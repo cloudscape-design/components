@@ -63,10 +63,10 @@ $column-breakpoint-spans: (
 @mixin make-horizontal-borders() {
   /* stylelint-disable selector-max-universal */
   > * {
-    border-block-end: $column-layout-border;
+    border-bottom: $column-layout-border;
 
     &:last-child {
-      border-block-end-width: 0;
+      border-bottom-width: 0;
     }
   }
   /* stylelint-enable selector-max-universal */
@@ -89,7 +89,7 @@ $column-breakpoint-spans: (
       @for $h from 1 through $items-per-row - $m + 1 {
         @if $h > 0 {
           > *:nth-last-child(#{$m}):nth-child(#{$items-per-row}n + #{$h}) {
-            border-block-end-width: 0;
+            border-bottom-width: 0;
           }
         }
       }
@@ -103,31 +103,25 @@ div.column-layout {
   word-wrap: break-word;
 
   > .grid {
-    margin-block: calc(#{$grid-gutter-width} / -2);
-    margin-inline: calc(#{$grid-gutter-width} / -2);
+    margin: calc(#{$grid-gutter-width} / -2);
 
     &.grid-no-gutters {
-      margin-block: 0;
-      margin-inline: 0;
+      margin: 0;
     }
 
     &.grid-variant-text-grid {
       @include make-vertical-borders('left');
-      margin-block: calc(-1 * #{$grid-gutter-width} / 2);
-      margin-inline: calc(-1 * #{$grid-gutter-width});
+      margin: calc(-1 * #{$grid-gutter-width} / 2) calc(-1 * #{$grid-gutter-width});
     }
     /* stylelint-disable-next-line selector-max-universal */
     &:not(.grid-no-gutters) > * {
-      padding-block: calc(#{$grid-gutter-width} / 2);
-      padding-inline: calc(#{$grid-gutter-width} / 2);
+      padding: calc(#{$grid-gutter-width} / 2);
     }
 
     /* stylelint-disable-next-line selector-max-universal */
     &:not(.grid-no-gutters).grid-variant-text-grid > * {
-      padding-block: 0;
-      padding-inline: $grid-gutter-width;
-      margin-block: calc(#{$grid-gutter-width} / 2);
-      margin-inline: 0;
+      padding: 0 $grid-gutter-width;
+      margin: calc(#{$grid-gutter-width} / 2) 0;
     }
 
     &.grid-vertical-borders {

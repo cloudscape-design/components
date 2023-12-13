@@ -11,17 +11,17 @@
   $border: awsui.$border-item-width solid $border-color;
   $radius: awsui.$border-radius-item;
   > .pane__cell {
-    border-block-start: $border;
-    border-block-end: $border;
+    border-top: $border;
+    border-bottom: $border;
     &:first-child {
-      border-inline-start: $border;
-      border-start-start-radius: $radius;
-      border-end-start-radius: $radius;
+      border-left: $border;
+      border-top-left-radius: $radius;
+      border-bottom-left-radius: $radius;
     }
     &:last-child {
-      border-inline-end: $border;
-      border-start-end-radius: $radius;
-      border-end-end-radius: $radius;
+      border-right: $border;
+      border-top-right-radius: $radius;
+      border-bottom-right-radius: $radius;
     }
   }
 }
@@ -32,31 +32,30 @@
   flex-direction: row;
   flex: 1;
 
-  border-block-start: awsui.$border-item-width solid awsui.$color-border-code-editor-default;
-  border-end-start-radius: awsui.$border-radius-code-editor;
-  border-end-end-radius: awsui.$border-radius-code-editor;
+  border-top: awsui.$border-item-width solid awsui.$color-border-code-editor-default;
+  border-bottom-left-radius: awsui.$border-radius-code-editor;
+  border-bottom-right-radius: awsui.$border-radius-code-editor;
   background: awsui.$color-background-code-editor-status-bar;
   color: awsui.$color-text-body-default;
 
   &__close-container {
     position: absolute;
-    inset-block-start: 0;
-    inset-inline-end: calc(#{awsui.$space-s} / 2);
+    top: 0;
+    right: calc(#{awsui.$space-s} / 2);
   }
 
   &__list {
     flex: 1;
     overflow: auto;
-    max-block-size: 100%;
+    max-height: 100%;
     box-sizing: border-box;
-    margin-inline-end: calc(#{awsui.$line-height-body-m} + 2 * #{awsui.$space-xs});
+    margin-right: calc(#{awsui.$line-height-body-m} + 2 * #{awsui.$space-xs});
   }
 
   &__table {
-    inline-size: 100%;
+    width: 100%;
     border-spacing: 0;
-    margin-block: awsui.$space-s;
-    margin-inline: 0;
+    margin: awsui.$space-s 0;
   }
 
   &__item {
@@ -76,22 +75,21 @@
 
   &__location,
   &__description {
-    padding-block: awsui.$space-xxs;
-    padding-inline: awsui.$space-s;
+    padding: awsui.$space-xxs awsui.$space-s;
   }
 
   &__location {
     vertical-align: baseline;
     white-space: nowrap;
-    padding-inline-start: calc(#{awsui.$space-l} + #{awsui.$space-s});
+    padding-left: calc(#{awsui.$space-l} + #{awsui.$space-s});
   }
 
   &__description {
-    padding-inline-end: 0;
+    padding-right: 0;
     @include styles.text-wrapping;
   }
 }
 
 .focus-lock {
-  block-size: 100%;
+  height: 100%;
 }

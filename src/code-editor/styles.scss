@@ -13,18 +13,17 @@
 .code-editor {
   @include styles.styles-reset;
   display: inline-block;
-  border-block: awsui.$border-item-width solid awsui.$color-border-code-editor-default;
-  border-inline: awsui.$border-item-width solid awsui.$color-border-code-editor-default;
-  border-start-start-radius: awsui.$border-radius-code-editor;
-  border-start-end-radius: awsui.$border-radius-code-editor;
-  border-end-start-radius: awsui.$border-radius-code-editor;
-  border-end-end-radius: awsui.$border-radius-code-editor;
-  inline-size: 100%;
+  border: awsui.$border-item-width solid awsui.$color-border-code-editor-default;
+  border-radius: awsui.$border-radius-code-editor;
+  width: 100%;
 }
 
 .editor {
   position: absolute;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
 
   &:focus {
     @include styles.focus-highlight(3px);
@@ -34,19 +33,19 @@
 }
 
 .editor-refresh {
-  border-start-start-radius: calc(awsui.$border-radius-code-editor - awsui.$border-item-width);
-  border-start-end-radius: calc(awsui.$border-radius-code-editor - awsui.$border-item-width);
+  border-top-left-radius: calc(awsui.$border-radius-code-editor - awsui.$border-item-width);
+  border-top-right-radius: calc(awsui.$border-radius-code-editor - awsui.$border-item-width);
 }
 
 .status-bar {
   display: flex;
   vertical-align: middle;
 
-  border-block-start: awsui.$border-item-width solid awsui.$color-border-code-editor-default;
+  border-top: awsui.$border-item-width solid awsui.$color-border-code-editor-default;
   background-color: awsui.$color-background-code-editor-status-bar;
   &-with-hidden-pane {
-    border-end-start-radius: awsui.$border-radius-code-editor;
-    border-end-end-radius: awsui.$border-radius-code-editor;
+    border-bottom-left-radius: awsui.$border-radius-code-editor;
+    border-bottom-right-radius: awsui.$border-radius-code-editor;
   }
 
   @include styles.text-wrapping;
@@ -55,8 +54,8 @@
     flex: 1;
     display: flex;
     flex-wrap: wrap;
-    padding-inline-start: awsui.$space-l;
-    border-inline-end: awsui.$border-item-width solid awsui.$color-border-code-editor-default;
+    padding-left: awsui.$space-l;
+    border-right: awsui.$border-item-width solid awsui.$color-border-code-editor-default;
   }
 
   &__left-virtual {
@@ -73,13 +72,11 @@
   &__cursor-position {
     display: inline-block;
     color: awsui.$color-text-body-default;
-    padding-block: awsui.$space-scaled-xs;
-    padding-inline: awsui.$space-s;
+    padding: awsui.$space-scaled-xs awsui.$space-s;
   }
 
   &__cog-button {
-    padding-block: calc(#{awsui.$space-scaled-xxs} - 1px);
-    padding-inline: calc(#{awsui.$space-xs} - 2px);
+    padding: calc(#{awsui.$space-scaled-xxs} - 1px) calc(#{awsui.$space-xs} - 2px);
   }
 }
 
@@ -90,13 +87,11 @@
 .tab-button {
   position: relative;
   display: inline-block;
-  padding-block: awsui.$space-scaled-xs;
-  padding-inline: awsui.$space-s;
+  padding: awsui.$space-scaled-xs awsui.$space-s;
   line-height: inherit;
   color: awsui.$color-text-status-error;
   background: none;
-  border-block: none;
-  border-inline: none;
+  border: none;
   font-weight: bold;
   outline: none;
   cursor: pointer;
@@ -110,19 +105,17 @@
   &::after {
     content: '';
     position: absolute;
-    inset-inline: 0;
-    inset-block-end: 0;
-    block-size: awsui.$border-active-width;
-    border-start-start-radius: awsui.$border-radius-tabs-focus-ring;
-    border-start-end-radius: awsui.$border-radius-tabs-focus-ring;
-    border-end-start-radius: awsui.$border-radius-tabs-focus-ring;
-    border-end-end-radius: awsui.$border-radius-tabs-focus-ring;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: awsui.$border-active-width;
+    border-radius: awsui.$border-radius-tabs-focus-ring;
     background: awsui.$color-text-status-error;
     opacity: 0;
   }
 
   &--refresh {
-    padding-block-end: calc(#{awsui.$space-scaled-xs} + #{awsui.$border-active-width} - 2px);
+    padding-bottom: calc(#{awsui.$space-scaled-xs} + #{awsui.$border-active-width} - 2px);
   }
 
   &--warnings {
@@ -168,8 +161,8 @@
 
   &--divider {
     display: inline-block;
-    block-size: awsui.$line-height-body-m;
-    inline-size: awsui.$border-code-editor-status-divider-width;
+    height: awsui.$line-height-body-m;
+    width: awsui.$border-code-editor-status-divider-width;
     background: awsui.$color-border-tabs-divider;
     vertical-align: middle;
   }
@@ -185,13 +178,12 @@ $default-height: 480px;
   display: flex;
   align-items: center;
   justify-content: center;
-  block-size: $default-height;
+
+  height: $default-height;
+
   color: awsui.$color-text-body-secondary;
   background: awsui.$color-background-code-editor-loading;
-  border-start-start-radius: awsui.$border-radius-code-editor;
-  border-start-end-radius: awsui.$border-radius-code-editor;
-  border-end-start-radius: awsui.$border-radius-code-editor;
-  border-end-end-radius: awsui.$border-radius-code-editor;
+  border-radius: awsui.$border-radius-code-editor;
 }
 
 .error-screen {

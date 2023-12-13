@@ -12,10 +12,10 @@
 
 .code-editor-refresh :global .ace_editor {
   .ace_gutter {
-    border-start-start-radius: calc(awsui.$border-radius-code-editor - awsui.$border-item-width);
+    border-top-left-radius: calc(awsui.$border-radius-code-editor - awsui.$border-item-width);
   }
   .ace_scroller {
-    border-start-end-radius: calc(awsui.$border-radius-code-editor - awsui.$border-item-width);
+    border-top-right-radius: calc(awsui.$border-radius-code-editor - awsui.$border-item-width);
   }
 }
 
@@ -50,7 +50,8 @@
   }
 
   .ace_gutter-cell {
-    padding-inline: $gutter-padding-left $gutter-padding-right;
+    padding-left: $gutter-padding-left;
+    padding-right: $gutter-padding-right;
   }
 
   .ace_fold-widget {
@@ -58,17 +59,16 @@
        <<html<<<<
        </html>
     */
-    inline-size: $gutter-padding-right - 2 * 1px; // gutter padding - 1px margin each side
-    margin-inline-end: -$gutter-padding-right + 1px; // leave 1px margin on each side
+    width: $gutter-padding-right - 2 * 1px; // gutter padding - 1px margin each side
+    margin-right: -$gutter-padding-right + 1px; // leave 1px margin on each side
     background-color: transparent;
-    border-block: none;
-    border-inline: none;
+    border: none;
   }
 
   .ace_gutter_annotation {
     // To align our custom icon with the annotation clickable/focus area.
     // Based on -19px in ace's default stylesheet.
-    margin-inline-start: -21px;
+    margin-left: -21px;
   }
 
   .ace_fold-widget,
@@ -85,13 +85,13 @@
   .ace_marker-layer > .ace_active-line {
     background: transparent;
     box-sizing: border-box;
-    border-block-start: 1px solid $active-line-border-color-light;
-    border-block-end: 1px solid $active-line-border-color-light;
+    border-top: 1px solid $active-line-border-color-light;
+    border-bottom: 1px solid $active-line-border-color-light;
   }
 
   &.ace_dark .ace_marker-layer > .ace_active-line {
-    border-block-start: 1px solid $active-line-border-color-dark;
-    border-block-end: 1px solid $active-line-border-color-dark;
+    border-top: 1px solid $active-line-border-color-dark;
+    border-bottom: 1px solid $active-line-border-color-dark;
   }
 
   .ace_gutter {

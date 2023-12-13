@@ -13,10 +13,8 @@ $dropdown-trigger-icon-offset: 2px;
 }
 
 .items-list-container {
-  padding-block: 0;
-  padding-inline: 0;
-  margin-block: 0;
-  margin-inline: 0;
+  padding: 0;
+  margin: 0;
 
   @include styles.with-motion {
     animation: awsui-motion-fade-in-0 500ms awsui.$motion-easing-show-quick;
@@ -42,11 +40,9 @@ $dropdown-trigger-icon-offset: 2px;
   display: flex;
   flex-direction: column;
   list-style: none;
-  padding-block: awsui.$space-s;
-  padding-inline: awsui.$space-l;
-  border-block-start: styles.$control-border-width solid transparent;
-  border-block-end: styles.$control-border-width solid awsui.$color-border-dropdown-group;
-  border-inline: styles.$control-border-width solid transparent;
+  padding: awsui.$space-s awsui.$space-l;
+  border: styles.$control-border-width solid transparent;
+  border-bottom: styles.$control-border-width solid awsui.$color-border-dropdown-group;
 }
 
 .title,
@@ -65,23 +61,24 @@ $dropdown-trigger-icon-offset: 2px;
 
   & > .trigger-item:not(:last-child) {
     & > .trigger-button {
-      border-start-end-radius: 0;
-      border-end-end-radius: 0;
-      padding-inline-end: awsui.$space-m;
-      margin-inline-end: awsui.$space-xxxs;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      padding-right: awsui.$space-m;
+      margin-right: awsui.$space-xxxs;
     }
   }
 
   & > .trigger-item:not(:first-child) {
     & > .trigger-button {
-      border-start-start-radius: 0;
-      border-end-start-radius: 0;
-      padding-inline: calc(#{awsui.$space-xs} - #{$dropdown-trigger-icon-offset});
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      padding-left: calc(#{awsui.$space-xs} - #{$dropdown-trigger-icon-offset});
+      padding-right: calc(#{awsui.$space-xs} - #{$dropdown-trigger-icon-offset});
     }
 
     &.visual-refresh {
       & > .trigger-button {
-        padding-inline-end: calc(#{awsui.$space-s} - #{$dropdown-trigger-icon-offset});
+        padding-right: calc(#{awsui.$space-s} - #{$dropdown-trigger-icon-offset});
       }
     }
   }

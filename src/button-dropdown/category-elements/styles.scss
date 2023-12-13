@@ -8,20 +8,19 @@
 
 .header {
   position: relative;
-  margin-block: 0;
-  margin-inline: 0;
+  margin: 0;
   color: awsui.$color-text-dropdown-group-label;
-  border-block: awsui.$border-divider-list-width solid transparent;
-  border-inline: awsui.$border-divider-list-width solid transparent;
+  border: awsui.$border-divider-list-width solid transparent;
   // remove the borders completely to avoid the slating effect at the border ends (AWSUI-10545)
-  border-inline-width: 0;
+  border-left: 0;
+  border-right: 0;
   font-weight: bold;
   display: flex;
   justify-content: space-between;
   // to compensate for the loss of padding due to the removal of the left and right borders
   // and differences in default divider + selected border widths (visual refresh)
-  padding-block: styles.$option-padding-with-border-placeholder-vertical;
-  padding-inline: calc(#{awsui.$space-button-horizontal} + #{awsui.$border-item-width});
+  padding: styles.$option-padding-with-border-placeholder-vertical
+    calc(#{awsui.$space-button-horizontal} + #{awsui.$border-item-width});
   z-index: 1;
 
   &.disabled {
@@ -30,8 +29,8 @@
   }
 
   &.expandable-header {
-    border-block-start-color: awsui.$color-border-dropdown-group;
-    border-block-end-color: awsui.$color-border-dropdown-group;
+    border-top-color: awsui.$color-border-dropdown-group;
+    border-bottom-color: awsui.$color-border-dropdown-group;
     cursor: pointer;
     &.disabled {
       cursor: default;
@@ -40,22 +39,16 @@
       outline: none;
     }
     &.rolled-down {
-      border-block-end-color: transparent;
+      border-bottom-color: transparent;
     }
     &.highlighted {
       background-color: awsui.$color-background-dropdown-item-hover;
       color: awsui.$color-text-dropdown-item-highlighted;
       // reset padding when adding border back in
-      padding-block: styles.$option-padding-vertical;
-      padding-inline: awsui.$space-button-horizontal;
-      border-block: awsui.$border-item-width solid awsui.$color-border-dropdown-item-hover;
-      border-inline: awsui.$border-item-width solid awsui.$color-border-dropdown-item-hover;
-      border-start-start-radius: awsui.$border-radius-item;
-      border-start-end-radius: awsui.$border-radius-item;
-      border-end-start-radius: awsui.$border-radius-item;
-      border-end-end-radius: awsui.$border-radius-item;
+      padding: styles.$option-padding-vertical awsui.$space-button-horizontal;
+      border: awsui.$border-item-width solid awsui.$color-border-dropdown-item-hover;
+      border-radius: awsui.$border-radius-item;
       z-index: 2;
-
       &.disabled {
         background-color: awsui.$color-background-dropdown-item-dimmed;
         border-color: awsui.$color-border-dropdown-item-dimmed-hover;
@@ -68,12 +61,14 @@
     }
 
     &.variant-navigation {
-      padding-block: awsui.$space-xs;
+      padding-top: awsui.$space-xs;
+      padding-bottom: awsui.$space-xs;
 
       &.highlighted {
         border-color: transparent;
-        border-block-start-color: awsui.$color-border-dropdown-group;
-        border-block-end-color: awsui.$color-border-dropdown-group;
+        border-top-color: awsui.$color-border-dropdown-group;
+        border-bottom-color: awsui.$color-border-dropdown-group;
+
         background-color: transparent;
         color: awsui.$color-text-accent;
       }
@@ -83,34 +78,33 @@
 
 .category {
   list-style: none;
-  margin-block-start: calc(-1 * #{awsui.$border-divider-list-width});
-  padding-block: 0;
-  padding-inline: 0;
+  margin-top: calc(-1 * #{awsui.$border-divider-list-width});
+  padding: 0;
   &:first-child {
-    margin-block-start: 0;
+    margin-top: 0;
   }
 
   &.expandable {
-    border-block-start: 0;
+    border-top: 0;
   }
 
   &:last-child {
-    border-block-end: none;
+    border-bottom: none;
   }
 
   &.variant-navigation {
-    padding-block-start: awsui.$space-xxs;
+    padding-top: awsui.$space-xxs;
 
     &.expandable {
-      padding-block-start: 0;
+      padding-top: 0;
     }
   }
 }
 
 .expand-icon {
   position: relative;
-  inset-inline-start: awsui.$space-s;
-  inline-size: awsui.$space-m;
+  left: awsui.$space-s;
+  width: awsui.$space-m;
   display: inline-block;
 
   &-up {
@@ -126,10 +120,7 @@
 }
 
 .items-list-container {
-  padding-block: 0;
-  padding-inline: 0;
-  margin-block-start: -1px;
-  margin-block-end: 0;
-  margin-inline: 0;
+  padding: 0;
+  margin: -1px 0 0 0;
   overflow-y: auto;
 }

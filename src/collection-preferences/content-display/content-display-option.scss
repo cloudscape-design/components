@@ -29,20 +29,15 @@ $border-radius: awsui.$border-radius-item;
   @include styles.styles-reset;
   display: flex;
   align-items: flex-start;
-  padding-block: awsui.$space-xs;
-  padding-inline-start: 0;
-  padding-inline-end: awsui.$space-scaled-xs;
+  padding: awsui.$space-xs awsui.$space-scaled-xs awsui.$space-xs 0;
   background-color: awsui.$color-background-container-content;
-  border-start-start-radius: $border-radius;
-  border-start-end-radius: $border-radius;
-  border-end-start-radius: $border-radius;
-  border-end-end-radius: $border-radius;
+  border-radius: $border-radius;
 }
 
 .content-display-option {
   list-style: none;
   position: relative;
-  border-block-start: awsui.$border-divider-list-width solid awsui.$color-border-divider-default;
+  border-top: awsui.$border-divider-list-width solid awsui.$color-border-divider-default;
   &:not(.placeholder).sorting {
     @include animated;
   }
@@ -52,12 +47,12 @@ $border-radius: awsui.$border-radius-item;
       &:after {
         content: ' ';
         position: absolute;
-        inset: 0;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
         background: awsui.$color-drag-placeholder-hover;
-        border-start-start-radius: $border-radius;
-        border-start-end-radius: $border-radius;
-        border-end-start-radius: $border-radius;
-        border-end-end-radius: $border-radius;
+        border-radius: $border-radius;
       }
     }
   }
@@ -66,15 +61,12 @@ $border-radius: awsui.$border-radius-item;
 .content-display-option-label {
   flex-grow: 1;
   @include styles.text-wrapping;
-  padding-inline-end: awsui.$space-l;
+  padding-right: awsui.$space-l;
 }
 
 .drag-overlay {
   box-shadow: awsui.$shadow-container-active;
-  border-start-start-radius: $border-radius;
-  border-start-end-radius: $border-radius;
-  border-end-start-radius: $border-radius;
-  border-end-end-radius: $border-radius;
+  border-radius: $border-radius;
   @include focus-visible {
     @include styles.focus-highlight(0px, $border-radius);
   }

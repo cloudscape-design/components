@@ -20,12 +20,12 @@
     user-select: none;
     background-color: awsui.$color-background-dropdown-item-default;
     outline: none;
-    border-block-start: none;
-    border-block-end: none;
+    border-top: none;
+    border-bottom: none;
 
     display: flex;
     flex-direction: column;
-    inline-size: 100%;
+    width: 100%;
 
     &.nowrap {
       white-space: nowrap;

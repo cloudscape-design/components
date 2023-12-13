@@ -18,33 +18,30 @@ $border: awsui.$border-divider-list-width solid awsui.$color-border-divider-defa
 .visible-content-title {
   @include styles.font-label;
   color: awsui.$color-text-form-label;
-  margin-block-start: 0;
-  margin-block-end: awsui.$space-scaled-l;
-  margin-inline: 0;
+  margin: 0;
+  margin-bottom: awsui.$space-scaled-l;
 }
 
 .visible-content-group-label {
   color: awsui.$color-text-group-label;
-  padding-block-end: awsui.$space-xs;
-  border-block-end: $border;
+  padding-bottom: awsui.$space-xs;
+  border-bottom: $border;
 }
 
 .visible-content-option {
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-between;
-  padding-block: awsui.$space-xs;
-  padding-inline-start: awsui.$space-scaled-l;
-  padding-inline-end: 0px;
-  border-block-end: $border;
+  padding: awsui.$space-xs 0px awsui.$space-xs awsui.$space-scaled-l;
+  border-bottom: $border;
   &:last-child {
-    border-block-end: none;
+    border-bottom: none;
   }
 }
 
 .visible-content-option-label {
   overflow: hidden;
   text-overflow: ellipsis;
-  padding-inline-end: awsui.$space-l;
+  padding-right: awsui.$space-l;
   flex-grow: 1;
 }

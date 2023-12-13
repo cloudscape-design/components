@@ -53,12 +53,7 @@
     {
       "files": [
         "./src/a*/*.scss",
-        "./src/b*/*.scss",
-        "./src/c*/*.scss",
-        "./src/d*/*.scss",
-        "./src/e*/*.scss",
-        "./src/f*/*.scss"
-
+        "./src/button/*.scss"
       ],
       "rules": {
         "property-disallowed-list": ["border-radius", "border-style", "border-width", "margin", "padding"],
