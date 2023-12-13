@@ -113,6 +113,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextHeadingDefault: { light: '{colorGrey900}', dark: '{colorGrey200}' },
   colorTextHeadingSecondary: { light: '{colorGrey600}', dark: '{colorGrey300}' },
   colorTextHomeHeaderDefault: { dark: '{colorGrey200}' },
+  colorTextHomeHeaderSecondary: '{colorGrey300}',
   colorTextInputDisabled: { light: '{colorGrey500}' },
   colorTextInputPlaceholder: { light: '{colorGrey550}', dark: '{colorGrey500}' },
   colorTextInputPlaceholderDisabled: '{colorTextInputPlaceholder}',
@@ -139,6 +140,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorDropzoneBackgroundHover: { light: '{colorBlue300}', dark: '{colorBlue600}' },
   colorDropzoneTextActive: { light: '{colorGrey600}', dark: '{colorGrey900}' },
   colorDropzoneTextHover: { light: '{colorBlue900}', dark: '{colorWhite}' },
+  colorBackgroundDropdownItemHover: { light: '{colorGrey150}', dark: '{colorGrey650}' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = merge(
