@@ -5,7 +5,8 @@ import { Box, SpaceBetween, CopyToClipboard } from '~components';
 import ScreenshotArea from '../utils/screenshot-area';
 
 const i18nStrings = {
-  copyButtonText: 'Copy',
+  copySuccessText: 'Copied to clipboard',
+  copyErrorText: 'Failed to copy to clipboard',
 };
 
 const paragraphs = [
@@ -34,22 +35,8 @@ export default function DateInputScenario() {
 
             <CopyToClipboard
               data-testid="copy-article"
-              copySuccessText="Lorem ipsum article copied"
-              copyErrorText="Lorem ipsum article failed to copy"
+              copyButtonText="Copy"
               textToCopy={paragraphs.join('\n\n')}
-              i18nStrings={i18nStrings}
-            />
-          </div>
-
-          <div style={{ display: 'flex', gap: 16 }}>
-            <Box variant="p">{paragraphs[0]}</Box>
-
-            <CopyToClipboard
-              data-testid="copy-paragraph"
-              variant="icon"
-              copySuccessText="Lorem ipsum paragraph copied"
-              copyErrorText="Lorem ipsum paragraph failed to copy"
-              textToCopy={paragraphs[0]}
               i18nStrings={i18nStrings}
             />
           </div>
@@ -57,9 +44,7 @@ export default function DateInputScenario() {
           <CopyToClipboard
             data-testid="copy-sentence"
             variant="inline"
-            ariaLabel="Copy lorem ipsum"
-            copySuccessText="Lorem ipsum sentence copied"
-            copyErrorText="Lorem ipsum sentence failed to copy"
+            copyButtonAriaLabel="Copy lorem ipsum"
             textToCopy={sentence}
             i18nStrings={i18nStrings}
           />

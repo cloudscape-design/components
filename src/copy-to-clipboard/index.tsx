@@ -17,10 +17,9 @@ export { CopyToClipboardProps };
 
 export default function CopyToClipboard({
   variant = 'button',
-  ariaLabel,
+  copyButtonAriaLabel,
+  copyButtonText,
   textToCopy,
-  copySuccessText,
-  copyErrorText,
   i18nStrings,
   ...restProps
 }: CopyToClipboardProps) {
@@ -28,12 +27,16 @@ export default function CopyToClipboard({
   const baseProps = getBaseProps(restProps);
 
   const i18n = useInternalI18n('copy-to-clipboard');
-  const copyButtonText = i18n('i18nStrings.copyButtonText', i18nStrings?.copyButtonText);
   const copyButtonProps =
-    variant === 'button' ? { children: copyButtonText, ariaLabel } : { ariaLabel: ariaLabel ?? copyButtonText };
+    variant === 'button'
+      ? { children: copyButtonText, ariaLabel: copyButtonAriaLabel }
+      : { ariaLabel: copyButtonAriaLabel ?? copyButtonText };
 
   const [status, setStatus] = useState<'pending' | 'success' | 'error'>('pending');
   const [statusText, setStatusText] = useState('');
+
+  const copySuccessText = i18n('i18nStrings.copySuccessText', i18nStrings?.copySuccessText) ?? '';
+  const copyErrorText = i18n('i18nStrings.copyErrorText', i18nStrings?.copyErrorText) ?? '';
 
   const onClick = () => {
     if (navigator.clipboard) {

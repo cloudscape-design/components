@@ -129,7 +129,8 @@ export interface I18nFormatArgTypes {
     }
   }
   "copy-to-clipboard": {
-    "i18nStrings.copyButtonText": string;
+    "i18nStrings.copySuccessText": never;
+    "i18nStrings.copyErrorText": never;
   };
   "date-range-picker": {
     "i18nStrings.relativeModeTitle": never;
