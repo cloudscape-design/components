@@ -1,11 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { ScaleType } from '../internal/components/cartesian-chart/interfaces';
-import { ChartDataTypes, MixedLineBarChartProps } from '../mixed-line-bar-chart/interfaces';
+import { ChartDataTypes, CommonMixedChartProps, MixedLineBarChartProps } from '../mixed-line-bar-chart/interfaces';
 
 type BarSeries<T> = MixedLineBarChartProps.BarDataSeries<T> | MixedLineBarChartProps.ThresholdSeries<T>;
 
-export interface BarChartProps<T extends ChartDataTypes> extends MixedLineBarChartProps<T> {
+export interface BarChartProps<T extends ChartDataTypes> extends CommonMixedChartProps<T> {
   /**
    * Array that represents the source of data for the displayed chart.
    * Each element can represent a bar series or a threshold, and can have the following properties:
