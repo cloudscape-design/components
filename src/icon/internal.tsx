@@ -103,12 +103,20 @@ const InternalIcon = ({
 
   const validIcon = name && Object.prototype.hasOwnProperty.call(icons, name);
 
+  function getIconName(name: IconProps.Name) {
+    if (name === 'gen-ai') {
+      return iconSize === 'small' ? icons['gen-ai-filled'] : icons['gen-ai'];
+    } else {
+      return icons[name];
+    }
+  }
+
   return (
     <span
       {...baseProps}
       // dangerouslySetInnerHTML is safe here, as we control the content coming from `icons`
       // eslint-disable-next-line react/no-danger
-      dangerouslySetInnerHTML={validIcon ? { __html: icons[name] } : undefined}
+      dangerouslySetInnerHTML={validIcon ? { __html: getIconName(name) } : undefined}
       ref={mergedRef}
       style={inlineStyles}
     />

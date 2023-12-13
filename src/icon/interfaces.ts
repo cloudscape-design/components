@@ -104,6 +104,7 @@ export namespace IconProps {
     | 'flag'
     | 'folder-open'
     | 'folder'
+    | 'gen-ai'
     | 'group-active'
     | 'group'
     | 'heart'
