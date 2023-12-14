@@ -184,7 +184,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextDropdownItemSecondary: '{colorTextFormSecondary}',
   colorTextDropdownItemSecondaryHover: { light: '{colorGrey550}', dark: '{colorGrey300}' },
   colorTextEmpty: { light: '{colorGrey550}', dark: '{colorGrey300}' },
-  colorTextExpandableSectionDefault: '{colorTextInteractiveActive}',
+  colorTextExpandableSectionDefault: { light: '{colorGrey900}', dark: '{colorGrey300}' },
   colorTextExpandableSectionHover: '{colorTextAccent}',
   colorTextExpandableSectionNavigationIconDefault: '{colorTextInteractiveDefault}',
   colorTextFormDefault: { light: '{colorGrey900}', dark: '{colorGrey300}' },
