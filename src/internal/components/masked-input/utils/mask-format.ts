@@ -133,7 +133,7 @@ class MaskFormat {
   }
 
   getSegmentValueWithAddition(position: number, value: string, enteredDigit: string) {
-    const segment = this.getPositionFormatOrThrow(position);
+    const segment = this.positionFormats.get(position)!;
     const segmentValue = value.substr(segment.start, segment.length);
     const segmentPosition = position - segment.start;
     const newValue = insertAt(segmentValue, enteredDigit, segmentPosition, segmentPosition + 1);
@@ -150,14 +150,14 @@ class MaskFormat {
 
     // first, insert zeros in a partial segment at beginning of selection
     if (!this.isSegmentStart(cursorStart)) {
-      const segment = this.getPositionFormatOrThrow(cursorStart);
+      const segment = this.positionFormats.get(cursorStart)!;
       value = insertAt(value, padLeftZeros('', segment.end - cursorStart), cursorStart, segment.end);
       cursorStart = segment.end + 1;
     }
 
     // then loop through remaining segments, filling with zeros
     let currentSegment: FormatSegmentFull;
-    while (cursorStart < cursorEnd && (currentSegment = this.getPositionFormatOrThrow(cursorStart + 1))) {
+    while (cursorStart < cursorEnd && (currentSegment = this.positionFormats.get(cursorStart + 1)!)) {
       const insertionEnd = Math.min(cursorEnd, currentSegment.end);
       value = insertAt(
         value,
@@ -178,7 +178,7 @@ class MaskFormat {
 
   handleSeparatorInput(value: string, position: number): ChangeResult | void {
     if (position === value.length && !this.isSegmentStart(position)) {
-      const segment = this.getPositionFormatOrThrow(position);
+      const segment = this.positionFormats.get(position)!;
       let segmentValue = value.substr(segment.start, segment.length);
       segmentValue = this.padWithDefaultValue(segmentValue, segment);
       value = insertAt(value, segmentValue, segment.start, segment.end);
@@ -199,11 +199,11 @@ class MaskFormat {
   }
 
   getSegmentMaxValue(value: string, position: number): number {
-    return this.getPositionFormatOrThrow(position).max(value);
+    return this.positionFormats.get(position)!.max(value);
   }
 
   getSegmentMinValue(value: string, position: number): number {
-    return this.getPositionFormatOrThrow(position).min;
+    return this.positionFormats.get(position)!.min;
   }
 
   getMaxLength() {
@@ -357,14 +357,6 @@ class MaskFormat {
       // skip a position for separator
       position++;
     }
-  }
-
-  private getPositionFormatOrThrow(position: number): FormatSegmentFull {
-    const format = this.positionFormats.get(position);
-    if (format === undefined) {
-      throw new Error('Invariant violation: undefined position format.');
-    }
-    return format;
   }
 }
 
