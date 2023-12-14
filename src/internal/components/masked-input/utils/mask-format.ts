@@ -148,6 +148,8 @@ class MaskFormat {
       cursorStart++;
     }
 
+    console.log('DEBUG', this.isSegmentStart(cursorStart));
+
     // first, insert zeros in a partial segment at beginning of selection
     if (!this.isSegmentStart(cursorStart)) {
       const segment = this.positionFormats.get(cursorStart)!;
