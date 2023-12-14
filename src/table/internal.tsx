@@ -239,7 +239,8 @@ const InternalTable = React.forwardRef(
       onFocusMove: moveFocus,
       onResizeFinish(newWidth) {
         const widthsDetail = columnDefinitions.map(
-          (column, index) => newWidth[getColumnKey(column, index)] || (column.width as number) || DEFAULT_COLUMN_WIDTH
+          (column, index) =>
+            newWidth.get(getColumnKey(column, index)) || (column.width as number) || DEFAULT_COLUMN_WIDTH
         );
         const widthsChanged = widthsDetail.some((width, index) => columnDefinitions[index].width !== width);
         if (widthsChanged) {
