@@ -155,12 +155,15 @@ const RECTANGLE_CALCULATIONS: Record<InternalPosition, (r: ElementGroup) => Boun
  * Returns whether one rectangle fits in another.
  */
 function canRectFit(inner: BoundingOffset, outer: BoundingOffset): boolean {
-  return (
-    inner.left >= outer.left &&
-    inner.top >= outer.top &&
-    inner.left + inner.width <= outer.left + outer.width &&
-    inner.top + inner.height <= outer.top + outer.height
-  );
+  return canRectFitHorizontally(inner, outer) && canRectFitVertically(inner, outer);
+}
+
+function canRectFitHorizontally(inner: BoundingOffset, outer: BoundingOffset): boolean {
+  return inner.left >= outer.left && inner.left + inner.width <= outer.left + outer.width;
+}
+
+function canRectFitVertically(inner: BoundingOffset, outer: BoundingOffset): boolean {
+  return inner.top >= outer.top && inner.top + inner.height <= outer.top + outer.height;
 }
 
 function fitIntoContainer(inner: BoundingOffset, outer: BoundingOffset): BoundingOffset {
@@ -261,7 +264,10 @@ export function calculatePosition({
       boundingRectangles.push(container);
     }
     const availableArea = intersectRectangles(boundingRectangles);
-    if (availableArea && availableArea > largestArea) {
+    const fitsHorizontally =
+      canRectFitHorizontally(boundingOffset, container) && canRectFitHorizontally(boundingOffset, viewport);
+
+    if (availableArea && ((fitsHorizontally && availableArea > largestArea) || fixedInternalPosition)) {
       bestPositionOutsideViewport = { internalPosition, boundingOffset };
       largestArea = availableArea;
     }

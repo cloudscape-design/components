@@ -13,11 +13,13 @@ import SpaceBetween from '~components/space-between';
 import StatusIndicator from '~components/status-indicator';
 import AppContext, { AppContextType } from '../app/app-context';
 
-type PopoverPlacementContext = React.Context<AppContextType<{ position?: string; placement?: string }>>;
+type PopoverPlacementContext = React.Context<
+  AppContextType<{ position?: string; placement?: string; tallTrigger?: boolean }>
+>;
 
 export default function () {
   const {
-    urlParams: { position, placement },
+    urlParams: { position, placement, tallTrigger },
   } = useContext(AppContext as PopoverPlacementContext);
 
   if (!position || !placement) {
@@ -64,14 +66,17 @@ export default function () {
               >
                 <Popover
                   id={`popover-${row}-${col}`}
-                  size="medium"
+                  size="large"
+                  fixedWidth={true}
                   position={position}
                   header="Info"
                   content={<Content />}
                   dismissAriaLabel="Close"
                   triggerType="custom"
                 >
-                  <button id="popover-trigger">Open popover</button>
+                  <button id="popover-trigger" className={clsx(tallTrigger && styles['tall-trigger'])}>
+                    {!tallTrigger && 'Open popover'}
+                  </button>
                 </Popover>
               </div>
             );

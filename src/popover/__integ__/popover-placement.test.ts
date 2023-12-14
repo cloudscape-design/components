@@ -28,6 +28,7 @@ interface SetupProps {
   viewport: readonly [width: number, height: number];
   scrollLeft?: number;
   scrollTop?: number;
+  tallTrigger?: boolean;
 }
 
 type Expectation = (trigger: ElementRect, container: ElementRect, arrow: ElementRect) => void;
@@ -140,11 +141,17 @@ describe('Fallback to vertical placement in mobile', () => {
     [{ position: 'left', placement: 'top-right', viewport: VIEWPORT_MOBILE }, bottomLeft],
     [{ position: 'right', placement: 'bottom-left', viewport: VIEWPORT_MOBILE }, topRight],
     [{ position: 'left', placement: 'bottom-right', viewport: VIEWPORT_MOBILE }, topLeft],
+    [{ position: 'right', placement: 'top-center', viewport: VIEWPORT_MOBILE, tallTrigger: true }, bottomRight],
+    [{ position: 'left', placement: 'top-center', viewport: VIEWPORT_MOBILE, tallTrigger: true }, bottomRight],
+    [{ position: 'right', placement: 'center-center', viewport: VIEWPORT_MOBILE, tallTrigger: true }, bottomRight],
+    [{ position: 'left', placement: 'center-center', viewport: VIEWPORT_MOBILE, tallTrigger: true }, bottomRight],
+    [{ position: 'right', placement: 'bottom-center', viewport: VIEWPORT_MOBILE, tallTrigger: true }, bottomLeft],
+    [{ position: 'left', placement: 'bottom-center', viewport: VIEWPORT_MOBILE, tallTrigger: true }, bottomLeft],
   ];
 
   for (const [props, expectation] of scenarios) {
     test(
-      `Scenario: ${props.position}, ${props.placement}, ${props.viewport}`,
+      `Scenario: ${props.position}, ${props.placement}, ${props.viewport}${props.tallTrigger ? ', tall trigger' : ''}`,
       setupTest(props, async page => {
         await page.click('#popover-trigger');
         const trigger = await page.getBoundingBox(triggerSelector);
