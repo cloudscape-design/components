@@ -17,7 +17,7 @@ function readWidths(
   getCell: (columnId: PropertyKey) => null | HTMLElement,
   visibleColumns: readonly ColumnWidthDefinition[]
 ) {
-  const result: Record<PropertyKey, number> = {};
+  const result = new Map<PropertyKey, number>();
   for (let index = 0; index < visibleColumns.length; index++) {
     const column = visibleColumns[index];
     let width = (column.width as number) || 0;
@@ -29,9 +29,10 @@ function readWidths(
       const colEl = getCell(column.id);
       width = colEl?.getBoundingClientRect().width ?? DEFAULT_COLUMN_WIDTH;
     }
-    result[column.id] = Math.max(width, minWidth);
+    result.set(column.id, Math.max(width, minWidth));
   }
-  return result;
+  // TODO: return map
+  return Object.fromEntries(result.entries());
 }
 
 function updateWidths(
@@ -145,17 +146,18 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
     if (!resizableColumns) {
       return;
     }
-    const updates: Record<PropertyKey, number> = {};
+    const updates = new Map<PropertyKey, number>();
     const lastVisible = visibleColumnsRef.current;
     if (lastVisible) {
       for (let index = 0; index < visibleColumns.length; index++) {
         const column = visibleColumns[index];
         if (!columnWidths?.[column.id] && lastVisible.indexOf(column.id) === -1) {
-          updates[column.id] = (column.width as number) || DEFAULT_COLUMN_WIDTH;
+          updates.set(column.id, (column.width as number) || DEFAULT_COLUMN_WIDTH);
         }
       }
-      if (Object.keys(updates).length > 0) {
-        setColumnWidths(columnWidths => ({ ...columnWidths, ...updates }));
+      if (updates.size > 0) {
+        // TODO: use maps as is
+        setColumnWidths(columnWidths => ({ ...columnWidths, ...Object.fromEntries(updates.entries()) }));
       }
     }
     visibleColumnsRef.current = visibleColumns.map(column => column.id);
