@@ -75,15 +75,15 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
   const containerWidthRef = useRef(0);
   const [columnWidths, setColumnWidths] = useState<null | Record<PropertyKey, number>>(null);
 
-  const cellsRef = useRef<Record<PropertyKey, HTMLElement>>({});
-  const stickyCellsRef = useRef<Record<PropertyKey, HTMLElement>>({});
-  const getCell = (columnId: PropertyKey): null | HTMLElement => cellsRef.current[columnId] ?? null;
+  const cellsRef = useRef(new Map<PropertyKey, HTMLElement>());
+  const stickyCellsRef = useRef(new Map<PropertyKey, HTMLElement>());
+  const getCell = (columnId: PropertyKey): null | HTMLElement => cellsRef.current.get(columnId) ?? null;
   const setCell = (sticky: boolean, columnId: PropertyKey, node: null | HTMLElement) => {
     const ref = sticky ? stickyCellsRef : cellsRef;
     if (node) {
-      ref.current[columnId] = node;
+      ref.current.set(columnId, node);
     } else {
-      delete ref.current[columnId];
+      ref.current.delete(columnId);
     }
   };
 
@@ -94,7 +94,7 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
     }
 
     if (sticky) {
-      return { width: cellsRef.current[column.id]?.offsetWidth || (columnWidths?.[column.id] ?? column.width) };
+      return { width: cellsRef.current.get(column.id)?.offsetWidth || (columnWidths?.[column.id] ?? column.width) };
     }
 
     if (resizableColumns && columnWidths) {
@@ -117,14 +117,16 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
   // This allows setting the style as soon container's size change is observed.
   const updateColumnWidths = useStableCallback(() => {
     for (const { id } of visibleColumns) {
-      if (cellsRef.current[id]) {
-        setElementWidths(cellsRef.current[id], getColumnStyles(false, id));
+      const element = cellsRef.current.get(id);
+      if (element) {
+        setElementWidths(element, getColumnStyles(false, id));
       }
     }
     // Sticky column widths must be synchronized once all real column widths are assigned.
     for (const { id } of visibleColumns) {
-      if (stickyCellsRef.current[id]) {
-        setElementWidths(stickyCellsRef.current[id], getColumnStyles(true, id));
+      const element = stickyCellsRef.current.get(id);
+      if (element) {
+        setElementWidths(element, getColumnStyles(true, id));
       }
     }
   });
