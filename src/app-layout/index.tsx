@@ -491,7 +491,13 @@ const OldAppLayout = React.forwardRef(
           onNavigationToggle(false);
         }
       },
-      focusToolsClose: () => focusToolsButtons(true),
+      focusToolsClose: () => {
+        if (activeDrawerId) {
+          focusDrawersButtons(true);
+        } else {
+          focusToolsButtons(true);
+        }
+      },
       focusActiveDrawer: () => focusDrawersButtons(true),
       focusSplitPanel: () => splitPanelRefs.slider.current?.focus(),
     }));
