@@ -141,12 +141,12 @@ describe('Fallback to vertical placement in mobile', () => {
     [{ position: 'left', placement: 'top-right', viewport: VIEWPORT_MOBILE }, bottomLeft],
     [{ position: 'right', placement: 'bottom-left', viewport: VIEWPORT_MOBILE }, topRight],
     [{ position: 'left', placement: 'bottom-right', viewport: VIEWPORT_MOBILE }, topLeft],
-    [{ position: 'right', placement: 'top-center', viewport: VIEWPORT_MOBILE, tallTrigger: true }, bottomRight],
-    [{ position: 'left', placement: 'top-center', viewport: VIEWPORT_MOBILE, tallTrigger: true }, bottomRight],
-    [{ position: 'right', placement: 'center-center', viewport: VIEWPORT_MOBILE, tallTrigger: true }, bottomRight],
-    [{ position: 'left', placement: 'center-center', viewport: VIEWPORT_MOBILE, tallTrigger: true }, bottomRight],
-    [{ position: 'right', placement: 'bottom-center', viewport: VIEWPORT_MOBILE, tallTrigger: true }, bottomLeft],
-    [{ position: 'left', placement: 'bottom-center', viewport: VIEWPORT_MOBILE, tallTrigger: true }, bottomLeft],
+    [{ position: 'right', placement: 'top-center', viewport: VIEWPORT_MOBILE, tallTrigger: true }, centerBottom],
+    [{ position: 'left', placement: 'top-center', viewport: VIEWPORT_MOBILE, tallTrigger: true }, centerBottom],
+    [{ position: 'right', placement: 'center-center', viewport: VIEWPORT_MOBILE, tallTrigger: true }, centerTop],
+    [{ position: 'left', placement: 'center-center', viewport: VIEWPORT_MOBILE, tallTrigger: true }, centerTop],
+    [{ position: 'right', placement: 'bottom-center', viewport: VIEWPORT_MOBILE, tallTrigger: true }, centerTop],
+    [{ position: 'left', placement: 'bottom-center', viewport: VIEWPORT_MOBILE, tallTrigger: true }, centerTop],
   ];
 
   for (const [props, expectation] of scenarios) {

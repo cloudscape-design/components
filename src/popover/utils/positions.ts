@@ -1,18 +1,18 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { PopoverProps, InternalPosition, BoundingOffset, BoundingBox } from '../interfaces';
+import { PopoverProps, InternalPosition, BoundingBox, Dimensions } from '../interfaces';
 
 // A structure describing how the popover should be positioned
 interface CalculatedPosition {
   scrollable?: boolean;
   internalPosition: InternalPosition;
-  boundingOffset: BoundingOffset;
+  boundingBox: BoundingBox;
 }
 
 interface ElementGroup {
-  body: BoundingBox;
-  trigger: BoundingOffset;
-  arrow: BoundingBox;
+  body: Dimensions;
+  trigger: BoundingBox;
+  arrow: Dimensions;
 }
 
 const ARROW_OFFSET = 12;
@@ -68,7 +68,7 @@ export const PRIORITY_MAPPING: Record<PopoverProps.Position, InternalPosition[]>
   ],
 };
 
-const RECTANGLE_CALCULATIONS: Record<InternalPosition, (r: ElementGroup) => BoundingOffset> = {
+const RECTANGLE_CALCULATIONS: Record<InternalPosition, (r: ElementGroup) => BoundingBox> = {
   'top-center': ({ body, trigger, arrow }) => {
     return {
       top: trigger.top - body.height - arrow.height,
@@ -151,22 +151,7 @@ const RECTANGLE_CALCULATIONS: Record<InternalPosition, (r: ElementGroup) => Boun
   },
 };
 
-/**
- * Returns whether one rectangle fits in another.
- */
-function canRectFit(inner: BoundingOffset, outer: BoundingOffset): boolean {
-  return canRectFitHorizontally(inner, outer) && canRectFitVertically(inner, outer);
-}
-
-function canRectFitHorizontally(inner: BoundingOffset, outer: BoundingOffset): boolean {
-  return inner.left >= outer.left && inner.left + inner.width <= outer.left + outer.width;
-}
-
-function canRectFitVertically(inner: BoundingOffset, outer: BoundingOffset): boolean {
-  return inner.top >= outer.top && inner.top + inner.height <= outer.top + outer.height;
-}
-
-function fitIntoContainer(inner: BoundingOffset, outer: BoundingOffset): BoundingOffset {
+function fitIntoContainer(inner: BoundingBox, outer: BoundingBox): BoundingBox {
   let { left, width, top, height } = inner;
 
   // Adjust left boundary.
@@ -191,32 +176,39 @@ function fitIntoContainer(inner: BoundingOffset, outer: BoundingOffset): Boundin
   return { left, width, top, height };
 }
 
-/**
- * Returns the area of the intersection of passed in rectangles or a null, if there is no intersection
- */
-export function intersectRectangles(rectangles: BoundingOffset[]): number | null {
-  let boundingOffset: BoundingOffset | null = null;
+function getIntersection(rectangles: BoundingBox[]): BoundingBox | null {
+  let boundingBox: BoundingBox | null = null;
   for (const currentRect of rectangles) {
-    if (!boundingOffset) {
-      boundingOffset = currentRect;
+    if (!boundingBox) {
+      boundingBox = currentRect;
       continue;
     }
-    const left = Math.max(boundingOffset.left, currentRect.left);
-    const top = Math.max(boundingOffset.top, currentRect.top);
-    const right = Math.min(boundingOffset.left + boundingOffset.width, currentRect.left + currentRect.width);
-    const bottom = Math.min(boundingOffset.top + boundingOffset.height, currentRect.top + currentRect.height);
+    const left = Math.max(boundingBox.left, currentRect.left);
+    const top = Math.max(boundingBox.top, currentRect.top);
+    const right = Math.min(boundingBox.left + boundingBox.width, currentRect.left + currentRect.width);
+    const bottom = Math.min(boundingBox.top + boundingBox.height, currentRect.top + currentRect.height);
     if (right < left || bottom < top) {
       return null;
     }
-    boundingOffset = {
+    boundingBox = {
       left,
       top,
       width: right - left,
       height: bottom - top,
     };
   }
-  return boundingOffset && boundingOffset.height * boundingOffset.width;
+  return boundingBox;
 }
+
+/**
+ * Returns the area of the intersection of passed in rectangles or a null, if there is no intersection
+ */
+export function intersectRectangles(rectangles: BoundingBox[]): number | null {
+  const boundingBox: BoundingBox | null = getIntersection(rectangles);
+  return boundingBox && boundingBox.height * boundingBox.width;
+}
+
+type CandidatePosition = CalculatedPosition & { visibleArea: BoundingBox | null };
 
 /**
  * A functions that returns the correct popover position based on screen dimensions.
@@ -234,55 +226,62 @@ export function calculatePosition({
 }: {
   preferredPosition: PopoverProps.Position;
   fixedInternalPosition?: InternalPosition;
-  trigger: BoundingOffset;
-  arrow: BoundingBox;
-  body: BoundingBox;
-  container: BoundingOffset;
-  viewport: BoundingOffset;
+  trigger: BoundingBox;
+  arrow: Dimensions;
+  body: Dimensions;
+  container: BoundingBox;
+  viewport: BoundingBox;
   // the popover is only bound by the viewport if it is rendered in a portal
   renderWithPortal?: boolean;
 }): CalculatedPosition {
-  let bestPositionOutsideViewport: CalculatedPosition | null = null;
-  let largestArea = 0;
+  let bestOption: CandidatePosition | null = null;
 
   // If a fixed internal position is passed, only consider this one.
   const preferredInternalPositions = fixedInternalPosition
     ? [fixedInternalPosition]
     : PRIORITY_MAPPING[preferredPosition];
 
-  // Attempt to position the popover based on the priority list for this position,
-  // trying to fit it inside the container and inside the viewport.
+  // Attempt to position the popover based on the priority list for this position.
   for (const internalPosition of preferredInternalPositions) {
-    const boundingOffset = RECTANGLE_CALCULATIONS[internalPosition]({ body, trigger, arrow });
-    const fitsInContainer = renderWithPortal || canRectFit(boundingOffset, container);
-    const fitsInViewport = canRectFit(boundingOffset, viewport);
-    if (fitsInContainer && fitsInViewport) {
-      return { internalPosition, boundingOffset };
-    }
-    const boundingRectangles = [boundingOffset, viewport];
-    if (!renderWithPortal) {
-      boundingRectangles.push(container);
-    }
-    const availableArea = intersectRectangles(boundingRectangles);
-    const fitsHorizontally =
-      canRectFitHorizontally(boundingOffset, container) && canRectFitHorizontally(boundingOffset, viewport);
+    const boundingBox = RECTANGLE_CALCULATIONS[internalPosition]({ body, trigger, arrow });
+    const intersection = renderWithPortal
+      ? getIntersection([boundingBox, viewport])
+      : getIntersection([boundingBox, viewport, container]);
 
-    if (availableArea && ((fitsHorizontally && availableArea > largestArea) || fixedInternalPosition)) {
-      bestPositionOutsideViewport = { internalPosition, boundingOffset };
-      largestArea = availableArea;
+    const fitsWithoutOverflow =
+      intersection && intersection.width === body.width && intersection.height === body.height;
+
+    if (fitsWithoutOverflow) {
+      return { internalPosition, boundingBox };
     }
+
+    const newOption = { boundingBox, internalPosition, visibleArea: intersection };
+    bestOption = getBestOption(newOption, bestOption);
   }
 
   // Use best possible placement.
-  const internalPosition = bestPositionOutsideViewport?.internalPosition || 'right-top';
+  const internalPosition = bestOption?.internalPosition || 'right-top';
   // Get default rect for that placement.
-  const defaultOffset = RECTANGLE_CALCULATIONS[internalPosition]({ body, trigger, arrow });
+  const defaultBoundingBox = RECTANGLE_CALCULATIONS[internalPosition]({ body, trigger, arrow });
   // Get largest possible rect that fits into viewport.
-  const optimisedOffset = fitIntoContainer(defaultOffset, viewport);
+  const optimisedBoundingBox = fitIntoContainer(defaultBoundingBox, viewport);
   // If largest possible rect is smaller than original - set body scroll.
-  const scrollable = optimisedOffset.height < defaultOffset.height;
+  const scrollable = optimisedBoundingBox.height < defaultBoundingBox.height;
 
-  return { internalPosition, boundingOffset: optimisedOffset, scrollable };
+  return { internalPosition, boundingBox: optimisedBoundingBox, scrollable };
+}
+
+function getBestOption(option1: CandidatePosition, option2: CandidatePosition | null) {
+  if (!option2?.visibleArea) {
+    return option1;
+  }
+  if (!option1.visibleArea) {
+    return option2;
+  }
+  if (option1.visibleArea.width === option2.visibleArea.width) {
+    return option1.visibleArea.height > option2.visibleArea.height ? option1 : option2;
+  }
+  return option1.visibleArea.width > option2.visibleArea.width ? option1 : option2;
 }
 
 export function getOffsetDimensions(element: HTMLElement) {

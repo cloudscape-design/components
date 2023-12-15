@@ -6,7 +6,7 @@ import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
 import { getContainingBlock } from '../internal/utils/dom';
-import { BoundingOffset, InternalPosition, Offset, PopoverProps } from './interfaces';
+import { BoundingBox, InternalPosition, Offset, PopoverProps } from './interfaces';
 import { calculatePosition, getDimensions, getOffsetDimensions } from './utils/positions';
 import styles from './styles.css.js';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
@@ -123,7 +123,7 @@ export default function PopoverContainer({
       const {
         scrollable,
         internalPosition: newInternalPosition,
-        boundingOffset,
+        boundingBox,
       } = calculatePosition({
         preferredPosition: position,
         fixedInternalPosition,
@@ -136,7 +136,7 @@ export default function PopoverContainer({
       });
 
       // Get the position of the popover relative to the offset parent.
-      const popoverOffset = toRelativePosition(boundingOffset, containingBlockRect);
+      const popoverOffset = toRelativePosition(boundingBox, containingBlockRect);
 
       // Cache the distance between the trigger and the popover (which stays the same as you scroll),
       // and use that to recalculate the new popover position.
@@ -148,7 +148,7 @@ export default function PopoverContainer({
 
       // Allow popover body to scroll if can't fit the popover into the container/viewport otherwise.
       if (scrollable) {
-        body.style.maxHeight = boundingOffset.height + 'px';
+        body.style.maxHeight = boundingBox.height + 'px';
         body.style.overflowX = 'hidden';
         body.style.overflowY = 'auto';
       }
@@ -265,9 +265,9 @@ function toRelativePosition(element: Offset, parent: Offset): Offset {
 }
 
 /**
- * Get a BoundingOffset that represents the visible viewport.
+ * Get a BoundingBox that represents the visible viewport.
  */
-function getViewportRect(window: Window): BoundingOffset {
+function getViewportRect(window: Window): BoundingBox {
   return {
     top: 0,
     left: 0,
@@ -276,7 +276,7 @@ function getViewportRect(window: Window): BoundingOffset {
   };
 }
 
-function getDocumentRect(document: Document): BoundingOffset {
+function getDocumentRect(document: Document): BoundingBox {
   const { top, left } = document.documentElement.getBoundingClientRect();
   return {
     top,
