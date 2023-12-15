@@ -130,7 +130,7 @@
   }
 }
 
-@mixin container-style {
+@mixin container-shadow {
   border-radius: awsui.$border-radius-container;
   box-sizing: border-box;
 
@@ -145,13 +145,15 @@
 
   &::after {
     @include utils.base-pseudo-element;
-    border-radius: awsui.$border-radius-container;
-  }
-  &:not(.refresh)::after {
     box-shadow: awsui.$shadow-container;
+    border-radius: awsui.$border-radius-container;
+    mix-blend-mode: multiply;
   }
-  &.refresh::after {
-    outline: solid awsui.$border-divider-section-width awsui.$color-border-divider-default;
+
+  // HACK: because of the issues with IE's box shadow rendering we draw
+  // a border and don't mind the pixel fitting
+  @media screen and (-ms-high-contrast: active) {
+    border: constants.$control-border-width solid awsui.$color-border-container-top;
   }
 }
 
