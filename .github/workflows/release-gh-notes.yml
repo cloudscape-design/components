@@ -11,6 +11,10 @@ on:
         required: true
         description: 'npm package of the release repo'
         type: string
+      commit:
+        required: false
+        description: 'commit to generate release notes'
+        type: string
 
 permissions:
   contents: write
@@ -22,3 +26,4 @@ jobs:
     with:
       npm_package: ${{ github.event.inputs.npm_package }}
       version: ${{ github.event.inputs.version }}
+      commit: ${{ github.event.inputs.commit }}
