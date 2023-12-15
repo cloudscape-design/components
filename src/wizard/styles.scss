@@ -38,7 +38,7 @@
   > ul {
     background: awsui.$color-background-container-content;
     position: relative;
-    @include styles.container-shadow;
+    @include styles.container-style;
     margin: 0;
     padding: awsui.$space-scaled-m awsui.$space-l awsui.$space-scaled-l awsui.$space-m;
     width: 280px;
