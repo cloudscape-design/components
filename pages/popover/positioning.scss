@@ -5,9 +5,8 @@
 
 .grid {
   box-sizing: border-box;
-  height: calc(100vh - 148px);
+  height: 100vh;
   flex: 1 1 auto;
-  // padding: 1.2rem;
 
   display: grid;
   display: -ms-grid;
@@ -20,6 +19,7 @@
 .square {
   display: flex;
   flex-direction: column;
+  padding: 1.2rem;
 }
 
 .square-row-1 {

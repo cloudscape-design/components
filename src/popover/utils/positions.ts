@@ -265,22 +265,33 @@ export function calculatePosition({
   const defaultBoundingBox = RECTANGLE_CALCULATIONS[internalPosition]({ body, trigger, arrow });
   // Get largest possible rect that fits into viewport.
   const optimisedBoundingBox = fitIntoContainer(defaultBoundingBox, viewport);
-  // If largest possible rect is smaller than original - set body scroll.
+  // If largest possible rect is shorter than original - set body scroll.
   const scrollable = optimisedBoundingBox.height < defaultBoundingBox.height;
 
   return { internalPosition, boundingBox: optimisedBoundingBox, scrollable };
 }
 
+// Very bare minium height to display the dismiss button, the header and a small part of the content below.
+const minHeight = 50;
+
 function getBestOption(option1: CandidatePosition, option2: CandidatePosition | null) {
+  // Within calculatePosition, the only case where option2 will not be defined will be in the first call.
+  // The only case where the visibleArea of an option will be null is when the popover is totally outside of the viewport.
   if (!option2?.visibleArea) {
     return option1;
   }
   if (!option1.visibleArea) {
     return option2;
   }
+  // In the edge case that one of the options does not get to have a minimum height, choose the other one.
+  if (option1.visibleArea.height < minHeight && option2.visibleArea.height > minHeight) {
+    return option2;
+  }
+  // Only if none of the two options overflows horizontally, choose the best based on the height.
   if (option1.visibleArea.width === option2.visibleArea.width) {
     return option1.visibleArea.height > option2.visibleArea.height ? option1 : option2;
   }
+  // Otherwise, choose the option that is less cut off horizontally.
   return option1.visibleArea.width > option2.visibleArea.width ? option1 : option2;
 }
 
