@@ -76,7 +76,6 @@ export const Drawer = React.forwardRef(
 
     return (
       <div
-        id={id}
         ref={ref}
         className={clsx(styles.drawer, {
           [styles.hide]: isHidden,
@@ -110,6 +109,7 @@ export const Drawer = React.forwardRef(
         }}
       >
         <div
+          id={id}
           style={{ width: drawerContentWidth, top: topOffset, bottom: bottomOffset }}
           className={clsx(styles['drawer-content'], styles['drawer-content-clickable'], contentClassName)}
         >

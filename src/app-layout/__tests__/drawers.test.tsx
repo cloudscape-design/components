@@ -21,6 +21,8 @@ jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
   useMobile: jest.fn().mockReturnValue(true),
 }));
 
+const testIf = (condition: boolean) => (condition ? test : test.skip);
+
 jest.mock('@cloudscape-design/component-toolkit', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit'),
   useContainerQuery: () => [100, () => {}],
@@ -130,5 +132,16 @@ describeEachAppLayout(size => {
   test('registers public drawers api', () => {
     const { wrapper } = renderComponent(<AppLayout drawers={singleDrawerPublic} />);
     expect(wrapper.findDrawersTriggers()).toHaveLength(1);
+  });
+
+  testIf(size !== 'mobile')('aria-controls points to an existing drawer id', () => {
+    const { wrapper } = renderComponent(<AppLayout drawers={singleDrawerPublic} />);
+    const drawerTrigger = wrapper.findDrawerTriggerById('security')!;
+    expect(drawerTrigger!.getElement()).not.toHaveAttribute('aria-controls');
+
+    drawerTrigger.click();
+    expect(drawerTrigger!.getElement()).toHaveAttribute('aria-controls', 'security');
+    console.log(wrapper.findActiveDrawer()!.getElement());
+    expect(wrapper.findActiveDrawer()!.getElement()).toHaveAttribute('id', 'security');
   });
 });
