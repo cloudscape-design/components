@@ -66,16 +66,11 @@
   &.selected {
     z-index: 2;
     background-color: awsui.$color-background-dropdown-item-selected;
+    border-color: awsui.$color-border-dropdown-item-selected;
     // smooth adjacent selected borders to avoid bubble effect (visual refresh)
     &.next-item-selected {
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
-    }
-  }
-
-  &.refresh {
-    &.selected {
-      border-color: awsui.$color-border-dropdown-item-selected;
     }
   }
 
