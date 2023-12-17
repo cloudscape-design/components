@@ -151,7 +151,7 @@
     box-shadow: awsui.$shadow-container;
   }
   &.refresh::after {
-    outline: solid awsui.$border-divider-section-width awsui.$color-border-divider-default;
+    border: solid awsui.$border-divider-section-width awsui.$color-border-divider-default;
   }
 }
 

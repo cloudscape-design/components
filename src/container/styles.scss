@@ -34,6 +34,7 @@
     &-stacked:not(:last-child)::after {
       border-bottom-right-radius: 0;
       border-bottom-left-radius: 0;
+      border-bottom-width: 0;
     }
     // Meld container top corners into preceding container
     &-stacked + &-stacked,

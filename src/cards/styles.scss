@@ -96,11 +96,8 @@
   &-selected {
     > .card-inner {
       background-color: awsui.$color-background-item-selected;
-      &:not(.refresh)::before {
+      &::before {
         border: awsui.$border-item-width solid awsui.$color-border-item-selected;
-      }
-      &.refresh::before {
-        outline: awsui.$border-item-width solid awsui.$color-border-item-selected;
       }
     }
   }
