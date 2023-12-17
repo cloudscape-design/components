@@ -24,6 +24,7 @@ export default function MobileToolbar() {
     navigationRefs,
     toolsHide,
     toolsRefs,
+    userSettingsThemeHighContrastHeader,
   } = useAppLayoutInternals();
 
   if (
@@ -44,7 +45,7 @@ export default function MobileToolbar() {
           [styles.unfocusable]: hasDrawerViewportOverlay,
         },
         testutilStyles['mobile-bar'],
-        'awsui-context-content-header'
+        userSettingsThemeHighContrastHeader === 'enabled' && 'awsui-context-content-header'
       )}
     >
       {!navigationHide && (

@@ -121,6 +121,24 @@ export default function InternalContainer({
   const hasMedia = !!media?.content;
   const mediaPosition = media?.position ?? 'top';
 
+  /**
+   * Mutation observer for Cloudscape User Settings
+   * Category: Theme
+   * Property: High Contrast Header
+   */
+  const [userSettingsThemeHighContrastHeader, setUserSettingsThemeHighContrastHeader] = React.useState('enabled');
+
+  function callback(mutationList: any) {
+    for (const mutation of mutationList) {
+      if (mutation.type === 'attributes') {
+        setUserSettingsThemeHighContrastHeader(mutation.target.dataset.userSettingsThemeHighContrastHeader);
+      }
+    }
+  }
+
+  const observer = new MutationObserver(callback);
+  observer.observe(document.body, { attributeFilter: ['data-user-settings-theme-high-contrast-header'] });
+
   return (
     <div
       {...baseProps}
@@ -164,7 +182,14 @@ export default function InternalContainer({
               ref={headerMergedRef}
             >
               {__darkHeader ? (
-                <div className={clsx(styles['dark-header'], 'awsui-context-content-header')}>{header}</div>
+                <div
+                  className={clsx(
+                    styles['dark-header'],
+                    userSettingsThemeHighContrastHeader === 'enabled' && 'awsui-context-content-header'
+                  )}
+                >
+                  {header}
+                </div>
               ) : (
                 header
               )}

@@ -31,6 +31,7 @@ import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import useBackgroundOverlap from './use-background-overlap';
 import { useDrawers } from '../utils/use-drawers';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
+import UserSettingsDrawerContent from '../utils/user-settings-drawer';
 
 interface AppLayoutInternals extends AppLayoutProps {
   activeDrawerId: string | null;
@@ -91,6 +92,8 @@ interface AppLayoutInternals extends AppLayoutProps {
   toolsControlId: string;
   toolsRefs: FocusControlRefs;
   __embeddedViewMode?: boolean;
+  // Cloudscape User Settings
+  userSettingsThemeHighContrastHeader: string;
 }
 
 /**
@@ -366,6 +369,8 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       [props.onSplitPanelPreferencesChange, setSplitPanelPreferences, setSplitPanelLastInteraction]
     );
 
+    const userSettingsContent = <UserSettingsDrawerContent />;
+
     const {
       drawers,
       activeDrawer,
@@ -375,7 +380,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       onActiveDrawerResize,
       activeDrawerSize,
       ...drawersProps
-    } = useDrawers(props, props.ariaLabels, {
+    } = useDrawers(props, userSettingsContent, props.ariaLabels, {
       ariaLabels: props.ariaLabels,
       toolsHide,
       toolsOpen: isToolsOpen,
@@ -383,6 +388,63 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       toolsWidth,
       onToolsToggle: handleToolsClick,
     });
+
+    function getLocal(key: string) {
+      const saved = localStorage.getItem(key);
+      const initialValue = saved && JSON.parse(saved);
+      initialValue?.value && document.body.classList.add(initialValue.value);
+    }
+
+    function getLocalAttribute(key: string, attribute: string) {
+      const saved = localStorage.getItem(key);
+      const initialValue = saved && JSON.parse(saved);
+
+      if (initialValue) {
+        if (initialValue.value) {
+          document.body.setAttribute(attribute, initialValue.value);
+        } else {
+          document.body.setAttribute(attribute, initialValue);
+        }
+      }
+    }
+
+    React.useEffect(() => {
+      /**
+       * Theme properties
+       */
+      getLocal('color-scheme');
+      getLocal('density');
+      getLocalAttribute('high-contrast-header', 'data-user-settings-theme-high-contrast-header');
+      getLocalAttribute('border-radius', 'data-user-settings-theme-border-radius');
+
+      /**
+       * Layout properties
+       */
+      getLocalAttribute('content-width', 'data-user-settings-layout-content-width');
+      getLocalAttribute('notifications-position', 'data-user-settings-layout-notifications-position');
+
+      /**
+       * Accessibility properties
+       */
+      getLocal('motion');
+      getLocalAttribute('links', 'data-user-settings-accessibility-links');
+
+      /**
+       * Internationalization properties
+       */
+      getLocalAttribute('direction', 'dir');
+
+      /**
+       * Keyboard shortcut properties
+       */
+      getLocalAttribute('toggle-navigation-key', 'data-user-settings-keyboard-shortcuts-toggle-navigation-key');
+      getLocalAttribute('toggle-tools-key', 'data-user-settings-keyboard-shortcuts-toggle-tools-key');
+      getLocalAttribute(
+        'toggle-stacked-notifications-key',
+        'data-user-settings-keyboard-shortcuts-toggle-stacked-notifications-key'
+      );
+      getLocalAttribute('toggle-split-panel-key', 'data-user-settings-keyboard-shortcuts-toggle-split-panel-key');
+    }, []);
 
     const [drawersMaxWidth, setDrawersMaxWidth] = useState(toolsWidth);
 
@@ -590,6 +652,69 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       [isMobile, handleNavigationClick, handleToolsClick, focusToolsButtons, focusDrawersButtons, splitPanelRefs.slider]
     );
 
+    /**
+     * Mutation observer for Cloudscape User Settings
+     * Category: Theme
+     * Property: High Contrast Header
+     */
+    const [userSettingsThemeHighContrastHeader, setUserSettingsThemeHighContrastHeader] = React.useState('enabled');
+
+    function callbackHighContrastHeader(mutationList: any) {
+      for (const mutation of mutationList) {
+        if (mutation.type === 'attributes') {
+          setUserSettingsThemeHighContrastHeader(mutation.target.dataset.userSettingsThemeHighContrastHeader);
+        }
+      }
+    }
+
+    const observerHighContrastHeader = new MutationObserver(callbackHighContrastHeader);
+    observerHighContrastHeader.observe(document.body, {
+      attributeFilter: ['data-user-settings-theme-high-contrast-header'],
+    });
+
+    /**
+     * Mutation observer for Cloudscape User Settings
+     * Category: Customization
+     * Property: Toggle Split Panel
+     */
+    const [userSettingsKeyboardShortcutsToggleSplitPanelKey, setUserSettingsKeyboardShortcutsToggleSplitPanelKey] =
+      React.useState(null);
+
+    function callbackSplitPanel(mutationList: any) {
+      for (const mutation of mutationList) {
+        if (mutation.type === 'attributes') {
+          setUserSettingsKeyboardShortcutsToggleSplitPanelKey(
+            mutation.target.dataset.userSettingsKeyboardShortcutsToggleSplitPanelKey
+          );
+        }
+      }
+    }
+
+    const observerSplitPanel = new MutationObserver(callbackSplitPanel);
+
+    observerSplitPanel.observe(document.body, {
+      attributeFilter: ['data-user-settings-keyboard-shortcuts-toggle-split-panel-key'],
+    });
+
+    const handleKeyboard = ({ repeat, ctrlKey, key }: any) => {
+      if (repeat) {
+        return;
+      }
+
+      if (ctrlKey && key === userSettingsKeyboardShortcutsToggleSplitPanelKey) {
+        handleSplitPanelClick();
+      }
+    };
+
+    React.useEffect(() => {
+      if (userSettingsKeyboardShortcutsToggleSplitPanelKey !== null) {
+        document.addEventListener('keydown', handleKeyboard);
+      } else {
+        document.removeEventListener('keydown', handleKeyboard);
+      }
+      return () => document.removeEventListener('keydown', handleKeyboard);
+    });
+
     return (
       <AppLayoutInternalsContext.Provider
         value={{
@@ -662,6 +787,8 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           toolsWidth,
           toolsRefs,
           __embeddedViewMode,
+          // Cloudscape User Settings
+          userSettingsThemeHighContrastHeader,
         }}
       >
         <AppLayoutContext.Provider

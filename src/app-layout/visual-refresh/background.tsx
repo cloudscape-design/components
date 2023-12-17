@@ -13,6 +13,7 @@ export default function Background() {
     hasStickyBackground,
     isMobile,
     stickyNotifications,
+    userSettingsThemeHighContrastHeader,
   } = useAppLayoutInternals();
 
   if (!hasNotificationsContent && (!breadcrumbs || isMobile) && !hasBackgroundOverlap) {
@@ -20,7 +21,12 @@ export default function Background() {
   }
 
   return (
-    <div className={clsx(styles.background, 'awsui-context-content-header')}>
+    <div
+      className={clsx(
+        styles.background,
+        userSettingsThemeHighContrastHeader === 'enabled' && 'awsui-context-content-header'
+      )}
+    >
       <div className={styles['scrolling-background']} />
 
       {!isMobile && hasStickyBackground && (

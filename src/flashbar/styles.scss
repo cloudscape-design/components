@@ -146,3 +146,18 @@
   color: awsui.$color-text-notification-yellow;
   background-color: awsui.$color-background-notification-yellow;
 }
+
+/*
+Cloudscape User Settings
+Category: Theme
+Property: Border Radius
+*/
+/* stylelint-disable */
+body[data-user-settings-theme-border-radius='straight-edges'] .flash {
+  border-radius: 2px;
+
+  &::before {
+    border-radius: 2px;
+  }
+}
+/* stylelint-enable */

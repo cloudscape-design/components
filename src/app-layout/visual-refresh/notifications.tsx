@@ -7,8 +7,14 @@ import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 
 export default function Notifications() {
-  const { ariaLabels, hasDrawerViewportOverlay, notifications, notificationsElement, stickyNotifications } =
-    useAppLayoutInternals();
+  const {
+    ariaLabels,
+    hasDrawerViewportOverlay,
+    notifications,
+    notificationsElement,
+    stickyNotifications,
+    userSettingsThemeHighContrastHeader,
+  } = useAppLayoutInternals();
 
   if (!notifications) {
     return null;
@@ -29,7 +35,7 @@ export default function Notifications() {
           [styles.unfocusable]: hasDrawerViewportOverlay,
         },
         testutilStyles.notifications,
-        'awsui-context-content-header'
+        userSettingsThemeHighContrastHeader === 'enabled' && 'awsui-context-content-header'
       )}
     >
       <div ref={notificationsElement}>{notifications}</div>

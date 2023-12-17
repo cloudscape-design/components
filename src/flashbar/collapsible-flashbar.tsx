@@ -207,6 +207,51 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
 
   const getAnimationElementId = (item: StackableItem) => `flash-${getItemId(item)}`;
 
+  /**
+   * Mutation observer for Cloudscape User Settings
+   * Category: Customization
+   * Property: Toggle Stacked Flashbar
+   */
+  const [
+    userSettingsKeyboardShortcutsToggleStackedNotificationsKey,
+    setUserSettingsKeyboardShortcutsToggleStackedNotificationsKey,
+  ] = React.useState(null);
+
+  function callback(mutationList: any) {
+    for (const mutation of mutationList) {
+      if (mutation.type === 'attributes') {
+        setUserSettingsKeyboardShortcutsToggleStackedNotificationsKey(
+          mutation.target.dataset.userSettingsKeyboardShortcutsToggleStackedNotificationsKey
+        );
+      }
+    }
+  }
+
+  const observer = new MutationObserver(callback);
+
+  observer.observe(document.body, {
+    attributeFilter: ['data-user-settings-keyboard-shortcuts-toggle-stacked-notifications-key'],
+  });
+
+  const handleKeyboard = ({ repeat, ctrlKey, key }: any) => {
+    if (repeat) {
+      return;
+    }
+
+    if (ctrlKey && key === userSettingsKeyboardShortcutsToggleStackedNotificationsKey) {
+      toggleCollapseExpand();
+    }
+  };
+
+  React.useEffect(() => {
+    if (userSettingsKeyboardShortcutsToggleStackedNotificationsKey !== null) {
+      document.addEventListener('keydown', handleKeyboard);
+    } else {
+      document.removeEventListener('keydown', handleKeyboard);
+    }
+    return () => document.removeEventListener('keydown', handleKeyboard);
+  });
+
   const renderList = () => (
     <ul
       ref={listElementRef}

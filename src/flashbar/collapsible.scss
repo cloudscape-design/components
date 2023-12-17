@@ -323,3 +323,14 @@ the grid layout will be:
   // Default to 0 so that this does not apply to non-sticky Flashbar.
   padding-bottom: var(#{custom-props.$flashbarStickyBottomMargin}, 0);
 }
+
+/*
+Cloudscape User Settings
+Category: Theme
+Property: Border Radius
+*/
+/* stylelint-disable */
+body[data-user-settings-theme-border-radius='straight-edges'] .stack > .notification-bar {
+  border-radius: 2px;
+}
+/* stylelint-enable */

@@ -55,6 +55,47 @@ export default function Tools({ children }: ToolsProps) {
   const isUnfocusable = hasDrawerViewportOverlay && !isToolsOpen;
 
   /**
+   * Mutation observer for Cloudscape User Settings
+   * Category: Customization
+   * Property: Toggle Tools
+   */
+  const [userSettingsKeyboardShortcutsToggleToolsKey, setUserSettingsKeyboardShortcutsToggleToolsKey] =
+    React.useState(null);
+
+  function callback(mutationList: any) {
+    for (const mutation of mutationList) {
+      if (mutation.type === 'attributes') {
+        setUserSettingsKeyboardShortcutsToggleToolsKey(
+          mutation.target.dataset.userSettingsKeyboardShortcutsToggleToolsKey
+        );
+      }
+    }
+  }
+
+  const observer = new MutationObserver(callback);
+
+  observer.observe(document.body, { attributeFilter: ['data-user-settings-keyboard-shortcuts-toggle-tools-key'] });
+
+  const handleKeyboard = ({ repeat, ctrlKey, key }: any) => {
+    if (repeat) {
+      return;
+    }
+
+    if (ctrlKey && key === userSettingsKeyboardShortcutsToggleToolsKey) {
+      handleToolsClick(!isToolsOpen);
+    }
+  };
+
+  React.useEffect(() => {
+    if (userSettingsKeyboardShortcutsToggleToolsKey !== null) {
+      document.addEventListener('keydown', handleKeyboard);
+    } else {
+      document.removeEventListener('keydown', handleKeyboard);
+    }
+    return () => document.removeEventListener('keydown', handleKeyboard);
+  });
+
+  /**
    * If the drawers property is defined the SplitPanel will be mounted and rendered
    * by the Drawers component.
    */

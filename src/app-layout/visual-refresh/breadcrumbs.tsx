@@ -7,7 +7,7 @@ import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 
 export default function Breadcrumbs() {
-  const { breadcrumbs, hasStickyBackground, isMobile } = useAppLayoutInternals();
+  const { breadcrumbs, hasStickyBackground, isMobile, userSettingsThemeHighContrastHeader } = useAppLayoutInternals();
 
   if (isMobile || !breadcrumbs) {
     return null;
@@ -21,7 +21,7 @@ export default function Breadcrumbs() {
         {
           [styles['has-sticky-background']]: hasStickyBackground,
         },
-        'awsui-context-content-header'
+        userSettingsThemeHighContrastHeader === 'enabled' && 'awsui-context-content-header'
       )}
     >
       {breadcrumbs}

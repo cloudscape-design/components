@@ -133,14 +133,25 @@
 @mixin container-shadow {
   border-radius: awsui.$border-radius-container;
   box-sizing: border-box;
+  /* stylelint-disable */
+  body[data-user-settings-theme-border-radius='straight-edges'] & {
+    border-radius: 2px;
+  }
+  /* stylelint-enable */
 
   &::before {
     @include utils.base-pseudo-element;
     // Reset border color to prevent it from flashing black during card selection animation
     border-color: transparent;
     border-top: awsui.$border-container-top-width solid awsui.$color-border-container-top;
+
     border-radius: awsui.$border-radius-container;
     z-index: 1;
+    /* stylelint-disable */
+    body[data-user-settings-theme-border-radius='straight-edges'] & {
+      border-radius: 2px;
+    }
+    /* stylelint-enable */
   }
 
   &::after {
@@ -148,6 +159,11 @@
     box-shadow: awsui.$shadow-container;
     border-radius: awsui.$border-radius-container;
     mix-blend-mode: multiply;
+    /* stylelint-disable */
+    body[data-user-settings-theme-border-radius='straight-edges'] & {
+      border-radius: 2px;
+    }
+    /* stylelint-enable */
   }
 
   // HACK: because of the issues with IE's box shadow rendering we draw

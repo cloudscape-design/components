@@ -12,6 +12,7 @@ import { AppLayoutProps } from '../interfaces';
 import { togglesConfig } from '../toggles';
 
 export const TOOLS_DRAWER_ID = 'awsui-internal-tools';
+export const USER_SETTINGS_DRAWER_ID = 'awsui-user-settings';
 
 interface ToolsProps {
   toolsHide: boolean | undefined;
@@ -39,6 +40,22 @@ function getToolsDrawerItem(props: ToolsProps): AppLayoutProps.Drawer | null {
     },
     trigger: {
       iconName: iconName,
+    },
+  };
+}
+
+function getUserSettingsDrawerItem(userSettingsContent: React.ReactNode | undefined): AppLayoutProps.Drawer {
+  return {
+    ariaLabels: {
+      closeButton: 'Settings close button',
+      drawerName: 'Settings',
+      triggerButton: 'Settings trigger button',
+    },
+    content: userSettingsContent,
+    defaultSize: 400,
+    id: USER_SETTINGS_DRAWER_ID,
+    trigger: {
+      iconName: 'settings',
     },
   };
 }
@@ -104,8 +121,12 @@ function convertBetaApi(drawers: BetaDrawersProps, ariaLabels: AppLayoutProps['a
   };
 }
 
-function applyToolsDrawer(toolsProps: ToolsProps, runtimeDrawers: DrawersLayout) {
-  const drawers = [...runtimeDrawers.before, ...runtimeDrawers.after];
+function applyToolsDrawer(
+  toolsProps: ToolsProps,
+  runtimeDrawers: DrawersLayout,
+  userSettingsContent: React.ReactNode | undefined
+) {
+  const drawers = [...runtimeDrawers.before, getUserSettingsDrawerItem(userSettingsContent), ...runtimeDrawers.after];
   if (drawers.length === 0) {
     return null;
   }
@@ -128,6 +149,7 @@ export function useDrawers(
     onDrawerChange,
     __disableRuntimeDrawers: disableRuntimeDrawers,
   }: UseDrawersProps,
+  userSettingsContent: React.ReactNode | undefined,
   ariaLabels: AppLayoutProps['ariaLabels'],
   toolsProps: ToolsProps
 ) {
@@ -159,8 +181,8 @@ export function useDrawers(
   const hasOwnDrawers = !!drawers;
   const runtimeDrawers = useRuntimeDrawers(disableRuntimeDrawers, activeDrawerId, onActiveDrawerChange);
   const combinedDrawers = drawers
-    ? [...runtimeDrawers.before, ...drawers, ...runtimeDrawers.after]
-    : applyToolsDrawer(toolsProps, runtimeDrawers);
+    ? [...runtimeDrawers.before, ...drawers, getUserSettingsDrawerItem(userSettingsContent), ...runtimeDrawers.after]
+    : applyToolsDrawer(toolsProps, runtimeDrawers, userSettingsContent);
   // support toolsOpen in runtime-drawers-only mode
   let activeDrawerIdResolved = toolsProps?.toolsOpen && !hasOwnDrawers ? TOOLS_DRAWER_ID : activeDrawerId;
   const activeDrawer = combinedDrawers?.find(drawer => drawer.id === activeDrawerIdResolved);

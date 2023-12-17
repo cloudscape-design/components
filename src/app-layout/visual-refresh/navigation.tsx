@@ -34,6 +34,47 @@ export default function Navigation() {
     toolsHide,
   } = useAppLayoutInternals();
 
+  /**
+   * Mutation observer for Cloudscape User Settings
+   * Category: Customization
+   * Property: Toggle Navigation
+   */
+  const [userSettingsKeyboardShortcutsToggleNavigationKey, setUserSettingsKeyboardShortcutsToggleNavigationKey] =
+    React.useState(null);
+
+  function callback(mutationList: any) {
+    for (const mutation of mutationList) {
+      if (mutation.type === 'attributes') {
+        setUserSettingsKeyboardShortcutsToggleNavigationKey(
+          mutation.target.dataset.userSettingsKeyboardShortcutsToggleNavigationKey
+        );
+      }
+    }
+  }
+
+  const observer = new MutationObserver(callback);
+
+  observer.observe(document.body, { attributeFilter: ['data-user-settings-keyboard-shortcuts-toggle-navigation-key'] });
+
+  const handleKeyboard = ({ repeat, ctrlKey, key }: any) => {
+    if (repeat) {
+      return;
+    }
+
+    if (ctrlKey && key === userSettingsKeyboardShortcutsToggleNavigationKey) {
+      handleNavigationClick(!isNavigationOpen);
+    }
+  };
+
+  React.useEffect(() => {
+    if (userSettingsKeyboardShortcutsToggleNavigationKey !== null) {
+      document.addEventListener('keydown', handleKeyboard);
+    } else {
+      document.removeEventListener('keydown', handleKeyboard);
+    }
+    return () => document.removeEventListener('keydown', handleKeyboard);
+  });
+
   if (navigationHide) {
     return null;
   }

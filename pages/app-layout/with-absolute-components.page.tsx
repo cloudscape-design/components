@@ -34,11 +34,11 @@ const dropdownItems: ButtonDropdownProps.Items = [
   { id: '4', text: 'Item 4' },
 ];
 const selectOptions: SelectProps.Options = [
-  { value: 'First' },
-  { value: 'Second' },
-  { value: 'Third' },
-  { value: 'Forth' },
-  { value: 'Fifth' },
+  { value: 'A' },
+  { value: 'B' },
+  { value: 'C' },
+  { value: 'D' },
+  { value: 'E' },
 ];
 
 export default function () {

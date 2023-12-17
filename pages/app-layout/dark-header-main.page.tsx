@@ -25,7 +25,26 @@ export default function () {
               variant="h1"
               info={<Link>Info</Link>}
               description="When you create an Amazon CloudFront distribution."
-              actions={<Button variant="primary">Create distribution</Button>}
+              actions={
+                <Button
+                  onClick={() => {
+                    document.body.setAttribute('data-user-settings-layout-notifications-position', 'bottom-right');
+                    document.body.setAttribute('data-user-settings-layout-width', 'full-width');
+                    document.body.setAttribute('data-user-settings-accessibility-links', 'no-underline');
+                    document.body.setAttribute('data-user-settings-theme-high-contrast-header', 'disabled');
+                    document.body.setAttribute('data-user-settings-customization-toggle-navigation-modifier', 'n');
+                    document.body.setAttribute('data-user-settings-customization-toggle-tools-modifier', 't');
+                    document.body.setAttribute(
+                      'data-user-settings-customization-toggle-stacked-flashbar-modifier',
+                      'f'
+                    );
+                    document.body.setAttribute('data-user-settings-customization-toggle-split-panel-modifier', 's');
+                  }}
+                  variant="primary"
+                >
+                  Customize My UI Please.
+                </Button>
+              }
             >
               Create distribution
             </Header>
