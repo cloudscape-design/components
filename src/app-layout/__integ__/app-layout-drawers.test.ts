@@ -94,8 +94,8 @@ const setupTest = (
 
 for (const visualRefresh of ['true', 'false']) {
   describe(`visualRefresh=${visualRefresh}`, () => {
-    // there is an extra border inside drawer box in visual refresh
-    const vrBorderOffset = visualRefresh === 'true' ? 1 : 0;
+    // there is an extra 2 borders inside drawer box in visual refresh
+    const vrBorderOffset = visualRefresh === 'true' ? 2 : 0;
 
     test(
       'slider is accessible by keyboard in side position',
