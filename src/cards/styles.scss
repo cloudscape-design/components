@@ -15,7 +15,7 @@
   box-sizing: border-box;
 
   &::before {
-    @include utils.base-pseudo-element;
+    @include styles.base-pseudo-element;
     // Reset border color to prevent it from flashing black during card selection animation
     border-color: transparent;
     border-top: awsui.$border-container-top-width solid awsui.$color-border-container-top;
@@ -24,7 +24,7 @@
   }
 
   &::after {
-    @include utils.base-pseudo-element;
+    @include styles.base-pseudo-element;
     border-radius: awsui.$border-radius-container;
   }
   &:not(.refresh)::after {
@@ -104,7 +104,7 @@
     padding: awsui.$space-card-vertical awsui.$space-card-horizontal;
     width: 100%;
     min-width: 0;
-    @include styles.card-style;
+    @include card-style;
   }
   &-header {
     @include styles.font-heading-m;
