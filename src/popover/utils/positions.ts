@@ -246,18 +246,17 @@ export function calculatePosition({
   // Attempt to position the popover based on the priority list for this position.
   for (const internalPosition of preferredInternalPositions) {
     const boundingBox = RECTANGLE_CALCULATIONS[internalPosition]({ body, trigger, arrow });
-    const intersection = renderWithPortal
+    const visibleArea = renderWithPortal
       ? getIntersection([boundingBox, viewport])
       : getIntersection([boundingBox, viewport, container]);
 
-    const fitsWithoutOverflow =
-      intersection && intersection.width === body.width && intersection.height === body.height;
+    const fitsWithoutOverflow = visibleArea && visibleArea.width === body.width && visibleArea.height === body.height;
 
     if (fitsWithoutOverflow) {
       return { internalPosition, boundingBox };
     }
 
-    const newOption = { boundingBox, internalPosition, visibleArea: intersection };
+    const newOption = { boundingBox, internalPosition, visibleArea };
     bestOption = getBestOption(newOption, bestOption);
   }
 
