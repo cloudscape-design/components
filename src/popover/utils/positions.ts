@@ -176,6 +176,10 @@ function fitIntoContainer(inner: BoundingBox, outer: BoundingBox): BoundingBox {
   return { left, width, top, height };
 }
 
+function getTallestRect(rect1: BoundingBox, rect2: BoundingBox): BoundingBox {
+  return rect1.height >= rect2.height ? rect1 : rect2;
+}
+
 function getIntersection(rectangles: BoundingBox[]): BoundingBox | null {
   let boundingBox: BoundingBox | null = null;
   for (const currentRect of rectangles) {
@@ -265,7 +269,11 @@ export function calculatePosition({
   // Get default rect for that placement.
   const defaultBoundingBox = RECTANGLE_CALCULATIONS[internalPosition]({ body, trigger, arrow });
   // Get largest possible rect that fits into the viewport or container.
-  const optimisedBoundingBox = fitIntoContainer(defaultBoundingBox, allowVerticalOverflow ? container : viewport);
+  const tallestRect = getTallestRect(viewport, container);
+  const optimisedBoundingBox = fitIntoContainer(
+    defaultBoundingBox,
+    allowVerticalOverflow ? { ...tallestRect, left: viewport.left, width: viewport.width } : viewport
+  );
   // If largest possible rect is shorter than original - set body scroll.
   const scrollable = optimisedBoundingBox.height < defaultBoundingBox.height;
 
@@ -281,7 +289,7 @@ function getBestOption(option1: CandidatePosition, option2: CandidatePosition | 
   if (!option1.visibleArea) {
     return option2;
   }
-  // Only if none of the two options overflows horizontally, choose the best based on the height.
+  // Only if none of the two options overflows horizontally, choose the best based on the visible height.
   if (option1.visibleArea.width === option2.visibleArea.width) {
     return option1.visibleArea.height > option2.visibleArea.height ? option1 : option2;
   }

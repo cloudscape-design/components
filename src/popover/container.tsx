@@ -160,12 +160,16 @@ export default function PopoverContainer({
       }
 
       if (allowVerticalOverflow) {
-        const { top, height } = { ...popoverOffset, ...boundingBox };
+        const { top, height } = boundingBox;
+        // We can't use the browser native scrollIntoView API because the element has fixed position.
         if (top < 0) {
-          // We can't use scrollElementIntoView because the element has fixed position.
           window.scrollBy(0, top);
         } else if (top + height > window.innerHeight) {
-          window.scrollBy(0, top + height - window.innerHeight);
+          if (height > window.innerHeight) {
+            window.scrollBy(0, top);
+          } else {
+            window.scrollBy(0, top + height - window.innerHeight);
+          }
         }
       }
 
