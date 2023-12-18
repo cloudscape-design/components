@@ -13,12 +13,12 @@ import StatusIndicator from '~components/status-indicator';
 import AppContext, { AppContextType } from '../app/app-context';
 
 type PopoverPlacementContext = React.Context<
-  AppContextType<{ position?: string; placement?: string; tallTrigger?: boolean }>
+  AppContextType<{ position?: string; placement?: string; triggerHeight?: string }>
 >;
 
 export default function () {
   const {
-    urlParams: { position, placement, tallTrigger },
+    urlParams: { position, placement, triggerHeight },
   } = useContext(AppContext as PopoverPlacementContext);
 
   if (!position || !placement) {
@@ -73,8 +73,11 @@ export default function () {
                   dismissAriaLabel="Close"
                   triggerType="custom"
                 >
-                  <button id="popover-trigger" className={clsx(tallTrigger && styles['tall-trigger'])}>
-                    {!tallTrigger && 'Open popover'}
+                  <button
+                    id="popover-trigger"
+                    style={triggerHeight ? { display: 'block', height: `${triggerHeight}px` } : undefined}
+                  >
+                    {triggerHeight === undefined && 'Open popover'}
                   </button>
                 </Popover>
               </div>

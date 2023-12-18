@@ -26,7 +26,7 @@ interface SetupProps {
     | 'bottom-center'
     | 'bottom-right';
   viewport: readonly [width: number, height: number];
-  tallTrigger?: boolean;
+  triggerHeight?: number;
 }
 
 type Expectation = (trigger: ElementRect, container: ElementRect, arrow: ElementRect) => void;
@@ -110,6 +110,12 @@ const setupTest = (
   });
 };
 
+function formatSetupDescription(props: SetupProps) {
+  return Object.entries(props)
+    .map(([key, value]) => `${key}: ${value}`)
+    .join(', ');
+}
+
 describe('Default placement', () => {
   const scenarios: Scenario[] = [
     [{ position: 'bottom', placement: 'top-center', viewport: VIEWPORT_TABLET }, centerBottom],
@@ -122,7 +128,7 @@ describe('Default placement', () => {
 
   for (const [props, expectation] of scenarios) {
     test(
-      `Scenario: ${props.position}, ${props.placement}, ${props.viewport}`,
+      formatSetupDescription(props),
       setupTest(props, async page => {
         await page.click('#popover-trigger');
         const trigger = await page.getBoundingBox(triggerSelector);
@@ -140,17 +146,17 @@ describe('Fallback to vertical placement in mobile', () => {
     [{ position: 'left', placement: 'top-right', viewport: VIEWPORT_MOBILE }, bottomLeft],
     [{ position: 'right', placement: 'bottom-left', viewport: VIEWPORT_MOBILE }, topRight],
     [{ position: 'left', placement: 'bottom-right', viewport: VIEWPORT_MOBILE }, topLeft],
-    [{ position: 'right', placement: 'top-center', viewport: VIEWPORT_MOBILE, tallTrigger: true }, centerBottom],
-    [{ position: 'left', placement: 'top-center', viewport: VIEWPORT_MOBILE, tallTrigger: true }, centerBottom],
-    [{ position: 'right', placement: 'center-center', viewport: VIEWPORT_MOBILE, tallTrigger: true }, centerBottom],
-    [{ position: 'left', placement: 'center-center', viewport: VIEWPORT_MOBILE, tallTrigger: true }, centerBottom],
-    [{ position: 'right', placement: 'bottom-center', viewport: VIEWPORT_MOBILE, tallTrigger: true }, centerTop],
-    [{ position: 'left', placement: 'bottom-center', viewport: VIEWPORT_MOBILE, tallTrigger: true }, centerTop],
+    [{ position: 'right', placement: 'top-center', viewport: VIEWPORT_MOBILE, triggerHeight: 400 }, centerBottom],
+    [{ position: 'left', placement: 'top-center', viewport: VIEWPORT_MOBILE, triggerHeight: 400 }, centerBottom],
+    [{ position: 'right', placement: 'center-center', viewport: VIEWPORT_MOBILE, triggerHeight: 400 }, centerBottom],
+    [{ position: 'left', placement: 'center-center', viewport: VIEWPORT_MOBILE, triggerHeight: 400 }, centerBottom],
+    [{ position: 'right', placement: 'bottom-center', viewport: VIEWPORT_MOBILE, triggerHeight: 400 }, centerTop],
+    [{ position: 'left', placement: 'bottom-center', viewport: VIEWPORT_MOBILE, triggerHeight: 400 }, centerTop],
   ];
 
   for (const [props, expectation] of scenarios) {
     test(
-      `Scenario: ${props.position}, ${props.placement}, ${props.viewport}${props.tallTrigger ? ', tall trigger' : ''}`,
+      formatSetupDescription(props),
       setupTest(props, async page => {
         await page.click('#popover-trigger');
         const trigger = await page.getBoundingBox(triggerSelector);
