@@ -10,7 +10,7 @@ import { BoundingBox, InternalPosition, Offset, PopoverProps } from './interface
 import { calculatePosition, getDimensions, getOffsetDimensions } from './utils/positions';
 import styles from './styles.css.js';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { usePrevious } from '../internal/hooks/use-previous';
+import { useMobile } from '../internal/hooks/use-mobile';
 
 export interface PopoverContainerProps {
   /** References the element the container is positioned against. */
@@ -52,18 +52,17 @@ export default function PopoverContainer({
   fixedWidth,
   variant,
   keepPosition,
-  isPinned,
 }: PopoverContainerProps) {
   const bodyRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
   const popoverRef = useRef<HTMLDivElement | null>(null);
   const arrowRef = useRef<HTMLDivElement | null>(null);
   const previousInternalPositionRef = useRef<InternalPosition | null>(null);
-  const wasPinned = usePrevious(isPinned);
 
   const [popoverStyle, setPopoverStyle] = useState<Offset>(INITIAL_STYLES);
   const [internalPosition, setInternalPosition] = useState<InternalPosition | null>(null);
   const isRefresh = useVisualRefresh();
+  const isMobile = useMobile();
 
   // Store the handler in a ref so that it can still be replaced from outside of the listener closure.
   const positionHandlerRef = useRef<() => void>(() => {});
@@ -123,6 +122,8 @@ export default function PopoverContainer({
       const shouldKeepPosition = keepPosition && onContentResize && !!previousInternalPositionRef.current;
       const fixedInternalPosition = (shouldKeepPosition && previousInternalPositionRef.current) ?? undefined;
 
+      const allowVerticalOverflow = isMobile && !previousInternalPositionRef.current;
+
       // Calculate the arrow direction and viewport-relative position of the popover.
       const {
         scrollable,
@@ -137,7 +138,7 @@ export default function PopoverContainer({
         container: containingBlock ? containingBlockRect : getDocumentRect(document),
         viewport: viewportRect,
         renderWithPortal,
-        allowVerticalOverflow: !wasPinned && isPinned,
+        allowVerticalOverflow,
       });
 
       // Get the position of the popover relative to the offset parent.
@@ -158,7 +159,7 @@ export default function PopoverContainer({
         body.style.overflowY = 'auto';
       }
 
-      if (!wasPinned && isPinned) {
+      if (allowVerticalOverflow) {
         const { top, height } = { ...popoverOffset, ...boundingBox };
         if (top < 0) {
           window.scrollBy(0, top);
@@ -185,7 +186,7 @@ export default function PopoverContainer({
         });
       };
     },
-    [trackRef, keepPosition, position, renderWithPortal, wasPinned, isPinned]
+    [trackRef, keepPosition, isMobile, position, renderWithPortal]
   );
 
   // Recalculate position when properties change.

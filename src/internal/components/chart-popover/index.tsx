@@ -120,7 +120,6 @@ function ChartPopover(
           </div>
         )}
         keepPosition={true}
-        isPinned={dismissButton}
       >
         <div className={styles['hover-area']}>
           <PopoverBody
