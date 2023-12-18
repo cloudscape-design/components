@@ -121,8 +121,10 @@ export const useStickyHeader = (
   // box-shadow, applied here by a "header-stuck" className
   const checkIfStuck = useCallback(() => {
     if (rootRef.current && headerRef.current) {
-      const rootTop = rootRef.current.getBoundingClientRect().top;
+      const rootTopBorderWidth = parseFloat(getComputedStyle(rootRef.current).borderTopWidth) || 0;
+      const rootTop = rootRef.current.getBoundingClientRect().top + rootTopBorderWidth;
       const headerTop = headerRef.current.getBoundingClientRect().top;
+
       if (rootTop < headerTop) {
         setIsStuck(true);
       } else {

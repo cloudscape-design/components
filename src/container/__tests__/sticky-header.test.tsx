@@ -95,6 +95,28 @@ test('should set isStuck to false when rootTop is larger than than headerTop', (
   expect(result.current.isStuck).toBe(false);
 });
 
+test('should not set isStuck to true when rootTop has a border and is larger than than headerTop', () => {
+  (supportsStickyPosition as jest.Mock).mockReturnValue(true);
+
+  const rootRef = {
+    current: document.createElement('div'),
+  };
+  rootRef.current.getBoundingClientRect = jest.fn().mockReturnValue({ top: 199 });
+  rootRef.current.style.borderTopWidth = '1px';
+
+  const headerRef = {
+    current: document.createElement('div'),
+  };
+  headerRef.current.getBoundingClientRect = jest.fn().mockReturnValue({ top: 200 });
+
+  const { result } = renderHook(() => useStickyHeader(rootRef, headerRef, true, 0, 0, false));
+  act(() => {
+    window.dispatchEvent(new Event('scroll'));
+  });
+
+  expect(result.current.isStuck).toBe(false);
+});
+
 test('should set isStuck to false when headerRef is null', () => {
   (supportsStickyPosition as jest.Mock).mockReturnValue(true);
 

@@ -87,7 +87,6 @@ nav.show-navigation {
 
 nav.navigation {
   background-color: awsui.$color-background-container-content;
-  box-shadow: awsui.$shadow-panel;
   bottom: 0;
   height: 100%;
   overflow-x: hidden;
@@ -97,6 +96,7 @@ nav.navigation {
   position: relative;
   word-wrap: break-word;
   pointer-events: auto;
+  border-right: solid awsui.$border-divider-section-width awsui.$color-border-divider-default;
 
   // Animation for the Navigation opacity and width when it is added to the DOM
   @keyframes openNavigation {

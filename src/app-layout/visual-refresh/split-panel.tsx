@@ -123,6 +123,8 @@ function SplitPanelSide() {
     splitPanelMaxWidth,
     splitPanelMinWidth,
     splitPanelControlId,
+    isToolsOpen,
+    activeDrawerId,
   } = useAppLayoutInternals();
 
   if (!splitPanel) {
@@ -135,6 +137,7 @@ function SplitPanelSide() {
       aria-hidden={!isSplitPanelOpen || splitPanelPosition === 'bottom' ? true : false}
       className={clsx(styles['split-panel-side'], styles[`position-${splitPanelPosition}`], {
         [styles['is-split-panel-open']]: isSplitPanelOpen,
+        [styles['has-open-drawer']]: !!activeDrawerId || isToolsOpen,
       })}
       style={{
         [customCssProps.splitPanelMaxWidth]: `${splitPanelMaxWidth}px`,

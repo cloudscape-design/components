@@ -24,17 +24,17 @@
   &.variant {
     &-default,
     &-stacked {
-      // Border and shadows are applied with ::before and ::after elements (respectively)
-      @include shared.borders-and-shadows;
       background-color: awsui.$color-background-container-content;
+      // Border and shadows are applied with ::before and ::after elements (respectively)
+      @include styles.container-style;
     }
-
     // Meld container bottom corners into next adjoining container
     &-stacked:not(:last-child),
     &-stacked:not(:last-child)::before,
     &-stacked:not(:last-child)::after {
       border-bottom-right-radius: 0;
       border-bottom-left-radius: 0;
+      border-bottom-width: 0;
     }
     // Meld container top corners into preceding container
     &-stacked + &-stacked,
@@ -44,17 +44,13 @@
       border-top-right-radius: 0;
     }
     // Replace container border with a divider
-    &-stacked + &-stacked::before {
+    &-stacked + &-stacked:not(.refresh)::before {
       @include shared.divider;
-    }
-    // Reset container shadow to prevent unwanted overflow
-    &-stacked + &-stacked::after {
-      box-shadow: awsui.$shadow-container-stacked;
     }
   }
 
   // To ensure the top border/divider is visible on sticky elements which have a higher z-index
-  &.sticky-enabled {
+  &.sticky-enabled:not(.refresh) {
     &::before {
       top: calc(-1 * #{awsui.$border-container-top-width});
     }
@@ -176,11 +172,11 @@
   }
 
   &-variant-cards {
+    // Border and shadows are applied with ::before and ::after elements (respectively)
+    @include styles.container-style;
     &:not(.header-sticky-enabled) {
       position: relative;
     }
-    @include shared.borders-and-shadows;
-
     &.header-stuck::after,
     &.header-stuck::before {
       border: 0;

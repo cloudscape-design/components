@@ -17,11 +17,13 @@ class StickyScrollbarPage extends BasePageObject {
   }
 }
 
-const setupTest = (testFn: (page: StickyScrollbarPage) => Promise<void>) => {
+const setupTest = (testFn: (page: StickyScrollbarPage) => Promise<void>, isVisualRefresh?: boolean) => {
   return useBrowser(async browser => {
     const page = new StickyScrollbarPage(browser);
     await page.setWindowSize({ width: 600, height: 400 });
-    await browser.url('#/light/table/sticky-scrollbar');
+    await browser.url(
+      `#/light/table/sticky-scrollbar?${isVisualRefresh ? 'visualRefresh=true' : 'visualRefresh=false'}`
+    );
 
     await testFn(page);
   });
@@ -34,12 +36,18 @@ describe('Sticky scrollbar', () => {
       await expect(page.isExisting(await page.findVisibleScrollbar())).resolves.toEqual(true);
     })
   );
-  test(
-    `scrollbarWidth is equal to tableWidth`,
-    setupTest(async page => {
-      const { width: scrollbarWidth } = await page.getBoundingBox(await page.findVisibleScrollbar());
-      const { width: tableWidth } = await page.getBoundingBox(await page.findTable());
-      expect(scrollbarWidth).toEqual(tableWidth);
+
+  [false, true].forEach(visualRefresh =>
+    describe(`visualRefresh=${visualRefresh}`, () => {
+      test(
+        `scrollbarWidth is equal to tableWidth`,
+        setupTest(async page => {
+          const { width: scrollbarWidth } = await page.getBoundingBox(await page.findVisibleScrollbar());
+          const { width: tableWidth } = await page.getBoundingBox(await page.findTable());
+          const borderOffset = visualRefresh ? 2 : 0;
+          expect(scrollbarWidth).toEqual(tableWidth - borderOffset);
+        }, visualRefresh)
+      );
     })
   );
 

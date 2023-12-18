@@ -131,7 +131,8 @@ export default function InternalContainer({
         styles[`variant-${variant}`],
         fitHeight && styles['fit-height'],
         hasMedia && (mediaPosition === 'side' ? styles['with-side-media'] : styles['with-top-media']),
-        shouldHaveStickyStyles && [styles['sticky-enabled']]
+        shouldHaveStickyStyles && [styles['sticky-enabled']],
+        isRefresh && styles.refresh
       )}
       ref={mergedRef}
     >
@@ -151,7 +152,7 @@ export default function InternalContainer({
         {header && (
           <StickyHeaderContext.Provider value={{ isStuck }}>
             <div
-              className={clsx(styles.header, styles[`header-variant-${variant}`], {
+              className={clsx(isRefresh && styles.refresh, styles.header, styles[`header-variant-${variant}`], {
                 [styles['header-sticky-disabled']]: __stickyHeader && !isSticky,
                 [styles['header-sticky-enabled']]: isSticky,
                 [styles['header-dynamic-height']]: hasDynamicHeight,

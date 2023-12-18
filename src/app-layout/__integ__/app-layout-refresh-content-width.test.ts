@@ -45,6 +45,8 @@ function setupTest(viewportWidth: number, testFn: (page: AppLayoutRefreshNotofic
   });
 }
 
+const vrBorderOffset = 1;
+
 describe('Default width per contentType', () => {
   const testCases = [
     { viewPortWidth: 1920, navigationWidth: 280, contentWidth: 1280, toolsWidth: 290 }, // XXXS - L breakpoint
@@ -62,8 +64,8 @@ describe('Default width per contentType', () => {
 
           // Open the drawers and check their width
           await page.setDrawersOpen();
-          await expect(page.getNavigationWidth()).resolves.toBe(navigationWidth);
-          await expect(page.getToolsWidth()).resolves.toBe(toolsWidth);
+          await expect(page.getNavigationWidth()).resolves.toBe(navigationWidth + vrBorderOffset);
+          await expect(page.getToolsWidth()).resolves.toBe(toolsWidth + vrBorderOffset);
         })
       );
     }
