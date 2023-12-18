@@ -150,6 +150,7 @@ function InternalPopover(
           arrow={position => <Arrow position={position} />}
           renderWithPortal={renderWithPortal}
           zIndex={renderWithPortal ? 7000 : undefined}
+          isPinned={dismissButton}
         >
           <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
             <PopoverBody

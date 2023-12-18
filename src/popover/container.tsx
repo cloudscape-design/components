@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
@@ -62,7 +62,6 @@ export default function PopoverContainer({
   const wasPinned = usePrevious(isPinned);
 
   const [popoverStyle, setPopoverStyle] = useState<Offset>(INITIAL_STYLES);
-  const boundingBoxRef = useRef<BoundingBox | null>(null);
   const [internalPosition, setInternalPosition] = useState<InternalPosition | null>(null);
   const isRefresh = useVisualRefresh();
 
@@ -138,6 +137,7 @@ export default function PopoverContainer({
         container: containingBlock ? containingBlockRect : getDocumentRect(document),
         viewport: viewportRect,
         renderWithPortal,
+        allowVerticalOverflow: !wasPinned && isPinned,
       });
 
       // Get the position of the popover relative to the offset parent.
@@ -158,7 +158,14 @@ export default function PopoverContainer({
         body.style.overflowY = 'auto';
       }
 
-      boundingBoxRef.current = { ...popoverOffset, ...boundingBox };
+      if (!wasPinned && isPinned) {
+        const { top, height } = { ...popoverOffset, ...boundingBox };
+        if (top < 0) {
+          window.scrollBy(0, top);
+        } else if (top + height > window.innerHeight) {
+          window.scrollBy(0, top + height - window.innerHeight);
+        }
+      }
 
       // Remember the internal position in case we want to keep it later.
       previousInternalPositionRef.current = newInternalPosition;
@@ -178,19 +185,8 @@ export default function PopoverContainer({
         });
       };
     },
-    [trackRef, keepPosition, position, renderWithPortal]
+    [trackRef, keepPosition, position, renderWithPortal, wasPinned, isPinned]
   );
-
-  useEffect(() => {
-    if (!wasPinned && isPinned && boundingBoxRef.current) {
-      const { top, height } = boundingBoxRef.current;
-      if (top < 0) {
-        window.scrollBy(0, top);
-      } else if (top + height > window.innerHeight) {
-        window.scrollBy(0, top + height - window.innerHeight);
-      }
-    }
-  }, [isPinned, wasPinned]);
 
   // Recalculate position when properties change.
   useLayoutEffect(() => {

@@ -223,6 +223,7 @@ export function calculatePosition({
   viewport,
   // the popover is only bound by the viewport if it is rendered in a portal
   renderWithPortal,
+  allowVerticalOverflow,
 }: {
   preferredPosition: PopoverProps.Position;
   fixedInternalPosition?: InternalPosition;
@@ -233,6 +234,7 @@ export function calculatePosition({
   viewport: BoundingBox;
   // the popover is only bound by the viewport if it is rendered in a portal
   renderWithPortal?: boolean;
+  allowVerticalOverflow?: boolean;
 }): CalculatedPosition {
   let bestOption: CandidatePosition | null = null;
 
@@ -263,8 +265,8 @@ export function calculatePosition({
   const internalPosition = bestOption?.internalPosition || 'right-top';
   // Get default rect for that placement.
   const defaultBoundingBox = RECTANGLE_CALCULATIONS[internalPosition]({ body, trigger, arrow });
-  // Get largest possible rect that fits into the container.
-  const optimisedBoundingBox = fitIntoContainer(defaultBoundingBox, container);
+  // Get largest possible rect that fits into the viewport or container.
+  const optimisedBoundingBox = fitIntoContainer(defaultBoundingBox, allowVerticalOverflow ? container : viewport);
   // If largest possible rect is shorter than original - set body scroll.
   const scrollable = optimisedBoundingBox.height < defaultBoundingBox.height;
 
