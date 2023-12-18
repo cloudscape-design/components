@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { CSSProperties, useCallback, useLayoutEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
@@ -10,6 +10,7 @@ import { BoundingBox, InternalPosition, Offset, PopoverProps } from './interface
 import { calculatePosition, getDimensions, getOffsetDimensions } from './utils/positions';
 import styles from './styles.css.js';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { usePrevious } from '../internal/hooks/use-previous';
 
 export interface PopoverContainerProps {
   /** References the element the container is positioned against. */
@@ -34,9 +35,10 @@ export interface PopoverContainerProps {
   variant?: 'annotation';
   // When keepPosition is true, the popover will not recalculate its position when it resizes nor when it receives clicks.
   keepPosition?: boolean;
+  isPinned?: boolean;
 }
 
-const INITIAL_STYLES: CSSProperties = { top: -9999, left: -9999 };
+const INITIAL_STYLES: Offset = { top: -9999, left: -9999 };
 
 export default function PopoverContainer({
   position,
@@ -50,14 +52,17 @@ export default function PopoverContainer({
   fixedWidth,
   variant,
   keepPosition,
+  isPinned,
 }: PopoverContainerProps) {
   const bodyRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
   const popoverRef = useRef<HTMLDivElement | null>(null);
   const arrowRef = useRef<HTMLDivElement | null>(null);
   const previousInternalPositionRef = useRef<InternalPosition | null>(null);
+  const wasPinned = usePrevious(isPinned);
 
-  const [popoverStyle, setPopoverStyle] = useState<CSSProperties>(INITIAL_STYLES);
+  const [popoverStyle, setPopoverStyle] = useState<Offset>(INITIAL_STYLES);
+  const boundingBoxRef = useRef<BoundingBox | null>(null);
   const [internalPosition, setInternalPosition] = useState<InternalPosition | null>(null);
   const isRefresh = useVisualRefresh();
 
@@ -153,6 +158,8 @@ export default function PopoverContainer({
         body.style.overflowY = 'auto';
       }
 
+      boundingBoxRef.current = { ...popoverOffset, ...boundingBox };
+
       // Remember the internal position in case we want to keep it later.
       previousInternalPositionRef.current = newInternalPosition;
 
@@ -173,6 +180,17 @@ export default function PopoverContainer({
     },
     [trackRef, keepPosition, position, renderWithPortal]
   );
+
+  useEffect(() => {
+    if (!wasPinned && isPinned && boundingBoxRef.current) {
+      const { top, height } = boundingBoxRef.current;
+      if (top < 0) {
+        window.scrollBy(0, top);
+      } else if (top + height > window.innerHeight) {
+        window.scrollBy(0, top + height - window.innerHeight);
+      }
+    }
+  }, [isPinned, wasPinned]);
 
   // Recalculate position when properties change.
   useLayoutEffect(() => {
