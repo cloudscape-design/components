@@ -130,11 +130,15 @@
   }
 }
 
-@mixin container-shadow {
+@mixin container-style {
   border-radius: awsui.$border-radius-container;
   box-sizing: border-box;
 
-  &::before {
+  &.refresh {
+    border: solid awsui.$border-divider-section-width awsui.$color-border-divider-default;
+  }
+
+  &:not(.refresh)::before {
     @include utils.base-pseudo-element;
     // Reset border color to prevent it from flashing black during card selection animation
     border-color: transparent;
@@ -143,17 +147,10 @@
     z-index: 1;
   }
 
-  &::after {
+  &:not(.refresh)::after {
     @include utils.base-pseudo-element;
-    box-shadow: awsui.$shadow-container;
     border-radius: awsui.$border-radius-container;
-    mix-blend-mode: multiply;
-  }
-
-  // HACK: because of the issues with IE's box shadow rendering we draw
-  // a border and don't mind the pixel fitting
-  @media screen and (-ms-high-contrast: active) {
-    border: constants.$control-border-width solid awsui.$color-border-container-top;
+    box-shadow: awsui.$shadow-container;
   }
 }
 

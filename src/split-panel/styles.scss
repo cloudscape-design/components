@@ -53,11 +53,6 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
     }
   }
 
-  &.refresh {
-    border-right: awsui.$border-divider-section-width solid awsui.$color-border-divider-panel-side;
-    box-sizing: border-box;
-  }
-
   & > [aria-hidden='true'] {
     display: none;
   }
@@ -77,13 +72,13 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
 .position-bottom {
   position: fixed;
   overflow-y: auto;
-  border-left: awsui.$border-divider-section-width solid awsui.$color-border-divider-panel-bottom;
-  border-right: awsui.$border-divider-section-width solid awsui.$color-border-divider-panel-bottom;
   border-top: awsui.$border-panel-top-width solid awsui.$color-border-divider-panel-bottom;
 
   &:not(.refresh) {
     // custom shadow because the existing one does not have shadow on top
     box-shadow: awsui.$shadow-split-bottom;
+    border-left: awsui.$border-divider-section-width solid awsui.$color-border-divider-panel-bottom;
+    border-right: awsui.$border-divider-section-width solid awsui.$color-border-divider-panel-bottom;
   }
   &.drawer-closed {
     overflow: hidden;
