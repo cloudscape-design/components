@@ -8,11 +8,11 @@ on:
         description: 'Specify the version for this release'
         type: string
       npm_package:
-        required: true
-        description: 'npm package of the release repo'
+        required: false
+        description: 'npm package of the release repo (deprecated)'
         type: string
       commit:
-        required: false
+        required: true
         description: 'commit to generate release notes'
         type: string
 

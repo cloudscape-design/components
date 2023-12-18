@@ -53,7 +53,7 @@ export default function Navigation({
       className={clsx(styles.navigation, hidden && styles.hidden, isVisualRefresh && styles.refresh)}
       aria-label={i18nStrings.navigationAriaLabel}
     >
-      <ul className={clsx(isVisualRefresh && styles.refresh)}>
+      <ul>
         {steps.map((step, index: number) =>
           isVisualRefresh ? (
             <NavigationStepVisualRefresh

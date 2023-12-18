@@ -95,7 +95,7 @@ const setupTest = (
 for (const visualRefresh of ['true', 'false']) {
   describe(`visualRefresh=${visualRefresh}`, () => {
     // there is an extra border inside drawer box in visual refresh
-    const vrBorderOffset = visualRefresh === 'true' ? 1 : 0;
+    const vrBorderOffset = visualRefresh === 'true' ? 2 : 0;
 
     test(
       'slider is accessible by keyboard in side position',
@@ -131,7 +131,7 @@ for (const visualRefresh of ['true', 'false']) {
         // there are different layouts between these two designs
         await expect(page.getActiveDrawerWidth()).resolves.toEqual(290 + vrBorderOffset);
         await page.dragResizerTo({ x: 0, y: 0 });
-        await expect(page.getActiveDrawerWidth()).resolves.toEqual(visualRefresh === 'true' ? 447 : 520);
+        await expect(page.getActiveDrawerWidth()).resolves.toEqual(visualRefresh === 'true' ? 448 : 520);
       })
     );
 

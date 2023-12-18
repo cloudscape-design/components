@@ -76,7 +76,6 @@ export const Drawer = React.forwardRef(
 
     return (
       <div
-        id={id}
         ref={ref}
         className={clsx(styles.drawer, {
           [styles.hide]: isHidden,
@@ -110,16 +109,17 @@ export const Drawer = React.forwardRef(
         }}
       >
         <div
+          id={id}
           style={{ width: drawerContentWidth, top: topOffset, bottom: bottomOffset }}
           className={clsx(styles['drawer-content'], styles['drawer-content-clickable'], contentClassName)}
         >
           {!isMobile && !hideOpenButton && regularOpenButton}
-          {resizeHandle}
           <TagName
             className={clsx(resizeHandle && styles['drawer-resize-content'])}
             aria-label={mainLabel}
             aria-hidden={!isOpen}
           >
+            {!isMobile && isOpen && resizeHandle}
             <CloseButton
               ref={toggleRefs.close}
               className={closeClassName}

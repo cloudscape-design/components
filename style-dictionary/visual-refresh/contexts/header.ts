@@ -20,6 +20,7 @@ const colorTokens: StyleDictionary.ColorsDictionary = {
 };
 
 const shadowsTokens: StyleDictionary.ShadowsDictionary = {
+  shadowContainer: 'none',
   shadowFlashSticky: parentShadowsTokens.shadowFlashSticky,
   shadowPanel: parentShadowsTokens.shadowPanel,
   shadowPanelToggle: parentShadowsTokens.shadowPanelToggle,
