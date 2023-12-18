@@ -42,9 +42,7 @@ export function SplitPanelContentSide({
       ref={splitPanelRef}
     >
       <div
-        className={clsx(styles['drawer-content-side'], {
-          [styles.refresh]: isRefresh,
-        })}
+        className={clsx(styles['drawer-content-side'])}
         style={{
           top: topOffset,
           bottom: bottomOffset,
