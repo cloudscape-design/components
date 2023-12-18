@@ -7,7 +7,6 @@ import Popover from '~components/popover';
 import Box from '~components/box';
 import styles from './positioning.scss';
 import ScreenshotArea from '../utils/screenshot-area';
-import ColumnLayout from '~components/column-layout';
 import Link from '~components/link';
 import SpaceBetween from '~components/space-between';
 import StatusIndicator from '~components/status-indicator';
@@ -98,7 +97,7 @@ function Page({ children }: { children: React.ReactNode }) {
 
 function Content() {
   return (
-    <ColumnLayout variant="text-grid" columns={2}>
+    <SpaceBetween size="l" direction="horizontal">
       <SpaceBetween size="l">
         <ValueWithLabel label="Label for key">Value</ValueWithLabel>
         <ValueWithLabel label="Label for key">
@@ -113,7 +112,7 @@ function Content() {
           </Link>
         </ValueWithLabel>
       </SpaceBetween>
-    </ColumnLayout>
+    </SpaceBetween>
   );
 }
 
