@@ -352,14 +352,15 @@ export default function ChartContainer<T extends ChartDataTypes>({
     }
   }, [highlightedX, highlightedPoint, showPopover]);
 
+  const isSomeElementHighlighted = !!(highlightedPoint || highlightedGroupIndex !== null || verticalMarkerX);
+
   const onPopoverDismiss = (outsideClick?: boolean) => {
     dismissPopover();
 
     if (!outsideClick) {
       // The delay is needed to bypass focus events caused by click or keypress needed to unpin the popover.
       setTimeout(() => {
-        const isSomeInnerElementFocused = highlightedPoint || highlightedGroupIndex !== null || verticalMarkerX;
-        if (isSomeInnerElementFocused) {
+        if (isSomeElementHighlighted) {
           plotRef.current?.focusApplication();
         } else {
           plotRef.current?.focusPlot();
@@ -405,10 +406,6 @@ export default function ChartContainer<T extends ChartDataTypes>({
       setVerticalMarkerX(null);
       if (!plotContainerRef?.current?.contains(blurTarget)) {
         clearHighlightedSeries();
-      }
-
-      if (isPopoverOpen && !isPopoverPinned) {
-        dismissPopover();
       }
     }
   };
@@ -643,7 +640,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
           ref={popoverRef}
           containerRef={containerRefObject}
           trackRef={highlightedElementRef}
-          isOpen={isPopoverOpen}
+          isOpen={isPopoverOpen && isSomeElementHighlighted}
           isPinned={isPopoverPinned}
           highlightDetails={highlightDetails}
           onDismiss={onPopoverDismiss}
