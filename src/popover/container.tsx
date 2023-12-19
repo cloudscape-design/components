@@ -11,6 +11,7 @@ import { calculatePosition, getDimensions, getOffsetDimensions } from './utils/p
 import styles from './styles.css.js';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useMobile } from '../internal/hooks/use-mobile';
+import { scrollRectangleIntoView } from '../internal/utils/scrollable-containers';
 
 export interface PopoverContainerProps {
   /** References the element the container is positioned against. */
@@ -160,17 +161,7 @@ export default function PopoverContainer({
       }
 
       if (allowVerticalOverflow) {
-        const { top, height } = boundingBox;
-        // We can't use the browser native scrollIntoView API because the element has fixed position.
-        if (top < 0) {
-          window.scrollBy(0, top);
-        } else if (top + height > window.innerHeight) {
-          if (height > window.innerHeight) {
-            window.scrollBy(0, top);
-          } else {
-            window.scrollBy(0, top + height - window.innerHeight);
-          }
-        }
+        scrollRectangleIntoView(boundingBox);
       }
 
       // Remember the internal position in case we want to keep it later.

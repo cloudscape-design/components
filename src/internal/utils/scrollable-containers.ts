@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-export interface Dimensions {
+export interface BoundingBox {
   height: number;
   width: number;
   top: number;
@@ -27,7 +27,7 @@ export const getOverflowParentDimensions = ({
   excludeClosestParent: boolean;
   expandToViewport: boolean;
   canExpandOutsideViewport: boolean;
-}): Dimensions[] => {
+}): BoundingBox[] => {
   const parents = expandToViewport
     ? []
     : getOverflowParents(element).map(el => {
@@ -83,4 +83,21 @@ export function scrollElementIntoView(
   options: ScrollIntoViewOptions = { block: 'nearest', inline: 'nearest' }
 ) {
   element?.scrollIntoView?.(options);
+}
+
+/**
+ * For elements with fixed position, the browser's native scrollIntoView API doesn't work,
+ * so we need to manually scroll to the element's position.
+ * Supports only vertical scrolling.
+ */
+export function scrollRectangleIntoView({ top, height }: BoundingBox) {
+  if (top < 0) {
+    window.scrollBy(0, top);
+  } else if (top + height > window.innerHeight) {
+    if (height > window.innerHeight) {
+      window.scrollBy(0, top);
+    } else {
+      window.scrollBy(0, top + height - window.innerHeight);
+    }
+  }
 }
