@@ -36,7 +36,6 @@ export interface PopoverContainerProps {
   variant?: 'annotation';
   // When keepPosition is true, the popover will not recalculate its position when it resizes nor when it receives clicks.
   keepPosition?: boolean;
-  isPinned?: boolean;
 }
 
 const INITIAL_STYLES: Offset = { top: -9999, left: -9999 };
