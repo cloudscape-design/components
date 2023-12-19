@@ -123,7 +123,9 @@ export default function PopoverContainer({
       const shouldKeepPosition = keepPosition && onContentResize && !!previousInternalPositionRef.current;
       const fixedInternalPosition = (shouldKeepPosition && previousInternalPositionRef.current) ?? undefined;
 
-      const allowVerticalOverflow = isMobile && !previousInternalPositionRef.current;
+      // On mobile screens, allow the popover to open outside of the viewoprt and scroll to it,
+      // if there is no position where it can fit without being cropped.
+      const allowVerticalOverflow = isMobile && !shouldKeepPosition;
 
       // Calculate the arrow direction and viewport-relative position of the popover.
       const {
