@@ -49,6 +49,7 @@ export interface ChartPlotProps {
   onBlur?: (event: React.FocusEvent<SVGGElement>) => void;
   onKeyDown?: (event: React.KeyboardEvent<SVGGElement>) => void;
   children: React.ReactNode;
+  hasHighlight?: boolean;
 }
 
 /**
@@ -89,6 +90,7 @@ function ChartPlot(
     onBlur,
     focusOffset = DEFAULT_PLOT_FOCUS_OFFSET,
     activeElementFocusOffset = DEFAULT_ELEMENT_FOCUS_OFFSET,
+    hasHighlight,
     ...restProps
   }: ChartPlotProps,
   ref: React.Ref<ChartPlotRef>
@@ -114,12 +116,11 @@ function ChartPlot(
     plotClickedRef.current = true;
   };
   const onPlotFocus = (event: React.FocusEvent<SVGSVGElement>) => {
-    if (event.target === svgRef.current && !plotClickedRef.current) {
-      setPlotFocused(true);
-    }
     // The click should focus the underling application bypassing the svg.
-    else if (plotClickedRef.current) {
+    if (plotClickedRef.current || hasHighlight) {
       applicationRef.current!.focus();
+    } else if (event.target === svgRef.current) {
+      setPlotFocused(true);
     }
   };
   const onPlotClick = (event: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
