@@ -318,6 +318,7 @@ export default <T extends PieChartProps.Datum>({
           onBlur={onBlur}
           onKeyDown={onKeyDown}
           onMouseOut={checkMouseLeave}
+          hasHighlight={!!highlightedSegment}
         >
           <Segments
             pieData={pieData}

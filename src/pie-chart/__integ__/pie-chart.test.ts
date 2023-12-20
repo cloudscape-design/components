@@ -97,6 +97,26 @@ describe('Segments', () => {
   );
 
   test(
+    'tabbing from the popover back to the chart keeps the highlights',
+    setupTest(async page => {
+      const buttonSelector = pieWrapper.findDetailPopover().findContent().findButton().toSelector();
+      await page.click('#focus-target');
+      await page.keys(['Tab', 'Tab', 'Enter']);
+
+      await page.waitForVisible(highlightedSegmentSelector);
+      await page.waitForVisible(detailsPopoverSelector);
+      await expect(page.isFocused(buttonSelector)).resolves.toBe(false);
+
+      await page.keys(['Tab']);
+      await expect(page.isFocused(buttonSelector)).resolves.toBe(true);
+
+      await page.keys(['Shift', 'Tab', 'Shift']);
+      await page.waitForVisible(detailsPopoverSelector);
+      await expect(page.isFocused(buttonSelector)).resolves.toBe(false);
+    })
+  );
+
+  test(
     'clicking outside of the chart removes all highlights for pinned element',
     setupTest(async page => {
       await page.click(pieWrapper.findSegments().get(2).toSelector());
