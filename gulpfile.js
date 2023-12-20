@@ -18,6 +18,7 @@ const {
   a11y,
   generateI18nMessages,
   integ,
+  motion,
   licenses,
   themeableSource,
   bundleVendorFiles,
@@ -38,6 +39,7 @@ exports.test = series(unit, integ, a11y);
 exports['test:unit'] = unit;
 exports['test:integ'] = integ;
 exports['test:a11y'] = a11y;
+exports['test:motion'] = motion;
 
 exports.watch = () => {
   watch(
@@ -47,6 +49,7 @@ exports.watch = () => {
       '!**/__tests__/**',
       '!**/__integ__/**',
       '!**/__a11y__/**',
+      '!**/__motion__/**',
       '!src/internal/vendor/**/*.ts',
     ],
     typescript

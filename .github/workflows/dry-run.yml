@@ -1,15 +1,233 @@
 # This workflow executes a full dry-run test, which means that all we build and test all @cloudscape-design packages in GitHub.
 # This ensures that the changes in the current package do not cause any regressions for its consumers.
-name: Dry-run
+name: dry-run
+
 on:
-  workflow_dispatch:
   pull_request:
     branches:
       - main
-  merge_group:
-    branches:
-      - main
+  workflow_call:
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
 
 jobs:
-  dry-run:
-    uses: cloudscape-design/actions/.github/workflows/dry-run.yml@main
+  buildJestPreset:
+    name: Build jest-preset
+    runs-on: ubuntu-latest
+    steps:
+      - uses: cloudscape-design/actions/.github/actions/build-package@main
+        with:
+          package: jest-preset
+          skip_build: true
+  buildGlobalStyles:
+    name: Build global-styles
+    runs-on: ubuntu-latest
+    steps:
+      - uses: cloudscape-design/actions/.github/actions/build-package@main
+        with:
+          package: global-styles
+  buildCollectionHooks:
+    name: Build collection-hooks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: cloudscape-design/actions/.github/actions/build-package@main
+        with:
+          package: collection-hooks
+  buildBrowserTestTools:
+    name: Build browser-test-tools
+    runs-on: ubuntu-latest
+    steps:
+      - uses: cloudscape-design/actions/.github/actions/build-package@main
+        with:
+          package: browser-test-tools
+  buildDocumenter:
+    name: Build documenter
+    runs-on: ubuntu-latest
+    steps:
+      - uses: cloudscape-design/actions/.github/actions/build-package@main
+        with:
+          package: documenter
+  buildTestUtils:
+    name: Build test-utils
+    runs-on: ubuntu-latest
+    needs: buildDocumenter
+    steps:
+      - uses: cloudscape-design/actions/.github/actions/build-package@main
+        with:
+          package: test-utils
+          download_dependencies: true
+  buildThemingCore:
+    name: Build theming-core
+    runs-on: ubuntu-latest
+    needs:
+      - buildBrowserTestTools
+    steps:
+      - uses: cloudscape-design/actions/.github/actions/build-package@main
+        with:
+          package: theming-core
+          artifact_path: theming-*.tgz
+          download_dependencies: true
+  buildComponentToolkit:
+    name: Build component-toolkit
+    runs-on: ubuntu-latest
+    needs:
+      - buildBrowserTestTools
+    steps:
+      - uses: cloudscape-design/actions/.github/actions/build-package@main
+        with:
+          package: component-toolkit
+          download_dependencies: true
+  buildComponents:
+    name: Build components
+    runs-on: ubuntu-latest
+    needs:
+      - buildJestPreset
+      - buildGlobalStyles
+      - buildCollectionHooks
+      - buildBrowserTestTools
+      - buildDocumenter
+      - buildTestUtils
+      - buildThemingCore
+      - buildComponentToolkit
+    steps:
+      - uses: cloudscape-design/actions/.github/actions/build-package@main
+        with:
+          package: components
+          target_artifact: components-package
+          artifact_path: ./*.tgz
+          skip_tests: true
+          download_dependencies: true
+
+  buildBoardComponents:
+    name: Build board components
+    runs-on: ubuntu-latest
+    needs:
+      - buildGlobalStyles
+      - buildBrowserTestTools
+      - buildDocumenter
+      - buildTestUtils
+      - buildComponentToolkit
+      - buildComponents
+    steps:
+      - name: Download component artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: components-package
+      - uses: cloudscape-design/actions/.github/actions/build-package@main
+        with:
+          package: board-components
+          download_dependencies: true
+
+  unitTest:
+    name: Components unit tests
+    runs-on: ubuntu-latest
+    needs:
+      - buildComponents
+    steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Download component artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: components-package
+      - name: Unpack components artifacts
+        run: tar -xzf components-full.tgz
+      - name: Unit tests
+        run: npm run test:unit
+
+  integTest:
+    name: Components integration tests
+    runs-on: ubuntu-latest
+    needs:
+      - buildComponents
+    steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Download component artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: components-package
+      - name: Unpack components artifacts
+        run: tar -xzf components-full.tgz
+      - name: Integration tests
+        run: npm run test:integ
+
+  a11yTest:
+    name: Components accessibility tests
+    runs-on: ubuntu-latest
+    needs:
+      - a11yTestShards
+    steps:
+      - run: echo "Completed all accessibility tests"
+
+  a11yTestShards:
+    name: Components accessibility tests shard
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        shard: [1, 2, 3, 4, 5, 6]
+    needs:
+      - buildComponents
+    steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Download component artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: components-package
+      - name: Unpack components artifacts
+        run: tar -xzf components-full.tgz
+      - name: Accessibility tests
+        run: npm run test:a11y -- --shard=${{ matrix.shard }}/${{ strategy.job-total }}
+
+  demosTest:
+    name: Demos tests
+    runs-on: ubuntu-latest
+    needs:
+      - buildComponents
+      - buildBoardComponents
+      - buildBrowserTestTools
+      - buildCollectionHooks
+      - buildTestUtils
+      - buildGlobalStyles
+      - buildThemingCore
+    steps:
+      - name: Download component artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: components-package
+      - name: Build
+        uses: cloudscape-design/actions/.github/actions/build-package@main
+        with:
+          package: demos
+          download_dependencies: true
+
+  motionTest:
+    name: Components motion tests
+    runs-on: ubuntu-latest
+    needs:
+      - buildComponents
+    steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Download component artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: components-package
+      - name: Unpack components artifacts
+        run: tar -xzf components-full.tgz
+      - name: Motion tests
+        run: npm run test:motion
