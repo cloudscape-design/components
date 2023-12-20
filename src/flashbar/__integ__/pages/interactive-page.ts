@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { FlashbarBasePage, flashbar } from './base';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
+import createWrapper from '../../../../lib/components/test-utils/selectors';
 
 export class FlashbarInteractivePage extends FlashbarBasePage {
   async addInfoFlash() {
@@ -22,6 +23,10 @@ export class FlashbarInteractivePage extends FlashbarBasePage {
 
   async toggleStackingFeature() {
     await this.click('[data-id="stack-items"]');
+  }
+
+  async dismissFirstItem() {
+    await this.click(createWrapper().findFlashbar().findItems().get(1).findDismissButton().toSelector());
   }
 
   async removeAll() {
