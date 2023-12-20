@@ -149,6 +149,7 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
           onKeyDown={model.handlers.onSVGKeyDown}
           onFocus={model.handlers.onSVGFocus}
           onBlur={model.handlers.onSVGBlur}
+          hasHighlight={highlightedX !== null}
         >
           <line
             ref={model.refs.plotMeasure}
