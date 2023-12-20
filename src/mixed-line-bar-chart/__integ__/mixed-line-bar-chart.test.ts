@@ -253,6 +253,34 @@ describe('Series', () => {
   );
 
   test(
+    'navigating back from popover restores highlighted element',
+    setupTest('#/light/bar-chart/test', async page => {
+      await page.click('#focus-target');
+      await page.keys(['Tab', 'Tab', 'ArrowRight']);
+
+      // First group is highlighted
+      await expect(page.getText(popoverHeaderSelector())).resolves.toContain('Potatoes');
+      await expect(page.getText(popoverContentSelector())).resolves.toContain('Calories\n77');
+
+      // Tab into the popover
+      await page.keys(['Tab']);
+      await expect(
+        page.isFocused(chartWrapper.findDetailPopover().findContent().findButton().toSelector())
+      ).resolves.toBe(true);
+
+      // Tab back into the chart
+      await page.keys(['Shift', 'Tab', 'Shift']);
+      await expect(
+        page.isFocused(chartWrapper.findDetailPopover().findContent().findButton().toSelector())
+      ).resolves.toBe(false);
+
+      // First group is highlighted again
+      await expect(page.getText(popoverHeaderSelector())).resolves.toContain('Potatoes');
+      await expect(page.getText(popoverContentSelector())).resolves.toContain('Calories\n77');
+    })
+  );
+
+  test(
     'clicking outside of the chart removes all highlights for pinned element',
     setupTest('#/light/bar-chart/test', async page => {
       // Click on it to reveal the dismiss button
