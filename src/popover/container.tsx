@@ -10,7 +10,7 @@ import { BoundingBox, InternalPosition, Offset, PopoverProps } from './interface
 import { calculatePosition, getDimensions, getOffsetDimensions } from './utils/positions';
 import styles from './styles.css.js';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { scrollRectangleIntoView } from '../internal/utils/scrollable-containers';
+import { calculateScroll, scrollRectangleIntoView } from '../internal/utils/scrollable-containers';
 
 export interface PopoverContainerProps {
   /** References the element the container is positioned against. */
@@ -163,16 +163,16 @@ export default function PopoverContainer({
         body.style.overflowY = 'auto';
       }
 
+      // Remember the internal position in case we want to keep it later.
+      previousInternalPositionRef.current = newInternalPosition;
+      setInternalPosition(newInternalPosition);
+
+      // Position the popover
+      const top = scrollIfNeeded ? popoverOffset.top + calculateScroll(boundingBox) : popoverOffset.top;
+      setPopoverStyle({ top, left: popoverOffset.left });
       if (scrollIfNeeded) {
         scrollRectangleIntoView(boundingBox);
       }
-
-      // Remember the internal position in case we want to keep it later.
-      previousInternalPositionRef.current = newInternalPosition;
-
-      // Position the popover
-      setInternalPosition(newInternalPosition);
-      setPopoverStyle({ top: popoverOffset.top, left: popoverOffset.left });
 
       positionHandlerRef.current = () => {
         const newTrackOffset = toRelativePosition(

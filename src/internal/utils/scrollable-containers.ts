@@ -85,19 +85,27 @@ export function scrollElementIntoView(
   element?.scrollIntoView?.(options);
 }
 
+export function calculateScroll({ top, height }: BoundingBox) {
+  if (top < 0) {
+    return top;
+  } else if (top + height > window.innerHeight) {
+    if (height > window.innerHeight) {
+      return top;
+    } else {
+      return top + height - window.innerHeight;
+    }
+  }
+  return 0;
+}
+
 /**
  * For elements with fixed position, the browser's native scrollIntoView API doesn't work,
  * so we need to manually scroll to the element's position.
  * Supports only vertical scrolling.
  */
-export function scrollRectangleIntoView({ top, height }: BoundingBox) {
-  if (top < 0) {
-    window.scrollBy(0, top);
-  } else if (top + height > window.innerHeight) {
-    if (height > window.innerHeight) {
-      window.scrollBy(0, top);
-    } else {
-      window.scrollBy(0, top + height - window.innerHeight);
-    }
+export function scrollRectangleIntoView(box: BoundingBox) {
+  const scrollAmount = calculateScroll(box);
+  if (scrollAmount) {
+    window.scrollBy(0, scrollAmount);
   }
 }
