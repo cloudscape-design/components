@@ -253,32 +253,6 @@ describe('Series', () => {
   );
 
   test(
-    'tabbing from the popover back to the chart keeps the highlights',
-    setupTest('#/light/bar-chart/test', async page => {
-      await page.click('#focus-target');
-      await page.keys(['Tab', 'Tab', 'ArrowRight']);
-
-      // First group is highlighted
-      await expect(page.getText(popoverHeaderSelector())).resolves.toContain('Potatoes');
-
-      // Tab into the popover
-      await page.keys(['Tab']);
-      await expect(
-        page.isFocused(chartWrapper.findDetailPopover().findContent().findButton().toSelector())
-      ).resolves.toBe(true);
-
-      // Tab back into the chart
-      await page.keys(['Shift', 'Tab', 'Shift']);
-      await expect(
-        page.isFocused(chartWrapper.findDetailPopover().findContent().findButton().toSelector())
-      ).resolves.toBe(false);
-
-      // First group is still highlighted
-      await expect(page.getText(popoverHeaderSelector())).resolves.toContain('Potatoes');
-    })
-  );
-
-  test(
     'clicking outside of the chart removes all highlights for pinned element',
     setupTest('#/light/bar-chart/test', async page => {
       // Click on it to reveal the dismiss button
@@ -414,6 +388,32 @@ describe('Details popover', () => {
       await expect(page.isDisplayed(popoverContentSelector())).resolves.toBe(false);
     });
   });
+
+  test(
+    'tabbing from the popover back to the chart keeps the highlights',
+    setupTest('#/light/bar-chart/test', async page => {
+      await page.click('#focus-target');
+      await page.keys(['Tab', 'Tab', 'ArrowRight']);
+
+      // First group is highlighted
+      await expect(page.getText(popoverHeaderSelector())).resolves.toContain('Potatoes');
+
+      // Tab into the popover
+      await page.keys(['Tab']);
+      await expect(
+        page.isFocused(chartWrapper.findDetailPopover().findContent().findButton().toSelector())
+      ).resolves.toBe(true);
+
+      // Tab back into the chart
+      await page.keys(['Shift', 'Tab', 'Shift']);
+      await expect(
+        page.isFocused(chartWrapper.findDetailPopover().findContent().findButton().toSelector())
+      ).resolves.toBe(false);
+
+      // First group is still highlighted
+      await expect(page.getText(popoverHeaderSelector())).resolves.toContain('Potatoes');
+    })
+  );
 
   test(
     'can be pinned by clicking on chart background and dismissed by clicking outside chart area in line chart',
