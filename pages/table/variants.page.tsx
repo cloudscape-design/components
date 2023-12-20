@@ -20,7 +20,7 @@ export default function () {
   return (
     <>
       <h1>Table Variants</h1>
-      <ScreenshotArea disableAnimations={true}>
+      <ScreenshotArea>
         <SpaceBetween size="m">
           <Button onClick={() => setVisible(true)}>Open Modal</Button>
           <Modal

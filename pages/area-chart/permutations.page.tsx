@@ -172,7 +172,7 @@ export default function () {
   return (
     <>
       <h1>Area chart permutations</h1>
-      <ScreenshotArea disableAnimations={true}>
+      <ScreenshotArea>
         <PermutationsView
           permutations={permutations}
           render={permutation => <Example isPermutation={true} {...permutation} />}

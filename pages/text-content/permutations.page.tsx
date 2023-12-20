@@ -6,7 +6,7 @@ import ScreenshotArea from '../utils/screenshot-area';
 
 export default function TextContentPermutations() {
   return (
-    <ScreenshotArea disableAnimations={true}>
+    <ScreenshotArea>
       <TextContent>
         <h1>Heading 1</h1>
         <h2>Heading 2</h2>

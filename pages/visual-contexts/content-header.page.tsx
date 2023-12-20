@@ -37,7 +37,7 @@ const onChange = () => {};
 
 export default function ContentHeaderVisualContextDemo() {
   return (
-    <ScreenshotArea disableAnimations={true} gutters={false}>
+    <ScreenshotArea gutters={false}>
       <VisualContext contextName="content-header">
         <Box padding="l" className={styles.main}>
           <SpaceBetween size="l">

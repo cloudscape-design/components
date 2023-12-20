@@ -9,7 +9,7 @@ import buttonDropdownItems from './utils/button-dropdown-items';
 
 export default function ButtonDropdownScenario() {
   return (
-    <ScreenshotArea disableAnimations={true}>
+    <ScreenshotArea>
       <h1>ButtonDropdown expandToViewport in overflow: !visible containers</h1>
       <div className={styles['layout-wrapper']}>
         <div className={clsx(styles['overflow-container'], styles.scroll)} id="scroll-container">

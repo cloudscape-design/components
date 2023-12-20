@@ -49,7 +49,7 @@ export default function FlashbarSmallScreen() {
   return (
     <>
       <h1>Action button inside flash should stack on small screen</h1>
-      <ScreenshotArea disableAnimations={true}>
+      <ScreenshotArea>
         <Flashbar items={items} />
       </ScreenshotArea>
     </>

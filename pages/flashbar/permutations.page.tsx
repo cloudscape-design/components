@@ -93,7 +93,7 @@ export default function FlashbarPermutations() {
   return (
     <>
       <h1>Flashbar permutations</h1>
-      <ScreenshotArea disableAnimations={true}>
+      <ScreenshotArea>
         <PermutationsView
           permutations={permutations}
           render={permutation => (

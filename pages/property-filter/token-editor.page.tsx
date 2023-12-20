@@ -17,7 +17,7 @@ export default function () {
   return (
     <>
       <h1>Strings wrapping screenshot page</h1>
-      <ScreenshotArea disableAnimations={true} style={{ height: '1000px' }}>
+      <ScreenshotArea style={{ height: '1000px' }}>
         <PropertyFilter
           className="property-filter-overflow"
           query={{

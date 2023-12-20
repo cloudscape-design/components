@@ -35,7 +35,7 @@ export default function TimeInputPermutations() {
   return (
     <Box padding="l">
       <h1>Time Input permutations</h1>
-      <ScreenshotArea disableAnimations={true}>
+      <ScreenshotArea>
         <SpaceBetween size="m">
           <PermutationsView
             permutations={permutations}

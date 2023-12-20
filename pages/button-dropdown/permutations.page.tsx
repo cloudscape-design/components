@@ -26,7 +26,7 @@ export default function () {
   return (
     <>
       <h1>ButtonDropdown permutations</h1>
-      <ScreenshotArea disableAnimations={true}>
+      <ScreenshotArea>
         <PermutationsView
           permutations={permutations}
           render={permutation => <span>{<ButtonDropdown {...permutation}>Button Dropdown</ButtonDropdown>}</span>}

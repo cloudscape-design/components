@@ -102,7 +102,7 @@ export default function () {
   return (
     <>
       <h1>Integration tests fixture for async loading suggestions</h1>
-      <ScreenshotArea disableAnimations={true}>
+      <ScreenshotArea>
         <PropertyFilter
           i18nStrings={i18nStrings}
           query={query}

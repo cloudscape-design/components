@@ -41,7 +41,7 @@ const permutations = createPermutations<BoxProps>([
 
 export default function BoxPermutations() {
   return (
-    <ScreenshotArea disableAnimations={true}>
+    <ScreenshotArea>
       <PermutationsView
         permutations={permutations}
         render={permutation => (

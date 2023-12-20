@@ -56,7 +56,7 @@ export default function TabsScenario() {
   return (
     <div id="test" style={{ padding: 10 }}>
       <h1>Tabs integration test page</h1>
-      <ScreenshotArea disableAnimations={true}>
+      <ScreenshotArea>
         <div id="click-this" tabIndex={0} style={{ height: 10 }} />
         <Tabs
           id="first-tabs"

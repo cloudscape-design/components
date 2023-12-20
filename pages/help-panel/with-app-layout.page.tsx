@@ -40,7 +40,7 @@ const toolsPanel = (
 
 export default function HelpPanelSimple() {
   return (
-    <ScreenshotArea disableAnimations={true} gutters={false}>
+    <ScreenshotArea gutters={false}>
       <AppLayoutWrapper tools={toolsPanel} />
     </ScreenshotArea>
   );

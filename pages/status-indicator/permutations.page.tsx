@@ -30,7 +30,7 @@ export default function StatusIndicatorPermutations() {
   return (
     <>
       <h1>StatusIndicator permutations</h1>
-      <ScreenshotArea disableAnimations={true}>
+      <ScreenshotArea>
         <PermutationsView
           permutations={permutations}
           render={permutation => (

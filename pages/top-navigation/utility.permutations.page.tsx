@@ -81,7 +81,7 @@ export default function () {
   return (
     <>
       <h1>Top navigation utility permutations</h1>
-      <ScreenshotArea disableAnimations={true}>
+      <ScreenshotArea>
         <VisualContext contextName="top-navigation" className={styles['utility-permutations']}>
           <PermutationsView permutations={permutations} render={permutation => <Utility {...permutation} />} />
         </VisualContext>

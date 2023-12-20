@@ -21,7 +21,7 @@ const linkPermutations = createPermutations<LinkProps>([
 
 export default function TextContentPermutations() {
   return (
-    <ScreenshotArea disableAnimations={true}>
+    <ScreenshotArea>
       <h1>TextContent with nested links</h1>
       <TextContent>
         <PermutationsView

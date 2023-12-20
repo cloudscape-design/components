@@ -43,7 +43,7 @@ export default function () {
   });
 
   return (
-    <ScreenshotArea disableAnimations={true}>
+    <ScreenshotArea>
       <I18nProvider messages={[messages]} locale={locale}>
         <ul>
           <li>

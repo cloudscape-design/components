@@ -116,7 +116,7 @@ export default () => {
   return (
     <>
       <h1>Cards permutations</h1>
-      <ScreenshotArea disableAnimations={true}>
+      <ScreenshotArea>
         <PermutationsView permutations={permutations} render={permutation => <Cards {...permutation} />} />
       </ScreenshotArea>
     </>

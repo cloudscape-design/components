@@ -14,7 +14,7 @@ export default function SpaceBetweenNestedComponents() {
   return (
     <>
       <h1>SpaceBetween with nested layouting components</h1>
-      <ScreenshotArea disableAnimations={true}>
+      <ScreenshotArea>
         <SpaceBetween size="s">
           <h1>Inside a grid</h1>
           <Grid gridDefinition={[{ colspan: { default: 9, m: 3 } }, { colspan: { default: 3, m: 9 } }]}>

@@ -42,7 +42,7 @@ const layoutPermutations = createPermutations<BoxProps>([
 
 export default function NestedBoxPermutations() {
   return (
-    <ScreenshotArea disableAnimations={true}>
+    <ScreenshotArea>
       <TextContent>
         <hr />
         <h1> TextContent</h1>

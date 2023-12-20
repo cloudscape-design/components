@@ -31,7 +31,7 @@ export default function FlashbarPermutations() {
     <>
       <h1>Flashbar dismissal test</h1>
       <FocusTarget />
-      <ScreenshotArea disableAnimations={true}>
+      <ScreenshotArea>
         <Flashbar items={items} />
       </ScreenshotArea>
     </>

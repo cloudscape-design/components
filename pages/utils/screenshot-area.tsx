@@ -25,6 +25,8 @@ export default function ScreenshotArea({
   children,
 }: ScreenshotAreaProps) {
   const [documentHeight, ref] = useContainerQuery(() => document.documentElement.scrollHeight);
+  console.log(disableAnimations);
+  console.log(styles);
   return (
     <section
       ref={ref}

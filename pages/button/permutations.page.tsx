@@ -95,7 +95,7 @@ export default function ButtonPermutations() {
   return (
     <>
       <h1>Button permutations</h1>
-      <ScreenshotArea disableAnimations={true}>
+      <ScreenshotArea>
         <PermutationsView permutations={permutations} render={permutation => <Button {...permutation} />} />
       </ScreenshotArea>
     </>

@@ -8,7 +8,7 @@ import buttonDropdownItems, { largeGroupItems } from './utils/button-dropdown-it
 
 export default function ButtonDropdownScenario() {
   return (
-    <ScreenshotArea disableAnimations={true}>
+    <ScreenshotArea>
       <div className={styles.container}>
         <article>
           <h1>Expandable dropdown scenarios</h1>

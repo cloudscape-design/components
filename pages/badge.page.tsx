@@ -24,7 +24,7 @@ export default function BadgePermutations() {
   return (
     <>
       <h1>Badge permutations</h1>
-      <ScreenshotArea disableAnimations={true}>
+      <ScreenshotArea>
         <PermutationsView permutations={permutations} render={permutation => <Badge {...permutation} />} />
       </ScreenshotArea>
     </>

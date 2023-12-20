@@ -19,7 +19,7 @@ export default function BoxPermutations() {
   return (
     <>
       <h1>Box component - paddings</h1>
-      <ScreenshotArea disableAnimations={true}>
+      <ScreenshotArea>
         <PermutationsView
           permutations={permutations}
           render={permutation => (

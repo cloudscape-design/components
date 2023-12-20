@@ -144,7 +144,6 @@ const withDisabledItems: ButtonDropdownProps['items'] = [
 export default function ButtonDropdownPage() {
   return (
     <ScreenshotArea
-      disableAnimations={true}
       style={{
         // extra space to include dropdown in the screenshot area
         paddingBottom: 100,
