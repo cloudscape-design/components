@@ -103,16 +103,21 @@ describe('Segments', () => {
       await page.click('#focus-target');
       await page.keys(['Tab', 'Tab', 'Enter']);
 
+      // First segment is highlighted
       await page.waitForVisible(highlightedSegmentSelector);
       await page.waitForVisible(detailsPopoverSelector);
       await expect(page.isFocused(buttonSelector)).resolves.toBe(false);
 
+      // Tab into the popover
       await page.keys(['Tab']);
       await expect(page.isFocused(buttonSelector)).resolves.toBe(true);
 
+      // Tab back into the chart
       await page.keys(['Shift', 'Tab', 'Shift']);
-      await page.waitForVisible(detailsPopoverSelector);
       await expect(page.isFocused(buttonSelector)).resolves.toBe(false);
+
+      // First group is still highlighted
+      await page.waitForVisible(detailsPopoverSelector);
     })
   );
 

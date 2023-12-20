@@ -245,7 +245,7 @@ describe('Popover', () => {
   );
 
   test(
-    'navigating back from popover keeps highlighted elements',
+    'tabbing from the popover back to the chart keeps the highlights',
     setupTest('#/light/area-chart/test', 'Controlled linear latency chart', async page => {
       await page.focusPlot();
       await expect(page.hasPopover()).resolves.toBe(true);
