@@ -45,7 +45,7 @@ function renderPopover() {
 
 describe('Scrolls beyond the viewport if necessary on mobile screen', () => {
   test('scrolls up when the container has more space at the top', () => {
-    (calculatePosition as jest.Mock).mockReturnValue({
+    jest.mocked(calculatePosition).mockReturnValue({
       scrollable: false,
       internalPosition: 'top-center',
       boundingBox: { top: -50, left: 0, width: 200, height: 300 },
@@ -55,7 +55,7 @@ describe('Scrolls beyond the viewport if necessary on mobile screen', () => {
     expect(window.scrollBy).toHaveBeenCalledWith(0, -50);
   });
   test('scrolls down when the container has more space at the bottom', () => {
-    (calculatePosition as jest.Mock).mockReturnValue({
+    jest.mocked(calculatePosition).mockReturnValue({
       scrollable: false,
       internalPosition: 'bottom-center',
       boundingBox: { top: 300, left: 0, width: 200, height: 300 },
@@ -65,7 +65,7 @@ describe('Scrolls beyond the viewport if necessary on mobile screen', () => {
     expect(window.scrollBy).toHaveBeenCalledWith(0, 100);
   });
   test('does not scroll down past the popover top', () => {
-    (calculatePosition as jest.Mock).mockReturnValue({
+    jest.mocked(calculatePosition).mockReturnValue({
       scrollable: false,
       internalPosition: 'bottom-center',
       boundingBox: { top: 300, left: 0, width: 200, height: 600 },
