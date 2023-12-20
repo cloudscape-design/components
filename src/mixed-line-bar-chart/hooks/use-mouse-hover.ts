@@ -9,6 +9,7 @@ import styles from '../styles.css.js';
 import { ChartPlotRef } from '../../internal/components/chart-plot';
 import { VerticalMarkerX } from '../interfaces';
 import { isYThreshold } from '../utils';
+import { useRef } from 'react';
 
 const MAX_HOVER_MARGIN = 6;
 const POPOVER_DEADZONE = 12;
@@ -38,6 +39,8 @@ export function useMouseHover<T>({
   isHandlersDisabled,
   highlightX,
 }: UseMouseHoverProps<T>) {
+  const mouseMoved = useRef(false);
+
   const isMouseOverPopover = (event: React.MouseEvent<SVGElement, MouseEvent>) => {
     if (popoverRef.current?.firstChild) {
       const popoverPosition = (popoverRef.current.firstChild as HTMLElement).getBoundingClientRect();
@@ -112,6 +115,7 @@ export function useMouseHover<T>({
 
   const onSVGMouseMove = (event: React.MouseEvent<SVGElement, MouseEvent>) => {
     if (event.target === plotRef.current!.svg && !isHandlersDisabled && !isMouseOverPopover(event)) {
+      mouseMoved.current = true;
       if (isGroupNavigation) {
         onGroupMouseMove(event);
       } else if (scaledSeries.length > 0) {
@@ -140,5 +144,5 @@ export function useMouseHover<T>({
     }
   };
 
-  return { onSVGMouseMove, onSVGMouseOut, onPopoverLeave };
+  return { mouseMoved: mouseMoved.current, onSVGMouseMove, onSVGMouseOut, onPopoverLeave };
 }

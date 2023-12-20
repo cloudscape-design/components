@@ -48,6 +48,8 @@ export interface ChartPopoverProps extends PopoverProps {
 
   /** Popover content */
   children?: React.ReactNode;
+
+  allowVerticalScroll?: boolean;
 }
 
 export default React.forwardRef(ChartPopover);
@@ -71,6 +73,8 @@ function ChartPopover(
     onMouseEnter,
     onMouseLeave,
     onBlur,
+
+    allowVerticalScroll,
 
     ...restProps
   }: ChartPopoverProps,
@@ -120,6 +124,7 @@ function ChartPopover(
           </div>
         )}
         keepPosition={true}
+        allowVerticalScroll={allowVerticalScroll}
       >
         <div className={styles['hover-area']}>
           <PopoverBody

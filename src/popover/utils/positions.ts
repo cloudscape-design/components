@@ -227,7 +227,7 @@ export function calculatePosition({
   viewport,
   // the popover is only bound by the viewport if it is rendered in a portal
   renderWithPortal,
-  allowVerticalOverflow,
+  scrollIfNeeded,
 }: {
   preferredPosition: PopoverProps.Position;
   fixedInternalPosition?: InternalPosition;
@@ -238,7 +238,7 @@ export function calculatePosition({
   viewport: BoundingBox;
   // the popover is only bound by the viewport if it is rendered in a portal
   renderWithPortal?: boolean;
-  allowVerticalOverflow?: boolean;
+  scrollIfNeeded?: boolean;
 }): CalculatedPosition {
   let bestOption: CandidatePosition | null = null;
 
@@ -272,7 +272,7 @@ export function calculatePosition({
   const tallestRect = getTallestRect(viewport, container);
   const optimisedBoundingBox = fitIntoContainer(
     defaultBoundingBox,
-    allowVerticalOverflow ? { ...tallestRect, left: viewport.left, width: viewport.width } : viewport
+    scrollIfNeeded ? { ...tallestRect, left: viewport.left, width: viewport.width } : viewport
   );
   // If largest possible rect is shorter than original - set body scroll.
   const scrollable = optimisedBoundingBox.height < defaultBoundingBox.height;

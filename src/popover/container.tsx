@@ -10,7 +10,6 @@ import { BoundingBox, InternalPosition, Offset, PopoverProps } from './interface
 import { calculatePosition, getDimensions, getOffsetDimensions } from './utils/positions';
 import styles from './styles.css.js';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { useMobile } from '../internal/hooks/use-mobile';
 import { scrollRectangleIntoView } from '../internal/utils/scrollable-containers';
 
 export interface PopoverContainerProps {
@@ -36,6 +35,9 @@ export interface PopoverContainerProps {
   variant?: 'annotation';
   // When keepPosition is true, the popover will not recalculate its position when it resizes nor when it receives clicks.
   keepPosition?: boolean;
+  // When allowVerticalScroll is true, we will scroll to the the popover if it overflows the viewport even when choosing the best possible position for it.
+  // Do not use this if the popover is open on hover, in order to avoid unexpected movement.
+  allowVerticalScroll?: boolean;
 }
 
 const INITIAL_STYLES: Offset = { top: -9999, left: -9999 };
@@ -52,6 +54,7 @@ export default function PopoverContainer({
   fixedWidth,
   variant,
   keepPosition,
+  allowVerticalScroll,
 }: PopoverContainerProps) {
   const bodyRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
@@ -62,7 +65,6 @@ export default function PopoverContainer({
   const [popoverStyle, setPopoverStyle] = useState<Offset>(INITIAL_STYLES);
   const [internalPosition, setInternalPosition] = useState<InternalPosition | null>(null);
   const isRefresh = useVisualRefresh();
-  const isMobile = useMobile();
 
   // Store the handler in a ref so that it can still be replaced from outside of the listener closure.
   const positionHandlerRef = useRef<() => void>(() => {});
@@ -124,7 +126,7 @@ export default function PopoverContainer({
 
       // On mobile screens, allow the popover to open outside of the viewoprt and scroll to it,
       // if there is no position where it can fit without being cropped.
-      const allowVerticalOverflow = isMobile && !shouldKeepPosition;
+      const scrollIfNeeded = allowVerticalScroll && !shouldKeepPosition;
 
       // Calculate the arrow direction and viewport-relative position of the popover.
       const {
@@ -140,7 +142,7 @@ export default function PopoverContainer({
         container: containingBlock ? containingBlockRect : getDocumentRect(document),
         viewport: viewportRect,
         renderWithPortal,
-        allowVerticalOverflow,
+        scrollIfNeeded,
       });
 
       // Get the position of the popover relative to the offset parent.
@@ -161,7 +163,7 @@ export default function PopoverContainer({
         body.style.overflowY = 'auto';
       }
 
-      if (allowVerticalOverflow) {
+      if (scrollIfNeeded) {
         scrollRectangleIntoView(boundingBox);
       }
 
@@ -183,7 +185,7 @@ export default function PopoverContainer({
         });
       };
     },
-    [trackRef, keepPosition, isMobile, position, renderWithPortal]
+    [trackRef, keepPosition, allowVerticalScroll, position, renderWithPortal]
   );
 
   // Recalculate position when properties change.
