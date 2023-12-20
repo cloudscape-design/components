@@ -58,6 +58,9 @@ function InternalPopover(
   const triggerRef = useRef<HTMLElement | null>(null);
   const popoverRef = useRef<HTMLDivElement | null>(null);
   const clickFrameId = useRef<number | null>(null);
+  const mouseMoved = useRef(false);
+  const touchStarted = useRef(false);
+  const hasHover = useRef(false);
 
   const i18n = useInternalI18n('popover');
   const dismissAriaLabel = i18n('dismissAriaLabel', restProps.dismissAriaLabel);
@@ -124,12 +127,19 @@ function InternalPopover(
 
   const popoverClasses = usePortalModeClasses(triggerRef);
 
+  const onTriggerMouseMove = () => (mouseMoved.current = true);
+  const onTriggerTouchStart = () => (touchStarted.current = true);
+
+  hasHover.current = hasHover.current || (mouseMoved.current && !touchStarted.current);
+
   const triggerProps = {
     // https://github.com/microsoft/TypeScript/issues/36659
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ref: triggerRef as any,
     onClick: onTriggerClick,
     onKeyDown: onTriggerKeyDown,
+    onMouseMove: onTriggerMouseMove,
+    onTouchStart: onTriggerTouchStart,
     className: clsx(styles.trigger, styles[`trigger-type-${triggerType}`]),
   };
 
@@ -150,6 +160,7 @@ function InternalPopover(
           arrow={position => <Arrow position={position} />}
           renderWithPortal={renderWithPortal}
           zIndex={renderWithPortal ? 7000 : undefined}
+          allowVerticalScroll={!hasHover.current}
         >
           <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
             <PopoverBody
