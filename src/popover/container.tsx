@@ -8,7 +8,7 @@ import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal
 import { InternalPosition, PopoverProps } from './interfaces';
 import styles from './styles.css.js';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import usePosition from './use-popover-position.js';
+import usePopoverPosition from './use-popover-position.js';
 
 export interface PopoverContainerProps {
   /** References the element the container is positioned against. */
@@ -60,7 +60,7 @@ export default function PopoverContainer({
   const isRefresh = useVisualRefresh();
 
   // Updates the position handler.
-  const { updatePositionHandler, popoverStyle, internalPosition, positionHandlerRef } = usePosition({
+  const { updatePositionHandler, popoverStyle, internalPosition, positionHandlerRef } = usePopoverPosition({
     popoverRef,
     bodyRef,
     arrowRef,

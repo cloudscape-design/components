@@ -8,7 +8,7 @@ import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
 import { calculateScroll, scrollRectangleIntoView } from '../internal/utils/scrollable-containers';
 import { getContainingBlock } from '../internal/utils/dom';
 
-export default function usePosition({
+export default function usePopoverPosition({
   popoverRef,
   bodyRef,
   arrowRef,
