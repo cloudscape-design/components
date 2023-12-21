@@ -90,6 +90,7 @@ function ChartPlot(
     onBlur,
     focusOffset = DEFAULT_PLOT_FOCUS_OFFSET,
     activeElementFocusOffset = DEFAULT_ELEMENT_FOCUS_OFFSET,
+    onMouseMove,
     onTouchStart,
     ...restProps
   }: ChartPlotProps,
@@ -140,6 +141,12 @@ function ChartPlot(
       if (codes.indexOf(event.keyCode) !== -1) {
         applicationRef.current!.focus();
       }
+    }
+  };
+
+  const onPlotMouseMove = (event: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
+    if (onMouseMove) {
+      onMouseMove(event);
     }
   };
 
@@ -194,6 +201,7 @@ function ChartPlot(
         onBlur={onPlotBlur}
         onKeyDown={onPlotKeyDown}
         onTouchStart={onTouchStart}
+        onMouseMove={onPlotMouseMove}
       >
         <FocusOutline elementRef={svgRef} elementKey={isPlotFocused} offset={focusOffset} />
 
