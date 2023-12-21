@@ -351,6 +351,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
     if (highlightedX !== null || highlightedPoint !== null) {
       showPopover();
     } else {
+      // Reset right before the popover closes.
       isTouch.current = false;
     }
   }, [highlightedX, highlightedPoint, showPopover]);
