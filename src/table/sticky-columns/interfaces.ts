@@ -8,7 +8,7 @@ export interface StickyColumnsProps {
 }
 
 export interface StickyColumnsState {
-  cellState: Map<PropertyKey, StickyColumnsCellState>;
+  cellState: Record<PropertyKey, null | StickyColumnsCellState>;
   wrapperState: StickyColumnsWrapperState;
 }
 

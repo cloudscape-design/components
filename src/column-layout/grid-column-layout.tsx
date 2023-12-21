@@ -11,12 +11,12 @@ import { InternalColumnLayoutProps } from './interfaces';
 import { COLUMN_TRIGGERS, ColumnLayoutBreakpoint } from './internal';
 import styles from './styles.css.js';
 
-const COLUMN_DEFS = new Map<number, GridProps.ElementDefinition>([
-  [1, { colspan: { default: 12, xxs: 12, xs: 12 } }],
-  [2, { colspan: { default: 12, xxs: 6, xs: 6 } }],
-  [3, { colspan: { default: 12, xxs: 6, xs: 4 } }],
-  [4, { colspan: { default: 12, xxs: 6, xs: 3 } }],
-]);
+const COLUMN_DEFS: Record<number, GridProps.ElementDefinition | undefined> = {
+  1: { colspan: { default: 12, xxs: 12, xs: 12 } },
+  2: { colspan: { default: 12, xxs: 6, xs: 6 } },
+  3: { colspan: { default: 12, xxs: 6, xs: 4 } },
+  4: { colspan: { default: 12, xxs: 6, xs: 3 } },
+};
 
 interface GridColumnLayoutProps
   extends Required<Pick<InternalColumnLayoutProps, 'columns' | 'variant' | 'borders' | 'disableGutters'>> {
@@ -46,7 +46,7 @@ export default function GridColumnLayout({
     <InternalGrid
       ref={ref}
       disableGutters={true}
-      gridDefinition={repeat(COLUMN_DEFS.get(columns) ?? {}, flattenedChildren.length)}
+      gridDefinition={repeat(COLUMN_DEFS[columns] ?? {}, flattenedChildren.length)}
       className={clsx(styles.grid, styles[`grid-columns-${columns}`], styles[`grid-variant-${variant}`], {
         [styles['grid-horizontal-borders']]: shouldHaveHorizontalBorders,
         [styles['grid-vertical-borders']]: shouldHaveVerticalBorders,

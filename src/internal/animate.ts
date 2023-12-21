@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-export function getDOMRects(elements: Record<string, HTMLElement | null>) {
+export function getDOMRects(elements: Record<string | number, HTMLElement | null>) {
   const rects: Record<string, DOMRect> = {};
   for (const id in elements) {
     const element = elements[id];
@@ -29,8 +29,8 @@ export function animate({
   onTransitionsEnd,
   newElementInitialState,
 }: {
-  elements: Record<string, HTMLElement | null>;
-  oldState: Record<string, DOMRect>;
+  elements: Record<string | number, HTMLElement | null>;
+  oldState: Record<string | number, DOMRect>;
   onTransitionsEnd?: () => void;
   newElementInitialState?: (newRect: DOMRect) => { scale?: number; y?: number };
 }) {

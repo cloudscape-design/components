@@ -64,9 +64,9 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
     },
   });
 
-  const collapsedItemRefs = useRef<Record<string, HTMLElement | null>>({});
-  const expandedItemRefs = useRef<Record<string, HTMLElement | null>>({});
-  const [initialAnimationState, setInitialAnimationState] = useState<Record<string, DOMRect> | null>(null);
+  const collapsedItemRefs = useRef<Record<string | number, HTMLElement | null>>({});
+  const expandedItemRefs = useRef<Record<string | number, HTMLElement | null>>({});
+  const [initialAnimationState, setInitialAnimationState] = useState<Record<string | number, DOMRect> | null>(null);
   const listElementRef = useRef<HTMLUListElement | null>(null);
   const notificationBarRef = useRef<HTMLDivElement | null>(null);
   const [transitioning, setTransitioning] = useState(false);
