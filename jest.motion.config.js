@@ -18,6 +18,6 @@ module.exports = {
   globalTeardown: '<rootDir>/build-tools/integ/global-teardown.js',
   setupFilesAfterEnv: [path.join(__dirname, 'build-tools', 'integ', 'setup.motion.js')],
   moduleFileExtensions: ['js', 'ts'],
-  testRegex: '(/(__motion__)/.*(\\.|/)test)\\.[jt]sx?$',
+  testRegex: '(/(__motion__|__integ__)/.*(\\.|/)test)\\.[jt]sx?$',
   preset: 'ts-jest',
 };
