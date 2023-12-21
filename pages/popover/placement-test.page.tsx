@@ -7,18 +7,17 @@ import Popover from '~components/popover';
 import Box from '~components/box';
 import styles from './positioning.scss';
 import ScreenshotArea from '../utils/screenshot-area';
+import ColumnLayout from '~components/column-layout';
 import Link from '~components/link';
 import SpaceBetween from '~components/space-between';
 import StatusIndicator from '~components/status-indicator';
 import AppContext, { AppContextType } from '../app/app-context';
 
-type PopoverPlacementContext = React.Context<
-  AppContextType<{ position?: string; placement?: string; triggerHeight?: string }>
->;
+type PopoverPlacementContext = React.Context<AppContextType<{ position?: string; placement?: string }>>;
 
 export default function () {
   const {
-    urlParams: { position, placement, triggerHeight },
+    urlParams: { position, placement },
   } = useContext(AppContext as PopoverPlacementContext);
 
   if (!position || !placement) {
@@ -65,20 +64,14 @@ export default function () {
               >
                 <Popover
                   id={`popover-${row}-${col}`}
-                  size="large"
-                  fixedWidth={true}
+                  size="medium"
                   position={position}
                   header="Info"
                   content={<Content />}
                   dismissAriaLabel="Close"
                   triggerType="custom"
                 >
-                  <button
-                    id="popover-trigger"
-                    style={triggerHeight ? { display: 'block', height: `${triggerHeight}px` } : undefined}
-                  >
-                    {triggerHeight === undefined && 'Open popover'}
-                  </button>
+                  <button id="popover-trigger">Open popover</button>
                 </Popover>
               </div>
             );
@@ -100,7 +93,7 @@ function Page({ children }: { children: React.ReactNode }) {
 
 function Content() {
   return (
-    <SpaceBetween size="l" direction="horizontal">
+    <ColumnLayout variant="text-grid" columns={2}>
       <SpaceBetween size="l">
         <ValueWithLabel label="Label for key">Value</ValueWithLabel>
         <ValueWithLabel label="Label for key">
@@ -115,7 +108,7 @@ function Content() {
           </Link>
         </ValueWithLabel>
       </SpaceBetween>
-    </SpaceBetween>
+    </ColumnLayout>
   );
 }
 
