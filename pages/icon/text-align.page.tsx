@@ -14,29 +14,29 @@ export default function IconScenario() {
       </ul>
       <ScreenshotArea>
         <Box fontSize="display-l" fontWeight="light">
-          <Icon name="gen-ai" size="large" /> Display large <Icon name="external" size="inherit" />
+          <Icon name="settings" size="large" /> Display large <Icon name="external" size="inherit" />
         </Box>
         <TextContent>
           <h1>
-            <Icon name="gen-ai" size="big" /> Heading 1 <Icon name="external" size="inherit" />
+            <Icon name="settings" size="big" /> Heading 1 <Icon name="external" size="inherit" />
           </h1>
           <h2>
-            <Icon name="gen-ai" size="medium" /> Heading 2 <Icon name="external" size="inherit" />
+            <Icon name="settings" size="medium" /> Heading 2 <Icon name="external" size="inherit" />
           </h2>
           <h3>
-            <Icon name="gen-ai" /> Heading 3 <Icon name="external" size="inherit" />
+            <Icon name="settings" /> Heading 3 <Icon name="external" size="inherit" />
           </h3>
           <h4>
-            <Icon name="gen-ai" /> Heading 4 <Icon name="external" size="inherit" />
+            <Icon name="settings" /> Heading 4 <Icon name="external" size="inherit" />
           </h4>
           <h5>
-            <Icon name="gen-ai" /> Heading 5 <Icon name="external" size="inherit" />
+            <Icon name="settings" /> Heading 5 <Icon name="external" size="inherit" />
           </h5>
           <p>
-            <Icon name="gen-ai" /> Paragraph <Icon name="external" size="inherit" />
+            <Icon name="settings" /> Paragraph <Icon name="external" size="inherit" />
           </p>
           <small>
-            <Icon name="gen-ai" size="small" /> Small <Icon name="external" size="inherit" />
+            <Icon name="settings" size="small" /> Small <Icon name="external" size="inherit" />
           </small>
         </TextContent>
       </ScreenshotArea>

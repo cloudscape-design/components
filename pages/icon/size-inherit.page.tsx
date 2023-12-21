@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Icon, { IconProps } from '~components/icon';
 import TextContent from '~components/text-content';
 import Box from '~components/box';
@@ -8,15 +8,18 @@ import ScreenshotArea from '../utils/screenshot-area';
 import SpaceBetween from '~components/space-between';
 import customIcon from './custom-icon.png';
 import icons from '~components/icon/icons';
+import AppContext, { AppContextType } from '../app/app-context';
 
 const UNITS = 'px';
 const tagVariants = ['h1', 'h2', 'h3', 'h4', 'h5', 'p', 'div', 'span', 'small'] as const;
+type DemoContext = React.Context<AppContextType<{ iconName: IconProps.Name }>>;
 
 export default function IconScenario() {
+  const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
+  const iconName: IconProps.Name = urlParams.iconName || 'settings';
   const [height, setHeight] = useState(16);
   const [visibility, setVisibility] = useState(false);
   const unitHeight = height + UNITS;
-  const [iconName, setIconName] = useState('settings' as IconProps.Name);
   const iconPermutations = (
     <>
       <Icon name="external" size="inherit" /> <Icon url={customIcon} alt="custom icon" size="inherit" />{' '}
@@ -40,7 +43,7 @@ export default function IconScenario() {
       <div style={{ padding: '5px 20px' }} id="test-controls">
         <label>
           Icon to show:
-          <select defaultValue={iconName} onChange={e => setIconName(e.target.value as IconProps.Name)}>
+          <select defaultValue={iconName} onChange={e => setUrlParams({ iconName: e.target.value as IconProps.Name })}>
             {Object.keys(icons).map((icon, key) => (
               <option value={icon} key={key}>
                 {icon}
