@@ -18,7 +18,6 @@ export default function AreaChartPopover<T extends AreaChartProps.DataTypes>({
   footer,
   size,
   onBlur,
-  allowVerticalScroll,
 }: {
   model: ChartModel<T>;
   highlightDetails: null | HighlightDetails;
@@ -26,7 +25,6 @@ export default function AreaChartPopover<T extends AreaChartProps.DataTypes>({
   footer?: React.ReactNode;
   size?: 'small' | 'medium' | 'large';
   onBlur?: (event: React.FocusEvent) => void;
-  allowVerticalScroll?: boolean;
 }) {
   if (!highlightDetails) {
     return null;
@@ -49,7 +47,6 @@ export default function AreaChartPopover<T extends AreaChartProps.DataTypes>({
       dismissAriaLabel={dismissAriaLabel}
       size={size}
       onBlur={onBlur}
-      allowVerticalScroll={allowVerticalScroll}
     >
       <ChartSeriesDetails details={highlightDetails.seriesDetails} />
       <div className={styles['popover-divider']} />
