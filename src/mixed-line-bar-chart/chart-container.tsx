@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 
@@ -26,7 +26,6 @@ import DataSeries from './data-series';
 import BarGroups from './bar-groups';
 import { useMouseHover } from './hooks/use-mouse-hover';
 import { useNavigation } from './hooks/use-navigation';
-import { usePopover } from './hooks/use-popover';
 
 import { CartesianChartProps } from '../internal/components/cartesian-chart/interfaces';
 import useContainerWidth from '../internal/utils/use-container-width';
@@ -140,14 +139,16 @@ export default function ChartContainer<T extends ChartDataTypes>({
   const [verticalMarkerX, setVerticalMarkerX] = useState<VerticalMarkerX<T> | null>(null);
   const [detailsPopoverText, setDetailsPopoverText] = useState('');
   const [containerWidth, containerMeasureRef] = useContainerWidth(fallbackContainerWidth);
+  const [isPopoverPinned, setPopoverPinned] = useState(false);
+
   const maxLeftLabelsWidth = Math.round(containerWidth / 2);
   const plotWidth = containerWidth
     ? // Calculate the minimum between leftLabelsWidth and maxLeftLabelsWidth for extra safety because leftLabelsWidth could be out of date
       Math.max(0, containerWidth - Math.min(leftLabelsWidth, maxLeftLabelsWidth) - LEFT_LABELS_MARGIN)
     : fallbackContainerWidth;
-  const containerRefObject = useRef(null);
-  const containerRef = useMergeRefs(containerMeasureRef, containerRefObject);
   const popoverRef = useRef<HTMLElement | null>(null);
+  const popoverContainerRef = useRef(null);
+  const containerRef = useMergeRefs(containerMeasureRef, popoverContainerRef);
 
   const xDomain = (props.xDomain || computeDomainX(series, xScaleType)) as
     | readonly number[]
@@ -222,7 +223,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
   const scaledSeries = makeScaledSeries(visibleSeries, xAxisProps.scale, yAxisProps.scale);
   const barGroups: ScaledBarGroup<T>[] = makeScaledBarGroups(visibleSeries, xAxisProps.scale, plotWidth, plotHeight, y);
 
-  const { isPopoverOpen, isPopoverPinned, showPopover, pinPopover, dismissPopover } = usePopover();
+  const isPopoverOpen = isPopoverPinned || !!highlightedPoint || highlightedGroupIndex !== null || !!highlightedSeries;
 
   // Allows to add a delay between popover is dismissed and handlers are enabled to prevent immediate popover reopening.
   const [isHandlersDisabled, setHandlersDisabled] = useState(!isPopoverPinned);
@@ -263,6 +264,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
     setHighlightedPoint(null);
     highlightSeries(null);
     setHighlightedGroupIndex(null);
+    setPopoverPinned(false);
   }, [highlightSeries, setHighlightedGroupIndex, setHighlightedPoint]);
 
   // Highlight all points at a given X in a line chart
@@ -286,11 +288,6 @@ export default function ChartContainer<T extends ChartDataTypes>({
     [highlightSeries, setHighlightedPoint, setHighlightedGroupIndex]
   );
 
-  const clearHighlightedSeries = useCallback(() => {
-    clearAllHighlights();
-    dismissPopover();
-  }, [dismissPopover, clearAllHighlights]);
-
   const { isGroupNavigation, ...handlers } = useNavigation({
     series,
     visibleSeries,
@@ -302,12 +299,12 @@ export default function ChartContainer<T extends ChartDataTypes>({
     highlightedGroupIndex,
     highlightedSeries,
     isHandlersDisabled,
-    pinPopover,
+    pinPopover: () => setPopoverPinned(true),
     highlightSeries,
     highlightGroup,
     highlightPoint,
     highlightX,
-    clearHighlightedSeries,
+    clearHighlightedSeries: clearAllHighlights,
     verticalMarkerX,
   });
 
@@ -318,7 +315,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
     popoverRef,
     highlightPoint,
     highlightGroup,
-    clearHighlightedSeries,
+    clearHighlightedSeries: clearAllHighlights,
     isGroupNavigation,
     isHandlersDisabled,
     highlightX,
@@ -339,21 +336,15 @@ export default function ChartContainer<T extends ChartDataTypes>({
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        dismissPopover();
+        clearAllHighlights();
       }
     };
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);
-  }, [dismissPopover]);
-
-  useLayoutEffect(() => {
-    if (highlightedX !== null || highlightedPoint !== null) {
-      showPopover();
-    }
-  }, [highlightedX, highlightedPoint, showPopover]);
+  }, [clearAllHighlights]);
 
   const onPopoverDismiss = (outsideClick?: boolean) => {
-    dismissPopover();
+    clearAllHighlights();
 
     if (!outsideClick) {
       // The delay is needed to bypass focus events caused by click or keypress needed to unpin the popover.
@@ -366,7 +357,6 @@ export default function ChartContainer<T extends ChartDataTypes>({
         }
       }, 0);
     } else {
-      clearAllHighlights();
       setVerticalMarkerX(null);
     }
   };
@@ -374,13 +364,11 @@ export default function ChartContainer<T extends ChartDataTypes>({
   const onSVGClick = (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
     if (isPopoverOpen) {
       if (isPopoverPinned) {
-        dismissPopover();
+        setPopoverPinned(false);
       } else {
-        pinPopover();
+        setPopoverPinned(true);
         e.preventDefault();
       }
-    } else {
-      showPopover();
     }
   };
 
@@ -399,16 +387,12 @@ export default function ChartContainer<T extends ChartDataTypes>({
     if (
       blurTarget === null ||
       !(blurTarget instanceof Element) ||
-      !nodeBelongs(containerRefObject.current, blurTarget)
+      !nodeBelongs(popoverContainerRef.current, blurTarget)
     ) {
       setHighlightedPoint(null);
       setVerticalMarkerX(null);
-      if (!plotContainerRef?.current?.contains(blurTarget)) {
-        clearHighlightedSeries();
-      }
-
-      if (isPopoverOpen && !isPopoverPinned) {
-        dismissPopover();
+      if (!isPopoverPinned || !plotContainerRef?.current?.contains(blurTarget)) {
+        clearAllHighlights();
       }
     }
   };
@@ -641,7 +625,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
       popover={
         <ChartPopover
           ref={popoverRef}
-          containerRef={containerRefObject}
+          containerRef={popoverContainerRef}
           trackRef={highlightedElementRef}
           isOpen={isPopoverOpen}
           isPinned={isPopoverPinned}
