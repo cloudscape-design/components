@@ -20,19 +20,19 @@ export function isWrapperStatesEqual(s1: StickyColumnsWrapperState, s2: StickyCo
   return s1.scrollPaddingLeft === s2.scrollPaddingLeft && s1.scrollPaddingRight === s2.scrollPaddingRight;
 }
 
-export function updateCellOffsets(cells: Record<PropertyKey, HTMLElement>, props: StickyColumnsProps): CellOffsets {
+export function updateCellOffsets(cells: Map<PropertyKey, HTMLElement>, props: StickyColumnsProps): CellOffsets {
   const totalColumns = props.visibleColumns.length;
 
   const firstColumnsWidths: number[] = [];
   for (let i = 0; i < Math.min(totalColumns, props.stickyColumnsFirst); i++) {
-    const element = cells[props.visibleColumns[i]];
+    const element = cells.get(props.visibleColumns[i]);
     const cellWidth = element?.getBoundingClientRect().width ?? 0;
     firstColumnsWidths[i] = (firstColumnsWidths[i - 1] ?? 0) + cellWidth;
   }
 
   const lastColumnsWidths: number[] = [];
   for (let i = 0; i < Math.min(totalColumns, props.stickyColumnsLast); i++) {
-    const element = cells[props.visibleColumns[totalColumns - 1 - i]];
+    const element = cells.get(props.visibleColumns[totalColumns - 1 - i]);
     const cellWidth = element?.getBoundingClientRect().width ?? 0;
     lastColumnsWidths[i] = (lastColumnsWidths[i - 1] ?? 0) + cellWidth;
   }
