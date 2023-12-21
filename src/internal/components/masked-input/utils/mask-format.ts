@@ -31,10 +31,9 @@ class MaskFormat {
   separator: string;
   private inputSeparators: Array<string>;
   private segments: Array<FormatSegmentFull>;
-  private positionFormats: { [x: number]: FormatSegmentFull };
+  private positionFormats = new Map<number, FormatSegmentFull>();
 
   constructor({ separator, inputSeparators = [], segments }: MaskArgs) {
-    this.positionFormats = {};
     this.segments = [];
     this.separator = separator;
 
@@ -134,7 +133,7 @@ class MaskFormat {
   }
 
   getSegmentValueWithAddition(position: number, value: string, enteredDigit: string) {
-    const segment = this.positionFormats[position];
+    const segment = this.positionFormats.get(position)!;
     const segmentValue = value.substr(segment.start, segment.length);
     const segmentPosition = position - segment.start;
     const newValue = insertAt(segmentValue, enteredDigit, segmentPosition, segmentPosition + 1);
@@ -151,14 +150,14 @@ class MaskFormat {
 
     // first, insert zeros in a partial segment at beginning of selection
     if (!this.isSegmentStart(cursorStart)) {
-      const segment = this.positionFormats[cursorStart];
+      const segment = this.positionFormats.get(cursorStart)!;
       value = insertAt(value, padLeftZeros('', segment.end - cursorStart), cursorStart, segment.end);
       cursorStart = segment.end + 1;
     }
 
     // then loop through remaining segments, filling with zeros
     let currentSegment: FormatSegmentFull;
-    while (cursorStart < cursorEnd && (currentSegment = this.positionFormats[cursorStart + 1])) {
+    while (cursorStart < cursorEnd && (currentSegment = this.positionFormats.get(cursorStart + 1)!)) {
       const insertionEnd = Math.min(cursorEnd, currentSegment.end);
       value = insertAt(
         value,
@@ -179,7 +178,7 @@ class MaskFormat {
 
   handleSeparatorInput(value: string, position: number): ChangeResult | void {
     if (position === value.length && !this.isSegmentStart(position)) {
-      const segment = this.positionFormats[position];
+      const segment = this.positionFormats.get(position)!;
       let segmentValue = value.substr(segment.start, segment.length);
       segmentValue = this.padWithDefaultValue(segmentValue, segment);
       value = insertAt(value, segmentValue, segment.start, segment.end);
@@ -192,7 +191,7 @@ class MaskFormat {
   }
 
   isCursorAtSeparator(position: number) {
-    return 0 < position && position < this.getMaxLength() && this.positionFormats[position] === undefined;
+    return 0 < position && position < this.getMaxLength() && this.positionFormats.get(position) === undefined;
   }
 
   isSegmentStart(position: number) {
@@ -200,11 +199,11 @@ class MaskFormat {
   }
 
   getSegmentMaxValue(value: string, position: number): number {
-    return this.positionFormats[position].max(value);
+    return this.positionFormats.get(position)!.max(value);
   }
 
   getSegmentMinValue(value: string, position: number): number {
-    return this.positionFormats[position].min;
+    return this.positionFormats.get(position)!.min;
   }
 
   getMaxLength() {
@@ -237,7 +236,7 @@ class MaskFormat {
   }
 
   correctMinMaxValues(value: string): string {
-    let segment = this.positionFormats[0];
+    let segment = this.positionFormats.get(0);
     while (segment && value.length >= segment.end) {
       const segmentValue = parseInt(value.substr(segment.start, segment.length), 10);
       const segmentMax = segment.max(value);
@@ -249,7 +248,7 @@ class MaskFormat {
       if (segmentValue > segmentMax) {
         value = insertAt(value, segmentMax.toFixed(), segment.start, segment.end);
       }
-      segment = this.positionFormats[segment.end + 1];
+      segment = this.positionFormats.get(segment.end + 1);
     }
     return value.substr(0, this.segments[this.segments.length - 1].end);
   }
@@ -339,7 +338,7 @@ class MaskFormat {
   }
 
   private enrichSegmentDefinitions(segments: FormatSegment[]) {
-    this.positionFormats = {};
+    this.positionFormats = new Map();
     this.segments = [];
     let position = 0;
     for (const segment of segments) {
@@ -353,7 +352,7 @@ class MaskFormat {
       this.segments.push(fullSegment);
       // insert this format segment for every char in the max value
       for (let j = 0; j < fullSegment.length; j++) {
-        this.positionFormats[position++] = fullSegment;
+        this.positionFormats.set(position++, fullSegment);
       }
       // skip a position for separator
       position++;
