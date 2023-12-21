@@ -148,7 +148,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
   const containerRefObject = useRef(null);
   const containerRef = useMergeRefs(containerMeasureRef, containerRefObject);
   const popoverRef = useRef<HTMLElement | null>(null);
-  const hasHover = useRef(false);
+  const isTouch = useRef(false);
 
   const xDomain = (props.xDomain || computeDomainX(series, xScaleType)) as
     | readonly number[]
@@ -350,6 +350,8 @@ export default function ChartContainer<T extends ChartDataTypes>({
   useLayoutEffect(() => {
     if (highlightedX !== null || highlightedPoint !== null) {
       showPopover();
+    } else {
+      isTouch.current = false;
     }
   }, [highlightedX, highlightedPoint, showPopover]);
 
@@ -415,6 +417,10 @@ export default function ChartContainer<T extends ChartDataTypes>({
   };
 
   const onSVGKeyDown = handlers.onKeyDown;
+
+  const onSVGTouchStart = () => {
+    isTouch.current = true;
+  };
 
   const xOffset = xAxisProps.scale.isCategorical() ? Math.max(0, xAxisProps.scale.d3Scale.bandwidth() - 1) / 2 : 0;
 
@@ -504,7 +510,6 @@ export default function ChartContainer<T extends ChartDataTypes>({
   const isLineXKeyboardFocused = isPlotFocused && !highlightedPoint && verticalMarkerX;
 
   const isRefresh = useVisualRefresh();
-  const setHasHover = (value: boolean) => (hasHover.current = value);
 
   return (
     <CartesianChartContainer
@@ -547,7 +552,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
           onFocus={onSVGFocus}
           onBlur={onSVGBlur}
           onKeyDown={onSVGKeyDown}
-          setHasHover={setHasHover}
+          onTouchStart={onSVGTouchStart}
         >
           <line
             ref={plotMeasureRef}
@@ -656,7 +661,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
           onMouseLeave={onPopoverLeave}
           onBlur={onSVGBlur}
           setPopoverText={setDetailsPopoverText}
-          allowVerticalScroll={!hasHover.current}
+          allowVerticalScroll={isTouch.current}
         />
       }
     />

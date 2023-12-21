@@ -48,8 +48,8 @@ export interface ChartPlotProps {
   onFocus?: (event: React.FocusEvent<SVGGElement>, trigger: 'mouse' | 'keyboard') => void;
   onBlur?: (event: React.FocusEvent<SVGGElement>) => void;
   onKeyDown?: (event: React.KeyboardEvent<SVGGElement>) => void;
+  onTouchStart?: (event: React.TouchEvent<SVGSVGElement>) => void;
   children: React.ReactNode;
-  setHasHover?: (value: boolean) => void;
 }
 
 /**
@@ -90,8 +90,8 @@ function ChartPlot(
     onBlur,
     focusOffset = DEFAULT_PLOT_FOCUS_OFFSET,
     activeElementFocusOffset = DEFAULT_ELEMENT_FOCUS_OFFSET,
-    setHasHover,
     onMouseMove,
+    onTouchStart,
     ...restProps
   }: ChartPlotProps,
   ref: React.Ref<ChartPlotRef>
@@ -102,8 +102,6 @@ function ChartPlot(
   const plotClickedRef = useRef(false);
   const [isPlotFocused, setPlotFocused] = useState(false);
   const [isApplicationFocused, setApplicationFocused] = useState(false);
-  const touchStartedRef = useRef(false);
-  const hasHoverRef = useRef(false);
 
   const internalDescriptionId = useUniqueId('awsui-chart-plot__description');
   const ariaDescriptionId = [ariaDescription && internalDescriptionId, ariaDescribedby].filter(Boolean).join(' ');
@@ -147,17 +145,9 @@ function ChartPlot(
   };
 
   const onPlotMouseMove = (event: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
-    hasHoverRef.current = hasHoverRef.current || !touchStartedRef.current;
-    if (setHasHover) {
-      setHasHover(hasHoverRef.current);
-    }
     if (onMouseMove) {
       onMouseMove(event);
     }
-  };
-  const onPlotTouchStart = () => {
-    console.log('touchstart');
-    touchStartedRef.current = true;
   };
 
   const onApplicationFocus = (event: React.FocusEvent<SVGGElement>) => {
@@ -210,7 +200,7 @@ function ChartPlot(
         onFocus={onPlotFocus}
         onBlur={onPlotBlur}
         onKeyDown={onPlotKeyDown}
-        onTouchStart={onPlotTouchStart}
+        onTouchStart={onTouchStart}
         onMouseMove={onPlotMouseMove}
       >
         <FocusOutline elementRef={svgRef} elementKey={isPlotFocused} offset={focusOffset} />
