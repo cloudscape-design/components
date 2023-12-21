@@ -79,6 +79,7 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
   const [leftLabelsWidth, setLeftLabelsWidth] = useState(0);
   const [containerWidth, containerWidthRef] = useContainerWidth(DEFAULT_CHART_WIDTH);
   const maxLeftLabelsWidth = Math.round(containerWidth / 2);
+  const hasHover = useRef(false);
 
   const bottomLabelsProps = useBottomLabels({
     ticks: model.computed.xTicks,
@@ -112,6 +113,8 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
     () => (detailPopoverFooter && highlightedX ? detailPopoverFooter(highlightedX[0].x) : null),
     [detailPopoverFooter, highlightedX]
   );
+
+  const setHasHover = (value: boolean) => (hasHover.current = value);
 
   return (
     <CartesianChartContainer
@@ -149,6 +152,7 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
           onKeyDown={model.handlers.onSVGKeyDown}
           onFocus={model.handlers.onSVGFocus}
           onBlur={model.handlers.onSVGBlur}
+          setHasHover={setHasHover}
         >
           <line
             ref={model.refs.plotMeasure}
@@ -200,6 +204,7 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
           size={detailPopoverSize}
           footer={detailPopoverFooterContent}
           onBlur={model.handlers.onSVGBlur}
+          allowVerticalScroll={!hasHover.current}
         />
       }
     />

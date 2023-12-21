@@ -15,7 +15,7 @@ import EmphasizedBaseline from '../internal/components/cartesian-chart/emphasize
 import HighlightedPoint from '../internal/components/cartesian-chart/highlighted-point';
 import VerticalMarker from '../internal/components/cartesian-chart/vertical-marker';
 import { ChartScale, NumericChartScale } from '../internal/components/cartesian-chart/scales';
-import ChartPopover from './chart-popover';
+import MixedChartPopover from './chart-popover';
 import { ChartDataTypes, InternalChartSeries, MixedLineBarChartProps, ScaleType, VerticalMarkerX } from './interfaces';
 import { computeDomainX, computeDomainY } from './domain';
 import { isXThreshold } from './utils';
@@ -148,7 +148,6 @@ export default function ChartContainer<T extends ChartDataTypes>({
   const containerRefObject = useRef(null);
   const containerRef = useMergeRefs(containerMeasureRef, containerRefObject);
   const popoverRef = useRef<HTMLElement | null>(null);
-  const touchStarted = useRef(false);
   const hasHover = useRef(false);
 
   const xDomain = (props.xDomain || computeDomainX(series, xScaleType)) as
@@ -313,7 +312,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
     verticalMarkerX,
   });
 
-  const { mouseMoved, onSVGMouseMove, onSVGMouseOut, onPopoverLeave } = useMouseHover<T>({
+  const { onSVGMouseMove, onSVGMouseOut, onPopoverLeave } = useMouseHover<T>({
     scaledSeries,
     barGroups,
     plotRef,
@@ -325,8 +324,6 @@ export default function ChartContainer<T extends ChartDataTypes>({
     isHandlersDisabled,
     highlightX,
   });
-
-  hasHover.current = hasHover.current || (mouseMoved && !touchStarted.current);
 
   // There are multiple ways to indicate what X is selected.
   // TODO: make a uniform verticalMarkerX state to fit all use-cases.
@@ -419,10 +416,6 @@ export default function ChartContainer<T extends ChartDataTypes>({
 
   const onSVGKeyDown = handlers.onKeyDown;
 
-  const onTouchStart = () => {
-    touchStarted.current = true;
-  };
-
   const xOffset = xAxisProps.scale.isCategorical() ? Math.max(0, xAxisProps.scale.d3Scale.bandwidth() - 1) / 2 : 0;
 
   let verticalLineX: number | null = null;
@@ -511,6 +504,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
   const isLineXKeyboardFocused = isPlotFocused && !highlightedPoint && verticalMarkerX;
 
   const isRefresh = useVisualRefresh();
+  const setHasHover = (value: boolean) => (hasHover.current = value);
 
   return (
     <CartesianChartContainer
@@ -553,7 +547,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
           onFocus={onSVGFocus}
           onBlur={onSVGBlur}
           onKeyDown={onSVGKeyDown}
-          onTouchStart={onTouchStart}
+          setHasHover={setHasHover}
         >
           <line
             ref={plotMeasureRef}
@@ -648,7 +642,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
         </ChartPlot>
       }
       popover={
-        <ChartPopover
+        <MixedChartPopover
           ref={popoverRef}
           containerRef={containerRefObject}
           trackRef={highlightedElementRef}
