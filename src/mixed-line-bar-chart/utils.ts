@@ -67,7 +67,7 @@ export const matchesX = <T>(x1: T, x2: T) => {
   return x1 === x2;
 };
 
-export type OffsetMap = Map<string | number, number>;
+export type OffsetMap = Record<string | number, number>;
 
 export interface StackedOffsets {
   positiveOffsets: OffsetMap;
@@ -83,21 +83,21 @@ export function calculateOffsetMaps(
   return data.reduce((acc, curr, idx) => {
     // First series receives empty offsets map
     if (idx === 0) {
-      acc.push({ positiveOffsets: new Map(), negativeOffsets: new Map() });
+      acc.push({ positiveOffsets: {}, negativeOffsets: {} });
     }
     const lastMap = acc[idx];
     const map: StackedOffsets = lastMap
-      ? { positiveOffsets: new Map(lastMap.positiveOffsets), negativeOffsets: new Map(lastMap.negativeOffsets) }
-      : { positiveOffsets: new Map(), negativeOffsets: new Map() };
+      ? { positiveOffsets: { ...lastMap.positiveOffsets }, negativeOffsets: { ...lastMap.negativeOffsets } }
+      : { positiveOffsets: {}, negativeOffsets: {} };
 
     curr.forEach(({ x, y }) => {
       const key = getKeyValue(x);
       if (y < 0) {
-        const lastValue = lastMap?.negativeOffsets.get(key) || 0;
-        map.negativeOffsets.set(key, lastValue + y);
+        const lastValue = lastMap?.negativeOffsets[key] || 0;
+        map.negativeOffsets[key] = lastValue + y;
       } else {
-        const lastValue = lastMap?.positiveOffsets.get(key) || 0;
-        map.positiveOffsets.set(key, lastValue + y);
+        const lastValue = lastMap?.positiveOffsets[key] || 0;
+        map.positiveOffsets[key] = lastValue + y;
       }
     });
 

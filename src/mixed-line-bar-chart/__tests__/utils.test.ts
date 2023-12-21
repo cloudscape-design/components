@@ -52,25 +52,9 @@ describe('calculateOffsetMaps', () => {
     const actual = calculateOffsetMaps(data);
 
     expect(actual).toEqual([
-      { positiveOffsets: new Map(), negativeOffsets: new Map() },
-      {
-        positiveOffsets: new Map([
-          ['Potatoes', 77],
-          ['Chocolate', 546],
-          ['Apples', 52],
-          ['Oranges', 47],
-        ]),
-        negativeOffsets: new Map(),
-      },
-      {
-        positiveOffsets: new Map([
-          ['Potatoes', 87],
-          ['Chocolate', 566],
-          ['Apples', 52],
-          ['Oranges', 97],
-        ]),
-        negativeOffsets: new Map(),
-      },
+      { positiveOffsets: {}, negativeOffsets: {} },
+      { positiveOffsets: { Potatoes: 77, Chocolate: 546, Apples: 52, Oranges: 47 }, negativeOffsets: {} },
+      { positiveOffsets: { Potatoes: 87, Chocolate: 566, Apples: 52, Oranges: 97 }, negativeOffsets: {} },
     ]);
   });
 
@@ -81,14 +65,14 @@ describe('calculateOffsetMaps', () => {
     const actual = calculateOffsetMaps(data);
 
     expect(actual).toEqual([
-      { positiveOffsets: new Map(), negativeOffsets: new Map() },
+      { positiveOffsets: {}, negativeOffsets: {} },
       {
-        positiveOffsets: new Map([[date.getTime(), 1]]),
-        negativeOffsets: new Map(),
+        positiveOffsets: { [date.getTime()]: 1 },
+        negativeOffsets: {},
       },
       {
-        positiveOffsets: new Map([[date.getTime(), 3]]),
-        negativeOffsets: new Map(),
+        positiveOffsets: { [date.getTime()]: 3 },
+        negativeOffsets: {},
       },
     ]);
   });
@@ -99,14 +83,14 @@ describe('calculateOffsetMaps', () => {
     const actual = calculateOffsetMaps(data);
 
     expect(actual).toEqual([
-      { positiveOffsets: new Map(), negativeOffsets: new Map() },
+      { positiveOffsets: {}, negativeOffsets: {} },
       {
-        positiveOffsets: new Map([[1, 1]]),
-        negativeOffsets: new Map(),
+        positiveOffsets: { 1: 1 },
+        negativeOffsets: {},
       },
       {
-        positiveOffsets: new Map([[1, 3]]),
-        negativeOffsets: new Map(),
+        positiveOffsets: { 1: 3 },
+        negativeOffsets: {},
       },
     ]);
   });
@@ -133,24 +117,14 @@ describe('calculateOffsetMaps', () => {
     const actual = calculateOffsetMaps(data);
 
     expect(actual).toEqual([
-      { positiveOffsets: new Map(), negativeOffsets: new Map() },
+      { positiveOffsets: {}, negativeOffsets: {} },
       {
-        positiveOffsets: new Map([[2, 3]]),
-        negativeOffsets: new Map([
-          [1, -1],
-          [3, -4],
-        ]),
+        positiveOffsets: { 2: 3 },
+        negativeOffsets: { 1: -1, 3: -4 },
       },
       {
-        positiveOffsets: new Map([
-          [1, 2],
-          [2, 3],
-        ]),
-        negativeOffsets: new Map([
-          [1, -1],
-          [2, -3],
-          [3, -8],
-        ]),
+        positiveOffsets: { 1: 2, 2: 3 },
+        negativeOffsets: { 1: -1, 2: -3, 3: -8 },
       },
     ]);
   });
