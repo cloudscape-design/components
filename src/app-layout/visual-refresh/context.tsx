@@ -582,12 +582,26 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           openTools: function () {
             handleToolsClick(true);
           },
-          focusToolsClose: () => focusToolsButtons(true),
+          focusToolsClose: () => {
+            if (drawers && drawers.length) {
+              focusDrawersButtons(true);
+            } else {
+              focusToolsButtons(true);
+            }
+          },
           focusActiveDrawer: () => focusDrawersButtons(true),
           focusSplitPanel: () => splitPanelRefs.slider.current?.focus(),
         };
       },
-      [isMobile, handleNavigationClick, handleToolsClick, focusToolsButtons, focusDrawersButtons, splitPanelRefs.slider]
+      [
+        isMobile,
+        handleNavigationClick,
+        handleToolsClick,
+        focusToolsButtons,
+        focusDrawersButtons,
+        splitPanelRefs.slider,
+        drawers,
+      ]
     );
 
     return (

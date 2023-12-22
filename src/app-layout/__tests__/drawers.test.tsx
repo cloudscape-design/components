@@ -7,6 +7,7 @@ import {
   singleDrawer,
   manyDrawers,
   manyDrawersWithBadges,
+  multipleDrawers,
   findActiveDrawerLandmark,
   singleDrawerOpen,
   singleDrawerPublic,
@@ -126,6 +127,30 @@ describeEachAppLayout(size => {
     const { wrapper } = renderComponent(<AppLayout ref={newRef => (ref = newRef)} {...(singleDrawerOpen as any)} />);
     expect(wrapper.findActiveDrawer()).toBeTruthy();
     act(() => ref!.focusActiveDrawer());
+    expect(wrapper.findActiveDrawerCloseButton()!.getElement()).toHaveFocus();
+  });
+
+  test('moves focus on focusToolsClose if tools are rendered as part of drawers', () => {
+    let ref: AppLayoutProps.Ref | null = null;
+    const { wrapper, rerender } = renderComponent(
+      <AppLayout
+        ref={newRef => (ref = newRef)}
+        activeDrawerId={null}
+        drawers={multipleDrawers}
+        tools={<div>Tools</div>}
+      />
+    );
+    expect(wrapper.findActiveDrawer()).toBeFalsy();
+    rerender(
+      <AppLayout
+        ref={newRef => (ref = newRef)}
+        activeDrawerId={multipleDrawers[0].id}
+        drawers={multipleDrawers}
+        tools={<div>Tools</div>}
+      />
+    );
+    expect(wrapper.findActiveDrawerCloseButton()!.getElement()).not.toHaveFocus();
+    act(() => ref!.focusToolsClose());
     expect(wrapper.findActiveDrawerCloseButton()!.getElement()).toHaveFocus();
   });
 
