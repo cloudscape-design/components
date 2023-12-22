@@ -11,6 +11,7 @@
   @include styles.styles-reset;
   word-wrap: break-word;
   position: relative;
+  overflow: hidden;
 
   &.fit-height {
     display: flex;
@@ -101,16 +102,9 @@
     border: 0;
   }
 
-  &-top {
-    max-height: 66%;
-    border-top-left-radius: awsui.$border-radius-container;
-    border-top-right-radius: awsui.$border-radius-container;
-  }
-
+  &-top,
   &-side {
-    max-width: 66%;
-    border-top-left-radius: awsui.$border-radius-container;
-    border-bottom-left-radius: awsui.$border-radius-container;
+    max-height: 66%;
   }
 }
 
