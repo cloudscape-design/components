@@ -11,7 +11,6 @@
   @include styles.styles-reset;
   word-wrap: break-word;
   position: relative;
-  overflow: hidden;
 
   &.fit-height {
     display: flex;
@@ -102,9 +101,17 @@
     border: 0;
   }
 
-  &-top,
-  &-side {
+  // reduce border-radius size to fill the visual gap between the parent border and image
+  &-top {
     max-height: 66%;
+    border-top-left-radius: calc(awsui.$border-radius-container - 1px);
+    border-top-right-radius: calc(awsui.$border-radius-container - 1px);
+  }
+
+  &-side {
+    max-width: 66%;
+    border-top-left-radius: calc(awsui.$border-radius-container - 1px);
+    border-bottom-left-radius: calc(awsui.$border-radius-container - 1px);
   }
 }
 
