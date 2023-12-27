@@ -348,6 +348,33 @@ describe('Details popover', () => {
   );
 
   test(
+    'can be pinned and unpinned in a chart with mouse when rendered inside tabs',
+    setupTest('#/light/mixed-line-bar-chart/in-tabs', async page => {
+      // Hover over third group in the first chart
+      await page.hoverElement(chartWrapper.findBarGroups().get(3).toSelector());
+      await expect(page.getText(popoverHeaderSelector())).resolves.toContain('Chocolate');
+      await expect(page.isDisplayed(popoverDismissSelector())).resolves.toBe(false);
+
+      // Click on it to reveal the dismiss button
+      await page.click(chartWrapper.toSelector());
+      await expect(page.isDisplayed(popoverDismissSelector())).resolves.toBe(true);
+      await page.waitForAssertion(() => expect(page.isFocused(popoverDismissSelector())).resolves.toBe(true));
+
+      // Click inside popover to ensure it remains visible.
+      await page.click(popoverContentSelector());
+      await expect(page.isDisplayed(popoverDismissSelector())).resolves.toBe(true);
+
+      // Ensure the next focus target is the dismiss button.
+      await page.keys(['Tab']);
+      await page.waitForAssertion(() => expect(page.isFocused(popoverDismissSelector())).resolves.toBe(true));
+
+      // Click dismiss to unpin
+      await page.click(popoverDismissSelector());
+      await expect(page.isDisplayed(popoverDismissSelector())).resolves.toBe(false);
+    })
+  );
+
+  test(
     'can be hidden after hover by pressing Escape',
     setupTest('#/light/mixed-line-bar-chart/test', async page => {
       // Hover over first group
