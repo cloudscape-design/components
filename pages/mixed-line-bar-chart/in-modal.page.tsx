@@ -17,7 +17,7 @@ export default function () {
       <h1>Mixed chart integration test</h1>
       <Button onClick={() => setIsOpen(true)}>Show in modal</Button>
       {isOpen ? (
-        <Modal visible={true} onDismiss={() => setIsOpen(false)}>
+        <Modal visible={true} onDismiss={() => setIsOpen(false)} closeAriaLabel="Close" header="Chart modal">
           <Chart />
         </Modal>
       ) : (
