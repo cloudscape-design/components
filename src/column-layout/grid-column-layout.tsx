@@ -18,6 +18,10 @@ const COLUMN_DEFS = new Map<number, GridProps.ElementDefinition>([
   [4, { colspan: { default: 12, xxs: 6, xs: 3 } }],
 ]);
 
+function getColumnDefinition(columns: number) {
+  return (typeof columns === 'number' ? COLUMN_DEFS.get(columns) : COLUMN_DEFS.get(parseInt(columns))) ?? {};
+}
+
 interface GridColumnLayoutProps
   extends Required<Pick<InternalColumnLayoutProps, 'columns' | 'variant' | 'borders' | 'disableGutters'>> {
   children: React.ReactNode;
@@ -46,7 +50,7 @@ export default function GridColumnLayout({
     <InternalGrid
       ref={ref}
       disableGutters={true}
-      gridDefinition={repeat(COLUMN_DEFS.get(columns) ?? {}, flattenedChildren.length)}
+      gridDefinition={repeat(getColumnDefinition(columns), flattenedChildren.length)}
       className={clsx(styles.grid, styles[`grid-columns-${columns}`], styles[`grid-variant-${variant}`], {
         [styles['grid-horizontal-borders']]: shouldHaveHorizontalBorders,
         [styles['grid-vertical-borders']]: shouldHaveVerticalBorders,
