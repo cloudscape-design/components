@@ -65,8 +65,8 @@ export default function CopyToClipboard({
       position="top"
       triggerType="custom"
       dismissButton={false}
+      renderWithPortal={true}
       content={<InternalStatusIndicator type={status}>{statusText}</InternalStatusIndicator>}
-      __hidden={status === 'pending'}
     >
       <InternalButton
         {...copyButtonProps}
@@ -80,16 +80,16 @@ export default function CopyToClipboard({
   );
 
   return (
-    <div ref={__internalRootRef} {...baseProps} className={clsx(baseProps.className, styles.root, testStyles.root)}>
+    <span ref={__internalRootRef} {...baseProps} className={clsx(baseProps.className, styles.root, testStyles.root)}>
       {variant === 'inline' ? (
-        <div className={styles['inline-container']}>
-          <div className={styles['inline-container-trigger']}>{trigger}</div>
-          <div className={clsx(styles['inline-container-text'], testStyles['text-to-copy'])}>{textToCopy}</div>
-        </div>
+        <span className={styles['inline-container']}>
+          <span className={styles['inline-container-trigger']}>{trigger}</span>
+          <span className={clsx(styles['inline-container-text'], testStyles['text-to-copy'])}>{textToCopy}</span>
+        </span>
       ) : (
         trigger
       )}
-    </div>
+    </span>
   );
 }
 

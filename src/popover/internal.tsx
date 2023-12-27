@@ -25,7 +25,6 @@ import { LinkDefaultVariantContext } from '../internal/context/link-default-vari
 
 export interface InternalPopoverProps extends PopoverProps, InternalBaseComponentProps {
   __onOpen?: NonCancelableEventHandler<null>;
-  __hidden?: boolean;
 }
 
 export interface InternalPopoverRef {
@@ -49,7 +48,6 @@ function InternalPopover(
 
     renderWithPortal = false,
 
-    __hidden,
     __onOpen,
     __internalRootRef = null,
     ...restProps
@@ -143,7 +141,7 @@ function InternalPopover(
       className={clsx(popoverClasses, styles['popover-content'])}
       data-awsui-referrer-id={referrerId}
     >
-      {visible && !__hidden && (
+      {visible && (
         <PopoverContainer
           size={size}
           fixedWidth={fixedWidth}

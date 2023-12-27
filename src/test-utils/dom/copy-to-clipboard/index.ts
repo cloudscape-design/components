@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ComponentWrapper } from '@cloudscape-design/test-utils-core/dom';
+import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 import testStyles from '../../../copy-to-clipboard/test-classes/styles.selectors.js';
 import ButtonWrapper from '../button';
 import PopoverWrapper from '../popover';
@@ -12,11 +12,13 @@ export default class CopyToClipboardWrapper extends ComponentWrapper {
     return this.findComponent(`.${ButtonWrapper.rootSelector}`, ButtonWrapper)!;
   }
 
-  findStatusText(): null | ComponentWrapper {
-    return this.findComponent(`.${PopoverWrapper.rootSelector}`, PopoverWrapper)!.findContent();
+  findStatusText(): null | ElementWrapper {
+    return this.findComponent(`.${PopoverWrapper.rootSelector}`, PopoverWrapper)!.findContent({
+      renderWithPortal: true,
+    });
   }
 
-  findTextToCopy(): null | ComponentWrapper {
+  findTextToCopy(): null | ElementWrapper {
     return this.findByClassName(testStyles['text-to-copy']);
   }
 }

@@ -10,11 +10,9 @@
 }
 
 .inline-container {
-  display: inline-block;
   word-break: break-all;
 
   &-trigger {
-    display: inline-block;
     margin-inline-end: awsui.$space-scaled-xxs;
   }
   &-text {
