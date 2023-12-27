@@ -3,7 +3,7 @@
 
 import React, { useRef, useState } from 'react';
 import { render, fireEvent } from '@testing-library/react';
-import { useGridNavigation } from '../../../../lib/components/table/table-role';
+import { GridNavigationProvider } from '../../../../lib/components/table/table-role';
 import { KeyCode } from '../../../../lib/components/internal/keycode';
 
 const mockObserver = {
@@ -31,45 +31,43 @@ function TestTable<T extends object>({
   items,
   startIndex = 0,
   pageSize = 2,
-  suppressKeyboardNavigationFor,
 }: {
   tableRole?: 'grid' | 'table';
   columns: { header: React.ReactNode; cell: (item: T) => React.ReactNode }[];
   items: T[];
   startIndex?: number;
   pageSize?: number;
-  suppressKeyboardNavigationFor?: string | ((focusedElement: HTMLElement) => boolean);
 }) {
   const tableRef = useRef<HTMLTableElement>(null);
-  useGridNavigation({
-    keyboardNavigation: tableRole === 'grid',
-    suppressKeyboardNavigationFor,
-    pageSize,
-    getTable: () => tableRef.current,
-  });
   return (
-    <table role={tableRole} ref={tableRef}>
-      <thead>
-        <tr aria-rowindex={1}>
-          {columns.map((column, columnIndex) => (
-            <th key={columnIndex} aria-colindex={columnIndex + 1}>
-              {column.header}
-            </th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {items.map((item, itemIndex) => (
-          <tr key={itemIndex} aria-rowindex={startIndex + itemIndex + 1 + 1}>
+    <GridNavigationProvider
+      keyboardNavigation={tableRole === 'grid'}
+      pageSize={pageSize}
+      getTable={() => tableRef.current}
+    >
+      <table role={tableRole} ref={tableRef}>
+        <thead>
+          <tr aria-rowindex={1}>
             {columns.map((column, columnIndex) => (
-              <td key={columnIndex} aria-colindex={columnIndex + 1}>
-                {column.cell(item)}
-              </td>
+              <th key={columnIndex} aria-colindex={columnIndex + 1}>
+                {column.header}
+              </th>
             ))}
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {items.map((item, itemIndex) => (
+            <tr key={itemIndex} aria-rowindex={startIndex + itemIndex + 1 + 1}>
+              {columns.map((column, columnIndex) => (
+                <td key={columnIndex} aria-colindex={columnIndex + 1}>
+                  {column.cell(item)}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </GridNavigationProvider>
   );
 }
 
@@ -255,8 +253,11 @@ test('updates page size', () => {
 
 test('does not throw errors if table is null', () => {
   function TestTable() {
-    useGridNavigation({ keyboardNavigation: true, pageSize: 2, getTable: () => null });
-    return null;
+    return (
+      <GridNavigationProvider keyboardNavigation={true} pageSize={2} getTable={() => null}>
+        {null}
+      </GridNavigationProvider>
+    );
   }
   expect(() => render(<TestTable />)).not.toThrow();
 });
@@ -389,21 +390,22 @@ test('cell navigation works when the table is mutated between commands', () => {
 test('throws no error when focusing on incorrect target', () => {
   function TestComponent() {
     const tableRef = useRef<HTMLTableElement>(null);
-    useGridNavigation({ keyboardNavigation: true, pageSize: 2, getTable: () => tableRef.current });
     return (
-      <table role="grid" ref={tableRef}>
-        <tbody>
-          <button>action</button>
-          <tr aria-rowindex={1}>
-            <td aria-colindex={1}>cell-1-1</td>
-            <td aria-colindex={2}>cell-1-2</td>
-            <td aria-colindex={3}>cell-1-3</td>
-          </tr>
-          <svg>
-            <g tabIndex={0}>graphic</g>
-          </svg>
-        </tbody>
-      </table>
+      <GridNavigationProvider keyboardNavigation={true} pageSize={2} getTable={() => tableRef.current}>
+        <table role="grid" ref={tableRef}>
+          <tbody>
+            <button>action</button>
+            <tr aria-rowindex={1}>
+              <td aria-colindex={1}>cell-1-1</td>
+              <td aria-colindex={2}>cell-1-2</td>
+              <td aria-colindex={3}>cell-1-3</td>
+            </tr>
+            <svg>
+              <g tabIndex={0}>graphic</g>
+            </svg>
+          </tbody>
+        </table>
+      </GridNavigationProvider>
     );
   }
 
@@ -429,51 +431,23 @@ test('elements focus is restored if table changes role after being rendered as g
   expect(getTabIndices()).toEqual([0, 0, 0, 0, 0]);
 });
 
-test.each([
-  '[aria-label="Sort by value!"]',
-  (focusedElement: HTMLElement) => focusedElement.getAttribute('aria-label') === 'Sort by value!',
-])('grid navigation is suppressed by `suppressKeyboardNavigationFor`', suppressKeyboardNavigationFor => {
-  const { container } = render(
-    <TestTable
-      columns={[nameColumn, valueColumn]}
-      items={items}
-      suppressKeyboardNavigationFor={suppressKeyboardNavigationFor}
-    />
-  );
-  const table = container.querySelector('table')!;
-
-  (container.querySelector('button[aria-label="Sort by name"]') as HTMLElement).focus();
-  expect(getActiveElement()).toEqual(['button', 'Sort by name']);
-
-  fireEvent.keyDown(table, { keyCode: KeyCode.right });
-  expect(getActiveElement()).toEqual(['button', 'Sort by value']);
-
-  const sortByValueButton = container.querySelector('button[aria-label="Sort by value"]')!;
-  sortByValueButton.setAttribute('aria-label', 'Sort by value!');
-  mockObserver.callback([
-    { type: 'childList', addedNodes: [sortByValueButton], removedNodes: [] } as unknown as MutationRecord,
-  ]);
-
-  fireEvent.keyDown(table, { keyCode: KeyCode.left });
-  expect(getActiveElement()).toEqual(['button', 'Sort by value!']);
-});
-
 test('does not override tab index for programmatically focused elements', () => {
   function TestComponent() {
     const tableRef = useRef<HTMLTableElement>(null);
-    useGridNavigation({ keyboardNavigation: true, pageSize: 10, getTable: () => tableRef.current });
     return (
-      <table role="grid" ref={tableRef}>
-        <tbody>
-          <tr aria-rowindex={1}>
-            <td aria-colindex={1}>cell-1-1</td>
-            <td aria-colindex={2}>cell-1-2</td>
-            <td aria-colindex={3}>
-              cell-1-3 <button tabIndex={-1}>Programmatically focusable</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <GridNavigationProvider keyboardNavigation={true} pageSize={10} getTable={() => tableRef.current}>
+        <table role="grid" ref={tableRef}>
+          <tbody>
+            <tr aria-rowindex={1}>
+              <td aria-colindex={1}>cell-1-1</td>
+              <td aria-colindex={2}>cell-1-2</td>
+              <td aria-colindex={3}>
+                cell-1-3 <button tabIndex={-1}>Programmatically focusable</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </GridNavigationProvider>
     );
   }
 

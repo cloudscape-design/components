@@ -13,7 +13,7 @@ import {
   getTableRoleProps,
   getTableRowRoleProps,
   getTableWrapperRoleProps,
-  useGridNavigation,
+  GridNavigationProvider,
 } from '~components/table/table-role';
 import styles from './styles.scss';
 
@@ -79,48 +79,48 @@ function Table({ useGridNavigation: gridNavigationActive }: { useGridNavigation:
   const tableRole = 'grid';
   const tableRef = useRef<HTMLTableElement>(null);
 
-  useGridNavigation({ keyboardNavigation: gridNavigationActive, pageSize: 10, getTable: () => tableRef.current });
-
   return (
-    <div className={styles['custom-table']} {...getTableWrapperRoleProps({ tableRole, isScrollable: false })}>
-      <table
-        ref={tableRef}
-        className={styles['custom-table-table']}
-        {...getTableRoleProps({
-          tableRole,
-          totalItemsCount: items.length,
-          totalColumnsCount: columnDefinitions.length,
-        })}
-      >
-        <thead>
-          <tr {...getTableHeaderRowRoleProps({ tableRole })}>
-            {columnDefinitions.map((column, colIndex) => (
-              <th
-                key={column.key}
-                className={styles['custom-table-cell']}
-                {...getTableColHeaderRoleProps({ tableRole, colIndex })}
-              >
-                {column.label}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {items.map((item, rowIndex) => (
-            <tr key={item.id} {...getTableRowRoleProps({ tableRole, rowIndex, firstIndex: 0 })}>
+    <GridNavigationProvider keyboardNavigation={gridNavigationActive} pageSize={10} getTable={() => tableRef.current}>
+      <div className={styles['custom-table']} {...getTableWrapperRoleProps({ tableRole, isScrollable: false })}>
+        <table
+          ref={tableRef}
+          className={styles['custom-table-table']}
+          {...getTableRoleProps({
+            tableRole,
+            totalItemsCount: items.length,
+            totalColumnsCount: columnDefinitions.length,
+          })}
+        >
+          <thead>
+            <tr {...getTableHeaderRowRoleProps({ tableRole })}>
               {columnDefinitions.map((column, colIndex) => (
-                <td
+                <th
                   key={column.key}
                   className={styles['custom-table-cell']}
-                  {...getTableCellRoleProps({ tableRole, colIndex })}
+                  {...getTableColHeaderRoleProps({ tableRole, colIndex })}
                 >
-                  {column.render(item)}
-                </td>
+                  {column.label}
+                </th>
               ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody>
+            {items.map((item, rowIndex) => (
+              <tr key={item.id} {...getTableRowRoleProps({ tableRole, rowIndex, firstIndex: 0 })}>
+                {columnDefinitions.map((column, colIndex) => (
+                  <td
+                    key={column.key}
+                    className={styles['custom-table-cell']}
+                    {...getTableCellRoleProps({ tableRole, colIndex })}
+                  >
+                    {column.render(item)}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </GridNavigationProvider>
   );
 }

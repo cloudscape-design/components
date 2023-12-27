@@ -12,4 +12,4 @@ export {
   getTableWrapperRoleProps,
 } from './table-role-helper';
 
-export { useGridNavigation } from './use-grid-navigation';
+export { GridNavigationProvider } from './grid-navigation';
