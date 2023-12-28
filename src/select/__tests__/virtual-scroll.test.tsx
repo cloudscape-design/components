@@ -4,6 +4,8 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import Select, { SelectProps } from '../../../lib/components/select';
 import createWrapper from '../../../lib/components/test-utils/dom';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
+import { scrollToIndex } from '../../../__mocks__/@tanstack/react-virtual';
 
 const defaultProps: SelectProps = {
   options: [
@@ -58,5 +60,14 @@ describe('Virtual scroll support', () => {
     wrapper.openDropdown();
     wrapper.selectOptionByValue('2');
     expect(onChange).toHaveBeenCalledWith({ selectedOption: defaultProps.options![1] });
+  });
+
+  test('should scroll to index', () => {
+    const wrapper = renderWithWrapper(<Select {...defaultProps} />);
+    expect(scrollToIndex).toHaveBeenCalledTimes(0);
+
+    wrapper.findTrigger().keydown(KeyCode.down);
+    expect(scrollToIndex).toHaveBeenCalledTimes(1);
+    expect(scrollToIndex).toHaveBeenCalledWith(0);
   });
 });

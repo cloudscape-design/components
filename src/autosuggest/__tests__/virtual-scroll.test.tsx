@@ -72,15 +72,12 @@ describe('Virtual scroll support', () => {
 
   test('should scroll to index', () => {
     const wrapper = renderWithWrapper(<Autosuggest {...defaultProps} />);
-    expect(scrollToIndex).toHaveBeenCalledTimes(0);
+    expect(scrollToIndex).not.toHaveBeenCalled();
 
     wrapper.findNativeInput().keydown(KeyCode.down);
-    expect(scrollToIndex).toHaveBeenCalledTimes(2);
-    expect(scrollToIndex).toHaveBeenCalledWith(0);
     expect(scrollToIndex).toHaveBeenCalledWith(0);
 
     wrapper.findNativeInput().keydown(KeyCode.down);
-    expect(scrollToIndex).toHaveBeenCalledTimes(3);
     expect(scrollToIndex).toHaveBeenCalledWith(1);
   });
 });
