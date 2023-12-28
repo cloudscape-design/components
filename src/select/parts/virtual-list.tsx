@@ -46,14 +46,15 @@ const VirtualListOpen = forwardRef(
       estimateSize: useCallback(() => 31, [width, filteringValue]),
     });
 
+    const totalItems = filteredOptions.length;
     useImperativeHandle(
       ref,
       () => (index: number) => {
-        if (highlightType.moveFocus) {
+        if (highlightType.moveFocus && index >= 0 && index < totalItems) {
           scrollToIndex(index);
         }
       },
-      [highlightType, scrollToIndex]
+      [totalItems, highlightType, scrollToIndex]
     );
     const finalOptions = renderOptions({
       options: virtualItems.map(({ index }) => filteredOptions[index]),

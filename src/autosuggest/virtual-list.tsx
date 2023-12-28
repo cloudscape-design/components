@@ -37,11 +37,13 @@ const VirtualList = ({
     estimateSize: useCallback(() => 31, [width, highlightText]),
   });
 
+  const totalItems = autosuggestItemsState.items.length;
   useEffect(() => {
-    if (autosuggestItemsState.highlightType.moveFocus) {
-      rowVirtualizer.scrollToIndex(autosuggestItemsState.highlightedIndex);
+    const index = autosuggestItemsState.highlightedIndex;
+    if (autosuggestItemsState.highlightType.moveFocus && index >= 0 && index < totalItems) {
+      rowVirtualizer.scrollToIndex(index);
     }
-  }, [autosuggestItemsState.highlightType, autosuggestItemsState.highlightedIndex, rowVirtualizer]);
+  }, [autosuggestItemsState.highlightType, autosuggestItemsState.highlightedIndex, rowVirtualizer, totalItems]);
 
   return (
     <OptionsList
