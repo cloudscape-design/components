@@ -4,19 +4,6 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import Autosuggest, { AutosuggestProps } from '../../../lib/components/autosuggest';
 import createWrapper from '../../../lib/components/test-utils/dom';
-import { range } from 'lodash';
-
-jest.mock('@tanstack/react-virtual', () => ({
-  useVirtualizer: jest.fn().mockImplementation(({ count }: { count: number }) => ({
-    getVirtualItems: () =>
-      range(0, count)
-        .slice(0, 10)
-        .map((_, index) => ({ key: index, index, start: index, end: index + 1, size: 1, lane: 0 })),
-    getTotalSize: () => 10,
-    scrollToIndex: () => {},
-    measureElement: () => {},
-  })),
-}));
 
 const defaultProps: AutosuggestProps = {
   options: [
