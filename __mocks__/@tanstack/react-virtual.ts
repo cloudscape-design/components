@@ -4,6 +4,9 @@
 import { range } from 'lodash';
 import { useEffect } from 'react';
 
+export const scrollToIndex = jest.fn();
+export const measureElement = jest.fn();
+
 export function useVirtualizer({
   count,
   getScrollElement,
@@ -31,7 +34,7 @@ export function useVirtualizer({
         .slice(0, 10)
         .map((_, index) => ({ key: index, index, start: index, end: index + 1, size: 1, lane: 0 })),
     getTotalSize: () => 10,
-    scrollToIndex: () => {},
-    measureElement: () => {},
+    scrollToIndex,
+    measureElement,
   };
 }

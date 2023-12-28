@@ -4,6 +4,8 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import Autosuggest, { AutosuggestProps } from '../../../lib/components/autosuggest';
 import createWrapper from '../../../lib/components/test-utils/dom';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
+import { scrollToIndex } from '../../../__mocks__/@tanstack/react-virtual';
 
 const defaultProps: AutosuggestProps = {
   options: [
@@ -23,6 +25,10 @@ function renderWithWrapper(ui: React.ReactElement) {
 }
 
 describe('Virtual scroll support', () => {
+  beforeEach(() => {
+    scrollToIndex.mockReset();
+  });
+
   test('should render plain virtual list', () => {
     const wrapper = renderWithWrapper(<Autosuggest {...defaultProps} />);
     wrapper.findNativeInput().focus();
@@ -62,5 +68,19 @@ describe('Virtual scroll support', () => {
     wrapper.findNativeInput().focus();
     wrapper.selectSuggestionByValue('2');
     expect(onChange).toHaveBeenCalledWith({ value: '2' });
+  });
+
+  test('should scroll to index', () => {
+    const wrapper = renderWithWrapper(<Autosuggest {...defaultProps} />);
+    expect(scrollToIndex).toHaveBeenCalledTimes(0);
+
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    expect(scrollToIndex).toHaveBeenCalledTimes(2);
+    expect(scrollToIndex).toHaveBeenCalledWith(0);
+    expect(scrollToIndex).toHaveBeenCalledWith(0);
+
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    expect(scrollToIndex).toHaveBeenCalledTimes(3);
+    expect(scrollToIndex).toHaveBeenCalledWith(1);
   });
 });
