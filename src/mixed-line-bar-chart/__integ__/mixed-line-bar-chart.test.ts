@@ -302,6 +302,15 @@ describe('Details popover', () => {
   );
 
   test(
+    'shows on hover in a mixed line/bar chart inside modal',
+    setupTest('#/light/mixed-line-bar-chart/in-modal', async page => {
+      // Hover over first group
+      await page.hoverElement(chartWrapper.findBarGroups().get(1).toSelector());
+      await expect(page.getText(popoverHeaderSelector())).resolves.toContain('Potatoes');
+    })
+  );
+
+  test(
     'shows on hover in a mixed line/bar chart',
     setupTest('#/light/mixed-line-bar-chart/test', async page => {
       // Hover over first group
