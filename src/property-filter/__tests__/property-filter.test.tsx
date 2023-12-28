@@ -22,13 +22,15 @@ import {
 } from '../../../lib/components/property-filter/interfaces';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
 import '../../__a11y__/to-validate-a11y';
+import { range } from 'lodash';
 
-jest.mock('../../../lib/components/internal/hooks/use-virtual', () => ({
-  useVirtual: jest.fn().mockImplementation(({ items }: { items: unknown[] }) => ({
-    virtualItems: items
-      .slice(0, 10)
-      .map((_, index) => ({ key: index, index, start: index, end: index + 1, size: 1, lane: 0 })),
-    totalSize: 0,
+jest.mock('@tanstack/react-virtual', () => ({
+  useVirtualizer: jest.fn().mockImplementation(({ count }: { count: number }) => ({
+    getVirtualItems: () =>
+      range(0, count)
+        .slice(0, 10)
+        .map((_, index) => ({ key: index, index, start: index, end: index + 1, size: 1, lane: 0 })),
+    getTotalSize: () => 10,
     scrollToIndex: () => {},
     measureElement: () => {},
   })),

@@ -1,13 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useEffect, useImperativeHandle, useRef } from 'react';
+import { useVirtualizer } from '@tanstack/react-virtual';
 
 import OptionsList from '../internal/components/options-list';
 
 import AutosuggestOption from './autosuggest-option';
 import { getOptionProps, ListProps } from './plain-list';
 import styles from './styles.css.js';
-import { useVirtual } from '../internal/hooks/use-virtual';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
 const VirtualList = ({
@@ -26,15 +26,16 @@ const VirtualList = ({
   const [width, strutRef] = useContainerQuery(rect => rect.contentBoxWidth, []);
   useImperativeHandle(strutRef, () => scrollRef.current);
 
-  const rowVirtualizer = useVirtual({
-    items: autosuggestItemsState.items,
-    parentRef: scrollRef,
+  const rowVirtualizer = useVirtualizer({
+    count: autosuggestItemsState.items.length,
+    getScrollElement: () => scrollRef.current,
     // estimateSize is a dependency of measurements memo. We update it to force full recalculation
     // when the height of any option could have changed:
     // 1: because the component got resized (width property got updated)
     // 2: because the option changed its content (highlightText property controls the highlight and the visibility of hidden tags)
     // eslint-disable-next-line react-hooks/exhaustive-deps
     estimateSize: useCallback(() => 31, [width, highlightText]),
+    overscan: 5,
   });
 
   const totalItems = autosuggestItemsState.items.length;
@@ -58,9 +59,9 @@ const VirtualList = ({
         aria-hidden="true"
         key="total-size"
         className={styles['layout-strut']}
-        style={{ height: rowVirtualizer.totalSize + (autosuggestItemsState.items.length === 1 ? 1 : 0) }}
+        style={{ height: rowVirtualizer.getTotalSize() + (autosuggestItemsState.items.length === 1 ? 1 : 0) }}
       />
-      {rowVirtualizer.virtualItems.map(virtualRow => {
+      {rowVirtualizer.getVirtualItems().map(virtualRow => {
         const { index, start } = virtualRow;
         const item = autosuggestItemsState.items[index];
         const optionProps = getOptionProps(
