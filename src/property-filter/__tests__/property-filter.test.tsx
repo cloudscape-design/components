@@ -23,6 +23,17 @@ import {
 import TestI18nProvider from '../../../lib/components/i18n/testing';
 import '../../__a11y__/to-validate-a11y';
 
+jest.mock('../../../lib/components/internal/hooks/use-virtual', () => ({
+  useVirtual: jest.fn().mockImplementation(({ items }: { items: unknown[] }) => ({
+    virtualItems: items
+      .slice(0, 10)
+      .map((_, index) => ({ key: index, index, start: index, end: index + 1, size: 1, lane: 0 })),
+    totalSize: 0,
+    scrollToIndex: () => {},
+    measureElement: () => {},
+  })),
+}));
+
 const states: Record<string, string> = {
   0: 'Stopped',
   1: 'Stopping',

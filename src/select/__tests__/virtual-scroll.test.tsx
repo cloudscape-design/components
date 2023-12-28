@@ -5,6 +5,17 @@ import { render } from '@testing-library/react';
 import Select, { SelectProps } from '../../../lib/components/select';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
+jest.mock('../../../lib/components/internal/hooks/use-virtual', () => ({
+  useVirtual: jest.fn().mockImplementation(({ items }: { items: unknown[] }) => ({
+    virtualItems: items
+      .slice(0, 10)
+      .map((_, index) => ({ key: index, index, start: index, end: index + 1, size: 1, lane: 0 })),
+    totalSize: 0,
+    scrollToIndex: () => {},
+    measureElement: () => {},
+  })),
+}));
+
 const defaultProps: SelectProps = {
   options: [
     { value: '1', label: 'One' },
