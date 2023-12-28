@@ -14,6 +14,7 @@ export type SelectableItemProps = BaseComponentProps & {
   hasBackground?: boolean;
   isParent?: boolean;
   isChild?: boolean;
+  virtualIndex?: number;
   virtualPosition?: number;
   padBottom?: boolean;
   isNextSelected?: boolean;
@@ -35,6 +36,7 @@ const SelectableItem = (
     hasBackground,
     isParent,
     isChild,
+    virtualIndex,
     virtualPosition,
     padBottom,
     isNextSelected,
@@ -115,7 +117,7 @@ const SelectableItem = (
       <div className={styles['option-content']} ref={contentRef}>
         {content}
       </div>
-      <div className={styles['measure-strut']} ref={ref} />
+      <div className={styles['measure-strut']} ref={ref} data-index={virtualIndex} />
       <div className={styles['screenreader-content']} ref={screenReaderContentRef}></div>
     </li>
   );

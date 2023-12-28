@@ -17,6 +17,7 @@ export interface ItemProps {
   selected?: boolean;
   filteringValue?: string;
   hasCheckbox?: boolean;
+  virtualIndex?: number;
   virtualPosition?: number;
   padBottom?: boolean;
   isNextSelected?: boolean;
@@ -33,6 +34,7 @@ const Item = (
     selected,
     filteringValue,
     hasCheckbox,
+    virtualIndex,
     virtualPosition,
     padBottom,
     isNextSelected,
@@ -61,6 +63,7 @@ const Item = (
       isParent={isParent}
       isChild={isChild}
       ref={ref}
+      virtualIndex={virtualIndex}
       virtualPosition={virtualPosition}
       padBottom={padBottom}
       screenReaderContent={screenReaderContent}

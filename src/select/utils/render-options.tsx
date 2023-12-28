@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { VirtualItem } from 'react-virtual';
+import { VirtualItem } from '@tanstack/react-virtual';
 import Item from '../parts/item';
 import MutliselectItem from '../parts/multiselect-item';
 import { DropdownOption } from '../../internal/components/option/interfaces';
@@ -16,6 +16,7 @@ export interface RenderOptionProps {
   checkboxes?: boolean;
   hasDropdownStatus?: boolean;
   virtualItems?: VirtualItem[];
+  measureElement?: (element: null | HTMLElement) => void;
   useInteractiveGroups?: boolean;
   screenReaderContent?: string;
   ariaSetsize?: number;
@@ -29,6 +30,7 @@ export const renderOptions = ({
   checkboxes = false,
   hasDropdownStatus,
   virtualItems,
+  measureElement,
   useInteractiveGroups,
   screenReaderContent,
   ariaSetsize,
@@ -52,8 +54,9 @@ export const renderOptions = ({
       <ListItem
         key={globalIndex}
         {...props}
+        virtualIndex={virtualItem && virtualItem.index}
         virtualPosition={virtualItem && virtualItem.start}
-        ref={virtualItem && virtualItem.measureRef}
+        ref={measureElement}
         padBottom={padBottom}
         screenReaderContent={screenReaderContent}
         ariaPosinset={globalIndex + 1}

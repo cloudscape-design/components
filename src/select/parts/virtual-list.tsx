@@ -35,7 +35,7 @@ const VirtualListOpen = forwardRef(
     const menuRefObject = useRef(null);
     const menuRef = useMergeRefs(menuMeasureRef, menuRefObject, menuProps.ref);
 
-    const { virtualItems, totalSize, scrollToIndex } = useVirtual({
+    const { virtualItems, totalSize, scrollToIndex, measureElement } = useVirtual({
       items: filteredOptions,
       parentRef: menuRefObject,
       // estimateSize is a dependency of measurements memo. We update it to force full recalculation
@@ -63,6 +63,7 @@ const VirtualListOpen = forwardRef(
       checkboxes,
       hasDropdownStatus,
       virtualItems,
+      measureElement,
       useInteractiveGroups,
       screenReaderContent,
       ariaSetsize: filteredOptions.length,

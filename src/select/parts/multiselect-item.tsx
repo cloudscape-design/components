@@ -20,6 +20,7 @@ const MultiSelectItem = (
     selected,
     filteringValue,
     hasCheckbox,
+    virtualIndex,
     virtualPosition,
     padBottom,
     isNextSelected,
@@ -53,6 +54,7 @@ const MultiSelectItem = (
       isChild={isChild}
       highlightType={highlightType}
       ref={ref}
+      virtualIndex={virtualIndex}
       virtualPosition={virtualPosition}
       padBottom={padBottom}
       useInteractiveGroups={true}

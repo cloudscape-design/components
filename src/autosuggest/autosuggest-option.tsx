@@ -20,6 +20,7 @@ export interface AutosuggestOptionProps extends BaseComponentProps {
   highlightType: HighlightType;
   current: boolean;
   enteredTextLabel?: (value: string) => string;
+  virtualIndex?: number;
   virtualPosition?: number;
   padBottom?: boolean;
   screenReaderContent?: string;
@@ -36,6 +37,7 @@ const AutosuggestOption = (
     highlightType,
     current,
     enteredTextLabel,
+    virtualIndex,
     virtualPosition,
     padBottom,
     screenReaderContent,
@@ -85,6 +87,7 @@ const AutosuggestOption = (
       hasBackground={useEntered}
       isParent={isParent}
       isChild={isChild}
+      virtualIndex={virtualIndex}
       virtualPosition={virtualPosition}
       data-test-index={throughIndex}
       data-in-group-index={inGroupIndex}

@@ -59,7 +59,7 @@ const VirtualList = ({
         style={{ height: rowVirtualizer.totalSize + (autosuggestItemsState.items.length === 1 ? 1 : 0) }}
       />
       {rowVirtualizer.virtualItems.map(virtualRow => {
-        const { index, start, measureRef } = virtualRow;
+        const { index, start } = virtualRow;
         const item = autosuggestItemsState.items[index];
         const optionProps = getOptionProps(
           index,
@@ -73,13 +73,14 @@ const VirtualList = ({
         return (
           <AutosuggestOption
             key={index}
-            ref={measureRef}
+            ref={rowVirtualizer.measureElement as React.RefCallback<HTMLElement>}
             highlightText={highlightText}
             option={item}
             highlighted={item === autosuggestItemsState.highlightedOption}
             current={item.value === highlightText}
             data-mouse-target={index}
             enteredTextLabel={enteredTextLabel}
+            virtualIndex={index}
             virtualPosition={start + (index === 0 ? 1 : 0)}
             screenReaderContent={screenReaderContent}
             ariaSetsize={autosuggestItemsState.items.length}
