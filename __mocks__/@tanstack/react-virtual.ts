@@ -2,8 +2,29 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { range } from 'lodash';
+import { useEffect } from 'react';
 
-export function useVirtualizer({ count }: { count: number }) {
+export function useVirtualizer({
+  count,
+  getScrollElement,
+  estimateSize,
+}: {
+  count: number;
+  getScrollElement: () => null | HTMLElement;
+  estimateSize?: () => number;
+}) {
+  useEffect(() => {
+    const element = getScrollElement();
+    if (!element) {
+      throw new Error('Scroll element is missing');
+    }
+
+    const size = estimateSize ? estimateSize() : 0;
+    if (isNaN(size)) {
+      throw new Error('Invalid estimated size');
+    }
+  });
+
   return {
     getVirtualItems: () =>
       range(0, count)
