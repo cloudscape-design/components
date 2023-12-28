@@ -39,7 +39,6 @@
     "mnth": "^2.0.0",
     "react-keyed-flatten-children": "^1.3.0",
     "react-transition-group": "^4.4.2",
-    "react-virtual": "^2.8.2",
     "tslib": "^2.4.0",
     "weekstart": "^1.1.0"
   },
