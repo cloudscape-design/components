@@ -30,9 +30,9 @@ import {
   getTableRoleProps,
   getTableRowRoleProps,
   getTableWrapperRoleProps,
-  useGridNavigation,
+  GridNavigationProvider,
 } from '~components/table/table-role';
-import { orderBy } from 'lodash';
+import { orderBy, range } from 'lodash';
 import appLayoutLabels from '../app-layout/utils/labels';
 import { stateToStatusIndicator } from '../table/shared-configs';
 
@@ -115,14 +115,15 @@ export default function Page() {
     },
     { key: 'dnsName', label: 'DNS name', render: (item: Instance) => <DnsEditCell item={item} /> },
     { key: 'type', label: 'Type', render: (item: Instance) => item.type },
+    { key: 'inline-select', label: 'Select', render: (item: Instance) => <InlineSelect value={item.type} /> },
+    { key: 'inline-radio', label: 'Radio', render: (item: Instance) => <InlineRadio value={item.type} /> },
+    { key: 'inline-input', label: 'Input', render: (item: Instance) => <InlineInput value={item.type} /> },
   ];
 
   const [sortingKey, setSortingKey] = useState<null | string>(null);
   const [sortingDirection, setSortingDirection] = useState<1 | -1>(1);
 
   const tableRef = useRef<HTMLTableElement>(null);
-
-  useGridNavigation({ keyboardNavigation: tableRole === 'grid', pageSize, getTable: () => tableRef.current });
 
   const sortedItems = useMemo(() => {
     if (!sortingKey) {
@@ -184,66 +185,104 @@ export default function Page() {
               </Link>
             }
           >
-            <div className={styles['custom-table']} {...getTableWrapperRoleProps({ tableRole, isScrollable: false })}>
-              <table
-                ref={tableRef}
-                className={styles['custom-table-table']}
-                {...getTableRoleProps({
-                  tableRole,
-                  totalItemsCount: items.length,
-                  totalColumnsCount: columnDefinitions.length,
-                })}
-              >
-                <thead>
-                  <tr {...getTableHeaderRowRoleProps({ tableRole })}>
-                    {columnDefinitions.map((column, colIndex) => (
-                      <th
-                        key={column.key}
-                        className={styles['custom-table-cell']}
-                        {...getTableColHeaderRoleProps({ tableRole, colIndex })}
-                      >
-                        <div style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap' }}>
-                          <button
-                            className={styles['custom-table-sorting-header']}
-                            onClick={() => {
-                              if (sortingKey !== column.key) {
-                                setSortingKey(column.key);
-                                setSortingDirection(-1);
-                              } else {
-                                setSortingDirection(prev => (prev === 1 ? -1 : 1));
-                              }
-                            }}
-                          >
-                            {column.label}
-                          </button>
-                          {sortingKey === column.key && sortingDirection === -1 && <Icon name="angle-down" />}
-                          {sortingKey === column.key && sortingDirection === 1 && <Icon name="angle-up" />}
-                        </div>
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {sortedItems.map((item, rowIndex) => (
-                    <tr key={item.id} {...getTableRowRoleProps({ tableRole, rowIndex, firstIndex: 0 })}>
+            <GridNavigationProvider
+              keyboardNavigation={tableRole === 'grid'}
+              pageSize={pageSize}
+              getTable={() => tableRef.current}
+            >
+              <div className={styles['custom-table']} {...getTableWrapperRoleProps({ tableRole, isScrollable: false })}>
+                <table
+                  ref={tableRef}
+                  className={styles['custom-table-table']}
+                  {...getTableRoleProps({
+                    tableRole,
+                    totalItemsCount: items.length,
+                    totalColumnsCount: columnDefinitions.length,
+                  })}
+                >
+                  <thead>
+                    <tr {...getTableHeaderRowRoleProps({ tableRole })}>
                       {columnDefinitions.map((column, colIndex) => (
-                        <td
+                        <th
                           key={column.key}
                           className={styles['custom-table-cell']}
-                          {...getTableCellRoleProps({ tableRole, colIndex })}
+                          {...getTableColHeaderRoleProps({ tableRole, colIndex })}
                         >
-                          {column.render(item)}
-                        </td>
+                          <div style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap' }}>
+                            <button
+                              className={styles['custom-table-sorting-header']}
+                              onClick={() => {
+                                if (sortingKey !== column.key) {
+                                  setSortingKey(column.key);
+                                  setSortingDirection(-1);
+                                } else {
+                                  setSortingDirection(prev => (prev === 1 ? -1 : 1));
+                                }
+                              }}
+                            >
+                              {column.label}
+                            </button>
+                            {sortingKey === column.key && sortingDirection === -1 && <Icon name="angle-down" />}
+                            {sortingKey === column.key && sortingDirection === 1 && <Icon name="angle-up" />}
+                          </div>
+                        </th>
                       ))}
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {sortedItems.map((item, rowIndex) => (
+                      <tr key={item.id} {...getTableRowRoleProps({ tableRole, rowIndex, firstIndex: 0 })}>
+                        {columnDefinitions.map((column, colIndex) => (
+                          <td
+                            key={column.key}
+                            className={styles['custom-table-cell']}
+                            {...getTableCellRoleProps({ tableRole, colIndex })}
+                          >
+                            {column.render(item)}
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </GridNavigationProvider>
           </Container>
         </ContentLayout>
       }
     />
+  );
+}
+
+function InlineInput({ value: initialValue }: { value: string }) {
+  const [value, setValue] = useState(initialValue);
+  return (
+    <div style={{ minWidth: 200 }}>
+      <Input ariaLabel="Inline input" value={value} onChange={e => setValue(e.detail.value)} />
+    </div>
+  );
+}
+
+function InlineSelect({ value: initialValue }: { value: string }) {
+  const options = range(0, 5).map(i => ({ value: initialValue + i }));
+  const [selectedOption, setSelectedOption] = useState(options[0]);
+  return (
+    <Select
+      selectedOption={selectedOption}
+      options={options}
+      onChange={e => setSelectedOption(e.detail.selectedOption as any)}
+      expandToViewport={true}
+    />
+  );
+}
+
+function InlineRadio({ value: initialValue }: { value: string }) {
+  const items = range(0, 2).map(i => ({ value: initialValue + i, label: initialValue + i }));
+  const [value, setValue] = useState(initialValue + 0);
+  return (
+    <div style={{ minWidth: 200 }}>
+      <RadioGroup items={items} value={value} onChange={e => setValue(e.detail.value)} />
+    </div>
   );
 }
 
