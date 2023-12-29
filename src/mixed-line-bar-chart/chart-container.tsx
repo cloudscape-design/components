@@ -402,6 +402,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
       !nodeBelongs(containerRefObject.current, blurTarget)
     ) {
       setHighlightedPoint(null);
+      setHighlightedGroupIndex(null);
       setVerticalMarkerX(null);
       if (!plotContainerRef?.current?.contains(blurTarget)) {
         clearHighlightedSeries();
@@ -504,14 +505,6 @@ export default function ChartContainer<T extends ChartDataTypes>({
 
   const isRefresh = useVisualRefresh();
 
-  // This is covered by integration test
-  /* istanbul ignore next */
-  const showPopoverOfHighlightedItem = () => {
-    if (!isPopoverOpen && (highlightedX !== null || highlightedPoint !== null)) {
-      showPopover();
-    }
-  };
-
   return (
     <CartesianChartContainer
       ref={containerRef}
@@ -553,7 +546,6 @@ export default function ChartContainer<T extends ChartDataTypes>({
           onFocus={onSVGFocus}
           onBlur={onSVGBlur}
           onKeyDown={onSVGKeyDown}
-          showPopoverOfHighlightedItem={showPopoverOfHighlightedItem}
         >
           <line
             ref={plotMeasureRef}

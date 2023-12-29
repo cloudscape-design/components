@@ -303,7 +303,6 @@ describe('event handlers', () => {
   });
 
   test('application events', () => {
-    const showPopoverOfHighlightedItem = jest.fn();
     const { plotWrapper, applicationWrapper } = renderPlot(
       <ChartPlot
         width={0}
@@ -314,7 +313,6 @@ describe('event handlers', () => {
         onFocus={onFocus}
         onBlur={onBlur}
         onKeyDown={onKeyDown}
-        showPopoverOfHighlightedItem={showPopoverOfHighlightedItem}
       >
         <text>Test</text>
       </ChartPlot>
@@ -322,7 +320,6 @@ describe('event handlers', () => {
 
     plotWrapper.fireEvent(new MouseEvent('focus', { bubbles: true }));
     plotWrapper.keydown(KeyCode.enter);
-    expect(showPopoverOfHighlightedItem).toBeCalledTimes(1);
 
     applicationWrapper.keydown(KeyCode.left);
     applicationWrapper.blur();
