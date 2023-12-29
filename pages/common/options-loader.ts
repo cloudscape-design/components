@@ -28,6 +28,7 @@ const pendingRequests: Array<PendingRequest> = (window.__pendingRequests = []);
 
 export interface OptionsLoaderProps {
   pageSize?: number;
+  timeout?: number;
   randomErrors?: boolean;
 }
 
@@ -42,7 +43,7 @@ export interface FetchItemsProps<Item> {
   sourceItems?: readonly Item[];
 }
 
-export function useOptionsLoader<Item>({ pageSize = 25, randomErrors = false }: OptionsLoaderProps) {
+export function useOptionsLoader<Item>({ pageSize = 25, timeout = 1000, randomErrors = false }: OptionsLoaderProps) {
   const [items, setItems] = useState(new Array<Item>());
   const [status, setStatus] = useState<'pending' | 'loading' | 'finished' | 'error'>('pending');
   const [filteringText, setFilteringText] = useState('');
@@ -72,7 +73,7 @@ export function useOptionsLoader<Item>({ pageSize = 25, randomErrors = false }: 
           const nextItems = sourceItems.slice(pageNumber * pageSize, (pageNumber + 1) * pageSize);
           resolve({ items: nextItems, hasNextPage: items.length + nextItems.length < sourceItems.length });
         }
-      }, 1000)
+      }, timeout)
     );
   }
 
