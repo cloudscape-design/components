@@ -26,9 +26,8 @@ interface ExtendedWindow extends Window {
 declare const window: ExtendedWindow;
 const pendingRequests: Array<PendingRequest> = (window.__pendingRequests = []);
 
-export interface OptionsLoaderProps<Item> {
+export interface OptionsLoaderProps {
   pageSize?: number;
-  sourceItems?: readonly Item[];
   randomErrors?: boolean;
 }
 
@@ -37,68 +36,107 @@ export interface OptionsLoaderState<Item> {
   status: AutosuggestProps.StatusType;
 }
 
-export interface FetchItemsProps {
+export interface FetchItemsProps<Item> {
   firstPage: boolean;
   filteringText: string;
+  sourceItems?: readonly Item[];
 }
 
-export function useOptionsLoader<Item>({ pageSize = 25, sourceItems, randomErrors = false }: OptionsLoaderProps<Item>) {
+export function useOptionsLoader<Item>({ pageSize = 25, randomErrors = false }: OptionsLoaderProps) {
   const [items, setItems] = useState(new Array<Item>());
   const [status, setStatus] = useState<'pending' | 'loading' | 'finished' | 'error'>('pending');
-  const filteringTextRef = useRef('');
-  const pageNumberRef = useRef(0);
+  const [filteringText, setFilteringText] = useState('');
+  const requestsRef = useRef(new Array<FakeRequest<APIResponse>>());
 
-  function fetchSourceItems() {
-    if (!sourceItems) {
-      throw new Error('Invariant violation: no source items.');
-    }
-    return new Promise<APIResponse>((resolve, reject) =>
+  function cancelRequests() {
+    requestsRef.current.forEach(rq => (rq.cancelled = true));
+    requestsRef.current = [];
+  }
+
+  function hasPendingRequest() {
+    return requestsRef.current.some(rq => !rq.resolved && !rq.rejected);
+  }
+
+  function getNextPageNumber() {
+    const resolvedRequests = requestsRef.current.filter(rq => rq.resolved);
+    const lastResolved = resolvedRequests[resolvedRequests.length - 1];
+    return !lastResolved ? 0 : lastResolved.pageNumber + 1;
+  }
+
+  function fetchSourceItems(pageNumber: number, sourceItems: readonly Item[]) {
+    return new FakeRequest<APIResponse>(pageNumber, (resolve, reject) =>
       setTimeout(() => {
         if (randomErrors && Math.random() < 0.3) {
           reject();
         } else {
-          const pageNumber = pageNumberRef.current;
-          const items = sourceItems.slice(pageNumber * pageSize, (pageNumber + 1) * pageSize);
-          const hasNextPage = items[items.length - 1] !== sourceItems[sourceItems.length - 1];
-          resolve({ items, hasNextPage });
+          const nextItems = sourceItems.slice(pageNumber * pageSize, (pageNumber + 1) * pageSize);
+          resolve({ items: nextItems, hasNextPage: items.length + nextItems.length < sourceItems.length });
         }
       }, 1000)
     );
   }
 
-  async function fetchItems({ firstPage, filteringText }: FetchItemsProps) {
-    try {
-      if (firstPage) {
-        setItems([]);
-        filteringTextRef.current = filteringText;
-        pageNumberRef.current = 0;
-      }
-      if (filteringTextRef.current !== filteringText) {
-        // There is another request in progress, discard the result of this one.
-        return;
-      }
-      if (items.length === sourceItems?.length) {
-        // All items are loaded.
-        return;
-      }
-
-      setStatus('loading');
-
-      const pageNumber = pageNumberRef.current;
-      const response = await (sourceItems
-        ? fetchSourceItems()
-        : new Promise<APIResponse>((resolve, reject) =>
-            pendingRequests.push({ resolve, reject, params: { filteringText, pageNumber } })
-          ));
-
-      pageNumberRef.current += 1;
-
-      setItems(prev => [...prev, ...(response.items as Item[])]);
-      setStatus(response.hasNextPage ? 'pending' : 'finished');
-    } catch (error) {
-      setStatus('error');
-    }
+  function issuePendingRequest(pageNumber: number, filteringText: string) {
+    const params = { filteringText, pageNumber };
+    return new FakeRequest<APIResponse>(pageNumber, (resolve, reject) =>
+      pendingRequests.push({ resolve, reject, params })
+    );
   }
 
-  return { items, status, fetchItems };
+  function fetchItems({ sourceItems, firstPage, filteringText: nextFilteringText }: FetchItemsProps<Item>) {
+    if (firstPage) {
+      setItems([]);
+      setFilteringText(nextFilteringText);
+      cancelRequests();
+    }
+
+    if (hasPendingRequest()) {
+      return;
+    }
+
+    setStatus('loading');
+
+    const pageNumber = getNextPageNumber();
+    const request = sourceItems
+      ? fetchSourceItems(pageNumber, sourceItems)
+      : issuePendingRequest(pageNumber, nextFilteringText);
+    requestsRef.current.push(request);
+
+    request.promise
+      .then(response => {
+        setItems(prev => [...prev, ...(response.items as Item[])]);
+        setStatus(response.hasNextPage ? 'pending' : 'finished');
+      })
+      .catch(() => {
+        setStatus('error');
+      });
+  }
+
+  return { items, status, filteringText, fetchItems };
+}
+
+class FakeRequest<T> {
+  pageNumber: number;
+  promise: Promise<T>;
+  cancelled = false;
+  resolved = false;
+  rejected = false;
+
+  constructor(pageNumber: number, onResolve: (resolve: (value: T) => void, reject: () => void) => void) {
+    this.pageNumber = pageNumber;
+    this.promise = new Promise((resolve, reject) => {
+      if (!this.cancelled) {
+        onResolve(
+          value => {
+            this.resolved = true;
+            resolve(value);
+          },
+          () => {
+            this.rejected = true;
+            reject();
+          }
+        );
+      }
+    });
+  }
 }

@@ -5,6 +5,7 @@ import Autosuggest from '~components/autosuggest';
 import { useOptionsLoader } from '../common/options-loader';
 import AppContext, { AppContextType } from '../app/app-context';
 import { range } from 'lodash';
+import { AutosuggestProps } from '~components/autosuggest/interfaces';
 
 const sourceItems = range(0, 100).map(index => ({ value: `Option #${index}` }));
 
@@ -32,10 +33,7 @@ export default function Page() {
     },
     setUrlParams,
   } = useContext(AppContext as PageContext);
-  const { items, status, fetchItems } = useOptionsLoader({
-    sourceItems: fakeResponses ? sourceItems : undefined,
-    randomErrors: randomErrors,
-  });
+  const { items, status, fetchItems } = useOptionsLoader<AutosuggestProps.Option>({ randomErrors });
   return (
     <div className="awsui-util-p-l">
       <h1>Autosuggest async</h1>
@@ -94,7 +92,9 @@ export default function Page() {
         recoveryText="Retry"
         finishedText={showFinishedText ? 'End of all results' : undefined}
         onChange={event => setValue(event.detail.value)}
-        onLoadItems={({ detail: { firstPage, filteringText } }) => fetchItems({ firstPage, filteringText })}
+        onLoadItems={({ detail: { firstPage, filteringText } }) =>
+          fetchItems({ firstPage, filteringText, sourceItems: fakeResponses ? sourceItems : undefined })
+        }
         enteredTextLabel={enteredTextLabel}
         ariaLabel="async autosuggest"
         selectedAriaLabel="Selected"
