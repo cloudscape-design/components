@@ -103,6 +103,10 @@ export function getTableColHeaderRoleProps(options: {
     nativeProps['aria-sort'] = getAriaSort(options.sortingStatus);
   }
 
+  if (options.tableRole === 'grid') {
+    nativeProps.tabIndex = -1;
+  }
+
   return nativeProps;
 }
 
@@ -115,6 +119,10 @@ export function getTableCellRoleProps(options: { tableRole: TableRole; colIndex:
 
   if (options.isRowHeader) {
     nativeProps.scope = 'row';
+  }
+
+  if (options.tableRole === 'grid') {
+    nativeProps.tabIndex = -1;
   }
 
   return nativeProps;

@@ -13,13 +13,8 @@ const FOCUSABLES_SELECTOR = `[tabIndex="0"],[tabIndex="${PSEUDO_FOCUSABLE_TAB_IN
  * Finds focused cell props corresponding the focused element inside the table.
  * The function relies on ARIA colindex/rowindex attributes being correctly applied.
  */
-export function findFocusinCell(event: FocusEvent): null | FocusedCell {
-  if (!(event.target instanceof HTMLElement)) {
-    return null;
-  }
-  const element = event.target;
-
-  const cellElement = element.closest('td,th') as null | HTMLTableCellElement;
+export function findFocusedCell(focusedElement: HTMLElement): null | FocusedCell {
+  const cellElement = focusedElement.closest('td,th') as null | HTMLTableCellElement;
   const rowElement = cellElement?.closest('tr');
 
   if (!cellElement || !rowElement) {
@@ -33,53 +28,52 @@ export function findFocusinCell(event: FocusEvent): null | FocusedCell {
   }
 
   const cellFocusables = getFocusables(cellElement);
-  const elementIndex = cellFocusables.indexOf(element);
+  const elementIndex = cellFocusables.indexOf(focusedElement);
 
-  return { rowIndex, colIndex, rowElement, cellElement, element, elementIndex };
+  return { rowIndex, colIndex, rowElement, cellElement, element: focusedElement, elementIndex };
 }
 
 /**
  * Moves table focus in the provided direction. The focus can transition between cells or interactive elements inside cells.
  */
-export function moveFocusBy(table: HTMLTableElement, from: FocusedCell, delta: { y: number; x: number }) {
+export function getNextFocusable(table: HTMLTableElement, from: FocusedCell, delta: { y: number; x: number }) {
   // Find next row to move focus into (can be null if the top/bottom is reached).
   const targetAriaRowIndex = from.rowIndex + delta.y;
   const targetRow = findTableRowByAriaRowIndex(table, targetAriaRowIndex, delta.y);
   if (!targetRow) {
-    return;
+    return null;
   }
 
   // Move focus to the next interactive cell content element if available.
   const cellFocusables = getFocusables(from.cellElement);
   const nextElementIndex = from.elementIndex + delta.x;
   if (delta.x && from.elementIndex !== -1 && 0 <= nextElementIndex && nextElementIndex < cellFocusables.length) {
-    focus(cellFocusables[nextElementIndex]);
-    return;
+    return cellFocusables[nextElementIndex];
   }
 
   // Find next cell to focus or move focus into (can be null if the left/right edge is reached).
   const targetAriaColIndex = from.colIndex + delta.x;
   const targetCell = findTableRowCellByAriaColIndex(targetRow, targetAriaColIndex, delta.x);
   if (!targetCell) {
-    return;
+    return null;
   }
 
   // When target cell matches the current cell it means we reached the left or right boundary.
-  if (targetCell === from.cellElement) {
-    return;
+  if (targetCell === from.cellElement && delta.x !== 0) {
+    return null;
   }
 
   // Move focus on the cell interactive content or the cell itself.
   const targetCellFocusables = getFocusables(targetCell);
   const focusIndex = delta.x < 0 ? targetCellFocusables.length - 1 : delta.x > 0 ? 0 : from.elementIndex;
   const focusTarget = targetCellFocusables[focusIndex] ?? targetCell;
-  focus(focusTarget);
+  return focusTarget;
 }
 
 /**
  * Makes the cell element, the first interactive element or the first cell of the table user-focusable.
  */
-export function ensureSingleFocusable(table: HTMLElement, cell: null | FocusedCell) {
+export function ensureSingleFocusable(table: HTMLTableElement, cell: null | FocusedCell) {
   const firstTableCell = table.querySelector('td,th') as null | HTMLTableCellElement;
 
   // A single element of the table is made user-focusable.
@@ -87,8 +81,8 @@ export function ensureSingleFocusable(table: HTMLElement, cell: null | FocusedCe
   let focusTarget: null | HTMLElement = (firstTableCell && getFocusables(firstTableCell)[0]) ?? firstTableCell;
 
   // When a navigation-focused element is present in the table it is used for user-navigation instead.
-  if (cell && table.contains(cell.element) && isUserFocusable(cell.element)) {
-    focusTarget = cell.element;
+  if (cell) {
+    focusTarget = getNextFocusable(table, cell, { x: 0, y: 0 });
   }
 
   setTabIndex(focusTarget, 0);
@@ -216,17 +210,8 @@ function findTableRowCellByAriaColIndex(tableRow: HTMLTableRowElement, targetAri
   return targetCell;
 }
 
-function focus(element: null | HTMLElement) {
-  setTabIndex(element, 0);
-  element?.focus();
-}
-
 function setTabIndex(element: null | HTMLElement, tabIndex: number) {
   if (element && element.tabIndex !== tabIndex) {
     element.tabIndex = tabIndex;
   }
-}
-
-function isUserFocusable(element: HTMLElement) {
-  return element.matches(FOCUSABLES_SELECTOR);
 }
