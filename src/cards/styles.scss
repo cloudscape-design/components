@@ -21,7 +21,7 @@
     @include styles.base-pseudo-element;
     // Reset border color to prevent it from flashing black during card selection animation
     border-color: transparent;
-    border-top: awsui.$border-container-top-width solid awsui.$color-border-container-top;
+    border-block-start: awsui.$border-container-top-width solid awsui.$color-border-container-top;
     border-start-start-radius: awsui.$border-radius-container;
     border-start-end-radius: awsui.$border-radius-container;
     border-end-start-radius: awsui.$border-radius-container;
@@ -76,7 +76,7 @@
   @for $i from 1 through 20 {
     &.list-grid-#{$i} {
       > .card {
-        width: math.div(100%, $i);
+        inline-size: math.div(100%, $i);
       }
     }
   }
@@ -85,9 +85,9 @@
 .selection-control {
   position: absolute;
   box-sizing: border-box;
-  width: calc(#{awsui.$size-control} + (2 * #{awsui.$space-card-horizontal}));
-  top: 0;
-  right: 0;
+  inline-size: calc(#{awsui.$size-control} + (2 * #{awsui.$space-card-horizontal}));
+  inset-block-start: 0;
+  inset-inline-end: 0;
   padding-block: awsui.$space-card-vertical;
   padding-inline: awsui.$space-card-horizontal;
 }
@@ -131,20 +131,20 @@
     margin-inline-end: 0;
     padding-block: awsui.$space-card-vertical;
     padding-inline: awsui.$space-card-horizontal;
-    width: 100%;
-    min-width: 0;
+    inline-size: 100%;
+    min-inline-size: 0;
     @include card-style;
   }
   &-header {
     @include styles.font-heading-m;
     &-inner {
-      width: 100%;
+      inline-size: 100%;
       display: inline-block;
     }
   }
   &-selectable {
     > .card-inner > .card-header {
-      width: 90%;
+      inline-size: 90%;
     }
   }
   &-selected {
