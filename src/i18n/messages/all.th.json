@@ -1,0 +1,356 @@
+{
+  "[charts]": {
+    "loadingText": "กำลังโหลดแผนภูมิ",
+    "errorText": "ไม่สามารถดึงข้อมูลได้ โปรดลองอีกครั้งในภายหลัง",
+    "recoveryText": "ลองอีกครั้ง",
+    "i18nStrings.filterLabel": "กรองข้อมูลที่แสดง",
+    "i18nStrings.filterPlaceholder": "กรองข้อมูล",
+    "i18nStrings.legendAriaLabel": "รายละเอียด",
+    "i18nStrings.chartAriaRoleDescription": "แผนภูมิ",
+    "i18nStrings.xAxisAriaRoleDescription": "แกน x",
+    "i18nStrings.yAxisAriaRoleDescription": "แกน y"
+  },
+  "alert": {
+    "dismissAriaLabel": "ยกเลิกการแจ้งเตือน"
+  },
+  "annotation-context": {
+    "i18nStrings.nextButtonText": "ถัดไป",
+    "i18nStrings.previousButtonText": "ก่อนหน้า",
+    "i18nStrings.finishButtonText": "เสร็จสิ้น",
+    "i18nStrings.labelDismissAnnotation": "ยกเลิกคำอธิบายประกอบ",
+    "i18nStrings.stepCounterText": "ขั้นตอน {stepNumber} จาก {totalStepCount}",
+    "i18nStrings.taskTitle": "งาน {taskNumber}: {taskTitle}",
+    "i18nStrings.labelHotspot": "{openState, select, true {ปิดคำอธิบายประกอบสำหรับขั้นตอนของ {stepNumber} จาก {totalStepCount}} false {เปิดคำอธิบายประกอบสำหรับขั้นตอนของ {stepNumber} จาก {totalStepCount}} other {}}"
+  },
+  "app-layout": {
+    "ariaLabels.drawers": "ลิ้นชัก",
+    "ariaLabels.drawersOverflow": "ลิ้นชักล้น",
+    "ariaLabels.drawersOverflowWithBadge": "ลิ้นชักล้นพร้อมป้าย",
+    "ariaLabels.navigation": "การนำทางด้านข้าง",
+    "ariaLabels.navigationClose": "ปิดการนำทางด้านข้าง",
+    "ariaLabels.navigationToggle": "เปิดการนำทางด้านข้าง",
+    "ariaLabels.notifications": "การแจ้งเตือน",
+    "ariaLabels.tools": "แผงช่วยเหลือ",
+    "ariaLabels.toolsClose": "ปิดแผงช่วยเหลือ",
+    "ariaLabels.toolsToggle": "เปิดแผงช่วยเหลือ"
+  },
+  "area-chart": {
+    "i18nStrings.detailTotalLabel": "ทั้งหมด"
+  },
+  "attribute-editor": {
+    "removeButtonText": "ลบ"
+  },
+  "autosuggest": {
+    "errorIconAriaLabel": "ข้อผิดพลาด",
+    "selectedAriaLabel": "เลือกไว้",
+    "enteredTextLabel": "ใช้: \"{value}\"",
+    "recoveryText": "ลองอีกครั้ง"
+  },
+  "breadcrumb-group": {
+    "expandAriaLabel": "แสดงเส้นทาง"
+  },
+  "calendar": {
+    "nextMonthAriaLabel": "เดือนถัดไป",
+    "previousMonthAriaLabel": "เดือนก่อนหน้า",
+    "todayAriaLabel": "วันนี้"
+  },
+  "cards": {
+    "ariaLabels.selectionGroupLabel": "การเลือกรายการ"
+  },
+  "code-editor": {
+    "i18nStrings.loadingState": "กำลังโหลดโปรแกรมแก้ไขรหัส",
+    "i18nStrings.errorState": "มีข้อผิดพลาดในการโหลดโปรแกรมแก้ไขรหัส",
+    "i18nStrings.errorStateRecovery": "ลองอีกครั้ง",
+    "i18nStrings.editorGroupAriaLabel": "โปรแกรมแก้ไขรหัส",
+    "i18nStrings.statusBarGroupAriaLabel": "แถบสถานะ",
+    "i18nStrings.cursorPosition": "บรรทัด {row} คอลัมน์ {column}",
+    "i18nStrings.errorsTab": "ข้อผิดพลาด",
+    "i18nStrings.warningsTab": "คำเตือน",
+    "i18nStrings.preferencesButtonAriaLabel": "การตั้งค่า",
+    "i18nStrings.paneCloseButtonAriaLabel": "ปิด",
+    "i18nStrings.preferencesModalHeader": "การตั้งค่า",
+    "i18nStrings.preferencesModalCancel": "ยกเลิก",
+    "i18nStrings.preferencesModalConfirm": "ยืนยัน",
+    "i18nStrings.preferencesModalWrapLines": "ตัดบรรทัด",
+    "i18nStrings.preferencesModalTheme": "ธีม",
+    "i18nStrings.preferencesModalLightThemes": "ธีมสีอ่อน",
+    "i18nStrings.preferencesModalDarkThemes": "ธีมสีเข้ม"
+  },
+  "collection-preferences": {
+    "title": "การตั้งค่า",
+    "confirmLabel": "ยืนยัน",
+    "cancelLabel": "ยกเลิก",
+    "pageSizePreference.title": "ขนาดหน้าเว็บ",
+    "wrapLinesPreference.label": "ตัดบรรทัด",
+    "wrapLinesPreference.description": "เลือกเพื่อดูข้อความทั้งหมดและตัดบรรทัด",
+    "stripedRowsPreference.label": "แถวลายทาง",
+    "stripedRowsPreference.description": "เลือกเพื่อเพิ่มแถวเฉดสลับกัน",
+    "contentDensityPreference.label": "โหมดบีบอัด",
+    "contentDensityPreference.description": "เลือกเพื่อแสดงเนื้อหาในโหมดที่หนาแน่นและบีบอัดมากขึ้น",
+    "contentDisplayPreference.title": "การตั้งค่าคอลัมน์",
+    "contentDisplayPreference.description": "ปรับแต่งการมองเห็นและลำดับคอลัมน์",
+    "contentDisplayPreference.dragHandleAriaLabel": "ลากที่จับ",
+    "contentDisplayPreference.dragHandleAriaDescription": "ใช้ปุ่ม Space หรือ Enter เพื่อเปิดใช้งานการลากสำหรับรายการ จากนั้นใช้ปุ่มลูกศรเพื่อย้ายตำแหน่งของรายการ หากต้องการย้ายตำแหน่งให้เสร็จสิ้น ให้ใช้ปุ่ม Space หรือ Enter หรือหากต้องการยกเลิกการย้ายให้ใช้ปุ่ม Escape",
+    "contentDisplayPreference.liveAnnouncementDndStarted": "รับรายการที่ตำแหน่ง {position} จาก {total}",
+    "contentDisplayPreference.liveAnnouncementDndDiscarded": "ยกเลิกการจัดเรียงใหม่",
+    "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {ย้ายรายการกลับไปยังตำแหน่ง {currentPosition} จาก {total}} false {ย้ายรายการไปยังตำแหน่ง {currentPosition} จาก {total}} other {}}",
+    "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {รายการย้ายกลับไปยังตำแหน่งเดิม {initialPosition} จาก {total}} false {รายการย้ายจากตำแหน่ง {initialPosition} ไปยังตำแหน่ง {finalPosition} จาก {total}} other {}}"
+  },
+  "date-range-picker": {
+    "i18nStrings.relativeModeTitle": "โหมดสัมพัทธ์",
+    "i18nStrings.absoluteModeTitle": "โหมดสัมบูรณ์",
+    "i18nStrings.relativeRangeSelectionHeading": "เลือกช่วง",
+    "i18nStrings.cancelButtonLabel": "ยกเลิก",
+    "i18nStrings.clearButtonLabel": "ล้างและยกเลิก",
+    "i18nStrings.applyButtonLabel": "นำไปใช้",
+    "i18nStrings.customRelativeRangeOptionLabel": "ช่วงที่กำหนดเอง",
+    "i18nStrings.customRelativeRangeOptionDescription": "ตั้งค่าช่วงที่กำหนดเองในอดีต",
+    "i18nStrings.customRelativeRangeUnitLabel": "หน่วยเวลา",
+    "i18nStrings.customRelativeRangeDurationLabel": "ระยะเวลา",
+    "i18nStrings.customRelativeRangeDurationPlaceholder": "ป้อนระยะเวลา",
+    "i18nStrings.startDateLabel": "วันที่เริ่มต้น",
+    "i18nStrings.startTimeLabel": "เวลาเริ่มต้น",
+    "i18nStrings.endDateLabel": "วันสิ้นสุด",
+    "i18nStrings.endTimeLabel": "เวลาสิ้นสุด",
+    "i18nStrings.dateTimeConstraintText": "สำหรับวันที่ให้ใช้ YYYY/MM/DD สำหรับเวลาให้ใช้รูปแบบ 24 ชม.",
+    "i18nStrings.errorIconAriaLabel": "ข้อผิดพลาด",
+    "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "ช่วงที่เลือกตั้งแต่ {startDate} ถึง {endDate}",
+    "i18nStrings.formatRelativeRange": "{amount, plural, one {{amount} {unit} ครั้งล่าสุด} other {{amount} {unit} ครั้งล่าสุด}}",
+    "i18nStrings.formatUnit": "{amount, plural, one {{unit}} other {{unit} วินาที}}"
+  },
+  "drawer": {
+    "i18nStrings.loadingText": "กำลังโหลดเนื้อหา"
+  },
+  "flashbar": {
+    "i18nStrings.ariaLabel": "การแจ้งเตือน",
+    "i18nStrings.errorIconAriaLabel": "ข้อผิดพลาด",
+    "i18nStrings.inProgressIconAriaLabel": "กำลังดำเนินการ",
+    "i18nStrings.infoIconAriaLabel": "ข้อมูล",
+    "i18nStrings.notificationBarAriaLabel": "การแจ้งเตือนทั้งหมด",
+    "i18nStrings.notificationBarText": "การแจ้งเตือน",
+    "i18nStrings.successIconAriaLabel": "สำเร็จ",
+    "i18nStrings.warningIconAriaLabel": "คำเตือน"
+  },
+  "form-field": {
+    "i18nStrings.errorIconAriaLabel": "ข้อผิดพลาด"
+  },
+  "form": {
+    "errorIconAriaLabel": "ข้อผิดพลาด"
+  },
+  "help-panel": {
+    "loadingText": "กำลังโหลดเนื้อหา"
+  },
+  "input": {
+    "clearAriaLabel": "ล้าง"
+  },
+  "link": {
+    "externalIconAriaLabel": "เปิดในแท็บใหม่"
+  },
+  "modal": {
+    "closeAriaLabel": "ปิดโมแดล"
+  },
+  "multiselect": {
+    "deselectAriaLabel": "ลบ {option__label}"
+  },
+  "pagination": {
+    "ariaLabels.nextPageLabel": "หน้าถัดไป",
+    "ariaLabels.pageLabel": "หน้า {pageNumber} จากทุกหน้า",
+    "ariaLabels.previousPageLabel": "หน้าก่อนหน้า"
+  },
+  "pie-chart": {
+    "i18nStrings.detailsValue": "ค่า",
+    "i18nStrings.detailsPercentage": "เปอร์เซ็นต์",
+    "i18nStrings.chartAriaRoleDescription": "แผนภูมิวงกลม",
+    "i18nStrings.segmentAriaRoleDescription": "ส่วน"
+  },
+  "popover": {
+    "dismissAriaLabel": "ปิดป๊อปโอเวอร์"
+  },
+  "property-filter": {
+    "i18nStrings.allPropertiesLabel": "คุณสมบัติทั้งหมด",
+    "i18nStrings.applyActionText": "นำไปใช้",
+    "i18nStrings.cancelActionText": "ยกเลิก",
+    "i18nStrings.clearFiltersText": "ล้างตัวกรอง",
+    "i18nStrings.editTokenHeader": "แก้ไขตัวกรอง",
+    "i18nStrings.groupPropertiesText": "เลิกทำ",
+    "i18nStrings.groupValuesText": "ค่า",
+    "i18nStrings.operationAndText": "และ",
+    "i18nStrings.operationOrText": "หรือ",
+    "i18nStrings.operatorContainsText": "ประกอบด้วย",
+    "i18nStrings.operatorDoesNotContainText": "ไม่มี",
+    "i18nStrings.operatorDoesNotEqualText": "ไม่เท่ากับ",
+    "i18nStrings.operatorEqualsText": "เท่ากับ",
+    "i18nStrings.operatorGreaterOrEqualText": "มากกว่าหรือเท่ากับ",
+    "i18nStrings.operatorGreaterText": "มากกว่า",
+    "i18nStrings.operatorLessOrEqualText": "น้อยกว่าหรือเท่ากับ",
+    "i18nStrings.operatorLessText": "น้อยกว่า",
+    "i18nStrings.operatorStartsWithText": "เริ่มต้นด้วย",
+    "i18nStrings.operatorText": "ตัวดำเนินการ",
+    "i18nStrings.operatorsText": "ตัวดำเนินการ",
+    "i18nStrings.propertyText": "คุณสมบัติ",
+    "i18nStrings.tokenLimitShowFewer": "แสดงน้อยลง",
+    "i18nStrings.tokenLimitShowMore": "แสดงเพิ่มเติม",
+    "i18nStrings.valueText": "ค่า",
+    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {ลบตัวกรอง {token__propertyKey} เท่ากับ {token__value}} not_equals {ลบตัวกรอง {token__propertyKey} ไม่เท่ากับ {token__value}} greater_than {ลบตัวกรอง {token__propertyKey} มากกว่า {token__value}} greater_than_equal {ลบตัวกรอง {token__propertyKey} มากกว่าหรือเท่ากับ {token__value}} less_than {ลบตัวกรอง {token__propertyKey} น้อยกว่า {token__value}} less_than_equal {ลบตัวกรอง {token__propertyKey} น้อยกว่าหรือเท่ากับ {token__value}} contains {ลบตัวกรอง {token__propertyKey} ประกอบด้วย {token__value}} not_contains {ลบตัวกรอง {token__propertyKey} ไม่มี {token__value}} starts_with {ลบตัวกรอง {token__propertyKey} เริ่มต้นด้วย {token__value}} other {}}"
+  },
+  "s3-resource-selector": {
+    "i18nStrings.inContextSelectPlaceholder": "เลือกเวอร์ชัน",
+    "i18nStrings.inContextBrowseButton": "เรียกดู S3",
+    "i18nStrings.inContextViewButton": "ดู",
+    "i18nStrings.inContextViewButtonAriaLabel": "เปิดในแท็บใหม่",
+    "i18nStrings.inContextLoadingText": "กำลังโหลดทรัพยากร",
+    "i18nStrings.inContextUriLabel": "S3 URI",
+    "i18nStrings.inContextVersionSelectLabel": "เวอร์ชันวัตถุ",
+    "i18nStrings.modalTitle": "เลือกไฟล์เก็บถาวรใน S3",
+    "i18nStrings.modalCancelButton": "ยกเลิก",
+    "i18nStrings.modalSubmitButton": "เลือก",
+    "i18nStrings.modalBreadcrumbRootItem": "บัคเก็ต S3",
+    "i18nStrings.selectionBuckets": "บัคเก็ต",
+    "i18nStrings.selectionObjects": "วัตถุ",
+    "i18nStrings.selectionVersions": "เวอร์ชัน",
+    "i18nStrings.selectionBucketsSearchPlaceholder": "ค้นหาบัคเก็ต",
+    "i18nStrings.selectionObjectsSearchPlaceholder": "ค้นหาวัตถุตามคำนำหน้า",
+    "i18nStrings.selectionVersionsSearchPlaceholder": "ค้นหาเวอร์ชัน",
+    "i18nStrings.selectionBucketsLoading": "โหลดบัคเก็ต",
+    "i18nStrings.selectionBucketsNoItems": "ไม่มีบัคเก็ต",
+    "i18nStrings.selectionObjectsLoading": "กำลังโหลดวัตถุ",
+    "i18nStrings.selectionObjectsNoItems": "ไม่มีวัตถุ",
+    "i18nStrings.selectionVersionsLoading": "กำลังโหลดเวอร์ชัน",
+    "i18nStrings.selectionVersionsNoItems": "ไม่มีเวอร์ชัน",
+    "i18nStrings.filteringNoMatches": "ไม่มีที่ตรงกัน",
+    "i18nStrings.filteringCantFindMatch": "เราไม่พบคู่ที่ตรงกัน",
+    "i18nStrings.clearFilterButtonText": "ล้างตัวกรอง",
+    "i18nStrings.columnBucketID": "ID",
+    "i18nStrings.columnBucketName": "ชื่อ",
+    "i18nStrings.columnBucketCreationDate": "วันที่สร้าง",
+    "i18nStrings.columnBucketRegion": "ภูมิภาค",
+    "i18nStrings.columnObjectKey": "คีย์",
+    "i18nStrings.columnObjectLastModified": "แก้ไขล่าสุด",
+    "i18nStrings.columnObjectSize": "ขนาด",
+    "i18nStrings.columnVersionID": "รหัสเวอร์ชัน",
+    "i18nStrings.columnVersionLastModified": "แก้ไขล่าสุด",
+    "i18nStrings.columnVersionSize": "ขนาด",
+    "i18nStrings.validationPathMustBegin": "เส้นทางต้องเริ่มต้นด้วย s3://จึงจะถูกต้อง",
+    "i18nStrings.validationBucketLowerCase": "ชื่อบัคเก็ตต้องเริ่มต้นด้วยตัวอักษรตัวพิมพ์เล็กหรือตัวเลข",
+    "i18nStrings.validationBucketMustNotContain": "ชื่อบัคเก็ตต้องไม่มีตัวอักษรตัวพิมพ์ใหญ่",
+    "i18nStrings.validationBucketLength": "ชื่อบัคเก็ตต้องมีตั้งแต่ 3 ถึง 63 ตัวอักษร",
+    "i18nStrings.validationBucketMustComplyDns": "ชื่อบัคเก็ตต้องเป็นไปตามข้อตกลงการตั้งชื่อ DNS",
+    "i18nStrings.labelSortedDescending": "{columnName} เรียงลำดับจากมากไปน้อย",
+    "i18nStrings.labelSortedAscending": "{columnName} เรียงลำดับจากน้อยไปมาก",
+    "i18nStrings.labelNotSorted": "{columnName} ไม่ได้เรียงลำดับ",
+    "i18nStrings.labelsBucketsSelection.selectionGroupLabel": "บัคเก็ต",
+    "i18nStrings.labelsBucketsSelection.itemSelectionLabel": "{item__Name}",
+    "i18nStrings.labelsObjectsSelection.selectionGroupLabel": "วัตถุ",
+    "i18nStrings.labelsObjectsSelection.itemSelectionLabel": "{item__Key}",
+    "i18nStrings.labelsVersionsSelection.selectionGroupLabel": "เวอร์ชัน",
+    "i18nStrings.labelsVersionsSelection.itemSelectionLabel": "{item__VersionId}",
+    "i18nStrings.labelFiltering": "ค้นหา {itemsType}",
+    "i18nStrings.labelRefresh": "รีเฟรชข้อมูล",
+    "i18nStrings.labelBreadcrumbs": "การนำทาง S3",
+    "i18nStrings.filteringCounterText": "{count, plural, one {1 คู่ที่ตรงกัน} other {{count} คู่ที่ตรงกัน}}"
+  },
+  "select": {
+    "errorIconAriaLabel": "ข้อผิดพลาด",
+    "selectedAriaLabel": "เลือกไว้",
+    "recoveryText": "ลองอีกครั้ง"
+  },
+  "split-panel": {
+    "i18nStrings.closeButtonAriaLabel": "ปิดแผง",
+    "i18nStrings.openButtonAriaLabel": "เปิดแผง",
+    "i18nStrings.preferencesTitle": "การตั้งค่าแผงแยก",
+    "i18nStrings.preferencesPositionLabel": "ตำแหน่งแผงแยก",
+    "i18nStrings.preferencesPositionDescription": "เลือกตำแหน่งแผงแยกเริ่มต้นสำหรับบริการ",
+    "i18nStrings.preferencesPositionSide": "ด้านข้าง",
+    "i18nStrings.preferencesPositionBottom": "ด้านล่าง",
+    "i18nStrings.preferencesConfirm": "ยืนยัน",
+    "i18nStrings.preferencesCancel": "ยกเลิก",
+    "i18nStrings.resizeHandleAriaLabel": "ปรับขนาดแผงแยก"
+  },
+  "table": {
+    "ariaLabels.resizerRoleDescription": "ปุ่มปรับขนาด",
+    "ariaLabels.submittingEditText": "การส่งแก้ไข",
+    "ariaLabels.successfulEditLabel": "แก้ไขเรียบร้อยแล้ว",
+    "columnDefinitions.editConfig.errorIconAriaLabel": "ข้อผิดพลาด",
+    "columnDefinitions.editConfig.editIconAriaLabel": "ที่สามารถแก้ไขได้"
+  },
+  "tabs": {
+    "i18nStrings.scrollLeftAriaLabel": "เลื่อนไปทางซ้าย",
+    "i18nStrings.scrollRightAriaLabel": "เลื่อนไปทางขวา"
+  },
+  "tag-editor": {
+    "i18nStrings.keyPlaceholder": "ป้อนคีย์",
+    "i18nStrings.valuePlaceholder": "ป้อนค่า",
+    "i18nStrings.addButton": "เพิ่มแท็กใหม่",
+    "i18nStrings.removeButton": "ลบ",
+    "i18nStrings.removeButtonAriaLabel": "ลบ {tag__key}",
+    "i18nStrings.undoButton": "ยกเลิก",
+    "i18nStrings.undoPrompt": "แท็กนี้จะถูกลบออกเมื่อบันทึกการเปลี่ยนแปลง",
+    "i18nStrings.loading": "กำลังโหลดแท็กที่เชื่อมโยงกับทรัพยากรนี้",
+    "i18nStrings.keyHeader": "คีย์",
+    "i18nStrings.valueHeader": "ค่า",
+    "i18nStrings.optional": "ไม่จำเป็น",
+    "i18nStrings.keySuggestion": "คีย์แท็กที่กำหนดเอง",
+    "i18nStrings.valueSuggestion": "ค่าแท็กที่กำหนดเอง",
+    "i18nStrings.emptyTags": "ไม่มีแท็กที่เกี่ยวข้องกับทรัพยากร",
+    "i18nStrings.tooManyKeysSuggestion": "คุณมีคีย์มากกว่าที่สามารถแสดงได้",
+    "i18nStrings.tooManyValuesSuggestion": "คุณมีค่ามากกว่าที่สามารถแสดงได้",
+    "i18nStrings.keysSuggestionLoading": "กำลังโหลดปุ่มแท็ก",
+    "i18nStrings.keysSuggestionError": "ไม่สามารถดึงคีย์แท็กได้",
+    "i18nStrings.valuesSuggestionLoading": "กำลังโหลดค่าแท็ก",
+    "i18nStrings.valuesSuggestionError": "ไม่สามารถดึงค่าแท็กได้",
+    "i18nStrings.emptyKeyError": "คุณต้องระบุคีย์แท็ก",
+    "i18nStrings.maxKeyCharLengthError": "จำนวนอักขระสูงสุดที่คุณสามารถใช้ในคีย์แท็กได้คือ 128",
+    "i18nStrings.maxValueCharLengthError": "จำนวนอักขระสูงสุดที่คุณสามารถใช้ในค่าแท็กได้คือ 256",
+    "i18nStrings.duplicateKeyError": "คุณต้องระบุคีย์แท็กที่ไม่ซ้ำกัน",
+    "i18nStrings.invalidKeyError": "คีย์ไม่ถูกต้อง คีย์สามารถประกอบด้วยตัวอักษร Unicode ตัวเลข ช่องว่าง และเครื่องหมายต่อไปนี้เท่านั้น: _.:/=+@-",
+    "i18nStrings.invalidValueError": "ค่าไม่ถูกต้อง ค่าสามารถประกอบด้วยตัวอักษร Unicode ตัวเลข ช่องว่าง และเครื่องหมายต่อไปนี้เท่านั้น: _.:/=+@-",
+    "i18nStrings.awsPrefixError": "ไม่สามารถเริ่มด้วย aws:",
+    "i18nStrings.tagLimitReached": "{tagLimit, plural, one {คุณถึงขีด จำกัด 1 แท็กแล้ว} other {คุณถึงขีดจำกัด {tagLimit} แท็กแล้ว}}",
+    "i18nStrings.tagLimitExceeded": "{tagLimit, plural, one {คุณเกินขีด จำกัด 1 แท็กแล้ว} other {คุณเกินขีดจำกัด {tagLimit} แท็กแล้ว}}",
+    "i18nStrings.tagLimit": "{tagLimitAvailable, select, true {{availableTags, plural, other {คุณสามารถเพิ่มแท็กได้มากถึง {tagLimit} แท็ก}}} false {{availableTags, plural, one {คุณสามารถเพิ่มแท็กได้อีก 1 แท็ก} other {คุณสามารถเพิ่มแท็กได้อีก {availableTags} แท็ก}}} other {}}"
+  },
+  "token-group": {
+    "i18nStrings.limitShowFewer": "แสดงน้อยลง",
+    "i18nStrings.limitShowMore": "แสดงเพิ่มเติม"
+  },
+  "top-navigation": {
+    "i18nStrings.searchIconAriaLabel": "ค้นหา",
+    "i18nStrings.searchDismissIconAriaLabel": "ปิดการค้นหา",
+    "i18nStrings.overflowMenuTriggerText": "เพิ่มเติม",
+    "i18nStrings.overflowMenuDismissIconAriaLabel": "ปิดเมนู",
+    "i18nStrings.overflowMenuBackIconAriaLabel": "ย้อนกลับ",
+    "i18nStrings.overflowMenuTitleText": "ทั้งหมด"
+  },
+  "tutorial-panel": {
+    "i18nStrings.loadingText": "กำลังโหลด",
+    "i18nStrings.tutorialListTitle": "เลือกบทช่วยสอน",
+    "i18nStrings.tutorialListDownloadLinkText": "ดาวน์โหลดเวอร์ชัน PDF",
+    "i18nStrings.labelTutorialListDownloadLink": "ดาวน์โหลดเวอร์ชัน PDF ของบทช่วยสอนนี้",
+    "i18nStrings.tutorialCompletedText": "บทช่วยสอนเสร็จสมบูรณ์แล้ว",
+    "i18nStrings.learnMoreLinkText": "เรียนรู้เพิ่มเติม",
+    "i18nStrings.startTutorialButtonText": "เริ่มบทช่วยสอน",
+    "i18nStrings.restartTutorialButtonText": "เริ่มบทช่วยสอนใหม่",
+    "i18nStrings.completionScreenTitle": "ขอแสดงความยินดีด้วย! คุณทำบทช่วยสอนเสร็จสมบูรณ์แล้ว",
+    "i18nStrings.feedbackLinkText": "ข้อเสนอแนะ",
+    "i18nStrings.dismissTutorialButtonText": "ยกเลิกบทช่วยสอน",
+    "i18nStrings.taskTitle": "งาน {taskNumber}: {taskTitle}",
+    "i18nStrings.stepTitle": "ขั้นตอน {stepNumber}: {stepTitle}",
+    "i18nStrings.labelExitTutorial": "ยกเลิกบทช่วยสอน",
+    "i18nStrings.labelTotalSteps": "ขั้นตอนทั้งหมด: {totalStepCount}",
+    "i18nStrings.labelsTaskStatus.pending": "รอดำเนินการ",
+    "i18nStrings.labelsTaskStatus.in-progress": "กำลังดำเนินการ",
+    "i18nStrings.labelsTaskStatus.success": "สำเร็จ"
+  },
+  "wizard": {
+    "i18nStrings.stepNumberLabel": "ขั้นตอน {stepNumber}",
+    "i18nStrings.collapsedStepsLabel": "ขั้นตอน {stepNumber} จาก {stepsCount}",
+    "i18nStrings.skipToButtonLabel": "ข้ามไปที่ {task__title}",
+    "i18nStrings.navigationAriaLabel": "ขั้นตอน",
+    "i18nStrings.cancelButton": "ยกเลิก",
+    "i18nStrings.previousButton": "ก่อนหน้า",
+    "i18nStrings.nextButton": "ถัดไป",
+    "i18nStrings.optional": "ไม่จำเป็น",
+    "i18nStrings.nextButtonLoadingAnnouncement": "กำลังโหลดขั้นตอนถัดไป",
+    "i18nStrings.submitButtonLoadingAnnouncement": "กำลังส่งแบบฟอร์ม"
+  }
+}
