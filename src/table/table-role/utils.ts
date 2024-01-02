@@ -34,7 +34,7 @@ export function findFocusedCell(focusedElement: HTMLElement): null | FocusedCell
 }
 
 /**
- * Moves table focus in the provided direction. The focus can transition between cells or interactive elements inside cells.
+ * Finds element to be focused next. The focus can transition between cells or interactive elements inside cells.
  */
 export function getNextFocusable(table: HTMLTableElement, from: FocusedCell, delta: { y: number; x: number }) {
   // Find next row to move focus into (can be null if the top/bottom is reached).
@@ -44,7 +44,7 @@ export function getNextFocusable(table: HTMLTableElement, from: FocusedCell, del
     return null;
   }
 
-  // Move focus to the next interactive cell content element if available.
+  // Return next interactive cell content element if available.
   const cellFocusables = getFocusables(from.cellElement);
   const nextElementIndex = from.elementIndex + delta.x;
   if (delta.x && from.elementIndex !== -1 && 0 <= nextElementIndex && nextElementIndex < cellFocusables.length) {
@@ -63,7 +63,7 @@ export function getNextFocusable(table: HTMLTableElement, from: FocusedCell, del
     return null;
   }
 
-  // Move focus on the cell interactive content or the cell itself.
+  // Return cell interactive content or the cell itself.
   const targetCellFocusables = getFocusables(targetCell);
   const focusIndex = delta.x < 0 ? targetCellFocusables.length - 1 : delta.x > 0 ? 0 : from.elementIndex;
   const focusTarget = targetCellFocusables[focusIndex] ?? targetCell;
