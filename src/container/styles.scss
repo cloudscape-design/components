@@ -25,7 +25,7 @@
     &-default,
     &-stacked {
       // Border and shadows are applied with ::before and ::after elements (respectively)
-      @include shared.borders-and-shadows;
+      @include styles.container-style;
       background-color: awsui.$color-background-container-content;
     }
 
@@ -186,7 +186,6 @@
     &:not(.header-sticky-enabled) {
       position: relative;
     }
-    @include shared.borders-and-shadows;
 
     &.header-stuck::after,
     &.header-stuck::before {
