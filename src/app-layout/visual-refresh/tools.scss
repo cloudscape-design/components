@@ -61,6 +61,7 @@ viewport size and state of the Tools drawer.
 
 .tools {
   background-color: awsui.$color-background-container-content;
+  box-shadow: awsui.$shadow-panel;
   flex-shrink: 0;
   block-size: 100%;
   overflow-y: auto;
@@ -92,8 +93,11 @@ viewport size and state of the Tools drawer.
 
   // Apply the animation when the Tools is opened
   &.is-tools-open {
+<<<<<<< HEAD
     border-inline-start: solid awsui.$border-divider-section-width awsui.$color-border-divider-default;
 
+=======
+>>>>>>> b7f1fb2e (Initial commit of migrated changes from revert.)
     &.animating {
       @include styles.with-motion {
         animation: openTools awsui.$motion-duration-refresh-only-fast;

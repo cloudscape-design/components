@@ -20,6 +20,7 @@
 
   &.has-open-drawer {
     background-color: awsui.$color-background-container-content;
+    box-shadow: awsui.$shadow-panel;
   }
 
   @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {

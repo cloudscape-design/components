@@ -24,9 +24,9 @@
   &.variant {
     &-default,
     &-stacked {
-      background-color: awsui.$color-background-container-content;
       // Border and shadows are applied with ::before and ::after elements (respectively)
-      @include styles.container-style;
+      @include shared.borders-and-shadows;
+      background-color: awsui.$color-background-container-content;
     }
 
     // Meld container bottom corners into next adjoining container
@@ -45,13 +45,17 @@
       border-start-end-radius: 0;
     }
     // Replace container border with a divider
-    &-stacked + &-stacked:not(.refresh)::before {
+    &-stacked + &-stacked::before {
       @include shared.divider;
+    }
+    // Reset container shadow to prevent unwanted overflow
+    &-stacked + &-stacked::after {
+      box-shadow: awsui.$shadow-container-stacked;
     }
   }
 
   // To ensure the top border/divider is visible on sticky elements which have a higher z-index
-  &.sticky-enabled:not(.refresh) {
+  &.sticky-enabled {
     &::before {
       inset-block-start: calc(-1 * #{awsui.$border-container-top-width});
     }
@@ -184,11 +188,13 @@
   }
 
   &-variant-cards {
-    // Border and shadows are applied with ::before and ::after elements (respectively)
-    @include styles.container-style;
     &:not(.header-sticky-enabled) {
       position: relative;
     }
+<<<<<<< HEAD
+=======
+    @include shared.borders-and-shadows;
+>>>>>>> b7f1fb2e (Initial commit of migrated changes from revert.)
 
     &.header-stuck::after,
     &.header-stuck::before {
