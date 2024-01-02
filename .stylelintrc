@@ -52,7 +52,12 @@
   "overrides": [
     {
       "files": [
-        "./src/button/*.scss",
+        "./src/a*/**/*.scss",
+        "./src/b*/**/*.scss",
+        "./src/c*/**/*.scss",
+        "./src/d*/**/*.scss",
+        "./src/e*/**/*.scss",
+        "./src/f*/**/*.scss",
         "./src/g*/**/*.scss",
         "./src/h*/**/*.scss",
         "./src/i*/**/*.scss",
