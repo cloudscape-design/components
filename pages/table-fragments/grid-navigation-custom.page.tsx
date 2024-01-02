@@ -1,11 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
-import SpaceBetween from '~components/space-between';
+import React, { useContext, useMemo, useRef, useState } from 'react';
 import {
   AppLayout,
   Button,
   ButtonDropdown,
+  Checkbox,
   ColumnLayout,
   Container,
   ContentLayout,
@@ -17,8 +17,10 @@ import {
   Link,
   RadioGroup,
   Select,
+  SpaceBetween,
   StatusIndicator,
 } from '~components';
+import { useEffectOnUpdate } from '~components/internal/hooks/use-effect-on-update';
 import styles from './styles.scss';
 import { id as generateId, generateItems, Instance, InstanceState } from '../table/generate-data';
 import AppContext, { AppContextType } from '../app/app-context';
@@ -36,11 +38,17 @@ import { orderBy, range } from 'lodash';
 import appLayoutLabels from '../app-layout/utils/labels';
 import { stateToStatusIndicator } from '../table/shared-configs';
 
+interface ExtendedWindow extends Window {
+  refreshItems: () => void;
+}
+declare const window: ExtendedWindow;
+
 type PageContext = React.Context<
   AppContextType<{
     pageSize: number;
     tableRole: TableRole;
     actionsMode: ActionsMode;
+    autoRefresh: boolean;
   }>
 >;
 
@@ -56,17 +64,19 @@ const actionsModeOptions = [
 export default function Page() {
   const [toolsOpen, setToolsOpen] = useState(false);
   const { urlParams, setUrlParams } = useContext(AppContext as PageContext);
-  const pageSize = urlParams.pageSize ?? 10;
-  const tableRole = urlParams.tableRole ?? 'grid';
-  const actionsMode = urlParams.actionsMode ?? 'dropdown';
+  const { pageSize = 10, tableRole = 'grid', actionsMode = 'dropdown', autoRefresh = false } = urlParams;
 
   const [items, setItems] = useState(generateItems(25));
+  const [refreshCounter, setRefreshCounter] = useState(0);
+  window.refreshItems = () => setRefreshCounter(prev => prev + 1);
 
-  useEffect(() => {
-    setInterval(() => {
-      setItems(prev => [...prev, ...generateItems(1)]);
-    }, 10000);
-  }, []);
+  useEffectOnUpdate(() => {
+    setItems(prev => [...prev.slice(1), ...generateItems(1)]);
+    if (autoRefresh) {
+      const timeoutId = setTimeout(() => setRefreshCounter(prev => prev + 1), 10000);
+      return () => clearTimeout(timeoutId);
+    }
+  }, [autoRefresh, refreshCounter]);
 
   const columnDefinitions = [
     {
@@ -173,6 +183,17 @@ export default function Page() {
                     />
                   </FormField>
                 </ColumnLayout>
+
+                <SpaceBetween alignItems="center" size="m" direction="horizontal">
+                  <Checkbox
+                    checked={autoRefresh}
+                    onChange={event => setUrlParams({ autoRefresh: event.detail.checked })}
+                  >
+                    Auto-refresh every 10 seconds
+                  </Checkbox>
+
+                  <Button onClick={() => setRefreshCounter(prev => prev + 1)} iconName="refresh" ariaLabel="Refresh" />
+                </SpaceBetween>
 
                 <Link onFollow={() => setToolsOpen(true)} data-testid="link-before">
                   How to use grid navigation?
@@ -368,8 +389,8 @@ function DnsEditCell({ item }: { item: Instance }) {
       style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap' }}
     >
       <Input autoFocus={true} value={value} onChange={event => setValue(event.detail.value)} />
-      <Button iconName="check" onClick={() => setActive(false)} />
-      <Button iconName="close" onClick={() => setActive(false)} />
+      <Button iconName="check" ariaLabel="Save" onClick={() => setActive(false)} />
+      <Button iconName="close" ariaLabel="Cancel" onClick={() => setActive(false)} />
     </div>
   );
 }
