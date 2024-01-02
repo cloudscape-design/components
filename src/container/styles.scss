@@ -15,7 +15,7 @@
   &.fit-height {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    block-size: 100%;
     &.with-side-media {
       flex-direction: row;
     }
@@ -24,38 +24,42 @@
   &.variant {
     &-default,
     &-stacked {
-      background-color: awsui.$color-background-container-content;
       // Border and shadows are applied with ::before and ::after elements (respectively)
-      @include styles.container-style;
+      @include shared.borders-and-shadows;
+      background-color: awsui.$color-background-container-content;
     }
+
     // Meld container bottom corners into next adjoining container
     &-stacked:not(:last-child),
     &-stacked:not(:last-child)::before,
     &-stacked:not(:last-child)::after {
-      border-bottom-right-radius: 0;
-      border-bottom-left-radius: 0;
-      border-bottom-width: 0;
+      border-end-end-radius: 0;
+      border-end-start-radius: 0;
     }
     // Meld container top corners into preceding container
     &-stacked + &-stacked,
     &-stacked + &-stacked::before,
     &-stacked + &-stacked::after {
-      border-top-left-radius: 0;
-      border-top-right-radius: 0;
+      border-start-start-radius: 0;
+      border-start-end-radius: 0;
     }
     // Replace container border with a divider
-    &-stacked + &-stacked:not(.refresh)::before {
+    &-stacked + &-stacked::before {
       @include shared.divider;
+    }
+    // Reset container shadow to prevent unwanted overflow
+    &-stacked + &-stacked::after {
+      box-shadow: awsui.$shadow-container-stacked;
     }
   }
 
   // To ensure the top border/divider is visible on sticky elements which have a higher z-index
-  &.sticky-enabled:not(.refresh) {
+  &.sticky-enabled {
     &::before {
-      top: calc(-1 * #{awsui.$border-container-top-width});
+      inset-block-start: calc(-1 * #{awsui.$border-container-top-width});
     }
     &.variant-stacked::before {
-      top: calc(-1 * #{awsui.$border-divider-section-width});
+      inset-block-start: calc(-1 * #{awsui.$border-divider-section-width});
     }
   }
 }
@@ -73,9 +77,9 @@
 .content-wrapper {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  inline-size: 100%;
   &-fit-height {
-    height: 100%;
+    block-size: 100%;
     overflow: hidden;
   }
 }
@@ -88,42 +92,43 @@
   img,
   video,
   picture {
-    width: 100%;
-    height: 100%;
+    inline-size: 100%;
+    block-size: 100%;
     object-fit: cover;
     object-position: center;
   }
 
   // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant, selector-max-type
   iframe {
-    width: 100%;
-    height: 100%;
-    border: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    border-block: 0;
+    border-inline: 0;
   }
 
   // reduce border-radius size to fill the visual gap between the parent border and image
   &-top {
-    max-height: 66%;
-    border-top-left-radius: calc(awsui.$border-radius-container - 1px);
-    border-top-right-radius: calc(awsui.$border-radius-container - 1px);
+    max-block-size: 66%;
+    border-start-start-radius: calc(awsui.$border-radius-container - 1px);
+    border-start-end-radius: calc(awsui.$border-radius-container - 1px);
   }
 
   &-side {
-    max-width: 66%;
-    border-top-left-radius: calc(awsui.$border-radius-container - 1px);
-    border-bottom-left-radius: calc(awsui.$border-radius-container - 1px);
+    max-inline-size: 66%;
+    border-start-start-radius: calc(awsui.$border-radius-container - 1px);
+    border-end-start-radius: calc(awsui.$border-radius-container - 1px);
   }
 }
 
 .header {
   background-color: awsui.$color-background-container-header;
-  border-top-left-radius: awsui.$border-radius-container;
-  border-top-right-radius: awsui.$border-radius-container;
+  border-start-start-radius: awsui.$border-radius-container;
+  border-start-end-radius: awsui.$border-radius-container;
 
   &.header-with-media {
     background: none;
     &:not(:empty) {
-      border-bottom: none;
+      border-block-end: none;
     }
   }
 
@@ -135,16 +140,21 @@
   }
 
   &-sticky-enabled {
-    top: 0;
+    inset-block-start: 0;
     /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
     position: sticky;
     z-index: 800;
   }
 
   &-stuck {
-    border-radius: 0;
+    border-start-start-radius: 0;
+    border-start-end-radius: 0;
+    border-end-start-radius: 0;
+    border-end-end-radius: 0;
+
     &::before {
-      border: 0;
+      border-block: 0;
+      border-inline: 0;
     }
     &:not(.header-variant-cards) {
       box-shadow: awsui.$shadow-sticky-embedded;
@@ -153,36 +163,41 @@
 
   &-dynamic-height.header-stuck {
     // to prevent the block from changing its height when variant dynamically changes
-    margin-bottom: calc(#{awsui.$line-height-heading-xl} - #{awsui.$line-height-heading-l});
+    margin-block-end: calc(#{awsui.$line-height-heading-xl} - #{awsui.$line-height-heading-l});
   }
 
   &:not(:empty) {
-    border-bottom: awsui.$border-container-sticky-width solid awsui.$color-border-container-divider;
+    border-block-end: awsui.$border-container-sticky-width solid awsui.$color-border-container-divider;
   }
 
   &.with-paddings {
-    padding: shared.$header-padding;
+    padding-block-start: awsui.$space-container-header-top;
+    padding-block-end: awsui.$space-container-header-bottom;
+    padding-inline: awsui.$space-container-horizontal;
+
     &.header-variant-cards {
-      padding: awsui.$space-container-header-top awsui.$space-container-horizontal;
+      padding-block: awsui.$space-container-header-top;
+      padding-inline: awsui.$space-container-horizontal;
     }
   }
 
   &.with-hidden-content {
-    border-bottom-left-radius: awsui.$border-radius-container;
-    border-bottom-right-radius: awsui.$border-radius-container;
+    border-end-start-radius: awsui.$border-radius-container;
+    border-end-end-radius: awsui.$border-radius-container;
   }
 
   &-variant-cards {
-    // Border and shadows are applied with ::before and ::after elements (respectively)
-    @include styles.container-style;
     &:not(.header-sticky-enabled) {
       position: relative;
     }
+    @include shared.borders-and-shadows;
+
     &.header-stuck::after,
     &.header-stuck::before {
-      border: 0;
-      border-top-left-radius: 0;
-      border-top-right-radius: 0;
+      border-block: 0;
+      border-inline: 0;
+      border-start-start-radius: 0;
+      border-start-end-radius: 0;
     }
   }
 
@@ -205,10 +220,7 @@
       content: '';
 
       position: absolute;
-      right: 0;
-      left: 0;
-      bottom: 0;
-      top: 0;
+      inset: 0;
 
       box-shadow: awsui.$shadow-sticky;
       // This polygon only shows the part of the shadow that is lower than the element itself.
@@ -239,12 +251,13 @@ the default white background of the container component.
     overflow: auto;
   }
   &.with-paddings {
-    padding: awsui.$space-scaled-l awsui.$space-container-horizontal;
+    padding-block: awsui.$space-scaled-l;
+    padding-inline: awsui.$space-container-horizontal;
 
     .header + & {
-      padding-top: awsui.$space-container-content-top;
+      padding-block-start: awsui.$space-container-content-top;
       &.content-with-media {
-        padding-top: 0;
+        padding-block-start: 0;
       }
     }
   }
@@ -252,7 +265,8 @@ the default white background of the container component.
 
 .footer {
   &.with-paddings {
-    padding: shared.$footer-padding;
+    padding-block: awsui.$space-scaled-s;
+    padding-inline: awsui.$space-container-horizontal;
   }
 
   &.with-divider {

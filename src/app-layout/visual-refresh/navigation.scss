@@ -12,9 +12,9 @@
   display: flex;
   grid-column: 1;
   grid-row: 1 / span 10;
-  height: var(#{custom-props.$contentHeight});
+  block-size: var(#{custom-props.$contentHeight});
   position: sticky;
-  top: var(#{custom-props.$offsetTop});
+  inset-block-start: var(#{custom-props.$offsetTop});
   z-index: 830;
 
   /*
@@ -34,7 +34,7 @@
   }
 
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
-    left: 0;
+    inset-inline-start: 0;
     position: fixed;
     z-index: 1001;
 
@@ -46,13 +46,14 @@
     relative to the body.
     */
     &.disable-body-scroll {
-      top: var(#{custom-props.$headerHeight});
+      inset-block-start: var(#{custom-props.$headerHeight});
     }
   }
 }
 
 nav.show-navigation {
-  padding: awsui.$space-scaled-s awsui.$space-layout-toggle-padding;
+  padding-block: awsui.$space-scaled-s;
+  padding-inline: awsui.$space-layout-toggle-padding;
 
   // Animation for the buttons when they are added to the DOM
   @keyframes showButtons {
@@ -87,8 +88,9 @@ nav.show-navigation {
 
 nav.navigation {
   background-color: awsui.$color-background-container-content;
-  bottom: 0;
-  height: 100%;
+  box-shadow: awsui.$shadow-panel;
+  inset-block-end: 0;
+  block-size: 100%;
   overflow-x: hidden;
   overflow-y: auto;
   /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
@@ -96,24 +98,23 @@ nav.navigation {
   position: relative;
   word-wrap: break-word;
   pointer-events: auto;
-  border-right: solid awsui.$border-divider-section-width awsui.$color-border-divider-default;
 
   // Animation for the Navigation opacity and width when it is added to the DOM
   @keyframes openNavigation {
     from {
       opacity: 0;
-      width: calc(#{awsui.$space-layout-toggle-padding} * 2 + #{awsui.$space-layout-toggle-diameter});
+      inline-size: calc(#{awsui.$space-layout-toggle-padding} * 2 + #{awsui.$space-layout-toggle-diameter});
     }
 
     to {
       opacity: 1;
-      width: var(#{custom-props.$navigationWidth});
+      inline-size: var(#{custom-props.$navigationWidth});
     }
   }
 
   // All content is hidden by the overflow-x property
   &:not(.is-navigation-open) {
-    width: 0;
+    inline-size: 0;
     // We need to hide the closed panel to make containing focusable elements not focusable anymore.
     display: none;
   }
@@ -133,7 +134,7 @@ nav.navigation {
   prevent unwanted text wrapping.
   */
   > .animated-content {
-    width: var(#{custom-props.$navigationWidth});
+    inline-size: var(#{custom-props.$navigationWidth});
   }
 
   // The Navigation drawer will take up the entire viewport on mobile
@@ -144,6 +145,6 @@ nav.navigation {
 
 .hide-navigation {
   position: absolute;
-  right: awsui.$space-m;
-  top: awsui.$size-vertical-panel-icon-offset;
+  inset-inline-end: awsui.$space-m;
+  inset-block-start: awsui.$size-vertical-panel-icon-offset;
 }
