@@ -24,9 +24,9 @@
   &.variant {
     &-default,
     &-stacked {
+      background-color: awsui.$color-background-container-content;
       // Border and shadows are applied with ::before and ::after elements (respectively)
       @include styles.container-style;
-      background-color: awsui.$color-background-container-content;
     }
 
     // Meld container bottom corners into next adjoining container
@@ -153,7 +153,8 @@
       border-inline: 0;
     }
     &:not(.header-variant-cards) {
-      box-shadow: awsui.$shadow-sticky-embedded;
+      // Border and shadows are applied with ::before and ::after elements (respectively)
+      @include styles.container-style;
     }
   }
 
@@ -183,6 +184,8 @@
   }
 
   &-variant-cards {
+    // Border and shadows are applied with ::before and ::after elements (respectively)
+    @include styles.container-style;
     &:not(.header-sticky-enabled) {
       position: relative;
     }
