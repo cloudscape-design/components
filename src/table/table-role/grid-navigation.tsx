@@ -93,12 +93,12 @@ class GridNavigationProcessor {
 
   public refresh() {
     if (this._table) {
-      const cellSuppressed = this.focusedCell ? this.isSuppressed(this.focusedCell.element) : false;
-
       // Update focused cell indices in case table rows, columns, or firstIndex change.
       if (this.focusedCell) {
         this.focusedCell = findFocusedCell(this.focusedCell.element);
       }
+
+      const cellSuppressed = this.focusedCell ? this.isSuppressed(this.focusedCell.element) : false;
 
       // Ensure newly added elements if any are muted.
       muteElementFocusables(this.table, cellSuppressed);
@@ -144,7 +144,7 @@ class GridNavigationProcessor {
   };
 
   private onFocusout = () => {
-    // When focus leaves the cell and the cell becomes no longer belong to the table it indicates the focused element has been unmounted.
+    // When focus leaves the cell and the cell no longer belong to the table it indicates the focused element has been unmounted.
     // In that case the focus needs to be restored on the same coordinates.
     setTimeout(() => {
       if (this.focusedCell && !nodeBelongs(this.table, this.focusedCell.element)) {
