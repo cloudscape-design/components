@@ -10,6 +10,41 @@
 @use '../container/shared' as container;
 @use './motion';
 
+@mixin card-style {
+  border-start-start-radius: awsui.$border-radius-container;
+  border-start-end-radius: awsui.$border-radius-container;
+  border-end-start-radius: awsui.$border-radius-container;
+  border-end-end-radius: awsui.$border-radius-container;
+  box-sizing: border-box;
+
+  &::before {
+    @include styles.base-pseudo-element;
+    // Reset border color to prevent it from flashing black during card selection animation
+    border-color: transparent;
+    border-top: awsui.$border-container-top-width solid awsui.$color-border-container-top;
+    border-start-start-radius: awsui.$border-radius-container;
+    border-start-end-radius: awsui.$border-radius-container;
+    border-end-start-radius: awsui.$border-radius-container;
+    border-end-end-radius: awsui.$border-radius-container;
+    z-index: 1;
+  }
+
+  &::after {
+    @include styles.base-pseudo-element;
+    border-start-start-radius: awsui.$border-radius-container;
+    border-start-end-radius: awsui.$border-radius-container;
+    border-end-start-radius: awsui.$border-radius-container;
+    border-end-end-radius: awsui.$border-radius-container;
+  }
+  &:not(.refresh)::after {
+    box-shadow: awsui.$shadow-container;
+  }
+  &.refresh::after {
+    border-block: solid awsui.$border-divider-section-width awsui.$color-border-divider-default;
+    border-inline: solid awsui.$border-divider-section-width awsui.$color-border-divider-default;
+  }
+}
+
 .root {
   @include styles.styles-reset();
   @include styles.default-text-style;
@@ -17,12 +52,12 @@
 
 .header {
   &-variant-full-page.header-refresh {
-    @include container.borders-and-shadows;
     padding-block-start: 0;
+    padding-inline-start: 0;
+    padding-inline-end: 0;
     padding-block-end: calc(
       #{awsui.$space-container-header-bottom} + #{awsui.$space-table-header-tools-full-page-bottom}
     );
-    padding-inline: 0;
   }
 }
 
@@ -41,7 +76,7 @@
   @for $i from 1 through 20 {
     &.list-grid-#{$i} {
       > .card {
-        inline-size: math.div(100%, $i);
+        width: math.div(100%, $i);
       }
     }
   }
@@ -50,9 +85,9 @@
 .selection-control {
   position: absolute;
   box-sizing: border-box;
-  inline-size: calc(#{awsui.$size-control} + (2 * #{awsui.$space-card-horizontal}));
-  inset-block-start: 0;
-  inset-inline-end: 0;
+  width: calc(#{awsui.$size-control} + (2 * #{awsui.$space-card-horizontal}));
+  top: 0;
+  right: 0;
   padding-block: awsui.$space-card-vertical;
   padding-inline: awsui.$space-card-horizontal;
 }
@@ -96,20 +131,20 @@
     margin-inline-end: 0;
     padding-block: awsui.$space-card-vertical;
     padding-inline: awsui.$space-card-horizontal;
-    @include styles.container-shadow;
-    inline-size: 100%;
-    min-inline-size: 0;
+    width: 100%;
+    min-width: 0;
+    @include card-style;
   }
   &-header {
     @include styles.font-heading-m;
     &-inner {
-      inline-size: 100%;
+      width: 100%;
       display: inline-block;
     }
   }
   &-selectable {
     > .card-inner > .card-header {
-      inline-size: 90%;
+      width: 90%;
     }
   }
   &-selected {
