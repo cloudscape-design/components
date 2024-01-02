@@ -239,6 +239,7 @@ const CardsList = <T,>({
 }) => {
   const selectable = !!selectionType;
   const canClickEntireCard = selectable && entireCardClickable;
+  const isRefresh = useVisualRefresh();
 
   const { moveFocusDown, moveFocusUp } = useSelectionFocusMove(selectionType, items.length);
 
@@ -277,7 +278,7 @@ const CardsList = <T,>({
           role={listItemRole}
         >
           <div
-            className={styles['card-inner']}
+            className={clsx(styles['card-inner'], isRefresh && styles.refresh)}
             onClick={
               canClickEntireCard
                 ? event => {
