@@ -20,7 +20,6 @@
 
   &.has-open-drawer {
     background-color: awsui.$color-background-container-content;
-    box-shadow: awsui.$shadow-panel;
   }
 
   @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
@@ -163,6 +162,7 @@
   }
 
   &.is-drawer-open {
+    border-inline-start: solid awsui.$border-divider-section-width awsui.$color-border-divider-default;
     border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
     opacity: 1;
     inline-size: var(#{custom-props.$drawerSize});

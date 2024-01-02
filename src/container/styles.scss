@@ -47,10 +47,6 @@
     &-stacked + &-stacked::before {
       @include shared.divider;
     }
-    // Reset container shadow to prevent unwanted overflow
-    &-stacked + &-stacked::after {
-      box-shadow: awsui.$shadow-container-stacked;
-    }
   }
 
   // To ensure the top border/divider is visible on sticky elements which have a higher z-index
