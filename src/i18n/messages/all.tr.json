@@ -96,6 +96,9 @@
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Öğe {currentPosition}/{total} konumuna geri taşınıyor} false {Öğe {currentPosition}/{total} konumuna taşınıyor} other {}}",
     "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {Öğe ilk {initialPosition}/{total} konumuna geri taşındı} false {Öğe {initialPosition} konumundan {finalPosition}/{total} konumuna taşındı} other {}}"
   },
+  "copy-to-clipboard": {
+    "i18nStrings.copyButtonText": "Kopyala"
+  },
   "date-range-picker": {
     "i18nStrings.relativeModeTitle": "Göreceli mod",
     "i18nStrings.absoluteModeTitle": "Mutlak mod",
@@ -115,8 +118,8 @@
     "i18nStrings.dateTimeConstraintText": "Tarih için YYYY/AA/GG kullanın. Zaman için 24 saat biçimini kullanın.",
     "i18nStrings.errorIconAriaLabel": "Hata",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "{startDate}-{endDate} aralığı seçildi",
-    "i18nStrings.formatRelativeRange": "{amount, plural, one {Son {amount} {unit}} other {Son {amount} {unit}}}",
-    "i18nStrings.formatUnit": "{amount, plural, one {{unit}} other {{unit}}}"
+    "i18nStrings.formatRelativeRange": "{unit, select, second {{amount, plural, zero {Son {amount} saniye} one {Son {amount} saniye} other {Son {amount} saniye}}} minute {{amount, plural, zero {Son {amount} dakika} one {Son {amount} dakika} other {Son {amount} dakika}}} hour {{amount, plural, zero {Son {amount} saat} one {Son {amount} saat} other {Son {amount} saat}}} day {{amount, plural, zero {Son {amount} gün} one {Son {amount} gün} other {Son {amount} gün}}} week {{amount, plural, zero {Son {amount} hafta} one {Son {amount} hafta} other {Son {amount} hafta}}} month {{amount, plural, zero {Son {amount} ay} one {Son {amount} ay} other {Son {amount} ay}}} year {{amount, plural, zero {Son {amount} yıl} one {Son {amount} yıl} other {Son {amount} yıl}}} other {}}",
+    "i18nStrings.formatUnit": "{unit, select, second {{amount, plural, zero {saniye} one {saniye} other {saniye}}} minute {{amount, plural, zero {dakika} one {dakika} other {dakika}}} hour {{amount, plural, zero {saat} one {saat} other {saat}}} day {{amount, plural, zero {gün} one {gün} other {gün}}} week {{amount, plural, zero {hafta} one {hafta} other {hafta}}} month {{amount, plural, zero {ay} one {ay} other {ay}}} year {{amount, plural, zero {yıl} one {yıl} other {yıl}}} other {}}"
   },
   "drawer": {
     "i18nStrings.loadingText": "İçerik yükleniyor"
