@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { useEffect, useMemo } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import {
   defaultIsSuppressed,
   findTableRowByAriaRowIndex,
@@ -11,9 +11,19 @@ import {
 import { FocusableChangeHandler, FocusableDefinition, FocusedCell, GridNavigationProps } from './interfaces';
 import { KeyCode } from '../../internal/keycode';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
-import React from 'react';
+import React, { createContext } from 'react';
 import { nodeBelongs } from '../../internal/utils/node-belongs';
 import { getAllFocusables } from '../../internal/components/focus-lock/utils';
+
+const GridNavigationContext = createContext<{
+  keyboardNavigation: boolean;
+  registerFocusable(focusable: FocusableDefinition, handler: FocusableChangeHandler): () => void;
+  unregisterFocusable(focusable: FocusableDefinition): void;
+}>({
+  keyboardNavigation: false,
+  registerFocusable: () => () => {},
+  unregisterFocusable: () => {},
+});
 
 /**
  * Makes table navigable with keyboard commands.
@@ -45,7 +55,56 @@ export function GridNavigationProvider({ keyboardNavigation, pageSize, getTable,
     }
   });
 
-  return <>{children}</>;
+  return (
+    <GridNavigationContext.Provider
+      value={{
+        keyboardNavigation,
+        registerFocusable: gridNavigation.registerFocusable,
+        unregisterFocusable: gridNavigation.unregisterFocusable,
+      }}
+    >
+      {children}
+    </GridNavigationContext.Provider>
+  );
+}
+
+export function GridNavigationSuppressed({ children, active = true }: { children: React.ReactNode; active?: boolean }) {
+  const parentContext = useContext(GridNavigationContext);
+  return (
+    <GridNavigationContext.Provider value={active ? { ...parentContext, keyboardNavigation: false } : parentContext}>
+      {children}
+    </GridNavigationContext.Provider>
+  );
+}
+
+export function useGridNavigationContext() {
+  const { keyboardNavigation, registerFocusable, unregisterFocusable } = useContext(GridNavigationContext);
+  const registerFocusableDecorated = useCallback(
+    (focusable: FocusableDefinition, changeHandler: FocusableChangeHandler) =>
+      keyboardNavigation ? registerFocusable(focusable, changeHandler) : () => {},
+    [keyboardNavigation, registerFocusable]
+  );
+  return { keyboardNavigation, registerFocusable: registerFocusableDecorated, unregisterFocusable };
+}
+
+export function useGridNavigationFocusable(
+  focusable: FocusableDefinition,
+  { navigationSuppressed = false }: { navigationSuppressed?: boolean } = {}
+) {
+  const { keyboardNavigation, registerFocusable } = useGridNavigationContext();
+  const [focusTargetActive, setFocusTargetActive] = useState(false);
+
+  useEffect(() => {
+    if (!navigationSuppressed) {
+      const changeHandler = (focusTarget: null | HTMLElement) =>
+        setFocusTargetActive(getFocusableElement(focusable) === focusTarget);
+      return registerFocusable(focusable, changeHandler);
+    }
+  }, [navigationSuppressed, focusable, registerFocusable]);
+
+  const shouldMuteUserFocus = keyboardNavigation && !focusTargetActive;
+
+  return { keyboardNavigation, shouldMuteUserFocus };
 }
 
 /**
