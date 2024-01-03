@@ -35,6 +35,7 @@
     &-stacked:not(:last-child)::after {
       border-end-end-radius: 0;
       border-end-start-radius: 0;
+      border-block-end-width: 0;
     }
     // Meld container top corners into preceding container
     &-stacked + &-stacked,
@@ -44,7 +45,7 @@
       border-start-end-radius: 0;
     }
     // Replace container border with a divider
-    &-stacked + &-stacked::before {
+    &-stacked + &-stacked:not(.refresh)::before {
       @include shared.divider;
     }
   }
@@ -153,8 +154,7 @@
       border-inline: 0;
     }
     &:not(.header-variant-cards) {
-      // Border and shadows are applied with ::before and ::after elements (respectively)
-      @include styles.container-style;
+      box-shadow: awsui.$shadow-sticky-embedded;
     }
   }
 
