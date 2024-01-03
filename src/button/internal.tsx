@@ -58,6 +58,7 @@ export const InternalButton = React.forwardRef(
       ariaLabel,
       ariaDescribedby,
       ariaExpanded,
+      ariaControls,
       fullWidth,
       badge,
       __nativeAttributes,
@@ -142,6 +143,7 @@ export const InternalButton = React.forwardRef(
       'aria-label': ariaLabel,
       'aria-describedby': ariaDescribedby,
       'aria-expanded': ariaExpanded,
+      'aria-controls': ariaControls,
       // add ariaLabel as `title` as visible hint text
       title: ariaLabel,
       className: buttonClass,
