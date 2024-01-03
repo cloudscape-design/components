@@ -162,8 +162,8 @@
   }
 
   &.is-drawer-open {
-    border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
-    border-inline-end: solid awsui.$border-divider-section-width awsui.$color-border-divider-default;
+    border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+    border-inline-start: solid awsui.$border-divider-section-width awsui.$color-border-divider-default;
     opacity: 1;
     inline-size: var(#{custom-props.$drawerSize});
   }

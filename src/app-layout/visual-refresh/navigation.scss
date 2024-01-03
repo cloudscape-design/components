@@ -97,6 +97,7 @@ nav.navigation {
   position: relative;
   word-wrap: break-word;
   pointer-events: auto;
+  border-inline-end: solid awsui.$border-divider-section-width awsui.$color-border-divider-default;
 
   // Animation for the Navigation opacity and width when it is added to the DOM
   @keyframes openNavigation {
