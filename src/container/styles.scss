@@ -154,8 +154,7 @@
       border-inline: 0;
     }
     &:not(.header-variant-cards) {
-      // Border and shadows are applied with ::before and ::after elements (respectively)
-      @include styles.container-style;
+      box-shadow: awsui.$shadow-sticky-embedded;
     }
   }
 
