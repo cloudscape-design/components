@@ -35,6 +35,7 @@ import {
   getTableWrapperRoleProps,
   GridNavigationProvider,
   useGridNavigationFocusable,
+  GridNavigationSuppressed,
 } from '~components/table/table-role';
 import { orderBy, range } from 'lodash';
 import appLayoutLabels from '../app-layout/utils/labels';
@@ -431,26 +432,28 @@ function DnsEditCell({ item }: { item: Instance }) {
       {item.dnsName}
     </div>
   ) : (
-    <div
-      ref={dialogRef}
-      role="dialog"
-      aria-label="Edit DND name"
-      onBlur={event => {
-        if (!dialogRef.current!.contains(event.relatedTarget)) {
-          setActive(false);
-        }
-      }}
-      onKeyDown={event => {
-        if (event.key === 'Enter' || event.key === 'Escape' || event.key === 'F2') {
-          setActive(false);
-        }
-      }}
-      style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap' }}
-    >
-      <Input autoFocus={true} value={value} onChange={event => setValue(event.detail.value)} />
-      <Button iconName="check" ariaLabel="Save" onClick={() => setActive(false)} />
-      <Button iconName="close" ariaLabel="Cancel" onClick={() => setActive(false)} />
-    </div>
+    <GridNavigationSuppressed>
+      <div
+        ref={dialogRef}
+        role="dialog"
+        aria-label="Edit DND name"
+        onBlur={event => {
+          if (!dialogRef.current!.contains(event.relatedTarget)) {
+            setActive(false);
+          }
+        }}
+        onKeyDown={event => {
+          if (event.key === 'Enter' || event.key === 'Escape' || event.key === 'F2') {
+            setActive(false);
+          }
+        }}
+        style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap' }}
+      >
+        <Input autoFocus={true} value={value} onChange={event => setValue(event.detail.value)} />
+        <Button iconName="check" ariaLabel="Save" onClick={() => setActive(false)} />
+        <Button iconName="close" ariaLabel="Cancel" onClick={() => setActive(false)} />
+      </div>
+    </GridNavigationSuppressed>
   );
 }
 

@@ -2,12 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import {
-  defaultIsSuppressed,
-  findTableRowByAriaRowIndex,
-  findTableRowCellByAriaColIndex,
-  getFocusableElement,
-} from './utils';
+import { findTableRowByAriaRowIndex, findTableRowCellByAriaColIndex, getFocusableElement } from './utils';
 import { FocusableChangeHandler, FocusableDefinition, FocusedCell, GridNavigationProps } from './interfaces';
 import { KeyCode } from '../../internal/keycode';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
@@ -182,7 +177,10 @@ class GridNavigationProcessor {
   }
 
   private isSuppressed(focusedElement: HTMLElement): boolean {
-    return defaultIsSuppressed(focusedElement);
+    if (focusedElement instanceof HTMLTableCellElement) {
+      return false;
+    }
+    return !this.getRegisteredElements().has(focusedElement);
   }
 
   private onFocusin = (event: FocusEvent) => {
