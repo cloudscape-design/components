@@ -11,6 +11,7 @@
 @use './motion';
 
 .root {
+  /* used in test-utils */
   @include styles.styles-reset;
   @include styles.text-flex-wrapping;
   display: block;
@@ -21,6 +22,7 @@
 }
 
 .alert {
+  /* used in test-utils */
   @include styles.styles-reset;
   position: relative;
   display: grid;
@@ -47,6 +49,7 @@
 }
 
 .header {
+  /* used in test-utils */
   font-weight: styles.$font-weight-bold;
 }
 

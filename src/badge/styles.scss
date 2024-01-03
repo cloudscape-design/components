@@ -7,6 +7,7 @@
 @use '../internal/styles/tokens' as awsui;
 
 .badge {
+  /* used in test-utils */
   @include styles.styles-reset;
 
   @include styles.font-body-s;

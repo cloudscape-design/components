@@ -1,0 +1,422 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`selectors 1`] = `
+Array [
+  Array [
+    "alert",
+    Array [
+      ".awsui_action-button_mx3cw_s3rj7_184",
+      ".awsui_action-slot_mx3cw_s3rj7_183",
+      ".awsui_alert_mx3cw_s3rj7_93",
+      ".awsui_content_mx3cw_s3rj7_240",
+      ".awsui_dismiss-button_mx3cw_s3rj7_249",
+      ".awsui_header_mx3cw_s3rj7_173",
+      ".awsui_root_mx3cw_s3rj7_119",
+    ],
+  ],
+  Array [
+    "anchor-navigation",
+    Array [
+      ".awsui_anchor-item--active_17oho_5eh15_13",
+      ".awsui_anchor-link-info_17oho_5eh15_25",
+      ".awsui_anchor-link-text_17oho_5eh15_21",
+      ".awsui_anchor-link_17oho_5eh15_17",
+      ".awsui_anchor-list_17oho_5eh15_9",
+      ".awsui_root_17oho_5eh15_5",
+    ],
+  ],
+  Array [
+    "annotation-context",
+    Array [
+      ".awsui_annotation_1hpp3_1sn4e_145",
+      ".awsui_content_1hpp3_1sn4e_151",
+      ".awsui_finish-button_1hpp3_1sn4e_148",
+      ".awsui_header_1hpp3_1sn4e_149",
+      ".awsui_next-button_1hpp3_1sn4e_146",
+      ".awsui_previous-button_1hpp3_1sn4e_147",
+      ".awsui_step-counter-content_1hpp3_1sn4e_150",
+    ],
+  ],
+  Array [
+    "app-layout",
+    Array [
+      ".awsui_active-drawer-close-button_1fj9k_sk4v8_65",
+      ".awsui_active-drawer_1fj9k_sk4v8_61",
+      ".awsui_breadcrumbs_1fj9k_sk4v8_29",
+      ".awsui_content_1fj9k_sk4v8_21",
+      ".awsui_disable-body-scroll-root_1fj9k_sk4v8_53",
+      ".awsui_drawer-closed_1fj9k_sk4v8_45",
+      ".awsui_drawers-slider_1fj9k_sk4v8_69",
+      ".awsui_drawers-trigger_1fj9k_sk4v8_57",
+      ".awsui_mobile-bar_1fj9k_sk4v8_49",
+      ".awsui_navigation-close_1fj9k_sk4v8_17",
+      ".awsui_navigation-toggle_1fj9k_sk4v8_13",
+      ".awsui_navigation_1fj9k_sk4v8_9",
+      ".awsui_notifications_1fj9k_sk4v8_25",
+      ".awsui_root_1fj9k_sk4v8_5",
+      ".awsui_tools-close_1fj9k_sk4v8_37",
+      ".awsui_tools-toggle_1fj9k_sk4v8_41",
+      ".awsui_tools_1fj9k_sk4v8_33",
+    ],
+  ],
+  Array [
+    "area-chart",
+    Array [
+      ".awsui_root_y1yrh_lwuxf_111",
+      ".awsui_series--highlighted_y1yrh_lwuxf_123",
+    ],
+  ],
+  Array [
+    "attribute-editor",
+    Array [
+      ".awsui_add-button_n4qlp_d2uj6_151",
+      ".awsui_field_n4qlp_d2uj6_147",
+      ".awsui_remove-button_n4qlp_d2uj6_155",
+      ".awsui_row-control_n4qlp_d2uj6_143",
+      ".awsui_row_n4qlp_d2uj6_139",
+    ],
+  ],
+  Array [
+    "badge",
+    Array [
+      ".awsui_badge_1yjyg_rd9t3_93",
+    ],
+  ],
+  Array [
+    "bar-chart",
+    Array [
+      ".awsui_root_1gfe1_7b6p8_9",
+    ],
+  ],
+  Array [
+    "button-dropdown",
+    Array [
+      ".awsui_test-utils-button-trigger_sne0l_jrij7_188",
+    ],
+  ],
+  Array [
+    "button",
+    Array [
+      ".awsui_button_vjswe_1y4ij_101",
+      ".awsui_button_vjswe_1y4ij_101 > .awsui_icon-left_vjswe_1y4ij_1004",
+      ".awsui_content_vjswe_1y4ij_97",
+    ],
+  ],
+  Array [
+    "calendar",
+    Array [
+      ".awsui_root_1ykar_mabzv_124",
+    ],
+  ],
+  Array [
+    "cards",
+    Array [
+      ".awsui_section-content_p8a6i_b4qoh_335",
+    ],
+  ],
+  Array [
+    "code-editor",
+    Array [
+      ".awsui_tab-button--errors_1gl9c_1qctu_932",
+    ],
+  ],
+  Array [
+    "collection-preferences",
+    Array [
+      ".awsui_cancel-button_tc96w_1428z_522",
+      ".awsui_confirm-button_tc96w_1428z_523",
+      ".awsui_content-density_tc96w_1428z_534",
+      ".awsui_content-display-option-toggle_1f3h0_vp1u7_185",
+      ".awsui_content-display-option-toggle_tc96w_1428z_409",
+      ".awsui_content-display_1f3h0_vp1u7_185",
+      ".awsui_content-display_tc96w_1428z_409",
+      ".awsui_custom_tc96w_1428z_524",
+      ".awsui_modal-root_tc96w_1428z_520",
+      ".awsui_page-size-form-field_tc96w_1428z_536",
+      ".awsui_page-size-radio-group_tc96w_1428z_537",
+      ".awsui_page-size_tc96w_1428z_535",
+      ".awsui_root_tc96w_1428z_519",
+      ".awsui_sticky-columns-first_tc96w_1428z_541",
+      ".awsui_sticky-columns-form-field_tc96w_1428z_539",
+      ".awsui_sticky-columns-last_tc96w_1428z_542",
+      ".awsui_sticky-columns-radio-group_tc96w_1428z_540",
+      ".awsui_sticky-columns_tc96w_1428z_538",
+      ".awsui_striped-rows_tc96w_1428z_533",
+      ".awsui_trigger-button_tc96w_1428z_521",
+      ".awsui_visible-content-group_tc96w_1428z_187",
+      ".awsui_visible-content-groups_tc96w_1428z_187",
+      ".awsui_visible-content-toggle_tc96w_1428z_186",
+      ".awsui_visible-content_tc96w_1428z_185",
+      ".awsui_wrap-lines_tc96w_1428z_532",
+    ],
+  ],
+  Array [
+    "date-input",
+    Array [
+      ".awsui_root_yodkx_im8v7_5",
+    ],
+  ],
+  Array [
+    "date-picker",
+    Array [
+      ".awsui_open-calendar-button_145pa_1igdg_137",
+    ],
+  ],
+  Array [
+    "date-range-picker",
+    Array [
+      ".awsui_apply-button_mgja0_144zw_297",
+      ".awsui_calendar-aria-live_mgja0_144zw_305",
+      ".awsui_cancel-button_mgja0_144zw_301",
+      ".awsui_clear-button_mgja0_144zw_293",
+      ".awsui_custom-range-duration-input_16zmw_1j1n9_125",
+      ".awsui_custom-range-unit-select_16zmw_1j1n9_126",
+      ".awsui_end-date-input_mgja0_144zw_280",
+      ".awsui_end-time-input_mgja0_144zw_281",
+      ".awsui_first-grid_mgja0_144zw_187",
+      ".awsui_mode-switch_mgja0_144zw_249",
+      ".awsui_relative-range-radio-group_16zmw_1j1n9_130",
+      ".awsui_second-grid_mgja0_144zw_188",
+      ".awsui_start-date-input_mgja0_144zw_278",
+      ".awsui_start-time-input_mgja0_144zw_279",
+      ".awsui_validation-error_mgja0_144zw_289",
+      ".awsui_validation-section_mgja0_144zw_285",
+    ],
+  ],
+  Array [
+    "drawer",
+    Array [
+      ".awsui_test-utils-drawer-content_1sxt8_u6fcq_138",
+    ],
+  ],
+  Array [
+    "expandable-section",
+    Array [
+      ".awsui_expand-button_gwq0h_16zft_167",
+      ".awsui_header-text_gwq0h_16zft_340",
+      ".awsui_header_gwq0h_16zft_218",
+    ],
+  ],
+  Array [
+    "file-upload",
+    Array [
+      ".awsui_file-option-last-modified_ezgb4_u1so3_11",
+      ".awsui_file-option-name_ezgb4_u1so3_9",
+      ".awsui_file-option-size_ezgb4_u1so3_10",
+      ".awsui_file-option-thumbnail_ezgb4_u1so3_12",
+      ".awsui_hints_1ubbm_rrcaf_10",
+      ".awsui_root_1ubbm_rrcaf_9",
+      ".awsui_upload-button_4xu1k_vep7l_93",
+      ".awsui_upload-input_4xu1k_vep7l_94",
+    ],
+  ],
+  Array [
+    "form-field",
+    Array [
+      ".awsui_secondary-control_14mhv_17frf_213",
+    ],
+  ],
+  Array [
+    "form",
+    Array [
+      ".awsui_content_1i0s3_1h9v6_110",
+      ".awsui_error_1i0s3_1h9v6_114",
+    ],
+  ],
+  Array [
+    "header",
+    Array [
+      ".awsui_heading-text_2qdw9_1or79_282",
+    ],
+  ],
+  Array [
+    "hotspot",
+    Array [
+      ".awsui_root_cqcqk_17pjq_93",
+    ],
+  ],
+  Array [
+    "input",
+    Array [
+      ".awsui_input-button-right_2rhyz_1brvq_238",
+      ".awsui_root_2rhyz_1brvq_93",
+    ],
+  ],
+  Array [
+    "internal",
+    Array [
+      ".awsui_axis-label--x_f0fot_1r3bt_24",
+      ".awsui_axis-label--y_f0fot_1r3bt_25",
+      ".awsui_chart-filter_1px7g_qe9rd_106",
+      ".awsui_filter-container_z5mul_1w1yj_141",
+      ".awsui_option-content_15o6u_16c0g_231",
+      ".awsui_root_11n0s_5huaf_9",
+      ".awsui_root_3bgfn_im8v7_5",
+      ".awsui_root_vrgzu_1713b_93 > .awsui_recovery_vrgzu_1713b_107",
+      ".awsui_select_10m3l_x5mbx_119",
+      ".awsui_ticks--x_f0fot_1r3bt_45",
+      ".awsui_ticks--y_f0fot_1r3bt_44",
+    ],
+  ],
+  Array [
+    "line-chart",
+    Array [
+      ".awsui_root_g9v3m_im8v7_5",
+    ],
+  ],
+  Array [
+    "mixed-line-bar-chart",
+    Array [
+      ".awsui_root_1yz9c_p4ph0_137",
+    ],
+  ],
+  Array [
+    "modal",
+    Array [
+      ".awsui_dismiss-control_1d2i7_1egdl_316",
+      ".awsui_header--text_1d2i7_1egdl_295",
+    ],
+  ],
+  Array [
+    "pie-chart",
+    Array [
+      ".awsui_label--highlighted_1edmh_14bb6_305",
+      ".awsui_root_1edmh_14bb6_156",
+    ],
+  ],
+  Array [
+    "popover",
+    Array [
+      ".awsui_dismiss-control_xjuzf_1bban_357",
+    ],
+  ],
+  Array [
+    "progress-bar",
+    Array [
+      " .awsui_result-container-success_11huc_16b7w_242",
+      ".awsui_percentage_11huc_16b7w_279",
+      ".awsui_result-container-error_11huc_16b7w_242",
+      ".awsui_result-text_11huc_16b7w_238",
+    ],
+  ],
+  Array [
+    "property-filter",
+    Array [
+      ".awsui_custom-filter-actions_1wzqe_1iaky_205",
+      ".awsui_join-operation_1wzqe_1iaky_204",
+      ".awsui_property-editor-field-property_1wzqe_1iaky_140",
+      ".awsui_property-editor-submit_1wzqe_1iaky_156",
+      ".awsui_remove-all_1wzqe_1iaky_202",
+      ".awsui_token-editor-field-property_1wzqe_1iaky_141",
+      ".awsui_token-editor-submit_1wzqe_1iaky_157",
+      ".awsui_token-label_1wzqe_1iaky_203",
+    ],
+  ],
+  Array [
+    "radio-group",
+    Array [
+      ".awsui_radio_1mabk_16xhy_107",
+    ],
+  ],
+  Array [
+    "s3-resource-selector",
+    Array [
+      ".awsui_alert_1u0yw_rfo7y_9",
+      ".awsui_browse-button_1vtzr_jorr1_17",
+      ".awsui_root_1u0yw_rfo7y_5",
+      ".awsui_root_1vtzr_jorr1_9",
+      ".awsui_submit-button_12hyz_1p88p_9",
+      ".awsui_view-button_1vtzr_jorr1_13",
+    ],
+  ],
+  Array [
+    "segmented-control",
+    Array [
+      ".awsui_icon_8cbea_15lvz_195",
+    ],
+  ],
+  Array [
+    "side-navigation",
+    Array [
+      ".awsui_section-group-title_l0dv0_z5gsk_210",
+    ],
+  ],
+  Array [
+    "space-between",
+    Array [
+      ".awsui_child_18582_frdpw_97",
+    ],
+  ],
+  Array [
+    "split-panel",
+    Array [
+      ".awsui_close-button_1r9lg_ptaxg_308",
+      ".awsui_open-button_1r9lg_ptaxg_439",
+      ".awsui_preferences-button_1r9lg_ptaxg_304",
+    ],
+  ],
+  Array [
+    "table",
+    Array [
+      ".awsui_header-cell-ascending_1spae_8r04d_236",
+      ".awsui_header-cell-descending_1spae_8r04d_237",
+      ".awsui_loading_wih1l_1sdjp_212",
+      ".awsui_root_1s55x_1ox2w_93",
+      ".awsui_row-selected_wih1l_1sdjp_302",
+      ".awsui_row_wih1l_1sdjp_301",
+      ".awsui_thead-active_wih1l_1sdjp_300",
+    ],
+  ],
+  Array [
+    "tabs",
+    Array [
+      ".awsui_root_14rmt_1q6hw_358",
+    ],
+  ],
+  Array [
+    "time-input",
+    Array [
+      ".awsui_root_l809c_im8v7_5",
+    ],
+  ],
+  Array [
+    "top-navigation",
+    Array [
+      ".awsui_overflow-menu-back-button_k5dlb_1vvmm_350",
+      ".awsui_overflow-menu-dismiss-button_k5dlb_1vvmm_354",
+      ".awsui_overflow-menu-header-text--title_k5dlb_1vvmm_346",
+      ".awsui_trigger_1ca1i_73l45_280",
+    ],
+  ],
+  Array [
+    "tutorial-panel",
+    Array [
+      ".awsui_collapse-button_ig8mp_9ut34_192",
+      ".awsui_completed_ig8mp_9ut34_208",
+      ".awsui_completion-screen-description_1u70p_s07s4_185",
+      ".awsui_completion-screen-title_1u70p_s07s4_184",
+      ".awsui_dismiss-button_1u70p_s07s4_183",
+      ".awsui_expand-button_ig8mp_9ut34_188",
+      ".awsui_feedback-link_1u70p_s07s4_182",
+      ".awsui_learn-more-link_ig8mp_9ut34_196",
+      ".awsui_prerequisites-alert_ig8mp_9ut34_204",
+      ".awsui_start_ig8mp_9ut34_184",
+      ".awsui_step-title_1u70p_s07s4_181",
+      ".awsui_title_ig8mp_9ut34_200",
+    ],
+  ],
+  Array [
+    "wizard",
+    Array [
+      ".awsui_cancel-button_1xupv_1wco4_383",
+      ".awsui_form-header-component_1xupv_1wco4_355",
+      ".awsui_navigation-link-item_1xupv_1wco4_369",
+      ".awsui_navigation-link-label_1xupv_1wco4_370",
+      ".awsui_navigation-link_1xupv_1wco4_368",
+      ".awsui_previous-button_1xupv_1wco4_384",
+      ".awsui_primary-button_1xupv_1wco4_385",
+      ".awsui_skip-to-button_1xupv_1wco4_386",
+    ],
+  ],
+]
+`;
