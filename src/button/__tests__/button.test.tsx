@@ -108,6 +108,13 @@ describe('Button Component', () => {
     });
   });
 
+  describe('ariaControls property', () => {
+    test('adds aria-controls property to button', () => {
+      const wrapper = renderButton({ ariaControls: 'test-element' });
+      expect(wrapper.getElement()).toHaveAttribute('aria-controls', 'test-element');
+    });
+  });
+
   describe('ariaDescribedby property', () => {
     test('adds aria-describedby property to button', () => {
       const wrapper = renderButton({ ariaDescribedby: 'my-element' });
