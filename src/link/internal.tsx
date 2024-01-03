@@ -26,6 +26,7 @@ import {
   getSubStepAllSelector,
 } from '../internal/analytics/selectors';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
+import { useGridNavigationFocusable } from '../table/table-role';
 
 type InternalLinkProps = InternalBaseComponentProps<HTMLAnchorElement> &
   Omit<LinkProps, 'variant'> & {
@@ -138,6 +139,8 @@ const InternalLink = React.forwardRef(
     // Visual refresh should only add styles to buttons that don't already have unique styles (e.g. primary/secondary variants)
     const applyButtonStyles = isButton && isVisualRefresh && !hasSpecialStyle;
 
+    const { shouldMuteUserFocus } = useGridNavigationFocusable(linkRef);
+
     const sharedProps = {
       id: linkId,
       ...baseProps,
@@ -153,6 +156,7 @@ const InternalLink = React.forwardRef(
       ),
       'aria-label': ariaLabel,
       'aria-labelledby': '',
+      tabIndex: shouldMuteUserFocus ? -1 : 0,
       [DATA_ATTR_FUNNEL_VALUE]: uniqueId,
     };
 
@@ -186,7 +190,7 @@ const InternalLink = React.forwardRef(
 
     if (isButton) {
       return (
-        <a {...sharedProps} role="button" tabIndex={0} onKeyDown={handleButtonKeyDown} onClick={handleButtonClick}>
+        <a {...sharedProps} role="button" onKeyDown={handleButtonKeyDown} onClick={handleButtonClick}>
           {content}
         </a>
       );

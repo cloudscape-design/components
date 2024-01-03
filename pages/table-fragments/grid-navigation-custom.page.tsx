@@ -6,6 +6,7 @@ import {
   Button,
   ButtonDropdown,
   Checkbox,
+  CollectionPreferences,
   ColumnLayout,
   Container,
   ContentLayout,
@@ -22,7 +23,7 @@ import {
 } from '~components';
 import { useEffectOnUpdate } from '~components/internal/hooks/use-effect-on-update';
 import styles from './styles.scss';
-import { id as generateId, generateItems, Instance, InstanceState } from '../table/generate-data';
+import { id as generateId, generateItems, Instance } from '../table/generate-data';
 import AppContext, { AppContextType } from '../app/app-context';
 import {
   TableRole,
@@ -33,10 +34,12 @@ import {
   getTableRowRoleProps,
   getTableWrapperRoleProps,
   GridNavigationProvider,
+  useGridNavigationFocusable,
 } from '~components/table/table-role';
 import { orderBy, range } from 'lodash';
 import appLayoutLabels from '../app-layout/utils/labels';
 import { stateToStatusIndicator } from '../table/shared-configs';
+import { contentDisplayPreferenceI18nStrings } from '../common/i18n-strings';
 
 interface ExtendedWindow extends Window {
   refreshItems: () => void;
@@ -49,6 +52,7 @@ type PageContext = React.Context<
     tableRole: TableRole;
     actionsMode: ActionsMode;
     autoRefresh: boolean;
+    visibleColumns: string;
   }>
 >;
 
@@ -64,7 +68,15 @@ const actionsModeOptions = [
 export default function Page() {
   const [toolsOpen, setToolsOpen] = useState(false);
   const { urlParams, setUrlParams } = useContext(AppContext as PageContext);
-  const { pageSize = 10, tableRole = 'grid', actionsMode = 'dropdown', autoRefresh = false } = urlParams;
+  const {
+    pageSize = 10,
+    tableRole = 'grid',
+    actionsMode = 'dropdown',
+    autoRefresh = false,
+    visibleColumns:
+      visibleColumnsString = 'id,actions,state,imageId,dnsName,type,inline-select,inline-radio,inline-input',
+  } = urlParams;
+  const visibleColumns = visibleColumnsString.split(',').filter(Boolean);
 
   const [items, setItems] = useState(generateItems(25));
   const [refreshCounter, setRefreshCounter] = useState(0);
@@ -109,14 +121,7 @@ export default function Page() {
     {
       key: 'state',
       label: 'State',
-      render: (item: Instance) => (
-        <EditableStateCell
-          value={item.state}
-          onChange={value =>
-            setItems(prev => prev.map(prevItem => (prevItem.id === item.id ? { ...prevItem, state: value } : prevItem)))
-          }
-        />
-      ),
+      render: (item: Instance) => <StatusIndicator {...stateToStatusIndicator[item.state]} />,
     },
     {
       key: 'imageId',
@@ -129,6 +134,7 @@ export default function Page() {
     { key: 'inline-radio', label: 'Radio', render: (item: Instance) => <InlineRadio value={item.type} /> },
     { key: 'inline-input', label: 'Input', render: (item: Instance) => <InlineInput value={item.type} /> },
   ];
+  const visibleColumnDefinitions = columnDefinitions.filter(def => visibleColumns.includes(def.key));
 
   const [sortingKey, setSortingKey] = useState<null | string>(null);
   const [sortingDirection, setSortingDirection] = useState<1 | -1>(1);
@@ -185,6 +191,36 @@ export default function Page() {
                 </ColumnLayout>
 
                 <SpaceBetween alignItems="center" size="m" direction="horizontal">
+                  <CollectionPreferences
+                    title="Preferences"
+                    confirmLabel="Confirm"
+                    cancelLabel="Cancel"
+                    preferences={{
+                      contentDisplay: columnDefinitions.map(column => ({
+                        id: column.key,
+                        visible: visibleColumns.includes(column.key),
+                      })),
+                    }}
+                    onConfirm={({ detail }) =>
+                      setUrlParams({
+                        visibleColumns: (detail.contentDisplay ?? [])
+                          .filter(column => column.visible)
+                          .map(column => column.id)
+                          .join(','),
+                      })
+                    }
+                    contentDisplayPreference={{
+                      title: 'Column preferences',
+                      description: 'Customize the columns visibility.',
+                      options: columnDefinitions.map(column => ({
+                        id: column.key,
+                        label: column.label,
+                        alwaysVisible: column.key === 'id',
+                      })),
+                      ...contentDisplayPreferenceI18nStrings,
+                    }}
+                  />
+
                   <Checkbox
                     checked={autoRefresh}
                     onChange={event => setUrlParams({ autoRefresh: event.detail.checked })}
@@ -218,34 +254,34 @@ export default function Page() {
                   {...getTableRoleProps({
                     tableRole,
                     totalItemsCount: items.length,
-                    totalColumnsCount: columnDefinitions.length,
+                    totalColumnsCount: visibleColumnDefinitions.length,
                   })}
                 >
                   <thead>
                     <tr {...getTableHeaderRowRoleProps({ tableRole })}>
-                      {columnDefinitions.map((column, colIndex) => (
+                      {visibleColumnDefinitions.map((column, colIndex) => (
                         <th
                           key={column.key}
                           className={styles['custom-table-cell']}
                           {...getTableColHeaderRoleProps({ tableRole, colIndex })}
                         >
-                          <div style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap' }}>
-                            <button
-                              className={styles['custom-table-sorting-header']}
-                              onClick={() => {
-                                if (sortingKey !== column.key) {
-                                  setSortingKey(column.key);
-                                  setSortingDirection(-1);
-                                } else {
-                                  setSortingDirection(prev => (prev === 1 ? -1 : 1));
-                                }
-                              }}
-                            >
-                              {column.label}
-                            </button>
-                            {sortingKey === column.key && sortingDirection === -1 && <Icon name="angle-down" />}
-                            {sortingKey === column.key && sortingDirection === 1 && <Icon name="angle-up" />}
-                          </div>
+                          <SortingHeader
+                            label={column.label}
+                            icon={
+                              <>
+                                {sortingKey === column.key && sortingDirection === -1 && <Icon name="angle-down" />}
+                                {sortingKey === column.key && sortingDirection === 1 && <Icon name="angle-up" />}
+                              </>
+                            }
+                            onClick={() => {
+                              if (sortingKey !== column.key) {
+                                setSortingKey(column.key);
+                                setSortingDirection(-1);
+                              } else {
+                                setSortingDirection(prev => (prev === 1 ? -1 : 1));
+                              }
+                            }}
+                          />
                         </th>
                       ))}
                     </tr>
@@ -253,7 +289,7 @@ export default function Page() {
                   <tbody>
                     {sortedItems.map((item, rowIndex) => (
                       <tr key={item.id} {...getTableRowRoleProps({ tableRole, rowIndex, firstIndex: 0 })}>
-                        {columnDefinitions.map((column, colIndex) => (
+                        {visibleColumnDefinitions.map((column, colIndex) => (
                           <td
                             key={column.key}
                             className={styles['custom-table-cell']}
@@ -272,6 +308,24 @@ export default function Page() {
         </ContentLayout>
       }
     />
+  );
+}
+
+function SortingHeader({ label, onClick, icon }: { label: string; onClick: () => void; icon: React.ReactNode }) {
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const { shouldMuteUserFocus } = useGridNavigationFocusable(buttonRef);
+  return (
+    <div style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap' }}>
+      <button
+        ref={buttonRef}
+        tabIndex={shouldMuteUserFocus ? -1 : 0}
+        className={styles['custom-table-sorting-header']}
+        onClick={onClick}
+      >
+        {label}
+      </button>
+      {icon}
+    </div>
   );
 }
 
@@ -356,11 +410,16 @@ function ItemActionsCell({
 function DnsEditCell({ item }: { item: Instance }) {
   const [active, setActive] = useState(false);
   const [value, setValue] = useState(item.dnsName ?? '');
+
+  const triggerRef = useRef<HTMLDivElement>(null);
+  const { shouldMuteUserFocus } = useGridNavigationFocusable(triggerRef, { navigationSuppressed: active });
   const dialogRef = useRef<HTMLDivElement>(null);
+
   return !active ? (
     <div
+      ref={triggerRef}
       role="button"
-      tabIndex={0}
+      tabIndex={shouldMuteUserFocus ? -1 : 0}
       aria-label="Edit DNS name"
       onClick={() => setActive(true)}
       onKeyDown={event => {
@@ -391,63 +450,6 @@ function DnsEditCell({ item }: { item: Instance }) {
       <Input autoFocus={true} value={value} onChange={event => setValue(event.detail.value)} />
       <Button iconName="check" ariaLabel="Save" onClick={() => setActive(false)} />
       <Button iconName="close" ariaLabel="Cancel" onClick={() => setActive(false)} />
-    </div>
-  );
-}
-
-function EditableStateCell({ value, onChange }: { value: InstanceState; onChange: (value: InstanceState) => void }) {
-  const [active, setActive] = useState(false);
-  const dialogRef = useRef<HTMLDivElement>(null);
-
-  if (!active) {
-    return value === 'TERMINATED' ? (
-      <StatusIndicator {...stateToStatusIndicator[value]} />
-    ) : (
-      <button className={styles['status-trigger-button']} onClick={() => setActive(true)}>
-        <StatusIndicator {...stateToStatusIndicator[value]} />
-      </button>
-    );
-  }
-
-  return (
-    <div
-      ref={dialogRef}
-      role="dialog"
-      aria-label="Set control value dialog"
-      onBlur={event => {
-        if (!dialogRef.current?.contains(event.relatedTarget)) {
-          setActive(false);
-        }
-      }}
-      onKeyDown={event => {
-        if (event.key === 'Escape' || event.key === 'F2' || event.key === ' ') {
-          event.preventDefault();
-          setActive(false);
-        }
-      }}
-    >
-      <RadioGroup
-        items={[
-          {
-            value: 'RUNNING',
-            label: 'Start',
-          },
-          {
-            value: 'PENDING',
-            label: 'Suspend',
-          },
-          {
-            value: 'STOPPING',
-            label: 'Stop',
-          },
-          {
-            value: 'TERMINATING',
-            label: 'Terminate',
-          },
-        ]}
-        onChange={({ detail }) => onChange(detail.value as InstanceState)}
-        value={value}
-      />
     </div>
   );
 }
