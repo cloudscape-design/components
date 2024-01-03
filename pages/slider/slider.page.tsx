@@ -8,7 +8,9 @@ import FormField from '~components/form-field';
 import { Grid, Select, Slider, SliderProps } from '~components';
 
 function Sliders() {
-  const [sliderValue, setSliderValue] = useState('20');
+  const [sliderValue, setSliderValue] = useState(20);
+  const [rangeMin, setRangeMin] = useState(20);
+  const [rangeMax, setRangeMax] = useState(80);
   const [minValue, setMinValue] = React.useState<any>({ value: '5' });
   const rangeOptions = [{ value: '0' }, { value: '5' }, { value: '10' }, { value: '15' }, { value: '20' }];
 
@@ -16,7 +18,7 @@ function Sliders() {
     <SpaceBetween size="xxl">
       <Slider value={sliderValue} min={0} max={100} step={10} onChange={({ detail }) => setSliderValue(detail.value)} />
 
-      <FormField label="Range slider">
+      <FormField label="Slider with select">
         <SpaceBetween size="m">
           <Grid
             gridDefinition={[
@@ -31,7 +33,6 @@ function Sliders() {
             />
           </Grid>
           <Slider
-            variant="range"
             value={minValue.value}
             onChange={({ detail }) => {
               console.log(detail);
@@ -41,6 +42,19 @@ function Sliders() {
             max={20}
             step={5}
           />
+          <FormField label="Range slider">
+            <Slider
+              variant="range"
+              rangeValue={[rangeMin, rangeMax]}
+              onRangeChange={({ detail }) => {
+                console.log(detail);
+                setRangeMin(detail.value[0]);
+                setRangeMax(detail.value[1]);
+              }}
+              min={0}
+              max={100}
+            />
+          </FormField>
         </SpaceBetween>
       </FormField>
     </SpaceBetween>
@@ -48,7 +62,7 @@ function Sliders() {
 }
 
 export default function InputsPage() {
-  const [value, setValue] = React.useState<SliderProps.ChangeDetail['value']>('50');
+  const [value, setValue] = React.useState<SliderProps.ChangeDetail['value']>(50);
 
   return (
     <div style={{ padding: 10 }}>
@@ -71,7 +85,7 @@ export default function InputsPage() {
               min={0}
               max={100}
             />
-            <Input value={value} onChange={({ detail }) => setValue(detail.value)} />
+            <Input value={`${value}`} onChange={({ detail }) => setValue(Number(detail.value))} />
             <Box>Units</Box>
           </Grid>
         </FormField>

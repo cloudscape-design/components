@@ -7,7 +7,12 @@ export interface SliderProps extends BaseComponentProps {
   /**
    * Indicates the current value. If variant is 'range', use format [number, number], otherwise, use number.
    */
-  value: string;
+  value?: number;
+
+  /**
+   * Indicates the current value. If variant is 'range', use format [number, number], otherwise, use number.
+   */
+  rangeValue?: [number, number];
 
   /**
    * Indicates the minimum value.
@@ -23,6 +28,11 @@ export interface SliderProps extends BaseComponentProps {
    * onChange handler.
    */
   onChange?: NonCancelableEventHandler<SliderProps.ChangeDetail>;
+
+  /**
+   * onRangeChange handler.
+   */
+  onRangeChange?: NonCancelableEventHandler<SliderProps.RangeChangeDetail>;
 
   /**
    * Indicates the variant.
@@ -56,6 +66,10 @@ export namespace SliderProps {
   export type Variant = 'default' | 'range';
 
   export interface ChangeDetail {
-    value: string;
+    value: number;
+  }
+
+  export interface RangeChangeDetail {
+    value: [number, number];
   }
 }
