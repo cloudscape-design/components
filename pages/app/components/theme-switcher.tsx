@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext } from 'react';
-import { ALWAYS_VISUAL_REFRESH } from '~components/internal/environment';
-import { Popover, SpaceBetween } from '~components';
+import { THEME, ALWAYS_VISUAL_REFRESH } from '~components/internal/environment';
+import SpaceBetween from '~components/space-between';
 import AppContext from '../app-context';
 import { Density, Mode } from '@cloudscape-design/global-styles';
 
@@ -26,65 +26,44 @@ export default function ThemeSwitcher() {
   }
 
   return (
-    <Popover
-      header="Settings"
-      position="bottom"
-      size="large"
-      content={
-        <SpaceBetween direction="vertical" size="xs">
-          <label>
-            <input {...vrSwitchProps} />
-            Visual refresh
-          </label>
-
-          <label>
-            <input
-              id="mode-toggle"
-              type="checkbox"
-              checked={mode === 'dark'}
-              onChange={event => setMode(event.target.checked ? Mode.Dark : Mode.Light)}
-            />
-            Dark mode
-          </label>
-
-          <label>
-            <input
-              id="density-toggle"
-              type="checkbox"
-              checked={urlParams.density === 'compact'}
-              onChange={event =>
-                setUrlParams({ density: event.target.checked ? Density.Compact : Density.Comfortable })
-              }
-            />
-            Compact mode
-          </label>
-
-          <label>
-            <input
-              id="disabled-motion-toggle"
-              type="checkbox"
-              checked={urlParams.motionDisabled}
-              onChange={event => setUrlParams({ motionDisabled: event.target.checked })}
-            />
-            Disable motion
-          </label>
-
-          <label>
-            <input
-              id="disabled-motion-toggle"
-              type="checkbox"
-              checked={urlParams.direction === 'rtl'}
-              onChange={event => {
-                setUrlParams({ direction: event.target.checked ? 'rtl' : 'ltr' });
-                window.location.reload();
-              }}
-            />
-            Right to Left
-          </label>
-        </SpaceBetween>
-      }
-    >
-      Demo Page Settings
-    </Popover>
+    <SpaceBetween direction="horizontal" size="xs">
+      <label>
+        Theme
+        <select defaultValue={THEME}>
+          <option value={THEME}>{THEME}</option>
+        </select>
+      </label>
+      <label>
+        <input {...vrSwitchProps} />
+        Visual refresh
+      </label>
+      <label>
+        <input
+          id="mode-toggle"
+          type="checkbox"
+          checked={mode === 'dark'}
+          onChange={event => setMode(event.target.checked ? Mode.Dark : Mode.Light)}
+        />
+        Dark mode
+      </label>
+      <label>
+        <input
+          id="density-toggle"
+          type="checkbox"
+          checked={urlParams.density === 'compact'}
+          onChange={event => setUrlParams({ density: event.target.checked ? Density.Compact : Density.Comfortable })}
+        />
+        Compact mode
+      </label>
+      <label>
+        <input
+          id="disabled-motion-toggle"
+          type="checkbox"
+          checked={urlParams.motionDisabled}
+          onChange={event => setUrlParams({ motionDisabled: event.target.checked })}
+        />
+        Disable motion
+      </label>
+    </SpaceBetween>
   );
 }

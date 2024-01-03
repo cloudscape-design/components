@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { createContext } from 'react';
 import mapValues from 'lodash/mapValues';
+import { THEME } from '~components/internal/environment';
 import { Density, Mode } from '@cloudscape-design/global-styles';
 import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 
@@ -26,7 +27,7 @@ const appContextDefaults: AppContextType = {
   urlParams: {
     density: Density.Comfortable,
     direction: 'ltr',
-    visualRefresh: false,
+    visualRefresh: THEME === 'default',
     motionDisabled: false,
   },
   setMode: () => {},
