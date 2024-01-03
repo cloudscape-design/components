@@ -111,7 +111,10 @@ const columns: TableProps.ColumnDefinition<DistributionInfo>[] = [
         );
       },
       isDisabled(item) {
-        return item.Origin.includes('browserstack');
+        if (item.Origin.includes('browserstack')) {
+          return "You don't have the necessary permissions to change a BrowserStack origin.";
+        }
+        return false;
       },
     },
     cell: item => item.Origin,

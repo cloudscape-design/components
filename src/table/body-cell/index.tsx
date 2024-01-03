@@ -4,19 +4,19 @@ import clsx from 'clsx';
 import styles from './styles.css.js';
 import React, { useEffect, useRef, useState } from 'react';
 import Icon from '../../icon/internal';
-import Popover from '../../popover/internal';
 import { TableProps } from '../interfaces';
 import { TableTdElement, TableTdElementProps } from './td-element';
 import { InlineEditor } from './inline-editor';
 import LiveRegion from '../../internal/components/live-region/index.js';
 import { useInternalI18n } from '../../i18n/context';
 import { usePrevious } from '../../internal/hooks/use-previous';
+import { DisabledInlineEditor } from './disabled-inline-editor';
 
 const submitHandlerFallback = () => {
   throw new Error('The function `handleSubmit` is required for editable columns');
 };
 
-interface TableBodyCellProps<ItemType> extends TableTdElementProps {
+export interface TableBodyCellProps<ItemType> extends TableTdElementProps {
   column: TableProps.ColumnDefinition<ItemType>;
   item: ItemType;
   isEditing: boolean;
@@ -47,8 +47,6 @@ function TableCellEditable<ItemType>({
   };
   const isFocusMoveNeededRef = useRef(false);
 
-  const editDisabledReason = column.editConfig?.isDisabled?.(item) ?? false;
-
   useEffect(() => {
     if (!isEditing && editActivateRef.current && isFocusMoveNeededRef.current) {
       isFocusMoveNeededRef.current = false;
@@ -63,8 +61,6 @@ function TableCellEditable<ItemType>({
   const prevSuccessfulEdit = usePrevious(successfulEdit);
   const prevHasFocus = usePrevious(hasFocus);
   const [showSuccessIcon, setShowSuccessIcon] = useState(false);
-
-  console.log({ editDisabledReason, showIcon });
 
   useEffect(() => {
     // Hide the success icon after a successful edit, when cell loses focus.
@@ -92,24 +88,7 @@ function TableCellEditable<ItemType>({
       onMouseEnter={() => setHasHover(true)}
       onMouseLeave={() => setHasHover(false)}
     >
-      {editDisabledReason ? (
-        <>
-          {column.cell(item)}
-          <button
-            className={styles['body-cell-editor']}
-            aria-label={ariaLabels?.activateEditLabel?.(column, item)}
-            ref={editActivateRef}
-            onFocus={() => setHasFocus(true)}
-            onBlur={() => setHasFocus(false)}
-          >
-            {showIcon && (
-              <Popover content="You cannot edit this!">
-                <Icon name="lock-private" variant="normal" />
-              </Popover>
-            )}
-          </button>
-        </>
-      ) : isEditing ? (
+      {isEditing ? (
         <InlineEditor
           ariaLabels={ariaLabels}
           column={column}
@@ -158,44 +137,6 @@ function TableCellEditable<ItemType>({
   );
 }
 
-function TableCellDisabledEdit<ItemType>({
-  className,
-  item,
-  column,
-  ariaLabels,
-  isVisualRefresh,
-  ...rest
-}: TableBodyCellProps<ItemType>) {
-  const [hasHover, setHasHover] = useState(false);
-  const [hasFocus, setHasFocus] = useState(false);
-  const showIcon = hasHover || hasFocus;
-  return (
-    <TableTdElement
-      {...rest}
-      className={clsx(
-        className,
-        styles['body-cell-editable'],
-        styles['body-cell-disabled-edit'],
-        isVisualRefresh && styles['is-visual-refresh']
-      )}
-      onMouseEnter={() => setHasHover(true)}
-      onMouseLeave={() => setHasHover(false)}
-    >
-      {column.cell(item)}
-
-      <div
-        tabIndex={0}
-        className={styles['body-cell-editor']}
-        aria-label={ariaLabels?.activateEditLabel?.(column, item)}
-        onFocus={() => setHasFocus(true)}
-        onBlur={() => setHasFocus(false)}
-      >
-        {showIcon && <Icon name="lock-private" variant="normal" />}
-      </div>
-    </TableTdElement>
-  );
-}
-
 export function TableBodyCell<ItemType>({
   isEditable,
   ...rest
@@ -203,7 +144,7 @@ export function TableBodyCell<ItemType>({
   const editDisabledReason = rest.column.editConfig?.isDisabled?.(rest.item) ?? false;
 
   if (editDisabledReason) {
-    return <TableCellDisabledEdit {...rest} />;
+    return <DisabledInlineEditor editDisabledReason={editDisabledReason} {...rest} />;
   }
 
   if (isEditable || rest.isEditing) {

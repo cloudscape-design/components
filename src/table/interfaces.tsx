@@ -361,7 +361,7 @@ export namespace TableProps {
      */
     editingCell(item: T, ctx: TableProps.CellContext<any>): React.ReactNode;
 
-    isDisabled?: (item: T) => boolean | string;
+    isDisabled?: (item: T) => string | false;
   }
 
   export type ColumnDefinition<ItemType> = {
