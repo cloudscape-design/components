@@ -12,6 +12,8 @@ export namespace ExpandableSectionProps {
   export type HeadingTag = 'h1' | 'h2' | 'h3' | 'h4' | 'h5';
 }
 
+export type InternalVariant = ExpandableSectionProps.Variant | 'compact';
+
 export interface ExpandableSectionProps extends BaseComponentProps {
   /**
    * Determines whether the component initially displays in expanded state (that is, with content visible). The component operates in an uncontrolled

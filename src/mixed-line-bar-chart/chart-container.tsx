@@ -77,7 +77,7 @@ export interface ChartContainerProps<T extends ChartDataTypes> {
   ariaDescription: MixedLineBarChartProps<T>['ariaDescription'];
   i18nStrings: MixedLineBarChartProps<T>['i18nStrings'];
 
-  plotContainerRef: React.RefObject<HTMLDivElement>;
+  detailPopoverSeriesContent?: MixedLineBarChartProps.DetailPopoverSeriesContent<T>;
 }
 
 interface BaseAxisProps {
@@ -127,7 +127,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
   ariaLabelledby,
   ariaDescription,
   i18nStrings = {},
-  plotContainerRef,
+  detailPopoverSeriesContent,
   ...props
 }: ChartContainerProps<T>) {
   const plotRef = useRef<ChartPlotRef>(null);
@@ -135,6 +135,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
 
   const [leftLabelsWidth, setLeftLabelsWidth] = useState(0);
   const [verticalMarkerX, setVerticalMarkerX] = useState<VerticalMarkerX<T> | null>(null);
+  const [detailsPopoverText, setDetailsPopoverText] = useState('');
   const [containerWidth, containerMeasureRef] = useContainerWidth(fallbackContainerWidth);
   const maxLeftLabelsWidth = Math.round(containerWidth / 2);
   const plotWidth = containerWidth
@@ -367,7 +368,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
     }
   };
 
-  const onSVGMouseDown = (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
+  const onSVGClick = (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
     if (isPopoverOpen) {
       if (isPopoverPinned) {
         dismissPopover();
@@ -397,11 +398,8 @@ export default function ChartContainer<T extends ChartDataTypes>({
       !(blurTarget instanceof Element) ||
       !nodeBelongs(containerRefObject.current, blurTarget)
     ) {
-      setHighlightedPoint(null);
+      clearHighlightedSeries();
       setVerticalMarkerX(null);
-      if (!plotContainerRef?.current?.contains(blurTarget)) {
-        clearHighlightedSeries();
-      }
 
       if (isPopoverOpen && !isPopoverPinned) {
         dismissPopover();
@@ -467,25 +465,30 @@ export default function ChartContainer<T extends ChartDataTypes>({
       const seriesToShow = visibleSeries.filter(
         series => series.series === highlightedPoint?.series || isXThreshold(series.series)
       );
-      return formatHighlighted(highlightedX, seriesToShow, xTickFormatter);
+      return formatHighlighted({
+        position: highlightedX,
+        series: seriesToShow,
+        xTickFormatter,
+        detailPopoverSeriesContent,
+      });
     }
 
     // Otherwise - show all visible series details.
-    return formatHighlighted(highlightedX, visibleSeries, xTickFormatter);
-  }, [highlightedX, highlightedPoint, visibleSeries, xTickFormatter]);
+    return formatHighlighted({
+      position: highlightedX,
+      series: visibleSeries,
+      xTickFormatter,
+      detailPopoverSeriesContent,
+    });
+  }, [highlightedX, highlightedPoint, visibleSeries, xTickFormatter, detailPopoverSeriesContent]);
 
   const detailPopoverFooterContent = useMemo(
     () => (detailPopoverFooter && highlightedX ? detailPopoverFooter(highlightedX) : null),
     [detailPopoverFooter, highlightedX]
   );
 
-  const activeAriaLabel = useMemo(
-    () =>
-      highlightDetails
-        ? `${highlightDetails.position}, ${highlightDetails.details.map(d => d.key + ' ' + d.value).join(',')}`
-        : '',
-    [highlightDetails]
-  );
+  const activeAriaLabel =
+    highlightDetails && detailsPopoverText ? `${highlightDetails.position}, ${detailsPopoverText}` : '';
 
   // Live region is used when nothing is focused e.g. when hovering.
   const activeLiveRegion =
@@ -532,7 +535,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
           activeElementFocusOffset={isGroupNavigation ? 0 : isLineXKeyboardFocused ? { x: 8, y: 0 } : 3}
           onMouseMove={onSVGMouseMove}
           onMouseOut={onSVGMouseOut}
-          onMouseDown={onSVGMouseDown}
+          onClick={onSVGClick}
           onFocus={onSVGFocus}
           onBlur={onSVGBlur}
           onKeyDown={onSVGKeyDown}
@@ -643,6 +646,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
           dismissAriaLabel={i18nStrings.detailPopoverDismissAriaLabel}
           onMouseLeave={onPopoverLeave}
           onBlur={onSVGBlur}
+          setPopoverText={setDetailsPopoverText}
         />
       }
     />

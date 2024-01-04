@@ -72,9 +72,15 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
 
   &-default,
   &-navigation,
-  &-footer {
+  &-footer,
+  &-compact {
     color: awsui.$color-text-expandable-section-default;
     @include styles.font-smoothing;
+  }
+
+  &-default,
+  &-navigation,
+  &-footer {
     font-size: awsui.$font-expandable-heading-size;
     letter-spacing: awsui.$letter-spacing-heading-s;
   }
@@ -92,9 +98,12 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   }
 
   &-footer {
-    // We remove left and right padding here to better align the carat icon
     padding-top: awsui.$space-scaled-xxs;
     padding-bottom: awsui.$space-scaled-xxs;
+  }
+
+  &-footer,
+  &-compact {
     padding-right: 0;
     &.header-deprecated {
       padding-left: 0;
@@ -145,6 +154,12 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
     letter-spacing: inherit;
     margin: 0;
     padding: 0;
+  }
+
+  &-actions-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
   }
 
   &-button,
@@ -212,6 +227,10 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
 
   &-expanded {
     display: block;
+  }
+
+  &-compact {
+    padding-inline-start: $icon-total-space-normal;
   }
 }
 

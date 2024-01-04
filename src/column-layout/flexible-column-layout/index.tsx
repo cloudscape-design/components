@@ -60,12 +60,11 @@ export default function FlexibleColumnLayout({
     >
       {flattenedChildren.map((child, i) => {
         // If this react child is a primitive value, the key will be undefined
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const key = (child as any).key;
+        const key = (child as Record<'key', unknown>).key;
 
         return (
           <div
-            key={key}
+            key={key ? String(key) : undefined}
             className={clsx(styles.item, {
               [styles['first-column']]: i % columnCount === 0,
             })}

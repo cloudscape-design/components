@@ -61,7 +61,6 @@ viewport size and state of the Tools drawer.
 
 .tools {
   background-color: awsui.$color-background-container-content;
-  box-shadow: awsui.$shadow-panel;
   flex-shrink: 0;
   height: 100%;
   overflow-y: auto;
@@ -93,6 +92,8 @@ viewport size and state of the Tools drawer.
 
   // Apply the animation when the Tools is opened
   &.is-tools-open {
+    border-left: solid awsui.$border-divider-section-width awsui.$color-border-divider-default;
+
     &.animating {
       @include styles.with-motion {
         animation: openTools awsui.$motion-duration-refresh-only-fast;
@@ -168,6 +169,7 @@ handleSplitPanelMaxWidth function in the context.
       display: flex;
       flex-direction: column;
       gap: awsui.$space-xs;
+
       &.animating {
         @include styles.with-motion {
           animation: showButtons awsui.$motion-duration-refresh-only-fast;

@@ -1,12 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { CartesianChartProps, ScaleType } from '../internal/components/cartesian-chart/interfaces';
-import { ChartDataTypes, MixedLineBarChartProps } from '../mixed-line-bar-chart/interfaces';
+import { ScaleType } from '../internal/components/cartesian-chart/interfaces';
+import { ChartDataTypes, CommonMixedChartProps, MixedLineBarChartProps } from '../mixed-line-bar-chart/interfaces';
 
 type BarSeries<T> = MixedLineBarChartProps.BarDataSeries<T> | MixedLineBarChartProps.ThresholdSeries<T>;
 
-export interface BarChartProps<T extends ChartDataTypes>
-  extends CartesianChartProps<T, MixedLineBarChartProps.ChartSeries<T>> {
+export interface BarChartProps<T extends ChartDataTypes> extends CommonMixedChartProps<T> {
   /**
    * Array that represents the source of data for the displayed chart.
    * Each element can represent a bar series or a threshold, and can have the following properties:
@@ -29,12 +28,6 @@ export interface BarChartProps<T extends ChartDataTypes>
    * This can only be used when the chart consists exclusively of bar series.
    */
   horizontalBars?: boolean;
-
-  /**
-   * When set to `true`, adds a visual emphasis on the zero baseline axis.
-   * See the usage guidelines for more details.
-   */
-  emphasizeBaselineAxis?: boolean;
 
   /**
    * Determines the type of scale for values on the x axis.

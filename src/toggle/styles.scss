@@ -23,6 +23,9 @@ $shadow-color: rgba(0, 0, 0, 0.25);
 }
 
 .toggle-control {
+  // this is a "drawing" element, and therefore we want it (and children) to retain
+  // background colors in high-contrast/forced-color mode
+  forced-color-adjust: none;
   @include styles.make-control-size($toggle-height, $toggle-width);
   background: awsui.$color-background-toggle-default;
   border-radius: 0.8 * styles.$base-size;

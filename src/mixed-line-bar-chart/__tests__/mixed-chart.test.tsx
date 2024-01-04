@@ -1,16 +1,24 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render } from '@testing-library/react';
+import { waitFor } from '@testing-library/react';
 import { ElementWrapper } from '../../../lib/components/test-utils/dom';
 import { MixedLineBarChartWrapper } from '../../../lib/components/test-utils/dom';
 import MixedLineBarChart, { MixedLineBarChartProps } from '../../../lib/components/mixed-line-bar-chart';
 import styles from '../../../lib/components/mixed-line-bar-chart/styles.css.js';
 import cartesianStyles from '../../../lib/components/internal/components/cartesian-chart/styles.css.js';
 import chartWrapperStyles from '../../../lib/components/internal/components/chart-wrapper/styles.css.js';
-import { lineSeries3 } from './common';
+import { lineSeries3, renderMixedChart } from './common';
 import createComputedTextLengthMock from './computed-text-length-mock';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
+import positions from '../../../lib/components/popover/utils/positions';
+
+jest.mock('../../../lib/components/popover/utils/positions', () => {
+  return {
+    ...jest.requireActual('../../../lib/components/popover/utils/positions'),
+    getOffsetDimensions: () => ({ offsetWidth: 200, offsetHeight: 300 }), // Approximate mock value for the popover dimensions
+  };
+});
 
 const statusTypes: Array<MixedLineBarChartProps<number>['statusType']> = ['finished', 'loading', 'error'];
 
@@ -20,14 +28,6 @@ function expectToExist(wrapper: ElementWrapper | null, shouldExist: boolean) {
   } else {
     expect(wrapper).toBeNull();
   }
-}
-
-function renderMixedChart(jsx: React.ReactElement) {
-  const { container, rerender } = render(jsx);
-  return {
-    rerender,
-    wrapper: new MixedLineBarChartWrapper(container),
-  };
 }
 
 const lineSeries: MixedLineBarChartProps.DataSeries<number> = {
@@ -99,13 +99,26 @@ const thresholdSeries: MixedLineBarChartProps.ThresholdSeries = {
 // Mock support for CSS Custom Properties in Jest so that we assign the correct colors.
 // Transformation to fallback colors for browsers that don't support them are covered by the `parseCssVariable` utility.
 const originalCSS = window.CSS;
+
+let originalGetComputedStyle: Window['getComputedStyle'];
+const fakeGetComputedStyle: Window['getComputedStyle'] = (...args) => {
+  const result = originalGetComputedStyle(...args);
+  result.borderWidth = '2px'; // Approximate mock value for the popover body' border width
+  result.width = '10px'; // Approximate mock value for the popover arrow's width
+  result.height = '10px'; // Approximate mock value for the popover arrow's height
+  return result;
+};
+
 beforeEach(() => {
   window.CSS.supports = () => true;
+  originalGetComputedStyle = window.getComputedStyle;
+  window.getComputedStyle = fakeGetComputedStyle;
 
   jest.resetAllMocks();
 });
 afterEach(() => {
   window.CSS = originalCSS;
+  window.getComputedStyle = originalGetComputedStyle;
 });
 
 describe('Series', () => {
@@ -884,13 +897,6 @@ describe('Reserve space', () => {
 });
 
 describe('Details popover', () => {
-  beforeEach(() => {
-    jest.useFakeTimers();
-  });
-  afterEach(() => {
-    jest.useRealTimers();
-  });
-
   const lineChartProps = {
     series: [lineSeries, thresholdSeries] as ReadonlyArray<MixedLineBarChartProps.ChartSeries<string>>,
     height: 250,
@@ -898,7 +904,7 @@ describe('Details popover', () => {
     xScaleType: 'linear' as const,
   };
 
-  const barChartProps = {
+  const mixedChartProps = {
     series: [barSeries, { ...barSeries2, type: 'line' }, thresholdSeries] as ReadonlyArray<
       MixedLineBarChartProps.ChartSeries<string>
     >,
@@ -911,7 +917,7 @@ describe('Details popover', () => {
   test('uses the formatters when available', () => {
     const { wrapper } = renderMixedChart(
       <MixedLineBarChart
-        {...barChartProps}
+        {...mixedChartProps}
         series={[{ ...barSeries, valueFormatter: (value, x) => `${value.toFixed(2)} @ ${x}` }]}
         i18nStrings={{ xTickFormatter: value => value.toUpperCase() }}
       />
@@ -925,7 +931,7 @@ describe('Details popover', () => {
   });
 
   test('can be shown on focus in a mixed chart', () => {
-    const { wrapper } = renderMixedChart(<MixedLineBarChart {...barChartProps} />);
+    const { wrapper } = renderMixedChart(<MixedLineBarChart {...mixedChartProps} />);
 
     wrapper.findApplication()!.focus();
 
@@ -937,7 +943,7 @@ describe('Details popover', () => {
   });
 
   test('can be pinned and unpinned in a mixed chart', () => {
-    const { wrapper } = renderMixedChart(<MixedLineBarChart {...barChartProps} />);
+    const { wrapper } = renderMixedChart(<MixedLineBarChart {...mixedChartProps} />);
 
     wrapper.findApplication()!.focus();
 
@@ -946,7 +952,7 @@ describe('Details popover', () => {
     expect(wrapper.findDetailPopover()?.findDismissButton()).toBeNull();
 
     // Can be pinned
-    wrapper.findChart()!.fireEvent(new MouseEvent('mousedown', { bubbles: true }));
+    wrapper.findChart()!.click();
 
     expect(wrapper.findDetailPopover()?.findDismissButton()).not.toBeNull();
     expect(wrapper.findByClassName(styles.exiting)).toBeNull();
@@ -956,41 +962,43 @@ describe('Details popover', () => {
     expect(wrapper.findByClassName(styles.exiting)).not.toBeNull();
   });
 
-  test('delegates focus back to chart when unpinned in a non-grouped chart', () => {
+  test('delegates focus back to chart when unpinned in a non-grouped chart', async () => {
     const { wrapper } = renderMixedChart(<MixedLineBarChart {...lineChartProps} />);
 
     wrapper.findApplication()!.focus();
 
     expect(wrapper.findApplication()!.getElement()).toHaveFocus();
 
-    wrapper.findChart()!.fireEvent(new MouseEvent('mousedown', { bubbles: true }));
+    wrapper.findChart()!.click();
 
     wrapper.findDetailPopover()!.findDismissButton()!.keydown(KeyCode.escape);
-    jest.runAllTimers();
 
-    expect(wrapper.findApplication()!.getElement()).toHaveFocus();
+    await waitFor(() => {
+      expect(wrapper.findApplication()!.getElement()).toHaveFocus();
+    });
   });
 
-  test('delegates focus back to chart when unpinned in a grouped chart', () => {
-    const { wrapper } = renderMixedChart(<MixedLineBarChart {...barChartProps} />);
+  test('delegates focus back to chart when unpinned in a grouped chart', async () => {
+    const { wrapper } = renderMixedChart(<MixedLineBarChart {...mixedChartProps} />);
 
     wrapper.findApplication()!.focus();
 
     expect(wrapper.findApplication()!.getElement()).toHaveFocus();
 
-    wrapper.findChart()!.fireEvent(new MouseEvent('mousedown', { bubbles: true }));
+    wrapper.findChart()!.click();
 
     wrapper.findDetailPopover()!.findDismissButton()!.keydown(KeyCode.escape);
-    jest.runAllTimers();
 
-    expect(wrapper.findApplication()!.getElement()).toHaveFocus();
+    await waitFor(() => {
+      expect(wrapper.findApplication()!.getElement()).toHaveFocus();
+    });
   });
 
   test('no highlighted segment when pressing outside', () => {
-    const { wrapper } = renderMixedChart(<MixedLineBarChart {...barChartProps} />);
+    const { wrapper } = renderMixedChart(<MixedLineBarChart {...mixedChartProps} />);
 
     wrapper.findApplication()!.focus();
-    wrapper.findChart()!.fireEvent(new MouseEvent('mousedown', { bubbles: true }));
+    wrapper.findChart()!.click();
 
     expect(wrapper.findByClassName(styles['series--dimmed'])).not.toBeNull();
 
@@ -1000,11 +1008,40 @@ describe('Details popover', () => {
 
   test('can contain custom content in the footer', () => {
     const { wrapper } = renderMixedChart(
-      <MixedLineBarChart {...barChartProps} detailPopoverFooter={xValue => <span>Details about {xValue}</span>} />
+      <MixedLineBarChart {...mixedChartProps} detailPopoverFooter={xValue => <span>Details about {xValue}</span>} />
     );
 
     wrapper.findApplication()!.focus();
     expect(wrapper.findDetailPopover()?.findContent()?.getElement()).toHaveTextContent('Details about Group 1');
+  });
+
+  test('highlights relevant x-thresholds when navigating line series', () => {
+    const { wrapper } = renderMixedChart(
+      <MixedLineBarChart series={[lineSeries, { type: 'threshold', title: 'X-Threshold 1', x: 0 }]} />
+    );
+    wrapper.findApplication()!.focus();
+
+    expect(wrapper.findDetailPopover()!.findContent()!.getElement().textContent).toContain('Line Series 1');
+    expect(wrapper.findDetailPopover()!.findContent()!.getElement().textContent).toContain('X-Threshold 1');
+  });
+
+  describe('does not recalculate position when interacting with the popover', () => {
+    let spy: jest.SpyInstance | undefined;
+
+    beforeEach(() => {
+      spy = jest.spyOn(positions, 'calculatePosition');
+    });
+    afterEach(() => {
+      jest.restoreAllMocks();
+    });
+
+    test('on click', () => {
+      const { wrapper } = renderMixedChart(<MixedLineBarChart {...mixedChartProps} />);
+      wrapper.findApplication()!.focus();
+      spy!.mockClear();
+      wrapper.findDetailPopover()!.click();
+      expect(spy).not.toHaveBeenCalled();
+    });
   });
 });
 
@@ -1023,14 +1060,4 @@ test('highlighted series are controllable', () => {
   expect(wrapper.findLegend()?.findHighlightedItem()?.getElement()).toEqual(
     wrapper.findLegend()?.findItems()[1].getElement()
   );
-});
-
-test('highlights relevant x-thresholds when navigating line series', () => {
-  const { wrapper } = renderMixedChart(
-    <MixedLineBarChart series={[lineSeries, { type: 'threshold', title: 'X-Threshold 1', x: 0 }]} />
-  );
-  wrapper.findApplication()!.focus();
-
-  expect(wrapper.findDetailPopover()!.findContent()!.getElement().textContent).toContain('Line Series 1');
-  expect(wrapper.findDetailPopover()!.findContent()!.getElement().textContent).toContain('X-Threshold 1');
 });

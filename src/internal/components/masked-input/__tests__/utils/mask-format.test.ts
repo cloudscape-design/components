@@ -105,4 +105,13 @@ describe('MaskFormat', () => {
       expect(maskFormat.getSegmentValueWithAddition(3, '00:00', '1')).toBe(10);
     });
   });
+
+  describe('replaceDigitsWithZeroes', () => {
+    test('replaces selected digits with zeroes', () => {
+      expect(maskFormat.replaceDigitsWithZeroes('12:34', 0, 1)).toEqual({ position: 0, value: '02:34' });
+      expect(maskFormat.replaceDigitsWithZeroes('12:34', 1, 2)).toEqual({ position: 1, value: '10:34' });
+      expect(maskFormat.replaceDigitsWithZeroes('12:34', 1, 3)).toEqual({ position: 1, value: '10:34' });
+      expect(maskFormat.replaceDigitsWithZeroes('12:34', 1, 4)).toEqual({ position: 1, value: '10:04' });
+    });
+  });
 });

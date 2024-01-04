@@ -433,6 +433,20 @@ Object {
             "light": "#545b64",
           },
         },
+        "color-border-divider-secondary": Object {
+          "$description": "The border color for row dividers. For example: row dividers for table and collection preferences.",
+          "$value": Object {
+            "dark": "#414750",
+            "light": "#eaeded",
+          },
+        },
+        "color-border-dropdown-item-focused": Object {
+          "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
+          "$value": Object {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
         "color-border-dropdown-item-hover": Object {
           "$description": "The border color of dropdown items on hover. For example: border of hovered items in select, multiselect, autosuggest, and hovered days in datepicker.",
           "$value": Object {
@@ -1750,7 +1764,7 @@ Object {
           },
         },
         "color-text-heading-default": Object {
-          "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
+          "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
             "dark": "#eaeded",
             "light": "#16191f",
@@ -2693,6 +2707,20 @@ Object {
             "light": "#eaeded",
           },
         },
+        "color-border-divider-secondary": Object {
+          "$description": "The border color for row dividers. For example: row dividers for table and collection preferences.",
+          "$value": Object {
+            "dark": "#414750",
+            "light": "#eaeded",
+          },
+        },
+        "color-border-dropdown-item-focused": Object {
+          "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
+          "$value": Object {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
         "color-border-dropdown-item-hover": Object {
           "$description": "The border color of dropdown items on hover. For example: border of hovered items in select, multiselect, autosuggest, and hovered days in datepicker.",
           "$value": Object {
@@ -4010,7 +4038,7 @@ Object {
           },
         },
         "color-text-heading-default": Object {
-          "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
+          "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
             "dark": "#eaeded",
             "light": "#16191f",
@@ -4953,6 +4981,20 @@ Object {
             "light": "#fafafa",
           },
         },
+        "color-border-divider-secondary": Object {
+          "$description": "The border color for row dividers. For example: row dividers for table and collection preferences.",
+          "$value": Object {
+            "dark": "#414750",
+            "light": "#eaeded",
+          },
+        },
+        "color-border-dropdown-item-focused": Object {
+          "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
+          "$value": Object {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
         "color-border-dropdown-item-hover": Object {
           "$description": "The border color of dropdown items on hover. For example: border of hovered items in select, multiselect, autosuggest, and hovered days in datepicker.",
           "$value": Object {
@@ -6270,7 +6312,7 @@ Object {
           },
         },
         "color-text-heading-default": Object {
-          "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
+          "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
             "dark": "#eaeded",
             "light": "#16191f",
@@ -7213,6 +7255,20 @@ Object {
             "light": "#16191f",
           },
         },
+        "color-border-divider-secondary": Object {
+          "$description": "The border color for row dividers. For example: row dividers for table and collection preferences.",
+          "$value": Object {
+            "dark": "#414750",
+            "light": "#eaeded",
+          },
+        },
+        "color-border-dropdown-item-focused": Object {
+          "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
+          "$value": Object {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
         "color-border-dropdown-item-hover": Object {
           "$description": "The border color of dropdown items on hover. For example: border of hovered items in select, multiselect, autosuggest, and hovered days in datepicker.",
           "$value": Object {
@@ -8530,7 +8586,7 @@ Object {
           },
         },
         "color-text-heading-default": Object {
-          "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
+          "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
             "dark": "#eaeded",
             "light": "#16191f",
@@ -9473,6 +9529,20 @@ Object {
             "light": "#414750",
           },
         },
+        "color-border-divider-secondary": Object {
+          "$description": "The border color for row dividers. For example: row dividers for table and collection preferences.",
+          "$value": Object {
+            "dark": "#414750",
+            "light": "#414750",
+          },
+        },
+        "color-border-dropdown-item-focused": Object {
+          "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
+          "$value": Object {
+            "dark": "#00a1c9",
+            "light": "#00a1c9",
+          },
+        },
         "color-border-dropdown-item-hover": Object {
           "$description": "The border color of dropdown items on hover. For example: border of hovered items in select, multiselect, autosuggest, and hovered days in datepicker.",
           "$value": Object {
@@ -10790,7 +10860,7 @@ Object {
           },
         },
         "color-text-heading-default": Object {
-          "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
+          "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
             "dark": "#eaeded",
             "light": "#eaeded",
@@ -11733,6 +11803,20 @@ Object {
         "light": "#eaeded",
       },
     },
+    "color-border-divider-secondary": Object {
+      "$description": "The border color for row dividers. For example: row dividers for table and collection preferences.",
+      "$value": Object {
+        "dark": "#414750",
+        "light": "#eaeded",
+      },
+    },
+    "color-border-dropdown-item-focused": Object {
+      "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
+      "$value": Object {
+        "dark": "#00a1c9",
+        "light": "#0073bb",
+      },
+    },
     "color-border-dropdown-item-hover": Object {
       "$description": "The border color of dropdown items on hover. For example: border of hovered items in select, multiselect, autosuggest, and hovered days in datepicker.",
       "$value": Object {
@@ -13050,7 +13134,7 @@ Object {
       },
     },
     "color-text-heading-default": Object {
-      "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
+      "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
       "$value": Object {
         "dark": "#eaeded",
         "light": "#16191f",
@@ -13693,7 +13777,7 @@ Object {
         "color-background-cell-shaded": Object {
           "$description": "The background color of shaded table cells.",
           "$value": Object {
-            "dark": "#232f3e",
+            "dark": "#192534",
             "light": "#f8f8f8",
           },
         },
@@ -13749,7 +13833,7 @@ Object {
         "color-background-dropdown-item-hover": Object {
           "$description": "The background color of dropdown items on hover. For example: background of hovered items in select, multiselect, autosuggest, and datepicker dropdowns.",
           "$value": Object {
-            "dark": "#354150",
+            "dark": "#081120",
             "light": "#f4f4f4",
           },
         },
@@ -13777,7 +13861,7 @@ Object {
         "color-background-item-selected": Object {
           "$description": "The background color of a selected item. For example: tokens, selected table rows, cards, and tile backgrounds.",
           "$value": Object {
-            "dark": "#192534",
+            "dark": "#00142b",
             "light": "#f2f8fd",
           },
         },
@@ -13791,22 +13875,22 @@ Object {
         "color-background-layout-toggle-active": Object {
           "$description": "The background color of the app layout toggle button when it's active.",
           "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
+            "dark": "#414d5c",
+            "light": "#414d5c",
           },
         },
         "color-background-layout-toggle-default": Object {
           "$description": "The default background color of the app layout toggle button.",
           "$value": Object {
-            "dark": "#192534",
-            "light": "#192534",
+            "dark": "#414d5c",
+            "light": "#414d5c",
           },
         },
         "color-background-layout-toggle-hover": Object {
           "$description": "The background color of the app layout toggle button on hover.",
           "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
+            "dark": "#5f6b7a",
+            "light": "#5f6b7a",
           },
         },
         "color-background-layout-toggle-selected-active": Object {
@@ -13993,6 +14077,20 @@ Object {
         },
         "color-border-divider-default": Object {
           "$description": "The default color for dividers. For example: dividers in column layout, expanding sections, side nav, help panel, between table rows and dropdown items, and inside containers.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
+          },
+        },
+        "color-border-divider-secondary": Object {
+          "$description": "The border color for row dividers. For example: row dividers for table and collection preferences.",
+          "$value": Object {
+            "dark": "#232f3e",
+            "light": "#e9ebed",
+          },
+        },
+        "color-border-dropdown-item-focused": Object {
+          "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": Object {
             "dark": "#d1d5db",
             "light": "#414d5c",
@@ -15198,14 +15296,14 @@ Object {
         "color-text-body-default": Object {
           "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
           "$value": Object {
-            "dark": "#d1d5db",
+            "dark": "#b6bec9",
             "light": "#000716",
           },
         },
         "color-text-body-secondary": Object {
           "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
           "$value": Object {
-            "dark": "#d1d5db",
+            "dark": "#b6bec9",
             "light": "#414d5c",
           },
         },
@@ -15310,14 +15408,14 @@ Object {
         "color-text-group-label": Object {
           "$description": "The default color for group labels. For example: group label in dropdown part of button dropdown, select, and multiselect, and group label in table and cards' preferences content selector.",
           "$value": Object {
-            "dark": "#8d99a8",
+            "dark": "#b6bec9",
             "light": "#414d5c",
           },
         },
         "color-text-heading-default": Object {
-          "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
+          "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
-            "dark": "#e9ebed",
+            "dark": "#d1d5db",
             "light": "#000716",
           },
         },
@@ -15331,15 +15429,15 @@ Object {
         "color-text-home-header-default": Object {
           "$description": "The color of the home header's text, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#e9ebed",
+            "light": "#e9ebed",
           },
         },
         "color-text-home-header-secondary": Object {
           "$description": "The color of the home header's secondary text, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#d1d5db",
-            "light": "#d1d5db",
+            "dark": "#b6bec9",
+            "light": "#b6bec9",
           },
         },
         "color-text-input-disabled": Object {
@@ -15352,7 +15450,7 @@ Object {
         "color-text-input-placeholder": Object {
           "$description": "The color of placeholder text in an input. For example: placeholder text in an input, autosuggest, datepicker, and the trigger of a select and multiselect.",
           "$value": Object {
-            "dark": "#7d8998",
+            "dark": "#8d99a8",
             "light": "#5f6b7a",
           },
         },
@@ -15682,7 +15780,7 @@ Object {
         "shadow-container-active": Object {
           "$description": "Shadow for containers and cards in active state.",
           "$value": Object {
-            "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #000716",
+            "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
@@ -15953,8 +16051,8 @@ Object {
         "color-background-cell-shaded": Object {
           "$description": "The background color of shaded table cells.",
           "$value": Object {
-            "dark": "#232f3e",
-            "light": "#232f3e",
+            "dark": "#192534",
+            "light": "#192534",
           },
         },
         "color-background-container-content": Object {
@@ -16009,8 +16107,8 @@ Object {
         "color-background-dropdown-item-hover": Object {
           "$description": "The background color of dropdown items on hover. For example: background of hovered items in select, multiselect, autosuggest, and datepicker dropdowns.",
           "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
+            "dark": "#081120",
+            "light": "#081120",
           },
         },
         "color-background-home-header": Object {
@@ -16037,8 +16135,8 @@ Object {
         "color-background-item-selected": Object {
           "$description": "The background color of a selected item. For example: tokens, selected table rows, cards, and tile backgrounds.",
           "$value": Object {
-            "dark": "#192534",
-            "light": "#192534",
+            "dark": "#00142b",
+            "light": "#00142b",
           },
         },
         "color-background-layout-main": Object {
@@ -16051,22 +16149,22 @@ Object {
         "color-background-layout-toggle-active": Object {
           "$description": "The background color of the app layout toggle button when it's active.",
           "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
+            "dark": "#414d5c",
+            "light": "#414d5c",
           },
         },
         "color-background-layout-toggle-default": Object {
           "$description": "The default background color of the app layout toggle button.",
           "$value": Object {
-            "dark": "#192534",
-            "light": "#192534",
+            "dark": "#414d5c",
+            "light": "#414d5c",
           },
         },
         "color-background-layout-toggle-hover": Object {
           "$description": "The background color of the app layout toggle button on hover.",
           "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
+            "dark": "#5f6b7a",
+            "light": "#5f6b7a",
           },
         },
         "color-background-layout-toggle-selected-active": Object {
@@ -16253,6 +16351,20 @@ Object {
         },
         "color-border-divider-default": Object {
           "$description": "The default color for dividers. For example: dividers in column layout, expanding sections, side nav, help panel, between table rows and dropdown items, and inside containers.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
+          },
+        },
+        "color-border-divider-secondary": Object {
+          "$description": "The border color for row dividers. For example: row dividers for table and collection preferences.",
+          "$value": Object {
+            "dark": "#232f3e",
+            "light": "#232f3e",
+          },
+        },
+        "color-border-dropdown-item-focused": Object {
+          "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": Object {
             "dark": "#d1d5db",
             "light": "#d1d5db",
@@ -17458,15 +17570,15 @@ Object {
         "color-text-body-default": Object {
           "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
           "$value": Object {
-            "dark": "#d1d5db",
-            "light": "#d1d5db",
+            "dark": "#b6bec9",
+            "light": "#b6bec9",
           },
         },
         "color-text-body-secondary": Object {
           "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
           "$value": Object {
-            "dark": "#d1d5db",
-            "light": "#d1d5db",
+            "dark": "#b6bec9",
+            "light": "#b6bec9",
           },
         },
         "color-text-breadcrumb-current": Object {
@@ -17570,15 +17682,15 @@ Object {
         "color-text-group-label": Object {
           "$description": "The default color for group labels. For example: group label in dropdown part of button dropdown, select, and multiselect, and group label in table and cards' preferences content selector.",
           "$value": Object {
-            "dark": "#8d99a8",
-            "light": "#8d99a8",
+            "dark": "#b6bec9",
+            "light": "#b6bec9",
           },
         },
         "color-text-heading-default": Object {
-          "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
+          "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
-            "dark": "#e9ebed",
-            "light": "#e9ebed",
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
           },
         },
         "color-text-heading-secondary": Object {
@@ -17591,15 +17703,15 @@ Object {
         "color-text-home-header-default": Object {
           "$description": "The color of the home header's text, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#e9ebed",
+            "light": "#e9ebed",
           },
         },
         "color-text-home-header-secondary": Object {
           "$description": "The color of the home header's secondary text, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#d1d5db",
-            "light": "#d1d5db",
+            "dark": "#b6bec9",
+            "light": "#b6bec9",
           },
         },
         "color-text-input-disabled": Object {
@@ -17612,8 +17724,8 @@ Object {
         "color-text-input-placeholder": Object {
           "$description": "The color of placeholder text in an input. For example: placeholder text in an input, autosuggest, datepicker, and the trigger of a select and multiselect.",
           "$value": Object {
-            "dark": "#7d8998",
-            "light": "#7d8998",
+            "dark": "#8d99a8",
+            "light": "#8d99a8",
           },
         },
         "color-text-interactive-active": Object {
@@ -17942,7 +18054,7 @@ Object {
         "shadow-container-active": Object {
           "$description": "Shadow for containers and cards in active state.",
           "$value": Object {
-            "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #000716",
+            "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
@@ -18213,7 +18325,7 @@ Object {
         "color-background-cell-shaded": Object {
           "$description": "The background color of shaded table cells.",
           "$value": Object {
-            "dark": "#232f3e",
+            "dark": "#192534",
             "light": "#f8f8f8",
           },
         },
@@ -18269,7 +18381,7 @@ Object {
         "color-background-dropdown-item-hover": Object {
           "$description": "The background color of dropdown items on hover. For example: background of hovered items in select, multiselect, autosuggest, and datepicker dropdowns.",
           "$value": Object {
-            "dark": "#354150",
+            "dark": "#081120",
             "light": "#f4f4f4",
           },
         },
@@ -18297,7 +18409,7 @@ Object {
         "color-background-item-selected": Object {
           "$description": "The background color of a selected item. For example: tokens, selected table rows, cards, and tile backgrounds.",
           "$value": Object {
-            "dark": "#192534",
+            "dark": "#00142b",
             "light": "#f2f8fd",
           },
         },
@@ -18311,22 +18423,22 @@ Object {
         "color-background-layout-toggle-active": Object {
           "$description": "The background color of the app layout toggle button when it's active.",
           "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
+            "dark": "#414d5c",
+            "light": "#414d5c",
           },
         },
         "color-background-layout-toggle-default": Object {
           "$description": "The default background color of the app layout toggle button.",
           "$value": Object {
-            "dark": "#192534",
-            "light": "#192534",
+            "dark": "#414d5c",
+            "light": "#414d5c",
           },
         },
         "color-background-layout-toggle-hover": Object {
           "$description": "The background color of the app layout toggle button on hover.",
           "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
+            "dark": "#5f6b7a",
+            "light": "#5f6b7a",
           },
         },
         "color-background-layout-toggle-selected-active": Object {
@@ -18515,7 +18627,21 @@ Object {
           "$description": "The default color for dividers. For example: dividers in column layout, expanding sections, side nav, help panel, between table rows and dropdown items, and inside containers.",
           "$value": Object {
             "dark": "#414d5c",
+            "light": "#b6bec9",
+          },
+        },
+        "color-border-divider-secondary": Object {
+          "$description": "The border color for row dividers. For example: row dividers for table and collection preferences.",
+          "$value": Object {
+            "dark": "#232f3e",
             "light": "#e9ebed",
+          },
+        },
+        "color-border-dropdown-item-focused": Object {
+          "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
           },
         },
         "color-border-dropdown-item-hover": Object {
@@ -19718,14 +19844,14 @@ Object {
         "color-text-body-default": Object {
           "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
           "$value": Object {
-            "dark": "#d1d5db",
+            "dark": "#b6bec9",
             "light": "#000716",
           },
         },
         "color-text-body-secondary": Object {
           "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
           "$value": Object {
-            "dark": "#d1d5db",
+            "dark": "#b6bec9",
             "light": "#414d5c",
           },
         },
@@ -19830,14 +19956,14 @@ Object {
         "color-text-group-label": Object {
           "$description": "The default color for group labels. For example: group label in dropdown part of button dropdown, select, and multiselect, and group label in table and cards' preferences content selector.",
           "$value": Object {
-            "dark": "#8d99a8",
+            "dark": "#b6bec9",
             "light": "#414d5c",
           },
         },
         "color-text-heading-default": Object {
-          "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
+          "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
-            "dark": "#e9ebed",
+            "dark": "#d1d5db",
             "light": "#000716",
           },
         },
@@ -19851,15 +19977,15 @@ Object {
         "color-text-home-header-default": Object {
           "$description": "The color of the home header's text, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#e9ebed",
+            "light": "#e9ebed",
           },
         },
         "color-text-home-header-secondary": Object {
           "$description": "The color of the home header's secondary text, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#d1d5db",
-            "light": "#d1d5db",
+            "dark": "#b6bec9",
+            "light": "#b6bec9",
           },
         },
         "color-text-input-disabled": Object {
@@ -19872,7 +19998,7 @@ Object {
         "color-text-input-placeholder": Object {
           "$description": "The color of placeholder text in an input. For example: placeholder text in an input, autosuggest, datepicker, and the trigger of a select and multiselect.",
           "$value": Object {
-            "dark": "#7d8998",
+            "dark": "#8d99a8",
             "light": "#5f6b7a",
           },
         },
@@ -20202,7 +20328,7 @@ Object {
         "shadow-container-active": Object {
           "$description": "Shadow for containers and cards in active state.",
           "$value": Object {
-            "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #000716",
+            "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
@@ -20473,7 +20599,7 @@ Object {
         "color-background-cell-shaded": Object {
           "$description": "The background color of shaded table cells.",
           "$value": Object {
-            "dark": "#232f3e",
+            "dark": "#192534",
             "light": "#f8f8f8",
           },
         },
@@ -20529,7 +20655,7 @@ Object {
         "color-background-dropdown-item-hover": Object {
           "$description": "The background color of dropdown items on hover. For example: background of hovered items in select, multiselect, autosuggest, and datepicker dropdowns.",
           "$value": Object {
-            "dark": "#354150",
+            "dark": "#081120",
             "light": "#f4f4f4",
           },
         },
@@ -20557,7 +20683,7 @@ Object {
         "color-background-item-selected": Object {
           "$description": "The background color of a selected item. For example: tokens, selected table rows, cards, and tile backgrounds.",
           "$value": Object {
-            "dark": "#192534",
+            "dark": "#00142b",
             "light": "#f2f8fd",
           },
         },
@@ -20571,22 +20697,22 @@ Object {
         "color-background-layout-toggle-active": Object {
           "$description": "The background color of the app layout toggle button when it's active.",
           "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
+            "dark": "#414d5c",
+            "light": "#414d5c",
           },
         },
         "color-background-layout-toggle-default": Object {
           "$description": "The default background color of the app layout toggle button.",
           "$value": Object {
-            "dark": "#192534",
-            "light": "#192534",
+            "dark": "#414d5c",
+            "light": "#414d5c",
           },
         },
         "color-background-layout-toggle-hover": Object {
           "$description": "The background color of the app layout toggle button on hover.",
           "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
+            "dark": "#5f6b7a",
+            "light": "#5f6b7a",
           },
         },
         "color-background-layout-toggle-selected-active": Object {
@@ -20776,6 +20902,20 @@ Object {
           "$value": Object {
             "dark": "#fbfbfb",
             "light": "#fbfbfb",
+          },
+        },
+        "color-border-divider-secondary": Object {
+          "$description": "The border color for row dividers. For example: row dividers for table and collection preferences.",
+          "$value": Object {
+            "dark": "#232f3e",
+            "light": "#e9ebed",
+          },
+        },
+        "color-border-dropdown-item-focused": Object {
+          "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
           },
         },
         "color-border-dropdown-item-hover": Object {
@@ -21985,7 +22125,7 @@ Object {
         "color-text-body-secondary": Object {
           "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
           "$value": Object {
-            "dark": "#d1d5db",
+            "dark": "#b6bec9",
             "light": "#414d5c",
           },
         },
@@ -22090,14 +22230,14 @@ Object {
         "color-text-group-label": Object {
           "$description": "The default color for group labels. For example: group label in dropdown part of button dropdown, select, and multiselect, and group label in table and cards' preferences content selector.",
           "$value": Object {
-            "dark": "#8d99a8",
+            "dark": "#b6bec9",
             "light": "#414d5c",
           },
         },
         "color-text-heading-default": Object {
-          "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
+          "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
-            "dark": "#e9ebed",
+            "dark": "#d1d5db",
             "light": "#000716",
           },
         },
@@ -22111,15 +22251,15 @@ Object {
         "color-text-home-header-default": Object {
           "$description": "The color of the home header's text, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#e9ebed",
+            "light": "#e9ebed",
           },
         },
         "color-text-home-header-secondary": Object {
           "$description": "The color of the home header's secondary text, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#d1d5db",
-            "light": "#d1d5db",
+            "dark": "#b6bec9",
+            "light": "#b6bec9",
           },
         },
         "color-text-input-disabled": Object {
@@ -22132,7 +22272,7 @@ Object {
         "color-text-input-placeholder": Object {
           "$description": "The color of placeholder text in an input. For example: placeholder text in an input, autosuggest, datepicker, and the trigger of a select and multiselect.",
           "$value": Object {
-            "dark": "#7d8998",
+            "dark": "#8d99a8",
             "light": "#5f6b7a",
           },
         },
@@ -22462,7 +22602,7 @@ Object {
         "shadow-container-active": Object {
           "$description": "Shadow for containers and cards in active state.",
           "$value": Object {
-            "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #000716",
+            "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
@@ -22733,7 +22873,7 @@ Object {
         "color-background-cell-shaded": Object {
           "$description": "The background color of shaded table cells.",
           "$value": Object {
-            "dark": "#232f3e",
+            "dark": "#192534",
             "light": "#f8f8f8",
           },
         },
@@ -22789,7 +22929,7 @@ Object {
         "color-background-dropdown-item-hover": Object {
           "$description": "The background color of dropdown items on hover. For example: background of hovered items in select, multiselect, autosuggest, and datepicker dropdowns.",
           "$value": Object {
-            "dark": "#354150",
+            "dark": "#081120",
             "light": "#f4f4f4",
           },
         },
@@ -22817,7 +22957,7 @@ Object {
         "color-background-item-selected": Object {
           "$description": "The background color of a selected item. For example: tokens, selected table rows, cards, and tile backgrounds.",
           "$value": Object {
-            "dark": "#192534",
+            "dark": "#00142b",
             "light": "#f2f8fd",
           },
         },
@@ -22831,22 +22971,22 @@ Object {
         "color-background-layout-toggle-active": Object {
           "$description": "The background color of the app layout toggle button when it's active.",
           "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
+            "dark": "#414d5c",
+            "light": "#414d5c",
           },
         },
         "color-background-layout-toggle-default": Object {
           "$description": "The default background color of the app layout toggle button.",
           "$value": Object {
-            "dark": "#192534",
-            "light": "#192534",
+            "dark": "#414d5c",
+            "light": "#414d5c",
           },
         },
         "color-background-layout-toggle-hover": Object {
           "$description": "The background color of the app layout toggle button on hover.",
           "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
+            "dark": "#5f6b7a",
+            "light": "#5f6b7a",
           },
         },
         "color-background-layout-toggle-selected-active": Object {
@@ -23036,6 +23176,20 @@ Object {
           "$value": Object {
             "dark": "#000716",
             "light": "#000716",
+          },
+        },
+        "color-border-divider-secondary": Object {
+          "$description": "The border color for row dividers. For example: row dividers for table and collection preferences.",
+          "$value": Object {
+            "dark": "#232f3e",
+            "light": "#e9ebed",
+          },
+        },
+        "color-border-dropdown-item-focused": Object {
+          "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
           },
         },
         "color-border-dropdown-item-hover": Object {
@@ -24245,7 +24399,7 @@ Object {
         "color-text-body-secondary": Object {
           "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
           "$value": Object {
-            "dark": "#d1d5db",
+            "dark": "#b6bec9",
             "light": "#414d5c",
           },
         },
@@ -24350,14 +24504,14 @@ Object {
         "color-text-group-label": Object {
           "$description": "The default color for group labels. For example: group label in dropdown part of button dropdown, select, and multiselect, and group label in table and cards' preferences content selector.",
           "$value": Object {
-            "dark": "#8d99a8",
+            "dark": "#b6bec9",
             "light": "#414d5c",
           },
         },
         "color-text-heading-default": Object {
-          "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
+          "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
-            "dark": "#e9ebed",
+            "dark": "#d1d5db",
             "light": "#000716",
           },
         },
@@ -24371,15 +24525,15 @@ Object {
         "color-text-home-header-default": Object {
           "$description": "The color of the home header's text, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#e9ebed",
+            "light": "#e9ebed",
           },
         },
         "color-text-home-header-secondary": Object {
           "$description": "The color of the home header's secondary text, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#d1d5db",
-            "light": "#d1d5db",
+            "dark": "#b6bec9",
+            "light": "#b6bec9",
           },
         },
         "color-text-input-disabled": Object {
@@ -24392,7 +24546,7 @@ Object {
         "color-text-input-placeholder": Object {
           "$description": "The color of placeholder text in an input. For example: placeholder text in an input, autosuggest, datepicker, and the trigger of a select and multiselect.",
           "$value": Object {
-            "dark": "#7d8998",
+            "dark": "#8d99a8",
             "light": "#5f6b7a",
           },
         },
@@ -24722,7 +24876,7 @@ Object {
         "shadow-container-active": Object {
           "$description": "Shadow for containers and cards in active state.",
           "$value": Object {
-            "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #000716",
+            "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
@@ -24993,8 +25147,8 @@ Object {
         "color-background-cell-shaded": Object {
           "$description": "The background color of shaded table cells.",
           "$value": Object {
-            "dark": "#232f3e",
-            "light": "#232f3e",
+            "dark": "#192534",
+            "light": "#192534",
           },
         },
         "color-background-container-content": Object {
@@ -25049,8 +25203,8 @@ Object {
         "color-background-dropdown-item-hover": Object {
           "$description": "The background color of dropdown items on hover. For example: background of hovered items in select, multiselect, autosuggest, and datepicker dropdowns.",
           "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
+            "dark": "#081120",
+            "light": "#081120",
           },
         },
         "color-background-home-header": Object {
@@ -25077,8 +25231,8 @@ Object {
         "color-background-item-selected": Object {
           "$description": "The background color of a selected item. For example: tokens, selected table rows, cards, and tile backgrounds.",
           "$value": Object {
-            "dark": "#192534",
-            "light": "#192534",
+            "dark": "#00142b",
+            "light": "#00142b",
           },
         },
         "color-background-layout-main": Object {
@@ -25091,22 +25245,22 @@ Object {
         "color-background-layout-toggle-active": Object {
           "$description": "The background color of the app layout toggle button when it's active.",
           "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
+            "dark": "#414d5c",
+            "light": "#414d5c",
           },
         },
         "color-background-layout-toggle-default": Object {
           "$description": "The default background color of the app layout toggle button.",
           "$value": Object {
-            "dark": "#192534",
-            "light": "#192534",
+            "dark": "#414d5c",
+            "light": "#414d5c",
           },
         },
         "color-background-layout-toggle-hover": Object {
           "$description": "The background color of the app layout toggle button on hover.",
           "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
+            "dark": "#5f6b7a",
+            "light": "#5f6b7a",
           },
         },
         "color-background-layout-toggle-selected-active": Object {
@@ -25296,6 +25450,20 @@ Object {
           "$value": Object {
             "dark": "#414d5c",
             "light": "#414d5c",
+          },
+        },
+        "color-border-divider-secondary": Object {
+          "$description": "The border color for row dividers. For example: row dividers for table and collection preferences.",
+          "$value": Object {
+            "dark": "#232f3e",
+            "light": "#232f3e",
+          },
+        },
+        "color-border-dropdown-item-focused": Object {
+          "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
           },
         },
         "color-border-dropdown-item-hover": Object {
@@ -26498,15 +26666,15 @@ Object {
         "color-text-body-default": Object {
           "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
           "$value": Object {
-            "dark": "#d1d5db",
-            "light": "#d1d5db",
+            "dark": "#b6bec9",
+            "light": "#b6bec9",
           },
         },
         "color-text-body-secondary": Object {
           "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
           "$value": Object {
-            "dark": "#d1d5db",
-            "light": "#d1d5db",
+            "dark": "#b6bec9",
+            "light": "#b6bec9",
           },
         },
         "color-text-breadcrumb-current": Object {
@@ -26610,15 +26778,15 @@ Object {
         "color-text-group-label": Object {
           "$description": "The default color for group labels. For example: group label in dropdown part of button dropdown, select, and multiselect, and group label in table and cards' preferences content selector.",
           "$value": Object {
-            "dark": "#8d99a8",
-            "light": "#8d99a8",
+            "dark": "#b6bec9",
+            "light": "#b6bec9",
           },
         },
         "color-text-heading-default": Object {
-          "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
+          "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
-            "dark": "#e9ebed",
-            "light": "#e9ebed",
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
           },
         },
         "color-text-heading-secondary": Object {
@@ -26631,15 +26799,15 @@ Object {
         "color-text-home-header-default": Object {
           "$description": "The color of the home header's text, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#e9ebed",
+            "light": "#e9ebed",
           },
         },
         "color-text-home-header-secondary": Object {
           "$description": "The color of the home header's secondary text, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#d1d5db",
-            "light": "#d1d5db",
+            "dark": "#b6bec9",
+            "light": "#b6bec9",
           },
         },
         "color-text-input-disabled": Object {
@@ -26652,8 +26820,8 @@ Object {
         "color-text-input-placeholder": Object {
           "$description": "The color of placeholder text in an input. For example: placeholder text in an input, autosuggest, datepicker, and the trigger of a select and multiselect.",
           "$value": Object {
-            "dark": "#7d8998",
-            "light": "#7d8998",
+            "dark": "#8d99a8",
+            "light": "#8d99a8",
           },
         },
         "color-text-interactive-active": Object {
@@ -26982,8 +27150,8 @@ Object {
         "shadow-container-active": Object {
           "$description": "Shadow for containers and cards in active state.",
           "$value": Object {
-            "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #000716",
-            "light": "0px 1px 1px 1px #192534, 0px 6px 36px #000716",
+            "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
+            "light": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
           },
         },
         "space-container-horizontal": Object {
@@ -27253,8 +27421,8 @@ Object {
         "color-background-cell-shaded": Object {
           "$description": "The background color of shaded table cells.",
           "$value": Object {
-            "dark": "#232f3e",
-            "light": "#232f3e",
+            "dark": "#192534",
+            "light": "#192534",
           },
         },
         "color-background-container-content": Object {
@@ -27309,8 +27477,8 @@ Object {
         "color-background-dropdown-item-hover": Object {
           "$description": "The background color of dropdown items on hover. For example: background of hovered items in select, multiselect, autosuggest, and datepicker dropdowns.",
           "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
+            "dark": "#081120",
+            "light": "#081120",
           },
         },
         "color-background-home-header": Object {
@@ -27337,8 +27505,8 @@ Object {
         "color-background-item-selected": Object {
           "$description": "The background color of a selected item. For example: tokens, selected table rows, cards, and tile backgrounds.",
           "$value": Object {
-            "dark": "#192534",
-            "light": "#192534",
+            "dark": "#00142b",
+            "light": "#00142b",
           },
         },
         "color-background-layout-main": Object {
@@ -27351,22 +27519,22 @@ Object {
         "color-background-layout-toggle-active": Object {
           "$description": "The background color of the app layout toggle button when it's active.",
           "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
+            "dark": "#414d5c",
+            "light": "#414d5c",
           },
         },
         "color-background-layout-toggle-default": Object {
           "$description": "The default background color of the app layout toggle button.",
           "$value": Object {
-            "dark": "#192534",
-            "light": "#192534",
+            "dark": "#414d5c",
+            "light": "#414d5c",
           },
         },
         "color-background-layout-toggle-hover": Object {
           "$description": "The background color of the app layout toggle button on hover.",
           "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
+            "dark": "#5f6b7a",
+            "light": "#5f6b7a",
           },
         },
         "color-background-layout-toggle-selected-active": Object {
@@ -27556,6 +27724,20 @@ Object {
           "$value": Object {
             "dark": "#414d5c",
             "light": "#414d5c",
+          },
+        },
+        "color-border-divider-secondary": Object {
+          "$description": "The border color for row dividers. For example: row dividers for table and collection preferences.",
+          "$value": Object {
+            "dark": "#232f3e",
+            "light": "#232f3e",
+          },
+        },
+        "color-border-dropdown-item-focused": Object {
+          "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
           },
         },
         "color-border-dropdown-item-hover": Object {
@@ -28758,15 +28940,15 @@ Object {
         "color-text-body-default": Object {
           "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
           "$value": Object {
-            "dark": "#d1d5db",
-            "light": "#d1d5db",
+            "dark": "#b6bec9",
+            "light": "#b6bec9",
           },
         },
         "color-text-body-secondary": Object {
           "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
           "$value": Object {
-            "dark": "#d1d5db",
-            "light": "#d1d5db",
+            "dark": "#b6bec9",
+            "light": "#b6bec9",
           },
         },
         "color-text-breadcrumb-current": Object {
@@ -28870,15 +29052,15 @@ Object {
         "color-text-group-label": Object {
           "$description": "The default color for group labels. For example: group label in dropdown part of button dropdown, select, and multiselect, and group label in table and cards' preferences content selector.",
           "$value": Object {
-            "dark": "#8d99a8",
-            "light": "#8d99a8",
+            "dark": "#b6bec9",
+            "light": "#b6bec9",
           },
         },
         "color-text-heading-default": Object {
-          "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
+          "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
-            "dark": "#e9ebed",
-            "light": "#e9ebed",
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
           },
         },
         "color-text-heading-secondary": Object {
@@ -28891,15 +29073,15 @@ Object {
         "color-text-home-header-default": Object {
           "$description": "The color of the home header's text, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#e9ebed",
+            "light": "#e9ebed",
           },
         },
         "color-text-home-header-secondary": Object {
           "$description": "The color of the home header's secondary text, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#d1d5db",
-            "light": "#d1d5db",
+            "dark": "#b6bec9",
+            "light": "#b6bec9",
           },
         },
         "color-text-input-disabled": Object {
@@ -28912,8 +29094,8 @@ Object {
         "color-text-input-placeholder": Object {
           "$description": "The color of placeholder text in an input. For example: placeholder text in an input, autosuggest, datepicker, and the trigger of a select and multiselect.",
           "$value": Object {
-            "dark": "#7d8998",
-            "light": "#7d8998",
+            "dark": "#8d99a8",
+            "light": "#8d99a8",
           },
         },
         "color-text-interactive-active": Object {
@@ -29242,7 +29424,7 @@ Object {
         "shadow-container-active": Object {
           "$description": "Shadow for containers and cards in active state.",
           "$value": Object {
-            "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #000716",
+            "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
@@ -29513,7 +29695,7 @@ Object {
     "color-background-cell-shaded": Object {
       "$description": "The background color of shaded table cells.",
       "$value": Object {
-        "dark": "#232f3e",
+        "dark": "#192534",
         "light": "#f8f8f8",
       },
     },
@@ -29569,7 +29751,7 @@ Object {
     "color-background-dropdown-item-hover": Object {
       "$description": "The background color of dropdown items on hover. For example: background of hovered items in select, multiselect, autosuggest, and datepicker dropdowns.",
       "$value": Object {
-        "dark": "#354150",
+        "dark": "#081120",
         "light": "#f4f4f4",
       },
     },
@@ -29597,7 +29779,7 @@ Object {
     "color-background-item-selected": Object {
       "$description": "The background color of a selected item. For example: tokens, selected table rows, cards, and tile backgrounds.",
       "$value": Object {
-        "dark": "#192534",
+        "dark": "#00142b",
         "light": "#f2f8fd",
       },
     },
@@ -29611,22 +29793,22 @@ Object {
     "color-background-layout-toggle-active": Object {
       "$description": "The background color of the app layout toggle button when it's active.",
       "$value": Object {
-        "dark": "#354150",
-        "light": "#354150",
+        "dark": "#414d5c",
+        "light": "#414d5c",
       },
     },
     "color-background-layout-toggle-default": Object {
       "$description": "The default background color of the app layout toggle button.",
       "$value": Object {
-        "dark": "#192534",
-        "light": "#192534",
+        "dark": "#414d5c",
+        "light": "#414d5c",
       },
     },
     "color-background-layout-toggle-hover": Object {
       "$description": "The background color of the app layout toggle button on hover.",
       "$value": Object {
-        "dark": "#354150",
-        "light": "#354150",
+        "dark": "#5f6b7a",
+        "light": "#5f6b7a",
       },
     },
     "color-background-layout-toggle-selected-active": Object {
@@ -29815,7 +29997,21 @@ Object {
       "$description": "The default color for dividers. For example: dividers in column layout, expanding sections, side nav, help panel, between table rows and dropdown items, and inside containers.",
       "$value": Object {
         "dark": "#414d5c",
+        "light": "#b6bec9",
+      },
+    },
+    "color-border-divider-secondary": Object {
+      "$description": "The border color for row dividers. For example: row dividers for table and collection preferences.",
+      "$value": Object {
+        "dark": "#232f3e",
         "light": "#e9ebed",
+      },
+    },
+    "color-border-dropdown-item-focused": Object {
+      "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
+      "$value": Object {
+        "dark": "#d1d5db",
+        "light": "#414d5c",
       },
     },
     "color-border-dropdown-item-hover": Object {
@@ -31018,14 +31214,14 @@ Object {
     "color-text-body-default": Object {
       "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
       "$value": Object {
-        "dark": "#d1d5db",
+        "dark": "#b6bec9",
         "light": "#000716",
       },
     },
     "color-text-body-secondary": Object {
       "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
       "$value": Object {
-        "dark": "#d1d5db",
+        "dark": "#b6bec9",
         "light": "#414d5c",
       },
     },
@@ -31130,14 +31326,14 @@ Object {
     "color-text-group-label": Object {
       "$description": "The default color for group labels. For example: group label in dropdown part of button dropdown, select, and multiselect, and group label in table and cards' preferences content selector.",
       "$value": Object {
-        "dark": "#8d99a8",
+        "dark": "#b6bec9",
         "light": "#414d5c",
       },
     },
     "color-text-heading-default": Object {
-      "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
+      "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
       "$value": Object {
-        "dark": "#e9ebed",
+        "dark": "#d1d5db",
         "light": "#000716",
       },
     },
@@ -31151,15 +31347,15 @@ Object {
     "color-text-home-header-default": Object {
       "$description": "The color of the home header's text, displayed on the Service's home page.",
       "$value": Object {
-        "dark": "#ffffff",
-        "light": "#ffffff",
+        "dark": "#e9ebed",
+        "light": "#e9ebed",
       },
     },
     "color-text-home-header-secondary": Object {
       "$description": "The color of the home header's secondary text, displayed on the Service's home page.",
       "$value": Object {
-        "dark": "#d1d5db",
-        "light": "#d1d5db",
+        "dark": "#b6bec9",
+        "light": "#b6bec9",
       },
     },
     "color-text-input-disabled": Object {
@@ -31172,7 +31368,7 @@ Object {
     "color-text-input-placeholder": Object {
       "$description": "The color of placeholder text in an input. For example: placeholder text in an input, autosuggest, datepicker, and the trigger of a select and multiselect.",
       "$value": Object {
-        "dark": "#7d8998",
+        "dark": "#8d99a8",
         "light": "#5f6b7a",
       },
     },
@@ -31502,7 +31698,7 @@ Object {
     "shadow-container-active": Object {
       "$description": "Shadow for containers and cards in active state.",
       "$value": Object {
-        "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #000716",
+        "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
         "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
       },
     },

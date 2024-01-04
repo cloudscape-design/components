@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { ReactNode } from 'react';
 import { CartesianChartProps } from '../internal/components/cartesian-chart/interfaces';
 
 export type ChartDataTypes = number | string | Date;
@@ -14,8 +15,30 @@ export interface InternalChartSeries<T> {
   series: MixedLineBarChartProps.ChartSeries<T>;
 }
 
-export interface MixedLineBarChartProps<T extends ChartDataTypes>
+// Properties that are shared as is (including API doc comments) by mixed, line and bar charts.
+export interface CommonMixedChartProps<T extends ChartDataTypes>
   extends CartesianChartProps<T, MixedLineBarChartProps.ChartSeries<T>> {
+  /**
+   * When set to `true`, adds a visual emphasis on the zero baseline axis.
+   * See the usage guidelines for more details.
+   */
+  emphasizeBaselineAxis?: boolean;
+
+  /**
+   * A function that determines the details that are displayed in the popover for each series.
+   * Use this for wrapping keys or values in external links, or to display a metric breakdown by adding an additional level of nested items.
+   *
+   * The function is called with the parameters `{ series, x, y }` representing the series, the highlighted x coordinate value and its corresponding y value respectively,
+   * and should return the following properties:
+   * * `key` (ReactNode) - Name of the series.
+   * * `value` (ReactNode) - Value of the series at the highlighted x coordinate.
+   * * `subItems` (ReadonlyArray<{ key: ReactNode; value: ReactNode }>) - (Optional) List of nested key-value pairs.
+   * * `expandable` (boolean) - (Optional) Determines whether the optional list of nested items provided via `subItems` is expandable. This is `false` by default.
+   */
+  detailPopoverSeriesContent?: MixedLineBarChartProps.DetailPopoverSeriesContent<T>;
+}
+
+export interface MixedLineBarChartProps<T extends ChartDataTypes> extends CommonMixedChartProps<T> {
   /**
    * Array that represents the source of data for the displayed chart.
    * Each element can represent a line series, bar series, or a threshold, and can have the following properties:
@@ -39,12 +62,6 @@ export interface MixedLineBarChartProps<T extends ChartDataTypes>
    * This can only be used when the chart consists exclusively of bar series.
    */
   horizontalBars?: boolean;
-
-  /**
-   * When set to `true`, adds a visual emphasis on the zero baseline axis.
-   * See the usage guidelines for more details.
-   */
-  emphasizeBaselineAxis?: boolean;
 
   /**
    * Determines the type of scale for values on the x axis.
@@ -111,6 +128,23 @@ export namespace MixedLineBarChartProps {
   export type ValueFormatter<YType, XType = null> = CartesianChartProps.ValueFormatter<YType, XType>;
 
   export type I18nStrings<T> = CartesianChartProps.I18nStrings<T>;
+
+  export interface DetailPopoverSeriesData<T> {
+    series: ChartSeries<T>;
+    x: T;
+    y: number;
+  }
+
+  export interface DetailPopoverSeriesKeyValuePair {
+    key: ReactNode;
+    value: ReactNode;
+    expandable?: boolean;
+    subItems?: ReadonlyArray<{ key: ReactNode; value: ReactNode }>;
+  }
+
+  export interface DetailPopoverSeriesContent<T> {
+    (data: DetailPopoverSeriesData<T>): DetailPopoverSeriesKeyValuePair;
+  }
 }
 
 export interface VerticalMarkerX<T> {

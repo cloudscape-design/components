@@ -53,11 +53,6 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
     }
   }
 
-  &.refresh {
-    border-right: awsui.$border-divider-section-width solid awsui.$color-border-divider-panel-side;
-    box-sizing: border-box;
-  }
-
   & > [aria-hidden='true'] {
     display: none;
   }
@@ -77,13 +72,13 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
 .position-bottom {
   position: fixed;
   overflow-y: auto;
-  border-left: awsui.$border-divider-section-width solid awsui.$color-border-divider-panel-bottom;
-  border-right: awsui.$border-divider-section-width solid awsui.$color-border-divider-panel-bottom;
   border-top: awsui.$border-panel-top-width solid awsui.$color-border-divider-panel-bottom;
 
   &:not(.refresh) {
     // custom shadow because the existing one does not have shadow on top
     box-shadow: awsui.$shadow-split-bottom;
+    border-left: awsui.$border-divider-section-width solid awsui.$color-border-divider-panel-bottom;
+    border-right: awsui.$border-divider-section-width solid awsui.$color-border-divider-panel-bottom;
   }
   &.drawer-closed {
     overflow: hidden;
@@ -187,7 +182,7 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   align-items: center;
   flex-direction: column;
   z-index: 1; // should be above .content-bottom
-  padding: 0 awsui.$space-scaled-2x-xxxl;
+  padding: 0 awsui.$space-layout-content-horizontal;
   .drawer-mobile > .drawer-content-bottom > & {
     padding: 0 awsui.$space-l;
   }
@@ -201,7 +196,7 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
 }
 
 .content-bottom {
-  padding: 0 awsui.$space-scaled-2x-xxxl;
+  padding: 0 awsui.$space-layout-content-horizontal;
   margin-top: awsui.$space-panel-split-top;
   position: relative;
   z-index: 0; // the content inside .content-bottom should not be above pane-header-wrapper-bottom

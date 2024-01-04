@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ExpandableSectionProps } from './interfaces';
+import { ExpandableSectionProps, InternalVariant } from './interfaces';
 import React, { KeyboardEventHandler, MouseEventHandler, ReactNode } from 'react';
 import InternalIcon from '../icon/internal';
 import clsx from 'clsx';
@@ -8,7 +8,7 @@ import styles from './styles.css.js';
 import InternalHeader, { Description as HeaderDescription } from '../header/internal';
 import { isDevelopment } from '../internal/is-development';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
-import { variantSupportsDescription } from './utils';
+import { variantSupportsDescription, variantSupportsInteractiveElements } from './utils';
 
 export const componentName = 'ExpandableSection';
 
@@ -24,7 +24,7 @@ interface ExpandableDefaultHeaderProps {
   onKeyDown: KeyboardEventHandler;
   onClick: MouseEventHandler;
   icon: JSX.Element;
-  variant: ExpandableSectionProps.Variant;
+  variant: InternalVariant;
 }
 
 interface ExpandableNavigationHeaderProps extends Omit<ExpandableDefaultHeaderProps, 'onKeyUp' | 'onKeyDown'> {
@@ -40,7 +40,6 @@ interface ExpandableHeaderTextWrapperProps extends ExpandableDefaultHeaderProps 
 }
 
 interface ExpandableSectionHeaderProps extends Omit<ExpandableDefaultHeaderProps, 'children' | 'icon'> {
-  variant: ExpandableSectionProps.Variant;
   header?: ReactNode;
   headerText?: ReactNode;
   headerDescription?: ReactNode;
@@ -133,25 +132,25 @@ const ExpandableHeaderTextWrapper = ({
 }: ExpandableHeaderTextWrapperProps) => {
   const isContainer = variant === 'container';
   const HeadingTag = headingTagOverride || 'div';
-  const hasInteractiveElements = isContainer && (headerInfo || headerActions);
-  const listeners = { onClick, onKeyDown, onKeyUp };
-
+  const supportsInteractiveElements = variantSupportsInteractiveElements(variant);
+  const restrictClickableArea = supportsInteractiveElements && (headerInfo || headerActions);
+  const actions = supportsInteractiveElements && headerActions;
   const description = variantSupportsDescription(variant) && headerDescription && (
     <span id={descriptionId} className={styles[`description-${variant}`]}>
       {headerDescription}
     </span>
   );
+  const listeners = { onClick, onKeyDown, onKeyUp };
 
   // If interactive elements are present, constrain the clickable area to only the icon and the header text
   // to prevent nesting interactive elements.
-  const headerButtonListeners = hasInteractiveElements ? listeners : undefined;
+  const headerButtonListeners = restrictClickableArea ? listeners : undefined;
   // For the default and footer variants with description,
   // include also the immediate wrapper around it to include the entire row for backwards compatibility,
   // but exclude the description.
   const headingTagListeners = !headerButtonListeners && !isContainer && description ? listeners : undefined;
   // For all other cases, make the entire header clickable for backwards compatibility.
   const wrapperListeners = !headerButtonListeners && !headingTagListeners ? listeners : undefined;
-
   const headerButton = (
     <span
       className={clsx(
@@ -183,19 +182,22 @@ const ExpandableHeaderTextWrapper = ({
           description={description}
           counter={headerCounter}
           info={headerInfo}
-          actions={headerActions}
+          actions={actions}
           headingTagOverride={headingTagOverride}
         >
           {headerButton}
         </InternalHeader>
       ) : (
         <>
-          <HeadingTag
-            className={clsx(styles['header-wrapper'], headingTagListeners && styles['click-target'])}
-            {...headingTagListeners}
-          >
-            {headerButton}
-          </HeadingTag>
+          <div className={clsx(actions && styles['header-actions-wrapper'])}>
+            <HeadingTag
+              className={clsx(styles['header-wrapper'], headingTagListeners && styles['click-target'])}
+              {...headingTagListeners}
+            >
+              {headerButton}
+            </HeadingTag>
+            {actions}
+          </div>
           {description && <HeaderDescription variantOverride="h3">{description}</HeaderDescription>}
         </>
       )}
@@ -240,7 +242,7 @@ export const ExpandableSectionHeader = ({
     variant,
   };
 
-  if ((headerCounter || headerInfo || headerActions) && variant !== 'container' && isDevelopment) {
+  if ((headerCounter || headerInfo || headerActions) && !variantSupportsInteractiveElements(variant) && isDevelopment) {
     warnOnce(
       componentName,
       'The `headerCounter`, `headerInfo` and `headerActions` props are only supported for the "container" variant.'

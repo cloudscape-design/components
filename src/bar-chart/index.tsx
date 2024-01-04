@@ -22,6 +22,7 @@ function BarChart<T extends number | string | Date>({
   detailPopoverSize = 'medium',
   statusType = 'finished',
   emphasizeBaselineAxis = true,
+  detailPopoverSeriesContent,
   ...props
 }: BarChartProps<T>) {
   const baseComponentProps = useBaseComponent('BarChart');
@@ -42,6 +43,7 @@ function BarChart<T extends number | string | Date>({
       detailPopoverSize={detailPopoverSize}
       statusType={statusType}
       emphasizeBaselineAxis={emphasizeBaselineAxis}
+      detailPopoverSeriesContent={detailPopoverSeriesContent}
     />
   );
 }

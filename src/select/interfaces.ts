@@ -107,6 +107,7 @@ export interface BaseSelectProps
   ariaRequired?: boolean;
   /**
    * Adds `aria-label` to the select element.
+   * Use this if you don't have a visible label for this control.
    */
   ariaLabel?: string;
   /**

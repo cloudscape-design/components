@@ -96,6 +96,9 @@
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Objekt zurück an die Position {currentPosition} von {total} verschieben} false {Objekt an Position {currentPosition} von {total} verschieben} other {}}",
     "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {Das Objekt wurde zurück an seine ursprüngliche Position {initialPosition} von {total} verschoben} false {Das Objekt wurde von Position {initialPosition} zu Position {finalPosition} von {total} verschoben} other {}}"
   },
+  "copy-to-clipboard": {
+    "i18nStrings.copyButtonText": "Kopieren"
+  },
   "date-range-picker": {
     "i18nStrings.relativeModeTitle": "Relativer Modus",
     "i18nStrings.absoluteModeTitle": "Absoluter Modus",
@@ -115,8 +118,8 @@
     "i18nStrings.dateTimeConstraintText": "Verwenden Sie für Datum JJJJ/MM/TT. Verwenden Sie für die Zeit das 24-Stunden-Format.",
     "i18nStrings.errorIconAriaLabel": "Fehler",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "Bereich ausgewählt von {startDate} bis {endDate}",
-    "i18nStrings.formatRelativeRange": "{amount, plural, one {Letzte {amount} {unit}} other {Letzte {amount} {unit}s}}",
-    "i18nStrings.formatUnit": "{amount, plural, one {{unit}} other {{unit}s}}"
+    "i18nStrings.formatRelativeRange": "{unit, select, second {{amount, plural, zero {Letzte {amount} Sekunden} one {Letzte {amount} Sekunde} other {Letzte {amount} Sekunden}}} minute {{amount, plural, zero {Letzte {amount} Minuten} one {Letzte {amount} Minute} other {Letzte {amount} Minuten}}} hour {{amount, plural, zero {Letzte {amount} Stunden} one {Letzte {amount} Stunde} other {Letzte {amount} Stunden}}} day {{amount, plural, zero {Letzte {amount} Tage} one {Letzter {amount} Tag} other {Letzte {amount} Tage}}} week {{amount, plural, zero {Letzte {amount} Wochen} one {Letzte {amount} Woche} other {Letzte {amount} Wochen}}} month {{amount, plural, zero {Letzte {amount} Monate} one {Letzter {amount} Monat} other {Letzte {amount} Monate}}} year {{amount, plural, zero {Letzte {amount} Jahre} one {Letztes {amount} Jahr} other {Letzte {amount} Jahre}}} other {}}",
+    "i18nStrings.formatUnit": "{unit, select, second {{amount, plural, zero {Sekunden} one {Sekunde} other {Sekunden}}} minute {{amount, plural, zero {Minuten} one {Minute} other {Minuten}}} hour {{amount, plural, zero {Stunden} one {Stunde} other {Stunden}}} day {{amount, plural, zero {Tage} one {Tag} other {Tage}}} week {{amount, plural, zero {Wochen} one {Woche} other {Wochen}}} month {{amount, plural, zero {Monate} one {Monat} other {Monate}}} year {{amount, plural, zero {Jahre} one {Jahr} other {Jahre}}} other {}}"
   },
   "drawer": {
     "i18nStrings.loadingText": "Inhalte werden geladen"

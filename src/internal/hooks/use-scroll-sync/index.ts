@@ -14,7 +14,7 @@ import { supportsStickyPosition } from '../../utils/dom';
 export function useScrollSync(refs: Array<RefObject<any>>, disabled = !supportsStickyPosition()) {
   const activeElement = useRef<HTMLElement | null>(null);
   const onScroll = (event: React.UIEvent) => {
-    const targetElement = event.target as HTMLElement;
+    const targetElement = event.currentTarget as HTMLElement;
     // remembers the first element that fires onscroll to align with other elements against it
     if (targetElement && (activeElement.current === null || activeElement.current === targetElement)) {
       requestAnimationFrame(() => {

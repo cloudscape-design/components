@@ -1,10 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
-import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import createWrapper, { BarChartWrapper, MixedLineBarChartWrapper } from '../../../lib/components/test-utils/selectors';
 import chartPlotStyles from '../../../lib/components/internal/components/chart-plot/styles.selectors.js';
 import mixedChartStyles from '../../../lib/components/mixed-line-bar-chart/styles.selectors.js';
+import { setupTest } from './common';
+import { setupPopoverPositionTest } from './popover-position-page';
 
 const chartWrapper = createWrapper().findMixedLineBarChart('#chart');
 const groupedBarWrapper = new BarChartWrapper('#chart-grouped');
@@ -26,14 +26,6 @@ const dimmedElementsSelector = (wrapper: MixedLineBarChartWrapper = chartWrapper
   wrapper.findAll(`.${mixedChartStyles['series--dimmed']}`).toSelector();
 const filterWrapper = chartWrapper.findDefaultFilter();
 const legendWrapper = chartWrapper.findLegend();
-
-function setupTest(url: string, testFn: (page: BasePageObject) => Promise<void>) {
-  return useBrowser(async browser => {
-    const page = new BasePageObject(browser);
-    await browser.url(url);
-    await testFn(page);
-  });
-}
 
 describe('Legend', () => {
   test(
@@ -310,6 +302,15 @@ describe('Details popover', () => {
   );
 
   test(
+    'shows on hover in a mixed line/bar chart inside modal',
+    setupTest('#/light/mixed-line-bar-chart/in-modal', async page => {
+      // Hover over first group
+      await page.hoverElement(chartWrapper.findBarGroups().get(1).toSelector());
+      await expect(page.getText(popoverHeaderSelector())).resolves.toContain('Potatoes');
+    })
+  );
+
+  test(
     'shows on hover in a mixed line/bar chart',
     setupTest('#/light/mixed-line-bar-chart/test', async page => {
       // Hover over first group
@@ -356,6 +357,33 @@ describe('Details popover', () => {
   );
 
   test(
+    'can be pinned and unpinned in a chart with mouse when rendered inside tabs',
+    setupTest('#/light/mixed-line-bar-chart/in-tabs', async page => {
+      // Hover over third group in the first chart
+      await page.hoverElement(chartWrapper.findBarGroups().get(3).toSelector());
+      await expect(page.getText(popoverHeaderSelector())).resolves.toContain('Chocolate');
+      await expect(page.isDisplayed(popoverDismissSelector())).resolves.toBe(false);
+
+      // Click on it to reveal the dismiss button
+      await page.click(chartWrapper.toSelector());
+      await expect(page.isDisplayed(popoverDismissSelector())).resolves.toBe(true);
+      await page.waitForAssertion(() => expect(page.isFocused(popoverDismissSelector())).resolves.toBe(true));
+
+      // Click inside popover to ensure it remains visible.
+      await page.click(popoverContentSelector());
+      await expect(page.isDisplayed(popoverDismissSelector())).resolves.toBe(true);
+
+      // Ensure the next focus target is the dismiss button.
+      await page.keys(['Tab']);
+      await page.waitForAssertion(() => expect(page.isFocused(popoverDismissSelector())).resolves.toBe(true));
+
+      // Click dismiss to unpin
+      await page.click(popoverDismissSelector());
+      await expect(page.isDisplayed(popoverDismissSelector())).resolves.toBe(false);
+    })
+  );
+
+  test(
     'can be hidden after hover by pressing Escape',
     setupTest('#/light/mixed-line-bar-chart/test', async page => {
       // Hover over first group
@@ -384,18 +412,19 @@ describe('Details popover', () => {
     })
   );
 
-  test('can be hidden by moving focus away', () => {
+  test(
+    'can be hidden by moving focus away',
     setupTest('#/light/mixed-line-bar-chart/test', async page => {
       await page.click('#focus-target');
       await page.keys(['Tab', 'Tab', 'ArrowRight']);
       await expect(page.getText(popoverHeaderSelector())).resolves.toContain('Potatoes');
       await page.keys(['Tab']);
-      expect(await page.getFocusedElementText()).toBe('Filter by Apples');
+      expect(await page.getFocusedElementText()).toBe('Filter by Potatoes');
       await page.keys(['Tab']);
       expect(await page.getFocusedElementText()).toBe('Happiness');
       await expect(page.isDisplayed(popoverContentSelector())).resolves.toBe(false);
-    });
-  });
+    })
+  );
 
   test(
     'can be pinned by clicking on chart background and dismissed by clicking outside chart area in line chart',
@@ -441,6 +470,24 @@ describe('Details popover', () => {
     })
   );
 
+  describe('keeps the popover position when it resizes due to interacting with the popover itself', () => {
+    test.each(['hover', 'click', 'keyboard'])('Interaction type: %s', interactionType =>
+      setupPopoverPositionTest(async page => {
+        await page.setWindowSize({ width: 900, height: 500 });
+        await page.openPopoverOnBarGroup(1, interactionType);
+        const popover = page.findDetailPopover();
+        expect(page.isDisplayed(popover.toSelector())).resolves.toBe(true);
+        const initialRect = await page.getPopoverRect();
+        await page.click(popover.findContent().findExpandableSection().toSelector());
+        const newRect = await page.getPopoverRect();
+        // Verify that the popover actually got bigger after the interaction,
+        // but that it didn't change its position nonetheless.
+        expect(newRect.height).toBeGreaterThan(initialRect.height);
+        expect(newRect.top).toEqual(initialRect.top);
+      })()
+    );
+  });
+
   test(
     'Allow mouse to enter popover when a group is hovering over a point',
     setupTest('#/light/mixed-line-bar-chart/test', async page => {
@@ -450,6 +497,22 @@ describe('Details popover', () => {
 
       await page.hoverElement(chartWrapper.findDetailPopover().findHeader().toSelector());
       await expect(page.getText(popoverHeaderSelector())).resolves.toContain('Potatoes');
+    })
+  );
+
+  test(
+    'Should still open popver when focus move out then move in again with keyboard',
+    setupTest('#/light/bar-chart/test', async page => {
+      await page.click('#focus-target');
+      // Should open popver when focus on a bar with keyboard
+      await page.keys(['Tab', 'Tab', 'ArrowRight']);
+      await expect(page.isDisplayed(popoverContentSelector())).resolves.toBe(true);
+      // Should close popver when lose focus
+      await page.keys(['Tab', 'Tab']);
+      await expect(page.isDisplayed(popoverContentSelector())).resolves.toBe(false);
+      // Should open popver when move focus back to the bar
+      await page.keys(['Shift', 'Tab', 'ArrowRight']);
+      await expect(page.isDisplayed(popoverContentSelector())).resolves.toBe(true);
     })
   );
 });

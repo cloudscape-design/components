@@ -93,7 +93,7 @@ function convertBetaApi(drawers: BetaDrawersProps, ariaLabels: AppLayoutProps['a
       })
     ),
     controlledActiveDrawerId: drawers.activeDrawerId,
-    onDrawerChange: (event: NonCancelableCustomEvent<{ activeDrawerId: string | null }>) =>
+    onDrawerChange: (event: NonCancelableCustomEvent<AppLayoutProps.DrawerChangeDetail>) =>
       fireNonCancelableEvent(drawers.onChange, event.detail.activeDrawerId),
     ariaLabels: {
       ...ariaLabels,
@@ -167,14 +167,18 @@ export function useDrawers(
   // ensure that id is only defined when the drawer exists
   activeDrawerIdResolved = activeDrawer?.id ?? null;
 
+  const activeDrawerSize = activeDrawerIdResolved
+    ? drawerSizes[activeDrawerIdResolved] ?? activeDrawer?.defaultSize ?? toolsProps.toolsWidth
+    : toolsProps.toolsWidth;
+  const minDrawerSize = Math.min(activeDrawer?.defaultSize ?? 290, 290);
+
   return {
     ariaLabelsWithDrawers: ariaLabels,
     drawers: combinedDrawers || undefined,
     activeDrawer,
     activeDrawerId: activeDrawerIdResolved,
-    activeDrawerSize: activeDrawerIdResolved
-      ? drawerSizes[activeDrawerIdResolved] ?? activeDrawer?.defaultSize ?? toolsProps.toolsWidth
-      : toolsProps.toolsWidth,
+    activeDrawerSize,
+    minDrawerSize,
     onActiveDrawerChange,
     onActiveDrawerResize,
   };

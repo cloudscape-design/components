@@ -57,15 +57,22 @@ export const AnalyticsFunnel = (props: AnalyticsFunnelProps) => {
   return <InnerAnalyticsFunnel {...props} />;
 };
 export const CREATION_EDIT_FLOW_DONE_EVENT_NAME = 'awsui-creation-edit-flow-done';
+const dispatchCreateEditFlowDoneEvent = () => {
+  try {
+    window.top?.document.dispatchEvent(new Event(CREATION_EDIT_FLOW_DONE_EVENT_NAME));
+  } catch {
+    // probably because of cross-origin error, then do not dispatch the event
+  }
+};
 
 const onFunnelCancelled = ({ funnelInteractionId }: { funnelInteractionId: string }) => {
   FunnelMetrics.funnelCancelled({ funnelInteractionId });
-  document.dispatchEvent(new Event(CREATION_EDIT_FLOW_DONE_EVENT_NAME));
+  dispatchCreateEditFlowDoneEvent();
 };
 
 const onFunnelComplete = ({ funnelInteractionId }: { funnelInteractionId: string }) => {
   FunnelMetrics.funnelComplete({ funnelInteractionId });
-  document.dispatchEvent(new Event(CREATION_EDIT_FLOW_DONE_EVENT_NAME));
+  dispatchCreateEditFlowDoneEvent();
 };
 
 function evaluateSelectors(selectors: string[], defaultSelector: string) {
@@ -254,7 +261,7 @@ function getSubStepConfiguration(): SubStepConfiguration[] {
 }
 
 function useStepChangeListener(stepNumber: number, handler: (stepConfiguration: SubStepConfiguration[]) => void) {
-  const subStepConfiguration = useRef<Record<number, SubStepConfiguration[] | undefined>>({});
+  const subStepConfiguration = useRef(new Map<number, SubStepConfiguration[] | undefined>());
   /*
    Chosen so that it's hopefully shorter than a user interaction, but gives enough time for the
    amount of containers to stabilise.
@@ -275,14 +282,14 @@ function useStepChangeListener(stepNumber: number, handler: (stepConfiguration: 
   /* We debounce this handler, so that multiple containers can change at once without causing 
   too many events. */
   const stepChangeCallback = useDebounceCallback(() => {
-    subStepConfiguration.current[stepNumber] = getSubStepConfiguration();
+    subStepConfiguration.current.set(stepNumber, getSubStepConfiguration());
 
     // We don't want to emit the event after the component has been unmounted.
     if (!listenForSubStepChanges.current) {
       return;
     }
 
-    handler(subStepConfiguration.current[stepNumber]!);
+    handler(subStepConfiguration.current.get(stepNumber)!);
   }, SUBSTEP_CHANGE_DEBOUNCE);
 
   return { onStepChange: stepChangeCallback, subStepConfiguration };

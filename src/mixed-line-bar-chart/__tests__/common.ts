@@ -1,6 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { render } from '@testing-library/react';
 import { MixedLineBarChartProps } from '../../../lib/components/mixed-line-bar-chart';
+import { MixedLineBarChartWrapper } from '../../../lib/components/test-utils/dom';
 
 export const lineSeries1: MixedLineBarChartProps.DataSeries<number> = {
   type: 'line',
@@ -120,3 +122,11 @@ export const stackedDateBarSeries: Array<MixedLineBarChartProps.BarDataSeries<Da
     ],
   },
 ];
+
+export function renderMixedChart(jsx: React.ReactElement) {
+  const { container, rerender } = render(jsx);
+  return {
+    rerender,
+    wrapper: new MixedLineBarChartWrapper(container),
+  };
+}

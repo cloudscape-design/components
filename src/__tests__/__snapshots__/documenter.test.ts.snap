@@ -401,7 +401,18 @@ Object {
     Object {
       "cancelable": false,
       "description": "Fired when the active drawer is toggled.",
-      "detailType": "unknown",
+      "detailInlineType": Object {
+        "name": "AppLayoutProps.DrawerChangeDetail",
+        "properties": Array [
+          Object {
+            "name": "activeDrawerId",
+            "optional": false,
+            "type": "null | string",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "AppLayoutProps.DrawerChangeDetail",
       "name": "onDrawerChange",
     },
     Object {
@@ -2157,6 +2168,31 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "CartesianChartProps.DetailPopoverFooter<T>",
     },
     Object {
+      "description": "A function that determines the details that are displayed in the popover for each series.
+Use this for wrapping keys or values in external links, or to display a metric breakdown by adding an additional level of nested items.
+The function is called with the parameters \`{ series, x, y }\` representing the series, the highlighted x coordinate value and its corresponding y value respectively,
+and should return the following properties:
+* \`key\` (ReactNode) - Name of the series.
+* \`value\` (ReactNode) - Value of the series at the highlighted x coordinate.
+* \`subItems\` (ReadonlyArray<{ key: ReactNode; value: ReactNode }>) - (Optional) List of nested key-value pairs.
+* \`expandable\` (boolean) - (Optional) Determines whether the optional list of nested items provided via \`subItems\` is expandable. This is \`false\` by default.
+",
+      "inlineType": Object {
+        "name": "MixedLineBarChartProps.DetailPopoverSeriesContent",
+        "parameters": Array [
+          Object {
+            "name": "data",
+            "type": "MixedLineBarChartProps.DetailPopoverSeriesData<T>",
+          },
+        ],
+        "returnType": "MixedLineBarChartProps.DetailPopoverSeriesKeyValuePair",
+        "type": "function",
+      },
+      "name": "detailPopoverSeriesContent",
+      "optional": true,
+      "type": "MixedLineBarChartProps.DetailPopoverSeriesContent<T>",
+    },
+    Object {
       "defaultValue": "\\"medium\\"",
       "description": "Determines the maximum width the detail popover will be limited to.",
       "inlineType": Object {
@@ -2967,8 +3003,9 @@ modifier keys (that is, CTRL, ALT, SHIFT, META), and the button has an \`href\` 
       "type": "boolean",
     },
     Object {
-      "description": "Adds \`aria-label\` to the button element. It should be used in buttons that don't have text in order to make
-them accessible. The text will also be added to the \`title\` attribute of the button.",
+      "description": "Adds \`aria-label\` to the button element. Use this to provide an accessible name for buttons
+that don't have visible text, and to distinguish between multiple buttons with identical visible text.
+The text will also be added to the \`title\` attribute of the button.",
       "name": "ariaLabel",
       "optional": true,
       "type": "string",
@@ -3097,6 +3134,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "flag",
           "folder-open",
           "folder",
+          "gen-ai",
           "group-active",
           "group",
           "heart",
@@ -3350,7 +3388,7 @@ modifier keys (that is, CTRL, ALT, SHIFT, META), and the item has an \`href\` se
   "properties": Array [
     Object {
       "description": "Adds \`aria-label\` to the button dropdown trigger.
-It should be used in buttons that don't have text in order to make them accessible.",
+Use this to provide an accessible name for buttons that don't have visible text.",
       "name": "ariaLabel",
       "optional": true,
       "type": "string",
@@ -7470,6 +7508,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "flag",
           "folder-open",
           "folder",
+          "gen-ai",
           "group-active",
           "group",
           "heart",
@@ -8074,6 +8113,31 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "name": "detailPopoverFooter",
       "optional": true,
       "type": "CartesianChartProps.DetailPopoverFooter<T>",
+    },
+    Object {
+      "description": "A function that determines the details that are displayed in the popover for each series.
+Use this for wrapping keys or values in external links, or to display a metric breakdown by adding an additional level of nested items.
+The function is called with the parameters \`{ series, x, y }\` representing the series, the highlighted x coordinate value and its corresponding y value respectively,
+and should return the following properties:
+* \`key\` (ReactNode) - Name of the series.
+* \`value\` (ReactNode) - Value of the series at the highlighted x coordinate.
+* \`subItems\` (ReadonlyArray<{ key: ReactNode; value: ReactNode }>) - (Optional) List of nested key-value pairs.
+* \`expandable\` (boolean) - (Optional) Determines whether the optional list of nested items provided via \`subItems\` is expandable. This is \`false\` by default.
+",
+      "inlineType": Object {
+        "name": "MixedLineBarChartProps.DetailPopoverSeriesContent",
+        "parameters": Array [
+          Object {
+            "name": "data",
+            "type": "MixedLineBarChartProps.DetailPopoverSeriesData<T>",
+          },
+        ],
+        "returnType": "MixedLineBarChartProps.DetailPopoverSeriesKeyValuePair",
+        "type": "function",
+      },
+      "name": "detailPopoverSeriesContent",
+      "optional": true,
+      "type": "MixedLineBarChartProps.DetailPopoverSeriesContent<T>",
     },
     Object {
       "defaultValue": "\\"medium\\"",
@@ -8685,6 +8749,31 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "CartesianChartProps.DetailPopoverFooter<T>",
     },
     Object {
+      "description": "A function that determines the details that are displayed in the popover for each series.
+Use this for wrapping keys or values in external links, or to display a metric breakdown by adding an additional level of nested items.
+The function is called with the parameters \`{ series, x, y }\` representing the series, the highlighted x coordinate value and its corresponding y value respectively,
+and should return the following properties:
+* \`key\` (ReactNode) - Name of the series.
+* \`value\` (ReactNode) - Value of the series at the highlighted x coordinate.
+* \`subItems\` (ReadonlyArray<{ key: ReactNode; value: ReactNode }>) - (Optional) List of nested key-value pairs.
+* \`expandable\` (boolean) - (Optional) Determines whether the optional list of nested items provided via \`subItems\` is expandable. This is \`false\` by default.
+",
+      "inlineType": Object {
+        "name": "MixedLineBarChartProps.DetailPopoverSeriesContent",
+        "parameters": Array [
+          Object {
+            "name": "data",
+            "type": "MixedLineBarChartProps.DetailPopoverSeriesData<T>",
+          },
+        ],
+        "returnType": "MixedLineBarChartProps.DetailPopoverSeriesKeyValuePair",
+        "type": "function",
+      },
+      "name": "detailPopoverSeriesContent",
+      "optional": true,
+      "type": "MixedLineBarChartProps.DetailPopoverSeriesContent<T>",
+    },
+    Object {
       "defaultValue": "\\"medium\\"",
       "description": "Determines the maximum width the detail popover will be limited to.",
       "inlineType": Object {
@@ -9227,7 +9316,8 @@ and set the property to a string of each ID separated by spaces (for example, \`
       "type": "string",
     },
     Object {
-      "description": "Adds \`aria-label\` to the select element.",
+      "description": "Adds \`aria-label\` to the select element.
+Use this if you don't have a visible label for this control.",
       "name": "ariaLabel",
       "optional": true,
       "type": "string",
@@ -9864,8 +9954,8 @@ The full data object will be passed down to events and properties like \`detailP
 The function is called with the data of the target segment and is expected to return an array of detail pairs.
 By default, each segment displays two detail pairs: count and percentage.
 Each pair has the following properties:
-* \`key\` (string) - Name of the detail or metric.
-* \`value\` (string | number) - The value of this detail for the target segment.
+* \`key\` (ReactNode) - Name of the detail or metric.
+* \`value\` (ReactNode) - The value of this detail for the target segment.
 ",
       "inlineType": Object {
         "name": "PieChartProps.DetailPopoverContentFunction",
@@ -10277,7 +10367,8 @@ Note: Using popover rendered with portal within a Modal is not supported.
       "type": "string",
     },
     Object {
-      "description": "Adds an aria-label to the text trigger button.",
+      "description": "Adds \`aria-label\` to the text trigger button. Use this to provide an accessible name for triggers
+that don't have visible text, and to distinguish between multiple triggers with identical visible text.",
       "name": "triggerAriaLabel",
       "optional": true,
       "type": "string",
@@ -11808,7 +11899,8 @@ and set the property to a string of each ID separated by spaces (for example, \`
       "type": "string",
     },
     Object {
-      "description": "Adds \`aria-label\` to the select element.",
+      "description": "Adds \`aria-label\` to the select element.
+Use this if you don't have a visible label for this control.",
       "name": "ariaLabel",
       "optional": true,
       "type": "string",

@@ -15,7 +15,9 @@ function Demo() {
 
   return (
     <>
-      <div data-testid="element1" ref={ref1} onScroll={handleScroll} />
+      <div data-testid="element1" ref={ref1} onScroll={handleScroll}>
+        <div data-testid="element3" />
+      </div>
       <div data-testid="element2" ref={ref2} onScroll={handleScroll} />
     </>
   );
@@ -23,7 +25,7 @@ function Demo() {
 
 function scroll(panel: any, scrollLeft: number) {
   act(() => {
-    Object.defineProperty(panel, 'scrollLeft', { value: scrollLeft });
+    Object.defineProperty(panel, 'scrollLeft', { value: scrollLeft, writable: true });
     panel.dispatchEvent(new Event('scroll'));
   });
 }
@@ -49,5 +51,13 @@ describe('Sync scroll util', function () {
     scroll(getByTestId('element2'), 10);
     await timeout();
     expect(getByTestId('element1').scrollLeft).toEqual(10);
+  });
+  it('scroll child element should not affect synced element', async () => {
+    const { getByTestId } = render(<Demo />);
+    scroll(getByTestId('element1'), 30);
+    await timeout();
+    scroll(getByTestId('element3'), 10);
+    await timeout();
+    expect(getByTestId('element1').scrollLeft).toEqual(30);
   });
 });

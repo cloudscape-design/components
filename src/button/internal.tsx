@@ -21,14 +21,17 @@ import {
 } from '../internal/analytics/selectors';
 import { FunnelMetrics } from '../internal/analytics';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
 
 export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   variant?: ButtonProps['variant'] | 'flashbar-icon' | 'breadcrumb-group' | 'menu-trigger' | 'modal-dismiss';
   badge?: boolean;
-  __nativeAttributes?: Record<string, any>;
+  __nativeAttributes?:
+    | (React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>)
+    | Record<`data-${string}`, string>;
   __iconClass?: string;
   __activated?: boolean;
-} & InternalBaseComponentProps;
+} & InternalBaseComponentProps<HTMLAnchorElement | HTMLButtonElement>;
 
 export const InternalButton = React.forwardRef(
   (
@@ -80,6 +83,18 @@ export const InternalButton = React.forwardRef(
     const { stepNumber, stepNameSelector } = useFunnelStep();
     const { subStepSelector, subStepNameSelector } = useFunnelSubStep();
 
+    usePerformanceMarks(
+      'primaryButton',
+      variant === 'primary',
+      buttonRef,
+      () => ({
+        loading,
+        disabled,
+        text: buttonRef.current?.innerText,
+      }),
+      [loading, disabled]
+    );
+
     const handleClick = (event: React.MouseEvent) => {
       if (isNotInteractive) {
         return event.preventDefault();
@@ -123,7 +138,7 @@ export const InternalButton = React.forwardRef(
       ...props,
       ...__nativeAttributes,
       // https://github.com/microsoft/TypeScript/issues/36659
-      ref: useMergeRefs(buttonRef as any, __internalRootRef),
+      ref: useMergeRefs(buttonRef, __internalRootRef),
       'aria-label': ariaLabel,
       'aria-describedby': ariaDescribedby,
       'aria-expanded': ariaExpanded,
