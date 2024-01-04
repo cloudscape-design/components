@@ -145,7 +145,7 @@ export interface ButtonProps extends BaseComponentProps {
   ariaExpanded?: boolean;
 
   /**
-   * Adds `aria-controls` to the button. Use when the button controls contents or presence of an element.
+   * Adds `aria-controls` to the button. Use when the button controls the contents or presence of an element.
    */
   ariaControls?: string;
 

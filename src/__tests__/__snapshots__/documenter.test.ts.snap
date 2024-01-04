@@ -2991,7 +2991,7 @@ modifier keys (that is, CTRL, ALT, SHIFT, META), and the button has an \`href\` 
   "name": "Button",
   "properties": Array [
     Object {
-      "description": "Adds \`aria-controls\` to the button. Use when the button controls contents or presence of an element.",
+      "description": "Adds \`aria-controls\` to the button. Use when the button controls the contents or presence of an element.",
       "name": "ariaControls",
       "optional": true,
       "type": "string",
