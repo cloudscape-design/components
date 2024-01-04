@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import styles from './styles.css.js';
@@ -32,44 +32,25 @@ export default function Slider({
     fireNonCancelableEvent(onChange, { value });
   };
 
-  const [minVal, setMinVal] = useState(min);
-  const [maxVal, setMaxVal] = useState(max);
-  const minValRef = useRef(min);
-  const maxValRef = useRef(max);
-  const range = useRef(null);
-
-  // Convert to percentage
-  const getPercent = useCallback(value => Math.round(((value - min) / (max - min)) * 100), [min, max]);
+  const rv0 = rangeValue ? rangeValue[0] : 0;
+  const rv1 = rangeValue ? rangeValue[1] : 1;
+  const range = useRef<HTMLDivElement>(null);
 
   // Set width of the range to decrease from the left side
   useEffect(() => {
-    const minPercent = getPercent(minVal);
-    const maxPercent = getPercent(maxValRef.current);
+    const getPercent = (value: any) => Math.round(((value - min) / (max - min)) * 100);
+    const minPercent = getPercent(rv0);
+    const maxPercent = getPercent(rv1);
 
     if (range.current) {
       range.current.style.left = `${minPercent}%`;
       range.current.style.width = `${maxPercent - minPercent}%`;
     }
-  }, [minVal, getPercent]);
-
-  // Set width of the range to decrease from the right side
-  useEffect(() => {
-    const minPercent = getPercent(minValRef.current);
-    const maxPercent = getPercent(maxVal);
-
-    if (range.current) {
-      range.current.style.width = `${maxPercent - minPercent}%`;
-    }
-  }, [maxVal, getPercent]);
-
-  // Get min and max values when their state changes
-  useEffect(() => {
-    onRangeChange && fireNonCancelableEvent(onRangeChange, { value: [minVal, maxVal] });
-  }, [minVal, maxVal, onRangeChange]);
+  }, [rv0, rv1, min, max]);
 
   if (variant === 'default') {
     return (
-      <div className={styles['slider-container']}>
+      <div>
         <input
           aria-label={ariaLabel}
           ref={__internalRootRef}
@@ -98,24 +79,22 @@ export default function Slider({
           type="range"
           min={min}
           max={max}
-          value={rangeValue && rangeValue[0]}
+          value={rangeValue ? rangeValue[0] : ''}
           onChange={event => {
-            const value = Math.min(Number(event.target.value), maxVal - 1);
-            setMinVal(value);
-            minValRef.current = value;
+            onRangeChange &&
+              fireNonCancelableEvent(onRangeChange, { value: [Math.min(Number(event.target.value), rv1 - 1), rv1] });
           }}
           className={clsx(styles.thumb, styles['thumb--left'])}
-          style={{ zIndex: minVal > max - 100 && '5' }}
+          style={{ zIndex: rv0 > max - 100 ? '5' : undefined }}
         />
         <input
           type="range"
           min={min}
           max={max}
-          value={rangeValue && rangeValue[1]}
+          value={rangeValue ? rangeValue[1] : ''}
           onChange={event => {
-            const value = Math.max(Number(event.target.value), minVal + 1);
-            setMaxVal(value);
-            maxValRef.current = value;
+            onRangeChange &&
+              fireNonCancelableEvent(onRangeChange, { value: [rv0, Math.max(Number(event.target.value), rv0 + 1)] });
           }}
           className={clsx(styles.thumb, styles['thumb--right'])}
         />
@@ -125,7 +104,7 @@ export default function Slider({
           <div ref={range} className={styles.slider__range} />
         </div>
 
-        <div className={styles['value-slider-labels']}>
+        <div className={clsx(styles['value-slider-labels'], styles['range-slider-labels'])}>
           <span>{min}</span>
           <span>{max}</span>
         </div>

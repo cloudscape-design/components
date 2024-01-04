@@ -15,20 +15,22 @@
   }
 }
 
+.range-slider-labels {
+  padding-top: awsui.$space-m;
+}
+
+.slider-container {
+  padding: awsui.$space-m 0;
+}
+
 .slider {
   position: relative;
   width: 100%;
 }
 
 .slider__track,
-.slider__range,
-.slider__left-value,
-.slider__right-value {
-  position: absolute;
-}
-
-.slider__track,
 .slider__range {
+  position: absolute;
   border-radius: 3px;
   height: 5px;
 }
@@ -42,21 +44,6 @@
 .slider__range {
   background-color: awsui.$color-background-progress-bar-content-default;
   z-index: 2;
-}
-
-.slider__left-value,
-.slider__right-value {
-  color: awsui.$color-background-progress-bar-content-default;
-  font-size: 12px;
-  margin-top: 20px;
-}
-
-.slider__left-value {
-  left: 6px;
-}
-
-.slider__right-value {
-  right: -4px;
 }
 
 /* Removing the default appearance */
@@ -76,10 +63,12 @@
 
 .thumb--left {
   z-index: 3;
+  left: 8px;
 }
 
 .thumb--right {
   z-index: 4;
+  right: 8px;
 }
 
 /* For Chrome browsers */
@@ -87,10 +76,9 @@
   background-color: awsui.$color-background-progress-bar-content-default;
   border: none;
   border-radius: 50%;
-  box-shadow: 0 0 1px 1px awsui.$color-background-progress-bar-content-default;
   cursor: pointer;
-  height: 18px;
-  width: 18px;
+  height: 16px;
+  width: 16px;
   margin-top: 4px;
   pointer-events: all;
   position: relative;
@@ -101,10 +89,9 @@
   background-color: awsui.$color-background-progress-bar-content-default;
   border: none;
   border-radius: 50%;
-  box-shadow: 0 0 1px 1px awsui.$color-background-progress-bar-content-default;
   cursor: pointer;
-  height: 18px;
-  width: 18px;
+  height: 16px;
+  width: 16px;
   margin-top: 4px;
   pointer-events: all;
   position: relative;
