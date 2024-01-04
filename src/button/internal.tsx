@@ -135,6 +135,8 @@ export const InternalButton = React.forwardRef(
       [styles['full-width']]: shouldHaveContent && fullWidth,
     });
 
+    const nativeTabIndex =
+      __nativeAttributes && 'tabIndex' in __nativeAttributes ? __nativeAttributes.tabIndex : undefined;
     const buttonProps = {
       ...props,
       ...__nativeAttributes,
@@ -193,7 +195,7 @@ export const InternalButton = React.forwardRef(
             target={target}
             // security recommendation: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#target
             rel={rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined)}
-            tabIndex={isNotInteractive || shouldMuteUserFocus ? -1 : undefined}
+            tabIndex={isNotInteractive || shouldMuteUserFocus ? -1 : nativeTabIndex}
             aria-disabled={isNotInteractive ? true : undefined}
             download={download}
           >
@@ -210,7 +212,7 @@ export const InternalButton = React.forwardRef(
           type={formAction === 'none' ? 'button' : 'submit'}
           disabled={disabled}
           aria-disabled={loading && !disabled ? true : undefined}
-          tabIndex={shouldMuteUserFocus ? -1 : undefined}
+          tabIndex={shouldMuteUserFocus ? -1 : nativeTabIndex}
         >
           {buttonContent}
         </button>
