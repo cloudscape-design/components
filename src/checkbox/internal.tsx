@@ -11,6 +11,7 @@ import styles from './styles.css.js';
 import CheckboxIcon from '../internal/components/checkbox-icon';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useFormFieldContext } from '../internal/context/form-field-context';
+import { useGridNavigationFocusable } from '../table/table-role';
 
 interface InternalProps extends CheckboxProps, InternalBaseComponentProps {
   tabIndex?: -1;
@@ -32,7 +33,7 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
       onFocus,
       onBlur,
       onChange,
-      tabIndex,
+      tabIndex: explicitTabIndex,
       showOutline,
       ariaControls,
       __internalRootRef,
@@ -49,6 +50,8 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
         checkboxRef.current.indeterminate = Boolean(indeterminate);
       }
     });
+
+    const { tabIndex } = useGridNavigationFocusable(checkboxRef, { tabIndex: explicitTabIndex });
 
     return (
       <AbstractSwitch
