@@ -8,23 +8,22 @@ import { KeyCode } from '../../../../lib/components/internal/keycode';
 import { TestTable, actionsColumn, idColumn, items, nameColumn, valueColumn } from './stubs';
 
 function readActiveElement() {
-  const tagName = document.activeElement?.tagName.toUpperCase();
-  const text = document.activeElement?.textContent || document.activeElement?.getAttribute('aria-label');
-  if (!tagName) {
-    return null;
-  }
+  return document.activeElement ? formatElement(document.activeElement) : null;
+}
+
+function readFocusableElements() {
+  return Array.from(document.querySelectorAll('[tabIndex="0"]')).map(formatElement);
+}
+
+function formatElement(element: Element) {
+  const tagName = element.tagName.toUpperCase();
+  const text = element.textContent || element.getAttribute('aria-label');
   return `${tagName}[${text}]`;
 }
 
 test('updates interactive elements tab indices', () => {
-  const { container } = render(<TestTable columns={[nameColumn, valueColumn]} items={items} />);
-  const mutedButtons = container.querySelectorAll('button[tabIndex="-999"]');
-  const userFocusableButtons = container.querySelectorAll('button[tabIndex="0"]');
-
-  // Value header button and value cell buttons are muted.
-  expect(mutedButtons).toHaveLength(1 + 4);
-  expect(userFocusableButtons).toHaveLength(1);
-  expect(userFocusableButtons[0]).toHaveAccessibleName('Sort by name');
+  render(<TestTable columns={[nameColumn, valueColumn]} items={items} />);
+  expect(readFocusableElements()).toEqual(['BUTTON[Sort by name]']);
 });
 
 test.each([0, 5])('supports arrow keys navigation for startIndex=%s', startIndex => {
@@ -97,24 +96,25 @@ test('suppresses grid navigation when focusing on dialog element', async () => {
   const table = container.querySelector('table')!;
 
   (container.querySelector('button[aria-label="Sort by value"]') as HTMLElement).focus();
+  expect(readFocusableElements()).toEqual(['BUTTON[Sort by value]']);
   expect(readActiveElement()).toEqual('BUTTON[Sort by value]');
-  expect(container.querySelectorAll('button[tabIndex="-999"]')).toHaveLength(5);
 
   fireEvent.keyDown(table, { keyCode: KeyCode.down });
+  expect(readFocusableElements()).toEqual(['BUTTON[Edit value 1]']);
   expect(readActiveElement()).toEqual('BUTTON[Edit value 1]');
 
   (document.activeElement as HTMLElement).click();
+  expect(readFocusableElements().length).toBeGreaterThanOrEqual(3);
   expect(readActiveElement()).toEqual('INPUT[Value input]');
-  expect(container.querySelectorAll('button[tabIndex="-999"]')).toHaveLength(0);
 
   fireEvent.keyDown(table, { keyCode: KeyCode.down });
+  expect(readFocusableElements().length).toBeGreaterThanOrEqual(3);
   expect(readActiveElement()).toEqual('INPUT[Value input]');
-  expect(container.querySelectorAll('button[tabIndex="-999"]')).toHaveLength(0);
 
   (container.querySelector('button[aria-label="Save"]') as HTMLElement).click();
   await waitFor(() => {
+    expect(readFocusableElements()).toEqual(['BUTTON[Edit value 1]']);
     expect(readActiveElement()).toEqual('BUTTON[Edit value 1]');
-    expect(container.querySelectorAll('button[tabIndex="-999"]')).toHaveLength(5);
   });
 });
 
@@ -244,14 +244,19 @@ test('restores focus when the node gets removed', async () => {
 });
 
 test('all elements focus is restored if table changes role after being rendered as grid', () => {
-  const { container, rerender } = render(<TestTable columns={[valueColumn, idColumn]} items={items} />);
-  const getTabIndices = () => Array.from(container.querySelectorAll('button')).map(button => button.tabIndex);
+  const { rerender } = render(<TestTable columns={[valueColumn, idColumn]} items={items} />);
 
-  expect(getTabIndices()).toEqual([0, -999, -999, -999, -999]);
+  expect(readFocusableElements()).toEqual(['BUTTON[Sort by value]']);
 
   rerender(<TestTable keyboardNavigation={false} columns={[idColumn, valueColumn]} items={items} />);
 
-  expect(getTabIndices()).toEqual([0, 0, 0, 0, 0]);
+  expect(readFocusableElements()).toEqual([
+    'BUTTON[Sort by value]',
+    'BUTTON[Edit value 1]',
+    'BUTTON[Edit value 2]',
+    'BUTTON[Edit value 3]',
+    'BUTTON[Edit value 4]',
+  ]);
 });
 
 test('does not override tab index for programmatically focused elements', () => {
