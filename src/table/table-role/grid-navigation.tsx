@@ -144,14 +144,17 @@ class GridNavigationProcessor {
   }
 
   public refresh() {
-    if (this._table) {
-      // Update focused cell indices in case table rows, columns, or firstIndex change.
-      if (this.focusedCell) {
-        this.focusedCell = this.findFocusedCell(this.focusedCell.element);
-      }
+    // Timeout ensures the newly rendered content elements are registered.
+    setTimeout(() => {
+      if (this._table) {
+        // Update focused cell indices in case table rows, columns, or firstIndex change.
+        if (this.focusedCell) {
+          this.focusedCell = this.findFocusedCell(this.focusedCell.element);
+        }
 
-      this.updateFocusTarget();
-    }
+        this.updateFocusTarget();
+      }
+    }, 0);
   }
 
   public registerFocusable = (focusable: FocusableDefinition, changeHandler: FocusableChangeHandler) => {

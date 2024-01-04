@@ -261,7 +261,8 @@ export default function Page() {
                   <thead>
                     <tr {...getTableHeaderRowRoleProps({ tableRole })}>
                       {visibleColumnDefinitions.map((column, colIndex) => (
-                        <th
+                        <Cell
+                          tag="th"
                           key={column.key}
                           className={styles['custom-table-cell']}
                           {...getTableColHeaderRoleProps({ tableRole, colIndex })}
@@ -283,7 +284,7 @@ export default function Page() {
                               }
                             }}
                           />
-                        </th>
+                        </Cell>
                       ))}
                     </tr>
                   </thead>
@@ -291,13 +292,14 @@ export default function Page() {
                     {sortedItems.map((item, rowIndex) => (
                       <tr key={item.id} {...getTableRowRoleProps({ tableRole, rowIndex, firstIndex: 0 })}>
                         {visibleColumnDefinitions.map((column, colIndex) => (
-                          <td
+                          <Cell
+                            tag="td"
                             key={column.key}
                             className={styles['custom-table-cell']}
                             {...getTableCellRoleProps({ tableRole, colIndex })}
                           >
                             {column.render(item)}
-                          </td>
+                          </Cell>
                         ))}
                       </tr>
                     ))}
@@ -309,6 +311,20 @@ export default function Page() {
         </ContentLayout>
       }
     />
+  );
+}
+
+function Cell({
+  tag: Tag,
+  children,
+  ...rest
+}: React.HTMLAttributes<HTMLTableCellElement> & { tag: 'th' | 'td'; children: React.ReactNode }) {
+  const cellRef = useRef<HTMLTableCellElement>(null);
+  const { shouldMuteUserFocus } = useGridNavigationFocusable(cellRef);
+  return (
+    <Tag {...rest} ref={cellRef} tabIndex={shouldMuteUserFocus ? -1 : 0}>
+      {children}
+    </Tag>
   );
 }
 
