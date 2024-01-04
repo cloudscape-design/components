@@ -314,18 +314,10 @@ export default function Page() {
   );
 }
 
-function Cell({
-  tag: Tag,
-  children,
-  ...rest
-}: React.HTMLAttributes<HTMLTableCellElement> & { tag: 'th' | 'td'; children: React.ReactNode }) {
+function Cell({ tag: Tag, ...rest }: React.HTMLAttributes<HTMLTableCellElement> & { tag: 'th' | 'td' }) {
   const cellRef = useRef<HTMLTableCellElement>(null);
   const { shouldMuteUserFocus } = useGridNavigationFocusable(cellRef);
-  return (
-    <Tag {...rest} ref={cellRef} tabIndex={shouldMuteUserFocus ? -1 : 0}>
-      {children}
-    </Tag>
-  );
+  return <Tag {...rest} ref={cellRef} tabIndex={shouldMuteUserFocus ? -1 : 0} />;
 }
 
 function SortingHeader({ label, onClick, icon }: { label: string; onClick: () => void; icon: React.ReactNode }) {

@@ -14,13 +14,20 @@ function getActiveElement() {
   ];
 }
 
+function readFocusableButtons() {
+  return Array.from(document.querySelectorAll('button[tabIndex="0"]')).map(
+    button => button.textContent || button.getAttribute('aria-label')
+  );
+}
+
 test('updates interactive elements tab indices', () => {
   const { container } = render(<TestTable columns={[nameColumn, valueColumn]} items={items} />);
-  const mutedButtons = container.querySelectorAll('button[tabIndex="-999"]');
+  const mutedButtons = container.querySelectorAll('button[tabIndex="-1"]');
   const userFocusableButtons = container.querySelectorAll('button[tabIndex="0"]');
 
   // Value header button and value cell buttons are muted.
   expect(mutedButtons).toHaveLength(1 + 4);
+  // Name header button is focusable
   expect(userFocusableButtons).toHaveLength(1);
   expect(userFocusableButtons[0]).toHaveAccessibleName('Sort by name');
 });
@@ -90,29 +97,30 @@ test('supports key combination navigation', () => {
   expect(getActiveElement()).toEqual(['button', 'Sort by name']);
 });
 
-test('suppresses grid navigation when focusing on dialog element', () => {
+test('suppresses grid navigation when focusing on dialog element', async () => {
   const { container } = render(<TestTable columns={[nameColumn, valueColumn]} items={items} />);
   const table = container.querySelector('table')!;
 
   (container.querySelector('button[aria-label="Sort by value"]') as HTMLElement).focus();
   expect(getActiveElement()).toEqual(['button', 'Sort by value']);
-  expect(container.querySelectorAll('button[tabIndex="-999"]')).toHaveLength(5);
+  expect(readFocusableButtons()).toEqual(['Sort by value']);
 
   fireEvent.keyDown(table, { keyCode: KeyCode.down });
   expect(getActiveElement()).toEqual(['button', 'Edit value 1']);
 
   (document.activeElement as HTMLElement).click();
   expect(getActiveElement()).toEqual(['input', 'Value input']);
-  expect(container.querySelectorAll('button[tabIndex="-999"]')).toHaveLength(0);
+  expect(readFocusableButtons()).toEqual(['Save', 'Discard']);
 
   fireEvent.keyDown(table, { keyCode: KeyCode.down });
   expect(getActiveElement()).toEqual(['input', 'Value input']);
-  expect(container.querySelectorAll('button[tabIndex="-999"]')).toHaveLength(0);
+  expect(readFocusableButtons()).toEqual(['Save', 'Discard']);
 
   (container.querySelector('button[aria-label="Save"]') as HTMLElement).click();
-  fireEvent.keyDown(table, { keyCode: KeyCode.down });
-  expect(getActiveElement()).toEqual(['button', 'Edit value 2']);
-  expect(container.querySelectorAll('button[tabIndex="-999"]')).toHaveLength(5);
+  await waitFor(() => {
+    expect(getActiveElement()).toEqual(['button', 'Edit value 1']);
+    expect(readFocusableButtons()).toEqual(['Edit value 1']);
+  });
 });
 
 test('updates page size', () => {
@@ -244,7 +252,7 @@ test('all elements focus is restored if table changes role after being rendered 
   const { container, rerender } = render(<TestTable columns={[valueColumn, idColumn]} items={items} />);
   const getTabIndices = () => Array.from(container.querySelectorAll('button')).map(button => button.tabIndex);
 
-  expect(getTabIndices()).toEqual([0, -999, -999, -999, -999]);
+  expect(getTabIndices()).toEqual([0, -1, -1, -1, -1]);
 
   rerender(<TestTable keyboardNavigation={false} columns={[idColumn, valueColumn]} items={items} />);
 

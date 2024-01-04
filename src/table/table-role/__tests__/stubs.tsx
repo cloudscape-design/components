@@ -2,7 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useRef, useState } from 'react';
-import { GridNavigationProvider } from '../../../../lib/components/table/table-role';
+import {
+  GridNavigationProvider,
+  GridNavigationSuppressed,
+  useGridNavigationFocusable,
+} from '../../../../lib/components/table/table-role';
 
 export interface Item {
   id: string;
@@ -21,7 +25,7 @@ export const idColumn = { header: 'ID', cell: (item: Item) => item.id };
 export const nameColumn = {
   header: (
     <span>
-      Name <button aria-label="Sort by name" />
+      Name <Button aria-label="Sort by name" />
     </span>
   ),
   cell: (item: Item) => item.name,
@@ -29,17 +33,17 @@ export const nameColumn = {
 export const valueColumn = {
   header: (
     <span>
-      Value <button aria-label="Sort by value" />
+      Value <Button aria-label="Sort by value" />
     </span>
   ),
-  cell: (item: Item) => <ValueCell item={item} />,
+  cell: (item: Item) => <EditableCellContent item={item} />,
 };
 export const actionsColumn = {
   header: 'Actions',
   cell: (item: Item) => (
     <span>
-      <button aria-label={`Delete item ${item.id}`} />
-      <button aria-label={`Copy item ${item.id}`} />
+      <Button aria-label={`Delete item ${item.id}`} />
+      <Button aria-label={`Copy item ${item.id}`} />
     </span>
   ),
 };
@@ -68,9 +72,9 @@ export function TestTable<T extends object>({
         <thead>
           <tr aria-rowindex={1}>
             {columns.map((column, columnIndex) => (
-              <th key={columnIndex} aria-colindex={columnIndex + 1} tabIndex={-1}>
+              <Cell tag="th" key={columnIndex} aria-colindex={columnIndex + 1} tabIndex={-1}>
                 {column.header}
-              </th>
+              </Cell>
             ))}
           </tr>
         </thead>
@@ -78,9 +82,9 @@ export function TestTable<T extends object>({
           {items.map((item, itemIndex) => (
             <tr key={itemIndex} aria-rowindex={startIndex + itemIndex + 1 + 1}>
               {columns.map((column, columnIndex) => (
-                <td key={columnIndex} aria-colindex={columnIndex + 1} tabIndex={-1}>
+                <Cell tag="td" key={columnIndex} aria-colindex={columnIndex + 1} tabIndex={-1}>
                   {column.cell(item)}
-                </td>
+                </Cell>
               ))}
             </tr>
           ))}
@@ -90,18 +94,31 @@ export function TestTable<T extends object>({
   );
 }
 
-function ValueCell({ item }: { item: Item }) {
+function EditableCellContent({ item }: { item: Item }) {
   const [active, setActive] = useState(false);
-
   return !active ? (
     <span>
-      {item.value ?? 0} <button aria-label={`Edit value ${item.value}`} onClick={() => setActive(true)} />
+      {item.value ?? 0} <Button aria-label={`Edit value ${item.value}`} onClick={() => setActive(true)} />
     </span>
   ) : (
-    <span role="dialog">
-      <input value={item.value} autoFocus={true} aria-label="Value input" tabIndex={0} />
-      <button aria-label="Save" onClick={() => setActive(false)} />
-      <button aria-label="Discard" onClick={() => setActive(false)} />
-    </span>
+    <GridNavigationSuppressed>
+      <span role="dialog">
+        <input value={item.value} autoFocus={true} aria-label="Value input" tabIndex={0} />
+        <Button aria-label="Save" onClick={() => setActive(false)} />
+        <Button aria-label="Discard" onClick={() => setActive(false)} />
+      </span>
+    </GridNavigationSuppressed>
   );
+}
+
+function Button(props: React.HTMLAttributes<HTMLButtonElement>) {
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const { shouldMuteUserFocus } = useGridNavigationFocusable(buttonRef);
+  return <button {...props} ref={buttonRef} tabIndex={shouldMuteUserFocus ? -1 : 0} />;
+}
+
+function Cell({ tag: Tag, ...rest }: React.HTMLAttributes<HTMLTableCellElement> & { tag: 'th' | 'td' }) {
+  const cellRef = useRef<HTMLTableCellElement>(null);
+  const { shouldMuteUserFocus } = useGridNavigationFocusable(cellRef);
+  return <Tag {...rest} ref={cellRef} tabIndex={shouldMuteUserFocus ? -1 : 0} />;
 }

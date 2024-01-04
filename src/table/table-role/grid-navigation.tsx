@@ -322,13 +322,13 @@ class GridNavigationProcessor {
     const rowElement = cellElement?.closest('tr');
 
     if (!cellElement || !rowElement) {
-      return null;
+      return this.focusedCell;
     }
 
     const colIndex = parseInt(cellElement.getAttribute('aria-colindex') ?? '');
     const rowIndex = parseInt(rowElement.getAttribute('aria-rowindex') ?? '');
     if (isNaN(colIndex) || isNaN(rowIndex)) {
-      return null;
+      return this.focusedCell;
     }
 
     const cellFocusables = this.getFocusablesFrom(cellElement);
