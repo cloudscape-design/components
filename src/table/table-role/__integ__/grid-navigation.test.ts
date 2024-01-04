@@ -7,15 +7,16 @@ import { GridNavigationPageObject } from './page-object';
 
 interface Options {
   actionsMode?: 'dropdown' | 'inline';
+  visibleColumns?: string[];
 }
 
 const setupTest = (
-  { actionsMode = 'dropdown' }: Options,
+  { actionsMode = 'dropdown', visibleColumns = ['id', 'actions', 'state', 'imageId', 'dnsName', 'type'] }: Options,
   testFn: (page: GridNavigationPageObject) => Promise<void>
 ) => {
   return useBrowser(async browser => {
     const page = new GridNavigationPageObject(browser);
-    const query = new URLSearchParams({ actionsMode });
+    const query = new URLSearchParams({ actionsMode, visibleColumns: visibleColumns.join(',') });
     await browser.url(`#/light/table-fragments/grid-navigation-custom/?${query.toString()}`);
     await page.waitForVisible('table');
     await testFn(page);
