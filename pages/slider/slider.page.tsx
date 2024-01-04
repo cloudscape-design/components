@@ -8,6 +8,7 @@ import FormField from '~components/form-field';
 import { Grid, Select, Slider, SliderProps } from '~components';
 
 function Sliders() {
+  const [value, setValue] = React.useState<SliderProps.ChangeDetail['value']>(50);
   const [sliderValue, setSliderValue] = useState(20);
   const [rangeMin, setRangeMin] = useState(20);
   const [rangeMax, setRangeMax] = useState(80);
@@ -43,17 +44,57 @@ function Sliders() {
             step={5}
           />
           <FormField label="Range slider">
+            <Grid
+              gridDefinition={[
+                { colspan: { default: 4, xs: 2 } },
+                { colspan: { default: 4, xs: 2 }, offset: { xs: 8, default: 4 } },
+              ]}
+            >
+              <Input
+                type="number"
+                inputMode="numeric"
+                value={`${rangeMin}`}
+                onChange={({ detail }) => {
+                  setRangeMin(Number(detail.value));
+                }}
+              />
+              <Input
+                type="number"
+                inputMode="numeric"
+                value={`${rangeMax}`}
+                onChange={({ detail }) => setRangeMax(Number(detail.value))}
+              />
+            </Grid>
             <Slider
               variant="range"
               rangeValue={[rangeMin, rangeMax]}
               onRangeChange={({ detail }) => {
-                console.log(detail);
                 setRangeMin(detail.value[0]);
                 setRangeMax(detail.value[1]);
               }}
               min={0}
               max={100}
             />
+          </FormField>
+          <FormField label="Default slider">
+            <Grid
+              gridDefinition={[
+                { colspan: { default: 8, xs: 4 } },
+                { colspan: { default: 2, xs: 1 } },
+                { colspan: { default: 2, xs: 1 } },
+              ]}
+            >
+              <Slider
+                value={value}
+                onChange={({ detail }) => {
+                  setValue(detail.value);
+                }}
+                min={0}
+                max={100}
+              />
+              <Input value={`${value}`} onChange={({ detail }) => setValue(Number(detail.value))} />
+              <Box>Units</Box>
+            </Grid>
           </FormField>
         </SpaceBetween>
       </FormField>
@@ -62,33 +103,11 @@ function Sliders() {
 }
 
 export default function InputsPage() {
-  const [value, setValue] = React.useState<SliderProps.ChangeDetail['value']>(50);
-
   return (
     <div style={{ padding: 10 }}>
       <h1>Sliders demo</h1>
       <SpaceBetween size="xxl">
         <Sliders />
-        <FormField label="Default slider">
-          <Grid
-            gridDefinition={[
-              { colspan: { default: 8, xs: 4 } },
-              { colspan: { default: 2, xs: 1 } },
-              { colspan: { default: 2, xs: 1 } },
-            ]}
-          >
-            <Slider
-              value={value}
-              onChange={({ detail }) => {
-                setValue(detail.value);
-              }}
-              min={0}
-              max={100}
-            />
-            <Input value={`${value}`} onChange={({ detail }) => setValue(Number(detail.value))} />
-            <Box>Units</Box>
-          </Grid>
-        </FormField>
       </SpaceBetween>
     </div>
   );
