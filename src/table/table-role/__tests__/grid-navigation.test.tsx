@@ -7,11 +7,13 @@ import { GridNavigationProvider } from '../../../../lib/components/table/table-r
 import { KeyCode } from '../../../../lib/components/internal/keycode';
 import { TestTable, actionsColumn, idColumn, items, nameColumn, valueColumn } from './stubs';
 
-function getActiveElement() {
-  return [
-    document.activeElement?.tagName.toLowerCase(),
-    document.activeElement?.textContent || document.activeElement?.getAttribute('aria-label'),
-  ];
+function readActiveElement() {
+  const tagName = document.activeElement?.tagName.toUpperCase();
+  const text = document.activeElement?.textContent || document.activeElement?.getAttribute('aria-label');
+  if (!tagName) {
+    return null;
+  }
+  return `${tagName}[${text}]`;
 }
 
 test('updates interactive elements tab indices', () => {
@@ -32,33 +34,33 @@ test.each([0, 5])('supports arrow keys navigation for startIndex=%s', startIndex
   const table = container.querySelector('table')!;
 
   container.querySelector('th')!.focus();
-  expect(getActiveElement()).toEqual(['th', 'ID']);
+  expect(readActiveElement()).toBe('TH[ID]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.right });
-  expect(getActiveElement()).toEqual(['button', 'Sort by name']);
+  expect(readActiveElement()).toBe('BUTTON[Sort by name]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.down });
-  expect(getActiveElement()).toEqual(['td', 'First']);
+  expect(readActiveElement()).toBe('TD[First]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.left });
-  expect(getActiveElement()).toEqual(['td', 'id1']);
+  expect(readActiveElement()).toBe('TD[id1]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.up });
-  expect(getActiveElement()).toEqual(['th', 'ID']);
+  expect(readActiveElement()).toBe('TH[ID]');
 
   rerender(<TestTable columns={[idColumn, actionsColumn]} items={items} startIndex={startIndex} />);
 
   fireEvent.keyDown(table, { keyCode: KeyCode.right });
-  expect(getActiveElement()).toEqual(['th', 'Actions']);
+  expect(readActiveElement()).toBe('TH[Actions]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.down });
-  expect(getActiveElement()).toEqual(['button', 'Delete item id1']);
+  expect(readActiveElement()).toBe('BUTTON[Delete item id1]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.right });
-  expect(getActiveElement()).toEqual(['button', 'Copy item id1']);
+  expect(readActiveElement()).toBe('BUTTON[Copy item id1]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.down });
-  expect(getActiveElement()).toEqual(['button', 'Copy item id2']);
+  expect(readActiveElement()).toBe('BUTTON[Copy item id2]');
 });
 
 test('supports key combination navigation', () => {
@@ -66,53 +68,54 @@ test('supports key combination navigation', () => {
   const table = container.querySelector('table')!;
 
   container.querySelector('button')!.focus();
-  expect(getActiveElement()).toEqual(['button', 'Sort by name']);
+  expect(readActiveElement()).toBe('BUTTON[Sort by name]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.pageDown });
-  expect(getActiveElement()).toEqual(['td', 'Second']);
+  expect(readActiveElement()).toBe('TD[Second]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.pageUp });
-  expect(getActiveElement()).toEqual(['button', 'Sort by name']);
+  expect(readActiveElement()).toBe('BUTTON[Sort by name]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.end });
-  expect(getActiveElement()).toEqual(['th', 'Actions']);
+  expect(readActiveElement()).toBe('TH[Actions]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.home });
-  expect(getActiveElement()).toEqual(['button', 'Sort by name']);
+  expect(readActiveElement()).toBe('BUTTON[Sort by name]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.end, ctrlKey: true });
-  expect(getActiveElement()).toEqual(['button', 'Delete item id4']);
+  expect(readActiveElement()).toBe('BUTTON[Delete item id4]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.home, ctrlKey: true });
-  expect(getActiveElement()).toEqual(['button', 'Sort by name']);
+  expect(readActiveElement()).toBe('BUTTON[Sort by name]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.backspace }); // Unsupported key
-  expect(getActiveElement()).toEqual(['button', 'Sort by name']);
+  expect(readActiveElement()).toBe('BUTTON[Sort by name]');
 });
 
-test('suppresses grid navigation when focusing on dialog element', () => {
+test('suppresses grid navigation when focusing on dialog element', async () => {
   const { container } = render(<TestTable columns={[nameColumn, valueColumn]} items={items} />);
   const table = container.querySelector('table')!;
 
   (container.querySelector('button[aria-label="Sort by value"]') as HTMLElement).focus();
-  expect(getActiveElement()).toEqual(['button', 'Sort by value']);
+  expect(readActiveElement()).toEqual('BUTTON[Sort by value]');
   expect(container.querySelectorAll('button[tabIndex="-999"]')).toHaveLength(5);
 
   fireEvent.keyDown(table, { keyCode: KeyCode.down });
-  expect(getActiveElement()).toEqual(['button', 'Edit value 1']);
+  expect(readActiveElement()).toEqual('BUTTON[Edit value 1]');
 
   (document.activeElement as HTMLElement).click();
-  expect(getActiveElement()).toEqual(['input', 'Value input']);
+  expect(readActiveElement()).toEqual('INPUT[Value input]');
   expect(container.querySelectorAll('button[tabIndex="-999"]')).toHaveLength(0);
 
   fireEvent.keyDown(table, { keyCode: KeyCode.down });
-  expect(getActiveElement()).toEqual(['input', 'Value input']);
+  expect(readActiveElement()).toEqual('INPUT[Value input]');
   expect(container.querySelectorAll('button[tabIndex="-999"]')).toHaveLength(0);
 
   (container.querySelector('button[aria-label="Save"]') as HTMLElement).click();
-  fireEvent.keyDown(table, { keyCode: KeyCode.down });
-  expect(getActiveElement()).toEqual(['button', 'Edit value 2']);
-  expect(container.querySelectorAll('button[tabIndex="-999"]')).toHaveLength(5);
+  await waitFor(() => {
+    expect(readActiveElement()).toEqual('BUTTON[Edit value 1]');
+    expect(container.querySelectorAll('button[tabIndex="-999"]')).toHaveLength(5);
+  });
 });
 
 test('updates page size', () => {
@@ -120,15 +123,15 @@ test('updates page size', () => {
   const table = container.querySelector('table')!;
 
   container.querySelector('th')!.focus();
-  expect(getActiveElement()).toEqual(['th', 'ID']);
+  expect(readActiveElement()).toEqual('TH[ID]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.pageDown });
-  expect(getActiveElement()).toEqual(['td', 'id3']);
+  expect(readActiveElement()).toEqual('TD[id3]');
 
   rerender(<TestTable columns={[idColumn, nameColumn]} items={items} pageSize={1} />);
 
   fireEvent.keyDown(table, { keyCode: KeyCode.pageUp });
-  expect(getActiveElement()).toEqual(['td', 'id2']);
+  expect(readActiveElement()).toEqual('TD[id2]');
 });
 
 test('does not throw errors if table is null', () => {
@@ -147,22 +150,22 @@ test('ignores keydown modifiers other than ctrl', () => {
   const table = container.querySelector('table')!;
 
   container.querySelector('button')!.focus();
-  expect(getActiveElement()).toEqual(['button', 'Sort by name']);
+  expect(readActiveElement()).toEqual('BUTTON[Sort by name]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.down, altKey: true });
-  expect(getActiveElement()).toEqual(['button', 'Sort by name']);
+  expect(readActiveElement()).toEqual('BUTTON[Sort by name]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.down, shiftKey: true });
-  expect(getActiveElement()).toEqual(['button', 'Sort by name']);
+  expect(readActiveElement()).toEqual('BUTTON[Sort by name]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.down, metaKey: true });
-  expect(getActiveElement()).toEqual(['button', 'Sort by name']);
+  expect(readActiveElement()).toEqual('BUTTON[Sort by name]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.down, ctrlKey: true });
-  expect(getActiveElement()).toEqual(['button', 'Sort by name']);
+  expect(readActiveElement()).toEqual('BUTTON[Sort by name]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.end, ctrlKey: true });
-  expect(getActiveElement()).toEqual(['button', 'Edit value 4']);
+  expect(readActiveElement()).toEqual('BUTTON[Edit value 4]');
 });
 
 test('cell navigation works when the table is mutated between commands', () => {
