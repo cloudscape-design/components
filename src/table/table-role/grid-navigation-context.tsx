@@ -26,7 +26,7 @@ export function useGridNavigationFocusable(focusable: null | FocusableDefinition
     }
   }, [focusable, focusTarget]);
 
-  let tabIndex = options?.tabIndex;
+  let tabIndex: undefined | number = options?.tabIndex;
   if (keyboardNavigation) {
     tabIndex = !focusTargetActive ? -1 : tabIndex ?? 0;
   }

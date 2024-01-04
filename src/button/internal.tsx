@@ -22,6 +22,7 @@ import {
 import { FunnelMetrics } from '../internal/analytics';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
+import { useGridNavigationFocusable } from '../table/table-role';
 
 export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   variant?: ButtonProps['variant'] | 'flashbar-icon' | 'breadcrumb-group' | 'menu-trigger' | 'modal-dismiss';
@@ -134,9 +135,14 @@ export const InternalButton = React.forwardRef(
       [styles['full-width']]: shouldHaveContent && fullWidth,
     });
 
+    const explicitTabIndex =
+      __nativeAttributes && 'tabIndex' in __nativeAttributes ? __nativeAttributes.tabIndex : undefined;
+    const { tabIndex } = useGridNavigationFocusable(buttonRef, { tabIndex: isNotInteractive ? -1 : explicitTabIndex });
+
     const buttonProps = {
       ...props,
       ...__nativeAttributes,
+      tabIndex,
       // https://github.com/microsoft/TypeScript/issues/36659
       ref: useMergeRefs(buttonRef, __internalRootRef),
       'aria-label': ariaLabel,
@@ -148,6 +154,7 @@ export const InternalButton = React.forwardRef(
       onClick: handleClick,
       [DATA_ATTR_FUNNEL_VALUE]: uniqueId,
     } as const;
+
     const iconProps: ButtonIconProps = {
       loading,
       iconName,
@@ -190,7 +197,6 @@ export const InternalButton = React.forwardRef(
             target={target}
             // security recommendation: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#target
             rel={rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined)}
-            tabIndex={isNotInteractive ? -1 : undefined}
             aria-disabled={isNotInteractive ? true : undefined}
             download={download}
           >

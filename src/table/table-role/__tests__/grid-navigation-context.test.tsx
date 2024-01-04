@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useRef } from 'react';
-import { useGridNavigationFocusable } from '../../../../lib/components/table/table-role/grid-navigation-context';
+import { useGridNavigationFocusable } from '../../../../lib/components/table/table-role';
 import { renderWithGridNavigation } from './utils';
 
 function Button(props: React.HTMLAttributes<HTMLButtonElement>) {
@@ -12,7 +12,7 @@ function Button(props: React.HTMLAttributes<HTMLButtonElement>) {
 }
 
 test('does not override tab index when keyboard navigation is not active', () => {
-  renderWithGridNavigation({ target: null }, <Button id="button">button</Button>);
+  renderWithGridNavigation({ target: null }, <Button id="button" />);
   expect(document.querySelector('#button')).not.toHaveAttribute('tabIndex');
 });
 
@@ -20,8 +20,8 @@ test('overrides tab index when keyboard navigation is active', () => {
   renderWithGridNavigation(
     { target: '#button1' },
     <div>
-      <Button id="button1">button 1</Button>
-      <Button id="button2">button 2</Button>
+      <Button id="button1" />
+      <Button id="button2" />
     </div>
   );
   expect(document.querySelector('#button1')).toHaveAttribute('tabIndex', '0');
@@ -32,12 +32,8 @@ test('does not override explicit tab index with 0', () => {
   renderWithGridNavigation(
     { target: '#button1' },
     <div>
-      <Button id="button1" tabIndex={-2}>
-        button 1
-      </Button>
-      <Button id="button2" tabIndex={-2}>
-        button 2
-      </Button>
+      <Button id="button1" tabIndex={-2} />
+      <Button id="button2" tabIndex={-2} />
     </div>
   );
   expect(document.querySelector('#button1')).toHaveAttribute('tabIndex', '-2');

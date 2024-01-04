@@ -3,9 +3,11 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
 import Button, { ButtonProps } from '../../../lib/components/button';
+import InternalButton from '../../../lib/components/button/internal';
 import createWrapper, { ButtonWrapper } from '../../../lib/components/test-utils/dom';
 import styles from '../../../lib/components/button/styles.css.js';
 import { buttonRelExpectations, buttonTargetExpectations } from '../../__tests__/target-rel-test-helper';
+import { renderWithGridNavigation } from '../../table/table-role/__tests__/utils';
 
 function renderWrappedButton(props: ButtonProps = {}) {
   const onClickSpy = jest.fn();
@@ -561,4 +563,35 @@ describe('Button Component', () => {
       expectToHaveClasses(wrapper.getElement(), { [styles['full-width']]: false });
     }
   );
+});
+
+describe('table grid navigation support', () => {
+  test('does not override tab index when keyboard navigation is not active', () => {
+    renderWithGridNavigation({ target: null }, <Button id="button" />);
+    expect(document.querySelector('#button')).not.toHaveAttribute('tabIndex');
+  });
+
+  test('overrides tab index when keyboard navigation is active', () => {
+    renderWithGridNavigation(
+      { target: '#button1' },
+      <div>
+        <Button id="button1" />
+        <Button id="button2" />
+      </div>
+    );
+    expect(document.querySelector('#button1')).toHaveAttribute('tabIndex', '0');
+    expect(document.querySelector('#button2')).toHaveAttribute('tabIndex', '-1');
+  });
+
+  test('does not override explicit tab index with 0', () => {
+    renderWithGridNavigation(
+      { target: '#button1' },
+      <div>
+        <InternalButton id="button1" __nativeAttributes={{ tabIndex: -2 }} />
+        <InternalButton id="button2" __nativeAttributes={{ tabIndex: -2 }} />
+      </div>
+    );
+    expect(document.querySelector('#button1')).toHaveAttribute('tabIndex', '-2');
+    expect(document.querySelector('#button2')).toHaveAttribute('tabIndex', '-1');
+  });
 });
