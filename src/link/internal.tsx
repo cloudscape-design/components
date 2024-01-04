@@ -139,8 +139,6 @@ const InternalLink = React.forwardRef(
     // Visual refresh should only add styles to buttons that don't already have unique styles (e.g. primary/secondary variants)
     const applyButtonStyles = isButton && isVisualRefresh && !hasSpecialStyle;
 
-    const { shouldMuteUserFocus } = useGridNavigationFocusable(linkRef);
-
     const sharedProps = {
       id: linkId,
       ...baseProps,
@@ -156,7 +154,6 @@ const InternalLink = React.forwardRef(
       ),
       'aria-label': ariaLabel,
       'aria-labelledby': '',
-      tabIndex: shouldMuteUserFocus ? -1 : 0,
       [DATA_ATTR_FUNNEL_VALUE]: uniqueId,
     };
 
@@ -188,9 +185,17 @@ const InternalLink = React.forwardRef(
       </>
     );
 
+    const { shouldMuteUserFocus } = useGridNavigationFocusable(linkRef);
+
     if (isButton) {
       return (
-        <a {...sharedProps} role="button" onKeyDown={handleButtonKeyDown} onClick={handleButtonClick}>
+        <a
+          {...sharedProps}
+          role="button"
+          tabIndex={shouldMuteUserFocus ? -1 : 0}
+          onKeyDown={handleButtonKeyDown}
+          onClick={handleButtonClick}
+        >
           {content}
         </a>
       );
@@ -199,7 +204,14 @@ const InternalLink = React.forwardRef(
     return (
       // we dynamically set proper rel in the code above
       // eslint-disable-next-line react/jsx-no-target-blank
-      <a {...sharedProps} target={anchorTarget} rel={anchorRel} href={href} onClick={handleLinkClick}>
+      <a
+        {...sharedProps}
+        tabIndex={shouldMuteUserFocus ? -1 : undefined}
+        target={anchorTarget}
+        rel={anchorRel}
+        href={href}
+        onClick={handleLinkClick}
+      >
         {content}
       </a>
     );
