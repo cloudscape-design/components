@@ -137,7 +137,9 @@ export const InternalButton = React.forwardRef(
 
     const explicitTabIndex =
       __nativeAttributes && 'tabIndex' in __nativeAttributes ? __nativeAttributes.tabIndex : undefined;
-    const { tabIndex } = useGridNavigationFocusable(buttonRef, { tabIndex: isNotInteractive ? -1 : explicitTabIndex });
+    const { tabIndex } = useGridNavigationFocusable(buttonRef, {
+      tabIndex: isAnchor && isNotInteractive ? -1 : explicitTabIndex,
+    });
 
     const buttonProps = {
       ...props,
