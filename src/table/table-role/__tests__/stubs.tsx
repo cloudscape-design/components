@@ -21,7 +21,7 @@ export const idColumn = { header: 'ID', cell: (item: Item) => item.id };
 export const nameColumn = {
   header: (
     <span>
-      Name <button aria-label="Sort by name" />
+      Name <button aria-label="Sort by name" tabIndex={0} />
     </span>
   ),
   cell: (item: Item) => item.name,
@@ -29,7 +29,7 @@ export const nameColumn = {
 export const valueColumn = {
   header: (
     <span>
-      Value <button aria-label="Sort by value" />
+      Value <button aria-label="Sort by value" tabIndex={0} />
     </span>
   ),
   cell: (item: Item) => <ValueCell item={item} />,
@@ -38,8 +38,8 @@ export const actionsColumn = {
   header: 'Actions',
   cell: (item: Item) => (
     <span>
-      <button aria-label={`Delete item ${item.id}`} />
-      <button aria-label={`Copy item ${item.id}`} />
+      <button aria-label={`Delete item ${item.id}`} tabIndex={0} />
+      <button aria-label={`Copy item ${item.id}`} tabIndex={0} />
     </span>
   ),
 };
@@ -95,13 +95,13 @@ function ValueCell({ item }: { item: Item }) {
 
   return !active ? (
     <span>
-      {item.value ?? 0} <button aria-label={`Edit value ${item.value}`} onClick={() => setActive(true)} />
+      {item.value ?? 0} <button aria-label={`Edit value ${item.value}`} onClick={() => setActive(true)} tabIndex={0} />
     </span>
   ) : (
     <span role="dialog">
       <input value={item.value} autoFocus={true} aria-label="Value input" tabIndex={0} />
-      <button aria-label="Save" onClick={() => setActive(false)} />
-      <button aria-label="Discard" onClick={() => setActive(false)} />
+      <button aria-label="Save" onClick={() => setActive(false)} tabIndex={0} />
+      <button aria-label="Discard" onClick={() => setActive(false)} tabIndex={0} />
     </span>
   );
 }

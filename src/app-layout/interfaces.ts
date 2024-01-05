@@ -24,6 +24,16 @@ export interface AppLayoutProps extends BaseComponentProps {
    * * resizable (boolean) - if the drawer is resizable or not.
    * * defaultSize (number) - starting size of the drawer. if not set, defaults to 290.
    * * onResize (({ size: number }) => void) - Fired when the active drawer is resized.
+   * 
+   * #### DrawerTrigger
+   * - `iconName` (IconProps.Name) - (Optional) Specifies the icon to be displayed.
+   * - `iconSvg` (React.ReactNode) - (Optional) Specifies the SVG of a custom icon. For more information, see [SVG icon guidelines](/components/icon/?tabId=api#slots)
+   *
+   * #### DrawerAriaLabels
+   * - `drawerName` (string) - Label for the drawer itself.
+   * - `closeButton` (string) - (Optional) Label for the close button.
+   * - `triggerButton` (string) - (Optional) Label for the trigger button.
+   * - `resizeHandle` (string) - (Optional) Label for the resize handle.
    */
   drawers?: Array<AppLayoutProps.Drawer>;
 
