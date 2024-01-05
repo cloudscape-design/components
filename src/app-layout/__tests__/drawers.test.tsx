@@ -7,7 +7,6 @@ import {
   singleDrawer,
   manyDrawers,
   manyDrawersWithBadges,
-  multipleDrawers,
   findActiveDrawerLandmark,
   singleDrawerOpen,
   singleDrawerPublic,
@@ -136,7 +135,7 @@ describeEachAppLayout(size => {
       <AppLayout
         ref={newRef => (ref = newRef)}
         activeDrawerId={null}
-        drawers={multipleDrawers}
+        drawers={singleDrawerPublic}
         tools={<div>Tools</div>}
       />
     );
@@ -144,8 +143,8 @@ describeEachAppLayout(size => {
     rerender(
       <AppLayout
         ref={newRef => (ref = newRef)}
-        activeDrawerId={multipleDrawers[0].id}
-        drawers={multipleDrawers}
+        activeDrawerId={singleDrawerPublic[0].id}
+        drawers={singleDrawerPublic}
         tools={<div>Tools</div>}
       />
     );

@@ -492,7 +492,7 @@ const OldAppLayout = React.forwardRef(
         }
       },
       focusToolsClose: () => {
-        if (drawers && drawers.length) {
+        if (hasDrawers) {
           focusDrawersButtons(true);
         } else {
           focusToolsButtons(true);

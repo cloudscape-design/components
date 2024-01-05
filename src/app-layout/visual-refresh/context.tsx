@@ -385,6 +385,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     });
 
     const [drawersMaxWidth, setDrawersMaxWidth] = useState(toolsWidth);
+    const hasDrawers = !!drawers && drawers.length > 0;
 
     const {
       refs: drawersRefs,
@@ -583,7 +584,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
             handleToolsClick(true);
           },
           focusToolsClose: () => {
-            if (drawers && drawers.length) {
+            if (hasDrawers) {
               focusDrawersButtons(true);
             } else {
               focusToolsButtons(true);
@@ -600,7 +601,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
         focusToolsButtons,
         focusDrawersButtons,
         splitPanelRefs.slider,
-        drawers,
+        hasDrawers,
       ]
     );
 

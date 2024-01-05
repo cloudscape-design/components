@@ -284,32 +284,3 @@ export const singleDrawerPublic: Array<AppLayoutProps.Drawer> = [
     },
   },
 ];
-
-export const multipleDrawers: Array<AppLayoutProps.Drawer> = [
-  {
-    ariaLabels: {
-      closeButton: 'Help close button',
-      drawerName: 'Help drawer content',
-      triggerButton: 'Help trigger button',
-      resizeHandle: 'Help resize handle',
-    },
-    content: <span>Help</span>,
-    id: 'help',
-    trigger: {
-      iconName: 'status-info',
-    },
-  },
-  {
-    ariaLabels: {
-      closeButton: 'Security close button',
-      drawerName: 'Security drawer content',
-      triggerButton: 'Security trigger button',
-      resizeHandle: 'Security resize handle',
-    },
-    content: <span>Security</span>,
-    id: 'security',
-    trigger: {
-      iconName: 'security',
-    },
-  },
-];
