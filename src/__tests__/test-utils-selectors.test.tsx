@@ -48,7 +48,7 @@ function isTestUtilsComment(node: ChildNode) {
 }
 
 function getFormattedSelectors(selector: string) {
-  return selector.split(',').map(selector => selector.replace(':not(#\\9)', '').replace('\n', ''));
+  return selector.split(',').map(selector => selector.replace(/:not\(#\\9\)/g, '').replace(/\n/g, ''));
 }
 
 function getComponentNameFromFile(file: string) {
