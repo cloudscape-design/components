@@ -391,13 +391,15 @@ describe('Date range picker', () => {
     // When endDate hasn't been selected
     wrapper.findDropdown()!.findDateAt('left', 3, 4).click();
     wrapper.findDropdown()!.findApplyButton().click();
-    expect(isValidRange).toHaveBeenCalledWith(
+    expect(isValidRange).toHaveBeenNthCalledWith(
+      1,
       expect.objectContaining({ type: 'absolute', startDate: '2023-08-16', endDate: '' })
     );
     // When full range has been selected
     wrapper.findDropdown()!.findDateAt('right', 3, 4).click();
     wrapper.findDropdown()!.findApplyButton().click();
-    expect(isValidRange).toHaveBeenCalledWith(
+    expect(isValidRange).toHaveBeenNthCalledWith(
+      1,
       expect.objectContaining({ type: 'absolute', startDate: '2023-08-16', endDate: '2023-09-13' })
     );
   });
