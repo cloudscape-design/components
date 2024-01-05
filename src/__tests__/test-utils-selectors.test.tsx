@@ -48,7 +48,20 @@ function isTestUtilsComment(node: ChildNode) {
 }
 
 function getFormattedSelectors(selector: string) {
-  return selector.split(',').map(selector => selector.replace(/:not\(#\\9\)/g, '').replace(/\n/g, ''));
+  return selector.split(',').map(formatSelector);
+}
+
+function formatSelector(selector: string) {
+  return trimHash(selector.replace(/:not\(#\\9\)/g, '').replace(/\n/g, ''));
+}
+
+function trimHash(selector: string) {
+  const splitSelector = selector.replace('.', '').split('_');
+  if (splitSelector.length >= 5) {
+    splitSelector.splice(splitSelector.length - 2, splitSelector.length);
+    return splitSelector.join('_');
+  }
+  return selector;
 }
 
 function getComponentNameFromFile(file: string) {
