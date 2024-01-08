@@ -7,24 +7,31 @@ import { GridNavigationContext } from '../../../../lib/components/table/table-ro
 import { useGridNavigationFocusable } from '../../../../lib/components/table/table-role';
 import { renderWithGridNavigation } from './utils';
 
-function Button(props: React.HTMLAttributes<HTMLButtonElement>) {
+function ButtonWithRef(props: React.HTMLAttributes<HTMLButtonElement>) {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const { tabIndex } = useGridNavigationFocusable(buttonRef, { tabIndex: props.tabIndex });
   return <button {...props} ref={buttonRef} tabIndex={tabIndex} />;
 }
 
-function ButtonAlt(props: React.HTMLAttributes<HTMLButtonElement>) {
+function ButtonWithCallback(props: React.HTMLAttributes<HTMLButtonElement>) {
   const getElement = useCallback(() => document.querySelector(`#${props.id}`), [props.id]);
   const { tabIndex } = useGridNavigationFocusable(getElement, { tabIndex: props.tabIndex });
   return <button {...props} tabIndex={tabIndex} />;
 }
 
-test.each([Button, ButtonAlt])('does not override tab index when keyboard navigation is not active', Button => {
-  renderWithGridNavigation({ target: null }, <Button id="button" />);
-  expect(document.querySelector('#button')).not.toHaveAttribute('tabIndex');
-});
+const buttons = { ref: ButtonWithRef, callback: ButtonWithCallback } as const;
 
-test.each([Button, ButtonAlt])('overrides tab index when keyboard navigation is active', Button => {
+test.each(['ref', 'callback'] as const)(
+  'does not override tab index when keyboard navigation is not active (%s)',
+  buttonType => {
+    const Button = buttons[buttonType];
+    renderWithGridNavigation({ target: null }, <Button id="button" />);
+    expect(document.querySelector('#button')).not.toHaveAttribute('tabIndex');
+  }
+);
+
+test.each(['ref', 'callback'] as const)('overrides tab index when keyboard navigation is active (%s)', buttonType => {
+  const Button = buttons[buttonType];
   renderWithGridNavigation(
     { target: '#button1' },
     <div>
@@ -36,7 +43,8 @@ test.each([Button, ButtonAlt])('overrides tab index when keyboard navigation is 
   expect(document.querySelector('#button2')).toHaveAttribute('tabIndex', '-1');
 });
 
-test.each([Button, ButtonAlt])('does not override explicit tab index with 0', Button => {
+test.each(['ref', 'callback'] as const)('does not override explicit tab index with 0 (%s)', buttonType => {
+  const Button = buttons[buttonType];
   renderWithGridNavigation(
     { target: '#button1' },
     <div>
