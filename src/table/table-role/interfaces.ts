@@ -18,5 +18,3 @@ export interface FocusedCell {
   cellElement: HTMLTableCellElement;
   element: HTMLElement;
 }
-
-export type FocusableDefinition = React.RefObject<HTMLElement>;

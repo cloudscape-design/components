@@ -3,30 +3,30 @@
 
 import React, { createRef, forwardRef, useImperativeHandle, useState } from 'react';
 import { render } from '@testing-library/react';
-import { GridNavigationContext } from '../../../../lib/components/table/table-role/grid-navigation-context';
+import { SingleTabStopNavigationContext } from '../../../../lib/components/internal/context/single-tab-stop-navigation-context';
 
-interface FakeGridNavigationProviderRef {
+interface ProviderRef {
   setCurrentTarget(element: null | Element): void;
 }
 
-const FakeGridNavigationProvider = forwardRef(
-  ({ children }: { children: React.ReactNode }, ref: React.Ref<FakeGridNavigationProviderRef>) => {
+const FakeSingleTabStopNavigationProvider = forwardRef(
+  ({ children }: { children: React.ReactNode }, ref: React.Ref<ProviderRef>) => {
     const [focusTarget, setFocusTarget] = useState<null | Element>(null);
 
     useImperativeHandle(ref, () => ({ setCurrentTarget: setFocusTarget }));
 
     return (
-      <GridNavigationContext.Provider value={{ focusTarget, keyboardNavigation: !!focusTarget }}>
+      <SingleTabStopNavigationContext.Provider value={{ focusTarget, navigationActive: !!focusTarget }}>
         {children}
-      </GridNavigationContext.Provider>
+      </SingleTabStopNavigationContext.Provider>
     );
   }
 );
 
-export function renderWithGridNavigation(ui: React.ReactNode) {
-  const providerRef = createRef<FakeGridNavigationProviderRef>();
+export function renderWithSingleTabStopNavigation(ui: React.ReactNode) {
+  const providerRef = createRef<ProviderRef>();
   const { container, rerender } = render(
-    <FakeGridNavigationProvider ref={providerRef}>{ui}</FakeGridNavigationProvider>
+    <FakeSingleTabStopNavigationProvider ref={providerRef}>{ui}</FakeSingleTabStopNavigationProvider>
   );
   return {
     container,

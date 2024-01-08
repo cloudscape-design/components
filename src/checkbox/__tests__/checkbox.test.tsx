@@ -9,7 +9,7 @@ import InternalCheckbox from '../../../lib/components/checkbox/internal';
 import styles from '../../../lib/components/internal/components/checkbox-icon/styles.selectors.js';
 import abstractSwitchStyles from '../../../lib/components/internal/components/abstract-switch/styles.css.js';
 import { createCommonTests } from './common-tests';
-import { renderWithGridNavigation } from '../../table/table-role/__tests__/utils';
+import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
 
 function renderCheckbox(jsx: React.ReactElement) {
   const { container, rerender } = render(jsx);
@@ -229,12 +229,12 @@ describe('table grid navigation support', () => {
   }
 
   test('does not override tab index when keyboard navigation is not active', () => {
-    renderWithGridNavigation(<Checkbox id="checkbox" checked={false} />);
+    renderWithSingleTabStopNavigation(<Checkbox id="checkbox" checked={false} />);
     expect(getCheckboxInput('#checkbox')).not.toHaveAttribute('tabIndex');
   });
 
   test('overrides tab index when keyboard navigation is active', () => {
-    const { setCurrentTarget } = renderWithGridNavigation(
+    const { setCurrentTarget } = renderWithSingleTabStopNavigation(
       <div>
         <Checkbox id="checkbox1" checked={false} />
         <Checkbox id="checkbox2" checked={false} />
@@ -246,7 +246,7 @@ describe('table grid navigation support', () => {
   });
 
   test('does not override explicit tab index with 0', () => {
-    const { setCurrentTarget } = renderWithGridNavigation(
+    const { setCurrentTarget } = renderWithSingleTabStopNavigation(
       <div>
         <InternalCheckbox id="checkbox1" checked={false} tabIndex={-1} />
         <InternalCheckbox id="checkbox2" checked={false} tabIndex={-1} />

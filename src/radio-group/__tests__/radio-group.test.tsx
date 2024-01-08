@@ -6,7 +6,7 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 import RadioGroup, { RadioGroupProps } from '../../../lib/components/radio-group';
 import RadioButtonWrapper from '../../../lib/components/test-utils/dom/radio-group/radio-button';
 import '../../__a11y__/to-validate-a11y';
-import { renderWithGridNavigation } from '../../table/table-role/__tests__/utils';
+import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
 
 const defaultItems: RadioGroupProps.RadioButtonDefinition[] = [
   { value: 'val1', label: 'Option one' },
@@ -316,12 +316,12 @@ describe('table grid navigation support', () => {
   }
 
   test('does not override tab index when keyboard navigation is not active', () => {
-    renderWithGridNavigation(<RadioGroup id="radio" value={null} items={[{ value: '1', label: 'One' }]} />);
+    renderWithSingleTabStopNavigation(<RadioGroup id="radio" value={null} items={[{ value: '1', label: 'One' }]} />);
     expect(getRadioInput('#radio')).not.toHaveAttribute('tabIndex');
   });
 
   test('overrides tab index when keyboard navigation is active', () => {
-    const { setCurrentTarget } = renderWithGridNavigation(
+    const { setCurrentTarget } = renderWithSingleTabStopNavigation(
       <div>
         <RadioGroup id="radio1" value={null} items={[{ value: '1', label: 'One' }]} />
         <RadioGroup id="radio2" value={null} items={[{ value: '2', label: 'Two' }]} />

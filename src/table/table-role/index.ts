@@ -13,4 +13,3 @@ export {
 } from './table-role-helper';
 
 export { GridNavigationProvider } from './grid-navigation';
-export { useGridNavigationFocusable } from './grid-navigation-context';

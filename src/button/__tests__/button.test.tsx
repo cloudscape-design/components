@@ -7,7 +7,7 @@ import InternalButton from '../../../lib/components/button/internal';
 import createWrapper, { ButtonWrapper } from '../../../lib/components/test-utils/dom';
 import styles from '../../../lib/components/button/styles.css.js';
 import { buttonRelExpectations, buttonTargetExpectations } from '../../__tests__/target-rel-test-helper';
-import { renderWithGridNavigation } from '../../table/table-role/__tests__/utils';
+import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
 
 function renderWrappedButton(props: ButtonProps = {}) {
   const onClickSpy = jest.fn();
@@ -571,12 +571,12 @@ describe('table grid navigation support', () => {
   }
 
   test('does not override tab index when keyboard navigation is not active', () => {
-    renderWithGridNavigation(<Button id="button" />);
+    renderWithSingleTabStopNavigation(<Button id="button" />);
     expect(getButton('#button')).not.toHaveAttribute('tabIndex');
   });
 
   test('overrides tab index when keyboard navigation is active', () => {
-    const { setCurrentTarget } = renderWithGridNavigation(
+    const { setCurrentTarget } = renderWithSingleTabStopNavigation(
       <div>
         <Button id="button1" />
         <Button id="button2" />
@@ -588,7 +588,7 @@ describe('table grid navigation support', () => {
   });
 
   test('does not override explicit tab index with 0', () => {
-    const { setCurrentTarget } = renderWithGridNavigation(
+    const { setCurrentTarget } = renderWithSingleTabStopNavigation(
       <div>
         <InternalButton id="button1" __nativeAttributes={{ tabIndex: -2 }} />
         <InternalButton id="button2" __nativeAttributes={{ tabIndex: -2 }} />

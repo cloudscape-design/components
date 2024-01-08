@@ -14,7 +14,7 @@ import { AnalyticsFunnel } from '../../../lib/components/internal/analytics/comp
 import { FunnelMetrics } from '../../../lib/components/internal/analytics';
 
 import { mockedFunnelInteractionId, mockFunnelMetrics } from '../../internal/analytics/__tests__/mocks';
-import { renderWithGridNavigation } from '../../table/table-role/__tests__/utils';
+import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
 
 function renderLink(props: LinkProps = {}) {
   const renderResult = render(<Link {...props} />);
@@ -282,17 +282,17 @@ describe('table grid navigation support', () => {
   }
 
   test('does not override tab index for button link when keyboard navigation is not active', () => {
-    renderWithGridNavigation(<Link id="link" />);
+    renderWithSingleTabStopNavigation(<Link id="link" />);
     expect(getLink('#link')).toHaveAttribute('tabIndex', '0');
   });
 
   test('does not override tab index for anchor link when keyboard navigation is not active', () => {
-    renderWithGridNavigation(<Link id="link" href="#" />);
+    renderWithSingleTabStopNavigation(<Link id="link" href="#" />);
     expect(getLink('#link')).not.toHaveAttribute('tabIndex');
   });
 
   test.each([undefined, '#'])('overrides tab index when keyboard navigation is active href=%s', href => {
-    const { setCurrentTarget } = renderWithGridNavigation(
+    const { setCurrentTarget } = renderWithSingleTabStopNavigation(
       <div>
         <Link id="link1" href={href} />
         <Link id="link2" href={href} />

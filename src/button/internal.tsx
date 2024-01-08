@@ -22,7 +22,7 @@ import {
 import { FunnelMetrics } from '../internal/analytics';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
-import { useGridNavigationFocusable } from '../table/table-role';
+import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
 
 export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   variant?: ButtonProps['variant'] | 'flashbar-icon' | 'breadcrumb-group' | 'menu-trigger' | 'modal-dismiss';
@@ -137,7 +137,7 @@ export const InternalButton = React.forwardRef(
 
     const explicitTabIndex =
       __nativeAttributes && 'tabIndex' in __nativeAttributes ? __nativeAttributes.tabIndex : undefined;
-    const { tabIndex } = useGridNavigationFocusable(buttonRef, {
+    const { tabIndex } = useSingleTabStopNavigation(buttonRef, {
       tabIndex: isAnchor && isNotInteractive ? -1 : explicitTabIndex,
     });
 

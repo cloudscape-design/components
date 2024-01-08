@@ -3,23 +3,25 @@
 
 import React, { useRef } from 'react';
 import { render } from '@testing-library/react';
-import { GridNavigationContext } from '../../../../lib/components/table/table-role/grid-navigation-context';
-import { useGridNavigationFocusable } from '../../../../lib/components/table/table-role';
-import { renderWithGridNavigation } from './utils';
+import {
+  SingleTabStopNavigationContext,
+  useSingleTabStopNavigation,
+} from '../../../../lib/components/internal/context/single-tab-stop-navigation-context';
+import { renderWithSingleTabStopNavigation } from './utils';
 
 function Button(props: React.HTMLAttributes<HTMLButtonElement>) {
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const { tabIndex } = useGridNavigationFocusable(buttonRef, { tabIndex: props.tabIndex });
+  const { tabIndex } = useSingleTabStopNavigation(buttonRef, { tabIndex: props.tabIndex });
   return <button {...props} ref={buttonRef} tabIndex={tabIndex} />;
 }
 
 test('does not override tab index when keyboard navigation is not active', () => {
-  renderWithGridNavigation(<Button id="button" />);
+  renderWithSingleTabStopNavigation(<Button id="button" />);
   expect(document.querySelector('#button')).not.toHaveAttribute('tabIndex');
 });
 
 test('overrides tab index when keyboard navigation is active', () => {
-  const { setCurrentTarget } = renderWithGridNavigation(
+  const { setCurrentTarget } = renderWithSingleTabStopNavigation(
     <div>
       <Button id="button1" />
       <Button id="button2" />
@@ -31,7 +33,7 @@ test('overrides tab index when keyboard navigation is active', () => {
 });
 
 test('does not override explicit tab index with 0', () => {
-  const { setCurrentTarget } = renderWithGridNavigation(
+  const { setCurrentTarget } = renderWithSingleTabStopNavigation(
     <div>
       <Button id="button1" tabIndex={-2} />
       <Button id="button2" tabIndex={-2} />
@@ -44,22 +46,22 @@ test('does not override explicit tab index with 0', () => {
 
 test('propagates keyboard navigation state', () => {
   function Component() {
-    const { keyboardNavigation } = useGridNavigationFocusable(null);
-    return <div>{String(keyboardNavigation)}</div>;
+    const { navigationActive } = useSingleTabStopNavigation(null);
+    return <div>{String(navigationActive)}</div>;
   }
 
   const { rerender } = render(
-    <GridNavigationContext.Provider value={{ keyboardNavigation: true, focusTarget: null }}>
+    <SingleTabStopNavigationContext.Provider value={{ navigationActive: true, focusTarget: null }}>
       <Component />
-    </GridNavigationContext.Provider>
+    </SingleTabStopNavigationContext.Provider>
   );
 
   expect(document.querySelector('div')).toHaveTextContent('true');
 
   rerender(
-    <GridNavigationContext.Provider value={{ keyboardNavigation: false, focusTarget: null }}>
+    <SingleTabStopNavigationContext.Provider value={{ navigationActive: false, focusTarget: null }}>
       <Component />
-    </GridNavigationContext.Provider>
+    </SingleTabStopNavigationContext.Provider>
   );
 
   expect(document.querySelector('div')).toHaveTextContent('false');

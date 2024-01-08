@@ -26,7 +26,7 @@ import {
   getSubStepAllSelector,
 } from '../internal/analytics/selectors';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
-import { useGridNavigationFocusable } from '../table/table-role';
+import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
 
 type InternalLinkProps = InternalBaseComponentProps<HTMLAnchorElement> &
   Omit<LinkProps, 'variant'> & {
@@ -185,7 +185,7 @@ const InternalLink = React.forwardRef(
       </>
     );
 
-    const { tabIndex } = useGridNavigationFocusable(linkRef, { tabIndex: isButton ? 0 : undefined });
+    const { tabIndex } = useSingleTabStopNavigation(linkRef, { tabIndex: isButton ? 0 : undefined });
 
     if (isButton) {
       return (
