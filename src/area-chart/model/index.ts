@@ -20,8 +20,8 @@ export interface ChartModel<T extends AreaChartProps.DataTypes> {
     onSVGMouseOut: (event: React.MouseEvent<SVGElement>) => void;
     onSVGMouseDown: (event: React.MouseEvent<SVGSVGElement>) => void;
     onSVGKeyDown: (event: React.KeyboardEvent) => void;
-    onSVGFocus: (event: React.FocusEvent<Element>, trigger: 'mouse' | 'keyboard') => void;
-    onSVGBlur: (event: React.FocusEvent<Element>) => void;
+    onApplicationFocus: (event: React.FocusEvent<Element>, trigger: 'mouse' | 'keyboard') => void;
+    onApplicationBlur: (event: React.FocusEvent<Element>) => void;
     onFilterSeries: (series: readonly AreaChartProps.Series<T>[]) => void;
     onLegendHighlight: (series: null | AreaChartProps.Series<T>) => void;
     onPopoverDismiss: (outsideClick?: boolean) => void;

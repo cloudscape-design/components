@@ -147,9 +147,8 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
           onMouseOut={model.handlers.onSVGMouseOut}
           onClick={model.handlers.onSVGMouseDown}
           onKeyDown={model.handlers.onSVGKeyDown}
-          onFocus={model.handlers.onSVGFocus}
-          onBlur={model.handlers.onSVGBlur}
-          hasHighlight={highlightedX !== null}
+          onApplicationFocus={model.handlers.onApplicationFocus}
+          onApplicationBlur={model.handlers.onApplicationBlur}
         >
           <line
             ref={model.refs.plotMeasure}
@@ -200,7 +199,7 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
           dismissAriaLabel={detailPopoverDismissAriaLabel}
           size={detailPopoverSize}
           footer={detailPopoverFooterContent}
-          onBlur={model.handlers.onSVGBlur}
+          onBlur={model.handlers.onApplicationBlur}
         />
       }
     />
