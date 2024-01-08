@@ -81,7 +81,7 @@ export default function BarSeries<T extends ChartDataTypes>({
       if (stackedBarOffsets) {
         // Stacked bars
         const offsetMap = d.y < 0 ? stackedBarOffsets.negativeOffsets : stackedBarOffsets.positiveOffsets;
-        yValue = d.y + (offsetMap[getKeyValue(d.x)] || 0);
+        yValue = d.y + (offsetMap.get(getKeyValue(d.x)) || 0);
       } else if (totalSeriesCount > 1) {
         // Regular grouped bars
         barX += seriesIndex * (barWidth + PADDING);
