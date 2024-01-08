@@ -23,12 +23,7 @@ export const GridNavigationContext = createContext<{
 export function useGridNavigationFocusable(focusable: null | FocusableDefinition, options?: { tabIndex?: number }) {
   const { focusTarget, keyboardNavigation } = useContext(GridNavigationContext);
 
-  let focusTargetActive = false;
-  if (typeof focusable === 'function') {
-    focusTargetActive = focusable() === focusTarget;
-  } else if (focusable) {
-    focusTargetActive = focusable.current === focusTarget;
-  }
+  const focusTargetActive = Boolean(focusable && focusable.current === focusTarget);
 
   let tabIndex: undefined | number = options?.tabIndex;
   if (keyboardNavigation) {
