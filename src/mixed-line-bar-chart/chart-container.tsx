@@ -77,8 +77,6 @@ export interface ChartContainerProps<T extends ChartDataTypes> {
   ariaDescription: MixedLineBarChartProps<T>['ariaDescription'];
   i18nStrings: MixedLineBarChartProps<T>['i18nStrings'];
 
-  plotContainerRef: React.RefObject<HTMLDivElement>;
-
   detailPopoverSeriesContent?: MixedLineBarChartProps.DetailPopoverSeriesContent<T>;
 }
 
@@ -129,7 +127,6 @@ export default function ChartContainer<T extends ChartDataTypes>({
   ariaLabelledby,
   ariaDescription,
   i18nStrings = {},
-  plotContainerRef,
   detailPopoverSeriesContent,
   ...props
 }: ChartContainerProps<T>) {
@@ -401,11 +398,8 @@ export default function ChartContainer<T extends ChartDataTypes>({
       !(blurTarget instanceof Element) ||
       !nodeBelongs(containerRefObject.current, blurTarget)
     ) {
-      setHighlightedPoint(null);
+      clearHighlightedSeries();
       setVerticalMarkerX(null);
-      if (!plotContainerRef?.current?.contains(blurTarget)) {
-        clearHighlightedSeries();
-      }
 
       if (isPopoverOpen && !isPopoverPinned) {
         dismissPopover();

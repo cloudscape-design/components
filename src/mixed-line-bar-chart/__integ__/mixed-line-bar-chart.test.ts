@@ -302,6 +302,15 @@ describe('Details popover', () => {
   );
 
   test(
+    'shows on hover in a mixed line/bar chart inside modal',
+    setupTest('#/light/mixed-line-bar-chart/in-modal', async page => {
+      // Hover over first group
+      await page.hoverElement(chartWrapper.findBarGroups().get(1).toSelector());
+      await expect(page.getText(popoverHeaderSelector())).resolves.toContain('Potatoes');
+    })
+  );
+
+  test(
     'shows on hover in a mixed line/bar chart',
     setupTest('#/light/mixed-line-bar-chart/test', async page => {
       // Hover over first group
@@ -344,6 +353,33 @@ describe('Details popover', () => {
       await page.click(popoverDismissSelector());
       await expect(page.isDisplayed(popoverDismissSelector())).resolves.toBe(false);
       await expect(page.isDisplayed(popoverHeaderSelector())).resolves.toBe(false);
+    })
+  );
+
+  test(
+    'can be pinned and unpinned in a chart with mouse when rendered inside tabs',
+    setupTest('#/light/mixed-line-bar-chart/in-tabs', async page => {
+      // Hover over third group in the first chart
+      await page.hoverElement(chartWrapper.findBarGroups().get(3).toSelector());
+      await expect(page.getText(popoverHeaderSelector())).resolves.toContain('Chocolate');
+      await expect(page.isDisplayed(popoverDismissSelector())).resolves.toBe(false);
+
+      // Click on it to reveal the dismiss button
+      await page.click(chartWrapper.toSelector());
+      await expect(page.isDisplayed(popoverDismissSelector())).resolves.toBe(true);
+      await page.waitForAssertion(() => expect(page.isFocused(popoverDismissSelector())).resolves.toBe(true));
+
+      // Click inside popover to ensure it remains visible.
+      await page.click(popoverContentSelector());
+      await expect(page.isDisplayed(popoverDismissSelector())).resolves.toBe(true);
+
+      // Ensure the next focus target is the dismiss button.
+      await page.keys(['Tab']);
+      await page.waitForAssertion(() => expect(page.isFocused(popoverDismissSelector())).resolves.toBe(true));
+
+      // Click dismiss to unpin
+      await page.click(popoverDismissSelector());
+      await expect(page.isDisplayed(popoverDismissSelector())).resolves.toBe(false);
     })
   );
 
@@ -461,6 +497,22 @@ describe('Details popover', () => {
 
       await page.hoverElement(chartWrapper.findDetailPopover().findHeader().toSelector());
       await expect(page.getText(popoverHeaderSelector())).resolves.toContain('Potatoes');
+    })
+  );
+
+  test(
+    'Should still open popver when focus move out then move in again with keyboard',
+    setupTest('#/light/bar-chart/test', async page => {
+      await page.click('#focus-target');
+      // Should open popver when focus on a bar with keyboard
+      await page.keys(['Tab', 'Tab', 'ArrowRight']);
+      await expect(page.isDisplayed(popoverContentSelector())).resolves.toBe(true);
+      // Should close popver when lose focus
+      await page.keys(['Tab', 'Tab']);
+      await expect(page.isDisplayed(popoverContentSelector())).resolves.toBe(false);
+      // Should open popver when move focus back to the bar
+      await page.keys(['Shift', 'Tab', 'ArrowRight']);
+      await expect(page.isDisplayed(popoverContentSelector())).resolves.toBe(true);
     })
   );
 });

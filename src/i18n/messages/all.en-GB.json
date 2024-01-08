@@ -96,6 +96,9 @@
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Moving item back to position {currentPosition} of {total}} false {Moving item to position {currentPosition} of {total}} other {}}",
     "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {Item moved back to its original position {initialPosition} of {total}} false {Item moved from position {initialPosition} to position {finalPosition} of {total}} other {}}"
   },
+  "copy-to-clipboard": {
+    "i18nStrings.copyButtonText": "Copy"
+  },
   "date-range-picker": {
     "i18nStrings.relativeModeTitle": "Relative mode",
     "i18nStrings.absoluteModeTitle": "Absolute mode",
@@ -115,8 +118,8 @@
     "i18nStrings.dateTimeConstraintText": "For date, use DD/MM/YYYY. For time, use 24-hr format.",
     "i18nStrings.errorIconAriaLabel": "Error",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "Range selected from {startDate} to {endDate}",
-    "i18nStrings.formatRelativeRange": "{amount, plural, one {Last {amount} {unit}} other {Last {amount} {unit}s}}",
-    "i18nStrings.formatUnit": "{amount, plural, one {{unit}} other {{unit}s}}"
+    "i18nStrings.formatRelativeRange": "{unit, select, second {{amount, plural, zero {Last {amount} seconds} one {Last {amount} second} other {Last {amount} seconds}}} minute {{amount, plural, zero {Last {amount} minutes} one {Last {amount} minute} other {Last {amount} minutes}}} hour {{amount, plural, zero {Last {amount} hours} one {Last {amount} hour} other {Last {amount} hours}}} day {{amount, plural, zero {Last {amount} days} one {Last {amount} day} other {Last {amount} days}}} week {{amount, plural, zero {Last {amount} weeks} one {Last {amount} week} other {Last {amount} weeks}}} month {{amount, plural, zero {Last {amount} months} one {Last {amount} month} other {Last {amount} months}}} year {{amount, plural, zero {Last {amount} years} one {Last {amount} year} other {Last {amount} years}}} other {}}",
+    "i18nStrings.formatUnit": "{unit, select, second {{amount, plural, zero {seconds} one {second} other {seconds}}} minute {{amount, plural, zero {minutes} one {minute} other {minutes}}} hour {{amount, plural, zero {hours} one {hour} other {hours}}} day {{amount, plural, zero {days} one {day} other {days}}} week {{amount, plural, zero {weeks} one {week} other {weeks}}} month {{amount, plural, zero {months} one {Month} other {months}}} year {{amount, plural, zero {years} one {year} other {years}}} other {}}"
   },
   "drawer": {
     "i18nStrings.loadingText": "Loading content"

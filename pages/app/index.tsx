@@ -77,10 +77,13 @@ function App() {
 }
 
 const history = createHashHistory();
-const { visualRefresh } = parseQuery(history.location.search);
+const { direction, visualRefresh } = parseQuery(history.location.search);
 
 // The VR class needs to be set before any React rendering occurs.
 window[awsuiVisualRefreshFlag] = () => visualRefresh;
+
+// Apply the direction value to the HTML element dir attribute
+document.documentElement.setAttribute('dir', direction);
 
 render(
   <HashRouter>
