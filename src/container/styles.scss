@@ -101,16 +101,17 @@
     border: 0;
   }
 
+  // reduce border-radius size to fill the visual gap between the parent border and image
   &-top {
     max-height: 66%;
-    border-top-left-radius: awsui.$border-radius-container;
-    border-top-right-radius: awsui.$border-radius-container;
+    border-top-left-radius: calc(awsui.$border-radius-container - 1px);
+    border-top-right-radius: calc(awsui.$border-radius-container - 1px);
   }
 
   &-side {
     max-width: 66%;
-    border-top-left-radius: awsui.$border-radius-container;
-    border-bottom-left-radius: awsui.$border-radius-container;
+    border-top-left-radius: calc(awsui.$border-radius-container - 1px);
+    border-bottom-left-radius: calc(awsui.$border-radius-container - 1px);
   }
 }
 
