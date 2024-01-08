@@ -75,7 +75,6 @@
 }
 
 .button {
-  /* used in test-utils */
   @include styles.styles-reset;
   @include styles.text-wrapping;
   @include styles.font-button;
@@ -135,7 +134,6 @@
   }
 
   > .icon-left {
-    /* used in test-utils */
     position: relative;
     // margin-left was breaking layout on firefox
     inset-inline-start: calc(-1 * #{awsui.$space-xxs});
