@@ -28,10 +28,6 @@ export default function Slider({
   const { __internalRootRef } = useBaseComponent('Slider');
   const baseProps = getBaseProps(rest);
 
-  const handleChange = (value: number) => {
-    fireNonCancelableEvent(onChange, { value });
-  };
-
   const rv0 = rangeValue ? rangeValue[0] : 0;
   const rv1 = rangeValue ? rangeValue[1] : 1;
   const range = useRef<HTMLDivElement>(null);
@@ -41,40 +37,30 @@ export default function Slider({
     const getPercent = (value: any) => Math.round(((value - min) / (max - min)) * 100);
     const minPercent = getPercent(rv0);
     const maxPercent = getPercent(rv1);
+    const percent = getPercent(value);
 
-    if (range.current) {
+    if (range.current && variant === 'range') {
       range.current.style.left = `${minPercent}%`;
       range.current.style.width = `${maxPercent - minPercent}%`;
     }
-  }, [rv0, rv1, min, max]);
 
-  if (variant === 'default') {
-    return (
-      <div>
-        <input
-          aria-label={ariaLabel}
-          ref={__internalRootRef}
-          className={styles['value-slider']}
-          type="range"
-          value={value ?? ''}
-          min={min}
-          max={max}
-          disabled={disabled}
-          step={step}
-          onChange={onChange && (event => handleChange(Number(event.target.value)))}
-          {...baseProps}
+    if (range.current && variant === 'default') {
+      range.current.style.width = `${percent}%`;
+    }
+  }, [value, variant, rv0, rv1, min, max]);
+
+  return (
+    <div className={styles['slider-container']}>
+      <div className={styles.slider}>
+        <div className={styles['slider-track']} />
+        <div
+          ref={range}
+          className={clsx(styles['slider-range'], {
+            [styles.disabled]: disabled,
+          })}
         />
-        <div className={styles['value-slider-labels']}>
-          <span>{min}</span>
-          <span>{max}</span>
-        </div>
       </div>
-    );
-  }
-
-  if (variant === 'range') {
-    return (
-      <div className={styles['slider-container']}>
+      {variant === 'range' && (
         <input
           type="range"
           min={min}
@@ -84,35 +70,33 @@ export default function Slider({
             onRangeChange &&
               fireNonCancelableEvent(onRangeChange, { value: [Math.min(Number(event.target.value), rv1 - 1), rv1] });
           }}
-          className={clsx(styles.thumb, styles['thumb--left'])}
-          style={{ zIndex: rv0 > max - 100 ? '5' : undefined }}
+          className={clsx(styles.thumb, styles['thumb-left'])}
         />
-        <input
-          type="range"
-          min={min}
-          max={max}
-          value={rangeValue ? rangeValue[1] : ''}
-          onChange={event => {
-            onRangeChange &&
-              fireNonCancelableEvent(onRangeChange, { value: [rv0, Math.max(Number(event.target.value), rv0 + 1)] });
-          }}
-          className={clsx(styles.thumb, styles['thumb--right'])}
-        />
+      )}
+      <input
+        aria-label={ariaLabel}
+        ref={__internalRootRef}
+        type="range"
+        min={min}
+        max={max}
+        disabled={disabled}
+        step={step}
+        value={value ? value : rangeValue ? rangeValue[1] : ''}
+        onChange={event => {
+          onChange && fireNonCancelableEvent(onChange, { value: Number(event.target.value) });
+          onRangeChange &&
+            fireNonCancelableEvent(onRangeChange, { value: [rv0, Math.max(Number(event.target.value), rv0 + 1)] });
+        }}
+        className={clsx(styles.thumb, styles['thumb-right'])}
+        {...baseProps}
+      />
 
-        <div className={styles.slider}>
-          <div className={styles.slider__track} />
-          <div ref={range} className={styles.slider__range} />
-        </div>
-
-        <div className={clsx(styles['value-slider-labels'], styles['range-slider-labels'])}>
-          <span>{min}</span>
-          <span>{max}</span>
-        </div>
+      <div className={clsx(styles['slider-labels'])}>
+        <span>{min}</span>
+        <span>{max}</span>
       </div>
-    );
-  }
-
-  return <div />;
+    </div>
+  );
 }
 
 applyDisplayName(Slider, 'Slider');

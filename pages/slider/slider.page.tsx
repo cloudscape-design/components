@@ -18,6 +18,7 @@ function Sliders() {
   return (
     <SpaceBetween size="xxl">
       <Slider value={sliderValue} min={0} max={100} step={10} onChange={({ detail }) => setSliderValue(detail.value)} />
+      <Slider value={50} min={0} max={100} disabled={true} />
 
       <FormField label="Slider with select">
         <SpaceBetween size="m">
@@ -43,7 +44,10 @@ function Sliders() {
             max={20}
             step={5}
           />
-          <FormField label="Range slider">
+          <FormField
+            label="Range slider"
+            errorText={rangeMin < 0 || (rangeMin > 100 && 'Values must be between 0 and 100')}
+          >
             <Grid
               gridDefinition={[
                 { colspan: { default: 4, xs: 2 } },
@@ -51,6 +55,7 @@ function Sliders() {
               ]}
             >
               <Input
+                invalid={rangeMin < 0 || rangeMin > 100}
                 type="number"
                 inputMode="numeric"
                 value={`${rangeMin}`}
@@ -59,6 +64,7 @@ function Sliders() {
                 }}
               />
               <Input
+                invalid={rangeMin < 0 || rangeMin > 100}
                 type="number"
                 inputMode="numeric"
                 value={`${rangeMax}`}
