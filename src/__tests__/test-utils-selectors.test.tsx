@@ -2,60 +2,102 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import fs from 'fs';
-import postcss, { Rule, AtRule, ChildNode } from 'postcss';
+import Path from 'path';
 import glob from 'glob';
+import { transformSync, types, PluginObj, NodePath } from '@babel/core';
+import { flatten, zip } from 'lodash';
+
+// TODO: move selectors extraction to @cloudscape-design/test-utils
 
 // The test extracts generated selectors from the compiled output and matches those against the snapshot.
-// Only selectors having "used in test-utils" comment or placed under {component}/test-classes/styles.scss are extracted.
-// A difference to existing selectors means there is going to be a mismatch between the new version of the components
-// and the old version of the test-utils which matters when different version of the packages are used for the runtime and the testing infrastructure.
-test('selectors', () => {
-  const allComponentSelectors = createSelectorsMapping();
-  expect(allComponentSelectors).toMatchSnapshot();
+test('test-utils selectors', () => {
+  // Find referenced selector files and properties.
+  const selectorsFilePathToUsedProperties = new Map<string, Set<string>>();
+  for (const file of glob.sync('lib/components/test-utils/selectors/**/*.js')) {
+    extractSelectorProperties(file, (filePath, propertyKey) => {
+      const properties = selectorsFilePathToUsedProperties.get(filePath) ?? new Set();
+      properties.add(propertyKey);
+      selectorsFilePathToUsedProperties.set(filePath, properties);
+    });
+  }
+
+  // Find referenced selector values.
+  const componentToSelectors: Record<string, string[]> = {};
+  for (const [filePath, properties] of selectorsFilePathToUsedProperties) {
+    extractComponentSelectors(filePath, [...properties], selector => {
+      const componentName = getComponentNameFromFilePath(filePath);
+      componentToSelectors[componentName] = [...(componentToSelectors[componentName] ?? []), selector];
+    });
+  }
+  expect(componentToSelectors).toMatchSnapshot();
 });
 
-function createSelectorsMapping() {
-  const allComponentSelectors = new Map<string, Set<string>>();
-  for (const file of glob.sync('lib/components/**/*.css')) {
-    const content = fs.readFileSync(file, 'utf-8');
-    postcss([
-      tokenExtractor(file, (component: string, selectors: string[]) => {
-        const componentSelectors = allComponentSelectors.get(component) ?? new Set();
-        selectors.forEach(selector => componentSelectors.add(selector));
-        allComponentSelectors.set(component, componentSelectors);
-      }),
-    ]).process(content, { from: file }).css; // trigger the getter
+function extractSelectorProperties(file: string, onExtract: (filePath: string, propertyKey: string) => void) {
+  function extractor(): PluginObj {
+    const selectorVars = new Map<string, string>();
+    return {
+      visitor: {
+        // Find require statements that import selectors.
+        CallExpression(path: NodePath<types.CallExpression>) {
+          if (path.node.callee.type === 'Identifier' && path.node.callee.name === 'require') {
+            const argument = path.node.arguments[0];
+            if (argument.type === 'StringLiteral' && argument.value.endsWith('selectors.js')) {
+              if (path.parent.type === 'VariableDeclarator' && path.parent.id.type === 'Identifier') {
+                selectorVars.set(path.parent.id.name, Path.resolve(file, '..', argument.value));
+              }
+            }
+          }
+        },
+        // Find selector references and extract used property names.
+        MemberExpression(path: NodePath<types.MemberExpression>) {
+          function parseNested(expression: types.MemberExpression, propertyName: string) {
+            if (expression.object.type === 'Identifier' && selectorVars.has(expression.object.name)) {
+              const filePath = selectorVars.get(expression.object.name)!;
+              if (expression.property.type === 'Identifier' && expression.property.name === 'default') {
+                onExtract(filePath, propertyName);
+              }
+            }
+          }
+          if (path.node.object.type === 'MemberExpression') {
+            if (path.node.property.type === 'Identifier') {
+              parseNested(path.node.object, path.node.property.name);
+            } else if (path.node.property.type === 'StringLiteral') {
+              parseNested(path.node.object, path.node.property.value);
+            } else if (path.node.property.type === 'TemplateLiteral') {
+              parseNested(path.node.object, buildTemplateString(path.node.property));
+            } else {
+              throw new Error('Unhandled selectors access type.');
+            }
+          }
+        },
+      },
+    } as PluginObj;
   }
-  return [...allComponentSelectors.entries()].map(([component, selectors]) => [component, [...selectors].sort()]);
+  const source = fs.readFileSync(file, 'utf-8');
+  transformSync(source, { babelrc: false, configFile: false, plugins: [extractor] })?.code;
 }
 
-function tokenExtractor(file: string, onSelectorsMatched: (component: string, selectors: string[]) => void) {
-  return {
-    postcssPlugin: 'tokens-collector',
-    Rule(rule: Rule) {
-      if (rule.parent && rule.parent instanceof AtRule && rule.parent.name === 'keyframes') {
-        return;
-      }
-      if (file.includes('test-classes') || rule.nodes.some(isTestUtilsComment)) {
-        onSelectorsMatched(getComponentNameFromFile(file), getFormattedSelectors(rule.selector));
-      }
-    },
-  };
+function extractComponentSelectors(file: string, usedProperties: string[], onExtract: (selector: string) => void) {
+  function extractor(): PluginObj {
+    return {
+      visitor: {
+        ObjectProperty(path: NodePath<types.ObjectProperty>) {
+          if (path.node.key.type === 'StringLiteral' && matchProperties(usedProperties, path.node.key.value)) {
+            if (path.node.value.type === 'StringLiteral') {
+              onExtract(trimSelectorHash(path.node.value.value));
+            } else {
+              throw new Error('Unexpected selector value format');
+            }
+          }
+        },
+      },
+    } as PluginObj;
+  }
+  const source = fs.readFileSync(file, 'utf-8');
+  transformSync(source, { babelrc: false, configFile: false, plugins: [extractor] })?.code;
 }
 
-function isTestUtilsComment(node: ChildNode) {
-  return node.type === 'comment' && node.text.match(/used in test-utils/);
-}
-
-function getFormattedSelectors(selector: string) {
-  return selector.split(',').map(formatSelector);
-}
-
-function formatSelector(selector: string) {
-  return trimHash(selector.replace(/:not\(#\\9\)/g, '').replace(/\n/g, ''));
-}
-
-function trimHash(selector: string) {
+function trimSelectorHash(selector: string) {
   const splitSelector = selector.replace('.', '').split('_');
   if (splitSelector.length >= 5) {
     splitSelector.splice(splitSelector.length - 2, splitSelector.length);
@@ -64,6 +106,36 @@ function trimHash(selector: string) {
   return selector;
 }
 
-function getComponentNameFromFile(file: string) {
-  return file.split('/')[2];
+function getComponentNameFromFilePath(filePath: string) {
+  return filePath.match(/lib\/components\/(\w+)/)![1];
+}
+
+function buildTemplateString(node: types.TemplateLiteral) {
+  let literal = '';
+  for (const element of flatten(zip(node.quasis, node.expressions))) {
+    if (!element) {
+      continue;
+    } else if (element.type === 'TemplateElement') {
+      literal += element.value.raw;
+    } else if (element.type === 'Identifier') {
+      literal += '*';
+    } else if (element.type === 'NumericLiteral') {
+      literal += element.value;
+    } else {
+      throw new Error('Unhandled template literal structure.');
+    }
+  }
+  return literal;
+}
+
+function matchProperties(usedProperties: string[], property: string) {
+  for (const testProperty of usedProperties) {
+    if (testProperty === property) {
+      return true;
+    }
+    if (testProperty.includes('*') && new RegExp(testProperty.replace(/\*/g, '.*')).test(property)) {
+      return true;
+    }
+  }
+  return false;
 }
