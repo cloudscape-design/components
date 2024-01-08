@@ -96,6 +96,9 @@
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {將項目移回 {currentPosition} 位置 (共 {total} 個位置)} false {將項目移到 {currentPosition} 位置 (共 {total} 個位置)} other {}}",
     "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {項目移回原來的 {initialPosition} 位置 (共 {total} 個位置)} false {項目已從 {initialPosition} 位置移到 {finalPosition} 位置 (共 {total} 個位置)} other {}}"
   },
+  "copy-to-clipboard": {
+    "i18nStrings.copyButtonText": "複製"
+  },
   "date-range-picker": {
     "i18nStrings.relativeModeTitle": "相對模式",
     "i18nStrings.absoluteModeTitle": "絕對模式",
@@ -115,8 +118,8 @@
     "i18nStrings.dateTimeConstraintText": "日期請使用 YYYY/MM/DD 格式。時間請使用 24 小時格式。",
     "i18nStrings.errorIconAriaLabel": "錯誤",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "已選取從 {startDate} 到 {endDate} 的範圍",
-    "i18nStrings.formatRelativeRange": "{amount, plural, one {最後 {amount} {unit}} other {最後 {amount} {unit}}}",
-    "i18nStrings.formatUnit": "{amount, plural, one {{unit}} other {{unit}}}"
+    "i18nStrings.formatRelativeRange": "{unit, select, second {{amount, plural, zero {最後{amount}秒} one {最後{amount}秒} other {最後{amount}秒}}} minute {{amount, plural, zero {最後{amount}分鐘} one {最後{amount}分鐘} other {最後{amount}分鐘}}} hour {{amount, plural, zero {最後{amount}小時} one {最後{amount}小時} other {最後{amount}小時}}} day {{amount, plural, zero {最後{amount}天} one {最後{amount}天} other {最後{amount}天}}} week {{amount, plural, zero {最後{amount}週} one {最後{amount}週} other {最後{amount}週}}} month {{amount, plural, zero {最後{amount}個月} one {最後{amount}個月} other {最後{amount}個月}}} year {{amount, plural, zero {最後{amount}年} one {最後{amount}年} other {最後{amount}年}}} other {}}",
+    "i18nStrings.formatUnit": "{unit, select, second {{amount, plural, zero {秒} one {秒} other {秒}}} minute {{amount, plural, zero {分鐘} one {分鐘} other {分鐘}}} hour {{amount, plural, zero {小時} one {小時} other {小時}}} day {{amount, plural, zero {天} one {天} other {天}}} week {{amount, plural, zero {週} one {週} other {週}}} month {{amount, plural, zero {個月} one {個月} other {個月}}} year {{amount, plural, zero {年} one {年} other {年}}} other {}}"
   },
   "drawer": {
     "i18nStrings.loadingText": "載入內容"

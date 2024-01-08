@@ -5,9 +5,9 @@ export type TableRole = 'table' | 'grid' | 'grid-default';
 
 export interface GridNavigationProps {
   keyboardNavigation: boolean;
-  suppressKeyboardNavigationFor?: string | ((focusedElement: HTMLElement) => boolean);
   pageSize: number;
   getTable: () => null | HTMLTableElement;
+  children: React.ReactNode;
 }
 
 export interface FocusedCell {

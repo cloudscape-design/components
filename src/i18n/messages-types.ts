@@ -128,6 +128,9 @@ export interface I18nFormatArgTypes {
       "finalPosition": string | number;
     }
   }
+  "copy-to-clipboard": {
+    "i18nStrings.copyButtonText": never;
+  }
   "date-range-picker": {
     "i18nStrings.relativeModeTitle": never;
     "i18nStrings.absoluteModeTitle": never;
@@ -151,12 +154,12 @@ export interface I18nFormatArgTypes {
       "endDate": string | number;
     }
     "i18nStrings.formatRelativeRange": {
+      "unit": string;
       "amount": number;
-      "unit": string | number;
     }
     "i18nStrings.formatUnit": {
+      "unit": string;
       "amount": number;
-      "unit": string | number;
     }
   }
   "drawer": {

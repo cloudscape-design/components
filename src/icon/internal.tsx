@@ -103,12 +103,32 @@ const InternalIcon = ({
 
   const validIcon = name && Object.prototype.hasOwnProperty.call(icons, name);
 
+  function iconMap(name: IconProps.Name) {
+    const genAiFilledIcon = `<svg
+        width="12"
+        height="12"
+        viewBox="0 0 16 16"
+        xmlns="http://www.w3.org/2000/svg"
+        focusable="false"
+        aria-hidden="true"
+        data-testid="gen-ai-filled"
+      >
+        <path d="m8 4.4 1.018 2.582L11.6 8 9.018 9.018 8 11.6 6.982 9.018 4.4 8l2.582-1.018L8 4.4ZM2.405 2.41l.002-.003.003-.002-.003-.002-.002-.003-.002.003-.003.002.003.002.002.003Z" class="filled"></path>
+      </svg>`;
+
+    if (name === 'gen-ai' && iconSize === 'small') {
+      return genAiFilledIcon;
+    } else {
+      return icons[name];
+    }
+  }
+
   return (
     <span
       {...baseProps}
       // dangerouslySetInnerHTML is safe here, as we control the content coming from `icons`
       // eslint-disable-next-line react/no-danger
-      dangerouslySetInnerHTML={validIcon ? { __html: icons[name] } : undefined}
+      dangerouslySetInnerHTML={validIcon ? { __html: iconMap(name) } : undefined}
       ref={mergedRef}
       style={inlineStyles}
     />

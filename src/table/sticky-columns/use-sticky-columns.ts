@@ -38,7 +38,7 @@ export function useStickyColumns({
   const store = useMemo(() => new StickyColumnsStore(), []);
   const wrapperRef = useRef<HTMLElement>(null) as React.MutableRefObject<null | HTMLElement>;
   const tableRef = useRef<HTMLElement>(null) as React.MutableRefObject<null | HTMLElement>;
-  const cellsRef = useRef<Record<PropertyKey, HTMLElement>>({});
+  const cellsRef = useRef(new Map<PropertyKey, HTMLElement>());
 
   const hasStickyColumns = stickyColumnsFirst + stickyColumnsLast > 0;
 
@@ -116,9 +116,9 @@ export function useStickyColumns({
 
   const setCell = useCallback((columnId: PropertyKey, node: null | HTMLElement) => {
     if (node) {
-      cellsRef.current[columnId] = node;
+      cellsRef.current.set(columnId, node);
     } else {
-      delete cellsRef.current[columnId];
+      cellsRef.current.delete(columnId);
     }
   }, []);
 
@@ -166,7 +166,7 @@ export function useStickyCellStyles({
       setCell(columnId, cellElement);
 
       // Update cell styles imperatively to avoid unnecessary re-renders.
-      const selector = (state: StickyColumnsState) => state.cellState[columnId];
+      const selector = (state: StickyColumnsState) => state.cellState.get(columnId) ?? null;
 
       const updateCellStyles = (state: null | StickyColumnsCellState, prev: null | StickyColumnsCellState) => {
         if (isCellStatesEqual(state, prev)) {
@@ -202,7 +202,7 @@ export function useStickyCellStyles({
   );
 
   // Provide cell styles as props so that a re-render won't cause invalidation.
-  const cellStyles = stickyColumns.store.get().cellState[columnId];
+  const cellStyles = stickyColumns.store.get().cellState.get(columnId);
   return {
     ref: refCallback,
     className: cellStyles ? clsx(getClassName(cellStyles)) : undefined,
@@ -213,7 +213,7 @@ export function useStickyCellStyles({
 interface UpdateCellStylesProps {
   wrapper: HTMLElement;
   table: HTMLElement;
-  cells: Record<PropertyKey, HTMLElement>;
+  cells: Map<PropertyKey, HTMLElement>;
   visibleColumns: readonly PropertyKey[];
   stickyColumnsFirst: number;
   stickyColumnsLast: number;
@@ -230,7 +230,7 @@ export default class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
   private padLeft = false;
 
   constructor() {
-    super({ cellState: {}, wrapperState: { scrollPaddingLeft: 0, scrollPaddingRight: 0 } });
+    super({ cellState: new Map(), wrapperState: { scrollPaddingLeft: 0, scrollPaddingRight: 0 } });
   }
 
   public updateCellStyles(props: UpdateCellStylesProps) {
@@ -266,7 +266,7 @@ export default class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
     this.padLeft = tablePaddingLeft !== 0 && this.isStuckToTheLeft;
   }
 
-  private generateCellStyles = (props: UpdateCellStylesProps): Record<PropertyKey, null | StickyColumnsCellState> => {
+  private generateCellStyles = (props: UpdateCellStylesProps): Map<PropertyKey, StickyColumnsCellState> => {
     const isEnabled = this.isEnabled(props);
     const lastLeftStickyColumnIndex = props.stickyColumnsFirst - 1;
     const lastRightStickyColumnIndex = props.visibleColumns.length - props.stickyColumnsLast;
@@ -280,7 +280,6 @@ export default class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
       }
 
       if (!isEnabled || stickySide === 'non-sticky') {
-        acc[columnId] = null;
         return acc;
       }
 
@@ -289,7 +288,7 @@ export default class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
       const stickyColumnOffsetLeft = this.cellOffsets.offsets.get(columnId)?.first ?? 0;
       const stickyColumnOffsetRight = this.cellOffsets.offsets.get(columnId)?.last ?? 0;
 
-      acc[columnId] = {
+      acc.set(columnId, {
         padLeft: isFirstColumn && this.padLeft,
         lastLeft: this.isStuckToTheLeft && lastLeftStickyColumnIndex === index,
         lastRight: this.isStuckToTheRight && lastRightStickyColumnIndex === index,
@@ -297,9 +296,9 @@ export default class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
           left: stickySide === 'left' ? stickyColumnOffsetLeft : undefined,
           right: stickySide === 'right' ? stickyColumnOffsetRight : undefined,
         },
-      };
+      });
       return acc;
-    }, {} as Record<PropertyKey, null | StickyColumnsCellState>);
+    }, new Map<PropertyKey, StickyColumnsCellState>());
   };
 
   private updateCellOffsets = (props: UpdateCellStylesProps): void => {

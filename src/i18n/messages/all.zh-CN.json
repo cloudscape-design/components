@@ -96,6 +96,9 @@
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {正在将项目移回位置 {currentPosition}（共 {total} 个位置）} false {正在将项目移动到位置 {currentPosition}（共 {total} 个位置）} other {}}",
     "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {已将项目移回其原始位置 {initialPosition}（共 {total} 个位置）} false {已将项目从位置 {initialPosition} 移动到位置 {finalPosition}（共 {total} 个位置）} other {}}"
   },
+  "copy-to-clipboard": {
+    "i18nStrings.copyButtonText": "复制"
+  },
   "date-range-picker": {
     "i18nStrings.relativeModeTitle": "相对模式",
     "i18nStrings.absoluteModeTitle": "绝对模式",
@@ -115,8 +118,8 @@
     "i18nStrings.dateTimeConstraintText": "对于日期，请使用 YYYY/MM/DD。对于时间，请使用 24 小时格式。",
     "i18nStrings.errorIconAriaLabel": "错误",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "选定范围从 {startDate} 到 {endDate}",
-    "i18nStrings.formatRelativeRange": "{amount, plural, one {最近 {amount} {unit}} other {最近 {amount} {unit}}}",
-    "i18nStrings.formatUnit": "{amount, plural, one {{unit}} other {{unit}}}"
+    "i18nStrings.formatRelativeRange": "{unit, select, second {{amount, plural, zero {过去 {amount} 秒} one {过去 {amount} 秒} other {过去 {amount} 秒}}} minute {{amount, plural, zero {过去 {amount} 分钟} one {过去 {amount} 分钟} other {过去 {amount} 分钟}}} hour {{amount, plural, zero {过去 {amount} 小时} one {过去 {amount} 小时} other {过去 {amount} 小时}}} day {{amount, plural, zero {过去 {amount} 天} one {过去 {amount} 天} other {过去 {amount} 天}}} week {{amount, plural, zero {过去 {amount} 周} one {过去 {amount} 周} other {过去 {amount} 周}}} month {{amount, plural, zero {过去 {amount} 月} one {过去 {amount} 月} other {过去 {amount} 月}}} year {{amount, plural, zero {过去 {amount} 年} one {过去 {amount} 年} other {过去 {amount} 年}}} other {}}",
+    "i18nStrings.formatUnit": "{unit, select, second {{amount, plural, zero {秒} one {秒} other {秒}}} minute {{amount, plural, zero {分钟} one {分钟} other {分钟}}} hour {{amount, plural, zero {小时} one {小时} other {小时}}} day {{amount, plural, zero {天} one {天} other {天}}} week {{amount, plural, zero {周} one {周} other {周}}} month {{amount, plural, zero {月} one {月} other {月}}} year {{amount, plural, zero {年} one {年} other {年}}} other {}}"
   },
   "drawer": {
     "i18nStrings.loadingText": "正在加载内容"

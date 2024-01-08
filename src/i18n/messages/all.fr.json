@@ -96,6 +96,9 @@
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Remettre l'élément à la position {currentPosition} de {total}} false {Déplacer l'élément vers la position {currentPosition} de {total}} other {}}",
     "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {L'élément a été replacé dans sa position initiale {initialPosition} de {total}} false {L'élément a été déplacé de la position {initialPosition} à {finalPosition} de {total}} other {}}"
   },
+  "copy-to-clipboard": {
+    "i18nStrings.copyButtonText": "Copier"
+  },
   "date-range-picker": {
     "i18nStrings.relativeModeTitle": "Mode relatif",
     "i18nStrings.absoluteModeTitle": "Mode absolu",
@@ -115,8 +118,8 @@
     "i18nStrings.dateTimeConstraintText": "Pour la date, utilisez le format AAAA/MM/JJ. Pour l'heure, utilisez le format 24 heures.",
     "i18nStrings.errorIconAriaLabel": "Erreur",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "Plage sélectionnée de {startDate} à {endDate}",
-    "i18nStrings.formatRelativeRange": "{amount, plural, one {Dernier {amount} {unit}} other {Dernières {amount} {unit}s}}",
-    "i18nStrings.formatUnit": "{amount, plural, one {{unit}} other {{unit}s}}"
+    "i18nStrings.formatRelativeRange": "{unit, select, second {{amount, plural, zero {Dernières {amount} secondes} one {Dernière {amount} seconde} other {Dernières {amount} secondes}}} minute {{amount, plural, zero {Dernières {amount} minutes} one {Dernière {amount} minute} other {Dernières {amount} minutes}}} hour {{amount, plural, zero {Dernières {amount} heures} one {Dernière {amount} heure} other {Dernières {amount} heures}}} day {{amount, plural, zero {Derniers {amount} jours} one {Dernier {amount} jour} other {Derniers {amount} jours}}} week {{amount, plural, zero {Dernières {amount} semaines} one {Dernière {amount} semaine} other {Dernières {amount} semaines}}} month {{amount, plural, zero {Derniers {amount} mois} one {Dernier {amount} mois} other {Derniers {amount} mois}}} year {{amount, plural, zero {Dernières {amount} années} one {Dernière {amount} année} other {Dernières {amount} années}}} other {}}",
+    "i18nStrings.formatUnit": "{unit, select, second {{amount, plural, zero {secondes} one {seconde} other {secondes}}} minute {{amount, plural, zero {minutes} one {minute} other {minutes}}} hour {{amount, plural, zero {heures} one {heure} other {heures}}} day {{amount, plural, zero {jours} one {jour} other {jours}}} week {{amount, plural, zero {semaines} one {semaine} other {semaines}}} month {{amount, plural, zero {mois} one {mois} other {mois}}} year {{amount, plural, zero {années} one {année} other {années}}} other {}}"
   },
   "drawer": {
     "i18nStrings.loadingText": "Chargement du contenu en cours"
