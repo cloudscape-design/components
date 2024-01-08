@@ -115,10 +115,12 @@ function ChartPlot(
     plotClickedRef.current = true;
   };
   const onPlotFocus = (event: React.FocusEvent<SVGSVGElement>) => {
-    // The click should focus the underlying application bypassing the svg.
+    // If focused via click or an element was highlighted,
+    // focus the internal application, which will manage and show focus accordingly on its internal elements.
     if (plotClickedRef.current || !!activeElementKey) {
       applicationRef.current!.focus();
     } else if (event.target === svgRef.current) {
+      // Otherwise, focus the entire plot if it was focused with the keyboard.
       setPlotFocused(true);
     }
   };
