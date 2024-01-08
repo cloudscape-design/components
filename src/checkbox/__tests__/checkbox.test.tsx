@@ -229,30 +229,30 @@ describe('table grid navigation support', () => {
   }
 
   test('does not override tab index when keyboard navigation is not active', () => {
-    renderWithGridNavigation({ target: null }, <Checkbox id="checkbox" checked={false} />);
+    renderWithGridNavigation(<Checkbox id="checkbox" checked={false} />);
     expect(getCheckboxInput('#checkbox')).not.toHaveAttribute('tabIndex');
   });
 
   test('overrides tab index when keyboard navigation is active', () => {
-    renderWithGridNavigation(
-      { target: '#checkbox1 input' },
+    const { setCurrentTarget } = renderWithGridNavigation(
       <div>
         <Checkbox id="checkbox1" checked={false} />
         <Checkbox id="checkbox2" checked={false} />
       </div>
     );
+    setCurrentTarget(getCheckboxInput('#checkbox1'));
     expect(getCheckboxInput('#checkbox1')).toHaveAttribute('tabIndex', '0');
     expect(getCheckboxInput('#checkbox2')).toHaveAttribute('tabIndex', '-1');
   });
 
   test('does not override explicit tab index with 0', () => {
-    renderWithGridNavigation(
-      { target: '#checkbox1 input' },
+    const { setCurrentTarget } = renderWithGridNavigation(
       <div>
         <InternalCheckbox id="checkbox1" checked={false} tabIndex={-1} />
         <InternalCheckbox id="checkbox2" checked={false} tabIndex={-1} />
       </div>
     );
+    setCurrentTarget(getCheckboxInput('#checkbox1'));
     expect(getCheckboxInput('#checkbox1')).toHaveAttribute('tabIndex', '-1');
     expect(getCheckboxInput('#checkbox2')).toHaveAttribute('tabIndex', '-1');
   });

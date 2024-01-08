@@ -316,21 +316,18 @@ describe('table grid navigation support', () => {
   }
 
   test('does not override tab index when keyboard navigation is not active', () => {
-    renderWithGridNavigation(
-      { target: null },
-      <RadioGroup id="radio" value={null} items={[{ value: '1', label: 'One' }]} />
-    );
+    renderWithGridNavigation(<RadioGroup id="radio" value={null} items={[{ value: '1', label: 'One' }]} />);
     expect(getRadioInput('#radio')).not.toHaveAttribute('tabIndex');
   });
 
   test('overrides tab index when keyboard navigation is active', () => {
-    renderWithGridNavigation(
-      { target: '#radio1 input' },
+    const { setCurrentTarget } = renderWithGridNavigation(
       <div>
         <RadioGroup id="radio1" value={null} items={[{ value: '1', label: 'One' }]} />
         <RadioGroup id="radio2" value={null} items={[{ value: '2', label: 'Two' }]} />
       </div>
     );
+    setCurrentTarget(getRadioInput('#radio1'));
     expect(getRadioInput('#radio1')).toHaveAttribute('tabIndex', '0');
     expect(getRadioInput('#radio2')).toHaveAttribute('tabIndex', '-1');
   });

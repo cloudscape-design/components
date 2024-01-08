@@ -14,30 +14,30 @@ function Button(props: React.HTMLAttributes<HTMLButtonElement>) {
 }
 
 test('does not override tab index when keyboard navigation is not active', () => {
-  renderWithGridNavigation({ target: null }, <Button id="button" />);
+  renderWithGridNavigation(<Button id="button" />);
   expect(document.querySelector('#button')).not.toHaveAttribute('tabIndex');
 });
 
 test('overrides tab index when keyboard navigation is active', () => {
-  renderWithGridNavigation(
-    { target: '#button1' },
+  const { setCurrentTarget } = renderWithGridNavigation(
     <div>
       <Button id="button1" />
       <Button id="button2" />
     </div>
   );
+  setCurrentTarget(document.querySelector('#button1'));
   expect(document.querySelector('#button1')).toHaveAttribute('tabIndex', '0');
   expect(document.querySelector('#button2')).toHaveAttribute('tabIndex', '-1');
 });
 
 test('does not override explicit tab index with 0', () => {
-  renderWithGridNavigation(
-    { target: '#button1' },
+  const { setCurrentTarget } = renderWithGridNavigation(
     <div>
       <Button id="button1" tabIndex={-2} />
       <Button id="button2" tabIndex={-2} />
     </div>
   );
+  setCurrentTarget(document.querySelector('#button1'));
   expect(document.querySelector('#button1')).toHaveAttribute('tabIndex', '-2');
   expect(document.querySelector('#button2')).toHaveAttribute('tabIndex', '-1');
 });

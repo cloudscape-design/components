@@ -282,23 +282,23 @@ describe('table grid navigation support', () => {
   }
 
   test('does not override tab index for button link when keyboard navigation is not active', () => {
-    renderWithGridNavigation({ target: null }, <Link id="link" />);
+    renderWithGridNavigation(<Link id="link" />);
     expect(getLink('#link')).toHaveAttribute('tabIndex', '0');
   });
 
   test('does not override tab index for anchor link when keyboard navigation is not active', () => {
-    renderWithGridNavigation({ target: null }, <Link id="link" href="#" />);
+    renderWithGridNavigation(<Link id="link" href="#" />);
     expect(getLink('#link')).not.toHaveAttribute('tabIndex');
   });
 
   test.each([undefined, '#'])('overrides tab index when keyboard navigation is active href=%s', href => {
-    renderWithGridNavigation(
-      { target: '#link1' },
+    const { setCurrentTarget } = renderWithGridNavigation(
       <div>
         <Link id="link1" href={href} />
         <Link id="link2" href={href} />
       </div>
     );
+    setCurrentTarget(getLink('#link1'));
     expect(getLink('#link1')).toHaveAttribute('tabIndex', '0');
     expect(getLink('#link2')).toHaveAttribute('tabIndex', '-1');
   });

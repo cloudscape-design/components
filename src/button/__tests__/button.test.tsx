@@ -571,30 +571,30 @@ describe('table grid navigation support', () => {
   }
 
   test('does not override tab index when keyboard navigation is not active', () => {
-    renderWithGridNavigation({ target: null }, <Button id="button" />);
+    renderWithGridNavigation(<Button id="button" />);
     expect(getButton('#button')).not.toHaveAttribute('tabIndex');
   });
 
   test('overrides tab index when keyboard navigation is active', () => {
-    renderWithGridNavigation(
-      { target: '#button1' },
+    const { setCurrentTarget } = renderWithGridNavigation(
       <div>
         <Button id="button1" />
         <Button id="button2" />
       </div>
     );
+    setCurrentTarget(getButton('#button1'));
     expect(getButton('#button1')).toHaveAttribute('tabIndex', '0');
     expect(getButton('#button2')).toHaveAttribute('tabIndex', '-1');
   });
 
   test('does not override explicit tab index with 0', () => {
-    renderWithGridNavigation(
-      { target: '#button1' },
+    const { setCurrentTarget } = renderWithGridNavigation(
       <div>
         <InternalButton id="button1" __nativeAttributes={{ tabIndex: -2 }} />
         <InternalButton id="button2" __nativeAttributes={{ tabIndex: -2 }} />
       </div>
     );
+    setCurrentTarget(getButton('#button1'));
     expect(getButton('#button1')).toHaveAttribute('tabIndex', '-2');
     expect(getButton('#button2')).toHaveAttribute('tabIndex', '-1');
   });
