@@ -26,6 +26,7 @@ import {
   getSubStepAllSelector,
 } from '../internal/analytics/selectors';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
+import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
 
 type InternalLinkProps = InternalBaseComponentProps<HTMLAnchorElement> &
   Omit<LinkProps, 'variant'> & {
@@ -184,9 +185,17 @@ const InternalLink = React.forwardRef(
       </>
     );
 
+    const { tabIndex } = useSingleTabStopNavigation(linkRef, { tabIndex: isButton ? 0 : undefined });
+
     if (isButton) {
       return (
-        <a {...sharedProps} role="button" tabIndex={0} onKeyDown={handleButtonKeyDown} onClick={handleButtonClick}>
+        <a
+          {...sharedProps}
+          role="button"
+          tabIndex={tabIndex}
+          onKeyDown={handleButtonKeyDown}
+          onClick={handleButtonClick}
+        >
           {content}
         </a>
       );
@@ -195,7 +204,14 @@ const InternalLink = React.forwardRef(
     return (
       // we dynamically set proper rel in the code above
       // eslint-disable-next-line react/jsx-no-target-blank
-      <a {...sharedProps} target={anchorTarget} rel={anchorRel} href={href} onClick={handleLinkClick}>
+      <a
+        {...sharedProps}
+        tabIndex={tabIndex}
+        target={anchorTarget}
+        rel={anchorRel}
+        href={href}
+        onClick={handleLinkClick}
+      >
         {content}
       </a>
     );
