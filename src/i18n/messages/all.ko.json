@@ -96,6 +96,9 @@
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {{currentPosition}/{total} 위치로 항목 다시 이동} false {{currentPosition}/{total} 위치로 항목 이동} other {}}",
     "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {항목이 원래 위치인 {initialPosition}/{total} 위치로 다시 이동됨} false {항목이 {initialPosition}/{total} 위치에서 인 {finalPosition}/{total} 위치로 이동됨} other {}}"
   },
+  "copy-to-clipboard": {
+    "i18nStrings.copyButtonText": "복사"
+  },
   "date-range-picker": {
     "i18nStrings.relativeModeTitle": "상대 모드",
     "i18nStrings.absoluteModeTitle": "절대 모드",
@@ -115,8 +118,8 @@
     "i18nStrings.dateTimeConstraintText": "날짜에는 YYYY/MM/DD를 사용합니다. 시간에는 24시간 형식을 사용합니다.",
     "i18nStrings.errorIconAriaLabel": "오류",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "{startDate}~{endDate}에서 선택한 범위",
-    "i18nStrings.formatRelativeRange": "{amount, plural, one {마지막 {amount}{unit}} other {마지막 {amount}{unit}}}",
-    "i18nStrings.formatUnit": "{amount, plural, one {{unit}} other {{unit}}}"
+    "i18nStrings.formatRelativeRange": "{unit, select, second {{amount, plural, zero {지난 {amount}초} one {지난 {amount}초} other {지난 {amount}초}}} minute {{amount, plural, zero {지난 {amount}분} one {지난 {amount}분} other {지난 {amount}분}}} hour {{amount, plural, zero {지난 {amount}시간} one {지난 {amount}시간} other {지난 {amount}시간}}} day {{amount, plural, zero {지난 {amount}일} one {지난 {amount}일} other {지난 {amount}일}}} week {{amount, plural, zero {지난 {amount}주} one {지난 {amount}주} other {지난 {amount}주}}} month {{amount, plural, zero {지난 {amount}개월} one {지난 {amount}개월} other {지난 {amount}개월}}} year {{amount, plural, zero {지난 {amount}년} one {지난 {amount}년} other {지난 {amount}년}}} other {}}",
+    "i18nStrings.formatUnit": "{unit, select, second {{amount, plural, zero {초} one {초} other {초}}} minute {{amount, plural, zero {분} one {분} other {분}}} hour {{amount, plural, zero {시간} one {시간} other {시간}}} day {{amount, plural, zero {일} one {일} other {일}}} week {{amount, plural, zero {주} one {주} other {주}}} month {{amount, plural, zero {개월} one {개월} other {개월}}} year {{amount, plural, zero {년} one {년} other {년}}} other {}}"
   },
   "drawer": {
     "i18nStrings.loadingText": "콘텐츠 로드 중"

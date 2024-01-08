@@ -96,6 +96,7 @@ export function getTableColHeaderRoleProps(options: {
   nativeProps.scope = 'col';
 
   if (options.tableRole === 'grid') {
+    nativeProps.tabIndex = -1;
     nativeProps['aria-colindex'] = options.colIndex + 1;
   }
 
@@ -110,6 +111,7 @@ export function getTableCellRoleProps(options: { tableRole: TableRole; colIndex:
   const nativeProps: React.TdHTMLAttributes<HTMLTableCellElement> = {};
 
   if (options.tableRole === 'grid') {
+    nativeProps.tabIndex = -1;
     nativeProps['aria-colindex'] = options.colIndex + 1;
   }
 

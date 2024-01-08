@@ -106,6 +106,9 @@ function ChartPopover(
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       onBlur={onBlur}
+      // The tabIndex makes it so that clicking inside popover assigns this element as blur target.
+      // That is necessary in charts to ensure the blur target is within the chart and no cleanup is needed.
+      tabIndex={-1}
     >
       <PopoverContainer
         size={size}

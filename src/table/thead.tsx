@@ -29,7 +29,7 @@ export interface TheadProps {
   resizableColumns: boolean | undefined;
   getSelectAllProps: () => SelectionProps;
   onFocusMove: ((sourceElement: HTMLElement, fromIndex: number, direction: -1 | 1) => void) | undefined;
-  onResizeFinish: (newWidths: Record<string, number>) => void;
+  onResizeFinish: (newWidths: Map<PropertyKey, number>) => void;
   onSortingChange: NonCancelableEventHandler<TableProps.SortingState<any>> | undefined;
   sticky?: boolean;
   hidden?: boolean;

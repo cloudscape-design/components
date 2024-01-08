@@ -12,6 +12,10 @@ defaults:
   run:
     shell: bash
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   buildReference:
     name: Generate reference images
@@ -44,6 +48,9 @@ jobs:
   test:
     name: Test for regressions
     runs-on: ubuntu-latest
+    environment:
+      name: visual-regression-report
+      url: ${{ steps.deploy-report.outputs.preview-url }}index.html
     needs:
       - buildReference
     steps:
@@ -66,11 +73,12 @@ jobs:
         run: npm run start:integ &
       - name: Run visual regression tests
         run: npm run test:visual test
-      - name: Upload results
-        uses: actions/upload-artifact@v3
+      - name: Deploy report
         if: always()
+        id: deploy-report
+        uses: cloudscape-design/actions/.github/actions/deploy-static@main
         with:
-          name: visual-regression-results
-          path: |
-            backstop
-            !backstop/node_modules
+          role-to-assume: ${{ secrets.AWS_PREVIEW_ROLE_ARN }}
+          deployment-bucket: ${{ secrets.AWS_PREVIEW_BUCKET_NAME }}
+          source-path: backstop/html_report
+          target-path: visual-regressions

@@ -96,6 +96,9 @@
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {項目を位置 {currentPosition}/{total} に戻しています} false {項目を位置 {currentPosition}/{total} に移動しています} other {}}",
     "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {項目は元の位置 {initialPosition}/{total} に戻りました} false {項目が位置 {initialPosition} から位置 {finalPosition}/{total} に移動しました} other {}}"
   },
+  "copy-to-clipboard": {
+    "i18nStrings.copyButtonText": "コピー"
+  },
   "date-range-picker": {
     "i18nStrings.relativeModeTitle": "相対モード",
     "i18nStrings.absoluteModeTitle": "絶対モード",
@@ -115,8 +118,8 @@
     "i18nStrings.dateTimeConstraintText": "日付には YYYY/MM/DD を使用します。時刻には 24 時間形式を使用します。",
     "i18nStrings.errorIconAriaLabel": "エラー",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "{startDate} から {endDate} で選択された範囲",
-    "i18nStrings.formatRelativeRange": "{amount, plural, one {最後の {amount} {unit}} other {最後の {amount} {unit}}}",
-    "i18nStrings.formatUnit": "{amount, plural, one {{unit}} other {{unit}}}"
+    "i18nStrings.formatRelativeRange": "{unit, select, second {{amount, plural, zero {直近 {amount} 秒間} one {直近 {amount} 秒間} other {直近 {amount} 秒間}}} minute {{amount, plural, zero {直近 {amount} 分間} one {直近 {amount} 分間} other {直近 {amount} 分間}}} hour {{amount, plural, zero {直近 {amount} 時間} one {直近 {amount} 時間} other {直近 {amount} 時間}}} day {{amount, plural, zero {直近 {amount} 日間} one {直近 {amount} 日間} other {直近 {amount} 日間}}} week {{amount, plural, zero {直近 {amount} 週間} one {直近 {amount} 週間} other {直近 {amount} 週間}}} month {{amount, plural, zero {直近 {amount} か月間} one {直近 {amount} か月間} other {直近 {amount} か月間}}} year {{amount, plural, zero {直近 {amount} 年間} one {直近 {amount} 年間} other {直近 {amount} 年間}}} other {}}",
+    "i18nStrings.formatUnit": "{unit, select, second {{amount, plural, zero {秒間} one {秒間} other {秒間}}} minute {{amount, plural, zero {分間} one {分間} other {分間}}} hour {{amount, plural, zero {時間} one {時間} other {時間}}} day {{amount, plural, zero {日間} one {日間} other {日間}}} week {{amount, plural, zero {週間} one {週間} other {週間}}} month {{amount, plural, zero {か月間} one {か月間} other {か月間}}} year {{amount, plural, zero {年間} one {年間} other {年間}}} other {}}"
   },
   "drawer": {
     "i18nStrings.loadingText": "コンテンツのロード中"
