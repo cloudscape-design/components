@@ -43,11 +43,12 @@ function extractSelectorProperties(file: string, onExtract: (filePath: string, p
     } else if (path.node.property.type === 'TemplateLiteral') {
       return buildTemplateString(path.node.property);
     } else {
-      throw new Error(`Unhandled selectors access type at ${file}:${path.node.loc?.start.line}.`);
+      throw new Error(`Unhandled selector access type at ${file}:${path.node.loc?.start.line}.`);
     }
   }
 
   // Build string literal from template string replacing arguments with wildcards ("*").
+  // For example, a template string `flash-type-${statusType}` becomes "flash-type-*".
   function buildTemplateString(node: types.TemplateLiteral) {
     let literal = '';
     for (const element of flatten(zip(node.quasis, node.expressions))) {
@@ -60,7 +61,7 @@ function extractSelectorProperties(file: string, onExtract: (filePath: string, p
       } else if (element.type === 'NumericLiteral') {
         literal += element.value;
       } else {
-        throw new Error(`Unhandled template literal structure at ${file}:${node.loc?.start.line}.`);
+        throw new Error(`Unhandled template literal type at ${file}:${node.loc?.start.line}.`);
       }
     }
     return literal;
@@ -77,26 +78,21 @@ function extractSelectorProperties(file: string, onExtract: (filePath: string, p
             if (specifier.type === 'ImportDefaultSpecifier') {
               selectorVars.set(specifier.local.name, resolveSelectorsPath(path.node.source.value));
             } else {
-              throw new Error(`Unsupported styles specifier format at ${file}:${path.node.loc?.start.line}.`);
+              throw new Error(`Unhandled styles import type at ${file}:${path.node.loc?.start.line}.`);
             }
           }
         },
         // Find selector references and extract used property names.
         MemberExpression(path: NodePath<types.MemberExpression>) {
           if (path.node.object.type === 'Identifier' && selectorVars.has(path.node.object.name)) {
-            const filePath = selectorVars.get(path.node.object.name)!;
-            onExtract(filePath, getPropertyName(path));
+            onExtract(selectorVars.get(path.node.object.name)!, getPropertyName(path));
           }
         },
       },
     } as PluginObj;
   }
   const source = fs.readFileSync(file, 'utf-8');
-  transformSync(source, {
-    babelrc: false,
-    configFile: false,
-    plugins: [...defaultPlugins, extractor],
-  })?.code;
+  transformSync(source, { babelrc: false, configFile: false, plugins: [...defaultPlugins, extractor] })?.code;
 }
 
 function extractComponentSelectors(file: string, usedProperties: string[], onExtract: (selector: string) => void) {
@@ -108,7 +104,7 @@ function extractComponentSelectors(file: string, usedProperties: string[], onExt
             if (path.node.value.type === 'StringLiteral') {
               onExtract(trimSelectorHash(path.node.value.value));
             } else {
-              throw new Error(`Unexpected selector value format at ${file}:${path.node.loc?.start.line}.`);
+              throw new Error(`Unhandled selector value type at ${file}:${path.node.loc?.start.line}.`);
             }
           }
         },
@@ -116,11 +112,7 @@ function extractComponentSelectors(file: string, usedProperties: string[], onExt
     } as PluginObj;
   }
   const source = fs.readFileSync(file, 'utf-8');
-  transformSync(source, {
-    babelrc: false,
-    configFile: false,
-    plugins: [...defaultPlugins, extractor],
-  })?.code;
+  transformSync(source, { babelrc: false, configFile: false, plugins: [...defaultPlugins, extractor] })?.code;
 }
 
 function trimSelectorHash(selector: string) {
@@ -140,7 +132,8 @@ function getComponentNameFromFilePath(filePath: string) {
   return filePath.match(/lib\/components\/([\w-]+)/)![1];
 }
 
-// Match property against the used properties supporting the wildcards ("*").
+// Match property against the used properties supporting wildcards ("*").
+// For example, property "flash-type-*" matches "flash-type-error", "flash-type-in-progress", and so on.
 function matchProperties(usedProperties: string[], property: string) {
   for (const testProperty of usedProperties) {
     if (testProperty === property) {
