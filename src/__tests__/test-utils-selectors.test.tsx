@@ -65,7 +65,7 @@ function extractSelectorProperties(file: string, onExtract: (filePath: string, p
   }
 
   function extractor(): PluginObj {
-    const selectorVars = new Map<string, string>();
+    const selectorToFilePath = new Map<string, string>();
     return {
       visitor: {
         // Find import statements for selectors.
@@ -73,7 +73,7 @@ function extractSelectorProperties(file: string, onExtract: (filePath: string, p
           if (path.node.source.value.endsWith('selectors.js') && path.node.specifiers.length === 1) {
             const specifier = path.node.specifiers[0];
             if (specifier.type === 'ImportDefaultSpecifier') {
-              selectorVars.set(specifier.local.name, resolveSelectorsPath(path.node.source.value));
+              selectorToFilePath.set(specifier.local.name, resolveSelectorsPath(path.node.source.value));
             } else {
               throw new Error(`Unhandled styles import type at ${file}:${path.node.loc?.start.line}.`);
             }
@@ -81,8 +81,8 @@ function extractSelectorProperties(file: string, onExtract: (filePath: string, p
         },
         // Find selector references and extract used property names.
         MemberExpression(path: NodePath<types.MemberExpression>) {
-          if (path.node.object.type === 'Identifier' && selectorVars.has(path.node.object.name)) {
-            onExtract(selectorVars.get(path.node.object.name)!, getPropertyName(path));
+          if (path.node.object.type === 'Identifier' && selectorToFilePath.has(path.node.object.name)) {
+            onExtract(selectorToFilePath.get(path.node.object.name)!, getPropertyName(path));
           }
         },
       },
