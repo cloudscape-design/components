@@ -3,54 +3,43 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
+@use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 
-.value-slider {
+.slider {
+  position: relative;
   width: 100%;
+
+  &-track,
+  &-range {
+    position: absolute;
+    border-radius: 3px;
+    height: 5px;
+  }
+
+  &-track {
+    background-color: awsui.$color-background-progress-bar-layout-default;
+    width: 100%;
+  }
+
+  &-range {
+    background-color: awsui.$color-background-progress-bar-content-default;
+
+    &.disabled {
+      background-color: awsui.$color-text-status-inactive;
+    }
+  }
+
+  &-container {
+    padding: awsui.$space-m 0;
+  }
 
   &-labels {
     display: flex;
     justify-content: space-between;
     height: 0;
+    padding-top: awsui.$space-m;
   }
-}
-
-.range-slider-labels {
-  padding-top: awsui.$space-m;
-}
-
-.slider-container {
-  padding: awsui.$space-m 0;
-}
-
-.slider {
-  position: relative;
-  width: 100%;
-}
-
-.slider__track,
-.slider__range {
-  position: absolute;
-  border-radius: 3px;
-  height: 5px;
-}
-
-.slider__track {
-  background-color: awsui.$color-background-progress-bar-layout-default;
-  width: 100%;
-  z-index: 1;
-}
-
-.slider__range {
-  background-color: awsui.$color-background-progress-bar-content-default;
-  z-index: 2;
-}
-
-/* Removing the default appearance */
-.thumb,
-.thumb::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  -webkit-tap-highlight-color: transparent;
 }
 
 .thumb {
@@ -59,40 +48,36 @@
   height: 0;
   width: 100%;
   outline: none;
-}
 
-.thumb--left {
-  z-index: 3;
-  left: 8px;
-}
+  &-right {
+    right: 8px;
+  }
 
-.thumb--right {
-  z-index: 4;
-  right: 8px;
-}
+  &-left {
+    left: 8px;
+  }
 
-/* For Chrome browsers */
-.thumb::-webkit-slider-thumb {
-  background-color: awsui.$color-background-progress-bar-content-default;
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-  height: 16px;
-  width: 16px;
-  margin-top: 4px;
-  pointer-events: all;
-  position: relative;
-}
+  &::-webkit-slider-thumb {
+    background-color: awsui.$color-background-progress-bar-content-default;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    height: 16px;
+    width: 16px;
+    margin-top: 4px;
+    pointer-events: all;
+    position: relative;
+  }
 
-/* For Firefox browsers */
-.thumb::-moz-range-thumb {
-  background-color: awsui.$color-background-progress-bar-content-default;
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-  height: 16px;
-  width: 16px;
-  margin-top: 4px;
-  pointer-events: all;
-  position: relative;
+  &::-moz-range-thumb {
+    background-color: awsui.$color-background-progress-bar-content-default;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    height: 16px;
+    width: 16px;
+    margin-top: 4px;
+    pointer-events: all;
+    position: relative;
+  }
 }
