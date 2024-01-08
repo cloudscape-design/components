@@ -2,16 +2,20 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import fs from 'fs';
-import Path from 'path';
 import glob from 'glob';
 import { transformSync, types, PluginObj, NodePath } from '@babel/core';
 import { flatten, zip } from 'lodash';
+
+const defaultPlugins = [
+  require('@babel/plugin-syntax-typescript'),
+  [require('@babel/plugin-syntax-decorators'), { legacy: true }],
+] as const;
 
 // The test extracts generated selectors from the compiled output and matches those against the snapshot.
 test('test-utils selectors', () => {
   // Find referenced selector files and properties.
   const selectorsFilePathToUsedProperties = new Map<string, Set<string>>();
-  for (const file of glob.sync('lib/components/test-utils/selectors/**/*.js')) {
+  for (const file of glob.sync('src/test-utils/selectors/**/*.ts')) {
     extractSelectorProperties(file, (filePath, propertyKey) => {
       const properties = selectorsFilePathToUsedProperties.get(filePath) ?? new Set();
       properties.add(propertyKey);
@@ -35,44 +39,44 @@ function extractSelectorProperties(file: string, onExtract: (filePath: string, p
     const selectorVars = new Map<string, string>();
     return {
       visitor: {
-        // Find require statements that import selectors.
-        CallExpression(path: NodePath<types.CallExpression>) {
-          if (path.node.callee.type === 'Identifier' && path.node.callee.name === 'require') {
-            const argument = path.node.arguments[0];
-            if (argument.type === 'StringLiteral' && argument.value.endsWith('selectors.js')) {
-              if (path.parent.type === 'VariableDeclarator' && path.parent.id.type === 'Identifier') {
-                selectorVars.set(path.parent.id.name, Path.resolve(file, '..', argument.value));
-              }
+        // Find import statements for selectors.
+        ImportDeclaration(path: NodePath<types.ImportDeclaration>) {
+          if (path.node.source.value.endsWith('selectors.js') && path.node.specifiers.length === 1) {
+            const specifier = path.node.specifiers[0];
+            if (specifier.type === 'ImportDefaultSpecifier') {
+              selectorVars.set(specifier.local.name, resolveSelectorsPath(path.node.source.value));
+            } else {
+              throw new Error('Unsupported styles specifier format');
             }
           }
         },
         // Find selector references and extract used property names.
         MemberExpression(path: NodePath<types.MemberExpression>) {
-          function parseNested(expression: types.MemberExpression, propertyName: string) {
-            if (expression.object.type === 'Identifier' && selectorVars.has(expression.object.name)) {
-              const filePath = selectorVars.get(expression.object.name)!;
-              if (expression.property.type === 'Identifier' && expression.property.name === 'default') {
-                onExtract(filePath, propertyName);
-              }
-            }
-          }
-          if (path.node.object.type === 'MemberExpression') {
+          function getPropertyName() {
             if (path.node.property.type === 'Identifier') {
-              parseNested(path.node.object, path.node.property.name);
+              return path.node.property.name;
             } else if (path.node.property.type === 'StringLiteral') {
-              parseNested(path.node.object, path.node.property.value);
+              return path.node.property.value;
             } else if (path.node.property.type === 'TemplateLiteral') {
-              parseNested(path.node.object, buildTemplateString(path.node.property));
+              return buildTemplateString(path.node.property);
             } else {
               throw new Error('Unhandled selectors access type.');
             }
+          }
+          if (path.node.object.type === 'Identifier' && selectorVars.has(path.node.object.name)) {
+            const filePath = selectorVars.get(path.node.object.name)!;
+            onExtract(filePath, getPropertyName());
           }
         },
       },
     } as PluginObj;
   }
   const source = fs.readFileSync(file, 'utf-8');
-  transformSync(source, { babelrc: false, configFile: false, plugins: [extractor] })?.code;
+  transformSync(source, {
+    babelrc: false,
+    configFile: false,
+    plugins: [...defaultPlugins, extractor],
+  })?.code;
 }
 
 function extractComponentSelectors(file: string, usedProperties: string[], onExtract: (selector: string) => void) {
@@ -92,7 +96,11 @@ function extractComponentSelectors(file: string, usedProperties: string[], onExt
     } as PluginObj;
   }
   const source = fs.readFileSync(file, 'utf-8');
-  transformSync(source, { babelrc: false, configFile: false, plugins: [extractor] })?.code;
+  transformSync(source, {
+    babelrc: false,
+    configFile: false,
+    plugins: [...defaultPlugins, extractor],
+  })?.code;
 }
 
 function trimSelectorHash(selector: string) {
@@ -102,6 +110,10 @@ function trimSelectorHash(selector: string) {
     return splitSelector.join('_');
   }
   return selector;
+}
+
+function resolveSelectorsPath(importPath: string) {
+  return 'lib/components/' + importPath.replace(/\.\.\//g, '');
 }
 
 function getComponentNameFromFilePath(filePath: string) {
