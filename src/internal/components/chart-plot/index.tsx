@@ -49,6 +49,7 @@ export interface ChartPlotProps {
   onBlur?: (event: React.FocusEvent<SVGGElement>) => void;
   onKeyDown?: (event: React.KeyboardEvent<SVGGElement>) => void;
   onTouchStart?: (event: React.TouchEvent<SVGSVGElement>) => void;
+  onTouchEnd?: (event: React.TouchEvent<SVGSVGElement>) => void;
   children: React.ReactNode;
 }
 
@@ -90,7 +91,6 @@ function ChartPlot(
     onBlur,
     focusOffset = DEFAULT_PLOT_FOCUS_OFFSET,
     activeElementFocusOffset = DEFAULT_ELEMENT_FOCUS_OFFSET,
-    onMouseMove,
     onTouchStart,
     ...restProps
   }: ChartPlotProps,
@@ -141,12 +141,6 @@ function ChartPlot(
       if (codes.indexOf(event.keyCode) !== -1) {
         applicationRef.current!.focus();
       }
-    }
-  };
-
-  const onPlotMouseMove = (event: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
-    if (onMouseMove) {
-      onMouseMove(event);
     }
   };
 
@@ -201,7 +195,6 @@ function ChartPlot(
         onBlur={onPlotBlur}
         onKeyDown={onPlotKeyDown}
         onTouchStart={onTouchStart}
-        onMouseMove={onPlotMouseMove}
       >
         <FocusOutline elementRef={svgRef} elementKey={isPlotFocused} offset={focusOffset} />
 
