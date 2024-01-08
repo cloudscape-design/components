@@ -343,7 +343,7 @@ describe('imperative handle', () => {
   test('imperative handle allows to focus plot', () => {
     const ref = React.createRef<ChartPlotRef>();
     const { plotWrapper } = renderPlot(
-      <ChartPlot ref={ref} width={0} height={0} activeElementFocusOffset={3}>
+      <ChartPlot ref={ref} width={0} height={0}>
         <text>Test</text>
       </ChartPlot>
     );
