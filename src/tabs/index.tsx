@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React from 'react';
 import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
 import InternalContainer from '../container/internal';
@@ -12,11 +12,9 @@ import { useControllable } from '../internal/hooks/use-controllable';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 
 export { TabsProps };
-
-let lastGeneratedId = 0;
-export const nextGeneratedId = () => `awsui-tabs-${lastGeneratedId++}-${Math.round(Math.random() * 10000)}`;
 
 function firstEnabledTab(tabs: ReadonlyArray<TabsProps.Tab>) {
   const enabledTabs = tabs.filter(tab => !tab.disabled);
@@ -41,7 +39,7 @@ export default function Tabs({
     checkSafeUrl('Tabs', tab.href);
   }
   const { __internalRootRef } = useBaseComponent('Tabs');
-  const [idNamespace] = useState(() => nextGeneratedId());
+  const idNamespace = useUniqueId('awsui-tabs-');
 
   const [activeTabId, setActiveTabId] = useControllable(controlledTabId, onChange, firstEnabledTab(tabs)?.id ?? '', {
     componentName: 'Tabs',
