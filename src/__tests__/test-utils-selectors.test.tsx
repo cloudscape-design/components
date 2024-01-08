@@ -35,6 +35,37 @@ test('test-utils selectors', () => {
 });
 
 function extractSelectorProperties(file: string, onExtract: (filePath: string, propertyKey: string) => void) {
+  function getPropertyName(path: NodePath<types.MemberExpression>) {
+    if (path.node.property.type === 'Identifier') {
+      return path.node.property.name;
+    } else if (path.node.property.type === 'StringLiteral') {
+      return path.node.property.value;
+    } else if (path.node.property.type === 'TemplateLiteral') {
+      return buildTemplateString(path.node.property);
+    } else {
+      throw new Error(`Unhandled selectors access type at ${file}:${path.node.loc?.start.line}.`);
+    }
+  }
+
+  // Build string literal from template string replacing arguments with wildcards ("*").
+  function buildTemplateString(node: types.TemplateLiteral) {
+    let literal = '';
+    for (const element of flatten(zip(node.quasis, node.expressions))) {
+      if (!element) {
+        continue;
+      } else if (element.type === 'TemplateElement') {
+        literal += element.value.raw;
+      } else if (element.type === 'Identifier') {
+        literal += '*';
+      } else if (element.type === 'NumericLiteral') {
+        literal += element.value;
+      } else {
+        throw new Error(`Unhandled template literal structure at ${file}:${node.loc?.start.line}.`);
+      }
+    }
+    return literal;
+  }
+
   function extractor(): PluginObj {
     const selectorVars = new Map<string, string>();
     return {
@@ -46,26 +77,15 @@ function extractSelectorProperties(file: string, onExtract: (filePath: string, p
             if (specifier.type === 'ImportDefaultSpecifier') {
               selectorVars.set(specifier.local.name, resolveSelectorsPath(path.node.source.value));
             } else {
-              throw new Error('Unsupported styles specifier format');
+              throw new Error(`Unsupported styles specifier format at ${file}:${path.node.loc?.start.line}.`);
             }
           }
         },
         // Find selector references and extract used property names.
         MemberExpression(path: NodePath<types.MemberExpression>) {
-          function getPropertyName() {
-            if (path.node.property.type === 'Identifier') {
-              return path.node.property.name;
-            } else if (path.node.property.type === 'StringLiteral') {
-              return path.node.property.value;
-            } else if (path.node.property.type === 'TemplateLiteral') {
-              return buildTemplateString(path.node.property);
-            } else {
-              throw new Error('Unhandled selectors access type.');
-            }
-          }
           if (path.node.object.type === 'Identifier' && selectorVars.has(path.node.object.name)) {
             const filePath = selectorVars.get(path.node.object.name)!;
-            onExtract(filePath, getPropertyName());
+            onExtract(filePath, getPropertyName(path));
           }
         },
       },
@@ -88,7 +108,7 @@ function extractComponentSelectors(file: string, usedProperties: string[], onExt
             if (path.node.value.type === 'StringLiteral') {
               onExtract(trimSelectorHash(path.node.value.value));
             } else {
-              throw new Error('Unexpected selector value format');
+              throw new Error(`Unexpected selector value format at ${file}:${path.node.loc?.start.line}.`);
             }
           }
         },
@@ -118,25 +138,6 @@ function resolveSelectorsPath(importPath: string) {
 
 function getComponentNameFromFilePath(filePath: string) {
   return filePath.match(/lib\/components\/([\w-]+)/)![1];
-}
-
-// Build string literal from template string replacing arguments with wildcards ("*").
-function buildTemplateString(node: types.TemplateLiteral) {
-  let literal = '';
-  for (const element of flatten(zip(node.quasis, node.expressions))) {
-    if (!element) {
-      continue;
-    } else if (element.type === 'TemplateElement') {
-      literal += element.value.raw;
-    } else if (element.type === 'Identifier') {
-      literal += '*';
-    } else if (element.type === 'NumericLiteral') {
-      literal += element.value;
-    } else {
-      throw new Error('Unhandled template literal structure.');
-    }
-  }
-  return literal;
 }
 
 // Match property against the used properties supporting the wildcards ("*").
