@@ -84,7 +84,7 @@ export default function CopyToClipboard({
       {variant === 'inline' ? (
         <span className={styles['inline-container']}>
           <span className={styles['inline-container-trigger']}>{trigger}</span>
-          <span className={clsx(styles['inline-container-text'], testStyles['text-to-copy'])}>{textToCopy}</span>
+          <span className={testStyles['text-to-copy']}>{textToCopy}</span>
         </span>
       ) : (
         trigger
