@@ -6,10 +6,7 @@ import glob from 'glob';
 import { transformSync, types, PluginObj, NodePath } from '@babel/core';
 import { flatten, zip } from 'lodash';
 
-const defaultPlugins = [
-  require('@babel/plugin-syntax-typescript'),
-  [require('@babel/plugin-syntax-decorators'), { legacy: true }],
-] as const;
+const defaultPlugins = [require('@babel/plugin-syntax-typescript')] as const;
 
 // The test extracts generated selectors from the compiled output and matches those against the snapshot.
 test('test-utils selectors', () => {
