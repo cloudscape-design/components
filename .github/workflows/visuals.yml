@@ -41,16 +41,14 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: visual-regression-results
-          path: |
-            backstop
-            !backstop/node_modules
+          path: backstop/report
 
   test:
     name: Test for regressions
     runs-on: ubuntu-latest
     environment:
       name: visual-regression-report
-      url: ${{ steps.deploy-report.outputs.preview-url }}index.html
+      url: ${{ steps.deploy-report.outputs.preview-url }}/html_report/index.html
     needs:
       - buildReference
     steps:
@@ -63,7 +61,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: visual-regression-results
-          path: backstop
+          path: backstop/report
       - run: npm install
       - name: Install BackstopJS
         run: npm --prefix backstop install ./backstop
@@ -80,5 +78,5 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_PREVIEW_ROLE_ARN }}
           deployment-bucket: ${{ secrets.AWS_PREVIEW_BUCKET_NAME }}
-          source-path: backstop/html_report
+          source-path: backstop/report
           target-path: visual-regressions
