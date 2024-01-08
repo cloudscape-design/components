@@ -7,8 +7,6 @@ import glob from 'glob';
 import { transformSync, types, PluginObj, NodePath } from '@babel/core';
 import { flatten, zip } from 'lodash';
 
-// TODO: move selectors extraction to @cloudscape-design/test-utils
-
 // The test extracts generated selectors from the compiled output and matches those against the snapshot.
 test('test-utils selectors', () => {
   // Find referenced selector files and properties.
@@ -26,7 +24,7 @@ test('test-utils selectors', () => {
   for (const [filePath, properties] of selectorsFilePathToUsedProperties) {
     extractComponentSelectors(filePath, [...properties], selector => {
       const componentName = getComponentNameFromFilePath(filePath);
-      componentToSelectors[componentName] = [...(componentToSelectors[componentName] ?? []), selector];
+      componentToSelectors[componentName] = [...(componentToSelectors[componentName] ?? []), selector].sort();
     });
   }
   expect(componentToSelectors).toMatchSnapshot();
@@ -110,6 +108,7 @@ function getComponentNameFromFilePath(filePath: string) {
   return filePath.match(/lib\/components\/([\w-]+)/)![1];
 }
 
+// Build string literal from template string replacing arguments with wildcards ("*").
 function buildTemplateString(node: types.TemplateLiteral) {
   let literal = '';
   for (const element of flatten(zip(node.quasis, node.expressions))) {
@@ -128,6 +127,7 @@ function buildTemplateString(node: types.TemplateLiteral) {
   return literal;
 }
 
+// Match property against the used properties supporting the wildcards ("*").
 function matchProperties(usedProperties: string[], property: string) {
   for (const testProperty of usedProperties) {
     if (testProperty === property) {
