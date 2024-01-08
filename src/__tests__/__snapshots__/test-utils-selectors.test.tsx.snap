@@ -11,7 +11,7 @@ Object {
     "awsui_content_mx3cw",
     "awsui_dismiss-button_mx3cw",
   ],
-  "anchor": Array [
+  "anchor-navigation": Array [
     "awsui_root_17oho",
     "awsui_anchor-list_17oho",
     "awsui_anchor-item--active_17oho",
@@ -19,7 +19,7 @@ Object {
     "awsui_anchor-link-text_17oho",
     "awsui_anchor-link-info_17oho",
   ],
-  "annotation": Array [
+  "annotation-context": Array [
     "awsui_annotation_1hpp3",
     "awsui_next-button_1hpp3",
     "awsui_previous-button_1hpp3",
@@ -29,7 +29,7 @@ Object {
     "awsui_content_1hpp3",
     "awsui_hotspot_1hpp3",
   ],
-  "app": Array [
+  "app-layout": Array [
     "awsui_root_1fj9k",
     "awsui_navigation_1fj9k",
     "awsui_navigation-toggle_1fj9k",
@@ -45,12 +45,12 @@ Object {
     "awsui_active-drawer-close-button_1fj9k",
     "awsui_drawers-slider_1fj9k",
   ],
-  "area": Array [
+  "area-chart": Array [
     "awsui_series_y1yrh",
     "awsui_root_y1yrh",
     "awsui_series--highlighted_y1yrh",
   ],
-  "attribute": Array [
+  "attribute-editor": Array [
     "awsui_root_n4qlp",
     "awsui_empty_n4qlp",
     "awsui_row_n4qlp",
@@ -66,28 +66,30 @@ Object {
   "badge": Array [
     "awsui_badge_1yjyg",
   ],
-  "bar": Array [
+  "bar-chart": Array [
     "awsui_root_1gfe1",
   ],
   "box": Array [
     "awsui_root_18wu0",
   ],
-  "breadcrumb": Array [
+  "breadcrumb-group": Array [
     "awsui_breadcrumb_1kosq",
     "awsui_anchor_1kosq",
     "awsui_breadcrumb-group_d19fg",
     "awsui_item_d19fg",
   ],
   "button": Array [
+    "awsui_content_vjswe",
+    "awsui_button_vjswe",
+    "awsui_icon-left_vjswe",
+  ],
+  "button-dropdown": Array [
     "awsui_button-dropdown_sne0l",
     "awsui_title_sne0l",
     "awsui_description_sne0l",
     "awsui_split-trigger_sne0l",
     "awsui_dropdown-trigger_sne0l",
     "awsui_test-utils-button-trigger_sne0l",
-    "awsui_content_vjswe",
-    "awsui_button_vjswe",
-    "awsui_icon-left_vjswe",
     "awsui_item-element_93a1u",
     "awsui_highlighted_93a1u",
     "awsui_expandable_16mm3",
@@ -116,7 +118,7 @@ Object {
   "checkbox": Array [
     "awsui_root_k2y2q",
   ],
-  "code": Array [
+  "code-editor": Array [
     "awsui_code-editor_1gl9c",
     "awsui_pane_1gl9c",
     "awsui_editor_1gl9c",
@@ -127,7 +129,7 @@ Object {
     "awsui_loading-screen_1gl9c",
     "awsui_error-screen_1gl9c",
   ],
-  "collection": Array [
+  "collection-preferences": Array [
     "awsui_visible-content_tc96w",
     "awsui_visible-content-toggle_tc96w",
     "awsui_visible-content-groups_tc96w",
@@ -161,7 +163,7 @@ Object {
     "awsui_sticky-columns-first_tc96w",
     "awsui_sticky-columns-last_tc96w",
   ],
-  "column": Array [
+  "column-layout": Array [
     "awsui_column-layout_vvxn7",
   ],
   "container": Array [
@@ -172,15 +174,19 @@ Object {
     "awsui_content_14iqq",
     "awsui_footer_14iqq",
   ],
-  "content": Array [
+  "content-layout": Array [
     "awsui_layout_5gtk3",
     "awsui_header_5gtk3",
     "awsui_content_5gtk3",
   ],
-  "date": Array [
+  "date-input": Array [
     "awsui_root_yodkx",
+  ],
+  "date-picker": Array [
     "awsui_root_145pa",
     "awsui_open-calendar-button_145pa",
+  ],
+  "date-range-picker": Array [
     "awsui_root_mgja0",
     "awsui_calendar-header_mgja0",
     "awsui_calendar-next-month-btn_mgja0",
@@ -211,7 +217,7 @@ Object {
     "awsui_header_1sxt8",
     "awsui_test-utils-drawer-content_1sxt8",
   ],
-  "expandable": Array [
+  "expandable-section": Array [
     "awsui_root_gwq0h",
     "awsui_expand-button_gwq0h",
     "awsui_icon-container_gwq0h",
@@ -220,7 +226,7 @@ Object {
     "awsui_content_gwq0h",
     "awsui_content-expanded_gwq0h",
   ],
-  "file": Array [
+  "file-upload": Array [
     "awsui_upload-button_4xu1k",
     "awsui_upload-input_4xu1k",
     "awsui_root_1ubbm",
@@ -246,6 +252,14 @@ Object {
     "awsui_flash-type-warning_1q84n",
   ],
   "form": Array [
+    "awsui_root_1i0s3",
+    "awsui_header_1i0s3",
+    "awsui_content_1i0s3",
+    "awsui_error_1i0s3",
+    "awsui_secondary-actions_1i0s3",
+    "awsui_actions_1i0s3",
+  ],
+  "form-field": Array [
     "awsui_error_14mhv",
     "awsui_root_14mhv",
     "awsui_label_14mhv",
@@ -256,12 +270,6 @@ Object {
     "awsui_secondary-control_14mhv",
     "awsui_control_14mhv",
     "awsui_error__message_14mhv",
-    "awsui_root_1i0s3",
-    "awsui_header_1i0s3",
-    "awsui_content_1i0s3",
-    "awsui_error_1i0s3",
-    "awsui_secondary-actions_1i0s3",
-    "awsui_actions_1i0s3",
   ],
   "grid": Array [
     "awsui_grid_14yj0",
@@ -275,7 +283,7 @@ Object {
     "awsui_heading-text_2qdw9",
     "awsui_counter_2qdw9",
   ],
-  "help": Array [
+  "help-panel": Array [
     "awsui_help-panel_1d237",
     "awsui_header_1d237",
     "awsui_content_1d237",
@@ -344,13 +352,13 @@ Object {
     "awsui_ticks--x_f0fot",
     "awsui_button_m5h9f",
   ],
-  "line": Array [
+  "line-chart": Array [
     "awsui_root_g9v3m",
   ],
   "link": Array [
     "awsui_link_4c84z",
   ],
-  "mixed": Array [
+  "mixed-line-bar-chart": Array [
     "awsui_series_1yz9c",
     "awsui_root_1yz9c",
     "awsui_series--highlighted_1yz9c",
@@ -372,7 +380,7 @@ Object {
     "awsui_page-number_fvjdu",
     "awsui_button-current_fvjdu",
   ],
-  "pie": Array [
+  "pie-chart": Array [
     "awsui_segment_1edmh",
     "awsui_label_1edmh",
     "awsui_root_1edmh",
@@ -387,7 +395,7 @@ Object {
     "awsui_root_xjuzf",
     "awsui_trigger_xjuzf",
   ],
-  "progress": Array [
+  "progress-bar": Array [
     "awsui_root_11huc",
     "awsui_result-text_11huc",
     "awsui_result-container-error_11huc",
@@ -395,17 +403,17 @@ Object {
     "awsui_result-button_11huc",
     "awsui_percentage_11huc",
   ],
-  "property": Array [
+  "property-filter": Array [
     "awsui_root_1wzqe",
     "awsui_custom-control_1wzqe",
     "awsui_remove-all_1wzqe",
     "awsui_custom-filter-actions_1wzqe",
   ],
-  "radio": Array [
+  "radio-group": Array [
     "awsui_root_1mabk",
     "awsui_radio_1mabk",
   ],
-  "s3": Array [
+  "s3-resource-selector": Array [
     "awsui_submit-button_12hyz",
     "awsui_root_1vtzr",
     "awsui_view-button_1vtzr",
@@ -415,7 +423,7 @@ Object {
     "awsui_root_1u0yw",
     "awsui_alert_1u0yw",
   ],
-  "segmented": Array [
+  "segmented-control": Array [
     "awsui_segment_8cbea",
     "awsui_selected_8cbea",
     "awsui_root_8cbea",
@@ -424,7 +432,7 @@ Object {
     "awsui_placeholder_dwuol",
     "awsui_root_r2vco",
   ],
-  "side": Array [
+  "side-navigation": Array [
     "awsui_root_l0dv0",
     "awsui_header_l0dv0",
     "awsui_header-link_l0dv0",
@@ -437,13 +445,13 @@ Object {
     "awsui_link-active_l0dv0",
     "awsui_divider_l0dv0",
   ],
-  "space": Array [
+  "space-between": Array [
     "awsui_root_18582",
   ],
   "spinner": Array [
     "awsui_root_1612d",
   ],
-  "split": Array [
+  "split-panel": Array [
     "awsui_root_1r9lg",
     "awsui_preferences-button_1r9lg",
     "awsui_close-button_1r9lg",
@@ -454,7 +462,7 @@ Object {
     "awsui_open-button_1r9lg",
     "awsui_header-text_1r9lg",
   ],
-  "status": Array [
+  "status-indicator": Array [
     "awsui_root_1cbgc",
   ],
   "table": Array [
@@ -486,16 +494,18 @@ Object {
     "awsui_root_14rmt",
     "awsui_tabs-content-active_14rmt",
   ],
-  "tag": Array [
+  "tag-editor": Array [
     "awsui_root_brdst",
     "awsui_loading_brdst",
     "awsui_undo-button_brdst",
   ],
-  "text": Array [
+  "text-content": Array [
+    "awsui_text-content_6absk",
+  ],
+  "text-filter": Array [
     "awsui_root_1sdq3",
     "awsui_input_1sdq3",
     "awsui_results_1sdq3",
-    "awsui_text-content_6absk",
   ],
   "textarea": Array [
     "awsui_root_qk1j1",
@@ -506,18 +516,18 @@ Object {
     "awsui_tile-container_vj6p7",
     "awsui_image_vj6p7",
   ],
-  "time": Array [
+  "time-input": Array [
     "awsui_root_l809c",
   ],
   "toggle": Array [
     "awsui_root_4yi2u",
   ],
-  "token": Array [
+  "token-group": Array [
     "awsui_root_dm8gx",
     "awsui_dismiss-button_dm8gx",
     "awsui_token_dm8gx",
   ],
-  "top": Array [
+  "top-navigation": Array [
     "awsui_top-navigation_1ca1i",
     "awsui_hidden_1ca1i",
     "awsui_identity_1ca1i",
@@ -539,7 +549,7 @@ Object {
     "awsui_overflow-menu-back-button_k5dlb",
     "awsui_overflow-menu-dismiss-button_k5dlb",
   ],
-  "tutorial": Array [
+  "tutorial-panel": Array [
     "awsui_tutorial-box_ig8mp",
     "awsui_tutorial-description_ig8mp",
     "awsui_start_ig8mp",

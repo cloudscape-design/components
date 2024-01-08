@@ -107,7 +107,7 @@ function trimSelectorHash(selector: string) {
 }
 
 function getComponentNameFromFilePath(filePath: string) {
-  return filePath.match(/lib\/components\/(\w+)/)![1];
+  return filePath.match(/lib\/components\/([\w-]+)/)![1];
 }
 
 function buildTemplateString(node: types.TemplateLiteral) {
