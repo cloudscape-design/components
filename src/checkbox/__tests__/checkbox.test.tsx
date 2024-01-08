@@ -224,9 +224,13 @@ test('Should set aria-describedby and aria-labelledby from ariaLabelledby and ar
 });
 
 describe('table grid navigation support', () => {
+  function getCheckboxInput(selector: string) {
+    return createWrapper().findCheckbox(selector)!.findNativeInput().getElement();
+  }
+
   test('does not override tab index when keyboard navigation is not active', () => {
     renderWithGridNavigation({ target: null }, <Checkbox id="checkbox" checked={false} />);
-    expect(document.querySelector('#checkbox input')).not.toHaveAttribute('tabIndex');
+    expect(getCheckboxInput('#checkbox')).not.toHaveAttribute('tabIndex');
   });
 
   test('overrides tab index when keyboard navigation is active', () => {
@@ -237,8 +241,8 @@ describe('table grid navigation support', () => {
         <Checkbox id="checkbox2" checked={false} />
       </div>
     );
-    expect(document.querySelector('#checkbox1 input')).toHaveAttribute('tabIndex', '0');
-    expect(document.querySelector('#checkbox2 input')).toHaveAttribute('tabIndex', '-1');
+    expect(getCheckboxInput('#checkbox1')).toHaveAttribute('tabIndex', '0');
+    expect(getCheckboxInput('#checkbox2')).toHaveAttribute('tabIndex', '-1');
   });
 
   test('does not override explicit tab index with 0', () => {
@@ -249,7 +253,7 @@ describe('table grid navigation support', () => {
         <InternalCheckbox id="checkbox2" checked={false} tabIndex={-1} />
       </div>
     );
-    expect(document.querySelector('#checkbox1 input')).toHaveAttribute('tabIndex', '-1');
-    expect(document.querySelector('#checkbox2 input')).toHaveAttribute('tabIndex', '-1');
+    expect(getCheckboxInput('#checkbox1')).toHaveAttribute('tabIndex', '-1');
+    expect(getCheckboxInput('#checkbox2')).toHaveAttribute('tabIndex', '-1');
   });
 });

@@ -311,12 +311,16 @@ describe('value', () => {
 });
 
 describe('table grid navigation support', () => {
+  function getRadioInput(selector: string) {
+    return createWrapper().findRadioGroup(selector)!.findButtons()[0].findNativeInput().getElement();
+  }
+
   test('does not override tab index when keyboard navigation is not active', () => {
     renderWithGridNavigation(
       { target: null },
       <RadioGroup id="radio" value={null} items={[{ value: '1', label: 'One' }]} />
     );
-    expect(document.querySelector('#radio input')).not.toHaveAttribute('tabIndex');
+    expect(getRadioInput('#radio')).not.toHaveAttribute('tabIndex');
   });
 
   test('overrides tab index when keyboard navigation is active', () => {
@@ -327,7 +331,7 @@ describe('table grid navigation support', () => {
         <RadioGroup id="radio2" value={null} items={[{ value: '2', label: 'Two' }]} />
       </div>
     );
-    expect(document.querySelector('#radio1 input')).toHaveAttribute('tabIndex', '0');
-    expect(document.querySelector('#radio2 input')).toHaveAttribute('tabIndex', '-1');
+    expect(getRadioInput('#radio1')).toHaveAttribute('tabIndex', '0');
+    expect(getRadioInput('#radio2')).toHaveAttribute('tabIndex', '-1');
   });
 });

@@ -566,9 +566,13 @@ describe('Button Component', () => {
 });
 
 describe('table grid navigation support', () => {
+  function getButton(selector: string) {
+    return createWrapper().findButton(selector)!.getElement();
+  }
+
   test('does not override tab index when keyboard navigation is not active', () => {
     renderWithGridNavigation({ target: null }, <Button id="button" />);
-    expect(document.querySelector('#button')).not.toHaveAttribute('tabIndex');
+    expect(getButton('#button')).not.toHaveAttribute('tabIndex');
   });
 
   test('overrides tab index when keyboard navigation is active', () => {
@@ -579,8 +583,8 @@ describe('table grid navigation support', () => {
         <Button id="button2" />
       </div>
     );
-    expect(document.querySelector('#button1')).toHaveAttribute('tabIndex', '0');
-    expect(document.querySelector('#button2')).toHaveAttribute('tabIndex', '-1');
+    expect(getButton('#button1')).toHaveAttribute('tabIndex', '0');
+    expect(getButton('#button2')).toHaveAttribute('tabIndex', '-1');
   });
 
   test('does not override explicit tab index with 0', () => {
@@ -591,7 +595,7 @@ describe('table grid navigation support', () => {
         <InternalButton id="button2" __nativeAttributes={{ tabIndex: -2 }} />
       </div>
     );
-    expect(document.querySelector('#button1')).toHaveAttribute('tabIndex', '-2');
-    expect(document.querySelector('#button2')).toHaveAttribute('tabIndex', '-1');
+    expect(getButton('#button1')).toHaveAttribute('tabIndex', '-2');
+    expect(getButton('#button2')).toHaveAttribute('tabIndex', '-1');
   });
 });

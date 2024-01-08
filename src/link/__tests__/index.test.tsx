@@ -277,14 +277,18 @@ describe('Link component', () => {
 });
 
 describe('table grid navigation support', () => {
+  function getLink(selector: string) {
+    return createWrapper().findLink(selector)!.getElement();
+  }
+
   test('does not override tab index for button link when keyboard navigation is not active', () => {
     renderWithGridNavigation({ target: null }, <Link id="link" />);
-    expect(document.querySelector('#link')).toHaveAttribute('tabIndex', '0');
+    expect(getLink('#link')).toHaveAttribute('tabIndex', '0');
   });
 
   test('does not override tab index for anchor link when keyboard navigation is not active', () => {
     renderWithGridNavigation({ target: null }, <Link id="link" href="#" />);
-    expect(document.querySelector('#link')).not.toHaveAttribute('tabIndex');
+    expect(getLink('#link')).not.toHaveAttribute('tabIndex');
   });
 
   test.each([undefined, '#'])('overrides tab index when keyboard navigation is active href=%s', href => {
@@ -295,7 +299,7 @@ describe('table grid navigation support', () => {
         <Link id="link2" href={href} />
       </div>
     );
-    expect(document.querySelector('#link1')).toHaveAttribute('tabIndex', '0');
-    expect(document.querySelector('#link2')).toHaveAttribute('tabIndex', '-1');
+    expect(getLink('#link1')).toHaveAttribute('tabIndex', '0');
+    expect(getLink('#link2')).toHaveAttribute('tabIndex', '-1');
   });
 });
