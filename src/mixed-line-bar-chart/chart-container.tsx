@@ -332,8 +332,6 @@ export default function ChartContainer<T extends ChartDataTypes>({
     return highlightedPoint?.datum?.x ?? null;
   }, [highlightedPoint, verticalMarkerX, highlightedGroupIndex, barGroups]);
 
-  const isSomeElementHighlighted = !!(highlightedPoint || highlightedGroupIndex !== null || verticalMarkerX);
-
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -356,6 +354,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
     if (!outsideClick) {
       // The delay is needed to bypass focus events caused by click or keypress needed to unpin the popover.
       setTimeout(() => {
+        const isSomeElementHighlighted = !!(highlightedPoint || highlightedGroupIndex !== null || verticalMarkerX);
         if (isSomeElementHighlighted) {
           plotRef.current?.focusApplication();
         } else {
