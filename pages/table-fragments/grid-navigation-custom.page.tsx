@@ -34,9 +34,11 @@ import {
   getTableRowRoleProps,
   getTableWrapperRoleProps,
   GridNavigationProvider,
-  GridNavigationSuppressed,
-  useGridNavigationFocusable,
 } from '~components/table/table-role';
+import {
+  useSingleTabStopNavigation,
+  SingleTabStopNavigationSuppressed,
+} from '~components/internal/context/single-tab-stop-navigation-context';
 import { orderBy, range } from 'lodash';
 import appLayoutLabels from '../app-layout/utils/labels';
 import { stateToStatusIndicator } from '../table/shared-configs';
@@ -318,21 +320,16 @@ export default function Page() {
 
 function Cell({ tag: Tag, ...rest }: React.HTMLAttributes<HTMLTableCellElement> & { tag: 'th' | 'td' }) {
   const cellRef = useRef<HTMLTableCellElement>(null);
-  const { shouldMuteUserFocus } = useGridNavigationFocusable(cellRef);
-  return <Tag {...rest} ref={cellRef} tabIndex={shouldMuteUserFocus ? -1 : 0} />;
+  const { tabIndex } = useSingleTabStopNavigation(cellRef);
+  return <Tag {...rest} ref={cellRef} tabIndex={tabIndex} />;
 }
 
 function SortingHeader({ label, onClick, icon }: { label: string; onClick: () => void; icon: React.ReactNode }) {
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const { shouldMuteUserFocus } = useGridNavigationFocusable(buttonRef);
+  const { tabIndex } = useSingleTabStopNavigation(buttonRef);
   return (
     <div style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap' }}>
-      <button
-        ref={buttonRef}
-        tabIndex={shouldMuteUserFocus ? -1 : 0}
-        className={styles['custom-table-sorting-header']}
-        onClick={onClick}
-      >
+      <button ref={buttonRef} tabIndex={tabIndex} className={styles['custom-table-sorting-header']} onClick={onClick}>
         {label}
       </button>
       {icon}
@@ -423,14 +420,14 @@ function DnsEditCell({ item }: { item: Instance }) {
   const [value, setValue] = useState(item.dnsName ?? '');
 
   const triggerRef = useRef<HTMLDivElement>(null);
-  const { shouldMuteUserFocus } = useGridNavigationFocusable(triggerRef, { navigationSuppressed: active });
+  const { tabIndex } = useSingleTabStopNavigation(triggerRef);
   const dialogRef = useRef<HTMLDivElement>(null);
 
   return !active ? (
     <div
       ref={triggerRef}
       role="button"
-      tabIndex={shouldMuteUserFocus ? -1 : 0}
+      tabIndex={tabIndex}
       aria-label="Edit DNS name"
       onClick={() => setActive(true)}
       onKeyDown={event => {
@@ -442,7 +439,7 @@ function DnsEditCell({ item }: { item: Instance }) {
       {item.dnsName}
     </div>
   ) : (
-    <GridNavigationSuppressed>
+    <SingleTabStopNavigationSuppressed>
       <div
         ref={dialogRef}
         role="dialog"
@@ -463,7 +460,7 @@ function DnsEditCell({ item }: { item: Instance }) {
         <Button iconName="check" ariaLabel="Save" onClick={() => setActive(false)} />
         <Button iconName="close" ariaLabel="Cancel" onClick={() => setActive(false)} />
       </div>
-    </GridNavigationSuppressed>
+    </SingleTabStopNavigationSuppressed>
   );
 }
 

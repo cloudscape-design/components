@@ -1,12 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { FocusableDefinition } from './interfaces';
-
-export function getFocusableElement(focusable: FocusableDefinition): null | HTMLElement {
-  return typeof focusable === 'function' ? focusable() : focusable.current;
-}
-
 /**
  * Finds the closest row to the targetAriaRowIndex+delta in the direction of delta.
  */

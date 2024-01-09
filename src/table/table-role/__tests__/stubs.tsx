@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useRef, useState } from 'react';
+import { GridNavigationProvider } from '../../../../lib/components/table/table-role';
 import {
-  GridNavigationProvider,
-  GridNavigationSuppressed,
+  SingleTabStopNavigationSuppressed,
   useSingleTabStopNavigation,
 } from '../../../../lib/components/internal/context/single-tab-stop-navigation-context';
 
@@ -101,24 +101,30 @@ function EditableCellContent({ item }: { item: Item }) {
       {item.value ?? 0} <Button aria-label={`Edit value ${item.value}`} onClick={() => setActive(true)} />
     </span>
   ) : (
-    <GridNavigationSuppressed>
+    <SingleTabStopNavigationSuppressed>
       <span role="dialog">
-        <input value={item.value} autoFocus={true} aria-label="Value input" tabIndex={0} />
+        <Input value={item.value} autoFocus={true} aria-label="Value input" tabIndex={0} />
         <Button aria-label="Save" onClick={() => setActive(false)} />
         <Button aria-label="Discard" onClick={() => setActive(false)} />
       </span>
-    </GridNavigationSuppressed>
+    </SingleTabStopNavigationSuppressed>
   );
+}
+
+function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const { tabIndex } = useSingleTabStopNavigation(inputRef, { tabIndex: 0 });
+  return <input {...props} ref={inputRef} tabIndex={tabIndex} />;
 }
 
 function Button(props: React.HTMLAttributes<HTMLButtonElement>) {
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const { shouldMuteUserFocus } = useSingleTabStopNavigation(buttonRef);
-  return <button {...props} ref={buttonRef} tabIndex={shouldMuteUserFocus ? -1 : 0} />;
+  const { tabIndex } = useSingleTabStopNavigation(buttonRef, { tabIndex: 0 });
+  return <button {...props} ref={buttonRef} tabIndex={tabIndex} />;
 }
 
 function Cell({ tag: Tag, ...rest }: React.HTMLAttributes<HTMLTableCellElement> & { tag: 'th' | 'td' }) {
   const cellRef = useRef<HTMLTableCellElement>(null);
-  const { shouldMuteUserFocus } = useSingleTabStopNavigation(cellRef);
-  return <Tag {...rest} ref={cellRef} tabIndex={shouldMuteUserFocus ? -1 : 0} />;
+  const { tabIndex } = useSingleTabStopNavigation(cellRef);
+  return <Tag {...rest} ref={cellRef} tabIndex={tabIndex} />;
 }

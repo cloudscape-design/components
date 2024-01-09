@@ -16,7 +16,7 @@ function Button(props: React.HTMLAttributes<HTMLButtonElement>) {
 }
 
 test('does not override tab index when keyboard navigation is not active', () => {
-  renderWithSingleTabStopNavigation(<Button id="button" />);
+  renderWithSingleTabStopNavigation(<Button id="button" />, { navigationActive: false });
   expect(document.querySelector('#button')).not.toHaveAttribute('tabIndex');
 });
 
@@ -51,7 +51,7 @@ test('propagates keyboard navigation state', () => {
   }
 
   const { rerender } = render(
-    <SingleTabStopNavigationContext.Provider value={{ navigationActive: true, focusTarget: null }}>
+    <SingleTabStopNavigationContext.Provider value={{ navigationActive: true, registerFocusable: () => () => {} }}>
       <Component />
     </SingleTabStopNavigationContext.Provider>
   );
@@ -59,7 +59,7 @@ test('propagates keyboard navigation state', () => {
   expect(document.querySelector('div')).toHaveTextContent('true');
 
   rerender(
-    <SingleTabStopNavigationContext.Provider value={{ navigationActive: false, focusTarget: null }}>
+    <SingleTabStopNavigationContext.Provider value={{ navigationActive: false, registerFocusable: () => () => {} }}>
       <Component />
     </SingleTabStopNavigationContext.Provider>
   );
