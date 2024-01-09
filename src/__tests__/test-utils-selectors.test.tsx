@@ -81,7 +81,7 @@ function extractSelectorProperties(file: string, onExtract: (filePath: string, p
         },
         // Find selector references and extract used property names.
         MemberExpression(path: NodePath<types.MemberExpression>) {
-          if (path.node.object.type === 'Identifier' && selectorToFilePath.has(path.node.object.name)) {
+          if (path.node.object.type === 'Identifier' && isSelectorsImport(path.node.object.name, path)) {
             onExtract(selectorToFilePath.get(path.node.object.name)!, getPropertyName(path));
           }
         },
@@ -141,4 +141,14 @@ function matchProperties(usedProperties: string[], property: string) {
     }
   }
   return false;
+}
+
+function isSelectorsImport(objectName: string, path: NodePath) {
+  const binding = path.scope.getBinding(objectName);
+  return (
+    binding &&
+    binding.kind === 'module' &&
+    binding.path.parent.type === 'ImportDeclaration' &&
+    binding.path.parent.source.value.endsWith('selectors.js')
+  );
 }
