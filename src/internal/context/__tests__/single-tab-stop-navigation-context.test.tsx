@@ -4,6 +4,7 @@
 import React, { useRef } from 'react';
 import { render } from '@testing-library/react';
 import {
+  SingleTabStopNavigationSuppressed,
   SingleTabStopNavigationContext,
   useSingleTabStopNavigation,
 } from '../../../../lib/components/internal/context/single-tab-stop-navigation-context';
@@ -44,25 +45,27 @@ test('does not override explicit tab index with 0', () => {
   expect(document.querySelector('#button2')).toHaveAttribute('tabIndex', '-2');
 });
 
-test('propagates keyboard navigation state', () => {
+test('propagates and suppresses navigation active state', () => {
   function Component() {
     const { navigationActive } = useSingleTabStopNavigation(null);
     return <div>{String(navigationActive)}</div>;
   }
+  function Test({ navigationActive, suppressed }: { navigationActive: boolean; suppressed: boolean }) {
+    return (
+      <SingleTabStopNavigationContext.Provider value={{ navigationActive, registerFocusable: () => () => {} }}>
+        <SingleTabStopNavigationSuppressed suppressed={suppressed}>
+          <Component />
+        </SingleTabStopNavigationSuppressed>
+      </SingleTabStopNavigationContext.Provider>
+    );
+  }
 
-  const { rerender } = render(
-    <SingleTabStopNavigationContext.Provider value={{ navigationActive: true, registerFocusable: () => () => {} }}>
-      <Component />
-    </SingleTabStopNavigationContext.Provider>
-  );
-
+  const { rerender } = render(<Test navigationActive={true} suppressed={false} />);
   expect(document.querySelector('div')).toHaveTextContent('true');
 
-  rerender(
-    <SingleTabStopNavigationContext.Provider value={{ navigationActive: false, registerFocusable: () => () => {} }}>
-      <Component />
-    </SingleTabStopNavigationContext.Provider>
-  );
+  rerender(<Test navigationActive={true} suppressed={true} />);
+  expect(document.querySelector('div')).toHaveTextContent('false');
 
+  rerender(<Test navigationActive={false} suppressed={false} />);
   expect(document.querySelector('div')).toHaveTextContent('false');
 });
