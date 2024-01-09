@@ -198,6 +198,17 @@ export default function Page() {
                     title="Preferences"
                     confirmLabel="Confirm"
                     cancelLabel="Cancel"
+                    customPreference={(
+                      customValue: undefined | { autoRefresh: boolean },
+                      setCustomValue: (value: { autoRefresh: boolean }) => void
+                    ) => (
+                      <Checkbox
+                        checked={!!customValue?.autoRefresh}
+                        onChange={event => setCustomValue({ autoRefresh: event.detail.checked })}
+                      >
+                        Auto-refresh every 10 seconds
+                      </Checkbox>
+                    )}
                     preferences={{
                       contentDisplay: columnDefinitions.map(column => ({
                         id: column.key,
@@ -210,6 +221,7 @@ export default function Page() {
                           .filter(column => column.visible)
                           .map(column => column.id)
                           .join(','),
+                        autoRefresh: detail.custom.autoRefresh,
                       })
                     }
                     contentDisplayPreference={{
@@ -223,13 +235,6 @@ export default function Page() {
                       ...contentDisplayPreferenceI18nStrings,
                     }}
                   />
-
-                  <Checkbox
-                    checked={autoRefresh}
-                    onChange={event => setUrlParams({ autoRefresh: event.detail.checked })}
-                  >
-                    Auto-refresh every 10 seconds
-                  </Checkbox>
 
                   <Button onClick={() => setRefreshCounter(prev => prev + 1)} iconName="refresh" ariaLabel="Refresh">
                     Refresh
@@ -272,13 +277,9 @@ export default function Page() {
                           {...getTableColHeaderRoleProps({ tableRole, colIndex })}
                         >
                           <SortingHeader
-                            label={column.label}
-                            icon={
-                              <>
-                                {sortingKey === column.key && sortingDirection === -1 && <Icon name="angle-down" />}
-                                {sortingKey === column.key && sortingDirection === 1 && <Icon name="angle-up" />}
-                              </>
-                            }
+                            column={column}
+                            sortingKey={sortingKey}
+                            sortingDirection={sortingDirection}
                             onClick={() => {
                               if (sortingKey !== column.key) {
                                 setSortingKey(column.key);
@@ -324,15 +325,26 @@ function Cell({ tag: Tag, ...rest }: React.HTMLAttributes<HTMLTableCellElement> 
   return <Tag {...rest} ref={cellRef} tabIndex={tabIndex} />;
 }
 
-function SortingHeader({ label, onClick, icon }: { label: string; onClick: () => void; icon: React.ReactNode }) {
+function SortingHeader({
+  column,
+  sortingKey,
+  sortingDirection,
+  onClick,
+}: {
+  column: { key: string; label: string };
+  sortingKey: null | string;
+  sortingDirection: -1 | 1;
+  onClick: () => void;
+}) {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const { tabIndex } = useSingleTabStopNavigation(buttonRef);
   return (
     <div style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap' }}>
       <button ref={buttonRef} tabIndex={tabIndex} className={styles['custom-table-sorting-header']} onClick={onClick}>
-        {label}
+        {column.label}
       </button>
-      {icon}
+      {sortingKey === column.key && sortingDirection === -1 && <Icon name="angle-down" />}
+      {sortingKey === column.key && sortingDirection === 1 && <Icon name="angle-up" />}
     </div>
   );
 }
