@@ -136,9 +136,17 @@ function matchProperties(usedProperties: string[], property: string) {
     if (testProperty === property) {
       return true;
     }
-    if (testProperty.includes('*') && new RegExp(testProperty.replace(/\*/g, '.*')).test(property)) {
+    if (matchWildcard(testProperty, property)) {
       return true;
     }
+  }
+  return false;
+}
+
+function matchWildcard(testProperty: string, propertyToMatch: string) {
+  if (testProperty.includes('*')) {
+    testProperty = testProperty.replace(/\*/g, '.*');
+    return new RegExp('^' + testProperty + '$').test(propertyToMatch);
   }
   return false;
 }
