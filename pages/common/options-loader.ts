@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { useRef, useState } from 'react';
-import { AutosuggestProps } from '~components/autosuggest';
 
 interface PendingRequest {
   resolve: (value: APIResponse) => void;
@@ -30,11 +29,6 @@ export interface OptionsLoaderProps {
   pageSize?: number;
   timeout?: number;
   randomErrors?: boolean;
-}
-
-export interface OptionsLoaderState<Item> {
-  data: readonly Item[];
-  status: AutosuggestProps.StatusType;
 }
 
 export interface FetchItemsProps<Item> {
