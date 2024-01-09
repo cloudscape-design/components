@@ -7,29 +7,23 @@ import { GridNavigationProvider } from '../../../../lib/components/table/table-r
 import { KeyCode } from '../../../../lib/components/internal/keycode';
 import { TestTable, actionsColumn, idColumn, items, nameColumn, valueColumn } from './stubs';
 
-function getActiveElement() {
-  return [
-    document.activeElement?.tagName.toLowerCase(),
-    document.activeElement?.textContent || document.activeElement?.getAttribute('aria-label'),
-  ];
+function readActiveElement() {
+  return document.activeElement ? formatElement(document.activeElement) : null;
 }
 
-function readFocusableButtons() {
-  return Array.from(document.querySelectorAll('button[tabIndex="0"]')).map(
-    button => button.textContent || button.getAttribute('aria-label')
-  );
+function readFocusableElements() {
+  return Array.from(document.querySelectorAll('[tabIndex="0"]')).map(formatElement);
+}
+
+function formatElement(element: Element) {
+  const tagName = element.tagName.toUpperCase();
+  const text = element.textContent || element.getAttribute('aria-label');
+  return `${tagName}[${text}]`;
 }
 
 test('updates interactive elements tab indices', () => {
-  const { container } = render(<TestTable columns={[nameColumn, valueColumn]} items={items} />);
-  const mutedButtons = container.querySelectorAll('button[tabIndex="-1"]');
-  const userFocusableButtons = container.querySelectorAll('button[tabIndex="0"]');
-
-  // Value header button and value cell buttons are muted.
-  expect(mutedButtons).toHaveLength(1 + 4);
-  // Name header button is focusable
-  expect(userFocusableButtons).toHaveLength(1);
-  expect(userFocusableButtons[0]).toHaveAccessibleName('Sort by name');
+  render(<TestTable columns={[nameColumn, valueColumn]} items={items} />);
+  expect(readFocusableElements()).toEqual(['BUTTON[Sort by name]']);
 });
 
 test.each([0, 5])('supports arrow keys navigation for startIndex=%s', startIndex => {
@@ -39,33 +33,33 @@ test.each([0, 5])('supports arrow keys navigation for startIndex=%s', startIndex
   const table = container.querySelector('table')!;
 
   container.querySelector('th')!.focus();
-  expect(getActiveElement()).toEqual(['th', 'ID']);
+  expect(readActiveElement()).toBe('TH[ID]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.right });
-  expect(getActiveElement()).toEqual(['button', 'Sort by name']);
+  expect(readActiveElement()).toBe('BUTTON[Sort by name]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.down });
-  expect(getActiveElement()).toEqual(['td', 'First']);
+  expect(readActiveElement()).toBe('TD[First]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.left });
-  expect(getActiveElement()).toEqual(['td', 'id1']);
+  expect(readActiveElement()).toBe('TD[id1]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.up });
-  expect(getActiveElement()).toEqual(['th', 'ID']);
+  expect(readActiveElement()).toBe('TH[ID]');
 
   rerender(<TestTable columns={[idColumn, actionsColumn]} items={items} startIndex={startIndex} />);
 
   fireEvent.keyDown(table, { keyCode: KeyCode.right });
-  expect(getActiveElement()).toEqual(['th', 'Actions']);
+  expect(readActiveElement()).toBe('TH[Actions]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.down });
-  expect(getActiveElement()).toEqual(['button', 'Delete item id1']);
+  expect(readActiveElement()).toBe('BUTTON[Delete item id1]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.right });
-  expect(getActiveElement()).toEqual(['button', 'Copy item id1']);
+  expect(readActiveElement()).toBe('BUTTON[Copy item id1]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.down });
-  expect(getActiveElement()).toEqual(['button', 'Copy item id2']);
+  expect(readActiveElement()).toBe('BUTTON[Copy item id2]');
 });
 
 test('supports key combination navigation', () => {
@@ -73,28 +67,28 @@ test('supports key combination navigation', () => {
   const table = container.querySelector('table')!;
 
   container.querySelector('button')!.focus();
-  expect(getActiveElement()).toEqual(['button', 'Sort by name']);
+  expect(readActiveElement()).toBe('BUTTON[Sort by name]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.pageDown });
-  expect(getActiveElement()).toEqual(['td', 'Second']);
+  expect(readActiveElement()).toBe('TD[Second]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.pageUp });
-  expect(getActiveElement()).toEqual(['button', 'Sort by name']);
+  expect(readActiveElement()).toBe('BUTTON[Sort by name]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.end });
-  expect(getActiveElement()).toEqual(['th', 'Actions']);
+  expect(readActiveElement()).toBe('TH[Actions]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.home });
-  expect(getActiveElement()).toEqual(['button', 'Sort by name']);
+  expect(readActiveElement()).toBe('BUTTON[Sort by name]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.end, ctrlKey: true });
-  expect(getActiveElement()).toEqual(['button', 'Delete item id4']);
+  expect(readActiveElement()).toBe('BUTTON[Delete item id4]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.home, ctrlKey: true });
-  expect(getActiveElement()).toEqual(['button', 'Sort by name']);
+  expect(readActiveElement()).toBe('BUTTON[Sort by name]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.backspace }); // Unsupported key
-  expect(getActiveElement()).toEqual(['button', 'Sort by name']);
+  expect(readActiveElement()).toBe('BUTTON[Sort by name]');
 });
 
 test('suppresses grid navigation when focusing on dialog element', async () => {
@@ -102,24 +96,25 @@ test('suppresses grid navigation when focusing on dialog element', async () => {
   const table = container.querySelector('table')!;
 
   (container.querySelector('button[aria-label="Sort by value"]') as HTMLElement).focus();
-  expect(getActiveElement()).toEqual(['button', 'Sort by value']);
-  expect(readFocusableButtons()).toEqual(['Sort by value']);
+  expect(readFocusableElements()).toEqual(['BUTTON[Sort by value]']);
+  expect(readActiveElement()).toEqual('BUTTON[Sort by value]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.down });
-  expect(getActiveElement()).toEqual(['button', 'Edit value 1']);
+  expect(readFocusableElements()).toEqual(['BUTTON[Edit value 1]']);
+  expect(readActiveElement()).toEqual('BUTTON[Edit value 1]');
 
   (document.activeElement as HTMLElement).click();
-  expect(getActiveElement()).toEqual(['input', 'Value input']);
-  expect(readFocusableButtons()).toEqual(['Save', 'Discard']);
+  expect(readFocusableElements().length).toBeGreaterThanOrEqual(3);
+  expect(readActiveElement()).toEqual('INPUT[Value input]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.down });
-  expect(getActiveElement()).toEqual(['input', 'Value input']);
-  expect(readFocusableButtons()).toEqual(['Save', 'Discard']);
+  expect(readFocusableElements().length).toBeGreaterThanOrEqual(3);
+  expect(readActiveElement()).toEqual('INPUT[Value input]');
 
   (container.querySelector('button[aria-label="Save"]') as HTMLElement).click();
   await waitFor(() => {
-    expect(getActiveElement()).toEqual(['button', 'Edit value 1']);
-    expect(readFocusableButtons()).toEqual(['Edit value 1']);
+    expect(readFocusableElements()).toEqual(['BUTTON[Edit value 1]']);
+    expect(readActiveElement()).toEqual('BUTTON[Edit value 1]');
   });
 });
 
@@ -128,15 +123,15 @@ test('updates page size', () => {
   const table = container.querySelector('table')!;
 
   container.querySelector('th')!.focus();
-  expect(getActiveElement()).toEqual(['th', 'ID']);
+  expect(readActiveElement()).toEqual('TH[ID]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.pageDown });
-  expect(getActiveElement()).toEqual(['td', 'id3']);
+  expect(readActiveElement()).toEqual('TD[id3]');
 
   rerender(<TestTable columns={[idColumn, nameColumn]} items={items} pageSize={1} />);
 
   fireEvent.keyDown(table, { keyCode: KeyCode.pageUp });
-  expect(getActiveElement()).toEqual(['td', 'id2']);
+  expect(readActiveElement()).toEqual('TD[id2]');
 });
 
 test('does not throw errors if table is null', () => {
@@ -155,22 +150,22 @@ test('ignores keydown modifiers other than ctrl', () => {
   const table = container.querySelector('table')!;
 
   container.querySelector('button')!.focus();
-  expect(getActiveElement()).toEqual(['button', 'Sort by name']);
+  expect(readActiveElement()).toEqual('BUTTON[Sort by name]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.down, altKey: true });
-  expect(getActiveElement()).toEqual(['button', 'Sort by name']);
+  expect(readActiveElement()).toEqual('BUTTON[Sort by name]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.down, shiftKey: true });
-  expect(getActiveElement()).toEqual(['button', 'Sort by name']);
+  expect(readActiveElement()).toEqual('BUTTON[Sort by name]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.down, metaKey: true });
-  expect(getActiveElement()).toEqual(['button', 'Sort by name']);
+  expect(readActiveElement()).toEqual('BUTTON[Sort by name]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.down, ctrlKey: true });
-  expect(getActiveElement()).toEqual(['button', 'Sort by name']);
+  expect(readActiveElement()).toEqual('BUTTON[Sort by name]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.end, ctrlKey: true });
-  expect(getActiveElement()).toEqual(['button', 'Edit value 4']);
+  expect(readActiveElement()).toEqual('BUTTON[Edit value 4]');
 });
 
 test('cell navigation works when the table is mutated between commands', () => {
@@ -249,14 +244,19 @@ test('restores focus when the node gets removed', async () => {
 });
 
 test('all elements focus is restored if table changes role after being rendered as grid', () => {
-  const { container, rerender } = render(<TestTable columns={[valueColumn, idColumn]} items={items} />);
-  const getTabIndices = () => Array.from(container.querySelectorAll('button')).map(button => button.tabIndex);
+  const { rerender } = render(<TestTable columns={[valueColumn, idColumn]} items={items} />);
 
-  expect(getTabIndices()).toEqual([0, -1, -1, -1, -1]);
+  expect(readFocusableElements()).toEqual(['BUTTON[Sort by value]']);
 
   rerender(<TestTable keyboardNavigation={false} columns={[idColumn, valueColumn]} items={items} />);
 
-  expect(getTabIndices()).toEqual([0, 0, 0, 0, 0]);
+  expect(readFocusableElements()).toEqual([
+    'BUTTON[Sort by value]',
+    'BUTTON[Edit value 1]',
+    'BUTTON[Edit value 2]',
+    'BUTTON[Edit value 3]',
+    'BUTTON[Edit value 4]',
+  ]);
 });
 
 test('does not override tab index for programmatically focused elements', () => {

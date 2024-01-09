@@ -26,7 +26,7 @@ import {
   getSubStepAllSelector,
 } from '../internal/analytics/selectors';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
-import { useGridNavigationFocusable } from '../table/table-role';
+import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
 
 type InternalLinkProps = InternalBaseComponentProps<HTMLAnchorElement> &
   Omit<LinkProps, 'variant'> & {
@@ -185,14 +185,14 @@ const InternalLink = React.forwardRef(
       </>
     );
 
-    const { shouldMuteUserFocus } = useGridNavigationFocusable(linkRef);
+    const { tabIndex } = useSingleTabStopNavigation(linkRef, { tabIndex: isButton ? 0 : undefined });
 
     if (isButton) {
       return (
         <a
           {...sharedProps}
           role="button"
-          tabIndex={shouldMuteUserFocus ? -1 : 0}
+          tabIndex={tabIndex}
           onKeyDown={handleButtonKeyDown}
           onClick={handleButtonClick}
         >
@@ -206,7 +206,7 @@ const InternalLink = React.forwardRef(
       // eslint-disable-next-line react/jsx-no-target-blank
       <a
         {...sharedProps}
-        tabIndex={shouldMuteUserFocus ? -1 : undefined}
+        tabIndex={tabIndex}
         target={anchorTarget}
         rel={anchorRel}
         href={href}

@@ -5,9 +5,11 @@ import { render } from '@testing-library/react';
 import createWrapper, { CheckboxWrapper } from '../../../lib/components/test-utils/dom';
 import FormField from '../../../lib/components/form-field';
 import Checkbox, { CheckboxProps } from '../../../lib/components/checkbox';
+import InternalCheckbox from '../../../lib/components/checkbox/internal';
 import styles from '../../../lib/components/internal/components/checkbox-icon/styles.selectors.js';
 import abstractSwitchStyles from '../../../lib/components/internal/components/abstract-switch/styles.css.js';
 import { createCommonTests } from './common-tests';
+import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
 
 function renderCheckbox(jsx: React.ReactElement) {
   const { container, rerender } = render(jsx);
@@ -219,4 +221,39 @@ test('Should set aria-describedby and aria-labelledby from ariaLabelledby and ar
 
   expect(checkboxInputAriaDescribedby).toBe('description-id' + ' ' + toggleDescriptionId);
   expect(checkboxInputAriaLabelledby).toBe(toggleLabelId + ' ' + 'label-id');
+});
+
+describe('table grid navigation support', () => {
+  function getCheckboxInput(selector: string) {
+    return createWrapper().findCheckbox(selector)!.findNativeInput().getElement();
+  }
+
+  test('does not override tab index when keyboard navigation is not active', () => {
+    renderWithSingleTabStopNavigation(<Checkbox id="checkbox" checked={false} />);
+    expect(getCheckboxInput('#checkbox')).not.toHaveAttribute('tabIndex');
+  });
+
+  test('overrides tab index when keyboard navigation is active', () => {
+    const { setCurrentTarget } = renderWithSingleTabStopNavigation(
+      <div>
+        <Checkbox id="checkbox1" checked={false} />
+        <Checkbox id="checkbox2" checked={false} />
+      </div>
+    );
+    setCurrentTarget(getCheckboxInput('#checkbox1'));
+    expect(getCheckboxInput('#checkbox1')).toHaveAttribute('tabIndex', '0');
+    expect(getCheckboxInput('#checkbox2')).toHaveAttribute('tabIndex', '-1');
+  });
+
+  test('does not override explicit tab index with 0', () => {
+    const { setCurrentTarget } = renderWithSingleTabStopNavigation(
+      <div>
+        <InternalCheckbox id="checkbox1" checked={false} tabIndex={-1} />
+        <InternalCheckbox id="checkbox2" checked={false} tabIndex={-1} />
+      </div>
+    );
+    setCurrentTarget(getCheckboxInput('#checkbox1'));
+    expect(getCheckboxInput('#checkbox1')).toHaveAttribute('tabIndex', '-1');
+    expect(getCheckboxInput('#checkbox2')).toHaveAttribute('tabIndex', '-1');
+  });
 });

@@ -5,8 +5,8 @@ import React, { useRef, useState } from 'react';
 import {
   GridNavigationProvider,
   GridNavigationSuppressed,
-  useGridNavigationFocusable,
-} from '../../../../lib/components/table/table-role';
+  useSingleTabStopNavigation,
+} from '../../../../lib/components/internal/context/single-tab-stop-navigation-context';
 
 export interface Item {
   id: string;
@@ -113,12 +113,12 @@ function EditableCellContent({ item }: { item: Item }) {
 
 function Button(props: React.HTMLAttributes<HTMLButtonElement>) {
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const { shouldMuteUserFocus } = useGridNavigationFocusable(buttonRef);
+  const { shouldMuteUserFocus } = useSingleTabStopNavigation(buttonRef);
   return <button {...props} ref={buttonRef} tabIndex={shouldMuteUserFocus ? -1 : 0} />;
 }
 
 function Cell({ tag: Tag, ...rest }: React.HTMLAttributes<HTMLTableCellElement> & { tag: 'th' | 'td' }) {
   const cellRef = useRef<HTMLTableCellElement>(null);
-  const { shouldMuteUserFocus } = useGridNavigationFocusable(cellRef);
+  const { shouldMuteUserFocus } = useSingleTabStopNavigation(cellRef);
   return <Tag {...rest} ref={cellRef} tabIndex={shouldMuteUserFocus ? -1 : 0} />;
 }

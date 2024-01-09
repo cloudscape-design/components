@@ -34,8 +34,8 @@ import {
   getTableRowRoleProps,
   getTableWrapperRoleProps,
   GridNavigationProvider,
-  useGridNavigationFocusable,
   GridNavigationSuppressed,
+  useGridNavigationFocusable,
 } from '~components/table/table-role';
 import { orderBy, range } from 'lodash';
 import appLayoutLabels from '../app-layout/utils/labels';
@@ -229,7 +229,9 @@ export default function Page() {
                     Auto-refresh every 10 seconds
                   </Checkbox>
 
-                  <Button onClick={() => setRefreshCounter(prev => prev + 1)} iconName="refresh" ariaLabel="Refresh" />
+                  <Button onClick={() => setRefreshCounter(prev => prev + 1)} iconName="refresh" ariaLabel="Refresh">
+                    Refresh
+                  </Button>
                 </SpaceBetween>
 
                 <Link onFollow={() => setToolsOpen(true)} data-testid="link-before">
