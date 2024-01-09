@@ -41,7 +41,7 @@ test('does not override explicit tab index with 0', () => {
   );
   setCurrentTarget(document.querySelector('#button1'));
   expect(document.querySelector('#button1')).toHaveAttribute('tabIndex', '-2');
-  expect(document.querySelector('#button2')).toHaveAttribute('tabIndex', '-1');
+  expect(document.querySelector('#button2')).toHaveAttribute('tabIndex', '-2');
 });
 
 test('propagates keyboard navigation state', () => {
