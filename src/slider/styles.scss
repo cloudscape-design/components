@@ -6,9 +6,43 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 
+$thumb-size: 16px;
+
+@mixin base-thumb-styles {
+  background-color: awsui.$color-background-progress-bar-content-default;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  height: $thumb-size;
+  width: $thumb-size;
+  margin-top: 4px;
+  pointer-events: all;
+  position: relative;
+}
+
+@mixin base-thumb-focus-styles {
+  //border: 1px solid awsui.$color-background-progress-bar-content-default;;
+  outline: 2px solid awsui.$color-background-progress-bar-content-default;
+  outline-offset: 0.125rem;
+}
+
 .slider {
   position: relative;
   width: 100%;
+
+  &-thumb-label {
+    position: absolute;
+    border-radius: awsui.$border-radius-popover;
+
+    background-color: awsui.$color-background-popover;
+    box-shadow: awsui.$shadow-popover;
+    border: awsui.$border-field-width solid awsui.$color-border-popover;
+
+    bottom: awsui.$space-scaled-m;
+    padding: awsui.$space-scaled-xs;
+    min-width: 40px;
+    text-align: center;
+  }
 
   &-track,
   &-range {
@@ -31,6 +65,7 @@
   }
 
   &-container {
+    @include styles.styles-reset;
     padding: awsui.$space-m 0;
   }
 
@@ -43,41 +78,34 @@
 }
 
 .thumb {
-  pointer-events: none;
   position: absolute;
   height: 0;
-  width: 100%;
+  width: calc(100% - $thumb-size);
   outline: none;
 
   &-right {
     right: 8px;
+    pointer-events: none;
   }
 
   &-left {
     left: 8px;
+    pointer-events: none;
   }
 
   &::-webkit-slider-thumb {
-    background-color: awsui.$color-background-progress-bar-content-default;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    height: 16px;
-    width: 16px;
-    margin-top: 4px;
-    pointer-events: all;
-    position: relative;
+    @include base-thumb-styles();
   }
 
   &::-moz-range-thumb {
-    background-color: awsui.$color-background-progress-bar-content-default;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    height: 16px;
-    width: 16px;
-    margin-top: 4px;
-    pointer-events: all;
-    position: relative;
+    @include base-thumb-styles();
+  }
+
+  &:focus::-webkit-slider-thumb {
+    @include base-thumb-focus-styles();
+  }
+
+  &:focus::-moz-range-thumb {
+    @include base-thumb-focus-styles();
   }
 }
