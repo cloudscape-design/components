@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import range from 'lodash/range';
 
 import PropertyFilter from '~components/property-filter';
@@ -9,6 +9,7 @@ import { PropertyFilterProps } from '~components/property-filter/interfaces';
 import AppContext, { AppContextType } from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
 import { i18nStrings } from './common-props';
+import { useOptionsLoader } from '../common/options-loader';
 
 type PropertyFilterDemoContext = React.Context<
   AppContextType<{
@@ -25,7 +26,7 @@ const filteringProperties = [
     groupValuesLabel: `Label values`,
   },
 ] as const;
-const serverFilteringOptions = range(1000).map(value => ({
+const filteringOptions = range(1000).map(value => ({
   propertyKey: 'property',
   value: value + '',
 }));
@@ -35,11 +36,6 @@ interface ExtendedWindow {
 }
 declare let window: ExtendedWindow;
 window.loadItemsCalls = [];
-
-const fetchOptions = async () => {
-  await new Promise(resolve => setTimeout(() => resolve(''), 100));
-  return serverFilteringOptions;
-};
 
 export default function () {
   const { urlParams } = useContext(AppContext as PropertyFilterDemoContext);
@@ -51,31 +47,10 @@ export default function () {
     ],
     operation: 'and',
   });
-  const request = useRef<{
-    filteringText: string;
-    filteringProperty?: PropertyFilterProps.FilteringProperty;
-    filteringOperator?: PropertyFilterProps.ComparisonOperator;
-  }>();
-  const [filteringOptions, setFilteringOptions] = useState<PropertyFilterProps['filteringOptions']>([]);
-  const [status, setStatus] = useState<PropertyFilterProps['filteringStatusType']>('pending');
-  const fetchData = async (
-    filteringText: string,
-    filteringProperty?: PropertyFilterProps.FilteringProperty,
-    filteringOperator?: PropertyFilterProps.ComparisonOperator
-  ) => {
-    const items = await fetchOptions();
-    if (
-      !request.current ||
-      request.current.filteringText !== filteringText ||
-      request.current.filteringProperty !== filteringProperty ||
-      request.current.filteringOperator !== filteringOperator
-    ) {
-      // there is another request in progress, discard the result of this one
-      return;
-    }
-    setStatus('finished');
-    setFilteringOptions(items);
-  };
+  const [fetchTarget, setFetchTarget] = useState<'properties' | 'options'>('properties');
+  const propertiesLoader = useOptionsLoader({ timeout: 100 });
+  const optionsLoader = useOptionsLoader<PropertyFilterProps.FilteringOption>({ pageSize: 100, timeout: 100 });
+  const status = { properties: propertiesLoader, options: optionsLoader }[fetchTarget].status;
 
   const handleLoadItems = ({ detail }: { detail: PropertyFilterProps.LoadItemsDetail }) => {
     const { filteringProperty, filteringOperator, filteringText, firstPage, samePage } = detail;
@@ -90,13 +65,15 @@ export default function () {
         : {}),
       ...(filteringOperator ? { filteringOperator } : {}),
     });
-    setStatus('loading');
-    request.current = {
-      filteringProperty,
-      filteringOperator,
-      filteringText,
-    };
-    fetchData(filteringText, filteringProperty, filteringOperator);
+
+    const fetchTarget = filteringProperty && filteringOperator ? 'options' : 'properties';
+    setFetchTarget(fetchTarget);
+
+    if (fetchTarget === 'properties') {
+      propertiesLoader.fetchItems({ sourceItems: filteringProperties, filteringText, firstPage });
+    } else {
+      optionsLoader.fetchItems({ sourceItems: filteringOptions, filteringText, firstPage });
+    }
   };
 
   return (
@@ -108,7 +85,7 @@ export default function () {
           query={query}
           onChange={e => setQuery(e.detail)}
           filteringProperties={filteringProperties}
-          filteringOptions={filteringOptions}
+          filteringOptions={optionsLoader.items}
           filteringStatusType={status}
           filteringLoadingText={'loading text'}
           filteringErrorText={'error text'}
