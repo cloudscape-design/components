@@ -71,7 +71,7 @@ function RenderChartModelHook(props: UseChartModelProps<ChartDataTypes>) {
   return (
     <div
       onFocus={event => {
-        handlers.onSVGFocus(event, 'keyboard');
+        handlers.onApplicationFocus(event, 'keyboard');
       }}
       onKeyDown={handlers.onSVGKeyDown}
       tabIndex={-1}

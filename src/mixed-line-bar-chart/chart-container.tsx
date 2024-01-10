@@ -209,7 +209,6 @@ export default function ChartContainer<T extends ChartDataTypes>({
    */
   const highlightedPointRef = useRef<SVGGElement>(null);
   const highlightedGroupRef = useRef<SVGRectElement>(null);
-  const [isPlotFocused, setPlotFocused] = useState(false);
 
   // Some chart components are rendered against "x" or "y" axes,
   // When "horizontalBars" is enabled, the axes are inverted.
@@ -355,8 +354,8 @@ export default function ChartContainer<T extends ChartDataTypes>({
     if (!outsideClick) {
       // The delay is needed to bypass focus events caused by click or keypress needed to unpin the popover.
       setTimeout(() => {
-        const isSomeInnerElementFocused = highlightedPoint || highlightedGroupIndex !== null || verticalMarkerX;
-        if (isSomeInnerElementFocused) {
+        const isSomeElementHighlighted = !!(highlightedPoint || highlightedGroupIndex !== null || verticalMarkerX);
+        if (isSomeElementHighlighted) {
           plotRef.current?.focusApplication();
         } else {
           plotRef.current?.focusPlot();
@@ -381,8 +380,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
     }
   };
 
-  const onSVGFocus = (event: React.FocusEvent, trigger: 'mouse' | 'keyboard') => {
-    setPlotFocused(true);
+  const onApplicationFocus = (event: React.FocusEvent, trigger: 'mouse' | 'keyboard') => {
     if (trigger === 'keyboard') {
       handlers.onFocus();
     } else {
@@ -390,8 +388,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
     }
   };
 
-  const onSVGBlur = (event: React.FocusEvent<Element>) => {
-    setPlotFocused(false);
+  const onApplicationBlur = (event: React.FocusEvent<Element>) => {
     const blurTarget = event.relatedTarget || event.target;
     if (
       blurTarget === null ||
@@ -494,7 +491,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
   const activeLiveRegion =
     activeAriaLabel && !highlightedPoint && highlightedGroupIndex === null ? activeAriaLabel : '';
 
-  const isLineXKeyboardFocused = isPlotFocused && !highlightedPoint && verticalMarkerX;
+  const isLineXKeyboardFocused = !highlightedPoint && verticalMarkerX;
 
   const isRefresh = useVisualRefresh();
 
@@ -528,16 +525,15 @@ export default function ChartContainer<T extends ChartDataTypes>({
           ariaLiveRegion={activeLiveRegion}
           activeElementRef={highlightedElementRef}
           activeElementKey={
-            isPlotFocused &&
-            (highlightedGroupIndex?.toString() ??
-              (isLineXKeyboardFocused ? `point-index-${handlers.xIndex}` : point?.key))
+            highlightedGroupIndex?.toString() ??
+            (isLineXKeyboardFocused ? `point-index-${handlers.xIndex}` : point?.key)
           }
           activeElementFocusOffset={isGroupNavigation ? 0 : isLineXKeyboardFocused ? { x: 8, y: 0 } : 3}
           onMouseMove={onSVGMouseMove}
           onMouseOut={onSVGMouseOut}
           onClick={onSVGClick}
-          onFocus={onSVGFocus}
-          onBlur={onSVGBlur}
+          onApplicationFocus={onApplicationFocus}
+          onApplicationBlur={onApplicationBlur}
           onKeyDown={onSVGKeyDown}
         >
           <line
@@ -645,7 +641,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
           footer={detailPopoverFooterContent}
           dismissAriaLabel={i18nStrings.detailPopoverDismissAriaLabel}
           onMouseLeave={onPopoverLeave}
-          onBlur={onSVGBlur}
+          onBlur={onApplicationBlur}
           setPopoverText={setDetailsPopoverText}
         />
       }
