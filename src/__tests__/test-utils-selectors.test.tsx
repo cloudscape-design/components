@@ -3,6 +3,7 @@
 
 import fs from 'fs';
 import glob from 'glob';
+import path from 'path';
 import { transformSync, types, PluginObj, NodePath } from '@babel/core';
 import { flatten, zip } from 'lodash';
 
@@ -89,23 +90,19 @@ function extractSelectorProperties(file: string, onExtract: (filePath: string, p
 }
 
 function extractComponentSelectors(file: string, usedProperties: string[], onExtract: (selector: string) => void) {
-  function extractor(): PluginObj {
-    return {
-      visitor: {
-        ObjectProperty(path: NodePath<types.ObjectProperty>) {
-          if (path.node.key.type === 'StringLiteral' && matchProperties(usedProperties, path.node.key.value)) {
-            if (path.node.value.type === 'StringLiteral') {
-              onExtract(trimSelectorHash(path.node.value.value));
-            } else {
-              throw new Error(`Unhandled selector value type at ${file}:${path.node.loc?.start.line}.`);
-            }
-          }
-        },
-      },
-    } as PluginObj;
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const source = require(file);
+  if (typeof source.default !== 'object') {
+    throw new Error(`Unexpected selectors file format at ${file}.`);
   }
-  const source = fs.readFileSync(file, 'utf-8');
-  transformSync(source, { babelrc: false, configFile: false, plugins: [...defaultPlugins, extractor] })?.code;
+  for (const [property, value] of Object.entries(source.default)) {
+    if (typeof value !== 'string') {
+      throw new Error(`Unexpected selectors file format at ${file}, "${property}".`);
+    }
+    if (matchProperties(usedProperties, property)) {
+      onExtract(trimSelectorHash(value as string));
+    }
+  }
 }
 
 function trimSelectorHash(selector: string) {
@@ -118,7 +115,12 @@ function trimSelectorHash(selector: string) {
 }
 
 function resolveSelectorsPath(importPath: string) {
-  return 'lib/components/' + importPath.replace(/\.\.\//g, '');
+  let selectorsFile = importPath;
+  // Path to selectors file from 'lib/components'.
+  selectorsFile = path.resolve(path.relative('lib/components/test-utils', importPath));
+  // Absolute path to selectors file.
+  selectorsFile = path.resolve(path.join('lib/components', selectorsFile));
+  return selectorsFile;
 }
 
 function getComponentNameFromFilePath(filePath: string) {
