@@ -45,8 +45,8 @@ export interface ChartPlotProps {
   onClick?: (event: React.MouseEvent<SVGSVGElement>) => void;
   onMouseMove?: (event: React.MouseEvent<SVGSVGElement>) => void;
   onMouseOut?: (event: React.MouseEvent<SVGSVGElement>) => void;
-  onFocus?: (event: React.FocusEvent<SVGGElement>, trigger: 'mouse' | 'keyboard') => void;
-  onBlur?: (event: React.FocusEvent<SVGGElement>) => void;
+  onApplicationFocus?: (event: React.FocusEvent<SVGGElement>, trigger: 'mouse' | 'keyboard') => void;
+  onApplicationBlur?: (event: React.FocusEvent<SVGGElement>) => void;
   onKeyDown?: (event: React.KeyboardEvent<SVGGElement>) => void;
   onTouchStart?: (event: React.TouchEvent<SVGSVGElement>) => void;
   onTouchEnd?: (event: React.TouchEvent<SVGSVGElement>) => void;
@@ -87,12 +87,13 @@ function ChartPlot(
     children,
     onClick,
     onKeyDown,
-    onFocus,
-    onBlur,
     focusOffset = DEFAULT_PLOT_FOCUS_OFFSET,
     activeElementFocusOffset = DEFAULT_ELEMENT_FOCUS_OFFSET,
     onTouchStart,
-    ...restProps
+    onMouseMove,
+    onMouseOut,
+    onApplicationBlur,
+    onApplicationFocus,
   }: ChartPlotProps,
   ref: React.Ref<ChartPlotRef>
 ) {
@@ -117,12 +118,13 @@ function ChartPlot(
     plotClickedRef.current = true;
   };
   const onPlotFocus = (event: React.FocusEvent<SVGSVGElement>) => {
-    if (event.target === svgRef.current && !plotClickedRef.current) {
-      setPlotFocused(true);
-    }
-    // The click should focus the underling application bypassing the svg.
-    else if (plotClickedRef.current) {
+    // If focused via click or an element was highlighted,
+    // focus the internal application, which will manage and show focus accordingly on its internal elements.
+    if (plotClickedRef.current || !!activeElementKey) {
       applicationRef.current!.focus();
+    } else if (event.target === svgRef.current) {
+      // Otherwise, focus the entire plot if it was focused with the keyboard.
+      setPlotFocused(true);
     }
   };
   const onPlotClick = (event: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
@@ -144,14 +146,14 @@ function ChartPlot(
     }
   };
 
-  const onApplicationFocus = (event: React.FocusEvent<SVGGElement>) => {
-    onFocus && onFocus(event, plotClickedRef.current ? 'mouse' : 'keyboard');
+  const onPlotApplicationFocus = (event: React.FocusEvent<SVGGElement>) => {
+    onApplicationFocus && onApplicationFocus(event, plotClickedRef.current ? 'mouse' : 'keyboard');
     // "Release" the click reference to not affect the next call of this handler.
     plotClickedRef.current = false;
     setApplicationFocused(true);
   };
-  const onApplicationBlur = (event: React.FocusEvent<SVGGElement>) => {
-    onBlur && onBlur(event);
+  const onPlotApplicationBlur = (event: React.FocusEvent<SVGGElement>) => {
+    onApplicationBlur && onApplicationBlur(event);
     setApplicationFocused(false);
   };
   const onApplicationKeyDown = onKeyDown;
@@ -170,7 +172,8 @@ function ChartPlot(
   return (
     <>
       <svg
-        {...restProps}
+        onMouseMove={onMouseMove}
+        onMouseOut={onMouseOut}
         focusable={plotFocusable}
         tabIndex={plotTabIndex}
         role="application"
@@ -200,11 +203,11 @@ function ChartPlot(
 
         <g transform={transform}>
           <ApplicationController
-            activeElementKey={activeElementKey || null}
+            activeElementKey={(isApplicationFocused && activeElementKey) || null}
             activeElementRef={activeElementRef}
             ref={applicationRef}
-            onFocus={onApplicationFocus}
-            onBlur={onApplicationBlur}
+            onFocus={onPlotApplicationFocus}
+            onBlur={onPlotApplicationBlur}
             onKeyDown={onApplicationKeyDown}
           />
 

@@ -284,8 +284,8 @@ describe('event handlers', () => {
         onClick={onClick}
         onMouseMove={onMouseMove}
         onMouseOut={onMouseOut}
-        onFocus={onFocus}
-        onBlur={onBlur}
+        onApplicationFocus={onFocus}
+        onApplicationBlur={onBlur}
         onKeyDown={onKeyDown}
       >
         <text>Test</text>
@@ -310,8 +310,8 @@ describe('event handlers', () => {
         onClick={onClick}
         onMouseMove={onMouseMove}
         onMouseOut={onMouseOut}
-        onFocus={onFocus}
-        onBlur={onBlur}
+        onApplicationFocus={onFocus}
+        onApplicationBlur={onBlur}
         onKeyDown={onKeyDown}
       >
         <text>Test</text>
@@ -343,7 +343,7 @@ describe('imperative handle', () => {
   test('imperative handle allows to focus plot', () => {
     const ref = React.createRef<ChartPlotRef>();
     const { plotWrapper } = renderPlot(
-      <ChartPlot ref={ref} width={0} height={0} activeElementKey="key" activeElementFocusOffset={3}>
+      <ChartPlot ref={ref} width={0} height={0}>
         <text>Test</text>
       </ChartPlot>
     );
@@ -451,7 +451,7 @@ describe('application focus delegation', () => {
       internalFocusCounter++;
     };
     const { plotWrapper, applicationWrapper, rerender } = renderPlot(
-      <ChartPlot width={0} height={0} activeElementKey="1:3" onFocus={externalOnFocus}>
+      <ChartPlot width={0} height={0} activeElementKey="1:3" onApplicationFocus={externalOnFocus}>
         <text>Test</text>
       </ChartPlot>
     );
@@ -466,7 +466,7 @@ describe('application focus delegation', () => {
     expect(internalFocusCounter).toBe(1);
 
     rerender(
-      <ChartPlot width={0} height={0} activeElementKey="1:4" onFocus={externalOnFocus}>
+      <ChartPlot width={0} height={0} activeElementKey="1:4" onApplicationFocus={externalOnFocus}>
         <text>Test</text>
       </ChartPlot>
     );

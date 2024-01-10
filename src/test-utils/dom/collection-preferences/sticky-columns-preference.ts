@@ -10,12 +10,12 @@ export default class StickyColumnsPreferenceWrapper extends ComponentWrapper {
   static lastRootSelector = styles['sticky-columns-last'];
 
   findTitle(): ElementWrapper {
-    return this.findComponent(`.${styles[`sticky-columns-form-field`]}`, FormFieldWrapper)!.findLabel()!;
+    return this.findComponent(`.${styles['sticky-columns-form-field']}`, FormFieldWrapper)!.findLabel()!;
   }
   findDescription(): ElementWrapper {
-    return this.findComponent(`.${styles[`sticky-columns-form-field`]}`, FormFieldWrapper)!.findDescription()!;
+    return this.findComponent(`.${styles['sticky-columns-form-field']}`, FormFieldWrapper)!.findDescription()!;
   }
   findRadioGroup(): RadioGroupWrapper {
-    return this.findComponent(`.${styles[`sticky-columns-radio-group`]}`, RadioGroupWrapper)!;
+    return this.findComponent(`.${styles['sticky-columns-radio-group']}`, RadioGroupWrapper)!;
   }
 }

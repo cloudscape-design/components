@@ -129,6 +129,30 @@ describeEachAppLayout(size => {
     expect(wrapper.findActiveDrawerCloseButton()!.getElement()).toHaveFocus();
   });
 
+  test('moves focus on focusToolsClose if tools are rendered as part of drawers', () => {
+    let ref: AppLayoutProps.Ref | null = null;
+    const { wrapper, rerender } = renderComponent(
+      <AppLayout
+        ref={newRef => (ref = newRef)}
+        activeDrawerId={null}
+        drawers={singleDrawerPublic}
+        tools={<div>Tools</div>}
+      />
+    );
+    expect(wrapper.findActiveDrawer()).toBeFalsy();
+    rerender(
+      <AppLayout
+        ref={newRef => (ref = newRef)}
+        activeDrawerId={singleDrawerPublic[0].id}
+        drawers={singleDrawerPublic}
+        tools={<div>Tools</div>}
+      />
+    );
+    expect(wrapper.findActiveDrawerCloseButton()!.getElement()).not.toHaveFocus();
+    act(() => ref!.focusToolsClose());
+    expect(wrapper.findActiveDrawerCloseButton()!.getElement()).toHaveFocus();
+  });
+
   test('registers public drawers api', () => {
     const { wrapper } = renderComponent(<AppLayout drawers={singleDrawerPublic} />);
     expect(wrapper.findDrawersTriggers()).toHaveLength(1);

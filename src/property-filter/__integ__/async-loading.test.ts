@@ -118,6 +118,9 @@ const testCases: TestCase[] = [
         result: [
           { filteringText: 'l', firstPage: false, samePage: false },
           { filteringProperty, filteringOperator: '=', filteringText: '', firstPage: true, samePage: false },
+          // The second page of options is queried immediately because onscroll condition applies:
+          // the list bottom is reached and the filtering status is yet "pending" (that happens before React state updates).
+          { filteringProperty, filteringOperator: '=', filteringText: '', firstPage: false, samePage: false },
         ],
       },
     ],

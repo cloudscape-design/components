@@ -128,7 +128,7 @@ export interface AppLayoutProps extends BaseComponentProps {
    * * `tools` (string) - Label for the landmark that wraps the tools drawer.
    * * `toolsClose` (string) - Label for the button that closes the tools drawer.
    * * `toolsToggle` (string) - Label for the button that opens the tools drawer.
-   * * `drawers` (string) - Label for the landmark that the active drawer.
+   * * `drawers` (string) - Label for the landmark that wraps the active drawer.
    * * `drawersOverflow` (string) - Label for the ellipsis button with any overflow drawers.
    * * `drawersOverflowWithBadge` (string) - Label for the ellipsis button with any overflow drawers, with a badge.
    *
