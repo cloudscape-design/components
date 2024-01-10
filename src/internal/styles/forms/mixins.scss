@@ -70,14 +70,24 @@
   }
 }
 
-// Use for form input elements, excluding buttons
-// or for elements that have a light border and light background
-@mixin form-focus-element($border-radius: constants.$control-border-radius) {
+// Use for elements that have a light border and light background
+@mixin focus-element-with-border($border-radius: constants.$control-border-radius) {
   // Using a special transparent outline only visible in Windows High Contrast Mode.
   // See focus-highlight above.
   outline: 2px dotted transparent;
 
   border: constants.$control-border-width solid awsui.$color-border-item-focused;
+  border-radius: $border-radius;
+  box-shadow: foundation.$box-shadow-focused-light;
+}
+
+// Use for form input elements, excluding buttons
+@mixin form-focus-element($border-radius: constants.$control-border-radius) {
+  // Using a special transparent outline only visible in Windows High Contrast Mode.
+  // See focus-highlight above.
+  outline: 2px dotted transparent;
+
+  border: constants.$control-border-width solid awsui.$color-border-input-focused;
   border-radius: $border-radius;
   box-shadow: foundation.$box-shadow-focused-light;
 }
