@@ -536,7 +536,7 @@ describe('Details popover', () => {
     })
   );
 
-  describe.skip('keeps the popover position when it resizes due to interacting with the popover itself', () => {
+  describe('keeps the popover position when it resizes due to interacting with the popover itself', () => {
     test.each(['hover', 'click', 'keyboard'])('Interaction type: %s', interactionType =>
       setupPopoverPositionTest(async page => {
         await page.setWindowSize({ width: 900, height: 500 });
