@@ -244,7 +244,7 @@ export default <T extends PieChartProps.Datum>({
     },
     [setPinnedSegment, highlightSegment, pieData, highlightedSegmentIndex]
   );
-  const onFocus = useCallback(
+  const onApplicationFocus = useCallback(
     (_event: any, target: 'keyboard' | 'mouse') => {
       // We need to make sure that we do not re-show the popover when we focus the segment after the popover is dismissed.
       // Normally we would check `event.relatedTarget` for the previously focused element,
@@ -260,7 +260,7 @@ export default <T extends PieChartProps.Datum>({
     [pinnedSegment, pieData, highlightSegment, highlightedSegment, legendSegment]
   );
 
-  const onBlur = useCallback(
+  const onApplicationBlur = useCallback(
     (event: React.FocusEvent) => {
       const blurTarget = event.relatedTarget || event.target;
       if (blurTarget === null || !(blurTarget instanceof Element) || !nodeBelongs(containerRef.current, blurTarget)) {
@@ -314,8 +314,8 @@ export default <T extends PieChartProps.Datum>({
           ariaRoleDescription={i18nStrings?.chartAriaRoleDescription}
           activeElementRef={focusedSegmentRef}
           activeElementKey={highlightedSegmentIndex?.toString()}
-          onFocus={onFocus}
-          onBlur={onBlur}
+          onApplicationFocus={onApplicationFocus}
+          onApplicationBlur={onApplicationBlur}
           onKeyDown={onKeyDown}
           onMouseOut={checkMouseLeave}
         >
@@ -383,7 +383,7 @@ export default <T extends PieChartProps.Datum>({
           container={plotRef.current?.svg || null}
           size={detailPopoverSize}
           onMouseLeave={checkMouseLeave}
-          onBlur={onBlur}
+          onBlur={onApplicationBlur}
         >
           {popoverContent}
           {detailPopoverFooterContent && <ChartPopoverFooter>{detailPopoverFooterContent}</ChartPopoverFooter>}
