@@ -65,24 +65,20 @@ function extractSelectorProperties(file: string, onExtract: (filePath: string, p
   }
 
   function extractor(): PluginObj {
-    const selectorToFilePath = new Map<string, string>();
     return {
       visitor: {
-        // Find import statements for selectors.
-        ImportDeclaration(path: NodePath<types.ImportDeclaration>) {
-          if (path.node.source.value.endsWith('selectors.js') && path.node.specifiers.length === 1) {
-            const specifier = path.node.specifiers[0];
-            if (specifier.type === 'ImportDefaultSpecifier') {
-              selectorToFilePath.set(specifier.local.name, resolveSelectorsPath(path.node.source.value));
-            } else {
-              throw new Error(`Unhandled styles import type at ${file}:${path.node.loc?.start.line}.`);
-            }
-          }
-        },
         // Find selector references and extract used property names.
         MemberExpression(path: NodePath<types.MemberExpression>) {
-          if (path.node.object.type === 'Identifier' && isSelectorsImport(path.node.object.name, path)) {
-            onExtract(selectorToFilePath.get(path.node.object.name)!, getPropertyName(path));
+          if (path.node.object.type === 'Identifier') {
+            const binding = path.scope.getBinding(path.node.object.name);
+            if (
+              binding &&
+              binding.kind === 'module' &&
+              binding.path.parent.type === 'ImportDeclaration' &&
+              binding.path.parent.source.value.endsWith('selectors.js')
+            ) {
+              onExtract(resolveSelectorsPath(binding.path.parent.source.value), getPropertyName(path));
+            }
           }
         },
       },
@@ -149,14 +145,4 @@ function matchWildcard(testProperty: string, propertyToMatch: string) {
     return new RegExp('^' + testProperty + '$').test(propertyToMatch);
   }
   return false;
-}
-
-function isSelectorsImport(objectName: string, path: NodePath) {
-  const binding = path.scope.getBinding(objectName);
-  return (
-    binding &&
-    binding.kind === 'module' &&
-    binding.path.parent.type === 'ImportDeclaration' &&
-    binding.path.parent.source.value.endsWith('selectors.js')
-  );
 }
