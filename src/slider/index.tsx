@@ -64,7 +64,7 @@ export default function Slider({
   return (
     <div className={styles['slider-container']}>
       <div className={styles.slider}>
-        {tooltipVisible && (
+        {tooltipVisible && variant === 'default' && (
           <div
             style={{ left: tooltipWidth ? `calc(${percent}% - ${tooltipWidth}px / 2` : `${percent}%` }}
             className={styles['slider-thumb-label']}
@@ -103,8 +103,8 @@ export default function Slider({
         disabled={disabled}
         onFocus={() => setTooltipVisible(true)}
         onBlur={() => setTooltipVisible(false)}
-        // onMouseOver={() => setTooltipVisible(true)}
-        // onMouseOut={() => setTooltipVisible(false)}
+        //onMouseOver={() => setTooltipVisible(true)}
+        //onMouseOut={() => setTooltipVisible(true)}
         step={step}
         value={variant === 'default' ? value ?? '' : rangeValue ? Math.max(rangeValue[1], rv0 + 1) : ''}
         onChange={event => {
