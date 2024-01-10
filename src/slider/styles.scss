@@ -27,7 +27,6 @@ $thumb-size: 16px;
 }
 
 .slider {
-  position: relative;
   width: 100%;
 
   &-thumb-label {
@@ -38,9 +37,10 @@ $thumb-size: 16px;
     box-shadow: awsui.$shadow-popover;
     border: awsui.$border-field-width solid awsui.$color-border-popover;
 
-    bottom: awsui.$space-scaled-m;
+    bottom: 50px;
     padding: awsui.$space-scaled-xs;
     min-width: 40px;
+    width: max-content;
     text-align: center;
   }
 
@@ -67,6 +67,7 @@ $thumb-size: 16px;
   &-container {
     @include styles.styles-reset;
     padding: awsui.$space-m 0;
+    position: relative;
   }
 
   &-labels {
@@ -80,16 +81,14 @@ $thumb-size: 16px;
 .thumb {
   position: absolute;
   height: 0;
-  width: calc(100% - $thumb-size);
+  width: 100%;
   outline: none;
 
   &-right {
-    right: 8px;
     pointer-events: none;
   }
 
   &-left {
-    left: 8px;
     pointer-events: none;
   }
 
