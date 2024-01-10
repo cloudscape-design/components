@@ -16,7 +16,9 @@ export function mockFunnelMetrics() {
     funnelStepStart: jest.fn(),
     funnelStepComplete: jest.fn(),
     funnelStepNavigation: jest.fn(),
-    funnelStepError: jest.fn(),
+    funnelStepError: jest.fn(() => {
+      throw new Error('should not be called');
+    }),
     funnelSubStepStart: jest.fn(),
     funnelSubStepComplete: jest.fn(),
     funnelSubStepError: jest.fn(),
