@@ -48,8 +48,6 @@ export interface ChartPopoverProps extends PopoverProps {
 
   /** Popover content */
   children?: React.ReactNode;
-
-  allowVerticalScroll?: boolean;
 }
 
 export default React.forwardRef(ChartPopover);
@@ -73,8 +71,6 @@ function ChartPopover(
     onMouseEnter,
     onMouseLeave,
     onBlur,
-
-    allowVerticalScroll,
 
     ...restProps
   }: ChartPopoverProps,
@@ -102,6 +98,9 @@ function ChartPopover(
     };
   }, [container, onDismiss]);
 
+  // In chart popovers, dismiss button is present when they are pinned, so both values are equivalent.
+  const isPinned = dismissButton;
+
   return (
     <div
       {...baseProps}
@@ -128,7 +127,7 @@ function ChartPopover(
         )}
         keepPosition={true}
         allowVerticalOverflow={true}
-        allowVerticalScroll={allowVerticalScroll}
+        allowVerticalScroll={isPinned}
       >
         <div className={styles['hover-area']}>
           <PopoverBody

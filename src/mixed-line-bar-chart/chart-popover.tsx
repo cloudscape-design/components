@@ -67,7 +67,6 @@ function MixedChartPopover<T extends ChartDataTypes>(
               onMouseEnter={onMouseEnter}
               onMouseLeave={onMouseLeave}
               onBlur={onBlur}
-              allowVerticalScroll={isPinned}
             >
               <ChartSeriesDetails
                 key={highlightDetails.position}
