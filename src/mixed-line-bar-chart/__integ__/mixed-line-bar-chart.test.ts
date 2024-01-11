@@ -518,6 +518,7 @@ describe('Details popover', () => {
       const barChart = createWrapper().findBarChart();
       const barGroup = barChart.findBarGroups().get(1).toSelector();
       await page.hoverElement(barGroup);
+      await expect(page.getWindowScroll()).resolves.toEqual({ top: 150, left: 0 });
       await expect(page.getText(barChart.findDetailPopover().findHeader().toSelector())).resolves.toContain('Apr 2023');
       await expect(page.getWindowScroll()).resolves.toEqual({ top: 150, left: 0 });
     })
