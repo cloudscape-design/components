@@ -113,8 +113,7 @@ jobs:
           npm run quick-build
 
           cd ../bundle-size
-          rm -rf node_modules/@cloudscape-design/components
-          cp -r $GITHUB_WORKSPACE/components/lib/components node_modules/@cloudscape-design/components
+          npm i $GITHUB_WORKSPACE/components/lib/components
           cp main-with-cloudscape.jsx main.jsx
           npm run build
 
