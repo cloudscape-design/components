@@ -145,6 +145,11 @@ export interface ButtonProps extends BaseComponentProps {
   ariaExpanded?: boolean;
 
   /**
+   * Adds `aria-controls` to the button. Use when the button controls the contents or presence of an element.
+   */
+  ariaControls?: string;
+
+  /**
    * Sets the button width to be 100% of the parent container width. Button content is centered.
    */
   fullWidth?: boolean;
