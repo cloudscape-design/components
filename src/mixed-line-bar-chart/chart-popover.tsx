@@ -26,7 +26,6 @@ export interface MixedChartPopoverProps<T extends ChartDataTypes> {
   onMouseLeave?: (event: React.MouseEvent) => void;
   onBlur?: (event: React.FocusEvent) => void;
   setPopoverText: (s: string) => void;
-  allowVerticalScroll?: boolean;
 }
 
 export default React.forwardRef(MixedChartPopover);
@@ -46,7 +45,6 @@ function MixedChartPopover<T extends ChartDataTypes>(
     onMouseLeave,
     onBlur,
     setPopoverText,
-    allowVerticalScroll,
   }: MixedChartPopoverProps<T>,
   popoverRef: React.Ref<HTMLElement>
 ) {
@@ -69,7 +67,7 @@ function MixedChartPopover<T extends ChartDataTypes>(
               onMouseEnter={onMouseEnter}
               onMouseLeave={onMouseLeave}
               onBlur={onBlur}
-              allowVerticalScroll={allowVerticalScroll}
+              allowVerticalScroll={isPinned}
             >
               <ChartSeriesDetails
                 key={highlightDetails.position}

@@ -643,7 +643,6 @@ export default function ChartContainer<T extends ChartDataTypes>({
           onMouseLeave={onPopoverLeave}
           onBlur={onApplicationBlur}
           setPopoverText={setDetailsPopoverText}
-          allowVerticalScroll={isPopoverPinned}
         />
       }
     />
