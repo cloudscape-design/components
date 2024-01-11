@@ -37,12 +37,13 @@ export interface ChartSeriesDetailsProps extends BaseComponentProps {
   expandedSeries?: ExpandedSeries;
   setPopoverText?: (s: string) => void;
   setExpandedState?: (seriesTitle: string, state: boolean) => void;
+  compactList?: boolean;
 }
 
 export default memo(forwardRef(ChartSeriesDetails));
 
 function ChartSeriesDetails(
-  { details, expandedSeries, setPopoverText, setExpandedState, ...restProps }: ChartSeriesDetailsProps,
+  { details, expandedSeries, setPopoverText, setExpandedState, compactList, ...restProps }: ChartSeriesDetailsProps,
   ref: React.Ref<HTMLDivElement>
 ) {
   const baseProps = getBaseProps(restProps);
@@ -67,7 +68,7 @@ function ChartSeriesDetails(
 
   return (
     <div {...baseProps} className={className} ref={mergedRef}>
-      <ul className={styles.list}>
+      <ul className={clsx(styles.list, compactList && styles.compact)}>
         {details.map(({ key, value, markerType, color, isDimmed, subItems, expandableId }, index) => (
           <li
             key={index}

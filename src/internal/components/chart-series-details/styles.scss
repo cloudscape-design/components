@@ -41,11 +41,6 @@ $font-weight-bold: awsui.$font-weight-heading-s;
   }
 }
 
-.list-item:not(:first-child),
-.inner-list-item {
-  margin-top: awsui.$space-scaled-xxs;
-}
-
 .sub-items {
   &:not(.expandable) {
     padding-inline-start: calc(marker.$marker-width + marker.$marker-margin-right);
@@ -72,6 +67,12 @@ $font-weight-bold: awsui.$font-weight-heading-s;
 
     &.dimmed {
       opacity: 0.35;
+    }
+  }
+  &:not(.compact) {
+    > .list-item:not(:first-child),
+    > .inner-list-item {
+      margin-top: awsui.$space-scaled-xxs;
     }
   }
 }
