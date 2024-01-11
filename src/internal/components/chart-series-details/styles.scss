@@ -69,12 +69,11 @@ $font-weight-bold: awsui.$font-weight-heading-s;
       opacity: 0.35;
     }
   }
-  &:not(.compact) {
-    > .list-item:not(:first-child),
-    > .inner-list-item {
-      margin-top: awsui.$space-scaled-xxs;
-    }
-  }
+}
+
+.list:not(.compact) > .list-item:not(:first-child),
+.inner-list-item {
+  margin-top: awsui.$space-scaled-xxs;
 }
 
 .list-item.with-sub-items:not(.expandable) > .key-value-pair {
