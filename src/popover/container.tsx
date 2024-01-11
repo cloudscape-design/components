@@ -33,9 +33,9 @@ export interface PopoverContainerProps {
   variant?: 'annotation';
   // When keepPosition is true, the popover will not recalculate its position when it resizes nor when it receives clicks.
   keepPosition?: boolean;
-  // When allowVerticalScroll is true, we will scroll to the the popover if it overflows the viewport even when choosing the best possible position for it.
+  // When allowScrollToFit is true, we will scroll to the the popover if it overflows the viewport even when choosing the best possible position for it.
   // Do not use this if the popover is open on hover, in order to avoid unexpected movement.
-  allowVerticalScroll?: boolean;
+  allowScrollToFit?: boolean;
   allowVerticalOverflow?: boolean;
 }
 
@@ -51,7 +51,7 @@ export default function PopoverContainer({
   fixedWidth,
   variant,
   keepPosition,
-  allowVerticalScroll,
+  allowScrollToFit,
   allowVerticalOverflow,
 }: PopoverContainerProps) {
   const bodyRef = useRef<HTMLDivElement | null>(null);
@@ -68,7 +68,7 @@ export default function PopoverContainer({
     arrowRef,
     trackRef,
     contentRef,
-    allowVerticalScroll,
+    allowScrollToFit,
     allowVerticalOverflow,
     preferredPosition: position,
     renderWithPortal,

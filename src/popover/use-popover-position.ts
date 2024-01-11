@@ -14,7 +14,7 @@ export default function usePopoverPosition({
   arrowRef,
   trackRef,
   contentRef,
-  allowVerticalScroll,
+  allowScrollToFit,
   allowVerticalOverflow,
   preferredPosition,
   renderWithPortal,
@@ -25,7 +25,7 @@ export default function usePopoverPosition({
   arrowRef: React.RefObject<HTMLDivElement | null>;
   trackRef: React.RefObject<Element | null>;
   contentRef: React.RefObject<HTMLDivElement | null>;
-  allowVerticalScroll?: boolean;
+  allowScrollToFit?: boolean;
   allowVerticalOverflow?: boolean;
   preferredPosition: PopoverProps.Position;
   renderWithPortal?: boolean;
@@ -131,7 +131,7 @@ export default function usePopoverPosition({
       previousInternalPositionRef.current = newInternalPosition;
       setInternalPosition(newInternalPosition);
 
-      const shouldScroll = allowVerticalScroll && !shouldKeepPosition;
+      const shouldScroll = allowScrollToFit && !shouldKeepPosition;
 
       // Position the popover
       const top = shouldScroll ? popoverOffset.top + calculateScroll(rect) : popoverOffset.top;
@@ -158,7 +158,7 @@ export default function usePopoverPosition({
       contentRef,
       arrowRef,
       keepPosition,
-      allowVerticalScroll,
+      allowScrollToFit,
       preferredPosition,
       renderWithPortal,
       allowVerticalOverflow,

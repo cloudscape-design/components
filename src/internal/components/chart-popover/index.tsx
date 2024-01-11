@@ -127,7 +127,7 @@ function ChartPopover(
         )}
         keepPosition={true}
         allowVerticalOverflow={true}
-        allowVerticalScroll={isPinned}
+        allowScrollToFit={isPinned}
       >
         <div className={styles['hover-area']}>
           <PopoverBody
