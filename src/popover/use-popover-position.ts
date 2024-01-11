@@ -15,6 +15,7 @@ export default function usePopoverPosition({
   trackRef,
   contentRef,
   allowVerticalScroll,
+  allowVerticalOverflow,
   preferredPosition,
   renderWithPortal,
   keepPosition,
@@ -25,6 +26,7 @@ export default function usePopoverPosition({
   trackRef: React.RefObject<Element | null>;
   contentRef: React.RefObject<HTMLDivElement | null>;
   allowVerticalScroll?: boolean;
+  allowVerticalOverflow?: boolean;
   preferredPosition: PopoverProps.Position;
   renderWithPortal?: boolean;
   keepPosition?: boolean;
@@ -90,15 +92,11 @@ export default function usePopoverPosition({
       const shouldKeepPosition = keepPosition && onContentResize && !!previousInternalPositionRef.current;
       const fixedInternalPosition = (shouldKeepPosition && previousInternalPositionRef.current) ?? undefined;
 
-      // On mobile screens, allow the popover to open outside of the viewoprt and scroll to it,
-      // if there is no position where it can fit without being cropped.
-      const scrollIfNeeded = allowVerticalScroll && !shouldKeepPosition;
-
       // Calculate the arrow direction and viewport-relative position of the popover.
       const {
         scrollable,
         internalPosition: newInternalPosition,
-        boundingBox,
+        rect,
       } = calculatePosition({
         preferredPosition,
         fixedInternalPosition,
@@ -108,11 +106,11 @@ export default function usePopoverPosition({
         container: containingBlock ? containingBlockRect : getDocumentRect(document),
         viewport: viewportRect,
         renderWithPortal,
-        scrollIfNeeded,
+        allowVerticalOverflow,
       });
 
       // Get the position of the popover relative to the offset parent.
-      const popoverOffset = toRelativePosition(boundingBox, containingBlockRect);
+      const popoverOffset = toRelativePosition(rect, containingBlockRect);
 
       // Cache the distance between the trigger and the popover (which stays the same as you scroll),
       // and use that to recalculate the new popover position.
@@ -124,7 +122,7 @@ export default function usePopoverPosition({
 
       // Allow popover body to scroll if can't fit the popover into the container/viewport otherwise.
       if (scrollable) {
-        body.style.maxHeight = boundingBox.height + 'px';
+        body.style.maxHeight = rect.height + 'px';
         body.style.overflowX = 'hidden';
         body.style.overflowY = 'auto';
       }
@@ -133,11 +131,13 @@ export default function usePopoverPosition({
       previousInternalPositionRef.current = newInternalPosition;
       setInternalPosition(newInternalPosition);
 
+      const shouldScroll = allowVerticalScroll && !shouldKeepPosition;
+
       // Position the popover
-      const top = scrollIfNeeded ? popoverOffset.top + calculateScroll(boundingBox) : popoverOffset.top;
+      const top = shouldScroll ? popoverOffset.top + calculateScroll(rect) : popoverOffset.top;
       setPopoverStyle({ top, left: popoverOffset.left });
-      if (scrollIfNeeded) {
-        scrollRectangleIntoView(boundingBox);
+      if (shouldScroll) {
+        scrollRectangleIntoView(rect);
       }
 
       positionHandlerRef.current = () => {
@@ -161,6 +161,7 @@ export default function usePopoverPosition({
       allowVerticalScroll,
       preferredPosition,
       renderWithPortal,
+      allowVerticalOverflow,
     ]
   );
   return { updatePositionHandler, popoverStyle, internalPosition, positionHandlerRef };

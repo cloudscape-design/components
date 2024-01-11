@@ -127,6 +127,7 @@ function ChartPopover(
           </div>
         )}
         keepPosition={true}
+        allowVerticalOverflow={true}
         allowVerticalScroll={allowVerticalScroll}
       >
         <div className={styles['hover-area']}>

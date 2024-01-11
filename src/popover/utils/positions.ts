@@ -6,7 +6,7 @@ import { PopoverProps, InternalPosition, BoundingBox, Dimensions } from '../inte
 interface CalculatedPosition {
   scrollable?: boolean;
   internalPosition: InternalPosition;
-  boundingBox: BoundingBox;
+  rect: BoundingBox;
 }
 
 interface ElementGroup {
@@ -227,7 +227,7 @@ export function calculatePosition({
   viewport,
   // the popover is only bound by the viewport if it is rendered in a portal
   renderWithPortal,
-  scrollIfNeeded,
+  allowVerticalOverflow,
 }: {
   preferredPosition: PopoverProps.Position;
   fixedInternalPosition?: InternalPosition;
@@ -238,7 +238,7 @@ export function calculatePosition({
   viewport: BoundingBox;
   // the popover is only bound by the viewport if it is rendered in a portal
   renderWithPortal?: boolean;
-  scrollIfNeeded?: boolean;
+  allowVerticalOverflow?: boolean;
 }): CalculatedPosition {
   let bestOption: CandidatePosition | null = null;
 
@@ -249,35 +249,39 @@ export function calculatePosition({
 
   // Attempt to position the popover based on the priority list for this position.
   for (const internalPosition of preferredInternalPositions) {
-    const boundingBox = RECTANGLE_CALCULATIONS[internalPosition]({ body, trigger, arrow });
+    const rect = RECTANGLE_CALCULATIONS[internalPosition]({ body, trigger, arrow });
     const visibleArea = renderWithPortal
-      ? getIntersection([boundingBox, viewport])
-      : getIntersection([boundingBox, viewport, container]);
+      ? getIntersection([rect, viewport])
+      : getIntersection([rect, viewport, container]);
 
     const fitsWithoutOverflow = visibleArea && visibleArea.width === body.width && visibleArea.height === body.height;
 
     if (fitsWithoutOverflow) {
-      return { internalPosition, boundingBox };
+      return { internalPosition, rect };
     }
 
-    const newOption = { boundingBox, internalPosition, visibleArea };
+    const newOption = { rect, internalPosition, visibleArea };
     bestOption = getBestOption(newOption, bestOption);
   }
 
   // Use best possible placement.
   const internalPosition = bestOption?.internalPosition || 'right-top';
   // Get default rect for that placement.
-  const defaultBoundingBox = RECTANGLE_CALCULATIONS[internalPosition]({ body, trigger, arrow });
+  const rect = RECTANGLE_CALCULATIONS[internalPosition]({ body, trigger, arrow });
   // Get largest possible rect that fits into the viewport or container.
-  const tallestRect = getTallestRect(viewport, container);
-  const optimisedBoundingBox = fitIntoContainer(
-    defaultBoundingBox,
-    scrollIfNeeded ? { ...tallestRect, left: viewport.left, width: viewport.width } : viewport
-  );
-  // If largest possible rect is shorter than original - set body scroll.
-  const scrollable = optimisedBoundingBox.height < defaultBoundingBox.height;
 
-  return { internalPosition, boundingBox: optimisedBoundingBox, scrollable };
+  // We allow the popover to overflow the viewport if allowVerticalOverflow is true _and_ the popover will be anchored to the top or the bottom.
+  // If it is anchored to the right or left, we consider that it should have enough vertical space so that applying scroll to it is a better option.
+  const boundingContainer =
+    allowVerticalOverflow && isTopOrBottom(internalPosition)
+      ? { ...getTallestRect(viewport, container), left: viewport.left, width: viewport.width }
+      : viewport;
+  const optimizedRect = fitIntoContainer(rect, boundingContainer);
+
+  // If largest possible rect is shorter than original - set body scroll.
+  const scrollable = optimizedRect.height < rect.height;
+
+  return { internalPosition, rect: optimizedRect, scrollable };
 }
 
 function getBestOption(option1: CandidatePosition, option2: CandidatePosition | null) {
@@ -307,4 +311,8 @@ export function getDimensions(element: HTMLElement) {
     width: parseFloat(computedStyle.width),
     height: parseFloat(computedStyle.height),
   };
+}
+
+function isTopOrBottom(internalPosition: InternalPosition) {
+  return ['top', 'bottom'].includes(internalPosition.split('-')[0]);
 }

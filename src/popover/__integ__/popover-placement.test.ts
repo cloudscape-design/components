@@ -26,7 +26,8 @@ interface SetupProps {
     | 'bottom-center'
     | 'bottom-right';
   viewport: readonly [width: number, height: number];
-  triggerHeight?: number;
+  scrollLeft?: number;
+  scrollTop?: number;
 }
 
 type Expectation = (trigger: ElementRect, container: ElementRect, arrow: ElementRect) => void;
@@ -97,24 +98,17 @@ const topLeft: Expectation = (trigger, container) => {
 };
 
 const setupTest = (
-  { position, placement, viewport: [width, height] }: SetupProps,
+  { position, placement, viewport: [width, height], scrollLeft = 0, scrollTop = 0 }: SetupProps,
   testFn: (page: BasePageObject) => Promise<void>
 ) => {
   return useBrowser(async browser => {
     const page = new BasePageObject(browser);
     await page.setWindowSize({ width, height });
     await browser.url(`#/light/popover/placement-test?position=${position}&placement=${placement}`);
-    // Scroll past the top bar and the page header, all the way to the bottom so that the grid (height: 100vh) fits the viewport exactly.
-    await page.windowScrollTo({ top: height });
+    await page.windowScrollTo({ left: scrollLeft, top: scrollTop });
     await testFn(page);
   });
 };
-
-function formatSetupDescription(props: SetupProps) {
-  return Object.entries(props)
-    .map(([key, value]) => `${key}: ${value}`)
-    .join(', ');
-}
 
 describe('Default placement', () => {
   const scenarios: Scenario[] = [
@@ -122,13 +116,13 @@ describe('Default placement', () => {
     [{ position: 'right', placement: 'top-left', viewport: VIEWPORT_TABLET }, rightBottom],
     [{ position: 'left', placement: 'top-right', viewport: VIEWPORT_TABLET }, leftBottom],
     [{ position: 'top', placement: 'center-center', viewport: VIEWPORT_TABLET }, centerTop],
-    [{ position: 'right', placement: 'bottom-left', viewport: VIEWPORT_TABLET }, rightTop],
-    [{ position: 'left', placement: 'bottom-right', viewport: VIEWPORT_TABLET }, leftTop],
+    [{ position: 'right', placement: 'bottom-left', viewport: VIEWPORT_TABLET, scrollTop: 500 }, rightTop],
+    [{ position: 'left', placement: 'bottom-right', viewport: VIEWPORT_TABLET, scrollTop: 500 }, leftTop],
   ];
 
   for (const [props, expectation] of scenarios) {
     test(
-      formatSetupDescription(props),
+      `Scenario: ${props.position}, ${props.placement}, ${props.viewport}`,
       setupTest(props, async page => {
         await page.click('#popover-trigger');
         const trigger = await page.getBoundingBox(triggerSelector);
@@ -146,17 +140,11 @@ describe('Fallback to vertical placement in mobile', () => {
     [{ position: 'left', placement: 'top-right', viewport: VIEWPORT_MOBILE }, bottomLeft],
     [{ position: 'right', placement: 'bottom-left', viewport: VIEWPORT_MOBILE }, topRight],
     [{ position: 'left', placement: 'bottom-right', viewport: VIEWPORT_MOBILE }, topLeft],
-    [{ position: 'right', placement: 'top-center', viewport: VIEWPORT_MOBILE, triggerHeight: 400 }, centerBottom],
-    [{ position: 'left', placement: 'top-center', viewport: VIEWPORT_MOBILE, triggerHeight: 400 }, centerBottom],
-    [{ position: 'right', placement: 'center-center', viewport: VIEWPORT_MOBILE, triggerHeight: 400 }, centerBottom],
-    [{ position: 'left', placement: 'center-center', viewport: VIEWPORT_MOBILE, triggerHeight: 400 }, centerBottom],
-    [{ position: 'right', placement: 'bottom-center', viewport: VIEWPORT_MOBILE, triggerHeight: 400 }, centerTop],
-    [{ position: 'left', placement: 'bottom-center', viewport: VIEWPORT_MOBILE, triggerHeight: 400 }, centerTop],
   ];
 
   for (const [props, expectation] of scenarios) {
     test(
-      formatSetupDescription(props),
+      `Scenario: ${props.position}, ${props.placement}, ${props.viewport}`,
       setupTest(props, async page => {
         await page.click('#popover-trigger');
         const trigger = await page.getBoundingBox(triggerSelector);
@@ -192,7 +180,7 @@ test(
 
 test(
   'top-center falls back to top-side if cannot open top-center or bottom-center',
-  setupTest({ position: 'top', placement: 'bottom-right', viewport: VIEWPORT_TABLET }, async page => {
+  setupTest({ position: 'top', placement: 'bottom-right', viewport: VIEWPORT_TABLET, scrollTop: 500 }, async page => {
     await page.click('#popover-trigger');
     const trigger = await page.getBoundingBox(triggerSelector);
     const container = await page.getBoundingBox(containerSelector);

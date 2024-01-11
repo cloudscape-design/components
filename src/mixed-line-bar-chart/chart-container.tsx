@@ -145,7 +145,6 @@ export default function ChartContainer<T extends ChartDataTypes>({
   const containerRefObject = useRef(null);
   const containerRef = useMergeRefs(containerMeasureRef, containerRefObject);
   const popoverRef = useRef<HTMLElement | null>(null);
-  const isTouch = useRef(false);
 
   const xDomain = (props.xDomain || computeDomainX(series, xScaleType)) as
     | readonly number[]
@@ -346,9 +345,6 @@ export default function ChartContainer<T extends ChartDataTypes>({
   useLayoutEffect(() => {
     if (highlightedX !== null || highlightedPoint !== null) {
       showPopover();
-    } else {
-      // Reset right before the popover closes.
-      isTouch.current = false;
     }
   }, [highlightedX, highlightedPoint, showPopover]);
 
@@ -409,10 +405,6 @@ export default function ChartContainer<T extends ChartDataTypes>({
   };
 
   const onSVGKeyDown = handlers.onKeyDown;
-
-  const onSVGTouchStart = () => {
-    isTouch.current = true;
-  };
 
   const xOffset = xAxisProps.scale.isCategorical() ? Math.max(0, xAxisProps.scale.d3Scale.bandwidth() - 1) / 2 : 0;
 
@@ -543,7 +535,6 @@ export default function ChartContainer<T extends ChartDataTypes>({
           onApplicationFocus={onApplicationFocus}
           onApplicationBlur={onApplicationBlur}
           onKeyDown={onSVGKeyDown}
-          onTouchStart={onSVGTouchStart}
         >
           <line
             ref={plotMeasureRef}
@@ -652,7 +643,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
           onMouseLeave={onPopoverLeave}
           onBlur={onApplicationBlur}
           setPopoverText={setDetailsPopoverText}
-          allowVerticalScroll={isTouch.current}
+          allowVerticalScroll={isPopoverPinned}
         />
       }
     />

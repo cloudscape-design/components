@@ -36,6 +36,7 @@ export interface PopoverContainerProps {
   // When allowVerticalScroll is true, we will scroll to the the popover if it overflows the viewport even when choosing the best possible position for it.
   // Do not use this if the popover is open on hover, in order to avoid unexpected movement.
   allowVerticalScroll?: boolean;
+  allowVerticalOverflow?: boolean;
 }
 
 export default function PopoverContainer({
@@ -51,6 +52,7 @@ export default function PopoverContainer({
   variant,
   keepPosition,
   allowVerticalScroll,
+  allowVerticalOverflow,
 }: PopoverContainerProps) {
   const bodyRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
@@ -67,6 +69,7 @@ export default function PopoverContainer({
     trackRef,
     contentRef,
     allowVerticalScroll,
+    allowVerticalOverflow,
     preferredPosition: position,
     renderWithPortal,
     keepPosition,
