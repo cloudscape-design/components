@@ -41,6 +41,11 @@ $font-weight-bold: awsui.$font-weight-heading-s;
   }
 }
 
+.list-item:not(:first-child),
+.inner-list-item {
+  margin-top: awsui.$space-scaled-xxs;
+}
+
 .sub-items {
   &:not(.expandable) {
     padding-inline-start: calc(marker.$marker-width + marker.$marker-margin-right);
