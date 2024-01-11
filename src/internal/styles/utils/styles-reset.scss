@@ -6,9 +6,9 @@
 @use '../typography' as typography;
 
 @mixin styles-reset {
+  /* Begin inherited property reset */
   border-collapse: separate;
   border-spacing: 0;
-  box-sizing: border-box;
   caption-side: top;
   cursor: auto;
   direction: inherit;
@@ -17,19 +17,21 @@
   font-size: medium;
   font-style: normal;
   font-variant: normal;
-  font-weight: normal;
+  font-weight: 400;
   font-stretch: normal;
   line-height: normal;
   hyphens: none;
   letter-spacing: normal;
   list-style: disc outside none;
   tab-size: 8;
-  text-align: start;
+  text-align: left;
   text-indent: 0;
   text-shadow: none;
   text-transform: none;
   visibility: visible;
   white-space: normal;
   word-spacing: normal;
+  /* End inherited property reset */
+  box-sizing: border-box;
   @include typography.default-text-style;
 }
