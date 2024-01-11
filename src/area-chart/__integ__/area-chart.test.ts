@@ -243,6 +243,31 @@ describe('Popover', () => {
       await expect(page.hasPopover()).resolves.toBe(false);
     })
   );
+
+  test(
+    'tabbing from the popover back to the chart keeps the highlights',
+    setupTest('#/light/area-chart/test', 'Controlled linear latency chart', async page => {
+      await page.focusPlot();
+      await expect(page.hasPopover()).resolves.toBe(true);
+      const popover = page.getPopover();
+      const buttonDropdown = popover.findContent().findButtonDropdown().findNativeButton();
+
+      // First group is highlighted
+      await expect(page.getText(popover.findHeader().toSelector())).resolves.toContain('1s');
+      await expect(page.isFocused(buttonDropdown.toSelector())).resolves.toBe(false);
+
+      // Tab into the popover
+      await page.keys(['Tab']);
+      await expect(page.isFocused(buttonDropdown.toSelector())).resolves.toBe(true);
+
+      // Tab back into the chart
+      await page.keys(['Shift', 'Tab', 'Shift']);
+      await expect(page.isFocused(buttonDropdown.toSelector())).resolves.toBe(false);
+
+      // First group is still highlighted
+      await expect(page.getText(popover.findHeader().toSelector())).resolves.toContain('1s');
+    })
+  );
 });
 
 describe('Keyboard navigation', () => {

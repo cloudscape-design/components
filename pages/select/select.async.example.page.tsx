@@ -1,109 +1,75 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import * as React from 'react';
-import Select from '~components/select';
-import { fetchSecurityGroups } from './mock/security-groups-provider';
+import React, { useContext, useState } from 'react';
+import Select, { SelectProps } from '~components/select';
 import Box from '~components/box';
+import AppContext, { AppContextType } from '../app/app-context';
+import { useOptionsLoader } from '../common/options-loader';
+import { groupsRaw } from './mock/data';
 
-class SecurityGroupSingleSelect extends React.Component {
-  pageNumber: any = null;
-  filteringText = '';
-  state = {
-    selectedOption: null,
-    options: [],
-    status: 'pending',
-  };
+const allOptions = JSON.parse(JSON.stringify(groupsRaw)) as unknown as SelectProps.OptionGroup[];
 
-  fetchData = async () => {
-    try {
-      const { filteringText, pageNumber } = this;
-      const { items, hasNext } = await fetchSecurityGroups({
-        filteringText,
-        pageNumber,
-      });
-      if (this.filteringText !== filteringText) {
-        // there is another request in progress, discard the result of this one
-        return;
-      }
-      this.setState({
-        status: hasNext ? 'pending' : 'finished',
-        options: this.pageNumber === 1 ? items : this.state.options.concat(items as any),
-      });
-    } catch (error) {
-      this.setState({
-        status: 'error',
-      });
-    }
-  };
+type PageContext = React.Context<
+  AppContextType<{
+    showFinishedText?: boolean;
+    fakeResponses?: boolean;
+    randomErrors?: boolean;
+    virtualScroll?: boolean;
+    expandToViewport?: boolean;
+  }>
+>;
 
-  handleLoadItems = ({ detail: { filteringText, firstPage, samePage } }: any) => {
-    let { options } = this.state;
-    this.filteringText = filteringText;
-    if (firstPage) {
-      this.pageNumber = 0;
-      options = [];
-    }
-    if (!samePage) {
-      this.pageNumber++;
-    }
-    this.setState({
-      options,
-      status: 'loading',
-    });
-    this.fetchData();
-  };
+export default function Page() {
+  const [selectedOption, setSelectedOption] = useState<null | SelectProps.Option>(null);
+  const {
+    urlParams: { fakeResponses = true, randomErrors = true },
+  } = useContext(AppContext as PageContext);
 
-  handleChange = (event: any) => {
-    this.setState({
-      selectedOption: event.detail.selectedOption,
-    });
-  };
+  const { items, status, filteringText, fetchItems } = useOptionsLoader<SelectProps.Option>({
+    pageSize: 10,
+    randomErrors: randomErrors,
+  });
 
-  showFilteredText = (matchesCount: number, totalCount: number) => {
-    if (this.state.status === 'pending') {
+  function showFilteredText(matchesCount: number, totalCount: number) {
+    if (status === 'pending') {
       return `${matchesCount}+ results`;
     }
 
-    if (this.state.status === 'finished') {
+    if (status === 'finished') {
       return `${matchesCount} out of ${totalCount} results`;
     }
     return '';
-  };
-
-  render() {
-    const { status, options, selectedOption } = this.state;
-    return (
-      <>
-        <Box margin={{ bottom: 'xxs' }} color="text-label">
-          <label htmlFor="select_security_group">Security group</label>
-        </Box>
-        <Select
-          controlId="select_security_group"
-          filteringType="manual"
-          filteringPlaceholder="Find security group"
-          filteringAriaLabel="Filtering aria label"
-          filteringResultsText={this.showFilteredText}
-          statusType={status as any}
-          placeholder="Choose a security group"
-          loadingText="Loading security groups"
-          errorText="Error fetching results."
-          recoveryText="Retry"
-          finishedText={this.filteringText ? `End of "${this.filteringText}" results` : 'End of all results'}
-          empty="No security groups found"
-          options={options}
-          selectedOption={selectedOption}
-          onChange={this.handleChange}
-          onLoadItems={this.handleLoadItems}
-        />
-      </>
-    );
   }
-}
-export default function SelectPage() {
+
   return (
     <Box padding="l">
       <Box variant="h1">Select: asynchronously fetched options</Box>
-      <SecurityGroupSingleSelect />
+      <Box margin={{ bottom: 'xxs' }} color="text-label">
+        <label htmlFor="select_security_group">Security group</label>
+      </Box>
+      <Select
+        controlId="select_security_group"
+        filteringType="manual"
+        filteringPlaceholder="Find security group"
+        filteringAriaLabel="Filtering aria label"
+        filteringResultsText={showFilteredText}
+        statusType={status as any}
+        placeholder="Choose a security group"
+        loadingText="Loading security groups"
+        errorText="Error fetching results."
+        recoveryText="Retry"
+        finishedText={filteringText ? `End of "${filteringText}" results` : 'End of all results'}
+        empty="No security groups found"
+        options={items}
+        selectedOption={selectedOption}
+        onChange={event => setSelectedOption(event.detail.selectedOption)}
+        onLoadItems={({ detail: { firstPage, filteringText } }) => {
+          const filteredOptions = allOptions
+            .filter(group => group.label!.indexOf(filteringText) > -1)
+            .map(group => ({ ...group, value: group.label }));
+          fetchItems({ firstPage, filteringText, sourceItems: fakeResponses ? filteredOptions : undefined });
+        }}
+      />
     </Box>
   );
 }

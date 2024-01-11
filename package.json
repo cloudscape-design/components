@@ -48,6 +48,8 @@
     "react-dom": "^16.8 || ^17 || ^18"
   },
   "devDependencies": {
+    "@babel/core": "^7.23.7",
+    "@babel/plugin-syntax-typescript": "^7.23.3",
     "@cloudscape-design/browser-test-tools": "^3.0.0",
     "@cloudscape-design/documenter": "^1.0.0",
     "@cloudscape-design/eslint-plugin": "file:build-tools/eslint",

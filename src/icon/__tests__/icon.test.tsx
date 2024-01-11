@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
-import Icon from '../../../lib/components/icon';
+import Icon, { IconProps } from '../../../lib/components/icon';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import styles from '../../../lib/components/icon/styles.css.js';
 
@@ -38,6 +38,26 @@ describe('Icon Component', () => {
     test('renders with proper class name', () => {
       const { container } = render(<Icon size="inherit" name="settings" />);
       expect(container.firstElementChild).toHaveClass(styles['icon-flex-height']);
+    });
+  });
+
+  describe('gen ai icon', () => {
+    test('filled icon renders with accessibility-related attributes', () => {
+      const { container } = render(<Icon name="gen-ai" size="small" />);
+      const svg = container.querySelector('svg');
+      expect(svg).toHaveAttribute('data-testid', 'gen-ai-filled');
+      expect(svg).toHaveAttribute('focusable', 'false');
+      expect(svg).toHaveAttribute('aria-hidden', 'true');
+    });
+
+    test('only renders filled icon only for small size', () => {
+      const sizes: IconProps.Size[] = ['normal', 'medium', 'big', 'large', 'inherit'];
+
+      sizes.forEach(size => {
+        const { container } = render(<Icon name="gen-ai" size={size} />);
+        const svg = container.querySelector('svg');
+        expect(svg).not.toHaveAttribute('data-testid', 'gen-ai-filled');
+      });
     });
   });
 

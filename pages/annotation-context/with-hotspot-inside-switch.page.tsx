@@ -7,7 +7,6 @@ import Checkbox from '~components/checkbox';
 import Hotspot from '~components/hotspot';
 import RadioGroup from '~components/radio-group';
 import SpaceBetween from '~components/space-between';
-import Tiles from '~components/tiles';
 import Toggle from '~components/toggle';
 import tutorials from '../onboarding/tutorials';
 import { annotationContextStrings } from '../onboarding/i18n';
@@ -19,7 +18,6 @@ export default function AnnotationScroll() {
   const [checkboxIsChecked, setCheckboxIsChecked] = useState(false);
   const [toggleIsChecked, setToggleIsChecked] = useState(false);
   const [radiogroupValue, setRadiogroupValue] = useState('first');
-  const [tilesValue, setTilesValue] = useState('item1');
 
   return (
     <>
@@ -74,26 +72,6 @@ export default function AnnotationScroll() {
                   description: 'This is a description',
                 },
                 { value: 'third', label: 'Third choice', description: 'This is a description' },
-              ]}
-            />
-
-            <Tiles
-              onChange={({ detail }) => {
-                console.log('Tile selected');
-                setTilesValue(detail.value);
-              }}
-              value={tilesValue}
-              items={[
-                { label: 'Item 1 label', value: 'item1' },
-                {
-                  label: (
-                    <>
-                      Item 2 label <Hotspot hotspotId={tutorial.tasks[0].steps[5].hotspotId} />
-                    </>
-                  ),
-                  value: 'item2',
-                },
-                { label: 'Item 3 label', value: 'item3' },
               ]}
             />
           </SpaceBetween>

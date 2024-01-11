@@ -96,6 +96,9 @@
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Memindahkan item kembali ke posisi {currentPosition} dari {total}} false {Memindahkan item ke posisi {currentPosition} dari {total}} other {}}",
     "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {Item dipindahkan kembali ke posisi aslinya {initialPosition} dari {total}} false {Item dipindahkan dari posisi {initialPosition} ke posisi {finalPosition} dari {total}} other {}}"
   },
+  "copy-to-clipboard": {
+    "i18nStrings.copyButtonText": "Salin"
+  },
   "date-range-picker": {
     "i18nStrings.relativeModeTitle": "Mode relatif",
     "i18nStrings.absoluteModeTitle": "Mode absolut",
@@ -115,8 +118,8 @@
     "i18nStrings.dateTimeConstraintText": "Untuk tanggal, gunakan HH/BB/TTTT. Untuk waktu, gunakan format 24 jam.",
     "i18nStrings.errorIconAriaLabel": "Kesalahan",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "Rentang dipilih dari {startDate} hingga {endDate}",
-    "i18nStrings.formatRelativeRange": "{amount, plural, one {{amount} {unit} terakhir} other {{amount} {unit} terakhir}}",
-    "i18nStrings.formatUnit": "{amount, plural, one {{unit}} other {{unit}}}"
+    "i18nStrings.formatRelativeRange": "{unit, select, second {{amount, plural, zero {{amount} detik terakhir} one {{amount} detik terakhir} other {{amount} detik terakhir}}} minute {{amount, plural, zero {{amount} menit terakhir} one {{amount} menit terakhir} other {{amount} menit terakhir}}} hour {{amount, plural, zero {{amount} jam terakhir} one {{amount} jam terakhir} other {{amount} jam terakhir}}} day {{amount, plural, zero {{amount} hari terakhir} one {{amount} hari terakhir} other {{amount} hari terakhir}}} week {{amount, plural, zero {{amount} minggu terakhir} one {{amount} minggu terakhir} other {{amount} minggu terakhir}}} month {{amount, plural, zero {{amount} bulan terakhir} one {{amount} bulan terakhir} other {{amount} bulan terakhir}}} year {{amount, plural, zero {{amount} tahun terakhir} one {{amount} tahun terakhir} other {{amount} tahun terakhir}}} other {}}",
+    "i18nStrings.formatUnit": "{unit, select, second {{amount, plural, zero {detik} one {detik} other {detik}}} minute {{amount, plural, zero {menit} one {menit} other {menit}}} hour {{amount, plural, zero {jam} one {jam} other {jam}}} day {{amount, plural, zero {hari} one {hari} other {hari}}} week {{amount, plural, zero {minggu} one {minggu} other {minggu}}} month {{amount, plural, zero {bulan} one {bulan} other {bulan}}} year {{amount, plural, zero {tahun} one {tahun} other {tahun}}} other {}}"
   },
   "drawer": {
     "i18nStrings.loadingText": "Memuat konten"

@@ -3,13 +3,14 @@
 import { useRef } from 'react';
 
 export function useDateCache(): (date: Date) => Date {
-  const cacheRef = useRef<{ [key: number]: Date }>({});
+  const cacheRef = useRef(new Map<number, Date>());
 
   return (date: Date) => {
-    if (cacheRef.current[date.getTime()]) {
-      return cacheRef.current[date.getTime()];
+    const current = cacheRef.current.get(date.getTime());
+    if (current) {
+      return current;
     }
-    cacheRef.current[date.getTime()] = date;
+    cacheRef.current.set(date.getTime(), date);
     return date;
   };
 }

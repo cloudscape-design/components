@@ -279,7 +279,6 @@ export default function InternalMixedLineBarChart<T extends number | string | Da
             ariaLabelledby={ariaLabelledby}
             ariaDescription={ariaDescription}
             i18nStrings={i18nStrings}
-            plotContainerRef={containerRef}
           />
         ) : null
       }
