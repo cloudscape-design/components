@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import * as React from 'react';
+import MockDate from 'mockdate';
 import { render } from '@testing-library/react';
 import Calendar, { CalendarProps } from '../../../lib/components/calendar';
 import styles from '../../../lib/components/calendar/styles.selectors.js';
@@ -10,6 +11,8 @@ import '../../__a11y__/to-validate-a11y';
 import screenreaderOnlyStyles from '../../../lib/components/internal/components/screenreader-only/styles.selectors.js';
 
 // The calendar is mostly tested here: src/date-picker/__tests__/date-picker-calendar.test.tsx
+
+const localeDE = new Intl.DateTimeFormat('de-DE', { timeZone: 'GMT' });
 
 const defaultProps: CalendarProps = {
   todayAriaLabel: 'Today',
@@ -28,6 +31,10 @@ function findCalendarWeekdays(wrapper: CalendarWrapper) {
   return wrapper
     .findAll(`.${styles['calendar-day-header']} :not(.${screenreaderOnlyStyles.root})`)
     .map(day => day.getElement().textContent!.trim());
+}
+
+function getDayText(wrapper: CalendarWrapper, row: number, col: number) {
+  return wrapper.findDateAt(row, col).findByClassName(styles['day-inner'])!.getElement().textContent;
 }
 
 describe('Calendar', () => {
@@ -93,5 +100,94 @@ describe('aria-describedby', () => {
       'aria-describedby',
       expect.stringContaining('calendar-description')
     );
+  });
+});
+
+describe('selected date', () => {
+  beforeEach(() => jest.spyOn(Intl, 'DateTimeFormat').mockImplementation(() => localeDE));
+  afterEach(() => jest.restoreAllMocks());
+
+  test('aria-selected is set for selected date only', () => {
+    const { container } = render(<Calendar {...defaultProps} value="2022-01-07" />);
+    const wrapper = createWrapper(container).findCalendar()!;
+    const selectedDateRow = 2;
+    const selectedDateCol = 5;
+
+    expect(getDayText(wrapper, selectedDateRow, selectedDateCol)).toBe('7');
+
+    for (let row = 1; row <= 6; row++) {
+      for (let col = 1; col <= 7; col++) {
+        const matchesSelected = row === selectedDateRow && col === selectedDateCol;
+        expect(wrapper.findDateAt(row, col).getElement()).toHaveAttribute('aria-selected', String(matchesSelected));
+      }
+    }
+  });
+
+  test('aria-selected is not set when selected date is disabled', () => {
+    const { container } = render(
+      <Calendar {...defaultProps} value="2022-01-07" isDateEnabled={date => date.getDate() !== 7} />
+    );
+    const wrapper = createWrapper(container).findCalendar()!;
+    const selectedDateRow = 2;
+    const selectedDateCol = 5;
+
+    expect(getDayText(wrapper, selectedDateRow, selectedDateCol)).toBe('7');
+
+    for (let row = 1; row <= 6; row++) {
+      for (let col = 1; col <= 7; col++) {
+        expect(wrapper.findDateAt(row, col).getElement()).not.toHaveAttribute('aria-selected', 'true');
+      }
+    }
+  });
+});
+
+describe('disabled date', () => {
+  beforeEach(() => jest.spyOn(Intl, 'DateTimeFormat').mockImplementation(() => localeDE));
+  afterEach(() => jest.restoreAllMocks());
+
+  test('aria-disabled is set for all disabled dates', () => {
+    const { container } = render(
+      <Calendar {...defaultProps} value="2022-01-07" isDateEnabled={date => date.getDay() !== 4} />
+    );
+    const wrapper = createWrapper(container).findCalendar()!;
+    const disabledDateCol = 4;
+
+    for (let row = 1; row <= 6; row++) {
+      for (let col = 1; col <= 7; col++) {
+        const matchesDisabled = col === disabledDateCol;
+        expect(wrapper.findDateAt(row, col).getElement()).toHaveAttribute('aria-disabled', String(matchesDisabled));
+      }
+    }
+  });
+});
+
+describe('current date', () => {
+  beforeEach(() => {
+    MockDate.set(new Date(2022, 0, 5));
+    jest.spyOn(Intl, 'DateTimeFormat').mockImplementation(() => localeDE);
+  });
+  afterEach(() => {
+    MockDate.reset();
+    jest.restoreAllMocks();
+  });
+
+  test('aria-disabled is set for all disabled dates', () => {
+    const { container } = render(
+      <Calendar {...defaultProps} value="2022-01-07" isDateEnabled={date => date.getDay() !== 4} />
+    );
+    const wrapper = createWrapper(container).findCalendar()!;
+    const currentDateRow = 2;
+    const currentDateCol = 3;
+
+    expect(getDayText(wrapper, currentDateRow, currentDateCol)).toBe('5');
+    expect(wrapper.findDateAt(currentDateRow, currentDateCol).getElement()).toHaveAttribute('aria-current', 'date');
+
+    for (let row = 1; row <= 6; row++) {
+      for (let col = 1; col <= 7; col++) {
+        if (row !== currentDateRow || col !== currentDateCol) {
+          expect(wrapper.findDateAt(row, col).getElement()).not.toHaveAttribute('aria-current');
+        }
+      }
+    }
   });
 });
