@@ -6,9 +6,9 @@
 @use '../typography' as typography;
 
 @mixin styles-reset {
-  /* Begin inherited property reset */
   border-collapse: separate;
   border-spacing: 0;
+  box-sizing: border-box;
   caption-side: top;
   cursor: auto;
   direction: inherit;
@@ -31,7 +31,5 @@
   visibility: visible;
   white-space: normal;
   word-spacing: normal;
-  /* End inherited property reset */
-  box-sizing: border-box;
   @include typography.default-text-style;
 }
