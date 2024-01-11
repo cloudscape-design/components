@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useEffect, useImperativeHandle, useRef } from 'react';
-import { useVirtualizer } from '@tanstack/react-virtual';
 
 import OptionsList from '../internal/components/options-list';
 
@@ -9,6 +8,7 @@ import AutosuggestOption from './autosuggest-option';
 import { getOptionProps, ListProps } from './plain-list';
 import styles from './styles.css.js';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+import { useVirtualizer } from '../internal/hooks/use-virtualizer';
 
 const VirtualList = ({
   autosuggestItemsState,

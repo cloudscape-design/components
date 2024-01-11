@@ -1,11 +1,46 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useEffect } from 'react';
 import { render } from '@testing-library/react';
 import Autosuggest, { AutosuggestProps } from '../../../lib/components/autosuggest';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
-import { scrollToIndex } from '../../../__mocks__/@tanstack/react-virtual';
+import { range } from 'lodash';
+
+export const scrollToIndex = jest.fn();
+export const measureElement = jest.fn();
+
+jest.mock('../../../lib/components/internal/hooks/use-virtualizer', () => ({
+  useVirtualizer({
+    count,
+    getScrollElement,
+    estimateSize,
+  }: {
+    count: number;
+    getScrollElement: () => Element;
+    estimateSize: () => number;
+  }) {
+    useEffect(() => {
+      const element = getScrollElement();
+      if (!element) {
+        throw new Error('Scroll element is missing');
+      }
+      const size = estimateSize ? estimateSize() : 0;
+      if (isNaN(size)) {
+        throw new Error('Invalid estimated size');
+      }
+    });
+    return {
+      getVirtualItems: () =>
+        range(0, count)
+          .slice(0, 10)
+          .map((_, index) => ({ key: index, index, start: index, end: index + 1, size: 1, lane: 0 })),
+      getTotalSize: () => 10,
+      scrollToIndex,
+      measureElement,
+    };
+  },
+}));
 
 const defaultProps: AutosuggestProps = {
   options: [

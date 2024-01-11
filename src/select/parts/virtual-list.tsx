@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import React, { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
-import { useVirtualizer } from '@tanstack/react-virtual';
 import OptionsList from '../../internal/components/options-list';
 import { renderOptions } from '../utils/render-options';
 import { SelectListProps } from './plain-list';
 
 import styles from './styles.css.js';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+import { useVirtualizer } from '../../internal/hooks/use-virtualizer';
 
 const VirtualList = (props: SelectListProps, ref: React.Ref<SelectListProps.SelectListRef>) => {
   return props.menuProps.open ? <VirtualListOpen {...props} ref={ref} /> : <VirtualListClosed {...props} ref={ref} />;
