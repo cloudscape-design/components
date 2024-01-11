@@ -268,14 +268,22 @@ export function calculatePosition({
   const internalPosition = bestOption?.internalPosition || 'right-top';
   // Get default rect for that placement.
   const rect = RECTANGLE_CALCULATIONS[internalPosition]({ body, trigger, arrow });
+
   // Get largest possible rect that fits into the viewport or container.
 
   // We allow the popover to overflow the viewport if allowVerticalOverflow is true _and_ the popover will be anchored to the top or the bottom.
   // If it is anchored to the right or left, we consider that it should have enough vertical space so that applying scroll to it is a better option.
+  const tallestBoundingContainer = getTallestRect(viewport, container);
   const boundingContainer =
     allowVerticalOverflow && isTopOrBottom(internalPosition)
-      ? { ...getTallestRect(viewport, container), left: viewport.left, width: viewport.width }
+      ? {
+          top: tallestBoundingContainer.top,
+          height: tallestBoundingContainer.height,
+          left: viewport.left,
+          width: viewport.width,
+        }
       : viewport;
+
   const optimizedRect = fitIntoContainer(rect, boundingContainer);
 
   // If largest possible rect is shorter than original - set body scroll.
