@@ -16,7 +16,7 @@ jest.mock('../../../lib/components/popover/utils/positions', () => ({
   ...jest.requireActual('../../../lib/components/popover/utils/positions'),
   calculatePosition: () => ({
     internalPosition: 'top-right',
-    boundingBox: { top: 100, left: 100, width: 200, height: 100 },
+    rect: { top: 100, left: 100, width: 200, height: 100 },
   }),
   getOffsetDimensions: () => ({ offsetWidth: 100, offsetHeight: 200 }),
 }));
