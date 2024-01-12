@@ -98,6 +98,9 @@ function ChartPopover(
     };
   }, [container, onDismiss]);
 
+  // In chart popovers, dismiss button is present when they are pinned, so both values are equivalent.
+  const isPinned = dismissButton;
+
   return (
     <div
       {...baseProps}
@@ -123,6 +126,8 @@ function ChartPopover(
           </div>
         )}
         keepPosition={true}
+        allowVerticalOverflow={true}
+        allowScrollToFit={isPinned}
       >
         <div className={styles['hover-area']}>
           <PopoverBody
