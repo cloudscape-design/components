@@ -124,7 +124,7 @@ export default <T extends PieChartProps.Datum>({
   const detailFunction = detailPopoverContent || defaultDetails(i18n, i18nStrings);
   const details = popoverData ? detailFunction(popoverData.datum, dataSum) : [];
   const popoverContentRef = useRef<HTMLDivElement | null>(null);
-  const popoverContent = popoverData && <SeriesDetails details={details} ref={popoverContentRef} />;
+  const popoverContent = popoverData && <SeriesDetails details={details} compactList={true} ref={popoverContentRef} />;
 
   const popoverDismissedRecently = useRef(false);
   const escapePressed = useRef(false);
