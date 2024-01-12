@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { getBreakpointValue } from '../../breakpoints';
-import { BoundingBox, getOverflowParents, getOverflowParentDimensions } from '../../utils/scrollable-containers';
+import { Dimensions, getOverflowParents, getOverflowParentDimensions } from '../../utils/scrollable-containers';
 import styles from './styles.css.js';
 
 const AVAILABLE_SPACE_RESERVE_DEFAULT = 50;
@@ -52,7 +52,7 @@ export const getAvailableSpace = ({
   isMobile,
 }: {
   trigger: HTMLElement;
-  overflowParents: ReadonlyArray<BoundingBox>;
+  overflowParents: ReadonlyArray<Dimensions>;
   stretchWidth?: boolean;
   stretchHeight?: boolean;
   isMobile?: boolean;
@@ -94,7 +94,7 @@ export const getInteriorAvailableSpace = ({
   isMobile,
 }: {
   trigger: HTMLElement;
-  overflowParents: ReadonlyArray<BoundingBox>;
+  overflowParents: ReadonlyArray<Dimensions>;
   isMobile?: boolean;
 }): AvailableSpace => {
   const AVAILABLE_SPACE_RESERVE_VERTICAL = isMobile
@@ -205,7 +205,7 @@ export const getDropdownPosition = ({
 }: {
   triggerElement: HTMLElement;
   dropdownElement: HTMLElement;
-  overflowParents: ReadonlyArray<BoundingBox>;
+  overflowParents: ReadonlyArray<Dimensions>;
   minWidth?: number;
   preferCenter?: boolean;
   stretchWidth?: boolean;
@@ -274,7 +274,7 @@ export const getDropdownPosition = ({
 export const getInteriorDropdownPosition = (
   trigger: HTMLElement,
   dropdown: HTMLElement,
-  overflowParents: ReadonlyArray<BoundingBox>,
+  overflowParents: ReadonlyArray<Dimensions>,
   isMobile?: boolean
 ): InteriorDropdownPosition => {
   const availableSpace = getInteriorAvailableSpace({ trigger, overflowParents, isMobile });

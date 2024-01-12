@@ -15,7 +15,7 @@ import EmphasizedBaseline from '../internal/components/cartesian-chart/emphasize
 import HighlightedPoint from '../internal/components/cartesian-chart/highlighted-point';
 import VerticalMarker from '../internal/components/cartesian-chart/vertical-marker';
 import { ChartScale, NumericChartScale } from '../internal/components/cartesian-chart/scales';
-import MixedChartPopover from './chart-popover';
+import ChartPopover from './chart-popover';
 import { ChartDataTypes, InternalChartSeries, MixedLineBarChartProps, ScaleType, VerticalMarkerX } from './interfaces';
 import { computeDomainX, computeDomainY } from './domain';
 import { isXThreshold } from './utils';
@@ -629,7 +629,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
         </ChartPlot>
       }
       popover={
-        <MixedChartPopover
+        <ChartPopover
           ref={popoverRef}
           containerRef={containerRefObject}
           trackRef={highlightedElementRef}
