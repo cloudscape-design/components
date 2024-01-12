@@ -103,9 +103,23 @@ export function calculateScroll({ top, height }: BoundingBox) {
  * so we need to manually scroll to the element's position.
  * Supports only vertical scrolling.
  */
-export function scrollRectangleIntoView(box: BoundingBox) {
+export function scrollRectangleIntoView(box: BoundingBox, scrollableParent?: HTMLElement) {
   const scrollAmount = calculateScroll(box);
   if (scrollAmount) {
-    window.scrollBy(0, scrollAmount);
+    (scrollableParent || window).scrollBy(0, scrollAmount);
+  }
+}
+
+export function getFirstScrollableParent(element: HTMLElement): HTMLElement | undefined {
+  if (!(element instanceof HTMLElement)) {
+    return;
+  }
+  const overflows = element.scrollHeight > element.clientHeight;
+  const isScrollable = overflows && ['scroll', 'auto'].includes(getComputedStyle(element).overflowY);
+  if (isScrollable) {
+    return element;
+  }
+  if (element.parentElement) {
+    return getFirstScrollableParent(element.parentElement);
   }
 }
