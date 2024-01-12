@@ -173,8 +173,8 @@ describe('calculatePosition', () => {
           renderWithPortal,
         });
         expect(position.scrollable).toBe(true);
-        expect(position.rect.width).toBe(250);
-        expect(position.rect.height).toBeLessThan(900);
+        expect(position.boundingOffset.width).toBe(250);
+        expect(position.boundingOffset.height).toBeLessThan(900);
       });
     });
   });
