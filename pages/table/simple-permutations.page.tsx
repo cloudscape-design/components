@@ -95,7 +95,7 @@ export default function () {
   return (
     <>
       <h1>Simple table permutations</h1>
-      <ScreenshotArea disableAnimations={true}>
+      <ScreenshotArea>
         <PermutationsView
           permutations={permutations}
           render={permutation => <Table {...permutation} ariaLabels={ARIA_LABELS} />}

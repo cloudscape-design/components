@@ -9,7 +9,7 @@ import buttonDropdownItems from './utils/button-dropdown-items';
 
 export default function ButtonDropdownScenario() {
   return (
-    <ScreenshotArea disableAnimations={true}>
+    <ScreenshotArea>
       <h1>ButtonDropdown in a scrollable container</h1>
       <div className={clsx(styles['overflow-container'], styles.scroll)} id="scrollable-container">
         <div />

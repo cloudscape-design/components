@@ -56,7 +56,7 @@ export default function SpaceBetweenPermutations() {
   return (
     <>
       <h1>SpaceBetween - alignment</h1>
-      <ScreenshotArea disableAnimations={true}>
+      <ScreenshotArea>
         <PermutationsView
           permutations={permutations}
           render={permutation => (

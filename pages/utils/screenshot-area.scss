@@ -7,10 +7,8 @@
 /* stylelint-disable selector-combinator-disallowed-list, selector-max-universal, @cloudscape-design/no-motion-outside-of-mixin, @cloudscape-design/no-implicit-descendant */
 .noAnimation {
   *,
-  *:before,
   *:after {
     animation: none !important;
-    transition: none !important;
   }
 }
 /* stylelint-enable */

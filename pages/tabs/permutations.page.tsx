@@ -55,7 +55,7 @@ export default function TabsPermutations() {
   return (
     <>
       <h1>Tabs permutations</h1>
-      <ScreenshotArea disableAnimations={true}>
+      <ScreenshotArea>
         <PermutationsView
           permutations={permutations}
           render={permutation => (

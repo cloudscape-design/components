@@ -17,7 +17,7 @@ export default function CollectionPreferencesPermutations() {
   return (
     <>
       <h1>CollectionPreferences page for screenshot tests</h1>
-      <ScreenshotArea disableAnimations={true}>
+      <ScreenshotArea>
         <CollectionPreferences
           className={`cp-1`}
           {...baseProperties}

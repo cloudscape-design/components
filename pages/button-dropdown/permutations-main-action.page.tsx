@@ -58,7 +58,7 @@ export default function () {
   return (
     <>
       <Box variant="h1">ButtonDropdown with main action permutations</Box>
-      <ScreenshotArea disableAnimations={true}>
+      <ScreenshotArea>
         <PermutationsView
           permutations={permutations}
           render={({ items, ...rest }) => {

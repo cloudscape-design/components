@@ -147,7 +147,7 @@ export default function ExpandableSectionPermutations() {
   return (
     <>
       <h1>Expandable Section permutations</h1>
-      <ScreenshotArea disableAnimations={true}>
+      <ScreenshotArea>
         <PermutationsView permutations={permutations} render={permutation => <ExpandableSection {...permutation} />} />
       </ScreenshotArea>
     </>

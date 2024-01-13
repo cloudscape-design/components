@@ -7,7 +7,7 @@ import ScreenshotArea from '../utils/screenshot-area';
 
 export default function HelpPanelLoading() {
   return (
-    <ScreenshotArea disableAnimations={true} gutters={false}>
+    <ScreenshotArea gutters={false}>
       <AppLayoutWrapper tools={<HelpPanel loading={true} loadingText="Loading content" />} />
     </ScreenshotArea>
   );

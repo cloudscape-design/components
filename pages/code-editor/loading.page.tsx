@@ -9,7 +9,7 @@ export default function () {
   return (
     <article>
       <h1>Code Editor - loading</h1>
-      <ScreenshotArea style={{ maxWidth: 960 }} disableAnimations={true}>
+      <ScreenshotArea style={{ maxWidth: 960 }}>
         <CodeEditor
           ace={null}
           value=""

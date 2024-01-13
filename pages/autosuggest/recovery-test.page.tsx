@@ -17,7 +17,7 @@ export default function () {
   return (
     <>
       <h1>Autosuggest recovery test</h1>
-      <ScreenshotArea disableAnimations={true} style={{ height: '500px' }}>
+      <ScreenshotArea style={{ height: '500px' }}>
         <SpaceBetween direction="horizontal" size="m">
           <Autosuggest
             value={value}

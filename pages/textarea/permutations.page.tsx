@@ -46,7 +46,7 @@ export default function TextareaPermutations() {
   return (
     <>
       <h1>Textarea permutations</h1>
-      <ScreenshotArea disableAnimations={true}>
+      <ScreenshotArea>
         <PermutationsView
           permutations={permutations}
           render={permutation => (

@@ -32,7 +32,7 @@ export default function FlashbarStacking() {
   return (
     <>
       <h1>Flashbar items should have correct spacing between them</h1>
-      <ScreenshotArea disableAnimations={true}>
+      <ScreenshotArea>
         <Flashbar items={items} />
       </ScreenshotArea>
     </>

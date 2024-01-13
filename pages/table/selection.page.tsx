@@ -10,7 +10,7 @@ export default function () {
   return (
     <>
       <h1>Table selection</h1>
-      <ScreenshotArea disableAnimations={true}>
+      <ScreenshotArea>
         <SpaceBetween size="m">
           <MultiSelection />
           <SingleSelection />

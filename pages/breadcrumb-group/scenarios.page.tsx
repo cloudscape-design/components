@@ -23,7 +23,7 @@ const testCases = [
 
 export default function ButtonDropdownPage() {
   return (
-    <ScreenshotArea disableAnimations={true}>
+    <ScreenshotArea>
       <article>
         <h1>BreadcrumbGroup variations</h1>
         {testCases.map((testcase, index) => (

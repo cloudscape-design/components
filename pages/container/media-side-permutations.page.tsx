@@ -30,7 +30,7 @@ export default function MediaPermutations() {
   return (
     <>
       <h1>Media permutations - side</h1>
-      <ScreenshotArea disableAnimations={true}>
+      <ScreenshotArea>
         <PermutationsView
           permutations={permutations}
           render={permutation => <PermutationContainer permutation={{ ...permutation, position: 'side' }} />}

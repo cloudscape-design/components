@@ -47,7 +47,7 @@ export default function WizardPage() {
       >
         Next
       </button>
-      <ScreenshotArea disableAnimations={true}>
+      <ScreenshotArea>
         <Wizard
           activeStepIndex={activeStepIndex}
           steps={steps}

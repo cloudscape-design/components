@@ -7,7 +7,7 @@ import ScreenshotArea from '../utils/screenshot-area';
 
 export default function TextContentPermutations() {
   return (
-    <ScreenshotArea disableAnimations={true}>
+    <ScreenshotArea>
       <TextContent>
         <h1>
           <Icon name="status-positive" size="big" /> Heading 1 <Icon name="external" size="inherit" />

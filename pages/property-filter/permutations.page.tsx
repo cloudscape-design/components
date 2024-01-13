@@ -116,7 +116,7 @@ export default function () {
   return (
     <>
       <h1>Token visuals screenshot page</h1>
-      <ScreenshotArea disableAnimations={true}>
+      <ScreenshotArea>
         <PermutationsView
           permutations={permutations}
           render={permutation => (

@@ -38,7 +38,7 @@ export default function () {
   return (
     <>
       <h1>Autosuggest regions scenarios</h1>
-      <ScreenshotArea disableAnimations={true} style={{ height: '500px' }}>
+      <ScreenshotArea style={{ height: '500px' }}>
         <SpaceBetween direction="horizontal" size="m">
           <TestScenario empty="No resources found" />
           <TestScenario statusType="error" errorText="Some error" />

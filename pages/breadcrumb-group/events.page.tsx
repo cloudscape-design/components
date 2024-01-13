@@ -27,7 +27,7 @@ export default function ButtonDropdownPage() {
     setOnClickMessage(`OnClick: ${event.detail.text} item was selected`);
   };
   return (
-    <ScreenshotArea disableAnimations={true}>
+    <ScreenshotArea>
       <article>
         <h1>BreadcrumbGroup variations</h1>
         <SpaceBetween size="xxl">

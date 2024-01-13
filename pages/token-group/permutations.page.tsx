@@ -185,7 +185,7 @@ export default function TokenGroupPermutations() {
   return (
     <>
       <h1>TokenGroup permutations</h1>
-      <ScreenshotArea disableAnimations={true}>
+      <ScreenshotArea>
         <PermutationsView
           permutations={permutations}
           render={permutation => (

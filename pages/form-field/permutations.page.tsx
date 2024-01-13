@@ -111,7 +111,7 @@ export default function FormFieldPermutations() {
   return (
     <>
       <h1>FormField permutations</h1>
-      <ScreenshotArea disableAnimations={true}>
+      <ScreenshotArea>
         <PermutationsView permutations={permutations} render={permutation => <FormField {...permutation} />} />
       </ScreenshotArea>
     </>

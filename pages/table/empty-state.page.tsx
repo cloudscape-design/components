@@ -46,7 +46,7 @@ export default function () {
       <Button id="scroll-content" onClick={scrollContainers}>
         Align scroll position
       </Button>
-      <ScreenshotArea disableAnimations={true}>
+      <ScreenshotArea>
         <SpaceBetween size="l">
           <Table
             items={[]}

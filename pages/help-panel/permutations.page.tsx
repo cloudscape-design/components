@@ -146,7 +146,7 @@ const footerContent = (
 
 export default function HelpPanelPermutations() {
   return (
-    <ScreenshotArea disableAnimations={true} gutters={false}>
+    <ScreenshotArea gutters={false}>
       <Box variant="h1">Help panel styles</Box>
       <div className={styles.permutations}>
         {['default', 'medium', 'large'].map((panelSize, index) => (
