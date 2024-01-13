@@ -84,7 +84,8 @@
   display: block;
   max-height: awsui.$space-xxl;
   margin-right: awsui.$space-s;
-  width: auto;
+  width: 100%;
+  max-width: fit-content;
   flex-shrink: 0;
 
   // Setting an arbitrary min-width here discourages browser from lazy rendering
@@ -180,6 +181,7 @@
   // Hide dividers around primary buttons.
   left: -1px;
   border-left: 1px solid awsui.$color-background-container-content;
+
   &::after {
     display: none;
   }

@@ -7,6 +7,7 @@ import logo from './logos/simple-logo.svg';
 import longLogo from './logos/long-logo.svg';
 import narrowLogo from './logos/narrow-logo.svg';
 import tallLogo from './logos/tall-logo.svg';
+import fullHeightWidthLogo from './logos/full-w-h-logo.svg';
 import { I18N_STRINGS } from './common';
 
 export default function TopNavigationPage() {
@@ -60,6 +61,15 @@ export default function TopNavigationPage() {
           href: '#',
           logo: { src: tallLogo, alt: 'Only logo, no title' },
           title: 'Tall logo, resized to fit',
+        }}
+      />
+      <br />
+      <TopNavigation
+        i18nStrings={I18N_STRINGS}
+        identity={{
+          href: '#',
+          logo: { src: fullHeightWidthLogo, alt: 'Only logo, no title' },
+          title: '100% width and height logo, text should not overflow',
         }}
       />
     </article>
