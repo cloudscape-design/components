@@ -16,6 +16,8 @@ export default function InternalContentLayout({
   children,
   disableOverlap,
   header,
+  maxWidth,
+  headerBackgroundCss,
   __internalRootRef,
   ...rest
 }: InternalContentLayoutProps) {
@@ -44,12 +46,19 @@ export default function InternalContentLayout({
           { [styles['is-overlap-disabled']]: isOverlapDisabled },
           'awsui-context-content-header'
         )}
+        style={headerBackgroundCss ? { background: headerBackgroundCss } : {}}
         ref={overlapElement}
       />
 
-      {header && <div className={clsx(styles.header, 'awsui-context-content-header')}>{header}</div>}
+      {header && (
+        <div className={clsx(styles.header, 'awsui-context-content-header')} style={maxWidth ? { maxWidth } : {}}>
+          {header}
+        </div>
+      )}
 
-      <div className={styles.content}>{children}</div>
+      <div className={styles.content} style={maxWidth ? { maxWidth } : {}}>
+        {children}
+      </div>
     </div>
   );
 }

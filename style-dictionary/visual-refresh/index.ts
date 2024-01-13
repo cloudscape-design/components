@@ -9,6 +9,7 @@ import {
   createFlashbarContext,
   createFlashbarWarningContext,
   createAlertContext,
+  createDarkPageHeaderContext,
 } from '../utils/contexts';
 import alertHeaderContextTokens from './contexts/header-alert';
 
@@ -53,6 +54,8 @@ export function buildVisualRefresh(builder: ThemeBuilder) {
     selector: '.awsui-context-content-header .awsui-context-alert',
     tokens: alertHeaderContextTokens,
   });
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  builder.addContext(createDarkPageHeaderContext(require('./contexts/dark-page-header').tokens));
 
   return builder.build();
 }

@@ -1,0 +1,48 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~design-tokens' as awsui;
+
+.separator {
+  display: inline-block;
+  width: 2px;
+  height: 1.5rem;
+  background-color: awsui.$color-border-divider-default;
+
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
+.inline-list {
+  display: inline-flex;
+  align-items: center;
+}
+
+.full-header {
+  display: flex;
+  position: relative;
+  width: 100%;
+  justify-content: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+
+  background-color: awsui.$color-background-layout-main;
+}
+
+.inner-header {
+  max-width: 1200px;
+  margin-left: awsui.$space-scaled-m;
+  margin-right: awsui.$space-scaled-m;
+}
+
+.header-background-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: auto;
+
+  background-size: cover;
+  background-position: center center;
+}
