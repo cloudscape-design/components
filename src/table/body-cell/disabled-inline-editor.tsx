@@ -66,6 +66,7 @@ export function DisabledInlineEditor<ItemType>({
         className={styles['body-cell-editor']}
         aria-label={ariaLabels?.activateEditLabel?.(column, item)}
         aria-haspopup="dialog"
+        aria-disabled="true"
         onFocus={() => setHasFocus(true)}
         onBlur={() => setHasFocus(false)}
         onKeyDown={handleEscape}

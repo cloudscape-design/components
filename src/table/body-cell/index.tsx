@@ -141,7 +141,7 @@ export function TableBodyCell<ItemType>({
   isEditable,
   ...rest
 }: TableBodyCellProps<ItemType> & { isEditable: boolean }) {
-  const editDisabledReason = rest.column.editConfig?.isDisabled?.(rest.item) ?? false;
+  const editDisabledReason = rest.column.editConfig?.disabledReason?.(rest.item);
 
   if (editDisabledReason) {
     return <DisabledInlineEditor editDisabledReason={editDisabledReason} {...rest} />;

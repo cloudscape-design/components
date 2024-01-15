@@ -361,7 +361,10 @@ export namespace TableProps {
      */
     editingCell(item: T, ctx: TableProps.CellContext<any>): React.ReactNode;
 
-    isDisabled?: (item: T) => string | false;
+    /**
+     * Determines whether inline edit for certain items is disabled and provides a reason why.
+     */
+    disabledReason?: (item: T) => string | undefined;
   }
 
   export type ColumnDefinition<ItemType> = {
