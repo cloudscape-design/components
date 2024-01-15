@@ -23,7 +23,9 @@ const Highlight = ({ str }: HighlightMatchProps) =>
   str ? <span className={clsx(styles['filtering-match-highlight'])}>{str}</span> : null;
 
 export default function HighlightMatch({ str, highlightText }: HighlightMatchProps) {
-  if (!str || !highlightText) {
+  // splitOnFiltering creates a regex using user-provided strings, so we skip
+  // highlighting if the generated regex would be too memory intensive.
+  if (!str || !highlightText || highlightText.length > 100000) {
     return <span>{str}</span>;
   }
 

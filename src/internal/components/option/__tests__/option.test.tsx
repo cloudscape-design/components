@@ -300,6 +300,16 @@ describe('Option component', () => {
       });
       checkMatches(optionWrapper, 1, '^${}[]().*+?<>-&');
     });
+    test('skips highlighting if the label text is too long', () => {
+      const optionWrapper = renderOption({
+        option: {
+          label: 'a'.repeat(1000000),
+          value: '1',
+        },
+        highlightText: 'a'.repeat(500000),
+      });
+      checkMatches(optionWrapper, 0, '');
+    });
   });
 });
 
