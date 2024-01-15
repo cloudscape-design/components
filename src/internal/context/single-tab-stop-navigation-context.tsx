@@ -5,12 +5,7 @@ import React, { createContext, useCallback, useContext, useEffect, useState } fr
 
 export type FocusableDefinition = React.RefObject<Element>;
 
-export type FocusableChangeHandler = (focusTarget: null | Element) => void;
-
-export interface SingleTabStopNavigationSuppressedProps {
-  children: React.ReactNode;
-  suppressed?: boolean;
-}
+export type FocusableChangeHandler = (focusTarget: null | Element, suppressed: boolean) => void;
 
 export interface SingleTabStopNavigationOptions {
   tabIndex?: number;
@@ -28,15 +23,6 @@ export const SingleTabStopNavigationContext = createContext<{
   registerFocusable: () => () => {},
 });
 
-export function SingleTabStopNavigationSuppressed({
-  children,
-  suppressed = true,
-}: SingleTabStopNavigationSuppressedProps) {
-  const parentContextValue = useContext(SingleTabStopNavigationContext);
-  const value = suppressed ? { ...parentContextValue, navigationActive: false } : parentContextValue;
-  return <SingleTabStopNavigationContext.Provider value={value}>{children}</SingleTabStopNavigationContext.Provider>;
-}
-
 export function useSingleTabStopNavigation(focusable: null | FocusableDefinition, options?: { tabIndex?: number }) {
   const { navigationActive: contextNavigationActive, registerFocusable: contextRegisterFocusable } =
     useContext(SingleTabStopNavigationContext);
@@ -51,8 +37,10 @@ export function useSingleTabStopNavigation(focusable: null | FocusableDefinition
 
   useEffect(() => {
     if (focusable) {
-      const changeHandler = (element: null | Element) => setFocusTargetActive(focusable.current === element);
-      return registerFocusable(focusable, changeHandler);
+      const changeHandler = (element: null | Element, suppressed: boolean) =>
+        setFocusTargetActive(focusable.current === element || suppressed);
+      const unregister = registerFocusable(focusable, changeHandler);
+      return () => unregister();
     }
   }, [focusable, registerFocusable]);
 

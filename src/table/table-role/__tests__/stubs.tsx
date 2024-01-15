@@ -3,10 +3,7 @@
 
 import React, { useRef, useState } from 'react';
 import { GridNavigationProvider } from '../../../../lib/components/table/table-role';
-import {
-  SingleTabStopNavigationSuppressed,
-  useSingleTabStopNavigation,
-} from '../../../../lib/components/internal/context/single-tab-stop-navigation-context';
+import { useSingleTabStopNavigation } from '../../../../lib/components/internal/context/single-tab-stop-navigation-context';
 
 export interface Item {
   id: string;
@@ -101,13 +98,11 @@ function EditableCellContent({ item }: { item: Item }) {
       {item.value ?? 0} <Button aria-label={`Edit value ${item.value}`} onClick={() => setActive(true)} />
     </span>
   ) : (
-    <SingleTabStopNavigationSuppressed>
-      <span role="dialog">
-        <Input value={item.value} autoFocus={true} aria-label="Value input" tabIndex={0} />
-        <Button aria-label="Save" onClick={() => setActive(false)} />
-        <Button aria-label="Discard" onClick={() => setActive(false)} />
-      </span>
-    </SingleTabStopNavigationSuppressed>
+    <span role="dialog">
+      <Input value={item.value} autoFocus={true} aria-label="Value input" tabIndex={0} />
+      <Button aria-label="Save" onClick={() => setActive(false)} />
+      <Button aria-label="Discard" onClick={() => setActive(false)} />
+    </span>
   );
 }
 

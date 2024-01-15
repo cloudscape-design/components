@@ -10,7 +10,7 @@ import {
 } from '../../../../lib/components/internal/context/single-tab-stop-navigation-context';
 
 interface ProviderRef {
-  setCurrentTarget(focusTarget: null | Element): void;
+  setCurrentTarget(focusTarget: null | Element, suppressed: boolean): void;
 }
 
 const FakeSingleTabStopNavigationProvider = forwardRef(
@@ -30,10 +30,10 @@ const FakeSingleTabStopNavigationProvider = forwardRef(
     }, []);
 
     useImperativeHandle(ref, () => ({
-      setCurrentTarget: (focusTarget: null | Element) => {
+      setCurrentTarget: (focusTarget: null | Element, suppressed: boolean) => {
         const focusable = [...focusablesRef.current].find(f => f.current === focusTarget);
         if (focusable) {
-          focusHandlersRef.current.forEach(handler => handler(focusTarget));
+          focusHandlersRef.current.forEach(handler => handler(focusTarget, suppressed));
         }
       },
     }));
@@ -59,11 +59,11 @@ export function renderWithSingleTabStopNavigation(
   return {
     container,
     rerender,
-    setCurrentTarget: (focusTarget: null | Element) => {
+    setCurrentTarget: (focusTarget: null | Element, suppressed = false) => {
       if (!providerRef.current) {
         throw new Error('Provider is not ready');
       }
-      providerRef.current.setCurrentTarget(focusTarget);
+      providerRef.current.setCurrentTarget(focusTarget, suppressed);
     },
   };
 }

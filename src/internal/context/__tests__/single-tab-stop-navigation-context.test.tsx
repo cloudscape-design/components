@@ -4,7 +4,6 @@
 import React, { useRef } from 'react';
 import { render } from '@testing-library/react';
 import {
-  SingleTabStopNavigationSuppressed,
   SingleTabStopNavigationContext,
   useSingleTabStopNavigation,
 } from '../../../../lib/components/internal/context/single-tab-stop-navigation-context';
@@ -19,6 +18,21 @@ function Button(props: React.HTMLAttributes<HTMLButtonElement>) {
 test('does not override tab index when keyboard navigation is not active', () => {
   renderWithSingleTabStopNavigation(<Button id="button" />, { navigationActive: false });
   expect(document.querySelector('#button')).not.toHaveAttribute('tabIndex');
+});
+
+test('does not override tab index when keyboard navigation is suppressed', () => {
+  const { setCurrentTarget } = renderWithSingleTabStopNavigation(
+    <div>
+      <Button id="button1" />
+      <Button id="button2" />
+      <Button id="button3" tabIndex={-1} />
+    </div>,
+    { navigationActive: true }
+  );
+  setCurrentTarget(document.querySelector('#button1'), true);
+  expect(document.querySelector('#button1')).toHaveAttribute('tabIndex', '0');
+  expect(document.querySelector('#button2')).toHaveAttribute('tabIndex', '0');
+  expect(document.querySelector('#button3')).toHaveAttribute('tabIndex', '-1');
 });
 
 test('overrides tab index when keyboard navigation is active', () => {
@@ -50,22 +64,17 @@ test('propagates and suppresses navigation active state', () => {
     const { navigationActive } = useSingleTabStopNavigation(null);
     return <div>{String(navigationActive)}</div>;
   }
-  function Test({ navigationActive, suppressed }: { navigationActive: boolean; suppressed: boolean }) {
+  function Test({ navigationActive }: { navigationActive: boolean }) {
     return (
       <SingleTabStopNavigationContext.Provider value={{ navigationActive, registerFocusable: () => () => {} }}>
-        <SingleTabStopNavigationSuppressed suppressed={suppressed}>
-          <Component />
-        </SingleTabStopNavigationSuppressed>
+        <Component />
       </SingleTabStopNavigationContext.Provider>
     );
   }
 
-  const { rerender } = render(<Test navigationActive={true} suppressed={false} />);
+  const { rerender } = render(<Test navigationActive={true} />);
   expect(document.querySelector('div')).toHaveTextContent('true');
 
-  rerender(<Test navigationActive={true} suppressed={true} />);
-  expect(document.querySelector('div')).toHaveTextContent('false');
-
-  rerender(<Test navigationActive={false} suppressed={false} />);
+  rerender(<Test navigationActive={false} />);
   expect(document.querySelector('div')).toHaveTextContent('false');
 });

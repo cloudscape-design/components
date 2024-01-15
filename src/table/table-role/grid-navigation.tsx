@@ -3,7 +3,7 @@
 
 import React from 'react';
 import { useEffect, useMemo } from 'react';
-import { findTableRowByAriaRowIndex, findTableRowCellByAriaColIndex } from './utils';
+import { defaultIsSuppressed, findTableRowByAriaRowIndex, findTableRowCellByAriaColIndex } from './utils';
 import { FocusedCell, GridNavigationProps } from './interfaces';
 import { KeyCode } from '../../internal/keycode';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
@@ -72,6 +72,8 @@ class GridNavigationProcessor {
   private focusedCell: null | FocusedCell = null;
   private focusables = new Set<FocusableDefinition>();
   private focusHandlers = new Map<FocusableDefinition, FocusableChangeHandler>();
+  private focusTarget: null | Element = null;
+  private suppressed = false;
 
   public init(table: HTMLTableElement) {
     this._table = table;
@@ -106,7 +108,6 @@ class GridNavigationProcessor {
         if (this.focusedCell) {
           this.focusedCell = this.findFocusedCell(this.focusedCell.element);
         }
-
         this.updateFocusTarget();
       }
     }, 0);
@@ -115,6 +116,7 @@ class GridNavigationProcessor {
   public registerFocusable = (focusable: FocusableDefinition, changeHandler: FocusableChangeHandler) => {
     this.focusables.add(focusable);
     this.focusHandlers.set(focusable, changeHandler);
+    changeHandler(this.focusTarget, this.suppressed);
     return () => this.unregisterFocusable(focusable);
   };
 
@@ -132,13 +134,6 @@ class GridNavigationProcessor {
       throw new Error('Invariant violation: GridNavigationProcessor is used before initialization.');
     }
     return this._table;
-  }
-
-  private isSuppressed(focusedElement: HTMLElement): boolean {
-    if (focusedElement instanceof HTMLTableCellElement) {
-      return false;
-    }
-    return !this.getRegisteredElements().has(focusedElement);
   }
 
   private onFocusin = (event: FocusEvent) => {
@@ -195,7 +190,7 @@ class GridNavigationProcessor {
     const maxExtreme = Number.POSITIVE_INFINITY;
 
     // Do not intercept any keys when the navigation is suppressed.
-    if (this.isSuppressed(from.element)) {
+    if (this.suppressed) {
       return;
     }
 
@@ -250,8 +245,9 @@ class GridNavigationProcessor {
   }
 
   private updateFocusTarget() {
-    const focusTarget = this.getSingleFocusable();
-    focusTarget && this.notifyFocusHandlers(focusTarget);
+    this.focusTarget = this.getSingleFocusable();
+    this.suppressed = document.activeElement ? defaultIsSuppressed(document.activeElement) : false;
+    this.focusHandlers.forEach(handler => handler(this.focusTarget, this.suppressed));
   }
 
   private getRegisteredElements = (): Set<Element> => {
@@ -263,13 +259,6 @@ class GridNavigationProcessor {
     }
     return registeredElements;
   };
-
-  private notifyFocusHandlers(focusTarget: HTMLElement) {
-    const focusable = [...this.focusables].find(f => f.current === focusTarget);
-    if (focusable) {
-      this.focusHandlers.forEach(handler => handler(focusTarget));
-    }
-  }
 
   private findFocusedCell(focusedElement: HTMLElement): null | FocusedCell {
     const cellElement = focusedElement.closest('td,th') as null | HTMLTableCellElement;
