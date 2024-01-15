@@ -5,6 +5,12 @@ import styles from './styles.css.js';
 import clsx from 'clsx';
 
 const splitOnFiltering = (str: string, highlightText: string) => {
+  // We match by creating a regex using user-provided strings, so we skip
+  // highlighting if the generated regex would be too memory intensive.
+  if (highlightText.length > 100000) {
+    return { noMatches: [str], matches: null };
+  }
+
   // Filtering needs to be case insensitive
   const filteringPattern = highlightText.replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&');
   const regexp = new RegExp(filteringPattern, 'gi');
@@ -23,9 +29,7 @@ const Highlight = ({ str }: HighlightMatchProps) =>
   str ? <span className={clsx(styles['filtering-match-highlight'])}>{str}</span> : null;
 
 export default function HighlightMatch({ str, highlightText }: HighlightMatchProps) {
-  // splitOnFiltering creates a regex using user-provided strings, so we skip
-  // highlighting if the generated regex would be too memory intensive.
-  if (!str || !highlightText || highlightText.length > 100000) {
+  if (!str || !highlightText) {
     return <span>{str}</span>;
   }
 
