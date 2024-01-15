@@ -73,7 +73,6 @@ class GridNavigationProcessor {
   private focusables = new Set<FocusableDefinition>();
   private focusHandlers = new Map<FocusableDefinition, FocusableChangeHandler>();
   private focusTarget: null | Element = null;
-  private suppressed = false;
 
   public init(table: HTMLTableElement) {
     this._table = table;
@@ -116,7 +115,7 @@ class GridNavigationProcessor {
   public registerFocusable = (focusable: FocusableDefinition, changeHandler: FocusableChangeHandler) => {
     this.focusables.add(focusable);
     this.focusHandlers.set(focusable, changeHandler);
-    changeHandler(this.focusTarget, this.suppressed);
+    changeHandler(this.focusTarget, this.isSuppressed(focusable.current));
     return () => this.unregisterFocusable(focusable);
   };
 
@@ -189,8 +188,7 @@ class GridNavigationProcessor {
     const minExtreme = Number.NEGATIVE_INFINITY;
     const maxExtreme = Number.POSITIVE_INFINITY;
 
-    // Do not intercept any keys when the navigation is suppressed.
-    if (this.suppressed) {
+    if (this.isSuppressed(document.activeElement) || !this.isRegistered(document.activeElement)) {
       return;
     }
 
@@ -246,8 +244,19 @@ class GridNavigationProcessor {
 
   private updateFocusTarget() {
     this.focusTarget = this.getSingleFocusable();
-    this.suppressed = document.activeElement ? defaultIsSuppressed(document.activeElement) : false;
-    this.focusHandlers.forEach(handler => handler(this.focusTarget, this.suppressed));
+    this.focusables.forEach(focusable => {
+      const element = focusable.current;
+      const handler = this.focusHandlers.get(focusable)!;
+      handler(this.focusTarget, this.isSuppressed(element));
+    });
+  }
+
+  private isSuppressed(element: null | Element) {
+    return !element || defaultIsSuppressed(element);
+  }
+
+  private isRegistered(element: null | Element) {
+    return !element || this.getRegisteredElements().has(element);
   }
 
   private getRegisteredElements = (): Set<Element> => {
