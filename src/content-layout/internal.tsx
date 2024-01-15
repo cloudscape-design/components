@@ -4,6 +4,7 @@ import React, { useRef } from 'react';
 import clsx from 'clsx';
 import { ContentLayoutProps } from './interfaces';
 import { getBaseProps } from '../internal/base-component';
+import { contentHeaderClassName } from '../internal/utils/content-header-utils';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useDynamicOverlap } from '../internal/hooks/use-dynamic-overlap';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
@@ -42,12 +43,12 @@ export default function InternalContentLayout({
         className={clsx(
           styles.background,
           { [styles['is-overlap-disabled']]: isOverlapDisabled },
-          'awsui-context-content-header'
+          contentHeaderClassName
         )}
         ref={overlapElement}
       />
 
-      {header && <div className={clsx(styles.header, 'awsui-context-content-header')}>{header}</div>}
+      {header && <div className={clsx(styles.header, contentHeaderClassName)}>{header}</div>}
 
       <div className={styles.content}>{children}</div>
     </div>

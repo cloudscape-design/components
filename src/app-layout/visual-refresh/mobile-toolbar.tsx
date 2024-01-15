@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
+import { contentHeaderClassName } from '../../internal/utils/content-header-utils';
 import { InternalButton } from '../../button/internal';
 import { MobileTriggers as DrawersMobileTriggers } from './drawers';
 import { useAppLayoutInternals } from './context';
@@ -44,7 +45,7 @@ export default function MobileToolbar() {
           [styles.unfocusable]: hasDrawerViewportOverlay,
         },
         testutilStyles['mobile-bar'],
-        'awsui-context-content-header'
+        contentHeaderClassName
       )}
     >
       {!navigationHide && (
