@@ -77,7 +77,7 @@
   }
 
   @include focus-visible.when-visible {
-    @include styles.focus-element-with-border(awsui.$border-radius-control-default-focus-ring);
+    @include styles.focus-element-without-border(awsui.$border-radius-control-default-focus-ring);
   }
 
   > .description {

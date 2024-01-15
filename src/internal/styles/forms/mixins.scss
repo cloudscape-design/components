@@ -70,8 +70,9 @@
   }
 }
 
-// Use for elements that have a light border and light background
-@mixin focus-element-with-border($border-radius: constants.$control-border-radius) {
+// Use for elements that have inline buttons without borders
+// like pagination, token list and expandable section
+@mixin focus-element-without-border($border-radius: constants.$control-border-radius) {
   // Using a special transparent outline only visible in Windows High Contrast Mode.
   // See focus-highlight above.
   outline: 2px dotted transparent;
@@ -82,6 +83,7 @@
 }
 
 // Use for form input elements, excluding buttons
+// or for elements that have a light border and light background
 @mixin form-focus-element($border-radius: constants.$control-border-radius) {
   // Using a special transparent outline only visible in Windows High Contrast Mode.
   // See focus-highlight above.
