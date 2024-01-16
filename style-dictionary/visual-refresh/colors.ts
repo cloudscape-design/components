@@ -114,6 +114,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBorderEditableCellHover: '{colorBorderDropdownItemHover}',
   colorBorderInputDefault: { light: '{colorGrey500}', dark: '{colorGrey550}' },
   colorBorderInputDisabled: '{colorBackgroundInputDisabled}',
+  colorBorderInputFocused: { light: '{colorBlue800}', dark: '{colorBlue300}' },
   colorBorderItemFocused: { light: '{colorBlue600}', dark: '{colorBlue500}' },
   colorBorderDropdownItemFocused: { light: '{colorGrey600}', dark: '{colorGrey300}' },
   colorBorderItemPlaceholder: '{colorBorderItemSelected}',
