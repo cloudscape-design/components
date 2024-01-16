@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React from 'react';
+import React, { useRef } from 'react';
 import InternalIcon from '../../icon/internal';
 import { KeyCode } from '../../internal/keycode';
 import { TableProps } from '../interfaces';
@@ -13,6 +13,7 @@ import { useInternalI18n } from '../../i18n/context';
 import { StickyColumnsModel } from '../sticky-columns';
 import { TableRole } from '../table-role';
 import { TableThElement } from './th-element';
+import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
 
 interface TableHeaderCellProps<ItemType> {
   className?: string;
@@ -41,7 +42,7 @@ interface TableHeaderCellProps<ItemType> {
 export function TableHeaderCell<ItemType>({
   className,
   style,
-  tabIndex,
+  tabIndex: headerTabIndex,
   column,
   activeSortingColumn,
   sortingDescending,
@@ -84,6 +85,9 @@ export function TableHeaderCell<ItemType>({
 
   const headerId = useUniqueId('table-header-');
 
+  const clickableHeaderRef = useRef<HTMLDivElement>(null);
+  const { tabIndex } = useSingleTabStopNavigation(clickableHeaderRef, { tabIndex: headerTabIndex });
+
   return (
     <TableThElement
       className={className}
@@ -91,6 +95,7 @@ export function TableHeaderCell<ItemType>({
       cellRef={cellRef}
       sortingStatus={sortingStatus}
       sortingDisabled={sortingDisabled}
+      focusedComponent={focusedComponent}
       hidden={hidden}
       colIndex={colIndex}
       columnId={columnId}
@@ -98,12 +103,13 @@ export function TableHeaderCell<ItemType>({
       tableRole={tableRole}
     >
       <div
+        ref={clickableHeaderRef}
         data-focus-id={`sorting-control-${String(columnId)}`}
         className={clsx(styles['header-cell-content'], {
           [styles['header-cell-fake-focus']]: focusedComponent === `sorting-control-${String(columnId)}`,
         })}
         aria-label={
-          column.ariaLabel
+          column.ariaLabel && !sortingDisabled
             ? column.ariaLabel({
                 sorted: sorted,
                 descending: sorted && !!sortingDescending,
@@ -140,7 +146,7 @@ export function TableHeaderCell<ItemType>({
       </div>
       {resizableColumns ? (
         <Resizer
-          tabIndex={tabIndex}
+          tabIndex={headerTabIndex}
           focusId={`resize-control-${String(columnId)}`}
           showFocusRing={focusedComponent === `resize-control-${String(columnId)}`}
           onWidthUpdate={newWidth => updateColumn(columnId, newWidth)}

@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useContext } from 'react';
 import Box from '~components/box';
 import Button from '~components/button';
 import ButtonDropdown from '~components/button-dropdown';
@@ -11,6 +11,14 @@ import ScreenshotArea from '../utils/screenshot-area';
 import { Instance, generateItems } from './generate-data';
 import { columnsConfig, selectionLabels } from './shared-configs';
 import Link from '~components/link';
+import AppContext, { AppContextType } from '../app/app-context';
+import { Checkbox } from '~components';
+
+type PageContext = React.Context<
+  AppContextType<{
+    enableKeyboardNavigation: boolean;
+  }>
+>;
 
 const items = generateItems(10);
 
@@ -148,8 +156,20 @@ const columnDefinitionsOnlyIcons: TableProps.ColumnDefinition<Instance>[] = [
 ];
 
 export default function () {
+  const { urlParams, setUrlParams } = useContext(AppContext as PageContext);
+
   return (
     <ScreenshotArea style={{ padding: '10px 50px' }}>
+      <Checkbox
+        checked={urlParams.enableKeyboardNavigation}
+        onChange={event => {
+          setUrlParams({ enableKeyboardNavigation: event.detail.checked });
+          window.location.reload();
+        }}
+      >
+        Keyboard navigation
+      </Checkbox>
+
       <Box padding="l">
         <h1>Tables with inline actions</h1>
         <SpaceBetween size="l">
@@ -158,12 +178,14 @@ export default function () {
             header={<Header>Table with single actions</Header>}
             columnDefinitions={columnDefinitionsSingle}
             items={items}
+            enableKeyboardNavigation={urlParams.enableKeyboardNavigation}
           />
           <Table
             ariaLabels={selectionLabels}
             header={<Header>Table with multiple actions</Header>}
             columnDefinitions={columnDefinitionsMultiple}
             items={items}
+            enableKeyboardNavigation={urlParams.enableKeyboardNavigation}
           />
           <Table
             ariaLabels={selectionLabels}
@@ -190,18 +212,21 @@ export default function () {
             selectionType="multi"
             columnDefinitions={columnDefinitionsDropdown}
             items={items}
+            enableKeyboardNavigation={urlParams.enableKeyboardNavigation}
           />
           <Table
             ariaLabels={selectionLabels}
             header={<Header>Table with mixed actions</Header>}
             columnDefinitions={columnDefinitionsMixed}
             items={items}
+            enableKeyboardNavigation={urlParams.enableKeyboardNavigation}
           />
           <Table
             ariaLabels={selectionLabels}
             header={<Header>Table with only icon actions</Header>}
             columnDefinitions={columnDefinitionsOnlyIcons}
             items={items}
+            enableKeyboardNavigation={urlParams.enableKeyboardNavigation}
           />
         </SpaceBetween>
       </Box>

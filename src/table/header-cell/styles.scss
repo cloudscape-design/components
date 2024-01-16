@@ -17,6 +17,25 @@
   font-weight: awsui.$font-weight-heading-s;
   @include styles.font-smoothing;
   padding: awsui.$space-scaled-xxs awsui.$space-scaled-xs;
+
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(
+      (
+        'vertical': calc(-1 * #{awsui.$space-scaled-xxs}),
+        'horizontal': calc(-1 * #{awsui.$space-scaled-xxs}),
+      )
+    );
+  }
+  // stylelint-disable-next-line selector-combinator-disallowed-list
+  body[data-awsui-focus-visible='true'] &-fake-focus {
+    @include styles.focus-highlight(
+      (
+        'vertical': calc(-1 * #{awsui.$space-scaled-xxs}),
+        'horizontal': calc(-1 * #{awsui.$space-scaled-xxs}),
+      )
+    );
+  }
+
   &-sticky {
     border-bottom: awsui.$border-table-sticky-width solid awsui.$color-border-divider-default;
   }

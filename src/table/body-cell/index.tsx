@@ -10,6 +10,7 @@ import { InlineEditor } from './inline-editor';
 import LiveRegion from '../../internal/components/live-region/index.js';
 import { useInternalI18n } from '../../i18n/context';
 import { usePrevious } from '../../internal/hooks/use-previous';
+import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context.js';
 
 const submitHandlerFallback = () => {
   throw new Error('The function `handleSubmit` is required for editable columns');
@@ -72,6 +73,8 @@ function TableCellEditable<ItemType>({
     }
   }, [hasFocus, successfulEdit, prevHasFocus, prevSuccessfulEdit]);
 
+  const { tabIndex } = useSingleTabStopNavigation(editActivateRef);
+
   return (
     <TableTdElement
       {...rest}
@@ -127,6 +130,7 @@ function TableCellEditable<ItemType>({
             ref={editActivateRef}
             onFocus={() => setHasFocus(true)}
             onBlur={() => setHasFocus(false)}
+            tabIndex={tabIndex}
           >
             {showIcon && <Icon name="edit" />}
           </button>

@@ -8,6 +8,7 @@ import { DEFAULT_COLUMN_WIDTH } from '../use-column-widths';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { getHeaderWidth, getResizerElements } from './resizer-lookup';
+import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context.js';
 
 interface ResizerProps {
   onWidthUpdate: (newWidth: number) => void;
@@ -33,7 +34,7 @@ export function Resizer({
   onWidthUpdateCommit,
   ariaLabelledby,
   minWidth = DEFAULT_COLUMN_WIDTH,
-  tabIndex,
+  tabIndex: masterTabIndex,
   showFocusRing,
   focusId,
   roleDescription,
@@ -168,6 +169,8 @@ export function Resizer({
     };
   }, [minWidth, isDragging, isKeyboardDragging, resizerHasFocus, onWidthUpdate, onWidthUpdateCommit]);
 
+  const { tabIndex } = useSingleTabStopNavigation(resizerToggleRef, { tabIndex: masterTabIndex });
+
   return (
     <>
       <button
@@ -211,6 +214,7 @@ export function Resizer({
       />
       <span
         className={clsx(styles.divider, isDragging && styles['divider-active'])}
+        data-awsui-table-suppress-navigation={true}
         ref={resizerSeparatorRef}
         id={separatorId}
         role="separator"

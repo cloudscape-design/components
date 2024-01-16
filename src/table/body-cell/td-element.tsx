@@ -1,12 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React from 'react';
+import React, { useRef } from 'react';
 import styles from './styles.css.js';
 import { getStickyClassNames } from '../utils';
 import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
 import { TableRole, getTableCellRoleProps } from '../table-role';
 import { useMergeRefs } from '../../internal/hooks/use-merge-refs/index.js';
+import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context.js';
+import useMouseDownTarget from '../../internal/hooks/use-mouse-down-target.js';
 
 export interface TableTdElementProps {
   className?: string;
@@ -76,7 +78,10 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       getClassName: props => getStickyClassNames(styles, props),
     });
 
-    const mergedRef = useMergeRefs(stickyStyles.ref, ref);
+    const getMouseDownTarget = useMouseDownTarget();
+    const cellRefObject = useRef<HTMLTableCellElement>(null);
+    const mergedRef = useMergeRefs(stickyStyles.ref, ref, cellRefObject);
+    const { tabIndex } = useSingleTabStopNavigation(cellRefObject);
 
     return (
       <Element
@@ -98,10 +103,16 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           stickyStyles.className
         )}
         onClick={onClick}
+        onFocus={event => {
+          if (!event.currentTarget.contains(getMouseDownTarget())) {
+            event.target.scrollIntoView?.({ block: 'center' });
+          }
+        }}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         ref={mergedRef}
         {...nativeAttributes}
+        tabIndex={tabIndex}
       >
         {children}
       </Element>
