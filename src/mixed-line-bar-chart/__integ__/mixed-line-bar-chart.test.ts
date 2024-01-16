@@ -530,6 +530,7 @@ describe('Details popover', () => {
     setupTest('#/light/bar-chart/in-modal', async page => {
       await page.setWindowSize({ width: 360, height: 650 });
       const wrapper = createWrapper();
+      await page.click(wrapper.findButton().toSelector());
       const modalSelector = wrapper.findModal().toSelector();
       const modalTop = (await page.getBoundingBox(wrapper.findModal().findHeader().toSelector())).top;
       await page.elementScrollTo(modalSelector, { left: 0, top: 400 });
