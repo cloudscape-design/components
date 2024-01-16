@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
-import { TableBodyCell } from '../../../lib/components/table/body-cell';
+import { TableBodyCell, TableBodyCellProps } from '../../../lib/components/table/body-cell';
 import { TableProps } from '../interfaces';
 import { renderHook } from '../../__tests__/render-hook';
 import { useStickyColumns } from '../../../lib/components/table/sticky-columns';
@@ -45,36 +45,40 @@ const { result } = renderHook(() =>
   useStickyColumns({ visibleColumns: ['id'], stickyColumnsFirst: 0, stickyColumnsLast: 0 })
 );
 
+const commonProps: TableBodyCellProps<typeof testItem> & {
+  isEditable: boolean;
+} = {
+  column: column,
+  item: testItem,
+  isEditing: false,
+  successfulEdit: false,
+  onEditStart: onEditStart,
+  onEditEnd: onEditEnd,
+  isEditable: true,
+  isPrevSelected: false,
+  isNextSelected: false,
+  isFirstRow: true,
+  isLastRow: true,
+  isSelected: false,
+  wrapLines: false,
+  stickyState: result.current,
+  columnId: 'id',
+  colIndex: 0,
+  tableRole: tableRole,
+  ariaLabels: {
+    activateEditLabel: (column, item) => `Edit ${item.test} ${column.id}`,
+    cancelEditLabel: () => 'cancel edit',
+    submitEditLabel: () => 'submit edit',
+    successfulEditLabel: () => 'edit successful',
+  },
+};
+
 const TestComponent = ({ isEditing = false, successfulEdit = false }) => {
   return (
     <table>
       <tbody>
         <tr>
-          <TableBodyCell<typeof testItem>
-            column={column}
-            item={testItem}
-            isEditing={isEditing}
-            onEditStart={onEditStart}
-            onEditEnd={onEditEnd}
-            ariaLabels={{
-              activateEditLabel: (column, item) => `Edit ${item.test} ${column.id}`,
-              cancelEditLabel: () => 'cancel edit',
-              submitEditLabel: () => 'submit edit',
-              successfulEditLabel: () => 'edit successful',
-            }}
-            isEditable={true}
-            isPrevSelected={false}
-            isNextSelected={false}
-            isFirstRow={true}
-            isLastRow={true}
-            isSelected={false}
-            wrapLines={false}
-            stickyState={result.current}
-            successfulEdit={successfulEdit}
-            columnId="id"
-            colIndex={0}
-            tableRole={tableRole}
-          />
+          <TableBodyCell<typeof testItem> {...commonProps} isEditing={isEditing} successfulEdit={successfulEdit} />
         </tr>
       </tbody>
     </table>
@@ -86,29 +90,7 @@ const TestComponent2 = ({ column }: any) => {
     <table>
       <tbody>
         <tr>
-          <TableBodyCell<typeof testItem>
-            column={column}
-            item={testItem}
-            isEditing={true}
-            onEditStart={onEditStart}
-            onEditEnd={onEditEnd}
-            ariaLabels={{
-              activateEditLabel: () => 'activate edit',
-              cancelEditLabel: () => 'cancel edit',
-              submitEditLabel: () => 'submit edit',
-            }}
-            isEditable={true}
-            isPrevSelected={false}
-            isNextSelected={false}
-            isFirstRow={true}
-            isLastRow={true}
-            isSelected={false}
-            wrapLines={false}
-            stickyState={result.current}
-            columnId="id"
-            colIndex={0}
-            tableRole={tableRole}
-          />
+          <TableBodyCell<typeof testItem> {...commonProps} column={column} isEditing={true} isEditable={true} />
         </tr>
       </tbody>
     </table>
@@ -238,6 +220,60 @@ describe('TableBodyCell', () => {
       const successIcon = container.querySelector(bodyCellSuccessIcon$)!;
       fireEvent.mouseDown(successIcon);
       expect(onEditStart).toHaveBeenCalled();
+    });
+  });
+
+  describe('disable inline edit', () => {
+    const disableInlineEditColumn = {
+      ...column,
+      editConfig: {
+        ...column.editConfig,
+        disabledReason: (item: typeof testItem) => (item.test === 'testData' ? 'Cannot edit' : undefined),
+        editingCell: () => <input />,
+      },
+    };
+
+    test('can show disabled reason for disabled edit cells', () => {
+      render(<TableBodyCell {...commonProps} column={disableInlineEditColumn} />);
+
+      const disabledButton = screen.getByRole('button', { name: 'Edit testData test' });
+      expect(disabledButton).toHaveAccessibleDescription('Cannot edit');
+      expect(disabledButton).toHaveAttribute('aria-disabled');
+    });
+
+    test('activates live region when disabled cell is activated', () => {
+      const { container } = render(
+        <TableBodyCell {...commonProps} column={disableInlineEditColumn} isEditing={true} />
+      );
+
+      const disabledButton = screen.getByRole('button', { name: 'Edit testData test' });
+      expect(disabledButton).toHaveAccessibleDescription('Cannot edit');
+      expect(disabledButton).toHaveAttribute('aria-disabled');
+
+      const liveRegion = container.querySelector('[aria-live]');
+      expect(liveRegion).toHaveTextContent('Cannot edit');
+    });
+
+    test('dynamically disables inline edit based on disabledReason callback', () => {
+      const { rerender } = render(<TableBodyCell {...commonProps} column={disableInlineEditColumn} />);
+
+      // Show disabled reason when the callback returns a string
+      expect(screen.getByRole('button', { description: 'Cannot edit' })).toBeInTheDocument();
+
+      // Don't show a disabled reason when the callback returns undefined
+      rerender(
+        <TableBodyCell
+          {...commonProps}
+          column={{
+            ...disableInlineEditColumn,
+            editConfig: {
+              ...disableInlineEditColumn.editConfig,
+              disabledReason: item => (item.test === 'nomatch' ? 'Cannot edit' : undefined),
+            },
+          }}
+        />
+      );
+      expect(screen.queryByRole('button', { description: 'Cannot edit' })).toBeNull();
     });
   });
 });

@@ -8,7 +8,7 @@ import PopoverContainer from '../../popover/container';
 import PopoverBody from '../../popover/body';
 import styles from './styles.css.js';
 import Arrow from '../../popover/arrow';
-import { TableTdElement } from './td-element';
+import { TableTdElement, TableTdElementProps } from './td-element';
 import { TableBodyCellProps } from './index';
 import useHiddenDescription from '../../button-dropdown/utils/use-hidden-description';
 
@@ -28,13 +28,18 @@ export function DisabledInlineEditor<ItemType>({
   isVisualRefresh,
   ...rest
 }: DisabledInlineEditorProps<ItemType>) {
-  const clickAwayRef = useClickAway(() => onEditEnd(true));
+  const clickAwayRef = useClickAway(() => {
+    if (isEditing) {
+      onEditEnd(true);
+    }
+  });
 
   const [hasHover, setHasHover] = useState(false);
   const [hasFocus, setHasFocus] = useState(false);
   const showIcon = hasHover || hasFocus || isEditing;
 
   const iconRef = useRef(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   function handleEscape(event: React.KeyboardEvent): void {
     if (event.key === 'Escape') {
@@ -42,11 +47,19 @@ export function DisabledInlineEditor<ItemType>({
     }
   }
 
+  const onClick = () => {
+    onEditStart();
+    buttonRef.current?.focus();
+  };
+
   const { targetProps, descriptionEl } = useHiddenDescription(editDisabledReason);
 
   return (
     <TableTdElement
       {...rest}
+      nativeAttributes={
+        { 'data-inline-editing-active': isEditing.toString() } as TableTdElementProps['nativeAttributes']
+      }
       className={clsx(
         className,
         styles['body-cell-editable'],
@@ -54,7 +67,7 @@ export function DisabledInlineEditor<ItemType>({
         isEditing && styles['body-cell-edit-disabled-popover'],
         isVisualRefresh && styles['is-visual-refresh']
       )}
-      onClick={!isEditing ? onEditStart : undefined}
+      onClick={!isEditing ? onClick : undefined}
       onMouseEnter={() => setHasHover(true)}
       onMouseLeave={() => setHasHover(false)}
       ref={clickAwayRef}
@@ -62,6 +75,7 @@ export function DisabledInlineEditor<ItemType>({
       {column.cell(item)}
 
       <button
+        ref={buttonRef}
         tabIndex={0}
         className={styles['body-cell-editor']}
         aria-label={ariaLabels?.activateEditLabel?.(column, item)}
