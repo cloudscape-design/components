@@ -5,7 +5,11 @@ import React, { useCallback, useRef, useState } from 'react';
 import { BoundingBox, InternalPosition, Offset, PopoverProps } from './interfaces';
 import { calculatePosition, getDimensions, getOffsetDimensions } from './utils/positions';
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
-import { calculateScroll, scrollRectangleIntoView } from '../internal/utils/scrollable-containers';
+import {
+  calculateScroll,
+  getFirstScrollableParent,
+  scrollRectangleIntoView,
+} from '../internal/utils/scrollable-containers';
 import { getContainingBlock } from '../internal/utils/dom';
 
 export default function usePopoverPosition({
@@ -136,8 +140,11 @@ export default function usePopoverPosition({
       // Position the popover
       const top = shouldScroll ? popoverOffset.top + calculateScroll(rect) : popoverOffset.top;
       setPopoverStyle({ top, left: popoverOffset.left });
+
+      // Scroll if necessary
       if (shouldScroll) {
-        scrollRectangleIntoView(rect);
+        const scrollableParent = getFirstScrollableParent(popover);
+        scrollRectangleIntoView(rect, scrollableParent);
       }
 
       positionHandlerRef.current = () => {
