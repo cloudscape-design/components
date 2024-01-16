@@ -248,7 +248,7 @@ test('all elements focus is restored if table changes role after being rendered 
 
   expect(readFocusableElements()).toEqual(['BUTTON[Sort by value]']);
 
-  rerender(<TestTable keyboardNavigation={false} columns={[idColumn, valueColumn]} items={items} />);
+  rerender(<TestTable keyboardNavigation={false} columns={[valueColumn, idColumn]} items={items} />);
 
   expect(readFocusableElements()).toEqual([
     'BUTTON[Sort by value]',

@@ -229,7 +229,7 @@ describe('table grid navigation support', () => {
   }
 
   test('does not override tab index when keyboard navigation is not active', () => {
-    renderWithSingleTabStopNavigation(<Checkbox id="checkbox" checked={false} />);
+    renderWithSingleTabStopNavigation(<Checkbox id="checkbox" checked={false} />, { navigationActive: false });
     expect(getCheckboxInput('#checkbox')).not.toHaveAttribute('tabIndex');
   });
 

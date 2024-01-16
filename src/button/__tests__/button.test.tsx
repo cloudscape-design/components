@@ -578,7 +578,7 @@ describe('table grid navigation support', () => {
   }
 
   test('does not override tab index when keyboard navigation is not active', () => {
-    renderWithSingleTabStopNavigation(<Button id="button" />);
+    renderWithSingleTabStopNavigation(<Button id="button" />, { navigationActive: false });
     expect(getButton('#button')).not.toHaveAttribute('tabIndex');
   });
 
@@ -603,6 +603,6 @@ describe('table grid navigation support', () => {
     );
     setCurrentTarget(getButton('#button1'));
     expect(getButton('#button1')).toHaveAttribute('tabIndex', '-2');
-    expect(getButton('#button2')).toHaveAttribute('tabIndex', '-1');
+    expect(getButton('#button2')).toHaveAttribute('tabIndex', '-2');
   });
 });
