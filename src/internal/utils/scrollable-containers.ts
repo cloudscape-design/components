@@ -111,15 +111,12 @@ export function scrollRectangleIntoView(box: BoundingBox, scrollableParent?: HTM
 }
 
 export function getFirstScrollableParent(element: HTMLElement): HTMLElement | undefined {
-  if (!(element instanceof HTMLElement)) {
-    return;
-  }
   const overflows = element.scrollHeight > element.clientHeight;
   const isScrollable = overflows && ['scroll', 'auto'].includes(getComputedStyle(element).overflowY);
   if (isScrollable) {
     return element;
   }
-  if (element.parentElement) {
+  if (element.parentElement instanceof HTMLElement) {
     return getFirstScrollableParent(element.parentElement);
   }
 }
