@@ -1,5 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
+import { findUpUntil } from './dom';
 export interface BoundingBox {
   height: number;
   width: number;
@@ -110,13 +112,9 @@ export function scrollRectangleIntoView(box: BoundingBox, scrollableParent?: HTM
   }
 }
 
-export function getFirstScrollableParent(element: HTMLElement): HTMLElement | undefined {
-  const overflows = element.scrollHeight > element.clientHeight;
-  const isScrollable = overflows && ['scroll', 'auto'].includes(getComputedStyle(element).overflowY);
-  if (isScrollable) {
-    return element;
-  }
-  if (element.parentElement instanceof HTMLElement) {
-    return getFirstScrollableParent(element.parentElement);
-  }
+export function getFirstScrollableParent(element: HTMLElement): HTMLElement | null {
+  return findUpUntil(element, el => {
+    const overflows = el.scrollHeight > el.clientHeight;
+    return overflows && ['scroll', 'auto'].includes(getComputedStyle(el).overflowY);
+  });
 }

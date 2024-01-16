@@ -61,7 +61,7 @@ describe('getFirstScrollableParent', () => {
 
     expect(getFirstScrollableParent(inner)).toBe(outer);
   });
-  test('returns undefined if no scrollable parent is found', () => {
-    expect(getFirstScrollableParent(inner)).toBe(undefined);
+  test('returns null if no scrollable parent is found', () => {
+    expect(getFirstScrollableParent(inner)).toBe(null);
   });
 });
