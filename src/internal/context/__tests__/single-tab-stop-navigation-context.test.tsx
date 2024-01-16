@@ -20,19 +20,27 @@ test('does not override tab index when keyboard navigation is not active', () =>
   expect(document.querySelector('#button')).not.toHaveAttribute('tabIndex');
 });
 
-test('does not override tab index when keyboard navigation is suppressed', () => {
+test('does not override tab index for suppressed elements', () => {
   const { setCurrentTarget } = renderWithSingleTabStopNavigation(
     <div>
       <Button id="button1" />
       <Button id="button2" />
       <Button id="button3" tabIndex={-1} />
+      <Button id="button4" />
+      <Button id="button5" tabIndex={-1} />
     </div>,
     { navigationActive: true }
   );
-  setCurrentTarget(document.querySelector('#button1'), true);
+  setCurrentTarget(document.querySelector('#button1'), [
+    document.querySelector('#button1'),
+    document.querySelector('#button2'),
+    document.querySelector('#button3'),
+  ]);
   expect(document.querySelector('#button1')).toHaveAttribute('tabIndex', '0');
   expect(document.querySelector('#button2')).toHaveAttribute('tabIndex', '0');
   expect(document.querySelector('#button3')).toHaveAttribute('tabIndex', '-1');
+  expect(document.querySelector('#button4')).toHaveAttribute('tabIndex', '-1');
+  expect(document.querySelector('#button5')).toHaveAttribute('tabIndex', '-1');
 });
 
 test('overrides tab index when keyboard navigation is active', () => {
