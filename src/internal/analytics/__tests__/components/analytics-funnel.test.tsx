@@ -718,13 +718,13 @@ describe('emit awsui-creation-flow-done event', () => {
     });
   });
 
-  test('emit awsui-creation-flow-done event when funnelCancelled', () => {
+  test('does not emit awsui-creation-flow-done event when funnelCancelled', () => {
     const { unmount } = render(
       <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1} />
     );
     act(() => void jest.runAllTimers());
     unmount();
-    expect(doneSpy).toHaveBeenCalled();
+    expect(doneSpy).not.toHaveBeenCalled();
   });
 });
 

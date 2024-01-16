@@ -67,7 +67,6 @@ const dispatchCreateEditFlowDoneEvent = () => {
 
 const onFunnelCancelled = ({ funnelInteractionId }: { funnelInteractionId: string }) => {
   FunnelMetrics.funnelCancelled({ funnelInteractionId });
-  dispatchCreateEditFlowDoneEvent();
 };
 
 const onFunnelComplete = ({ funnelInteractionId }: { funnelInteractionId: string }) => {
