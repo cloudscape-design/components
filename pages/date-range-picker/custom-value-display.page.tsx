@@ -26,8 +26,8 @@ const permutations = createPermutations<Intl.DateTimeFormatOptions>([
 export default function DatePickerScenario() {
   const [value, setValue] = useState<DateRangePickerProps['value']>({
     type: 'absolute',
-    startDate: '2024-12-30T00:00:00+01:00',
-    endDate: '2024-12-31T23:59:59+01:00',
+    startDate: '2024-12-30T00:00:00',
+    endDate: '2024-12-31T23:59:59',
   });
 
   return (
