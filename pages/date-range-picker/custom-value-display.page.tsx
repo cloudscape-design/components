@@ -85,30 +85,28 @@ export default function DatePickerScenario() {
               <ErrorBoundary errorMessage={`Invalid i18n options: ${str}`}>
                 <h3>{str}</h3>
                 {locales.map(locale => (
-                  <>
-                    <Grid key={`pickers-${locale}`} gridDefinition={[{ colspan: 2 }, { colspan: 10 }]}>
-                      <div style={{ textAlign: 'right' }}>{locale}</div>
-                      <DateRangePicker
-                        value={value}
-                        locale={locale}
-                        i18nStrings={{
-                          ...i18nStrings,
-                          formatAbsoluteRange: (startDate, endDate, locale) =>
-                            (new Intl.DateTimeFormat(locale, permutation) as DateTimeFormat).formatRange(
-                              new Date(startDate),
-                              new Date(endDate)
-                            ),
-                        }}
-                        placeholder={'Filter by a date and time range'}
-                        onChange={e => setValue(e.detail.value)}
-                        relativeOptions={[]}
-                        isValidRange={isValid}
-                        timeInputFormat="hh:mm"
-                        rangeSelectorMode={'absolute-only'}
-                        isDateEnabled={date => date.getDate() !== 15}
-                      />
-                    </Grid>
-                  </>
+                  <Grid key={`pickers-${locale}`} gridDefinition={[{ colspan: 2 }, { colspan: 10 }]}>
+                    <div style={{ textAlign: 'right' }}>{locale}</div>
+                    <DateRangePicker
+                      value={value}
+                      locale={locale}
+                      i18nStrings={{
+                        ...i18nStrings,
+                        formatAbsoluteRange: (startDate, endDate, locale) =>
+                          (new Intl.DateTimeFormat(locale, permutation) as DateTimeFormat).formatRange(
+                            new Date(startDate),
+                            new Date(endDate)
+                          ),
+                      }}
+                      placeholder={'Filter by a date and time range'}
+                      onChange={e => setValue(e.detail.value)}
+                      relativeOptions={[]}
+                      isValidRange={isValid}
+                      timeInputFormat="hh:mm"
+                      rangeSelectorMode={'absolute-only'}
+                      isDateEnabled={date => date.getDate() !== 15}
+                    />
+                  </Grid>
                 ))}
               </ErrorBoundary>
             );
