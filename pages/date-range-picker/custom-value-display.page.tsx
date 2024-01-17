@@ -40,7 +40,7 @@ export default function DatePickerScenario() {
 
         <hr />
 
-        <h2>ISO 8061 with time offset</h2>
+        <h2>Default</h2>
         <DateRangePicker
           value={value}
           locale={'en'}
@@ -52,6 +52,28 @@ export default function DatePickerScenario() {
           timeInputFormat="hh:mm:ss"
           rangeSelectorMode={'absolute-only'}
           isDateEnabled={date => date.getDate() !== 15}
+          getTimeOffset={() => -5 * 60}
+        />
+
+        <hr />
+
+        <h2>ISO 8061 with time offset</h2>
+        <DateRangePicker
+          value={value}
+          locale={'en'}
+          i18nStrings={{
+            ...i18nStrings,
+            formatAbsoluteRange: ({ startDate, endDate, startDateTimezoneOffset, endDateTimezoneOffset }) =>
+              `${startDate}${startDateTimezoneOffset} — ${endDate}${endDateTimezoneOffset}`,
+          }}
+          placeholder={'Filter by a date and time range'}
+          onChange={e => setValue(e.detail.value)}
+          relativeOptions={[]}
+          isValidRange={isValid}
+          timeInputFormat="hh:mm:ss"
+          rangeSelectorMode={'absolute-only'}
+          isDateEnabled={date => date.getDate() !== 15}
+          getTimeOffset={() => -5 * 60}
         />
 
         <hr />
@@ -71,6 +93,7 @@ export default function DatePickerScenario() {
           timeInputFormat="hh:mm:ss"
           rangeSelectorMode={'absolute-only'}
           isDateEnabled={date => date.getDate() !== 15}
+          getTimeOffset={() => -5 * 60}
         />
 
         <hr />
@@ -106,6 +129,7 @@ export default function DatePickerScenario() {
                       timeInputFormat="hh:mm:ss"
                       rangeSelectorMode={'absolute-only'}
                       isDateEnabled={date => date.getDate() !== 15}
+                      getTimeOffset={() => -5 * 60}
                     />
                   </Grid>
                 ))}
