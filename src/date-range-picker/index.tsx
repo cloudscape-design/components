@@ -34,23 +34,21 @@ import { formatValue } from './utils';
 export { DateRangePickerProps };
 
 function renderDateRange({
-  originalRange,
-  rangeWithoutTimeOffset,
+  range,
   placeholder = '',
   formatRelativeRange,
   formatAbsoluteRange,
   timeOffset,
   locale,
 }: {
-  originalRange: null | DateRangePickerProps.Value;
-  rangeWithoutTimeOffset: null | DateRangePickerProps.Value;
+  range: null | DateRangePickerProps.Value;
   placeholder?: string;
   formatRelativeRange: DateRangePickerProps.I18nStrings['formatRelativeRange'];
   formatAbsoluteRange?: DateRangePickerProps.I18nStrings['formatAbsoluteRange'];
   timeOffset: { startDate?: number; endDate?: number };
   locale: string;
 }) {
-  if (!rangeWithoutTimeOffset) {
+  if (!range) {
     return (
       <span className={styles['label-text']} aria-disabled={true}>
         {placeholder}
@@ -59,22 +57,18 @@ function renderDateRange({
   }
 
   const formatted =
-    rangeWithoutTimeOffset.type === 'relative' ? (
-      formatRelativeRange?.(rangeWithoutTimeOffset) ?? ''
+    range.type === 'relative' ? (
+      formatRelativeRange?.(range) ?? ''
     ) : (
       <BreakSpaces
         text={
-          originalRange &&
-          originalRange.type === 'absolute' &&
-          formatAbsoluteRange &&
-          originalRange.startDate &&
-          originalRange.endDate
+          formatAbsoluteRange && range.startDate && range.endDate
             ? formatAbsoluteRange({
-                startDate: originalRange.startDate,
-                endDate: originalRange.endDate,
+                startDate: range.startDate,
+                endDate: range.endDate,
                 locale,
               })
-            : formatDateRange(rangeWithoutTimeOffset.startDate, rangeWithoutTimeOffset.endDate, timeOffset)
+            : formatDateRange(range.startDate, range.endDate, timeOffset)
         }
       />
     );
@@ -139,7 +133,7 @@ const DateRangePicker = React.forwardRef(
     checkControlled('DateRangePicker', 'value', value, 'onChange', onChange);
 
     const normalizedTimeOffset = normalizeTimeOffset(value, getTimeOffset, timeOffset);
-    let rangeWithoutTimeOffset = isDateOnly(value) ? value : shiftTimeOffset(value, normalizedTimeOffset);
+    value = isDateOnly(value) ? value : shiftTimeOffset(value, normalizedTimeOffset);
 
     const baseProps = getBaseProps(rest);
     const { invalid, controlId, ariaDescribedby, ariaLabelledby } = useFormFieldContext({
@@ -219,24 +213,20 @@ const DateRangePicker = React.forwardRef(
       }
     }, [prevDateOnly, dateOnly]);
 
-    if (
-      rangeWithoutTimeOffset &&
-      rangeWithoutTimeOffset.type !== 'absolute' &&
-      rangeWithoutTimeOffset.type !== 'relative'
-    ) {
+    if (value && value.type !== 'absolute' && value.type !== 'relative') {
       warnOnce('DateRangePicker', 'You provided an invalid value. Reverting back to default.');
       value = null;
     }
 
     if (
-      (rangeWithoutTimeOffset?.type === 'absolute' && rangeSelectorMode === 'relative-only') ||
-      (rangeWithoutTimeOffset?.type === 'relative' && rangeSelectorMode === 'absolute-only')
+      (value?.type === 'absolute' && rangeSelectorMode === 'relative-only') ||
+      (value?.type === 'relative' && rangeSelectorMode === 'absolute-only')
     ) {
       warnOnce(
         'DateRangePicker',
         'The provided value does not correspond to the current range selector mode. Reverting back to default.'
       );
-      rangeWithoutTimeOffset = null;
+      value = null;
     }
 
     const i18n = useInternalI18n('date-range-picker');
@@ -258,8 +248,7 @@ const DateRangePicker = React.forwardRef(
     }
 
     const formattedDate: string | JSX.Element = renderDateRange({
-      originalRange: value,
-      rangeWithoutTimeOffset,
+      range: value,
       placeholder,
       formatRelativeRange,
       formatAbsoluteRange: i18nStrings?.formatAbsoluteRange,
@@ -326,7 +315,7 @@ const DateRangePicker = React.forwardRef(
                 locale={normalizedLocale}
                 isSingleGrid={isSingleGrid}
                 onDropdownClose={() => closeDropdown(true)}
-                value={rangeWithoutTimeOffset}
+                value={value}
                 showClearButton={showClearButton}
                 isDateEnabled={isDateEnabled}
                 i18nStrings={i18nStrings}
