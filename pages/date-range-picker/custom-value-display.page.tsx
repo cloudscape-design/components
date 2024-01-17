@@ -33,7 +33,7 @@ export default function DatePickerScenario() {
   return (
     <Box padding="s">
       <SpaceBetween direction="vertical" size="m">
-        <h1>Date range picker with custom value display</h1>
+        <h1>Absolute date rate range picker with custom value display</h1>
 
         <h2>Raw value</h2>
         <pre>{JSON.stringify(value, undefined, 2)}</pre>
