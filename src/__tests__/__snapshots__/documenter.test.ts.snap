@@ -6085,7 +6085,7 @@ Default: the user's current time offset as provided by the browser.
           Object {
             "name": "formatAbsoluteRange",
             "optional": true,
-            "type": "(startDate: string, endDate: string, locale: string) => string",
+            "type": "(__namedParameters: unknown) => string",
           },
           Object {
             "name": "formatRelativeRange",
