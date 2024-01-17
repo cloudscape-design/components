@@ -1,118 +1,84 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import * as React from 'react';
+import React, { useContext, useState } from 'react';
 import Multiselect, { MultiselectProps } from '~components/multiselect';
-import { fetchSecurityGroups } from '../select/mock/security-groups-provider';
 import Box from '~components/box';
 import { i18nStrings } from './constants';
+import { groupsRaw } from '../select/mock/data';
+import AppContext, { AppContextType } from '../app/app-context';
+import { useOptionsLoader } from '../common/options-loader';
+
+const allOptions = JSON.parse(JSON.stringify(groupsRaw)) as unknown as MultiselectProps.OptionGroup[];
+
+type PageContext = React.Context<
+  AppContextType<{
+    showFinishedText?: boolean;
+    fakeResponses?: boolean;
+    randomErrors?: boolean;
+    virtualScroll?: boolean;
+    expandToViewport?: boolean;
+  }>
+>;
 
 const deselectAriaLabel: MultiselectProps['deselectAriaLabel'] = option => {
   const label = option?.value || option?.label;
   return label ? `Deselect ${label}` : 'no label';
 };
 
-class SecurityGroupMultiselect extends React.Component {
-  pageNumber: any = null;
-  filteringText = '';
-  state = {
-    selectedOptions: [],
-    options: [],
-    status: 'pending',
-  };
+export default function Page() {
+  const [selectedOptions, setSelectedOptions] = useState<readonly MultiselectProps.Option[]>([]);
+  const {
+    urlParams: { fakeResponses = true, randomErrors = true },
+  } = useContext(AppContext as PageContext);
 
-  fetchData = async () => {
-    try {
-      const { filteringText, pageNumber } = this;
-      const { items, hasNext } = await fetchSecurityGroups({
-        filteringText,
-        pageNumber,
-      });
-      if (this.filteringText !== filteringText) {
-        // there is another request in progress, discard the result of this one
-        return;
-      }
-      this.setState({
-        status: hasNext ? 'pending' : 'finished',
-        options: this.pageNumber === 1 ? items : this.state.options.concat(items as any),
-      });
-    } catch (error) {
-      this.setState({
-        status: 'error',
-      });
-    }
-  };
+  const { items, status, filteringText, fetchItems } = useOptionsLoader<MultiselectProps.Option>({
+    pageSize: 10,
+    randomErrors: randomErrors,
+  });
 
-  handleLoadItems = ({ detail: { filteringText, firstPage, samePage } }: any) => {
-    let { options } = this.state;
-    this.filteringText = filteringText;
-    if (firstPage) {
-      this.pageNumber = 0;
-      options = [];
-    }
-    if (!samePage) {
-      this.pageNumber++;
-    }
-    this.setState({
-      options,
-      status: 'loading',
-    });
-    this.fetchData();
-  };
-
-  handleChange = (event: any) => {
-    this.setState({
-      selectedOptions: event.detail.selectedOptions,
-    });
-  };
-
-  showFilteredText = (matchesCount: number, totalCount: number) => {
-    if (this.state.status === 'pending') {
+  function showFilteredText(matchesCount: number, totalCount: number) {
+    if (status === 'pending') {
       return `${matchesCount}+ results`;
     }
 
-    if (this.state.status === 'finished') {
+    if (status === 'finished') {
       return `${matchesCount} out of ${totalCount} results`;
     }
     return '';
-  };
-
-  render() {
-    const { status, options, selectedOptions } = this.state;
-    return (
-      <>
-        <Box margin={{ bottom: 'xxs' }} color="text-label">
-          <label htmlFor="select_security_group">Security group</label>
-        </Box>
-        <Multiselect
-          controlId="select_security_group"
-          filteringType="manual"
-          filteringPlaceholder="Find security group"
-          filteringAriaLabel="Filtering aria label"
-          filteringResultsText={this.showFilteredText}
-          statusType={status as any}
-          placeholder="Choose a security group"
-          loadingText="Loading security groups"
-          errorText="Error fetching results."
-          recoveryText="Retry"
-          finishedText={this.filteringText ? `End of "${this.filteringText}" results` : 'End of all results'}
-          empty="No security groups found"
-          options={options}
-          selectedOptions={selectedOptions}
-          onChange={this.handleChange}
-          onLoadItems={this.handleLoadItems}
-          tokenLimit={3}
-          deselectAriaLabel={deselectAriaLabel}
-          i18nStrings={i18nStrings}
-        />
-      </>
-    );
   }
-}
-export default function MultiselectPage() {
+
   return (
     <Box padding="l">
       <Box variant="h1">Multiselect: asynchronously fetched options</Box>
-      <SecurityGroupMultiselect />
+      <Box margin={{ bottom: 'xxs' }} color="text-label">
+        <label htmlFor="select_security_group">Security group</label>
+      </Box>
+      <Multiselect
+        controlId="select_security_group"
+        filteringType="manual"
+        filteringPlaceholder="Find security group"
+        filteringAriaLabel="Filtering aria label"
+        filteringResultsText={showFilteredText}
+        statusType={status as any}
+        placeholder="Choose a security group"
+        loadingText="Loading security groups"
+        errorText="Error fetching results."
+        recoveryText="Retry"
+        finishedText={filteringText ? `End of "${filteringText}" results` : 'End of all results'}
+        empty="No security groups found"
+        options={items}
+        selectedOptions={selectedOptions}
+        onChange={event => setSelectedOptions(event.detail.selectedOptions)}
+        onLoadItems={({ detail: { firstPage, filteringText } }) => {
+          const filteredOptions = allOptions
+            .filter(group => group.label!.indexOf(filteringText) > -1)
+            .map(group => ({ ...group, value: group.label }));
+          fetchItems({ firstPage, filteringText, sourceItems: fakeResponses ? filteredOptions : undefined });
+        }}
+        tokenLimit={3}
+        deselectAriaLabel={deselectAriaLabel}
+        i18nStrings={i18nStrings}
+      />
     </Box>
   );
 }

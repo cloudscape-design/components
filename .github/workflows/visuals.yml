@@ -48,7 +48,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: visual-regression-report
-      url: ${{ steps.deploy-report.outputs.preview-url }}/html_report/index.html
+      url: ${{ steps.deploy-report.outputs.preview-url }}html_report/index.html
     needs:
       - buildReference
     steps:

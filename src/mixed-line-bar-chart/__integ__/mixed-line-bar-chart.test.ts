@@ -427,6 +427,32 @@ describe('Details popover', () => {
   );
 
   test(
+    'tabbing from the popover back to the chart keeps the highlights',
+    setupTest('#/light/bar-chart/test', async page => {
+      await page.click('#focus-target');
+      await page.keys(['Tab', 'Tab', 'ArrowRight']);
+
+      // First group is highlighted
+      await expect(page.getText(popoverHeaderSelector())).resolves.toContain('Potatoes');
+
+      // Tab into the popover
+      await page.keys(['Tab']);
+      await expect(
+        page.isFocused(chartWrapper.findDetailPopover().findContent().findButton().toSelector())
+      ).resolves.toBe(true);
+
+      // Tab back into the chart
+      await page.keys(['Shift', 'Tab', 'Shift']);
+      await expect(
+        page.isFocused(chartWrapper.findDetailPopover().findContent().findButton().toSelector())
+      ).resolves.toBe(false);
+
+      // First group is still highlighted
+      await expect(page.getText(popoverHeaderSelector())).resolves.toContain('Potatoes');
+    })
+  );
+
+  test(
     'can be pinned by clicking on chart background and dismissed by clicking outside chart area in line chart',
     setupTest('#/light/line-chart/test', async page => {
       // Hovers to open popover
@@ -467,6 +493,54 @@ describe('Details popover', () => {
       await page.waitForAssertion(() =>
         expect(page.isFocused(chartWrapper.findApplication().toSelector())).resolves.toBe(true)
       );
+    })
+  );
+
+  test(
+    'scrolls if necessary on click',
+    setupTest('#/light/bar-chart/drilldown', async page => {
+      await page.setWindowSize({ width: 360, height: 650 });
+      await page.windowScrollTo({ top: 150 });
+      const barChart = createWrapper().findBarChart();
+      const barGroup = barChart.findBarGroups().get(1).toSelector();
+      await expect(page.getWindowScroll()).resolves.toEqual({ top: 150, left: 0 });
+      await page.clickBarGroup(barGroup);
+      await page.waitForVisible(barChart.findDetailPopover().toSelector());
+      await expect(page.getText(barChart.findDetailPopover().findHeader().toSelector())).resolves.toContain('Apr 2023');
+      await expect(page.getWindowScroll()).resolves.toEqual({ top: 0, left: 0 });
+    })
+  );
+
+  test(
+    'does not scroll on hover',
+    setupTest('#/light/bar-chart/drilldown', async page => {
+      await page.setWindowSize({ width: 360, height: 650 });
+      await page.windowScrollTo({ top: 150 });
+      const barChart = createWrapper().findBarChart();
+      const barGroup = barChart.findBarGroups().get(1).toSelector();
+      await expect(page.getWindowScroll()).resolves.toEqual({ top: 150, left: 0 });
+      await page.hoverElement(barGroup);
+      await expect(page.getText(barChart.findDetailPopover().findHeader().toSelector())).resolves.toContain('Apr 2023');
+      await expect(page.getWindowScroll()).resolves.toEqual({ top: 150, left: 0 });
+    })
+  );
+
+  test(
+    'scrolls if necessary on click inside a scrollable container',
+    setupTest('#/light/bar-chart/in-modal', async page => {
+      await page.setWindowSize({ width: 360, height: 650 });
+      const wrapper = createWrapper();
+      await page.click(wrapper.findButton().toSelector());
+      const modalSelector = wrapper.findModal().toSelector();
+      const modalTop = (await page.getBoundingBox(wrapper.findModal().findHeader().toSelector())).top;
+      await page.elementScrollTo(modalSelector, { left: 0, top: 400 });
+      await expect(page.getElementScroll(modalSelector)).resolves.toEqual({ left: 0, top: 400 });
+      const barChart = wrapper.findBarChart();
+      const barGroup = barChart.findBarGroups().get(1).toSelector();
+      await page.clickBarGroup(barGroup);
+      await page.waitForVisible(barChart.findDetailPopover().toSelector());
+      await expect(page.getText(barChart.findDetailPopover().findHeader().toSelector())).resolves.toContain('Apr 2023');
+      await expect(page.getElementScroll(modalSelector)).resolves.toEqual({ left: 0, top: modalTop });
     })
   );
 
