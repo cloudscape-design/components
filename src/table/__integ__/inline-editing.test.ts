@@ -30,7 +30,7 @@ const cellBelow$ = tableWrapper.findEditCellButton(5, 5).toSelector();
 const bodyCellError = bodyCell.findFormField().findError().toSelector();
 
 const disabledCell = tableWrapper.findBodyCell(4, 4);
-const disabledCell$ = tableWrapper.findBodyCell(4, 4).toSelector();
+const disabledCell$ = disabledCell.toSelector();
 const disabledCellLiveRegion$ = disabledCell.find('[aria-live]').toSelector();
 
 const setupTest = (testFn: (page: BasePageObject) => Promise<void>) => {
