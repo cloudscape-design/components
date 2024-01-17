@@ -44,6 +44,7 @@ export default function DatePickerScenario() {
         <DateRangePicker
           value={value}
           locale={'en'}
+          i18nStrings={i18nStrings}
           placeholder={'Filter by a date and time range'}
           onChange={e => setValue(e.detail.value)}
           relativeOptions={[]}
