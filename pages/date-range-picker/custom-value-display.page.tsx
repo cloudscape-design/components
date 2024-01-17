@@ -34,6 +34,46 @@ export default function DatePickerScenario() {
     <Box padding="s">
       <SpaceBetween direction="vertical" size="m">
         <h1>Date range picker with custom value display</h1>
+
+        <h2>Raw value</h2>
+        <pre>{JSON.stringify(value, undefined, 2)}</pre>
+
+        <hr />
+
+        <h2>ISO 8061 with time offset</h2>
+        <DateRangePicker
+          value={value}
+          locale={'en'}
+          placeholder={'Filter by a date and time range'}
+          onChange={e => setValue(e.detail.value)}
+          relativeOptions={[]}
+          isValidRange={isValid}
+          timeInputFormat="hh:mm"
+          rangeSelectorMode={'absolute-only'}
+          isDateEnabled={date => date.getDate() !== 15}
+        />
+
+        <hr />
+
+        <h2>ISO 8061 without time offset</h2>
+        <DateRangePicker
+          value={value}
+          locale={'en'}
+          i18nStrings={{
+            ...i18nStrings,
+            formatAbsoluteRange: (startDate, endDate) => `${startDate} — ${endDate}`,
+          }}
+          placeholder={'Filter by a date and time range'}
+          onChange={e => setValue(e.detail.value)}
+          relativeOptions={[]}
+          isValidRange={isValid}
+          timeInputFormat="hh:mm"
+          rangeSelectorMode={'absolute-only'}
+          isDateEnabled={date => date.getDate() !== 15}
+        />
+
+        <hr />
+
         <h2>
           Using <code>Intl.DateTimeFormat.formatRange</code>
         </h2>
@@ -74,39 +114,6 @@ export default function DatePickerScenario() {
             );
           }}
         />
-        <hr />
-        <h2>ISO 8061 without time offset</h2>
-        <DateRangePicker
-          value={value}
-          locale={'en'}
-          i18nStrings={{
-            ...i18nStrings,
-            formatAbsoluteRange: (startDate, endDate) => `${startDate} — ${endDate}`,
-          }}
-          placeholder={'Filter by a date and time range'}
-          onChange={e => setValue(e.detail.value)}
-          relativeOptions={[]}
-          isValidRange={isValid}
-          timeInputFormat="hh:mm"
-          rangeSelectorMode={'absolute-only'}
-          isDateEnabled={date => date.getDate() !== 15}
-        />
-        <hr />
-        <h2>ISO 8061 with time offset</h2>
-        <DateRangePicker
-          value={value}
-          locale={'en'}
-          placeholder={'Filter by a date and time range'}
-          onChange={e => setValue(e.detail.value)}
-          relativeOptions={[]}
-          isValidRange={isValid}
-          timeInputFormat="hh:mm"
-          rangeSelectorMode={'absolute-only'}
-          isDateEnabled={date => date.getDate() !== 15}
-        />
-        <hr />
-        <h2>Raw value</h2>
-        <pre>{JSON.stringify(value, undefined, 2)}</pre>
       </SpaceBetween>
     </Box>
   );
