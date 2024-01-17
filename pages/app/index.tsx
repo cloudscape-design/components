@@ -87,10 +87,11 @@ const { direction, visualRefresh, removeHighContrastHeader } = parseQuery(histor
 
 // The VR class needs to be set before any React rendering occurs.
 window[awsuiVisualRefreshFlag] = () => visualRefresh;
+if (!window[awsuiGlobalFlagsSymbol]) {
+  window[awsuiGlobalFlagsSymbol] = {};
+}
 if (removeHighContrastHeader) {
-  window[awsuiGlobalFlagsSymbol] = {
-    removeHighContrastHeader: true,
-  };
+  window[awsuiGlobalFlagsSymbol].removeHighContrastHeader = true;
 }
 
 // Apply the direction value to the HTML element dir attribute
