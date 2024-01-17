@@ -34,7 +34,7 @@ export function Resizer({
   onWidthUpdateCommit,
   ariaLabelledby,
   minWidth = DEFAULT_COLUMN_WIDTH,
-  tabIndex: masterTabIndex,
+  tabIndex,
   showFocusRing,
   focusId,
   roleDescription,
@@ -169,7 +169,7 @@ export function Resizer({
     };
   }, [minWidth, isDragging, isKeyboardDragging, resizerHasFocus, onWidthUpdate, onWidthUpdateCommit]);
 
-  const { tabIndex } = useSingleTabStopNavigation(resizerToggleRef, { tabIndex: masterTabIndex });
+  const { tabIndex: resizerTabIndex } = useSingleTabStopNavigation(resizerToggleRef, { tabIndex });
 
   return (
     <>
@@ -209,7 +209,7 @@ export function Resizer({
         // See https://www.w3.org/TR/wai-aria-1.1/#aria-roledescription
         aria-roledescription={roleDescription}
         aria-labelledby={ariaLabelledby}
-        tabIndex={tabIndex}
+        tabIndex={resizerTabIndex}
         data-focus-id={focusId}
       />
       <span

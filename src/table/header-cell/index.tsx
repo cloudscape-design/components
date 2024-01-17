@@ -42,7 +42,7 @@ interface TableHeaderCellProps<ItemType> {
 export function TableHeaderCell<ItemType>({
   className,
   style,
-  tabIndex: headerTabIndex,
+  tabIndex,
   column,
   activeSortingColumn,
   sortingDescending,
@@ -86,7 +86,7 @@ export function TableHeaderCell<ItemType>({
   const headerId = useUniqueId('table-header-');
 
   const clickableHeaderRef = useRef<HTMLDivElement>(null);
-  const { tabIndex } = useSingleTabStopNavigation(clickableHeaderRef, { tabIndex: headerTabIndex });
+  const { tabIndex: clickableHeaderTabIndex } = useSingleTabStopNavigation(clickableHeaderRef, { tabIndex });
 
   return (
     <TableThElement
@@ -120,7 +120,7 @@ export function TableHeaderCell<ItemType>({
         {...(sortingStatus && !sortingDisabled
           ? {
               onKeyPress: handleKeyPress,
-              tabIndex: tabIndex,
+              tabIndex: clickableHeaderTabIndex,
               role: 'button',
               onClick: handleClick,
             }
@@ -146,7 +146,7 @@ export function TableHeaderCell<ItemType>({
       </div>
       {resizableColumns ? (
         <Resizer
-          tabIndex={headerTabIndex}
+          tabIndex={tabIndex}
           focusId={`resize-control-${String(columnId)}`}
           showFocusRing={focusedComponent === `resize-control-${String(columnId)}`}
           onWidthUpdate={newWidth => updateColumn(columnId, newWidth)}

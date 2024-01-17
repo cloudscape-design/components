@@ -46,14 +46,15 @@ export function TableThElement({
     getClassName: props => getStickyClassNames(styles, props),
   });
 
-  const getMouseDownTarget = useMouseDownTarget();
   const cellRefObject = useRef<HTMLTableCellElement>(null);
   const mergedRef = useMergeRefs(stickyStyles.ref, cellRef, cellRefObject);
-  const { tabIndex } = useSingleTabStopNavigation(cellRefObject);
+  const { tabIndex: cellTabIndex } = useSingleTabStopNavigation(cellRefObject);
+  const getMouseDownTarget = useMouseDownTarget();
 
   return (
     <th
       data-focus-id={`header-${String(columnId)}`}
+      // Scroll cell into view when it is focused with keyboard.
       onFocus={event => {
         if (!event.currentTarget.contains(getMouseDownTarget())) {
           event.target.scrollIntoView?.({ block: 'center' });
@@ -75,7 +76,7 @@ export function TableThElement({
       style={{ ...style, ...stickyStyles.style }}
       ref={mergedRef}
       {...getTableColHeaderRoleProps({ tableRole, sortingStatus, colIndex })}
-      tabIndex={tabIndex}
+      tabIndex={cellTabIndex}
     >
       {children}
     </th>

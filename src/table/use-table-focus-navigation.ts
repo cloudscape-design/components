@@ -4,6 +4,7 @@
 import { RefObject, useCallback, useEffect, useMemo } from 'react';
 import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
 import { TableProps } from './interfaces';
+import { TableRole } from './table-role';
 
 function iterateTableCells<T extends HTMLElement>(
   table: T,
@@ -26,6 +27,7 @@ function iterateTableCells<T extends HTMLElement>(
  * @param numRows - The number of rows in the table.
  */
 function useTableFocusNavigation<T extends { editConfig?: TableProps.EditConfig<any> }>(
+  tableRole: TableRole,
   selectionType: TableProps['selectionType'],
   tableRoot: RefObject<HTMLTableElement>,
   columnDefinitions: Readonly<T[]>,
@@ -128,7 +130,7 @@ function useTableFocusNavigation<T extends { editConfig?: TableProps.EditConfig<
   );
 
   useEffect(() => {
-    if (!tableRoot.current) {
+    if (!tableRoot.current || tableRole === 'grid') {
       return;
     }
 
@@ -136,7 +138,7 @@ function useTableFocusNavigation<T extends { editConfig?: TableProps.EditConfig<
     tableRoot.current.addEventListener('keydown', handleArrowKeyEvents);
 
     return () => tableElement && tableElement.removeEventListener('keydown', handleArrowKeyEvents);
-  }, [focusableColumns, handleArrowKeyEvents, tableRoot]);
+  }, [tableRole, focusableColumns, handleArrowKeyEvents, tableRoot]);
 }
 
 export default useTableFocusNavigation;

@@ -78,10 +78,10 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       getClassName: props => getStickyClassNames(styles, props),
     });
 
-    const getMouseDownTarget = useMouseDownTarget();
     const cellRefObject = useRef<HTMLTableCellElement>(null);
     const mergedRef = useMergeRefs(stickyStyles.ref, ref, cellRefObject);
-    const { tabIndex } = useSingleTabStopNavigation(cellRefObject);
+    const { tabIndex: cellTabIndex } = useSingleTabStopNavigation(cellRefObject);
+    const getMouseDownTarget = useMouseDownTarget();
 
     return (
       <Element
@@ -103,6 +103,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           stickyStyles.className
         )}
         onClick={onClick}
+        // Scroll cell into view when it is focused with keyboard.
         onFocus={event => {
           if (!event.currentTarget.contains(getMouseDownTarget())) {
             event.target.scrollIntoView?.({ block: 'center' });
@@ -112,7 +113,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
         onMouseLeave={onMouseLeave}
         ref={mergedRef}
         {...nativeAttributes}
-        tabIndex={tabIndex}
+        tabIndex={cellTabIndex}
       >
         {children}
       </Element>

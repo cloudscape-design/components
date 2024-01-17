@@ -73,7 +73,7 @@ function TableCellEditable<ItemType>({
     }
   }, [hasFocus, successfulEdit, prevHasFocus, prevSuccessfulEdit]);
 
-  const { tabIndex } = useSingleTabStopNavigation(editActivateRef);
+  const { tabIndex: editActivateTabIndex } = useSingleTabStopNavigation(editActivateRef);
 
   return (
     <TableTdElement
@@ -130,7 +130,7 @@ function TableCellEditable<ItemType>({
             ref={editActivateRef}
             onFocus={() => setHasFocus(true)}
             onBlur={() => setHasFocus(false)}
-            tabIndex={tabIndex}
+            tabIndex={editActivateTabIndex}
           >
             {showIcon && <Icon name="edit" />}
           </button>

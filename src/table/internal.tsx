@@ -48,6 +48,7 @@ import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 import { NoDataCell } from './no-data-cell';
 import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
 
+const GRID_NAVIGATION_PAGE_SIZE = 10;
 const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
 
@@ -274,7 +275,7 @@ const InternalTable = React.forwardRef(
 
     const hasDynamicHeight = computedVariant === 'full-page';
     const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
-    // useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items?.length);
+    useTableFocusNavigation(tableRole, selectionType, tableRefObject, visibleColumnDefinitions, items?.length);
     const toolsHeaderWrapper = useRef<HTMLDivElement>(null);
     // If is mobile, we take into consideration the AppLayout's mobile bar and we subtract the tools wrapper height so only the table header is sticky
     const toolsHeaderHeight =
@@ -374,8 +375,7 @@ const InternalTable = React.forwardRef(
               )}
               <GridNavigationProvider
                 keyboardNavigation={tableRole === 'grid'}
-                // TODO: use constant
-                pageSize={10}
+                pageSize={GRID_NAVIGATION_PAGE_SIZE}
                 getTable={() => tableRefObject.current}
               >
                 <table

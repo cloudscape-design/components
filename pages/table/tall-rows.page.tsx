@@ -36,7 +36,6 @@ export default function () {
         items={items}
         stickyHeader={true}
         variant="container"
-        enableKeyboardNavigation={true}
       />
       <div style={{ height: '90vh', padding: 10 }}>Placeholder to allow page scroll beyond table</div>
     </Box>
