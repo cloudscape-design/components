@@ -158,6 +158,8 @@ export interface DateRangePickerProps
    * Specifies an additional control displayed in the dropdown, located below the range calendar.
    */
   customAbsoluteRangeControl?: DateRangePickerProps.AbsoluteRangeControl;
+
+  renderSelectedAbsoluteRange?: (startDate: string, endDate: string, locale: string) => string;
 }
 
 export namespace DateRangePickerProps {

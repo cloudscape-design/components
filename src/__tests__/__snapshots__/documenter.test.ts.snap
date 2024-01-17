@@ -6256,6 +6256,11 @@ modifying the value. A read-only component can receive focus.",
       "type": "ReadonlyArray<DateRangePickerProps.RelativeOption>",
     },
     Object {
+      "name": "renderSelectedAbsoluteRange",
+      "optional": true,
+      "type": "(startDate: string, endDate: string, locale: string) => string",
+    },
+    Object {
       "defaultValue": "true",
       "description": "Specifies whether the component should show a button that
 allows the user to clear the selected value.",

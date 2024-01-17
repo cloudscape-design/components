@@ -106,6 +106,7 @@ const DateRangePicker = React.forwardRef(
       expandToViewport = false,
       rangeSelectorMode = 'default',
       customAbsoluteRangeControl,
+      renderSelectedAbsoluteRange,
       ...rest
     }: DateRangePickerProps,
     ref: Ref<DateRangePickerProps.Ref>
@@ -228,6 +229,11 @@ const DateRangePicker = React.forwardRef(
       }
     }
 
+    const formattedDate: string | JSX.Element =
+      renderSelectedAbsoluteRange && value?.type === 'absolute' && value?.startDate && value?.endDate
+        ? renderSelectedAbsoluteRange(value.startDate, value.endDate, normalizedLocale)
+        : renderDateRange(value, placeholder ?? '', formatRelativeRange, normalizedTimeOffset);
+
     const trigger = (
       <div className={styles['trigger-wrapper']}>
         <ButtonTrigger
@@ -254,9 +260,7 @@ const DateRangePicker = React.forwardRef(
             <span className={styles['icon-wrapper']}>
               <InternalIcon name="calendar" variant={disabled || readOnly ? 'disabled' : 'normal'} />
             </span>
-            <span id={triggerContentId}>
-              {renderDateRange(value, placeholder ?? '', formatRelativeRange, normalizedTimeOffset)}
-            </span>
+            <span id={triggerContentId}>{formattedDate}</span>
           </span>
         </ButtonTrigger>
       </div>
