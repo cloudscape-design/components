@@ -116,10 +116,21 @@ export default function DatePickerScenario() {
                       locale={locale}
                       i18nStrings={{
                         ...i18nStrings,
-                        formatAbsoluteRange: ({ startDate, endDate, locale }) =>
-                          (new Intl.DateTimeFormat(locale, permutation) as DateTimeFormat).formatRange(
-                            new Date(startDate),
-                            new Date(endDate)
+                        formatAbsoluteRange: ({
+                          startDate,
+                          endDate,
+                          locale,
+                          startDateTimezoneOffset,
+                          endDateTimezoneOffset,
+                        }) =>
+                          (
+                            new Intl.DateTimeFormat(locale, {
+                              ...permutation,
+                              timeZone: startDateTimezoneOffset,
+                            }) as DateTimeFormat
+                          ).formatRange(
+                            new Date(`${startDate}${startDateTimezoneOffset}`),
+                            new Date(`${endDate}${endDateTimezoneOffset}`)
                           ),
                       }}
                       placeholder={'Filter by a date and time range'}
