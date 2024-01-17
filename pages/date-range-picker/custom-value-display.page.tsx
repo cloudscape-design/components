@@ -14,8 +14,12 @@ const locales = ['de', 'en-GB', 'en', 'es', 'fr', 'id', 'it', 'ja', 'ko', 'pt-BR
 
 const permutations = createPermutations<Intl.DateTimeFormatOptions>([
   {
-    dateStyle: [undefined, 'medium', 'short'],
+    dateStyle: [undefined, 'short'],
     timeStyle: ['medium', 'long'],
+  },
+  {
+    dateStyle: ['medium'],
+    timeStyle: ['medium'],
   },
 ]);
 
@@ -23,8 +27,8 @@ export default function DatePickerScenario() {
   const [dateOnly] = useState(false);
   const [value, setValue] = useState<DateRangePickerProps['value']>({
     type: 'absolute',
-    startDate: '2024-04-06T00:00:00+02:00',
-    endDate: '2024-04-07T23:59:59+02:00',
+    startDate: '2024-12-30T00:00:00+01:00',
+    endDate: '2024-12-31T23:59:59+01:00',
   });
 
   return (
@@ -55,10 +59,12 @@ export default function DatePickerScenario() {
                         rangeSelectorMode={'absolute-only'}
                         isDateEnabled={date => date.getDate() !== 15}
                         // getTimeOffset={() => -60}
-                        renderSelectedAbsoluteRange={(startDate, endDate, locale) => {
-                          const formatter = new Intl.DateTimeFormat(locale, permutation) as DateTimeFormat;
-                          return formatter.formatRange(new Date(startDate), new Date(endDate));
-                        }}
+                        renderSelectedAbsoluteRange={(startDate, endDate, locale) =>
+                          (new Intl.DateTimeFormat(locale, permutation) as DateTimeFormat).formatRange(
+                            new Date(startDate),
+                            new Date(endDate)
+                          )
+                        }
                       />
                     </Grid>
                   </>
