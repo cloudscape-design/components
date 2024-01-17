@@ -48,7 +48,7 @@ export default function DatePickerScenario() {
           onChange={e => setValue(e.detail.value)}
           relativeOptions={[]}
           isValidRange={isValid}
-          timeInputFormat="hh:mm"
+          timeInputFormat="hh:mm:ss"
           rangeSelectorMode={'absolute-only'}
           isDateEnabled={date => date.getDate() !== 15}
         />
@@ -67,7 +67,7 @@ export default function DatePickerScenario() {
           onChange={e => setValue(e.detail.value)}
           relativeOptions={[]}
           isValidRange={isValid}
-          timeInputFormat="hh:mm"
+          timeInputFormat="hh:mm:ss"
           rangeSelectorMode={'absolute-only'}
           isDateEnabled={date => date.getDate() !== 15}
         />
@@ -102,7 +102,7 @@ export default function DatePickerScenario() {
                       onChange={e => setValue(e.detail.value)}
                       relativeOptions={[]}
                       isValidRange={isValid}
-                      timeInputFormat="hh:mm"
+                      timeInputFormat="hh:mm:ss"
                       rangeSelectorMode={'absolute-only'}
                       isDateEnabled={date => date.getDate() !== 15}
                     />
