@@ -6083,6 +6083,11 @@ Default: the user's current time offset as provided by the browser.
             "type": "string",
           },
           Object {
+            "name": "formatAbsoluteRange",
+            "optional": true,
+            "type": "(startDate: string, endDate: string, locale: string) => string",
+          },
+          Object {
             "name": "formatRelativeRange",
             "optional": true,
             "type": "(value: DateRangePickerProps.RelativeValue) => string",
@@ -6254,11 +6259,6 @@ modifying the value. A read-only component can receive focus.",
       "name": "relativeOptions",
       "optional": false,
       "type": "ReadonlyArray<DateRangePickerProps.RelativeOption>",
-    },
-    Object {
-      "name": "renderSelectedAbsoluteRange",
-      "optional": true,
-      "type": "(startDate: string, endDate: string, locale: string) => string",
     },
     Object {
       "defaultValue": "true",

@@ -158,8 +158,6 @@ export interface DateRangePickerProps
    * Specifies an additional control displayed in the dropdown, located below the range calendar.
    */
   customAbsoluteRangeControl?: DateRangePickerProps.AbsoluteRangeControl;
-
-  renderSelectedAbsoluteRange?: (startDate: string, endDate: string, locale: string) => string;
 }
 
 export namespace DateRangePickerProps {
@@ -305,6 +303,12 @@ export namespace DateRangePickerProps {
      * This function must convert a relative range to a human-readable string.
      */
     formatRelativeRange?: (value: RelativeValue) => string;
+
+    /**
+     * Formatting function for absolute ranges.
+     * This function must convert an absolute range to a human-readable string.
+     */
+    formatAbsoluteRange?: (startDate: string, endDate: string, locale: string) => string;
 
     /**
      * Formatting function for time units.

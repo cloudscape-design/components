@@ -33,12 +33,21 @@ import { formatValue } from './utils';
 
 export { DateRangePickerProps };
 
-function renderDateRange(
-  range: null | DateRangePickerProps.Value,
-  placeholder: string,
-  formatRelativeRange: DateRangePickerProps.I18nStrings['formatRelativeRange'],
-  timeOffset: { startDate?: number; endDate?: number }
-) {
+function renderDateRange({
+  range,
+  placeholder = '',
+  formatRelativeRange,
+  formatAbsoluteRange,
+  timeOffset,
+  locale,
+}: {
+  range: null | DateRangePickerProps.Value;
+  placeholder?: string;
+  formatRelativeRange: DateRangePickerProps.I18nStrings['formatRelativeRange'];
+  formatAbsoluteRange?: DateRangePickerProps.I18nStrings['formatAbsoluteRange'];
+  timeOffset: { startDate?: number; endDate?: number };
+  locale: string;
+}) {
   if (!range) {
     return (
       <span className={styles['label-text']} aria-disabled={true}>
@@ -51,7 +60,13 @@ function renderDateRange(
     range.type === 'relative' ? (
       formatRelativeRange?.(range) ?? ''
     ) : (
-      <BreakSpaces text={formatDateRange(range.startDate, range.endDate, timeOffset)} />
+      <BreakSpaces
+        text={
+          formatAbsoluteRange && range.startDate && range.endDate
+            ? formatAbsoluteRange(range.startDate, range.endDate, locale)
+            : formatDateRange(range.startDate, range.endDate, timeOffset)
+        }
+      />
     );
 
   return (
@@ -106,7 +121,6 @@ const DateRangePicker = React.forwardRef(
       expandToViewport = false,
       rangeSelectorMode = 'default',
       customAbsoluteRangeControl,
-      renderSelectedAbsoluteRange,
       ...rest
     }: DateRangePickerProps,
     ref: Ref<DateRangePickerProps.Ref>
@@ -229,10 +243,14 @@ const DateRangePicker = React.forwardRef(
       }
     }
 
-    const formattedDate: string | JSX.Element =
-      renderSelectedAbsoluteRange && value?.type === 'absolute' && value?.startDate && value?.endDate
-        ? renderSelectedAbsoluteRange(value.startDate, value.endDate, normalizedLocale)
-        : renderDateRange(value, placeholder ?? '', formatRelativeRange, normalizedTimeOffset);
+    const formattedDate: string | JSX.Element = renderDateRange({
+      range: value,
+      placeholder,
+      formatRelativeRange,
+      formatAbsoluteRange: i18nStrings?.formatAbsoluteRange,
+      timeOffset: normalizedTimeOffset,
+      locale: normalizedLocale,
+    });
 
     const trigger = (
       <div className={styles['trigger-wrapper']}>

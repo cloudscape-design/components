@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 import { Box, DateRangePicker, DateRangePickerProps, SpaceBetween, Grid } from '~components';
-import { i18nStrings, i18nStringsDateOnly, isValid } from './common';
+import { i18nStrings, isValid } from './common';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 
@@ -24,7 +24,6 @@ const permutations = createPermutations<Intl.DateTimeFormatOptions>([
 ]);
 
 export default function DatePickerScenario() {
-  const [dateOnly] = useState(false);
   const [value, setValue] = useState<DateRangePickerProps['value']>({
     type: 'absolute',
     startDate: '2024-12-30T00:00:00+01:00',
@@ -35,13 +34,16 @@ export default function DatePickerScenario() {
     <Box padding="s">
       <SpaceBetween direction="vertical" size="m">
         <h1>Date range picker with custom value display</h1>
+        <h2>
+          Using <code>Intl.DateTimeFormat.formatRange</code>
+        </h2>
         <PermutationsView
           permutations={permutations}
           render={permutation => {
             const str = JSON.stringify(permutation);
             return (
               <ErrorBoundary errorMessage={`Invalid i18n options: ${str}`}>
-                <h2>{str}</h2>
+                <h3>{str}</h3>
                 {locales.map(locale => (
                   <>
                     <Grid key={`pickers-${locale}`} gridDefinition={[{ colspan: 2 }, { colspan: 10 }]}>
@@ -49,22 +51,21 @@ export default function DatePickerScenario() {
                       <DateRangePicker
                         value={value}
                         locale={locale}
-                        i18nStrings={dateOnly ? i18nStringsDateOnly : i18nStrings}
+                        i18nStrings={{
+                          ...i18nStrings,
+                          formatAbsoluteRange: (startDate, endDate, locale) =>
+                            (new Intl.DateTimeFormat(locale, permutation) as DateTimeFormat).formatRange(
+                              new Date(startDate),
+                              new Date(endDate)
+                            ),
+                        }}
                         placeholder={'Filter by a date and time range'}
                         onChange={e => setValue(e.detail.value)}
                         relativeOptions={[]}
                         isValidRange={isValid}
-                        dateOnly={dateOnly}
                         timeInputFormat="hh:mm"
                         rangeSelectorMode={'absolute-only'}
                         isDateEnabled={date => date.getDate() !== 15}
-                        // getTimeOffset={() => -60}
-                        renderSelectedAbsoluteRange={(startDate, endDate, locale) =>
-                          (new Intl.DateTimeFormat(locale, permutation) as DateTimeFormat).formatRange(
-                            new Date(startDate),
-                            new Date(endDate)
-                          )
-                        }
                       />
                     </Grid>
                   </>
@@ -73,7 +74,38 @@ export default function DatePickerScenario() {
             );
           }}
         />
-        <b>Raw value</b>
+        <hr />
+        <h2>ISO 8061 without time offset</h2>
+        <DateRangePicker
+          value={value}
+          locale={'en'}
+          i18nStrings={{
+            ...i18nStrings,
+            formatAbsoluteRange: (startDate, endDate) => `${startDate} — ${endDate}`,
+          }}
+          placeholder={'Filter by a date and time range'}
+          onChange={e => setValue(e.detail.value)}
+          relativeOptions={[]}
+          isValidRange={isValid}
+          timeInputFormat="hh:mm"
+          rangeSelectorMode={'absolute-only'}
+          isDateEnabled={date => date.getDate() !== 15}
+        />
+        <hr />
+        <h2>ISO 8061 with time offset</h2>
+        <DateRangePicker
+          value={value}
+          locale={'en'}
+          placeholder={'Filter by a date and time range'}
+          onChange={e => setValue(e.detail.value)}
+          relativeOptions={[]}
+          isValidRange={isValid}
+          timeInputFormat="hh:mm"
+          rangeSelectorMode={'absolute-only'}
+          isDateEnabled={date => date.getDate() !== 15}
+        />
+        <hr />
+        <h2>Raw value</h2>
         <pre>{JSON.stringify(value, undefined, 2)}</pre>
       </SpaceBetween>
     </Box>
