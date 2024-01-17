@@ -41,6 +41,11 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
         'horizontal': calc(-1 * #{awsui.$space-scaled-xxs}),
       )
     );
+    // @mixin focus-highlight sets cell's position to "relative".
+    // Reinforcing sticky position for it to take precedence.
+    &.sticky-cell {
+      position: sticky;
+    }
   }
 
   &:not(.body-cell-wrap) {
