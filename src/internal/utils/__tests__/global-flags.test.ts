@@ -62,10 +62,17 @@ describe('getGlobalFlag', () => {
     jest.spyOn(globalFlags, 'getTopWindow').mockReturnValue(undefined);
     expect(getGlobalFlag('removeHighContrastHeader')).toBeUndefined();
   });
-  test('returns undefined when an error is thrown', () => {
+  test('returns undefined when an error is thrown and flag is not defined in own window', () => {
     jest.spyOn(globalFlags, 'getTopWindow').mockImplementation(() => {
       throw new Error('whatever');
     });
     expect(getGlobalFlag('removeHighContrastHeader')).toBeUndefined();
+  });
+  test('returns value when an error is thrown and flag is defined in own window', () => {
+    jest.spyOn(globalFlags, 'getTopWindow').mockImplementation(() => {
+      throw new Error('whatever');
+    });
+    window[awsuiGlobalFlagsSymbol] = { removeHighContrastHeader: true };
+    expect(getGlobalFlag('removeHighContrastHeader')).toBe(true);
   });
 });

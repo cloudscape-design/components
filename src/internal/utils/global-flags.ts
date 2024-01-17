@@ -15,12 +15,20 @@ export const getTopWindow = (): ExtendedWindow | undefined => {
   return window.top as ExtendedWindow;
 };
 
+function readFlag(window: ExtendedWindow | undefined, flagName: keyof GlobalFlags) {
+  if (typeof window === 'undefined' || !window[awsuiGlobalFlagsSymbol]) {
+    return undefined;
+  }
+  return window[awsuiGlobalFlagsSymbol][flagName];
+}
+
 export const getGlobalFlag = (flagName: keyof GlobalFlags): GlobalFlags[keyof GlobalFlags] | undefined => {
   try {
-    if (typeof window !== 'undefined') {
-      const topWindow = getTopWindow();
-      return window[awsuiGlobalFlagsSymbol]?.[flagName] ?? topWindow?.[awsuiGlobalFlagsSymbol]?.[flagName];
+    const ownFlag = readFlag(window, flagName);
+    if (ownFlag !== undefined) {
+      return ownFlag;
     }
+    return readFlag(getTopWindow(), flagName);
   } catch (e) {
     return undefined;
   }
