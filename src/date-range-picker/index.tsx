@@ -69,7 +69,11 @@ function renderDateRange({
           formatAbsoluteRange &&
           originalRange.startDate &&
           originalRange.endDate
-            ? formatAbsoluteRange(originalRange.startDate, originalRange.endDate, locale)
+            ? formatAbsoluteRange({
+                startDate: originalRange.startDate,
+                endDate: originalRange.endDate,
+                locale,
+              })
             : formatDateRange(rangeWithoutTimeOffset.startDate, rangeWithoutTimeOffset.endDate, timeOffset)
         }
       />

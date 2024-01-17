@@ -308,7 +308,15 @@ export namespace DateRangePickerProps {
      * Formatting function for absolute ranges.
      * This function must convert an absolute range to a human-readable string.
      */
-    formatAbsoluteRange?: (startDate: string, endDate: string, locale: string) => string;
+    formatAbsoluteRange?: ({
+      startDate,
+      endDate,
+      locale,
+    }: {
+      startDate: string;
+      endDate: string;
+      locale: string;
+    }) => string;
 
     /**
      * Formatting function for time units.
