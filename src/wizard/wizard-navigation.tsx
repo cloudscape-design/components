@@ -61,7 +61,6 @@ export default function Navigation({
     >
       <ul
         className={clsx(
-          styles.list,
           isVisualRefresh && styles.refresh,
           isHighContrastHeaderActive && styles['remove-high-contrast-header']
         )}
