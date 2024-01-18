@@ -95,14 +95,13 @@ class VirtualScroll {
     this.scrollContainer = scrollContainer;
     this.onFrameChange = onFrameChange;
 
-    const resizeObserver = new ResizeObserver(this.onContainerResize);
-    resizeObserver.observe(scrollContainer);
+    const disconnectObserver = this.setupContainerResizeObserver();
     scrollContainer.addEventListener('scroll', this.onContainerScroll);
     window.addEventListener('resize', this.onWindowResize);
 
     this.cleanup = () => {
       this.onFrameChange = () => {};
-      resizeObserver.disconnect();
+      disconnectObserver();
       scrollContainer.removeEventListener('scroll', this.onContainerScroll);
       window.removeEventListener('resize', this.onWindowResize);
     };
@@ -110,6 +109,15 @@ class VirtualScroll {
 
   public cleanup = () => {
     // noop
+  };
+
+  private setupContainerResizeObserver = () => {
+    if (typeof ResizeObserver !== 'undefined') {
+      const resizeObserver = new ResizeObserver(this.onContainerResize);
+      resizeObserver.observe(this.scrollContainer!);
+      return () => resizeObserver.disconnect();
+    }
+    return () => {};
   };
 
   public update = ({ size, defaultItemSize }: VirtualScrollUpdateProps) => {
