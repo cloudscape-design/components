@@ -1,22 +1,19 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import React from 'react';
 import { useEffect, useMemo } from 'react';
-import {
-  defaultIsSuppressed,
-  muteElementFocusables,
-  restoreElementFocusables,
-  getFirstFocusable,
-  getFocusables,
-  findTableRowByAriaRowIndex,
-  findTableRowCellByAriaColIndex,
-  setTabIndex,
-} from './utils';
+import { defaultIsSuppressed, findTableRowByAriaRowIndex, findTableRowCellByAriaColIndex } from './utils';
 import { FocusedCell, GridNavigationProps } from './interfaces';
 import { KeyCode } from '../../internal/keycode';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
-import React from 'react';
 import { nodeBelongs } from '../../internal/utils/node-belongs';
+import { getAllFocusables } from '../../internal/components/focus-lock/utils';
+import {
+  SingleTabStopNavigationContext,
+  FocusableDefinition,
+  FocusableChangeHandler,
+} from '../../internal/context/single-tab-stop-navigation-context';
 
 /**
  * Makes table navigable with keyboard commands.
@@ -48,7 +45,16 @@ export function GridNavigationProvider({ keyboardNavigation, pageSize, getTable,
     }
   });
 
-  return <>{children}</>;
+  return (
+    <SingleTabStopNavigationContext.Provider
+      value={{
+        navigationActive: keyboardNavigation,
+        registerFocusable: gridNavigation.registerFocusable,
+      }}
+    >
+      {children}
+    </SingleTabStopNavigationContext.Provider>
+  );
 }
 
 /**
@@ -64,6 +70,9 @@ class GridNavigationProcessor {
 
   // State
   private focusedCell: null | FocusedCell = null;
+  private focusables = new Set<FocusableDefinition>();
+  private focusHandlers = new Map<FocusableDefinition, FocusableChangeHandler>();
+  private focusTarget: null | Element = null;
 
   public init(table: HTMLTableElement) {
     this._table = table;
@@ -72,14 +81,13 @@ class GridNavigationProcessor {
     this.table.addEventListener('focusout', this.onFocusout);
     this.table.addEventListener('keydown', this.onKeydown);
 
-    this.ensureSingleFocusable();
+    this.updateFocusTarget();
 
     this.cleanup = () => {
       this.table.removeEventListener('focusin', this.onFocusin);
       this.table.removeEventListener('focusout', this.onFocusout);
       this.table.removeEventListener('keydown', this.onKeydown);
-
-      restoreElementFocusables(this.table);
+      this.focusables.forEach(this.unregisterFocusable);
     };
   }
 
@@ -92,16 +100,29 @@ class GridNavigationProcessor {
   }
 
   public refresh() {
-    if (this._table) {
-      // Update focused cell indices in case table rows, columns, or firstIndex change.
-      if (this.focusedCell) {
-        this.focusedCell = this.findFocusedCell(this.focusedCell.element);
+    // Timeout ensures the newly rendered content elements are registered.
+    setTimeout(() => {
+      if (this._table) {
+        // Update focused cell indices in case table rows, columns, or firstIndex change.
+        if (this.focusedCell) {
+          this.focusedCell = this.findFocusedCell(this.focusedCell.element);
+        }
+        this.updateFocusTarget();
       }
-
-      // Ensure newly added elements if any are muted.
-      this.ensureSingleFocusable();
-    }
+    }, 0);
   }
+
+  public registerFocusable = (focusable: FocusableDefinition, changeHandler: FocusableChangeHandler) => {
+    this.focusables.add(focusable);
+    this.focusHandlers.set(focusable, changeHandler);
+    changeHandler(this.focusTarget, this.isSuppressed(focusable.current));
+    return () => this.unregisterFocusable(focusable);
+  };
+
+  public unregisterFocusable = (focusable: FocusableDefinition) => {
+    this.focusables.delete(focusable);
+    this.focusHandlers.delete(focusable);
+  };
 
   private get pageSize() {
     return this._pageSize;
@@ -112,10 +133,6 @@ class GridNavigationProcessor {
       throw new Error('Invariant violation: GridNavigationProcessor is used before initialization.');
     }
     return this._table;
-  }
-
-  private isSuppressed(focusedElement: HTMLElement): boolean {
-    return defaultIsSuppressed(focusedElement);
   }
 
   private onFocusin = (event: FocusEvent) => {
@@ -130,12 +147,12 @@ class GridNavigationProcessor {
 
     this.focusedCell = cell;
 
-    this.ensureSingleFocusable();
+    this.updateFocusTarget();
 
     // Focusing on cell is not eligible when it contains focusable elements in the content.
     // If content focusables are available - move the focus to the first one.
     if (cell.element === cell.cellElement) {
-      getFirstFocusable(cell.cellElement)?.focus();
+      this.getFocusablesFrom(cell.cellElement)[0]?.focus();
     }
   };
 
@@ -171,8 +188,7 @@ class GridNavigationProcessor {
     const minExtreme = Number.NEGATIVE_INFINITY;
     const maxExtreme = Number.POSITIVE_INFINITY;
 
-    // Do not intercept any keys when the navigation is suppressed.
-    if (this.isSuppressed(from.element)) {
+    if (this.isSuppressed(document.activeElement) || !this.isRegistered(document.activeElement)) {
       return;
     }
 
@@ -226,33 +242,53 @@ class GridNavigationProcessor {
     this.getNextFocusable(cell, delta)?.focus();
   }
 
-  /**
-   * Finds focused cell props corresponding the focused element inside the table.
-   * The function relies on ARIA colindex/rowindex attributes being correctly applied.
-   */
+  private updateFocusTarget() {
+    this.focusTarget = this.getSingleFocusable();
+    this.focusables.forEach(focusable => {
+      const element = focusable.current;
+      const handler = this.focusHandlers.get(focusable)!;
+      handler(this.focusTarget, this.isSuppressed(element));
+    });
+  }
+
+  private isSuppressed(element: null | Element) {
+    return !element || defaultIsSuppressed(element);
+  }
+
+  private isRegistered(element: null | Element) {
+    return !element || this.getRegisteredElements().has(element);
+  }
+
+  private getRegisteredElements = (): Set<Element> => {
+    const registeredElements = new Set<Element>();
+    for (const focusable of this.focusables) {
+      if (focusable.current) {
+        registeredElements.add(focusable.current);
+      }
+    }
+    return registeredElements;
+  };
+
   private findFocusedCell(focusedElement: HTMLElement): null | FocusedCell {
     const cellElement = focusedElement.closest('td,th') as null | HTMLTableCellElement;
     const rowElement = cellElement?.closest('tr');
 
     if (!cellElement || !rowElement) {
-      return null;
+      return this.focusedCell;
     }
 
     const colIndex = parseInt(cellElement.getAttribute('aria-colindex') ?? '');
     const rowIndex = parseInt(rowElement.getAttribute('aria-rowindex') ?? '');
     if (isNaN(colIndex) || isNaN(rowIndex)) {
-      return null;
+      return this.focusedCell;
     }
 
-    const cellFocusables = getFocusables(cellElement);
+    const cellFocusables = this.getFocusablesFrom(cellElement);
     const elementIndex = cellFocusables.indexOf(focusedElement);
 
     return { rowIndex, colIndex, rowElement, cellElement, element: focusedElement, elementIndex };
   }
 
-  /**
-   * Finds element to be focused next. The focus can transition between cells or interactive elements inside cells.
-   */
   private getNextFocusable(from: FocusedCell, delta: { y: number; x: number }) {
     // Find next row to move focus into (can be null if the top/bottom is reached).
     const targetAriaRowIndex = from.rowIndex + delta.y;
@@ -262,7 +298,7 @@ class GridNavigationProcessor {
     }
 
     // Return next interactive cell content element if available.
-    const cellFocusables = getFocusables(from.cellElement);
+    const cellFocusables = this.getFocusablesFrom(from.cellElement);
     const nextElementIndex = from.elementIndex + delta.x;
     if (delta.x && from.elementIndex !== -1 && 0 <= nextElementIndex && nextElementIndex < cellFocusables.length) {
       return cellFocusables[nextElementIndex];
@@ -281,30 +317,31 @@ class GridNavigationProcessor {
     }
 
     // Return cell interactive content or the cell itself.
-    const targetCellFocusables = getFocusables(targetCell);
+    const targetCellFocusables = this.getFocusablesFrom(targetCell);
     const focusIndex = delta.x < 0 ? targetCellFocusables.length - 1 : delta.x > 0 ? 0 : from.elementIndex;
     const focusTarget = targetCellFocusables[focusIndex] ?? targetCell;
     return focusTarget;
   }
 
-  /**
-   * Makes the cell element, the first interactive element or the first cell of the table user-focusable.
-   */
-  private ensureSingleFocusable() {
-    const cellSuppressed = this.focusedCell ? this.isSuppressed(this.focusedCell.element) : false;
-    muteElementFocusables(this.table, cellSuppressed);
-
+  private getSingleFocusable() {
+    const cell = this.focusedCell;
     const firstTableCell = this.table.querySelector('td,th') as null | HTMLTableCellElement;
 
     // A single element of the table is made user-focusable.
     // It defaults to the first interactive element of the first cell or the first cell itself otherwise.
-    let focusTarget: null | HTMLElement = (firstTableCell && getFocusables(firstTableCell)[0]) ?? firstTableCell;
+    let focusTarget: null | HTMLElement =
+      (firstTableCell && this.getFocusablesFrom(firstTableCell)[0]) ?? firstTableCell;
 
     // When a navigation-focused element is present in the table it is used for user-navigation instead.
-    if (this.focusedCell) {
-      focusTarget = this.getNextFocusable(this.focusedCell, { x: 0, y: 0 });
+    if (cell) {
+      focusTarget = this.getNextFocusable(cell, { x: 0, y: 0 });
     }
 
-    setTabIndex(focusTarget, 0);
+    return focusTarget;
+  }
+
+  private getFocusablesFrom(target: HTMLElement) {
+    const registeredElements = this.getRegisteredElements();
+    return getAllFocusables(target).filter(el => registeredElements.has(el));
   }
 }

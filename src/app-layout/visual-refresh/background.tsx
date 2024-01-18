@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
+import { contentHeaderClassName } from '../../internal/utils/content-header-utils';
 import { useAppLayoutInternals } from './context';
 import styles from './styles.css.js';
 
@@ -20,7 +21,7 @@ export default function Background() {
   }
 
   return (
-    <div className={clsx(styles.background, 'awsui-context-content-header')}>
+    <div className={clsx(styles.background, contentHeaderClassName)}>
       <div className={styles['scrolling-background']} />
 
       {!isMobile && hasStickyBackground && (

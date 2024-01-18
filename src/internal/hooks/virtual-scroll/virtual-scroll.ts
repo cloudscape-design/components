@@ -6,7 +6,6 @@ import { InternalFrameUpdate } from './interfaces';
 import { VirtualFrame } from './virtual-frame';
 
 const SCROLL_THROTTLE_MS = 10;
-const ON_SIZES_UPDATED_THROTTLE_MS = 25;
 
 interface VirtualScrollProps<Item> {
   items: readonly Item[];
@@ -29,11 +28,7 @@ export class VirtualScrollModel<Item extends object> {
     this.scrollContainer = scrollContainer;
     this.onFrameChange = onFrameChange;
 
-    const onSizesUpdated = throttle(() => {
-      const nextFrame = this.frame.updateFrameIfNeeded();
-      onFrameChange(nextFrame);
-    }, ON_SIZES_UPDATED_THROTTLE_MS);
-    this.frame = new VirtualFrame<Item>({ defaultItemSize, onSizesUpdated });
+    this.frame = new VirtualFrame<Item>({ defaultItemSize, onSizesUpdated: () => {} });
 
     scrollContainer.addEventListener('scroll', this.handleScroll);
     this.cleanupCallbacks.push(() => scrollContainer.removeEventListener('scroll', this.handleScroll));

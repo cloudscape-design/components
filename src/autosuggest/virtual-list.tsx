@@ -7,7 +7,7 @@ import OptionsList from '../internal/components/options-list';
 import AutosuggestOption from './autosuggest-option';
 import { getOptionProps, ListProps } from './plain-list';
 import styles from './styles.css.js';
-import { useVirtualScroll } from '../internal/hooks/virtual-scroll';
+import { useVirtualScroll, VirtualItemMeasure } from '../internal/hooks/virtual-scroll';
 
 const VirtualList = ({
   autosuggestItemsState,
@@ -62,22 +62,25 @@ const VirtualList = ({
         );
 
         return (
-          <AutosuggestOption
-            key={index}
-            ref={measureRef}
-            highlightText={highlightText}
-            option={item}
-            highlighted={item === autosuggestItemsState.highlightedOption}
-            current={item.value === highlightText}
-            data-mouse-target={index}
-            enteredTextLabel={enteredTextLabel}
-            virtualPosition={start + (index === 0 ? 1 : 0)}
-            screenReaderContent={screenReaderContent}
-            ariaSetsize={autosuggestItemsState.items.length}
-            ariaPosinset={index + 1}
-            highlightType={autosuggestItemsState.highlightType}
-            {...optionProps}
-          />
+          <VirtualItemMeasure key={index} measure={measureRef}>
+            {itemRef => (
+              <AutosuggestOption
+                ref={itemRef}
+                highlightText={highlightText}
+                option={item}
+                highlighted={item === autosuggestItemsState.highlightedOption}
+                current={item.value === highlightText}
+                data-mouse-target={index}
+                enteredTextLabel={enteredTextLabel}
+                virtualPosition={start + (index === 0 ? 1 : 0)}
+                screenReaderContent={screenReaderContent}
+                ariaSetsize={autosuggestItemsState.items.length}
+                ariaPosinset={index + 1}
+                highlightType={autosuggestItemsState.highlightType}
+                {...optionProps}
+              />
+            )}
+          </VirtualItemMeasure>
         );
       })}
       {listBottom ? (

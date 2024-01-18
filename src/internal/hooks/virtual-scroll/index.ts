@@ -50,6 +50,13 @@ export function useVirtualScroll<Item extends object>(props: VirtualScrollProps<
     [model, props.defaultItemSize]
   );
 
+  // TODO: use model.update on every render
+  // inside model check item identity. If in cache - use available size
+  // if not - use default size and request measurement
+  // for every measurement arriving request update
+  // batch update requests with a small time interval
+  // execute updates if needed -> compare if the values are actually different
+
   // TODO: use model in ref
   useEffect(() => {
     model && model.setItems(props.items);
@@ -76,4 +83,21 @@ export function useVirtualScroll<Item extends object>(props: VirtualScrollProps<
     totalSize,
     scrollToIndex: (index: number) => model?.scrollToIndex(index),
   };
+}
+
+export function VirtualItemMeasure({
+  children,
+  measure,
+}: {
+  children: (ref: React.RefObject<HTMLDivElement>) => React.ReactElement;
+  measure: (node: null | HTMLElement) => void;
+}): React.ReactElement {
+  const itemRef = useRef<HTMLDivElement>(null) as React.RefObject<HTMLDivElement>;
+  useEffect(() => {
+    if (itemRef.current) {
+      measure(itemRef.current);
+    }
+    return () => measure(null);
+  });
+  return children(itemRef);
 }

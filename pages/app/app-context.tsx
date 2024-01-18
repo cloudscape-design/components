@@ -11,6 +11,7 @@ interface AppUrlParams {
   direction: 'ltr' | 'rtl';
   visualRefresh: boolean;
   motionDisabled: boolean;
+  removeHighContrastHeader: boolean;
 }
 
 export interface AppContextType<T = unknown> {
@@ -29,6 +30,7 @@ const appContextDefaults: AppContextType = {
     direction: 'ltr',
     visualRefresh: THEME === 'default',
     motionDisabled: false,
+    removeHighContrastHeader: false,
   },
   setMode: () => {},
   setUrlParams: () => {},

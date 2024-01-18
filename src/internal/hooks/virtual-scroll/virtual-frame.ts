@@ -4,8 +4,6 @@
 import { InternalFrameUpdate, InternalVirtualItem } from './interfaces';
 import { createVirtualIndices } from './utils';
 
-const PENDING_ITEM_SIZES_WARNING_DELAY_MS = 1000;
-
 interface VirtualFrameProps {
   defaultItemSize: number;
   onSizesUpdated: () => void;
@@ -22,14 +20,11 @@ export class VirtualFrame<Item extends object> {
   private _virtualItems: readonly InternalVirtualItem[] = [];
   private _cachedItemSizesByIndex: (number | null)[] = [];
   private _cachedItemSizesByTrackedProperty = new Map<any, number>();
-  private _pendingItemSizes = new Set<number>();
-  private _pendingItemsSizesWarningTimeout: null | number = null;
-  private onSizesUpdated: () => void;
+  private _measuredSizes = new Set<number>();
   private trackBy: (item: Item) => any;
 
-  constructor({ defaultItemSize, onSizesUpdated }: VirtualFrameProps) {
+  constructor({ defaultItemSize }: VirtualFrameProps) {
     this._defaultItemSize = defaultItemSize;
-    this.onSizesUpdated = onSizesUpdated;
 
     // When no explicit trackBy provided default to identity function - the items will be matched by reference.
     // When the item identity is not maintained it is not possible to keep the cached sizes which may result
@@ -81,20 +76,20 @@ export class VirtualFrame<Item extends object> {
         knownSizes++;
       }
     }
-    return totalSize / knownSizes;
+    // TODO: update
+    return isNaN(totalSize / knownSizes) ? this.defaultItemSize : totalSize / knownSizes;
   }
 
   // The "ready" state means all item sizes for the current frame have been set with "setItemSize".
   // Non-ready state is possible for a short period of time during the next frame rendering.
   // If the non-ready state persists it is likely to indicate a misuse of the utility.
   public isReady() {
-    return this._pendingItemSizes.size === 0;
+    return this._virtualItems.every(item => this._measuredSizes.has(item.index));
   }
 
   public setItems(items: readonly Item[]): InternalFrameUpdate {
     this._items = items;
     this.updateCachedSizes();
-    this.setupPendingItems();
     return this.updateFrameIfNeeded();
   }
 
@@ -113,15 +108,11 @@ export class VirtualFrame<Item extends object> {
       throw new Error('Invariant violation: item index is out of bounds.');
     }
 
-    this._pendingItemSizes.delete(index);
+    this._measuredSizes.add(index);
     this._cachedItemSizesByIndex[index] = size;
     this._cachedItemSizesByTrackedProperty.set(this.trackBy(item), size);
 
-    if (this.isReady() && this._pendingItemsSizesWarningTimeout) {
-      this.onSizesUpdated();
-      clearTimeout(this._pendingItemsSizesWarningTimeout);
-      this._pendingItemsSizesWarningTimeout = null;
-    }
+    this.updateFrameIfNeeded();
   }
 
   public updateFrameIfNeeded(): InternalFrameUpdate {
@@ -185,21 +176,11 @@ export class VirtualFrame<Item extends object> {
     }
 
     let totalSize = 0;
-    for (let i = frameStart; i < frameStart + frameSize && i < this.totalSize; i++) {
+    for (let i = 0; i < this.totalSize; i++) {
       totalSize += this.getSizeForIndex(i);
     }
 
     return { frame: this._virtualItems, totalSize };
-  }
-
-  private setupPendingItems() {
-    if (this._pendingItemsSizesWarningTimeout) {
-      clearTimeout(this._pendingItemsSizesWarningTimeout);
-    }
-    this._pendingItemSizes = new Set([...this._virtualItems.map(item => item.index)]);
-    this._pendingItemsSizesWarningTimeout = setTimeout(() => {
-      console.warn('[AwsUi] [Virtual scroll] Reached pending item sizes warning timeout.');
-    }, PENDING_ITEM_SIZES_WARNING_DELAY_MS);
   }
 
   private getSizeForIndex(index: number) {

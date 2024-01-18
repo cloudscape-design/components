@@ -241,7 +241,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   }
 
   @include focus-visible.when-visible {
-    @include styles.form-focus-element(awsui.$border-radius-control-default-focus-ring);
+    @include styles.focus-element-without-border(awsui.$border-radius-control-default-focus-ring);
   }
 }
 

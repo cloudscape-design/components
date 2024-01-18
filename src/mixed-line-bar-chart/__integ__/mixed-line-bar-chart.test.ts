@@ -496,6 +496,54 @@ describe('Details popover', () => {
     })
   );
 
+  test(
+    'scrolls if necessary on click',
+    setupTest('#/light/bar-chart/drilldown', async page => {
+      await page.setWindowSize({ width: 360, height: 650 });
+      await page.windowScrollTo({ top: 150 });
+      const barChart = createWrapper().findBarChart();
+      const barGroup = barChart.findBarGroups().get(1).toSelector();
+      await expect(page.getWindowScroll()).resolves.toEqual({ top: 150, left: 0 });
+      await page.clickBarGroup(barGroup);
+      await page.waitForVisible(barChart.findDetailPopover().toSelector());
+      await expect(page.getText(barChart.findDetailPopover().findHeader().toSelector())).resolves.toContain('Apr 2023');
+      await expect(page.getWindowScroll()).resolves.toEqual({ top: 0, left: 0 });
+    })
+  );
+
+  test(
+    'does not scroll on hover',
+    setupTest('#/light/bar-chart/drilldown', async page => {
+      await page.setWindowSize({ width: 360, height: 650 });
+      await page.windowScrollTo({ top: 150 });
+      const barChart = createWrapper().findBarChart();
+      const barGroup = barChart.findBarGroups().get(1).toSelector();
+      await expect(page.getWindowScroll()).resolves.toEqual({ top: 150, left: 0 });
+      await page.hoverElement(barGroup);
+      await expect(page.getText(barChart.findDetailPopover().findHeader().toSelector())).resolves.toContain('Apr 2023');
+      await expect(page.getWindowScroll()).resolves.toEqual({ top: 150, left: 0 });
+    })
+  );
+
+  test(
+    'scrolls if necessary on click inside a scrollable container',
+    setupTest('#/light/bar-chart/in-modal', async page => {
+      await page.setWindowSize({ width: 360, height: 650 });
+      const wrapper = createWrapper();
+      await page.click(wrapper.findButton().toSelector());
+      const modalSelector = wrapper.findModal().toSelector();
+      const modalTop = (await page.getBoundingBox(wrapper.findModal().findHeader().toSelector())).top;
+      await page.elementScrollTo(modalSelector, { left: 0, top: 400 });
+      await expect(page.getElementScroll(modalSelector)).resolves.toEqual({ left: 0, top: 400 });
+      const barChart = wrapper.findBarChart();
+      const barGroup = barChart.findBarGroups().get(1).toSelector();
+      await page.clickBarGroup(barGroup);
+      await page.waitForVisible(barChart.findDetailPopover().toSelector());
+      await expect(page.getText(barChart.findDetailPopover().findHeader().toSelector())).resolves.toContain('Apr 2023');
+      await expect(page.getElementScroll(modalSelector)).resolves.toEqual({ left: 0, top: modalTop });
+    })
+  );
+
   describe('keeps the popover position when it resizes due to interacting with the popover itself', () => {
     test.each(['hover', 'click', 'keyboard'])('Interaction type: %s', interactionType =>
       setupPopoverPositionTest(async page => {

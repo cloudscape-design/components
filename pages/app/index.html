@@ -27,7 +27,7 @@
       if (location.hash.includes('file-upload')) {
         csp['img-src'] = 'blob:';
       }
-
+      
       const cspString = Object.entries(csp)
         .map(([key, value]) => `${key} ${value}`)
         .join('; ');
