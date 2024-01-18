@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 
 export type FocusableDefinition = React.RefObject<Element>;
 
@@ -27,6 +27,7 @@ export function useSingleTabStopNavigation(focusable: null | FocusableDefinition
   const { navigationActive: contextNavigationActive, registerFocusable: contextRegisterFocusable } =
     useContext(SingleTabStopNavigationContext);
   const [focusTargetActive, setFocusTargetActive] = useState(false);
+  const focusTargetActivePrevious = useRef(false);
 
   const navigationActive = contextNavigationActive && (!options?.tabIndex || options?.tabIndex >= 0);
   const registerFocusable = useCallback(
@@ -37,8 +38,13 @@ export function useSingleTabStopNavigation(focusable: null | FocusableDefinition
 
   useEffect(() => {
     if (focusable) {
-      const changeHandler = (element: null | Element, suppressed: boolean) =>
-        setFocusTargetActive(focusable.current === element || suppressed);
+      const changeHandler = (element: null | Element, suppressed: boolean) => {
+        const isActive = focusable.current === element || suppressed;
+        if (focusTargetActivePrevious.current !== isActive) {
+          focusTargetActivePrevious.current = isActive;
+          setFocusTargetActive(isActive);
+        }
+      };
       const unregister = registerFocusable(focusable, changeHandler);
       return () => unregister();
     }
