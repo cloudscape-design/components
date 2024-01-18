@@ -104,7 +104,6 @@ export default function InternalContainer({
    * stays in the same vertical position as the header content.
    */
   useEffect(() => {
-    console.log('hello' + isHighContrastHeaderActive);
     const shouldUpdateStickyBackground = isSticky && variant === 'full-page' && setHasStickyBackground;
     if (shouldUpdateStickyBackground) {
       setHasStickyBackground(true);
@@ -123,7 +122,6 @@ export default function InternalContainer({
 
   const hasMedia = !!media?.content;
   const mediaPosition = media?.position ?? 'top';
-  console.log(isHighContrastHeaderActive);
   return (
     <div
       {...baseProps}
