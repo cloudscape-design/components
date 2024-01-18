@@ -85,20 +85,24 @@ class VirtualScroll {
   private defaultItemSize = 0;
   private frameStart = 0;
   private frameSize = 0;
-  private measuredItemSizes: (number | null)[] = [];
+  private measuredItems: (null | HTMLElement)[] = [];
   private previousVirtualItems: InternalVirtualItem[] = [];
   private previousTotalSize = 0;
   private previousScrollTop = 0;
+  private previousContainerWidth = 0;
 
   public init = ({ scrollContainer, onFrameChange }: VirtualScrollInitProps) => {
     this.scrollContainer = scrollContainer;
     this.onFrameChange = onFrameChange;
 
+    const resizeObserver = new ResizeObserver(this.onContainerResize);
+    resizeObserver.observe(scrollContainer);
     scrollContainer.addEventListener('scroll', this.onContainerScroll);
     window.addEventListener('resize', this.onWindowResize);
 
     this.cleanup = () => {
       this.onFrameChange = () => {};
+      resizeObserver.disconnect();
       scrollContainer.removeEventListener('scroll', this.onContainerScroll);
       window.removeEventListener('resize', this.onWindowResize);
     };
@@ -120,7 +124,7 @@ class VirtualScroll {
     setTimeout(() => {
       let scrollOffset = 0;
       for (let i = 0; i < this.frameStart; i++) {
-        scrollOffset += this.getSizeForIndex(i);
+        scrollOffset += this.getSizeOrDefaultForIndex(i);
       }
       if (!this.scrollContainer) {
         throw new Error('Invariant violation: using virtual scroll before initialization.');
@@ -138,14 +142,14 @@ class VirtualScroll {
       let totalSize = this.defaultItemSize;
       let knownSizes = 1;
       for (let i = 0; i < this.size; i++) {
-        totalSize += this.measuredItemSizes[i] || 0;
-        knownSizes += this.measuredItemSizes[i] ? 1 : 0;
+        totalSize += this.getSizeForIndex(i) || 0;
+        knownSizes += this.getSizeForIndex(i) ? 1 : 0;
       }
       const averageSize = Math.round(totalSize / knownSizes);
 
       this.frameStart = this.size - 1;
       for (let i = 0, start = 0; i < this.size; i++) {
-        const next = start + (this.measuredItemSizes[i] ?? averageSize);
+        const next = start + (this.getSizeForIndex(i) ?? averageSize);
         if (start <= scrollTop && scrollTop <= next) {
           this.frameStart = Math.min(this.size - 1, scrollTop - start < next - scrollTop ? i : i + 1);
           break;
@@ -161,12 +165,22 @@ class VirtualScroll {
     this.requestUpdate();
   };
 
+  private onContainerResize = (entries: ResizeObserverEntry[]) => {
+    const containerWidth = entries[0].contentBoxSize[0].inlineSize;
+    if (containerWidth !== this.previousContainerWidth) {
+      this.previousContainerWidth = containerWidth;
+      for (let i = this.frameStart; i < this.frameStart + this.frameSize && i < this.size; i++) {
+        this.measureRef(i, this.measuredItems[i]);
+      }
+    }
+  };
+
   private measureRef = (index: number, node: null | HTMLElement) => {
-    if (!node && this.measuredItemSizes[index] === null) {
+    if (!node && this.getSizeForIndex(index) === null) {
       return;
     }
     if (!node) {
-      this.measuredItemSizes[index] = null;
+      this.measuredItems[index] = null;
       this.requestUpdate();
       return;
     }
@@ -174,10 +188,10 @@ class VirtualScroll {
       throw new Error('Invariant violation: measured item index is out of bounds.');
     }
     const size = node.getBoundingClientRect().height;
-    if (size === this.measuredItemSizes[index]) {
+    if (size === this.getSizeForIndex(index)) {
       return;
     }
-    this.measuredItemSizes[index] = size;
+    this.measuredItems[index] = node;
     this.requestUpdate();
   };
 
@@ -199,7 +213,7 @@ class VirtualScroll {
 
     let runningStart = 0;
     for (let i = 0; indices.length > 0 && i < indices[0]; i++) {
-      runningStart += this.getSizeForIndex(i);
+      runningStart += this.getSizeOrDefaultForIndex(i);
     }
     let updateRequired = indices.length !== this.previousVirtualItems.length;
     const nextVirtualItems: InternalVirtualItem[] = [];
@@ -210,13 +224,13 @@ class VirtualScroll {
       if (!updateRequired && (previousItem.index !== item.index || previousItem.start !== item.start)) {
         updateRequired = true;
       }
-      runningStart += this.getSizeForIndex(virtualIndex);
+      runningStart += this.getSizeOrDefaultForIndex(virtualIndex);
       nextVirtualItems.push(item);
     }
 
     let totalSize = 0;
     for (let i = 0; i < this.size; i++) {
-      totalSize += this.getSizeForIndex(i);
+      totalSize += this.getSizeOrDefaultForIndex(i);
     }
     if (totalSize !== this.previousTotalSize) {
       updateRequired = true;
@@ -234,8 +248,8 @@ class VirtualScroll {
 
   private updateFrameSize = () => {
     const itemSizesMinToMax: number[] = [];
-    for (const size of this.measuredItemSizes) {
-      itemSizesMinToMax.push(size ?? this.defaultItemSize);
+    for (let i = 0; i < this.size; i++) {
+      itemSizesMinToMax.push(this.getSizeOrDefaultForIndex(i));
     }
     itemSizesMinToMax.sort((a, b) => a - b);
 
@@ -250,7 +264,11 @@ class VirtualScroll {
     }
   };
 
+  private getSizeOrDefaultForIndex = (index: number) => {
+    return this.getSizeForIndex(index) ?? this.defaultItemSize;
+  };
+
   private getSizeForIndex = (index: number) => {
-    return this.measuredItemSizes[index] ?? this.defaultItemSize;
+    return this.measuredItems[index]?.getBoundingClientRect().height ?? null;
   };
 }
