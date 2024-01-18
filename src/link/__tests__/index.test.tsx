@@ -282,12 +282,12 @@ describe('table grid navigation support', () => {
   }
 
   test('does not override tab index for button link when keyboard navigation is not active', () => {
-    renderWithSingleTabStopNavigation(<Link id="link" />);
+    renderWithSingleTabStopNavigation(<Link id="link" />, { navigationActive: false });
     expect(getLink('#link')).toHaveAttribute('tabIndex', '0');
   });
 
   test('does not override tab index for anchor link when keyboard navigation is not active', () => {
-    renderWithSingleTabStopNavigation(<Link id="link" href="#" />);
+    renderWithSingleTabStopNavigation(<Link id="link" href="#" />, { navigationActive: false });
     expect(getLink('#link')).not.toHaveAttribute('tabIndex');
   });
 

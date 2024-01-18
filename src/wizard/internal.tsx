@@ -12,6 +12,7 @@ import { useControllable } from '../internal/hooks/use-controllable';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { contentHeaderClassName } from '../internal/utils/content-header-utils';
 
 import { useInternalI18n } from '../i18n/context';
 
@@ -164,7 +165,7 @@ export default function InternalWizard({
         <div
           className={clsx(styles.form, isVisualRefresh && styles.refresh, smallContainer && styles['small-container'])}
         >
-          {isVisualRefresh && <div className={clsx(styles.background, 'awsui-context-content-header')} />}
+          {isVisualRefresh && <div className={clsx(styles.background, contentHeaderClassName)} />}
           <WizardForm
             steps={steps}
             isVisualRefresh={isVisualRefresh}

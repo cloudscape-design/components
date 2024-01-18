@@ -1,5 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
+import { findUpUntil } from './dom';
 export interface BoundingBox {
   height: number;
   width: number;
@@ -103,9 +105,18 @@ export function calculateScroll({ top, height }: BoundingBox) {
  * so we need to manually scroll to the element's position.
  * Supports only vertical scrolling.
  */
-export function scrollRectangleIntoView(box: BoundingBox) {
+export function scrollRectangleIntoView(box: BoundingBox, scrollableParent?: HTMLElement) {
   const scrollAmount = calculateScroll(box);
   if (scrollAmount) {
-    window.scrollBy(0, scrollAmount);
+    (scrollableParent || window).scrollBy(0, scrollAmount);
   }
+}
+
+export function getFirstScrollableParent(element: HTMLElement): HTMLElement | undefined {
+  return (
+    findUpUntil(element, el => {
+      const overflows = el.scrollHeight > el.clientHeight;
+      return overflows && ['scroll', 'auto'].includes(getComputedStyle(el).overflowY);
+    }) || undefined
+  );
 }

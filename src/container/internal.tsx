@@ -6,6 +6,7 @@ import { ContainerProps } from './interfaces';
 import { getBaseProps } from '../internal/base-component';
 import { useAppLayoutContext } from '../internal/context/app-layout-context';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { contentHeaderClassName } from '../internal/utils/content-header-utils';
 import { StickyHeaderContext, useStickyHeader } from './use-sticky-header';
 import { useDynamicOverlap } from '../internal/hooks/use-dynamic-overlap';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
@@ -165,7 +166,7 @@ export default function InternalContainer({
               ref={headerMergedRef}
             >
               {__darkHeader ? (
-                <div className={clsx(styles['dark-header'], 'awsui-context-content-header')}>{header}</div>
+                <div className={clsx(styles['dark-header'], contentHeaderClassName)}>{header}</div>
               ) : (
                 header
               )}
