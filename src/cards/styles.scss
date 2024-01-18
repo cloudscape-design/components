@@ -88,6 +88,11 @@
   // Unfortunately, we don't have access to the header of InternalContainer
   // in order to use margin-bottom instead.
   margin-top: awsui.$space-grid-gutter;
+  &.refresh {
+    &.remove-high-contrast-header {
+      margin-top: awsui.$space-scaled-s;
+    }
+  }
 }
 
 .card {
