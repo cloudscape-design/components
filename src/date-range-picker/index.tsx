@@ -27,9 +27,9 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { usePrevious } from '../internal/hooks/use-previous';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { joinStrings } from '../internal/utils/strings/join-strings';
-import { formatDateRange, formatTimezoneOffset, isIsoDateOnly } from '../internal/utils/date-time';
+import { formatDateRange, isIsoDateOnly } from '../internal/utils/date-time';
 import { useInternalI18n } from '../i18n/context';
-import { formatValue } from './utils';
+import { formatValue, formatValueAbsolute } from './utils';
 
 export { DateRangePickerProps };
 
@@ -62,13 +62,13 @@ function renderDateRange({
     ) : (
       <BreakSpaces
         text={
-          formatAbsoluteRange && range.startDate && range.endDate
+          range.type === 'absolute' && formatAbsoluteRange && range.startDate && range.endDate
             ? formatAbsoluteRange({
-                startDate: range.startDate,
-                endDate: range.endDate,
+                ...formatValueAbsolute(range, {
+                  timeOffset,
+                  dateOnly: isIsoDateOnly(range.startDate) && isIsoDateOnly(range.endDate),
+                }),
                 locale,
-                startDateTimezoneOffset: formatTimezoneOffset(range.startDate, timeOffset.startDate),
-                endDateTimezoneOffset: formatTimezoneOffset(range.endDate, timeOffset.endDate),
               })
             : formatDateRange(range.startDate, range.endDate, timeOffset)
         }

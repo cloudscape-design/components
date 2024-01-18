@@ -63,8 +63,7 @@ export default function DatePickerScenario() {
           locale={'en'}
           i18nStrings={{
             ...i18nStrings,
-            formatAbsoluteRange: ({ startDate, endDate, startDateTimezoneOffset, endDateTimezoneOffset }) =>
-              `${startDate}${startDateTimezoneOffset} — ${endDate}${endDateTimezoneOffset}`,
+            formatAbsoluteRange: ({ startDate, endDate }) => `${startDate} — ${endDate}`,
           }}
           placeholder={'Filter by a date and time range'}
           onChange={e => setValue(e.detail.value)}
@@ -84,7 +83,7 @@ export default function DatePickerScenario() {
           locale={'en'}
           i18nStrings={{
             ...i18nStrings,
-            formatAbsoluteRange: ({ startDate, endDate }) => `${startDate} — ${endDate}`,
+            formatAbsoluteRange: ({ startDate, endDate }) => `${startDate.slice(0, -6)} — ${endDate.slice(0, -6)}`,
           }}
           placeholder={'Filter by a date and time range'}
           onChange={e => setValue(e.detail.value)}
@@ -116,21 +115,13 @@ export default function DatePickerScenario() {
                       locale={locale}
                       i18nStrings={{
                         ...i18nStrings,
-                        formatAbsoluteRange: ({
-                          startDate,
-                          endDate,
-                          locale,
-                          startDateTimezoneOffset,
-                          endDateTimezoneOffset,
-                        }) =>
+                        formatAbsoluteRange: ({ startDate, endDate, locale }) =>
                           (
                             new Intl.DateTimeFormat(locale, {
                               ...permutation,
+                              timeZone: 'America/Bogota',
                             }) as DateTimeFormat
-                          ).formatRange(
-                            new Date(`${startDate}${startDateTimezoneOffset}`),
-                            new Date(`${endDate}${endDateTimezoneOffset}`)
-                          ),
+                          ).formatRange(new Date(startDate), new Date(endDate)),
                       }}
                       placeholder={'Filter by a date and time range'}
                       onChange={e => setValue(e.detail.value)}

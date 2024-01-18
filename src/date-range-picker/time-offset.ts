@@ -15,6 +15,13 @@ export function setTimeOffset(
   if (!(value?.type === 'absolute')) {
     return value;
   }
+  return setTimeOffsetAbsolute(value, timeOffset);
+}
+
+export function setTimeOffsetAbsolute(
+  value: DateRangePickerProps.AbsoluteValue,
+  timeOffset: { startDate?: number; endDate?: number }
+): DateRangePickerProps.AbsoluteValue {
   return {
     type: 'absolute',
     startDate: value.startDate + formatTimezoneOffset(value.startDate, timeOffset.startDate),
