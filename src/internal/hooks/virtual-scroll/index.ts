@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react';
-import { throttle } from '../../utils/throttle';
 
 const OVERSCAN = 5;
 const UPDATE_FRAME_THROTTLE_MS = 10;
@@ -76,7 +75,7 @@ interface FrameUpdate {
   virtualItems: readonly VirtualItem[];
 }
 
-export class VirtualScroll {
+class VirtualScroll {
   // Props
   private scrollContainer: null | HTMLElement = null;
   private onFrameChange: (props: FrameUpdate) => void = () => {};
@@ -112,12 +111,12 @@ export class VirtualScroll {
   public update = ({ size, defaultItemSize }: VirtualScrollUpdateProps) => {
     this.size = size;
     this.defaultItemSize = defaultItemSize;
-    this.updateFrameIfNeeded();
+    this.requestUpdate();
   };
 
   public scrollToIndex = (index: number) => {
     this.frameStart = Math.min(this.size, Math.max(0, index));
-    this.updateFrameIfNeeded();
+    this.requestUpdate();
     setTimeout(() => {
       let scrollOffset = 0;
       for (let i = 0; i < this.frameStart; i++) {
@@ -154,12 +153,12 @@ export class VirtualScroll {
         start = next;
       }
 
-      this.updateFrameIfNeeded();
+      this.requestUpdate();
     }
   };
 
   private onWindowResize = () => {
-    this.updateFrameIfNeeded();
+    this.requestUpdate();
   };
 
   private measureRef = (index: number, node: null | HTMLElement) => {
@@ -168,7 +167,7 @@ export class VirtualScroll {
     }
     if (!node) {
       this.measuredItemSizes[index] = null;
-      this.updateFrameIfNeeded();
+      this.requestUpdate();
       return;
     }
     if (index < 0 || index >= this.size) {
@@ -179,10 +178,18 @@ export class VirtualScroll {
       return;
     }
     this.measuredItemSizes[index] = size;
-    this.updateFrameIfNeeded();
+    this.requestUpdate();
   };
 
-  private updateFrameIfNeeded = throttle(() => {
+  private updateTimerRef: null | number = null;
+  private requestUpdate = () => {
+    if (this.updateTimerRef) {
+      clearTimeout(this.updateTimerRef);
+    }
+    this.updateTimerRef = setTimeout(this.updateFrameIfNeeded, UPDATE_FRAME_THROTTLE_MS);
+  };
+
+  private updateFrameIfNeeded = () => {
     this.updateFrameSize();
 
     const indices: number[] = [];
@@ -223,7 +230,7 @@ export class VirtualScroll {
         virtualItems: nextVirtualItems.map(item => ({ ...item, measureRef: this.measureRef.bind(this, item.index) })),
       });
     }
-  }, UPDATE_FRAME_THROTTLE_MS);
+  };
 
   private updateFrameSize = () => {
     const itemSizesMinToMax: number[] = [];
@@ -243,7 +250,7 @@ export class VirtualScroll {
     }
   };
 
-  private getSizeForIndex(index: number) {
+  private getSizeForIndex = (index: number) => {
     return this.measuredItemSizes[index] ?? this.defaultItemSize;
-  }
+  };
 }
