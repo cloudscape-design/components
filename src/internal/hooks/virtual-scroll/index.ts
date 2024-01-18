@@ -123,7 +123,7 @@ class VirtualScroll {
   public update = ({ size, defaultItemSize }: VirtualScrollUpdateProps) => {
     this.size = size;
     this.defaultItemSize = defaultItemSize;
-    this.requestUpdate();
+    this.requestUpdate(false);
   };
 
   public scrollToIndex = (index: number) => {
@@ -204,11 +204,15 @@ class VirtualScroll {
   };
 
   private updateTimerRef: null | number = null;
-  private requestUpdate = () => {
+  private requestUpdate = (batch = true) => {
     if (this.updateTimerRef) {
       clearTimeout(this.updateTimerRef);
     }
-    this.updateTimerRef = setTimeout(this.updateFrameIfNeeded, UPDATE_FRAME_THROTTLE_MS);
+    if (batch) {
+      this.updateTimerRef = setTimeout(this.updateFrameIfNeeded, UPDATE_FRAME_THROTTLE_MS);
+    } else {
+      this.updateFrameIfNeeded();
+    }
   };
 
   private updateFrameIfNeeded = () => {
