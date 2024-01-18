@@ -3,6 +3,7 @@
 import clsx from 'clsx';
 import React from 'react';
 import { useDynamicOverlap } from '../internal/hooks/use-dynamic-overlap';
+import { contentHeaderClassName } from '../internal/utils/content-header-utils';
 import styles from './styles.css.js';
 
 interface WizardFormHeaderProps {
@@ -19,7 +20,7 @@ export default function WizardFormHeader({ children, isVisualRefresh }: WizardFo
       className={clsx(
         styles['form-header'],
         isVisualRefresh && styles['form-header-refresh'],
-        isVisualRefresh && 'awsui-context-content-header'
+        isVisualRefresh && contentHeaderClassName
       )}
       ref={overlapElement}
     >
