@@ -31,7 +31,7 @@ import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
-import { isHighContrastHeaderActive } from '../internal/utils/content-header-utils';
+import { shouldRemoveHighContrastHeader } from '../internal/utils/content-header-utils';
 
 export { CardsProps };
 
@@ -149,7 +149,7 @@ const Cards = React.forwardRef(function <T = any>(
                     styles.header,
                     isRefresh && styles['header-refresh'],
                     styles[`header-variant-${computedVariant}`],
-                    isHighContrastHeaderActive && styles['remove-high-contrast-header']
+                    shouldRemoveHighContrastHeader && styles['remove-high-contrast-header']
                   )}
                 >
                   <CollectionLabelContext.Provider value={{ assignId: setHeaderRef }}>
@@ -172,7 +172,7 @@ const Cards = React.forwardRef(function <T = any>(
               className={clsx(
                 hasToolsHeader && styles['has-header'],
                 isRefresh && styles.refresh,
-                isHighContrastHeaderActive && styles['remove-high-contrast-header']
+                shouldRemoveHighContrastHeader && styles['remove-high-contrast-header']
               )}
             >
               {!!renderAriaLive && !!firstIndex && (

@@ -27,7 +27,7 @@ import { WizardProps } from './interfaces';
 
 import styles from './styles.css.js';
 import { useFunnelChangeEvent } from './analytics';
-import { isHighContrastHeaderActive } from '../internal/utils/content-header-utils';
+import { shouldRemoveHighContrastHeader } from '../internal/utils/content-header-utils';
 
 type InternalWizardProps = WizardProps & InternalBaseComponentProps;
 
@@ -153,7 +153,7 @@ export default function InternalWizard({
           styles.wizard,
           isVisualRefresh && styles.refresh,
           smallContainer && styles['small-container'],
-          isHighContrastHeaderActive && styles['remove-high-contrast-header']
+          shouldRemoveHighContrastHeader && styles['remove-high-contrast-header']
         )}
       >
         <WizardNavigation
@@ -173,7 +173,7 @@ export default function InternalWizard({
             styles.form,
             isVisualRefresh && styles.refresh,
             smallContainer && styles['small-container'],
-            isHighContrastHeaderActive && styles['remove-high-contrast-header']
+            shouldRemoveHighContrastHeader && styles['remove-high-contrast-header']
           )}
         >
           {isVisualRefresh && <div className={clsx(styles.background, contentHeaderClassName)} />}

@@ -16,7 +16,7 @@ import styles from './styles.css.js';
 import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 import { useModalContext } from '../internal/context/modal-context';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { isHighContrastHeaderActive } from '../internal/utils/content-header-utils';
+import { shouldRemoveHighContrastHeader } from '../internal/utils/content-header-utils';
 
 export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>, InternalBaseComponentProps {
   __stickyHeader?: boolean;
@@ -157,7 +157,7 @@ export default function InternalContainer({
                 isRefresh && styles.refresh,
                 styles.header,
                 styles[`header-variant-${variant}`],
-                isHighContrastHeaderActive && styles['remove-high-contrast-header'],
+                shouldRemoveHighContrastHeader && styles['remove-high-contrast-header'],
                 {
                   [styles['header-sticky-disabled']]: __stickyHeader && !isSticky,
                   [styles['header-sticky-enabled']]: isSticky,
@@ -183,7 +183,7 @@ export default function InternalContainer({
           className={clsx(
             styles.content,
             fitHeight && styles['content-fit-height'],
-            isHighContrastHeaderActive && styles['remove-high-contrast-header'],
+            shouldRemoveHighContrastHeader && styles['remove-high-contrast-header'],
             {
               [styles['with-paddings']]: !disableContentPaddings,
             }
