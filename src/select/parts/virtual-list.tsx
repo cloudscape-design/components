@@ -32,14 +32,11 @@ const VirtualListOpen = forwardRef(
     const menuRefObject = useRef(null);
     const menuRef = useMergeRefs(menuRefObject, menuProps.ref);
 
-    const { virtualItems, totalSize, scrollToIndex } = useVirtualScroll(
-      {
-        size: filteredOptions.length,
-        containerRef: menuRefObject,
-        defaultItemSize: 31,
-      },
-      [filteringValue]
-    );
+    const { virtualItems, totalSize, scrollToIndex } = useVirtualScroll({
+      size: filteredOptions.length,
+      containerRef: menuRefObject,
+      defaultItemSize: 31,
+    });
 
     useImperativeHandle(
       ref,

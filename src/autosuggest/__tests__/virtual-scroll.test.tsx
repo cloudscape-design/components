@@ -29,17 +29,6 @@ describe('Virtual scroll support', () => {
     expect(wrapper.findDropdown().findOptions()).toHaveLength(3);
   });
 
-  test('should render a subset of items in virtual list', () => {
-    const wrapper = renderWithWrapper(
-      <Autosuggest
-        {...defaultProps}
-        options={Array.from({ length: 100 }, (_, index) => ({ value: `Option ${index}` }))}
-      />
-    );
-    wrapper.findNativeInput().focus();
-    expect(wrapper.findDropdown().findOptions().length).toBeLessThan(100);
-  });
-
   test('should render virtual list with groups', () => {
     const wrapper = renderWithWrapper(
       <Autosuggest

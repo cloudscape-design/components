@@ -5,7 +5,6 @@ import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 
 const OVERSCAN = 5;
 const UPDATE_FRAME_THROTTLE_MS = 10;
-const SCROLL_TO_OFFSET_DELAY_MS = 25;
 
 export interface VirtualScrollProps {
   size: number;
@@ -28,10 +27,7 @@ interface InternalVirtualItem {
   start: number;
 }
 
-export function useVirtualScroll(
-  { size, defaultItemSize, containerRef }: VirtualScrollProps,
-  deps: React.DependencyList = []
-): Virtualizer {
+export function useVirtualScroll({ size, defaultItemSize, containerRef }: VirtualScrollProps): Virtualizer {
   const [virtualItems, setVirtualItems] = useState<readonly VirtualItem[]>([]);
   const [totalSize, setTotalSize] = useState(0);
 
@@ -52,9 +48,7 @@ export function useVirtualScroll(
 
   useEffect(() => {
     virtualScroll.update({ size, defaultItemSize });
-    // Using custom dependencies to trigger size calculation
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [virtualScroll, size, defaultItemSize, ...deps]);
+  });
 
   const safeVirtualItems = useMemo(() => virtualItems.filter(item => item.index < size), [virtualItems, size]);
 
@@ -93,7 +87,6 @@ class VirtualScroll {
   private measuredItems: (null | HTMLElement)[] = [];
   private previousVirtualItems: InternalVirtualItem[] = [];
   private previousTotalSize = 0;
-  private previousScrollTop = 0;
   private previousContainerWidth = 0;
 
   public init = ({ scrollContainer, onFrameChange }: VirtualScrollInitProps) => {
@@ -132,46 +125,46 @@ class VirtualScroll {
   };
 
   public scrollToIndex = (index: number) => {
-    this.frameStart = Math.min(this.size, Math.max(0, index));
-    this.requestUpdate();
-    setTimeout(() => {
-      let scrollOffset = 0;
-      for (let i = 0; i < this.frameStart; i++) {
-        scrollOffset += this.getSizeOrDefaultForIndex(i);
-      }
-      if (!this.scrollContainer) {
-        throw new Error('Invariant violation: using virtual scroll before initialization.');
-      }
+    index = Math.max(0, Math.min(this.size - 1, index));
+
+    let scrollOffset = 0;
+    for (let i = 0; i < index; i++) {
+      scrollOffset += this.getSizeOrDefaultForIndex(i);
+    }
+    if (!this.scrollContainer) {
+      throw new Error('Invariant violation: using virtual scroll before initialization.');
+    }
+
+    const frameTop = this.scrollContainer.scrollTop;
+    const frameBottom = frameTop + this.scrollContainer.getBoundingClientRect().height;
+    if (scrollOffset < frameTop || frameBottom < scrollOffset) {
       this.scrollContainer.scrollTop = scrollOffset;
-    }, SCROLL_TO_OFFSET_DELAY_MS);
+    }
   };
 
   private onContainerScroll = (event: Event) => {
     const scrollTop = (event.target as HTMLElement).scrollTop;
 
-    if (scrollTop !== this.previousScrollTop) {
-      this.previousScrollTop = scrollTop;
-
-      let totalSize = this.defaultItemSize;
-      let knownSizes = 1;
-      for (let i = 0; i < this.size; i++) {
-        totalSize += this.getSizeForIndex(i) || 0;
-        knownSizes += this.getSizeForIndex(i) ? 1 : 0;
-      }
-      const averageSize = Math.round(totalSize / knownSizes);
-
-      this.frameStart = this.size - 1;
-      for (let i = 0, start = 0; i < this.size; i++) {
-        const next = start + (this.getSizeForIndex(i) ?? averageSize);
-        if (start <= scrollTop && scrollTop <= next) {
-          this.frameStart = Math.min(this.size - 1, scrollTop - start < next - scrollTop ? i : i + 1);
-          break;
-        }
-        start = next;
-      }
-
-      this.requestUpdate();
+    let totalSize = this.defaultItemSize;
+    let knownSizes = 1;
+    for (let i = 0; i < this.size; i++) {
+      totalSize += this.getSizeForIndex(i) || 0;
+      knownSizes += this.getSizeForIndex(i) ? 1 : 0;
     }
+    const averageSize = Math.round(totalSize / knownSizes);
+
+    this.frameStart = this.size - 1;
+    for (let i = 0, start = 0; i < this.size; i++) {
+      const next = start + (this.getSizeForIndex(i) ?? averageSize);
+      if (start <= scrollTop && scrollTop <= next) {
+        this.frameStart = scrollTop - start < next - scrollTop ? i : i + 1;
+        break;
+      }
+      start = next;
+    }
+    this.frameStart = Math.max(0, Math.min(this.size - this.frameSize, this.frameStart));
+
+    this.requestUpdate();
   };
 
   private onWindowResize = () => {
