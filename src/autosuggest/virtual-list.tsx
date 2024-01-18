@@ -22,11 +22,14 @@ const VirtualList = ({
 }: ListProps) => {
   const scrollRef = useRef<HTMLUListElement>(null);
 
-  const { virtualItems, totalSize, scrollToIndex } = useVirtualScroll({
-    size: autosuggestItemsState.items.length,
-    defaultItemSize: 31,
-    containerRef: scrollRef,
-  });
+  const { virtualItems, totalSize, scrollToIndex } = useVirtualScroll(
+    {
+      size: autosuggestItemsState.items.length,
+      defaultItemSize: 31,
+      containerRef: scrollRef,
+    },
+    [highlightText]
+  );
 
   useEffect(() => {
     if (autosuggestItemsState.highlightType.moveFocus) {

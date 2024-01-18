@@ -28,7 +28,10 @@ interface InternalVirtualItem {
   start: number;
 }
 
-export function useVirtualScroll({ size, defaultItemSize, containerRef }: VirtualScrollProps): Virtualizer {
+export function useVirtualScroll(
+  { size, defaultItemSize, containerRef }: VirtualScrollProps,
+  deps: React.DependencyList = []
+): Virtualizer {
   const [virtualItems, setVirtualItems] = useState<readonly VirtualItem[]>([]);
   const [totalSize, setTotalSize] = useState(0);
 
@@ -49,7 +52,9 @@ export function useVirtualScroll({ size, defaultItemSize, containerRef }: Virtua
 
   useEffect(() => {
     virtualScroll.update({ size, defaultItemSize });
-  }, [virtualScroll, size, defaultItemSize]);
+    // Using custom dependencies to trigger size calculation
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [virtualScroll, size, defaultItemSize, ...deps]);
 
   const safeVirtualItems = useMemo(() => virtualItems.filter(item => item.index < size), [virtualItems, size]);
 
@@ -194,10 +199,6 @@ class VirtualScroll {
     }
     if (index < 0 || index >= this.size) {
       throw new Error('Invariant violation: measured item index is out of bounds.');
-    }
-    const size = node.getBoundingClientRect().height;
-    if (size === this.getSizeForIndex(index)) {
-      return;
     }
     this.measuredItems[index] = node;
     this.requestUpdate();
