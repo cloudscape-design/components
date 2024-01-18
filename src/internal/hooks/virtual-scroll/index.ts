@@ -131,14 +131,18 @@ class VirtualScroll {
     for (let i = 0; i < index; i++) {
       scrollOffset += this.getSizeOrDefaultForIndex(i);
     }
+    const itemSize = this.getSizeOrDefaultForIndex(index);
+
     if (!this.scrollContainer) {
       throw new Error('Invariant violation: using virtual scroll before initialization.');
     }
-
     const frameTop = this.scrollContainer.scrollTop;
-    const frameBottom = frameTop + this.scrollContainer.getBoundingClientRect().height;
-    if (scrollOffset < frameTop || frameBottom < scrollOffset) {
+    const containerHeight = this.scrollContainer.getBoundingClientRect().height;
+    const frameBottom = frameTop + containerHeight;
+    if (scrollOffset < frameTop) {
       this.scrollContainer.scrollTop = scrollOffset;
+    } else if (frameBottom < scrollOffset + itemSize) {
+      this.scrollContainer.scrollTop = scrollOffset + itemSize - containerHeight;
     }
   };
 
