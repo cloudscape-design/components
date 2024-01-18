@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 
 const OVERSCAN = 5;
@@ -220,6 +221,8 @@ class VirtualScroll {
       if (!batch) {
         this.updateFrameIfNeeded();
       }
+    } else {
+      warnOnce('virtual-scroll', 'Reached safety counter, check for infinite loops.');
     }
   };
 
