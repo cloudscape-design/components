@@ -5,6 +5,7 @@ import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 
 const OVERSCAN = 5;
 const UPDATE_FRAME_THROTTLE_MS = 10;
+const KILL_SWITCH_THRESHOLD = 1000;
 
 export interface VirtualScrollProps {
   size: number;
@@ -88,6 +89,7 @@ class VirtualScroll {
   private previousVirtualItems: InternalVirtualItem[] = [];
   private previousTotalSize = 0;
   private previousContainerWidth = 0;
+  private killSwitchCounter = KILL_SWITCH_THRESHOLD;
 
   public init = ({ scrollContainer, onFrameChange }: VirtualScrollInitProps) => {
     this.scrollContainer = scrollContainer;
@@ -201,15 +203,23 @@ class VirtualScroll {
     this.requestUpdate();
   };
 
-  private updateTimerRef: null | number = null;
+  private updateTimer: null | number = null;
   private requestUpdate = (batch = true) => {
-    if (this.updateTimerRef) {
-      clearTimeout(this.updateTimerRef);
+    this.killSwitchCounter--;
+    if (this.updateTimer) {
+      clearTimeout(this.updateTimer);
     }
-    if (batch) {
-      this.updateTimerRef = setTimeout(this.updateFrameIfNeeded, UPDATE_FRAME_THROTTLE_MS);
-    } else {
-      this.updateFrameIfNeeded();
+    if (this.killSwitchCounter > 0) {
+      setTimeout(() => {
+        if (batch) {
+          this.updateFrameIfNeeded();
+          this.killSwitchCounter = KILL_SWITCH_THRESHOLD;
+        }
+      }, UPDATE_FRAME_THROTTLE_MS);
+
+      if (!batch) {
+        this.updateFrameIfNeeded();
+      }
     }
   };
 
