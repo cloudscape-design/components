@@ -1,103 +1,249 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { VirtualScrollModel } from './virtual-scroll';
-import { useEffectOnUpdate } from '../use-effect-on-update';
-import { InternalVirtualItem, Virtualizer } from './interfaces';
+import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import { throttle } from '../../utils/throttle';
 
-interface VirtualScrollProps<Item extends object> {
-  items: readonly Item[];
+const OVERSCAN = 5;
+const UPDATE_FRAME_THROTTLE_MS = 10;
+const SCROLL_TO_OFFSET_DELAY_MS = 25;
+
+export interface VirtualScrollProps {
+  size: number;
   defaultItemSize: number;
   containerRef: React.RefObject<HTMLElement>;
 }
 
-export function useVirtualScroll<Item extends object>(props: VirtualScrollProps<Item>): Virtualizer {
-  const [frame, setFrame] = useState<readonly InternalVirtualItem[]>([]);
+export interface Virtualizer {
+  virtualItems: readonly VirtualItem[];
+  totalSize: number;
+  scrollToIndex: (index: number) => void;
+}
+
+export interface VirtualItem extends InternalVirtualItem {
+  measureRef: (node: null | HTMLElement) => void;
+}
+
+interface InternalVirtualItem {
+  index: number;
+  start: number;
+}
+
+export function useVirtualScroll({ size, defaultItemSize, containerRef }: VirtualScrollProps): Virtualizer {
+  const [virtualItems, setVirtualItems] = useState<readonly VirtualItem[]>([]);
   const [totalSize, setTotalSize] = useState(0);
 
-  const [model, setModel] = useState<null | VirtualScrollModel<Item>>(null);
+  const virtualScroll = useMemo(() => new VirtualScroll(), []);
+
   useLayoutEffect(() => {
-    if (props.containerRef.current) {
-      setModel(
-        new VirtualScrollModel({
-          ...props,
-          scrollContainer: props.containerRef.current,
-          onFrameChange: ({ frame, totalSize }) => {
-            frame && setFrame(frame);
-            setTotalSize(totalSize);
-          },
-        })
-      );
+    if (containerRef.current) {
+      virtualScroll.init({
+        scrollContainer: containerRef.current,
+        onFrameChange: ({ virtualItems, totalSize }) => {
+          setVirtualItems(virtualItems);
+          setTotalSize(totalSize);
+        },
+      });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.containerRef]);
+    return () => virtualScroll.cleanup();
+  }, [virtualScroll, containerRef]);
 
   useEffect(() => {
-    return () => {
-      model && model.cleanup();
-    };
-  }, [model]);
+    virtualScroll.update({ size, defaultItemSize });
+  }, [virtualScroll, size, defaultItemSize]);
 
-  const itemRefs = useRef<{ [index: number]: null | HTMLElement }>({});
-  const setItemRef = useCallback(
-    (index: number, node: null | HTMLElement) => {
-      itemRefs.current[index] = node;
-      if (node && model) {
-        model.setItemSize(index, node.getBoundingClientRect().height || props.defaultItemSize);
-      }
-    },
-    [model, props.defaultItemSize]
-  );
-
-  // TODO: use model.update on every render
-  // inside model check item identity. If in cache - use available size
-  // if not - use default size and request measurement
-  // for every measurement arriving request update
-  // batch update requests with a small time interval
-  // execute updates if needed -> compare if the values are actually different
-
-  // TODO: use model in ref
-  useEffect(() => {
-    model && model.setItems(props.items);
-  }, [model, props.items]);
-
-  // TODO: use model in ref
-  useEffectOnUpdate(() => {
-    model && model.setDefaultItemSize(props.defaultItemSize);
-  }, [model, props.defaultItemSize]);
-
-  // TODO: is there a better way to achieve the same?
-  // Can't rely on setFrame because the items and frame can become out of sync in case items shrink.
-  const safeFrame =
-    frame[frame.length - 1]?.index >= props.items.length
-      ? frame.filter(item => item.index < props.items.length)
-      : frame;
-  const decoratedFrame = safeFrame.map(item => ({
-    ...item,
-    measureRef: (node: null | HTMLElement) => setItemRef(item.index, node),
-  }));
+  const safeVirtualItems = useMemo(() => virtualItems.filter(item => item.index < size), [virtualItems, size]);
 
   return {
-    frame: decoratedFrame,
+    virtualItems: safeVirtualItems,
     totalSize,
-    scrollToIndex: (index: number) => model?.scrollToIndex(index),
+    scrollToIndex: virtualScroll.scrollToIndex,
   };
 }
 
-export function VirtualItemMeasure({
-  children,
-  measure,
-}: {
-  children: (ref: React.RefObject<HTMLDivElement>) => React.ReactElement;
-  measure: (node: null | HTMLElement) => void;
-}): React.ReactElement {
-  const itemRef = useRef<HTMLDivElement>(null) as React.RefObject<HTMLDivElement>;
-  useEffect(() => {
-    if (itemRef.current) {
-      measure(itemRef.current);
+interface VirtualScrollInitProps {
+  scrollContainer: HTMLElement;
+  onFrameChange: (props: FrameUpdate) => void;
+}
+
+interface VirtualScrollUpdateProps {
+  size: number;
+  defaultItemSize: number;
+}
+
+interface FrameUpdate {
+  totalSize: number;
+  virtualItems: readonly VirtualItem[];
+}
+
+export class VirtualScroll {
+  // Props
+  private scrollContainer: null | HTMLElement = null;
+  private onFrameChange: (props: FrameUpdate) => void = () => {};
+
+  // State
+  private size = 0;
+  private defaultItemSize = 0;
+  private frameStart = 0;
+  private frameSize = 0;
+  private measuredItemSizes: (number | null)[] = [];
+  private previousVirtualItems: InternalVirtualItem[] = [];
+  private previousTotalSize = 0;
+  private previousScrollTop = 0;
+
+  public init = ({ scrollContainer, onFrameChange }: VirtualScrollInitProps) => {
+    this.scrollContainer = scrollContainer;
+    this.onFrameChange = onFrameChange;
+
+    scrollContainer.addEventListener('scroll', this.onContainerScroll);
+    window.addEventListener('resize', this.onWindowResize);
+
+    this.cleanup = () => {
+      this.onFrameChange = () => {};
+      scrollContainer.removeEventListener('scroll', this.onContainerScroll);
+      window.removeEventListener('resize', this.onWindowResize);
+    };
+  };
+
+  public cleanup = () => {
+    // noop
+  };
+
+  public update = ({ size, defaultItemSize }: VirtualScrollUpdateProps) => {
+    this.size = size;
+    this.defaultItemSize = defaultItemSize;
+    this.updateFrameIfNeeded();
+  };
+
+  public scrollToIndex = (index: number) => {
+    this.frameStart = Math.min(this.size, Math.max(0, index));
+    this.updateFrameIfNeeded();
+    setTimeout(() => {
+      let scrollOffset = 0;
+      for (let i = 0; i < this.frameStart; i++) {
+        scrollOffset += this.getSizeForIndex(i);
+      }
+      if (!this.scrollContainer) {
+        throw new Error('Invariant violation: using virtual scroll before initialization.');
+      }
+      this.scrollContainer.scrollTop = scrollOffset;
+    }, SCROLL_TO_OFFSET_DELAY_MS);
+  };
+
+  private onContainerScroll = (event: Event) => {
+    const scrollTop = (event.target as HTMLElement).scrollTop;
+
+    if (scrollTop !== this.previousScrollTop) {
+      this.previousScrollTop = scrollTop;
+
+      let totalSize = this.defaultItemSize;
+      let knownSizes = 1;
+      for (let i = 0; i < this.size; i++) {
+        totalSize += this.measuredItemSizes[i] || 0;
+        knownSizes += this.measuredItemSizes[i] ? 1 : 0;
+      }
+      const averageSize = Math.round(totalSize / knownSizes);
+
+      this.frameStart = this.size - 1;
+      for (let i = 0, start = 0; i < this.size; i++) {
+        const next = start + (this.measuredItemSizes[i] ?? averageSize);
+        if (start <= scrollTop && scrollTop <= next) {
+          this.frameStart = Math.min(this.size - 1, scrollTop - start < next - scrollTop ? i : i + 1);
+          break;
+        }
+        start = next;
+      }
+
+      this.updateFrameIfNeeded();
     }
-    return () => measure(null);
-  });
-  return children(itemRef);
+  };
+
+  private onWindowResize = () => {
+    this.updateFrameIfNeeded();
+  };
+
+  private measureRef = (index: number, node: null | HTMLElement) => {
+    if (!node && this.measuredItemSizes[index] === null) {
+      return;
+    }
+    if (!node) {
+      this.measuredItemSizes[index] = null;
+      this.updateFrameIfNeeded();
+      return;
+    }
+    if (index < 0 || index >= this.size) {
+      throw new Error('Invariant violation: measured item index is out of bounds.');
+    }
+    const size = node.getBoundingClientRect().height;
+    if (size === this.measuredItemSizes[index]) {
+      return;
+    }
+    this.measuredItemSizes[index] = size;
+    this.updateFrameIfNeeded();
+  };
+
+  private updateFrameIfNeeded = throttle(() => {
+    this.updateFrameSize();
+
+    const indices: number[] = [];
+    for (let i = Math.max(0, this.frameStart - OVERSCAN); i < this.frameStart + this.frameSize && i < this.size; i++) {
+      indices.push(i);
+    }
+
+    let runningStart = 0;
+    for (let i = 0; indices.length > 0 && i < indices[0]; i++) {
+      runningStart += this.getSizeForIndex(i);
+    }
+    let updateRequired = indices.length !== this.previousVirtualItems.length;
+    const nextVirtualItems: InternalVirtualItem[] = [];
+    for (let i = 0; i < indices.length; i++) {
+      const virtualIndex = indices[i];
+      const item = { index: virtualIndex, start: runningStart };
+      const previousItem = this.previousVirtualItems[i];
+      if (!updateRequired && (previousItem.index !== item.index || previousItem.start !== item.start)) {
+        updateRequired = true;
+      }
+      runningStart += this.getSizeForIndex(virtualIndex);
+      nextVirtualItems.push(item);
+    }
+
+    let totalSize = 0;
+    for (let i = 0; i < this.size; i++) {
+      totalSize += this.getSizeForIndex(i);
+    }
+    if (totalSize !== this.previousTotalSize) {
+      updateRequired = true;
+    }
+
+    if (updateRequired) {
+      this.previousVirtualItems = nextVirtualItems;
+      this.previousTotalSize = totalSize;
+      this.onFrameChange({
+        totalSize,
+        virtualItems: nextVirtualItems.map(item => ({ ...item, measureRef: this.measureRef.bind(this, item.index) })),
+      });
+    }
+  }, UPDATE_FRAME_THROTTLE_MS);
+
+  private updateFrameSize = () => {
+    const itemSizesMinToMax: number[] = [];
+    for (const size of this.measuredItemSizes) {
+      itemSizesMinToMax.push(size ?? this.defaultItemSize);
+    }
+    itemSizesMinToMax.sort((a, b) => a - b);
+
+    this.frameSize = this.size;
+    let contentSize = 0;
+    for (let i = 0; i < this.size; i++) {
+      contentSize += itemSizesMinToMax[i];
+      if (contentSize > window.innerHeight) {
+        this.frameSize = i;
+        break;
+      }
+    }
+  };
+
+  private getSizeForIndex(index: number) {
+    return this.measuredItemSizes[index] ?? this.defaultItemSize;
+  }
 }

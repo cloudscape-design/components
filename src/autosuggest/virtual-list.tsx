@@ -7,7 +7,7 @@ import OptionsList from '../internal/components/options-list';
 import AutosuggestOption from './autosuggest-option';
 import { getOptionProps, ListProps } from './plain-list';
 import styles from './styles.css.js';
-import { useVirtualScroll, VirtualItemMeasure } from '../internal/hooks/virtual-scroll';
+import { useVirtualScroll } from '../internal/hooks/virtual-scroll';
 
 const VirtualList = ({
   autosuggestItemsState,
@@ -22,17 +22,17 @@ const VirtualList = ({
 }: ListProps) => {
   const scrollRef = useRef<HTMLUListElement>(null);
 
-  const virtualScroll = useVirtualScroll({
-    items: autosuggestItemsState.items,
+  const { virtualItems, totalSize, scrollToIndex } = useVirtualScroll({
+    size: autosuggestItemsState.items.length,
     defaultItemSize: 31,
     containerRef: scrollRef,
   });
 
   useEffect(() => {
     if (autosuggestItemsState.highlightType.moveFocus) {
-      virtualScroll.scrollToIndex(autosuggestItemsState.highlightedIndex);
+      scrollToIndex(autosuggestItemsState.highlightedIndex);
     }
-  }, [autosuggestItemsState.highlightType, autosuggestItemsState.highlightedIndex, virtualScroll]);
+  }, [autosuggestItemsState.highlightType, autosuggestItemsState.highlightedIndex, scrollToIndex]);
 
   return (
     <OptionsList
@@ -47,9 +47,9 @@ const VirtualList = ({
         aria-hidden="true"
         key="total-size"
         className={styles['layout-strut']}
-        style={{ height: virtualScroll.totalSize + (autosuggestItemsState.items.length === 1 ? 1 : 0) }}
+        style={{ height: totalSize + (autosuggestItemsState.items.length === 1 ? 1 : 0) }}
       />
-      {virtualScroll.frame.map(virtualItem => {
+      {virtualItems.map(virtualItem => {
         const { index, start, measureRef } = virtualItem;
         const item = autosuggestItemsState.items[index];
         const optionProps = getOptionProps(
@@ -62,25 +62,22 @@ const VirtualList = ({
         );
 
         return (
-          <VirtualItemMeasure key={index} measure={measureRef}>
-            {itemRef => (
-              <AutosuggestOption
-                ref={itemRef}
-                highlightText={highlightText}
-                option={item}
-                highlighted={item === autosuggestItemsState.highlightedOption}
-                current={item.value === highlightText}
-                data-mouse-target={index}
-                enteredTextLabel={enteredTextLabel}
-                virtualPosition={start + (index === 0 ? 1 : 0)}
-                screenReaderContent={screenReaderContent}
-                ariaSetsize={autosuggestItemsState.items.length}
-                ariaPosinset={index + 1}
-                highlightType={autosuggestItemsState.highlightType}
-                {...optionProps}
-              />
-            )}
-          </VirtualItemMeasure>
+          <AutosuggestOption
+            key={index}
+            ref={measureRef}
+            highlightText={highlightText}
+            option={item}
+            highlighted={item === autosuggestItemsState.highlightedOption}
+            current={item.value === highlightText}
+            data-mouse-target={index}
+            enteredTextLabel={enteredTextLabel}
+            virtualPosition={start + (index === 0 ? 1 : 0)}
+            screenReaderContent={screenReaderContent}
+            ariaSetsize={autosuggestItemsState.items.length}
+            ariaPosinset={index + 1}
+            highlightType={autosuggestItemsState.highlightType}
+            {...optionProps}
+          />
         );
       })}
       {listBottom ? (
