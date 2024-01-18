@@ -57,7 +57,7 @@ export default function DatePickerScenario() {
 
         <hr />
 
-        <h2>ISO 8061 with time offset</h2>
+        <h2>ISO 8601 with time offset</h2>
         <DateRangePicker
           value={value}
           locale={'en'}
@@ -77,7 +77,7 @@ export default function DatePickerScenario() {
 
         <hr />
 
-        <h2>ISO 8061 without time offset</h2>
+        <h2>ISO 8601 without time offset</h2>
         <DateRangePicker
           value={value}
           locale={'en'}
