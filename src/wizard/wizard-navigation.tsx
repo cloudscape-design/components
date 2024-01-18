@@ -6,7 +6,7 @@ import InternalLink from '../link/internal';
 import InternalBox from '../box/internal';
 import { WizardProps } from './interfaces';
 import styles from './styles.css.js';
-import { isHighContrastHeaderActive } from '../internal/utils/content-header-utils';
+import { shouldRemoveHighContrastHeader } from '../internal/utils/content-header-utils';
 
 interface NavigationProps {
   activeStepIndex: number;
@@ -55,14 +55,14 @@ export default function Navigation({
         styles.navigation,
         hidden && styles.hidden,
         isVisualRefresh && styles.refresh,
-        isHighContrastHeaderActive && styles['remove-high-contrast-header']
+        shouldRemoveHighContrastHeader && styles['remove-high-contrast-header']
       )}
       aria-label={i18nStrings.navigationAriaLabel}
     >
       <ul
         className={clsx(
           isVisualRefresh && styles.refresh,
-          isHighContrastHeaderActive && styles['remove-high-contrast-header']
+          shouldRemoveHighContrastHeader && styles['remove-high-contrast-header']
         )}
       >
         {steps.map((step, index: number) =>

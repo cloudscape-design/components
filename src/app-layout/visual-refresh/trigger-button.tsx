@@ -6,7 +6,7 @@ import Icon from '../../icon/internal';
 import styles from './styles.css.js';
 import { ButtonProps } from '../../button/interfaces';
 import { IconProps } from '../../icon/interfaces';
-import { isHighContrastHeaderActive } from '../../internal/utils/content-header-utils';
+import { shouldRemoveHighContrastHeader } from '../../internal/utils/content-header-utils';
 
 export interface TriggerButtonProps {
   ariaLabel?: string;
@@ -38,7 +38,10 @@ function TriggerButton(
 ) {
   return (
     <div
-      className={clsx(styles['trigger-wrapper'], isHighContrastHeaderActive && styles['remove-high-contrast-header'])}
+      className={clsx(
+        styles['trigger-wrapper'],
+        shouldRemoveHighContrastHeader && styles['remove-high-contrast-header']
+      )}
     >
       <button
         aria-expanded={ariaExpanded}
