@@ -18,11 +18,14 @@
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   grid-template-rows: auto 1fr;
-  row-gap: awsui.$space-scaled-xl;
+  row-gap: awsui.$space-scaled-xxs;
 
   &.small-container {
     grid-template-columns: minmax(0, 1fr) 0;
     row-gap: awsui.$space-scaled-l;
+  }
+  &:not(.remove-high-contrast-header) {
+    row-gap: awsui.$space-scaled-xl;
   }
 }
 
@@ -35,14 +38,18 @@
   grid-row: 1 / span 2;
   padding-top: var(#{custom-props.$containerFirstGap}, 0px);
 
-  > ul {
+  > ul.refresh {
     background: awsui.$color-background-container-content;
     position: relative;
-    @include styles.container-style;
     margin: 0;
-    padding: awsui.$space-scaled-m awsui.$space-l awsui.$space-scaled-l awsui.$space-m;
-    width: 280px;
+    padding: awsui.$space-scaled-xxs 0 0 0;
+    width: 260px;
     box-sizing: border-box;
+    &:not(.remove-high-contrast-header) {
+      @include styles.container-style;
+      padding: awsui.$space-scaled-m awsui.$space-l awsui.$space-scaled-l awsui.$space-m;
+      width: 280px;
+    }
 
     > li {
       display: grid;
@@ -172,7 +179,7 @@
   padding-top: awsui.$space-xxs;
   width: 20 * styles.$base-size;
 
-  > ul {
+  > ul:not(.refresh) {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -222,8 +229,15 @@
   }
 
   > .form-header > .form-header-content {
-    padding-top: calc(var(#{custom-props.$containerFirstGap}, 0px) + awsui.$space-s);
-    padding-bottom: awsui.$space-scaled-m;
+    padding-top: calc(var(#{custom-props.$containerFirstGap}, 0px) + awsui.$space-m - awsui.$space-xxxs);
+    padding-bottom: awsui.$space-scaled-s;
+  }
+
+  &:not(.remove-high-contrast-header) {
+    > .form-header > .form-header-content {
+      padding-top: calc(var(#{custom-props.$containerFirstGap}, 0px) + awsui.$space-s);
+      padding-bottom: awsui.$space-scaled-m;
+    }
   }
 
   > .form-component {

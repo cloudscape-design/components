@@ -5,6 +5,7 @@ import React from 'react';
 import { useDynamicOverlap } from '../internal/hooks/use-dynamic-overlap';
 import { contentHeaderClassName } from '../internal/utils/content-header-utils';
 import styles from './styles.css.js';
+import { isHighContrastHeaderActive } from '../internal/utils/content-header-utils';
 
 interface WizardFormHeaderProps {
   children: React.ReactNode;
@@ -24,7 +25,14 @@ export default function WizardFormHeader({ children, isVisualRefresh }: WizardFo
       )}
       ref={overlapElement}
     >
-      <div className={clsx(styles['form-header-content'])}>{children}</div>
+      <div
+        className={clsx(
+          styles['form-header-content'],
+          isHighContrastHeaderActive && styles['remove-high-contrast-header']
+        )}
+      >
+        {children}
+      </div>
     </div>
   );
 }

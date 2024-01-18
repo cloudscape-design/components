@@ -8,6 +8,7 @@ import { MobileTriggers as DrawersMobileTriggers } from './drawers';
 import { useAppLayoutInternals } from './context';
 import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
+import { isHighContrastHeaderActive } from '../../internal/utils/content-header-utils';
 
 export default function MobileToolbar() {
   const {
@@ -45,7 +46,8 @@ export default function MobileToolbar() {
           [styles.unfocusable]: hasDrawerViewportOverlay,
         },
         testutilStyles['mobile-bar'],
-        contentHeaderClassName
+        contentHeaderClassName,
+        isHighContrastHeaderActive && styles['remove-high-contrast-header']
       )}
     >
       {!navigationHide && (

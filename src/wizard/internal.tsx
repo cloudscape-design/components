@@ -27,6 +27,7 @@ import { WizardProps } from './interfaces';
 
 import styles from './styles.css.js';
 import { useFunnelChangeEvent } from './analytics';
+import { isHighContrastHeaderActive } from '../internal/utils/content-header-utils';
 
 type InternalWizardProps = WizardProps & InternalBaseComponentProps;
 
@@ -148,7 +149,12 @@ export default function InternalWizard({
   return (
     <div {...baseProps} {...funnelProps} ref={ref} className={clsx(styles.root, baseProps.className)}>
       <div
-        className={clsx(styles.wizard, isVisualRefresh && styles.refresh, smallContainer && styles['small-container'])}
+        className={clsx(
+          styles.wizard,
+          isVisualRefresh && styles.refresh,
+          smallContainer && styles['small-container'],
+          isHighContrastHeaderActive && styles['remove-high-contrast-header']
+        )}
       >
         <WizardNavigation
           activeStepIndex={actualActiveStepIndex}
@@ -163,7 +169,12 @@ export default function InternalWizard({
           steps={steps}
         />
         <div
-          className={clsx(styles.form, isVisualRefresh && styles.refresh, smallContainer && styles['small-container'])}
+          className={clsx(
+            styles.form,
+            isVisualRefresh && styles.refresh,
+            smallContainer && styles['small-container'],
+            isHighContrastHeaderActive && styles['remove-high-contrast-header']
+          )}
         >
           {isVisualRefresh && <div className={clsx(styles.background, contentHeaderClassName)} />}
           <WizardForm
