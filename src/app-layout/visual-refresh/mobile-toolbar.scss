@@ -11,7 +11,7 @@ section.mobile-toolbar {
   align-items: center;
   background-color: awsui.$color-background-layout-main;
   border-bottom: 1px solid awsui.$color-border-divider-default;
-  box-shadow: awsui.$shadow-flash-sticky;
+  box-shadow: awsui.$shadow-sticky;
   box-sizing: border-box;
   height: var(#{custom-props.$mobileBarHeight});
   display: grid;
