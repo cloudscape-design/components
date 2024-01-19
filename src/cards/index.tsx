@@ -172,6 +172,7 @@ const Cards = React.forwardRef(function <T = any>(
               className={clsx(
                 hasToolsHeader && styles['has-header'],
                 isRefresh && styles.refresh,
+                styles[`header-variant-${computedVariant}`],
                 shouldRemoveHighContrastHeader && styles['remove-high-contrast-header']
               )}
             >
