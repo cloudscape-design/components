@@ -6,6 +6,7 @@ import { TableBodyCell, TableBodyCellProps } from '../../../lib/components/table
 import { TableProps } from '../interfaces';
 import { renderHook } from '../../__tests__/render-hook';
 import { useStickyColumns } from '../../../lib/components/table/sticky-columns';
+import wrapper from '../../../lib/components/test-utils/dom';
 import styles from '../../../lib/components/table/body-cell/styles.selectors.js';
 
 const tableRole = 'table';
@@ -318,6 +319,21 @@ describe('TableBodyCell', () => {
       fireEvent.focus(disabledButton);
       fireEvent.keyDown(disabledButton, { key: 'Escape' });
       expect(onEditEndMock).toBeCalledWith(true);
+    });
+
+    test('show and hide lock icon based on hover when popover is not visible', () => {
+      const { container } = render(<TestComponent {...commonProps} column={disableInlineEditColumn} />);
+
+      // No icon by default
+      expect(wrapper(container).findIcon()).toBeNull();
+
+      // Hover over TD element
+      fireEvent.mouseEnter(container.querySelector('[data-inline-editing-active]')!);
+      expect(wrapper(container).findIcon()).not.toBeNull();
+
+      // Remove mouse
+      fireEvent.mouseLeave(container.querySelector('[data-inline-editing-active]')!);
+      expect(wrapper(container).findIcon()).toBeNull();
     });
   });
 });
