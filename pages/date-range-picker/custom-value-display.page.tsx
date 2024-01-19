@@ -3,8 +3,6 @@
 import React, { useState } from 'react';
 import { Box, DateRangePicker, DateRangePickerProps, SpaceBetween, Grid } from '~components';
 import { i18nStrings, isValid } from './common';
-import createPermutations from '../utils/permutations';
-import PermutationsView from '../utils/permutations-view';
 
 type DateTimeFormat = Intl.DateTimeFormat & {
   formatRange(startName: Date, endNumber: Date): string;
@@ -12,16 +10,8 @@ type DateTimeFormat = Intl.DateTimeFormat & {
 
 const locales = ['de', 'en-GB', 'en', 'es', 'fr', 'id', 'it', 'ja', 'ko', 'pt-BR', 'th', 'tr', 'zh-CN', 'zh-TW'];
 
-const permutations = createPermutations<Intl.DateTimeFormatOptions>([
-  {
-    dateStyle: [undefined, 'short'],
-    timeStyle: ['medium', 'long'],
-  },
-  {
-    dateStyle: ['medium'],
-    timeStyle: ['medium'],
-  },
-]);
+const timezoneName = 'America/Bogota';
+const getTimeOffset = () => -5 * 60;
 
 export default function DatePickerScenario() {
   const [value, setValue] = useState<DateRangePickerProps['value']>({
@@ -34,12 +24,9 @@ export default function DatePickerScenario() {
     <Box padding="s">
       <SpaceBetween direction="vertical" size="m">
         <h1>Absolute date range picker with custom value display</h1>
-
         <h2>Raw value</h2>
         <pre>{JSON.stringify(value, undefined, 2)}</pre>
-
         <hr />
-
         <h2>Default</h2>
         <DateRangePicker
           value={value}
@@ -52,11 +39,9 @@ export default function DatePickerScenario() {
           timeInputFormat="hh:mm:ss"
           rangeSelectorMode={'absolute-only'}
           isDateEnabled={date => date.getDate() !== 15}
-          getTimeOffset={() => -5 * 60}
+          getTimeOffset={getTimeOffset}
         />
-
         <hr />
-
         <h2>ISO 8601 with time offset</h2>
         <DateRangePicker
           value={value}
@@ -72,11 +57,9 @@ export default function DatePickerScenario() {
           timeInputFormat="hh:mm:ss"
           rangeSelectorMode={'absolute-only'}
           isDateEnabled={date => date.getDate() !== 15}
-          getTimeOffset={() => -5 * 60}
+          getTimeOffset={getTimeOffset}
         />
-
         <hr />
-
         <h2>ISO 8601 without time offset</h2>
         <DateRangePicker
           value={value}
@@ -92,76 +75,127 @@ export default function DatePickerScenario() {
           timeInputFormat="hh:mm:ss"
           rangeSelectorMode={'absolute-only'}
           isDateEnabled={date => date.getDate() !== 15}
-          getTimeOffset={() => -5 * 60}
+          getTimeOffset={getTimeOffset}
         />
-
         <hr />
-
-        <h2>
+        <h2>Use case 1</h2>
+        <h3>
+          Using <code>Intl.DateTimeFormat.format</code>
+        </h3>
+        {locales.map(locale => (
+          <Grid key={`pickers-${locale}`} gridDefinition={[{ colspan: 2 }, { colspan: 10 }]}>
+            <div style={{ textAlign: 'right' }}>{locale}</div>
+            <DateRangePicker
+              value={value}
+              locale={locale}
+              i18nStrings={{
+                ...i18nStrings,
+                formatAbsoluteRange: ({ startDate, endDate }) => {
+                  const { format } = new Intl.DateTimeFormat(locale, {
+                    dateStyle: 'long',
+                    timeZone: timezoneName,
+                  });
+                  return `${format(new Date(startDate))} — ${format(new Date(endDate))}`;
+                },
+              }}
+              placeholder={'Filter by a date and time range'}
+              onChange={e => setValue(e.detail.value)}
+              relativeOptions={[]}
+              isValidRange={isValid}
+              timeInputFormat="hh:mm:ss"
+              rangeSelectorMode={'absolute-only'}
+              isDateEnabled={date => date.getDate() !== 15}
+              getTimeOffset={getTimeOffset}
+              dateOnly={true}
+            />
+          </Grid>
+        ))}
+        <h3>
           Using <code>Intl.DateTimeFormat.formatRange</code>
-        </h2>
-        <PermutationsView
-          permutations={permutations}
-          render={permutation => {
-            const str = JSON.stringify(permutation);
-            return (
-              <ErrorBoundary errorMessage={`Invalid i18n options: ${str}`}>
-                <h3>{str}</h3>
-                {locales.map(locale => (
-                  <Grid key={`pickers-${locale}`} gridDefinition={[{ colspan: 2 }, { colspan: 10 }]}>
-                    <div style={{ textAlign: 'right' }}>{locale}</div>
-                    <DateRangePicker
-                      value={value}
-                      locale={locale}
-                      i18nStrings={{
-                        ...i18nStrings,
-                        formatAbsoluteRange: ({ startDate, endDate, locale }) =>
-                          (
-                            new Intl.DateTimeFormat(locale, {
-                              ...permutation,
-                              timeZone: 'America/Bogota',
-                            }) as DateTimeFormat
-                          ).formatRange(new Date(startDate), new Date(endDate)),
-                      }}
-                      placeholder={'Filter by a date and time range'}
-                      onChange={e => setValue(e.detail.value)}
-                      relativeOptions={[]}
-                      isValidRange={isValid}
-                      timeInputFormat="hh:mm:ss"
-                      rangeSelectorMode={'absolute-only'}
-                      isDateEnabled={date => date.getDate() !== 15}
-                      getTimeOffset={() => -5 * 60}
-                    />
-                  </Grid>
-                ))}
-              </ErrorBoundary>
-            );
-          }}
-        />
+        </h3>
+        {locales.map(locale => (
+          <Grid key={`pickers-${locale}`} gridDefinition={[{ colspan: 2 }, { colspan: 10 }]}>
+            <div style={{ textAlign: 'right' }}>{locale}</div>
+            <DateRangePicker
+              value={value}
+              locale={locale}
+              i18nStrings={{
+                ...i18nStrings,
+                formatAbsoluteRange: ({ startDate, endDate }) =>
+                  (
+                    new Intl.DateTimeFormat(locale, {
+                      dateStyle: 'long',
+                      timeZone: timezoneName,
+                    }) as DateTimeFormat
+                  ).formatRange(new Date(startDate), new Date(endDate)),
+              }}
+              placeholder={'Filter by a date and time range'}
+              onChange={e => setValue(e.detail.value)}
+              relativeOptions={[]}
+              isValidRange={isValid}
+              timeInputFormat="hh:mm:ss"
+              rangeSelectorMode={'absolute-only'}
+              isDateEnabled={date => date.getDate() !== 15}
+              getTimeOffset={getTimeOffset}
+              dateOnly={true}
+            />
+          </Grid>
+        ))}
+        <h2>Use case 2</h2>
+        {locales.map(locale => (
+          <Grid key={`pickers-${locale}`} gridDefinition={[{ colspan: 2 }, { colspan: 10 }]}>
+            <div style={{ textAlign: 'right' }}>{locale}</div>
+            <DateRangePicker
+              value={value}
+              locale={locale}
+              i18nStrings={{
+                ...i18nStrings,
+                formatAbsoluteRange: ({ startDate, endDate }) => `${format2(startDate)} — ${format2(endDate)}`,
+              }}
+              placeholder={'Filter by a date and time range'}
+              onChange={e => setValue(e.detail.value)}
+              relativeOptions={[]}
+              isValidRange={isValid}
+              timeInputFormat="hh:mm:ss"
+              rangeSelectorMode={'absolute-only'}
+              isDateEnabled={date => date.getDate() !== 15}
+              getTimeOffset={getTimeOffset}
+              dateOnly={false}
+            />
+          </Grid>
+        ))}
+        <h2>Use case 4</h2>
+        {locales.map(locale => (
+          <Grid key={`pickers-${locale}`} gridDefinition={[{ colspan: 2 }, { colspan: 10 }]}>
+            <div style={{ textAlign: 'right' }}>{locale}</div>
+            <DateRangePicker
+              value={value}
+              locale={locale}
+              i18nStrings={{
+                ...i18nStrings,
+                formatAbsoluteRange: ({ startDate, endDate }) => `${format4(startDate)} — ${format4(endDate)}`,
+              }}
+              placeholder={'Filter by a date and time range'}
+              onChange={e => setValue(e.detail.value)}
+              relativeOptions={[]}
+              isValidRange={isValid}
+              timeInputFormat="hh:mm:ss"
+              rangeSelectorMode={'absolute-only'}
+              isDateEnabled={date => date.getDate() !== 15}
+              getTimeOffset={getTimeOffset}
+              dateOnly={true}
+            />
+          </Grid>
+        ))}
       </SpaceBetween>
     </Box>
   );
 }
 
-class ErrorBoundary extends React.Component<any, { errorMessage: string }> {
-  constructor(props: any) {
-    super(props);
-    this.state = { errorMessage: '' };
-  }
+function format2(s: string) {
+  return s.slice(0, -6).replace('T', ' ');
+}
 
-  static getDerivedStateFromError(error: Error) {
-    // Update state so the next render will show the fallback UI.
-    return { errorMessage: error.stack || error.message };
-  }
-
-  render() {
-    if (this.state.errorMessage) {
-      // You can render any custom fallback UI
-      return (
-        <span style={{ color: 'orange', whiteSpace: 'pre' }}>{this.props.errorMessage || this.state.errorMessage}</span>
-      );
-    }
-
-    return this.props.children;
-  }
+function format4(s: string) {
+  return s.slice(0, 10).replace(/-/g, '/');
 }
