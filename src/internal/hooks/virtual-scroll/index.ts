@@ -6,7 +6,7 @@ import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 
 const OVERSCAN = 5;
 const UPDATE_FRAME_THROTTLE_MS = 10;
-const KILL_SWITCH_THRESHOLD = 1000;
+const KILL_SWITCH_THRESHOLD = 10000;
 
 export interface VirtualScrollProps {
   size: number;
@@ -137,7 +137,7 @@ class VirtualScroll {
     const itemSize = this.getSizeOrDefaultForIndex(index);
 
     if (!this.scrollContainer) {
-      throw new Error('Invariant violation: using virtual scroll before initialization.');
+      throw new Error('Invariant violation: scrollToIndex used before initialization.');
     }
     const frameTop = this.scrollContainer.scrollTop;
     const containerHeight = this.scrollContainer.getBoundingClientRect().height;
@@ -211,7 +211,7 @@ class VirtualScroll {
       clearTimeout(this.updateTimer);
     }
     if (this.killSwitchCounter > 0) {
-      setTimeout(() => {
+      this.updateTimer = setTimeout(() => {
         if (batch) {
           this.updateFrameIfNeeded();
           this.killSwitchCounter = KILL_SWITCH_THRESHOLD;
