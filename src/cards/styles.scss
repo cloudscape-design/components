@@ -89,8 +89,10 @@
   // in order to use margin-bottom instead.
   margin-top: awsui.$space-grid-gutter;
   &.refresh {
-    &.remove-high-contrast-header {
-      margin-top: awsui.$space-scaled-s;
+    &.header-variant-full-page {
+      &.remove-high-contrast-header {
+        margin-top: awsui.$space-scaled-s;
+      }
     }
   }
 }
