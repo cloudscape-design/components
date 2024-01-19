@@ -88,28 +88,28 @@ export function DisabledInlineEditor<ItemType>({
       >
         {showIcon && <Icon name="lock-private" variant="normal" __internalRootRef={iconRef} />}
         {descriptionEl}
-        {isEditing && (
-          <PopoverContainer
-            size="medium"
-            fixedWidth={false}
-            position="top"
-            trackRef={iconRef}
-            arrow={position => <Arrow position={position} />}
-            renderWithPortal={true}
-            zIndex={2000}
-          >
-            <PopoverBody
-              dismissButton={false}
-              dismissAriaLabel={undefined}
-              header={null}
-              onDismiss={() => {}}
-              overflowVisible="both"
-            >
-              <span aria-live="polite">{editDisabledReason}</span>
-            </PopoverBody>
-          </PopoverContainer>
-        )}
       </button>
+      {isEditing && (
+        <PopoverContainer
+          size="medium"
+          fixedWidth={false}
+          position="top"
+          trackRef={iconRef}
+          arrow={position => <Arrow position={position} />}
+          renderWithPortal={true}
+          zIndex={2000}
+        >
+          <PopoverBody
+            dismissButton={false}
+            dismissAriaLabel={undefined}
+            header={null}
+            onDismiss={() => {}}
+            overflowVisible="both"
+          >
+            <span aria-live="polite">{editDisabledReason}</span>
+          </PopoverBody>
+        </PopoverContainer>
+      )}
     </TableTdElement>
   );
 }
