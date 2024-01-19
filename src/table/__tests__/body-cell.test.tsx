@@ -45,9 +45,11 @@ const { result } = renderHook(() =>
   useStickyColumns({ visibleColumns: ['id'], stickyColumnsFirst: 0, stickyColumnsLast: 0 })
 );
 
-const commonProps: TableBodyCellProps<typeof testItem> & {
+type TestBodyCellProps = TableBodyCellProps<typeof testItem> & {
   isEditable: boolean;
-} = {
+};
+
+const commonProps: TestBodyCellProps = {
   column: column,
   item: testItem,
   isEditing: false,
@@ -73,12 +75,17 @@ const commonProps: TableBodyCellProps<typeof testItem> & {
   },
 };
 
-const TestComponent = ({ isEditing = false, successfulEdit = false }) => {
+const TestComponent = ({ isEditing = false, successfulEdit = false, ...rest }: Partial<TestBodyCellProps>) => {
   return (
     <table>
       <tbody>
         <tr>
-          <TableBodyCell<typeof testItem> {...commonProps} isEditing={isEditing} successfulEdit={successfulEdit} />
+          <TableBodyCell<typeof testItem>
+            {...commonProps}
+            {...rest}
+            isEditing={isEditing}
+            successfulEdit={successfulEdit}
+          />
         </tr>
       </tbody>
     </table>
@@ -234,7 +241,7 @@ describe('TableBodyCell', () => {
     };
 
     test('can show disabled reason for disabled edit cells', () => {
-      render(<TableBodyCell {...commonProps} column={disableInlineEditColumn} />);
+      render(<TestComponent {...commonProps} column={disableInlineEditColumn} />);
 
       const disabledButton = screen.getByRole('button', { name: 'Edit testData test' });
       expect(disabledButton).toHaveAccessibleDescription('Cannot edit');
@@ -243,7 +250,7 @@ describe('TableBodyCell', () => {
 
     test('activates live region when disabled cell is activated', () => {
       const { container } = render(
-        <TableBodyCell {...commonProps} column={disableInlineEditColumn} isEditing={true} />
+        <TestComponent {...commonProps} column={disableInlineEditColumn} isEditing={true} />
       );
 
       const disabledButton = screen.getByRole('button', { name: 'Edit testData test' });
@@ -255,14 +262,14 @@ describe('TableBodyCell', () => {
     });
 
     test('dynamically disables inline edit based on disabledReason callback', () => {
-      const { rerender } = render(<TableBodyCell {...commonProps} column={disableInlineEditColumn} />);
+      const { rerender } = render(<TestComponent {...commonProps} column={disableInlineEditColumn} />);
 
       // Show disabled reason when the callback returns a string
       expect(screen.getByRole('button', { description: 'Cannot edit' })).toBeInTheDocument();
 
       // Don't show a disabled reason when the callback returns undefined
       rerender(
-        <TableBodyCell
+        <TestComponent
           {...commonProps}
           column={{
             ...disableInlineEditColumn,
@@ -274,6 +281,43 @@ describe('TableBodyCell', () => {
         />
       );
       expect(screen.queryByRole('button', { description: 'Cannot edit' })).toBeNull();
+    });
+
+    test('click activates the popover state', () => {
+      const onEditStartMock = jest.fn();
+      const { container } = render(
+        <TestComponent {...commonProps} onEditStart={onEditStartMock} column={disableInlineEditColumn} />
+      );
+
+      // Click on the TD itself
+      fireEvent.click(container.querySelector('[data-inline-editing-active]')!);
+      expect(onEditStartMock).toBeCalled();
+    });
+
+    test('popover can be dismissed by clicking away', () => {
+      const onEditEndMock = jest.fn();
+      render(
+        <div>
+          <button data-testid="outside">Click away</button>
+          <TestComponent {...commonProps} onEditEnd={onEditEndMock} column={disableInlineEditColumn} isEditing={true} />
+        </div>
+      );
+
+      // Click away
+      fireEvent.click(screen.getByTestId('outside'));
+      expect(onEditEndMock).toBeCalledWith(true);
+    });
+
+    test('popover can be dismissed by pressing Escape', () => {
+      const onEditEndMock = jest.fn();
+      render(
+        <TestComponent {...commonProps} onEditEnd={onEditEndMock} column={disableInlineEditColumn} isEditing={true} />
+      );
+
+      const disabledButton = screen.getByRole('button');
+      fireEvent.focus(disabledButton);
+      fireEvent.keyDown(disabledButton, { key: 'Escape' });
+      expect(onEditEndMock).toBeCalledWith(true);
     });
   });
 });
