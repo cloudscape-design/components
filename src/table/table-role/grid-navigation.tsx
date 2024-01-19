@@ -3,7 +3,12 @@
 
 import React from 'react';
 import { useEffect, useMemo } from 'react';
-import { defaultIsSuppressed, findTableRowByAriaRowIndex, findTableRowCellByAriaColIndex } from './utils';
+import {
+  defaultIsSuppressed,
+  findTableRowByAriaRowIndex,
+  findTableRowCellByAriaColIndex,
+  getClosestCell,
+} from './utils';
 import { FocusedCell, GridNavigationProps } from './interfaces';
 import { KeyCode } from '../../internal/keycode';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
@@ -151,8 +156,9 @@ class GridNavigationProcessor {
 
     // Focusing on cell is not eligible when it contains focusable elements in the content.
     // If content focusables are available - move the focus to the first one.
-    if (cell.element === cell.cellElement) {
-      this.getFocusablesFrom(cell.cellElement)[0]?.focus();
+    const cellElement = getClosestCell(cell.element);
+    if (cell.element === cellElement) {
+      this.getFocusablesFrom(cellElement)[0]?.focus();
     }
   };
 
@@ -270,7 +276,7 @@ class GridNavigationProcessor {
   };
 
   private findFocusedCell(focusedElement: HTMLElement): null | FocusedCell {
-    const cellElement = focusedElement.closest('td,th') as null | HTMLTableCellElement;
+    const cellElement = getClosestCell(focusedElement);
     const rowElement = cellElement?.closest('tr');
 
     if (!cellElement || !rowElement) {
@@ -286,7 +292,7 @@ class GridNavigationProcessor {
     const cellFocusables = this.getFocusablesFrom(cellElement);
     const elementIndex = cellFocusables.indexOf(focusedElement);
 
-    return { rowIndex, colIndex, rowElement, cellElement, element: focusedElement, elementIndex };
+    return { rowIndex, colIndex, element: focusedElement, elementIndex };
   }
 
   private getNextFocusable(from: FocusedCell, delta: { y: number; x: number }) {
@@ -298,7 +304,8 @@ class GridNavigationProcessor {
     }
 
     // Return next interactive cell content element if available.
-    const cellFocusables = this.getFocusablesFrom(from.cellElement);
+    const cellElement = getClosestCell(from.element);
+    const cellFocusables = cellElement ? this.getFocusablesFrom(cellElement) : [];
     const nextElementIndex = from.elementIndex + delta.x;
     if (delta.x && from.elementIndex !== -1 && 0 <= nextElementIndex && nextElementIndex < cellFocusables.length) {
       return cellFocusables[nextElementIndex];
@@ -312,7 +319,7 @@ class GridNavigationProcessor {
     }
 
     // When target cell matches the current cell it means we reached the left or right boundary.
-    if (targetCell === from.cellElement && delta.x !== 0) {
+    if (targetCell === cellElement && delta.x !== 0) {
       return null;
     }
 

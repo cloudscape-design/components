@@ -1,6 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+export function getClosestCell(target: Element): null | HTMLTableCellElement {
+  return target.closest('td,th') as null | HTMLTableCellElement;
+}
+
 /**
  * Returns true if the target element or one of its parents is a dialog or is marked with data-awsui-table-suppress-navigation attribute.
  * This is used to suppress navigation for interactive content without a need to use a custom suppression check.
@@ -9,8 +13,7 @@ export function defaultIsSuppressed(target: Element) {
   let current: null | Element = target;
   while (current) {
     // Stop checking for parents upon reaching the cell element as the function only aims at the cell content.
-    const tagName = current.tagName.toLowerCase();
-    if (tagName === 'td' || tagName === 'th') {
+    if (current instanceof HTMLTableCellElement) {
       return false;
     }
     if (
