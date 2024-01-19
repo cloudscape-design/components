@@ -46,10 +46,7 @@ export default function DatePickerScenario() {
         <DateRangePicker
           value={value}
           locale={'en'}
-          i18nStrings={{
-            ...i18nStrings,
-            formatAbsoluteRange: ({ startDate, endDate }) => `${startDate} — ${endDate}`,
-          }}
+          i18nStrings={i18nStrings}
           placeholder={'Filter by a date and time range'}
           onChange={e => setValue(e.detail.value)}
           relativeOptions={[]}
@@ -58,16 +55,14 @@ export default function DatePickerScenario() {
           rangeSelectorMode={'absolute-only'}
           isDateEnabled={date => date.getDate() !== 15}
           getTimeOffset={getTimeOffset}
+          formatAbsoluteRange={({ startDate, endDate }) => `${startDate} — ${endDate}`}
         />
         <hr />
         <h2>ISO 8601 without time offset</h2>
         <DateRangePicker
           value={value}
           locale={'en'}
-          i18nStrings={{
-            ...i18nStrings,
-            formatAbsoluteRange: ({ startDate, endDate }) => `${startDate.slice(0, -6)} — ${endDate.slice(0, -6)}`,
-          }}
+          i18nStrings={i18nStrings}
           placeholder={'Filter by a date and time range'}
           onChange={e => setValue(e.detail.value)}
           relativeOptions={[]}
@@ -76,6 +71,7 @@ export default function DatePickerScenario() {
           rangeSelectorMode={'absolute-only'}
           isDateEnabled={date => date.getDate() !== 15}
           getTimeOffset={getTimeOffset}
+          formatAbsoluteRange={({ startDate, endDate }) => `${startDate.slice(0, -6)} — ${endDate.slice(0, -6)}`}
         />
         <hr />
         <h2>Use case 1</h2>
@@ -88,16 +84,7 @@ export default function DatePickerScenario() {
             <DateRangePicker
               value={value}
               locale={locale}
-              i18nStrings={{
-                ...i18nStrings,
-                formatAbsoluteRange: ({ startDate, endDate }) => {
-                  const { format } = new Intl.DateTimeFormat(locale, {
-                    dateStyle: 'long',
-                    timeZone: timezoneName,
-                  });
-                  return `${format(new Date(startDate))} — ${format(new Date(endDate))}`;
-                },
-              }}
+              i18nStrings={i18nStrings}
               placeholder={'Filter by a date and time range'}
               onChange={e => setValue(e.detail.value)}
               relativeOptions={[]}
@@ -107,6 +94,13 @@ export default function DatePickerScenario() {
               isDateEnabled={date => date.getDate() !== 15}
               getTimeOffset={getTimeOffset}
               dateOnly={true}
+              formatAbsoluteRange={({ startDate, endDate }) => {
+                const { format } = new Intl.DateTimeFormat(locale, {
+                  dateStyle: 'long',
+                  timeZone: timezoneName,
+                });
+                return `${format(new Date(startDate))} — ${format(new Date(endDate))}`;
+              }}
             />
           </Grid>
         ))}
@@ -119,16 +113,7 @@ export default function DatePickerScenario() {
             <DateRangePicker
               value={value}
               locale={locale}
-              i18nStrings={{
-                ...i18nStrings,
-                formatAbsoluteRange: ({ startDate, endDate }) =>
-                  (
-                    new Intl.DateTimeFormat(locale, {
-                      dateStyle: 'long',
-                      timeZone: timezoneName,
-                    }) as DateTimeFormat
-                  ).formatRange(new Date(startDate), new Date(endDate)),
-              }}
+              i18nStrings={i18nStrings}
               placeholder={'Filter by a date and time range'}
               onChange={e => setValue(e.detail.value)}
               relativeOptions={[]}
@@ -138,6 +123,14 @@ export default function DatePickerScenario() {
               isDateEnabled={date => date.getDate() !== 15}
               getTimeOffset={getTimeOffset}
               dateOnly={true}
+              formatAbsoluteRange={({ startDate, endDate }) =>
+                (
+                  new Intl.DateTimeFormat(locale, {
+                    dateStyle: 'long',
+                    timeZone: timezoneName,
+                  }) as DateTimeFormat
+                ).formatRange(new Date(startDate), new Date(endDate))
+              }
             />
           </Grid>
         ))}
@@ -148,10 +141,7 @@ export default function DatePickerScenario() {
             <DateRangePicker
               value={value}
               locale={locale}
-              i18nStrings={{
-                ...i18nStrings,
-                formatAbsoluteRange: ({ startDate, endDate }) => `${format2(startDate)} — ${format2(endDate)}`,
-              }}
+              i18nStrings={i18nStrings}
               placeholder={'Filter by a date and time range'}
               onChange={e => setValue(e.detail.value)}
               relativeOptions={[]}
@@ -161,6 +151,7 @@ export default function DatePickerScenario() {
               isDateEnabled={date => date.getDate() !== 15}
               getTimeOffset={getTimeOffset}
               dateOnly={false}
+              formatAbsoluteRange={({ startDate, endDate }) => `${format2(startDate)} — ${format2(endDate)}`}
             />
           </Grid>
         ))}
@@ -171,10 +162,7 @@ export default function DatePickerScenario() {
             <DateRangePicker
               value={value}
               locale={locale}
-              i18nStrings={{
-                ...i18nStrings,
-                formatAbsoluteRange: ({ startDate, endDate }) => `${format4(startDate)} — ${format4(endDate)}`,
-              }}
+              i18nStrings={i18nStrings}
               placeholder={'Filter by a date and time range'}
               onChange={e => setValue(e.detail.value)}
               relativeOptions={[]}
@@ -184,6 +172,7 @@ export default function DatePickerScenario() {
               isDateEnabled={date => date.getDate() !== 15}
               getTimeOffset={getTimeOffset}
               dateOnly={true}
+              formatAbsoluteRange={({ startDate, endDate }) => `${format4(startDate)} — ${format4(endDate)}`}
             />
           </Grid>
         ))}

@@ -44,7 +44,7 @@ function renderDateRange({
   range: null | DateRangePickerProps.Value;
   placeholder?: string;
   formatRelativeRange: DateRangePickerProps.I18nStrings['formatRelativeRange'];
-  formatAbsoluteRange?: DateRangePickerProps.I18nStrings['formatAbsoluteRange'];
+  formatAbsoluteRange?: DateRangePickerProps['formatAbsoluteRange'];
   timeOffset: { startDate?: number; endDate?: number };
   locale: string;
 }) {
@@ -127,6 +127,7 @@ const DateRangePicker = React.forwardRef(
       expandToViewport = false,
       rangeSelectorMode = 'default',
       customAbsoluteRangeControl,
+      formatAbsoluteRange,
       ...rest
     }: DateRangePickerProps,
     ref: Ref<DateRangePickerProps.Ref>
@@ -253,7 +254,7 @@ const DateRangePicker = React.forwardRef(
       range: value,
       placeholder,
       formatRelativeRange,
-      formatAbsoluteRange: i18nStrings?.formatAbsoluteRange,
+      formatAbsoluteRange,
       timeOffset: normalizedTimeOffset,
       locale: normalizedLocale,
     });

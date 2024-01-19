@@ -108,6 +108,23 @@ export interface DateRangePickerBaseProps {
    * Default: the user's current time offset as provided by the browser.
    */
   getTimeOffset?: DateRangePickerProps.GetTimeOffsetFunction;
+
+  /**
+   * Formatting function for absolute ranges.
+   * This function must convert an absolute range to a human-readable string, and it is called with the following parameters:
+   * * `startDate`: (string) The chosen start date in ISO8601 format, e.g.: 2024-01-18T08:52:23+02:00 (or 2024-01-18 when `dateOnly` is true).
+   * * `endDate`: (string) The chosen start date in ISO8601 format, e.g.: 2024-01-18T08:52:23+02:00 (or 2024-01-18 when `dateOnly` is true).
+   * * `locale`: (string) locale which corresponds to the `locale` property or is determined based on the page and browser locales if not specified.
+   */
+  formatAbsoluteRange?: ({
+    startDate,
+    endDate,
+    locale,
+  }: {
+    startDate: string;
+    endDate: string;
+    locale: string;
+  }) => string;
 }
 export interface DateRangePickerProps
   extends BaseComponentProps,
@@ -303,23 +320,6 @@ export namespace DateRangePickerProps {
      * This function must convert a relative range to a human-readable string.
      */
     formatRelativeRange?: (value: RelativeValue) => string;
-
-    /**
-     * Formatting function for absolute ranges.
-     * This function must convert an absolute range to a human-readable string, and it is called with the following parameters:
-     * * `startDate`: (string) The chosen start date in ISO8601 format, e.g.: 2024-01-18T08:52:23+02:00 (or 2024-01-18 when `dateOnly` is true).
-     * * `endDate`: (string) The chosen start date in ISO8601 format, e.g.: 2024-01-18T08:52:23+02:00 (or 2024-01-18 when `dateOnly` is true).
-     * * `locale`: (string) locale which corresponds to the `locale` property or is determined based on the page and browser locales if not specified.
-     */
-    formatAbsoluteRange?: ({
-      startDate,
-      endDate,
-      locale,
-    }: {
-      startDate: string;
-      endDate: string;
-      locale: string;
-    }) => string;
 
     /**
      * Formatting function for time units.
