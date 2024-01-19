@@ -155,6 +155,66 @@ export default function DatePickerScenario() {
             />
           </Grid>
         ))}
+        <h2>Use case 3</h2>
+        <h3>
+          Using <code>Intl.DateTimeFormat.format</code>
+        </h3>
+        {locales.map(locale => (
+          <Grid key={`pickers-${locale}`} gridDefinition={[{ colspan: 2 }, { colspan: 10 }]}>
+            <div style={{ textAlign: 'right' }}>{locale}</div>
+            <DateRangePicker
+              value={value}
+              locale={locale}
+              i18nStrings={i18nStrings}
+              placeholder={'Filter by a date and time range'}
+              onChange={e => setValue(e.detail.value)}
+              relativeOptions={[]}
+              isValidRange={isValid}
+              timeInputFormat="hh:mm:ss"
+              rangeSelectorMode={'absolute-only'}
+              isDateEnabled={date => date.getDate() !== 15}
+              getTimeOffset={getTimeOffset}
+              dateOnly={true}
+              formatAbsoluteRange={({ startDate, endDate }) => {
+                const { format } = new Intl.DateTimeFormat(locale, {
+                  dateStyle: 'short',
+                  timeZone: timezoneName,
+                });
+                return `${format(new Date(startDate))} — ${format(new Date(endDate))}`;
+              }}
+            />
+          </Grid>
+        ))}
+        <h3>
+          Using <code>Intl.DateTimeFormat.formatRange</code>
+        </h3>
+        {locales.map(locale => (
+          <Grid key={`pickers-${locale}`} gridDefinition={[{ colspan: 2 }, { colspan: 10 }]}>
+            <div style={{ textAlign: 'right' }}>{locale}</div>
+            <DateRangePicker
+              value={value}
+              locale={locale}
+              i18nStrings={i18nStrings}
+              placeholder={'Filter by a date and time range'}
+              onChange={e => setValue(e.detail.value)}
+              relativeOptions={[]}
+              isValidRange={isValid}
+              timeInputFormat="hh:mm:ss"
+              rangeSelectorMode={'absolute-only'}
+              isDateEnabled={date => date.getDate() !== 15}
+              getTimeOffset={getTimeOffset}
+              dateOnly={true}
+              formatAbsoluteRange={({ startDate, endDate }) =>
+                (
+                  new Intl.DateTimeFormat(locale, {
+                    dateStyle: 'short',
+                    timeZone: timezoneName,
+                  }) as DateTimeFormat
+                ).formatRange(new Date(startDate), new Date(endDate))
+              }
+            />
+          </Grid>
+        ))}
         <h2>Use case 4</h2>
         {locales.map(locale => (
           <Grid key={`pickers-${locale}`} gridDefinition={[{ colspan: 2 }, { colspan: 10 }]}>
