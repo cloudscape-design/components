@@ -378,6 +378,7 @@ export type ColorsTokenName =
   | 'colorTextControlDisabled'
   | 'colorTextCounter'
   | 'colorTextDisabled'
+  | 'colorTextDisabledInlineEdit'
   | 'colorTextDropdownFooter'
   | 'colorTextDropdownGroupLabel'
   | 'colorTextDropdownHeader'

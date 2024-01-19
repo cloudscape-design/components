@@ -255,7 +255,7 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
   }
 
   &.body-cell-disabled-edit > .body-cell-editor {
-    color: awsui.$color-text-button-normal-default;
+    color: awsui.$color-text-disabled-inline-edit;
   }
 
   &.body-cell-editable {
