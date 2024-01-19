@@ -96,7 +96,7 @@ export function DisabledInlineEditor<ItemType>({
             trackRef={iconRef}
             arrow={position => <Arrow position={position} />}
             renderWithPortal={true}
-            zIndex={7000}
+            zIndex={2000}
           >
             <PopoverBody
               dismissButton={false}
