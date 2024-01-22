@@ -21,7 +21,9 @@ export default function Slider({
   onRangeChange,
   step,
   disabled,
+  error,
   ariaLabel,
+  stepLabels,
   variant = 'default',
   ...rest
 }: SliderProps) {
@@ -42,9 +44,18 @@ export default function Slider({
 
   const percent = value && getPercent(Math.max(Math.min(value, max), min));
 
+  const getStepArray = (step: number) => {
+    let steps = [];
+
+    for (let i = min; i < max; i = i + step) {
+      steps.push(i);
+    }
+    return steps;
+  };
+
   useLayoutEffect(() => {
     if (tooltip.current) {
-      tooltip.current.style.left = `calc(${percent}% - ${tooltipWidth}px / 2`;
+      tooltip.current.style.left = `calc(${percent}% - ${tooltipWidth}px / 2)`;
     }
 
     setTooltipWidth(tooltip.current?.offsetWidth ?? 0);
@@ -78,6 +89,7 @@ export default function Slider({
           ref={range}
           className={clsx(styles['slider-range'], {
             [styles.disabled]: disabled,
+            [styles.error]: error,
           })}
         />
       </div>
@@ -91,7 +103,9 @@ export default function Slider({
             onRangeChange &&
               fireNonCancelableEvent(onRangeChange, { value: [Math.min(Number(event.target.value), rv1 - 1), rv1] });
           }}
-          className={clsx(styles.thumb, styles['thumb-left'])}
+          className={clsx(styles.thumb, styles['thumb-left'], {
+            [styles.error]: error,
+          })}
         />
       )}
       <input
@@ -114,16 +128,62 @@ export default function Slider({
         }}
         className={clsx(styles.thumb, {
           [styles['thumb-right']]: variant === 'range',
+          [styles.error]: error,
         })}
+        list="markers"
         {...baseProps}
       />
+      <datalist id="markers" className={clsx(styles.ticks)}>
+        {step &&
+          getStepArray(step).map(step => (
+            <option
+              style={{
+                left:
+                  (step / (max - min)) * 100 > 100
+                    ? '100%'
+                    : (step / (max - min)) * 100 < 0
+                    ? '0%'
+                    : `${(step / (max - min)) * 100}%`,
+              }}
+              className={clsx(styles.tick)}
+              value={step}
+            ></option>
+          ))}
+      </datalist>
 
       <div className={clsx(styles['slider-labels'])}>
         <span>{min}</span>
+        {stepLabels &&
+          stepLabels.length > 0 &&
+          stepLabels.map(step => {
+            console.log(`${(step / max) * 100}%`);
+
+            return (
+              <span
+                style={{
+                  left: (step / max) * 100 > 100 ? '100%' : (step / max) * 100 < 0 ? '0%' : `${(step / max) * 100}%`,
+                }}
+                className={clsx(styles['slider-reference'])}
+              >
+                {step}
+              </span>
+            );
+          })}
         <span>{max}</span>
       </div>
     </div>
   );
 }
 
+/*
+
+Min: 50
+
+Max: 100
+
+10
+
+((max - min) / labelNum) + min
+
+*/
 applyDisplayName(Slider, 'Slider');

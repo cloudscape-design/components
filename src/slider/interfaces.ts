@@ -50,6 +50,16 @@ export interface SliderProps extends BaseComponentProps {
   disabled?: boolean;
 
   /**
+   * Whether or not the slider has an error.
+   */
+  error?: boolean;
+
+  /**
+   * Stepped labels.
+   */
+  stepLabels?: Array<number>;
+
+  /**
    * Adds an `aria-label` to the native control.
    *
    * Use this if you don't have a visible label for this control.
