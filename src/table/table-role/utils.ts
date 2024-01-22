@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-export function getClosestCell(target: Element): null | HTMLTableCellElement {
-  return target.closest('td,th') as null | HTMLTableCellElement;
+export function getClosestCell(element: Element) {
+  return element.closest('td,th') as null | HTMLTableCellElement;
 }
 
 /**

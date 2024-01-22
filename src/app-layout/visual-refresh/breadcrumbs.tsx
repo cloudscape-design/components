@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
+import { contentHeaderClassName } from '../../internal/utils/content-header-utils';
 import { useAppLayoutInternals } from './context';
 import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
@@ -21,7 +22,7 @@ export default function Breadcrumbs() {
         {
           [styles['has-sticky-background']]: hasStickyBackground,
         },
-        'awsui-context-content-header'
+        contentHeaderClassName
       )}
     >
       {breadcrumbs}

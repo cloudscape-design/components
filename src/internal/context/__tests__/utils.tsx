@@ -5,7 +5,6 @@ import React, { createRef, forwardRef, useCallback, useImperativeHandle, useRef 
 import { render } from '@testing-library/react';
 import {
   FocusableChangeHandler,
-  FocusableDefinition,
   SingleTabStopNavigationContext,
 } from '../../../../lib/components/internal/context/single-tab-stop-navigation-context';
 
@@ -18,9 +17,9 @@ const FakeSingleTabStopNavigationProvider = forwardRef(
     { children, navigationActive }: { children: React.ReactNode; navigationActive: boolean },
     ref: React.Ref<ProviderRef>
   ) => {
-    const focusablesRef = useRef(new Set<FocusableDefinition>());
-    const focusHandlersRef = useRef(new Map<FocusableDefinition, FocusableChangeHandler>());
-    const registerFocusable = useCallback((focusable: FocusableDefinition, changeHandler: FocusableChangeHandler) => {
+    const focusablesRef = useRef(new Set<Element>());
+    const focusHandlersRef = useRef(new Map<Element, FocusableChangeHandler>());
+    const registerFocusable = useCallback((focusable: Element, changeHandler: FocusableChangeHandler) => {
       focusablesRef.current.add(focusable);
       focusHandlersRef.current.set(focusable, changeHandler);
       return () => {
@@ -30,11 +29,10 @@ const FakeSingleTabStopNavigationProvider = forwardRef(
     }, []);
 
     useImperativeHandle(ref, () => ({
-      setCurrentTarget: (focusTarget: null | Element, suppressed: (null | Element)[] = []) => {
+      setCurrentTarget: (focusTarget: null | Element, suppressed: Element[] = []) => {
         focusablesRef.current.forEach(focusable => {
-          const element = focusable.current;
           const handler = focusHandlersRef.current.get(focusable)!;
-          handler(focusTarget, element ? suppressed.includes(element) : false);
+          handler(focusTarget === focusable || suppressed.includes(focusable));
         });
       },
     }));

@@ -295,6 +295,12 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorBorderInputFocused: {
+    description:
+      'The color of focus states for form inputs. For example: input, textarea, autosuggest, datepicker, select, and multiselect.',
+    public: true,
+    themeable: true,
+  },
   colorBorderItemPlaceholder: {
     description: 'The border color for dividers.',
   },
