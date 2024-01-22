@@ -9,6 +9,7 @@ import { TableRole, getTableCellRoleProps } from '../table-role';
 import { useMergeRefs } from '../../internal/hooks/use-merge-refs/index.js';
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context.js';
 import useMouseDownTarget from '../../internal/hooks/use-mouse-down-target.js';
+import { scrollElementIntoView } from '../../internal/utils/scrollable-containers.js';
 
 export interface TableTdElementProps {
   className?: string;
@@ -106,7 +107,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
         // Scroll cell into view when it is focused with keyboard.
         onFocus={event => {
           if (!event.currentTarget.contains(getMouseDownTarget())) {
-            event.target.scrollIntoView?.({ block: 'center' });
+            scrollElementIntoView(event.target, { block: 'center' });
           }
         }}
         onMouseEnter={onMouseEnter}

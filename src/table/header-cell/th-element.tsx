@@ -10,6 +10,7 @@ import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import { TableRole, getTableColHeaderRoleProps } from '../table-role';
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
 import useMouseDownTarget from '../../internal/hooks/use-mouse-down-target';
+import { scrollElementIntoView } from '../../internal/utils/scrollable-containers';
 
 interface TableThElementProps {
   className?: string;
@@ -57,7 +58,7 @@ export function TableThElement({
       // Scroll cell into view when it is focused with keyboard.
       onFocus={event => {
         if (!event.currentTarget.contains(getMouseDownTarget())) {
-          event.target.scrollIntoView?.({ block: 'center' });
+          scrollElementIntoView(event.target, { block: 'center' });
         }
       }}
       className={clsx(
