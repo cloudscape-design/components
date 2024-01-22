@@ -1,6 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+export function getClosestCell(element: Element) {
+  return element.closest('td,th') as null | HTMLTableCellElement;
+}
+
 /**
  * Returns true if the target element or one of its parents is a dialog or is marked with data-awsui-table-suppress-navigation attribute.
  * This is used to suppress navigation for interactive content without a need to use a custom suppression check.
