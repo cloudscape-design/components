@@ -109,7 +109,7 @@ export function TableHeaderCell<ItemType>({
           [styles['header-cell-fake-focus']]: focusedComponent === `sorting-control-${String(columnId)}`,
         })}
         aria-label={
-          column.ariaLabel && !sortingDisabled
+          column.ariaLabel
             ? column.ariaLabel({
                 sorted: sorted,
                 descending: sorted && !!sortingDescending,
