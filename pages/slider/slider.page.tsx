@@ -11,11 +11,10 @@ function Sliders() {
   const [value, setValue] = React.useState<SliderProps.ChangeDetail['value']>(2);
   const [value2, setValue2] = React.useState<SliderProps.ChangeDetail['value']>(2);
   const [value3, setValue3] = React.useState<SliderProps.ChangeDetail['value']>(50);
+  const [value4, setValue4] = React.useState<SliderProps.ChangeDetail['value']>(50);
   const [sliderValue, setSliderValue] = useState(2000);
   const [rangeMin, setRangeMin] = useState(20);
   const [rangeMax, setRangeMax] = useState(80);
-  const [error, setError] = useState(false);
-  const [decimalError, setDecimalError] = useState(false);
   const [error2, setError2] = useState(false);
   const [minValue, setMinValue] = React.useState<any>({ value: '5' });
   const rangeOptions = [{ value: '5' }, { value: '10' }, { value: '15' }, { value: '20' }, { value: '25' }];
@@ -31,47 +30,6 @@ function Sliders() {
 
       <FormField
         constraintText="Units must be a value between 0 and 10,000."
-        label="Slider with error on blur / enter key"
-        errorText={
-          decimalError ? 'Unit must be a whole number' : error ? 'Unit must be between 0 and 10,000.' : undefined
-        }
-      >
-        <Grid gridDefinition={[{ colspan: { default: 8, xs: 4 } }, { colspan: { default: 3, xs: 3 } }]}>
-          <Slider
-            value={value}
-            onChange={({ detail }) => {
-              setValue(detail.value);
-            }}
-            min={0}
-            max={10000}
-            // step={0.5}
-          />
-          <SpaceBetween size="m" alignItems="center" direction="horizontal">
-            <Input
-              type="number"
-              inputMode="numeric"
-              invalid={error || decimalError}
-              onBlur={() => {
-                setDecimalError(value % 1 !== 0);
-                setError(value < 0 || value > 10000);
-              }}
-              onKeyDown={({ detail }) => {
-                if (detail.keyCode === 13) {
-                  setDecimalError(value % 1 !== 0);
-                  setError(value < 0 || value > 10000);
-                }
-              }}
-              value={`${value}`}
-              onChange={({ detail }) => {
-                setValue(Number(detail.value));
-              }}
-            />
-            <Box>Units</Box>
-          </SpaceBetween>
-        </Grid>
-      </FormField>
-      <FormField
-        constraintText="Units must be a value between 0 and 10,000."
         label="Slider with immediate error"
         errorText={
           error2 ? (value2 % 1 !== 0 ? 'Unit must be a whole number' : 'Unit must be between 0 and 10,000.') : undefined
@@ -85,6 +43,8 @@ function Sliders() {
             }}
             min={0}
             max={10000}
+            error={error2}
+            stepLabels={[2500, 5000, 75000]}
           />
           <SpaceBetween size="m" alignItems="center" direction="horizontal">
             <Input
@@ -134,7 +94,18 @@ function Sliders() {
           step={25}
         />
       </FormField>
-      <FormField label="Range slider" description="This doesn't have any validation set up">
+      <FormField label="Slider with reference labels">
+        <Slider
+          value={value4}
+          onChange={({ detail }) => {
+            setValue4(detail.value);
+          }}
+          min={0}
+          max={100}
+          stepLabels={[20, 40, 60, 80]}
+        />
+      </FormField>
+      {/* <FormField label="Range slider" description="This doesn't have any validation set up">
         <Grid
           gridDefinition={[
             { colspan: { default: 4, xs: 2 } },
@@ -167,7 +138,7 @@ function Sliders() {
           min={0}
           max={100}
         />
-      </FormField>
+      </FormField> */}
     </SpaceBetween>
   );
 }
