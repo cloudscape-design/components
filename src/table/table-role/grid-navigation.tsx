@@ -108,9 +108,7 @@ class GridNavigationProcessor {
     setTimeout(() => {
       if (this._table) {
         // Update focused cell indices in case table rows, columns, or firstIndex change.
-        if (this.focusedCell) {
-          this.focusedCell = this.findFocusedCell(this.focusedCell.element);
-        }
+        this.updateFocusedCell(this.focusedCell?.element);
         this.updateFocusTarget();
       }
     }, 0);
@@ -148,19 +146,17 @@ class GridNavigationProcessor {
       return;
     }
 
-    const cell = this.findFocusedCell(event.target);
-    if (!cell) {
+    this.updateFocusedCell(event.target);
+    if (!this.focusedCell) {
       return;
     }
-
-    this.focusedCell = cell;
 
     this.updateFocusTarget();
 
     // Focusing on cell is not eligible when it contains focusable elements in the content.
     // If content focusables are available - move the focus to the first one.
-    const cellElement = getClosestCell(cell.element);
-    if (cell.element === cellElement) {
+    const cellElement = getClosestCell(this.focusedCell.element);
+    if (this.focusedCell.element === cellElement) {
       this.getFocusablesFrom(cellElement)[0]?.focus();
     }
   };
@@ -270,24 +266,26 @@ class GridNavigationProcessor {
     return !element || this.focusables.has(element);
   }
 
-  private findFocusedCell(focusedElement: HTMLElement): null | FocusedCell {
+  private updateFocusedCell(focusedElement?: HTMLElement): void {
+    if (!focusedElement) {
+      return;
+    }
+
     const cellElement = getClosestCell(focusedElement);
     const rowElement = cellElement?.closest('tr');
-
     if (!cellElement || !rowElement) {
-      return this.focusedCell;
+      return;
     }
 
     const colIndex = parseInt(cellElement.getAttribute('aria-colindex') ?? '');
     const rowIndex = parseInt(rowElement.getAttribute('aria-rowindex') ?? '');
     if (isNaN(colIndex) || isNaN(rowIndex)) {
-      return this.focusedCell;
+      return;
     }
 
     const cellFocusables = this.getFocusablesFrom(cellElement);
     const elementIndex = cellFocusables.indexOf(focusedElement);
-
-    return { rowIndex, colIndex, element: focusedElement, elementIndex };
+    this.focusedCell = { rowIndex, colIndex, element: focusedElement, elementIndex };
   }
 
   private getNextFocusable(from: FocusedCell, delta: { y: number; x: number }) {
