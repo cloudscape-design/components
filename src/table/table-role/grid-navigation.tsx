@@ -249,11 +249,11 @@ class GridNavigationProcessor {
 
   private updateFocusTarget() {
     this.focusTarget = this.getSingleFocusable();
-    for (const [focusable, prevIsFocusable] of this.focusables) {
-      const isFocusable = this.focusTarget === focusable || this.isSuppressed(focusable);
-      if (isFocusable !== prevIsFocusable) {
-        this.focusables.set(focusable, isFocusable);
-        this.focusHandlers.get(focusable)!(isFocusable);
+    for (const [focusableElement, isFocusable] of this.focusables) {
+      const newIsFocusable = this.focusTarget === focusableElement || this.isSuppressed(focusableElement);
+      if (newIsFocusable !== isFocusable) {
+        this.focusables.set(focusableElement, newIsFocusable);
+        this.focusHandlers.get(focusableElement)!(newIsFocusable);
       }
     }
   }
