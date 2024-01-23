@@ -2,10 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
-import { TableBodyCell } from '../../../lib/components/table/body-cell';
+import { TableBodyCell, TableBodyCellProps } from '../../../lib/components/table/body-cell';
 import { TableProps } from '../interfaces';
 import { renderHook } from '../../__tests__/render-hook';
 import { useStickyColumns } from '../../../lib/components/table/sticky-columns';
+import wrapper from '../../../lib/components/test-utils/dom';
 import styles from '../../../lib/components/table/body-cell/styles.selectors.js';
 
 const tableRole = 'table';
@@ -45,35 +46,46 @@ const { result } = renderHook(() =>
   useStickyColumns({ visibleColumns: ['id'], stickyColumnsFirst: 0, stickyColumnsLast: 0 })
 );
 
-const TestComponent = ({ isEditing = false, successfulEdit = false }) => {
+type TestBodyCellProps = TableBodyCellProps<typeof testItem> & {
+  isEditable: boolean;
+};
+
+const commonProps: TestBodyCellProps = {
+  column: column,
+  item: testItem,
+  isEditing: false,
+  successfulEdit: false,
+  onEditStart: onEditStart,
+  onEditEnd: onEditEnd,
+  isEditable: true,
+  isPrevSelected: false,
+  isNextSelected: false,
+  isFirstRow: true,
+  isLastRow: true,
+  isSelected: false,
+  wrapLines: false,
+  stickyState: result.current,
+  columnId: 'id',
+  colIndex: 0,
+  tableRole: tableRole,
+  ariaLabels: {
+    activateEditLabel: (column, item) => `Edit ${item.test} ${column.id}`,
+    cancelEditLabel: () => 'cancel edit',
+    submitEditLabel: () => 'submit edit',
+    successfulEditLabel: () => 'edit successful',
+  },
+};
+
+const TestComponent = ({ isEditing = false, successfulEdit = false, ...rest }: Partial<TestBodyCellProps>) => {
   return (
     <table>
       <tbody>
         <tr>
           <TableBodyCell<typeof testItem>
-            column={column}
-            item={testItem}
+            {...commonProps}
+            {...rest}
             isEditing={isEditing}
-            onEditStart={onEditStart}
-            onEditEnd={onEditEnd}
-            ariaLabels={{
-              activateEditLabel: (column, item) => `Edit ${item.test} ${column.id}`,
-              cancelEditLabel: () => 'cancel edit',
-              submitEditLabel: () => 'submit edit',
-              successfulEditLabel: () => 'edit successful',
-            }}
-            isEditable={true}
-            isPrevSelected={false}
-            isNextSelected={false}
-            isFirstRow={true}
-            isLastRow={true}
-            isSelected={false}
-            wrapLines={false}
-            stickyState={result.current}
             successfulEdit={successfulEdit}
-            columnId="id"
-            colIndex={0}
-            tableRole={tableRole}
           />
         </tr>
       </tbody>
@@ -86,29 +98,7 @@ const TestComponent2 = ({ column }: any) => {
     <table>
       <tbody>
         <tr>
-          <TableBodyCell<typeof testItem>
-            column={column}
-            item={testItem}
-            isEditing={true}
-            onEditStart={onEditStart}
-            onEditEnd={onEditEnd}
-            ariaLabels={{
-              activateEditLabel: () => 'activate edit',
-              cancelEditLabel: () => 'cancel edit',
-              submitEditLabel: () => 'submit edit',
-            }}
-            isEditable={true}
-            isPrevSelected={false}
-            isNextSelected={false}
-            isFirstRow={true}
-            isLastRow={true}
-            isSelected={false}
-            wrapLines={false}
-            stickyState={result.current}
-            columnId="id"
-            colIndex={0}
-            tableRole={tableRole}
-          />
+          <TableBodyCell<typeof testItem> {...commonProps} column={column} isEditing={true} isEditable={true} />
         </tr>
       </tbody>
     </table>
@@ -238,6 +228,112 @@ describe('TableBodyCell', () => {
       const successIcon = container.querySelector(bodyCellSuccessIcon$)!;
       fireEvent.mouseDown(successIcon);
       expect(onEditStart).toHaveBeenCalled();
+    });
+  });
+
+  describe('disable inline edit', () => {
+    const disableInlineEditColumn = {
+      ...column,
+      editConfig: {
+        ...column.editConfig,
+        disabledReason: (item: typeof testItem) => (item.test === 'testData' ? 'Cannot edit' : undefined),
+        editingCell: () => <input />,
+      },
+    };
+
+    test('can show disabled reason for disabled edit cells', () => {
+      render(<TestComponent {...commonProps} column={disableInlineEditColumn} />);
+
+      const disabledButton = screen.getByRole('button', { name: 'Edit testData test' });
+      expect(disabledButton).toHaveAccessibleDescription('Cannot edit');
+      expect(disabledButton).toHaveAttribute('aria-disabled');
+    });
+
+    test('activates live region when disabled cell is activated', () => {
+      const { baseElement } = render(
+        <TestComponent {...commonProps} column={disableInlineEditColumn} isEditing={true} />
+      );
+
+      const disabledButton = screen.getByRole('button', { name: 'Edit testData test' });
+      expect(disabledButton).toHaveAccessibleDescription('Cannot edit');
+      expect(disabledButton).toHaveAttribute('aria-disabled');
+
+      const liveRegion = baseElement.querySelector('[aria-live]');
+      expect(liveRegion).toHaveTextContent('Cannot edit');
+    });
+
+    test('dynamically disables inline edit based on disabledReason callback', () => {
+      const { rerender } = render(<TestComponent {...commonProps} column={disableInlineEditColumn} />);
+
+      // Show disabled reason when the callback returns a string
+      expect(screen.getByRole('button', { description: 'Cannot edit' })).toBeInTheDocument();
+
+      // Don't show a disabled reason when the callback returns undefined
+      rerender(
+        <TestComponent
+          {...commonProps}
+          column={{
+            ...disableInlineEditColumn,
+            editConfig: {
+              ...disableInlineEditColumn.editConfig,
+              disabledReason: item => (item.test === 'nomatch' ? 'Cannot edit' : undefined),
+            },
+          }}
+        />
+      );
+      expect(screen.queryByRole('button', { description: 'Cannot edit' })).toBeNull();
+    });
+
+    test('click activates the popover state', () => {
+      const onEditStartMock = jest.fn();
+      const { container } = render(
+        <TestComponent {...commonProps} onEditStart={onEditStartMock} column={disableInlineEditColumn} />
+      );
+
+      // Click on the TD itself
+      fireEvent.click(container.querySelector('[data-inline-editing-active]')!);
+      expect(onEditStartMock).toBeCalled();
+    });
+
+    test('popover can be dismissed by clicking away', () => {
+      const onEditEndMock = jest.fn();
+      render(
+        <div>
+          <button data-testid="outside">Click away</button>
+          <TestComponent {...commonProps} onEditEnd={onEditEndMock} column={disableInlineEditColumn} isEditing={true} />
+        </div>
+      );
+
+      // Click away
+      fireEvent.click(screen.getByTestId('outside'));
+      expect(onEditEndMock).toBeCalledWith(true);
+    });
+
+    test('popover can be dismissed by pressing Escape', () => {
+      const onEditEndMock = jest.fn();
+      render(
+        <TestComponent {...commonProps} onEditEnd={onEditEndMock} column={disableInlineEditColumn} isEditing={true} />
+      );
+
+      const disabledButton = screen.getByRole('button');
+      fireEvent.focus(disabledButton);
+      fireEvent.keyDown(disabledButton, { key: 'Escape' });
+      expect(onEditEndMock).toBeCalledWith(true);
+    });
+
+    test('show and hide lock icon based on hover when popover is not visible', () => {
+      const { container } = render(<TestComponent {...commonProps} column={disableInlineEditColumn} />);
+
+      // No icon by default
+      expect(wrapper(container).findIcon()).toBeNull();
+
+      // Hover over TD element
+      fireEvent.mouseEnter(container.querySelector('[data-inline-editing-active]')!);
+      expect(wrapper(container).findIcon()).not.toBeNull();
+
+      // Remove mouse
+      fireEvent.mouseLeave(container.querySelector('[data-inline-editing-active]')!);
+      expect(wrapper(container).findIcon()).toBeNull();
     });
   });
 });
