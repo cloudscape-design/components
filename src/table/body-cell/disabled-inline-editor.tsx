@@ -2,15 +2,17 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
-import { useClickAway } from './click-away';
+import useHiddenDescription from '../../button-dropdown/utils/use-hidden-description';
 import Icon from '../../icon/internal';
 import PopoverContainer from '../../popover/container';
 import PopoverBody from '../../popover/body';
-import styles from './styles.css.js';
+import Portal from '../../internal/components/portal';
+import { usePortalModeClasses } from '../../internal/hooks/use-portal-mode-classes';
 import Arrow from '../../popover/arrow';
+import { useClickAway } from './click-away';
 import { TableTdElement, TableTdElementProps } from './td-element';
 import { TableBodyCellProps } from './index';
-import useHiddenDescription from '../../button-dropdown/utils/use-hidden-description';
+import styles from './styles.css.js';
 
 interface DisabledInlineEditorProps<ItemType> extends TableBodyCellProps<ItemType> {
   editDisabledReason: string;
@@ -40,6 +42,7 @@ export function DisabledInlineEditor<ItemType>({
 
   const iconRef = useRef(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const portalRef = useRef<HTMLSpanElement>(null);
 
   function handleEscape(event: React.KeyboardEvent): void {
     if (event.key === 'Escape') {
@@ -53,6 +56,7 @@ export function DisabledInlineEditor<ItemType>({
   };
 
   const { targetProps, descriptionEl } = useHiddenDescription(editDisabledReason);
+  const portalClasses = usePortalModeClasses(portalRef);
 
   return (
     <TableTdElement
@@ -90,25 +94,31 @@ export function DisabledInlineEditor<ItemType>({
         {descriptionEl}
       </button>
       {isEditing && (
-        <PopoverContainer
-          size="medium"
-          fixedWidth={false}
-          position="top"
-          trackRef={iconRef}
-          arrow={position => <Arrow position={position} />}
-          renderWithPortal={true}
-          zIndex={2000}
-        >
-          <PopoverBody
-            dismissButton={false}
-            dismissAriaLabel={undefined}
-            header={null}
-            onDismiss={() => {}}
-            overflowVisible="both"
-          >
-            <span aria-live="polite">{editDisabledReason}</span>
-          </PopoverBody>
-        </PopoverContainer>
+        <span ref={portalRef}>
+          <Portal>
+            <span className={portalClasses}>
+              <PopoverContainer
+                size="medium"
+                fixedWidth={false}
+                position="top"
+                trackRef={iconRef}
+                arrow={position => <Arrow position={position} />}
+                renderWithPortal={true}
+                zIndex={2000}
+              >
+                <PopoverBody
+                  dismissButton={false}
+                  dismissAriaLabel={undefined}
+                  header={null}
+                  onDismiss={() => {}}
+                  overflowVisible="both"
+                >
+                  <span aria-live="polite">{editDisabledReason}</span>
+                </PopoverBody>
+              </PopoverContainer>
+            </span>
+          </Portal>
+        </span>
       )}
     </TableTdElement>
   );
