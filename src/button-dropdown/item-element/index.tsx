@@ -23,6 +23,7 @@ const ItemElement = ({
   first = false,
   last,
   hasCategoryHeader,
+  hasExpandableGroups,
   isKeyboardHighlighted = false,
   variant = 'normal',
 }: ItemProps) => {
@@ -51,6 +52,7 @@ const ItemElement = ({
         [styles.first]: first,
         [styles.last]: last,
         [styles['has-category-header']]: hasCategoryHeader,
+        [styles['has-expandable-groups']]: hasExpandableGroups,
         [styles['is-focused']]: isKeyboardHighlighted,
       })}
       role="presentation"
