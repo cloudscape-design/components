@@ -55,8 +55,7 @@ export function InlineEditor<ItemType>({
     onEditEnd({ cancelled, refocusCell: refocusCell });
   }
 
-  async function onSubmitClick(evt: React.FormEvent) {
-    evt.preventDefault();
+  async function onSubmitClick() {
     if (currentEditValue === undefined) {
       finishEdit();
       return;
@@ -112,7 +111,7 @@ export function InlineEditor<ItemType>({
         aria-label={ariaLabels?.activateEditLabel?.(column, item)}
         onKeyDown={handleEscape}
       >
-        <form onSubmit={onSubmitClick} className={styles['body-cell-editor-form']}>
+        <div className={styles['body-cell-editor-form']}>
           <FormField
             stretch={true}
             label={ariaLabel}
@@ -137,10 +136,11 @@ export function InlineEditor<ItemType>({
                   ) : null}
                   <Button
                     ariaLabel={ariaLabels?.submitEditLabel?.(column)}
-                    formAction="submit"
+                    formAction="none"
                     iconName="check"
                     variant="inline-icon"
                     loading={currentEditLoading}
+                    onClick={onSubmitClick}
                   />
                 </SpaceBetween>
                 <LiveRegion>
@@ -151,7 +151,7 @@ export function InlineEditor<ItemType>({
               </span>
             </div>
           </FormField>
-        </form>
+        </div>
       </div>
     </FocusLock>
   );
