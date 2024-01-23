@@ -269,6 +269,11 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
       flex-shrink: 0;
     }
   }
+
+  &.body-cell-disabled-edit > .body-cell-editor {
+    color: awsui.$color-text-disabled-inline-edit;
+  }
+
   &.body-cell-editable {
     position: relative;
     cursor: pointer;
@@ -302,33 +307,40 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
       // It's therefore important to display the focus outline, even when a keyboard user wasn't detected.
       // For example, when an edit button is selected from the VoiceOver rotor menu.
       &:focus-within {
-        padding-right: calc(#{$cell-horizontal-padding} + #{awsui.$space-l});
-        &.body-cell-has-success {
-          // After a successful edit, we display the success icon next to the edit button and need additional padding to not let the text overflow the success icon.
-          padding-right: calc(#{$cell-horizontal-padding} + #{awsui.$space-l} + #{$icon-width-with-spacing});
-        }
-        @include focused-editor-styles;
         @include styles.focus-highlight(
           (
             'vertical': calc(-1 * #{awsui.$space-scaled-xxs}),
             'horizontal': calc(-1 * #{awsui.$space-scaled-xxs}),
           )
         );
+      }
+
+      &:focus-within,
+      &.body-cell-edit-disabled-popover {
+        padding-right: calc(#{$cell-horizontal-padding} + #{awsui.$space-l});
+        &.body-cell-has-success {
+          // After a successful edit, we display the success icon next to the edit button and need additional padding to not let the text overflow the success icon.
+          padding-right: calc(#{$cell-horizontal-padding} + #{awsui.$space-l} + #{$icon-width-with-spacing});
+        }
+        @include focused-editor-styles;
         &.sticky-cell {
           position: sticky;
         }
       }
+
       &:hover {
-        position: relative;
         background-color: awsui.$color-background-dropdown-item-hover;
         border: awsui.$border-divider-list-width solid awsui.$color-border-editable-cell-hover;
         left: calc(-1 * #{awsui.$border-divider-list-width});
         right: calc(-1 * #{awsui.$border-divider-list-width});
-        @include focused-editor-styles;
+
+        position: relative;
+
         &:first-child {
           left: 0;
           right: 0;
         }
+
         & > .body-cell-editor {
           padding-right: calc(#{$edit-button-padding-right} - (2 * #{awsui.$border-divider-list-width}));
         }
@@ -351,6 +363,7 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
         &.sticky-cell {
           position: sticky;
         }
+        @include focused-editor-styles;
       }
     }
   }

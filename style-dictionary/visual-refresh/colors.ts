@@ -174,6 +174,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextControlDisabled: '{colorTextInteractiveDisabled}',
   colorTextCounter: { light: '{colorGrey550}', dark: '{colorGrey450}' },
   colorTextDisabled: { light: '{colorGrey400}', dark: '{colorGrey550}' },
+  colorTextDisabledInlineEdit: { light: '{colorGrey600}', dark: '{colorGrey400}' },
   colorTextDropdownFooter: '{colorTextFormSecondary}',
   colorTextDropdownGroupLabel: '{colorTextGroupLabel}',
   colorTextDropdownHeader: { light: '{colorGrey900}', dark: '{colorGrey100}' },

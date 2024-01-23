@@ -7,9 +7,9 @@ export function getClosestCell(element: Element) {
 
 export function isElementDisabled(element: HTMLElement) {
   if (element instanceof HTMLInputElement || element instanceof HTMLButtonElement) {
-    return element.disabled || element.ariaDisabled === 'true';
+    return element.disabled;
   }
-  return element.ariaDisabled === 'true';
+  return false;
 }
 
 /**
