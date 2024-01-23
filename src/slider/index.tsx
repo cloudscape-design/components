@@ -45,11 +45,12 @@ export default function Slider({
   const percent = value && getPercent(Math.max(Math.min(value, max), min));
 
   const getStepArray = (step: number) => {
-    let steps = [];
+    const steps = [];
 
-    for (let i = min; i < max; i = i + step) {
+    for (let i = min; i <= max; i = i + step) {
       steps.push(i);
     }
+    console.log(steps);
     return steps;
   };
 
@@ -85,6 +86,28 @@ export default function Slider({
           </div>
         )}
         <div className={styles['slider-track']} />
+        <datalist id="markers" className={clsx(styles.datalist)}>
+          {step && getStepArray(step).map((step, index) => <option key={`step-${index}`} value={step}></option>)}
+        </datalist>
+        <div className={clsx(styles.ticks)}>
+          {step &&
+            getStepArray(step).map((step, index) => (
+              <div
+                key={`step-${index}`}
+                style={{
+                  left:
+                    ((step - min) / (max - min)) * 100 > 100
+                      ? '100%'
+                      : ((step - min) / (max - min)) * 100 < 0
+                      ? '0%'
+                      : `${((step - min) / (max - min)) * 100}%`,
+                }}
+                className={clsx(styles.tick, {
+                  [styles['tick-filled']]: value && value > step,
+                })}
+              ></div>
+            ))}
+        </div>
         <div
           ref={range}
           className={clsx(styles['slider-range'], {
@@ -93,6 +116,7 @@ export default function Slider({
           })}
         />
       </div>
+
       {variant === 'range' && (
         <input
           type="range"
@@ -133,35 +157,22 @@ export default function Slider({
         list="markers"
         {...baseProps}
       />
-      <datalist id="markers" className={clsx(styles.ticks)}>
-        {step &&
-          getStepArray(step).map(step => (
-            <option
-              style={{
-                left:
-                  (step / (max - min)) * 100 > 100
-                    ? '100%'
-                    : (step / (max - min)) * 100 < 0
-                    ? '0%'
-                    : `${(step / (max - min)) * 100}%`,
-              }}
-              className={clsx(styles.tick)}
-              value={step}
-            ></option>
-          ))}
-      </datalist>
 
       <div className={clsx(styles['slider-labels'])}>
         <span>{min}</span>
         {stepLabels &&
           stepLabels.length > 0 &&
-          stepLabels.map(step => {
-            console.log(`${(step / max) * 100}%`);
-
+          stepLabels.map((step, index) => {
             return (
               <span
+                key={`step-${index}`}
                 style={{
-                  left: (step / max) * 100 > 100 ? '100%' : (step / max) * 100 < 0 ? '0%' : `${(step / max) * 100}%`,
+                  left:
+                    ((step - min) / (max - min)) * 100 > 100
+                      ? '100%'
+                      : ((step - min) / (max - min)) * 100 < 0
+                      ? '0%'
+                      : `${((step - min) / (max - min)) * 100}%`,
                 }}
                 className={clsx(styles['slider-reference'])}
               >

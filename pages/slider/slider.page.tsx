@@ -8,13 +8,10 @@ import FormField from '~components/form-field';
 import { Grid, Select, Slider, SliderProps } from '~components';
 
 function Sliders() {
-  const [value, setValue] = React.useState<SliderProps.ChangeDetail['value']>(2);
   const [value2, setValue2] = React.useState<SliderProps.ChangeDetail['value']>(2);
   const [value3, setValue3] = React.useState<SliderProps.ChangeDetail['value']>(50);
   const [value4, setValue4] = React.useState<SliderProps.ChangeDetail['value']>(50);
   const [sliderValue, setSliderValue] = useState(2000);
-  const [rangeMin, setRangeMin] = useState(20);
-  const [rangeMax, setRangeMax] = useState(80);
   const [error2, setError2] = useState(false);
   const [minValue, setMinValue] = React.useState<any>({ value: '5' });
   const rangeOptions = [{ value: '5' }, { value: '10' }, { value: '15' }, { value: '20' }, { value: '25' }];
@@ -44,7 +41,7 @@ function Sliders() {
             min={0}
             max={10000}
             error={error2}
-            stepLabels={[2500, 5000, 75000]}
+            stepLabels={[2500, 5000, 7500]}
           />
           <SpaceBetween size="m" alignItems="center" direction="horizontal">
             <Input
@@ -91,7 +88,7 @@ function Sliders() {
           }}
           min={0}
           max={100}
-          step={25}
+          step={10}
         />
       </FormField>
       <FormField label="Slider with reference labels">
