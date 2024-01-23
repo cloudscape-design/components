@@ -31,7 +31,7 @@ const bodyCellError = bodyCell.findFormField().findError().toSelector();
 
 const disabledCell = tableWrapper.findBodyCell(4, 4);
 const disabledCell$ = disabledCell.toSelector();
-const disabledCellLiveRegion$ = disabledCell.find('[aria-live]').toSelector();
+const disabledCellLiveRegion$ = createWrapper().find('[aria-live]').toSelector();
 
 const setupTest = (testFn: (page: BasePageObject) => Promise<void>) => {
   return useBrowser(async browser => {

@@ -250,7 +250,7 @@ describe('TableBodyCell', () => {
     });
 
     test('activates live region when disabled cell is activated', () => {
-      const { container } = render(
+      const { baseElement } = render(
         <TestComponent {...commonProps} column={disableInlineEditColumn} isEditing={true} />
       );
 
@@ -258,7 +258,7 @@ describe('TableBodyCell', () => {
       expect(disabledButton).toHaveAccessibleDescription('Cannot edit');
       expect(disabledButton).toHaveAttribute('aria-disabled');
 
-      const liveRegion = container.querySelector('[aria-live]');
+      const liveRegion = baseElement.querySelector('[aria-live]');
       expect(liveRegion).toHaveTextContent('Cannot edit');
     });
 
