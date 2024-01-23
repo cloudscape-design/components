@@ -127,6 +127,7 @@ export function InlineEditor<ItemType>({
                 <SpaceBetween direction="horizontal" size="xxs">
                   {!currentEditLoading ? (
                     <Button
+                      className={styles['body-cell-editor-cancel-button']}
                       ariaLabel={ariaLabels?.cancelEditLabel?.(column)}
                       formAction="none"
                       iconName="close"
@@ -135,6 +136,7 @@ export function InlineEditor<ItemType>({
                     />
                   ) : null}
                   <Button
+                    className={styles['body-cell-editor-save-button']}
                     ariaLabel={ariaLabels?.submitEditLabel?.(column)}
                     formAction="none"
                     iconName="check"

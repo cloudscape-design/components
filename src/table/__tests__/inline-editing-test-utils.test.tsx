@@ -4,6 +4,7 @@ import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import Table, { TableProps } from '../../../lib/components/table';
+import styles from '../../../lib/components/table/body-cell/styles.css.js';
 
 interface Item {
   id: number;
@@ -72,7 +73,9 @@ describe('Editable Table TestUtils', () => {
     const { wrapper, getByTestId } = renderTable(<Table columnDefinitions={editableColumns} items={defaultItems} />);
     const cellId0 = wrapper.findBodyCell(1, 1)!.getElement()!;
     fireEvent.click(cellId0);
-    const buttons = getByTestId('id-editing-1').closest('form')!.querySelectorAll('button')!;
+    const buttons = getByTestId('id-editing-1')
+      .closest(`.${styles['body-cell-editor-form']}`)!
+      .querySelectorAll('button')!;
     expect(wrapper.findEditingCellCancelButton()!.getElement()!).toBe(buttons[0]);
     expect(wrapper.findEditingCellSaveButton()!.getElement()!).toBe(buttons[1]);
   });

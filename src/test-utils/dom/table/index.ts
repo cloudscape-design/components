@@ -160,10 +160,10 @@ export default class TableWrapper extends ComponentWrapper {
   }
 
   findEditingCellSaveButton(): ElementWrapper | null {
-    return this._findEditingCellControls()?.find('button[type="submit"]') ?? null;
+    return this._findEditingCellControls()?.findByClassName(bodyCellStyles['body-cell-editor-save-button']) ?? null;
   }
 
   findEditingCellCancelButton(): ElementWrapper | null {
-    return this._findEditingCellControls()?.find('button:first-child') ?? null;
+    return this._findEditingCellControls()?.findByClassName(bodyCellStyles['body-cell-editor-cancel-button']) ?? null;
   }
 }

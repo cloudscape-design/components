@@ -239,6 +239,11 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
       }
     }
 
+    &-cancel-button,
+    &-save-button {
+      /* used in test-utils */
+    }
+
     &-row {
       display: flex;
       flex-flow: row nowrap;
