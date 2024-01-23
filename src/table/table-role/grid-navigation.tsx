@@ -8,6 +8,7 @@ import {
   findTableRowByAriaRowIndex,
   findTableRowCellByAriaColIndex,
   getClosestCell,
+  isElementDisabled,
 } from './utils';
 import { FocusedCell, GridNavigationProps } from './interfaces';
 import { KeyCode } from '../../internal/keycode';
@@ -348,6 +349,6 @@ class GridNavigationProcessor {
   }
 
   private getFocusablesFrom(target: HTMLElement) {
-    return getAllFocusables(target).filter(el => this.focusables.has(el));
+    return getAllFocusables(target).filter(el => this.focusables.has(el) && !isElementDisabled(el));
   }
 }

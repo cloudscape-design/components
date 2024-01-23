@@ -5,7 +5,7 @@ import React, { useRef } from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import { GridNavigationProvider } from '../../../../lib/components/table/table-role';
 import { KeyCode } from '../../../../lib/components/internal/keycode';
-import { TestTable, actionsColumn, idColumn, items, nameColumn, valueColumn } from './stubs';
+import { Button, Cell, TestTable, actionsColumn, idColumn, items, nameColumn, valueColumn } from './stubs';
 
 function readActiveElement() {
   return document.activeElement ? formatElement(document.activeElement) : null;
@@ -259,7 +259,7 @@ test('all elements focus is restored if table changes role after being rendered 
   ]);
 });
 
-test('does not override tab index for programmatically focused elements', () => {
+test('ignores disabled elements', () => {
   function TestComponent() {
     const tableRef = useRef<HTMLTableElement>(null);
     return (
@@ -267,11 +267,15 @@ test('does not override tab index for programmatically focused elements', () => 
         <table role="grid" ref={tableRef}>
           <tbody>
             <tr aria-rowindex={1}>
-              <td aria-colindex={1}>cell-1-1</td>
-              <td aria-colindex={2}>cell-1-2</td>
-              <td aria-colindex={3}>
-                cell-1-3 <button tabIndex={-1}>Programmatically focusable</button>
-              </td>
+              <Cell tag="td" aria-colindex={1}>
+                Cell
+              </Cell>
+              <Cell tag="td" aria-colindex={2}>
+                <Button>Active</Button>
+              </Cell>
+              <Cell tag="td" aria-colindex={3}>
+                <Button disabled={true}>Inactive</Button>
+              </Cell>
             </tr>
           </tbody>
         </table>
@@ -280,9 +284,15 @@ test('does not override tab index for programmatically focused elements', () => 
   }
 
   const { container } = render(<TestComponent />);
-  const button = container.querySelector('button')!;
+  const table = container.querySelector('table')!;
+  const cell = container.querySelector('td')!;
 
-  button.focus();
-  expect(button).toHaveFocus();
-  expect(button).toHaveAttribute('tabIndex', '-1');
+  cell.focus();
+  expect(readActiveElement()).toEqual('TD[Cell]');
+
+  fireEvent.keyDown(table, { keyCode: KeyCode.right });
+  expect(readActiveElement()).toEqual('BUTTON[Active]');
+
+  fireEvent.keyDown(table, { keyCode: KeyCode.right });
+  expect(readActiveElement()).toEqual('TD[Inactive]');
 });

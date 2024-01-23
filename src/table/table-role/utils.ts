@@ -5,6 +5,13 @@ export function getClosestCell(element: Element) {
   return element.closest('td,th') as null | HTMLTableCellElement;
 }
 
+export function isElementDisabled(element: HTMLElement) {
+  if (element instanceof HTMLInputElement || element instanceof HTMLButtonElement) {
+    return element.disabled || element.ariaDisabled === 'true';
+  }
+  return element.ariaDisabled === 'true';
+}
+
 /**
  * Returns true if the target element or one of its parents is a dialog or is marked with data-awsui-table-suppress-navigation attribute.
  * This is used to suppress navigation for interactive content without a need to use a custom suppression check.

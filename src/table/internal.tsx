@@ -460,6 +460,7 @@ const InternalTable = React.forwardRef(
                                 tableRole={tableRole}
                               >
                                 <SelectionControl
+                                  tableRole={tableRole}
                                   onFocusDown={moveFocusDown}
                                   onFocusUp={moveFocusUp}
                                   onShiftToggle={updateShiftToggle}
