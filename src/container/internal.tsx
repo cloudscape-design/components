@@ -6,7 +6,7 @@ import { ContainerProps } from './interfaces';
 import { getBaseProps } from '../internal/base-component';
 import { useAppLayoutContext } from '../internal/context/app-layout-context';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { contentHeaderClassName } from '../internal/utils/content-header-utils';
+import { getContentHeaderClassName } from '../internal/utils/content-header-utils';
 import { StickyHeaderContext, useStickyHeader } from './use-sticky-header';
 import { useDynamicOverlap } from '../internal/hooks/use-dynamic-overlap';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
@@ -157,7 +157,7 @@ export default function InternalContainer({
                 isRefresh && styles.refresh,
                 styles.header,
                 styles[`header-variant-${variant}`],
-                shouldRemoveHighContrastHeader && styles['remove-high-contrast-header'],
+                shouldRemoveHighContrastHeader() && styles['remove-high-contrast-header'],
                 {
                   [styles['header-sticky-disabled']]: __stickyHeader && !isSticky,
                   [styles['header-sticky-enabled']]: isSticky,
@@ -172,7 +172,7 @@ export default function InternalContainer({
               ref={headerMergedRef}
             >
               {__darkHeader ? (
-                <div className={clsx(styles['dark-header'], contentHeaderClassName)}>{header}</div>
+                <div className={clsx(styles['dark-header'], getContentHeaderClassName())}>{header}</div>
               ) : (
                 header
               )}
@@ -183,7 +183,7 @@ export default function InternalContainer({
           className={clsx(
             styles.content,
             fitHeight && styles['content-fit-height'],
-            shouldRemoveHighContrastHeader && styles['remove-high-contrast-header'],
+            shouldRemoveHighContrastHeader() && styles['remove-high-contrast-header'],
             {
               [styles['with-paddings']]: !disableContentPaddings,
             }
