@@ -467,7 +467,9 @@ Object {
   ],
   "table": Array [
     "awsui_body-cell-edit-active_c6tup",
+    "awsui_body-cell-editor-cancel-button_c6tup",
     "awsui_body-cell-editor-controls_c6tup",
+    "awsui_body-cell-editor-save-button_c6tup",
     "awsui_body-cell-editor_c6tup",
     "awsui_body-cell_c6tup",
     "awsui_empty_wih1l",
