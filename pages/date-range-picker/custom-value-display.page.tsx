@@ -10,7 +10,7 @@ type DateTimeFormat = Intl.DateTimeFormat & {
 
 const locales = ['de', 'en-GB', 'en', 'es', 'fr', 'id', 'it', 'ja', 'ko', 'pt-BR', 'th', 'tr', 'zh-CN', 'zh-TW'];
 
-const timezoneName = 'America/Bogota';
+const timezoneName = 'Africa/Cairo';
 const getTimeOffset = () => -5 * 60;
 
 export default function DatePickerScenario() {
@@ -38,7 +38,6 @@ export default function DatePickerScenario() {
           isValidRange={isValid}
           timeInputFormat="hh:mm:ss"
           rangeSelectorMode={'absolute-only'}
-          isDateEnabled={date => date.getDate() !== 15}
           getTimeOffset={getTimeOffset}
         />
         <hr />
@@ -53,7 +52,6 @@ export default function DatePickerScenario() {
           isValidRange={isValid}
           timeInputFormat="hh:mm:ss"
           rangeSelectorMode={'absolute-only'}
-          isDateEnabled={date => date.getDate() !== 15}
           getTimeOffset={getTimeOffset}
           formatAbsoluteRange={({ startDate, endDate }) => `${startDate} — ${endDate}`}
         />
@@ -69,9 +67,8 @@ export default function DatePickerScenario() {
           isValidRange={isValid}
           timeInputFormat="hh:mm:ss"
           rangeSelectorMode={'absolute-only'}
-          isDateEnabled={date => date.getDate() !== 15}
           getTimeOffset={getTimeOffset}
-          formatAbsoluteRange={({ startDate, endDate }) => `${startDate.slice(0, -6)} — ${endDate.slice(0, -6)}`}
+          formatAbsoluteRange={({ startDate, endDate }) => `${startDate.slice(0, 19)} — ${endDate.slice(0, 19)}`}
         />
         <hr />
         <h2>Use case 1</h2>
@@ -91,7 +88,6 @@ export default function DatePickerScenario() {
               isValidRange={isValid}
               timeInputFormat="hh:mm:ss"
               rangeSelectorMode={'absolute-only'}
-              isDateEnabled={date => date.getDate() !== 15}
               getTimeOffset={getTimeOffset}
               dateOnly={true}
               formatAbsoluteRange={({ startDate, endDate }) => {
@@ -148,7 +144,6 @@ export default function DatePickerScenario() {
               isValidRange={isValid}
               timeInputFormat="hh:mm:ss"
               rangeSelectorMode={'absolute-only'}
-              isDateEnabled={date => date.getDate() !== 15}
               getTimeOffset={getTimeOffset}
               dateOnly={false}
               formatAbsoluteRange={({ startDate, endDate }) => `${format2(startDate)} — ${format2(endDate)}`}
@@ -172,7 +167,6 @@ export default function DatePickerScenario() {
               isValidRange={isValid}
               timeInputFormat="hh:mm:ss"
               rangeSelectorMode={'absolute-only'}
-              isDateEnabled={date => date.getDate() !== 15}
               getTimeOffset={getTimeOffset}
               dateOnly={true}
               formatAbsoluteRange={({ startDate, endDate }) => {
@@ -229,10 +223,56 @@ export default function DatePickerScenario() {
               isValidRange={isValid}
               timeInputFormat="hh:mm:ss"
               rangeSelectorMode={'absolute-only'}
-              isDateEnabled={date => date.getDate() !== 15}
               getTimeOffset={getTimeOffset}
               dateOnly={true}
               formatAbsoluteRange={({ startDate, endDate }) => `${format4(startDate)} — ${format4(endDate)}`}
+            />
+          </Grid>
+        ))}
+        <h2>Use case 5</h2>
+        {locales.map(locale => (
+          <Grid key={`pickers-${locale}`} gridDefinition={[{ colspan: 2 }, { colspan: 10 }]}>
+            <div style={{ textAlign: 'right' }}>{locale}</div>
+            <DateRangePicker
+              value={value}
+              locale={locale}
+              i18nStrings={i18nStrings}
+              placeholder={'Filter by a date and time range'}
+              onChange={e => setValue(e.detail.value)}
+              relativeOptions={[]}
+              isValidRange={isValid}
+              timeInputFormat="hh:mm:ss"
+              rangeSelectorMode={'absolute-only'}
+              getTimeOffset={getTimeOffset}
+              dateOnly={true}
+              formatAbsoluteRange={({ startDate, endDate }) => `${format5(startDate)} — ${format5(endDate)}`}
+            />
+          </Grid>
+        ))}
+        <h2>Long format</h2>
+        {locales.map(locale => (
+          <Grid key={`pickers-${locale}`} gridDefinition={[{ colspan: 2 }, { colspan: 10 }]}>
+            <div style={{ textAlign: 'right' }}>{locale}</div>
+            <DateRangePicker
+              value={value}
+              locale={locale}
+              i18nStrings={i18nStrings}
+              placeholder={'Filter by a date and time range'}
+              onChange={e => setValue(e.detail.value)}
+              relativeOptions={[]}
+              isValidRange={isValid}
+              timeInputFormat="hh:mm:ss"
+              rangeSelectorMode={'absolute-only'}
+              getTimeOffset={() => -480}
+              dateOnly={true}
+              formatAbsoluteRange={({ startDate, endDate }) =>
+                (
+                  new Intl.DateTimeFormat(locale, {
+                    timeStyle: 'long',
+                    timeZone: timezoneName,
+                  }) as DateTimeFormat
+                ).formatRange(new Date(startDate), new Date(endDate))
+              }
             />
           </Grid>
         ))}
@@ -247,4 +287,8 @@ function format2(s: string) {
 
 function format4(s: string) {
   return s.slice(0, 10).replace(/-/g, '/');
+}
+
+function format5(s: string) {
+  return s.slice(0, 19).replace(/-/g, '/').replace('T', ' ');
 }
