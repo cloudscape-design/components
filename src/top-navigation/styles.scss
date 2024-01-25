@@ -56,6 +56,10 @@
   visibility: hidden;
 }
 
+.identity-slot {
+  display: contents;
+}
+
 .identity {
   min-width: 0;
 

@@ -57,7 +57,7 @@ export function useTopNavigation({ identity, search, utilities }: UseTopNavigati
   // The component works by calculating the possible resize states that it can
   // be in, and having a state variable to track which state we're currently in.
   const hasSearch = !!search;
-  const hasTitleWithLogo = identity && !!identity.logo && !!identity.title;
+  const hasTitleWithLogo = identity && ((!!identity.logo && !!identity.title) || !!identity.custom);
   const responsiveStates = useMemo<ReadonlyArray<ResponsiveState>>(() => {
     return generateResponsiveStateKeys(utilities, hasSearch, hasTitleWithLogo);
   }, [utilities, hasSearch, hasTitleWithLogo]);
@@ -72,6 +72,8 @@ export function useTopNavigation({ identity, search, utilities }: UseTopNavigati
   // It's easier to render all of these utilities separately rather than figuring out
   // spacing token values, icon sizes, text widths, etc.
   const [responsiveState, setResponsiveState] = useState<ResponsiveState | undefined>();
+
+  const identitySelector = identity.custom ? `.${styles['identity-slot']}` : `.${styles.identity}`;
   const recalculateFit = useCallback(() => {
     if (!mainRef?.current || !virtualRef.current) {
       setResponsiveState(responsiveStates[0]);
@@ -91,7 +93,7 @@ export function useTopNavigation({ identity, search, utilities }: UseTopNavigati
       availableWidth,
 
       // Get widths from the hidden top navigation
-      fullIdentityWidth: virtualRef.current.querySelector(`.${styles.identity}`)!.getBoundingClientRect().width,
+      fullIdentityWidth: virtualRef.current.querySelector(identitySelector)!.getBoundingClientRect().width,
       titleWidth: virtualRef.current.querySelector(`.${styles.title}`)?.getBoundingClientRect().width ?? 0,
       searchSlotWidth: virtualRef.current.querySelector(`.${styles.search}`)?.getBoundingClientRect().width ?? 0,
       searchUtilityWidth: virtualRef.current.querySelector('[data-utility-special="search"]')!.getBoundingClientRect()
@@ -110,7 +112,7 @@ export function useTopNavigation({ identity, search, utilities }: UseTopNavigati
         .getBoundingClientRect().width,
     };
     setResponsiveState(determineBestResponsiveState(responsiveStates, sizeConfiguration));
-  }, [responsiveStates, hasSearch]);
+  }, [identitySelector, responsiveStates, hasSearch]);
 
   const [, containerQueryRef] = useContainerQuery(() => {
     recalculateFit();

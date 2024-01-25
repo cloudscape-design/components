@@ -14977,13 +14977,19 @@ Object {
 * \`logo\` ({ src: string, alt: string }) - Specifies the logo for the product. Use fixed width and height for SVG images to ensure proper rendering.
 * \`href\` (string) - Specifies the \`href\` that the header links to.
 * \`onFollow\` (() => void) - Specifies the event handler called when the identity is clicked without any modifier keys.
+* \`custom\` (element) - Specifies custom content to be rendered as identity. When used, all other properties are ignored.
 ",
       "inlineType": Object {
         "name": "TopNavigationProps.Identity",
         "properties": Array [
           Object {
+            "name": "custom",
+            "optional": true,
+            "type": "React.ReactNode",
+          },
+          Object {
             "name": "href",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {

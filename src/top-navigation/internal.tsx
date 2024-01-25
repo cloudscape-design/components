@@ -20,6 +20,7 @@ import styles from './styles.css.js';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import { SomeRequired } from '../internal/types';
 import { useInternalI18n } from '../i18n/context';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 export type InternalTopNavigationProps = SomeRequired<TopNavigationProps, 'utilities'> & InternalBaseComponentProps;
 
@@ -42,6 +43,10 @@ export default function InternalTopNavigation({
   const isMediumViewport = breakpoint === 'xxs';
   const isLargeViewport = breakpoint === 's';
   const i18n = useInternalI18n('top-navigation');
+
+  if (!identity.custom && !identity.href) {
+    warnOnce('TopNavigation', 'Must specify identity `href` or use `identity.custom slot`.');
+  }
 
   const onIdentityClick = (event: React.MouseEvent) => {
     if (isPlainLeftClick(event)) {
@@ -91,23 +96,27 @@ export default function InternalTopNavigation({
         })}
       >
         <div className={styles['padding-box']}>
-          {showIdentity && (
-            <div className={clsx(styles.identity, !identity.logo && styles['no-logo'])}>
-              <a className={styles['identity-link']} href={identity.href} onClick={onIdentityClick}>
-                {identity.logo && (
-                  <img
-                    role="img"
-                    src={identity.logo?.src}
-                    alt={identity.logo?.alt}
-                    className={clsx(styles.logo, {
-                      [styles.narrow]: isNarrowViewport,
-                    })}
-                  />
-                )}
-                {showTitle && <span className={styles.title}>{identity.title}</span>}
-              </a>
-            </div>
-          )}
+          {showIdentity ? (
+            identity.custom ? (
+              <div className={styles['identity-slot']}>{identity.custom}</div>
+            ) : (
+              <div className={clsx(styles.identity, !identity.logo && styles['no-logo'])}>
+                <a className={styles['identity-link']} href={identity.href} onClick={onIdentityClick}>
+                  {identity.logo && (
+                    <img
+                      role="img"
+                      src={identity.logo?.src}
+                      alt={identity.logo?.alt}
+                      className={clsx(styles.logo, {
+                        [styles.narrow]: isNarrowViewport,
+                      })}
+                    />
+                  )}
+                  {showTitle && <span className={styles.title}>{identity.title}</span>}
+                </a>
+              </div>
+            )
+          ) : null}
 
           {showSearchSlot && (
             <div className={styles.inputs}>

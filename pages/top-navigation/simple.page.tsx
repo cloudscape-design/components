@@ -8,6 +8,7 @@ import longLogo from './logos/long-logo.svg';
 import narrowLogo from './logos/narrow-logo.svg';
 import tallLogo from './logos/tall-logo.svg';
 import { I18N_STRINGS } from './common';
+import { Link } from '~components';
 
 export default function TopNavigationPage() {
   return (
@@ -60,6 +61,18 @@ export default function TopNavigationPage() {
           href: '#',
           logo: { src: tallLogo, alt: 'Only logo, no title' },
           title: 'Tall logo, resized to fit',
+        }}
+      />
+      <br />
+      <TopNavigation
+        i18nStrings={I18N_STRINGS}
+        identity={{
+          custom: (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+              <img role="img" src={logo} alt="Custom Identity" />
+              <Link>Custom Identity</Link>
+            </div>
+          ),
         }}
       />
     </article>
