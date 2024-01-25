@@ -60,6 +60,11 @@ export interface SliderProps extends BaseComponentProps {
   stepLabels?: Array<number>;
 
   /**
+   * Specifies the ID for the trigger component. It uses an automatically generated ID by default.
+   */
+  controlId?: string;
+
+  /**
    * Adds an `aria-label` to the native control.
    *
    * Use this if you don't have a visible label for this control.

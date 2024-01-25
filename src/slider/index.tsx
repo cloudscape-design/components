@@ -9,6 +9,9 @@ import { SliderProps } from './interfaces';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { fireNonCancelableEvent } from '../internal/events';
+import { useFormFieldContext } from '../internal/context/form-field-context';
+import InternalPopover from '../popover/internal.js';
+import Internal from '../input/internal.js';
 
 export { SliderProps };
 
@@ -44,13 +47,14 @@ export default function Slider({
 
   const percent = value && getPercent(Math.max(Math.min(value, max), min));
 
+  const formFieldContext = useFormFieldContext(rest);
+
   const getStepArray = (step: number) => {
     const steps = [];
 
     for (let i = min; i <= max; i = i + step) {
       steps.push(i);
     }
-    console.log(steps);
     return steps;
   };
 
@@ -75,6 +79,9 @@ export default function Slider({
 
   return (
     <div className={styles['slider-container']}>
+      {/* <InternalPopover dismissButton={false} position="top" size="small" content={value}>
+        Hello
+      </InternalPopover> */}
       <div className={styles.slider}>
         {tooltipVisible && variant === 'default' && (
           <div
@@ -86,28 +93,28 @@ export default function Slider({
           </div>
         )}
         <div className={styles['slider-track']} />
-        <datalist id="markers" className={clsx(styles.datalist)}>
-          {step && getStepArray(step).map((step, index) => <option key={`step-${index}`} value={step}></option>)}
-        </datalist>
-        <div className={clsx(styles.ticks)}>
-          {step &&
-            getStepArray(step).map((step, index) => (
-              <div
-                key={`step-${index}`}
-                style={{
-                  left:
-                    ((step - min) / (max - min)) * 100 > 100
-                      ? '100%'
-                      : ((step - min) / (max - min)) * 100 < 0
-                      ? '0%'
-                      : `${((step - min) / (max - min)) * 100}%`,
-                }}
-                className={clsx(styles.tick, {
-                  [styles['tick-filled']]: value && value > step,
-                })}
-              ></div>
-            ))}
-        </div>
+        {step && (
+          <>
+            <div className={clsx(styles.ticks)}>
+              {getStepArray(step).map((step, index) => (
+                <div
+                  key={`step-${index}`}
+                  style={{
+                    left:
+                      ((step - min) / (max - min)) * 100 > 100
+                        ? '100%'
+                        : ((step - min) / (max - min)) * 100 < 0
+                        ? '0%'
+                        : `${((step - min) / (max - min)) * 100}%`,
+                  }}
+                  className={clsx(styles.tick, {
+                    [styles['tick-filled']]: value && value > step,
+                  })}
+                ></div>
+              ))}
+            </div>
+          </>
+        )}
         <div
           ref={range}
           className={clsx(styles['slider-range'], {
@@ -129,11 +136,14 @@ export default function Slider({
           }}
           className={clsx(styles.thumb, styles['thumb-left'], {
             [styles.error]: error,
+            [styles.disabled]: disabled,
           })}
         />
       )}
+
       <input
         aria-label={ariaLabel}
+        aria-labelledby={formFieldContext.ariaLabelledby}
         ref={__internalRootRef}
         type="range"
         min={min}
@@ -153,8 +163,8 @@ export default function Slider({
         className={clsx(styles.thumb, {
           [styles['thumb-right']]: variant === 'range',
           [styles.error]: error,
+          [styles.disabled]: disabled,
         })}
-        list="markers"
         {...baseProps}
       />
 
