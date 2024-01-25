@@ -4,7 +4,24 @@ import React, { useContext, useState } from 'react';
 import { Box, DateRangePicker, DateRangePickerProps, SpaceBetween, Grid, TimeInputProps } from '~components';
 import { i18nStrings, isValid } from './common';
 import AppContext, { AppContextType } from '../app/app-context';
-const locales = ['de', 'en-GB', 'en', 'es', 'fr', 'id', 'it', 'ja', 'ko', 'pt-BR', 'th', 'tr', 'zh-CN', 'zh-TW'];
+const locales = [
+  'ar',
+  'de',
+  'en-GB',
+  'en',
+  'es',
+  'fr',
+  'he',
+  'id',
+  'it',
+  'ja',
+  'ko',
+  'pt-BR',
+  'th',
+  'tr',
+  'zh-CN',
+  'zh-TW',
+];
 
 type DemoContext = React.Context<
   AppContextType<{
