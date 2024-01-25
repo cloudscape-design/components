@@ -48,6 +48,7 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
     }
   }
 
+  text-align: start;
   &:not(.body-cell-wrap) {
     white-space: nowrap;
     overflow: hidden;
