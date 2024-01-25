@@ -328,7 +328,7 @@ const DateRangePicker = React.forwardRef(
       placeholder,
       formatRelativeRange,
       absoluteTimeFormat,
-      showTimeOffset: showTimeOffset !== false || !!getTimeOffset,
+      showTimeOffset: showTimeOffset === undefined ? !!getTimeOffset : showTimeOffset,
       timeInputFormat,
       dateOnly,
       timeOffset: normalizedTimeOffset,
