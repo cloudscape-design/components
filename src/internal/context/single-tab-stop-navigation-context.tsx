@@ -1,11 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
-export type FocusableDefinition = React.RefObject<Element>;
-
-export type FocusableChangeHandler = (focusTarget: null | Element, suppressed: boolean) => void;
+export type FocusableChangeHandler = (isFocusable: boolean) => void;
 
 export interface SingleTabStopNavigationOptions {
   tabIndex?: number;
@@ -17,32 +15,27 @@ export interface SingleTabStopNavigationOptions {
  */
 export const SingleTabStopNavigationContext = createContext<{
   navigationActive: boolean;
-  registerFocusable(focusable: FocusableDefinition, handler: FocusableChangeHandler): () => void;
+  registerFocusable(focusable: Element, handler: FocusableChangeHandler): () => void;
 }>({
   navigationActive: false,
   registerFocusable: () => () => {},
 });
 
-export function useSingleTabStopNavigation(focusable: null | FocusableDefinition, options?: { tabIndex?: number }) {
-  const { navigationActive: contextNavigationActive, registerFocusable: contextRegisterFocusable } =
-    useContext(SingleTabStopNavigationContext);
+export function useSingleTabStopNavigation(
+  focusable: null | React.RefObject<Element>,
+  options?: { tabIndex?: number }
+) {
+  const { navigationActive: contextNavigationActive, registerFocusable } = useContext(SingleTabStopNavigationContext);
   const [focusTargetActive, setFocusTargetActive] = useState(false);
-
-  const navigationActive = contextNavigationActive && (!options?.tabIndex || options?.tabIndex >= 0);
-  const registerFocusable = useCallback(
-    (focusable: FocusableDefinition, changeHandler: FocusableChangeHandler) =>
-      navigationActive ? contextRegisterFocusable(focusable, changeHandler) : () => {},
-    [navigationActive, contextRegisterFocusable]
-  );
+  const navigationDisabled = options?.tabIndex && options?.tabIndex < 0;
+  const navigationActive = contextNavigationActive && !navigationDisabled;
 
   useEffect(() => {
-    if (focusable) {
-      const changeHandler = (element: null | Element, suppressed: boolean) =>
-        setFocusTargetActive(focusable.current === element || suppressed);
-      const unregister = registerFocusable(focusable, changeHandler);
+    if (!navigationDisabled && focusable && focusable.current) {
+      const unregister = registerFocusable(focusable.current, isFocusable => setFocusTargetActive(isFocusable));
       return () => unregister();
     }
-  }, [focusable, registerFocusable]);
+  });
 
   let tabIndex = options?.tabIndex;
   if (navigationActive) {

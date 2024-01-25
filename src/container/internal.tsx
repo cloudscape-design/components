@@ -16,6 +16,7 @@ import styles from './styles.css.js';
 import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 import { useModalContext } from '../internal/context/modal-context';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { shouldRemoveHighContrastHeader } from '../internal/utils/content-header-utils';
 
 export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>, InternalBaseComponentProps {
   __stickyHeader?: boolean;
@@ -121,7 +122,6 @@ export default function InternalContainer({
 
   const hasMedia = !!media?.content;
   const mediaPosition = media?.position ?? 'top';
-
   return (
     <div
       {...baseProps}
@@ -153,15 +153,21 @@ export default function InternalContainer({
         {header && (
           <StickyHeaderContext.Provider value={{ isStuck }}>
             <div
-              className={clsx(isRefresh && styles.refresh, styles.header, styles[`header-variant-${variant}`], {
-                [styles['header-sticky-disabled']]: __stickyHeader && !isSticky,
-                [styles['header-sticky-enabled']]: isSticky,
-                [styles['header-dynamic-height']]: hasDynamicHeight,
-                [styles['header-stuck']]: isStuck,
-                [styles['with-paddings']]: !disableHeaderPaddings,
-                [styles['with-hidden-content']]: !children || __hiddenContent,
-                [styles['header-with-media']]: hasMedia,
-              })}
+              className={clsx(
+                isRefresh && styles.refresh,
+                styles.header,
+                styles[`header-variant-${variant}`],
+                shouldRemoveHighContrastHeader && styles['remove-high-contrast-header'],
+                {
+                  [styles['header-sticky-disabled']]: __stickyHeader && !isSticky,
+                  [styles['header-sticky-enabled']]: isSticky,
+                  [styles['header-dynamic-height']]: hasDynamicHeight,
+                  [styles['header-stuck']]: isStuck,
+                  [styles['with-paddings']]: !disableHeaderPaddings,
+                  [styles['with-hidden-content']]: !children || __hiddenContent,
+                  [styles['header-with-media']]: hasMedia,
+                }
+              )}
               {...stickyStyles}
               ref={headerMergedRef}
             >
@@ -174,9 +180,14 @@ export default function InternalContainer({
           </StickyHeaderContext.Provider>
         )}
         <div
-          className={clsx(styles.content, fitHeight && styles['content-fit-height'], {
-            [styles['with-paddings']]: !disableContentPaddings,
-          })}
+          className={clsx(
+            styles.content,
+            fitHeight && styles['content-fit-height'],
+            shouldRemoveHighContrastHeader && styles['remove-high-contrast-header'],
+            {
+              [styles['with-paddings']]: !disableContentPaddings,
+            }
+          )}
         >
           {children}
         </div>
