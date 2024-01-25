@@ -6,13 +6,13 @@ import { i18nStrings, isValid } from './common';
 import AppContext, { AppContextType } from '../app/app-context';
 const locales = ['de', 'en-GB', 'en', 'es', 'fr', 'id', 'it', 'ja', 'ko', 'pt-BR', 'th', 'tr', 'zh-CN', 'zh-TW'];
 
-const getTimeOffset = () => 60;
-
 type DemoContext = React.Context<
   AppContextType<{
     absoluteTimeFormat?: DateRangePickerProps.AbsoluteTimeFormat;
     dateOnly?: boolean;
+    showTimeOffset?: boolean;
     timeInputFormat?: TimeInputProps.Format;
+    timeOffset?: number;
   }>
 >;
 
@@ -68,6 +68,32 @@ export default function DatePickerScenario() {
               <option value="hh">hh</option>
             </select>
           </label>
+          <label>
+            Time offset from UTC in minutes{' '}
+            <input
+              type="number"
+              value={urlParams.timeOffset}
+              onChange={event => {
+                const value = parseInt(event.currentTarget.value);
+                setUrlParams({ timeOffset: isNaN(value) ? 0 : value });
+              }}
+            />
+          </label>
+          <label>
+            Show time offset{' '}
+            <select
+              value={urlParams.showTimeOffset?.toString()}
+              onChange={event =>
+                setUrlParams({
+                  showTimeOffset: event.currentTarget.value === '' ? undefined : event.currentTarget.value === 'true',
+                })
+              }
+            >
+              <option value="true">Yes</option>
+              <option value="false">No</option>
+              <option value="">If time offset is provided</option>
+            </select>
+          </label>
         </SpaceBetween>
         <hr />
         {locales.map(locale => (
@@ -84,11 +110,11 @@ export default function DatePickerScenario() {
               isValidRange={isValid}
               rangeSelectorMode={'absolute-only'}
               isDateEnabled={date => date.getDate() !== 15}
-              getTimeOffset={getTimeOffset}
+              getTimeOffset={urlParams.timeOffset === undefined ? undefined : () => urlParams.timeOffset!}
               absoluteTimeFormat={urlParams.absoluteTimeFormat}
               dateOnly={urlParams.dateOnly}
               timeInputFormat={urlParams.timeInputFormat}
-              showTimeOffset={true}
+              showTimeOffset={urlParams.showTimeOffset}
             />
           </Grid>
         ))}
