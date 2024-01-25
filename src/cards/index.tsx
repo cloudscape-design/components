@@ -149,7 +149,7 @@ const Cards = React.forwardRef(function <T = any>(
                     styles.header,
                     isRefresh && styles['header-refresh'],
                     styles[`header-variant-${computedVariant}`],
-                    shouldRemoveHighContrastHeader && styles['remove-high-contrast-header']
+                    shouldRemoveHighContrastHeader() && styles['remove-high-contrast-header']
                   )}
                 >
                   <CollectionLabelContext.Provider value={{ assignId: setHeaderRef }}>
@@ -173,7 +173,7 @@ const Cards = React.forwardRef(function <T = any>(
                 hasToolsHeader && styles['has-header'],
                 isRefresh && styles.refresh,
                 styles[`header-variant-${computedVariant}`],
-                shouldRemoveHighContrastHeader && styles['remove-high-contrast-header']
+                shouldRemoveHighContrastHeader() && styles['remove-high-contrast-header']
               )}
             >
               {!!renderAriaLive && !!firstIndex && (
