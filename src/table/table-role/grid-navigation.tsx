@@ -193,8 +193,6 @@ class GridNavigationProcessor {
     }
 
     const from = this.focusedCell;
-    const minExtreme = Number.NEGATIVE_INFINITY;
-    const maxExtreme = Number.POSITIVE_INFINITY;
 
     if (this.isSuppressed(document.activeElement) || !this.isRegistered(document.activeElement)) {
       return;
@@ -227,19 +225,19 @@ class GridNavigationProcessor {
 
       case KeyCode.home:
         event.preventDefault();
-        return this.moveFocusBy(from, { y: 0, x: minExtreme });
+        return this.moveFocusBy(from, { y: 0, x: -Infinity });
 
       case KeyCode.end:
         event.preventDefault();
-        return this.moveFocusBy(from, { y: 0, x: maxExtreme });
+        return this.moveFocusBy(from, { y: 0, x: Infinity });
 
       case -KeyCode.home:
         event.preventDefault();
-        return this.moveFocusBy(from, { y: minExtreme, x: minExtreme });
+        return this.moveFocusBy(from, { y: -Infinity, x: -Infinity });
 
       case -KeyCode.end:
         event.preventDefault();
-        return this.moveFocusBy(from, { y: maxExtreme, x: maxExtreme });
+        return this.moveFocusBy(from, { y: Infinity, x: Infinity });
 
       default:
         return;
@@ -324,11 +322,20 @@ class GridNavigationProcessor {
       return null;
     }
 
-    // Return cell interactive content or the cell itself.
     const targetCellFocusables = this.getFocusablesFrom(targetCell);
-    const focusIndex = delta.x < 0 ? targetCellFocusables.length - 1 : delta.x > 0 ? 0 : from.elementIndex;
-    const focusTarget = targetCellFocusables[focusIndex] ?? targetCell;
-    return focusTarget;
+
+    // When delta.x = 0 keep element index if possible.
+    let focusIndex = from.elementIndex;
+    // Use first element index when moving to the right or to extreme left.
+    if ((isFinite(delta.x) && delta.x > 0) || delta.x === -Infinity) {
+      focusIndex = 0;
+    }
+    // Use last element index when moving to the left or to extreme right.
+    if ((isFinite(delta.x) && delta.x < 0) || delta.x === Infinity) {
+      focusIndex = targetCellFocusables.length - 1;
+    }
+
+    return targetCellFocusables[focusIndex] ?? targetCell;
   }
 
   private getSingleFocusable() {

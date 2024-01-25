@@ -82,7 +82,7 @@ test('supports key combination navigation', () => {
   expect(readActiveElement()).toBe('BUTTON[Sort by name]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.end, ctrlKey: true });
-  expect(readActiveElement()).toBe('BUTTON[Delete item id4]');
+  expect(readActiveElement()).toBe('BUTTON[Copy item id4]');
 
   fireEvent.keyDown(table, { keyCode: KeyCode.home, ctrlKey: true });
   expect(readActiveElement()).toBe('BUTTON[Sort by name]');
@@ -295,4 +295,44 @@ test('ignores disabled elements', () => {
 
   fireEvent.keyDown(table, { keyCode: KeyCode.right });
   expect(readActiveElement()).toEqual('TD[Inactive]');
+});
+
+test('respects element order when navigating between extremes', () => {
+  function TestComponent() {
+    const tableRef = useRef<HTMLTableElement>(null);
+    return (
+      <GridNavigationProvider keyboardNavigation={true} pageSize={10} getTable={() => tableRef.current}>
+        <table role="grid" ref={tableRef}>
+          <tbody>
+            <tr aria-rowindex={1}>
+              <Cell tag="td" aria-colindex={1}>
+                <Button>1</Button>
+                <Button>2</Button>
+              </Cell>
+              <Cell tag="td" aria-colindex={2}>
+                <Button>3</Button>
+              </Cell>
+              <Cell tag="td" aria-colindex={3}>
+                <Button>4</Button>
+                <Button>5</Button>
+              </Cell>
+            </tr>
+          </tbody>
+        </table>
+      </GridNavigationProvider>
+    );
+  }
+
+  const { container } = render(<TestComponent />);
+  const table = container.querySelector('table')!;
+  const cell = container.querySelector('td')!;
+
+  cell.focus();
+  expect(readActiveElement()).toEqual('BUTTON[1]');
+
+  fireEvent.keyDown(table, { keyCode: KeyCode.end });
+  expect(readActiveElement()).toBe('BUTTON[5]');
+
+  fireEvent.keyDown(table, { keyCode: KeyCode.home });
+  expect(readActiveElement()).toBe('BUTTON[1]');
 });
