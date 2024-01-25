@@ -117,6 +117,14 @@ function applyAbsoluteTimeFormat({
   showTimeOffset?: boolean;
 }) {
   const d = new Date(date);
+
+  const formattedDate =
+    absoluteTimeFormat === 'long'
+      ? new Intl.DateTimeFormat(locale, { dateStyle: 'long' }).format(d)
+      : [d.getFullYear(), padLeftZeros((d.getMonth() + 1).toString(), 2), padLeftZeros(d.getDate().toString(), 2)].join(
+          '-'
+        );
+
   const formattedTime = dateOnly
     ? undefined
     : new Intl.DateTimeFormat(locale, {
@@ -124,12 +132,6 @@ function applyAbsoluteTimeFormat({
         minute: timeInputFormat.length > 2 ? '2-digit' : undefined,
         second: timeInputFormat.length > 5 ? '2-digit' : undefined,
       }).format(d);
-  const formattedDate =
-    absoluteTimeFormat === 'long'
-      ? new Intl.DateTimeFormat(locale, { dateStyle: 'long' }).format(d)
-      : [d.getFullYear(), padLeftZeros((d.getMonth() + 1).toString(), 2), padLeftZeros(d.getDate().toString(), 2)].join(
-          '-'
-        );
 
   const formattedTimeOffset = showTimeOffset
     ? absoluteTimeFormat === 'long'
