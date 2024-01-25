@@ -5874,6 +5874,20 @@ The event \`detail\` contains the current value of the field.",
   "name": "DateRangePicker",
   "properties": Array [
     Object {
+      "description": "Speficies the time format to use for displaying the absolute time range.",
+      "inlineType": Object {
+        "name": "DateRangePickerProps.AbsoluteTimeFormat",
+        "type": "union",
+        "values": Array [
+          "short",
+          "long",
+        ],
+      },
+      "name": "absoluteTimeFormat",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Adds \`aria-describedby\` to the component. If you're using this component within a form field,
 don't set this property because the form field component automatically sets it.
 Use this property if the component isn't surrounded by a form field, or you want to override the value
@@ -5970,16 +5984,6 @@ because fixed positioning results in a slight, visible lag when scrolling comple
       "name": "expandToViewport",
       "optional": true,
       "type": "boolean",
-    },
-    Object {
-      "description": "Formatting function for absolute ranges.
-This function must convert an absolute range to a human-readable string, and it is called with the following parameters:
-* \`startDate\`: (string) The chosen start date in ISO8601 format, e.g.: 2024-01-18T08:52:23+02:00 (or 2024-01-18 when \`dateOnly\` is true).
-* \`endDate\`: (string) The chosen start date in ISO8601 format, e.g.: 2024-01-18T08:52:23+02:00 (or 2024-01-18 when \`dateOnly\` is true).
-* \`locale\`: (string) locale which corresponds to the \`locale\` property or is determined based on the page and browser locales if not specified.",
-      "name": "formatAbsoluteRange",
-      "optional": true,
-      "type": "(__namedParameters: unknown) => string",
     },
     Object {
       "description": "A function that defines timezone offset from UTC in minutes for selected dates.
@@ -6270,6 +6274,13 @@ modifying the value. A read-only component can receive focus.",
       "description": "Specifies whether the component should show a button that
 allows the user to clear the selected value.",
       "name": "showClearButton",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Specifices whether to show the time offset in the displayed absolute time range.
+If not provided, defaults to whether \`getTimeOffset\` is provided.",
+      "name": "showTimeOffset",
       "optional": true,
       "type": "boolean",
     },

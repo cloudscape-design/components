@@ -108,23 +108,6 @@ export interface DateRangePickerBaseProps {
    * Default: the user's current time offset as provided by the browser.
    */
   getTimeOffset?: DateRangePickerProps.GetTimeOffsetFunction;
-
-  /**
-   * Formatting function for absolute ranges.
-   * This function must convert an absolute range to a human-readable string, and it is called with the following parameters:
-   * * `startDate`: (string) The chosen start date in ISO8601 format, e.g.: 2024-01-18T08:52:23+02:00 (or 2024-01-18 when `dateOnly` is true).
-   * * `endDate`: (string) The chosen end date in ISO8601 format, e.g.: 2024-01-18T08:52:23+02:00 (or 2024-01-18 when `dateOnly` is true).
-   * * `locale`: (string) locale which corresponds to the `locale` property or is determined based on the page and browser locales if not specified.
-   */
-  formatAbsoluteRange?: ({
-    startDate,
-    endDate,
-    locale,
-  }: {
-    startDate: string;
-    endDate: string;
-    locale: string;
-  }) => string;
 }
 export interface DateRangePickerProps
   extends BaseComponentProps,
@@ -175,6 +158,17 @@ export interface DateRangePickerProps
    * Specifies an additional control displayed in the dropdown, located below the range calendar.
    */
   customAbsoluteRangeControl?: DateRangePickerProps.AbsoluteRangeControl;
+
+  /**
+   * Speficies the time format to use for displaying the absolute time range.
+   */
+  absoluteTimeFormat?: DateRangePickerProps.AbsoluteTimeFormat;
+
+  /**
+   * Specifices whether to show the time offset in the displayed absolute time range.
+   * If not provided, defaults to whether `getTimeOffset` is provided.
+   */
+  showTimeOffset?: boolean;
 }
 
 export namespace DateRangePickerProps {
@@ -408,6 +402,8 @@ export namespace DateRangePickerProps {
      */
     renderSelectedAbsoluteRangeAriaLive?: (startDate: string, endDate: string) => string;
   }
+
+  export type AbsoluteTimeFormat = 'short' | 'long';
 }
 
 export type DayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;

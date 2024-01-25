@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { DateRangePickerProps } from './interfaces';
-import { setTimeOffset, setTimeOffsetAbsolute } from './time-offset';
+import { setTimeOffset } from './time-offset';
 import { joinDateTime, splitDateTime } from '../internal/utils/date-time';
 import { normalizeTimeString } from '../internal/utils/date-time/join-date-time';
 
@@ -20,20 +20,6 @@ export function formatValue(
     };
   }
   return setTimeOffset(value, timeOffset);
-}
-
-export function formatValueAbsolute(
-  value: DateRangePickerProps.AbsoluteValue,
-  { timeOffset, dateOnly }: { timeOffset: { startDate?: number; endDate?: number }; dateOnly: boolean }
-): DateRangePickerProps.AbsoluteValue {
-  if (dateOnly) {
-    return {
-      type: 'absolute',
-      startDate: value.startDate.split('T')[0],
-      endDate: value.endDate.split('T')[0],
-    };
-  }
-  return setTimeOffsetAbsolute(value, timeOffset);
 }
 
 export function getDefaultMode(

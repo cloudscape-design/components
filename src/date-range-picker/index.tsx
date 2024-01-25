@@ -29,7 +29,8 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { joinStrings } from '../internal/utils/strings/join-strings';
 import { formatDateRange, isIsoDateOnly } from '../internal/utils/date-time';
 import { useInternalI18n } from '../i18n/context';
-import { formatValue, formatValueAbsolute } from './utils';
+import { formatValue } from './utils';
+import { padLeftZeros } from '../internal/utils/strings/pad-left-zeros.js';
 
 export { DateRangePickerProps };
 
@@ -37,14 +38,20 @@ function renderDateRange({
   range,
   placeholder = '',
   formatRelativeRange,
-  formatAbsoluteRange,
+  absoluteTimeFormat,
+  dateOnly,
+  timeInputFormat,
+  showTimeOffset,
   timeOffset,
   locale,
 }: {
   range: null | DateRangePickerProps.Value;
   placeholder?: string;
   formatRelativeRange: DateRangePickerProps.I18nStrings['formatRelativeRange'];
-  formatAbsoluteRange?: DateRangePickerProps['formatAbsoluteRange'];
+  absoluteTimeFormat?: 'short' | 'long';
+  dateOnly: boolean;
+  timeInputFormat: string;
+  showTimeOffset?: boolean;
   timeOffset: { startDate?: number; endDate?: number };
   locale: string;
 }) {
@@ -62,14 +69,24 @@ function renderDateRange({
     ) : (
       <BreakSpaces
         text={
-          range.type === 'absolute' && formatAbsoluteRange && range.startDate && range.endDate
-            ? formatAbsoluteRange({
-                ...formatValueAbsolute(range, {
-                  timeOffset,
-                  dateOnly: isIsoDateOnly(range.startDate) && isIsoDateOnly(range.endDate),
-                }),
+          range.type === 'absolute' && absoluteTimeFormat
+            ? `${applyAbsoluteTimeFormat({
+                date: range.startDate,
                 locale,
-              })
+                timeOffset: timeOffset.startDate,
+                dateOnly,
+                absoluteTimeFormat,
+                timeInputFormat,
+                showTimeOffset,
+              })} — ${applyAbsoluteTimeFormat({
+                date: range.endDate,
+                locale,
+                timeOffset: timeOffset.endDate,
+                dateOnly,
+                absoluteTimeFormat,
+                timeInputFormat,
+                showTimeOffset,
+              })}`
             : formatDateRange(range.startDate, range.endDate, timeOffset)
         }
       />
@@ -80,6 +97,61 @@ function renderDateRange({
       {formatted}
     </InternalBox>
   );
+}
+
+function applyAbsoluteTimeFormat({
+  date,
+  locale,
+  timeOffset,
+  dateOnly,
+  absoluteTimeFormat,
+  timeInputFormat,
+  showTimeOffset,
+}: {
+  date: string;
+  locale: string;
+  timeOffset?: number;
+  dateOnly: boolean;
+  absoluteTimeFormat: 'short' | 'long';
+  timeInputFormat: string;
+  showTimeOffset?: boolean;
+}) {
+  const d = new Date(date);
+  const formattedTime = dateOnly
+    ? undefined
+    : new Intl.DateTimeFormat(locale, {
+        hour: '2-digit',
+        minute: timeInputFormat.length > 2 ? '2-digit' : undefined,
+        second: timeInputFormat.length > 5 ? '2-digit' : undefined,
+      }).format(d);
+  const formattedDate =
+    absoluteTimeFormat === 'long'
+      ? new Intl.DateTimeFormat(locale, { dateStyle: 'long' }).format(d)
+      : [d.getFullYear(), padLeftZeros((d.getMonth() + 1).toString(), 2), padLeftZeros(d.getDate().toString(), 2)].join(
+          '-'
+        );
+
+  const formattedTimeOffset = showTimeOffset
+    ? absoluteTimeFormat === 'long'
+      ? timeOffset
+        ? `(UTC${formatOffset(date, timeOffset)})`
+        : `(UTC)`
+      : timeOffset
+      ? formatOffset(date, timeOffset, true)
+      : undefined
+    : undefined;
+  return [[formattedDate, formattedTime].filter(Boolean).join(', '), formattedTimeOffset].filter(Boolean).join(' ');
+}
+
+function formatOffset(isoDate: string, offsetInMinutes?: number, padHours = false) {
+  offsetInMinutes = offsetInMinutes ?? 0 - new Date(isoDate).getTimezoneOffset();
+  const hours = Math.floor(Math.abs(offsetInMinutes) / 60).toFixed(0);
+  const hoursOffset = padHours ? padLeftZeros(hours, 2) : hours;
+  const minuteOffset = padLeftZeros(Math.abs(offsetInMinutes % 60).toFixed(0), 2);
+  const sign = offsetInMinutes < 0 ? '-' : '+';
+  const formattedOffset = `${sign}${hoursOffset}:${minuteOffset}`;
+
+  return formattedOffset;
 }
 
 function BreakSpaces({ text }: { text: string }) {
@@ -127,7 +199,8 @@ const DateRangePicker = React.forwardRef(
       expandToViewport = false,
       rangeSelectorMode = 'default',
       customAbsoluteRangeControl,
-      formatAbsoluteRange,
+      absoluteTimeFormat,
+      showTimeOffset,
       ...rest
     }: DateRangePickerProps,
     ref: Ref<DateRangePickerProps.Ref>
@@ -254,7 +327,10 @@ const DateRangePicker = React.forwardRef(
       range: value,
       placeholder,
       formatRelativeRange,
-      formatAbsoluteRange,
+      absoluteTimeFormat,
+      showTimeOffset: showTimeOffset !== false || !!getTimeOffset,
+      timeInputFormat,
+      dateOnly,
       timeOffset: normalizedTimeOffset,
       locale: normalizedLocale,
     });
