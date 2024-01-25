@@ -112,6 +112,7 @@ const Thead = React.forwardRef(
               hidden={hidden}
               tableRole={tableRole}
               colIndex={0}
+              focusedComponent={focusedComponent}
               columnId={selectionColumnId}
               stickyState={stickyState}
             >
