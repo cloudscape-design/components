@@ -23,7 +23,7 @@
   &:first-child {
     margin-top: 0;
   }
-  &:not(.has-expandable-groups).last {
+  &.show-divider {
     border-bottom: awsui.$border-item-width solid awsui.$color-border-dropdown-group;
   }
   &.highlighted {
