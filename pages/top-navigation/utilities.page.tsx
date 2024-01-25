@@ -1,10 +1,18 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import * as React from 'react';
+import React, { useContext } from 'react';
 
 import Input from '~components/input';
 import TopNavigation from '~components/top-navigation';
 import { I18N_STRINGS } from './common';
+import AppContext, { AppContextType } from '../app/app-context';
+import { Box, Checkbox } from '~components';
+
+type PageContext = React.Context<
+  AppContextType<{
+    expandableGroups: boolean;
+  }>
+>;
 
 const profileActions = [
   { type: 'button', id: 'profile', text: 'Profile' },
@@ -67,9 +75,20 @@ const simpleActions = [
 ];
 
 export default function TopNavigationPage() {
+  const { urlParams, setUrlParams } = useContext(AppContext as PageContext);
   return (
     <article>
       <h1>Simple TopNavigation</h1>
+
+      <Box margin={{ bottom: 'm' }}>
+        <Checkbox
+          checked={urlParams.expandableGroups}
+          onChange={event => setUrlParams({ expandableGroups: event.detail.checked })}
+        >
+          Expandable groups
+        </Checkbox>
+      </Box>
+
       <TopNavigation
         i18nStrings={I18N_STRINGS}
         identity={{
@@ -97,6 +116,7 @@ export default function TopNavigationPage() {
             description: 'john.doe@example.com',
             iconName: 'envelope',
             items: profileActions,
+            expandableGroups: urlParams.expandableGroups,
           },
         ]}
       />
@@ -116,6 +136,7 @@ export default function TopNavigationPage() {
             description: 'jane.doe@example.com',
             iconName: 'envelope',
             items: profileActions,
+            expandableGroups: urlParams.expandableGroups,
           },
         ]}
       />
@@ -143,6 +164,7 @@ export default function TopNavigationPage() {
             description: 'jane.doe@example.com',
             iconName: 'envelope',
             items: profileActions,
+            expandableGroups: urlParams.expandableGroups,
           },
         ]}
       />
