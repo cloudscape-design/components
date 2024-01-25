@@ -5,31 +5,36 @@ import Input from '~components/input';
 import Box from '~components/box';
 import SpaceBetween from '~components/space-between';
 import FormField from '~components/form-field';
-import { Grid, Select, Slider, SliderProps } from '~components';
+import { Grid, Select, SelectProps, Slider, SliderProps } from '~components';
 
 function Sliders() {
   const [value2, setValue2] = React.useState<SliderProps.ChangeDetail['value']>(2);
   const [value3, setValue3] = React.useState<SliderProps.ChangeDetail['value']>(50);
   const [value4, setValue4] = React.useState<SliderProps.ChangeDetail['value']>(50);
-  const [sliderValue, setSliderValue] = useState(2000);
+  const [sliderValue, setSliderValue] = useState(40);
   const [error2, setError2] = useState(false);
-  const [minValue, setMinValue] = React.useState<any>({ value: '5' });
+  const [minValue, setMinValue] = React.useState<SelectProps.Option>({ value: '5' });
   const rangeOptions = [{ value: '5' }, { value: '10' }, { value: '15' }, { value: '20' }, { value: '25' }];
 
   React.useEffect(() => {
-    setError2(value2 < 0 || value2 > 10000 || value2 % 1 !== 0);
+    setError2(value2 < 0 || value2 > 100 || value2 % 1 !== 0);
   }, [value2]);
 
   return (
     <SpaceBetween size="xxl">
-      <Slider value={sliderValue} min={0} max={100} onChange={({ detail }) => setSliderValue(detail.value)} />
-      <Slider value={50} min={0} max={100} disabled={true} />
+      <Slider
+        ariaLabel="slider-example"
+        value={sliderValue}
+        min={0}
+        max={100}
+        onChange={({ detail }) => setSliderValue(detail.value)}
+      />
+      <Slider ariaLabel="slider-disabled-example" value={50} min={0} max={100} disabled={true} />
 
       <FormField
-        constraintText="Units must be a value between 0 and 10,000."
         label="Slider with immediate error"
         errorText={
-          error2 ? (value2 % 1 !== 0 ? 'Unit must be a whole number' : 'Unit must be between 0 and 10,000.') : undefined
+          error2 ? (value2 % 1 !== 0 ? 'Unit must be a whole number' : 'Unit must be between 0 and 100.') : undefined
         }
       >
         <Grid gridDefinition={[{ colspan: { default: 8, xs: 4 } }, { colspan: { default: 3, xs: 3 } }]}>
@@ -39,9 +44,8 @@ function Sliders() {
               setValue2(detail.value);
             }}
             min={0}
-            max={10000}
+            max={100}
             error={error2}
-            stepLabels={[2500, 5000, 7500]}
           />
           <SpaceBetween size="m" alignItems="center" direction="horizontal">
             <Input
@@ -58,12 +62,7 @@ function Sliders() {
         </Grid>
       </FormField>
       <FormField label="Slider with select">
-        <Grid
-          gridDefinition={[
-            { colspan: { default: 4, xs: 2 } },
-            { colspan: { default: 4, xs: 2 }, offset: { xs: 8, default: 4 } },
-          ]}
-        >
+        <Grid gridDefinition={[{ colspan: { default: 4, xs: 2 } }]}>
           <Select
             selectedOption={minValue}
             onChange={({ detail }) => setMinValue(detail.selectedOption)}
@@ -71,9 +70,9 @@ function Sliders() {
           />
         </Grid>
         <Slider
-          value={minValue.value}
+          value={Number(minValue.value)}
           onChange={({ detail }) => {
-            setMinValue({ value: detail.value });
+            setMinValue({ value: detail.value.toString() });
           }}
           min={5}
           max={25}

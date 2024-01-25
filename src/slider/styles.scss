@@ -9,24 +9,32 @@
 $thumb-size: 16px;
 
 @mixin base-thumb-styles {
-  background-color: awsui.$color-background-progress-bar-content-default;
-  border: none;
+  appearance: none;
+  background: awsui.$color-background-progress-bar-content-default;
+  border: 2px solid awsui.$color-background-progress-bar-content-default;
   border-radius: 50%;
   cursor: pointer;
   height: $thumb-size;
   width: $thumb-size;
-  margin-top: 4px;
   pointer-events: all;
   position: relative;
 }
 
 @mixin base-thumb-focus-styles {
   outline: 2px solid awsui.$color-background-progress-bar-content-default;
-  outline-offset: 0.125rem;
+  border: 2px solid white;
+  width: 20px;
+  height: 20px;
+}
+
+@mixin base-thumb-hover-styles {
+  background: awsui.$color-background-progress-bar-content-default;
 }
 
 .slider {
   width: 100%;
+  display: flex;
+  align-items: center;
 
   &-thumb-label {
     position: absolute;
@@ -77,7 +85,6 @@ $thumb-size: 16px;
     justify-content: space-between;
     height: 0;
     padding-top: awsui.$space-m;
-    // position: relative;
   }
 
   &-reference {
@@ -105,7 +112,7 @@ $thumb-size: 16px;
   padding: 0;
   border-radius: 50%;
   background: awsui.$color-text-interactive-disabled;
-  top: -3px;
+  top: -5px;
 
   &-filled {
     background: awsui.$color-background-progress-bar-content-default;
@@ -113,6 +120,8 @@ $thumb-size: 16px;
 }
 
 .thumb {
+  background: transparent;
+  appearance: none;
   position: absolute;
   height: 0;
   width: 100%;
@@ -141,14 +150,42 @@ $thumb-size: 16px;
   &:focus::-moz-range-thumb {
     @include base-thumb-focus-styles();
   }
+
+  &:hover::-webkit-slider-thumb {
+    @include base-thumb-hover-styles();
+  }
+
+  &:hover::-moz-range-thumb {
+    @include base-thumb-hover-styles();
+  }
 }
 
-.error {
+.disabled,
+.disabled:hover {
+  &::-webkit-slider-thumb {
+    background-color: awsui.$color-background-control-disabled;
+    border-color: awsui.$color-background-control-disabled;
+
+    pointer-events: none;
+  }
+
+  &::-moz-range-thumb {
+    background-color: awsui.$color-background-control-disabled;
+    border-color: awsui.$color-background-control-disabled;
+
+    pointer-events: none;
+  }
+}
+
+.error,
+.error:hover {
   &::-webkit-slider-thumb {
     background-color: awsui.$color-text-status-error;
+    border-color: awsui.$color-text-status-error;
   }
 
   &::-moz-range-thumb {
     background-color: awsui.$color-text-status-error;
+    border-color: awsui.$color-text-status-error;
   }
 }
