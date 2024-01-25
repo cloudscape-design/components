@@ -47,7 +47,14 @@ export interface FormFieldValidationControlProps extends FormFieldControlProps {
   invalid?: boolean;
 }
 
-export const FormFieldContext = createContext<FormFieldValidationControlProps>({});
+export interface InternalFormFieldContentProps extends FormFieldValidationControlProps {
+  /**
+   * Provides custom form ID to associate inputs with.
+   */
+  form?: string;
+}
+
+export const FormFieldContext = createContext<InternalFormFieldContentProps>({});
 
 function applyDefault<T>(fields: T, defaults: T, keys: (keyof T)[]) {
   const result = <T>{};
@@ -59,5 +66,11 @@ function applyDefault<T>(fields: T, defaults: T, keys: (keyof T)[]) {
 
 export function useFormFieldContext(props: FormFieldValidationControlProps) {
   const context = useContext(FormFieldContext);
-  return applyDefault(props, context, ['invalid', 'controlId', 'ariaLabelledby', 'ariaDescribedby']);
+  return applyDefault<InternalFormFieldContentProps>(props, context, [
+    'invalid',
+    'controlId',
+    'ariaLabelledby',
+    'ariaDescribedby',
+    'form',
+  ]);
 }

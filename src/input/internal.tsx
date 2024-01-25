@@ -110,6 +110,7 @@ function InternalInput(
     placeholder,
     autoFocus,
     id: controlId,
+    form: formFieldContext.form,
     className: clsx(
       styles.input,
       type && styles[`input-type-${type}`],

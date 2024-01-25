@@ -92,4 +92,9 @@ export interface InternalFormFieldProps extends FormFieldProps, InternalBaseComp
    * Disable the gutter applied by default.
    */
   __disableGutters?: boolean;
+
+  /**
+   * Provide custom form ID to associate inputs with.
+   */
+  __formId?: string;
 }

@@ -11,6 +11,8 @@ import { Optional } from '../../internal/types';
 import FocusLock, { FocusLockRef } from '../../internal/components/focus-lock';
 import LiveRegion from '../../internal/components/live-region';
 import { useInternalI18n } from '../../i18n/context';
+import Portal from '../../internal/components/portal';
+import { useUniqueId } from '../../internal/hooks/use-unique-id';
 
 // A function that does nothing
 const noop = () => undefined;
@@ -42,6 +44,7 @@ export function InlineEditor<ItemType>({
   const i18n = useInternalI18n('table');
 
   const focusLockRef = useRef<FocusLockRef>(null);
+  const formId = useUniqueId();
 
   const cellContext = {
     currentValue: currentEditValue,
@@ -55,7 +58,13 @@ export function InlineEditor<ItemType>({
     onEditEnd({ cancelled, refocusCell: refocusCell });
   }
 
-  async function onSubmitClick() {
+  async function onSubmitClick(event: React.FormEvent) {
+    // Prevents page refresh on submit.
+    event.preventDefault();
+
+    // Prevents outer form from receiving this submit event.
+    event.stopPropagation();
+
     if (currentEditValue === undefined) {
       finishEdit();
       return;
@@ -118,6 +127,7 @@ export function InlineEditor<ItemType>({
             constraintText={constraintText}
             __hideLabel={true}
             __disableGutters={true}
+            __formId={formId}
             i18nStrings={{ errorIconAriaLabel }}
             errorText={validation(item, currentEditValue)}
           >
@@ -138,11 +148,11 @@ export function InlineEditor<ItemType>({
                   <Button
                     className={styles['body-cell-editor-save-button']}
                     ariaLabel={ariaLabels?.submitEditLabel?.(column)}
-                    formAction="none"
+                    form={formId}
+                    formAction="submit"
                     iconName="check"
                     variant="inline-icon"
                     loading={currentEditLoading}
-                    onClick={onSubmitClick}
                   />
                 </SpaceBetween>
                 <LiveRegion>
@@ -154,6 +164,11 @@ export function InlineEditor<ItemType>({
             </div>
           </FormField>
         </div>
+
+        {/* Avoids form nesting in case the entire table is used in a form. */}
+        <Portal>
+          <form id={formId} onSubmit={onSubmitClick} />
+        </Portal>
       </div>
     </FocusLock>
   );
