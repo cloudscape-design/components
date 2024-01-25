@@ -9,8 +9,6 @@ import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
 import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import { TableRole, getTableColHeaderRoleProps } from '../table-role';
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
-import useMouseDownTarget from '../../internal/hooks/use-mouse-down-target';
-import { scrollElementIntoView } from '../../internal/utils/scrollable-containers';
 
 interface TableThElementProps {
   className?: string;
@@ -50,17 +48,10 @@ export function TableThElement({
   const cellRefObject = useRef<HTMLTableCellElement>(null);
   const mergedRef = useMergeRefs(stickyStyles.ref, cellRef, cellRefObject);
   const { tabIndex: cellTabIndex } = useSingleTabStopNavigation(cellRefObject);
-  const getMouseDownTarget = useMouseDownTarget();
 
   return (
     <th
       data-focus-id={`header-${String(columnId)}`}
-      // Scroll cell into view when it is focused with keyboard.
-      onFocus={event => {
-        if (!event.currentTarget.contains(getMouseDownTarget())) {
-          scrollElementIntoView(event.target, { block: 'center' });
-        }
-      }}
       className={clsx(
         className,
         {
