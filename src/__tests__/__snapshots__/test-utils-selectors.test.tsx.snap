@@ -179,6 +179,10 @@ Object {
     "awsui_header_5gtk3",
     "awsui_layout_5gtk3",
   ],
+  "copy-to-clipboard": Array [
+    "awsui_root_ljpwc",
+    "awsui_text-to-copy_ljpwc",
+  ],
   "date-input": Array [
     "awsui_root_yodkx",
   ],
