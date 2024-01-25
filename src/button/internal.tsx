@@ -22,6 +22,7 @@ import {
 import { FunnelMetrics } from '../internal/analytics';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
+import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
 
 export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   variant?: ButtonProps['variant'] | 'flashbar-icon' | 'breadcrumb-group' | 'menu-trigger' | 'modal-dismiss';
@@ -58,6 +59,7 @@ export const InternalButton = React.forwardRef(
       ariaLabel,
       ariaDescribedby,
       ariaExpanded,
+      ariaControls,
       fullWidth,
       badge,
       __nativeAttributes,
@@ -134,20 +136,29 @@ export const InternalButton = React.forwardRef(
       [styles['full-width']]: shouldHaveContent && fullWidth,
     });
 
+    const explicitTabIndex =
+      __nativeAttributes && 'tabIndex' in __nativeAttributes ? __nativeAttributes.tabIndex : undefined;
+    const { tabIndex } = useSingleTabStopNavigation(buttonRef, {
+      tabIndex: isAnchor && isNotInteractive ? -1 : explicitTabIndex,
+    });
+
     const buttonProps = {
       ...props,
       ...__nativeAttributes,
+      tabIndex,
       // https://github.com/microsoft/TypeScript/issues/36659
       ref: useMergeRefs(buttonRef, __internalRootRef),
       'aria-label': ariaLabel,
       'aria-describedby': ariaDescribedby,
       'aria-expanded': ariaExpanded,
+      'aria-controls': ariaControls,
       // add ariaLabel as `title` as visible hint text
       title: ariaLabel,
       className: buttonClass,
       onClick: handleClick,
       [DATA_ATTR_FUNNEL_VALUE]: uniqueId,
     } as const;
+
     const iconProps: ButtonIconProps = {
       loading,
       iconName,
@@ -190,7 +201,6 @@ export const InternalButton = React.forwardRef(
             target={target}
             // security recommendation: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#target
             rel={rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined)}
-            tabIndex={isNotInteractive ? -1 : undefined}
             aria-disabled={isNotInteractive ? true : undefined}
             download={download}
           >

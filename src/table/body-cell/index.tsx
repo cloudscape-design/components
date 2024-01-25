@@ -10,12 +10,13 @@ import { InlineEditor } from './inline-editor';
 import LiveRegion from '../../internal/components/live-region/index.js';
 import { useInternalI18n } from '../../i18n/context';
 import { usePrevious } from '../../internal/hooks/use-previous';
+import { DisabledInlineEditor } from './disabled-inline-editor';
 
 const submitHandlerFallback = () => {
   throw new Error('The function `handleSubmit` is required for editable columns');
 };
 
-interface TableBodyCellProps<ItemType> extends TableTdElementProps {
+export interface TableBodyCellProps<ItemType> extends TableTdElementProps {
   column: TableProps.ColumnDefinition<ItemType>;
   item: ItemType;
   isEditing: boolean;
@@ -140,6 +141,12 @@ export function TableBodyCell<ItemType>({
   isEditable,
   ...rest
 }: TableBodyCellProps<ItemType> & { isEditable: boolean }) {
+  const editDisabledReason = rest.column.editConfig?.disabledReason?.(rest.item);
+
+  if (editDisabledReason) {
+    return <DisabledInlineEditor editDisabledReason={editDisabledReason} {...rest} />;
+  }
+
   if (isEditable || rest.isEditing) {
     return <TableCellEditable {...rest} />;
   }

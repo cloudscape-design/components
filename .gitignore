@@ -1,9 +1,7 @@
 build
 node_modules
 coverage
-backstop/bitmaps_reference
-backstop/bitmaps_test
-backstop/html_report
+backstop/report
 # build output
 lib
 # generated sources

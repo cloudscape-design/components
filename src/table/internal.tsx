@@ -42,6 +42,7 @@ import { CollectionLabelContext } from '../internal/context/collection-label-con
 import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 import { NoDataCell } from './no-data-cell';
 import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
+import { getContentHeaderClassName } from '../internal/utils/content-header-utils';
 
 const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
@@ -293,7 +294,7 @@ const InternalTable = React.forwardRef(
                 {hasHeader && (
                   <div
                     ref={overlapElement}
-                    className={clsx(hasDynamicHeight && [styles['dark-header'], 'awsui-context-content-header'])}
+                    className={clsx(hasDynamicHeight && [styles['dark-header'], getContentHeaderClassName()])}
                   >
                     <div
                       ref={toolsHeaderWrapper}

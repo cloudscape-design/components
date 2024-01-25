@@ -385,6 +385,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     });
 
     const [drawersMaxWidth, setDrawersMaxWidth] = useState(toolsWidth);
+    const hasDrawers = !!drawers && drawers.length > 0;
 
     const {
       refs: drawersRefs,
@@ -582,12 +583,26 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           openTools: function () {
             handleToolsClick(true);
           },
-          focusToolsClose: () => focusToolsButtons(true),
+          focusToolsClose: () => {
+            if (hasDrawers) {
+              focusDrawersButtons(true);
+            } else {
+              focusToolsButtons(true);
+            }
+          },
           focusActiveDrawer: () => focusDrawersButtons(true),
           focusSplitPanel: () => splitPanelRefs.slider.current?.focus(),
         };
       },
-      [isMobile, handleNavigationClick, handleToolsClick, focusToolsButtons, focusDrawersButtons, splitPanelRefs.slider]
+      [
+        isMobile,
+        handleNavigationClick,
+        handleToolsClick,
+        focusToolsButtons,
+        focusDrawersButtons,
+        splitPanelRefs.slider,
+        hasDrawers,
+      ]
     );
 
     return (

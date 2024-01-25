@@ -67,7 +67,6 @@ const dispatchCreateEditFlowDoneEvent = () => {
 
 const onFunnelCancelled = ({ funnelInteractionId }: { funnelInteractionId: string }) => {
   FunnelMetrics.funnelCancelled({ funnelInteractionId });
-  dispatchCreateEditFlowDoneEvent();
 };
 
 const onFunnelComplete = ({ funnelInteractionId }: { funnelInteractionId: string }) => {
@@ -279,16 +278,25 @@ function useStepChangeListener(stepNumber: number, handler: (stepConfiguration: 
     };
   }, []);
 
+  useEffect(() => {
+    const handle = setTimeout(
+      () => subStepConfiguration.current.set(stepNumber, getSubStepConfiguration()),
+      SUBSTEP_CHANGE_DEBOUNCE
+    );
+    return () => {
+      clearTimeout(handle);
+    };
+  }, [stepNumber]);
+
   /* We debounce this handler, so that multiple containers can change at once without causing 
   too many events. */
   const stepChangeCallback = useDebounceCallback(() => {
-    subStepConfiguration.current.set(stepNumber, getSubStepConfiguration());
-
     // We don't want to emit the event after the component has been unmounted.
     if (!listenForSubStepChanges.current) {
       return;
     }
 
+    subStepConfiguration.current.set(stepNumber, getSubStepConfiguration());
     handler(subStepConfiguration.current.get(stepNumber)!);
   }, SUBSTEP_CHANGE_DEBOUNCE);
 

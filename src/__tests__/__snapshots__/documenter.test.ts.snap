@@ -554,7 +554,7 @@ to control the state by listening to \`toolsChange\` and providing \`toolsOpen\`
 * \`tools\` (string) - Label for the landmark that wraps the tools drawer.
 * \`toolsClose\` (string) - Label for the button that closes the tools drawer.
 * \`toolsToggle\` (string) - Label for the button that opens the tools drawer.
-* \`drawers\` (string) - Label for the landmark that the active drawer.
+* \`drawers\` (string) - Label for the landmark that wraps the active drawer.
 * \`drawersOverflow\` (string) - Label for the ellipsis button with any overflow drawers.
 * \`drawersOverflowWithBadge\` (string) - Label for the ellipsis button with any overflow drawers, with a badge.
 
@@ -693,6 +693,16 @@ Each Drawer is an item in the drawers wrapper with the following properties:
 * resizable (boolean) - if the drawer is resizable or not.
 * defaultSize (number) - starting size of the drawer. if not set, defaults to 290.
 * onResize (({ size: number }) => void) - Fired when the active drawer is resized.
+
+#### DrawerTrigger
+- \`iconName\` (IconProps.Name) - (Optional) Specifies the icon to be displayed.
+- \`iconSvg\` (React.ReactNode) - (Optional) Specifies the SVG of a custom icon. For more information, see [SVG icon guidelines](/components/icon/?tabId=api#slots)
+
+#### DrawerAriaLabels
+- \`drawerName\` (string) - Label for the drawer itself.
+- \`closeButton\` (string) - (Optional) Label for the close button.
+- \`triggerButton\` (string) - (Optional) Label for the trigger button.
+- \`resizeHandle\` (string) - (Optional) Label for the resize handle.
 ",
       "name": "drawers",
       "optional": true,
@@ -2990,6 +3000,12 @@ modifier keys (that is, CTRL, ALT, SHIFT, META), and the button has an \`href\` 
   ],
   "name": "Button",
   "properties": Array [
+    Object {
+      "description": "Adds \`aria-controls\` to the button. Use when the button controls the contents or presence of an element.",
+      "name": "ariaControls",
+      "optional": true,
+      "type": "string",
+    },
     Object {
       "description": "Adds \`aria-describedby\` to the button.",
       "name": "ariaDescribedby",
@@ -13089,6 +13105,8 @@ add a meaningful description to the whole selection.
 * * \`editConfig.errorIconAriaLabel\` (string) - Specifies an ariaLabel for the error icon that is displayed when the validation fails.
 * * \`editConfig.editIconAriaLabel\` (string) - Specifies an alternate text for the edit icon used in column header.
 * * \`editConfig.constraintText\` (string) - Constraint text that is displayed below the edit control.
+* * \`editConfig.disabledReason\` ((item) => string | undefined) - A function that determines whether inline edit for certain items is disabled, and provides a reason why.
+           Return a string from the function to disable inline edit with a reason. Return \`undefined\` (or no return) from the function allow inline edit.
 * * \`editConfig.validation\` ((item, value) => string) - A function that allows you to validate the value of the edit control.
            Return a string from the function to display an error message. Return \`undefined\` (or no return) from the function to indicate that the value is valid.
 * * \`editConfig.editingCell\` ((item, cellContext) => ReactNode) - Determines the display of a cell's content when inline editing is active on a cell;
@@ -15102,6 +15120,7 @@ The following properties are supported across all utility types:
 * \`items\` (ButtonDropdownProps.Items) - An array of dropdown items. This follows the same structure as the \`items\` property of the [button dropdown component](/components/button-dropdown).
 * \`onItemClick\` (NonCancelableEventHandler<ButtonDropdownProps.ItemClickDetails>) - Specifies the event handler called when a dropdown item is selected.
 * \`onItemFollow\` (NonCancelableEventHandler<ButtonDropdownProps.ItemClickDetails>) - Specifies the event handler called when a dropdown item is selected without pressing modifier keys, and the item has an \`href\` set.
+* \`expandableGroups\` (boolean) - Controls expandability of the item groups.
 ",
       "name": "utilities",
       "optional": true,

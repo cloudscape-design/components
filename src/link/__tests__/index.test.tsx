@@ -14,6 +14,7 @@ import { AnalyticsFunnel } from '../../../lib/components/internal/analytics/comp
 import { FunnelMetrics } from '../../../lib/components/internal/analytics';
 
 import { mockedFunnelInteractionId, mockFunnelMetrics } from '../../internal/analytics/__tests__/mocks';
+import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
 
 function renderLink(props: LinkProps = {}) {
   const renderResult = render(<Link {...props} />);
@@ -272,5 +273,33 @@ describe('Link component', () => {
         })
       );
     });
+  });
+});
+
+describe('table grid navigation support', () => {
+  function getLink(selector: string) {
+    return createWrapper().findLink(selector)!.getElement();
+  }
+
+  test('does not override tab index for button link when keyboard navigation is not active', () => {
+    renderWithSingleTabStopNavigation(<Link id="link" />, { navigationActive: false });
+    expect(getLink('#link')).toHaveAttribute('tabIndex', '0');
+  });
+
+  test('does not override tab index for anchor link when keyboard navigation is not active', () => {
+    renderWithSingleTabStopNavigation(<Link id="link" href="#" />, { navigationActive: false });
+    expect(getLink('#link')).not.toHaveAttribute('tabIndex');
+  });
+
+  test.each([undefined, '#'])('overrides tab index when keyboard navigation is active href=%s', href => {
+    const { setCurrentTarget } = renderWithSingleTabStopNavigation(
+      <div>
+        <Link id="link1" href={href} />
+        <Link id="link2" href={href} />
+      </div>
+    );
+    setCurrentTarget(getLink('#link1'));
+    expect(getLink('#link1')).toHaveAttribute('tabIndex', '0');
+    expect(getLink('#link2')).toHaveAttribute('tabIndex', '-1');
   });
 });

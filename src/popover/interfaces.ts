@@ -93,12 +93,12 @@ export interface Offset {
   top: number;
 }
 
-export interface BoundingBox {
+export interface Dimensions {
   width: number;
   height: number;
 }
 
-export type BoundingOffset = BoundingBox & Offset;
+export type BoundingBox = Dimensions & Offset;
 
 export namespace PopoverProps {
   export type Position = 'top' | 'right' | 'bottom' | 'left';

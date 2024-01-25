@@ -6,6 +6,7 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 import RadioGroup, { RadioGroupProps } from '../../../lib/components/radio-group';
 import RadioButtonWrapper from '../../../lib/components/test-utils/dom/radio-group/radio-button';
 import '../../__a11y__/to-validate-a11y';
+import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
 
 const defaultItems: RadioGroupProps.RadioButtonDefinition[] = [
   { value: 'val1', label: 'Option one' },
@@ -306,5 +307,30 @@ describe('value', () => {
       const { wrapper } = renderRadioGroup(<RadioGroup ariaRequired={false} value={null} items={defaultItems} />);
       await expect(wrapper.getElement()).toValidateA11y();
     });
+  });
+});
+
+describe('table grid navigation support', () => {
+  function getRadioInput(selector: string) {
+    return createWrapper().findRadioGroup(selector)!.findButtons()[0].findNativeInput().getElement();
+  }
+
+  test('does not override tab index when keyboard navigation is not active', () => {
+    renderWithSingleTabStopNavigation(<RadioGroup id="radio" value={null} items={[{ value: '1', label: 'One' }]} />, {
+      navigationActive: false,
+    });
+    expect(getRadioInput('#radio')).not.toHaveAttribute('tabIndex');
+  });
+
+  test('overrides tab index when keyboard navigation is active', () => {
+    const { setCurrentTarget } = renderWithSingleTabStopNavigation(
+      <div>
+        <RadioGroup id="radio1" value={null} items={[{ value: '1', label: 'One' }]} />
+        <RadioGroup id="radio2" value={null} items={[{ value: '2', label: 'Two' }]} />
+      </div>
+    );
+    setCurrentTarget(getRadioInput('#radio1'));
+    expect(getRadioInput('#radio1')).toHaveAttribute('tabIndex', '0');
+    expect(getRadioInput('#radio2')).toHaveAttribute('tabIndex', '-1');
   });
 });

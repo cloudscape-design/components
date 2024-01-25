@@ -260,8 +260,8 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
       interactions.highlightX(interactions.plot.xy[0]);
     };
 
-    // A callback for svg focus to highlight series.
-    const onSVGFocus = (_event: React.FocusEvent, trigger: 'mouse' | 'keyboard') => {
+    // A callback for application focus to highlight series.
+    const onApplicationFocus = (_event: React.FocusEvent, trigger: 'mouse' | 'keyboard') => {
       // When focus is caused by a click event nothing is expected as clicks are handled separately.
       if (trigger === 'keyboard') {
         const { highlightedX, highlightedPoint, highlightedSeries, legendSeries } = interactions.get();
@@ -273,8 +273,8 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
       }
     };
 
-    // A callback for svg blur to clear all highlights unless the popover is pinned.
-    const onSVGBlur = (event: React.FocusEvent<Element>) => {
+    // A callback for application blur to clear all highlights unless the popover is pinned.
+    const onApplicationBlur = (event: React.FocusEvent<Element>) => {
       // Pinned popover stays pinned even if the focus is lost.
       // If blur is not caused by the popover, forget the previously highlighted point.
       if (!nodeBelongs(containerRef.current, event.relatedTarget) && !interactions.get().isPopoverPinned) {
@@ -338,8 +338,8 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
         onSVGMouseOut,
         onSVGMouseDown,
         onSVGKeyDown,
-        onSVGFocus,
-        onSVGBlur,
+        onApplicationFocus,
+        onApplicationBlur,
         onFilterSeries,
         onLegendHighlight,
         onPopoverDismiss,

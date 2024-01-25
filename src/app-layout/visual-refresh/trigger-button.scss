@@ -88,8 +88,11 @@ handleSplitPanelMaxWidth function in the context.
 
 .trigger-wrapper {
   position: relative;
-  box-shadow: awsui.$shadow-panel-toggle;
   border-radius: 50%;
+
+  &:not(.remove-high-contrast-header) {
+    box-shadow: awsui.$shadow-panel-toggle;
+  }
 }
 
 .dot {

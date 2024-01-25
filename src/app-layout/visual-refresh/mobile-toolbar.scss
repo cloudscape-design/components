@@ -9,9 +9,9 @@
 
 section.mobile-toolbar {
   align-items: center;
-  background-color: awsui.$color-background-home-header;
+  background-color: awsui.$color-background-layout-main;
   border-bottom: 1px solid awsui.$color-border-divider-default;
-  box-shadow: awsui.$shadow-panel-toggle;
+  box-shadow: awsui.$shadow-sticky;
   box-sizing: border-box;
   height: var(#{custom-props.$mobileBarHeight});
   display: grid;
@@ -22,6 +22,10 @@ section.mobile-toolbar {
   position: sticky;
   top: var(#{custom-props.$offsetTop});
   z-index: 1000;
+  &:not(.remove-high-contrast-header) {
+    background-color: awsui.$color-background-layout-main;
+    box-shadow: awsui.$shadow-panel-toggle;
+  }
 
   > .mobile-toolbar-nav {
     grid-column: 1;

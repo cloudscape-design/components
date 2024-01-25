@@ -23,6 +23,7 @@ const MobileExpandableCategoryElement = ({
   highlightItem,
   disabled,
   variant,
+  hasExpandableGroups,
 }: CategoryProps) => {
   const highlighted = isHighlighted(item);
   const expanded = isExpanded(item);
@@ -102,6 +103,7 @@ const MobileExpandableCategoryElement = ({
               highlightItem={highlightItem}
               hasCategoryHeader={true}
               variant={variant}
+              hasExpandableGroups={hasExpandableGroups}
             />
           </ul>
         )}

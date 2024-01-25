@@ -8,6 +8,7 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { RadioGroupProps } from './interfaces';
 import styles from './styles.css.js';
+import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
 
 interface RadioButtonProps extends RadioGroupProps.RadioButtonDefinition {
   name: string;
@@ -23,6 +24,8 @@ export default React.forwardRef(function RadioButton(
   const radioButtonRef = useRef<HTMLInputElement>(null);
   const mergedRefs = useMergeRefs(radioButtonRef, ref);
 
+  const { tabIndex } = useSingleTabStopNavigation(radioButtonRef);
+
   return (
     <AbstractSwitch
       className={clsx(styles.radio, description && styles['radio--has-description'])}
@@ -35,6 +38,7 @@ export default React.forwardRef(function RadioButton(
       nativeControl={nativeControlProps => (
         <input
           {...nativeControlProps}
+          tabIndex={tabIndex}
           type="radio"
           ref={mergedRefs}
           name={name}

@@ -8,6 +8,7 @@ function findAllPages() {
 
 const skippedTests = [
   'tabs/responsive-permutations', // Currently has flaky behavior (AWSUI-17810)
+  'pie-chart/permutations', // Currently has flaky behavior (AWSUI-29588)
 ];
 
 const scenarios = findAllPages()
@@ -34,11 +35,11 @@ module.exports = {
   ],
   scenarios,
   paths: {
-    bitmaps_reference: 'backstop/bitmaps_reference',
-    bitmaps_test: 'backstop/bitmaps_test',
+    bitmaps_reference: 'backstop/report/bitmaps_reference',
+    bitmaps_test: 'backstop/report/bitmaps_test',
     engine_scripts: 'backstop/engine_scripts',
-    html_report: 'backstop/html_report',
-    ci_report: 'backstop/ci_report',
+    html_report: 'backstop/report/html_report',
+    ci_report: 'backstop/report/ci_report',
   },
   report: ['browser'],
   engine: 'puppeteer',

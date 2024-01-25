@@ -8,8 +8,10 @@ import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 
 interface AppUrlParams {
   density: Density;
+  direction: 'ltr' | 'rtl';
   visualRefresh: boolean;
   motionDisabled: boolean;
+  removeHighContrastHeader: boolean;
 }
 
 export interface AppContextType<T = unknown> {
@@ -25,8 +27,10 @@ const appContextDefaults: AppContextType = {
   pageId: undefined,
   urlParams: {
     density: Density.Comfortable,
+    direction: 'ltr',
     visualRefresh: THEME === 'default',
     motionDisabled: false,
+    removeHighContrastHeader: false,
   },
   setMode: () => {},
   setUrlParams: () => {},

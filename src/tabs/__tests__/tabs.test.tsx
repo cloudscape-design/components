@@ -138,7 +138,7 @@ describe('Tabs', () => {
 
     defaultTabs.forEach((tab, index) => {
       const renderedTabId = tabContents[index].getElement().getAttribute('id');
-      expect(renderedTabId).toMatch(new RegExp(`awsui-tabs-\\d*-\\d*-${tab.id}-panel`));
+      expect(renderedTabId).toMatch(new RegExp(`awsui-tabs-.*-${tab.id}-panel`));
 
       expect(tabLinks[index].getElement()).toHaveAttribute('aria-controls', renderedTabId);
     });

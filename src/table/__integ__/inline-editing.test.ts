@@ -29,6 +29,10 @@ const cellBelow$ = tableWrapper.findEditCellButton(5, 5).toSelector();
 
 const bodyCellError = bodyCell.findFormField().findError().toSelector();
 
+const disabledCell = tableWrapper.findBodyCell(4, 4);
+const disabledCell$ = disabledCell.toSelector();
+const disabledCellLiveRegion$ = createWrapper().find('[aria-live]').toSelector();
+
 const setupTest = (testFn: (page: BasePageObject) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new BasePageObject(browser);
@@ -148,5 +152,38 @@ test(
     // Click on the input element outside, it should get focused.
     await page.click('[data-testid="focus"]');
     await expect(page.isFocused('[data-testid="focus"]')).resolves.toBe(true);
+  })
+);
+
+test(
+  'can activate and dismiss disabled reason popover with mouse',
+  setupTest(async page => {
+    // Click on cell with disabled inline edit
+    await page.click(disabledCell$);
+
+    await expect(page.getText(disabledCellLiveRegion$)).resolves.toContain(
+      "You don't have the necessary permissions to change a BrowserStack origin."
+    );
+
+    // Dismiss with Escape
+    await page.keys(['Escape']);
+    await expect(page.getElementsCount(disabledCellLiveRegion$)).resolves.toBe(0);
+  })
+);
+
+test(
+  'can activate disabled reason popover with keyboard',
+  setupTest(async page => {
+    // Navigate to a disabled cell
+    await page.click(mainCell$);
+    await page.click(cellSaveButton.toSelector());
+    await page.keys(['ArrowLeft']);
+
+    // Activate the popover with Enter
+    await page.keys(['Enter']);
+
+    await expect(page.getText(disabledCellLiveRegion$)).resolves.toContain(
+      "You don't have the necessary permissions to change a BrowserStack origin."
+    );
   })
 );

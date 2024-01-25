@@ -24,6 +24,16 @@ export interface AppLayoutProps extends BaseComponentProps {
    * * resizable (boolean) - if the drawer is resizable or not.
    * * defaultSize (number) - starting size of the drawer. if not set, defaults to 290.
    * * onResize (({ size: number }) => void) - Fired when the active drawer is resized.
+   * 
+   * #### DrawerTrigger
+   * - `iconName` (IconProps.Name) - (Optional) Specifies the icon to be displayed.
+   * - `iconSvg` (React.ReactNode) - (Optional) Specifies the SVG of a custom icon. For more information, see [SVG icon guidelines](/components/icon/?tabId=api#slots)
+   *
+   * #### DrawerAriaLabels
+   * - `drawerName` (string) - Label for the drawer itself.
+   * - `closeButton` (string) - (Optional) Label for the close button.
+   * - `triggerButton` (string) - (Optional) Label for the trigger button.
+   * - `resizeHandle` (string) - (Optional) Label for the resize handle.
    */
   drawers?: Array<AppLayoutProps.Drawer>;
 
@@ -118,7 +128,7 @@ export interface AppLayoutProps extends BaseComponentProps {
    * * `tools` (string) - Label for the landmark that wraps the tools drawer.
    * * `toolsClose` (string) - Label for the button that closes the tools drawer.
    * * `toolsToggle` (string) - Label for the button that opens the tools drawer.
-   * * `drawers` (string) - Label for the landmark that the active drawer.
+   * * `drawers` (string) - Label for the landmark that wraps the active drawer.
    * * `drawersOverflow` (string) - Label for the ellipsis button with any overflow drawers.
    * * `drawersOverflowWithBadge` (string) - Label for the ellipsis button with any overflow drawers, with a badge.
    *

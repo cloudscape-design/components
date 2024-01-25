@@ -7,10 +7,6 @@ on:
         required: true
         description: 'Specify the version for this release'
         type: string
-      npm_package:
-        required: false
-        description: 'npm package of the release repo (deprecated)'
-        type: string
       commit:
         required: true
         description: 'commit to generate release notes'
@@ -24,6 +20,5 @@ jobs:
     uses: cloudscape-design/actions/.github/workflows/release-gh-notes.yml@main
     secrets: inherit
     with:
-      npm_package: ${{ github.event.inputs.npm_package }}
       version: ${{ github.event.inputs.version }}
       commit: ${{ github.event.inputs.commit }}

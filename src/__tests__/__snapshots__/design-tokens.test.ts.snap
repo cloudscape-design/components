@@ -461,6 +461,13 @@ Object {
             "light": "#687078",
           },
         },
+        "color-border-input-focused": Object {
+          "$description": "The color of focus states for form inputs. For example: input, textarea, autosuggest, datepicker, select, and multiselect.",
+          "$value": Object {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
         "color-border-item-focused": Object {
           "$description": "The color of focus states. For example: the focus ring around interactive elements.",
           "$value": Object {
@@ -2733,6 +2740,13 @@ Object {
           "$value": Object {
             "dark": "#879596",
             "light": "#687078",
+          },
+        },
+        "color-border-input-focused": Object {
+          "$description": "The color of focus states for form inputs. For example: input, textarea, autosuggest, datepicker, select, and multiselect.",
+          "$value": Object {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
           },
         },
         "color-border-item-focused": Object {
@@ -5009,6 +5023,13 @@ Object {
             "light": "#687078",
           },
         },
+        "color-border-input-focused": Object {
+          "$description": "The color of focus states for form inputs. For example: input, textarea, autosuggest, datepicker, select, and multiselect.",
+          "$value": Object {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
         "color-border-item-focused": Object {
           "$description": "The color of focus states. For example: the focus ring around interactive elements.",
           "$value": Object {
@@ -7281,6 +7302,13 @@ Object {
           "$value": Object {
             "dark": "#879596",
             "light": "#687078",
+          },
+        },
+        "color-border-input-focused": Object {
+          "$description": "The color of focus states for form inputs. For example: input, textarea, autosuggest, datepicker, select, and multiselect.",
+          "$value": Object {
+            "dark": "#16191f",
+            "light": "#16191f",
           },
         },
         "color-border-item-focused": Object {
@@ -9557,6 +9585,13 @@ Object {
             "light": "#879596",
           },
         },
+        "color-border-input-focused": Object {
+          "$description": "The color of focus states for form inputs. For example: input, textarea, autosuggest, datepicker, select, and multiselect.",
+          "$value": Object {
+            "dark": "#00a1c9",
+            "light": "#00a1c9",
+          },
+        },
         "color-border-item-focused": Object {
           "$description": "The color of focus states. For example: the focus ring around interactive elements.",
           "$value": Object {
@@ -11829,6 +11864,13 @@ Object {
       "$value": Object {
         "dark": "#879596",
         "light": "#687078",
+      },
+    },
+    "color-border-input-focused": Object {
+      "$description": "The color of focus states for form inputs. For example: input, textarea, autosuggest, datepicker, select, and multiselect.",
+      "$value": Object {
+        "dark": "#00a1c9",
+        "light": "#0073bb",
       },
     },
     "color-border-item-focused": Object {
@@ -14110,6 +14152,13 @@ Object {
             "light": "#7d8998",
           },
         },
+        "color-border-input-focused": Object {
+          "$description": "The color of focus states for form inputs. For example: input, textarea, autosuggest, datepicker, select, and multiselect.",
+          "$value": Object {
+            "dark": "#b5d6f4",
+            "light": "#033160",
+          },
+        },
         "color-border-item-focused": Object {
           "$description": "The color of focus states. For example: the focus ring around interactive elements.",
           "$value": Object {
@@ -16382,6 +16431,13 @@ Object {
           "$value": Object {
             "dark": "#5f6b7a",
             "light": "#5f6b7a",
+          },
+        },
+        "color-border-input-focused": Object {
+          "$description": "The color of focus states for form inputs. For example: input, textarea, autosuggest, datepicker, select, and multiselect.",
+          "$value": Object {
+            "dark": "#b5d6f4",
+            "light": "#b5d6f4",
           },
         },
         "color-border-item-focused": Object {
@@ -18658,6 +18714,13 @@ Object {
             "light": "#7d8998",
           },
         },
+        "color-border-input-focused": Object {
+          "$description": "The color of focus states for form inputs. For example: input, textarea, autosuggest, datepicker, select, and multiselect.",
+          "$value": Object {
+            "dark": "#b5d6f4",
+            "light": "#033160",
+          },
+        },
         "color-border-item-focused": Object {
           "$description": "The color of focus states. For example: the focus ring around interactive elements.",
           "$value": Object {
@@ -20930,6 +20993,13 @@ Object {
           "$value": Object {
             "dark": "#5f6b7a",
             "light": "#7d8998",
+          },
+        },
+        "color-border-input-focused": Object {
+          "$description": "The color of focus states for form inputs. For example: input, textarea, autosuggest, datepicker, select, and multiselect.",
+          "$value": Object {
+            "dark": "#b5d6f4",
+            "light": "#033160",
           },
         },
         "color-border-item-focused": Object {
@@ -23206,6 +23276,13 @@ Object {
             "light": "#7d8998",
           },
         },
+        "color-border-input-focused": Object {
+          "$description": "The color of focus states for form inputs. For example: input, textarea, autosuggest, datepicker, select, and multiselect.",
+          "$value": Object {
+            "dark": "#b5d6f4",
+            "light": "#033160",
+          },
+        },
         "color-border-item-focused": Object {
           "$description": "The color of focus states. For example: the focus ring around interactive elements.",
           "$value": Object {
@@ -25478,6 +25555,13 @@ Object {
           "$value": Object {
             "dark": "#5f6b7a",
             "light": "#5f6b7a",
+          },
+        },
+        "color-border-input-focused": Object {
+          "$description": "The color of focus states for form inputs. For example: input, textarea, autosuggest, datepicker, select, and multiselect.",
+          "$value": Object {
+            "dark": "#b5d6f4",
+            "light": "#b5d6f4",
           },
         },
         "color-border-item-focused": Object {
@@ -27754,6 +27838,13 @@ Object {
             "light": "#5f6b7a",
           },
         },
+        "color-border-input-focused": Object {
+          "$description": "The color of focus states for form inputs. For example: input, textarea, autosuggest, datepicker, select, and multiselect.",
+          "$value": Object {
+            "dark": "#b5d6f4",
+            "light": "#b5d6f4",
+          },
+        },
         "color-border-item-focused": Object {
           "$description": "The color of focus states. For example: the focus ring around interactive elements.",
           "$value": Object {
@@ -30026,6 +30117,13 @@ Object {
       "$value": Object {
         "dark": "#5f6b7a",
         "light": "#7d8998",
+      },
+    },
+    "color-border-input-focused": Object {
+      "$description": "The color of focus states for form inputs. For example: input, textarea, autosuggest, datepicker, select, and multiselect.",
+      "$value": Object {
+        "dark": "#b5d6f4",
+        "light": "#033160",
       },
     },
     "color-border-item-focused": Object {
