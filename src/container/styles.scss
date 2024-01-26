@@ -193,6 +193,7 @@
       content: '';
 
       position: absolute;
+      pointer-events: none;
       right: 0;
       left: 0;
       bottom: 0;
@@ -218,7 +219,6 @@
       &::before {
         content: '';
         border-bottom: none;
-        pointer-events: none;
       }
     }
   }
