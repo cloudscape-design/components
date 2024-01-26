@@ -218,6 +218,7 @@
       &::before {
         content: '';
         border-bottom: none;
+        pointer-events: none;
       }
     }
   }
