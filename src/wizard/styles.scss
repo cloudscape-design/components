@@ -50,8 +50,11 @@
     box-sizing: border-box;
     &:not(.remove-high-contrast-header) {
       @include styles.container-style;
-      padding: awsui.$space-scaled-m awsui.$space-l awsui.$space-scaled-l awsui.$space-m;
-      width: 280px;
+      padding-block-start: awsui.$space-scaled-m;
+      padding-block-end: awsui.$space-scaled-l;
+      padding-inline-start: awsui.$space-m;
+      padding-inline-end: awsui.$space-l;
+      inline-size: 280px;
     }
 
     > li {
