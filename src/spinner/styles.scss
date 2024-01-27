@@ -7,12 +7,21 @@
 @use './mixins' as mixins;
 @use '../internal/styles/tokens' as awsui;
 
-@keyframes spinner-rotator {
+@keyframes spinner-rotator-ltr {
   0% {
     transform: rotate(0deg);
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes spinner-rotator-rtl {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-360deg);
   }
 }
 
@@ -59,7 +68,7 @@
   vertical-align: top;
   // Spinner is an exception from our motion rules, it always has motion
   /*stylelint-disable-next-line @cloudscape-design/no-motion-outside-of-mixin */
-  animation: spinner-rotator 0.7s linear infinite;
+  animation: spinner-rotator-ltr 0.7s linear infinite;
   box-sizing: border-box;
   line-height: 0;
 
@@ -92,3 +101,29 @@
     animation-name: spinner-line-right;
   }
 }
+
+/* stylelint-disable plugin/no-unsupported-browser-features */
+@supports selector(:dir(rtl)) {
+  .root:dir(rtl) {
+    /*stylelint-disable-next-line @cloudscape-design/no-motion-outside-of-mixin */
+    animation-name: spinner-rotator-rtl;
+  }
+
+  .circle:dir(rtl).circle-right:after {
+    inset-inline-start: 100%;
+  }
+}
+/* stylelint-enable plugin/no-unsupported-browser-features */
+
+/* stylelint-disable selector-combinator-disallowed-list */
+@supports not selector(:dir(rtl)) {
+  [dir='rtl'] .root {
+    /*stylelint-disable-next-line @cloudscape-design/no-motion-outside-of-mixin */
+    animation-name: spinner-rotator-rtl;
+  }
+
+  [dir='rtl'] .circle.circle-right:after {
+    inset-inline-start: 100%;
+  }
+}
+/* stylelint-enable selector-combinator-disallowed-list */

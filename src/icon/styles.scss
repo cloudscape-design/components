@@ -43,12 +43,6 @@
   inset-inline-end: -3px;
 }
 
-/*
-Mirror all icons that are assymetrical or indicate a passage of 
-time when the icon direction is RTL. For browsers that do not 
-support the :dir() pseudoclass provide a fallback that depends 
-on the global document dir attribute.
-*/
 /* stylelint-disable plugin/no-unsupported-browser-features */
 @supports selector(:dir(rtl)) {
   .icon:dir(rtl):is(

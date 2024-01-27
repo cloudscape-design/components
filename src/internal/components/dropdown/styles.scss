@@ -116,11 +116,6 @@
   block-size: 100%;
 }
 
-/*
-Unset the logical position of the dropdown in RTL for the 
-left and right drop positions. The document flow
-of the browser will compute the placement automatically.
-*/
 /* stylelint-disable plugin/no-unsupported-browser-features */
 @supports selector(:dir(rtl)) {
   .dropdown:dir(rtl):is(.dropdown-drop-left, .dropdown-drop-right) {
@@ -132,7 +127,7 @@ of the browser will compute the placement automatically.
 
 /* stylelint-disable selector-combinator-disallowed-list */
 @supports not selector(:dir(rtl)) {
-  [dir='rtl'] :is(.dropdown-drop-left, .dropdown-drop-right) {
+  [dir='rtl'] .dropdown:is(.dropdown-drop-left, .dropdown-drop-right) {
     inset-inline-end: unset;
     inset-inline-start: unset;
   }
