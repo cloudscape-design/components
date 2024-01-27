@@ -42,3 +42,58 @@
   inset-block-start: 0px;
   inset-inline-end: -3px;
 }
+
+/*
+Mirror all icons that are assymetrical or indicate a passage of 
+time when the icon direction is RTL. For browsers that do not 
+support the :dir() pseudoclass provide a fallback that depends 
+on the global document dir attribute.
+*/
+/* stylelint-disable plugin/no-unsupported-browser-features */
+@supports selector(:dir(rtl)) {
+  .icon:dir(rtl):is(
+      .name-angle-left-double,
+      .name-angle-left,
+      .name-angle-right-double,
+      .name-angle-right,
+      .name-arrow-left,
+      .name-caret-left-filled,
+      .name-caret-right-filled,
+      .name-audio-full,
+      .name-audio-half,
+      .name-audio-off,
+      .name-external,
+      .name-redo,
+      .name-shrink,
+      .name-undo,
+      .name-view-vertical
+    ) {
+    transform: scaleX(-1);
+  }
+}
+/* stylelint-enable plugin/no-unsupported-browser-features */
+
+/* stylelint-disable selector-combinator-disallowed-list */
+@supports not selector(:dir(rtl)) {
+  [dir='rtl']
+    .icon:is(
+      .name-angle-left-double,
+      .name-angle-left,
+      .name-angle-right-double,
+      .name-angle-right,
+      .name-arrow-left,
+      .name-caret-left-filled,
+      .name-caret-right-filled,
+      .name-audio-full,
+      .name-audio-half,
+      .name-audio-off,
+      .name-external,
+      .name-redo,
+      .name-shrink,
+      .name-undo,
+      .name-view-vertical
+    ) {
+    transform: scaleX(-1);
+  }
+}
+/* stylelint-enable selector-combinator-disallowed-list */
