@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useState } from 'react';
-import { Box, DateRangePicker, DateRangePickerProps, SpaceBetween, Grid, TimeInputProps } from '~components';
+import { Box, DateRangePicker, DateRangePickerProps, SpaceBetween, Grid } from '~components';
 import { i18nStrings, isValid } from './common';
 import AppContext, { AppContextType } from '../app/app-context';
 const locales = [
@@ -27,8 +27,7 @@ type DemoContext = React.Context<
   AppContextType<{
     absoluteFormat?: DateRangePickerProps.AbsoluteFormat;
     dateOnly?: boolean;
-    showTimeOffset?: boolean;
-    timeInputFormat?: TimeInputProps.Format;
+    hideTimeOffset?: boolean;
     timeOffset?: number;
   }>
 >;
@@ -58,8 +57,7 @@ export default function DatePickerScenario() {
               }
             >
               <option value="">(Default)</option>
-              <option value="short">Short</option>
-              <option value="long">Long</option>
+              <option value="spaced">Spaced</option>
             </select>
           </label>
           <label>
@@ -69,21 +67,6 @@ export default function DatePickerScenario() {
               onChange={event => setUrlParams({ dateOnly: !!event.target.checked })}
             />{' '}
             Date only
-          </label>
-          <label>
-            Time input format{' '}
-            <select
-              value={urlParams.timeInputFormat}
-              onChange={event =>
-                setUrlParams({
-                  timeInputFormat: event.currentTarget.value as TimeInputProps.Format,
-                })
-              }
-            >
-              <option value="hh:mm:ss">hh:mm:ss</option>
-              <option value="hh:mm">hh:mm</option>
-              <option value="hh">hh</option>
-            </select>
           </label>
           <label>
             Time offset from UTC in minutes{' '}
@@ -97,18 +80,17 @@ export default function DatePickerScenario() {
             />
           </label>
           <label>
-            Show time offset{' '}
+            Hide time offset{' '}
             <select
-              value={urlParams.showTimeOffset?.toString()}
+              value={urlParams.hideTimeOffset?.toString()}
               onChange={event =>
                 setUrlParams({
-                  showTimeOffset: event.currentTarget.value === '' ? undefined : event.currentTarget.value === 'true',
+                  hideTimeOffset: event.currentTarget.value === '' ? undefined : event.currentTarget.value === 'true',
                 })
               }
             >
               <option value="true">Yes</option>
               <option value="false">No</option>
-              <option value="">If time offset is provided</option>
             </select>
           </label>
         </SpaceBetween>
@@ -130,8 +112,7 @@ export default function DatePickerScenario() {
               getTimeOffset={urlParams.timeOffset === undefined ? undefined : () => urlParams.timeOffset!}
               absoluteFormat={urlParams.absoluteFormat}
               dateOnly={urlParams.dateOnly}
-              timeInputFormat={urlParams.timeInputFormat}
-              showTimeOffset={urlParams.showTimeOffset}
+              hideTimeOffset={urlParams.hideTimeOffset}
             />
           </Grid>
         ))}

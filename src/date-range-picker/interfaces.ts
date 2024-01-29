@@ -165,10 +165,10 @@ export interface DateRangePickerProps
   absoluteFormat?: DateRangePickerProps.AbsoluteFormat;
 
   /**
-   * Specifices whether to show the time offset in the displayed absolute time range.
-   * If not provided, defaults to whether `getTimeOffset` is provided.
+   * Specifices whether to hide the time offset in the displayed absolute time range.
+   * Defaults to `false`.
    */
-  showTimeOffset?: boolean;
+  hideTimeOffset?: boolean;
 }
 
 export namespace DateRangePickerProps {

@@ -30,7 +30,6 @@ import { joinStrings } from '../internal/utils/strings/join-strings';
 import { formatDateRange, isIsoDateOnly } from '../internal/utils/date-time';
 import { useInternalI18n } from '../i18n/context';
 import { formatValue } from './utils';
-import { padLeftZeros } from '../internal/utils/strings/pad-left-zeros.js';
 
 export { DateRangePickerProps };
 
@@ -39,19 +38,15 @@ function renderDateRange({
   placeholder = '',
   formatRelativeRange,
   absoluteFormat,
-  dateOnly,
-  showTimeOffset,
+  hideTimeOffset,
   timeOffset,
-  locale,
 }: {
   range: null | DateRangePickerProps.Value;
   placeholder?: string;
   formatRelativeRange: DateRangePickerProps.I18nStrings['formatRelativeRange'];
   absoluteFormat?: DateRangePickerProps.AbsoluteFormat;
-  dateOnly: boolean;
-  showTimeOffset?: boolean;
+  hideTimeOffset?: boolean;
   timeOffset: { startDate?: number; endDate?: number };
-  locale: string;
 }) {
   if (!range) {
     return (
@@ -66,25 +61,13 @@ function renderDateRange({
       formatRelativeRange?.(range) ?? ''
     ) : (
       <BreakSpaces
-        text={
-          range.type === 'absolute' && absoluteFormat
-            ? `${applyAbsoluteFormat({
-                date: range.startDate,
-                locale,
-                timeOffset: timeOffset.startDate,
-                dateOnly,
-                absoluteFormat,
-                showTimeOffset,
-              })} — ${applyAbsoluteFormat({
-                date: range.endDate,
-                locale,
-                timeOffset: timeOffset.endDate,
-                dateOnly,
-                absoluteFormat,
-                showTimeOffset,
-              })}`
-            : formatDateRange(range.startDate, range.endDate, timeOffset)
-        }
+        text={formatDateRange({
+          startDate: range.startDate,
+          endDate: range.endDate,
+          timeOffset,
+          hideTimeOffset,
+          format: absoluteFormat,
+        })}
       />
     );
 
@@ -93,51 +76,6 @@ function renderDateRange({
       {formatted}
     </InternalBox>
   );
-}
-
-function applyAbsoluteFormat({
-  date,
-  timeOffset,
-  dateOnly,
-  showTimeOffset,
-}: {
-  date: string;
-  locale: string;
-  timeOffset?: number;
-  dateOnly: boolean;
-  absoluteFormat: DateRangePickerProps.AbsoluteFormat;
-  showTimeOffset?: boolean;
-}) {
-  const d = new Date(date);
-
-  const formattedDate = [
-    d.getFullYear(),
-    padLeftZeros((d.getMonth() + 1).toString(), 2),
-    padLeftZeros(d.getDate().toString(), 2),
-  ].join('-');
-
-  const formattedTime = dateOnly
-    ? undefined
-    : [
-        padLeftZeros(d.getHours().toString(), 2),
-        padLeftZeros(d.getMinutes().toString(), 2),
-        padLeftZeros(d.getSeconds().toString(), 2),
-      ].join(':');
-
-  const formattedTimeOffset = showTimeOffset ? formatOffset(date, timeOffset, true) : undefined;
-
-  return [formattedDate, formattedTime, formattedTimeOffset].filter(Boolean).join(' ');
-}
-
-function formatOffset(isoDate: string, offsetInMinutes?: number, padHours = false) {
-  offsetInMinutes = offsetInMinutes ?? 0 - new Date(isoDate).getTimezoneOffset();
-  const hours = Math.floor(Math.abs(offsetInMinutes) / 60).toFixed(0);
-  const hoursOffset = padHours ? padLeftZeros(hours, 2) : hours;
-  const minuteOffset = padLeftZeros(Math.abs(offsetInMinutes % 60).toFixed(0), 2);
-  const sign = offsetInMinutes < 0 ? '-' : '+';
-  const formattedOffset = `${sign}${hoursOffset}:${minuteOffset}`;
-
-  return formattedOffset;
 }
 
 function BreakSpaces({ text }: { text: string }) {
@@ -186,7 +124,7 @@ const DateRangePicker = React.forwardRef(
       rangeSelectorMode = 'default',
       customAbsoluteRangeControl,
       absoluteFormat,
-      showTimeOffset,
+      hideTimeOffset,
       ...rest
     }: DateRangePickerProps,
     ref: Ref<DateRangePickerProps.Ref>
@@ -314,10 +252,8 @@ const DateRangePicker = React.forwardRef(
       placeholder,
       formatRelativeRange,
       absoluteFormat,
-      showTimeOffset: showTimeOffset === undefined ? !!getTimeOffset : showTimeOffset,
-      dateOnly,
+      hideTimeOffset,
       timeOffset: normalizedTimeOffset,
-      locale: normalizedLocale,
     });
 
     const trigger = (

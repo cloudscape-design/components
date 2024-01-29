@@ -6011,6 +6011,13 @@ Default: the user's current time offset as provided by the browser.
       "type": "DateRangePickerProps.GetTimeOffsetFunction",
     },
     Object {
+      "description": "Specifices whether to hide the time offset in the displayed absolute time range.
+Defaults to \`false\`.",
+      "name": "hideTimeOffset",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "description": "An object containing all the necessary localized strings required by the component.",
       "i18nTag": true,
       "inlineType": Object {
@@ -6274,13 +6281,6 @@ modifying the value. A read-only component can receive focus.",
       "description": "Specifies whether the component should show a button that
 allows the user to clear the selected value.",
       "name": "showClearButton",
-      "optional": true,
-      "type": "boolean",
-    },
-    Object {
-      "description": "Specifices whether to show the time offset in the displayed absolute time range.
-If not provided, defaults to whether \`getTimeOffset\` is provided.",
-      "name": "showTimeOffset",
       "optional": true,
       "type": "boolean",
     },
