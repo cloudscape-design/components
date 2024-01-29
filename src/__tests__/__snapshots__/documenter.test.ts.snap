@@ -5400,6 +5400,83 @@ If true, the overlap will be removed.",
 }
 `;
 
+exports[`Documenter definition for copy-to-clipboard matches the snapshot: copy-to-clipboard 1`] = `
+Object {
+  "events": Array [],
+  "functions": Array [],
+  "name": "CopyToClipboard",
+  "properties": Array [
+    Object {
+      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds \`aria-label\` to the copy button. Use this to provide an accessible name for buttons that don't have visible text,
+and to distinguish between multiple buttons with identical visible text. The text will also be added to the \`title\` attribute of the button.",
+      "name": "copyButtonAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "The text of the copy button (for variant=\\"button\\").",
+      "name": "copyButtonText",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "The message shown when the text is not copied due to an error, see [https://w3c.github.io/clipboard-apis/#dom-clipboard-writetext](https://w3c.github.io/clipboard-apis/#dom-clipboard-writetext).",
+      "name": "copyErrorText",
+      "optional": false,
+      "type": "string",
+    },
+    Object {
+      "description": "The message shown when the text is copied successfully.",
+      "name": "copySuccessText",
+      "optional": false,
+      "type": "string",
+    },
+    Object {
+      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "The text content to be copied. It is displayed next to the copy button when \`variant=\\"inline\\"\`, and is not shown otherwise.",
+      "name": "textToCopy",
+      "optional": false,
+      "type": "string",
+    },
+    Object {
+      "defaultValue": "\\"button\\"",
+      "description": "Determines the general styling of the copy button as follows:
+* \`button\` to display a standalone secondary button with an icon, and \`copyButtonText\` as text.
+* \`icon\` to display a standalone icon-only (no text) button.
+* \`inline\` to display an icon-only (no text) button within a text context.
+Defaults to \`button\`.",
+      "inlineType": Object {
+        "name": "CopyToClipboardProps.Variant",
+        "type": "union",
+        "values": Array [
+          "button",
+          "icon",
+          "inline",
+        ],
+      },
+      "name": "variant",
+      "optional": true,
+      "type": "string",
+    },
+  ],
+  "regions": Array [],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Documenter definition for date-input matches the snapshot: date-input 1`] = `
 Object {
   "events": Array [
