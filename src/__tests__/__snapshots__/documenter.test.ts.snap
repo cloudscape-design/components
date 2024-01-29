@@ -5876,14 +5876,14 @@ The event \`detail\` contains the current value of the field.",
     Object {
       "description": "Speficies the time format to use for displaying the absolute time range.",
       "inlineType": Object {
-        "name": "DateRangePickerProps.AbsoluteTimeFormat",
+        "name": "DateRangePickerProps.AbsoluteFormat",
         "type": "union",
         "values": Array [
-          "short",
-          "long",
+          "spaced",
+          "iso",
         ],
       },
-      "name": "absoluteTimeFormat",
+      "name": "absoluteFormat",
       "optional": true,
       "type": "string",
     },

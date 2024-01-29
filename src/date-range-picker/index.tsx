@@ -38,9 +38,8 @@ function renderDateRange({
   range,
   placeholder = '',
   formatRelativeRange,
-  absoluteTimeFormat,
+  absoluteFormat,
   dateOnly,
-  timeInputFormat,
   showTimeOffset,
   timeOffset,
   locale,
@@ -48,9 +47,8 @@ function renderDateRange({
   range: null | DateRangePickerProps.Value;
   placeholder?: string;
   formatRelativeRange: DateRangePickerProps.I18nStrings['formatRelativeRange'];
-  absoluteTimeFormat?: 'short' | 'long';
+  absoluteFormat?: DateRangePickerProps.AbsoluteFormat;
   dateOnly: boolean;
-  timeInputFormat: string;
   showTimeOffset?: boolean;
   timeOffset: { startDate?: number; endDate?: number };
   locale: string;
@@ -69,22 +67,20 @@ function renderDateRange({
     ) : (
       <BreakSpaces
         text={
-          range.type === 'absolute' && absoluteTimeFormat
-            ? `${applyAbsoluteTimeFormat({
+          range.type === 'absolute' && absoluteFormat
+            ? `${applyAbsoluteFormat({
                 date: range.startDate,
                 locale,
                 timeOffset: timeOffset.startDate,
                 dateOnly,
-                absoluteTimeFormat,
-                timeInputFormat,
+                absoluteFormat,
                 showTimeOffset,
-              })} — ${applyAbsoluteTimeFormat({
+              })} — ${applyAbsoluteFormat({
                 date: range.endDate,
                 locale,
                 timeOffset: timeOffset.endDate,
                 dateOnly,
-                absoluteTimeFormat,
-                timeInputFormat,
+                absoluteFormat,
                 showTimeOffset,
               })}`
             : formatDateRange(range.startDate, range.endDate, timeOffset)
@@ -99,50 +95,38 @@ function renderDateRange({
   );
 }
 
-function applyAbsoluteTimeFormat({
+function applyAbsoluteFormat({
   date,
-  locale,
   timeOffset,
   dateOnly,
-  absoluteTimeFormat,
-  timeInputFormat,
   showTimeOffset,
 }: {
   date: string;
   locale: string;
   timeOffset?: number;
   dateOnly: boolean;
-  absoluteTimeFormat: 'short' | 'long';
-  timeInputFormat: string;
+  absoluteFormat: DateRangePickerProps.AbsoluteFormat;
   showTimeOffset?: boolean;
 }) {
   const d = new Date(date);
 
-  const formattedDate =
-    absoluteTimeFormat === 'long'
-      ? new Intl.DateTimeFormat(locale, { dateStyle: 'long' }).format(d)
-      : [d.getFullYear(), padLeftZeros((d.getMonth() + 1).toString(), 2), padLeftZeros(d.getDate().toString(), 2)].join(
-          '-'
-        );
+  const formattedDate = [
+    d.getFullYear(),
+    padLeftZeros((d.getMonth() + 1).toString(), 2),
+    padLeftZeros(d.getDate().toString(), 2),
+  ].join('-');
 
   const formattedTime = dateOnly
     ? undefined
-    : new Intl.DateTimeFormat(locale, {
-        hour: '2-digit',
-        minute: timeInputFormat.length > 2 ? '2-digit' : undefined,
-        second: timeInputFormat.length > 5 ? '2-digit' : undefined,
-      }).format(d);
+    : [
+        padLeftZeros(d.getHours().toString(), 2),
+        padLeftZeros(d.getMinutes().toString(), 2),
+        padLeftZeros(d.getSeconds().toString(), 2),
+      ].join(':');
 
-  const formattedTimeOffset = showTimeOffset
-    ? absoluteTimeFormat === 'long'
-      ? timeOffset
-        ? `(UTC${formatOffset(date, timeOffset)})`
-        : `(UTC)`
-      : timeOffset
-      ? formatOffset(date, timeOffset, true)
-      : undefined
-    : undefined;
-  return [[formattedDate, formattedTime].filter(Boolean).join(', '), formattedTimeOffset].filter(Boolean).join(' ');
+  const formattedTimeOffset = showTimeOffset ? formatOffset(date, timeOffset, true) : undefined;
+
+  return [formattedDate, formattedTime, formattedTimeOffset].filter(Boolean).join(' ');
 }
 
 function formatOffset(isoDate: string, offsetInMinutes?: number, padHours = false) {
@@ -201,7 +185,7 @@ const DateRangePicker = React.forwardRef(
       expandToViewport = false,
       rangeSelectorMode = 'default',
       customAbsoluteRangeControl,
-      absoluteTimeFormat,
+      absoluteFormat,
       showTimeOffset,
       ...rest
     }: DateRangePickerProps,
@@ -329,9 +313,8 @@ const DateRangePicker = React.forwardRef(
       range: value,
       placeholder,
       formatRelativeRange,
-      absoluteTimeFormat,
+      absoluteFormat,
       showTimeOffset: showTimeOffset === undefined ? !!getTimeOffset : showTimeOffset,
-      timeInputFormat,
       dateOnly,
       timeOffset: normalizedTimeOffset,
       locale: normalizedLocale,

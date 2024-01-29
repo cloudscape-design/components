@@ -162,7 +162,7 @@ export interface DateRangePickerProps
   /**
    * Speficies the time format to use for displaying the absolute time range.
    */
-  absoluteTimeFormat?: DateRangePickerProps.AbsoluteTimeFormat;
+  absoluteFormat?: DateRangePickerProps.AbsoluteFormat;
 
   /**
    * Specifices whether to show the time offset in the displayed absolute time range.
@@ -403,7 +403,7 @@ export namespace DateRangePickerProps {
     renderSelectedAbsoluteRangeAriaLive?: (startDate: string, endDate: string) => string;
   }
 
-  export type AbsoluteTimeFormat = 'short' | 'long';
+  export type AbsoluteFormat = 'spaced' | 'iso';
 }
 
 export type DayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;

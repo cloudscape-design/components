@@ -25,7 +25,7 @@ const locales = [
 
 type DemoContext = React.Context<
   AppContextType<{
-    absoluteTimeFormat?: DateRangePickerProps.AbsoluteTimeFormat;
+    absoluteFormat?: DateRangePickerProps.AbsoluteFormat;
     dateOnly?: boolean;
     showTimeOffset?: boolean;
     timeInputFormat?: TimeInputProps.Format;
@@ -50,10 +50,10 @@ export default function DatePickerScenario() {
           <label>
             Format{' '}
             <select
-              value={urlParams.absoluteTimeFormat}
+              value={urlParams.absoluteFormat}
               onChange={event =>
                 setUrlParams({
-                  absoluteTimeFormat: event.currentTarget.value as DateRangePickerProps.AbsoluteTimeFormat,
+                  absoluteFormat: event.currentTarget.value as DateRangePickerProps.AbsoluteFormat,
                 })
               }
             >
@@ -128,7 +128,7 @@ export default function DatePickerScenario() {
               rangeSelectorMode={'absolute-only'}
               isDateEnabled={date => date.getDate() !== 15}
               getTimeOffset={urlParams.timeOffset === undefined ? undefined : () => urlParams.timeOffset!}
-              absoluteTimeFormat={urlParams.absoluteTimeFormat}
+              absoluteFormat={urlParams.absoluteFormat}
               dateOnly={urlParams.dateOnly}
               timeInputFormat={urlParams.timeInputFormat}
               showTimeOffset={urlParams.showTimeOffset}
