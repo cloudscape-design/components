@@ -24,6 +24,7 @@ jest.mock('@cloudscape-design/component-toolkit', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit'),
   useContainerQuery: () => [1300, () => {}],
 }));
+jest.mock('../../../lib/components/app-layout/utils/use-document-width', () => () => 1024);
 
 async function renderComponent(jsx: React.ReactElement) {
   const { container, rerender } = render(jsx);
@@ -161,7 +162,7 @@ describeEachAppLayout(size => {
       ...drawerDefaults,
       defaultSize: 400,
     });
-    const { wrapper } = await renderComponent(<AppLayout />);
+    const { wrapper } = await renderComponent(<AppLayout navigationOpen={false} />);
     wrapper.findToolsToggle()!.click();
     // always full-screen on mobile
     expect(getActiveDrawerWidth(wrapper)).toEqual(size === 'desktop' ? '290px' : '');
@@ -227,7 +228,7 @@ describeEachAppLayout(size => {
 
     expect(wrapper.findTools()).toBeFalsy();
 
-    ref!.openTools();
+    act(() => ref!.openTools());
     expect(wrapper.findTools().getElement()).toHaveTextContent('Tools content');
 
     wrapper.findToolsClose().click();
