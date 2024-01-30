@@ -6,6 +6,7 @@ import { NonCancelableEventHandler } from '../internal/events';
 import { TimeInputProps } from '../time-input/interfaces';
 import { ExpandToViewport } from '../internal/components/dropdown/interfaces';
 import React from 'react';
+import { AbsoluteDateRangeFormat } from '../internal/utils/date-time/format-date-range';
 
 export interface DateRangePickerBaseProps {
   /**
@@ -161,6 +162,10 @@ export interface DateRangePickerProps
 
   /**
    * Speficies the time format to use for displaying the absolute time range.
+   * Possible values are:
+   * * 'iso': ISO 8601 format, e.g.: 2024-01-30T13:32:32+01:00 (or 2024-01-30 when `dateOnly` is true)
+   * * `compact`: a format similar to ISO but using spaces for improved readability, e.g.: 2024-01-30 13:32:32 +01:00 (or 2024-01-30 when `dateOnly` is true)
+   * Defaults to 'iso'.
    */
   absoluteFormat?: DateRangePickerProps.AbsoluteFormat;
 
@@ -403,7 +408,7 @@ export namespace DateRangePickerProps {
     renderSelectedAbsoluteRangeAriaLive?: (startDate: string, endDate: string) => string;
   }
 
-  export type AbsoluteFormat = 'spaced' | 'iso';
+  export type AbsoluteFormat = AbsoluteDateRangeFormat;
 }
 
 export type DayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;

@@ -1,10 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { DateRangePickerProps } from '../../../date-range-picker/interfaces';
 import { padLeftZeros } from '../strings';
 import { formatTimezoneOffset } from './format-timezone-offset';
 import { isIsoDateOnly } from './is-iso-date-only';
+
+export type AbsoluteDateRangeFormat = 'compact' | 'iso';
 
 export function formatDateRange({
   startDate,
@@ -17,7 +18,7 @@ export function formatDateRange({
   endDate: string;
   hideTimeOffset?: boolean;
   timeOffset: { startDate?: number; endDate?: number };
-  format?: DateRangePickerProps.AbsoluteFormat;
+  format?: AbsoluteDateRangeFormat;
 }): string {
   const isDateOnly = isIsoDateOnly(startDate) && isIsoDateOnly(endDate);
   return [
@@ -46,7 +47,7 @@ function formatDate({
   timeOffset,
 }: {
   date: string;
-  format?: DateRangePickerProps.AbsoluteFormat;
+  format?: AbsoluteDateRangeFormat;
   hideTimeOffset?: boolean;
   isDateOnly: boolean;
   timeOffset?: number;
@@ -54,7 +55,7 @@ function formatDate({
   const formattedOffset = hideTimeOffset || isDateOnly ? '' : formatTimezoneOffset(date, timeOffset);
 
   switch (format) {
-    case 'spaced': {
+    case 'compact': {
       const d = new Date(date);
 
       const formattedDate = [
