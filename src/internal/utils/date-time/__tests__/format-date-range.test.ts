@@ -16,6 +16,6 @@ describe('formatDateRange', () => {
     ['2020-01-01T00:00:00', '2020-01-01T12:00:00', newYork, '2020-01-01T00:00:00-04:00 — 2020-01-01T12:00:00-04:00'],
     ['2020-01-01T00:00:00', '2020-01-01T12:00:00', regional, '2020-01-01T00:00:00+00:00 — 2020-01-01T12:00:00+01:00'],
   ])('formats date correctly [%s, %s, %s]', (startDate, endDate, timeOffset, expected) => {
-    expect(formatDateRange(startDate, endDate, timeOffset)).toBe(expected);
+    expect(formatDateRange({ startDate, endDate, timeOffset })).toBe(expected);
   });
 });
