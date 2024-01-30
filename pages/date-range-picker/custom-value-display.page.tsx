@@ -39,7 +39,7 @@ export default function DatePickerScenario() {
               }
             >
               <option value="">(Default)</option>
-              <option value="spaced">Spaced</option>
+              <option value="compact">Compact</option>
             </select>
           </label>
           <label>
@@ -62,18 +62,12 @@ export default function DatePickerScenario() {
             />
           </label>
           <label>
-            Hide time offset{' '}
-            <select
-              value={urlParams.hideTimeOffset?.toString()}
-              onChange={event =>
-                setUrlParams({
-                  hideTimeOffset: event.currentTarget.value === '' ? undefined : event.currentTarget.value === 'true',
-                })
-              }
-            >
-              <option value="true">Yes</option>
-              <option value="false">No</option>
-            </select>
+            <input
+              type="checkbox"
+              checked={urlParams.hideTimeOffset}
+              onChange={event => setUrlParams({ hideTimeOffset: !!event.target.checked })}
+            />{' '}
+            Hide time offset
           </label>
         </SpaceBetween>
         <hr />
@@ -86,7 +80,6 @@ export default function DatePickerScenario() {
           relativeOptions={[]}
           isValidRange={isValid}
           rangeSelectorMode={'absolute-only'}
-          isDateEnabled={date => date.getDate() !== 15}
           getTimeOffset={urlParams.timeOffset === undefined ? undefined : () => urlParams.timeOffset!}
           absoluteFormat={urlParams.absoluteFormat}
           dateOnly={urlParams.dateOnly}
