@@ -1,27 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useState } from 'react';
-import { Box, DateRangePicker, DateRangePickerProps, SpaceBetween, Grid } from '~components';
+import { Box, DateRangePicker, DateRangePickerProps, SpaceBetween } from '~components';
 import { i18nStrings, isValid } from './common';
 import AppContext, { AppContextType } from '../app/app-context';
-const locales = [
-  'ar',
-  'de',
-  'en-GB',
-  'en',
-  'es',
-  'fr',
-  'he',
-  'id',
-  'it',
-  'ja',
-  'ko',
-  'pt-BR',
-  'th',
-  'tr',
-  'zh-CN',
-  'zh-TW',
-];
 
 type DemoContext = React.Context<
   AppContextType<{
@@ -95,27 +77,21 @@ export default function DatePickerScenario() {
           </label>
         </SpaceBetween>
         <hr />
-        {locales.map(locale => (
-          <Grid key={`pickers-${locale}`} gridDefinition={[{ colspan: 1 }, { colspan: 11 }]}>
-            <div style={{ textAlign: 'right' }}>{locale}</div>
 
-            <DateRangePicker
-              value={value}
-              locale={locale}
-              i18nStrings={i18nStrings}
-              placeholder={'Filter by a date and time range'}
-              onChange={e => setValue(e.detail.value)}
-              relativeOptions={[]}
-              isValidRange={isValid}
-              rangeSelectorMode={'absolute-only'}
-              isDateEnabled={date => date.getDate() !== 15}
-              getTimeOffset={urlParams.timeOffset === undefined ? undefined : () => urlParams.timeOffset!}
-              absoluteFormat={urlParams.absoluteFormat}
-              dateOnly={urlParams.dateOnly}
-              hideTimeOffset={urlParams.hideTimeOffset}
-            />
-          </Grid>
-        ))}
+        <DateRangePicker
+          value={value}
+          i18nStrings={i18nStrings}
+          placeholder={'Filter by a date and time range'}
+          onChange={e => setValue(e.detail.value)}
+          relativeOptions={[]}
+          isValidRange={isValid}
+          rangeSelectorMode={'absolute-only'}
+          isDateEnabled={date => date.getDate() !== 15}
+          getTimeOffset={urlParams.timeOffset === undefined ? undefined : () => urlParams.timeOffset!}
+          absoluteFormat={urlParams.absoluteFormat}
+          dateOnly={urlParams.dateOnly}
+          hideTimeOffset={urlParams.hideTimeOffset}
+        />
       </SpaceBetween>
     </Box>
   );
