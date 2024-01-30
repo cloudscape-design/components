@@ -6,11 +6,11 @@ import { i18nStrings } from './common';
 import { renderCodeEditor } from './util';
 
 function submitPreferences() {
-  screen.getByText(i18nStrings.preferencesModalConfirm).click();
+  screen.getByText(i18nStrings.preferencesModalConfirm!).click();
 }
 
 function cancelPreferences() {
-  screen.getByText(i18nStrings.preferencesModalCancel).click();
+  screen.getByText(i18nStrings.preferencesModalCancel!).click();
 }
 
 function findWrapLinesCheckbox() {
