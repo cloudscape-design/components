@@ -9,7 +9,7 @@ const locales = [
   'ar',
   'de',
   'en-GB',
-  'en',
+  'en-US',
   'es',
   'fr',
   'he',
@@ -33,14 +33,19 @@ type DemoContext = React.Context<
   }>
 >;
 
+const initialRange = {
+  startDate: '2024-12-30T00:00:00+01:00',
+  endDate: '2024-12-31T23:59:59+01:00',
+};
+
 export default function DatePickerScenario() {
+  const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
+
   const [value, setValue] = useState<DateRangePickerProps['value']>({
     type: 'absolute',
-    startDate: '2024-12-30T00:00:00+01:00',
-    endDate: '2024-12-31T23:59:59+01:00',
+    startDate: urlParams.dateOnly ? initialRange.startDate.slice(0, 10) : initialRange.startDate,
+    endDate: urlParams.dateOnly ? initialRange.endDate.slice(0, 10) : initialRange.endDate,
   });
-
-  const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
 
   return (
     <Box padding="s">

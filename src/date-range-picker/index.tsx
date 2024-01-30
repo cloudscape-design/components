@@ -34,6 +34,7 @@ import { formatValue } from './utils';
 export { DateRangePickerProps };
 
 function renderDateRange({
+  locale,
   range,
   placeholder = '',
   formatRelativeRange,
@@ -41,6 +42,7 @@ function renderDateRange({
   hideTimeOffset,
   timeOffset,
 }: {
+  locale: string;
   range: null | DateRangePickerProps.Value;
   placeholder?: string;
   formatRelativeRange: DateRangePickerProps.I18nStrings['formatRelativeRange'];
@@ -67,6 +69,7 @@ function renderDateRange({
           timeOffset,
           hideTimeOffset,
           format: absoluteFormat,
+          locale,
         })}
       />
     );
@@ -248,6 +251,7 @@ const DateRangePicker = React.forwardRef(
     }
 
     const formattedDate: string | JSX.Element = renderDateRange({
+      locale: normalizedLocale,
       range: value,
       placeholder,
       formatRelativeRange,
