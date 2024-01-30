@@ -42,7 +42,7 @@ function renderDateRange({
   hideTimeOffset,
   timeOffset,
 }: {
-  locale: string;
+  locale?: string;
   range: null | DateRangePickerProps.Value;
   placeholder?: string;
   formatRelativeRange: DateRangePickerProps.I18nStrings['formatRelativeRange'];

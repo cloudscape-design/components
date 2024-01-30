@@ -19,7 +19,7 @@ export function formatDateRange({
   hideTimeOffset?: boolean;
   timeOffset: { startDate?: number; endDate?: number };
   format?: AbsoluteDateRangeFormat;
-  locale: string;
+  locale?: string;
 }): string {
   const isDateOnly = isIsoDateOnly(startDate) && isIsoDateOnly(endDate);
   return [
@@ -55,7 +55,7 @@ function formatDate({
   hideTimeOffset?: boolean;
   isDateOnly: boolean;
   timeOffset?: number;
-  locale: string;
+  locale?: string;
 }) {
   switch (format) {
     case 'absolute': {
@@ -78,7 +78,7 @@ function formatDate({
         second: '2-digit',
       }).format(date);
 
-      const isRTL = getDirection(locale) === 'rtl';
+      const isRTL = locale && getDirection(locale) === 'rtl';
 
       const formattedDateTime = isRTL
         ? [formattedTime, formattedDate].join(' ,')
