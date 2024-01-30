@@ -517,6 +517,10 @@ describe('Code editor component', () => {
   });
 
   describe('i18n', () => {
+    test("doesn't crash if i18nStrings is an empty object", () => {
+      renderCodeEditor({ i18nStrings: {} });
+    });
+
     test('supports using i18nStrings.loadingState from i18n provider', () => {
       const { container } = render(
         <TestI18nProvider messages={{ 'code-editor': { 'i18nStrings.loadingState': 'Custom loading' } }}>
