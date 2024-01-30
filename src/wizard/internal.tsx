@@ -12,7 +12,7 @@ import { useControllable } from '../internal/hooks/use-controllable';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { contentHeaderClassName } from '../internal/utils/content-header-utils';
+import { getContentHeaderClassName } from '../internal/utils/content-header-utils';
 
 import { useInternalI18n } from '../i18n/context';
 
@@ -153,7 +153,7 @@ export default function InternalWizard({
           styles.wizard,
           isVisualRefresh && styles.refresh,
           smallContainer && styles['small-container'],
-          shouldRemoveHighContrastHeader && styles['remove-high-contrast-header']
+          shouldRemoveHighContrastHeader() && styles['remove-high-contrast-header']
         )}
       >
         <WizardNavigation
@@ -173,10 +173,10 @@ export default function InternalWizard({
             styles.form,
             isVisualRefresh && styles.refresh,
             smallContainer && styles['small-container'],
-            shouldRemoveHighContrastHeader && styles['remove-high-contrast-header']
+            shouldRemoveHighContrastHeader() && styles['remove-high-contrast-header']
           )}
         >
-          {isVisualRefresh && <div className={clsx(styles.background, contentHeaderClassName)} />}
+          {isVisualRefresh && <div className={clsx(styles.background, getContentHeaderClassName())} />}
           <WizardForm
             steps={steps}
             isVisualRefresh={isVisualRefresh}

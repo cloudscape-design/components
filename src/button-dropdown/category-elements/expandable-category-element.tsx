@@ -24,6 +24,7 @@ const ExpandableCategoryElement = ({
   disabled,
   expandToViewport,
   variant,
+  hasExpandableGroups,
 }: CategoryProps) => {
   const highlighted = isHighlighted(item);
   const expanded = isExpanded(item);
@@ -106,6 +107,7 @@ const ExpandableCategoryElement = ({
               isExpanded={isExpanded}
               highlightItem={highlightItem}
               variant={variant}
+              hasExpandableGroups={hasExpandableGroups}
             />
           </ul>
         )}

@@ -27,7 +27,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
 }
 
 .expand-button {
-  /* used in test-utils */
+  outline: none;
 }
 
 .icon {

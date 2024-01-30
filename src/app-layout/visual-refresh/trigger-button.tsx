@@ -40,7 +40,7 @@ function TriggerButton(
     <div
       className={clsx(
         styles['trigger-wrapper'],
-        shouldRemoveHighContrastHeader && styles['remove-high-contrast-header']
+        shouldRemoveHighContrastHeader() && styles['remove-high-contrast-header']
       )}
     >
       <button

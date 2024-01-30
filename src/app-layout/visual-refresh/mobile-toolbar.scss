@@ -23,7 +23,7 @@ section.mobile-toolbar {
   top: var(#{custom-props.$offsetTop});
   z-index: 1000;
   &:not(.remove-high-contrast-header) {
-    background-color: awsui.$color-background-home-header;
+    background-color: awsui.$color-background-layout-main;
     box-shadow: awsui.$shadow-panel-toggle;
   }
 

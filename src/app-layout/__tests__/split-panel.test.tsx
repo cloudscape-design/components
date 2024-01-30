@@ -37,6 +37,7 @@ jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   useDensityMode: jest.fn().mockReturnValue('comfortable'),
   useReducedMotion: jest.fn().mockReturnValue(true),
 }));
+jest.mock('../../../lib/components/app-layout/utils/use-document-width', () => () => 1024);
 
 let isMocked = false;
 
