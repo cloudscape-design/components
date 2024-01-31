@@ -81,7 +81,7 @@ function formatDate({
       const isRTL = locale && getDirection(locale) === 'rtl';
 
       const formattedDateTime = isRTL
-        ? [formattedTime, formattedDate].join(' ,')
+        ? [formattedTime, formattedDate].join(' ,') + '\u200E' // Add LTR mark at the end to be able to concatenate correctly to form the date range.
         : [formattedDate, formattedTime].join(', ');
 
       if (hideTimeOffset) {
