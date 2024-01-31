@@ -73,7 +73,7 @@ function formatDate({
 
       const formattedTime = new Intl.DateTimeFormat(locale, {
         hour: '2-digit',
-        hour12: false,
+        hourCycle: 'h23',
         minute: '2-digit',
         second: '2-digit',
       }).format(date);
