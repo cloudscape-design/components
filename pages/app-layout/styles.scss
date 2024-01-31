@@ -79,3 +79,27 @@
     margin-top: 4rem;
   }
 }
+
+.custom-home__header {
+  background: awsui.$color-background-home-header;
+  //position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0px;
+    left: 0;
+    width: 100%;
+    height: 240px;
+    z-index: 0;
+    background: #000716;
+  }
+}
+
+.custom-home__header-title {
+  color: awsui.$color-text-home-header-default !important;
+}
+
+.custom-home__category,
+.custom-home__header-sub-title {
+  color: awsui.$color-text-home-header-secondary !important;
+}
