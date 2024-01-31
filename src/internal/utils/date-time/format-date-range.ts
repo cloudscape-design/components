@@ -62,7 +62,7 @@ function formatDate({
       const date = new Date(isoDate);
 
       const formattedDate = new Intl.DateTimeFormat(locale, {
-        day: '2-digit',
+        day: 'numeric',
         month: 'long',
         year: 'numeric',
       }).format(date);
