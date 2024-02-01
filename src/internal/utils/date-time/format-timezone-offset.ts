@@ -3,7 +3,7 @@
 
 import { padLeftZeros } from '../strings';
 
-export function formatTimezoneOffset(isoDate: string, offsetInMinutes?: number) {
+export function formatISOTimezoneOffset(isoDate: string, offsetInMinutes?: number) {
   offsetInMinutes = offsetInMinutes ?? 0 - new Date(isoDate).getTimezoneOffset();
   const hoursOffset = padLeftZeros(Math.floor(Math.abs(offsetInMinutes) / 60).toFixed(0), 2);
   const minuteOffset = padLeftZeros(Math.abs(offsetInMinutes % 60).toFixed(0), 2);
