@@ -43,12 +43,48 @@ describe('formatDateRange', () => {
   });
 
   describe('Date and time', () => {
-    test.each([
-      ['2020-01-01T00:00:00', '2020-01-01T12:00:00', berlin, '2020-01-01T00:00:00+02:00 — 2020-01-01T12:00:00+02:00'],
-      ['2020-01-01T00:00:00', '2020-01-01T12:00:00', newYork, '2020-01-01T00:00:00-04:00 — 2020-01-01T12:00:00-04:00'],
-      ['2020-01-01T00:00:00', '2020-01-01T12:00:00', regional, '2020-01-01T00:00:00+00:00 — 2020-01-01T12:00:00+01:00'],
-    ])('formats date correctly [%s, %s, %s]', (startDate, endDate, timeOffset, expected) => {
-      expect(formatDateRange({ startDate, endDate, timeOffset })).toBe(expected);
+    const cases = [
+      {
+        startDate: '2020-01-01T00:00:00',
+        endDate: '2020-01-01T12:00:00',
+        timeOffset: berlin,
+        expected: {
+          iso: '2020-01-01T00:00:00+02:00 — 2020-01-01T12:00:00+02:00',
+          absolute: { 'en-US': 'January 1, 2020, 00:00:00 (UTC+2) — January 1, 2020, 12:00:00 (UTC+2)' },
+        },
+      },
+      {
+        startDate: '2020-01-01T00:00:00',
+        endDate: '2020-01-01T12:00:00',
+        timeOffset: newYork,
+        expected: {
+          iso: '2020-01-01T00:00:00-04:00 — 2020-01-01T12:00:00-04:00',
+          absolute: { 'en-US': 'January 1, 2020, 00:00:00 (UTC-4) — January 1, 2020, 12:00:00 (UTC-4)' },
+        },
+      },
+      {
+        startDate: '2020-01-01T00:00:00',
+        endDate: '2020-01-01T12:00:00',
+        timeOffset: regional,
+        expected: {
+          iso: '2020-01-01T00:00:00+00:00 — 2020-01-01T12:00:00+01:00',
+          absolute: { 'en-US': 'January 1, 2020, 00:00:00 (UTC) — January 1, 2020, 12:00:00 (UTC+1)' },
+        },
+      },
+    ];
+
+    describe.each(cases)('formats date correctly [%j]', ({ startDate, endDate, timeOffset, expected }) => {
+      test('Default', () => {
+        expect(formatDateRange({ startDate, endDate, timeOffset })).toBe(expected.iso);
+      });
+      test('ISO', () => {
+        expect(formatDateRange({ startDate, endDate, timeOffset, format: 'iso' })).toBe(expected.iso);
+      });
+      test('Absolute', () => {
+        expect(formatDateRange({ startDate, endDate, timeOffset, format: 'absolute', locale: 'en-US' })).toBe(
+          expected.absolute['en-US']
+        );
+      });
     });
   });
 });
