@@ -2,7 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { formatTimezoneOffset, isIsoDateOnly } from '.';
+
 export type AbsoluteDateFormat = 'iso' | 'long-localized';
+
 export function formatDateRange({
   startDate,
   endDate,
@@ -79,12 +81,13 @@ function formatDate({
       const isRTL = locale && getDirection(locale) === 'rtl';
 
       const formattedDateTime = isRTL
-        ? [formattedTime, formattedDate].join(' ,') + '\u200E' // Add LTR mark at the end to be able to concatenate correctly to form the date range.
-        : [formattedDate, formattedTime].join(', ');
+        ? [formattedTime, formattedDate].join(getDateTimeSeparator(locale)) + '\u200E' // Add LTR mark at the end to be able to concatenate correctly to form the date range.
+        : [formattedDate, formattedTime].join(getDateTimeSeparator(locale));
 
       if (hideTimeOffset) {
         return formattedDateTime;
       }
+
       const formattedTimeOffset = formatTimezoneOffsetAbsolute(isoDate, timeOffset);
       if (isRTL) {
         return [formattedTimeOffset, formattedDateTime].join(' ');
@@ -99,8 +102,25 @@ function formatDate({
   }
 }
 
+// Languages written from right to left (RTL)
+const rtlLanguages = ['ar', 'he'];
+
+// Languages in which date and time are separated just with a space, without comma
+const languagesWithoutDateTimeSeparator = ['ja', 'zh-CN'];
+
 function getDirection(locale: string) {
-  return ['ar', 'he'].includes(locale.split('-')[0]) ? 'rtl' : 'ltr';
+  return rtlLanguages.includes(getPrimarySubTag(locale)) ? 'rtl' : 'ltr';
+}
+
+function getDateTimeSeparator(locale?: string) {
+  if (!locale) {
+    return ', ';
+  }
+  return languagesWithoutDateTimeSeparator.includes(locale) ? ' ' : getDirection(locale) === 'rtl' ? ' ,' : ', ';
+}
+
+function getPrimarySubTag(locale: string) {
+  return locale.split('-')[0];
 }
 
 function formatTimezoneOffsetAbsolute(isoDate: string, offsetInMinutes?: number) {

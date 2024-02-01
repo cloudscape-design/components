@@ -151,4 +151,48 @@ describe('formatDateRange', () => {
       );
     });
   });
+
+  describe('Localization', () => {
+    describe('Order is reversed in RTL languages', () => {
+      test.each(['ar', 'he'])('%s', locale => {
+        expect(
+          formatDateRange({
+            startDate: '2020-01-01T00:00:00',
+            endDate: '2020-01-01T12:00:00',
+            timeOffset: { startDate: 60 },
+            locale,
+            format: 'long-localized',
+          }).slice(0, 8)
+        ).toBe('(UTC+1) ');
+      });
+    });
+
+    describe('Some languages use comma to separate date and time', () => {
+      test.each(['es', 'id', 'pt-BR'])('%s', locale => {
+        expect(
+          formatDateRange({
+            startDate: '2020-01-01T00:00:00',
+            endDate: '2020-01-01T12:00:00',
+            timeOffset: { startDate: 60 },
+            locale,
+            format: 'long-localized',
+          })
+        ).toContain(',');
+      });
+    });
+
+    describe('Some languages do not use comma to separate date and time', () => {
+      test.each(['ja', 'zh-CN'])('%s', locale => {
+        expect(
+          formatDateRange({
+            startDate: '2020-01-01T00:00:00',
+            endDate: '2020-01-01T12:00:00',
+            timeOffset: { startDate: 60 },
+            locale,
+            format: 'long-localized',
+          })
+        ).not.toContain(',');
+      });
+    });
+  });
 });
