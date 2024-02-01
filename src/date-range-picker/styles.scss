@@ -14,10 +14,10 @@ $calendar-header-color: awsui.$color-text-body-default;
 
 .root {
   @include styles.styles-reset;
-  &:not(.format-absolute) {
+  &:not(.wide) {
     max-width: 32em;
   }
-  &.format-absolute {
+  &.wide {
     max-width: 39em;
   }
 }
