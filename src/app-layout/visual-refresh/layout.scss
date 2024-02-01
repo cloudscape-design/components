@@ -102,6 +102,9 @@ explicitly set in script.
     &.content-type-cards {
       #{custom-props.$defaultMaxContentWidth}: 100%;
     }
+    &.content-type-homepage {
+      outline: solid red 2px;
+    }
   }
 
   /*
