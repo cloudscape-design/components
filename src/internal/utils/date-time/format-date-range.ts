@@ -1,11 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { formatTimezoneOffset } from './format-timezone-offset';
-import { isIsoDateOnly } from './is-iso-date-only';
-
-export type AbsoluteDateRangeFormat = 'iso' | 'absolute';
-
+import { formatTimezoneOffset, isIsoDateOnly } from '.';
+export type AbsoluteDateFormat = 'iso' | 'absolute';
 export function formatDateRange({
   startDate,
   endDate,
@@ -18,11 +15,11 @@ export function formatDateRange({
   endDate: string;
   hideTimeOffset?: boolean;
   timeOffset: { startDate?: number; endDate?: number };
-  format?: AbsoluteDateRangeFormat;
+  format?: AbsoluteDateFormat;
   locale?: string;
 }): string {
   const isDateOnly = isIsoDateOnly(startDate) && isIsoDateOnly(endDate);
-  return [
+  return (
     formatDate({
       date: startDate,
       format,
@@ -30,7 +27,8 @@ export function formatDateRange({
       isDateOnly,
       timeOffset: timeOffset.startDate,
       locale,
-    }),
+    }) +
+    ' — ' +
     formatDate({
       date: endDate,
       format,
@@ -38,8 +36,8 @@ export function formatDateRange({
       isDateOnly,
       timeOffset: timeOffset.endDate,
       locale,
-    }),
-  ].join(' — ');
+    })
+  );
 }
 
 function formatDate({
@@ -51,7 +49,7 @@ function formatDate({
   locale,
 }: {
   date: string;
-  format?: AbsoluteDateRangeFormat;
+  format?: AbsoluteDateFormat;
   hideTimeOffset?: boolean;
   isDateOnly: boolean;
   timeOffset?: number;

@@ -6,7 +6,7 @@ import { NonCancelableEventHandler } from '../internal/events';
 import { TimeInputProps } from '../time-input/interfaces';
 import { ExpandToViewport } from '../internal/components/dropdown/interfaces';
 import React from 'react';
-import { AbsoluteDateRangeFormat } from '../internal/utils/date-time/format-date-range';
+import { AbsoluteDateFormat } from '../internal/utils/date-time';
 
 export interface DateRangePickerBaseProps {
   /**
@@ -408,7 +408,7 @@ export namespace DateRangePickerProps {
     renderSelectedAbsoluteRangeAriaLive?: (startDate: string, endDate: string) => string;
   }
 
-  export type AbsoluteFormat = AbsoluteDateRangeFormat;
+  export type AbsoluteFormat = AbsoluteDateFormat;
 }
 
 export type DayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;

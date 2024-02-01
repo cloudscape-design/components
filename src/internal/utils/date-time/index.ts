@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 export { isoToDisplay, displayToIso } from './display-format';
-export { formatDateRange } from './format-date-range';
+export { formatDateRange, AbsoluteDateFormat } from './format-date-range';
 export { formatDate } from './format-date';
 export { formatTime } from './format-time';
 export { formatDateTime } from './format-date-time';
