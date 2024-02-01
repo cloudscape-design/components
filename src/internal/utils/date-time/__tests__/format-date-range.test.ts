@@ -27,19 +27,22 @@ describe('formatDateRange', () => {
         expected: { iso: '2020-01-01 — 2020-01-02', absolute: { 'en-US': 'January 1, 2020 — January 2, 2020' } },
       },
     ];
-    describe.each(cases)('formats date correctly [%j]', ({ startDate, endDate, timeOffset, expected }) => {
-      test('Default', () => {
-        expect(formatDateRange({ startDate, endDate, timeOffset })).toBe(expected.iso);
-      });
-      test('ISO', () => {
-        expect(formatDateRange({ startDate, endDate, timeOffset, format: 'iso' })).toBe(expected.iso);
-      });
-      test('Long localized', () => {
-        expect(formatDateRange({ startDate, endDate, timeOffset, format: 'long-localized', locale: 'en-US' })).toBe(
-          expected.absolute['en-US']
-        );
-      });
-    });
+    describe.each(cases)(
+      'formats date correctly [startDate=$startDate, endDate=$endDate, timeOffset=$timeOffset]',
+      ({ startDate, endDate, timeOffset, expected }) => {
+        test('Default', () => {
+          expect(formatDateRange({ startDate, endDate, timeOffset })).toBe(expected.iso);
+        });
+        test('ISO', () => {
+          expect(formatDateRange({ startDate, endDate, timeOffset, format: 'iso' })).toBe(expected.iso);
+        });
+        test('Long localized', () => {
+          expect(formatDateRange({ startDate, endDate, timeOffset, format: 'long-localized', locale: 'en-US' })).toBe(
+            expected.absolute['en-US']
+          );
+        });
+      }
+    );
   });
 
   describe('Date and time', () => {
@@ -73,19 +76,22 @@ describe('formatDateRange', () => {
           },
         },
       ];
-      describe.each(cases)('formats date correctly [%j]', ({ startDate, endDate, timeOffset, expected }) => {
-        test('Default', () => {
-          expect(formatDateRange({ startDate, endDate, timeOffset })).toBe(expected.iso);
-        });
-        test('ISO', () => {
-          expect(formatDateRange({ startDate, endDate, timeOffset, format: 'iso' })).toBe(expected.iso);
-        });
-        test('Long localized', () => {
-          expect(formatDateRange({ startDate, endDate, timeOffset, format: 'long-localized', locale: 'en-US' })).toBe(
-            expected.absolute['en-US']
-          );
-        });
-      });
+      describe.each(cases)(
+        'formats date correctly [startDate=$startDate, endDate=$endDate, timeOffset=$timeOffset]',
+        ({ startDate, endDate, timeOffset, expected }) => {
+          test('Default', () => {
+            expect(formatDateRange({ startDate, endDate, timeOffset })).toBe(expected.iso);
+          });
+          test('ISO', () => {
+            expect(formatDateRange({ startDate, endDate, timeOffset, format: 'iso' })).toBe(expected.iso);
+          });
+          test('Long localized', () => {
+            expect(formatDateRange({ startDate, endDate, timeOffset, format: 'long-localized', locale: 'en-US' })).toBe(
+              expected.absolute['en-US']
+            );
+          });
+        }
+      );
     });
 
     describe('without time offset', () => {
@@ -118,28 +124,31 @@ describe('formatDateRange', () => {
           },
         },
       ];
-      describe.each(cases)('formats date correctly [%j]', ({ startDate, endDate, timeOffset, expected }) => {
-        test('Default', () => {
-          expect(formatDateRange({ startDate, endDate, timeOffset, hideTimeOffset: true })).toBe(expected.iso);
-        });
-        test('ISO', () => {
-          expect(formatDateRange({ startDate, endDate, timeOffset, hideTimeOffset: true, format: 'iso' })).toBe(
-            expected.iso
-          );
-        });
-        test('Long localized', () => {
-          expect(
-            formatDateRange({
-              startDate,
-              endDate,
-              timeOffset,
-              hideTimeOffset: true,
-              format: 'long-localized',
-              locale: 'en-US',
-            })
-          ).toBe(expected.absolute['en-US']);
-        });
-      });
+      describe.each(cases)(
+        'formats date correctly [startDate=$startDate, endDate=$endDate, timeOffset=$timeOffset]',
+        ({ startDate, endDate, timeOffset, expected }) => {
+          test('Default', () => {
+            expect(formatDateRange({ startDate, endDate, timeOffset, hideTimeOffset: true })).toBe(expected.iso);
+          });
+          test('ISO', () => {
+            expect(formatDateRange({ startDate, endDate, timeOffset, hideTimeOffset: true, format: 'iso' })).toBe(
+              expected.iso
+            );
+          });
+          test('Long localized', () => {
+            expect(
+              formatDateRange({
+                startDate,
+                endDate,
+                timeOffset,
+                hideTimeOffset: true,
+                format: 'long-localized',
+                locale: 'en-US',
+              })
+            ).toBe(expected.absolute['en-US']);
+          });
+        }
+      );
     });
   });
 });
