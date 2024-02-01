@@ -62,8 +62,5 @@ function formatTimeOffset(isoDate: string, offsetInMinutes?: number) {
 const languagesWithoutDateTimeSeparator = ['ja', 'zh-CN'];
 
 function getDateTimeSeparator(locale?: string) {
-  if (!locale) {
-    return ', ';
-  }
-  return languagesWithoutDateTimeSeparator.includes(locale) ? ' ' : ', ';
+  return locale && languagesWithoutDateTimeSeparator.includes(locale) ? ' ' : ', ';
 }
