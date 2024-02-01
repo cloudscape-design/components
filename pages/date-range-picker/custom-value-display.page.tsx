@@ -65,7 +65,7 @@ export default function DatePickerScenario() {
               }
             >
               <option value="">(Default)</option>
-              <option value="absolute">Absolute</option>
+              <option value="long-localized">Absolute</option>
             </select>
           </label>
           <label>

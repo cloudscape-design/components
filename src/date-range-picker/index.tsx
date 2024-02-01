@@ -298,7 +298,11 @@ const DateRangePicker = React.forwardRef(
       <div
         {...baseProps}
         ref={mergedRef}
-        className={clsx(baseProps.className, styles.root, absoluteFormat === 'absolute' && styles['format-absolute'])}
+        className={clsx(
+          baseProps.className,
+          styles.root,
+          absoluteFormat === 'long-localized' && styles['format-absolute']
+        )}
         onKeyDown={onWrapperKeyDownHandler}
       >
         <Dropdown

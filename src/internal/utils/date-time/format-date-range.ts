@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { formatTimezoneOffset, isIsoDateOnly } from '.';
-export type AbsoluteDateFormat = 'iso' | 'absolute';
+export type AbsoluteDateFormat = 'iso' | 'long-localized';
 export function formatDateRange({
   startDate,
   endDate,
@@ -56,7 +56,7 @@ function formatDate({
   locale?: string;
 }) {
   switch (format) {
-    case 'absolute': {
+    case 'long-localized': {
       const date = new Date(isoDate);
 
       const formattedDate = new Intl.DateTimeFormat(locale, {

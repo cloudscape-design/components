@@ -34,8 +34,8 @@ describe('formatDateRange', () => {
       test('ISO', () => {
         expect(formatDateRange({ startDate, endDate, timeOffset, format: 'iso' })).toBe(expected.iso);
       });
-      test('Absolute', () => {
-        expect(formatDateRange({ startDate, endDate, timeOffset, format: 'absolute', locale: 'en-US' })).toBe(
+      test('Long localized', () => {
+        expect(formatDateRange({ startDate, endDate, timeOffset, format: 'long-localized', locale: 'en-US' })).toBe(
           expected.absolute['en-US']
         );
       });
@@ -80,8 +80,8 @@ describe('formatDateRange', () => {
       test('ISO', () => {
         expect(formatDateRange({ startDate, endDate, timeOffset, format: 'iso' })).toBe(expected.iso);
       });
-      test('Absolute', () => {
-        expect(formatDateRange({ startDate, endDate, timeOffset, format: 'absolute', locale: 'en-US' })).toBe(
+      test('Long localized', () => {
+        expect(formatDateRange({ startDate, endDate, timeOffset, format: 'long-localized', locale: 'en-US' })).toBe(
           expected.absolute['en-US']
         );
       });
