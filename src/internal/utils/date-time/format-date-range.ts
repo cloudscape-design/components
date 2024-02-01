@@ -105,11 +105,15 @@ function getDirection(locale: string) {
 
 function formatTimezoneOffsetAbsolute(isoDate: string, offsetInMinutes?: number) {
   offsetInMinutes = offsetInMinutes ?? 0 - new Date(isoDate).getTimezoneOffset();
+  if (offsetInMinutes === 0) {
+    return '(UTC)';
+  }
   const hoursOffset = Math.floor(Math.abs(offsetInMinutes) / 60);
   const minuteOffset = Math.floor(Math.abs(offsetInMinutes % 60));
 
   const sign = offsetInMinutes < 0 ? '-' : '+';
-  const formattedOffset = `(UTC${sign}${hoursOffset}` + (minuteOffset === 0 ? '' : `:${minuteOffset}`) + ')';
+  const formattedOffsetMinutes = minuteOffset === 0 ? '' : `:${minuteOffset}`;
+  const formattedOffset = `(UTC${sign}${hoursOffset}${formattedOffsetMinutes})`;
 
   return formattedOffset;
 }
