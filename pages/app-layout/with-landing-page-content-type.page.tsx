@@ -400,7 +400,6 @@ export default function () {
     <ScreenshotArea gutters={false}>
       <AppLayout
         ariaLabels={labels}
-        contentType="homepage"
         breadcrumbs={breadcrumbVisible ? <Breadcrumbs /> : null}
         disableContentPaddings={true}
         navigation={<Navigation />}
