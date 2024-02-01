@@ -33,21 +33,14 @@ export default function formatDateLocalized({
     second: '2-digit',
   }).format(date);
 
-  const isRTL = locale && getDirection(locale) === 'rtl';
-
-  const formattedDateTime = isRTL
-    ? [formattedTime, formattedDate].join(getDateTimeSeparator(locale)) + '\u200E' // Add LTR mark at the end to be able to concatenate correctly to form the date range.
-    : [formattedDate, formattedTime].join(getDateTimeSeparator(locale));
+  const formattedDateTime = formattedDate + getDateTimeSeparator(locale) + formattedTime;
 
   if (hideTimeOffset) {
     return formattedDateTime;
   }
 
   const formattedTimeOffset = formatTimeOffset(isoDate, timeOffset);
-  if (isRTL) {
-    return [formattedTimeOffset, formattedDateTime].join(' ');
-  }
-  return [formattedDateTime, formattedTimeOffset].join(' ');
+  return formattedDateTime + ' ' + formattedTimeOffset;
 }
 
 function formatTimeOffset(isoDate: string, offsetInMinutes?: number) {
@@ -65,23 +58,12 @@ function formatTimeOffset(isoDate: string, offsetInMinutes?: number) {
   return formattedOffset;
 }
 
-// Languages written from right to left (RTL)
-const rtlLanguages = ['ar', 'he'];
-
 // Languages in which date and time are separated just with a space, without comma
 const languagesWithoutDateTimeSeparator = ['ja', 'zh-CN'];
-
-function getDirection(locale: string) {
-  return rtlLanguages.includes(getPrimarySubTag(locale)) ? 'rtl' : 'ltr';
-}
 
 function getDateTimeSeparator(locale?: string) {
   if (!locale) {
     return ', ';
   }
-  return languagesWithoutDateTimeSeparator.includes(locale) ? ' ' : getDirection(locale) === 'rtl' ? ' ,' : ', ';
-}
-
-function getPrimarySubTag(locale: string) {
-  return locale.split('-')[0];
+  return languagesWithoutDateTimeSeparator.includes(locale) ? ' ' : ', ';
 }
