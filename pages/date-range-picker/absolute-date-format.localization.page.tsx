@@ -40,7 +40,7 @@ const initialRange = {
   endDate: '2024-12-31T23:59:59+01:00',
 };
 
-export default function DatePickerScenario() {
+export default function DateRangePickerScenario() {
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
 
   const [value, setValue] = useState<DateRangePickerProps['value']>({
@@ -52,7 +52,7 @@ export default function DatePickerScenario() {
   return (
     <Box padding="s">
       <SpaceBetween direction="vertical" size="m">
-        <h1>Absolute date range picker with custom value display</h1>
+        <h1>Absolute date range picker with custom absolute format</h1>
         <SpaceBetween direction="horizontal" size="xxl">
           <label>
             Format{' '}
@@ -65,7 +65,7 @@ export default function DatePickerScenario() {
               }
             >
               <option value="">(Default)</option>
-              <option value="long-localized">Absolute</option>
+              <option value="long-localized">Localized</option>
             </select>
           </label>
           <label>
