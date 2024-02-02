@@ -212,6 +212,7 @@ export interface ItemProps {
   highlightItem: (item: ButtonDropdownProps.ItemOrGroup) => void;
   first?: boolean;
   last: boolean;
+  showDivider: boolean;
   hasCategoryHeader: boolean;
   isKeyboardHighlighted?: boolean;
   variant?: ItemListProps['variant'];
