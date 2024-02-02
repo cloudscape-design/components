@@ -25,6 +25,11 @@ export interface SliderProps extends BaseComponentProps {
   max: number;
 
   /**
+   * Formats the values
+   */
+  valueFormatter?: (value: number) => string;
+
+  /**
    * onChange handler.
    */
   onChange?: NonCancelableEventHandler<SliderProps.ChangeDetail>;
@@ -45,6 +50,16 @@ export interface SliderProps extends BaseComponentProps {
   step?: number;
 
   /**
+   * Hide the tooltip on focus.
+   */
+  hideTooltip?: boolean;
+
+  /**
+   * Thumb only.
+   */
+  thumbOnly?: boolean;
+
+  /**
    * Whether or not the slider is disabled.
    */
   disabled?: boolean;
@@ -57,7 +72,7 @@ export interface SliderProps extends BaseComponentProps {
   /**
    * Stepped labels.
    */
-  stepLabels?: Array<number>;
+  referenceValues?: Array<number>;
 
   /**
    * Specifies the ID for the trigger component. It uses an automatically generated ID by default.
@@ -82,6 +97,7 @@ export namespace SliderProps {
 
   export interface ChangeDetail {
     value: number;
+    label?: string;
   }
 
   export interface RangeChangeDetail {
