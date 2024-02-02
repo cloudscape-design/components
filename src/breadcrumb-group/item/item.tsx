@@ -14,6 +14,7 @@ import Portal from '../../internal/components/portal';
 import popoverStyles from '../../popover/styles.css.js';
 import { DATA_ATTR_FUNNEL_KEY } from '../../internal/analytics/selectors';
 import { FUNNEL_KEY_FUNNEL_NAME } from '../../internal/analytics/selectors';
+import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 
 type BreadcrumbItemWithPopoverProps<T extends BreadcrumbGroupProps.Item> = React.HTMLAttributes<HTMLElement> & {
   item: T;
@@ -45,6 +46,8 @@ const BreadcrumbItemWithPopover = <T extends BreadcrumbGroupProps.Item>({
     return false;
   };
 
+  const isVisualRefresh = useVisualRefresh();
+
   const popoverContent = (
     <Portal>
       <div className={styles['item-popover']}>
@@ -58,7 +61,7 @@ const BreadcrumbItemWithPopover = <T extends BreadcrumbGroupProps.Item>({
               arrow={position => (
                 <div className={clsx(popoverStyles.arrow, popoverStyles[`arrow-position-${position}`])}>
                   <div className={popoverStyles['arrow-outer']} />
-                  <div className={popoverStyles['arrow-inner']} />
+                  <div className={clsx(popoverStyles['arrow-inner'], isVisualRefresh && popoverStyles.refresh)} />
                 </div>
               )}
             >

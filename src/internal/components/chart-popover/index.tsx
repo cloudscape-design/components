@@ -11,6 +11,7 @@ import PopoverContainer from '../../../popover/container';
 import PopoverBody from '../../../popover/body';
 import popoverStyles from '../../../popover/styles.css.js';
 import { useMergeRefs } from '../../hooks/use-merge-refs';
+import { useVisualRefresh } from '../../../internal/hooks/use-visual-mode';
 
 import styles from './styles.css.js';
 import { nodeBelongs } from '../../utils/node-belongs';
@@ -101,6 +102,8 @@ function ChartPopover(
   // In chart popovers, dismiss button is present when they are pinned, so both values are equivalent.
   const isPinned = dismissButton;
 
+  const isVisualRefresh = useVisualRefresh();
+
   return (
     <div
       {...baseProps}
@@ -122,7 +125,7 @@ function ChartPopover(
         arrow={position => (
           <div className={clsx(popoverStyles.arrow, popoverStyles[`arrow-position-${position}`])}>
             <div className={popoverStyles['arrow-outer']} />
-            <div className={popoverStyles['arrow-inner']} />
+            <div className={clsx(popoverStyles['arrow-inner'], isVisualRefresh && popoverStyles.refresh)} />
           </div>
         )}
         keepPosition={true}
