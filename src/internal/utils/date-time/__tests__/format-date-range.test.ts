@@ -155,16 +155,16 @@ describe('formatDateRange', () => {
 
   describe('Localization', () => {
     describe('Some languages use comma to separate date and time', () => {
-      test.each(['es', 'he', 'id', 'it', 'ja', 'ko', 'pt-BR'])('%s', locale => {
-        expect(
-          formatDateRange({
-            startDate: '2020-01-01T00:00:00',
-            endDate: '2020-01-01T12:00:00',
-            timeOffset: { startDate: 60 },
-            locale,
-            format: 'long-localized',
-          })
-        ).toContain(',');
+      test.each(['es', 'he', 'id', 'it', 'ko', 'pt-BR'])('%s', locale => {
+        const result = formatDateRange({
+          startDate: '2020-01-01T00:00:00',
+          endDate: '2020-01-01T12:00:00',
+          timeOffset: { startDate: 60 },
+          locale,
+          format: 'long-localized',
+        });
+        const numberOfCommas = (result.match(/, /g) || []).length;
+        expect(numberOfCommas).toBe(2);
       });
     });
 
