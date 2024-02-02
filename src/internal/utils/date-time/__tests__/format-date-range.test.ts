@@ -155,7 +155,7 @@ describe('formatDateRange', () => {
 
   describe('Localization', () => {
     describe('Some languages use comma to separate date and time', () => {
-      test.each(['es', 'id', 'pt-BR'])('%s', locale => {
+      test.each(['es', 'he', 'id', 'it', 'ja', 'ko', 'pt-BR'])('%s', locale => {
         expect(
           formatDateRange({
             startDate: '2020-01-01T00:00:00',
