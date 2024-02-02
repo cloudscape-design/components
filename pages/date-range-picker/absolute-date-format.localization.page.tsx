@@ -38,7 +38,7 @@ type DemoContext = React.Context<
 >;
 
 const initialRange = {
-  startDate: '2024-12-30T00:00:00+01:00',
+  startDate: '2024-12-09T00:00:00+01:00',
   endDate: '2024-12-31T23:59:59+01:00',
 };
 
