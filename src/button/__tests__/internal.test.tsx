@@ -30,6 +30,23 @@ test('supports __iconClass property', () => {
   expect(container.querySelector(`button .${styles.icon}`)).toHaveClass('example-class');
 });
 
+test('sets disabled and does not set aria-disabled, when __focusable is not provided', () => {
+  const { container } = render(<InternalButton disabled={true} />);
+
+  const button = container.querySelector('button');
+
+  expect(button).toHaveAttribute('disabled');
+  expect(button).not.toHaveAttribute('aria-disabled');
+});
+
+test('sets aria-disabled when __focusable is provided', () => {
+  const { container } = render(<InternalButton disabled={true} __focusable={true} />);
+  const button = container.querySelector('button');
+
+  expect(button).toHaveAttribute('aria-disabled', 'true');
+  expect(button).not.toHaveAttribute('disabled');
+});
+
 describe('Analytics', () => {
   beforeEach(() => {
     jest.clearAllMocks();
