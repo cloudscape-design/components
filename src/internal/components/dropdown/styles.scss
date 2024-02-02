@@ -116,20 +116,7 @@
   block-size: 100%;
 }
 
-/* stylelint-disable plugin/no-unsupported-browser-features */
-@supports selector(:dir(rtl)) {
-  .dropdown:dir(rtl):is(.dropdown-drop-left, .dropdown-drop-right) {
-    inset-inline-end: unset;
-    inset-inline-start: unset;
-  }
+@include styles.with-direction('.dropdown:is(.dropdown-drop-left, .dropdown-drop-right)') {
+  inset-inline-end: unset;
+  inset-inline-start: unset;
 }
-/* stylelint-enable plugin/no-unsupported-browser-features */
-
-/* stylelint-disable selector-combinator-disallowed-list */
-@supports not selector(:dir(rtl)) {
-  [dir='rtl'] .dropdown:is(.dropdown-drop-left, .dropdown-drop-right) {
-    inset-inline-end: unset;
-    inset-inline-start: unset;
-  }
-}
-/* stylelint-enable selector-combinator-disallowed-list */

@@ -44,7 +44,7 @@
 }
 
 @include styles.with-direction(
-  '.icon:dir(rtl):is(.name-angle-left-double, .name-angle-left, .name-angle-right-double, .name-angle-right, .name-arrow-left, .name-caret-left-filled, .name-caret-right-filled, .name-audio-full, .name-audio-half, .name-audio-off, .name-external, .name-redo, .name-shrink, .name-undo, .name-view-vertical)'
+  '.icon:is(.name-angle-left-double, .name-angle-left, .name-angle-right-double, .name-angle-right, .name-arrow-left, .name-caret-left-filled, .name-caret-right-filled, .name-audio-full, .name-audio-half, .name-audio-off, .name-external, .name-redo, .name-shrink, .name-undo, .name-view-vertical)'
 ) {
   transform: scaleX(-1);
 }
