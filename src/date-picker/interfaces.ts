@@ -75,6 +75,8 @@ export interface DatePickerProps
    * Called when input focus is removed from the UI control.
    */
   onBlur?: NonCancelableEventHandler<null>;
+
+  granularity?: DatePickerProps.Granularity;
 }
 
 export namespace DatePickerProps {
@@ -99,4 +101,6 @@ export namespace DatePickerProps {
      */
     focus(): void;
   }
+
+  export type Granularity = 'day' | 'month';
 }
