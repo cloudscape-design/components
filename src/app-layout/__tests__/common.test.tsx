@@ -3,15 +3,7 @@
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
-import {
-  describeEachAppLayout,
-  drawerWithoutLabels,
-  isDrawerClosed,
-  renderComponent,
-  singleDrawer,
-  singleDrawerOpen,
-  singleDrawerPublic,
-} from './utils';
+import { describeEachAppLayout, drawerWithoutLabels, isDrawerClosed, renderComponent, testDrawer } from './utils';
 import AppLayout from '../../../lib/components/app-layout';
 
 jest.mock('@cloudscape-design/component-toolkit', () => ({
@@ -248,54 +240,42 @@ describeEachAppLayout(size => {
   describe(`Drawers`, () => {
     test(`Should call handler once on open when toggle is clicked`, () => {
       const onChange = jest.fn();
-      const drawersClosed = {
-        drawers: {
-          onChange: onChange,
-          items: singleDrawer.drawers.items,
-        },
-      };
-      const { wrapper } = renderComponent(<AppLayout contentType="form" {...(drawersClosed as any)} />);
-
+      const { wrapper } = renderComponent(
+        <AppLayout drawers={[testDrawer]} onDrawerChange={event => onChange(event.detail)} />
+      );
       wrapper.findDrawerTriggerById('security')!.click();
-
-      expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: 'security' }));
+      expect(onChange).toHaveBeenCalledWith({ activeDrawerId: 'security' });
     });
 
     test(`Should call handler once on open when span inside toggle is clicked`, () => {
       const onChange = jest.fn();
-      const drawersClosed = {
-        drawers: {
-          onChange: onChange,
-          items: singleDrawer.drawers.items,
-        },
-      };
-      const { wrapper } = renderComponent(<AppLayout contentType="form" {...(drawersClosed as any)} />);
+      const { wrapper } = renderComponent(
+        <AppLayout drawers={[testDrawer]} onDrawerChange={event => onChange(event.detail)} />
+      );
 
       // Chrome bubbles up events from specific elements inside <button>s.
       wrapper.findDrawerTriggerById('security')!.find('span')!.click();
       expect(onChange).toHaveBeenCalledTimes(1);
-      expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: 'security' }));
+      expect(onChange).toHaveBeenCalledWith({ activeDrawerId: 'security' });
     });
 
     test(`Should call handler once on close`, () => {
       const onChange = jest.fn();
-      const drawersOpen = {
-        drawers: {
-          onChange: onChange,
-          activeDrawerId: 'security',
-          items: singleDrawer.drawers.items,
-        },
-      };
-
-      const { wrapper } = renderComponent(<AppLayout contentType="form" {...(drawersOpen as any)} />);
+      const { wrapper } = renderComponent(
+        <AppLayout
+          drawers={[testDrawer]}
+          activeDrawerId={testDrawer.id}
+          onDrawerChange={event => onChange(event.detail)}
+        />
+      );
 
       wrapper.findActiveDrawerCloseButton()!.click();
       expect(onChange).toHaveBeenCalledTimes(1);
-      expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: null }));
+      expect(onChange).toHaveBeenCalledWith({ activeDrawerId: null });
     });
 
     test('Renders aria-expanded only on toggle', () => {
-      const { wrapper } = renderComponent(<AppLayout drawers={singleDrawerPublic} />);
+      const { wrapper } = renderComponent(<AppLayout drawers={[testDrawer]} />);
 
       const drawerTrigger = wrapper.findDrawerTriggerById('security')!;
       expect(drawerTrigger.getElement()).toHaveAttribute('aria-expanded', 'false');
@@ -308,7 +288,9 @@ describeEachAppLayout(size => {
     });
 
     test('Close button does have a label if it is defined', () => {
-      const { wrapper } = renderComponent(<AppLayout contentType="form" {...(singleDrawerOpen as any)} />);
+      const { wrapper } = renderComponent(
+        <AppLayout activeDrawerId={testDrawer.id} drawers={[testDrawer]} onDrawerChange={() => {}} />
+      );
 
       expect(wrapper.findActiveDrawerCloseButton()!.getElement()).toHaveAttribute(
         'aria-label',
@@ -331,7 +313,7 @@ describeEachAppLayout(size => {
 
     test('Opens and closes drawer in uncontrolled mode', () => {
       // use content type with initial closed state for all drawers
-      const { wrapper } = renderComponent(<AppLayout drawers={singleDrawerPublic} />);
+      const { wrapper } = renderComponent(<AppLayout drawers={[testDrawer]} />);
       expect(wrapper.findActiveDrawer()).toBeNull();
 
       wrapper.findDrawerTriggerById('security')!.find('span')!.click();
