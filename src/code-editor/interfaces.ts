@@ -6,8 +6,9 @@ import { NonCancelableEventHandler } from '../internal/events';
 import { AceModes } from './ace-modes';
 import { DarkThemes, LightThemes } from './ace-themes';
 import { FormFieldControlProps } from '../internal/context/form-field-context';
+import { BaseModalProps } from '../modal/interfaces';
 
-export interface CodeEditorProps extends BaseComponentProps, FormFieldControlProps {
+export interface CodeEditorProps extends BaseComponentProps, FormFieldControlProps, BaseModalProps {
   /**
    * The ace object.
    */

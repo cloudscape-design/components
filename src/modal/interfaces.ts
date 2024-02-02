@@ -4,7 +4,22 @@ import { BaseComponentProps } from '../internal/base-component';
 import React from 'react';
 import { NonCancelableEventHandler } from '../internal/events';
 
-export interface ModalProps extends BaseComponentProps {
+export interface BaseModalProps {
+  /**
+   * Use this property to specify a different dynamic modal root for the dialog.
+   * The function will be called when a user clicks on the trigger button.
+   */
+  getModalRoot?: () => Promise<HTMLElement>;
+
+  /**
+   * Use this property when `getModalRoot` is used to clean up the modal root
+   * element after a user closes the dialog. The function receives the return value
+   * of the most recent getModalRoot call as an argument.
+   */
+  removeModalRoot?: (rootElement: HTMLElement) => void;
+}
+
+export interface ModalProps extends BaseComponentProps, BaseModalProps {
   /**
    * Sets the width of the modal. `max` uses variable width up to the
    * largest size allowed by the design guidelines. Other sizes
@@ -46,7 +61,8 @@ export interface ModalProps extends BaseComponentProps {
   onDismiss?: NonCancelableEventHandler<ModalProps.DismissDetail>;
   /**
    * Specifies the HTML element where the modal is rendered.
-   * If a modal root isn't provided, the modal will render to an element under `document.body`.
+   * If neither `modalRoot` or `getModalRoot` properties are provided, the modal will
+   * render to an element under `document.body`.
    */
   modalRoot?: HTMLElement;
 }

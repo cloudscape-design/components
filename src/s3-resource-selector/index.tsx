@@ -39,6 +39,8 @@ const S3ResourceSelector = React.forwardRef(
       versionsIsItemDisabled,
       onChange,
       ariaLabel,
+      getModalRoot,
+      removeModalRoot,
       ...rest
     }: S3ResourceSelectorProps,
     ref: React.Ref<S3ResourceSelectorProps.Ref>
@@ -74,6 +76,8 @@ const S3ResourceSelector = React.forwardRef(
       fetchVersions,
       versionsVisibleColumns,
       versionsIsItemDisabled,
+      getModalRoot,
+      removeModalRoot,
       onSubmit: resource => {
         fireNonCancelableEvent(onChange, { resource });
         setModalOpen(false);
