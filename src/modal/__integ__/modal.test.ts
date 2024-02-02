@@ -94,3 +94,22 @@ test(
     await page.click(footerSelector);
   })
 );
+
+test(
+  'renders modal in async root',
+  useBrowser(async browser => {
+    const page = new BasePageObject(browser);
+    const modal = createWrapper().findModal();
+    await browser.url('#/light/modal/async-modal-root');
+
+    // Open modal
+    await page.click('[data-testid="modal-trigger"]');
+    // wait for async modal to appear
+    await page.waitForVisible(modal.toSelector());
+
+    await expect(page.isExisting('#async-modal-root')).resolves.toBe(true);
+
+    await page.click(modal.findDismissButton().toSelector());
+    await expect(page.isExisting('#async-modal-root')).resolves.toBe(false);
+  })
+);
