@@ -10,8 +10,6 @@ import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { fireNonCancelableEvent } from '../internal/events';
 import { useFormFieldContext } from '../internal/context/form-field-context';
-import InternalPopover from '../popover/internal.js';
-import Internal from '../input/internal.js';
 
 export { SliderProps };
 
@@ -26,7 +24,10 @@ export default function Slider({
   disabled,
   error,
   ariaLabel,
-  stepLabels,
+  referenceValues,
+  hideTooltip,
+  thumbOnly,
+  valueFormatter,
   variant = 'default',
   ...rest
 }: SliderProps) {
@@ -37,6 +38,7 @@ export default function Slider({
   const rv1 = rangeValue ? rangeValue[1] : 1;
   const range = useRef<HTMLDivElement>(null);
   const tooltip = useRef<HTMLDivElement>(null);
+  const referenceValueRefs = useRef<Array<HTMLSpanElement | null>>([]);
   const [tooltipVisible, setTooltipVisible] = React.useState(false);
   const [tooltipWidth, setTooltipWidth] = React.useState(0);
 
@@ -45,7 +47,7 @@ export default function Slider({
   const minPercent = getPercent(Math.max(Math.min(rv0, max), min));
   const maxPercent = getPercent(Math.max(Math.min(rv1, max), min));
 
-  const percent = value && getPercent(Math.max(Math.min(value, max), min));
+  const percent = value !== undefined && getPercent(Math.max(Math.min(value, max), min));
 
   const formFieldContext = useFormFieldContext(rest);
 
@@ -66,6 +68,14 @@ export default function Slider({
     setTooltipWidth(tooltip.current?.offsetWidth ?? 0);
   }, [tooltipVisible, percent, tooltipWidth]);
 
+  useLayoutEffect(() => {
+    referenceValueRefs.current = referenceValueRefs.current.slice(0, referenceValues?.length);
+
+    if (referenceValueRefs.current) {
+      referenceValueRefs.current.map(item => item && (item.style.marginLeft = `-${item.clientWidth / 2}px`));
+    }
+  }, [referenceValues?.length]);
+
   useEffect(() => {
     if (range.current && variant === 'range') {
       range.current.style.left = `${minPercent}%`;
@@ -79,17 +89,14 @@ export default function Slider({
 
   return (
     <div className={styles['slider-container']}>
-      {/* <InternalPopover dismissButton={false} position="top" size="small" content={value}>
-        Hello
-      </InternalPopover> */}
       <div className={styles.slider}>
-        {tooltipVisible && variant === 'default' && (
+        {!hideTooltip && tooltipVisible && variant === 'default' && value !== undefined && (
           <div
             style={{ left: tooltipWidth ? `calc(${percent}% - ${tooltipWidth}px / 2` : `${percent}%` }}
             className={styles['slider-thumb-label']}
             ref={tooltip}
           >
-            {value}
+            {valueFormatter ? valueFormatter(value) : value}
           </div>
         )}
         <div className={styles['slider-track']} />
@@ -108,20 +115,22 @@ export default function Slider({
                         : `${((step - min) / (max - min)) * 100}%`,
                   }}
                   className={clsx(styles.tick, {
-                    [styles['tick-filled']]: value && value > step,
+                    [styles['tick-filled']]: !thumbOnly && value && value > step,
                   })}
                 ></div>
               ))}
             </div>
           </>
         )}
-        <div
-          ref={range}
-          className={clsx(styles['slider-range'], {
-            [styles.disabled]: disabled,
-            [styles.error]: error,
-          })}
-        />
+        {!thumbOnly && (
+          <div
+            ref={range}
+            className={clsx(styles['slider-range'], {
+              [styles.disabled]: disabled,
+              [styles.error]: error,
+            })}
+          />
+        )}
       </div>
 
       {variant === 'range' && (
@@ -151,10 +160,8 @@ export default function Slider({
         disabled={disabled}
         onFocus={() => setTooltipVisible(true)}
         onBlur={() => setTooltipVisible(false)}
-        //onMouseOver={() => setTooltipVisible(true)}
-        //onMouseOut={() => setTooltipVisible(true)}
         step={step}
-        value={variant === 'default' ? value ?? '' : rangeValue ? Math.max(rangeValue[1], rv0 + 1) : ''}
+        value={value ?? ''}
         onChange={event => {
           onChange && fireNonCancelableEvent(onChange, { value: Number(event.target.value) });
           onRangeChange &&
@@ -169,12 +176,13 @@ export default function Slider({
       />
 
       <div className={clsx(styles['slider-labels'])}>
-        <span>{min}</span>
-        {stepLabels &&
-          stepLabels.length > 0 &&
-          stepLabels.map((step, index) => {
+        <span>{valueFormatter ? valueFormatter(min) : min}</span>
+        {referenceValues &&
+          referenceValues.length > 0 &&
+          referenceValues.map((step, index) => {
             return (
               <span
+                ref={el => (referenceValueRefs.current[index] = el)}
                 key={`step-${index}`}
                 style={{
                   left:
@@ -186,11 +194,11 @@ export default function Slider({
                 }}
                 className={clsx(styles['slider-reference'])}
               >
-                {step}
+                {valueFormatter ? valueFormatter(step) : step}
               </span>
             );
           })}
-        <span>{max}</span>
+        <span>{valueFormatter ? valueFormatter(max) : max}</span>
       </div>
     </div>
   );
