@@ -31,6 +31,7 @@ export default function Calendar({
   ariaDescribedby,
   onChange,
   __internalRootRef,
+  i18nStrings,
   ...rest
 }: CalendarProps & InternalBaseComponentProps) {
   checkControlled('Calendar', 'value', value, 'onChange', onChange);
@@ -53,9 +54,12 @@ export default function Calendar({
   const headingId = useUniqueId('calendar-heading');
 
   const i18n = useInternalI18n('calendar');
-  const nextMonthAriaLabel = i18n('nextMonthAriaLabel', rest.nextMonthAriaLabel);
-  const previousMonthAriaLabel = i18n('previousMonthAriaLabel', rest.previousMonthAriaLabel);
-  const todayAriaLabel = i18n('todayAriaLabel', rest.todayAriaLabel);
+  const nextMonthAriaLabel = i18n('nextMonthAriaLabel', i18nStrings?.nextMonthAriaLabel || rest.nextMonthAriaLabel);
+  const previousMonthAriaLabel = i18n(
+    'previousMonthAriaLabel',
+    i18nStrings?.previousMonthAriaLabel || rest.previousMonthAriaLabel
+  );
+  const todayAriaLabel = i18n('todayAriaLabel', i18nStrings?.todayAriaLabel || rest.todayAriaLabel);
 
   // Update displayed date if value changes.
   useEffect(() => {
