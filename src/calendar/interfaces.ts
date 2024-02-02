@@ -109,5 +109,23 @@ export namespace CalendarProps {
      * @i18n
      */
     previousMonthAriaLabel?: string;
+
+    /**
+     * Used as part of the `aria-label` for the current month in the calendar.
+     * @i18n
+     */
+    currentMonthAriaLabel?: string;
+
+    /**
+     * Specifies an `aria-label` for the 'next year' button.
+     * @i18n
+     */
+    nextYearAriaLabel?: string;
+
+    /**
+     * Specifies an `aria-label` for the 'previous year' button.
+     * @i18n
+     */
+    previousYearAriaLabel?: string;
   }
 }
