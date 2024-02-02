@@ -3,32 +3,39 @@
 import React from 'react';
 import styles from '../styles.css.js';
 import { renderMonthAndYear } from '../utils/intl';
-import { PrevMonthButton, NextMonthButton } from './header-button';
+import { HeaderPrevButton, HeaderNextButton } from './header-button';
 
 interface CalendarHeaderProps {
   baseDate: Date;
   locale: string;
-  onChangeMonth: (date: Date) => void;
-  previousMonthLabel?: string;
-  nextMonthLabel?: string;
+  onChange: (date: Date) => void;
+  previousLabel?: string;
+  nextLabel?: string;
   headingId: string;
+  granularity?: 'month' | 'day';
 }
 
 const CalendarHeader = ({
   baseDate,
   locale,
-  onChangeMonth,
-  previousMonthLabel,
-  nextMonthLabel,
+  onChange,
+  previousLabel: previousMonthLabel,
+  nextLabel: nextMonthLabel,
   headingId,
+  granularity,
 }: CalendarHeaderProps) => {
   return (
     <div className={styles['calendar-header']}>
-      <PrevMonthButton ariaLabel={previousMonthLabel} baseDate={baseDate} onChangeMonth={onChangeMonth} />
-      <h2 className={styles['calendar-header-month']} id={headingId}>
-        {renderMonthAndYear(locale, baseDate)}
+      <HeaderPrevButton
+        ariaLabel={previousMonthLabel}
+        baseDate={baseDate}
+        onChange={onChange}
+        granularity={granularity}
+      />
+      <h2 className={styles['calendar-header-title']} id={headingId}>
+        {granularity === 'month' ? baseDate.getFullYear() : renderMonthAndYear(locale, baseDate)}
       </h2>
-      <NextMonthButton ariaLabel={nextMonthLabel} baseDate={baseDate} onChangeMonth={onChangeMonth} />
+      <HeaderNextButton ariaLabel={nextMonthLabel} baseDate={baseDate} onChange={onChange} granularity={granularity} />
     </div>
   );
 };

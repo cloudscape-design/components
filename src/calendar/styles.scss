@@ -31,7 +31,7 @@
     align-items: center;
   }
 
-  &-header-month {
+  &-header-title {
     @include styles.font-body-m;
     font-weight: typographyConstants.$font-weight-bold;
     color: calendar.$header-color;

@@ -4,34 +4,35 @@
 import React from 'react';
 import { InternalButton } from '../../button/internal';
 import styles from '../styles.css.js';
-import { addMonths } from 'date-fns';
+import { addMonths, addYears } from 'date-fns';
 
 interface HeaderButtonProps {
   ariaLabel?: string;
   baseDate: Date;
-  onChangeMonth: (date: Date) => void;
+  onChange: (date: Date) => void;
+  granularity?: 'month' | 'day';
 }
 
-export function PrevMonthButton({ ariaLabel, baseDate, onChangeMonth }: HeaderButtonProps) {
+export function HeaderPrevButton({ ariaLabel, baseDate, onChange, granularity }: HeaderButtonProps) {
   return (
     <InternalButton
       iconName="angle-left"
       ariaLabel={ariaLabel}
       variant="icon"
-      onClick={() => onChangeMonth(addMonths(baseDate, -1))}
+      onClick={() => onChange((granularity === 'month' ? addYears : addMonths)(baseDate, -1))}
       formAction="none"
       className={styles['calendar-prev-month-btn']}
     />
   );
 }
 
-export function NextMonthButton({ ariaLabel, baseDate, onChangeMonth }: HeaderButtonProps) {
+export function HeaderNextButton({ ariaLabel, baseDate, onChange, granularity }: HeaderButtonProps) {
   return (
     <InternalButton
       iconName="angle-right"
       ariaLabel={ariaLabel}
       variant="icon"
-      onClick={() => onChangeMonth(addMonths(baseDate, 1))}
+      onClick={() => onChange((granularity === 'month' ? addYears : addMonths)(baseDate, 1))}
       formAction="none"
       className={styles['calendar-next-month-btn']}
     />
