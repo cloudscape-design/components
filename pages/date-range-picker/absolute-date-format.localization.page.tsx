@@ -26,6 +26,8 @@ const locales = [
   'zh-TW',
 ];
 
+const rtlLocales = new Set(['ar', 'he']);
+
 type DemoContext = React.Context<
   AppContextType<{
     absoluteFormat?: DateRangePickerProps.AbsoluteFormat;
@@ -98,24 +100,25 @@ export default function DateRangePickerScenario() {
         </SpaceBetween>
         <hr />
         {locales.map(locale => (
-          <Grid key={`pickers-${locale}`} gridDefinition={[{ colspan: 1 }, { colspan: 11 }]}>
-            <div style={{ textAlign: 'right' }}>{locale}</div>
-
-            <DateRangePicker
-              value={value}
-              locale={locale}
-              i18nStrings={i18nStrings}
-              placeholder={'Filter by a date and time range'}
-              onChange={e => setValue(e.detail.value)}
-              relativeOptions={[]}
-              isValidRange={isValid}
-              rangeSelectorMode={'absolute-only'}
-              getTimeOffset={urlParams.timeOffset === undefined ? undefined : () => urlParams.timeOffset!}
-              absoluteFormat={urlParams.absoluteFormat}
-              dateOnly={urlParams.dateOnly}
-              hideTimeOffset={urlParams.hideTimeOffset}
-            />
-          </Grid>
+          <div key={`pickers-${locale}`} dir={rtlLocales.has(locale) ? 'rtl' : 'ltr'}>
+            <Grid gridDefinition={[{ colspan: 1 }, { colspan: 11 }]}>
+              <div style={{ textAlign: 'right' }}>{locale}</div>
+              <DateRangePicker
+                value={value}
+                locale={locale}
+                i18nStrings={i18nStrings}
+                placeholder={'Filter by a date and time range'}
+                onChange={e => setValue(e.detail.value)}
+                relativeOptions={[]}
+                isValidRange={isValid}
+                rangeSelectorMode={'absolute-only'}
+                getTimeOffset={urlParams.timeOffset === undefined ? undefined : () => urlParams.timeOffset!}
+                absoluteFormat={urlParams.absoluteFormat}
+                dateOnly={urlParams.dateOnly}
+                hideTimeOffset={urlParams.hideTimeOffset}
+              />
+            </Grid>
+          </div>
         ))}
       </SpaceBetween>
     </Box>
