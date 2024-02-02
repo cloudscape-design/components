@@ -25,8 +25,8 @@
   &:first-child {
     margin-block-start: 0;
   }
-  &.last {
-    border-block-end: awsui.$border-item-width solid awsui.$color-border-dropdown-group;
+  &.show-divider {
+    border-bottom: awsui.$border-item-width solid awsui.$color-border-dropdown-group;
   }
   &.highlighted {
     color: awsui.$color-text-dropdown-item-highlighted;
