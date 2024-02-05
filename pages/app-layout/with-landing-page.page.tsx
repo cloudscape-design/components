@@ -20,6 +20,7 @@ import { Breadcrumbs, Footer, Notifications } from './utils/content-blocks';
 import labels from './utils/labels';
 import Button from '~components/button';
 import styles from './styles.scss';
+import { ContentLayout } from '~components';
 
 function Navigation() {
   return (
@@ -54,12 +55,14 @@ interface ToolsProps {
   onFlashbarChange: (isChecked: boolean) => void;
   onStackedNotificationChange: (isChecked: boolean) => void;
   onBreadcrumbChange: (isChecked: boolean) => void;
+  onNestingChange: (isChecked: boolean) => void;
 }
 
-function Tools({ onFlashbarChange, onStackedNotificationChange, onBreadcrumbChange }: ToolsProps) {
+function Tools({ onFlashbarChange, onStackedNotificationChange, onNestingChange }: ToolsProps) {
   const [hasFlash, setFlash] = React.useState(false);
   const [hasStackedNotification, setStackedNotification] = React.useState(false);
-  const [hasBreadcrumb, setBreadcrumb] = React.useState(false);
+  //const [hasBreadcrumb, setBreadcrumb] = React.useState(false);
+  const [hasNesting, setNesting] = React.useState(false);
 
   const handleFlashbarChange = (isChecked: boolean) => {
     setFlash(isChecked);
@@ -75,10 +78,17 @@ function Tools({ onFlashbarChange, onStackedNotificationChange, onBreadcrumbChan
     }
   };
 
-  const handleBreadcrumbChange = (isChecked: boolean) => {
-    setBreadcrumb(isChecked);
-    if (onBreadcrumbChange) {
-      onBreadcrumbChange(isChecked);
+  // const handleBreadcrumbChange = (isChecked: boolean) => {
+  //   setBreadcrumb(isChecked);
+  //   if (onBreadcrumbChange) {
+  //     onBreadcrumbChange(isChecked);
+  //   }
+  // };
+
+  const handleNestingChange = (isChecked: boolean) => {
+    setNesting(isChecked);
+    if (onNestingChange) {
+      onNestingChange(isChecked);
     }
   };
 
@@ -94,8 +104,11 @@ function Tools({ onFlashbarChange, onStackedNotificationChange, onBreadcrumbChan
         >
           Show stacked notifications
         </Toggle>
-        <Toggle onChange={({ detail }) => handleBreadcrumbChange(detail.checked)} checked={hasBreadcrumb}>
+        {/* <Toggle onChange={({ detail }) => handleBreadcrumbChange(detail.checked)} checked={hasBreadcrumb}>
           Show Breadcrumb
+        </Toggle> */}
+        <Toggle onChange={({ detail }) => handleNestingChange(detail.checked)} checked={hasNesting}>
+          Wrap in ContentLayout
         </Toggle>
       </SpaceBetween>
     </HelpPanel>
@@ -160,7 +173,7 @@ const Content = () => {
                 fontSize="display-l"
                 className={styles['custom-home__header-title']}
               >
-                Amazon CloudFront
+                Service Homepage
               </Box>
               <Box
                 fontWeight="light"
@@ -172,7 +185,7 @@ const Content = () => {
               </Box>
               <Box variant="p" fontWeight="normal">
                 <span className={styles['custom-home__header-sub-title']}>
-                  Amazon CloudFront is a global content delivery network service (CDN) that accelerates delivery of your
+                  Service Homepage is a global content delivery network service (CDN) that accelerates delivery of your
                   websites, APIs, video content or other web assets through CDN caching.
                 </span>
               </Box>
@@ -365,6 +378,7 @@ export default function () {
   const [flashbarVisible, setFlashbarVisible] = React.useState(false);
   const [notificationsVisible, setNotificationsVisible] = React.useState(false);
   const [breadcrumbVisible, setBreadcrumbVisible] = React.useState(false);
+  const [nestingVisible, setNestingVisible] = React.useState(false);
 
   const handleFlashbarChange = (isChecked: boolean) => {
     setFlashbarVisible(isChecked);
@@ -376,6 +390,10 @@ export default function () {
 
   const handleBreadcrumbChange = (isChecked: boolean) => {
     setBreadcrumbVisible(isChecked);
+  };
+
+  const handleNestingChange = (isChecked: boolean) => {
+    setNestingVisible(isChecked);
   };
 
   return (
@@ -390,6 +408,7 @@ export default function () {
             onFlashbarChange={handleFlashbarChange}
             onStackedNotificationChange={handleStackedNotificationChange}
             onBreadcrumbChange={handleBreadcrumbChange}
+            onNestingChange={handleNestingChange}
           />
         }
         toolsOpen={toolsOpen}
@@ -403,7 +422,15 @@ export default function () {
             <></>
           )
         }
-        content={<Content />}
+        content={
+          !nestingVisible ? (
+            <Content />
+          ) : (
+            <ContentLayout>
+              <Content />
+            </ContentLayout>
+          )
+        }
       />
       <Footer legacyConsoleNav={false} />
     </ScreenshotArea>

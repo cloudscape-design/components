@@ -52,6 +52,7 @@ export default function Layout({ children }: LayoutProps) {
   // Content gaps on the left and right are used with the minmax function in the CSS grid column definition
   const hasContentGapLeft = isNavigationOpen || navigationHide;
   const hasContentGapRight = drawersTriggerCount === 0 || hasOpenDrawer;
+  console.log('Content type is ' + contentType);
 
   return (
     <main
