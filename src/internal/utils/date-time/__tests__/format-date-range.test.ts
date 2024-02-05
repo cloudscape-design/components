@@ -169,7 +169,7 @@ describe('formatDateRange', () => {
     });
 
     describe('Some languages do not use comma to separate date and time', () => {
-      test.each(['ja', 'zh-CN'])('%s', locale => {
+      test.each(['ja', 'zh-CN', 'zh-TW'])('%s', locale => {
         expect(
           formatDateRange({
             startDate: '2020-01-01T00:00:00',

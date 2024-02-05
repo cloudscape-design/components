@@ -59,7 +59,7 @@ function formatTimeOffset(isoDate: string, offsetInMinutes?: number) {
 }
 
 // Languages in which date and time are separated just with a space, without comma
-const languagesWithoutDateTimeSeparator = ['ja', 'zh-CN'];
+const languagesWithoutDateTimeSeparator = ['ja', 'zh-CN', 'zh-TW'];
 
 function getDateTimeSeparator(locale?: string) {
   return locale && languagesWithoutDateTimeSeparator.includes(locale) ? ' ' : ', ';
