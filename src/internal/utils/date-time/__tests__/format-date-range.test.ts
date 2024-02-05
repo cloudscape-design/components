@@ -36,7 +36,7 @@ describe('formatDateRange', () => {
         test('ISO', () => {
           expect(formatDateRange({ startDate, endDate, timeOffset, format: 'iso' })).toBe(expected.iso);
         });
-        test('Long localized', () => {
+        test('Human-readable', () => {
           expect(formatDateRange({ startDate, endDate, timeOffset, format: 'long-localized', locale: 'en-US' })).toBe(
             expected.absolute['en-US']
           );
@@ -85,7 +85,7 @@ describe('formatDateRange', () => {
           test('ISO', () => {
             expect(formatDateRange({ startDate, endDate, timeOffset, format: 'iso' })).toBe(expected.iso);
           });
-          test('Long localized', () => {
+          test('Human-readable', () => {
             expect(formatDateRange({ startDate, endDate, timeOffset, format: 'long-localized', locale: 'en-US' })).toBe(
               expected.absolute['en-US']
             );
@@ -136,7 +136,7 @@ describe('formatDateRange', () => {
               expected.iso
             );
           });
-          test('Long localized', () => {
+          test('Human-readable', () => {
             expect(
               formatDateRange({
                 startDate,
@@ -154,7 +154,7 @@ describe('formatDateRange', () => {
   });
 
   describe('Localization', () => {
-    describe('Some languages use comma to separate date and time', () => {
+    describe('uses comma to separate date and time in some languages', () => {
       test.each(['ar', 'de', 'en-GB', 'en-US', 'es', 'fr', 'he', 'id', 'it', 'ko', 'pt-BR', 'th', 'tr'])(
         '%s',
         locale => {
@@ -171,7 +171,7 @@ describe('formatDateRange', () => {
       );
     });
 
-    describe('Some languages do not use comma to separate date and time', () => {
+    describe('does not use comma to separate date and time in some languages', () => {
       test.each(['ja', 'zh-CN', 'zh-TW'])('%s', locale => {
         expect(
           formatDateRange({
