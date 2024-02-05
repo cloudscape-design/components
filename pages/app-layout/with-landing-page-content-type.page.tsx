@@ -32,8 +32,6 @@ function HeroHeader() {
         //position: 'relative',
         width: '100%',
         //justifyContent: 'center',
-        //paddingTop: awsui.$space-static-xxxl,
-        //paddingBottom: awsui.$space-static-xxxl,
       }}
     >
       <div
@@ -55,7 +53,6 @@ function HeroHeader() {
       <div
         className="inner-header"
         style={{
-          //backgroundImage: `url("https://images.unsplash.com/photo-1515256722043-0f2b082ddadc?q=80&w=1702&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")`,
           background: 'blue',
         }}
       >
@@ -388,7 +385,7 @@ export default function () {
           )
         }
         content={
-          <ContentLayout header={<HeroHeader />}>
+          <ContentLayout header={<HeroHeader />} disableOverlap={true}>
             <ContentTest />
           </ContentLayout>
         }
