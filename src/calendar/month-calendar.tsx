@@ -21,7 +21,7 @@ import { useInternalI18n } from '../i18n/context.js';
 
 export type DayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
-export default function Calendar({
+export default function MonthCalendar({
   value,
   locale = '',
   startOfWeek,
@@ -54,12 +54,11 @@ export default function Calendar({
   const headingId = useUniqueId('calendar-heading');
 
   const i18n = useInternalI18n('calendar');
-  const nextMonthAriaLabel = i18n('nextMonthAriaLabel', i18nStrings?.nextMonthAriaLabel || rest.nextMonthAriaLabel);
-  const previousMonthAriaLabel = i18n(
-    'previousMonthAriaLabel',
-    i18nStrings?.previousMonthAriaLabel || rest.previousMonthAriaLabel
-  );
   const todayAriaLabel = i18n('todayAriaLabel', i18nStrings?.todayAriaLabel || rest.todayAriaLabel);
+
+  const nextYearAriaLabel = i18n('nextYearAriaLabel', i18nStrings?.nextYearAriaLabel);
+  const previousYearAriaLabel = i18n('previousYearAriaLabel', i18nStrings?.previousYearAriaLabel);
+  //   const currentMonthAriaLabel = i18n('currentMonthAriaLabel', i18nStrings?.currentMonthAriaLabel);
 
   // Update displayed date if value changes.
   useEffect(() => {
@@ -83,7 +82,7 @@ export default function Calendar({
   const baseDate = getBaseDate(displayedDate, isDateEnabled);
   const focusableDate = focusedDate || selectFocusedDate(memoizedValue, baseDate);
 
-  const onHeaderChangeMonthHandler = (date: Date) => {
+  const onHeaderChangeYearHandler = (date: Date) => {
     setDisplayedDate(date);
     setFocusedDate(null);
   };
@@ -100,7 +99,7 @@ export default function Calendar({
   };
 
   const onGridSelectDateHandler = (date: Date) => {
-    fireNonCancelableEvent(onChange, { value: formatDate(date) });
+    fireNonCancelableEvent(onChange, { value: formatDate(date, 'month') });
     setFocusedDate(null);
   };
 
@@ -110,7 +109,6 @@ export default function Calendar({
       setFocusedDate(null);
     }
   };
-
   return (
     <div
       ref={__internalRootRef}
@@ -125,10 +123,11 @@ export default function Calendar({
         <CalendarHeader
           baseDate={baseDate}
           locale={normalizedLocale}
-          onChange={onHeaderChangeMonthHandler}
-          previousLabel={previousMonthAriaLabel}
-          nextLabel={nextMonthAriaLabel}
+          onChange={onHeaderChangeYearHandler}
+          previousLabel={previousYearAriaLabel}
+          nextLabel={nextYearAriaLabel}
           headingId={headingId}
+          granularity="month"
         />
         <div onBlur={onGridBlur} ref={gridWrapperRef}>
           <Grid
@@ -144,6 +143,7 @@ export default function Calendar({
             todayAriaLabel={todayAriaLabel}
             selectedDate={memoizedValue}
             ariaLabelledby={headingId}
+            granularity="month"
           />
         </div>
       </div>

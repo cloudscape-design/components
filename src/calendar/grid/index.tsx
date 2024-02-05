@@ -11,7 +11,16 @@ import { getDateLabel, renderDayName } from '../utils/intl';
 import clsx from 'clsx';
 import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update.js';
 import ScreenreaderOnly from '../../internal/components/screenreader-only/index.js';
-import { moveNextDay, movePrevDay, moveNextWeek, movePrevWeek } from '../utils/navigation';
+import {
+  moveNextDay,
+  movePrevDay,
+  moveNextWeek,
+  movePrevWeek,
+  moveNextMonth,
+  movePrevMonth,
+  moveMonthDown,
+  moveMonthUp,
+} from '../utils/navigation';
 
 /**
  * Calendar grid supports two mechanisms of keyboard navigation:
@@ -41,6 +50,7 @@ export interface GridProps {
   todayAriaLabel?: string;
   selectedDate: Date | null;
   ariaLabelledby: string;
+  granularity?: 'month' | 'day';
 }
 
 export default function Grid({
@@ -56,8 +66,15 @@ export default function Grid({
   todayAriaLabel,
   selectedDate,
   ariaLabelledby,
+  granularity,
 }: GridProps) {
   const focusedDateRef = useRef<HTMLTableCellElement>(null);
+  const isMonthPicker = granularity === 'month';
+
+  const moveRight = isMonthPicker ? moveNextMonth : moveNextDay;
+  const moveLeft = isMonthPicker ? movePrevMonth : movePrevDay;
+  const moveUp = isMonthPicker ? moveMonthUp : movePrevWeek;
+  const moveDown = isMonthPicker ? moveMonthDown : moveNextWeek;
 
   const onGridKeyDownHandler = (event: React.KeyboardEvent) => {
     let updatedFocusDate;
@@ -77,25 +94,25 @@ export default function Grid({
         return;
       case KeyCode.right:
         event.preventDefault();
-        updatedFocusDate = moveNextDay(focusableDate, isDateEnabled);
+        updatedFocusDate = moveRight(focusableDate, isDateEnabled);
         break;
       case KeyCode.left:
         event.preventDefault();
-        updatedFocusDate = movePrevDay(focusableDate, isDateEnabled);
+        updatedFocusDate = moveLeft(focusableDate, isDateEnabled);
         break;
       case KeyCode.up:
         event.preventDefault();
-        updatedFocusDate = movePrevWeek(focusableDate, isDateEnabled);
+        updatedFocusDate = moveUp(focusableDate, isDateEnabled);
         break;
       case KeyCode.down:
         event.preventDefault();
-        updatedFocusDate = moveNextWeek(focusableDate, isDateEnabled);
+        updatedFocusDate = moveDown(focusableDate, isDateEnabled);
         break;
       default:
         return;
     }
 
-    if (!isSameMonth(updatedFocusDate, baseDate)) {
+    if (granularity === 'day' && !isSameMonth(updatedFocusDate, baseDate)) {
       onChangeMonth(updatedFocusDate);
     }
     onFocusDate(updatedFocusDate);
@@ -109,30 +126,41 @@ export default function Grid({
     }
   }, [focusedDate]);
 
-  const weeks = useMemo<Date[][]>(
-    () => getCalendarMonth(baseDate, { firstDayOfWeek: startOfWeek }),
-    [baseDate, startOfWeek]
+  const rows = useMemo<Date[][]>(
+    () =>
+      granularity === 'month'
+        ? new Array(4).fill(0).map((_, i: number) =>
+            new Array(3).fill(0).map((_, j: number) => {
+              const d = new Date(baseDate);
+              d.setMonth(i * 3 + j);
+              return d;
+            })
+          )
+        : getCalendarMonth(baseDate, { firstDayOfWeek: startOfWeek }),
+    [baseDate, granularity, startOfWeek]
   );
-  const weekdays = weeks[0].map(date => date.getDay());
+  const weekdays = rows[0].map(date => date.getDay());
 
   return (
     <table role="grid" className={styles['calendar-grid']} aria-labelledby={ariaLabelledby}>
-      <thead>
-        <tr>
-          {weekdays.map(dayIndex => (
-            <th
-              key={dayIndex}
-              scope="col"
-              className={clsx(styles['calendar-grid-cell'], styles['calendar-day-header'])}
-            >
-              <span aria-hidden="true">{renderDayName(locale, dayIndex, 'short')}</span>
-              <ScreenreaderOnly>{renderDayName(locale, dayIndex, 'long')}</ScreenreaderOnly>
-            </th>
-          ))}
-        </tr>
-      </thead>
+      {granularity === 'day' && (
+        <thead>
+          <tr>
+            {weekdays.map(dayIndex => (
+              <th
+                key={dayIndex}
+                scope="col"
+                className={clsx(styles['calendar-grid-cell'], styles['calendar-day-header'])}
+              >
+                <span aria-hidden="true">{renderDayName(locale, dayIndex, 'short')}</span>
+                <ScreenreaderOnly>{renderDayName(locale, dayIndex, 'long')}</ScreenreaderOnly>
+              </th>
+            ))}
+          </tr>
+        </thead>
+      )}
       <tbody onKeyDown={onGridKeyDownHandler}>
-        {weeks.map((week, weekIndex) => (
+        {rows.map((week, weekIndex) => (
           <tr key={weekIndex} className={styles['calendar-week']}>
             {week.map((date, dateIndex) => {
               const isFocusable = !!focusableDate && isSameDay(date, focusableDate);
@@ -174,7 +202,7 @@ export default function Grid({
                   })}
                 >
                   <span className={styles['day-inner']} aria-hidden="true">
-                    {date.getDate()}
+                    {granularity === 'month' ? date.toLocaleString(locale, { month: 'short' }) : date.getDate()}
                   </span>
                   <ScreenreaderOnly>{dayAnnouncement}</ScreenreaderOnly>
                 </td>

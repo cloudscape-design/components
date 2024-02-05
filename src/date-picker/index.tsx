@@ -5,6 +5,7 @@ import React, { Ref, useCallback, useRef, useState } from 'react';
 import styles from './styles.css.js';
 import { DatePickerProps } from './interfaces';
 import InternalCalendar from '../calendar/internal';
+import MonthCalendar from '../calendar/month-calendar';
 import { normalizeLocale } from '../internal/utils/locale';
 import { getDateLabel, renderMonthAndYear } from '../calendar/utils/intl';
 import { InputProps } from '../input/interfaces';
@@ -55,6 +56,7 @@ const DatePicker = React.forwardRef(
       invalid,
       openCalendarAriaLabel,
       expandToViewport,
+      granularity,
       ...restProps
     }: DatePickerProps,
     ref: Ref<DatePickerProps.Ref>
@@ -130,6 +132,7 @@ const DatePicker = React.forwardRef(
             ref={internalInputRef}
             autoFocus={autoFocus}
             onFocus={onDropdownCloseHandler}
+            granularity={granularity}
           />
         </div>
         <div>
@@ -175,25 +178,47 @@ const DatePicker = React.forwardRef(
             {isDropDownOpen && (
               <FocusLock className={styles['focus-lock']} autoFocus={true}>
                 <div tabIndex={0} className={styles.calendar} role="dialog" aria-modal="true">
-                  <InternalCalendar
-                    value={value}
-                    onChange={e => {
-                      fireNonCancelableEvent(onChange, e.detail);
-                      buttonRef?.current?.focus();
-                      setIsDropDownOpen(false);
-                    }}
-                    locale={normalizedLocale}
-                    startOfWeek={startOfWeek}
-                    ariaDescribedby={calendarDescriptionId}
-                    ariaLabel={ariaLabel}
-                    ariaLabelledby={ariaLabelledby}
-                    isDateEnabled={isDateEnabled}
-                    i18nStrings={{
-                      todayAriaLabel: i18nStrings?.todayAriaLabel || todayAriaLabel,
-                      nextMonthAriaLabel: i18nStrings?.nextMonthAriaLabel || nextMonthAriaLabel,
-                      previousMonthAriaLabel: i18nStrings?.previousMonthAriaLabel || previousMonthAriaLabel,
-                    }}
-                  />
+                  {granularity === 'month' ? (
+                    <MonthCalendar
+                      value={value}
+                      onChange={e => {
+                        fireNonCancelableEvent(onChange, e.detail);
+                        buttonRef?.current?.focus();
+                        setIsDropDownOpen(false);
+                      }}
+                      locale={normalizedLocale}
+                      startOfWeek={startOfWeek}
+                      ariaDescribedby={calendarDescriptionId}
+                      ariaLabel={ariaLabel}
+                      ariaLabelledby={ariaLabelledby}
+                      isDateEnabled={isDateEnabled}
+                      i18nStrings={{
+                        currentMonthAriaLabel: i18nStrings?.currentMonthAriaLabel,
+                        nextYearAriaLabel: i18nStrings?.nextYearAriaLabel,
+                        previousYearAriaLabel: i18nStrings?.previousYearAriaLabel,
+                      }}
+                    />
+                  ) : (
+                    <InternalCalendar
+                      value={value}
+                      onChange={e => {
+                        fireNonCancelableEvent(onChange, e.detail);
+                        buttonRef?.current?.focus();
+                        setIsDropDownOpen(false);
+                      }}
+                      locale={normalizedLocale}
+                      startOfWeek={startOfWeek}
+                      ariaDescribedby={calendarDescriptionId}
+                      ariaLabel={ariaLabel}
+                      ariaLabelledby={ariaLabelledby}
+                      isDateEnabled={isDateEnabled}
+                      i18nStrings={{
+                        todayAriaLabel: i18nStrings?.todayAriaLabel || todayAriaLabel,
+                        nextMonthAriaLabel: i18nStrings?.nextMonthAriaLabel || nextMonthAriaLabel,
+                        previousMonthAriaLabel: i18nStrings?.previousMonthAriaLabel || previousMonthAriaLabel,
+                      }}
+                    />
+                  )}
                   <LiveRegion id={calendarDescriptionId}>{renderMonthAndYear(normalizedLocale, baseDate)}</LiveRegion>
                 </div>
               </FocusLock>
