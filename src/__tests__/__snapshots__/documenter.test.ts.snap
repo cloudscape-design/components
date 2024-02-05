@@ -655,6 +655,7 @@ Individual properties will always take precedence over the default coming from t
           "cards",
           "wizard",
           "dashboard",
+          "hero",
         ],
       },
       "name": "contentType",
