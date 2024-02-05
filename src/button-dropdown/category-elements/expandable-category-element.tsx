@@ -20,6 +20,7 @@ const ExpandableCategoryElement = ({
   isHighlighted,
   isKeyboardHighlight,
   isExpanded,
+  isLast,
   highlightItem,
   disabled,
   expandToViewport,
@@ -104,6 +105,7 @@ const ExpandableCategoryElement = ({
               isHighlighted={isHighlighted}
               isKeyboardHighlight={isKeyboardHighlight}
               isExpanded={isExpanded}
+              isLast={isLast}
               highlightItem={highlightItem}
               variant={variant}
             />
