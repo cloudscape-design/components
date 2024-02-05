@@ -4,8 +4,7 @@
 import { isIsoDateOnly } from './is-iso-date-only';
 import formatDateIso from './format-date-iso';
 import formatDateLocalized from './format-date-localized';
-
-export type AbsoluteDateFormat = 'iso' | 'long-localized';
+import { DateRangePickerProps } from '../../../date-range-picker/interfaces';
 
 export function formatDateRange({
   startDate,
@@ -19,7 +18,7 @@ export function formatDateRange({
   endDate: string;
   hideTimeOffset?: boolean;
   timeOffset: { startDate?: number; endDate?: number };
-  format?: AbsoluteDateFormat;
+  format?: DateRangePickerProps.AbsoluteFormat;
   locale?: string;
 }): string {
   const isDateOnly = isIsoDateOnly(startDate) && isIsoDateOnly(endDate);
@@ -53,7 +52,7 @@ function formatDate({
   locale,
 }: {
   date: string;
-  format?: AbsoluteDateFormat;
+  format?: DateRangePickerProps.AbsoluteFormat;
   hideTimeOffset?: boolean;
   isDateOnly: boolean;
   timeOffset?: number;
