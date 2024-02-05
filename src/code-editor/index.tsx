@@ -235,7 +235,7 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
               languageLabel={languageLabel}
               cursorPosition={i18n(
                 'i18nStrings.cursorPosition',
-                i18nStrings?.cursorPosition(cursorPosition.row + 1, cursorPosition.column + 1),
+                i18nStrings?.cursorPosition?.(cursorPosition.row + 1, cursorPosition.column + 1),
                 format => format({ row: cursorPosition.row + 1, column: cursorPosition.column + 1 })
               )}
               errorCount={errorCount}

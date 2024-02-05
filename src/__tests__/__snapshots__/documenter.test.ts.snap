@@ -4466,72 +4466,72 @@ The object should contain, among others:
         "properties": Array [
           Object {
             "name": "cursorPosition",
-            "optional": false,
+            "optional": true,
             "type": "(row: number, column: number) => string",
           },
           Object {
             "name": "editorGroupAriaLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "errorState",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "errorStateRecovery",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "errorsTab",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "loadingState",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "paneCloseButtonAriaLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "preferencesButtonAriaLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "preferencesModalCancel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "preferencesModalConfirm",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "preferencesModalDarkThemes",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "preferencesModalHeader",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "preferencesModalLightThemes",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "preferencesModalTheme",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -4551,17 +4551,17 @@ The object should contain, among others:
           },
           Object {
             "name": "preferencesModalWrapLines",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "statusBarGroupAriaLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "warningsTab",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
         ],
