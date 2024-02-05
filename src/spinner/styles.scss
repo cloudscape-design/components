@@ -7,21 +7,12 @@
 @use './mixins' as mixins;
 @use '../internal/styles/tokens' as awsui;
 
-@keyframes spinner-rotator-ltr {
+@keyframes spinner-rotator {
   0% {
     transform: rotate(0deg);
   }
   100% {
     transform: rotate(360deg);
-  }
-}
-
-@keyframes spinner-rotator-rtl {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(-360deg);
   }
 }
 
@@ -68,7 +59,7 @@
   vertical-align: top;
   // Spinner is an exception from our motion rules, it always has motion
   /*stylelint-disable-next-line @cloudscape-design/no-motion-outside-of-mixin */
-  animation: spinner-rotator-ltr 0.7s linear infinite;
+  animation: spinner-rotator 0.7s linear infinite;
   box-sizing: border-box;
   line-height: 0;
 
@@ -100,13 +91,4 @@
     /*stylelint-disable-next-line @cloudscape-design/no-motion-outside-of-mixin */
     animation-name: spinner-line-right;
   }
-}
-
-@include styles.with-direction('.root') {
-  /*stylelint-disable-next-line @cloudscape-design/no-motion-outside-of-mixin */
-  animation-name: spinner-rotator-rtl;
-}
-
-@include styles.with-direction('.circle.circle-right:after') {
-  inset-inline-start: 100%;
 }
