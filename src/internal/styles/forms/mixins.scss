@@ -84,9 +84,12 @@
   // Using a special transparent outline only visible in Windows High Contrast Mode.
   // See focus-highlight above.
   outline: 2px dotted transparent;
-
-  border: constants.$control-border-width solid awsui.$color-border-item-focused;
-  border-radius: $border-radius;
+  border-block: constants.$control-border-width solid awsui.$color-border-item-focused;
+  border-inline: constants.$control-border-width solid awsui.$color-border-item-focused;
+  border-start-start-radius: $border-radius;
+  border-start-end-radius: $border-radius;
+  border-end-start-radius: $border-radius;
+  border-end-end-radius: $border-radius;
   box-shadow: foundation.$box-shadow-focused-light;
 }
 
@@ -166,7 +169,8 @@
   box-sizing: border-box;
 
   &.refresh {
-    border: solid awsui.$border-divider-section-width awsui.$color-border-divider-default;
+    border-block: solid awsui.$border-divider-section-width awsui.$color-border-divider-default;
+    border-inline: solid awsui.$border-divider-section-width awsui.$color-border-divider-default;
   }
 
   &:not(.refresh)::before {

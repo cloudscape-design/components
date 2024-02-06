@@ -16,7 +16,7 @@ $font-weight-bold: awsui.$font-weight-heading-s;
 }
 
 .value {
-  text-align: right;
+  text-align: end;
   margin-inline-start: awsui.$space-xxl;
   &.expandable {
     font-weight: $font-weight-bold;
@@ -34,7 +34,7 @@ $font-weight-bold: awsui.$font-weight-heading-s;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 100%;
+  inline-size: 100%;
   > .key {
     display: inline-flex;
     color: awsui.$color-text-group-label;
