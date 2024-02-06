@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { DrawersApiInternal, DrawersApiPublic, DrawersController } from './controllers/drawers';
 import { ActionsApiInternal, ActionsApiPublic, ActionButtonsController } from './controllers/action-buttons';
+import { AppLayoutWidgetApiInternal, AppLayoutWidgetController } from './controllers/app-layout-widget';
 
 const storageKey = Symbol.for('awsui-plugin-api');
 
@@ -13,6 +14,7 @@ interface AwsuiApi {
   };
   awsuiPluginsInternal: {
     appLayout: DrawersApiInternal;
+    appLayoutWidget: AppLayoutWidgetApiInternal;
     alert: ActionsApiInternal;
     flashbar: ActionsApiInternal;
   };
@@ -69,6 +71,11 @@ function installApi(api: DeepPartial<AwsuiApi>): AwsuiApi {
   const flashbarActions = new ActionButtonsController();
   api.awsuiPlugins.flashbar = flashbarActions.installPublic(api.awsuiPlugins.flashbar);
   api.awsuiPluginsInternal.flashbar = flashbarActions.installInternal(api.awsuiPluginsInternal.flashbar);
+
+  const appLayoutController = new AppLayoutWidgetController();
+  api.awsuiPluginsInternal.appLayoutWidget = appLayoutController.installInternal(
+    api.awsuiPluginsInternal.appLayoutWidget
+  );
 
   return api as AwsuiApi;
 }

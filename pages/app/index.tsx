@@ -19,6 +19,7 @@ import AppContext, { AppContextProvider, parseQuery } from './app-context';
 
 interface GlobalFlags {
   removeHighContrastHeader?: boolean;
+  enableAppLayoutWidget?: boolean;
 }
 const awsuiVisualRefreshFlag = Symbol.for('awsui-visual-refresh-flag');
 const awsuiGlobalFlagsSymbol = Symbol.for('awsui-global-flags');
@@ -93,6 +94,7 @@ if (!window[awsuiGlobalFlagsSymbol]) {
 if (removeHighContrastHeader) {
   window[awsuiGlobalFlagsSymbol].removeHighContrastHeader = true;
 }
+window[awsuiGlobalFlagsSymbol].enableAppLayoutWidget = true;
 
 // Apply the direction value to the HTML element dir attribute
 document.documentElement.setAttribute('dir', direction);
