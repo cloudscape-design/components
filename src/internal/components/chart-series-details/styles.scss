@@ -75,7 +75,7 @@ $font-weight-bold: awsui.$font-weight-heading-s;
 
 .list:not(.compact) > .list-item:not(:first-child),
 .inner-list-item {
-  margin-top: awsui.$space-scaled-xxs;
+  margin-block-start: awsui.$space-scaled-xxs;
 }
 
 .list-item.with-sub-items:not(.expandable) > .key-value-pair {
@@ -86,7 +86,7 @@ $font-weight-bold: awsui.$font-weight-heading-s;
 }
 
 .full-width {
-  width: 100%;
+  inline-size: 100%;
 }
 
 .announced {
