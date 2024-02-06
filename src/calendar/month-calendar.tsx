@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { isSameMonth } from 'date-fns';
 import styles from './styles.css.js';
 import CalendarHeader from './header';
@@ -109,6 +109,19 @@ export default function MonthCalendar({
       setFocusedDate(null);
     }
   };
+
+  const rows = useMemo<Date[][]>(
+    () =>
+      new Array(4).fill(0).map((_, i: number) =>
+        new Array(3).fill(0).map((_, j: number) => {
+          const d = new Date(baseDate);
+          d.setMonth(i * 3 + j);
+          return d;
+        })
+      ),
+    [baseDate]
+  );
+
   return (
     <div
       ref={__internalRootRef}
@@ -144,6 +157,7 @@ export default function MonthCalendar({
             selectedDate={memoizedValue}
             ariaLabelledby={headingId}
             granularity="month"
+            rows={rows}
           />
         </div>
       </div>

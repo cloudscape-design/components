@@ -1,10 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useMemo, useRef } from 'react';
+import React, { useRef } from 'react';
 import styles from '../styles.css.js';
 import { KeyCode } from '../../internal/keycode';
 import { isSameDay, isSameMonth } from 'date-fns';
-import { getCalendarMonth } from 'mnth';
 import { DayIndex } from '../internal';
 import { DatePickerProps } from '../../date-picker/interfaces';
 import { getDateLabel, renderDayName } from '../utils/intl';
@@ -51,6 +50,7 @@ export interface GridProps {
   selectedDate: Date | null;
   ariaLabelledby: string;
   granularity?: 'month' | 'day';
+  rows: ReadonlyArray<ReadonlyArray<Date>>;
 }
 
 export default function Grid({
@@ -62,11 +62,11 @@ export default function Grid({
   onSelectDate,
   onFocusDate,
   onChangeMonth,
-  startOfWeek,
   todayAriaLabel,
   selectedDate,
   ariaLabelledby,
   granularity,
+  rows,
 }: GridProps) {
   const focusedDateRef = useRef<HTMLTableCellElement>(null);
   const isMonthPicker = granularity === 'month';
@@ -126,43 +126,30 @@ export default function Grid({
     }
   }, [focusedDate]);
 
-  const rows = useMemo<Date[][]>(
-    () =>
-      granularity === 'month'
-        ? new Array(4).fill(0).map((_, i: number) =>
-            new Array(3).fill(0).map((_, j: number) => {
-              const d = new Date(baseDate);
-              d.setMonth(i * 3 + j);
-              return d;
-            })
-          )
-        : getCalendarMonth(baseDate, { firstDayOfWeek: startOfWeek }),
-    [baseDate, granularity, startOfWeek]
-  );
-  const weekdays = rows[0].map(date => date.getDay());
-
   return (
     <table role="grid" className={styles['calendar-grid']} aria-labelledby={ariaLabelledby}>
       {granularity === 'day' && (
         <thead>
           <tr>
-            {weekdays.map(dayIndex => (
-              <th
-                key={dayIndex}
-                scope="col"
-                className={clsx(styles['calendar-grid-cell'], styles['calendar-day-header'])}
-              >
-                <span aria-hidden="true">{renderDayName(locale, dayIndex, 'short')}</span>
-                <ScreenreaderOnly>{renderDayName(locale, dayIndex, 'long')}</ScreenreaderOnly>
-              </th>
-            ))}
+            {rows[0]
+              .map(date => date.getDay())
+              .map(dayIndex => (
+                <th
+                  key={dayIndex}
+                  scope="col"
+                  className={clsx(styles['calendar-grid-cell'], styles['calendar-day-header'])}
+                >
+                  <span aria-hidden="true">{renderDayName(locale, dayIndex, 'short')}</span>
+                  <ScreenreaderOnly>{renderDayName(locale, dayIndex, 'long')}</ScreenreaderOnly>
+                </th>
+              ))}
           </tr>
         </thead>
       )}
       <tbody onKeyDown={onGridKeyDownHandler}>
-        {rows.map((week, weekIndex) => (
-          <tr key={weekIndex} className={styles['calendar-week']}>
-            {week.map((date, dateIndex) => {
+        {rows.map((row, rowIndex) => (
+          <tr key={rowIndex} className={styles['calendar-week']}>
+            {row.map((date, dateIndex) => {
               const isFocusable = !!focusableDate && isSameDay(date, focusableDate);
               const isSelected = !!selectedDate && isSameDay(date, selectedDate);
               const isEnabled = !isDateEnabled || isDateEnabled(date);
@@ -186,7 +173,7 @@ export default function Grid({
 
               return (
                 <td
-                  key={`${weekIndex}:${dateIndex}`}
+                  key={`${rowIndex}:${dateIndex}`}
                   ref={tabIndex === 0 ? focusedDateRef : undefined}
                   tabIndex={tabIndex}
                   aria-current={isDateOnSameDay ? 'date' : undefined}

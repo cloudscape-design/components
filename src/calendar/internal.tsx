@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { isSameMonth } from 'date-fns';
 import styles from './styles.css.js';
 import CalendarHeader from './header';
@@ -18,6 +18,7 @@ import { getBaseDate } from './utils/navigation';
 import { useDateCache } from '../internal/hooks/use-date-cache/index.js';
 import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
 import { useInternalI18n } from '../i18n/context.js';
+import { getCalendarMonth } from 'mnth';
 
 export type DayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
@@ -111,6 +112,11 @@ export default function Calendar({
     }
   };
 
+  const rows = useMemo<Date[][]>(
+    () => getCalendarMonth(baseDate, { firstDayOfWeek: normalizedStartOfWeek }),
+    [baseDate, normalizedStartOfWeek]
+  );
+
   return (
     <div
       ref={__internalRootRef}
@@ -144,6 +150,7 @@ export default function Calendar({
             todayAriaLabel={todayAriaLabel}
             selectedDate={memoizedValue}
             ariaLabelledby={headingId}
+            rows={rows}
           />
         </div>
       </div>
