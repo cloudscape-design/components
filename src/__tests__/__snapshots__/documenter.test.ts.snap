@@ -663,6 +663,12 @@ Individual properties will always take precedence over the default coming from t
       "type": "string",
     },
     Object {
+      "description": "If true, enables dark header for breadcrumbs and flashbar",
+      "name": "darkHeader",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "deprecatedTag": "This layout is being phased out and may miss some features.",
       "description": "Activates a backwards-compatibility mode for applications with non-fixed headers and footers.",
       "name": "disableBodyScroll",
@@ -5406,6 +5412,13 @@ If true, the overlap will be removed.",
       "optional": true,
       "type": "boolean",
       "visualRefreshTag": "",
+    },
+    Object {
+      "description": "Determines whether it's heroHeader.
+If true the background color will be removed.",
+      "name": "heroHeader",
+      "optional": true,
+      "type": "boolean",
     },
     Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
