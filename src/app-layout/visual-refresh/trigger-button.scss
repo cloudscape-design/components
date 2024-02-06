@@ -59,7 +59,8 @@ handleSplitPanelMaxWidth function in the context.
 */
 .trigger {
   @include trigger-button-styles();
-  border: none;
+  border-block: none;
+  border-inline: none;
   color: awsui.$color-text-layout-toggle;
   cursor: pointer;
   pointer-events: auto;

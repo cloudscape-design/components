@@ -67,13 +67,13 @@
       }
     }
     &.variant-navigation {
-      padding-top: awsui.$space-xs;
-      padding-bottom: awsui.$space-xs;
+      padding-block-start: awsui.$space-xs;
+      padding-block-end: awsui.$space-xs;
 
       &.highlighted {
         border-color: transparent;
-        border-top-color: awsui.$color-border-dropdown-group;
-        border-bottom-color: awsui.$color-border-dropdown-group;
+        border-block-start-color: awsui.$color-border-dropdown-group;
+        border-block-end-color: awsui.$color-border-dropdown-group;
 
         background-color: transparent;
         color: awsui.$color-text-accent;

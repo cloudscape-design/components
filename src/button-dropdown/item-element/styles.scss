@@ -26,7 +26,7 @@
     margin-block-start: 0;
   }
   &.last {
-    border-bottom: awsui.$border-item-width solid awsui.$color-border-dropdown-group;
+    border-block-end: awsui.$border-item-width solid awsui.$color-border-dropdown-group;
   }
   &.highlighted {
     color: awsui.$color-text-dropdown-item-highlighted;

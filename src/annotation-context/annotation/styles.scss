@@ -43,7 +43,8 @@
 .hotspot {
   @include styles.styles-reset;
   background: transparent;
-  border: none;
+  border-block: none;
+  border-inline: none;
   padding-block: 0;
   padding-inline: 0;
   cursor: pointer;
