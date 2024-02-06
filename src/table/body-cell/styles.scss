@@ -316,10 +316,10 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
 
       &:focus-within,
       &.body-cell-edit-disabled-popover {
-        padding-right: calc(#{$cell-horizontal-padding} + #{awsui.$space-l});
+        padding-inline-end: calc(#{$cell-horizontal-padding} + #{awsui.$space-l});
         &.body-cell-has-success {
           // After a successful edit, we display the success icon next to the edit button and need additional padding to not let the text overflow the success icon.
-          padding-right: calc(#{$cell-horizontal-padding} + #{awsui.$space-l} + #{$icon-width-with-spacing});
+          padding-inline-end: calc(#{$cell-horizontal-padding} + #{awsui.$space-l} + #{$icon-width-with-spacing});
         }
         @include focused-editor-styles;
         &.sticky-cell {
