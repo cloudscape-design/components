@@ -6,36 +6,44 @@
 @use '../internal/styles' as styles;
 @use './mixins' as mixins;
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/generated/custom-css-properties/index' as custom-props;
 
 @keyframes spinner-rotator {
   0% {
-    transform: rotate(0deg);
+    transform: rotate(var(#{custom-props.$spinnerRotatorFrom}));
   }
   100% {
-    transform: rotate(360deg);
+    transform: rotate(var(#{custom-props.$spinnerRotatorTo}));
   }
 }
 
-@mixin swing-animation($name, $from, $to) {
-  @keyframes #{$name} {
-    0% {
-      transform: rotate($from);
-    }
+@keyframes spinner-line-left {
+  0% {
+    transform: rotate(var(#{custom-props.$spinnerLineLeftFrom}));
+  }
 
-    50% {
-      transform: rotate($to);
-    }
+  50% {
+    transform: rotate(var(#{custom-props.$spinnerLineLeftTo}));
+  }
 
-    100% {
-      transform: rotate($from);
-    }
+  100% {
+    transform: rotate(var(#{custom-props.$spinnerLineLeftFrom}));
   }
 }
 
-@include swing-animation(spinner-line-left, 0deg, 120deg);
+@keyframes spinner-line-right {
+  0% {
+    transform: rotate(var(#{custom-props.$spinnerLineRightFrom}));
+  }
 
-// right part of animation requires offset, so it starts from different angle
-@include swing-animation(spinner-line-right, 90deg, -30deg);
+  50% {
+    transform: rotate(var(#{custom-props.$spinnerLineRightTo}));
+  }
+
+  100% {
+    transform: rotate(var(#{custom-props.$spinnerLineRightFrom}));
+  }
+}
 
 @mixin awsui-spinner-circle {
   position: relative;
@@ -55,6 +63,12 @@
 }
 
 .root {
+  #{custom-props.$spinnerRotatorFrom}: 0deg;
+  #{custom-props.$spinnerRotatorTo}: 360deg;
+  #{custom-props.$spinnerLineLeftFrom}: 0deg;
+  #{custom-props.$spinnerLineLeftTo}: 120deg;
+  #{custom-props.$spinnerLineRightFrom}: 90deg;
+  #{custom-props.$spinnerLineRightTo}: -30deg;
   display: inline-block;
   vertical-align: top;
   // Spinner is an exception from our motion rules, it always has motion
@@ -91,4 +105,13 @@
     /*stylelint-disable-next-line @cloudscape-design/no-motion-outside-of-mixin */
     animation-name: spinner-line-right;
   }
+}
+
+@include styles.with-direction('.root') {
+  #{custom-props.$spinnerRotatorFrom}: 360deg;
+  #{custom-props.$spinnerRotatorTo}: 0deg;
+  #{custom-props.$spinnerLineLeftFrom}: 0deg;
+  #{custom-props.$spinnerLineLeftTo}: -120deg;
+  #{custom-props.$spinnerLineRightFrom}: -90deg;
+  #{custom-props.$spinnerLineRightTo}: 30deg;
 }
