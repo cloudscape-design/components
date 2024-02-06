@@ -80,19 +80,9 @@
   }
 }
 
+// Homepage styles
 .custom-home__header {
-  background: awsui.$color-background-home-header;
-  //position: relative;
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0px;
-    left: 0;
-    width: 100%;
-    height: 240px;
-    z-index: 0;
-    background: #000716;
-  }
+  //background: awsui.$color-background-home-header;
 }
 
 .custom-home__header-title {

@@ -20,4 +20,10 @@ export interface ContentLayoutProps extends BaseComponentProps {
    * Use this slot to render the header content for the layout.
    */
   header?: React.ReactNode;
+
+  /**
+   * Determines whether it's heroHeader.
+   * If true the background color will be removed.
+   */
+  heroHeader?: boolean;
 }

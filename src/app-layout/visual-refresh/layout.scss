@@ -104,15 +104,6 @@ explicitly set in script.
     }
   }
 
-  &.content-type-hero {
-    outline: solid red 4px;
-    @each $breakpoint, $width in constants.$hero-content-widths {
-      @include styles.media-breakpoint-up($breakpoint) {
-        #{custom-props.$defaultMaxContentWidth}: $width;
-      }
-    }
-  }
-
   /*
   Only use the max content width custom property for the middle column definition
   if the maxContentWidth property has been explicitly set to a non-zero value and

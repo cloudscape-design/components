@@ -43,6 +43,11 @@ export interface AppLayoutProps extends BaseComponentProps {
   activeDrawerId?: string | null;
 
   /**
+   * If true, enables dark header for breadcrumbs and flashbar
+   */
+  darkHeader?: boolean;
+
+  /**
    * Fired when the active drawer is toggled.
    */
   onDrawerChange?: NonCancelableEventHandler<AppLayoutProps.DrawerChangeDetail>;
