@@ -8,7 +8,6 @@ import CategoryElement from './category-elements/category-element';
 import { isItemGroup } from './utils/utils';
 import { useMobile } from '../internal/hooks/use-mobile';
 import MobileExpandableCategoryElement from './category-elements/mobile-expandable-category-element';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 
 export default function ItemsList({
   items,
@@ -27,13 +26,11 @@ export default function ItemsList({
   variant = 'normal',
 }: ItemListProps) {
   const isMobile = useMobile();
-  const isVisualRefresh = useVisualRefresh();
 
   const elements = items.map((item, index) => {
     if (!isItemGroup(item)) {
       const lastInSection = index === items.length - 1 || isItemGroup(items[index + 1]);
-      const showDivider =
-        !lastInDropdown && isItemGroup(items[index + 1]) && (!hasExpandableGroups || isMobile || !isVisualRefresh);
+      const showDivider = lastInSection && !lastInDropdown;
 
       return (
         <ItemElement
