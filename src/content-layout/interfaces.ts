@@ -24,6 +24,7 @@ export interface ContentLayoutProps extends BaseComponentProps {
   /**
    * Determines whether it's heroHeader.
    * If true the background color will be removed.
+   * @visualrefresh
    */
   heroHeader?: boolean;
 }
