@@ -51,7 +51,7 @@
   }
 
   // To ensure the top border/divider is visible on sticky elements which have a higher z-index
-  &.sticky-enabled {
+  &.sticky-enabled:not(.refresh) {
     &::before {
       inset-block-start: calc(-1 * #{awsui.$border-container-top-width});
     }
