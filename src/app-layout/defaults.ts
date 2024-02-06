@@ -18,7 +18,7 @@ const defaults: Record<AppLayoutProps.ContentType, AppLayoutState> = {
   hero: {
     navigationOpen: false,
     minContentWidth: 280,
-    maxContentWidth: 1080,
+    maxContentWidth: undefined,
   },
   cards: {
     navigationOpen: true,
