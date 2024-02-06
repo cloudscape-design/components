@@ -13,8 +13,6 @@ import useHiddenDescription from '../utils/use-hidden-description';
 import InternalIcon, { InternalIconProps } from '../../icon/internal';
 import { useDropdownContext } from '../../internal/components/dropdown/context';
 import { getMenuItemProps } from '../utils/menu-item';
-import { useMobile } from '../../internal/hooks/use-mobile';
-import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 
 const ItemElement = ({
   item,
@@ -25,13 +23,9 @@ const ItemElement = ({
   first = false,
   last,
   hasCategoryHeader,
-  hasExpandableGroups,
   isKeyboardHighlighted = false,
   variant = 'normal',
 }: ItemProps) => {
-  const isMobile = useMobile();
-  const isVisualRefresh = useVisualRefresh();
-
   const isLink = isLinkItem(item);
   const onClick = (event: React.MouseEvent) => {
     // Stop propagation to parent node and handle event exclusively in here. This ensures
@@ -57,7 +51,6 @@ const ItemElement = ({
         [styles.first]: first,
         [styles.last]: last,
         [styles['has-category-header']]: hasCategoryHeader,
-        [styles['show-divider']]: last && (!hasExpandableGroups || isMobile || !isVisualRefresh),
         [styles['is-focused']]: isKeyboardHighlighted,
       })}
       role="presentation"

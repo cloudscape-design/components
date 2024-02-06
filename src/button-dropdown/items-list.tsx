@@ -40,7 +40,6 @@ export default function ItemsList({
           first={index === 0 || isItemGroup(items[index - 1])}
           last={index === items.length - 1 || isItemGroup(items[index + 1])}
           hasCategoryHeader={hasCategoryHeader}
-          hasExpandableGroups={hasExpandableGroups}
           variant={variant}
         />
       );
@@ -60,7 +59,6 @@ export default function ItemsList({
             highlightItem={highlightItem}
             disabled={item.disabled ?? false}
             variant={variant}
-            hasExpandableGroups={hasExpandableGroups}
           />
         ) : (
           <ExpandableCategoryElement
@@ -76,7 +74,6 @@ export default function ItemsList({
             disabled={item.disabled ?? false}
             expandToViewport={expandToViewport}
             variant={variant}
-            hasExpandableGroups={hasExpandableGroups}
           />
         )
       ) : null;
@@ -94,7 +91,6 @@ export default function ItemsList({
         highlightItem={highlightItem}
         disabled={item.disabled ?? false}
         variant={variant}
-        hasExpandableGroups={hasExpandableGroups}
       />
     );
   });
