@@ -185,7 +185,6 @@ export interface CategoryProps extends HighlightProps {
   onGroupToggle: GroupToggle;
   onItemActivate: ItemActivate;
   disabled: boolean;
-  hasExpandableGroups: boolean;
   expandToViewport?: boolean;
   variant?: ItemListProps['variant'];
 }
@@ -214,7 +213,6 @@ export interface ItemProps {
   first?: boolean;
   last: boolean;
   hasCategoryHeader: boolean;
-  hasExpandableGroups: boolean;
   isKeyboardHighlighted?: boolean;
   variant?: ItemListProps['variant'];
 }
