@@ -22,6 +22,7 @@ export default function DatePickerScenario() {
         openCalendarAriaLabel={selectedDate =>
           'Choose Date' + (selectedDate ? `, selected date is ${selectedDate}` : '')
         }
+        isDateEnabled={date => date <= new Date()}
         granularity="month"
       />
     </Box>
