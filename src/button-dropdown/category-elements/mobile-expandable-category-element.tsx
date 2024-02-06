@@ -20,7 +20,7 @@ const MobileExpandableCategoryElement = ({
   isHighlighted,
   isKeyboardHighlight,
   isExpanded,
-  isLast,
+  lastInDropdown,
   highlightItem,
   disabled,
   variant,
@@ -100,7 +100,7 @@ const MobileExpandableCategoryElement = ({
               isHighlighted={isHighlighted}
               isKeyboardHighlight={isKeyboardHighlight}
               isExpanded={isExpanded}
-              isLast={isLast}
+              lastInDropdown={lastInDropdown}
               highlightItem={highlightItem}
               hasCategoryHeader={true}
               variant={variant}

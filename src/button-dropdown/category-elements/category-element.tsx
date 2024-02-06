@@ -14,7 +14,7 @@ const CategoryElement = ({
   isHighlighted,
   isKeyboardHighlight,
   isExpanded,
-  isLast,
+  lastInDropdown,
   highlightItem,
   disabled,
   variant,
@@ -42,7 +42,7 @@ const CategoryElement = ({
             isHighlighted={isHighlighted}
             isKeyboardHighlight={isKeyboardHighlight}
             isExpanded={isExpanded}
-            isLast={isLast}
+            lastInDropdown={lastInDropdown}
             highlightItem={highlightItem}
             categoryDisabled={disabled}
             hasCategoryHeader={!!item.text}

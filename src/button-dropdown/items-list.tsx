@@ -18,7 +18,7 @@ export default function ItemsList({
   isHighlighted,
   isKeyboardHighlight,
   isExpanded,
-  isLast,
+  lastInDropdown,
   highlightItem,
   categoryDisabled = false,
   hasExpandableGroups = false,
@@ -31,9 +31,9 @@ export default function ItemsList({
 
   const elements = items.map((item, index) => {
     if (!isItemGroup(item)) {
-      const last = index === items.length - 1 || isItemGroup(items[index + 1]);
+      const lastInSection = index === items.length - 1 || isItemGroup(items[index + 1]);
       const showDivider =
-        !isLast && isItemGroup(items[index + 1]) && (!hasExpandableGroups || isMobile || !isVisualRefresh);
+        !lastInDropdown && isItemGroup(items[index + 1]) && (!hasExpandableGroups || isMobile || !isVisualRefresh);
 
       return (
         <ItemElement
@@ -45,7 +45,7 @@ export default function ItemsList({
           isKeyboardHighlighted={isKeyboardHighlight(item)}
           highlightItem={highlightItem}
           first={index === 0 || isItemGroup(items[index - 1])}
-          last={last}
+          lastInSection={lastInSection}
           showDivider={showDivider}
           hasCategoryHeader={hasCategoryHeader}
           variant={variant}
@@ -64,7 +64,7 @@ export default function ItemsList({
             isHighlighted={isHighlighted}
             isKeyboardHighlight={isKeyboardHighlight}
             isExpanded={isExpanded}
-            isLast={isLast && index === items.length - 1}
+            lastInDropdown={lastInDropdown && index === items.length - 1}
             highlightItem={highlightItem}
             disabled={item.disabled ?? false}
             variant={variant}
@@ -79,7 +79,7 @@ export default function ItemsList({
             isHighlighted={isHighlighted}
             isKeyboardHighlight={isKeyboardHighlight}
             isExpanded={isExpanded}
-            isLast={true}
+            lastInDropdown={true}
             highlightItem={highlightItem}
             disabled={item.disabled ?? false}
             expandToViewport={expandToViewport}
@@ -98,7 +98,7 @@ export default function ItemsList({
         isHighlighted={isHighlighted}
         isKeyboardHighlight={isKeyboardHighlight}
         isExpanded={isExpanded}
-        isLast={isLast && index === items.length - 1}
+        lastInDropdown={lastInDropdown && index === items.length - 1}
         highlightItem={highlightItem}
         disabled={item.disabled ?? false}
         variant={variant}
