@@ -6,8 +6,8 @@ import { useTelemetry } from '../use-telemetry';
 import { PACKAGE_VERSION } from '../../environment';
 import useFocusVisible from '../focus-visible';
 
-export interface InternalBaseComponentProps<T = any> {
-  __internalRootRef?: MutableRefObject<T | null> | null;
+export interface InternalBaseComponentProps {
+  __internalRootRef?: MutableRefObject<any> | null;
 }
 
 /**
@@ -15,9 +15,9 @@ export interface InternalBaseComponentProps<T = any> {
  * attached to the (internal) component's root DOM node. The hook takes care of attaching the metadata to this
  * root DOM node and emits the telemetry for this component.
  */
-export default function useBaseComponent<T = any>(componentName: string) {
+export default function useBaseComponent(componentName: string): InternalBaseComponentProps {
   useTelemetry(componentName);
   useFocusVisible();
-  const elementRef = useComponentMetadata<T>(componentName, PACKAGE_VERSION);
+  const elementRef = useComponentMetadata(componentName, PACKAGE_VERSION);
   return { __internalRootRef: elementRef };
 }
