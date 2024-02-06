@@ -284,6 +284,7 @@ export type ColorsTokenName =
   | 'colorBackgroundSliderHandleActive'
   | 'colorBackgroundSliderTrack'
   | 'colorBackgroundSliderHandleRing'
+  | 'colorBackgroundSliderErrorPressed'
   | 'colorBackgroundStatusError'
   | 'colorBackgroundStatusInfo'
   | 'colorBackgroundStatusSuccess'

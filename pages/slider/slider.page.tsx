@@ -10,7 +10,7 @@ import Header from '~components/header';
 import { Grid, Select, SelectProps, Slider } from '~components';
 
 function Sliders() {
-  const [value2, setValue2] = React.useState(2);
+  const [value2, setValue2] = React.useState(-2);
   const [value3, setValue3] = React.useState(50);
   const [value4, setValue4] = React.useState(40);
   const [value5, setValue5] = React.useState(25);
@@ -99,6 +99,7 @@ function Sliders() {
           onChange={({ detail }) => {
             setValue3(detail.value);
           }}
+          valueFormatter={value => `The value at this point on the slider is: ${value}`}
           min={0}
           max={100}
           step={10}
@@ -170,6 +171,7 @@ function Sliders() {
 }
 
 export default function InputsPage() {
+  const [value, setValue] = React.useState(4);
   return (
     <div style={{ padding: 30 }}>
       <h1>Sliders demo</h1>
@@ -182,12 +184,22 @@ export default function InputsPage() {
             </FormField>
             <FormField label="Volume">
               <Grid gridDefinition={[{ colspan: 10 }, { colspan: 2 }]}>
-                <Slider value={11} min={0} max={11} />
+                <Slider value={value} onChange={({ detail }) => setValue(detail.value)} min={0} max={11} />
                 <SpaceBetween size="xxs" direction="vertical">
-                  <Input type="number" inputMode="numeric" value={'11'} />
+                  <Input
+                    type="number"
+                    inputMode="numeric"
+                    value={`${value}`}
+                    onChange={({ detail }) => {
+                      setValue(Number(detail.value));
+                    }}
+                  />
                   <Box>Units</Box>
                 </SpaceBetween>
               </Grid>
+            </FormField>
+            <FormField label="This is a form field" description="This is a description">
+              <Input value="" placeholder="Placeholder" />
             </FormField>
           </SpaceBetween>
         </Container>

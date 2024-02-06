@@ -80,6 +80,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundSliderHandleActive: { light: '{colorBlue700}', dark: '{colorBlue400}' },
   colorBackgroundSliderTrack: { light: '{colorGrey500}', dark: '{colorGrey550}' },
   colorBackgroundSliderHandleRing: { light: '{colorWhite}', dark: '{colorGrey800}' },
+  colorBackgroundSliderErrorPressed: { light: '{colorRed700}', dark: '{colorRed500}' },
   colorBackgroundStatusError: { light: '{colorRed100}', dark: '{colorRed900}' },
   colorBackgroundStatusInfo: { light: '{colorBlue100}', dark: '{colorBlue900}' },
   colorBackgroundStatusSuccess: { light: '{colorGreen100}', dark: '{colorGreen900}' },

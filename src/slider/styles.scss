@@ -22,26 +22,22 @@ $tick-width: 2px;
 }
 
 @mixin base-thumb-hover-styles {
-  outline: 2px solid awsui.$color-background-slider-handle-default;
-  border: 2px solid awsui.$color-background-slider-handle-ring;
-  width: 20px;
-  height: 20px;
+  box-shadow: 0px 0 0 2px awsui.$color-background-slider-handle-ring,
+    0 0 0 4px awsui.$color-background-slider-handle-default;
+  cursor: pointer;
 }
 
 @mixin base-thumb-focus-styles {
+  box-shadow: 0px 0 0 2px awsui.$color-background-slider-handle-ring,
+    0 0 0 4px awsui.$color-background-slider-handle-hover;
   background: awsui.$color-background-slider-handle-hover;
-  outline: 2px solid awsui.$color-background-slider-handle-hover;
-  border: 2px solid awsui.$color-background-slider-handle-ring;
-  width: 20px;
-  height: 20px;
+  border: 2px solid awsui.$color-background-slider-handle-hover;
 }
 
 @mixin base-thumb-disabled-styles {
   background-color: awsui.$color-background-control-disabled;
   border-color: awsui.$color-background-control-disabled;
-  outline: none;
-  width: $thumb-size;
-  height: $thumb-size;
+  box-shadow: none;
   pointer-events: none;
 }
 
@@ -61,6 +57,7 @@ $tick-width: 2px;
     bottom: 55px;
     padding: awsui.$space-xs;
     min-width: 40px;
+    max-width: 210px;
     width: max-content;
     text-align: center;
 
@@ -70,11 +67,11 @@ $tick-width: 2px;
       width: 10px;
       background-color: awsui.$color-background-popover;
       box-shadow: 2px 2px awsui.$color-border-popover, 2px 2px awsui.$color-border-popover;
-      rotate: 45deg;
+      transform: rotate(45deg);
       display: block;
       position: absolute;
       left: calc(50% - 5px);
-      top: 30px;
+      bottom: -4px;
     }
   }
 
@@ -92,7 +89,7 @@ $tick-width: 2px;
 
   &-range {
     background-color: awsui.$color-background-slider-handle-default;
-    height: 2px;
+    height: 4px;
 
     &.disabled {
       background-color: awsui.$color-background-control-disabled;
@@ -152,8 +149,9 @@ $tick-width: 2px;
   appearance: none;
   position: absolute;
   height: 0;
-  width: 100%;
-  outline: none;
+  width: calc(100% + $thumb-size);
+  outline: 0;
+  margin-left: calc($thumb-size / -2);
 
   &-right {
     pointer-events: none;
@@ -171,20 +169,20 @@ $tick-width: 2px;
     @include base-thumb-styles();
   }
 
-  &:focus::-webkit-slider-thumb {
-    @include base-thumb-focus-styles();
-  }
-
-  &:focus::-moz-range-thumb {
-    @include base-thumb-focus-styles();
-  }
-
   &:hover::-webkit-slider-thumb {
     @include base-thumb-hover-styles();
   }
 
   &:hover::-moz-range-thumb {
     @include base-thumb-hover-styles();
+  }
+
+  &:focus::-webkit-slider-thumb {
+    @include base-thumb-focus-styles();
+  }
+
+  &:focus::-moz-range-thumb {
+    @include base-thumb-focus-styles();
   }
 
   &:active::-webkit-slider-thumb {
@@ -196,26 +194,66 @@ $tick-width: 2px;
   }
 }
 
-.disabled,
-.disabled:hover {
+.error,
+.error:hover,
+.error:active {
   &::-webkit-slider-thumb {
-    @include base-thumb-disabled-styles();
+    background-color: awsui.$color-text-status-error;
+    border-color: awsui.$color-text-status-error;
   }
 
   &::-moz-range-thumb {
-    @include base-thumb-disabled-styles();
+    background-color: awsui.$color-text-status-error;
+    border-color: awsui.$color-text-status-error;
+  }
+
+  &:hover::-webkit-slider-thumb {
+    background-color: awsui.$color-text-status-error;
+    box-shadow: 0px 0 0 2px awsui.$color-background-slider-handle-ring, 0 0 0 4px awsui.$color-text-status-error;
+  }
+
+  &:hover::-moz-range-thumb {
+    background-color: awsui.$color-text-status-error;
+    box-shadow: 0px 0 0 2px awsui.$color-background-slider-handle-ring, 0 0 0 4px awsui.$color-text-status-error;
+  }
+
+  &:focus::-webkit-slider-thumb {
+    background-color: awsui.$color-background-slider-error-pressed;
+    border: 2px solid awsui.$color-background-slider-error-pressed;
+    box-shadow: 0px 0 0 2px awsui.$color-background-slider-handle-ring,
+      0 0 0 4px awsui.$color-background-slider-error-pressed;
+  }
+
+  &:focus::-moz-range-thumb {
+    background-color: awsui.$color-background-slider-error-pressed;
+    border: 2px solid awsui.$color-background-slider-error-pressed;
+    box-shadow: 0px 0 0 2px awsui.$color-background-slider-handle-ring,
+      0 0 0 4px awsui.$color-background-slider-error-pressed;
+  }
+
+  &:active::-webkit-slider-thumb {
+    background-color: awsui.$color-background-slider-error-pressed;
+    border: 2px solid awsui.$color-background-slider-error-pressed;
+    box-shadow: 0px 0 0 2px awsui.$color-background-slider-handle-ring,
+      0 0 0 4px awsui.$color-background-slider-error-pressed;
+  }
+
+  &:active::-moz-range-thumb {
+    background-color: awsui.$color-background-slider-error-pressed;
+    border: 2px solid awsui.$color-background-slider-error-pressed;
+    box-shadow: 0px 0 0 2px awsui.$color-background-slider-handle-ring,
+      0 0 0 4px awsui.$color-background-slider-error-pressed;
   }
 }
 
-.error,
-.error:hover {
+.disabled,
+.disabled:hover,
+.disabled:active {
   &::-webkit-slider-thumb {
-    background-color: awsui.$color-text-status-error;
-    border-color: awsui.$color-text-status-error;
+    @include base-thumb-disabled-styles();
   }
 
   &::-moz-range-thumb {
-    background-color: awsui.$color-text-status-error;
-    border-color: awsui.$color-text-status-error;
+    @include base-thumb-disabled-styles();
   }
 }
