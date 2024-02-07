@@ -12,9 +12,9 @@
 
   display: flex;
   align-items: flex-start;
-  width: 100%;
+  inline-size: 100%;
   // Hack to truncate flex boxes
-  min-width: 0;
+  min-inline-size: 0;
   box-sizing: border-box;
   color: inherit;
 
@@ -30,11 +30,11 @@
 }
 
 .content {
-  width: 100%;
+  inline-size: 100%;
   display: flex;
   flex-direction: column;
   // Hack to truncate flex boxes
-  min-width: 0;
+  min-inline-size: 0;
 }
 
 .label-content {
@@ -59,9 +59,9 @@
 }
 
 .label-tag {
-  padding-left: awsui.$space-s;
+  padding-inline-start: awsui.$space-s;
   flex: auto;
-  text-align: right;
+  text-align: end;
 
   &:empty {
     display: none;
@@ -89,18 +89,18 @@
 }
 
 .tag:not(:last-child) {
-  padding-right: awsui.$space-m;
+  padding-inline-end: awsui.$space-m;
 }
 
 .icon {
-  padding-right: awsui.$space-xs;
+  padding-inline-end: awsui.$space-xs;
   align-content: center;
   display: flex;
   flex-shrink: 0;
 }
 
 .icon-size-big {
-  padding-top: awsui.$space-option-icon-big-top;
+  padding-block-start: awsui.$space-option-icon-big-top;
 }
 
 .filtering-match-highlight {
