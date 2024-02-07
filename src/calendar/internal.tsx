@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { isSameMonth } from 'date-fns';
+import { isSameDay, isSameMonth, isSameYear } from 'date-fns';
 import styles from './styles.css.js';
 import CalendarHeader from './header';
 import Grid from './grid';
@@ -19,8 +19,8 @@ import { useDateCache } from '../internal/hooks/use-date-cache/index.js';
 import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
 import { useInternalI18n } from '../i18n/context.js';
 import { getCalendarMonth } from 'mnth';
-import { renderDayName } from './utils/intl.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only/index.js';
+import { getDateLabel, renderDayName, renderMonthAndYear } from './utils/intl';
 
 export type DayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
@@ -69,10 +69,11 @@ export default function Calendar({
     ? i18n('nextYearAriaLabel', i18nStrings?.nextYearAriaLabel)
     : i18n('nextMonthAriaLabel', i18nStrings?.nextMonthAriaLabel || rest.nextMonthAriaLabel);
 
-  const currentLabel = isMonthPicker
+  const currentDateLabel = isMonthPicker
     ? i18n('currentMonthAriaLabel', i18nStrings?.currentMonthAriaLabel)
     : i18n('todayAriaLabel', i18nStrings?.todayAriaLabel || rest.todayAriaLabel);
 
+  console.log(previousLabel, nextLabel, currentDateLabel);
   // Update displayed date if value changes.
   useEffect(() => {
     memoizedValue && setDisplayedDate(prev => (prev.getTime() !== memoizedValue.getTime() ? memoizedValue : prev));
@@ -100,7 +101,7 @@ export default function Calendar({
     setFocusedDate(null);
   };
 
-  const onGridChangeMonthHandler = (newMonth: Date) => {
+  const onChangePageHandler = (newMonth: Date) => {
     setDisplayedDate(newMonth);
     setFocusedDate(null);
   };
@@ -112,7 +113,7 @@ export default function Calendar({
   };
 
   const onGridSelectDateHandler = (date: Date) => {
-    fireNonCancelableEvent(onChange, { value: formatDate(date) });
+    fireNonCancelableEvent(onChange, { value: formatDate(date, granularity) });
     setFocusedDate(null);
   };
 
@@ -146,15 +147,35 @@ export default function Calendar({
             <th
               key={dayIndex}
               scope="col"
-              className={clsx(styles['calendar-grid-cell'], styles['calendar-day-header'])}
+              className={clsx(styles['calendar-grid-cell'], styles['calendar-date-header'])}
             >
-              <span aria-hidden="true">{renderDayName(locale, dayIndex, 'short')}</span>
-              <ScreenreaderOnly>{renderDayName(locale, dayIndex, 'long')}</ScreenreaderOnly>
+              <span aria-hidden="true">{renderDayName(normalizedLocale, dayIndex, 'short')}</span>
+              <ScreenreaderOnly>{renderDayName(normalizedLocale, dayIndex, 'long')}</ScreenreaderOnly>
             </th>
           ))}
       </tr>
     </thead>
   );
+
+  const isActive = (date: Date) => isMonthPicker || isSameMonth(date, baseDate);
+
+  const renderDate = (date: Date) =>
+    isMonthPicker ? date.toLocaleString(normalizedLocale, { month: 'short' }) : date.getDate().toString();
+
+  const renderDateAnnouncement = (date: Date, isCurrentDate: boolean) => {
+    const formattedDate = isMonthPicker
+      ? renderMonthAndYear(normalizedLocale, date)
+      : getDateLabel(normalizedLocale, date, 'short');
+    if (isCurrentDate) {
+      return formattedDate + '. ' + currentDateLabel;
+    }
+    return formattedDate;
+  };
+
+  const isSameDate = isMonthPicker ? isSameMonth : isSameDay;
+
+  const belongsToCurrentPage = (date: Date) =>
+    isMonthPicker ? isSameYear(date, baseDate) : isSameMonth(date, baseDate);
 
   return (
     <div
@@ -179,20 +200,23 @@ export default function Calendar({
         <div onBlur={onGridBlur} ref={gridWrapperRef}>
           <Grid
             locale={normalizedLocale}
-            baseDate={baseDate}
             isDateEnabled={isDateEnabled}
             focusedDate={focusedDate}
             focusableDate={focusableDate}
             onSelectDate={onGridSelectDateHandler}
             onFocusDate={onGridFocusDateHandler}
-            onChangeMonth={onGridChangeMonthHandler}
+            onChangePage={onChangePageHandler}
             startOfWeek={normalizedStartOfWeek}
-            todayAriaLabel={currentLabel}
             selectedDate={memoizedValue}
             ariaLabelledby={headingId}
             granularity={granularity}
             header={header}
             rows={rows}
+            isActive={isActive}
+            renderDate={renderDate}
+            renderDateAnnouncement={renderDateAnnouncement}
+            isSameDate={isSameDate}
+            belongsToCurrentPage={belongsToCurrentPage}
           />
         </div>
       </div>

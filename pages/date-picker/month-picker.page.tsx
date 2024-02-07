@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Box, DatePicker, Link } from '~components';
 
 export default function DatePickerScenario() {
-  const [value, setValue] = useState('2018-01');
+  const [value, setValue] = useState('');
 
   return (
     <Box padding="s">
@@ -24,6 +24,11 @@ export default function DatePickerScenario() {
         }
         isDateEnabled={date => date <= new Date()}
         granularity="month"
+        i18nStrings={{
+          previousYearAriaLabel: 'Previous year',
+          nextYearAriaLabel: 'Next year',
+          currentMonthAriaLabel: 'Current month',
+        }}
       />
     </Box>
   );

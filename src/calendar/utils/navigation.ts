@@ -3,47 +3,35 @@
 import { addDays, addMonths, differenceInYears, isSameMonth, startOfMonth } from 'date-fns';
 
 export function moveNextDay(startDate: Date, isDateEnabled: (date: Date) => boolean): Date {
-  return moveDate(startDate, isDateEnabled, 1);
+  return moveDay(startDate, isDateEnabled, 1);
 }
 
 export function movePrevDay(startDate: Date, isDateEnabled: (date: Date) => boolean): Date {
-  return moveDate(startDate, isDateEnabled, -1);
+  return moveDay(startDate, isDateEnabled, -1);
 }
 
 export function moveNextWeek(startDate: Date, isDateEnabled: (date: Date) => boolean): Date {
-  return moveDate(startDate, isDateEnabled, 7);
+  return moveDay(startDate, isDateEnabled, 7);
 }
 
 export function movePrevWeek(startDate: Date, isDateEnabled: (date: Date) => boolean): Date {
-  return moveDate(startDate, isDateEnabled, -7);
+  return moveDay(startDate, isDateEnabled, -7);
 }
 
 export function moveNextMonth(startDate: Date, isDateEnabled: (date: Date) => boolean): Date {
-  if (isDateEnabled(startDate)) {
-    return addMonths(startDate, 1);
-  }
-  return startDate;
+  return moveMonth(startDate, isDateEnabled, 1);
 }
 
 export function movePrevMonth(startDate: Date, isDateEnabled: (date: Date) => boolean): Date {
-  if (isDateEnabled(startDate)) {
-    return addMonths(startDate, -1);
-  }
-  return startDate;
+  return moveMonth(startDate, isDateEnabled, -1);
 }
 
 export function moveMonthDown(startDate: Date, isDateEnabled: (date: Date) => boolean): Date {
-  if (isDateEnabled(startDate)) {
-    return addMonths(startDate, 3);
-  }
-  return startDate;
+  return moveMonth(startDate, isDateEnabled, 3);
 }
 
 export function moveMonthUp(startDate: Date, isDateEnabled: (date: Date) => boolean): Date {
-  if (isDateEnabled(startDate)) {
-    return addMonths(startDate, -3);
-  }
-  return startDate;
+  return moveMonth(startDate, isDateEnabled, -3);
 }
 
 // Returns first enabled date of the month corresponding the given date.
@@ -54,13 +42,13 @@ export function getBaseDate(date: Date, isDateEnabled: (date: Date) => boolean) 
     return startDate;
   }
 
-  const firstEnabledDate = moveDate(startDate, isDateEnabled, 1);
+  const firstEnabledDate = moveDay(startDate, isDateEnabled, 1);
   return isSameMonth(startDate, firstEnabledDate) ? firstEnabledDate : startDate;
 }
 
-// Iterates dates forwards or backwards until the next active date is found.
-// If there is no active date in a year range the start date is returned.
-function moveDate(startDate: Date, isDateEnabled: (date: Date) => boolean, step: number): Date {
+// Iterates days forwards or backwards until the next active day is found.
+// If there is no active day in a year range, the start day is returned.
+function moveDay(startDate: Date, isDateEnabled: (date: Date) => boolean, step: number): Date {
   let current = addDays(startDate, step);
 
   while (!isDateEnabled(current)) {
@@ -68,6 +56,21 @@ function moveDate(startDate: Date, isDateEnabled: (date: Date) => boolean, step:
       return startDate;
     }
     current = addDays(current, step);
+  }
+
+  return current;
+}
+
+// Iterates months forwards or backwards until the next active month is found.
+// If there is no active month in a year range, the start month is returned.
+function moveMonth(startDate: Date, isDateEnabled: (date: Date) => boolean, step: number): Date {
+  let current = addMonths(startDate, step);
+
+  while (!isDateEnabled(current)) {
+    if (Math.abs(differenceInYears(startDate, current)) > 1) {
+      return startDate;
+    }
+    current = addMonths(current, step);
   }
 
   return current;

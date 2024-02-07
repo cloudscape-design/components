@@ -13,7 +13,7 @@ export default class CalendarWrapper extends ComponentWrapper {
    * @param column 1-based column index of the day.
    */
   findDateAt(row: number, column: number): ElementWrapper {
-    return this.find(`.${styles['calendar-week']}:nth-child(${row}) .${styles['calendar-day']}:nth-child(${column})`)!;
+    return this.find(`.${styles['calendar-row']}:nth-child(${row}) .${styles['calendar-date']}:nth-child(${column})`)!;
   }
 
   findHeader(): ElementWrapper {
@@ -29,6 +29,6 @@ export default class CalendarWrapper extends ComponentWrapper {
   }
 
   findSelectedDate(): ElementWrapper {
-    return this.find(`.${styles['calendar-day-selected']}`)!;
+    return this.find(`.${styles['calendar-date-selected']}`)!;
   }
 }

@@ -3,10 +3,8 @@
 import React, { useRef } from 'react';
 import styles from '../styles.css.js';
 import { KeyCode } from '../../internal/keycode';
-import { isSameDay, isSameMonth } from 'date-fns';
 import { DayIndex } from '../internal';
 import { DatePickerProps } from '../../date-picker/interfaces';
-import { getDateLabel } from '../utils/intl';
 import clsx from 'clsx';
 import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update.js';
 import ScreenreaderOnly from '../../internal/components/screenreader-only/index.js';
@@ -39,37 +37,42 @@ import { CalendarProps } from '../interfaces.js';
 
 export interface GridProps {
   locale: string;
-  baseDate: Date;
   isDateEnabled: DatePickerProps.IsDateEnabledFunction;
   focusedDate: Date | null;
   focusableDate: Date | null;
   onSelectDate: (date: Date) => void;
   onFocusDate: (date: null | Date) => void;
-  onChangeMonth: (date: Date) => void;
+  onChangePage: (date: Date) => void;
   startOfWeek: DayIndex;
-  todayAriaLabel?: string;
   selectedDate: Date | null;
   ariaLabelledby: string;
   granularity?: CalendarProps.Granularity;
   header?: React.ReactNode;
   rows: ReadonlyArray<ReadonlyArray<Date>>;
+  isActive: (date: Date) => boolean;
+  renderDate: (date: Date) => string;
+  renderDateAnnouncement: (date: Date, isOnCurrentDate: boolean) => string;
+  isSameDate: (date: Date, baseDate: Date) => boolean;
+  belongsToCurrentPage: (date: Date) => boolean;
 }
 
 export default function Grid({
-  locale,
-  baseDate,
   isDateEnabled,
   focusedDate,
   focusableDate,
   onSelectDate,
   onFocusDate,
-  onChangeMonth,
-  todayAriaLabel,
+  onChangePage,
   selectedDate,
   ariaLabelledby,
   granularity,
   header,
   rows,
+  isActive,
+  renderDate,
+  renderDateAnnouncement,
+  isSameDate,
+  belongsToCurrentPage,
 }: GridProps) {
   const focusedDateRef = useRef<HTMLTableCellElement>(null);
   const isMonthPicker = granularity === 'month';
@@ -115,8 +118,8 @@ export default function Grid({
         return;
     }
 
-    if (granularity === 'day' && !isSameMonth(updatedFocusDate, baseDate)) {
-      onChangeMonth(updatedFocusDate);
+    if (!belongsToCurrentPage(updatedFocusDate)) {
+      onChangePage(updatedFocusDate);
     }
     onFocusDate(updatedFocusDate);
   };
@@ -134,12 +137,12 @@ export default function Grid({
       {header}
       <tbody onKeyDown={onGridKeyDownHandler}>
         {rows.map((row, rowIndex) => (
-          <tr key={rowIndex} className={styles['calendar-week']}>
+          <tr key={rowIndex} className={styles['calendar-row']}>
             {row.map((date, dateIndex) => {
-              const isFocusable = !!focusableDate && isSameDay(date, focusableDate);
-              const isSelected = !!selectedDate && isSameDay(date, selectedDate);
+              const isFocusable = !!focusableDate && isSameDate(date, focusableDate);
+              const isSelected = !!selectedDate && isSameDate(date, selectedDate);
               const isEnabled = !isDateEnabled || isDateEnabled(date);
-              const isDateOnSameDay = isSameDay(date, new Date());
+              const isCurrentDate = isSameDate(date, new Date());
 
               // Can't be focused.
               let tabIndex = undefined;
@@ -151,33 +154,28 @@ export default function Grid({
                 tabIndex = -1;
               }
 
-              // Screen-reader announcement for the focused day.
-              let dayAnnouncement = getDateLabel(locale, date, 'short');
-              if (isDateOnSameDay) {
-                dayAnnouncement += '. ' + todayAriaLabel;
-              }
-
               return (
                 <td
                   key={`${rowIndex}:${dateIndex}`}
                   ref={tabIndex === 0 ? focusedDateRef : undefined}
                   tabIndex={tabIndex}
-                  aria-current={isDateOnSameDay ? 'date' : undefined}
+                  aria-current={isCurrentDate ? 'date' : undefined}
                   aria-selected={isEnabled ? isSelected : undefined}
                   aria-disabled={!isEnabled}
                   // Do not attach click event when the date is disabled, otherwise VO+safari announces clickable
                   onClick={isEnabled ? () => onSelectDate(date) : undefined}
-                  className={clsx(styles['calendar-grid-cell'], styles['calendar-day'], {
-                    [styles['calendar-day-current-month']]: isSameMonth(date, baseDate),
-                    [styles['calendar-day-enabled']]: isEnabled,
-                    [styles['calendar-day-selected']]: isSelected,
-                    [styles['calendar-day-today']]: isDateOnSameDay,
+                  className={clsx(styles['calendar-grid-cell'], styles['calendar-date'], {
+                    [styles['calendar-date-active']]: isActive(date),
+                    [styles['calendar-date-enabled']]: isEnabled,
+                    [styles['calendar-date-selected']]: isSelected,
+                    [styles['calendar-date-current']]: isCurrentDate,
                   })}
                 >
-                  <span className={styles['day-inner']} aria-hidden="true">
-                    {granularity === 'month' ? date.toLocaleString(locale, { month: 'short' }) : date.getDate()}
+                  <span className={styles['date-inner']} aria-hidden="true">
+                    {renderDate(date)}
                   </span>
-                  <ScreenreaderOnly>{dayAnnouncement}</ScreenreaderOnly>
+                  {/* Screen-reader announcement for the focused date. */}
+                  <ScreenreaderOnly>{renderDateAnnouncement(date, isCurrentDate)}</ScreenreaderOnly>
                 </td>
               );
             })}
