@@ -49,15 +49,6 @@ describe('TokenGroup', () => {
     },
   ] as TokenGroupProps.Item[];
 
-  test('raises warning without onDismiss property', () => {
-    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
-    renderTokenGroup({ items });
-    expect(consoleWarnSpy).toHaveBeenCalledWith(
-      `[AwsUi] [TokenGroup] You provided \`items\` prop without an \`onDismiss\` handler. This will render a read-only component. If the component should be mutable, set an \`onDismiss\` handler.`
-    );
-    consoleWarnSpy.mockRestore();
-  });
-
   test('does not apply "has-items" class when provided an empty items list', () => {
     const wrapper = renderTokenGroup({ items: [], onDismiss });
     expect(wrapper.getElement()).not.toHaveClass(selectors['has-items']);
@@ -66,6 +57,11 @@ describe('TokenGroup', () => {
   test('applies "has-items" class with a non-empty list', () => {
     const wrapper = renderTokenGroup({ items, onDismiss });
     expect(wrapper.getElement()).toHaveClass(selectors['has-items']);
+  });
+
+  test('does not show dismiss buttons if no onDismiss handler is provided', () => {
+    const wrapper = renderTokenGroup({ items });
+    expect(wrapper.findToken(1)?.findDismiss()).toBeNull();
   });
 
   test('aligns tokens horizontally by default', () => {

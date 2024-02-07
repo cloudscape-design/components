@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 
 import Option from '../internal/components/option';
 import { fireNonCancelableEvent } from '../internal/events';
-import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 
 import { TokenGroupProps } from './interfaces';
@@ -27,12 +26,12 @@ export default function InternalTokenGroup({
   __internalRootRef,
   ...props
 }: InternalTokenGroupProps) {
-  checkControlled('TokenGroup', 'items', items, 'onDismiss', onDismiss);
-
   const [removedItemIndex, setRemovedItemIndex] = useState<null | number>(null);
 
   const baseProps = getBaseProps(props);
   const hasItems = items.length > 0;
+  const dismissible = !!onDismiss;
+
   return (
     <div
       {...baseProps}
@@ -52,10 +51,14 @@ export default function InternalTokenGroup({
           <Token
             ariaLabel={item.label}
             dismissLabel={item.dismissLabel}
-            onDismiss={() => {
-              fireNonCancelableEvent(onDismiss, { itemIndex });
-              setRemovedItemIndex(itemIndex);
-            }}
+            onDismiss={
+              dismissible
+                ? () => {
+                    fireNonCancelableEvent(onDismiss, { itemIndex });
+                    setRemovedItemIndex(itemIndex);
+                  }
+                : undefined
+            }
             disabled={item.disabled}
           >
             <Option option={item} isGenericGroup={false} />

@@ -33,6 +33,7 @@ export function Token({
 }: TokenProps) {
   const errorId = useUniqueId('error');
   const baseProps = getBaseProps(restProps);
+  const dismissible = !!onDismiss;
   return (
     <div
       {...baseProps}
@@ -45,6 +46,7 @@ export function Token({
       <div
         className={clsx(
           styles['token-box'],
+          dismissible && styles['token-box-dismissible'],
           disabled && styles['token-box-disabled'],
           errorText && styles['token-box-error']
         )}

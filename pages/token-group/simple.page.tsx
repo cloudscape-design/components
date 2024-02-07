@@ -30,6 +30,9 @@ export default function TokenGroupPage() {
     <Box padding="xl">
       <h1>Token Group</h1>
       <TokenGroup items={items} onDismiss={onDismiss} i18nStrings={i18nStrings} limit={5} />
+
+      <h1>Non-dismissible token group</h1>
+      <TokenGroup items={items} i18nStrings={i18nStrings} limit={5} />
     </Box>
   );
 }
