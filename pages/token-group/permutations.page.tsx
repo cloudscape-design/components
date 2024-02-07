@@ -73,23 +73,27 @@ const wordWrapItems: Array<TokenGroupProps.Item> = [
     label:
       'AVeryLongWordLabelEnoughToWrapTheTabLabelUtEleifendNisiNonDuiImperdietIaculisVestibulumVolutpatEstMiNecLuctusAugueEleifendVelUtTellusNislUltricesMattisLeoNonFaucibusAliquetEstUtEleifendNisiNonDuiImperdietIaculis',
     labelTag: 'Small label tag',
+    dismissLabel: 'dismiss',
   },
   {
     label: 'Small label',
     labelTag:
       'AVeryLongWordLabelTagEnoughToWrapTheTabLabelUtEleifendNisiNonDuiImperdietIaculisVestibulumVolutpatEstMiNecLuctusAugueEleifendVelUtTellusNislUltricesMattisLeoNonFaucibusAliquetEstUtEleifendNisiNonDuiImperdietIaculis',
+    dismissLabel: 'dismiss',
   },
   {
     label:
       'A very long label, long enough to wrap the label. Ut eleifend nisi non dui imperdiet iaculis. Vestibulum volutpat est mi, nec luctus augue eleifend vel. Ut tellus nisl, ultrices mattis leo non, faucibus aliquet est. Ut eleifend nisi non dui imperdiet iaculis.',
     labelTag:
       'A very long label tag, long enough to wrap the tag label. Ut eleifend nisi non dui imperdiet iaculis. Vestibulum volutpat est mi, nec luctus augue eleifend vel. Ut tellus nisl, ultrices mattis leo non, faucibus aliquet est. Ut eleifend nisi non dui imperdiet iaculis.',
+    dismissLabel: 'dismiss',
   },
   {
     label:
       'AVeryLongWordLabelEnoughToWrapTheLabelUtEleifendNisiNonDuiImperdietIaculisVestibulumVolutpatEstMiNecLuctusAugueEleifendVelUtTellusNislUltricesMattisLeoNonFaucibusAliquetEstUtEleifendNisiNonDuiImperdietIaculis',
     labelTag:
       'AVeryLongWordLabelTagEnoughToWrapTheTagLabelUtEleifendNisiNonDuiImperdietIaculisVestibulumVolutpatEstMiNecLuctusAugueEleifendVelUtTellusNislUltricesMattisLeoNonFaucibusAliquetEstUtEleifendNisiNonDuiImperdietIaculis',
+    dismissLabel: 'dismiss',
   },
 ];
 
