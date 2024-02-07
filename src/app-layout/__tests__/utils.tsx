@@ -137,24 +137,17 @@ export const splitPanelI18nStrings: SplitPanelProps.I18nStrings = {
   resizeHandleAriaLabel: 'Resize panel',
 };
 
-export const singleDrawer: { drawers: BetaDrawersProps } = {
-  drawers: {
-    ariaLabel: 'Drawers',
-    items: [
-      {
-        ariaLabels: {
-          closeButton: 'Security close button',
-          content: 'Security drawer content',
-          triggerButton: 'Security trigger button',
-          resizeHandle: 'Security resize handle',
-        },
-        content: <span>Security</span>,
-        id: 'security',
-        trigger: {
-          iconName: 'security',
-        },
-      },
-    ],
+export const testDrawer: AppLayoutProps.Drawer = {
+  ariaLabels: {
+    closeButton: 'Security close button',
+    drawerName: 'Security drawer content',
+    triggerButton: 'Security trigger button',
+    resizeHandle: 'Security resize handle',
+  },
+  content: <span>Security</span>,
+  id: 'security',
+  trigger: {
+    iconName: 'security',
   },
 };
 
@@ -211,28 +204,6 @@ export const manyDrawersWithBadges: { drawers: BetaDrawersProps } = {
   },
 };
 
-export const singleDrawerOpen: { drawers: BetaDrawersProps } = {
-  drawers: {
-    ariaLabel: 'Drawers',
-    activeDrawerId: 'security',
-    items: [
-      {
-        ariaLabels: {
-          closeButton: 'Security close button',
-          content: 'Security drawer content',
-          triggerButton: 'Security trigger button',
-          resizeHandle: 'Security resize handle',
-        },
-        content: <span>Security</span>,
-        id: 'security',
-        trigger: {
-          iconName: 'security',
-        },
-      },
-    ],
-  },
-};
-
 export const resizableDrawer: { drawers: BetaDrawersProps } = {
   drawers: {
     ariaLabel: 'Drawers',
@@ -268,19 +239,3 @@ export const drawerWithoutLabels: { drawers: BetaDrawersProps } = {
     ],
   },
 };
-
-export const singleDrawerPublic: Array<AppLayoutProps.Drawer> = [
-  {
-    ariaLabels: {
-      closeButton: 'Security close button',
-      drawerName: 'Security drawer content',
-      triggerButton: 'Security trigger button',
-      resizeHandle: 'Security resize handle',
-    },
-    content: <span>Security</span>,
-    id: 'security',
-    trigger: {
-      iconName: 'security',
-    },
-  },
-];
