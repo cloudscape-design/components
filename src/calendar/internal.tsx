@@ -19,6 +19,8 @@ import { useDateCache } from '../internal/hooks/use-date-cache/index.js';
 import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
 import { useInternalI18n } from '../i18n/context.js';
 import { getCalendarMonth } from 'mnth';
+import { renderDayName } from './utils/intl.js';
+import ScreenreaderOnly from '../internal/components/screenreader-only/index.js';
 
 export type DayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
@@ -135,6 +137,25 @@ export default function Calendar({
     [baseDate, isMonthPicker, normalizedStartOfWeek]
   );
 
+  const header = isMonthPicker ? null : (
+    <thead>
+      <tr>
+        {rows[0]
+          .map(date => date.getDay())
+          .map(dayIndex => (
+            <th
+              key={dayIndex}
+              scope="col"
+              className={clsx(styles['calendar-grid-cell'], styles['calendar-day-header'])}
+            >
+              <span aria-hidden="true">{renderDayName(locale, dayIndex, 'short')}</span>
+              <ScreenreaderOnly>{renderDayName(locale, dayIndex, 'long')}</ScreenreaderOnly>
+            </th>
+          ))}
+      </tr>
+    </thead>
+  );
+
   return (
     <div
       ref={__internalRootRef}
@@ -170,6 +191,7 @@ export default function Calendar({
             selectedDate={memoizedValue}
             ariaLabelledby={headingId}
             granularity={granularity}
+            header={header}
             rows={rows}
           />
         </div>

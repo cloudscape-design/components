@@ -6,7 +6,7 @@ import { KeyCode } from '../../internal/keycode';
 import { isSameDay, isSameMonth } from 'date-fns';
 import { DayIndex } from '../internal';
 import { DatePickerProps } from '../../date-picker/interfaces';
-import { getDateLabel, renderDayName } from '../utils/intl';
+import { getDateLabel } from '../utils/intl';
 import clsx from 'clsx';
 import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update.js';
 import ScreenreaderOnly from '../../internal/components/screenreader-only/index.js';
@@ -20,6 +20,7 @@ import {
   moveMonthDown,
   moveMonthUp,
 } from '../utils/navigation';
+import { CalendarProps } from '../interfaces.js';
 
 /**
  * Calendar grid supports two mechanisms of keyboard navigation:
@@ -49,7 +50,8 @@ export interface GridProps {
   todayAriaLabel?: string;
   selectedDate: Date | null;
   ariaLabelledby: string;
-  granularity?: 'month' | 'day';
+  granularity?: CalendarProps.Granularity;
+  header?: React.ReactNode;
   rows: ReadonlyArray<ReadonlyArray<Date>>;
 }
 
@@ -66,6 +68,7 @@ export default function Grid({
   selectedDate,
   ariaLabelledby,
   granularity,
+  header,
   rows,
 }: GridProps) {
   const focusedDateRef = useRef<HTMLTableCellElement>(null);
@@ -128,24 +131,7 @@ export default function Grid({
 
   return (
     <table role="grid" className={styles['calendar-grid']} aria-labelledby={ariaLabelledby}>
-      {granularity === 'day' && (
-        <thead>
-          <tr>
-            {rows[0]
-              .map(date => date.getDay())
-              .map(dayIndex => (
-                <th
-                  key={dayIndex}
-                  scope="col"
-                  className={clsx(styles['calendar-grid-cell'], styles['calendar-day-header'])}
-                >
-                  <span aria-hidden="true">{renderDayName(locale, dayIndex, 'short')}</span>
-                  <ScreenreaderOnly>{renderDayName(locale, dayIndex, 'long')}</ScreenreaderOnly>
-                </th>
-              ))}
-          </tr>
-        </thead>
-      )}
+      {header}
       <tbody onKeyDown={onGridKeyDownHandler}>
         {rows.map((row, rowIndex) => (
           <tr key={rowIndex} className={styles['calendar-week']}>

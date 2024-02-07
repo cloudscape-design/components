@@ -4,6 +4,7 @@ import React from 'react';
 import styles from '../styles.css.js';
 import { renderMonthAndYear } from '../utils/intl';
 import { HeaderPrevButton, HeaderNextButton } from './header-button';
+import { CalendarProps } from '../interfaces.js';
 
 interface CalendarHeaderProps {
   baseDate: Date;
@@ -12,7 +13,7 @@ interface CalendarHeaderProps {
   previousLabel?: string;
   nextLabel?: string;
   headingId: string;
-  granularity?: 'month' | 'day';
+  granularity?: CalendarProps.Granularity;
 }
 
 const CalendarHeader = ({
