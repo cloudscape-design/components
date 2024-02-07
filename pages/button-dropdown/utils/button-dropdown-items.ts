@@ -31,7 +31,17 @@ const expandableGroup = {
 
 const nestedExpandableGroup = {
   ...expandableGroup,
-  items: [...expandableGroup.items, { id: 'id4', text: 'option4', items: [{ id: 'id5', text: 'Nested item' }] }],
+  items: [
+    ...expandableGroup.items,
+    {
+      id: 'id4',
+      text: 'option4',
+      items: [
+        { id: 'id5', text: 'Nested item' },
+        { id: 'id6', text: 'Deeply expandable group', items: [{ id: 'id6', text: 'Deeply nested item' }] },
+      ],
+    },
+  ],
 };
 
 export default [expandableGroup, ...dropdownItems];

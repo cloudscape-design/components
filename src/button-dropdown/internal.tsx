@@ -302,6 +302,7 @@ const InternalButtonDropdown = React.forwardRef(
               isHighlighted={isHighlighted}
               isKeyboardHighlight={isKeyboardHighlight}
               isExpanded={isExpanded}
+              lastInDropdown={true}
               highlightItem={highlightItem}
               expandToViewport={expandToViewport}
               variant={variant}

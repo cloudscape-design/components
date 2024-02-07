@@ -185,6 +185,7 @@ export interface CategoryProps extends HighlightProps {
   onGroupToggle: GroupToggle;
   onItemActivate: ItemActivate;
   disabled: boolean;
+  lastInDropdown: boolean;
   expandToViewport?: boolean;
   variant?: ItemListProps['variant'];
 }
@@ -196,6 +197,7 @@ export interface ItemListProps extends HighlightProps {
   categoryDisabled?: boolean;
   hasExpandableGroups?: boolean;
   hasCategoryHeader?: boolean;
+  lastInDropdown: boolean;
   expandToViewport?: boolean;
   variant?: InternalButtonDropdownProps['variant'];
 }
@@ -211,7 +213,8 @@ export interface ItemProps {
   onItemActivate: ItemActivate;
   highlightItem: (item: ButtonDropdownProps.ItemOrGroup) => void;
   first?: boolean;
-  last: boolean;
+  lastInSection: boolean;
+  showDivider: boolean;
   hasCategoryHeader: boolean;
   isKeyboardHighlighted?: boolean;
   variant?: ItemListProps['variant'];

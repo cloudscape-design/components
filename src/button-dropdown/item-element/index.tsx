@@ -21,7 +21,8 @@ const ItemElement = ({
   highlighted,
   highlightItem,
   first = false,
-  last,
+  lastInSection,
+  showDivider,
   hasCategoryHeader,
   isKeyboardHighlighted = false,
   variant = 'normal',
@@ -49,8 +50,9 @@ const ItemElement = ({
         [styles.highlighted]: highlighted,
         [styles.disabled]: disabled,
         [styles.first]: first,
-        [styles.last]: last,
+        [styles.last]: lastInSection,
         [styles['has-category-header']]: hasCategoryHeader,
+        [styles['show-divider']]: showDivider,
         [styles['is-focused']]: isKeyboardHighlighted,
       })}
       role="presentation"
