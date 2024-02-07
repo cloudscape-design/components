@@ -45,8 +45,10 @@ export interface TokenGroupProps extends BaseComponentProps {
    */
   items?: ReadonlyArray<TokenGroupProps.Item>;
   /**
-   *  Called when the user clicks on the dismiss button. The token won't be automatically removed.
-   *  Make sure that you add a listener to this event to update your application state.
+   * Defining an `onDismiss` event makes all tokens in the token group dismissable.
+   *
+   * Called when the user clicks on the dismiss button. The token won't be automatically removed.
+   * Make sure that you add a listener to this event to update your application state.
    */
   onDismiss?: NonCancelableEventHandler<TokenGroupProps.DismissDetail>;
 }

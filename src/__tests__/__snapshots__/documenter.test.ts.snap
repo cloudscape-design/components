@@ -14876,8 +14876,10 @@ Object {
   "events": Array [
     Object {
       "cancelable": false,
-      "description": " Called when the user clicks on the dismiss button. The token won't be automatically removed.
- Make sure that you add a listener to this event to update your application state.",
+      "description": "Defining an \`onDismiss\` event makes all tokens in the token group dismissable.
+Called when the user clicks on the dismiss button. The token won't be automatically removed.
+Make sure that you add a listener to this event to update your application state.
+",
       "detailInlineType": Object {
         "name": "TokenGroupProps.DismissDetail",
         "properties": Array [
