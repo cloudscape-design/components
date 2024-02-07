@@ -33,6 +33,7 @@ export default function Calendar({
   onChange,
   __internalRootRef,
   i18nStrings,
+  granularity,
   ...rest
 }: CalendarProps & InternalBaseComponentProps) {
   checkControlled('Calendar', 'value', value, 'onChange', onChange);
@@ -55,12 +56,20 @@ export default function Calendar({
   const headingId = useUniqueId('calendar-heading');
 
   const i18n = useInternalI18n('calendar');
-  const nextMonthAriaLabel = i18n('nextMonthAriaLabel', i18nStrings?.nextMonthAriaLabel || rest.nextMonthAriaLabel);
-  const previousMonthAriaLabel = i18n(
-    'previousMonthAriaLabel',
-    i18nStrings?.previousMonthAriaLabel || rest.previousMonthAriaLabel
-  );
-  const todayAriaLabel = i18n('todayAriaLabel', i18nStrings?.todayAriaLabel || rest.todayAriaLabel);
+
+  const isMonthPicker = granularity === 'month';
+
+  const previousLabel = isMonthPicker
+    ? i18n('previousYearAriaLabel', i18nStrings?.previousYearAriaLabel)
+    : i18n('previousMonthAriaLabel', i18nStrings?.previousMonthAriaLabel || rest.previousMonthAriaLabel);
+
+  const nextLabel = isMonthPicker
+    ? i18n('nextYearAriaLabel', i18nStrings?.nextYearAriaLabel)
+    : i18n('nextMonthAriaLabel', i18nStrings?.nextMonthAriaLabel || rest.nextMonthAriaLabel);
+
+  const currentLabel = isMonthPicker
+    ? i18n('currentMonthAriaLabel', i18nStrings?.currentMonthAriaLabel)
+    : i18n('todayAriaLabel', i18nStrings?.todayAriaLabel || rest.todayAriaLabel);
 
   // Update displayed date if value changes.
   useEffect(() => {
@@ -84,7 +93,7 @@ export default function Calendar({
   const baseDate = getBaseDate(displayedDate, isDateEnabled);
   const focusableDate = focusedDate || selectFocusedDate(memoizedValue, baseDate);
 
-  const onHeaderChangeMonthHandler = (date: Date) => {
+  const onHeaderChangePageHandler = (date: Date) => {
     setDisplayedDate(date);
     setFocusedDate(null);
   };
@@ -113,8 +122,17 @@ export default function Calendar({
   };
 
   const rows = useMemo<Date[][]>(
-    () => getCalendarMonth(baseDate, { firstDayOfWeek: normalizedStartOfWeek }),
-    [baseDate, normalizedStartOfWeek]
+    () =>
+      isMonthPicker
+        ? new Array(4).fill(0).map((_, i: number) =>
+            new Array(3).fill(0).map((_, j: number) => {
+              const d = new Date(baseDate);
+              d.setMonth(i * 3 + j);
+              return d;
+            })
+          )
+        : getCalendarMonth(baseDate, { firstDayOfWeek: normalizedStartOfWeek }),
+    [baseDate, isMonthPicker, normalizedStartOfWeek]
   );
 
   return (
@@ -131,10 +149,11 @@ export default function Calendar({
         <CalendarHeader
           baseDate={baseDate}
           locale={normalizedLocale}
-          onChange={onHeaderChangeMonthHandler}
-          previousLabel={previousMonthAriaLabel}
-          nextLabel={nextMonthAriaLabel}
+          onChange={onHeaderChangePageHandler}
+          previousLabel={previousLabel}
+          nextLabel={nextLabel}
           headingId={headingId}
+          granularity={granularity}
         />
         <div onBlur={onGridBlur} ref={gridWrapperRef}>
           <Grid
@@ -147,9 +166,10 @@ export default function Calendar({
             onFocusDate={onGridFocusDateHandler}
             onChangeMonth={onGridChangeMonthHandler}
             startOfWeek={normalizedStartOfWeek}
-            todayAriaLabel={todayAriaLabel}
+            todayAriaLabel={currentLabel}
             selectedDate={memoizedValue}
             ariaLabelledby={headingId}
+            granularity={granularity}
             rows={rows}
           />
         </div>

@@ -77,6 +77,12 @@ export interface CalendarProps extends BaseComponentProps {
    * the component.
    */
   i18nStrings?: CalendarProps.I18nStrings;
+
+  /**
+   * Specifies the granularity at which users will be able to select a date.
+   * Defaults to `day`.
+   **/
+  granularity?: 'month' | 'day';
 }
 
 export namespace CalendarProps {
@@ -90,6 +96,8 @@ export namespace CalendarProps {
   export interface IsDateEnabledFunction {
     (date: Date): boolean;
   }
+
+  export type Granularity = 'day' | 'month';
 
   export interface I18nStrings {
     /**

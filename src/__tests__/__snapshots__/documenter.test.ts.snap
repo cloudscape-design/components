@@ -3692,18 +3692,48 @@ The event \`detail\` contains the current value of the field.",
       "type": "string",
     },
     Object {
+      "description": "Specifies the granularity at which users will be able to select a date.
+Defaults to \`day\`.",
+      "inlineType": Object {
+        "name": "",
+        "type": "union",
+        "values": Array [
+          "month",
+          "day",
+        ],
+      },
+      "name": "granularity",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "An object containing all the necessary localized strings required by
 the component.",
       "inlineType": Object {
         "name": "CalendarProps.I18nStrings",
         "properties": Array [
           Object {
+            "name": "currentMonthAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
             "name": "nextMonthAriaLabel",
             "optional": true,
             "type": "string",
           },
           Object {
+            "name": "nextYearAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
             "name": "previousMonthAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "previousYearAriaLabel",
             "optional": true,
             "type": "string",
           },
@@ -5804,12 +5834,14 @@ because fixed positioning results in a slight, visible lag when scrolling comple
       "type": "boolean",
     },
     Object {
+      "description": "Specifies the granularity at which users will be able to select a date.
+Defaults to \`day\`.",
       "inlineType": Object {
-        "name": "DatePickerProps.Granularity",
+        "name": "",
         "type": "union",
         "values": Array [
-          "day",
           "month",
+          "day",
         ],
       },
       "name": "granularity",
@@ -5823,12 +5855,27 @@ the component.",
         "name": "CalendarProps.I18nStrings",
         "properties": Array [
           Object {
+            "name": "currentMonthAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
             "name": "nextMonthAriaLabel",
             "optional": true,
             "type": "string",
           },
           Object {
+            "name": "nextYearAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
             "name": "previousMonthAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "previousYearAriaLabel",
             "optional": true,
             "type": "string",
           },
