@@ -17,7 +17,6 @@ export default function ItemsList({
   isHighlighted,
   isKeyboardHighlight,
   isExpanded,
-  lastInDropdown,
   highlightItem,
   categoryDisabled = false,
   hasExpandableGroups = false,
@@ -29,9 +28,6 @@ export default function ItemsList({
 
   const elements = items.map((item, index) => {
     if (!isItemGroup(item)) {
-      const lastInSection = index === items.length - 1 || isItemGroup(items[index + 1]);
-      const showDivider = lastInSection && !lastInDropdown;
-
       return (
         <ItemElement
           key={index}
@@ -42,8 +38,7 @@ export default function ItemsList({
           isKeyboardHighlighted={isKeyboardHighlight(item)}
           highlightItem={highlightItem}
           first={index === 0 || isItemGroup(items[index - 1])}
-          lastInSection={lastInSection}
-          showDivider={showDivider}
+          last={index === items.length - 1 || isItemGroup(items[index + 1])}
           hasCategoryHeader={hasCategoryHeader}
           variant={variant}
         />
@@ -61,7 +56,6 @@ export default function ItemsList({
             isHighlighted={isHighlighted}
             isKeyboardHighlight={isKeyboardHighlight}
             isExpanded={isExpanded}
-            lastInDropdown={lastInDropdown && index === items.length - 1}
             highlightItem={highlightItem}
             disabled={item.disabled ?? false}
             variant={variant}
@@ -76,7 +70,6 @@ export default function ItemsList({
             isHighlighted={isHighlighted}
             isKeyboardHighlight={isKeyboardHighlight}
             isExpanded={isExpanded}
-            lastInDropdown={true}
             highlightItem={highlightItem}
             disabled={item.disabled ?? false}
             expandToViewport={expandToViewport}
@@ -95,7 +88,6 @@ export default function ItemsList({
         isHighlighted={isHighlighted}
         isKeyboardHighlight={isKeyboardHighlight}
         isExpanded={isExpanded}
-        lastInDropdown={lastInDropdown && index === items.length - 1}
         highlightItem={highlightItem}
         disabled={item.disabled ?? false}
         variant={variant}
