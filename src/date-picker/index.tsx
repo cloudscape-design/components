@@ -40,7 +40,6 @@ const DatePicker = React.forwardRef(
       previousMonthAriaLabel,
       todayAriaLabel,
       i18nStrings,
-      i18nStrings,
       placeholder = '',
       value = '',
       readOnly = false,

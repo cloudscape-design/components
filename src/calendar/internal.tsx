@@ -73,7 +73,6 @@ export default function Calendar({
     ? i18n('currentMonthAriaLabel', i18nStrings?.currentMonthAriaLabel)
     : i18n('todayAriaLabel', i18nStrings?.todayAriaLabel || rest.todayAriaLabel);
 
-  console.log(previousLabel, nextLabel, currentDateLabel);
   // Update displayed date if value changes.
   useEffect(() => {
     memoizedValue && setDisplayedDate(prev => (prev.getTime() !== memoizedValue.getTime() ? memoizedValue : prev));
