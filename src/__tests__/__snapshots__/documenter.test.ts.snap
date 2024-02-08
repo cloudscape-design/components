@@ -6555,8 +6555,9 @@ Behaves similar to the Header component counter.",
     },
     Object {
       "description": "Overrides the default [HTML heading tag](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements).
-Use with the container variant (which defaults to H2) or default/footer variants (which default to DIV). Note that this only
-works with the \`headerText\` slot (not with the deprecated \`header\`), and not with the navigation variant.",
+Use with the container variant (which defaults to H2) or default/footer variants (which default to DIV). Using this
+property does not change the visual appearance of the component. Note that this only works with the \`headerText\`
+slot (not with the deprecated \`header\`), and not with the navigation variant.",
       "inlineType": Object {
         "name": "ExpandableSectionProps.HeadingTag",
         "type": "union",
@@ -7259,7 +7260,7 @@ to display resource counters in table and cards components.",
     },
     Object {
       "description": "Overrides the default [HTML heading tag](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements)
-provided by the variant.",
+provided by the variant. Using this property does not change the visual appearance of the component.",
       "inlineType": Object {
         "name": "HeaderProps.HeadingTag",
         "type": "union",

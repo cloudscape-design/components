@@ -57,7 +57,7 @@
 
 .labels-left {
   position: relative;
-  margin-right: 12px;
+  margin-inline-end: 12px;
 
   > .axis-label {
     position: absolute;
@@ -82,7 +82,7 @@
 .labels-bottom {
   position: relative;
   display: block;
-  width: 100%;
+  inline-size: 100%;
   overflow: visible;
 }
 
@@ -112,12 +112,12 @@
 
 .chart-container {
   display: flex;
-  width: 100%;
+  inline-size: 100%;
   flex-direction: column;
 
   &.fit-height {
-    height: 100%;
-    min-height: inherit;
+    block-size: 100%;
+    min-block-size: inherit;
   }
 }
 
@@ -133,7 +133,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  width: 100%;
+  inline-size: 100%;
 }
 
 .chart-container-plot-wrapper {
@@ -148,10 +148,7 @@
   &.fit-height {
     display: block;
     position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
+    inset: 0;
   }
 }
 
