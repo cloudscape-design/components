@@ -3694,6 +3694,7 @@ The event \`detail\` contains the current value of the field.",
     Object {
       "description": "An object containing all the necessary localized strings required by
 the component.",
+      "i18nTag": true,
       "inlineType": Object {
         "name": "CalendarProps.I18nStrings",
         "properties": Array [
@@ -3757,14 +3758,14 @@ Supported values and formats are listed in the
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Use \`i18nStrings\`",
+      "deprecatedTag": "Use \`i18nStrings\` instead.",
       "description": "Specifies an \`aria-label\` for the 'next month' button.",
       "name": "nextMonthAriaLabel",
       "optional": true,
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Use \`i18nStrings\`",
+      "deprecatedTag": "Use \`i18nStrings\` instead.",
       "description": "Specifies an \`aria-label\` for the 'previous month' button.",
       "name": "previousMonthAriaLabel",
       "optional": true,
@@ -3778,7 +3779,7 @@ By default the starting day of the week is defined by the locale, but you can us
       "type": "number",
     },
     Object {
-      "deprecatedTag": "Use \`i18nStrings\`",
+      "deprecatedTag": "Use \`i18nStrings\` instead.",
       "description": "Used as part of the \`aria-label\` for today's date in the calendar.",
       "name": "todayAriaLabel",
       "optional": true,
@@ -5806,6 +5807,7 @@ because fixed positioning results in a slight, visible lag when scrolling comple
     Object {
       "description": "An object containing all the necessary localized strings required by
 the component.",
+      "i18nTag": true,
       "inlineType": Object {
         "name": "CalendarProps.I18nStrings",
         "properties": Array [
@@ -5885,7 +5887,7 @@ Supported values and formats are listed in the
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Use \`i18nStrings\`",
+      "deprecatedTag": "Use \`i18nStrings\` instead.",
       "description": "Specifies an \`aria-label\` for the 'next month' button.",
       "name": "nextMonthAriaLabel",
       "optional": true,
@@ -5918,7 +5920,7 @@ a human-readable localised string representing the current value of the input.
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Use \`i18nStrings\`",
+      "deprecatedTag": "Use \`i18nStrings\` instead.",
       "description": "Specifies an \`aria-label\` for the 'previous month' button.",
       "name": "previousMonthAriaLabel",
       "optional": true,
@@ -5943,7 +5945,7 @@ By default the starting day of the week is defined by the locale, but you can us
       "type": "number",
     },
     Object {
-      "deprecatedTag": "Use \`i18nStrings\`",
+      "deprecatedTag": "Use \`i18nStrings\` instead.",
       "description": "Used as part of the \`aria-label\` for today's date in the calendar.",
       "name": "todayAriaLabel",
       "optional": true,
