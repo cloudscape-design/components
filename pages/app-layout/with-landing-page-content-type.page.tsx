@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import AppLayout from '~components/app-layout';
 import clsx from 'clsx';
 import Box from '~components/box';
@@ -19,11 +19,11 @@ import Toggle from '~components/toggle';
 import HelpPanel from '~components/help-panel';
 import ScreenshotArea from '../utils/screenshot-area';
 import { Breadcrumbs, Footer, Notifications } from './utils/content-blocks';
-//import * as toolsContent from './utils/tools-content';
 import labels from './utils/labels';
 import Button from '~components/button';
 import styles from './styles.scss';
 import { ContentLayout } from '~components';
+import AppContext from '../app/app-context';
 
 // List component
 interface SeparatedListProps {
@@ -134,10 +134,10 @@ interface ToolsProps {
 }
 
 function Tools({ onFlashbarChange, onStackedNotificationChange, onBreadcrumbChange }: ToolsProps) {
-  const [hasFlash, setFlash] = React.useState(false);
-  const [hasStackedNotification, setStackedNotification] = React.useState(false);
-  const [hasBreadcrumb, setBreadcrumb] = React.useState(false);
-  //const [hasNesting, setNesting] = React.useState(false);
+  const [hasFlash, setFlash] = React.useState(true);
+  const [hasStackedNotification, setStackedNotification] = React.useState(true);
+  const [hasBreadcrumb, setBreadcrumb] = React.useState(true);
+  const { urlParams, setUrlParams } = useContext(AppContext as any) as any;
 
   const handleFlashbarChange = (isChecked: boolean) => {
     setFlash(isChecked);
@@ -170,21 +170,43 @@ function Tools({ onFlashbarChange, onStackedNotificationChange, onBreadcrumbChan
   return (
     <HelpPanel header={<h2>Configuration</h2>}>
       <SpaceBetween size="m">
-        <Toggle onChange={({ detail }) => handleFlashbarChange(detail.checked)} checked={hasFlash}>
+        <Toggle
+          onChange={({ detail }) => {
+            handleFlashbarChange(detail.checked);
+            setUrlParams({ notificationVisible: detail.checked });
+          }}
+          checked={(urlParams.notificationVisible, hasFlash)}
+        >
           Show Flashbar
         </Toggle>
         <Toggle
-          onChange={({ detail }) => handleStackedNotificationChange(detail.checked)}
-          checked={hasStackedNotification}
+          onChange={({ detail }) => {
+            handleStackedNotificationChange(detail.checked);
+            setUrlParams({ stackNotificationVisible: detail.checked });
+          }}
+          //checked={hasStackedNotification}
+          checked={(urlParams.stackNotificationVisible, hasStackedNotification)}
         >
           Show stacked notifications
         </Toggle>
-        <Toggle onChange={({ detail }) => handleBreadcrumbChange(detail.checked)} checked={hasBreadcrumb}>
+        <Toggle
+          onChange={({ detail }) => {
+            handleBreadcrumbChange(detail.checked);
+            setUrlParams({ breadcrumbCheck: detail.checked });
+          }}
+          checked={(urlParams.breadcrumbVisible, hasBreadcrumb)}
+        >
           Show Breadcrumb
         </Toggle>
-        {/* <Toggle onChange={({ detail }) => handleNestingChange(detail.checked)} checked={hasNesting}>
-          Wrap in ContentLayout
-        </Toggle> */}
+        <Toggle
+          onChange={({ detail }) => {
+            setUrlParams({ removeHighContrastHeader: detail.checked });
+            location.reload();
+          }}
+          checked={urlParams.removeHighContrastHeader}
+        >
+          Remove dark header
+        </Toggle>
       </SpaceBetween>
     </HelpPanel>
   );
@@ -409,10 +431,10 @@ const ContentTest = () => {
 export default function () {
   const [toolsOpen, setToolsOpen] = useState(false);
 
-  const [flashbarVisible, setFlashbarVisible] = React.useState(false);
-  const [notificationsVisible, setNotificationsVisible] = React.useState(false);
-  const [breadcrumbVisible, setBreadcrumbVisible] = React.useState(false);
-  const [nestingVisible, setNestingVisible] = React.useState(false);
+  const [flashbarVisible, setFlashbarVisible] = React.useState(true);
+  const [notificationsVisible, setNotificationsVisible] = React.useState(true);
+  const [breadcrumbVisible, setBreadcrumbVisible] = React.useState(true);
+  const [nestingVisible, setNestingVisible] = React.useState(true);
 
   console.log(nestingVisible);
 
