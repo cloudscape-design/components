@@ -8,14 +8,14 @@
 
 @mixin awsui-util-hide {
   position: absolute !important;
-  top: -9999px !important;
-  left: -9999px !important;
+  inset-block-start: -9999px !important;
+  inset-inline-start: -9999px !important;
 }
 
 @mixin text-wrapping {
   // When using with Flexbox, a flex item has min-width set to "auto" by default, which
   // prevents the text wrapping. We need to override the min-width by setting it to "0"
-  min-width: 0;
+  min-inline-size: 0;
 
   // `word-break: break-word` is deprecated.
   // But its replacement, `overflow-wrap: anywhere`, is not supported in Safari 14.0 and 15.0.
@@ -24,7 +24,7 @@
 
 @mixin text-flex-wrapping {
   word-wrap: break-word;
-  max-width: 100%;
+  max-inline-size: 100%;
   overflow: hidden;
 }
 
@@ -32,7 +32,8 @@
   @include typography.font-body-s;
   font-family: typography.$font-family-monospace;
   background-color: awsui.$color-background-layout-main;
-  padding: 0 awsui.$space-xxs;
+  padding-block: 0;
+  padding-inline: awsui.$space-xxs;
   word-wrap: break-word;
   white-space: pre-wrap;
 }
@@ -46,10 +47,10 @@
 @mixin base-pseudo-element {
   content: '';
   position: absolute;
-  left: 0px;
-  top: 0px;
-  width: 100%;
-  height: 100%;
+  inset-inline-start: 0px;
+  inset-block-start: 0px;
+  inline-size: 100%;
+  block-size: 100%;
   pointer-events: none;
   background: transparent;
   box-sizing: border-box;

@@ -3709,6 +3709,7 @@ Defaults to \`day\`.",
     Object {
       "description": "An object containing all the necessary localized strings required by
 the component.",
+      "i18nTag": true,
       "inlineType": Object {
         "name": "CalendarProps.I18nStrings",
         "properties": Array [
@@ -3787,14 +3788,14 @@ Supported values and formats are listed in the
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Use \`i18nStrings\`",
+      "deprecatedTag": "Use \`i18nStrings\` instead.",
       "description": "Specifies an \`aria-label\` for the 'next month' button.",
       "name": "nextMonthAriaLabel",
       "optional": true,
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Use \`i18nStrings\`",
+      "deprecatedTag": "Use \`i18nStrings\` instead.",
       "description": "Specifies an \`aria-label\` for the 'previous month' button.",
       "name": "previousMonthAriaLabel",
       "optional": true,
@@ -3808,7 +3809,7 @@ By default the starting day of the week is defined by the locale, but you can us
       "type": "number",
     },
     Object {
-      "deprecatedTag": "Use \`i18nStrings\`",
+      "deprecatedTag": "Use \`i18nStrings\` instead.",
       "description": "Used as part of the \`aria-label\` for today's date in the calendar.",
       "name": "todayAriaLabel",
       "optional": true,
@@ -5851,6 +5852,7 @@ Defaults to \`day\`.",
     Object {
       "description": "An object containing all the necessary localized strings required by
 the component.",
+      "i18nTag": true,
       "inlineType": Object {
         "name": "CalendarProps.I18nStrings",
         "properties": Array [
@@ -5945,7 +5947,7 @@ Supported values and formats are listed in the
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Use \`i18nStrings\`",
+      "deprecatedTag": "Use \`i18nStrings\` instead.",
       "description": "Specifies an \`aria-label\` for the 'next month' button.",
       "name": "nextMonthAriaLabel",
       "optional": true,
@@ -5978,7 +5980,7 @@ a human-readable localised string representing the current value of the input.
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Use \`i18nStrings\`",
+      "deprecatedTag": "Use \`i18nStrings\` instead.",
       "description": "Specifies an \`aria-label\` for the 'previous month' button.",
       "name": "previousMonthAriaLabel",
       "optional": true,
@@ -6003,7 +6005,7 @@ By default the starting day of the week is defined by the locale, but you can us
       "type": "number",
     },
     Object {
-      "deprecatedTag": "Use \`i18nStrings\`",
+      "deprecatedTag": "Use \`i18nStrings\` instead.",
       "description": "Used as part of the \`aria-label\` for today's date in the calendar.",
       "name": "todayAriaLabel",
       "optional": true,
@@ -6646,8 +6648,9 @@ Behaves similar to the Header component counter.",
     },
     Object {
       "description": "Overrides the default [HTML heading tag](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements).
-Use with the container variant (which defaults to H2) or default/footer variants (which default to DIV). Note that this only
-works with the \`headerText\` slot (not with the deprecated \`header\`), and not with the navigation variant.",
+Use with the container variant (which defaults to H2) or default/footer variants (which default to DIV). Using this
+property does not change the visual appearance of the component. Note that this only works with the \`headerText\`
+slot (not with the deprecated \`header\`), and not with the navigation variant.",
       "inlineType": Object {
         "name": "ExpandableSectionProps.HeadingTag",
         "type": "union",
@@ -7350,7 +7353,7 @@ to display resource counters in table and cards components.",
     },
     Object {
       "description": "Overrides the default [HTML heading tag](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements)
-provided by the variant.",
+provided by the variant. Using this property does not change the visual appearance of the component.",
       "inlineType": Object {
         "name": "HeaderProps.HeadingTag",
         "type": "union",

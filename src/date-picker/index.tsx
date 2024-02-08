@@ -40,6 +40,7 @@ const DatePicker = React.forwardRef(
       previousMonthAriaLabel,
       todayAriaLabel,
       i18nStrings,
+      i18nStrings,
       placeholder = '',
       value = '',
       readOnly = false,
@@ -192,10 +193,9 @@ const DatePicker = React.forwardRef(
                     granularity={granularity}
                     isDateEnabled={isDateEnabled}
                     i18nStrings={{
-                      todayAriaLabel,
-                      nextMonthAriaLabel,
-                      previousMonthAriaLabel,
-                      ...i18nStrings,
+                      todayAriaLabel: i18nStrings?.todayAriaLabel || todayAriaLabel,
+                      nextMonthAriaLabel: i18nStrings?.nextMonthAriaLabel || nextMonthAriaLabel,
+                      previousMonthAriaLabel: i18nStrings?.previousMonthAriaLabel || previousMonthAriaLabel,
                     }}
                   />
                   <LiveRegion id={calendarDescriptionId}>{renderMonthAndYear(normalizedLocale, baseDate)}</LiveRegion>
