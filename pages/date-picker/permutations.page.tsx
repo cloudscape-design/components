@@ -6,6 +6,7 @@ import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 import { Box, SpaceBetween, DatePicker, DatePickerProps } from '~components';
+import i18nStrings from './i18n-strings';
 
 // Mock the date in order to have the current day styling in place for screenshot testing.
 MockDate.set(new Date(2020, 9, 8));
@@ -41,9 +42,7 @@ export default function DatePickerScenario() {
               name={'date-picker-name'}
               ariaLabel={'date-picker-label'}
               locale="en-GB"
-              previousMonthAriaLabel={'Previous month'}
-              nextMonthAriaLabel={'Next month'}
-              todayAriaLabel={'TEST TODAY'}
+              i18nStrings={i18nStrings}
               placeholder={'YYYY/MM/DD'}
               isDateEnabled={date => date.getDay() !== 0}
               openCalendarAriaLabel={openCalendarAriaLabel}
