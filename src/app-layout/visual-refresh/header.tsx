@@ -7,11 +7,14 @@ import { useAppLayoutInternals } from './context';
 import styles from './styles.css.js';
 
 export default function Header() {
-  const { breadcrumbs, contentHeader, hasDrawerViewportOverlay, hasNotificationsContent } = useAppLayoutInternals();
+  const { breadcrumbs, contentHeader, hasDrawerViewportOverlay, hasNotificationsContent, darkHeader } =
+    useAppLayoutInternals();
 
   if (!contentHeader) {
     return null;
   }
+
+  console.log('The header part recieves ' + darkHeader);
 
   return (
     <header
@@ -23,6 +26,7 @@ export default function Header() {
           [styles.unfocusable]: hasDrawerViewportOverlay,
         },
         getContentHeaderClassName()
+        //!darkHeader ? getContentHeaderClassName() : ''
       )}
     >
       {contentHeader}
