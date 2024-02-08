@@ -14,7 +14,7 @@ export default function Header() {
     return null;
   }
 
-  console.log('The header part recieves ' + darkHeader);
+  const removeHighContrastHeader = darkHeader ? 'awsui-context-content-header' : getContentHeaderClassName();
 
   return (
     <header
@@ -25,8 +25,8 @@ export default function Header() {
           [styles['has-notifications-content']]: hasNotificationsContent,
           [styles.unfocusable]: hasDrawerViewportOverlay,
         },
-        getContentHeaderClassName()
-        //!darkHeader ? getContentHeaderClassName() : ''
+        //getContentHeaderClassName()
+        removeHighContrastHeader
       )}
     >
       {contentHeader}
