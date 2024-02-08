@@ -51,7 +51,7 @@ function HeroHeader() {
     <div className={clsx(styles['custom-home__header'])}>
       <div className={clsx(styles['inner-header'])}>
         <Grid gridDefinition={[{ colspan: { default: 12, xs: 8 } }, { colspan: { default: 12, xs: 4 } }]}>
-          <Box>
+          <Box margin={{ top: 'xxl' }}>
             <Box fontWeight="normal" padding={{ top: 'xs', bottom: 'xs' }}>
               <span className={clsx(styles['custom-home__category'])}>Category</span>
             </Box>
@@ -76,21 +76,23 @@ function HeroHeader() {
               organization to unlock innovation.
             </Box>
           </Box>
-          <Container header={<Header variant="h2">Create distribution</Header>}>
-            <SpaceBetween direction="vertical" size="xl">
-              <FormField stretch={true} label="Delivery method">
-                <Select
-                  ariaLabel="Demo select"
-                  selectedOption={selectedOption}
-                  options={selectOptions}
-                  onChange={event => setSelectedOption(event.detail.selectedOption)}
-                />
-              </FormField>
-              <Button href="#" variant="primary">
-                Next step
-              </Button>
-            </SpaceBetween>
-          </Container>
+          <Box margin={{ top: 'xxl', bottom: 'xxl' }}>
+            <Container header={<Header variant="h2">Create distribution</Header>}>
+              <SpaceBetween direction="vertical" size="xl">
+                <FormField stretch={true} label="Delivery method">
+                  <Select
+                    ariaLabel="Demo select"
+                    selectedOption={selectedOption}
+                    options={selectOptions}
+                    onChange={event => setSelectedOption(event.detail.selectedOption)}
+                  />
+                </FormField>
+                <Button href="#" variant="primary">
+                  Next step
+                </Button>
+              </SpaceBetween>
+            </Container>
+          </Box>
         </Grid>
       </div>
     </div>
@@ -454,7 +456,7 @@ const ContentWithoutContentLayout = () => {
             ]}
           >
             <Box fontWeight="normal" padding={{ top: 'xs', bottom: 'xs' }}>
-              <span className="custom-home__category">Networking &amp; Content Delivery</span>
+              <span className={clsx(styles['custom-home__category'])}>Category</span>
             </Box>
             <div className={clsx(styles['custom-home__header-title'])}>
               <Box

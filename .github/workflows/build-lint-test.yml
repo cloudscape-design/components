@@ -32,5 +32,4 @@ jobs:
     secrets: inherit
     with:
       artifact-name: dev-pages
-      skip-codecov: true
       deployment-path: lib/static-default
