@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
-import { getContentHeaderClassName, shouldRemoveHighContrastHeader } from '../../internal/utils/content-header-utils';
+import { getContentHeaderClassName } from '../../internal/utils/content-header-utils';
 import { useAppLayoutInternals } from './context';
 import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
@@ -14,12 +14,7 @@ export default function Breadcrumbs() {
     return null;
   }
 
-  console.log('The header part recieves darkHeader' + darkHeader);
-  // Call shouldRemoveHighContrastHeader() conditionally based on darkHeader value
-  const removeHighContrastHeader = darkHeader ? false : shouldRemoveHighContrastHeader();
-
-  // Get content header class name
-  const contentHeaderClassName = removeHighContrastHeader ? '' : getContentHeaderClassName();
+  const removeHighContrastHeader = darkHeader ? 'awsui-context-content-header' : getContentHeaderClassName();
 
   return (
     <div
@@ -30,8 +25,7 @@ export default function Breadcrumbs() {
         {
           [styles['has-sticky-background']]: hasStickyBackground,
         },
-        //getContentHeaderClassName()
-        contentHeaderClassName
+        removeHighContrastHeader
       )}
     >
       {breadcrumbs}
