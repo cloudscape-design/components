@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { formatISOTimezoneOffset } from './format-timezone-offset';
+import { formatTimeOffsetISO } from './format-time-offset';
 
 export default function ({
   date: isoDate,
@@ -14,6 +14,6 @@ export default function ({
   isDateOnly: boolean;
   timeOffset?: number;
 }) {
-  const formattedOffset = hideTimeOffset || isDateOnly ? '' : formatISOTimezoneOffset(isoDate, timeOffset);
+  const formattedOffset = hideTimeOffset || isDateOnly ? '' : formatTimeOffsetISO(isoDate, timeOffset);
   return isoDate + formattedOffset;
 }

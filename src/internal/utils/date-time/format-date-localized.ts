@@ -1,6 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { formatTimeOffsetLocalized } from './format-time-offset';
+
 export default function formatDateLocalized({
   date: isoDate,
   hideTimeOffset,
@@ -39,23 +41,8 @@ export default function formatDateLocalized({
     return formattedDateTime;
   }
 
-  const formattedTimeOffset = formatTimeOffset(isoDate, timeOffset);
+  const formattedTimeOffset = formatTimeOffsetLocalized(isoDate, timeOffset);
   return formattedDateTime + ' ' + formattedTimeOffset;
-}
-
-function formatTimeOffset(isoDate: string, offsetInMinutes?: number) {
-  offsetInMinutes = offsetInMinutes ?? 0 - new Date(isoDate).getTimezoneOffset();
-  if (offsetInMinutes === 0) {
-    return '(UTC)';
-  }
-  const hoursOffset = Math.floor(Math.abs(offsetInMinutes) / 60);
-  const minuteOffset = Math.floor(Math.abs(offsetInMinutes % 60));
-
-  const sign = offsetInMinutes < 0 ? '-' : '+';
-  const formattedOffsetMinutes = minuteOffset === 0 ? '' : `:${minuteOffset}`;
-  const formattedOffset = `(UTC${sign}${hoursOffset}${formattedOffsetMinutes})`;
-
-  return formattedOffset;
 }
 
 // Languages in which date and time are separated just with a space, without comma

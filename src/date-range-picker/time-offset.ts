@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { DateRangePickerProps } from './interfaces';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
-import { formatISOTimezoneOffset, parseTimezoneOffset, shiftTimezoneOffset } from '../internal/utils/date-time';
+import { formatTimeOffsetISO, parseTimezoneOffset, shiftTimezoneOffset } from '../internal/utils/date-time';
 import { addMinutes } from 'date-fns';
 
 /**
@@ -17,8 +17,8 @@ export function setTimeOffset(
   }
   return {
     type: 'absolute',
-    startDate: value.startDate + formatISOTimezoneOffset(value.startDate, timeOffset.startDate),
-    endDate: value.endDate + formatISOTimezoneOffset(value.endDate, timeOffset.endDate),
+    startDate: value.startDate + formatTimeOffsetISO(value.startDate, timeOffset.startDate),
+    endDate: value.endDate + formatTimeOffsetISO(value.endDate, timeOffset.endDate),
   };
 }
 
