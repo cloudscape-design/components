@@ -26,6 +26,7 @@ export default function Breadcrumbs() {
           [styles['has-sticky-background']]: hasStickyBackground,
         },
         removeHighContrastHeader
+        //getContentHeaderClassName()
       )}
     >
       {breadcrumbs}
