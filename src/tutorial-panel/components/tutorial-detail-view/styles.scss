@@ -8,29 +8,31 @@
 
 .tutorial-list {
   @include styles.styles-reset;
-  padding: 0;
-  margin: 0;
+  padding-block: 0;
+  padding-inline: 0;
+  margin-block: 0;
+  margin-inline: 0;
 }
 
 .tutorial-title {
   display: flex;
   align-items: flex-start;
-  margin-left: calc(-1 * #{awsui.$space-xxs});
-  padding-bottom: awsui.$space-xxxs;
+  margin-inline-start: calc(-1 * #{awsui.$space-xxs});
+  padding-block-end: awsui.$space-xxxs;
 }
 
 .task {
   list-style: none;
-  padding-top: 0;
+  padding-block-start: 0;
   &:not(:first-child) {
-    margin-top: awsui.$space-xl;
+    margin-block-start: awsui.$space-xl;
   }
 }
 
 .task-title {
   display: flex;
   align-items: flex-start;
-  padding-left: awsui.$border-divider-section-width;
+  padding-inline-start: awsui.$border-divider-section-width;
   @include styles.font(heading-s);
 
   &--status {
@@ -62,20 +64,22 @@
 }
 
 .divider {
-  border-bottom: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+  border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
 }
 
 .step-list {
   list-style: none;
-  padding: 0 0 0 awsui.$space-xxxs;
+  padding-block: 0;
+  padding-inline-start: awsui.$space-xxxs;
+  padding-inline-end: 0;
 }
 
 .step:not(:first-child) {
-  padding-top: awsui.$space-xxs;
+  padding-block-start: awsui.$space-xxs;
 }
 
 .expandable-section-wrapper {
-  width: 100%;
+  inline-size: 100%;
 }
 
 .expandable-section-header {

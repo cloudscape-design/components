@@ -21,33 +21,34 @@ th:not(:last-child) > .divider {
   position: absolute;
   outline: none;
   pointer-events: none;
-  right: 0;
-  bottom: 0;
-  top: 0;
-  min-height: awsui.$line-height-heading-xs;
-  max-height: calc(100% - #{$gap});
-  margin: auto;
-  border-left: awsui.$border-item-width solid awsui.$color-border-divider-interactive-default;
+  inset-inline-end: 0;
+  inset-block-end: 0;
+  inset-block-start: 0;
+  min-block-size: awsui.$line-height-heading-xs;
+  max-block-size: calc(100% - #{$gap});
+  margin-block: auto;
+  margin-inline: auto;
+  border-inline-start: awsui.$border-item-width solid awsui.$color-border-divider-interactive-default;
   box-sizing: border-box;
 
   &-disabled {
-    border-left-color: awsui.$color-border-divider-default;
+    border-inline-start-color: awsui.$color-border-divider-default;
   }
   &-active {
-    border-left: $active-separator-width solid awsui.$color-border-divider-active;
+    border-inline-start: $active-separator-width solid awsui.$color-border-divider-active;
   }
 }
 
 .resizer {
   @include styles.styles-reset;
-  border: none;
+  border-block: none;
+  border-inline: none;
   background: none;
-  bottom: 0;
+  inset-block: 0;
   cursor: col-resize;
   position: absolute;
-  right: calc(-1 * #{$handle-width} / 2);
-  top: 0;
-  width: $handle-width;
+  inset-inline-end: calc(-1 * #{$handle-width} / 2);
+  inline-size: $handle-width;
   z-index: 10;
   &:focus {
     outline: none;
@@ -58,11 +59,11 @@ th:not(:last-child) > .divider {
     pointer-events: none;
   }
   th:last-child > & {
-    width: calc(#{$handle-width} / 2);
-    right: 0;
+    inline-size: calc(#{$handle-width} / 2);
+    inset-inline-end: 0;
   }
   &:hover + .divider {
-    border-left: $active-separator-width solid awsui.$color-border-divider-active;
+    border-inline-start: $active-separator-width solid awsui.$color-border-divider-active;
   }
   // stylelint-disable-next-line selector-combinator-disallowed-list
   body[data-awsui-focus-visible='true'] &.has-focus {
@@ -74,10 +75,9 @@ th:not(:last-child) > .divider {
 .tracker {
   display: none;
   position: absolute;
-  border-left: awsui.$border-divider-list-width dashed awsui.$color-border-divider-active;
-  width: 0;
-  top: 0;
-  bottom: 0;
+  border-inline-start: awsui.$border-divider-list-width dashed awsui.$color-border-divider-active;
+  inline-size: 0;
+  inset-block: 0;
   //stylelint-disable-next-line selector-combinator-disallowed-list
   .resize-active & {
     display: block;
