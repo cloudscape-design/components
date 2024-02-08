@@ -9,9 +9,12 @@ import Container from '~components/container';
 import Link from '~components/link';
 import SpaceBetween from '~components/space-between';
 import Header from '~components/header';
+import Icon from '~components/icon';
 import ColumnLayout from '~components/column-layout';
 import SideNavigation from '~components/side-navigation';
 import Flashbar from '~components/flashbar';
+import FormField from '~components/form-field';
+import Select, { SelectProps } from '~components/select';
 import Toggle from '~components/toggle';
 import HelpPanel from '~components/help-panel';
 import ScreenshotArea from '../utils/screenshot-area';
@@ -22,8 +25,28 @@ import Button from '~components/button';
 import styles from './styles.scss';
 import { ContentLayout } from '~components';
 
-//import "./Hero.scss";
+// List component
+interface SeparatedListProps {
+  ariaLabel?: string;
+  ariaLabelledBy?: string;
+  items: Array<React.ReactNode>;
+}
+function SeparatedList({ ariaLabel, ariaLabelledBy, items }: SeparatedListProps) {
+  return (
+    <ul aria-label={ariaLabel} aria-labelledby={ariaLabelledBy} className={styles['separated-list']}>
+      {items.map((item, index) => (
+        <li className={styles['separated-list-item']} key={index}>
+          {item}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+// HeroHeader component
 function HeroHeader() {
+  const selectOptions: SelectProps.Options = [{ value: 'First' }, { value: 'Second' }, { value: 'Third' }];
+  const [selectedOption, setSelectedOption] = useState<SelectProps.Option>({ value: 'First' });
   return (
     <div className={clsx(styles['custom-home__header'])}>
       <div className={clsx(styles['inner-header'])}>
@@ -53,10 +76,19 @@ function HeroHeader() {
               organization to unlock innovation.
             </Box>
           </Box>
-          <Container>
-            <SpaceBetween direction="vertical" size="xs">
-              <Button variant="primary">Browse by Solution Category</Button>
-              <Button>Browse by Solution Industry</Button>
+          <Container header={<Header variant="h2">Create distribution</Header>}>
+            <SpaceBetween direction="vertical" size="xl">
+              <FormField stretch={true} label="Delivery method">
+                <Select
+                  ariaLabel="Demo select"
+                  selectedOption={selectedOption}
+                  options={selectOptions}
+                  onChange={event => setSelectedOption(event.detail.selectedOption)}
+                />
+              </FormField>
+              <Button href="#" variant="primary">
+                Next step
+              </Button>
             </SpaceBetween>
           </Container>
         </Grid>
@@ -316,38 +348,56 @@ const ContentTest = () => {
         <div className="custom-home__sidebar">
           <SpaceBetween size="xxl">
             <Container header={<Header variant="h2">Pricing (US)</Header>}>
-              {/* <SeparatedList
-                  ariaLabel="Pricing details"
-                  items={[
-                    <>
-                      <span>10 TB/month</span>
-                      <Box variant="span" color="text-body-secondary">
-                        $0.085 per GB
-                      </Box>
-                    </>,
-                    <>
-                      <span>100 TB/month</span>
-                      <Box variant="span" color="text-body-secondary">
-                        $0.065 per GB
-                      </Box>
-                    </>,
-                    <>
-                      <span>524 TB/month</span>
-                      <Box variant="span" color="text-body-secondary">
-                        $0.035 per GB
-                      </Box>
-                    </>,
-                    <>
-                      <span>4 PB/month</span>
-                      <Box variant="span" color="text-body-secondary">
-                        $0.025 per GB
-                      </Box>
-                    </>,
-                    <>
-                      <Link href="#">Cost calculator</Link>
-                    </>,
-                  ]}
-                /> */}
+              <SeparatedList
+                ariaLabel="Pricing details"
+                items={[
+                  <>
+                    <span>10 TB/month</span>
+                    <Box variant="span" color="text-body-secondary">
+                      $0.085 per GB
+                    </Box>
+                  </>,
+                  <>
+                    <span>100 TB/month</span>
+                    <Box variant="span" color="text-body-secondary">
+                      $0.065 per GB
+                    </Box>
+                  </>,
+                  <>
+                    <span>524 TB/month</span>
+                    <Box variant="span" color="text-body-secondary">
+                      $0.035 per GB
+                    </Box>
+                  </>,
+                  <>
+                    <span>4 PB/month</span>
+                    <Box variant="span" color="text-body-secondary">
+                      $0.025 per GB
+                    </Box>
+                  </>,
+                  <>
+                    <Link external={true} href="#">
+                      Cost calculator
+                    </Link>
+                  </>,
+                ]}
+              />
+            </Container>
+            <Container header={<Header info={<Icon name="external" size="medium" />}>Getting started</Header>}>
+              <SeparatedList
+                ariaLabel="Getting started"
+                items={[
+                  <>
+                    <Link href="#">What is Amazon CloudFront?</Link>
+                  </>,
+                  <>
+                    <Link href="#">Getting started with CloudFront</Link>
+                  </>,
+                  <>
+                    <Link href="#">Working with CloudFront distributions</Link>
+                  </>,
+                ]}
+              />
             </Container>
           </SpaceBetween>
         </div>
