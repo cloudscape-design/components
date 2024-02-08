@@ -17,14 +17,14 @@ describe('formatDateRange', () => {
         timeOffset: browser,
         expected: {
           iso: '2020-01-01 — 2020-01-02',
-          absolute: { 'en-US': 'January 1, 2020 — January 2, 2020' },
+          localized: { 'en-US': 'January 1, 2020 — January 2, 2020' },
         },
       },
       {
         startDate: '2020-01-01',
         endDate: '2020-01-02',
         timeOffset: berlin,
-        expected: { iso: '2020-01-01 — 2020-01-02', absolute: { 'en-US': 'January 1, 2020 — January 2, 2020' } },
+        expected: { iso: '2020-01-01 — 2020-01-02', localized: { 'en-US': 'January 1, 2020 — January 2, 2020' } },
       },
     ];
     describe.each(cases)(
@@ -38,7 +38,7 @@ describe('formatDateRange', () => {
         });
         test('Human-readable', () => {
           expect(formatDateRange({ startDate, endDate, timeOffset, format: 'long-localized', locale: 'en-US' })).toBe(
-            expected.absolute['en-US']
+            expected.localized['en-US']
           );
         });
       }
@@ -54,7 +54,7 @@ describe('formatDateRange', () => {
           timeOffset: berlin,
           expected: {
             iso: '2020-01-01T00:00:00+02:00 — 2020-01-01T12:00:00+02:00',
-            absolute: { 'en-US': 'January 1, 2020, 00:00:00 (UTC+2) — January 1, 2020, 12:00:00 (UTC+2)' },
+            localized: { 'en-US': 'January 1, 2020, 00:00:00 (UTC+2) — January 1, 2020, 12:00:00 (UTC+2)' },
           },
         },
         {
@@ -63,7 +63,7 @@ describe('formatDateRange', () => {
           timeOffset: newYork,
           expected: {
             iso: '2020-01-01T00:00:00-04:00 — 2020-01-01T12:00:00-04:00',
-            absolute: { 'en-US': 'January 1, 2020, 00:00:00 (UTC-4) — January 1, 2020, 12:00:00 (UTC-4)' },
+            localized: { 'en-US': 'January 1, 2020, 00:00:00 (UTC-4) — January 1, 2020, 12:00:00 (UTC-4)' },
           },
         },
         {
@@ -72,7 +72,7 @@ describe('formatDateRange', () => {
           timeOffset: regional,
           expected: {
             iso: '2020-01-01T00:00:00+00:00 — 2020-01-01T12:00:00+01:00',
-            absolute: { 'en-US': 'January 1, 2020, 00:00:00 (UTC) — January 1, 2020, 12:00:00 (UTC+1)' },
+            localized: { 'en-US': 'January 1, 2020, 00:00:00 (UTC) — January 1, 2020, 12:00:00 (UTC+1)' },
           },
         },
       ];
@@ -87,7 +87,7 @@ describe('formatDateRange', () => {
           });
           test('Human-readable', () => {
             expect(formatDateRange({ startDate, endDate, timeOffset, format: 'long-localized', locale: 'en-US' })).toBe(
-              expected.absolute['en-US']
+              expected.localized['en-US']
             );
           });
         }
@@ -102,7 +102,7 @@ describe('formatDateRange', () => {
           timeOffset: berlin,
           expected: {
             iso: '2020-01-01T00:00:00 — 2020-01-01T12:00:00',
-            absolute: { 'en-US': 'January 1, 2020, 00:00:00 — January 1, 2020, 12:00:00' },
+            localized: { 'en-US': 'January 1, 2020, 00:00:00 — January 1, 2020, 12:00:00' },
           },
         },
         {
@@ -111,7 +111,7 @@ describe('formatDateRange', () => {
           timeOffset: newYork,
           expected: {
             iso: '2020-01-01T00:00:00 — 2020-01-01T12:00:00',
-            absolute: { 'en-US': 'January 1, 2020, 00:00:00 — January 1, 2020, 12:00:00' },
+            localized: { 'en-US': 'January 1, 2020, 00:00:00 — January 1, 2020, 12:00:00' },
           },
         },
         {
@@ -120,7 +120,7 @@ describe('formatDateRange', () => {
           timeOffset: regional,
           expected: {
             iso: '2020-01-01T00:00:00 — 2020-01-01T12:00:00',
-            absolute: { 'en-US': 'January 1, 2020, 00:00:00 — January 1, 2020, 12:00:00' },
+            localized: { 'en-US': 'January 1, 2020, 00:00:00 — January 1, 2020, 12:00:00' },
           },
         },
       ];
@@ -146,7 +146,7 @@ describe('formatDateRange', () => {
                 format: 'long-localized',
                 locale: 'en-US',
               })
-            ).toBe(expected.absolute['en-US']);
+            ).toBe(expected.localized['en-US']);
           });
         }
       );
