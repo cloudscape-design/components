@@ -93,3 +93,25 @@
 .custom-home__header-sub-title {
   color: awsui.$color-text-home-header-secondary !important;
 }
+
+.separated-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.separated-list-item {
+  border-top: 1px solid awsui.$color-border-divider-secondary;
+  padding: 0.8rem 0;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  &:first-child {
+    padding-top: 0;
+    border-top: none;
+  }
+
+  &:last-child {
+    padding-bottom: 0;
+  }
+}
