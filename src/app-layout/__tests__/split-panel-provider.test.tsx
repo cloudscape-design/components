@@ -32,7 +32,7 @@ describe.each(['bottom', 'side'] as const)('position=%s', position => {
     isOpen: true,
     bottomOffset: 0,
     getMaxHeight: () => 500,
-    maxWidth: 500,
+    getMaxWidth: () => 500,
     isForcedPosition: false,
     leftOffset: 0,
     onPreferencesChange: () => {},
@@ -96,14 +96,19 @@ describe.each(['bottom', 'side'] as const)('position=%s', position => {
       </SplitPanelProvider>
     );
 
-    expect(reportSize).toHaveBeenCalledTimes(position === 'bottom' ? 2 : 1);
+    expect(reportSize).toHaveBeenCalledTimes(2);
     expect(reportSize).toHaveBeenLastCalledWith(500);
   });
 
   test('when minSize > maxSize, prefer minSize', async () => {
     const reportSize = jest.fn();
     await renderComponent(
-      <SplitPanelProvider {...defaultProviderProps} reportSize={reportSize} getMaxHeight={() => 150} maxWidth={150}>
+      <SplitPanelProvider
+        {...defaultProviderProps}
+        reportSize={reportSize}
+        getMaxHeight={() => 150}
+        getMaxWidth={() => 150}
+      >
         <SplitPanel {...defaultSplitPanelProps} />
       </SplitPanelProvider>
     );
@@ -148,7 +153,12 @@ describe.each(['bottom', 'side'] as const)('position=%s', position => {
   test('onResize handler not called when resize is invalid', async () => {
     const onResize = jest.fn();
     const { wrapper } = await renderComponent(
-      <SplitPanelProvider {...defaultProviderProps} onResize={onResize} getMaxHeight={() => 100} maxWidth={100}>
+      <SplitPanelProvider
+        {...defaultProviderProps}
+        onResize={onResize}
+        getMaxHeight={() => 100}
+        getMaxWidth={() => 100}
+      >
         <SplitPanel {...defaultSplitPanelProps} />
       </SplitPanelProvider>
     );

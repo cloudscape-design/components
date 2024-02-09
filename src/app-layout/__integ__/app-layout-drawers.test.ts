@@ -184,7 +184,7 @@ for (const visualRefresh of ['true', 'false']) {
     test(
       'updates side split panel position when using different width drawers',
       setupTest(
-        { visualRefresh, splitPanelPosition: 'side', screenSize: { ...viewports.desktop, width: 1450 } },
+        { visualRefresh, splitPanelPosition: 'side', screenSize: { ...viewports.desktop, width: 1500 } },
         async page => {
           await page.openFirstDrawer();
           await page.openSplitPanel();

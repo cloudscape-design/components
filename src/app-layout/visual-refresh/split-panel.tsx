@@ -37,7 +37,7 @@ function SplitPanel({ children }: React.PropsWithChildren<unknown>) {
       // If the page is likely zoomed in at 200%, allow the split panel to fill the content area.
       return availableHeight < 400 ? availableHeight - 40 : availableHeight - 250;
     },
-    maxWidth: typeof document !== 'undefined' ? document.documentElement.clientWidth : Number.POSITIVE_INFINITY,
+    getMaxWidth: () => document.documentElement.clientWidth,
     isForcedPosition: isSplitPanelForcedPosition,
     isOpen: isSplitPanelOpen,
     leftOffset: 0,
