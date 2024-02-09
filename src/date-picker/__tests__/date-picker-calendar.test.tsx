@@ -65,7 +65,14 @@ describe('Date picker calendar', () => {
       .map(day => day.getElement().textContent!.trim());
   };
 
-  const findToday = (wrapper: DatePickerWrapper): ElementWrapper<HTMLElement> => {
+  const findCalendarDates = (wrapper: DatePickerWrapper) => {
+    return wrapper
+      .findCalendar()!
+      .findAll(`.${calendarStyles['calendar-date']} .${calendarStyles['date-inner']}`)
+      .map(date => date.getElement().textContent!.trim());
+  };
+
+  const findCurrentDate = (wrapper: DatePickerWrapper): ElementWrapper<HTMLElement> => {
     return wrapper.findCalendar()!.find(`.${calendarStyles['calendar-date-current']}`)!;
   };
 
@@ -134,41 +141,85 @@ describe('Date picker calendar', () => {
   });
 
   describe('localization', () => {
-    test('should render calendar with the default locale', () => {
-      const { wrapper } = renderDatePicker();
-      wrapper.findOpenCalendarButton().click();
-      expect(findCalendarHeaderText(wrapper)).toBe('March 2018');
-      expect(findCalendarWeekdays(wrapper)).toEqual(['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']);
+    describe('day granularity', () => {
+      test('should render calendar with the default locale', () => {
+        const { wrapper } = renderDatePicker();
+        wrapper.findOpenCalendarButton().click();
+        expect(findCalendarHeaderText(wrapper)).toBe('March 2018');
+        expect(findCalendarWeekdays(wrapper)).toEqual(['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']);
+      });
+
+      test('should allow country override', () => {
+        const { wrapper } = renderDatePicker({ ...defaultProps, locale: 'en-GB' });
+        wrapper.findOpenCalendarButton().click();
+        expect(findCalendarHeaderText(wrapper)).toBe('March 2018');
+        expect(findCalendarWeekdays(wrapper)).toEqual(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']);
+      });
+
+      test('should allow locale override', () => {
+        const locale = 'de-DE';
+        const localStringMock = jest.fn().mockReturnValue('März 2018');
+        const oldImpl = window.Date.prototype.toLocaleDateString;
+        window.Date.prototype.toLocaleDateString = localStringMock;
+
+        const { wrapper } = renderDatePicker({ ...defaultProps, locale });
+        wrapper.findOpenCalendarButton().click();
+        expect(findCalendarHeaderText(wrapper)).toBe('März 2018');
+        // we render 2018/03/22 which results in
+        // -> 35 (5 weeks á 7 days) + 7 (weekday names) * 2 + 1 (month name)
+        expect(localStringMock).toHaveBeenCalledTimes(51);
+        expect(localStringMock).toHaveBeenCalledWith(locale, expect.any(Object));
+        window.Date.prototype.toLocaleDateString = oldImpl;
+      });
+
+      test('should override start day of week', () => {
+        const { wrapper } = renderDatePicker({ ...defaultProps, startOfWeek: 4 });
+        wrapper.findOpenCalendarButton().click();
+        expect(findCalendarHeaderText(wrapper)).toBe('March 2018');
+        expect(findCalendarWeekdays(wrapper)).toEqual(['Thu', 'Fri', 'Sat', 'Sun', 'Mon', 'Tue', 'Wed']);
+      });
     });
 
-    test('should allow country override', () => {
-      const { wrapper } = renderDatePicker({ ...defaultProps, locale: 'en-GB' });
-      wrapper.findOpenCalendarButton().click();
-      expect(findCalendarHeaderText(wrapper)).toBe('March 2018');
-      expect(findCalendarWeekdays(wrapper)).toEqual(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']);
-    });
+    describe('month granularity', () => {
+      test('should render calendar with the default locale', () => {
+        const { wrapper } = renderDatePicker({ ...defaultProps, granularity: 'month' });
+        wrapper.findOpenCalendarButton().click();
+        expect(findCalendarHeaderText(wrapper)).toBe('2018');
+        expect(findCalendarDates(wrapper)).toEqual([
+          'Jan',
+          'Feb',
+          'Mar',
+          'Apr',
+          'May',
+          'Jun',
+          'Jul',
+          'Aug',
+          'Sep',
+          'Oct',
+          'Nov',
+          'Dec',
+        ]);
+      });
 
-    test('should allow locale override', () => {
-      const locale = 'de-DE';
-      const localStringMock = jest.fn().mockReturnValue('März 2018');
-      const oldImpl = window.Date.prototype.toLocaleDateString;
-      window.Date.prototype.toLocaleDateString = localStringMock;
-
-      const { wrapper } = renderDatePicker({ ...defaultProps, locale });
-      wrapper.findOpenCalendarButton().click();
-      expect(findCalendarHeaderText(wrapper)).toBe('März 2018');
-      // we render 2018/03/22 which results in
-      // -> 35 (5 weeks á 7 days) + 7 (weekday names) * 2 + 1 (month name)
-      expect(localStringMock).toHaveBeenCalledTimes(51);
-      expect(localStringMock).toHaveBeenCalledWith(locale, expect.any(Object));
-      window.Date.prototype.toLocaleDateString = oldImpl;
-    });
-
-    test('should override start day of week', () => {
-      const { wrapper } = renderDatePicker({ ...defaultProps, startOfWeek: 4 });
-      wrapper.findOpenCalendarButton().click();
-      expect(findCalendarHeaderText(wrapper)).toBe('March 2018');
-      expect(findCalendarWeekdays(wrapper)).toEqual(['Thu', 'Fri', 'Sat', 'Sun', 'Mon', 'Tue', 'Wed']);
+      test('should allow locale override', () => {
+        const { wrapper } = renderDatePicker({ ...defaultProps, granularity: 'month', locale: 'de' });
+        wrapper.findOpenCalendarButton().click();
+        expect(findCalendarHeaderText(wrapper)).toBe('2018');
+        expect(findCalendarDates(wrapper)).toEqual([
+          'Jan',
+          'Feb',
+          'Mär',
+          'Apr',
+          'Mai',
+          'Jun',
+          'Jul',
+          'Aug',
+          'Sep',
+          'Okt',
+          'Nov',
+          'Dez',
+        ]);
+      });
     });
   });
 
@@ -493,7 +544,7 @@ describe('Date picker calendar', () => {
           i18nStrings: { todayAriaLabel: 'TEST TODAY' },
         });
         wrapper.findOpenCalendarButton().click();
-        expect(findToday(wrapper).find(`.${screenreaderOnlyStyles.root}`)?.getElement().textContent).toMatch(
+        expect(findCurrentDate(wrapper).find(`.${screenreaderOnlyStyles.root}`)?.getElement().textContent).toMatch(
           'TEST TODAY'
         );
       });
@@ -501,7 +552,7 @@ describe('Date picker calendar', () => {
       test('from deprecated top-level property', () => {
         const { wrapper } = renderDatePicker({ value: '', todayAriaLabel: 'TEST TODAY' });
         wrapper.findOpenCalendarButton().click();
-        expect(findToday(wrapper).find(`.${screenreaderOnlyStyles.root}`)?.getElement().textContent).toMatch(
+        expect(findCurrentDate(wrapper).find(`.${screenreaderOnlyStyles.root}`)?.getElement().textContent).toMatch(
           'TEST TODAY'
         );
       });
@@ -523,7 +574,7 @@ describe('Date picker calendar', () => {
     test('should add aria-current="date" to the date of today in the calendar', () => {
       const { wrapper } = renderDatePicker({ ...defaultProps, value: '' });
       wrapper.findOpenCalendarButton().click();
-      expect(findToday(wrapper).getElement()!.getAttribute('aria-current')).toBe('date');
+      expect(findCurrentDate(wrapper).getElement()!.getAttribute('aria-current')).toBe('date');
     });
 
     describe('should add `nextMonthAriaLabel` to appropriate button in the calendar', () => {
