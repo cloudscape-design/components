@@ -20,7 +20,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundButtonPrimaryDefault: { light: '{colorBlue600}', dark: '{colorBlue400}' },
   colorBackgroundButtonPrimaryDisabled: { light: '{colorWhite}', dark: '{colorGrey700}' },
   colorBackgroundButtonPrimaryHover: { light: '{colorBlue700}', dark: '{colorBlue500}' },
-  colorBackgroundCalendarToday: { dark: '{colorGrey900}' },
+  colorBackgroundCalendarCurrentDate: { dark: '{colorGrey900}' },
   colorBackgroundCellShaded: { light: '{colorGrey150}', dark: '{colorGrey900}' },
   colorBackgroundCodeEditorLoading: '{colorBackgroundCodeEditorStatusBar}',
   colorBackgroundContainerContent: { dark: '{colorGrey700}' },

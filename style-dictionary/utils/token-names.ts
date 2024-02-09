@@ -229,7 +229,7 @@ export type ColorsTokenName =
   | 'colorBackgroundButtonPrimaryDefault'
   | 'colorBackgroundButtonPrimaryDisabled'
   | 'colorBackgroundButtonPrimaryHover'
-  | 'colorBackgroundCalendarToday'
+  | 'colorBackgroundCalendarCurrentDate'
   | 'colorBackgroundCellShaded'
   | 'colorBackgroundCodeEditorGutterActiveLineDefault'
   | 'colorBackgroundCodeEditorGutterActiveLineError'

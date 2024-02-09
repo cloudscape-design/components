@@ -25,7 +25,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundButtonPrimaryDefault: '{colorBorderButtonNormalDefault}',
   colorBackgroundButtonPrimaryDisabled: { light: '{colorGrey200}', dark: '{colorGrey650}' },
   colorBackgroundButtonPrimaryHover: '{colorBorderButtonNormalHover}',
-  colorBackgroundCalendarToday: { light: '{colorGrey150}', dark: '{colorGrey650}' },
+  colorBackgroundCalendarCurrentDate: { light: '{colorGrey150}', dark: '{colorGrey650}' },
   colorBackgroundCellShaded: { light: '{colorGrey125}', dark: '{colorGrey750}' },
   colorBackgroundCodeEditorGutterActiveLineDefault: { light: '{colorGrey550}', dark: '{colorGrey500}' },
   colorBackgroundCodeEditorGutterActiveLineError: '{colorTextStatusError}',
