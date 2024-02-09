@@ -8,7 +8,9 @@ import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 
 export default function Breadcrumbs() {
-  const { breadcrumbs, hasStickyBackground, isMobile } = useAppLayoutInternals();
+  const { breadcrumbs, hasStickyBackground, isMobile, darkHeader } = useAppLayoutInternals();
+
+  const removeHighContrastHeader = darkHeader ? 'awsui-context-content-header' : getContentHeaderClassName();
 
   if (isMobile || !breadcrumbs) {
     return null;
@@ -22,7 +24,8 @@ export default function Breadcrumbs() {
         {
           [styles['has-sticky-background']]: hasStickyBackground,
         },
-        getContentHeaderClassName()
+        //getContentHeaderClassName()
+        removeHighContrastHeader
       )}
     >
       {breadcrumbs}
