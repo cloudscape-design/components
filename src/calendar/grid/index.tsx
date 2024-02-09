@@ -170,7 +170,7 @@ export default function Grid({
                     [styles['calendar-date-current-page']]: isSameMonth(date, baseDate),
                     [styles['calendar-date-enabled']]: isEnabled,
                     [styles['calendar-date-selected']]: isSelected,
-                    [styles['calendar-date-today']]: isDateOnSameDay,
+                    [styles['calendar-date-current']]: isDateOnSameDay,
                   })}
                 >
                   <span className={styles['date-inner']} aria-hidden="true">
