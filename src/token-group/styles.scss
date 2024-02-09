@@ -12,14 +12,19 @@
   @include styles.styles-reset;
 
   &.has-items:not(.no-padding) {
-    padding-top: awsui.$space-xs;
+    padding-block-start: awsui.$space-xs;
   }
 }
 
 .dismiss-button {
-  margin: -1px -1px 0 awsui.$space-xxs;
-  border: 1px solid transparent;
-  padding: 0 awsui.$space-xxs;
+  margin-block-start: -1px;
+  margin-block-end: 0;
+  margin-inline-start: awsui.$space-xxs;
+  margin-inline-end: -1px;
+  border-block: 1px solid transparent;
+  border-inline: 1px solid transparent;
+  padding-block: 0;
+  padding-inline: awsui.$space-xxs;
   color: awsui.$color-text-button-inline-icon-default;
   background-color: transparent;
 
@@ -39,26 +44,33 @@
 }
 
 .token {
-  height: 100%;
+  block-size: 100%;
   display: flex;
   flex-direction: column;
   gap: awsui.$space-xxs;
 }
+
 .token-box {
-  height: 100%;
-  border: awsui.$border-field-width solid constants.$token-border-color;
-  padding: styles.$control-padding-vertical awsui.$space-xxs styles.$control-padding-vertical
-    styles.$control-padding-horizontal;
+  block-size: 100%;
+  border-block: awsui.$border-field-width solid constants.$token-border-color;
+  border-inline: awsui.$border-field-width solid constants.$token-border-color;
+  padding-block-start: styles.$control-padding-vertical;
+  padding-block-end: styles.$control-padding-vertical;
+  padding-inline-start: styles.$control-padding-horizontal;
+  padding-inline-end: awsui.$space-xxs;
   display: flex;
   align-items: flex-start;
   background: constants.$token-background;
-  border-radius: awsui.$border-radius-token;
+  border-start-start-radius: awsui.$border-radius-token;
+  border-start-end-radius: awsui.$border-radius-token;
+  border-end-start-radius: awsui.$border-radius-token;
+  border-end-end-radius: awsui.$border-radius-token;
   color: awsui.$color-text-body-default;
   box-sizing: border-box;
 }
 .token-box-error {
   border-color: awsui.$color-border-status-error;
-  border-left-width: awsui.$border-invalid-width;
+  border-inline-start-width: awsui.$border-invalid-width;
 
   > .dismiss-button {
     color: awsui.$color-text-interactive-default;

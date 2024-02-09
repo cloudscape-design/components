@@ -12,19 +12,23 @@ $separator-color: awsui.$color-border-tabs-divider;
 $label-horizontal-spacing: awsui.$space-l;
 
 .tabs-header {
-  margin: 0;
-  padding: 0;
+  margin-block: 0;
+  margin-inline: 0;
+  padding-block: 0;
+  padding-inline: 0;
   display: flex;
 }
 
 .tabs-header-list {
-  margin: 0;
-  padding: 0;
+  margin-block: 0;
+  margin-inline: 0;
+  padding-block: 0;
+  padding-inline: 0;
   display: flex;
   overflow-x: scroll;
   overflow-y: hidden;
   position: relative;
-  width: 100%;
+  inline-size: 100%;
   // do not use pointer-events none because it disables scroll by sliding
 
   // Hide scrollbar in all browsers
@@ -36,18 +40,20 @@ $label-horizontal-spacing: awsui.$space-l;
 }
 
 .pagination-button {
-  margin: awsui.$space-scaled-s 0;
-  padding: 0 awsui.$space-xxs;
+  margin-block: awsui.$space-scaled-s;
+  margin-inline: 0;
+  padding-block: 0;
+  padding-inline: awsui.$space-xxs;
   display: flex;
   &-left {
-    border-right: awsui.$border-divider-section-width solid awsui.$color-border-control-disabled;
+    border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-control-disabled;
     &-scrollable {
       z-index: 1;
       box-shadow: 5px 0px 4px -3px awsui.$color-border-tabs-shadow, 1px 0px 0px 0px awsui.$color-border-tabs-shadow;
     }
   }
   &-right {
-    border-left: awsui.$border-divider-section-width solid awsui.$color-border-control-disabled;
+    border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-control-disabled;
     &-scrollable {
       z-index: 1;
       box-shadow: -5px 0px 4px -3px awsui.$color-border-tabs-shadow, -1px 0px 0px 0 awsui.$color-border-tabs-shadow;
@@ -58,11 +64,12 @@ $label-horizontal-spacing: awsui.$space-l;
 .tabs-tab {
   // Clear list formatting that comes with list item
   list-style: none;
-  padding: 0;
+  padding-block: 0;
+  padding-inline: 0;
 
   flex-shrink: 0;
   display: flex;
-  max-width: calc(90% - #{$label-horizontal-spacing});
+  max-inline-size: calc(90% - #{$label-horizontal-spacing});
 
   & > button {
     background-color: transparent;
@@ -72,8 +79,9 @@ $label-horizontal-spacing: awsui.$space-l;
 .tabs-tab-label {
   display: flex;
   align-items: center;
-  padding: awsui.$space-scaled-2x-xxs $label-horizontal-spacing;
-  text-align: left;
+  padding-block: awsui.$space-scaled-2x-xxs;
+  padding-inline: $label-horizontal-spacing;
+  text-align: start;
   position: relative;
 
   @include styles.text-wrapping;
@@ -82,8 +90,8 @@ $label-horizontal-spacing: awsui.$space-l;
 .tabs-tab:not(:last-child) {
   & > a > .tabs-tab-label,
   & > button > .tabs-tab-label {
-    margin-right: calc(-1 * #{awsui.$border-divider-section-width});
-    border-right: awsui.$border-divider-section-width solid $separator-color;
+    margin-inline-end: calc(-1 * #{awsui.$border-divider-section-width});
+    border-inline-end: awsui.$border-divider-section-width solid $separator-color;
   }
 }
 
@@ -93,16 +101,21 @@ $label-horizontal-spacing: awsui.$space-l;
   align-items: stretch;
   text-decoration: none;
   cursor: pointer;
-  padding: calc(#{awsui.$space-scaled-s} - 1px) 0 awsui.$space-scaled-s 0;
-  margin-top: 1px;
-  border: awsui.$border-divider-section-width solid transparent;
+  padding-block-start: calc(#{awsui.$space-scaled-s} - 1px);
+  padding-block-end: awsui.$space-scaled-s;
+  padding-inline: 0;
+  margin-block-start: 1px;
+  border-block: awsui.$border-divider-section-width solid transparent;
+  border-inline: awsui.$border-divider-section-width solid transparent;
 
   font-size: awsui.$font-tabs-size;
   line-height: awsui.$font-tabs-line-height;
   font-weight: awsui.$font-wayfinding-link-active-weight;
   color: awsui.$color-text-interactive-default;
   &.refresh {
-    padding: calc(awsui.$space-static-xs - 1px) 0 awsui.$space-static-xs 0;
+    padding-block-start: calc(awsui.$space-static-xs - 1px);
+    padding-block-end: awsui.$space-static-xs;
+    padding-inline: 0;
   }
 
   &:hover {
@@ -119,26 +132,26 @@ $label-horizontal-spacing: awsui.$space-l;
     @include styles.focus-highlight(awsui.$space-tabs-focus-outline-gutter);
     & > a > .tabs-tab-label,
     & > button > .tabs-tab-label {
-      border-right-color: transparent;
+      border-inline-end-color: transparent;
     }
   }
 }
 
 // Remediate focus shadow
 .tabs-tab:first-child {
-  margin-left: 1px;
+  margin-inline-start: 1px;
   & > a > .tabs-tab-label,
   & > button > .tabs-tab-label {
-    padding-left: calc(#{$label-horizontal-spacing} - 1px);
+    padding-inline-start: calc(#{$label-horizontal-spacing} - 1px);
   }
 }
 
 // Remediate focus shadow
 .tabs-tab:last-child {
-  margin-right: 1px;
+  margin-inline-end: 1px;
   & > a > .tabs-tab-label,
   & > button > .tabs-tab-label {
-    padding-right: calc(#{$label-horizontal-spacing} - 1px);
+    padding-inline-end: calc(#{$label-horizontal-spacing} - 1px);
   }
 }
 
@@ -157,13 +170,15 @@ $label-horizontal-spacing: awsui.$space-l;
   &:after {
     content: '';
     position: absolute;
-    left: 0;
-    width: 100%;
-    bottom: calc(-1 * #{awsui.$border-divider-section-width});
-    height: awsui.$border-active-width;
-    border-radius: awsui.$border-radius-tabs-focus-ring;
+    inset-inline-start: 0;
+    inline-size: 100%;
+    inset-block-end: calc(-1 * #{awsui.$border-divider-section-width});
+    block-size: awsui.$border-active-width;
+    border-start-start-radius: awsui.$border-radius-tabs-focus-ring;
+    border-start-end-radius: awsui.$border-radius-tabs-focus-ring;
+    border-end-start-radius: awsui.$border-radius-tabs-focus-ring;
+    border-end-end-radius: awsui.$border-radius-tabs-focus-ring;
     background: awsui.$color-border-tabs-underline;
-
     opacity: 0;
   }
 
@@ -184,5 +199,5 @@ $label-horizontal-spacing: awsui.$space-l;
 }
 
 .tabs-header-with-divider {
-  border-bottom: awsui.$border-divider-section-width solid $separator-color;
+  border-block-end: awsui.$border-divider-section-width solid $separator-color;
 }

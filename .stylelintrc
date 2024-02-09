@@ -65,7 +65,14 @@
         "./src/p*/**/*.scss",
         "./src/q*/**/*.scss",
         "./src/r*/**/*.scss",
-        "./src/s*/**/*.scss"
+        "./src/s*/**/*.scss",
+        "./src/t*/**/*.scss",
+        "./src/u*/**/*.scss",
+        "./src/v*/**/*.scss",
+        "./src/w*/**/*.scss",
+        "./src/x*/**/*.scss",
+        "./src/y*/**/*.scss",
+        "./src/z*/**/*.scss"
       ],
       "rules": {
         "property-disallowed-list": ["border", "border-radius", "border-style", "margin", "padding"],
