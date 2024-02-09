@@ -109,7 +109,7 @@ describe('aria labels', () => {
   describe('should add `todayAriaLabel` to today', () => {
     const getTodayLabelText = (container: HTMLElement) => {
       return container
-        .querySelector(`.${styles['calendar-day-today']}`)!
+        .querySelector(`.${styles['calendar-date-current']}`)!
         .querySelector(`.${screenreaderOnlyStyles.root}`)!.textContent;
     };
 

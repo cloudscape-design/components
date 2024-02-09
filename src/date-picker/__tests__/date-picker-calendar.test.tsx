@@ -16,11 +16,9 @@ describe('Date picker calendar', () => {
   const outsideId = 'outside';
   const defaultProps: DatePickerProps = {
     i18nStrings: {
-      i18nStrings: {
-        todayAriaLabel: 'Today',
-        nextMonthAriaLabel: 'next month',
-        previousMonthAriaLabel: 'prev month',
-      },
+      todayAriaLabel: 'Today',
+      nextMonthAriaLabel: 'next month',
+      previousMonthAriaLabel: 'prev month',
     },
     value: '2018-03-22',
   };
