@@ -64,7 +64,7 @@ describe('Date picker calendar', () => {
   };
 
   const findToday = (wrapper: DatePickerWrapper): ElementWrapper<HTMLElement> => {
-    return wrapper.findCalendar()!.find(`.${calendarStyles['calendar-day-today']}`)!;
+    return wrapper.findCalendar()!.find(`.${calendarStyles['calendar-date-current']}`)!;
   };
 
   beforeEach(() => {
