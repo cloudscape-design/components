@@ -8,13 +8,13 @@
 // Colors
 $header-color: awsui.$color-text-dropdown-item-default;
 $grid-border-color: awsui.$color-border-calendar-grid;
-$grid-day-color: awsui.$color-text-dropdown-item-default;
-$grid-day-name-color: awsui.$color-text-calendar-month;
-$grid-disabled-day-color: awsui.$color-text-dropdown-item-disabled;
+$grid-date-color: awsui.$color-text-dropdown-item-default;
+$grid-date-name-color: awsui.$color-text-calendar-month;
+$grid-disabled-date-color: awsui.$color-text-dropdown-item-disabled;
 $grid-nonmonth-day-color: awsui.$color-text-dropdown-item-secondary;
 $grid-hover-background-color: awsui.$color-background-dropdown-item-hover;
 $grid-hover-border-color: awsui.$color-border-dropdown-item-hover;
-$grid-today-background-color: awsui.$color-background-calendar-today;
+$grid-current-date-background-color: awsui.$color-background-calendar-today;
 $grid-selected-text-color: awsui.$color-background-control-default;
 $grid-selected-background-color: awsui.$color-background-control-checked;
 $grid-selected-border-color: awsui.$color-background-control-checked;

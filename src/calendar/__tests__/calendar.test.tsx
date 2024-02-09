@@ -29,12 +29,12 @@ function renderCalendar(props: CalendarProps = defaultProps) {
 
 function findCalendarWeekdays(wrapper: CalendarWrapper) {
   return wrapper
-    .findAll(`.${styles['calendar-day-header']} :not(.${screenreaderOnlyStyles.root})`)
+    .findAll(`.${styles['calendar-date-header']} :not(.${screenreaderOnlyStyles.root})`)
     .map(day => day.getElement().textContent!.trim());
 }
 
 function getDayText(wrapper: CalendarWrapper, row: number, col: number) {
-  return wrapper.findDateAt(row, col).findByClassName(styles['day-inner'])!.getElement().textContent;
+  return wrapper.findDateAt(row, col).findByClassName(styles['date-inner'])!.getElement().textContent;
 }
 
 describe('Calendar', () => {
