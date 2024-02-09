@@ -662,6 +662,12 @@ Individual properties will always take precedence over the default coming from t
       "type": "string",
     },
     Object {
+      "description": "If true, Breadcrumb and Flashbar background get dark mode context.",
+      "name": "darkHeader",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "deprecatedTag": "This layout is being phased out and may miss some features.",
       "description": "Activates a backwards-compatibility mode for applications with non-fixed headers and footers.",
       "name": "disableBodyScroll",
