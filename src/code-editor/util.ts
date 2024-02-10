@@ -13,7 +13,7 @@ const DEFAULT_DARK_THEME: typeof DarkThemes[number]['value'] = 'cloud_editor_dar
 const FALLBACK_LIGHT_THEME: typeof LightThemes[number]['value'] = 'dawn';
 const FALLBACK_DARK_THEME: typeof DarkThemes[number]['value'] = 'tomorrow_night_bright';
 
-function isAceVersionAbove(ace: any, minVersion: [number, number, number]): boolean {
+function isAceVersionAtLeast(ace: any, minVersion: [number, number, number]): boolean {
   // Split semantic version numbers. We don't need a full semver parser for this.
   const semanticVersion = ace?.version?.split('.').map((part: string) => {
     const parsed = parseInt(part);
@@ -32,11 +32,11 @@ function isAceVersionAbove(ace: any, minVersion: [number, number, number]): bool
 }
 
 export function supportsKeyboardAccessibility(ace: any): boolean {
-  return isAceVersionAbove(ace, [1, 23, 0]);
+  return isAceVersionAtLeast(ace, [1, 23, 0]);
 }
 
 export function supportsCloudEditorThemes(ace: any): boolean {
-  return isAceVersionAbove(ace, [1, 32, 0]);
+  return isAceVersionAtLeast(ace, [1, 32, 0]);
 }
 
 export function getDefaultConfig(ace: any): Partial<Ace.EditorOptions> {
