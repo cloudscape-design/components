@@ -7,7 +7,7 @@ import {
   findActiveDrawerLandmark,
   getActiveDrawerWidth,
   isDrawerTriggerWithBadge,
-  singleDrawer,
+  testDrawer,
 } from './utils';
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import { BetaDrawersProps } from '../../../lib/components/app-layout/drawer/interfaces';
@@ -24,7 +24,6 @@ jest.mock('@cloudscape-design/component-toolkit', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit'),
   useContainerQuery: () => [1300, () => {}],
 }));
-jest.mock('../../../lib/components/app-layout/utils/use-document-width', () => () => 1024);
 
 async function renderComponent(jsx: React.ReactElement) {
   const { container, rerender } = render(jsx);
@@ -162,7 +161,7 @@ describeEachAppLayout(size => {
       ...drawerDefaults,
       defaultSize: 400,
     });
-    const { wrapper } = await renderComponent(<AppLayout navigationOpen={false} />);
+    const { wrapper } = await renderComponent(<AppLayout />);
     wrapper.findToolsToggle()!.click();
     // always full-screen on mobile
     expect(getActiveDrawerWidth(wrapper)).toEqual(size === 'desktop' ? '290px' : '');
@@ -228,7 +227,7 @@ describeEachAppLayout(size => {
 
     expect(wrapper.findTools()).toBeFalsy();
 
-    act(() => ref!.openTools());
+    ref!.openTools();
     expect(wrapper.findTools().getElement()).toHaveTextContent('Tools content');
 
     wrapper.findToolsClose().click();
@@ -413,14 +412,10 @@ describeEachAppLayout(size => {
   test('updates active drawer id in controlled mode', async () => {
     awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, defaultActive: true });
     const onChange = jest.fn();
-    const drawers: { drawers: BetaDrawersProps } = {
-      drawers: {
-        ...singleDrawer.drawers,
-        onChange: event => onChange(event.detail),
-      },
-    };
-    const { wrapper } = await renderComponent(<AppLayout contentType="form" {...(drawers as any)} />);
-    expect(onChange).toHaveBeenCalledWith(drawerDefaults.id);
+    const { wrapper } = await renderComponent(
+      <AppLayout drawers={[testDrawer]} onDrawerChange={event => onChange(event.detail)} />
+    );
+    expect(onChange).toHaveBeenCalledWith({ activeDrawerId: drawerDefaults.id });
     expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('runtime drawer content');
   });
 

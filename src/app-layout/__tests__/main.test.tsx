@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import { waitFor } from '@testing-library/react';
-import { isDrawerClosed, renderComponent, singleDrawer } from './utils';
+import { isDrawerClosed, renderComponent, testDrawer } from './utils';
 import AppLayout from '../../../lib/components/app-layout';
 import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
 import mobileStyles from '../../../lib/components/app-layout/mobile-toolbar/styles.css.js';
@@ -80,33 +80,25 @@ describe('drawers', () => {
 
   test('property is controlled', () => {
     const onChange = jest.fn();
-    const drawers: any = {
-      drawers: {
-        onChange: onChange,
-        activeDrawerId: null,
-        items: singleDrawer.drawers.items,
-      },
-    };
-
-    const drawersOpen: any = {
-      drawers: {
-        onChange: onChange,
-        activeDrawerId: 'security',
-        items: singleDrawer.drawers.items,
-      },
-    };
-
-    const { wrapper, rerender } = renderComponent(<AppLayout toolsHide={true} contentType="form" {...drawers} />);
+    const { wrapper, rerender } = renderComponent(
+      <AppLayout activeDrawerId={null} onDrawerChange={event => onChange(event.detail)} drawers={[testDrawer]} />
+    );
 
     expect(findElement(wrapper)).toBeNull();
     findToggle(wrapper).click();
-    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: 'security' }));
+    expect(onChange).toHaveBeenCalledWith({ activeDrawerId: 'security' });
 
-    rerender(<AppLayout contentType="form" {...drawersOpen} />);
+    rerender(
+      <AppLayout
+        activeDrawerId={testDrawer.id}
+        onDrawerChange={event => onChange(event.detail)}
+        drawers={[testDrawer]}
+      />
+    );
 
     expect(findElement(wrapper)).not.toBeNull();
     findClose(wrapper).click();
-    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: null }));
+    expect(onChange).toHaveBeenCalledWith({ activeDrawerId: null });
   });
 });
 

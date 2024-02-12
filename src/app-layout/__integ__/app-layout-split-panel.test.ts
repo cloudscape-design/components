@@ -218,7 +218,7 @@ test(
   { url: '#/light/app-layout/with-split-panel', name: 'paddings enabled' },
 ].forEach(({ url, name }) => {
   test(
-    `should not allow resize split panel beyond min and max limits (side position) (${name})`,
+    `should not allow resize split panel beyond min and max limits (side position) (${name})}`,
     setupTest(async page => {
       await page.openPanel();
       await page.switchPosition('side');

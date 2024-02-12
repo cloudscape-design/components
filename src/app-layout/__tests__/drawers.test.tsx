@@ -4,16 +4,13 @@ import React from 'react';
 import {
   describeEachAppLayout,
   renderComponent,
-  singleDrawer,
+  testDrawer,
   manyDrawers,
   manyDrawersWithBadges,
   findActiveDrawerLandmark,
-  singleDrawerOpen,
-  singleDrawerPublic,
 } from './utils';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
-import { BetaDrawersProps } from '../../../lib/components/app-layout/drawer/interfaces';
 import { render, act } from '@testing-library/react';
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 
@@ -30,7 +27,7 @@ jest.mock('@cloudscape-design/component-toolkit', () => ({
 
 describeEachAppLayout(size => {
   test(`should not render drawer when it is not defined`, () => {
-    const { wrapper, rerender } = renderComponent(<AppLayout toolsHide={true} drawers={singleDrawerPublic} />);
+    const { wrapper, rerender } = renderComponent(<AppLayout toolsHide={true} drawers={[testDrawer]} />);
     expect(wrapper.findDrawersTriggers()).toHaveLength(1);
     rerender(<AppLayout />);
     expect(wrapper.findDrawersTriggers()).toHaveLength(0);
@@ -50,7 +47,7 @@ describeEachAppLayout(size => {
   });
 
   test('ignores tools when drawers API is used', () => {
-    const { wrapper } = renderComponent(<AppLayout tools="Test" drawers={singleDrawerPublic} />);
+    const { wrapper } = renderComponent(<AppLayout tools="Test" drawers={[testDrawer]} />);
 
     expect(wrapper.findToolsToggle()).toBeFalsy();
     expect(wrapper.findDrawersTriggers()).toHaveLength(1);
@@ -81,7 +78,7 @@ describeEachAppLayout(size => {
   });
 
   test('renders aria-labels', async () => {
-    const { wrapper } = await renderComponent(<AppLayout drawers={singleDrawerPublic} />);
+    const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
     expect(wrapper.findDrawerTriggerById('security')!.getElement()).toHaveAttribute(
       'aria-label',
       'Security trigger button'
@@ -92,19 +89,18 @@ describeEachAppLayout(size => {
   });
 
   test('renders resize only on resizable drawer', async () => {
-    const drawers: { drawers: BetaDrawersProps } = {
-      drawers: {
-        items: [
-          singleDrawer.drawers.items[0],
+    const { wrapper } = await renderComponent(
+      <AppLayout
+        drawers={[
+          testDrawer,
           {
-            ...singleDrawer.drawers.items[0],
+            ...testDrawer,
             id: 'security-resizable',
             resizable: true,
           },
-        ],
-      },
-    };
-    const { wrapper } = await renderComponent(<AppLayout contentType="form" {...(drawers as any)} />);
+        ]}
+      />
+    );
 
     wrapper.findDrawerTriggerById('security')!.click();
     expect(wrapper.findActiveDrawerResizeHandle()).toBeFalsy();
@@ -123,7 +119,14 @@ describeEachAppLayout(size => {
 
   test('focuses drawer close button', () => {
     let ref: AppLayoutProps.Ref | null = null;
-    const { wrapper } = renderComponent(<AppLayout ref={newRef => (ref = newRef)} {...(singleDrawerOpen as any)} />);
+    const { wrapper } = renderComponent(
+      <AppLayout
+        ref={newRef => (ref = newRef)}
+        activeDrawerId={testDrawer.id}
+        drawers={[testDrawer]}
+        onDrawerChange={() => {}}
+      />
+    );
     expect(wrapper.findActiveDrawer()).toBeTruthy();
     act(() => ref!.focusActiveDrawer());
     expect(wrapper.findActiveDrawerCloseButton()!.getElement()).toHaveFocus();
@@ -135,7 +138,8 @@ describeEachAppLayout(size => {
       <AppLayout
         ref={newRef => (ref = newRef)}
         activeDrawerId={null}
-        drawers={singleDrawerPublic}
+        drawers={[testDrawer]}
+        onDrawerChange={() => {}}
         tools={<div>Tools</div>}
       />
     );
@@ -143,8 +147,9 @@ describeEachAppLayout(size => {
     rerender(
       <AppLayout
         ref={newRef => (ref = newRef)}
-        activeDrawerId={singleDrawerPublic[0].id}
-        drawers={singleDrawerPublic}
+        activeDrawerId={testDrawer.id}
+        drawers={[testDrawer]}
+        onDrawerChange={() => {}}
         tools={<div>Tools</div>}
       />
     );
@@ -154,17 +159,18 @@ describeEachAppLayout(size => {
   });
 
   test('registers public drawers api', () => {
-    const { wrapper } = renderComponent(<AppLayout drawers={singleDrawerPublic} />);
+    const { wrapper } = renderComponent(<AppLayout drawers={[testDrawer]} />);
     expect(wrapper.findDrawersTriggers()).toHaveLength(1);
   });
 
   testIf(size !== 'mobile')('aria-controls points to an existing drawer id', () => {
-    const { wrapper } = renderComponent(<AppLayout drawers={singleDrawerPublic} />);
+    const { wrapper } = renderComponent(<AppLayout drawers={[testDrawer]} />);
     const drawerTrigger = wrapper.findDrawerTriggerById('security')!;
     expect(drawerTrigger!.getElement()).not.toHaveAttribute('aria-controls');
 
     drawerTrigger.click();
     expect(drawerTrigger!.getElement()).toHaveAttribute('aria-controls', 'security');
+    console.log(wrapper.findActiveDrawer()!.getElement());
     expect(wrapper.findActiveDrawer()!.getElement()).toHaveAttribute('id', 'security');
   });
 });

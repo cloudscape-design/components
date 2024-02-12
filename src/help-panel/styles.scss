@@ -10,22 +10,29 @@
 .help-panel {
   @include styles.styles-reset;
   word-wrap: break-word;
-  padding: awsui.$space-scaled-l awsui.$space-panel-side-right 0 awsui.$space-panel-side-left;
+  padding-block-start: awsui.$space-scaled-l;
+  padding-block-end: 0;
+  padding-inline-end: awsui.$space-panel-side-right;
+  padding-inline-start: awsui.$space-panel-side-left;
 
   hr {
-    border: none;
-    border-top: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
-    margin: awsui.$space-scaled-xl calc(-1 * #{awsui.$space-xs});
+    border-block: none;
+    border-inline: none;
+    border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+    margin-block: awsui.$space-scaled-xl;
+    margin-inline: calc(-1 * #{awsui.$space-xs});
   }
 
   ol,
   ul {
-    padding-left: awsui.$space-l;
+    padding-inline-start: awsui.$space-l;
     list-style-position: outside;
-    margin: awsui.$space-s 0;
+    margin-block: awsui.$space-s;
+    margin-inline: 0;
   }
   li {
-    margin: awsui.$space-scaled-xxs 0;
+    margin-block: awsui.$space-scaled-xxs;
+    margin-inline: 0;
   }
 
   a,
@@ -35,9 +42,9 @@
   h5,
   pre,
   code {
-    margin: awsui.$space-xs 0;
-    padding-top: 0;
-    padding-bottom: 0;
+    margin-block: awsui.$space-xs;
+    margin-inline: 0;
+    padding-block: 0;
   }
 
   code {
@@ -46,23 +53,26 @@
 
   pre {
     @include styles.code-highlight;
-    padding: awsui.$space-xxs;
+    padding-block: awsui.$space-xxs;
+    padding-inline: awsui.$space-xxs;
   }
 
   dl {
-    margin: awsui.$space-s 0;
+    margin-block: awsui.$space-s;
+    margin-inline: 0;
     /* stylelint-disable-next-line selector-max-universal */
     * {
-      margin-top: 0;
-      margin-bottom: 0;
+      margin-block: 0;
     }
   }
   dt {
-    margin-top: awsui.$space-xs;
+    margin-block-start: awsui.$space-xs;
     font-weight: styles.$font-weight-bold;
   }
   dd {
-    margin: 0 0 awsui.$space-xs;
+    margin-block-start: 0;
+    margin-block-end: awsui.$space-xs;
+    margin-inline: 0;
   }
 
   h2,
@@ -70,19 +80,20 @@
   h4,
   h5,
   h6 {
-    margin-top: awsui.$space-xl;
+    margin-block-start: awsui.$space-xl;
     color: awsui.$color-text-heading-default;
   }
   // sets padding at the bottom of the panel
   & > :last-child {
-    margin-bottom: awsui.$space-scaled-xxxl;
+    margin-block-end: awsui.$space-scaled-xxxl;
   }
 
   // add basic font-sizes
   p {
     color: inherit;
     text-decoration: none;
-    margin: awsui.$space-s 0;
+    margin-block: awsui.$space-s;
+    margin-inline: 0;
   }
   h1 {
     @include styles.font-heading-xl;
@@ -107,24 +118,25 @@
   .header {
     @include styles.font-panel-header;
     color: awsui.$color-text-heading-default;
-    padding-bottom: awsui.$space-scaled-l;
-    padding-left: awsui.$space-panel-side-left;
+    padding-block-end: awsui.$space-scaled-l;
+    padding-inline: awsui.$space-panel-side-left calc(#{awsui.$space-xl} + #{awsui.$space-scaled-xxl});
     // padding to make sure the header doesn't overlap with the close icon
-    padding-right: calc(#{awsui.$space-xl} + #{awsui.$space-scaled-xxl});
-    border: none;
-    border-bottom: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
-    margin: 0 calc(-1 * #{awsui.$space-panel-side-right}) awsui.$space-scaled-l
-      calc(-1 * #{awsui.$space-panel-side-left});
+    border-block: none;
+    border-inline: none;
+    border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+    margin-block-start: 0;
+    margin-block-end: awsui.$space-scaled-l;
+    margin-inline-end: calc(-1 * #{awsui.$space-panel-side-right});
+    margin-inline-start: calc(-1 * #{awsui.$space-panel-side-left});
+
     h2,
     h3,
     h4,
     h5,
     h6 {
       @include styles.font-panel-header;
-      padding-top: 0;
-      padding-bottom: 0;
-      margin-top: 0;
-      margin-bottom: 0;
+      padding-block: 0;
+      margin-block: 0;
     }
   }
 }
@@ -137,7 +149,7 @@
   h4:first-child,
   h5:first-child,
   h6:first-child {
-    margin-top: 0;
+    margin-block-start: 0;
   }
 
   a {
@@ -147,15 +159,17 @@
 
 .footer {
   color: awsui.$color-text-body-secondary;
-  border-top: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
-  margin: awsui.$space-scaled-xl calc(-1 * #{awsui.$space-xs});
-  padding: 0 awsui.$space-s;
+  border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+  margin-block: awsui.$space-scaled-xl;
+  margin-inline: calc(-1 * #{awsui.$space-xs});
+  padding-block: 0;
+  padding-inline: awsui.$space-s;
   > :first-child {
-    margin-top: awsui.$space-scaled-xl;
+    margin-block-start: awsui.$space-scaled-xl;
   }
   ul {
     list-style: none;
-    padding-left: 0;
+    padding-inline-start: 0;
   }
   a {
     @include styles.link-default;

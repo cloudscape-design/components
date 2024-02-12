@@ -15,23 +15,26 @@ $grid-gutter-width: awsui.$space-grid-gutter;
   @include styles.styles-reset;
   display: flex;
   flex-wrap: wrap;
-  margin: calc(#{$grid-gutter-width} / -2);
+  margin-block: calc(#{$grid-gutter-width} / -2);
+  margin-inline: calc(#{$grid-gutter-width} / -2);
   pointer-events: none;
 
   &.no-gutters {
-    margin: 0;
+    margin-block: 0;
+    margin-inline: 0;
   }
 }
 
 .grid-column {
   box-sizing: border-box;
   position: relative;
-  padding: calc(#{$grid-gutter-width} / 2);
-
+  padding-block: calc(#{$grid-gutter-width} / 2);
+  padding-inline: calc(#{$grid-gutter-width} / 2);
   display: flex;
 
   .grid.no-gutters > & {
-    padding: 0;
+    padding-block: 0;
+    padding-inline: 0;
   }
 
   @for $i from 1 through $grid-columns {
@@ -40,24 +43,24 @@ $grid-gutter-width: awsui.$space-grid-gutter;
       // Add a `max-width` to ensure content within each column does not blow out
       // the width of the column. Applies to IE10+ and Firefox. Chrome and Safari
       // do not appear to require this.
-      max-width: math.percentage(math.div($i, $grid-columns));
+      max-inline-size: math.percentage(math.div($i, $grid-columns));
     }
 
     &.push-#{$i} {
-      left: math.percentage(math.div($i, $grid-columns));
+      inset-inline-start: math.percentage(math.div($i, $grid-columns));
     }
 
     &.pull-#{$i} {
-      right: math.percentage(math.div($i, $grid-columns));
+      inset-inline-end: math.percentage(math.div($i, $grid-columns));
     }
   }
 
   &.push-0 {
-    left: auto;
+    inset-inline-start: auto;
   }
 
   &.pull-0 {
-    right: auto;
+    inset-inline-end: auto;
   }
 
   // `$grid-columns - 1` because offsetting by the width of an entire row isn't possible
@@ -65,7 +68,7 @@ $grid-gutter-width: awsui.$space-grid-gutter;
     // Avoid emitting useless .offset-0
     @if $i != 0 {
       &.offset-#{$i} {
-        margin-left: math.percentage(math.div($i, $grid-columns));
+        margin-inline-start: math.percentage(math.div($i, $grid-columns));
       }
     }
   }
@@ -73,5 +76,5 @@ $grid-gutter-width: awsui.$space-grid-gutter;
 
 .restore-pointer-events {
   pointer-events: auto;
-  width: 100%;
+  inline-size: 100%;
 }
