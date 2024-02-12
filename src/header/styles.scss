@@ -132,9 +132,7 @@
 
 .title {
   @include styles.text-wrapping;
-  align-items: center;
   color: awsui.$color-text-heading-default;
-  display: inline-flex;
 
   &-variant-h1 {
     font-size: awsui.$font-size-heading-xl;
@@ -219,9 +217,7 @@
   margin-block: 0;
   margin-inline: 0;
   // We display heading element inline to achieve the proper line-wrapping with info links
-  display: inline-flex;
   font-size: inherit;
-  gap: awsui.$space-scaled-xxs;
   @include styles.info-link-spacing();
 
   &-variant-h1 {
@@ -251,4 +247,14 @@
 .counter {
   color: awsui.$color-text-counter;
   font-weight: styles.$font-weight-normal;
+}
+
+@include styles.with-direction('.title') {
+  align-items: center;
+  display: inline-flex;
+}
+
+@include styles.with-direction('.heading') {
+  display: inline-flex;
+  gap: awsui.$space-scaled-xxs;
 }
