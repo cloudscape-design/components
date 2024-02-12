@@ -11,7 +11,7 @@
     }
   }
 
-  @supports not selector(:dir(rtl)) {
+  @supports not selector(:dir(#{$direction})) {
     [dir='#{$direction}'] #{$selector} {
       @content;
     }
