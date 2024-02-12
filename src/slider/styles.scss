@@ -24,10 +24,11 @@ $tick-width: 2px;
 @mixin base-thumb-hover-styles {
   box-shadow: 0px 0 0 2px awsui.$color-background-slider-handle-ring,
     0 0 0 4px awsui.$color-background-slider-handle-default;
-  cursor: pointer;
 }
 
 @mixin base-thumb-focus-styles {
+  height: 18px;
+  width: 18px;
   box-shadow: 0px 0 0 2px awsui.$color-background-slider-handle-ring,
     0 0 0 4px awsui.$color-background-slider-handle-hover;
   background: awsui.$color-background-slider-handle-hover;
@@ -54,12 +55,12 @@ $tick-width: 2px;
     box-shadow: awsui.$shadow-popover;
     border: awsui.$border-field-width solid awsui.$color-border-popover;
 
-    bottom: 55px;
     padding: awsui.$space-xs;
     min-width: 40px;
     max-width: 210px;
     width: max-content;
     text-align: center;
+    z-index: 1;
 
     &::after {
       content: '';
@@ -85,11 +86,21 @@ $tick-width: 2px;
     background-color: awsui.$color-background-slider-track;
     width: 100%;
     height: 2px;
+    cursor: pointer;
+
+    &.disabled {
+      cursor: default;
+      background-color: awsui.$color-background-control-disabled;
+    }
   }
 
   &-range {
     background-color: awsui.$color-background-slider-handle-default;
     height: 4px;
+
+    &.active {
+      background-color: awsui.$color-background-slider-handle-hover;
+    }
 
     &.disabled {
       background-color: awsui.$color-background-control-disabled;
@@ -152,13 +163,18 @@ $tick-width: 2px;
   width: calc(100% + $thumb-size);
   outline: 0;
   margin-left: calc($thumb-size / -2);
+  cursor: pointer;
 
-  &-right {
-    pointer-events: none;
+  &.disabled {
+    cursor: default;
   }
 
-  &-left {
-    pointer-events: none;
+  &.min {
+    margin-left: 0;
+  }
+
+  &.max {
+    margin-left: -$thumb-size;
   }
 
   &::-webkit-slider-thumb {
@@ -206,7 +222,7 @@ $tick-width: 2px;
     background-color: awsui.$color-text-status-error;
     border-color: awsui.$color-text-status-error;
   }
-
+  /* stylelint-disable no-descending-specificity */
   &:hover::-webkit-slider-thumb {
     background-color: awsui.$color-text-status-error;
     box-shadow: 0px 0 0 2px awsui.$color-background-slider-handle-ring, 0 0 0 4px awsui.$color-text-status-error;
@@ -244,6 +260,7 @@ $tick-width: 2px;
     box-shadow: 0px 0 0 2px awsui.$color-background-slider-handle-ring,
       0 0 0 4px awsui.$color-background-slider-error-pressed;
   }
+  /* stylelint-enable no-descending-specificity */
 }
 
 .disabled,

@@ -58,7 +58,7 @@ function Sliders() {
             }}
             min={0}
             max={100}
-            error={error2}
+            invalid={error2}
           />
           <SpaceBetween size="m" alignItems="center" direction="horizontal">
             <Input
@@ -99,7 +99,7 @@ function Sliders() {
           onChange={({ detail }) => {
             setValue3(detail.value);
           }}
-          valueFormatter={value => `The value at this point on the slider is: ${value}`}
+          valueFormatter={value => `The very long and precise value at this point on the slider is: ${value}`}
           min={0}
           max={100}
           step={10}
@@ -132,40 +132,6 @@ function Sliders() {
           referenceValues={[25, 50]}
         />
       </FormField>
-      {/* <FormField label="Range slider" description="This doesn't have any validation set up">
-        <Grid
-          gridDefinition={[
-            { colspan: { default: 4, xs: 2 } },
-            { colspan: { default: 4, xs: 2 }, offset: { xs: 8, default: 4 } },
-          ]}
-        >
-          <Input
-            type="number"
-            inputMode="numeric"
-            value={`${rangeMin}`}
-            onChange={({ detail }) => {
-              setRangeMin(Number(detail.value));
-            }}
-          />
-          <Input
-            type="number"
-            inputMode="numeric"
-            value={`${rangeMax}`}
-            onBlur={() => setRangeMax(rangeMax)}
-            onChange={({ detail }) => setRangeMax(Number(detail.value))}
-          />
-        </Grid>
-        <Slider
-          variant="range"
-          rangeValue={[rangeMin, rangeMax]}
-          onRangeChange={({ detail }) => {
-            setRangeMin(detail.value[0]);
-            setRangeMax(detail.value[1]);
-          }}
-          min={0}
-          max={100}
-        />
-      </FormField> */}
     </SpaceBetween>
   );
 }
@@ -200,6 +166,26 @@ export default function InputsPage() {
             </FormField>
             <FormField label="This is a form field" description="This is a description">
               <Input value="" placeholder="Placeholder" />
+            </FormField>
+            <FormField label="Volume">
+              <Grid gridDefinition={[{ colspan: 2 }, { colspan: 10 }]}>
+                <Input
+                  type="number"
+                  inputMode="numeric"
+                  value={`${value}`}
+                  onChange={({ detail }) => {
+                    setValue(Number(detail.value));
+                  }}
+                />
+              </Grid>
+              <Slider
+                valueFormatter={() => ''}
+                hideTooltip={true}
+                value={value}
+                onChange={({ detail }) => setValue(detail.value)}
+                min={0}
+                max={11}
+              />
             </FormField>
           </SpaceBetween>
         </Container>
