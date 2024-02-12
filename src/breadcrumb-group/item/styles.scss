@@ -15,7 +15,8 @@
   display: flex;
 
   > .icon {
-    margin: 0 awsui.$space-xs;
+    margin-block: 0;
+    margin-inline: awsui.$space-xs;
     color: awsui.$color-text-breadcrumb-icon;
   }
 
@@ -40,7 +41,7 @@
   }
 }
 .compressed {
-  min-width: 0;
+  min-inline-size: 0;
   overflow: hidden;
   > .text {
     overflow: hidden;
