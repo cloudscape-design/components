@@ -152,7 +152,7 @@ export default function Grid({
 
               // Screen-reader announcement for the focused day.
               let dayAnnouncement = getDateLabel(locale, date, 'short');
-              if (isDateOnSameDay) {
+              if (isDateOnSameDay && todayAriaLabel) {
                 dayAnnouncement += '. ' + todayAriaLabel;
               }
 

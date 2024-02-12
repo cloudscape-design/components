@@ -22,7 +22,7 @@
 
 .description {
   overflow: hidden;
-  margin-top: awsui.$space-xxs;
+  margin-block-start: awsui.$space-xxs;
 }
 
 .actionBar {
@@ -33,24 +33,26 @@
 }
 
 .stepCounter {
-  margin-right: 2 * styles.$base-size;
+  margin-inline-end: 2 * styles.$base-size;
 }
 
 .divider {
-  border-bottom: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+  border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
 }
 
 .hotspot {
   @include styles.styles-reset;
   background: transparent;
-  border: none;
-  padding: 0;
+  border-block: none;
+  border-inline: none;
+  padding-block: 0;
+  padding-inline: 0;
   cursor: pointer;
   scroll-margin: var(#{custom-props.$contentScrollMargin}, 40px 0 0 0);
 
   // These dimensions match the dimensions of the contained SVG icon.
-  width: 16px;
-  height: 16px;
+  inline-size: 16px;
+  block-size: 16px;
 
   &:focus {
     outline: none;

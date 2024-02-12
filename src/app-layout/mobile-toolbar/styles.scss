@@ -17,33 +17,34 @@
   align-items: center;
   flex-shrink: 0;
   z-index: 1000;
-  width: 100%;
+  inline-size: 100%;
   box-sizing: border-box;
   background-color: awsui.$color-background-layout-mobile-panel;
   box-shadow: awsui.$shadow-panel;
-  height: calc(2 * #{awsui.$space-m} + #{awsui.$space-scaled-xs});
+  block-size: calc(2 * #{awsui.$space-m} + #{awsui.$space-scaled-xs});
 }
 
 .mobile-bar-breadcrumbs {
-  min-width: 0;
+  min-inline-size: 0;
   flex: 1;
-  margin-left: awsui.$space-m;
-  margin-right: awsui.$space-m;
+  margin-inline-start: awsui.$space-m;
+  margin-inline-end: awsui.$space-m;
 }
 
 .mobile-toggle {
   box-sizing: border-box;
   cursor: pointer;
   z-index: 1;
-  padding: constants.$toggle-padding;
-  width: constants.$sidebar-size-closed;
+  padding-block: constants.$toggle-padding-vertical;
+  padding-inline: constants.$toggle-padding-horizontal;
+  inline-size: constants.$sidebar-size-closed;
   color: awsui.$color-text-interactive-default;
   &-type-navigation {
-    border-right: 1px solid awsui.$color-border-layout;
+    border-inline-end: 1px solid awsui.$color-border-layout;
   }
   &-type-tools,
   &-type-drawer {
-    border-left: 1px solid awsui.$color-border-layout;
+    border-inline-start: 1px solid awsui.$color-border-layout;
   }
   &:hover {
     background: awsui.$color-background-layout-panel-hover;
