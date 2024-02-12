@@ -3,13 +3,13 @@
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 import { useCallback, useEffect, useState } from 'react';
 
-interface AppLayoutOffsets {
+interface AppLayoutRect {
   left: number;
   right: number;
   width: number;
 }
 
-export default function useAppLayoutOffsets(element: HTMLDivElement | null): AppLayoutOffsets {
+export default function useAppLayoutRect(element: HTMLDivElement | null): AppLayoutRect {
   const [offsets, setOffsets] = useState({ left: 0, right: 0, width: Number.POSITIVE_INFINITY });
 
   const updatePosition = useCallback(() => {

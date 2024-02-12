@@ -35,7 +35,7 @@ import {
   SplitPanelProvider,
   SplitPanelProviderProps,
 } from './split-panel';
-import useAppLayoutOffsets from './utils/use-content-width';
+import useAppLayoutRect from './utils/use-app-layout-rect';
 import { isDevelopment } from '../internal/is-development';
 import { useStableCallback, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
@@ -341,7 +341,7 @@ const OldAppLayout = React.forwardRef(
           : availableHeight - MAIN_PANEL_MIN_HEIGHT;
       }
     });
-    const { left: leftOffset, right: rightOffset, width: documentWidth } = useAppLayoutOffsets(rootRef.current);
+    const { left: leftOffset, right: rightOffset, width: documentWidth } = useAppLayoutRect(rootRef.current);
 
     const rightDrawerBarWidth = drawers ? (drawers.length > 1 ? closedDrawerWidth : 0) : 0;
     const contentPadding = 80;
