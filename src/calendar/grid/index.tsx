@@ -132,8 +132,16 @@ export default function Grid({
     }
   }, [focusedDate]);
 
+  const rowLength = rows[0].length;
+
+  const spacedGrid = rowLength < 7;
+
   return (
-    <table role="grid" className={styles['calendar-grid']} aria-labelledby={ariaLabelledby}>
+    <table
+      role="grid"
+      className={clsx(styles['calendar-grid'], spacedGrid && styles['calendar-grid-spaced'])}
+      aria-labelledby={ariaLabelledby}
+    >
       {header}
       <tbody onKeyDown={onGridKeyDownHandler}>
         {rows.map((row, rowIndex) => (
@@ -169,6 +177,7 @@ export default function Grid({
                     [styles['calendar-date-enabled']]: isEnabled,
                     [styles['calendar-date-selected']]: isSelected,
                     [styles['calendar-date-current']]: isCurrentDate,
+                    [styles['calendar-date-spaced']]: spacedGrid,
                   })}
                 >
                   <span className={styles['date-inner']} aria-hidden="true">

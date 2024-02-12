@@ -48,11 +48,17 @@
 
   &-grid {
     width: 100%;
-    border-spacing: 0;
+
+    &:not(.calendar-grid-spaced) {
+      border-spacing: 0;
+    }
+    &-spaced {
+      border-spacing: awsui.$space-xxxs calc(#{awsui.$space-xxs} + #{awsui.$space-xxxs});
+      padding: awsui.$space-xs;
+    }
   }
 
   &-grid-cell {
-    width: calc(100% / 7);
     word-break: break-word;
     text-align: center;
     font-weight: unset;
@@ -70,6 +76,35 @@
     padding: awsui.$space-xxs 0;
     color: calendar.$grid-disabled-day-color;
     position: relative;
+
+    &:not(.calendar-date-spaced) {
+      width: calc(100% / 7);
+    }
+
+    &-spaced {
+      width: calc(100% / 3);
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      z-index: 1;
+      background-color: transparent;
+    }
+
+    &:not(.calendar-date-spaced)::after {
+      top: calc(-1 * #{awsui.$border-item-width});
+      left: -1px;
+      bottom: -1px;
+      right: calc(-1 * #{awsui.$border-item-width});
+    }
+
+    &-spaced::after {
+      top: calc(-1 * #{awsui.$border-item-width});
+      left: 0;
+      bottom: calc(-1 * #{awsui.$border-item-width});
+      right: 0;
+    }
 
     &:first-child {
       border-left: calendar.$grid-border;
@@ -101,16 +136,6 @@
       font-weight: styles.$font-weight-bold;
     }
 
-    &::after {
-      content: '';
-      position: absolute;
-      z-index: 1;
-      top: calc(-1 * #{awsui.$border-item-width});
-      left: -1px;
-      bottom: -1px;
-      right: calc(-1 * #{awsui.$border-item-width});
-      background-color: transparent;
-    }
     > .date-inner {
       position: relative;
       z-index: 1;
