@@ -133,7 +133,7 @@ describe('aria labels', () => {
       });
     });
 
-    describe('should add `nextMonthAriaLabel` to appropriate button in the calendar', () => {
+    describe('should add `nextMonthAriaLabel` to appropriate button', () => {
       test('from i18nStrings', () => {
         const { container } = render(
           <Calendar
@@ -160,7 +160,7 @@ describe('aria labels', () => {
       });
     });
 
-    describe('should add `previousMonthAriaLabel` to appropriate button in the calendar', () => {
+    describe('should add `previousMonthAriaLabel` to appropriate button', () => {
       test('from i18nStrings', () => {
         const { container } = render(
           <Calendar
@@ -207,7 +207,7 @@ describe('aria labels', () => {
       expect(getCurrentMonthLabelText(container)).toMatch('TEST CURRENT MONTH');
     });
 
-    test('should add `nextYearAriaLabel` to appropriate button in the calendar', () => {
+    test('should add `nextYearAriaLabel` to appropriate button', () => {
       const { container } = render(
         <Calendar
           {...defaultProps}
@@ -223,7 +223,7 @@ describe('aria labels', () => {
       );
     });
 
-    test('should add `previousYearAriaLabel` to appropriate button in the calendar', () => {
+    test('should add `previousYearAriaLabel` to appropriate button', () => {
       const { container } = render(
         <Calendar
           {...defaultProps}
