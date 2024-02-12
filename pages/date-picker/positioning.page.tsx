@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { Box, DatePicker } from '~components';
+import i18nStrings from './i18n-strings';
 
 export default function DatePickerScenario() {
   return (
@@ -19,9 +20,7 @@ export default function DatePickerScenario() {
           name={'date-picker-name'}
           ariaLabel={'date-picker-label'}
           locale="en-GB"
-          previousMonthAriaLabel={'Previous month'}
-          nextMonthAriaLabel={'Next month'}
-          todayAriaLabel={'TEST TODAY'}
+          i18nStrings={i18nStrings}
           openCalendarAriaLabel={selectedDate =>
             'Choose Date' + (selectedDate ? `, selected date is ${selectedDate}` : '')
           }

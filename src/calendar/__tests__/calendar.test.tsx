@@ -15,9 +15,11 @@ import screenreaderOnlyStyles from '../../../lib/components/internal/components/
 const localeDE = new Intl.DateTimeFormat('de-DE', { timeZone: 'GMT' });
 
 const defaultProps: CalendarProps = {
-  todayAriaLabel: 'Today',
-  nextMonthAriaLabel: 'next month',
-  previousMonthAriaLabel: 'prev month',
+  i18nStrings: {
+    todayAriaLabel: 'Today',
+    nextMonthAriaLabel: 'next month',
+    previousMonthAriaLabel: 'prev month',
+  },
   value: '',
 };
 
@@ -70,35 +72,115 @@ describe('Calendar locale DE', () => {
   });
 });
 
-describe('aria-label', () => {
-  test('can be set', () => {
-    const { container } = render(<Calendar {...defaultProps} ariaLabel="This is a label for the calendar" />);
-    const wrapper = createWrapper(container);
+describe('aria labels', () => {
+  describe('aria-label', () => {
+    test('can be set', () => {
+      const { container } = render(<Calendar {...defaultProps} ariaLabel="This is a label for the calendar" />);
+      const wrapper = createWrapper(container);
 
-    expect(wrapper.findCalendar()!.getElement()).toHaveAttribute('aria-label', 'This is a label for the calendar');
+      expect(wrapper.findCalendar()!.getElement()).toHaveAttribute('aria-label', 'This is a label for the calendar');
+    });
+  });
+
+  describe('aria-labelledby', () => {
+    test('can be set', () => {
+      const { container } = render(<Calendar {...defaultProps} ariaLabelledby="calendar-label" />);
+      const wrapper = createWrapper(container);
+
+      expect(wrapper.findCalendar()!.getElement()).toHaveAttribute(
+        'aria-labelledby',
+        expect.stringContaining('calendar-label')
+      );
+    });
+  });
+
+  describe('aria-describedby', () => {
+    test('can be set', () => {
+      const { container } = render(<Calendar {...defaultProps} ariaDescribedby="calendar-description" />);
+      const wrapper = createWrapper(container);
+
+      expect(wrapper.findCalendar()!.getElement()).toHaveAttribute(
+        'aria-describedby',
+        expect.stringContaining('calendar-description')
+      );
+    });
+  });
+
+  describe('should add `todayAriaLabel` to today', () => {
+    const getTodayLabelText = (container: HTMLElement) => {
+      return container
+        .querySelector(`.${styles['calendar-day-today']}`)!
+        .querySelector(`.${screenreaderOnlyStyles.root}`)!.textContent;
+    };
+
+    test('from i18nStrings', () => {
+      const { container } = render(
+        <Calendar
+          {...defaultProps}
+          i18nStrings={{
+            todayAriaLabel: 'TEST TODAY',
+          }}
+        />
+      );
+      expect(getTodayLabelText(container)).toMatch('TEST TODAY');
+    });
+    test('from deprecated top-level property', () => {
+      const { container } = render(<Calendar {...defaultProps} i18nStrings={undefined} todayAriaLabel="TEST TODAY" />);
+      expect(getTodayLabelText(container)).toMatch('TEST TODAY');
+    });
+  });
+
+  describe('should add `nextMonthAriaLabel` to appropriate button', () => {
+    test('from i18nStrings', () => {
+      const { container } = render(
+        <Calendar
+          {...defaultProps}
+          i18nStrings={{
+            nextMonthAriaLabel: 'TEST NEXT MONTH',
+          }}
+        />
+      );
+      const wrapper = createWrapper(container);
+      expect(wrapper.findCalendar()!.findNextMonthButton()!.getElement()!.getAttribute('aria-label')).toMatch(
+        'TEST NEXT MONTH'
+      );
+    });
+
+    test('from deprecated top-level property', () => {
+      const { container } = render(
+        <Calendar {...defaultProps} i18nStrings={undefined} nextMonthAriaLabel="TEST NEXT MONTH" />
+      );
+      const wrapper = createWrapper(container);
+      expect(wrapper.findCalendar()!.findNextMonthButton()!.getElement()!.getAttribute('aria-label')).toMatch(
+        'TEST NEXT MONTH'
+      );
+    });
   });
 });
 
-describe('aria-labelledby', () => {
-  test('can be set', () => {
-    const { container } = render(<Calendar {...defaultProps} ariaLabelledby="calendar-label" />);
+describe('should add `previousMonthAriaLabel` to appropriate button in the calendar', () => {
+  test('from i18nStrings', () => {
+    const { container } = render(
+      <Calendar
+        {...defaultProps}
+        i18nStrings={{
+          previousMonthAriaLabel: 'TEST PREVIOUS MONTH',
+        }}
+      />
+    );
     const wrapper = createWrapper(container);
-
-    expect(wrapper.findCalendar()!.getElement()).toHaveAttribute(
-      'aria-labelledby',
-      expect.stringContaining('calendar-label')
+    expect(wrapper.findCalendar()!.findPreviousMonthButton()!.getElement()!.getAttribute('aria-label')).toMatch(
+      'TEST PREVIOUS MONTH'
     );
   });
-});
 
-describe('aria-describedby', () => {
-  test('can be set', () => {
-    const { container } = render(<Calendar {...defaultProps} ariaDescribedby="calendar-description" />);
+  test('from deprecated top-level property', () => {
+    const { container } = render(
+      <Calendar {...defaultProps} i18nStrings={undefined} previousMonthAriaLabel="TEST PREVIOUS MONTH" />
+    );
     const wrapper = createWrapper(container);
-
-    expect(wrapper.findCalendar()!.getElement()).toHaveAttribute(
-      'aria-describedby',
-      expect.stringContaining('calendar-description')
+    expect(wrapper.findCalendar()!.findPreviousMonthButton()!.getElement()!.getAttribute('aria-label')).toMatch(
+      'TEST PREVIOUS MONTH'
     );
   });
 });
