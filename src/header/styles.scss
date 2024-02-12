@@ -217,6 +217,7 @@
   margin-block: 0;
   margin-inline: 0;
   // We display heading element inline to achieve the proper line-wrapping with info links
+  display: inline;
   font-size: inherit;
   @include styles.info-link-spacing();
 
