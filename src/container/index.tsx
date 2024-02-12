@@ -14,9 +14,12 @@ export default function Container({
   variant = 'default',
   disableHeaderPaddings = false,
   disableContentPaddings = false,
+  fitHeight = false,
   ...props
 }: ContainerProps) {
-  const baseComponentProps = useBaseComponent('Container');
+  const baseComponentProps = useBaseComponent('Container', {
+    props: { disableContentPaddings, disableHeaderPaddings, fitHeight, variant },
+  });
   const externalProps = getExternalProps(props);
 
   return (
@@ -25,6 +28,7 @@ export default function Container({
         variant={variant}
         disableContentPaddings={disableContentPaddings}
         disableHeaderPaddings={disableHeaderPaddings}
+        fitHeight={fitHeight}
         {...props}
         {...externalProps}
         {...baseComponentProps}
