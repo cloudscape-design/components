@@ -192,9 +192,9 @@ const DatePicker = React.forwardRef(
                     granularity={granularity}
                     isDateEnabled={isDateEnabled}
                     i18nStrings={{
-                      todayAriaLabel: i18nStrings?.todayAriaLabel || todayAriaLabel,
-                      nextMonthAriaLabel: i18nStrings?.nextMonthAriaLabel || nextMonthAriaLabel,
-                      previousMonthAriaLabel: i18nStrings?.previousMonthAriaLabel || previousMonthAriaLabel,
+                      todayAriaLabel: i18nStrings?.todayAriaLabel ?? todayAriaLabel,
+                      nextMonthAriaLabel: i18nStrings?.nextMonthAriaLabel ?? nextMonthAriaLabel,
+                      previousMonthAriaLabel: i18nStrings?.previousMonthAriaLabel ?? previousMonthAriaLabel,
                       currentMonthAriaLabel: i18nStrings?.currentMonthAriaLabel,
                     }}
                   />
