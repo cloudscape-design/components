@@ -63,15 +63,15 @@ export default function Calendar({
 
   const previousLabel = isMonthPicker
     ? i18n('previousYearAriaLabel', i18nStrings?.previousYearAriaLabel)
-    : i18n('previousMonthAriaLabel', i18nStrings?.previousMonthAriaLabel || rest.previousMonthAriaLabel);
+    : i18n('previousMonthAriaLabel', i18nStrings?.previousMonthAriaLabel ?? rest.previousMonthAriaLabel);
 
   const nextLabel = isMonthPicker
     ? i18n('nextYearAriaLabel', i18nStrings?.nextYearAriaLabel)
-    : i18n('nextMonthAriaLabel', i18nStrings?.nextMonthAriaLabel || rest.nextMonthAriaLabel);
+    : i18n('nextMonthAriaLabel', i18nStrings?.nextMonthAriaLabel ?? rest.nextMonthAriaLabel);
 
   const currentDateLabel = isMonthPicker
     ? i18n('currentMonthAriaLabel', i18nStrings?.currentMonthAriaLabel)
-    : i18n('todayAriaLabel', i18nStrings?.todayAriaLabel || rest.todayAriaLabel);
+    : i18n('todayAriaLabel', i18nStrings?.todayAriaLabel ?? rest.todayAriaLabel);
 
   // Update displayed date if value changes.
   useEffect(() => {
