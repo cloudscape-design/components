@@ -41,8 +41,9 @@ export interface DesktopDrawerProps {
 export interface ResizableDrawerProps extends DesktopDrawerProps {
   activeDrawer: AppLayoutProps.Drawer | undefined;
   onResize: (resizeDetail: { size: number; id: string }) => void;
-  minWidth: number;
-  maxWidth: number;
+  minSize: number;
+  size: number;
+  getMaxWidth: () => number;
   refs: FocusControlRefs;
   toolsContent: React.ReactNode;
 }
