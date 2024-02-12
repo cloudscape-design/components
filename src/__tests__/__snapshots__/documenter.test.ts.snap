@@ -5809,7 +5809,7 @@ because fixed positioning results in a slight, visible lag when scrolling comple
 the component.",
       "i18nTag": true,
       "inlineType": Object {
-        "name": "CalendarProps.I18nStrings",
+        "name": "DatePickerProps.I18nStrings",
         "properties": Array [
           Object {
             "name": "nextMonthAriaLabel",
@@ -5831,7 +5831,7 @@ the component.",
       },
       "name": "i18nStrings",
       "optional": true,
-      "type": "CalendarProps.I18nStrings",
+      "type": "DatePickerProps.I18nStrings",
     },
     Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
