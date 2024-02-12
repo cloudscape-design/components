@@ -24,7 +24,6 @@ jest.mock('@cloudscape-design/component-toolkit', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit'),
   useContainerQuery: () => [1300, () => {}],
 }));
-jest.mock('../../../lib/components/app-layout/utils/use-document-width', () => () => 1024);
 
 async function renderComponent(jsx: React.ReactElement) {
   const { container, rerender } = render(jsx);

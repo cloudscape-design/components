@@ -28,7 +28,6 @@ jest.mock('@cloudscape-design/component-toolkit', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit'),
   useContainerQuery: () => [1300, () => {}],
 }));
-jest.mock('../../../lib/components/app-layout/utils/use-document-width', () => () => 1024);
 
 describeEachThemeAppLayout(false, () => {
   test('renders breadcrumbs and notifications inside of the main landmark', () => {

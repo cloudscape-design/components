@@ -11,7 +11,6 @@ import { AppLayoutProps } from './interfaces';
 import { Notifications } from './notifications';
 import { MobileToolbar } from './mobile-toolbar';
 import { useFocusControl } from './utils/use-focus-control';
-import useDocumentWidth from './utils/use-document-width';
 import useContentHeight from './utils/use-content-height';
 import styles from './styles.css.js';
 import testutilStyles from './test-classes/styles.css.js';
@@ -342,8 +341,7 @@ const OldAppLayout = React.forwardRef(
           : availableHeight - MAIN_PANEL_MIN_HEIGHT;
       }
     });
-    const documentWidth = useDocumentWidth();
-    const { left: leftOffset, right: rightOffset } = useAppLayoutOffsets(rootRef.current);
+    const { left: leftOffset, right: rightOffset, width: documentWidth } = useAppLayoutOffsets(rootRef.current);
 
     const rightDrawerBarWidth = drawers ? (drawers.length > 1 ? closedDrawerWidth : 0) : 0;
     const contentPadding = 80;
