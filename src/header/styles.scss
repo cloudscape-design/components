@@ -250,12 +250,12 @@
   font-weight: styles.$font-weight-normal;
 }
 
-@include styles.with-direction('.title') {
+@include styles.with-direction('.title', 'rtl') {
   align-items: center;
   display: inline-flex;
 }
 
-@include styles.with-direction('.heading') {
+@include styles.with-direction('.heading', 'rtl') {
   display: inline-flex;
   gap: awsui.$space-scaled-xxs;
 }

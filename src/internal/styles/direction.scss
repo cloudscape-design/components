@@ -4,7 +4,7 @@
 */
 
 /* stylelint-disable @cloudscape-design/no-implicit-descendant, plugin/no-unsupported-browser-features, selector-combinator-disallowed-list */
-@mixin with-direction($selector, $direction: rtl) {
+@mixin with-direction($selector, $direction) {
   @supports selector(:dir(#{$direction})) {
     #{$selector}:dir(#{$direction}) {
       @content;

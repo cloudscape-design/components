@@ -116,7 +116,7 @@
   block-size: 100%;
 }
 
-@include styles.with-direction('.dropdown:is(.dropdown-drop-left, .dropdown-drop-right)') {
+@include styles.with-direction('.dropdown:is(.dropdown-drop-left, .dropdown-drop-right)', 'rtl') {
   inset-inline-end: unset;
   inset-inline-start: unset;
 }

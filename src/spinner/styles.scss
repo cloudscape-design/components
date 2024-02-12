@@ -107,7 +107,7 @@
   }
 }
 
-@include styles.with-direction('.root') {
+@include styles.with-direction('.root', 'rtl') {
   #{custom-props.$spinnerRotatorFrom}: 360deg;
   #{custom-props.$spinnerRotatorTo}: 0deg;
   #{custom-props.$spinnerLineLeftFrom}: 0deg;
