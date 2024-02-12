@@ -10,7 +10,6 @@
 @use '../container/shared' as container;
 @use './motion';
 
-<<<<<<< HEAD
 @mixin card-style {
   border-start-start-radius: awsui.$border-radius-container;
   border-start-end-radius: awsui.$border-radius-container;
@@ -46,8 +45,6 @@
   }
 }
 
-=======
->>>>>>> b7f1fb2e (Initial commit of migrated changes from revert.)
 .root {
   @include styles.styles-reset();
   @include styles.default-text-style;
@@ -55,21 +52,12 @@
 
 .header {
   &-variant-full-page.header-refresh {
-<<<<<<< HEAD
     padding-block-start: 0;
     padding-inline-start: 0;
     padding-inline-end: 0;
     padding-block-end: calc(
       #{awsui.$space-container-header-bottom} + #{awsui.$space-table-header-tools-full-page-bottom}
     );
-=======
-    @include container.borders-and-shadows;
-    padding-block-start: 0;
-    padding-block-end: calc(
-      #{awsui.$space-container-header-bottom} + #{awsui.$space-table-header-tools-full-page-bottom}
-    );
-    padding-inline: 0;
->>>>>>> b7f1fb2e (Initial commit of migrated changes from revert.)
   }
 }
 
@@ -143,15 +131,9 @@
     margin-inline-end: 0;
     padding-block: awsui.$space-card-vertical;
     padding-inline: awsui.$space-card-horizontal;
-<<<<<<< HEAD
     inline-size: 100%;
     min-inline-size: 0;
     @include card-style;
-=======
-    @include styles.container-shadow;
-    inline-size: 100%;
-    min-inline-size: 0;
->>>>>>> b7f1fb2e (Initial commit of migrated changes from revert.)
   }
   &-header {
     @include styles.font-heading-m;
