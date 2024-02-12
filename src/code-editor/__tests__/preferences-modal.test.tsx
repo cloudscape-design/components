@@ -3,7 +3,7 @@
 import { screen } from '@testing-library/react';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { i18nStrings } from './common';
-import { renderCodeEditor } from './util';
+import { renderCodeEditor, aceMock } from './util';
 
 function submitPreferences() {
   screen.getByText(i18nStrings.preferencesModalConfirm!).click();
@@ -16,6 +16,16 @@ function cancelPreferences() {
 function findWrapLinesCheckbox() {
   return createWrapper().findModal()!.findContent().findCheckbox()!;
 }
+
+const versionSpy = jest.spyOn(aceMock, 'version', 'get').mockReturnValue('1.0.0');
+
+afterEach(() => {
+  jest.clearAllMocks();
+});
+
+afterAll(() => {
+  versionSpy.mockRestore();
+});
 
 test('should not render modal when preferences are not displayed', () => {
   const { wrapper } = renderCodeEditor({});
@@ -63,12 +73,22 @@ test('should change syntax theme preference via modal', () => {
   expect(onPreferencesChange).toHaveBeenCalledWith({ theme: 'chrome', wrapLines: true });
 });
 
-test('renders all themes by default', () => {
+test('renders all themes by default except cloud editor themes if not supported', () => {
+  versionSpy.mockReturnValue('1.0.0');
   const { wrapper } = renderCodeEditor();
   wrapper.findSettingsButton()!.click();
   const select = createWrapper().findModal()!.findContent().findSelect()!;
   select.openDropdown();
   expect(select.findDropdown().findOptions()).toHaveLength(38);
+});
+
+test('renders all themes by default including cloud editor themes if supported', () => {
+  versionSpy.mockReturnValue('1.45.0');
+  const { wrapper } = renderCodeEditor();
+  wrapper.findSettingsButton()!.click();
+  const select = createWrapper().findModal()!.findContent().findSelect()!;
+  select.openDropdown();
+  expect(select.findDropdown().findOptions()).toHaveLength(40);
 });
 
 test('should allow limiting themes selection via property', () => {
