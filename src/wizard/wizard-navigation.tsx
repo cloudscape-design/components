@@ -55,14 +55,14 @@ export default function Navigation({
         styles.navigation,
         hidden && styles.hidden,
         isVisualRefresh && styles.refresh,
-        shouldRemoveHighContrastHeader && styles['remove-high-contrast-header']
+        shouldRemoveHighContrastHeader() && styles['remove-high-contrast-header']
       )}
       aria-label={i18nStrings.navigationAriaLabel}
     >
       <ul
         className={clsx(
           isVisualRefresh && styles.refresh,
-          shouldRemoveHighContrastHeader && styles['remove-high-contrast-header']
+          shouldRemoveHighContrastHeader() && styles['remove-high-contrast-header']
         )}
       >
         {steps.map((step, index: number) =>

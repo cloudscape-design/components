@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef } from 'react';
 import { useMutationObserver } from '../../hooks/use-mutation-observer';
-import { contentHeaderClassName } from '../../utils/content-header-utils';
+import { getContentHeaderClassName } from '../../utils/content-header-utils';
 import styles from './styles.css.js';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
@@ -55,7 +55,7 @@ export default function DarkRibbon({ children, isRefresh, hasPlainStyling }: Dar
   }
 
   return (
-    <div ref={containerRef} className={contentHeaderClassName}>
+    <div ref={containerRef} className={getContentHeaderClassName()}>
       <div ref={fillRef} className={styles['background-fill']} />
       <div className={styles.content}>{children}</div>
     </div>

@@ -3692,6 +3692,35 @@ The event \`detail\` contains the current value of the field.",
       "type": "string",
     },
     Object {
+      "description": "An object containing all the necessary localized strings required by
+the component.",
+      "i18nTag": true,
+      "inlineType": Object {
+        "name": "CalendarProps.I18nStrings",
+        "properties": Array [
+          Object {
+            "name": "nextMonthAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "previousMonthAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "todayAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "CalendarProps.I18nStrings",
+    },
+    Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
@@ -3729,15 +3758,15 @@ Supported values and formats are listed in the
       "type": "string",
     },
     Object {
+      "deprecatedTag": "Use \`i18nStrings.nextMonthAriaLabel\` instead.",
       "description": "Specifies an \`aria-label\` for the 'next month' button.",
-      "i18nTag": true,
       "name": "nextMonthAriaLabel",
       "optional": true,
       "type": "string",
     },
     Object {
+      "deprecatedTag": "Use \`i18nStrings.previousMonthAriaLabel\` instead.",
       "description": "Specifies an \`aria-label\` for the 'previous month' button.",
-      "i18nTag": true,
       "name": "previousMonthAriaLabel",
       "optional": true,
       "type": "string",
@@ -3750,8 +3779,8 @@ By default the starting day of the week is defined by the locale, but you can us
       "type": "number",
     },
     Object {
+      "deprecatedTag": "Use \`i18nString.todayAriaLabel\` instead.",
       "description": "Used as part of the \`aria-label\` for today's date in the calendar.",
-      "i18nTag": true,
       "name": "todayAriaLabel",
       "optional": true,
       "type": "string",
@@ -4466,72 +4495,72 @@ The object should contain, among others:
         "properties": Array [
           Object {
             "name": "cursorPosition",
-            "optional": false,
+            "optional": true,
             "type": "(row: number, column: number) => string",
           },
           Object {
             "name": "editorGroupAriaLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "errorState",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "errorStateRecovery",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "errorsTab",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "loadingState",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "paneCloseButtonAriaLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "preferencesButtonAriaLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "preferencesModalCancel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "preferencesModalConfirm",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "preferencesModalDarkThemes",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "preferencesModalHeader",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "preferencesModalLightThemes",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "preferencesModalTheme",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -4551,17 +4580,17 @@ The object should contain, among others:
           },
           Object {
             "name": "preferencesModalWrapLines",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "statusBarGroupAriaLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "warningsTab",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
         ],
@@ -5400,6 +5429,83 @@ If true, the overlap will be removed.",
 }
 `;
 
+exports[`Documenter definition for copy-to-clipboard matches the snapshot: copy-to-clipboard 1`] = `
+Object {
+  "events": Array [],
+  "functions": Array [],
+  "name": "CopyToClipboard",
+  "properties": Array [
+    Object {
+      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds \`aria-label\` to the copy button. Use this to provide an accessible name for buttons that don't have visible text,
+and to distinguish between multiple buttons with identical visible text. The text will also be added to the \`title\` attribute of the button.",
+      "name": "copyButtonAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "The text of the copy button (for variant=\\"button\\").",
+      "name": "copyButtonText",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "The message shown when the text is not copied due to an error, see [https://w3c.github.io/clipboard-apis/#dom-clipboard-writetext](https://w3c.github.io/clipboard-apis/#dom-clipboard-writetext).",
+      "name": "copyErrorText",
+      "optional": false,
+      "type": "string",
+    },
+    Object {
+      "description": "The message shown when the text is copied successfully.",
+      "name": "copySuccessText",
+      "optional": false,
+      "type": "string",
+    },
+    Object {
+      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "The text content to be copied. It is displayed next to the copy button when \`variant=\\"inline\\"\`, and is not shown otherwise.",
+      "name": "textToCopy",
+      "optional": false,
+      "type": "string",
+    },
+    Object {
+      "defaultValue": "\\"button\\"",
+      "description": "Determines the general styling of the copy button as follows:
+* \`button\` to display a standalone secondary button with an icon, and \`copyButtonText\` as text.
+* \`icon\` to display a standalone icon-only (no text) button.
+* \`inline\` to display an icon-only (no text) button within a text context.
+Defaults to \`button\`.",
+      "inlineType": Object {
+        "name": "CopyToClipboardProps.Variant",
+        "type": "union",
+        "values": Array [
+          "button",
+          "icon",
+          "inline",
+        ],
+      },
+      "name": "variant",
+      "optional": true,
+      "type": "string",
+    },
+  ],
+  "regions": Array [],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Documenter definition for date-input matches the snapshot: date-input 1`] = `
 Object {
   "events": Array [
@@ -5699,6 +5805,35 @@ because fixed positioning results in a slight, visible lag when scrolling comple
       "type": "boolean",
     },
     Object {
+      "description": "An object containing all the necessary localized strings required by
+the component.",
+      "i18nTag": true,
+      "inlineType": Object {
+        "name": "DatePickerProps.I18nStrings",
+        "properties": Array [
+          Object {
+            "name": "nextMonthAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "previousMonthAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "todayAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "DatePickerProps.I18nStrings",
+    },
+    Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
@@ -5752,8 +5887,8 @@ Supported values and formats are listed in the
       "type": "string",
     },
     Object {
+      "deprecatedTag": "Use \`i18nStrings.nextMonthAriaLabel\` instead.",
       "description": "Specifies an \`aria-label\` for the 'next month' button.",
-      "i18nTag": true,
       "name": "nextMonthAriaLabel",
       "optional": true,
       "type": "string",
@@ -5785,8 +5920,8 @@ a human-readable localised string representing the current value of the input.
       "type": "string",
     },
     Object {
+      "deprecatedTag": "Use \`i18nStrings.previousMonthAriaLabel\` instead.",
       "description": "Specifies an \`aria-label\` for the 'previous month' button.",
-      "i18nTag": true,
       "name": "previousMonthAriaLabel",
       "optional": true,
       "type": "string",
@@ -5810,8 +5945,8 @@ By default the starting day of the week is defined by the locale, but you can us
       "type": "number",
     },
     Object {
+      "deprecatedTag": "Use \`i18nString.todayAriaLabel\` instead.",
       "description": "Used as part of the \`aria-label\` for today's date in the calendar.",
-      "i18nTag": true,
       "name": "todayAriaLabel",
       "optional": true,
       "type": "string",
@@ -6453,8 +6588,9 @@ Behaves similar to the Header component counter.",
     },
     Object {
       "description": "Overrides the default [HTML heading tag](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements).
-Use with the container variant (which defaults to H2) or default/footer variants (which default to DIV). Note that this only
-works with the \`headerText\` slot (not with the deprecated \`header\`), and not with the navigation variant.",
+Use with the container variant (which defaults to H2) or default/footer variants (which default to DIV). Using this
+property does not change the visual appearance of the component. Note that this only works with the \`headerText\`
+slot (not with the deprecated \`header\`), and not with the navigation variant.",
       "inlineType": Object {
         "name": "ExpandableSectionProps.HeadingTag",
         "type": "union",
@@ -7157,7 +7293,7 @@ to display resource counters in table and cards components.",
     },
     Object {
       "description": "Overrides the default [HTML heading tag](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements)
-provided by the variant.",
+provided by the variant. Using this property does not change the visual appearance of the component.",
       "inlineType": Object {
         "name": "HeaderProps.HeadingTag",
         "type": "union",
@@ -15050,6 +15186,7 @@ The following properties are supported across all utility types:
 * \`items\` (ButtonDropdownProps.Items) - An array of dropdown items. This follows the same structure as the \`items\` property of the [button dropdown component](/components/button-dropdown).
 * \`onItemClick\` (NonCancelableEventHandler<ButtonDropdownProps.ItemClickDetails>) - Specifies the event handler called when a dropdown item is selected.
 * \`onItemFollow\` (NonCancelableEventHandler<ButtonDropdownProps.ItemClickDetails>) - Specifies the event handler called when a dropdown item is selected without pressing modifier keys, and the item has an \`href\` set.
+* \`expandableGroups\` (boolean) - Controls expandability of the item groups.
 ",
       "name": "utilities",
       "optional": true,

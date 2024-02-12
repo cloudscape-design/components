@@ -39,17 +39,22 @@
 
 .input {
   @include styles.styles-reset;
-  padding: styles.$control-padding;
+  padding-block: styles.$control-padding-vertical;
+  padding-inline: styles.$control-padding-horizontal;
   color: awsui.$color-text-body-default;
-  width: 100%;
+  inline-size: 100%;
   cursor: text;
   box-sizing: border-box;
   background-color: awsui.$color-background-input-default;
-  border-radius: styles.$control-border-radius;
-  border: styles.$control-border-width solid awsui.$color-border-input-default;
+  border-start-start-radius: styles.$control-border-radius;
+  border-start-end-radius: styles.$control-border-radius;
+  border-end-start-radius: styles.$control-border-radius;
+  border-end-end-radius: styles.$control-border-radius;
+  border-block: styles.$control-border-width solid awsui.$color-border-input-default;
+  border-inline: styles.$control-border-width solid awsui.$color-border-input-default;
   @include styles.font-body-m;
   // IE requires input height to be explicitly set
-  height: awsui.$size-vertical-input;
+  block-size: awsui.$size-vertical-input;
 
   &.input-readonly {
     @include styles.form-readonly-element;
@@ -79,7 +84,7 @@
   &.input-invalid {
     @include styles.form-invalid-control();
     &.input-has-icon-left {
-      padding-left: calc(
+      padding-inline-start: calc(
         #{styles.$control-icon-horizontal-padding} - (#{styles.$invalid-control-left-border} - #{styles.$control-border-width})
       );
     }
@@ -104,13 +109,16 @@
     }
   }
   &.input-has-icon-left {
-    padding-left: styles.$control-icon-horizontal-padding;
+    padding-inline-start: styles.$control-icon-horizontal-padding;
   }
   &.input-has-icon-right {
-    padding-right: styles.$control-icon-horizontal-padding;
+    padding-inline-end: styles.$control-icon-horizontal-padding;
   }
   &.input-has-no-border-radius {
-    border-radius: awsui.$border-radius-dropdown;
+    border-start-start-radius: awsui.$border-radius-dropdown;
+    border-start-end-radius: awsui.$border-radius-dropdown;
+    border-end-start-radius: awsui.$border-radius-dropdown;
+    border-end-end-radius: awsui.$border-radius-dropdown;
   }
 }
 
@@ -122,14 +130,14 @@
 .input-icon-left {
   position: absolute;
   pointer-events: none;
-  left: styles.$control-icon-horizontal-offset;
-  top: styles.$control-icon-vertical-offset;
+  inset-inline-start: styles.$control-icon-horizontal-offset;
+  inset-block-start: styles.$control-icon-vertical-offset;
 }
 
 .input-icon-right {
   position: absolute;
-  top: styles.$control-icon-vertical-offset;
-  right: calc(#{styles.$control-icon-horizontal-offset} - #{awsui.$space-xxs});
+  inset-block-start: styles.$control-icon-vertical-offset;
+  inset-inline-end: calc(#{styles.$control-icon-horizontal-offset} - #{awsui.$space-xxs});
 }
 
 .input-button-right {

@@ -7,7 +7,7 @@ import {
   findActiveDrawerLandmark,
   getActiveDrawerWidth,
   isDrawerTriggerWithBadge,
-  singleDrawer,
+  testDrawer,
 } from './utils';
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import { BetaDrawersProps } from '../../../lib/components/app-layout/drawer/interfaces';
@@ -412,14 +412,10 @@ describeEachAppLayout(size => {
   test('updates active drawer id in controlled mode', async () => {
     awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, defaultActive: true });
     const onChange = jest.fn();
-    const drawers: { drawers: BetaDrawersProps } = {
-      drawers: {
-        ...singleDrawer.drawers,
-        onChange: event => onChange(event.detail),
-      },
-    };
-    const { wrapper } = await renderComponent(<AppLayout contentType="form" {...(drawers as any)} />);
-    expect(onChange).toHaveBeenCalledWith(drawerDefaults.id);
+    const { wrapper } = await renderComponent(
+      <AppLayout drawers={[testDrawer]} onDrawerChange={event => onChange(event.detail)} />
+    );
+    expect(onChange).toHaveBeenCalledWith({ activeDrawerId: drawerDefaults.id });
     expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('runtime drawer content');
   });
 

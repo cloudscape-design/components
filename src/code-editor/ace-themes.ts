@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 export const LightThemes = [
   { value: 'chrome', label: 'Chrome' },
   { value: 'clouds', label: 'Clouds' },
@@ -16,6 +17,7 @@ export const LightThemes = [
   { value: 'kuroir', label: 'Kuroir' },
   { value: 'katzenmilch', label: 'KatzenMilch' },
   { value: 'sqlserver', label: 'SQL Server' },
+  { value: 'cloud_editor', label: 'CloudEditor' },
 ] as const;
 
 export const DarkThemes = [
@@ -42,4 +44,5 @@ export const DarkThemes = [
   { value: 'tomorrow_night_eighties', label: 'Tomorrow Night 80s' },
   { value: 'twilight', label: 'Twilight' },
   { value: 'vibrant_ink', label: 'Vibrant Ink' },
+  { value: 'cloud_editor_dark', label: 'CloudEditor Dark' },
 ] as const;

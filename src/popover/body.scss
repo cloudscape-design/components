@@ -10,7 +10,8 @@
   @include styles.styles-reset;
   @include styles.text-flex-wrapping;
 
-  padding: awsui.$space-s awsui.$space-m;
+  padding-block: awsui.$space-s;
+  padding-inline: awsui.$space-m;
 
   &-overflow-visible {
     overflow: visible;
@@ -23,9 +24,9 @@
 }
 
 .dismiss {
-  margin: calc(-1 * (#{awsui.$space-scaled-xxs} + #{awsui.$border-field-width}))
-    calc(-1 * (#{awsui.$space-xxs} + #{awsui.$border-field-width}));
-  margin-left: 0;
+  margin-block: calc(-1 * (#{awsui.$space-scaled-xxs} + #{awsui.$border-field-width}));
+  margin-inline-start: 0;
+  margin-inline-end: calc(-1 * (#{awsui.$space-xxs} + #{awsui.$border-field-width}));
   flex: 0 0 auto;
   order: 1;
 }
@@ -35,7 +36,7 @@
 }
 
 .header-row {
-  margin-bottom: awsui.$space-xs;
+  margin-block-end: awsui.$space-xs;
 }
 
 .header {
@@ -55,7 +56,7 @@
   @include styles.text-flex-wrapping;
   color: awsui.$color-text-body-secondary;
   flex: 1 1 auto;
-  min-width: 0;
+  min-inline-size: 0;
   &-overflow-visible {
     overflow: visible;
   }

@@ -31,8 +31,14 @@ afterEach(() => {
 });
 
 describe('Code editor component', () => {
+  const versionSpy = jest.spyOn(aceMock, 'version', 'get').mockReturnValue('1.0.0');
+
   afterEach(() => {
     jest.clearAllMocks();
+  });
+
+  afterAll(() => {
+    versionSpy.mockRestore();
   });
 
   it('displays loading screen', () => {
@@ -62,10 +68,22 @@ describe('Code editor component', () => {
     expect(aceMock.edit).toHaveBeenCalled();
     expect(editorMock.setValue).toHaveBeenCalledWith('const pi = 3.14;', -1); // -1 is hardcoded
     expect(editorMock.session.setMode).toHaveBeenLastCalledWith('ace/mode/javascript');
+  });
+
+  it("sets the default light mode theme to dawn if cloud_editor isn't supported", () => {
+    versionSpy.mockReturnValue('1.0.0');
+    renderCodeEditor();
     expect(editorMock.setTheme).toHaveBeenLastCalledWith('ace/theme/dawn');
   });
 
-  it('detects the dark mode if present', () => {
+  it('sets the default light mode theme to cloud_editor if ace supports it', () => {
+    versionSpy.mockReturnValue('1.33.0');
+    renderCodeEditor();
+    expect(editorMock.setTheme).toHaveBeenLastCalledWith('ace/theme/cloud_editor');
+  });
+
+  it("sets the default dark mode theme to tomorrow_night_bright if cloud_editor_dark isn't supported", () => {
+    versionSpy.mockReturnValue('1.0.0');
     render(
       <div className="awsui-polaris-dark-mode">
         <CodeEditor {...defaultProps} />
@@ -74,7 +92,18 @@ describe('Code editor component', () => {
     expect(editorMock.setTheme).toHaveBeenLastCalledWith('ace/theme/tomorrow_night_bright');
   });
 
+  it('sets the default dark mode theme to cloud_editor_dark if ace supports it', () => {
+    versionSpy.mockReturnValue('1.33.0');
+    render(
+      <div className="awsui-polaris-dark-mode">
+        <CodeEditor {...defaultProps} />
+      </div>
+    );
+    expect(editorMock.setTheme).toHaveBeenLastCalledWith('ace/theme/cloud_editor_dark');
+  });
+
   it('detects alternative dark mode class', () => {
+    versionSpy.mockReturnValue('1.0.0');
     render(
       <div className="awsui-dark-mode">
         <CodeEditor {...defaultProps} />
@@ -84,6 +113,7 @@ describe('Code editor component', () => {
   });
 
   it('does not detect dark mode on non-parent elements', () => {
+    versionSpy.mockReturnValue('1.0.0');
     render(
       <div>
         <div className="awsui-polaris-dark-mode"></div>
@@ -517,6 +547,10 @@ describe('Code editor component', () => {
   });
 
   describe('i18n', () => {
+    test("doesn't crash if i18nStrings is an empty object", () => {
+      renderCodeEditor({ i18nStrings: {} });
+    });
+
     test('supports using i18nStrings.loadingState from i18n provider', () => {
       const { container } = render(
         <TestI18nProvider messages={{ 'code-editor': { 'i18nStrings.loadingState': 'Custom loading' } }}>

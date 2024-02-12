@@ -19,19 +19,22 @@
 
 .trigger {
   display: inline-block;
-  max-width: 100%;
+  max-inline-size: 100%;
   color: inherit;
   text-align: inherit;
 }
 
 .trigger-type-text {
-  border: 0;
-  margin: 0;
-  padding: 0;
+  border-block: 0;
+  border-inline: 0;
+  margin-block: 0;
+  margin-inline: 0;
+  padding-block: 0;
+  padding-inline: 0;
   background-color: transparent;
 
   cursor: pointer;
-  border-bottom: awsui.$border-divider-list-width dashed currentColor;
+  border-block-end: awsui.$border-divider-list-width dashed currentColor;
 
   &:focus {
     outline: none;

@@ -51,7 +51,29 @@
   },
   "overrides": [
     {
-      "files": ["./src/button/*.scss"],
+      "files": [
+        "./src/button/*.scss",
+        "./src/g*/**/*.scss",
+        "./src/h*/**/*.scss",
+        "./src/i*/**/*.scss",
+        "./src/j*/**/*.scss",
+        "./src/k*/**/*.scss",
+        "./src/l*/**/*.scss",
+        "./src/m*/**/*.scss",
+        "./src/n*/**/*.scss",
+        "./src/o*/**/*.scss",
+        "./src/p*/**/*.scss",
+        "./src/q*/**/*.scss",
+        "./src/r*/**/*.scss",
+        "./src/s*/**/*.scss",
+        "./src/t*/**/*.scss",
+        "./src/u*/**/*.scss",
+        "./src/v*/**/*.scss",
+        "./src/w*/**/*.scss",
+        "./src/x*/**/*.scss",
+        "./src/y*/**/*.scss",
+        "./src/z*/**/*.scss"
+      ],
       "rules": {
         "property-disallowed-list": ["border", "border-radius", "border-style", "margin", "padding"],
         "csstools/use-logical": "always"

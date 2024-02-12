@@ -4,7 +4,7 @@ import * as React from 'react';
 import styles from './styles.scss';
 import ButtonDropdown from '~components/button-dropdown';
 import ScreenshotArea from '../utils/screenshot-area';
-import buttonDropdownItems, { largeGroupItems } from './utils/button-dropdown-items';
+import buttonDropdownItems, { largeGroupItems, nestedExpandableGroupItems } from './utils/button-dropdown-items';
 
 export default function ButtonDropdownScenario() {
   return (
@@ -22,7 +22,7 @@ export default function ButtonDropdownScenario() {
               </ButtonDropdown>
             </div>
             <div className={styles.row}>
-              <ButtonDropdown expandableGroups={true} className="bd-bottom-left" items={buttonDropdownItems}>
+              <ButtonDropdown expandableGroups={true} className="bd-bottom-left" items={nestedExpandableGroupItems}>
                 Dropdown items
               </ButtonDropdown>
               <ButtonDropdown expandableGroups={true} className="bd-bottom-right" items={largeGroupItems}>

@@ -12,7 +12,7 @@
   display: block;
 
   &--fit-height {
-    height: 100%;
+    block-size: 100%;
     overflow-y: auto;
   }
 }
@@ -21,7 +21,7 @@
   &--fit-height {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    block-size: 100%;
   }
 }
 
@@ -39,11 +39,11 @@
 }
 
 .content--reserve-filter {
-  margin-top: calc(2 * #{awsui.$line-height-body-m});
+  margin-block-start: calc(2 * #{awsui.$line-height-body-m});
 }
 
 .content--reserve-legend {
-  margin-bottom: calc(2 * #{awsui.$line-height-body-m});
+  margin-block-end: calc(2 * #{awsui.$line-height-body-m});
 }
 
 .content--fit-height {

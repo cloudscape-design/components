@@ -19,15 +19,21 @@
   // Allow multi-line placeholders
   white-space: pre-wrap;
 
-  padding: styles.$control-padding;
+  padding-block: styles.$control-padding-vertical;
+  padding-inline: styles.$control-padding-horizontal;
+
   color: awsui.$color-text-body-default;
-  max-width: 100%;
-  width: 100%;
+  max-inline-size: 100%;
+  inline-size: 100%;
   display: block;
   box-sizing: border-box;
   background-color: awsui.$color-background-input-default;
-  border-radius: styles.$control-border-radius;
-  border: styles.$control-border-width solid awsui.$color-border-input-default;
+  border-start-start-radius: styles.$control-border-radius;
+  border-start-end-radius: styles.$control-border-radius;
+  border-end-start-radius: styles.$control-border-radius;
+  border-end-end-radius: styles.$control-border-radius;
+  border-block: styles.$control-border-width solid awsui.$color-border-input-default;
+  border-inline: styles.$control-border-width solid awsui.$color-border-input-default;
   @include styles.font-body-m;
 
   &.textarea-readonly {

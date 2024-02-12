@@ -3,6 +3,7 @@
 import * as React from 'react';
 import Calendar from '~components/calendar';
 import Dropdown from '~components/internal/components/dropdown';
+import i18nStrings from './i18n-strings';
 
 export default function CalendarPage() {
   return (
@@ -23,9 +24,7 @@ export default function CalendarPage() {
           ariaLabel="Certificate expiration date, calendar"
           startOfWeek={1}
           isDateEnabled={date => date.getDay() !== 6 && date.getDay() !== 0}
-          nextMonthAriaLabel="Next month"
-          previousMonthAriaLabel="Previous month"
-          todayAriaLabel="Today"
+          i18nStrings={i18nStrings}
         />
         <Calendar
           value=""
@@ -34,9 +33,7 @@ export default function CalendarPage() {
           ariaLabel="Scheduled launch date, calendar"
           startOfWeek={1}
           isDateEnabled={date => date.getDay() !== 6 && date.getDay() !== 0}
-          nextMonthAriaLabel="Next month"
-          previousMonthAriaLabel="Previous month"
-          todayAriaLabel="Today"
+          i18nStrings={i18nStrings}
         />
       </Dropdown>
     </article>

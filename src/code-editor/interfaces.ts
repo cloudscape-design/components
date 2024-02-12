@@ -140,26 +140,26 @@ export namespace CodeEditorProps {
   }
 
   export interface I18nStrings {
-    loadingState: string;
-    errorState: string;
-    errorStateRecovery: string;
+    loadingState?: string;
+    errorState?: string;
+    errorStateRecovery?: string;
 
-    editorGroupAriaLabel: string;
-    statusBarGroupAriaLabel: string;
+    editorGroupAriaLabel?: string;
+    statusBarGroupAriaLabel?: string;
 
-    cursorPosition: (row: number, column: number) => string;
-    errorsTab: string;
-    warningsTab: string;
-    preferencesButtonAriaLabel: string;
-    paneCloseButtonAriaLabel: string;
+    cursorPosition?: (row: number, column: number) => string;
+    errorsTab?: string;
+    warningsTab?: string;
+    preferencesButtonAriaLabel?: string;
+    paneCloseButtonAriaLabel?: string;
 
-    preferencesModalHeader: string;
-    preferencesModalCancel: string;
-    preferencesModalConfirm: string;
-    preferencesModalWrapLines: string;
-    preferencesModalTheme: string;
-    preferencesModalLightThemes: string;
-    preferencesModalDarkThemes: string;
+    preferencesModalHeader?: string;
+    preferencesModalCancel?: string;
+    preferencesModalConfirm?: string;
+    preferencesModalWrapLines?: string;
+    preferencesModalTheme?: string;
+    preferencesModalLightThemes?: string;
+    preferencesModalDarkThemes?: string;
 
     preferencesModalThemeFilteringPlaceholder?: string;
     preferencesModalThemeFilteringAriaLabel?: string;
