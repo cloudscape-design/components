@@ -50,19 +50,19 @@ export interface CalendarProps extends BaseComponentProps {
 
   /**
    * Used as part of the `aria-label` for today's date in the calendar.
-   * @deprecated Use `i18nStrings` instead.
+   * @deprecated Use `i18nString.todayAriaLabel` instead.
    */
   todayAriaLabel?: string;
 
   /**
    * Specifies an `aria-label` for the 'next month' button.
-   * @deprecated Use `i18nStrings` instead.
+   * @deprecated Use `i18nStrings.nextMonthAriaLabel` instead.
    */
   nextMonthAriaLabel?: string;
 
   /**
    * Specifies an `aria-label` for the 'previous month' button.
-   * @deprecated Use `i18nStrings` instead.
+   * @deprecated Use `i18nStrings.previousMonthAriaLabel` instead.
    */
   previousMonthAriaLabel?: string;
 
