@@ -125,11 +125,17 @@ describe('aria labels', () => {
         );
         expect(getTodayLabelText(container)).toMatch('TEST TODAY');
       });
+
       test('from deprecated top-level property', () => {
         const { container } = render(
           <Calendar {...defaultProps} i18nStrings={undefined} todayAriaLabel="TEST TODAY" />
         );
         expect(getTodayLabelText(container)).toMatch('TEST TODAY');
+      });
+
+      test('does not add `undefined` if not provided', () => {
+        const { container } = render(<Calendar {...defaultProps} i18nStrings={undefined} />);
+        expect(getTodayLabelText(container)).not.toContain('undefined');
       });
     });
 
@@ -189,12 +195,13 @@ describe('aria labels', () => {
   });
 
   describe('month granularity', () => {
+    const getCurrentMonthLabelText = (container: HTMLElement) => {
+      return container
+        .querySelector(`.${styles['calendar-date-current']}`)!
+        .querySelector(`.${screenreaderOnlyStyles.root}`)!.textContent;
+    };
+
     test('should add `currentMonthAriaLabel` to current month', () => {
-      const getCurrentMonthLabelText = (container: HTMLElement) => {
-        return container
-          .querySelector(`.${styles['calendar-date-current']}`)!
-          .querySelector(`.${screenreaderOnlyStyles.root}`)!.textContent;
-      };
       const { container } = render(
         <Calendar
           {...defaultProps}
@@ -205,6 +212,11 @@ describe('aria labels', () => {
         />
       );
       expect(getCurrentMonthLabelText(container)).toMatch('TEST CURRENT MONTH');
+    });
+
+    test('does not add `undefined` if `currentMonthAriaLabel` is not provided', () => {
+      const { container } = render(<Calendar {...defaultProps} i18nStrings={undefined} />);
+      expect(getCurrentMonthLabelText(container)).not.toContain('undefined');
     });
 
     test('should add `nextYearAriaLabel` to appropriate button', () => {

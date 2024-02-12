@@ -165,7 +165,7 @@ export default function Calendar({
     const formattedDate = isMonthPicker
       ? renderMonthAndYear(normalizedLocale, date)
       : getDateLabel(normalizedLocale, date, 'short');
-    if (isCurrentDate) {
+    if (isCurrentDate && currentDateLabel) {
       return formattedDate + '. ' + currentDateLabel;
     }
     return formattedDate;
