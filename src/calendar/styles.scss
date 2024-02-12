@@ -86,6 +86,7 @@
         &:hover {
           color: awsui.$color-text-calendar-day-hover;
           background-color: calendar.$grid-hover-background-color;
+          border-radius: awsui.$border-radius-item;
           &:not(.calendar-day-selected) {
             &::after {
               border: awsui.$border-item-width solid calendar.$grid-hover-border-color;
