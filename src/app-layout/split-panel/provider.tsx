@@ -3,59 +3,58 @@
 import React, { useEffect, useState } from 'react';
 import { getLimitedValue } from '../../split-panel/utils/size-utils';
 import { SplitPanelContextBaseProps, SplitPanelContextProvider } from '../../internal/context/split-panel-context';
-import { SPLIT_PANEL_MIN_HEIGHT, SPLIT_PANEL_MIN_WIDTH } from './constants';
 
 export interface SplitPanelProviderProps extends SplitPanelContextBaseProps {
-  maxWidth: number;
+  getMaxWidth: () => number;
   getMaxHeight: () => number;
   children?: React.ReactNode;
 }
+
+const MIN_HEIGHT = 160;
+const MIN_WIDTH = 280;
 
 export function SplitPanelProvider({
   children,
   size,
   getMaxHeight,
-  maxWidth,
+  getMaxWidth,
   onResize,
   ...rest
 }: SplitPanelProviderProps) {
   const { position, reportSize, isOpen } = rest;
-  const [maxHeight, setMaxHeight] = useState(size);
-  const minSize = position === 'bottom' ? SPLIT_PANEL_MIN_HEIGHT : SPLIT_PANEL_MIN_WIDTH;
-  const maxSize = position === 'bottom' ? maxHeight : maxWidth;
+  const minSize = position === 'bottom' ? MIN_HEIGHT : MIN_WIDTH;
+  const [relativeSize, setRelativeSize] = useState(0);
+  const [maxSize, setMaxSize] = useState(size);
   const cappedSize = getLimitedValue(minSize, size, maxSize);
-  const relativeSize = ((size - minSize) / (maxSize - minSize)) * 100;
 
   const onResizeWithValidation = (newSize: number) => {
-    const maxSize = position === 'side' ? maxWidth : getMaxHeight();
-    const isResizeValid = position === 'side' ? maxSize >= SPLIT_PANEL_MIN_WIDTH : maxSize >= SPLIT_PANEL_MIN_HEIGHT;
+    const maxSize = position === 'side' ? getMaxWidth() : getMaxHeight();
+    const isResizeValid = position === 'side' ? maxSize >= MIN_WIDTH : maxSize >= MIN_HEIGHT;
     if (isOpen && isResizeValid) {
       onResize(getLimitedValue(minSize, newSize, maxSize));
     }
   };
 
   useEffect(() => {
-    if (position !== 'bottom') {
-      return;
-    }
     // effects are called inside out in the components tree
     // wait one frame to allow app-layout to complete its calculations
-    const handle = requestAnimationFrame(() => setMaxHeight(getMaxHeight()));
+    const handle = requestAnimationFrame(() => {
+      const maxSize = position === 'bottom' ? getMaxHeight() : getMaxWidth();
+      setRelativeSize(((size - minSize) / (maxSize - minSize)) * 100);
+      setMaxSize(maxSize);
+    });
     return () => cancelAnimationFrame(handle);
-  }, [size, minSize, position, getMaxHeight]);
+  }, [size, minSize, position, getMaxHeight, getMaxWidth]);
 
   useEffect(() => {
     reportSize(cappedSize);
   }, [reportSize, cappedSize]);
 
   useEffect(() => {
-    if (position !== 'bottom') {
-      return;
-    }
-    const handler = () => setMaxHeight(getMaxHeight());
+    const handler = () => setMaxSize(position === 'bottom' ? getMaxHeight() : getMaxWidth());
     window.addEventListener('resize', handler);
     return () => window.removeEventListener('resize', handler);
-  }, [position, getMaxHeight]);
+  }, [position, getMaxWidth, getMaxHeight]);
 
   return (
     <SplitPanelContextProvider value={{ ...rest, size: cappedSize, relativeSize, onResize: onResizeWithValidation }}>
