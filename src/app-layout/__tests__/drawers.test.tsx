@@ -54,7 +54,7 @@ describeEachAppLayout(size => {
   });
 
   test('should open active drawer on click of overflow item', () => {
-    const { container } = render(<AppLayout contentType="form" {...(manyDrawers as any)} />);
+    const { container } = render(<AppLayout drawers={manyDrawers} />);
     const wrapper = createWrapper(container).findAppLayout()!;
     const buttonDropdown = createWrapper(container).findButtonDropdown();
 
@@ -65,12 +65,16 @@ describeEachAppLayout(size => {
   });
 
   test('renders correct aria-label on overflow menu', () => {
-    const { container, rerender } = render(<AppLayout contentType="form" {...(manyDrawers as any)} />);
+    const ariaLabels: AppLayoutProps.Labels = {
+      drawersOverflow: 'Overflow drawers',
+      drawersOverflowWithBadge: 'Overflow drawers (Unread notifications)',
+    };
+    const { container, rerender } = render(<AppLayout drawers={manyDrawers} ariaLabels={ariaLabels} />);
     const buttonDropdown = createWrapper(container).findButtonDropdown();
 
     expect(buttonDropdown!.findNativeButton().getElement()).toHaveAttribute('aria-label', 'Overflow drawers');
 
-    rerender(<AppLayout contentType="form" {...(manyDrawersWithBadges as any)} />);
+    rerender(<AppLayout drawers={manyDrawersWithBadges} ariaLabels={ariaLabels} />);
     expect(buttonDropdown!.findNativeButton().getElement()).toHaveAttribute(
       'aria-label',
       'Overflow drawers (Unread notifications)'
