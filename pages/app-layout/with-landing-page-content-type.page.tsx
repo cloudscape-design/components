@@ -770,7 +770,7 @@ export default function () {
   const backgroundStyleGradient1 =
     'linear-gradient(135deg, rgba(71,17,118,1) 3%, rgba(131,57,157,1) 44%, rgba(149,85,182,1) 69%, rgba(145,134,215,1) 94%)';
   const backgroundStyleGradient2 =
-    'radial-gradient(circle at 13% 95%, rgba(193, 255, 195, 1) 0%, rgba(195, 255, 245, 1) 37%, rgba(247, 255, 254, 1) 100%)';
+    'radial-gradient(ellipse at 31% 100%, rgba(216, 255, 217, 1) 0%, rgba(229, 255, 251, 1) 48%, rgba(251, 255, 254, 1) 92%)';
 
   // const [themed, setThemed] = useState<boolean>(false);
   // const [secondaryTheme, setSecondaryTheme] = useState<boolean>(false);
