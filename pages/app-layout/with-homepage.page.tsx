@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import AppLayout from '~components/app-layout';
 import clsx from 'clsx';
 import Box from '~components/box';
@@ -14,6 +14,7 @@ import ColumnLayout from '~components/column-layout';
 import SideNavigation from '~components/side-navigation';
 import Flashbar from '~components/flashbar';
 import FormField from '~components/form-field';
+import RadioGroup from '~components/radio-group';
 import Select, { SelectProps } from '~components/select';
 import Toggle from '~components/toggle';
 import HelpPanel from '~components/help-panel';
@@ -24,6 +25,7 @@ import Button from '~components/button';
 import styles from './styles.scss';
 import { ContentLayout } from '~components';
 import AppContext from '../app/app-context';
+import { Theme, applyTheme } from '~components/theming';
 
 // List component
 interface SeparatedListProps {
@@ -133,14 +135,22 @@ interface ToolsProps {
   onStackedNotificationChange: (isChecked: boolean) => void;
   onBreadcrumbChange: (isChecked: boolean) => void;
   onNestingChange: (isChecked: boolean) => void;
+  onColorChange: (isChecked: string) => void;
 }
 
-function Tools({ onFlashbarChange, onStackedNotificationChange, onBreadcrumbChange, onNestingChange }: ToolsProps) {
+function Tools({
+  onFlashbarChange,
+  onStackedNotificationChange,
+  onBreadcrumbChange,
+  onNestingChange,
+  onColorChange,
+}: ToolsProps) {
   const [hasFlash, setFlash] = React.useState(true);
   const [hasStackedNotification, setStackedNotification] = React.useState(true);
   const [hasBreadcrumb, setBreadcrumb] = React.useState(true);
   const [hasNesting, setNesting] = React.useState(true);
   const { urlParams, setUrlParams } = useContext(AppContext as any) as any;
+  const [value, setColorOption] = React.useState('default');
 
   const handleFlashbarChange = (isChecked: boolean) => {
     setFlash(isChecked);
@@ -167,6 +177,13 @@ function Tools({ onFlashbarChange, onStackedNotificationChange, onBreadcrumbChan
     setNesting(isChecked);
     if (onNestingChange) {
       onNestingChange(isChecked);
+    }
+  };
+
+  const handleColorOption = (isChecked: string) => {
+    setColorOption(isChecked);
+    if (onColorChange) {
+      onColorChange(isChecked);
     }
   };
 
@@ -219,6 +236,20 @@ function Tools({ onFlashbarChange, onStackedNotificationChange, onBreadcrumbChan
         >
           Wrap content in ContentLayout
         </Toggle>
+        <FormField label="Header background color">
+          <RadioGroup
+            onChange={({ detail }) => {
+              handleColorOption(detail.value);
+              setUrlParams({ colorOptionCheck: detail.value });
+            }}
+            value={value}
+            items={[
+              { value: 'default', label: 'Grey-900' },
+              { value: 'gradient-1', label: 'Gradient 1' },
+              { value: 'gradient-2', label: 'Gradient 2' },
+            ]}
+          />
+        </FormField>
       </SpaceBetween>
     </HelpPanel>
   );
@@ -532,6 +563,7 @@ export default function () {
   const [notificationsVisible, setNotificationsVisible] = React.useState(true);
   const [breadcrumbVisible, setBreadcrumbVisible] = React.useState(true);
   const [nestingVisible, setNestingVisible] = React.useState(true);
+  const [colorOptionVisible, setColorOptionVisible] = React.useState('default');
 
   console.log(nestingVisible);
 
@@ -551,6 +583,52 @@ export default function () {
     setNestingVisible(isChecked);
   };
 
+  const handleColorOption = (isChecked: string) => {
+    setColorOptionVisible(isChecked);
+  };
+
+  const backgroundStyleGradient1 =
+    'linear-gradient(135deg, rgba(71,17,118,1) 3%, rgba(131,57,157,1) 44%, rgba(149,85,182,1) 69%, rgba(145,134,215,1) 94%)';
+  const backgroundStyleGradient2 =
+    'radial-gradient(ellipse at 31% 100%, rgba(216, 255, 217, 1) 0%, rgba(229, 255, 251, 1) 48%, rgba(251, 255, 254, 1) 92%)';
+
+  useEffect(() => {
+    const theme: Theme = {
+      tokens: {},
+    };
+
+    if (colorOptionVisible === 'gradient-1') {
+      console.log('colorOptionVisible is gradient-1?' + colorOptionVisible);
+      theme.tokens.colorBackgroundHomeHeader = {
+        light: backgroundStyleGradient1,
+        dark: backgroundStyleGradient1,
+      };
+      theme.tokens.colorTextHomeHeaderSecondary = {
+        light: '#e9ebed',
+        dark: '#e9ebed',
+      };
+    } else if (colorOptionVisible === 'gradient-2') {
+      console.log('colorOptionVisible is gradient-2?' + colorOptionVisible);
+      theme.tokens.colorBackgroundHomeHeader = {
+        light: backgroundStyleGradient2,
+        dark: backgroundStyleGradient2,
+      };
+      theme.tokens.colorTextHomeHeaderDefault = {
+        light: '#02100C',
+        dark: '#02100C',
+      };
+      theme.tokens.colorTextHomeHeaderSecondary = {
+        light: '#0C3A2D',
+        dark: '#0C3A2D',
+      };
+    }
+    applyTheme({
+      theme,
+      baseThemeId: 'visual-refresh',
+    });
+    //console.log('Hello' + colorOptionVisible);
+  }, [colorOptionVisible]);
+
   return (
     <ScreenshotArea gutters={false}>
       <AppLayout
@@ -566,6 +644,7 @@ export default function () {
             onStackedNotificationChange={handleStackedNotificationChange}
             onBreadcrumbChange={handleBreadcrumbChange}
             onNestingChange={handleNestingChange}
+            onColorChange={handleColorOption}
           />
         }
         toolsOpen={toolsOpen}

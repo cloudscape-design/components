@@ -21,6 +21,7 @@ export default function Breadcrumbs() {
       className={clsx(
         styles.breadcrumbs,
         testutilStyles.breadcrumbs,
+        darkHeader && styles['dark-header'],
         {
           [styles['has-sticky-background']]: hasStickyBackground,
         },

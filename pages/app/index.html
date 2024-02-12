@@ -1,45 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cloudscape demo pages</title>
 
-    <script>
-      const isDevelopment = '<%= process.env.NODE_ENV %>' !== 'production';
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cloudscape demo pages</title>
 
-      const csp = { 'default-src': "'self'", 'font-src': 'data:', 'style-src': "'self'" };
+  <script>
+    const isDevelopment = '<%= process.env.NODE_ENV %>' !== 'production';
 
-      if (isDevelopment) {
-        csp['connect-src'] = `'self' ws://${location.host};`;
-      }
+    const csp = { 'default-src': "'self'", 'font-src': 'data:', 'style-src': "'self' 'unsafe-inline'" };
 
-      // Theming generates inline styles in runtime
-      if (location.hash.includes('theming')) {
-        csp['style-src'] = "'unsafe-inline' 'self'";
-      }
-      if (location.hash.includes('code-editor')) {
-        csp['worker-src'] = 'blob:'; // ace uses web workers for syntax validation
-        csp['img-src'] = 'data:'; // this component contains icons loaded this way
-      }
-      // Custom CSP required for thumbnails in FileUpload component
-      if (location.hash.includes('file-upload')) {
-        csp['img-src'] = 'blob:';
-      }
-      
-      const cspString = Object.entries(csp)
-        .map(([key, value]) => `${key} ${value}`)
-        .join('; ');
+    if (isDevelopment) {
+      csp['connect-src'] = `'self' ws://${location.host};`;
+    }
 
-      document.write('<meta http-equiv="Content-Security-Policy" content="' + cspString + '" />');
-    </script>
-  </head>
+    // Theming generates inline styles in runtime
+    if (location.hash.includes('theming')) {
+      csp['style-src'] = "'unsafe-inline' 'self'";
+    }
+    if (location.hash.includes('code-editor')) {
+      csp['worker-src'] = 'blob:'; // ace uses web workers for syntax validation
+      csp['img-src'] = 'data:'; // this component contains icons loaded this way
+    }
+    // Custom CSP required for thumbnails in FileUpload component
+    if (location.hash.includes('file-upload')) {
+      csp['img-src'] = 'blob:';
+    }
 
-  <body>
-    <!-- #b element should be there for compatibility with global navigation -->
-    <div id="b">
-      <div id="app"></div>
-    </div>
-  </body>
+    const cspString = Object.entries(csp)
+      .map(([key, value]) => `${key} ${value}`)
+      .join('; ');
+
+    document.write('<meta http-equiv="Content-Security-Policy" content="' + cspString + '" />');
+  </script>
+</head>
+
+<body>
+  <!-- #b element should be there for compatibility with global navigation -->
+  <div id="b">
+    <div id="app"></div>
+  </div>
+</body>
+
 </html>
