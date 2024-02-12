@@ -33,17 +33,14 @@ interface PreferencesModalProps {
 
   i18nStrings: PreferencesModali18nStrings;
 
-  themes: CodeEditorProps['themes'];
+  themes: CodeEditorProps.AvailableThemes;
   defaultTheme: CodeEditorProps.Theme;
 
   onConfirm: (preferences: CodeEditorProps.Preferences) => void;
   onDismiss: () => void;
 }
 
-function filterThemes(allThemes: ReadonlyArray<SelectProps.Option>, available: ReadonlyArray<string> | undefined) {
-  if (!available) {
-    return allThemes;
-  }
+function filterThemes(allThemes: ReadonlyArray<SelectProps.Option>, available: ReadonlyArray<string>) {
   return allThemes.filter(theme => available.indexOf(theme.value!) > -1);
 }
 
@@ -53,11 +50,11 @@ export default (props: PreferencesModalProps) => {
   const themeOptions = [
     {
       label: props.i18nStrings.lightThemes,
-      options: filterThemes(LightThemes, props.themes?.light),
+      options: filterThemes(LightThemes, props.themes.light),
     },
     {
       label: props.i18nStrings.darkThemes,
-      options: filterThemes(DarkThemes, props.themes?.dark),
+      options: filterThemes(DarkThemes, props.themes.dark),
     },
   ];
   const [selectedThemeOption, setSelectedThemeOption] = useState<SelectProps.Option>(

@@ -11,7 +11,7 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { CodeEditorProps } from './interfaces';
 import { Pane } from './pane';
 import { useChangeEffect } from './listeners';
-import { DEFAULT_DARK_THEME, DEFAULT_LIGHT_THEME, PaneStatus, getLanguageLabel } from './util';
+import { PaneStatus, getLanguageLabel, getDefaultTheme, getDefaultSupportedThemes } from './util';
 import { fireNonCancelableEvent } from '../internal/events';
 import { setupEditor } from './setup-editor';
 import { ResizableBox } from './resizable-box';
@@ -110,7 +110,7 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
 
   useSyncEditorWrapLines(editor, preferences?.wrapLines);
 
-  const defaultTheme = mode === 'dark' ? DEFAULT_DARK_THEME : DEFAULT_LIGHT_THEME;
+  const defaultTheme = getDefaultTheme(ace, mode);
   useSyncEditorTheme(editor, preferences?.theme ?? defaultTheme);
 
   // Change listeners
@@ -273,7 +273,7 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
             <PreferencesModal
               onConfirm={onPreferencesConfirm}
               onDismiss={onPreferencesDismiss}
-              themes={themes}
+              themes={themes ?? getDefaultSupportedThemes(ace)}
               preferences={preferences}
               defaultTheme={defaultTheme}
               i18nStrings={{
