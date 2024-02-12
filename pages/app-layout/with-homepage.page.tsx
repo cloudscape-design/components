@@ -444,7 +444,7 @@ const ContentWithHeader = () => {
               </ColumnLayout>
             </Container>
           </SpaceBetween>
-          <div className="custom-home__sidebar">
+          <div className={clsx(styles['custom-home__sidebar'])}>
             <SpaceBetween size="xxl">
               <Container header={<Header variant="h2">Pricing (US)</Header>}>
                 <SeparatedList
