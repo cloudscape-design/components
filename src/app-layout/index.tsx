@@ -11,7 +11,6 @@ import { AppLayoutProps } from './interfaces';
 import { Notifications } from './notifications';
 import { MobileToolbar } from './mobile-toolbar';
 import { useFocusControl } from './utils/use-focus-control';
-import useWindowWidth from './utils/use-window-width';
 import useContentHeight from './utils/use-content-height';
 import styles from './styles.css.js';
 import testutilStyles from './test-classes/styles.css.js';
@@ -30,8 +29,13 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import ContentWrapper, { ContentWrapperProps } from './content-wrapper';
 import { Drawer, DrawerTriggersBar } from './drawer';
 import { ResizableDrawer } from './drawer/resizable-drawer';
-import { SplitPanelProvider, SideSplitPanelDrawer, SplitPanelProviderProps } from './split-panel';
-import useAppLayoutOffsets from './utils/use-content-width';
+import {
+  SPLIT_PANEL_MIN_WIDTH,
+  SideSplitPanelDrawer,
+  SplitPanelProvider,
+  SplitPanelProviderProps,
+} from './split-panel';
+import useAppLayoutRect from './utils/use-app-layout-rect';
 import { isDevelopment } from '../internal/is-development';
 import { useStableCallback, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
@@ -227,7 +231,6 @@ const OldAppLayout = React.forwardRef(
       footerSelector,
       disableBodyScroll
     );
-    const [isSplitpanelForcedPosition, setIsSplitpanelForcedPosition] = useState(false);
 
     const [notificationsHeight, notificationsRef] = useContainerQuery(rect => rect.contentBoxHeight);
     const anyPanelOpen = navigationVisible || toolsVisible || !!activeDrawer;
@@ -266,16 +269,12 @@ const OldAppLayout = React.forwardRef(
     const effectiveNavigationWidth = navigationHide ? 0 : navigationOpen ? navigationWidth : closedDrawerWidth;
 
     const getEffectiveToolsWidth = () => {
-      if (
-        toolsHide &&
-        (!splitPanelDisplayed || splitPanelPreferences?.position !== 'side') &&
-        (!drawers || drawers.length === 0)
-      ) {
-        return 0;
-      }
-
       if (activeDrawer && activeDrawerSize) {
         return activeDrawerSize;
+      }
+
+      if (toolsHide || drawers) {
+        return 0;
       }
 
       if (toolsOpen) {
@@ -329,37 +328,6 @@ const OldAppLayout = React.forwardRef(
       fireNonCancelableEvent(onSplitPanelToggle, { open: !splitPanelOpen });
     }, [setSplitPanelOpen, splitPanelOpen, onSplitPanelToggle, setSplitPanelLastInteraction]);
 
-    const getSplitPanelMaxWidth = useStableCallback(() => {
-      if (!mainContentRef.current || !defaults.minContentWidth) {
-        return NaN;
-      }
-
-      const width = parseInt(getComputedStyle(mainContentRef.current).width);
-      // when disableContentPaddings is true there is less available space,
-      // so we subtract space-scaled-2x-xxxl * 2 for left and right padding
-      const contentPadding = disableContentPaddings ? 80 : 0;
-      const spaceAvailable = width - defaults.minContentWidth - contentPadding;
-
-      const spaceTaken = finalSplitPanePosition === 'side' ? splitPanelSize : 0;
-      return Math.max(0, spaceTaken + spaceAvailable);
-    });
-
-    const getDrawerMaxWidth = useStableCallback(() => {
-      if (!mainContentRef.current || !defaults.minContentWidth) {
-        return NaN;
-      }
-
-      // Either use the computed width of the drawer or the drawerSize as defined.
-      const width = parseInt(getComputedStyle(mainContentRef.current).width || `${activeDrawerSize}`);
-
-      // when disableContentPaddings is true there is less available space,
-      // so we subtract space-scaled-2x-xxxl * 2 for left and right padding
-      const contentPadding = disableContentPaddings ? 80 : 0;
-      const spaceAvailable = width - defaults.minContentWidth - contentPadding;
-
-      return Math.max(0, activeDrawerSize + spaceAvailable);
-    });
-
     const getSplitPanelMaxHeight = useStableCallback(() => {
       if (typeof document === 'undefined') {
         return 0; // render the split panel in its minimum possible size
@@ -373,81 +341,54 @@ const OldAppLayout = React.forwardRef(
           : availableHeight - MAIN_PANEL_MIN_HEIGHT;
       }
     });
+    const { left: leftOffset, right: rightOffset, width: documentWidth } = useAppLayoutRect(rootRef.current);
 
-    const finalSplitPanePosition = isSplitpanelForcedPosition ? 'bottom' : splitPanelPosition;
+    const rightDrawerBarWidth = drawers ? (drawers.length > 1 ? closedDrawerWidth : 0) : 0;
+    const contentPadding = 80;
+    // all content except split-panel + drawers/tools area
+    const resizableSpaceAvailable = Math.max(
+      0,
+      documentWidth -
+        leftOffset -
+        rightOffset -
+        effectiveNavigationWidth -
+        defaults.minContentWidth -
+        contentPadding -
+        rightDrawerBarWidth
+    );
+
+    // if there is no space to display split panel in the side, force to bottom
+    const isSplitPanelForcedPosition =
+      isMobile || resizableSpaceAvailable - effectiveToolsWidth < SPLIT_PANEL_MIN_WIDTH;
+    const finalSplitPanePosition = isSplitPanelForcedPosition ? 'bottom' : splitPanelPosition;
 
     const splitPaneAvailableOnTheSide = splitPanelDisplayed && finalSplitPanePosition === 'side';
-    const splitPanelOpenOnTheSide = splitPaneAvailableOnTheSide && splitPanelOpen;
 
-    const toggleButtonsBarWidth = 0;
-
-    const windowWidth = useWindowWidth();
-    const { left: leftOffset, right: rightOffset } = useAppLayoutOffsets(rootRef.current);
-    const contentWidthWithSplitPanel =
-      windowWidth -
-      leftOffset -
-      rightOffset -
-      effectiveToolsWidth -
-      effectiveNavigationWidth -
-      (disableContentPaddings ? 0 : toggleButtonsBarWidth);
-    const isResizeInvalid = isMobile || (defaults.minContentWidth || 0) > contentWidthWithSplitPanel;
-
-    useEffect(() => {
-      const contentWidth = contentWidthWithSplitPanel - splitPanelSize;
-
-      setIsSplitpanelForcedPosition(isMobile || (defaults.minContentWidth || 0) > contentWidth);
-      // This is a workaround to avoid a forced position due to splitPanelSize, which is
-      // user controlled variable.
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [contentWidthWithSplitPanel, activeDrawerSize, defaults.minContentWidth, isMobile]);
+    const sideSplitPanelSize = splitPaneAvailableOnTheSide ? (splitPanelOpen ? splitPanelSize : closedDrawerWidth) : 0;
+    const splitPanelMaxWidth = Math.max(0, resizableSpaceAvailable - effectiveToolsWidth);
+    const drawerMaxSize = Math.max(0, resizableSpaceAvailable - sideSplitPanelSize);
 
     const navigationClosedWidth = navigationHide || isMobile ? 0 : closedDrawerWidth;
-    const toolsClosedWidth = toolsHide || isMobile || (!hasDrawers && toolsHide) ? 0 : closedDrawerWidth;
 
     const contentMaxWidthStyle = !isMobile ? { maxWidth: defaults.maxContentWidth } : undefined;
 
     const [splitPanelReportedSize, setSplitPanelReportedSize] = useState(0);
     const [splitPanelReportedHeaderHeight, setSplitPanelReportedHeaderHeight] = useState(0);
 
-    const getSplitPanelRightOffset = () => {
-      if (isMobile) {
-        return 0;
-      }
-
-      if (hasDrawers) {
-        if (activeDrawer) {
-          if (drawers.length === 1) {
-            return activeDrawerSize;
-          }
-          if (!isResizeInvalid && activeDrawerSize) {
-            return activeDrawerSize + closedDrawerWidth;
-          }
-
-          return toolsWidth + closedDrawerWidth;
-        }
-        return drawers.length > 0 ? closedDrawerWidth : 0;
-      }
-
-      if (!toolsHide && toolsOpen) {
-        return toolsWidth;
-      }
-      return toolsClosedWidth;
-    };
-
     const splitPanelContextProps: SplitPanelProviderProps = {
       topOffset: headerHeight + (finalSplitPanePosition === 'bottom' ? stickyNotificationsHeight || 0 : 0),
       bottomOffset: footerHeight,
       leftOffset:
         leftOffset + (isMobile ? 0 : !navigationHide && navigationOpen ? navigationWidth : navigationClosedWidth),
-      rightOffset: rightOffset + getSplitPanelRightOffset(),
+      rightOffset: isMobile ? 0 : rightOffset + effectiveToolsWidth + rightDrawerBarWidth,
       position: finalSplitPanePosition,
       size: splitPanelSize,
-      getMaxWidth: getSplitPanelMaxWidth,
+      maxWidth: splitPanelMaxWidth,
       getMaxHeight: getSplitPanelMaxHeight,
       disableContentPaddings,
       contentWidthStyles: contentMaxWidthStyle,
       isOpen: splitPanelOpen,
-      isForcedPosition: isSplitpanelForcedPosition,
+      isForcedPosition: isSplitPanelForcedPosition,
       onResize: onSplitPanelSizeSet,
       onToggle: onSplitPanelToggleHandler,
       onPreferencesChange: onSplitPanelPreferencesSet,
@@ -480,7 +421,7 @@ const OldAppLayout = React.forwardRef(
         // 2. Tools panel is present and open
         toolsVisible ||
         // 3. Split panel is open in side position
-        splitPanelOpenOnTheSide,
+        (splitPaneAvailableOnTheSide && splitPanelOpen),
       isMobile,
     };
 
@@ -663,7 +604,9 @@ const OldAppLayout = React.forwardRef(
                 mainLabel: activeDrawer?.ariaLabels.drawerName,
                 resizeHandle: activeDrawer?.ariaLabels?.resizeHandle,
               }}
-              width={!isResizeInvalid ? activeDrawerSize : toolsWidth}
+              minWidth={minDrawerSize}
+              maxWidth={drawerMaxSize}
+              width={activeDrawerSize}
               bottomOffset={footerHeight}
               topOffset={headerHeight}
               isMobile={isMobile}
@@ -680,11 +623,8 @@ const OldAppLayout = React.forwardRef(
               type="tools"
               onLoseFocus={loseDrawersFocus}
               activeDrawer={activeDrawer}
-              minSize={minDrawerSize}
-              size={!isResizeInvalid ? activeDrawerSize : toolsWidth}
               onResize={changeDetail => onActiveDrawerResize(changeDetail)}
               refs={drawerRefs}
-              getMaxWidth={getDrawerMaxWidth}
               toolsContent={drawers?.find(drawer => drawer.id === TOOLS_DRAWER_ID)?.content}
             >
               {activeDrawer?.content}
@@ -696,7 +636,7 @@ const OldAppLayout = React.forwardRef(
                 toggleClassName={testutilStyles['tools-toggle']}
                 closeClassName={testutilStyles['tools-close']}
                 ariaLabels={togglesConfig.tools.getLabels(ariaLabels)}
-                width={effectiveToolsWidth}
+                width={toolsWidth}
                 bottomOffset={footerHeight}
                 topOffset={headerHeight}
                 isMobile={isMobile}

@@ -174,7 +174,6 @@ describeEachAppLayout(size => {
 
     drawerTrigger.click();
     expect(drawerTrigger!.getElement()).toHaveAttribute('aria-controls', 'security');
-    console.log(wrapper.findActiveDrawer()!.getElement());
     expect(wrapper.findActiveDrawer()!.getElement()).toHaveAttribute('id', 'security');
   });
 });
