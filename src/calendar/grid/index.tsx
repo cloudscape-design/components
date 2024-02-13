@@ -29,10 +29,10 @@ import { CalendarProps } from '../interfaces.js';
  * - (table navigation) Chrome+VO - weekday is announced twice when navigating to the calendar's header;
  * - (table navigation) Safari+VO - "dimmed" state is announced twice;
  * - (table navigation) Firefox/Chrome+NVDA - cannot use table navigation if any cell has a focus;
- * - (keyboard navigation) Firefox+NVDA - every day is announced as "not selected";
+ * - (keyboard navigation) Firefox+NVDA - every date is announced as "not selected";
  * - (keyboard navigation) Safari/Chrome+VO - weekdays are not announced;
- * - (keyboard navigation) Safari/Chrome+VO - days are not announced as interactive (clickable or selectable);
- * - (keyboard navigation) Safari/Chrome+VO - day announcements are not interruptive and can be missed if navigating fast.
+ * - (keyboard navigation) Safari/Chrome+VO - dates are not announced as interactive (clickable or selectable);
+ * - (keyboard navigation) Safari/Chrome+VO - date announcements are not interruptive and can be missed if navigating fast.
  */
 
 export interface GridProps {
@@ -125,7 +125,7 @@ export default function Grid({
   };
 
   // The focused date changes as a feedback to keyboard navigation in the grid.
-  // Once changed, the corresponding day button needs to receive the actual focus.
+  // Once changed, the corresponding date button needs to receive the actual focus.
   useEffectOnUpdate(() => {
     if (focusedDate && focusedDateRef.current) {
       (focusedDateRef.current as HTMLDivElement).focus();
@@ -173,7 +173,7 @@ export default function Grid({
                   // Do not attach click event when the date is disabled, otherwise VO+safari announces clickable
                   onClick={isEnabled ? () => onSelectDate(date) : undefined}
                   className={clsx(styles['calendar-grid-cell'], styles['calendar-date'], {
-                    [styles['calendar-date-active']]: isActive(date),
+                    [styles['calendar-date-current-page']]: isActive(date),
                     [styles['calendar-date-enabled']]: isEnabled,
                     [styles['calendar-date-selected']]: isSelected,
                     [styles['calendar-date-current']]: isCurrentDate,

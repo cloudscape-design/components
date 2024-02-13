@@ -21,11 +21,11 @@ export default class CalendarWrapper extends ComponentWrapper {
   }
 
   findPreviousMonthButton(): ButtonWrapper {
-    return this.findComponent(`.${styles['calendar-prev-month-btn']}`, ButtonWrapper)!;
+    return this.findComponent(`.${styles['calendar-prev-btn']}`, ButtonWrapper)!;
   }
 
   findNextMonthButton(): ButtonWrapper {
-    return this.findComponent(`.${styles['calendar-next-month-btn']}`, ButtonWrapper)!;
+    return this.findComponent(`.${styles['calendar-next-btn']}`, ButtonWrapper)!;
   }
 
   findSelectedDate(): ElementWrapper {

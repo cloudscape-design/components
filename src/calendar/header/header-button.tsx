@@ -21,7 +21,7 @@ export function HeaderPrevButton({ ariaLabel, baseDate, onChange, granularity }:
       variant="icon"
       onClick={() => onChange((granularity === 'month' ? addYears : addMonths)(baseDate, -1))}
       formAction="none"
-      className={styles['calendar-prev-month-btn']}
+      className={styles['calendar-prev-btn']}
     />
   );
 }
@@ -34,7 +34,7 @@ export function HeaderNextButton({ ariaLabel, baseDate, onChange, granularity }:
       variant="icon"
       onClick={() => onChange((granularity === 'month' ? addYears : addMonths)(baseDate, 1))}
       formAction="none"
-      className={styles['calendar-next-month-btn']}
+      className={styles['calendar-next-btn']}
     />
   );
 }

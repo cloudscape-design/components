@@ -97,7 +97,12 @@ Object {
   "calendar": Array [
     "awsui_calendar-date-selected_1ykar",
     "awsui_calendar-date_1ykar",
+    "awsui_calendar-date-selected_1ykar",
+    "awsui_calendar-date_1ykar",
     "awsui_calendar-header_1ykar",
+    "awsui_calendar-next-btn_1ykar",
+    "awsui_calendar-prev-btn_1ykar",
+    "awsui_calendar-row_1ykar",
     "awsui_calendar-next-month-btn_1ykar",
     "awsui_calendar-prev-month-btn_1ykar",
     "awsui_calendar-row_1ykar",
