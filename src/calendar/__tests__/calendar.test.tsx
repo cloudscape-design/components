@@ -147,7 +147,7 @@ describe('aria labels', () => {
         />
       );
       const wrapper = createWrapper(container);
-      expect(wrapper.findCalendar()!.findNextButton()!.getElement()!.getAttribute('aria-label')).toMatch(
+      expect(wrapper.findCalendar()!.findNextButton().getElement()!.getAttribute('aria-label')).toMatch(
         'TEST NEXT MONTH'
       );
     });
@@ -157,7 +157,7 @@ describe('aria labels', () => {
         <Calendar {...defaultProps} i18nStrings={undefined} nextMonthAriaLabel="TEST NEXT MONTH" />
       );
       const wrapper = createWrapper(container);
-      expect(wrapper.findCalendar()!.findNextButton()!.getElement()!.getAttribute('aria-label')).toMatch(
+      expect(wrapper.findCalendar()!.findNextButton().getElement()!.getAttribute('aria-label')).toMatch(
         'TEST NEXT MONTH'
       );
     });
