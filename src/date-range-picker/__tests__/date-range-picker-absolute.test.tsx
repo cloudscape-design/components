@@ -90,8 +90,8 @@ describe('Date range picker', () => {
         const wrapper = createWrapper(container).findDateRangePicker()!;
 
         wrapper.findTrigger().click();
-        wrapper.findDropdown()!.findPreviousMonthButton().click();
-        wrapper.findDropdown()!.findNextMonthButton().click();
+        wrapper.findDropdown()!.findPreviousButton().click();
+        wrapper.findDropdown()!.findNextButton().click();
         wrapper.findDropdown()!.findDateAt('left', 2, 1).click();
         wrapper.findDropdown()!.findDateAt('right', 2, 1).click();
         expect(onSubmit).not.toHaveBeenCalled();

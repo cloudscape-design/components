@@ -53,7 +53,7 @@ export default class DateRangePickerPage extends BasePageObject {
   }
 
   isNextButtonFocused() {
-    return this.isFocused(this.findDropdown().findNextMonthButton().toSelector());
+    return this.isFocused(this.findDropdown().findNextButton().toSelector());
   }
 
   async focusPrevElement() {
@@ -69,7 +69,7 @@ export default class DateRangePickerPage extends BasePageObject {
   }
 
   async clickPreviousMonth() {
-    await this.click(this.findDropdown().findPreviousMonthButton().toSelector());
+    await this.click(this.findDropdown().findPreviousButton().toSelector());
   }
 
   async clickOutside() {
