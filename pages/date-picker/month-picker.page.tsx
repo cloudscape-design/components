@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Box, DatePicker, Link } from '~components';
 
 export default function DatePickerScenario() {
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState('2024-02');
 
   return (
     <Box padding="s">
@@ -14,8 +14,6 @@ export default function DatePickerScenario() {
       <br />
       <DatePicker
         value={value}
-        name={'date-picker-name'}
-        ariaLabel={'date-picker-label'}
         locale="en-GB"
         placeholder={'YYYY/MM'}
         onChange={event => setValue(event.detail.value)}
