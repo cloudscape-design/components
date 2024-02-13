@@ -246,8 +246,8 @@ describe('Date range picker calendar', () => {
         // focus a new date
         findFocusableDate(wrapper)!.keydown(KeyCode.right);
         // navigate to previous month
-        wrapper.findDropdown()!.findPreviousMonthButton().click();
-        wrapper.findDropdown()!.findPreviousMonthButton().click();
+        wrapper.findDropdown()!.findPreviousMonthButton()!.click();
+        wrapper.findDropdown()!.findPreviousMonthButton()!.click();
 
         expect(findFocusableDateText(wrapper)).toBe('1');
       });
@@ -257,8 +257,8 @@ describe('Date range picker calendar', () => {
         const { wrapper } = renderDateRangePicker({ ...defaultProps, isDateEnabled });
 
         changeMode(wrapper, 'absolute');
-        wrapper.findDropdown()!.findNextMonthButton().click();
-        wrapper.findDropdown()!.findNextMonthButton().click();
+        wrapper.findDropdown()!.findNextMonthButton()!.click();
+        wrapper.findDropdown()!.findNextMonthButton()!.click();
 
         expect(findFocusableDateText(wrapper)).toBe('2');
       });
@@ -416,7 +416,7 @@ describe('Date range picker calendar', () => {
     test('should add `nextMonthAriaLabel` to appropriate button in the calendar', () => {
       const { wrapper } = renderDateRangePicker({ ...defaultProps, i18nStrings });
       changeMode(wrapper, 'absolute');
-      expect(wrapper.findDropdown()!.findNextMonthButton().getElement()!.getAttribute('aria-label')).toMatch(
+      expect(wrapper.findDropdown()!.findNextMonthButton()!.getElement()!.getAttribute('aria-label')).toMatch(
         'TEST NEXT MONTH'
       );
     });
@@ -424,7 +424,7 @@ describe('Date range picker calendar', () => {
     test('should add `previousMonthAriaLabel` to appropriate button in the calendar', () => {
       const { wrapper } = renderDateRangePicker({ ...defaultProps, i18nStrings });
       changeMode(wrapper, 'absolute');
-      expect(wrapper.findDropdown()!.findPreviousMonthButton().getElement()!.getAttribute('aria-label')).toMatch(
+      expect(wrapper.findDropdown()!.findPreviousMonthButton()!.getElement()!.getAttribute('aria-label')).toMatch(
         'TEST PREVIOUS MONTH'
       );
     });
