@@ -54,7 +54,7 @@
       border-spacing: 0;
     }
     &-spaced {
-      border-spacing: awsui.$space-xxxs calc(#{awsui.$space-xxs} + #{awsui.$space-xxxs});
+      border-spacing: awsui.$space-calendar-grid-gutter-vertical awsui.$space-calendar-grid-gutter-horizontal;
       padding-block: awsui.$space-xs;
       padding-inline: awsui.$space-xs;
     }
