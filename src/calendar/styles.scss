@@ -49,6 +49,7 @@
 
   &-grid {
     inline-size: 100%;
+    table-layout: fixed;
 
     &:not(.calendar-grid-spaced) {
       border-spacing: 0;
@@ -81,14 +82,6 @@
     padding-inline: 0;
     color: calendar.$grid-disabled-date-color;
     position: relative;
-
-    &:not(.calendar-date-spaced) {
-      inline-size: calc(100% / 7);
-    }
-
-    &-spaced {
-      inline-size: calc(100% / 3);
-    }
 
     &::after {
       content: '';
