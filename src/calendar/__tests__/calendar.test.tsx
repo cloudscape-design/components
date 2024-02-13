@@ -124,9 +124,15 @@ describe('aria labels', () => {
       );
       expect(getTodayLabelText(container)).toMatch('TEST TODAY');
     });
+
     test('from deprecated top-level property', () => {
       const { container } = render(<Calendar {...defaultProps} i18nStrings={undefined} todayAriaLabel="TEST TODAY" />);
       expect(getTodayLabelText(container)).toMatch('TEST TODAY');
+    });
+
+    test('does not add `undefined` if not provided', () => {
+      const { container } = render(<Calendar {...defaultProps} i18nStrings={undefined} />);
+      expect(getTodayLabelText(container)).not.toContain('undefined');
     });
   });
 
