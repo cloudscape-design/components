@@ -11,7 +11,6 @@ import { findUpUntil } from '../../../lib/components/internal/utils/dom';
 import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
 import testutilStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
 import { BetaDrawersProps } from '../../../lib/components/app-layout/drawer/interfaces';
-import { IconProps } from '../../../lib/components/icon/interfaces';
 import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
 import iconStyles from '../../../lib/components/icon/styles.css.js';
 
@@ -151,11 +150,11 @@ export const testDrawer: AppLayoutProps.Drawer = {
   },
 };
 
-const getDrawerItem = (id: string, iconName: IconProps.Name, badge: boolean) => {
+const getDrawerItem = (id: string, badge: boolean): AppLayoutProps.Drawer => {
   return {
     ariaLabels: {
       closeButton: `${id} close button`,
-      content: `${id} drawer content`,
+      drawerName: `${id} drawer content`,
       triggerButton: `${id} trigger button`,
       resizeHandle: `${id} resize handle`,
     },
@@ -163,46 +162,19 @@ const getDrawerItem = (id: string, iconName: IconProps.Name, badge: boolean) => 
     badge,
     id,
     trigger: {
-      iconName,
+      iconName: 'security',
     },
   };
 };
 
-const manyDrawersArray = [...Array(100).keys()].map(item => item.toString());
+export const manyDrawers: Array<AppLayoutProps.Drawer> = [
+  getDrawerItem('security', true),
+  ...Array.from({ length: 100 }, (_, index) => getDrawerItem(`${index}`, false)),
+];
 
-export const manyDrawers: { drawers: BetaDrawersProps } = {
-  drawers: {
-    ariaLabel: 'Drawers',
-    overflowAriaLabel: 'Overflow drawers',
-    overflowWithBadgeAriaLabel: 'Overflow drawers (Unread notifications)',
-    items: [
-      {
-        ariaLabels: {
-          closeButton: 'Security close button',
-          content: 'Security drawer content',
-          triggerButton: 'Security trigger button',
-          resizeHandle: 'Security resize handle',
-        },
-        content: <span>Security</span>,
-        badge: true,
-        id: 'security',
-        trigger: {
-          iconName: 'security',
-        },
-      },
-      ...manyDrawersArray.map(item => getDrawerItem(item, 'security', false)),
-    ],
-  },
-};
-
-export const manyDrawersWithBadges: { drawers: BetaDrawersProps } = {
-  drawers: {
-    ariaLabel: 'Drawers',
-    overflowAriaLabel: 'Overflow drawers',
-    overflowWithBadgeAriaLabel: 'Overflow drawers (Unread notifications)',
-    items: [...manyDrawersArray.map(item => getDrawerItem(item, 'security', true))],
-  },
-};
+export const manyDrawersWithBadges: Array<AppLayoutProps.Drawer> = Array.from({ length: 100 }, (_, index) =>
+  getDrawerItem(`${index}`, true)
+);
 
 export const resizableDrawer: { drawers: BetaDrawersProps } = {
   drawers: {
