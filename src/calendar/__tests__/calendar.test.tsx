@@ -281,23 +281,19 @@ describe('current date', () => {
 });
 
 describe('test API', () => {
-  test('findPreviousButton', () => {
+  test('findPreviousMonthButton (deprecated) returns the same element as findPreviousButton', () => {
     const { wrapper } = renderCalendar();
-    expect(wrapper.findPreviousButton().getElement()).toBeTruthy();
+    const previousButton = wrapper.findPreviousButton().getElement();
+    const previousMonthButton = wrapper.findPreviousMonthButton().getElement();
+    expect(previousButton).toBeTruthy();
+    expect(previousMonthButton).toBe(previousButton);
   });
 
-  test('findNextButton', () => {
+  test('findNextMonthButton (deprecated) returns the same element as findNextButton', () => {
     const { wrapper } = renderCalendar();
-    expect(wrapper.findNextButton().getElement()).toBeTruthy();
-  });
-
-  test('findPreviousMonthButton (deprecated)', () => {
-    const { wrapper } = renderCalendar();
-    expect(wrapper.findPreviousMonthButton().getElement()).toBeTruthy();
-  });
-
-  test('findNextMonthButton (deprecated)', () => {
-    const { wrapper } = renderCalendar();
-    expect(wrapper.findNextMonthButton().getElement()).toBeTruthy();
+    const nextButton = wrapper.findNextButton().getElement();
+    const nextMonthButton = wrapper.findNextMonthButton().getElement();
+    expect(nextButton).toBeTruthy();
+    expect(nextMonthButton).toBe(nextButton);
   });
 });
