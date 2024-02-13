@@ -1,20 +1,22 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import * as React from 'react';
 import MockDate from 'mockdate';
-import { render } from '@testing-library/react';
 import DatePickerWrapper from '../../../lib/components/test-utils/dom/date-picker';
-import DatePicker, { DatePickerProps } from '../../../lib/components/date-picker';
+import { DatePickerProps } from '../../../lib/components/date-picker';
 import calendarStyles from '../../../lib/components/calendar/styles.selectors.js';
 import { KeyCode } from '../../../lib/components/internal/keycode';
 import { NonCancelableEventHandler } from '../../../lib/components/internal/events';
-import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
-import createWrapper from '../../../lib/components/test-utils/dom';
 import screenreaderOnlyStyles from '../../../lib/components/internal/components/screenreader-only/styles.selectors.js';
-import { padLeftZeros } from '../../../lib/components/internal/utils/strings/pad-left-zeros';
+import {
+  findCalendarHeaderText,
+  findCurrentDate,
+  findFocusableDateText,
+  findFocusedDate,
+  outsideId,
+  renderDatePicker,
+} from './common';
 
 describe('Date picker calendar', () => {
-  const outsideId = 'outside';
   const defaultProps: DatePickerProps = {
     i18nStrings: {
       todayAriaLabel: 'Today',
@@ -24,57 +26,11 @@ describe('Date picker calendar', () => {
     value: '2018-03-22',
   };
 
-  function renderDatePicker(props: DatePickerProps = defaultProps) {
-    const { container, getByTestId } = render(
-      <div>
-        <button value={'Used to change the focus in this testsuite'} data-testid={outsideId} />
-        <br />
-        <DatePicker {...props} />
-      </div>
-    );
-
-    const wrapper = createWrapper(container).findDatePicker()!;
-    const input = wrapper.findNativeInput().getElement();
-
-    return {
-      wrapper,
-      input,
-      getByTestId,
-    };
-  }
-
-  const findFocusedDate = (wrapper: DatePickerWrapper) => {
-    return wrapper
-      .findCalendar()!
-      .find(`.${calendarStyles['calendar-date']}[tabIndex="0"]`)
-      ?.find(`:not(.${screenreaderOnlyStyles.root}`);
-  };
-
-  const findFocusableDateText = (wrapper: DatePickerWrapper) => {
-    const focusedItem = findFocusedDate(wrapper);
-    return focusedItem ? focusedItem.getElement().textContent!.trim() : null;
-  };
-
-  const findCalendarHeaderText = (wrapper: DatePickerWrapper) => {
-    return wrapper.findCalendar()!.findHeader()!.getElement().textContent!.trim();
-  };
-
   const findCalendarWeekdays = (wrapper: DatePickerWrapper) => {
     return wrapper
       .findCalendar()!
       .findAll(`.${calendarStyles['calendar-date-header']} :not(.${screenreaderOnlyStyles.root})`)
       .map(day => day.getElement().textContent!.trim());
-  };
-
-  const findCalendarDates = (wrapper: DatePickerWrapper) => {
-    return wrapper
-      .findCalendar()!
-      .findAll(`.${calendarStyles['calendar-date']} .${calendarStyles['date-inner']}`)
-      .map(date => date.getElement().textContent!.trim());
-  };
-
-  const findCurrentDate = (wrapper: DatePickerWrapper): ElementWrapper<HTMLElement> => {
-    return wrapper.findCalendar()!.find(`.${calendarStyles['calendar-date-current']}`)!;
   };
 
   beforeEach(() => {
@@ -88,7 +44,7 @@ describe('Date picker calendar', () => {
     let wrapper: DatePickerWrapper, getByTestId: (selector: string) => HTMLElement;
 
     beforeEach(async () => {
-      ({ wrapper, getByTestId } = renderDatePicker());
+      ({ wrapper, getByTestId } = renderDatePicker(defaultProps));
       wrapper.findOpenCalendarButton().click();
       await runPendingEvents();
     });
@@ -142,85 +98,41 @@ describe('Date picker calendar', () => {
   });
 
   describe('localization', () => {
-    describe('day granularity', () => {
-      test('should render calendar with the default locale', () => {
-        const { wrapper } = renderDatePicker();
-        wrapper.findOpenCalendarButton().click();
-        expect(findCalendarHeaderText(wrapper)).toBe('March 2018');
-        expect(findCalendarWeekdays(wrapper)).toEqual(['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']);
-      });
-
-      test('should allow country override', () => {
-        const { wrapper } = renderDatePicker({ ...defaultProps, locale: 'en-GB' });
-        wrapper.findOpenCalendarButton().click();
-        expect(findCalendarHeaderText(wrapper)).toBe('March 2018');
-        expect(findCalendarWeekdays(wrapper)).toEqual(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']);
-      });
-
-      test('should allow locale override', () => {
-        const locale = 'de-DE';
-        const localStringMock = jest.fn().mockReturnValue('März 2018');
-        const oldImpl = window.Date.prototype.toLocaleDateString;
-        window.Date.prototype.toLocaleDateString = localStringMock;
-
-        const { wrapper } = renderDatePicker({ ...defaultProps, locale });
-        wrapper.findOpenCalendarButton().click();
-        expect(findCalendarHeaderText(wrapper)).toBe('März 2018');
-        // we render 2018/03/22 which results in
-        // -> 35 (5 weeks á 7 days) + 7 (weekday names) * 2 + 1 (month name)
-        expect(localStringMock).toHaveBeenCalledTimes(51);
-        expect(localStringMock).toHaveBeenCalledWith(locale, expect.any(Object));
-        window.Date.prototype.toLocaleDateString = oldImpl;
-      });
-
-      test('should override start day of week', () => {
-        const { wrapper } = renderDatePicker({ ...defaultProps, startOfWeek: 4 });
-        wrapper.findOpenCalendarButton().click();
-        expect(findCalendarHeaderText(wrapper)).toBe('March 2018');
-        expect(findCalendarWeekdays(wrapper)).toEqual(['Thu', 'Fri', 'Sat', 'Sun', 'Mon', 'Tue', 'Wed']);
-      });
+    test('should render calendar with the default locale', () => {
+      const { wrapper } = renderDatePicker(defaultProps);
+      wrapper.findOpenCalendarButton().click();
+      expect(findCalendarHeaderText(wrapper)).toBe('March 2018');
+      expect(findCalendarWeekdays(wrapper)).toEqual(['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']);
     });
 
-    describe('month granularity', () => {
-      test('should render calendar with the default locale', () => {
-        const { wrapper } = renderDatePicker({ ...defaultProps, granularity: 'month' });
-        wrapper.findOpenCalendarButton().click();
-        expect(findCalendarHeaderText(wrapper)).toBe('2018');
-        expect(findCalendarDates(wrapper)).toEqual([
-          'Jan',
-          'Feb',
-          'Mar',
-          'Apr',
-          'May',
-          'Jun',
-          'Jul',
-          'Aug',
-          'Sep',
-          'Oct',
-          'Nov',
-          'Dec',
-        ]);
-      });
+    test('should allow country override', () => {
+      const { wrapper } = renderDatePicker({ ...defaultProps, locale: 'en-GB' });
+      wrapper.findOpenCalendarButton().click();
+      expect(findCalendarHeaderText(wrapper)).toBe('March 2018');
+      expect(findCalendarWeekdays(wrapper)).toEqual(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']);
+    });
 
-      test('should allow locale override', () => {
-        const { wrapper } = renderDatePicker({ ...defaultProps, granularity: 'month', locale: 'de' });
-        wrapper.findOpenCalendarButton().click();
-        expect(findCalendarHeaderText(wrapper)).toBe('2018');
-        expect(findCalendarDates(wrapper)).toEqual([
-          'Jan',
-          'Feb',
-          'Mär',
-          'Apr',
-          'Mai',
-          'Jun',
-          'Jul',
-          'Aug',
-          'Sep',
-          'Okt',
-          'Nov',
-          'Dez',
-        ]);
-      });
+    test('should allow locale override', () => {
+      const locale = 'de-DE';
+      const localStringMock = jest.fn().mockReturnValue('März 2018');
+      const oldImpl = window.Date.prototype.toLocaleDateString;
+      window.Date.prototype.toLocaleDateString = localStringMock;
+
+      const { wrapper } = renderDatePicker({ ...defaultProps, locale });
+      wrapper.findOpenCalendarButton().click();
+      expect(findCalendarHeaderText(wrapper)).toBe('März 2018');
+      // we render 2018/03/22 which results in
+      // -> 35 (5 weeks á 7 days) + 7 (weekday names) * 2 + 1 (month name)
+      expect(localStringMock).toHaveBeenCalledTimes(51);
+      expect(localStringMock).toHaveBeenCalledWith(locale, expect.any(Object));
+      window.Date.prototype.toLocaleDateString = oldImpl;
+    });
+
+    test('should override start day of week', () => {
+      const { wrapper } = renderDatePicker({ ...defaultProps, startOfWeek: 4 });
+      wrapper.findOpenCalendarButton().click();
+      expect(findCalendarHeaderText(wrapper)).toBe('March 2018');
+      expect(findCalendarWeekdays(wrapper)).toEqual(['Thu', 'Fri', 'Sat', 'Sun', 'Mon', 'Tue', 'Wed']);
     });
   });
 
@@ -266,68 +178,19 @@ describe('Date picker calendar', () => {
   });
 
   describe('keyboard navigation', () => {
-    let onChangeSpy: jest.Mock<NonCancelableEventHandler<DatePickerProps.ChangeDetail>>;
-
-    const openDatePicker = (props: Partial<DatePickerProps> = defaultProps) => {
-      const { wrapper } = renderDatePicker({ ...defaultProps, onChange: onChangeSpy, ...props });
-      wrapper.focus();
-      wrapper.findOpenCalendarButton().click();
-      return wrapper;
-    };
-
-    beforeEach(() => {
-      onChangeSpy = jest.fn();
-    });
-
-    afterEach(() => {
-      jest.restoreAllMocks();
-    });
-
-    test('should allow initially selected date to be re-selected with enter', () => {
-      const wrapper = openDatePicker();
-      wrapper.findCalendar()!.findSelectedDate().keydown(KeyCode.enter);
-      expect(document.activeElement).toBe(wrapper.findOpenCalendarButton().getElement());
-      expect(wrapper.findCalendar()).toBeNull();
-    });
-
-    test('should not change the selected date before enter is pressed', () => {
-      const wrapper = openDatePicker();
-      wrapper.findCalendar()!.findSelectedDate().keydown(KeyCode.down);
-      expect(wrapper.findNativeInput().getElement().value).toBe('2018/03/22');
-      wrapper.findCalendar()!.findSelectedDate().keydown(KeyCode.enter);
-      expect(onChangeSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '2018-03-29' } }));
-    });
-
-    test('should close the dropdown and focus the "open calendar" button when enter is pressed', () => {
-      const wrapper = openDatePicker();
-      const date = wrapper.findCalendar()!.findSelectedDate();
-      date.keydown(KeyCode.down);
-      date.keydown(KeyCode.enter);
-      expect(document.activeElement).toBe(wrapper.findOpenCalendarButton().getElement());
-      expect(wrapper.findCalendar()).toBeNull();
-    });
-
-    test('should close the dropdown and focus the "open calendar" button when escape is pressed', () => {
-      const wrapper = openDatePicker();
-      wrapper.findCalendar()!.keydown(KeyCode.escape);
-      expect(document.activeElement).toBe(wrapper.findOpenCalendarButton().getElement());
-      expect(wrapper.findCalendar()).toBeNull();
-    });
-
-    test('should close the dropdown and focus the "open calendar" button when escape is pressed after keyboard navigation', () => {
-      const wrapper = openDatePicker();
-      wrapper.findCalendar()!.keydown(KeyCode.tab);
-      wrapper.findCalendar()!.keydown(KeyCode.tab);
-      wrapper.findCalendar()!.keydown(KeyCode.right);
-      wrapper.findCalendar()!.keydown(KeyCode.escape);
-      expect(document.activeElement).toBe(wrapper.findOpenCalendarButton().getElement());
-      expect(wrapper.findCalendar()).toBeNull();
-    });
-
-    describe('day granularity', () => {
+    describe('without default props', () => {
       let wrapper: DatePickerWrapper;
+      let onChangeSpy: jest.Mock<NonCancelableEventHandler<DatePickerProps.ChangeDetail>>;
+
       beforeEach(() => {
-        wrapper = openDatePicker();
+        onChangeSpy = jest.fn();
+        ({ wrapper } = renderDatePicker({ ...defaultProps, onChange: onChangeSpy }));
+        wrapper.focus();
+        wrapper.findOpenCalendarButton().click();
+      });
+
+      afterEach(() => {
+        jest.restoreAllMocks();
       });
 
       test('should have the selected date be initially focusable', () => {
@@ -374,7 +237,43 @@ describe('Date picker calendar', () => {
         expect(findCalendarHeaderText(wrapper)).toBe('April 2018');
       });
 
-      test('should focus first day of the month after changing month with previous month button', () => {
+      test('should allow initially selected date to be re-selected with enter', () => {
+        wrapper.findCalendar()!.findSelectedDate().keydown(KeyCode.enter);
+        expect(document.activeElement).toBe(wrapper.findOpenCalendarButton().getElement());
+        expect(wrapper.findCalendar()).toBeNull();
+      });
+
+      test('should not change the selected date before enter is pressed', () => {
+        wrapper.findCalendar()!.findSelectedDate().keydown(KeyCode.down);
+        expect(wrapper.findNativeInput().getElement().value).toBe('2018/03/22');
+        wrapper.findCalendar()!.findSelectedDate().keydown(KeyCode.enter);
+        expect(onChangeSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '2018-03-29' } }));
+      });
+
+      test('should close the dropdown and focus the "open calendar" button when enter is pressed', () => {
+        const date = wrapper.findCalendar()!.findSelectedDate();
+        date.keydown(KeyCode.down);
+        date.keydown(KeyCode.enter);
+        expect(document.activeElement).toBe(wrapper.findOpenCalendarButton().getElement());
+        expect(wrapper.findCalendar()).toBeNull();
+      });
+
+      test('should close the dropdown and focus the "open calendar" button when escape is pressed', () => {
+        wrapper.findCalendar()!.keydown(KeyCode.escape);
+        expect(document.activeElement).toBe(wrapper.findOpenCalendarButton().getElement());
+        expect(wrapper.findCalendar()).toBeNull();
+      });
+
+      test('should close the dropdown and focus the "open calendar" button when escape is pressed after keyboard navigation', () => {
+        wrapper.findCalendar()!.keydown(KeyCode.tab);
+        wrapper.findCalendar()!.keydown(KeyCode.tab);
+        wrapper.findCalendar()!.keydown(KeyCode.right);
+        wrapper.findCalendar()!.keydown(KeyCode.escape);
+        expect(document.activeElement).toBe(wrapper.findOpenCalendarButton().getElement());
+        expect(wrapper.findCalendar()).toBeNull();
+      });
+
+      test('should allow first date to be focused after moving dates then navigating between months', () => {
         wrapper.findCalendar()!.keydown(KeyCode.tab);
         wrapper.findCalendar()!.keydown(KeyCode.tab);
 
@@ -415,7 +314,7 @@ describe('Date picker calendar', () => {
         expect(findCalendarHeaderText(wrapper)).toBe('January 2022');
       });
 
-      test('should focus next available date if available dates are spread across different years', () => {
+      test('should focus next available date if available dates are spread across different different years', () => {
         const isDateEnabled = (date: any) => {
           return ['2022-01-14', '2023-01-14', '2024-01-14'].includes(date.toISOString().slice(0, 10));
         };
@@ -510,166 +409,6 @@ describe('Date picker calendar', () => {
         const { wrapper } = renderDatePicker({ ...defaultProps, isDateEnabled });
         wrapper.findOpenCalendarButton().click();
         wrapper.setInputValue('2018/03/21');
-        expect(findFocusableDateText(wrapper)).toBeNull();
-      });
-    });
-
-    describe('month granularity', () => {
-      let wrapper: DatePickerWrapper;
-      beforeEach(() => {
-        wrapper = openDatePicker({ granularity: 'month', value: '2024-05' });
-      });
-
-      test('should have the selected date be initially focusable', () => {
-        expect(findFocusableDateText(wrapper)).toBe('May');
-      });
-
-      test('should go to the next month', () => {
-        wrapper.findCalendar()!.findSelectedDate().keydown(KeyCode.right);
-        expect(findFocusableDateText(wrapper)).toBe('Jun');
-      });
-
-      test('should go to the previous month', () => {
-        wrapper.findCalendar()!.findSelectedDate().keydown(KeyCode.left);
-        expect(findFocusableDateText(wrapper)).toBe('Apr');
-      });
-
-      test('should go to the month below', () => {
-        wrapper.findCalendar()!.findSelectedDate().keydown(KeyCode.down);
-        expect(findFocusableDateText(wrapper)).toBe('Aug');
-      });
-
-      test('should go to the month above', () => {
-        wrapper.findCalendar()!.findSelectedDate().keydown(KeyCode.up);
-        expect(findFocusableDateText(wrapper)).toBe('Feb');
-      });
-
-      test('should go to the previous year by going up', () => {
-        wrapper = openDatePicker({ granularity: 'month', value: '2024-02' });
-        wrapper.findCalendar()!.findSelectedDate().keydown(KeyCode.up);
-        expect(findFocusableDateText(wrapper)).toBe('Nov');
-        expect(findCalendarHeaderText(wrapper)).toBe('2023');
-      });
-
-      test('should go to the previous year by going left', () => {
-        wrapper = openDatePicker({ granularity: 'month', value: '2024-01' });
-        wrapper.findCalendar()!.findSelectedDate().keydown(KeyCode.left);
-        expect(findFocusableDateText(wrapper)).toBe('Dec');
-        expect(findCalendarHeaderText(wrapper)).toBe('2023');
-      });
-
-      test('should go to the next year by going down', () => {
-        wrapper = openDatePicker({ granularity: 'month', value: '2024-11' });
-        wrapper.findCalendar()!.findSelectedDate().keydown(KeyCode.down);
-        expect(findFocusableDateText(wrapper)).toBe('Feb');
-        expect(findCalendarHeaderText(wrapper)).toBe('2025');
-      });
-
-      test('should go to the next year by going right', () => {
-        wrapper = openDatePicker({ granularity: 'month', value: '2024-12' });
-        wrapper.findCalendar()!.findSelectedDate().keydown(KeyCode.right);
-        expect(findFocusableDateText(wrapper)).toBe('Jan');
-        expect(findCalendarHeaderText(wrapper)).toBe('2025');
-      });
-
-      test('should focus next available month if the first month of the year is disabled', () => {
-        const isDateEnabled = (date: Date) => date.getMonth() > 0;
-        wrapper = openDatePicker({ granularity: 'month', value: '2024-01', isDateEnabled });
-        expect(findFocusableDateText(wrapper)).toBe('Feb');
-        expect(findCalendarHeaderText(wrapper)).toBe('2024');
-      });
-
-      test('should focus next available month if available months are spread across different years', () => {
-        const isDateEnabled = (date: any) => {
-          const formattedDate = [date.getFullYear(), padLeftZeros((date.getMonth() + 1).toString(), 2)].join('-');
-          return ['2022-02', '2023-04', '2024-03'].includes(formattedDate);
-        };
-        wrapper = openDatePicker({ granularity: 'month', value: '2022-02', isDateEnabled });
-        expect(findFocusableDateText(wrapper)).toBe('Feb');
-        expect(findCalendarHeaderText(wrapper)).toBe('2022');
-        // Navigate to future available dates across different years
-        wrapper.findCalendar()!.keydown(KeyCode.tab);
-        wrapper.findCalendar()!.keydown(KeyCode.tab);
-        wrapper.findCalendar()!.keydown(KeyCode.tab);
-        findFocusedDate(wrapper)!.keydown(KeyCode.right);
-        expect(findFocusableDateText(wrapper)).toBe('Apr');
-        expect(findCalendarHeaderText(wrapper)).toBe('2023');
-        findFocusedDate(wrapper)!.keydown(KeyCode.right);
-        expect(findFocusableDateText(wrapper)).toBe('Mar');
-        expect(findCalendarHeaderText(wrapper)).toBe('2024');
-        // Navigate to past available dates across differnet years
-        findFocusedDate(wrapper)!.keydown(KeyCode.left);
-        expect(findFocusableDateText(wrapper)).toBe('Apr');
-        expect(findCalendarHeaderText(wrapper)).toBe('2023');
-        findFocusedDate(wrapper)!.keydown(KeyCode.left);
-        expect(findFocusableDateText(wrapper)).toBe('Feb');
-        expect(findCalendarHeaderText(wrapper)).toBe('2022');
-      });
-
-      test('should jump over a disabled date in the future', () => {
-        const isDateEnabled = (date: Date) => date.getMonth() !== 3;
-        const wrapper = openDatePicker({ granularity: 'month', isDateEnabled, value: '2018-03' });
-        wrapper.findCalendar()!.findSelectedDate().keydown(KeyCode.right);
-        expect(findFocusableDateText(wrapper)).toBe('May');
-      });
-
-      test('should jump over a disabled date in the past', () => {
-        const isDateEnabled = (date: Date) => date.getMonth() !== 1;
-        const wrapper = openDatePicker({ granularity: 'month', isDateEnabled, value: '2018-03' });
-        wrapper.findCalendar()!.findSelectedDate().keydown(KeyCode.left);
-        expect(findFocusableDateText(wrapper)).toBe('Jan');
-      });
-
-      test('should jump to the next year when all remaining months in the year are disabled', () => {
-        const isDateEnabled = (date: Date) => date.getMonth() < 3;
-        const wrapper = openDatePicker({ granularity: 'month', isDateEnabled, value: '2018-03' });
-        wrapper.findCalendar()!.findSelectedDate().keydown(KeyCode.right);
-        expect(findFocusableDateText(wrapper)).toBe('Jan');
-        expect(findCalendarHeaderText(wrapper)).toBe('2019');
-      });
-
-      test('should jump to the previous year when all remaining previous months in the year are disabled', () => {
-        const isDateEnabled = (date: Date) => date.getMonth() > 1;
-        const wrapper = openDatePicker({ granularity: 'month', isDateEnabled, value: '2018-03' });
-        wrapper.findCalendar()!.findSelectedDate().keydown(KeyCode.left);
-        expect(findFocusableDateText(wrapper)).toBe('Dec');
-        expect(findCalendarHeaderText(wrapper)).toBe('2017');
-      });
-
-      test('should not move focus forward if there are no more enabled dates in the future', () => {
-        const maxDate = new Date(2018, 3, 1).getTime(); // April 1st
-        const isDateEnabled = (date: Date) => date.getTime() < maxDate;
-        const wrapper = openDatePicker({ granularity: 'month', isDateEnabled, value: '2018-03' });
-        wrapper.findCalendar()!.findSelectedDate().keydown(KeyCode.right);
-        expect(findFocusableDateText(wrapper)).toBe('Mar');
-        expect(findCalendarHeaderText(wrapper)).toBe('2018');
-      });
-
-      test('should not move focus backward if there are no more enabled dates in the past', () => {
-        const minDate = new Date(2018, 1, 28).getTime(); // February 28th
-        const isDateEnabled = (date: Date) => date.getTime() > minDate;
-        const wrapper = openDatePicker({ granularity: 'month', isDateEnabled, value: '2018-03' });
-        wrapper.findCalendar()!.findSelectedDate().keydown(KeyCode.left);
-        expect(findFocusableDateText(wrapper)).toBe('Mar');
-        expect(findCalendarHeaderText(wrapper)).toBe('2018');
-      });
-
-      test('should display the current year with current selection but without focusable months if there is no enabled month in it', () => {
-        const minDate = new Date(2019, 0, 1).getTime(); // January 1st
-        const isDateEnabled = (date: Date) => date.getTime() > minDate;
-        const wrapper = openDatePicker({ granularity: 'month', value: '2018-03', isDateEnabled });
-        expect(findCalendarHeaderText(wrapper)).toBe('2018');
-        expect(
-          wrapper.findCalendar()!.findSelectedDate()?.find(`:not(.${screenreaderOnlyStyles.root}`)?.getElement()
-            .textContent
-        ).toBe('Mar');
-        expect(findFocusableDateText(wrapper)).toBeNull();
-      });
-
-      test('does not focus anything if all dates are disabled', () => {
-        const isDateEnabled = () => false;
-        const wrapper = openDatePicker({ granularity: 'month', isDateEnabled });
-        wrapper.setInputValue('2018/03');
         expect(findFocusableDateText(wrapper)).toBeNull();
       });
     });
