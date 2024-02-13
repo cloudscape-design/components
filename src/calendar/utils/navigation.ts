@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { addDays, addMonths, differenceInYears, isSameMonth, startOfMonth } from 'date-fns';
+import { addDays, addMonths, differenceInYears, isSameMonth, isSameYear, startOfMonth, startOfYear } from 'date-fns';
 
 export function moveNextDay(startDate: Date, isDateEnabled: (date: Date) => boolean): Date {
   return moveDay(startDate, isDateEnabled, 1);
@@ -34,9 +34,9 @@ export function moveMonthUp(startDate: Date, isDateEnabled: (date: Date) => bool
   return moveMonth(startDate, isDateEnabled, -3);
 }
 
-// Returns first enabled date of the month corresponding the given date.
-// If all month's days are disabled the first day of the month is returned.
-export function getBaseDate(date: Date, isDateEnabled: (date: Date) => boolean) {
+// Returns first enabled date of the month corresponding to the given date.
+// If all month's days are disabled, the first day of the month is returned.
+export function getBaseDay(date: Date, isDateEnabled: (date: Date) => boolean) {
   const startDate = startOfMonth(date);
   if (isDateEnabled(startDate)) {
     return startDate;
@@ -44,6 +44,18 @@ export function getBaseDate(date: Date, isDateEnabled: (date: Date) => boolean) 
 
   const firstEnabledDate = moveDay(startDate, isDateEnabled, 1);
   return isSameMonth(startDate, firstEnabledDate) ? firstEnabledDate : startDate;
+}
+
+// Returns first enabled month of the year corresponding to the given date.
+// If all year's months are disabled, the first month of the year is returned.
+export function getBaseMonth(date: Date, isDateEnabled: (date: Date) => boolean) {
+  const startDate = startOfYear(date);
+  if (isDateEnabled(startDate)) {
+    return startDate;
+  }
+
+  const firstEnabledDate = moveMonth(startDate, isDateEnabled, 1);
+  return isSameYear(startDate, firstEnabledDate) ? firstEnabledDate : startDate;
 }
 
 // Iterates days forwards or backwards until the next active day is found.

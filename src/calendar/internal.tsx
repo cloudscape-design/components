@@ -14,7 +14,7 @@ import clsx from 'clsx';
 import { CalendarProps } from './interfaces.js';
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
-import { getBaseDate } from './utils/navigation';
+import { getBaseDay, getBaseMonth } from './utils/navigation';
 import { useDateCache } from '../internal/hooks/use-date-cache/index.js';
 import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
 import { useInternalI18n } from '../i18n/context.js';
@@ -78,12 +78,14 @@ export default function Calendar({
     memoizedValue && setDisplayedDate(prev => (prev.getTime() !== memoizedValue.getTime() ? memoizedValue : prev));
   }, [memoizedValue]);
 
+  const isSamePage = isMonthPicker ? isSameYear : isSameMonth;
+
   const selectFocusedDate = (selected: Date | null, baseDate: Date): Date | null => {
-    if (selected && isDateEnabled(selected) && isSameMonth(selected, baseDate)) {
+    if (selected && isDateEnabled(selected) && isSamePage(selected, baseDate)) {
       return selected;
     }
     const today = new Date();
-    if (isDateEnabled(today) && isSameMonth(today, baseDate)) {
+    if (isDateEnabled(today) && isSamePage(today, baseDate)) {
       return today;
     }
     if (isDateEnabled(baseDate)) {
@@ -92,7 +94,10 @@ export default function Calendar({
     return null;
   };
 
-  const baseDate = getBaseDate(displayedDate, isDateEnabled);
+  const baseDate = isMonthPicker
+    ? getBaseMonth(displayedDate, isDateEnabled)
+    : getBaseDay(displayedDate, isDateEnabled);
+
   const focusableDate = focusedDate || selectFocusedDate(memoizedValue, baseDate);
 
   const onHeaderChangePageHandler = (date: Date) => {
@@ -173,8 +178,7 @@ export default function Calendar({
 
   const isSameDate = isMonthPicker ? isSameMonth : isSameDay;
 
-  const belongsToCurrentPage = (date: Date) =>
-    isMonthPicker ? isSameYear(date, baseDate) : isSameMonth(date, baseDate);
+  const belongsToCurrentPage = (date: Date) => isSamePage(date, baseDate);
 
   return (
     <div
