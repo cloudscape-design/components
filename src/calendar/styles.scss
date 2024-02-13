@@ -96,9 +96,20 @@
       z-index: 1;
       background-color: transparent;
       inset-block-start: calc(-1 * #{awsui.$border-item-width});
-      inset-block-end: calc(-1 * #{awsui.$border-item-width});
       inset-inline-start: calc(-1 * #{awsui.$border-item-width});
       inset-inline-end: calc(-1 * #{awsui.$border-item-width});
+    }
+
+    &:not(.calendar-date-spaced)::after {
+      // Limit the overflow when there are no gutters.
+      // Otherwise the cells would start to overlap when the border is larger than 1px.
+      inset-block-end: -1px;
+      inset-inline-start: -1px;
+    }
+
+    &-spaced::after {
+      inset-block-end: calc(-1 * #{awsui.$border-item-width});
+      inset-inline-start: calc(-1 * #{awsui.$border-item-width});
     }
 
     &:first-child {
