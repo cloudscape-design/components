@@ -12,7 +12,7 @@
   }
 
   @supports not selector(:dir(#{$direction})) {
-    [dir='#{$direction}'] #{$selector} {
+    html[dir='#{$direction}'] #{$selector} {
       @content;
     }
   }
