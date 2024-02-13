@@ -2,37 +2,34 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
-import { InternalButton } from '../../button/internal';
+import { InternalButton, InternalButtonProps } from '../../button/internal';
 import styles from '../styles.css.js';
-import { addMonths, addYears } from 'date-fns';
 
 interface HeaderButtonProps {
   ariaLabel?: string;
-  baseDate: Date;
-  onChange: (date: Date) => void;
-  granularity?: 'month' | 'day';
+  onClick: InternalButtonProps['onClick'];
 }
 
-export function HeaderPrevButton({ ariaLabel, baseDate, onChange, granularity }: HeaderButtonProps) {
+export function HeaderPrevButton({ ariaLabel, onClick }: HeaderButtonProps) {
   return (
     <InternalButton
       iconName="angle-left"
       ariaLabel={ariaLabel}
       variant="icon"
-      onClick={() => onChange((granularity === 'month' ? addYears : addMonths)(baseDate, -1))}
+      onClick={onClick}
       formAction="none"
       className={styles['calendar-prev-btn']}
     />
   );
 }
 
-export function HeaderNextButton({ ariaLabel, baseDate, onChange, granularity }: HeaderButtonProps) {
+export function HeaderNextButton({ ariaLabel, onClick }: HeaderButtonProps) {
   return (
     <InternalButton
       iconName="angle-right"
       ariaLabel={ariaLabel}
       variant="icon"
-      onClick={() => onChange((granularity === 'month' ? addYears : addMonths)(baseDate, 1))}
+      onClick={onClick}
       formAction="none"
       className={styles['calendar-next-btn']}
     />

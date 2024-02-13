@@ -5,6 +5,7 @@ import styles from '../styles.css.js';
 import { renderMonthAndYear } from '../utils/intl';
 import { HeaderPrevButton, HeaderNextButton } from './header-button';
 import { CalendarProps } from '../interfaces.js';
+import { addMonths, addYears } from 'date-fns';
 
 interface CalendarHeaderProps {
   baseDate: Date;
@@ -20,23 +21,21 @@ const CalendarHeader = ({
   baseDate,
   locale,
   onChange,
-  previousLabel: previousMonthLabel,
-  nextLabel: nextMonthLabel,
+  previousLabel,
+  nextLabel,
   headingId,
   granularity,
 }: CalendarHeaderProps) => {
+  const isMonthPicker = granularity === 'month';
+  const moveDate = isMonthPicker ? addYears : addMonths;
+  const formattedDate = isMonthPicker ? baseDate.getFullYear() : renderMonthAndYear(locale, baseDate);
   return (
     <div className={styles['calendar-header']}>
-      <HeaderPrevButton
-        ariaLabel={previousMonthLabel}
-        baseDate={baseDate}
-        onChange={onChange}
-        granularity={granularity}
-      />
+      <HeaderPrevButton ariaLabel={previousLabel} onClick={() => onChange(moveDate(baseDate, -1))} />
       <h2 className={styles['calendar-header-title']} id={headingId}>
-        {granularity === 'month' ? baseDate.getFullYear() : renderMonthAndYear(locale, baseDate)}
+        {formattedDate}
       </h2>
-      <HeaderNextButton ariaLabel={nextMonthLabel} baseDate={baseDate} onChange={onChange} granularity={granularity} />
+      <HeaderNextButton ariaLabel={nextLabel} onClick={() => onChange(moveDate(baseDate, -1))} />
     </div>
   );
 };
