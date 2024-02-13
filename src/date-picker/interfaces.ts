@@ -75,6 +75,13 @@ export interface DatePickerProps
    * Called when input focus is removed from the UI control.
    */
   onBlur?: NonCancelableEventHandler<null>;
+
+  /**
+   * An object containing all the necessary localized strings required by
+   * the component.
+   * @i18n
+   */
+  i18nStrings?: DatePickerProps.I18nStrings;
 }
 
 export namespace DatePickerProps {
@@ -99,4 +106,6 @@ export namespace DatePickerProps {
      */
     focus(): void;
   }
+
+  export type I18nStrings = CalendarProps.I18nStrings;
 }

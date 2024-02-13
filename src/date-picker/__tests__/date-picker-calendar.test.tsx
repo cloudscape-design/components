@@ -15,9 +15,11 @@ import screenreaderOnlyStyles from '../../../lib/components/internal/components/
 describe('Date picker calendar', () => {
   const outsideId = 'outside';
   const defaultProps: DatePickerProps = {
-    todayAriaLabel: 'Today',
-    nextMonthAriaLabel: 'next month',
-    previousMonthAriaLabel: 'prev month',
+    i18nStrings: {
+      todayAriaLabel: 'Today',
+      nextMonthAriaLabel: 'next month',
+      previousMonthAriaLabel: 'prev month',
+    },
     value: '2018-03-22',
   };
 
@@ -43,7 +45,7 @@ describe('Date picker calendar', () => {
   const findFocusedDay = (wrapper: DatePickerWrapper) => {
     return wrapper
       .findCalendar()!
-      .find(`.${calendarStyles['calendar-day']}[tabIndex="0"]`)
+      .find(`.${calendarStyles['calendar-date']}[tabIndex="0"]`)
       ?.find(`:not(.${screenreaderOnlyStyles.root}`);
   };
 
@@ -59,12 +61,12 @@ describe('Date picker calendar', () => {
   const findCalendarWeekdays = (wrapper: DatePickerWrapper) => {
     return wrapper
       .findCalendar()!
-      .findAll(`.${calendarStyles['calendar-day-header']} :not(.${screenreaderOnlyStyles.root})`)
+      .findAll(`.${calendarStyles['calendar-date-header']} :not(.${screenreaderOnlyStyles.root})`)
       .map(day => day.getElement().textContent!.trim());
   };
 
   const findToday = (wrapper: DatePickerWrapper): ElementWrapper<HTMLElement> => {
-    return wrapper.findCalendar()!.find(`.${calendarStyles['calendar-day-today']}`)!;
+    return wrapper.findCalendar()!.find(`.${calendarStyles['calendar-date-current']}`)!;
   };
 
   beforeEach(() => {
@@ -483,12 +485,26 @@ describe('Date picker calendar', () => {
   });
 
   describe('aria labels', () => {
-    test('should add `todayAriaLabel` to today in the calendar', () => {
-      const { wrapper } = renderDatePicker({ ...defaultProps, value: '', todayAriaLabel: 'TEST TODAY' });
-      wrapper.findOpenCalendarButton().click();
-      expect(findToday(wrapper).find(`.${screenreaderOnlyStyles.root}`)?.getElement().textContent).toMatch(
-        'TEST TODAY'
-      );
+    describe('should add `todayAriaLabel` to today in the calendar', () => {
+      test('from i18nStrings', () => {
+        const { wrapper } = renderDatePicker({
+          ...defaultProps,
+          value: '',
+          i18nStrings: { todayAriaLabel: 'TEST TODAY' },
+        });
+        wrapper.findOpenCalendarButton().click();
+        expect(findToday(wrapper).find(`.${screenreaderOnlyStyles.root}`)?.getElement().textContent).toMatch(
+          'TEST TODAY'
+        );
+      });
+
+      test('from deprecated top-level property', () => {
+        const { wrapper } = renderDatePicker({ value: '', todayAriaLabel: 'TEST TODAY' });
+        wrapper.findOpenCalendarButton().click();
+        expect(findToday(wrapper).find(`.${screenreaderOnlyStyles.root}`)?.getElement().textContent).toMatch(
+          'TEST TODAY'
+        );
+      });
     });
 
     test('should add aria-selected="true" to selected date in the calendar', () => {
@@ -510,20 +526,46 @@ describe('Date picker calendar', () => {
       expect(findToday(wrapper).getElement()!.getAttribute('aria-current')).toBe('date');
     });
 
-    test('should add `nextMonthAriaLabel` to appropriate button in the calendar', () => {
-      const { wrapper } = renderDatePicker({ ...defaultProps, nextMonthAriaLabel: 'TEST NEXT MONTH' });
-      wrapper.findOpenCalendarButton().click();
-      expect(wrapper.findCalendar()!.findNextMonthButton()!.getElement()!.getAttribute('aria-label')).toMatch(
-        'TEST NEXT MONTH'
-      );
+    describe('should add `nextMonthAriaLabel` to appropriate button in the calendar', () => {
+      test('from i18nStrings', () => {
+        const { wrapper } = renderDatePicker({
+          ...defaultProps,
+          i18nStrings: { nextMonthAriaLabel: 'TEST NEXT MONTH' },
+        });
+        wrapper.findOpenCalendarButton().click();
+        expect(wrapper.findCalendar()!.findNextMonthButton()!.getElement()!.getAttribute('aria-label')).toMatch(
+          'TEST NEXT MONTH'
+        );
+      });
+
+      test('from deprecated top-level property', () => {
+        const { wrapper } = renderDatePicker({ value: '2018-03-22', nextMonthAriaLabel: 'TEST NEXT MONTH' });
+        wrapper.findOpenCalendarButton().click();
+        expect(wrapper.findCalendar()!.findNextMonthButton()!.getElement()!.getAttribute('aria-label')).toMatch(
+          'TEST NEXT MONTH'
+        );
+      });
     });
 
-    test('should add `previousMonthAriaLabel` to appropriate button in the calendar', () => {
-      const { wrapper } = renderDatePicker({ ...defaultProps, previousMonthAriaLabel: 'TEST PREV MONTH' });
-      wrapper.findOpenCalendarButton().click();
-      expect(wrapper.findCalendar()!.findPreviousMonthButton()!.getElement()!.getAttribute('aria-label')).toMatch(
-        'TEST PREV MONTH'
-      );
+    describe('should add `previousMonthAriaLabel` to appropriate button in the calendar', () => {
+      test('from i18nStrings', () => {
+        const { wrapper } = renderDatePicker({
+          ...defaultProps,
+          i18nStrings: { previousMonthAriaLabel: 'TEST PREV MONTH' },
+        });
+        wrapper.findOpenCalendarButton().click();
+        expect(wrapper.findCalendar()!.findPreviousMonthButton()!.getElement()!.getAttribute('aria-label')).toMatch(
+          'TEST PREV MONTH'
+        );
+      });
+
+      test('from deprecated top-level property', () => {
+        const { wrapper } = renderDatePicker({ value: '2018-03-22', previousMonthAriaLabel: 'TEST PREV MONTH' });
+        wrapper.findOpenCalendarButton().click();
+        expect(wrapper.findCalendar()!.findPreviousMonthButton()!.getElement()!.getAttribute('aria-label')).toMatch(
+          'TEST PREV MONTH'
+        );
+      });
     });
 
     test('should add date label to date in the calendar', () => {

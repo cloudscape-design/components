@@ -3,6 +3,7 @@
 import React, { useState, useRef, useContext } from 'react';
 import { Box, Link, DatePicker } from '~components';
 import AppContext, { AppContextType } from '../app/app-context';
+import i18nStrings from './i18n-strings';
 
 type DatePickerEventsPageContext = React.Context<AppContextType<{ expandToViewport: boolean }>>;
 
@@ -58,9 +59,7 @@ export default function DatePickerScenario() {
         name={'date-picker-name'}
         ariaLabel={'date-picker-label'}
         locale="en-GB"
-        previousMonthAriaLabel={'Previous month'}
-        nextMonthAriaLabel={'Next month'}
-        todayAriaLabel={'TEST TODAY'}
+        i18nStrings={i18nStrings}
         placeholder={'YYYY/MM/DD'}
         onFocus={handleFocus}
         onBlur={handleBlur}
