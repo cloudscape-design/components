@@ -324,7 +324,7 @@ describe('Date picker calendar', () => {
         const isDateEnabled = (date: Date) => date.getDate() > 1;
         const { wrapper } = renderDatePicker({ ...defaultProps, isDateEnabled });
         wrapper.findOpenCalendarButton().click();
-        wrapper.findCalendar()!.findNextButton()!.click();
+        wrapper.findCalendar()!.findNextButton().click();
         expect(findFocusableDateText(wrapper)).toBe('2');
       });
 
@@ -533,7 +533,7 @@ describe('Date picker calendar', () => {
           i18nStrings: { nextMonthAriaLabel: 'TEST NEXT MONTH' },
         });
         wrapper.findOpenCalendarButton().click();
-        expect(wrapper.findCalendar()!.findNextButton()!.getElement()!.getAttribute('aria-label')).toMatch(
+        expect(wrapper.findCalendar()!.findNextButton().getElement()!.getAttribute('aria-label')).toMatch(
           'TEST NEXT MONTH'
         );
       });
@@ -541,7 +541,7 @@ describe('Date picker calendar', () => {
       test('from deprecated top-level property', () => {
         const { wrapper } = renderDatePicker({ value: '2018-03-22', nextMonthAriaLabel: 'TEST NEXT MONTH' });
         wrapper.findOpenCalendarButton().click();
-        expect(wrapper.findCalendar()!.findNextButton()!.getElement()!.getAttribute('aria-label')).toMatch(
+        expect(wrapper.findCalendar()!.findNextButton().getElement()!.getAttribute('aria-label')).toMatch(
           'TEST NEXT MONTH'
         );
       });
