@@ -381,7 +381,6 @@ export type ColorsTokenName =
   | 'colorTextDisabledInlineEdit'
   | 'colorTextDropdownFooter'
   | 'colorTextDropdownGroupLabel'
-  | 'colorTextDropdownHeader'
   | 'colorTextDropdownItemDefault'
   | 'colorTextDropdownItemDimmed'
   | 'colorTextDropdownItemDisabled'
