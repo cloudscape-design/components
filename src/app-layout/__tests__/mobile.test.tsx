@@ -475,7 +475,7 @@ describeEachThemeAppLayout(true, theme => {
   });
 
   test('should render badge when defined', () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...(manyDrawers as any)} />);
+    const { wrapper } = renderComponent(<AppLayout drawers={manyDrawers} />);
     expect(wrapper.findDrawerTriggerById('security')!.getElement().children[0]).toHaveClass(iconStyles.badge);
   });
 
