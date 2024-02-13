@@ -22,10 +22,10 @@ import { moveNextDay, movePrevDay, moveNextWeek, movePrevWeek } from '../utils/n
  * - (table navigation) Chrome+VO - weekday is announced twice when navigating to the calendar's header;
  * - (table navigation) Safari+VO - "dimmed" state is announced twice;
  * - (table navigation) Firefox/Chrome+NVDA - cannot use table navigation if any cell has a focus;
- * - (keyboard navigation) Firefox+NVDA - every date is announced as "not selected";
+ * - (keyboard navigation) Firefox+NVDA - every day is announced as "not selected";
  * - (keyboard navigation) Safari/Chrome+VO - weekdays are not announced;
- * - (keyboard navigation) Safari/Chrome+VO - dates are not announced as interactive (clickable or selectable);
- * - (keyboard navigation) Safari/Chrome+VO - date announcements are not interruptive and can be missed if navigating fast.
+ * - (keyboard navigation) Safari/Chrome+VO - days are not announced as interactive (clickable or selectable);
+ * - (keyboard navigation) Safari/Chrome+VO - day announcements are not interruptive and can be missed if navigating fast.
  */
 
 export interface GridProps {
@@ -102,7 +102,7 @@ export default function Grid({
   };
 
   // The focused date changes as a feedback to keyboard navigation in the grid.
-  // Once changed, the corresponding date button needs to receive the actual focus.
+  // Once changed, the corresponding day button needs to receive the actual focus.
   useEffectOnUpdate(() => {
     if (focusedDate && focusedDateRef.current) {
       (focusedDateRef.current as HTMLDivElement).focus();
@@ -123,7 +123,7 @@ export default function Grid({
             <th
               key={dayIndex}
               scope="col"
-              className={clsx(styles['calendar-grid-cell'], styles['calendar-date-header'])}
+              className={clsx(styles['calendar-grid-cell'], styles['calendar-day-header'])}
             >
               <span aria-hidden="true">{renderDayName(locale, dayIndex, 'short')}</span>
               <ScreenreaderOnly>{renderDayName(locale, dayIndex, 'long')}</ScreenreaderOnly>
@@ -133,7 +133,7 @@ export default function Grid({
       </thead>
       <tbody onKeyDown={onGridKeyDownHandler}>
         {weeks.map((week, weekIndex) => (
-          <tr key={weekIndex} className={styles['calendar-row']}>
+          <tr key={weekIndex} className={styles['calendar-week']}>
             {week.map((date, dateIndex) => {
               const isFocusable = !!focusableDate && isSameDay(date, focusableDate);
               const isSelected = !!selectedDate && isSameDay(date, selectedDate);
@@ -150,7 +150,7 @@ export default function Grid({
                 tabIndex = -1;
               }
 
-              // Screen-reader announcement for the focused date.
+              // Screen-reader announcement for the focused day.
               let dayAnnouncement = getDateLabel(locale, date, 'short');
               if (isDateOnSameDay && todayAriaLabel) {
                 dayAnnouncement += '. ' + todayAriaLabel;
@@ -166,14 +166,14 @@ export default function Grid({
                   aria-disabled={!isEnabled}
                   // Do not attach click event when the date is disabled, otherwise VO+safari announces clickable
                   onClick={isEnabled ? () => onSelectDate(date) : undefined}
-                  className={clsx(styles['calendar-grid-cell'], styles['calendar-date'], {
-                    [styles['calendar-date-current-page']]: isSameMonth(date, baseDate),
-                    [styles['calendar-date-enabled']]: isEnabled,
-                    [styles['calendar-date-selected']]: isSelected,
-                    [styles['calendar-date-current']]: isDateOnSameDay,
+                  className={clsx(styles['calendar-grid-cell'], styles['calendar-day'], {
+                    [styles['calendar-day-current-month']]: isSameMonth(date, baseDate),
+                    [styles['calendar-day-enabled']]: isEnabled,
+                    [styles['calendar-day-selected']]: isSelected,
+                    [styles['calendar-day-today']]: isDateOnSameDay,
                   })}
                 >
-                  <span className={styles['date-inner']} aria-hidden="true">
+                  <span className={styles['day-inner']} aria-hidden="true">
                     {date.getDate()}
                   </span>
                   <ScreenreaderOnly>{dayAnnouncement}</ScreenreaderOnly>

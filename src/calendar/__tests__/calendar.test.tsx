@@ -31,12 +31,12 @@ function renderCalendar(props: CalendarProps = defaultProps) {
 
 function findCalendarWeekdays(wrapper: CalendarWrapper) {
   return wrapper
-    .findAll(`.${styles['calendar-date-header']} :not(.${screenreaderOnlyStyles.root})`)
+    .findAll(`.${styles['calendar-day-header']} :not(.${screenreaderOnlyStyles.root})`)
     .map(day => day.getElement().textContent!.trim());
 }
 
 function getDayText(wrapper: CalendarWrapper, row: number, col: number) {
-  return wrapper.findDateAt(row, col).findByClassName(styles['date-inner'])!.getElement().textContent;
+  return wrapper.findDateAt(row, col).findByClassName(styles['day-inner'])!.getElement().textContent;
 }
 
 describe('Calendar', () => {
@@ -109,7 +109,7 @@ describe('aria labels', () => {
   describe('should add `todayAriaLabel` to today', () => {
     const getTodayLabelText = (container: HTMLElement) => {
       return container
-        .querySelector(`.${styles['calendar-date-current']}`)!
+        .querySelector(`.${styles['calendar-day-today']}`)!
         .querySelector(`.${screenreaderOnlyStyles.root}`)!.textContent;
     };
 

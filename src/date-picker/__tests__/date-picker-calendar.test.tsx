@@ -45,7 +45,7 @@ describe('Date picker calendar', () => {
   const findFocusedDay = (wrapper: DatePickerWrapper) => {
     return wrapper
       .findCalendar()!
-      .find(`.${calendarStyles['calendar-date']}[tabIndex="0"]`)
+      .find(`.${calendarStyles['calendar-day']}[tabIndex="0"]`)
       ?.find(`:not(.${screenreaderOnlyStyles.root}`);
   };
 
@@ -61,12 +61,12 @@ describe('Date picker calendar', () => {
   const findCalendarWeekdays = (wrapper: DatePickerWrapper) => {
     return wrapper
       .findCalendar()!
-      .findAll(`.${calendarStyles['calendar-date-header']} :not(.${screenreaderOnlyStyles.root})`)
+      .findAll(`.${calendarStyles['calendar-day-header']} :not(.${screenreaderOnlyStyles.root})`)
       .map(day => day.getElement().textContent!.trim());
   };
 
   const findToday = (wrapper: DatePickerWrapper): ElementWrapper<HTMLElement> => {
-    return wrapper.findCalendar()!.find(`.${calendarStyles['calendar-date-current']}`)!;
+    return wrapper.findCalendar()!.find(`.${calendarStyles['calendar-day-today']}`)!;
   };
 
   beforeEach(() => {

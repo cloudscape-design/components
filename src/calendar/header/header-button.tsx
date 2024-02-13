@@ -20,7 +20,7 @@ export function PrevMonthButton({ ariaLabel, baseDate, onChangeMonth }: HeaderBu
       variant="icon"
       onClick={() => onChangeMonth(addMonths(baseDate, -1))}
       formAction="none"
-      className={styles['calendar-prev-btn']}
+      className={styles['calendar-prev-month-btn']}
     />
   );
 }
@@ -33,7 +33,7 @@ export function NextMonthButton({ ariaLabel, baseDate, onChangeMonth }: HeaderBu
       variant="icon"
       onClick={() => onChangeMonth(addMonths(baseDate, 1))}
       formAction="none"
-      className={styles['calendar-next-btn']}
+      className={styles['calendar-next-month-btn']}
     />
   );
 }

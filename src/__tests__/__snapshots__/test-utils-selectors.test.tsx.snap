@@ -95,12 +95,12 @@ Object {
     "awsui_title_sne0l",
   ],
   "calendar": Array [
-    "awsui_calendar-date-selected_1ykar",
-    "awsui_calendar-date_1ykar",
+    "awsui_calendar-day-selected_1ykar",
+    "awsui_calendar-day_1ykar",
     "awsui_calendar-header_1ykar",
-    "awsui_calendar-next-btn_1ykar",
-    "awsui_calendar-prev-btn_1ykar",
-    "awsui_calendar-row_1ykar",
+    "awsui_calendar-next-month-btn_1ykar",
+    "awsui_calendar-prev-month-btn_1ykar",
+    "awsui_calendar-week_1ykar",
     "awsui_root_1ykar",
   ],
   "cards": Array [
