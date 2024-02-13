@@ -54,7 +54,7 @@
       border-spacing: 0;
     }
     &-spaced {
-      border-spacing: awsui.$space-calendar-grid-gutter-vertical awsui.$space-calendar-grid-gutter-horizontal;
+      border-spacing: awsui.$space-calendar-grid-gutter;
       padding-block: awsui.$space-xs;
       padding-inline: awsui.$space-xs;
     }
@@ -95,20 +95,10 @@
       position: absolute;
       z-index: 1;
       background-color: transparent;
-    }
-
-    &:not(.calendar-date-spaced)::after {
       inset-block-start: calc(-1 * #{awsui.$border-item-width});
-      inset-inline-start: -1px;
-      inset-block-end: -1px;
-      inset-inline-end: calc(-1 * #{awsui.$border-item-width});
-    }
-
-    &-spaced::after {
-      inset-block-start: calc(-1 * #{awsui.$border-item-width});
-      inset-inline-start: 0;
       inset-block-end: calc(-1 * #{awsui.$border-item-width});
-      inset-inline-end: 0;
+      inset-inline-start: calc(-1 * #{awsui.$border-item-width});
+      inset-inline-end: calc(-1 * #{awsui.$border-item-width});
     }
 
     &:first-child {
