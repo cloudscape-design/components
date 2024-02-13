@@ -605,6 +605,73 @@ describe('Date picker calendar', () => {
         expect(findFocusableDateText(wrapper)).toBe('Feb');
         expect(findCalendarHeaderText(wrapper)).toBe('2022');
       });
+
+      test('should jump over a disabled date in the future', () => {
+        const isDateEnabled = (date: Date) => date.getMonth() !== 3;
+        const wrapper = openDatePicker({ granularity: 'month', isDateEnabled, value: '2018-03' });
+        wrapper.findCalendar()!.findSelectedDate().keydown(KeyCode.right);
+        expect(findFocusableDateText(wrapper)).toBe('May');
+      });
+
+      test('should jump over a disabled date in the past', () => {
+        const isDateEnabled = (date: Date) => date.getMonth() !== 1;
+        const wrapper = openDatePicker({ granularity: 'month', isDateEnabled, value: '2018-03' });
+        wrapper.findCalendar()!.findSelectedDate().keydown(KeyCode.left);
+        expect(findFocusableDateText(wrapper)).toBe('Jan');
+      });
+
+      test('should jump to the next year when all remaining months in the year are disabled', () => {
+        const isDateEnabled = (date: Date) => date.getMonth() < 3;
+        const wrapper = openDatePicker({ granularity: 'month', isDateEnabled, value: '2018-03' });
+        wrapper.findCalendar()!.findSelectedDate().keydown(KeyCode.right);
+        expect(findFocusableDateText(wrapper)).toBe('Jan');
+        expect(findCalendarHeaderText(wrapper)).toBe('2019');
+      });
+
+      test('should jump to the previous year when all remaining previous months in the year are disabled', () => {
+        const isDateEnabled = (date: Date) => date.getMonth() > 1;
+        const wrapper = openDatePicker({ granularity: 'month', isDateEnabled, value: '2018-03' });
+        wrapper.findCalendar()!.findSelectedDate().keydown(KeyCode.left);
+        expect(findFocusableDateText(wrapper)).toBe('Dec');
+        expect(findCalendarHeaderText(wrapper)).toBe('2017');
+      });
+
+      test('should not move focus forward if there are no more enabled dates in the future', () => {
+        const maxDate = new Date(2018, 3, 1).getTime(); // April 1st
+        const isDateEnabled = (date: Date) => date.getTime() < maxDate;
+        const wrapper = openDatePicker({ granularity: 'month', isDateEnabled, value: '2018-03' });
+        wrapper.findCalendar()!.findSelectedDate().keydown(KeyCode.right);
+        expect(findFocusableDateText(wrapper)).toBe('Mar');
+        expect(findCalendarHeaderText(wrapper)).toBe('2018');
+      });
+
+      test('should not move focus backward if there are no more enabled dates in the past', () => {
+        const minDate = new Date(2018, 1, 28).getTime(); // February 28th
+        const isDateEnabled = (date: Date) => date.getTime() > minDate;
+        const wrapper = openDatePicker({ granularity: 'month', isDateEnabled, value: '2018-03' });
+        wrapper.findCalendar()!.findSelectedDate().keydown(KeyCode.left);
+        expect(findFocusableDateText(wrapper)).toBe('Mar');
+        expect(findCalendarHeaderText(wrapper)).toBe('2018');
+      });
+
+      test('should display the current year with current selection but without focusable months if there is no enabled month in it', () => {
+        const minDate = new Date(2019, 0, 1).getTime(); // January 1st
+        const isDateEnabled = (date: Date) => date.getTime() > minDate;
+        const wrapper = openDatePicker({ granularity: 'month', value: '2018-03', isDateEnabled });
+        expect(findCalendarHeaderText(wrapper)).toBe('2018');
+        expect(
+          wrapper.findCalendar()!.findSelectedDate()?.find(`:not(.${screenreaderOnlyStyles.root}`)?.getElement()
+            .textContent
+        ).toBe('Mar');
+        expect(findFocusableDateText(wrapper)).toBeNull();
+      });
+
+      test('does not focus anything if all dates are disabled', () => {
+        const isDateEnabled = () => false;
+        const wrapper = openDatePicker({ granularity: 'month', isDateEnabled });
+        wrapper.setInputValue('2018/03');
+        expect(findFocusableDateText(wrapper)).toBeNull();
+      });
     });
   });
 
