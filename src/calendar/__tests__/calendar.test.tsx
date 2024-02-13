@@ -175,7 +175,7 @@ describe('should add `previousMonthAriaLabel` to appropriate button in the calen
       />
     );
     const wrapper = createWrapper(container);
-    expect(wrapper.findCalendar()!.findPreviousButton()!.getElement()!.getAttribute('aria-label')).toMatch(
+    expect(wrapper.findCalendar()!.findPreviousButton().getElement()!.getAttribute('aria-label')).toMatch(
       'TEST PREVIOUS MONTH'
     );
   });
@@ -185,7 +185,7 @@ describe('should add `previousMonthAriaLabel` to appropriate button in the calen
       <Calendar {...defaultProps} i18nStrings={undefined} previousMonthAriaLabel="TEST PREVIOUS MONTH" />
     );
     const wrapper = createWrapper(container);
-    expect(wrapper.findCalendar()!.findPreviousButton()!.getElement()!.getAttribute('aria-label')).toMatch(
+    expect(wrapper.findCalendar()!.findPreviousButton().getElement()!.getAttribute('aria-label')).toMatch(
       'TEST PREVIOUS MONTH'
     );
   });
@@ -277,5 +277,27 @@ describe('current date', () => {
         }
       }
     }
+  });
+});
+
+describe('test API', () => {
+  test('findPreviousButton', () => {
+    const { wrapper } = renderCalendar();
+    expect(wrapper.findPreviousButton().getElement()).toBeTruthy();
+  });
+
+  test('findNextButton', () => {
+    const { wrapper } = renderCalendar();
+    expect(wrapper.findNextButton().getElement()).toBeTruthy();
+  });
+
+  test('findPreviousMonthButton (deprecated)', () => {
+    const { wrapper } = renderCalendar();
+    expect(wrapper.findPreviousMonthButton().getElement()).toBeTruthy();
+  });
+
+  test('findNextMonthButton (deprecated)', () => {
+    const { wrapper } = renderCalendar();
+    expect(wrapper.findNextMonthButton().getElement()).toBeTruthy();
   });
 });

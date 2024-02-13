@@ -92,7 +92,7 @@ describe('Date picker calendar', () => {
     test('should reset the date of the calendar when it is closed and reopened', () => {
       expect(wrapper.findCalendar()).not.toBeNull();
       expect(findCalendarHeaderText(wrapper)).toBe('March 2018');
-      const button = wrapper.findCalendar()!.findPreviousButton()!;
+      const button = wrapper.findCalendar()!.findPreviousButton();
       button.click();
       button.click();
       button.click();
@@ -316,7 +316,7 @@ describe('Date picker calendar', () => {
         // focus a new date
         wrapper.findCalendar()!.findSelectedDate().keydown(KeyCode.right);
         // navigate to previous month
-        wrapper.findCalendar()!.findPreviousButton()!.click();
+        wrapper.findCalendar()!.findPreviousButton().click();
         expect(findFocusableDateText(wrapper)).toBe('1');
       });
 
@@ -554,7 +554,7 @@ describe('Date picker calendar', () => {
           i18nStrings: { previousMonthAriaLabel: 'TEST PREV MONTH' },
         });
         wrapper.findOpenCalendarButton().click();
-        expect(wrapper.findCalendar()!.findPreviousButton()!.getElement()!.getAttribute('aria-label')).toMatch(
+        expect(wrapper.findCalendar()!.findPreviousButton().getElement()!.getAttribute('aria-label')).toMatch(
           'TEST PREV MONTH'
         );
       });
@@ -562,7 +562,7 @@ describe('Date picker calendar', () => {
       test('from deprecated top-level property', () => {
         const { wrapper } = renderDatePicker({ value: '2018-03-22', previousMonthAriaLabel: 'TEST PREV MONTH' });
         wrapper.findOpenCalendarButton().click();
-        expect(wrapper.findCalendar()!.findPreviousButton()!.getElement()!.getAttribute('aria-label')).toMatch(
+        expect(wrapper.findCalendar()!.findPreviousButton().getElement()!.getAttribute('aria-label')).toMatch(
           'TEST PREV MONTH'
         );
       });

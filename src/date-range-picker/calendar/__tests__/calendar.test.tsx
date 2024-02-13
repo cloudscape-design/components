@@ -246,8 +246,8 @@ describe('Date range picker calendar', () => {
         // focus a new date
         findFocusableDate(wrapper)!.keydown(KeyCode.right);
         // navigate to previous month
-        wrapper.findDropdown()!.findPreviousButton()!.click();
-        wrapper.findDropdown()!.findPreviousButton()!.click();
+        wrapper.findDropdown()!.findPreviousButton().click();
+        wrapper.findDropdown()!.findPreviousButton().click();
 
         expect(findFocusableDateText(wrapper)).toBe('1');
       });
@@ -424,7 +424,7 @@ describe('Date range picker calendar', () => {
     test('should add `previousMonthAriaLabel` to appropriate button in the calendar', () => {
       const { wrapper } = renderDateRangePicker({ ...defaultProps, i18nStrings });
       changeMode(wrapper, 'absolute');
-      expect(wrapper.findDropdown()!.findPreviousButton()!.getElement()!.getAttribute('aria-label')).toMatch(
+      expect(wrapper.findDropdown()!.findPreviousButton().getElement()!.getAttribute('aria-label')).toMatch(
         'TEST PREVIOUS MONTH'
       );
     });
