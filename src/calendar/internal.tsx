@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { isSameDay, isSameMonth, isSameYear } from 'date-fns';
+import { addMonths, addYears, isSameDay, isSameMonth, isSameYear } from 'date-fns';
 import styles from './styles.css.js';
 import CalendarHeader from './header';
 import Grid from './grid';
@@ -110,8 +110,10 @@ export default function Calendar({
 
   const focusableDate = focusedDate || selectFocusedDate(memoizedValue, baseDate);
 
-  const onHeaderChangePageHandler = (date: Date) => {
-    setDisplayedDate(date);
+  const onHeaderChangePageHandler = (amount: number) => {
+    const movePage = isMonthPicker ? addYears : addMonths;
+    const newDate = movePage(baseDate, amount);
+    setDisplayedDate(newDate);
     setFocusedDate(null);
   };
 
@@ -195,6 +197,8 @@ export default function Calendar({
   const moveRight = isMonthPicker ? moveNextMonth : moveNextDay;
   const moveUp = isMonthPicker ? moveMonthUp : movePrevWeek;
 
+  const headerText = isMonthPicker ? baseDate.getFullYear().toString() : renderMonthAndYear(normalizedLocale, baseDate);
+
   return (
     <div
       ref={__internalRootRef}
@@ -207,13 +211,11 @@ export default function Calendar({
     >
       <div className={styles['calendar-inner']}>
         <CalendarHeader
-          baseDate={baseDate}
-          locale={normalizedLocale}
+          formattedDate={headerText}
           onChange={onHeaderChangePageHandler}
           previousLabel={previousLabel}
           nextLabel={nextLabel}
           headingId={headingId}
-          granularity={granularity}
         />
         <div onBlur={onGridBlur} ref={gridWrapperRef}>
           <Grid

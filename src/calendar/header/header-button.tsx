@@ -2,34 +2,34 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
-import { InternalButton, InternalButtonProps } from '../../button/internal';
+import { InternalButton } from '../../button/internal';
 import styles from '../styles.css.js';
 
 interface HeaderButtonProps {
   ariaLabel?: string;
-  onClick: InternalButtonProps['onClick'];
+  onChange: (n: number) => void;
 }
 
-export function HeaderPrevButton({ ariaLabel, onClick }: HeaderButtonProps) {
+export function HeaderPrevButton({ ariaLabel, onChange }: HeaderButtonProps) {
   return (
     <InternalButton
       iconName="angle-left"
       ariaLabel={ariaLabel}
       variant="icon"
-      onClick={onClick}
+      onClick={() => onChange(-1)}
       formAction="none"
       className={styles['calendar-prev-btn']}
     />
   );
 }
 
-export function HeaderNextButton({ ariaLabel, onClick }: HeaderButtonProps) {
+export function HeaderNextButton({ ariaLabel, onChange }: HeaderButtonProps) {
   return (
     <InternalButton
       iconName="angle-right"
       ariaLabel={ariaLabel}
       variant="icon"
-      onClick={onClick}
+      onClick={() => onChange(1)}
       formAction="none"
       className={styles['calendar-next-btn']}
     />
