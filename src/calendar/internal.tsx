@@ -18,7 +18,6 @@ import { getBaseDay, getBaseMonth } from './utils/navigation';
 
 import { useDateCache } from '../internal/hooks/use-date-cache/index.js';
 import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
-import { getDateLabel, renderMonthAndYear } from './utils/intl';
 import useCalendarLabels from './use-calendar-labels';
 import useCalendarGridContent from './use-calendar-grid-content.js';
 import useCalendarGridKeyboardNavigation from './use-calendar-grid-keyboard-navigation.js';
@@ -45,14 +44,6 @@ export default function Calendar({
   const baseProps = getBaseProps(rest);
   const normalizedLocale = normalizeLocale('Calendar', locale);
 
-  const { previousButtonLabel, nextButtonLabel, currentDateLabel } = useCalendarLabels({
-    granularity,
-    i18nStrings,
-    previousMonthAriaLabel,
-    nextMonthAriaLabel,
-    todayAriaLabel,
-  });
-
   const isMonthPicker = granularity === 'month';
 
   const gridWrapperRef = useRef<HTMLDivElement>(null);
@@ -70,6 +61,16 @@ export default function Calendar({
   const baseDate = isMonthPicker
     ? getBaseMonth(displayedDate, isDateEnabled)
     : getBaseDay(displayedDate, isDateEnabled);
+
+  const { previousButtonLabel, nextButtonLabel, renderDate, renderDateAnnouncement, renderHeaderText } =
+    useCalendarLabels({
+      granularity,
+      i18nStrings,
+      locale: normalizedLocale,
+      previousMonthAriaLabel,
+      nextMonthAriaLabel,
+      todayAriaLabel,
+    });
 
   const { header, rows } = useCalendarGridContent({ baseDate, granularity, startOfWeek, locale: normalizedLocale });
 
@@ -141,22 +142,9 @@ export default function Calendar({
 
   const isActive = (date: Date) => isMonthPicker || isSameMonth(date, baseDate);
 
-  const renderDate = (date: Date) =>
-    isMonthPicker ? date.toLocaleString(normalizedLocale, { month: 'short' }) : date.getDate().toString();
-
-  const renderDateAnnouncement = (date: Date, isCurrentDate: boolean) => {
-    const formattedDate = isMonthPicker
-      ? renderMonthAndYear(normalizedLocale, date)
-      : getDateLabel(normalizedLocale, date, 'short');
-    if (isCurrentDate && currentDateLabel) {
-      return formattedDate + '. ' + currentDateLabel;
-    }
-    return formattedDate;
-  };
-
   const isSameDate = isMonthPicker ? isSameMonth : isSameDay;
 
-  const headerText = isMonthPicker ? baseDate.getFullYear().toString() : renderMonthAndYear(normalizedLocale, baseDate);
+  const headerText = renderHeaderText(baseDate);
 
   return (
     <div
