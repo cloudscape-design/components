@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 import { fireEvent, render as testingLibraryRender, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import FileUpload, { FileUploadProps } from '../../../lib/components/file-upload';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
@@ -63,7 +64,17 @@ function renderStateful(props: Partial<FileUploadProps> = {}) {
 
 function StatefulFileUpload({ value: initialValue = [], ...rest }: Partial<FileUploadProps>) {
   const [value, setValue] = useState(initialValue);
-  return <FileUpload {...defaultProps} {...rest} value={value} onChange={event => setValue(event.detail.value)} />;
+  return (
+    <FileUpload
+      {...defaultProps}
+      {...rest}
+      value={value}
+      onChange={event => {
+        onChange(event);
+        setValue(event.detail.value);
+      }}
+    />
+  );
 }
 
 describe('FileUpload input', () => {
@@ -199,6 +210,17 @@ describe('File upload tokens', () => {
     wrapperMultiple.findFileToken(1)!.findRemoveButton()!.click();
 
     expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: [file2] } }));
+  });
+
+  test('onChange called when the same is reuploaded ', async () => {
+    const user = userEvent.setup();
+    const wrapper = renderStateful({ value: [] });
+
+    await user.upload(wrapper.findNativeInput().getElement(), file1);
+    await user.upload(wrapper.findNativeInput().getElement(), file1);
+
+    expect(onChange).toHaveBeenCalledTimes(2);
+    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: [file1] } }));
   });
 
   test('file token only shows name by default', () => {
