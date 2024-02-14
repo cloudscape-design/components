@@ -3,7 +3,6 @@
 import React, { useRef } from 'react';
 import styles from '../styles.css.js';
 import { KeyCode } from '../../internal/keycode';
-import { DayIndex } from '../internal';
 import { DatePickerProps } from '../../date-picker/interfaces';
 import clsx from 'clsx';
 import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update.js';
@@ -36,14 +35,12 @@ import { CalendarProps } from '../interfaces.js';
  */
 
 export interface GridProps {
-  locale: string;
   isDateEnabled: DatePickerProps.IsDateEnabledFunction;
   focusedDate: Date | null;
   focusableDate: Date | null;
   onSelectDate: (date: Date) => void;
   onFocusDate: (date: null | Date) => void;
   onChangePage: (date: Date) => void;
-  startOfWeek: DayIndex;
   selectedDate: Date | null;
   ariaLabelledby: string;
   granularity?: CalendarProps.Granularity;

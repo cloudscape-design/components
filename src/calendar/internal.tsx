@@ -202,14 +202,12 @@ export default function Calendar({
         />
         <div onBlur={onGridBlur} ref={gridWrapperRef}>
           <Grid
-            locale={normalizedLocale}
             isDateEnabled={isDateEnabled}
             focusedDate={focusedDate}
             focusableDate={focusableDate}
             onSelectDate={onGridSelectDateHandler}
             onFocusDate={onGridFocusDateHandler}
             onChangePage={onChangePageHandler}
-            startOfWeek={normalizedStartOfWeek}
             selectedDate={memoizedValue}
             ariaLabelledby={headingId}
             granularity={granularity}
