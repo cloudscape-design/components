@@ -1,12 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { addMonths, addYears, isSameDay, isSameMonth, isSameYear } from 'date-fns';
 import styles from './styles.css.js';
 import CalendarHeader from './header';
 import Grid from './grid';
-import { normalizeLocale, normalizeStartOfWeek } from '../internal/utils/locale';
+import { normalizeLocale } from '../internal/utils/locale';
 import { formatDate, parseDate } from '../internal/utils/date-time';
 import { fireNonCancelableEvent } from '../internal/events/index.js';
 import checkControlled from '../internal/hooks/check-controlled/index.js';
@@ -29,10 +29,9 @@ import {
 
 import { useDateCache } from '../internal/hooks/use-date-cache/index.js';
 import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
-import { getCalendarMonth } from 'mnth';
-import ScreenreaderOnly from '../internal/components/screenreader-only/index.js';
-import { getDateLabel, renderDayName, renderMonthAndYear } from './utils/intl';
+import { getDateLabel, renderMonthAndYear } from './utils/intl';
 import useCalendarLabels from './use-calendar-labels';
+import useCalendarGridContent from './use-calendar-grid-content.js';
 
 export default function Calendar({
   value,
@@ -64,7 +63,8 @@ export default function Calendar({
     todayAriaLabel,
   });
 
-  const normalizedStartOfWeek = normalizeStartOfWeek(startOfWeek, normalizedLocale);
+  const isMonthPicker = granularity === 'month';
+
   const gridWrapperRef = useRef<HTMLDivElement>(null);
   const [focusedDate, setFocusedDate] = useState<Date | null>(null);
 
@@ -77,9 +77,13 @@ export default function Calendar({
   const defaultDisplayedDate = memoizedValue ?? new Date();
   const [displayedDate, setDisplayedDate] = useState(defaultDisplayedDate);
 
-  const headingId = useUniqueId('calendar-heading');
+  const baseDate = isMonthPicker
+    ? getBaseMonth(displayedDate, isDateEnabled)
+    : getBaseDay(displayedDate, isDateEnabled);
 
-  const isMonthPicker = granularity === 'month';
+  const { header, rows } = useCalendarGridContent({ baseDate, granularity, startOfWeek, locale: normalizedLocale });
+
+  const headingId = useUniqueId('calendar-heading');
 
   // Update displayed date if value changes.
   useEffect(() => {
@@ -101,10 +105,6 @@ export default function Calendar({
     }
     return null;
   };
-
-  const baseDate = isMonthPicker
-    ? getBaseMonth(displayedDate, isDateEnabled)
-    : getBaseDay(displayedDate, isDateEnabled);
 
   const focusableDate = focusedDate || selectFocusedDate(memoizedValue, baseDate);
 
@@ -137,39 +137,6 @@ export default function Calendar({
       setFocusedDate(null);
     }
   };
-
-  const rows = useMemo<Date[][]>(
-    () =>
-      isMonthPicker
-        ? new Array(4).fill(0).map((_, i: number) =>
-            new Array(3).fill(0).map((_, j: number) => {
-              const d = new Date(baseDate);
-              d.setMonth(i * 3 + j);
-              return d;
-            })
-          )
-        : getCalendarMonth(baseDate, { firstDayOfWeek: normalizedStartOfWeek }),
-    [baseDate, isMonthPicker, normalizedStartOfWeek]
-  );
-
-  const header = isMonthPicker ? null : (
-    <thead>
-      <tr>
-        {rows[0]
-          .map(date => date.getDay())
-          .map(dayIndex => (
-            <th
-              key={dayIndex}
-              scope="col"
-              className={clsx(styles['calendar-grid-cell'], styles['calendar-date-header'])}
-            >
-              <span aria-hidden="true">{renderDayName(normalizedLocale, dayIndex, 'short')}</span>
-              <ScreenreaderOnly>{renderDayName(normalizedLocale, dayIndex, 'long')}</ScreenreaderOnly>
-            </th>
-          ))}
-      </tr>
-    </thead>
-  );
 
   const isActive = (date: Date) => isMonthPicker || isSameMonth(date, baseDate);
 
