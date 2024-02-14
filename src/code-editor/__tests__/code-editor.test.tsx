@@ -541,9 +541,35 @@ describe('Code editor component', () => {
     expect(warnOnce).not.toHaveBeenCalled();
   });
 
-  test('a11y', async () => {
-    const { wrapper } = renderCodeEditor();
-    await expect(wrapper.getElement()).toValidateA11y();
+  describe('a11y', () => {
+    test('a11y on code editor default state', async () => {
+      const { wrapper } = renderCodeEditor();
+      await expect(wrapper.getElement()).toValidateA11y();
+    });
+
+    test(`panel's aria-labelledby attr points to error button when displaying error details`, () => {
+      editorMock.session.getAnnotations.mockReturnValueOnce([{ type: 'error' }]);
+      const { wrapper } = renderCodeEditor();
+      act(() => emulateAceAnnotationEvent!());
+
+      wrapper.findErrorsTab()!.click();
+      const errorTabId = wrapper.findErrorsTab()!.getElement()!.getAttribute('id');
+
+      expect(errorTabId).toBeDefined();
+      expect(wrapper.findPane()!.getElement().getAttribute('aria-labelledby')).toBe(errorTabId);
+    });
+
+    test(`panel's aria-labelledby attr points to warning button when displaying warning details`, () => {
+      editorMock.session.getAnnotations.mockReturnValueOnce([{ type: 'warning' }]);
+      const { wrapper } = renderCodeEditor();
+      act(() => emulateAceAnnotationEvent!());
+
+      wrapper.findWarningsTab()!.click();
+      const errorTabId = wrapper.findWarningsTab()!.getElement()!.getAttribute('id');
+
+      expect(errorTabId).toBeDefined();
+      expect(wrapper.findPane()!.getElement().getAttribute('aria-labelledby')).toBe(errorTabId);
+    });
   });
 
   describe('i18n', () => {

@@ -11,6 +11,7 @@ import { InternalButton } from '../button/internal';
 import { ResizableBox } from './resizable-box';
 
 import styles from './styles.css.js';
+import { getStatusButtonId, PaneStatus } from './util';
 
 const ANNOTATION_ITEM_HEIGHT = 31;
 const PANE_ANNOTATIONS_PADDING = 12;
@@ -18,6 +19,7 @@ const MIN_HEIGHT = 3 * ANNOTATION_ITEM_HEIGHT + 2 * PANE_ANNOTATIONS_PADDING;
 
 export interface PaneProps {
   id: string;
+  paneStatus: PaneStatus;
 
   visible: boolean;
   annotations: Ace.Annotation[];
@@ -33,6 +35,7 @@ export interface PaneProps {
 
 export const Pane = ({
   id,
+  paneStatus,
   visible,
   annotations,
   highlighted,
@@ -78,12 +81,14 @@ export const Pane = ({
     }
   };
 
+  const ariaLabelledBy = getStatusButtonId({ paneId: id, paneStatus: paneStatus });
+
   if (!visible) {
     return null;
   }
 
   return (
-    <div id={id} className={styles.pane} onKeyDown={onEscKeyDown} role="tabpanel">
+    <div id={id} className={styles.pane} onKeyDown={onEscKeyDown} role="tabpanel" aria-labelledby={ariaLabelledBy}>
       <ResizableBox height={paneHeight} minHeight={MIN_HEIGHT} onResize={newHeight => setPaneHeight(newHeight)}>
         <FocusLock className={styles['focus-lock']} autoFocus={true} restoreFocus={true}>
           <div className={styles.pane__list} tabIndex={-1}>

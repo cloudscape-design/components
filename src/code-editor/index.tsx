@@ -255,6 +255,7 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
             />
             <Pane
               id={paneId}
+              paneStatus={paneStatus}
               visible={isPaneVisible}
               annotations={currentAnnotations}
               highlighted={highlightedAnnotation}
