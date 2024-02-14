@@ -72,3 +72,7 @@ export function getAceTheme(theme: CodeEditorProps.Theme) {
 export function getLanguageLabel(language: CodeEditorProps.Language): string {
   return AceModes.filter((mode: { value: string }) => mode.value === language)[0]?.label || language;
 }
+
+export function getStatusButtonId({ paneId, paneStatus }: { paneId?: string; paneStatus: PaneStatus }) {
+  return paneId ? `${paneId}-button-${paneStatus}` : undefined;
+}

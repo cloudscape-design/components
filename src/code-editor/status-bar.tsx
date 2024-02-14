@@ -9,11 +9,12 @@ import { InternalButton } from '../button/internal';
 import { CodeEditorProps } from './interfaces';
 import { useInternalI18n } from '../i18n/context.js';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+import { getStatusButtonId, PaneStatus } from './util';
 
 interface StatusBarProps {
   languageLabel: string;
   cursorPosition?: string;
-  paneStatus: string;
+  paneStatus: PaneStatus;
   isTabFocused: boolean;
   paneId?: string;
   i18nStrings?: CodeEditorProps.I18nStrings;
@@ -62,6 +63,8 @@ function InternalStatusBar({
   const i18n = useInternalI18n('code-editor');
   const errorText = `${i18n('i18nStrings.errorsTab', i18nStrings?.errorsTab)}: ${errorCount}`;
   const warningText = `${i18n('i18nStrings.warningsTab', i18nStrings?.warningsTab)}: ${warningCount}`;
+  const errorButtonId = !isVirtual ? getStatusButtonId({ paneId, paneStatus: 'error' }) : undefined;
+  const warningButtonId = !isVirtual ? getStatusButtonId({ paneId, paneStatus: 'warning' }) : undefined;
 
   // Virtual status bar is inaccessible for screen readers and keyboard interactions.
 
@@ -84,6 +87,7 @@ function InternalStatusBar({
 
         <div role="tablist">
           <TabButton
+            id={errorButtonId}
             text={minifyCounters ? ` ${errorCount}` : errorText}
             className={styles['tab-button--errors']}
             iconName="status-negative"
@@ -99,6 +103,7 @@ function InternalStatusBar({
           />
           <span className={styles['tab-button--divider']}></span>
           <TabButton
+            id={warningButtonId}
             text={minifyCounters ? ` ${warningCount}` : warningText}
             className={styles['tab-button--warnings']}
             iconName="status-warning"
