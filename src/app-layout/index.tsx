@@ -53,7 +53,21 @@ const AppLayout = React.forwardRef(
     { contentType = 'default', headerSelector = '#b #h', footerSelector = '#b #f', ...rest }: AppLayoutProps,
     ref: React.Ref<AppLayoutProps.Ref>
   ) => {
-    const { __internalRootRef } = useBaseComponent<HTMLDivElement>('AppLayout');
+    const { __internalRootRef } = useBaseComponent<HTMLDivElement>('AppLayout', {
+      props: {
+        contentType,
+        disableContentPaddings: rest.disableContentPaddings,
+        disableBodyScroll: rest.disableBodyScroll,
+        navigationWidth: rest.navigationWidth,
+        navigationHide: rest.navigationHide,
+        toolsHide: rest.toolsHide,
+        toolsWidth: rest.toolsWidth,
+        maxContentWidth: rest.maxContentWidth,
+        minContentWidth: rest.minContentWidth,
+        stickyNotifications: rest.stickyNotifications,
+        disableContentHeaderOverlap: rest.disableContentHeaderOverlap,
+      },
+    });
     const isRefresh = useVisualRefresh();
 
     const i18n = useInternalI18n('app-layout');
