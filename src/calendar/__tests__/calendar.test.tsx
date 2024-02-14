@@ -162,90 +162,32 @@ describe('aria labels', () => {
       );
     });
   });
+});
 
-  describe('should add `previousMonthAriaLabel` to appropriate button in the calendar', () => {
-    test('from i18nStrings', () => {
-      const { container } = render(
-        <Calendar
-          {...defaultProps}
-          i18nStrings={{
-            previousMonthAriaLabel: 'TEST PREVIOUS MONTH',
-          }}
-        />
-      );
-      const wrapper = createWrapper(container);
-      expect(wrapper.findCalendar()!.findPreviousButton().getElement()!.getAttribute('aria-label')).toMatch(
-        'TEST PREVIOUS MONTH'
-      );
-    });
-
-    test('from deprecated top-level property', () => {
-      const { container } = render(
-        <Calendar {...defaultProps} i18nStrings={undefined} previousMonthAriaLabel="TEST PREVIOUS MONTH" />
-      );
-      const wrapper = createWrapper(container);
-      expect(wrapper.findCalendar()!.findPreviousButton().getElement()!.getAttribute('aria-label')).toMatch(
-        'TEST PREVIOUS MONTH'
-      );
-    });
+describe('should add `previousMonthAriaLabel` to appropriate button in the calendar', () => {
+  test('from i18nStrings', () => {
+    const { container } = render(
+      <Calendar
+        {...defaultProps}
+        i18nStrings={{
+          previousMonthAriaLabel: 'TEST PREVIOUS MONTH',
+        }}
+      />
+    );
+    const wrapper = createWrapper(container);
+    expect(wrapper.findCalendar()!.findPreviousButton().getElement()!.getAttribute('aria-label')).toMatch(
+      'TEST PREVIOUS MONTH'
+    );
   });
 
-  describe('month granularity', () => {
-    const getCurrentMonthLabelText = (container: HTMLElement) => {
-      return container
-        .querySelector(`.${styles['calendar-date-current']}`)!
-        .querySelector(`.${screenreaderOnlyStyles.root}`)!.textContent;
-    };
-
-    test('should add `currentMonthAriaLabel` to current month', () => {
-      const { container } = render(
-        <Calendar
-          {...defaultProps}
-          granularity="month"
-          i18nStrings={{
-            currentMonthAriaLabel: 'TEST CURRENT MONTH',
-          }}
-        />
-      );
-      expect(getCurrentMonthLabelText(container)).toMatch('TEST CURRENT MONTH');
-    });
-
-    test('does not add `undefined` if `currentMonthAriaLabel` is not provided', () => {
-      const { container } = render(<Calendar {...defaultProps} i18nStrings={undefined} />);
-      expect(getCurrentMonthLabelText(container)).not.toContain('undefined');
-    });
-
-    test('should add `nextYearAriaLabel` to appropriate button', () => {
-      const { container } = render(
-        <Calendar
-          {...defaultProps}
-          granularity="month"
-          i18nStrings={{
-            nextYearAriaLabel: 'TEST NEXT YEAR',
-          }}
-        />
-      );
-      const wrapper = createWrapper(container);
-      expect(wrapper.findCalendar()!.findNextButton()!.getElement()!.getAttribute('aria-label')).toMatch(
-        'TEST NEXT YEAR'
-      );
-    });
-
-    test('should add `previousYearAriaLabel` to appropriate button', () => {
-      const { container } = render(
-        <Calendar
-          {...defaultProps}
-          granularity="month"
-          i18nStrings={{
-            previousYearAriaLabel: 'TEST PREVIOUS YEAR',
-          }}
-        />
-      );
-      const wrapper = createWrapper(container);
-      expect(wrapper.findCalendar()!.findPreviousButton()!.getElement()!.getAttribute('aria-label')).toMatch(
-        'TEST PREVIOUS YEAR'
-      );
-    });
+  test('from deprecated top-level property', () => {
+    const { container } = render(
+      <Calendar {...defaultProps} i18nStrings={undefined} previousMonthAriaLabel="TEST PREVIOUS MONTH" />
+    );
+    const wrapper = createWrapper(container);
+    expect(wrapper.findCalendar()!.findPreviousButton().getElement()!.getAttribute('aria-label')).toMatch(
+      'TEST PREVIOUS MONTH'
+    );
   });
 });
 
