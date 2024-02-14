@@ -43,7 +43,8 @@ export function useHighlightedOption<OptionType>({
     options[highlightedIndex] && isHighlightable(options[highlightedIndex]) ? options[highlightedIndex] : undefined;
 
   const moveHighlightFrom = (direction: -1 | 1, startIndex = highlightedIndex, highlightType: HighlightType) => {
-    let newIndex = startIndex;
+    const fromBottomEnd = startIndex === -1 && direction === -1;
+    let newIndex = fromBottomEnd ? options.length : startIndex;
     do {
       newIndex += direction;
     } while (options[newIndex] && !isHighlightable(options[newIndex]));
