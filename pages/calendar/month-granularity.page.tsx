@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Box, Link } from '~components';
 import Calendar from '~components/calendar';
 
-export default function DatePickerEditorScenario() {
+export default function () {
   const [value, setValue] = useState('2022-01-01');
 
   return (

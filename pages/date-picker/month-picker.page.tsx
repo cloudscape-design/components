@@ -3,8 +3,8 @@
 import React, { useState } from 'react';
 import { Box, DatePicker, Link } from '~components';
 
-export default function DatePickerScenario() {
-  const [value, setValue] = useState('2024-02');
+export default function () {
+  const [value, setValue] = useState('2023-02');
 
   return (
     <Box padding="s">
@@ -20,7 +20,7 @@ export default function DatePickerScenario() {
         openCalendarAriaLabel={selectedDate =>
           'Choose Date' + (selectedDate ? `, selected date is ${selectedDate}` : '')
         }
-        isDateEnabled={date => date <= new Date('2024-05')}
+        isDateEnabled={date => date <= new Date('2023-05')}
         granularity="month"
         i18nStrings={{
           previousYearAriaLabel: 'Previous year',
