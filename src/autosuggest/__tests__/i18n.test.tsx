@@ -82,4 +82,22 @@ describe('i18n provider', () => {
         .getElement()
     ).toHaveTextContent('Custom selected');
   });
+
+  const spyOnConsoleWarn = jest.spyOn(console, 'warn').mockImplementation();
+
+  test('should warn when enteredTextLabel is undefined and not using the i18n provider', () => {
+    renderElement(<Autosuggest {...defaultProps} value="1" />);
+    expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('A value for enteredTextLabel must be provided'));
+    spyOnConsoleWarn.mockClear();
+  });
+
+  test('should not warn when enteredTextLabel is undefined when using the i18n provider', () => {
+    renderElement(
+      <TestI18nProvider messages={{ autosuggest: { enteredTextLabel: 'Use' } }}>
+        <Autosuggest {...defaultProps} value="1" />
+      </TestI18nProvider>
+    );
+    expect(console.warn).not.toHaveBeenCalled();
+    spyOnConsoleWarn.mockClear();
+  });
 });
