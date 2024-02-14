@@ -15,6 +15,13 @@
   /* used in test-utils */
 }
 
+@mixin item-border-radius {
+  border-start-start-radius: awsui.$border-radius-item;
+  border-start-end-radius: awsui.$border-radius-item;
+  border-end-start-radius: awsui.$border-radius-item;
+  border-end-end-radius: awsui.$border-radius-item;
+}
+
 .calendar {
   display: block;
   inline-size: awsui.$size-calendar-grid-width;
@@ -113,14 +120,12 @@
       cursor: pointer;
       color: calendar.$grid-nonmonth-day-color;
       &::after {
-        border-start-start-radius: awsui.$border-radius-item;
-        border-start-end-radius: awsui.$border-radius-item;
-        border-end-start-radius: awsui.$border-radius-item;
-        border-end-end-radius: awsui.$border-radius-item;
+        @include item-border-radius;
       }
       &.calendar-date-current-page {
         color: calendar.$grid-date-color;
         &:hover {
+          @include item-border-radius;
           color: awsui.$color-text-calendar-date-hover;
           background-color: calendar.$grid-hover-background-color;
           &:not(.calendar-date-selected) {
@@ -134,11 +139,8 @@
     }
 
     &-current {
+      @include item-border-radius;
       background-color: calendar.$grid-current-date-background-color;
-      border-start-start-radius: awsui.$border-radius-item;
-      border-start-end-radius: awsui.$border-radius-item;
-      border-end-start-radius: awsui.$border-radius-item;
-      border-end-end-radius: awsui.$border-radius-item;
       font-weight: styles.$font-weight-bold;
     }
 
@@ -178,13 +180,10 @@
         }
       }
       &::after {
+        @include item-border-radius;
         background-color: calendar.$grid-selected-background-color;
         border-block: awsui.$border-item-width solid calendar.$grid-selected-border-color;
         border-inline: awsui.$border-item-width solid calendar.$grid-selected-border-color;
-        border-start-start-radius: awsui.$border-radius-item;
-        border-start-end-radius: awsui.$border-radius-item;
-        border-end-start-radius: awsui.$border-radius-item;
-        border-end-end-radius: awsui.$border-radius-item;
       }
       > .date-inner {
         z-index: 2;
