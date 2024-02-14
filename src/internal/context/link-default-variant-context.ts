@@ -3,6 +3,8 @@
 import { createContext } from 'react';
 import { LinkProps } from '../../link/interfaces';
 
-export const LinkDefaultVariantContext = createContext<{ defaultVariant: LinkProps.Variant }>({
+export const defaultValue: { defaultVariant: LinkProps.Variant } = {
   defaultVariant: 'secondary',
-});
+};
+
+export const LinkDefaultVariantContext = createContext(defaultValue);
