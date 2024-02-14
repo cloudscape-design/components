@@ -74,8 +74,6 @@ export default function Calendar({
 
   const { header, rows } = useCalendarGridContent({ baseDate, granularity, startOfWeek, locale: normalizedLocale });
 
-  const belongsToCurrentPage = (date: Date) => isSamePage(date, baseDate);
-
   const headingId = useUniqueId('calendar-heading');
 
   // Update displayed date if value changes.
@@ -84,6 +82,7 @@ export default function Calendar({
   }, [memoizedValue]);
 
   const isSamePage = isMonthPicker ? isSameYear : isSameMonth;
+  const belongsToCurrentPage = (date: Date) => isSamePage(date, baseDate);
 
   const selectFocusedDate = (selected: Date | null, baseDate: Date): Date | null => {
     if (selected && isDateEnabled(selected) && isSamePage(selected, baseDate)) {
@@ -107,8 +106,8 @@ export default function Calendar({
     onChangePageHandler(newDate);
   };
 
-  const onChangePageHandler = (newMonth: Date) => {
-    setDisplayedDate(newMonth);
+  const onChangePageHandler = (newDate: Date) => {
+    setDisplayedDate(newDate);
     setFocusedDate(null);
   };
 
