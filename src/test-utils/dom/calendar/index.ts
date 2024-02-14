@@ -20,11 +20,27 @@ export default class CalendarWrapper extends ComponentWrapper {
     return this.findByClassName(styles['calendar-header'])!;
   }
 
+  /**
+   * Alias for findPreviousButton for compatibility with previous versions
+   * @deprecated
+   */
   findPreviousMonthButton(): ButtonWrapper {
+    return this.findPreviousButton();
+  }
+
+  /**
+   * Alias for findNextButton for compatibility with previous versions
+   * @deprecated
+   */
+  findNextMonthButton(): ButtonWrapper {
+    return this.findNextButton();
+  }
+
+  findPreviousButton(): ButtonWrapper {
     return this.findComponent(`.${styles['calendar-prev-btn']}`, ButtonWrapper)!;
   }
 
-  findNextMonthButton(): ButtonWrapper {
+  findNextButton(): ButtonWrapper {
     return this.findComponent(`.${styles['calendar-next-btn']}`, ButtonWrapper)!;
   }
 
