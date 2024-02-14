@@ -56,7 +56,7 @@ describe('Date picker calendar', () => {
     test('should reset the date of the calendar when it is closed and reopened', () => {
       expect(wrapper.findCalendar()).not.toBeNull();
       expect(findCalendarHeaderText(wrapper)).toBe('March 2018');
-      const button = wrapper.findCalendar()!.findPreviousMonthButton()!;
+      const button = wrapper.findCalendar()!.findPreviousButton();
       button.click();
       button.click();
       button.click();
@@ -280,7 +280,7 @@ describe('Date picker calendar', () => {
         // focus a new date
         wrapper.findCalendar()!.findSelectedDate().keydown(KeyCode.right);
         // navigate to previous month
-        wrapper.findCalendar()!.findPreviousMonthButton()!.click();
+        wrapper.findCalendar()!.findPreviousButton().click();
         expect(findFocusableDateText(wrapper)).toBe('1');
       });
 
@@ -288,7 +288,7 @@ describe('Date picker calendar', () => {
         const isDateEnabled = (date: Date) => date.getDate() > 1;
         const { wrapper } = renderDatePicker({ ...defaultProps, isDateEnabled });
         wrapper.findOpenCalendarButton().click();
-        wrapper.findCalendar()!.findNextMonthButton()!.click();
+        wrapper.findCalendar()!.findNextButton().click();
         expect(findFocusableDateText(wrapper)).toBe('2');
       });
 
@@ -497,7 +497,7 @@ describe('Date picker calendar', () => {
           i18nStrings: { nextMonthAriaLabel: 'TEST NEXT MONTH' },
         });
         wrapper.findOpenCalendarButton().click();
-        expect(wrapper.findCalendar()!.findNextMonthButton()!.getElement()!.getAttribute('aria-label')).toMatch(
+        expect(wrapper.findCalendar()!.findNextButton().getElement()!.getAttribute('aria-label')).toMatch(
           'TEST NEXT MONTH'
         );
       });
@@ -505,7 +505,7 @@ describe('Date picker calendar', () => {
       test('from deprecated top-level property', () => {
         const { wrapper } = renderDatePicker({ value: '2018-03-22', nextMonthAriaLabel: 'TEST NEXT MONTH' });
         wrapper.findOpenCalendarButton().click();
-        expect(wrapper.findCalendar()!.findNextMonthButton()!.getElement()!.getAttribute('aria-label')).toMatch(
+        expect(wrapper.findCalendar()!.findNextButton().getElement()!.getAttribute('aria-label')).toMatch(
           'TEST NEXT MONTH'
         );
       });
@@ -518,7 +518,7 @@ describe('Date picker calendar', () => {
           i18nStrings: { previousMonthAriaLabel: 'TEST PREV MONTH' },
         });
         wrapper.findOpenCalendarButton().click();
-        expect(wrapper.findCalendar()!.findPreviousMonthButton()!.getElement()!.getAttribute('aria-label')).toMatch(
+        expect(wrapper.findCalendar()!.findPreviousButton().getElement()!.getAttribute('aria-label')).toMatch(
           'TEST PREV MONTH'
         );
       });
@@ -526,7 +526,7 @@ describe('Date picker calendar', () => {
       test('from deprecated top-level property', () => {
         const { wrapper } = renderDatePicker({ value: '2018-03-22', previousMonthAriaLabel: 'TEST PREV MONTH' });
         wrapper.findOpenCalendarButton().click();
-        expect(wrapper.findCalendar()!.findPreviousMonthButton()!.getElement()!.getAttribute('aria-label')).toMatch(
+        expect(wrapper.findCalendar()!.findPreviousButton().getElement()!.getAttribute('aria-label')).toMatch(
           'TEST PREV MONTH'
         );
       });

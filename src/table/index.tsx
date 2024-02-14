@@ -13,7 +13,17 @@ const Table = React.forwardRef(
     { items = [], selectedItems = [], variant = 'container', contentDensity = 'comfortable', ...props }: TableProps<T>,
     ref: React.Ref<TableProps.Ref>
   ) => {
-    const baseComponentProps = useBaseComponent('Table');
+    const baseComponentProps = useBaseComponent('Table', {
+      props: {
+        contentDensity,
+        resizableColumns: props.resizableColumns,
+        selectionType: props.selectionType,
+        stickyHeader: props.stickyHeader,
+        stripedRows: props.stripedRows,
+        variant,
+        wrapLines: props.wrapLines,
+      },
+    });
 
     const tableProps: Parameters<typeof InternalTable<T>>[0] = {
       items,
