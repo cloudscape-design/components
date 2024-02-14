@@ -34,8 +34,6 @@ import { getCalendarMonth } from 'mnth';
 import ScreenreaderOnly from '../internal/components/screenreader-only/index.js';
 import { getDateLabel, renderDayName, renderMonthAndYear } from './utils/intl';
 
-export type DayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
-
 export default function Calendar({
   value,
   locale = '',
