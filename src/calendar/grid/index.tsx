@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef } from 'react';
 import styles from '../styles.css.js';
-import { KeyCode } from '../../internal/keycode';
 import { DatePickerProps } from '../../date-picker/interfaces';
 import clsx from 'clsx';
 import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update.js';
@@ -38,11 +37,7 @@ export interface GridProps {
   renderDate: (date: Date) => string;
   renderDateAnnouncement: (date: Date, isOnCurrentDate: boolean) => string;
   isSameDate: (date: Date, baseDate: Date) => boolean;
-  belongsToCurrentPage: (date: Date) => boolean;
-  moveUp: (startDate: Date, isDateEnabled: DatePickerProps.IsDateEnabledFunction) => Date;
-  moveDown: (startDate: Date, isDateEnabled: DatePickerProps.IsDateEnabledFunction) => Date;
-  moveLeft: (startDate: Date, isDateEnabled: DatePickerProps.IsDateEnabledFunction) => Date;
-  moveRight: (startDate: Date, isDateEnabled: DatePickerProps.IsDateEnabledFunction) => Date;
+  onGridKeyDownHandler: (event: React.KeyboardEvent) => void;
 }
 
 export default function Grid({
@@ -50,8 +45,6 @@ export default function Grid({
   focusedDate,
   focusableDate,
   onSelectDate,
-  onFocusDate,
-  onChangePage,
   selectedDate,
   ariaLabelledby,
   header,
@@ -60,55 +53,9 @@ export default function Grid({
   renderDate,
   renderDateAnnouncement,
   isSameDate,
-  belongsToCurrentPage,
-  moveUp,
-  moveDown,
-  moveLeft,
-  moveRight,
+  onGridKeyDownHandler,
 }: GridProps) {
   const focusedDateRef = useRef<HTMLTableCellElement>(null);
-
-  const onGridKeyDownHandler = (event: React.KeyboardEvent) => {
-    let updatedFocusDate;
-
-    if (focusableDate === null) {
-      return;
-    }
-
-    switch (event.keyCode) {
-      case KeyCode.space:
-      case KeyCode.enter:
-        event.preventDefault();
-        if (focusableDate) {
-          onFocusDate(null);
-          onSelectDate(focusableDate);
-        }
-        return;
-      case KeyCode.right:
-        event.preventDefault();
-        updatedFocusDate = moveRight(focusableDate, isDateEnabled);
-        break;
-      case KeyCode.left:
-        event.preventDefault();
-        updatedFocusDate = moveLeft(focusableDate, isDateEnabled);
-        break;
-      case KeyCode.up:
-        event.preventDefault();
-        updatedFocusDate = moveUp(focusableDate, isDateEnabled);
-        break;
-      case KeyCode.down:
-        event.preventDefault();
-        updatedFocusDate = moveDown(focusableDate, isDateEnabled);
-        break;
-      default:
-        return;
-    }
-
-    if (!belongsToCurrentPage(updatedFocusDate)) {
-      onChangePage(updatedFocusDate);
-    }
-    onFocusDate(updatedFocusDate);
-  };
 
   // The focused date changes as a feedback to keyboard navigation in the grid.
   // Once changed, the corresponding date button needs to receive the actual focus.

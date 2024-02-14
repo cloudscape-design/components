@@ -14,24 +14,14 @@ import clsx from 'clsx';
 import { CalendarProps } from './interfaces.js';
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
-import {
-  getBaseDay,
-  getBaseMonth,
-  moveNextDay,
-  movePrevDay,
-  moveNextWeek,
-  movePrevWeek,
-  moveNextMonth,
-  movePrevMonth,
-  moveMonthDown,
-  moveMonthUp,
-} from './utils/navigation';
+import { getBaseDay, getBaseMonth } from './utils/navigation';
 
 import { useDateCache } from '../internal/hooks/use-date-cache/index.js';
 import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
 import { getDateLabel, renderMonthAndYear } from './utils/intl';
 import useCalendarLabels from './use-calendar-labels';
 import useCalendarGridContent from './use-calendar-grid-content.js';
+import useCalendarGridKeyboardNavigation from './use-calendar-grid-keyboard-navigation.js';
 
 export default function Calendar({
   value,
@@ -83,6 +73,8 @@ export default function Calendar({
 
   const { header, rows } = useCalendarGridContent({ baseDate, granularity, startOfWeek, locale: normalizedLocale });
 
+  const belongsToCurrentPage = (date: Date) => isSamePage(date, baseDate);
+
   const headingId = useUniqueId('calendar-heading');
 
   // Update displayed date if value changes.
@@ -111,8 +103,7 @@ export default function Calendar({
   const onHeaderChangePageHandler = (amount: number) => {
     const movePage = isMonthPicker ? addYears : addMonths;
     const newDate = movePage(baseDate, amount);
-    setDisplayedDate(newDate);
-    setFocusedDate(null);
+    onChangePageHandler(newDate);
   };
 
   const onChangePageHandler = (newMonth: Date) => {
@@ -138,6 +129,16 @@ export default function Calendar({
     }
   };
 
+  const onGridKeyDownHandler = useCalendarGridKeyboardNavigation({
+    belongsToCurrentPage,
+    focusableDate,
+    granularity,
+    isDateEnabled,
+    onChangePage: onChangePageHandler,
+    onFocusDate: onGridFocusDateHandler,
+    onSelectDate: onGridSelectDateHandler,
+  });
+
   const isActive = (date: Date) => isMonthPicker || isSameMonth(date, baseDate);
 
   const renderDate = (date: Date) =>
@@ -154,13 +155,6 @@ export default function Calendar({
   };
 
   const isSameDate = isMonthPicker ? isSameMonth : isSameDay;
-
-  const belongsToCurrentPage = (date: Date) => isSamePage(date, baseDate);
-
-  const moveDown = isMonthPicker ? moveMonthDown : moveNextWeek;
-  const moveLeft = isMonthPicker ? movePrevMonth : movePrevDay;
-  const moveRight = isMonthPicker ? moveNextMonth : moveNextDay;
-  const moveUp = isMonthPicker ? moveMonthUp : movePrevWeek;
 
   const headerText = isMonthPicker ? baseDate.getFullYear().toString() : renderMonthAndYear(normalizedLocale, baseDate);
 
@@ -198,11 +192,7 @@ export default function Calendar({
             renderDate={renderDate}
             renderDateAnnouncement={renderDateAnnouncement}
             isSameDate={isSameDate}
-            belongsToCurrentPage={belongsToCurrentPage}
-            moveDown={moveDown}
-            moveLeft={moveLeft}
-            moveRight={moveRight}
-            moveUp={moveUp}
+            onGridKeyDownHandler={onGridKeyDownHandler}
           />
         </div>
       </div>
