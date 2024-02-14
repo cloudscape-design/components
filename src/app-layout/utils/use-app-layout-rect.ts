@@ -3,17 +3,24 @@
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 import { useCallback, useEffect, useState } from 'react';
 
-export default function useAppLayoutOffsets(element: HTMLDivElement | null): { left: number; right: number } {
-  const [offsets, setOffsets] = useState({ left: 0, right: 0 });
+interface AppLayoutRect {
+  left: number;
+  right: number;
+  width: number;
+}
+
+export default function useAppLayoutRect(element: HTMLDivElement | null): AppLayoutRect {
+  const [offsets, setOffsets] = useState({ left: 0, right: 0, width: Number.POSITIVE_INFINITY });
 
   const updatePosition = useCallback(() => {
-    if (!element) {
+    // skip reading sizes in JSDOM
+    if (!element || !document.body.clientWidth) {
       return;
     }
     const { left, right } = element.getBoundingClientRect();
     const bodyWidth = document.body.clientWidth;
 
-    setOffsets({ left, right: bodyWidth - right });
+    setOffsets({ left, right: bodyWidth - right, width: bodyWidth });
   }, [element]);
 
   useEffect(() => {

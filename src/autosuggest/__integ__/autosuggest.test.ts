@@ -104,6 +104,18 @@ describe(`Simple Autosuggest`, () => {
   );
 
   test(
+    'should move selection to the suggestion list from keyboard from bottom to top',
+    setupTest(async page => {
+      await page.focusInput();
+      await page.keys(['option']);
+      await page.keys(['ArrowUp']);
+      await page.assertHighlightedOptionContains('Option');
+      await page.keys(['ArrowUp']);
+      await page.assertHighlightedOptionContains('Option 2');
+    })
+  );
+
+  test(
     'should use input from suggestion list when selected with enter',
     setupTest(async page => {
       await page.focusInput();
