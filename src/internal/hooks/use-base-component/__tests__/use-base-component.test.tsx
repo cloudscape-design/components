@@ -21,8 +21,8 @@ function InternalDemo({ __internalRootRef }: InternalDemoProps) {
   return <div ref={__internalRootRef}>Internal Demo Component</div>;
 }
 
-function Demo() {
-  const baseComponentProps = useBaseComponent('DemoComponent');
+function Demo({ variant }: { variant: string }) {
+  const baseComponentProps = useBaseComponent('DemoComponent', { props: { variant } });
   return <InternalDemo {...baseComponentProps} />;
 }
 
@@ -52,16 +52,16 @@ function PortalDemoComponent() {
 }
 
 test('should attach the metadata to the returned root DOM node', () => {
-  const { container } = render(<Demo />);
+  const { container } = render(<Demo variant="default" />);
   const rootNode: any = container.firstChild;
   expect(rootNode[COMPONENT_METADATA_KEY]?.name).toBe('DemoComponent');
   expect(rootNode[COMPONENT_METADATA_KEY]?.version).toBe(PACKAGE_VERSION);
 });
 
-test('should call the useTelemetry hook passing down the given component name', () => {
+test('should call the useTelemetry hook passing down the given component name and its props', () => {
   jest.resetAllMocks();
-  render(<Demo />);
-  expect(useTelemetry).toHaveBeenCalledWith('DemoComponent');
+  render(<Demo variant="default" />);
+  expect(useTelemetry).toHaveBeenCalledWith('DemoComponent', { props: { variant: 'default' } });
 });
 
 test('metadata get attached on the Portal component root DOM node when elementRef is changing', () => {
