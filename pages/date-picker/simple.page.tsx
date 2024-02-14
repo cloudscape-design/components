@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 import { Box, DatePicker, FormField, Link } from '~components';
+import i18nStrings from './i18n-strings';
 
 export default function DatePickerScenario() {
   const [value, setValue] = useState('');
@@ -16,9 +17,7 @@ export default function DatePickerScenario() {
           value={value}
           name={'date-picker-name'}
           locale="en-GB"
-          previousMonthAriaLabel={'Previous month'}
-          nextMonthAriaLabel={'Next month'}
-          todayAriaLabel={'TEST TODAY'}
+          i18nStrings={i18nStrings}
           openCalendarAriaLabel={selectedDate =>
             'Choose certificate expiry date' + (selectedDate ? `, selected date is ${selectedDate}` : '')
           }

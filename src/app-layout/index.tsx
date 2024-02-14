@@ -11,7 +11,6 @@ import { AppLayoutProps } from './interfaces';
 import { Notifications } from './notifications';
 import { MobileToolbar } from './mobile-toolbar';
 import { useFocusControl } from './utils/use-focus-control';
-import useDocumentWidth from './utils/use-document-width';
 import useContentHeight from './utils/use-content-height';
 import styles from './styles.css.js';
 import testutilStyles from './test-classes/styles.css.js';
@@ -36,7 +35,7 @@ import {
   SplitPanelProvider,
   SplitPanelProviderProps,
 } from './split-panel';
-import useAppLayoutOffsets from './utils/use-content-width';
+import useAppLayoutRect from './utils/use-app-layout-rect';
 import { isDevelopment } from '../internal/is-development';
 import { useStableCallback, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
@@ -54,7 +53,21 @@ const AppLayout = React.forwardRef(
     { contentType = 'default', headerSelector = '#b #h', footerSelector = '#b #f', ...rest }: AppLayoutProps,
     ref: React.Ref<AppLayoutProps.Ref>
   ) => {
-    const { __internalRootRef } = useBaseComponent<HTMLDivElement>('AppLayout');
+    const { __internalRootRef } = useBaseComponent<HTMLDivElement>('AppLayout', {
+      props: {
+        contentType,
+        disableContentPaddings: rest.disableContentPaddings,
+        disableBodyScroll: rest.disableBodyScroll,
+        navigationWidth: rest.navigationWidth,
+        navigationHide: rest.navigationHide,
+        toolsHide: rest.toolsHide,
+        toolsWidth: rest.toolsWidth,
+        maxContentWidth: rest.maxContentWidth,
+        minContentWidth: rest.minContentWidth,
+        stickyNotifications: rest.stickyNotifications,
+        disableContentHeaderOverlap: rest.disableContentHeaderOverlap,
+      },
+    });
     const isRefresh = useVisualRefresh();
 
     const i18n = useInternalI18n('app-layout');
@@ -342,8 +355,7 @@ const OldAppLayout = React.forwardRef(
           : availableHeight - MAIN_PANEL_MIN_HEIGHT;
       }
     });
-    const documentWidth = useDocumentWidth();
-    const { left: leftOffset, right: rightOffset } = useAppLayoutOffsets(rootRef.current);
+    const { left: leftOffset, right: rightOffset, width: documentWidth } = useAppLayoutRect(rootRef.current);
 
     const rightDrawerBarWidth = drawers ? (drawers.length > 1 ? closedDrawerWidth : 0) : 0;
     const contentPadding = 80;

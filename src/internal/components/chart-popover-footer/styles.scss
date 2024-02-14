@@ -5,11 +5,13 @@
 @use '../../styles/tokens' as awsui;
 
 .root {
-  margin-top: awsui.$space-xs;
+  margin-block-start: awsui.$space-xs;
   /* stylelint-disable selector-max-type */
   > hr {
-    border: none;
-    border-top: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
-    margin: awsui.$space-xs 0;
+    border-block: none;
+    border-inline: none;
+    border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+    margin-block: awsui.$space-xs;
+    margin-inline: 0;
   }
 }

@@ -15,13 +15,13 @@
   align-items: center;
   justify-content: center;
   position: absolute;
-  padding-bottom: awsui.$space-xxs;
-  height: 100%;
-  top: 0;
-  width: 100%;
-  left: 0;
+  padding-block-end: awsui.$space-xxs;
+  block-size: 100%;
+  inset-block-start: 0;
+  inline-size: 100%;
+  inset-inline-start: 0;
   box-sizing: border-box;
-  border-right: 0.1 * styles.$base-size solid transparent;
+  border-inline-end: 0.1 * styles.$base-size solid transparent;
 }
 
 .stud {

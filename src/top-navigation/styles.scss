@@ -20,27 +20,27 @@
     justify-content: space-between;
     align-items: center;
     box-sizing: border-box;
-    height: calc(#{awsui.$space-xxxl} + #{awsui.$space-scaled-m});
-    padding-left: awsui.$space-xxl;
+    block-size: calc(#{awsui.$space-xxxl} + #{awsui.$space-scaled-m});
+    padding-inline-start: awsui.$space-xxl;
   }
 
   &.medium > .padding-box,
   &.narrow > .padding-box {
-    padding-left: awsui.$space-l;
+    padding-inline-start: awsui.$space-l;
   }
 
   &.medium > .padding-box {
-    height: calc(#{awsui.$space-xxxl} + #{awsui.$space-scaled-xs});
-    padding-right: 0;
+    block-size: calc(#{awsui.$space-xxxl} + #{awsui.$space-scaled-xs});
+    padding-inline-end: 0;
   }
 
   &.narrow > .padding-box {
-    height: awsui.$space-xxxl;
+    block-size: awsui.$space-xxxl;
   }
 }
 
 .virtual {
-  width: 9000px;
+  inline-size: 9000px;
 }
 
 .hidden {
@@ -57,7 +57,7 @@
 }
 
 .identity {
-  min-width: 0;
+  min-inline-size: 0;
 
   > .identity-link {
     display: flex;
@@ -76,22 +76,22 @@
 
   &.no-logo {
     // Prevent responsiveness from completely hiding the title.
-    min-width: 100px;
+    min-inline-size: 100px;
   }
 }
 
 .logo {
   display: block;
-  max-height: awsui.$space-xxl;
-  margin-right: awsui.$space-s;
-  width: auto;
+  max-block-size: awsui.$space-xxl;
+  margin-inline-end: awsui.$space-s;
+  inline-size: auto;
   flex-shrink: 0;
 
   // Setting an arbitrary min-width here discourages browser from lazy rendering
-  min-width: 10px;
+  min-inline-size: 10px;
 
   &.narrow {
-    max-height: awsui.$space-xl;
+    max-block-size: awsui.$space-xl;
   }
 }
 
@@ -109,16 +109,17 @@
 .inputs {
   display: flex;
   flex: 1;
-  padding: 0 awsui.$space-m;
+  padding-block: 0;
+  padding-inline: awsui.$space-m;
   justify-content: center;
 }
 
 .search {
-  width: 100%;
-  max-width: 340px;
+  inline-size: 100%;
+  max-inline-size: 340px;
 
   &-expanded {
-    max-width: none;
+    max-inline-size: none;
   }
 }
 
@@ -129,11 +130,11 @@
   align-items: stretch;
 
   // Expand height of utilies fully so that the dropdown is anchored directly underneath it.
-  height: 100%;
+  block-size: 100%;
 
   .medium > .padding-box > &,
   .narrow > .padding-box > & {
-    padding-left: 0;
+    padding-inline-start: 0;
   }
 }
 
@@ -142,17 +143,17 @@
   position: relative;
   flex-shrink: 0;
   align-items: center;
-  padding: 0 awsui.$space-m;
+  padding-block: 0;
+  padding-inline: awsui.$space-m;
 
   &::after {
     display: block;
     position: absolute;
     content: '';
 
-    width: 1px;
-    right: 0;
-    top: awsui.$space-s;
-    bottom: awsui.$space-s;
+    inline-size: 1px;
+    inset-inline-end: 0;
+    inset-block: awsui.$space-s;
 
     background: awsui.$color-border-divider-default;
   }
@@ -163,30 +164,32 @@
 }
 
 .utility-type-button-link {
-  padding: 0 awsui.$space-l;
+  padding-block: 0;
+  padding-inline: awsui.$space-l;
 }
 
 .utility-type-menu-dropdown {
-  padding: 0 awsui.$space-s;
+  padding-block: 0;
+  padding-inline: awsui.$space-s;
   align-items: stretch;
 
   &:not(.narrow):last-of-type,
   &:not(.medium):last-of-type {
-    padding-right: 0;
+    padding-inline-end: 0;
   }
 }
 
 .utility-type-button-primary-button {
   // Hide dividers around primary buttons.
-  left: -1px;
-  border-left: 1px solid awsui.$color-background-container-content;
+  inset-inline-start: -1px;
+  border-inline-start: 1px solid awsui.$color-background-container-content;
   &::after {
     display: none;
   }
 }
 
 .utility-link-icon {
-  margin-left: awsui.$space-xxs;
+  margin-inline-start: awsui.$space-xxs;
 }
 
 .utility-button-external-icon {
@@ -194,43 +197,45 @@
 }
 
 .offset-right-none {
-  margin-right: 0;
+  margin-inline-end: 0;
 }
 
 .offset-right-l {
-  margin-right: awsui.$space-xxs;
+  margin-inline-end: awsui.$space-xxs;
 }
 
 .offset-right-xxl {
-  margin-right: awsui.$space-m;
+  margin-inline-end: awsui.$space-m;
 }
 
 /* Overflow Menu */
 .overflow-menu-drawer {
   position: fixed;
-  height: 100%;
-  width: 100%;
+  block-size: 100%;
+  inline-size: 100%;
   z-index: 1001;
 }
 
 .overflow-menu {
   @include styles.styles-reset;
   background: awsui.$color-background-container-content;
-  height: 100%;
+  block-size: 100%;
 }
 
 .overflow-menu-header {
   display: flex;
   align-items: center;
-  min-height: awsui.$font-panel-header-line-height;
-  padding: awsui.$space-scaled-m;
-  border-bottom: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+  min-block-size: awsui.$font-panel-header-line-height;
+  padding-block: awsui.$space-scaled-m;
+  padding-inline: awsui.$space-scaled-m;
+  border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
 
   &-text {
     @include styles.font-panel-header;
     color: awsui.$color-text-heading-default;
     flex: 1;
-    margin: 0;
+    margin-block: 0;
+    margin-inline: 0;
     text-align: center;
 
     &--secondary {
@@ -256,13 +261,16 @@
 .overflow-menu-control {
   @include styles.styles-reset;
   display: flex;
-  width: 100%;
-  padding: 0;
+  inline-size: 100%;
+  padding-block: 0;
+  padding-inline: 0;
   background: none;
-  border: none;
+  border-block: none;
+  border-inline: none;
 
   .overflow-menu-list-item-utility > & {
-    padding: awsui.$space-scaled-m;
+    padding-block: awsui.$space-scaled-m;
+    padding-inline: awsui.$space-scaled-m;
   }
 
   &:hover {
@@ -292,11 +300,14 @@
 
 .overflow-menu-list {
   list-style: none;
-  margin: 0;
-  padding: 0;
+  margin-block: 0;
+  margin-inline: 0;
+  padding-block: 0;
+  padding-inline: 0;
 
   &-submenu {
-    margin: awsui.$space-scaled-xxs 0;
+    margin-block: awsui.$space-scaled-xxs;
+    margin-inline: 0;
   }
 }
 
@@ -305,7 +316,7 @@
   letter-spacing: awsui.$font-button-letter-spacing;
 
   &-icon {
-    margin-right: awsui.$space-xxs;
+    margin-inline-end: awsui.$space-xxs;
   }
 
   &-text {
@@ -314,22 +325,24 @@
 
   &-utility {
     @include styles.font-button;
-    border-bottom: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+    border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
   }
 
   &-submenu {
-    border-top: awsui.$border-divider-section-width solid transparent;
-    border-bottom: awsui.$border-divider-section-width solid transparent;
-    padding: awsui.$space-scaled-xxs awsui.$space-scaled-l;
+    border-block-start: awsui.$border-divider-section-width solid transparent;
+    border-block-end: awsui.$border-divider-section-width solid transparent;
+    padding-block: awsui.$space-scaled-xxs;
+    padding-inline: awsui.$space-scaled-l;
   }
 
   &-dropdown-menu {
-    padding: awsui.$space-scaled-xxs awsui.$space-scaled-s;
+    padding-block: awsui.$space-scaled-xxs;
+    padding-inline: awsui.$space-scaled-s;
   }
 
   &-expandable {
-    border-top-color: awsui.$color-border-divider-default;
-    border-bottom-color: awsui.$color-border-divider-default;
+    border-block-start-color: awsui.$color-border-divider-default;
+    border-block-end-color: awsui.$color-border-divider-default;
   }
 }
 

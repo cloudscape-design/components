@@ -14,7 +14,7 @@ $calendar-header-color: awsui.$color-text-body-default;
 
 .root {
   @include styles.styles-reset;
-  max-width: 32em;
+  max-inline-size: 32em;
 }
 
 .focus-lock {
@@ -22,7 +22,7 @@ $calendar-header-color: awsui.$color-text-body-default;
 }
 
 .trigger-wrapper {
-  min-width: calc(#{$calendar-grid-width} + 2 * #{awsui.$space-l});
+  min-inline-size: calc(#{$calendar-grid-width} + 2 * #{awsui.$space-l});
 }
 
 .trigger-flexbox {
@@ -30,10 +30,10 @@ $calendar-header-color: awsui.$color-text-body-default;
 }
 
 .calendar-container {
-  width: calc(2 * #{$calendar-grid-width} + #{awsui.$space-xs});
+  inline-size: calc(2 * #{$calendar-grid-width} + #{awsui.$space-xs});
 
   &.one-grid {
-    width: $calendar-grid-width;
+    inline-size: $calendar-grid-width;
   }
 }
 
@@ -47,12 +47,10 @@ $calendar-header-color: awsui.$color-text-body-default;
 
   &-header-months-wrapper {
     position: absolute;
-    right: 0;
-    left: 0;
-    top: 0;
-    bottom: 0;
+    inset: 0;
 
-    margin: 0;
+    margin-block: 0;
+    margin-inline: 0;
 
     display: flex;
     justify-content: space-around;
@@ -92,7 +90,7 @@ $calendar-header-color: awsui.$color-text-body-default;
   gap: awsui.$space-xs;
 }
 .date-and-time-wrapper {
-  width: $calendar-grid-width;
+  inline-size: $calendar-grid-width;
   display: grid;
   gap: awsui.$space-xs;
   grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
@@ -102,29 +100,33 @@ $calendar-header-color: awsui.$color-text-body-default;
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
-  border-top: 1px solid #{awsui.$color-border-dropdown-item-default};
-  padding: 0 awsui.$space-l awsui.$space-s;
+  border-block-start: 1px solid #{awsui.$color-border-dropdown-item-default};
+  padding-block-start: 0;
+  padding-block-end: awsui.$space-s;
+  padding-inline: awsui.$space-l;
 
   &.has-clear-button {
     justify-content: space-between;
   }
 
   &.one-grid {
-    padding: 0 awsui.$space-xs awsui.$space-s;
+    padding-block-start: 0;
+    padding-block-end: awsui.$space-s;
+    padding-inline: awsui.$space-xs;
   }
 }
 
 .footer-button-wrapper {
-  padding-top: awsui.$space-s;
+  padding-block-start: awsui.$space-s;
 
   &:last-child {
-    margin-left: auto;
+    margin-inline-start: auto;
   }
 }
 
 .icon-wrapper {
   color: awsui.$color-text-interactive-default;
-  margin-right: awsui.$space-xs;
+  margin-inline-end: awsui.$space-xs;
 }
 
 .label {
@@ -154,9 +156,12 @@ $calendar-header-color: awsui.$color-text-body-default;
   // widths.
   overflow: auto;
 
-  border-top: 1px solid #{awsui.$color-border-container-top};
-  border-bottom: 1px solid #{awsui.$color-border-container-top};
-  border-radius: awsui.$border-radius-dropdown;
+  border-block-start: 1px solid #{awsui.$color-border-container-top};
+  border-block-end: 1px solid #{awsui.$color-border-container-top};
+  border-start-start-radius: awsui.$border-radius-dropdown;
+  border-start-end-radius: awsui.$border-radius-dropdown;
+  border-end-start-radius: awsui.$border-radius-dropdown;
+  border-end-end-radius: awsui.$border-radius-dropdown;
 
   &:focus {
     outline: none;
@@ -169,10 +174,10 @@ $calendar-header-color: awsui.$color-text-body-default;
 .dropdown-content {
   user-select: text;
   background-color: awsui.$color-background-container-content;
-  width: calc(2 * #{$calendar-grid-width} + #{awsui.$space-xs} + 2 * #{awsui.$space-l});
+  inline-size: calc(2 * #{$calendar-grid-width} + #{awsui.$space-xs} + 2 * #{awsui.$space-l});
 
   &.one-grid {
-    width: calc(#{$calendar-grid-width} + 2 * #{awsui.$space-l});
+    inline-size: calc(#{$calendar-grid-width} + 2 * #{awsui.$space-l});
   }
 }
 

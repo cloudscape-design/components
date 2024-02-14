@@ -15,18 +15,23 @@
 
   position: relative;
   display: flex;
-  width: 100%;
+  inline-size: 100%;
   justify-content: space-between;
   align-items: center;
-  padding: styles.$control-padding-vertical styles.$control-padding-horizontal;
+  padding-block: styles.$control-padding-vertical;
+  padding-inline: styles.$control-padding-horizontal;
 
   background-color: awsui.$color-background-input-default;
-  border-radius: styles.$control-border-radius;
-  border: styles.$control-border-width solid awsui.$color-border-input-default;
-  min-height: awsui.$size-vertical-input;
+  border-start-start-radius: styles.$control-border-radius;
+  border-start-end-radius: styles.$control-border-radius;
+  border-end-start-radius: styles.$control-border-radius;
+  border-end-end-radius: styles.$control-border-radius;
+  border-block: styles.$control-border-width solid awsui.$color-border-input-default;
+  border-inline: styles.$control-border-width solid awsui.$color-border-input-default;
+  min-block-size: awsui.$size-vertical-input;
 
   &.has-caret {
-    padding-right: styles.$control-icon-horizontal-padding;
+    padding-inline-end: styles.$control-icon-horizontal-padding;
   }
 
   > .placeholder {
@@ -35,8 +40,8 @@
 
   > .arrow {
     position: absolute;
-    right: styles.$control-icon-horizontal-offset;
-    top: styles.$control-icon-vertical-offset;
+    inset-inline-end: styles.$control-icon-horizontal-offset;
+    inset-block-start: styles.$control-icon-vertical-offset;
     color: awsui.$color-text-button-inline-icon-default;
   }
 
@@ -91,9 +96,9 @@
 
   &.in-filtering-token {
     border-color: tokenGroup.$token-border-color;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    height: 100%;
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+    block-size: 100%;
     @include focus-visible.when-visible {
       @include styles.focus-highlight(awsui.$space-filtering-token-operation-select-focus-outline-gutter);
     }
@@ -101,7 +106,6 @@
 
   &.inline-tokens {
     // Remove default paddings and just rely on center alignment of the content
-    padding-top: 0;
-    padding-bottom: 0;
+    padding-block: 0;
   }
 }

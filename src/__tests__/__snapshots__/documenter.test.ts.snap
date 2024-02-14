@@ -3692,6 +3692,35 @@ The event \`detail\` contains the current value of the field.",
       "type": "string",
     },
     Object {
+      "description": "An object containing all the necessary localized strings required by
+the component.",
+      "i18nTag": true,
+      "inlineType": Object {
+        "name": "CalendarProps.I18nStrings",
+        "properties": Array [
+          Object {
+            "name": "nextMonthAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "previousMonthAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "todayAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "CalendarProps.I18nStrings",
+    },
+    Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
@@ -3729,15 +3758,15 @@ Supported values and formats are listed in the
       "type": "string",
     },
     Object {
+      "deprecatedTag": "Use \`i18nStrings.nextMonthAriaLabel\` instead.",
       "description": "Specifies an \`aria-label\` for the 'next month' button.",
-      "i18nTag": true,
       "name": "nextMonthAriaLabel",
       "optional": true,
       "type": "string",
     },
     Object {
+      "deprecatedTag": "Use \`i18nStrings.previousMonthAriaLabel\` instead.",
       "description": "Specifies an \`aria-label\` for the 'previous month' button.",
-      "i18nTag": true,
       "name": "previousMonthAriaLabel",
       "optional": true,
       "type": "string",
@@ -3750,8 +3779,8 @@ By default the starting day of the week is defined by the locale, but you can us
       "type": "number",
     },
     Object {
+      "deprecatedTag": "Use \`i18nString.todayAriaLabel\` instead.",
       "description": "Used as part of the \`aria-label\` for today's date in the calendar.",
-      "i18nTag": true,
       "name": "todayAriaLabel",
       "optional": true,
       "type": "string",
@@ -5250,6 +5279,7 @@ Object {
       "type": "boolean",
     },
     Object {
+      "defaultValue": "false",
       "description": "Enabling this property will make the container to fit into available height. If content is too short, the container
 will stretch, if too long, the container will shrink and show vertical scrollbar.
 Use this property to align heights of multiple containers displayed in a single row. It is recommended to stretch
@@ -5776,6 +5806,35 @@ because fixed positioning results in a slight, visible lag when scrolling comple
       "type": "boolean",
     },
     Object {
+      "description": "An object containing all the necessary localized strings required by
+the component.",
+      "i18nTag": true,
+      "inlineType": Object {
+        "name": "DatePickerProps.I18nStrings",
+        "properties": Array [
+          Object {
+            "name": "nextMonthAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "previousMonthAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "todayAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "DatePickerProps.I18nStrings",
+    },
+    Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
@@ -5829,8 +5888,8 @@ Supported values and formats are listed in the
       "type": "string",
     },
     Object {
+      "deprecatedTag": "Use \`i18nStrings.nextMonthAriaLabel\` instead.",
       "description": "Specifies an \`aria-label\` for the 'next month' button.",
-      "i18nTag": true,
       "name": "nextMonthAriaLabel",
       "optional": true,
       "type": "string",
@@ -5862,8 +5921,8 @@ a human-readable localised string representing the current value of the input.
       "type": "string",
     },
     Object {
+      "deprecatedTag": "Use \`i18nStrings.previousMonthAriaLabel\` instead.",
       "description": "Specifies an \`aria-label\` for the 'previous month' button.",
-      "i18nTag": true,
       "name": "previousMonthAriaLabel",
       "optional": true,
       "type": "string",
@@ -5887,8 +5946,8 @@ By default the starting day of the week is defined by the locale, but you can us
       "type": "number",
     },
     Object {
+      "deprecatedTag": "Use \`i18nString.todayAriaLabel\` instead.",
       "description": "Used as part of the \`aria-label\` for today's date in the calendar.",
-      "i18nTag": true,
       "name": "todayAriaLabel",
       "optional": true,
       "type": "string",
@@ -6530,8 +6589,9 @@ Behaves similar to the Header component counter.",
     },
     Object {
       "description": "Overrides the default [HTML heading tag](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements).
-Use with the container variant (which defaults to H2) or default/footer variants (which default to DIV). Note that this only
-works with the \`headerText\` slot (not with the deprecated \`header\`), and not with the navigation variant.",
+Use with the container variant (which defaults to H2) or default/footer variants (which default to DIV). Using this
+property does not change the visual appearance of the component. Note that this only works with the \`headerText\`
+slot (not with the deprecated \`header\`), and not with the navigation variant.",
       "inlineType": Object {
         "name": "ExpandableSectionProps.HeadingTag",
         "type": "union",
@@ -7234,7 +7294,7 @@ to display resource counters in table and cards components.",
     },
     Object {
       "description": "Overrides the default [HTML heading tag](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements)
-provided by the variant.",
+provided by the variant. Using this property does not change the visual appearance of the component.",
       "inlineType": Object {
         "name": "HeaderProps.HeadingTag",
         "type": "union",

@@ -52,13 +52,7 @@
   "overrides": [
     {
       "files": [
-        "./src/button/*.scss",
-        "./src/n*/*.scss",
-        "./src/o*/*.scss",
-        "./src/p*/*.scss",
-        "./src/q*/*.scss",
-        "./src/r*/*.scss",
-        "./src/s*/*.scss"
+        "./src/**/*.scss"
       ],
       "rules": {
         "property-disallowed-list": ["border", "border-radius", "border-style", "margin", "padding"],

@@ -9,12 +9,10 @@ import {
   isDrawerClosed,
   renderComponent,
   resizableDrawer,
-  singleDrawer,
-  singleDrawerOpen,
+  testDrawer,
   manyDrawers,
   isDrawerTriggerWithBadge,
   getActiveDrawerWidth,
-  singleDrawerPublic,
 } from './utils';
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import styles from '../../../lib/components/app-layout/styles.css.js';
@@ -30,7 +28,6 @@ jest.mock('@cloudscape-design/component-toolkit', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit'),
   useContainerQuery: () => [1300, () => {}],
 }));
-jest.mock('../../../lib/components/app-layout/utils/use-document-width', () => () => 1024);
 
 describeEachThemeAppLayout(false, () => {
   test('renders breadcrumbs and notifications inside of the main landmark', () => {
@@ -155,13 +152,15 @@ describeEachThemeAppLayout(false, () => {
   });
 
   test('should render an active drawer', () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...(singleDrawerOpen as any)} />);
+    const { wrapper } = renderComponent(
+      <AppLayout activeDrawerId={testDrawer.id} drawers={[testDrawer]} onDrawerChange={() => {}} />
+    );
 
     expect(wrapper.findActiveDrawer()).toBeTruthy();
   });
 
   test(`should toggle drawer on click`, () => {
-    const { wrapper } = renderComponent(<AppLayout toolsHide={true} drawers={singleDrawerPublic} />);
+    const { wrapper } = renderComponent(<AppLayout toolsHide={true} drawers={[testDrawer]} />);
     act(() => wrapper.findDrawersTriggers()![0].click());
     expect(wrapper.findActiveDrawer()).toBeTruthy();
     act(() => wrapper.findDrawersTriggers()![0].click());
@@ -230,23 +229,23 @@ describeEachThemeAppLayout(false, () => {
   });
 
   test('should render overflow item when expected', () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...(manyDrawers as any)} />);
+    const { wrapper } = renderComponent(<AppLayout drawers={manyDrawers} />);
 
     expect(wrapper.findDrawersTriggers()!.length).toBeLessThan(100);
   });
 
   test('Renders aria-controls on toggle only when active', () => {
-    const { wrapper } = renderComponent(<AppLayout drawers={singleDrawerPublic} />);
+    const { wrapper } = renderComponent(<AppLayout drawers={[testDrawer]} />);
     expect(wrapper.findDrawerTriggerById('security')!.getElement()).not.toHaveAttribute('aria-controls');
     wrapper.findDrawerTriggerById('security')!.click();
     expect(wrapper.findDrawerTriggerById('security')!.getElement()).toHaveAttribute('aria-controls', 'security');
   });
 
   test('should render badge when defined', () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...(manyDrawers as any)} />);
+    const { wrapper } = renderComponent(<AppLayout drawers={manyDrawers} />);
 
-    expect(isDrawerTriggerWithBadge(wrapper, manyDrawers.drawers.items[0].id)).toEqual(true);
-    expect(isDrawerTriggerWithBadge(wrapper, manyDrawers.drawers.items[1].id)).toEqual(false);
+    expect(isDrawerTriggerWithBadge(wrapper, manyDrawers[0].id)).toEqual(true);
+    expect(isDrawerTriggerWithBadge(wrapper, manyDrawers[1].id)).toEqual(false);
   });
 
   test('should have width equal to the size declaration', () => {
@@ -289,7 +288,9 @@ describe('Classic only features', () => {
   });
 
   test(`should toggle single drawer on click of container`, () => {
-    const { wrapper } = renderComponent(<AppLayout toolsHide={true} {...(singleDrawer as any)} />);
+    const { wrapper } = renderComponent(
+      <AppLayout toolsHide={true} drawers={[testDrawer]} ariaLabels={{ drawers: 'Drawers' }} />
+    );
     act(() => screen.getByLabelText('Drawers').click());
     expect(wrapper.findActiveDrawer()).toBeTruthy();
     act(() => screen.getByLabelText('Drawers').click());
@@ -297,7 +298,9 @@ describe('Classic only features', () => {
   });
 
   test(`should not toggle many drawers on click of container`, () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" toolsHide={true} {...(manyDrawers as any)} />);
+    const { wrapper } = renderComponent(
+      <AppLayout toolsHide={true} drawers={manyDrawers} ariaLabels={{ drawers: 'Drawers' }} />
+    );
     act(() => screen.getByLabelText('Drawers').click());
     expect(wrapper.findActiveDrawer()).toBeFalsy();
   });
@@ -319,7 +322,7 @@ describe('Classic only features', () => {
   });
 
   test('renders roles and aria labels when provided', () => {
-    const { wrapper } = renderComponent(<AppLayout drawers={singleDrawerPublic} ariaLabels={{ drawers: 'Drawers' }} />);
+    const { wrapper } = renderComponent(<AppLayout drawers={[testDrawer]} ariaLabels={{ drawers: 'Drawers' }} />);
     const drawersAside = within(wrapper.findByClassName(drawerStyles['drawer-closed'])!.getElement()).getByRole(
       'region'
     );
@@ -358,7 +361,7 @@ describe('VR only features', () => {
   });
 
   test('renders roles and aria labels when provided', () => {
-    const { wrapper } = renderComponent(<AppLayout drawers={singleDrawerPublic} ariaLabels={{ drawers: 'Drawers' }} />);
+    const { wrapper } = renderComponent(<AppLayout drawers={[testDrawer]} ariaLabels={{ drawers: 'Drawers' }} />);
 
     expect(wrapper.findDrawerTriggerById('security')!.getElement()).toHaveAttribute(
       'aria-label',

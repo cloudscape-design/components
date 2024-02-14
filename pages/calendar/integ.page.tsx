@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Box, Link } from '~components';
 import Calendar from '~components/calendar';
+import i18nStrings from './i18n-strings';
 
 export default function DatePickerEditorScenario() {
   const [value, setValue] = useState('2022-01-01');
@@ -15,9 +16,7 @@ export default function DatePickerEditorScenario() {
       <Calendar
         value={value}
         locale="en-GB"
-        previousMonthAriaLabel={'Previous month'}
-        nextMonthAriaLabel={'Next month'}
-        todayAriaLabel="Today"
+        i18nStrings={i18nStrings}
         onChange={event => setValue(event.detail.value)}
         isDateEnabled={date => date.getDate() !== 15}
       />
