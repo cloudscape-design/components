@@ -15,7 +15,6 @@ import { CalendarProps } from './interfaces.js';
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import { getBaseDay, getBaseMonth } from './utils/navigation';
-
 import { useDateCache } from '../internal/hooks/use-date-cache/index.js';
 import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
 import useCalendarLabels from './use-calendar-labels';
@@ -62,6 +61,10 @@ export default function Calendar({
     ? getBaseMonth(displayedDate, isDateEnabled)
     : getBaseDay(displayedDate, isDateEnabled);
 
+  const isSameDate = isMonthPicker ? isSameMonth : isSameDay;
+  const isSamePage = isMonthPicker ? isSameYear : isSameMonth;
+  const isCurrentPage = (date: Date) => isMonthPicker || isSameMonth(date, baseDate);
+
   const { previousButtonLabel, nextButtonLabel, renderDate, renderDateAnnouncement, renderHeaderText } =
     useCalendarLabels({
       granularity,
@@ -80,9 +83,6 @@ export default function Calendar({
   useEffect(() => {
     memoizedValue && setDisplayedDate(prev => (prev.getTime() !== memoizedValue.getTime() ? memoizedValue : prev));
   }, [memoizedValue]);
-
-  const isSamePage = isMonthPicker ? isSameYear : isSameMonth;
-  const belongsToCurrentPage = (date: Date) => isSamePage(date, baseDate);
 
   const selectFocusedDate = (selected: Date | null, baseDate: Date): Date | null => {
     if (selected && isDateEnabled(selected) && isSamePage(selected, baseDate)) {
@@ -130,7 +130,7 @@ export default function Calendar({
   };
 
   const onGridKeyDownHandler = useCalendarGridKeyboardNavigation({
-    belongsToCurrentPage,
+    baseDate,
     focusableDate,
     granularity,
     isDateEnabled,
@@ -138,10 +138,6 @@ export default function Calendar({
     onFocusDate: onGridFocusDateHandler,
     onSelectDate: onGridSelectDateHandler,
   });
-
-  const isActive = (date: Date) => isMonthPicker || isSameMonth(date, baseDate);
-
-  const isSameDate = isMonthPicker ? isSameMonth : isSameDay;
 
   const headerText = renderHeaderText(baseDate);
 
@@ -175,7 +171,7 @@ export default function Calendar({
             ariaLabelledby={headingId}
             header={header}
             rows={rows}
-            isActive={isActive}
+            isCurrentPage={isCurrentPage}
             renderDate={renderDate}
             renderDateAnnouncement={renderDateAnnouncement}
             isSameDate={isSameDate}

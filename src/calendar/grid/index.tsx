@@ -33,7 +33,7 @@ export interface GridProps {
   ariaLabelledby: string;
   header?: React.ReactNode;
   rows: ReadonlyArray<ReadonlyArray<Date>>;
-  isActive: (date: Date) => boolean;
+  isCurrentPage: (date: Date) => boolean;
   renderDate: (date: Date) => string;
   renderDateAnnouncement: (date: Date, isOnCurrentDate: boolean) => string;
   isSameDate: (date: Date, baseDate: Date) => boolean;
@@ -49,7 +49,7 @@ export default function Grid({
   ariaLabelledby,
   header,
   rows,
-  isActive,
+  isCurrentPage,
   renderDate,
   renderDateAnnouncement,
   isSameDate,
@@ -106,7 +106,7 @@ export default function Grid({
                   // Do not attach click event when the date is disabled, otherwise VO+safari announces clickable
                   onClick={isEnabled ? () => onSelectDate(date) : undefined}
                   className={clsx(styles['calendar-grid-cell'], styles['calendar-date'], {
-                    [styles['calendar-date-current-page']]: isActive(date),
+                    [styles['calendar-date-current-page']]: isCurrentPage(date),
                     [styles['calendar-date-enabled']]: isEnabled,
                     [styles['calendar-date-selected']]: isSelected,
                     [styles['calendar-date-current']]: isCurrentDate,

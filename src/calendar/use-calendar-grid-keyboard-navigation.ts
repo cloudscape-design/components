@@ -14,9 +14,10 @@ import {
   moveMonthUp,
 } from './utils/navigation';
 import { KeyCode } from '../internal/keycode';
+import { isSameMonth, isSameYear } from 'date-fns';
 
 export default function useCalendarGridKeyboardNavigation({
-  belongsToCurrentPage,
+  baseDate,
   focusableDate,
   granularity,
   isDateEnabled,
@@ -24,7 +25,7 @@ export default function useCalendarGridKeyboardNavigation({
   onFocusDate,
   onSelectDate,
 }: {
-  belongsToCurrentPage: (date: Date) => boolean;
+  baseDate: Date;
   focusableDate: Date | null;
   granularity: CalendarProps.Granularity;
   isDateEnabled: CalendarProps.IsDateEnabledFunction;
@@ -38,6 +39,9 @@ export default function useCalendarGridKeyboardNavigation({
   const moveLeft = isMonthPicker ? movePrevMonth : movePrevDay;
   const moveRight = isMonthPicker ? moveNextMonth : moveNextDay;
   const moveUp = isMonthPicker ? moveMonthUp : movePrevWeek;
+
+  const isSamePage = isMonthPicker ? isSameYear : isSameMonth;
+  const belongsToCurrentPage = (date: Date) => isSamePage(date, baseDate);
 
   const onGridKeyDownHandler = (event: React.KeyboardEvent) => {
     let updatedFocusDate;
