@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
+import { isSameMonth } from 'date-fns';
 import { CalendarProps } from './interfaces';
 import { moveNextDay, movePrevDay, moveNextWeek, movePrevWeek } from './utils/navigation';
 import { KeyCode } from '../internal/keycode';
-import { isSameMonth } from 'date-fns';
 
 export default function useCalendarGridKeyboardNavigation({
   baseDate,
