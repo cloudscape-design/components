@@ -29,10 +29,10 @@ import {
 
 import { useDateCache } from '../internal/hooks/use-date-cache/index.js';
 import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
-import { useInternalI18n } from '../i18n/context.js';
 import { getCalendarMonth } from 'mnth';
 import ScreenreaderOnly from '../internal/components/screenreader-only/index.js';
 import { getDateLabel, renderDayName, renderMonthAndYear } from './utils/intl';
+import useCalendarLabels from './use-calendar-labels';
 
 export default function Calendar({
   value,
@@ -45,13 +45,25 @@ export default function Calendar({
   onChange,
   __internalRootRef,
   i18nStrings,
-  granularity,
+  granularity = 'day',
+  previousMonthAriaLabel,
+  nextMonthAriaLabel,
+  todayAriaLabel,
   ...rest
 }: CalendarProps & InternalBaseComponentProps) {
   checkControlled('Calendar', 'value', value, 'onChange', onChange);
 
   const baseProps = getBaseProps(rest);
   const normalizedLocale = normalizeLocale('Calendar', locale);
+
+  const { previousButtonLabel, nextButtonLabel, currentDateLabel } = useCalendarLabels({
+    granularity,
+    i18nStrings,
+    previousMonthAriaLabel,
+    nextMonthAriaLabel,
+    todayAriaLabel,
+  });
+
   const normalizedStartOfWeek = normalizeStartOfWeek(startOfWeek, normalizedLocale);
   const gridWrapperRef = useRef<HTMLDivElement>(null);
   const [focusedDate, setFocusedDate] = useState<Date | null>(null);
@@ -67,21 +79,7 @@ export default function Calendar({
 
   const headingId = useUniqueId('calendar-heading');
 
-  const i18n = useInternalI18n('calendar');
-
   const isMonthPicker = granularity === 'month';
-
-  const previousLabel = isMonthPicker
-    ? i18n('previousYearAriaLabel', i18nStrings?.previousYearAriaLabel)
-    : i18n('previousMonthAriaLabel', i18nStrings?.previousMonthAriaLabel ?? rest.previousMonthAriaLabel);
-
-  const nextLabel = isMonthPicker
-    ? i18n('nextYearAriaLabel', i18nStrings?.nextYearAriaLabel)
-    : i18n('nextMonthAriaLabel', i18nStrings?.nextMonthAriaLabel ?? rest.nextMonthAriaLabel);
-
-  const currentDateLabel = isMonthPicker
-    ? i18n('currentMonthAriaLabel', i18nStrings?.currentMonthAriaLabel)
-    : i18n('todayAriaLabel', i18nStrings?.todayAriaLabel ?? rest.todayAriaLabel);
 
   // Update displayed date if value changes.
   useEffect(() => {
@@ -213,8 +211,8 @@ export default function Calendar({
         <CalendarHeader
           formattedDate={headerText}
           onChange={onHeaderChangePageHandler}
-          previousLabel={previousLabel}
-          nextLabel={nextLabel}
+          previousLabel={previousButtonLabel}
+          nextLabel={nextButtonLabel}
           headingId={headingId}
         />
         <div onBlur={onGridBlur} ref={gridWrapperRef}>
