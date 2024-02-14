@@ -14,7 +14,19 @@ import clsx from 'clsx';
 import { CalendarProps } from './interfaces.js';
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
-import { getBaseDay, getBaseMonth } from './utils/navigation';
+import {
+  getBaseDay,
+  getBaseMonth,
+  moveNextDay,
+  movePrevDay,
+  moveNextWeek,
+  movePrevWeek,
+  moveNextMonth,
+  movePrevMonth,
+  moveMonthDown,
+  moveMonthUp,
+} from './utils/navigation';
+
 import { useDateCache } from '../internal/hooks/use-date-cache/index.js';
 import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
 import { useInternalI18n } from '../i18n/context.js';
@@ -180,6 +192,11 @@ export default function Calendar({
 
   const belongsToCurrentPage = (date: Date) => isSamePage(date, baseDate);
 
+  const moveDown = isMonthPicker ? moveMonthDown : moveNextWeek;
+  const moveLeft = isMonthPicker ? movePrevMonth : movePrevDay;
+  const moveRight = isMonthPicker ? moveNextMonth : moveNextDay;
+  const moveUp = isMonthPicker ? moveMonthUp : movePrevWeek;
+
   return (
     <div
       ref={__internalRootRef}
@@ -210,7 +227,6 @@ export default function Calendar({
             onChangePage={onChangePageHandler}
             selectedDate={memoizedValue}
             ariaLabelledby={headingId}
-            granularity={granularity}
             header={header}
             rows={rows}
             isActive={isActive}
@@ -218,6 +234,10 @@ export default function Calendar({
             renderDateAnnouncement={renderDateAnnouncement}
             isSameDate={isSameDate}
             belongsToCurrentPage={belongsToCurrentPage}
+            moveDown={moveDown}
+            moveLeft={moveLeft}
+            moveRight={moveRight}
+            moveUp={moveUp}
           />
         </div>
       </div>

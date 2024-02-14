@@ -7,17 +7,6 @@ import { DatePickerProps } from '../../date-picker/interfaces';
 import clsx from 'clsx';
 import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update.js';
 import ScreenreaderOnly from '../../internal/components/screenreader-only/index.js';
-import {
-  moveNextDay,
-  movePrevDay,
-  moveNextWeek,
-  movePrevWeek,
-  moveNextMonth,
-  movePrevMonth,
-  moveMonthDown,
-  moveMonthUp,
-} from '../utils/navigation';
-import { CalendarProps } from '../interfaces.js';
 
 /**
  * Calendar grid supports two mechanisms of keyboard navigation:
@@ -43,7 +32,6 @@ export interface GridProps {
   onChangePage: (date: Date) => void;
   selectedDate: Date | null;
   ariaLabelledby: string;
-  granularity?: CalendarProps.Granularity;
   header?: React.ReactNode;
   rows: ReadonlyArray<ReadonlyArray<Date>>;
   isActive: (date: Date) => boolean;
@@ -51,6 +39,10 @@ export interface GridProps {
   renderDateAnnouncement: (date: Date, isOnCurrentDate: boolean) => string;
   isSameDate: (date: Date, baseDate: Date) => boolean;
   belongsToCurrentPage: (date: Date) => boolean;
+  moveUp: (startDate: Date, isDateEnabled: DatePickerProps.IsDateEnabledFunction) => Date;
+  moveDown: (startDate: Date, isDateEnabled: DatePickerProps.IsDateEnabledFunction) => Date;
+  moveLeft: (startDate: Date, isDateEnabled: DatePickerProps.IsDateEnabledFunction) => Date;
+  moveRight: (startDate: Date, isDateEnabled: DatePickerProps.IsDateEnabledFunction) => Date;
 }
 
 export default function Grid({
@@ -62,7 +54,6 @@ export default function Grid({
   onChangePage,
   selectedDate,
   ariaLabelledby,
-  granularity,
   header,
   rows,
   isActive,
@@ -70,14 +61,12 @@ export default function Grid({
   renderDateAnnouncement,
   isSameDate,
   belongsToCurrentPage,
+  moveUp,
+  moveDown,
+  moveLeft,
+  moveRight,
 }: GridProps) {
   const focusedDateRef = useRef<HTMLTableCellElement>(null);
-  const isMonthPicker = granularity === 'month';
-
-  const moveRight = isMonthPicker ? moveNextMonth : moveNextDay;
-  const moveLeft = isMonthPicker ? movePrevMonth : movePrevDay;
-  const moveUp = isMonthPicker ? moveMonthUp : movePrevWeek;
-  const moveDown = isMonthPicker ? moveMonthDown : moveNextWeek;
 
   const onGridKeyDownHandler = (event: React.KeyboardEvent) => {
     let updatedFocusDate;
