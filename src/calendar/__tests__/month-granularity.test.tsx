@@ -19,6 +19,12 @@ const defaultProps: CalendarProps = {
   value: '',
 };
 
+function renderCalendar(props?: CalendarProps) {
+  const { container } = render(<Calendar {...defaultProps} {...props} />);
+  const wrapper = createWrapper(container).findCalendar()!;
+  return { container, wrapper };
+}
+
 const getCurrentMonthLabelText = (container: HTMLElement) => {
   return container
     .querySelector(`.${styles['calendar-date-current']}`)!
@@ -72,6 +78,22 @@ describe('Calendar at month granularity', () => {
       expect(wrapper.findCalendar()!.findPreviousButton()!.getElement()!.getAttribute('aria-label')).toMatch(
         'TEST PREVIOUS YEAR'
       );
+    });
+  });
+
+  describe('Calendar header', () => {
+    test('previous button navigates to previous year', () => {
+      const { wrapper } = renderCalendar({ value: '2022-01' });
+      expect(wrapper.findHeader().getElement()).toHaveTextContent('2022');
+      wrapper.findPreviousButton().click();
+      expect(wrapper.findHeader().getElement()).toHaveTextContent('2021');
+    });
+
+    test('next button navigates to next year', () => {
+      const { wrapper } = renderCalendar({ value: '2022-01' });
+      expect(wrapper.findHeader().getElement()).toHaveTextContent('2022');
+      wrapper.findNextButton().click();
+      expect(wrapper.findHeader().getElement()).toHaveTextContent('2023');
     });
   });
 });
