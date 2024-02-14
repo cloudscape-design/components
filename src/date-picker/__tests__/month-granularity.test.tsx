@@ -307,7 +307,7 @@ describe('Date picker calendar at month granularity', () => {
       const wrapper = openDatePicker({
         i18nStrings: { nextYearAriaLabel: 'TEST NEXT YEAR' },
       });
-      expect(wrapper.findCalendar()!.findNextMonthButton()!.getElement()!.getAttribute('aria-label')).toMatch(
+      expect(wrapper.findCalendar()!.findNextButton()!.getElement()!.getAttribute('aria-label')).toMatch(
         'TEST NEXT YEAR'
       );
     });
@@ -316,7 +316,7 @@ describe('Date picker calendar at month granularity', () => {
       const wrapper = openDatePicker({
         i18nStrings: { previousYearAriaLabel: 'TEST PREVIOUS YEAR' },
       });
-      expect(wrapper.findCalendar()!.findPreviousMonthButton()!.getElement()!.getAttribute('aria-label')).toMatch(
+      expect(wrapper.findCalendar()!.findPreviousButton()!.getElement()!.getAttribute('aria-label')).toMatch(
         'TEST PREVIOUS YEAR'
       );
     });
