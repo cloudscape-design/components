@@ -86,7 +86,8 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     warnOnce('Autosuggest', '`onLoadItems` must be provided for `recoveryText` to be displayed.');
   }
 
-  if (!enteredTextLabel) {
+  const enteredTextLabelI18nTestValue = i18n('enteredTextLabel', undefined, format => format({ value: '' }));
+  if (!enteredTextLabel && enteredTextLabelI18nTestValue === undefined) {
     warnOnce('Autosuggest', 'A value for enteredTextLabel must be provided.');
   }
 
