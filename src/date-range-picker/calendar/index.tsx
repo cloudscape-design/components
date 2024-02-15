@@ -16,7 +16,7 @@ import { getDateLabel, renderTimeLabel } from '../../calendar/utils/intl';
 import LiveRegion from '../../internal/components/live-region';
 import { normalizeLocale, normalizeStartOfWeek } from '../../internal/utils/locale';
 import { parseDate, splitDateTime, formatDateTime } from '../../internal/utils/date-time';
-import { getBaseDate } from '../../calendar/utils/navigation';
+import { getBaseDay } from '../../calendar/utils/navigation';
 import { useMobile } from '../../internal/hooks/use-mobile/index.js';
 import RangeInputs from './range-inputs.js';
 import { findDateToFocus, findMonthToDisplay } from './utils';
@@ -187,7 +187,7 @@ export default function DateRangePickerCalendar({
     setCurrentMonth(newCurrentMonth);
 
     const newBaseDateMonth = isSingleGrid ? newCurrentMonth : addMonths(newCurrentMonth, -1);
-    const newBaseDate = getBaseDate(newBaseDateMonth, isDateEnabled);
+    const newBaseDate = getBaseDay(newBaseDateMonth, isDateEnabled);
     setFocusedDate(newBaseDate);
   };
 

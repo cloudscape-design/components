@@ -27,10 +27,10 @@ viewport size and state of the Tools drawer.
   display: flex;
   grid-column: 5;
   grid-row: 1 / span 10;
-  height: var(#{custom-props.$contentHeight});
-  max-width: var(#{custom-props.$toolsMaxWidth});
+  block-size: var(#{custom-props.$contentHeight});
+  max-inline-size: var(#{custom-props.$toolsMaxWidth});
   position: sticky;
-  top: var(#{custom-props.$offsetTop});
+  inset-block-start: var(#{custom-props.$offsetTop});
   z-index: 830;
 
   pointer-events: none;
@@ -43,7 +43,7 @@ viewport size and state of the Tools drawer.
     #{custom-props.$toolsMaxWidth}: none;
     #{custom-props.$toolsWidth}: auto;
     position: fixed;
-    right: 0;
+    inset-inline-end: 0;
     z-index: 1001;
 
     /*
@@ -54,7 +54,7 @@ viewport size and state of the Tools drawer.
     relative to the body.
     */
     &.disable-body-scroll {
-      top: var(#{custom-props.$headerHeight});
+      inset-block-start: var(#{custom-props.$headerHeight});
     }
   }
 }
@@ -62,7 +62,7 @@ viewport size and state of the Tools drawer.
 .tools {
   background-color: awsui.$color-background-container-content;
   flex-shrink: 0;
-  height: 100%;
+  block-size: 100%;
   overflow-y: auto;
   overflow-x: hidden;
   /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
@@ -75,24 +75,24 @@ viewport size and state of the Tools drawer.
   @keyframes openTools {
     from {
       opacity: var(#{custom-props.$toolsAnimationStartingOpacity}, 0);
-      width: calc(#{awsui.$space-layout-toggle-padding} * 2 + #{awsui.$space-layout-toggle-diameter});
+      inline-size: calc(#{awsui.$space-layout-toggle-padding} * 2 + #{awsui.$space-layout-toggle-diameter});
     }
 
     to {
       opacity: 1;
-      width: var(#{custom-props.$toolsWidth});
+      inline-size: var(#{custom-props.$toolsWidth});
     }
   }
 
   &:not(.is-tools-open) {
-    width: 0;
+    inline-size: 0;
     // We need to hide the closed panel to make containing focusable elements not focusable anymore.
     display: none;
   }
 
   // Apply the animation when the Tools is opened
   &.is-tools-open {
-    border-left: solid awsui.$border-divider-section-width awsui.$color-border-divider-default;
+    border-inline-start: solid awsui.$border-divider-section-width awsui.$color-border-divider-default;
 
     &.animating {
       @include styles.with-motion {
@@ -107,7 +107,7 @@ viewport size and state of the Tools drawer.
   prevent unwanted text wrapping.
   */
   > .animated-content {
-    width: var(#{custom-props.$toolsWidth});
+    inline-size: var(#{custom-props.$toolsWidth});
   }
 
   /*
@@ -118,7 +118,7 @@ viewport size and state of the Tools drawer.
   */
   @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
     &.is-tools-open.has-tools-form-persistence {
-      border-right: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+      border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
     }
   }
 
@@ -130,8 +130,8 @@ viewport size and state of the Tools drawer.
 
 .hide-tools {
   position: absolute;
-  right: awsui.$space-m;
-  top: awsui.$size-vertical-panel-icon-offset;
+  inset-inline-end: awsui.$space-m;
+  inset-block-start: awsui.$size-vertical-panel-icon-offset;
   z-index: 1;
 }
 
@@ -143,7 +143,8 @@ handleSplitPanelMaxWidth function in the context.
 .show-tools {
   @include styles.styles-reset;
   box-sizing: border-box;
-  padding: awsui.$space-scaled-s awsui.$space-layout-toggle-padding;
+  padding-block: awsui.$space-scaled-s;
+  padding-inline: awsui.$space-layout-toggle-padding;
 
   // Animation for the buttons when they are added to the DOM
   @keyframes showButtons {
@@ -169,7 +170,6 @@ handleSplitPanelMaxWidth function in the context.
       display: flex;
       flex-direction: column;
       gap: awsui.$space-xs;
-
       &.animating {
         @include styles.with-motion {
           animation: showButtons awsui.$motion-duration-refresh-only-fast;

@@ -5,6 +5,7 @@ import React from 'react';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import Table, { TableProps } from '../../../lib/components/table';
 import Header from '../../../lib/components/header';
+import Modal from '../../../lib/components/modal';
 import { render } from '@testing-library/react';
 import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
 
@@ -28,6 +29,17 @@ const defaultItems: Item[] = [
 function renderTableWrapper(props?: Partial<TableProps>) {
   const { container } = render(<Table items={defaultItems} columnDefinitions={defaultColumns} {...props} />);
   return createWrapper(container).findTable()!;
+}
+
+function rerenderableTableWrapper(props?: Partial<TableProps>) {
+  const toRender = (props?: Partial<TableProps>) => (
+    <Table items={defaultItems} columnDefinitions={defaultColumns} {...props} />
+  );
+  const rendered = render(toRender(props));
+  return {
+    rerender: (newProps?: Partial<TableProps>) => rendered.rerender(toRender({ ...props, ...newProps })),
+    wrapper: createWrapper(rendered.container).findTable()!,
+  };
 }
 
 const tableLabel = 'Items';
@@ -73,6 +85,21 @@ describe('labels', () => {
     const wrapper = renderTableWrapper({
       header: <Header counter="(10)">Labelled table</Header>,
     });
+    expect(wrapper.find('[role=table]')!.getElement()).toHaveAccessibleName('Labelled table');
+  });
+
+  test('should not get auto label from a modal', () => {
+    const { rerender, wrapper } = rerenderableTableWrapper({
+      header: (
+        <>
+          <Header counter="(10)">Labelled table</Header>
+          <Modal header="Modal title" visible={false} />
+        </>
+      ),
+    });
+    // re-render was needed to trigger the error scenario here
+    rerender({ items: defaultItems.slice(1) });
+
     expect(wrapper.find('[role=table]')!.getElement()).toHaveAccessibleName('Labelled table');
   });
 

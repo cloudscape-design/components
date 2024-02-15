@@ -31,12 +31,12 @@ function renderCalendar(props: CalendarProps = defaultProps) {
 
 function findCalendarWeekdays(wrapper: CalendarWrapper) {
   return wrapper
-    .findAll(`.${styles['calendar-day-header']} :not(.${screenreaderOnlyStyles.root})`)
+    .findAll(`.${styles['calendar-date-header']} :not(.${screenreaderOnlyStyles.root})`)
     .map(day => day.getElement().textContent!.trim());
 }
 
 function getDayText(wrapper: CalendarWrapper, row: number, col: number) {
-  return wrapper.findDateAt(row, col).findByClassName(styles['day-inner'])!.getElement().textContent;
+  return wrapper.findDateAt(row, col).findByClassName(styles['date-inner'])!.getElement().textContent;
 }
 
 describe('Calendar', () => {
@@ -69,6 +69,22 @@ describe('Calendar locale DE', () => {
   test('start of the week is Monday', () => {
     const { wrapper } = renderCalendar();
     expect(findCalendarWeekdays(wrapper)[0]).toBe('Mo');
+  });
+});
+
+describe('Calendar header', () => {
+  test('previous button navigates to previous month', () => {
+    const { wrapper } = renderCalendar({ value: '2022-01-07' });
+    expect(wrapper.findHeader().getElement()).toHaveTextContent('January 2022');
+    wrapper.findPreviousButton().click();
+    expect(wrapper.findHeader().getElement()).toHaveTextContent('December 2021');
+  });
+
+  test('next button navigates to next month', () => {
+    const { wrapper } = renderCalendar({ value: '2022-01-07' });
+    expect(wrapper.findHeader().getElement()).toHaveTextContent('January 2022');
+    wrapper.findNextButton().click();
+    expect(wrapper.findHeader().getElement()).toHaveTextContent('February 2022');
   });
 });
 
@@ -109,7 +125,7 @@ describe('aria labels', () => {
   describe('should add `todayAriaLabel` to today', () => {
     const getTodayLabelText = (container: HTMLElement) => {
       return container
-        .querySelector(`.${styles['calendar-day-today']}`)!
+        .querySelector(`.${styles['calendar-date-current']}`)!
         .querySelector(`.${screenreaderOnlyStyles.root}`)!.textContent;
     };
 
@@ -147,7 +163,7 @@ describe('aria labels', () => {
         />
       );
       const wrapper = createWrapper(container);
-      expect(wrapper.findCalendar()!.findNextMonthButton()!.getElement()!.getAttribute('aria-label')).toMatch(
+      expect(wrapper.findCalendar()!.findNextButton().getElement()!.getAttribute('aria-label')).toMatch(
         'TEST NEXT MONTH'
       );
     });
@@ -157,7 +173,7 @@ describe('aria labels', () => {
         <Calendar {...defaultProps} i18nStrings={undefined} nextMonthAriaLabel="TEST NEXT MONTH" />
       );
       const wrapper = createWrapper(container);
-      expect(wrapper.findCalendar()!.findNextMonthButton()!.getElement()!.getAttribute('aria-label')).toMatch(
+      expect(wrapper.findCalendar()!.findNextButton().getElement()!.getAttribute('aria-label')).toMatch(
         'TEST NEXT MONTH'
       );
     });
@@ -175,7 +191,7 @@ describe('should add `previousMonthAriaLabel` to appropriate button in the calen
       />
     );
     const wrapper = createWrapper(container);
-    expect(wrapper.findCalendar()!.findPreviousMonthButton()!.getElement()!.getAttribute('aria-label')).toMatch(
+    expect(wrapper.findCalendar()!.findPreviousButton().getElement()!.getAttribute('aria-label')).toMatch(
       'TEST PREVIOUS MONTH'
     );
   });
@@ -185,7 +201,7 @@ describe('should add `previousMonthAriaLabel` to appropriate button in the calen
       <Calendar {...defaultProps} i18nStrings={undefined} previousMonthAriaLabel="TEST PREVIOUS MONTH" />
     );
     const wrapper = createWrapper(container);
-    expect(wrapper.findCalendar()!.findPreviousMonthButton()!.getElement()!.getAttribute('aria-label')).toMatch(
+    expect(wrapper.findCalendar()!.findPreviousButton().getElement()!.getAttribute('aria-label')).toMatch(
       'TEST PREVIOUS MONTH'
     );
   });
@@ -277,5 +293,23 @@ describe('current date', () => {
         }
       }
     }
+  });
+});
+
+describe('test API', () => {
+  test('findPreviousMonthButton (deprecated) returns the same element as findPreviousButton', () => {
+    const { wrapper } = renderCalendar();
+    const previousButton = wrapper.findPreviousButton().getElement();
+    const previousMonthButton = wrapper.findPreviousMonthButton().getElement();
+    expect(previousButton).toBeTruthy();
+    expect(previousMonthButton).toBe(previousButton);
+  });
+
+  test('findNextMonthButton (deprecated) returns the same element as findNextButton', () => {
+    const { wrapper } = renderCalendar();
+    const nextButton = wrapper.findNextButton().getElement();
+    const nextMonthButton = wrapper.findNextMonthButton().getElement();
+    expect(nextButton).toBeTruthy();
+    expect(nextMonthButton).toBe(nextButton);
   });
 });

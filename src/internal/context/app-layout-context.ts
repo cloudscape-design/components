@@ -9,11 +9,13 @@ export interface AppLayoutContextProps {
   setHasStickyBackground?: (hasBackground: boolean) => void;
 }
 
-export const AppLayoutContext = createContext<AppLayoutContextProps>({
+export const defaultValue: AppLayoutContextProps = {
   stickyOffsetTop: 0,
   stickyOffsetBottom: 0,
   mobileBarHeight: 0,
-});
+};
+
+export const AppLayoutContext = createContext(defaultValue);
 
 export function useAppLayoutContext() {
   return useContext(AppLayoutContext);

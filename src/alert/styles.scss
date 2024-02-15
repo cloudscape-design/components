@@ -25,9 +25,14 @@
   position: relative;
   display: grid;
   grid-template-columns: 1fr;
-  border-radius: awsui.$border-radius-alert;
-  border: awsui.$border-field-width solid;
-  padding: awsui.$space-alert-vertical awsui.$space-alert-horizontal;
+  border-block: awsui.$border-field-width solid;
+  border-inline: awsui.$border-field-width solid;
+  border-start-start-radius: awsui.$border-radius-alert;
+  border-start-end-radius: awsui.$border-radius-alert;
+  border-end-start-radius: awsui.$border-radius-alert;
+  border-end-end-radius: awsui.$border-radius-alert;
+  padding-block: awsui.$space-alert-vertical;
+  padding-inline: awsui.$space-alert-horizontal;
   background-color: awsui.$color-background-container-content;
 
   &.with-dismiss,
@@ -52,7 +57,7 @@
 
 .action {
   white-space: nowrap;
-  margin-left: awsui.$space-alert-action-left;
+  margin-inline-start: awsui.$space-alert-action-left;
 }
 
 .action-slot,
@@ -73,14 +78,17 @@
 }
 
 .text {
-  min-width: 0;
-  padding: awsui.$border-field-width 0; // To account for vertical misalignment due to button borders
-  margin: awsui.$space-scaled-xxs awsui.$space-xxs;
+  min-inline-size: 0;
+  // To account for vertical misalignment due to button borders
+  padding-block: awsui.$border-field-width;
+  padding-inline: 0;
+  margin-block: awsui.$space-scaled-xxs;
+  margin-inline: awsui.$space-xxs;
   &.icon {
-    margin-left: 0;
+    margin-inline-start: 0;
   }
   &.message {
-    margin-right: awsui.$space-alert-message-right;
+    margin-inline-end: awsui.$space-alert-message-right;
   }
 }
 
@@ -88,18 +96,18 @@
   // Below the breakpoint, arrange actions below the content
   > .action {
     grid-row: 2;
-    margin-bottom: awsui.$space-xxs;
+    margin-block-end: awsui.$space-xxs;
   }
 
   // Indent actions according to the size of the alert icon
   &.icon-size-medium > .action {
-    margin-left: calc(#{awsui.$size-icon-medium} + #{awsui.$space-xs});
+    margin-inline-start: calc(#{awsui.$size-icon-medium} + #{awsui.$space-xs});
   }
   &.icon-size-big > .action {
-    margin-left: calc(#{awsui.$size-icon-big} + #{awsui.$space-xs});
+    margin-inline-start: calc(#{awsui.$size-icon-big} + #{awsui.$space-xs});
   }
   &.icon-size-normal > .action {
-    margin-left: calc(#{awsui.$size-icon-normal} + #{awsui.$space-xs});
+    margin-inline-start: calc(#{awsui.$size-icon-normal} + #{awsui.$space-xs});
   }
 }
 
@@ -108,8 +116,8 @@
 }
 
 .dismiss {
-  margin-right: calc(-1 * #{awsui.$space-xxs});
-  margin-left: awsui.$space-s;
+  margin-inline-end: calc(-1 * #{awsui.$space-xxs});
+  margin-inline-start: awsui.$space-s;
 }
 
 .dismiss-button {

@@ -229,7 +229,7 @@ describeEachThemeAppLayout(false, () => {
   });
 
   test('should render overflow item when expected', () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...(manyDrawers as any)} />);
+    const { wrapper } = renderComponent(<AppLayout drawers={manyDrawers} />);
 
     expect(wrapper.findDrawersTriggers()!.length).toBeLessThan(100);
   });
@@ -242,10 +242,10 @@ describeEachThemeAppLayout(false, () => {
   });
 
   test('should render badge when defined', () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...(manyDrawers as any)} />);
+    const { wrapper } = renderComponent(<AppLayout drawers={manyDrawers} />);
 
-    expect(isDrawerTriggerWithBadge(wrapper, manyDrawers.drawers.items[0].id)).toEqual(true);
-    expect(isDrawerTriggerWithBadge(wrapper, manyDrawers.drawers.items[1].id)).toEqual(false);
+    expect(isDrawerTriggerWithBadge(wrapper, manyDrawers[0].id)).toEqual(true);
+    expect(isDrawerTriggerWithBadge(wrapper, manyDrawers[1].id)).toEqual(false);
   });
 
   test('should have width equal to the size declaration', () => {
@@ -298,7 +298,9 @@ describe('Classic only features', () => {
   });
 
   test(`should not toggle many drawers on click of container`, () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" toolsHide={true} {...(manyDrawers as any)} />);
+    const { wrapper } = renderComponent(
+      <AppLayout toolsHide={true} drawers={manyDrawers} ariaLabels={{ drawers: 'Drawers' }} />
+    );
     act(() => screen.getByLabelText('Drawers').click());
     expect(wrapper.findActiveDrawer()).toBeFalsy();
   });

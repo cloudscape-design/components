@@ -11,8 +11,6 @@ import { focusFlashById } from './flash';
 import { isDevelopment } from '../internal/is-development';
 import { useReducedMotion, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-export const componentName = 'Flashbar';
-
 // Common logic for collapsible and non-collapsible Flashbar
 export function useFlashbar({
   items,
@@ -25,7 +23,9 @@ export function useFlashbar({
   onItemsRemoved?: (items: FlashbarProps.MessageDefinition[]) => void;
   onItemsChanged?: (options?: { allItemsHaveId?: boolean; isReducedMotion?: boolean }) => void;
 }) {
-  const { __internalRootRef } = useBaseComponent(componentName);
+  const { __internalRootRef } = useBaseComponent('Flashbar', {
+    props: { stackItems: restProps.stackItems },
+  });
   const allItemsHaveId = useMemo(() => items.every(item => 'id' in item), [items]);
   const baseProps = getBaseProps(restProps);
   const ref = useRef<HTMLDivElement | null>(null);
