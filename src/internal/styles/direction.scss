@@ -4,15 +4,15 @@
 */
 
 /* stylelint-disable @cloudscape-design/no-implicit-descendant, plugin/no-unsupported-browser-features, selector-combinator-disallowed-list */
-@mixin with-direction($selector, $direction) {
+@mixin with-direction($direction) {
   @supports selector(:dir(#{$direction})) {
-    #{$selector}:dir(#{$direction}) {
+    &:dir(#{$direction}) {
       @content;
     }
   }
 
   @supports not selector(:dir(#{$direction})) {
-    html[dir='#{$direction}'] #{$selector} {
+    html[dir='#{$direction}'] & {
       @content;
     }
   }

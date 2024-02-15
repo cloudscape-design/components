@@ -79,6 +79,15 @@
 
   @include mixins.make-spinner-sizes;
   @include mixins.make-spinner-variants;
+
+  @include styles.with-direction('rtl') {
+    #{custom-props.$spinnerRotatorFrom}: 360deg;
+    #{custom-props.$spinnerRotatorTo}: 0deg;
+    #{custom-props.$spinnerLineLeftFrom}: 0deg;
+    #{custom-props.$spinnerLineLeftTo}: -120deg;
+    #{custom-props.$spinnerLineRightFrom}: -90deg;
+    #{custom-props.$spinnerLineRightTo}: 30deg;
+  }
 }
 
 .circle {
@@ -105,13 +114,4 @@
     /*stylelint-disable-next-line @cloudscape-design/no-motion-outside-of-mixin */
     animation-name: spinner-line-right;
   }
-}
-
-@include styles.with-direction('.root', 'rtl') {
-  #{custom-props.$spinnerRotatorFrom}: 360deg;
-  #{custom-props.$spinnerRotatorTo}: 0deg;
-  #{custom-props.$spinnerLineLeftFrom}: 0deg;
-  #{custom-props.$spinnerLineLeftTo}: -120deg;
-  #{custom-props.$spinnerLineRightFrom}: -90deg;
-  #{custom-props.$spinnerLineRightTo}: 30deg;
 }

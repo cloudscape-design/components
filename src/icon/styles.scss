@@ -27,6 +27,28 @@
 
   @include mixins.make-icon-sizes;
   @include mixins.make-icon-variants;
+
+  &:is(
+      .name-angle-left-double,
+      .name-angle-left,
+      .name-angle-right-double,
+      .name-angle-right,
+      .name-arrow-left,
+      .name-caret-left-filled,
+      .name-caret-right-filled,
+      .name-audio-full,
+      .name-audio-half,
+      .name-audio-off,
+      .name-external,
+      .name-redo,
+      .name-shrink,
+      .name-undo,
+      .name-view-vertical
+    ) {
+    @include styles.with-direction('rtl') {
+      transform: scaleX(-1);
+    }
+  }
 }
 
 .badge::after {
@@ -41,11 +63,4 @@
   background-color: awsui.$color-background-badge-icon;
   inset-block-start: 0px;
   inset-inline-end: -3px;
-}
-
-@include styles.with-direction(
-  '.icon:is(.name-angle-left-double, .name-angle-left, .name-angle-right-double, .name-angle-right, .name-arrow-left, .name-caret-left-filled, .name-caret-right-filled, .name-audio-full, .name-audio-half, .name-audio-off, .name-external, .name-redo, .name-shrink, .name-undo, .name-view-vertical)',
-  'rtl'
-) {
-  transform: scaleX(-1);
 }

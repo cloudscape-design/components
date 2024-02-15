@@ -165,6 +165,11 @@
     // Additional padding to make it the same height as a header with wrapping
     padding-block-end: calc(#{awsui.$space-scaled-xxs} + #{awsui.$space-scaled-xxxs});
   }
+
+  @include styles.with-direction('rtl') {
+    align-items: center;
+    display: inline-flex;
+  }
 }
 
 .root-no-actions.root-has-description > .main > :not(.refresh) {
@@ -230,6 +235,11 @@
   &-variant-h3 {
     @include styles.font(heading-m);
   }
+
+  @include styles.with-direction('rtl') {
+    display: inline-flex;
+    gap: awsui.$space-scaled-xxs;
+  }
 }
 
 .heading-text {
@@ -248,14 +258,4 @@
 .counter {
   color: awsui.$color-text-counter;
   font-weight: styles.$font-weight-normal;
-}
-
-@include styles.with-direction('.title', 'rtl') {
-  align-items: center;
-  display: inline-flex;
-}
-
-@include styles.with-direction('.heading', 'rtl') {
-  display: inline-flex;
-  gap: awsui.$space-scaled-xxs;
 }
