@@ -8,6 +8,7 @@ import { fireCancelableEvent, CancelableEventHandler, isPlainLeftClick } from '.
 import { KeyCode } from '../../internal/keycode';
 import { getItemTarget, isItemGroup, isLinkItem } from './utils';
 import useHighlightedMenu from './use-highlighted-menu';
+import handleKeyDown from '../../internal/utils/handle-key-down';
 
 interface UseButtonDropdownOptions extends ButtonDropdownSettings {
   items: ButtonDropdownProps.Items;
@@ -122,61 +123,55 @@ export function useButtonDropdown({
     actOnParentDropdown(event);
   };
 
-  const onKeyDown = (event: React.KeyboardEvent) => {
-    setIsUsingMouse(false);
-    switch (event.keyCode) {
-      case KeyCode.down: {
-        doVerticalNavigation(1);
-        event.preventDefault();
-        break;
-      }
-      case KeyCode.up: {
-        doVerticalNavigation(-1);
-        event.preventDefault();
-        break;
-      }
-      case KeyCode.space: {
-        // Prevent scrolling the list of items and highlighting the trigger
-        event.preventDefault();
-        break;
-      }
-      case KeyCode.enter: {
-        if (!targetItem?.disabled) {
-          activate(event, true);
-        }
-        break;
-      }
-      case KeyCode.left:
-      case KeyCode.right: {
-        if (targetItem && !targetItem.disabled && isItemGroup(targetItem) && !isExpanded(targetItem)) {
-          expandGroup();
-        } else if (hasExpandableGroups) {
-          collapseGroup();
-        }
-
-        event.preventDefault();
-        break;
-      }
-      case KeyCode.escape: {
-        onReturnFocus();
-        closeDropdown();
-        event.preventDefault();
-        if (isOpen) {
-          event.stopPropagation();
-        }
-        break;
-      }
-      case KeyCode.tab: {
-        // When expanded to viewport the focus can't move naturally to the next element.
-        // Returning the focus to the trigger instead.
-        if (expandToViewport) {
-          onReturnFocus();
-        }
-        closeDropdown();
-        break;
-      }
+  const onLeftOrRight = () => {
+    if (targetItem && !targetItem.disabled && isItemGroup(targetItem) && !isExpanded(targetItem)) {
+      expandGroup();
+    } else if (hasExpandableGroups) {
+      collapseGroup();
     }
   };
+
+  const onKeyDown = handleKeyDown({
+    onAll: () => {
+      setIsUsingMouse(false);
+    },
+    onSpace: event => {
+      // Prevent scrolling the list of items and highlighting the trigger
+      event.preventDefault();
+    },
+    onEnter: event => {
+      if (!targetItem?.disabled) {
+        activate(event, true);
+      }
+    },
+    onEscape: event => {
+      onReturnFocus();
+      closeDropdown();
+      event.preventDefault();
+      if (isOpen) {
+        event.stopPropagation();
+      }
+    },
+    onDown: event => {
+      doVerticalNavigation(1);
+      event.preventDefault();
+    },
+    onUp: event => {
+      doVerticalNavigation(-1);
+      event.preventDefault();
+    },
+    onLeft: onLeftOrRight,
+    onRight: onLeftOrRight,
+    onTab: () => {
+      // When expanded to viewport the focus can't move naturally to the next element.
+      // Returning the focus to the trigger instead.
+      if (expandToViewport) {
+        onReturnFocus();
+      }
+      closeDropdown();
+    },
+  });
+
   const onKeyUp = (event: React.KeyboardEvent) => {
     // We need to handle activating items with Space separately because there is a bug
     // in Firefox where changing the focus during a Space keydown event it will trigger
