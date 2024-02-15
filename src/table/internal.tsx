@@ -276,7 +276,13 @@ const InternalTable = React.forwardRef(
 
     const hasDynamicHeight = computedVariant === 'full-page';
     const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
-    useTableFocusNavigation(tableRole, selectionType, tableRefObject, visibleColumnDefinitions, items?.length);
+    useTableFocusNavigation({
+      tableRole,
+      selectionType,
+      tableRoot: tableRefObject,
+      columnDefinitions: visibleColumnDefinitions,
+      numRows: items?.length,
+    });
     const toolsHeaderWrapper = useRef<HTMLDivElement>(null);
     // If is mobile, we take into consideration the AppLayout's mobile bar and we subtract the tools wrapper height so only the table header is sticky
     const toolsHeaderHeight =

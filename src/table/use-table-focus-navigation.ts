@@ -17,6 +17,14 @@ function iterateTableCells<T extends HTMLElement>(
   });
 }
 
+interface TableFocusNavigationProps<T> {
+  tableRole: TableRole;
+  selectionType: TableProps['selectionType'];
+  tableRoot: RefObject<HTMLTableElement>;
+  columnDefinitions: Readonly<T[]>;
+  numRows: number;
+}
+
 /**
  * This hook is used to navigate between table cells using the keyboard arrow keys.
  * All the functionality is implemented in the hook, so the table component does not
@@ -26,13 +34,13 @@ function iterateTableCells<T extends HTMLElement>(
  * @param columnDefinitions - The column definitions for the table.
  * @param numRows - The number of rows in the table.
  */
-function useTableFocusNavigation<T extends { editConfig?: TableProps.EditConfig<any> }>(
-  tableRole: TableRole,
-  selectionType: TableProps['selectionType'],
-  tableRoot: RefObject<HTMLTableElement>,
-  columnDefinitions: Readonly<T[]>,
-  numRows: number
-) {
+function useTableFocusNavigation<T extends { editConfig?: TableProps.EditConfig<any> }>({
+  tableRole,
+  selectionType,
+  tableRoot,
+  columnDefinitions,
+  numRows,
+}: TableFocusNavigationProps<T>) {
   const focusableColumns = useMemo(() => {
     const cols = columnDefinitions.map(column => !!column.editConfig);
     if (selectionType) {

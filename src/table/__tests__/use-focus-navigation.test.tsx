@@ -26,13 +26,13 @@ const TestComponent = () => {
 
   const editConfig = { __mock: true };
 
-  useTableFocusNavigation(
-    'table',
-    undefined,
-    tableRef,
-    [{ editConfig }, { editConfig: undefined }, { editConfig }] as any,
-    3
-  );
+  useTableFocusNavigation({
+    tableRole: 'table',
+    selectionType: undefined,
+    tableRoot: tableRef,
+    columnDefinitions: [{ editConfig }, { editConfig: undefined }, { editConfig }] as any,
+    numRows: 3,
+  });
 
   const focusHandler = (evt: React.FocusEvent) => {
     focusFn(evt.target.innerHTML);
@@ -209,11 +209,11 @@ describe('useTableFocusNavigation', () => {
     });
     it('should attach event listener for focus navigation', () => {
       renderHook(() =>
-        useTableFocusNavigation(
-          'table',
-          undefined,
-          { current: table },
-          [
+        useTableFocusNavigation({
+          tableRole: 'table',
+          selectionType: undefined,
+          tableRoot: { current: table },
+          columnDefinitions: [
             {
               editConfig,
             },
@@ -224,8 +224,8 @@ describe('useTableFocusNavigation', () => {
               editConfig,
             },
           ],
-          3
-        )
+          numRows: 3,
+        })
       );
 
       expect(addEventListenerRoot).toHaveBeenCalled();
@@ -233,13 +233,13 @@ describe('useTableFocusNavigation', () => {
 
     it('satisfies istanbul coverage', () => {
       renderHook(() =>
-        useTableFocusNavigation(
-          'table',
-          'multi',
-          { current: null },
-          [{ editConfig }, { editConfig }, { editConfig }],
-          3
-        )
+        useTableFocusNavigation({
+          tableRole: 'table',
+          selectionType: 'multi',
+          tableRoot: { current: null },
+          columnDefinitions: [{ editConfig }, { editConfig }, { editConfig }],
+          numRows: 3,
+        })
       );
       expect(removeEventListener).not.toHaveBeenCalled();
       expect(addEventListenerRoot).not.toHaveBeenCalled();
