@@ -52,7 +52,10 @@
   "calendar": {
     "nextMonthAriaLabel": "Próximo mês",
     "previousMonthAriaLabel": "Mês anterior",
-    "todayAriaLabel": "Hoje"
+    "todayAriaLabel": "Hoje",
+    "i18nStrings.nextYearAriaLabel": "Próximo ano",
+    "i18nStrings.previousYearAriaLabel": "Ano anterior",
+    "i18nStrings.currentMonthAriaLabel": "Mês atual"
   },
   "cards": {
     "ariaLabels.selectionGroupLabel": "Seleção de item"
