@@ -43,6 +43,7 @@ import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 import { NoDataCell } from './no-data-cell';
 import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
 import { getContentHeaderClassName } from '../internal/utils/content-header-utils';
+import InternalIcon from '../icon/internal';
 
 const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
@@ -107,6 +108,10 @@ const InternalTable = React.forwardRef(
       renderAriaLive,
       stickyColumns,
       columnDisplay,
+      getItemChildren,
+      getItemExpandable,
+      getItemExpanded,
+      onExpandableItemToggle,
       __funnelSubStepProps,
       ...rest
     }: InternalTableProps<T>,
@@ -115,6 +120,43 @@ const InternalTable = React.forwardRef(
     const baseProps = getBaseProps(rest);
     stickyHeader = stickyHeader && supportsStickyPosition();
     const isMobile = useMobile();
+
+    let allItems = items;
+    const itemToLevel = new Map<T, number>();
+
+    if (getItemChildren) {
+      const visibleItems = new Array<T>();
+
+      const traverse = (item: T, level = 1) => {
+        itemToLevel.set(item, level);
+        visibleItems.push(item);
+        if (!getItemExpanded || getItemExpanded(item)) {
+          const children = getItemChildren(item);
+          children.forEach(child => traverse(child, level + 1));
+        }
+      };
+
+      items.forEach(item => traverse(item));
+
+      for (let index = 0; index < visibleItems.length; index++) {
+        const item = visibleItems[index];
+        const isExpanded = getItemExpanded && getItemExpanded(item);
+        if (isExpanded) {
+          let insertionIndex = index + 1;
+          for (insertionIndex; insertionIndex < visibleItems.length; insertionIndex++) {
+            const insertionItem = visibleItems[insertionIndex];
+            if ((itemToLevel.get(item) ?? 0) >= (itemToLevel.get(insertionItem) ?? 0)) {
+              break;
+            }
+          }
+          insertionIndex--;
+        }
+      }
+
+      allItems = visibleItems;
+    }
+
+    const getItemLevel = getItemChildren ? (item: T) => itemToLevel.get(item) ?? 1 : undefined;
 
     const [containerWidth, wrapperMeasureRef] = useContainerQuery<number>(rect => rect.contentBoxWidth);
     const wrapperMeasureRefObject = useRef(null);
@@ -158,7 +200,7 @@ const InternalTable = React.forwardRef(
     const wrapperRefObject = useRef(null);
     const handleScroll = useScrollSync([wrapperRefObject, scrollbarRef, secondaryWrapperRef]);
 
-    const { moveFocusDown, moveFocusUp, moveFocus } = useSelectionFocusMove(selectionType, items.length);
+    const { moveFocusDown, moveFocusUp, moveFocus } = useSelectionFocusMove(selectionType, allItems.length);
     const { onRowClickHandler, onRowContextMenuHandler } = useRowEvents({ onRowClick, onRowContextMenu });
 
     const visibleColumnDefinitions = getVisibleColumnDefinitions({
@@ -168,7 +210,7 @@ const InternalTable = React.forwardRef(
     });
 
     const { isItemSelected, getSelectAllProps, getItemSelectionProps, updateShiftToggle } = useSelection({
-      items,
+      items: allItems,
       trackBy,
       selectedItems,
       selectionType,
@@ -254,6 +296,7 @@ const InternalTable = React.forwardRef(
       stickyState,
       selectionColumnId,
       tableRole,
+      isExpandable: !!getItemLevel,
     };
 
     const wrapperRef = useMergeRefs(wrapperRefObject, stickyState.refs.wrapper);
@@ -389,7 +432,7 @@ const InternalTable = React.forwardRef(
                   {...theadProps}
                 />
                 <tbody>
-                  {loading || items.length === 0 ? (
+                  {loading || allItems.length === 0 ? (
                     <tr>
                       <NoDataCell
                         totalColumnsCount={totalColumnsCount}
@@ -402,13 +445,24 @@ const InternalTable = React.forwardRef(
                       />
                     </tr>
                   ) : (
-                    items.map((item, rowIndex) => {
+                    allItems.map((item, rowIndex) => {
                       const firstVisible = rowIndex === 0;
-                      const lastVisible = rowIndex === items.length - 1;
+                      const lastVisible = rowIndex === allItems.length - 1;
                       const isEven = rowIndex % 2 === 0;
                       const isSelected = !!selectionType && isItemSelected(item);
-                      const isPrevSelected = !!selectionType && !firstVisible && isItemSelected(items[rowIndex - 1]);
-                      const isNextSelected = !!selectionType && !lastVisible && isItemSelected(items[rowIndex + 1]);
+                      const isPrevSelected = !!selectionType && !firstVisible && isItemSelected(allItems[rowIndex - 1]);
+                      const isNextSelected = !!selectionType && !lastVisible && isItemSelected(allItems[rowIndex + 1]);
+                      const expandableProps = getItemLevel
+                        ? {
+                            level: getItemLevel(item),
+                            isExpandable: getItemExpandable?.(item) ?? true,
+                            isExpanded:
+                              getItemExpanded?.(item) ??
+                              (allItems[rowIndex + 1] && getItemLevel(item) < getItemLevel(allItems[rowIndex + 1])),
+                            onExpandableItemToggle: (item: T) =>
+                              fireNonCancelableEvent(onExpandableItemToggle, { item }),
+                          }
+                        : undefined;
                       return (
                         <tr
                           key={getItemKey(trackBy, item, rowIndex)}
@@ -453,6 +507,48 @@ const InternalTable = React.forwardRef(
                               />
                             </TableTdElement>
                           )}
+
+                          {expandableProps && (
+                            <TableTdElement
+                              className={clsx(styles['expand-cell'])}
+                              isVisualRefresh={isVisualRefresh}
+                              isFirstRow={firstVisible}
+                              isLastRow={lastVisible}
+                              isSelected={isSelected}
+                              isNextSelected={isNextSelected}
+                              isPrevSelected={isPrevSelected}
+                              wrapLines={true}
+                              isEvenRow={isEven}
+                              stripedRows={stripedRows}
+                              hasSelection={hasSelection}
+                              hasFooter={hasFooter}
+                              stickyState={stickyState}
+                              columnId="expand-column-id"
+                              colIndex={-1}
+                              tableRole={tableRole}
+                              level={expandableProps.level}
+                              isExpandCell={true}
+                            >
+                              {getItemExpandable?.(item) ? (
+                                <button
+                                  className={clsx(
+                                    styles['expand-toggle'],
+                                    !expandableProps.isExpandable && styles['expand-toggle-hidden']
+                                  )}
+                                  onClick={() => {
+                                    expandableProps.onExpandableItemToggle(item);
+                                  }}
+                                >
+                                  {expandableProps.isExpanded ? (
+                                    <InternalIcon name="caret-down-filled" />
+                                  ) : (
+                                    <InternalIcon name="caret-right-filled" />
+                                  )}
+                                </button>
+                              ) : null}
+                            </TableTdElement>
+                          )}
+
                           {visibleColumnDefinitions.map((column, colIndex) => {
                             const isEditing = cellEditing.checkEditing({ rowIndex, colIndex });
                             const successfulEdit = cellEditing.checkLastSuccessfulEdit({ rowIndex, colIndex });
@@ -495,6 +591,9 @@ const InternalTable = React.forwardRef(
                                 stickyState={stickyState}
                                 isVisualRefresh={isVisualRefresh}
                                 tableRole={tableRole}
+                                level={getItemLevel ? getItemLevel(item) : 1}
+                                isExpandCell={colIndex === 0}
+                                isContentCell={true}
                               />
                             );
                           })}
