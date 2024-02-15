@@ -182,6 +182,8 @@ describe('Date picker calendar', () => {
       let wrapper: DatePickerWrapper;
       let onChangeSpy: jest.Mock<NonCancelableEventHandler<DatePickerProps.ChangeDetail>>;
 
+      const selectionKeys: ReadonlyArray<'enter' | 'space'> = ['enter', 'space'];
+
       beforeEach(() => {
         onChangeSpy = jest.fn();
         ({ wrapper } = renderDatePicker({ ...defaultProps, onChange: onChangeSpy }));
@@ -237,26 +239,29 @@ describe('Date picker calendar', () => {
         expect(findCalendarHeaderText(wrapper)).toBe('April 2018');
       });
 
-      test('should allow initially selected date to be re-selected with enter', () => {
-        wrapper.findCalendar()!.findSelectedDate().keydown(KeyCode.enter);
+      test.each(selectionKeys)('should allow initially selected date to be re-selected with %s', key => {
+        wrapper.findCalendar()!.findSelectedDate().keydown(KeyCode[key]);
         expect(document.activeElement).toBe(wrapper.findOpenCalendarButton().getElement());
         expect(wrapper.findCalendar()).toBeNull();
       });
 
-      test('should not change the selected date before enter is pressed', () => {
+      test.each(selectionKeys)('should not change the selected date before %s is pressed', key => {
         wrapper.findCalendar()!.findSelectedDate().keydown(KeyCode.down);
         expect(wrapper.findNativeInput().getElement().value).toBe('2018/03/22');
-        wrapper.findCalendar()!.findSelectedDate().keydown(KeyCode.enter);
+        wrapper.findCalendar()!.findSelectedDate().keydown(KeyCode[key]);
         expect(onChangeSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '2018-03-29' } }));
       });
 
-      test('should close the dropdown and focus the "open calendar" button when enter is pressed', () => {
-        const date = wrapper.findCalendar()!.findSelectedDate();
-        date.keydown(KeyCode.down);
-        date.keydown(KeyCode.enter);
-        expect(document.activeElement).toBe(wrapper.findOpenCalendarButton().getElement());
-        expect(wrapper.findCalendar()).toBeNull();
-      });
+      test.each(selectionKeys)(
+        'should close the dropdown and focus the "open calendar" button when %s is pressed',
+        key => {
+          const date = wrapper.findCalendar()!.findSelectedDate();
+          date.keydown(KeyCode.down);
+          date.keydown(KeyCode[key]);
+          expect(document.activeElement).toBe(wrapper.findOpenCalendarButton().getElement());
+          expect(wrapper.findCalendar()).toBeNull();
+        }
+      );
 
       test('should close the dropdown and focus the "open calendar" button when escape is pressed', () => {
         wrapper.findCalendar()!.keydown(KeyCode.escape);

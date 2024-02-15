@@ -18,8 +18,9 @@ import { getBaseDay, getBaseMonth } from './utils/navigation';
 import { useDateCache } from '../internal/hooks/use-date-cache/index.js';
 import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
 import useCalendarLabels from './use-calendar-labels';
-import useCalendarGridContent from './use-calendar-grid-content.js';
-import useCalendarGridKeyboardNavigation from './use-calendar-grid-keyboard-navigation.js';
+import useCalendarGridRows from './grid/use-calendar-grid-rows';
+import useCalendarGridKeyboardNavigation from './grid/use-calendar-grid-keyboard-navigation';
+import CalendarGridHeader from './grid/calendar-grid-header';
 
 export default function Calendar({
   value,
@@ -75,7 +76,7 @@ export default function Calendar({
       todayAriaLabel,
     });
 
-  const { header, rows } = useCalendarGridContent({ baseDate, granularity, startOfWeek, locale: normalizedLocale });
+  const gridRows = useCalendarGridRows({ baseDate, granularity, startOfWeek, locale: normalizedLocale });
 
   const headingId = useUniqueId('calendar-heading');
 
@@ -169,8 +170,8 @@ export default function Calendar({
             onChangePage={onChangePageHandler}
             selectedDate={memoizedValue}
             ariaLabelledby={headingId}
-            header={header}
-            rows={rows}
+            header={isMonthPicker ? null : <CalendarGridHeader locale={normalizedLocale} rows={gridRows} />}
+            rows={gridRows}
             isCurrentPage={isCurrentPage}
             renderDate={renderDate}
             renderDateAnnouncement={renderDateAnnouncement}
