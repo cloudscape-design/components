@@ -5,7 +5,6 @@ import clsx from 'clsx';
 
 import { KeyCode } from '../internal/keycode';
 import { getBaseProps } from '../internal/base-component';
-import { FormFieldContext } from '../internal/context/form-field-context';
 
 import Arrow from './arrow';
 import Portal from '../internal/components/portal';
@@ -22,6 +21,7 @@ import { useInternalI18n } from '../i18n/context';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { getFirstFocusable } from '../internal/components/focus-lock/utils';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
+import ResetContextsForModal from '../internal/context/reset-contexts-for-modal';
 
 export interface InternalPopoverProps extends PopoverProps, InternalBaseComponentProps {
   __onOpen?: NonCancelableEventHandler<null>;
@@ -190,9 +190,9 @@ function InternalPopover(
           {children}
         </span>
       )}
-      <FormFieldContext.Provider value={{}}>
+      <ResetContextsForModal>
         {renderWithPortal ? <Portal>{popoverContent}</Portal> : popoverContent}
-      </FormFieldContext.Provider>
+      </ResetContextsForModal>
     </span>
   );
 }

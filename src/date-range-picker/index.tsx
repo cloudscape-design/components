@@ -16,7 +16,7 @@ import Dropdown from '../internal/components/dropdown';
 import { useFocusTracker } from '../internal/hooks/use-focus-tracker';
 import { useMobile } from '../internal/hooks/use-mobile';
 import ButtonTrigger from '../internal/components/button-trigger';
-import { FormFieldContext, useFormFieldContext } from '../internal/context/form-field-context';
+import { useFormFieldContext } from '../internal/context/form-field-context';
 import InternalIcon from '../icon/internal';
 import { normalizeTimeOffset, shiftTimeOffset } from './time-offset';
 import useBaseComponent from '../internal/hooks/use-base-component';
@@ -30,6 +30,7 @@ import { joinStrings } from '../internal/utils/strings/join-strings';
 import { formatDateRange, isIsoDateOnly } from '../internal/utils/date-time';
 import { useInternalI18n } from '../i18n/context';
 import { formatValue } from './utils';
+import ResetContextsForModal from '../internal/context/reset-contexts-for-modal.js';
 
 export { DateRangePickerProps };
 
@@ -316,7 +317,7 @@ const DateRangePicker = React.forwardRef(
           dropdownId={dropdownId}
         >
           {/* Reset form field context to prevent a wrapper form field from labelling all inputs inside the dropdown. */}
-          <FormFieldContext.Provider value={{}}>
+          <ResetContextsForModal>
             {isDropDownOpen && (
               <DateRangePickerDropdown
                 startOfWeek={startOfWeek}
@@ -339,7 +340,7 @@ const DateRangePicker = React.forwardRef(
                 customAbsoluteRangeControl={customAbsoluteRangeControl}
               />
             )}
-          </FormFieldContext.Provider>
+          </ResetContextsForModal>
         </Dropdown>
       </div>
     );
