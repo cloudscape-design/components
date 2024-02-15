@@ -18,7 +18,7 @@ export function formatDateRange({
   endDate: string;
   hideTimeOffset?: boolean;
   timeOffset: { startDate?: number; endDate?: number };
-  format?: DateRangePickerProps.AbsoluteFormat;
+  format: DateRangePickerProps.AbsoluteFormat;
   locale?: string;
 }): string {
   const isDateOnly = isIsoDateOnly(startDate) && isIsoDateOnly(endDate);
@@ -52,7 +52,7 @@ function formatDate({
   locale,
 }: {
   date: string;
-  format?: DateRangePickerProps.AbsoluteFormat;
+  format: DateRangePickerProps.AbsoluteFormat;
   hideTimeOffset?: boolean;
   isDateOnly: boolean;
   timeOffset?: number;

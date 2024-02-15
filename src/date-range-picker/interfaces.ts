@@ -164,7 +164,8 @@ export interface DateRangePickerProps
    * It can take the following values:
    * * `iso`: ISO 8601 format, e.g.: 2024-01-30T13:32:32+01:00 (or 2024-01-30 when `dateOnly` is true)
    * * `long-localized`: a more human-readable, localized format, e.g.: January 30, 2024, 13:32:32 (UTC+1) (or January 30, 2024 when `dateOnly` is true)
-   * Defaults to 'iso'.
+   *
+   * Defaults to `iso`.
    */
   absoluteFormat?: DateRangePickerProps.AbsoluteFormat;
 
