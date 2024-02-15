@@ -3,9 +3,9 @@
 
 import React, { useCallback } from 'react';
 import { isSameMonth } from 'date-fns';
-import { CalendarProps } from './interfaces';
-import { moveNextDay, movePrevDay, moveNextWeek, movePrevWeek } from './utils/navigation';
-import { KeyCode } from '../internal/keycode';
+import { CalendarProps } from '../interfaces';
+import { moveNextDay, movePrevDay, moveNextWeek, movePrevWeek } from '../utils/navigation';
+import { KeyCode } from '../../internal/keycode';
 
 export default function useCalendarGridKeyboardNavigation({
   baseDate,
