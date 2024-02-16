@@ -8,6 +8,7 @@ import {
   findTableRowByAriaRowIndex,
   findTableRowCellByAriaColIndex,
   getClosestCell,
+  isElementDisabled,
 } from './utils';
 import { FocusedCell, GridNavigationProps } from './interfaces';
 import { KeyCode } from '../../internal/keycode';
@@ -74,8 +75,9 @@ class GridNavigationProcessor {
 
   // State
   private focusedCell: null | FocusedCell = null;
-  private focusables = new Map<Element, boolean>();
+  private focusables = new Set<Element>();
   private focusHandlers = new Map<Element, FocusableChangeHandler>();
+  private focusablesState = new WeakMap<Element, boolean>();
   private focusTarget: null | Element = null;
 
   public init(table: HTMLTableElement) {
@@ -91,7 +93,7 @@ class GridNavigationProcessor {
       this.table.removeEventListener('focusin', this.onFocusin);
       this.table.removeEventListener('focusout', this.onFocusout);
       this.table.removeEventListener('keydown', this.onKeydown);
-      [...this.focusables.keys()].forEach(this.unregisterFocusable);
+      this.focusables.forEach(this.unregisterFocusable);
     };
   }
 
@@ -114,15 +116,16 @@ class GridNavigationProcessor {
     }, 0);
   }
 
-  public registerFocusable = (focusable: Element, changeHandler: FocusableChangeHandler) => {
-    this.focusables.set(focusable, false);
-    this.focusHandlers.set(focusable, changeHandler);
-    const isFocusable = this.focusTarget === focusable || this.isSuppressed(focusable);
-    if (isFocusable) {
-      this.focusables.set(focusable, isFocusable);
-      changeHandler(isFocusable);
+  public registerFocusable = (focusableElement: Element, changeHandler: FocusableChangeHandler) => {
+    this.focusables.add(focusableElement);
+    this.focusHandlers.set(focusableElement, changeHandler);
+    const isFocusable = this.focusablesState.get(focusableElement) ?? false;
+    const newIsFocusable = this.focusTarget === focusableElement || this.isSuppressed(focusableElement);
+    if (newIsFocusable !== isFocusable) {
+      this.focusablesState.set(focusableElement, newIsFocusable);
+      changeHandler(newIsFocusable);
     }
-    return () => this.unregisterFocusable(focusable);
+    return () => this.unregisterFocusable(focusableElement);
   };
 
   public unregisterFocusable = (focusable: Element) => {
@@ -190,8 +193,6 @@ class GridNavigationProcessor {
     }
 
     const from = this.focusedCell;
-    const minExtreme = Number.NEGATIVE_INFINITY;
-    const maxExtreme = Number.POSITIVE_INFINITY;
 
     if (this.isSuppressed(document.activeElement) || !this.isRegistered(document.activeElement)) {
       return;
@@ -224,19 +225,19 @@ class GridNavigationProcessor {
 
       case KeyCode.home:
         event.preventDefault();
-        return this.moveFocusBy(from, { y: 0, x: minExtreme });
+        return this.moveFocusBy(from, { y: 0, x: -Infinity });
 
       case KeyCode.end:
         event.preventDefault();
-        return this.moveFocusBy(from, { y: 0, x: maxExtreme });
+        return this.moveFocusBy(from, { y: 0, x: Infinity });
 
       case -KeyCode.home:
         event.preventDefault();
-        return this.moveFocusBy(from, { y: minExtreme, x: minExtreme });
+        return this.moveFocusBy(from, { y: -Infinity, x: -Infinity });
 
       case -KeyCode.end:
         event.preventDefault();
-        return this.moveFocusBy(from, { y: maxExtreme, x: maxExtreme });
+        return this.moveFocusBy(from, { y: Infinity, x: Infinity });
 
       default:
         return;
@@ -249,16 +250,21 @@ class GridNavigationProcessor {
 
   private updateFocusTarget() {
     this.focusTarget = this.getSingleFocusable();
-    for (const [focusableElement, isFocusable] of this.focusables) {
+    for (const focusableElement of this.focusables) {
+      const isFocusable = this.focusablesState.get(focusableElement) ?? false;
       const newIsFocusable = this.focusTarget === focusableElement || this.isSuppressed(focusableElement);
       if (newIsFocusable !== isFocusable) {
-        this.focusables.set(focusableElement, newIsFocusable);
+        this.focusablesState.set(focusableElement, newIsFocusable);
         this.focusHandlers.get(focusableElement)!(newIsFocusable);
       }
     }
   }
 
   private isSuppressed(element: null | Element) {
+    // Omit calculation as irrelevant until the table receives focus.
+    if (!this.focusedCell) {
+      return false;
+    }
     return !element || defaultIsSuppressed(element);
   }
 
@@ -316,11 +322,20 @@ class GridNavigationProcessor {
       return null;
     }
 
-    // Return cell interactive content or the cell itself.
     const targetCellFocusables = this.getFocusablesFrom(targetCell);
-    const focusIndex = delta.x < 0 ? targetCellFocusables.length - 1 : delta.x > 0 ? 0 : from.elementIndex;
-    const focusTarget = targetCellFocusables[focusIndex] ?? targetCell;
-    return focusTarget;
+
+    // When delta.x = 0 keep element index if possible.
+    let focusIndex = from.elementIndex;
+    // Use first element index when moving to the right or to extreme left.
+    if ((isFinite(delta.x) && delta.x > 0) || delta.x === -Infinity) {
+      focusIndex = 0;
+    }
+    // Use last element index when moving to the left or to extreme right.
+    if ((isFinite(delta.x) && delta.x < 0) || delta.x === Infinity) {
+      focusIndex = targetCellFocusables.length - 1;
+    }
+
+    return targetCellFocusables[focusIndex] ?? targetCell;
   }
 
   private getSingleFocusable() {
@@ -341,6 +356,6 @@ class GridNavigationProcessor {
   }
 
   private getFocusablesFrom(target: HTMLElement) {
-    return getAllFocusables(target).filter(el => this.focusables.has(el));
+    return getAllFocusables(target).filter(el => this.focusables.has(el) && !isElementDisabled(el));
   }
 }
