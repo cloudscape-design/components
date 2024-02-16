@@ -32,6 +32,22 @@ const getCurrentMonthLabelText = (container: HTMLElement) => {
 };
 
 describe('Calendar at month granularity', () => {
+  describe('Calendar header', () => {
+    test('previous button navigates to previous year', () => {
+      const { wrapper } = renderCalendar({ value: '2022-01' });
+      expect(wrapper.findHeader().getElement()).toHaveTextContent('2022');
+      wrapper.findPreviousButton().click();
+      expect(wrapper.findHeader().getElement()).toHaveTextContent('2021');
+    });
+
+    test('next button navigates to next year', () => {
+      const { wrapper } = renderCalendar({ value: '2022-01' });
+      expect(wrapper.findHeader().getElement()).toHaveTextContent('2022');
+      wrapper.findNextButton().click();
+      expect(wrapper.findHeader().getElement()).toHaveTextContent('2023');
+    });
+  });
+
   describe('ARIA labels', () => {
     test('should add `currentMonthAriaLabel` to current month', () => {
       const { container } = render(
@@ -78,22 +94,6 @@ describe('Calendar at month granularity', () => {
       expect(wrapper.findCalendar()!.findPreviousButton()!.getElement()!.getAttribute('aria-label')).toMatch(
         'TEST PREVIOUS YEAR'
       );
-    });
-  });
-
-  describe('Calendar header', () => {
-    test('previous button navigates to previous year', () => {
-      const { wrapper } = renderCalendar({ value: '2022-01' });
-      expect(wrapper.findHeader().getElement()).toHaveTextContent('2022');
-      wrapper.findPreviousButton().click();
-      expect(wrapper.findHeader().getElement()).toHaveTextContent('2021');
-    });
-
-    test('next button navigates to next year', () => {
-      const { wrapper } = renderCalendar({ value: '2022-01' });
-      expect(wrapper.findHeader().getElement()).toHaveTextContent('2022');
-      wrapper.findNextButton().click();
-      expect(wrapper.findHeader().getElement()).toHaveTextContent('2023');
     });
   });
 });
