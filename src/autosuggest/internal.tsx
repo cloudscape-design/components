@@ -87,7 +87,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   }
 
   const enteredTextLabelI18nTestValue = i18n('enteredTextLabel', undefined, format => format({ value: '' }));
-  if (!enteredTextLabel && enteredTextLabelI18nTestValue === undefined) {
+  if (!enteredTextLabel && !enteredTextLabelI18nTestValue) {
     warnOnce('Autosuggest', 'A value for enteredTextLabel must be provided.');
   }
 
