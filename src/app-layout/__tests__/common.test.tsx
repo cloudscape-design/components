@@ -3,7 +3,7 @@
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
-import { describeEachAppLayout, drawerWithoutLabels, isDrawerClosed, renderComponent, testDrawer } from './utils';
+import { describeEachAppLayout, isDrawerClosed, renderComponent, testDrawer, testDrawerWithoutLabels } from './utils';
 import AppLayout from '../../../lib/components/app-layout';
 
 jest.mock('@cloudscape-design/component-toolkit', () => ({
@@ -299,14 +299,9 @@ describeEachAppLayout(size => {
     });
 
     test('Close button does not render a label if is not defined', () => {
-      const drawersOpen = {
-        drawers: {
-          activeDrawerId: 'security',
-          items: drawerWithoutLabels.drawers.items,
-        },
-      };
-
-      const { wrapper } = renderComponent(<AppLayout contentType="form" {...(drawersOpen as any)} />);
+      const { wrapper } = renderComponent(
+        <AppLayout activeDrawerId={testDrawerWithoutLabels.id} drawers={[testDrawerWithoutLabels]} />
+      );
 
       expect(wrapper.findActiveDrawerCloseButton()!.getElement()).not.toHaveAttribute('aria-label');
     });
