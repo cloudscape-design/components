@@ -9,7 +9,7 @@ import Table, { TableProps } from '../../../lib/components/table';
 import resizerStyles from '../../../lib/components/table/resizer/styles.css.js';
 import { fireMousedown, fireMouseup, fireMouseMove, fakeBoundingClientRect } from './utils/resize-actions';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
-import { ContainerQueryEntry } from '@cloudscape-design/component-toolkit/lib/internal/container-queries/interfaces';
+import { ContainerQueryEntry } from '@cloudscape-design/component-toolkit';
 
 jest.mock('../../../lib/components/internal/utils/scrollable-containers', () => ({
   ...jest.requireActual('../../../lib/components/internal/utils/scrollable-containers'),
