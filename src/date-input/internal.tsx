@@ -13,10 +13,11 @@ import { MaskArgs } from '../internal/components/masked-input/utils/mask-format'
 import styles from './styles.css.js';
 import { DateInputProps } from './interfaces';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { CalendarProps } from '../calendar/interfaces';
 
 type InternalDateInputProps = DateInputProps &
   InternalBaseComponentProps & {
-    granularity?: 'month' | 'day';
+    granularity?: CalendarProps.Granularity;
   };
 
 function daysMax(value: string): number {
