@@ -83,7 +83,7 @@ export interface CalendarProps extends BaseComponentProps {
    * Specifies the granularity at which users will be able to select a date.
    * Defaults to `day`.
    **/
-  granularity?: 'month' | 'day';
+  granularity?: CalendarProps.Granularity;
 }
 
 export namespace CalendarProps {
