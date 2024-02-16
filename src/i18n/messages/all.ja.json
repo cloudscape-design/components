@@ -52,7 +52,10 @@
   "calendar": {
     "nextMonthAriaLabel": "来月",
     "previousMonthAriaLabel": "前月",
-    "todayAriaLabel": "今日"
+    "todayAriaLabel": "今日",
+    "i18nStrings.nextYearAriaLabel": "翌年",
+    "i18nStrings.previousYearAriaLabel": "前年",
+    "i18nStrings.currentMonthAriaLabel": "当月"
   },
   "cards": {
     "ariaLabels.selectionGroupLabel": "項目の選択"

@@ -70,9 +70,9 @@ export interface I18nFormatArgTypes {
     nextMonthAriaLabel: never;
     previousMonthAriaLabel: never;
     todayAriaLabel: never;
-    nextYearAriaLabel: never;
-    previousYearAriaLabel: never;
-    currentMonthAriaLabel: never;
+    'i18nStrings.nextYearAriaLabel': never;
+    'i18nStrings.previousYearAriaLabel': never;
+    'i18nStrings.currentMonthAriaLabel': never;
   };
   cards: {
     'ariaLabels.selectionGroupLabel': never;
