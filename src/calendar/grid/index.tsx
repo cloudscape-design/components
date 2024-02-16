@@ -67,12 +67,12 @@ export default function Grid({
 
   const rowLength = rows[0].length;
 
-  const spacedGrid = rowLength < 7;
+  const denseGrid = rowLength > 3;
 
   return (
     <table
       role="grid"
-      className={clsx(styles['calendar-grid'], spacedGrid && styles['calendar-grid-spaced'])}
+      className={clsx(styles['calendar-grid'], denseGrid && styles['calendar-grid-dense'])}
       aria-labelledby={ariaLabelledby}
     >
       {header}
@@ -110,7 +110,7 @@ export default function Grid({
                     [styles['calendar-date-enabled']]: isEnabled,
                     [styles['calendar-date-selected']]: isSelected,
                     [styles['calendar-date-current']]: isCurrentDate,
-                    [styles['calendar-date-spaced']]: spacedGrid,
+                    [styles['calendar-date-dense']]: denseGrid,
                   })}
                 >
                   <span className={styles['date-inner']} aria-hidden="true">

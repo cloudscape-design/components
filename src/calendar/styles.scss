@@ -58,13 +58,13 @@
     inline-size: 100%;
     table-layout: fixed;
 
-    &:not(.calendar-grid-spaced) {
-      border-spacing: 0;
-    }
-    &-spaced {
+    &:not(.calendar-grid-dense) {
       border-spacing: awsui.$space-calendar-grid-gutter;
       padding-block: awsui.$space-xs;
       padding-inline: awsui.$space-xs;
+    }
+    &-dense {
+      border-spacing: 0;
     }
   }
 
@@ -132,16 +132,16 @@
       inset-inline-end: calc(-1 * #{awsui.$border-item-width});
     }
 
-    &:not(.calendar-date-spaced)::after {
+    &:not(.calendar-date-dense)::after {
+      inset-block-end: calc(-1 * #{awsui.$border-item-width});
+      inset-inline-start: calc(-1 * #{awsui.$border-item-width});
+    }
+
+    &-dense::after {
       // Limit the overflow when there are no gutters.
       // Otherwise the cells would start to overlap when the border is larger than 1px.
       inset-block-end: -1px;
       inset-inline-start: -1px;
-    }
-
-    &-spaced::after {
-      inset-block-end: calc(-1 * #{awsui.$border-item-width});
-      inset-inline-start: calc(-1 * #{awsui.$border-item-width});
     }
 
     > .date-inner {
