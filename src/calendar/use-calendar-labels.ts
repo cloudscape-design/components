@@ -25,15 +25,15 @@ export default function useCalendarLabels({
 
   const isMonthPicker = granularity === 'month';
   const previousButtonLabel = isMonthPicker
-    ? i18n('previousYearAriaLabel', i18nStrings?.previousYearAriaLabel)
+    ? i18n('i18nStrings.previousYearAriaLabel', i18nStrings?.previousYearAriaLabel)
     : i18n('previousMonthAriaLabel', i18nStrings?.previousMonthAriaLabel ?? previousMonthAriaLabel);
 
   const nextButtonLabel = isMonthPicker
-    ? i18n('nextYearAriaLabel', i18nStrings?.nextYearAriaLabel)
+    ? i18n('i18nStrings.nextYearAriaLabel', i18nStrings?.nextYearAriaLabel)
     : i18n('nextMonthAriaLabel', i18nStrings?.nextMonthAriaLabel ?? nextMonthAriaLabel);
 
   const currentDateLabel = isMonthPicker
-    ? i18n('currentMonthAriaLabel', i18nStrings?.currentMonthAriaLabel)
+    ? i18n('i18nStrings.currentMonthAriaLabel', i18nStrings?.currentMonthAriaLabel)
     : i18n('todayAriaLabel', i18nStrings?.todayAriaLabel ?? todayAriaLabel);
 
   const renderDate = (date: Date) =>
