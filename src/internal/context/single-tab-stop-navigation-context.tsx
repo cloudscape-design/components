@@ -33,7 +33,7 @@ export function useSingleTabStopNavigation(
   const navigationActive = contextNavigationActive && !navigationDisabled;
 
   useEffect(() => {
-    if (!navigationDisabled && focusable && focusable.current) {
+    if (navigationActive && focusable && focusable.current) {
       const unregister = registerFocusable(focusable.current, isFocusable => setFocusTargetActive(isFocusable));
       return () => unregister();
     }

@@ -40,7 +40,7 @@ export function NoDataCell({
 
   return (
     <td colSpan={totalColumnsCount} className={clsx(styles['cell-merged'], hasFooter && styles['has-footer'])}>
-      <div ref={cellContentRef} className={styles['cell-merged-content']}>
+      <div ref={cellContentRef} className={styles['cell-merged-content']} data-awsui-table-suppress-navigation={true}>
         {loading ? (
           <InternalStatusIndicator type="loading" className={styles.loading} wrapText={true}>
             <LiveRegion visible={true}>{loadingText}</LiveRegion>

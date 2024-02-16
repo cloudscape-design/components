@@ -12,6 +12,7 @@ import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
 import { ContainerQueryEntry } from '@cloudscape-design/component-toolkit/lib/internal/container-queries/interfaces';
 
 jest.mock('../../../lib/components/internal/utils/scrollable-containers', () => ({
+  ...jest.requireActual('../../../lib/components/internal/utils/scrollable-containers'),
   browserScrollbarSize: () => ({ width: 20, height: 20 }),
   getOverflowParents: jest.fn(() => {
     const overflowParent = document.createElement('div');
