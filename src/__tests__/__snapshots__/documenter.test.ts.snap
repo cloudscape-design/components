@@ -3692,14 +3692,15 @@ The event \`detail\` contains the current value of the field.",
       "type": "string",
     },
     Object {
+      "defaultValue": "\\"day\\"",
       "description": "Specifies the granularity at which users will be able to select a date.
 Defaults to \`day\`.",
       "inlineType": Object {
-        "name": "",
+        "name": "CalendarProps.Granularity",
         "type": "union",
         "values": Array [
-          "month",
           "day",
+          "month",
         ],
       },
       "name": "granularity",
@@ -5836,14 +5837,15 @@ because fixed positioning results in a slight, visible lag when scrolling comple
       "type": "boolean",
     },
     Object {
+      "defaultValue": "'day'",
       "description": "Specifies the granularity at which users will be able to select a date.
 Defaults to \`day\`.",
       "inlineType": Object {
-        "name": "",
+        "name": "CalendarProps.Granularity",
         "type": "union",
         "values": Array [
-          "month",
           "day",
+          "month",
         ],
       },
       "name": "granularity",
