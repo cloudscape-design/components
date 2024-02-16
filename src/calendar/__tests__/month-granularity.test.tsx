@@ -1,13 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import * as React from 'react';
 import { render } from '@testing-library/react';
 import styles from '../../../lib/components/calendar/styles.selectors.js';
 import screenreaderOnlyStyles from '../../../lib/components/internal/components/screenreader-only/styles.selectors.js';
 import Calendar, { CalendarProps } from '../../../lib/components/calendar';
 import createWrapper from '../../../lib/components/test-utils/dom';
-
-import * as React from 'react';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 
 const defaultProps: CalendarProps = {
   granularity: 'month',
@@ -25,11 +25,11 @@ function renderCalendar(props?: CalendarProps) {
   return { container, wrapper };
 }
 
-const getCurrentMonthLabelText = (container: HTMLElement) => {
+function getCurrentMonthLabelText(container: HTMLElement) {
   return container
     .querySelector(`.${styles['calendar-date-current']}`)!
     .querySelector(`.${screenreaderOnlyStyles.root}`)!.textContent;
-};
+}
 
 describe('Calendar at month granularity', () => {
   describe('Calendar header', () => {
@@ -94,6 +94,29 @@ describe('Calendar at month granularity', () => {
       expect(wrapper.findCalendar()!.findPreviousButton()!.getElement()!.getAttribute('aria-label')).toMatch(
         'TEST PREVIOUS YEAR'
       );
+    });
+  });
+
+  describe('i18n', () => {
+    test('adds ARIA labels', () => {
+      const { container } = render(
+        <TestI18nProvider
+          messages={{
+            calendar: {
+              'i18nStrings.currentMonthAriaLabel': 'Test current month',
+              'i18nStrings.previousYearAriaLabel': 'Test previous year',
+              'i18nStrings.nextYearAriaLabel': 'Test next year',
+            },
+          }}
+        >
+          <Calendar granularity="month" value="" />
+        </TestI18nProvider>
+      );
+
+      const wrapper = createWrapper(container).findCalendar()!;
+      expect(wrapper.findPreviousButton().getElement()).toHaveAttribute('aria-label', 'Test previous year');
+      expect(wrapper.findNextButton().getElement()).toHaveAttribute('aria-label', 'Test next year');
+      expect(getCurrentMonthLabelText(container)).toContain('Test current month');
     });
   });
 });

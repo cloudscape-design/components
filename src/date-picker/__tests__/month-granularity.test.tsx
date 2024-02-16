@@ -1,10 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
+import React from 'react';
+import { render } from '@testing-library/react';
+import { createWrapper } from '@cloudscape-design/test-utils-core/dom.js';
 import DatePickerWrapper from '../../../lib/components/test-utils/dom/date-picker';
-import { DatePickerProps } from '../../../lib/components/date-picker';
+import DatePicker, { DatePickerProps } from '../../../lib/components/date-picker';
 import { KeyCode } from '../../../lib/components/internal/keycode';
 import screenreaderOnlyStyles from '../../../lib/components/internal/components/screenreader-only/styles.selectors.js';
 import { padLeftZeros } from '../../../lib/components/internal/utils/strings/pad-left-zeros';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 import {
   findCalendarDates,
   findCalendarHeaderText,
@@ -13,6 +18,10 @@ import {
   findFocusedDate,
   renderDatePicker,
 } from './common';
+
+function getCurrentMonthLabelText(wrapper: DatePickerWrapper) {
+  return findCurrentDate(wrapper).find(`.${screenreaderOnlyStyles.root}`)?.getElement().textContent;
+}
 
 describe('Date picker calendar at month granularity', () => {
   const defaultProps: DatePickerProps = {
@@ -280,9 +289,7 @@ describe('Date picker calendar at month granularity', () => {
         i18nStrings: { currentMonthAriaLabel: 'TEST CURRENT MONTH' },
       });
 
-      expect(findCurrentDate(wrapper).find(`.${screenreaderOnlyStyles.root}`)?.getElement().textContent).toMatch(
-        'TEST CURRENT MONTH'
-      );
+      expect(getCurrentMonthLabelText(wrapper)).toMatch('TEST CURRENT MONTH');
     });
 
     test('should add aria-selected="true" to selected month in the calendar', () => {
@@ -326,6 +333,32 @@ describe('Date picker calendar at month granularity', () => {
       expect(
         wrapper.findCalendar()!.findSelectedDate().find(':not([aria-hidden=true])')?.getElement().textContent
       ).toBe('January 2024');
+    });
+  });
+
+  describe('i18n', () => {
+    test('adds ARIA labels', () => {
+      const { container } = render(
+        <TestI18nProvider
+          messages={{
+            calendar: {
+              'i18nStrings.currentMonthAriaLabel': 'Test current month',
+              'i18nStrings.previousYearAriaLabel': 'Test previous year',
+              'i18nStrings.nextYearAriaLabel': 'Test next year',
+            },
+          }}
+        >
+          <DatePicker granularity="month" value="" />
+        </TestI18nProvider>
+      );
+
+      const wrapper = createWrapper(container).findDatePicker()!;
+      wrapper.focus();
+      wrapper.findOpenCalendarButton().click();
+      const calendar = createWrapper(container).findCalendar()!;
+      expect(calendar.findPreviousButton().getElement()).toHaveAttribute('aria-label', 'Test previous year');
+      expect(calendar.findNextButton().getElement()).toHaveAttribute('aria-label', 'Test next year');
+      expect(getCurrentMonthLabelText(wrapper)).toContain('Test current month');
     });
   });
 });
