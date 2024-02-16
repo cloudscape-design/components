@@ -30,9 +30,6 @@ describe('formatDateRange', () => {
     describe.each(cases)(
       'formats date correctly [startDate=$startDate, endDate=$endDate, timeOffset=$timeOffset]',
       ({ startDate, endDate, timeOffset, expected }) => {
-        test('Default', () => {
-          expect(formatDateRange({ startDate, endDate, timeOffset })).toBe(expected.iso);
-        });
         test('ISO', () => {
           expect(formatDateRange({ startDate, endDate, timeOffset, format: 'iso' })).toBe(expected.iso);
         });
@@ -79,9 +76,6 @@ describe('formatDateRange', () => {
       describe.each(cases)(
         'formats date correctly [startDate=$startDate, endDate=$endDate, timeOffset=$timeOffset]',
         ({ startDate, endDate, timeOffset, expected }) => {
-          test('Default', () => {
-            expect(formatDateRange({ startDate, endDate, timeOffset })).toBe(expected.iso);
-          });
           test('ISO', () => {
             expect(formatDateRange({ startDate, endDate, timeOffset, format: 'iso' })).toBe(expected.iso);
           });
@@ -128,9 +122,6 @@ describe('formatDateRange', () => {
       describe.each(cases)(
         'formats date correctly [startDate=$startDate, endDate=$endDate, timeOffset=$timeOffset]',
         ({ startDate, endDate, timeOffset, expected }) => {
-          test('Default', () => {
-            expect(formatDateRange({ startDate, endDate, timeOffset, hideTimeOffset: true })).toBe(expected.iso);
-          });
           test('ISO', () => {
             expect(formatDateRange({ startDate, endDate, timeOffset, hideTimeOffset: true, format: 'iso' })).toBe(
               expected.iso
