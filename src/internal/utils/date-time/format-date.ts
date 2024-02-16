@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { CalendarProps } from '../../../calendar/interfaces';
 import { padLeftZeros } from '../strings';
 
 /**
@@ -8,7 +9,7 @@ import { padLeftZeros } from '../strings';
  *
  * We cannot use Date.toISOString because it produces GMT time where the date can be different than local.
  */
-export function formatDate(value: Date, granularity: 'month' | 'day' = 'day'): string {
+export function formatDate(value: Date, granularity: CalendarProps.Granularity = 'day'): string {
   const year = value.getFullYear();
   const month = padLeftZeros(`${value.getMonth() + 1}`, 2);
   if (granularity === 'month') {
