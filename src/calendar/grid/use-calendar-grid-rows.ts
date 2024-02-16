@@ -33,10 +33,7 @@ export default function useCalendarGridRows({
 // Returns a 3-by-4 matrix with dates corresponding to the initial date-time of each month of the year for a given date.
 function getCalendarYear(date: Date): Date[][] {
   const year = date.getFullYear();
-  return new Array(4).fill(0).map((_, i: number) =>
-    new Array(3).fill(0).map((_, j: number) => {
-      const d = new Date(year, i * 3 + j);
-      return d;
-    })
-  );
+  return new Array(4)
+    .fill(0)
+    .map((_, i: number) => new Array(3).fill(0).map((_, j: number) => new Date(year, i * 3 + j)));
 }
