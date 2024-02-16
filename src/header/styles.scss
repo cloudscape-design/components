@@ -133,6 +133,7 @@
 .title {
   @include styles.text-wrapping;
   color: awsui.$color-text-heading-default;
+
   &-variant-h1 {
     font-size: awsui.$font-size-heading-xl;
     padding-block-start: awsui.$space-scaled-2x-xxs;
@@ -163,6 +164,11 @@
   .no-wrap > &:not(.refresh) {
     // Additional padding to make it the same height as a header with wrapping
     padding-block-end: calc(#{awsui.$space-scaled-xxs} + #{awsui.$space-scaled-xxxs});
+  }
+
+  @include styles.with-direction('rtl') {
+    align-items: center;
+    display: inline-flex;
   }
 }
 
@@ -228,6 +234,11 @@
   }
   &-variant-h3 {
     @include styles.font(heading-m);
+  }
+
+  @include styles.with-direction('rtl') {
+    display: inline-flex;
+    gap: awsui.$space-scaled-xxs;
   }
 }
 
