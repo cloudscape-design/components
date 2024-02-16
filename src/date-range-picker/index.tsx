@@ -34,12 +34,23 @@ import ResetContextsForModal from '../internal/context/reset-contexts-for-modal.
 
 export { DateRangePickerProps };
 
-function renderDateRange(
-  range: null | DateRangePickerProps.Value,
-  placeholder: string,
-  formatRelativeRange: DateRangePickerProps.I18nStrings['formatRelativeRange'],
-  timeOffset: { startDate?: number; endDate?: number }
-) {
+function renderDateRange({
+  locale,
+  range,
+  placeholder = '',
+  formatRelativeRange,
+  absoluteFormat,
+  hideTimeOffset,
+  timeOffset,
+}: {
+  locale?: string;
+  range: null | DateRangePickerProps.Value;
+  placeholder?: string;
+  formatRelativeRange: DateRangePickerProps.I18nStrings['formatRelativeRange'];
+  absoluteFormat: DateRangePickerProps.AbsoluteFormat;
+  hideTimeOffset?: boolean;
+  timeOffset: { startDate?: number; endDate?: number };
+}) {
   if (!range) {
     return (
       <span className={styles['label-text']} aria-disabled={true}>
@@ -52,7 +63,16 @@ function renderDateRange(
     range.type === 'relative' ? (
       formatRelativeRange?.(range) ?? ''
     ) : (
-      <BreakSpaces text={formatDateRange(range.startDate, range.endDate, timeOffset)} />
+      <BreakSpaces
+        text={formatDateRange({
+          startDate: range.startDate,
+          endDate: range.endDate,
+          timeOffset,
+          hideTimeOffset,
+          format: absoluteFormat,
+          locale,
+        })}
+      />
     );
 
   return (
@@ -107,6 +127,8 @@ const DateRangePicker = React.forwardRef(
       expandToViewport = false,
       rangeSelectorMode = 'default',
       customAbsoluteRangeControl,
+      absoluteFormat = 'iso',
+      hideTimeOffset,
       ...rest
     }: DateRangePickerProps,
     ref: Ref<DateRangePickerProps.Ref>
@@ -229,6 +251,16 @@ const DateRangePicker = React.forwardRef(
       }
     }
 
+    const formattedDate: string | JSX.Element = renderDateRange({
+      locale: normalizedLocale,
+      range: value,
+      placeholder,
+      formatRelativeRange,
+      absoluteFormat,
+      hideTimeOffset,
+      timeOffset: normalizedTimeOffset,
+    });
+
     const trigger = (
       <div className={styles['trigger-wrapper']}>
         <ButtonTrigger
@@ -255,9 +287,7 @@ const DateRangePicker = React.forwardRef(
             <span className={styles['icon-wrapper']}>
               <InternalIcon name="calendar" variant={disabled || readOnly ? 'disabled' : 'normal'} />
             </span>
-            <span id={triggerContentId}>
-              {renderDateRange(value, placeholder ?? '', formatRelativeRange, normalizedTimeOffset)}
-            </span>
+            <span id={triggerContentId}>{formattedDate}</span>
           </span>
         </ButtonTrigger>
       </div>
@@ -269,7 +299,11 @@ const DateRangePicker = React.forwardRef(
       <div
         {...baseProps}
         ref={mergedRef}
-        className={clsx(baseProps.className, styles.root)}
+        className={clsx(
+          baseProps.className,
+          styles.root,
+          absoluteFormat === 'long-localized' && !dateOnly && styles.wide
+        )}
         onKeyDown={onWrapperKeyDownHandler}
       >
         <Dropdown

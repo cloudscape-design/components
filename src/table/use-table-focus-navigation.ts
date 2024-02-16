@@ -4,6 +4,7 @@
 import { RefObject, useCallback, useEffect, useMemo } from 'react';
 import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
 import { TableProps } from './interfaces';
+import { TableRole } from './table-role';
 
 function iterateTableCells<T extends HTMLElement>(
   table: T,
@@ -16,6 +17,14 @@ function iterateTableCells<T extends HTMLElement>(
   });
 }
 
+interface TableFocusNavigationProps<T> {
+  tableRole: TableRole;
+  selectionType: TableProps['selectionType'];
+  tableRoot: RefObject<HTMLTableElement>;
+  columnDefinitions: Readonly<T[]>;
+  numRows: number;
+}
+
 /**
  * This hook is used to navigate between table cells using the keyboard arrow keys.
  * All the functionality is implemented in the hook, so the table component does not
@@ -25,12 +34,13 @@ function iterateTableCells<T extends HTMLElement>(
  * @param columnDefinitions - The column definitions for the table.
  * @param numRows - The number of rows in the table.
  */
-function useTableFocusNavigation<T extends { editConfig?: TableProps.EditConfig<any> }>(
-  selectionType: TableProps['selectionType'],
-  tableRoot: RefObject<HTMLTableElement>,
-  columnDefinitions: Readonly<T[]>,
-  numRows: number
-) {
+function useTableFocusNavigation<T extends { editConfig?: TableProps.EditConfig<any> }>({
+  tableRole,
+  selectionType,
+  tableRoot,
+  columnDefinitions,
+  numRows,
+}: TableFocusNavigationProps<T>) {
   const focusableColumns = useMemo(() => {
     const cols = columnDefinitions.map(column => !!column.editConfig);
     if (selectionType) {
@@ -128,7 +138,7 @@ function useTableFocusNavigation<T extends { editConfig?: TableProps.EditConfig<
   );
 
   useEffect(() => {
-    if (!tableRoot.current) {
+    if (!tableRoot.current || tableRole === 'grid') {
       return;
     }
 
@@ -136,7 +146,7 @@ function useTableFocusNavigation<T extends { editConfig?: TableProps.EditConfig<
     tableRoot.current.addEventListener('keydown', handleArrowKeyEvents);
 
     return () => tableElement && tableElement.removeEventListener('keydown', handleArrowKeyEvents);
-  }, [focusableColumns, handleArrowKeyEvents, tableRoot]);
+  }, [tableRole, focusableColumns, handleArrowKeyEvents, tableRoot]);
 }
 
 export default useTableFocusNavigation;

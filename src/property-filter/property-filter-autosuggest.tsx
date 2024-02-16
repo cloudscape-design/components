@@ -80,6 +80,7 @@ const PropertyFilterAutosuggest = React.forwardRef(
       filterValue: value,
       filterText: highlightText,
       filteringType: 'manual',
+      enteredTextLabel,
       hideEnteredTextLabel: hideEnteredTextOption,
       onSelectItem: (option: AutosuggestItem) => {
         const value = option.value || '';
@@ -177,7 +178,6 @@ const PropertyFilterAutosuggest = React.forwardRef(
           highlightText={highlightText}
           listId={listId}
           controlId={controlId}
-          enteredTextLabel={enteredTextLabel}
           handleLoadMore={autosuggestLoadMoreHandlers.fireLoadMoreOnScroll}
           hasDropdownStatus={dropdownStatus.content !== null}
           virtualScroll={virtualScroll}

@@ -5,6 +5,7 @@
 
 @use '../../internal/styles' as styles;
 @use '../../internal/styles/tokens' as awsui;
+@use '../../internal/hooks/focus-visible' as focus-visible;
 
 $cell-vertical-padding: awsui.$space-scaled-xs;
 // Calculate padding to prevent a shift in content after selection due to the difference
@@ -34,6 +35,21 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
   word-wrap: break-word;
   border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-divider-secondary;
   font-weight: inherit;
+
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(
+      (
+        'vertical': calc(-1 * #{awsui.$space-scaled-xxs}),
+        'horizontal': calc(-1 * #{awsui.$space-scaled-xxs}),
+      )
+    );
+    // @mixin focus-highlight sets cell's position to "relative".
+    // Reinforcing sticky position for it to take precedence.
+    &.sticky-cell {
+      position: sticky;
+    }
+  }
+
   text-align: start;
   &:not(.body-cell-wrap) {
     white-space: nowrap;

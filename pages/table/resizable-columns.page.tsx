@@ -99,6 +99,7 @@ type PageContext = React.Context<
     fullPage: boolean;
     withColumnIds?: boolean;
     withSelection?: boolean;
+    enableKeyboardNavigation?: boolean;
   }>
 >;
 
@@ -111,6 +112,7 @@ export default function App() {
     fullPage = false,
     withColumnIds = true,
     withSelection = false,
+    enableKeyboardNavigation = false,
   } = urlParams;
 
   const [renderKey, setRenderKey] = useState(0);
@@ -173,6 +175,15 @@ export default function App() {
             <Checkbox checked={withSelection} onChange={event => setUrlParams({ withSelection: event.detail.checked })}>
               With row selection
             </Checkbox>
+            <Checkbox
+              checked={enableKeyboardNavigation}
+              onChange={event => {
+                setUrlParams({ enableKeyboardNavigation: event.detail.checked });
+                window.location.reload();
+              }}
+            >
+              Keyboard navigation
+            </Checkbox>
           </div>
           <div>
             {columnsConfig.map(column => (
@@ -213,6 +224,7 @@ export default function App() {
           onSortingChange={event => setSorting(event.detail)}
           onColumnWidthsChange={handleWidthChange}
           variant={fullPage ? 'full-page' : undefined}
+          enableKeyboardNavigation={enableKeyboardNavigation}
         />
       </ScreenshotArea>
     </SpaceBetween>

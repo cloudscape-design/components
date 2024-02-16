@@ -14,7 +14,6 @@ const VirtualList = ({
   autosuggestItemsState,
   handleLoadMore,
   menuProps,
-  enteredTextLabel,
   highlightedA11yProps,
   hasDropdownStatus,
   highlightText,
@@ -79,7 +78,6 @@ const VirtualList = ({
             highlighted={item === autosuggestItemsState.highlightedOption}
             current={item.value === highlightText}
             data-mouse-target={index}
-            enteredTextLabel={enteredTextLabel}
             virtualPosition={start + (index === 0 ? 1 : 0)}
             screenReaderContent={screenReaderContent}
             ariaSetsize={autosuggestItemsState.items.length}

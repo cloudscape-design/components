@@ -19,6 +19,24 @@
   padding-block: awsui.$space-scaled-xxs;
   padding-inline: awsui.$space-scaled-xs;
 
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(
+      (
+        'vertical': calc(-1 * #{awsui.$space-scaled-xxs}),
+        'horizontal': calc(-1 * #{awsui.$space-scaled-xxs}),
+      )
+    );
+  }
+  // stylelint-disable-next-line selector-combinator-disallowed-list
+  body[data-awsui-focus-visible='true'] &-fake-focus {
+    @include styles.focus-highlight(
+      (
+        'vertical': calc(-1 * #{awsui.$space-scaled-xxs}),
+        'horizontal': calc(-1 * #{awsui.$space-scaled-xxs}),
+      )
+    );
+  }
+
   &-sticky {
     border-block-end: awsui.$border-table-sticky-width solid awsui.$color-border-divider-default;
   }

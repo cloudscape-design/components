@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useCollection } from '@cloudscape-design/collection-hooks';
 import Button from '~components/button';
 import CollectionPreferences, { CollectionPreferencesProps } from '~components/collection-preferences';
@@ -20,6 +20,14 @@ import {
 } from './shared-configs';
 import ScreenshotArea from '../utils/screenshot-area';
 import { contentDisplayPreferenceI18nStrings } from '../common/i18n-strings';
+import { Box, Checkbox } from '~components';
+import AppContext, { AppContextType } from '../app/app-context';
+
+type PageContext = React.Context<
+  AppContextType<{
+    enableKeyboardNavigation: boolean;
+  }>
+>;
 
 const allItems = generateItems();
 const ariaLabels: TableProps<Instance>['ariaLabels'] = {
@@ -30,6 +38,7 @@ const ariaLabels: TableProps<Instance>['ariaLabels'] = {
 };
 
 export default function App() {
+  const { urlParams, setUrlParams } = useContext(AppContext as PageContext);
   const [preferences, setPreferences] = useState<CollectionPreferencesProps.Preferences>(defaultPreferences);
   const { items, actions, filteredItemsCount, collectionProps, filterProps, paginationProps } = useCollection(
     allItems,
@@ -57,52 +66,64 @@ export default function App() {
   const [selectedItems, setSelectedItems] = useState<any>([]);
 
   return (
-    <ScreenshotArea>
-      <Table<Instance>
-        {...collectionProps}
-        header={
-          <Header headingTagOverride="h1" counter={`(${allItems.length})`}>
-            Multiple selection and hooks
-          </Header>
-        }
-        columnDefinitions={columnsConfig}
-        items={items}
-        pagination={<Pagination {...paginationProps} ariaLabels={paginationLabels} />}
-        filter={
-          <TextFilter
-            {...filterProps!}
-            countText={getMatchesCountText(filteredItemsCount!)}
-            filteringAriaLabel="Filter instances"
-          />
-        }
-        columnDisplay={preferences.contentDisplay}
-        selectedItems={selectedItems}
-        selectionType={'multi'}
-        trackBy={'id'}
-        onSelectionChange={({ detail: { selectedItems } }) => setSelectedItems(selectedItems)}
-        ariaLabels={ariaLabels}
-        preferences={
-          <CollectionPreferences
-            title="Preferences"
-            confirmLabel="Confirm"
-            cancelLabel="Cancel"
-            onConfirm={({ detail }) => setPreferences(detail)}
-            preferences={preferences}
-            pageSizePreference={{
-              title: 'Select page size',
-              options: pageSizeOptions,
-            }}
-            contentDisplayPreference={{
-              ...contentDisplayPreference,
-              ...contentDisplayPreferenceI18nStrings,
-            }}
-            wrapLinesPreference={{
-              label: 'Wrap lines',
-              description: 'Wrap lines description',
-            }}
-          />
-        }
-      />
-    </ScreenshotArea>
+    <Box>
+      <Checkbox
+        checked={urlParams.enableKeyboardNavigation}
+        onChange={event => {
+          setUrlParams({ enableKeyboardNavigation: event.detail.checked });
+          window.location.reload();
+        }}
+      >
+        Keyboard navigation
+      </Checkbox>
+      <ScreenshotArea>
+        <Table<Instance>
+          {...collectionProps}
+          header={
+            <Header headingTagOverride="h1" counter={`(${allItems.length})`}>
+              Multiple selection and hooks
+            </Header>
+          }
+          columnDefinitions={columnsConfig}
+          items={items}
+          pagination={<Pagination {...paginationProps} ariaLabels={paginationLabels} />}
+          filter={
+            <TextFilter
+              {...filterProps!}
+              countText={getMatchesCountText(filteredItemsCount!)}
+              filteringAriaLabel="Filter instances"
+            />
+          }
+          columnDisplay={preferences.contentDisplay}
+          selectedItems={selectedItems}
+          selectionType={'multi'}
+          trackBy={'id'}
+          onSelectionChange={({ detail: { selectedItems } }) => setSelectedItems(selectedItems)}
+          ariaLabels={ariaLabels}
+          preferences={
+            <CollectionPreferences
+              title="Preferences"
+              confirmLabel="Confirm"
+              cancelLabel="Cancel"
+              onConfirm={({ detail }) => setPreferences(detail)}
+              preferences={preferences}
+              pageSizePreference={{
+                title: 'Select page size',
+                options: pageSizeOptions,
+              }}
+              contentDisplayPreference={{
+                ...contentDisplayPreference,
+                ...contentDisplayPreferenceI18nStrings,
+              }}
+              wrapLinesPreference={{
+                label: 'Wrap lines',
+                description: 'Wrap lines description',
+              }}
+            />
+          }
+          enableKeyboardNavigation={urlParams.enableKeyboardNavigation}
+        />
+      </ScreenshotArea>
+    </Box>
   );
 }
