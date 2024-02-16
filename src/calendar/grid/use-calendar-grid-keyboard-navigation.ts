@@ -41,7 +41,7 @@ export default function useCalendarGridKeyboardNavigation({
   const moveUp = isMonthPicker ? moveMonthUp : movePrevWeek;
 
   const isSamePage = isMonthPicker ? isSameYear : isSameMonth;
-  const belongsToCurrentPage = (date: Date) => isSamePage(date, baseDate);
+
   const onGridKeyDownHandler = (event: React.KeyboardEvent) => {
     let updatedFocusDate;
 
@@ -78,7 +78,7 @@ export default function useCalendarGridKeyboardNavigation({
         return;
     }
 
-    if (!belongsToCurrentPage(updatedFocusDate)) {
+    if (!isSamePage(updatedFocusDate, baseDate)) {
       onChangePage(updatedFocusDate);
     }
     onFocusDate(updatedFocusDate);
