@@ -72,6 +72,22 @@ describe('Calendar locale DE', () => {
   });
 });
 
+describe('Calendar header', () => {
+  test('previous button navigates to previous month', () => {
+    const { wrapper } = renderCalendar({ value: '2022-01-07' });
+    expect(wrapper.findHeader().getElement()).toHaveTextContent('January 2022');
+    wrapper.findPreviousButton().click();
+    expect(wrapper.findHeader().getElement()).toHaveTextContent('December 2021');
+  });
+
+  test('next button navigates to next month', () => {
+    const { wrapper } = renderCalendar({ value: '2022-01-07' });
+    expect(wrapper.findHeader().getElement()).toHaveTextContent('January 2022');
+    wrapper.findNextButton().click();
+    expect(wrapper.findHeader().getElement()).toHaveTextContent('February 2022');
+  });
+});
+
 describe('aria labels', () => {
   describe('aria-label', () => {
     test('can be set', () => {

@@ -10,6 +10,7 @@ import { InlineEditor } from './inline-editor';
 import LiveRegion from '../../internal/components/live-region/index.js';
 import { useInternalI18n } from '../../i18n/context';
 import { usePrevious } from '../../internal/hooks/use-previous';
+import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context.js';
 import { DisabledInlineEditor } from './disabled-inline-editor';
 
 const submitHandlerFallback = () => {
@@ -73,6 +74,8 @@ function TableCellEditable<ItemType>({
     }
   }, [hasFocus, successfulEdit, prevHasFocus, prevSuccessfulEdit]);
 
+  const { tabIndex: editActivateTabIndex } = useSingleTabStopNavigation(editActivateRef);
+
   return (
     <TableTdElement
       {...rest}
@@ -128,6 +131,7 @@ function TableCellEditable<ItemType>({
             ref={editActivateRef}
             onFocus={() => setHasFocus(true)}
             onBlur={() => setHasFocus(false)}
+            tabIndex={editActivateTabIndex}
           >
             {showIcon && <Icon name="edit" />}
           </button>

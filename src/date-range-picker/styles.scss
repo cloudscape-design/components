@@ -14,7 +14,12 @@ $calendar-header-color: awsui.$color-text-body-default;
 
 .root {
   @include styles.styles-reset;
-  max-inline-size: 32em;
+  &:not(.wide) {
+    max-inline-size: 32em;
+  }
+  &.wide {
+    max-inline-size: 39em;
+  }
 }
 
 .focus-lock {

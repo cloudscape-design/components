@@ -22,6 +22,7 @@ type DemoContext = React.Context<
     selectionType: undefined | 'single' | 'multi';
     stickyColumnsFirst: string;
     stickyColumnsLast: string;
+    enableKeyboardNavigation: boolean;
   }>
 >;
 
@@ -189,6 +190,16 @@ export default () => {
               onChange={event => setUrlParams({ sortingDisabled: event.detail.checked })}
             >
               Sorting disabled
+            </Checkbox>
+
+            <Checkbox
+              checked={urlParams.enableKeyboardNavigation}
+              onChange={event => {
+                setUrlParams({ enableKeyboardNavigation: event.detail.checked });
+                window.location.reload();
+              }}
+            >
+              Keyboard navigation
             </Checkbox>
           </FormField>
 

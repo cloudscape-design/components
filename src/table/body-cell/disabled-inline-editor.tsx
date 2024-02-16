@@ -13,6 +13,7 @@ import { useClickAway } from './click-away';
 import { TableTdElement, TableTdElementProps } from './td-element';
 import { TableBodyCellProps } from './index';
 import styles from './styles.css.js';
+import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
 
 interface DisabledInlineEditorProps<ItemType> extends TableBodyCellProps<ItemType> {
   editDisabledReason: string;
@@ -58,6 +59,8 @@ export function DisabledInlineEditor<ItemType>({
   const { targetProps, descriptionEl } = useHiddenDescription(editDisabledReason);
   const portalClasses = usePortalModeClasses(portalRef);
 
+  const { tabIndex } = useSingleTabStopNavigation(buttonRef);
+
   return (
     <TableTdElement
       {...rest}
@@ -80,7 +83,7 @@ export function DisabledInlineEditor<ItemType>({
 
       <button
         ref={buttonRef}
-        tabIndex={0}
+        tabIndex={tabIndex}
         className={styles['body-cell-editor']}
         aria-label={ariaLabels?.activateEditLabel?.(column, item)}
         aria-haspopup="dialog"

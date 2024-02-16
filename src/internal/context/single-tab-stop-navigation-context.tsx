@@ -9,17 +9,19 @@ export interface SingleTabStopNavigationOptions {
   tabIndex?: number;
 }
 
+export const defaultValue: {
+  navigationActive: boolean;
+  registerFocusable(focusable: Element, handler: FocusableChangeHandler): () => void;
+} = {
+  navigationActive: false,
+  registerFocusable: () => () => {},
+};
+
 /**
  * Single tab stop navigation context is used together with keyboard navigation that requires a single tab stop.
  * It instructs interactive elements to override tab indices for just a single one to remain user-focusable.
  */
-export const SingleTabStopNavigationContext = createContext<{
-  navigationActive: boolean;
-  registerFocusable(focusable: Element, handler: FocusableChangeHandler): () => void;
-}>({
-  navigationActive: false,
-  registerFocusable: () => () => {},
-});
+export const SingleTabStopNavigationContext = createContext(defaultValue);
 
 export function useSingleTabStopNavigation(
   focusable: null | React.RefObject<Element>,
@@ -31,7 +33,7 @@ export function useSingleTabStopNavigation(
   const navigationActive = contextNavigationActive && !navigationDisabled;
 
   useEffect(() => {
-    if (!navigationDisabled && focusable && focusable.current) {
+    if (navigationActive && focusable && focusable.current) {
       const unregister = registerFocusable(focusable.current, isFocusable => setFocusTargetActive(isFocusable));
       return () => unregister();
     }
