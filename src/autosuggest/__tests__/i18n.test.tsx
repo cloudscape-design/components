@@ -23,7 +23,6 @@ jest.mock('@cloudscape-design/component-toolkit/internal', () => {
 });
 beforeEach(() => {
   (warnOnce as any).mockClear();
-  console.log('clear');
 });
 
 const defaultOptions: AutosuggestProps.Options = [{ value: '1' }, { value: '2' }, { value: '3' }, { value: '4' }];
