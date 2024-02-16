@@ -10,10 +10,7 @@ import PlainList from './plain-list';
 import { useAnnouncement } from '../select/utils/use-announcement';
 
 export interface AutosuggestOptionsListProps
-  extends Pick<
-    AutosuggestProps,
-    'enteredTextLabel' | 'virtualScroll' | 'selectedAriaLabel' | 'renderHighlightedAriaLive'
-  > {
+  extends Pick<AutosuggestProps, 'virtualScroll' | 'selectedAriaLabel' | 'renderHighlightedAriaLive'> {
   statusType: AutosuggestProps.StatusType;
   autosuggestItemsState: AutosuggestItemsState;
   autosuggestItemsHandlers: AutosuggestItemsHandlers;
@@ -42,7 +39,6 @@ export default function AutosuggestOptionsList({
   highlightText,
   listId,
   controlId,
-  enteredTextLabel,
   handleLoadMore,
   hasDropdownStatus,
   virtualScroll,
@@ -70,7 +66,6 @@ export default function AutosuggestOptionsList({
       handleLoadMore={handleLoadMore}
       autosuggestItemsState={autosuggestItemsState}
       highlightText={highlightText}
-      enteredTextLabel={enteredTextLabel}
       highlightedA11yProps={highlightedOptionId ? { id: highlightedOptionId } : {}}
       hasDropdownStatus={hasDropdownStatus}
       menuProps={{
