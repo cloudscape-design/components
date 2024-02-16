@@ -64,7 +64,7 @@ test('scrollable grid props', () => {
   const tableWrapper = getTableWrapperRoleProps({ tableRole, ariaLabel, isScrollable: true });
   const tableProps = getTableRoleProps({ tableRole, ariaLabel, totalItemsCount, totalColumnsCount });
 
-  expect(tableWrapper).toEqual({});
+  expect(tableWrapper).toEqual({ 'aria-label': 'table', role: 'region', tabIndex: 0 });
   expect(tableProps).toEqual({
     role: tableRole,
     'aria-label': ariaLabel,
