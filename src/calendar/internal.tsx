@@ -44,8 +44,6 @@ export default function Calendar({
   const baseProps = getBaseProps(rest);
   const normalizedLocale = normalizeLocale('Calendar', locale);
 
-  const isMonthPicker = granularity === 'month';
-
   const gridWrapperRef = useRef<HTMLDivElement>(null);
   const [focusedDate, setFocusedDate] = useState<Date | null>(null);
 
@@ -57,6 +55,10 @@ export default function Calendar({
   const memoizedValue = parsedValue ? valueDateCache(parsedValue) : null;
   const defaultDisplayedDate = memoizedValue ?? new Date();
   const [displayedDate, setDisplayedDate] = useState(defaultDisplayedDate);
+
+  const headingId = useUniqueId('calendar-heading');
+
+  const isMonthPicker = granularity === 'month';
 
   const baseDate = isMonthPicker
     ? getBaseMonth(displayedDate, isDateEnabled)
@@ -77,8 +79,6 @@ export default function Calendar({
     });
 
   const gridRows = useCalendarGridRows({ baseDate, granularity, startOfWeek, locale: normalizedLocale });
-
-  const headingId = useUniqueId('calendar-heading');
 
   // Update displayed date if value changes.
   useEffect(() => {
