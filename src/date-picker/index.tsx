@@ -55,7 +55,7 @@ const DatePicker = React.forwardRef(
       invalid,
       openCalendarAriaLabel,
       expandToViewport,
-      granularity,
+      granularity = 'day',
       ...restProps
     }: DatePickerProps,
     ref: Ref<DatePickerProps.Ref>
