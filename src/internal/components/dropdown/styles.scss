@@ -70,17 +70,9 @@
   }
   &-drop-left {
     inset-inline-end: 0;
-
-    @include styles.with-direction('rtl') {
-      inset-inline-end: unset;
-    }
   }
   &-drop-right {
     inset-inline-start: 0;
-
-    @include styles.with-direction('rtl') {
-      inset-inline-start: unset;
-    }
   }
   &.occupy-entire-width {
     min-inline-size: 100%;

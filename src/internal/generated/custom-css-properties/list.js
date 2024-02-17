@@ -47,14 +47,7 @@ const customCssPropertiesList = [
   'flashbarStickyBottomMargin',
   'stackedNotificationsBottomMargin',
   'stackedNotificationsDefaultBottomMargin',
-  // Dropdown Custom Properties
+  // Dropdown
   'dropdownDefaultMaxWidth',
-  // Spinner Custom Properties
-  'spinnerRotatorFrom',
-  'spinnerRotatorTo',
-  'spinnerLineLeftFrom',
-  'spinnerLineLeftTo',
-  'spinnerLineRightFrom',
-  'spinnerLineRightTo',
 ];
 module.exports = customCssPropertiesList;

@@ -6,44 +6,36 @@
 @use '../internal/styles' as styles;
 @use './mixins' as mixins;
 @use '../internal/styles/tokens' as awsui;
-@use '../internal/generated/custom-css-properties/index' as custom-props;
 
 @keyframes spinner-rotator {
   0% {
-    transform: rotate(var(#{custom-props.$spinnerRotatorFrom}));
+    transform: rotate(0deg);
   }
   100% {
-    transform: rotate(var(#{custom-props.$spinnerRotatorTo}));
+    transform: rotate(360deg);
   }
 }
 
-@keyframes spinner-line-left {
-  0% {
-    transform: rotate(var(#{custom-props.$spinnerLineLeftFrom}));
-  }
+@mixin swing-animation($name, $from, $to) {
+  @keyframes #{$name} {
+    0% {
+      transform: rotate($from);
+    }
 
-  50% {
-    transform: rotate(var(#{custom-props.$spinnerLineLeftTo}));
-  }
+    50% {
+      transform: rotate($to);
+    }
 
-  100% {
-    transform: rotate(var(#{custom-props.$spinnerLineLeftFrom}));
+    100% {
+      transform: rotate($from);
+    }
   }
 }
 
-@keyframes spinner-line-right {
-  0% {
-    transform: rotate(var(#{custom-props.$spinnerLineRightFrom}));
-  }
+@include swing-animation(spinner-line-left, 0deg, 120deg);
 
-  50% {
-    transform: rotate(var(#{custom-props.$spinnerLineRightTo}));
-  }
-
-  100% {
-    transform: rotate(var(#{custom-props.$spinnerLineRightFrom}));
-  }
-}
+// right part of animation requires offset, so it starts from different angle
+@include swing-animation(spinner-line-right, 90deg, -30deg);
 
 @mixin awsui-spinner-circle {
   position: relative;
@@ -63,12 +55,6 @@
 }
 
 .root {
-  #{custom-props.$spinnerRotatorFrom}: 0deg;
-  #{custom-props.$spinnerRotatorTo}: 360deg;
-  #{custom-props.$spinnerLineLeftFrom}: 0deg;
-  #{custom-props.$spinnerLineLeftTo}: 120deg;
-  #{custom-props.$spinnerLineRightFrom}: 90deg;
-  #{custom-props.$spinnerLineRightTo}: -30deg;
   display: inline-block;
   vertical-align: top;
   // Spinner is an exception from our motion rules, it always has motion
@@ -79,15 +65,6 @@
 
   @include mixins.make-spinner-sizes;
   @include mixins.make-spinner-variants;
-
-  @include styles.with-direction('rtl') {
-    #{custom-props.$spinnerRotatorFrom}: 360deg;
-    #{custom-props.$spinnerRotatorTo}: 0deg;
-    #{custom-props.$spinnerLineLeftFrom}: 0deg;
-    #{custom-props.$spinnerLineLeftTo}: -120deg;
-    #{custom-props.$spinnerLineRightFrom}: -90deg;
-    #{custom-props.$spinnerLineRightTo}: 30deg;
-  }
 }
 
 .circle {
