@@ -5,12 +5,11 @@ import Table, { TableProps } from '~components/table';
 import Header from '~components/header';
 import SpaceBetween from '~components/space-between';
 import Input from '~components/input';
-import Link from '~components/link';
 import ScreenshotArea from '../utils/screenshot-area';
-import { columnsConfig } from './shared-configs';
+import { columnsConfig, getMatchesCountText } from './shared-configs';
 import { generateItems, Instance } from './generate-data';
 import { useCollection } from '@cloudscape-design/collection-hooks';
-import { Checkbox, FormField, Select } from '~components';
+import { Button, Checkbox, FormField, Select, TextFilter } from '~components';
 import AppContext, { AppContextType } from '../app/app-context';
 import pseudoRandom from '../utils/pseudo-random';
 
@@ -81,6 +80,7 @@ for (let iteration = 0; iteration < 5; iteration++) {
 }
 
 const COLUMN_DEFINITIONS: TableProps.ColumnDefinition<ExtendedInstance>[] = [
+  ...columnsConfig,
   {
     id: 'variable',
     header: 'Name',
@@ -97,71 +97,19 @@ const COLUMN_DEFINITIONS: TableProps.ColumnDefinition<ExtendedInstance>[] = [
     sortingField: 'description',
   },
   {
-    id: 'description-2',
-    header: 'Description',
-    cell: item => item.description || '-',
-    sortingField: 'description',
-  },
-  {
-    id: 'description-3',
-    header: 'Description',
-    cell: item => item.description || '-',
-    sortingField: 'description',
-  },
-  {
-    id: 'description-4',
-    header: 'Description',
-    cell: item => item.description || '-',
-    sortingField: 'description',
-  },
-  {
-    id: 'description-5',
-    header: 'Description',
-    cell: item => item.description || '-',
-    sortingField: 'description',
-  },
-  {
-    id: 'description-6',
-    header: 'Description',
-    cell: item => item.description || '-',
-    sortingField: 'description',
-  },
-  {
-    id: 'description-7',
-    header: 'Description',
-    cell: item => item.description || '-',
-    sortingField: 'description',
-  },
-  {
-    id: 'description-8',
-    header: 'Description',
-    cell: item => item.description || '-',
-    sortingField: 'description',
-  },
-  {
-    id: 'description-9',
-    header: 'Description',
-    cell: item => item.description || '-',
-    sortingField: 'description',
-  },
-  {
-    id: 'description-10',
-    header: 'Description',
-    cell: item => <Link href="#">Link: {item.description}</Link> || '-',
-    sortingField: 'description',
-  },
-  {
-    id: 'description-11',
-    header: 'Description',
-    cell: item => item.description || '-',
-    sortingField: 'description',
-  },
-  {
-    id: 'description-12',
-    minWidth: 200,
-    header: 'Description',
-    cell: item => item.description || '-',
-    sortingField: 'description',
+    id: 'inline-edit',
+    header: 'Editable cell',
+    cell: item => item.alt || '-',
+    editConfig: {
+      ariaLabel: 'Edit first',
+      editIconAriaLabel: 'editable',
+      errorIconAriaLabel: 'Edit cell error',
+      editingCell: (item, { currentValue, setValue }) => {
+        return (
+          <Input autoFocus={true} value={currentValue ?? item.name} onChange={event => setValue(event.detail.value)} />
+        );
+      },
+    },
   },
 ];
 
@@ -186,9 +134,10 @@ const stickyColumnsOptions = [{ value: '0' }, { value: '1' }, { value: '2' }, { 
 export default () => {
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
   const [selectedItems, setSelectedItems] = useState<any>([]);
-  const { items, collectionProps } = useCollection(allItems, {
+  const { items, collectionProps, filterProps, filteredItemsCount, actions } = useCollection(allItems, {
     pagination: { pageSize: 999 },
     sorting: {},
+    filtering: {},
     expandableRows: {
       getId: item => item.id,
       getParentId: item => item.parentId ?? null,
@@ -251,6 +200,18 @@ export default () => {
           </FormField>
         </SpaceBetween>
 
+        <SpaceBetween size="s" direction="horizontal">
+          <TextFilter
+            {...filterProps}
+            filteringAriaLabel="Filter items"
+            filteringPlaceholder="Find items"
+            filteringClearAriaLabel="Clear"
+            countText={getMatchesCountText(filteredItemsCount ?? 0)}
+          />
+          <Button onClick={() => actions.setExpandedItems(allItems)}>Expand all</Button>
+          <Button onClick={() => actions.setExpandedItems([])}>Collapse all</Button>
+        </SpaceBetween>
+
         <Table
           {...collectionProps}
           data-test-id="small-table"
@@ -258,81 +219,12 @@ export default () => {
             first: parseInt(urlParams.stickyColumnsFirst || '0'),
           }}
           {...urlParams}
-          columnDefinitions={columnsConfig}
+          columnDefinitions={COLUMN_DEFINITIONS}
           selectedItems={selectedItems}
           onSelectionChange={({ detail: { selectedItems } }) => setSelectedItems(selectedItems)}
           items={items}
           ariaLabels={{ ...ariaLabels, tableLabel: 'Small table' }}
           header={<Header>Simple table</Header>}
-        />
-        <Table
-          {...collectionProps}
-          data-test-id="large-table"
-          stickyColumns={{
-            first: parseInt(urlParams.stickyColumnsFirst || '0'),
-          }}
-          {...urlParams}
-          ariaLabels={{ ...ariaLabels, tableLabel: 'Large table' }}
-          columnDefinitions={COLUMN_DEFINITIONS}
-          selectedItems={selectedItems}
-          onSelectionChange={({ detail: { selectedItems } }) => setSelectedItems(selectedItems)}
-          items={items}
-          header={<Header>Large table</Header>}
-        />
-        <Table
-          {...collectionProps}
-          data-test-id="inline-editing-table"
-          stickyColumns={{
-            first: parseInt(urlParams.stickyColumnsFirst || '0'),
-          }}
-          {...urlParams}
-          columnDefinitions={[
-            {
-              id: 'inline-edit-start',
-              header: 'Edit first cells',
-              cell: item => item.alt || '-',
-              editConfig: {
-                ariaLabel: 'Edit first cell',
-                editIconAriaLabel: 'editable',
-                errorIconAriaLabel: 'Edit first cell error',
-                editingCell: (item, { currentValue, setValue }) => {
-                  return (
-                    <Input
-                      autoFocus={true}
-                      value={currentValue ?? item.name}
-                      onChange={event => setValue(event.detail.value)}
-                    />
-                  );
-                },
-              },
-            },
-            ...COLUMN_DEFINITIONS,
-            {
-              id: 'inline-edit-end',
-              header: 'Edit last cells',
-              cell: item => item.alt || '-',
-              sortingField: 'alt',
-              editConfig: {
-                ariaLabel: 'Edit cell last',
-                editIconAriaLabel: 'editable',
-                errorIconAriaLabel: 'Edit cell last error',
-                editingCell: (item, { currentValue, setValue }) => {
-                  return (
-                    <Input
-                      autoFocus={true}
-                      value={currentValue ?? item.name}
-                      onChange={event => setValue(event.detail.value)}
-                    />
-                  );
-                },
-              },
-            },
-          ]}
-          selectedItems={selectedItems}
-          onSelectionChange={({ detail: { selectedItems } }) => setSelectedItems(selectedItems)}
-          items={items}
-          ariaLabels={{ ...ariaLabels, tableLabel: 'Inline editing table' }}
-          header={<Header>Large table with inline editing</Header>}
         />
       </SpaceBetween>
     </ScreenshotArea>
