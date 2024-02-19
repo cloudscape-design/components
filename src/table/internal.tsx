@@ -49,6 +49,7 @@ import { NoDataCell } from './no-data-cell';
 import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
 import { getContentHeaderClassName } from '../internal/utils/content-header-utils';
 import InternalIcon from '../icon/internal';
+import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
 
 const GRID_NAVIGATION_PAGE_SIZE = 10;
 const SELECTION_COLUMN_WIDTH = 54;
@@ -324,7 +325,7 @@ const InternalTable = React.forwardRef(
       selectionType,
       tableRoot: tableRefObject,
       columnDefinitions: visibleColumnDefinitions,
-      numRows: items?.length,
+      numRows: allItems?.length,
     });
     const toolsHeaderWrapper = useRef<HTMLDivElement>(null);
     // If is mobile, we take into consideration the AppLayout's mobile bar and we subtract the tools wrapper height so only the table header is sticky
@@ -419,7 +420,7 @@ const InternalTable = React.forwardRef(
               {!!renderAriaLive && !!firstIndex && (
                 <LiveRegion>
                   <span>
-                    {renderAriaLive({ totalItemsCount, firstIndex, lastIndex: firstIndex + items.length - 1 })}
+                    {renderAriaLive({ totalItemsCount, firstIndex, lastIndex: firstIndex + allItems.length - 1 })}
                   </span>
                 </LiveRegion>
               )}
@@ -450,7 +451,7 @@ const InternalTable = React.forwardRef(
                     {...theadProps}
                   />
                   <tbody>
-                    {loading || items.length === 0 ? (
+                    {loading || allItems.length === 0 ? (
                       <tr>
                         <NoDataCell
                           totalColumnsCount={totalColumnsCount}
@@ -463,13 +464,15 @@ const InternalTable = React.forwardRef(
                         />
                       </tr>
                     ) : (
-                      items.map((item, rowIndex) => {
+                      allItems.map((item, rowIndex) => {
                         const firstVisible = rowIndex === 0;
-                        const lastVisible = rowIndex === items.length - 1;
+                        const lastVisible = rowIndex === allItems.length - 1;
                         const isEven = rowIndex % 2 === 0;
                         const isSelected = !!selectionType && isItemSelected(item);
-                        const isPrevSelected = !!selectionType && !firstVisible && isItemSelected(items[rowIndex - 1]);
-                        const isNextSelected = !!selectionType && !lastVisible && isItemSelected(items[rowIndex + 1]);
+                        const isPrevSelected =
+                          !!selectionType && !firstVisible && isItemSelected(allItems[rowIndex - 1]);
+                        const isNextSelected =
+                          !!selectionType && !lastVisible && isItemSelected(allItems[rowIndex + 1]);
                         const expandableProps = getItemLevel
                           ? {
                               level: getItemLevel(item),
@@ -551,21 +554,11 @@ const InternalTable = React.forwardRef(
                                 isExpandCell={true}
                               >
                                 {getItemExpandable?.(item) ? (
-                                  <button
-                                    className={clsx(
-                                      styles['expand-toggle'],
-                                      !expandableProps.isExpandable && styles['expand-toggle-hidden']
-                                    )}
-                                    onClick={() => {
-                                      expandableProps.onExpandableItemToggle(item);
-                                    }}
-                                  >
-                                    {expandableProps.isExpanded ? (
-                                      <InternalIcon name="caret-down-filled" />
-                                    ) : (
-                                      <InternalIcon name="caret-right-filled" />
-                                    )}
-                                  </button>
+                                  <ExpandToggleButton
+                                    isExpandable={expandableProps.isExpandable}
+                                    isExpanded={expandableProps.isExpanded}
+                                    onExpandableItemToggle={() => expandableProps.onExpandableItemToggle(item)}
+                                  />
                                 ) : null}
                               </TableTdElement>
                             )}
@@ -642,5 +635,28 @@ const InternalTable = React.forwardRef(
     );
   }
 ) as TableForwardRefType;
+
+function ExpandToggleButton({
+  isExpandable,
+  isExpanded,
+  onExpandableItemToggle,
+}: {
+  isExpandable: boolean;
+  isExpanded: boolean;
+  onExpandableItemToggle: () => void;
+}) {
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const { tabIndex } = useSingleTabStopNavigation(buttonRef);
+  return (
+    <button
+      ref={buttonRef}
+      tabIndex={tabIndex}
+      className={clsx(styles['expand-toggle'], !isExpandable && styles['expand-toggle-hidden'])}
+      onClick={() => onExpandableItemToggle()}
+    >
+      {isExpanded ? <InternalIcon name="caret-down-filled" /> : <InternalIcon name="caret-right-filled" />}
+    </button>
+  );
+}
 
 export default InternalTable;
