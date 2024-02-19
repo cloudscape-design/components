@@ -28,8 +28,7 @@
     text-decoration: none;
   }
 
-  &:active,
-  &.is-activated {
+  &:active {
     background: map.get($variant, 'active-background');
     color: map.get($variant, 'active-color');
     border-color: map.get($variant, 'active-border-color');
