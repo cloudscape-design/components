@@ -15,6 +15,11 @@ const defaults: Record<AppLayoutProps.ContentType, AppLayoutState> = {
   dashboard: {
     ...defaultContentTypeState,
   },
+  hero: {
+    navigationOpen: false,
+    minContentWidth: 280,
+    maxContentWidth: undefined,
+  },
   cards: {
     navigationOpen: true,
     minContentWidth: 280,

@@ -8,7 +8,7 @@ import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 
 export default function Breadcrumbs() {
-  const { breadcrumbs, hasStickyBackground, isMobile } = useAppLayoutInternals();
+  const { breadcrumbs, hasStickyBackground, isMobile, contentType } = useAppLayoutInternals();
 
   if (isMobile || !breadcrumbs) {
     return null;
@@ -19,6 +19,7 @@ export default function Breadcrumbs() {
       className={clsx(
         styles.breadcrumbs,
         testutilStyles.breadcrumbs,
+        contentType === 'hero' && styles['content-type-hero'],
         {
           [styles['has-sticky-background']]: hasStickyBackground,
         },

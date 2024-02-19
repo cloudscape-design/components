@@ -43,6 +43,11 @@ export interface AppLayoutProps extends BaseComponentProps {
   activeDrawerId?: string | null;
 
   /**
+   * If true, enables dark header for breadcrumbs and flashbar
+   */
+  darkHeader?: boolean;
+
+  /**
    * Fired when the active drawer is toggled.
    */
   onDrawerChange?: NonCancelableEventHandler<AppLayoutProps.DrawerChangeDetail>;
@@ -239,7 +244,7 @@ export interface AppLayoutProps extends BaseComponentProps {
 }
 
 export namespace AppLayoutProps {
-  export type ContentType = 'default' | 'form' | 'table' | 'cards' | 'wizard' | 'dashboard';
+  export type ContentType = 'default' | 'form' | 'table' | 'cards' | 'wizard' | 'dashboard' | 'hero';
 
   export interface Ref {
     /**

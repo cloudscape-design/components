@@ -10,6 +10,9 @@
 .breadcrumbs {
   background-color: awsui.$color-background-layout-main;
   grid-area: breadcrumbs;
+  &.content-type-hero {
+    background-color: transparent;
+  }
 
   /*
   If a child component tells the AppLayout to have a sticky 
