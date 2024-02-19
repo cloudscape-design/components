@@ -1,0 +1,12 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+/* stylelint-disable @cloudscape-design/no-implicit-descendant, plugin/no-unsupported-browser-features, selector-combinator-disallowed-list */
+@mixin with-direction($direction) {
+  html[dir='#{$direction}'] & {
+    @content;
+  }
+}
+/* stylelint-enable @cloudscape-design/no-implicit-descendant, plugin/no-unsupported-browser-features, selector-combinator-disallowed-list */

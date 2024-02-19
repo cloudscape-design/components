@@ -127,6 +127,7 @@ interface PageConfig {
   stickyHeader?: boolean;
   withColumnIds?: boolean;
   withSelection?: boolean;
+  enableKeyboardNavigation?: boolean;
 }
 
 const setupTest = (testFn: (page: TablePage) => Promise<void>, config?: PageConfig) => {
@@ -137,6 +138,8 @@ const setupTest = (testFn: (page: TablePage) => Promise<void>, config?: PageConf
       stickyHeader: config?.stickyHeader !== undefined ? String(config.stickyHeader) : 'false',
       withColumnIds: config?.withColumnIds !== undefined ? String(config.withColumnIds) : 'true',
       withSelection: config?.withSelection !== undefined ? String(config.withSelection) : 'false',
+      enableKeyboardNavigation:
+        config?.enableKeyboardNavigation !== undefined ? String(config.enableKeyboardNavigation) : 'false',
     }).toString();
     await browser.url(`#/light/table/resizable-columns?${params}`);
     await page.waitForVisible(tableWrapper.findBodyCell(2, 1).toSelector());
@@ -342,24 +345,29 @@ test(
   })
 );
 
-test(
-  'should resize column to grow by keyboard',
-  setupTest(async page => {
-    await page.click('#reset-state');
-    const originalWidth = await page.getColumnWidth(1);
-    await page.keys(['Tab']);
-    // wait for the resizer to attach handler
+test.each([false, true])(
+  'should resize column to grow by keyboard [enableKeyboardNavigation=%s]',
+  enableKeyboardNavigation => {
+    setupTest(
+      async page => {
+        await page.click('#reset-state');
+        const originalWidth = await page.getColumnWidth(1);
+        await page.keys(['Tab']);
+        // wait for the resizer to attach handler
 
-    await page.keys(['Enter', 'ArrowRight', 'ArrowRight', 'Enter']);
-    await page.assertColumnWidth(1, originalWidth + 20);
-    await expect(page.readTableWidth(1)).resolves.toEqual(originalWidth + 20);
+        await page.keys(['Enter', 'ArrowRight', 'ArrowRight', 'Enter']);
+        await page.assertColumnWidth(1, originalWidth + 20);
+        await expect(page.readTableWidth(1)).resolves.toEqual(originalWidth + 20);
 
-    await page.keys(['Space', 'ArrowLeft', 'Space']);
-    await page.assertColumnWidth(1, originalWidth + 10);
-    await expect(page.readTableWidth(1)).resolves.toEqual(originalWidth + 10);
+        await page.keys(['Space', 'ArrowLeft', 'Space']);
+        await page.assertColumnWidth(1, originalWidth + 10);
+        await expect(page.readTableWidth(1)).resolves.toEqual(originalWidth + 10);
 
-    await page.keys(['Enter', 'ArrowRight', 'Escape']);
-    await page.assertColumnWidth(1, originalWidth + 20);
-    await expect(page.readTableWidth(1)).resolves.toEqual(originalWidth + 20);
-  })
+        await page.keys(['Enter', 'ArrowRight', 'Escape']);
+        await page.assertColumnWidth(1, originalWidth + 20);
+        await expect(page.readTableWidth(1)).resolves.toEqual(originalWidth + 20);
+      },
+      { enableKeyboardNavigation }
+    );
+  }
 );

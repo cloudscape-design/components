@@ -38,7 +38,7 @@
     align-items: center;
   }
 
-  &-header-month {
+  &-header-title {
     @include styles.font-body-m;
     font-weight: typographyConstants.$font-weight-bold;
     color: calendar.$header-color;
@@ -56,11 +56,11 @@
 
   &-grid {
     inline-size: 100%;
+    table-layout: fixed;
     border-spacing: 0;
   }
 
   &-grid-cell {
-    inline-size: calc(100% / 7);
     word-break: break-word;
     text-align: center;
     font-weight: unset;

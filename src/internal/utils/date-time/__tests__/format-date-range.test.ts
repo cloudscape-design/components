@@ -9,13 +9,171 @@ const newYork = { startDate: -240, endDate: -240 };
 const regional = { startDate: 0, endDate: 60 };
 
 describe('formatDateRange', () => {
-  test.each([
-    ['2020-01-01', '2020-01-02', browser, '2020-01-01 — 2020-01-02'],
-    ['2020-01-01', '2020-01-02', berlin, '2020-01-01 — 2020-01-02'],
-    ['2020-01-01T00:00:00', '2020-01-01T12:00:00', berlin, '2020-01-01T00:00:00+02:00 — 2020-01-01T12:00:00+02:00'],
-    ['2020-01-01T00:00:00', '2020-01-01T12:00:00', newYork, '2020-01-01T00:00:00-04:00 — 2020-01-01T12:00:00-04:00'],
-    ['2020-01-01T00:00:00', '2020-01-01T12:00:00', regional, '2020-01-01T00:00:00+00:00 — 2020-01-01T12:00:00+01:00'],
-  ])('formats date correctly [%s, %s, %s]', (startDate, endDate, timeOffset, expected) => {
-    expect(formatDateRange(startDate, endDate, timeOffset)).toBe(expected);
+  describe('Only date', () => {
+    const cases = [
+      {
+        startDate: '2020-01-01',
+        endDate: '2020-01-02',
+        timeOffset: browser,
+        expected: {
+          iso: '2020-01-01 — 2020-01-02',
+          localized: { 'en-US': 'January 1, 2020 — January 2, 2020' },
+        },
+      },
+      {
+        startDate: '2020-01-01',
+        endDate: '2020-01-02',
+        timeOffset: berlin,
+        expected: { iso: '2020-01-01 — 2020-01-02', localized: { 'en-US': 'January 1, 2020 — January 2, 2020' } },
+      },
+    ];
+    describe.each(cases)(
+      'formats date correctly [startDate=$startDate, endDate=$endDate, timeOffset=$timeOffset]',
+      ({ startDate, endDate, timeOffset, expected }) => {
+        test('ISO', () => {
+          expect(formatDateRange({ startDate, endDate, timeOffset, format: 'iso' })).toBe(expected.iso);
+        });
+        test('Human-readable', () => {
+          expect(formatDateRange({ startDate, endDate, timeOffset, format: 'long-localized', locale: 'en-US' })).toBe(
+            expected.localized['en-US']
+          );
+        });
+      }
+    );
+  });
+
+  describe('Date and time', () => {
+    describe('with time offset', () => {
+      const cases = [
+        {
+          startDate: '2020-01-01T00:00:00',
+          endDate: '2020-01-01T12:00:00',
+          timeOffset: berlin,
+          expected: {
+            iso: '2020-01-01T00:00:00+02:00 — 2020-01-01T12:00:00+02:00',
+            localized: { 'en-US': 'January 1, 2020, 00:00:00 (UTC+2) — January 1, 2020, 12:00:00 (UTC+2)' },
+          },
+        },
+        {
+          startDate: '2020-01-01T00:00:00',
+          endDate: '2020-01-01T12:00:00',
+          timeOffset: newYork,
+          expected: {
+            iso: '2020-01-01T00:00:00-04:00 — 2020-01-01T12:00:00-04:00',
+            localized: { 'en-US': 'January 1, 2020, 00:00:00 (UTC-4) — January 1, 2020, 12:00:00 (UTC-4)' },
+          },
+        },
+        {
+          startDate: '2020-01-01T00:00:00',
+          endDate: '2020-01-01T12:00:00',
+          timeOffset: regional,
+          expected: {
+            iso: '2020-01-01T00:00:00+00:00 — 2020-01-01T12:00:00+01:00',
+            localized: { 'en-US': 'January 1, 2020, 00:00:00 (UTC) — January 1, 2020, 12:00:00 (UTC+1)' },
+          },
+        },
+      ];
+      describe.each(cases)(
+        'formats date correctly [startDate=$startDate, endDate=$endDate, timeOffset=$timeOffset]',
+        ({ startDate, endDate, timeOffset, expected }) => {
+          test('ISO', () => {
+            expect(formatDateRange({ startDate, endDate, timeOffset, format: 'iso' })).toBe(expected.iso);
+          });
+          test('Human-readable', () => {
+            expect(formatDateRange({ startDate, endDate, timeOffset, format: 'long-localized', locale: 'en-US' })).toBe(
+              expected.localized['en-US']
+            );
+          });
+        }
+      );
+    });
+
+    describe('without time offset', () => {
+      const cases = [
+        {
+          startDate: '2020-01-01T00:00:00',
+          endDate: '2020-01-01T12:00:00',
+          timeOffset: berlin,
+          expected: {
+            iso: '2020-01-01T00:00:00 — 2020-01-01T12:00:00',
+            localized: { 'en-US': 'January 1, 2020, 00:00:00 — January 1, 2020, 12:00:00' },
+          },
+        },
+        {
+          startDate: '2020-01-01T00:00:00',
+          endDate: '2020-01-01T12:00:00',
+          timeOffset: newYork,
+          expected: {
+            iso: '2020-01-01T00:00:00 — 2020-01-01T12:00:00',
+            localized: { 'en-US': 'January 1, 2020, 00:00:00 — January 1, 2020, 12:00:00' },
+          },
+        },
+        {
+          startDate: '2020-01-01T00:00:00',
+          endDate: '2020-01-01T12:00:00',
+          timeOffset: regional,
+          expected: {
+            iso: '2020-01-01T00:00:00 — 2020-01-01T12:00:00',
+            localized: { 'en-US': 'January 1, 2020, 00:00:00 — January 1, 2020, 12:00:00' },
+          },
+        },
+      ];
+
+      describe.each(cases)(
+        'formats date correctly [startDate=$startDate, endDate=$endDate, timeOffset=$timeOffset]',
+        ({ startDate, endDate, timeOffset, expected }) => {
+          test('ISO', () => {
+            expect(formatDateRange({ startDate, endDate, timeOffset, hideTimeOffset: true, format: 'iso' })).toBe(
+              expected.iso
+            );
+          });
+          test('Human-readable', () => {
+            expect(
+              formatDateRange({
+                startDate,
+                endDate,
+                timeOffset,
+                hideTimeOffset: true,
+                format: 'long-localized',
+                locale: 'en-US',
+              })
+            ).toBe(expected.localized['en-US']);
+          });
+        }
+      );
+    });
+  });
+
+  describe('Localization', () => {
+    describe('uses comma to separate date and time in some languages', () => {
+      test.each(['ar', 'de', 'en-GB', 'en-US', 'es', 'fr', 'he', 'id', 'it', 'ko', 'pt-BR', 'th', 'tr'])(
+        '%s',
+        locale => {
+          expect(
+            formatDateRange({
+              startDate: '2020-01-01T00:00:00',
+              endDate: '2020-01-01T12:00:00',
+              timeOffset: { startDate: 60 },
+              locale,
+              format: 'long-localized',
+            })
+          ).toContain(', ');
+        }
+      );
+    });
+
+    describe('does not use comma to separate date and time in some languages', () => {
+      test.each(['ja', 'zh-CN', 'zh-TW'])('%s', locale => {
+        expect(
+          formatDateRange({
+            startDate: '2020-01-01T00:00:00',
+            endDate: '2020-01-01T12:00:00',
+            timeOffset: { startDate: 60 },
+            locale,
+            format: 'long-localized',
+          })
+        ).not.toContain(',');
+      });
+    });
   });
 });

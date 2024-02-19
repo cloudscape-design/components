@@ -225,6 +225,7 @@ export default () => {
           items={items}
           ariaLabels={{ ...ariaLabels, tableLabel: 'Small table' }}
           header={<Header>Simple table</Header>}
+          enableKeyboardNavigation={true}
         />
       </SpaceBetween>
     </ScreenshotArea>

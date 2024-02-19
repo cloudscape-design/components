@@ -20,6 +20,7 @@ interface TabButtonProps {
   isRefresh: boolean;
 
   className: string;
+  id?: string;
 
   onClick: () => void;
   onFocus?: React.FocusEventHandler<HTMLButtonElement>;
@@ -42,6 +43,7 @@ export const TabButton = React.forwardRef(
       isRefresh,
       text,
       className,
+      id,
     }: TabButtonProps,
     ref: React.Ref<HTMLButtonElement>
   ) => {
@@ -52,6 +54,7 @@ export const TabButton = React.forwardRef(
           [styles['tab-button--disabled']]: disabled,
           [styles['tab-button--refresh']]: isRefresh,
         })}
+        id={id}
         type="button"
         onClick={onClick}
         onFocus={onFocus}

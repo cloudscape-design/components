@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { moveNextDay, movePrevDay, moveNextWeek, movePrevWeek, getBaseDate } from '../navigation';
+import { moveNextDay, movePrevDay, moveNextWeek, movePrevWeek, getBaseDay } from '../navigation';
 
 jest.mock('date-fns', () => ({ ...jest.requireActual('date-fns'), startOfMonth: () => new Date('2022-01-01') }));
 
@@ -31,8 +31,8 @@ test('movePrevWeek', () => {
   expect(movePrevWeek(startDate, disableDates('2022-01-08', '2022-01-01'))).toEqual(new Date('2021-12-25'));
 });
 
-test('getBaseDate', () => {
-  expect(getBaseDate(startDate, () => true)).toEqual(new Date('2022-01-01'));
-  expect(getBaseDate(startDate, disableDates('2022-01-01', '2022-01-02'))).toEqual(new Date('2022-01-03'));
-  expect(getBaseDate(startDate, () => false)).toEqual(new Date('2022-01-01'));
+test('getBaseDay', () => {
+  expect(getBaseDay(startDate, () => true)).toEqual(new Date('2022-01-01'));
+  expect(getBaseDay(startDate, disableDates('2022-01-01', '2022-01-02'))).toEqual(new Date('2022-01-03'));
+  expect(getBaseDay(startDate, () => false)).toEqual(new Date('2022-01-01'));
 });

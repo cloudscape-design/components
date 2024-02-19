@@ -114,11 +114,13 @@ const Thead = React.forwardRef(
               hidden={hidden}
               tableRole={tableRole}
               colIndex={0}
+              focusedComponent={focusedComponent}
               columnId={selectionColumnId}
               stickyState={stickyState}
             >
               {selectionType === 'multi' ? (
                 <SelectionControl
+                  tableRole={tableRole}
                   onFocusDown={event => {
                     onFocusMove!(event.target as HTMLElement, -1, +1);
                   }}
