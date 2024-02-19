@@ -113,12 +113,28 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
         {...nativeAttributes}
         tabIndex={cellTabIndex}
       >
-        {!level || !isExpandCell ? (
-          children
-        ) : (
-          <div style={{ paddingLeft: `${(isContentCell ? 8 : 0) + 20 * (level - 1)}px` }}>{children}</div>
-        )}
+        <TableTdElementContent level={level} isExpandCell={isExpandCell} isContentCell={isContentCell}>
+          {children}
+        </TableTdElementContent>
       </Element>
     );
   }
 );
+
+export function TableTdElementContent({
+  level,
+  isExpandCell,
+  isContentCell,
+  children,
+}: {
+  level?: number;
+  isExpandCell?: boolean;
+  isContentCell?: boolean;
+  children: React.ReactNode;
+}) {
+  return !level || !isExpandCell ? (
+    <>{children}</>
+  ) : (
+    <div style={{ paddingLeft: `${(isContentCell ? 8 : 0) + 20 * (level - 1)}px` }}>{children}</div>
+  );
+}

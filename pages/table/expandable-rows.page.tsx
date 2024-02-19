@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import Table, { TableProps } from '~components/table';
 import Header from '~components/header';
 import SpaceBetween from '~components/space-between';
@@ -20,6 +20,8 @@ type DemoContext = React.Context<
     sortingDisabled: boolean;
     selectionType: undefined | 'single' | 'multi';
     stickyColumnsFirst: string;
+    imitateServerExpand: boolean;
+    imitateServerErrors: boolean;
   }>
 >;
 
@@ -132,7 +134,18 @@ const selectionTypeOptions = [{ value: 'none' }, { value: 'single' }, { value: '
 const stickyColumnsOptions = [{ value: '0' }, { value: '1' }, { value: '2' }, { value: '3' }];
 
 export default () => {
-  const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
+  const {
+    urlParams: {
+      resizableColumns,
+      stickyHeader,
+      sortingDisabled,
+      imitateServerExpand = true,
+      imitateServerErrors,
+      selectionType,
+      stickyColumnsFirst,
+    },
+    setUrlParams,
+  } = useContext(AppContext as DemoContext);
   const [selectedItems, setSelectedItems] = useState<any>([]);
   const { items, collectionProps, filterProps, filteredItemsCount, actions } = useCollection(allItems, {
     pagination: { pageSize: 999 },
@@ -143,6 +156,41 @@ export default () => {
       getParentId: item => item.parentId ?? null,
     },
   });
+  const [serverExpandState, setServerExpandState] = useState(new Map<ExtendedInstance, TableProps.ExpandedItemState>());
+
+  const requestQueue = useRef<ExtendedInstance[]>([]);
+  useEffect(() => {
+    const resolveRequest = () => {
+      const first = requestQueue.current.shift();
+      if (first) {
+        setServerExpandState(prev => {
+          const newMap = new Map<ExtendedInstance, TableProps.ExpandedItemState>();
+          for (const [item, state] of prev) {
+            newMap.set(item, state);
+          }
+          const errorProbability = imitateServerErrors ? 0.15 : 0;
+          newMap.set(
+            first,
+            pseudoRandom() < 1 - errorProbability
+              ? { type: 'ready' }
+              : { type: 'error', errorText: 'Could not load nested items due to a server error' }
+          );
+          return newMap;
+        });
+      }
+    };
+
+    const interval1 = setInterval(resolveRequest, 2000);
+    const interval2 = setInterval(resolveRequest, 3000);
+    const interval3 = setInterval(resolveRequest, 3500);
+
+    return () => {
+      clearInterval(interval1);
+      clearInterval(interval2);
+      clearInterval(interval3);
+    };
+  }, [imitateServerErrors]);
+
   return (
     <ScreenshotArea>
       <h1>Expandable rows</h1>
@@ -150,31 +198,42 @@ export default () => {
         <SpaceBetween direction="horizontal" size="m">
           <FormField label="Table flags">
             <Checkbox
-              checked={urlParams.resizableColumns}
+              checked={resizableColumns}
               onChange={event => setUrlParams({ resizableColumns: event.detail.checked })}
             >
               Resizable columns
             </Checkbox>
 
-            <Checkbox
-              checked={urlParams.stickyHeader}
-              onChange={event => setUrlParams({ stickyHeader: event.detail.checked })}
-            >
+            <Checkbox checked={stickyHeader} onChange={event => setUrlParams({ stickyHeader: event.detail.checked })}>
               Sticky header
             </Checkbox>
 
             <Checkbox
-              checked={urlParams.sortingDisabled}
+              checked={sortingDisabled}
               onChange={event => setUrlParams({ sortingDisabled: event.detail.checked })}
             >
               Sorting disabled
+            </Checkbox>
+
+            <Checkbox
+              checked={imitateServerExpand}
+              onChange={event => setUrlParams({ imitateServerExpand: event.detail.checked })}
+            >
+              Imitate server expand
+            </Checkbox>
+
+            <Checkbox
+              checked={imitateServerErrors}
+              onChange={event => setUrlParams({ imitateServerErrors: event.detail.checked })}
+            >
+              Imitate server errors
             </Checkbox>
           </FormField>
 
           <FormField label="Selection type">
             <Select
               selectedOption={
-                selectionTypeOptions.find(option => option.value === urlParams.selectionType) ?? selectionTypeOptions[0]
+                selectionTypeOptions.find(option => option.value === selectionType) ?? selectionTypeOptions[0]
               }
               options={selectionTypeOptions}
               onChange={event =>
@@ -191,8 +250,7 @@ export default () => {
           <FormField label="Sticky columns first">
             <Select
               selectedOption={
-                stickyColumnsOptions.find(option => option.value === urlParams.stickyColumnsFirst) ??
-                stickyColumnsOptions[0]
+                stickyColumnsOptions.find(option => option.value === stickyColumnsFirst) ?? stickyColumnsOptions[0]
               }
               options={stickyColumnsOptions}
               onChange={event => setUrlParams({ stickyColumnsFirst: event.detail.selectedOption.value })}
@@ -208,17 +266,73 @@ export default () => {
             filteringClearAriaLabel="Clear"
             countText={getMatchesCountText(filteredItemsCount ?? 0)}
           />
-          <Button onClick={() => actions.setExpandedItems(allItems)}>Expand all</Button>
-          <Button onClick={() => actions.setExpandedItems([])}>Collapse all</Button>
+          <Button
+            onClick={() => {
+              actions.setExpandedItems(allItems);
+
+              if (imitateServerExpand) {
+                setServerExpandState(() => {
+                  const newMap = new Map();
+                  requestQueue.current = [];
+                  for (const item of allItems) {
+                    newMap.set(item, { type: 'loading', loadingText: `Expanding item ${item.name}` });
+                    requestQueue.current.push(item);
+                  }
+                  return newMap;
+                });
+              }
+            }}
+          >
+            Expand all
+          </Button>
+          <Button
+            onClick={() => {
+              actions.setExpandedItems([]);
+
+              if (imitateServerExpand) {
+                setServerExpandState(new Map());
+                requestQueue.current = [];
+              }
+            }}
+          >
+            Collapse all
+          </Button>
         </SpaceBetween>
 
         <Table
           {...collectionProps}
-          data-test-id="small-table"
-          stickyColumns={{
-            first: parseInt(urlParams.stickyColumnsFirst || '0'),
+          onExpandableItemToggle={event => {
+            collectionProps.onExpandableItemToggle?.(event);
+
+            if (imitateServerExpand) {
+              setServerExpandState(prev => {
+                const newMap = new Map<ExtendedInstance, TableProps.ExpandedItemState>();
+                for (const [item, state] of prev) {
+                  if (item !== event.detail.item) {
+                    newMap.set(item, state);
+                  }
+                }
+                requestQueue.current = requestQueue.current.filter(item => item !== event.detail.item);
+
+                if (event.detail.expanded) {
+                  newMap.set(event.detail.item, {
+                    type: 'loading',
+                    loadingText: `Expanding item ${event.detail.item.name}`,
+                  });
+                  requestQueue.current.push(event.detail.item);
+                }
+
+                return newMap;
+              });
+            }
           }}
-          {...urlParams}
+          getItemExpandedState={item => serverExpandState.get(item) ?? { type: 'ready' }}
+          data-test-id="small-table"
+          stickyColumns={{ first: parseInt(stickyColumnsFirst || '0') }}
+          resizableColumns={resizableColumns}
+          stickyHeader={stickyHeader}
+          sortingDisabled={sortingDisabled}
+          selectionType={selectionType}
           columnDefinitions={COLUMN_DEFINITIONS}
           selectedItems={selectedItems}
           onSelectionChange={({ detail: { selectedItems } }) => setSelectedItems(selectedItems)}

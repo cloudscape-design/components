@@ -345,6 +345,11 @@ export interface TableProps<T = any> extends BaseComponentProps {
   /**
    * Experimental API
    */
+  getItemExpandedState?: (item: T) => TableProps.ExpandedItemState;
+
+  /**
+   * Experimental API
+   */
   onExpandableItemToggle?: NonCancelableEventHandler<TableProps.ExpandableItemToggleDetail<T>>;
 }
 
@@ -495,5 +500,19 @@ export namespace TableProps {
 
   export interface ExpandableItemToggleDetail<T> {
     item: T;
+    expanded: boolean;
+  }
+
+  export type ExpandedItemState = ExpandedItemStateReady | ExpandedItemStateLoading | ExpandedItemStateError;
+  export interface ExpandedItemStateReady {
+    type: 'ready';
+  }
+  export interface ExpandedItemStateLoading {
+    type: 'loading';
+    loadingText: string;
+  }
+  export interface ExpandedItemStateError {
+    type: 'error';
+    errorText: string;
   }
 }
