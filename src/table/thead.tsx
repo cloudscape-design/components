@@ -94,6 +94,14 @@ const Thead = React.forwardRef(
 
     const { getColumnStyles, columnWidths, updateColumn, setCell } = useColumnWidths();
 
+    let colIndexOffset = 0;
+    if (selectionType) {
+      colIndexOffset++;
+    }
+    if (isExpandable) {
+      colIndexOffset++;
+    }
+
     return (
       <thead className={clsx(!hidden && styles['thead-active'])}>
         <tr
@@ -141,7 +149,7 @@ const Thead = React.forwardRef(
               style={{ width: '10px', minWidth: '10px', maxWidth: '10px', padding: '0px' }}
               hidden={hidden}
               tableRole={tableRole}
-              colIndex={-1}
+              colIndex={colIndexOffset - 1}
               columnId="expand-column-id"
               stickyState={stickyState}
             >
@@ -164,7 +172,7 @@ const Thead = React.forwardRef(
                 sortingDisabled={sortingDisabled}
                 wrapLines={wrapLines}
                 hidden={hidden}
-                colIndex={selectionType ? colIndex + 1 : colIndex}
+                colIndex={colIndex + colIndexOffset}
                 columnId={columnId}
                 updateColumn={updateColumn}
                 onResizeFinish={() => onResizeFinish(columnWidths)}

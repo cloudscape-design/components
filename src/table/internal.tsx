@@ -332,7 +332,14 @@ const InternalTable = React.forwardRef(
     const toolsHeaderHeight =
       (toolsHeaderWrapper?.current as HTMLDivElement | null)?.getBoundingClientRect().height ?? 0;
 
-    const totalColumnsCount = selectionType ? visibleColumnDefinitions.length + 1 : visibleColumnDefinitions.length;
+    let colIndexOffset = 0;
+    if (selectionType) {
+      colIndexOffset++;
+    }
+    if (getItemLevel) {
+      colIndexOffset++;
+    }
+    const totalColumnsCount = visibleColumnDefinitions.length + colIndexOffset;
 
     return (
       <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
@@ -548,7 +555,7 @@ const InternalTable = React.forwardRef(
                                 hasFooter={hasFooter}
                                 stickyState={stickyState}
                                 columnId="expand-column-id"
-                                colIndex={-1}
+                                colIndex={colIndexOffset - 1}
                                 tableRole={tableRole}
                                 level={expandableProps.level}
                                 isExpandCell={true}
@@ -601,7 +608,7 @@ const InternalTable = React.forwardRef(
                                   stripedRows={stripedRows}
                                   isEvenRow={isEven}
                                   columnId={column.id ?? colIndex}
-                                  colIndex={selectionType !== undefined ? colIndex + 1 : colIndex}
+                                  colIndex={colIndex + colIndexOffset}
                                   stickyState={stickyState}
                                   isVisualRefresh={isVisualRefresh}
                                   tableRole={tableRole}
