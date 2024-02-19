@@ -64,7 +64,7 @@ let allItems: ExtendedInstance[] = generateItems(10).map((it, index) => ({
 }));
 for (let iteration = 0; iteration < 5; iteration++) {
   allItems = allItems.flatMap(parent => {
-    const childrenCount = parent.level === iteration ? Math.floor(pseudoRandom() * 10) : 0;
+    const childrenCount = parent.level === iteration ? Math.floor(pseudoRandom() * 6) : 0;
     return [
       parent,
       ...generateItems(childrenCount).map((item, index) => ({
@@ -224,7 +224,7 @@ export default () => {
           onSelectionChange={({ detail: { selectedItems } }) => setSelectedItems(selectedItems)}
           items={items}
           ariaLabels={{ ...ariaLabels, tableLabel: 'Small table' }}
-          header={<Header>Simple table</Header>}
+          header={<Header counter={`(${filteredItemsCount ?? allItems.length})`}>Simple table</Header>}
           enableKeyboardNavigation={true}
         />
       </SpaceBetween>
