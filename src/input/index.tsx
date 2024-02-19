@@ -36,6 +36,7 @@ const Input = React.forwardRef(
       ariaLabelledby,
       ariaDescribedby,
       invalid,
+      warning,
       controlId,
       clearAriaLabel,
       ...rest
@@ -88,6 +89,7 @@ const Input = React.forwardRef(
           ariaDescribedby,
           ariaLabelledby,
           invalid,
+          warning,
           controlId,
           clearAriaLabel,
         }}

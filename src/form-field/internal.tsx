@@ -34,6 +34,12 @@ interface FormFieldErrorProps {
   errorIconAriaLabel?: string;
 }
 
+interface FormFieldWarningProps {
+  id?: string;
+  children?: React.ReactNode;
+  warningIconAriaLabel?: string;
+}
+
 export function FormFieldError({ id, children, errorIconAriaLabel }: FormFieldErrorProps) {
   const i18n = useInternalI18n('form-field');
 
@@ -45,10 +51,29 @@ export function FormFieldError({ id, children, errorIconAriaLabel }: FormFieldEr
           aria-label={i18n('i18nStrings.errorIconAriaLabel', errorIconAriaLabel)}
           className={styles['error-icon-scale-wrapper']}
         >
-          <InternalIcon name="status-warning" size="small" />
+          <InternalIcon name="status-negative" size="small" />
         </div>
       </div>
       <span className={styles.error__message}>{children}</span>
+    </div>
+  );
+}
+
+export function FormFieldWarning({ id, children, warningIconAriaLabel }: FormFieldWarningProps) {
+  const i18n = useInternalI18n('form-field');
+
+  return (
+    <div id={id} className={styles.warning}>
+      <div className={styles['warning-icon-shake-wrapper']}>
+        <div
+          role="img"
+          aria-label={i18n('i18nStrings.warningIconAriaLabel', warningIconAriaLabel)}
+          className={styles['warning-icon-scale-wrapper']}
+        >
+          <InternalIcon name="status-warning" size="small" />
+        </div>
+      </div>
+      <span className={styles.warning__message}>{children}</span>
     </div>
   );
 }
@@ -80,6 +105,7 @@ export default function InternalFormField({
   description,
   constraintText,
   errorText,
+  warningText,
   __hideLabel,
   __internalRootRef = null,
   __disableGutters = false,
@@ -96,7 +122,7 @@ export default function InternalFormField({
   const { stepNumber, stepNameSelector } = useFunnelStep();
   const { subStepSelector, subStepNameSelector } = useFunnelSubStep();
 
-  const slotIds = getSlotIds(formFieldId, label, description, constraintText, errorText);
+  const slotIds = getSlotIds(formFieldId, label, description, constraintText, errorText, warningText);
 
   const ariaDescribedBy = getAriaDescribedBy(slotIds);
 
@@ -106,17 +132,20 @@ export default function InternalFormField({
     ariaLabelledby: parentAriaLabelledby,
     ariaDescribedby: parentAriaDescribedby,
     invalid: parentInvalid,
+    warning: parentWarning,
   } = useFormFieldContext({});
 
   const contextValuesWithoutControlId = {
     ariaLabelledby: joinStrings(parentAriaLabelledby, slotIds.label) || undefined,
     ariaDescribedby: joinStrings(parentAriaDescribedby, ariaDescribedBy) || undefined,
     invalid: !!errorText || !!parentInvalid,
+    warning: !!warningText || !!parentWarning,
   };
 
   const analyticsAttributes = {
     [DATA_ATTR_FIELD_LABEL]: slotIds.label ? getFieldSlotSeletor(slotIds.label) : undefined,
     [DATA_ATTR_FIELD_ERROR]: slotIds.error ? getFieldSlotSeletor(slotIds.error) : undefined,
+    // Analytics for warning to be added
   };
 
   useEffect(() => {
@@ -196,15 +225,20 @@ export default function InternalFormField({
         </InternalGrid>
       </div>
 
-      {(constraintText || errorText) && (
+      {(constraintText || errorText || warningText) && (
         <div className={styles.hints}>
           {errorText && (
             <FormFieldError id={slotIds.error} errorIconAriaLabel={i18nStrings?.errorIconAriaLabel}>
               {errorText}
             </FormFieldError>
           )}
+          {warningText && (
+            <FormFieldWarning id={slotIds.warning} warningIconAriaLabel={i18nStrings?.warningIconAriaLabel}>
+              {warningText}
+            </FormFieldWarning>
+          )}
           {constraintText && (
-            <ConstraintText id={slotIds.constraint} hasError={!!errorText}>
+            <ConstraintText id={slotIds.constraint} hasError={!!errorText || !!warningText}>
               {constraintText}
             </ConstraintText>
           )}

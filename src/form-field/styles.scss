@@ -60,7 +60,16 @@
   align-items: flex-start;
 }
 
-.error__message {
+.warning {
+  color: awsui.$color-text-status-warning;
+  @include styles.font-body-s;
+
+  display: flex;
+  align-items: flex-start;
+}
+
+.error__message,
+.warning__message {
   margin-inline-start: awsui.$space-xxs;
 }
 

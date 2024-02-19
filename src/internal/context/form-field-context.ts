@@ -34,6 +34,8 @@ export interface FormFieldControlProps {
    * and set the property to a string of each ID separated by spaces (for example, `"id1 id2 id3"`).
    */
   ariaDescribedby?: string;
+
+  warning?: boolean;
 }
 
 export interface FormFieldValidationControlProps extends FormFieldControlProps {
@@ -45,6 +47,11 @@ export interface FormFieldValidationControlProps extends FormFieldControlProps {
    * single form field.
    */
   invalid?: boolean;
+
+  /**
+   * Warning state
+   */
+  warning?: boolean;
 }
 
 export const FormFieldContext = createContext<FormFieldValidationControlProps>({});
@@ -59,5 +66,5 @@ function applyDefault<T>(fields: T, defaults: T, keys: (keyof T)[]) {
 
 export function useFormFieldContext(props: FormFieldValidationControlProps) {
   const context = useContext(FormFieldContext);
-  return applyDefault(props, context, ['invalid', 'controlId', 'ariaLabelledby', 'ariaDescribedby']);
+  return applyDefault(props, context, ['invalid', 'warning', 'controlId', 'ariaLabelledby', 'ariaDescribedby']);
 }

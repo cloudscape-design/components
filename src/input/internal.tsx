@@ -97,7 +97,9 @@ function InternalInput(
   __onRightIconClick = __onRightIconClick ?? searchProps.__onRightIconClick;
 
   const formFieldContext = useFormFieldContext(rest);
-  const { ariaLabelledby, ariaDescribedby, controlId, invalid } = __inheritFormFieldProps ? formFieldContext : rest;
+  const { ariaLabelledby, ariaDescribedby, controlId, invalid, warning } = __inheritFormFieldProps
+    ? formFieldContext
+    : rest;
 
   const attributes: React.InputHTMLAttributes<HTMLInputElement> = {
     'aria-label': ariaLabel,
@@ -119,6 +121,7 @@ function InternalInput(
       {
         [styles['input-readonly']]: readOnly,
         [styles['input-invalid']]: invalid,
+        [styles['input-warning']]: warning,
       }
     ),
     autoComplete: convertAutoComplete(autoComplete),

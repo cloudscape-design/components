@@ -7,6 +7,7 @@ interface FormFieldIds {
   description?: string;
   constraint?: string;
   error?: string;
+  warning?: string;
 }
 
 function makeSlotId(prop: React.ReactNode, formFieldId: string, propName: string): string | undefined {
@@ -22,13 +23,15 @@ export function getSlotIds(
   label?: React.ReactNode,
   description?: React.ReactNode,
   constraintText?: React.ReactNode,
-  errorText?: React.ReactNode
+  errorText?: React.ReactNode,
+  warningText?: React.ReactNode
 ) {
   const ids: FormFieldIds = {
     label: makeSlotId(label, formFieldId, 'label'),
     description: makeSlotId(description, formFieldId, 'description'),
     constraint: makeSlotId(constraintText, formFieldId, 'constraint'),
     error: makeSlotId(errorText, formFieldId, 'error'),
+    warning: makeSlotId(warningText, formFieldId, 'warning'),
   };
 
   return ids;

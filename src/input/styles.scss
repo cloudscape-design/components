@@ -90,6 +90,15 @@
     }
   }
 
+  &.input-warning {
+    @include styles.form-warning-control();
+    &.input-has-icon-left {
+      padding-inline-start: calc(
+        #{styles.$control-icon-horizontal-padding} - (#{styles.$invalid-control-left-border} - #{styles.$control-border-width})
+      );
+    }
+  }
+
   &.input-type-search {
     box-sizing: border-box; // Overrides the [type='search'] CSS from normalize
     -webkit-appearance: none; /* stylelint-disable-line plugin/no-unsupported-browser-features */

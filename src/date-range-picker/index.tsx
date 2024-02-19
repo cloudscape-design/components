@@ -140,7 +140,7 @@ const DateRangePicker = React.forwardRef(
     value = isDateOnly(value) ? value : shiftTimeOffset(value, normalizedTimeOffset);
 
     const baseProps = getBaseProps(rest);
-    const { invalid, controlId, ariaDescribedby, ariaLabelledby } = useFormFieldContext({
+    const { invalid, warning, controlId, ariaDescribedby, ariaLabelledby } = useFormFieldContext({
       ariaLabelledby: rest.ariaLabelledby ?? i18nStrings?.ariaLabelledby,
       ariaDescribedby: rest.ariaDescribedby ?? i18nStrings?.ariaDescribedby,
       ...rest,
@@ -267,6 +267,7 @@ const DateRangePicker = React.forwardRef(
           ref={triggerRef}
           id={controlId}
           invalid={invalid}
+          warning={warning}
           ariaLabelledby={joinStrings(ariaLabelledby, triggerContentId)}
           ariaLabel={i18nStrings?.ariaLabel}
           ariaDescribedby={ariaDescribedby}

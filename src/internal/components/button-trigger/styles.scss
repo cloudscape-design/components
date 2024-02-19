@@ -92,6 +92,11 @@
     &.invalid:focus {
       @include styles.form-invalid-control();
     }
+
+    &.warning,
+    &.warning:focus {
+      @include styles.form-warning-control();
+    }
   }
 
   &.in-filtering-token {
