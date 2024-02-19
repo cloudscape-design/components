@@ -18,6 +18,7 @@ type DemoContext = React.Context<
     resizableColumns: boolean;
     stickyHeader: boolean;
     sortingDisabled: boolean;
+    stripedRows: boolean;
     selectionType: undefined | 'single' | 'multi';
     stickyColumnsFirst: string;
     imitateServerExpand: boolean;
@@ -139,6 +140,7 @@ export default () => {
       resizableColumns,
       stickyHeader,
       sortingDisabled,
+      stripedRows,
       imitateServerExpand = true,
       imitateServerErrors,
       selectionType,
@@ -213,6 +215,10 @@ export default () => {
               onChange={event => setUrlParams({ sortingDisabled: event.detail.checked })}
             >
               Sorting disabled
+            </Checkbox>
+
+            <Checkbox checked={stripedRows} onChange={event => setUrlParams({ stripedRows: event.detail.checked })}>
+              Striped rows
             </Checkbox>
 
             <Checkbox
@@ -333,6 +339,7 @@ export default () => {
           stickyHeader={stickyHeader}
           sortingDisabled={sortingDisabled}
           selectionType={selectionType}
+          stripedRows={stripedRows}
           columnDefinitions={COLUMN_DEFINITIONS}
           selectedItems={selectedItems}
           onSelectionChange={({ detail: { selectedItems } }) => setSelectedItems(selectedItems)}

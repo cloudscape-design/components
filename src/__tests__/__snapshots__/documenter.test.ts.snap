@@ -12948,6 +12948,28 @@ validation states, or show warning for unsaved changes.",
     },
     Object {
       "cancelable": false,
+      "description": "Experimental API",
+      "detailInlineType": Object {
+        "name": "TableProps.ExpandableItemToggleDetail",
+        "properties": Array [
+          Object {
+            "name": "expanded",
+            "optional": false,
+            "type": "boolean",
+          },
+          Object {
+            "name": "item",
+            "optional": false,
+            "type": "T",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "TableProps.ExpandableItemToggleDetail<T>",
+      "name": "onExpandableItemToggle",
+    },
+    Object {
+      "cancelable": false,
       "description": "Note: This feature is provided for backwards compatibility. Its use is not recommended,
 and it may be deprecated in the future.
 Called when the user clicked at a table row. The event detail contains the index of the
@@ -13246,6 +13268,30 @@ When set to \`true\`, table cells become navigable with arrow keys, and the enti
       "name": "firstIndex",
       "optional": true,
       "type": "number",
+    },
+    Object {
+      "description": "Experimental API",
+      "name": "getItemChildren",
+      "optional": true,
+      "type": "(item: T) => typeOperator",
+    },
+    Object {
+      "description": "Experimental API",
+      "name": "getItemExpandable",
+      "optional": true,
+      "type": "(item: T) => boolean",
+    },
+    Object {
+      "description": "Experimental API",
+      "name": "getItemExpanded",
+      "optional": true,
+      "type": "(item: T) => boolean",
+    },
+    Object {
+      "description": "Experimental API",
+      "name": "getItemExpandedState",
+      "optional": true,
+      "type": "(item: T) => TableProps.ExpandedItemState",
     },
     Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
