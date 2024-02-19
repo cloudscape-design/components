@@ -261,6 +261,7 @@ export type ColorsTokenName =
   | 'colorBackgroundLayoutToggleSelectedDefault'
   | 'colorBackgroundLayoutToggleSelectedHover'
   | 'colorBackgroundLayoutToggleSelectedActive'
+  | 'colorBackgroundPageContent'
   | 'colorBackgroundModalOverlay'
   | 'colorBackgroundNotificationBlue'
   | 'colorBackgroundNotificationGreen'

@@ -162,6 +162,12 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorBackgroundPageContent: {
+    description:
+      "The background color of the entire page on a content-rich website that doesn't use app layout. For example: product pages.",
+    public: true,
+    themeable: true,
+  },
   colorBackgroundNotificationBlue: {
     description: 'Background color for blue notifications. For example: blue badges and info flash messages.',
     public: true,

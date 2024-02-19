@@ -57,6 +57,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundLayoutToggleSelectedActive: { light: '{colorBlue600}', dark: '{colorBlue500}' },
   colorBackgroundLayoutToggleSelectedDefault: { light: '{colorBlue600}', dark: '{colorBlue500}' },
   colorBackgroundLayoutToggleSelectedHover: { light: '{colorBlue700}', dark: '{colorBlue400}' },
+  colorBackgroundPageContent: { light: '{colorWhite}', dark: '{colorGrey900}' },
   colorBackgroundModalOverlay: '{colorGreyOpaque70}',
   colorBackgroundNotificationBlue: '{colorBlue600}',
   colorBackgroundNotificationGreen: '{colorGreen600}',
