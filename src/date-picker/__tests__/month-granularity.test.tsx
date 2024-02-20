@@ -334,6 +334,16 @@ describe('Date picker calendar at month granularity', () => {
         wrapper.findCalendar()!.findSelectedDate().find(':not([aria-hidden=true])')?.getElement().textContent
       ).toBe('January 2024');
     });
+
+    test('should add aria label for the "Open calendar" button', () => {
+      const wrapper = openDatePicker({
+        value: '2018-01',
+        locale: 'en-US',
+        openCalendarAriaLabel: date => `Choose a date. The selected date is ${date}`,
+      });
+      const button = wrapper.findOpenCalendarButton().getElement();
+      expect(button).toHaveAttribute('aria-label', 'Choose a date. The selected date is January 2018');
+    });
   });
 
   describe('i18n', () => {
