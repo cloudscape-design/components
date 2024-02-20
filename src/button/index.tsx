@@ -6,6 +6,7 @@ import { ButtonProps } from './interfaces';
 import { InternalButton } from './internal';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
+import { useLatencyMetrics } from '../internal/hooks/use-latency-metrics';
 
 export { ButtonProps };
 
@@ -40,8 +41,12 @@ const Button = React.forwardRef(
     }: ButtonProps,
     ref: React.Ref<ButtonProps.Ref>
   ) => {
-    const baseComponentProps = useBaseComponent('Button');
+    const baseComponentProps = useBaseComponent<HTMLAnchorElement | HTMLButtonElement>('Button');
     const baseProps = getBaseProps(props);
+
+    // TODO: Add the instanceId when it becomes available.
+    useLatencyMetrics('Button', baseComponentProps.__internalRootRef, undefined, loading);
+
     return (
       <InternalButton
         {...baseProps}
