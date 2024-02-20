@@ -30,7 +30,7 @@ describe('Collapsible flashbar', () => {
         await page.addInfoFlash();
         await expect(page.countFlashes()).resolves.toBe(1);
         await page.dismissFirstItem();
-        await expect(page.countFlashes()).resolves.toBe(0);
+        await page.waitForAssertion(() => expect(page.countFlashes()).resolves.toBe(0));
       })()
     );
   });
