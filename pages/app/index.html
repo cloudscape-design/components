@@ -10,7 +10,7 @@
   <script>
     const isDevelopment = '<%= process.env.NODE_ENV %>' !== 'production';
 
-    const csp = { 'default-src': "'self'", 'font-src': 'data:', 'style-src': "'self' 'unsafe-inline'" };
+    const csp = { 'default-src': "'self'", 'font-src': 'data:', 'style-src': "'self' 'unsafe-inline'", 'img-src': "'self' 'unsafe-inline'" };
 
     if (isDevelopment) {
       csp['connect-src'] = `'self' ws://${location.host};`;
