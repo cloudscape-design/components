@@ -55,7 +55,7 @@
     "todayAriaLabel": "Heute",
     "i18nStrings.nextYearAriaLabel": "Nächstes Jahr",
     "i18nStrings.previousYearAriaLabel": "Vorheriges Jahr",
-    "i18nStrings.currentMonthAriaLabel": "Kosten des aktuellen Monats"
+    "i18nStrings.currentMonthAriaLabel": "Aktueller Monat"
   },
   "cards": {
     "ariaLabels.selectionGroupLabel": "Elementauswahl"
