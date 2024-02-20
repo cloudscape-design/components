@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 import MockDate from 'mockdate';
-import { Box, DatePicker, Link } from '~components';
+import { Box, DatePicker } from '~components';
 import ScreenshotArea from '../utils/screenshot-area';
 
 // Mock the date in order to have the current day styling in place for screenshot testing.
@@ -14,9 +14,6 @@ export default function () {
   return (
     <Box padding="s">
       <h1>Date picker with month granularity</h1>
-      <Link id="focus-dismiss-helper">Focusable element</Link>
-      <br />
-      <br />
       <ScreenshotArea style={{ height: 300 }}>
         <DatePicker
           value={value}

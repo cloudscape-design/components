@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import { Box, Link } from '~components';
+import { Box } from '~components';
 import Calendar from '~components/calendar';
 
 export default function () {
@@ -10,8 +10,6 @@ export default function () {
   return (
     <Box padding="s">
       <h1>Calendar with month granularity</h1>
-      <Link id="focusable-element-before-date-picker">Focusable element before the date picker</Link>
-      <br />
       <Calendar
         value={value}
         locale="en-GB"
@@ -24,9 +22,6 @@ export default function () {
         isDateEnabled={date => date <= new Date()}
         granularity="month"
       />
-      <br />
-      <br />
-      <Link id="focusable-element-after-date-picker">Focusable element after the date picker</Link>
     </Box>
   );
 }
