@@ -6,7 +6,6 @@ import styles from './styles.css.js';
 import { DatePickerProps } from './interfaces';
 import InternalCalendar from '../calendar/internal';
 import { normalizeLocale } from '../internal/utils/locale';
-import { renderMonthAndYear } from '../calendar/utils/intl';
 import { InputProps } from '../input/interfaces';
 import { KeyCode } from '../internal/keycode';
 import { fireNonCancelableEvent } from '../internal/events';
@@ -27,7 +26,7 @@ import { parseDate } from '../internal/utils/date-time';
 import LiveRegion from '../internal/components/live-region';
 import { useFormFieldContext } from '../contexts/form-field.js';
 import { useLocale } from '../i18n/context.js';
-import { getSelectedDateLabel, isValidFullDate } from './utils';
+import { getBaseDateLabel, getSelectedDateLabel, isValidFullDate } from './utils';
 
 export { DatePickerProps };
 
@@ -117,7 +116,9 @@ const DatePicker = React.forwardRef(
     const buttonAriaLabel =
       openCalendarAriaLabel &&
       openCalendarAriaLabel(
-        hasFullValue && parsedValue ? getSelectedDateLabel({ date: parsedValue, granularity, locale }) : null
+        hasFullValue && parsedValue
+          ? getSelectedDateLabel({ date: parsedValue, granularity, locale: normalizedLocale })
+          : null
       );
 
     const trigger = (
@@ -204,7 +205,9 @@ const DatePicker = React.forwardRef(
                       previousMonthAriaLabel: i18nStrings?.previousMonthAriaLabel ?? previousMonthAriaLabel,
                     }}
                   />
-                  <LiveRegion id={calendarDescriptionId}>{renderMonthAndYear(normalizedLocale, baseDate)}</LiveRegion>
+                  <LiveRegion id={calendarDescriptionId}>
+                    {getBaseDateLabel({ date: baseDate, granularity, locale: normalizedLocale })}
+                  </LiveRegion>
                 </div>
               </FocusLock>
             )}
