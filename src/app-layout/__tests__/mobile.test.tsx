@@ -5,12 +5,12 @@ import { act } from 'react-dom/test-utils';
 import { within } from '@testing-library/react';
 import {
   describeEachThemeAppLayout,
-  drawerWithoutLabels,
   isDrawerClosed,
   renderComponent,
   testDrawer,
   manyDrawers,
   splitPanelI18nStrings,
+  testDrawerWithoutLabels,
 } from './utils';
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import SplitPanel from '../../../lib/components/split-panel';
@@ -480,7 +480,7 @@ describeEachThemeAppLayout(true, theme => {
   });
 
   test('renders roles only when aria labels are not provided', () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...(drawerWithoutLabels as any)} />);
+    const { wrapper } = renderComponent(<AppLayout drawers={[testDrawerWithoutLabels]} />);
     const drawersAside = within(findMobileToolbar(wrapper)!.getElement()).getByRole('region');
 
     expect(wrapper.findDrawerTriggerById('security')!.getElement()).not.toHaveAttribute('aria-label');

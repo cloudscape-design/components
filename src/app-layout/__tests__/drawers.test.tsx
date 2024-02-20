@@ -34,13 +34,7 @@ describeEachAppLayout(size => {
   });
 
   test('should not apply drawers treatment to the tools if the drawers array is empty', () => {
-    const emptyDrawerItems = {
-      drawers: {
-        ariaLabel: 'Drawers',
-        items: [],
-      },
-    };
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...(emptyDrawerItems as any)} />);
+    const { wrapper } = renderComponent(<AppLayout drawers={[]} />);
 
     expect(wrapper.findDrawersTriggers()).toHaveLength(0);
     expect(wrapper.findToolsToggle()).toBeFalsy();
