@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
+import { getContentHeaderClassName } from '../../internal/utils/content-header-utils';
 import { useAppLayoutInternals } from './context';
 import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
@@ -29,7 +30,7 @@ export default function Notifications() {
           [styles.unfocusable]: hasDrawerViewportOverlay,
         },
         testutilStyles.notifications,
-        'awsui-context-content-header'
+        getContentHeaderClassName()
       )}
     >
       <div ref={notificationsElement}>{notifications}</div>

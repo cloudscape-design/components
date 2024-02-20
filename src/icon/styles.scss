@@ -27,15 +27,40 @@
 
   @include mixins.make-icon-sizes;
   @include mixins.make-icon-variants;
+
+  &:is(
+      .name-angle-left-double,
+      .name-angle-left,
+      .name-angle-right-double,
+      .name-angle-right,
+      .name-arrow-left,
+      .name-caret-left-filled,
+      .name-caret-right-filled,
+      .name-audio-full,
+      .name-audio-half,
+      .name-audio-off,
+      .name-external,
+      .name-redo,
+      .name-shrink,
+      .name-undo,
+      .name-view-vertical
+    ) {
+    @include styles.with-direction('rtl') {
+      transform: scaleX(-1);
+    }
+  }
 }
 
 .badge::after {
   content: '';
   position: absolute;
-  width: 6px;
-  height: 6px;
-  border-radius: 4px;
+  inline-size: 6px;
+  block-size: 6px;
+  border-start-start-radius: 4px;
+  border-start-end-radius: 4px;
+  border-end-start-radius: 4px;
+  border-end-end-radius: 4px;
   background-color: awsui.$color-background-badge-icon;
-  top: 0px;
-  right: -3px;
+  inset-block-start: 0px;
+  inset-inline-end: -3px;
 }

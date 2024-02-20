@@ -64,7 +64,7 @@ test('scrollable grid props', () => {
   const tableWrapper = getTableWrapperRoleProps({ tableRole, ariaLabel, isScrollable: true });
   const tableProps = getTableRoleProps({ tableRole, ariaLabel, totalItemsCount, totalColumnsCount });
 
-  expect(tableWrapper).toEqual({});
+  expect(tableWrapper).toEqual({ 'aria-label': 'table', role: 'region', tabIndex: 0 });
   expect(tableProps).toEqual({
     role: tableRole,
     'aria-label': ariaLabel,
@@ -104,8 +104,8 @@ test('grid row and cell props', () => {
 
   expect(headerRow).toEqual({ 'aria-rowindex': 1 });
   expect(bodyRow).toEqual({ 'aria-rowindex': 2 });
-  expect(headerCell1).toEqual({ 'aria-colindex': 1, scope: 'col', 'aria-sort': 'ascending', tabIndex: -1 });
-  expect(headerCell2).toEqual({ 'aria-colindex': 2, scope: 'col', tabIndex: -1 });
-  expect(bodyCell1).toEqual({ 'aria-colindex': 1, scope: 'row', tabIndex: -1 });
-  expect(bodyCell2).toEqual({ 'aria-colindex': 2, tabIndex: -1 });
+  expect(headerCell1).toEqual({ 'aria-colindex': 1, scope: 'col', 'aria-sort': 'ascending' });
+  expect(headerCell2).toEqual({ 'aria-colindex': 2, scope: 'col' });
+  expect(bodyCell1).toEqual({ 'aria-colindex': 1, scope: 'row' });
+  expect(bodyCell2).toEqual({ 'aria-colindex': 2 });
 });

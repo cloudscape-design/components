@@ -8,8 +8,9 @@
 
 .root {
   @include styles.styles-reset;
-  padding: styles.$option-padding-vertical styles.$control-padding-horizontal
-    calc(#{styles.$option-padding-vertical} + #{awsui.$space-xxxs});
+  padding-block-start: styles.$option-padding-vertical;
+  padding-block-end: calc(#{styles.$option-padding-vertical} + #{awsui.$space-xxxs});
+  padding-inline: styles.$control-padding-horizontal;
   color: awsui.$color-text-dropdown-footer;
 
   > .recovery {

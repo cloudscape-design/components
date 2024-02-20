@@ -10,6 +10,8 @@ import {
   HighlightedOptionState,
   useHighlightedOption,
 } from '../internal/components/options-list/utils/use-highlight-option';
+import { useInternalI18n } from '../i18n/context';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 type Options = AutosuggestProps.Options;
 
@@ -18,6 +20,7 @@ export interface UseAutosuggestItemsProps {
   filterValue: string;
   filterText: string;
   filteringType: AutosuggestProps.FilteringType;
+  enteredTextLabel?: AutosuggestProps.EnteredTextLabel;
   hideEnteredTextLabel?: boolean;
   onSelectItem: (option: AutosuggestItem) => void;
 }
@@ -46,21 +49,35 @@ export const useAutosuggestItems = ({
   filterValue,
   filterText,
   filteringType,
+  enteredTextLabel,
   hideEnteredTextLabel,
   onSelectItem,
 }: UseAutosuggestItemsProps): [AutosuggestItemsState, AutosuggestItemsHandlers] => {
+  const i18n = useInternalI18n('autosuggest');
   const [showAll, setShowAll] = useState(false);
 
   const { items, getItemGroup } = useMemo(() => createItems(options), [options]);
 
+  const enteredItemLabel = i18n('enteredTextLabel', enteredTextLabel?.(filterValue), format =>
+    format({ value: filterValue })
+  );
+  if (!enteredItemLabel) {
+    warnOnce('Autosuggest', 'A value for enteredTextLabel must be provided.');
+  }
+
   const filteredItems = useMemo(() => {
     const filteredItems = filteringType === 'auto' && !showAll ? filterOptions(items, filterText) : [...items];
     if (filterValue && !hideEnteredTextLabel) {
-      filteredItems.unshift({ value: filterValue, type: 'use-entered', option: { value: filterValue } });
+      filteredItems.unshift({
+        value: filterValue,
+        type: 'use-entered',
+        label: enteredItemLabel,
+        option: { value: filterValue },
+      });
     }
     generateTestIndexes(filteredItems, getItemGroup);
     return filteredItems;
-  }, [items, getItemGroup, filterValue, filterText, filteringType, showAll, hideEnteredTextLabel]);
+  }, [filteringType, showAll, items, filterText, filterValue, hideEnteredTextLabel, getItemGroup, enteredItemLabel]);
 
   const [highlightedOptionState, highlightedOptionHandlers] = useHighlightedOption({
     options: filteredItems,

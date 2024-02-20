@@ -8,6 +8,7 @@ function findAllPages() {
 
 const skippedTests = [
   'tabs/responsive-permutations', // Currently has flaky behavior (AWSUI-17810)
+  'pie-chart/permutations', // Currently has flaky behavior (AWSUI-29588)
 ];
 
 const scenarios = findAllPages()

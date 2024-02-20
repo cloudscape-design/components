@@ -316,7 +316,9 @@ describe('table grid navigation support', () => {
   }
 
   test('does not override tab index when keyboard navigation is not active', () => {
-    renderWithSingleTabStopNavigation(<RadioGroup id="radio" value={null} items={[{ value: '1', label: 'One' }]} />);
+    renderWithSingleTabStopNavigation(<RadioGroup id="radio" value={null} items={[{ value: '1', label: 'One' }]} />, {
+      navigationActive: false,
+    });
     expect(getRadioInput('#radio')).not.toHaveAttribute('tabIndex');
   });
 

@@ -463,7 +463,8 @@ describe('application focus delegation', () => {
     plotWrapper.keydown(KeyCode.right);
 
     expect(externalFocusCounter).toBe(1);
-    expect(internalFocusCounter).toBe(1);
+    // We get one extra internal focus because we re-attach and re-focus the application to trigger a screen reader update.
+    expect(internalFocusCounter).toBe(2);
 
     rerender(
       <ChartPlot width={0} height={0} activeElementKey="1:4" onApplicationFocus={externalOnFocus}>
@@ -473,6 +474,6 @@ describe('application focus delegation', () => {
     jest.runAllTimers();
 
     expect(externalFocusCounter).toBe(1);
-    expect(internalFocusCounter).toBe(2);
+    expect(internalFocusCounter).toBe(3);
   });
 });

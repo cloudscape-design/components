@@ -1,6 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-export interface Dimensions {
+
+import { findUpUntil } from './dom';
+export interface BoundingBox {
   height: number;
   width: number;
   top: number;
@@ -27,7 +29,7 @@ export const getOverflowParentDimensions = ({
   excludeClosestParent: boolean;
   expandToViewport: boolean;
   canExpandOutsideViewport: boolean;
-}): Dimensions[] => {
+}): BoundingBox[] => {
   const parents = expandToViewport
     ? []
     : getOverflowParents(element).map(el => {
@@ -70,7 +72,7 @@ type ScrollIntoViewOptions = Parameters<HTMLElement['scrollIntoView']>[0];
 
 /**
  * Calls `scrollIntoView` on the provided element with sensible defaults. If
- * the element does not existed or does not support the `scrollIntoView`
+ * the element does not exist or does not support the `scrollIntoView`
  * method, it will do nothing. This wrapper is created to support environments
  * where the native function is not available like JSDom (feature request:
  * https://github.com/jsdom/jsdom/issues/1422).
@@ -83,4 +85,38 @@ export function scrollElementIntoView(
   options: ScrollIntoViewOptions = { block: 'nearest', inline: 'nearest' }
 ) {
   element?.scrollIntoView?.(options);
+}
+
+export function calculateScroll({ top, height }: BoundingBox) {
+  if (top < 0) {
+    return top;
+  } else if (top + height > window.innerHeight) {
+    if (height > window.innerHeight) {
+      return top;
+    } else {
+      return top + height - window.innerHeight;
+    }
+  }
+  return 0;
+}
+
+/**
+ * For elements with fixed position, the browser's native scrollIntoView API doesn't work,
+ * so we need to manually scroll to the element's position.
+ * Supports only vertical scrolling.
+ */
+export function scrollRectangleIntoView(box: BoundingBox, scrollableParent?: HTMLElement) {
+  const scrollAmount = calculateScroll(box);
+  if (scrollAmount) {
+    (scrollableParent || window).scrollBy(0, scrollAmount);
+  }
+}
+
+export function getFirstScrollableParent(element: HTMLElement): HTMLElement | undefined {
+  return (
+    findUpUntil(element, el => {
+      const overflows = el.scrollHeight > el.clientHeight;
+      return overflows && ['scroll', 'auto'].includes(getComputedStyle(el).overflowY);
+    }) || undefined
+  );
 }

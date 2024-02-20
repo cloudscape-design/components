@@ -9,8 +9,10 @@ import RadioButton from '../../radio-group/radio-button';
 
 import styles from './styles.css.js';
 import { SelectionProps } from './interfaces';
+import { TableRole } from '../table-role';
 
 export interface SelectionControlProps extends SelectionProps {
+  tableRole?: TableRole;
   onShiftToggle?(shiftPressed: boolean): void;
   onFocusUp?: KeyboardEventHandler;
   onFocusDown?: KeyboardEventHandler;
@@ -20,6 +22,7 @@ export interface SelectionControlProps extends SelectionProps {
 }
 
 export function SelectionControl({
+  tableRole,
   selectionType,
   indeterminate = false,
   onShiftToggle,
@@ -52,7 +55,7 @@ export function SelectionControl({
   // native checkboxes do not have focus move via keyboard, we implement it here programmatically
   const handleKeyDown = (event: KeyboardEvent) => {
     setShiftState(event);
-    if (isMultiSelection) {
+    if (isMultiSelection && tableRole !== 'grid') {
       if (event.keyCode === KeyCode.up) {
         event.preventDefault();
         onFocusUp && onFocusUp(event);

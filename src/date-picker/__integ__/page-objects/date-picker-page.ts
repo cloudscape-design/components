@@ -65,7 +65,7 @@ export default class DatePickerPage extends BasePageObject {
   }
 
   isNextButtonFocused() {
-    return this.isFocused(this.findCalendar().findNextMonthButton().toSelector());
+    return this.isFocused(this.findCalendar().findNextButton().toSelector());
   }
 
   getInputText() {
@@ -89,7 +89,7 @@ export default class DatePickerPage extends BasePageObject {
   }
 
   async clickPreviousMonth() {
-    await this.click(this.findCalendar().findPreviousMonthButton().toSelector());
+    await this.click(this.findCalendar().findPreviousButton().toSelector());
   }
 
   isDropdownOpen() {
@@ -108,7 +108,7 @@ export default class DatePickerPage extends BasePageObject {
   }
 
   isPreviousMonthButtonFocused() {
-    return this.isFocused(this.findCalendar().findPreviousMonthButton().getElement());
+    return this.isFocused(this.findCalendar().findPreviousButton().getElement());
   }
 
   isDateFocused() {

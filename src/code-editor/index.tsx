@@ -11,7 +11,7 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { CodeEditorProps } from './interfaces';
 import { Pane } from './pane';
 import { useChangeEffect } from './listeners';
-import { DEFAULT_DARK_THEME, DEFAULT_LIGHT_THEME, PaneStatus, getLanguageLabel } from './util';
+import { PaneStatus, getLanguageLabel, getDefaultTheme, getDefaultSupportedThemes } from './util';
 import { fireNonCancelableEvent } from '../internal/events';
 import { setupEditor } from './setup-editor';
 import { ResizableBox } from './resizable-box';
@@ -110,7 +110,7 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
 
   useSyncEditorWrapLines(editor, preferences?.wrapLines);
 
-  const defaultTheme = mode === 'dark' ? DEFAULT_DARK_THEME : DEFAULT_LIGHT_THEME;
+  const defaultTheme = getDefaultTheme(ace, mode);
   useSyncEditorTheme(editor, preferences?.theme ?? defaultTheme);
 
   // Change listeners
@@ -235,7 +235,7 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
               languageLabel={languageLabel}
               cursorPosition={i18n(
                 'i18nStrings.cursorPosition',
-                i18nStrings?.cursorPosition(cursorPosition.row + 1, cursorPosition.column + 1),
+                i18nStrings?.cursorPosition?.(cursorPosition.row + 1, cursorPosition.column + 1),
                 format => format({ row: cursorPosition.row + 1, column: cursorPosition.column + 1 })
               )}
               errorCount={errorCount}
@@ -255,6 +255,7 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
             />
             <Pane
               id={paneId}
+              paneStatus={paneStatus}
               visible={isPaneVisible}
               annotations={currentAnnotations}
               highlighted={highlightedAnnotation}
@@ -273,7 +274,7 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
             <PreferencesModal
               onConfirm={onPreferencesConfirm}
               onDismiss={onPreferencesDismiss}
-              themes={themes}
+              themes={themes ?? getDefaultSupportedThemes(ace)}
               preferences={preferences}
               defaultTheme={defaultTheme}
               i18nStrings={{

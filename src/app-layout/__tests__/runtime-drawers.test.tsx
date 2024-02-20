@@ -7,10 +7,9 @@ import {
   findActiveDrawerLandmark,
   getActiveDrawerWidth,
   isDrawerTriggerWithBadge,
-  singleDrawer,
+  testDrawer,
 } from './utils';
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
-import { BetaDrawersProps } from '../../../lib/components/app-layout/drawer/interfaces';
 import { TOOLS_DRAWER_ID } from '../../../lib/components/app-layout/utils/use-drawers';
 import { awsuiPlugins, awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
 import { DrawerConfig } from '../../../lib/components/internal/plugins/controllers/drawers';
@@ -161,7 +160,7 @@ describeEachAppLayout(size => {
       ...drawerDefaults,
       defaultSize: 400,
     });
-    const { wrapper } = await renderComponent(<AppLayout />);
+    const { wrapper } = await renderComponent(<AppLayout navigationOpen={false} onNavigationChange={() => {}} />);
     wrapper.findToolsToggle()!.click();
     // always full-screen on mobile
     expect(getActiveDrawerWidth(wrapper)).toEqual(size === 'desktop' ? '290px' : '');
@@ -227,7 +226,7 @@ describeEachAppLayout(size => {
 
     expect(wrapper.findTools()).toBeFalsy();
 
-    ref!.openTools();
+    act(() => ref!.openTools());
     expect(wrapper.findTools().getElement()).toHaveTextContent('Tools content');
 
     wrapper.findToolsClose().click();
@@ -412,14 +411,10 @@ describeEachAppLayout(size => {
   test('updates active drawer id in controlled mode', async () => {
     awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, defaultActive: true });
     const onChange = jest.fn();
-    const drawers: { drawers: BetaDrawersProps } = {
-      drawers: {
-        ...singleDrawer.drawers,
-        onChange: event => onChange(event.detail),
-      },
-    };
-    const { wrapper } = await renderComponent(<AppLayout contentType="form" {...(drawers as any)} />);
-    expect(onChange).toHaveBeenCalledWith(drawerDefaults.id);
+    const { wrapper } = await renderComponent(
+      <AppLayout drawers={[testDrawer]} onDrawerChange={event => onChange(event.detail)} />
+    );
+    expect(onChange).toHaveBeenCalledWith({ activeDrawerId: drawerDefaults.id });
     expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('runtime drawer content');
   });
 
@@ -541,13 +536,11 @@ describeEachAppLayout(size => {
         ariaLabels: { triggerButton: 'ccc' },
         orderPriority: -1,
       });
-      const drawers: { drawers: BetaDrawersProps } = {
-        drawers: {
-          items: [{ id: 'ddd', trigger: {}, content: null, ariaLabels: { triggerButton: 'ddd' } }],
-        },
-      };
       const { wrapper } = await renderComponent(
-        <AppLayout {...(drawers as any)} ariaLabels={{ toolsToggle: 'tools toggle' }} />
+        <AppLayout
+          drawers={[{ id: 'ddd', trigger: {}, content: null, ariaLabels: { triggerButton: 'ddd', drawerName: 'ddd' } }]}
+          ariaLabels={{ toolsToggle: 'tools toggle' }}
+        />
       );
       expect(wrapper.findDrawersTriggers().map(trigger => trigger.getElement().getAttribute('aria-label'))).toEqual([
         'bbb',

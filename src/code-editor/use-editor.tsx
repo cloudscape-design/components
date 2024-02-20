@@ -3,12 +3,14 @@
 
 import { Ace } from 'ace-builds';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCurrentMode } from '@cloudscape-design/component-toolkit/internal';
 import { getAceTheme, getDefaultConfig, getDefaultTheme } from './util';
 import { CodeEditorProps } from './interfaces';
 
 export function useEditor(ace: any, loading?: boolean) {
   const editorRef = useRef<HTMLDivElement>(null);
   const [editor, setEditor] = useState<null | Ace.Editor>(null);
+  const [initialMode] = useState(useCurrentMode(editorRef));
 
   useEffect(() => {
     const elem = editorRef.current;
@@ -19,10 +21,10 @@ export function useEditor(ace: any, loading?: boolean) {
     setEditor(
       ace.edit(elem, {
         ...config,
-        theme: getAceTheme(getDefaultTheme(elem)),
+        theme: getAceTheme(getDefaultTheme(ace, initialMode)),
       })
     );
-  }, [ace, loading]);
+  }, [ace, loading, initialMode]);
 
   return { editorRef, editor };
 }

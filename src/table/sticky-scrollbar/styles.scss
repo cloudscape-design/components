@@ -6,16 +6,16 @@
 @use '../../internal/styles' as styles;
 
 .sticky-scrollbar {
-  height: 15px;
+  block-size: 15px;
   position: sticky;
   display: none;
   overflow-x: auto;
   overflow-y: hidden;
-  bottom: 0;
-  width: 100%;
+  inset-block-end: 0;
+  inline-size: 100%;
 
   &-content {
-    height: 15px;
+    block-size: 15px;
   }
   &-visible {
     display: block;
@@ -23,7 +23,7 @@
   &-native-invisible {
     // Native scrollbar does not take space when it is not always invisible
     // For example it is set as "show when scrolling"
-    margin-top: -15px;
+    margin-block-start: -15px;
   }
 
   &-offset {
@@ -33,14 +33,14 @@
     z-index: 799; // Higher than sticky columns (798) and lower than table sticky header (800)
     &:not(.is-visual-refresh) {
       background-color: awsui.$color-background-container-content;
-      height: 15px;
-      margin-top: calc(-1 * awsui.$border-divider-section-width); // -1px to compensate for border width
-      border-top: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+      block-size: 15px;
+      margin-block-start: calc(-1 * awsui.$border-divider-section-width); // -1px to compensate for border width
+      border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
     }
 
     &.is-visual-refresh {
       // Needed to avoid sticky scrollbar overlapping with interactive elements in VR compact mode
-      margin-top: -5px;
+      margin-block-start: -5px;
     }
   }
 }

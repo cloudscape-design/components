@@ -6,8 +6,30 @@
 @use '../typography' as typography;
 
 @mixin styles-reset {
-  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
-  all: initial;
+  border-collapse: separate;
+  border-spacing: 0;
   box-sizing: border-box;
+  caption-side: top;
+  cursor: auto;
+  direction: inherit;
+  empty-cells: show;
+  font-family: serif;
+  font-size: medium;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 400;
+  font-stretch: normal;
+  line-height: normal;
+  hyphens: none;
+  letter-spacing: normal;
+  list-style: disc outside none;
+  tab-size: 8;
+  text-align: start;
+  text-indent: 0;
+  text-shadow: none;
+  text-transform: none;
+  visibility: visible;
+  white-space: normal;
+  word-spacing: normal;
   @include typography.default-text-style;
 }

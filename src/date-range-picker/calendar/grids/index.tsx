@@ -11,7 +11,7 @@ import styles from '../../styles.css.js';
 
 import { hasValue } from '../../../internal/utils/has-value';
 import { useDateCache } from '../../../internal/hooks/use-date-cache';
-import { moveNextDay, movePrevDay, moveNextWeek, movePrevWeek, getBaseDate } from '../../../calendar/utils/navigation';
+import { moveNextDay, movePrevDay, moveNextWeek, movePrevWeek, getBaseDay } from '../../../calendar/utils/navigation';
 import { findDateToFocus } from '../utils';
 
 function isVisible(date: Date, baseDate: Date, isSingleGrid: boolean) {
@@ -77,7 +77,7 @@ export const Grids = ({
       const direction = isAfter(focusedDate, baseDate) ? -1 : 1;
 
       const newMonth = !isSingleGrid && direction === -1 ? addMonths(baseDate, -1) : baseDate;
-      const nearestBaseDate = getBaseDate(newMonth, isDateEnabled);
+      const nearestBaseDate = getBaseDay(newMonth, isDateEnabled);
 
       const newFocusedDate = findDateToFocus(focusedDate, nearestBaseDate, isDateEnabled);
 

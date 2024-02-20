@@ -66,17 +66,10 @@ function ApplicationController(
     if (!isFocused || focusTransitionRef.current === true) {
       return;
     }
-
-    // Delay focus juggle to let the last focus event settle in Firefox.
-    // Without the delay the focus is getting lost.
-    const timeoutId = setTimeout(() => {
-      focusTransitionRef.current = true;
-      containerRef.current!.removeChild(applicationRef.current!);
-      containerRef.current!.appendChild(applicationRef.current!);
-      focusApplication(applicationRef.current!, activeElementRef?.current || null);
-    }, 0);
-
-    return () => clearTimeout(timeoutId);
+    focusTransitionRef.current = true;
+    containerRef.current!.removeChild(applicationRef.current!);
+    containerRef.current!.appendChild(applicationRef.current!);
+    focusApplication(applicationRef.current!, activeElementRef?.current || null);
   }, [isFocused, activeElementKey, activeElementRef]);
 
   return (

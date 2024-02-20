@@ -35,6 +35,7 @@ import {
   getTableWrapperRoleProps,
   GridNavigationProvider,
 } from '~components/table/table-role';
+import { useSingleTabStopNavigation } from '~components/internal/context/single-tab-stop-navigation-context';
 import { orderBy, range } from 'lodash';
 import appLayoutLabels from '../app-layout/utils/labels';
 import { stateToStatusIndicator } from '../table/shared-configs';
@@ -266,7 +267,8 @@ export default function Page() {
                   <thead>
                     <tr {...getTableHeaderRowRoleProps({ tableRole })}>
                       {visibleColumnDefinitions.map((column, colIndex) => (
-                        <th
+                        <Cell
+                          tag="th"
                           key={column.key}
                           className={styles['custom-table-cell']}
                           {...getTableColHeaderRoleProps({ tableRole, colIndex })}
@@ -284,7 +286,7 @@ export default function Page() {
                               }
                             }}
                           />
-                        </th>
+                        </Cell>
                       ))}
                     </tr>
                   </thead>
@@ -292,13 +294,14 @@ export default function Page() {
                     {sortedItems.map((item, rowIndex) => (
                       <tr key={item.id} {...getTableRowRoleProps({ tableRole, rowIndex, firstIndex: 0 })}>
                         {visibleColumnDefinitions.map((column, colIndex) => (
-                          <td
+                          <Cell
+                            tag="td"
                             key={column.key}
                             className={styles['custom-table-cell']}
                             {...getTableCellRoleProps({ tableRole, colIndex })}
                           >
                             {column.render(item)}
-                          </td>
+                          </Cell>
                         ))}
                       </tr>
                     ))}
@@ -313,6 +316,12 @@ export default function Page() {
   );
 }
 
+function Cell({ tag: Tag, ...rest }: React.HTMLAttributes<HTMLTableCellElement> & { tag: 'th' | 'td' }) {
+  const cellRef = useRef<HTMLTableCellElement>(null);
+  const { tabIndex } = useSingleTabStopNavigation(cellRef);
+  return <Tag {...rest} ref={cellRef} tabIndex={tabIndex} />;
+}
+
 function SortingHeader({
   column,
   sortingKey,
@@ -324,9 +333,11 @@ function SortingHeader({
   sortingDirection: -1 | 1;
   onClick: () => void;
 }) {
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const { tabIndex } = useSingleTabStopNavigation(buttonRef);
   return (
     <div style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap' }}>
-      <button className={styles['custom-table-sorting-header']} onClick={onClick}>
+      <button ref={buttonRef} tabIndex={tabIndex} className={styles['custom-table-sorting-header']} onClick={onClick}>
         {column.label}
       </button>
       {sortingKey === column.key && sortingDirection === -1 && <Icon name="angle-down" />}
@@ -416,11 +427,16 @@ function ItemActionsCell({
 function DnsEditCell({ item }: { item: Instance }) {
   const [active, setActive] = useState(false);
   const [value, setValue] = useState(item.dnsName ?? '');
+
+  const triggerRef = useRef<HTMLDivElement>(null);
+  const { tabIndex } = useSingleTabStopNavigation(triggerRef);
   const dialogRef = useRef<HTMLDivElement>(null);
+
   return !active ? (
     <div
+      ref={triggerRef}
       role="button"
-      tabIndex={0}
+      tabIndex={tabIndex}
       aria-label="Edit DNS name"
       onClick={() => setActive(true)}
       onKeyDown={event => {

@@ -16,7 +16,7 @@ $font-weight-bold: awsui.$font-weight-heading-s;
 }
 
 .value {
-  text-align: right;
+  text-align: end;
   margin-inline-start: awsui.$space-xxl;
   &.expandable {
     font-weight: $font-weight-bold;
@@ -34,7 +34,7 @@ $font-weight-bold: awsui.$font-weight-heading-s;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 100%;
+  inline-size: 100%;
   > .key {
     display: inline-flex;
     color: awsui.$color-text-group-label;
@@ -55,8 +55,10 @@ $font-weight-bold: awsui.$font-weight-heading-s;
 
 .list {
   display: flex;
-  margin: 0;
-  padding: 0;
+  margin-block: 0;
+  margin-inline: 0;
+  padding-block: 0;
+  padding-inline: 0;
   list-style: none;
   flex-direction: column;
 
@@ -71,6 +73,11 @@ $font-weight-bold: awsui.$font-weight-heading-s;
   }
 }
 
+.list:not(.compact) > .list-item:not(:first-child),
+.inner-list-item {
+  margin-block-start: awsui.$space-scaled-xxs;
+}
+
 .list-item.with-sub-items:not(.expandable) > .key-value-pair {
   > .key,
   > .value {
@@ -79,7 +86,7 @@ $font-weight-bold: awsui.$font-weight-heading-s;
 }
 
 .full-width {
-  width: 100%;
+  inline-size: 100%;
 }
 
 .announced {

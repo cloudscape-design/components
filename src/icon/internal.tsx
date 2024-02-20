@@ -62,7 +62,8 @@ const InternalIcon = ({
     badge && styles.badge,
     !contextualSize && styles[`size-${iconSize}-mapped-height`],
     styles[`size-${iconSize}`],
-    styles[`variant-${variant}`]
+    styles[`variant-${variant}`],
+    styles[`name-${name}`]
   );
 
   // Possible infinite loop is not a concern here because line

@@ -18,11 +18,14 @@
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   grid-template-rows: auto 1fr;
-  row-gap: awsui.$space-scaled-xl;
+  row-gap: awsui.$space-scaled-xxs;
 
   &.small-container {
     grid-template-columns: minmax(0, 1fr) 0;
     row-gap: awsui.$space-scaled-l;
+  }
+  &:not(.remove-high-contrast-header) {
+    row-gap: awsui.$space-scaled-xl;
   }
 }
 
@@ -33,30 +36,42 @@
 .navigation.refresh {
   grid-column: 1;
   grid-row: 1 / span 2;
-  padding-top: var(#{custom-props.$containerFirstGap}, 0px);
+  padding-block-start: var(#{custom-props.$containerFirstGap}, 0px);
 
-  > ul {
+  > ul.refresh {
     background: awsui.$color-background-container-content;
     position: relative;
-    @include styles.container-style;
-    margin: 0;
-    padding: awsui.$space-scaled-m awsui.$space-l awsui.$space-scaled-l awsui.$space-m;
-    width: 280px;
+    margin-block: 0;
+    margin-inline: 0;
+    padding-block-start: awsui.$space-scaled-xxs;
+    padding-block-end: 0;
+    padding-inline: 0;
+    inline-size: 260px;
     box-sizing: border-box;
+    &:not(.remove-high-contrast-header) {
+      @include styles.container-style;
+      padding-block-start: awsui.$space-scaled-m;
+      padding-block-end: awsui.$space-scaled-l;
+      padding-inline-start: awsui.$space-m;
+      padding-inline-end: awsui.$space-l;
+      inline-size: 280px;
+    }
 
     > li {
       display: grid;
       column-gap: awsui.$space-xs;
       grid-template-columns: awsui.$space-l 1fr;
       grid-template-rows: repeat(2, auto);
-      padding: 0;
+      padding-block: 0;
+      padding-inline: 0;
 
       > hr {
         background-color: awsui.$color-border-divider-default;
-        border: 0;
+        border-block: 0;
+        border-inline: 0;
         grid-column: 1;
-        height: 100%;
-        width: awsui.$space-xxxs;
+        block-size: 100%;
+        inline-size: awsui.$space-xxxs;
       }
 
       > .number {
@@ -77,12 +92,15 @@
         grid-template-columns: awsui.$space-l 1fr;
 
         > .circle {
-          border-radius: 100%;
+          border-start-start-radius: 100%;
+          border-start-end-radius: 100%;
+          border-end-start-radius: 100%;
+          border-end-end-radius: 100%;
           grid-column: 1;
-          height: 10px;
+          block-size: 10px;
           justify-self: center;
-          margin-top: 6px;
-          width: 10px;
+          margin-block-start: 6px;
+          inline-size: 10px;
         }
 
         > .title {
@@ -101,7 +119,7 @@
     }
 
     > li:not(:first-child) > .number {
-      margin-top: awsui.$space-m;
+      margin-block-start: awsui.$space-m;
     }
 
     > li:last-child > hr {
@@ -167,39 +185,40 @@
 .navigation:not(.refresh) {
   color: awsui.$color-text-disabled;
   display: inline-block;
-  margin-right: calc(2 * #{awsui.$space-xxxl});
-  min-width: 20 * styles.$base-size;
-  padding-top: awsui.$space-xxs;
-  width: 20 * styles.$base-size;
+  margin-inline-end: calc(2 * #{awsui.$space-xxxl});
+  min-inline-size: 20 * styles.$base-size;
+  padding-block-start: awsui.$space-xxs;
+  inline-size: 20 * styles.$base-size;
 
-  > ul {
+  > ul:not(.refresh) {
     list-style: none;
-    padding: 0;
-    margin: 0;
+    padding-block: 0;
+    padding-inline: 0;
+    margin-block: 0;
+    margin-inline: 0;
 
     > li {
       @include styles.text-wrapping;
-      padding-bottom: awsui.$space-scaled-m;
-      padding-top: 0;
+      padding-block: 0 awsui.$space-scaled-m;
     }
 
     > li:not(:first-child) {
-      margin-top: awsui.$space-scaled-m;
+      margin-block-start: awsui.$space-scaled-m;
     }
 
     > li:not(:last-child) {
-      border-bottom: awsui.$border-divider-list-width solid awsui.$color-border-layout;
+      border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-layout;
     }
   }
 }
 
 .form:not(.refresh) {
   @include styles.text-wrapping;
-  width: 100%;
+  inline-size: 100%;
 
   > .form-header {
     position: relative;
-    margin-bottom: awsui.$space-scaled-m;
+    margin-block-end: awsui.$space-scaled-m;
   }
 }
 
@@ -222,8 +241,15 @@
   }
 
   > .form-header > .form-header-content {
-    padding-top: calc(var(#{custom-props.$containerFirstGap}, 0px) + awsui.$space-s);
-    padding-bottom: awsui.$space-scaled-m;
+    padding-block-start: calc(var(#{custom-props.$containerFirstGap}, 0px) + awsui.$space-m - awsui.$space-xxxs);
+    padding-block-end: awsui.$space-scaled-s;
+  }
+
+  &:not(.remove-high-contrast-header) {
+    > .form-header > .form-header-content {
+      padding-block-start: calc(var(#{custom-props.$containerFirstGap}, 0px) + awsui.$space-s);
+      padding-block-end: awsui.$space-scaled-m;
+    }
   }
 
   > .form-component {
@@ -237,7 +263,7 @@
     }
 
     > .form-header > .form-header-content {
-      padding-top: 0;
+      padding-block-start: 0;
     }
 
     > .form-component {
@@ -253,7 +279,7 @@
 .collapsed-steps {
   color: awsui.$color-text-heading-secondary;
   font-weight: styles.$font-weight-bold;
-  padding-top: awsui.$space-scaled-xxs;
+  padding-block-start: awsui.$space-scaled-xxs;
   &-hidden {
     display: none;
   }

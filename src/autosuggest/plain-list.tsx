@@ -7,7 +7,7 @@ import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
 import { getBaseProps } from '../internal/base-component';
 
 import AutosuggestOption from './autosuggest-option';
-import { AutosuggestProps, AutosuggestItem } from './interfaces';
+import { AutosuggestItem } from './interfaces';
 import styles from './styles.css.js';
 import { AutosuggestItemsState } from './options-controller';
 
@@ -15,7 +15,6 @@ export interface ListProps {
   autosuggestItemsState: AutosuggestItemsState;
   menuProps: Omit<OptionsListProps, 'children'>;
   handleLoadMore: () => void;
-  enteredTextLabel?: AutosuggestProps.EnteredTextLabel;
   highlightedA11yProps: Record<string, string | number | boolean>;
   hasDropdownStatus?: boolean;
   highlightText: string;
@@ -44,7 +43,6 @@ const PlainList = ({
   autosuggestItemsState,
   handleLoadMore,
   menuProps,
-  enteredTextLabel,
   highlightedA11yProps,
   hasDropdownStatus,
   highlightText,
@@ -88,7 +86,6 @@ const PlainList = ({
             current={item.value === highlightText}
             key={index}
             data-mouse-target={index}
-            enteredTextLabel={enteredTextLabel}
             screenReaderContent={screenReaderContent}
             highlightType={autosuggestItemsState.highlightType}
             {...optionProps}
