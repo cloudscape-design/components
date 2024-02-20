@@ -51,8 +51,8 @@ function SeparatedList({ ariaLabel, ariaLabelledBy, items }: SeparatedListProps)
 
 // HeroHeader component
 function HeroHeader() {
-  //const selectOptions: SelectProps.Options = [{ value: 'First' }, { value: 'Second' }, { value: 'Third' }];
-  //const [selectedOption, setSelectedOption] = useState<SelectProps.Option>({ value: 'First' });
+  // const selectOptions: SelectProps.Options = [{ value: 'First' }, { value: 'Second' }, { value: 'Third' }];
+  // const [selectedOption, setSelectedOption] = useState<SelectProps.Option>({ value: 'First' });
   return (
     <div className={clsx(styles['custom-home__header'])}>
       <div className={clsx(styles['inner-header'])}>
