@@ -86,16 +86,12 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     warnOnce('Autosuggest', '`onLoadItems` must be provided for `recoveryText` to be displayed.');
   }
 
-  const enteredTextLabelI18nTestValue = i18n('enteredTextLabel', undefined, format => format({ value: '' }));
-  if (!enteredTextLabel && !enteredTextLabelI18nTestValue) {
-    warnOnce('Autosuggest', 'A value for enteredTextLabel must be provided.');
-  }
-
   const [autosuggestItemsState, autosuggestItemsHandlers] = useAutosuggestItems({
     options: options || [],
     filterValue: value,
     filterText: value,
     filteringType,
+    enteredTextLabel,
     hideEnteredTextLabel: false,
     onSelectItem: (option: AutosuggestItem) => {
       const value = option.value || '';
@@ -225,7 +221,6 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
             highlightText={value}
             listId={listId}
             controlId={controlId}
-            enteredTextLabel={enteredTextLabel}
             handleLoadMore={autosuggestLoadMoreHandlers.fireLoadMoreOnScroll}
             hasDropdownStatus={dropdownStatus.content !== null}
             virtualScroll={virtualScroll}

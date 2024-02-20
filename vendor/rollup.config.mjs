@@ -6,7 +6,7 @@ import * as path from 'path';
 import { fileURLToPath } from 'url';
 import commenting from 'commenting';
 import { readFileSync } from 'fs';
-import del from 'del';
+import { sync as rimrafSync } from 'rimraf';
 
 const dirName = path.dirname(fileURLToPath(import.meta.url));
 
@@ -44,8 +44,8 @@ function removeVendorFolder() {
     generateBundle: {
       sequential: true,
       order: 'pre',
-      async handler() {
-        await del([vendorFolder]);
+      handler() {
+        rimrafSync(vendorFolder);
       },
     },
   };

@@ -10,7 +10,6 @@ import { getTestOptionIndexes } from '../internal/components/options-list/utils/
 import styles from './styles.css.js';
 import { AutosuggestItem } from './interfaces';
 import { HighlightType } from '../internal/components/options-list/utils/use-highlight-option';
-import { useInternalI18n } from '../i18n/context';
 
 export interface AutosuggestOptionProps extends BaseComponentProps {
   nativeAttributes?: React.HTMLAttributes<HTMLDivElement>;
@@ -19,7 +18,6 @@ export interface AutosuggestOptionProps extends BaseComponentProps {
   highlighted: boolean;
   highlightType: HighlightType;
   current: boolean;
-  enteredTextLabel?: (value: string) => string;
   virtualPosition?: number;
   padBottom?: boolean;
   screenReaderContent?: string;
@@ -35,7 +33,6 @@ const AutosuggestOption = (
     highlighted,
     highlightType,
     current,
-    enteredTextLabel,
     virtualPosition,
     padBottom,
     screenReaderContent,
@@ -46,7 +43,6 @@ const AutosuggestOption = (
   ref: React.Ref<HTMLDivElement>
 ) => {
   const baseProps = getBaseProps(rest);
-  const i18n = useInternalI18n('autosuggest');
   const useEntered = 'type' in option && option.type === 'use-entered';
   const isParent = 'type' in option && option.type === 'parent';
   const isChild = 'type' in option && option.type === 'child';
@@ -54,9 +50,7 @@ const AutosuggestOption = (
 
   let optionContent;
   if (useEntered) {
-    optionContent = i18n('enteredTextLabel', enteredTextLabel?.(option.value || ''), format =>
-      format({ value: option.value || '' })
-    );
+    optionContent = option.label;
     // we don't want fancy generated content for screenreader for the "Use..." option,
     // just the visible text is fine
     screenReaderContent = undefined;

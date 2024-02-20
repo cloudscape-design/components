@@ -124,12 +124,14 @@ test(
 );
 
 test(
-  'disables left/right arrow when first/last tab is selected',
+  'left/right arrow should have aria-disabled when first/last tab is selected',
   setupTest(async page => {
     await page.hasPaginationButtons(true);
     await expect(page.isExisting(page.paginationButton('left', true))).resolves.toBe(false);
     await expect(page.isExisting(page.paginationButton('right', true))).resolves.toBe(true);
     await page.focusTabHeader();
+    // arrows have a focus ring (and a tab stop) even in disabled state
+    await page.keys(['Tab']);
     // TODO: understand why the following line does not work, and keys have to be sent in a different way
     // await page.keys(['ArrowRight', 'ArrowRight', 'ArrowRight', 'ArrowRight']);
     await page.keys(['ArrowRight']);
@@ -160,7 +162,8 @@ test(
   setupTest(async page => {
     await page.setWindowSize({ width: 500, height: 1000 });
     await page.focusTabHeader();
-    await page.keys(['Tab', 'Space']);
+    // arrows have a focus ring (and a tab stop) even in disabled state
+    await page.keys(['Tab', 'Tab', 'Space']);
     await expect(page.isExisting(page.paginationButton('left', true))).resolves.toBe(true);
     await expect(page.isExisting(page.paginationButton('right', true))).resolves.toBe(false);
     await page.keys(['Shift', 'Tab', 'Tab', 'Space']);
@@ -175,6 +178,8 @@ test(
     // This test assumes that one pagination event leads to the end/beginning of the tabs header
     await page.setWindowSize({ width: 500, height: 1000 });
     await page.focusTabHeader();
+    // arrows have a focus ring (and a tab stop) even in disabled state
+    await page.keys('Tab');
     await page.keys('PageDown');
     await expect(page.isExisting(page.paginationButton('left', true))).resolves.toBe(true);
     await expect(page.isExisting(page.paginationButton('right', true))).resolves.toBe(false);
@@ -242,6 +247,10 @@ test(
     setupTest(async page => {
       await page.click('#before');
       await expect(page.findActiveTabIndex()).resolves.toBe(0);
+      if (smallViewport) {
+        // arrows have a focus ring (and a tab stop) even in disabled state
+        await page.keys('Tab');
+      }
       await page.keys(['Tab', 'ArrowRight']);
       await expect(page.findActiveTabIndex()).resolves.toBe(1);
       // TODO: understand why the following line does not work, and keys have to be sent in a different way
@@ -261,6 +270,10 @@ test(
     'has the same arrow home/end keys behavior when paginated',
     setupTest(async page => {
       await page.focusTabHeader();
+      if (smallViewport) {
+        // arrows have a focus ring (and a tab stop) even in disabled state
+        await page.keys('Tab');
+      }
       await page.keys(['End']);
       await expect(page.findActiveTabIndex()).resolves.toBe(5);
       await page.keys(['Home']);
