@@ -29,6 +29,10 @@ export class FlashbarInteractivePage extends FlashbarBasePage {
     await this.click(createWrapper().findFlashbar().findItems().get(1).findDismissButton().toSelector());
   }
 
+  getItem(index: number) {
+    return createWrapper().findFlashbar().findItems().get(index);
+  }
+
   async removeAll() {
     await this.click('[data-id="remove-all"]');
   }
