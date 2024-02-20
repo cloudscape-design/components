@@ -17,8 +17,8 @@ export function Breadcrumbs() {
   return (
     <BreadcrumbGroup
       items={[
-        { text: 'Home', href: '#' },
-        { text: 'Service', href: '#' },
+        { text: 'Machine Learning', href: '#' },
+        { text: 'Generative AI', href: '#' },
       ]}
     />
   );
