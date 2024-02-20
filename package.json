@@ -23,7 +23,7 @@
     "start:watch": "gulp watch",
     "start:dev": "cross-env NODE_ENV=development webpack serve --config pages/webpack.config.js",
     "start:integ": "cross-env NODE_ENV=development webpack serve --config pages/webpack.config.integ.js",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "dependencies": {
     "@cloudscape-design/collection-hooks": "^1.0.0",
@@ -104,10 +104,10 @@
     "gulp": "^4.0.2",
     "html-validate": "^7.3.0",
     "html-webpack-plugin": "^5.5.0",
-    "husky": "^6.0.0",
+    "husky": "^9.0.0",
     "jest": "^28.1.0",
     "jest-environment-jsdom": "^28.1.0",
-    "lint-staged": "^10.5.4",
+    "lint-staged": "^15.2.2",
     "loader-utils": "^3.2.1",
     "lodash": "^4.17.21",
     "mini-css-extract-plugin": "^2.4.4",
