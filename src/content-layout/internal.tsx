@@ -14,6 +14,7 @@ import styles from './styles.css.js';
 type InternalContentLayoutProps = ContentLayoutProps & InternalBaseComponentProps;
 
 export default function InternalContentLayout({
+  heroHeader,
   children,
   disableOverlap,
   header,
@@ -23,6 +24,7 @@ export default function InternalContentLayout({
   const baseProps = getBaseProps(rest);
   const rootElement = useRef<HTMLDivElement>(null);
   const mergedRef = useMergeRefs(rootElement, __internalRootRef);
+  const isHeroHeader = heroHeader;
 
   const isVisualRefresh = useVisualRefresh();
   const overlapElement = useDynamicOverlap();
@@ -42,6 +44,7 @@ export default function InternalContentLayout({
       <div
         className={clsx(
           styles.background,
+          isHeroHeader && styles.hero,
           { [styles['is-overlap-disabled']]: isOverlapDisabled },
           getContentHeaderClassName()
         )}

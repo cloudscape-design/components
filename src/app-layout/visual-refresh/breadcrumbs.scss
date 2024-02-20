@@ -8,12 +8,12 @@
 @use '../../internal/generated/custom-css-properties/index.scss' as custom-props;
 
 .breadcrumbs {
-  background-color: awsui.$color-background-layout-main;
+  //background-color: awsui.$color-background-layout-main;
   grid-area: breadcrumbs;
 
-  &.dark-header {
-    background-color: transparent;
-  }
+  // &.dark-header {
+  //   background-color: transparent;
+  // }
 
   /*
   If a child component tells the AppLayout to have a sticky 

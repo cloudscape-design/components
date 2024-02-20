@@ -15,7 +15,9 @@ export interface AppLayoutProps extends BaseComponentProps {
   /**
    * If true, Breadcrumb and Flashbar background get dark mode context.
    */
-  darkHeader?: boolean;
+  //darkHeader?: boolean;
+
+  headerBackground?: string;
 
   /**
    * Drawers property.

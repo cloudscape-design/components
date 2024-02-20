@@ -31,7 +31,7 @@ nodes will directly touch with no gap between them.
   min-height: 100%;
 
   > .background {
-    background-color: awsui.$color-background-layout-main;
+    //background-color: awsui.$color-background-layout-main;
     grid-column: 1;
     grid-row: 1 / 3;
     color: awsui.$color-text-body-default;
@@ -39,6 +39,10 @@ nodes will directly touch with no gap between them.
     &.is-overlap-disabled {
       grid-row: 1 / 2;
     }
+
+    // &.hero {
+    //   background-color: transparent;
+    // }
   }
 
   > .header {
