@@ -28,16 +28,21 @@ export function useLatencyMetrics(
       return;
     }
 
+    const timestamp = Date.now();
+
     const cleanup = isInViewport(elementRef.current!, inViewport => {
-      emitMetric({
-        type: 'mounted',
-        lifecycleId,
-        componentName,
-        inViewport,
-        metadata: { instanceId },
-        loading: isLoadingOrSpinner,
-        loadingDuration: undefined,
-      });
+      emitMetric(
+        {
+          type: 'mounted',
+          lifecycleId,
+          componentName,
+          inViewport,
+          metadata: { instanceId },
+          loading: isLoadingOrSpinner,
+          loadingDuration: undefined,
+        },
+        timestamp
+      );
     });
 
     return () => {
@@ -46,15 +51,18 @@ export function useLatencyMetrics(
       if (loadingStartTime.current !== undefined) {
         const loadingDuration = performance.now() - loadingStartTime.current;
 
-        emitMetric({
-          type: componentType === 'spinner' ? 'loading-finished' : 'loading-cancelled',
-          lifecycleId,
-          componentName,
-          inViewport: undefined,
-          metadata: { instanceId },
-          loading: isLoadingOrSpinner,
-          loadingDuration,
-        });
+        emitMetric(
+          {
+            type: componentType === 'spinner' ? 'loading-finished' : 'loading-cancelled',
+            lifecycleId,
+            componentName,
+            inViewport: undefined,
+            metadata: { instanceId },
+            loading: isLoadingOrSpinner,
+            loadingDuration,
+          },
+          Date.now()
+        );
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -66,15 +74,18 @@ export function useLatencyMetrics(
       return;
     }
     if (loading) {
-      emitMetric({
-        type: 'loading-started',
-        lifecycleId,
-        componentName,
-        inViewport: undefined,
-        metadata: { instanceId },
-        loading: isLoadingOrSpinner,
-        loadingDuration: undefined,
-      });
+      emitMetric(
+        {
+          type: 'loading-started',
+          lifecycleId,
+          componentName,
+          inViewport: undefined,
+          metadata: { instanceId },
+          loading: isLoadingOrSpinner,
+          loadingDuration: undefined,
+        },
+        Date.now()
+      );
     } else {
       if (loadingStartTime.current === undefined) {
         return;
@@ -82,15 +93,18 @@ export function useLatencyMetrics(
       const loadingDuration = performance.now() - loadingStartTime.current;
       loadingStartTime.current = undefined;
 
-      emitMetric({
-        type: 'loading-finished',
-        lifecycleId,
-        componentName,
-        inViewport: undefined,
-        metadata: { instanceId },
-        loading: isLoadingOrSpinner,
-        loadingDuration,
-      });
+      emitMetric(
+        {
+          type: 'loading-finished',
+          lifecycleId,
+          componentName,
+          inViewport: undefined,
+          metadata: { instanceId },
+          loading: isLoadingOrSpinner,
+          loadingDuration,
+        },
+        Date.now()
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
@@ -106,6 +120,6 @@ interface EventDetail {
   loadingDuration: number | undefined;
 }
 
-function emitMetric(eventDetail: EventDetail) {
-  metrics.sendPanoramaMetric({ eventType: 'awsui-latency', eventDetail: JSON.stringify(eventDetail) });
+function emitMetric(eventDetail: EventDetail, timestamp: number) {
+  metrics.sendPanoramaMetric({ eventType: 'awsui-latency', eventDetail: JSON.stringify(eventDetail), timestamp });
 }
