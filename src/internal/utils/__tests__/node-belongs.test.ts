@@ -47,4 +47,16 @@ describe('nodeBelongs', () => {
     `;
     expect(nodeBelongs(div.querySelector('#container1'), div.querySelector('#node') as Node)).toBe(true);
   });
+
+  test('returns "true" when the node is a descendant of the container, both inside a portal', () => {
+    div.innerHTML = `
+      <div id="portal"></div>
+      <div data-awsui-referrer-id="portal">
+        <div id="container1">
+          <div id="node"></div>
+        </div>
+      </div>
+    `;
+    expect(nodeBelongs(div.querySelector('#container1'), div.querySelector('#node') as Node)).toBe(true);
+  });
 });
