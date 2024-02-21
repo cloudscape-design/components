@@ -11,6 +11,10 @@
   background-color: awsui.$color-background-layout-main;
   grid-area: breadcrumbs;
 
+  &.dark-header {
+    background-color: transparent;
+  }
+
   /*
   If a child component tells the AppLayout to have a sticky 
   background (typically because of a stickyHeader with a 

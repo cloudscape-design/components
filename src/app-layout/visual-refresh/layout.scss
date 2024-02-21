@@ -258,6 +258,9 @@ explicitly set in script.
     &.content-first-child-main:not(.has-header) {
       #{custom-props.$containerFirstOverlapExtension}: #{awsui.$space-m};
       #{custom-props.$containerFirstGap}: #{awsui.$space-xxs};
+      &.dark-header {
+        #{custom-props.$containerFirstGap}: 0;
+      }
     }
   }
 
