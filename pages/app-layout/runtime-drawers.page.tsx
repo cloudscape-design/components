@@ -8,7 +8,6 @@ import {
   HelpPanel,
   Drawer,
   Link,
-  NonCancelableCustomEvent,
   SpaceBetween,
   SplitPanel,
   Toggle,
@@ -35,41 +34,27 @@ export default function WithDrawers() {
   const hasDrawers = urlParams.hasDrawers ?? true;
   const [isToolsOpen, setIsToolsOpen] = useState(false);
 
-  const [widths, setWidths] = useState<{ [id: string]: number }>({
-    security: 500,
-    'pro-help': 280,
-  });
-
-  const drawers = !hasDrawers
+  const drawersProps: Pick<AppLayoutProps, 'activeDrawerId' | 'onDrawerChange' | 'drawers'> | null = !hasDrawers
     ? null
     : {
-        drawers: {
-          ariaLabel: 'Drawers',
-          activeDrawerId: activeDrawerId,
-          onResize: (event: NonCancelableCustomEvent<{ size: number; id: string }>) => {
-            const obj = widths;
-            obj[event.detail.id] = event.detail.size;
-            setWidths(obj);
-            console.log(widths.security);
-          },
-          items: [
-            {
-              ariaLabels: {
-                closeButton: 'ProHelp close button',
-                content: 'ProHelp drawer content',
-                triggerButton: 'ProHelp trigger button',
-                resizeHandle: 'ProHelp resize handle',
-              },
-              content: <ProHelp />,
-              id: 'pro-help',
-              trigger: {
-                iconName: 'contact',
-              },
+        activeDrawerId: activeDrawerId,
+        drawers: [
+          {
+            ariaLabels: {
+              closeButton: 'ProHelp close button',
+              drawerName: 'ProHelp drawer content',
+              triggerButton: 'ProHelp trigger button',
+              resizeHandle: 'ProHelp resize handle',
             },
-          ],
-          onChange: (event: NonCancelableCustomEvent<string>) => {
-            setActiveDrawerId(event.detail);
+            content: <ProHelp />,
+            id: 'pro-help',
+            trigger: {
+              iconName: 'contact',
+            },
           },
+        ],
+        onDrawerChange: event => {
+          setActiveDrawerId(event.detail.activeDrawerId);
         },
       };
 
@@ -164,7 +149,7 @@ export default function WithDrawers() {
       tools={<Info helpPathSlug={helpPathSlug} />}
       toolsOpen={isToolsOpen}
       toolsHide={!hasTools}
-      {...(drawers as any)}
+      {...drawersProps}
     />
   );
 }
