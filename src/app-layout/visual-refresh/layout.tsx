@@ -44,6 +44,7 @@ export default function Layout({ children }: LayoutProps) {
     splitPanelPosition,
     stickyNotifications,
     splitPanelDisplayed,
+    darkHeader,
   } = useAppLayoutInternals();
 
   // Determine the first content child so the gap will vertically align with the trigger buttons
@@ -59,6 +60,7 @@ export default function Layout({ children }: LayoutProps) {
         styles.layout,
         styles[`content-first-child-${contentFirstChild}`],
         styles[`content-type-${contentType}`],
+        darkHeader && styles['dark-header'],
         styles[`split-panel-position-${splitPanelPosition ?? 'bottom'}`],
         {
           [styles['disable-body-scroll']]: disableBodyScroll,
