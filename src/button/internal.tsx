@@ -31,7 +31,7 @@ export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
     | (React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>)
     | Record<`data-${string}`, string>;
   __iconClass?: string;
-  __activated?: boolean;
+  __focusable?: boolean;
 } & InternalBaseComponentProps<HTMLAnchorElement | HTMLButtonElement>;
 
 export const InternalButton = React.forwardRef(
@@ -64,7 +64,7 @@ export const InternalButton = React.forwardRef(
       badge,
       __nativeAttributes,
       __internalRootRef = null,
-      __activated = false,
+      __focusable = false,
       ...props
     }: InternalButtonProps,
     ref: React.Ref<ButtonProps.Ref>
@@ -72,6 +72,7 @@ export const InternalButton = React.forwardRef(
     checkSafeUrl('Button', href);
     const isAnchor = Boolean(href);
     const isNotInteractive = loading || disabled;
+    const hasAriaDisabled = (loading && !disabled) || (disabled && __focusable);
     const shouldHaveContent =
       children && ['icon', 'inline-icon', 'flashbar-icon', 'modal-dismiss'].indexOf(variant) === -1;
 
@@ -132,7 +133,6 @@ export const InternalButton = React.forwardRef(
       [styles.disabled]: isNotInteractive,
       [styles['button-no-wrap']]: !wrapText,
       [styles['button-no-text']]: !shouldHaveContent,
-      [styles['is-activated']]: __activated,
       [styles['full-width']]: shouldHaveContent && fullWidth,
     });
 
@@ -215,8 +215,8 @@ export const InternalButton = React.forwardRef(
         <button
           {...buttonProps}
           type={formAction === 'none' ? 'button' : 'submit'}
-          disabled={disabled}
-          aria-disabled={loading && !disabled ? true : undefined}
+          disabled={disabled && !__focusable}
+          aria-disabled={hasAriaDisabled ? true : undefined}
         >
           {buttonContent}
         </button>

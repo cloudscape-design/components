@@ -615,7 +615,7 @@ const OldAppLayout = React.forwardRef(
               ariaLabels={{
                 openLabel: activeDrawer?.ariaLabels?.triggerButton,
                 closeLabel: activeDrawer?.ariaLabels?.closeButton,
-                mainLabel: activeDrawer?.ariaLabels.drawerName,
+                mainLabel: activeDrawer?.ariaLabels?.drawerName,
                 resizeHandle: activeDrawer?.ariaLabels?.resizeHandle,
               }}
               minWidth={minDrawerSize}

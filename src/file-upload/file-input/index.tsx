@@ -70,6 +70,9 @@ function FileInput(
       }
       uploadInputRef.current!.files = dataTransfer.files;
     }
+    if (uploadInputRef.current) {
+      uploadInputRef.current.value = ''; // reset value to allow calling onChange when the same file is uploaded again
+    }
   }, [value]);
 
   return (

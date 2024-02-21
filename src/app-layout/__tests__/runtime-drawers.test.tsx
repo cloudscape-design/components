@@ -10,7 +10,6 @@ import {
   testDrawer,
 } from './utils';
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
-import { BetaDrawersProps } from '../../../lib/components/app-layout/drawer/interfaces';
 import { TOOLS_DRAWER_ID } from '../../../lib/components/app-layout/utils/use-drawers';
 import { awsuiPlugins, awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
 import { DrawerConfig } from '../../../lib/components/internal/plugins/controllers/drawers';
@@ -537,13 +536,11 @@ describeEachAppLayout(size => {
         ariaLabels: { triggerButton: 'ccc' },
         orderPriority: -1,
       });
-      const drawers: { drawers: BetaDrawersProps } = {
-        drawers: {
-          items: [{ id: 'ddd', trigger: {}, content: null, ariaLabels: { triggerButton: 'ddd' } }],
-        },
-      };
       const { wrapper } = await renderComponent(
-        <AppLayout {...(drawers as any)} ariaLabels={{ toolsToggle: 'tools toggle' }} />
+        <AppLayout
+          drawers={[{ id: 'ddd', trigger: {}, content: null, ariaLabels: { triggerButton: 'ddd', drawerName: 'ddd' } }]}
+          ariaLabels={{ toolsToggle: 'tools toggle' }}
+        />
       );
       expect(wrapper.findDrawersTriggers().map(trigger => trigger.getElement().getAttribute('aria-label'))).toEqual([
         'bbb',

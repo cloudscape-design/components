@@ -10,7 +10,6 @@ import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-vis
 import { findUpUntil } from '../../../lib/components/internal/utils/dom';
 import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
 import testutilStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
-import { BetaDrawersProps } from '../../../lib/components/app-layout/drawer/interfaces';
 import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
 import iconStyles from '../../../lib/components/icon/styles.css.js';
 
@@ -150,6 +149,12 @@ export const testDrawer: AppLayoutProps.Drawer = {
   },
 };
 
+export const testDrawerWithoutLabels = {
+  ...testDrawer,
+  // not allowed by types, but we still would like to test this
+  ariaLabels: undefined as unknown as AppLayoutProps.DrawerAriaLabels,
+};
+
 const getDrawerItem = (id: string, badge: boolean): AppLayoutProps.Drawer => {
   return {
     ariaLabels: {
@@ -175,39 +180,3 @@ export const manyDrawers: Array<AppLayoutProps.Drawer> = [
 export const manyDrawersWithBadges: Array<AppLayoutProps.Drawer> = Array.from({ length: 100 }, (_, index) =>
   getDrawerItem(`${index}`, true)
 );
-
-export const resizableDrawer: { drawers: BetaDrawersProps } = {
-  drawers: {
-    ariaLabel: 'Drawers',
-    items: [
-      {
-        ariaLabels: {
-          closeButton: 'Security close button',
-          content: 'Security drawer content',
-          triggerButton: 'Security trigger button',
-          resizeHandle: 'Security resize handle',
-        },
-        resizable: true,
-        content: <span>Security</span>,
-        id: 'security',
-        trigger: {
-          iconName: 'security',
-        },
-      },
-    ],
-  },
-};
-
-export const drawerWithoutLabels: { drawers: BetaDrawersProps } = {
-  drawers: {
-    items: [
-      {
-        content: <span>Security</span>,
-        id: 'security',
-        trigger: {
-          iconName: 'security',
-        },
-      } as BetaDrawersProps['items'][number],
-    ],
-  },
-};
