@@ -410,7 +410,7 @@ const ContentWithContentLayout = () => {
             </ColumnLayout>
           </Container>
         </SpaceBetween>
-        <div className="custom-home__sidebar">
+        <div>
           <SpaceBetween size="xxl">
             <Container header={<Header variant="h2">Pricing (US)</Header>}>
               <SeparatedList
