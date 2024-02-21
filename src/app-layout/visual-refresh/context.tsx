@@ -31,6 +31,7 @@ import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import useBackgroundOverlap from './use-background-overlap';
 import { useDrawers } from '../utils/use-drawers';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
+import { CustomHeaderStyle } from './header-style';
 
 interface AppLayoutInternals extends AppLayoutProps {
   activeDrawerId: string | null;
@@ -183,6 +184,8 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       isMobile ? false : contentTypeDefaults.navigationOpen,
       { componentName: 'AppLayout', controlledProp: 'navigationOpen', changeHandler: 'onNavigationChange' }
     );
+
+    const [headerProps, setHeaderProps] = useState({});
 
     const { refs: navigationRefs, setFocus: focusNavButtons } = useFocusControl(isNavigationOpen);
 
@@ -604,93 +607,96 @@ export const AppLayoutInternalsProvider = React.forwardRef(
         hasDrawers,
       ]
     );
-
+    console.log('Background is ' + headerProps.headerBackground);
     return (
-      <AppLayoutInternalsContext.Provider
-        value={{
-          ...props,
-          activeDrawerId,
-          contentType,
-          drawers,
-          drawersAriaLabel: drawersProps.ariaLabelsWithDrawers?.drawers,
-          drawersOverflowAriaLabel: drawersProps.ariaLabelsWithDrawers?.drawersOverflow,
-          drawersOverflowWithBadgeAriaLabel: drawersProps.ariaLabelsWithDrawers?.drawersOverflowWithBadge,
-          drawersRefs,
-          drawersMinWidth,
-          drawersMaxWidth,
-          drawerSize,
-          drawerRef,
-          resizeHandle,
-          drawersTriggerCount,
-          headerHeight,
-          footerHeight,
-          hasDefaultToolsWidth,
-          hasDrawerViewportOverlay,
-          handleDrawersClick,
-          handleNavigationClick,
-          handleSplitPanelClick,
-          handleSplitPanelPreferencesChange,
-          handleSplitPanelResize,
-          handleToolsClick,
-          hasBackgroundOverlap,
-          hasNotificationsContent,
-          hasOpenDrawer,
-          hasStickyBackground,
-          isBackgroundOverlapDisabled: props.disableContentHeaderOverlap || !hasBackgroundOverlap,
-          isMobile,
-          isNavigationOpen: isNavigationOpen ?? false,
-          isSplitPanelForcedPosition,
-          isSplitPanelOpen,
-          isToolsOpen,
-          layoutElement,
-          layoutWidth,
-          loseToolsFocus,
-          loseDrawersFocus,
-          mainElement,
-          mainOffsetLeft,
-          maxContentWidth,
-          minContentWidth,
-          navigationHide,
-          navigationRefs,
-          notificationsElement,
-          notificationsHeight,
-          offsetBottom,
-          setHasStickyBackground,
-          setSplitPanelReportedSize,
-          setSplitPanelReportedHeaderHeight,
-          splitPanel,
-          splitPanelControlId,
-          splitPanelDisplayed,
-          splitPanelMaxWidth,
-          splitPanelMinWidth,
-          splitPanelPosition,
-          splitPanelPreferences,
-          splitPanelReportedSize,
-          splitPanelReportedHeaderHeight,
-          splitPanelSize,
-          splitPanelToggle,
-          setSplitPanelToggle,
-          splitPanelRefs,
-          toolsControlId,
-          toolsHide,
-          toolsOpen: isToolsOpen,
-          toolsWidth,
-          toolsRefs,
-          __embeddedViewMode,
-        }}
-      >
-        <AppLayoutContext.Provider
+      <CustomHeaderStyle.Provider value={setHeaderProps}>
+        <AppLayoutInternalsContext.Provider
           value={{
-            stickyOffsetBottom: offsetBottom,
-            stickyOffsetTop: 0, // not used in this design. Sticky headers read a CSS-var instead
+            ...props,
+            activeDrawerId,
+            contentType,
+            drawers,
+            drawersAriaLabel: drawersProps.ariaLabelsWithDrawers?.drawers,
+            drawersOverflowAriaLabel: drawersProps.ariaLabelsWithDrawers?.drawersOverflow,
+            drawersOverflowWithBadgeAriaLabel: drawersProps.ariaLabelsWithDrawers?.drawersOverflowWithBadge,
+            drawersRefs,
+            drawersMinWidth,
+            drawersMaxWidth,
+            drawerSize,
+            drawerRef,
+            resizeHandle,
+            drawersTriggerCount,
+            headerHeight,
+            footerHeight,
+            hasDefaultToolsWidth,
+            hasDrawerViewportOverlay,
+            handleDrawersClick,
+            handleNavigationClick,
+            handleSplitPanelClick,
+            handleSplitPanelPreferencesChange,
+            handleSplitPanelResize,
+            handleToolsClick,
+            hasBackgroundOverlap,
+            hasNotificationsContent,
+            hasOpenDrawer,
+            hasStickyBackground,
+            isBackgroundOverlapDisabled: props.disableContentHeaderOverlap || !hasBackgroundOverlap,
+            isMobile,
+            isNavigationOpen: isNavigationOpen ?? false,
+            isSplitPanelForcedPosition,
+            isSplitPanelOpen,
+            isToolsOpen,
+            layoutElement,
+            layoutWidth,
+            loseToolsFocus,
+            loseDrawersFocus,
+            mainElement,
+            mainOffsetLeft,
+            maxContentWidth,
+            minContentWidth,
+            navigationHide,
+            navigationRefs,
+            notificationsElement,
+            notificationsHeight,
+            offsetBottom,
             setHasStickyBackground,
+            setSplitPanelReportedSize,
+            setSplitPanelReportedHeaderHeight,
+            splitPanel,
+            splitPanelControlId,
+            splitPanelDisplayed,
+            splitPanelMaxWidth,
+            splitPanelMinWidth,
+            splitPanelPosition,
+            splitPanelPreferences,
+            splitPanelReportedSize,
+            splitPanelReportedHeaderHeight,
+            splitPanelSize,
+            splitPanelToggle,
+            setSplitPanelToggle,
+            splitPanelRefs,
+            toolsControlId,
+            toolsHide,
+            toolsOpen: isToolsOpen,
+            toolsWidth,
+            toolsRefs,
+            headerBackground: headerProps.headerBackground,
+            __embeddedViewMode,
           }}
         >
-          <DynamicOverlapContext.Provider value={updateBackgroundOverlapHeight}>
-            {children}
-          </DynamicOverlapContext.Provider>
-        </AppLayoutContext.Provider>
-      </AppLayoutInternalsContext.Provider>
+          <AppLayoutContext.Provider
+            value={{
+              stickyOffsetBottom: offsetBottom,
+              stickyOffsetTop: 0, // not used in this design. Sticky headers read a CSS-var instead
+              setHasStickyBackground,
+            }}
+          >
+            <DynamicOverlapContext.Provider value={updateBackgroundOverlapHeight}>
+              {children}
+            </DynamicOverlapContext.Provider>
+          </AppLayoutContext.Provider>
+        </AppLayoutInternalsContext.Provider>
+      </CustomHeaderStyle.Provider>
     );
   }
 );

@@ -14,15 +14,18 @@ export default function Background() {
     hasStickyBackground,
     isMobile,
     stickyNotifications,
+    headerBackground,
   } = useAppLayoutInternals();
 
   if (!hasNotificationsContent && (!breadcrumbs || isMobile) && !hasBackgroundOverlap) {
     return null;
   }
 
+  //console.log('Header background is ' + headerBackground);
+
   return (
     <div className={clsx(styles.background, getContentHeaderClassName())}>
-      <div className={styles['scrolling-background']} />
+      <div className={styles['scrolling-background']} style={{ background: headerBackground }} />
 
       {!isMobile && hasStickyBackground && (
         <div

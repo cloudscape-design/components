@@ -20,4 +20,11 @@ export interface ContentLayoutProps extends BaseComponentProps {
    * Use this slot to render the header content for the layout.
    */
   header?: React.ReactNode;
+
+  /**
+   * New!
+   */
+  darkHeaderContext?: boolean;
+
+  headerBackground?: string;
 }

@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import clsx from 'clsx';
 import { ContentLayoutProps } from './interfaces';
 import { getBaseProps } from '../internal/base-component';
@@ -10,6 +10,8 @@ import { useDynamicOverlap } from '../internal/hooks/use-dynamic-overlap';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
+import { useHeaderStyle } from '../app-layout/visual-refresh/header-style';
+//import AppContext from '../app/app-context';
 
 type InternalContentLayoutProps = ContentLayoutProps & InternalBaseComponentProps;
 
@@ -18,6 +20,8 @@ export default function InternalContentLayout({
   disableOverlap,
   header,
   __internalRootRef,
+  headerBackground,
+  darkHeaderContext,
   ...rest
 }: InternalContentLayoutProps) {
   const baseProps = getBaseProps(rest);
@@ -25,9 +29,15 @@ export default function InternalContentLayout({
   const mergedRef = useMergeRefs(rootElement, __internalRootRef);
 
   const isVisualRefresh = useVisualRefresh();
-  const overlapElement = useDynamicOverlap();
+  const isDarkHeaderContext = darkHeaderContext;
+  const overlapElement = useDynamicOverlap(); //this needs to be refactored
 
   const isOverlapDisabled = !children || disableOverlap;
+  const setHeaderProps = useHeaderStyle();
+
+  useEffect(() => {
+    setHeaderProps({ headerBackground });
+  });
 
   return (
     <div
@@ -48,7 +58,9 @@ export default function InternalContentLayout({
         ref={overlapElement}
       />
 
-      {header && <div className={clsx(styles.header, getContentHeaderClassName())}>{header}</div>}
+      {header && (
+        <div className={clsx(styles.header, !isDarkHeaderContext ? getContentHeaderClassName() : null)}>{header}</div>
+      )}
 
       <div className={styles.content}>{children}</div>
     </div>
