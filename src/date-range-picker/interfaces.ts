@@ -61,6 +61,7 @@ export interface DateRangePickerBaseProps {
 
   /**
    * Determines the range selector mode as follows:
+   *
    * * `default` for combined absolute/relative range selector.
    * * `absolute-only` for absolute-only range selector.
    * * `relative-only` for relative-only range selector.
