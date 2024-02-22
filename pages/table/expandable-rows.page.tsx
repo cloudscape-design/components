@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Table, { TableProps } from '~components/table';
 import Header from '~components/header';
 import SpaceBetween from '~components/space-between';
@@ -21,8 +21,6 @@ type DemoContext = React.Context<
     stripedRows: boolean;
     selectionType: undefined | 'single' | 'multi';
     stickyColumnsFirst: string;
-    imitateServerExpand: boolean;
-    imitateServerErrors: boolean;
   }>
 >;
 
@@ -136,16 +134,7 @@ const stickyColumnsOptions = [{ value: '0' }, { value: '1' }, { value: '2' }, { 
 
 export default () => {
   const {
-    urlParams: {
-      resizableColumns,
-      stickyHeader,
-      sortingDisabled,
-      stripedRows,
-      imitateServerExpand = true,
-      imitateServerErrors,
-      selectionType,
-      stickyColumnsFirst,
-    },
+    urlParams: { resizableColumns, stickyHeader, sortingDisabled, stripedRows, selectionType, stickyColumnsFirst },
     setUrlParams,
   } = useContext(AppContext as DemoContext);
   const [selectedItems, setSelectedItems] = useState<any>([]);
@@ -158,40 +147,6 @@ export default () => {
       getParentId: item => item.parentId ?? null,
     },
   });
-  const [serverExpandState, setServerExpandState] = useState(new Map<ExtendedInstance, TableProps.ExpandedItemState>());
-
-  const requestQueue = useRef<ExtendedInstance[]>([]);
-  useEffect(() => {
-    const resolveRequest = () => {
-      const first = requestQueue.current.shift();
-      if (first) {
-        setServerExpandState(prev => {
-          const newMap = new Map<ExtendedInstance, TableProps.ExpandedItemState>();
-          for (const [item, state] of prev) {
-            newMap.set(item, state);
-          }
-          const errorProbability = imitateServerErrors ? 0.15 : 0;
-          newMap.set(
-            first,
-            pseudoRandom() < 1 - errorProbability
-              ? { type: 'ready' }
-              : { type: 'error', errorText: 'Could not load nested items due to a server error' }
-          );
-          return newMap;
-        });
-      }
-    };
-
-    const interval1 = setInterval(resolveRequest, 2000);
-    const interval2 = setInterval(resolveRequest, 3000);
-    const interval3 = setInterval(resolveRequest, 3500);
-
-    return () => {
-      clearInterval(interval1);
-      clearInterval(interval2);
-      clearInterval(interval3);
-    };
-  }, [imitateServerErrors]);
 
   return (
     <ScreenshotArea>
@@ -219,20 +174,6 @@ export default () => {
 
             <Checkbox checked={stripedRows} onChange={event => setUrlParams({ stripedRows: event.detail.checked })}>
               Striped rows
-            </Checkbox>
-
-            <Checkbox
-              checked={imitateServerExpand}
-              onChange={event => setUrlParams({ imitateServerExpand: event.detail.checked })}
-            >
-              Imitate server expand
-            </Checkbox>
-
-            <Checkbox
-              checked={imitateServerErrors}
-              onChange={event => setUrlParams({ imitateServerErrors: event.detail.checked })}
-            >
-              Imitate server errors
             </Checkbox>
           </FormField>
 
@@ -275,18 +216,6 @@ export default () => {
           <Button
             onClick={() => {
               actions.setExpandedItems(allItems);
-
-              if (imitateServerExpand) {
-                setServerExpandState(() => {
-                  const newMap = new Map();
-                  requestQueue.current = [];
-                  for (const item of allItems) {
-                    newMap.set(item, { type: 'loading', loadingText: `Expanding item ${item.name}` });
-                    requestQueue.current.push(item);
-                  }
-                  return newMap;
-                });
-              }
             }}
           >
             Expand all
@@ -294,11 +223,6 @@ export default () => {
           <Button
             onClick={() => {
               actions.setExpandedItems([]);
-
-              if (imitateServerExpand) {
-                setServerExpandState(new Map());
-                requestQueue.current = [];
-              }
             }}
           >
             Collapse all
@@ -307,32 +231,6 @@ export default () => {
 
         <Table
           {...collectionProps}
-          onExpandableItemToggle={event => {
-            collectionProps.onExpandableItemToggle?.(event);
-
-            if (imitateServerExpand) {
-              setServerExpandState(prev => {
-                const newMap = new Map<ExtendedInstance, TableProps.ExpandedItemState>();
-                for (const [item, state] of prev) {
-                  if (item !== event.detail.item) {
-                    newMap.set(item, state);
-                  }
-                }
-                requestQueue.current = requestQueue.current.filter(item => item !== event.detail.item);
-
-                if (event.detail.expanded) {
-                  newMap.set(event.detail.item, {
-                    type: 'loading',
-                    loadingText: `Expanding item ${event.detail.item.name}`,
-                  });
-                  requestQueue.current.push(event.detail.item);
-                }
-
-                return newMap;
-              });
-            }
-          }}
-          getItemExpandedState={item => serverExpandState.get(item) ?? { type: 'ready' }}
           data-test-id="small-table"
           stickyColumns={{ first: parseInt(stickyColumnsFirst || '0') }}
           resizableColumns={resizableColumns}

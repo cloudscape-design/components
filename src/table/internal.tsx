@@ -19,7 +19,6 @@ import { ColumnWidthDefinition, ColumnWidthsProvider, DEFAULT_COLUMN_WIDTH } fro
 import { useScrollSync } from '../internal/hooks/use-scroll-sync';
 import { ResizeTracker } from './resizer';
 import styles from './styles.css.js';
-import cellStyles from './body-cell/styles.css.js';
 import headerStyles from '../header/styles.css.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
@@ -30,7 +29,7 @@ import { useDynamicOverlap } from '../internal/hooks/use-dynamic-overlap';
 import LiveRegion from '../internal/components/live-region';
 import useTableFocusNavigation from './use-table-focus-navigation';
 import { SomeRequired } from '../internal/types';
-import { TableTdElement, TableTdElementContent } from './body-cell/td-element';
+import { TableTdElement } from './body-cell/td-element';
 import { useStickyColumns } from './sticky-columns';
 import { StickyScrollbar } from './sticky-scrollbar';
 import { checkColumnWidths } from './column-widths-utils';
@@ -51,8 +50,6 @@ import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
 import { getContentHeaderClassName } from '../internal/utils/content-header-utils';
 import InternalIcon from '../icon/internal';
 import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
-import InternalSpinner from '../spinner/internal';
-import InternalStatusIndicator from '../status-indicator/internal';
 
 const GRID_NAVIGATION_PAGE_SIZE = 10;
 const SELECTION_COLUMN_WIDTH = 54;
@@ -122,7 +119,6 @@ const InternalTable = React.forwardRef(
       getItemChildren,
       getItemExpandable,
       getItemExpanded,
-      getItemExpandedState,
       onExpandableItemToggle,
       __funnelSubStepProps,
       ...rest
@@ -135,7 +131,6 @@ const InternalTable = React.forwardRef(
 
     let allItems = items;
     const itemToLevel = new Map<T, number>();
-    const itemToState = new Map<T, TableProps.ExpandedItemState>();
 
     if (getItemChildren) {
       const visibleItems = new Array<T>();
@@ -143,8 +138,7 @@ const InternalTable = React.forwardRef(
       const traverse = (item: T, level = 1) => {
         itemToLevel.set(item, level);
         visibleItems.push(item);
-        const state = getItemExpandedState?.(item) ?? { type: 'ready' };
-        if ((!getItemExpanded || getItemExpanded(item)) && state.type === 'ready') {
+        if (!getItemExpanded || getItemExpanded(item)) {
           const children = getItemChildren(item);
           children.forEach(child => traverse(child, level + 1));
         }
@@ -164,8 +158,6 @@ const InternalTable = React.forwardRef(
             }
           }
           insertionIndex--;
-
-          itemToState.set(item, getItemExpandedState?.(item) ?? { type: 'ready' });
         }
       }
 
@@ -500,7 +492,7 @@ const InternalTable = React.forwardRef(
                             }
                           : undefined;
 
-                        const dataRow = (
+                        return (
                           <tr
                             key={getItemKey(trackBy, item, rowIndex)}
                             className={clsx(styles.row, isSelected && styles['row-selected'])}
@@ -631,49 +623,6 @@ const InternalTable = React.forwardRef(
                             })}
                           </tr>
                         );
-
-                        const expandedItemState = itemToState.get(item) ?? { type: 'ready' };
-                        if (expandedItemState.type === 'loading') {
-                          return (
-                            <React.Fragment key={getItemKey(trackBy, item, rowIndex)}>
-                              {dataRow}
-                              <tr className={styles.row}>
-                                {selectionType ? <td className={clsx(cellStyles['body-cell'])}></td> : null}
-                                <td colSpan={totalColumnsCount} className={clsx(cellStyles['body-cell'])}>
-                                  <TableTdElementContent
-                                    isExpandCell={true}
-                                    level={(getItemLevel ? getItemLevel(item) : 1) + 1}
-                                  >
-                                    <InternalSpinner size="normal" variant="normal" />
-                                    <LiveRegion>{expandedItemState.loadingText}</LiveRegion>
-                                  </TableTdElementContent>
-                                </td>
-                              </tr>
-                            </React.Fragment>
-                          );
-                        }
-                        if (expandedItemState.type === 'error') {
-                          return (
-                            <React.Fragment key={getItemKey(trackBy, item, rowIndex)}>
-                              {dataRow}
-                              <tr className={styles.row}>
-                                {selectionType ? <td className={clsx(cellStyles['body-cell'])}></td> : null}
-                                <td colSpan={totalColumnsCount} className={clsx(cellStyles['body-cell'])}>
-                                  <TableTdElementContent
-                                    isExpandCell={true}
-                                    level={(getItemLevel ? getItemLevel(item) : 1) + 1}
-                                  >
-                                    <InternalStatusIndicator type="error">
-                                      {expandedItemState.errorText}
-                                    </InternalStatusIndicator>
-                                  </TableTdElementContent>
-                                </td>
-                              </tr>
-                            </React.Fragment>
-                          );
-                        }
-
-                        return dataRow;
                       })
                     )}
                   </tbody>

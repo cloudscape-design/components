@@ -13286,12 +13286,6 @@ When set to \`true\`, table cells become navigable with arrow keys, and the enti
       "type": "(item: T) => boolean",
     },
     Object {
-      "description": "Experimental API",
-      "name": "getItemExpandedState",
-      "optional": true,
-      "type": "(item: T) => TableProps.ExpandedItemState",
-    },
-    Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
