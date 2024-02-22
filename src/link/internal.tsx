@@ -36,6 +36,7 @@ type InternalLinkProps = InternalBaseComponentProps<HTMLAnchorElement> &
 const InternalLink = React.forwardRef(
   (
     {
+      title,
       variant: providedVariant,
       fontSize = 'body-m',
       color = 'normal',
@@ -152,6 +153,7 @@ const InternalLink = React.forwardRef(
         styles[getFontSizeStyle(variant, fontSize)],
         styles[getColorStyle(variant, color)]
       ),
+      title,
       'aria-label': ariaLabel,
       'aria-labelledby': '',
       [DATA_ATTR_FUNNEL_VALUE]: uniqueId,

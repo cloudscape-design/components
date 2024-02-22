@@ -41,6 +41,11 @@ describe('Link component', () => {
     expect(createWrapper(wrapper.getElement()).find('[aria-label="External link"]')).toBeTruthy();
   });
 
+  test('title is applied', () => {
+    const wrapper = renderLink({ title: 'Cloud Computing Services - Amazon Web Services (AWS) });
+    expect(wrapper.getElement()).toHaveAttribute('title', 'Cloud Computing Services - Amazon Web Services (AWS)');
+  });
+
   describe('i18n', () => {
     test('supports providing externalIconAriaLabel through i18n provider', () => {
       const { container } = render(
