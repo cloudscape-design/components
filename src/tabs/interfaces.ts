@@ -64,6 +64,11 @@ export interface TabsProps extends BaseComponentProps {
    * @i18n
    */
   i18nStrings?: TabsProps.I18nStrings;
+  /**
+   * Enabling this property will make the tabs fit to the available height. If content is too short, the tab content
+   * will stretch, if too long, the content will shrink and show a vertical scrollbar.
+   */
+  fitHeight?: boolean;
 }
 export namespace TabsProps {
   export type Variant = 'default' | 'container' | 'stacked';

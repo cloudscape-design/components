@@ -13683,6 +13683,13 @@ Don't use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "boolean",
     },
     Object {
+      "description": "Enabling this property will make the tabs fit to the available height. If content is too short, the tab content
+will stretch, if too long, the content will shrink and show a vertical scrollbar.",
+      "name": "fitHeight",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "description": "An object containing all the necessary localized strings required by the component.",
       "i18nTag": true,
       "inlineType": Object {
