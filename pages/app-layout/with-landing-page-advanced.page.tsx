@@ -28,8 +28,8 @@ import AppContext from '../app/app-context';
 import { Theme, applyTheme } from '~components/theming';
 import Image1 from './Images/imageOne.png';
 import Image2 from './Images/imageTwo.png';
-import ImageThree from './Images/imageThree.png';
-import ImageFour from './Images/imageFour.png';
+//import ImageThree from './Images/imageThree.png';
+//import ImageFour from './Images/imageFour.png';
 
 // List component
 interface SeparatedListProps {
@@ -329,7 +329,7 @@ const ContentWithContentLayout = () => {
 
             <div className={clsx(styles['child-2'])}>
               <div className={clsx(styles['background-image'])}>
-                <img src={ImageThree} alt="test" width={'100%'} height={'100%'} />
+                <img src={Image1} alt="test" width={'100%'} height={'100%'} />
               </div>
               <div className={clsx(styles['foreground-content'])}>
                 <div className={clsx(styles.badge)}>Service</div>
@@ -340,7 +340,7 @@ const ContentWithContentLayout = () => {
             </div>
             <div className={clsx(styles['child-3'])}>
               <div className={clsx(styles['background-image'])}>
-                <img src={ImageFour} alt="test" width={'100%'} />
+                <img src={Image1} alt="test" width={'100%'} />
               </div>
               <div className={clsx(styles['foreground-content'])}>
                 <div className={clsx(styles.badge)}>Service</div>
