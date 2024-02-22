@@ -57,7 +57,15 @@
   &-grid {
     inline-size: 100%;
     table-layout: fixed;
-    border-spacing: 0;
+
+    &:not(.calendar-grid-dense) {
+      border-spacing: awsui.$space-calendar-grid-gutter;
+      padding-block: awsui.$space-xs;
+      padding-inline: awsui.$space-xs;
+    }
+    &-dense {
+      border-spacing: 0;
+    }
   }
 
   &-grid-cell {
@@ -118,12 +126,24 @@
       content: '';
       position: absolute;
       z-index: 1;
+      background-color: transparent;
       inset-block-start: calc(-1 * #{awsui.$border-item-width});
+      inset-inline-start: calc(-1 * #{awsui.$border-item-width});
+      inset-inline-end: calc(-1 * #{awsui.$border-item-width});
+    }
+
+    &:not(.calendar-date-dense)::after {
+      inset-block-end: calc(-1 * #{awsui.$border-item-width});
+      inset-inline-start: calc(-1 * #{awsui.$border-item-width});
+    }
+
+    &-dense::after {
+      // Limit the overflow when there are no gutters.
+      // Otherwise the cells would start to overlap when the border is larger than 1px.
       inset-block-end: -1px;
       inset-inline-start: -1px;
-      inset-inline-end: calc(-1 * #{awsui.$border-item-width});
-      background-color: transparent;
     }
+
     > .date-inner {
       position: relative;
       z-index: 1;

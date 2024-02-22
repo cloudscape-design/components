@@ -9,9 +9,22 @@ import InternalCalendar from './internal';
 
 export { CalendarProps };
 
-export default function Calendar({ locale = '', isDateEnabled = () => true, ...props }: CalendarProps) {
+export default function Calendar({
+  locale = '',
+  isDateEnabled = () => true,
+  granularity = 'day',
+  ...props
+}: CalendarProps) {
   const baseComponentProps = useBaseComponent('Calendar');
-  return <InternalCalendar {...props} {...baseComponentProps} locale={locale} isDateEnabled={isDateEnabled} />;
+  return (
+    <InternalCalendar
+      {...props}
+      {...baseComponentProps}
+      locale={locale}
+      isDateEnabled={isDateEnabled}
+      granularity={granularity}
+    />
+  );
 }
 
 applyDisplayName(Calendar, 'Calendar');

@@ -65,8 +65,16 @@ export default function Grid({
     }
   }, [focusedDate]);
 
+  const rowLength = rows[0].length;
+
+  const denseGrid = rowLength > 3;
+
   return (
-    <table role="grid" className={styles['calendar-grid']} aria-labelledby={ariaLabelledby}>
+    <table
+      role="grid"
+      className={clsx(styles['calendar-grid'], denseGrid && styles['calendar-grid-dense'])}
+      aria-labelledby={ariaLabelledby}
+    >
       {header}
       <tbody onKeyDown={onGridKeyDownHandler}>
         {rows.map((row, rowIndex) => (
@@ -102,6 +110,7 @@ export default function Grid({
                     [styles['calendar-date-enabled']]: isEnabled,
                     [styles['calendar-date-selected']]: isSelected,
                     [styles['calendar-date-current']]: isCurrentDate,
+                    [styles['calendar-date-dense']]: denseGrid,
                   })}
                 >
                   <span className={styles['date-inner']} aria-hidden="true">

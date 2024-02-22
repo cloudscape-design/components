@@ -52,7 +52,10 @@
   "calendar": {
     "nextMonthAriaLabel": "Gelecek ay",
     "previousMonthAriaLabel": "Önceki ay",
-    "todayAriaLabel": "Bugün"
+    "todayAriaLabel": "Bugün",
+    "i18nStrings.nextYearAriaLabel": "Gelecek yıl",
+    "i18nStrings.previousYearAriaLabel": "Önceki yıl",
+    "i18nStrings.currentMonthAriaLabel": "Geçerli ay"
   },
   "cards": {
     "ariaLabels.selectionGroupLabel": "Öğe seçimi"

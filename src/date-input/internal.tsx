@@ -13,8 +13,12 @@ import { MaskArgs } from '../internal/components/masked-input/utils/mask-format'
 import styles from './styles.css.js';
 import { DateInputProps } from './interfaces';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { CalendarProps } from '../calendar/interfaces';
 
-type InternalDateInputProps = DateInputProps & InternalBaseComponentProps;
+type InternalDateInputProps = DateInputProps &
+  InternalBaseComponentProps & {
+    granularity?: CalendarProps.Granularity;
+  };
 
 function daysMax(value: string): number {
   // force to first day in month, as new Date('2018-02-30') -> March 2nd 2018
@@ -22,18 +26,21 @@ function daysMax(value: string): number {
   return getDaysInMonth(parseDate(baseDate));
 }
 
-const maskArgs: MaskArgs = {
-  separator: '/',
-  inputSeparators: ['-', '.', ' '],
-  segments: [
-    { min: 0, max: 9999, default: 2000, length: 4 },
-    { min: 1, max: 12, length: 2 },
-    { min: 1, max: daysMax, length: 2 },
-  ],
-};
+const yearMask = { min: 0, max: 9999, default: 2000, length: 4 };
+const monthMask = { min: 1, max: 12, length: 2 };
+const dayMask = { min: 1, max: daysMax, length: 2 };
 
 const InternalDateInput = React.forwardRef(
-  ({ value, onChange, __internalRootRef = null, ...props }: InternalDateInputProps, ref: Ref<HTMLInputElement>) => {
+  (
+    { value, onChange, granularity, __internalRootRef = null, ...props }: InternalDateInputProps,
+    ref: Ref<HTMLInputElement>
+  ) => {
+    const maskArgs: MaskArgs = {
+      separator: '/',
+      inputSeparators: ['-', '.', ' '],
+      segments: granularity === 'month' ? [yearMask, monthMask] : [yearMask, monthMask, dayMask],
+    };
+
     return (
       <MaskedInput
         ref={ref}
