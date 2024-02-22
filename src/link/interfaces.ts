@@ -7,6 +7,7 @@ import { BaseNavigationDetail, CancelableEventHandler } from '../internal/events
 export interface LinkProps extends BaseComponentProps {
   /**
    * Determines the visual style of the link as follows:
+   *
    * - `primary` - Displays the link text with bold styling for sufficient contrast with surrounding text.
    *     Use this for links where the context doesn't imply interactivity such as
    *     "Learn more" links and links within paragraphs.
@@ -32,6 +33,7 @@ export interface LinkProps extends BaseComponentProps {
 
   /**
    * Determines the text color of the link and its icon.
+   *
    * - `normal`: Use in most cases where a link is required.
    * - `inverted`: Use to style links inside Flashbars.
    *

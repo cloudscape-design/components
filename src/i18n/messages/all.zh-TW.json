@@ -52,7 +52,10 @@
   "calendar": {
     "nextMonthAriaLabel": "下個月",
     "previousMonthAriaLabel": "上個月",
-    "todayAriaLabel": "今天"
+    "todayAriaLabel": "今天",
+    "i18nStrings.nextYearAriaLabel": "下一年",
+    "i18nStrings.previousYearAriaLabel": "上一年",
+    "i18nStrings.currentMonthAriaLabel": "當前月份"
   },
   "cards": {
     "ariaLabels.selectionGroupLabel": "項目選擇"
