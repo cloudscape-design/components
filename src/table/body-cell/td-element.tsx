@@ -113,15 +113,15 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
         {...nativeAttributes}
         tabIndex={cellTabIndex}
       >
-        <TableTdElementContent level={level} isExpandCell={isExpandCell} isContentCell={isContentCell}>
+        <CellContent level={level} isExpandCell={isExpandCell} isContentCell={isContentCell}>
           {children}
-        </TableTdElementContent>
+        </CellContent>
       </Element>
     );
   }
 );
 
-export function TableTdElementContent({
+function CellContent({
   level,
   isExpandCell,
   isContentCell,

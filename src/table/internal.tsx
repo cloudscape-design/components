@@ -48,8 +48,8 @@ import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 import { NoDataCell } from './no-data-cell';
 import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
 import { getContentHeaderClassName } from '../internal/utils/content-header-utils';
-import InternalIcon from '../icon/internal';
-import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
+import { ExpandToggleButton } from './expandable-rows/expand-toggle-button';
+import { getExpandableTableProps } from './expandable-rows/expandable-rows-utils';
 
 const GRID_NAVIGATION_PAGE_SIZE = 10;
 const SELECTION_COLUMN_WIDTH = 54;
@@ -129,42 +129,13 @@ const InternalTable = React.forwardRef(
     stickyHeader = stickyHeader && supportsStickyPosition();
     const isMobile = useMobile();
 
-    let allItems = items;
-    const itemToLevel = new Map<T, number>();
-
-    if (getItemChildren) {
-      const visibleItems = new Array<T>();
-
-      const traverse = (item: T, level = 1) => {
-        itemToLevel.set(item, level);
-        visibleItems.push(item);
-        if (!getItemExpanded || getItemExpanded(item)) {
-          const children = getItemChildren(item);
-          children.forEach(child => traverse(child, level + 1));
-        }
-      };
-
-      items.forEach(item => traverse(item));
-
-      for (let index = 0; index < visibleItems.length; index++) {
-        const item = visibleItems[index];
-        const isExpanded = getItemExpanded && getItemExpanded(item);
-        if (isExpanded) {
-          let insertionIndex = index + 1;
-          for (insertionIndex; insertionIndex < visibleItems.length; insertionIndex++) {
-            const insertionItem = visibleItems[insertionIndex];
-            if ((itemToLevel.get(item) ?? 0) >= (itemToLevel.get(insertionItem) ?? 0)) {
-              break;
-            }
-          }
-          insertionIndex--;
-        }
-      }
-
-      allItems = visibleItems;
-    }
-
-    const getItemLevel = getItemChildren ? (item: T) => itemToLevel.get(item) ?? 1 : undefined;
+    const { isExpandable, allItems, getItemLevel, getExpandableItemProps } = getExpandableTableProps({
+      items,
+      getItemChildren,
+      getItemExpandable,
+      getItemExpanded,
+      onExpandableItemToggle,
+    });
 
     const [containerWidth, wrapperMeasureRef] = useContainerQuery<number>(rect => rect.contentBoxWidth);
     const wrapperMeasureRefObject = useRef(null);
@@ -336,7 +307,7 @@ const InternalTable = React.forwardRef(
     if (selectionType) {
       colIndexOffset++;
     }
-    if (getItemLevel) {
+    if (isExpandable) {
       colIndexOffset++;
     }
     const totalColumnsCount = visibleColumnDefinitions.length + colIndexOffset;
@@ -480,18 +451,7 @@ const InternalTable = React.forwardRef(
                           !!selectionType && !firstVisible && isItemSelected(allItems[rowIndex - 1]);
                         const isNextSelected =
                           !!selectionType && !lastVisible && isItemSelected(allItems[rowIndex + 1]);
-                        const expandableProps = getItemLevel
-                          ? {
-                              level: getItemLevel(item),
-                              isExpandable: getItemExpandable?.(item) ?? true,
-                              isExpanded:
-                                getItemExpanded?.(item) ??
-                                (allItems[rowIndex + 1] && getItemLevel(item) < getItemLevel(allItems[rowIndex + 1])),
-                              onExpandableItemToggle: (item: T, expanded: boolean) =>
-                                fireNonCancelableEvent(onExpandableItemToggle, { item, expanded }),
-                            }
-                          : undefined;
-
+                        const expandableProps = getExpandableItemProps(item);
                         return (
                           <tr
                             key={getItemKey(trackBy, item, rowIndex)}
@@ -540,7 +500,7 @@ const InternalTable = React.forwardRef(
                               </TableTdElement>
                             )}
 
-                            {expandableProps && (
+                            {isExpandable && (
                               <TableTdElement
                                 className={clsx(styles['expand-cell'])}
                                 isVisualRefresh={isVisualRefresh}
@@ -645,28 +605,5 @@ const InternalTable = React.forwardRef(
     );
   }
 ) as TableForwardRefType;
-
-function ExpandToggleButton({
-  isExpandable,
-  isExpanded,
-  onExpandableItemToggle,
-}: {
-  isExpandable: boolean;
-  isExpanded: boolean;
-  onExpandableItemToggle: () => void;
-}) {
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  const { tabIndex } = useSingleTabStopNavigation(buttonRef);
-  return (
-    <button
-      ref={buttonRef}
-      tabIndex={tabIndex}
-      className={clsx(styles['expand-toggle'], !isExpandable && styles['expand-toggle-hidden'])}
-      onClick={() => onExpandableItemToggle()}
-    >
-      {isExpanded ? <InternalIcon name="caret-down-filled" /> : <InternalIcon name="caret-right-filled" />}
-    </button>
-  );
-}
 
 export default InternalTable;

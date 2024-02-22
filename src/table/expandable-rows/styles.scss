@@ -1,0 +1,31 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../internal/styles/index' as styles;
+@use '../../internal/styles/tokens' as awsui;
+
+.expand-toggle {
+  @include styles.styles-reset;
+  cursor: pointer;
+  border-block: 0;
+  border-inline: 0;
+  margin-block: 0;
+  margin-inline: 0;
+  padding-block: 4px;
+  padding-inline: 8px;
+  background: none;
+
+  color: awsui.$color-text-button-normal-default;
+
+  &-hidden {
+    visibility: hidden;
+  }
+  &:hover {
+    color: awsui.$color-text-button-normal-hover;
+  }
+  &:active {
+    color: awsui.$color-text-button-normal-active;
+  }
+}
