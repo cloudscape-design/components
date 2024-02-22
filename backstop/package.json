@@ -3,5 +3,8 @@
   "version": "1.0.0",
   "devDependencies": {
     "backstopjs": "^6.3.3"
+  },
+  "puppeteer": {
+    "downloadBaseUrl": "https://storage.googleapis.com/chrome-for-testing-public"
   }
 }
