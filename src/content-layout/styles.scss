@@ -39,6 +39,10 @@ nodes will directly touch with no gap between them.
     &.is-overlap-disabled {
       grid-row: 1 / 2;
     }
+
+    &.hero {
+      background-color: transparent;
+    }
   }
 
   > .header {

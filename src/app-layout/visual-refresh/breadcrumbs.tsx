@@ -8,21 +8,25 @@ import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 
 export default function Breadcrumbs() {
-  const { breadcrumbs, hasStickyBackground, isMobile } = useAppLayoutInternals();
+  const { breadcrumbs, hasStickyBackground, isMobile, contentType, darkHeader } = useAppLayoutInternals();
 
   if (isMobile || !breadcrumbs) {
     return null;
   }
+
+  const removeHighContrastHeader = darkHeader ? 'awsui-context-content-header' : getContentHeaderClassName();
 
   return (
     <div
       className={clsx(
         styles.breadcrumbs,
         testutilStyles.breadcrumbs,
+        contentType === 'hero' && styles['content-type-hero'],
         {
           [styles['has-sticky-background']]: hasStickyBackground,
         },
-        getContentHeaderClassName()
+        removeHighContrastHeader
+        //getContentHeaderClassName()
       )}
     >
       {breadcrumbs}
