@@ -36,6 +36,7 @@ type DemoContext = React.Context<
     selectionType: undefined | 'single' | 'multi';
     stickyColumnsFirst: string;
     groupResources: boolean;
+    keepSelection: boolean;
   }>
 >;
 
@@ -68,6 +69,7 @@ export default () => {
       selectionType = 'multi',
       stickyColumnsFirst,
       groupResources = true,
+      keepSelection,
     },
     setUrlParams,
   } = useContext(AppContext as DemoContext);
@@ -140,7 +142,7 @@ export default () => {
           },
         ],
       },
-      selection: { trackBy: 'name' },
+      selection: { trackBy: 'name', keepSelection },
       expandableRows: groupResources
         ? {
             getId: item => item.name,
@@ -346,6 +348,13 @@ export default () => {
 
               <Checkbox checked={stripedRows} onChange={event => setUrlParams({ stripedRows: event.detail.checked })}>
                 Striped rows
+              </Checkbox>
+
+              <Checkbox
+                checked={keepSelection}
+                onChange={event => setUrlParams({ keepSelection: event.detail.checked })}
+              >
+                Keep selection
               </Checkbox>
             </FormField>
 
