@@ -15,6 +15,7 @@ import {
   Checkbox,
   FormField,
   Link,
+  Popover,
   Select,
   StatusIndicator,
   TextFilter,
@@ -129,14 +130,35 @@ export default () => {
       id: 'state',
       header: 'State',
       cell: item => {
-        switch (item.state) {
-          case 'RUNNING':
-            return <StatusIndicator type="success">Running</StatusIndicator>;
-          case 'STOPPED':
-            return <StatusIndicator type="stopped">Stopped</StatusIndicator>;
-          case 'TERMINATED':
-            return <StatusIndicator type="error">Terminated</StatusIndicator>;
+        const selfState = (() => {
+          switch (item.state) {
+            case 'RUNNING':
+              return <StatusIndicator type="success">Running</StatusIndicator>;
+            case 'STOPPED':
+              return <StatusIndicator type="stopped">Stopped</StatusIndicator>;
+            case 'TERMINATED':
+              return <StatusIndicator type="error">Terminated</StatusIndicator>;
+          }
+        })();
+        if (item.type === 'instance') {
+          return selfState;
         }
+        return (
+          <Popover
+            dismissButton={false}
+            position="top"
+            size="small"
+            content={
+              <SpaceBetween size="s" direction="horizontal">
+                <StatusIndicator type="success">{item.stateGrouped.RUNNING}</StatusIndicator>
+                <StatusIndicator type="stopped">{item.stateGrouped.STOPPED}</StatusIndicator>
+                <StatusIndicator type="error">{item.stateGrouped.TERMINATED}</StatusIndicator>
+              </SpaceBetween>
+            }
+          >
+            {selfState}
+          </Popover>
+        );
       },
       ariaLabel: columnLabel('State'),
       sortingField: 'state',
