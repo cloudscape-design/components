@@ -93,7 +93,13 @@ export default () => {
     {
       id: 'role',
       header: 'Role',
-      cell: item => <InstanceTypeWrapper instanceType={item.type}>{item.role}</InstanceTypeWrapper>,
+      cell: item => (
+        <InstanceTypeWrapper instanceType={item.type}>
+          {item.type === 'instance'
+            ? item.role
+            : `${item.role} (${collectionProps.getItemChildren?.(item).length ?? 0})`}
+        </InstanceTypeWrapper>
+      ),
       ariaLabel: columnLabel('Role'),
       sortingField: 'role',
     },
@@ -150,7 +156,14 @@ export default () => {
       header: 'Actions',
       cell: item => {
         if (item.children === 0) {
-          return '-';
+          return (
+            <ButtonDropdown
+              variant="inline-icon"
+              ariaLabel={`Instance ${item.name} actions`}
+              disabled={true}
+              items={[]}
+            />
+          );
         }
         const scopedInstances = getScopedInstances(item.name);
         return (
@@ -287,7 +300,11 @@ export default () => {
                     </Button>
                   }
                 >
-                  Showing databases that belong to {selectedCluster} cluster.
+                  Showing databases that belong to{' '}
+                  <Box variant="span" fontWeight="bold">
+                    {selectedCluster}
+                  </Box>{' '}
+                  cluster.
                 </Alert>
               )}
             </SpaceBetween>
