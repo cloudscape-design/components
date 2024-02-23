@@ -15,7 +15,7 @@ export interface Instance extends InstanceDetail {
   sizeGrouped: string;
   regionGrouped: string;
   parentName: null | string;
-  parents: string[];
+  path: string[];
   children: number;
   level: number;
 }
@@ -36,7 +36,7 @@ for (let i = 0; i < 35; i++) {
   allInstances.push(...generateLevelItems(1, []));
 }
 
-function generateLevelItems(level: number, parents: string[], parent: null | InstanceDetail = null): Instance[] {
+function generateLevelItems(level: number, path: string[], parent: null | InstanceDetail = null): Instance[] {
   const type = generateInstanceType(level);
   const state = generateState(parent);
   const instanceDetail = {
@@ -49,8 +49,8 @@ function generateLevelItems(level: number, parents: string[], parent: null | Ins
     region: generateRegion(type),
     terminationReason: generateTerminationReason(state),
   };
-  const nextParents = [instanceDetail.name, ...parents];
-  const children = generateChildren(type, level, nextParents, instanceDetail);
+  const nextPath = [instanceDetail.name, ...path];
+  const children = generateChildren(type, level, nextPath, instanceDetail);
   const selectsPerSecond = getSelectsPerSecond(type, children);
   const stateGrouped = getGroupedState(type, instanceDetail.state, children);
   const sizeGrouped = getGroupedSize(type, instanceDetail.size, children);
@@ -63,7 +63,7 @@ function generateLevelItems(level: number, parents: string[], parent: null | Ins
       sizeGrouped,
       regionGrouped,
       parentName: parent?.name ?? null,
-      parents: nextParents,
+      path: nextPath,
       children: children.length,
       level,
     },
@@ -85,14 +85,14 @@ function generateInstanceType(level: number): InstanceType {
   return 'instance';
 }
 
-function generateChildren(instanceType: InstanceType, level: number, parents: string[], parent: InstanceDetail) {
+function generateChildren(instanceType: InstanceType, level: number, path: string[], parent: InstanceDetail) {
   if (instanceType === 'instance') {
     return [];
   }
   const count = level === 1 ? 1 + Math.floor(pseudoRandom() * 5) : Math.floor(pseudoRandom() * 5);
   const children: Instance[] = [];
   for (let i = 0; i < count; i++) {
-    children.push(...generateLevelItems(level + 1, parents, parent));
+    children.push(...generateLevelItems(level + 1, path, parent));
   }
   return children;
 }

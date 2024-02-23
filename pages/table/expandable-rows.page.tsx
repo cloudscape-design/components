@@ -16,14 +16,16 @@ import {
   FormField,
   Link,
   Popover,
+  PropertyFilter,
   Select,
   StatusIndicator,
-  TextFilter,
   Textarea,
   Toggle,
 } from '~components';
 import AppContext, { AppContextType } from '../app/app-context';
 import { allInstances, Instance, InstanceType } from './expandable-rows-data';
+import messages from '~components/i18n/messages/all.en';
+import I18nProvider from '~components/i18n';
 
 type DemoContext = React.Context<
   AppContextType<{
@@ -53,16 +55,17 @@ const ariaLabels: TableProps<Instance>['ariaLabels'] = {
 
 const selectionTypeOptions = [{ value: 'none' }, { value: 'single' }, { value: 'multi' }];
 
-const stickyColumnsOptions = [{ value: '0' }, { value: '1' }, { value: '2' }, { value: '3' }];
+// TODO: remove
+// const stickyColumnsOptions = [{ value: '0' }, { value: '1' }, { value: '2' }, { value: '3' }];
 
 export default () => {
   const {
     urlParams: {
       resizableColumns = true,
-      stickyHeader,
+      stickyHeader = true,
       sortingDisabled,
       stripedRows,
-      selectionType,
+      selectionType = 'multi',
       stickyColumnsFirst,
       groupResources = true,
     },
@@ -71,18 +74,72 @@ export default () => {
 
   const [selectedCluster, setSelectedCluster] = useState<null | string>(null);
   const getScopedInstances = (selected: null | string) => {
-    return selected === null
-      ? allInstances
-      : allInstances.filter(i => i.name === selected || i.parents.includes(selected));
+    return selected === null ? allInstances : allInstances.filter(i => i.path.includes(selected));
   };
   const scopedInstances = getScopedInstances(selectedCluster);
 
-  const { items, collectionProps, filterProps, filteredItemsCount, actions } = useCollection(
+  const { items, collectionProps, propertyFilterProps, filteredItemsCount, actions } = useCollection(
     getScopedInstances(selectedCluster),
     {
       pagination: { pageSize: 999 },
       sorting: {},
       filtering: {},
+      propertyFiltering: {
+        filteringProperties: [
+          {
+            key: 'path',
+            propertyLabel: 'DB Name',
+            groupValuesLabel: 'DB Name values',
+            operators: [
+              {
+                operator: '=',
+                match: (path: unknown, token: null | string) => Array.isArray(path) && path.includes(token),
+              },
+              {
+                operator: ':',
+                match: (path: unknown, token: null | string) =>
+                  Array.isArray(path) && path.some(entry => entry.includes(token)),
+              },
+            ],
+          },
+          {
+            key: 'role',
+            propertyLabel: 'Role',
+            groupValuesLabel: 'Role values',
+            operators: ['='],
+          },
+          {
+            key: 'state',
+            propertyLabel: 'State',
+            groupValuesLabel: 'State values',
+            operators: ['=', '!='],
+          },
+          {
+            key: 'engine',
+            propertyLabel: 'Engine',
+            groupValuesLabel: 'Engine values',
+            operators: ['=', '!=', ':'],
+          },
+          {
+            key: 'size',
+            propertyLabel: 'Size',
+            groupValuesLabel: 'Size values',
+            operators: ['=', '!=', ':'],
+          },
+          {
+            key: 'region',
+            propertyLabel: 'Region',
+            groupValuesLabel: 'Region values',
+            operators: ['=', '!=', ':'],
+          },
+          {
+            key: 'terminationReason',
+            propertyLabel: 'Termination reason',
+            groupValuesLabel: 'Termination reason values',
+            operators: [':', '!;'],
+          },
+        ],
+      },
       selection: { trackBy: 'name' },
       expandableRows: groupResources
         ? {
@@ -91,6 +148,9 @@ export default () => {
           }
         : undefined,
     }
+  );
+  const filteringOptions = propertyFilterProps.filteringOptions.map(option =>
+    option.propertyKey === 'path' ? { ...option, value: option.value.split(',')[0] } : option
   );
 
   const expandedInstances = scopedInstances.filter(i => collectionProps.getItemExpanded?.(i));
@@ -252,54 +312,62 @@ export default () => {
   ];
 
   return (
-    <ScreenshotArea>
-      <Box variant="h1" margin={{ bottom: 'm' }}>
-        Expandable rows
-      </Box>
-      <SpaceBetween size="xl">
-        <SpaceBetween direction="horizontal" size="m">
-          <FormField label="Table flags">
-            <Checkbox
-              checked={resizableColumns}
-              onChange={event => setUrlParams({ resizableColumns: event.detail.checked })}
-            >
-              Resizable columns
-            </Checkbox>
+    <I18nProvider messages={[messages]} locale="en">
+      <ScreenshotArea>
+        <Box variant="h1" margin={{ bottom: 'm' }}>
+          Expandable rows
+        </Box>
+        <SpaceBetween size="xl">
+          <SpaceBetween direction="horizontal" size="m">
+            <FormField label="Table flags">
+              <Checkbox
+                checked={resizableColumns}
+                onChange={event => setUrlParams({ resizableColumns: event.detail.checked })}
+              >
+                Resizable columns
+              </Checkbox>
 
-            <Checkbox checked={stickyHeader} onChange={event => setUrlParams({ stickyHeader: event.detail.checked })}>
-              Sticky header
-            </Checkbox>
+              <Checkbox
+                checked={stickyHeader}
+                onChange={event => {
+                  setUrlParams({ stickyHeader: event.detail.checked });
+                  window.location.reload();
+                }}
+              >
+                Sticky header
+              </Checkbox>
 
-            <Checkbox
-              checked={sortingDisabled}
-              onChange={event => setUrlParams({ sortingDisabled: event.detail.checked })}
-            >
-              Sorting disabled
-            </Checkbox>
+              <Checkbox
+                checked={sortingDisabled}
+                onChange={event => setUrlParams({ sortingDisabled: event.detail.checked })}
+              >
+                Sorting disabled
+              </Checkbox>
 
-            <Checkbox checked={stripedRows} onChange={event => setUrlParams({ stripedRows: event.detail.checked })}>
-              Striped rows
-            </Checkbox>
-          </FormField>
+              <Checkbox checked={stripedRows} onChange={event => setUrlParams({ stripedRows: event.detail.checked })}>
+                Striped rows
+              </Checkbox>
+            </FormField>
 
-          <FormField label="Selection type">
-            <Select
-              selectedOption={
-                selectionTypeOptions.find(option => option.value === selectionType) ?? selectionTypeOptions[0]
-              }
-              options={selectionTypeOptions}
-              onChange={event =>
-                setUrlParams({
-                  selectionType:
-                    event.detail.selectedOption.value === 'single' || event.detail.selectedOption.value === 'multi'
-                      ? event.detail.selectedOption.value
-                      : undefined,
-                })
-              }
-            />
-          </FormField>
+            <FormField label="Selection type">
+              <Select
+                selectedOption={
+                  selectionTypeOptions.find(option => option.value === selectionType) ?? selectionTypeOptions[0]
+                }
+                options={selectionTypeOptions}
+                onChange={event =>
+                  setUrlParams({
+                    selectionType:
+                      event.detail.selectedOption.value === 'single' || event.detail.selectedOption.value === 'multi'
+                        ? event.detail.selectedOption.value
+                        : undefined,
+                  })
+                }
+              />
+            </FormField>
 
-          <FormField label="Sticky columns first">
+            {/* TODO: move to collection props */}
+            {/* <FormField label="Sticky columns first">
             <Select
               selectedOption={
                 stickyColumnsOptions.find(option => option.value === stickyColumnsFirst) ?? stickyColumnsOptions[0]
@@ -307,81 +375,85 @@ export default () => {
               options={stickyColumnsOptions}
               onChange={event => setUrlParams({ stickyColumnsFirst: event.detail.selectedOption.value })}
             />
-          </FormField>
-        </SpaceBetween>
+          </FormField> */}
+          </SpaceBetween>
 
-        <Table
-          {...collectionProps}
-          stickyColumns={{ first: parseInt(stickyColumnsFirst || '0'), last: 1 }}
-          resizableColumns={resizableColumns}
-          stickyHeader={stickyHeader}
-          sortingDisabled={sortingDisabled}
-          selectionType={selectionType}
-          stripedRows={stripedRows}
-          columnDefinitions={columnDefinitions}
-          items={items}
-          ariaLabels={{ ...ariaLabels, tableLabel: 'Small table' }}
-          wrapLines={true}
-          header={
-            <SpaceBetween size="m">
-              <Header
-                counter={`(${filteredItemsCount ?? allInstances.length})`}
-                actions={
-                  <SpaceBetween size="s" direction="horizontal">
-                    <Toggle
-                      checked={groupResources}
-                      onChange={event => setUrlParams({ groupResources: event.detail.checked })}
-                    >
-                      Group resources
-                    </Toggle>
-                  </SpaceBetween>
-                }
-              >
-                Databases
-              </Header>
-              {selectedCluster && (
-                <Alert
-                  type="info"
-                  action={<Button onClick={() => setSelectedCluster(null)}>Show all databases</Button>}
+          <Table
+            {...collectionProps}
+            stickyColumns={{ first: parseInt(stickyColumnsFirst || '0'), last: 1 }}
+            resizableColumns={resizableColumns}
+            stickyHeader={stickyHeader}
+            sortingDisabled={sortingDisabled}
+            selectionType={selectionType}
+            stripedRows={stripedRows}
+            columnDefinitions={columnDefinitions}
+            items={items}
+            ariaLabels={{ ...ariaLabels, tableLabel: 'Small table' }}
+            wrapLines={true}
+            header={
+              <SpaceBetween size="m">
+                <Header
+                  counter={`(${filteredItemsCount ?? allInstances.length})`}
+                  actions={
+                    <SpaceBetween size="s" direction="horizontal" alignItems="center">
+                      <Toggle
+                        checked={groupResources}
+                        onChange={event => setUrlParams({ groupResources: event.detail.checked })}
+                      >
+                        Group resources
+                      </Toggle>
+
+                      <ButtonDropdown
+                        variant="normal"
+                        items={[
+                          { id: 'expand-all', text: 'Expand all' },
+                          { id: 'collapse-all', text: 'Collapse all' },
+                        ]}
+                        onItemClick={event => {
+                          switch (event.detail.id) {
+                            case 'expand-all':
+                              return actions.setExpandedItems(allInstances);
+                            case 'collapse-all':
+                              return actions.setExpandedItems([]);
+                            default:
+                              throw new Error('Invariant violation: unsupported action.');
+                          }
+                        }}
+                      >
+                        Row actions
+                      </ButtonDropdown>
+                    </SpaceBetween>
+                  }
                 >
-                  Showing databases that belong to{' '}
-                  <Box variant="span" fontWeight="bold">
-                    {selectedCluster}
-                  </Box>{' '}
-                  cluster.
-                </Alert>
-              )}
-            </SpaceBetween>
-          }
-          filter={
-            <SpaceBetween size="s" direction="horizontal">
-              <TextFilter
-                {...filterProps}
-                filteringAriaLabel="Filter items"
-                filteringPlaceholder="Find items"
-                filteringClearAriaLabel="Clear"
+                  Databases
+                </Header>
+                {selectedCluster && (
+                  <Alert
+                    type="info"
+                    action={<Button onClick={() => setSelectedCluster(null)}>Show all databases</Button>}
+                  >
+                    Showing databases that belong to{' '}
+                    <Box variant="span" fontWeight="bold">
+                      {selectedCluster}
+                    </Box>{' '}
+                    cluster.
+                  </Alert>
+                )}
+              </SpaceBetween>
+            }
+            filter={
+              <PropertyFilter
+                {...propertyFilterProps}
+                filteringOptions={filteringOptions}
                 countText={getMatchesCountText(filteredItemsCount ?? 0)}
+                filteringPlaceholder="Search databases"
               />
-              <Button
-                onClick={() => {
-                  actions.setExpandedItems(allInstances);
-                }}
-              >
-                Expand all
-              </Button>
-              <Button
-                onClick={() => {
-                  actions.setExpandedItems([]);
-                }}
-              >
-                Collapse all
-              </Button>
-            </SpaceBetween>
-          }
-          enableKeyboardNavigation={true}
-        />
-      </SpaceBetween>
-    </ScreenshotArea>
+            }
+            enableKeyboardNavigation={true}
+          />
+        </SpaceBetween>
+      </ScreenshotArea>
+    </I18nProvider>
   );
 };
 
