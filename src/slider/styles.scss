@@ -8,15 +8,22 @@
 
 $thumb-size: 16px;
 $tick-width: 2px;
+$thumb-border-radius: 50%;
 
 @mixin base-thumb-styles {
   appearance: none;
   background: awsui.$color-background-slider-handle-default;
-  border: 2px solid awsui.$color-background-slider-handle-default;
-  border-radius: 50%;
+  border-color: awsui.$color-background-slider-handle-default;
+  border-block-width: 2px;
+  border-inline-width: 2px;
+  border-start-start-radius: $thumb-border-radius;
+  border-start-end-radius: $thumb-border-radius;
+  border-end-start-radius: $thumb-border-radius;
+  border-end-end-radius: $thumb-border-radius;
+
   cursor: pointer;
-  height: $thumb-size;
-  width: $thumb-size;
+  block-size: $thumb-size;
+  inline-size: $thumb-size;
   pointer-events: all;
   position: relative;
 }
@@ -27,12 +34,15 @@ $tick-width: 2px;
 }
 
 @mixin base-thumb-focus-styles {
-  height: 18px;
-  width: 18px;
+  block-size: 18px;
+  inline-size: 18px;
   box-shadow: 0px 0 0 2px awsui.$color-background-slider-handle-ring,
     0 0 0 4px awsui.$color-background-slider-handle-hover;
   background: awsui.$color-background-slider-handle-hover;
-  border: 2px solid awsui.$color-background-slider-handle-hover;
+
+  border-color: awsui.$color-background-slider-handle-hover;
+  border-block-width: 2px;
+  border-inline-width: 2px;
 }
 
 @mixin base-thumb-disabled-styles {
@@ -43,49 +53,60 @@ $tick-width: 2px;
 }
 
 .slider {
-  width: 100%;
+  inline-size: 100%;
   display: flex;
   align-items: center;
 
   &-thumb-label {
     position: absolute;
-    border-radius: awsui.$border-radius-popover;
+    border-start-start-radius: awsui.$border-radius-popover;
+    border-start-end-radius: awsui.$border-radius-popover;
+    border-end-start-radius: awsui.$border-radius-popover;
+    border-end-end-radius: awsui.$border-radius-popover;
+
+    border-block-width: awsui.$border-field-width;
+    border-inline-width: awsui.$border-field-width;
+
+    border-color: awsui.$color-border-popover;
 
     background-color: awsui.$color-background-popover;
     box-shadow: awsui.$shadow-popover;
-    border: awsui.$border-field-width solid awsui.$color-border-popover;
 
-    padding: awsui.$space-xs;
-    min-width: 40px;
-    max-width: 210px;
-    width: max-content;
+    padding-inline: awsui.$space-xs;
+    padding-block: awsui.$space-xs;
+    min-inline-size: 40px;
+    max-inline-size: 210px;
+    inline-size: max-content;
     text-align: center;
     z-index: 1;
 
     &::after {
       content: '';
-      height: 10px;
-      width: 10px;
+      block-size: 10px;
+      inline-size: 10px;
       background-color: awsui.$color-background-popover;
       box-shadow: 2px 2px awsui.$color-border-popover, 2px 2px awsui.$color-border-popover;
       transform: rotate(45deg);
       display: block;
       position: absolute;
-      left: calc(50% - 5px);
-      bottom: -4px;
+      inset-inline-start: calc(50% - 5px);
+      inset-block-end: -4px;
     }
   }
 
   &-track,
   &-range {
     position: absolute;
-    border-radius: 3px;
+    border-start-start-radius: 3px;
+    border-start-end-radius: 3px;
+    border-end-start-radius: 3px;
+    border-end-end-radius: 3px;
   }
 
   &-track {
     background-color: awsui.$color-background-slider-track;
-    width: 100%;
-    height: 2px;
+    inline-size: 100%;
+    block-size: 2px;
     cursor: pointer;
 
     &.disabled {
@@ -96,7 +117,7 @@ $tick-width: 2px;
 
   &-range {
     background-color: awsui.$color-background-slider-handle-default;
-    height: 4px;
+    block-size: 4px;
 
     &.active {
       background-color: awsui.$color-background-slider-handle-hover;
@@ -112,23 +133,24 @@ $tick-width: 2px;
 
   &-container {
     @include styles.styles-reset;
-    padding: awsui.$space-m 0;
+    padding-block: awsui.$space-m;
+
     position: relative;
-    min-width: 100px;
+    min-inline-size: 100px;
   }
 
   &-labels {
     display: flex;
     justify-content: space-between;
-    height: 0;
-    padding-top: awsui.$space-m;
+    block-size: 0;
+    padding-block-start: awsui.$space-s;
   }
 
   &-reference {
     position: absolute;
-    min-width: max-content;
-    width: 16px;
-    margin-left: -8px;
+    min-inline-size: max-content;
+    inline-size: 16px;
+    margin-inline-start: -8px;
   }
 }
 
@@ -138,31 +160,38 @@ $tick-width: 2px;
 
 .ticks {
   display: flex;
-  width: calc(100% - $tick-width);
+  inline-size: calc(100% - $tick-width);
   position: relative;
 }
 
 .tick {
   position: absolute;
-  min-height: 8px;
-  width: $tick-width;
-  padding: 0;
+  min-block-size: 8px;
+  inline-size: $tick-width;
+  padding-inline: 0;
+  padding-block: 0;
   background: awsui.$color-background-slider-track;
-  top: -4px;
+  inset-block-start: -4px;
 
   &-filled {
     background: awsui.$color-background-slider-handle-default;
   }
 }
 
+.tooltip-thumb {
+  position: absolute;
+  padding-block: awsui.$space-l;
+  padding-inline: 0;
+}
+
 .thumb {
   background: transparent;
   appearance: none;
   position: absolute;
-  height: 0;
-  width: calc(100% + $thumb-size);
+  block-size: 0;
+  inline-size: calc(100% + $thumb-size);
   outline: 0;
-  margin-left: calc($thumb-size / -2);
+  margin-inline-start: calc($thumb-size / -2);
   cursor: pointer;
 
   &.disabled {
@@ -170,18 +199,20 @@ $tick-width: 2px;
   }
 
   &.min {
-    margin-left: 0;
+    margin-inline-start: 0;
   }
 
   &.max {
-    margin-left: -$thumb-size;
+    margin-inline-start: -$thumb-size;
   }
 
   &::-webkit-slider-thumb {
+    appearance: none;
     @include base-thumb-styles();
   }
 
   &::-moz-range-thumb {
+    appearance: none;
     @include base-thumb-styles();
   }
 
@@ -235,28 +266,37 @@ $tick-width: 2px;
 
   &:focus::-webkit-slider-thumb {
     background-color: awsui.$color-background-slider-error-pressed;
-    border: 2px solid awsui.$color-background-slider-error-pressed;
+    border-block-width: 2px;
+    border-inline-width: 2px;
+    border-color: awsui.$color-background-slider-error-pressed;
+
     box-shadow: 0px 0 0 2px awsui.$color-background-slider-handle-ring,
       0 0 0 4px awsui.$color-background-slider-error-pressed;
   }
 
   &:focus::-moz-range-thumb {
     background-color: awsui.$color-background-slider-error-pressed;
-    border: 2px solid awsui.$color-background-slider-error-pressed;
+    border-block-width: 2px;
+    border-inline-width: 2px;
+    border-color: awsui.$color-background-slider-error-pressed;
     box-shadow: 0px 0 0 2px awsui.$color-background-slider-handle-ring,
       0 0 0 4px awsui.$color-background-slider-error-pressed;
   }
 
   &:active::-webkit-slider-thumb {
     background-color: awsui.$color-background-slider-error-pressed;
-    border: 2px solid awsui.$color-background-slider-error-pressed;
+    border-block-width: 2px;
+    border-inline-width: 2px;
+    border-color: awsui.$color-background-slider-error-pressed;
     box-shadow: 0px 0 0 2px awsui.$color-background-slider-handle-ring,
       0 0 0 4px awsui.$color-background-slider-error-pressed;
   }
 
   &:active::-moz-range-thumb {
     background-color: awsui.$color-background-slider-error-pressed;
-    border: 2px solid awsui.$color-background-slider-error-pressed;
+    border-block-width: 2px;
+    border-inline-width: 2px;
+    border-color: awsui.$color-background-slider-error-pressed;
     box-shadow: 0px 0 0 2px awsui.$color-background-slider-handle-ring,
       0 0 0 4px awsui.$color-background-slider-error-pressed;
   }
