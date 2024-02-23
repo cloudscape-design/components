@@ -13,6 +13,7 @@ import {
   Button,
   ButtonDropdown,
   Checkbox,
+  ExpandableSection,
   FormField,
   Link,
   Popover,
@@ -315,68 +316,79 @@ export default () => {
 
   return (
     <I18nProvider messages={[messages]} locale="en">
-      <ScreenshotArea>
-        <Box variant="h1" margin={{ bottom: 'm' }}>
+      <Box>
+        <Box variant="h1" margin="m">
           Expandable rows
         </Box>
-        <SpaceBetween size="xl">
-          <SpaceBetween direction="horizontal" size="m">
-            <FormField label="Table flags">
-              <Checkbox
-                checked={resizableColumns}
-                onChange={event => setUrlParams({ resizableColumns: event.detail.checked })}
-              >
-                Resizable columns
-              </Checkbox>
+        <div>
+          <Box margin={{ horizontal: 'm' }}>
+            <ExpandableSection
+              variant="container"
+              headerText="Page settings"
+              headingTagOverride="h2"
+              defaultExpanded={true}
+            >
+              <SpaceBetween direction="horizontal" size="m">
+                <FormField label="Table flags">
+                  <Checkbox
+                    checked={resizableColumns}
+                    onChange={event => setUrlParams({ resizableColumns: event.detail.checked })}
+                  >
+                    Resizable columns
+                  </Checkbox>
 
-              <Checkbox
-                checked={stickyHeader}
-                onChange={event => {
-                  setUrlParams({ stickyHeader: event.detail.checked });
-                  window.location.reload();
-                }}
-              >
-                Sticky header
-              </Checkbox>
+                  <Checkbox
+                    checked={stickyHeader}
+                    onChange={event => {
+                      setUrlParams({ stickyHeader: event.detail.checked });
+                      window.location.reload();
+                    }}
+                  >
+                    Sticky header
+                  </Checkbox>
 
-              <Checkbox
-                checked={sortingDisabled}
-                onChange={event => setUrlParams({ sortingDisabled: event.detail.checked })}
-              >
-                Sorting disabled
-              </Checkbox>
+                  <Checkbox
+                    checked={sortingDisabled}
+                    onChange={event => setUrlParams({ sortingDisabled: event.detail.checked })}
+                  >
+                    Sorting disabled
+                  </Checkbox>
 
-              <Checkbox checked={stripedRows} onChange={event => setUrlParams({ stripedRows: event.detail.checked })}>
-                Striped rows
-              </Checkbox>
+                  <Checkbox
+                    checked={stripedRows}
+                    onChange={event => setUrlParams({ stripedRows: event.detail.checked })}
+                  >
+                    Striped rows
+                  </Checkbox>
 
-              <Checkbox
-                checked={keepSelection}
-                onChange={event => setUrlParams({ keepSelection: event.detail.checked })}
-              >
-                Keep selection
-              </Checkbox>
-            </FormField>
+                  <Checkbox
+                    checked={keepSelection}
+                    onChange={event => setUrlParams({ keepSelection: event.detail.checked })}
+                  >
+                    Keep selection
+                  </Checkbox>
+                </FormField>
 
-            <FormField label="Selection type">
-              <Select
-                selectedOption={
-                  selectionTypeOptions.find(option => option.value === selectionType) ?? selectionTypeOptions[0]
-                }
-                options={selectionTypeOptions}
-                onChange={event =>
-                  setUrlParams({
-                    selectionType:
-                      event.detail.selectedOption.value === 'single' || event.detail.selectedOption.value === 'multi'
-                        ? event.detail.selectedOption.value
-                        : undefined,
-                  })
-                }
-              />
-            </FormField>
+                <FormField label="Selection type">
+                  <Select
+                    selectedOption={
+                      selectionTypeOptions.find(option => option.value === selectionType) ?? selectionTypeOptions[0]
+                    }
+                    options={selectionTypeOptions}
+                    onChange={event =>
+                      setUrlParams({
+                        selectionType:
+                          event.detail.selectedOption.value === 'single' ||
+                          event.detail.selectedOption.value === 'multi'
+                            ? event.detail.selectedOption.value
+                            : undefined,
+                      })
+                    }
+                  />
+                </FormField>
 
-            {/* TODO: move to collection props */}
-            {/* <FormField label="Sticky columns first">
+                {/* TODO: move to collection props */}
+                {/* <FormField label="Sticky columns first">
             <Select
               selectedOption={
                 stickyColumnsOptions.find(option => option.value === stickyColumnsFirst) ?? stickyColumnsOptions[0]
@@ -385,83 +397,87 @@ export default () => {
               onChange={event => setUrlParams({ stickyColumnsFirst: event.detail.selectedOption.value })}
             />
           </FormField> */}
-          </SpaceBetween>
-
-          <Table
-            {...collectionProps}
-            stickyColumns={{ first: parseInt(stickyColumnsFirst || '0'), last: 1 }}
-            resizableColumns={resizableColumns}
-            stickyHeader={stickyHeader}
-            sortingDisabled={sortingDisabled}
-            selectionType={selectionType}
-            stripedRows={stripedRows}
-            columnDefinitions={columnDefinitions}
-            items={items}
-            ariaLabels={{ ...ariaLabels, tableLabel: 'Small table' }}
-            wrapLines={true}
-            header={
-              <SpaceBetween size="m">
-                <Header
-                  counter={`(${filteredItemsCount ?? allInstances.length})`}
-                  actions={
-                    <SpaceBetween size="s" direction="horizontal" alignItems="center">
-                      <Toggle
-                        checked={groupResources}
-                        onChange={event => setUrlParams({ groupResources: event.detail.checked })}
-                      >
-                        Group resources
-                      </Toggle>
-
-                      <ButtonDropdown
-                        variant="normal"
-                        items={[
-                          { id: 'expand-all', text: 'Expand all' },
-                          { id: 'collapse-all', text: 'Collapse all' },
-                        ]}
-                        onItemClick={event => {
-                          switch (event.detail.id) {
-                            case 'expand-all':
-                              return actions.setExpandedItems(allInstances);
-                            case 'collapse-all':
-                              return actions.setExpandedItems([]);
-                            default:
-                              throw new Error('Invariant violation: unsupported action.');
-                          }
-                        }}
-                      >
-                        Row actions
-                      </ButtonDropdown>
-                    </SpaceBetween>
-                  }
-                >
-                  Databases
-                </Header>
-                {selectedCluster && (
-                  <Alert
-                    type="info"
-                    action={<Button onClick={() => setSelectedCluster(null)}>Show all databases</Button>}
-                  >
-                    Showing databases that belong to{' '}
-                    <Box variant="span" fontWeight="bold">
-                      {selectedCluster}
-                    </Box>{' '}
-                    cluster.
-                  </Alert>
-                )}
               </SpaceBetween>
-            }
-            filter={
-              <PropertyFilter
-                {...propertyFilterProps}
-                filteringOptions={filteringOptions}
-                countText={getMatchesCountText(filteredItemsCount ?? 0)}
-                filteringPlaceholder="Search databases"
-              />
-            }
-            enableKeyboardNavigation={true}
-          />
-        </SpaceBetween>
-      </ScreenshotArea>
+            </ExpandableSection>
+          </Box>
+
+          <ScreenshotArea>
+            <Table
+              {...collectionProps}
+              stickyColumns={{ first: parseInt(stickyColumnsFirst || '0'), last: 1 }}
+              resizableColumns={resizableColumns}
+              stickyHeader={stickyHeader}
+              sortingDisabled={sortingDisabled}
+              selectionType={selectionType}
+              stripedRows={stripedRows}
+              columnDefinitions={columnDefinitions}
+              items={items}
+              ariaLabels={{ ...ariaLabels, tableLabel: 'Small table' }}
+              wrapLines={true}
+              header={
+                <SpaceBetween size="m">
+                  <Header
+                    counter={`(${filteredItemsCount ?? allInstances.length})`}
+                    actions={
+                      <SpaceBetween size="s" direction="horizontal" alignItems="center">
+                        <Toggle
+                          checked={groupResources}
+                          onChange={event => setUrlParams({ groupResources: event.detail.checked })}
+                        >
+                          Group resources
+                        </Toggle>
+
+                        <ButtonDropdown
+                          variant="normal"
+                          items={[
+                            { id: 'expand-all', text: 'Expand all' },
+                            { id: 'collapse-all', text: 'Collapse all' },
+                          ]}
+                          onItemClick={event => {
+                            switch (event.detail.id) {
+                              case 'expand-all':
+                                return actions.setExpandedItems(allInstances);
+                              case 'collapse-all':
+                                return actions.setExpandedItems([]);
+                              default:
+                                throw new Error('Invariant violation: unsupported action.');
+                            }
+                          }}
+                        >
+                          Row actions
+                        </ButtonDropdown>
+                      </SpaceBetween>
+                    }
+                  >
+                    Databases
+                  </Header>
+                  {selectedCluster && (
+                    <Alert
+                      type="info"
+                      action={<Button onClick={() => setSelectedCluster(null)}>Show all databases</Button>}
+                    >
+                      Showing databases that belong to{' '}
+                      <Box variant="span" fontWeight="bold">
+                        {selectedCluster}
+                      </Box>{' '}
+                      cluster.
+                    </Alert>
+                  )}
+                </SpaceBetween>
+              }
+              filter={
+                <PropertyFilter
+                  {...propertyFilterProps}
+                  filteringOptions={filteringOptions}
+                  countText={getMatchesCountText(filteredItemsCount ?? 0)}
+                  filteringPlaceholder="Search databases"
+                />
+              }
+              enableKeyboardNavigation={true}
+            />
+          </ScreenshotArea>
+        </div>
+      </Box>
     </I18nProvider>
   );
 };
