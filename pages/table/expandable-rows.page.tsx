@@ -18,6 +18,7 @@ import {
   Select,
   StatusIndicator,
   TextFilter,
+  Toggle,
 } from '~components';
 import AppContext, { AppContextType } from '../app/app-context';
 import { allInstances, Instance, InstanceType } from './expandable-rows-data';
@@ -30,7 +31,7 @@ type DemoContext = React.Context<
     stripedRows: boolean;
     selectionType: undefined | 'single' | 'multi';
     stickyColumnsFirst: string;
-    settingsExpanded: boolean;
+    groupResources: boolean;
   }>
 >;
 
@@ -54,7 +55,15 @@ const stickyColumnsOptions = [{ value: '0' }, { value: '1' }, { value: '2' }, { 
 
 export default () => {
   const {
-    urlParams: { resizableColumns, stickyHeader, sortingDisabled, stripedRows, selectionType, stickyColumnsFirst },
+    urlParams: {
+      resizableColumns,
+      stickyHeader,
+      sortingDisabled,
+      stripedRows,
+      selectionType,
+      stickyColumnsFirst,
+      groupResources = true,
+    },
     setUrlParams,
   } = useContext(AppContext as DemoContext);
 
@@ -73,10 +82,12 @@ export default () => {
       sorting: {},
       filtering: {},
       selection: { trackBy: 'name' },
-      expandableRows: {
-        getId: item => item.name,
-        getParentId: item => item.parentName,
-      },
+      expandableRows: groupResources
+        ? {
+            getId: item => item.name,
+            getParentId: item => item.parentName,
+          }
+        : undefined,
     }
   );
 
@@ -171,8 +182,8 @@ export default () => {
             expandToViewport={true}
             items={[
               { id: 'drill-down', text: `Show ${item.name} cluster only` },
-              { id: 'expand-all', text: `Expand databases cluster` },
-              { id: 'collapse-all', text: `Collapse all databases` },
+              { id: 'expand-all', text: `Expand cluster` },
+              { id: 'collapse-all', text: `Collapse cluster` },
             ]}
             variant="inline-icon"
             ariaLabel={`Instance ${item.name} actions`}
@@ -285,7 +296,21 @@ export default () => {
           ariaLabels={{ ...ariaLabels, tableLabel: 'Small table' }}
           header={
             <SpaceBetween size="m">
-              <Header counter={`(${filteredItemsCount ?? allInstances.length})`}>Databases</Header>
+              <Header
+                counter={`(${filteredItemsCount ?? allInstances.length})`}
+                actions={
+                  <SpaceBetween size="s" direction="horizontal">
+                    <Toggle
+                      checked={groupResources}
+                      onChange={event => setUrlParams({ groupResources: event.detail.checked })}
+                    >
+                      Group resources
+                    </Toggle>
+                  </SpaceBetween>
+                }
+              >
+                Databases
+              </Header>
               {selectedCluster && (
                 <Alert
                   type="info"
