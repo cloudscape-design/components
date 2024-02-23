@@ -1,13 +1,24 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Table, { TableProps } from '~components/table';
 import Header from '~components/header';
 import SpaceBetween from '~components/space-between';
 import ScreenshotArea from '../utils/screenshot-area';
 import { columnLabel, getMatchesCountText } from './shared-configs';
 import { useCollection } from '@cloudscape-design/collection-hooks';
-import { Box, Button, Checkbox, FormField, Link, Select, StatusIndicator, TextFilter } from '~components';
+import {
+  Alert,
+  Box,
+  Button,
+  ButtonDropdown,
+  Checkbox,
+  FormField,
+  Link,
+  Select,
+  StatusIndicator,
+  TextFilter,
+} from '~components';
 import AppContext, { AppContextType } from '../app/app-context';
 import { allInstances, Instance, InstanceType } from './expandable-rows-data';
 
@@ -22,93 +33,6 @@ type DemoContext = React.Context<
     settingsExpanded: boolean;
   }>
 >;
-
-const COLUMN_DEFINITIONS: TableProps.ColumnDefinition<Instance>[] = [
-  {
-    id: 'name',
-    header: 'DB Name',
-    cell: item => <Link href={`#${item.name}`}>{item.name}</Link>,
-    ariaLabel: columnLabel('DB Name'),
-    sortingField: 'name',
-  },
-  {
-    id: 'role',
-    header: 'Role',
-    cell: item => <InstanceTypeWrapper instanceType={item.type}>{item.role}</InstanceTypeWrapper>,
-    ariaLabel: columnLabel('Role'),
-    sortingField: 'role',
-  },
-  {
-    id: 'activity',
-    header: 'Activity',
-    cell: item => <Box fontSize="body-s" color="text-body-secondary">{`${item.selectsPerSecond} Selects/Sec`}</Box>,
-    ariaLabel: columnLabel('Activity'),
-    sortingField: 'selectsPerSecond',
-  },
-  {
-    id: 'state',
-    header: 'State',
-    cell: item => {
-      switch (item.state) {
-        case 'RUNNING':
-          return <StatusIndicator type="success">Running</StatusIndicator>;
-        case 'STOPPED':
-          return <StatusIndicator type="stopped">Stopped</StatusIndicator>;
-        case 'TERMINATED':
-          return <StatusIndicator type="error">Terminated</StatusIndicator>;
-      }
-    },
-    ariaLabel: columnLabel('State'),
-    sortingField: 'state',
-  },
-  {
-    id: 'engine',
-    header: 'Engine',
-    cell: item => item.engine,
-    ariaLabel: columnLabel('Engine'),
-    sortingField: 'engine',
-  },
-  {
-    id: 'size',
-    header: 'Size',
-    cell: item => <InstanceTypeWrapper instanceType={item.type}>{item.sizeGrouped}</InstanceTypeWrapper>,
-    ariaLabel: columnLabel('Size'),
-    sortingField: 'sizeGrouped',
-  },
-  {
-    id: 'region',
-    header: 'Region & AZ',
-    cell: item => <InstanceTypeWrapper instanceType={item.type}>{item.regionGrouped}</InstanceTypeWrapper>,
-    ariaLabel: columnLabel('Region & AZ'),
-    sortingField: 'regionGrouped',
-  },
-  // {
-  //   id: 'inline-edit',
-  //   header: 'Editable cell',
-  //   cell: item => item.alt || '-',
-  //   editConfig: {
-  //     ariaLabel: 'Edit first',
-  //     editIconAriaLabel: 'editable',
-  //     errorIconAriaLabel: 'Edit cell error',
-  //     editingCell: (item, { currentValue, setValue }) => {
-  //       return (
-  //         <Input autoFocus={true} value={currentValue ?? item.name} onChange={event => setValue(event.detail.value)} />
-  //       );
-  //     },
-  //   },
-  // },
-];
-
-function InstanceTypeWrapper({ instanceType, children }: { instanceType: InstanceType; children: React.ReactNode }) {
-  return (
-    <Box
-      fontWeight={instanceType === 'instance' ? 'normal' : 'bold'}
-      color={instanceType === 'instance' ? 'inherit' : 'text-body-secondary'}
-    >
-      {children}
-    </Box>
-  );
-}
 
 const ariaLabels: TableProps<Instance>['ariaLabels'] = {
   selectionGroupLabel: 'group label',
@@ -134,20 +58,153 @@ export default () => {
     setUrlParams,
   } = useContext(AppContext as DemoContext);
 
-  const { items, collectionProps, filterProps, filteredItemsCount, actions } = useCollection(allInstances, {
-    pagination: { pageSize: 999 },
-    sorting: {},
-    filtering: {},
-    selection: { trackBy: 'name' },
-    expandableRows: {
-      getId: item => item.name,
-      getParentId: item => item.parentName,
+  const [selectedCluster, setSelectedCluster] = useState<null | string>(null);
+  const getScopedInstances = (selected: null | string) => {
+    return selected === null
+      ? allInstances
+      : allInstances.filter(i => i.name === selected || i.parents.includes(selected));
+  };
+  const scopedInstances = getScopedInstances(selectedCluster);
+
+  const { items, collectionProps, filterProps, filteredItemsCount, actions } = useCollection(
+    getScopedInstances(selectedCluster),
+    {
+      pagination: { pageSize: 999 },
+      sorting: {},
+      filtering: {},
+      selection: { trackBy: 'name' },
+      expandableRows: {
+        getId: item => item.name,
+        getParentId: item => item.parentName,
+      },
+    }
+  );
+
+  const expandedInstances = scopedInstances.filter(i => collectionProps.getItemExpanded?.(i));
+
+  const columnDefinitions: TableProps.ColumnDefinition<Instance>[] = [
+    {
+      id: 'name',
+      header: 'DB Name',
+      cell: item => <Link href={`#${item.name}`}>{item.name}</Link>,
+      ariaLabel: columnLabel('DB Name'),
+      sortingField: 'name',
     },
-  });
+    {
+      id: 'role',
+      header: 'Role',
+      cell: item => <InstanceTypeWrapper instanceType={item.type}>{item.role}</InstanceTypeWrapper>,
+      ariaLabel: columnLabel('Role'),
+      sortingField: 'role',
+    },
+    {
+      id: 'activity',
+      header: 'Activity',
+      cell: item => (
+        <Box fontSize="body-s" color="text-body-secondary">
+          {item.selectsPerSecond !== null ? `${item.selectsPerSecond} Selects/Sec` : '-'}
+        </Box>
+      ),
+      ariaLabel: columnLabel('Activity'),
+      sortingField: 'selectsPerSecond',
+    },
+    {
+      id: 'state',
+      header: 'State',
+      cell: item => {
+        switch (item.state) {
+          case 'RUNNING':
+            return <StatusIndicator type="success">Running</StatusIndicator>;
+          case 'STOPPED':
+            return <StatusIndicator type="stopped">Stopped</StatusIndicator>;
+          case 'TERMINATED':
+            return <StatusIndicator type="error">Terminated</StatusIndicator>;
+        }
+      },
+      ariaLabel: columnLabel('State'),
+      sortingField: 'state',
+    },
+    {
+      id: 'engine',
+      header: 'Engine',
+      cell: item => item.engine,
+      ariaLabel: columnLabel('Engine'),
+      sortingField: 'engine',
+    },
+    {
+      id: 'size',
+      header: 'Size',
+      cell: item => <InstanceTypeWrapper instanceType={item.type}>{item.sizeGrouped || '-'}</InstanceTypeWrapper>,
+      ariaLabel: columnLabel('Size'),
+      sortingField: 'sizeGrouped',
+    },
+    {
+      id: 'region',
+      header: 'Region & AZ',
+      cell: item => <InstanceTypeWrapper instanceType={item.type}>{item.regionGrouped}</InstanceTypeWrapper>,
+      ariaLabel: columnLabel('Region & AZ'),
+      sortingField: 'regionGrouped',
+    },
+    {
+      id: 'actions',
+      header: 'Actions',
+      cell: item => {
+        if (item.children === 0) {
+          return '-';
+        }
+        const scopedInstances = getScopedInstances(item.name);
+        return (
+          <ButtonDropdown
+            expandToViewport={true}
+            items={[
+              { id: 'drill-down', text: `Show ${item.name} cluster only` },
+              { id: 'expand-all', text: `Expand databases cluster` },
+              { id: 'collapse-all', text: `Collapse all databases` },
+            ]}
+            variant="inline-icon"
+            ariaLabel={`Instance ${item.name} actions`}
+            onItemClick={event => {
+              switch (event.detail.id) {
+                case 'drill-down':
+                  actions.setExpandedItems(scopedInstances);
+                  setSelectedCluster(item.name);
+                  break;
+                case 'expand-all':
+                  actions.setExpandedItems([...expandedInstances, ...scopedInstances]);
+                  break;
+                case 'collapse-all':
+                  actions.setExpandedItems(expandedInstances.filter(i => !scopedInstances.includes(i)));
+                  break;
+                default:
+                  throw new Error('Invariant violation: unexpected action.');
+              }
+            }}
+          />
+        );
+      },
+    },
+    // {
+    //   id: 'inline-edit',
+    //   header: 'Editable cell',
+    //   cell: item => item.alt || '-',
+    //   editConfig: {
+    //     ariaLabel: 'Edit first',
+    //     editIconAriaLabel: 'editable',
+    //     errorIconAriaLabel: 'Edit cell error',
+    //     editingCell: (item, { currentValue, setValue }) => {
+    //       return (
+    //         <Input autoFocus={true} value={currentValue ?? item.name} onChange={event => setValue(event.detail.value)} />
+    //       );
+    //     },
+    //   },
+    // },
+  ];
 
   return (
     <ScreenshotArea>
-      <Header variant="h1">Expandable rows</Header>
+      <Box variant="h1" margin={{ bottom: 'm' }}>
+        Expandable rows
+      </Box>
       <SpaceBetween size="xl">
         <SpaceBetween direction="horizontal" size="m">
           <FormField label="Table flags">
@@ -210,10 +267,31 @@ export default () => {
           sortingDisabled={sortingDisabled}
           selectionType={selectionType}
           stripedRows={stripedRows}
-          columnDefinitions={COLUMN_DEFINITIONS}
+          columnDefinitions={columnDefinitions}
           items={items}
           ariaLabels={{ ...ariaLabels, tableLabel: 'Small table' }}
-          header={<Header counter={`(${filteredItemsCount ?? allInstances.length})`}>Databases</Header>}
+          header={
+            <SpaceBetween size="m">
+              <Header counter={`(${filteredItemsCount ?? allInstances.length})`}>Databases</Header>
+              {selectedCluster && (
+                <Alert
+                  type="info"
+                  action={
+                    <Button
+                      onClick={() => {
+                        actions.setExpandedItems([]);
+                        setSelectedCluster(null);
+                      }}
+                    >
+                      Show all databases
+                    </Button>
+                  }
+                >
+                  Showing databases that belong to {selectedCluster} cluster.
+                </Alert>
+              )}
+            </SpaceBetween>
+          }
           filter={
             <SpaceBetween size="s" direction="horizontal">
               <TextFilter
@@ -245,3 +323,14 @@ export default () => {
     </ScreenshotArea>
   );
 };
+
+function InstanceTypeWrapper({ instanceType, children }: { instanceType: InstanceType; children: React.ReactNode }) {
+  return (
+    <Box
+      fontWeight={instanceType === 'instance' ? 'normal' : 'bold'}
+      color={instanceType === 'instance' ? 'inherit' : 'text-body-secondary'}
+    >
+      {children}
+    </Box>
+  );
+}
