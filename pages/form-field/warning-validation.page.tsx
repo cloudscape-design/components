@@ -245,6 +245,46 @@ function NumberFormField() {
   );
 }
 
+function FileUploadValidation() {
+  return (
+    <FormField label="Form field with file upload">
+      <FileUpload
+        multiple={true}
+        value={[
+          new File([new Blob(['Test content'])], 'file-1.pdf', {
+            type: 'application/pdf',
+            lastModified: 1590962400000,
+          }),
+          new File([new Blob(['Test content'])], 'file-2.pdf', {
+            type: 'application/pdf',
+            lastModified: 1590962400000,
+          }),
+          new File([new Blob(['Test content'])], 'file-3.pdf', {
+            type: 'application/pdf',
+            lastModified: 1590962400000,
+          }),
+          new File([new Blob(['Test content'])], 'file-4.pdf', {
+            type: 'application/pdf',
+            lastModified: 1590962400000,
+          }),
+        ]}
+        onChange={() => {}}
+        i18nStrings={{
+          uploadButtonText: () => 'Choose file',
+          dropzoneText: () => 'Drop files to upload',
+          removeFileAriaLabel: () => `Remove file`,
+          limitShowFewer: 'Show fewer files',
+          limitShowMore: 'Show more files',
+        }}
+        constraintText="Hint text for file requirements"
+        fileWarnings={['Warning message', null, 'Warning message']}
+        fileErrors={[null, 'Error message', 'Error message']}
+        warningText="Warning file"
+      />
+    </FormField>
+  );
+}
+
 export default function FormFieldWarningTest() {
   return (
     <I18nProvider messages={[messages]} locale="en">
@@ -274,7 +314,6 @@ export default function FormFieldWarningTest() {
                 removeFileAriaLabel: () => `Remove file`,
                 limitShowFewer: 'Show fewer files',
                 limitShowMore: 'Show more files',
-                errorIconAriaLabel: 'Error',
               }}
             />
           </FormField>
@@ -289,10 +328,10 @@ export default function FormFieldWarningTest() {
                 removeFileAriaLabel: () => `Remove file`,
                 limitShowFewer: 'Show fewer files',
                 limitShowMore: 'Show more files',
-                errorIconAriaLabel: 'Error',
               }}
             />
           </FormField>
+          <FileUploadValidation />
 
           <FormField label="Form field with checkbox" warningText="Warned checkbox">
             <Checkbox checked={true}>Expired</Checkbox>

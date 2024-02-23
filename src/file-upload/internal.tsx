@@ -18,7 +18,7 @@ import { Dropzone, useDropzoneVisible } from './dropzone';
 import FileInput from './file-input';
 import TokenList from '../internal/components/token-list';
 import { Token } from '../token-group/token';
-import { ConstraintText, FormFieldError } from '../form-field/internal';
+import { ConstraintText, FormFieldError, FormFieldWarning } from '../form-field/internal';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { joinStrings } from '../internal/utils/strings';
@@ -44,7 +44,9 @@ function InternalFileUpload(
     __internalRootRef = null,
     constraintText,
     errorText,
+    warningText,
     fileErrors,
+    fileWarnings,
     ...restProps
   }: InternalFileUploadProps,
   externalRef: ForwardedRef<ButtonProps.Ref>
@@ -53,6 +55,7 @@ function InternalFileUpload(
   const metadata = { showFileSize, showFileLastModified, showFileThumbnail };
 
   const errorId = useUniqueId('error-');
+  const warningId = useUniqueId('warning-');
   const constraintTextId = useUniqueId('constraint-text-');
 
   const fileInputRef = useRef<ButtonProps.Ref>(null);
@@ -82,10 +85,13 @@ function InternalFileUpload(
 
   const isDropzoneVisible = useDropzoneVisible(multiple);
 
+  const showWarning = Boolean(warningText && !errorText);
+
   const formFieldContext = useFormFieldContext(restProps);
   const ariaDescribedBy = joinStrings(
     restProps.ariaDescribedby ?? formFieldContext.ariaDescribedby,
     errorText ? errorId : undefined,
+    showWarning ? warningId : undefined,
     constraintText ? constraintTextId : undefined
   );
 
@@ -118,15 +124,20 @@ function InternalFileUpload(
           </FileInput>
         )}
 
-        {(constraintText || errorText) && (
+        {(constraintText || errorText || warningText) && (
           <div className={styles.hints}>
             {errorText && (
               <FormFieldError id={errorId} errorIconAriaLabel={i18nStrings?.errorIconAriaLabel}>
                 {errorText}
               </FormFieldError>
             )}
+            {showWarning && (
+              <FormFieldWarning id={warningId} warningIconAriaLabel={i18nStrings?.warningIconAriaLabel}>
+                {warningText}
+              </FormFieldWarning>
+            )}
             {constraintText && (
-              <ConstraintText id={constraintTextId} hasError={!!errorText}>
+              <ConstraintText id={constraintTextId} hasError={!!errorText || !!warningText}>
                 {constraintText}
               </ConstraintText>
             )}
@@ -141,6 +152,7 @@ function InternalFileUpload(
             dismissLabel={i18nStrings.removeFileAriaLabel(0)}
             onDismiss={() => onFileRemove(0)}
             errorText={fileErrors?.[0]}
+            warningText={fileWarnings?.[0]}
             errorIconAriaLabel={i18nStrings.errorIconAriaLabel}
             data-index={0}
           >
@@ -160,6 +172,7 @@ function InternalFileUpload(
                 dismissLabel={i18nStrings.removeFileAriaLabel(fileIndex)}
                 onDismiss={() => onFileRemove(fileIndex)}
                 errorText={fileErrors?.[fileIndex]}
+                warningText={fileWarnings?.[fileIndex]}
                 errorIconAriaLabel={i18nStrings.errorIconAriaLabel}
                 data-index={fileIndex}
               >
