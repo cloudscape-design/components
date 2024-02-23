@@ -110,17 +110,38 @@ export default function PopoverContainer({
       });
     };
 
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (keepPosition) {
+        return;
+      }
+
+      if (
+        event.key === 'ArrowRight' ||
+        event.key === 'ArrowLeft' ||
+        event.key === 'ArrowUp' ||
+        event.key === 'ArrowDown'
+      ) {
+        requestAnimationFrame(() => {
+          updatePositionHandler();
+        });
+      }
+    };
+
     const updatePositionOnResize = () => requestAnimationFrame(() => updatePositionHandler());
     const refreshPosition = () => requestAnimationFrame(() => positionHandlerRef.current());
 
     window.addEventListener('click', onClick);
     window.addEventListener('resize', updatePositionOnResize);
     window.addEventListener('scroll', refreshPosition, true);
+    window.addEventListener('pointermove', refreshPosition, true);
+    window.addEventListener('keydown', onKeyDown);
 
     return () => {
       window.removeEventListener('click', onClick);
       window.removeEventListener('resize', updatePositionOnResize);
       window.removeEventListener('scroll', refreshPosition, true);
+      window.removeEventListener('pointermove', refreshPosition, true);
+      window.removeEventListener('keydown', onKeyDown);
     };
   }, [keepPosition, positionHandlerRef, trackRef, updatePositionHandler]);
 
