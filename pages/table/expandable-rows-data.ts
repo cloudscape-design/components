@@ -28,6 +28,7 @@ interface InstanceDetail {
   engine: string;
   size: null | string;
   region: null | string;
+  terminationReason: null | string;
 }
 
 export const allInstances: Instance[] = [];
@@ -37,14 +38,16 @@ for (let i = 0; i < 35; i++) {
 
 function generateLevelItems(level: number, parents: string[], parent: null | InstanceDetail = null): Instance[] {
   const type = generateInstanceType(level);
+  const state = generateState(parent);
   const instanceDetail = {
     type,
     name: `${type}-${generateId()}`,
     role: generateRole(type, level),
     engine: parent?.engine ?? generateEngine(type),
-    state: generateState(parent),
+    state,
     size: generateSize(type),
     region: generateRegion(type),
+    terminationReason: generateTerminationReason(state),
   };
   const nextParents = [instanceDetail.name, ...parents];
   const children = generateChildren(type, level, nextParents, instanceDetail);
@@ -198,4 +201,11 @@ function getGroupedRegion(instanceType: InstanceType, region: null | string, chi
     return `${allRegions.length} regions`;
   }
   return region ?? '';
+}
+
+function generateTerminationReason(state: InstanceState): null | string {
+  if (state === 'TERMINATED') {
+    return `Terminated manually (CM-${generateId().slice(0, 5).toUpperCase()})`;
+  }
+  return null;
 }

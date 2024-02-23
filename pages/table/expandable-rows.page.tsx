@@ -19,6 +19,7 @@ import {
   Select,
   StatusIndicator,
   TextFilter,
+  Textarea,
   Toggle,
 } from '~components';
 import AppContext, { AppContextType } from '../app/app-context';
@@ -57,7 +58,7 @@ const stickyColumnsOptions = [{ value: '0' }, { value: '1' }, { value: '2' }, { 
 export default () => {
   const {
     urlParams: {
-      resizableColumns,
+      resizableColumns = true,
       stickyHeader,
       sortingDisabled,
       stripedRows,
@@ -101,6 +102,7 @@ export default () => {
       cell: item => <Link href={`#${item.name}`}>{item.name}</Link>,
       ariaLabel: columnLabel('DB Name'),
       sortingField: 'name',
+      minWidth: 200,
     },
     {
       id: 'role',
@@ -185,6 +187,24 @@ export default () => {
       sortingField: 'regionGrouped',
     },
     {
+      id: 'termination-reason',
+      header: 'Termination reason',
+      cell: item => item.terminationReason || '-',
+      editConfig: {
+        ariaLabel: 'Edit termination reason',
+        editIconAriaLabel: 'editable',
+        errorIconAriaLabel: 'Edit cell error',
+        editingCell: (item, { currentValue, setValue }) => (
+          <Textarea
+            autoFocus={true}
+            value={currentValue ?? item.terminationReason}
+            onChange={event => setValue(event.detail.value)}
+          />
+        ),
+      },
+      minWidth: 250,
+    },
+    {
       id: 'actions',
       header: 'Actions',
       cell: item => {
@@ -229,21 +249,6 @@ export default () => {
         );
       },
     },
-    // {
-    //   id: 'inline-edit',
-    //   header: 'Editable cell',
-    //   cell: item => item.alt || '-',
-    //   editConfig: {
-    //     ariaLabel: 'Edit first',
-    //     editIconAriaLabel: 'editable',
-    //     errorIconAriaLabel: 'Edit cell error',
-    //     editingCell: (item, { currentValue, setValue }) => {
-    //       return (
-    //         <Input autoFocus={true} value={currentValue ?? item.name} onChange={event => setValue(event.detail.value)} />
-    //       );
-    //     },
-    //   },
-    // },
   ];
 
   return (
@@ -307,7 +312,7 @@ export default () => {
 
         <Table
           {...collectionProps}
-          stickyColumns={{ first: parseInt(stickyColumnsFirst || '0') }}
+          stickyColumns={{ first: parseInt(stickyColumnsFirst || '0'), last: 1 }}
           resizableColumns={resizableColumns}
           stickyHeader={stickyHeader}
           sortingDisabled={sortingDisabled}
@@ -316,6 +321,7 @@ export default () => {
           columnDefinitions={columnDefinitions}
           items={items}
           ariaLabels={{ ...ariaLabels, tableLabel: 'Small table' }}
+          wrapLines={true}
           header={
             <SpaceBetween size="m">
               <Header
@@ -336,16 +342,7 @@ export default () => {
               {selectedCluster && (
                 <Alert
                   type="info"
-                  action={
-                    <Button
-                      onClick={() => {
-                        actions.setExpandedItems([]);
-                        setSelectedCluster(null);
-                      }}
-                    >
-                      Show all databases
-                    </Button>
-                  }
+                  action={<Button onClick={() => setSelectedCluster(null)}>Show all databases</Button>}
                 >
                   Showing databases that belong to{' '}
                   <Box variant="span" fontWeight="bold">
