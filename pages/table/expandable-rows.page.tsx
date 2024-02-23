@@ -1,17 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import Table, { TableProps } from '~components/table';
 import Header from '~components/header';
 import SpaceBetween from '~components/space-between';
-import Input from '~components/input';
 import ScreenshotArea from '../utils/screenshot-area';
-import { columnsConfig, getMatchesCountText } from './shared-configs';
-import { generateItems, Instance } from './generate-data';
+import { columnLabel, getMatchesCountText } from './shared-configs';
 import { useCollection } from '@cloudscape-design/collection-hooks';
-import { Button, Checkbox, FormField, Select, TextFilter } from '~components';
+import { Box, Button, Checkbox, FormField, Link, Select, StatusIndicator, TextFilter } from '~components';
 import AppContext, { AppContextType } from '../app/app-context';
-import pseudoRandom from '../utils/pseudo-random';
+import { allInstances, Instance, InstanceType } from './expandable-rows-data';
 
 type DemoContext = React.Context<
   AppContextType<{
@@ -21,100 +19,98 @@ type DemoContext = React.Context<
     stripedRows: boolean;
     selectionType: undefined | 'single' | 'multi';
     stickyColumnsFirst: string;
+    settingsExpanded: boolean;
   }>
 >;
 
-interface ExtendedInstance extends Instance {
-  level?: number;
-  parentId?: string;
-  name: string;
-  alt: string;
-  description: string;
-}
-
-function getName(previousName: string, index: number) {
-  return `${previousName}-${index + 1}`;
-}
-
-function getAlt(name: string) {
-  const last = name.split('-').reverse()[0];
-  return getDescription(last);
-}
-
-function getDescription(name: string) {
-  return name
-    .replace(/10/g, 'ten')
-    .replace(/9/g, 'nine')
-    .replace(/8/g, 'eight')
-    .replace(/7/g, 'seven')
-    .replace(/6/g, 'six')
-    .replace(/5/g, 'five')
-    .replace(/4/g, 'four')
-    .replace(/3/g, 'three')
-    .replace(/2/g, 'two')
-    .replace(/1/g, 'one')
-    .replace(/-/g, ' ');
-}
-
-let allItems: ExtendedInstance[] = generateItems(10).map((it, index) => ({
-  ...it,
-  level: 0,
-  name: getName('Item', index),
-  alt: getAlt(getName('Item', index)),
-  description: getDescription(getName('Item', index)),
-}));
-for (let iteration = 0; iteration < 5; iteration++) {
-  allItems = allItems.flatMap(parent => {
-    const childrenCount = parent.level === iteration ? Math.floor(pseudoRandom() * 6) : 0;
-    return [
-      parent,
-      ...generateItems(childrenCount).map((item, index) => ({
-        ...item,
-        level: iteration + 1,
-        parentId: parent.id,
-        name: getName(parent.name, index),
-        alt: getAlt(getName(parent.name, index)),
-        description: getDescription(getName(parent.name, index)),
-      })),
-    ];
-  });
-}
-
-const COLUMN_DEFINITIONS: TableProps.ColumnDefinition<ExtendedInstance>[] = [
-  ...columnsConfig,
+const COLUMN_DEFINITIONS: TableProps.ColumnDefinition<Instance>[] = [
   {
-    id: 'variable',
-    header: 'Name',
-    minWidth: 200,
+    id: 'name',
+    header: 'DB Name',
+    cell: item => <Link href={`#${item.name}`}>{item.name}</Link>,
+    ariaLabel: columnLabel('DB Name'),
+    sortingField: 'name',
+  },
+  {
+    id: 'role',
+    header: 'Role',
+    cell: item => <InstanceTypeWrapper instanceType={item.type}>{item.role}</InstanceTypeWrapper>,
+    ariaLabel: columnLabel('Role'),
+    sortingField: 'role',
+  },
+  {
+    id: 'activity',
+    header: 'Activity',
+    cell: item => <Box fontSize="body-s" color="text-body-secondary">{`${item.selectsPerSecond} Selects/Sec`}</Box>,
+    ariaLabel: columnLabel('Activity'),
+    sortingField: 'selectsPerSecond',
+  },
+  {
+    id: 'state',
+    header: 'State',
     cell: item => {
-      return item.name;
+      switch (item.state) {
+        case 'RUNNING':
+          return <StatusIndicator type="success">Running</StatusIndicator>;
+        case 'STOPPED':
+          return <StatusIndicator type="stopped">Stopped</StatusIndicator>;
+        case 'TERMINATED':
+          return <StatusIndicator type="error">Terminated</StatusIndicator>;
+      }
     },
-    sortingField: 'variable',
+    ariaLabel: columnLabel('State'),
+    sortingField: 'state',
   },
   {
-    id: 'description',
-    header: 'Description',
-    cell: item => item.description || '-',
-    sortingField: 'description',
+    id: 'engine',
+    header: 'Engine',
+    cell: item => item.engine,
+    ariaLabel: columnLabel('Engine'),
+    sortingField: 'engine',
   },
   {
-    id: 'inline-edit',
-    header: 'Editable cell',
-    cell: item => item.alt || '-',
-    editConfig: {
-      ariaLabel: 'Edit first',
-      editIconAriaLabel: 'editable',
-      errorIconAriaLabel: 'Edit cell error',
-      editingCell: (item, { currentValue, setValue }) => {
-        return (
-          <Input autoFocus={true} value={currentValue ?? item.name} onChange={event => setValue(event.detail.value)} />
-        );
-      },
-    },
+    id: 'size',
+    header: 'Size',
+    cell: item => <InstanceTypeWrapper instanceType={item.type}>{item.sizeGrouped}</InstanceTypeWrapper>,
+    ariaLabel: columnLabel('Size'),
+    sortingField: 'sizeGrouped',
   },
+  {
+    id: 'region',
+    header: 'Region & AZ',
+    cell: item => <InstanceTypeWrapper instanceType={item.type}>{item.regionGrouped}</InstanceTypeWrapper>,
+    ariaLabel: columnLabel('Region & AZ'),
+    sortingField: 'regionGrouped',
+  },
+  // {
+  //   id: 'inline-edit',
+  //   header: 'Editable cell',
+  //   cell: item => item.alt || '-',
+  //   editConfig: {
+  //     ariaLabel: 'Edit first',
+  //     editIconAriaLabel: 'editable',
+  //     errorIconAriaLabel: 'Edit cell error',
+  //     editingCell: (item, { currentValue, setValue }) => {
+  //       return (
+  //         <Input autoFocus={true} value={currentValue ?? item.name} onChange={event => setValue(event.detail.value)} />
+  //       );
+  //     },
+  //   },
+  // },
 ];
 
-const ariaLabels: TableProps<ExtendedInstance>['ariaLabels'] = {
+function InstanceTypeWrapper({ instanceType, children }: { instanceType: InstanceType; children: React.ReactNode }) {
+  return (
+    <Box
+      fontWeight={instanceType === 'instance' ? 'normal' : 'bold'}
+      color={instanceType === 'instance' ? 'inherit' : 'text-body-secondary'}
+    >
+      {children}
+    </Box>
+  );
+}
+
+const ariaLabels: TableProps<Instance>['ariaLabels'] = {
   selectionGroupLabel: 'group label',
   activateEditLabel: column => `Edit ${column.header}`,
   cancelEditLabel: column => `Cancel editing ${column.header}`,
@@ -125,7 +121,7 @@ const ariaLabels: TableProps<ExtendedInstance>['ariaLabels'] = {
     const isItemSelected = selectedItems.filter(i => i.name === item.name).length;
     return `${item.name} is ${isItemSelected ? '' : 'not'} selected`;
   },
-  tableLabel: 'Demo table',
+  tableLabel: 'Databases table',
 };
 
 const selectionTypeOptions = [{ value: 'none' }, { value: 'single' }, { value: 'multi' }];
@@ -137,20 +133,21 @@ export default () => {
     urlParams: { resizableColumns, stickyHeader, sortingDisabled, stripedRows, selectionType, stickyColumnsFirst },
     setUrlParams,
   } = useContext(AppContext as DemoContext);
-  const [selectedItems, setSelectedItems] = useState<any>([]);
-  const { items, collectionProps, filterProps, filteredItemsCount, actions } = useCollection(allItems, {
+
+  const { items, collectionProps, filterProps, filteredItemsCount, actions } = useCollection(allInstances, {
     pagination: { pageSize: 999 },
     sorting: {},
     filtering: {},
+    selection: { trackBy: 'name' },
     expandableRows: {
-      getId: item => item.id,
-      getParentId: item => item.parentId ?? null,
+      getId: item => item.name,
+      getParentId: item => item.parentName,
     },
   });
 
   return (
     <ScreenshotArea>
-      <h1>Expandable rows</h1>
+      <Header variant="h1">Expandable rows</Header>
       <SpaceBetween size="xl">
         <SpaceBetween direction="horizontal" size="m">
           <FormField label="Table flags">
@@ -205,33 +202,8 @@ export default () => {
           </FormField>
         </SpaceBetween>
 
-        <SpaceBetween size="s" direction="horizontal">
-          <TextFilter
-            {...filterProps}
-            filteringAriaLabel="Filter items"
-            filteringPlaceholder="Find items"
-            filteringClearAriaLabel="Clear"
-            countText={getMatchesCountText(filteredItemsCount ?? 0)}
-          />
-          <Button
-            onClick={() => {
-              actions.setExpandedItems(allItems);
-            }}
-          >
-            Expand all
-          </Button>
-          <Button
-            onClick={() => {
-              actions.setExpandedItems([]);
-            }}
-          >
-            Collapse all
-          </Button>
-        </SpaceBetween>
-
         <Table
           {...collectionProps}
-          data-test-id="small-table"
           stickyColumns={{ first: parseInt(stickyColumnsFirst || '0') }}
           resizableColumns={resizableColumns}
           stickyHeader={stickyHeader}
@@ -239,11 +211,34 @@ export default () => {
           selectionType={selectionType}
           stripedRows={stripedRows}
           columnDefinitions={COLUMN_DEFINITIONS}
-          selectedItems={selectedItems}
-          onSelectionChange={({ detail: { selectedItems } }) => setSelectedItems(selectedItems)}
           items={items}
           ariaLabels={{ ...ariaLabels, tableLabel: 'Small table' }}
-          header={<Header counter={`(${filteredItemsCount ?? allItems.length})`}>Simple table</Header>}
+          header={<Header counter={`(${filteredItemsCount ?? allInstances.length})`}>Databases</Header>}
+          filter={
+            <SpaceBetween size="s" direction="horizontal">
+              <TextFilter
+                {...filterProps}
+                filteringAriaLabel="Filter items"
+                filteringPlaceholder="Find items"
+                filteringClearAriaLabel="Clear"
+                countText={getMatchesCountText(filteredItemsCount ?? 0)}
+              />
+              <Button
+                onClick={() => {
+                  actions.setExpandedItems(allInstances);
+                }}
+              >
+                Expand all
+              </Button>
+              <Button
+                onClick={() => {
+                  actions.setExpandedItems([]);
+                }}
+              >
+                Collapse all
+              </Button>
+            </SpaceBetween>
+          }
           enableKeyboardNavigation={true}
         />
       </SpaceBetween>

@@ -42,7 +42,7 @@ function dnsName() {
   return `ec2-${number()}-${number()}-${number()}-${number()}.eu-west-1.compute.amazonaws.com`;
 }
 
-function instanceType() {
+export function instanceType() {
   const types = [
     't1.micro',
     't2.nano',

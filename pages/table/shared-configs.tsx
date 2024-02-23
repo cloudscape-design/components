@@ -53,7 +53,7 @@ export const selectionLabels: TableProps<Instance>['ariaLabels'] = {
     `${item.id} is ${selectedItems.indexOf(item) < 0 ? 'not ' : ''}selected`,
 };
 
-const columnLabel = (column: string) => (sortState: TableProps.LabelData) => {
+export const columnLabel = (column: string) => (sortState: TableProps.LabelData) => {
   const ascending = !sortState.descending;
   return `${column}, ${sortState.sorted ? `sorted ${ascending ? 'ascending' : 'descending'}` : 'not sorted'}.`;
 };
