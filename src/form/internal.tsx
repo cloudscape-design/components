@@ -26,6 +26,7 @@ export default function InternalForm({
   secondaryActions,
   variant,
   __internalRootRef,
+  __analyticsMetadata,
   ...props
 }: InternalFormProps) {
   const baseProps = getBaseProps(props);
@@ -37,13 +38,13 @@ export default function InternalForm({
   useEffect(() => {
     if (funnelInteractionId && errorText) {
       errorCount.current++;
-      FunnelMetrics.funnelError({ funnelInteractionId });
+      FunnelMetrics.funnelError({ funnelInteractionId, errorContext: __analyticsMetadata?.errorContext });
       return () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
         errorCount.current--;
       };
     }
-  }, [funnelInteractionId, errorText, submissionAttempt, errorCount]);
+  }, [funnelInteractionId, errorText, submissionAttempt, errorCount, __analyticsMetadata?.errorContext]);
 
   return (
     <div {...baseProps} ref={__internalRootRef} className={clsx(styles.root, baseProps.className)}>

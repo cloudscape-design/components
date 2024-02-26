@@ -18,6 +18,6 @@ export interface InternalBaseComponentProps<T = any> {
 export default function useBaseComponent<T = any>(componentName: string, config?: ComponentConfiguration) {
   useTelemetry(componentName, config);
   useFocusVisible();
-  const elementRef = useComponentMetadata<T>(componentName, PACKAGE_VERSION);
+  const elementRef = useComponentMetadata<T>(componentName, PACKAGE_VERSION, config);
   return { __internalRootRef: elementRef };
 }

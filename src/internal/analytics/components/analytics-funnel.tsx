@@ -40,6 +40,8 @@ interface AnalyticsFunnelProps {
   funnelType: FunnelProps['funnelType'];
   optionalStepNumbers: FunnelProps['optionalStepNumbers'];
   totalFunnelSteps: FunnelProps['totalFunnelSteps'];
+  flowType?: string;
+  instanceId?: string;
 }
 
 export const AnalyticsFunnel = (props: AnalyticsFunnelProps) => {
@@ -136,6 +138,8 @@ const InnerAnalyticsFunnel = ({ children, stepConfiguration, ...props }: Analyti
         theme: isVisualRefresh ? 'vr' : 'classic',
         funnelVersion: FUNNEL_VERSION,
         stepConfiguration: stepConfiguration ?? singleStepFlowStepConfiguration,
+        instanceId: props.instanceId,
+        flowType: props.flowType,
       });
 
       setFunnelInteractionId(funnelInteractionId);
@@ -236,6 +240,8 @@ interface AnalyticsFunnelStepProps {
   children?: React.ReactNode | ((props: FunnelStepContextValue) => React.ReactNode);
   stepNameSelector?: FunnelStepProps['stepNameSelector'];
   stepNumber: FunnelStepProps['stepNumber'];
+  instanceId?: string;
+  errorContext?: string;
 }
 
 export const AnalyticsFunnelStep = (props: AnalyticsFunnelStepProps) => {
@@ -360,6 +366,7 @@ const InnerAnalyticsFunnelStep = ({ children, stepNumber, ...rest }: AnalyticsFu
         subStepAllSelector: getSubStepAllSelector(),
         totalSubSteps: subStepCount.current,
         subStepConfiguration: getSubStepConfiguration(),
+        instanceId: rest.instanceId,
       });
     }
 
@@ -385,6 +392,7 @@ const InnerAnalyticsFunnelStep = ({ children, stepNumber, ...rest }: AnalyticsFu
     parentStepExists,
     funnelType,
     parentStepFunnelInteractionId,
+    rest.instanceId,
   ]);
 
   const contextValue: FunnelStepContextValue = {

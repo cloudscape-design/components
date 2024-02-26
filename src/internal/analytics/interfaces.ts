@@ -8,6 +8,10 @@ export interface BaseFunnelProps {
   funnelInteractionId: string;
 }
 
+export interface FunnelErrorProps extends BaseFunnelProps {
+  errorContext?: string;
+}
+
 export interface FunnelProps extends BaseFunnelProps {
   totalFunnelSteps: number;
   optionalStepNumbers: number[];
@@ -24,6 +28,8 @@ export interface FunnelStartProps {
   funnelVersion: string;
   componentVersion: string;
   theme: string;
+  instanceId?: string;
+  flowType?: string;
 }
 
 // A function type for a generic funnel method
@@ -43,6 +49,7 @@ export interface FunnelStepProps extends BaseFunnelProps {
 export interface FunnelStepStartProps extends FunnelStepProps {
   totalSubSteps?: number;
   subStepConfiguration?: SubStepConfiguration[];
+  instanceId?: string;
 }
 export interface FunnelStepCompleteProps extends FunnelStepProps {
   totalSubSteps?: number;
@@ -56,6 +63,7 @@ export interface FunnelStepNavigationProps extends FunnelStepProps {
 
 export interface FunnelStepErrorProps extends FunnelStepProps {
   stepErrorSelector: string;
+  errorContext?: string;
 }
 
 export interface FunnelSubStepProps extends FunnelStepProps {
@@ -63,16 +71,19 @@ export interface FunnelSubStepProps extends FunnelStepProps {
   subStepName?: string | undefined;
   subStepNameSelector: string;
   subStepNumber?: number;
+  instanceId?: string;
 }
 
 export interface FunnelSubStepErrorProps extends FunnelSubStepProps {
   fieldLabelSelector: string;
   fieldErrorSelector: string;
+  errorContext?: string;
 }
 
 export interface OptionalFunnelSubStepErrorProps extends FunnelSubStepProps {
   fieldLabelSelector?: string;
   fieldErrorSelector?: string;
+  errorContext?: string;
 }
 
 export interface FunnelLinkInteractionProps extends FunnelSubStepProps {
@@ -106,7 +117,7 @@ export interface SubStepConfiguration {
 // Define the interface using the method type
 export interface IFunnelMetrics {
   funnelStart: FunnelStartMethod;
-  funnelError: FunnelMethod<BaseFunnelProps>;
+  funnelError: FunnelMethod<FunnelErrorProps>;
   funnelComplete: FunnelMethod<BaseFunnelProps>;
   funnelSuccessful: FunnelMethod<BaseFunnelProps>;
   funnelCancelled: FunnelMethod<BaseFunnelProps>;

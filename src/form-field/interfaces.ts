@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { BaseComponentProps } from '../internal/base-component';
+import { AnalyticsMetadata, BaseComponentProps } from '../internal/base-component';
 import React from 'react';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 
@@ -71,6 +71,12 @@ export interface FormFieldProps extends BaseComponentProps {
    * non-empty string, it will render the form field as invalid.
    */
   errorText?: React.ReactNode;
+
+  /**
+   * @internal
+   * @analytics
+   */
+  __analyticsMetadata?: Pick<AnalyticsMetadata, 'instanceId'>;
 }
 
 export namespace FormFieldProps {

@@ -91,6 +91,9 @@ export default function MultiPageCreate() {
           </Container>
         </SpaceBetween>
       ),
+      __analyticsMetadata: {
+        instanceId: 'cloudscape.create-resource.step-1',
+      },
     },
     {
       title: 'Step 2',
@@ -101,6 +104,9 @@ export default function MultiPageCreate() {
           <div id="content-text">Content 2</div>
         </div>
       ),
+      __analyticsMetadata: {
+        instanceId: 'cloudscape.create-resource.step-2',
+      },
     },
     {
       title: 'Step 3',
@@ -115,6 +121,9 @@ export default function MultiPageCreate() {
           ))}
         </div>
       ),
+      __analyticsMetadata: {
+        instanceId: 'cloudscape.create-resource.step-3',
+      },
     },
   ];
 
@@ -136,6 +145,10 @@ export default function MultiPageCreate() {
       </button>
       {mounted && (
         <Wizard
+          __analyticsMetadata={{
+            instanceId: 'cloudscape.create-resource',
+            flowType: 'create',
+          }}
           i18nStrings={i18nStrings}
           steps={steps}
           activeStepIndex={activeStepIndex}

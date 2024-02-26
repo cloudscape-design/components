@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { BaseComponentProps } from '../internal/base-component';
+import { AnalyticsMetadata, BaseComponentProps } from '../internal/base-component';
 
 export interface SpinnerProps extends BaseComponentProps {
   /**
@@ -11,6 +11,12 @@ export interface SpinnerProps extends BaseComponentProps {
    * Specifies the color variant of the spinner. The `normal` variant picks up the current color of its context.
    */
   variant?: SpinnerProps.Variant;
+
+  /**
+   * @analytics
+   * @internal
+   */
+  __analyticsMetadata?: Pick<AnalyticsMetadata, 'instanceId'>;
 }
 
 export namespace SpinnerProps {

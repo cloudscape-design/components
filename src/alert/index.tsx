@@ -12,9 +12,10 @@ import { getNameFromSelector, getSubStepAllSelector } from '../internal/analytic
 export { AlertProps };
 
 const Alert = React.forwardRef(
-  ({ type = 'info', visible = true, ...props }: AlertProps, ref: React.Ref<AlertProps.Ref>) => {
+  ({ type = 'info', visible = true, ...rest }: AlertProps, ref: React.Ref<AlertProps.Ref>) => {
     const baseComponentProps = useBaseComponent<HTMLDivElement>('Alert', {
-      props: { type, visible, dismissible: props.dismissible },
+      props: { type, visible, dismissible: rest.dismissible },
+      analytics: { ...rest.__analyticsMetadata },
     });
 
     const { funnelInteractionId, submissionAttempt, funnelState, errorCount } = useFunnel();
@@ -59,7 +60,7 @@ const Alert = React.forwardRef(
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [funnelInteractionId, visible, submissionAttempt, errorCount]);
 
-    return <InternalAlert type={type} visible={visible} {...props} {...baseComponentProps} ref={ref} />;
+    return <InternalAlert type={type} visible={visible} {...rest} {...baseComponentProps} ref={ref} />;
   }
 );
 

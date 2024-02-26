@@ -27,6 +27,19 @@ describe('Form Analytics', () => {
     mockFunnelMetrics();
   });
 
+  test('analytics object is included on root form element metadata object', () => {
+    const { container } = render(
+      <Form __analyticsMetadata={{ instanceId: 'instance-123', flowType: 'create', errorContext: 'error-context-1' }} />
+    );
+    const form = createWrapper(container).findForm()!.getElement();
+    expect((form as any).__awsuiMetadata__).toBeTruthy();
+    expect((form as any).__awsuiMetadata__.analytics).toEqual({
+      instanceId: 'instance-123',
+      flowType: 'create',
+      errorContext: 'error-context-1',
+    });
+  });
+
   test('sends funnelStart and funnelStepStart metrics when Form is mounted', () => {
     render(
       <Form
@@ -67,6 +80,58 @@ describe('Form Analytics', () => {
           { name: 'Substep one', number: 1 },
           { name: 'Substep two', number: 2 },
         ],
+      })
+    );
+  });
+
+  test('includes instanceId in the funnelStart and funnelStepStart metrics when provided', () => {
+    render(
+      <Form
+        __analyticsMetadata={{ instanceId: 'form.instance-1' }}
+        header={
+          <Header info="This is info" description="This is a description">
+            My funnel
+          </Header>
+        }
+      >
+        <Container header={<Header>Substep one</Header>}></Container>
+        <Container header={<Header>Substep two</Header>}></Container>
+      </Form>
+    );
+    act(() => void jest.runAllTimers());
+
+    expect(FunnelMetrics.funnelStart).toHaveBeenCalledWith(
+      expect.objectContaining({
+        instanceId: 'form.instance-1',
+      })
+    );
+
+    expect(FunnelMetrics.funnelStepStart).toHaveBeenCalledWith(
+      expect.objectContaining({
+        instanceId: 'form.instance-1',
+      })
+    );
+  });
+
+  test('includes flowType in the funnelStart metrics when provided', () => {
+    render(
+      <Form
+        __analyticsMetadata={{ flowType: 'create' }}
+        header={
+          <Header info="This is info" description="This is a description">
+            My funnel
+          </Header>
+        }
+      >
+        <Container header={<Header>Substep one</Header>}></Container>
+        <Container header={<Header>Substep two</Header>}></Container>
+      </Form>
+    );
+    act(() => void jest.runAllTimers());
+
+    expect(FunnelMetrics.funnelStart).toHaveBeenCalledWith(
+      expect.objectContaining({
+        flowType: 'create',
       })
     );
   });
@@ -282,6 +347,17 @@ describe('Form Analytics', () => {
     expect(FunnelMetrics.funnelError).toHaveBeenCalledWith(
       expect.objectContaining({
         funnelInteractionId: expect.any(String),
+      })
+    );
+  });
+
+  test('includes the errorContext in the funnelError metric when provided', () => {
+    render(<Form errorText="Error" __analyticsMetadata={{ errorContext: 'error-context' }} />);
+    act(() => void jest.runAllTimers());
+
+    expect(FunnelMetrics.funnelError).toHaveBeenCalledWith(
+      expect.objectContaining({
+        errorContext: 'error-context',
       })
     );
   });

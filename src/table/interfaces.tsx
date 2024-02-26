@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { BaseComponentProps } from '../internal/base-component';
+import { AnalyticsMetadata, BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler, CancelableEventHandler } from '../internal/events';
 import { Optional } from '../internal/types';
 import ColumnDisplayProperties = TableProps.ColumnDisplayProperties;
@@ -326,6 +326,12 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * When set to `true`, table cells become navigable with arrow keys, and the entire table has a single tab stop.
    */
   enableKeyboardNavigation?: boolean;
+
+  /**
+   * @analytics
+   * @internal
+   */
+  __analyticsMetadata?: Pick<AnalyticsMetadata, 'instanceId'>;
 }
 
 export namespace TableProps {
