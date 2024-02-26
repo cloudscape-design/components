@@ -6,6 +6,7 @@ import { PACKAGE_SOURCE, PACKAGE_VERSION } from '../environment';
 
 // these styles needed to be imported for every public component
 import './styles.css.js';
+import { AnalyticsMetadata } from '../analytics/interfaces';
 
 initAwsUiVersions(PACKAGE_SOURCE, PACKAGE_VERSION);
 
@@ -33,4 +34,12 @@ export function getBaseProps(props: BaseComponentProps) {
     }
   });
   return baseProps as BaseComponentProps;
+}
+
+export interface BasePropsWithAnalyticsMetadata {
+  __analyticsMetadata?: AnalyticsMetadata;
+}
+
+export function getAnalyticsMetadataProps(props: BasePropsWithAnalyticsMetadata) {
+  return props.__analyticsMetadata;
 }
