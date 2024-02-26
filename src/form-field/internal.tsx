@@ -232,7 +232,7 @@ export default function InternalFormField({
               {errorText}
             </FormFieldError>
           )}
-          {warningText && (
+          {warningText && !errorText && (
             <FormFieldWarning id={slotIds.warning} warningIconAriaLabel={i18nStrings?.warningIconAriaLabel}>
               {warningText}
             </FormFieldWarning>

@@ -34,8 +34,6 @@ export interface FormFieldControlProps {
    * and set the property to a string of each ID separated by spaces (for example, `"id1 id2 id3"`).
    */
   ariaDescribedby?: string;
-
-  warning?: boolean;
 }
 
 export interface FormFieldValidationControlProps extends FormFieldControlProps {
@@ -49,7 +47,11 @@ export interface FormFieldValidationControlProps extends FormFieldControlProps {
   invalid?: boolean;
 
   /**
-   * Warning state
+   * Overrides the invalidation state. Usually the warning state
+   * comes from the parent `FormField`component,
+   * however sometimes you need to override its
+   * state when you have more than one input within a
+   * single form field.
    */
   warning?: boolean;
 }

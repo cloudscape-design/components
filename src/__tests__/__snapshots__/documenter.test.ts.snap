@@ -2021,7 +2021,11 @@ by the \`findOptionsContainer\` test utility for this.
       "type": "boolean",
     },
     Object {
-      "description": "Warning state",
+      "description": "Overrides the invalidation state. Usually the warning state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.",
       "name": "warning",
       "optional": true,
       "type": "boolean",
@@ -4293,11 +4297,6 @@ in the native control.",
       "optional": true,
       "type": "string",
     },
-    Object {
-      "name": "warning",
-      "optional": true,
-      "type": "boolean",
-    },
   ],
   "regions": Array [
     Object {
@@ -4688,11 +4687,6 @@ least one dark theme. If not set explicitly, it will render all Ace themes avail
       "name": "value",
       "optional": false,
       "type": "string",
-    },
-    Object {
-      "name": "warning",
-      "optional": true,
-      "type": "boolean",
     },
   ],
   "regions": Array [],
@@ -5681,7 +5675,11 @@ Don't use read-only inputs outside a form.
       "type": "string",
     },
     Object {
-      "description": "Warning state",
+      "description": "Overrides the invalidation state. Usually the warning state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.",
       "name": "warning",
       "optional": true,
       "type": "boolean",
@@ -5982,7 +5980,11 @@ By default the starting day of the week is defined by the locale, but you can us
       "type": "string",
     },
     Object {
-      "description": "Warning state",
+      "description": "Overrides the invalidation state. Usually the warning state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.",
       "name": "warning",
       "optional": true,
       "type": "boolean",
@@ -6503,7 +6505,11 @@ or a relative time range.",
       "type": "DateRangePickerProps.Value | null",
     },
     Object {
-      "description": "Warning state",
+      "description": "Overrides the invalidation state. Usually the warning state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.",
       "name": "warning",
       "optional": true,
       "type": "boolean",
@@ -8135,7 +8141,11 @@ be slightly different across browsers.",
       "type": "string",
     },
     Object {
-      "description": "Warning state",
+      "description": "Overrides the invalidation state. Usually the warning state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.",
       "name": "warning",
       "optional": true,
       "type": "boolean",
@@ -9809,7 +9819,11 @@ by the \`findOptionsContainer\` test utility for this.
       "type": "boolean",
     },
     Object {
-      "description": "Warning state",
+      "description": "Overrides the invalidation state. Usually the warning state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.",
       "name": "warning",
       "optional": true,
       "type": "boolean",
@@ -11174,11 +11188,6 @@ it removes options that are not currently in view from the DOM.",
       "optional": true,
       "type": "boolean",
     },
-    Object {
-      "name": "warning",
-      "optional": true,
-      "type": "boolean",
-    },
   ],
   "regions": Array [
     Object {
@@ -11326,11 +11335,6 @@ If you want to clear the selection, use \`null\`.",
       "name": "value",
       "optional": false,
       "type": "null | string",
-    },
-    Object {
-      "name": "warning",
-      "optional": true,
-      "type": "boolean",
     },
   ],
   "regions": Array [],
@@ -12359,7 +12363,11 @@ by the \`findOptionsContainer\` test utility for this.
       "type": "boolean",
     },
     Object {
-      "description": "Warning state",
+      "description": "Overrides the invalidation state. Usually the warning state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.",
       "name": "warning",
       "optional": true,
       "type": "boolean",
@@ -14200,11 +14208,6 @@ in order to prevent the user from changing the filtering text.",
       "optional": true,
       "type": "string",
     },
-    Object {
-      "name": "warning",
-      "optional": true,
-      "type": "boolean",
-    },
   ],
   "regions": Array [],
   "releaseStatus": "stable",
@@ -14516,7 +14519,11 @@ inadvertently sending data (such as user passwords) to third parties.
       "type": "string",
     },
     Object {
-      "description": "Warning state",
+      "description": "Overrides the invalidation state. Usually the warning state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.",
       "name": "warning",
       "optional": true,
       "type": "boolean",
@@ -14661,11 +14668,6 @@ If you want to clear the selection, use \`null\`.",
       "name": "value",
       "optional": false,
       "type": "null | string",
-    },
-    Object {
-      "name": "warning",
-      "optional": true,
-      "type": "boolean",
     },
   ],
   "regions": Array [],
@@ -14883,7 +14885,11 @@ When using 12-hour format, there is no option for picking AM or PM.",
       "type": "string",
     },
     Object {
-      "description": "Warning state",
+      "description": "Overrides the invalidation state. Usually the warning state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.",
       "name": "warning",
       "optional": true,
       "type": "boolean",
@@ -15014,11 +15020,6 @@ receive focus.",
       "name": "name",
       "optional": true,
       "type": "string",
-    },
-    Object {
-      "name": "warning",
-      "optional": true,
-      "type": "boolean",
     },
   ],
   "regions": Array [
