@@ -620,7 +620,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       ]
     );
     //console.log('Background is ' + headerProps.headerBackground);
-    console.log('The passed prop is ' + heroHeaderProps.heroHeader);
+    //console.log('The passed prop is ' + heroHeaderProps.heroHeader);
     return (
       <HeroHeader.Provider value={{ handleHeroHeaderProps }}>
         <AppLayoutInternalsContext.Provider
