@@ -215,6 +215,7 @@ function NumberFormField() {
       description="Behavior TBD when both error and warning msg exist"
       errorText={numberErrorText}
       warningText={numberWarningText}
+      i18nStrings={{ errorIconAriaLabel: 'Test error', warningIconAriaLabel: 'Test warning' }}
     >
       <Input value={numberValue} type="number" onChange={onNumberValueChange} />
     </FormField>
@@ -251,6 +252,8 @@ function FileUploadValidation() {
           removeFileAriaLabel: () => `Remove file`,
           limitShowFewer: 'Show fewer files',
           limitShowMore: 'Show more files',
+          errorIconAriaLabel: 'Test error',
+          warningIconAriaLabel: 'Test warning',
         }}
         constraintText="Hint text for file requirements"
         fileWarnings={['Warning message', null, 'Warning message']}
@@ -350,6 +353,7 @@ export default function FormFieldWarningTest() {
                 errorText: (item, index) => (index === 1 ? 'Invalid input' : null),
               },
             ]}
+            i18nStrings={{ errorIconAriaLabel: 'Test error', warningIconAriaLabel: 'Test warning' }}
           />
 
           <Input value="" onChange={() => {}} warning={true} placeholder="Input" />

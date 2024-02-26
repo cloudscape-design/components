@@ -154,6 +154,7 @@ function InternalFileUpload(
             errorText={fileErrors?.[0]}
             warningText={fileWarnings?.[0]}
             errorIconAriaLabel={i18nStrings.errorIconAriaLabel}
+            warningIconAriaLabel={i18nStrings.warningIconAriaLabel}
             data-index={0}
           >
             <FileOption file={value[0]} metadata={metadata} i18nStrings={i18nStrings} />
@@ -174,6 +175,7 @@ function InternalFileUpload(
                 errorText={fileErrors?.[fileIndex]}
                 warningText={fileWarnings?.[fileIndex]}
                 errorIconAriaLabel={i18nStrings.errorIconAriaLabel}
+                warningIconAriaLabel={i18nStrings.warningIconAriaLabel}
                 data-index={fileIndex}
               >
                 <FileOption file={file} metadata={metadata} i18nStrings={i18nStrings} />
