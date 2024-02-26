@@ -15,7 +15,7 @@
     "test:a11y": "echo 1",
     "test:integ": "gulp test:integ",
     "test:motion": "gulp test:motion",
-    "test:visual": "echo 1",
+    "test:visual": "./backstop/node_modules/.bin/backstop --config backstop.config.js",
     "lint": "eslint --ignore-path .gitignore --ext ts,tsx,js . && stylelint --ignore-path .gitignore '{src,pages}/**/*.{css,scss}'",
     "start": "gulp watch & NODE_ENV=development webpack serve --config pages/webpack.config.js",
     "start:integ": "NODE_ENV=development webpack serve --config pages/webpack.config.integ.js",
