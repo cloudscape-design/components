@@ -81,7 +81,7 @@ export const Row = React.memo(
               columns={definition.length}
               __breakpoint={breakpoint}
             >
-              {definition.map(({ info, label, constraintText, errorText, control }, defIndex) => (
+              {definition.map(({ info, label, constraintText, errorText, warningText, control }, defIndex) => (
                 <InternalFormField
                   key={defIndex}
                   className={styles.field}
@@ -89,8 +89,12 @@ export const Row = React.memo(
                   info={info}
                   constraintText={render(item, index, constraintText)}
                   errorText={render(item, index, errorText)}
+                  warningText={render(item, index, warningText)}
                   stretch={true}
-                  i18nStrings={{ errorIconAriaLabel: i18nStrings.errorIconAriaLabel }}
+                  i18nStrings={{
+                    errorIconAriaLabel: i18nStrings.errorIconAriaLabel,
+                    warningIconAriaLabel: i18nStrings.warningIconAriaLabel,
+                  }}
                   __hideLabel={isWideViewport && index > 0}
                   controlId={defIndex === 0 ? firstControlId : undefined}
                 >

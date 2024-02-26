@@ -10,6 +10,7 @@ import Box from '~components/box';
 import FileUpload from '~components/file-upload';
 import Checkbox from '~components/checkbox';
 import TextArea from '~components/textarea';
+import AttributeEditor from '~components/attribute-editor';
 import { I18nProvider } from '~components/i18n';
 import messages from '~components/i18n/messages/all.en';
 
@@ -189,6 +190,7 @@ function BasicFormField() {
     if (value.includes('error')) {
       setErrorText('Invalid input');
     } else if (value.includes('warning')) {
+      setErrorText('');
       setWarningText('Warning text');
     } else {
       setErrorText('');
@@ -222,7 +224,6 @@ function NumberFormField() {
     console.log('number value: ', value);
     if (value === '3') {
       setNumberErrorText('Invalid input');
-      setNumberWarningText('');
     } else if (value === '2') {
       setNumberErrorText('');
       setNumberWarningText('Warning text');
@@ -315,9 +316,10 @@ export default function FormFieldWarningTest() {
                 limitShowFewer: 'Show fewer files',
                 limitShowMore: 'Show more files',
               }}
+              constraintText="Hint text for file requirements"
             />
           </FormField>
-          <FormField label="Form field with file upload" errorText="Warned file">
+          <FormField label="Form field with file upload" errorText="Invalid file">
             <FileUpload
               value={[]}
               onChange={() => {}}
@@ -329,6 +331,7 @@ export default function FormFieldWarningTest() {
                 limitShowFewer: 'Show fewer files',
                 limitShowMore: 'Show more files',
               }}
+              constraintText="Hint text for file requirements"
             />
           </FormField>
           <FileUploadValidation />
@@ -346,6 +349,38 @@ export default function FormFieldWarningTest() {
           <FormField label="Form field with textarea" errorText="Invalid textarea">
             <TextArea value="" />
           </FormField>
+
+          <AttributeEditor
+            items={[
+              {
+                key: 'some-key-1',
+                value: 'some-value-1',
+                type: { label: 'Type 1', value: '0' },
+              },
+              {
+                key: 'some-key-2',
+                value: 'some-value-2',
+                type: { label: 'Type 2', value: '1' },
+              },
+            ]}
+            addButtonText="Add new item"
+            definition={[
+              {
+                label: 'Key',
+                control: item => <Input value={item.key} placeholder="Enter key" />,
+              },
+              {
+                label: 'Value',
+                control: item => <Input value={item.value} placeholder="Enter value" />,
+              },
+              {
+                label: 'Type',
+                control: item => <Input value={item.value} placeholder="Enter type" />,
+                warningText: (item, index) => (index === 0 ? 'Warning input' : null),
+                errorText: (item, index) => (index === 1 ? 'Invalid input' : null),
+              },
+            ]}
+          />
         </SpaceBetween>
       </Box>
     </I18nProvider>
