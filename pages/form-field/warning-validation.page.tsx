@@ -4,12 +4,17 @@ import React, { useState } from 'react';
 import FormField from '~components/form-field';
 import Input from '~components/input';
 import TextFilter from '~components/text-filter';
-import DateRangePicker from '~components/date-range-picker';
+import DateRangePicker, { DateRangePickerProps } from '~components/date-range-picker';
 import SpaceBetween from '~components/space-between';
 import Box from '~components/box';
 import FileUpload from '~components/file-upload';
 import Checkbox from '~components/checkbox';
 import TextArea from '~components/textarea';
+import TimeInput from '~components/time-input';
+import Multiselect from '~components/multiselect';
+import Select from '~components/select';
+import Autosuggest from '~components/autosuggest';
+import DatePicker from '~components/date-picker';
 import AttributeEditor from '~components/attribute-editor';
 import { I18nProvider } from '~components/i18n';
 import messages from '~components/i18n/messages/all.en';
@@ -29,6 +34,50 @@ interface TextFilterInputValue {
 interface TextFilterInput {
   detail: TextFilterInputValue;
 }
+
+const isValidRange = (range: DateRangePickerProps.Value | null) => {
+  if (range?.type === 'absolute') {
+    const [startDateWithoutTime] = range.startDate.split('T');
+    const [endDateWithoutTime] = range.endDate.split('T');
+    if (!startDateWithoutTime || !endDateWithoutTime) {
+      return {
+        valid: false,
+        errorMessage: 'The selected date range is incomplete. Select a start and end date for the date range.',
+      };
+    }
+  }
+  return {
+    valid: false,
+    errorMessage: 'The selected date range is incomplete. Select a start and end date for the date range',
+  };
+};
+
+const relativeOptions: ReadonlyArray<DateRangePickerProps.RelativeOption> = [
+  {
+    key: 'previous-5-minutes',
+    amount: 5,
+    unit: 'minute',
+    type: 'relative',
+  },
+  {
+    key: 'previous-30-minutes',
+    amount: 30,
+    unit: 'minute',
+    type: 'relative',
+  },
+  {
+    key: 'previous-1-hour',
+    amount: 1,
+    unit: 'hour',
+    type: 'relative',
+  },
+  {
+    key: 'previous-6-hours',
+    amount: 6,
+    unit: 'hour',
+    type: 'relative',
+  },
+];
 
 function TextFilterFormField() {
   const [filteringText, setFilteringText] = useState('');
@@ -76,45 +125,8 @@ function DateRangePickerFormFieldWarning() {
       <DateRangePicker
         onChange={() => {}}
         value={null}
-        relativeOptions={[
-          {
-            key: 'previous-5-minutes',
-            amount: 5,
-            unit: 'minute',
-            type: 'relative',
-          },
-          {
-            key: 'previous-30-minutes',
-            amount: 30,
-            unit: 'minute',
-            type: 'relative',
-          },
-          {
-            key: 'previous-1-hour',
-            amount: 1,
-            unit: 'hour',
-            type: 'relative',
-          },
-          {
-            key: 'previous-6-hours',
-            amount: 6,
-            unit: 'hour',
-            type: 'relative',
-          },
-        ]}
-        isValidRange={range => {
-          if (range?.type === 'absolute') {
-            const [startDateWithoutTime] = range.startDate.split('T');
-            const [endDateWithoutTime] = range.endDate.split('T');
-            if (!startDateWithoutTime || !endDateWithoutTime) {
-              return {
-                valid: false,
-                errorMessage: 'The selected date range is incomplete. Select a start and end date for the date range.',
-              };
-            }
-          }
-          return { valid: true };
-        }}
+        relativeOptions={relativeOptions}
+        isValidRange={isValidRange}
         i18nStrings={{}}
         placeholder="Filter by a date and time range"
       />
@@ -132,45 +144,8 @@ function DateRangePickerFormFieldError() {
       <DateRangePicker
         onChange={() => {}}
         value={null}
-        relativeOptions={[
-          {
-            key: 'previous-5-minutes',
-            amount: 5,
-            unit: 'minute',
-            type: 'relative',
-          },
-          {
-            key: 'previous-30-minutes',
-            amount: 30,
-            unit: 'minute',
-            type: 'relative',
-          },
-          {
-            key: 'previous-1-hour',
-            amount: 1,
-            unit: 'hour',
-            type: 'relative',
-          },
-          {
-            key: 'previous-6-hours',
-            amount: 6,
-            unit: 'hour',
-            type: 'relative',
-          },
-        ]}
-        isValidRange={range => {
-          if (range?.type === 'absolute') {
-            const [startDateWithoutTime] = range.startDate.split('T');
-            const [endDateWithoutTime] = range.endDate.split('T');
-            if (!startDateWithoutTime || !endDateWithoutTime) {
-              return {
-                valid: false,
-                errorMessage: 'The selected date range is incomplete. Select a start and end date for the date range.',
-              };
-            }
-          }
-          return { valid: true };
-        }}
+        relativeOptions={relativeOptions}
+        isValidRange={isValidRange}
         i18nStrings={{}}
         placeholder="Filter by a date and time range"
       />
@@ -294,12 +269,7 @@ export default function FormFieldWarningTest() {
           <BasicFormField />
           <BasicFormField />
           <NumberFormField />
-          <FormField>
-            <Input value="" onChange={() => {}} warning={true} placeholder="Enter value" />
-          </FormField>
-          <FormField>
-            <Input value="" onChange={() => {}} invalid={true} placeholder="Enter value" />
-          </FormField>
+
           <TextFilterFormField />
           <DateRangePickerFormFieldWarning />
           <DateRangePickerFormFieldError />
@@ -380,6 +350,62 @@ export default function FormFieldWarningTest() {
                 errorText: (item, index) => (index === 1 ? 'Invalid input' : null),
               },
             ]}
+          />
+
+          <Input value="" onChange={() => {}} warning={true} placeholder="Input" />
+          <Input value="" onChange={() => {}} invalid={true} placeholder="Input" />
+
+          <Multiselect
+            selectedOptions={[
+              {
+                label: 'Multiselect',
+                value: '1',
+                description: 'This is a description',
+              },
+            ]}
+            warning={true}
+          />
+          <Multiselect
+            selectedOptions={[
+              {
+                label: 'Multiselect',
+                value: '1',
+                description: 'This is a description',
+              },
+            ]}
+            invalid={true}
+          />
+
+          <Select selectedOption={{ label: 'Select', value: '1' }} warning={true} />
+          <Select selectedOption={{ label: 'Select', value: '1' }} invalid={true} />
+
+          <TextArea placeholder="Textarea" warning={true} value="" />
+          <TextArea placeholder="Textarea" invalid={true} value="" />
+
+          <TimeInput value="" placeholder="Time input" warning={true} />
+          <TimeInput value="" placeholder="Time input" invalid={true} />
+
+          <Autosuggest value="" onChange={() => {}} warning={true} placeholder="Autosuggest" />
+          <Autosuggest value="" onChange={() => {}} invalid={true} placeholder="Autosuggest" />
+
+          <DatePicker value="" onChange={() => {}} warning={true} placeholder="Date picker" />
+          <DatePicker value="" onChange={() => {}} invalid={true} placeholder="Date picker" />
+
+          <DateRangePicker
+            value={null}
+            onChange={() => {}}
+            isValidRange={isValidRange}
+            relativeOptions={relativeOptions}
+            warning={true}
+            placeholder="Date range picker"
+          />
+          <DateRangePicker
+            value={null}
+            onChange={() => {}}
+            isValidRange={isValidRange}
+            relativeOptions={relativeOptions}
+            invalid={true}
+            placeholder="Date range picker"
           />
         </SpaceBetween>
       </Box>
