@@ -22,6 +22,7 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { getFirstFocusable } from '../internal/components/focus-lock/utils';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import ResetContextsForModal from '../internal/context/reset-contexts-for-modal';
+import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
 
 export interface InternalPopoverProps extends PopoverProps, InternalBaseComponentProps {
   __onOpen?: NonCancelableEventHandler<null>;
@@ -124,10 +125,12 @@ function InternalPopover(
 
   const popoverClasses = usePortalModeClasses(triggerRef);
 
+  const { tabIndex: triggerTabIndex } = useSingleTabStopNavigation(triggerRef);
   const triggerProps = {
     // https://github.com/microsoft/TypeScript/issues/36659
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ref: triggerRef as any,
+    tabIndex: triggerTabIndex,
     onClick: onTriggerClick,
     onKeyDown: onTriggerKeyDown,
     className: clsx(styles.trigger, styles[`trigger-type-${triggerType}`]),
