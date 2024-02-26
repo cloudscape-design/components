@@ -44,8 +44,13 @@ const Button = React.forwardRef(
     const baseComponentProps = useBaseComponent<HTMLAnchorElement | HTMLButtonElement>('Button');
     const baseProps = getBaseProps(props);
 
-    // TODO: Add the instanceId when it becomes available.
-    useLatencyMetrics('Button', baseComponentProps.__internalRootRef, undefined, loading);
+    useLatencyMetrics({
+      componentName: 'Button',
+      elementRef: baseComponentProps.__internalRootRef,
+      loading,
+      // TODO: Add the instanceId when it becomes available.
+      instanceId: undefined,
+    });
 
     return (
       <InternalButton

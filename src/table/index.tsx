@@ -36,8 +36,13 @@ const Table = React.forwardRef(
       ref,
     };
 
-    // TODO: Add the instanceId when it becomes available.
-    useLatencyMetrics('Table', baseComponentProps.__internalRootRef, undefined, props.loading);
+    useLatencyMetrics({
+      componentName: 'Table',
+      elementRef: baseComponentProps.__internalRootRef,
+      loading: props.loading,
+      // TODO: Add the instanceId when it becomes available.
+      instanceId: undefined,
+    });
 
     if (variant === 'borderless' || variant === 'embedded') {
       return <InternalTable {...tableProps} />;

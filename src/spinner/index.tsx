@@ -12,8 +12,14 @@ export { SpinnerProps };
 export default function Spinner({ size = 'normal', variant = 'normal', ...props }: SpinnerProps) {
   const baseComponentProps = useBaseComponent('Spinner');
 
-  // TODO: Add the instanceId when it becomes available.
-  useLatencyMetrics('Spinner', baseComponentProps.__internalRootRef, undefined, true, 'spinner');
+  useLatencyMetrics({
+    componentName: 'Spinner',
+    elementRef: baseComponentProps.__internalRootRef,
+    loading: true,
+    componentType: 'spinner',
+    // TODO: Add the instanceId when it becomes available.
+    instanceId: undefined,
+  });
 
   return <InternalSpinner size={size} variant={variant} {...props} {...baseComponentProps} />;
 }

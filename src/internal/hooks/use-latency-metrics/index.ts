@@ -7,19 +7,27 @@ import { useEffectOnUpdate } from '../use-effect-on-update';
 import { isInViewport } from './is-in-viewport';
 import { metrics } from '../../analytics/metrics';
 
-export function useLatencyMetrics(
-  componentName: string,
-  elementRef: React.RefObject<HTMLElement>,
-  instanceId: string | undefined,
-  loading: boolean | undefined = false,
-  componentType: 'spinner' | undefined = undefined
-) {
+interface UseLatencyMetricsProps {
+  componentName: string;
+  elementRef: React.RefObject<HTMLElement>;
+  instanceId: string | undefined;
+  loading?: boolean | undefined;
+  componentType?: 'spinner' | undefined;
+}
+
+export function useLatencyMetrics({
+  componentName,
+  componentType,
+  elementRef,
+  instanceId,
+  ...props
+}: UseLatencyMetricsProps) {
   const lifecycleId = useIdFallback();
 
-  const isLoadingOrSpinner = loading || componentType === 'spinner';
+  const loading = props.loading || componentType === 'spinner';
 
   const loadingStartTime = useRef<undefined | number>(undefined);
-  if (isLoadingOrSpinner && loadingStartTime.current === undefined) {
+  if (loading && loadingStartTime.current === undefined) {
     loadingStartTime.current = performance.now();
   }
 
@@ -38,7 +46,7 @@ export function useLatencyMetrics(
           componentName,
           inViewport,
           metadata: { instanceId },
-          loading: isLoadingOrSpinner,
+          loading,
           loadingDuration: undefined,
         },
         timestamp
@@ -58,15 +66,14 @@ export function useLatencyMetrics(
             componentName,
             inViewport: undefined,
             metadata: { instanceId },
-            loading: isLoadingOrSpinner,
+            loading,
             loadingDuration,
           },
           Date.now()
         );
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [componentName, componentType, elementRef, instanceId, lifecycleId, loading]);
 
   useEffectOnUpdate(() => {
     if (componentType === 'spinner') {
@@ -81,7 +88,7 @@ export function useLatencyMetrics(
           componentName,
           inViewport: undefined,
           metadata: { instanceId },
-          loading: isLoadingOrSpinner,
+          loading,
           loadingDuration: undefined,
         },
         Date.now()
@@ -100,14 +107,13 @@ export function useLatencyMetrics(
           componentName,
           inViewport: undefined,
           metadata: { instanceId },
-          loading: isLoadingOrSpinner,
+          loading,
           loadingDuration,
         },
         Date.now()
       );
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loading]);
+  }, [componentName, componentType, instanceId, lifecycleId, loading]);
 }
 
 interface EventDetail {
