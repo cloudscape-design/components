@@ -152,6 +152,7 @@ const Thead = React.forwardRef(
               colIndex={colIndexOffset - 1}
               columnId="expand-column-id"
               stickyState={stickyState}
+              focusedComponent={focusedComponent}
             >
               {null}
             </TableThElement>
