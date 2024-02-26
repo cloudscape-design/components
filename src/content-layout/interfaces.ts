@@ -30,3 +30,7 @@ export interface ContentLayoutProps extends BaseComponentProps {
 
   headerBackground?: string;
 }
+
+export namespace ContentLayoutHeaderProps {
+  export type HeaderType = 'default' | 'hero';
+}
