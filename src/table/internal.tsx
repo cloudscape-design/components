@@ -528,6 +528,8 @@ const InternalTable = React.forwardRef(
                                     onExpandableItemToggle={() =>
                                       expandableProps.onExpandableItemToggle(item, !getItemExpanded?.(item))
                                     }
+                                    expandButtonLabel={ariaLabels?.expandButtonLabel?.(item)}
+                                    collapseButtonLabel={ariaLabels?.collapseButtonLabel?.(item)}
                                   />
                                 ) : null}
                               </TableTdElement>

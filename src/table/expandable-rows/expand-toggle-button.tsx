@@ -11,10 +11,14 @@ export function ExpandToggleButton({
   isExpandable,
   isExpanded,
   onExpandableItemToggle,
+  expandButtonLabel,
+  collapseButtonLabel,
 }: {
   isExpandable: boolean;
   isExpanded: boolean;
   onExpandableItemToggle: () => void;
+  expandButtonLabel?: string;
+  collapseButtonLabel?: string;
 }) {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const { tabIndex } = useSingleTabStopNavigation(buttonRef);
@@ -22,6 +26,7 @@ export function ExpandToggleButton({
     <button
       ref={buttonRef}
       tabIndex={tabIndex}
+      aria-label={isExpanded ? collapseButtonLabel : expandButtonLabel}
       className={clsx(styles['expand-toggle'], !isExpandable && styles['expand-toggle-hidden'])}
       onClick={() => onExpandableItemToggle()}
     >

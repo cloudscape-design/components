@@ -434,6 +434,8 @@ export namespace TableProps {
     submitEditLabel?: (column: ColumnDefinition<any>) => string;
     submittingEditText?: (column: ColumnDefinition<any>) => string;
     successfulEditLabel?: (column: ColumnDefinition<any>) => string;
+    expandButtonLabel?: (item: T) => string;
+    collapseButtonLabel?: (item: T) => string;
   }
   export interface SortingState<T> {
     isDescending?: boolean;

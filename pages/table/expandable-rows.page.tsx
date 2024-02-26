@@ -53,6 +53,8 @@ const ariaLabels: TableProps<Instance>['ariaLabels'] = {
     return `${item.name} is ${isItemSelected ? '' : 'not'} selected`;
   },
   tableLabel: 'Databases table',
+  expandButtonLabel: () => 'expand row',
+  collapseButtonLabel: () => 'collapse row',
 };
 
 const selectionTypeOptions = [{ value: 'none' }, { value: 'single' }, { value: 'multi' }];
@@ -412,7 +414,7 @@ export default () => {
               stripedRows={stripedRows}
               columnDefinitions={columnDefinitions}
               items={items}
-              ariaLabels={{ ...ariaLabels, tableLabel: 'Small table' }}
+              ariaLabels={ariaLabels}
               wrapLines={true}
               header={
                 <SpaceBetween size="m">
