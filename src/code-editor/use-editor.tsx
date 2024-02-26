@@ -7,10 +7,10 @@ import { useCurrentMode } from '@cloudscape-design/component-toolkit/internal';
 import { getAceTheme, getDefaultConfig, getDefaultTheme } from './util';
 import { CodeEditorProps } from './interfaces';
 
-export function useEditor(ace: any, loading?: boolean) {
+export function useEditor(ace: any, themes?: CodeEditorProps.AvailableThemes, loading?: boolean) {
   const editorRef = useRef<HTMLDivElement>(null);
   const [editor, setEditor] = useState<null | Ace.Editor>(null);
-  const [initialMode] = useState(useCurrentMode(editorRef));
+  const [initialTheme] = useState(getAceTheme(getDefaultTheme(useCurrentMode(editorRef), themes)));
 
   useEffect(() => {
     const elem = editorRef.current;
@@ -21,10 +21,10 @@ export function useEditor(ace: any, loading?: boolean) {
     setEditor(
       ace.edit(elem, {
         ...config,
-        theme: getAceTheme(getDefaultTheme(ace, initialMode)),
+        theme: initialTheme,
       })
     );
-  }, [ace, loading, initialMode]);
+  }, [ace, loading, initialTheme]);
 
   return { editorRef, editor };
 }
