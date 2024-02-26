@@ -14,6 +14,9 @@ div.background {
     color: awsui.$color-text-body-default;
     grid-column: 1 / span 5;
     grid-row: 1 / 10;
+    &.hero-header {
+      background: awsui.$color-background-home-header;
+    }
   }
 
   > .sticky-background {

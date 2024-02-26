@@ -31,7 +31,8 @@ import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import useBackgroundOverlap from './use-background-overlap';
 import { useDrawers } from '../utils/use-drawers';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
-import { CustomHeaderStyle } from './header-style';
+//import { CustomHeaderStyle } from './header-style';
+import { HeroHeader } from './header-style';
 
 interface AppLayoutInternals extends AppLayoutProps {
   activeDrawerId: string | null;
@@ -92,6 +93,11 @@ interface AppLayoutInternals extends AppLayoutProps {
   toolsControlId: string;
   toolsRefs: FocusControlRefs;
   __embeddedViewMode?: boolean;
+  heroHeader: boolean;
+}
+
+export interface HeroHeaderProps {
+  heroHeader: boolean;
 }
 
 /**
@@ -185,7 +191,9 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       { componentName: 'AppLayout', controlledProp: 'navigationOpen', changeHandler: 'onNavigationChange' }
     );
 
-    const [headerProps, setHeaderProps] = useState({});
+    //const [headerProps, setHeaderProps] = useState<{ headerBackground: string }>({ headerBackground: '' });
+    //const [heroHeaderProps, setHeroHeaderProps] = useState<{ heroHeader: boolean }>({ heroHeader: Boolean });
+    const [heroHeaderProps, setHeroHeaderProps] = useState<HeroHeaderProps>({ heroHeader: false });
 
     const { refs: navigationRefs, setFocus: focusNavButtons } = useFocusControl(isNavigationOpen);
 
@@ -201,6 +209,10 @@ export const AppLayoutInternalsProvider = React.forwardRef(
         handleNavigationClick(false);
       }
     }, [isMobile, handleNavigationClick]);
+
+    const handleHeroHeaderProps = (heroHeaderProps: HeroHeaderProps) => {
+      setHeroHeaderProps(heroHeaderProps);
+    };
 
     /**
      * The useControllable hook will set the default value and manage either
@@ -607,9 +619,10 @@ export const AppLayoutInternalsProvider = React.forwardRef(
         hasDrawers,
       ]
     );
-    console.log('Background is ' + headerProps.headerBackground);
+    //console.log('Background is ' + headerProps.headerBackground);
+    console.log('The passed prop is ' + heroHeaderProps.heroHeader);
     return (
-      <CustomHeaderStyle.Provider value={setHeaderProps}>
+      <HeroHeader.Provider value={{ handleHeroHeaderProps }}>
         <AppLayoutInternalsContext.Provider
           value={{
             ...props,
@@ -680,7 +693,8 @@ export const AppLayoutInternalsProvider = React.forwardRef(
             toolsOpen: isToolsOpen,
             toolsWidth,
             toolsRefs,
-            headerBackground: headerProps.headerBackground,
+            //headerBackground: headerProps.headerBackground,
+            heroHeader: heroHeaderProps.heroHeader,
             __embeddedViewMode,
           }}
         >
@@ -696,7 +710,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
             </DynamicOverlapContext.Provider>
           </AppLayoutContext.Provider>
         </AppLayoutInternalsContext.Provider>
-      </CustomHeaderStyle.Provider>
+      </HeroHeader.Provider>
     );
   }
 );

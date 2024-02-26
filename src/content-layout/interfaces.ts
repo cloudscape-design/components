@@ -24,6 +24,8 @@ export interface ContentLayoutProps extends BaseComponentProps {
   /**
    * New!
    */
+  heroHeader?: boolean;
+
   darkHeaderContext?: boolean;
 
   headerBackground?: string;

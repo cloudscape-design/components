@@ -10,7 +10,7 @@ import { useDynamicOverlap } from '../internal/hooks/use-dynamic-overlap';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
-import { useHeaderStyle } from '../app-layout/visual-refresh/header-style';
+import { useHeroHeader } from '../app-layout/visual-refresh/header-style';
 //import AppContext from '../app/app-context';
 
 type InternalContentLayoutProps = ContentLayoutProps & InternalBaseComponentProps;
@@ -18,9 +18,9 @@ type InternalContentLayoutProps = ContentLayoutProps & InternalBaseComponentProp
 export default function InternalContentLayout({
   children,
   disableOverlap,
+  heroHeader,
   header,
   __internalRootRef,
-  headerBackground,
   darkHeaderContext,
   ...rest
 }: InternalContentLayoutProps) {
@@ -29,15 +29,21 @@ export default function InternalContentLayout({
   const mergedRef = useMergeRefs(rootElement, __internalRootRef);
 
   const isVisualRefresh = useVisualRefresh();
+  //const isHeroHeader = heroHeader;
   const isDarkHeaderContext = darkHeaderContext;
   const overlapElement = useDynamicOverlap(); //this needs to be refactored
 
   const isOverlapDisabled = !children || disableOverlap;
-  const setHeaderProps = useHeaderStyle();
+  // const setHeaderProps = useHeaderStyle();
+  const { handleHeroHeaderProps } = useHeroHeader();
+
+  // useEffect(() => {
+  //   handleHeroHeaderProps({ headerBackground });
+  // });
 
   useEffect(() => {
-    setHeaderProps({ headerBackground });
-  });
+    heroHeader && handleHeroHeaderProps({ heroHeader });
+  }, [handleHeroHeaderProps, heroHeader]);
 
   return (
     <div
@@ -52,15 +58,13 @@ export default function InternalContentLayout({
       <div
         className={clsx(
           styles.background,
-          { [styles['is-overlap-disabled']]: isOverlapDisabled },
-          getContentHeaderClassName()
+          { [styles['is-overlap-disabled']]: isOverlapDisabled }
+          //getContentHeaderClassName()
         )}
         ref={overlapElement}
       />
 
-      {header && (
-        <div className={clsx(styles.header, !isDarkHeaderContext ? getContentHeaderClassName() : null)}>{header}</div>
-      )}
+      {header && <div className={clsx(styles.header, getContentHeaderClassName(isDarkHeaderContext))}>{header}</div>}
 
       <div className={styles.content}>{children}</div>
     </div>

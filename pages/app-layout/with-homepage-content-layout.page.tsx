@@ -50,7 +50,7 @@ function HeroHeader() {
   const selectOptions: SelectProps.Options = [{ value: 'First' }, { value: 'Second' }, { value: 'Third' }];
   const [selectedOption, setSelectedOption] = useState<SelectProps.Option>({ value: 'First' });
   return (
-    <div className={clsx(styles['custom-home__header'])}>
+    <div>
       <div className={clsx(styles['inner-header'])}>
         <Grid gridDefinition={[{ colspan: { default: 12, xs: 8 } }, { colspan: { default: 12, xs: 4 } }]}>
           <Box margin={{ top: 'xxl' }}>
@@ -147,7 +147,7 @@ function Tools({
 }: ToolsProps) {
   const [hasFlash, setFlash] = React.useState(true);
   const [hasStackedNotification, setStackedNotification] = React.useState(false);
-  const [hasBreadcrumb, setBreadcrumb] = React.useState(true);
+  const [hasBreadcrumb, setBreadcrumb] = React.useState(false);
   const [hasNesting, setNesting] = React.useState(true);
   const { urlParams, setUrlParams } = useContext(AppContext as any) as any;
   const [value, setColorOption] = React.useState('default');
@@ -743,7 +743,7 @@ export default function () {
 
   const [flashbarVisible, setFlashbarVisible] = React.useState(true);
   const [notificationsVisible, setNotificationsVisible] = React.useState(false);
-  const [breadcrumbVisible, setBreadcrumbVisible] = React.useState(true);
+  const [breadcrumbVisible, setBreadcrumbVisible] = React.useState(false);
   const [nestingVisible, setNestingVisible] = React.useState(true);
   const [colorOptionVisible, setColorOptionVisible] = React.useState('default');
 
@@ -800,6 +800,7 @@ export default function () {
             <ContentLayout
               header={<HeroHeader />}
               disableOverlap={false}
+              heroHeader={true}
               darkHeaderContext={false}
               headerBackground={
                 colorOptionVisible === 'default'
