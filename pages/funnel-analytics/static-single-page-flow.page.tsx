@@ -24,6 +24,7 @@ import { SelfDismissibleAlert, uriToConsoleUrl } from '../s3-resource-selector/s
 
 import { setFunnelMetrics } from '~components/internal/analytics';
 import { MockedFunnelMetrics } from './mock-funnel';
+import { getAnalyticsProps } from './metadata';
 
 setFunnelMetrics(MockedFunnelMetrics);
 
@@ -83,6 +84,10 @@ export default function StaticSinglePageCreatePage() {
       />
       {mounted && (
         <Form
+          {...getAnalyticsProps({
+            instanceId: 'single-page',
+            flowType: 'create',
+          })}
           errorText={errorText}
           actions={
             <SpaceBetween size="xs" direction="horizontal">
@@ -129,6 +134,9 @@ export default function StaticSinglePageCreatePage() {
                   Container 1 - header
                 </Header>
               }
+              {...getAnalyticsProps({
+                instanceId: 'container-1',
+              })}
             >
               <SpaceBetween size="s">
                 <FormField
@@ -156,6 +164,9 @@ export default function StaticSinglePageCreatePage() {
                   Container 2 - header
                 </Header>
               }
+              {...getAnalyticsProps({
+                instanceId: 'container-2',
+              })}
             >
               <FormField
                 info={

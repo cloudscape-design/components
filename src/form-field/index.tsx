@@ -4,12 +4,18 @@ import React from 'react';
 import InternalFormField from './internal';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
+import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
+
 import { FormFieldProps } from './interfaces';
 
 export { FormFieldProps };
 
 export default function FormField({ stretch = false, ...props }: FormFieldProps) {
-  const baseComponentProps = useBaseComponent('FormField', { props: { stretch } });
+  const baseComponentProps = useBaseComponent(
+    'FormField',
+    { props: { stretch } },
+    getAnalyticsMetadataProps(props as BasePropsWithAnalyticsMetadata)
+  );
   return <InternalFormField stretch={stretch} {...props} __hideLabel={false} {...baseComponentProps} />;
 }
 
