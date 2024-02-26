@@ -9,6 +9,7 @@ import '../../__a11y__/to-validate-a11y';
 import styles from '../../../lib/components/popover/styles.selectors.js';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
+import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
 
 jest.mock('../../../lib/components/popover/utils/positions', () => ({
   ...jest.requireActual('../../../lib/components/popover/utils/positions'),
@@ -339,5 +340,38 @@ describe('ARIA labels', () => {
     });
     wrapper.findTrigger().click();
     await expect(document.body).toValidateA11y();
+  });
+});
+
+describe('table grid navigation support', () => {
+  function getTrigger(selector?: string) {
+    return createWrapper().findPopover(selector)!.findTrigger()!.getElement();
+  }
+
+  test('does not override tab index when keyboard navigation is not active', () => {
+    renderWithSingleTabStopNavigation(<Popover>Trigger</Popover>, { navigationActive: false });
+    expect(getTrigger()).not.toHaveAttribute('tabIndex');
+  });
+
+  test('overrides tab index when keyboard navigation is active', () => {
+    const { setCurrentTarget } = renderWithSingleTabStopNavigation(
+      <div>
+        <Popover id="popover1">Trigger</Popover>
+        <Popover id="popover2">Trigger</Popover>
+      </div>
+    );
+    setCurrentTarget(getTrigger('#popover1'));
+    expect(getTrigger('#popover1')).toHaveAttribute('tabIndex', '0');
+    expect(getTrigger('#popover2')).toHaveAttribute('tabIndex', '-1');
+  });
+
+  test('does not override tab index for custom trigger', () => {
+    const { setCurrentTarget } = renderWithSingleTabStopNavigation(
+      <div>
+        <Popover triggerType="custom">Trigger</Popover>
+      </div>
+    );
+    setCurrentTarget(getTrigger());
+    expect(getTrigger()).not.toHaveAttribute('tabIndex');
   });
 });

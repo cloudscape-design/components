@@ -16,6 +16,7 @@ import {
   Icon,
   Input,
   Link,
+  Popover,
   RadioGroup,
   Select,
   SpaceBetween,
@@ -121,7 +122,16 @@ export default function Page() {
     {
       key: 'state',
       label: 'State',
-      render: (item: Instance) => <StatusIndicator {...stateToStatusIndicator[item.state]} />,
+      render: (item: Instance) => {
+        if (item.state === 'TERMINATED') {
+          return (
+            <Popover dismissButton={false} content="Terminated because ...">
+              <StatusIndicator {...stateToStatusIndicator[item.state]} />
+            </Popover>
+          );
+        }
+        return <StatusIndicator {...stateToStatusIndicator[item.state]} />;
+      },
     },
     {
       key: 'imageId',
