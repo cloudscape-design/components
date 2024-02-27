@@ -210,10 +210,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       }
     }, [isMobile, handleNavigationClick]);
 
-    const handleHeroHeaderProps = (heroHeaderProps: HeroHeaderProps) => {
-      setHeroHeaderProps(heroHeaderProps);
-    };
-
     /**
      * The useControllable hook will set the default value and manage either
      * the controlled or uncontrolled state of the Tools drawer. The logic
@@ -622,7 +618,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     //console.log('Background is ' + headerProps.headerBackground);
     //console.log('The passed prop is ' + heroHeaderProps.heroHeader);
     return (
-      <HeroHeader.Provider value={{ handleHeroHeaderProps }}>
+      <HeroHeader.Provider value={{ handleHeroHeaderProps: setHeroHeaderProps }}>
         <AppLayoutInternalsContext.Provider
           value={{
             ...props,
