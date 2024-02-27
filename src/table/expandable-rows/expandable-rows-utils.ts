@@ -54,17 +54,15 @@ export function getExpandableTableProps<T>({
     allItems = visibleItems;
   }
 
-  const getItemLevel = (item: T) => itemToLevel.get(item) ?? 1;
-
   const getExpandableItemProps = (item: T) => {
+    const isExpanded = getItemExpanded?.(item) ?? true;
     return {
-      level: getItemLevel(item),
+      level: itemToLevel.get(item) ?? 1,
       isExpandable: getItemExpandable?.(item) ?? true,
-      isExpanded: getItemExpanded?.(item) ?? true,
-      onExpandableItemToggle: (item: T, expanded: boolean) =>
-        fireNonCancelableEvent(onExpandableItemToggle, { item, expanded }),
+      isExpanded,
+      onExpandableItemToggle: () => fireNonCancelableEvent(onExpandableItemToggle, { item, expanded: !isExpanded }),
     };
   };
 
-  return { isExpandable, allItems, getItemLevel, getExpandableItemProps };
+  return { isExpandable, allItems, getExpandableItemProps };
 }

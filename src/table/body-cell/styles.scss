@@ -393,3 +393,37 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
     }
   }
 }
+
+.expandable-cell-content {
+  display: flex;
+  align-items: center;
+  gap: awsui.$space-xs;
+
+  &-level-1 {
+    padding-inline-start: 0px;
+  }
+  &-level-2 {
+    padding-inline-start: 20px;
+  }
+  &-level-3 {
+    padding-inline-start: 40px;
+  }
+  &-level-4 {
+    padding-inline-start: 60px;
+  }
+  &-level-5 {
+    padding-inline-start: 80px;
+  }
+  &-level-6 {
+    padding-inline-start: 100px;
+  }
+  &-level-7 {
+    padding-inline-start: 120px;
+  }
+  &-level-8 {
+    padding-inline-start: 140px;
+  }
+  &-level-9 {
+    padding-inline-start: 160px;
+  }
+}

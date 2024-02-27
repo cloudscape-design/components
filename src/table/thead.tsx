@@ -42,7 +42,6 @@ export interface TheadProps {
   focusedComponent?: null | string;
   onFocusedComponentChange?: (focusId: null | string) => void;
   tableRole: TableRole;
-  isExpandable?: boolean;
 }
 
 const Thead = React.forwardRef(
@@ -71,7 +70,6 @@ const Thead = React.forwardRef(
       onFocusedComponentChange,
       tableRole,
       resizerRoleDescription,
-      isExpandable,
     }: TheadProps,
     outerRef: React.Ref<HTMLTableRowElement>
   ) => {
@@ -96,9 +94,6 @@ const Thead = React.forwardRef(
 
     let colIndexOffset = 0;
     if (selectionType) {
-      colIndexOffset++;
-    }
-    if (isExpandable) {
       colIndexOffset++;
     }
 
@@ -140,21 +135,6 @@ const Thead = React.forwardRef(
                 <ScreenreaderOnly>{singleSelectionHeaderAriaLabel}</ScreenreaderOnly>
               )}
               <Divider className={styles['resize-divider']} />
-            </TableThElement>
-          ) : null}
-
-          {isExpandable ? (
-            <TableThElement
-              className={clsx(headerCellClass, selectionCellClass, hidden && headerCellStyles['header-cell-hidden'])}
-              style={{ width: '10px', minWidth: '10px', maxWidth: '10px', padding: '0px' }}
-              hidden={hidden}
-              tableRole={tableRole}
-              colIndex={colIndexOffset - 1}
-              columnId="expand-column-id"
-              stickyState={stickyState}
-              focusedComponent={focusedComponent}
-            >
-              {null}
             </TableThElement>
           ) : null}
 

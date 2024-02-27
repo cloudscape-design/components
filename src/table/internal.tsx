@@ -48,7 +48,6 @@ import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 import { NoDataCell } from './no-data-cell';
 import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
 import { getContentHeaderClassName } from '../internal/utils/content-header-utils';
-import { ExpandToggleButton } from './expandable-rows/expand-toggle-button';
 import { getExpandableTableProps } from './expandable-rows/expandable-rows-utils';
 
 const GRID_NAVIGATION_PAGE_SIZE = 10;
@@ -129,7 +128,7 @@ const InternalTable = React.forwardRef(
     stickyHeader = stickyHeader && supportsStickyPosition();
     const isMobile = useMobile();
 
-    const { isExpandable, allItems, getItemLevel, getExpandableItemProps } = getExpandableTableProps({
+    const { isExpandable, allItems, getExpandableItemProps } = getExpandableTableProps({
       items,
       getItemChildren,
       getItemExpandable,
@@ -275,7 +274,6 @@ const InternalTable = React.forwardRef(
       stickyState,
       selectionColumnId,
       tableRole,
-      isExpandable,
     };
 
     const wrapperRef = useMergeRefs(wrapperRefObject, stickyState.refs.wrapper);
@@ -305,9 +303,6 @@ const InternalTable = React.forwardRef(
 
     let colIndexOffset = 0;
     if (selectionType) {
-      colIndexOffset++;
-    }
-    if (isExpandable) {
       colIndexOffset++;
     }
     const totalColumnsCount = visibleColumnDefinitions.length + colIndexOffset;
@@ -500,41 +495,6 @@ const InternalTable = React.forwardRef(
                               </TableTdElement>
                             )}
 
-                            {isExpandable && (
-                              <TableTdElement
-                                className={clsx(styles['expand-cell'])}
-                                isVisualRefresh={isVisualRefresh}
-                                isFirstRow={firstVisible}
-                                isLastRow={lastVisible}
-                                isSelected={isSelected}
-                                isNextSelected={isNextSelected}
-                                isPrevSelected={isPrevSelected}
-                                wrapLines={true}
-                                isEvenRow={isEven}
-                                stripedRows={stripedRows}
-                                hasSelection={hasSelection}
-                                hasFooter={hasFooter}
-                                stickyState={stickyState}
-                                columnId="expand-column-id"
-                                colIndex={colIndexOffset - 1}
-                                tableRole={tableRole}
-                                level={expandableProps.level}
-                                isExpandCell={true}
-                              >
-                                {getItemExpandable?.(item) ? (
-                                  <ExpandToggleButton
-                                    isExpandable={expandableProps.isExpandable}
-                                    isExpanded={expandableProps.isExpanded}
-                                    onExpandableItemToggle={() =>
-                                      expandableProps.onExpandableItemToggle(item, !getItemExpanded?.(item))
-                                    }
-                                    expandButtonLabel={ariaLabels?.expandButtonLabel?.(item)}
-                                    collapseButtonLabel={ariaLabels?.collapseButtonLabel?.(item)}
-                                  />
-                                ) : null}
-                              </TableTdElement>
-                            )}
-
                             {visibleColumnDefinitions.map((column, colIndex) => {
                               const isEditing = cellEditing.checkEditing({ rowIndex, colIndex });
                               const successfulEdit = cellEditing.checkLastSuccessfulEdit({ rowIndex, colIndex });
@@ -577,9 +537,15 @@ const InternalTable = React.forwardRef(
                                   stickyState={stickyState}
                                   isVisualRefresh={isVisualRefresh}
                                   tableRole={tableRole}
-                                  level={getItemLevel ? getItemLevel(item) : 1}
-                                  isExpandCell={colIndex === 0}
-                                  isContentCell={true}
+                                  expandableProps={
+                                    isExpandable && colIndex === 0
+                                      ? {
+                                          ...expandableProps,
+                                          expandButtonLabel: ariaLabels?.expandButtonLabel?.(item),
+                                          collapseButtonLabel: ariaLabels?.collapseButtonLabel?.(item),
+                                        }
+                                      : undefined
+                                  }
                                 />
                               );
                             })}

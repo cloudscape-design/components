@@ -1,20 +1,18 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import clsx from 'clsx';
 import React, { useRef } from 'react';
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
 import styles from './styles.css.js';
 import InternalIcon from '../../icon/internal';
+import clsx from 'clsx';
 
 export function ExpandToggleButton({
-  isExpandable,
   isExpanded,
   onExpandableItemToggle,
   expandButtonLabel,
   collapseButtonLabel,
 }: {
-  isExpandable: boolean;
   isExpanded: boolean;
   onExpandableItemToggle: () => void;
   expandButtonLabel?: string;
@@ -27,10 +25,22 @@ export function ExpandToggleButton({
       ref={buttonRef}
       tabIndex={tabIndex}
       aria-label={isExpanded ? collapseButtonLabel : expandButtonLabel}
-      className={clsx(styles['expand-toggle'], !isExpandable && styles['expand-toggle-hidden'])}
+      className={styles['expand-toggle']}
       onClick={() => onExpandableItemToggle()}
     >
       {isExpanded ? <InternalIcon name="caret-down-filled" /> : <InternalIcon name="caret-right-filled" />}
+    </button>
+  );
+}
+
+export function ExpandTogglePlaceholder() {
+  return (
+    <button
+      disabled={true}
+      aria-hidden={true}
+      className={clsx(styles['expand-toggle'], styles['expand-toggle-hidden'])}
+    >
+      <InternalIcon name="caret-right-filled" />
     </button>
   );
 }

@@ -8,6 +8,7 @@ import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
 import { TableRole, getTableCellRoleProps } from '../table-role';
 import { useMergeRefs } from '../../internal/hooks/use-merge-refs/index.js';
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context.js';
+import { ExpandToggleButton, ExpandTogglePlaceholder } from '../expandable-rows/expand-toggle-button.js';
 
 export interface TableTdElementProps {
   className?: string;
@@ -36,9 +37,16 @@ export interface TableTdElementProps {
   stickyState: StickyColumnsModel;
   isVisualRefresh?: boolean;
   tableRole: TableRole;
-  level?: number;
-  isExpandCell?: boolean;
-  isContentCell?: boolean;
+  expandableProps?: ExpandableProps;
+}
+
+interface ExpandableProps {
+  level: number;
+  isExpandable: boolean;
+  isExpanded: boolean;
+  onExpandableItemToggle: () => void;
+  expandButtonLabel?: string;
+  collapseButtonLabel?: string;
 }
 
 export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElementProps>(
@@ -67,9 +75,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       colIndex,
       stickyState,
       tableRole,
-      level,
-      isExpandCell,
-      isContentCell,
+      expandableProps,
     },
     ref
   ) => {
@@ -113,28 +119,24 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
         {...nativeAttributes}
         tabIndex={cellTabIndex}
       >
-        <CellContent level={level} isExpandCell={isExpandCell} isContentCell={isContentCell}>
-          {children}
-        </CellContent>
+        <CellContent expandableProps={expandableProps}>{children}</CellContent>
       </Element>
     );
   }
 );
 
-function CellContent({
-  level,
-  isExpandCell,
-  isContentCell,
-  children,
-}: {
-  level?: number;
-  isExpandCell?: boolean;
-  isContentCell?: boolean;
-  children: React.ReactNode;
-}) {
-  return !level || !isExpandCell ? (
+function CellContent({ expandableProps, children }: { expandableProps?: ExpandableProps; children: React.ReactNode }) {
+  return !expandableProps ? (
     <>{children}</>
   ) : (
-    <div style={{ paddingLeft: `${(isContentCell ? 8 : 0) + 20 * (level - 1)}px` }}>{children}</div>
+    <div
+      className={clsx(
+        styles['expandable-cell-content'],
+        styles[`expandable-cell-content-level-${expandableProps.level}`]
+      )}
+    >
+      {expandableProps.isExpandable ? <ExpandToggleButton {...expandableProps} /> : <ExpandTogglePlaceholder />}
+      {children}
+    </div>
   );
 }

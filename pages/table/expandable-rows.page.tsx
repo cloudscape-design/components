@@ -38,6 +38,7 @@ type DemoContext = React.Context<
     stickyColumnsFirst: string;
     groupResources: boolean;
     keepSelection: boolean;
+    wrapLines: boolean;
   }>
 >;
 
@@ -73,6 +74,7 @@ export default () => {
       stickyColumnsFirst,
       groupResources = true,
       keepSelection,
+      wrapLines = true,
     },
     setUrlParams,
   } = useContext(AppContext as DemoContext);
@@ -369,6 +371,10 @@ export default () => {
                   >
                     Keep selection
                   </Checkbox>
+
+                  <Checkbox checked={wrapLines} onChange={event => setUrlParams({ wrapLines: event.detail.checked })}>
+                    Wrap lines
+                  </Checkbox>
                 </FormField>
 
                 <FormField label="Selection type">
@@ -415,7 +421,7 @@ export default () => {
               columnDefinitions={columnDefinitions}
               items={items}
               ariaLabels={ariaLabels}
-              wrapLines={true}
+              wrapLines={wrapLines}
               header={
                 <SpaceBetween size="m">
                   <Header
