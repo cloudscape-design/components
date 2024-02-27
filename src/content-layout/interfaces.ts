@@ -26,7 +26,13 @@ export interface ContentLayoutProps extends BaseComponentProps {
    */
   heroHeader?: boolean;
 
+  headerType?: ContentLayoutProps.HeaderType;
+
   darkHeaderContext?: boolean;
 
   headerBackground?: string;
+}
+
+export namespace ContentLayoutProps {
+  export type HeaderType = 'default' | 'hero';
 }

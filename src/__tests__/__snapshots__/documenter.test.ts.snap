@@ -5422,6 +5422,19 @@ If true, the overlap will be removed.",
       "type": "string",
     },
     Object {
+      "inlineType": Object {
+        "name": "ContentLayoutProps.HeaderType",
+        "type": "union",
+        "values": Array [
+          "default",
+          "hero",
+        ],
+      },
+      "name": "headerType",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "New!",
       "name": "heroHeader",
       "optional": true,
