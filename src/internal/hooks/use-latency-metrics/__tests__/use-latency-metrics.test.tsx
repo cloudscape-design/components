@@ -237,6 +237,6 @@ function TestComponent(props: {
   componentType?: 'spinner' | undefined;
 }) {
   const elementRef = useRef(null);
-  useLatencyMetrics(props.componentName, elementRef, props.instanceId, props.loading, props.componentType);
+  useLatencyMetrics({ instanceId: undefined, loading: undefined, ...props, elementRef });
   return <div ref={elementRef} />;
 }

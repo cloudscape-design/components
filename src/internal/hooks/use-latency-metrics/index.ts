@@ -25,6 +25,7 @@ export function useLatencyMetrics({
   const lifecycleId = useIdFallback();
 
   const loading = props.loading || componentType === 'spinner';
+  const loadingAtMount = useRef(loading);
 
   const loadingStartTime = useRef<undefined | number>(undefined);
   if (loading && loadingStartTime.current === undefined) {
@@ -35,6 +36,7 @@ export function useLatencyMetrics({
     if (!elementRef.current) {
       return;
     }
+    const loading = loadingAtMount.current;
 
     const timestamp = Date.now();
 
@@ -73,7 +75,7 @@ export function useLatencyMetrics({
         );
       }
     };
-  }, [componentName, componentType, elementRef, instanceId, lifecycleId, loading]);
+  }, [componentName, componentType, elementRef, instanceId, lifecycleId]);
 
   useEffectOnUpdate(() => {
     if (componentType === 'spinner') {
