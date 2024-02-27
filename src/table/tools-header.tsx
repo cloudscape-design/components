@@ -12,9 +12,10 @@ interface ToolsHeaderProps {
   filter?: React.ReactNode;
   pagination?: React.ReactNode;
   preferences?: React.ReactNode;
+  setLastUserAction?: (name: string) => void;
 }
 
-export default function ToolsHeader({ header, filter, pagination, preferences }: ToolsHeaderProps) {
+export default function ToolsHeader({ header, filter, pagination, preferences, setLastUserAction }: ToolsHeaderProps) {
   const [breakpoint, ref] = useContainerBreakpoints(['xs']);
   const isHeaderString = typeof header === 'string';
   const assignHeaderId = useContext(CollectionLabelContext).assignId;
@@ -29,10 +30,26 @@ export default function ToolsHeader({ header, filter, pagination, preferences }:
       {isHeaderString ? <span id={headingId}>{header}</span> : header}
       {hasTools && (
         <div ref={ref} className={clsx(styles.tools, isSmall && styles['tools-small'])}>
-          {filter && <div className={styles['tools-filtering']}>{filter}</div>}
+          {filter && (
+            <div
+              className={styles['tools-filtering']}
+              onClickCapture={() => setLastUserAction?.('filter')}
+              onKeyDownCapture={() => setLastUserAction?.('filter')}
+            >
+              {filter}
+            </div>
+          )}
           <div className={styles['tools-align-right']}>
-            {pagination && <div className={styles['tools-pagination']}>{pagination}</div>}
-            {preferences && <div className={styles['tools-preferences']}>{preferences}</div>}
+            {pagination && (
+              <div className={styles['tools-pagination']} onClickCapture={() => setLastUserAction?.('paginate')}>
+                {pagination}
+              </div>
+            )}
+            {preferences && (
+              <div className={styles['tools-preferences']} onClickCapture={() => setLastUserAction?.('preferences')}>
+                {preferences}
+              </div>
+            )}
           </div>
         </div>
       )}

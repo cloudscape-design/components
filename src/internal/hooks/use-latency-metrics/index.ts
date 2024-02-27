@@ -7,7 +7,13 @@ import { useEffectOnUpdate } from '../use-effect-on-update';
 import { isInViewport } from './is-in-viewport';
 import { metrics } from '../../analytics/metrics';
 
-interface UseLatencyMetricsProps {
+/*
+If the last user interaction is more than this time ago, it is not considered
+to be the cause of the current loading state.
+*/
+const USER_ACTION_TIME_LIMIT = 1_000;
+
+export interface UseLatencyMetricsProps {
   componentName: string;
   elementRef: React.RefObject<HTMLElement>;
   instanceId: string | undefined;
@@ -23,6 +29,8 @@ export function useLatencyMetrics({
   ...props
 }: UseLatencyMetricsProps) {
   const lifecycleId = useIdFallback();
+  const lastUserAction = useRef<{ name: string; time: number } | undefined>(undefined);
+  const capturedUserAction = useRef<string | undefined>(undefined);
 
   const loading = props.loading || componentType === 'spinner';
   const loadingAtMount = useRef(loading);
@@ -30,6 +38,12 @@ export function useLatencyMetrics({
   const loadingStartTime = useRef<undefined | number>(undefined);
   if (loading && loadingStartTime.current === undefined) {
     loadingStartTime.current = performance.now();
+
+    if (lastUserAction.current && lastUserAction.current.time > Date.now() - USER_ACTION_TIME_LIMIT) {
+      capturedUserAction.current = lastUserAction.current.name;
+    } else {
+      capturedUserAction.current = undefined;
+    }
   }
 
   useEffect(() => {
@@ -50,6 +64,7 @@ export function useLatencyMetrics({
           metadata: { instanceId },
           loading,
           loadingDuration: undefined,
+          userAction: capturedUserAction.current,
         },
         timestamp
       );
@@ -70,6 +85,7 @@ export function useLatencyMetrics({
             metadata: { instanceId },
             loading,
             loadingDuration,
+            userAction: capturedUserAction.current,
           },
           Date.now()
         );
@@ -92,6 +108,7 @@ export function useLatencyMetrics({
           metadata: { instanceId },
           loading,
           loadingDuration: undefined,
+          userAction: capturedUserAction.current,
         },
         Date.now()
       );
@@ -111,11 +128,16 @@ export function useLatencyMetrics({
           metadata: { instanceId },
           loading,
           loadingDuration,
+          userAction: capturedUserAction.current,
         },
         Date.now()
       );
     }
   }, [componentName, componentType, instanceId, lifecycleId, loading]);
+
+  return {
+    setLastUserAction: (name: string) => void (lastUserAction.current = { name, time: Date.now() }),
+  };
 }
 
 interface EventDetail {
@@ -126,6 +148,7 @@ interface EventDetail {
   metadata: { instanceId: string | undefined };
   loading: boolean;
   loadingDuration: number | undefined;
+  userAction: string | undefined;
 }
 
 function emitMetric(eventDetail: EventDetail, timestamp: number) {

@@ -1,12 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
-import { render } from '@testing-library/react';
-import { useLatencyMetrics } from '..';
+import { RefObject } from 'react';
+import { UseLatencyMetricsProps, useLatencyMetrics } from '..';
+import { renderHook } from '../../../../__tests__/render-hook';
+import { expectDetailInPanoramaCall, panorama } from '../../../utils/__tests__/panorama';
 
 jest.useFakeTimers();
-const panorama = jest.fn();
-(window as any).panorama = panorama;
 
 jest.mock('../is-in-viewport', () => ({
   isInViewport(element: Element, callback: (inViewport: boolean) => void) {
@@ -26,20 +25,33 @@ beforeEach(() => {
   elementIsInViewport = undefined;
 });
 
-const expectDetailInCall = (callNumber: number) =>
-  expect(JSON.parse(panorama.mock.calls[callNumber - 1][1].eventDetail));
+type RenderProps = Omit<UseLatencyMetricsProps, 'elementRef' | 'instanceId'> & Partial<UseLatencyMetricsProps>;
+
+function render(props: RenderProps) {
+  const ref: RefObject<HTMLElement> = { current: document.createElement('div') };
+
+  const { result, rerender, unmount } = renderHook(useLatencyMetrics, {
+    initialProps: { elementRef: ref, instanceId: undefined, ...props },
+  });
+
+  return {
+    setLastUserAction: (name: string) => result.current.setLastUserAction(name),
+    rerender: (props: RenderProps) => rerender({ elementRef: ref, instanceId: undefined, ...props }),
+    unmount,
+  };
+}
 
 describe('useLatencyMetrics', () => {
   describe("'mounted' event", () => {
     it('emits a metric when rendered', () => {
       elementIsInViewport = true;
 
-      render(<TestComponent componentName="MyComponent" />);
+      render({ componentName: 'MyComponent' });
       jest.runAllTimers();
 
       expect(panorama).toHaveBeenCalledTimes(1);
 
-      expectDetailInCall(1).toEqual(
+      expectDetailInPanoramaCall(1).toEqual(
         expect.objectContaining({
           componentName: 'MyComponent',
           inViewport: true,
@@ -54,11 +66,11 @@ describe('useLatencyMetrics', () => {
     it('includes the visibility of the element', () => {
       elementIsInViewport = false;
 
-      render(<TestComponent componentName="MyComponent" />);
+      render({ componentName: 'MyComponent' });
       jest.runAllTimers();
 
       expect(panorama).toHaveBeenCalledTimes(1);
-      expectDetailInCall(1).toEqual(
+      expectDetailInPanoramaCall(1).toEqual(
         expect.objectContaining({
           inViewport: false,
         })
@@ -66,11 +78,11 @@ describe('useLatencyMetrics', () => {
 
       elementIsInViewport = true;
 
-      render(<TestComponent componentName="MyComponent" />);
+      render({ componentName: 'MyComponent' });
       jest.runAllTimers();
 
       expect(panorama).toHaveBeenCalledTimes(2);
-      expectDetailInCall(2).toEqual(
+      expectDetailInPanoramaCall(2).toEqual(
         expect.objectContaining({
           inViewport: true,
         })
@@ -80,10 +92,10 @@ describe('useLatencyMetrics', () => {
     it('includes the loading state of the element', () => {
       elementIsInViewport = true;
 
-      render(<TestComponent componentName="MyComponent" loading={true} />);
+      render({ componentName: 'MyComponent', loading: true });
       jest.runAllTimers();
 
-      expectDetailInCall(1).toEqual(
+      expectDetailInPanoramaCall(1).toEqual(
         expect.objectContaining({
           loading: true,
         })
@@ -95,15 +107,15 @@ describe('useLatencyMetrics', () => {
     it("emits a 'loading-started' metric when the component enters a loading state", () => {
       elementIsInViewport = true;
 
-      const { rerender } = render(<TestComponent componentName="MyComponent" />);
+      const { rerender } = render({ componentName: 'MyComponent' });
       jest.runAllTimers();
 
-      rerender(<TestComponent componentName="MyComponent" loading={true} />);
+      rerender({ componentName: 'MyComponent', loading: true });
       jest.runAllTimers();
 
       expect(panorama).toHaveBeenCalledTimes(2);
 
-      expectDetailInCall(2).toEqual(
+      expectDetailInPanoramaCall(2).toEqual(
         expect.objectContaining({
           type: 'loading-started',
         })
@@ -113,10 +125,10 @@ describe('useLatencyMetrics', () => {
     it("does not emit a 'loading-started' metric if the component already mounted in a loading state", () => {
       elementIsInViewport = true;
 
-      const { rerender } = render(<TestComponent componentName="MyComponent" loading={true} />);
+      const { rerender } = render({ componentName: 'MyComponent', loading: true });
       jest.runAllTimers();
 
-      rerender(<TestComponent componentName="MyComponent" loading={true} />);
+      rerender({ componentName: 'MyComponent', loading: true });
       jest.runAllTimers();
 
       expect(panorama).toHaveBeenCalledTimes(1);
@@ -125,14 +137,14 @@ describe('useLatencyMetrics', () => {
     it("emits a 'loading-finished' metric when the component exits the loading state", () => {
       elementIsInViewport = true;
 
-      const { rerender } = render(<TestComponent componentName="MyComponent" loading={true} />);
+      const { rerender } = render({ componentName: 'MyComponent', loading: true });
       jest.runAllTimers();
 
-      rerender(<TestComponent componentName="MyComponent" loading={false} />);
+      rerender({ componentName: 'MyComponent', loading: false });
       jest.runAllTimers();
 
       expect(panorama).toHaveBeenCalledTimes(2);
-      expectDetailInCall(2).toEqual(
+      expectDetailInPanoramaCall(2).toEqual(
         expect.objectContaining({
           type: 'loading-finished',
         })
@@ -142,14 +154,14 @@ describe('useLatencyMetrics', () => {
     it("includes the duration of the loading state in the 'loading-finished' metric", () => {
       elementIsInViewport = true;
 
-      const { rerender } = render(<TestComponent componentName="MyComponent" loading={true} />);
+      const { rerender } = render({ componentName: 'MyComponent', loading: true });
       jest.advanceTimersByTime(3456);
 
-      rerender(<TestComponent componentName="MyComponent" loading={false} />);
+      rerender({ componentName: 'MyComponent', loading: false });
       jest.runAllTimers();
 
       expect(panorama).toHaveBeenCalledTimes(2);
-      expectDetailInCall(2).toEqual(
+      expectDetailInPanoramaCall(2).toEqual(
         expect.objectContaining({
           type: 'loading-finished',
           loadingDuration: 3456,
@@ -159,7 +171,7 @@ describe('useLatencyMetrics', () => {
 
     it("emits a 'loading-cancelled' metric if the component is unmounted while in a loading state", () => {
       elementIsInViewport = true;
-      const { unmount } = render(<TestComponent componentName="MyComponent" loading={true} />);
+      const { unmount } = render({ componentName: 'MyComponent', loading: true });
 
       jest.runAllTimers();
       expect(panorama).toHaveBeenCalledTimes(1);
@@ -169,7 +181,7 @@ describe('useLatencyMetrics', () => {
 
       expect(panorama).toHaveBeenCalledTimes(2);
 
-      expectDetailInCall(2).toEqual(
+      expectDetailInPanoramaCall(2).toEqual(
         expect.objectContaining({
           type: 'loading-cancelled',
         })
@@ -181,12 +193,12 @@ describe('useLatencyMetrics', () => {
     it('is always considered to be in loading state', () => {
       elementIsInViewport = true;
 
-      render(<TestComponent componentName="MyComponent" componentType="spinner" />);
+      render({ componentName: 'MyComponent', componentType: 'spinner' });
       jest.runAllTimers();
 
       expect(panorama).toHaveBeenCalledTimes(1);
 
-      expectDetailInCall(1).toEqual(
+      expectDetailInPanoramaCall(1).toEqual(
         expect.objectContaining({
           type: 'mounted',
           loading: true,
@@ -197,12 +209,12 @@ describe('useLatencyMetrics', () => {
     it("does not emit an additional 'loading-started' metric when the 'loading' prop is set", () => {
       elementIsInViewport = true;
 
-      const { rerender } = render(<TestComponent componentName="MyComponent" componentType="spinner" />);
+      const { rerender } = render({ componentName: 'MyComponent', componentType: 'spinner' });
       jest.runAllTimers();
 
       expect(panorama).toHaveBeenCalledTimes(1);
 
-      rerender(<TestComponent componentName="MyComponent" componentType="spinner" loading={true} />);
+      rerender({ componentName: 'MyComponent', componentType: 'spinner', loading: true });
       jest.runAllTimers();
 
       expect(panorama).toHaveBeenCalledTimes(1);
@@ -211,7 +223,7 @@ describe('useLatencyMetrics', () => {
     it("emits a 'loading-finished' metric when the component unmounts", () => {
       elementIsInViewport = true;
 
-      const { unmount } = render(<TestComponent componentName="MyComponent" componentType="spinner" />);
+      const { unmount } = render({ componentName: 'MyComponent', componentType: 'spinner' });
       jest.runAllTimers();
 
       expect(panorama).toHaveBeenCalledTimes(1);
@@ -221,22 +233,109 @@ describe('useLatencyMetrics', () => {
 
       expect(panorama).toHaveBeenCalledTimes(2);
 
-      expectDetailInCall(2).toEqual(
+      expectDetailInPanoramaCall(2).toEqual(
         expect.objectContaining({
           type: 'loading-finished',
         })
       );
     });
   });
-});
 
-function TestComponent(props: {
-  componentName: string;
-  instanceId?: string | undefined;
-  loading?: boolean | undefined;
-  componentType?: 'spinner' | undefined;
-}) {
-  const elementRef = useRef(null);
-  useLatencyMetrics({ instanceId: undefined, loading: undefined, ...props, elementRef });
-  return <div ref={elementRef} />;
-}
+  describe('Interactions', () => {
+    test('user actions should be recorded if they happened recently', () => {
+      elementIsInViewport = true;
+
+      const { setLastUserAction, rerender } = render({ componentName: 'MyComponent' });
+      jest.runAllTimers();
+
+      expect(panorama).toHaveBeenCalledTimes(1);
+      expectDetailInPanoramaCall(1).toEqual(
+        expect.not.objectContaining({
+          userAction: expect.any(String),
+        })
+      );
+
+      setLastUserAction('filter');
+      rerender({ componentName: 'MyComponent', loading: true });
+      jest.runAllTimers();
+
+      expect(panorama).toHaveBeenCalledTimes(2);
+
+      expectDetailInPanoramaCall(2).toEqual(
+        expect.objectContaining({
+          userAction: 'filter',
+        })
+      );
+    });
+
+    test('user actions should not be recorded if they happened a longer time ago', () => {
+      elementIsInViewport = true;
+
+      const { setLastUserAction, rerender } = render({ componentName: 'MyComponent' });
+      jest.runAllTimers();
+
+      setLastUserAction('filter');
+
+      jest.advanceTimersByTime(5000);
+
+      rerender({ componentName: 'MyComponent', loading: true });
+      jest.runAllTimers();
+
+      expect(panorama).toHaveBeenCalledTimes(2);
+
+      expectDetailInPanoramaCall(2).toEqual(
+        expect.not.objectContaining({
+          userAction: expect.any(String),
+        })
+      );
+    });
+
+    test('the loading-finished metric should show the same user action as the loading-started metric', () => {
+      elementIsInViewport = true;
+
+      const { setLastUserAction, rerender } = render({ componentName: 'MyComponent' });
+      jest.runAllTimers();
+
+      setLastUserAction('filter');
+      rerender({ componentName: 'MyComponent', loading: true });
+      jest.runAllTimers();
+
+      jest.advanceTimersByTime(5000);
+
+      rerender({ componentName: 'MyComponent', loading: false });
+      jest.runAllTimers();
+
+      expect(panorama).toHaveBeenCalledTimes(3);
+
+      expectDetailInPanoramaCall(3).toEqual(
+        expect.objectContaining({
+          userAction: 'filter',
+        })
+      );
+    });
+
+    test('the loading-cancelled metric should show the same user action as the loading-started metric', () => {
+      elementIsInViewport = true;
+
+      const { setLastUserAction, rerender, unmount } = render({ componentName: 'MyComponent' });
+      jest.runAllTimers();
+
+      setLastUserAction('filter');
+      rerender({ componentName: 'MyComponent', loading: true });
+      jest.runAllTimers();
+
+      jest.advanceTimersByTime(5000);
+
+      unmount();
+      jest.runAllTimers();
+
+      expect(panorama).toHaveBeenCalledTimes(3);
+
+      expectDetailInPanoramaCall(3).toEqual(
+        expect.objectContaining({
+          userAction: 'filter',
+        })
+      );
+    });
+  });
+});
