@@ -40,7 +40,6 @@ function DemoCodeEditor({
 
 export default function ThemesPage() {
   const [ace, setAce] = useState<any>();
-  console.log(ace);
 
   useEffect(() => {
     import('ace-builds').then(loadedAce => {
