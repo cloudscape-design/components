@@ -117,7 +117,7 @@ module.exports = {
       },
     },
     {
-      files: ['build-tools/integ/**', '**/__integ__/**', '**/__a11y__/**'],
+      files: ['build-tools/integ/**', '**/__integ__/**', '**/__a11y__/**', '**/__motion__/**'],
       rules: {
         // useBrowser is not a React hook
         'react-hooks/rules-of-hooks': 'off',
@@ -157,7 +157,7 @@ module.exports = {
     },
     {
       files: ['src/**'],
-      excludedFiles: ['src/**/__tests__/**', 'src/**/__integ__/**', 'src/**/__a11y__/**'],
+      excludedFiles: ['src/**/__tests__/**', 'src/**/__integ__/**', 'src/**/__a11y__/**', 'src/**/__motion__/**'],
       rules: {
         '@cloudscape-design/no-implicit-svg-focusable': 'error',
         '@cloudscape-design/prefer-live-region': 'warn',
@@ -258,6 +258,7 @@ module.exports = {
         'src/**/__tests__/**',
         'src/**/__integ__/**',
         'src/**/__a11y__/**',
+        'src/**/__motion__/**',
         'src/test-utils/**',
         'src/internal/vendor/**',
       ],

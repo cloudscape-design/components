@@ -23,6 +23,12 @@ export function renderMonthAndYear(locale: string, baseDate: Date): string {
   return result;
 }
 
+export function renderYear(locale: string, date: Date): string {
+  return date.toLocaleDateString(locale, {
+    year: 'numeric',
+  });
+}
+
 /*
  `toLocaleDateString` is expensive (10+ ms) to calculate in IE11.
 */

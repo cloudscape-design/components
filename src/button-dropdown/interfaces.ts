@@ -89,6 +89,7 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
   /**
    * A standalone action that is shown prior to the dropdown trigger.
    * Use it with "primary" and "normal" variant only.
+   *
    * Main action properties:
    * * `text` (string) - Specifies the text shown in the main action.
    * * `external` (boolean) - Marks the main action as external by adding an icon after the text. The link will open in a new tab when clicked. Note that this only works when `href` is also provided.

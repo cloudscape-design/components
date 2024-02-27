@@ -595,6 +595,7 @@ export type SpacingTokenName =
   | 'spaceButtonModalDismissVertical'
   | 'spaceCalendarGridFocusOutlineGutter'
   | 'spaceCalendarGridSelectedFocusOutlineGutter'
+  | 'spaceCalendarGridGutter'
   | 'spaceCardHorizontal'
   | 'spaceCardVertical'
   | 'spaceCodeEditorStatusFocusOutlineGutter'

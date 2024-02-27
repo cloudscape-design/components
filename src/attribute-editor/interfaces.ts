@@ -106,6 +106,7 @@ export interface AttributeEditorProps<T> extends BaseComponentProps {
 
   /**
    * Defines the editor configuration. Each object in the array represents one form field in the row.
+   *
    * * `label` (ReactNode) - Text label for the form field.
    * * `info` (ReactNode) - Info link for the form field.
    * * `errorText` ((item, itemIndex) => ReactNode) - Error message text to display as a control validation message.

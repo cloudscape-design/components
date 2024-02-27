@@ -6,7 +6,6 @@ import styles from './styles.css.js';
 import { DatePickerProps } from './interfaces';
 import InternalCalendar from '../calendar/internal';
 import { normalizeLocale } from '../internal/utils/locale';
-import { getDateLabel, renderMonthAndYear } from '../calendar/utils/intl';
 import { InputProps } from '../input/interfaces';
 import { KeyCode } from '../internal/keycode';
 import { fireNonCancelableEvent } from '../internal/events';
@@ -27,6 +26,7 @@ import { parseDate } from '../internal/utils/date-time';
 import LiveRegion from '../internal/components/live-region';
 import { useFormFieldContext } from '../contexts/form-field.js';
 import { useLocale } from '../i18n/context.js';
+import { getBaseDateLabel, getSelectedDateLabel, isValidFullDate } from './utils';
 
 export { DatePickerProps };
 
@@ -55,6 +55,7 @@ const DatePicker = React.forwardRef(
       invalid,
       openCalendarAriaLabel,
       expandToViewport,
+      granularity = 'day',
       ...restProps
     }: DatePickerProps,
     ref: Ref<DatePickerProps.Ref>
@@ -110,6 +111,16 @@ const DatePicker = React.forwardRef(
     const parsedValue = value && value.length >= 4 ? parseDate(value) : null;
     const baseDate = parsedValue || new Date();
 
+    const hasFullValue = isValidFullDate({ date: value, granularity });
+
+    const buttonAriaLabel =
+      openCalendarAriaLabel &&
+      openCalendarAriaLabel(
+        hasFullValue && parsedValue
+          ? getSelectedDateLabel({ date: parsedValue, granularity, locale: normalizedLocale })
+          : null
+      );
+
     const trigger = (
       <div className={styles['date-picker-trigger']}>
         <div className={styles['date-picker-input']}>
@@ -130,6 +141,7 @@ const DatePicker = React.forwardRef(
             ref={internalInputRef}
             autoFocus={autoFocus}
             onFocus={onDropdownCloseHandler}
+            granularity={granularity}
           />
         </div>
         <div>
@@ -138,10 +150,7 @@ const DatePicker = React.forwardRef(
             className={styles['open-calendar-button']}
             onClick={onButtonClickHandler}
             ref={buttonRef}
-            ariaLabel={
-              openCalendarAriaLabel &&
-              openCalendarAriaLabel(value.length === 10 ? getDateLabel(normalizedLocale, parsedValue!) : null)
-            }
+            ariaLabel={buttonAriaLabel}
             disabled={disabled || readOnly}
             formAction="none"
           />
@@ -187,14 +196,18 @@ const DatePicker = React.forwardRef(
                     ariaDescribedby={calendarDescriptionId}
                     ariaLabel={ariaLabel}
                     ariaLabelledby={ariaLabelledby}
+                    granularity={granularity}
                     isDateEnabled={isDateEnabled}
                     i18nStrings={{
-                      todayAriaLabel: i18nStrings?.todayAriaLabel || todayAriaLabel,
-                      nextMonthAriaLabel: i18nStrings?.nextMonthAriaLabel || nextMonthAriaLabel,
-                      previousMonthAriaLabel: i18nStrings?.previousMonthAriaLabel || previousMonthAriaLabel,
+                      ...i18nStrings,
+                      todayAriaLabel: i18nStrings?.todayAriaLabel ?? todayAriaLabel,
+                      nextMonthAriaLabel: i18nStrings?.nextMonthAriaLabel ?? nextMonthAriaLabel,
+                      previousMonthAriaLabel: i18nStrings?.previousMonthAriaLabel ?? previousMonthAriaLabel,
                     }}
                   />
-                  <LiveRegion id={calendarDescriptionId}>{renderMonthAndYear(normalizedLocale, baseDate)}</LiveRegion>
+                  <LiveRegion id={calendarDescriptionId}>
+                    {getBaseDateLabel({ date: baseDate, granularity, locale: normalizedLocale })}
+                  </LiveRegion>
                 </div>
               </FocusLock>
             )}

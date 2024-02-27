@@ -2,14 +2,24 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
-import { isSameMonth } from 'date-fns';
+import { isSameMonth, isSameYear } from 'date-fns';
 import { CalendarProps } from '../interfaces';
-import { moveNextDay, movePrevDay, moveNextWeek, movePrevWeek } from '../utils/navigation';
+import {
+  moveNextDay,
+  movePrevDay,
+  moveNextWeek,
+  movePrevWeek,
+  moveNextMonth,
+  movePrevMonth,
+  moveMonthDown,
+  moveMonthUp,
+} from '../utils/navigation';
 import { KeyCode } from '../../internal/keycode';
 
 export default function useCalendarGridKeyboardNavigation({
   baseDate,
   focusableDate,
+  granularity,
   isDateEnabled,
   onChangePage,
   onFocusDate,
@@ -17,11 +27,21 @@ export default function useCalendarGridKeyboardNavigation({
 }: {
   baseDate: Date;
   focusableDate: Date | null;
+  granularity: CalendarProps.Granularity;
   isDateEnabled: CalendarProps.IsDateEnabledFunction;
   onChangePage: (date: Date) => void;
   onFocusDate: (date: null | Date) => void;
   onSelectDate: (date: Date) => void;
 }) {
+  const isMonthPicker = granularity === 'month';
+
+  const moveDown = isMonthPicker ? moveMonthDown : moveNextWeek;
+  const moveLeft = isMonthPicker ? movePrevMonth : movePrevDay;
+  const moveRight = isMonthPicker ? moveNextMonth : moveNextDay;
+  const moveUp = isMonthPicker ? moveMonthUp : movePrevWeek;
+
+  const isSamePage = isMonthPicker ? isSameYear : isSameMonth;
+
   const onGridKeyDownHandler = (event: React.KeyboardEvent) => {
     let updatedFocusDate;
 
@@ -40,25 +60,25 @@ export default function useCalendarGridKeyboardNavigation({
         return;
       case KeyCode.right:
         event.preventDefault();
-        updatedFocusDate = moveNextDay(focusableDate, isDateEnabled);
+        updatedFocusDate = moveRight(focusableDate, isDateEnabled);
         break;
       case KeyCode.left:
         event.preventDefault();
-        updatedFocusDate = movePrevDay(focusableDate, isDateEnabled);
+        updatedFocusDate = moveLeft(focusableDate, isDateEnabled);
         break;
       case KeyCode.up:
         event.preventDefault();
-        updatedFocusDate = movePrevWeek(focusableDate, isDateEnabled);
+        updatedFocusDate = moveUp(focusableDate, isDateEnabled);
         break;
       case KeyCode.down:
         event.preventDefault();
-        updatedFocusDate = moveNextWeek(focusableDate, isDateEnabled);
+        updatedFocusDate = moveDown(focusableDate, isDateEnabled);
         break;
       default:
         return;
     }
 
-    if (!isSameMonth(updatedFocusDate, baseDate)) {
+    if (!isSamePage(updatedFocusDate, baseDate)) {
       onChangePage(updatedFocusDate);
     }
     onFocusDate(updatedFocusDate);
