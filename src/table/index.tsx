@@ -6,6 +6,7 @@ import { applyDisplayName } from '../internal/utils/apply-display-name';
 import InternalTable, { InternalTableAsSubstep } from './internal';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
+import { useLatencyMetrics } from '../internal/hooks/use-latency-metrics';
 
 export { TableProps };
 const Table = React.forwardRef(
@@ -35,6 +36,14 @@ const Table = React.forwardRef(
       ...baseComponentProps,
       ref,
     };
+
+    useLatencyMetrics({
+      componentName: 'Table',
+      elementRef: baseComponentProps.__internalRootRef,
+      loading: props.loading,
+      // TODO: Add the instanceId when it becomes available.
+      instanceId: undefined,
+    });
 
     if (variant === 'borderless' || variant === 'embedded') {
       return <InternalTable {...tableProps} />;

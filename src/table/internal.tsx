@@ -19,7 +19,6 @@ import { ColumnWidthDefinition, ColumnWidthsProvider, DEFAULT_COLUMN_WIDTH } fro
 import { useScrollSync } from '../internal/hooks/use-scroll-sync';
 import { ResizeTracker } from './resizer';
 import styles from './styles.css.js';
-import headerStyles from '../header/styles.css.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import StickyHeader, { StickyHeaderRef } from './sticky-header';
@@ -46,7 +45,6 @@ import { LinkDefaultVariantContext } from '../internal/context/link-default-vari
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
 import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 import { NoDataCell } from './no-data-cell';
-import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
 import { getContentHeaderClassName } from '../internal/utils/content-header-utils';
 
 const GRID_NAVIGATION_PAGE_SIZE = 10;
@@ -135,23 +133,6 @@ const InternalTable = React.forwardRef(
     const stickyHeaderRef = React.useRef<StickyHeaderRef>(null);
     const scrollbarRef = React.useRef<HTMLDivElement>(null);
     const { cancelEdit, ...cellEditing } = useCellEditing({ onCancel: onEditCancel, onSubmit: submitEdit });
-
-    usePerformanceMarks(
-      'table',
-      true,
-      tableRefObject,
-      () => {
-        const headerText =
-          toolsHeaderWrapper.current?.querySelector<HTMLElement>(`.${headerStyles['heading-text']}`)?.innerText ??
-          toolsHeaderWrapper.current?.innerText;
-
-        return {
-          loading: loading ?? false,
-          header: headerText,
-        };
-      },
-      [loading]
-    );
 
     useImperativeHandle(
       ref,

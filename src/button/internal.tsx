@@ -21,7 +21,6 @@ import {
 } from '../internal/analytics/selectors';
 import { FunnelMetrics } from '../internal/analytics';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
 import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
 
 export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
@@ -85,18 +84,6 @@ export const InternalButton = React.forwardRef(
     const { funnelInteractionId } = useFunnel();
     const { stepNumber, stepNameSelector } = useFunnelStep();
     const { subStepSelector, subStepNameSelector } = useFunnelSubStep();
-
-    usePerformanceMarks(
-      'primaryButton',
-      variant === 'primary',
-      buttonRef,
-      () => ({
-        loading,
-        disabled,
-        text: buttonRef.current?.innerText,
-      }),
-      [loading, disabled]
-    );
 
     const handleClick = (event: React.MouseEvent) => {
       if (isNotInteractive) {
