@@ -37,6 +37,7 @@ interface TableHeaderCellProps<ItemType> {
   focusedComponent?: null | string;
   tableRole: TableRole;
   resizerRoleDescription?: string;
+  isExpandable?: boolean;
 }
 
 export function TableHeaderCell<ItemType>({
@@ -61,6 +62,7 @@ export function TableHeaderCell<ItemType>({
   cellRef,
   tableRole,
   resizerRoleDescription,
+  isExpandable,
 }: TableHeaderCellProps<ItemType>) {
   const i18n = useInternalI18n('table');
   const sortable = !!column.sortingComparator || !!column.sortingField;
@@ -107,6 +109,7 @@ export function TableHeaderCell<ItemType>({
         data-focus-id={`sorting-control-${String(columnId)}`}
         className={clsx(styles['header-cell-content'], {
           [styles['header-cell-fake-focus']]: focusedComponent === `sorting-control-${String(columnId)}`,
+          [styles['header-cell-content-expandable']]: isExpandable,
         })}
         aria-label={
           column.ariaLabel

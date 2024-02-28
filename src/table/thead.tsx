@@ -42,6 +42,7 @@ export interface TheadProps {
   focusedComponent?: null | string;
   onFocusedComponentChange?: (focusId: null | string) => void;
   tableRole: TableRole;
+  isExpandable?: boolean;
 }
 
 const Thead = React.forwardRef(
@@ -70,6 +71,7 @@ const Thead = React.forwardRef(
       onFocusedComponentChange,
       tableRole,
       resizerRoleDescription,
+      isExpandable,
     }: TheadProps,
     outerRef: React.Ref<HTMLTableRowElement>
   ) => {
@@ -164,6 +166,7 @@ const Thead = React.forwardRef(
                 cellRef={node => setCell(sticky, columnId, node)}
                 tableRole={tableRole}
                 resizerRoleDescription={resizerRoleDescription}
+                isExpandable={colIndex === 0 && isExpandable}
               />
             );
           })}

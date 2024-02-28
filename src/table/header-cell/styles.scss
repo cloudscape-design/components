@@ -118,6 +118,10 @@
       color: awsui.$color-text-interactive-disabled;
     }
   }
+
+  &-expandable {
+    padding-inline-start: calc(#{awsui.$space-s} + 26px);
+  }
 }
 
 .header-cell-sortable:not(.header-cell-disabled) {

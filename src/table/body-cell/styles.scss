@@ -397,7 +397,8 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
 .expandable-cell-content {
   display: flex;
   align-items: center;
-  gap: awsui.$space-xs;
+  gap: awsui.$space-xxs;
+  margin-inline-start: calc(-1 * #{awsui.$space-xs});
 
   &-level-1 {
     padding-inline-start: 0px;
