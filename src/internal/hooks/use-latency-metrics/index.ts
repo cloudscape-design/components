@@ -7,7 +7,13 @@ import { useEffectOnUpdate } from '../use-effect-on-update';
 import { isInViewport } from './is-in-viewport';
 import { metrics } from '../../analytics/metrics';
 
-interface UseLatencyMetricsProps {
+/*
+If the last user interaction is more than this time ago, it is not considered
+to be the cause of the current loading state.
+*/
+const USER_ACTION_TIME_LIMIT = 1_000;
+
+export interface UseLatencyMetricsProps {
   componentName: string;
   elementRef: React.RefObject<HTMLElement>;
   instanceId: string | undefined;
@@ -23,13 +29,21 @@ export function useLatencyMetrics({
   ...props
 }: UseLatencyMetricsProps) {
   const lifecycleId = useIdFallback();
+  const lastUserAction = useRef<{ name: string; time: number } | null>(null);
+  const capturedUserAction = useRef<string | null>(null);
 
   const loading = props.loading || componentType === 'spinner';
   const loadingAtMount = useRef(loading);
 
-  const loadingStartTime = useRef<undefined | number>(undefined);
-  if (loading && loadingStartTime.current === undefined) {
+  const loadingStartTime = useRef<number | null>(null);
+  if (loading && loadingStartTime.current === null) {
     loadingStartTime.current = performance.now();
+
+    if (lastUserAction.current && lastUserAction.current.time > performance.now() - USER_ACTION_TIME_LIMIT) {
+      capturedUserAction.current = lastUserAction.current.name;
+    } else {
+      capturedUserAction.current = null;
+    }
   }
 
   useEffect(() => {
@@ -47,9 +61,10 @@ export function useLatencyMetrics({
           lifecycleId,
           componentName,
           inViewport,
-          metadata: { instanceId },
+          metadata: { instanceId: instanceId ?? null },
           loading,
-          loadingDuration: undefined,
+          loadingDuration: null,
+          userAction: capturedUserAction.current,
         },
         timestamp
       );
@@ -58,7 +73,7 @@ export function useLatencyMetrics({
     return () => {
       cleanup();
 
-      if (loadingStartTime.current !== undefined) {
+      if (loadingStartTime.current !== null) {
         const loadingDuration = performance.now() - loadingStartTime.current;
 
         emitMetric(
@@ -66,10 +81,11 @@ export function useLatencyMetrics({
             type: componentType === 'spinner' ? 'loading-finished' : 'loading-cancelled',
             lifecycleId,
             componentName,
-            inViewport: undefined,
-            metadata: { instanceId },
+            inViewport: null,
+            metadata: { instanceId: instanceId ?? null },
             loading,
             loadingDuration,
+            userAction: capturedUserAction.current,
           },
           Date.now()
         );
@@ -88,44 +104,51 @@ export function useLatencyMetrics({
           type: 'loading-started',
           lifecycleId,
           componentName,
-          inViewport: undefined,
-          metadata: { instanceId },
+          inViewport: null,
+          metadata: { instanceId: instanceId ?? null },
           loading,
-          loadingDuration: undefined,
+          loadingDuration: null,
+          userAction: capturedUserAction.current,
         },
         Date.now()
       );
     } else {
-      if (loadingStartTime.current === undefined) {
+      if (loadingStartTime.current === null) {
         return;
       }
       const loadingDuration = performance.now() - loadingStartTime.current;
-      loadingStartTime.current = undefined;
+      loadingStartTime.current = null;
 
       emitMetric(
         {
           type: 'loading-finished',
           lifecycleId,
           componentName,
-          inViewport: undefined,
-          metadata: { instanceId },
+          inViewport: null,
+          metadata: { instanceId: instanceId ?? null },
           loading,
           loadingDuration,
+          userAction: capturedUserAction.current,
         },
         Date.now()
       );
     }
   }, [componentName, componentType, instanceId, lifecycleId, loading]);
+
+  return {
+    setLastUserAction: (name: string) => void (lastUserAction.current = { name, time: performance.now() }),
+  };
 }
 
 interface EventDetail {
   type: 'mounted' | 'loading-started' | 'loading-finished' | 'loading-cancelled';
   lifecycleId: string;
   componentName: string;
-  inViewport: boolean | undefined;
-  metadata: { instanceId: string | undefined };
+  inViewport: boolean | null;
+  metadata: { instanceId: string | null };
   loading: boolean;
-  loadingDuration: number | undefined;
+  loadingDuration: number | null;
+  userAction: string | null;
 }
 
 function emitMetric(eventDetail: EventDetail, timestamp: number) {
