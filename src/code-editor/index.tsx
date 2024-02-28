@@ -45,8 +45,6 @@ import {
 export { CodeEditorProps };
 
 const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditorProps.Ref>) => {
-  const { __internalRootRef } = useBaseComponent('CodeEditor');
-  const { controlId, ariaLabelledby, ariaDescribedby } = useFormFieldContext(props);
   const {
     ace,
     value,
@@ -61,6 +59,8 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
     themes,
     ...rest
   } = props;
+  const { __internalRootRef } = useBaseComponent('CodeEditor', { props: { language } });
+  const { controlId, ariaLabelledby, ariaDescribedby } = useFormFieldContext(props);
   const [editorHeight = 480, setEditorHeight] = useControllable(editorContentHeight, onEditorContentResize, 480, {
     componentName: 'code-editor',
     changeHandler: 'onEditorContentResize',
