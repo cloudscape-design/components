@@ -96,7 +96,8 @@ The package contains three types of tests:
 
 - **Build-tool tests** test the build-tools code in a NodeJS context.
 - **Unit tests** emulate a browser environment using JSDOM.
-- **Integration tests** test against real browser behavior on Chrome.
+- **Integration tests** test against real browser behavior on Chrome, with motion disabled.
+- **Motion tests** run a specific set of tests on Chrome, with motion enabled.
 
 #### Run all tests:
 
@@ -128,6 +129,21 @@ npm start
 npm run test:integ
 ```
 
+#### Run motion tests:
+
+As in integration tests, make sure you have ChromeDriver installed and start the dev server:
+
+```
+npm i -g chromedriver
+npm start
+```
+
+Then, run the motion tests in a separate terminal:
+
+```
+npm test:motion
+```
+
 #### Run a single test suite
 
 To run a single test suite, you can call Jest directly using the appropriate config:
@@ -138,6 +154,9 @@ npx jest -c jest.unit.config.js src/button/__tests__/button.test.tsx
 
 # Run all input integration tests
 npx jest -c jest.integ.config.js src/input
+
+# Run motion tests for the flashbar component
+npx jest -c jest.motion.config.js src/flashbar
 
 # Test all stylelint rules
 npx jest -c jest.build-tools.config.js build-tools/stylelint
@@ -202,6 +221,7 @@ After the test is done, you can find a report in `backstop/html_report/index.htm
 │   ├── <component-dir>
 │   │   ├── __tests__           - jest unit tests
 │   │   ├── __integ__           - jest integration tests
+│   │   ├── __motion__          - jest motion tests
 │   │   ├── index.tsx           - main component file (imports other files and styles)
 │   │   └── styles.scss         - main SCSS file
 |   │

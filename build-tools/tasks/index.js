@@ -16,6 +16,7 @@ module.exports = {
   a11y: require('./a11y'),
   generateI18nMessages: require('./generate-i18n-messages'),
   integ: require('./integ'),
+  motion: require('./motion'),
   licenses: require('./licenses'),
   themeableSource: require('./themeable-source'),
   bundleVendorFiles: require('./bundle-vendor-files'),

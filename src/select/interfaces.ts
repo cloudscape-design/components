@@ -51,6 +51,7 @@ export interface BaseSelectProps
   options?: SelectProps.Options;
   /**
    * Determines how filtering is applied to the list of `options`:
+   *
    * * `auto` - The component will automatically filter options based on user input.
    * * `manual` - You will set up `onChange` or `onLoadItems` event listeners and filter options on your side or request
    * them from server.

@@ -21,7 +21,6 @@ import {
 } from '../internal/analytics/selectors';
 import { FunnelMetrics } from '../internal/analytics';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
 import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
 
 export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
@@ -31,7 +30,7 @@ export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
     | (React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>)
     | Record<`data-${string}`, string>;
   __iconClass?: string;
-  __activated?: boolean;
+  __focusable?: boolean;
 } & InternalBaseComponentProps<HTMLAnchorElement | HTMLButtonElement>;
 
 export const InternalButton = React.forwardRef(
@@ -64,7 +63,7 @@ export const InternalButton = React.forwardRef(
       badge,
       __nativeAttributes,
       __internalRootRef = null,
-      __activated = false,
+      __focusable = false,
       ...props
     }: InternalButtonProps,
     ref: React.Ref<ButtonProps.Ref>
@@ -72,6 +71,7 @@ export const InternalButton = React.forwardRef(
     checkSafeUrl('Button', href);
     const isAnchor = Boolean(href);
     const isNotInteractive = loading || disabled;
+    const hasAriaDisabled = (loading && !disabled) || (disabled && __focusable);
     const shouldHaveContent =
       children && ['icon', 'inline-icon', 'flashbar-icon', 'modal-dismiss'].indexOf(variant) === -1;
 
@@ -84,18 +84,6 @@ export const InternalButton = React.forwardRef(
     const { funnelInteractionId } = useFunnel();
     const { stepNumber, stepNameSelector } = useFunnelStep();
     const { subStepSelector, subStepNameSelector } = useFunnelSubStep();
-
-    usePerformanceMarks(
-      'primaryButton',
-      variant === 'primary',
-      buttonRef,
-      () => ({
-        loading,
-        disabled,
-        text: buttonRef.current?.innerText,
-      }),
-      [loading, disabled]
-    );
 
     const handleClick = (event: React.MouseEvent) => {
       if (isNotInteractive) {
@@ -132,7 +120,6 @@ export const InternalButton = React.forwardRef(
       [styles.disabled]: isNotInteractive,
       [styles['button-no-wrap']]: !wrapText,
       [styles['button-no-text']]: !shouldHaveContent,
-      [styles['is-activated']]: __activated,
       [styles['full-width']]: shouldHaveContent && fullWidth,
     });
 
@@ -215,8 +202,8 @@ export const InternalButton = React.forwardRef(
         <button
           {...buttonProps}
           type={formAction === 'none' ? 'button' : 'submit'}
-          disabled={disabled}
-          aria-disabled={loading && !disabled ? true : undefined}
+          disabled={disabled && !__focusable}
+          aria-disabled={hasAriaDisabled ? true : undefined}
         >
           {buttonContent}
         </button>

@@ -2,9 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef, useState } from 'react';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
-import { BetaDrawersProps } from '../drawer/interfaces';
 import { useControllable } from '../../internal/hooks/use-controllable';
-import { fireNonCancelableEvent, NonCancelableCustomEvent } from '../../internal/events';
+import { fireNonCancelableEvent } from '../../internal/events';
 import { awsuiPluginsInternal } from '../../internal/plugins/api';
 import { sortByPriority } from '../../internal/plugins/helpers/utils';
 import { convertRuntimeDrawers, DrawersLayout } from '../runtime-api';
@@ -76,34 +75,6 @@ function useRuntimeDrawers(
   return runtimeDrawers;
 }
 
-function isBetaDrawers(drawers: unknown): drawers is BetaDrawersProps {
-  return typeof drawers === 'object' && !!drawers && !Array.isArray(drawers) && 'items' in drawers;
-}
-
-function convertBetaApi(drawers: BetaDrawersProps, ariaLabels: AppLayoutProps['ariaLabels']) {
-  return {
-    drawers: drawers.items.map(
-      (betaDrawer): AppLayoutProps.Drawer => ({
-        ...betaDrawer,
-        ariaLabels: { drawerName: betaDrawer.ariaLabels?.content ?? '', ...betaDrawer.ariaLabels },
-        onResize: event => {
-          fireNonCancelableEvent(betaDrawer.onResize, { size: event.detail.size, id: betaDrawer.id });
-          fireNonCancelableEvent(drawers.onResize, { size: event.detail.size, id: betaDrawer.id });
-        },
-      })
-    ),
-    controlledActiveDrawerId: drawers.activeDrawerId,
-    onDrawerChange: (event: NonCancelableCustomEvent<AppLayoutProps.DrawerChangeDetail>) =>
-      fireNonCancelableEvent(drawers.onChange, event.detail.activeDrawerId),
-    ariaLabels: {
-      ...ariaLabels,
-      drawers: drawers.ariaLabel,
-      drawersOverflow: drawers.overflowAriaLabel,
-      drawersOverflowWithBadge: drawers.overflowWithBadgeAriaLabel,
-    },
-  };
-}
-
 function applyToolsDrawer(toolsProps: ToolsProps, runtimeDrawers: DrawersLayout) {
   const drawers = [...runtimeDrawers.before, ...runtimeDrawers.after];
   if (drawers.length === 0) {
@@ -131,10 +102,6 @@ export function useDrawers(
   ariaLabels: AppLayoutProps['ariaLabels'],
   toolsProps: ToolsProps
 ) {
-  if (isBetaDrawers(drawers)) {
-    ({ drawers, controlledActiveDrawerId, onDrawerChange, ariaLabels } = convertBetaApi(drawers, ariaLabels));
-  }
-
   const [activeDrawerId = null, setActiveDrawerId] = useControllable(controlledActiveDrawerId, onDrawerChange, null, {
     componentName: 'AppLayout',
     controlledProp: 'activeDrawerId',

@@ -2,7 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import { PropertyFilterProps } from '~components/property-filter';
 import { states, TableItem } from './table.data';
-import { DateForm, DateTimeForm, formatDateTime, YesNoForm, yesNoFormat } from './custom-forms';
+import {
+  DateForm,
+  DateTimeForm,
+  formatDateTime,
+  formatOwners,
+  OwnerMultiSelectForm,
+  YesNoForm,
+  yesNoFormat,
+} from './custom-forms';
 
 const getStateLabel = (value: TableItem['state']) => (value !== undefined && states[value]) || 'Unknown';
 
@@ -205,6 +213,18 @@ export const filteringProperties: readonly PropertyFilterProps.FilteringProperty
         form: YesNoForm,
         format: yesNoFormat,
         match: (itemValue: boolean, tokenValue: boolean) => itemValue === tokenValue,
+      },
+    ];
+  }
+
+  // This is not recommended as it nests
+  if (def.id === 'owner') {
+    operators = [
+      {
+        operator: '=',
+        form: OwnerMultiSelectForm,
+        format: formatOwners,
+        match: (itemValue: string, tokenValue: string[]) => tokenValue.some(value => itemValue === value),
       },
     ];
   }

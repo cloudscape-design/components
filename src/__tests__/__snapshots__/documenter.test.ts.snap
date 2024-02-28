@@ -794,9 +794,7 @@ By default, the preference is \`{ position: 'bottom' }\`
     },
     Object {
       "description": "If true, the notification slot is rendered above the scrollable
-content area so it is always visible.
-Note that sticky notifications are not supported in Internet Explorer.
-",
+content area so it is always visible.",
       "name": "stickyNotifications",
       "optional": true,
       "type": "boolean",
@@ -1367,6 +1365,7 @@ The event \`detail\` contains the index of the corresponding item.",
    It renders the form field as invalid if the returned value is not \`null\` or \`undefined\`.
 * \`constraintText\` ((item, itemIndex) => ReactNode) - Text to display as a constraint message below the field.
 * \`control\` ((item, itemIndex) => ReactNode) - A control to use as the input for the field.
+
 A maximum of four fields are supported.
 ",
       "name": "definition",
@@ -1826,6 +1825,7 @@ because fixed positioning results in a slight, visible lag when scrolling comple
 * \`auto\` - The component will automatically filter options based on user input.
 * \`manual\` - You will set up \`onChange\` or \`onLoadItems\` event listeners and filter options on your side or request
 them from server.
+
 By default the component will filter the provided \`options\` based on the value of the filtering input field.
 Only options that have a \`value\`, \`label\`, \`description\` or \`labelTag\` that contains the input value as a substring
 are displayed in the list of options.
@@ -3525,6 +3525,7 @@ Main action properties:
 * \`text\` (string) - Specifies the text shown in the main action.
 * \`external\` (boolean) - Marks the main action as external by adding an icon after the text. The link will open in a new tab when clicked. Note that this only works when \`href\` is also provided.
 * \`externalIconAriaLabel\` (string) - Adds an ARIA label to the external icon.
+
 The main action also supports the following properties of the [button](/components/button/?tabId=api) component:
 \`ariaLabel\`, \`disabled\`, \`loading\`, \`loadingText\`, \`href\`, \`target\`, \`rel\`, \`download\`, \`iconAlt\`, \`iconName\`, \`iconUrl\`, \`iconSvg\`, \`onClick\`, \`onFollow\`.
 ",
@@ -3708,6 +3709,22 @@ The event \`detail\` contains the current value of the field.",
       "type": "string",
     },
     Object {
+      "defaultValue": "\\"day\\"",
+      "description": "Specifies the granularity at which users will be able to select a date.
+Defaults to \`day\`.",
+      "inlineType": Object {
+        "name": "CalendarProps.Granularity",
+        "type": "union",
+        "values": Array [
+          "day",
+          "month",
+        ],
+      },
+      "name": "granularity",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "An object containing all the necessary localized strings required by
 the component.",
       "i18nTag": true,
@@ -3715,12 +3732,27 @@ the component.",
         "name": "CalendarProps.I18nStrings",
         "properties": Array [
           Object {
+            "name": "currentMonthAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
             "name": "nextMonthAriaLabel",
             "optional": true,
             "type": "string",
           },
           Object {
+            "name": "nextYearAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
             "name": "previousMonthAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "previousYearAriaLabel",
             "optional": true,
             "type": "string",
           },
@@ -4667,7 +4699,8 @@ You can use any theme provided by Ace.
     },
     Object {
       "description": "List of Ace themes available for selection in preferences dialog. Make sure you include at least one light and at
-least one dark theme. If not set explicitly, it will render all Ace themes available for selection.",
+least one dark theme. If not set explicitly, it will render all Ace themes available for selection, except
+\\"cloud_editor\\" and \\"cloud_editor_dark\\".",
       "inlineType": Object {
         "name": "CodeEditorProps.AvailableThemes",
         "properties": Array [
@@ -5503,7 +5536,9 @@ and to distinguish between multiple buttons with identical visible text. The tex
 * \`button\` to display a standalone secondary button with an icon, and \`copyButtonText\` as text.
 * \`icon\` to display a standalone icon-only (no text) button.
 * \`inline\` to display an icon-only (no text) button within a text context.
-Defaults to \`button\`.",
+
+Defaults to \`button\`.
+",
       "inlineType": Object {
         "name": "CopyToClipboardProps.Variant",
         "type": "union",
@@ -5832,6 +5867,22 @@ because fixed positioning results in a slight, visible lag when scrolling comple
       "type": "boolean",
     },
     Object {
+      "defaultValue": "'day'",
+      "description": "Specifies the granularity at which users will be able to select a date.
+Defaults to \`day\`.",
+      "inlineType": Object {
+        "name": "CalendarProps.Granularity",
+        "type": "union",
+        "values": Array [
+          "day",
+          "month",
+        ],
+      },
+      "name": "granularity",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "An object containing all the necessary localized strings required by
 the component.",
       "i18nTag": true,
@@ -5839,12 +5890,27 @@ the component.",
         "name": "DatePickerProps.I18nStrings",
         "properties": Array [
           Object {
+            "name": "currentMonthAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
             "name": "nextMonthAriaLabel",
             "optional": true,
             "type": "string",
           },
           Object {
+            "name": "nextYearAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
             "name": "previousMonthAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "previousYearAriaLabel",
             "optional": true,
             "type": "string",
           },
@@ -6425,6 +6491,7 @@ are as-per the [JavaScript Intl API specification](https://developer.mozilla.org
 * \`default\` for combined absolute/relative range selector.
 * \`absolute-only\` for absolute-only range selector.
 * \`relative-only\` for relative-only range selector.
+
 By default, the range selector mode is \`default\`.
 ",
       "inlineType": Object {
@@ -8668,6 +8735,7 @@ If you want to implement client-side routing yourself, use this event and preven
       "description": "Determines the text color of the link and its icon.
 - \`normal\`: Use in most cases where a link is required.
 - \`inverted\`: Use to style links inside Flashbars.
+
 This property is overridden if the variant is \`info\`.
 ",
       "inlineType": Object {
@@ -8763,6 +8831,7 @@ For other options see the documentation for <a> tag's
     This can be used in cases where the interactivity is strongly implied by its context,
     such as in a table or a list of external links.
 - \`info\` - Use for \\"info\\" links that link to content in a help panel.
+
 The default is \`secondary\`, except inside the following components where it defaults to \`primary\`:
 - Table
 - Cards
@@ -9585,6 +9654,7 @@ because fixed positioning results in a slight, visible lag when scrolling comple
 * \`auto\` - The component will automatically filter options based on user input.
 * \`manual\` - You will set up \`onChange\` or \`onLoadItems\` event listeners and filter options on your side or request
 them from server.
+
 By default the component will filter the provided \`options\` based on the value of the filtering input field.
 Only options that have a \`value\`, \`label\`, \`description\` or \`labelTag\` that contains the input value as a substring
 are displayed in the list of options.
@@ -12160,6 +12230,7 @@ because fixed positioning results in a slight, visible lag when scrolling comple
 * \`auto\` - The component will automatically filter options based on user input.
 * \`manual\` - You will set up \`onChange\` or \`onLoadItems\` event listeners and filter options on your side or request
 them from server.
+
 By default the component will filter the provided \`options\` based on the value of the filtering input field.
 Only options that have a \`value\`, \`label\`, \`description\` or \`labelTag\` that contains the input value as a substring
 are displayed in the list of options.
