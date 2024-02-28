@@ -3,7 +3,7 @@
 import React from 'react';
 import { TableForwardRefType, TableProps } from './interfaces';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
-import InternalTable, { InternalTableAsSubstep, InternalTableProps } from './internal';
+import InternalTable, { InternalTableAsSubstep } from './internal';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
 import { useLatencyMetrics } from '../internal/hooks/use-latency-metrics';
@@ -27,15 +27,7 @@ const Table = React.forwardRef(
       },
     });
 
-    const { setLastUserAction } = useLatencyMetrics({
-      componentName: 'Table',
-      elementRef: baseComponentProps.__internalRootRef,
-      loading: props.loading,
-      // TODO: Add the instanceId when it becomes available (see document WlbaA28k7yCw).
-      instanceId: undefined,
-    });
-
-    const tableProps: Parameters<typeof InternalTable<T>>[0] & InternalTableProps<T> = {
+    const tableProps: Parameters<typeof InternalTable<T>>[0] = {
       items,
       selectedItems,
       variant,
@@ -43,8 +35,15 @@ const Table = React.forwardRef(
       ...props,
       ...baseComponentProps,
       ref,
-      setLastUserAction,
     };
+
+    useLatencyMetrics({
+      componentName: 'Table',
+      elementRef: baseComponentProps.__internalRootRef,
+      loading: props.loading,
+      // TODO: Add the instanceId when it becomes available.
+      instanceId: undefined,
+    });
 
     if (variant === 'borderless' || variant === 'embedded') {
       return <InternalTable {...tableProps} />;
