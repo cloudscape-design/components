@@ -85,7 +85,11 @@ function InternalFileUpload(
 
   const isDropzoneVisible = useDropzoneVisible(multiple);
 
-  const showWarning = Boolean(warningText && !errorText);
+  const showWarning = warningText && !errorText;
+
+  if (warningText && errorText) {
+    warnOnce('FileUpload', 'Both `errorText` and `warningText` exist. `warningText` will not be shown.');
+  }
 
   const formFieldContext = useFormFieldContext(restProps);
   const ariaDescribedBy = joinStrings(
@@ -137,7 +141,7 @@ function InternalFileUpload(
               </FormFieldWarning>
             )}
             {constraintText && (
-              <ConstraintText id={constraintTextId} hasError={!!errorText || !!warningText}>
+              <ConstraintText id={constraintTextId} hasValidationText={!!errorText || !!warningText}>
                 {constraintText}
               </ConstraintText>
             )}

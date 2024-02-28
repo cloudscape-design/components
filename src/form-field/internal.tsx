@@ -7,6 +7,7 @@ import { getBaseProps } from '../internal/base-component';
 import { FormFieldContext, useFormFieldContext } from '../internal/context/form-field-context';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import InternalGrid from '../grid/internal';
 import InternalIcon from '../icon/internal';
@@ -80,15 +81,15 @@ export function FormFieldWarning({ id, children, warningIconAriaLabel }: FormFie
 
 export function ConstraintText({
   id,
-  hasError,
+  hasValidationText,
   children,
 }: {
   id?: string;
-  hasError: boolean;
+  hasValidationText: boolean;
   children: React.ReactNode;
 }) {
   return (
-    <div id={id} className={clsx(styles.constraint, hasError && styles['constraint-has-error'])}>
+    <div id={id} className={clsx(styles.constraint, hasValidationText && styles['constraint-has-validation-text'])}>
       {children}
     </div>
   );
@@ -122,7 +123,20 @@ export default function InternalFormField({
   const { stepNumber, stepNameSelector } = useFunnelStep();
   const { subStepSelector, subStepNameSelector } = useFunnelSubStep();
 
-  const slotIds = getSlotIds(formFieldId, label, description, constraintText, errorText, warningText);
+  const showWarning = warningText && !errorText;
+
+  if (warningText && errorText) {
+    warnOnce('FileUpload', 'Both `errorText` and `warningText` exist. `warningText` will not be shown.');
+  }
+
+  const slotIds = getSlotIds(
+    formFieldId,
+    label,
+    description,
+    constraintText,
+    errorText,
+    showWarning ? warningText : undefined
+  );
 
   const ariaDescribedBy = getAriaDescribedBy(slotIds);
 
@@ -139,13 +153,12 @@ export default function InternalFormField({
     ariaLabelledby: joinStrings(parentAriaLabelledby, slotIds.label) || undefined,
     ariaDescribedby: joinStrings(parentAriaDescribedby, ariaDescribedBy) || undefined,
     invalid: !!errorText || !!parentInvalid,
-    warning: !!warningText || !!parentWarning,
+    warning: (!!warningText && !errorText) || (!!parentWarning && !parentInvalid),
   };
 
   const analyticsAttributes = {
     [DATA_ATTR_FIELD_LABEL]: slotIds.label ? getFieldSlotSeletor(slotIds.label) : undefined,
     [DATA_ATTR_FIELD_ERROR]: slotIds.error ? getFieldSlotSeletor(slotIds.error) : undefined,
-    // Analytics for warning to be added
   };
 
   useEffect(() => {
@@ -232,13 +245,13 @@ export default function InternalFormField({
               {errorText}
             </FormFieldError>
           )}
-          {warningText && !errorText && (
+          {showWarning && (
             <FormFieldWarning id={slotIds.warning} warningIconAriaLabel={i18nStrings?.warningIconAriaLabel}>
               {warningText}
             </FormFieldWarning>
           )}
           {constraintText && (
-            <ConstraintText id={slotIds.constraint} hasError={!!errorText || !!warningText}>
+            <ConstraintText id={slotIds.constraint} hasValidationText={!!errorText || !!warningText}>
               {constraintText}
             </ConstraintText>
           )}

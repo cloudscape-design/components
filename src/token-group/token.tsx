@@ -39,7 +39,7 @@ export function Token({
   const warningId = useUniqueId('warning');
   const baseProps = getBaseProps(restProps);
 
-  const showWarning = Boolean(warningText && !errorText);
+  const showWarning = warningText && !errorText;
 
   return (
     <div

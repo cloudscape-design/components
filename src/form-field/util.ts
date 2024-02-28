@@ -37,8 +37,8 @@ export function getSlotIds(
   return ids;
 }
 
-export function getAriaDescribedBy({ error, description, constraint }: FormFieldIds) {
-  const describedByAttributes = [error, description, constraint].filter(e => !!e);
+export function getAriaDescribedBy({ error, warning, description, constraint }: FormFieldIds) {
+  const describedByAttributes = [error, warning, description, constraint].filter(e => !!e);
   const describedBy = describedByAttributes.length ? describedByAttributes.join(' ') : undefined;
   return describedBy;
 }

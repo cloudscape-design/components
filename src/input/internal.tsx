@@ -121,7 +121,7 @@ function InternalInput(
       {
         [styles['input-readonly']]: readOnly,
         [styles['input-invalid']]: invalid,
-        [styles['input-warning']]: warning,
+        [styles['input-warning']]: warning && !invalid,
       }
     ),
     autoComplete: convertAutoComplete(autoComplete),
