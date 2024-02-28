@@ -24,7 +24,7 @@ describe('Table interaction latency metrics', () => {
     expect(panorama).toHaveBeenCalledTimes(2);
     expectDetailInPanoramaCall(2).toEqual(
       expect.objectContaining({
-        userAction: 'sort',
+        userAction: 'sorting',
       })
     );
   });
@@ -56,7 +56,7 @@ describe('Table interaction latency metrics', () => {
     expect(panorama).toHaveBeenCalledTimes(2);
     expectDetailInPanoramaCall(2).toEqual(
       expect.objectContaining({
-        userAction: 'paginate',
+        userAction: 'pagination',
       })
     );
   });

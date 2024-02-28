@@ -155,7 +155,7 @@ const Thead = React.forwardRef(
                 updateColumn={updateColumn}
                 onResizeFinish={() => onResizeFinish(columnWidths)}
                 resizableColumns={resizableColumns}
-                onClickCapture={() => setLastUserAction?.('sort')}
+                onClickCapture={() => setLastUserAction?.('sorting')}
                 onClick={detail => fireNonCancelableEvent(onSortingChange, detail)}
                 isEditable={!!column.editConfig}
                 stickyState={stickyState}

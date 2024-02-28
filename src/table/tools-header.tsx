@@ -41,7 +41,7 @@ export default function ToolsHeader({ header, filter, pagination, preferences, s
           )}
           <div className={styles['tools-align-right']}>
             {pagination && (
-              <div className={styles['tools-pagination']} onClickCapture={() => setLastUserAction?.('paginate')}>
+              <div className={styles['tools-pagination']} onClickCapture={() => setLastUserAction?.('pagination')}>
                 {pagination}
               </div>
             )}

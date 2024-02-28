@@ -57,7 +57,7 @@ describe('useLatencyMetrics', () => {
           inViewport: true,
           lifecycleId: expect.any(String),
           loading: false,
-          metadata: {},
+          metadata: { instanceId: null },
           type: 'mounted',
         })
       );
@@ -286,6 +286,55 @@ describe('useLatencyMetrics', () => {
       expectDetailInPanoramaCall(2).toEqual(
         expect.not.objectContaining({
           userAction: expect.any(String),
+        })
+      );
+    });
+
+    test('only the most recent user action should be used', () => {
+      elementIsInViewport = true;
+
+      const { setLastUserAction, rerender } = render({ componentName: 'MyComponent' });
+      jest.runAllTimers();
+
+      setLastUserAction('filter');
+      setLastUserAction('pagination');
+
+      rerender({ componentName: 'MyComponent', loading: true });
+      jest.runAllTimers();
+
+      expect(panorama).toHaveBeenCalledTimes(2);
+
+      expectDetailInPanoramaCall(2).toEqual(
+        expect.objectContaining({
+          userAction: 'pagination',
+        })
+      );
+    });
+
+    test('user actions during the loading state should be ignored', () => {
+      elementIsInViewport = true;
+
+      const { setLastUserAction, rerender } = render({ componentName: 'MyComponent' });
+      jest.runAllTimers();
+
+      setLastUserAction('filter');
+      rerender({ componentName: 'MyComponent', loading: true });
+
+      expect(panorama).toHaveBeenCalledTimes(2);
+      expectDetailInPanoramaCall(2).toEqual(
+        expect.objectContaining({
+          userAction: 'filter',
+        })
+      );
+
+      setLastUserAction('pagination');
+
+      rerender({ componentName: 'MyComponent' });
+
+      expect(panorama).toHaveBeenCalledTimes(3);
+      expectDetailInPanoramaCall(3).toEqual(
+        expect.objectContaining({
+          userAction: 'filter',
         })
       );
     });

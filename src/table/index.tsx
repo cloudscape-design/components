@@ -31,7 +31,7 @@ const Table = React.forwardRef(
       componentName: 'Table',
       elementRef: baseComponentProps.__internalRootRef,
       loading: props.loading,
-      // TODO: Add the instanceId when it becomes available.
+      // TODO: Add the instanceId when it becomes available (see document WlbaA28k7yCw).
       instanceId: undefined,
     });
 

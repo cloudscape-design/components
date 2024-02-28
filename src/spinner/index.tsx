@@ -17,7 +17,7 @@ export default function Spinner({ size = 'normal', variant = 'normal', ...props 
     elementRef: baseComponentProps.__internalRootRef,
     loading: true,
     componentType: 'spinner',
-    // TODO: Add the instanceId when it becomes available.
+    // TODO: Add the instanceId when it becomes available (see document WlbaA28k7yCw).
     instanceId: undefined,
   });
 
