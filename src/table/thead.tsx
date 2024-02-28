@@ -42,7 +42,6 @@ export interface TheadProps {
   focusedComponent?: null | string;
   onFocusedComponentChange?: (focusId: null | string) => void;
   tableRole: TableRole;
-  setLastUserAction?: (name: string) => void;
 }
 
 const Thead = React.forwardRef(
@@ -71,7 +70,6 @@ const Thead = React.forwardRef(
       onFocusedComponentChange,
       tableRole,
       resizerRoleDescription,
-      setLastUserAction,
     }: TheadProps,
     outerRef: React.Ref<HTMLTableRowElement>
   ) => {
@@ -155,7 +153,6 @@ const Thead = React.forwardRef(
                 updateColumn={updateColumn}
                 onResizeFinish={() => onResizeFinish(columnWidths)}
                 resizableColumns={resizableColumns}
-                onClickCapture={() => setLastUserAction?.('sorting')}
                 onClick={detail => fireNonCancelableEvent(onSortingChange, detail)}
                 isEditable={!!column.editConfig}
                 stickyState={stickyState}

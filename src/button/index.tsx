@@ -48,7 +48,7 @@ const Button = React.forwardRef(
       componentName: 'Button',
       elementRef: baseComponentProps.__internalRootRef,
       loading,
-      // TODO: Add the instanceId when it becomes available (see document WlbaA28k7yCw).
+      // TODO: Add the instanceId when it becomes available.
       instanceId: undefined,
     });
 

@@ -55,7 +55,6 @@ it('renders a fake focus outline on the sort control', () => {
         tabIndex={0}
         updateColumn={() => {}}
         onClick={() => {}}
-        onClickCapture={() => {}}
         onResizeFinish={() => {}}
         stickyState={result.current}
         columnId="id"
@@ -80,7 +79,6 @@ it('renders a fake focus outline on the resize control', () => {
         resizableColumns={true}
         updateColumn={() => {}}
         onClick={() => {}}
-        onClickCapture={() => {}}
         onResizeFinish={() => {}}
         stickyState={result.current}
         columnId="id"
@@ -106,7 +104,6 @@ describe('i18n', () => {
             resizableColumns={true}
             updateColumn={() => {}}
             onClick={() => {}}
-            onClickCapture={() => {}}
             onResizeFinish={() => {}}
             stickyState={result.current}
             columnId="id"

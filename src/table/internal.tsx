@@ -51,10 +51,9 @@ const GRID_NAVIGATION_PAGE_SIZE = 10;
 const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
 
-export type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
+type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
   InternalBaseComponentProps & {
     __funnelSubStepProps?: InternalContainerProps['__funnelSubStepProps'];
-    setLastUserAction?: (name: string) => void;
   };
 
 export const InternalTableAsSubstep = React.forwardRef(
@@ -114,7 +113,6 @@ const InternalTable = React.forwardRef(
       columnDisplay,
       enableKeyboardNavigation = false,
       __funnelSubStepProps,
-      setLastUserAction,
       ...rest
     }: InternalTableProps<T>,
     ref: React.Ref<TableProps.Ref>
@@ -244,7 +242,6 @@ const InternalTable = React.forwardRef(
       stickyState,
       selectionColumnId,
       tableRole,
-      setLastUserAction,
     };
 
     const wrapperRef = useMergeRefs(wrapperRefObject, stickyState.refs.wrapper);
@@ -303,7 +300,6 @@ const InternalTable = React.forwardRef(
                           filter={filter}
                           pagination={pagination}
                           preferences={preferences}
-                          setLastUserAction={setLastUserAction}
                         />
                       </CollectionLabelContext.Provider>
                     </div>
