@@ -5,22 +5,11 @@ import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { SpinnerProps } from './interfaces';
 import InternalSpinner from './internal';
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { useLatencyMetrics } from '../internal/hooks/use-latency-metrics';
 
 export { SpinnerProps };
 
 export default function Spinner({ size = 'normal', variant = 'normal', ...props }: SpinnerProps) {
   const baseComponentProps = useBaseComponent('Spinner');
-
-  useLatencyMetrics({
-    componentName: 'Spinner',
-    elementRef: baseComponentProps.__internalRootRef,
-    loading: true,
-    componentType: 'spinner',
-    // TODO: Add the instanceId when it becomes available.
-    instanceId: undefined,
-  });
-
   return <InternalSpinner size={size} variant={variant} {...props} {...baseComponentProps} />;
 }
 
