@@ -10,7 +10,7 @@ import { useDynamicOverlap } from '../internal/hooks/use-dynamic-overlap';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
-import { useHeroHeader } from '../app-layout/visual-refresh/header-style';
+import { useHeroHeader, useHeaderStyle, useHeaderDarkVisualContext } from '../app-layout/visual-refresh/header-style';
 //import AppContext from '../app/app-context';
 
 type InternalContentLayoutProps = ContentLayoutProps & InternalBaseComponentProps;
@@ -21,7 +21,8 @@ export default function InternalContentLayout({
   heroHeader,
   header,
   __internalRootRef,
-  darkHeaderContext,
+  highContrastHeader,
+  headerBackground,
   ...rest
 }: InternalContentLayoutProps) {
   const baseProps = getBaseProps(rest);
@@ -30,20 +31,30 @@ export default function InternalContentLayout({
 
   const isVisualRefresh = useVisualRefresh();
   //const isHeroHeader = heroHeader;
-  const isDarkHeaderContext = darkHeaderContext;
+  const isDarkHeaderContext = highContrastHeader;
   const overlapElement = useDynamicOverlap(); //this needs to be refactored
 
   const isOverlapDisabled = !children || disableOverlap;
   // const setHeaderProps = useHeaderStyle();
   const { handleHeroHeaderProps } = useHeroHeader();
+  const { handleCustomHeaderStyleProps } = useHeaderStyle();
+  const { handleHeaderDarkVisualContextProps } = useHeaderDarkVisualContext();
 
   // useEffect(() => {
-  //   handleHeroHeaderProps({ headerBackground });
+  //   handleCustomHeaderStyleProps({ headerBackground });
   // });
 
   useEffect(() => {
     heroHeader && handleHeroHeaderProps({ heroHeader });
   }, [handleHeroHeaderProps, heroHeader]);
+
+  useEffect(() => {
+    highContrastHeader && handleHeaderDarkVisualContextProps({ highContrastHeader });
+  }, [handleHeaderDarkVisualContextProps, highContrastHeader]);
+
+  useEffect(() => {
+    headerBackground && handleCustomHeaderStyleProps({ headerBackground });
+  }, [handleCustomHeaderStyleProps, headerBackground]);
 
   return (
     <div

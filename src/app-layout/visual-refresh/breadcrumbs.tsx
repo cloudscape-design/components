@@ -9,6 +9,7 @@ import testutilStyles from '../test-classes/styles.css.js';
 
 export default function Breadcrumbs() {
   const { breadcrumbs, hasStickyBackground, isMobile } = useAppLayoutInternals();
+  //const isDarkHeaderContext = highContrastHeader;
 
   if (isMobile || !breadcrumbs) {
     return null;

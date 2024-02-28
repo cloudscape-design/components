@@ -774,7 +774,7 @@ export default function () {
               disableOverlap={true}
               heroHeader={true}
               headerType="hero"
-              darkHeaderContext={true}
+              highContrastHeader={true}
               headerBackground={
                 colorOptionVisible === 'default'
                   ? '#000716'

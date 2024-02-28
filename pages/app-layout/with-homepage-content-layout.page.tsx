@@ -12,7 +12,6 @@ import Header from '~components/header';
 import Icon from '~components/icon';
 import ColumnLayout from '~components/column-layout';
 import SideNavigation from '~components/side-navigation';
-import Flashbar from '~components/flashbar';
 import FormField from '~components/form-field';
 import RadioGroup from '~components/radio-group';
 import Select, { SelectProps } from '~components/select';
@@ -25,7 +24,6 @@ import Button from '~components/button';
 import styles from './styles.scss';
 import { ContentLayout } from '~components';
 import AppContext from '../app/app-context';
-//import { Theme, applyTheme } from '~components/theming';
 
 // List component
 interface SeparatedListProps {
@@ -216,7 +214,7 @@ function Tools({
           //checked={hasStackedNotification}
           checked={(urlParams.stackNotificationVisible, hasStackedNotification)}
         >
-          Show stacked notifications
+          Header dark mode visual context
         </Toggle>
         <Toggle
           onChange={({ detail }) => {
@@ -253,40 +251,6 @@ function Tools({
       </SpaceBetween>
     </HelpPanel>
   );
-}
-
-type MessageType = 'success' | 'warning' | 'error' | 'info';
-
-interface NotificationsItem {
-  type: MessageType;
-  content: string;
-  id: string;
-}
-
-function StackedNotifications() {
-  const [items] = React.useState<NotificationsItem[]>([
-    {
-      type: 'success',
-      content: 'This is a success flash message',
-      id: 'message_5',
-    },
-    {
-      type: 'warning',
-      content: 'This is a warning flash message',
-      id: 'message_4',
-    },
-    {
-      type: 'error',
-      content: 'This is a dismissible error message',
-      id: 'message_3',
-    },
-    {
-      type: 'info',
-      content: 'This is an info flash message',
-      id: 'message_2',
-    },
-  ]);
-  return <Flashbar items={items} stackItems={true} />;
 }
 
 const ContentWithContentLayout = () => {
@@ -768,6 +732,7 @@ export default function () {
   };
 
   console.log('colorOptionVisible is ' + colorOptionVisible);
+  //console.log('headerBackground value in page demo level is ' + headerBackground);
 
   if (nestingVisible) {
     return (
@@ -787,21 +752,13 @@ export default function () {
           }
           toolsOpen={toolsOpen}
           onToolsChange={({ detail }) => setToolsOpen(detail.open)}
-          notifications={
-            flashbarVisible && !notificationsVisible ? (
-              <Notifications />
-            ) : notificationsVisible ? (
-              <StackedNotifications />
-            ) : (
-              <></>
-            )
-          }
+          notifications={flashbarVisible ? <Notifications /> : <></>}
           content={
             <ContentLayout
               header={<HeroHeader />}
               disableOverlap={false}
               heroHeader={true}
-              darkHeaderContext={false}
+              highContrastHeader={notificationsVisible ? true : false}
               headerBackground={
                 colorOptionVisible === 'default'
                   ? '#000716'
@@ -811,7 +768,6 @@ export default function () {
                   ? 'radial-gradient(ellipse at 31% 100%, rgba(216, 255, 217, 1) 0%, rgba(229, 255, 251, 1) 48%, rgba(251, 255, 254, 1) 92%)'
                   : 'red'
               }
-              //headerBackground={'radial-gradient(ellipse at 31% 100%, rgba(216, 255, 217, 1) 0%, rgba(229, 255, 251, 1) 48%, rgba(251, 255, 254, 1) 92%)'}
             >
               <ContentWithContentLayout />
             </ContentLayout>
@@ -824,8 +780,6 @@ export default function () {
     return (
       <ScreenshotArea gutters={false}>
         <AppLayout
-          //darkHeader={true} // enable dark header if there are breadcrumbs or flashbar
-          //contentType="hero" // navigation state
           ariaLabels={labels}
           breadcrumbs={breadcrumbVisible ? <Breadcrumbs /> : null}
           disableContentPaddings={true}
@@ -841,23 +795,11 @@ export default function () {
           }
           toolsOpen={toolsOpen}
           onToolsChange={({ detail }) => setToolsOpen(detail.open)}
-          notifications={
-            flashbarVisible && !notificationsVisible ? (
-              <Notifications />
-            ) : notificationsVisible ? (
-              <StackedNotifications />
-            ) : (
-              <></>
-            )
-          }
+          notifications={<Notifications />}
           content={<ContentWithoutContentLayout />}
         />
         <Footer legacyConsoleNav={false} />
       </ScreenshotArea>
     );
   }
-  // const { reset } = applyTheme({
-  //   theme,
-  //   baseThemeId: 'visual-refresh',
-  // });
 }

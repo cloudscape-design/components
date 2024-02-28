@@ -24,13 +24,20 @@ export interface ContentLayoutProps extends BaseComponentProps {
   /**
    * New!
    */
-  heroHeader?: boolean;
+  heroHeader?: boolean; // This will be replaced by headerType
 
   headerType?: ContentLayoutProps.HeaderType;
 
-  darkHeaderContext?: boolean;
+  highContrastHeader?: boolean;
 
   headerBackground?: string;
+
+  // headerBackground?:
+  //   | string
+  //   | {
+  //       lightMode: string;
+  //       darkMode: string;
+  //     };
 }
 
 export namespace ContentLayoutProps {

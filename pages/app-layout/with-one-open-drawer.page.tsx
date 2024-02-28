@@ -23,7 +23,7 @@ export default function WithDrawers() {
           <ContentLayout
             data-test-id="content"
             //headerBackground="#000716"
-            darkHeaderContext={true}
+            //highContrastHeader={true}
             header={
               <Header variant="h1" description="Sometimes you need custom drawers to get the job done.">
                 One drawer opened
