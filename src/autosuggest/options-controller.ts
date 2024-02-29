@@ -56,7 +56,7 @@ export const useAutosuggestItems = ({
   const i18n = useInternalI18n('autosuggest');
   const [showAll, setShowAll] = useState(false);
 
-  const { items, getItemGroup } = useMemo(() => createItems(options), [options]);
+  const { items, getItemGroup, getItemParent } = useMemo(() => createItems(options), [options]);
 
   const enteredItemLabel = i18n('enteredTextLabel', enteredTextLabel?.(filterValue), format =>
     format({ value: filterValue })
@@ -75,9 +75,9 @@ export const useAutosuggestItems = ({
         option: { value: filterValue },
       });
     }
-    generateTestIndexes(filteredItems);
+    generateTestIndexes(filteredItems, getItemParent);
     return filteredItems;
-  }, [filteringType, showAll, items, filterText, filterValue, hideEnteredTextLabel, enteredItemLabel]);
+  }, [filteringType, showAll, items, filterText, filterValue, hideEnteredTextLabel, getItemParent, enteredItemLabel]);
 
   const [highlightedOptionState, highlightedOptionHandlers] = useHighlightedOption({
     options: filteredItems,
@@ -118,8 +118,9 @@ export const useAutosuggestItems = ({
 
 function createItems(options: Options) {
   const items: AutosuggestItem[] = [];
-  const itemToGroup = new WeakMap<AutosuggestItem, AutosuggestProps.OptionGroup>();
-  const getItemGroup = (item: AutosuggestItem) => itemToGroup.get(item);
+  const itemToGroup = new WeakMap<AutosuggestItem, AutosuggestItem>();
+  const getItemParent = (item: AutosuggestItem) => itemToGroup.get(item);
+  const getItemGroup = (item: AutosuggestItem) => getItemParent(item)?.option as AutosuggestProps.OptionGroup;
 
   for (const option of options) {
     if (isGroup(option)) {
@@ -136,7 +137,9 @@ function createItems(options: Options) {
 
     let hasOnlyDisabledChildren = true;
 
-    const items: AutosuggestItem[] = [{ ...rest, type: 'parent', option: group }];
+    const groupItem: AutosuggestItem = { ...rest, type: 'parent', option: group };
+
+    const items: AutosuggestItem[] = [groupItem];
 
     for (const option of options) {
       if (!option.disabled) {
@@ -152,7 +155,7 @@ function createItems(options: Options) {
 
       items.push(childOption);
 
-      itemToGroup.set(childOption, group);
+      itemToGroup.set(childOption, groupItem);
     }
 
     items[0].disabled = items[0].disabled || hasOnlyDisabledChildren;
@@ -160,7 +163,7 @@ function createItems(options: Options) {
     return items;
   }
 
-  return { items, getItemGroup };
+  return { items, getItemGroup, getItemParent };
 }
 
 function isGroup(optionOrGroup: AutosuggestProps.Option): optionOrGroup is AutosuggestProps.OptionGroup {
