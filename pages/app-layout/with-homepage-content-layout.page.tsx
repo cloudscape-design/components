@@ -24,6 +24,9 @@ import Button from '~components/button';
 import styles from './styles.scss';
 import { ContentLayout } from '~components';
 import AppContext from '../app/app-context';
+//import * as awsui from '@amzn/awsui-design-tokens';
+//import { colorBackgroundContainerHeader } from '~design-tokens';
+// * to be used to be able select all
 
 // List component
 interface SeparatedListProps {
