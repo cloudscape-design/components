@@ -110,7 +110,7 @@ const Trigger = React.forwardRef(
         pressed={isOpen}
         disabled={disabled}
         invalid={invalid}
-        warning={warning}
+        warning={warning && !invalid}
         inFilteringToken={inFilteringToken}
         inlineTokens={triggerVariant === 'tokens'}
         ariaDescribedby={ariaDescribedby}
