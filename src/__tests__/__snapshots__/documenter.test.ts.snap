@@ -5414,7 +5414,7 @@ If true, the overlap will be removed.",
     Object {
       "name": "headerBackground",
       "optional": true,
-      "type": "string | unknown",
+      "type": "string",
     },
     Object {
       "inlineType": Object {

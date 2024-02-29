@@ -30,14 +30,14 @@ export interface ContentLayoutProps extends BaseComponentProps {
 
   highContrastHeader?: boolean;
 
-  //headerBackground?: string;
+  headerBackground?: string;
 
-  headerBackground?:
-    | string
-    | {
-        lightMode: string;
-        darkMode: string;
-      };
+  // headerBackground?:
+  //   | string
+  //   | {
+  //       lightMode: string;
+  //       darkMode: string;
+  //     };
 }
 
 export namespace ContentLayoutProps {
