@@ -36,6 +36,19 @@ const permutations = createPermutations<FormFieldProps>([
     children: ['Some control here'],
   },
   {
+    label: ['Very long label description oh wow'],
+    i18nStrings: [{ warningIconAriaLabel: 'Warning' }],
+    warningText: [
+      'Value contains prefix/trailing empty character',
+      <div>
+        Some <b>bold</b> instructional message
+      </div>,
+    ],
+    constraintText: [null, 'Only normal characters are allowed'],
+    description: ['Enter your name'],
+    children: ['Some control here'],
+  },
+  {
     label: ['Normal label'],
     i18nStrings: [{ errorIconAriaLabel: 'Error' }],
     errorText: [null, 'An application with that name already exists'],
@@ -58,6 +71,38 @@ const permutations = createPermutations<FormFieldProps>([
         ]}
       />,
     ],
+  },
+  {
+    label: ['Normal label'],
+    i18nStrings: [{ warningIconAriaLabel: 'Warning' }],
+    warningText: ['Value contains prefix/trailing empty character'],
+    constraintText: ['Only normal characters are allowed'],
+    description: ['Enter your name'],
+    info: [<Link variant="info">info</Link>],
+    children: [
+      <div>Some plain text</div>,
+      <Input value="" onChange={() => {}} placeholder="Main Instance" />,
+      <Textarea value="" onChange={() => {}} placeholder="Sample JSON" />,
+      <Checkbox checked={false} onChange={() => {}}>
+        Use Elastic IP
+      </Checkbox>,
+      <RadioGroup
+        value={null}
+        onChange={() => {}}
+        items={[
+          { label: 'First Item', value: 'first' },
+          { label: 'Second Item', value: 'second' },
+        ]}
+      />,
+    ],
+  },
+  {
+    label: ['Very long label description oh wow'],
+    warningText: ['Value contains prefix/trailing empty character'],
+    errorText: ['An application with that name already exists'],
+    constraintText: ['Only normal characters are allowed'],
+    description: ['Enter your name'],
+    children: [<Input value="" onChange={() => {}} placeholder="Main Instance" />],
   },
   {
     label: ['Normal label'],
