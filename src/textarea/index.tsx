@@ -58,7 +58,7 @@ const Textarea = React.forwardRef(
       className: clsx(styles.textarea, {
         [styles['textarea-readonly']]: readOnly,
         [styles['textarea-invalid']]: invalid,
-        [styles['textarea-warning']]: warning,
+        [styles['textarea-warning']]: warning && !invalid,
       }),
       autoComplete: convertAutoComplete(autoComplete),
       spellCheck: spellcheck,

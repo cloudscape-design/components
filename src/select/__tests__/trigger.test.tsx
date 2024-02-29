@@ -16,6 +16,7 @@ const defaultProps: any = {
   ariaDescribedby: 'aria described by',
   selectedOption: null,
   invalid: false,
+  warning: false,
   disabled: false,
   placeholder: 'placeholder',
   triggerVariant: 'option',
@@ -85,6 +86,15 @@ describe('Trigger component', () => {
 
     test('should have invalid class', () => {
       expect(buttonTriggerEl).toHaveClass(buttonTriggerStyles['button-trigger'], buttonTriggerStyles.invalid);
+    });
+  });
+
+  describe('Warning state', () => {
+    const wrapper = renderComponent({ ...defaultProps, warning: true });
+    const buttonTriggerEl = wrapper.getElement();
+
+    test('should have warning class', () => {
+      expect(buttonTriggerEl).toHaveClass(buttonTriggerStyles['button-trigger'], buttonTriggerStyles.warning);
     });
   });
 

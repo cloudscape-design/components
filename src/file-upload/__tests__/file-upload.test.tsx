@@ -32,6 +32,7 @@ const defaultProps: FileUploadProps = {
     dropzoneText: multiple => (multiple ? 'Drag files to upload' : 'Drag file to upload'),
     removeFileAriaLabel: fileIndex => `Remove file ${fileIndex + 1}`,
     errorIconAriaLabel: 'Error',
+    warningIconAriaLabel: 'Warning',
     limitShowFewer: 'Show fewer files',
     limitShowMore: 'Show more files',
   },
@@ -122,6 +123,12 @@ describe('FileUpload input', () => {
     expect(wrapper.findNativeInput().getElement()).toHaveAccessibleDescription('Error text');
   });
 
+  test('warning text is set and associated with the upload button', () => {
+    const wrapper = render({ warningText: 'Warning text' });
+    expect(wrapper.findWarning()!.getElement()).toHaveTextContent('Warning text');
+    expect(wrapper.findNativeInput().getElement()).toHaveAccessibleDescription('Warning text');
+  });
+
   test('constraint text is set and associated with the upload button', () => {
     const wrapper = render({ constraintText: 'Constraint text' });
     expect(wrapper.findConstraint()!.getElement()).toHaveTextContent('Constraint text');
@@ -131,6 +138,24 @@ describe('FileUpload input', () => {
   test('error and constraint text are both associated with the upload button', () => {
     const wrapper = render({ constraintText: 'Constraint text', errorText: 'Error text' });
     expect(wrapper.findNativeInput().getElement()).toHaveAccessibleDescription('Error text Constraint text');
+  });
+
+  test('warning and constraint text are both associated with the upload button', () => {
+    const wrapper = render({ constraintText: 'Constraint text', warningText: 'Warning text' });
+    expect(wrapper.findNativeInput().getElement()).toHaveAccessibleDescription('Warning text Constraint text');
+  });
+
+  test('when both errorText and warningText exist, errorText takes precedence and a dev warning is issued', () => {
+    const wrapper = render({ errorText: 'Error text', warningText: 'Warning text' });
+
+    expect(wrapper.findError()!.getElement()).toHaveTextContent('Error text');
+    expect(wrapper.findWarning()).toBeNull();
+
+    expect(warnOnce).toHaveBeenCalledTimes(1);
+    expect(warnOnce).toHaveBeenCalledWith(
+      'FileUpload',
+      'Both `errorText` and `warningText` exist. `warningText` will not be shown.'
+    );
   });
 
   test('file upload button can be assigned aria-invalid', () => {
@@ -276,6 +301,23 @@ describe('File upload tokens', () => {
     expect(wrapper.findFileToken(1)!.getElement()).toHaveAccessibleDescription('Error 1');
     expect(wrapper.findFileToken(2)!.getElement()).toHaveAccessibleDescription('Error 2');
   });
+
+  test('file warnings are associated to file tokens', () => {
+    const wrapper = render({ multiple: true, value: [file1, file2], fileWarnings: ['Warning 1', 'Warning 2'] });
+    expect(wrapper.findFileToken(1)!.getElement()).toHaveAccessibleDescription('Warning 1');
+    expect(wrapper.findFileToken(2)!.getElement()).toHaveAccessibleDescription('Warning 2');
+  });
+
+  test('file error takes precedence over file warning associated to file tokens', () => {
+    const wrapper = render({
+      multiple: true,
+      value: [file1],
+      fileErrors: ['Error 1'],
+      fileWarnings: ['Warning 1'],
+    });
+    expect(wrapper.findFileToken(1)!.getElement()).toHaveAccessibleDescription('Error 1');
+    expect(wrapper.findFileToken(1)!.getElement()).not.toHaveAccessibleDescription('Warning 1');
+  });
 });
 
 describe('Focusing behavior', () => {
@@ -318,7 +360,12 @@ describe('a11y', () => {
     await expect(wrapper.getElement()).toValidateA11y();
   });
 
-  test('single w/o errors', async () => {
+  test('multiple empty w/ constraint and warning', async () => {
+    const wrapper = render({ multiple: true, value: [], constraintText: 'Constraint', warningText: 'Warning' });
+    await expect(wrapper.getElement()).toValidateA11y();
+  });
+
+  test('single w/o errors nor warnings', async () => {
     const wrapper = render({
       value: [file1],
       showFileSize: true,
@@ -337,10 +384,24 @@ describe('a11y', () => {
       errorText: 'Error',
       fileErrors: ['File error'],
     });
+
     await expect(wrapper.getElement()).toValidateA11y();
   });
 
-  test('multiple w/o errors', async () => {
+  test('single w/ warnings', async () => {
+    const wrapper = render({
+      value: [file1],
+      showFileSize: true,
+      showFileLastModified: true,
+      constraintText: 'Constraint',
+      warningText: 'Warning',
+      fileWarnings: ['File warning'],
+    });
+
+    await expect(wrapper.getElement()).toValidateA11y();
+  });
+
+  test('multiple w/o errors nor warnings', async () => {
     const wrapper = render({
       multiple: true,
       value: [file1, file2],
@@ -359,6 +420,19 @@ describe('a11y', () => {
       constraintText: 'Constraint',
       errorText: '2 files have error(s)',
       fileErrors: ['File 1 error', 'File 2 error'],
+    });
+    await expect(wrapper.getElement()).toValidateA11y();
+  });
+
+  test('multiple w/ warnings', async () => {
+    const wrapper = render({
+      multiple: true,
+      value: [file1, file2],
+      showFileSize: true,
+      showFileLastModified: true,
+      constraintText: 'Constraint',
+      warningText: '2 files have warning(s)',
+      fileWarnings: ['File 1 warning', 'File 2 warning'],
     });
     await expect(wrapper.getElement()).toValidateA11y();
   });
