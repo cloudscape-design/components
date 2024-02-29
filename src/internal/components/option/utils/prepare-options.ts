@@ -12,7 +12,7 @@ export function prepareOptions(
 ) {
   const { flatOptions, parentMap } = flattenOptions(options);
   const filteredOptions = filteringType !== 'auto' ? flatOptions : filterOptions(flatOptions, filteringText);
-  generateTestIndexes(filteredOptions, parentMap.get.bind(parentMap));
+  generateTestIndexes(filteredOptions);
   return {
     filteredOptions,
     parentMap,

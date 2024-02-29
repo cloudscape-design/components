@@ -75,9 +75,9 @@ export const useAutosuggestItems = ({
         option: { value: filterValue },
       });
     }
-    generateTestIndexes(filteredItems, getItemGroup);
+    generateTestIndexes(filteredItems);
     return filteredItems;
-  }, [filteringType, showAll, items, filterText, filterValue, hideEnteredTextLabel, getItemGroup, enteredItemLabel]);
+  }, [filteringType, showAll, items, filterText, filterValue, hideEnteredTextLabel, enteredItemLabel]);
 
   const [highlightedOptionState, highlightedOptionHandlers] = useHighlightedOption({
     options: filteredItems,
