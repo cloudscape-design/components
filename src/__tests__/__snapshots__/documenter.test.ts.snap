@@ -5404,11 +5404,6 @@ Object {
       "type": "string",
     },
     Object {
-      "name": "darkHeaderContext",
-      "optional": true,
-      "type": "boolean",
-    },
-    Object {
       "description": "Determines whether the layout has an overlap between the header and content.
 If true, the overlap will be removed.",
       "name": "disableOverlap",
@@ -5419,7 +5414,7 @@ If true, the overlap will be removed.",
     Object {
       "name": "headerBackground",
       "optional": true,
-      "type": "string",
+      "type": "string | unknown",
     },
     Object {
       "inlineType": Object {
@@ -5437,6 +5432,11 @@ If true, the overlap will be removed.",
     Object {
       "description": "New!",
       "name": "heroHeader",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "name": "highContrastHeader",
       "optional": true,
       "type": "boolean",
     },
