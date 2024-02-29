@@ -11,7 +11,7 @@ import { BadgeProps } from './interfaces';
 export { BadgeProps };
 
 export default function Badge({ color = 'grey', children, ...rest }: BadgeProps) {
-  const { __internalRootRef } = useBaseComponent('Badge');
+  const { __internalRootRef } = useBaseComponent('Badge', { props: { color } });
   const baseProps = getBaseProps(rest);
 
   const className = clsx(baseProps.className, styles.badge, styles[`badge-color-${color}`]);

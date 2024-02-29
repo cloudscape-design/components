@@ -22,6 +22,7 @@ import { InternalBaseComponentProps } from '../../hooks/use-base-component';
 import { KeyCode } from '../../keycode';
 import styles from './styles.css.js';
 import clsx from 'clsx';
+import { nodeBelongs } from '../../utils/node-belongs';
 
 export interface AutosuggestInputProps
   extends BaseComponentProps,
@@ -235,9 +236,9 @@ const AutosuggestInput = React.forwardRef(
 
       const clickListener = (event: MouseEvent) => {
         if (
-          !inputRef.current?.contains(event.target as Node) &&
-          !dropdownContentRef.current?.contains(event.target as Node) &&
-          !dropdownFooterRef.current?.contains(event.target as Node)
+          !nodeBelongs(inputRef.current, event.target) &&
+          !nodeBelongs(dropdownContentRef.current, event.target) &&
+          !nodeBelongs(dropdownFooterRef.current, event.target)
         ) {
           closeDropdown();
         }

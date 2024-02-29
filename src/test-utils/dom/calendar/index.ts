@@ -7,10 +7,10 @@ import ButtonWrapper from '../button';
 export default class CalendarWrapper extends ComponentWrapper {
   static rootSelector: string = styles.root;
   /**
-   * Returns a day container on the calendar.
+   * Returns a date container on the calendar.
    *
-   * @param row 1-based row index of the day.
-   * @param column 1-based column index of the day.
+   * @param row 1-based row index of the day or month.
+   * @param column 1-based column index of the day or month.
    */
   findDateAt(row: number, column: number): ElementWrapper {
     return this.find(`.${styles['calendar-row']}:nth-child(${row}) .${styles['calendar-date']}:nth-child(${column})`)!;

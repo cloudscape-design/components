@@ -8,10 +8,15 @@ import { CodeEditorProps } from './interfaces';
 
 export type PaneStatus = 'error' | 'warning' | 'hidden';
 
-const DEFAULT_LIGHT_THEME: typeof LightThemes[number]['value'] = 'cloud_editor';
-const DEFAULT_DARK_THEME: typeof DarkThemes[number]['value'] = 'cloud_editor_dark';
+const CLOUD_EDITOR_LIGHT_THEME: typeof LightThemes[number]['value'] = 'cloud_editor';
+const CLOUD_EDITOR_DARK_THEME: typeof DarkThemes[number]['value'] = 'cloud_editor_dark';
 const FALLBACK_LIGHT_THEME: typeof LightThemes[number]['value'] = 'dawn';
 const FALLBACK_DARK_THEME: typeof DarkThemes[number]['value'] = 'tomorrow_night_bright';
+
+export const DEFAULT_AVAILABLE_THEMES = {
+  light: LightThemes.map(theme => theme.value).filter(value => value !== CLOUD_EDITOR_LIGHT_THEME),
+  dark: DarkThemes.map(theme => theme.value).filter(value => value !== CLOUD_EDITOR_DARK_THEME),
+};
 
 function isAceVersionAtLeast(ace: any, minVersion: [number, number, number]): boolean {
   // Split semantic version numbers. We don't need a full semver parser for this.
@@ -35,10 +40,6 @@ export function supportsKeyboardAccessibility(ace: any): boolean {
   return isAceVersionAtLeast(ace, [1, 23, 0]);
 }
 
-export function supportsCloudEditorThemes(ace: any): boolean {
-  return isAceVersionAtLeast(ace, [1, 32, 0]);
-}
-
 export function getDefaultConfig(ace: any): Partial<Ace.EditorOptions> {
   return {
     behavioursEnabled: true,
@@ -46,23 +47,19 @@ export function getDefaultConfig(ace: any): Partial<Ace.EditorOptions> {
   };
 }
 
-export function getDefaultTheme(ace: any, mode: 'light' | 'dark'): CodeEditorProps.Theme {
-  if (supportsCloudEditorThemes(ace)) {
-    return mode === 'dark' ? DEFAULT_DARK_THEME : DEFAULT_LIGHT_THEME;
+export function getDefaultTheme(
+  mode: 'light' | 'dark',
+  themes?: CodeEditorProps.AvailableThemes
+): CodeEditorProps.Theme {
+  if (mode === 'light') {
+    return themes?.light.some(value => value === CLOUD_EDITOR_LIGHT_THEME)
+      ? CLOUD_EDITOR_LIGHT_THEME
+      : FALLBACK_LIGHT_THEME;
   } else {
-    return mode === 'dark' ? FALLBACK_DARK_THEME : FALLBACK_LIGHT_THEME;
+    return themes?.dark.some(value => value === CLOUD_EDITOR_DARK_THEME)
+      ? CLOUD_EDITOR_DARK_THEME
+      : FALLBACK_DARK_THEME;
   }
-}
-
-export function getDefaultSupportedThemes(ace: any): CodeEditorProps.AvailableThemes {
-  return {
-    light: LightThemes.map(theme => theme.value).filter(
-      value => value !== 'cloud_editor' || supportsCloudEditorThemes(ace)
-    ),
-    dark: DarkThemes.map(theme => theme.value).filter(
-      value => value !== 'cloud_editor_dark' || supportsCloudEditorThemes(ace)
-    ),
-  };
 }
 
 export function getAceTheme(theme: CodeEditorProps.Theme) {
