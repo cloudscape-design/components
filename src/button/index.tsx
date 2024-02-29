@@ -41,7 +41,9 @@ const Button = React.forwardRef(
     }: ButtonProps,
     ref: React.Ref<ButtonProps.Ref>
   ) => {
-    const baseComponentProps = useBaseComponent<HTMLAnchorElement | HTMLButtonElement>('Button');
+    const baseComponentProps = useBaseComponent<HTMLAnchorElement | HTMLButtonElement>('Button', {
+      props: { formAction, fullWidth, iconAlign, iconName, rel, target, variant, wrapText },
+    });
     const baseProps = getBaseProps(props);
 
     useLatencyMetrics({

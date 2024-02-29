@@ -9,7 +9,9 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 export { ContentLayoutProps };
 
 export default function ContentLayout(props: ContentLayoutProps) {
-  const baseComponentProps = useBaseComponent('ContentLayout');
+  const baseComponentProps = useBaseComponent('ContentLayout', {
+    props: { disableOverlap: props.disableOverlap },
+  });
   return <InternalContentLayout {...props} {...baseComponentProps} />;
 }
 
