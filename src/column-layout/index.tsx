@@ -16,7 +16,9 @@ export default function ColumnLayout({
   disableGutters = false,
   ...props
 }: ColumnLayoutProps) {
-  const baseComponentProps = useBaseComponent('ColumnLayout');
+  const baseComponentProps = useBaseComponent('ColumnLayout', {
+    props: { borders, columns, disableGutters, minColumnWidth: props.minColumnWidth, variant },
+  });
   const externalProps = getExternalProps(props);
   return (
     <InternalColumnLayout

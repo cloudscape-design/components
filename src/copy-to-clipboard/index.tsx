@@ -23,7 +23,9 @@ export default function CopyToClipboard({
   textToCopy,
   ...restProps
 }: CopyToClipboardProps) {
-  const { __internalRootRef } = useBaseComponent('CopyToClipboard');
+  const { __internalRootRef } = useBaseComponent('CopyToClipboard', {
+    props: { variant },
+  });
   const baseProps = getBaseProps(restProps);
 
   const copyButtonProps =

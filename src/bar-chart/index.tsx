@@ -25,7 +25,19 @@ function BarChart<T extends number | string | Date>({
   detailPopoverSeriesContent,
   ...props
 }: BarChartProps<T>) {
-  const baseComponentProps = useBaseComponent('BarChart');
+  const baseComponentProps = useBaseComponent('BarChart', {
+    props: {
+      detailPopoverSize,
+      emphasizeBaselineAxis,
+      fitHeight: props.fitHeight,
+      hideFilter: props.hideFilter,
+      hideLegend: props.hideLegend,
+      horizontalBars,
+      stackedBars,
+      xScaleType,
+      yScaleType,
+    },
+  });
   const baseProps = getBaseProps(props);
   const className = clsx(baseProps.className, styles.root);
 
