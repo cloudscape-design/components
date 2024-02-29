@@ -68,7 +68,7 @@ const ButtonTrigger = (
       pressed && styles.pressed,
       disabled && styles.disabled,
       invalid && styles.invalid,
-      warning && styles.warning,
+      warning && !invalid && styles.warning,
       !hideCaret && styles['has-caret'],
       readOnly && styles['read-only'],
       inFilteringToken && styles['in-filtering-token'],
