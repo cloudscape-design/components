@@ -5,8 +5,10 @@ import React, { useEffect, useState } from 'react';
 import { ExtendedOperatorFormProps } from '~components/property-filter/interfaces';
 import Calendar from '~components/calendar';
 import DateInput from '~components/date-input';
+import Multiselect from '~components/multiselect';
 import { FormField, RadioGroup, TimeInput } from '~components';
 import styles from './custom-forms.scss';
+import { allItems } from './table.data';
 
 export function YesNoForm({ value, onChange }: ExtendedOperatorFormProps<boolean>) {
   return (
@@ -181,4 +183,29 @@ function formatTimezoneOffset(isoDate: string, offsetInMinutes?: number) {
     .toFixed(0)
     .padStart(2, '0');
   return `${sign}${hoursOffset}:${minuteOffset}`;
+}
+
+const allOwners = [...new Set(allItems.map(({ owner }) => owner))];
+
+export function OwnerMultiSelectForm({ value, onChange }: ExtendedOperatorFormProps<string[]>) {
+  return (
+    <FormField>
+      <Multiselect
+        options={allOwners.map(owner => ({ value: owner, label: owner }))}
+        selectedOptions={value?.map(owner => ({ value: owner, label: owner })) ?? []}
+        onChange={event =>
+          onChange(
+            event.detail.selectedOptions
+              .map(({ value }) => value)
+              .filter((value): value is string => typeof value !== 'undefined')
+          )
+        }
+        expandToViewport={true}
+      />
+    </FormField>
+  );
+}
+
+export function formatOwners(owners: string[]) {
+  return owners.join(', ');
 }

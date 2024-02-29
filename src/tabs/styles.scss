@@ -23,8 +23,15 @@
   display: none;
 }
 
+.fit-height {
+  display: flex;
+  flex-direction: column;
+  block-size: 100%;
+}
+
 .tabs-content-active {
   display: block;
+  flex: 1;
   @include focus-visible.when-visible {
     @include styles.container-focus();
   }
@@ -35,9 +42,20 @@
     padding-block: awsui.$space-scaled-m;
     padding-inline: 0;
   }
+  .fit-height > & {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+  }
 }
 
 .tabs-container-content-wrapper {
+  .fit-height > .tabs-content-wrapper > & {
+    block-size: 100%;
+    display: flex;
+    flex-direction: column;
+  }
   &.with-paddings > .tabs-content {
     padding-block-start: awsui.$space-tabs-content-top;
     padding-block-end: awsui.$space-scaled-l;

@@ -2,11 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import { act } from 'react-dom/test-utils';
-import { render as renderJsx } from '@testing-library/react';
+import { fireEvent, render as renderJsx } from '@testing-library/react';
 import AutosuggestInputWrapper from '../../../../../lib/components/test-utils/dom/internal/autosuggest-input';
 import AutosuggestInput, {
   AutosuggestInputRef,
 } from '../../../../../lib/components/internal/components/autosuggest-input';
+import Dropdown from '../../../../../lib/components/internal/components/dropdown';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 function render(jsx: React.ReactElement) {
@@ -285,6 +286,28 @@ describe('blur handling', () => {
     wrapper.findInput().findNativeInput().focus();
     getByTestId('target').focus();
     expect(onBlur).not.toBeCalled();
+    expect(wrapper.findDropdown()!.findOpenDropdown()).not.toBe(null);
+  });
+
+  test('ignores clicks inside dropdown content even if they are rendered in a portal', () => {
+    const onClose = jest.fn();
+    const { wrapper, getByTestId } = render(
+      <div>
+        <AutosuggestInput
+          value="1"
+          onChange={() => undefined}
+          onCloseDropdown={onClose}
+          dropdownContent={
+            <Dropdown trigger={<button />} open={true} expandToViewport={true}>
+              <button data-testid="target">target</button>
+            </Dropdown>
+          }
+        />
+      </div>
+    );
+    wrapper.findInput().findNativeInput().focus();
+    fireEvent.mouseDown(getByTestId('target'));
+    expect(onClose).not.toBeCalled();
     expect(wrapper.findDropdown()!.findOpenDropdown()).not.toBe(null);
   });
 });
