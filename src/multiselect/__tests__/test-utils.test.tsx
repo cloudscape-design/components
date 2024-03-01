@@ -8,32 +8,31 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 import { MultiselectProps } from '../interfaces';
 
 const options: MultiselectProps.Options = [
-  { label: 'First leaf item', value: '1' },
+  { label: 'First option', value: '1' },
   {
     label: 'First group',
     options: [
       {
-        label: 'Second leaf item',
+        label: 'Second option',
         value: '2',
       },
       {
-        label: 'Third leaf item',
+        label: 'Third option',
         value: '3',
       },
     ],
   },
-  { label: 'Third leaf item', value: '2' },
+  { label: 'Fourth option', value: '4' },
   {
     label: 'Second group',
     options: [
       {
-        label: 'Fourth leaf item',
-        value: '3',
-        lang: 'de',
+        label: 'Fifth option',
+        value: '5',
       },
       {
-        label: 'Fifth leaf item',
-        value: 'Option 4, test"2',
+        label: 'Sixth option',
+        value: '6',
       },
     ],
   },
