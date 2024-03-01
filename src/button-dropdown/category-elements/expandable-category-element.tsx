@@ -96,7 +96,11 @@ const ExpandableCategoryElement = ({
         trigger={trigger}
       >
         {item.items && expanded && (
-          <ul role="menu" aria-label={item.text} className={clsx(styles['items-list-container'])}>
+          <ul
+            role="menu"
+            aria-label={item.text}
+            className={clsx(styles['items-list-container'], styles['in-dropdown'])}
+          >
             <ItemsList
               items={item.items}
               onItemActivate={onItemActivate}
