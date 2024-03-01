@@ -1,19 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef } from 'react';
-import { KeyCode } from '../../internal/keycode';
+
 import {
   filterOptions,
   isInteractive,
   isGroupInteractive,
   isGroup,
 } from '../../internal/components/option/utils/filter-options';
-import { DropdownOption, OptionDefinition, OptionGroup } from '../../internal/components/option/interfaces';
+import type { DropdownOption, OptionDefinition, OptionGroup } from '../../internal/components/option/interfaces';
 import { useDebounceCallback } from '../../internal/hooks/use-debounce-callback';
-
-export const isChar = (keyCode: number): boolean => {
-  return [0, KeyCode.enter, KeyCode.space, KeyCode.tab].indexOf(keyCode) === -1;
-};
 
 export const isRepeatedChar = (str: string) => str.split('').every(c => c === str[0]);
 
@@ -84,12 +80,14 @@ export function useNativeSearch({
       return;
     }
 
-    const { charCode } = event;
-    if (!isChar(charCode)) {
+    const { key } = event;
+
+    if (!key || key.length !== 1) {
       return;
     }
+
     delayedResetValue();
-    const newValue = value.current + String.fromCharCode(charCode);
+    const newValue = value.current + key;
     value.current = newValue;
 
     const nextHighlight = findMatchingOption(options, newValue, highlightedOption, useInteractiveGroups);
