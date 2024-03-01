@@ -98,6 +98,7 @@ const permutations = createPermutations<FormFieldProps>([
   },
   {
     label: ['Very long label description oh wow'],
+    i18nStrings: [{ errorIconAriaLabel: 'Error', warningIconAriaLabel: 'Warning' }],
     warningText: ['Value contains prefix/trailing empty character'],
     errorText: ['An application with that name already exists'],
     constraintText: ['Only normal characters are allowed'],

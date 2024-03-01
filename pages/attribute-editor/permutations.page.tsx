@@ -120,6 +120,7 @@ export const permutations = createPermutations<AttributeEditorProps<Item>>([
   },
   {
     definition: [validationDefinitions],
+    i18nStrings: [{ errorIconAriaLabel: 'Error', warningIconAriaLabel: 'Warning' }],
     items: [defaultItems],
     addButtonText: ['Add item'],
     removeButtonText: ['Remove item'],
