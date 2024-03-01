@@ -38,7 +38,7 @@ export interface OptionsListProps extends BaseComponentProps {
   ariaLabel?: string;
   ariaLabelledby?: string;
   ariaDescribedby?: string;
-  decreaseTopMargin?: boolean;
+  decreaseBlockMargin?: boolean;
 }
 
 const BOTTOM_TRIGGER_OFFSET = 80;
@@ -66,7 +66,7 @@ const OptionsList = (
     onMouseMove,
     position = 'relative',
     role = 'listbox',
-    decreaseTopMargin = false,
+    decreaseBlockMargin = false,
     ariaLabel,
     ariaLabelledby,
     ariaDescribedby,
@@ -95,7 +95,7 @@ const OptionsList = (
   }, [open, statusType, handleScroll]);
 
   const className = clsx(styles['options-list'], {
-    [styles['decrease-top-margin']]: decreaseTopMargin,
+    [styles['decrease-block-margin']]: decreaseBlockMargin,
   });
 
   const mergedRef = useMergeRefs(ref, menuRef);
