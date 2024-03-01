@@ -62,6 +62,21 @@ describe('Dropdown Component', () => {
       expect(handleCloseDropdown).toBeCalled();
     });
 
+    test('does not fire close event when a portaled element inside dropdown is clicked', async () => {
+      const handleCloseDropdown = jest.fn();
+      renderDropdown(
+        <Dropdown trigger={<button />} onDropdownClose={handleCloseDropdown} open={true}>
+          <Dropdown trigger={<button />} open={true} expandToViewport={true}>
+            <button data-testid="inside">inside</button>
+          </Dropdown>
+        </Dropdown>
+      );
+      await runPendingEvents();
+
+      act(() => screen.getByTestId('inside').click());
+      expect(handleCloseDropdown).not.toBeCalled();
+    });
+
     test('does not fire close event when a self-destructible element inside dropdown was clicked', async () => {
       function SelfDestructible() {
         const [visible, setVisible] = useState(true);
@@ -88,6 +103,44 @@ describe('Dropdown Component', () => {
       expect(screen.getByTestId('after-dismiss')).toBeTruthy();
     });
   });
+
+  describe('dropdown focus events', () => {
+    test('fires focus and blur events when focus transitions from and to an outside element', async () => {
+      const handleFocus = jest.fn();
+      const handleBlur = jest.fn();
+      const [, outsideElement] = renderDropdown(
+        <Dropdown trigger={<button data-testid="trigger" />} onFocus={handleFocus} onBlur={handleBlur} open={true} />
+      );
+      await runPendingEvents();
+
+      screen.getByTestId('trigger').focus();
+      expect(handleFocus).toBeCalled();
+      outsideElement.focus();
+      expect(handleBlur).toBeCalled();
+    });
+
+    test('does not fire focus and event when focus transitions from and to a element in the dropdown, even if portaled', async () => {
+      const handleFocus = jest.fn();
+      const handleBlur = jest.fn();
+      renderDropdown(
+        <Dropdown trigger={<button data-testid="trigger" />} onFocus={handleFocus} onBlur={handleBlur} open={true}>
+          <Dropdown trigger={<button />} open={true} expandToViewport={true}>
+            <button data-testid="inside">inside</button>
+          </Dropdown>
+        </Dropdown>
+      );
+      await runPendingEvents();
+
+      screen.getByTestId('trigger').focus();
+      // handleFocus has been called once by the previous line to set up the test, so we clear it.
+      handleFocus.mockClear();
+      screen.getByTestId('inside').focus();
+      screen.getByTestId('trigger').focus();
+      expect(handleFocus).not.toBeCalled();
+      expect(handleBlur).not.toBeCalled();
+    });
+  });
+
   describe('dropdown recalculate position on scroll', () => {
     beforeEach(() => {
       jest.useFakeTimers();

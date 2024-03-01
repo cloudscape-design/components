@@ -11,7 +11,7 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { CodeEditorProps } from './interfaces';
 import { Pane } from './pane';
 import { useChangeEffect } from './listeners';
-import { PaneStatus, getLanguageLabel, getDefaultTheme, getDefaultSupportedThemes } from './util';
+import { PaneStatus, getLanguageLabel, getDefaultTheme, DEFAULT_AVAILABLE_THEMES } from './util';
 import { fireNonCancelableEvent } from '../internal/events';
 import { setupEditor } from './setup-editor';
 import { ResizableBox } from './resizable-box';
@@ -45,8 +45,6 @@ import {
 export { CodeEditorProps };
 
 const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditorProps.Ref>) => {
-  const { __internalRootRef } = useBaseComponent('CodeEditor');
-  const { controlId, ariaLabelledby, ariaDescribedby } = useFormFieldContext(props);
   const {
     ace,
     value,
@@ -61,6 +59,8 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
     themes,
     ...rest
   } = props;
+  const { __internalRootRef } = useBaseComponent('CodeEditor', { props: { language } });
+  const { controlId, ariaLabelledby, ariaDescribedby } = useFormFieldContext(props);
   const [editorHeight = 480, setEditorHeight] = useControllable(editorContentHeight, onEditorContentResize, 480, {
     componentName: 'code-editor',
     changeHandler: 'onEditorContentResize',
@@ -84,7 +84,7 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
   const [cursorPosition, setCursorPosition] = useState<Ace.Point>({ row: 0, column: 0 });
   const [isTabFocused, setTabFocused] = useState<boolean>(false);
 
-  const { editorRef, editor } = useEditor(ace, loading);
+  const { editorRef, editor } = useEditor(ace, themes, loading);
 
   useForwardFocus(ref, editorRef);
 
@@ -110,7 +110,7 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
 
   useSyncEditorWrapLines(editor, preferences?.wrapLines);
 
-  const defaultTheme = getDefaultTheme(ace, mode);
+  const defaultTheme = getDefaultTheme(mode, themes);
   useSyncEditorTheme(editor, preferences?.theme ?? defaultTheme);
 
   // Change listeners
@@ -274,7 +274,7 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
             <PreferencesModal
               onConfirm={onPreferencesConfirm}
               onDismiss={onPreferencesDismiss}
-              themes={themes ?? getDefaultSupportedThemes(ace)}
+              themes={themes ?? DEFAULT_AVAILABLE_THEMES}
               preferences={preferences}
               defaultTheme={defaultTheme}
               i18nStrings={{

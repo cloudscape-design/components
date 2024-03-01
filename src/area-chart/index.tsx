@@ -19,7 +19,16 @@ function AreaChart<T extends AreaChartProps.DataTypes>({
   i18nStrings = {},
   ...props
 }: AreaChartProps<T>) {
-  const baseComponentProps = useBaseComponent('AreaChart');
+  const baseComponentProps = useBaseComponent('AreaChart', {
+    props: {
+      detailPopoverSize,
+      hideLegend: props.hideLegend,
+      hideFilter: props.hideFilter,
+      fitHeight: props.fitHeight,
+      xScaleType,
+      yScaleType,
+    },
+  });
   return (
     <InternalAreaChart
       height={height}

@@ -24,6 +24,7 @@ import { getFirstFocusable, getLastFocusable } from '../focus-lock/utils.js';
 import { useUniqueId } from '../../hooks/use-unique-id/index.js';
 import customCssProps from '../../generated/custom-css-properties';
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
+import { nodeBelongs } from '../../utils/node-belongs';
 
 interface DropdownContainerProps {
   children?: React.ReactNode;
@@ -264,8 +265,8 @@ const Dropdown = ({
   };
 
   const isOutsideDropdown = (element: Element) =>
-    (!wrapperRef.current || !wrapperRef.current.contains(element)) &&
-    (!dropdownContainerRef.current || !dropdownContainerRef.current.contains(element));
+    (!wrapperRef.current || !nodeBelongs(wrapperRef.current, element)) &&
+    (!dropdownContainerRef.current || !nodeBelongs(dropdownContainerRef.current, element));
 
   const focusHandler = (event: React.FocusEvent) => {
     if (!event.relatedTarget || isOutsideDropdown(event.relatedTarget)) {
@@ -360,7 +361,7 @@ const Dropdown = ({
       return;
     }
     const clickListener = (e: MouseEvent) => {
-      if (!dropdownRef.current?.contains(e.target as Node) && !triggerRef.current?.contains(e.target as Node)) {
+      if (!nodeBelongs(dropdownRef.current, e.target) && !nodeBelongs(triggerRef.current, e.target)) {
         fireNonCancelableEvent(onDropdownClose);
       }
     };

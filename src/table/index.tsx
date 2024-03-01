@@ -22,6 +22,7 @@ const Table = React.forwardRef(
         stripedRows: props.stripedRows,
         variant,
         wrapLines: props.wrapLines,
+        enableKeyboardNavigation: props.enableKeyboardNavigation,
       },
     });
 
