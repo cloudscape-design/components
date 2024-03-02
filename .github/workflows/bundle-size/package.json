@@ -4,8 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "build": "node build.js",
-    "preinstall": "node ./unlock-package-lock.cjs"
+    "build": "node build.js"
   },
   "dependencies": {
     "@cloudscape-design/components": "*",
