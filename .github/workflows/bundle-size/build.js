@@ -5,6 +5,10 @@ import { unlinkSync, writeFileSync } from 'node:fs';
 import react from '@vitejs/plugin-react';
 const compress = promisify(gzip);
 
+function concatFiles(files) {
+  return files.reduce((total, current) => total + (current.code ?? current.source ?? ''), '');
+}
+
 async function main() {
   try {
     unlinkSync('output.txt');
@@ -12,28 +16,34 @@ async function main() {
 
   const result = await build({
     plugins: [react()],
-    logLevel: 'silent',
   });
 
-  const jsFile = result.output.find(item => item.fileName.includes('index') && item.fileName.endsWith('.js'));
-  if (!jsFile) {
+  const jsContent = concatFiles(result.output.filter(item => item.fileName.endsWith('.js')));
+  const cssContent = concatFiles(result.output.filter(item => item.fileName.endsWith('.css')));
+  if (!jsContent) {
     throw new Error('Build did not produce a JS file');
   }
-  if (jsFile.type !== 'chunk') {
-    throw new Error("The JS file is not of type 'chunk'");
-  }
-  return await getCompressedSize(jsFile.code);
+
+  return {
+    cssSize: cssContent.length,
+    cssCompressedSize: await getCompressedSize(cssContent),
+    jsSize: jsContent.length,
+    jsCompressedSize: await getCompressedSize(jsContent),
+  };
 }
 
 async function getCompressedSize(code) {
+  if (!code) {
+    return 0;
+  }
   const compressed = await compress(typeof code === 'string' ? code : Buffer.from(code));
   return compressed.length;
 }
 
 main()
-  .then(bytes => {
-    writeFileSync('output.txt', bytes.toString());
-    console.log('Result written to output.txt');
+  .then(stats => {
+    writeFileSync('output.json', JSON.stringify(stats));
+    console.log('Result written to output.json');
   })
   .catch(e => {
     console.error(e);
