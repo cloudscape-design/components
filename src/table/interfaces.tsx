@@ -328,24 +328,9 @@ export interface TableProps<T = any> extends BaseComponentProps {
   enableKeyboardNavigation?: boolean;
 
   /**
-   * Experimental API
+   * TODO: Add API description, list all 4 properties. Mention trackBy convention.
    */
-  getItemChildren?: (item: T) => readonly T[];
-
-  /**
-   * Experimental API
-   */
-  getItemExpandable?: (item: T) => boolean;
-
-  /**
-   * Experimental API
-   */
-  getItemExpanded?: (item: T) => boolean;
-
-  /**
-   * Experimental API
-   */
-  onExpandableItemToggle?: NonCancelableEventHandler<TableProps.ExpandableItemToggleDetail<T>>;
+  expandableRows?: TableProps.ExpandableRows<T>;
 }
 
 export namespace TableProps {
@@ -493,6 +478,13 @@ export namespace TableProps {
   export interface ColumnDisplayProperties {
     id: string;
     visible: boolean;
+  }
+
+  export interface ExpandableRows<T> {
+    getItemChildren: (item: T) => readonly T[];
+    getItemExpandable: (item: T) => boolean;
+    expandedItems: ReadonlyArray<T>;
+    onExpandableItemToggle: NonCancelableEventHandler<TableProps.ExpandableItemToggleDetail<T>>;
   }
 
   export interface ExpandableItemToggleDetail<T> {

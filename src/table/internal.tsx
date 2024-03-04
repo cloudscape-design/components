@@ -115,10 +115,7 @@ const InternalTable = React.forwardRef(
       stickyColumns,
       columnDisplay,
       enableKeyboardNavigation = false,
-      getItemChildren,
-      getItemExpandable,
-      getItemExpanded,
-      onExpandableItemToggle,
+      expandableRows,
       __funnelSubStepProps,
       ...rest
     }: InternalTableProps<T>,
@@ -130,10 +127,7 @@ const InternalTable = React.forwardRef(
 
     const { isExpandable, allItems, getExpandableItemProps } = getExpandableTableProps({
       items,
-      getItemChildren,
-      getItemExpandable,
-      getItemExpanded,
-      onExpandableItemToggle,
+      expandableRows,
     });
 
     const [containerWidth, wrapperMeasureRef] = useContainerQuery<number>(rect => rect.contentBoxWidth);

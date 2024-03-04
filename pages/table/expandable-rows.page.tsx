@@ -83,7 +83,6 @@ export default () => {
   const getScopedInstances = (selected: null | string) => {
     return selected === null ? allInstances : allInstances.filter(i => i.path.includes(selected));
   };
-  const scopedInstances = getScopedInstances(selectedCluster);
 
   const { items, collectionProps, propertyFilterProps, filteredItemsCount, actions } = useCollection(
     getScopedInstances(selectedCluster),
@@ -160,7 +159,7 @@ export default () => {
     option.propertyKey === 'path' ? { ...option, value: option.value.split(',')[0] } : option
   );
 
-  const expandedInstances = scopedInstances.filter(i => collectionProps.getItemExpanded?.(i));
+  const expandedInstances = collectionProps.expandableRows?.expandedItems ?? [];
 
   const columnDefinitions: TableProps.ColumnDefinition<Instance>[] = [
     {
@@ -178,7 +177,7 @@ export default () => {
         <InstanceTypeWrapper instanceType={item.type}>
           {item.type === 'instance'
             ? item.role
-            : `${item.role} (${collectionProps.getItemChildren?.(item).length ?? 0})`}
+            : `${item.role} (${collectionProps.expandableRows?.getItemChildren(item).length ?? 0})`}
         </InstanceTypeWrapper>
       ),
       ariaLabel: columnLabel('Role'),

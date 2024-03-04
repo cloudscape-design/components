@@ -1,23 +1,22 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { NonCancelableEventHandler, fireNonCancelableEvent } from '../../internal/events';
+import { fireNonCancelableEvent } from '../../internal/events';
 import { TableProps } from '../interfaces';
+import { ItemSet } from '../selection/utils';
 
 export function getExpandableTableProps<T>({
   items,
-  getItemChildren,
-  getItemExpandable,
-  getItemExpanded,
-  onExpandableItemToggle,
+  expandableRows,
+  trackBy,
 }: {
   items: readonly T[];
-  getItemChildren?: (item: T) => readonly T[];
-  getItemExpandable?: (item: T) => boolean;
-  getItemExpanded?: (item: T) => boolean;
-  onExpandableItemToggle?: NonCancelableEventHandler<TableProps.ExpandableItemToggleDetail<T>>;
+  expandableRows?: TableProps.ExpandableRows<T>;
+  trackBy?: TableProps.TrackBy<T>;
 }) {
-  const isExpandable = !!getItemChildren;
+  const isExpandable = !!expandableRows;
+
+  const expandedSet = new ItemSet(trackBy, expandableRows?.expandedItems ?? []);
 
   let allItems = items;
   const itemToLevel = new Map<T, number>();
@@ -28,8 +27,8 @@ export function getExpandableTableProps<T>({
     const traverse = (item: T, level = 1) => {
       itemToLevel.set(item, level);
       visibleItems.push(item);
-      if (!getItemExpanded || getItemExpanded(item)) {
-        const children = getItemChildren(item);
+      if (expandedSet.has(item)) {
+        const children = expandableRows.getItemChildren(item);
         children.forEach(child => traverse(child, level + 1));
       }
     };
@@ -38,7 +37,7 @@ export function getExpandableTableProps<T>({
 
     for (let index = 0; index < visibleItems.length; index++) {
       const item = visibleItems[index];
-      const isExpanded = getItemExpanded && getItemExpanded(item);
+      const isExpanded = expandedSet.has(item);
       if (isExpanded) {
         let insertionIndex = index + 1;
         for (insertionIndex; insertionIndex < visibleItems.length; insertionIndex++) {
@@ -54,15 +53,13 @@ export function getExpandableTableProps<T>({
     allItems = visibleItems;
   }
 
-  const getExpandableItemProps = (item: T) => {
-    const isExpanded = getItemExpanded?.(item) ?? true;
-    return {
-      level: itemToLevel.get(item) ?? 1,
-      isExpandable: getItemExpandable?.(item) ?? true,
-      isExpanded,
-      onExpandableItemToggle: () => fireNonCancelableEvent(onExpandableItemToggle, { item, expanded: !isExpanded }),
-    };
-  };
+  const getExpandableItemProps = (item: T) => ({
+    level: itemToLevel.get(item) ?? 1,
+    isExpandable: expandableRows?.getItemExpandable(item) ?? true,
+    isExpanded: expandedSet.has(item),
+    onExpandableItemToggle: () =>
+      fireNonCancelableEvent(expandableRows?.onExpandableItemToggle, { item, expanded: !expandedSet.has(item) }),
+  });
 
   return { isExpandable, allItems, getExpandableItemProps };
 }
