@@ -50,12 +50,15 @@
       border-inline: styles.$control-border-width solid awsui.$color-border-container-top;
     }
 
-    border-block-end: none;
-
     // Don't show dropdown border when there's no dropdown content
     &.is-empty::after {
       display: none;
     }
+  }
+
+  > .dropdown-content-wrapper {
+    border-block-start: awsui.$border-divider-list-width solid awsui.$color-border-container-top;
+    border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-dropdown-group;
   }
 
   &-drop-up {
@@ -89,12 +92,11 @@
     inline-size: max-content;
     max-inline-size: var(#{custom-props.$dropdownDefaultMaxWidth}, 100%);
   }
-  &.hide-upper-border > .dropdown-content-wrapper {
-    border-block-start: none;
+  &.hide-block-border > .dropdown-content-wrapper {
+    border-block: none;
   }
   &.interior > .dropdown-content-wrapper {
     margin-block-start: -1px;
-    border-block-start: awsui.$border-divider-list-width solid awsui.$color-border-container-top;
   }
   &.open {
     display: block;
