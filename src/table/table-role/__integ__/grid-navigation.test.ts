@@ -108,10 +108,10 @@ test(
     await page.click('[data-testid="link-before"]');
     await page.keys('Tab');
     await page.keys(['ArrowRight', 'ArrowDown', 'ArrowRight', 'ArrowRight']);
-    await expect(page.isFocused('button[aria-label="Update item"]')).resolves.toBe(true);
+    await expect(page.isFocused('tr[aria-rowindex="2"] button[aria-label="Update item"]')).resolves.toBe(true);
 
     await page.keys(['ArrowDown', 'ArrowDown', 'ArrowDown', 'ArrowDown']);
-    await expect(page.isFocused('button[aria-label="Update item"]')).resolves.toBe(true);
+    await expect(page.isFocused('tr[aria-rowindex="6"] button[aria-label="Update item"]')).resolves.toBe(true);
   })
 );
 
@@ -121,12 +121,12 @@ test(
     await page.click('[data-testid="link-before"]');
     await page.keys('Tab');
     await page.keys(['ArrowRight', 'ArrowDown', 'ArrowRight']);
-    await expect(page.isFocused('button[aria-label="Duplicate item"]')).resolves.toBe(true);
+    await expect(page.isFocused('tr[aria-rowindex="2"] button[aria-label="Duplicate item"]')).resolves.toBe(true);
 
     await page.keys(range(0, 11).map(() => 'ArrowDown'));
     await expect(page.getFocusedElementText()).resolves.toBe('Summary row');
 
     await page.keys(['ArrowDown']);
-    await expect(page.isFocused('button[aria-label="Duplicate item"]')).resolves.toBe(true);
+    await expect(page.isFocused('tr[aria-rowindex="14"] button[aria-label="Duplicate item"]')).resolves.toBe(true);
   })
 );
