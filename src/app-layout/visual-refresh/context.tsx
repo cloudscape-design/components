@@ -629,7 +629,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       ]
     );
     //console.log('Background is ' + headerProps.headerBackground);
-    console.log('Your context is ' + headerDarkVisualContext.highContrastHeader);
+    console.log('Your context in AppLayout is ' + headerDarkVisualContext.highContrastHeader);
     return (
       <HeaderDarkVisualContext.Provider value={{ handleHeaderDarkVisualContextProps: setHeaderDarkVisualContextProps }}>
         <CustomHeaderStyle.Provider value={{ handleCustomHeaderStyleProps: setCustomHeaderStyleProps }}>

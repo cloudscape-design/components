@@ -49,12 +49,12 @@ export default function InternalContentLayout({
   }, [handleHeroHeaderProps, heroHeader]);
 
   useEffect(() => {
-    highContrastHeader && handleHeaderDarkVisualContextProps({ highContrastHeader });
-  }, [handleHeaderDarkVisualContextProps, highContrastHeader]);
-
-  useEffect(() => {
     headerBackground && handleCustomHeaderStyleProps({ headerBackground });
   }, [handleCustomHeaderStyleProps, headerBackground]);
+
+  useEffect(() => {
+    highContrastHeader && handleHeaderDarkVisualContextProps({ highContrastHeader });
+  }, [handleHeaderDarkVisualContextProps, highContrastHeader]);
 
   return (
     <div

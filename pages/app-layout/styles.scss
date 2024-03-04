@@ -175,3 +175,13 @@
   overflow: hidden;
   position: relative;
 }
+
+@media only screen and (min-width: 957px) {
+  .custom-home__sidebar {
+    margin-top: -86px;
+  }
+
+  .custom-home__header-cta {
+    margin-bottom: 38px;
+  }
+}

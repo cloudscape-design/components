@@ -23,7 +23,7 @@ export default function Background() {
 
   //const customHeaderBackground = ''
 
-  //console.log('The dark header context is ' + isDarkHeaderContext);
+  console.log('The dark header context is ' + isDarkHeaderContext);
   console.log('The background color is ' + headerBackground);
 
   if (!hasNotificationsContent && (!breadcrumbs || isMobile) && !hasBackgroundOverlap) {

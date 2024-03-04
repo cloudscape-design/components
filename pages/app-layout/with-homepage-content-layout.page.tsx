@@ -444,7 +444,7 @@ const ContentWithoutContentLayout = () => {
   return (
     <Box margin={{ bottom: 'l' }}>
       <div className={clsx(styles['custom-home__header'])}>
-        <Box padding={{ vertical: 'xxxl', horizontal: 's' }}>
+        <Box padding={{ top: 'xl', bottom: 'xxxl', horizontal: 's' }}>
           <Grid
             className="homepage-heading"
             gridDefinition={[
@@ -453,7 +453,7 @@ const ContentWithoutContentLayout = () => {
               { colspan: { xl: 2, l: 3, s: 4, xxs: 10 }, offset: { s: 0, xxs: 1 } },
             ]}
           >
-            <Box fontWeight="normal" padding={{ top: 'xs', bottom: 'xs' }}>
+            <Box fontWeight="normal" padding={{ top: 'xs', bottom: 'xxxs' }}>
               <span className={clsx(styles['custom-home__category'])}>Category</span>
             </Box>
             <div className={clsx(styles['custom-home__header-title'])}>
@@ -474,14 +474,14 @@ const ContentWithoutContentLayout = () => {
               >
                 Fast and reliable delivery of your static content
               </Box>
-              <Box variant="p" fontWeight="normal">
+              <Box variant="p" fontWeight="normal" padding={{ bottom: 'l' }}>
                 <span className={clsx(styles['custom-home__header-sub-title'])}>
                   Amazon CloudFront is a global content delivery network service (CDN) that accelerates delivery of your
                   websites, APIs, video content or other web assets through CDN caching.
                 </span>
               </Box>
             </div>
-            <div className="custom-home__header-cta">
+            <div className={clsx(styles['custom-home__header-cta'])}>
               <Container header={<Header variant="h2">Create distribution</Header>}>
                 <SpaceBetween size="xl">
                   <FormField stretch={true} label="Delivery method">
@@ -624,7 +624,7 @@ const ContentWithoutContentLayout = () => {
               </ColumnLayout>
             </Container>
           </SpaceBetween>
-          <div className="custom-home__sidebar">
+          <div className={clsx(styles['custom-home__sidebar'])}>
             <SpaceBetween size="xxl">
               <Container header={<Header variant="h2">Pricing (US)</Header>}>
                 <SeparatedList
@@ -741,6 +741,7 @@ export default function () {
     return (
       <ScreenshotArea gutters={false}>
         <AppLayout
+          maxContentWidth={1280}
           ariaLabels={labels}
           breadcrumbs={breadcrumbVisible ? <Breadcrumbs /> : null}
           navigation={<Navigation />}
