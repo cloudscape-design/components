@@ -482,7 +482,7 @@ export namespace TableProps {
 
   export interface ExpandableRows<T> {
     getItemChildren: (item: T) => readonly T[];
-    getItemExpandable: (item: T) => boolean;
+    isItemExpandable: (item: T) => boolean;
     expandedItems: ReadonlyArray<T>;
     onExpandableItemToggle: NonCancelableEventHandler<TableProps.ExpandableItemToggleDetail<T>>;
   }

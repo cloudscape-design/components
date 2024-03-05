@@ -12946,28 +12946,6 @@ validation states, or show warning for unsaved changes.",
     },
     Object {
       "cancelable": false,
-      "description": "Experimental API",
-      "detailInlineType": Object {
-        "name": "TableProps.ExpandableItemToggleDetail",
-        "properties": Array [
-          Object {
-            "name": "expanded",
-            "optional": false,
-            "type": "boolean",
-          },
-          Object {
-            "name": "item",
-            "optional": false,
-            "type": "T",
-          },
-        ],
-        "type": "object",
-      },
-      "detailType": "TableProps.ExpandableItemToggleDetail<T>",
-      "name": "onExpandableItemToggle",
-    },
-    Object {
-      "cancelable": false,
       "description": "Note: This feature is provided for backwards compatibility. Its use is not recommended,
 and it may be deprecated in the future.
 Called when the user clicked at a table row. The event detail contains the index of the
@@ -13131,6 +13109,16 @@ add a meaningful description to the whole selection.
             "type": "(column: TableProps.ColumnDefinition<any>) => string",
           },
           Object {
+            "name": "collapseButtonLabel",
+            "optional": true,
+            "type": "(item: T) => string",
+          },
+          Object {
+            "name": "expandButtonLabel",
+            "optional": true,
+            "type": "(item: T) => string",
+          },
+          Object {
             "name": "itemSelectionLabel",
             "optional": true,
             "type": "(data: TableProps.SelectionState<T>, row: T) => string",
@@ -13260,30 +13248,44 @@ When set to \`true\`, table cells become navigable with arrow keys, and the enti
       "type": "boolean",
     },
     Object {
+      "description": "TODO: Add API description, list all 4 properties. Mention trackBy convention.",
+      "inlineType": Object {
+        "name": "TableProps.ExpandableRows",
+        "properties": Array [
+          Object {
+            "name": "expandedItems",
+            "optional": false,
+            "type": "ReadonlyArray<T>",
+          },
+          Object {
+            "name": "getItemChildren",
+            "optional": false,
+            "type": "(item: T) => typeOperator",
+          },
+          Object {
+            "name": "isItemExpandable",
+            "optional": false,
+            "type": "(item: T) => boolean",
+          },
+          Object {
+            "name": "onExpandableItemToggle",
+            "optional": false,
+            "type": "NonCancelableEventHandler<TableProps.ExpandableItemToggleDetail<T>>",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "expandableRows",
+      "optional": true,
+      "type": "TableProps.ExpandableRows<T>",
+    },
+    Object {
       "description": " Use this property to inform screen readers which range of items is currently displayed in the table.
  It specifies the index (1-based) of the first item in the table.
  If the table has no pagination, leave this property undefined.",
       "name": "firstIndex",
       "optional": true,
       "type": "number",
-    },
-    Object {
-      "description": "Experimental API",
-      "name": "getItemChildren",
-      "optional": true,
-      "type": "(item: T) => typeOperator",
-    },
-    Object {
-      "description": "Experimental API",
-      "name": "getItemExpandable",
-      "optional": true,
-      "type": "(item: T) => boolean",
-    },
-    Object {
-      "description": "Experimental API",
-      "name": "getItemExpanded",
-      "optional": true,
-      "type": "(item: T) => boolean",
     },
     Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",

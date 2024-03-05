@@ -55,7 +55,7 @@ export function getExpandableTableProps<T>({
 
   const getExpandableItemProps = (item: T) => ({
     level: itemToLevel.get(item) ?? 1,
-    isExpandable: expandableRows?.getItemExpandable(item) ?? true,
+    isExpandable: expandableRows?.isItemExpandable(item) ?? true,
     isExpanded: expandedSet.has(item),
     onExpandableItemToggle: () =>
       fireNonCancelableEvent(expandableRows?.onExpandableItemToggle, { item, expanded: !expandedSet.has(item) }),
