@@ -11,6 +11,7 @@ export interface TokenListProps<Item> {
   renderItem: (item: Item, itemIndex: number) => React.ReactNode;
   i18nStrings?: I18nStrings;
   removedItemIndex?: null | number;
+  onExpandedClick?: (isExpanded: boolean) => void;
 }
 
 export interface I18nStrings {

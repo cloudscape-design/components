@@ -63,6 +63,13 @@ export default function InternalTokenGroup({
         )}
         i18nStrings={i18nStrings}
         removedItemIndex={removedItemIndex}
+        onExpandedClick={isExpanded => {
+          if (isExpanded && limit) {
+            setRemovedItemIndex(limit);
+          } else {
+            setRemovedItemIndex(null);
+          }
+        }}
       />
     </div>
   );
