@@ -16,7 +16,8 @@
   pointer-events: none;
   position: sticky;
   inset-block-start: var(#{custom-props.$offsetTop});
-  z-index: 830;
+  // z-index: 830;
+  z-index: 850;
 
   &.has-open-drawer {
     background-color: awsui.$color-background-container-content;
@@ -54,36 +55,41 @@
   @include styles.styles-reset;
   background-color: transparent;
   box-sizing: border-box;
-  block-size: 100%;
+  // block-size: 100%;
   overflow-y: hidden;
   overflow-x: hidden;
   /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
   overscroll-behavior-y: contain;
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+  overscroll-behavior-x: contain;
 
-  &:not(.has-multiple-triggers).has-open-drawer {
-    inline-size: 0;
-  }
+  // &:not(.has-multiple-triggers).has-open-drawer {
+  //   inline-size: 0;
+  // }
+  inline-size: 100%;
 
   &.has-multiple-triggers.has-open-drawer {
     background-color: awsui.$color-background-container-content;
   }
 
-  &:not(.has-multiple-triggers):not(.has-open-drawer) {
-    inline-size: calc((awsui.$space-layout-toggle-padding * 2) + awsui.$space-layout-toggle-diameter);
-  }
+  // &:not(.has-multiple-triggers):not(.has-open-drawer) {
+  //   inline-size: calc((awsui.$space-layout-toggle-padding * 2) + awsui.$space-layout-toggle-diameter);
+  // }
 }
 
 .drawers-mobile-triggers-container {
   display: flex;
+  gap: awsui.$space-static-xxs;
 }
 
 .drawers-trigger-content {
   align-items: center;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: awsui.$space-xs;
-  padding-block-start: awsui.$space-scaled-s;
-  inline-size: calc((awsui.$space-layout-toggle-padding * 2) + awsui.$space-layout-toggle-diameter);
+  // padding-block-start: awsui.$space-scaled-s;
+  // inline-size: calc((awsui.$space-layout-toggle-padding * 2) + awsui.$space-layout-toggle-diameter);
+  justify-content: flex-end;
 
   &:not(.has-multiple-triggers).has-open-drawer {
     opacity: 0;
@@ -104,9 +110,10 @@
 
 .drawers-trigger {
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
-    inline-size: constants.$sidebar-size-closed;
+    // inline-size: constants.$sidebar-size-closed;
     display: flex;
     justify-content: center;
+    align-items: center;
   }
 }
 

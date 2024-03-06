@@ -14,7 +14,6 @@ export default function Main() {
     content,
     disableBodyScroll,
     disableContentPaddings,
-    footerHeight,
     hasDrawerViewportOverlay,
     navigationOpen,
     placement,
@@ -30,8 +29,6 @@ export default function Main() {
     splitPanelPosition,
     activeDrawerId,
   } = useAppLayoutInternals();
-
-  const splitPanelHeight = offsetBottom - footerHeight;
 
   return (
     <div

@@ -1,0 +1,50 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../internal/styles/' as styles;
+@use '../../internal/styles/tokens' as awsui;
+@use '../../internal/generated/custom-css-properties/index.scss' as custom-props;
+
+section.universal-toolbar {
+  background-color: awsui.$color-background-layout-panel-content;
+  border-block-end: awsui.$border-divider-layout-width solid awsui.$color-border-divider-panel-bottom;
+  box-sizing: border-box;
+  grid-area: universalToolbar;
+  grid-column: 2 / span 3;
+  padding-block: 0;
+  padding-inline: awsui.$space-m;
+  position: sticky;
+  inset-block-start: var(#{custom-props.$offsetTop});
+  transition: ease all 0.35s;
+  z-index: 840;
+
+  &.toolbar-hidden {
+    inset-block-start: -60px;
+    opacity: 0;
+    block-size: 0px;
+    border-block-end: none;
+  }
+
+  .toolbar-container {
+    block-size: 48px;
+    align-items: center;
+    display: inline-flex;
+    column-gap: awsui.$space-static-xs;
+    inline-size: 100%;
+  }
+
+  .universal-toolbar-breadcrumbs {
+    padding-inline-start: awsui.$space-static-xxs;
+    background-color: awsui.$color-background-layout-panel-content;
+    flex-shrink: 0;
+  }
+
+  .universal-toolbar-drawers {
+    column-gap: awsui.$space-static-xs;
+    display: flex;
+    inline-size: 100%;
+    justify-content: flex-end;
+  }
+}
