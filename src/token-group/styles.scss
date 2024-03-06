@@ -68,8 +68,7 @@
   color: awsui.$color-text-body-default;
   box-sizing: border-box;
 }
-.token-box-error {
-  border-color: awsui.$color-border-status-error;
+@mixin token-box-validation {
   border-inline-start-width: awsui.$border-invalid-width;
 
   > .dismiss-button {
@@ -78,6 +77,14 @@
       color: awsui.$color-text-interactive-hover;
     }
   }
+}
+.token-box-error {
+  border-color: awsui.$color-border-status-error;
+  @include token-box-validation;
+}
+.token-box-warning {
+  border-color: awsui.$color-border-status-warning;
+  @include token-box-validation;
 }
 .token-box-disabled.token-box-disabled {
   border-color: awsui.$color-border-control-disabled;

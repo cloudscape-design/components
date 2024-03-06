@@ -1361,6 +1361,7 @@ The event \`detail\` contains the index of the corresponding item.",
 * \`label\` (ReactNode) - Text label for the form field.
 * \`info\` (ReactNode) - Info link for the form field.
 * \`errorText\` ((item, itemIndex) => ReactNode) - Error message text to display as a control validation message.
+* \`warningText\` ((item, itemIndex) => ReactNode) - Warning message text to display as a control validation message.
    It renders the form field as invalid if the returned value is not \`null\` or \`undefined\`.
 * \`constraintText\` ((item, itemIndex) => ReactNode) - Text to display as a constraint message below the field.
 * \`control\` ((item, itemIndex) => ReactNode) - A control to use as the input for the field.
@@ -1396,6 +1397,11 @@ A maximum of four fields are supported.
             "name": "removeButtonAriaLabel",
             "optional": true,
             "type": "(item: T) => string",
+          },
+          Object {
+            "name": "warningIconAriaLabel",
+            "optional": true,
+            "type": "string",
           },
         ],
         "type": "object",
@@ -2017,6 +2023,16 @@ to the correct offset, before performing any operations on them. Use the element
 by the \`findOptionsContainer\` test utility for this.
 ",
       "name": "virtualScroll",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Overrides the invalidation state. Usually the warning state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.",
+      "name": "warning",
       "optional": true,
       "type": "boolean",
     },
@@ -5699,6 +5715,16 @@ Don't use read-only inputs outside a form.
       "optional": false,
       "type": "string",
     },
+    Object {
+      "description": "Overrides the invalidation state. Usually the warning state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.",
+      "name": "warning",
+      "optional": true,
+      "type": "boolean",
+    },
   ],
   "regions": Array [],
   "releaseStatus": "stable",
@@ -6024,6 +6050,16 @@ By default the starting day of the week is defined by the locale, but you can us
       "name": "value",
       "optional": false,
       "type": "string",
+    },
+    Object {
+      "description": "Overrides the invalidation state. Usually the warning state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.",
+      "name": "warning",
+      "optional": true,
+      "type": "boolean",
     },
   ],
   "regions": Array [],
@@ -6541,6 +6577,16 @@ or a relative time range.",
       "optional": false,
       "type": "DateRangePickerProps.Value | null",
     },
+    Object {
+      "description": "Overrides the invalidation state. Usually the warning state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.",
+      "name": "warning",
+      "optional": true,
+      "type": "boolean",
+    },
   ],
   "regions": Array [],
   "releaseStatus": "stable",
@@ -6806,31 +6852,6 @@ The event \`detail\` contains the current value of the component.",
       "type": "string",
     },
     Object {
-      "description": "Adds \`aria-describedby\` to the component. If you're using this component within a form field,
-don't set this property because the form field component automatically sets it.
-Use this property if the component isn't surrounded by a form field, or you want to override the value
-automatically set by the form field (for example, if you have two components within a single form field).
-
-To use it correctly, define an ID for each element that you want to use as a description
-and set the property to a string of each ID separated by spaces (for example, \`\\"id1 id2 id3\\"\`).
-",
-      "name": "ariaDescribedby",
-      "optional": true,
-      "type": "string",
-    },
-    Object {
-      "description": "Adds \`aria-labelledby\` to the component. If you're using this component within a form field,
-don't set this property because the form field component automatically sets it.
-Use this property if the component isn't surrounded by a form field, or you want to override the value
-automatically set by the form field (for example, if you have two components within a single form field).
-
-To use it correctly, define an ID for the element you want to use as label and set the property to that ID.
-",
-      "name": "ariaLabelledby",
-      "optional": true,
-      "type": "string",
-    },
-    Object {
       "description": "Specifies whether to add aria-required to the file upload control.",
       "name": "ariaRequired",
       "optional": true,
@@ -6844,18 +6865,14 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "string",
     },
     Object {
-      "description": "Specifies the ID of the native form element. You can use it to relate
-a label element's \`for\` attribute to this control.
-It defaults to an automatically generated ID that
-is provided by its parent form field component.
-",
-      "name": "controlId",
-      "optional": true,
-      "type": "string",
-    },
-    Object {
       "description": "An array of file errors corresponding to the files in the \`value\`.",
       "name": "fileErrors",
+      "optional": true,
+      "type": "ReadonlyArray<null | string>",
+    },
+    Object {
+      "description": "An array of file warnings corresponding to the files in the \`value\`.",
+      "name": "fileWarnings",
       "optional": true,
       "type": "ReadonlyArray<null | string>",
     },
@@ -6867,6 +6884,7 @@ is provided by its parent form field component.
 * \`limitShowFewer\` (string): The text of the show more tokens button.
 * \`limitShowMore\` (string): The text of the show fewer tokens button.
 * \`errorIconAriaLabel\` (string): The ARIA label to be shown on the error file icon.
+* \`warningIconAriaLabel\` (string): The ARIA label to be shown on the warning file icon.
 * \`formatFileSize\` (function): (Optional) A function that takes file size in bytes, and produces a formatted string.
 * \`formatFileLastModified\` (function): (Optional) A function that takes the files last modified date, and produces a formatted string.",
       "inlineType": Object {
@@ -6879,7 +6897,7 @@ is provided by its parent form field component.
           },
           Object {
             "name": "errorIconAriaLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -6912,6 +6930,11 @@ is provided by its parent form field component.
             "optional": false,
             "type": "(multiple: boolean) => string",
           },
+          Object {
+            "name": "warningIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
         ],
         "type": "object",
       },
@@ -6925,16 +6948,6 @@ is provided by its parent form field component.
       "name": "id",
       "optional": true,
       "type": "string",
-    },
-    Object {
-      "description": "Overrides the invalidation state. Usually the invalid state
-comes from the parent \`FormField\`component,
-however sometimes you need to override its
-state when you have more than one input within a
-single form field.",
-      "name": "invalid",
-      "optional": true,
-      "type": "boolean",
     },
     Object {
       "description": "Specifies the native file input \`multiple\` attribute to allow users entering more than one file.",
@@ -6984,6 +6997,11 @@ If you want to clear the selection, use empty array.",
       "description": "Text that displays as a validation message.",
       "isDefault": false,
       "name": "errorText",
+    },
+    Object {
+      "description": "Text that displays as a non-blocking validation message.",
+      "isDefault": false,
+      "name": "warningText",
     },
   ],
   "releaseStatus": "stable",
@@ -7229,6 +7247,11 @@ This only works well if you're using a single control in the form field.
             "optional": true,
             "type": "string",
           },
+          Object {
+            "name": "warningIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
         ],
         "type": "object",
       },
@@ -7297,6 +7320,12 @@ non-empty string, it will render the form field as invalid.",
       "description": "A secondary control. You can use this for custom actions and content.",
       "isDefault": false,
       "name": "secondaryControl",
+    },
+    Object {
+      "description": "Text that displays as a warning message. If this is set to a
+non-empty string, it will render the form field as ?.",
+      "isDefault": false,
+      "name": "warningText",
     },
   ],
   "releaseStatus": "stable",
@@ -8183,6 +8212,16 @@ be slightly different across browsers.",
       "name": "value",
       "optional": false,
       "type": "string",
+    },
+    Object {
+      "description": "Overrides the invalidation state. Usually the warning state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.",
+      "name": "warning",
+      "optional": true,
+      "type": "boolean",
     },
   ],
   "regions": Array [],
@@ -9852,6 +9891,16 @@ to the correct offset, before performing any operations on them. Use the element
 by the \`findOptionsContainer\` test utility for this.
 ",
       "name": "virtualScroll",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Overrides the invalidation state. Usually the warning state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.",
+      "name": "warning",
       "optional": true,
       "type": "boolean",
     },
@@ -12390,6 +12439,16 @@ by the \`findOptionsContainer\` test utility for this.
       "optional": true,
       "type": "boolean",
     },
+    Object {
+      "description": "Overrides the invalidation state. Usually the warning state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.",
+      "name": "warning",
+      "optional": true,
+      "type": "boolean",
+    },
   ],
   "regions": Array [
     Object {
@@ -14543,6 +14602,16 @@ inadvertently sending data (such as user passwords) to third parties.
       "optional": false,
       "type": "string",
     },
+    Object {
+      "description": "Overrides the invalidation state. Usually the warning state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.",
+      "name": "warning",
+      "optional": true,
+      "type": "boolean",
+    },
   ],
   "regions": Array [],
   "releaseStatus": "stable",
@@ -14898,6 +14967,16 @@ When using 12-hour format, there is no option for picking AM or PM.",
       "name": "value",
       "optional": false,
       "type": "string",
+    },
+    Object {
+      "description": "Overrides the invalidation state. Usually the warning state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.",
+      "name": "warning",
+      "optional": true,
+      "type": "boolean",
     },
   ],
   "regions": Array [],

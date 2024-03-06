@@ -180,6 +180,7 @@ export interface I18nFormatArgTypes {
   }
   "form-field": {
     "i18nStrings.errorIconAriaLabel": never;
+    "i18nStrings.warningIconAriaLabel": never;
   }
   "form": {
     "errorIconAriaLabel": never;

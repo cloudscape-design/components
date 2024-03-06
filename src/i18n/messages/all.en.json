@@ -138,7 +138,8 @@
     "i18nStrings.warningIconAriaLabel": "Warning"
   },
   "form-field": {
-    "i18nStrings.errorIconAriaLabel": "Error"
+    "i18nStrings.errorIconAriaLabel": "Error",
+    "i18nStrings.warningIconAriaLabel": "Warning"
   },
   "form": {
     "errorIconAriaLabel": "Error"

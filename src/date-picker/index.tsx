@@ -53,6 +53,7 @@ const DatePicker = React.forwardRef(
       ariaRequired,
       controlId,
       invalid,
+      warning,
       openCalendarAriaLabel,
       expandToViewport,
       granularity = 'day',
@@ -127,6 +128,7 @@ const DatePicker = React.forwardRef(
           <InternalDateInput
             name={name}
             invalid={invalid}
+            warning={warning}
             controlId={controlId}
             ariaLabelledby={ariaLabelledby}
             ariaDescribedby={ariaDescribedby}

@@ -5,7 +5,7 @@ import { BaseComponentProps } from '../internal/base-component';
 import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
 import { NonCancelableEventHandler } from '../internal/events';
 
-export interface FileUploadProps extends BaseComponentProps, FormFieldValidationControlProps {
+export interface FileUploadProps extends BaseComponentProps, Omit<FormFieldValidationControlProps, 'warning'> {
   /**
    * Specifies the native file input `accept` attribute to describe the allow-list of file types.
    */
@@ -53,9 +53,17 @@ export interface FileUploadProps extends BaseComponentProps, FormFieldValidation
    */
   errorText?: React.ReactNode;
   /**
+   * Text that displays as a non-blocking validation message.
+   */
+  warningText?: React.ReactNode;
+  /**
    * An array of file errors corresponding to the files in the `value`.
    */
   fileErrors?: ReadonlyArray<null | string>;
+  /**
+   * An array of file warnings corresponding to the files in the `value`.
+   */
+  fileWarnings?: ReadonlyArray<null | string>;
   /**
    * An object containing all the localized strings required by the component:
    * * `uploadButtonText` (function): A function to render the text of the file upload button. It takes `multiple` attribute to define plurality.
@@ -64,6 +72,7 @@ export interface FileUploadProps extends BaseComponentProps, FormFieldValidation
    * * `limitShowFewer` (string): The text of the show more tokens button.
    * * `limitShowMore` (string): The text of the show fewer tokens button.
    * * `errorIconAriaLabel` (string): The ARIA label to be shown on the error file icon.
+   * * `warningIconAriaLabel` (string): The ARIA label to be shown on the warning file icon.
    * * `formatFileSize` (function): (Optional) A function that takes file size in bytes, and produces a formatted string.
    * * `formatFileLastModified` (function): (Optional) A function that takes the files last modified date, and produces a formatted string.
    */
@@ -86,7 +95,8 @@ export namespace FileUploadProps {
     removeFileAriaLabel: (fileIndex: number) => string;
     limitShowFewer: string;
     limitShowMore: string;
-    errorIconAriaLabel: string;
+    errorIconAriaLabel?: string;
+    warningIconAriaLabel?: string;
     formatFileSize?: (sizeInBytes: number) => string;
     formatFileLastModified?: (date: Date) => string;
   }

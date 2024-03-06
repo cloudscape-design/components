@@ -42,4 +42,20 @@ describe('test-util selectors', () => {
     expect(innerFormFieldWrapper.findError()?.getElement()).toHaveTextContent('inner errorText');
     expect(innerFormFieldWrapper.findControl()?.getElement().children[0]).toHaveAttribute('id', 'innerControl');
   });
+
+  test('find the correct warning elements even when nesting', () => {
+    const renderResult = render(
+      <FormField id="outer" warningText="outer warningText">
+        <FormField id="inner" warningText="inner warningText">
+          <div />
+        </FormField>
+      </FormField>
+    );
+
+    const outerFormFieldWrapper = createWrapper(renderResult.container).findFormField('#outer')!;
+    const innerFormFieldWrapper = createWrapper(renderResult.container).findFormField('#inner')!;
+
+    expect(outerFormFieldWrapper.findWarning()?.getElement()).toHaveTextContent('outer warningText');
+    expect(innerFormFieldWrapper.findWarning()?.getElement()).toHaveTextContent('inner warningText');
+  });
 });

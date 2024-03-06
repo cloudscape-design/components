@@ -45,6 +45,15 @@ export interface FormFieldValidationControlProps extends FormFieldControlProps {
    * single form field.
    */
   invalid?: boolean;
+
+  /**
+   * Overrides the invalidation state. Usually the warning state
+   * comes from the parent `FormField`component,
+   * however sometimes you need to override its
+   * state when you have more than one input within a
+   * single form field.
+   */
+  warning?: boolean;
 }
 
 export const FormFieldContext = createContext<FormFieldValidationControlProps>({});
@@ -59,5 +68,5 @@ function applyDefault<T>(fields: T, defaults: T, keys: (keyof T)[]) {
 
 export function useFormFieldContext(props: FormFieldValidationControlProps) {
   const context = useContext(FormFieldContext);
-  return applyDefault(props, context, ['invalid', 'controlId', 'ariaLabelledby', 'ariaDescribedby']);
+  return applyDefault(props, context, ['invalid', 'warning', 'controlId', 'ariaLabelledby', 'ariaDescribedby']);
 }

@@ -274,6 +274,8 @@ Object {
     "awsui_label_14mhv",
     "awsui_root_14mhv",
     "awsui_secondary-control_14mhv",
+    "awsui_warning_14mhv",
+    "awsui_warning__message_14mhv",
   ],
   "grid": Array [
     "awsui_grid-column_14yj0",

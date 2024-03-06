@@ -21,6 +21,7 @@ const permutations = createPermutations<DatePickerProps>([
     disabled: [false, true],
     readOnly: [false, true],
     invalid: [false, true],
+    warning: [false, true],
     todayAriaLabel: ['Today'],
     nextMonthAriaLabel: ['Next Month'],
     previousMonthAriaLabel: ['Previous Month'],

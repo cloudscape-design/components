@@ -3,13 +3,15 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-.error-icon-shake-wrapper {
+.error-icon-shake-wrapper,
+.warning-icon-shake-wrapper {
   @include styles.with-motion {
     @include styles.animation-shake-horizontally;
     animation: awsui-motion-shake-horizontally awsui.$motion-duration-refresh-only-medium;
   }
 }
-.error-icon-scale-wrapper {
+.error-icon-scale-wrapper,
+.warning-icon-scale-wrapper {
   @include styles.with-motion {
     @include styles.animation-scale-popup;
     animation: awsui-motion-scale-popup awsui.$motion-duration-refresh-only-medium awsui.$motion-easing-refresh-only-a;

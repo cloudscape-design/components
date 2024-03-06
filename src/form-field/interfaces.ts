@@ -71,6 +71,12 @@ export interface FormFieldProps extends BaseComponentProps {
    * non-empty string, it will render the form field as invalid.
    */
   errorText?: React.ReactNode;
+
+  /**
+   * Text that displays as a warning message. If this is set to a
+   * non-empty string, it will render the form field as ?.
+   */
+  warningText?: React.ReactNode;
 }
 
 export namespace FormFieldProps {
@@ -79,6 +85,11 @@ export namespace FormFieldProps {
      * Provides a text alternative for the error icon in the error message.
      */
     errorIconAriaLabel?: string;
+
+    /**
+     * Provides a text alternative for the warning icon in the warning message.
+     */
+    warningIconAriaLabel?: string;
   }
 }
 
