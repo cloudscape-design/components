@@ -1,0 +1,71 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../internal/styles' as styles;
+@use '../../internal/styles/tokens' as awsui;
+@use '../../internal/generated/custom-css-properties/index.scss' as custom-props;
+
+.navigation {
+  position: sticky;
+  background-color: awsui.$color-background-container-content;
+  inset-block-end: 0;
+  block-size: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+  overscroll-behavior-y: contain;
+  word-wrap: break-word;
+  pointer-events: auto;
+  //border-inline-end: solid awsui.$border-divider-section-width awsui.$color-border-divider-default;
+
+  // TODO: find a way to implement
+  @keyframes openNavigation {
+    from {
+      opacity: 0;
+      inline-size: calc(#{awsui.$space-layout-toggle-padding} * 2 + #{awsui.$space-layout-toggle-diameter});
+    }
+
+    to {
+      opacity: 1;
+      inline-size: var(#{custom-props.$navigationWidth});
+    }
+  }
+
+  // All content is hidden by the overflow-x property
+  &:not(.is-navigation-open) {
+    inline-size: 0;
+    // We need to hide the closed panel to make containing focusable elements not focusable anymore.
+    display: none;
+  }
+
+  // Apply the animation when the Navigation is opened
+  &.is-navigation-open {
+    &.animating {
+      @include styles.with-motion {
+        animation: openNavigation awsui.$motion-duration-refresh-only-fast;
+      }
+    }
+  }
+
+  /*
+  A non-semantic node is added with a fixed width equal to the final Navigation
+  width. This will create the visual appearance of horizontal movement and
+  prevent unwanted text wrapping.
+  */
+  > .animated-content {
+    inline-size: var(#{custom-props.$navigationWidth});
+  }
+
+  // The Navigation drawer will take up the entire viewport on mobile
+  @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
+    #{custom-props.$navigationWidth}: 100vw;
+  }
+}
+
+.hide-navigation {
+  position: absolute;
+  inset-inline-end: awsui.$space-m;
+  inset-block-start: awsui.$size-vertical-panel-icon-offset;
+}

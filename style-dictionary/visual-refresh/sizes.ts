@@ -13,7 +13,7 @@ const tokens: StyleDictionary.SizesDictionary = {
   sizeIconNormal: '16px',
   sizeTableSelectionHorizontal: '40px',
   sizeVerticalInput: { comfortable: '32px', compact: '28px' },
-  sizeVerticalPanelIconOffset: { comfortable: '15px', compact: '13px' },
+  sizeVerticalPanelIconOffset: { comfortable: '11px', compact: '11px' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedDensityScopeDictionary = expandDensityDictionary(tokens);

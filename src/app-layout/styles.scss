@@ -28,7 +28,7 @@
 
 .with-motion {
   @include styles.with-motion {
-    transition: awsui.$motion-duration-refresh-only-fast;
+    transition: ease awsui.$motion-duration-refresh-only-slow;
     transition-property: border-color, opacity, width;
   }
 }

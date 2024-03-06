@@ -1,0 +1,99 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../../internal/styles' as styles;
+@use '../../../internal/styles/tokens' as awsui;
+@use '../../../internal/generated/custom-css-properties/index.scss' as custom-props;
+
+section.universal-toolbar {
+  background-color: awsui.$color-background-layout-panel-content;
+  border-block-end: awsui.$border-divider-layout-width solid awsui.$color-border-divider-panel-bottom;
+  box-sizing: border-box;
+  padding-block: 0;
+  padding-inline: awsui.$space-m;
+  position: sticky;
+  inset-block-start: var(#{custom-props.$headerHeight});
+  z-index: 840;
+  @include styles.with-motion {
+    transition: ease awsui.$motion-duration-refresh-only-slow;
+    transition-property: top, opacity;
+  }
+
+  &.disable-body-scroll {
+    inset-block-start: 0px;
+  }
+
+  &.toolbar-hidden {
+    inset-block-start: -60px;
+    opacity: 0;
+    block-size: 0px;
+    border-block-end: none;
+  }
+
+  > .toolbar-container {
+    block-size: 48px;
+    align-items: center;
+    display: grid;
+    column-gap: awsui.$space-static-xs;
+    inline-size: 100%;
+    grid-template-columns: min-content auto minmax(140px, 1fr);
+    grid-template-rows: var(#{custom-props.$toolbarHeight});
+
+    > .universal-toolbar-nav {
+      grid-column: 1;
+      padding-inline-end: awsui.$space-static-xxs;
+    }
+
+    > .universal-toolbar-breadcrumbs {
+      grid-column: 2;
+      background-color: transparent;
+      flex: 1 0;
+    }
+
+    > .universal-toolbar-drawers {
+      grid-column: 3;
+      column-gap: awsui.$space-static-xs;
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+}
+
+.drawers-desktop-triggers-container {
+  @include styles.styles-reset;
+  background-color: transparent;
+  box-sizing: border-box;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+  overscroll-behavior-y: contain;
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+  overscroll-behavior-x: contain;
+  inline-size: 100%;
+}
+
+.drawers-trigger-content {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: awsui.$space-xs;
+  justify-content: flex-end;
+
+  &:not(.has-multiple-triggers).has-open-drawer {
+    opacity: 0;
+  }
+
+  &:not(.has-multiple-triggers):not(.has-open-drawer) {
+    opacity: 1;
+  }
+}
+
+.drawers-trigger {
+  @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

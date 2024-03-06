@@ -24,6 +24,8 @@ interface SkeletonLayoutProps
     | 'placement'
   > {
   topBar?: React.ReactNode;
+  sideSplitPanel?: React.ReactNode;
+  bottomSplitPanel?: React.ReactNode;
 }
 
 export function SkeletonLayout({
@@ -35,6 +37,8 @@ export function SkeletonLayout({
   tools,
   toolsWidth,
   topBar,
+  sideSplitPanel,
+  bottomSplitPanel,
   placement,
   contentType,
   maxContentWidth,
@@ -54,6 +58,7 @@ export function SkeletonLayout({
         [customCssProps.toolsWidth]: `${toolsWidth}px`,
       }}
     >
+      {/*TODO: render conditionally*/}
       <section className={styles['top-bar']}>{topBar}</section>
       {navigation && <div className={styles.navigation}>{navigation}</div>}
       <main className={styles['main-landmark']}>
@@ -62,7 +67,9 @@ export function SkeletonLayout({
           {contentHeader && <div className={styles['content-header']}>{contentHeader}</div>}
           <div>{content}</div>
         </div>
+        {bottomSplitPanel}
       </main>
+      {sideSplitPanel && <div className={styles['split-panel-side']}>{sideSplitPanel}</div>}
       {tools && <div className={styles.tools}>{tools}</div>}
     </div>
   );
