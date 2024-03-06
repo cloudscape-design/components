@@ -13,19 +13,21 @@ div.background {
     background-color: awsui.$color-background-layout-main;
     color: awsui.$color-text-body-default;
     grid-column: 1 / span 5;
-    grid-row: 1 / 10;
+    grid-row: 1 / 8;
   }
 
   > .sticky-background {
     background-color: awsui.$color-background-layout-main;
     grid-column: 1 / span 5;
-    grid-row: 1 / 10;
+    grid-row: 1 / 8;
     position: sticky;
     inset-block-start: var(#{custom-props.$headerHeight});
     z-index: 799;
 
     &:not(.has-sticky-notifications) {
-      block-size: calc(#{awsui.$space-scaled-s} + var(#{custom-props.$overlapHeight}));
+      block-size: calc(
+        #{awsui.$space-scaled-s} + var(#{custom-props.$overlapHeight}) + var(#{custom-props.$toolbarHeight})
+      );
     }
 
     &.has-sticky-notifications {

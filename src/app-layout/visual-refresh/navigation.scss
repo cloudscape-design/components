@@ -14,7 +14,8 @@
   block-size: var(#{custom-props.$contentHeight});
   position: sticky;
   inset-block-start: var(#{custom-props.$offsetTop});
-  z-index: 830;
+  // z-index: 830;
+  z-index: 850;
 
   /*
   The navigation and tools containers (that contain the toggle buttons)

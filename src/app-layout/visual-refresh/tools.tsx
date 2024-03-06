@@ -122,7 +122,7 @@ export default function Tools({ children }: ToolsProps) {
             </aside>
           )}
 
-          {!isMobile && (
+          {/* {!isMobile && (
             <aside
               aria-hidden={!hasToolsForm ? true : false}
               aria-label={ariaLabels?.tools ?? undefined}
@@ -160,7 +160,7 @@ export default function Tools({ children }: ToolsProps) {
                 />
               )}
             </aside>
-          )}
+          )} */}
         </div>
       )}
     </Transition>

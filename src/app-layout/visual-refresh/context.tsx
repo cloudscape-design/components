@@ -84,6 +84,8 @@ interface AppLayoutInternals extends AppLayoutPropsWithDefaults {
   setSplitPanelToggle: (toggle: SplitPanelSideToggleProps) => void;
   splitPanelDisplayed: boolean;
   splitPanelRefs: SplitPanelFocusControlRefs;
+  toolbarRef: React.Ref<HTMLElement>;
+  toolbarHeight: number;
   toolsControlId: string;
   toolsRefs: FocusControlRefs;
   __embeddedViewMode?: boolean;
@@ -143,6 +145,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     const { refs: navigationRefs, setFocus: focusNavButtons } = useFocusControl(navigationOpen);
 
     const handleNavigationClick = useStableCallback(function handleNavigationChange(isOpen: boolean) {
+      !isOpen && setToolbarHeight(48);
       focusNavButtons();
       fireNonCancelableEvent(props.onNavigationChange, { open: isOpen });
     });
@@ -170,6 +173,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     const handleToolsClick = useCallback(
       function handleToolsChange(isOpen: boolean, skipFocusControl?: boolean) {
         setIsToolsOpen(isOpen);
+        !isOpen && setToolbarHeight(48);
         !skipFocusControl && focusToolsButtons();
         fireNonCancelableEvent(props.onToolsChange, { open: isOpen });
       },
@@ -405,6 +409,13 @@ export const AppLayoutInternalsProvider = React.forwardRef(
 
     const notificationsHeight = notificationsContainerQuery ?? 0;
     const hasNotificationsContent = notificationsHeight > 0;
+    const [toolbarContainerQuery, toolbarRef] = useContainerQuery(rect => rect.borderBoxHeight);
+    const [toolbarHeight, setToolbarHeight] = useState(0);
+
+    useEffect(() => {
+      setToolbarHeight(toolbarContainerQuery ?? 0);
+    }, [toolbarContainerQuery]);
+
     /**
      * Determine the offsetBottom value based on the presence of a footer element and
      * the SplitPanel component. Ignore the SplitPanel if it is not in the bottom
@@ -581,6 +592,8 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           splitPanelToggle,
           setSplitPanelToggle,
           splitPanelRefs,
+          toolbarRef,
+          toolbarHeight,
           toolsControlId,
           toolsHide,
           toolsOpen: isToolsOpen,

@@ -31,7 +31,8 @@ viewport size and state of the Tools drawer.
   max-inline-size: var(#{custom-props.$toolsMaxWidth});
   position: sticky;
   inset-block-start: var(#{custom-props.$offsetTop});
-  z-index: 830;
+  // z-index: 830;
+  z-index: 850;
 
   pointer-events: none;
 
