@@ -6,7 +6,7 @@ import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 
 const OVERSCAN = 5;
 const UPDATE_FRAME_THROTTLE_MS = 10;
-const KILL_SWITCH_THRESHOLD = 10000;
+const KILL_SWITCH_THRESHOLD = 5000;
 
 export interface VirtualScrollProps {
   size: number;
@@ -53,10 +53,7 @@ export function useVirtualScroll({ size, defaultItemSize, containerRef }: Virtua
   });
 
   // Ensure virtual items array never exceeds the size to avoid overflows.
-  const safeVirtualItems = useMemo(
-    () => (virtualItems.length < size ? virtualItems.slice(0, size) : virtualItems),
-    [virtualItems, size]
-  );
+  const safeVirtualItems = useMemo(() => virtualItems.filter(item => item.index < size), [virtualItems, size]);
 
   return {
     virtualItems: safeVirtualItems,
@@ -210,23 +207,28 @@ class VirtualScroll {
 
   private updateTimer: null | number = null;
   private triggerUpdate = (batch = true) => {
+    // Warn if detected an infinite loop and reset the counter with a delay.
     this.killSwitchCounter--;
+    if (this.killSwitchCounter <= 0) {
+      warnOnce('virtual-scroll', 'Reached safety counter, check for infinite loops.');
+      setTimeout(() => {
+        this.killSwitchCounter = KILL_SWITCH_THRESHOLD;
+      }, UPDATE_FRAME_THROTTLE_MS * 2);
+    }
+
+    // Issue a throttled or instant frame update.
     if (this.updateTimer) {
       clearTimeout(this.updateTimer);
     }
     if (this.killSwitchCounter > 0) {
-      this.updateTimer = setTimeout(() => {
-        if (batch) {
+      if (batch) {
+        this.updateTimer = setTimeout(() => {
           this.updateFrameIfNeeded();
           this.killSwitchCounter = KILL_SWITCH_THRESHOLD;
-        }
-      }, UPDATE_FRAME_THROTTLE_MS);
-
-      if (!batch) {
+        }, UPDATE_FRAME_THROTTLE_MS);
+      } else {
         this.updateFrameIfNeeded();
       }
-    } else {
-      warnOnce('virtual-scroll', 'Reached safety counter, check for infinite loops.');
     }
   };
 
