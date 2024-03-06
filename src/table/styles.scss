@@ -172,6 +172,11 @@ the default white background of the container component.
     & > .table {
       padding-inline: awsui.$space-table-horizontal;
     }
+
+    &:not(.table-has-header) {
+      border-top-right-radius: awsui.$border-radius-container;
+      border-top-left-radius: awsui.$border-radius-container;
+    }
   }
   &::-webkit-scrollbar {
     display: none; /* Safari and Chrome */
