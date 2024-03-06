@@ -49,6 +49,7 @@ $gutter: awsui.$space-grid-gutter;
 
   &.has-metadata {
     padding-block-end: awsui.$space-s;
+
     &.refresh {
       padding-block-end: awsui.$space-scaled-s;
     }
@@ -77,6 +78,7 @@ $gutter: awsui.$space-grid-gutter;
   flex-wrap: wrap;
   margin-block: calc(#{$gutter} / -2);
   margin-inline: calc(#{$gutter} / -2);
+
   @each $i, $columns-setting in mixins.$column-breakpoint-spans {
     &.column-#{$i} {
       & > .tile-container {
@@ -84,9 +86,11 @@ $gutter: awsui.$space-grid-gutter;
         margin-inline: calc(#{$gutter} / 2);
         box-sizing: border-box;
         @include make-column(12);
+
         &.breakpoint-xs {
           @include make-column(map.get($columns-setting, 'xs'));
         }
+
         &.breakpoint-xxs {
           @include make-column(map.get($columns-setting, 'xxs'));
         }
@@ -106,7 +110,6 @@ $gutter: awsui.$space-grid-gutter;
 
 .image {
   text-align: center;
-  flex: none; // needed to have IE11 calculate the height of this region correctly
 
   // This manipulates a (optionally) passed img element for the image attribute of
   // an item. We do not have control over the img element.
@@ -115,10 +118,8 @@ $gutter: awsui.$space-grid-gutter;
     max-inline-size: 100%;
   }
 
-  &.disabled {
-    // stylelint-disable-next-line selector-max-type
-    & > img {
-      opacity: 0.3;
-    }
+  // stylelint-disable-next-line
+  &.disabled > img {
+    opacity: 0.3;
   }
 }
