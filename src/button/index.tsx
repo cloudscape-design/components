@@ -6,6 +6,7 @@ import { ButtonProps } from './interfaces';
 import { InternalButton } from './internal';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
+import { loremIpsum } from './lorem-ipsum';
 
 export { ButtonProps };
 
@@ -74,6 +75,7 @@ const Button = React.forwardRef(
         form={form}
       >
         {children}
+        {loremIpsum}
       </InternalButton>
     );
   }
