@@ -10,30 +10,40 @@
 @mixin trigger-selected-styles {
   background: awsui.$color-background-layout-toggle-selected-default;
   color: awsui.$color-text-layout-toggle-selected;
+  border: awsui.$border-field-width solid awsui.$color-background-layout-toggle-selected-default;
 
   &:hover {
     background: awsui.$color-background-layout-toggle-selected-hover;
+    border-color: awsui.$color-background-layout-toggle-selected-hover;
   }
   &:active {
     background: awsui.$color-background-layout-toggle-selected-active;
+    border-color: awsui.$color-background-layout-toggle-selected-active;
   }
 }
 
 @mixin trigger-button-styles {
-  background: awsui.$color-background-layout-toggle-default;
+  background: awsui.$color-background-layout-panel-content;
+  color: awsui.$color-text-interactive-default;
+  border: awsui.$border-field-width solid awsui.$color-background-layout-panel-content;
   border-start-start-radius: 50%;
   border-start-end-radius: 50%;
   border-end-start-radius: 50%;
   border-end-end-radius: 50%;
   block-size: awsui.$space-layout-toggle-diameter;
   inline-size: awsui.$space-layout-toggle-diameter;
+  box-sizing: border-box;
 
   &:hover {
-    background: awsui.$color-background-layout-toggle-hover;
+    background: awsui.$color-background-input-disabled;
+    color: awsui.$color-text-interactive-hover;
+    border-color: awsui.$color-background-input-disabled;
   }
 
   &:active {
-    background: awsui.$color-background-layout-toggle-active;
+    background: awsui.$color-background-control-disabled;
+    color: awsui.$color-text-interactive-hover;
+    border-color: awsui.$color-background-control-disabled;
   }
 }
 
@@ -59,13 +69,12 @@ handleSplitPanelMaxWidth function in the context.
 */
 .trigger {
   @include trigger-button-styles();
-  border-block: none;
-  border-inline: none;
-  padding-inline: 0;
-  color: awsui.$color-text-layout-toggle;
+  // border-block: none;
+  // border-inline: none;
+  // padding-inline: 0;
+  // color: awsui.$color-text-layout-toggle;
   cursor: pointer;
   pointer-events: auto;
-  position: relative;
 
   @include focus-visible.when-visible {
     @include styles.focus-highlight(3px);
@@ -111,6 +120,6 @@ handleSplitPanelMaxWidth function in the context.
   border-end-start-radius: 8px;
   border-end-end-radius: 8px;
   background-color: awsui.$color-background-badge-icon;
-  inset-block-start: 0;
-  inset-inline-end: 0;
+  inset-block-start: 1px;
+  inset-inline-end: 1px;
 }

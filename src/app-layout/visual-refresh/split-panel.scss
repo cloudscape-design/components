@@ -59,31 +59,12 @@ section.split-panel-bottom {
   }
 
   /*
-  Unlike the side position the Split Panel is persistent in the DOM
-  when in the bottom position.
-  */
-  &.position-bottom {
-    display: block;
-  }
-
-  /*
-  Warning! This is a hack! The existing design token for the split panel
-  shadow in the bottom position does not render in the refactored code.
-  It appears to be related to the fact that the legacy split panel element
-  has a height equal to the expanded height and a corresponding translation
-  of the Y position so it is moved off the screen. This will need to be
-  refactored with an adjustment to the split panel design token.
-  */
-  &:not(.is-split-panel-open).position-bottom {
-    box-shadow: rgba(0, 7, 22, 0.1) 0px -32px 32px -24px;
-  }
-
-  /*
   When the data attribute changes indicating the Split Panel has been opened
   apply the animation to the height property.
   */
   &.is-split-panel-open.position-bottom {
     box-shadow: awsui.$shadow-split-bottom;
+    display: block;
     &.animating {
       @include styles.with-motion {
         animation: openSplitPanelBottom awsui.$motion-duration-refresh-only-fast;
