@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
-import Icon from '../../icon/internal';
+import Icon from '../../../../icon/internal';
 import styles from './styles.css.js';
-import { ButtonProps } from '../../button/interfaces';
-import { IconProps } from '../../icon/interfaces';
+import { ButtonProps } from '../../../../button/interfaces';
+import { IconProps } from '../../../../icon/interfaces';
 
 export interface TriggerButtonProps {
   ariaLabel?: string;
@@ -18,6 +18,7 @@ export interface TriggerButtonProps {
   onClick: React.MouseEventHandler<HTMLButtonElement>;
   selected?: boolean;
   badge?: boolean;
+  disabled?: boolean;
   highContrastHeader?: boolean;
 }
 
@@ -32,18 +33,20 @@ function TriggerButton(
     onClick,
     testId,
     badge,
-    selected = false,
-    highContrastHeader,
+    selected,
+    disabled,
   }: TriggerButtonProps,
   ref: React.Ref<ButtonProps.Ref>
 ) {
   return (
-    <div className={clsx(styles['trigger-wrapper'], !highContrastHeader && styles['remove-high-contrast-header'])}>
+    <div className={styles['trigger-wrapper']}>
       <button
         aria-expanded={ariaExpanded}
         aria-controls={ariaControls}
         aria-haspopup={true}
         aria-label={ariaLabel}
+        aria-disabled={disabled}
+        disabled={disabled}
         className={clsx(
           styles.trigger,
           {

@@ -22,7 +22,7 @@
   padding-block-end: awsui.$space-panel-header-vertical;
   padding-inline: awsui.$space-panel-side-left calc(#{awsui.$space-xl} + #{awsui.$space-scaled-xxl});
   // padding to make sure the header doesn't overlap with the close icon
-  border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-panel-header;
+  border-block-end: awsui.$border-panel-header-width solid awsui.$color-border-panel-header;
   margin-block-start: 0;
   margin-block-end: awsui.$space-panel-content-top;
   margin-inline-end: calc(-1 * #{awsui.$space-panel-side-right});

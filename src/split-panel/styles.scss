@@ -19,14 +19,20 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   @include styles.styles-reset;
   flex-shrink: 0;
   position: relative;
-  @include styles.text-wrapping;
   background-color: awsui.$color-background-layout-panel-content;
   // should be above tools and navigation panels to avoid their shadows
   z-index: 840;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+  overscroll-behavior-y: contain;
+  pointer-events: auto;
+  word-wrap: break-word;
   &-closed {
     cursor: pointer;
     min-inline-size: constants.$sidebar-size-closed;
   }
+  @include styles.text-wrapping;
 }
 
 .drawer-content-side {
@@ -210,7 +216,7 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   display: flex;
   flex: auto;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: baseline;
   justify-content: space-between;
   inline-size: 100%;
   margin-block: awsui.$size-vertical-panel-icon-offset;
@@ -222,7 +228,6 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
     padding-inline: 0;
     margin-block: 0;
     margin-inline: 0;
-    margin-block-start: calc(#{awsui.$space-scaled-xxs} + 1px);
   }
 }
 

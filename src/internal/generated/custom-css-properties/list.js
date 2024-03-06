@@ -37,6 +37,7 @@ const customCssPropertiesList = [
   'splitPanelHeight',
   'splitPanelMinWidth',
   'splitPanelMaxWidth',
+  'toolbarHeight',
   'toolsMaxWidth',
   'toolsWidth',
   'toolsAnimationStartingOpacity',

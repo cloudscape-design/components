@@ -11,7 +11,6 @@ import React, {
   useContext,
 } from 'react';
 import { AppLayoutContext } from '../../internal/context/app-layout-context';
-import { DynamicOverlapContext } from '../../internal/context/dynamic-overlap-context';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
 import { fireNonCancelableEvent } from '../../internal/events';
 import { FocusControlRefs, useFocusControl } from '../utils/use-focus-control';
@@ -25,7 +24,6 @@ import { useStableCallback } from '@cloudscape-design/component-toolkit/internal
 import useResize from '../utils/use-resize';
 import styles from './styles.css.js';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
-import useBackgroundOverlap from './use-background-overlap';
 import { useDrawers } from '../utils/use-drawers';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { SPLIT_PANEL_MIN_WIDTH } from '../split-panel';
@@ -50,12 +48,10 @@ interface AppLayoutInternals extends AppLayoutPropsWithDefaults {
   handleSplitPanelPreferencesChange: (detail: AppLayoutProps.SplitPanelPreferences) => void;
   handleSplitPanelResize: (newSize: number) => void;
   handleToolsClick: (value: boolean, skipFocusControl?: boolean) => void;
-  hasBackgroundOverlap: boolean;
   hasDrawerViewportOverlay: boolean;
   hasNotificationsContent: boolean;
   hasOpenDrawer?: boolean;
   hasStickyBackground: boolean;
-  isBackgroundOverlapDisabled: boolean;
   isMobile: boolean;
   isSplitPanelForcedPosition: boolean;
   isSplitPanelOpen?: boolean;
@@ -84,6 +80,8 @@ interface AppLayoutInternals extends AppLayoutPropsWithDefaults {
   setSplitPanelToggle: (toggle: SplitPanelSideToggleProps) => void;
   splitPanelDisplayed: boolean;
   splitPanelRefs: SplitPanelFocusControlRefs;
+  toolbarRef: React.Ref<HTMLElement>;
+  toolbarHeight: number;
   toolsControlId: string;
   toolsRefs: FocusControlRefs;
   __embeddedViewMode?: boolean;
@@ -143,6 +141,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     const { refs: navigationRefs, setFocus: focusNavButtons } = useFocusControl(navigationOpen);
 
     const handleNavigationClick = useStableCallback(function handleNavigationChange(isOpen: boolean) {
+      !isOpen && setToolbarHeight(48);
       focusNavButtons();
       fireNonCancelableEvent(props.onNavigationChange, { open: isOpen });
     });
@@ -170,6 +169,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     const handleToolsClick = useCallback(
       function handleToolsChange(isOpen: boolean, skipFocusControl?: boolean) {
         setIsToolsOpen(isOpen);
+        !isOpen && setToolbarHeight(48);
         !skipFocusControl && focusToolsButtons();
         fireNonCancelableEvent(props.onToolsChange, { open: isOpen });
       },
@@ -231,6 +231,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     const handleSplitPanelClick = useCallback(
       function handleSplitPanelChange() {
         setIsSplitPanelOpen(!isSplitPanelOpen);
+        !isSplitPanelOpen && setToolbarHeight(48);
         setSplitPanelLastInteraction({ type: isSplitPanelOpen ? 'close' : 'open' });
         fireNonCancelableEvent(props.onSplitPanelToggle, { open: !isSplitPanelOpen });
       },
@@ -264,7 +265,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       displayed: false,
       ariaLabel: undefined,
     });
-    const splitPanelDisplayed = !!(splitPanelToggle.displayed || isSplitPanelOpen) && !!splitPanel;
+    const splitPanelDisplayed = !!splitPanelToggle.displayed && !!splitPanel;
     const splitPanelControlId = useUniqueId('split-panel-');
     const toolsControlId = useUniqueId('tools-');
 
@@ -339,7 +340,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     };
 
     let drawersTriggerCount = drawers ? drawers.length : !toolsHide ? 1 : 0;
-    if (splitPanelDisplayed && splitPanelPosition === 'side') {
+    if (splitPanelDisplayed) {
       drawersTriggerCount++;
     }
     const hasOpenDrawer =
@@ -352,12 +353,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     const layoutElement = useRef<HTMLDivElement>(null);
     const mainElement = useRef<HTMLDivElement>(null);
     const [mainOffsetLeft, setMainOffsetLeft] = useState(0);
-
-    const { hasBackgroundOverlap, updateBackgroundOverlapHeight } = useBackgroundOverlap({
-      contentHeader: props.contentHeader,
-      disableContentHeaderOverlap: props.disableContentHeaderOverlap,
-      layoutElement,
-    });
 
     useLayoutEffect(
       function handleMainOffsetLeft() {
@@ -405,6 +400,13 @@ export const AppLayoutInternalsProvider = React.forwardRef(
 
     const notificationsHeight = notificationsContainerQuery ?? 0;
     const hasNotificationsContent = notificationsHeight > 0;
+    const [toolbarContainerQuery, toolbarRef] = useContainerQuery(rect => rect.borderBoxHeight);
+    const [toolbarHeight, setToolbarHeight] = useState(0);
+
+    useEffect(() => {
+      setToolbarHeight(toolbarContainerQuery ?? 0);
+    }, [toolbarContainerQuery]);
+
     /**
      * Determine the offsetBottom value based on the presence of a footer element and
      * the SplitPanel component. Ignore the SplitPanel if it is not in the bottom
@@ -430,23 +432,13 @@ export const AppLayoutInternalsProvider = React.forwardRef(
      *
      * $contentGapRight: #{awsui.$space-layout-content-horizontal};
      *
-     * The second is the width of the element that has the circular buttons for the
-     * Tools and Split Panel. This could be suppressed given the state of the Tools
-     * drawer returning a zero value. It would, however, be rendered if the Split Panel
-     * were to move into the side position. This is calculated in the Tools CSS and
-     * the Trigger button CSS with design tokens:
-     *
-     * padding: awsui.$space-scaled-s awsui.$space-layout-toggle-padding;
-     * width: awsui.$space-layout-toggle-diameter;
-     *
      * These values will be defined below as static integers that are rough approximations
      * of their computed width when rendered in the DOM, but doubled to ensure adequate
      * spacing for the Split Panel to be in side position.
      */
     useLayoutEffect(
       function handleSplitPanelMaxWidth() {
-        const contentGapRight = 50; // Approximately 24px when rendered but doubled for safety
-        const toolsFormOffsetWidth = 120; // Approximately 60px when rendered but doubled for safety
+        const contentGapRight = 40; // Approximately 20px when rendered but doubled for safety
         const getPanelOffsetWidth = () => {
           if (drawers) {
             return activeDrawerId ? drawerSize : 0;
@@ -455,17 +447,10 @@ export const AppLayoutInternalsProvider = React.forwardRef(
         };
 
         setSplitPanelMaxWidth(
-          placement.inlineSize -
-            mainOffsetLeft -
-            minContentWidth -
-            contentGapRight -
-            toolsFormOffsetWidth -
-            getPanelOffsetWidth()
+          placement.inlineSize - mainOffsetLeft - minContentWidth - contentGapRight - getPanelOffsetWidth()
         );
 
-        setDrawersMaxWidth(
-          placement.inlineSize - mainOffsetLeft - minContentWidth - contentGapRight - toolsFormOffsetWidth
-        );
+        setDrawersMaxWidth(placement.inlineSize - mainOffsetLeft - minContentWidth - contentGapRight);
       },
       [
         activeDrawerId,
@@ -544,11 +529,9 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           handleSplitPanelPreferencesChange,
           handleSplitPanelResize,
           handleToolsClick,
-          hasBackgroundOverlap,
           hasNotificationsContent,
           hasOpenDrawer,
           hasStickyBackground,
-          isBackgroundOverlapDisabled: props.disableContentHeaderOverlap || !hasBackgroundOverlap,
           isMobile,
           isSplitPanelForcedPosition,
           isSplitPanelOpen,
@@ -581,6 +564,8 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           splitPanelToggle,
           setSplitPanelToggle,
           splitPanelRefs,
+          toolbarRef,
+          toolbarHeight,
           toolsControlId,
           toolsHide,
           toolsOpen: isToolsOpen,
@@ -589,11 +574,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           __embeddedViewMode,
         }}
       >
-        <AppLayoutContext.Provider value={{ setHasStickyBackground }}>
-          <DynamicOverlapContext.Provider value={updateBackgroundOverlapHeight}>
-            {children}
-          </DynamicOverlapContext.Provider>
-        </AppLayoutContext.Provider>
+        <AppLayoutContext.Provider value={{ setHasStickyBackground }}>{children}</AppLayoutContext.Provider>
       </AppLayoutInternalsContext.Provider>
     );
   }

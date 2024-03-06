@@ -29,14 +29,15 @@
   // desktop grid
   @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
     grid-template-areas:
-      'navigation topBar       topBar        topBar    tools'
-      'navigation .         notifications    .         tools'
-      'navigation .             main         .         tools';
+      'navigation topBar       topBar        topBar    topBar          tools'
+      'navigation .         notifications    .         sideSplitPanel  tools'
+      'navigation .             main         .         sideSplitPanel  tools';
     grid-template-columns:
       min-content
       minmax(#{awsui.$space-layout-content-horizontal}, 1fr)
       minmax(0, var(#{custom-props.$maxContentWidth}))
       minmax(#{awsui.$space-layout-content-horizontal}, 1fr)
+      min-content
       min-content;
     grid-template-rows: min-content min-content 1fr min-content;
 
@@ -78,6 +79,15 @@
   @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
     grid-area: tools;
     inline-size: var(#{custom-props.$toolsWidth});
+    border-inline-start: 1px solid awsui.$color-border-divider-panel-side;
+  }
+}
+
+.split-panel-side {
+  display: none;
+  @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
+    display: block;
+    grid-area: sideSplitPanel;
     border-inline-start: 1px solid awsui.$color-border-divider-panel-side;
   }
 }

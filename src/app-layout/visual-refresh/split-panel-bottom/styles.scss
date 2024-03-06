@@ -1,0 +1,23 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '../../../internal/styles' as styles;
+@use '../../../internal/styles/tokens' as awsui;
+@use '../../../internal/generated/custom-css-properties' as custom-props;
+
+.root {
+  position: sticky;
+  z-index: 840;
+  align-self: end;
+  // TODO: this should live in skeleton styles
+  grid-area: main;
+  grid-column: 1 / -1;
+  @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
+    grid-column: 2 / span 3;
+  }
+}
+
+.panel-closed {
+  display: none;
+}

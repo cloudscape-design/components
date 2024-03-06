@@ -23,6 +23,7 @@ export function AppLayoutSkeleton({
   maxContentWidth,
   disableContentPaddings,
 }: AppLayoutPropsWithDefaults) {
+  // TODO unfocusable state
   // render nothing in the skeleton state
   const placeholder = <></>;
   return (
@@ -33,6 +34,7 @@ export function AppLayoutSkeleton({
       content={content}
       navigation={!navigationHide && navigationOpen && navigation && placeholder}
       navigationWidth={navigationWidth}
+      // TODO: support drawers here
       tools={!toolsHide && toolsOpen && tools && placeholder}
       toolsWidth={toolsWidth}
       placement={placement}
