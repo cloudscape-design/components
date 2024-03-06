@@ -40,6 +40,8 @@ const tokens: StyleDictionary.SpacingDictionary = {
   spaceLayoutContentHorizontal: '{spaceScaled2xXxxl}',
   spaceModalContentBottom: '{spaceScaledL}',
   spaceOptionIconBigTop: '{spaceXxxs}',
+  spacePanelContentTop: '{spaceScaledL}',
+  spacePanelHeaderVertical: '{spaceScaledL}',
   spacePanelNavLeft: '{spaceXxl}',
   spacePanelSideLeft: '{spaceScaledXxl}',
   spacePanelSideRight: '{spaceScaledXxl}',

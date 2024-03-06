@@ -41,18 +41,24 @@ export default function Layout({ children }: LayoutProps) {
     navigationHide,
     notificationsHeight,
     __embeddedViewMode,
+    offsetBottom,
     splitPanelPosition,
     stickyNotifications,
     splitPanelDisplayed,
+    // splitPanelReportedHeaderHeight,
+    // splitPanelReportedSize,
+    toolbarHeight,
+    tools,
   } = useAppLayoutInternals();
 
   // Determine the first content child so the gap will vertically align with the trigger buttons
-  const contentFirstChild = getContentFirstChild(breadcrumbs, contentHeader, hasNotificationsContent, isMobile);
+  const contentFirstChild = getContentFirstChild(breadcrumbs, contentHeader, hasNotificationsContent);
 
   // Content gaps on the left and right are used with the minmax function in the CSS grid column definition
   const hasContentGapLeft = navigationOpen || navigationHide;
-  const hasContentGapRight = drawersTriggerCount === 0 || hasOpenDrawer;
+  const hasContentGapRight = drawersTriggerCount === 0 || hasOpenDrawer || tools;
 
+  const splitPanelHeight = offsetBottom - footerHeight;
   return (
     <main
       className={clsx(
@@ -69,6 +75,7 @@ export default function Layout({ children }: LayoutProps) {
           [styles['has-content-gap-right']]: hasContentGapRight,
           [styles['has-header']]: contentHeader,
           [styles['has-max-content-width']]: maxContentWidth && maxContentWidth > 0,
+          [styles['has-notifications']]: hasNotificationsContent,
           [styles['has-split-panel']]: splitPanelDisplayed,
           [styles['has-sticky-background']]: hasStickyBackground,
           [styles['has-sticky-notifications']]: stickyNotifications && hasNotificationsContent,
@@ -86,6 +93,8 @@ export default function Layout({ children }: LayoutProps) {
         ...(maxContentWidth && { [customCssProps.maxContentWidth]: `${maxContentWidth}px` }),
         ...(minContentWidth && { [customCssProps.minContentWidth]: `${minContentWidth}px` }),
         [customCssProps.notificationsHeight]: `${notificationsHeight}px`,
+        [customCssProps.toolbarHeight]: `${toolbarHeight}px`,
+        [customCssProps.splitPanelHeight]: `${splitPanelHeight}px`,
       }}
     >
       {children}
@@ -102,15 +111,14 @@ child will be different to ensure vertical alignment with the trigger buttons.
 function getContentFirstChild(
   breadcrumbs: React.ReactNode,
   contentHeader: React.ReactNode,
-  hasNotificationsContent: boolean,
-  isMobile: boolean
+  hasNotificationsContent: boolean
 ) {
   let contentFirstChild = 'main';
 
   if (hasNotificationsContent) {
     contentFirstChild = 'notifications';
-  } else if (breadcrumbs && !isMobile) {
-    contentFirstChild = 'breadcrumbs';
+    // } else if (breadcrumbs && !isMobile) {
+    //   contentFirstChild = 'breadcrumbs';
   } else if (contentHeader) {
     contentFirstChild = 'header';
   }

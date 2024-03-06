@@ -16,7 +16,7 @@
   @include styles.font-panel-header;
   margin-block: 0;
   margin-inline: 0;
-  padding-block: awsui.$space-scaled-l;
+  padding-block: awsui.$space-panel-header-vertical;
   padding-inline-start: awsui.$space-panel-nav-left;
   // Additional xl space to prevent text from overlapping the close button.
   padding-inline-end: calc(#{awsui.$space-scaled-xxl} + #{awsui.$space-xl});
@@ -50,7 +50,7 @@
 }
 
 .list-container {
-  margin-block-start: awsui.$space-scaled-l;
+  margin-block-start: awsui.$space-panel-content-top;
 }
 
 .list {
@@ -172,14 +172,16 @@
 .divider {
   border-block: none;
   border-inline: none;
-  border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+  // border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
 }
 
 .divider-default {
   margin-block: awsui.$space-scaled-2x-xl;
   margin-inline: calc(-1 * #{awsui.$space-s});
+  border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
 }
 
 .divider-header {
   margin-block-start: 0;
+  border-block-start: awsui.$border-panel-header-width solid awsui.$color-border-divider-default;
 }

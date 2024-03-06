@@ -23,8 +23,8 @@ explicitly set in script.
 */
 .layout {
   #{custom-props.$breadcrumbsGap}: 0px;
-  #{custom-props.$contentGapLeft}: 0px;
-  #{custom-props.$contentGapRight}: 0px;
+  #{custom-props.$contentGapLeft}: awsui.$space-scaled-l;
+  #{custom-props.$contentGapRight}: awsui.$space-scaled-l;
   #{custom-props.$contentHeight}: calc(100vh - var(#{custom-props.$headerHeight}) - var(#{custom-props.$footerHeight}));
   #{custom-props.$defaultMaxContentWidth}: 1280px;
   #{custom-props.$defaultMinContentWidth}: 0px;
@@ -38,6 +38,7 @@ explicitly set in script.
   #{custom-props.$maxContentWidth}: 0px;
   #{custom-props.$minContentWidth}: 280px;
   #{custom-props.$mobileBarHeight}: calc(2 * #{awsui.$space-m} + #{awsui.$space-scaled-xs});
+  #{custom-props.$toolbarHeight}: 48px;
   #{custom-props.$notificationsGap}: 0px;
   #{custom-props.$notificationsHeight}: 0px;
   #{custom-props.$offsetTop}: var(#{custom-props.$headerHeight});
@@ -46,11 +47,9 @@ explicitly set in script.
   color: awsui.$color-text-body-default;
   display: grid;
   grid-template-areas:
-    '. . mobileToolbar . .'
+    '. . universalToolbar . .'
     '. . notificationsGap . .'
     '. . notifications . .'
-    '. . breadcrumbsGap . .'
-    '. . breadcrumbs . .'
     '. . headerGap . .'
     '. . header . .'
     '. . mainGap . .'
@@ -63,11 +62,9 @@ explicitly set in script.
     minmax(var(#{custom-props.$contentGapRight}), 1fr)
     min-content;
   grid-template-rows:
-    auto // mobileToolbar template area
+    auto // universalToolbar template area
     var(#{custom-props.$notificationsGap})
     auto // notifications template area
-    var(#{custom-props.$breadcrumbsGap})
-    auto // breadcrumbs template area
     var(#{custom-props.$headerGap})
     auto // contentHeader template area
     var(#{custom-props.$mainGap})
@@ -200,7 +197,7 @@ explicitly set in script.
 
   // Set the Main gap when it follows the Breadcrumbs with an overlap
   &.has-breadcrumbs:not(.has-header):not(.is-overlap-disabled) {
-    #{custom-props.$mainGap}: #{awsui.$space-scaled-xxs};
+    #{custom-props.$mainGap}: #{awsui.$space-scaled-s};
   }
 
   // Set the Main gap when it follows the Header
@@ -259,7 +256,9 @@ notifications top margin and some additional vertical space for aesthetics.
   overflow-y: scroll;
 
   &.has-split-panel.split-panel-position-bottom {
-    #{custom-props.$mainTemplateRows}: repeat(2, auto);
+    // :not(.has-notifications),
+    // &.has-notifications:not(.split-panel-position-bottom) {
+    // #{custom-props.$mainTemplateRows}: repeat(2, auto);
   }
 }
 

@@ -4,7 +4,6 @@ import React from 'react';
 import clsx from 'clsx';
 import { useAppLayoutInternals } from './context';
 import { InternalButton } from '../../button/internal';
-import TriggerButton from './trigger-button';
 import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 import { Transition } from '../../internal/components/transition';
@@ -62,7 +61,7 @@ export default function Navigation() {
           })}
           style={{ [customCssProps.navigationWidth]: `${navigationWidth}px` }}
         >
-          {!isMobile && (
+          {/* {!isMobile && (
             <nav
               aria-hidden={isMobile || navigationOpen}
               aria-label={ariaLabels?.navigation ?? undefined}
@@ -81,7 +80,7 @@ export default function Navigation() {
                 ref={navigationRefs.toggle}
               />
             </nav>
-          )}
+          )} */}
 
           <nav
             aria-label={ariaLabels?.navigation ?? undefined}

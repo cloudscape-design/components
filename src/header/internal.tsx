@@ -45,7 +45,7 @@ export default function InternalHeader({
     assignHeaderId(headingId);
   }
   // If is mobile there is no need to have the dynamic variant because it's scrolled out of view
-  const dynamicVariant = !isMobile && isStuck ? 'h2' : 'h1';
+  const dynamicVariant = !isMobile && isStuck ? 'h2' : 'h2';
   const variantOverride = variant === 'awsui-h1-sticky' ? (isRefresh ? dynamicVariant : 'h2') : variant;
   const hasToolbarHeader = getGlobalFlag('appLayoutWidget');
 
