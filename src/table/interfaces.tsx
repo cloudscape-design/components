@@ -95,6 +95,8 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * * * `editConfig.errorIconAriaLabel` (string) - Specifies an ariaLabel for the error icon that is displayed when the validation fails.
    * * * `editConfig.editIconAriaLabel` (string) - Specifies an alternate text for the edit icon used in column header.
    * * * `editConfig.constraintText` (string) - Constraint text that is displayed below the edit control.
+   * * * `editConfig.disabledReason` ((item) => string | undefined) - A function that determines whether inline edit for certain items is disabled, and provides a reason why.
+   *            Return a string from the function to disable inline edit with a reason. Return `undefined` (or no return) from the function allow inline edit.
    * * * `editConfig.validation` ((item, value) => string) - A function that allows you to validate the value of the edit control.
    *            Return a string from the function to display an error message. Return `undefined` (or no return) from the function to indicate that the value is valid.
    * * * `editConfig.editingCell` ((item, cellContext) => ReactNode) - Determines the display of a cell's content when inline editing is active on a cell;
@@ -318,6 +320,12 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * validation states, or show warning for unsaved changes.
    */
   onEditCancel?: CancelableEventHandler;
+
+  /**
+   * Use this property to activate advanced keyboard navigation and focusing behaviors.
+   * When set to `true`, table cells become navigable with arrow keys, and the entire table has a single tab stop.
+   */
+  enableKeyboardNavigation?: boolean;
 }
 
 export namespace TableProps {
@@ -360,6 +368,11 @@ export namespace TableProps {
      * Determines the display of a cell's content when inline edit is active.
      */
     editingCell(item: T, ctx: TableProps.CellContext<any>): React.ReactNode;
+
+    /**
+     * Determines whether inline edit for certain items is disabled, and provides a reason why.
+     */
+    disabledReason?: (item: T) => string | undefined;
   }
 
   export type ColumnDefinition<ItemType> = {

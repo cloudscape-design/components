@@ -8,8 +8,10 @@
 
 .breadcrumb-group {
   @include styles.styles-reset;
-  margin: 0;
-  padding: awsui.$space-xxs 0;
+  margin-block: 0;
+  margin-inline: 0;
+  padding-block: awsui.$space-xxs;
+  padding-inline: 0;
 
   > .item {
     @include styles.styles-reset;
@@ -19,24 +21,29 @@
   > .breadcrumb-group-list {
     display: flex;
     align-items: center;
-    padding: 0;
-    margin: 0;
+    padding-block: 0;
+    padding-inline: 0;
+    margin-block: 0;
+    margin-inline: 0;
     list-style: none;
-    width: 100%;
+    inline-size: 100%;
     flex-wrap: wrap;
 
     > .item,
     > .ellipsis {
       display: inline-block;
-      padding: 0;
-      margin: 0;
+      padding-block: 0;
+      padding-inline: 0;
+      margin-block: 0;
+      margin-inline: 0;
     }
 
     > .ellipsis {
       display: none;
 
       > .icon {
-        margin: 0 styles.$base-size;
+        margin-block: 0;
+        margin-inline: styles.$base-size;
         color: awsui.$color-text-breadcrumb-icon;
       }
     }
@@ -54,7 +61,7 @@
         flex-shrink: 0;
       }
       > .item {
-        min-width: 0;
+        min-inline-size: 0;
         &:not(:first-child):not(:last-child) {
           display: none;
         }

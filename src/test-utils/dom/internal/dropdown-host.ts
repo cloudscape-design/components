@@ -202,6 +202,22 @@ export class DropdownContentWrapper extends ComponentWrapper {
       (elementWrapper: ElementWrapper) => new OptionWrapper(elementWrapper.getElement())
     );
   }
+
+  /**
+   * Returns an option group from the dropdown.
+   *
+   * @param index 1-based index of the group to select.
+   */
+  findGroup(index: number): ElementWrapper | null {
+    return this.find(`.${selectableStyles['selectable-item']}[data-group-index="${index}"]`);
+  }
+
+  /**
+   * Returns all option groups in the dropdown.
+   */
+  findGroups(): Array<ElementWrapper> {
+    return this.findAll(`.${selectableStyles['selectable-item']}[data-group-index]:not([data-test-index])`);
+  }
 }
 
 export class PortalDropdownContentWrapper extends DropdownContentWrapper {

@@ -106,19 +106,19 @@ function EditableCellContent({ item }: { item: Item }) {
   );
 }
 
-function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
+export function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
   const inputRef = useRef<HTMLInputElement>(null);
   const { tabIndex } = useSingleTabStopNavigation(inputRef, { tabIndex: 0 });
   return <input {...props} ref={inputRef} tabIndex={tabIndex} />;
 }
 
-function Button(props: React.HTMLAttributes<HTMLButtonElement>) {
+export function Button(props: React.ButtonHTMLAttributes<HTMLButtonElement>) {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const { tabIndex } = useSingleTabStopNavigation(buttonRef, { tabIndex: 0 });
   return <button {...props} ref={buttonRef} tabIndex={tabIndex} />;
 }
 
-function Cell({ tag: Tag, ...rest }: React.HTMLAttributes<HTMLTableCellElement> & { tag: 'th' | 'td' }) {
+export function Cell({ tag: Tag, ...rest }: React.HTMLAttributes<HTMLTableCellElement> & { tag: 'th' | 'td' }) {
   const cellRef = useRef<HTMLTableCellElement>(null);
   const { tabIndex } = useSingleTabStopNavigation(cellRef);
   return <Tag {...rest} ref={cellRef} tabIndex={tabIndex} />;

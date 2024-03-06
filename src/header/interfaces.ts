@@ -21,7 +21,7 @@ export interface HeaderProps extends BaseComponentProps {
   variant?: HeaderProps.Variant;
   /**
    * Overrides the default [HTML heading tag](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements)
-   * provided by the variant.
+   * provided by the variant. Using this property does not change the visual appearance of the component.
    */
   headingTagOverride?: HeaderProps.HeadingTag;
   /**

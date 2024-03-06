@@ -51,7 +51,7 @@ export function getTableWrapperRoleProps(options: { tableRole: TableRole; isScro
   const nativeProps: React.HTMLAttributes<HTMLDivElement> = {};
 
   // When the table is scrollable, the wrapper is made focusable so that keyboard users can scroll it horizontally with arrow keys.
-  if (options.isScrollable && options.tableRole !== 'grid') {
+  if (options.isScrollable) {
     nativeProps.role = 'region';
     nativeProps.tabIndex = 0;
     nativeProps['aria-label'] = options.ariaLabel;
@@ -96,7 +96,6 @@ export function getTableColHeaderRoleProps(options: {
   nativeProps.scope = 'col';
 
   if (options.tableRole === 'grid') {
-    nativeProps.tabIndex = -1;
     nativeProps['aria-colindex'] = options.colIndex + 1;
   }
 
@@ -111,7 +110,6 @@ export function getTableCellRoleProps(options: { tableRole: TableRole; colIndex:
   const nativeProps: React.TdHTMLAttributes<HTMLTableCellElement> = {};
 
   if (options.tableRole === 'grid') {
-    nativeProps.tabIndex = -1;
     nativeProps['aria-colindex'] = options.colIndex + 1;
   }
 

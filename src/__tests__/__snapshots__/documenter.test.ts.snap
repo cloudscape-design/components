@@ -794,9 +794,7 @@ By default, the preference is \`{ position: 'bottom' }\`
     },
     Object {
       "description": "If true, the notification slot is rendered above the scrollable
-content area so it is always visible.
-Note that sticky notifications are not supported in Internet Explorer.
-",
+content area so it is always visible.",
       "name": "stickyNotifications",
       "optional": true,
       "type": "boolean",
@@ -1366,6 +1364,7 @@ The event \`detail\` contains the index of the corresponding item.",
    It renders the form field as invalid if the returned value is not \`null\` or \`undefined\`.
 * \`constraintText\` ((item, itemIndex) => ReactNode) - Text to display as a constraint message below the field.
 * \`control\` ((item, itemIndex) => ReactNode) - A control to use as the input for the field.
+
 A maximum of four fields are supported.
 ",
       "name": "definition",
@@ -1820,6 +1819,7 @@ because fixed positioning results in a slight, visible lag when scrolling comple
 * \`auto\` - The component will automatically filter options based on user input.
 * \`manual\` - You will set up \`onChange\` or \`onLoadItems\` event listeners and filter options on your side or request
 them from server.
+
 By default the component will filter the provided \`options\` based on the value of the filtering input field.
 Only options that have a \`value\`, \`label\`, \`description\` or \`labelTag\` that contains the input value as a substring
 are displayed in the list of options.
@@ -3509,6 +3509,7 @@ Main action properties:
 * \`text\` (string) - Specifies the text shown in the main action.
 * \`external\` (boolean) - Marks the main action as external by adding an icon after the text. The link will open in a new tab when clicked. Note that this only works when \`href\` is also provided.
 * \`externalIconAriaLabel\` (string) - Adds an ARIA label to the external icon.
+
 The main action also supports the following properties of the [button](/components/button/?tabId=api) component:
 \`ariaLabel\`, \`disabled\`, \`loading\`, \`loadingText\`, \`href\`, \`target\`, \`rel\`, \`download\`, \`iconAlt\`, \`iconName\`, \`iconUrl\`, \`iconSvg\`, \`onClick\`, \`onFollow\`.
 ",
@@ -3692,6 +3693,66 @@ The event \`detail\` contains the current value of the field.",
       "type": "string",
     },
     Object {
+      "defaultValue": "\\"day\\"",
+      "description": "Specifies the granularity at which users will be able to select a date.
+Defaults to \`day\`.",
+      "inlineType": Object {
+        "name": "CalendarProps.Granularity",
+        "type": "union",
+        "values": Array [
+          "day",
+          "month",
+        ],
+      },
+      "name": "granularity",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "An object containing all the necessary localized strings required by
+the component.",
+      "i18nTag": true,
+      "inlineType": Object {
+        "name": "CalendarProps.I18nStrings",
+        "properties": Array [
+          Object {
+            "name": "currentMonthAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "nextMonthAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "nextYearAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "previousMonthAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "previousYearAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "todayAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "CalendarProps.I18nStrings",
+    },
+    Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
@@ -3729,15 +3790,15 @@ Supported values and formats are listed in the
       "type": "string",
     },
     Object {
+      "deprecatedTag": "Use \`i18nStrings.nextMonthAriaLabel\` instead.",
       "description": "Specifies an \`aria-label\` for the 'next month' button.",
-      "i18nTag": true,
       "name": "nextMonthAriaLabel",
       "optional": true,
       "type": "string",
     },
     Object {
+      "deprecatedTag": "Use \`i18nStrings.previousMonthAriaLabel\` instead.",
       "description": "Specifies an \`aria-label\` for the 'previous month' button.",
-      "i18nTag": true,
       "name": "previousMonthAriaLabel",
       "optional": true,
       "type": "string",
@@ -3750,8 +3811,8 @@ By default the starting day of the week is defined by the locale, but you can us
       "type": "number",
     },
     Object {
+      "deprecatedTag": "Use \`i18nString.todayAriaLabel\` instead.",
       "description": "Used as part of the \`aria-label\` for today's date in the calendar.",
-      "i18nTag": true,
       "name": "todayAriaLabel",
       "optional": true,
       "type": "string",
@@ -4466,72 +4527,72 @@ The object should contain, among others:
         "properties": Array [
           Object {
             "name": "cursorPosition",
-            "optional": false,
+            "optional": true,
             "type": "(row: number, column: number) => string",
           },
           Object {
             "name": "editorGroupAriaLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "errorState",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "errorStateRecovery",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "errorsTab",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "loadingState",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "paneCloseButtonAriaLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "preferencesButtonAriaLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "preferencesModalCancel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "preferencesModalConfirm",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "preferencesModalDarkThemes",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "preferencesModalHeader",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "preferencesModalLightThemes",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "preferencesModalTheme",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -4551,17 +4612,17 @@ The object should contain, among others:
           },
           Object {
             "name": "preferencesModalWrapLines",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "statusBarGroupAriaLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "warningsTab",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
         ],
@@ -4622,7 +4683,8 @@ You can use any theme provided by Ace.
     },
     Object {
       "description": "List of Ace themes available for selection in preferences dialog. Make sure you include at least one light and at
-least one dark theme. If not set explicitly, it will render all Ace themes available for selection.",
+least one dark theme. If not set explicitly, it will render all Ace themes available for selection, except
+\\"cloud_editor\\" and \\"cloud_editor_dark\\".",
       "inlineType": Object {
         "name": "CodeEditorProps.AvailableThemes",
         "properties": Array [
@@ -5250,6 +5312,7 @@ Object {
       "type": "boolean",
     },
     Object {
+      "defaultValue": "false",
       "description": "Enabling this property will make the container to fit into available height. If content is too short, the container
 will stretch, if too long, the container will shrink and show vertical scrollbar.
 Use this property to align heights of multiple containers displayed in a single row. It is recommended to stretch
@@ -5396,6 +5459,85 @@ If true, the overlap will be removed.",
       "name": "header",
     },
   ],
+  "releaseStatus": "stable",
+}
+`;
+
+exports[`Documenter definition for copy-to-clipboard matches the snapshot: copy-to-clipboard 1`] = `
+Object {
+  "events": Array [],
+  "functions": Array [],
+  "name": "CopyToClipboard",
+  "properties": Array [
+    Object {
+      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds \`aria-label\` to the copy button. Use this to provide an accessible name for buttons that don't have visible text,
+and to distinguish between multiple buttons with identical visible text. The text will also be added to the \`title\` attribute of the button.",
+      "name": "copyButtonAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "The text of the copy button (for variant=\\"button\\").",
+      "name": "copyButtonText",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "The message shown when the text is not copied due to an error, see [https://w3c.github.io/clipboard-apis/#dom-clipboard-writetext](https://w3c.github.io/clipboard-apis/#dom-clipboard-writetext).",
+      "name": "copyErrorText",
+      "optional": false,
+      "type": "string",
+    },
+    Object {
+      "description": "The message shown when the text is copied successfully.",
+      "name": "copySuccessText",
+      "optional": false,
+      "type": "string",
+    },
+    Object {
+      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "The text content to be copied. It is displayed next to the copy button when \`variant=\\"inline\\"\`, and is not shown otherwise.",
+      "name": "textToCopy",
+      "optional": false,
+      "type": "string",
+    },
+    Object {
+      "defaultValue": "\\"button\\"",
+      "description": "Determines the general styling of the copy button as follows:
+* \`button\` to display a standalone secondary button with an icon, and \`copyButtonText\` as text.
+* \`icon\` to display a standalone icon-only (no text) button.
+* \`inline\` to display an icon-only (no text) button within a text context.
+
+Defaults to \`button\`.
+",
+      "inlineType": Object {
+        "name": "CopyToClipboardProps.Variant",
+        "type": "union",
+        "values": Array [
+          "button",
+          "icon",
+          "inline",
+        ],
+      },
+      "name": "variant",
+      "optional": true,
+      "type": "string",
+    },
+  ],
+  "regions": Array [],
   "releaseStatus": "stable",
 }
 `;
@@ -5699,6 +5841,66 @@ because fixed positioning results in a slight, visible lag when scrolling comple
       "type": "boolean",
     },
     Object {
+      "defaultValue": "'day'",
+      "description": "Specifies the granularity at which users will be able to select a date.
+Defaults to \`day\`.",
+      "inlineType": Object {
+        "name": "CalendarProps.Granularity",
+        "type": "union",
+        "values": Array [
+          "day",
+          "month",
+        ],
+      },
+      "name": "granularity",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "An object containing all the necessary localized strings required by
+the component.",
+      "i18nTag": true,
+      "inlineType": Object {
+        "name": "DatePickerProps.I18nStrings",
+        "properties": Array [
+          Object {
+            "name": "currentMonthAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "nextMonthAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "nextYearAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "previousMonthAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "previousYearAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "todayAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "DatePickerProps.I18nStrings",
+    },
+    Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
@@ -5752,8 +5954,8 @@ Supported values and formats are listed in the
       "type": "string",
     },
     Object {
+      "deprecatedTag": "Use \`i18nStrings.nextMonthAriaLabel\` instead.",
       "description": "Specifies an \`aria-label\` for the 'next month' button.",
-      "i18nTag": true,
       "name": "nextMonthAriaLabel",
       "optional": true,
       "type": "string",
@@ -5785,8 +5987,8 @@ a human-readable localised string representing the current value of the input.
       "type": "string",
     },
     Object {
+      "deprecatedTag": "Use \`i18nStrings.previousMonthAriaLabel\` instead.",
       "description": "Specifies an \`aria-label\` for the 'previous month' button.",
-      "i18nTag": true,
       "name": "previousMonthAriaLabel",
       "optional": true,
       "type": "string",
@@ -5810,8 +6012,8 @@ By default the starting day of the week is defined by the locale, but you can us
       "type": "number",
     },
     Object {
+      "deprecatedTag": "Use \`i18nString.todayAriaLabel\` instead.",
       "description": "Used as part of the \`aria-label\` for today's date in the calendar.",
-      "i18nTag": true,
       "name": "todayAriaLabel",
       "optional": true,
       "type": "string",
@@ -5873,6 +6075,27 @@ The event \`detail\` contains the current value of the field.",
   ],
   "name": "DateRangePicker",
   "properties": Array [
+    Object {
+      "defaultValue": "'iso'",
+      "description": "Specifies the time format to use for displaying the absolute time range.
+It can take the following values:
+* \`iso\`: ISO 8601 format, e.g.: 2024-01-30T13:32:32+01:00 (or 2024-01-30 when \`dateOnly\` is true)
+* \`long-localized\`: a more human-readable, localized format, e.g.: January 30, 2024, 13:32:32 (UTC+1) (or January 30, 2024 when \`dateOnly\` is true)
+
+Defaults to \`iso\`.
+",
+      "inlineType": Object {
+        "name": "DateRangePickerProps.AbsoluteFormat",
+        "type": "union",
+        "values": Array [
+          "iso",
+          "long-localized",
+        ],
+      },
+      "name": "absoluteFormat",
+      "optional": true,
+      "type": "string",
+    },
     Object {
       "description": "Adds \`aria-describedby\` to the component. If you're using this component within a form field,
 don't set this property because the form field component automatically sets it.
@@ -5995,6 +6218,13 @@ Default: the user's current time offset as provided by the browser.
       "name": "getTimeOffset",
       "optional": true,
       "type": "DateRangePickerProps.GetTimeOffsetFunction",
+    },
+    Object {
+      "description": "Specifies whether to hide the time offset in the displayed absolute time range.
+Defaults to \`false\`.",
+      "name": "hideTimeOffset",
+      "optional": true,
+      "type": "boolean",
     },
     Object {
       "description": "An object containing all the necessary localized strings required by the component.",
@@ -6225,6 +6455,7 @@ are as-per the [JavaScript Intl API specification](https://developer.mozilla.org
 * \`default\` for combined absolute/relative range selector.
 * \`absolute-only\` for absolute-only range selector.
 * \`relative-only\` for relative-only range selector.
+
 By default, the range selector mode is \`default\`.
 ",
       "inlineType": Object {
@@ -6453,8 +6684,9 @@ Behaves similar to the Header component counter.",
     },
     Object {
       "description": "Overrides the default [HTML heading tag](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements).
-Use with the container variant (which defaults to H2) or default/footer variants (which default to DIV). Note that this only
-works with the \`headerText\` slot (not with the deprecated \`header\`), and not with the navigation variant.",
+Use with the container variant (which defaults to H2) or default/footer variants (which default to DIV). Using this
+property does not change the visual appearance of the component. Note that this only works with the \`headerText\`
+slot (not with the deprecated \`header\`), and not with the navigation variant.",
       "inlineType": Object {
         "name": "ExpandableSectionProps.HeadingTag",
         "type": "union",
@@ -7157,7 +7389,7 @@ to display resource counters in table and cards components.",
     },
     Object {
       "description": "Overrides the default [HTML heading tag](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements)
-provided by the variant.",
+provided by the variant. Using this property does not change the visual appearance of the component.",
       "inlineType": Object {
         "name": "HeaderProps.HeadingTag",
         "type": "union",
@@ -8464,6 +8696,7 @@ If you want to implement client-side routing yourself, use this event and preven
       "description": "Determines the text color of the link and its icon.
 - \`normal\`: Use in most cases where a link is required.
 - \`inverted\`: Use to style links inside Flashbars.
+
 This property is overridden if the variant is \`info\`.
 ",
       "inlineType": Object {
@@ -8559,6 +8792,7 @@ For other options see the documentation for <a> tag's
     This can be used in cases where the interactivity is strongly implied by its context,
     such as in a table or a list of external links.
 - \`info\` - Use for \\"info\\" links that link to content in a help panel.
+
 The default is \`secondary\`, except inside the following components where it defaults to \`primary\`:
 - Table
 - Cards
@@ -9381,6 +9615,7 @@ because fixed positioning results in a slight, visible lag when scrolling comple
 * \`auto\` - The component will automatically filter options based on user input.
 * \`manual\` - You will set up \`onChange\` or \`onLoadItems\` event listeners and filter options on your side or request
 them from server.
+
 By default the component will filter the provided \`options\` based on the value of the filtering input field.
 Only options that have a \`value\`, \`label\`, \`description\` or \`labelTag\` that contains the input value as a substring
 are displayed in the list of options.
@@ -11946,6 +12181,7 @@ because fixed positioning results in a slight, visible lag when scrolling comple
 * \`auto\` - The component will automatically filter options based on user input.
 * \`manual\` - You will set up \`onChange\` or \`onLoadItems\` event listeners and filter options on your side or request
 them from server.
+
 By default the component will filter the provided \`options\` based on the value of the filtering input field.
 Only options that have a \`value\`, \`label\`, \`description\` or \`labelTag\` that contains the input value as a substring
 are displayed in the list of options.
@@ -13028,6 +13264,8 @@ add a meaningful description to the whole selection.
 * * \`editConfig.errorIconAriaLabel\` (string) - Specifies an ariaLabel for the error icon that is displayed when the validation fails.
 * * \`editConfig.editIconAriaLabel\` (string) - Specifies an alternate text for the edit icon used in column header.
 * * \`editConfig.constraintText\` (string) - Constraint text that is displayed below the edit control.
+* * \`editConfig.disabledReason\` ((item) => string | undefined) - A function that determines whether inline edit for certain items is disabled, and provides a reason why.
+           Return a string from the function to disable inline edit with a reason. Return \`undefined\` (or no return) from the function allow inline edit.
 * * \`editConfig.validation\` ((item, value) => string) - A function that allows you to validate the value of the edit control.
            Return a string from the function to display an error message. Return \`undefined\` (or no return) from the function to indicate that the value is valid.
 * * \`editConfig.editingCell\` ((item, cellContext) => ReactNode) - Determines the display of a cell's content when inline editing is active on a cell;
@@ -13064,6 +13302,13 @@ Use it in conjunction with the content display preference of the [collection pre
       "name": "contentDensity",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Use this property to activate advanced keyboard navigation and focusing behaviors.
+When set to \`true\`, table cells become navigable with arrow keys, and the entire table has a single tab stop.",
+      "name": "enableKeyboardNavigation",
+      "optional": true,
+      "type": "boolean",
     },
     Object {
       "description": " Use this property to inform screen readers which range of items is currently displayed in the table.
@@ -13434,6 +13679,13 @@ Don't use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "defaultValue": "false",
       "description": "Determines whether the tab content has padding. If \`true\`, removes the default padding from the tab content area.",
       "name": "disableContentPaddings",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Enabling this property makes the tab content fit to the available height.
+If the tab content is too short, it will stretch. If the tab content is too long, a vertical scrollbar will be shown.",
+      "name": "fitHeight",
       "optional": true,
       "type": "boolean",
     },
@@ -15041,6 +15293,7 @@ The following properties are supported across all utility types:
 * \`items\` (ButtonDropdownProps.Items) - An array of dropdown items. This follows the same structure as the \`items\` property of the [button dropdown component](/components/button-dropdown).
 * \`onItemClick\` (NonCancelableEventHandler<ButtonDropdownProps.ItemClickDetails>) - Specifies the event handler called when a dropdown item is selected.
 * \`onItemFollow\` (NonCancelableEventHandler<ButtonDropdownProps.ItemClickDetails>) - Specifies the event handler called when a dropdown item is selected without pressing modifier keys, and the item has an \`href\` set.
+* \`expandableGroups\` (boolean) - Controls expandability of the item groups.
 ",
       "name": "utilities",
       "optional": true,

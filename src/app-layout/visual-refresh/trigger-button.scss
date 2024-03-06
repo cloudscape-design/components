@@ -21,9 +21,12 @@
 
 @mixin trigger-button-styles {
   background: awsui.$color-background-layout-toggle-default;
-  border-radius: 50%;
-  height: awsui.$space-layout-toggle-diameter;
-  width: awsui.$space-layout-toggle-diameter;
+  border-start-start-radius: 50%;
+  border-start-end-radius: 50%;
+  border-end-start-radius: 50%;
+  border-end-end-radius: 50%;
+  block-size: awsui.$space-layout-toggle-diameter;
+  inline-size: awsui.$space-layout-toggle-diameter;
 
   &:hover {
     background: awsui.$color-background-layout-toggle-hover;
@@ -38,8 +41,8 @@
   @include trigger-button-styles();
 
   position: absolute;
-  top: 0;
-  left: 0;
+  inset-block-start: 0;
+  inset-inline-start: 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -56,8 +59,9 @@ handleSplitPanelMaxWidth function in the context.
 */
 .trigger {
   @include trigger-button-styles();
-
-  border: none;
+  border-block: none;
+  border-inline: none;
+  padding-inline: 0;
   color: awsui.$color-text-layout-toggle;
   cursor: pointer;
   pointer-events: auto;
@@ -88,16 +92,25 @@ handleSplitPanelMaxWidth function in the context.
 
 .trigger-wrapper {
   position: relative;
-  box-shadow: awsui.$shadow-panel-toggle;
-  border-radius: 50%;
+  border-start-start-radius: 50%;
+  border-start-end-radius: 50%;
+  border-end-start-radius: 50%;
+  border-end-end-radius: 50%;
+
+  &:not(.remove-high-contrast-header) {
+    box-shadow: awsui.$shadow-panel-toggle;
+  }
 }
 
 .dot {
   position: absolute;
-  width: 9px;
-  height: 9px;
-  border-radius: 8px;
+  inline-size: 9px;
+  block-size: 9px;
+  border-start-start-radius: 8px;
+  border-start-end-radius: 8px;
+  border-end-start-radius: 8px;
+  border-end-end-radius: 8px;
   background-color: awsui.$color-background-badge-icon;
-  top: 0;
-  right: 0;
+  inset-block-start: 0;
+  inset-inline-end: 0;
 }

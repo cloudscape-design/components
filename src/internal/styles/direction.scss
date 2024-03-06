@@ -1,0 +1,12 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+/* stylelint-disable plugin/no-unsupported-browser-features */
+@mixin with-direction($direction) {
+  &:dir(#{$direction}) {
+    @content;
+  }
+}
+/* stylelint-enable plugin/no-unsupported-browser-features */

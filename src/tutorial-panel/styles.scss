@@ -8,5 +8,7 @@
 
 .tutorial-panel {
   @include styles.styles-reset;
-  padding: 0 awsui.$space-l awsui.$space-m;
+  padding-block-start: 0;
+  padding-block-end: awsui.$space-m;
+  padding-inline: awsui.$space-l;
 }

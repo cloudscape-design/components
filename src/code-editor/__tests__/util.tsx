@@ -57,6 +57,9 @@ export const editorMock = {
 };
 
 export const aceMock = {
+  get version() {
+    return '1.0.0';
+  },
   edit: jest.fn(() => editorMock),
   config: {
     loadModule: jest.fn(),

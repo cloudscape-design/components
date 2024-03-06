@@ -7,28 +7,44 @@ import ButtonWrapper from '../button';
 export default class CalendarWrapper extends ComponentWrapper {
   static rootSelector: string = styles.root;
   /**
-   * Returns a day container on the calendar.
+   * Returns a date container on the calendar.
    *
-   * @param row 1-based row index of the day.
-   * @param column 1-based column index of the day.
+   * @param row 1-based row index of the day or month.
+   * @param column 1-based column index of the day or month.
    */
   findDateAt(row: number, column: number): ElementWrapper {
-    return this.find(`.${styles['calendar-week']}:nth-child(${row}) .${styles['calendar-day']}:nth-child(${column})`)!;
+    return this.find(`.${styles['calendar-row']}:nth-child(${row}) .${styles['calendar-date']}:nth-child(${column})`)!;
   }
 
   findHeader(): ElementWrapper {
     return this.findByClassName(styles['calendar-header'])!;
   }
 
+  /**
+   * Alias for findPreviousButton for compatibility with previous versions
+   * @deprecated
+   */
   findPreviousMonthButton(): ButtonWrapper {
-    return this.findComponent(`.${styles['calendar-prev-month-btn']}`, ButtonWrapper)!;
+    return this.findPreviousButton();
   }
 
+  /**
+   * Alias for findNextButton for compatibility with previous versions
+   * @deprecated
+   */
   findNextMonthButton(): ButtonWrapper {
-    return this.findComponent(`.${styles['calendar-next-month-btn']}`, ButtonWrapper)!;
+    return this.findNextButton();
+  }
+
+  findPreviousButton(): ButtonWrapper {
+    return this.findComponent(`.${styles['calendar-prev-btn']}`, ButtonWrapper)!;
+  }
+
+  findNextButton(): ButtonWrapper {
+    return this.findComponent(`.${styles['calendar-next-btn']}`, ButtonWrapper)!;
   }
 
   findSelectedDate(): ElementWrapper {
-    return this.find(`.${styles['calendar-day-selected']}`)!;
+    return this.find(`.${styles['calendar-date-selected']}`)!;
   }
 }

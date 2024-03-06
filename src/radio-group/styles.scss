@@ -19,11 +19,11 @@ $radio-size: awsui.$size-control;
 }
 
 .radio + .radio {
-  margin-top: awsui.$space-scaled-xxs;
+  margin-block-start: awsui.$space-scaled-xxs;
 }
 
 .radio--has-description + .radio {
-  margin-top: awsui.$space-scaled-xs;
+  margin-block-start: awsui.$space-scaled-xs;
 }
 
 .radio-control {

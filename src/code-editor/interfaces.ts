@@ -67,7 +67,8 @@ export interface CodeEditorProps extends BaseComponentProps, FormFieldControlPro
 
   /**
    * List of Ace themes available for selection in preferences dialog. Make sure you include at least one light and at
-   * least one dark theme. If not set explicitly, it will render all Ace themes available for selection.
+   * least one dark theme. If not set explicitly, it will render all Ace themes available for selection, except
+   * "cloud_editor" and "cloud_editor_dark".
    */
   themes?: CodeEditorProps.AvailableThemes;
 
@@ -140,26 +141,26 @@ export namespace CodeEditorProps {
   }
 
   export interface I18nStrings {
-    loadingState: string;
-    errorState: string;
-    errorStateRecovery: string;
+    loadingState?: string;
+    errorState?: string;
+    errorStateRecovery?: string;
 
-    editorGroupAriaLabel: string;
-    statusBarGroupAriaLabel: string;
+    editorGroupAriaLabel?: string;
+    statusBarGroupAriaLabel?: string;
 
-    cursorPosition: (row: number, column: number) => string;
-    errorsTab: string;
-    warningsTab: string;
-    preferencesButtonAriaLabel: string;
-    paneCloseButtonAriaLabel: string;
+    cursorPosition?: (row: number, column: number) => string;
+    errorsTab?: string;
+    warningsTab?: string;
+    preferencesButtonAriaLabel?: string;
+    paneCloseButtonAriaLabel?: string;
 
-    preferencesModalHeader: string;
-    preferencesModalCancel: string;
-    preferencesModalConfirm: string;
-    preferencesModalWrapLines: string;
-    preferencesModalTheme: string;
-    preferencesModalLightThemes: string;
-    preferencesModalDarkThemes: string;
+    preferencesModalHeader?: string;
+    preferencesModalCancel?: string;
+    preferencesModalConfirm?: string;
+    preferencesModalWrapLines?: string;
+    preferencesModalTheme?: string;
+    preferencesModalLightThemes?: string;
+    preferencesModalDarkThemes?: string;
 
     preferencesModalThemeFilteringPlaceholder?: string;
     preferencesModalThemeFilteringAriaLabel?: string;

@@ -40,7 +40,9 @@ const Button = React.forwardRef(
     }: ButtonProps,
     ref: React.Ref<ButtonProps.Ref>
   ) => {
-    const baseComponentProps = useBaseComponent('Button', { variant, disabled, loading });
+    const baseComponentProps = useBaseComponent('Button', {
+      props: { formAction, fullWidth, iconAlign, iconName, rel, target, variant, wrapText },
+    });
     const baseProps = getBaseProps(props);
     return (
       <InternalButton

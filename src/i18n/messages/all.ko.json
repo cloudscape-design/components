@@ -52,7 +52,10 @@
   "calendar": {
     "nextMonthAriaLabel": "다음 달",
     "previousMonthAriaLabel": "이전 달",
-    "todayAriaLabel": "오늘"
+    "todayAriaLabel": "오늘",
+    "i18nStrings.nextYearAriaLabel": "내년",
+    "i18nStrings.previousYearAriaLabel": "작년",
+    "i18nStrings.currentMonthAriaLabel": "이번 달"
   },
   "cards": {
     "ariaLabels.selectionGroupLabel": "항목 선택"

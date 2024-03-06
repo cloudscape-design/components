@@ -3,8 +3,6 @@
 import React from 'react';
 import { togglesConfig } from '../toggles';
 import { AppLayoutProps } from '../interfaces';
-import { IconProps } from '../../icon/interfaces';
-import { NonCancelableEventHandler } from '../../internal/events';
 
 import { FocusControlRefs } from '../utils/use-focus-control';
 
@@ -41,9 +39,8 @@ export interface DesktopDrawerProps {
 export interface ResizableDrawerProps extends DesktopDrawerProps {
   activeDrawer: AppLayoutProps.Drawer | undefined;
   onResize: (resizeDetail: { size: number; id: string }) => void;
-  minSize: number;
-  size: number;
-  getMaxWidth: () => number;
+  minWidth: number;
+  maxWidth: number;
   refs: FocusControlRefs;
   toolsContent: React.ReactNode;
 }
@@ -58,37 +55,3 @@ export interface DrawerTriggersBarProps {
   ariaLabels: AppLayoutProps['ariaLabels'];
   drawerRefs: FocusControlRefs;
 }
-
-// Beta interfaces
-// TODO: remove after beta consumers migrate to prod API
-interface BetaDrawerItemAriaLabels {
-  content?: string;
-  closeButton?: string;
-  triggerButton?: string;
-  resizeHandle?: string;
-}
-
-interface BetaDrawerItem {
-  id: string;
-  content: React.ReactNode;
-  trigger: {
-    iconName?: IconProps.Name;
-    iconSvg?: React.ReactNode;
-  };
-  ariaLabels: BetaDrawerItemAriaLabels;
-  resizable?: boolean;
-  defaultSize?: number;
-  onResize?: NonCancelableEventHandler<{ size: number; id: string }>;
-  badge?: boolean;
-}
-
-export interface BetaDrawersProps {
-  items: Array<BetaDrawerItem>;
-  activeDrawerId?: string | null;
-  onChange?: NonCancelableEventHandler<string | null>;
-  onResize?: NonCancelableEventHandler<{ size: number; id: string }>;
-  ariaLabel?: string;
-  overflowAriaLabel?: string;
-  overflowWithBadgeAriaLabel?: string;
-}
-// Beta interfaces end

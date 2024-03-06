@@ -12,7 +12,7 @@ import { useControllable } from '../internal/hooks/use-controllable';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { contentHeaderClassName } from '../internal/utils/content-header-utils';
+import { getContentHeaderClassName } from '../internal/utils/content-header-utils';
 
 import { useInternalI18n } from '../i18n/context';
 
@@ -27,6 +27,7 @@ import { WizardProps } from './interfaces';
 
 import styles from './styles.css.js';
 import { useFunnelChangeEvent } from './analytics';
+import { shouldRemoveHighContrastHeader } from '../internal/utils/content-header-utils';
 
 type InternalWizardProps = WizardProps & InternalBaseComponentProps;
 
@@ -148,7 +149,12 @@ export default function InternalWizard({
   return (
     <div {...baseProps} {...funnelProps} ref={ref} className={clsx(styles.root, baseProps.className)}>
       <div
-        className={clsx(styles.wizard, isVisualRefresh && styles.refresh, smallContainer && styles['small-container'])}
+        className={clsx(
+          styles.wizard,
+          isVisualRefresh && styles.refresh,
+          smallContainer && styles['small-container'],
+          shouldRemoveHighContrastHeader() && styles['remove-high-contrast-header']
+        )}
       >
         <WizardNavigation
           activeStepIndex={actualActiveStepIndex}
@@ -163,9 +169,14 @@ export default function InternalWizard({
           steps={steps}
         />
         <div
-          className={clsx(styles.form, isVisualRefresh && styles.refresh, smallContainer && styles['small-container'])}
+          className={clsx(
+            styles.form,
+            isVisualRefresh && styles.refresh,
+            smallContainer && styles['small-container'],
+            shouldRemoveHighContrastHeader() && styles['remove-high-contrast-header']
+          )}
         >
-          {isVisualRefresh && <div className={clsx(styles.background, contentHeaderClassName)} />}
+          {isVisualRefresh && <div className={clsx(styles.background, getContentHeaderClassName())} />}
           <WizardForm
             steps={steps}
             isVisualRefresh={isVisualRefresh}

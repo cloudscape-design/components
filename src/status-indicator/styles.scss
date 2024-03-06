@@ -58,13 +58,13 @@ $_color-overrides: (
     word-break: break-all;
 
     > .icon {
-      padding-right: awsui.$space-xxs;
+      padding-inline-end: awsui.$space-xxs;
     }
   }
 }
 
 .overflow-ellipsis {
-  max-width: 100%;
+  max-inline-size: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

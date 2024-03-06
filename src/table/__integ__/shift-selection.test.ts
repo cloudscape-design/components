@@ -65,56 +65,61 @@ class TablePage extends BasePageObject {
   }
 }
 
+interface TestOptions {
+  enableKeyboardNavigation?: boolean;
+}
+
 describe('Shift selection', () => {
-  const setupTest = (testFn: (page: TablePage) => Promise<void>) => {
+  const setupTest = ({ enableKeyboardNavigation }: TestOptions, testFn: (page: TablePage) => Promise<void>) => {
     return useBrowser(async browser => {
       const page = new TablePage(browser);
-      await browser.url('#/light/table/shift-selection');
+      const query = new URLSearchParams({ enableKeyboardNavigation: String(enableKeyboardNavigation) });
+      await browser.url(`#/light/table/shift-selection?${query.toString()}`);
       await page.waitForVisible(tableWrapper.findBodyCell(2, 1).toSelector());
       await testFn(page);
     });
   };
   describe('selection', () => {
-    test(
-      'selects a batch of items',
-      setupTest(async page => {
+    test.each([false, true])('selects a batch of items [enableKeyboardNavigation=%s]', enableKeyboardNavigation => {
+      setupTest({ enableKeyboardNavigation }, async page => {
         await page.toggleRow(1);
         await page.keys(['ArrowDown', 'ArrowDown', 'ArrowDown', 'ArrowDown', 'ArrowDown']);
         await page.selectWithShiftSpace();
         await expect(page.countSelected()).resolves.toBe(6);
-      })
-    );
-    test(
-      'deselects a batch of items',
-      setupTest(async page => {
+      });
+    });
+    test.each([false, true])('deselects a batch of items [enableKeyboardNavigation=%s]', enableKeyboardNavigation => {
+      setupTest({ enableKeyboardNavigation }, async page => {
         await page.toggleRow(1);
         await page.keys(['ArrowDown', 'ArrowDown', 'ArrowDown', 'ArrowDown', 'ArrowDown']);
         await page.selectWithShiftSpace();
         await page.keys(['ArrowUp', 'ArrowUp', 'ArrowUp']);
         await page.selectWithShiftSpace();
         await expect(page.countSelected()).resolves.toBe(2);
-      })
-    );
+      });
+    });
     test(
       'selects a batch of items with a mouse click',
-      setupTest(async page => {
+      setupTest({}, async page => {
         await page.toggleRow(1);
         await page.selectWithShiftClick(8);
         await expect(page.countSelected()).resolves.toBe(8);
       })
     );
-    test(
-      'focuses "all" checkbox with keyboard',
-      setupTest(async page => {
-        await page.toggleRow(1);
-        await page.keys(['ArrowUp', 'ArrowDown']);
-        await page.keys(['Space']);
-        await expect(page.countSelected()).resolves.toBe(0);
-      })
+    test.each([false, true])(
+      'focuses "all" checkbox with keyboard [enableKeyboardNavigation=%s]',
+      enableKeyboardNavigation => {
+        setupTest({ enableKeyboardNavigation }, async page => {
+          await page.toggleRow(1);
+          await page.keys(['ArrowUp', 'ArrowDown']);
+          await page.keys(['Space']);
+          await expect(page.countSelected()).resolves.toBe(0);
+        });
+      }
     );
     test(
       'forgets last selected item when moving to the next page',
-      setupTest(async page => {
+      setupTest({}, async page => {
         await page.toggleRow(5);
         await expect(page.countSelected()).resolves.toBe(1);
         await page.click(tableWrapper.findPagination().findNextPageButton().toSelector());
@@ -125,7 +130,7 @@ describe('Shift selection', () => {
     );
     test(
       'ignores last selected item when filtering and previously clicked item is no longer visible',
-      setupTest(async page => {
+      setupTest({}, async page => {
         await page.toggleRow(1);
         await expect(page.countSelected()).resolves.toBe(1);
         await page.click(inputSelector);
@@ -137,7 +142,7 @@ describe('Shift selection', () => {
     );
     test(
       'ignores last selected item when sorting and previously clicked item is no longer visible',
-      setupTest(async page => {
+      setupTest({}, async page => {
         await page.toggleRow(1);
         await expect(page.countSelected()).resolves.toBe(1);
         await page.click(tableWrapper.findColumnHeaders().get(2).toSelector());

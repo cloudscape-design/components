@@ -16,20 +16,25 @@ $guide-line-offset: -2px; // Negative to expand 2px beyond the element
 
 .anchor-list {
   list-style: none;
-  margin: 0;
-  padding: 0;
+  margin-block: 0;
+  margin-inline: 0;
+  padding-block: 0;
+  padding-inline: 0;
   position: relative;
   text-indent: 0;
 
   &::before {
     content: '';
     background-color: awsui.$color-border-divider-default;
-    border-radius: awsui.$border-radius-tabs-focus-ring;
-    bottom: $guide-line-offset;
+    border-start-start-radius: awsui.$border-radius-tabs-focus-ring;
+    border-start-end-radius: awsui.$border-radius-tabs-focus-ring;
+    border-end-start-radius: awsui.$border-radius-tabs-focus-ring;
+    border-end-end-radius: awsui.$border-radius-tabs-focus-ring;
+    inset-block-end: $guide-line-offset;
     pointer-events: none;
     position: absolute;
-    top: $guide-line-offset;
-    width: $guide-line-width;
+    inset-block-start: $guide-line-offset;
+    inline-size: $guide-line-width;
   }
 }
 
@@ -42,7 +47,8 @@ $guide-line-offset: -2px; // Negative to expand 2px beyond the element
 
   color: awsui.$color-text-body-secondary;
   font-weight: styles.$font-weight-normal;
-  margin: awsui.$space-scaled-xxs 0;
+  margin-block: awsui.$space-scaled-xxs;
+  margin-inline: 0;
 
   &--active {
     position: relative;
@@ -50,12 +56,15 @@ $guide-line-offset: -2px; // Negative to expand 2px beyond the element
     &::before {
       content: '';
       background-color: awsui.$color-text-accent;
-      border-radius: awsui.$border-radius-tabs-focus-ring;
-      bottom: $guide-line-offset;
+      border-start-start-radius: awsui.$border-radius-tabs-focus-ring;
+      border-start-end-radius: awsui.$border-radius-tabs-focus-ring;
+      border-end-start-radius: awsui.$border-radius-tabs-focus-ring;
+      border-end-end-radius: awsui.$border-radius-tabs-focus-ring;
+      inset-block-end: $guide-line-offset;
       pointer-events: none;
       position: absolute;
-      top: $guide-line-offset;
-      width: $guide-line-width;
+      inset-block-start: $guide-line-offset;
+      inline-size: $guide-line-width;
     }
   }
 }
@@ -104,7 +113,7 @@ $guide-line-offset: -2px; // Negative to expand 2px beyond the element
 }
 
 .anchor-link-info {
-  margin-left: awsui.$space-xs;
+  margin-inline-start: awsui.$space-xs;
   @include styles.font-body-s;
   @include styles.font-smoothing;
   font-weight: awsui.$font-button-weight;

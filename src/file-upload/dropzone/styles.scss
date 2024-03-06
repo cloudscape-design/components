@@ -12,8 +12,12 @@
   align-items: center;
   justify-content: center;
   gap: awsui.$space-static-xxs;
-  padding: awsui.$space-static-l;
-  border-radius: awsui.$border-radius-dropzone;
+  padding-block: awsui.$space-static-l;
+  padding-inline: awsui.$space-static-l;
+  border-start-start-radius: awsui.$border-radius-dropzone;
+  border-start-end-radius: awsui.$border-radius-dropzone;
+  border-end-start-radius: awsui.$border-radius-dropzone;
+  border-end-end-radius: awsui.$border-radius-dropzone;
   color: awsui.$color-dropzone-text-active;
   background-color: awsui.$color-dropzone-background-active;
   font-weight: styles.$font-weight-bold;

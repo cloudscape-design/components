@@ -9,6 +9,21 @@ import statusIconStyles from '../../../lib/components/status-indicator/styles.se
 import TestI18nProvider from '../../../lib/components/i18n/testing';
 import itemStyles from '../../../lib/components/internal/components/selectable-item/styles.css.js';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
+jest.mock('@cloudscape-design/component-toolkit/internal', () => {
+  const originalModule = jest.requireActual('@cloudscape-design/component-toolkit/internal');
+
+  //just mock the `warnOnce` export
+  return {
+    __esModule: true,
+    ...originalModule,
+    warnOnce: jest.fn(),
+  };
+});
+beforeEach(() => {
+  (warnOnce as any).mockClear();
+});
 
 const defaultOptions: AutosuggestProps.Options = [{ value: '1' }, { value: '2' }, { value: '3' }, { value: '4' }];
 const defaultProps: AutosuggestProps = {
@@ -81,5 +96,39 @@ describe('i18n provider', () => {
         .findByClassName(itemStyles['screenreader-content'])!
         .getElement()
     ).toHaveTextContent('Custom selected');
+  });
+
+  const enteredTextLabelRequiredWarning = 'A value for enteredTextLabel must be provided.';
+
+  test('should warn when enteredTextLabel is undefined and not using the i18n provider', () => {
+    renderElement(<Autosuggest {...defaultProps} value="1" />);
+    expect(warnOnce).toHaveBeenCalledWith('Autosuggest', enteredTextLabelRequiredWarning);
+  });
+
+  test('should warn when enteredTextLabel is undefined when using the i18n provider without enteredTextLabel value', () => {
+    renderElement(
+      <TestI18nProvider messages={{ autosuggest: {} }}>
+        <Autosuggest {...defaultProps} value="1" />
+      </TestI18nProvider>
+    );
+    expect(warnOnce).toHaveBeenCalledWith('Autosuggest', enteredTextLabelRequiredWarning);
+  });
+
+  test('should warn when enteredTextLabel is undefined when using the i18n provider with empty enteredTextLabel value', () => {
+    renderElement(
+      <TestI18nProvider messages={{ autosuggest: { enteredTextLabel: '' } }}>
+        <Autosuggest {...defaultProps} value="1" />
+      </TestI18nProvider>
+    );
+    expect(warnOnce).toHaveBeenCalledWith('Autosuggest', enteredTextLabelRequiredWarning);
+  });
+
+  test('should not warn when enteredTextLabel is undefined when using the i18n provider', () => {
+    renderElement(
+      <TestI18nProvider messages={{ autosuggest: { enteredTextLabel: 'Use' } }}>
+        <Autosuggest {...defaultProps} value="1" />
+      </TestI18nProvider>
+    );
+    expect(warnOnce).not.toHaveBeenCalled();
   });
 });

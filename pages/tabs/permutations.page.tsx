@@ -51,6 +51,28 @@ const permutations = createPermutations<TabsProps>([
   },
 ]);
 
+const fitHeightPermutations = createPermutations<TabsProps>([
+  {
+    activeTabId: ['first', 'second'],
+    variant: ['default', 'container'],
+    fitHeight: [true],
+    tabs: [
+      [
+        {
+          label: 'First tab',
+          id: 'first',
+          content: new Array(10).fill('').map((_, index) => <p key={index}>First content</p>),
+        },
+        {
+          label: 'Second tab',
+          id: 'second',
+          content: <div style={{ height: '100%', display: 'flex', alignItems: 'flex-end' }}>Second content</div>,
+        },
+      ],
+    ],
+  },
+]);
+
 export default function TabsPermutations() {
   return (
     <>
@@ -64,6 +86,18 @@ export default function TabsPermutations() {
               activeTabId={permutation.activeTabId}
               i18nStrings={{ scrollLeftAriaLabel: 'Scroll left', scrollRightAriaLabel: 'Scroll right' }}
             />
+          )}
+        />
+        <PermutationsView
+          permutations={fitHeightPermutations}
+          render={permutation => (
+            <div style={{ height: '200px' }}>
+              <Tabs
+                {...permutation}
+                activeTabId={permutation.activeTabId}
+                i18nStrings={{ scrollLeftAriaLabel: 'Scroll left', scrollRightAriaLabel: 'Scroll right' }}
+              />
+            </div>
           )}
         />
       </ScreenshotArea>

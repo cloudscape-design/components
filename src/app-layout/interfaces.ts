@@ -103,8 +103,6 @@ export interface AppLayoutProps extends BaseComponentProps {
   /**
    * If true, the notification slot is rendered above the scrollable
    * content area so it is always visible.
-   *
-   * Note that sticky notifications are not supported in Internet Explorer.
    */
   stickyNotifications?: boolean;
 

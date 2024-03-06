@@ -31,18 +31,20 @@
 }
 
 .grid {
-  width: awsui.$size-calendar-grid-width;
+  inline-size: awsui.$size-calendar-grid-width;
   border-spacing: 0;
 }
 .grid-cell {
-  width: calc(100% / 7);
+  inline-size: calc(100% / 7);
   word-break: break-word;
   text-align: center;
   font-weight: unset;
 }
 .day-header {
-  padding: awsui.$space-s 0 awsui.$space-xxs;
-  color: calendar.$grid-day-name-color;
+  padding-block-start: awsui.$space-s;
+  padding-block-end: awsui.$space-xxs;
+  padding-inline: 0;
+  color: calendar.$grid-date-name-color;
   @include styles.font-body-s;
 }
 
@@ -51,10 +53,11 @@
 }
 
 .day {
-  border-bottom: calendar.$grid-border;
-  border-right: calendar.$grid-border;
-  padding: awsui.$space-xxs 0;
-  color: calendar.$grid-disabled-day-color;
+  border-block-end: calendar.$grid-border;
+  border-inline-end: calendar.$grid-border;
+  padding-block: awsui.$space-xxs;
+  padding-inline: 0;
+  color: calendar.$grid-disabled-date-color;
   position: relative;
 
   &:focus {
@@ -65,10 +68,10 @@
     content: '';
     position: absolute;
     z-index: 1;
-    top: calc(-1 * #{awsui.$border-item-width});
-    left: -1px;
-    bottom: -1px;
-    right: calc(-1 * #{awsui.$border-item-width});
+    inset-block-start: calc(-1 * #{awsui.$border-item-width});
+    inset-block-end: -1px;
+    inset-inline-start: -1px;
+    inset-inline-end: calc(-1 * #{awsui.$border-item-width});
     background-color: transparent;
   }
 
@@ -87,11 +90,11 @@
 }
 
 .in-first-row:not(.in-previous-month) {
-  border-top: calendar.$grid-border;
+  border-block-start: calendar.$grid-border;
 }
 
 .in-previous-month:not(.last-day-of-month) {
-  border-right-color: transparent;
+  border-inline-end-color: transparent;
 }
 
 .in-next-month {
@@ -99,10 +102,10 @@
 }
 
 .in-first-column {
-  border-left: 1px solid transparent;
+  border-inline-start: 1px solid transparent;
 
   &.in-current-month {
-    border-left: calendar.$grid-border;
+    border-inline-start: calendar.$grid-border;
   }
 }
 
@@ -110,21 +113,25 @@
   cursor: pointer;
 
   &.in-current-month {
-    color: calendar.$grid-day-color;
+    color: calendar.$grid-date-color;
     &:not(.in-range),
     &.end-date.start-date,
     &.no-range {
       &,
       &::after {
-        border-radius: awsui.$border-radius-item;
+        border-start-start-radius: awsui.$border-radius-item;
+        border-start-end-radius: awsui.$border-radius-item;
+        border-end-start-radius: awsui.$border-radius-item;
+        border-end-end-radius: awsui.$border-radius-item;
       }
     }
     &:hover {
-      color: awsui.$color-text-calendar-day-hover;
+      color: awsui.$color-text-calendar-date-hover;
       background-color: calendar.$grid-hover-background-color;
       &:not(.selected) {
         &::after {
-          border: awsui.$border-item-width solid calendar.$grid-hover-border-color;
+          border-block: awsui.$border-item-width solid calendar.$grid-hover-border-color;
+          border-inline: awsui.$border-item-width solid calendar.$grid-hover-border-color;
         }
       }
     }
@@ -132,8 +139,11 @@
 }
 
 .today:not(.in-range) {
-  background-color: calendar.$grid-today-background-color;
-  border-radius: awsui.$border-radius-item;
+  background-color: calendar.$grid-current-date-background-color;
+  border-start-start-radius: awsui.$border-radius-item;
+  border-start-end-radius: awsui.$border-radius-item;
+  border-end-start-radius: awsui.$border-radius-item;
+  border-end-end-radius: awsui.$border-radius-item;
   font-weight: styles.$font-weight-bold;
 }
 
@@ -155,7 +165,8 @@
 
   &::after {
     background-color: calendar.$grid-selected-background-color;
-    border: awsui.$border-item-width solid calendar.$grid-selected-border-color;
+    border-block: awsui.$border-item-width solid calendar.$grid-selected-border-color;
+    border-inline: awsui.$border-item-width solid calendar.$grid-selected-border-color;
     z-index: 0;
   }
 

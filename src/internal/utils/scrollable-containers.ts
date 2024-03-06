@@ -72,7 +72,7 @@ type ScrollIntoViewOptions = Parameters<HTMLElement['scrollIntoView']>[0];
 
 /**
  * Calls `scrollIntoView` on the provided element with sensible defaults. If
- * the element does not existed or does not support the `scrollIntoView`
+ * the element does not exist or does not support the `scrollIntoView`
  * method, it will do nothing. This wrapper is created to support environments
  * where the native function is not available like JSDom (feature request:
  * https://github.com/jsdom/jsdom/issues/1422).

@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { ForwardedRef, forwardRef, useEffect, useRef, useState } from 'react';
+import React, { ForwardedRef, forwardRef, useContext, useEffect, useRef, useState } from 'react';
 import Header from '~components/header';
 import Input from '~components/input';
 import Alert from '~components/alert';
@@ -9,9 +9,16 @@ import Select, { SelectProps } from '~components/select';
 import TimeInput, { TimeInputProps } from '~components/time-input';
 import Autosuggest, { AutosuggestProps } from '~components/autosuggest';
 import Multiselect, { MultiselectProps } from '~components/multiselect';
-import { Link, Box, Button, Modal, SpaceBetween } from '~components';
+import { Link, Box, Button, Modal, SpaceBetween, Checkbox } from '~components';
 import { initialItems, DistributionInfo, tlsVersions, originSuggestions, tagOptions } from './editable-data';
 import ScreenshotArea from '../utils/screenshot-area';
+import AppContext, { AppContextType } from '../app/app-context';
+
+type PageContext = React.Context<
+  AppContextType<{
+    enableKeyboardNavigation: boolean;
+  }>
+>;
 
 let __editStateDirty = false;
 
@@ -110,6 +117,12 @@ const columns: TableProps.ColumnDefinition<DistributionInfo>[] = [
           />
         );
       },
+      disabledReason(item) {
+        if (item.Origin.includes('browserstack')) {
+          return "You don't have the necessary permissions to change a BrowserStack origin.";
+        }
+        return undefined;
+      },
     },
     cell: item => item.Origin,
   },
@@ -205,6 +218,7 @@ const Demo = forwardRef(
     tableRef: ForwardedRef<TableProps.Ref>
   ) => {
     const [items, setItems] = useState(initialItems);
+    const { urlParams } = useContext(AppContext as PageContext);
 
     const handleSubmit: TableProps.SubmitEditFunction<DistributionInfo> = async (currentItem, column, newValue) => {
       let value = newValue;
@@ -253,12 +267,14 @@ const Demo = forwardRef(
         resizableColumns={true}
         ariaLabels={ariaLabels}
         stickyHeader={true}
+        enableKeyboardNavigation={urlParams.enableKeyboardNavigation}
       />
     );
   }
 );
 
 export default function () {
+  const { urlParams, setUrlParams } = useContext(AppContext as PageContext);
   const [modalVisible, setModalVisible] = useState(false);
   const tableRef = useRef<TableProps.Ref>(null);
 
@@ -275,37 +291,52 @@ export default function () {
   });
 
   return (
-    <ScreenshotArea disableAnimations={true}>
-      <input data-testid="focus" aria-label="focus input" />
-      <Demo setModalVisible={setModalVisible} ref={tableRef} />
-      <Modal
-        visible={modalVisible}
-        header="Discard changes"
-        closeAriaLabel="Close modal"
-        onDismiss={withCleanState(() => setModalVisible(false))}
-        footer={
-          <Box float="right">
-            <SpaceBetween direction="horizontal" size="xs">
-              <Button variant="link" onClick={withCleanState(() => setModalVisible(false))}>
-                Cancel
-              </Button>
-              <Button
-                variant="primary"
-                onClick={withCleanState(() => {
-                  setModalVisible(false);
-                  tableRef.current?.cancelEdit?.();
-                })}
-              >
-                Discard
-              </Button>
-            </SpaceBetween>
-          </Box>
-        }
-      >
-        <Alert type="warning" statusIconAriaLabel="Warning">
-          Are you sure you want to discard any unsaved changes?
-        </Alert>
-      </Modal>
-    </ScreenshotArea>
+    <Box margin="s">
+      <SpaceBetween size="s">
+        <Checkbox
+          checked={urlParams.enableKeyboardNavigation}
+          onChange={event => {
+            setUrlParams({ enableKeyboardNavigation: event.detail.checked });
+            window.location.reload();
+          }}
+        >
+          Keyboard navigation
+        </Checkbox>
+
+        <input data-testid="focus" aria-label="focus input" />
+      </SpaceBetween>
+
+      <ScreenshotArea disableAnimations={true}>
+        <Demo setModalVisible={setModalVisible} ref={tableRef} />
+        <Modal
+          visible={modalVisible}
+          header="Discard changes"
+          closeAriaLabel="Close modal"
+          onDismiss={withCleanState(() => setModalVisible(false))}
+          footer={
+            <Box float="right">
+              <SpaceBetween direction="horizontal" size="xs">
+                <Button variant="link" onClick={withCleanState(() => setModalVisible(false))}>
+                  Cancel
+                </Button>
+                <Button
+                  variant="primary"
+                  onClick={withCleanState(() => {
+                    setModalVisible(false);
+                    tableRef.current?.cancelEdit?.();
+                  })}
+                >
+                  Discard
+                </Button>
+              </SpaceBetween>
+            </Box>
+          }
+        >
+          <Alert type="warning" statusIconAriaLabel="Warning">
+            Are you sure you want to discard any unsaved changes?
+          </Alert>
+        </Modal>
+      </ScreenshotArea>
+    </Box>
   );
 }
