@@ -49,10 +49,14 @@ export function useVirtualScroll({ size, defaultItemSize, containerRef }: Virtua
   }, [virtualScroll, containerRef]);
 
   useEffect(() => {
-    virtualScroll.update({ size, defaultItemSize });
+    virtualScroll.requestUpdate({ size, defaultItemSize });
   });
 
-  const safeVirtualItems = useMemo(() => virtualItems.filter(item => item.index < size), [virtualItems, size]);
+  // Ensure virtual items array never exceeds the size to avoid overflows.
+  const safeVirtualItems = useMemo(
+    () => (virtualItems.length < size ? virtualItems.slice(0, size) : virtualItems),
+    [virtualItems, size]
+  );
 
   return {
     virtualItems: safeVirtualItems,
@@ -121,10 +125,10 @@ class VirtualScroll {
     return () => {};
   };
 
-  public update = ({ size, defaultItemSize }: VirtualScrollUpdateProps) => {
+  public requestUpdate = ({ size, defaultItemSize }: VirtualScrollUpdateProps) => {
     this.size = size;
     this.defaultItemSize = defaultItemSize;
-    this.requestUpdate(false);
+    this.triggerUpdate(false);
   };
 
   public scrollToIndex = (index: number) => {
@@ -171,11 +175,11 @@ class VirtualScroll {
     }
     this.frameStart = Math.max(0, Math.min(this.size - this.frameSize, this.frameStart));
 
-    this.requestUpdate();
+    this.triggerUpdate();
   };
 
   private onWindowResize = () => {
-    this.requestUpdate();
+    this.triggerUpdate();
   };
 
   private onContainerResize = (entries: ResizeObserverEntry[]) => {
@@ -194,18 +198,18 @@ class VirtualScroll {
     }
     if (!node) {
       this.measuredItems[index] = null;
-      this.requestUpdate();
+      this.triggerUpdate();
       return;
     }
     if (index < 0 || index >= this.size) {
       throw new Error('Invariant violation: measured item index is out of bounds.');
     }
     this.measuredItems[index] = node;
-    this.requestUpdate();
+    this.triggerUpdate();
   };
 
   private updateTimer: null | number = null;
-  private requestUpdate = (batch = true) => {
+  private triggerUpdate = (batch = true) => {
     this.killSwitchCounter--;
     if (this.updateTimer) {
       clearTimeout(this.updateTimer);
