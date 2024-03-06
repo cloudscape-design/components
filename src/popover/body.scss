@@ -26,9 +26,7 @@ $header-row-margin-block-end: awsui.$space-xs;
 }
 
 .dismiss {
-  margin-block: calc(
-    -1 * max((#{awsui.$space-scaled-xxs} + #{awsui.$border-field-width}), $header-row-margin-block-end)
-  );
+  margin-block: calc(-1 * $header-row-margin-block-end);
   margin-inline-start: 0;
   margin-inline-end: calc(-1 * (#{awsui.$space-xxs} + #{awsui.$border-field-width}));
   flex: 0 0 auto;
