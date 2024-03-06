@@ -116,6 +116,7 @@ export default function Page() {
               prev.map(prevItem => (prevItem.id !== item.id ? prevItem : { ...prevItem, id: generateId() }))
             )
           }
+          canUpdate={item.state === 'PENDING' || item.state === 'RUNNING'}
         />
       ),
     },
@@ -301,20 +302,43 @@ export default function Page() {
                     </tr>
                   </thead>
                   <tbody>
-                    {sortedItems.map((item, rowIndex) => (
-                      <tr key={item.id} {...getTableRowRoleProps({ tableRole, rowIndex, firstIndex: 0 })}>
-                        {visibleColumnDefinitions.map((column, colIndex) => (
-                          <Cell
-                            tag="td"
-                            key={column.key}
-                            className={styles['custom-table-cell']}
-                            {...getTableCellRoleProps({ tableRole, colIndex })}
-                          >
-                            {column.render(item)}
-                          </Cell>
-                        ))}
-                      </tr>
-                    ))}
+                    {sortedItems.map((item, rowIndex) => {
+                      rowIndex = rowIndex > 10 ? rowIndex + 1 : rowIndex;
+                      const row = (
+                        <tr key={item.id} {...getTableRowRoleProps({ tableRole, rowIndex, firstIndex: 0 })}>
+                          {visibleColumnDefinitions.map((column, colIndex) => (
+                            <Cell
+                              tag="td"
+                              key={column.key}
+                              className={styles['custom-table-cell']}
+                              {...getTableCellRoleProps({ tableRole, colIndex })}
+                            >
+                              {column.render(item)}
+                            </Cell>
+                          ))}
+                        </tr>
+                      );
+
+                      if (rowIndex === 10) {
+                        return (
+                          <React.Fragment key={item.id}>
+                            {row}
+                            <tr {...getTableRowRoleProps({ tableRole, rowIndex: rowIndex + 1, firstIndex: 0 })}>
+                              <Cell
+                                tag="td"
+                                className={styles['custom-table-cell']}
+                                {...getTableCellRoleProps({ tableRole, colIndex: 0 })}
+                                colSpan={visibleColumnDefinitions.length}
+                              >
+                                Summary row
+                              </Cell>
+                            </tr>
+                          </React.Fragment>
+                        );
+                      }
+
+                      return row;
+                    })}
                   </tbody>
                 </table>
               </div>
@@ -326,10 +350,14 @@ export default function Page() {
   );
 }
 
-function Cell({ tag: Tag, ...rest }: React.HTMLAttributes<HTMLTableCellElement> & { tag: 'th' | 'td' }) {
+function Cell({
+  tag: Tag,
+  colSpan,
+  ...rest
+}: React.HTMLAttributes<HTMLTableCellElement> & { tag: 'th' | 'td'; colSpan?: number }) {
   const cellRef = useRef<HTMLTableCellElement>(null);
   const { tabIndex } = useSingleTabStopNavigation(cellRef);
-  return <Tag {...rest} ref={cellRef} tabIndex={tabIndex} />;
+  return <Tag {...rest} ref={cellRef} tabIndex={tabIndex} colSpan={colSpan} />;
 }
 
 function SortingHeader({
@@ -393,11 +421,13 @@ function ItemActionsCell({
   onDuplicate,
   onUpdate,
   mode,
+  canUpdate = true,
 }: {
   onDelete: () => void;
   onDuplicate: () => void;
   onUpdate: () => void;
   mode: ActionsMode;
+  canUpdate?: boolean;
 }) {
   if (mode === 'dropdown') {
     return (
@@ -408,7 +438,7 @@ function ItemActionsCell({
           items={[
             { id: 'delete', text: 'Delete' },
             { id: 'duplicate', text: 'Duplicate' },
-            { id: 'update', text: 'Update' },
+            { id: 'update', text: 'Update', disabled: !canUpdate },
           ]}
           onItemClick={event => {
             switch (event.detail.id) {
@@ -429,7 +459,13 @@ function ItemActionsCell({
     <div style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap' }}>
       <Button variant="inline-icon" iconName="remove" ariaLabel="Delete item" onClick={onDelete} />
       <Button variant="inline-icon" iconName="copy" ariaLabel="Duplicate item" onClick={onDuplicate} />
-      <Button variant="inline-icon" iconName="refresh" ariaLabel="Update item" onClick={onUpdate} />
+      <Button
+        variant="inline-icon"
+        iconName="refresh"
+        ariaLabel="Update item"
+        onClick={onUpdate}
+        disabled={!canUpdate}
+      />
     </div>
   );
 }
