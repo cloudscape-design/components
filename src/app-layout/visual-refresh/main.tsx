@@ -3,7 +3,6 @@
 import React from 'react';
 import clsx from 'clsx';
 import { useAppLayoutInternals } from './context';
-import customCssProps from '../../internal/generated/custom-css-properties';
 import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 
@@ -11,19 +10,15 @@ export default function Main() {
   const {
     content,
     disableContentPaddings,
-    footerHeight,
     hasDrawerViewportOverlay,
     navigationOpen,
     isSplitPanelOpen,
     isToolsOpen,
     mainElement,
-    offsetBottom,
     splitPanelDisplayed,
     splitPanelPosition,
     activeDrawerId,
   } = useAppLayoutInternals();
-
-  const splitPanelHeight = offsetBottom - footerHeight;
 
   return (
     <div
@@ -42,9 +37,6 @@ export default function Main() {
         testutilStyles.content
       )}
       ref={mainElement}
-      style={{
-        [customCssProps.splitPanelHeight]: `${splitPanelHeight}px`,
-      }}
     >
       {content}
     </div>

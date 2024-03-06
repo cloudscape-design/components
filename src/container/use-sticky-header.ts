@@ -53,7 +53,7 @@ export function computeOffset({
 
     // VR offset is calculated using CSS custom properties
     const visualRefreshOffset = `calc(var(${customCssProps.offsetTop}, 0px) + var(${
-      customCssProps.mobileBarHeight
+      customCssProps.toolbarHeight
     }, 0px) + ${(__stickyOffset ?? 0) - (__mobileStickyOffset ?? 0)}px)`;
 
     computedOffset = isVisualRefresh ? visualRefreshOffset : classicOffset;

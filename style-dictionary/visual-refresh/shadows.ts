@@ -6,12 +6,11 @@ import { expandColorDictionary } from '../utils';
 
 const tokens: StyleDictionary.ShadowsDictionary = {
   shadowContainer: {
-    light: '0px 0px 1px 1px #e9ebed, 0px 1px 8px 2px rgba(0, 7, 22, 0.12)', // 1px grey-200 faux border
+    light: 'none',
     dark: '0px 1px 8px 2px rgba(0, 7, 22, 0.6)',
   },
   shadowContainerStacked: {
-    light:
-      '-1px 1px 1px 0px #e9ebed, 1px 1px 1px 0px #e9ebed, 0px 9px 8px -7px rgb(0 7 22 / 12%), 8px 0px 8px -7px rgb(0 7 22 / 12%), -8px 0px 8px -7px rgb(0 7 22 / 12%)',
+    light: '-1px 1px 1px 0px #e9ebed, 1px 1px 1px 0px #e9ebed',
     dark: '0px 9px 8px -7px rgb(0 7 22 / 60%), 8px 0px 8px -7px rgb(0 7 22 / 60%), -8px 0px 8px -7px rgb(0 7 22 / 60%)',
   },
   shadowContainerActive: {
@@ -30,19 +29,19 @@ const tokens: StyleDictionary.ShadowsDictionary = {
     light: '0px 0px 0px 1px #b6bec9',
     dark: '0px 0px 0px 1px #414d5c',
   },
-  shadowPanelToggle: { light: '0px 6px 12px 1px rgba(0, 7, 22, 0.12)', dark: '0px 6px 12px 1px rgba(0, 7, 22, 1)' },
+  shadowPanelToggle: 'none',
   shadowPopover: '{shadowDropdown}',
   shadowSplitBottom: {
-    light: '0px -36px 36px -36px rgba(0, 7, 22, 0.10)',
+    light: '0px -4px 16px 0px rgba(0, 7, 22, 0.06)',
     dark: '0px -36px 36px -36px rgba(0, 7, 22, 1)',
   },
   shadowSplitSide: {
-    light: '-1px 0px 1px 0px #e9ebed, -36px 6px 36px -36px rgba(0, 7, 22, 0.10)',
+    light: 'none',
     dark: '-1px 0px 1px 0px #192534, -36px 6px 36px -36px rgba(0, 7, 22, 1)',
   },
   shadowSticky: { light: '0px 4px 8px 1px rgba(0, 7, 22, 0.10)', dark: '0px 4px 8px 1px rgba(0, 7, 22, 0.5)' },
   shadowStickyEmbedded: {
-    light: '0px 2px 0px 0px #e9ebed, 0px 16px 16px -12px rgba(0, 7, 22, 0.10)', // 2px grey-200 faux bottom border
+    light: '0px 2px 0px 0px #e9ebed, 0px 16px 12px -12px rgba(0, 7, 22, 0.06)', // 2px grey-200 faux bottom border
     dark: '0px 2px 0px 0px #414d5c, 0px 16px 16px -12px rgba(0, 7, 22, 1)', // 2px grey-600 faux bottom border
   },
   shadowStickyColumnFirst: {

@@ -202,6 +202,11 @@ export interface AppLayoutProps extends BaseComponentProps {
   onToolsChange?: NonCancelableEventHandler<AppLayoutProps.ChangeDetail>;
 
   /**
+   * Toolbar will not disappear/reappear on scroll when true
+   */
+  pinnedToolbar?: boolean;
+
+  /**
    * Use this slot to add the [split panel component](/components/split-panel/) to the app layout.
    *
    * Note: If provided, this property should be set to `null` or `undefined` if a split panel should not be rendered.
