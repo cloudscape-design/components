@@ -13088,7 +13088,9 @@ add a meaningful description to the whole selection.
 * \`successfulEditLabel\` (EditableColumnDefinition) => string -
                      Specifies an alternative text for the success icon in editable cells. This text is also announced to screen readers.
 * \`submittingEditText\` (EditableColumnDefinition) => string -
-                     Specifies a text that is announced to screen readers when a cell edit operation is submitted.",
+                     Specifies a text that is announced to screen readers when a cell edit operation is submitted.
+* \`expandButtonLabel\` (Item) => string - Specifies an alternative text for row expand button.
+* \`collapseButtonLabel\` (Item) => string - Specifies an alternative text for row collapse button.",
       "i18nTag": true,
       "inlineType": Object {
         "name": "TableProps.AriaLabels",
@@ -13248,7 +13250,11 @@ When set to \`true\`, table cells become navigable with arrow keys, and the enti
       "type": "boolean",
     },
     Object {
-      "description": "TODO: Add API description, list all 4 properties. Mention trackBy convention.",
+      "description": "Use this property to provide define expandable table rows. The expandableRows configuration object consists of
+* \`getItemChildren\` ((Item) => Item[]) - Use it to define nested items that are shown when an item gets expanded.
+* \`isItemExpandable\` ((Item) => boolean) - Use it for items that can be expanded to show nested items.
+* \`expandedItems\` (Item[]) - Use it to represent the expanded state of items.
+* \`onExpandableItemToggle\` (TableProps.OnExpandableItemToggle<T>) - Called when item's expand toggle is clicked.",
       "inlineType": Object {
         "name": "TableProps.ExpandableRows",
         "properties": Array [
@@ -13270,7 +13276,7 @@ When set to \`true\`, table cells become navigable with arrow keys, and the enti
           Object {
             "name": "onExpandableItemToggle",
             "optional": false,
-            "type": "NonCancelableEventHandler<TableProps.ExpandableItemToggleDetail<T>>",
+            "type": "TableProps.OnExpandableItemToggle<T>",
           },
         ],
         "type": "object",
@@ -13486,7 +13492,7 @@ If there is an unknown total of items in a table, leave this property undefined.
       "description": "Specifies a property that uniquely identifies an individual item.
 When it's set, it's used to provide [keys for React](https://reactjs.org/docs/lists-and-keys.html#keys)
 for performance optimizations.
-It's also used to connect \`items\` and \`selectedItems\` values when they reference different objects.
+It's also used to connect \`items\` and \`selectedItems\` or \`expandableRows.expandedItems\` values when they reference different objects.
 ",
       "inlineType": Object {
         "name": "TableProps.TrackBy",

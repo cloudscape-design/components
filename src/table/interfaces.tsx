@@ -57,7 +57,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * When it's set, it's used to provide [keys for React](https://reactjs.org/docs/lists-and-keys.html#keys)
    * for performance optimizations.
    *
-   * It's also used to connect `items` and `selectedItems` values when they reference different objects.
+   * It's also used to connect `items` and `selectedItems` or `expandableRows.expandedItems` values when they reference different objects.
    */
   trackBy?: TableProps.TrackBy<T>;
 
@@ -180,6 +180,8 @@ export interface TableProps<T = any> extends BaseComponentProps {
    *                      Specifies an alternative text for the success icon in editable cells. This text is also announced to screen readers.
    * * `submittingEditText` (EditableColumnDefinition) => string -
    *                      Specifies a text that is announced to screen readers when a cell edit operation is submitted.
+   * * `expandButtonLabel` (Item) => string - Specifies an alternative text for row expand button.
+   * * `collapseButtonLabel` (Item) => string - Specifies an alternative text for row collapse button.
    * @i18n
    */
   ariaLabels?: TableProps.AriaLabels<T>;
@@ -328,7 +330,11 @@ export interface TableProps<T = any> extends BaseComponentProps {
   enableKeyboardNavigation?: boolean;
 
   /**
-   * TODO: Add API description, list all 4 properties. Mention trackBy convention.
+   * Use this property to provide define expandable table rows. The expandableRows configuration object consists of
+   * * `getItemChildren` ((Item) => Item[]) - Use it to define nested items that are shown when an item gets expanded.
+   * * `isItemExpandable` ((Item) => boolean) - Use it for items that can be expanded to show nested items.
+   * * `expandedItems` (Item[]) - Use it to represent the expanded state of items.
+   * * `onExpandableItemToggle` (TableProps.OnExpandableItemToggle<T>) - Called when item's expand toggle is clicked.
    */
   expandableRows?: TableProps.ExpandableRows<T>;
 }
@@ -484,8 +490,10 @@ export namespace TableProps {
     getItemChildren: (item: T) => readonly T[];
     isItemExpandable: (item: T) => boolean;
     expandedItems: ReadonlyArray<T>;
-    onExpandableItemToggle: NonCancelableEventHandler<TableProps.ExpandableItemToggleDetail<T>>;
+    onExpandableItemToggle: TableProps.OnExpandableItemToggle<T>;
   }
+
+  export type OnExpandableItemToggle<T> = NonCancelableEventHandler<TableProps.ExpandableItemToggleDetail<T>>;
 
   export interface ExpandableItemToggleDetail<T> {
     item: T;
