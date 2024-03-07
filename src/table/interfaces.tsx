@@ -326,6 +326,8 @@ export interface TableProps<T = any> extends BaseComponentProps {
   /**
    * Use this property to activate advanced keyboard navigation and focusing behaviors.
    * When set to `true`, table cells become navigable with arrow keys, and the entire table has a single tab stop.
+   *
+   * By default, the keyboard navigation is active for tables with expandable rows.
    */
   enableKeyboardNavigation?: boolean;
 

@@ -114,13 +114,17 @@ const InternalTable = React.forwardRef(
       renderAriaLive,
       stickyColumns,
       columnDisplay,
-      enableKeyboardNavigation = false,
+      enableKeyboardNavigation,
       expandableRows,
       __funnelSubStepProps,
       ...rest
     }: InternalTableProps<T>,
     ref: React.Ref<TableProps.Ref>
   ) => {
+    if (expandableRows && enableKeyboardNavigation === undefined) {
+      enableKeyboardNavigation = true;
+    }
+
     const baseProps = getBaseProps(rest);
     stickyHeader = stickyHeader && supportsStickyPosition();
     const isMobile = useMobile();

@@ -310,8 +310,6 @@ export default () => {
                   filteringPlaceholder="Search databases"
                 />
               }
-              // TODO: set by default when expandableProps is set
-              enableKeyboardNavigation={true}
             />
           </ScreenshotArea>
         </div>
