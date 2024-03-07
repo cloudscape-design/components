@@ -28,7 +28,11 @@ export function ExpandToggleButton({
       className={styles['expand-toggle']}
       onClick={() => onExpandableItemToggle()}
     >
-      {isExpanded ? <InternalIcon name="caret-down-filled" /> : <InternalIcon name="caret-right-filled" />}
+      {isExpanded ? (
+        <InternalIcon size="small" name="caret-down-filled" />
+      ) : (
+        <InternalIcon size="small" name="caret-right-filled" />
+      )}
     </button>
   );
 }
@@ -40,7 +44,7 @@ export function ExpandTogglePlaceholder() {
       aria-hidden={true}
       className={clsx(styles['expand-toggle'], styles['expand-toggle-hidden'])}
     >
-      <InternalIcon name="caret-right-filled" />
+      <InternalIcon size="small" name="caret-right-filled" />
     </button>
   );
 }

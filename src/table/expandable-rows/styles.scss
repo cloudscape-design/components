@@ -9,21 +9,23 @@
 .expand-toggle {
   @include styles.styles-reset;
   cursor: pointer;
+  inline-size: awsui.$space-m;
+  block-size: awsui.$space-m;
   border-block: 0;
   border-inline: 0;
   margin-block: 0;
   margin-inline: 0;
   padding-block: 0;
-  padding-inline: 8px;
+  padding-inline: 0;
   background: none;
 
-  color: awsui.$color-text-button-normal-default;
+  color: awsui.$color-text-interactive-default;
 
   &:hover {
-    color: awsui.$color-text-button-normal-hover;
+    color: awsui.$color-text-interactive-hover;
   }
   &:active {
-    color: awsui.$color-text-button-normal-active;
+    color: awsui.$color-text-interactive-active;
   }
 
   &-hidden {

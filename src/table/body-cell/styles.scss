@@ -397,34 +397,33 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
 .expandable-cell-content {
   display: flex;
   align-items: center;
-  gap: awsui.$space-xxs;
-  margin-inline-start: calc(-1 * #{awsui.$space-xs});
+  gap: awsui.$space-xs;
 
   &-level-1 {
-    padding-inline-start: 0px;
+    padding-inline-start: calc(0 * (#{awsui.$space-m} + #{awsui.$space-xs}));
   }
   &-level-2 {
-    padding-inline-start: 20px;
+    padding-inline-start: calc(1 * (#{awsui.$space-m} + #{awsui.$space-xs}));
   }
   &-level-3 {
-    padding-inline-start: 40px;
+    padding-inline-start: calc(2 * (#{awsui.$space-m} + #{awsui.$space-xs}));
   }
   &-level-4 {
-    padding-inline-start: 60px;
+    padding-inline-start: calc(3 * (#{awsui.$space-m} + #{awsui.$space-xs}));
   }
   &-level-5 {
-    padding-inline-start: 80px;
+    padding-inline-start: calc(4 * (#{awsui.$space-m} + #{awsui.$space-xs}));
   }
   &-level-6 {
-    padding-inline-start: 100px;
+    padding-inline-start: calc(5 * (#{awsui.$space-m} + #{awsui.$space-xs}));
   }
   &-level-7 {
-    padding-inline-start: 120px;
+    padding-inline-start: calc(6 * (#{awsui.$space-m} + #{awsui.$space-xs}));
   }
   &-level-8 {
-    padding-inline-start: 140px;
+    padding-inline-start: calc(7 * (#{awsui.$space-m} + #{awsui.$space-xs}));
   }
   &-level-9 {
-    padding-inline-start: 160px;
+    padding-inline-start: calc(8 * (#{awsui.$space-m} + #{awsui.$space-xs}));
   }
 }

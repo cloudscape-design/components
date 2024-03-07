@@ -120,7 +120,7 @@
   }
 
   &-expandable {
-    padding-inline-start: calc(#{awsui.$space-s} + 26px);
+    padding-inline-start: calc(#{awsui.$space-s} + #{awsui.$space-m} + #{awsui.$space-xs});
   }
 }
 
