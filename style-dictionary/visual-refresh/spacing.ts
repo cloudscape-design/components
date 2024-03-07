@@ -45,7 +45,7 @@ const tokens: StyleDictionary.SpacingDictionary = {
   spaceModalHorizontal: '{spaceContainerHorizontal}',
   spaceOptionIconBigTop: '0px',
   spacePanelContentTop: '0px',
-  spacePanelHeaderVertical: '{spaceScaledM}',
+  spacePanelHeaderVertical: '{spaceStaticM}',
   spacePanelNavLeft: '28px',
   spacePanelSideLeft: '28px',
   spacePanelSideRight: '{spaceScaledXl}',
