@@ -10,7 +10,7 @@ import BarSeries from './bar-series';
 import { ChartDataTypes, InternalChartSeries, MixedLineBarChartProps } from './interfaces';
 
 import styles from './styles.css.js';
-import { calculateOffsetMaps, StackedOffsets } from './utils';
+import { calculateOffsetMaps, getKeyValue } from './utils';
 
 // Should have the same value as the `border-line-chart-width` token.
 const STROKE_WIDTH = 2;
@@ -49,9 +49,10 @@ export default function DataSeries<T extends ChartDataTypes>({
   // Lines get a small extra space at the top and bottom to account for the strokes when they are at the edge of the graph.
   const lineAreaClipPath = useUniqueId('awsui-line-chart__chart-area-');
 
-  const stackedBarOffsetMaps: StackedOffsets[] = useMemo(() => {
+  // TODO: fix a bug when threshold series is not the last series in a grouped bar chart.
+  const stackedBarOffsetMaps = useMemo(() => {
     if (!stackedBars) {
-      return [];
+      return null;
     }
 
     const barData: Array<readonly MixedLineBarChartProps.Datum<ChartDataTypes>[]> = [];
@@ -62,6 +63,13 @@ export default function DataSeries<T extends ChartDataTypes>({
     });
     return calculateOffsetMaps(barData);
   }, [visibleSeries, stackedBars]);
+
+  const getStackedMinimum = (xValue: ChartDataTypes) => {
+    return stackedBarOffsetMaps?.minValues.get(getKeyValue(xValue)) ?? 0;
+  };
+  const getStackedMaximum = (xValue: ChartDataTypes) => {
+    return stackedBarOffsetMaps?.maxValues.get(getKeyValue(xValue)) ?? 0;
+  };
 
   return (
     <>
@@ -118,7 +126,9 @@ export default function DataSeries<T extends ChartDataTypes>({
                   highlighted={isHighlighted}
                   dimmed={isDimmed}
                   chartAreaClipPath={chartAreaClipPath}
-                  stackedBarOffsets={stackedBarOffsetMaps[index]}
+                  stackedBarOffsets={stackedBarOffsetMaps?.seriesOffsets[index]}
+                  getStackedMinimum={getStackedMinimum}
+                  getStackedMaximum={getStackedMaximum}
                   highlightedGroupIndex={highlightedGroupIndex}
                 />
               );
