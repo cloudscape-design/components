@@ -16,6 +16,7 @@ import {
   ExpandableSection,
   FormField,
   Link,
+  Pagination,
   Popover,
   PropertyFilter,
   Select,
@@ -39,6 +40,7 @@ type DemoContext = React.Context<
     groupResources: boolean;
     keepSelection: boolean;
     wrapLines: boolean;
+    usePagination: boolean;
   }>
 >;
 
@@ -60,9 +62,6 @@ const ariaLabels: TableProps<Instance>['ariaLabels'] = {
 
 const selectionTypeOptions = [{ value: 'none' }, { value: 'single' }, { value: 'multi' }];
 
-// TODO: remove
-// const stickyColumnsOptions = [{ value: '0' }, { value: '1' }, { value: '2' }, { value: '3' }];
-
 export default () => {
   const {
     urlParams: {
@@ -75,6 +74,7 @@ export default () => {
       groupResources = true,
       keepSelection,
       wrapLines = true,
+      usePagination = false,
     },
     setUrlParams,
   } = useContext(AppContext as DemoContext);
@@ -84,10 +84,10 @@ export default () => {
     return selected === null ? allInstances : allInstances.filter(i => i.path.includes(selected));
   };
 
-  const { items, collectionProps, propertyFilterProps, filteredItemsCount, actions } = useCollection(
+  const { items, collectionProps, paginationProps, propertyFilterProps, filteredItemsCount, actions } = useCollection(
     getScopedInstances(selectedCluster),
     {
-      pagination: { pageSize: 999 },
+      pagination: usePagination ? { pageSize: 10 } : undefined,
       sorting: {},
       filtering: {},
       propertyFiltering: {
@@ -374,6 +374,13 @@ export default () => {
                   <Checkbox checked={wrapLines} onChange={event => setUrlParams({ wrapLines: event.detail.checked })}>
                     Wrap lines
                   </Checkbox>
+
+                  <Checkbox
+                    checked={usePagination}
+                    onChange={event => setUrlParams({ usePagination: event.detail.checked })}
+                  >
+                    Use pagination
+                  </Checkbox>
                 </FormField>
 
                 <FormField label="Selection type">
@@ -421,6 +428,7 @@ export default () => {
               items={items}
               ariaLabels={ariaLabels}
               wrapLines={wrapLines}
+              pagination={usePagination && <Pagination {...paginationProps} />}
               header={
                 <SpaceBetween size="m">
                   <Header
