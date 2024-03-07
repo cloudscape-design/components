@@ -5,7 +5,7 @@ import Table, { TableProps } from '~components/table';
 import Header from '~components/header';
 import SpaceBetween from '~components/space-between';
 import ScreenshotArea from '../utils/screenshot-area';
-import { columnLabel, getMatchesCountText } from './shared-configs';
+import { getMatchesCountText } from './shared-configs';
 import { useCollection } from '@cloudscape-design/collection-hooks';
 import {
   Alert,
@@ -13,24 +13,19 @@ import {
   Button,
   ButtonDropdown,
   Checkbox,
-  CollectionPreferences,
   CollectionPreferencesProps,
   ExpandableSection,
   FormField,
-  Link,
   Pagination,
-  Popover,
   PropertyFilter,
   Select,
-  StatusIndicator,
-  Textarea,
   Toggle,
 } from '~components';
 import AppContext, { AppContextType } from '../app/app-context';
-import { allInstances, Instance, InstanceType } from './expandable-rows/expandable-rows-data';
+import { allInstances, Instance } from './expandable-rows/expandable-rows-data';
 import messages from '~components/i18n/messages/all.en';
 import I18nProvider from '~components/i18n';
-import { contentDisplayPreferenceI18nStrings } from '../common/i18n-strings';
+import { createColumns, createPreferences, filteringProperties } from './expandable-rows/expandable-rows-configs';
 
 type DemoContext = React.Context<
   AppContextType<{
@@ -98,62 +93,7 @@ export default () => {
       pagination: usePagination ? { pageSize: 10 } : undefined,
       sorting: {},
       filtering: {},
-      propertyFiltering: {
-        filteringProperties: [
-          {
-            key: 'path',
-            propertyLabel: 'DB Name',
-            groupValuesLabel: 'DB Name values',
-            operators: [
-              {
-                operator: '=',
-                match: (path: unknown, token: null | string) => Array.isArray(path) && path.includes(token),
-              },
-              {
-                operator: ':',
-                match: (path: unknown, token: null | string) =>
-                  Array.isArray(path) && path.some(entry => entry.includes(token)),
-              },
-            ],
-          },
-          {
-            key: 'role',
-            propertyLabel: 'Role',
-            groupValuesLabel: 'Role values',
-            operators: ['='],
-          },
-          {
-            key: 'state',
-            propertyLabel: 'State',
-            groupValuesLabel: 'State values',
-            operators: ['=', '!='],
-          },
-          {
-            key: 'engine',
-            propertyLabel: 'Engine',
-            groupValuesLabel: 'Engine values',
-            operators: ['=', '!=', ':'],
-          },
-          {
-            key: 'size',
-            propertyLabel: 'Size',
-            groupValuesLabel: 'Size values',
-            operators: ['=', '!=', ':'],
-          },
-          {
-            key: 'region',
-            propertyLabel: 'Region',
-            groupValuesLabel: 'Region values',
-            operators: ['=', '!=', ':'],
-          },
-          {
-            key: 'terminationReason',
-            propertyLabel: 'Termination reason',
-            groupValuesLabel: 'Termination reason values',
-            operators: [':', '!;'],
-          },
-        ],
-      },
+      propertyFiltering: { filteringProperties },
       selection: { trackBy: 'name', keepSelection },
       expandableRows: groupResources
         ? {
@@ -169,161 +109,41 @@ export default () => {
 
   const expandedInstances = collectionProps.expandableRows?.expandedItems ?? [];
 
-  const columnDefinitions: TableProps.ColumnDefinition<Instance>[] = [
-    {
-      id: 'name',
-      header: 'DB Name',
-      cell: item => <Link href={`#${item.name}`}>{item.name}</Link>,
-      ariaLabel: columnLabel('DB Name'),
-      sortingField: 'name',
-      minWidth: 200,
+  const columnDefinitions = createColumns({
+    groupResources,
+    getInstanceProps: instance => {
+      const children = collectionProps.expandableRows?.getItemChildren(instance).length ?? 0;
+      const scopedInstances = getScopedInstances(instance.name);
+      const instanceActions = [
+        {
+          id: 'drill-down',
+          text: `Show ${instance.name} cluster only`,
+          hidden: !children,
+          onClick: () => {
+            actions.setExpandedItems(scopedInstances);
+            setSelectedCluster(instance.name);
+          },
+        },
+        {
+          id: 'expand-all',
+          text: `Expand cluster`,
+          hidden: !children,
+          onClick: () => {
+            actions.setExpandedItems([...expandedInstances, ...scopedInstances]);
+          },
+        },
+        {
+          id: 'collapse-all',
+          text: `Collapse cluster`,
+          hidden: !children,
+          onClick: () => {
+            actions.setExpandedItems(expandedInstances.filter(i => !scopedInstances.includes(i)));
+          },
+        },
+      ];
+      return { children, actions: instanceActions };
     },
-    {
-      id: 'role',
-      header: 'Role',
-      cell: item => (
-        <InstanceTypeWrapper instanceType={item.type}>
-          {item.type === 'instance'
-            ? item.role
-            : `${item.role} (${collectionProps.expandableRows?.getItemChildren(item).length ?? 0})`}
-        </InstanceTypeWrapper>
-      ),
-      ariaLabel: columnLabel('Role'),
-      sortingField: 'role',
-    },
-    {
-      id: 'activity',
-      header: 'Activity',
-      cell: item => (
-        <Box fontSize="body-s" color="text-body-secondary">
-          {item.selectsPerSecond !== null ? `${item.selectsPerSecond} Selects/Sec` : '-'}
-        </Box>
-      ),
-      ariaLabel: columnLabel('Activity'),
-      sortingField: 'selectsPerSecond',
-    },
-    {
-      id: 'state',
-      header: 'State',
-      cell: item => {
-        const selfState = (() => {
-          switch (item.state) {
-            case 'RUNNING':
-              return <StatusIndicator type="success">Running</StatusIndicator>;
-            case 'STOPPED':
-              return <StatusIndicator type="stopped">Stopped</StatusIndicator>;
-            case 'TERMINATED':
-              return <StatusIndicator type="error">Terminated</StatusIndicator>;
-          }
-        })();
-        if (item.type === 'instance') {
-          return selfState;
-        }
-        return (
-          <Popover
-            dismissButton={false}
-            position="top"
-            size="small"
-            content={
-              <SpaceBetween size="s" direction="horizontal">
-                <StatusIndicator type="success">{item.stateGrouped.RUNNING}</StatusIndicator>
-                <StatusIndicator type="stopped">{item.stateGrouped.STOPPED}</StatusIndicator>
-                <StatusIndicator type="error">{item.stateGrouped.TERMINATED}</StatusIndicator>
-              </SpaceBetween>
-            }
-          >
-            {selfState}
-          </Popover>
-        );
-      },
-      ariaLabel: columnLabel('State'),
-      sortingField: 'state',
-    },
-    {
-      id: 'engine',
-      header: 'Engine',
-      cell: item => item.engine,
-      ariaLabel: columnLabel('Engine'),
-      sortingField: 'engine',
-    },
-    {
-      id: 'size',
-      header: 'Size',
-      cell: item => <InstanceTypeWrapper instanceType={item.type}>{item.sizeGrouped || '-'}</InstanceTypeWrapper>,
-      ariaLabel: columnLabel('Size'),
-      sortingField: 'sizeGrouped',
-    },
-    {
-      id: 'region',
-      header: 'Region & AZ',
-      cell: item => <InstanceTypeWrapper instanceType={item.type}>{item.regionGrouped}</InstanceTypeWrapper>,
-      ariaLabel: columnLabel('Region & AZ'),
-      sortingField: 'regionGrouped',
-    },
-    {
-      id: 'termination-reason',
-      header: 'Termination reason',
-      cell: item => item.terminationReason || '-',
-      editConfig: {
-        ariaLabel: 'Edit termination reason',
-        editIconAriaLabel: 'editable',
-        errorIconAriaLabel: 'Edit cell error',
-        editingCell: (item, { currentValue, setValue }) => (
-          <Textarea
-            autoFocus={true}
-            value={currentValue ?? item.terminationReason}
-            onChange={event => setValue(event.detail.value)}
-          />
-        ),
-      },
-      minWidth: 250,
-    },
-    {
-      id: 'actions',
-      header: 'Actions',
-      cell: item => {
-        if (item.children === 0) {
-          return (
-            <ButtonDropdown
-              variant="inline-icon"
-              ariaLabel={`Instance ${item.name} actions`}
-              disabled={true}
-              items={[]}
-            />
-          );
-        }
-        const scopedInstances = getScopedInstances(item.name);
-        return (
-          <ButtonDropdown
-            expandToViewport={true}
-            items={[
-              { id: 'drill-down', text: `Show ${item.name} cluster only` },
-              { id: 'expand-all', text: `Expand cluster` },
-              { id: 'collapse-all', text: `Collapse cluster` },
-            ]}
-            variant="inline-icon"
-            ariaLabel={`Instance ${item.name} actions`}
-            onItemClick={event => {
-              switch (event.detail.id) {
-                case 'drill-down':
-                  actions.setExpandedItems(scopedInstances);
-                  setSelectedCluster(item.name);
-                  break;
-                case 'expand-all':
-                  actions.setExpandedItems([...expandedInstances, ...scopedInstances]);
-                  break;
-                case 'collapse-all':
-                  actions.setExpandedItems(expandedInstances.filter(i => !scopedInstances.includes(i)));
-                  break;
-                default:
-                  throw new Error('Invariant violation: unexpected action.');
-              }
-            }}
-          />
-        );
-      },
-    },
-  ];
+  });
 
   return (
     <I18nProvider messages={[messages]} locale="en">
@@ -423,90 +243,7 @@ export default () => {
               wrapLines={preferences.wrapLines}
               pagination={usePagination && <Pagination {...paginationProps} />}
               columnDisplay={preferences.contentDisplay}
-              preferences={
-                <CollectionPreferences
-                  title="Preferences"
-                  confirmLabel="Confirm"
-                  cancelLabel="Cancel"
-                  onConfirm={({ detail }) => setPreferences(detail)}
-                  preferences={preferences}
-                  pageSizePreference={{
-                    title: 'Select page size',
-                    options: [
-                      { value: 10, label: '10 Instances' },
-                      { value: 25, label: '25 Instances' },
-                      { value: 50, label: '50 Instances' },
-                    ],
-                  }}
-                  contentDisplayPreference={{
-                    title: 'Column preferences',
-                    description: 'Customize the columns visibility and order.',
-                    options: [
-                      {
-                        id: 'name',
-                        label: 'DB Name',
-                        alwaysVisible: true,
-                      },
-                      {
-                        id: 'role',
-                        label: 'Role',
-                      },
-                      {
-                        id: 'activity',
-                        label: 'Activity',
-                      },
-                      {
-                        id: 'state',
-                        label: 'State',
-                      },
-                      {
-                        id: 'engine',
-                        label: 'Engine',
-                      },
-                      {
-                        id: 'size',
-                        label: 'Size',
-                      },
-                      {
-                        id: 'region',
-                        label: 'Region & AZ',
-                      },
-                      {
-                        id: 'termination-reason',
-                        label: 'Termination reason',
-                      },
-                      {
-                        id: 'actions',
-                        label: 'Actions',
-                      },
-                    ],
-                    ...contentDisplayPreferenceI18nStrings,
-                  }}
-                  wrapLinesPreference={{
-                    label: 'Wrap lines',
-                    description: 'Wrap lines description',
-                  }}
-                  stickyColumnsPreference={{
-                    firstColumns: {
-                      title: 'First column(s)',
-                      description: 'Keep the first column(s) visible while horizontally scrolling table content.',
-                      options: [
-                        { label: 'None', value: 0 },
-                        { label: 'First column', value: 1 },
-                        { label: 'First two columns', value: 2 },
-                      ],
-                    },
-                    lastColumns: {
-                      title: 'Stick last visible column',
-                      description: 'Keep the last column visible when tables are wider than the viewport.',
-                      options: [
-                        { label: 'Last column', value: 1 },
-                        { label: 'Last two columns', value: 2 },
-                      ],
-                    },
-                  }}
-                />
-              }
+              preferences={createPreferences({ preferences, setPreferences })}
               header={
                 <SpaceBetween size="m">
                   <Header
@@ -573,6 +310,7 @@ export default () => {
                   filteringPlaceholder="Search databases"
                 />
               }
+              // TODO: set by default when expandableProps is set
               enableKeyboardNavigation={true}
             />
           </ScreenshotArea>
@@ -581,14 +319,3 @@ export default () => {
     </I18nProvider>
   );
 };
-
-function InstanceTypeWrapper({ instanceType, children }: { instanceType: InstanceType; children: React.ReactNode }) {
-  return (
-    <Box
-      fontWeight={instanceType === 'instance' ? 'normal' : 'bold'}
-      color={instanceType === 'instance' ? 'inherit' : 'text-body-secondary'}
-    >
-      {children}
-    </Box>
-  );
-}
