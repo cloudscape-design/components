@@ -7,17 +7,24 @@ import styles from './styles.css.js';
 import InternalIcon from '../../icon/internal';
 import clsx from 'clsx';
 
-export function ExpandToggleButton({
+interface ExpandToggleProps {
+  isExpanded: boolean;
+  isExpandable: boolean;
+  onExpandableItemToggle: () => void;
+  expandButtonLabel?: string;
+  collapseButtonLabel?: string;
+}
+
+export function ExpandToggle({ isExpandable, ...props }: ExpandToggleProps) {
+  return isExpandable ? <ExpandToggleButton {...props} /> : <ExpandTogglePlaceholder />;
+}
+
+function ExpandToggleButton({
   isExpanded,
   onExpandableItemToggle,
   expandButtonLabel,
   collapseButtonLabel,
-}: {
-  isExpanded: boolean;
-  onExpandableItemToggle: () => void;
-  expandButtonLabel?: string;
-  collapseButtonLabel?: string;
-}) {
+}: Omit<ExpandToggleProps, 'isExpandable'>) {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const { tabIndex } = useSingleTabStopNavigation(buttonRef);
   return (
@@ -26,7 +33,7 @@ export function ExpandToggleButton({
       tabIndex={tabIndex}
       aria-label={isExpanded ? collapseButtonLabel : expandButtonLabel}
       className={styles['expand-toggle']}
-      onClick={() => onExpandableItemToggle()}
+      onClick={onExpandableItemToggle}
     >
       {isExpanded ? (
         <InternalIcon size="small" name="caret-down-filled" />
@@ -37,14 +44,10 @@ export function ExpandToggleButton({
   );
 }
 
-export function ExpandTogglePlaceholder() {
+function ExpandTogglePlaceholder() {
   return (
-    <button
-      disabled={true}
-      aria-hidden={true}
-      className={clsx(styles['expand-toggle'], styles['expand-toggle-hidden'])}
-    >
+    <div aria-hidden={true} className={clsx(styles['expand-toggle'], styles['expand-toggle-hidden'])}>
       <InternalIcon size="small" name="caret-right-filled" />
-    </button>
+    </div>
   );
 }

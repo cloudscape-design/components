@@ -32,7 +32,6 @@ export function getExpandableTableProps<T>({
         children.forEach(child => traverse(child, level + 1));
       }
     };
-
     items.forEach(item => traverse(item));
 
     for (let index = 0; index < visibleItems.length; index++) {

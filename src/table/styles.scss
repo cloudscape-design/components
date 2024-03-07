@@ -147,13 +147,6 @@ filter search icon.
   }
 }
 
-.expand-cell {
-  max-width: 10px;
-  min-width: 10px;
-  width: 10px;
-  padding: 0px !important;
-}
-
 /*
 The dynamic height dark header needs a background that will cover
 the default white background of the container component.
@@ -234,25 +227,4 @@ the default white background of the container component.
 .row,
 .row-selected {
   /* used in test-utils */
-}
-
-.expand-toggle {
-  @include styles.styles-reset;
-  cursor: pointer;
-  border: none;
-  margin: 0;
-  padding: 4px 8px;
-  background: none;
-
-  &-hidden {
-    visibility: hidden;
-  }
-
-  color: awsui.$color-text-button-normal-default;
-  &:hover {
-    color: awsui.$color-text-button-normal-hover;
-  }
-  &:active {
-    color: awsui.$color-text-button-normal-active;
-  }
 }

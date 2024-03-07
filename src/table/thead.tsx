@@ -94,11 +94,6 @@ const Thead = React.forwardRef(
 
     const { getColumnStyles, columnWidths, updateColumn, setCell } = useColumnWidths();
 
-    let colIndexOffset = 0;
-    if (selectionType) {
-      colIndexOffset++;
-    }
-
     return (
       <thead className={clsx(!hidden && styles['thead-active'])}>
         <tr
@@ -155,7 +150,7 @@ const Thead = React.forwardRef(
                 sortingDisabled={sortingDisabled}
                 wrapLines={wrapLines}
                 hidden={hidden}
-                colIndex={colIndex + colIndexOffset}
+                colIndex={selectionType ? colIndex + 1 : colIndex}
                 columnId={columnId}
                 updateColumn={updateColumn}
                 onResizeFinish={() => onResizeFinish(columnWidths)}

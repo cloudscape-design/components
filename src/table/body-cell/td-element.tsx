@@ -8,7 +8,7 @@ import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
 import { TableRole, getTableCellRoleProps } from '../table-role';
 import { useMergeRefs } from '../../internal/hooks/use-merge-refs/index.js';
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context.js';
-import { ExpandToggleButton, ExpandTogglePlaceholder } from '../expandable-rows/expand-toggle-button.js';
+import { ExpandToggle } from '../expandable-rows/expand-toggle-button.js';
 
 export interface TableTdElementProps {
   className?: string;
@@ -135,7 +135,7 @@ function CellContent({ expandableProps, children }: { expandableProps?: Expandab
         styles[`expandable-cell-content-level-${expandableProps.level}`]
       )}
     >
-      {expandableProps.isExpandable ? <ExpandToggleButton {...expandableProps} /> : <ExpandTogglePlaceholder />}
+      <ExpandToggle {...expandableProps} />
       {children}
     </div>
   );

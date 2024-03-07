@@ -296,10 +296,7 @@ const InternalTable = React.forwardRef(
     const toolsHeaderHeight =
       (toolsHeaderWrapper?.current as HTMLDivElement | null)?.getBoundingClientRect().height ?? 0;
 
-    let colIndexOffset = 0;
-    if (selectionType) {
-      colIndexOffset++;
-    }
+    const colIndexOffset = selectionType ? 1 : 0;
     const totalColumnsCount = visibleColumnDefinitions.length + colIndexOffset;
 
     return (
