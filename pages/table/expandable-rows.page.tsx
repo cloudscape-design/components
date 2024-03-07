@@ -13,6 +13,8 @@ import {
   Button,
   ButtonDropdown,
   Checkbox,
+  CollectionPreferences,
+  CollectionPreferencesProps,
   ExpandableSection,
   FormField,
   Link,
@@ -28,6 +30,7 @@ import AppContext, { AppContextType } from '../app/app-context';
 import { allInstances, Instance, InstanceType } from './expandable-rows-data';
 import messages from '~components/i18n/messages/all.en';
 import I18nProvider from '~components/i18n';
+import { contentDisplayPreferenceI18nStrings } from '../common/i18n-strings';
 
 type DemoContext = React.Context<
   AppContextType<{
@@ -36,10 +39,8 @@ type DemoContext = React.Context<
     sortingDisabled: boolean;
     stripedRows: boolean;
     selectionType: undefined | 'single' | 'multi';
-    stickyColumnsFirst: string;
     groupResources: boolean;
     keepSelection: boolean;
-    wrapLines: boolean;
     usePagination: boolean;
   }>
 >;
@@ -70,15 +71,18 @@ export default () => {
       sortingDisabled,
       stripedRows,
       selectionType = 'multi',
-      stickyColumnsFirst,
       groupResources = true,
       keepSelection,
-      wrapLines = true,
       usePagination = false,
     },
     setUrlParams,
   } = useContext(AppContext as DemoContext);
 
+  const [preferences, setPreferences] = useState<CollectionPreferencesProps.Preferences>({
+    pageSize: 10,
+    wrapLines: true,
+    stickyColumns: { first: 0, last: 1 },
+  });
   const [selectedCluster, setSelectedCluster] = useState<null | string>(null);
   const getScopedInstances = (selected: null | string) => {
     return selected === null ? allInstances : allInstances.filter(i => i.path.includes(selected));
@@ -371,10 +375,6 @@ export default () => {
                     Keep selection
                   </Checkbox>
 
-                  <Checkbox checked={wrapLines} onChange={event => setUrlParams({ wrapLines: event.detail.checked })}>
-                    Wrap lines
-                  </Checkbox>
-
                   <Checkbox
                     checked={usePagination}
                     onChange={event => setUrlParams({ usePagination: event.detail.checked })}
@@ -400,17 +400,6 @@ export default () => {
                     }
                   />
                 </FormField>
-
-                {/* TODO: move to collection props */}
-                {/* <FormField label="Sticky columns first">
-            <Select
-              selectedOption={
-                stickyColumnsOptions.find(option => option.value === stickyColumnsFirst) ?? stickyColumnsOptions[0]
-              }
-              options={stickyColumnsOptions}
-              onChange={event => setUrlParams({ stickyColumnsFirst: event.detail.selectedOption.value })}
-            />
-          </FormField> */}
               </SpaceBetween>
             </ExpandableSection>
           </Box>
@@ -418,7 +407,7 @@ export default () => {
           <ScreenshotArea>
             <Table
               {...collectionProps}
-              stickyColumns={{ first: parseInt(stickyColumnsFirst || '0'), last: 1 }}
+              stickyColumns={preferences.stickyColumns}
               resizableColumns={resizableColumns}
               stickyHeader={stickyHeader}
               sortingDisabled={sortingDisabled}
@@ -427,8 +416,93 @@ export default () => {
               columnDefinitions={columnDefinitions}
               items={items}
               ariaLabels={ariaLabels}
-              wrapLines={wrapLines}
+              wrapLines={preferences.wrapLines}
               pagination={usePagination && <Pagination {...paginationProps} />}
+              columnDisplay={preferences.contentDisplay}
+              preferences={
+                <CollectionPreferences
+                  title="Preferences"
+                  confirmLabel="Confirm"
+                  cancelLabel="Cancel"
+                  onConfirm={({ detail }) => setPreferences(detail)}
+                  preferences={preferences}
+                  pageSizePreference={{
+                    title: 'Select page size',
+                    options: [
+                      { value: 10, label: '10 Instances' },
+                      { value: 25, label: '25 Instances' },
+                      { value: 50, label: '50 Instances' },
+                    ],
+                  }}
+                  contentDisplayPreference={{
+                    title: 'Column preferences',
+                    description: 'Customize the columns visibility and order.',
+                    options: [
+                      {
+                        id: 'name',
+                        label: 'DB Name',
+                        alwaysVisible: true,
+                      },
+                      {
+                        id: 'role',
+                        label: 'Role',
+                      },
+                      {
+                        id: 'activity',
+                        label: 'Activity',
+                      },
+                      {
+                        id: 'state',
+                        label: 'State',
+                      },
+                      {
+                        id: 'engine',
+                        label: 'Engine',
+                      },
+                      {
+                        id: 'size',
+                        label: 'Size',
+                      },
+                      {
+                        id: 'region',
+                        label: 'Region & AZ',
+                      },
+                      {
+                        id: 'termination-reason',
+                        label: 'Termination reason',
+                      },
+                      {
+                        id: 'actions',
+                        label: 'Actions',
+                      },
+                    ],
+                    ...contentDisplayPreferenceI18nStrings,
+                  }}
+                  wrapLinesPreference={{
+                    label: 'Wrap lines',
+                    description: 'Wrap lines description',
+                  }}
+                  stickyColumnsPreference={{
+                    firstColumns: {
+                      title: 'First column(s)',
+                      description: 'Keep the first column(s) visible while horizontally scrolling table content.',
+                      options: [
+                        { label: 'None', value: 0 },
+                        { label: 'First column', value: 1 },
+                        { label: 'First two columns', value: 2 },
+                      ],
+                    },
+                    lastColumns: {
+                      title: 'Stick last visible column',
+                      description: 'Keep the last column visible when tables are wider than the viewport.',
+                      options: [
+                        { label: 'Last column', value: 1 },
+                        { label: 'Last two columns', value: 2 },
+                      ],
+                    },
+                  }}
+                />
+              }
               header={
                 <SpaceBetween size="m">
                   <Header
