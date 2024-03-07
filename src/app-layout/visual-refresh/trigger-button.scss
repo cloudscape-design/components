@@ -23,9 +23,9 @@
 }
 
 @mixin trigger-button-styles {
-  background: awsui.$color-background-layout-panel-content;
+  background: transparent;
   color: awsui.$color-text-interactive-default;
-  border: awsui.$border-field-width solid awsui.$color-background-layout-panel-content;
+  border: awsui.$border-field-width solid transparent;
   border-start-start-radius: 50%;
   border-start-end-radius: 50%;
   border-end-start-radius: 50%;
