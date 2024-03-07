@@ -3,8 +3,6 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import selectors from '../../../../lib/components/flashbar/styles.selectors.js';
 import createWrapper from '../../../../lib/components/test-utils/selectors';
-import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
-import { FlashbarInteractivePage } from './interactive-page';
 
 export const flashbar = createWrapper().findFlashbar();
 
@@ -28,12 +26,3 @@ export class FlashbarBasePage extends BasePageObject {
     );
   }
 }
-
-export const setupTest = (path: string, testFn: (page: FlashbarInteractivePage) => Promise<void>) => {
-  return useBrowser(async browser => {
-    const page = new FlashbarInteractivePage(browser);
-    await browser.url(`#/light/flashbar/${path}`);
-    await page.waitForVisible(flashbar.toSelector());
-    await testFn(page);
-  });
-};

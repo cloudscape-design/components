@@ -18,6 +18,7 @@ const tokens: StyleDictionary.SpacingDictionary = {
   spaceButtonModalDismissVertical: '{spaceScaledXxs}',
   spaceCalendarGridFocusOutlineGutter: '0px',
   spaceCalendarGridSelectedFocusOutlineGutter: '2px',
+  spaceCalendarGridGutter: '0px',
   spaceCardVertical: '{spaceScaledL}',
   spaceCodeEditorStatusFocusOutlineGutter: '3px',
   spaceContainerContentTop: '{spaceScaledM}',

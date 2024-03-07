@@ -78,6 +78,12 @@ export interface CalendarProps extends BaseComponentProps {
    * @i18n
    */
   i18nStrings?: CalendarProps.I18nStrings;
+
+  /**
+   * Specifies the granularity at which users will be able to select a date.
+   * Defaults to `day`.
+   **/
+  granularity?: CalendarProps.Granularity;
 }
 
 export namespace CalendarProps {
@@ -91,6 +97,8 @@ export namespace CalendarProps {
   export interface IsDateEnabledFunction {
     (date: Date): boolean;
   }
+
+  export type Granularity = 'day' | 'month';
 
   export interface I18nStrings {
     /**
@@ -107,5 +115,23 @@ export namespace CalendarProps {
      * Specifies an `aria-label` for the 'previous month' button.
      */
     previousMonthAriaLabel?: string;
+
+    /**
+     * Used as part of the `aria-label` for the current month in the calendar.
+     * @i18n
+     */
+    currentMonthAriaLabel?: string;
+
+    /**
+     * Specifies an `aria-label` for the 'next year' button.
+     * @i18n
+     */
+    nextYearAriaLabel?: string;
+
+    /**
+     * Specifies an `aria-label` for the 'previous year' button.
+     * @i18n
+     */
+    previousYearAriaLabel?: string;
   }
 }

@@ -135,6 +135,7 @@ function InternalPopover(
     onKeyDown: onTriggerKeyDown,
     className: clsx(styles.trigger, styles[`trigger-type-${triggerType}`]),
   };
+  const { tabIndex: triggerTabIndex } = useSingleTabStopNavigation(triggerRef);
 
   const referrerId = useUniqueId();
   const popoverContent = (
@@ -185,7 +186,14 @@ function InternalPopover(
       }}
     >
       {triggerType === 'text' ? (
-        <button {...triggerProps} type="button" aria-haspopup="dialog" id={referrerId} aria-label={triggerAriaLabel}>
+        <button
+          {...triggerProps}
+          tabIndex={triggerTabIndex}
+          type="button"
+          aria-haspopup="dialog"
+          id={referrerId}
+          aria-label={triggerAriaLabel}
+        >
           <span className={styles['trigger-inner-text']}>{children}</span>
         </button>
       ) : (

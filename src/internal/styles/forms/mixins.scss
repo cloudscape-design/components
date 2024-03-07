@@ -201,7 +201,7 @@
   border-start-end-radius: awsui.$border-radius-dropdown;
   border-end-start-radius: awsui.$border-radius-dropdown;
   border-end-end-radius: awsui.$border-radius-dropdown;
-  border-block-start: awsui.$border-divider-list-width solid awsui.$color-border-container-top;
+  border-block: awsui.$border-divider-list-width solid awsui.$color-border-container-top;
   box-sizing: border-box;
 
   &::after {
@@ -209,7 +209,7 @@
     position: absolute;
     z-index: 1;
     inset-block-start: -1px;
-    inset-block-end: 0px;
+    inset-block-end: -1px;
     inset-inline-start: 0px;
     inset-inline-end: 0px;
     background-color: transparent;

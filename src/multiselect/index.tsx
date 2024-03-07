@@ -21,7 +21,17 @@ const Multiselect = React.forwardRef(
     }: MultiselectProps,
     ref: React.Ref<MultiselectProps.Ref>
   ) => {
-    const baseComponentProps = useBaseComponent('Multiselect');
+    const baseComponentProps = useBaseComponent('Multiselect', {
+      props: {
+        autoFocus: restProps.autoFocus,
+        expandToViewport: restProps.expandToViewport,
+        filteringType,
+        hideTokens,
+        keepOpen,
+        tokenLimit: restProps.tokenLimit,
+        virtualScroll: restProps.virtualScroll,
+      },
+    });
 
     // Private API for inline tokens
     const inlineTokens = Boolean((restProps as any).inlineTokens);

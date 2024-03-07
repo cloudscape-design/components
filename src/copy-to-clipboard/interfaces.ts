@@ -5,9 +5,11 @@ import { BaseComponentProps } from '../internal/base-component';
 
 export interface CopyToClipboardProps extends BaseComponentProps {
   /** Determines the general styling of the copy button as follows:
+   *
    * * `button` to display a standalone secondary button with an icon, and `copyButtonText` as text.
    * * `icon` to display a standalone icon-only (no text) button.
    * * `inline` to display an icon-only (no text) button within a text context.
+   *
    * Defaults to `button`.
    */
   variant?: CopyToClipboardProps.Variant;

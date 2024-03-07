@@ -31,14 +31,8 @@ afterEach(() => {
 });
 
 describe('Code editor component', () => {
-  const versionSpy = jest.spyOn(aceMock, 'version', 'get').mockReturnValue('1.0.0');
-
   afterEach(() => {
     jest.clearAllMocks();
-  });
-
-  afterAll(() => {
-    versionSpy.mockRestore();
   });
 
   it('displays loading screen', () => {
@@ -70,40 +64,35 @@ describe('Code editor component', () => {
     expect(editorMock.session.setMode).toHaveBeenLastCalledWith('ace/mode/javascript');
   });
 
-  it("sets the default light mode theme to dawn if cloud_editor isn't supported", () => {
-    versionSpy.mockReturnValue('1.0.0');
-    renderCodeEditor();
+  it("sets the default light mode theme to dawn if cloud_editor isn't explicitly provided", () => {
+    renderCodeEditor({ themes: { light: ['textmate', 'dawn'], dark: [] } });
     expect(editorMock.setTheme).toHaveBeenLastCalledWith('ace/theme/dawn');
   });
 
-  it('sets the default light mode theme to cloud_editor if ace supports it', () => {
-    versionSpy.mockReturnValue('1.33.0');
-    renderCodeEditor();
+  it('sets the default light mode theme to cloud_editor if explicitly provided', () => {
+    renderCodeEditor({ themes: { light: ['dawn', 'cloud_editor'], dark: [] } });
     expect(editorMock.setTheme).toHaveBeenLastCalledWith('ace/theme/cloud_editor');
   });
 
-  it("sets the default dark mode theme to tomorrow_night_bright if cloud_editor_dark isn't supported", () => {
-    versionSpy.mockReturnValue('1.0.0');
+  it("sets the default dark mode theme to tomorrow_night_bright if cloud_editor_dark isn't provided", () => {
     render(
       <div className="awsui-polaris-dark-mode">
-        <CodeEditor {...defaultProps} />
+        <CodeEditor {...defaultProps} themes={{ light: [], dark: ['tomorrow_night_bright', 'dracula'] }} />
       </div>
     );
     expect(editorMock.setTheme).toHaveBeenLastCalledWith('ace/theme/tomorrow_night_bright');
   });
 
-  it('sets the default dark mode theme to cloud_editor_dark if ace supports it', () => {
-    versionSpy.mockReturnValue('1.33.0');
+  it('sets the default dark mode theme to cloud_editor_dark if explicitly provided', () => {
     render(
       <div className="awsui-polaris-dark-mode">
-        <CodeEditor {...defaultProps} />
+        <CodeEditor {...defaultProps} themes={{ light: [], dark: ['tomorrow_night_bright', 'cloud_editor_dark'] }} />
       </div>
     );
     expect(editorMock.setTheme).toHaveBeenLastCalledWith('ace/theme/cloud_editor_dark');
   });
 
   it('detects alternative dark mode class', () => {
-    versionSpy.mockReturnValue('1.0.0');
     render(
       <div className="awsui-dark-mode">
         <CodeEditor {...defaultProps} />
@@ -113,7 +102,6 @@ describe('Code editor component', () => {
   });
 
   it('does not detect dark mode on non-parent elements', () => {
-    versionSpy.mockReturnValue('1.0.0');
     render(
       <div>
         <div className="awsui-polaris-dark-mode"></div>
