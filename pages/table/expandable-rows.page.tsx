@@ -158,7 +158,7 @@ export default () => {
       expandableRows: groupResources
         ? {
             getId: item => item.name,
-            getParentId: item => item.parentName,
+            getParentId: item => (item.name === selectedCluster ? null : item.parentName),
           }
         : undefined,
     }
