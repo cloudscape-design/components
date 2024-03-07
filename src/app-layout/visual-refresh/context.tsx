@@ -342,7 +342,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     };
 
     let drawersTriggerCount = drawers ? drawers.length : !toolsHide ? 1 : 0;
-    if (splitPanelDisplayed && splitPanelPosition === 'side') {
+    if (splitPanelDisplayed) {
       drawersTriggerCount++;
     }
     const hasOpenDrawer =
