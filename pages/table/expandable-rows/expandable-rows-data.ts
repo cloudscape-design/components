@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { id as generateId, instanceType as generateInstanceSize } from './generate-data';
-import pseudoRandom from '../utils/pseudo-random';
+import { id as generateId, instanceType as generateInstanceSize } from '../generate-data';
+import pseudoRandom from '../../utils/pseudo-random';
 import { sumBy, uniq } from 'lodash';
 
 export type InstanceType = 'global' | 'cluster' | 'instance';

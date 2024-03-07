@@ -27,7 +27,7 @@ import {
   Toggle,
 } from '~components';
 import AppContext, { AppContextType } from '../app/app-context';
-import { allInstances, Instance, InstanceType } from './expandable-rows-data';
+import { allInstances, Instance, InstanceType } from './expandable-rows/expandable-rows-data';
 import messages from '~components/i18n/messages/all.en';
 import I18nProvider from '~components/i18n';
 import { contentDisplayPreferenceI18nStrings } from '../common/i18n-strings';
@@ -44,6 +44,10 @@ type DemoContext = React.Context<
     usePagination: boolean;
   }>
 >;
+
+function getHeaderCounterText<T>(items: ReadonlyArray<T>, selectedItems: ReadonlyArray<T> | undefined) {
+  return selectedItems && selectedItems?.length > 0 ? `(${selectedItems.length}/${items.length})` : `(${items.length})`;
+}
 
 const ariaLabels: TableProps<Instance>['ariaLabels'] = {
   selectionGroupLabel: 'group label',
@@ -506,7 +510,7 @@ export default () => {
               header={
                 <SpaceBetween size="m">
                   <Header
-                    counter={`(${filteredItemsCount ?? allInstances.length})`}
+                    counter={getHeaderCounterText(allInstances, collectionProps.selectedItems)}
                     actions={
                       <SpaceBetween size="s" direction="horizontal" alignItems="center">
                         <Toggle
@@ -519,8 +523,13 @@ export default () => {
                         <ButtonDropdown
                           variant="normal"
                           items={[
-                            { id: 'expand-all', text: 'Expand all' },
-                            { id: 'collapse-all', text: 'Collapse all' },
+                            { id: 'expand-all', text: 'Expand all', disabled: !groupResources },
+                            { id: 'collapse-all', text: 'Collapse all', disabled: !groupResources },
+                            {
+                              id: 'terminate-selected',
+                              text: 'Terminate selected instances',
+                              disabled: collectionProps.selectedItems?.length === 0,
+                            },
                           ]}
                           onItemClick={event => {
                             switch (event.detail.id) {
@@ -528,12 +537,14 @@ export default () => {
                                 return actions.setExpandedItems(allInstances);
                               case 'collapse-all':
                                 return actions.setExpandedItems([]);
+                              case 'terminate-selected':
+                                return actions.setSelectedItems([]);
                               default:
                                 throw new Error('Invariant violation: unsupported action.');
                             }
                           }}
                         >
-                          Row actions
+                          Actions
                         </ButtonDropdown>
                       </SpaceBetween>
                     }
