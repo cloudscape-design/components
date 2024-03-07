@@ -15,7 +15,9 @@ const FileUpload = React.forwardRef(
     { multiple, showFileSize, showFileLastModified, showFileThumbnail, ...restProps }: FileUploadProps,
     ref: React.Ref<FileUploadProps.Ref>
   ) => {
-    const baseComponentProps = useBaseComponent('FileUpload');
+    const baseComponentProps = useBaseComponent('FileUpload', {
+      props: { multiple, showFileLastModified, showFileSize, showFileThumbnail, tokenLimit: restProps.tokenLimit },
+    });
     const externalProps = getExternalProps(restProps);
     return (
       <InternalFileUpload
