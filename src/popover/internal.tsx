@@ -125,12 +125,10 @@ function InternalPopover(
 
   const popoverClasses = usePortalModeClasses(triggerRef);
 
-  const { tabIndex: triggerTabIndex } = useSingleTabStopNavigation(triggerRef);
   const triggerProps = {
     // https://github.com/microsoft/TypeScript/issues/36659
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ref: triggerRef as any,
-    tabIndex: triggerTabIndex,
     onClick: onTriggerClick,
     onKeyDown: onTriggerKeyDown,
     className: clsx(styles.trigger, styles[`trigger-type-${triggerType}`]),
