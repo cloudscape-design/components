@@ -208,7 +208,6 @@
 
   &-variant-full-page.header-stuck {
     box-shadow: none;
-    border-bottom: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
 
     &::before {
       content: '';
