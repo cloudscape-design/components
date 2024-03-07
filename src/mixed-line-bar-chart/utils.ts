@@ -77,10 +77,24 @@ export interface StackedOffsets {
 /**
  * Calculates list of offset maps from all data by accumulating each value
  */
-export function calculateOffsetMaps(
-  data: Array<readonly MixedLineBarChartProps.Datum<ChartDataTypes>[]>
-): StackedOffsets[] {
-  return data.reduce((acc, curr, idx) => {
+export function calculateOffsetMaps(data: Array<readonly MixedLineBarChartProps.Datum<ChartDataTypes>[]>) {
+  const minValues = new Map<string | number, number>();
+  const setMinValue = (key: string | number, newOffset: number) => {
+    const currentOffset = minValues.get(key);
+    if (currentOffset === undefined || newOffset < currentOffset) {
+      minValues.set(key, newOffset);
+    }
+  };
+
+  const maxValues = new Map<string | number, number>();
+  const setMaxValue = (key: string | number, newOffset: number) => {
+    const currentOffset = maxValues.get(key);
+    if (currentOffset === undefined || currentOffset < newOffset) {
+      maxValues.set(key, newOffset);
+    }
+  };
+
+  const seriesOffsets: StackedOffsets[] = data.reduce((acc, curr, idx) => {
     // First series receives empty offsets map
     if (idx === 0) {
       acc.push({ positiveOffsets: new Map(), negativeOffsets: new Map() });
@@ -95,9 +109,13 @@ export function calculateOffsetMaps(
       if (y < 0) {
         const lastValue = lastMap?.negativeOffsets.get(key) || 0;
         map.negativeOffsets.set(key, lastValue + y);
+        setMinValue(key, lastValue + y);
+        setMaxValue(key, lastValue + y);
       } else {
         const lastValue = lastMap?.positiveOffsets.get(key) || 0;
         map.positiveOffsets.set(key, lastValue + y);
+        setMinValue(key, lastValue + y);
+        setMaxValue(key, lastValue + y);
       }
     });
 
@@ -108,6 +126,8 @@ export function calculateOffsetMaps(
 
     return acc;
   }, [] as StackedOffsets[]);
+
+  return { minValues, maxValues, seriesOffsets };
 }
 
 /** Returns string or number value for ChartDataTypes key */

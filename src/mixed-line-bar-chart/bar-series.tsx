@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useMemo } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import { ScaleContinuousNumeric, ScaleTime } from '../internal/vendor/d3-scale';
 
@@ -9,6 +9,7 @@ import { ChartDataTypes, MixedLineBarChartProps } from './interfaces';
 import { matchesX, getKeyValue, StackedOffsets } from './utils';
 import styles from './styles.css.js';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 export interface BarSeriesProps<T> {
   axis: 'x' | 'y';
 
@@ -30,6 +31,9 @@ export interface BarSeriesProps<T> {
 
   // Contains the cumulative offset for each x value in a stacked bar chart
   stackedBarOffsets?: StackedOffsets;
+  // Stacked bars minimums and maximums.
+  getStackedMinimum: (xValue: ChartDataTypes) => number;
+  getStackedMaximum: (xValue: ChartDataTypes) => number;
 }
 
 export default function BarSeries<T extends ChartDataTypes>({
@@ -41,15 +45,17 @@ export default function BarSeries<T extends ChartDataTypes>({
   highlighted,
   dimmed,
   highlightedGroupIndex,
-  stackedBarOffsets,
   totalSeriesCount,
   seriesIndex,
   plotSize,
   chartAreaClipPath,
+  stackedBarOffsets,
+  getStackedMinimum,
+  getStackedMaximum,
 }: BarSeriesProps<T>) {
   const isRefresh = useVisualRefresh();
 
-  const xCoordinates = useMemo(() => {
+  const xCoordinates = (() => {
     if (series.type !== 'bar' || !xScale.isCategorical()) {
       return [];
     }
@@ -95,11 +101,14 @@ export default function BarSeries<T extends ChartDataTypes>({
         y: yContinuosScale(yValue) ?? NaN,
         width: barWidth,
         height: Math.abs((yContinuosScale(d.y) ?? NaN) - baseY),
+        isMin: !!stackedBarOffsets && getStackedMinimum(d.x) === yValue + d.y,
+        isMax: !!stackedBarOffsets && getStackedMaximum(d.x) === yValue,
       };
     });
-  }, [series, xScale, yScale, plotSize, stackedBarOffsets, totalSeriesCount, seriesIndex]);
+  })();
 
   const highlightedXValue = highlightedGroupIndex !== null ? xScale.domain[highlightedGroupIndex] : null;
+  const clipPathId = useUniqueId();
 
   return (
     <g
@@ -110,7 +119,7 @@ export default function BarSeries<T extends ChartDataTypes>({
         [styles['series--dimmed']]: dimmed,
       })}
     >
-      {xCoordinates.map(({ x, y, width, height }, i) => {
+      {xCoordinates.map(({ x, y, width, height, isMin, isMax }, i) => {
         if (!isFinite(x) || !isFinite(height)) {
           return;
         }
@@ -126,30 +135,66 @@ export default function BarSeries<T extends ChartDataTypes>({
           [styles['series--dimmed']]: highlightedXValue !== null && !matchesX(highlightedXValue, series.data[i].x),
         });
 
-        return axis === 'x' ? (
-          <rect
-            key={`bar-${i}`}
-            fill={color}
-            x={x + widthOffset / 2}
-            y={y + heightOffset / 2}
-            width={width - widthOffset}
-            height={height - heightOffset}
-            rx={rx}
-            className={className}
-          />
-        ) : (
-          <rect
-            key={`bar-${i}`}
-            fill={color}
-            x={y - height + heightOffset / 2}
-            y={x + widthOffset / 2}
-            width={height - heightOffset}
-            height={width - widthOffset}
-            rx={rx}
-            className={className}
-          />
+        const rectPlacement =
+          axis === 'x'
+            ? {
+                x: x + widthOffset / 2,
+                y: y + heightOffset / 2,
+                width: width - widthOffset,
+                height: height - heightOffset,
+              }
+            : {
+                x: y - height + heightOffset / 2,
+                y: x + widthOffset / 2,
+                width: height - heightOffset,
+                height: width - widthOffset,
+              };
+
+        const isFirst = !stackedBarOffsets || isMin;
+        const isLast = !stackedBarOffsets || isMax;
+        const rxProps = isFirst && isLast ? { rx } : { clipPath: `url(#${clipPathId}-${i})` };
+
+        return (
+          <React.Fragment key={`bar-${i}`}>
+            {(isFirst || isLast) && (
+              <defs aria-hidden="true">
+                <clipPath id={`${clipPathId}-${i}`}>
+                  {isFirst && (
+                    <rect
+                      {...(axis === 'x' ? stretchRect(rectPlacement, 'down') : stretchRect(rectPlacement, 'left'))}
+                      rx={rx}
+                    />
+                  )}
+                  {isLast && (
+                    <rect
+                      {...(axis === 'x' ? stretchRect(rectPlacement, 'up') : stretchRect(rectPlacement, 'right'))}
+                      rx={rx}
+                    />
+                  )}
+                </clipPath>
+              </defs>
+            )}
+
+            <rect fill={color} {...rectPlacement} {...rxProps} className={className} />
+          </React.Fragment>
         );
       })}
     </g>
   );
+}
+
+function stretchRect(
+  rect: { x: number; y: number; height: number; width: number },
+  direction: 'left' | 'right' | 'up' | 'down'
+) {
+  switch (direction) {
+    case 'up':
+      return { ...rect, height: rect.height + 10 };
+    case 'down':
+      return { ...rect, y: rect.y - 10, height: rect.height + 10 };
+    case 'left':
+      return { ...rect, width: rect.width + 10 };
+    case 'right':
+      return { ...rect, x: rect.x - 10, width: rect.width + 10 };
+  }
 }
