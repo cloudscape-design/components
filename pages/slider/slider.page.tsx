@@ -7,10 +7,10 @@ import SpaceBetween from '~components/space-between';
 import FormField from '~components/form-field';
 import Container from '~components/container';
 import Header from '~components/header';
-import { Grid, Select, SelectProps, Slider } from '~components';
+import { Grid, ProgressBar, Select, SelectProps, Slider } from '~components';
 
 function Sliders() {
-  const [value2, setValue2] = React.useState(-2);
+  const [value2, setValue2] = React.useState(200);
   const [value3, setValue3] = React.useState(50);
   const [value4, setValue4] = React.useState(40);
   const [value5, setValue5] = React.useState(25);
@@ -20,9 +20,9 @@ function Sliders() {
   const rangeOptions = [{ value: '5' }, { value: '10' }, { value: '15' }, { value: '20' }, { value: '25' }];
   const sliderWordOptions = [
     { value: 0, label: 'None' },
-    { value: 25, label: 'Low' },
-    { value: 50, label: 'Medium' },
-    { value: 75, label: 'High' },
+    { value: 1, label: 'Low' },
+    { value: 2, label: 'Medium' },
+    { value: 3, label: 'High' },
   ];
 
   React.useEffect(() => {
@@ -50,7 +50,7 @@ function Sliders() {
           error2 ? (value2 % 1 !== 0 ? 'Unit must be a whole number' : 'Unit must be between 0 and 100.') : undefined
         }
       >
-        <Grid gridDefinition={[{ colspan: { default: 8, xs: 4 } }, { colspan: { default: 3, xs: 3 } }]}>
+        <Grid gridDefinition={[{ colspan: { default: 8, m: 6 } }, { colspan: { default: 4, m: 3 } }]}>
           <Slider
             value={value2}
             onChange={({ detail }) => {
@@ -111,7 +111,7 @@ function Sliders() {
           onChange={({ detail }) => {
             setValue4(detail.value);
           }}
-          valueFormatter={value => (value < 0 ? `${value}%` : value === 0 ? '500' : `+${value}%`)}
+          valueFormatter={value => (value < 0 ? `${value}% potatoes` : value === 0 ? '500' : `+${value}% potatoes`)}
           min={-100}
           max={100}
           thumbOnly={true}
@@ -125,11 +125,11 @@ function Sliders() {
             setValue5(detail.value);
           }}
           valueFormatter={value => sliderWordOptions.find(item => item.value === value)?.label || ''}
-          step={25}
+          step={1}
           hideTooltip={true}
           min={0}
-          max={75}
-          referenceValues={[25, 50]}
+          max={3}
+          referenceValues={[1, 2]}
         />
       </FormField>
     </SpaceBetween>
@@ -139,7 +139,7 @@ function Sliders() {
 export default function InputsPage() {
   const [value, setValue] = React.useState(4);
   return (
-    <div style={{ padding: 30 }}>
+    <div style={{ padding: 10 }}>
       <h1>Sliders demo</h1>
       <SpaceBetween size="xxl">
         <Sliders />
@@ -149,23 +149,33 @@ export default function InputsPage() {
               <Input value="" placeholder="Placeholder" />
             </FormField>
             <FormField label="Volume">
-              <Grid gridDefinition={[{ colspan: 10 }, { colspan: 2 }]}>
-                <Slider value={value} onChange={({ detail }) => setValue(detail.value)} min={0} max={11} />
-                <SpaceBetween size="xxs" direction="vertical">
-                  <Input
-                    type="number"
-                    inputMode="numeric"
-                    value={`${value}`}
-                    onChange={({ detail }) => {
-                      setValue(Number(detail.value));
-                    }}
-                  />
+              <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
+                <div style={{ flex: '1', maxInlineSize: '800px' }}>
+                  <Slider value={value} onChange={({ detail }) => setValue(detail.value)} min={0} max={11} />
+                </div>
+                <SpaceBetween size="xs" direction="horizontal" alignItems="center">
+                  <div style={{ maxInlineSize: '70px' }}>
+                    <Input
+                      type="number"
+                      inputMode="numeric"
+                      value={`${value}`}
+                      onChange={({ detail }) => {
+                        setValue(Number(detail.value));
+                      }}
+                    />
+                  </div>
                   <Box>Units</Box>
                 </SpaceBetween>
-              </Grid>
+              </div>
+            </FormField>
+            <FormField label="Volume">
+              <Slider value={value} onChange={({ detail }) => setValue(detail.value)} min={0} max={11} />
             </FormField>
             <FormField label="This is a form field" description="This is a description">
               <Input value="" placeholder="Placeholder" />
+            </FormField>
+            <FormField label="This is a form field" description="This is a description">
+              <ProgressBar value={50} />
             </FormField>
             <FormField label="Volume">
               <Grid gridDefinition={[{ colspan: 2 }, { colspan: 10 }]}>

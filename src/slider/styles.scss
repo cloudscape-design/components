@@ -34,8 +34,8 @@ $thumb-border-radius: 50%;
 }
 
 @mixin base-thumb-focus-styles {
-  block-size: 18px;
-  inline-size: 18px;
+  block-size: 20px;
+  inline-size: 20px;
   box-shadow: 0px 0 0 2px awsui.$color-background-slider-handle-ring,
     0 0 0 4px awsui.$color-background-slider-handle-hover;
   background: awsui.$color-background-slider-handle-hover;
@@ -136,7 +136,7 @@ $thumb-border-radius: 50%;
     padding-block: awsui.$space-m;
 
     position: relative;
-    min-inline-size: 100px;
+    max-inline-size: 800px;
   }
 
   &-labels {
@@ -151,6 +151,10 @@ $thumb-border-radius: 50%;
     min-inline-size: max-content;
     inline-size: 16px;
     margin-inline-start: -8px;
+  }
+
+  &-max {
+    text-align: end;
   }
 }
 
@@ -180,8 +184,10 @@ $thumb-border-radius: 50%;
 
 .tooltip-thumb {
   position: absolute;
-  padding-block: awsui.$space-l;
-  padding-inline: 0;
+  // padding-block: awsui.$space-l;
+  // padding-inline: 0;
+  inline-size: 32px;
+  block-size: 32px;
 }
 
 .thumb {
@@ -198,12 +204,13 @@ $thumb-border-radius: 50%;
     cursor: default;
   }
 
+  // 1px added to min and max to cover the step line when it exists.
   &.min {
-    margin-inline-start: 0;
+    margin-inline-start: -1px;
   }
 
   &.max {
-    margin-inline-start: -$thumb-size;
+    margin-inline-start: -$thumb-size + 1;
   }
 
   &::-webkit-slider-thumb {
