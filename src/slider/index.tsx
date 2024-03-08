@@ -15,6 +15,7 @@ import PopoverContainer from '../popover/container';
 import PopoverBody from '../popover/body';
 import Portal from '../internal/components/portal';
 import popoverStyles from '../popover/styles.css.js';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 
 export { SliderProps };
 
@@ -36,19 +37,22 @@ export default function Slider({
   const { __internalRootRef } = useBaseComponent('Slider');
   const baseProps = getBaseProps(rest);
 
+  const [visibleLabels, setVisibleLabels] = React.useState(referenceValues);
   const range = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const minRef = useRef<HTMLSpanElement>(null);
   const maxRef = useRef<HTMLSpanElement>(null);
   const referenceValueRefs = useRef<Array<HTMLSpanElement | null>>([]);
   const [tooltipVisible, setTooltipVisible] = React.useState(false);
   const [showPopover, setShowPopover] = React.useState(false);
   const handleRef = useRef<HTMLDivElement>(null);
+  const labelsId = useUniqueId('labels');
 
   const getPercent = (value: number) => ((value - min) / (max - min)) * 100;
   const percent = value !== undefined && getPercent(Math.max(Math.min(value, max), min));
 
   const formFieldContext = useFormFieldContext(rest);
-  const tooltipPositionAdjust = value !== undefined && (value <= min ? -8 : value >= max ? 8 : 0);
+  const tooltipPositionAdjust = value !== undefined && (value <= min ? 8 : value >= max ? 24 : 16);
 
   const getStepArray = (step: number) => {
     const steps = [];
@@ -67,11 +71,43 @@ export default function Slider({
       : `${((step - min) / (max - min)) * 100}%`;
   };
 
+  useEffect(() => {
+    const isOverlapping = (item1: HTMLSpanElement | null, item2: HTMLSpanElement | null) => {
+      if (item1 === null || item2 === null) {
+        return false;
+      }
+      const x = item1?.getBoundingClientRect().right > item2?.getBoundingClientRect().left;
+
+      return x;
+    };
+    const hasOverlap = isOverlapping(referenceValueRefs.current[0], referenceValueRefs.current[1]);
+
+    const checkOverlap = () => {
+      if (hasOverlap) {
+        setVisibleLabels(referenceValues?.filter((_, i) => i & 1));
+      }
+    };
+    const timeoutId = setTimeout(() => {
+      checkOverlap();
+    }, 0);
+
+    console.log(
+      referenceValueRefs.current[0]?.getBoundingClientRect(),
+      referenceValueRefs.current[2]?.getBoundingClientRect()
+    );
+
+    document.addEventListener('resize', checkOverlap);
+    return () => {
+      document.removeEventListener('resize', checkOverlap);
+      clearTimeout(timeoutId);
+    };
+  }, [referenceValues]);
+
   useLayoutEffect(() => {
     referenceValueRefs.current = referenceValueRefs.current.slice(0, referenceValues?.length);
 
     if (referenceValueRefs.current) {
-      referenceValueRefs.current.map(item => item && (item.style.marginLeft = `-${item.clientWidth / 2}px`));
+      referenceValueRefs.current.map(item => item && (item.style.marginInlineStart = `-${item.clientWidth / 2}px`));
     }
   }, [referenceValues?.length]);
 
@@ -83,7 +119,7 @@ export default function Slider({
 
   const popoverContent = value !== undefined && (
     <Portal>
-      <Transition in={showPopover}>
+      <Transition in={true}>
         {() => (
           <PopoverContainer
             trackRef={handleRef}
@@ -107,13 +143,13 @@ export default function Slider({
   );
 
   return (
-    <div className={styles['slider-container']}>
+    <div className={styles['slider-container']} ref={containerRef}>
       <div className={styles.slider}>
         <div
           ref={handleRef}
           className={clsx(styles['tooltip-thumb'])}
           style={{
-            left: `calc(${percent}% - ${tooltipPositionAdjust}px)`,
+            insetInlineStart: `calc(${percent}% - ${tooltipPositionAdjust}px)`,
           }}
         />
         {showPopover && !hideTooltip && popoverContent}
@@ -129,7 +165,7 @@ export default function Slider({
                 <div
                   key={`step-${index}`}
                   style={{
-                    left: getLabelPositions(step),
+                    insetInlineStart: getLabelPositions(step),
                   }}
                   className={clsx(styles.tick, {
                     [styles['tick-filled']]: !thumbOnly && value && value > step,
@@ -157,6 +193,7 @@ export default function Slider({
         aria-describedby={formFieldContext.ariaDescribedby}
         ref={__internalRootRef}
         type="range"
+        list={labelsId}
         min={min}
         max={max}
         disabled={disabled}
@@ -186,17 +223,20 @@ export default function Slider({
         {...baseProps}
       />
 
-      <div className={clsx(styles['slider-labels'])}>
-        <span ref={minRef}>{valueFormatter ? valueFormatter(min) : min}</span>
-        {referenceValues &&
-          referenceValues.length > 0 &&
-          referenceValues.map((step, index) => {
+      <div role="list" className={clsx(styles['slider-labels'])} id={labelsId}>
+        <span role="option" ref={minRef}>
+          {valueFormatter ? valueFormatter(min) : min}
+        </span>
+        {visibleLabels &&
+          visibleLabels.length > 0 &&
+          visibleLabels.map((step, index) => {
             return (
               <span
+                role="option"
                 ref={el => (referenceValueRefs.current[index] = el)}
                 key={`step-${index}`}
                 style={{
-                  left: getLabelPositions(step),
+                  insetInlineStart: getLabelPositions(step),
                 }}
                 className={clsx(styles['slider-reference'])}
               >
@@ -204,7 +244,9 @@ export default function Slider({
               </span>
             );
           })}
-        <span ref={maxRef}>{valueFormatter ? valueFormatter(max) : max}</span>
+        <span role="option" className={clsx(styles['slider-max'])} ref={maxRef}>
+          {valueFormatter ? valueFormatter(max) : max}
+        </span>
       </div>
     </div>
   );

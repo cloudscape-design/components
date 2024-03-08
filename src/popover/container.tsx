@@ -127,20 +127,20 @@ export default function PopoverContainer({
       }
     };
 
-    const updatePositionOnResize = () => requestAnimationFrame(() => updatePositionHandler());
+    const updatePositionOnResizeOrDrag = () => requestAnimationFrame(() => updatePositionHandler());
     const refreshPosition = () => requestAnimationFrame(() => positionHandlerRef.current());
 
     window.addEventListener('click', onClick);
-    window.addEventListener('resize', updatePositionOnResize);
+    window.addEventListener('resize', updatePositionOnResizeOrDrag);
     window.addEventListener('scroll', refreshPosition, true);
-    window.addEventListener('pointermove', refreshPosition, true);
+    window.addEventListener('pointermove', updatePositionOnResizeOrDrag);
     window.addEventListener('keydown', onKeyDown);
 
     return () => {
       window.removeEventListener('click', onClick);
-      window.removeEventListener('resize', updatePositionOnResize);
+      window.removeEventListener('resize', updatePositionOnResizeOrDrag);
       window.removeEventListener('scroll', refreshPosition, true);
-      window.removeEventListener('pointermove', refreshPosition, true);
+      window.removeEventListener('pointermove', updatePositionOnResizeOrDrag);
       window.removeEventListener('keydown', onKeyDown);
     };
   }, [keepPosition, positionHandlerRef, trackRef, updatePositionHandler]);
