@@ -135,10 +135,11 @@
     "i18nStrings.notificationBarAriaLabel": "Todas las notificaciones",
     "i18nStrings.notificationBarText": "Notificaciones",
     "i18nStrings.successIconAriaLabel": "Éxito",
-    "i18nStrings.warningIconAriaLabel": "Aviso"
+    "i18nStrings.warningIconAriaLabel": "Advertencia"
   },
   "form-field": {
-    "i18nStrings.errorIconAriaLabel": "Error"
+    "i18nStrings.errorIconAriaLabel": "Error",
+    "i18nStrings.warningIconAriaLabel": "Advertencia"
   },
   "form": {
     "errorIconAriaLabel": "Error"
@@ -191,6 +192,7 @@
     "i18nStrings.operatorLessOrEqualText": "Menor o igual que",
     "i18nStrings.operatorLessText": "Menor que",
     "i18nStrings.operatorStartsWithText": "Empieza con",
+    "i18nStrings.operatorDoesNotStartWithText": "No empieza con",
     "i18nStrings.operatorText": "Operador",
     "i18nStrings.operatorsText": "Operadores",
     "i18nStrings.propertyText": "Propiedad",
@@ -207,7 +209,7 @@
     "i18nStrings.inContextLoadingText": "Cargando recurso",
     "i18nStrings.inContextUriLabel": "URI de S3",
     "i18nStrings.inContextVersionSelectLabel": "Versión del objeto",
-    "i18nStrings.modalTitle": "Elija un archivo en S3",
+    "i18nStrings.modalTitle": "Elige un objeto en S3",
     "i18nStrings.modalCancelButton": "Cancelar",
     "i18nStrings.modalSubmitButton": "Elija",
     "i18nStrings.modalBreadcrumbRootItem": "Buckets de S3",

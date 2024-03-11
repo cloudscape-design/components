@@ -138,7 +138,8 @@
     "i18nStrings.warningIconAriaLabel": "Peringatan"
   },
   "form-field": {
-    "i18nStrings.errorIconAriaLabel": "Kesalahan"
+    "i18nStrings.errorIconAriaLabel": "Kesalahan",
+    "i18nStrings.warningIconAriaLabel": "Peringatan"
   },
   "form": {
     "errorIconAriaLabel": "Kesalahan"
@@ -191,6 +192,7 @@
     "i18nStrings.operatorLessOrEqualText": "Kurang dari atau sama dengan",
     "i18nStrings.operatorLessText": "Kurang dari",
     "i18nStrings.operatorStartsWithText": "Dimulai dengan",
+    "i18nStrings.operatorDoesNotStartWithText": "Tidak dimulai dengan",
     "i18nStrings.operatorText": "Operator",
     "i18nStrings.operatorsText": "Operator",
     "i18nStrings.propertyText": "Properti",
@@ -207,7 +209,7 @@
     "i18nStrings.inContextLoadingText": "Memuat sumber daya",
     "i18nStrings.inContextUriLabel": "URI S3",
     "i18nStrings.inContextVersionSelectLabel": "Versi objek",
-    "i18nStrings.modalTitle": "Pilih arsip di S3",
+    "i18nStrings.modalTitle": "Pilih objek di S3",
     "i18nStrings.modalCancelButton": "Batalkan",
     "i18nStrings.modalSubmitButton": "Pilih",
     "i18nStrings.modalBreadcrumbRootItem": "Bucket S3",
