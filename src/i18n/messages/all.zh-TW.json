@@ -138,7 +138,8 @@
     "i18nStrings.warningIconAriaLabel": "警告"
   },
   "form-field": {
-    "i18nStrings.errorIconAriaLabel": "錯誤"
+    "i18nStrings.errorIconAriaLabel": "錯誤",
+    "i18nStrings.warningIconAriaLabel": "警告"
   },
   "form": {
     "errorIconAriaLabel": "錯誤"
@@ -191,6 +192,7 @@
     "i18nStrings.operatorLessOrEqualText": "小於或等於",
     "i18nStrings.operatorLessText": "小於",
     "i18nStrings.operatorStartsWithText": "開始為",
+    "i18nStrings.operatorDoesNotStartWithText": "開頭不能為",
     "i18nStrings.operatorText": "運算子",
     "i18nStrings.operatorsText": "運算子",
     "i18nStrings.propertyText": "屬性",
@@ -207,7 +209,7 @@
     "i18nStrings.inContextLoadingText": "正在載入資源",
     "i18nStrings.inContextUriLabel": "S3 URI",
     "i18nStrings.inContextVersionSelectLabel": "選取版本",
-    "i18nStrings.modalTitle": "選擇 S3 中的存檔",
+    "i18nStrings.modalTitle": "在 S3 中選擇一個對象",
     "i18nStrings.modalCancelButton": "取消",
     "i18nStrings.modalSubmitButton": "選擇",
     "i18nStrings.modalBreadcrumbRootItem": "S3 儲存貯體",
