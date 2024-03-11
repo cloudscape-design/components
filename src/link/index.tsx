@@ -10,7 +10,9 @@ export { LinkProps };
 
 const Link = React.forwardRef(
   ({ fontSize = 'body-m', color = 'normal', external = false, ...props }: LinkProps, ref: React.Ref<LinkProps.Ref>) => {
-    const baseComponentProps = useBaseComponent('Link');
+    const baseComponentProps = useBaseComponent('Link', {
+      props: { color, external, fontSize, rel: props.rel, target: props.target, variant: props.variant },
+    });
     return (
       <InternalLink
         fontSize={fontSize}

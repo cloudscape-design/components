@@ -138,7 +138,8 @@
     "i18nStrings.warningIconAriaLabel": "Avertissement"
   },
   "form-field": {
-    "i18nStrings.errorIconAriaLabel": "Erreur"
+    "i18nStrings.errorIconAriaLabel": "Erreur",
+    "i18nStrings.warningIconAriaLabel": "Avertissement"
   },
   "form": {
     "errorIconAriaLabel": "Erreur"
@@ -191,6 +192,7 @@
     "i18nStrings.operatorLessOrEqualText": "Inférieur ou égal à",
     "i18nStrings.operatorLessText": "Inférieur à",
     "i18nStrings.operatorStartsWithText": "Commence par",
+    "i18nStrings.operatorDoesNotStartWithText": "Ne commence pas par",
     "i18nStrings.operatorText": "Opérateur",
     "i18nStrings.operatorsText": "Opérateurs",
     "i18nStrings.propertyText": "Propriété",
@@ -207,7 +209,7 @@
     "i18nStrings.inContextLoadingText": "Chargement de la ressource",
     "i18nStrings.inContextUriLabel": "URI S3",
     "i18nStrings.inContextVersionSelectLabel": "Version de l'objet",
-    "i18nStrings.modalTitle": "Choisir une archive dans S3",
+    "i18nStrings.modalTitle": "Choisir un objet dans S3",
     "i18nStrings.modalCancelButton": "Annuler",
     "i18nStrings.modalSubmitButton": "Choisir",
     "i18nStrings.modalBreadcrumbRootItem": "Compartiments S3",

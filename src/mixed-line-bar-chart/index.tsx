@@ -22,7 +22,19 @@ function MixedLineBarChart<T extends number | string | Date>({
   emphasizeBaselineAxis = true,
   ...props
 }: MixedLineBarChartProps<T>) {
-  const baseComponentProps = useBaseComponent('MixedLineBarChart');
+  const baseComponentProps = useBaseComponent('MixedLineBarChart', {
+    props: {
+      detailPopoverSize,
+      emphasizeBaselineAxis,
+      fitHeight: props.fitHeight,
+      hideFilter: props.hideFilter,
+      hideLegend: props.hideLegend,
+      horizontalBars,
+      stackedBars,
+      xScaleType,
+      yScaleType,
+    },
+  });
   return (
     <InternalMixedLineBarChart
       series={series}

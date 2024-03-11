@@ -46,7 +46,18 @@ const PieChart = function PieChart<T extends PieChartProps.Datum = PieChartProps
   detailPopoverSize = 'medium',
   ...props
 }: PieChartProps<T>) {
-  const { __internalRootRef = null } = useBaseComponent('PieChart');
+  const { __internalRootRef = null } = useBaseComponent('PieChart', {
+    props: {
+      fitHeight,
+      variant,
+      size,
+      hideTitles,
+      hideDescriptions,
+      hideLegend,
+      hideFilter,
+      detailPopoverSize,
+    },
+  });
   const baseProps = getBaseProps(props);
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, measureRef] = useContainerWidth();

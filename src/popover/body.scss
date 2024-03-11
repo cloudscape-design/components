@@ -6,6 +6,8 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 
+$header-row-margin-block-end: awsui.$space-xs;
+
 .body {
   @include styles.styles-reset;
   @include styles.text-flex-wrapping;
@@ -24,7 +26,7 @@
 }
 
 .dismiss {
-  margin-block: calc(-1 * (#{awsui.$space-scaled-xxs} + #{awsui.$border-field-width}));
+  margin-block: calc(-1 * $header-row-margin-block-end);
   margin-inline-start: 0;
   margin-inline-end: calc(-1 * (#{awsui.$space-xxs} + #{awsui.$border-field-width}));
   flex: 0 0 auto;
@@ -36,7 +38,7 @@
 }
 
 .header-row {
-  margin-block-end: awsui.$space-xs;
+  margin-block-end: $header-row-margin-block-end;
 }
 
 .header {

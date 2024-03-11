@@ -138,7 +138,8 @@
     "i18nStrings.warningIconAriaLabel": "경고"
   },
   "form-field": {
-    "i18nStrings.errorIconAriaLabel": "오류"
+    "i18nStrings.errorIconAriaLabel": "오류",
+    "i18nStrings.warningIconAriaLabel": "경고"
   },
   "form": {
     "errorIconAriaLabel": "오류"
@@ -191,6 +192,7 @@
     "i18nStrings.operatorLessOrEqualText": "작거나 같음",
     "i18nStrings.operatorLessText": "보다 작음",
     "i18nStrings.operatorStartsWithText": "로 시작",
+    "i18nStrings.operatorDoesNotStartWithText": "(으)로 시작하지 않음",
     "i18nStrings.operatorText": "연산자",
     "i18nStrings.operatorsText": "연산자",
     "i18nStrings.propertyText": "속성",
@@ -207,7 +209,7 @@
     "i18nStrings.inContextLoadingText": "리소스 로드 중",
     "i18nStrings.inContextUriLabel": "S3 URI",
     "i18nStrings.inContextVersionSelectLabel": "객체 버전",
-    "i18nStrings.modalTitle": "S3에서 아카이브 선택",
+    "i18nStrings.modalTitle": "S3에서 객체 선택",
     "i18nStrings.modalCancelButton": "취소",
     "i18nStrings.modalSubmitButton": "선택",
     "i18nStrings.modalBreadcrumbRootItem": "S3 버킷",
