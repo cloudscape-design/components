@@ -7,13 +7,13 @@ import {
   ButtonDropdown,
   CollectionPreferences,
   CollectionPreferencesProps,
+  Input,
   Link,
   Popover,
   PropertyFilterProps,
   SpaceBetween,
   StatusIndicator,
   TableProps,
-  Textarea,
 } from '~components';
 import { Instance, InstanceType } from './expandable-rows-data';
 import { columnLabel } from '../shared-configs';
@@ -141,12 +141,14 @@ export function createColumns({
         editIconAriaLabel: 'editable',
         errorIconAriaLabel: 'Edit cell error',
         editingCell: (item, { currentValue, setValue }) => (
-          <Textarea
+          <Input
             autoFocus={true}
             value={currentValue ?? item.terminationReason}
             onChange={event => setValue(event.detail.value)}
           />
         ),
+        disabledReason: item =>
+          item.terminationReason?.includes('automatically') ? 'Cannot edit automatically added description' : '',
       },
       minWidth: 250,
     },

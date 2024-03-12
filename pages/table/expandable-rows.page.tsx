@@ -244,6 +244,7 @@ export default () => {
               pagination={usePagination && <Pagination {...paginationProps} />}
               columnDisplay={preferences.contentDisplay}
               preferences={createPreferences({ preferences, setPreferences })}
+              submitEdit={() => {}}
               header={
                 <SpaceBetween size="m">
                   <Header

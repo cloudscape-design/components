@@ -205,7 +205,7 @@ function getGroupedRegion(instanceType: InstanceType, region: null | string, chi
 
 function generateTerminationReason(state: InstanceState): null | string {
   if (state === 'TERMINATED') {
-    return `Terminated manually (CM-${generateId().slice(0, 5).toUpperCase()})`;
+    return `Terminated automatically (CM-${generateId().slice(0, 5).toUpperCase()})`;
   }
   return null;
 }
