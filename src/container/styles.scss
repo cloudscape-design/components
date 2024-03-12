@@ -78,6 +78,8 @@
   &-fit-height {
     block-size: 100%;
     overflow: hidden;
+    border-end-start-radius: awsui.$border-radius-container;
+    border-end-end-radius: awsui.$border-radius-container;
   }
 }
 
