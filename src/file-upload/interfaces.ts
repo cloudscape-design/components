@@ -49,11 +49,11 @@ export interface FileUploadProps extends BaseComponentProps, Omit<FormFieldValid
    */
   constraintText?: React.ReactNode;
   /**
-   * Text that displays as a validation message.
+   * Text that displays as a validation error message.
    */
   errorText?: React.ReactNode;
   /**
-   * Text that displays as a non-blocking validation message.
+   * Text that displays as a validation warning message.
    */
   warningText?: React.ReactNode;
   /**

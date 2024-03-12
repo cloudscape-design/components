@@ -57,15 +57,17 @@ describe('controlId', () => {
         description: 'desc',
         constraintText: 'constraint',
         errorText: 'error',
+        warningText: 'warning',
       });
 
       expect(wrapper.findLabel()?.getElement()).toHaveAttribute('for', formFieldControlId);
       expect(wrapper.findDescription()?.getElement().id).toBe(`${formFieldControlId}-description`);
       expect(wrapper.find(errorSelector)?.getElement().id).toBe(`${formFieldControlId}-error`);
+      expect(wrapper.find(warningSelector)).toBeUndefined;
       expect(wrapper.findConstraint()?.getElement().id).toBe(`${formFieldControlId}-constraint`);
     });
 
-    test('sets the right ids for all props when everything including warningText is set at the sameTime', () => {
+    test('sets the right ids for all props when everything except errorText is set at the sameTime', () => {
       const wrapper = renderFormField({
         controlId: formFieldControlId,
         label: 'label',

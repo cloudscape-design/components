@@ -1361,8 +1361,9 @@ The event \`detail\` contains the index of the corresponding item.",
 * \`label\` (ReactNode) - Text label for the form field.
 * \`info\` (ReactNode) - Info link for the form field.
 * \`errorText\` ((item, itemIndex) => ReactNode) - Error message text to display as a control validation message.
-* \`warningText\` ((item, itemIndex) => ReactNode) - Warning message text to display as a control validation message.
    It renders the form field as invalid if the returned value is not \`null\` or \`undefined\`.
+* \`warningText\` ((item, itemIndex) => ReactNode) - Warning message text to display as a control validation message.
+   It renders the form field in a warning state if the returned value is not \`null\` or \`undefined\`.
 * \`constraintText\` ((item, itemIndex) => ReactNode) - Text to display as a constraint message below the field.
 * \`control\` ((item, itemIndex) => ReactNode) - A control to use as the input for the field.
 
@@ -2027,11 +2028,14 @@ by the \`findOptionsContainer\` test utility for this.
       "type": "boolean",
     },
     Object {
-      "description": "Overrides the invalidation state. Usually the warning state
+      "description": "Overrides the warning state. Usually the warning state
 comes from the parent \`FormField\`component,
 however sometimes you need to override its
 state when you have more than one input within a
-single form field.",
+single form field.
+When you use it, provide additional context with
+information on the input state, and associate it
+with the input using \`ariaDescribedBy\`.",
       "name": "warning",
       "optional": true,
       "type": "boolean",
@@ -5716,11 +5720,14 @@ Don't use read-only inputs outside a form.
       "type": "string",
     },
     Object {
-      "description": "Overrides the invalidation state. Usually the warning state
+      "description": "Overrides the warning state. Usually the warning state
 comes from the parent \`FormField\`component,
 however sometimes you need to override its
 state when you have more than one input within a
-single form field.",
+single form field.
+When you use it, provide additional context with
+information on the input state, and associate it
+with the input using \`ariaDescribedBy\`.",
       "name": "warning",
       "optional": true,
       "type": "boolean",
@@ -6052,11 +6059,14 @@ By default the starting day of the week is defined by the locale, but you can us
       "type": "string",
     },
     Object {
-      "description": "Overrides the invalidation state. Usually the warning state
+      "description": "Overrides the warning state. Usually the warning state
 comes from the parent \`FormField\`component,
 however sometimes you need to override its
 state when you have more than one input within a
-single form field.",
+single form field.
+When you use it, provide additional context with
+information on the input state, and associate it
+with the input using \`ariaDescribedBy\`.",
       "name": "warning",
       "optional": true,
       "type": "boolean",
@@ -6578,11 +6588,14 @@ or a relative time range.",
       "type": "DateRangePickerProps.Value | null",
     },
     Object {
-      "description": "Overrides the invalidation state. Usually the warning state
+      "description": "Overrides the warning state. Usually the warning state
 comes from the parent \`FormField\`component,
 however sometimes you need to override its
 state when you have more than one input within a
-single form field.",
+single form field.
+When you use it, provide additional context with
+information on the input state, and associate it
+with the input using \`ariaDescribedBy\`.",
       "name": "warning",
       "optional": true,
       "type": "boolean",
@@ -6994,12 +7007,12 @@ If you want to clear the selection, use empty array.",
       "name": "constraintText",
     },
     Object {
-      "description": "Text that displays as a validation message.",
+      "description": "Text that displays as a validation error message.",
       "isDefault": false,
       "name": "errorText",
     },
     Object {
-      "description": "Text that displays as a non-blocking validation message.",
+      "description": "Text that displays as a validation warning message.",
       "isDefault": false,
       "name": "warningText",
     },
@@ -7301,7 +7314,7 @@ additional information about valid formats, etc.",
       "name": "description",
     },
     Object {
-      "description": "Text that displays as a validation message. If this is set to a
+      "description": "Text that displays as a validation error message. If this is set to a
 non-empty string, it will render the form field as invalid.",
       "isDefault": false,
       "name": "errorText",
@@ -7322,8 +7335,8 @@ non-empty string, it will render the form field as invalid.",
       "name": "secondaryControl",
     },
     Object {
-      "description": "Text that displays as a warning message. If this is set to a
-non-empty string, it will render the form field as ?.",
+      "description": "Text that displays as a validation warning message. If this is set to a
+non-empty string, it will render the form field in a warning state.",
       "isDefault": false,
       "name": "warningText",
     },
@@ -8214,11 +8227,14 @@ be slightly different across browsers.",
       "type": "string",
     },
     Object {
-      "description": "Overrides the invalidation state. Usually the warning state
+      "description": "Overrides the warning state. Usually the warning state
 comes from the parent \`FormField\`component,
 however sometimes you need to override its
 state when you have more than one input within a
-single form field.",
+single form field.
+When you use it, provide additional context with
+information on the input state, and associate it
+with the input using \`ariaDescribedBy\`.",
       "name": "warning",
       "optional": true,
       "type": "boolean",
@@ -9895,11 +9911,14 @@ by the \`findOptionsContainer\` test utility for this.
       "type": "boolean",
     },
     Object {
-      "description": "Overrides the invalidation state. Usually the warning state
+      "description": "Overrides the warning state. Usually the warning state
 comes from the parent \`FormField\`component,
 however sometimes you need to override its
 state when you have more than one input within a
-single form field.",
+single form field.
+When you use it, provide additional context with
+information on the input state, and associate it
+with the input using \`ariaDescribedBy\`.",
       "name": "warning",
       "optional": true,
       "type": "boolean",
@@ -12440,11 +12459,14 @@ by the \`findOptionsContainer\` test utility for this.
       "type": "boolean",
     },
     Object {
-      "description": "Overrides the invalidation state. Usually the warning state
+      "description": "Overrides the warning state. Usually the warning state
 comes from the parent \`FormField\`component,
 however sometimes you need to override its
 state when you have more than one input within a
-single form field.",
+single form field.
+When you use it, provide additional context with
+information on the input state, and associate it
+with the input using \`ariaDescribedBy\`.",
       "name": "warning",
       "optional": true,
       "type": "boolean",
@@ -14603,11 +14625,14 @@ inadvertently sending data (such as user passwords) to third parties.
       "type": "string",
     },
     Object {
-      "description": "Overrides the invalidation state. Usually the warning state
+      "description": "Overrides the warning state. Usually the warning state
 comes from the parent \`FormField\`component,
 however sometimes you need to override its
 state when you have more than one input within a
-single form field.",
+single form field.
+When you use it, provide additional context with
+information on the input state, and associate it
+with the input using \`ariaDescribedBy\`.",
       "name": "warning",
       "optional": true,
       "type": "boolean",
@@ -14969,11 +14994,14 @@ When using 12-hour format, there is no option for picking AM or PM.",
       "type": "string",
     },
     Object {
-      "description": "Overrides the invalidation state. Usually the warning state
+      "description": "Overrides the warning state. Usually the warning state
 comes from the parent \`FormField\`component,
 however sometimes you need to override its
 state when you have more than one input within a
-single form field.",
+single form field.
+When you use it, provide additional context with
+information on the input state, and associate it
+with the input using \`ariaDescribedBy\`.",
       "name": "warning",
       "optional": true,
       "type": "boolean",

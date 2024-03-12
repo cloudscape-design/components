@@ -112,8 +112,9 @@ export interface AttributeEditorProps<T> extends BaseComponentProps {
    * * `label` (ReactNode) - Text label for the form field.
    * * `info` (ReactNode) - Info link for the form field.
    * * `errorText` ((item, itemIndex) => ReactNode) - Error message text to display as a control validation message.
-   * * `warningText` ((item, itemIndex) => ReactNode) - Warning message text to display as a control validation message.
    *    It renders the form field as invalid if the returned value is not `null` or `undefined`.
+   * * `warningText` ((item, itemIndex) => ReactNode) - Warning message text to display as a control validation message.
+   *    It renders the form field in a warning state if the returned value is not `null` or `undefined`.
    * * `constraintText` ((item, itemIndex) => ReactNode) - Text to display as a constraint message below the field.
    * * `control` ((item, itemIndex) => ReactNode) - A control to use as the input for the field.
    *

@@ -18,6 +18,7 @@
   }
 }
 
+.warning,
 .error {
   @include styles.with-motion {
     @include styles.animation-fade-in-0;
