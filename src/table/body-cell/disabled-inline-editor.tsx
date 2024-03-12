@@ -74,7 +74,6 @@ export function DisabledInlineEditor<ItemType>({
         className,
         styles['body-cell-editable'],
         expandableProps && styles['body-cell-editable-expandable'],
-        styles['body-cell-disabled-edit'],
         isEditing && styles['body-cell-edit-disabled-popover'],
         isVisualRefresh && styles['is-visual-refresh']
       )}
@@ -85,22 +84,29 @@ export function DisabledInlineEditor<ItemType>({
     >
       {column.cell(item)}
 
-      <button
-        ref={buttonRef}
-        tabIndex={tabIndex}
-        className={styles['body-cell-editor']}
-        aria-label={ariaLabels?.activateEditLabel?.(column, item)}
-        aria-haspopup="dialog"
-        aria-disabled="true"
-        onClick={!isEditing && expandableProps ? onClick : undefined}
-        onFocus={() => setHasFocus(true)}
-        onBlur={() => setHasFocus(false)}
-        onKeyDown={handleEscape}
-        {...targetProps}
-      >
-        {showIcon && <Icon name="lock-private" variant="normal" __internalRootRef={iconRef} />}
-        {descriptionEl}
-      </button>
+      <div className={styles['body-cell-editor-wrapper']}>
+        <button
+          ref={buttonRef}
+          tabIndex={tabIndex}
+          className={clsx(
+            styles['body-cell-editor'],
+            styles['body-cell-editor-disabled'],
+            !!expandableProps && styles['body-cell-editor-show-outline']
+          )}
+          aria-label={ariaLabels?.activateEditLabel?.(column, item)}
+          aria-haspopup="dialog"
+          aria-disabled="true"
+          onClick={!isEditing && expandableProps ? onClick : undefined}
+          onFocus={() => setHasFocus(true)}
+          onBlur={() => setHasFocus(false)}
+          onKeyDown={handleEscape}
+          {...targetProps}
+        >
+          {showIcon && <Icon name="lock-private" variant="normal" __internalRootRef={iconRef} />}
+          {descriptionEl}
+        </button>
+      </div>
+
       {isEditing && (
         <span ref={portalRef}>
           <Portal>
