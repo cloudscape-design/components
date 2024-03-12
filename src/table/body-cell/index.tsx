@@ -58,6 +58,7 @@ function TableCellEditable<ItemType>({
   // To improve the initial page render performance we only show the edit icon when necessary.
   const [hasHover, setHasHover] = useState(false);
   const [hasFocus, setHasFocus] = useState(false);
+  // When a cell is both expandable and editable the icon is always shown.
   const showIcon = hasHover || hasFocus || expandableProps;
 
   const prevSuccessfulEdit = usePrevious(successfulEdit);

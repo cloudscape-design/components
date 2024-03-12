@@ -40,6 +40,7 @@ export function DisabledInlineEditor<ItemType>({
 
   const [hasHover, setHasHover] = useState(false);
   const [hasFocus, setHasFocus] = useState(false);
+  // When a cell is both expandable and editable the icon is always shown.
   const showIcon = hasHover || hasFocus || isEditing || expandableProps;
 
   const iconRef = useRef(null);
