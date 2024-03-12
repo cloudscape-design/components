@@ -9,20 +9,32 @@ import Container from '~components/container';
 import Header from '~components/header';
 import { Grid, ProgressBar, Select, SelectProps, Slider } from '~components';
 
+import styles from './styles.scss';
+
 function Sliders() {
   const [value2, setValue2] = React.useState(200);
   const [value3, setValue3] = React.useState(50);
-  const [value4, setValue4] = React.useState(40);
+  const [value4, setValue4] = React.useState(50);
   const [value5, setValue5] = React.useState(25);
   const [sliderValue, setSliderValue] = useState(40);
   const [error2, setError2] = useState(false);
   const [minValue, setMinValue] = React.useState<SelectProps.Option>({ value: '5' });
   const rangeOptions = [{ value: '5' }, { value: '10' }, { value: '15' }, { value: '20' }, { value: '25' }];
   const sliderWordOptions = [
-    { value: 0, label: 'None' },
-    { value: 1, label: 'Low' },
+    { value: 1, label: 'Mild' },
     { value: 2, label: 'Medium' },
-    { value: 3, label: 'High' },
+    { value: 3, label: 'Spicy' },
+    { value: 4, label: 'Steam coming out of ears' },
+  ];
+
+  const DTWordOptions = [
+    { value: 0, label: 'Backend dev' },
+    { value: 25, label: 'Frontend dev' },
+    { value: 40, label: `Scott O'Brien` },
+    { value: 50, label: 'Jessica Kuelz ' },
+    { value: 60, label: 'Katie George' },
+    { value: 80, label: 'UX designer' },
+    { value: 100, label: 'Visual designer' },
   ];
 
   React.useEffect(() => {
@@ -50,29 +62,33 @@ function Sliders() {
           error2 ? (value2 % 1 !== 0 ? 'Unit must be a whole number' : 'Unit must be between 0 and 100.') : undefined
         }
       >
-        <Grid gridDefinition={[{ colspan: { default: 8, m: 6 } }, { colspan: { default: 4, m: 3 } }]}>
-          <Slider
-            value={value2}
-            onChange={({ detail }) => {
-              setValue2(detail.value);
-            }}
-            min={0}
-            max={100}
-            invalid={error2}
-          />
-          <SpaceBetween size="m" alignItems="center" direction="horizontal">
-            <Input
-              type="number"
-              inputMode="numeric"
-              invalid={error2}
-              value={`${value2}`}
+        <div className={styles['flex-wrapper']}>
+          <div className={styles['slider-wrapper']}>
+            <Slider
+              value={value2}
               onChange={({ detail }) => {
-                setValue2(Number(detail.value));
+                setValue2(detail.value);
               }}
+              min={0}
+              max={100}
+              invalid={error2}
             />
+          </div>
+          <SpaceBetween size="m" alignItems="center" direction="horizontal">
+            <div className={styles['input-wrapper']}>
+              <Input
+                type="number"
+                inputMode="numeric"
+                invalid={error2}
+                value={`${value2}`}
+                onChange={({ detail }) => {
+                  setValue2(Number(detail.value));
+                }}
+              />
+            </div>
             <Box>Units</Box>
           </SpaceBetween>
-        </Grid>
+        </div>
       </FormField>
 
       <FormField label="Slider with select">
@@ -91,6 +107,7 @@ function Sliders() {
           min={5}
           max={25}
           step={5}
+          tickMarks={true}
         />
       </FormField>
       <FormField label="Stepped slider">
@@ -99,26 +116,33 @@ function Sliders() {
           onChange={({ detail }) => {
             setValue3(detail.value);
           }}
-          valueFormatter={value => `The very long and precise value at this point on the slider is: ${value}`}
+          valueFormatter={value =>
+            value === 0 || value === 100
+              ? `The very long and precise value at this point on the slider is: ${value}`
+              : `${value}`
+          }
           min={0}
           max={100}
           step={10}
+          referenceValues={[30, 60]}
+          tickMarks={true}
         />
       </FormField>
-      <FormField label="Slider with thumb only and reference labels">
+      <FormField label="Where do you fall on the DT scale?">
         <Slider
           value={value4}
           onChange={({ detail }) => {
             setValue4(detail.value);
           }}
-          valueFormatter={value => (value < 0 ? `${value}% potatoes` : value === 0 ? '500' : `+${value}% potatoes`)}
-          min={-100}
+          valueFormatter={value => DTWordOptions.find(item => item.value === value)?.label || ''}
+          min={0}
           max={100}
-          thumbOnly={true}
-          referenceValues={[-80, -60, -40, -20, 0, 20, 40, 60, 80]}
+          hideFillLine={true}
+          hideTooltip={true}
+          referenceValues={[25, 40, 50, 60, 80]}
         />
       </FormField>
-      <FormField label="Slider with words">
+      <FormField label="How hot do you like your salsa?">
         <Slider
           value={value5}
           onChange={({ detail }) => {
@@ -127,9 +151,10 @@ function Sliders() {
           valueFormatter={value => sliderWordOptions.find(item => item.value === value)?.label || ''}
           step={1}
           hideTooltip={true}
-          min={0}
-          max={3}
-          referenceValues={[1, 2]}
+          min={1}
+          max={4}
+          referenceValues={[2, 3]}
+          tickMarks={true}
         />
       </FormField>
     </SpaceBetween>
@@ -149,12 +174,12 @@ export default function InputsPage() {
               <Input value="" placeholder="Placeholder" />
             </FormField>
             <FormField label="Volume">
-              <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
-                <div style={{ flex: '1', maxInlineSize: '800px' }}>
+              <div className={styles['flex-wrapper']}>
+                <div className={styles['slider-wrapper']}>
                   <Slider value={value} onChange={({ detail }) => setValue(detail.value)} min={0} max={11} />
                 </div>
                 <SpaceBetween size="xs" direction="horizontal" alignItems="center">
-                  <div style={{ maxInlineSize: '70px' }}>
+                  <div className={styles['input-wrapper']}>
                     <Input
                       type="number"
                       inputMode="numeric"

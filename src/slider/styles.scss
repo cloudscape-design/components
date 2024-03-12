@@ -5,6 +5,7 @@
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 
 $thumb-size: 16px;
 $tick-width: 2px;
@@ -140,21 +141,33 @@ $thumb-border-radius: 50%;
   }
 
   &-labels {
-    display: flex;
-    justify-content: space-between;
-    block-size: 0;
+    display: grid;
+    grid-template-columns: repeat(var(#{custom-props.$sliderLabelCount}), 1fr);
+    grid-auto-rows: 100%;
+    block-size: 16px;
     padding-block-start: awsui.$space-s;
   }
 
   &-reference {
-    position: absolute;
-    min-inline-size: max-content;
-    inline-size: 16px;
-    margin-inline-start: -8px;
+    // position: absolute;
+    grid-column-start: var(#{custom-props.$sliderReferenceColumn});
+    grid-column-end: var(#{custom-props.$sliderNextReferenceColumn});
+    grid-row: 1;
+    // margin-inline-start: -8px;
+  }
+
+  &-min {
+    grid-column: 1;
+    grid-row: 1;
+    grid-column-end: var(#{custom-props.$sliderMinEnd});
   }
 
   &-max {
     text-align: end;
+    justify-content: flex-end;
+    grid-row: 1;
+    grid-column-end: calc(var(#{custom-props.$sliderLabelCount}) + 1);
+    grid-column-start: var(#{custom-props.$sliderMaxStart});
   }
 }
 
@@ -184,8 +197,6 @@ $thumb-border-radius: 50%;
 
 .tooltip-thumb {
   position: absolute;
-  // padding-block: awsui.$space-l;
-  // padding-inline: 0;
   inline-size: 32px;
   block-size: 32px;
 }

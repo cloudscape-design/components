@@ -16,6 +16,7 @@ import PopoverBody from '../popover/body';
 import Portal from '../internal/components/portal';
 import popoverStyles from '../popover/styles.css.js';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
+import customCssProps from '../internal/generated/custom-css-properties';
 
 export { SliderProps };
 
@@ -30,14 +31,15 @@ export default function Slider({
   ariaLabel,
   referenceValues,
   hideTooltip,
-  thumbOnly,
+  tickMarks,
+  hideFillLine,
   valueFormatter,
   ...rest
 }: SliderProps) {
   const { __internalRootRef } = useBaseComponent('Slider');
   const baseProps = getBaseProps(rest);
 
-  const [visibleLabels, setVisibleLabels] = React.useState(referenceValues);
+  // const [visibleLabels, setVisibleLabels] = React.useState(referenceValues);
   const range = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const minRef = useRef<HTMLSpanElement>(null);
@@ -71,43 +73,38 @@ export default function Slider({
       : `${((step - min) / (max - min)) * 100}%`;
   };
 
-  useEffect(() => {
-    const isOverlapping = (item1: HTMLSpanElement | null, item2: HTMLSpanElement | null) => {
-      if (item1 === null || item2 === null) {
-        return false;
-      }
-      const x = item1?.getBoundingClientRect().right > item2?.getBoundingClientRect().left;
+  // useEffect(() => {
+  //   const isOverlapping = (item1: HTMLSpanElement | null, item2: HTMLSpanElement | null) => {
+  //     if (item1 === null || item2 === null) {
+  //       return false;
+  //     }
+  //     const x = item1?.getBoundingClientRect().right > item2?.getBoundingClientRect().left;
 
-      return x;
-    };
-    const hasOverlap = isOverlapping(referenceValueRefs.current[0], referenceValueRefs.current[1]);
+  //     return x;
+  //   };
+  //   const hasOverlap = isOverlapping(referenceValueRefs.current[0], referenceValueRefs.current[1]);
 
-    const checkOverlap = () => {
-      if (hasOverlap) {
-        setVisibleLabels(referenceValues?.filter((_, i) => i & 1));
-      }
-    };
-    const timeoutId = setTimeout(() => {
-      checkOverlap();
-    }, 0);
+  //   const checkOverlap = () => {
+  //     if (hasOverlap) {
+  //       setVisibleLabels(referenceValues?.filter((_, i) => i & 1));
+  //     }
+  //   };
+  //   const timeoutId = setTimeout(() => {
+  //     checkOverlap();
+  //   }, 0);
 
-    console.log(
-      referenceValueRefs.current[0]?.getBoundingClientRect(),
-      referenceValueRefs.current[2]?.getBoundingClientRect()
-    );
-
-    document.addEventListener('resize', checkOverlap);
-    return () => {
-      document.removeEventListener('resize', checkOverlap);
-      clearTimeout(timeoutId);
-    };
-  }, [referenceValues]);
+  //   document.addEventListener('resize', checkOverlap);
+  //   return () => {
+  //     document.removeEventListener('resize', checkOverlap);
+  //     clearTimeout(timeoutId);
+  //   };
+  // }, [referenceValues]);
 
   useLayoutEffect(() => {
     referenceValueRefs.current = referenceValueRefs.current.slice(0, referenceValues?.length);
 
     if (referenceValueRefs.current) {
-      referenceValueRefs.current.map(item => item && (item.style.marginInlineStart = `-${item.clientWidth / 2}px`));
+      // referenceValueRefs.current.map(item => item && (item.style.marginInlineStart = `-${item.clientWidth / 2}px`));
     }
   }, [referenceValues?.length]);
 
@@ -158,7 +155,7 @@ export default function Slider({
             [styles.disabled]: disabled,
           })}
         />
-        {step && (
+        {step && tickMarks && (
           <>
             <div className={clsx(styles.ticks)}>
               {getStepArray(step).map((step, index) => (
@@ -168,14 +165,14 @@ export default function Slider({
                     insetInlineStart: getLabelPositions(step),
                   }}
                   className={clsx(styles.tick, {
-                    [styles['tick-filled']]: !thumbOnly && value && value > step,
+                    [styles['tick-filled']]: !hideFillLine && value && value > step,
                   })}
                 ></div>
               ))}
             </div>
           </>
         )}
-        {!thumbOnly && (
+        {!hideFillLine && (
           <div
             ref={range}
             className={clsx(styles['slider-range'], {
@@ -223,20 +220,35 @@ export default function Slider({
         {...baseProps}
       />
 
-      <div role="list" className={clsx(styles['slider-labels'])} id={labelsId}>
-        <span role="option" ref={minRef}>
+      <div
+        role="list"
+        className={clsx(styles['slider-labels'])}
+        style={{
+          [customCssProps.sliderLabelCount]: max - 1,
+        }}
+        id={labelsId}
+      >
+        <span
+          role="option"
+          className={clsx(styles['slider-min'])}
+          style={{
+            [customCssProps.sliderMinEnd]: referenceValues ? referenceValues[0] : max / 2,
+          }}
+          ref={minRef}
+        >
           {valueFormatter ? valueFormatter(min) : min}
         </span>
-        {visibleLabels &&
-          visibleLabels.length > 0 &&
-          visibleLabels.map((step, index) => {
+        {referenceValues &&
+          referenceValues.length > 0 &&
+          referenceValues.map((step, index, steps) => {
             return (
               <span
                 role="option"
                 ref={el => (referenceValueRefs.current[index] = el)}
                 key={`step-${index}`}
                 style={{
-                  insetInlineStart: getLabelPositions(step),
+                  [customCssProps.sliderReferenceColumn]: step,
+                  [customCssProps.sliderNextReferenceColumn]: steps[index + 1] || max,
                 }}
                 className={clsx(styles['slider-reference'])}
               >
@@ -244,7 +256,14 @@ export default function Slider({
               </span>
             );
           })}
-        <span role="option" className={clsx(styles['slider-max'])} ref={maxRef}>
+        <span
+          role="option"
+          className={clsx(styles['slider-max'])}
+          style={{
+            [customCssProps.sliderMaxStart]: referenceValues ? referenceValues[referenceValues.length - 1] : max / 2,
+          }}
+          ref={maxRef}
+        >
           {valueFormatter ? valueFormatter(max) : max}
         </span>
       </div>

@@ -43,7 +43,12 @@ export interface SliderProps extends BaseComponentProps, FormFieldValidationCont
   /**
    * Thumb only.
    */
-  thumbOnly?: boolean;
+  hideFillLine?: boolean;
+
+  /**
+   * Show the tick marks along the axis. Use with stepped sliders, except in extreme cases.
+   */
+  tickMarks?: boolean;
 
   /**
    * Whether or not the slider is disabled.
