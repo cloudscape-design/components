@@ -106,6 +106,7 @@ function TableCellEditable<ItemType>({
       ) : (
         <>
           {column.cell(item)}
+
           {showSuccessIcon && showIcon && (
             <>
               <span
@@ -125,16 +126,19 @@ function TableCellEditable<ItemType>({
               </LiveRegion>
             </>
           )}
-          <button
-            className={styles['body-cell-editor']}
-            aria-label={ariaLabels?.activateEditLabel?.(column, item)}
-            ref={editActivateRef}
-            onFocus={() => setHasFocus(true)}
-            onBlur={() => setHasFocus(false)}
-            tabIndex={editActivateTabIndex}
-          >
-            {showIcon && <Icon name="edit" />}
-          </button>
+
+          <div className={styles['body-cell-editor-wrapper']}>
+            <button
+              className={styles['body-cell-editor']}
+              aria-label={ariaLabels?.activateEditLabel?.(column, item)}
+              ref={editActivateRef}
+              onFocus={() => setHasFocus(true)}
+              onBlur={() => setHasFocus(false)}
+              tabIndex={editActivateTabIndex}
+            >
+              {showIcon && <Icon name="edit" />}
+            </button>
+          </div>
         </>
       )}
     </TableTdElement>
