@@ -17,10 +17,10 @@ export default function TokenList<Item>({
   limit,
   after,
   i18nStrings,
-  removedItemIndex,
+  moveFocusNextToIndex,
   onExpandedClick = () => undefined,
 }: TokenListProps<Item>) {
-  const tokenListRef = useTokenFocusController({ removedItemIndex });
+  const tokenListRef = useTokenFocusController({ moveFocusNextToIndex: moveFocusNextToIndex });
   const controlId = useUniqueId();
 
   const [expanded, setExpanded] = useState(false);

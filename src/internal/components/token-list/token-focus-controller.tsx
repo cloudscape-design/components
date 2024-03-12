@@ -8,11 +8,11 @@ import styles from './styles.css.js';
 const tokenSelector = `.${styles['list-item']}`;
 const toggleButtonSelector = `.${styles.toggle}`;
 
-export function useTokenFocusController({ removedItemIndex }: { removedItemIndex?: null | number }) {
+export function useTokenFocusController({ moveFocusNextToIndex }: { moveFocusNextToIndex?: null | number }) {
   const tokenListRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (removedItemIndex === undefined || removedItemIndex === null || tokenListRef.current === null) {
+    if (moveFocusNextToIndex === undefined || moveFocusNextToIndex === null || tokenListRef.current === null) {
       return;
     }
 
@@ -30,12 +30,12 @@ export function useTokenFocusController({ removedItemIndex }: { removedItemIndex
     let closestNextIndex = Number.POSITIVE_INFINITY;
 
     for (const activeIndex of activeItemIndices) {
-      if (activeIndex < removedItemIndex) {
+      if (activeIndex < moveFocusNextToIndex) {
         closestPrevIndex =
-          removedItemIndex - activeIndex < removedItemIndex - closestPrevIndex ? activeIndex : closestPrevIndex;
+          moveFocusNextToIndex - activeIndex < moveFocusNextToIndex - closestPrevIndex ? activeIndex : closestPrevIndex;
       } else {
         closestNextIndex =
-          activeIndex - removedItemIndex < closestNextIndex - removedItemIndex ? activeIndex : closestNextIndex;
+          activeIndex - moveFocusNextToIndex < closestNextIndex - moveFocusNextToIndex ? activeIndex : closestNextIndex;
       }
     }
 
@@ -49,7 +49,7 @@ export function useTokenFocusController({ removedItemIndex }: { removedItemIndex
     } else if (toggleButton instanceof HTMLElement) {
       toggleButton.focus();
     }
-  }, [removedItemIndex]);
+  }, [moveFocusNextToIndex]);
 
   return tokenListRef;
 }
