@@ -26,6 +26,40 @@ $edit-button-padding-right: calc(
 ); // Cell vertical padding + xxs space that would normally come from the button.
 $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-with-spacing});
 
+.expandable-cell-content {
+  display: flex;
+  align-items: center;
+  gap: awsui.$space-xs;
+
+  &-level-1 {
+    padding-inline-start: calc(0 * (#{awsui.$space-m} + #{awsui.$space-xs}));
+  }
+  &-level-2 {
+    padding-inline-start: calc(1 * (#{awsui.$space-m} + #{awsui.$space-xs}));
+  }
+  &-level-3 {
+    padding-inline-start: calc(2 * (#{awsui.$space-m} + #{awsui.$space-xs}));
+  }
+  &-level-4 {
+    padding-inline-start: calc(3 * (#{awsui.$space-m} + #{awsui.$space-xs}));
+  }
+  &-level-5 {
+    padding-inline-start: calc(4 * (#{awsui.$space-m} + #{awsui.$space-xs}));
+  }
+  &-level-6 {
+    padding-inline-start: calc(5 * (#{awsui.$space-m} + #{awsui.$space-xs}));
+  }
+  &-level-7 {
+    padding-inline-start: calc(6 * (#{awsui.$space-m} + #{awsui.$space-xs}));
+  }
+  &-level-8 {
+    padding-inline-start: calc(7 * (#{awsui.$space-m} + #{awsui.$space-xs}));
+  }
+  &-level-9 {
+    padding-inline-start: calc(8 * (#{awsui.$space-m} + #{awsui.$space-xs}));
+  }
+}
+
 .body-cell {
   box-sizing: border-box;
   padding-block-start: $cell-vertical-padding;
@@ -66,7 +100,7 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
   &.is-visual-refresh:first-child {
     &:not(.has-striped-rows) {
       padding-inline-start: awsui.$space-xxxs;
-      &:not(.body-cell-edit-active).body-cell-editable:hover {
+      &:not(.body-cell-edit-active):not(.body-cell-editable-expandable).body-cell-editable:hover {
         padding-inline-start: calc(#{awsui.$space-xxxs} + #{awsui.$border-divider-list-width});
       }
     }
@@ -221,8 +255,8 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
 
   &-editor {
     padding-block: 0;
-    padding-inline-start: 0;
-    padding-inline-end: $edit-button-padding-right;
+    padding-inline: 0;
+    margin-inline-end: $edit-button-padding-right;
   }
 
   &-success {
@@ -236,6 +270,7 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
     inset-block: 0;
     inset-inline-end: 0;
     position: absolute;
+    margin-block: awsui.$space-xxs;
 
     display: flex;
     align-items: center;
@@ -285,8 +320,29 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
     }
   }
 
-  &.body-cell-disabled-edit > .body-cell-editor {
-    color: awsui.$color-text-disabled-inline-edit;
+  &.body-cell-disabled-edit {
+    > .body-cell-editor {
+      color: awsui.$color-text-disabled-inline-edit;
+    }
+    > .expandable-cell-content {
+      > .body-cell-editor {
+        color: awsui.$color-text-disabled-inline-edit;
+      }
+    }
+  }
+
+  &.body-cell-editable-expandable {
+    > .expandable-cell-content {
+      > .body-cell-editor {
+        @include focus-visible.when-visible {
+          @include styles.focus-highlight(awsui.$space-button-inline-icon-focus-outline-gutter);
+
+          // @mixin focus-highlight sets cell's position to "relative".
+          // Reinforcing sticky position for it to take precedence.
+          position: absolute;
+        }
+      }
+    }
   }
 
   &.body-cell-editable {
@@ -304,7 +360,7 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
       }
     }
 
-    &:not(.body-cell-edit-active) {
+    &:not(.body-cell-editable-expandable):not(.body-cell-edit-active) {
       @mixin focused-editor-styles {
         padding-inline-end: calc(#{$cell-horizontal-padding} + #{awsui.$space-l});
         & > .body-cell-editor {
@@ -378,7 +434,7 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
       }
     }
   }
-  &-editable.is-visual-refresh:not(.body-cell-edit-active):hover {
+  &-editable.is-visual-refresh:not(.body-cell-edit-active):not(.body-cell-editable-expandable):hover {
     &:first-child {
       border-start-start-radius: awsui.$border-radius-item;
       border-end-start-radius: awsui.$border-radius-item;
@@ -391,39 +447,5 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
     &.body-cell-first-row > .body-cell-editor {
       padding-block-start: awsui.$border-divider-list-width;
     }
-  }
-}
-
-.expandable-cell-content {
-  display: flex;
-  align-items: center;
-  gap: awsui.$space-xs;
-
-  &-level-1 {
-    padding-inline-start: calc(0 * (#{awsui.$space-m} + #{awsui.$space-xs}));
-  }
-  &-level-2 {
-    padding-inline-start: calc(1 * (#{awsui.$space-m} + #{awsui.$space-xs}));
-  }
-  &-level-3 {
-    padding-inline-start: calc(2 * (#{awsui.$space-m} + #{awsui.$space-xs}));
-  }
-  &-level-4 {
-    padding-inline-start: calc(3 * (#{awsui.$space-m} + #{awsui.$space-xs}));
-  }
-  &-level-5 {
-    padding-inline-start: calc(4 * (#{awsui.$space-m} + #{awsui.$space-xs}));
-  }
-  &-level-6 {
-    padding-inline-start: calc(5 * (#{awsui.$space-m} + #{awsui.$space-xs}));
-  }
-  &-level-7 {
-    padding-inline-start: calc(6 * (#{awsui.$space-m} + #{awsui.$space-xs}));
-  }
-  &-level-8 {
-    padding-inline-start: calc(7 * (#{awsui.$space-m} + #{awsui.$space-xs}));
-  }
-  &-level-9 {
-    padding-inline-start: calc(8 * (#{awsui.$space-m} + #{awsui.$space-xs}));
   }
 }

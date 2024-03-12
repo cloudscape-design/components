@@ -39,6 +39,7 @@ function TableCellEditable<ItemType>({
   ariaLabels,
   isVisualRefresh,
   successfulEdit = false,
+  expandableProps,
   ...rest
 }: TableBodyCellProps<ItemType>) {
   const i18n = useInternalI18n('table');
@@ -57,7 +58,7 @@ function TableCellEditable<ItemType>({
   // To improve the initial page render performance we only show the edit icon when necessary.
   const [hasHover, setHasHover] = useState(false);
   const [hasFocus, setHasFocus] = useState(false);
-  const showIcon = hasHover || hasFocus;
+  const showIcon = hasHover || hasFocus || expandableProps;
 
   const prevSuccessfulEdit = usePrevious(successfulEdit);
   const prevHasFocus = usePrevious(hasFocus);
@@ -79,15 +80,17 @@ function TableCellEditable<ItemType>({
   return (
     <TableTdElement
       {...rest}
+      expandableProps={expandableProps}
       nativeAttributes={tdNativeAttributes as TableTdElementProps['nativeAttributes']}
       className={clsx(
         className,
         styles['body-cell-editable'],
+        expandableProps && styles['body-cell-editable-expandable'],
         isEditing && styles['body-cell-edit-active'],
         showSuccessIcon && showIcon && styles['body-cell-has-success'],
         isVisualRefresh && styles['is-visual-refresh']
       )}
-      onClick={!isEditing ? onEditStart : undefined}
+      onClick={!isEditing && !expandableProps ? onEditStart : undefined}
       onMouseEnter={() => setHasHover(true)}
       onMouseLeave={() => setHasHover(false)}
     >
@@ -129,6 +132,7 @@ function TableCellEditable<ItemType>({
             className={styles['body-cell-editor']}
             aria-label={ariaLabels?.activateEditLabel?.(column, item)}
             ref={editActivateRef}
+            onClick={!isEditing && expandableProps ? onEditStart : undefined}
             onFocus={() => setHasFocus(true)}
             onBlur={() => setHasFocus(false)}
             tabIndex={editActivateTabIndex}

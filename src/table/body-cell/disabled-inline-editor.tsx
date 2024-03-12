@@ -29,6 +29,7 @@ export function DisabledInlineEditor<ItemType>({
   onEditEnd,
   editDisabledReason,
   isVisualRefresh,
+  expandableProps,
   ...rest
 }: DisabledInlineEditorProps<ItemType>) {
   const clickAwayRef = useClickAway(() => {
@@ -39,7 +40,7 @@ export function DisabledInlineEditor<ItemType>({
 
   const [hasHover, setHasHover] = useState(false);
   const [hasFocus, setHasFocus] = useState(false);
-  const showIcon = hasHover || hasFocus || isEditing;
+  const showIcon = hasHover || hasFocus || isEditing || expandableProps;
 
   const iconRef = useRef(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -64,17 +65,19 @@ export function DisabledInlineEditor<ItemType>({
   return (
     <TableTdElement
       {...rest}
+      expandableProps={expandableProps}
       nativeAttributes={
         { 'data-inline-editing-active': isEditing.toString() } as TableTdElementProps['nativeAttributes']
       }
       className={clsx(
         className,
         styles['body-cell-editable'],
+        expandableProps && styles['body-cell-editable-expandable'],
         styles['body-cell-disabled-edit'],
         isEditing && styles['body-cell-edit-disabled-popover'],
         isVisualRefresh && styles['is-visual-refresh']
       )}
-      onClick={!isEditing ? onClick : undefined}
+      onClick={!isEditing && !expandableProps ? onClick : undefined}
       onMouseEnter={() => setHasHover(true)}
       onMouseLeave={() => setHasHover(false)}
       ref={clickAwayRef}
@@ -88,6 +91,7 @@ export function DisabledInlineEditor<ItemType>({
         aria-label={ariaLabels?.activateEditLabel?.(column, item)}
         aria-haspopup="dialog"
         aria-disabled="true"
+        onClick={!isEditing && expandableProps ? onClick : undefined}
         onFocus={() => setHasFocus(true)}
         onBlur={() => setHasFocus(false)}
         onKeyDown={handleEscape}
