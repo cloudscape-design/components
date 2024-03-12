@@ -9,9 +9,10 @@ import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 import { useStickyColumns } from '~components/table/sticky-columns';
+import { Box } from '~components';
 
 const baseColumnDefinition = {
-  cell: () => 'Cell content',
+  cell: () => <Box>Cell content</Box>,
   header: 'Column header',
 };
 
@@ -20,7 +21,8 @@ const options = ['A', 'B', 'C', 'D', 'E', 'F'].map(value => ({ value, label: `Op
 interface PermutationProps extends TableProps.EditConfig<unknown> {
   isEditing: boolean;
   interactiveCell: boolean;
-  successfulEdit: boolean;
+  successfulEdit?: boolean;
+  disabledReason?: () => string;
 }
 
 const editPermutations = createPermutations<PermutationProps>([
@@ -43,7 +45,6 @@ const editPermutations = createPermutations<PermutationProps>([
     validation: [undefined, () => 'There was an error!'],
     isEditing: [true],
     interactiveCell: [false],
-    successfulEdit: [false],
   },
   {
     ariaLabel: ['Editable column'],
@@ -55,6 +56,17 @@ const editPermutations = createPermutations<PermutationProps>([
     isEditing: [false],
     interactiveCell: [false, true],
     successfulEdit: [false, true],
+  },
+  {
+    ariaLabel: ['Editable column'],
+    editIconAriaLabel: ['editable'],
+    errorIconAriaLabel: ['Error'],
+    editingCell: [() => null],
+    constraintText: [undefined],
+    validation: [undefined],
+    isEditing: [false],
+    interactiveCell: [false, true],
+    disabledReason: [() => 'Disabled reason popover content'],
   },
 ]);
 
