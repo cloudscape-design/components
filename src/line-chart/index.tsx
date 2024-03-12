@@ -22,7 +22,17 @@ function LineChart<T extends number | string | Date>({
   emphasizeBaselineAxis = true,
   ...props
 }: LineChartProps<T>) {
-  const baseComponentProps = useBaseComponent('LineChart');
+  const baseComponentProps = useBaseComponent('LineChart', {
+    props: {
+      detailPopoverSize,
+      emphasizeBaselineAxis,
+      fitHeight: props.fitHeight,
+      hideFilter: props.hideFilter,
+      hideLegend: props.hideLegend,
+      xScaleType,
+      yScaleType,
+    },
+  });
   const baseProps = getBaseProps(props);
   const className = clsx(baseProps.className, styles.root);
 
