@@ -10,11 +10,20 @@ import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 import { useStickyColumns } from '~components/table/sticky-columns';
 
-const baseColumnDefinition = { cell: () => 'Cell content', header: 'Column header' };
+const baseColumnDefinition = {
+  cell: () => 'Cell content',
+  header: 'Column header',
+};
 
 const options = ['A', 'B', 'C', 'D', 'E', 'F'].map(value => ({ value, label: `Option ${value}` }));
 
-const editPermutations = createPermutations<TableProps.EditConfig<unknown>>([
+interface PermutationProps extends TableProps.EditConfig<unknown> {
+  isEditing: boolean;
+  interactiveCell: boolean;
+  successfulEdit: boolean;
+}
+
+const editPermutations = createPermutations<PermutationProps>([
   {
     ariaLabel: ['Editable column'],
     editIconAriaLabel: ['editable'],
@@ -32,6 +41,20 @@ const editPermutations = createPermutations<TableProps.EditConfig<unknown>>([
     ],
     constraintText: [undefined, 'This requirement needs to be met.'],
     validation: [undefined, () => 'There was an error!'],
+    isEditing: [true],
+    interactiveCell: [false],
+    successfulEdit: [false],
+  },
+  {
+    ariaLabel: ['Editable column'],
+    editIconAriaLabel: ['editable'],
+    errorIconAriaLabel: ['Error'],
+    editingCell: [() => null],
+    constraintText: [undefined],
+    validation: [undefined],
+    isEditing: [false],
+    interactiveCell: [false, true],
+    successfulEdit: [false, true],
   },
 ]);
 
@@ -55,7 +78,6 @@ export default function InlineEditorPermutations() {
                     }}
                     item={{}}
                     column={{ ...baseColumnDefinition, editConfig: permutation }}
-                    isEditing={true}
                     isEditable={true}
                     isFirstRow={false}
                     isLastRow={false}

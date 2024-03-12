@@ -292,7 +292,6 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
 
   &.body-cell-editable {
     position: relative;
-    cursor: pointer;
 
     &.sticky-cell {
       position: sticky;
@@ -306,6 +305,8 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
     }
 
     &:not(.body-cell-edit-active) {
+      cursor: pointer;
+
       @mixin focused-editor-styles {
         padding-inline-end: calc(#{$cell-horizontal-padding} + #{awsui.$space-l});
         & > .body-cell-editor-wrapper {
@@ -318,11 +319,13 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
       & > .body-cell-editor-wrapper {
         opacity: 0;
       }
+
+      // Showing focus outline for the cell.
       // We don't use our focus-visible polyfill here because it doesn't work properly with screen readers.
       // These edit buttons are special because they are visually hidden (opacity: 0), but exposed to assistive technology.
       // It's therefore important to display the focus outline, even when a keyboard user wasn't detected.
       // For example, when an edit button is selected from the VoiceOver rotor menu.
-      &:focus-within {
+      &.body-cell-interactive:focus-within {
         @include styles.focus-highlight(
           (
             'vertical': calc(-1 * #{awsui.$space-scaled-xxs}),
@@ -330,8 +333,15 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
           )
         );
       }
+      // When a cell is not interactive the focus outline must be present for the editor button.
+      &:not(.body-cell-interactive) > .body-cell-editor-wrapper > .body-cell-editor {
+        @include focus-visible.when-visible {
+          @include styles.focus-highlight(awsui.$space-button-inline-icon-focus-outline-gutter);
+        }
+      }
 
-      &:focus-within,
+      &:not(.body-cell-interactive),
+      &:focus-within:focus-within,
       &.body-cell-edit-disabled-popover {
         padding-inline-end: calc(#{$cell-horizontal-padding} + #{awsui.$space-l});
         &.body-cell-has-success {
@@ -344,7 +354,7 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
         }
       }
 
-      &:hover {
+      &.body-cell-interactive:hover {
         background-color: awsui.$color-background-dropdown-item-hover;
         border-block: awsui.$border-divider-list-width solid awsui.$color-border-editable-cell-hover;
         border-inline: awsui.$border-divider-list-width solid awsui.$color-border-editable-cell-hover;
