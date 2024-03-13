@@ -8,8 +8,10 @@ import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 
 export default function Breadcrumbs() {
-  const { breadcrumbs, hasStickyBackground, isMobile } = useAppLayoutInternals();
-  //const isDarkHeaderContext = highContrastHeader;
+  const { breadcrumbs, hasStickyBackground, isMobile, headerType, highContrastHeader } = useAppLayoutInternals();
+
+  console.log('The HeaderType in Breadcrumb is ' + headerType);
+  const isDarkHeaderContext = highContrastHeader;
 
   if (isMobile || !breadcrumbs) {
     return null;
@@ -23,7 +25,7 @@ export default function Breadcrumbs() {
         {
           [styles['has-sticky-background']]: hasStickyBackground,
         },
-        getContentHeaderClassName()
+        getContentHeaderClassName(isDarkHeaderContext || headerType === 'homepage' || headerType === 'hero')
       )}
     >
       {breadcrumbs}

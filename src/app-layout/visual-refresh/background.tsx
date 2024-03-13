@@ -14,17 +14,14 @@ export default function Background() {
     hasStickyBackground,
     isMobile,
     stickyNotifications,
-    heroHeader,
-    headerBackground,
+    headerType,
     highContrastHeader,
   } = useAppLayoutInternals();
 
   const isDarkHeaderContext = highContrastHeader;
 
-  //const customHeaderBackground = ''
-
-  console.log('The dark header context is ' + isDarkHeaderContext);
-  console.log('The background color is ' + headerBackground);
+  //console.log('The dark header context is ' + isDarkHeaderContext);
+  console.log('The HeaderType is ' + headerType);
 
   if (!hasNotificationsContent && (!breadcrumbs || isMobile) && !hasBackgroundOverlap) {
     return null;
@@ -35,8 +32,11 @@ export default function Background() {
   return (
     <div className={clsx(styles.background, getContentHeaderClassName(isDarkHeaderContext))}>
       <div
-        className={clsx(styles['scrolling-background'], heroHeader && styles['hero-header'])}
-        style={{ background: headerBackground }}
+        className={clsx(
+          styles['scrolling-background'],
+          (headerType === 'homepage' || headerType === 'hero') && styles['hero-header']
+        )}
+        //style={{ background: headerBackground }}
       />
 
       {!isMobile && hasStickyBackground && (

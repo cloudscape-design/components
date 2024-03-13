@@ -31,7 +31,7 @@ import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import useBackgroundOverlap from './use-background-overlap';
 import { useDrawers } from '../utils/use-drawers';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
-import { HeroHeader, CustomHeaderStyle, HeaderDarkVisualContext } from './header-style';
+import { HeroHeader, HeaderType, HeaderDarkVisualContext } from './header-style';
 
 interface AppLayoutInternals extends AppLayoutProps {
   activeDrawerId: string | null;
@@ -94,15 +94,15 @@ interface AppLayoutInternals extends AppLayoutProps {
   __embeddedViewMode?: boolean;
   heroHeader: boolean;
   highContrastHeader: boolean;
-  headerBackground: string;
+  headerType: string;
 }
 
 export interface HeroHeaderProps {
   heroHeader: boolean;
 }
 
-export interface CustomHeaderStyleProps {
-  headerBackground: string;
+export interface HeaderTypeProps {
+  headerType: string;
 }
 
 export interface HeaderDarkVisualContextProps {
@@ -201,8 +201,8 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     );
 
     const [heroHeaderProps, setHeroHeaderProps] = useState<HeroHeaderProps>({ heroHeader: false });
-    const [customHeaderStyleProps, setCustomHeaderStyleProps] = useState<CustomHeaderStyleProps>({
-      headerBackground: '',
+    const [headerTypeProps, setHeaderTypeProps] = useState<HeaderTypeProps>({
+      headerType: '',
     });
     const [headerDarkVisualContext, setHeaderDarkVisualContextProps] = useState<HeaderDarkVisualContextProps>({
       highContrastHeader: false,
@@ -629,10 +629,9 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       ]
     );
     //console.log('Background is ' + headerProps.headerBackground);
-    console.log('Your context in AppLayout is ' + headerDarkVisualContext.highContrastHeader);
     return (
       <HeaderDarkVisualContext.Provider value={{ handleHeaderDarkVisualContextProps: setHeaderDarkVisualContextProps }}>
-        <CustomHeaderStyle.Provider value={{ handleCustomHeaderStyleProps: setCustomHeaderStyleProps }}>
+        <HeaderType.Provider value={{ handleHeaderTypeProps: setHeaderTypeProps }}>
           <HeroHeader.Provider value={{ handleHeroHeaderProps: setHeroHeaderProps }}>
             <AppLayoutInternalsContext.Provider
               value={{
@@ -704,7 +703,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
                 toolsOpen: isToolsOpen,
                 toolsWidth,
                 toolsRefs,
-                headerBackground: customHeaderStyleProps.headerBackground,
+                headerType: headerTypeProps.headerType,
                 heroHeader: heroHeaderProps.heroHeader,
                 highContrastHeader: headerDarkVisualContext.highContrastHeader,
                 __embeddedViewMode,
@@ -723,7 +722,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
               </AppLayoutContext.Provider>
             </AppLayoutInternalsContext.Provider>
           </HeroHeader.Provider>
-        </CustomHeaderStyle.Provider>
+        </HeaderType.Provider>
       </HeaderDarkVisualContext.Provider>
     );
   }

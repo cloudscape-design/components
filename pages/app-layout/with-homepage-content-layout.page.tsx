@@ -136,7 +136,7 @@ interface ToolsProps {
   onStackedNotificationChange: (isChecked: boolean) => void;
   onBreadcrumbChange: (isChecked: boolean) => void;
   onNestingChange: (isChecked: boolean) => void;
-  onColorChange: (isChecked: string) => void;
+  onHeaderTypeChange: (isChecked: string) => void;
 }
 
 function Tools({
@@ -144,14 +144,14 @@ function Tools({
   onStackedNotificationChange,
   onBreadcrumbChange,
   onNestingChange,
-  onColorChange,
+  onHeaderTypeChange,
 }: ToolsProps) {
   const [hasFlash, setFlash] = React.useState(true);
   const [hasStackedNotification, setStackedNotification] = React.useState(false);
-  const [hasBreadcrumb, setBreadcrumb] = React.useState(false);
+  const [hasBreadcrumb, setBreadcrumb] = React.useState(true);
   const [hasNesting, setNesting] = React.useState(true);
   const { urlParams, setUrlParams } = useContext(AppContext as any) as any;
-  const [value, setColorOption] = React.useState('default');
+  const [value, setHeaderType] = React.useState('homepage');
 
   const handleFlashbarChange = (isChecked: boolean) => {
     setFlash(isChecked);
@@ -181,10 +181,10 @@ function Tools({
     }
   };
 
-  const handleColorOption = (isChecked: string) => {
-    setColorOption(isChecked);
-    if (onColorChange) {
-      onColorChange(isChecked);
+  const handleHeaderTypeChange = (isChecked: string) => {
+    setHeaderType(isChecked);
+    if (onHeaderTypeChange) {
+      onHeaderTypeChange(isChecked);
     }
   };
 
@@ -217,7 +217,7 @@ function Tools({
           //checked={hasStackedNotification}
           checked={(urlParams.stackNotificationVisible, hasStackedNotification)}
         >
-          Header dark mode visual context
+          Sticky notification
         </Toggle>
         <Toggle
           onChange={({ detail }) => {
@@ -237,17 +237,20 @@ function Tools({
         >
           Wrap content in ContentLayout
         </Toggle>
-        <FormField label="Header background color">
+        <FormField
+          label="Testing HeaderType"
+          description="When 'homepage' is selected, it provides dark visual context for breadcrumb and light visual context for header content. When 'hero' is selected, it provides dark visual context for breadcrumb and header content."
+        >
           <RadioGroup
             onChange={({ detail }) => {
-              handleColorOption(detail.value);
+              handleHeaderTypeChange(detail.value);
               setUrlParams({ colorOptionCheck: detail.value });
             }}
             value={value}
             items={[
-              { value: 'default', label: 'Grey-900' },
-              { value: 'gradient-1', label: 'Gradient 1' },
-              { value: 'gradient-2', label: 'Gradient 2' },
+              { value: 'homepage', label: 'homepage' },
+              { value: 'documentation', label: 'documentation' },
+              { value: 'hero', label: 'hero' },
             ]}
           />
         </FormField>
@@ -710,9 +713,9 @@ export default function () {
 
   const [flashbarVisible, setFlashbarVisible] = React.useState(true);
   const [notificationsVisible, setNotificationsVisible] = React.useState(false);
-  const [breadcrumbVisible, setBreadcrumbVisible] = React.useState(false);
+  const [breadcrumbVisible, setBreadcrumbVisible] = React.useState(true);
   const [nestingVisible, setNestingVisible] = React.useState(true);
-  const [colorOptionVisible, setColorOptionVisible] = React.useState('default');
+  const [headerTypeVisible, setHeaderTypeVisible] = React.useState('homepage');
 
   const handleFlashbarChange = (isChecked: boolean) => {
     setFlashbarVisible(isChecked);
@@ -730,12 +733,11 @@ export default function () {
     setNestingVisible(isChecked);
   };
 
-  const handleColorOption = (isChecked: string) => {
-    setColorOptionVisible(isChecked);
+  const handleHeaderTypeChange = (isChecked: string) => {
+    setHeaderTypeVisible(isChecked);
   };
 
-  console.log('colorOptionVisible is ' + colorOptionVisible);
-  //console.log('headerBackground value in page demo level is ' + headerBackground);
+  //console.log('headerTypeVisible is ' + headerTypeVisible);
 
   if (nestingVisible) {
     return (
@@ -751,27 +753,35 @@ export default function () {
               onStackedNotificationChange={handleStackedNotificationChange}
               onBreadcrumbChange={handleBreadcrumbChange}
               onNestingChange={handleNestingChange}
-              onColorChange={handleColorOption}
+              onHeaderTypeChange={handleHeaderTypeChange}
             />
           }
           toolsOpen={toolsOpen}
           onToolsChange={({ detail }) => setToolsOpen(detail.open)}
           notifications={flashbarVisible ? <Notifications /> : <></>}
+          stickyNotifications={notificationsVisible ? true : false}
           content={
             <ContentLayout
               header={<HeroHeader />}
               disableOverlap={false}
-              heroHeader={true}
-              highContrastHeader={notificationsVisible ? true : false}
-              headerBackground={
-                colorOptionVisible === 'default'
-                  ? '#000716'
-                  : colorOptionVisible === 'gradient-1'
-                  ? 'linear-gradient(135deg, rgba(71,17,118,1) 3%, rgba(131,57,157,1) 44%, rgba(149,85,182,1) 69%, rgba(145,134,215,1) 94%)'
-                  : colorOptionVisible === 'gradient-2'
-                  ? 'radial-gradient(ellipse at 31% 100%, rgba(216, 255, 217, 1) 0%, rgba(229, 255, 251, 1) 48%, rgba(251, 255, 254, 1) 92%)'
-                  : 'red'
+              headerType={
+                headerTypeVisible === 'homepage'
+                  ? 'homepage'
+                  : headerTypeVisible === 'documentation'
+                  ? 'documentation'
+                  : headerTypeVisible === 'hero'
+                  ? 'hero'
+                  : 'default'
               }
+              // headerBackground={
+              //   headerTypeVisible === 'default'
+              //     ? '#000716'
+              //     : headerTypeVisible === 'gradient-1'
+              //     ? 'linear-gradient(135deg, rgba(71,17,118,1) 3%, rgba(131,57,157,1) 44%, rgba(149,85,182,1) 69%, rgba(145,134,215,1) 94%)'
+              //     : headerTypeVisible === 'gradient-2'
+              //     ? 'radial-gradient(ellipse at 31% 100%, rgba(216, 255, 217, 1) 0%, rgba(229, 255, 251, 1) 48%, rgba(251, 255, 254, 1) 92%)'
+              //     : 'red'
+              // }
             >
               <ContentWithContentLayout />
             </ContentLayout>
@@ -794,12 +804,13 @@ export default function () {
               onStackedNotificationChange={handleStackedNotificationChange}
               onBreadcrumbChange={handleBreadcrumbChange}
               onNestingChange={handleNestingChange}
-              onColorChange={handleColorOption}
+              onHeaderTypeChange={handleHeaderTypeChange}
             />
           }
           toolsOpen={toolsOpen}
           onToolsChange={({ detail }) => setToolsOpen(detail.open)}
-          notifications={<Notifications />}
+          notifications={flashbarVisible ? <Notifications /> : <></>}
+          stickyNotifications={notificationsVisible ? true : false}
           content={<ContentWithoutContentLayout />}
         />
         <Footer legacyConsoleNav={false} />

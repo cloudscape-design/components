@@ -9,7 +9,7 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { useDynamicOverlap } from '../internal/hooks/use-dynamic-overlap';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
-import { useHeroHeader, useHeaderStyle, useHeaderDarkVisualContext } from '../app-layout/visual-refresh/header-style';
+import { useHeaderStyle, useHeaderDarkVisualContext } from '../app-layout/visual-refresh/header-style';
 //import AppContext from '../app/app-context';
 
 type InternalContentLayoutProps = ContentLayoutProps & InternalBaseComponentProps;
@@ -17,11 +17,10 @@ type InternalContentLayoutProps = ContentLayoutProps & InternalBaseComponentProp
 export default function InternalContentLayout({
   children,
   disableOverlap,
-  heroHeader,
   header,
   __internalRootRef,
   highContrastHeader,
-  headerBackground,
+  headerType,
   ...rest
 }: InternalContentLayoutProps) {
   const baseProps = getBaseProps(rest);
@@ -33,25 +32,27 @@ export default function InternalContentLayout({
 
   const isOverlapDisabled = !children || disableOverlap;
   // const setHeaderProps = useHeaderStyle();
-  const { handleHeroHeaderProps } = useHeroHeader();
-  const { handleCustomHeaderStyleProps } = useHeaderStyle();
+  //const { handleHeroHeaderProps } = useHeroHeader();
+  const { handleHeaderTypeProps } = useHeaderStyle();
   const { handleHeaderDarkVisualContextProps } = useHeaderDarkVisualContext();
 
   // useEffect(() => {
   //   handleCustomHeaderStyleProps({ headerBackground });
   // });
 
-  useEffect(() => {
-    heroHeader && handleHeroHeaderProps({ heroHeader });
-  }, [handleHeroHeaderProps, heroHeader]);
+  // useEffect(() => {
+  //   heroHeader && handleHeroHeaderProps({ heroHeader });
+  // }, [handleHeroHeaderProps, heroHeader]);
 
   useEffect(() => {
-    headerBackground && handleCustomHeaderStyleProps({ headerBackground });
-  }, [handleCustomHeaderStyleProps, headerBackground]);
+    headerType && handleHeaderTypeProps({ headerType });
+  }, [handleHeaderTypeProps, headerType]);
 
   useEffect(() => {
     highContrastHeader && handleHeaderDarkVisualContextProps({ highContrastHeader });
   }, [handleHeaderDarkVisualContextProps, highContrastHeader]);
+
+  console.log('HeaderType in ContentLayout: ', headerType);
 
   return (
     <div
@@ -72,7 +73,11 @@ export default function InternalContentLayout({
         ref={overlapElement}
       />
 
-      {header && <div className={clsx(styles.header, getContentHeaderClassName(isDarkHeaderContext))}>{header}</div>}
+      {header && (
+        <div className={clsx(styles.header, getContentHeaderClassName(isDarkHeaderContext || headerType === 'hero'))}>
+          {header}
+        </div>
+      )}
 
       <div className={styles.content}>{children}</div>
     </div>

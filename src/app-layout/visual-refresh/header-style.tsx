@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext } from 'react';
-import { HeroHeaderProps, CustomHeaderStyleProps, HeaderDarkVisualContextProps } from './context';
+import { HeroHeaderProps, HeaderTypeProps, HeaderDarkVisualContextProps } from './context';
 
 ////// Context for heroHeader //////
 interface HeroHeader {
@@ -17,16 +17,16 @@ export function useHeroHeader() {
 }
 
 ////// Context for headerBackground //////
-interface CustomHeaderStyle {
-  handleCustomHeaderStyleProps: (customHeaderStyleProps: CustomHeaderStyleProps) => void;
+interface HeaderType {
+  handleHeaderTypeProps: (headerTypeProps: HeaderTypeProps) => void;
 }
 
-export const CustomHeaderStyle = React.createContext<CustomHeaderStyle>({
-  handleCustomHeaderStyleProps: () => {},
+export const HeaderType = React.createContext<HeaderType>({
+  handleHeaderTypeProps: () => {},
 });
 
 export function useHeaderStyle() {
-  return useContext(CustomHeaderStyle);
+  return useContext(HeaderType);
 }
 
 ////// Context for headerDarkVisualContext //////

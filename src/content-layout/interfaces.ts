@@ -24,22 +24,14 @@ export interface ContentLayoutProps extends BaseComponentProps {
   /**
    * New!
    */
-  heroHeader?: boolean; // This will be replaced by headerType
 
   headerType?: ContentLayoutProps.HeaderType;
 
   highContrastHeader?: boolean;
 
   headerBackground?: string;
-
-  // headerBackground?:
-  //   | string
-  //   | {
-  //       lightMode: string;
-  //       darkMode: string;
-  //     };
 }
 
 export namespace ContentLayoutProps {
-  export type HeaderType = 'default' | 'hero';
+  export type HeaderType = 'homepage' | 'hero' | 'documentation' | 'default';
 }
