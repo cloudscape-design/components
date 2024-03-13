@@ -6,7 +6,7 @@
 @use '../../internal/styles/index' as styles;
 @use '../../internal/styles/tokens' as awsui;
 
-.expand-toggle-hidden {
+.expand-toggle-hidden.expand-toggle-hidden {
   visibility: hidden;
 }
 
