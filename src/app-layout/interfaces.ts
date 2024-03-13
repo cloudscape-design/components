@@ -112,11 +112,6 @@ export interface AppLayoutProps extends BaseComponentProps {
   headerSelector?: string;
 
   /**
-   * New!
-   */
-  headerBackground?: string;
-
-  /**
    * CSS selector for the application footer.
    */
   footerSelector?: string;
