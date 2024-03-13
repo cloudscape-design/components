@@ -6,6 +6,7 @@ import headerCellStyles from '../../../table/header-cell/styles.selectors.js';
 import bodyCellStyles from '../../../table/body-cell/styles.selectors.js';
 import selectionStyles from '../../../table/selection/styles.selectors.js';
 import resizerStyles from '../../../table/resizer/styles.selectors.js';
+import expandableRowsStyles from '../../../table/expandable-rows/styles.selectors.js';
 import CollectionPreferencesWrapper from '../collection-preferences';
 import ContainerWrapper from '../container';
 import PaginationWrapper from '../pagination';
@@ -165,5 +166,14 @@ export default class TableWrapper extends ComponentWrapper {
 
   findEditingCellCancelButton(): ElementWrapper | null {
     return this._findEditingCellControls()?.find('button:first-child') ?? null;
+  }
+
+  /**
+   * Returns the button that toggles nested row visibility.
+   *
+   * @param rowIndex 1-based index of the row of the cell to select.
+   */
+  findExpandToggle(rowIndex: number): ElementWrapper | null {
+    return this.findNativeTable().find(`tbody tr:nth-child(${rowIndex}) .${expandableRowsStyles['expand-toggle']}`);
   }
 }

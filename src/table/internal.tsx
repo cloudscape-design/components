@@ -298,7 +298,7 @@ const InternalTable = React.forwardRef(
     const hasDynamicHeight = computedVariant === 'full-page';
     const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
     useTableFocusNavigation({
-      tableRole,
+      enableKeyboardNavigation,
       selectionType,
       tableRoot: tableRefObject,
       columnDefinitions: visibleColumnDefinitions,
@@ -403,7 +403,7 @@ const InternalTable = React.forwardRef(
                 </LiveRegion>
               )}
               <GridNavigationProvider
-                keyboardNavigation={tableRole === 'grid'}
+                keyboardNavigation={!!enableKeyboardNavigation}
                 pageSize={GRID_NAVIGATION_PAGE_SIZE}
                 getTable={() => tableRefObject.current}
               >
