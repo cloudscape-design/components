@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { BaseComponentProps } from '../internal/base-component';
-import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
+import { FormFieldCommonValidationControlProps } from '../internal/context/form-field-context';
 import { NonCancelableEventHandler } from '../internal/events';
 
-export interface FileUploadProps extends BaseComponentProps, Omit<FormFieldValidationControlProps, 'warning'> {
+export interface FileUploadProps extends BaseComponentProps, FormFieldCommonValidationControlProps {
   /**
    * Specifies the native file input `accept` attribute to describe the allow-list of file types.
    */
@@ -49,11 +49,11 @@ export interface FileUploadProps extends BaseComponentProps, Omit<FormFieldValid
    */
   constraintText?: React.ReactNode;
   /**
-   * Text that displays as a validation message.
+   * Text that displays as a validation error message.
    */
   errorText?: React.ReactNode;
   /**
-   * Text that displays as a non-blocking validation message.
+   * Text that displays as a validation warning message.
    */
   warningText?: React.ReactNode;
   /**
