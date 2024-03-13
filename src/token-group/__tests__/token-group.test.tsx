@@ -179,6 +179,16 @@ describe('TokenGroup', () => {
       expect(wrapper.findTokenToggle()!.getElement()).toHaveTextContent('Show less');
     });
 
+    test('tokens are hidden when clicking token toggle twice', () => {
+      const wrapper = renderTokenGroup({ items: generateItems(5), i18nStrings, limit: 2 });
+      wrapper.findTokenToggle()!.click();
+
+      expect(wrapper.findTokens().length).toBe(5);
+      expect(wrapper.findTokenToggle()!.getElement()).toHaveTextContent('Show less');
+      wrapper.findTokenToggle()!.click();
+      expect(wrapper.findTokenToggle()!.getElement()).toHaveTextContent('Show more (+3)');
+    });
+
     test('toggle button has aria-controls property that points to the token container', () => {
       const wrapper = renderTokenGroup({ items: generateItems(5), i18nStrings, limit: 2 });
 
