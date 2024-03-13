@@ -26,6 +26,7 @@ export interface TableBodyCellProps<ItemType> extends TableTdElementProps {
   onEditEnd: (cancelled: boolean) => void;
   submitEdit?: TableProps.SubmitEditFunction<ItemType>;
   ariaLabels: TableProps['ariaLabels'];
+  interactiveCell?: boolean;
 }
 
 function TableCellEditable<ItemType>({
@@ -39,7 +40,7 @@ function TableCellEditable<ItemType>({
   ariaLabels,
   isVisualRefresh,
   successfulEdit = false,
-  expandableProps,
+  interactiveCell = true,
   ...rest
 }: TableBodyCellProps<ItemType>) {
   const i18n = useInternalI18n('table');
@@ -59,7 +60,7 @@ function TableCellEditable<ItemType>({
   const [hasHover, setHasHover] = useState(false);
   const [hasFocus, setHasFocus] = useState(false);
   // When a cell is both expandable and editable the icon is always shown.
-  const showIcon = hasHover || hasFocus || expandableProps;
+  const showIcon = hasHover || hasFocus || !interactiveCell;
 
   const prevSuccessfulEdit = usePrevious(successfulEdit);
   const prevHasFocus = usePrevious(hasFocus);
@@ -81,17 +82,17 @@ function TableCellEditable<ItemType>({
   return (
     <TableTdElement
       {...rest}
-      expandableProps={expandableProps}
+      expandableProps={!isEditing ? rest.expandableProps : undefined}
       nativeAttributes={tdNativeAttributes as TableTdElementProps['nativeAttributes']}
       className={clsx(
         className,
         styles['body-cell-editable'],
-        expandableProps && styles['body-cell-editable-expandable'],
+        interactiveCell && styles['body-cell-interactive'],
         isEditing && styles['body-cell-edit-active'],
         showSuccessIcon && showIcon && styles['body-cell-has-success'],
         isVisualRefresh && styles['is-visual-refresh']
       )}
-      onClick={!isEditing && !expandableProps ? onEditStart : undefined}
+      onClick={interactiveCell && !isEditing ? onEditStart : undefined}
       onMouseEnter={() => setHasHover(true)}
       onMouseLeave={() => setHasHover(false)}
     >
@@ -133,10 +134,10 @@ function TableCellEditable<ItemType>({
 
           <div className={styles['body-cell-editor-wrapper']}>
             <button
-              className={clsx(styles['body-cell-editor'], !!expandableProps && styles['body-cell-editor-show-outline'])}
+              className={styles['body-cell-editor']}
               aria-label={ariaLabels?.activateEditLabel?.(column, item)}
               ref={editActivateRef}
-              onClick={!isEditing && expandableProps ? onEditStart : undefined}
+              onClick={!interactiveCell && !isEditing ? onEditStart : undefined}
               onFocus={() => setHasFocus(true)}
               onBlur={() => setHasFocus(false)}
               tabIndex={editActivateTabIndex}
@@ -154,14 +155,15 @@ export function TableBodyCell<ItemType>({
   isEditable,
   ...rest
 }: TableBodyCellProps<ItemType> & { isEditable: boolean }) {
+  const interactiveCell = !rest.expandableProps;
   const editDisabledReason = rest.column.editConfig?.disabledReason?.(rest.item);
 
   if (editDisabledReason) {
-    return <DisabledInlineEditor editDisabledReason={editDisabledReason} {...rest} />;
+    return <DisabledInlineEditor interactiveCell={interactiveCell} editDisabledReason={editDisabledReason} {...rest} />;
   }
 
   if (isEditable || rest.isEditing) {
-    return <TableCellEditable {...rest} />;
+    return <TableCellEditable {...rest} interactiveCell={interactiveCell} />;
   }
   const { column, item } = rest;
   return <TableTdElement {...rest}>{column.cell(item)}</TableTdElement>;

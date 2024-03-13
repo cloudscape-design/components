@@ -29,7 +29,7 @@ export function DisabledInlineEditor<ItemType>({
   onEditEnd,
   editDisabledReason,
   isVisualRefresh,
-  expandableProps,
+  interactiveCell = true,
   ...rest
 }: DisabledInlineEditorProps<ItemType>) {
   const clickAwayRef = useClickAway(() => {
@@ -41,7 +41,7 @@ export function DisabledInlineEditor<ItemType>({
   const [hasHover, setHasHover] = useState(false);
   const [hasFocus, setHasFocus] = useState(false);
   // When a cell is both expandable and editable the icon is always shown.
-  const showIcon = hasHover || hasFocus || isEditing || expandableProps;
+  const showIcon = hasHover || hasFocus || isEditing || !interactiveCell;
 
   const iconRef = useRef(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -66,18 +66,17 @@ export function DisabledInlineEditor<ItemType>({
   return (
     <TableTdElement
       {...rest}
-      expandableProps={expandableProps}
       nativeAttributes={
         { 'data-inline-editing-active': isEditing.toString() } as TableTdElementProps['nativeAttributes']
       }
       className={clsx(
         className,
         styles['body-cell-editable'],
-        expandableProps && styles['body-cell-editable-expandable'],
+        interactiveCell && styles['body-cell-interactive'],
         isEditing && styles['body-cell-edit-disabled-popover'],
         isVisualRefresh && styles['is-visual-refresh']
       )}
-      onClick={!isEditing && !expandableProps ? onClick : undefined}
+      onClick={interactiveCell && !isEditing ? onClick : undefined}
       onMouseEnter={() => setHasHover(true)}
       onMouseLeave={() => setHasHover(false)}
       ref={clickAwayRef}
@@ -88,15 +87,11 @@ export function DisabledInlineEditor<ItemType>({
         <button
           ref={buttonRef}
           tabIndex={tabIndex}
-          className={clsx(
-            styles['body-cell-editor'],
-            styles['body-cell-editor-disabled'],
-            !!expandableProps && styles['body-cell-editor-show-outline']
-          )}
+          className={clsx(styles['body-cell-editor'], styles['body-cell-editor-disabled'])}
           aria-label={ariaLabels?.activateEditLabel?.(column, item)}
           aria-haspopup="dialog"
           aria-disabled="true"
-          onClick={!isEditing && expandableProps ? onClick : undefined}
+          onClick={!interactiveCell && !isEditing ? onClick : undefined}
           onFocus={() => setHasFocus(true)}
           onBlur={() => setHasFocus(false)}
           onKeyDown={handleEscape}
