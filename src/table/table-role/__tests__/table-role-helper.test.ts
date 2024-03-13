@@ -36,8 +36,7 @@ test('scrollable table props', () => {
   expect(tableProps).toEqual({ role: tableRole, 'aria-label': ariaLabel, 'aria-rowcount': 6 });
 });
 
-test('non-scrollable grid props', () => {
-  const tableRole = 'grid';
+test.each(['grid', 'treegrid'] as const)('non-scrollable %s props', tableRole => {
   const ariaLabel = 'table';
   const totalItemsCount = 5;
   const totalColumnsCount = 4;
@@ -55,8 +54,7 @@ test('non-scrollable grid props', () => {
   });
 });
 
-test('scrollable grid props', () => {
-  const tableRole = 'grid';
+test.each(['grid', 'treegrid'] as const)('scrollable %s props', tableRole => {
   const ariaLabel = 'table';
   const totalItemsCount = 5;
   const totalColumnsCount = 4;
@@ -92,9 +90,7 @@ test('table row and cell props', () => {
   expect(bodyCell2).toEqual({});
 });
 
-test('grid row and cell props', () => {
-  const tableRole = 'grid';
-
+test.each(['grid', 'treegrid'] as const)('%s row and cell props', tableRole => {
   const headerRow = getTableHeaderRowRoleProps({ tableRole });
   const headerCell1 = getTableColHeaderRoleProps({ tableRole, colIndex: 0, sortingStatus: 'ascending' });
   const headerCell2 = getTableColHeaderRoleProps({ tableRole, colIndex: 1 });
@@ -108,4 +104,14 @@ test('grid row and cell props', () => {
   expect(headerCell2).toEqual({ 'aria-colindex': 2, scope: 'col' });
   expect(bodyCell1).toEqual({ 'aria-colindex': 1, scope: 'row' });
   expect(bodyCell2).toEqual({ 'aria-colindex': 2 });
+});
+
+test('treegrid row props', () => {
+  const bodyRow = getTableRowRoleProps({
+    tableRole: 'treegrid',
+    rowIndex: 0,
+    treeProps: { level: 2, setSize: 3, posInSet: 2 },
+  });
+
+  expect(bodyRow).toEqual({ 'aria-rowindex': 2, 'aria-level': 2, 'aria-setsize': 3, 'aria-posinset': 2 });
 });
