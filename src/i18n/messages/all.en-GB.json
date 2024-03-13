@@ -138,7 +138,8 @@
     "i18nStrings.warningIconAriaLabel": "Warning"
   },
   "form-field": {
-    "i18nStrings.errorIconAriaLabel": "Error"
+    "i18nStrings.errorIconAriaLabel": "Error",
+    "i18nStrings.warningIconAriaLabel": "Warning"
   },
   "form": {
     "errorIconAriaLabel": "Error"
@@ -191,6 +192,7 @@
     "i18nStrings.operatorLessOrEqualText": "Less than or equal to",
     "i18nStrings.operatorLessText": "Less than",
     "i18nStrings.operatorStartsWithText": "Starts with",
+    "i18nStrings.operatorDoesNotStartWithText": "Does not start with",
     "i18nStrings.operatorText": "Operator",
     "i18nStrings.operatorsText": "Operators",
     "i18nStrings.propertyText": "Property",
@@ -207,7 +209,7 @@
     "i18nStrings.inContextLoadingText": "Loading resource",
     "i18nStrings.inContextUriLabel": "S3 URI",
     "i18nStrings.inContextVersionSelectLabel": "Object version",
-    "i18nStrings.modalTitle": "Choose an archive in S3",
+    "i18nStrings.modalTitle": "Choose an object in S3",
     "i18nStrings.modalCancelButton": "Cancel",
     "i18nStrings.modalSubmitButton": "Choose",
     "i18nStrings.modalBreadcrumbRootItem": "S3 buckets",

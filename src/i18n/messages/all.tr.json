@@ -138,7 +138,8 @@
     "i18nStrings.warningIconAriaLabel": "Uyarı"
   },
   "form-field": {
-    "i18nStrings.errorIconAriaLabel": "Hata"
+    "i18nStrings.errorIconAriaLabel": "Hata",
+    "i18nStrings.warningIconAriaLabel": "Uyarı"
   },
   "form": {
     "errorIconAriaLabel": "Hata"
@@ -190,7 +191,8 @@
     "i18nStrings.operatorGreaterText": "Büyüktür",
     "i18nStrings.operatorLessOrEqualText": "Küçük veya eşittir",
     "i18nStrings.operatorLessText": "Küçüktür",
-    "i18nStrings.operatorStartsWithText": "İle başlar",
+    "i18nStrings.operatorStartsWithText": "Şununla başlıyor:",
+    "i18nStrings.operatorDoesNotStartWithText": "Şununla başlamıyor:",
     "i18nStrings.operatorText": "Operatör",
     "i18nStrings.operatorsText": "Operatörler",
     "i18nStrings.propertyText": "Özellik",
@@ -207,7 +209,7 @@
     "i18nStrings.inContextLoadingText": "Kaynak yükleniyor",
     "i18nStrings.inContextUriLabel": "S3 URI'si",
     "i18nStrings.inContextVersionSelectLabel": "Nesne sürümü",
-    "i18nStrings.modalTitle": "S3'te bir arşiv seç",
+    "i18nStrings.modalTitle": "S3'te bir nesne seçin",
     "i18nStrings.modalCancelButton": "İptal",
     "i18nStrings.modalSubmitButton": "Seç",
     "i18nStrings.modalBreadcrumbRootItem": "S3 bucket'ları",

@@ -180,6 +180,7 @@ export interface I18nFormatArgTypes {
   }
   "form-field": {
     "i18nStrings.errorIconAriaLabel": never;
+    "i18nStrings.warningIconAriaLabel": never;
   }
   "form": {
     "errorIconAriaLabel": never;
@@ -236,6 +237,7 @@ export interface I18nFormatArgTypes {
     "i18nStrings.operatorLessOrEqualText": never;
     "i18nStrings.operatorLessText": never;
     "i18nStrings.operatorStartsWithText": never;
+    "i18nStrings.operatorDoesNotStartWithText": never;
     "i18nStrings.operatorText": never;
     "i18nStrings.operatorsText": never;
     "i18nStrings.propertyText": never;
