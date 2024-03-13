@@ -1,10 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { render } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import Table, { TableProps } from '../../../lib/components/table';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
+import { KeyCode } from '../../../lib/components/internal/keycode';
 
 interface Instance {
   name: string;
@@ -132,7 +133,6 @@ describe('Expandable rows', () => {
         getItemChildren: () => [],
         onExpandableItemToggle: () => {},
       },
-      trackBy: item => item.name,
       ariaLabels: {
         expandButtonLabel: item => `Expand item ${item.name}`,
         collapseButtonLabel: item => `Collapse item ${item.name}`,
@@ -153,7 +153,6 @@ describe('Expandable rows', () => {
         getItemChildren: () => [],
         onExpandableItemToggle: () => {},
       },
-      trackBy: item => item.name,
       messages: {
         'ariaLabels.expandButtonLabel': 'Expand item',
         'ariaLabels.collapseButtonLabel': 'Collapse item',
@@ -194,18 +193,78 @@ describe('Expandable rows', () => {
     expect(table.findRows()[5].getElement()).toHaveAttribute('aria-posinset', '2');
   });
 
-  test('future tests', () => {
-    /*
-      Test cases:
+  test('onExpandableItemToggle fires with item and expand state', () => {
+    const onExpandableItemToggle = jest.fn();
+    const { table } = renderTable({
+      items: simpleItems,
+      expandableRows: {
+        isItemExpandable: item => item.expandable,
+        expandedItems: [simpleItems[0]],
+        getItemChildren: () => [],
+        onExpandableItemToggle,
+      },
+    });
 
-      8. Verify onToggle is called when clicking on toggle to expand and to collapse
-      9. Verify keyboard navigation for expand toggle
-      10. Verify keyboard navigation defaults to true for table with expandable rows
-      11. Verify table role is set to treegrid regardless of keyboard navigation flag
-      12. Verify warning/default for expandable=false, expanded=true
-      13. Verify expandable+editable cell combination (check for visible icon?)
-    */
+    table.findExpandToggle(1)!.click();
+    expect(onExpandableItemToggle).toBeCalledTimes(1);
+    expect(onExpandableItemToggle).toBeCalledWith(
+      expect.objectContaining({ detail: { item: simpleItems[0], expanded: false } })
+    );
 
-    throw new Error('Not implemented');
+    table.findExpandToggle(3)!.click();
+    expect(onExpandableItemToggle).toBeCalledTimes(2);
+    expect(onExpandableItemToggle).toBeCalledWith(
+      expect.objectContaining({ detail: { item: simpleItems[2], expanded: true } })
+    );
+  });
+
+  test('keyboard navigation is active by default', () => {
+    const { table } = renderTable({
+      items: simpleItems,
+      expandableRows: {
+        isItemExpandable: item => item.expandable,
+        expandedItems: [],
+        getItemChildren: () => [],
+        onExpandableItemToggle: () => {},
+      },
+    });
+
+    table.findExpandToggle(1)!.focus();
+    fireEvent.keyDown(table.find('table')!.getElement(), { keyCode: KeyCode.down });
+    expect(table.findBodyCell(2, 1)!.getElement()).toHaveFocus();
+
+    fireEvent.keyDown(table.find('table')!.getElement(), { keyCode: KeyCode.down });
+    expect(table.findExpandToggle(3)!.getElement()).toHaveFocus();
+  });
+
+  test('keyboard navigation can be disabled', () => {
+    const { table } = renderTable({
+      items: simpleItems,
+      expandableRows: {
+        isItemExpandable: item => item.expandable,
+        expandedItems: [],
+        getItemChildren: () => [],
+        onExpandableItemToggle: () => {},
+      },
+      enableKeyboardNavigation: false,
+    });
+
+    table.findExpandToggle(1)!.focus();
+    fireEvent.keyDown(table.find('table')!.getElement(), { keyCode: KeyCode.down });
+    expect(table.findExpandToggle(1)!.getElement()).toHaveFocus();
+  });
+
+  test.each([false, true])('table has role="treegrid" when enableKeyboardNavigation=`%s`', enableKeyboardNavigation => {
+    const { container } = renderTable({
+      items: simpleItems,
+      expandableRows: {
+        isItemExpandable: item => item.expandable,
+        expandedItems: [],
+        getItemChildren: () => [],
+        onExpandableItemToggle: () => {},
+      },
+      enableKeyboardNavigation,
+    });
+    expect(container.querySelector('table')).toHaveAttribute('role', 'treegrid');
   });
 });
