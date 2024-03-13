@@ -138,7 +138,8 @@
     "i18nStrings.warningIconAriaLabel": "警告"
   },
   "form-field": {
-    "i18nStrings.errorIconAriaLabel": "エラー"
+    "i18nStrings.errorIconAriaLabel": "エラー",
+    "i18nStrings.warningIconAriaLabel": "警告"
   },
   "form": {
     "errorIconAriaLabel": "エラー"
@@ -191,6 +192,7 @@
     "i18nStrings.operatorLessOrEqualText": "次以下",
     "i18nStrings.operatorLessText": "次より少ない",
     "i18nStrings.operatorStartsWithText": "次で始まる:",
+    "i18nStrings.operatorDoesNotStartWithText": "次始まらない:",
     "i18nStrings.operatorText": "演算子",
     "i18nStrings.operatorsText": "演算子",
     "i18nStrings.propertyText": "プロパティ",
@@ -207,7 +209,7 @@
     "i18nStrings.inContextLoadingText": "リソースのロード中",
     "i18nStrings.inContextUriLabel": "S3 URI",
     "i18nStrings.inContextVersionSelectLabel": "オブジェクトのバージョン",
-    "i18nStrings.modalTitle": "S3 のアーカイブを選択",
+    "i18nStrings.modalTitle": "S3 のオブジェクトを選択",
     "i18nStrings.modalCancelButton": "キャンセル",
     "i18nStrings.modalSubmitButton": "選択",
     "i18nStrings.modalBreadcrumbRootItem": "S3 バケット",
