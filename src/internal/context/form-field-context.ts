@@ -36,7 +36,7 @@ export interface FormFieldControlProps {
   ariaDescribedby?: string;
 }
 
-export interface FormFieldValidationControlProps extends FormFieldControlProps {
+export interface FormFieldCommonValidationControlProps extends FormFieldControlProps {
   /**
    * Overrides the invalidation state. Usually the invalid state
    * comes from the parent `FormField`component,
@@ -45,7 +45,9 @@ export interface FormFieldValidationControlProps extends FormFieldControlProps {
    * single form field.
    */
   invalid?: boolean;
+}
 
+export interface FormFieldValidationControlProps extends FormFieldCommonValidationControlProps {
   /**
    * Overrides the warning state. Usually the warning state
    * comes from the parent `FormField`component,
