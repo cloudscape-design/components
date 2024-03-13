@@ -19,17 +19,10 @@ export function useTokenFocusController({ moveFocusNextToIndex }: { moveFocusNex
     const tokenElements = tokenListRef.current.querySelectorAll(tokenSelector);
     const toggleButton = tokenListRef.current.querySelector(toggleButtonSelector);
 
-    const activeItemIndices: number[] = [];
-    for (let i = 0; i < tokenElements.length; i++) {
-      if (!tokenElements[i].querySelector('[aria-disabled="true"]')) {
-        activeItemIndices.push(i);
-      }
-    }
-
     let closestPrevIndex = Number.NEGATIVE_INFINITY;
     let closestNextIndex = Number.POSITIVE_INFINITY;
 
-    for (const activeIndex of activeItemIndices) {
+    for (let activeIndex = 0; activeIndex < tokenElements.length; activeIndex++) {
       if (activeIndex < moveFocusNextToIndex) {
         closestPrevIndex =
           moveFocusNextToIndex - activeIndex < moveFocusNextToIndex - closestPrevIndex ? activeIndex : closestPrevIndex;

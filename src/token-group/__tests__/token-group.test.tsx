@@ -203,7 +203,7 @@ describe('TokenGroup', () => {
   });
 
   describe('Focus management', () => {
-    test('Focus is dispatched to the next active token when non-last token is removed', () => {
+    test('Focus is dispatched to the next token when non-last token is removed', () => {
       const wrapper = renderStatefulTokenGroup({
         items: [
           { label: '1', dismissLabel: 'Remove 1' },
@@ -214,51 +214,52 @@ describe('TokenGroup', () => {
       });
       wrapper.findToken(2)!.findDismiss().click();
 
-      expect(wrapper.findToken(3)!.findDismiss().getElement()).toHaveFocus();
+      expect(wrapper.findToken(2)!.findDismiss().getElement()).toHaveFocus();
     });
 
-    test('Focus is dispatched to the previous active token when last active token is removed', () => {
+    test('Focus is dispatched to the previous token when last active token is removed', () => {
       const wrapper = renderStatefulTokenGroup({
         items: [
           { label: '1', dismissLabel: 'Remove 1' },
           { label: '2', dismissLabel: 'Remove 2' },
           { label: '3', dismissLabel: 'Remove 3', disabled: true },
           { label: '4', dismissLabel: 'Remove 4' },
-          { label: '5', dismissLabel: 'Remove 5', disabled: true },
         ],
       });
       wrapper.findToken(4)!.findDismiss().click();
 
-      expect(wrapper.findToken(2)!.findDismiss().getElement()).toHaveFocus();
+      expect(wrapper.findToken(3)!.findDismiss().getElement()).toHaveFocus();
     });
 
-    test('Focus is dispatched to the "show more" button when no active tokens visible after token removal', () => {
+    test('Focus returns to body when no token and no "show more" button after token removal', () => {
       const wrapper = renderStatefulTokenGroup({
         items: [
-          { label: '1', dismissLabel: 'Remove 1', disabled: true },
-          { label: '2', dismissLabel: 'Remove 2', disabled: true },
+          { label: '1', dismissLabel: 'Remove 1' },
+          { label: '2', dismissLabel: 'Remove 2' },
           { label: '3', dismissLabel: 'Remove 3' },
-          { label: '4', dismissLabel: 'Remove 4', disabled: true },
+        ],
+      });
+      wrapper.findToken(3)!.findDismiss().click();
+      wrapper.findToken(2)!.findDismiss().click();
+      wrapper.findToken(1)!.findDismiss().click();
+
+      expect(document.body).toHaveFocus();
+    });
+
+    test('Focus moves to the first token which got visible after clicking "show more" get clicked', () => {
+      const wrapper = renderStatefulTokenGroup({
+        items: [
+          { label: '1', dismissLabel: 'Remove 1' },
+          { label: '2', dismissLabel: 'Remove 2' },
+          { label: '3', dismissLabel: 'Remove 3' },
+          { label: '4', dismissLabel: 'Remove 4' },
           { label: '5', dismissLabel: 'Remove 5' },
         ],
         limit: 3,
       });
-      wrapper.findToken(3)!.findDismiss().click();
+      wrapper.findTokenToggle()!.click();
 
-      expect(wrapper.findTokenToggle()!.getElement()).toHaveFocus();
-    });
-
-    test('Focus returns to body when no active token and no "show more" button after token removal', () => {
-      const wrapper = renderStatefulTokenGroup({
-        items: [
-          { label: '1', dismissLabel: 'Remove 1', disabled: true },
-          { label: '2', dismissLabel: 'Remove 2', disabled: true },
-          { label: '3', dismissLabel: 'Remove 3' },
-        ],
-      });
-      wrapper.findToken(3)!.findDismiss().click();
-
-      expect(document.body).toHaveFocus();
+      expect(wrapper.findToken(4)!.findDismiss().getElement()).toHaveFocus();
     });
   });
 });
