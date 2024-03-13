@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { useInternalI18n } from '../../i18n/context';
 import { fireNonCancelableEvent } from '../../internal/events';
 import { TableProps } from '../interfaces';
 import { ItemSet } from '../selection/utils';
@@ -11,15 +12,18 @@ interface ItemPlacement {
   posInSet: number;
 }
 
-export function getExpandableTableProps<T>({
+export function useExpandableTableProps<T>({
   items,
   expandableRows,
   trackBy,
+  ariaLabels,
 }: {
   items: readonly T[];
   expandableRows?: TableProps.ExpandableRows<T>;
   trackBy?: TableProps.TrackBy<T>;
+  ariaLabels?: TableProps.AriaLabels<T>;
 }) {
+  const i18n = useInternalI18n('table');
   const isExpandable = !!expandableRows;
 
   const expandedSet = new ItemSet(trackBy, expandableRows?.expandedItems ?? []);
@@ -74,6 +78,8 @@ export function getExpandableTableProps<T>({
       isExpanded: expandedSet.has(item),
       onExpandableItemToggle: () =>
         fireNonCancelableEvent(expandableRows?.onExpandableItemToggle, { item, expanded: !expandedSet.has(item) }),
+      expandButtonLabel: i18n('ariaLabels.expandButtonLabel', ariaLabels?.expandButtonLabel?.(item)),
+      collapseButtonLabel: i18n('ariaLabels.collapseButtonLabel', ariaLabels?.collapseButtonLabel?.(item)),
     };
   };
 

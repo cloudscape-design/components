@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
+import { ComponentWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
 import styles from '../../../table/styles.selectors.js';
 import headerCellStyles from '../../../table/header-cell/styles.selectors.js';
 import bodyCellStyles from '../../../table/body-cell/styles.selectors.js';
@@ -175,5 +175,10 @@ export default class TableWrapper extends ComponentWrapper {
    */
   findExpandToggle(rowIndex: number): ElementWrapper | null {
     return this.findNativeTable().find(`tbody tr:nth-child(${rowIndex}) .${expandableRowsStyles['expand-toggle']}`);
+  }
+
+  @usesDom
+  isRowToggled(rowIndex: number): boolean {
+    return this.findExpandToggle(rowIndex)?.getElement().getAttribute('aria-expanded') === 'true';
   }
 }

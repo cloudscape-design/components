@@ -5,7 +5,6 @@ import React, { useRef } from 'react';
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
 import styles from './styles.css.js';
 import InternalIcon from '../../icon/internal';
-import clsx from 'clsx';
 
 interface ExpandToggleProps {
   isExpanded: boolean;
@@ -47,7 +46,7 @@ function ExpandToggleButton({
 
 function ExpandTogglePlaceholder() {
   return (
-    <div aria-hidden={true} className={clsx(styles['expand-toggle'], styles['expand-toggle-hidden'])}>
+    <div aria-hidden={true} className={styles['expand-toggle-hidden']}>
       <InternalIcon size="small" name="caret-right-filled" />
     </div>
   );

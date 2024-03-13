@@ -6,7 +6,12 @@
 @use '../../internal/styles/index' as styles;
 @use '../../internal/styles/tokens' as awsui;
 
-.expand-toggle {
+.expand-toggle-hidden {
+  visibility: hidden;
+}
+
+.expand-toggle,
+.expand-toggle-hidden {
   @include styles.styles-reset;
   cursor: pointer;
   inline-size: awsui.$space-m;
@@ -26,9 +31,5 @@
   }
   &:active {
     color: awsui.$color-text-interactive-active;
-  }
-
-  &-hidden {
-    visibility: hidden;
   }
 }

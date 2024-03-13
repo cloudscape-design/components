@@ -49,7 +49,7 @@ import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 import { NoDataCell } from './no-data-cell';
 import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
 import { getContentHeaderClassName } from '../internal/utils/content-header-utils';
-import { getExpandableTableProps } from './expandable-rows/expandable-rows-utils';
+import { useExpandableTableProps } from './expandable-rows/expandable-rows-utils';
 
 const GRID_NAVIGATION_PAGE_SIZE = 10;
 const SELECTION_COLUMN_WIDTH = 54;
@@ -130,9 +130,11 @@ const InternalTable = React.forwardRef(
     stickyHeader = stickyHeader && supportsStickyPosition();
     const isMobile = useMobile();
 
-    const { isExpandable, allItems, getExpandableItemProps } = getExpandableTableProps({
+    const { isExpandable, allItems, getExpandableItemProps } = useExpandableTableProps({
       items,
       expandableRows,
+      trackBy,
+      ariaLabels,
     });
 
     const [containerWidth, wrapperMeasureRef] = useContainerQuery<number>(rect => rect.contentBoxWidth);
@@ -551,15 +553,7 @@ const InternalTable = React.forwardRef(
                                   stickyState={stickyState}
                                   isVisualRefresh={isVisualRefresh}
                                   tableRole={tableRole}
-                                  expandableProps={
-                                    isExpandable && colIndex === 0
-                                      ? {
-                                          ...expandableProps,
-                                          expandButtonLabel: ariaLabels?.expandButtonLabel?.(item),
-                                          collapseButtonLabel: ariaLabels?.collapseButtonLabel?.(item),
-                                        }
-                                      : undefined
-                                  }
+                                  expandableProps={isExpandable && colIndex === 0 ? expandableProps : undefined}
                                 />
                               );
                             })}
