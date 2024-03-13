@@ -88,6 +88,7 @@ export default function InlineEditorPermutations() {
                         activateEditLabel: column => `Edit ${column.header}`,
                         cancelEditLabel: column => `Cancel editing ${column.header}`,
                         submitEditLabel: column => `Submit edit ${column.header}`,
+                        successfulEditLabel: () => 'Edit successful',
                       }}
                       item={{}}
                       column={{ ...baseColumnDefinition, editConfig: permutation }}
