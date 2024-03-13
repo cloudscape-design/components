@@ -116,11 +116,23 @@ describe('TokenGroup', () => {
       expect(wrapper.findToken(1)!.getElement()).toHaveAttribute('aria-disabled', 'true');
     });
 
+    test('sets aria-disabled and no disabled attribute on the token dismiss button when disabled', () => {
+      const wrapper = renderTokenGroup({ items: [{ ...items[0], disabled: true }], onDismiss });
+      const dismissButton = findToken(wrapper)!.findDismiss().getElement();
+      expect(dismissButton).toHaveAttribute('aria-disabled', 'true');
+      expect(dismissButton).not.toHaveAttribute('disabled');
+    });
+
     test('does not set aria-disabled on the token when not disabled', () => {
       const wrapper = renderTokenGroup({ items: [{ ...items[0], disabled: false }], onDismiss });
       expect(wrapper.findByClassName(tokenListSelectors['list-item'])!.getElement()).not.toHaveAttribute(
         'aria-disabled'
       );
+    });
+
+    test('does not set aria-disabled on the token dismiss button when not disabled', () => {
+      const wrapper = renderTokenGroup({ items: [{ ...items[0], disabled: false }], onDismiss });
+      expect(findToken(wrapper)!.findDismiss().getElement()).not.toHaveAttribute('aria-disabled');
     });
 
     test('fires dismiss event on mouse click', () => {
