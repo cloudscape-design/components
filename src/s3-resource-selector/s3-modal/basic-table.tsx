@@ -166,6 +166,7 @@ export function BasicS3Table<T>({
       visibleColumns={visibleColumns}
       isItemDisabled={isItemDisabled}
       columnDefinitions={columnDefinitions}
+      enableKeyboardNavigation={true}
     />
   );
 }

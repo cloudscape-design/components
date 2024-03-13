@@ -59,6 +59,8 @@ function getOperatorI18nString(operator: ComparisonOperator): string {
       return 'not_contains';
     case '^':
       return 'starts_with';
+    case '!^':
+      return 'not_starts_with';
     // The line is ignored from coverage because it is not reachable.
     // The purpose of it is to prevent TS errors if ComparisonOperator type gets extended.
     /* istanbul ignore next */
@@ -98,7 +100,9 @@ const PropertyFilter = React.forwardRef(
     }: PropertyFilterProps,
     ref: React.Ref<Ref>
   ) => {
-    const { __internalRootRef } = useBaseComponent('PropertyFilter');
+    const { __internalRootRef } = useBaseComponent('PropertyFilter', {
+      props: { asyncProperties, disableFreeTextFiltering, expandToViewport, hideOperations, tokenLimit, virtualScroll },
+    });
     const [removedTokenIndex, setRemovedTokenIndex] = useState<null | number>(null);
 
     const inputRef = useRef<AutosuggestInputRef>(null);
@@ -134,6 +138,10 @@ const PropertyFilter = React.forwardRef(
       operatorLessOrEqualText: i18n('i18nStrings.operatorLessOrEqualText', rest.i18nStrings?.operatorLessOrEqualText),
       operatorLessText: i18n('i18nStrings.operatorLessText', rest.i18nStrings?.operatorLessText),
       operatorStartsWithText: i18n('i18nStrings.operatorStartsWithText', rest.i18nStrings?.operatorStartsWithText),
+      operatorDoesNotStartWithText: i18n(
+        'i18nStrings.operatorDoesNotStartWithText',
+        rest.i18nStrings?.operatorDoesNotStartWithText
+      ),
       operatorText: i18n('i18nStrings.operatorText', rest.i18nStrings?.operatorText),
       operatorsText: i18n('i18nStrings.operatorsText', rest.i18nStrings?.operatorsText),
       propertyText: i18n('i18nStrings.propertyText', rest.i18nStrings?.propertyText),

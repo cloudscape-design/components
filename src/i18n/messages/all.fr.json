@@ -138,7 +138,8 @@
     "i18nStrings.warningIconAriaLabel": "Avertissement"
   },
   "form-field": {
-    "i18nStrings.errorIconAriaLabel": "Erreur"
+    "i18nStrings.errorIconAriaLabel": "Erreur",
+    "i18nStrings.warningIconAriaLabel": "Avertissement"
   },
   "form": {
     "errorIconAriaLabel": "Erreur"
@@ -191,13 +192,14 @@
     "i18nStrings.operatorLessOrEqualText": "Inférieur ou égal à",
     "i18nStrings.operatorLessText": "Inférieur à",
     "i18nStrings.operatorStartsWithText": "Commence par",
+    "i18nStrings.operatorDoesNotStartWithText": "Ne commence pas par",
     "i18nStrings.operatorText": "Opérateur",
     "i18nStrings.operatorsText": "Opérateurs",
     "i18nStrings.propertyText": "Propriété",
     "i18nStrings.tokenLimitShowFewer": "Afficher moins",
     "i18nStrings.tokenLimitShowMore": "Afficher plus",
     "i18nStrings.valueText": "Valeur",
-    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {Supprimer le filtre, {token__propertyKey} est égal à {token__value}} not_equals {Supprimer le filtre, {token__propertyKey} n'est pas égal à {token__value}} greater_than {Supprimer le filtre, {token__propertyKey} est supérieur à {token__value}} greater_than_equal {Supprimer le filtre, {token__propertyKey} est supérieur ou égal à {token__value}} less_than {Supprimer le filtre, {token__propertyKey} est inférieur à {token__value}} less_than_equal {Supprimer le filtre, {token__propertyKey} est inférieur ou égal à {token__value}} contains {Supprimer le filtre, {token__propertyKey} contient {token__value}} not_contains {Supprimer le filtre, {token__propertyKey} ne contient pas {token__value}} starts_with {Supprimer le filtre, {token__propertyKey} commence par {token__value}} other {}}"
+    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {Supprimer le filtre, {token__propertyKey} est égal à {token__value}} not_equals {Supprimer le filtre, {token__propertyKey} n'est pas égal à {token__value}} greater_than {Supprimer le filtre, {token__propertyKey} est supérieur à {token__value}} greater_than_equal {Supprimer le filtre, {token__propertyKey} est supérieur ou égal à {token__value}} less_than {Supprimer le filtre, {token__propertyKey} est inférieur à {token__value}} less_than_equal {Supprimer le filtre, {token__propertyKey} est inférieur ou égal à {token__value}} contains {Supprimer le filtre, {token__propertyKey} contient {token__value}} not_contains {Supprimer le filtre, {token__propertyKey} ne contient pas {token__value}} starts_with {Supprimer le filtre, {token__propertyKey} commence par {token__value}} not_starts_with {Supprimer le filtre, {token__propertyKey} ne commence pas par {token__value}} other {}}"
   },
   "s3-resource-selector": {
     "i18nStrings.inContextSelectPlaceholder": "Choisir une version",
@@ -207,7 +209,7 @@
     "i18nStrings.inContextLoadingText": "Chargement de la ressource",
     "i18nStrings.inContextUriLabel": "URI S3",
     "i18nStrings.inContextVersionSelectLabel": "Version de l'objet",
-    "i18nStrings.modalTitle": "Choisir une archive dans S3",
+    "i18nStrings.modalTitle": "Choisir un objet dans S3",
     "i18nStrings.modalCancelButton": "Annuler",
     "i18nStrings.modalSubmitButton": "Choisir",
     "i18nStrings.modalBreadcrumbRootItem": "Compartiments S3",

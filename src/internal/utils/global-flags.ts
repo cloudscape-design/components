@@ -6,25 +6,26 @@ interface GlobalFlags {
   removeHighContrastHeader?: boolean;
 }
 
-interface ExtendedWindow extends Window {
+export interface FlagsHolder {
   [awsuiGlobalFlagsSymbol]?: GlobalFlags;
 }
-declare const window: ExtendedWindow;
 
-export const getTopWindow = (): ExtendedWindow | undefined => {
-  return window.top as ExtendedWindow;
+export const getTopWindow = () => {
+  return window.top;
 };
 
-function readFlag(window: ExtendedWindow | undefined, flagName: keyof GlobalFlags) {
-  if (typeof window === 'undefined' || !window[awsuiGlobalFlagsSymbol]) {
-    return undefined;
-  }
-  return window[awsuiGlobalFlagsSymbol][flagName];
+function getGlobal() {
+  return typeof window !== 'undefined' ? window : globalThis;
+}
+
+function readFlag(window: unknown, flagName: keyof GlobalFlags) {
+  const holder = window as FlagsHolder | null;
+  return holder?.[awsuiGlobalFlagsSymbol]?.[flagName];
 }
 
 export const getGlobalFlag = (flagName: keyof GlobalFlags): GlobalFlags[keyof GlobalFlags] | undefined => {
   try {
-    const ownFlag = readFlag(window, flagName);
+    const ownFlag = readFlag(getGlobal(), flagName);
     if (ownFlag !== undefined) {
       return ownFlag;
     }

@@ -138,7 +138,8 @@
     "i18nStrings.warningIconAriaLabel": "Warning"
   },
   "form-field": {
-    "i18nStrings.errorIconAriaLabel": "Error"
+    "i18nStrings.errorIconAriaLabel": "Error",
+    "i18nStrings.warningIconAriaLabel": "Warning"
   },
   "form": {
     "errorIconAriaLabel": "Error"
@@ -191,13 +192,14 @@
     "i18nStrings.operatorLessOrEqualText": "Less than or equal",
     "i18nStrings.operatorLessText": "Less than",
     "i18nStrings.operatorStartsWithText": "Starts with",
+    "i18nStrings.operatorDoesNotStartWithText": "Does not start with",
     "i18nStrings.operatorText": "Operator",
     "i18nStrings.operatorsText": "Operators",
     "i18nStrings.propertyText": "Property",
     "i18nStrings.tokenLimitShowFewer": "Show fewer",
     "i18nStrings.tokenLimitShowMore": "Show more",
     "i18nStrings.valueText": "Value",
-    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {Remove filter, {token__propertyKey} equals {token__value}} not_equals {Remove filter, {token__propertyKey} does not equal {token__value}} greater_than {Remove filter, {token__propertyKey} is greater than {token__value}} greater_than_equal {Remove filter, {token__propertyKey} is greater than or equal to {token__value}} less_than {Remove filter, {token__propertyKey} is less than {token__value}} less_than_equal {Remove filter, {token__propertyKey} is less than or equal to {token__value}} contains {Remove filter, {token__propertyKey} contains {token__value}} not_contains {Remove filter, {token__propertyKey} does not contain {token__value}} starts_with {Remove filter, {token__propertyKey} starts with {token__value}} other {}}"
+    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {Remove filter, {token__propertyKey} equals {token__value}} not_equals {Remove filter, {token__propertyKey} does not equal {token__value}} greater_than {Remove filter, {token__propertyKey} is greater than {token__value}} greater_than_equal {Remove filter, {token__propertyKey} is greater than or equal to {token__value}} less_than {Remove filter, {token__propertyKey} is less than {token__value}} less_than_equal {Remove filter, {token__propertyKey} is less than or equal to {token__value}} contains {Remove filter, {token__propertyKey} contains {token__value}} not_contains {Remove filter, {token__propertyKey} does not contain {token__value}} starts_with {Remove filter, {token__propertyKey} starts with {token__value}} not_starts_with {Remove filter, {token__propertyKey} does not start with {token__value}} other {}}"
   },
   "s3-resource-selector": {
     "i18nStrings.inContextSelectPlaceholder": "Choose a version",
@@ -207,7 +209,7 @@
     "i18nStrings.inContextLoadingText": "Loading resource",
     "i18nStrings.inContextUriLabel": "S3 URI",
     "i18nStrings.inContextVersionSelectLabel": "Object version",
-    "i18nStrings.modalTitle": "Choose an archive in S3",
+    "i18nStrings.modalTitle": "Choose an object in S3",
     "i18nStrings.modalCancelButton": "Cancel",
     "i18nStrings.modalSubmitButton": "Choose",
     "i18nStrings.modalBreadcrumbRootItem": "S3 buckets",

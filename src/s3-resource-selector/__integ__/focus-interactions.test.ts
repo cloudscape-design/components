@@ -67,7 +67,7 @@ test(
     await page.setValue(tableFilteringInputSelector, 'wave-function-4ns.sim');
     await page.click(wrapper.findTable().findRowSelectionArea(1).toSelector());
     // navigate to submit button using keyboard
-    await page.keys(['Tab', 'Tab', 'Tab', 'Enter']);
+    await page.keys(['Tab', 'Tab', 'Enter']);
 
     await expect(page.isDisplayed(wrapper.findModal().toSelector())).resolves.toBe(false);
     await expect(page.isFocused(uriInputSelector)).resolves.toBe(true);

@@ -1,13 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import { ContentLayoutProps } from './interfaces';
 import { getBaseProps } from '../internal/base-component';
 import { getContentHeaderClassName } from '../internal/utils/content-header-utils';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useDynamicOverlap } from '../internal/hooks/use-dynamic-overlap';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
 import { useHeroHeader, useHeaderStyle, useHeaderDarkVisualContext } from '../app-layout/visual-refresh/header-style';
@@ -26,8 +25,6 @@ export default function InternalContentLayout({
   ...rest
 }: InternalContentLayoutProps) {
   const baseProps = getBaseProps(rest);
-  const rootElement = useRef<HTMLDivElement>(null);
-  const mergedRef = useMergeRefs(rootElement, __internalRootRef);
 
   const isVisualRefresh = useVisualRefresh();
   //const isHeroHeader = heroHeader;
@@ -64,7 +61,7 @@ export default function InternalContentLayout({
         [styles['is-visual-refresh']]: isVisualRefresh,
         [styles['has-header']]: !!header,
       })}
-      ref={mergedRef}
+      ref={__internalRootRef}
     >
       <div
         className={clsx(

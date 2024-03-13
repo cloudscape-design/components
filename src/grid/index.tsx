@@ -11,7 +11,9 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 export { GridProps };
 
 export default function Grid({ gridDefinition = [], disableGutters = false, children, ...restProps }: GridProps) {
-  const baseComponentProps = useBaseComponent('Grid');
+  const baseComponentProps = useBaseComponent('Grid', {
+    props: { disableGutters },
+  });
   const baseProps = getBaseProps(restProps);
   const [breakpoint, ref] = useContainerBreakpoints(undefined);
 

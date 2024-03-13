@@ -3,6 +3,7 @@
 
 import React from 'react';
 import { render } from '@testing-library/react';
+import MockDate from 'mockdate';
 import { createWrapper } from '@cloudscape-design/test-utils-core/dom.js';
 import DatePickerWrapper from '../../../lib/components/test-utils/dom/date-picker';
 import DatePicker, { DatePickerProps } from '../../../lib/components/date-picker';
@@ -42,11 +43,15 @@ describe('Date picker calendar at month granularity', () => {
   };
 
   beforeEach(() => {
-    // Set default locale of the browser to en-US for more consistent tests
+    // Set default locale of the browser to en-US and a fixed date for more consistent tests
     const locale = new Intl.DateTimeFormat('en-US', { timeZone: 'UTC' });
     jest.spyOn(Intl, 'DateTimeFormat').mockImplementation(() => locale);
+    MockDate.set(new Date(2024, 1, 15));
   });
-  afterEach(() => jest.restoreAllMocks());
+  afterEach(() => {
+    jest.restoreAllMocks();
+    MockDate.reset();
+  });
 
   describe('localization', () => {
     test('should render calendar with the default locale', () => {
