@@ -32,6 +32,7 @@ function ExpandToggleButton({
       ref={buttonRef}
       tabIndex={tabIndex}
       aria-label={isExpanded ? collapseButtonLabel : expandButtonLabel}
+      aria-expanded={isExpanded}
       className={styles['expand-toggle']}
       onClick={onExpandableItemToggle}
     >

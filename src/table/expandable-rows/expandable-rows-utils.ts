@@ -5,6 +5,12 @@ import { fireNonCancelableEvent } from '../../internal/events';
 import { TableProps } from '../interfaces';
 import { ItemSet } from '../selection/utils';
 
+interface ItemPlacement {
+  level: number;
+  setSize: number;
+  posInSet: number;
+}
+
 export function getExpandableTableProps<T>({
   items,
   expandableRows,
@@ -19,20 +25,26 @@ export function getExpandableTableProps<T>({
   const expandedSet = new ItemSet(trackBy, expandableRows?.expandedItems ?? []);
 
   let allItems = items;
-  const itemToLevel = new Map<T, number>();
+  const itemToPlacement = new Map<T, ItemPlacement>();
+  const getItemLevel = (item: T) => itemToPlacement.get(item)?.level ?? 0;
 
   if (isExpandable) {
     const visibleItems = new Array<T>();
 
-    const traverse = (item: T, level = 1) => {
-      itemToLevel.set(item, level);
+    const traverse = (item: T, placement: ItemPlacement) => {
+      itemToPlacement.set(item, placement);
+
       visibleItems.push(item);
       if (expandedSet.has(item)) {
         const children = expandableRows.getItemChildren(item);
-        children.forEach(child => traverse(child, level + 1));
+        expandableRows
+          .getItemChildren(item)
+          .forEach((child, index) =>
+            traverse(child, { level: placement.level + 1, setSize: children.length, posInSet: index + 1 })
+          );
       }
     };
-    items.forEach(item => traverse(item));
+    items.forEach((item, index) => traverse(item, { level: 1, setSize: items.length, posInSet: index + 1 }));
 
     for (let index = 0; index < visibleItems.length; index++) {
       const item = visibleItems[index];
@@ -41,7 +53,7 @@ export function getExpandableTableProps<T>({
         let insertionIndex = index + 1;
         for (insertionIndex; insertionIndex < visibleItems.length; insertionIndex++) {
           const insertionItem = visibleItems[insertionIndex];
-          if ((itemToLevel.get(item) ?? 0) >= (itemToLevel.get(insertionItem) ?? 0)) {
+          if (getItemLevel(item) >= getItemLevel(insertionItem)) {
             break;
           }
         }
@@ -52,13 +64,18 @@ export function getExpandableTableProps<T>({
     allItems = visibleItems;
   }
 
-  const getExpandableItemProps = (item: T) => ({
-    level: itemToLevel.get(item) ?? 1,
-    isExpandable: expandableRows?.isItemExpandable(item) ?? true,
-    isExpanded: expandedSet.has(item),
-    onExpandableItemToggle: () =>
-      fireNonCancelableEvent(expandableRows?.onExpandableItemToggle, { item, expanded: !expandedSet.has(item) }),
-  });
+  const getExpandableItemProps = (item: T) => {
+    const { level, setSize, posInSet } = itemToPlacement.get(item) ?? { level: 1, setSize: 1, posInSet: 1 };
+    return {
+      level,
+      setSize,
+      posInSet,
+      isExpandable: expandableRows?.isItemExpandable(item) ?? true,
+      isExpanded: expandedSet.has(item),
+      onExpandableItemToggle: () =>
+        fireNonCancelableEvent(expandableRows?.onExpandableItemToggle, { item, expanded: !expandedSet.has(item) }),
+    };
+  };
 
   return { isExpandable, allItems, getExpandableItemProps };
 }

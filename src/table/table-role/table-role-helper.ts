@@ -35,12 +35,12 @@ export function getTableRoleProps(options: {
   // Incrementing the total count by one to account for the header row.
   nativeProps['aria-rowcount'] = options.totalItemsCount ? options.totalItemsCount + 1 : -1;
 
-  if (options.tableRole === 'grid') {
+  if (options.tableRole === 'grid' || options.tableRole === 'treegrid') {
     nativeProps['aria-colcount'] = options.totalColumnsCount;
   }
 
   // Make table component programmatically focusable to attach focusin/focusout for keyboard navigation.
-  if (options.tableRole === 'grid') {
+  if (options.tableRole === 'grid' || options.tableRole === 'treegrid') {
     nativeProps.tabIndex = -1;
   }
 
@@ -64,23 +64,33 @@ export function getTableHeaderRowRoleProps(options: { tableRole: TableRole }) {
   const nativeProps: React.HTMLAttributes<HTMLTableRowElement> = {};
 
   // For grids headers are treated similar to data rows and are indexed accordingly.
-  if (options.tableRole === 'grid' || options.tableRole === 'grid-default') {
+  if (options.tableRole === 'grid' || options.tableRole === 'grid-default' || options.tableRole === 'treegrid') {
     nativeProps['aria-rowindex'] = 1;
   }
 
   return nativeProps;
 }
 
-export function getTableRowRoleProps(options: { tableRole: TableRole; rowIndex: number; firstIndex?: number }) {
+export function getTableRowRoleProps(options: {
+  tableRole: TableRole;
+  rowIndex: number;
+  firstIndex?: number;
+  treeProps?: { level: number; setSize: number; posInSet: number };
+}) {
   const nativeProps: React.HTMLAttributes<HTMLTableRowElement> = {};
 
   // The data cell indices are incremented by 1 to account for the header cells.
-  if (options.tableRole === 'grid') {
+  if (options.tableRole === 'grid' || options.tableRole === 'treegrid') {
     nativeProps['aria-rowindex'] = (options.firstIndex || 1) + options.rowIndex + 1;
   }
   // For tables indices are only added when the first index is not 0 (not the first page/frame).
   else if (options.firstIndex !== undefined) {
     nativeProps['aria-rowindex'] = options.firstIndex + options.rowIndex + 1;
+  }
+  if (options.tableRole === 'treegrid' && options.treeProps) {
+    nativeProps['aria-level'] = options.treeProps.level;
+    nativeProps['aria-setsize'] = options.treeProps.setSize;
+    nativeProps['aria-posinset'] = options.treeProps.posInSet;
   }
 
   return nativeProps;
@@ -95,7 +105,7 @@ export function getTableColHeaderRoleProps(options: {
 
   nativeProps.scope = 'col';
 
-  if (options.tableRole === 'grid') {
+  if (options.tableRole === 'grid' || options.tableRole === 'treegrid') {
     nativeProps['aria-colindex'] = options.colIndex + 1;
   }
 
@@ -109,7 +119,7 @@ export function getTableColHeaderRoleProps(options: {
 export function getTableCellRoleProps(options: { tableRole: TableRole; colIndex: number; isRowHeader?: boolean }) {
   const nativeProps: React.TdHTMLAttributes<HTMLTableCellElement> = {};
 
-  if (options.tableRole === 'grid') {
+  if (options.tableRole === 'grid' || options.tableRole === 'treegrid') {
     nativeProps['aria-colindex'] = options.colIndex + 1;
   }
 

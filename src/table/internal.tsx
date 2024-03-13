@@ -37,6 +37,7 @@ import { useMobile } from '../internal/hooks/use-mobile';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import {
   GridNavigationProvider,
+  TableRole,
   getTableRoleProps,
   getTableRowRoleProps,
   getTableWrapperRoleProps,
@@ -242,7 +243,15 @@ const InternalTable = React.forwardRef(
 
     const hasStickyColumns = !!((stickyColumns?.first ?? 0) + (stickyColumns?.last ?? 0) > 0);
     const hasEditableCells = !!columnDefinitions.find(col => col.editConfig);
-    const tableRole = enableKeyboardNavigation ? 'grid' : hasEditableCells ? 'grid-default' : 'table';
+
+    let tableRole: TableRole = 'table';
+    if (isExpandable) {
+      tableRole = 'treegrid';
+    } else if (enableKeyboardNavigation) {
+      tableRole = 'grid';
+    } else if (hasEditableCells) {
+      tableRole = 'grid-default';
+    }
 
     const theadProps: TheadProps = {
       selectionType,
@@ -460,7 +469,16 @@ const InternalTable = React.forwardRef(
                             onContextMenu={
                               onRowContextMenuHandler && onRowContextMenuHandler.bind(null, rowIndex, item)
                             }
-                            {...getTableRowRoleProps({ tableRole, firstIndex, rowIndex })}
+                            {...getTableRowRoleProps({
+                              tableRole,
+                              firstIndex,
+                              rowIndex,
+                              treeProps: {
+                                level: expandableProps.level,
+                                setSize: expandableProps.setSize,
+                                posInSet: expandableProps.posInSet,
+                              },
+                            })}
                           >
                             {selectionType !== undefined && (
                               <TableTdElement
