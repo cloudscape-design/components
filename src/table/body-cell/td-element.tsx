@@ -132,11 +132,15 @@ function CellContent({ expandableProps, children }: { expandableProps?: Expandab
     <div
       className={clsx(
         styles['expandable-cell-content'],
-        styles[`expandable-cell-content-level-${expandableProps.level}`]
+        styles[`expandable-cell-content-level-${getLevelClassSuffix(expandableProps.level)}`]
       )}
     >
       <ExpandToggle {...expandableProps} />
       {children}
     </div>
   );
+}
+
+function getLevelClassSuffix(level: number) {
+  return 1 <= level && level <= 9 ? level : 'next';
 }

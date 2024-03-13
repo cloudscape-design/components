@@ -55,7 +55,8 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
   &-level-8 {
     padding-inline-start: calc(7 * (#{awsui.$space-m} + #{awsui.$space-xs}));
   }
-  &-level-9 {
+  &-level-9,
+  &-level-next {
     padding-inline-start: calc(8 * (#{awsui.$space-m} + #{awsui.$space-xs}));
   }
 }
