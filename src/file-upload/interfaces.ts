@@ -5,7 +5,7 @@ import { BaseComponentProps } from '../internal/base-component';
 import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
 import { NonCancelableEventHandler } from '../internal/events';
 
-export interface FileUploadProps extends BaseComponentProps, Omit<FormFieldValidationControlProps, 'warning'> {
+export interface FileUploadProps extends BaseComponentProps, Exclude<FormFieldValidationControlProps, 'warning'> {
   /**
    * Specifies the native file input `accept` attribute to describe the allow-list of file types.
    */
