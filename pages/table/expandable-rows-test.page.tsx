@@ -8,12 +8,13 @@ import { getMatchesCountText } from './shared-configs';
 import { useCollection } from '@cloudscape-design/collection-hooks';
 import {
   Alert,
+  AppLayout,
   Box,
   Button,
   ButtonDropdown,
   Checkbox,
   CollectionPreferencesProps,
-  ExpandableSection,
+  Drawer,
   FormField,
   Pagination,
   PropertyFilter,
@@ -42,6 +43,7 @@ type PageContext = React.Context<
 
 export default () => {
   const settings = usePageSettings();
+  const [toolsOpen, setToolsOpen] = useState(true);
   const [preferences, setPreferences] = useState<CollectionPreferencesProps.Preferences>({
     pageSize: 10,
     wrapLines: true,
@@ -113,12 +115,13 @@ export default () => {
 
   return (
     <I18nProvider messages={[messages]} locale="en">
-      <Box margin="m">
-        <SpaceBetween size="m">
-          <Box variant="h1">Expandable rows</Box>
-
-          <PageSettings />
-
+      <AppLayout
+        contentType="table"
+        navigationHide={true}
+        tools={<PageSettings />}
+        toolsOpen={toolsOpen}
+        onToolsChange={({ detail: { open } }) => setToolsOpen(open)}
+        content={
           <Table
             {...collectionProps}
             stickyColumns={preferences.stickyColumns}
@@ -135,9 +138,12 @@ export default () => {
             columnDisplay={preferences.contentDisplay}
             preferences={createPreferences({ preferences, setPreferences })}
             submitEdit={() => {}}
+            variant="full-page"
             header={
               <SpaceBetween size="m">
                 <Header
+                  variant="h1"
+                  description="Table with expandable rows test page"
                   counter={getHeaderCounterText(allInstances, collectionProps.selectedItems)}
                   actions={
                     <SpaceBetween size="s" direction="horizontal" alignItems="center">
@@ -202,8 +208,8 @@ export default () => {
               />
             }
           />
-        </SpaceBetween>
-      </Box>
+        }
+      />
     </I18nProvider>
   );
 };
@@ -227,7 +233,7 @@ function PageSettings() {
   const selectionTypeOptions = [{ value: 'none' }, { value: 'single' }, { value: 'multi' }];
   const settings = usePageSettings();
   return (
-    <ExpandableSection variant="container" headerText="Page settings" headingTagOverride="h2" defaultExpanded={true}>
+    <Drawer header={<Header variant="h2">Page settings</Header>}>
       <SpaceBetween direction="horizontal" size="m">
         <FormField label="Table flags">
           <Checkbox
@@ -293,6 +299,6 @@ function PageSettings() {
           />
         </FormField>
       </SpaceBetween>
-    </ExpandableSection>
+    </Drawer>
   );
 }

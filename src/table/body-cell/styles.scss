@@ -371,7 +371,7 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
       // Showing focus outline for the cell.
       // We don't use our focus-visible polyfill here because it doesn't work properly with screen readers.
       // These edit buttons are special because they are visually hidden (opacity: 0), but exposed to assistive technology.
-      // It's therefore important to display the focus outline, even when a keyboard user wasn't detected.
+      // It's therefore important to display the focus outline, even when a keyboard use wasn't detected.
       // For example, when an edit button is selected from the VoiceOver rotor menu.
       &.body-cell-interactive:focus-within {
         @include styles.focus-highlight(

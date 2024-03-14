@@ -217,7 +217,7 @@ export default () => {
                 onExpandableItemToggle: () => {},
               }}
               submitEdit={permutation.editableCells ? () => {} : undefined}
-              ariaLabels={ariaLabels}
+              ariaLabels={{ ...ariaLabels, tableLabel: permutation.title }}
             />
           )}
         />
