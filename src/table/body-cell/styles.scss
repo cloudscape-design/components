@@ -355,14 +355,16 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
 
       @mixin focused-editor-styles {
         padding-inline-end: calc(#{$cell-horizontal-padding} + #{awsui.$space-l});
-        & > .body-cell-editor-wrapper {
+        & > .body-cell-editor-wrapper,
+        & > .expandable-cell-content > .body-cell-editor-wrapper {
           opacity: 1;
         }
         & > .body-cell-success {
           opacity: 1;
         }
       }
-      & > .body-cell-editor-wrapper {
+      & > .body-cell-editor-wrapper,
+      & > .expandable-cell-content > .body-cell-editor-wrapper {
         opacity: 0;
       }
 
@@ -380,7 +382,8 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
         );
       }
       // When a cell is not interactive the focus outline must be present for the editor button.
-      &:not(.body-cell-interactive) > .body-cell-editor-wrapper > .body-cell-editor {
+      &:not(.body-cell-interactive) > .body-cell-editor-wrapper > .body-cell-editor,
+      &:not(.body-cell-interactive) > .expandable-cell-content > .body-cell-editor-wrapper > .body-cell-editor {
         @include focus-visible.when-visible {
           @include styles.focus-highlight(awsui.$space-button-inline-icon-focus-outline-gutter);
         }
@@ -411,7 +414,8 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
           inset-inline: 0;
         }
 
-        & > .body-cell-editor-wrapper {
+        & > .body-cell-editor-wrapper,
+        & > .expandable-cell-content > .body-cell-editor-wrapper {
           padding-inline-end: calc(#{$edit-button-padding-right} - (2 * #{awsui.$border-divider-list-width}));
         }
         & > .body-cell-success {
@@ -445,7 +449,8 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
       border-end-end-radius: awsui.$border-radius-item;
     }
     &.body-cell-first-row > .body-cell-success,
-    &.body-cell-first-row > .body-cell-editor-wrapper {
+    &.body-cell-first-row > .body-cell-editor-wrapper,
+    &.body-cell-first-row > .expandable-cell-content > .body-cell-editor-wrapper {
       padding-block-start: awsui.$border-divider-list-width;
     }
   }
