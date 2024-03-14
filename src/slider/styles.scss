@@ -142,9 +142,11 @@ $thumb-border-radius: 50%;
 
   &-labels {
     display: grid;
-    grid-template-columns: repeat(var(#{custom-props.$sliderLabelCount}), 1fr);
+    grid-template-columns: 1fr repeat(calc((var(#{custom-props.$sliderLabelCount}) - 2) / 2), 2fr) 1fr;
+    //grid-template-columns: repeat(var(#{custom-props.$sliderLabelCount}), minmax(0, 1fr));
     grid-auto-rows: 100%;
-    block-size: 16px;
+    block-size: 40px;
+    overflow: hidden;
     padding-block-start: awsui.$space-s;
   }
 
@@ -153,6 +155,8 @@ $thumb-border-radius: 50%;
     grid-column-start: var(#{custom-props.$sliderReferenceColumn});
     grid-column-end: var(#{custom-props.$sliderNextReferenceColumn});
     grid-row: 1;
+    justify-self: center;
+    text-align: center;
     // margin-inline-start: -8px;
   }
 

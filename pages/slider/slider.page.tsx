@@ -16,25 +16,21 @@ function Sliders() {
   const [value3, setValue3] = React.useState(50);
   const [value4, setValue4] = React.useState(50);
   const [value5, setValue5] = React.useState(25);
+  const [value6, setValue6] = React.useState(25);
+  const [value7, setValue7] = React.useState(2);
   const [sliderValue, setSliderValue] = useState(40);
   const [error2, setError2] = useState(false);
   const [minValue, setMinValue] = React.useState<SelectProps.Option>({ value: '5' });
   const rangeOptions = [{ value: '5' }, { value: '10' }, { value: '15' }, { value: '20' }, { value: '25' }];
-  const sliderWordOptions = [
-    { value: 1, label: 'Mild' },
-    { value: 2, label: 'Medium' },
-    { value: 3, label: 'Spicy' },
-    { value: 4, label: 'Steam coming out of ears' },
-  ];
 
   const DTWordOptions = [
     { value: 0, label: 'Backend dev' },
-    { value: 25, label: 'Frontend dev' },
-    { value: 40, label: `Scott O'Brien` },
-    { value: 50, label: 'Jessica Kuelz ' },
-    { value: 60, label: 'Katie George' },
-    { value: 80, label: 'UX designer' },
-    { value: 100, label: 'Visual designer' },
+    { value: 2, label: 'Frontend dev' },
+    { value: 4, label: `Scott O'Brien` },
+    { value: 5, label: 'Jessica Kuelz ' },
+    { value: 6, label: 'Katie George' },
+    { value: 8, label: 'UX designer' },
+    { value: 10, label: 'Visual designer' },
   ];
 
   React.useEffect(() => {
@@ -116,15 +112,11 @@ function Sliders() {
           onChange={({ detail }) => {
             setValue3(detail.value);
           }}
-          valueFormatter={value =>
-            value === 0 || value === 100
-              ? `The very long and precise value at this point on the slider is: ${value}`
-              : `${value}`
-          }
+          valueFormatter={value => `${value} is the very long and precise value at this point.`}
           min={0}
           max={100}
           step={10}
-          referenceValues={[30, 60]}
+          referenceValues={[30, 50, 55, 60, 75]}
           tickMarks={true}
         />
       </FormField>
@@ -136,10 +128,12 @@ function Sliders() {
           }}
           valueFormatter={value => DTWordOptions.find(item => item.value === value)?.label || ''}
           min={0}
-          max={100}
+          max={10}
+          //step={1}
+          //tickMarks
           hideFillLine={true}
-          hideTooltip={true}
-          referenceValues={[25, 40, 50, 60, 80]}
+          hideTooltip={!DTWordOptions.map(item => item.value).includes(value4)}
+          referenceValues={[2, 4, 5, 6, 8]}
         />
       </FormField>
       <FormField label="How hot do you like your salsa?">
@@ -148,13 +142,39 @@ function Sliders() {
           onChange={({ detail }) => {
             setValue5(detail.value);
           }}
-          valueFormatter={value => sliderWordOptions.find(item => item.value === value)?.label || ''}
           step={1}
-          hideTooltip={true}
-          min={1}
-          max={4}
-          referenceValues={[2, 3]}
+          min={5}
+          max={15}
+          valueFormatter={value => `${value} is the label`}
+          referenceValues={[6, 7, 8, 9, 10, 11, 12, 13, 14]}
           tickMarks={true}
+        />
+      </FormField>
+      <FormField label="How hot do you like your salsa?">
+        <Slider
+          value={value6}
+          onChange={({ detail }) => {
+            setValue6(detail.value);
+          }}
+          step={1}
+          tickMarks={true}
+          min={0}
+          max={11}
+          referenceValues={Array.from({ length: 11 }, (v, i) => i + 1)}
+        />
+      </FormField>
+      <FormField label="How hot do you like your salsa?">
+        <Slider
+          value={value7}
+          onChange={({ detail }) => {
+            setValue7(detail.value);
+          }}
+          min={0}
+          max={70}
+          valueFormatter={value => `${value} is potato and potato`}
+          tickMarks={true}
+          step={5}
+          referenceValues={[7, 8, 9, 10, 25, 37, 39, 52, 53, 60, 67, 68]}
         />
       </FormField>
     </SpaceBetween>

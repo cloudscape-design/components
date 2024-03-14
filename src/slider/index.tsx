@@ -120,6 +120,7 @@ export default function Slider({
         {() => (
           <PopoverContainer
             trackRef={handleRef}
+            trackKey={value}
             size="small"
             fixedWidth={false}
             position="top"
@@ -138,6 +139,103 @@ export default function Slider({
       </Transition>
     </Portal>
   );
+
+  const getVisibleReferenceValues = () => {
+    // [0, 100] [2,20,21,50,99] => [20,50]
+    // [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+
+    if (!referenceValues) {
+      return [];
+    }
+
+    const newValues = [];
+
+    const lowestVal = referenceValues?.find(value => value / (max - min) >= 1 / 10);
+    newValues.push(lowestVal);
+    const lowestVal2 = referenceValues?.find(value => (value - (lowestVal || 0)) / (max - min) >= 1 / 10);
+    if (
+      lowestVal2 &&
+      !newValues.includes(lowestVal2) &&
+      referenceValues.length > 1 &&
+      (max - lowestVal2) / max >= 1 / 10
+    ) {
+      newValues.push(lowestVal2);
+    }
+    const lowestVal3 = referenceValues?.find(value => (value - (lowestVal2 || 0)) / (max - min) >= 1 / 10);
+    if (
+      lowestVal3 &&
+      !newValues.includes(lowestVal3) &&
+      referenceValues.length > 2 &&
+      (max - lowestVal3) / max >= 1 / 10
+    ) {
+      newValues.push(lowestVal3);
+    }
+    const lowestVal4 = referenceValues?.find(value => (value - (lowestVal3 || 0)) / (max - min) >= 1 / 10);
+    if (
+      lowestVal4 &&
+      !newValues.includes(lowestVal4) &&
+      referenceValues.length > 3 &&
+      (max - lowestVal4) / max >= 1 / 10
+    ) {
+      newValues.push(lowestVal4);
+    }
+    const lowestVal5 = referenceValues?.find(value => (value - (lowestVal4 || 0)) / (max - min) >= 1 / 10);
+    if (
+      lowestVal5 &&
+      !newValues.includes(lowestVal5) &&
+      referenceValues.length > 4 &&
+      (max - lowestVal5) / max >= 1 / 10
+    ) {
+      newValues.push(lowestVal5);
+    }
+    const lowestVal6 = referenceValues?.find(value => (value - (lowestVal5 || 0)) / (max - min) >= 1 / 10);
+    if (
+      lowestVal6 &&
+      !newValues.includes(lowestVal6) &&
+      referenceValues.length > 5 &&
+      (max - lowestVal6) / max >= 1 / 10
+    ) {
+      console.log(max, lowestVal6, max - lowestVal6);
+      newValues.push(lowestVal6);
+    }
+    const lowestVal7 = referenceValues?.find(value => (value - (lowestVal6 || 0)) / (max - min) >= 1 / 10);
+    if (
+      lowestVal7 &&
+      !newValues.includes(lowestVal7) &&
+      referenceValues.length > 6 &&
+      (max - lowestVal7) / max >= 1 / 10
+    ) {
+      newValues.push(lowestVal7);
+    }
+    const lowestVal8 = referenceValues?.find(value => (value - (lowestVal7 || 0)) / (max - min) >= 1 / 10);
+    if (
+      lowestVal8 &&
+      !newValues.includes(lowestVal8) &&
+      referenceValues.length > 7 &&
+      (max - lowestVal8) / max >= 1 / 10
+    ) {
+      newValues.push(lowestVal8);
+    }
+    const lowestVal9 = referenceValues?.find(value => (value - (lowestVal8 || 0)) / (max - min) >= 1 / 10);
+    if (
+      lowestVal9 &&
+      !newValues.includes(lowestVal9) &&
+      referenceValues.length > 8 &&
+      (max - lowestVal9) / max >= 1 / 10
+    ) {
+      newValues.push(lowestVal9);
+    }
+
+    // const filteredValues = referenceValues?.filter((value, index, values) => {
+    //   const valueBefore = values[0] ? 0 : values[index - 1];
+    //   if ((value - valueBefore) / (max - min) >= 1 / 10 && value / (max - min) <= 9 / 10) {
+    //     return value;
+    //   }
+    // });
+
+    console.log(newValues);
+    return newValues;
+  };
 
   return (
     <div className={styles['slider-container']} ref={containerRef}>
@@ -224,7 +322,8 @@ export default function Slider({
         role="list"
         className={clsx(styles['slider-labels'])}
         style={{
-          [customCssProps.sliderLabelCount]: max - 1,
+          [customCssProps.sliderLabelCount]: (max - min) * 2,
+          //[customCssProps.sliderLabelCount]: max - min,
         }}
         id={labelsId}
       >
@@ -232,7 +331,7 @@ export default function Slider({
           role="option"
           className={clsx(styles['slider-min'])}
           style={{
-            [customCssProps.sliderMinEnd]: referenceValues ? referenceValues[0] : max / 2,
+            [customCssProps.sliderMinEnd]: max - min > 10 ? 5 * Math.round((max - min) / 100) : 1,
           }}
           ref={minRef}
         >
@@ -240,15 +339,18 @@ export default function Slider({
         </span>
         {referenceValues &&
           referenceValues.length > 0 &&
-          referenceValues.map((step, index, steps) => {
+          getVisibleReferenceValues().map((step, index) => {
             return (
               <span
                 role="option"
                 ref={el => (referenceValueRefs.current[index] = el)}
                 key={`step-${index}`}
                 style={{
-                  [customCssProps.sliderReferenceColumn]: step,
-                  [customCssProps.sliderNextReferenceColumn]: steps[index + 1] || max,
+                  [customCssProps.sliderReferenceColumn]:
+                    max - min > 10 ? step - min + 1 - 4 * Math.round((max - min) / 100) : step - min + 1,
+                  [customCssProps.sliderNextReferenceColumn]:
+                    max - min > 10 ? step - min + 1 + 5 * Math.round((max - min) / 100) : step - min + 1 || max - min,
+                  //[customCssProps.sliderNextReferenceColumn]: steps[index + 1] || max - 1,
                 }}
                 className={clsx(styles['slider-reference'])}
               >
@@ -260,7 +362,8 @@ export default function Slider({
           role="option"
           className={clsx(styles['slider-max'])}
           style={{
-            [customCssProps.sliderMaxStart]: referenceValues ? referenceValues[referenceValues.length - 1] : max / 2,
+            [customCssProps.sliderMaxStart]:
+              max - min > 10 ? max - min + 1 - 5 * Math.round((max - min) / 100) : max - min + 1,
           }}
           ref={maxRef}
         >
