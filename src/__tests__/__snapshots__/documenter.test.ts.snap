@@ -683,7 +683,7 @@ Individual properties will always take precedence over the default coming from t
       "type": "boolean",
     },
     Object {
-      "description": "Drawers property.
+      "description": "Drawers property. If you set both \`drawers\` and \`tools\`, \`drawers\` will take precedence.
 Each Drawer is an item in the drawers wrapper with the following properties:
 * id (string) - the id of the drawer.
 * content (React.ReactNode) - the content in the drawer.
@@ -11200,6 +11200,11 @@ operations are communicated to the user in another way.",
             "type": "string",
           },
           Object {
+            "name": "operatorDoesNotStartWithText",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
             "name": "operatorEqualsText",
             "optional": true,
             "type": "string",
@@ -11289,7 +11294,7 @@ operations are communicated to the user in another way.",
 Each token has the following properties:
 * value [string]: The string value of the token to be used as a filter.
 * propertyKey [string]: The key of the corresponding property in filteringProperties.
-* operator ['<' | '<=' | '>' | '>=' | ':' | '!:' | '=' | '!=' | '^']: The operator which indicates how to filter the dataset using this token.
+* operator ['<' | '<=' | '>' | '>=' | ':' | '!:' | '=' | '!=' | '^' | '!^']: The operator which indicates how to filter the dataset using this token.
 
 \`operation\` has two valid values [and, or] and controls the join operation to be applied between tokens when filtering the items.
 ",

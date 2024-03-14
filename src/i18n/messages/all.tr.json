@@ -138,7 +138,8 @@
     "i18nStrings.warningIconAriaLabel": "Uyarı"
   },
   "form-field": {
-    "i18nStrings.errorIconAriaLabel": "Hata"
+    "i18nStrings.errorIconAriaLabel": "Hata",
+    "i18nStrings.warningIconAriaLabel": "Uyarı"
   },
   "form": {
     "errorIconAriaLabel": "Hata"
@@ -191,13 +192,14 @@
     "i18nStrings.operatorLessOrEqualText": "Küçük veya eşittir",
     "i18nStrings.operatorLessText": "Küçüktür",
     "i18nStrings.operatorStartsWithText": "İle başlar",
+    "i18nStrings.operatorDoesNotStartWithText": "Şununla başlamıyor:",
     "i18nStrings.operatorText": "Operatör",
     "i18nStrings.operatorsText": "Operatörler",
     "i18nStrings.propertyText": "Özellik",
     "i18nStrings.tokenLimitShowFewer": "Daha az göster",
     "i18nStrings.tokenLimitShowMore": "Daha fazla göster",
     "i18nStrings.valueText": "Değer",
-    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {{token__propertyKey}, {token__value} değerine eşittir filtresini kaldır} not_equals {{token__propertyKey}, {token__value} değerine eşit değildir filtresini kaldır} greater_than {{token__propertyKey}, {token__value} değerinden büyüktür filtresini kaldır} greater_than_equal {{token__propertyKey}, {token__value} değerinden büyük veya buna eşittir filtresini kaldır} less_than {{token__propertyKey}, {token__value} değerinden küçüktür filtresini kaldır} less_than_equal {{token__propertyKey}, {token__value} değerinden küçük veya buna eşittir filtresini kaldır} contains {{token__propertyKey}, {token__value} değerini içerir filtresini kaldır} not_contains {{token__propertyKey}, {token__value} değerini içermez filtresini kaldır} starts_with {{token__propertyKey}, {token__value} değerinden şunla başlar filtresini kaldır} other {}}"
+    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {{token__propertyKey}, {token__value} değerine eşittir filtresini kaldır} not_equals {{token__propertyKey}, {token__value} değerine eşit değildir filtresini kaldır} greater_than {{token__propertyKey}, {token__value} değerinden büyüktür filtresini kaldır} greater_than_equal {{token__propertyKey}, {token__value} değerinden büyük veya buna eşittir filtresini kaldır} less_than {{token__propertyKey}, {token__value} değerinden küçüktür filtresini kaldır} less_than_equal {{token__propertyKey}, {token__value} değerinden küçük veya buna eşittir filtresini kaldır} contains {{token__propertyKey}, {token__value} değerini içerir filtresini kaldır} not_contains {{token__propertyKey}, {token__value} değerini içermez filtresini kaldır} starts_with {{token__propertyKey}, {token__value} değerinden şunla başlar filtresini kaldır} not_starts_with {{token__propertyKey}, {token__value} değeri ile başlamaz filtresini kaldır} other {}}"
   },
   "s3-resource-selector": {
     "i18nStrings.inContextSelectPlaceholder": "Bir sürüm seçin",
@@ -207,7 +209,7 @@
     "i18nStrings.inContextLoadingText": "Kaynak yükleniyor",
     "i18nStrings.inContextUriLabel": "S3 URI'si",
     "i18nStrings.inContextVersionSelectLabel": "Nesne sürümü",
-    "i18nStrings.modalTitle": "S3'te bir arşiv seç",
+    "i18nStrings.modalTitle": "S3'te bir nesne seçin",
     "i18nStrings.modalCancelButton": "İptal",
     "i18nStrings.modalSubmitButton": "Seç",
     "i18nStrings.modalBreadcrumbRootItem": "S3 bucket'ları",

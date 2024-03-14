@@ -9,7 +9,7 @@ import { FormFieldProps } from './interfaces';
 export { FormFieldProps };
 
 export default function FormField({ stretch = false, ...props }: FormFieldProps) {
-  const baseComponentProps = useBaseComponent('FormField');
+  const baseComponentProps = useBaseComponent('FormField', { props: { stretch } });
   return <InternalFormField stretch={stretch} {...props} __hideLabel={false} {...baseComponentProps} />;
 }
 

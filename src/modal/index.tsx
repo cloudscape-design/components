@@ -9,7 +9,9 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 export { ModalProps };
 
 export default function Modal({ size = 'medium', ...props }: ModalProps) {
-  const baseComponentProps = useBaseComponent('Modal');
+  const baseComponentProps = useBaseComponent('Modal', {
+    props: { size, disableContentPaddings: props.disableContentPaddings },
+  });
   return <InternalModal size={size} {...props} {...baseComponentProps} />;
 }
 

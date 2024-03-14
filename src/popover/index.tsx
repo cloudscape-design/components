@@ -27,7 +27,9 @@ export default function Popover({
     }
   }
 
-  const baseComponentProps = useBaseComponent('Popover');
+  const baseComponentProps = useBaseComponent('Popover', {
+    props: { dismissButton, fixedWidth, position, renderWithPortal, size, triggerType },
+  });
   const externalProps = getExternalProps(rest);
   return (
     <InternalPopover

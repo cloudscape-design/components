@@ -19,7 +19,7 @@ export default function Hotspot({
   direction = 'top',
   ...restProps
 }: HotspotProps): JSX.Element {
-  const { __internalRootRef } = useBaseComponent('Hotspot');
+  const { __internalRootRef } = useBaseComponent('Hotspot', { props: { direction, side } });
   const baseProps = getBaseProps(restProps);
 
   const hotspotContext = useContext(hotspotContextType);

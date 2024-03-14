@@ -4,6 +4,7 @@
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import createWrapper from '../../../../lib/components/test-utils/selectors';
 import { GridNavigationPageObject } from './page-object';
+import { range } from 'lodash';
 
 interface Options {
   actionsMode?: 'dropdown' | 'inline';
@@ -98,5 +99,34 @@ test(
 
     await page.keys(['Shift', 'Tab', 'Null']);
     await expect(page.isFocused('[data-testid="link-before"]')).resolves.toBe(true);
+  })
+);
+
+test(
+  'element index is preserved when moving cursor down',
+  setupTest({ actionsMode: 'inline' }, async page => {
+    await page.click('[data-testid="link-before"]');
+    await page.keys('Tab');
+    await page.keys(['ArrowRight', 'ArrowDown', 'ArrowRight', 'ArrowRight']);
+    await expect(page.isFocused('tr[aria-rowindex="2"] button[aria-label="Update item"]')).resolves.toBe(true);
+
+    await page.keys(['ArrowDown', 'ArrowDown', 'ArrowDown', 'ArrowDown']);
+    await expect(page.isFocused('tr[aria-rowindex="6"] button[aria-label="Update item"]')).resolves.toBe(true);
+  })
+);
+
+test(
+  'column index is preserved when moving cursor down',
+  setupTest({ actionsMode: 'inline' }, async page => {
+    await page.click('[data-testid="link-before"]');
+    await page.keys('Tab');
+    await page.keys(['ArrowRight', 'ArrowDown', 'ArrowRight']);
+    await expect(page.isFocused('tr[aria-rowindex="2"] button[aria-label="Duplicate item"]')).resolves.toBe(true);
+
+    await page.keys(range(0, 11).map(() => 'ArrowDown'));
+    await expect(page.getFocusedElementText()).resolves.toBe('Summary row');
+
+    await page.keys(['ArrowDown']);
+    await expect(page.isFocused('tr[aria-rowindex="14"] button[aria-label="Duplicate item"]')).resolves.toBe(true);
   })
 );

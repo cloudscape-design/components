@@ -34,7 +34,9 @@ export default function ProgressBar({
   onResultButtonClick,
   ...rest
 }: ProgressBarProps) {
-  const { __internalRootRef } = useBaseComponent('ProgressBar');
+  const { __internalRootRef } = useBaseComponent('ProgressBar', {
+    props: { variant },
+  });
   const baseProps = getBaseProps(rest);
   const generatedName = useUniqueId('awsui-progress-bar-');
 

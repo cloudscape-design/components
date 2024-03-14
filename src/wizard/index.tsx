@@ -13,7 +13,9 @@ import { WizardProps } from './interfaces';
 import { useFunnel } from '../internal/analytics/hooks/use-funnel';
 
 function Wizard({ isLoadingNextStep = false, allowSkipTo = false, ...props }: WizardProps) {
-  const baseComponentProps = useBaseComponent('Wizard');
+  const baseComponentProps = useBaseComponent('Wizard', {
+    props: { allowSkipTo },
+  });
   const { wizardCount } = useFunnel();
   const externalProps = getExternalProps(props);
 

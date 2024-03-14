@@ -37,7 +37,9 @@ export default function SplitPanel({
   ...restProps
 }: SplitPanelProps) {
   const isRefresh = useVisualRefresh();
-  const { __internalRootRef } = useBaseComponent('SplitPanel');
+  const { __internalRootRef } = useBaseComponent('SplitPanel', {
+    props: { closeBehavior, hidePreferencesButton },
+  });
   const {
     position,
     topOffset,

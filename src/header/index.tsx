@@ -9,7 +9,9 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 export { HeaderProps };
 
 export default function Header({ variant = 'h2', ...props }: HeaderProps) {
-  const baseComponentProps = useBaseComponent('Header');
+  const baseComponentProps = useBaseComponent('Header', {
+    props: { headingTagOverride: props.headingTagOverride, variant },
+  });
   return <InternalHeader variant={variant} {...props} {...baseComponentProps} />;
 }
 

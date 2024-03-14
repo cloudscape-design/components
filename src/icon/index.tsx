@@ -9,7 +9,7 @@ import { IconProps } from './interfaces';
 export { IconProps };
 
 export default function Icon({ size = 'normal', variant = 'normal', ...props }: IconProps) {
-  const baseComponentProps = useBaseComponent('Icon');
+  const baseComponentProps = useBaseComponent('Icon', { props: { name: props.name, size, variant } });
   return <InternalIcon size={size} variant={variant} {...props} {...baseComponentProps} />;
 }
 

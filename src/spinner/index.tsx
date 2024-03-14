@@ -9,7 +9,9 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 export { SpinnerProps };
 
 export default function Spinner({ size = 'normal', variant = 'normal', ...props }: SpinnerProps) {
-  const baseComponentProps = useBaseComponent('Spinner');
+  const baseComponentProps = useBaseComponent('Spinner', {
+    props: { size, variant },
+  });
   return <InternalSpinner size={size} variant={variant} {...props} {...baseComponentProps} />;
 }
 

@@ -133,7 +133,17 @@ const DateRangePicker = React.forwardRef(
     }: DateRangePickerProps,
     ref: Ref<DateRangePickerProps.Ref>
   ) => {
-    const { __internalRootRef } = useBaseComponent('DateRangePicker');
+    const { __internalRootRef } = useBaseComponent('DateRangePicker', {
+      props: {
+        absoluteFormat,
+        dateOnly,
+        expandToViewport,
+        rangeSelectorMode,
+        readOnly,
+        showClearButton,
+        timeInputFormat,
+      },
+    });
     checkControlled('DateRangePicker', 'value', value, 'onChange', onChange);
 
     const normalizedTimeOffset = normalizeTimeOffset(value, getTimeOffset, timeOffset);

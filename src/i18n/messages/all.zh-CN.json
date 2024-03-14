@@ -138,7 +138,8 @@
     "i18nStrings.warningIconAriaLabel": "警告"
   },
   "form-field": {
-    "i18nStrings.errorIconAriaLabel": "错误"
+    "i18nStrings.errorIconAriaLabel": "错误",
+    "i18nStrings.warningIconAriaLabel": "警告"
   },
   "form": {
     "errorIconAriaLabel": "错误"
@@ -191,13 +192,14 @@
     "i18nStrings.operatorLessOrEqualText": "小于或等于",
     "i18nStrings.operatorLessText": "小于",
     "i18nStrings.operatorStartsWithText": "开头为",
+    "i18nStrings.operatorDoesNotStartWithText": "开头不为",
     "i18nStrings.operatorText": "运算符",
     "i18nStrings.operatorsText": "运算符",
     "i18nStrings.propertyText": "属性",
     "i18nStrings.tokenLimitShowFewer": "显示更少",
     "i18nStrings.tokenLimitShowMore": "显示更多",
     "i18nStrings.valueText": "值",
-    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {删除筛选条件，{token__propertyKey} 等于 {token__value}} not_equals {删除筛选条件，{token__propertyKey} 不等于 {token__value}} greater_than {删除筛选条件，{token__propertyKey} 大于 {token__value}} greater_than_equal {删除筛选条件，{token__propertyKey} 大于或等于 {token__value}} less_than {删除筛选条件，{token__propertyKey} 小于 {token__value}} less_than_equal {删除筛选条件，{token__propertyKey} 小于或等于 {token__value}} contains {删除筛选条件，{token__propertyKey} 包含 {token__value}} not_contains {删除筛选条件，{token__propertyKey} 不包含 {token__value}} starts_with {删除筛选条件，{token__propertyKey} 开头为 {token__value}} other {}}"
+    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {删除筛选条件，{token__propertyKey} 等于 {token__value}} not_equals {删除筛选条件，{token__propertyKey} 不等于 {token__value}} greater_than {删除筛选条件，{token__propertyKey} 大于 {token__value}} greater_than_equal {删除筛选条件，{token__propertyKey} 大于或等于 {token__value}} less_than {删除筛选条件，{token__propertyKey} 小于 {token__value}} less_than_equal {删除筛选条件，{token__propertyKey} 小于或等于 {token__value}} contains {删除筛选条件，{token__propertyKey} 包含 {token__value}} not_contains {删除筛选条件，{token__propertyKey} 不包含 {token__value}} starts_with {删除筛选条件，{token__propertyKey} 开头为 {token__value}} not_starts_with {删除筛选条件，{token__propertyKey} 不是以 {token__value} 开头} other {}}"
   },
   "s3-resource-selector": {
     "i18nStrings.inContextSelectPlaceholder": "选择版本",
@@ -207,7 +209,7 @@
     "i18nStrings.inContextLoadingText": "正在加载资源",
     "i18nStrings.inContextUriLabel": "S3 URI",
     "i18nStrings.inContextVersionSelectLabel": "对象版本",
-    "i18nStrings.modalTitle": "在 S3 中选择档案",
+    "i18nStrings.modalTitle": "在 S3 中选择一个对象",
     "i18nStrings.modalCancelButton": "取消",
     "i18nStrings.modalSubmitButton": "选择",
     "i18nStrings.modalBreadcrumbRootItem": "S3 存储桶",

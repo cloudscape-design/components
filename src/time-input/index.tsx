@@ -14,7 +14,15 @@ const TimeInput = React.forwardRef(
     { format = 'hh:mm:ss', use24Hour = true, autoComplete = true, ...props }: TimeInputProps,
     ref: Ref<HTMLInputElement>
   ) => {
-    const baseComponentProps = useBaseComponent('TimeInput');
+    const baseComponentProps = useBaseComponent('TimeInput', {
+      props: {
+        autoFocus: props.autoFocus,
+        disableBrowserAutocorrect: props.disableBrowserAutocorrect,
+        format,
+        readOnly: props.readOnly,
+        use24Hour,
+      },
+    });
     return (
       <InternalTimeInput
         format={format}

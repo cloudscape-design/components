@@ -34,7 +34,9 @@ const FormWithAnalytics = ({ variant = 'full-page', actions, ...props }: FormPro
 };
 
 export default function Form({ variant = 'full-page', ...props }: FormProps) {
-  const baseComponentProps = useBaseComponent('Form');
+  const baseComponentProps = useBaseComponent('Form', {
+    props: { variant },
+  });
   const inheritedFunnelNameSelector = useFunnelNameSelector();
   const funnelNameSelector = inheritedFunnelNameSelector || `.${headerStyles['heading-text']}`;
 

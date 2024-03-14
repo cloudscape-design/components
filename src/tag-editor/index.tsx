@@ -50,7 +50,9 @@ const TagEditor = React.forwardRef(
     }: TagEditorProps,
     ref: React.Ref<TagEditorProps.Ref>
   ) => {
-    const baseComponentProps = useBaseComponent('TagEditor');
+    const baseComponentProps = useBaseComponent('TagEditor', {
+      props: { tagLimit, allowedCharacterPattern },
+    });
     const i18n = useInternalI18n('tag-editor');
 
     const remainingTags = tagLimit - tags.filter(tag => !tag.markedForRemoval).length;

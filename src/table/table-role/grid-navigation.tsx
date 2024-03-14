@@ -75,6 +75,7 @@ class GridNavigationProcessor {
 
   // State
   private focusedCell: null | FocusedCell = null;
+  private keepUserIndex = false;
   private focusables = new Set<Element>();
   private focusHandlers = new Map<Element, FocusableChangeHandler>();
   private focusablesState = new WeakMap<Element, boolean>();
@@ -159,8 +160,11 @@ class GridNavigationProcessor {
     // Focusing on cell is not eligible when it contains focusable elements in the content.
     // If content focusables are available - move the focus to the first one.
     const cellElement = getClosestCell(this.focusedCell.element);
-    if (this.focusedCell.element === cellElement) {
-      this.getFocusablesFrom(cellElement)[0]?.focus();
+    const nextTarget = this.focusedCell.element === cellElement ? this.getFocusablesFrom(cellElement)[0] : null;
+    if (nextTarget) {
+      nextTarget.focus();
+    } else {
+      this.keepUserIndex = false;
     }
   };
 
@@ -245,6 +249,11 @@ class GridNavigationProcessor {
   };
 
   private moveFocusBy(cell: FocusedCell, delta: { x: number; y: number }) {
+    // For vertical moves preserve column- and element indices set by user.
+    // It allows keeping indices while moving over disabled actions or cells with colspan > 1.
+    if (delta.y !== 0 && delta.x === 0) {
+      this.keepUserIndex = true;
+    }
     this.getNextFocusable(cell, delta)?.focus();
   }
 
@@ -291,7 +300,15 @@ class GridNavigationProcessor {
 
     const cellFocusables = this.getFocusablesFrom(cellElement);
     const elementIndex = cellFocusables.indexOf(focusedElement);
-    this.focusedCell = { rowIndex, colIndex, element: focusedElement, elementIndex };
+
+    const prevColIndex = this.focusedCell?.colIndex ?? -1;
+    const prevElementIndex = this.focusedCell?.elementIndex ?? -1;
+    this.focusedCell = {
+      rowIndex,
+      colIndex: this.keepUserIndex && prevColIndex !== -1 ? prevColIndex : colIndex,
+      elementIndex: this.keepUserIndex && prevElementIndex !== -1 ? prevElementIndex : elementIndex,
+      element: focusedElement,
+    };
   }
 
   private getNextFocusable(from: FocusedCell, delta: { y: number; x: number }) {
