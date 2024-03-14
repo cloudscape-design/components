@@ -11,7 +11,9 @@ import InternalDateInput from './internal';
 export { DateInputProps };
 
 const DateInput = React.forwardRef((props: DateInputProps, ref: Ref<HTMLInputElement>) => {
-  const baseComponentProps = useBaseComponent('DateInput');
+  const baseComponentProps = useBaseComponent('DateInput', {
+    props: { autoFocus: props.autoFocus, readOnly: props.readOnly },
+  });
   return <InternalDateInput {...props} {...baseComponentProps} ref={ref} />;
 });
 

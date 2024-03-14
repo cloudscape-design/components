@@ -61,7 +61,9 @@ const DatePicker = React.forwardRef(
     }: DatePickerProps,
     ref: Ref<DatePickerProps.Ref>
   ) => {
-    const { __internalRootRef } = useBaseComponent('DatePicker');
+    const { __internalRootRef } = useBaseComponent('DatePicker', {
+      props: { autoFocus, expandToViewport, granularity, readOnly },
+    });
     checkControlled('DatePicker', 'value', value, 'onChange', onChange);
 
     const contextLocale = useLocale();

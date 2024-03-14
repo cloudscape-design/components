@@ -43,7 +43,9 @@ const Input = React.forwardRef(
     }: InputProps,
     ref: Ref<InputProps.Ref>
   ) => {
-    const baseComponentProps = useBaseComponent('Input');
+    const baseComponentProps = useBaseComponent('Input', {
+      props: { autoComplete, autoFocus, disableBrowserAutocorrect, inputMode, readOnly, spellcheck, type },
+    });
     const baseProps = getBaseProps(rest);
 
     const inputRef = useRef<HTMLInputElement>(null);

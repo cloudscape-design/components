@@ -39,8 +39,11 @@ const Textarea = React.forwardRef(
     }: TextareaProps,
     ref: Ref<TextareaProps.Ref>
   ) => {
-    const { __internalRootRef } = useBaseComponent('Textarea');
+    const { __internalRootRef } = useBaseComponent('Textarea', {
+      props: { autoComplete, autoFocus, disableBrowserAutocorrect, disableBrowserSpellcheck, readOnly, spellcheck },
+    });
     const { ariaLabelledby, ariaDescribedby, controlId, invalid, warning } = useFormFieldContext(rest);
+
     const baseProps = getBaseProps(rest);
 
     const textareaRef = useRef<HTMLTextAreaElement>(null);
