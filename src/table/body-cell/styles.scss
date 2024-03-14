@@ -26,38 +26,24 @@ $edit-button-padding-right: calc(
 ); // Cell vertical padding + xxs space that would normally come from the button.
 $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-with-spacing});
 
-.expandable-cell-content {
+.expandable-toggle-wrapper {
+  position: absolute;
+  inset-block: 0;
   display: flex;
   align-items: center;
-  gap: awsui.$space-xs;
+  margin-inline-start: calc(-1 * (#{awsui.$space-m} + #{awsui.$space-xs}));
+}
 
-  &-level-1 {
-    padding-inline-start: calc(0 * (#{awsui.$space-m} + #{awsui.$space-xs}));
+@mixin cell-offset($padding) {
+  padding-inline-start: $padding;
+
+  @for $i from 1 through 9 {
+    &.body-cell-expandable-level-#{$i} {
+      padding-inline-start: calc($padding + $i * (#{awsui.$space-m} + #{awsui.$space-xs}));
+    }
   }
-  &-level-2 {
-    padding-inline-start: calc(1 * (#{awsui.$space-m} + #{awsui.$space-xs}));
-  }
-  &-level-3 {
-    padding-inline-start: calc(2 * (#{awsui.$space-m} + #{awsui.$space-xs}));
-  }
-  &-level-4 {
-    padding-inline-start: calc(3 * (#{awsui.$space-m} + #{awsui.$space-xs}));
-  }
-  &-level-5 {
-    padding-inline-start: calc(4 * (#{awsui.$space-m} + #{awsui.$space-xs}));
-  }
-  &-level-6 {
-    padding-inline-start: calc(5 * (#{awsui.$space-m} + #{awsui.$space-xs}));
-  }
-  &-level-7 {
-    padding-inline-start: calc(6 * (#{awsui.$space-m} + #{awsui.$space-xs}));
-  }
-  &-level-8 {
-    padding-inline-start: calc(7 * (#{awsui.$space-m} + #{awsui.$space-xs}));
-  }
-  &-level-9,
-  &-level-next {
-    padding-inline-start: calc(8 * (#{awsui.$space-m} + #{awsui.$space-xs}));
+  &.body-cell-expandable-level-next {
+    padding-inline-start: calc($padding + 9 * (#{awsui.$space-m} + #{awsui.$space-xs}));
   }
 }
 
@@ -65,7 +51,8 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
   box-sizing: border-box;
   padding-block-start: $cell-vertical-padding;
   padding-block-end: $cell-vertical-padding-w-border;
-  padding-inline: $cell-horizontal-padding;
+  @include cell-offset($cell-horizontal-padding);
+  padding-inline-end: $cell-horizontal-padding;
   border-block-start: awsui.$border-divider-list-width solid transparent;
   word-wrap: break-word;
   border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-divider-secondary;
@@ -100,9 +87,9 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
   }
   &.is-visual-refresh:first-child {
     &:not(.has-striped-rows) {
-      padding-inline-start: awsui.$space-xxxs;
+      @include cell-offset(awsui.$space-xxxs);
       &:not(.body-cell-edit-active):not(.body-cell-editable-expandable).body-cell-editable:hover {
-        padding-inline-start: calc(#{awsui.$space-xxxs} + #{awsui.$border-divider-list-width});
+        @include cell-offset(calc(#{awsui.$space-xxxs} + #{awsui.$border-divider-list-width}));
       }
     }
 
@@ -112,9 +99,9 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
       to the table edge.
       */
     &:first-child.has-striped-rows {
-      padding-inline-start: awsui.$space-xxs;
+      @include cell-offset(awsui.$space-xxs);
       &-sticky-cell-pad-left {
-        padding-inline-start: awsui.$space-table-horizontal;
+        @include cell-offset(awsui.$space-table-horizontal);
       }
     }
 
@@ -128,7 +115,7 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
     }
   }
   &:first-child:not(.is-visual-refresh) {
-    padding-inline-start: $cell-edge-horizontal-padding;
+    @include cell-offset($cell-edge-horizontal-padding);
   }
   &-first-row {
     border-block-start: $border-placeholder;
@@ -183,7 +170,7 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
     background: awsui.$color-background-container-content;
     z-index: 798; // Our sticky elements should have z-index in the range of 800-850, this value needs to be lower
     &-pad-left:not(.has-selection):not(.is-visual-refresh.body-cell:first-child.has-striped-rows) {
-      padding-inline-start: awsui.$space-table-horizontal;
+      @include cell-offset(awsui.$space-table-horizontal);
     }
     &.body-cell-shaded {
       background: awsui.$color-background-cell-shaded;
@@ -333,6 +320,14 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
     }
     &-controls {
       flex-shrink: 0;
+    }
+  }
+
+  &.body-cell-expandable {
+    position: relative;
+
+    &.sticky-cell {
+      position: sticky;
     }
   }
 

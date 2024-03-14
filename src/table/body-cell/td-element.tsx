@@ -102,6 +102,8 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           isVisualRefresh && styles['is-visual-refresh'],
           hasSelection && styles['has-selection'],
           hasFooter && styles['has-footer'],
+          !!expandableProps && styles['body-cell-expandable'],
+          !!expandableProps && styles[`body-cell-expandable-level-${getLevelClassSuffix(expandableProps.level)}`],
           stickyStyles.className
         )}
         onClick={onClick}
@@ -111,37 +113,16 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
         {...nativeAttributes}
         tabIndex={cellTabIndex}
       >
-        <CellContent expandableProps={expandableProps}>{children}</CellContent>
+        {expandableProps && (
+          <div className={styles['expandable-toggle-wrapper']}>
+            <ExpandToggle {...expandableProps} />
+          </div>
+        )}
+        {children}
       </Element>
     );
   }
 );
-
-function CellContent({
-  expandableProps,
-  children,
-}: {
-  expandableProps?: ExpandableItemProps;
-  children: React.ReactNode;
-}) {
-  // When a cell is not in expandable column its content is rendered as is.
-  if (!expandableProps) {
-    return <>{children}</>;
-  }
-
-  // Otherwise, the content is wrapped with extra layout to add the toggle and the offset.
-  return (
-    <div
-      className={clsx(
-        styles['expandable-cell-content'],
-        styles[`expandable-cell-content-level-${getLevelClassSuffix(expandableProps.level)}`]
-      )}
-    >
-      <ExpandToggle {...expandableProps} />
-      {children}
-    </div>
-  );
-}
 
 function getLevelClassSuffix(level: number) {
   return 1 <= level && level <= 9 ? level : 'next';
