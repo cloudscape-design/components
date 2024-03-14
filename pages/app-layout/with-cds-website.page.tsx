@@ -7,7 +7,6 @@ import Box from '~components/box';
 import Grid from '~components/grid';
 import Container from '~components/container';
 import Link from '~components/link';
-import Tabs from '~components/tabs';
 import AnchorNavigation from '~components/anchor-navigation';
 import SpaceBetween from '~components/space-between';
 import Header from '~components/header';
@@ -52,26 +51,26 @@ function SeparatedList({ ariaLabel, ariaLabelledBy, items }: SeparatedListProps)
 // HeroHeader component
 function HeroHeader() {
   return (
-    <div>
-      <div className={clsx(styles['inner-header'])}>
-        <Grid gridDefinition={[{ colspan: { default: 12, xs: 8 } }, { colspan: { default: 12, xs: 4 } }]}>
-          <Box margin={{ top: 'xxs' }}>
-            <Box variant="h1" fontWeight="bold" padding="n">
-              Content Layout
-            </Box>
-            <Box color="text-body-secondary" className={clsx(styles['custom-home__header-sub-title'])}>
-              Provides the basic layout for the header and content of a page.
-            </Box>
-            <Box margin={{ top: 'xs', bottom: 'l' }}>
-              <SpaceBetween direction="horizontal" size="s">
-                <Button>Get design library</Button>
-                <Button>Get design library</Button>
-              </SpaceBetween>
-            </Box>
-          </Box>
-        </Grid>
-      </div>
-    </div>
+    <SpaceBetween size="l">
+      <Header
+        variant="h1"
+        description={
+          <React.Fragment>
+            Provides customers with the required information to troubleshoot access issues due to permissions.
+          </React.Fragment>
+        }
+      >
+        Access denied messaging
+      </Header>
+      <Box padding={{ bottom: 'xxs' }}>
+        <SpaceBetween size="xs" direction="horizontal">
+          <Button>Get design library</Button>
+          <Button iconAlign="right" iconName="external">
+            Browse code
+          </Button>
+        </SpaceBetween>
+      </Box>
+    </SpaceBetween>
   );
 }
 
@@ -121,7 +120,7 @@ function Tools({
 }: ToolsProps) {
   const [hasFlash, setFlash] = React.useState(true);
   const [hasStackedNotification, setStackedNotification] = React.useState(false);
-  const [hasBreadcrumb, setBreadcrumb] = React.useState(false);
+  const [hasBreadcrumb, setBreadcrumb] = React.useState(true);
   const [hasNesting, setNesting] = React.useState(true);
   const { urlParams, setUrlParams } = useContext(AppContext as any) as any;
   const [value, setHeaderType] = React.useState('documentation');
@@ -226,7 +225,7 @@ function Tools({
 const ContentWithContentLayout = () => {
   return (
     <Box padding={{ top: 'xl' }}>
-      <Tabs
+      {/* <Tabs
         tabs={[
           {
             label: 'Playground',
@@ -254,70 +253,73 @@ const ContentWithContentLayout = () => {
             content: 'Third tab content area',
           },
         ]}
-      />
+      /> */}
       <Grid gridDefinition={[{ colspan: { default: 12, xs: 9 } }, { colspan: { default: 12, xs: 3 } }]}>
         <SpaceBetween size="xxl">
           <div>
             <Box padding={{ top: 'xxs' }}>
               <Box variant="h2" padding={{ bottom: 's', top: 'n' }}>
-                General guidelines
+                Key UX concepts
               </Box>
             </Box>
-            <Container>
-              <div
-                className={styles.contentPlaceholder}
-                role="img"
-                aria-label="End user traffic enters the nearest AWS Edge Location protected by AWS Shield and AWS WAF before it passes through Regional Edge Caches and Origin Shield to the Application Content Origin"
-              ></div>
-            </Container>
+            <SpaceBetween size="s">
+              <SpaceBetween size="xxs">
+                <Box variant="h3">Identity and Access Management (IAM)</Box>
+                <Box variant="p">
+                  IAM is an AWS service where customers can create users and roles, including roles provisioned by IAM
+                  Identity Center (IDC). IAM customers can create and apply permissions policies to define access to
+                  resources in their AWS accounts.
+                </Box>
+              </SpaceBetween>
+              <SpaceBetween size="xxs">
+                <Box variant="h3">Policy</Box>
+                <Box variant="p">
+                  A policy is an entity that, when attached to an identity or resource, defines their permissions.
+                  Customers can specify whether they want to allow or deny an action (for example, create an EC2
+                  instance or list objects in an S3 bucket) in specific conditions on specific resources in their AWS
+                  accounts. Identities must have the required permissions before they can successfully perform an action
+                  on a resource.
+                </Box>
+              </SpaceBetween>
+              <SpaceBetween size="xxs">
+                <Box variant="h3">Resource</Box>
+                <Box variant="p">
+                  A resource is an entity customers can work with in their AWS accounts. Examples include an Amazon S3
+                  bucket, an EC2 instance, AWS Key Management Service encryption keys. Amazon Resource Names (ARNs)
+                  uniquely identify AWS resources. Customers use ARNs to specify a resource unambiguously across all of
+                  AWS, such as in IAM policies.
+                </Box>
+              </SpaceBetween>
+            </SpaceBetween>
           </div>
-
+          <div className={clsx(styles.divider)}></div>
           <div>
-            <Box variant="h2" padding={{ bottom: 's', top: 'm' }}>
-              Benefits and features
+            <Box variant="h2" padding={{ bottom: 's', top: 'xxs' }}>
+              Overview
             </Box>
-            <Container>
-              <ColumnLayout columns={2} variant="text-grid">
-                <div>
-                  <Box variant="h3" padding={{ top: 'n' }}>
-                    CloudFront console
-                  </Box>
-                  <Box variant="p">
-                    Create, monitor, and manage your content delivery with a few simple clicks on the CloudFront
-                    console.
-                  </Box>
-                </div>
-                <div>
-                  <Box variant="h3" padding={{ top: 'n' }}>
-                    Static and dynamic content
-                  </Box>
-                  <Box variant="p">
-                    Deliver both static content and dynamic content that you can personalize for individual users.
-                  </Box>
-                </div>
-                <div>
-                  <Box variant="h3" padding={{ top: 'n' }}>
-                    Reporting and analytics
-                  </Box>
-                  <Box variant="p">
-                    Get detailed cache statistics reports, monitor your CloudFront usage in near real-time, track your
-                    most popular objects, and set alarms on operational metrics.
-                  </Box>
-                </div>
-                <div>
-                  <Box variant="h3" padding={{ top: 'n' }}>
-                    Tools and libraries
-                  </Box>
-                  <Box variant="p">
-                    Take advantage of a variety of tools and libraries for managing your CloudFront distribution, like
-                    the CloudFront API, the AWS Command Line Interface (AWS CLI), and the AWS SDKs.
-                  </Box>
-                </div>
-              </ColumnLayout>
-            </Container>
+            <Box variant="p">
+              Customers as administrators create identity-based policies in IAM and resource-based polices in a few
+              services to secure resources in their accounts. Customers specify permissions in these policies
+              controlling who can access what and when. When unauthorized users attempt to access these resources in the
+              console, they get an error. Administrators managing permissions are responsible for granting any access
+              requested by users for themselves and their applications. To grant a required access for users or to
+              troubleshoot an access issue due to permissions, administrators need users to supply certain information
+              about the access issue. It is imperative for the console to present the required information in a
+              consistent form for customers to troubleshoot permissions issues.
+            </Box>
+            <Box variant="p">
+              This pattern standardizes the access denied message, its visual elements and style in the console. It
+              guides customers to copy the information and contact their administrators if they need access. They can
+              learn more about troubleshooting access denied errors by clicking a link pointing to AWS documentation.
+              The widget parses the access request information from the 403 error and presents the information in a
+              readable and easy to consume format. Customers can copy this information and share it with their
+              administrator requesting to grant them the required access. The administrator can use this information to
+              troubleshoot the access issue and to grant the required permissions.
+            </Box>
           </div>
+          <div className={clsx(styles.divider)}></div>
           <div>
-            <Box variant="h2" padding={{ bottom: 's', top: 'm' }}>
+            <Box variant="h2" padding={{ bottom: 's', top: 'xxs' }}>
               Use cases
             </Box>
             <Container>
@@ -677,7 +679,7 @@ export default function () {
 
   const [flashbarVisible, setFlashbarVisible] = React.useState(true);
   const [notificationsVisible, setNotificationsVisible] = React.useState(false);
-  const [breadcrumbVisible, setBreadcrumbVisible] = React.useState(false);
+  const [breadcrumbVisible, setBreadcrumbVisible] = React.useState(true);
   const [nestingVisible, setNestingVisible] = React.useState(true);
   const [headerTypeVisible, setHeaderTypeVisible] = React.useState('documentation');
 
