@@ -30,7 +30,7 @@ const simpleItems = [
   { name: '3', expandable: true },
 ];
 
-const items1: Instance[] = [
+const nestedItems: Instance[] = [
   {
     name: 'Root-1',
     children: [
@@ -62,8 +62,10 @@ const items1: Instance[] = [
   },
 ];
 
-function renderTable(tableProps: Partial<TableProps> & { messages?: Record<string, string> }) {
-  const mergedProps = { items: items1, columnDefinitions, ...tableProps };
+type WithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] };
+
+function renderTable(tableProps: WithRequired<Partial<TableProps>, 'items'> & { messages?: Record<string, string> }) {
+  const mergedProps = { columnDefinitions, ...tableProps };
   const { container } = render(
     tableProps.messages ? (
       <TestI18nProvider messages={{ table: tableProps.messages ?? {} }}>
@@ -98,13 +100,13 @@ describe('Expandable rows', () => {
       items: simpleItems,
       expandableRows: {
         isItemExpandable: item => item.expandable,
-        expandedItems: [simpleItems[2]],
+        expandedItems: [simpleItems[1], simpleItems[2]],
         getItemChildren: () => [],
         onExpandableItemToggle: () => {},
       },
     });
     expect(table.isRowToggled(1)).toBe(false);
-    expect(table.isRowToggled(2)).toBe(false);
+    expect(table.isRowToggled(2)).toBe(false); // Expanded but not expandable
     expect(table.isRowToggled(3)).toBe(true);
   });
 
@@ -124,7 +126,7 @@ describe('Expandable rows', () => {
     expect(table.isRowToggled(3)).toBe(true);
   });
 
-  test('expand toggles have correct ARIA attributes set', () => {
+  test('expand toggles have correct ARIA attributes assigned', () => {
     const { table } = renderTable({
       items: simpleItems,
       expandableRows: {
@@ -166,10 +168,10 @@ describe('Expandable rows', () => {
 
   test('nested items are rendered for expandable and expanded items', () => {
     const { table } = renderTable({
-      items: items1,
+      items: nestedItems,
       expandableRows: {
         isItemExpandable: item => item.children && item.children.length > 0,
-        expandedItems: flatten(items1).filter(item => item.name !== 'Root-2'),
+        expandedItems: flatten(nestedItems).filter(item => item.name !== 'Root-2'),
         getItemChildren: item => item.children ?? [],
         onExpandableItemToggle: () => {},
       },

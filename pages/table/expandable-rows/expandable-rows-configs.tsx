@@ -15,7 +15,7 @@ import {
   StatusIndicator,
   TableProps,
 } from '~components';
-import { Instance, InstanceType } from './expandable-rows-data';
+import { Instance, InstanceType } from './common';
 import { columnLabel } from '../shared-configs';
 import { contentDisplayPreferenceI18nStrings } from '../../common/i18n-strings';
 
@@ -279,11 +279,13 @@ export const filteringProperties: PropertyFilterProps.FilteringProperty[] = [
     key: 'path',
     propertyLabel: 'DB Name',
     groupValuesLabel: 'DB Name values',
+    // Use custom matchers so that when filtering item by name all its children are matched as well.
     operators: [
       {
         operator: '=',
         match: (path: unknown, token: null | string) => Array.isArray(path) && path.includes(token),
       },
+      // The contains operator is listed to support free-text matching.
       {
         operator: ':',
         match: (path: unknown, token: null | string) =>

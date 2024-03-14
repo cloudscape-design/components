@@ -169,14 +169,19 @@ export default class TableWrapper extends ComponentWrapper {
   }
 
   /**
-   * Returns the button that toggles nested row visibility.
+   * Returns the expandable row toggle button.
    *
-   * @param rowIndex 1-based index of the row of the cell to select.
+   * @param rowIndex 1-based index of the row.
    */
   findExpandToggle(rowIndex: number): ElementWrapper | null {
     return this.findNativeTable().find(`tbody tr:nth-child(${rowIndex}) .${expandableRowsStyles['expand-toggle']}`);
   }
 
+  /**
+   * Returns `true` if the row expand toggle is present and expanded. Returns `false` otherwise.
+   *
+   * @param rowIndex 1-based index of the row.
+   */
   @usesDom
   isRowToggled(rowIndex: number): boolean {
     return this.findExpandToggle(rowIndex)?.getElement().getAttribute('aria-expanded') === 'true';

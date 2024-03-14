@@ -161,6 +161,8 @@ const Thead = React.forwardRef(
                 cellRef={node => setCell(sticky, columnId, node)}
                 tableRole={tableRole}
                 resizerRoleDescription={resizerRoleDescription}
+                // Expandable option is only applicable to the first data column of the table.
+                // When present, the header content receives extra padding to match the first offset in the data cells.
                 isExpandable={colIndex === 0 && isExpandable}
               />
             );

@@ -21,12 +21,15 @@ describe('Expandable rows', () => {
   };
 
   test(
-    'selects a batch of items with a mouse click',
+    'expands and collapses item children by clicking on the expand toggle',
     setupTest({}, async page => {
       await expect(page.getElementsCount(tableWrapper.findRows().toSelector())).resolves.toBe(35);
 
       await page.click(tableWrapper.findExpandToggle(4).toSelector());
       await expect(page.getElementsCount(tableWrapper.findRows().toSelector())).resolves.toBe(35 + 3);
+
+      await page.click(tableWrapper.findExpandToggle(4).toSelector());
+      await expect(page.getElementsCount(tableWrapper.findRows().toSelector())).resolves.toBe(35);
     })
   );
 });

@@ -8,28 +8,13 @@ import { columnLabel } from './shared-configs';
 import { range } from 'lodash';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
+import { ariaLabels } from './expandable-rows/common';
 
 interface Instance {
   name: string;
   description: string;
   children?: Instance[];
 }
-
-const ariaLabels: TableProps<Instance>['ariaLabels'] = {
-  selectionGroupLabel: 'group label',
-  activateEditLabel: column => `Edit ${column.header}`,
-  cancelEditLabel: column => `Cancel editing ${column.header}`,
-  submitEditLabel: column => `Submit edit ${column.header}`,
-  allItemsSelectionLabel: ({ selectedItems }) =>
-    `${selectedItems.length} ${selectedItems.length === 1 ? 'item' : 'items'} selected`,
-  itemSelectionLabel: ({ selectedItems }, item) => {
-    const isItemSelected = selectedItems.filter(i => i.name === item.name).length;
-    return `${item.name} is ${isItemSelected ? '' : 'not'} selected`;
-  },
-  tableLabel: 'Databases table',
-  expandButtonLabel: () => 'expand row',
-  collapseButtonLabel: () => 'collapse row',
-};
 
 const itemsDeep: Instance[] = [{ name: 'Root', description: 'Root item' }];
 let current = itemsDeep[0];
@@ -211,13 +196,13 @@ export default () => {
                   sortingField: 'description',
                   editConfig: permutation.editableCells
                     ? {
-                        ariaLabel: 'Edit name',
+                        ariaLabel: 'Edit description',
                         editIconAriaLabel: 'editable',
                         errorIconAriaLabel: 'Edit cell error',
                         editingCell: (item: Instance, { currentValue, setValue }: TableProps.CellContext<string>) => (
                           <Input
                             autoFocus={true}
-                            value={currentValue ?? item.name}
+                            value={currentValue ?? item.description}
                             onChange={event => setValue(event.detail.value)}
                           />
                         ),

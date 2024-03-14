@@ -110,7 +110,7 @@ test('treegrid row props', () => {
   const bodyRow = getTableRowRoleProps({
     tableRole: 'treegrid',
     rowIndex: 0,
-    treeProps: { level: 2, setSize: 3, posInSet: 2 },
+    expandableProps: { level: 2, setSize: 3, posInSet: 2 },
   });
 
   expect(bodyRow).toEqual({ 'aria-rowindex': 2, 'aria-level': 2, 'aria-setsize': 3, 'aria-posinset': 2 });

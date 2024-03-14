@@ -4,32 +4,7 @@
 import { id as generateId, instanceType as generateInstanceSize } from '../generate-data';
 import pseudoRandom from '../../utils/pseudo-random';
 import { sumBy, uniq } from 'lodash';
-
-export type InstanceType = 'global' | 'cluster' | 'instance';
-
-export type InstanceState = 'RUNNING' | 'STOPPED' | 'TERMINATED';
-
-export interface Instance extends InstanceDetail {
-  selectsPerSecond: null | number;
-  stateGrouped: Record<InstanceState, number>;
-  sizeGrouped: string;
-  regionGrouped: string;
-  parentName: null | string;
-  path: string[];
-  children: number;
-  level: number;
-}
-
-interface InstanceDetail {
-  name: string;
-  type: InstanceType;
-  role: string;
-  state: InstanceState;
-  engine: string;
-  size: null | string;
-  region: null | string;
-  terminationReason: null | string;
-}
+import { Instance, InstanceDetail, InstanceType, InstanceState } from './common';
 
 export const allInstances: Instance[] = [];
 for (let i = 0; i < 35; i++) {

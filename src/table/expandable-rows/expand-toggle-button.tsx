@@ -5,16 +5,9 @@ import React, { useRef } from 'react';
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
 import styles from './styles.css.js';
 import InternalIcon from '../../icon/internal';
+import { ExpandableItemProps } from './expandable-rows-utils';
 
-interface ExpandToggleProps {
-  isExpanded: boolean;
-  isExpandable: boolean;
-  onExpandableItemToggle: () => void;
-  expandButtonLabel?: string;
-  collapseButtonLabel?: string;
-}
-
-export function ExpandToggle({ isExpandable, ...props }: ExpandToggleProps) {
+export function ExpandToggle({ isExpandable, ...props }: ExpandableItemProps) {
   return isExpandable ? <ExpandToggleButton {...props} /> : <ExpandTogglePlaceholder />;
 }
 
@@ -23,7 +16,7 @@ function ExpandToggleButton({
   onExpandableItemToggle,
   expandButtonLabel,
   collapseButtonLabel,
-}: Omit<ExpandToggleProps, 'isExpandable'>) {
+}: Omit<ExpandableItemProps, 'isExpandable'>) {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const { tabIndex } = useSingleTabStopNavigation(buttonRef);
   return (

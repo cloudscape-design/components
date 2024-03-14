@@ -6,9 +6,10 @@ import styles from './styles.css.js';
 import { getStickyClassNames } from '../utils';
 import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
 import { TableRole, getTableCellRoleProps } from '../table-role';
-import { useMergeRefs } from '../../internal/hooks/use-merge-refs/index.js';
-import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context.js';
-import { ExpandToggle } from '../expandable-rows/expand-toggle-button.js';
+import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
+import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
+import { ExpandToggle } from '../expandable-rows/expand-toggle-button';
+import { ExpandableItemProps } from '../expandable-rows/expandable-rows-utils';
 
 export interface TableTdElementProps {
   className?: string;
@@ -37,16 +38,7 @@ export interface TableTdElementProps {
   stickyState: StickyColumnsModel;
   isVisualRefresh?: boolean;
   tableRole: TableRole;
-  expandableProps?: ExpandableProps;
-}
-
-interface ExpandableProps {
-  level: number;
-  isExpandable: boolean;
-  isExpanded: boolean;
-  onExpandableItemToggle: () => void;
-  expandButtonLabel?: string;
-  collapseButtonLabel?: string;
+  expandableProps?: ExpandableItemProps;
 }
 
 export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElementProps>(
@@ -125,10 +117,20 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
   }
 );
 
-function CellContent({ expandableProps, children }: { expandableProps?: ExpandableProps; children: React.ReactNode }) {
-  return !expandableProps ? (
-    <>{children}</>
-  ) : (
+function CellContent({
+  expandableProps,
+  children,
+}: {
+  expandableProps?: ExpandableItemProps;
+  children: React.ReactNode;
+}) {
+  // When a cell is not in expandable column its content is rendered as is.
+  if (!expandableProps) {
+    return <>{children}</>;
+  }
+
+  // Otherwise, the content is wrapped with extra layout to add the toggle and the offset.
+  return (
     <div
       className={clsx(
         styles['expandable-cell-content'],

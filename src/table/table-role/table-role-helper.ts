@@ -75,7 +75,7 @@ export function getTableRowRoleProps(options: {
   tableRole: TableRole;
   rowIndex: number;
   firstIndex?: number;
-  treeProps?: { level: number; setSize: number; posInSet: number };
+  expandableProps?: { level: number; setSize: number; posInSet: number };
 }) {
   const nativeProps: React.HTMLAttributes<HTMLTableRowElement> = {};
 
@@ -87,10 +87,10 @@ export function getTableRowRoleProps(options: {
   else if (options.firstIndex !== undefined) {
     nativeProps['aria-rowindex'] = options.firstIndex + options.rowIndex + 1;
   }
-  if (options.tableRole === 'treegrid' && options.treeProps) {
-    nativeProps['aria-level'] = options.treeProps.level;
-    nativeProps['aria-setsize'] = options.treeProps.setSize;
-    nativeProps['aria-posinset'] = options.treeProps.posInSet;
+  if (options.tableRole === 'treegrid' && options.expandableProps) {
+    nativeProps['aria-level'] = options.expandableProps.level;
+    nativeProps['aria-setsize'] = options.expandableProps.setSize;
+    nativeProps['aria-posinset'] = options.expandableProps.posInSet;
   }
 
   return nativeProps;

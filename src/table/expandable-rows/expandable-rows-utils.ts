@@ -6,7 +6,15 @@ import { fireNonCancelableEvent } from '../../internal/events';
 import { TableProps } from '../interfaces';
 import { ItemSet } from '../selection/utils';
 
-interface ItemPlacement {
+export interface ExpandableItemProps extends ExpandableItemPlacement {
+  isExpandable: boolean;
+  isExpanded: boolean;
+  onExpandableItemToggle: () => void;
+  expandButtonLabel?: string;
+  collapseButtonLabel?: string;
+}
+
+export interface ExpandableItemPlacement {
   level: number;
   setSize: number;
   posInSet: number;
@@ -29,13 +37,13 @@ export function useExpandableTableProps<T>({
   const expandedSet = new ItemSet(trackBy, expandableRows?.expandedItems ?? []);
 
   let allItems = items;
-  const itemToPlacement = new Map<T, ItemPlacement>();
+  const itemToPlacement = new Map<T, ExpandableItemPlacement>();
   const getItemLevel = (item: T) => itemToPlacement.get(item)?.level ?? 0;
 
   if (isExpandable) {
     const visibleItems = new Array<T>();
 
-    const traverse = (item: T, placement: ItemPlacement) => {
+    const traverse = (item: T, placement: ExpandableItemPlacement) => {
       itemToPlacement.set(item, placement);
 
       visibleItems.push(item);
@@ -52,8 +60,7 @@ export function useExpandableTableProps<T>({
 
     for (let index = 0; index < visibleItems.length; index++) {
       const item = visibleItems[index];
-      const isExpanded = expandedSet.has(item);
-      if (isExpanded) {
+      if (expandedSet.has(item)) {
         let insertionIndex = index + 1;
         for (insertionIndex; insertionIndex < visibleItems.length; insertionIndex++) {
           const insertionItem = visibleItems[insertionIndex];
@@ -68,7 +75,7 @@ export function useExpandableTableProps<T>({
     allItems = visibleItems;
   }
 
-  const getExpandableItemProps = (item: T) => {
+  const getExpandableItemProps = (item: T): ExpandableItemProps => {
     const { level, setSize, posInSet } = itemToPlacement.get(item) ?? { level: 1, setSize: 1, posInSet: 1 };
     return {
       level,

@@ -122,6 +122,7 @@ const InternalTable = React.forwardRef(
     }: InternalTableProps<T>,
     ref: React.Ref<TableProps.Ref>
   ) => {
+    // Keyboard navigation defaults to `true` for tables with expandable rows.
     if (expandableRows && enableKeyboardNavigation === undefined) {
       enableKeyboardNavigation = true;
     }
@@ -471,16 +472,7 @@ const InternalTable = React.forwardRef(
                             onContextMenu={
                               onRowContextMenuHandler && onRowContextMenuHandler.bind(null, rowIndex, item)
                             }
-                            {...getTableRowRoleProps({
-                              tableRole,
-                              firstIndex,
-                              rowIndex,
-                              treeProps: {
-                                level: expandableProps.level,
-                                setSize: expandableProps.setSize,
-                                posInSet: expandableProps.posInSet,
-                              },
-                            })}
+                            {...getTableRowRoleProps({ tableRole, firstIndex, rowIndex, expandableProps })}
                           >
                             {selectionType !== undefined && (
                               <TableTdElement
@@ -553,6 +545,8 @@ const InternalTable = React.forwardRef(
                                   stickyState={stickyState}
                                   isVisualRefresh={isVisualRefresh}
                                   tableRole={tableRole}
+                                  // Expandable props only apply to the first data column of the table.
+                                  // When present, the cell content is decorated with expand toggles and extra paddings.
                                   expandableProps={isExpandable && colIndex === 0 ? expandableProps : undefined}
                                 />
                               );
