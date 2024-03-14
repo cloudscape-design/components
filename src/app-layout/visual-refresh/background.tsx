@@ -34,7 +34,8 @@ export default function Background() {
       <div
         className={clsx(
           styles['scrolling-background'],
-          (headerType === 'homepage' || headerType === 'hero') && styles['hero-header']
+          (headerType === 'homepage' || headerType === 'hero') && styles['hero-header'],
+          headerType === 'documentation' && styles['documentation-header']
         )}
         //style={{ background: headerBackground }}
       />

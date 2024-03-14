@@ -17,6 +17,9 @@ div.background {
     &.hero-header {
       background: awsui.$color-background-home-header;
     }
+    &.documentation-header {
+      border-block-end: 1px solid awsui.$color-border-divider-default;
+    }
   }
 
   > .sticky-background {

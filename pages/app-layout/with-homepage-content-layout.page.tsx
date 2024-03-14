@@ -193,15 +193,6 @@ function Tools({
       <SpaceBetween size="m">
         <Toggle
           onChange={({ detail }) => {
-            setUrlParams({ removeHighContrastHeader: detail.checked });
-            location.reload();
-          }}
-          checked={urlParams.removeHighContrastHeader}
-        >
-          Remove dark header
-        </Toggle>
-        <Toggle
-          onChange={({ detail }) => {
             handleFlashbarChange(detail.checked);
             setUrlParams({ notificationVisible: detail.checked });
           }}

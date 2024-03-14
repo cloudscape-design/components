@@ -7,6 +7,8 @@ import Box from '~components/box';
 import Grid from '~components/grid';
 import Container from '~components/container';
 import Link from '~components/link';
+import Tabs from '~components/tabs';
+import AnchorNavigation from '~components/anchor-navigation';
 import SpaceBetween from '~components/space-between';
 import Header from '~components/header';
 import Icon from '~components/icon';
@@ -49,49 +51,23 @@ function SeparatedList({ ariaLabel, ariaLabelledBy, items }: SeparatedListProps)
 
 // HeroHeader component
 function HeroHeader() {
-  const selectOptions: SelectProps.Options = [{ value: 'First' }, { value: 'Second' }, { value: 'Third' }];
-  const [selectedOption, setSelectedOption] = useState<SelectProps.Option>({ value: 'First' });
   return (
     <div>
       <div className={clsx(styles['inner-header'])}>
         <Grid gridDefinition={[{ colspan: { default: 12, xs: 8 } }, { colspan: { default: 12, xs: 4 } }]}>
-          <Box margin={{ top: 'xxl' }}>
-            <Box
-              fontSize="display-l"
-              fontWeight="bold"
-              variant="h1"
-              padding="n"
-              className={clsx(styles['custom-home__header-title'])}
-            >
-              AWS Migration Hub
+          <Box margin={{ top: 'xxs' }}>
+            <Box variant="h1" fontWeight="bold" padding="n">
+              Content Layout
             </Box>
-            <Box fontSize="display-l" fontWeight="light" className={clsx(styles['custom-home__header-sub-title'])}>
-              The gradient is displayed by theming colorBackgroundHomeHeader
+            <Box color="text-body-secondary" className={clsx(styles['custom-home__header-sub-title'])}>
+              Provides the basic layout for the header and content of a page.
             </Box>
-            <Box
-              variant="p"
-              margin={{ top: 'xs', bottom: 'l' }}
-              className={clsx(styles['custom-home__header-sub-title'])}
-            >
-              Simplify your end-to-end migration and modernization journey.
-            </Box>
-          </Box>
-          <Box margin={{ top: 'xxl', bottom: 'xxl' }}>
-            <Container header={<Header variant="h2">Create distribution</Header>}>
-              <SpaceBetween direction="vertical" size="xl">
-                <FormField stretch={true} label="Delivery method">
-                  <Select
-                    ariaLabel="Demo select"
-                    selectedOption={selectedOption}
-                    options={selectOptions}
-                    onChange={event => setSelectedOption(event.detail.selectedOption)}
-                  />
-                </FormField>
-                <Button href="#" variant="primary">
-                  Next step
-                </Button>
+            <Box margin={{ top: 'xs', bottom: 'l' }}>
+              <SpaceBetween direction="horizontal" size="s">
+                <Button>Get design library</Button>
+                <Button>Get design library</Button>
               </SpaceBetween>
-            </Container>
+            </Box>
           </Box>
         </Grid>
       </div>
@@ -148,7 +124,7 @@ function Tools({
   const [hasBreadcrumb, setBreadcrumb] = React.useState(false);
   const [hasNesting, setNesting] = React.useState(true);
   const { urlParams, setUrlParams } = useContext(AppContext as any) as any;
-  const [value, setHeaderType] = React.useState('hero');
+  const [value, setHeaderType] = React.useState('documentation');
 
   const handleFlashbarChange = (isChecked: boolean) => {
     setFlash(isChecked);
@@ -249,47 +225,183 @@ function Tools({
 
 const ContentWithContentLayout = () => {
   return (
-    <SpaceBetween size="l">
-      <Grid gridDefinition={[{ colspan: { default: 12, xs: 6 } }, { colspan: { default: 12, xs: 6 } }]}>
-        <Container>
-          <div
-            className={styles.contentPlaceholder}
-            role="img"
-            aria-label="End user traffic enters the nearest AWS Edge Location protected by AWS Shield and AWS WAF before it passes through Regional Edge Caches and Origin Shield to the Application Content Origin"
-          ></div>
-        </Container>
+    <Box padding={{ top: 'xl' }}>
+      <Tabs
+        tabs={[
+          {
+            label: 'Playground',
+            id: 'first',
+            content: 'First tab content area',
+          },
+          {
+            label: 'API',
+            id: 'second',
+            content: 'Second tab content area',
+          },
+          {
+            label: 'Testing',
+            id: 'third',
+            content: 'Third tab content area',
+          },
+          {
+            label: 'Usage',
+            id: 'fourth',
+            content: 'Third tab content area',
+          },
+          {
+            label: 'Communicaty',
+            id: 'fifth',
+            content: 'Third tab content area',
+          },
+        ]}
+      />
+      <Grid gridDefinition={[{ colspan: { default: 12, xs: 9 } }, { colspan: { default: 12, xs: 3 } }]}>
+        <SpaceBetween size="xxl">
+          <div>
+            <Box padding={{ top: 'xxs' }}>
+              <Box variant="h2" padding={{ bottom: 's', top: 'n' }}>
+                General guidelines
+              </Box>
+            </Box>
+            <Container>
+              <div
+                className={styles.contentPlaceholder}
+                role="img"
+                aria-label="End user traffic enters the nearest AWS Edge Location protected by AWS Shield and AWS WAF before it passes through Regional Edge Caches and Origin Shield to the Application Content Origin"
+              ></div>
+            </Container>
+          </div>
 
-        <Container>
-          <div
-            className={styles.contentPlaceholder}
-            role="img"
-            aria-label="End user traffic enters the nearest AWS Edge Location protected by AWS Shield and AWS WAF before it passes through Regional Edge Caches and Origin Shield to the Application Content Origin"
-          ></div>
-        </Container>
+          <div>
+            <Box variant="h2" padding={{ bottom: 's', top: 'm' }}>
+              Benefits and features
+            </Box>
+            <Container>
+              <ColumnLayout columns={2} variant="text-grid">
+                <div>
+                  <Box variant="h3" padding={{ top: 'n' }}>
+                    CloudFront console
+                  </Box>
+                  <Box variant="p">
+                    Create, monitor, and manage your content delivery with a few simple clicks on the CloudFront
+                    console.
+                  </Box>
+                </div>
+                <div>
+                  <Box variant="h3" padding={{ top: 'n' }}>
+                    Static and dynamic content
+                  </Box>
+                  <Box variant="p">
+                    Deliver both static content and dynamic content that you can personalize for individual users.
+                  </Box>
+                </div>
+                <div>
+                  <Box variant="h3" padding={{ top: 'n' }}>
+                    Reporting and analytics
+                  </Box>
+                  <Box variant="p">
+                    Get detailed cache statistics reports, monitor your CloudFront usage in near real-time, track your
+                    most popular objects, and set alarms on operational metrics.
+                  </Box>
+                </div>
+                <div>
+                  <Box variant="h3" padding={{ top: 'n' }}>
+                    Tools and libraries
+                  </Box>
+                  <Box variant="p">
+                    Take advantage of a variety of tools and libraries for managing your CloudFront distribution, like
+                    the CloudFront API, the AWS Command Line Interface (AWS CLI), and the AWS SDKs.
+                  </Box>
+                </div>
+              </ColumnLayout>
+            </Container>
+          </div>
+          <div>
+            <Box variant="h2" padding={{ bottom: 's', top: 'm' }}>
+              Use cases
+            </Box>
+            <Container>
+              <ColumnLayout columns={2} variant="text-grid">
+                <div>
+                  <Box variant="h3" padding={{ top: 'n' }}>
+                    Configure multiple origins
+                  </Box>
+                  <Box variant="p">
+                    Configure multiple origin servers and multiple cache behaviors based on URL path patterns on your
+                    website. Use AWS origins such as Amazon S3 or Elastic Load Balancing, and add your own custom
+                    origins to the mix.
+                  </Box>
+                  <Link external={true} href="#">
+                    Learn more
+                  </Link>
+                </div>
+                <div>
+                  <Box variant="h3" padding={{ top: 'n' }}>
+                    Deliver streaming video
+                  </Box>
+                  <Box variant="p">
+                    Use CloudFront to deliver on-demand video without the need to set up or operate any media servers.
+                    CloudFront supports multiple protocols for media streaming.
+                  </Box>
+                  <Link external={true} href="#">
+                    Learn more
+                  </Link>
+                </div>
+              </ColumnLayout>
+            </Container>
+          </div>
+          <Container header={<Header variant="h2">Related services</Header>}>
+            <ColumnLayout columns={2} variant="text-grid">
+              <div>
+                <Box variant="h3" padding={{ top: 'n' }}>
+                  <Link external={true} fontSize="heading-m">
+                    Amazon S3
+                  </Link>
+                </Box>
+                <Box variant="p">Use Amazon S3 to store the content that CloudFront delivers.</Box>
+              </div>
+              <div>
+                <Box variant="h3" padding={{ top: 'n' }}>
+                  <Link external={true} fontSize="heading-m">
+                    Amazon Route 53
+                  </Link>
+                </Box>
+                <Box variant="p">
+                  Use Amazon Route 53 to route DNS queries for your domain name to your CloudFront distribution.
+                </Box>
+              </div>
+            </ColumnLayout>
+          </Container>
+        </SpaceBetween>
+        <div>
+          <SpaceBetween size="xxl">
+            <SpaceBetween size="xs">
+              <Box variant="h2">On this page</Box>
+              <AnchorNavigation
+                anchors={[
+                  {
+                    text: 'General guidelines',
+                    href: '#playground',
+                    level: 1,
+                  },
+                  { text: 'Features', href: '#section2', level: 1 },
+                  {
+                    text: 'Writing guidelines',
+                    href: '#section3',
+                    level: 1,
+                  },
+                  {
+                    text: 'Accessibility guidelines',
+                    href: '#section4',
+                    level: 1,
+                  },
+                ]}
+              />
+            </SpaceBetween>
+          </SpaceBetween>
+        </div>
       </Grid>
-      <Container header={<Header variant="h2">Related services</Header>}>
-        <ColumnLayout columns={2} variant="text-grid">
-          <div>
-            <Box variant="h3" padding={{ top: 'n' }}>
-              <Link external={true} fontSize="heading-m">
-                Amazon S3
-              </Link>
-            </Box>
-            <Box variant="p">Use Amazon S3 to store the content that CloudFront delivers.</Box>
-          </div>
-          <div>
-            <Box variant="h3" padding={{ top: 'n' }}>
-              <Link external={true} fontSize="heading-m">
-                Amazon Route 53
-              </Link>
-            </Box>
-            <Box variant="p">
-              Use Amazon Route 53 to route DNS queries for your domain name to your CloudFront distribution.
-            </Box>
-          </div>
-        </ColumnLayout>
-      </Container>
-    </SpaceBetween>
+    </Box>
   );
 };
 
@@ -567,7 +679,7 @@ export default function () {
   const [notificationsVisible, setNotificationsVisible] = React.useState(false);
   const [breadcrumbVisible, setBreadcrumbVisible] = React.useState(false);
   const [nestingVisible, setNestingVisible] = React.useState(true);
-  const [headerTypeVisible, setHeaderTypeVisible] = React.useState('hero');
+  const [headerTypeVisible, setHeaderTypeVisible] = React.useState('documentation');
 
   const handleFlashbarChange = (isChecked: boolean) => {
     setFlashbarVisible(isChecked);
@@ -632,7 +744,7 @@ export default function () {
           content={
             <ContentLayout
               header={<HeroHeader />}
-              disableOverlap={false}
+              disableOverlap={true}
               headerType={
                 headerTypeVisible === 'homepage'
                   ? 'homepage'
