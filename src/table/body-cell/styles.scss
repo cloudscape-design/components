@@ -88,7 +88,7 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
   &.is-visual-refresh:first-child {
     &:not(.has-striped-rows) {
       @include cell-offset(awsui.$space-xxxs);
-      &:not(.body-cell-edit-active):not(.body-cell-editable-expandable).body-cell-editable:hover {
+      &:not(.body-cell-edit-active).body-cell-interactive.body-cell-editable:hover {
         @include cell-offset(calc(#{awsui.$space-xxxs} + #{awsui.$border-divider-list-width}));
       }
     }
@@ -346,7 +346,9 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
     }
 
     &:not(.body-cell-edit-active) {
-      cursor: pointer;
+      &.body-cell-interactive {
+        cursor: pointer;
+      }
 
       @mixin focused-editor-styles {
         padding-inline-end: calc(#{$cell-horizontal-padding} + #{awsui.$space-l});
@@ -434,7 +436,7 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
       }
     }
   }
-  &-editable.is-visual-refresh:not(.body-cell-edit-active):not(.body-cell-editable-expandable):hover {
+  &-editable.is-visual-refresh:not(.body-cell-edit-active).body-cell-interactive:hover {
     &:first-child {
       border-start-start-radius: awsui.$border-radius-item;
       border-end-start-radius: awsui.$border-radius-item;
