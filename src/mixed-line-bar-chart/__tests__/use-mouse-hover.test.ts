@@ -157,6 +157,45 @@ describe('Mouse hover hook', () => {
     expect(customProps.clearHighlightedSeries).toHaveBeenCalledTimes(1);
   });
 
+  test('clears highlightX when onPopoverLeave is called (pointing device exited from the page)', () => {
+    const customProps = {
+      highlightX: jest.fn(),
+      clearHighlightedSeries: jest.fn(),
+    };
+    const { hook } = renderMouseHoverHook(customProps);
+    // When leaving a page, relatedTarget points to window
+    const event = {
+      relatedTarget: window,
+    } as any;
+    act(() => hook.current.onPopoverLeave(event));
+    expect(customProps.highlightX).toHaveBeenCalledWith(null);
+    expect(customProps.clearHighlightedSeries).toHaveBeenCalledTimes(1);
+  });
+
+  test('does not clear highlightX when onPopoverLeave is called (pointing device exited from the svg)', () => {
+    const svgMock = { contains: () => true } as unknown as SVGSVGElement;
+    const customProps = {
+      highlightX: jest.fn(),
+      clearHighlightedSeries: jest.fn(),
+      isHandlersDisabled: true,
+      plotRef: {
+        current: {
+          svg: svgMock,
+          focusApplication: jest.fn(),
+          focusPlot: jest.fn(),
+        },
+      },
+    };
+
+    const { hook } = renderMouseHoverHook(customProps);
+    const event = {
+      relatedTarget: null,
+    } as any;
+    act(() => hook.current.onPopoverLeave(event));
+    expect(customProps.highlightX).not.toHaveBeenCalled();
+    expect(customProps.clearHighlightedSeries).not.toHaveBeenCalled();
+  });
+
   test('does not clear highlightX when onPopoverLeave is called if isHandlersDisabled is true', () => {
     const customProps = {
       highlightX: jest.fn(),
