@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import AppLayout from '~components/app-layout';
 import clsx from 'clsx';
 import Box from '~components/box';
@@ -25,7 +25,7 @@ import Button from '~components/button';
 import styles from './styles.scss';
 import { ContentLayout } from '~components';
 import AppContext from '../app/app-context';
-import { Theme, applyTheme } from '~components/theming';
+//import { Theme, applyTheme } from '~components/theming';
 //import * as awsui from '@amzn/awsui-design-tokens';
 //import { colorBackgroundContainerHeader } from '~design-tokens';
 // * to be used to be able select all
@@ -703,24 +703,24 @@ export default function () {
     setHeaderTypeVisible(isChecked);
   };
 
-  useEffect(() => {
-    const theme: Theme = {
-      tokens: {},
-    };
+  // useEffect(() => {
+  //   const theme: Theme = {
+  //     tokens: {},
+  //   };
 
-    if (headerTypeVisible === 'hero') {
-      theme.tokens.colorBackgroundHomeHeader = {
-        light:
-          'linear-gradient(135deg, rgba(71, 17, 118, 1) 3%, rgba(131, 57, 157, 1) 44%, rgba(149, 85, 182, 1) 69%, rgba(145, 134, 215, 1) 94%);',
-        dark: 'linear-gradient(135deg, rgba(71, 17, 118, 1) 3%, rgba(131, 57, 157, 1) 44%, rgba(149, 85, 182, 1) 69%, rgba(145, 134, 215, 1) 94%);',
-      };
-    }
-    applyTheme({
-      theme,
-      baseThemeId: 'visual-refresh',
-    });
-    console.log('Hello useEffect');
-  });
+  //   if (headerTypeVisible === 'hero') {
+  //     theme.tokens.colorBackgroundHomeHeader = {
+  //       light:
+  //         'linear-gradient(135deg, rgba(71, 17, 118, 1) 3%, rgba(131, 57, 157, 1) 44%, rgba(149, 85, 182, 1) 69%, rgba(145, 134, 215, 1) 94%);',
+  //       dark: 'linear-gradient(135deg, rgba(71, 17, 118, 1) 3%, rgba(131, 57, 157, 1) 44%, rgba(149, 85, 182, 1) 69%, rgba(145, 134, 215, 1) 94%);',
+  //     };
+  //   }
+  //   applyTheme({
+  //     theme,
+  //     baseThemeId: 'visual-refresh',
+  //   });
+  //   console.log('Hello useEffect');
+  // });
 
   if (nestingVisible) {
     return (
