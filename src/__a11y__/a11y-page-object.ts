@@ -92,11 +92,22 @@ export default class A11yPageObject extends BasePageObject {
 
   public async assertNoAxeViolations() {
     const result = await this.getAxeResults();
+    const violations = result.violations;
+    const incomplete = result.incomplete.filter(ariaLevelViolationsFilter);
 
-    expect(result.violations).toHaveLength(0);
-    expect(result.incomplete).toHaveLength(0);
+    expect(violations).toHaveLength(0);
+    expect(incomplete).toHaveLength(0);
 
     // Report if there are any occurrences of string "undefined" in HTML.
     await expect(this.getUndefinedTexts()).resolves.toHaveLength(0);
   }
+}
+
+// The message says: "aria-level values greater than 6 are not supported in all screenreader and browser combinations".
+// However, that is relevant for heading roles but not for treegrid. In treegrid there can be more levels of nesting.
+function ariaLevelViolationsFilter(violation: Axe.Result) {
+  return !(
+    violation.id === 'aria-valid-attr-value' &&
+    violation.nodes.every(node => node.all.every(entry => entry.id === 'aria-level'))
+  );
 }
