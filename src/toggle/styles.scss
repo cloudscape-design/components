@@ -59,6 +59,10 @@ $shadow-color: rgba(0, 0, 0, 0.25);
 
   &-checked {
     transform: translateX(0.8 * styles.$base-size);
+
+    @include styles.with-direction('rtl') {
+      transform: translateX(-0.8 * styles.$base-size);
+    }
   }
 
   &-disabled {
