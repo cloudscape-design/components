@@ -134,11 +134,7 @@ export function useMouseHover<T>({
   };
 
   const onPopoverLeave = (event: React.MouseEvent) => {
-    if (
-      !isHandlersDisabled &&
-      // pointing device exited from the page or from an element within the svg
-      (event.relatedTarget === window || !plotRef.current!.svg.contains(event.relatedTarget as Node))
-    ) {
+    if (!isHandlersDisabled && nodeContains(plotRef.current!.svg, event.relatedTarget as Element)) {
       highlightX(null);
       clearHighlightedSeries();
     }
