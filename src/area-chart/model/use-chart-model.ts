@@ -319,7 +319,11 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
     };
 
     const onPopoverLeave = (event: MouseEvent) => {
-      if (plotRef.current!.svg.contains(event.relatedTarget as Node) || interactions.get().isPopoverPinned) {
+      // pointing device exited from the page or from an element within the svg
+      if (
+        (event.relatedTarget !== window && plotRef.current!.svg.contains(event.relatedTarget as Node)) ||
+        interactions.get().isPopoverPinned
+      ) {
         return;
       }
       interactions.clearHighlight();
