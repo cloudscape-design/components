@@ -147,7 +147,7 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
       }
 
       // Check if the target is contained within svg to allow hovering on the popover body.
-      if (!nodeContains(plotRef.current!.svg, event.relatedTarget as Element)) {
+      if (!nodeContains(plotRef.current!.svg, event.relatedTarget)) {
         interactions.clearHighlightedLegend();
         interactions.clearHighlight();
       }
@@ -319,7 +319,7 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
     };
 
     const onPopoverLeave = (event: MouseEvent) => {
-      if (nodeContains(plotRef.current!.svg, event.relatedTarget as Element) || interactions.get().isPopoverPinned) {
+      if (nodeContains(plotRef.current!.svg, event.relatedTarget) || interactions.get().isPopoverPinned) {
         return;
       }
       interactions.clearHighlight();
