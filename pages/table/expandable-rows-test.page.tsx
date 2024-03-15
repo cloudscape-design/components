@@ -34,7 +34,7 @@ type PageContext = React.Context<
     stickyHeader: boolean;
     sortingDisabled: boolean;
     stripedRows: boolean;
-    selectionType: undefined | 'single' | 'multi';
+    selectionType: 'none' | 'single' | 'multi';
     groupResources: boolean;
     keepSelection: boolean;
     usePagination: boolean;
@@ -128,7 +128,7 @@ export default () => {
             resizableColumns={settings.resizableColumns}
             stickyHeader={settings.stickyHeader}
             sortingDisabled={settings.sortingDisabled}
-            selectionType={settings.selectionType}
+            selectionType={settings.selectionType !== 'none' ? settings.selectionType : undefined}
             stripedRows={settings.stripedRows}
             columnDefinitions={columnDefinitions}
             items={items}
@@ -290,10 +290,7 @@ function PageSettings() {
             options={selectionTypeOptions}
             onChange={event =>
               settings.setUrlParams({
-                selectionType:
-                  event.detail.selectedOption.value === 'single' || event.detail.selectedOption.value === 'multi'
-                    ? event.detail.selectedOption.value
-                    : undefined,
+                selectionType: event.detail.selectedOption.value as 'none' | 'single' | 'multi',
               })
             }
           />
