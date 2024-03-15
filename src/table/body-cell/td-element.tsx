@@ -107,7 +107,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
         {...nativeAttributes}
         tabIndex={cellTabIndex}
       >
-        {children}
+        <div className={styles['body-cell-content']}>{children}</div>
       </Element>
     );
   }

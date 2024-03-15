@@ -7,6 +7,52 @@
 @use '../../internal/styles/tokens' as awsui;
 @use '../../internal/styles' as styles;
 
+@mixin when-focus-visible-or-fake {
+  @include focus-visible.when-visible {
+    @content;
+  }
+  // stylelint-disable-next-line selector-combinator-disallowed-list
+  body[data-awsui-focus-visible='true'] &.header-cell-fake-focus {
+    @content;
+  }
+}
+@mixin header-cell-focus-outline($gutter) {
+  @include when-focus-visible-or-fake {
+    @include styles.focus-highlight(
+      (
+        'vertical': calc(-1 * #{$gutter}),
+        'horizontal': calc(-1 * #{$gutter}),
+      )
+    );
+  }
+}
+@mixin header-cell-focus-outline-first($gutter) {
+  @include when-focus-visible-or-fake {
+    @include styles.focus-highlight(
+      (
+        'vertical': calc(-1 * #{$gutter}),
+        'horizontal': (
+          'left': calc(-1 * #{$gutter} + #{awsui.$space-scaled-xxs}),
+          'right': calc(-1 * #{$gutter}),
+        ),
+      )
+    );
+  }
+}
+@mixin header-cell-focus-outline-last($gutter) {
+  @include when-focus-visible-or-fake {
+    @include styles.focus-highlight(
+      (
+        'vertical': calc(-1 * #{$gutter}),
+        'horizontal': (
+          'left': calc(-1 * #{$gutter}),
+          'right': calc(-1 * #{$gutter} + #{awsui.$space-scaled-xxs}),
+        ),
+      )
+    );
+  }
+}
+
 .header-cell {
   position: relative;
   text-align: start;
@@ -19,22 +65,23 @@
   padding-block: awsui.$space-scaled-xxs;
   padding-inline: awsui.$space-scaled-xs;
 
-  @include focus-visible.when-visible {
-    @include styles.focus-highlight(
-      (
-        'vertical': calc(-1 * #{awsui.$space-scaled-xxs}),
-        'horizontal': calc(-1 * #{awsui.$space-scaled-xxs}),
-      )
-    );
+  @include header-cell-focus-outline(awsui.$space-scaled-xxs);
+  & > .header-cell-content {
+    @include header-cell-focus-outline(awsui.$space-table-header-focus-outline-gutter);
   }
-  // stylelint-disable-next-line selector-combinator-disallowed-list
-  body[data-awsui-focus-visible='true'] &-fake-focus {
-    @include styles.focus-highlight(
-      (
-        'vertical': calc(-1 * #{awsui.$space-scaled-xxs}),
-        'horizontal': calc(-1 * #{awsui.$space-scaled-xxs}),
-      )
-    );
+  &.is-visual-refresh {
+    &:first-child {
+      @include header-cell-focus-outline-first(awsui.$space-scaled-xxs);
+      & > .header-cell-content {
+        @include header-cell-focus-outline-first(awsui.$space-table-header-focus-outline-gutter);
+      }
+    }
+    &:last-child {
+      @include header-cell-focus-outline-last(awsui.$space-scaled-xxs);
+      & > .header-cell-content {
+        @include header-cell-focus-outline-last(awsui.$space-table-header-focus-outline-gutter);
+      }
+    }
   }
 
   &-sticky {
@@ -102,15 +149,6 @@
   &:focus {
     outline: none;
     text-decoration: none;
-  }
-
-  @include focus-visible.when-visible {
-    @include styles.focus-highlight(awsui.$space-table-header-focus-outline-gutter);
-  }
-
-  // stylelint-disable-next-line selector-combinator-disallowed-list
-  body[data-awsui-focus-visible='true'] &.header-cell-fake-focus {
-    @include styles.focus-highlight(awsui.$space-table-header-focus-outline-gutter);
   }
 
   .header-cell-disabled.header-cell-sorted > & {
