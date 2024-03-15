@@ -1,12 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { VirtualItem } from 'react-virtual';
 import Item from '../parts/item';
 import MutliselectItem from '../parts/multiselect-item';
 import { DropdownOption } from '../../internal/components/option/interfaces';
 import { getItemProps } from './get-item-props';
 import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option';
+import { VirtualItem } from '../../internal/hooks/virtual-scroll';
 
 export interface RenderOptionProps {
   options: ReadonlyArray<DropdownOption>;
@@ -15,7 +15,7 @@ export interface RenderOptionProps {
   highlightType: HighlightType;
   checkboxes?: boolean;
   hasDropdownStatus?: boolean;
-  virtualItems?: VirtualItem[];
+  virtualItems?: readonly VirtualItem[];
   useInteractiveGroups?: boolean;
   screenReaderContent?: string;
   ariaSetsize?: number;

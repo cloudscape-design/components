@@ -1,14 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useEffect, useImperativeHandle, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import OptionsList from '../internal/components/options-list';
 
 import AutosuggestOption from './autosuggest-option';
 import { getOptionProps, ListProps } from './plain-list';
 import styles from './styles.css.js';
-import { useVirtual } from '../internal/hooks/use-virtual';
-import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+import { useVirtualScroll } from '../internal/hooks/virtual-scroll';
 
 const VirtualList = ({
   autosuggestItemsState,
@@ -21,26 +20,18 @@ const VirtualList = ({
   screenReaderContent,
 }: ListProps) => {
   const scrollRef = useRef<HTMLUListElement>(null);
-  // update component, when it gets wider or narrower to reposition items
-  const [width, strutRef] = useContainerQuery(rect => rect.contentBoxWidth, []);
-  useImperativeHandle(strutRef, () => scrollRef.current);
 
-  const rowVirtualizer = useVirtual({
-    items: autosuggestItemsState.items,
-    parentRef: scrollRef,
-    // estimateSize is a dependency of measurements memo. We update it to force full recalculation
-    // when the height of any option could have changed:
-    // 1: because the component got resized (width property got updated)
-    // 2: because the option changed its content (highlightText property controls the highlight and the visibility of hidden tags)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    estimateSize: useCallback(() => 31, [width, highlightText]),
+  const { virtualItems, totalSize, scrollToIndex } = useVirtualScroll({
+    size: autosuggestItemsState.items.length,
+    defaultItemSize: 31,
+    containerRef: scrollRef,
   });
 
   useEffect(() => {
     if (autosuggestItemsState.highlightType.moveFocus) {
-      rowVirtualizer.scrollToIndex(autosuggestItemsState.highlightedIndex);
+      scrollToIndex(autosuggestItemsState.highlightedIndex);
     }
-  }, [autosuggestItemsState.highlightType, autosuggestItemsState.highlightedIndex, rowVirtualizer]);
+  }, [autosuggestItemsState.highlightType, autosuggestItemsState.highlightedIndex, scrollToIndex]);
 
   return (
     <OptionsList
@@ -55,10 +46,10 @@ const VirtualList = ({
         aria-hidden="true"
         key="total-size"
         className={styles['layout-strut']}
-        style={{ height: rowVirtualizer.totalSize + (autosuggestItemsState.items.length === 1 ? 1 : 0) }}
+        style={{ height: totalSize + (autosuggestItemsState.items.length === 1 ? 1 : 0) }}
       />
-      {rowVirtualizer.virtualItems.map(virtualRow => {
-        const { index, start, measureRef } = virtualRow;
+      {virtualItems.map(virtualItem => {
+        const { index, start, measureRef } = virtualItem;
         const item = autosuggestItemsState.items[index];
         const optionProps = getOptionProps(
           index,
