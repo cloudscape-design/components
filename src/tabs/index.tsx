@@ -39,7 +39,9 @@ export default function Tabs({
   for (const tab of tabs) {
     checkSafeUrl('Tabs', tab.href);
   }
-  const { __internalRootRef } = useBaseComponent('Tabs');
+  const { __internalRootRef } = useBaseComponent('Tabs', {
+    props: { disableContentPaddings, variant },
+  });
   const idNamespace = useUniqueId('awsui-tabs-');
 
   const [activeTabId, setActiveTabId] = useControllable(controlledTabId, onChange, firstEnabledTab(tabs)?.id ?? '', {
