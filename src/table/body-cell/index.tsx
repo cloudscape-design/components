@@ -26,6 +26,7 @@ export interface TableBodyCellProps<ItemType> extends TableTdElementProps {
   onEditEnd: (cancelled: boolean) => void;
   submitEdit?: TableProps.SubmitEditFunction<ItemType>;
   ariaLabels: TableProps['ariaLabels'];
+  interactiveCell?: boolean;
 }
 
 function TableCellEditable<ItemType>({
@@ -39,6 +40,7 @@ function TableCellEditable<ItemType>({
   ariaLabels,
   isVisualRefresh,
   successfulEdit = false,
+  interactiveCell = true,
   ...rest
 }: TableBodyCellProps<ItemType>) {
   const i18n = useInternalI18n('table');
@@ -57,7 +59,7 @@ function TableCellEditable<ItemType>({
   // To improve the initial page render performance we only show the edit icon when necessary.
   const [hasHover, setHasHover] = useState(false);
   const [hasFocus, setHasFocus] = useState(false);
-  const showIcon = hasHover || hasFocus;
+  const showIcon = hasHover || hasFocus || !interactiveCell;
 
   const prevSuccessfulEdit = usePrevious(successfulEdit);
   const prevHasFocus = usePrevious(hasFocus);
@@ -83,11 +85,12 @@ function TableCellEditable<ItemType>({
       className={clsx(
         className,
         styles['body-cell-editable'],
+        interactiveCell && styles['body-cell-interactive'],
         isEditing && styles['body-cell-edit-active'],
         showSuccessIcon && showIcon && styles['body-cell-has-success'],
         isVisualRefresh && styles['is-visual-refresh']
       )}
-      onClick={!isEditing ? onEditStart : undefined}
+      onClick={interactiveCell && !isEditing ? onEditStart : undefined}
       onMouseEnter={() => setHasHover(true)}
       onMouseLeave={() => setHasHover(false)}
     >
@@ -106,6 +109,7 @@ function TableCellEditable<ItemType>({
       ) : (
         <>
           {column.cell(item)}
+
           {showSuccessIcon && showIcon && (
             <>
               <span
@@ -125,16 +129,20 @@ function TableCellEditable<ItemType>({
               </LiveRegion>
             </>
           )}
-          <button
-            className={styles['body-cell-editor']}
-            aria-label={ariaLabels?.activateEditLabel?.(column, item)}
-            ref={editActivateRef}
-            onFocus={() => setHasFocus(true)}
-            onBlur={() => setHasFocus(false)}
-            tabIndex={editActivateTabIndex}
-          >
-            {showIcon && <Icon name="edit" />}
-          </button>
+
+          <div className={styles['body-cell-editor-wrapper']}>
+            <button
+              className={styles['body-cell-editor']}
+              aria-label={ariaLabels?.activateEditLabel?.(column, item)}
+              ref={editActivateRef}
+              onClick={!interactiveCell && !isEditing ? onEditStart : undefined}
+              onFocus={() => setHasFocus(true)}
+              onBlur={() => setHasFocus(false)}
+              tabIndex={editActivateTabIndex}
+            >
+              {showIcon && <Icon name="edit" />}
+            </button>
+          </div>
         </>
       )}
     </TableTdElement>
