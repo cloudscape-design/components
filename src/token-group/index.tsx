@@ -9,7 +9,9 @@ import InternalTokenGroup from './internal';
 export { TokenGroupProps };
 
 export default function TokenGroup({ items = [], alignment = 'horizontal', ...props }: TokenGroupProps) {
-  const baseComponentProps = useBaseComponent('TokenGroup');
+  const baseComponentProps = useBaseComponent('TokenGroup', {
+    props: { alignment, disableOuterPadding: props.disableOuterPadding, limit: props.limit },
+  });
   return <InternalTokenGroup items={items} alignment={alignment} {...props} {...baseComponentProps} />;
 }
 
