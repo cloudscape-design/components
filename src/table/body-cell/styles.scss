@@ -26,32 +26,62 @@ $edit-button-padding-right: calc(
 ); // Cell vertical padding + xxs space that would normally come from the button.
 $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-with-spacing});
 
+@mixin cell-focus-outline {
+  @include styles.focus-highlight(
+    (
+      'vertical': calc(-1 * #{awsui.$space-scaled-xxs}),
+      'horizontal': calc(-1 * #{awsui.$space-scaled-xxs}),
+    )
+  );
+  &.is-visual-refresh:first-child {
+    @include styles.focus-highlight(
+      (
+        'vertical': calc(-1 * #{awsui.$space-scaled-xxs}),
+        'horizontal': (
+          'left': calc(1 * #{awsui.$space-scaled-xxs}),
+          'right': calc(-1 * #{awsui.$space-scaled-xxs}),
+        ),
+      )
+    );
+  }
+  &.is-visual-refresh:last-child {
+    @include styles.focus-highlight(
+      (
+        'vertical': calc(-1 * #{awsui.$space-scaled-xxs}),
+        'horizontal': (
+          'left': calc(-1 * #{awsui.$space-scaled-xxs}),
+          'right': calc(1 * #{awsui.$space-scaled-xxs}),
+        ),
+      )
+    );
+  }
+  // @mixin focus-highlight sets cell's position to "relative".
+  // Reinforcing sticky position for it to take precedence.
+  &.sticky-cell {
+    position: sticky;
+  }
+}
+
 .body-cell {
   box-sizing: border-box;
-  padding-block-start: $cell-vertical-padding;
-  padding-block-end: $cell-vertical-padding-w-border;
-  padding-inline: $cell-horizontal-padding;
-  border-block-start: awsui.$border-divider-list-width solid transparent;
+  padding-block: 0;
+  padding-inline: 0;
+  & > .body-cell-content {
+    padding-block-start: $cell-vertical-padding;
+    padding-block-end: $cell-vertical-padding-w-border;
+    padding-inline: $cell-horizontal-padding;
+    border-block-start: awsui.$border-divider-list-width solid transparent;
+  }
   word-wrap: break-word;
   border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-divider-secondary;
   font-weight: inherit;
 
   @include focus-visible.when-visible {
-    @include styles.focus-highlight(
-      (
-        'vertical': calc(-1 * #{awsui.$space-scaled-xxs}),
-        'horizontal': calc(-1 * #{awsui.$space-scaled-xxs}),
-      )
-    );
-    // @mixin focus-highlight sets cell's position to "relative".
-    // Reinforcing sticky position for it to take precedence.
-    &.sticky-cell {
-      position: sticky;
-    }
+    @include cell-focus-outline;
   }
 
   text-align: start;
-  &:not(.body-cell-wrap) {
+  &:not(.body-cell-wrap) > .body-cell-content {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -61,13 +91,20 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
   }
   &:last-child {
     border-inline-end: $border-placeholder;
-    padding-inline-end: $cell-edge-horizontal-padding;
+    & > .body-cell-content {
+      padding-inline-end: $cell-edge-horizontal-padding;
+    }
   }
   &.is-visual-refresh:first-child {
     &:not(.has-striped-rows) {
-      padding-inline-start: awsui.$space-xxxs;
+      & > .body-cell-content {
+        padding-inline-start: awsui.$space-xxxs;
+      }
+
       &:not(.body-cell-edit-active).body-cell-editable:hover {
-        padding-inline-start: calc(#{awsui.$space-xxxs} + #{awsui.$border-divider-list-width});
+        & > .body-cell-content {
+          padding-inline-start: calc(#{awsui.$space-xxxs} + #{awsui.$border-divider-list-width});
+        }
       }
     }
 
@@ -77,9 +114,14 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
       to the table edge.
       */
     &:first-child.has-striped-rows {
-      padding-inline-start: awsui.$space-xxs;
+      & > .body-cell-content {
+        padding-inline-start: awsui.$space-xxs;
+      }
+
       &-sticky-cell-pad-left {
-        padding-inline-start: awsui.$space-table-horizontal;
+        & > .body-cell-content {
+          padding-inline-start: awsui.$space-table-horizontal;
+        }
       }
     }
 
@@ -93,7 +135,9 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
     }
   }
   &:first-child:not(.is-visual-refresh) {
-    padding-inline-start: $cell-edge-horizontal-padding;
+    & > .body-cell-content {
+      padding-inline-start: $cell-edge-horizontal-padding;
+    }
   }
   &-first-row {
     border-block-start: $border-placeholder;
@@ -119,12 +163,16 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
     background-color: awsui.$color-background-item-selected;
     border-block-start: $selected-border;
     border-block-end: $selected-border;
-    padding-block-end: $cell-vertical-padding;
+    & > .body-cell-content {
+      padding-block-end: $cell-vertical-padding;
+    }
 
     // Last selected row has a fixed border-bottom width which do not change on selection in visual refresh.
     // Adjust padding-bottom prevents a slight jump in the table height.
     &.body-cell-last-row.is-visual-refresh {
-      padding-block-end: calc(#{$cell-vertical-padding} + #{awsui.$border-divider-list-width});
+      & > .body-cell-content {
+        padding-block-end: calc(#{$cell-vertical-padding} + #{awsui.$border-divider-list-width});
+      }
     }
 
     &:first-child {
@@ -148,7 +196,9 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
     background: awsui.$color-background-container-content;
     z-index: 798; // Our sticky elements should have z-index in the range of 800-850, this value needs to be lower
     &-pad-left:not(.has-selection):not(.is-visual-refresh.body-cell:first-child.has-striped-rows) {
-      padding-inline-start: awsui.$space-table-horizontal;
+      & > .body-cell-content {
+        padding-inline-start: awsui.$space-table-horizontal;
+      }
     }
     &.body-cell-shaded {
       background: awsui.$color-background-cell-shaded;
@@ -187,14 +237,20 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
 
   // Use padding as a selected border placeholder to make sure rows don't change height on selection (visual refresh)
   &-selected:not(:first-child) {
-    padding-block-start: $cell-vertical-padding-w-border;
+    & > .body-cell-content {
+      padding-block-start: $cell-vertical-padding-w-border;
+    }
   }
   &:not(.body-cell-selected).body-cell-next-selected {
     border-block-end: 0;
-    padding-block-end: calc(#{$cell-vertical-padding} + #{awsui.$border-divider-list-width});
+    & > .body-cell-content {
+      padding-block-end: calc(#{$cell-vertical-padding} + #{awsui.$border-divider-list-width});
+    }
   }
   &-selected.body-cell-prev-selected {
-    padding-block-start: $cell-vertical-padding-w-border;
+    & > .body-cell-content {
+      padding-block-start: $cell-vertical-padding-w-border;
+    }
     border-block-start: $selected-border-placeholder;
   }
   &-selected.body-cell-next-selected {
@@ -216,7 +272,9 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
   // Reset padding for selected rows with no adjacent selected row above it,
   // because rows reuse adjacent selected borders (visual refresh)
   &-selected:not(.body-cell-prev-selected) {
-    padding-block-start: $cell-vertical-padding;
+    & > .body-cell-content {
+      padding-block-start: $cell-vertical-padding;
+    }
   }
 
   &-editor {
@@ -298,7 +356,9 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
     }
 
     &.body-cell-edit-active {
-      overflow: visible;
+      & > .body-cell-content {
+        overflow: visible;
+      }
       &.sticky-cell {
         position: sticky;
       }
@@ -306,7 +366,9 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
 
     &:not(.body-cell-edit-active) {
       @mixin focused-editor-styles {
-        padding-inline-end: calc(#{$cell-horizontal-padding} + #{awsui.$space-l});
+        & > .body-cell-content {
+          padding-inline-end: calc(#{$cell-horizontal-padding} + #{awsui.$space-l});
+        }
         & > .body-cell-editor {
           opacity: 1;
         }
@@ -322,20 +384,19 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
       // It's therefore important to display the focus outline, even when a keyboard user wasn't detected.
       // For example, when an edit button is selected from the VoiceOver rotor menu.
       &:focus-within {
-        @include styles.focus-highlight(
-          (
-            'vertical': calc(-1 * #{awsui.$space-scaled-xxs}),
-            'horizontal': calc(-1 * #{awsui.$space-scaled-xxs}),
-          )
-        );
+        @include cell-focus-outline;
       }
 
       &:focus-within,
       &.body-cell-edit-disabled-popover {
-        padding-inline-end: calc(#{$cell-horizontal-padding} + #{awsui.$space-l});
+        & > .body-cell-content {
+          padding-inline-end: calc(#{$cell-horizontal-padding} + #{awsui.$space-l});
+        }
         &.body-cell-has-success {
-          // After a successful edit, we display the success icon next to the edit button and need additional padding to not let the text overflow the success icon.
-          padding-inline-end: calc(#{$cell-horizontal-padding} + #{awsui.$space-l} + #{$icon-width-with-spacing});
+          & > .body-cell-content {
+            // After a successful edit, we display the success icon next to the edit button and need additional padding to not let the text overflow the success icon.
+            padding-inline-end: calc(#{$cell-horizontal-padding} + #{awsui.$space-l} + #{$icon-width-with-spacing});
+          }
         }
         @include focused-editor-styles;
         &.sticky-cell {
@@ -363,13 +424,19 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
         }
         &.body-cell-last-row.body-cell-selected,
         &.body-cell-next-selected {
-          padding-block: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width} / 2));
+          & > .body-cell-content {
+            padding-block: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width} / 2));
+          }
         }
         &.body-cell-last-row:not(.body-cell-selected) {
-          padding-block-start: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width}));
+          & > .body-cell-content {
+            padding-block-start: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width}));
+          }
         }
         &.body-cell-first-row:not(.body-cell-selected) {
-          padding-block: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width}));
+          & > .body-cell-content {
+            padding-block: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width}));
+          }
         }
         &.sticky-cell {
           position: sticky;
