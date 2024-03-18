@@ -14,7 +14,7 @@ describe('Expandable rows', () => {
       const page = new BasePageObject(browser);
       await page.setWindowSize({ width: 1200, height: 1000 });
       const query = new URLSearchParams(options);
-      await browser.url(`#/light/table/expandable-rows?${query.toString()}`);
+      await browser.url(`#/light/table/expandable-rows-test?${query.toString()}`);
       await page.waitForVisible(tableWrapper.findBodyCell(2, 1).toSelector());
       await testFn(page);
     });
