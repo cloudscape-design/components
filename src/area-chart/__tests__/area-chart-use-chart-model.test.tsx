@@ -303,6 +303,47 @@ describe('useChartModel', () => {
 
         expect(wrapper.findHighlightedX()?.getElement()).toHaveTextContent('');
       });
+
+      test('clear highlighted X when mouse exited from the page', () => {
+        const { wrapper } = renderChartModelHook({
+          height: 0,
+          highlightedSeries: null,
+          setHighlightedSeries: (_series: AreaChartProps.Series<ChartDataTypes> | null) => _series,
+          setVisibleSeries: (_series: readonly AreaChartProps.Series<ChartDataTypes>[]) => _series,
+          width: 0,
+          xDomain: undefined,
+          xScaleType: 'linear',
+          yScaleType: 'linear',
+          externalSeries: series,
+          visibleSeries: series,
+          popoverRef: { current: null },
+        });
+
+        const mouseMoveEvent = {
+          relatedTarget: wrapper.findPlot()?.getElement(),
+          clientX: 100,
+          clientY: 100,
+        } as any;
+
+        act(() => {
+          fireEvent.mouseMove(wrapper.findPlot()!.getElement(), mouseMoveEvent);
+        });
+
+        expect(wrapper.findHighlightedX()?.getElement()).toHaveTextContent('1');
+
+        const mouseLeaveEvent = {
+          relatedTarget: window, // when mouse exited the page, relatedTarget is set to window.
+          clientX: 0,
+          clientY: 0,
+        } as any;
+
+        act(() => {
+          fireEvent.mouseLeave(wrapper.findDetailPopover()!.getElement(), mouseLeaveEvent);
+        });
+
+        expect(wrapper.findHighlightedX()?.getElement()).toHaveTextContent('');
+      });
+
       test('keep highlighted X when mouse leaves popover but in plot', () => {
         const { wrapper } = renderChartModelHook({
           height: 0,
