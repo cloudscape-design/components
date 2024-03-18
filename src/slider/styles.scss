@@ -134,7 +134,7 @@ $thumb-border-radius: 50%;
 
   &-container {
     @include styles.styles-reset;
-    padding-block: awsui.$space-m;
+    padding-block: awsui.$space-m awsui.$space-xs;
 
     position: relative;
     max-inline-size: 800px;
@@ -143,27 +143,36 @@ $thumb-border-radius: 50%;
   &-labels {
     display: grid;
     grid-template-columns: 1fr repeat(calc((var(#{custom-props.$sliderLabelCount}) - 2) / 2), 2fr) 1fr;
-    //grid-template-columns: repeat(var(#{custom-props.$sliderLabelCount}), minmax(0, 1fr));
     grid-auto-rows: 100%;
     block-size: 40px;
     overflow: hidden;
     padding-block-start: awsui.$space-s;
   }
 
+  &-noref {
+    grid-template-columns: 1fr 1fr;
+  }
+
   &-reference {
-    // position: absolute;
     grid-column-start: var(#{custom-props.$sliderReferenceColumn});
     grid-column-end: var(#{custom-props.$sliderNextReferenceColumn});
     grid-row: 1;
     justify-self: center;
     text-align: center;
-    // margin-inline-start: -8px;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
 
   &-min {
     grid-column: 1;
     grid-row: 1;
     grid-column-end: var(#{custom-props.$sliderMinEnd});
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
 
   &-max {
@@ -172,6 +181,10 @@ $thumb-border-radius: 50%;
     grid-row: 1;
     grid-column-end: calc(var(#{custom-props.$sliderLabelCount}) + 1);
     grid-column-start: var(#{custom-props.$sliderMaxStart});
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
 }
 

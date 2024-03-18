@@ -156,11 +156,12 @@ function Sliders() {
           onChange={({ detail }) => {
             setValue6(detail.value);
           }}
-          step={1}
-          tickMarks={true}
-          min={0}
-          max={11}
-          referenceValues={Array.from({ length: 11 }, (v, i) => i + 1)}
+          //step={250}
+          //tickMarks={true}
+          min={1}
+          max={1000}
+          //referenceValues={[250, 500, 750]}
+          referenceValues={Array.from({ length: 1000 }, (v, i) => i + 1)}
         />
       </FormField>
       <FormField label="How hot do you like your salsa?">
@@ -171,10 +172,10 @@ function Sliders() {
           }}
           min={0}
           max={70}
-          valueFormatter={value => `${value} is potato and potato`}
+          valueFormatter={value => `${value}`}
           tickMarks={true}
           step={5}
-          referenceValues={[7, 8, 9, 10, 25, 37, 39, 52, 53, 60, 67, 68]}
+          referenceValues={[7, 8, 9, 10, 25, 37, 39, 52, 53, 59, 67, 68]}
         />
       </FormField>
     </SpaceBetween>
@@ -184,7 +185,7 @@ function Sliders() {
 export default function InputsPage() {
   const [value, setValue] = React.useState(4);
   return (
-    <div style={{ padding: 10 }}>
+    <div style={{ padding: 30 }}>
       <h1>Sliders demo</h1>
       <SpaceBetween size="xxl">
         <Sliders />
