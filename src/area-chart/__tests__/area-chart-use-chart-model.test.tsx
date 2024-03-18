@@ -2,14 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState, useImperativeHandle, useRef } from 'react';
 
-import useChartModel, { UseChartModelProps } from '../model/use-chart-model';
+import useChartModel, { UseChartModelProps } from '../../../lib/components/area-chart/model/use-chart-model';
 import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
-import { ChartDataTypes } from '../../internal/components/cartesian-chart/interfaces';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
+import { ChartDataTypes } from '../../../lib/components/internal/components/cartesian-chart/interfaces';
 import { act, render, fireEvent } from '@testing-library/react';
-import { AreaChartProps } from '../interfaces';
-import { KeyCode } from '../../internal/keycode';
-import { useReaction } from '../async-store';
-import { ChartModel } from '../model';
+import { AreaChartProps } from '../../../lib/components/area-chart/interfaces';
+import { useReaction } from '../../../lib/components/area-chart/async-store';
+import { ChartModel } from '../../../lib/components/area-chart/model';
 import PlotPoint = ChartModel.PlotPoint;
 
 class UseChartModelWrapper extends ElementWrapper {
