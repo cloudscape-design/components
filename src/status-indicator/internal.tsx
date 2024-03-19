@@ -19,6 +19,7 @@ const typeToIcon: (size: IconProps.Size) => Record<StatusIndicatorProps.Type, JS
   pending: <InternalIcon name="status-pending" size={size} />,
   'in-progress': <InternalIcon name="status-in-progress" size={size} />,
   loading: <InternalSpinner />,
+  'gen-ai': <InternalIcon name="gen-ai" size={size} />,
 });
 
 export interface StatusIndicatorProps extends BaseComponentProps {
@@ -68,8 +69,17 @@ export interface InternalStatusIndicatorProps
 export namespace StatusIndicatorProps {
   // Why not enums? Explained there
   // https://stackoverflow.com/questions/52393730/typescript-string-literal-union-type-from-enum
-  export type Type = 'error' | 'warning' | 'success' | 'info' | 'stopped' | 'pending' | 'in-progress' | 'loading';
-  export type Color = 'blue' | 'grey' | 'green' | 'red' | 'yellow';
+  export type Type =
+    | 'error'
+    | 'warning'
+    | 'success'
+    | 'info'
+    | 'stopped'
+    | 'pending'
+    | 'in-progress'
+    | 'loading'
+    | 'gen-ai';
+  export type Color = 'blue' | 'grey' | 'green' | 'red' | 'yellow' | 'purple';
 }
 
 export default function StatusIndicator({

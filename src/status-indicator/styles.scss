@@ -18,6 +18,7 @@ $_status-colors: (
   'pending': awsui.$color-text-status-inactive,
   'in-progress': awsui.$color-text-status-inactive,
   'loading': awsui.$color-text-status-inactive,
+  'gen-ai': awsui.$color-text-gen-ai-label,
 );
 
 $_color-overrides: (
@@ -26,6 +27,7 @@ $_color-overrides: (
   'blue': awsui.$color-text-status-info,
   'green': awsui.$color-text-status-success,
   'yellow': awsui.$color-text-status-warning,
+  'purple': awsui.$color-text-gen-ai-label,
 );
 
 .root {
@@ -39,6 +41,9 @@ $_color-overrides: (
     &.color-override-#{$color} {
       color: #{map.get($_color-overrides, $color)};
     }
+  }
+  &.status-gen-ai {
+    font-style: italic;
   }
 }
 

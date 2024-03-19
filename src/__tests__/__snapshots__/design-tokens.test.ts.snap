@@ -1763,6 +1763,13 @@ Object {
             "light": "#687078",
           },
         },
+        "color-text-gen-ai-label": Object {
+          "$description": "The color for labels indicating that content is produced by generative AI.",
+          "$value": Object {
+            "dark": "#bf80ff",
+            "light": "#7300e5",
+          },
+        },
         "color-text-group-label": Object {
           "$description": "The default color for group labels. For example: group label in dropdown part of button dropdown, select, and multiselect, and group label in table and cards' preferences content selector.",
           "$value": Object {
@@ -4042,6 +4049,13 @@ Object {
           "$value": Object {
             "dark": "#95a5a6",
             "light": "#687078",
+          },
+        },
+        "color-text-gen-ai-label": Object {
+          "$description": "The color for labels indicating that content is produced by generative AI.",
+          "$value": Object {
+            "dark": "#bf80ff",
+            "light": "#7300e5",
           },
         },
         "color-text-group-label": Object {
@@ -6325,6 +6339,13 @@ Object {
             "light": "#687078",
           },
         },
+        "color-text-gen-ai-label": Object {
+          "$description": "The color for labels indicating that content is produced by generative AI.",
+          "$value": Object {
+            "dark": "#bf80ff",
+            "light": "#7300e5",
+          },
+        },
         "color-text-group-label": Object {
           "$description": "The default color for group labels. For example: group label in dropdown part of button dropdown, select, and multiselect, and group label in table and cards' preferences content selector.",
           "$value": Object {
@@ -8604,6 +8625,13 @@ Object {
           "$value": Object {
             "dark": "#95a5a6",
             "light": "#687078",
+          },
+        },
+        "color-text-gen-ai-label": Object {
+          "$description": "The color for labels indicating that content is produced by generative AI.",
+          "$value": Object {
+            "dark": "#bf80ff",
+            "light": "#7300e5",
           },
         },
         "color-text-group-label": Object {
@@ -10887,6 +10915,13 @@ Object {
             "light": "#95a5a6",
           },
         },
+        "color-text-gen-ai-label": Object {
+          "$description": "The color for labels indicating that content is produced by generative AI.",
+          "$value": Object {
+            "dark": "#bf80ff",
+            "light": "#bf80ff",
+          },
+        },
         "color-text-group-label": Object {
           "$description": "The default color for group labels. For example: group label in dropdown part of button dropdown, select, and multiselect, and group label in table and cards' preferences content selector.",
           "$value": Object {
@@ -13166,6 +13201,13 @@ Object {
       "$value": Object {
         "dark": "#95a5a6",
         "light": "#687078",
+      },
+    },
+    "color-text-gen-ai-label": Object {
+      "$description": "The color for labels indicating that content is produced by generative AI.",
+      "$value": Object {
+        "dark": "#bf80ff",
+        "light": "#7300e5",
       },
     },
     "color-text-group-label": Object {
@@ -15454,6 +15496,13 @@ Object {
             "light": "#5f6b7a",
           },
         },
+        "color-text-gen-ai-label": Object {
+          "$description": "The color for labels indicating that content is produced by generative AI.",
+          "$value": Object {
+            "dark": "#bf80ff",
+            "light": "#7300e5",
+          },
+        },
         "color-text-group-label": Object {
           "$description": "The default color for group labels. For example: group label in dropdown part of button dropdown, select, and multiselect, and group label in table and cards' preferences content selector.",
           "$value": Object {
@@ -17733,6 +17782,13 @@ Object {
           "$value": Object {
             "dark": "#8d99a8",
             "light": "#8d99a8",
+          },
+        },
+        "color-text-gen-ai-label": Object {
+          "$description": "The color for labels indicating that content is produced by generative AI.",
+          "$value": Object {
+            "dark": "#bf80ff",
+            "light": "#bf80ff",
           },
         },
         "color-text-group-label": Object {
@@ -20016,6 +20072,13 @@ Object {
             "light": "#5f6b7a",
           },
         },
+        "color-text-gen-ai-label": Object {
+          "$description": "The color for labels indicating that content is produced by generative AI.",
+          "$value": Object {
+            "dark": "#bf80ff",
+            "light": "#7300e5",
+          },
+        },
         "color-text-group-label": Object {
           "$description": "The default color for group labels. For example: group label in dropdown part of button dropdown, select, and multiselect, and group label in table and cards' preferences content selector.",
           "$value": Object {
@@ -22295,6 +22358,13 @@ Object {
           "$value": Object {
             "dark": "#8d99a8",
             "light": "#5f6b7a",
+          },
+        },
+        "color-text-gen-ai-label": Object {
+          "$description": "The color for labels indicating that content is produced by generative AI.",
+          "$value": Object {
+            "dark": "#bf80ff",
+            "light": "#7300e5",
           },
         },
         "color-text-group-label": Object {
@@ -24578,6 +24648,13 @@ Object {
             "light": "#5f6b7a",
           },
         },
+        "color-text-gen-ai-label": Object {
+          "$description": "The color for labels indicating that content is produced by generative AI.",
+          "$value": Object {
+            "dark": "#bf80ff",
+            "light": "#7300e5",
+          },
+        },
         "color-text-group-label": Object {
           "$description": "The default color for group labels. For example: group label in dropdown part of button dropdown, select, and multiselect, and group label in table and cards' preferences content selector.",
           "$value": Object {
@@ -26857,6 +26934,13 @@ Object {
           "$value": Object {
             "dark": "#8d99a8",
             "light": "#8d99a8",
+          },
+        },
+        "color-text-gen-ai-label": Object {
+          "$description": "The color for labels indicating that content is produced by generative AI.",
+          "$value": Object {
+            "dark": "#bf80ff",
+            "light": "#bf80ff",
           },
         },
         "color-text-group-label": Object {
@@ -29140,6 +29224,13 @@ Object {
             "light": "#8d99a8",
           },
         },
+        "color-text-gen-ai-label": Object {
+          "$description": "The color for labels indicating that content is produced by generative AI.",
+          "$value": Object {
+            "dark": "#bf80ff",
+            "light": "#bf80ff",
+          },
+        },
         "color-text-group-label": Object {
           "$description": "The default color for group labels. For example: group label in dropdown part of button dropdown, select, and multiselect, and group label in table and cards' preferences content selector.",
           "$value": Object {
@@ -31419,6 +31510,13 @@ Object {
       "$value": Object {
         "dark": "#8d99a8",
         "light": "#5f6b7a",
+      },
+    },
+    "color-text-gen-ai-label": Object {
+      "$description": "The color for labels indicating that content is produced by generative AI.",
+      "$value": Object {
+        "dark": "#bf80ff",
+        "light": "#7300e5",
       },
     },
     "color-text-group-label": Object {
