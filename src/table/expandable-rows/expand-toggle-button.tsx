@@ -6,6 +6,7 @@ import { useSingleTabStopNavigation } from '../../internal/context/single-tab-st
 import styles from './styles.css.js';
 import InternalIcon from '../../icon/internal';
 import { ExpandableItemProps } from './expandable-rows-utils';
+import clsx from 'clsx';
 
 export function ExpandToggle({ isExpandable, ...props }: ExpandableItemProps) {
   return isExpandable ? <ExpandToggleButton {...props} /> : <ExpandTogglePlaceholder />;
@@ -28,11 +29,11 @@ function ExpandToggleButton({
       className={styles['expand-toggle']}
       onClick={onExpandableItemToggle}
     >
-      {isExpanded ? (
-        <InternalIcon size="small" name="caret-down-filled" />
-      ) : (
-        <InternalIcon size="small" name="caret-right-filled" />
-      )}
+      <InternalIcon
+        size="small"
+        name="caret-down-filled"
+        className={clsx(styles['expand-toggle-icon'], isExpanded && styles['expand-toggle-icon-expanded'])}
+      />
     </button>
   );
 }
