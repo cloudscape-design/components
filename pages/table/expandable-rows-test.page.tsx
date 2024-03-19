@@ -78,7 +78,6 @@ export default () => {
   const expandedInstances = collectionProps.expandableRows?.expandedItems ?? [];
 
   const columnDefinitions = createColumns({
-    groupResources: settings.groupResources,
     getInstanceProps: instance => {
       const children = collectionProps.expandableRows?.getItemChildren(instance).length ?? 0;
       const scopedInstances = getScopedInstances(instance.name);

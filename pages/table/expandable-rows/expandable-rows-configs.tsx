@@ -3,7 +3,6 @@
 
 import React from 'react';
 import {
-  Box,
   ButtonDropdown,
   CollectionPreferences,
   CollectionPreferencesProps,
@@ -15,15 +14,13 @@ import {
   StatusIndicator,
   TableProps,
 } from '~components';
-import { Instance, InstanceType } from './common';
+import { Instance } from './common';
 import { columnLabel } from '../shared-configs';
 import { contentDisplayPreferenceI18nStrings } from '../../common/i18n-strings';
 
 export function createColumns({
-  groupResources,
   getInstanceProps,
 }: {
-  groupResources: boolean;
   getInstanceProps: (instance: Instance) => {
     children: number;
     actions: ReadonlyArray<{
@@ -47,22 +44,14 @@ export function createColumns({
     {
       id: 'role',
       header: 'Role',
-      cell: item => (
-        <InstanceTypeWrapper instanceType={item.type} groupResources={groupResources}>
-          {item.type === 'instance' ? item.role : `${item.role} (${getInstanceProps(item).children})`}
-        </InstanceTypeWrapper>
-      ),
+      cell: item => (item.type === 'instance' ? item.role : `${item.role} (${getInstanceProps(item).children})`),
       ariaLabel: columnLabel('Role'),
       sortingField: 'role',
     },
     {
       id: 'activity',
       header: 'Activity',
-      cell: item => (
-        <Box fontSize="body-s" color="text-body-secondary">
-          {item.selectsPerSecond !== null ? `${item.selectsPerSecond} Selects/Sec` : '-'}
-        </Box>
-      ),
+      cell: item => (item.selectsPerSecond !== null ? `${item.selectsPerSecond} Selects/Sec` : '-'),
       ariaLabel: columnLabel('Activity'),
       sortingField: 'selectsPerSecond',
     },
@@ -113,22 +102,14 @@ export function createColumns({
     {
       id: 'size',
       header: 'Size',
-      cell: item => (
-        <InstanceTypeWrapper instanceType={item.type} groupResources={groupResources}>
-          {item.sizeGrouped || '-'}
-        </InstanceTypeWrapper>
-      ),
+      cell: item => item.sizeGrouped || '-',
       ariaLabel: columnLabel('Size'),
       sortingField: 'sizeGrouped',
     },
     {
       id: 'region',
       header: 'Region & AZ',
-      cell: item => (
-        <InstanceTypeWrapper instanceType={item.type} groupResources={groupResources}>
-          {item.regionGrouped}
-        </InstanceTypeWrapper>
-      ),
+      cell: item => item.regionGrouped,
       ariaLabel: columnLabel('Region & AZ'),
       sortingField: 'regionGrouped',
     },
@@ -330,22 +311,3 @@ export const filteringProperties: PropertyFilterProps.FilteringProperty[] = [
     operators: [':', '!;'],
   },
 ];
-
-function InstanceTypeWrapper({
-  instanceType,
-  groupResources,
-  children,
-}: {
-  instanceType: InstanceType;
-  groupResources: boolean;
-  children: React.ReactNode;
-}) {
-  return (
-    <Box
-      fontWeight={!groupResources || instanceType === 'instance' ? 'normal' : 'bold'}
-      color={!groupResources || instanceType === 'instance' ? 'inherit' : 'text-body-secondary'}
-    >
-      {children}
-    </Box>
-  );
-}
