@@ -40,6 +40,7 @@ export function createColumns({
       ariaLabel: columnLabel('DB Name'),
       sortingField: 'name',
       minWidth: 200,
+      isRowHeader: true,
     },
     {
       id: 'role',
