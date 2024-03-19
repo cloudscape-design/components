@@ -4,7 +4,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { ContentLayoutProps } from './interfaces';
 import { getBaseProps } from '../internal/base-component';
-import { getContentHeaderClassName } from '../internal/utils/content-header-utils';
+import { highContrastHeaderClassName } from '../internal/utils/content-header-utils';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useDynamicOverlap } from '../internal/hooks/use-dynamic-overlap';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
@@ -16,6 +16,7 @@ export default function InternalContentLayout({
   children,
   disableOverlap,
   header,
+  headerVariant = 'default',
   __internalRootRef,
   ...rest
 }: InternalContentLayoutProps) {
@@ -25,6 +26,8 @@ export default function InternalContentLayout({
   const overlapElement = useDynamicOverlap();
 
   const isOverlapDisabled = !children || disableOverlap;
+
+  const contentHeaderClassName = headerVariant === 'high-contrast' ? highContrastHeaderClassName : '';
 
   return (
     <div
@@ -40,12 +43,20 @@ export default function InternalContentLayout({
         className={clsx(
           styles.background,
           { [styles['is-overlap-disabled']]: isOverlapDisabled },
-          getContentHeaderClassName()
+          contentHeaderClassName
         )}
         ref={overlapElement}
       />
 
-      {header && <div className={clsx(styles.header, getContentHeaderClassName())}>{header}</div>}
+      {header && (
+        <div
+          className={clsx(styles.header, contentHeaderClassName, {
+            [styles['with-divider']]: headerVariant === 'divider',
+          })}
+        >
+          {header}
+        </div>
+      )}
 
       <div className={styles.content}>{children}</div>
     </div>

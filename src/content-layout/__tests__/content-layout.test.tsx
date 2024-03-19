@@ -20,9 +20,6 @@ function renderContentLayout(props: ContentLayoutProps = {}) {
     rerender: (props: ContentLayoutProps) => rerender(<ContentLayout {...props} />),
   };
 }
-afterEach(() => {
-  delete (window as any)[Symbol.for('awsui-global-flags')];
-});
 
 describe('ContentLayout component', () => {
   describe('slots', () => {
@@ -32,7 +29,6 @@ describe('ContentLayout component', () => {
       });
 
       expect(wrapper.findHeader()!.getElement()).toHaveTextContent('Header text');
-      expect(wrapper.findByClassName('awsui-context-content-header')).toBeTruthy();
     });
 
     test('renders the content slot', () => {
@@ -101,15 +97,6 @@ describe('ContentLayout component', () => {
         header: <>Header text</>,
       });
       expect(isOverlapEnabled()).toBe(true);
-    });
-
-    test('hides dark header when global flag is set', () => {
-      (window as any)[Symbol.for('awsui-global-flags')] = { removeHighContrastHeader: true };
-      const { wrapper } = renderContentLayout({
-        children: <>Content text</>,
-        header: <>Header text</>,
-      });
-      expect(wrapper.findByClassName('awsui-context-content-header')).toBeFalsy();
     });
   });
 });

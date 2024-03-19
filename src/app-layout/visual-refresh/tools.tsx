@@ -47,6 +47,7 @@ export default function Tools({ children }: ToolsProps) {
     toolsHide,
     toolsRefs,
     toolsWidth,
+    headerVariant,
   } = useAppLayoutInternals();
 
   const hasSplitPanel = !!splitPanel && getSplitPanelStatus(splitPanelDisplayed, splitPanelPosition);
@@ -140,6 +141,7 @@ export default function Tools({ children }: ToolsProps) {
                   selected={hasSplitPanel && isToolsOpen}
                   className={testutilStyles['tools-toggle']}
                   ref={toolsRefs.toggle}
+                  highContrastHeader={headerVariant === 'high-contrast'}
                 />
               )}
 
@@ -153,6 +155,7 @@ export default function Tools({ children }: ToolsProps) {
                   selected={hasSplitPanel && isSplitPanelOpen}
                   className={splitPanelStyles['open-button']}
                   ref={splitPanelRefs.toggle}
+                  highContrastHeader={headerVariant === 'high-contrast'}
                 />
               )}
             </aside>

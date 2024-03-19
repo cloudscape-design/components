@@ -3,9 +3,7 @@
 import clsx from 'clsx';
 import React from 'react';
 import { useDynamicOverlap } from '../internal/hooks/use-dynamic-overlap';
-import { getContentHeaderClassName } from '../internal/utils/content-header-utils';
 import styles from './styles.css.js';
-import { shouldRemoveHighContrastHeader } from '../internal/utils/content-header-utils';
 
 interface WizardFormHeaderProps {
   children: React.ReactNode;
@@ -17,22 +15,8 @@ export default function WizardFormHeader({ children, isVisualRefresh }: WizardFo
   const overlapElement = useDynamicOverlap();
 
   return (
-    <div
-      className={clsx(
-        styles['form-header'],
-        isVisualRefresh && styles['form-header-refresh'],
-        isVisualRefresh && getContentHeaderClassName()
-      )}
-      ref={overlapElement}
-    >
-      <div
-        className={clsx(
-          styles['form-header-content'],
-          shouldRemoveHighContrastHeader() && styles['remove-high-contrast-header']
-        )}
-      >
-        {children}
-      </div>
+    <div className={clsx(styles['form-header'], isVisualRefresh && styles['form-header-refresh'])} ref={overlapElement}>
+      <div className={clsx(styles['form-header-content'])}>{children}</div>
     </div>
   );
 }

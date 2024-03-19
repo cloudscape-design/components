@@ -45,6 +45,10 @@ nodes will directly touch with no gap between them.
     grid-column: 1;
     grid-row: 1;
     padding-block-end: awsui.$space-content-header-padding-bottom;
+
+    &.with-divider {
+      border-block-end: 1px solid awsui.$color-border-divider-default;
+    }
   }
 
   > .content {

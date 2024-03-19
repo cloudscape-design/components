@@ -20,4 +20,14 @@ export interface ContentLayoutProps extends BaseComponentProps {
    * Use this slot to render the header content for the layout.
    */
   header?: React.ReactNode;
+
+  /**
+   * Determines the visual treatment for the header. Specifically:
+   * * `default` - Creates continuity between the header and the content.
+   * * `high-contrast` - Applies high-contrast to the background of the header and the elements contained within it.
+   *     If you are using the AppLayout component, set `headerVariant="high-contrast"` to apply the same treatment to the breadcrumbs and notifications slots.
+   * * `divider` - Add a horizontal separator between the header and the content.
+   * @visualrefresh
+   */
+  headerVariant?: 'default' | 'high-contrast' | 'divider';
 }

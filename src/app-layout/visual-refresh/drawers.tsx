@@ -174,6 +174,7 @@ function DesktopTriggers() {
     splitPanelToggle,
     splitPanelReportedHeaderHeight,
     splitPanelReportedSize,
+    headerVariant,
   } = useAppLayoutInternals();
 
   const hasMultipleTriggers = drawersTriggerCount > 1;
@@ -249,6 +250,7 @@ function DesktopTriggers() {
               selected={item.id === activeDrawerId}
               badge={item.badge}
               testId={`awsui-app-layout-trigger-${item.id}`}
+              highContrastHeader={headerVariant === 'high-contrast'}
             />
           );
         })}
@@ -266,6 +268,7 @@ function DesktopTriggers() {
                 className={clsx(styles['drawers-trigger'], testutilStyles['drawers-trigger'], testUtilsClass)}
                 iconName="ellipsis"
                 onClick={onClick}
+                highContrastHeader={headerVariant === 'high-contrast'}
               />
             )}
             onItemClick={({ detail }) => {
@@ -283,6 +286,7 @@ function DesktopTriggers() {
             onClick={() => handleSplitPanelClick()}
             selected={hasSplitPanel && isSplitPanelOpen}
             ref={splitPanelRefs.toggle}
+            highContrastHeader={headerVariant === 'high-contrast'}
           />
         )}
       </div>

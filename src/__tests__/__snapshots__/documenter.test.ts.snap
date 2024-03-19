@@ -723,6 +723,23 @@ Each Drawer is an item in the drawers wrapper with the following properties:
       "type": "string",
     },
     Object {
+      "description": "Determines the visual treatment for the breadcrumbs and notifications slots. Specifically:
+* \`default\` - Does not apply any visual treatment.
+* \`high-contrast\` - Applies high-contrast to both slots. Use in conjunction with \`headerVariant=\\"high-contrast\\"\` in ContentLayout.",
+      "inlineType": Object {
+        "name": "",
+        "type": "union",
+        "values": Array [
+          "default",
+          "high-contrast",
+        ],
+      },
+      "name": "headerVariant",
+      "optional": true,
+      "type": "string",
+      "visualRefreshTag": "",
+    },
+    Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
@@ -5436,6 +5453,26 @@ If true, the overlap will be removed.",
       "name": "disableOverlap",
       "optional": true,
       "type": "boolean",
+      "visualRefreshTag": "",
+    },
+    Object {
+      "description": "Determines the visual treatment for the header. Specifically:
+* \`default\` - Creates continuity between the header and the content.
+* \`high-contrast\` - Applies high-contrast to the background of the header and the elements contained within it.
+    If you are using the AppLayout component, set \`headerVariant=\\"high-contrast\\"\` to apply the same treatment to the breadcrumbs and notifications slots.
+* \`divider\` - Add a horizontal separator between the header and the content.",
+      "inlineType": Object {
+        "name": "",
+        "type": "union",
+        "values": Array [
+          "default",
+          "high-contrast",
+          "divider",
+        ],
+      },
+      "name": "headerVariant",
+      "optional": true,
+      "type": "string",
       "visualRefreshTag": "",
     },
     Object {
