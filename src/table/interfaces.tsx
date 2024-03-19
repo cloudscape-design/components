@@ -332,7 +332,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
   enableKeyboardNavigation?: boolean;
 
   /**
-   * Use this property to provide define expandable table rows. The expandableRows configuration object consists of
+   * Use this property to define expandable table rows. The expandableRows configuration object consists of:
    * * `getItemChildren` ((Item) => Item[]) - Use it to define nested items that are shown when an item gets expanded.
    * * `isItemExpandable` ((Item) => boolean) - Use it for items that can be expanded to show nested items.
    * * `expandedItems` (Item[]) - Use it to represent the expanded state of items.
