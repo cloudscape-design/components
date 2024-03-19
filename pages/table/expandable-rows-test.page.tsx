@@ -56,7 +56,7 @@ export default () => {
   const { items, collectionProps, paginationProps, propertyFilterProps, filteredItemsCount, actions } = useCollection(
     getScopedInstances(selectedCluster),
     {
-      pagination: settings.usePagination ? { pageSize: 10 } : undefined,
+      pagination: settings.usePagination ? { pageSize: preferences.pageSize } : undefined,
       sorting: {},
       filtering: {},
       propertyFiltering: { filteringProperties },
