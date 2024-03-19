@@ -203,7 +203,11 @@ export function DesktopTriggers() {
     return 0;
   };
 
-  const { visibleItems, overflowItems } = splitItems(drawers ?? undefined, getIndexOfOverflowItem(), activeDrawerId);
+  const { visibleItems, overflowItems } = splitItems(
+    drawers?.filter(drawer => !drawer.hideTrigger) ?? undefined,
+    getIndexOfOverflowItem(),
+    activeDrawerId
+  );
   const overflowMenuHasBadge = !!overflowItems.find(item => item.badge);
 
   return (

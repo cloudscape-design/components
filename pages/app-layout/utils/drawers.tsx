@@ -37,6 +37,7 @@ export const drawerItems: Array<AppLayoutProps.Drawer> = [
       // to their drawer being resized.
       console.log('Security Drawer is now: ', event.detail.size);
     },
+    hideTrigger: true,
     trigger: {
       iconName: 'security',
     },

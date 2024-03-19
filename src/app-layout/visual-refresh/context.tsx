@@ -415,7 +415,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       !skipFocusControl && focusDrawersButtons();
     };
 
-    let drawersTriggerCount = drawers ? drawers.length : !toolsHide ? 1 : 0;
+    let drawersTriggerCount = drawers ? drawers.filter(drawer => !drawer.hideTrigger).length : !toolsHide ? 1 : 0;
     if (splitPanelDisplayed) {
       drawersTriggerCount++;
     }
