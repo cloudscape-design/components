@@ -54,7 +54,7 @@ $column-breakpoint-spans: (
 
 @mixin remove-useless-vertical-borders($col-size, $direction) {
   $items-per-row: math.div($grid-columns, $col-size);
-  $items-modifier: if($direction == 'left', '+1', '');
+  $items-modifier: if($direction == 'inline-start', '+1', '');
   > *:nth-child(#{$items-per-row}n#{$items-modifier}) {
     border-#{$direction}-width: 0;
   }
