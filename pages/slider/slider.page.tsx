@@ -15,7 +15,7 @@ function Sliders() {
   const [value2, setValue2] = React.useState(200);
   const [value3, setValue3] = React.useState(50);
   const [value4, setValue4] = React.useState(50);
-  const [value5, setValue5] = React.useState(25);
+  const [value5, setValue5] = React.useState(0);
   const [value6, setValue6] = React.useState(25);
   const [value7, setValue7] = React.useState(2);
   const [sliderValue, setSliderValue] = useState(40);
@@ -31,6 +31,14 @@ function Sliders() {
     { value: 6, label: 'Katie George' },
     { value: 8, label: 'UX designer' },
     { value: 10, label: 'Visual designer' },
+  ];
+
+  const satisfactionScaleOptions = [
+    { value: 0, label: 'Extremely unsatisfied' },
+    { value: 1, label: 'Somewhat satisfied' },
+    { value: 2, label: `Not satisfied or unsatisfied` },
+    { value: 3, label: 'Somewhat satisfied' },
+    { value: 4, label: 'Extremely satisfied' },
   ];
 
   React.useEffect(() => {
@@ -136,17 +144,17 @@ function Sliders() {
           referenceValues={[2, 4, 5, 6, 8]}
         />
       </FormField>
-      <FormField label="How hot do you like your salsa?">
+      <FormField label="How satisfied are you by your results?">
         <Slider
           value={value5}
           onChange={({ detail }) => {
             setValue5(detail.value);
           }}
           step={1}
-          min={5}
-          max={15}
-          valueFormatter={value => `${value} is the label`}
-          referenceValues={[6, 7, 8, 9, 10, 11, 12, 13, 14]}
+          min={0}
+          max={4}
+          valueFormatter={value => satisfactionScaleOptions.find(item => item.value === value)?.label || ''}
+          referenceValues={[1, 2, 3]}
           tickMarks={true}
         />
       </FormField>
@@ -156,12 +164,13 @@ function Sliders() {
           onChange={({ detail }) => {
             setValue6(detail.value);
           }}
-          //step={250}
-          //tickMarks={true}
-          min={1}
-          max={1000}
-          //referenceValues={[250, 500, 750]}
-          referenceValues={Array.from({ length: 1000 }, (v, i) => i + 1)}
+          step={1000}
+          tickMarks={true}
+          min={0}
+          max={10000}
+          valueFormatter={value => `${value} is the value`}
+          //referenceValues={[10, 20, 30, 40, 50, 60, 70, 80, 90]}
+          referenceValues={Array.from({ length: 10000 }, (v, i) => i + 1)}
         />
       </FormField>
       <FormField label="How hot do you like your salsa?">
@@ -171,11 +180,11 @@ function Sliders() {
             setValue7(detail.value);
           }}
           min={0}
-          max={70}
+          max={100}
           valueFormatter={value => `${value}`}
           tickMarks={true}
-          step={5}
-          referenceValues={[7, 8, 9, 10, 25, 37, 39, 52, 53, 59, 67, 68]}
+          //step={5}
+          referenceValues={[7, 8, 9, 10, 25, 37, 39, 52, 53, 59, 67, 68, 93]}
         />
       </FormField>
     </SpaceBetween>

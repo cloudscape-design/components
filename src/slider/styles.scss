@@ -134,6 +134,7 @@ $thumb-border-radius: 50%;
 
   &-container {
     @include styles.styles-reset;
+    font-size: awsui.$font-size-body-s;
     padding-block: awsui.$space-m awsui.$space-xs;
 
     position: relative;
@@ -142,10 +143,14 @@ $thumb-border-radius: 50%;
 
   &-labels {
     display: grid;
-    grid-template-columns: 1fr repeat(calc((var(#{custom-props.$sliderLabelCount}) - 2) / 2), 2fr) 1fr;
+    // grid-template-columns: 1fr repeat(calc((var(#{custom-props.$sliderLabelCount}) - 2) / 2), 2fr) 1fr;
+    grid-template-columns:
+      3fr repeat(
+        calc((var(#{custom-props.$sliderLabelCount}) - 2) / 2 + (var(#{custom-props.$sliderLabelCount}) - 2) / 2 - 1),
+        2fr
+      )
+      3fr;
     grid-auto-rows: 100%;
-    block-size: 40px;
-    overflow: hidden;
     padding-block-start: awsui.$space-s;
   }
 
@@ -163,6 +168,7 @@ $thumb-border-radius: 50%;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
+    overflow-y: clip;
   }
 
   &-min {
@@ -173,6 +179,7 @@ $thumb-border-radius: 50%;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
+    overflow-y: clip;
   }
 
   &-max {
@@ -185,6 +192,7 @@ $thumb-border-radius: 50%;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
+    overflow-y: clip;
   }
 }
 
