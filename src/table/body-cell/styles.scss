@@ -289,12 +289,6 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
       color: awsui.$color-text-button-normal-active;
     }
 
-    &-show-outline {
-      @include focus-visible.when-visible {
-        @include styles.focus-highlight(awsui.$space-button-inline-icon-focus-outline-gutter);
-      }
-    }
-
     &-form {
       margin-block: calc(-1 * #{awsui.$space-xs});
       margin-inline: calc(-1.5 * #{awsui.$space-xs});
