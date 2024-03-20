@@ -14,7 +14,7 @@ import styles from './styles.scss';
 function Sliders() {
   const [value2, setValue2] = React.useState(200);
   const [value3, setValue3] = React.useState(50);
-  const [value4, setValue4] = React.useState(50);
+  const [value4, setValue4] = React.useState(4);
   const [value5, setValue5] = React.useState(0);
   const [value6, setValue6] = React.useState(25);
   const [value7, setValue7] = React.useState(2);
@@ -27,10 +27,9 @@ function Sliders() {
     { value: 0, label: 'Backend dev' },
     { value: 2, label: 'Frontend dev' },
     { value: 4, label: `Scott O'Brien` },
-    { value: 5, label: 'Jessica Kuelz ' },
-    { value: 6, label: 'Katie George' },
-    { value: 8, label: 'UX designer' },
-    { value: 10, label: 'Visual designer' },
+    { value: 6, label: 'Jessica Kuelz ' },
+    { value: 8, label: 'Katie George' },
+    { value: 10, label: 'UX designer' },
   ];
 
   const satisfactionScaleOptions = [
@@ -39,6 +38,14 @@ function Sliders() {
     { value: 2, label: `Not satisfied or unsatisfied` },
     { value: 3, label: 'Somewhat satisfied' },
     { value: 4, label: 'Extremely satisfied' },
+  ];
+
+  const satisfactionScaleOptions2 = [
+    { value: 0, label: 'Extremely unsatisfied' },
+    { value: 100, label: 'Somewhat satisfied' },
+    { value: 200, label: `Not satisfied or unsatisfied` },
+    { value: 300, label: 'Somewhat satisfied' },
+    { value: 400, label: 'Extremely satisfied' },
   ];
 
   React.useEffect(() => {
@@ -135,13 +142,11 @@ function Sliders() {
             setValue4(detail.value);
           }}
           valueFormatter={value => DTWordOptions.find(item => item.value === value)?.label || ''}
+          step={2}
+          tickMarks={true}
           min={0}
           max={10}
-          //step={1}
-          //tickMarks
-          hideFillLine={true}
-          hideTooltip={!DTWordOptions.map(item => item.value).includes(value4)}
-          referenceValues={[2, 4, 5, 6, 8]}
+          referenceValues={[2, 4, 6, 8]}
         />
       </FormField>
       <FormField label="How satisfied are you by your results?">
@@ -158,6 +163,20 @@ function Sliders() {
           tickMarks={true}
         />
       </FormField>
+      <FormField label="How satisfied are you by your results?">
+        <Slider
+          value={value5}
+          onChange={({ detail }) => {
+            setValue5(detail.value);
+          }}
+          step={100}
+          min={0}
+          max={400}
+          valueFormatter={value => satisfactionScaleOptions2.find(item => item.value === value)?.label || ''}
+          referenceValues={[100, 200, 300]}
+          tickMarks={true}
+        />
+      </FormField>
       <FormField label="How hot do you like your salsa?">
         <Slider
           value={value6}
@@ -168,9 +187,8 @@ function Sliders() {
           tickMarks={true}
           min={0}
           max={10000}
-          valueFormatter={value => `${value} is the value`}
-          //referenceValues={[10, 20, 30, 40, 50, 60, 70, 80, 90]}
-          referenceValues={Array.from({ length: 10000 }, (v, i) => i + 1)}
+          referenceValues={[1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000]}
+          //referenceValues={[...Array(10000).keys()]}
         />
       </FormField>
       <FormField label="How hot do you like your salsa?">
@@ -183,7 +201,6 @@ function Sliders() {
           max={100}
           valueFormatter={value => `${value}`}
           tickMarks={true}
-          //step={5}
           referenceValues={[7, 8, 9, 10, 25, 37, 39, 52, 53, 59, 67, 68, 93]}
         />
       </FormField>
@@ -243,14 +260,7 @@ export default function InputsPage() {
                   }}
                 />
               </Grid>
-              <Slider
-                valueFormatter={() => ''}
-                hideTooltip={true}
-                value={value}
-                onChange={({ detail }) => setValue(detail.value)}
-                min={0}
-                max={11}
-              />
+              <Slider value={value} onChange={({ detail }) => setValue(detail.value)} min={0} max={11} />
             </FormField>
           </SpaceBetween>
         </Container>

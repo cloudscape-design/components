@@ -16,7 +16,6 @@ export interface SliderLabelProps {
 }
 export default function SliderLabels({ min, max, referenceValues, valueFormatter, labelsId }: SliderLabelProps) {
   const isMobile = useMobile();
-
   const LABEL_THRESHOLD = isMobile ? 5 : 10;
 
   const getVisibleReferenceValues = () => {
@@ -44,17 +43,23 @@ export default function SliderLabels({ min, max, referenceValues, valueFormatter
   function getLabelPosition(index: number) {
     const minDistance = (max - min) / LABEL_THRESHOLD;
     const colSpan = Math.floor(minDistance / 2);
-    const positionStart = index - Math.ceil(colSpan / 2);
-    const positionEnd = index + Math.ceil(colSpan / 2);
+    const positionStart = index - colSpan;
+    const positionEnd = index + colSpan;
 
-    return { min: colSpan * 2, max: (max - colSpan) * 2, posStart: positionStart * 2, posEnd: positionEnd * 2 };
+    return {
+      min: colSpan * 2,
+      max: (max - colSpan) * 2,
+      // add one to center the label
+      posStart: positionStart * 2 + 1,
+      posEnd: positionEnd * 2,
+    };
   }
 
   return (
     <div
       role="list"
-      className={clsx(styles['slider-labels'], {
-        [styles['slider-noref']]: !referenceValues,
+      className={clsx(styles.labels, {
+        [styles['labels-noref']]: !referenceValues,
       })}
       style={{
         [customCssProps.sliderLabelCount]: !referenceValues ? 2 : (max - min) * 2,
@@ -63,7 +68,7 @@ export default function SliderLabels({ min, max, referenceValues, valueFormatter
     >
       <span
         role="option"
-        className={clsx(styles['slider-min'])}
+        className={clsx(styles.label, styles['labels-min'])}
         style={{
           [customCssProps.sliderMinEnd]: max - min > LABEL_THRESHOLD ? getLabelPosition(0).min : 1,
         }}
@@ -83,7 +88,7 @@ export default function SliderLabels({ min, max, referenceValues, valueFormatter
                 [customCssProps.sliderNextReferenceColumn]:
                   max - min > LABEL_THRESHOLD ? getLabelPosition(step).posEnd : step * 2 - min,
               }}
-              className={clsx(styles['slider-reference'])}
+              className={clsx(styles.label, styles['labels-reference'])}
             >
               {valueFormatter ? valueFormatter(step) : step}
             </span>
@@ -91,7 +96,7 @@ export default function SliderLabels({ min, max, referenceValues, valueFormatter
         })}
       <span
         role="option"
-        className={clsx(styles['slider-max'])}
+        className={clsx(styles.label, styles['labels-max'])}
         style={{
           [customCssProps.sliderMaxStart]: !referenceValues
             ? 2

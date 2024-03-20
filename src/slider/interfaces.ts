@@ -36,11 +36,6 @@ export interface SliderProps extends BaseComponentProps, FormFieldValidationCont
   step?: number;
 
   /**
-   * Hide the tooltip on focus.
-   */
-  hideTooltip?: boolean;
-
-  /**
    * Thumb only.
    */
   hideFillLine?: boolean;

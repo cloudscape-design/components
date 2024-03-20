@@ -26,7 +26,6 @@ export default function Slider({
   invalid,
   ariaLabel,
   referenceValues,
-  hideTooltip,
   tickMarks,
   hideFillLine,
   valueFormatter,
@@ -36,8 +35,8 @@ export default function Slider({
   const baseProps = getBaseProps(rest);
 
   const range = useRef<HTMLDivElement>(null);
-  const [tooltipVisible, setTooltipVisible] = React.useState(false);
   const [showPopover, setShowPopover] = React.useState(false);
+  const [isActive, setIsActive] = React.useState(false);
   const handleRef = useRef<HTMLDivElement>(null);
   const labelsId = useUniqueId('labels');
 
@@ -84,7 +83,7 @@ export default function Slider({
             insetInlineStart: `calc(${percent}% - ${tooltipPositionAdjust}px)`,
           }}
         />
-        {showPopover && !hideTooltip && popoverContent}
+        {showPopover && popoverContent}
         <div
           className={clsx(styles['slider-track'], {
             [styles.disabled]: disabled,
@@ -113,7 +112,7 @@ export default function Slider({
             className={clsx(styles['slider-range'], {
               [styles.disabled]: disabled,
               [styles.error]: invalid,
-              [styles.active]: tooltipVisible,
+              [styles.active]: isActive,
             })}
           />
         )}
@@ -131,16 +130,18 @@ export default function Slider({
         disabled={disabled}
         onFocus={() => {
           setShowPopover(true);
-          setTooltipVisible(true);
+          setIsActive(true);
         }}
         onBlur={() => {
           setShowPopover(false);
-          setTooltipVisible(false);
+          setIsActive(false);
         }}
         onMouseEnter={() => {
           setShowPopover(true);
         }}
-        onMouseLeave={() => setShowPopover(false)}
+        onMouseLeave={() => {
+          setShowPopover(false);
+        }}
         step={step}
         value={value ?? ''}
         onChange={event => {
