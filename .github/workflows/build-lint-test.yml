@@ -19,6 +19,24 @@ permissions:
   deployments: write
 
 jobs:
+  git-secrets:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        name: Checkout code with history
+        with:
+          fetch-depth: 100
+      - name: Install git-secrets
+        run: |
+          wget -O /usr/local/bin/git-secrets https://raw.githubusercontent.com/awslabs/git-secrets/master/git-secrets
+          chmod +x /usr/local/bin/git-secrets
+          git secrets --register-aws --global
+      - name: Run git-secrets
+        run: |
+          git rev-parse HEAD
+          git secrets --scan-history
   build:
     uses: cloudscape-design/actions/.github/workflows/build-lint-test.yml@main
     secrets: inherit
