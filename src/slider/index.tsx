@@ -13,6 +13,7 @@ import { useFormFieldContext } from '../internal/context/form-field-context';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import Tooltip from './tooltip.js';
 import SliderLabels from './slider-labels.js';
+import { getPercent, getStepArray, getTickMarkPositions, THUMB_SIZE } from './utils.js';
 
 export { SliderProps };
 
@@ -34,42 +35,27 @@ export default function Slider({
   const { __internalRootRef } = useBaseComponent('Slider');
   const baseProps = getBaseProps(rest);
 
-  const range = useRef<HTMLDivElement>(null);
+  const rangeRef = useRef<HTMLDivElement>(null);
+  const handleRef = useRef<HTMLDivElement>(null);
   const [showPopover, setShowPopover] = React.useState(false);
   const [isActive, setIsActive] = React.useState(false);
-  const handleRef = useRef<HTMLDivElement>(null);
   const labelsId = useUniqueId('labels');
-
-  const getPercent = (value: number) => ((value - min) / (max - min)) * 100;
-  const percent = value !== undefined && getPercent(Math.max(Math.min(value, max), min));
-
+  const hasValue = value !== undefined;
   const formFieldContext = useFormFieldContext(rest);
-  const tooltipPositionAdjust = value !== undefined && (value <= min ? 8 : value >= max ? 24 : 16);
 
-  const getStepArray = (step: number) => {
-    const steps = [];
+  const percent = hasValue && getPercent(Math.max(Math.min(value, max), min), min, max);
 
-    for (let i = min; i <= max; i = i + step) {
-      steps.push(i);
-    }
-    return steps;
-  };
-
-  const getTickMarkPositions = (step: number) => {
-    return ((step - min) / (max - min)) * 100 > 100
-      ? '100%'
-      : ((step - min) / (max - min)) * 100 < 0
-      ? '0%'
-      : `${((step - min) / (max - min)) * 100}%`;
-  };
+  // at the min and max values, the thumb is not centered.
+  const tooltipPositionAdjust =
+    hasValue && (value <= min ? THUMB_SIZE - THUMB_SIZE / 2 : value >= max ? THUMB_SIZE + THUMB_SIZE / 2 : THUMB_SIZE);
 
   useEffect(() => {
-    if (range.current) {
-      range.current.style.width = `${percent}%`;
+    if (rangeRef.current) {
+      rangeRef.current.style.width = `${percent}%`;
     }
-  }, [percent, showPopover]);
+  }, [percent]);
 
-  const popoverContent = value !== undefined && (
+  const popoverContent = hasValue && (
     <Tooltip value={valueFormatter ? valueFormatter(value) : value} trackRef={handleRef} />
   );
 
@@ -90,25 +76,23 @@ export default function Slider({
           })}
         />
         {step && tickMarks && (
-          <>
-            <div className={clsx(styles.ticks)}>
-              {getStepArray(step).map((step, index) => (
-                <div
-                  key={`step-${index}`}
-                  style={{
-                    insetInlineStart: getTickMarkPositions(step),
-                  }}
-                  className={clsx(styles.tick, {
-                    [styles['tick-filled']]: !hideFillLine && value && value > step,
-                  })}
-                ></div>
-              ))}
-            </div>
-          </>
+          <div className={clsx(styles.ticks)}>
+            {getStepArray(step, min, max).map((step, index) => (
+              <div
+                key={`step-${index}`}
+                style={{
+                  insetInlineStart: getTickMarkPositions(step, min, max),
+                }}
+                className={clsx(styles.tick, {
+                  [styles['tick-filled']]: !hideFillLine && value && value > step,
+                })}
+              ></div>
+            ))}
+          </div>
         )}
         {!hideFillLine && (
           <div
-            ref={range}
+            ref={rangeRef}
             className={clsx(styles['slider-range'], {
               [styles.disabled]: disabled,
               [styles.error]: invalid,
@@ -150,8 +134,8 @@ export default function Slider({
         className={clsx(styles.thumb, {
           [styles.error]: invalid,
           [styles.disabled]: disabled,
-          [styles.min]: value !== undefined && value <= min,
-          [styles.max]: value !== undefined && value >= max,
+          [styles.min]: hasValue && value <= min,
+          [styles.max]: hasValue && value >= max,
         })}
         {...baseProps}
       />
