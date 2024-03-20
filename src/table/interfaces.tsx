@@ -335,10 +335,10 @@ export interface TableProps<T = any> extends BaseComponentProps {
 
   /**
    * Use this property to define expandable table rows. The expandableRows configuration object consists of:
-   * * `getItemChildren` ((Item) => Item[]) - Use it to define nested items that are shown when an item gets expanded.
-   * * `isItemExpandable` ((Item) => boolean) - Use it for items that can be expanded to show nested items.
+   * * `getItemChildren` ((Item) => Item[]) - Use it to define nested data that are shown when an item gets expanded.
+   * * `isItemExpandable` ((Item) => boolean) - Use it for items that can be expanded to show nested data.
    * * `expandedItems` (Item[]) - Use it to represent the expanded state of items.
-   * * `onExpandableItemToggle` (TableProps.OnExpandableItemToggle<T>) - Called when item's expand toggle is clicked.
+   * * `onExpandableItemToggle` (TableProps.OnExpandableItemToggle<T>) - Called when an items expand toggle is clicked.
    */
   expandableRows?: TableProps.ExpandableRows<T>;
 }
