@@ -4,7 +4,7 @@ import React, { useContext, useState } from 'react';
 import Table from '~components/table';
 import Header from '~components/header';
 import SpaceBetween from '~components/space-between';
-import { getMatchesCountText } from './shared-configs';
+import { getMatchesCountText, renderAriaLive } from './shared-configs';
 import { useCollection } from '@cloudscape-design/collection-hooks';
 import {
   Alert,
@@ -138,6 +138,7 @@ export default () => {
             preferences={createPreferences({ preferences, setPreferences })}
             submitEdit={() => {}}
             variant="full-page"
+            renderAriaLive={renderAriaLive}
             header={
               <SpaceBetween size="m">
                 <Header
