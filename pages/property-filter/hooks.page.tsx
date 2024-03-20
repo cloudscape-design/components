@@ -38,6 +38,7 @@ export default function () {
         </Box>
       ),
       filteringProperties,
+      freeTextFiltering: { operators: ['=', '!=', ':', '!:'] },
     },
     sorting: {},
   });

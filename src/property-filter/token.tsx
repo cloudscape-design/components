@@ -7,6 +7,7 @@ import {
   I18nStrings,
   InternalFilteringOption,
   InternalFilteringProperty,
+  InternalFreeTextFiltering,
   InternalToken,
   JoinOperation,
   LoadItemsDetail,
@@ -25,7 +26,7 @@ interface TokenProps {
   asyncProps: DropdownStatusProps;
   customGroupsText: readonly GroupText[];
   disabled?: boolean;
-  disableFreeTextFiltering?: boolean;
+  freeTextFiltering: InternalFreeTextFiltering;
   expandToViewport?: boolean;
   filteringProperties: readonly InternalFilteringProperty[];
   filteringOptions: readonly InternalFilteringOption[];
@@ -56,7 +57,7 @@ export const TokenButton = ({
   hideOperations,
   customGroupsText,
   disabled,
-  disableFreeTextFiltering,
+  freeTextFiltering,
   expandToViewport,
 }: TokenProps) => {
   const externalToken = { ...token, propertyKey: token.property?.propertyKey };
@@ -89,7 +90,7 @@ export const TokenButton = ({
         i18nStrings={i18nStrings}
         asyncProperties={asyncProperties}
         customGroupsText={customGroupsText}
-        disableFreeTextFiltering={disableFreeTextFiltering}
+        freeTextFiltering={freeTextFiltering}
         expandToViewport={expandToViewport}
       />
     </FilteringToken>
