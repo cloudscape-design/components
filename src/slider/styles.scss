@@ -1,0 +1,323 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+$thumb-size: 16px;
+$tick-width: 2px;
+$thumb-border-radius: 50%;
+
+@mixin base-thumb-styles {
+  appearance: none;
+  background: awsui.$color-background-slider-handle-default;
+  border-color: awsui.$color-background-slider-handle-default;
+  border-block-width: 2px;
+  border-inline-width: 2px;
+  border-start-start-radius: $thumb-border-radius;
+  border-start-end-radius: $thumb-border-radius;
+  border-end-start-radius: $thumb-border-radius;
+  border-end-end-radius: $thumb-border-radius;
+
+  cursor: pointer;
+  block-size: $thumb-size;
+  inline-size: $thumb-size;
+  pointer-events: all;
+  position: relative;
+}
+
+@mixin base-thumb-hover-styles {
+  box-shadow: 0px 0 0 2px awsui.$color-background-slider-handle-ring,
+    0 0 0 4px awsui.$color-background-slider-handle-default;
+}
+
+@mixin base-thumb-focus-styles {
+  block-size: 20px;
+  inline-size: 20px;
+  box-shadow: 0px 0 0 2px awsui.$color-background-slider-handle-ring,
+    0 0 0 4px awsui.$color-background-slider-handle-hover;
+  background: awsui.$color-background-slider-handle-hover;
+
+  border-color: awsui.$color-background-slider-handle-hover;
+  border-block-width: 2px;
+  border-inline-width: 2px;
+}
+
+@mixin base-thumb-disabled-styles {
+  background-color: awsui.$color-background-control-disabled;
+  border-color: awsui.$color-background-control-disabled;
+  box-shadow: none;
+  pointer-events: none;
+}
+
+.slider {
+  inline-size: 100%;
+  display: flex;
+  align-items: center;
+
+  &-thumb-label {
+    position: absolute;
+    border-start-start-radius: awsui.$border-radius-popover;
+    border-start-end-radius: awsui.$border-radius-popover;
+    border-end-start-radius: awsui.$border-radius-popover;
+    border-end-end-radius: awsui.$border-radius-popover;
+
+    border-block-width: awsui.$border-field-width;
+    border-inline-width: awsui.$border-field-width;
+
+    border-color: awsui.$color-border-popover;
+
+    background-color: awsui.$color-background-popover;
+    box-shadow: awsui.$shadow-popover;
+
+    padding-inline: awsui.$space-xs;
+    padding-block: awsui.$space-xs;
+    min-inline-size: 40px;
+    max-inline-size: 210px;
+    inline-size: max-content;
+    text-align: center;
+    z-index: 1;
+
+    &::after {
+      content: '';
+      block-size: 10px;
+      inline-size: 10px;
+      background-color: awsui.$color-background-popover;
+      box-shadow: 2px 2px awsui.$color-border-popover, 2px 2px awsui.$color-border-popover;
+      transform: rotate(45deg);
+      display: block;
+      position: absolute;
+      inset-inline-start: calc(50% - 5px);
+      inset-block-end: -4px;
+    }
+  }
+
+  &-track,
+  &-range {
+    position: absolute;
+    border-start-start-radius: 3px;
+    border-start-end-radius: 3px;
+    border-end-start-radius: 3px;
+    border-end-end-radius: 3px;
+  }
+
+  &-track {
+    background-color: awsui.$color-background-slider-track;
+    inline-size: 100%;
+    block-size: 2px;
+    cursor: pointer;
+
+    &.disabled {
+      cursor: default;
+      background-color: awsui.$color-background-control-disabled;
+    }
+  }
+
+  &-range {
+    background-color: awsui.$color-background-slider-handle-default;
+    block-size: 4px;
+
+    &.active {
+      background-color: awsui.$color-background-slider-handle-hover;
+    }
+
+    &.disabled {
+      background-color: awsui.$color-background-control-disabled;
+    }
+    &.error {
+      background-color: awsui.$color-text-status-error;
+    }
+  }
+
+  &-container {
+    @include styles.styles-reset;
+    padding-block: awsui.$space-m;
+
+    position: relative;
+    max-inline-size: 800px;
+  }
+
+  &-labels {
+    display: flex;
+    justify-content: space-between;
+    block-size: 0;
+    padding-block-start: awsui.$space-s;
+  }
+
+  &-reference {
+    position: absolute;
+    min-inline-size: max-content;
+    inline-size: 16px;
+    margin-inline-start: -8px;
+  }
+
+  &-max {
+    text-align: end;
+  }
+}
+
+.datalist {
+  appearance: none;
+}
+
+.ticks {
+  display: flex;
+  inline-size: calc(100% - $tick-width);
+  position: relative;
+}
+
+.tick {
+  position: absolute;
+  min-block-size: 8px;
+  inline-size: $tick-width;
+  padding-inline: 0;
+  padding-block: 0;
+  background: awsui.$color-background-slider-track;
+  inset-block-start: -4px;
+
+  &-filled {
+    background: awsui.$color-background-slider-handle-default;
+  }
+}
+
+.tooltip-thumb {
+  position: absolute;
+  // padding-block: awsui.$space-l;
+  // padding-inline: 0;
+  inline-size: 32px;
+  block-size: 32px;
+}
+
+.thumb {
+  background: transparent;
+  appearance: none;
+  position: absolute;
+  block-size: 0;
+  inline-size: calc(100% + $thumb-size);
+  outline: 0;
+  margin-inline-start: calc($thumb-size / -2);
+  cursor: pointer;
+
+  &.disabled {
+    cursor: default;
+  }
+
+  // 1px added to min and max to cover the step line when it exists.
+  &.min {
+    margin-inline-start: -1px;
+  }
+
+  &.max {
+    margin-inline-start: -$thumb-size + 1;
+  }
+
+  &::-webkit-slider-thumb {
+    appearance: none;
+    @include base-thumb-styles();
+  }
+
+  &::-moz-range-thumb {
+    appearance: none;
+    @include base-thumb-styles();
+  }
+
+  &:hover::-webkit-slider-thumb {
+    @include base-thumb-hover-styles();
+  }
+
+  &:hover::-moz-range-thumb {
+    @include base-thumb-hover-styles();
+  }
+
+  &:focus::-webkit-slider-thumb {
+    @include base-thumb-focus-styles();
+  }
+
+  &:focus::-moz-range-thumb {
+    @include base-thumb-focus-styles();
+  }
+
+  &:active::-webkit-slider-thumb {
+    @include base-thumb-focus-styles();
+  }
+
+  &:active::-moz-range-thumb {
+    @include base-thumb-focus-styles();
+  }
+}
+
+.error,
+.error:hover,
+.error:active {
+  &::-webkit-slider-thumb {
+    background-color: awsui.$color-text-status-error;
+    border-color: awsui.$color-text-status-error;
+  }
+
+  &::-moz-range-thumb {
+    background-color: awsui.$color-text-status-error;
+    border-color: awsui.$color-text-status-error;
+  }
+  /* stylelint-disable no-descending-specificity */
+  &:hover::-webkit-slider-thumb {
+    background-color: awsui.$color-text-status-error;
+    box-shadow: 0px 0 0 2px awsui.$color-background-slider-handle-ring, 0 0 0 4px awsui.$color-text-status-error;
+  }
+
+  &:hover::-moz-range-thumb {
+    background-color: awsui.$color-text-status-error;
+    box-shadow: 0px 0 0 2px awsui.$color-background-slider-handle-ring, 0 0 0 4px awsui.$color-text-status-error;
+  }
+
+  &:focus::-webkit-slider-thumb {
+    background-color: awsui.$color-background-slider-error-pressed;
+    border-block-width: 2px;
+    border-inline-width: 2px;
+    border-color: awsui.$color-background-slider-error-pressed;
+
+    box-shadow: 0px 0 0 2px awsui.$color-background-slider-handle-ring,
+      0 0 0 4px awsui.$color-background-slider-error-pressed;
+  }
+
+  &:focus::-moz-range-thumb {
+    background-color: awsui.$color-background-slider-error-pressed;
+    border-block-width: 2px;
+    border-inline-width: 2px;
+    border-color: awsui.$color-background-slider-error-pressed;
+    box-shadow: 0px 0 0 2px awsui.$color-background-slider-handle-ring,
+      0 0 0 4px awsui.$color-background-slider-error-pressed;
+  }
+
+  &:active::-webkit-slider-thumb {
+    background-color: awsui.$color-background-slider-error-pressed;
+    border-block-width: 2px;
+    border-inline-width: 2px;
+    border-color: awsui.$color-background-slider-error-pressed;
+    box-shadow: 0px 0 0 2px awsui.$color-background-slider-handle-ring,
+      0 0 0 4px awsui.$color-background-slider-error-pressed;
+  }
+
+  &:active::-moz-range-thumb {
+    background-color: awsui.$color-background-slider-error-pressed;
+    border-block-width: 2px;
+    border-inline-width: 2px;
+    border-color: awsui.$color-background-slider-error-pressed;
+    box-shadow: 0px 0 0 2px awsui.$color-background-slider-handle-ring,
+      0 0 0 4px awsui.$color-background-slider-error-pressed;
+  }
+  /* stylelint-enable no-descending-specificity */
+}
+
+.disabled,
+.disabled:hover,
+.disabled:active {
+  &::-webkit-slider-thumb {
+    @include base-thumb-disabled-styles();
+  }
+
+  &::-moz-range-thumb {
+    @include base-thumb-disabled-styles();
+  }
+}
