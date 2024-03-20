@@ -22,6 +22,7 @@ import {
   FilteringProperty,
   ExtendedOperator,
   InternalQuery,
+  InternalFreeTextFiltering,
 } from './interfaces';
 import { TokenButton } from './token';
 import { getQueryActions, parseText, getAutosuggestOptions, getAllowedOperators } from './controller';
@@ -81,6 +82,7 @@ const PropertyFilter = React.forwardRef(
       filteringOptions = [],
       customGroupsText = [],
       disableFreeTextFiltering = false,
+      freeTextFiltering,
       onLoadItems,
       virtualScroll,
       customControl,
@@ -169,7 +171,7 @@ const PropertyFilter = React.forwardRef(
     );
     const [filteringText, setFilteringText] = useState<string>('');
 
-    const { internalProperties, internalOptions, internalQuery } = (() => {
+    const { internalProperties, internalOptions, internalQuery, internalFreeText } = (() => {
       const propertyByKey = filteringProperties.reduce((acc, property) => {
         const extendedOperators = (property?.operators ?? []).reduce(
           (acc, operator) => (typeof operator === 'object' ? acc.set(operator.operator, operator) : acc),
@@ -206,10 +208,16 @@ const PropertyFilter = React.forwardRef(
         })),
       };
 
-      return { internalProperties: [...propertyByKey.values()], internalOptions, internalQuery };
+      const internalFreeText: InternalFreeTextFiltering = {
+        disabled: disableFreeTextFiltering,
+        operators: freeTextFiltering?.operators ?? [':', '!:'],
+        defaultOperator: freeTextFiltering?.defaultOperator ?? ':',
+      };
+
+      return { internalProperties: [...propertyByKey.values()], internalOptions, internalQuery, internalFreeText };
     })();
 
-    const parsedText = parseText(filteringText, internalProperties, disableFreeTextFiltering);
+    const parsedText = parseText(filteringText, internalProperties, internalFreeText);
     const autosuggestOptions = getAutosuggestOptions(
       parsedText,
       internalProperties,
@@ -219,7 +227,7 @@ const PropertyFilter = React.forwardRef(
     );
 
     const createToken = (currentText: string) => {
-      const parsedText = parseText(currentText, internalProperties, disableFreeTextFiltering);
+      const parsedText = parseText(currentText, internalProperties, internalFreeText);
       let newToken: Token;
       switch (parsedText.step) {
         case 'property': {
@@ -235,20 +243,20 @@ const PropertyFilter = React.forwardRef(
         }
         case 'free-text': {
           newToken = {
-            operator: parsedText.operator || ':',
+            operator: parsedText.operator || internalFreeText.defaultOperator,
             value: parsedText.value,
           };
           break;
         }
         case 'operator': {
           newToken = {
-            operator: ':',
+            operator: internalFreeText.defaultOperator,
             value: currentText,
           };
           break;
         }
       }
-      if (disableFreeTextFiltering && !('propertyKey' in newToken)) {
+      if (internalFreeText.disabled && !('propertyKey' in newToken)) {
         return;
       }
       addToken(newToken);
@@ -318,7 +326,7 @@ const PropertyFilter = React.forwardRef(
       // stop dropdown from closing
       event.preventDefault();
 
-      const parsedText = parseText(value, internalProperties, disableFreeTextFiltering);
+      const parsedText = parseText(value, internalProperties, internalFreeText);
       const loadMoreDetail = getLoadMoreDetail(parsedText, value);
 
       // Insert operator automatically if only one operator is defined for the given property.
@@ -384,7 +392,7 @@ const PropertyFilter = React.forwardRef(
                 />
               )
             }
-            hideEnteredTextOption={disableFreeTextFiltering && parsedText.step !== 'property'}
+            hideEnteredTextOption={internalFreeText.disabled && parsedText.step !== 'property'}
             clearAriaLabel={i18nStrings.clearAriaLabel}
             searchResultsId={showResults ? searchResultsId : undefined}
           />
@@ -420,7 +428,7 @@ const PropertyFilter = React.forwardRef(
                     asyncProperties={asyncProperties}
                     hideOperations={hideOperations}
                     customGroupsText={customGroupsText}
-                    disableFreeTextFiltering={disableFreeTextFiltering}
+                    freeTextFiltering={internalFreeText}
                     disabled={disabled}
                     expandToViewport={expandToViewport}
                   />
