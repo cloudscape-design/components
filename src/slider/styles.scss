@@ -11,19 +11,19 @@
 $thumb-size: 16px;
 $tick-width: 2px;
 
+.root {
+  @include styles.styles-reset;
+  font-size: awsui.$font-size-body-s;
+  padding-block: awsui.$space-m awsui.$space-xs;
+
+  position: relative;
+  max-inline-size: 800px;
+}
+
 .slider {
   inline-size: 100%;
   display: flex;
   align-items: center;
-
-  &-container {
-    @include styles.styles-reset;
-    font-size: awsui.$font-size-body-s;
-    padding-block: awsui.$space-m awsui.$space-xs;
-
-    position: relative;
-    max-inline-size: 800px;
-  }
 
   &-track,
   &-range {

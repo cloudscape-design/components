@@ -60,7 +60,7 @@ export default function Slider({
   );
 
   return (
-    <div className={styles['slider-container']}>
+    <div ref={__internalRootRef} className={styles.root}>
       <div className={styles.slider}>
         <div
           ref={handleRef}
@@ -106,7 +106,6 @@ export default function Slider({
         aria-label={ariaLabel}
         aria-labelledby={formFieldContext.ariaLabelledby}
         aria-describedby={formFieldContext.ariaDescribedby}
-        ref={__internalRootRef}
         type="range"
         list={labelsId}
         min={min}

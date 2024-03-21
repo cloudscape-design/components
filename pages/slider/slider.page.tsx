@@ -183,11 +183,12 @@ function Sliders() {
           onChange={({ detail }) => {
             setValue6(detail.value);
           }}
-          step={1000}
+          step={10}
           tickMarks={true}
           min={0}
-          max={10000}
-          referenceValues={[1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000]}
+          max={100}
+          referenceValues={[50]}
+          valueFormatter={value => `${value} is the value`}
           //referenceValues={[...Array(10000).keys()]}
         />
       </FormField>
@@ -210,6 +211,7 @@ function Sliders() {
 
 export default function InputsPage() {
   const [value, setValue] = React.useState(4);
+  const [temperature, setTemperature] = React.useState(0.8);
   return (
     <div style={{ padding: 30 }}>
       <h1>Sliders demo</h1>
@@ -249,18 +251,24 @@ export default function InputsPage() {
             <FormField label="This is a form field" description="This is a description">
               <ProgressBar value={50} />
             </FormField>
-            <FormField label="Volume">
+            <FormField label="Temperature">
               <Grid gridDefinition={[{ colspan: 2 }, { colspan: 10 }]}>
                 <Input
                   type="number"
                   inputMode="numeric"
-                  value={`${value}`}
+                  value={`${temperature}`}
                   onChange={({ detail }) => {
-                    setValue(Number(detail.value));
+                    setTemperature(Number(detail.value));
                   }}
                 />
               </Grid>
-              <Slider value={value} onChange={({ detail }) => setValue(detail.value)} min={0} max={11} />
+              <Slider
+                step={0.1}
+                value={temperature}
+                onChange={({ detail }) => setTemperature(detail.value)}
+                min={0}
+                max={1}
+              />
             </FormField>
           </SpaceBetween>
         </Container>

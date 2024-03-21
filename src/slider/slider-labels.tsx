@@ -30,7 +30,7 @@ export default function SliderLabels({ min, max, referenceValues, valueFormatter
       if (
         val &&
         !values.includes(val) &&
-        referenceValues.length > 1 &&
+        referenceValues.length >= 1 &&
         (max - val) / (max - min) >= 1 / LABEL_THRESHOLD
       ) {
         values.push(val);
@@ -75,25 +75,23 @@ export default function SliderLabels({ min, max, referenceValues, valueFormatter
       >
         {valueFormatter ? valueFormatter(min) : min}
       </span>
-      {referenceValues &&
-        referenceValues.length > 0 &&
-        getVisibleReferenceValues().map((step, index) => {
-          return (
-            <span
-              role="option"
-              key={`step-${index}`}
-              style={{
-                [customCssProps.sliderReferenceColumn]:
-                  max - min > LABEL_THRESHOLD ? getLabelPosition(step).posStart : step * 2 - min,
-                [customCssProps.sliderNextReferenceColumn]:
-                  max - min > LABEL_THRESHOLD ? getLabelPosition(step).posEnd : step * 2 - min,
-              }}
-              className={clsx(styles.label, styles['labels-reference'])}
-            >
-              {valueFormatter ? valueFormatter(step) : step}
-            </span>
-          );
-        })}
+      {getVisibleReferenceValues().map((step, index) => {
+        return (
+          <span
+            role="option"
+            key={`step-${index}`}
+            style={{
+              [customCssProps.sliderReferenceColumn]:
+                max - min > LABEL_THRESHOLD ? getLabelPosition(step).posStart : step * 2 - min,
+              [customCssProps.sliderNextReferenceColumn]:
+                max - min > LABEL_THRESHOLD ? getLabelPosition(step).posEnd : step * 2 - min,
+            }}
+            className={clsx(styles.label, styles['labels-reference'])}
+          >
+            {valueFormatter ? valueFormatter(step) : step}
+          </span>
+        );
+      })}
       <span
         role="option"
         className={clsx(styles.label, styles['labels-max'])}
