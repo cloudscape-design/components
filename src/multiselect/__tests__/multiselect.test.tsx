@@ -259,6 +259,103 @@ test('does not render token group when no tokens are present', () => {
   expect(wrapper.findByClassName(tokenGroupStyles.root)).toBeNull();
 });
 
+describe('Token group', () => {
+  const i18nStrings = {
+    tokenLimitShowFewer: 'Show fewer',
+    tokenLimitShowMore: 'Show more',
+  };
+
+  test('displays no show more button when tokenLimit is higher than selected token count', () => {
+    const { wrapper } = renderMultiselect(
+      <Multiselect
+        selectedOptions={defaultOptions.slice(0, 2)}
+        options={defaultOptions}
+        i18nStrings={i18nStrings}
+        tokenLimit={100}
+      />
+    );
+    expect(wrapper.findTokenToggle()).toBeNull();
+  });
+
+  test('displays show more button when tokenLimit is collapsed', () => {
+    const { wrapper } = renderMultiselect(
+      <Multiselect
+        selectedOptions={defaultOptions.slice(0, 2)}
+        options={defaultOptions}
+        i18nStrings={i18nStrings}
+        tokenLimit={1}
+      />
+    );
+    expect(wrapper.findTokenToggle()!.getElement()).toHaveTextContent('Show more (+1)');
+  });
+
+  test('displays show fewer button when tokenlist is expanded', () => {
+    const { wrapper } = renderMultiselect(
+      <Multiselect
+        selectedOptions={defaultOptions.slice(0, 2)}
+        options={defaultOptions}
+        i18nStrings={i18nStrings}
+        tokenLimit={1}
+      />
+    );
+    wrapper.findTokenToggle()!.click();
+    expect(wrapper.findTokenToggle()!.getElement()).toHaveTextContent('Show fewer');
+  });
+
+  test('sets no aria-label text on the expand button by default', () => {
+    const { wrapper } = renderMultiselect(
+      <Multiselect
+        selectedOptions={defaultOptions.slice(0, 2)}
+        options={defaultOptions}
+        i18nStrings={i18nStrings}
+        tokenLimit={1}
+      />
+    );
+    expect(wrapper.findTokenToggle()!.getElement()).toHaveTextContent('Show more (+1)');
+    expect(wrapper.findTokenToggle()!.getElement()).not.toHaveAttribute('aria-label');
+  });
+
+  test('sets aria-label text on the expand button when provided', () => {
+    const { wrapper } = renderMultiselect(
+      <Multiselect
+        selectedOptions={defaultOptions.slice(0, 2)}
+        options={defaultOptions}
+        i18nStrings={i18nStrings}
+        tokenLimit={1}
+        tokenLimitShowMoreAriaLabel="Show more dummy token"
+      />
+    );
+    expect(wrapper.findTokenToggle()!.getElement()!.getAttribute('aria-label')).toBe('Show more dummy token');
+  });
+
+  test('sets no aria-label text on the collapse button by default', () => {
+    const { wrapper } = renderMultiselect(
+      <Multiselect
+        selectedOptions={defaultOptions.slice(0, 2)}
+        options={defaultOptions}
+        i18nStrings={i18nStrings}
+        tokenLimit={1}
+      />
+    );
+    wrapper.findTokenToggle()!.click();
+    expect(wrapper.findTokenToggle()!.getElement()).toHaveTextContent('Show fewer');
+    expect(wrapper.findTokenToggle()!.getElement()).not.toHaveAttribute('aria-label');
+  });
+
+  test('sets aria-label text on the collapse button when provided', () => {
+    const { wrapper } = renderMultiselect(
+      <Multiselect
+        selectedOptions={defaultOptions.slice(0, 2)}
+        options={defaultOptions}
+        i18nStrings={i18nStrings}
+        tokenLimit={1}
+        tokenLimitShowFewerAriaLabel="Show fewer dummy token"
+      />
+    );
+    wrapper.findTokenToggle()!.click();
+    expect(wrapper.findTokenToggle()!.getElement()!.getAttribute('aria-label')).toBe('Show fewer dummy token');
+  });
+});
 describe('Dropdown states', () => {
   [
     ['loading', true],

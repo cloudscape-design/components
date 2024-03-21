@@ -9845,6 +9845,20 @@ Provide an empty array to clear the selection.",
       "type": "number",
     },
     Object {
+      "description": "Adds an aria-label to the \\"Show fewer\\" button for the token group control.
+Use to assign unique labels when there are multiple token groups with the same \`tokenLimitShowFewer\` label on one page.",
+      "name": "tokenLimitShowFewerAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds an aria-label to the \\"Show more\\" button for the token group control.
+Use to assign unique labels when there are multiple token groups with the same \`tokenLimitShowMore\` label on one page.",
+      "name": "tokenLimitShowMoreAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "If you have more than 500 options, enable this flag to apply a performance optimization
 that makes the filtering experience smoother. We don't recommend enabling the feature if you
 have less than 500 options, because the improvements to performance are offset by a
@@ -11227,6 +11241,20 @@ Each token has the following properties:
       "name": "tokenLimit",
       "optional": true,
       "type": "number",
+    },
+    Object {
+      "description": "Adds an aria-label to the \\"Show fewer\\" button for the token group control.
+Use to assign unique labels when there are multiple token groups with the same \`tokenLimitShowFewer\` label on one page.",
+      "name": "tokenLimitShowFewerAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds an aria-label to the \\"Show more\\" button for the token group control.
+Use to assign unique labels when there are multiple token groups with the same \`tokenLimitShowMore\` label on one page.",
+      "name": "tokenLimitShowMoreAriaLabel",
+      "optional": true,
+      "type": "string",
     },
     Object {
       "description": "If you have more than 500 \`filteringOptions\`, enable this flag to apply a performance optimization that makes
@@ -15222,6 +15250,20 @@ We recommend to always enable this property.",
       "name": "limit",
       "optional": true,
       "type": "number",
+    },
+    Object {
+      "description": "Adds an \`aria-label\` to the \\"Show fewer\\" button.
+Use to assign unique labels when there are multiple token groups with the same \`limitShowFewer\` label on one page.",
+      "name": "limitShowFewerAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds an \`aria-label\` to the \\"Show more\\" button.
+Use to assign unique labels when there are multiple token groups with the same \`limitShowMore\` label on one page.",
+      "name": "limitShowMoreAriaLabel",
+      "optional": true,
+      "type": "string",
     },
   ],
   "regions": Array [],
