@@ -504,6 +504,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorTextLabelGenAi: {
+    description: 'The default color for labels indicating that content is produced by generative AI.',
+    public: true,
+    themeable: false,
+  },
   colorTextHeadingDefault: {
     description:
       'The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.',
