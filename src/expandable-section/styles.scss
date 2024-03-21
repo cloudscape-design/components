@@ -36,6 +36,14 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   &.expanded {
     transform: rotate(0deg);
   }
+
+  @include styles.with-direction('rtl') {
+    transform: rotate(90deg);
+
+    &.expanded {
+      transform: rotate(0deg);
+    }
+  }
 }
 
 .icon-container {
