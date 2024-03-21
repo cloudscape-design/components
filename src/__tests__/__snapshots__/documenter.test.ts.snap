@@ -27,6 +27,12 @@ when the \`dismissible\` property is set to \`true\`.",
   "name": "Alert",
   "properties": Array [
     Object {
+      "description": "",
+      "name": "__analyticsMetadata",
+      "optional": true,
+      "type": "Pick<AnalyticsMetadata, \\"errorContext\\" | \\"instanceId\\">",
+    },
+    Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
@@ -3863,6 +3869,12 @@ scroll parent up to reveal the first card or row of cards.",
   "name": "Cards",
   "properties": Array [
     Object {
+      "description": "",
+      "name": "__analyticsMetadata",
+      "optional": true,
+      "type": "Pick<AnalyticsMetadata, \\"instanceId\\">",
+    },
+    Object {
       "description": "Adds labels to the selection components (checkboxes and radio buttons) as follows:
 * \`itemSelectionLabel\` ((SelectionState, Item) => string) - Determines the label for an item.
 * \`selectionGroupLabel\` (string) - Specifies the label for the group selection control.
@@ -7124,6 +7136,33 @@ Object {
   "name": "Form",
   "properties": Array [
     Object {
+      "description": "",
+      "inlineType": Object {
+        "name": "AnalyticsMetadata",
+        "properties": Array [
+          Object {
+            "name": "errorContext",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "flowType",
+            "optional": true,
+            "type": "\\"create\\" | \\"edit\\"",
+          },
+          Object {
+            "name": "instanceId",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "__analyticsMetadata",
+      "optional": true,
+      "type": "AnalyticsMetadata",
+    },
+    Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
@@ -7200,6 +7239,12 @@ Object {
   "functions": Array [],
   "name": "FormField",
   "properties": Array [
+    Object {
+      "description": "",
+      "name": "__analyticsMetadata",
+      "optional": true,
+      "type": "Pick<AnalyticsMetadata, \\"instanceId\\">",
+    },
     Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
@@ -12727,6 +12772,12 @@ Object {
   "name": "Spinner",
   "properties": Array [
     Object {
+      "description": "",
+      "name": "__analyticsMetadata",
+      "optional": true,
+      "type": "Pick<AnalyticsMetadata, \\"instanceId\\">",
+    },
+    Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
@@ -13144,6 +13195,12 @@ scroll parent scrolls to reveal the first row of the table.",
   ],
   "name": "Table",
   "properties": Array [
+    Object {
+      "description": "",
+      "name": "__analyticsMetadata",
+      "optional": true,
+      "type": "Pick<AnalyticsMetadata, \\"instanceId\\">",
+    },
     Object {
       "description": "Specifies alternative text for the selection components (checkboxes and radio buttons) as follows:
 * \`itemSelectionLabel\` ((SelectionState, Item) => string) - Specifies the alternative text for an item.
@@ -15572,6 +15629,12 @@ or \`skip\` (when navigated using navigation pane or the *skip-to* button to the
   "functions": Array [],
   "name": "Wizard",
   "properties": Array [
+    Object {
+      "description": "",
+      "name": "__analyticsMetadata",
+      "optional": true,
+      "type": "Pick<AnalyticsMetadata, \\"flowType\\" | \\"instanceId\\">",
+    },
     Object {
       "description": "Index of the step that's currently displayed. The first step has an index of zero (0).
 If you don't set this property, the component starts on the first step and switches step automatically

@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { BaseComponentProps } from '../internal/base-component';
+import { AnalyticsMetadata, BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
 
 export namespace AlertProps {
@@ -70,4 +70,10 @@ export interface AlertProps extends BaseComponentProps {
    * **Deprecated** Replaced by `action`.
    */
   onButtonClick?: NonCancelableEventHandler;
+
+  /**
+   * @internal
+   * @analytics
+   */
+  __analyticsMetadata?: Pick<AnalyticsMetadata, 'instanceId' | 'errorContext'>;
 }

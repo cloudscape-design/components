@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { BaseComponentProps } from '../internal/base-component';
+import { AnalyticsMetadata, BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
 
 export interface WizardProps extends BaseComponentProps {
@@ -107,6 +107,12 @@ export interface WizardProps extends BaseComponentProps {
    * or `skip` (when navigated using navigation pane or the *skip-to* button to the previously unvisited step).
    */
   onNavigate?: NonCancelableEventHandler<WizardProps.NavigateDetail>;
+
+  /**
+   * @internal
+   * @analytics
+   */
+  __analyticsMetadata?: Pick<AnalyticsMetadata, 'instanceId' | 'flowType'>;
 }
 
 export namespace WizardProps {
@@ -117,6 +123,7 @@ export namespace WizardProps {
     content: React.ReactNode;
     errorText?: React.ReactNode;
     isOptional?: boolean;
+    __analyticsMetadata?: Pick<AnalyticsMetadata, 'instanceId' | 'errorContext'>;
   }
 
   export interface I18nStrings {

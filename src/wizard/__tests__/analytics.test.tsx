@@ -46,8 +46,25 @@ describe('Wizard Analytics', () => {
     jest.useFakeTimers();
     mockFunnelMetrics();
   });
+
   afterEach(() => {
     act(() => void jest.runAllTimers());
+  });
+
+  test('analytics object is included on root wizard element metadata object', () => {
+    const { container } = render(
+      <Wizard
+        __analyticsMetadata={{ instanceId: 'instance-123', flowType: 'create' }}
+        steps={DEFAULT_STEPS}
+        i18nStrings={DEFAULT_I18N_SETS[0]}
+      />
+    );
+    const wizard = createWrapper(container).findWizard()!.getElement();
+    expect((wizard as any).__awsuiMetadata__).toBeTruthy();
+    expect((wizard as any).__awsuiMetadata__.analytics).toEqual({
+      instanceId: 'instance-123',
+      flowType: 'create',
+    });
   });
 
   test('calls funnelStart when the component is mounted', () => {
@@ -69,6 +86,38 @@ describe('Wizard Analytics', () => {
           { isOptional: true, name: 'Step 2', number: 2 },
           { isOptional: false, name: 'Step 3', number: 3 },
         ],
+      })
+    );
+  });
+
+  test('passes instanceId to funnelStart when provided', () => {
+    render(
+      <Wizard
+        steps={DEFAULT_STEPS}
+        i18nStrings={DEFAULT_I18N_SETS[0]}
+        __analyticsMetadata={{ instanceId: 'instance-123' }}
+      />
+    );
+    act(() => void jest.runAllTimers());
+
+    expect(FunnelMetrics.funnelStart).toHaveBeenCalledTimes(1);
+    expect(FunnelMetrics.funnelStart).toHaveBeenCalledWith(
+      expect.objectContaining({
+        instanceId: 'instance-123',
+      })
+    );
+  });
+
+  test('passes flowType to funnelStart when provided', () => {
+    render(
+      <Wizard steps={DEFAULT_STEPS} i18nStrings={DEFAULT_I18N_SETS[0]} __analyticsMetadata={{ flowType: 'create' }} />
+    );
+    act(() => void jest.runAllTimers());
+
+    expect(FunnelMetrics.funnelStart).toHaveBeenCalledTimes(1);
+    expect(FunnelMetrics.funnelStart).toHaveBeenCalledWith(
+      expect.objectContaining({
+        flowType: 'create',
       })
     );
   });
@@ -142,6 +191,24 @@ describe('Wizard Analytics', () => {
         funnelInteractionId: expect.any(String),
         stepNameSelector: expect.any(String),
         subStepAllSelector: expect.any(String),
+      })
+    );
+  });
+
+  test('adds instanceId to funnelStepStart when provided', () => {
+    render(
+      <Wizard
+        steps={DEFAULT_STEPS}
+        i18nStrings={DEFAULT_I18N_SETS[0]}
+        __analyticsMetadata={{ instanceId: 'instance-123' }}
+      />
+    );
+    act(() => void jest.runAllTimers());
+
+    expect(FunnelMetrics.funnelStepStart).toHaveBeenCalledTimes(1);
+    expect(FunnelMetrics.funnelStepStart).toHaveBeenCalledWith(
+      expect.objectContaining({
+        instanceId: 'wizard.step-1',
       })
     );
   });
@@ -329,6 +396,26 @@ describe('Wizard Analytics', () => {
     expect(FunnelMetrics.funnelError).toHaveBeenCalledWith(
       expect.objectContaining({
         funnelInteractionId: expect.any(String),
+      })
+    );
+  });
+
+  test('adds errorContext to funnelError when provided to a step', () => {
+    const steps: WizardProps['steps'] = [
+      {
+        ...DEFAULT_STEPS[0],
+        errorText: 'Error',
+        __analyticsMetadata: { errorContext: 'errors.test' },
+      },
+    ];
+
+    render(<Wizard steps={steps} i18nStrings={DEFAULT_I18N_SETS[0]} />);
+    act(() => void jest.runAllTimers());
+
+    expect(FunnelMetrics.funnelError).toBeCalledTimes(1);
+    expect(FunnelMetrics.funnelError).toHaveBeenCalledWith(
+      expect.objectContaining({
+        errorContext: 'errors.test',
       })
     );
   });

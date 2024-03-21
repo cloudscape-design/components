@@ -36,6 +36,7 @@ const FormWithAnalytics = ({ variant = 'full-page', actions, ...props }: FormPro
 export default function Form({ variant = 'full-page', ...props }: FormProps) {
   const baseComponentProps = useBaseComponent('Form', {
     props: { variant },
+    analytics: { ...props.__analyticsMetadata },
   });
   const inheritedFunnelNameSelector = useFunnelNameSelector();
   const funnelNameSelector = inheritedFunnelNameSelector || `.${headerStyles['heading-text']}`;
@@ -46,8 +47,14 @@ export default function Form({ variant = 'full-page', ...props }: FormProps) {
       optionalStepNumbers={[]}
       totalFunnelSteps={1}
       funnelNameSelectors={[funnelNameSelector, `.${formStyles.header}`]}
+      instanceId={props.__analyticsMetadata?.instanceId}
+      flowType={props.__analyticsMetadata?.flowType}
     >
-      <AnalyticsFunnelStep stepNumber={1}>
+      <AnalyticsFunnelStep
+        stepNumber={1}
+        instanceId={props.__analyticsMetadata?.instanceId}
+        errorContext={props.__analyticsMetadata?.errorContext}
+      >
         <FormWithAnalytics variant={variant} {...props} {...baseComponentProps} />
       </AnalyticsFunnelStep>
     </AnalyticsFunnel>

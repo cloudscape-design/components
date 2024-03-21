@@ -30,6 +30,10 @@ export default function AlertScenario() {
           <SpaceBetween size="s">
             <div className={styles['alert-container']}>
               <Alert
+                __analyticsMetadata={{
+                  instanceId: 'cloudscape.alert.simple',
+                  errorContext: 'error.validation.warning',
+                }}
                 header="This is going to be an extremely long title for an alert not sure whether it makes any sense but whatever"
                 visible={visible}
                 statusIconAriaLabel="Warning"

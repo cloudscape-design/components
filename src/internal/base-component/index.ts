@@ -34,3 +34,9 @@ export function getBaseProps(props: BaseComponentProps) {
   });
   return baseProps as BaseComponentProps;
 }
+
+export interface AnalyticsMetadata {
+  instanceId?: string;
+  errorContext?: string;
+  flowType?: 'create' | 'edit';
+}

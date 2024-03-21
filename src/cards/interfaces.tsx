@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { BaseComponentProps } from '../internal/base-component';
+import { AnalyticsMetadata, BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
 
 /*
@@ -213,6 +213,12 @@ export interface CardsProps<T = any> extends BaseComponentProps {
    * Don't use this property if the card has any other interactive elements.
    */
   entireCardClickable?: boolean;
+
+  /**
+   * @internal
+   * @analytics
+   */
+  __analyticsMetadata?: Pick<AnalyticsMetadata, 'instanceId'>;
 }
 
 export namespace CardsProps {

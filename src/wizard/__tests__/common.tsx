@@ -42,6 +42,9 @@ export const DEFAULT_STEPS = [
         <Container header={<Header>Step 1, substep two</Header>}></Container>
       </>
     ),
+    __analyticsMetadata: {
+      instanceId: 'wizard.step-1',
+    },
   },
   {
     title: 'Step 2',
@@ -52,6 +55,9 @@ export const DEFAULT_STEPS = [
       </>
     ),
     isOptional: true,
+    __analyticsMetadata: {
+      instanceId: 'wizard.step-2',
+    },
   },
   {
     title: 'Step 3',
@@ -61,5 +67,8 @@ export const DEFAULT_STEPS = [
         <Container header={<Header>Step 3, substep two</Header>}></Container>
       </>
     ),
+    __analyticsMetadata: {
+      instanceId: 'wizard.step-3',
+    },
   },
 ] as ReadonlyArray<WizardProps.Step>;
