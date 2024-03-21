@@ -20,7 +20,7 @@ const options = ['A', 'B', 'C', 'D', 'E', 'F'].map(value => ({ value, label: `Op
 
 interface PermutationProps extends TableProps.EditConfig<unknown> {
   isEditing: boolean;
-  expandableProps: boolean;
+  interactiveCell: boolean;
   successfulEdit?: boolean;
   disabledReason?: () => string;
 }
@@ -44,7 +44,7 @@ const editPermutations = createPermutations<PermutationProps>([
     constraintText: [undefined, 'This requirement needs to be met.'],
     validation: [undefined, () => 'There was an error!'],
     isEditing: [true],
-    expandableProps: [false],
+    interactiveCell: [false],
   },
   {
     ariaLabel: ['Editable column'],
@@ -54,7 +54,7 @@ const editPermutations = createPermutations<PermutationProps>([
     constraintText: [undefined],
     validation: [undefined],
     isEditing: [false],
-    expandableProps: [false, true],
+    interactiveCell: [false, true],
     successfulEdit: [false, true],
   },
   {
@@ -65,7 +65,7 @@ const editPermutations = createPermutations<PermutationProps>([
     constraintText: [undefined],
     validation: [undefined],
     isEditing: [false],
-    expandableProps: [false, true],
+    interactiveCell: [false, true],
     disabledReason: [() => 'Disabled reason popover content'],
   },
 ]);
@@ -106,20 +106,6 @@ export default function InlineEditorPermutations() {
                       stickyState={stickyState}
                       tableRole="grid"
                       {...permutation}
-                      expandableProps={
-                        permutation.expandableProps
-                          ? {
-                              isExpandable: true,
-                              isExpanded: false,
-                              onExpandableItemToggle: () => {},
-                              expandButtonLabel: 'expand item',
-                              collapseButtonLabel: 'collapse item',
-                              level: 1,
-                              setSize: 1,
-                              posInSet: 1,
-                            }
-                          : undefined
-                      }
                     />
                   </tr>
                 </tbody>

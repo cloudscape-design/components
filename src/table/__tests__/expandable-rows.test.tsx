@@ -269,4 +269,34 @@ describe('Expandable rows', () => {
     });
     expect(container.querySelector('table')).toHaveAttribute('role', 'treegrid');
   });
+
+  test('all columns of plain table can be editable', () => {
+    const { table } = renderTable({
+      items: simpleItems,
+      columnDefinitions: [
+        { header: 'name1', cell: item => item.name, editConfig: { editingCell: () => null } },
+        { header: 'name2', cell: item => item.name, editConfig: { editingCell: () => null } },
+      ],
+    });
+    expect(table.findEditCellButton(1, 1)).not.toBe(null);
+    expect(table.findEditCellButton(1, 2)).not.toBe(null);
+  });
+
+  test('first column of expandable table cannot be editable', () => {
+    const { table } = renderTable({
+      items: simpleItems,
+      columnDefinitions: [
+        { header: 'name1', cell: item => item.name, editConfig: { editingCell: () => null } },
+        { header: 'name2', cell: item => item.name, editConfig: { editingCell: () => null } },
+      ],
+      expandableRows: {
+        isItemExpandable: item => item.expandable,
+        expandedItems: [],
+        getItemChildren: () => [],
+        onExpandableItemToggle: () => {},
+      },
+    });
+    expect(table.findEditCellButton(1, 1)).toBe(null);
+    expect(table.findEditCellButton(1, 2)).not.toBe(null);
+  });
 });

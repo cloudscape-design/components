@@ -131,7 +131,7 @@ export function TableHeaderCell<ItemType>({
       >
         <div className={clsx(styles['header-cell-text'], wrapLines && styles['header-cell-text-wrap'])} id={headerId}>
           {column.header}
-          {isEditable ? (
+          {isEditable && !isExpandable ? (
             <span
               className={styles['edit-icon']}
               role="img"

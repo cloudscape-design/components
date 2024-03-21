@@ -155,16 +155,15 @@ export function TableBodyCell<ItemType>({
   isEditable,
   ...rest
 }: TableBodyCellProps<ItemType> & { isEditable: boolean }) {
-  const interactiveCell = !rest.expandableProps;
   const editDisabledReason = rest.column.editConfig?.disabledReason?.(rest.item);
 
-  if (editDisabledReason) {
-    return <DisabledInlineEditor interactiveCell={interactiveCell} editDisabledReason={editDisabledReason} {...rest} />;
+  if (editDisabledReason && !rest.expandableProps) {
+    return <DisabledInlineEditor editDisabledReason={editDisabledReason} {...rest} />;
+  }
+  if ((isEditable || rest.isEditing) && !rest.expandableProps) {
+    return <TableCellEditable {...rest} />;
   }
 
-  if (isEditable || rest.isEditing) {
-    return <TableCellEditable {...rest} interactiveCell={interactiveCell} />;
-  }
   const { column, item } = rest;
   return <TableTdElement {...rest}>{column.cell(item)}</TableTdElement>;
 }
