@@ -338,7 +338,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * * `getItemChildren` ((Item) => Item[]) - Use it to define nested data that are shown when an item gets expanded.
    * * `isItemExpandable` ((Item) => boolean) - Use it for items that can be expanded to show nested data.
    * * `expandedItems` (Item[]) - Use it to represent the expanded state of items.
-   * * `onExpandableItemToggle` (TableProps.OnExpandableItemToggle<T>) - Called when an items expand toggle is clicked.
+   * * `onExpandableItemToggle` (TableProps.OnExpandableItemToggle<T>) - Called when an item's expand toggle is clicked.
    */
   expandableRows?: TableProps.ExpandableRows<T>;
 }
