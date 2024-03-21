@@ -92,8 +92,11 @@
     inline-size: max-content;
     max-inline-size: var(#{custom-props.$dropdownDefaultMaxWidth}, 100%);
   }
-  &.hide-block-border > .dropdown-content-wrapper {
-    border-block: none;
+  &.hide-block-start-border > .dropdown-content-wrapper {
+    border-block-start: none;
+  }
+  &.hide-block-end-border > .dropdown-content-wrapper {
+    border-block-end: none;
   }
   &.interior > .dropdown-content-wrapper {
     margin-block-start: -1px;
