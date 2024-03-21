@@ -443,7 +443,7 @@ const PropertyFilter = React.forwardRef(
                     </InternalButton>
                   )
                 }
-                removedItemIndex={removedTokenIndex}
+                moveFocusNextToIndex={removedTokenIndex}
               />
             </InternalSpaceBetween>
           </div>
