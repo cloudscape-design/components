@@ -147,6 +147,19 @@
     margin-inline-start: awsui.$space-xxs;
   }
 
+  &.variant-inline-link {
+    > .icon-left {
+      inset-inline-start: 0;
+      margin-inline-end: awsui.$space-xs;
+    }
+
+    > .icon-right {
+      position: relative;
+      inset-inline-end: 0;
+      margin-inline-start: awsui.$space-xs;
+    }
+  }
+
   &.button-no-text > .icon {
     margin-inline-start: auto;
     margin-inline-end: auto;
