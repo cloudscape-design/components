@@ -108,6 +108,7 @@ export default class A11yPageObject extends BasePageObject {
 function ariaLevelViolationsFilter(violation: Axe.Result) {
   return !(
     violation.id === 'aria-valid-attr-value' &&
-    violation.nodes.every(node => node.all.every(entry => entry.id === 'aria-level'))
+    violation.nodes.every(node => node.all.every(entry => entry.id === 'aria-level')) &&
+    violation.nodes.every(node => node.html.startsWith('<tr'))
   );
 }
