@@ -235,7 +235,7 @@ const InternalSelect = React.forwardRef(
         {...baseProps}
         ref={mergedRef}
         className={clsx(styles.root, baseProps.className)}
-        onKeyPress={handleNativeSearch}
+        onKeyDown={handleNativeSearch}
       >
         <Dropdown
           {...dropdownProps}
