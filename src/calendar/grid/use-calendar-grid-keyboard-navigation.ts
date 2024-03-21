@@ -49,6 +49,8 @@ export default function useCalendarGridKeyboardNavigation({
       return;
     }
 
+    const direction = getComputedStyle(event.currentTarget).direction ?? 'ltr';
+
     switch (event.keyCode) {
       case KeyCode.space:
       case KeyCode.enter:
@@ -60,11 +62,21 @@ export default function useCalendarGridKeyboardNavigation({
         return;
       case KeyCode.right:
         event.preventDefault();
-        updatedFocusDate = moveRight(focusableDate, isDateEnabled);
+
+        if (direction === 'rtl') {
+          updatedFocusDate = moveLeft(focusableDate, isDateEnabled);
+        } else {
+          updatedFocusDate = moveRight(focusableDate, isDateEnabled);
+        }
         break;
       case KeyCode.left:
         event.preventDefault();
-        updatedFocusDate = moveLeft(focusableDate, isDateEnabled);
+
+        if (direction === 'rtl') {
+          updatedFocusDate = moveRight(focusableDate, isDateEnabled);
+        } else {
+          updatedFocusDate = moveLeft(focusableDate, isDateEnabled);
+        }
         break;
       case KeyCode.up:
         event.preventDefault();
