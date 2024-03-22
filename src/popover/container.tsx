@@ -110,16 +110,16 @@ export default function PopoverContainer({
       });
     };
 
-    const updatePositionOnResizeOrDrag = () => requestAnimationFrame(() => updatePositionHandler());
+    const updatePositionOnResize = () => requestAnimationFrame(() => updatePositionHandler());
     const refreshPosition = () => requestAnimationFrame(() => positionHandlerRef.current());
 
     window.addEventListener('click', onClick);
-    window.addEventListener('resize', updatePositionOnResizeOrDrag);
+    window.addEventListener('resize', updatePositionOnResize);
     window.addEventListener('scroll', refreshPosition, true);
 
     return () => {
       window.removeEventListener('click', onClick);
-      window.removeEventListener('resize', updatePositionOnResizeOrDrag);
+      window.removeEventListener('resize', updatePositionOnResize);
       window.removeEventListener('scroll', refreshPosition, true);
     };
   }, [keepPosition, positionHandlerRef, trackRef, updatePositionHandler]);
