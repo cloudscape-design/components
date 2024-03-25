@@ -1,0 +1,18 @@
+{
+  "name": "lock-discussion",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.mjs",
+  "type": "module",
+  "scripts": {
+    "lock": "node index.mjs $TOKEN"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cloudscape-design/actions.git"
+  },
+  "private": true,
+  "dependencies": {
+    "@octokit/graphql": "^7.0.2"
+  }
+}

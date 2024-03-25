@@ -3,7 +3,7 @@ name: Lock threads
 
 on:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '0 0 * * 1'
 
   workflow_dispatch:
   pull_request:
@@ -16,6 +16,14 @@ permissions:
 jobs:
   lock-discussion:
     secrets: inherit
-    uses: cloudscape-design/actions/.github/workflows/lock.yml@lock-discussion
-    with:
-      repository: 'components'
+    steps:
+      - name: Setup lock-discussion project
+        run: |
+          cp -r actions/.github/workflows/lock-discussion lock-discussion
+          cd lock-discussion
+          npm i --force
+
+      - name: Run lock discussion
+        run: |
+          cd lock-discussion
+          npm run lock --TOKEN=${{ secrets.GITHUB_TOKEN }}
