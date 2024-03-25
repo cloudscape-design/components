@@ -92,6 +92,8 @@ export const Grids = ({
       return;
     }
 
+    const direction = getComputedStyle(e.currentTarget).direction ?? 'ltr';
+
     switch (e.keyCode) {
       case KeyCode.space:
       case KeyCode.enter:
@@ -102,11 +104,21 @@ export const Grids = ({
         return;
       case KeyCode.right:
         e.preventDefault();
-        updatedFocusDate = moveNextDay(focusedDate, isDateEnabled);
+
+        if (direction === 'rtl') {
+          updatedFocusDate = movePrevDay(focusedDate, isDateEnabled);
+        } else {
+          updatedFocusDate = moveNextDay(focusedDate, isDateEnabled);
+        }
         break;
       case KeyCode.left:
         e.preventDefault();
-        updatedFocusDate = movePrevDay(focusedDate, isDateEnabled);
+
+        if (direction === 'rtl') {
+          updatedFocusDate = moveNextDay(focusedDate, isDateEnabled);
+        } else {
+          updatedFocusDate = movePrevDay(focusedDate, isDateEnabled);
+        }
         break;
       case KeyCode.up:
         e.preventDefault();
