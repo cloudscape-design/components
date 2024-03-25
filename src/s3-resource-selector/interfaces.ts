@@ -5,8 +5,9 @@ import { TableProps } from '../table/interfaces';
 import { PaginationProps } from '../pagination/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
+import { BaseModalProps } from '../modal/interfaces';
 
-export interface S3ResourceSelectorProps extends BaseComponentProps {
+export interface S3ResourceSelectorProps extends BaseComponentProps, BaseModalProps {
   /**
    * Specifies additional information about component status.
    */

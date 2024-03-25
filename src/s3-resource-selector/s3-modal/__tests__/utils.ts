@@ -17,6 +17,8 @@ export const modalDefaultProps = {
   objectsIsItemDisabled: undefined,
   versionsIsItemDisabled: undefined,
   i18nStrings,
+  getModalRoot: undefined,
+  removeModalRoot: undefined,
   onSubmit: () => {},
   onDismiss: () => {},
 } as const;
