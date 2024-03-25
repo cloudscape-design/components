@@ -11,7 +11,8 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 import { fireNonCancelableEvent } from '../internal/events';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
-import Tooltip from './tooltip.js';
+// import Tooltip from './tooltip.js';
+import Tooltip from '../internal/components/tooltip';
 import SliderLabels from './slider-labels.js';
 import { getPercent, getStepArray, getTickMarkPositions, THUMB_SIZE } from './utils.js';
 
