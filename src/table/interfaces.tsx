@@ -180,7 +180,6 @@ export interface TableProps<T = any> extends BaseComponentProps {
    *                      Specifies an alternative text for the success icon in editable cells. This text is also announced to screen readers.
    * * `submittingEditText` (EditableColumnDefinition) => string -
    *                      Specifies a text that is announced to screen readers when a cell edit operation is submitted.
-   * @i18n
    */
   ariaLabels?: TableProps.AriaLabels<T>;
 

@@ -18,7 +18,6 @@ export interface DropdownStatusProps {
   finishedText?: string;
   /**
    * Specifies the text to display when a data fetching error occurs. Make sure that you provide `recoveryText`.
-   * @i18n
    **/
   errorText?: string;
   /**
