@@ -28,6 +28,7 @@ import {
   getNameFromSelector,
   getSubStepAllSelector,
 } from '../internal/analytics/selectors';
+import LiveRegion from '../internal/components/live-region';
 
 interface FormFieldErrorProps {
   id?: string;
@@ -56,6 +57,9 @@ export function FormFieldError({ id, children, errorIconAriaLabel }: FormFieldEr
         </div>
       </div>
       <span className={styles.error__message}>{children}</span>
+      <LiveRegion assertive={true}>
+        {errorIconAriaLabel} {children}
+      </LiveRegion>
     </div>
   );
 }
@@ -75,6 +79,9 @@ export function FormFieldWarning({ id, children, warningIconAriaLabel }: FormFie
         </div>
       </div>
       <span className={styles.warning__message}>{children}</span>
+      <LiveRegion assertive={true}>
+        {warningIconAriaLabel} {children}
+      </LiveRegion>
     </div>
   );
 }
