@@ -15,6 +15,7 @@ permissions:
 
 jobs:
   lock-discussion:
+    runs-on: ubuntu-latest
     steps:
       - name: Setup lock-discussion project
         run: |
