@@ -19,7 +19,7 @@ jobs:
     steps:
       - name: Setup lock-discussion project
         run: |
-          cp -r actions/.github/workflows/lock-discussion lock-discussion
+          cp -r components/.github/workflows/lock-discussion lock-discussion
           cd lock-discussion
           npm i --force
 
