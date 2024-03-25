@@ -50,6 +50,7 @@ import { NoDataCell } from './no-data-cell';
 import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
 import { getContentHeaderClassName } from '../internal/utils/content-header-utils';
 import { useExpandableTableProps } from './expandable-rows/expandable-rows-utils';
+import { LoaderCell } from './loader-cell';
 
 const GRID_NAVIGATION_PAGE_SIZE = 10;
 const SELECTION_COLUMN_WIDTH = 54;
@@ -117,6 +118,7 @@ const InternalTable = React.forwardRef(
       columnDisplay,
       enableKeyboardNavigation,
       expandableRows,
+      progressiveLoading,
       __funnelSubStepProps,
       ...rest
     }: InternalTableProps<T>,
@@ -455,7 +457,7 @@ const InternalTable = React.forwardRef(
                         const isNextSelected =
                           !!selectionType && !lastVisible && isItemSelected(allItems[rowIndex + 1]);
                         const expandableProps = getExpandableItemProps(item);
-                        return (
+                        const dataRow = (
                           <tr
                             key={getItemKey(trackBy, item, rowIndex)}
                             className={clsx(styles.row, isSelected && styles['row-selected'])}
@@ -553,6 +555,38 @@ const InternalTable = React.forwardRef(
                             })}
                           </tr>
                         );
+
+                        if ((lastVisible && progressiveLoading) || expandableProps.itemLoaders.length > 0) {
+                          return (
+                            <React.Fragment key={getItemKey(trackBy, item, rowIndex)}>
+                              {dataRow}
+                              {expandableProps.itemLoaders.map((progressiveLoading, i) => (
+                                <tr key={i}>
+                                  <LoaderCell
+                                    tableRef={tableRefObject}
+                                    containerRef={wrapperMeasureRefObject}
+                                    progressiveLoading={progressiveLoading}
+                                    totalColumnsCount={totalColumnsCount}
+                                    level={progressiveLoading.level}
+                                  />
+                                </tr>
+                              ))}
+                              {lastVisible && progressiveLoading && (
+                                <tr>
+                                  <LoaderCell
+                                    tableRef={tableRefObject}
+                                    containerRef={wrapperMeasureRefObject}
+                                    progressiveLoading={progressiveLoading}
+                                    totalColumnsCount={totalColumnsCount}
+                                    level={0}
+                                  />
+                                </tr>
+                              )}
+                            </React.Fragment>
+                          );
+                        }
+
+                        return dataRow;
                       })
                     )}
                   </tbody>

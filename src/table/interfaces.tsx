@@ -341,6 +341,15 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * * `onExpandableItemToggle` (TableProps.OnExpandableItemToggle<T>) - Called when an item's expand toggle is clicked.
    */
   expandableRows?: TableProps.ExpandableRows<T>;
+
+  /**
+   * Experimental API
+   */
+  progressiveLoading?: TableProps.ProgressiveLoading;
+  /**
+   * Experimental API
+   */
+  onLoadMoreItems?: TableProps.OnLoadMoreItems<T>;
 }
 
 export namespace TableProps {
@@ -495,6 +504,7 @@ export namespace TableProps {
     isItemExpandable: (item: T) => boolean;
     expandedItems: ReadonlyArray<T>;
     onExpandableItemToggle: TableProps.OnExpandableItemToggle<T>;
+    getItemProgressiveLoading?: (item: T) => TableProps.ProgressiveLoading;
   }
 
   export type OnExpandableItemToggle<T> = NonCancelableEventHandler<TableProps.ExpandableItemToggleDetail<T>>;
@@ -502,5 +512,27 @@ export namespace TableProps {
   export interface ExpandableItemToggleDetail<T> {
     item: T;
     expanded: boolean;
+  }
+
+  export type ProgressiveLoading = ProgressiveLoadingPending | ProgressiveLoadingLoading | ProgressiveLoadingError;
+
+  export interface ProgressiveLoadingPending {
+    state: 'pending';
+    buttonContent: string;
+    buttonAriaLabel?: string;
+  }
+  export interface ProgressiveLoadingLoading {
+    state: 'loading';
+    ariaLive: string;
+  }
+  export interface ProgressiveLoadingError {
+    state: 'error';
+    cellContent: React.ReactNode;
+  }
+
+  export type OnLoadMoreItems<T> = NonCancelableEventHandler<TableProps.LoadMoreItemsDetail<T>>;
+
+  export interface LoadMoreItemsDetail<T> {
+    parent: null | T;
   }
 }

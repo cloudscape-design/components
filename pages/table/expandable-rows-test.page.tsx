@@ -38,6 +38,7 @@ type PageContext = React.Context<
     groupResources: boolean;
     keepSelection: boolean;
     usePagination: boolean;
+    useProgressiveLoading: boolean;
   }>
 >;
 
@@ -112,6 +113,13 @@ export default () => {
     },
   });
 
+  const expandableRows = {
+    ...collectionProps.expandableRows!,
+    getItemProgressiveLoading: settings.useProgressiveLoading
+      ? () => ({ state: 'pending', buttonContent: 'Load more' } as const)
+      : undefined,
+  };
+
   return (
     <I18nProvider messages={[messages]} locale="en">
       <AppLayout
@@ -123,6 +131,7 @@ export default () => {
         content={
           <Table
             {...collectionProps}
+            expandableRows={expandableRows}
             stickyColumns={preferences.stickyColumns}
             resizableColumns={settings.resizableColumns}
             stickyHeader={settings.stickyHeader}
@@ -207,6 +216,9 @@ export default () => {
                 filteringPlaceholder="Search databases"
               />
             }
+            progressiveLoading={
+              settings.useProgressiveLoading ? { state: 'pending', buttonContent: 'Load more' } : undefined
+            }
           />
         }
       />
@@ -224,6 +236,7 @@ function usePageSettings() {
     selectionType: urlParams.selectionType ?? 'multi',
     keepSelection: urlParams.keepSelection ?? false,
     usePagination: urlParams.usePagination ?? false,
+    useProgressiveLoading: urlParams.useProgressiveLoading ?? true,
     groupResources: urlParams.groupResources ?? true,
     setUrlParams,
   };
@@ -279,6 +292,13 @@ function PageSettings() {
             onChange={event => settings.setUrlParams({ usePagination: event.detail.checked })}
           >
             Use pagination
+          </Checkbox>
+
+          <Checkbox
+            checked={settings.useProgressiveLoading}
+            onChange={event => settings.setUrlParams({ useProgressiveLoading: event.detail.checked })}
+          >
+            Use progressive loading
           </Checkbox>
         </FormField>
 

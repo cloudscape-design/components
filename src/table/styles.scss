@@ -91,6 +91,38 @@
   }
 }
 
+.cell-loader {
+  padding-block: 0;
+  padding-inline: 0;
+  &-content {
+    box-sizing: border-box;
+    inline-size: 100%;
+    padding-block-start: awsui.$space-scaled-xs;
+    padding-block-end: awsui.$space-scaled-xs;
+    padding-inline: awsui.$space-xs;
+    /* stylelint-disable plugin/no-unsupported-browser-features */
+    @supports (position: sticky) {
+      position: sticky;
+      inset-inline-start: 0;
+      // Offset table paddings to position centered when sticky
+      margin-block: 0;
+      margin-inline: calc(-2 * #{awsui.$space-table-horizontal});
+    }
+    /* stylelint-enable plugin/no-unsupported-browser-features */
+  }
+  &-content-level-0 {
+    padding-inline-start: awsui.$space-xs;
+  }
+  @for $i from 1 through 9 {
+    &-content-level-#{$i} {
+      padding-inline-start: calc(60px + awsui.$space-xs + $i * (#{awsui.$space-m} + #{awsui.$space-xs}));
+    }
+  }
+  &-content-level-next {
+    padding-inline-start: calc(60px + awsui.$space-xs + 9 * (#{awsui.$space-m} + #{awsui.$space-xs}));
+  }
+}
+
 .cell-merged {
   text-align: center;
   padding-block: 0;
