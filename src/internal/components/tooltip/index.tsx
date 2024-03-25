@@ -34,7 +34,7 @@ export default function Tooltip({ value, trackRef }: TooltipProps) {
                 </div>
               )}
             >
-              <PopoverBody dismissButton={false} dismissAriaLabel={undefined} onDismiss={() => {}} header={undefined}>
+              <PopoverBody dismissButton={false} dismissAriaLabel={undefined} onDismiss={undefined} header={undefined}>
                 {value}
               </PopoverBody>
             </PopoverContainer>
