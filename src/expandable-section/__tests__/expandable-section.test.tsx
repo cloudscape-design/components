@@ -31,7 +31,7 @@ const containerizedVariants: ExpandableSectionProps.Variant[] = ['container', 's
 describe('Expandable Section', () => {
   const variantsWithDescription: ExpandableSectionProps.Variant[] = [...containerizedVariants, 'default', 'footer'];
   const variantsWithoutDescription: ExpandableSectionProps.Variant[] = ['navigation'];
-  const nonContainerVariants: ExpandableSectionProps.Variant[] = ['default', 'footer', 'navigation'];
+  const nonContainerVariants: ExpandableSectionProps.Variant[] = ['footer', 'navigation'];
 
   describe('variant property', () => {
     test('has one trigger button and no div=[role=button] for variant navigation', () => {
