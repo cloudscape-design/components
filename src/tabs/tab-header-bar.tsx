@@ -186,21 +186,34 @@ export function TabHeaderBar({
         return;
       }
       event.preventDefault();
+
       const activeIndex = enabledTabsWithCurrentTab.indexOf(tab);
+      let nextIndex = activeIndex;
+
+      const direction = getComputedStyle(event.currentTarget).direction ?? 'ltr';
+      const incrementNextIndex = () =>
+        activeIndex + 1 === enabledTabsWithCurrentTab.length ? (nextIndex = 0) : nextIndex++;
+      const decrementNextIndex = () =>
+        activeIndex === 0 ? (nextIndex = enabledTabsWithCurrentTab.length - 1) : nextIndex--;
+
       switch (keyCode) {
         case KeyCode.right:
-          if (activeIndex + 1 === enabledTabsWithCurrentTab.length) {
-            highlightTab(0);
+          if (direction === 'rtl') {
+            decrementNextIndex();
           } else {
-            highlightTab(activeIndex + 1);
+            incrementNextIndex();
           }
+
+          highlightTab(nextIndex);
           return;
         case KeyCode.left:
-          if (activeIndex === 0) {
-            highlightTab(enabledTabsWithCurrentTab.length - 1);
+          if (direction === 'rtl') {
+            incrementNextIndex();
           } else {
-            highlightTab(activeIndex - 1);
+            decrementNextIndex();
           }
+
+          highlightTab(nextIndex);
           return;
         case KeyCode.end:
           highlightTab(enabledTabsWithCurrentTab.length - 1);
