@@ -16,7 +16,7 @@
 }
 
 @mixin in-range-borders {
-  $sides: top, right, bottom, left;
+  $sides: block-start, inline-end, block-end, inline-start;
   @each $side in $sides {
     &.in-range-border-#{$side}::after {
       border-#{$side}: awsui.$border-item-width solid calendar.$grid-selected-border-color;
@@ -172,17 +172,17 @@
 
   &.start-date,
   &.range-start-date {
-    @include border-radius(top, left);
+    @include border-radius(start, start);
     &.in-range-border-bottom {
-      @include border-radius(bottom, left);
+      @include border-radius(end, start);
     }
   }
 
   &.end-date,
   &.range-end-date {
-    @include border-radius(bottom, right);
+    @include border-radius(end, end);
     &.in-range-border-top {
-      @include border-radius(top, right);
+      @include border-radius(start, end);
     }
   }
 
@@ -198,8 +198,8 @@
   font-weight: styles.$font-weight-bold;
   @include in-range-borders;
 
-  @include in-range-border-radius(top, right);
-  @include in-range-border-radius(bottom, right);
-  @include in-range-border-radius(bottom, left);
-  @include in-range-border-radius(top, left);
+  @include in-range-border-radius(start, end);
+  @include in-range-border-radius(end, end);
+  @include in-range-border-radius(end, start);
+  @include in-range-border-radius(start, start);
 }
