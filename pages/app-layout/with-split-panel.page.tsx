@@ -6,10 +6,10 @@ import SplitPanel from '~components/split-panel';
 import Header from '~components/header';
 import SpaceBetween from '~components/space-between';
 import Toggle from '~components/toggle';
-import Table from '~components/Table';
-import Box from '~components/Box';
-import Link from '~components/Link';
-import Button from '~components/Button';
+import Table from '~components/table';
+import Box from '~components/box';
+import Link from '~components/link';
+import Button from '~components/button';
 
 export default function () {
   const [splitPanelExists, setSplitPanelExists] = useState(true);
