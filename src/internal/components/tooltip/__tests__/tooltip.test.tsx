@@ -28,7 +28,7 @@ describe('Tooltip', () => {
   it('renders text correctly', () => {
     const wrapper = renderTooltip({ value: 'Value' });
 
-    expect(wrapper.findContent()?.getElement()).toHaveTextContent('Value');
+    expect(wrapper.findContent()!.getElement()).toHaveTextContent('Value');
   });
 
   it('renders arrow', () => {
@@ -37,7 +37,7 @@ describe('Tooltip', () => {
     expect(wrapper.findArrow()).not.toBeNull();
   });
 
-  it('not does render a header', () => {
+  it('does not render a header', () => {
     const wrapper = renderTooltip({ value: 'Value' });
 
     expect(wrapper.findHeader()).toBeNull();
