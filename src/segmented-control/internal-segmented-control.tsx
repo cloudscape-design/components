@@ -26,12 +26,31 @@ export default function InternalSegmentedControl({
     if (event.keyCode !== KeyCode.right && event.keyCode !== KeyCode.left) {
       return;
     }
+
     let nextIndex = activeIndex;
-    if (event.keyCode === KeyCode.right) {
-      nextIndex = activeIndex + 1 === enabledSegments.length ? 0 : activeIndex + 1;
-    } else if (event.keyCode === KeyCode.left) {
-      nextIndex = activeIndex === 0 ? enabledSegments.length - 1 : activeIndex - 1;
+    const direction = getComputedStyle(event.currentTarget).direction ?? 'ltr';
+    const incrementNextIndex = () => (nextIndex = activeIndex + 1 === enabledSegments.length ? 0 : activeIndex + 1);
+    const decrementNextIndex = () => (nextIndex = activeIndex === 0 ? enabledSegments.length - 1 : activeIndex - 1);
+
+    switch (event.keyCode) {
+      case KeyCode.right:
+        if (direction === 'rtl') {
+          decrementNextIndex();
+        } else {
+          incrementNextIndex();
+        }
+        break;
+      case KeyCode.left:
+        if (direction === 'rtl') {
+          incrementNextIndex();
+        } else {
+          decrementNextIndex();
+        }
+        break;
+      default:
+        return;
     }
+
     const nextSegmentId = enabledSegments[nextIndex].id;
     segmentByIdRef.current[nextSegmentId]?.focus();
   };
