@@ -256,7 +256,11 @@ export const ExpandableSectionHeader = ({
     warnOnce(componentName, `The \`headerDescription\` prop is not supported for the ${variant} variant.`);
   }
 
-  const wrapperClassName = clsx(styles.wrapper, styles[`wrapper-${variant}`], expanded && styles['wrapper-expanded']);
+  const wrapperClassName = clsx(
+    styles.wrapper,
+    styles[`wrapper-${variant}`],
+    (expanded || headerActions !== undefined) && styles['wrapper-expanded']
+  );
   if (variant === 'navigation') {
     return (
       <ExpandableNavigationHeader

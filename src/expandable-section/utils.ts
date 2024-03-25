@@ -7,5 +7,5 @@ export function variantSupportsDescription(variant: InternalVariant) {
 }
 
 export function variantSupportsInteractiveElements(variant: InternalVariant) {
-  return ['container', 'compact'].includes(variant);
+  return ['container', 'compact', 'default'].includes(variant);
 }
