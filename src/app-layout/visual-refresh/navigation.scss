@@ -13,10 +13,8 @@
   grid-row: 1 / span 10;
   block-size: var(#{custom-props.$contentHeight});
   position: sticky;
-  inset-block-start: var(#{custom-props.$offsetTop});
-  // z-index: 830;
+  inset-block-start: var(#{custom-props.$headerHeight});
   z-index: 850;
-
   /*
   The navigation and tools containers (that contain the toggle buttons)
   stretch the full height of the app layout. Normally, this wouldn't be an
@@ -28,6 +26,10 @@
   the panels and toggle buttons.
   */
   pointer-events: none;
+
+  &.disable-body-scroll {
+    inset-block-start: 0px;
+  }
 
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
     inset-inline-start: 0;
