@@ -44,9 +44,4 @@
   &:active {
     color: awsui.$color-text-interactive-active;
   }
-
-  &-hidden {
-    visibility: hidden;
-    pointer-events: none;
-  }
 }
