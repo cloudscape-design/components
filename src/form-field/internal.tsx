@@ -46,21 +46,23 @@ export function FormFieldError({ id, children, errorIconAriaLabel }: FormFieldEr
   const i18n = useInternalI18n('form-field');
 
   return (
-    <div id={id} className={styles.error}>
-      <div className={styles['error-icon-shake-wrapper']}>
-        <div
-          role="img"
-          aria-label={i18n('i18nStrings.errorIconAriaLabel', errorIconAriaLabel)}
-          className={styles['error-icon-scale-wrapper']}
-        >
-          <InternalIcon name="status-negative" size="small" />
+    <>
+      <div id={id} className={styles.error}>
+        <div className={styles['error-icon-shake-wrapper']}>
+          <div
+            role="img"
+            aria-label={i18n('i18nStrings.errorIconAriaLabel', errorIconAriaLabel)}
+            className={styles['error-icon-scale-wrapper']}
+          >
+            <InternalIcon name="status-negative" size="small" />
+          </div>
         </div>
+        <span className={styles.error__message}>{children}</span>
       </div>
-      <span className={styles.error__message}>{children}</span>
       <LiveRegion assertive={true}>
         {errorIconAriaLabel} {children}
       </LiveRegion>
-    </div>
+    </>
   );
 }
 
@@ -68,21 +70,23 @@ export function FormFieldWarning({ id, children, warningIconAriaLabel }: FormFie
   const i18n = useInternalI18n('form-field');
 
   return (
-    <div id={id} className={styles.warning}>
-      <div className={styles['warning-icon-shake-wrapper']}>
-        <div
-          role="img"
-          aria-label={i18n('i18nStrings.warningIconAriaLabel', warningIconAriaLabel)}
-          className={styles['warning-icon-scale-wrapper']}
-        >
-          <InternalIcon name="status-warning" size="small" />
+    <>
+      <div id={id} className={styles.warning}>
+        <div className={styles['warning-icon-shake-wrapper']}>
+          <div
+            role="img"
+            aria-label={i18n('i18nStrings.warningIconAriaLabel', warningIconAriaLabel)}
+            className={styles['warning-icon-scale-wrapper']}
+          >
+            <InternalIcon name="status-warning" size="small" />
+          </div>
         </div>
+        <span className={styles.warning__message}>{children}</span>
       </div>
-      <span className={styles.warning__message}>{children}</span>
       <LiveRegion assertive={true}>
         {warningIconAriaLabel} {children}
       </LiveRegion>
-    </div>
+    </>
   );
 }
 
