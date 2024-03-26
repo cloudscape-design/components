@@ -131,8 +131,8 @@ export const data3 = [
 
 export const data4 = [
   { x: 'Potatoes', y: 300 },
-  { x: 'Chocolate', y: 280 },
   { x: 'Apples', y: 100 },
+  { x: 'Chocolate', y: 280 },
   { x: 'Oranges', y: 180 },
 ];
 
