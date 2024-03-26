@@ -43,6 +43,8 @@ export const tokens: StyleDictionary.ColorPaletteDictionary = {
   colorOrange500: '#ec7211',
   colorOrange600: '#eb5f07',
   colorOrange700: '#dd6b10',
+  colorPurple400: '#bf80ff',
+  colorPurple600: '#7300e5',
   colorRed100: '#fff7f7',
   colorRed500: '#eb6f6f',
   colorRed600: '#d91515',

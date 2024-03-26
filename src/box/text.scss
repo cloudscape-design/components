@@ -43,6 +43,11 @@
       color: awsui.$color-text-label;
       margin-block-end: awsui.$space-key-value-gap;
     }
+    &.gen-ai-label-variant {
+      @include styles.font-body-s;
+      font-style: italic;
+      color: awsui.$color-text-label-gen-ai;
+    }
     &.value-large-variant {
       @include styles.font-display-l;
       font-weight: awsui.$font-box-value-large-weight;

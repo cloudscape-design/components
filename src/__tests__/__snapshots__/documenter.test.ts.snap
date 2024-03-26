@@ -2741,8 +2741,12 @@ Sizes are automatically scaled down in compact mode.
       "defaultValue": "\\"div\\"",
       "description": "Defines the style of element to display.
 - If you set it to \`'div'\`, \`'span'\`, \`'h1'\`, \`'h2'\`, \`'h3'\`, \`'h4'\`, \`'h5'\`, \`'p'\`, \`'strong'\`, \`'small'\`, \`'code'\`, \`'pre'\`, or \`'samp'\`, the variant is also used as the HTML tag name.
-- If you set it to \`awsui-key-label\`, the component will display as a \`div\`.
-- If you set it to \`awsui-value-large\`, the component will display as a \`span\`.
+- If you set it to \`awsui-key-label\`, the component will render a \`div\`,
+  styled for use as a key label in key-value pairs.
+- If you set it to \`awsui-gen-ai-label\`, the component will render a \`div\`,
+  styled for use as a label indicating that content is produced by generative AI.
+- If you set it to \`awsui-value-large\`, the component will render a \`span\`,
+  styled using \\"Display large light\\" typography.
 
 Override the HTML tag by using property \`tagOverride\`.
 ",
@@ -2764,6 +2768,7 @@ Override the HTML tag by using property \`tagOverride\`.
           "pre",
           "samp",
           "awsui-key-label",
+          "awsui-gen-ai-label",
           "awsui-value-large",
         ],
       },
