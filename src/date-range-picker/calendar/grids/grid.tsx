@@ -187,10 +187,12 @@ export function Grid({
                       [styles['range-end-date']]: isRangeEndDate,
                       [styles['no-range']]: isSelected && onlyOneSelected,
                       [styles['in-range']]: dateIsInRange,
-                      [styles['in-range-border-top']]: !!inRangeStartWeek || date.getDate() <= 7,
-                      [styles['in-range-border-bottom']]: !!inRangeEndWeek || date.getDate() > getDaysInMonth(date) - 7,
-                      [styles['in-range-border-left']]: dateIndex === 0 || date.getDate() === 1 || isRangeStartDate,
-                      [styles['in-range-border-right']]:
+                      [styles['in-range-border-block-start']]: !!inRangeStartWeek || date.getDate() <= 7,
+                      [styles['in-range-border-block-end']]:
+                        !!inRangeEndWeek || date.getDate() > getDaysInMonth(date) - 7,
+                      [styles['in-range-border-inline-start']]:
+                        dateIndex === 0 || date.getDate() === 1 || isRangeStartDate,
+                      [styles['in-range-border-inline-end']]:
                         dateIndex === week.length - 1 || isLastDayOfMonth(date) || isRangeEndDate,
                       [styles.today]: isToday(date),
                     })}
