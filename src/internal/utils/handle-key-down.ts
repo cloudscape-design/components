@@ -31,7 +31,6 @@ export default function handleKeyDown({
 }) {
   return function (event: React.KeyboardEvent) {
     const direction = getComputedStyle(event.currentTarget).direction ?? 'ltr';
-    console.log(direction);
 
     onAll && onAll(event);
 
