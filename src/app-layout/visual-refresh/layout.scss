@@ -22,7 +22,6 @@ circumstances regardless of whether the minContentWidth property is
 explicitly set in script.
 */
 .layout {
-  #{custom-props.$breadcrumbsGap}: 0px;
   #{custom-props.$contentGapLeft}: awsui.$space-scaled-l;
   #{custom-props.$contentGapRight}: awsui.$space-scaled-l;
   #{custom-props.$contentHeight}: calc(100vh - var(#{custom-props.$headerHeight}) - var(#{custom-props.$footerHeight}));
@@ -38,10 +37,10 @@ explicitly set in script.
   #{custom-props.$maxContentWidth}: 0px;
   #{custom-props.$minContentWidth}: 280px;
   #{custom-props.$mobileBarHeight}: calc(2 * #{awsui.$space-m} + #{awsui.$space-scaled-xs});
-  #{custom-props.$toolbarHeight}: 48px;
+  #{custom-props.$toolbarHeight}: 0px;
   #{custom-props.$notificationsGap}: 0px;
   #{custom-props.$notificationsHeight}: 0px;
-  #{custom-props.$offsetTop}: var(#{custom-props.$headerHeight});
+  #{custom-props.$offsetTop}: calc(var(#{custom-props.$headerHeight}) + var(#{custom-props.$toolbarHeight}));
   #{custom-props.$overlapHeight}: #{awsui.$space-dark-header-overlap-distance};
   background-color: awsui.$color-background-layout-main;
   color: awsui.$color-text-body-default;
@@ -114,6 +113,7 @@ explicitly set in script.
 
   &.is-hide-mobile-toolbar {
     #{custom-props.$mobileBarHeight}: 0px;
+    #{custom-props.$toolbarHeight}: 0px;
   }
 
   /*
@@ -164,78 +164,22 @@ explicitly set in script.
     #{custom-props.$contentGapRight}: #{awsui.$space-l};
   }
 
-  // Vertically align the notifications with the trigger buttons
-  &.content-first-child-notifications {
-    #{custom-props.$notificationsGap}: #{awsui.$space-xs};
+  &.has-notifications {
+    #{custom-props.$notificationsGap}: #{awsui.$space-scaled-xs};
   }
 
-  // Vertically align the breadcrumbs with the trigger buttons
-  &.has-breadcrumbs {
-    #{custom-props.$breadcrumbsGap}: #{awsui.$space-scaled-m};
-  }
-
-  // Vertically align the content header with the trigger buttons
-  &.content-first-child-header,
-  &.content-first-child-notifications:not(.has-breadcrumbs).has-header {
-    #{custom-props.$headerGap}: #{awsui.$space-scaled-xs};
-  }
-
-  // The Header gap is slightly smaller when it comes after the Breadcrumbs
-  &.has-breadcrumbs.has-header {
-    #{custom-props.$headerGap}: #{awsui.$space-scaled-xs};
-  }
-
-  // Set the Main gap when it follows the Notifications
-  &.content-first-child-notifications:not(.has-breadcrumbs):not(.has-header) {
-    #{custom-props.$mainGap}: #{awsui.$space-xs};
-  }
-
-  // Set the Main gap when it follows the Breadcrumbs without an overlap
-  &.has-breadcrumbs:not(.has-header).is-overlap-disabled {
-    #{custom-props.$mainGap}: #{awsui.$space-scaled-m};
-  }
-
-  // Set the Main gap when it follows the Breadcrumbs with an overlap
-  &.has-breadcrumbs:not(.has-header):not(.is-overlap-disabled) {
-    #{custom-props.$mainGap}: #{awsui.$space-scaled-s};
-  }
-
-  // Set the Main gap when it follows the Header
   &.has-header {
+    #{custom-props.$headerGap}: #{awsui.$space-scaled-s};
+    // Set the Main gap when it follows the Header
     #{custom-props.$mainGap}: #{awsui.$space-content-header-padding-bottom};
   }
 
+  // Set the Main gap when it follows the Notifications
+  &.has-notifications:not(.has-header),
   // Set the Main gap when it is the first page content
-  &.content-first-child-main:not(.is-overlap-disabled),
-  &.content-first-child-main.is-overlap-disabled:not(.disable-content-paddings) {
+  &:not(.has-notifications):not(.has-header):not(.is-overlap-disabled),
+  &:not(.has-notifications):not(.has-header).is-overlap-disabled:not(.disable-content-paddings) {
     #{custom-props.$mainGap}: #{awsui.$space-scaled-s};
-  }
-
-  /*
-  Override the desktop gap values set above for the Notifications, Header, and Main
-  components for mobile viewports.
-  */
-  @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
-    &.content-first-child-notifications {
-      #{custom-props.$notificationsGap}: #{awsui.$space-scaled-s};
-    }
-
-    &.content-first-child-header {
-      #{custom-props.$headerGap}: #{awsui.$space-scaled-s};
-    }
-
-    &.content-first-child-notifications:not(.has-breadcrumbs).has-header {
-      #{custom-props.$headerGap}: #{awsui.$space-scaled-s};
-    }
-
-    &.content-first-child-notifications:not(.has-breadcrumbs):not(.has-header),
-    &.content-first-child-main:not(.is-overlap-disabled) {
-      #{custom-props.$mainGap}: #{awsui.$space-scaled-s};
-    }
-
-    &.content-first-child-main.is-overlap-disabled:not(.disable-content-paddings) {
-      #{custom-props.$mainGap}: #{awsui.$space-scaled-m};
-    }
   }
 }
 
@@ -251,14 +195,13 @@ notifications top margin and some additional vertical space for aesthetics.
 */
 .layout.disable-body-scroll {
   #{custom-props.$mainTemplateRows}: 1fr auto;
+  #{custom-props.$headerHeight}: 0px;
   #{custom-props.$offsetTop}: 0px;
   block-size: var(#{custom-props.$contentHeight});
   overflow-y: scroll;
 
   &.has-split-panel.split-panel-position-bottom {
-    // :not(.has-notifications),
-    // &.has-notifications:not(.split-panel-position-bottom) {
-    // #{custom-props.$mainTemplateRows}: repeat(2, auto);
+    #{custom-props.$mainTemplateRows}: repeat(2, auto);
   }
 }
 
