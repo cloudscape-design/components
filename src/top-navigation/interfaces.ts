@@ -14,6 +14,7 @@ export interface TopNavigationProps extends BaseComponentProps {
    * * `logo` ({ src: string, alt: string }) - Specifies the logo for the product. Use fixed width and height for SVG images to ensure proper rendering.
    * * `href` (string) - Specifies the `href` that the header links to.
    * * `onFollow` (() => void) - Specifies the event handler called when the identity is clicked without any modifier keys.
+   * * `custom` (element) - Specifies custom content to be rendered as identity. When used, all other properties are ignored.
    */
   identity: TopNavigationProps.Identity;
 
@@ -72,8 +73,9 @@ export namespace TopNavigationProps {
   export interface Identity {
     title?: string;
     logo?: Logo;
-    href: string;
+    href?: string;
     onFollow?: CancelableEventHandler;
+    custom?: React.ReactNode;
   }
 
   export interface Logo {
