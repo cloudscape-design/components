@@ -21,7 +21,7 @@ section.mobile-toolbar {
   padding-block: 0;
   padding-inline: awsui.$space-m;
   position: sticky;
-  inset-block-start: var(#{custom-props.$offsetTop});
+  inset-block-start: var(#{custom-props.$headerHeight});
   z-index: 1000;
   &:not(.remove-high-contrast-header) {
     background-color: awsui.$color-background-layout-main;

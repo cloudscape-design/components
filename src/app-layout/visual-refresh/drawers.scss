@@ -15,9 +15,12 @@
   block-size: var(#{custom-props.$contentHeight});
   pointer-events: none;
   position: sticky;
-  inset-block-start: var(#{custom-props.$offsetTop});
-  // z-index: 830;
+  inset-block-start: var(#{custom-props.$headerHeight});
   z-index: 850;
+
+  &.disable-body-scroll {
+    inset-block-start: 0px;
+  }
 
   &.has-open-drawer {
     background-color: awsui.$color-background-container-content;
@@ -54,26 +57,13 @@
   @include styles.styles-reset;
   background-color: transparent;
   box-sizing: border-box;
-  // block-size: 100%;
   overflow-y: hidden;
   overflow-x: hidden;
   /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
   overscroll-behavior-y: contain;
   /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
   overscroll-behavior-x: contain;
-
-  // &:not(.has-multiple-triggers).has-open-drawer {
-  //   inline-size: 0;
-  // }
   inline-size: 100%;
-
-  &.has-multiple-triggers.has-open-drawer {
-    background-color: awsui.$color-background-container-content;
-  }
-
-  // &:not(.has-multiple-triggers):not(.has-open-drawer) {
-  //   inline-size: calc((awsui.$space-layout-toggle-padding * 2) + awsui.$space-layout-toggle-diameter);
-  // }
 }
 
 .drawers-mobile-triggers-container {
@@ -86,8 +76,6 @@
   display: flex;
   flex-direction: row;
   gap: awsui.$space-xs;
-  // padding-block-start: awsui.$space-scaled-s;
-  // inline-size: calc((awsui.$space-layout-toggle-padding * 2) + awsui.$space-layout-toggle-diameter);
   justify-content: flex-end;
 
   &:not(.has-multiple-triggers).has-open-drawer {
@@ -109,7 +97,6 @@
 
 .drawers-trigger {
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
-    // inline-size: constants.$sidebar-size-closed;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -149,6 +136,7 @@
 
     > .drawer-content {
       grid-column: 1 / span 4;
+      grid-row: 1 / span 2;
       &.drawer-content-hidden {
         display: none;
       }

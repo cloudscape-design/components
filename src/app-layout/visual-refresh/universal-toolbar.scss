@@ -16,9 +16,15 @@ section.universal-toolbar {
   padding-block: 0;
   padding-inline: awsui.$space-m;
   position: sticky;
-  inset-block-start: var(#{custom-props.$offsetTop});
-  transition: ease all 0.35s;
+  inset-block-start: var(#{custom-props.$headerHeight});
   z-index: 840;
+  @include styles.with-motion {
+    transition: ease all 0.35s;
+  }
+
+  &.disable-body-scroll {
+    inset-block-start: 0px;
+  }
 
   &.toolbar-hidden {
     inset-block-start: -60px;
@@ -27,24 +33,24 @@ section.universal-toolbar {
     border-block-end: none;
   }
 
-  .toolbar-container {
+  > .toolbar-container {
     block-size: 48px;
     align-items: center;
     display: inline-flex;
     column-gap: awsui.$space-static-xs;
     inline-size: 100%;
-  }
 
-  .universal-toolbar-breadcrumbs {
-    padding-inline-start: awsui.$space-static-xxs;
-    background-color: transparent;
-    flex-shrink: 0;
-  }
+    > .universal-toolbar-breadcrumbs {
+      padding-inline-start: awsui.$space-static-xxs;
+      background-color: transparent;
+      flex-shrink: 0;
+    }
 
-  .universal-toolbar-drawers {
-    column-gap: awsui.$space-static-xs;
-    display: flex;
-    inline-size: 100%;
-    justify-content: flex-end;
+    > .universal-toolbar-drawers {
+      column-gap: awsui.$space-static-xs;
+      display: flex;
+      inline-size: 100%;
+      justify-content: flex-end;
+    }
   }
 }

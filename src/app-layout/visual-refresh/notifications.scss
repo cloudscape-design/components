@@ -16,10 +16,10 @@
     &.sticky-notifications {
       #{custom-props.$flashbarStickyBottomMargin}: #{awsui.$space-xxl};
       position: sticky;
-      transition: ease all 0.35s;
-      inset-block-start: calc(
-        var(#{custom-props.$offsetTop}) + var(#{custom-props.$toolbarHeight}) + #{awsui.$space-xs}
-      );
+      inset-block-start: calc(var(#{custom-props.$offsetTop}) + #{awsui.$space-xs});
+      @include styles.with-motion {
+        transition: ease all 0.35s;
+      }
     }
   }
 }
