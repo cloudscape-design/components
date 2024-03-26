@@ -278,6 +278,8 @@
     "ariaLabels.resizerRoleDescription": "调整按钮大小",
     "ariaLabels.submittingEditText": "正在提交编辑",
     "ariaLabels.successfulEditLabel": "编辑成功",
+    "ariaLabels.expandButtonLabel": "展开",
+    "ariaLabels.collapseButtonLabel": "折叠",
     "columnDefinitions.editConfig.errorIconAriaLabel": "错误",
     "columnDefinitions.editConfig.editIconAriaLabel": "可编辑"
   },
