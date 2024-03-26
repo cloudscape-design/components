@@ -16,7 +16,7 @@ function Sliders() {
   const [value3, setValue3] = React.useState(50);
   const [value4, setValue4] = React.useState(4);
   const [value5, setValue5] = React.useState(0);
-  const [value6, setValue6] = React.useState(25);
+  const [value6, setValue6] = React.useState(0.5);
   const [value7, setValue7] = React.useState(2);
   const [sliderValue, setSliderValue] = useState(40);
   const [error2, setError2] = useState(false);
@@ -25,9 +25,8 @@ function Sliders() {
 
   const DTWordOptions = [
     { value: 0, label: 'Backend dev' },
-    { value: 2, label: 'Frontend dev' },
-    { value: 4, label: `Scott O'Brien` },
-    { value: 6, label: 'Jessica Kuelz ' },
+    { value: 2, label: `Scott O'Brien` },
+    { value: 5, label: 'Jessica Kuelz ' },
     { value: 8, label: 'Katie George' },
     { value: 10, label: 'UX designer' },
   ];
@@ -38,14 +37,6 @@ function Sliders() {
     { value: 2, label: `Not satisfied or unsatisfied` },
     { value: 3, label: 'Somewhat satisfied' },
     { value: 4, label: 'Extremely satisfied' },
-  ];
-
-  const satisfactionScaleOptions2 = [
-    { value: 0, label: 'Extremely unsatisfied' },
-    { value: 100, label: 'Somewhat satisfied' },
-    { value: 200, label: `Not satisfied or unsatisfied` },
-    { value: 300, label: 'Somewhat satisfied' },
-    { value: 400, label: 'Extremely satisfied' },
   ];
 
   React.useEffect(() => {
@@ -148,7 +139,7 @@ function Sliders() {
           tickMarks={true}
           min={0}
           max={10}
-          referenceValues={[2, 4, 6, 8]}
+          referenceValues={[2, 5, 8]}
         />
       </FormField>
       <FormField label="How satisfied are you by your results?">
@@ -165,33 +156,16 @@ function Sliders() {
           tickMarks={true}
         />
       </FormField>
-      <FormField label="How satisfied are you by your results?">
-        <Slider
-          value={value5}
-          onChange={({ detail }) => {
-            setValue5(detail.value);
-          }}
-          step={100}
-          min={0}
-          max={400}
-          valueFormatter={value => satisfactionScaleOptions2.find(item => item.value === value)?.label || ''}
-          referenceValues={[100, 200, 300]}
-          tickMarks={true}
-        />
-      </FormField>
       <FormField label="How hot do you like your salsa?">
         <Slider
           value={value6}
           onChange={({ detail }) => {
             setValue6(detail.value);
           }}
-          step={10}
-          tickMarks={true}
+          step={0.1}
           min={0}
-          max={100}
-          referenceValues={[50]}
+          max={1}
           valueFormatter={value => `${value} is the value`}
-          //referenceValues={[...Array(10000).keys()]}
         />
       </FormField>
       <FormField label="How hot do you like your salsa?">
@@ -213,7 +187,7 @@ function Sliders() {
 
 export default function InputsPage() {
   const [value, setValue] = React.useState(4);
-  const [temperature, setTemperature] = React.useState(0.8);
+  const [temperature, setTemperature] = React.useState(72.4);
   return (
     <div style={{ padding: 30 }}>
       <h1>Sliders demo</h1>
@@ -250,9 +224,6 @@ export default function InputsPage() {
             <FormField label="This is a form field" description="This is a description">
               <Input value="" placeholder="Placeholder" />
             </FormField>
-            <FormField label="This is a form field" description="This is a description">
-              <ProgressBar value={50} />
-            </FormField>
             <FormField label="Temperature">
               <Grid gridDefinition={[{ colspan: 2 }, { colspan: 10 }]}>
                 <Input
@@ -268,8 +239,8 @@ export default function InputsPage() {
                 step={0.1}
                 value={temperature}
                 onChange={({ detail }) => setTemperature(detail.value)}
-                min={0}
-                max={1}
+                min={65}
+                max={85}
               />
             </FormField>
           </SpaceBetween>

@@ -105,8 +105,10 @@ export default function Slider({
 
       <input
         aria-label={ariaLabel}
-        aria-labelledby={formFieldContext.ariaLabelledby}
-        aria-describedby={formFieldContext.ariaDescribedby}
+        aria-labelledby={
+          ariaLabel && !rest.ariaLabelledby ? undefined : rest.ariaLabelledby ?? formFieldContext.ariaLabelledby
+        }
+        aria-describedby={rest.ariaDescribedby ?? formFieldContext.ariaDescribedby}
         type="range"
         list={labelsId}
         min={min}
