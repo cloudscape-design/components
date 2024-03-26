@@ -82,6 +82,8 @@ function Sliders() {
               }}
               min={0}
               max={100}
+              tickMarks={true}
+              step={25}
               invalid={error2}
             />
           </div>

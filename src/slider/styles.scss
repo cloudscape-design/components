@@ -140,8 +140,12 @@ $tick-width: 2px;
   background: awsui.$color-background-slider-track;
   inset-block-start: -4px;
 
-  &-filled {
+  &.filled {
     background: awsui.$color-background-slider-handle-default;
+  }
+
+  &.error {
+    background: awsui.$color-text-status-error;
   }
 }
 

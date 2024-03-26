@@ -11,7 +11,6 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 import { fireNonCancelableEvent } from '../internal/events';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
-// import Tooltip from './tooltip.js';
 import Tooltip from '../internal/components/tooltip';
 import SliderLabels from './slider-labels.js';
 import { getPercent, getStepArray, getTickMarkPositions, THUMB_SIZE } from './utils.js';
@@ -85,7 +84,8 @@ export default function Slider({
                   insetInlineStart: getTickMarkPositions(step, min, max),
                 }}
                 className={clsx(styles.tick, {
-                  [styles['tick-filled']]: !hideFillLine && value && value > step,
+                  [styles.filled]: !hideFillLine && value && value > step,
+                  [styles.error]: invalid && !hideFillLine && value && value > step,
                 })}
               ></div>
             ))}
