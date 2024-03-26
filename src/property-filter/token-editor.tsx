@@ -12,6 +12,7 @@ import {
   I18nStrings,
   InternalFilteringOption,
   InternalFilteringProperty,
+  InternalFreeTextFiltering,
   InternalToken,
   LoadItemsDetail,
   Token,
@@ -30,12 +31,10 @@ import InternalButton from '../button/internal';
 import InternalFormField from '../form-field/internal';
 import { matchTokenValue } from './utils';
 
-const freeTextOperators: ComparisonOperator[] = [':', '!:'];
-
 interface PropertyInputProps {
   asyncProps: null | DropdownStatusProps;
   customGroupsText: readonly GroupText[];
-  disableFreeTextFiltering?: boolean;
+  freeTextFiltering: InternalFreeTextFiltering;
   filteringProperties: readonly InternalFilteringProperty[];
   i18nStrings: I18nStrings;
   onChangePropertyKey: (propertyKey: undefined | string) => void;
@@ -51,7 +50,7 @@ function PropertyInput({
   onLoadItems,
   customGroupsText,
   i18nStrings,
-  disableFreeTextFiltering,
+  freeTextFiltering,
 }: PropertyInputProps) {
   const propertySelectHandlers = useLoadItems(onLoadItems);
   const asyncPropertySelectProps = asyncProps ? { ...asyncProps, ...propertySelectHandlers } : {};
@@ -82,7 +81,7 @@ function PropertyInput({
     label: i18nStrings.allPropertiesLabel,
     value: undefined,
   };
-  if (!disableFreeTextFiltering) {
+  if (!freeTextFiltering.disabled) {
     propertyOptions.unshift(allPropertiesOption);
   }
   return (
@@ -107,11 +106,11 @@ interface OperatorInputProps {
   onChangeOperator: (operator: ComparisonOperator) => void;
   operator: undefined | ComparisonOperator;
   property: null | InternalFilteringProperty;
+  freeTextFiltering: InternalFreeTextFiltering;
 }
 
-function OperatorInput({ property, operator, onChangeOperator, i18nStrings }: OperatorInputProps) {
-  const freeTextOperators: ComparisonOperator[] = [':', '!:'];
-  const operatorOptions = (property ? getAllowedOperators(property) : freeTextOperators).map(operator => ({
+function OperatorInput({ property, operator, onChangeOperator, i18nStrings, freeTextFiltering }: OperatorInputProps) {
+  const operatorOptions = (property ? getAllowedOperators(property) : freeTextFiltering.operators).map(operator => ({
     value: operator,
     label: operator,
     description: operatorToDescription(operator, i18nStrings),
@@ -190,7 +189,7 @@ interface TokenEditorProps {
   asyncProps: DropdownStatusProps;
   customGroupsText: readonly GroupText[];
   disabled?: boolean;
-  disableFreeTextFiltering?: boolean;
+  freeTextFiltering: InternalFreeTextFiltering;
   expandToViewport?: boolean;
   filteringProperties: readonly InternalFilteringProperty[];
   filteringOptions: readonly InternalFilteringOption[];
@@ -205,7 +204,7 @@ export function TokenEditor({
   asyncProperties,
   asyncProps,
   customGroupsText,
-  disableFreeTextFiltering,
+  freeTextFiltering,
   expandToViewport,
   filteringProperties,
   filteringOptions,
@@ -227,7 +226,7 @@ export function TokenEditor({
       (acc, property) => (property.propertyKey === newPropertyKey ? property : acc),
       undefined
     );
-    const allowedOperators = filteringProperty ? getAllowedOperators(filteringProperty) : freeTextOperators;
+    const allowedOperators = filteringProperty ? getAllowedOperators(filteringProperty) : freeTextFiltering.operators;
     const operator =
       temporaryToken.operator && allowedOperators.indexOf(temporaryToken.operator) !== -1
         ? temporaryToken.operator
@@ -269,7 +268,7 @@ export function TokenEditor({
                 onLoadItems={onLoadItems}
                 customGroupsText={customGroupsText}
                 i18nStrings={i18nStrings}
-                disableFreeTextFiltering={disableFreeTextFiltering}
+                freeTextFiltering={freeTextFiltering}
               />
             </InternalFormField>
 
@@ -279,6 +278,7 @@ export function TokenEditor({
                 operator={operator}
                 onChangeOperator={onChangeOperator}
                 i18nStrings={i18nStrings}
+                freeTextFiltering={freeTextFiltering}
               />
             </InternalFormField>
 

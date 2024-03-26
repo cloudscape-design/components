@@ -1,7 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { ComparisonOperator, FilteringProperty, GroupText, InternalFilteringProperty, ParsedText } from '../interfaces';
+import {
+  ComparisonOperator,
+  FilteringProperty,
+  GroupText,
+  InternalFilteringProperty,
+  InternalFreeTextFiltering,
+  ParsedText,
+} from '../interfaces';
 import { parseText, getAllowedOperators, getAutosuggestOptions } from '../controller';
 import { i18nStrings, toInternalProperties } from './common';
 
@@ -47,6 +54,12 @@ const filteringProperties = toInternalProperties([
     groupValuesLabel: 'Custom column values',
   },
 ]);
+
+const defaultFreeTextFiltering: InternalFreeTextFiltering = {
+  disabled: false,
+  operators: [':', '!:'],
+  defaultOperator: ':',
+};
 
 const customGroupText: readonly GroupText[] = [
   { group: 'group-name', properties: 'Group properties', values: 'Group values' },
@@ -101,83 +114,131 @@ describe('getAllowedOperators', () => {
 });
 
 describe('parseText', () => {
-  type TestCase = [string, string, boolean, ParsedText];
+  type TestCase = [string, string, InternalFreeTextFiltering, ParsedText];
   const cases: TestCase[] = [
-    ['free text', 'text', false, { step: 'free-text', value: 'text' }],
-    ['negated free text', '!:value', false, { step: 'free-text', operator: '!:', value: 'value' }],
-    ['negated free text with whitespace', '!: value', false, { step: 'free-text', operator: '!:', value: ' value' }],
-    ['negated free text shorthand', '!value', false, { step: 'free-text', operator: '!:', value: 'value' }],
+    ['free text', 'text', defaultFreeTextFiltering, { step: 'free-text', value: 'text' }],
+    ['negated free text', '!:value', defaultFreeTextFiltering, { step: 'free-text', operator: '!:', value: 'value' }],
+    [
+      'negated free text with whitespace',
+      '!: value',
+      defaultFreeTextFiltering,
+      { step: 'free-text', operator: '!:', value: 'value' },
+    ],
+    [
+      'negated free text shorthand',
+      '!value',
+      defaultFreeTextFiltering,
+      { step: 'free-text', operator: '!:', value: 'value' },
+    ],
     [
       'negated free text shorthand with whitespace',
       '! value',
-      false,
-      { step: 'free-text', operator: '!:', value: ' value' },
+      defaultFreeTextFiltering,
+      { step: 'free-text', operator: '!:', value: 'value' },
     ],
-    ['free text negation after whitespace is ignored', ' !:value', false, { step: 'free-text', value: ' !:value' }],
+    [
+      'free text negation after whitespace is ignored',
+      ' !:value',
+      defaultFreeTextFiltering,
+      { step: 'free-text', value: ' !:value' },
+    ],
     [
       'free text negation does not apply, if the free text is disabled',
       '!:value',
-      true,
+      { ...defaultFreeTextFiltering, disabled: true },
       { step: 'free-text', value: '!:value' },
+    ],
+    [
+      'free text with a non-default operator',
+      '^value',
+      { ...defaultFreeTextFiltering, operators: [':', '!:', '^'] },
+      { step: 'free-text', operator: '^', value: 'value' },
+    ],
+    [
+      'free text with an unsupported operator',
+      '=value',
+      defaultFreeTextFiltering,
+      { step: 'free-text', value: '=value' },
     ],
     // property tokens
     [
       'full operator',
       'string!:value',
-      false,
+      defaultFreeTextFiltering,
       { step: 'property', value: 'value', operator: '!:', property: filteringProperties[0] },
     ],
     [
       'full operator with whitespace before',
       'string   !=value',
-      false,
+      defaultFreeTextFiltering,
       { step: 'property', value: 'value', operator: '!=', property: filteringProperties[0] },
     ],
-    ['partial operator', 'string!', false, { step: 'operator', operatorPrefix: '!', property: filteringProperties[0] }],
-    ['partial operator with text after', 'string! ', false, { step: 'free-text', value: 'string! ' }],
+    [
+      'full operator with whitespace after',
+      'string != value',
+      defaultFreeTextFiltering,
+      { step: 'property', value: 'value', operator: '!=', property: filteringProperties[0] },
+    ],
+    [
+      'partial operator',
+      'string!',
+      defaultFreeTextFiltering,
+      { step: 'operator', operatorPrefix: '!', property: filteringProperties[0] },
+    ],
+    [
+      'partial operator with text after',
+      'string! ',
+      defaultFreeTextFiltering,
+      { step: 'free-text', value: 'string! ' },
+    ],
     [
       'partial operator with whitespace before',
       'string !',
-      false,
+      defaultFreeTextFiltering,
       { step: 'operator', operatorPrefix: '!', property: filteringProperties[0] },
     ],
-    ['partial operator was not completed', 'string !>', false, { step: 'free-text', value: 'string !>' }],
+    [
+      'partial operator was not completed',
+      'string !>',
+      defaultFreeTextFiltering,
+      { step: 'free-text', value: 'string !>' },
+    ],
     [
       'range operator greedy (could have been completed by a "=", but is already treated like completed)',
       'range >',
-      false,
+      defaultFreeTextFiltering,
       { step: 'property', operator: '>', value: '', property: filteringProperties[3] },
     ],
     [
       'operator after a property with the same prefix in the label',
       'string-other!=value',
-      false,
+      defaultFreeTextFiltering,
       { step: 'property', value: 'value', operator: '!=', property: filteringProperties[1] },
     ],
     [
       'operator after edge case property',
       'string!=:value',
-      false,
+      defaultFreeTextFiltering,
       { step: 'property', value: 'value', operator: ':', property: filteringProperties[4] },
     ],
-    ['unsupported operator', 'string>value', false, { step: 'free-text', value: 'string>value' }],
-    ['unsupported operator incompleted', 'string>', false, { step: 'free-text', value: 'string>' }],
+    ['unsupported operator', 'string>value', defaultFreeTextFiltering, { step: 'free-text', value: 'string>value' }],
+    ['unsupported operator incompleted', 'string>', defaultFreeTextFiltering, { step: 'free-text', value: 'string>' }],
     [
       'default operator',
       'default=value',
-      false,
+      defaultFreeTextFiltering,
       { step: 'property', value: 'value', operator: '=', property: filteringProperties[2] },
     ],
     [
       'whitespace before the property label is not allowed',
       ' string!:value',
-      false,
+      defaultFreeTextFiltering,
       { step: 'free-text', value: ' string!:value' },
     ],
     [
       'property label without an operator',
       'string',
-      false,
+      defaultFreeTextFiltering,
       { step: 'operator', operatorPrefix: '', property: filteringProperties[0] },
     ],
   ];

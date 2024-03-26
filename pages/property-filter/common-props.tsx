@@ -224,7 +224,8 @@ export const filteringProperties: readonly PropertyFilterProps.FilteringProperty
         operator: '=',
         form: OwnerMultiSelectForm,
         format: formatOwners,
-        match: (itemValue: string, tokenValue: string[]) => tokenValue.some(value => itemValue === value),
+        match: (itemValue: string, tokenValue: string[]) =>
+          Array.isArray(tokenValue) && tokenValue.some(value => itemValue === value),
       },
     ];
   }
