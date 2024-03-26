@@ -3,7 +3,7 @@
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import createWrapper from '../../../lib/components/test-utils/selectors';
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
-import styles from '../../../lib/components/breadcrumb-group/item/styles.selectors.js';
+import tooltipStyles from '../../../lib/components/internal/components/tooltip/styles.selectors.js';
 
 const breadcrumbGroupWrapper = createWrapper().findBreadcrumbGroup();
 const dropdownWrapper = breadcrumbGroupWrapper.findDropdown();
@@ -81,9 +81,7 @@ describe('BreadcrumbGroup', () => {
       await page.setWindowSize({ width: 1200, height: 800 });
       await page.click('#focus-target-long-text');
       await page.keys('Tab');
-      await expect(page.isExisting(createWrapper().find(`.${styles['item-popover']}`).toSelector())).resolves.toBe(
-        false
-      );
+      await expect(page.isExisting(createWrapper().find(`.${tooltipStyles.root}`).toSelector())).resolves.toBe(false);
     })
   );
 
@@ -93,18 +91,12 @@ describe('BreadcrumbGroup', () => {
       await page.setMobileViewport();
       await page.click('#focus-target-long-text');
       await page.keys('Tab');
-      await expect(page.isExisting(createWrapper().find(`.${styles['item-popover']}`).toSelector())).resolves.toBe(
-        true
-      );
+      await expect(page.isExisting(createWrapper().find(`.${tooltipStyles.root}`).toSelector())).resolves.toBe(true);
       await page.keys('Escape');
-      await expect(page.isExisting(createWrapper().find(`.${styles['item-popover']}`).toSelector())).resolves.toBe(
-        false
-      );
+      await expect(page.isExisting(createWrapper().find(`.${tooltipStyles.root}`).toSelector())).resolves.toBe(false);
       await page.click('#focus-target-short-text');
       await page.keys('Tab');
-      await expect(page.isExisting(createWrapper().find(`.${styles['item-popover']}`).toSelector())).resolves.toBe(
-        false
-      );
+      await expect(page.isExisting(createWrapper().find(`.${tooltipStyles.root}`).toSelector())).resolves.toBe(false);
     })
   );
 

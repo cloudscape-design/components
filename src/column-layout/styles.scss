@@ -54,7 +54,7 @@ $column-breakpoint-spans: (
 
 @mixin remove-useless-vertical-borders($col-size, $direction) {
   $items-per-row: math.div($grid-columns, $col-size);
-  $items-modifier: if($direction == 'left', '+1', '');
+  $items-modifier: if($direction == 'inline-start', '+1', '');
   > *:nth-child(#{$items-per-row}n#{$items-modifier}) {
     border-#{$direction}-width: 0;
   }
@@ -112,7 +112,7 @@ div.column-layout {
     }
 
     &.grid-variant-text-grid {
-      @include make-vertical-borders('left');
+      @include make-vertical-borders('inline-start');
       margin-block: calc(-1 * #{$grid-gutter-width} / 2);
       margin-inline: calc(-1 * #{$grid-gutter-width});
     }
@@ -131,7 +131,7 @@ div.column-layout {
     }
 
     &.grid-vertical-borders {
-      @include make-vertical-borders('right');
+      @include make-vertical-borders('inline-end');
     }
     &.grid-horizontal-borders {
       @include make-horizontal-borders;

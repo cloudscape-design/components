@@ -1788,7 +1788,6 @@ receive focus.",
     },
     Object {
       "description": "Specifies the text to display when a data fetching error occurs. Make sure that you provide \`recoveryText\`.",
-      "i18nTag": true,
       "name": "errorText",
       "optional": true,
       "type": "string",
@@ -5059,8 +5058,8 @@ It contains the following:
 - \`label\` (string) - Specifies the label for each radio group.
 - \`description\` (string) - Specifies the text displayed below each radio group label.
 
-You must set the current value in the \`preferences.stickyColumns\` property.",
-      "i18nTag": true,
+You must set the current value in the \`preferences.stickyColumns\` property.
+",
       "inlineType": Object {
         "name": "CollectionPreferencesProps.StickyColumnsPreference",
         "properties": Array [
@@ -9565,7 +9564,6 @@ To use it correctly, define an ID for the element you want to use as label and s
     },
     Object {
       "description": "Specifies the text to display when a data fetching error occurs. Make sure that you provide \`recoveryText\`.",
-      "i18nTag": true,
       "name": "errorText",
       "optional": true,
       "type": "string",
@@ -12136,7 +12134,6 @@ To use it correctly, define an ID for the element you want to use as label and s
     },
     Object {
       "description": "Specifies the text to display when a data fetching error occurs. Make sure that you provide \`recoveryText\`.",
-      "i18nTag": true,
       "name": "errorText",
       "optional": true,
       "type": "string",

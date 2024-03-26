@@ -15,7 +15,7 @@ import { useInternalI18n } from '../i18n/context';
 export interface PopoverBodyProps {
   dismissButton: boolean;
   dismissAriaLabel: string | undefined;
-  onDismiss: () => void;
+  onDismiss: (() => void) | undefined;
 
   header: React.ReactNode | undefined;
   children: React.ReactNode;
@@ -46,7 +46,7 @@ export default function PopoverBody({
     (event: React.KeyboardEvent) => {
       if (event.keyCode === KeyCode.escape) {
         event.stopPropagation();
-        onDismiss();
+        onDismiss?.();
       }
     },
     [onDismiss]
@@ -70,7 +70,7 @@ export default function PopoverBody({
         iconName="close"
         className={styles['dismiss-control']}
         ariaLabel={i18n('dismissAriaLabel', dismissAriaLabel)}
-        onClick={() => onDismiss()}
+        onClick={() => onDismiss?.()}
         ref={dismissButtonRef}
       />
     </div>
