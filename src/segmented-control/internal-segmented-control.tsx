@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef } from 'react';
 import clsx from 'clsx';
-import { KeyCode } from '../internal/keycode';
+import handleKeyDown from '../internal/utils/handle-key-down';
 import { fireNonCancelableEvent } from '../internal/events';
 import { SegmentedControlProps } from './interfaces';
 import { Segment } from './segment';
@@ -23,33 +23,14 @@ export default function InternalSegmentedControl({
   const enabledSegments = (options || []).filter(option => !option.disabled);
 
   const moveHighlight = (event: React.KeyboardEvent<HTMLButtonElement>, activeIndex: number) => {
-    if (event.keyCode !== KeyCode.right && event.keyCode !== KeyCode.left) {
-      return;
-    }
-
     let nextIndex = activeIndex;
-    const direction = getComputedStyle(event.currentTarget).direction ?? 'ltr';
-    const incrementNextIndex = () => (nextIndex = activeIndex + 1 === enabledSegments.length ? 0 : activeIndex + 1);
-    const decrementNextIndex = () => (nextIndex = activeIndex === 0 ? enabledSegments.length - 1 : activeIndex - 1);
 
-    switch (event.keyCode) {
-      case KeyCode.right:
-        if (direction === 'rtl') {
-          decrementNextIndex();
-        } else {
-          incrementNextIndex();
-        }
-        break;
-      case KeyCode.left:
-        if (direction === 'rtl') {
-          incrementNextIndex();
-        } else {
-          decrementNextIndex();
-        }
-        break;
-      default:
-        return;
-    }
+    const onKeyDown = handleKeyDown({
+      onInlineStart: () => (nextIndex = activeIndex === 0 ? enabledSegments.length - 1 : activeIndex - 1),
+      onInlineEnd: () => (nextIndex = activeIndex + 1 === enabledSegments.length ? 0 : activeIndex + 1),
+    });
+
+    onKeyDown(event);
 
     const nextSegmentId = enabledSegments[nextIndex].id;
     segmentByIdRef.current[nextSegmentId]?.focus();
