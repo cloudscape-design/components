@@ -278,6 +278,8 @@
     "ariaLabels.resizerRoleDescription": "크기 조정 버튼",
     "ariaLabels.submittingEditText": "편집 제출 중",
     "ariaLabels.successfulEditLabel": "편집 성공",
+    "ariaLabels.expandButtonLabel": "확장",
+    "ariaLabels.collapseButtonLabel": "축소",
     "columnDefinitions.editConfig.errorIconAriaLabel": "오류",
     "columnDefinitions.editConfig.editIconAriaLabel": "편집 가능"
   },

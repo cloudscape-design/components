@@ -278,6 +278,8 @@
     "ariaLabels.resizerRoleDescription": "[サイズを変更] ボタン",
     "ariaLabels.submittingEditText": "編集を送信中",
     "ariaLabels.successfulEditLabel": "編集に成功しました",
+    "ariaLabels.expandButtonLabel": "展開する",
+    "ariaLabels.collapseButtonLabel": "折りたたむ",
     "columnDefinitions.editConfig.errorIconAriaLabel": "エラー",
     "columnDefinitions.editConfig.editIconAriaLabel": "編集可能"
   },

@@ -278,6 +278,8 @@
     "ariaLabels.resizerRoleDescription": "yeniden boyutlandırma düğmesi",
     "ariaLabels.submittingEditText": "Düzenleme gönderiliyor",
     "ariaLabels.successfulEditLabel": "Düzenleme başarılı",
+    "ariaLabels.expandButtonLabel": "Genişlet",
+    "ariaLabels.collapseButtonLabel": "Daralt",
     "columnDefinitions.editConfig.errorIconAriaLabel": "Hata",
     "columnDefinitions.editConfig.editIconAriaLabel": "düzenlenebilir"
   },
