@@ -59,6 +59,7 @@ function TableCellEditable<ItemType>({
   // To improve the initial page render performance we only show the edit icon when necessary.
   const [hasHover, setHasHover] = useState(false);
   const [hasFocus, setHasFocus] = useState(false);
+  // When a cell is both expandable and editable the icon is always shown.
   const showIcon = hasHover || hasFocus || !interactiveCell;
 
   const prevSuccessfulEdit = usePrevious(successfulEdit);
@@ -81,6 +82,7 @@ function TableCellEditable<ItemType>({
   return (
     <TableTdElement
       {...rest}
+      expandableProps={!isEditing ? rest.expandableProps : undefined}
       nativeAttributes={tdNativeAttributes as TableTdElementProps['nativeAttributes']}
       className={clsx(
         className,
@@ -155,13 +157,13 @@ export function TableBodyCell<ItemType>({
 }: TableBodyCellProps<ItemType> & { isEditable: boolean }) {
   const editDisabledReason = rest.column.editConfig?.disabledReason?.(rest.item);
 
-  if (editDisabledReason) {
+  if (editDisabledReason && !rest.expandableProps) {
     return <DisabledInlineEditor editDisabledReason={editDisabledReason} {...rest} />;
   }
-
-  if (isEditable || rest.isEditing) {
+  if ((isEditable || rest.isEditing) && !rest.expandableProps) {
     return <TableCellEditable {...rest} />;
   }
+
   const { column, item } = rest;
   return <TableTdElement {...rest}>{column.cell(item)}</TableTdElement>;
 }

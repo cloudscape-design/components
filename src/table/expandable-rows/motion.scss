@@ -1,0 +1,13 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../internal/styles' as styles;
+@use '../../internal/styles/tokens' as tokens;
+
+.expand-toggle-icon {
+  @include styles.with-motion {
+    transition: transform tokens.$motion-duration-rotate-90 tokens.$motion-easing-rotate-90;
+  }
+}

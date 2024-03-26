@@ -1,0 +1,47 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../internal/styles/index' as styles;
+@use '../../internal/styles/tokens' as awsui;
+@use '../../internal/hooks/focus-visible' as focus-visible;
+@use '../../internal/styles/tokens' as tokens;
+
+@use './motion';
+
+.expand-toggle-icon {
+  transform: rotate(-90deg);
+
+  &-expanded {
+    transform: rotate(0deg);
+  }
+}
+
+.expand-toggle {
+  @include styles.styles-reset;
+  cursor: pointer;
+  inline-size: awsui.$space-m;
+  block-size: awsui.$space-m;
+  border-block: 0;
+  border-inline: 0;
+  margin-block: 0;
+  margin-inline: 0;
+  padding-block: 0;
+  padding-inline: 0;
+  background: none;
+  outline: 0;
+
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(awsui.$space-button-inline-icon-focus-outline-gutter);
+  }
+
+  color: awsui.$color-text-interactive-default;
+
+  &:hover {
+    color: awsui.$color-text-interactive-hover;
+  }
+  &:active {
+    color: awsui.$color-text-interactive-active;
+  }
+}

@@ -27,7 +27,7 @@ const TestComponent = () => {
   const editConfig = { __mock: true };
 
   useTableFocusNavigation({
-    tableRole: 'table',
+    enableKeyboardNavigation: false,
     selectionType: undefined,
     tableRoot: tableRef,
     columnDefinitions: [{ editConfig }, { editConfig: undefined }, { editConfig }] as any,
@@ -210,7 +210,7 @@ describe('useTableFocusNavigation', () => {
     it('should attach event listener for focus navigation', () => {
       renderHook(() =>
         useTableFocusNavigation({
-          tableRole: 'table',
+          enableKeyboardNavigation: false,
           selectionType: undefined,
           tableRoot: { current: table },
           columnDefinitions: [
@@ -234,7 +234,7 @@ describe('useTableFocusNavigation', () => {
     it('satisfies istanbul coverage', () => {
       renderHook(() =>
         useTableFocusNavigation({
-          tableRole: 'table',
+          enableKeyboardNavigation: false,
           selectionType: 'multi',
           tableRoot: { current: null },
           columnDefinitions: [{ editConfig }, { editConfig }, { editConfig }],

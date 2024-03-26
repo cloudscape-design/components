@@ -1,11 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
+import { ComponentWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
 import styles from '../../../table/styles.selectors.js';
 import headerCellStyles from '../../../table/header-cell/styles.selectors.js';
 import bodyCellStyles from '../../../table/body-cell/styles.selectors.js';
 import selectionStyles from '../../../table/selection/styles.selectors.js';
 import resizerStyles from '../../../table/resizer/styles.selectors.js';
+import expandableRowsStyles from '../../../table/expandable-rows/styles.selectors.js';
 import CollectionPreferencesWrapper from '../collection-preferences';
 import ContainerWrapper from '../container';
 import PaginationWrapper from '../pagination';
@@ -165,5 +166,24 @@ export default class TableWrapper extends ComponentWrapper {
 
   findEditingCellCancelButton(): ElementWrapper | null {
     return this._findEditingCellControls()?.find('button:first-child') ?? null;
+  }
+
+  /**
+   * Returns the expandable row toggle button.
+   *
+   * @param rowIndex 1-based index of the row.
+   */
+  findExpandToggle(rowIndex: number): ElementWrapper | null {
+    return this.findNativeTable().find(`tbody tr:nth-child(${rowIndex}) .${expandableRowsStyles['expand-toggle']}`);
+  }
+
+  /**
+   * Returns `true` if the row expand toggle is present and expanded. Returns `false` otherwise.
+   *
+   * @param rowIndex 1-based index of the row.
+   */
+  @usesDom
+  isRowToggled(rowIndex: number): boolean {
+    return this.findExpandToggle(rowIndex)?.getElement().getAttribute('aria-expanded') === 'true';
   }
 }

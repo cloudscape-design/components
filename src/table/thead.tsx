@@ -42,6 +42,7 @@ export interface TheadProps {
   focusedComponent?: null | string;
   onFocusedComponentChange?: (focusId: null | string) => void;
   tableRole: TableRole;
+  isExpandable?: boolean;
 }
 
 const Thead = React.forwardRef(
@@ -70,6 +71,7 @@ const Thead = React.forwardRef(
       onFocusedComponentChange,
       tableRole,
       resizerRoleDescription,
+      isExpandable,
     }: TheadProps,
     outerRef: React.Ref<HTMLTableRowElement>
   ) => {
@@ -159,6 +161,9 @@ const Thead = React.forwardRef(
                 cellRef={node => setCell(sticky, columnId, node)}
                 tableRole={tableRole}
                 resizerRoleDescription={resizerRoleDescription}
+                // Expandable option is only applicable to the first data column of the table.
+                // When present, the header content receives extra padding to match the first offset in the data cells.
+                isExpandable={colIndex === 0 && isExpandable}
               />
             );
           })}
