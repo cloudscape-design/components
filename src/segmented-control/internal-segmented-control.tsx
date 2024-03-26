@@ -3,6 +3,7 @@
 import React, { useRef } from 'react';
 import clsx from 'clsx';
 import handleKeyDown from '../internal/utils/handle-key-down';
+import { KeyCode } from '../internal/keycode';
 import { fireNonCancelableEvent } from '../internal/events';
 import { SegmentedControlProps } from './interfaces';
 import { Segment } from './segment';
@@ -23,6 +24,10 @@ export default function InternalSegmentedControl({
   const enabledSegments = (options || []).filter(option => !option.disabled);
 
   const moveHighlight = (event: React.KeyboardEvent<HTMLButtonElement>, activeIndex: number) => {
+    if (event.keyCode !== KeyCode.right && event.keyCode !== KeyCode.left) {
+      return;
+    }
+
     let nextIndex = activeIndex;
 
     handleKeyDown({
