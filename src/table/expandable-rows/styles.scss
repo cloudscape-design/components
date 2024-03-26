@@ -18,12 +18,7 @@
   }
 }
 
-.expand-toggle-hidden.expand-toggle-hidden {
-  visibility: hidden;
-}
-
-.expand-toggle,
-.expand-toggle-hidden {
+.expand-toggle {
   @include styles.styles-reset;
   cursor: pointer;
   inline-size: awsui.$space-m;
@@ -48,5 +43,10 @@
   }
   &:active {
     color: awsui.$color-text-interactive-active;
+  }
+
+  &-hidden {
+    visibility: hidden;
+    pointer-events: none;
   }
 }

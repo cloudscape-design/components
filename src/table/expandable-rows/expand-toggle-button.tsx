@@ -40,7 +40,7 @@ function ExpandToggleButton({
 
 function ExpandTogglePlaceholder() {
   return (
-    <div aria-hidden={true} className={styles['expand-toggle-hidden']}>
+    <div aria-hidden={true} className={clsx(styles['expand-toggle'], styles['expand-toggle-hidden'])}>
       <InternalIcon size="small" name="caret-right-filled" />
     </div>
   );

@@ -174,7 +174,9 @@ export default class TableWrapper extends ComponentWrapper {
    * @param rowIndex 1-based index of the row.
    */
   findExpandToggle(rowIndex: number): ElementWrapper | null {
-    return this.findNativeTable().find(`tbody tr:nth-child(${rowIndex}) .${expandableRowsStyles['expand-toggle']}`);
+    return this.findNativeTable().find(
+      `tbody tr:nth-child(${rowIndex}) .${expandableRowsStyles['expand-toggle']}:not(.${expandableRowsStyles['expand-toggle-hidden']})`
+    );
   }
 
   /**
