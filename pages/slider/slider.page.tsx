@@ -7,7 +7,7 @@ import SpaceBetween from '~components/space-between';
 import FormField from '~components/form-field';
 import Container from '~components/container';
 import Header from '~components/header';
-import { Grid, ProgressBar, Select, SelectProps, Slider } from '~components';
+import { Grid, Select, SelectProps, Slider } from '~components';
 
 import styles from './styles.scss';
 
