@@ -12,6 +12,7 @@ const statusToText: [StatusIndicatorProps.Type, string][] = [
   ['pending', 'Pending'],
   ['in-progress', 'In progress'],
   ['loading', 'Loading'],
+  ['gen-ai', 'Generated'],
 ];
 
 export default function StatusIndicatorScenario() {
