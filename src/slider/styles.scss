@@ -1,0 +1,249 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use './mixins.scss' as mixins;
+
+$thumb-size: 16px;
+$tick-width: 2px;
+
+.root {
+  @include styles.styles-reset;
+  font-size: awsui.$font-size-body-s;
+  padding-block: awsui.$space-m awsui.$space-xs;
+
+  position: relative;
+  max-inline-size: 800px;
+}
+
+.slider {
+  inline-size: 100%;
+  display: flex;
+  align-items: center;
+
+  &-track,
+  &-range {
+    position: absolute;
+    border-start-start-radius: 3px;
+    border-start-end-radius: 3px;
+    border-end-start-radius: 3px;
+    border-end-end-radius: 3px;
+  }
+
+  &-track {
+    background-color: awsui.$color-background-slider-track;
+    inline-size: 100%;
+    block-size: 2px;
+    cursor: pointer;
+
+    &.disabled {
+      cursor: default;
+      background-color: awsui.$color-background-control-disabled;
+    }
+  }
+
+  &-range {
+    background-color: awsui.$color-background-slider-handle-default;
+    block-size: 4px;
+
+    &.disabled {
+      background-color: awsui.$color-background-control-disabled;
+    }
+
+    &.error {
+      background-color: awsui.$color-text-status-error;
+    }
+  }
+}
+
+.labels {
+  display: grid;
+  grid-template-columns:
+    3fr repeat(
+      calc((var(#{custom-props.$sliderLabelCount}) - 2) / 2 + (var(#{custom-props.$sliderLabelCount}) - 2) / 2 - 1),
+      2fr
+    )
+    3fr;
+  grid-auto-rows: 100%;
+  padding-block-start: awsui.$space-s;
+
+  // this keeps the labels to a maximum of two lines
+  > .label {
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow-y: clip;
+  }
+
+  &-noref {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  &-reference {
+    grid-column-start: var(#{custom-props.$sliderReferenceColumn});
+    grid-column-end: var(#{custom-props.$sliderNextReferenceColumn});
+    grid-row: 1;
+    justify-self: center;
+    text-align: center;
+  }
+
+  &-min {
+    grid-column: 1;
+    grid-row: 1;
+    grid-column-end: var(#{custom-props.$sliderMinEnd});
+  }
+
+  &-max {
+    text-align: end;
+    justify-content: flex-end;
+    grid-row: 1;
+    grid-column-end: calc(var(#{custom-props.$sliderLabelCount}) + 1);
+    grid-column-start: var(#{custom-props.$sliderMaxStart});
+  }
+
+  @include styles.media-breakpoint-down(styles.$breakpoint-xx-small) {
+    & {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    &-min {
+      grid-column: 1;
+    }
+
+    &-max {
+      grid-column: 2;
+    }
+
+    > .labels-reference {
+      display: none;
+    }
+  }
+}
+
+.ticks {
+  display: flex;
+  inline-size: calc(100% - $tick-width);
+  position: relative;
+}
+
+.tick {
+  position: absolute;
+  min-block-size: 8px;
+  inline-size: $tick-width;
+  padding-inline: 0;
+  padding-block: 0;
+  background: awsui.$color-background-slider-track;
+  inset-block-start: -4px;
+
+  &.filled {
+    background: awsui.$color-background-slider-handle-default;
+  }
+
+  &.error {
+    background: awsui.$color-text-status-error;
+  }
+}
+
+.tooltip-thumb {
+  position: absolute;
+  inline-size: awsui.$space-xxl;
+  block-size: awsui.$space-xxl;
+}
+
+.thumb {
+  background: transparent;
+  appearance: none;
+  position: absolute;
+  block-size: 0;
+  inline-size: calc(100% + $thumb-size);
+  outline: 0;
+  margin-inline-start: calc($thumb-size / -2);
+  cursor: pointer;
+
+  &.disabled {
+    cursor: default;
+  }
+
+  // 1px added to min and max to cover the step line when it exists.
+  &.min {
+    margin-inline-start: -1px;
+  }
+
+  &.max {
+    margin-inline-start: -$thumb-size + 1;
+  }
+
+  &::-webkit-slider-thumb {
+    appearance: none;
+    @include mixins.base-thumb-styles();
+  }
+
+  &::-moz-range-thumb {
+    appearance: none;
+    @include mixins.base-thumb-styles();
+  }
+
+  &:hover::-webkit-slider-thumb {
+    @include mixins.base-thumb-hover-styles();
+  }
+
+  &:hover::-moz-range-thumb {
+    @include mixins.base-thumb-hover-styles();
+  }
+
+  &:focus::-webkit-slider-thumb,
+  &:active::-webkit-slider-thumb {
+    @include mixins.base-thumb-focus-styles();
+  }
+
+  &:focus::-moz-range-thumb,
+  &:active::-moz-range-thumb {
+    @include mixins.base-thumb-focus-styles();
+  }
+}
+
+.error {
+  &::-webkit-slider-thumb {
+    background-color: awsui.$color-text-status-error;
+    border-color: awsui.$color-text-status-error;
+  }
+
+  &::-moz-range-thumb {
+    background-color: awsui.$color-text-status-error;
+    border-color: awsui.$color-text-status-error;
+  }
+  &:hover::-webkit-slider-thumb {
+    @include mixins.error-thumb-hover-styles;
+  }
+
+  &:hover::-moz-range-thumb {
+    @include mixins.error-thumb-hover-styles;
+  }
+
+  &:focus::-webkit-slider-thumb,
+  &:active::-webkit-slider-thumb {
+    @include mixins.error-thumb-focus-styles;
+  }
+
+  &:focus::-moz-range-thumb,
+  &:active::-moz-range-thumb {
+    @include mixins.error-thumb-focus-styles;
+  }
+}
+
+.disabled,
+.disabled:hover,
+.disabled:active {
+  &::-webkit-slider-thumb {
+    @include mixins.base-thumb-disabled-styles();
+  }
+
+  &::-moz-range-thumb {
+    @include mixins.base-thumb-disabled-styles();
+  }
+}

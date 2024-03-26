@@ -56,5 +56,11 @@ const customCssPropertiesList = [
   'spinnerLineLeftTo',
   'spinnerLineRightFrom',
   'spinnerLineRightTo',
+  // Slider
+  'sliderLabelCount',
+  'sliderReferenceColumn',
+  'sliderNextReferenceColumn',
+  'sliderMaxStart',
+  'sliderMinEnd',
 ];
 module.exports = customCssPropertiesList;
