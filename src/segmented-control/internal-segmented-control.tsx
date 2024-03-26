@@ -25,12 +25,10 @@ export default function InternalSegmentedControl({
   const moveHighlight = (event: React.KeyboardEvent<HTMLButtonElement>, activeIndex: number) => {
     let nextIndex = activeIndex;
 
-    const onKeyDown = handleKeyDown({
+    handleKeyDown({
       onInlineStart: () => (nextIndex = activeIndex === 0 ? enabledSegments.length - 1 : activeIndex - 1),
       onInlineEnd: () => (nextIndex = activeIndex + 1 === enabledSegments.length ? 0 : activeIndex + 1),
-    });
-
-    onKeyDown(event);
+    })(event);
 
     const nextSegmentId = enabledSegments[nextIndex].id;
     segmentByIdRef.current[nextSegmentId]?.focus();
