@@ -14,6 +14,7 @@ import {
   scrollIntoView,
 } from './scroll-utils';
 import { hasModifierKeys, isPlainLeftClick } from '../internal/events';
+import handleKeyDown from '../internal/utils/handle-key-down';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useInternalI18n } from '../i18n/context';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
@@ -177,61 +178,28 @@ export function TabHeaderBar({
       onChange({ activeTabId: tab.id, activeTabHref: tab.href });
     };
 
-    const handleKeyDown = function (
+    const onKeyDown = function (
       event: React.KeyboardEvent<HTMLAnchorElement> | React.KeyboardEvent<HTMLButtonElement>
     ) {
-      const { keyCode } = event;
       const specialKeys = [KeyCode.right, KeyCode.left, KeyCode.end, KeyCode.home, KeyCode.pageUp, KeyCode.pageDown];
-      if (hasModifierKeys(event) || specialKeys.indexOf(keyCode) === -1) {
+
+      if (hasModifierKeys(event) || specialKeys.indexOf(event.keyCode) === -1) {
         return;
       }
+
       event.preventDefault();
-
       const activeIndex = enabledTabsWithCurrentTab.indexOf(tab);
-      let nextIndex = activeIndex;
 
-      const direction = getComputedStyle(event.currentTarget).direction ?? 'ltr';
-      const incrementNextIndex = () =>
-        activeIndex + 1 === enabledTabsWithCurrentTab.length ? (nextIndex = 0) : nextIndex++;
-      const decrementNextIndex = () =>
-        activeIndex === 0 ? (nextIndex = enabledTabsWithCurrentTab.length - 1) : nextIndex--;
-
-      switch (keyCode) {
-        case KeyCode.right:
-          if (direction === 'rtl') {
-            decrementNextIndex();
-          } else {
-            incrementNextIndex();
-          }
-
-          highlightTab(nextIndex);
-          return;
-        case KeyCode.left:
-          if (direction === 'rtl') {
-            incrementNextIndex();
-          } else {
-            decrementNextIndex();
-          }
-
-          highlightTab(nextIndex);
-          return;
-        case KeyCode.end:
-          highlightTab(enabledTabsWithCurrentTab.length - 1);
-          return;
-        case KeyCode.home:
-          highlightTab(0);
-          return;
-        case KeyCode.pageDown:
-          if (rightOverflow) {
-            onPaginationClick(headerBarRef, 1);
-          }
-          return;
-        case KeyCode.pageUp:
-          if (leftOverflow) {
-            onPaginationClick(headerBarRef, -1);
-          }
-          return;
-      }
+      handleKeyDown({
+        onEnd: () => highlightTab(enabledTabsWithCurrentTab.length - 1),
+        onHome: () => highlightTab(0),
+        onInlineStart: () =>
+          activeIndex === 0 ? highlightTab(enabledTabsWithCurrentTab.length - 1) : highlightTab(activeIndex - 1),
+        onInlineEnd: () =>
+          activeIndex + 1 === enabledTabsWithCurrentTab.length ? highlightTab(0) : highlightTab(activeIndex + 1),
+        onPageDown: () => onPaginationClick(headerBarRef, 1),
+        onPageUp: () => onPaginationClick(headerBarRef, -1),
+      })(event);
     };
 
     const clickTab = (event: React.MouseEvent) => {
@@ -293,7 +261,7 @@ export function TabHeaderBar({
       commonProps.tabIndex = 0;
       commonProps.onKeyDown = (
         event: React.KeyboardEvent<HTMLAnchorElement> | React.KeyboardEvent<HTMLButtonElement>
-      ) => handleKeyDown(event);
+      ) => onKeyDown(event);
     } else {
       commonProps.tabIndex = -1;
     }
