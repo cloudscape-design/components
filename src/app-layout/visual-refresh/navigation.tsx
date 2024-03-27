@@ -61,27 +61,6 @@ export default function Navigation() {
           })}
           style={{ [customCssProps.navigationWidth]: `${navigationWidth}px` }}
         >
-          {/* {!isMobile && (
-            <nav
-              aria-hidden={isMobile || navigationOpen}
-              aria-label={ariaLabels?.navigation ?? undefined}
-              className={clsx(styles['show-navigation'], {
-                [styles.animating]: state === 'exiting',
-                [styles['is-navigation-open']]: navigationOpen,
-              })}
-              ref={state === 'exiting' ? transitionEventsRef : undefined}
-            >
-              <TriggerButton
-                ariaLabel={ariaLabels?.navigationToggle}
-                ariaExpanded={navigationOpen ? undefined : false}
-                iconName="menu"
-                className={testutilStyles['navigation-toggle']}
-                onClick={() => handleNavigationClick(true)}
-                ref={navigationRefs.toggle}
-              />
-            </nav>
-          )} */}
-
           <nav
             aria-label={ariaLabels?.navigation ?? undefined}
             className={clsx(

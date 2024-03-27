@@ -10,7 +10,8 @@
 @mixin trigger-selected-styles {
   background: awsui.$color-background-layout-toggle-selected-default;
   color: awsui.$color-text-layout-toggle-selected;
-  border: awsui.$border-field-width solid awsui.$color-background-layout-toggle-selected-default;
+  border-block: awsui.$border-field-width solid awsui.$color-background-layout-toggle-selected-default;
+  border-inline: awsui.$border-field-width solid awsui.$color-background-layout-toggle-selected-default;
 
   &:hover {
     background: awsui.$color-background-layout-toggle-selected-hover;
@@ -25,7 +26,8 @@
 @mixin trigger-button-styles {
   background: transparent;
   color: awsui.$color-text-interactive-default;
-  border: awsui.$border-field-width solid transparent;
+  border-block: awsui.$border-field-width solid transparent;
+  border-inline: awsui.$border-field-width solid transparent;
   border-start-start-radius: 50%;
   border-start-end-radius: 50%;
   border-end-start-radius: 50%;
@@ -69,10 +71,6 @@ handleSplitPanelMaxWidth function in the context.
 */
 .trigger {
   @include trigger-button-styles();
-  // border-block: none;
-  // border-inline: none;
-  // padding-inline: 0;
-  // color: awsui.$color-text-layout-toggle;
   cursor: pointer;
   pointer-events: auto;
 

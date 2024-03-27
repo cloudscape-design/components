@@ -108,18 +108,6 @@ viewport size and state of the Tools drawer.
     inline-size: var(#{custom-props.$toolsWidth});
   }
 
-  /*
-  A right border is needed if the Tools is open and the buttons are persistent in
-  the DOM. This creates a visual vertical boundary between the Tools and the Buttons
-  only when they are both present. This is the circumstance when there is a Split Panel
-  in the side position.
-  */
-  @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
-    &.is-tools-open.has-tools-form-persistence {
-      border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
-    }
-  }
-
   // The Tools drawer will take up the entire viewport on mobile
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
     #{custom-props.$toolsWidth}: 100vw;
@@ -131,54 +119,4 @@ viewport size and state of the Tools drawer.
   inset-inline-end: awsui.$space-m;
   inset-block-start: awsui.$size-vertical-panel-icon-offset;
   z-index: 1;
-}
-
-/*
-Warning! If these design tokens for padding change it will adversely impact
-the calculation used to determine the Split Panel maximum width in the
-handleSplitPanelMaxWidth function in the context.
-*/
-.show-tools {
-  @include styles.styles-reset;
-  box-sizing: border-box;
-  padding-block: awsui.$space-scaled-s;
-  padding-inline: awsui.$space-layout-toggle-padding;
-
-  // Animation for the buttons when they are added to the DOM
-  @keyframes showButtons {
-    0% {
-      opacity: 0;
-    }
-
-    100% {
-      opacity: 1;
-    }
-  }
-
-  &:not(.has-tools-form) {
-    display: none;
-  }
-
-  /*
-  Apply the animation only in desktop viewports because the MobileToolbar will 
-  take control in responsive viewports.
-  */
-  @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
-    &.has-tools-form {
-      display: flex;
-      flex-direction: column;
-      gap: awsui.$space-xs;
-      &.animating {
-        @include styles.with-motion {
-          animation: showButtons awsui.$motion-duration-refresh-only-fast;
-        }
-      }
-    }
-
-    &.has-tools-form-persistence {
-      background-color: awsui.$color-background-container-content;
-      // We ned an incremented z-index so the shadow of the tools or split panel does not overlap the white background.
-      z-index: 1;
-    }
-  }
 }

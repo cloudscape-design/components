@@ -455,7 +455,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     useLayoutEffect(
       function handleSplitPanelMaxWidth() {
         const contentGapRight = 50; // Approximately 24px when rendered but doubled for safety
-        const toolsFormOffsetWidth = 120; // Approximately 60px when rendered but doubled for safety
         const getPanelOffsetWidth = () => {
           if (drawers) {
             return activeDrawerId ? drawerSize : 0;
@@ -464,15 +463,10 @@ export const AppLayoutInternalsProvider = React.forwardRef(
         };
 
         setSplitPanelMaxWidth(
-          placement.width -
-            mainOffsetLeft -
-            minContentWidth -
-            contentGapRight -
-            toolsFormOffsetWidth -
-            getPanelOffsetWidth()
+          placement.width - mainOffsetLeft - minContentWidth - contentGapRight - getPanelOffsetWidth()
         );
 
-        setDrawersMaxWidth(placement.width - mainOffsetLeft - minContentWidth - contentGapRight - toolsFormOffsetWidth);
+        setDrawersMaxWidth(placement.width - mainOffsetLeft - minContentWidth - contentGapRight);
       },
       [
         activeDrawerId,
