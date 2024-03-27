@@ -14,6 +14,7 @@ import { InfoLinkLabelContext } from '../internal/context/info-link-label-contex
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_SUBSTEP_NAME } from '../internal/analytics/selectors';
+import { getGlobalFlag } from '../internal/utils/global-flags';
 
 interface InternalHeaderProps extends SomeRequired<HeaderProps, 'variant'>, InternalBaseComponentProps {
   __disableActionsWrapping?: boolean;
@@ -42,7 +43,7 @@ export default function InternalHeader({
     assignHeaderId(headingId);
   }
   // If is mobile there is no need to have the dynamic variant because it's scrolled out of view
-  const dynamicVariant = !isMobile && isStuck ? 'h2' : 'h2';
+  const dynamicVariant = (!isMobile && isStuck) || getGlobalFlag('appLayoutWidget') ? 'h2' : 'h1';
   const variantOverride = variant === 'awsui-h1-sticky' ? (isRefresh ? dynamicVariant : 'h2') : variant;
 
   return (

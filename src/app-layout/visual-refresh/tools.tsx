@@ -4,9 +4,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { InternalButton } from '../../button/internal';
 import { useAppLayoutInternals } from './context';
-import TriggerButton from './trigger-button';
 import styles from './styles.css.js';
-import splitPanelStyles from '../../split-panel/styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 import { Transition } from '../../internal/components/transition';
 import customCssProps from '../../internal/generated/custom-css-properties';
@@ -28,7 +26,6 @@ export default function Tools({ children }: ToolsProps) {
     ariaLabels,
     disableBodyScroll,
     drawers,
-    handleSplitPanelClick,
     handleToolsClick,
     hasDefaultToolsWidth,
     hasDrawerViewportOverlay,
@@ -37,11 +34,8 @@ export default function Tools({ children }: ToolsProps) {
     isToolsOpen,
     loseToolsFocus,
     splitPanel,
-    splitPanelControlId,
     splitPanelDisplayed,
     splitPanelPosition,
-    splitPanelRefs,
-    splitPanelToggle,
     tools,
     toolsControlId,
     toolsHide,
@@ -50,8 +44,6 @@ export default function Tools({ children }: ToolsProps) {
   } = useAppLayoutInternals();
 
   const hasSplitPanel = !!splitPanel && getSplitPanelStatus(splitPanelDisplayed, splitPanelPosition);
-  const hasToolsForm = getToolsFormStatus(hasSplitPanel, isMobile, isSplitPanelOpen, isToolsOpen, toolsHide);
-  const hasToolsFormPersistence = getToolsFormPersistence(hasSplitPanel, isSplitPanelOpen, isToolsOpen, toolsHide);
   const isUnfocusable = hasDrawerViewportOverlay && !isToolsOpen;
 
   /**
@@ -93,7 +85,6 @@ export default function Tools({ children }: ToolsProps) {
                 styles.tools,
                 {
                   [styles.animating]: state === 'entering',
-                  [styles['has-tools-form-persistence']]: hasToolsFormPersistence,
                   [styles['is-tools-open']]: isToolsOpen,
                 },
                 testutilStyles.tools
@@ -117,46 +108,6 @@ export default function Tools({ children }: ToolsProps) {
               </div>
             </aside>
           )}
-
-          {/* {!isMobile && (
-            <aside
-              aria-hidden={!hasToolsForm ? true : false}
-              aria-label={ariaLabels?.tools ?? undefined}
-              className={clsx(styles['show-tools'], {
-                [styles.animating]: state === 'exiting',
-                [styles['has-tools-form']]: hasToolsForm,
-                [styles['has-tools-form-persistence']]: hasToolsFormPersistence,
-              })}
-              ref={state === 'exiting' ? transitionEventsRef : undefined}
-              data-testid="side-split-panel-drawer"
-            >
-              {!toolsHide && (
-                <TriggerButton
-                  ariaLabel={ariaLabels?.toolsToggle}
-                  ariaControls={toolsControlId}
-                  ariaExpanded={isToolsOpen}
-                  iconName="status-info"
-                  onClick={() => handleToolsClick(!isToolsOpen)}
-                  selected={hasSplitPanel && isToolsOpen}
-                  className={testutilStyles['tools-toggle']}
-                  ref={toolsRefs.toggle}
-                />
-              )}
-
-              {hasSplitPanel && splitPanelToggle.displayed && (
-                <TriggerButton
-                  ariaLabel={splitPanelToggle.ariaLabel}
-                  ariaControls={splitPanelControlId}
-                  ariaExpanded={!!isSplitPanelOpen}
-                  iconName="view-vertical"
-                  onClick={() => handleSplitPanelClick()}
-                  selected={hasSplitPanel && isSplitPanelOpen}
-                  className={splitPanelStyles['open-button']}
-                  ref={splitPanelRefs.toggle}
-                />
-              )}
-            </aside>
-          )} */}
         </div>
       )}
     </Transition>
@@ -169,63 +120,4 @@ export default function Tools({ children }: ToolsProps) {
  */
 function getSplitPanelStatus(splitPanelDisplayed: boolean, splitPanelPosition: string) {
   return splitPanelDisplayed && splitPanelPosition === 'side' ? true : false;
-}
-
-/**
- * By default the Tools form is styled as display: none; This behavior should
- * be unchanged in mobile viewports where the Tools form is always suppressed.
- * In large viewports, however the Tools form and its corresponding buttons
- * should be present in the UI under the below circumstances.
- */
-function getToolsFormStatus(
-  hasSplitPanel: boolean,
-  isMobile: boolean,
-  isSplitPanelOpen?: boolean,
-  isToolsOpen?: boolean,
-  toolsHide?: boolean
-) {
-  let hasToolsForm = false;
-
-  if (!isMobile) {
-    // Both the Split Panel and Tools button are needed
-    if (hasSplitPanel && !toolsHide) {
-      hasToolsForm = true;
-    }
-
-    // The Split Panel button is needed
-    if (hasSplitPanel && !isSplitPanelOpen && toolsHide) {
-      hasToolsForm = true;
-    }
-
-    // The Tools button is needed
-    if (!hasSplitPanel && !toolsHide && !isToolsOpen) {
-      hasToolsForm = true;
-    }
-  }
-
-  return hasToolsForm;
-}
-
-/**
- * Under two scenarios the Tools form that contains the triggers
- * for the Tools content and the Split Panel may be persistent
- * in the UI (as opposed to disappearing when one of the drawers
- * is open). This will also add a white background as opposed to the
- * default transparent background. The buttons will present and in a
- * selected / not selected state.
- */
-function getToolsFormPersistence(
-  hasSplitPanel: boolean,
-  isSplitPanelOpen?: boolean,
-  isToolsOpen?: boolean,
-  toolsHide?: boolean
-) {
-  let hasToolsFormPersistence = false;
-
-  // Both Tools and Split Panel exist and one or both is open
-  if (hasSplitPanel && !toolsHide && (isSplitPanelOpen || isToolsOpen)) {
-    hasToolsFormPersistence = true;
-  }
-
-  return hasToolsFormPersistence;
 }

@@ -62,27 +62,6 @@ export default function Navigation() {
           // Overwrite the default nav width (depends on breakpoints) only when the `navigationWidth` property is set.
           style={{ ...(navigationWidth && { [customCssProps.navigationWidth]: `${navigationWidth}px` }) }}
         >
-          {/* {!isMobile && (
-            <nav
-              aria-hidden={isMobile || isNavigationOpen ? true : false}
-              aria-label={ariaLabels?.navigation ?? undefined}
-              className={clsx(styles['show-navigation'], {
-                [styles.animating]: state === 'exiting',
-                [styles['is-navigation-open']]: isNavigationOpen,
-              })}
-              ref={state === 'exiting' ? transitionEventsRef : undefined}
-            >
-              <TriggerButton
-                ariaLabel={ariaLabels?.navigationToggle}
-                ariaExpanded={isNavigationOpen ? undefined : false}
-                iconName="menu"
-                className={testutilStyles['navigation-toggle']}
-                onClick={() => handleNavigationClick(true)}
-                ref={navigationRefs.toggle}
-              />
-            </nav>
-          )} */}
-
           <nav
             aria-label={ariaLabels?.navigation ?? undefined}
             className={clsx(
