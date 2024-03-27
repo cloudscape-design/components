@@ -23,7 +23,9 @@ div.background {
     position: sticky;
     inset-block-start: var(#{custom-props.$headerHeight});
     z-index: 799;
-    transition: ease all 0.35s;
+    @include styles.with-motion {
+      transition: ease all 0.35s;
+    }
 
     &:not(.has-sticky-notifications) {
       block-size: calc(

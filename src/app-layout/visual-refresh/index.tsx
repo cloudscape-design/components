@@ -28,11 +28,11 @@ const AppLayoutWithRef = React.forwardRef(function AppLayout(
 
           <UniversalToolbar />
 
+          <Notifications />
+
           <Header />
 
           <Main />
-
-          <Notifications />
 
           <SplitPanel.Bottom />
 
