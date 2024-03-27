@@ -46,7 +46,7 @@ export default function useCalendarGridKeyboardNavigation({
   const onGridKeyDownHandler = (event: React.KeyboardEvent) => {
     let updatedFocusDate;
 
-    const keys = [KeyCode.down, KeyCode.left, KeyCode.right, KeyCode.space, KeyCode.enter];
+    const keys = [KeyCode.up, KeyCode.down, KeyCode.left, KeyCode.right, KeyCode.space, KeyCode.enter];
 
     if (focusableDate === null || keys.indexOf(event.keyCode) === -1) {
       return;
