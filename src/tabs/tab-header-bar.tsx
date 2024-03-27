@@ -197,8 +197,8 @@ export function TabHeaderBar({
           activeIndex === 0 ? highlightTab(enabledTabsWithCurrentTab.length - 1) : highlightTab(activeIndex - 1),
         onInlineEnd: () =>
           activeIndex + 1 === enabledTabsWithCurrentTab.length ? highlightTab(0) : highlightTab(activeIndex + 1),
-        onPageDown: () => onPaginationClick(headerBarRef, 1),
-        onPageUp: () => onPaginationClick(headerBarRef, -1),
+        onPageDown: () => rightOverflow && onPaginationClick(headerBarRef, 1),
+        onPageUp: () => leftOverflow && onPaginationClick(headerBarRef, -1),
       })(event);
     };
 
