@@ -10,14 +10,12 @@ export default function handleKeyDown({
   onBlockEnd,
   onBlockStart,
   onEnd,
-  onEnter,
   onEscape,
   onHome,
   onInlineEnd,
   onInlineStart,
   onPageDown,
   onPageUp,
-  onSpace,
   onTab,
   default: defaultFunction,
 }: {
@@ -26,14 +24,12 @@ export default function handleKeyDown({
   onBlockEnd?: (event: React.KeyboardEvent) => void;
   onBlockStart?: (event: React.KeyboardEvent) => void;
   onEnd?: (event: React.KeyboardEvent) => void;
-  onEnter?: (event: React.KeyboardEvent) => void;
   onEscape?: (event: React.KeyboardEvent) => void;
   onHome?: (event: React.KeyboardEvent) => void;
   onInlineEnd?: (event: React.KeyboardEvent) => void;
   onInlineStart?: (event: React.KeyboardEvent) => void;
   onPageDown?: (event: React.KeyboardEvent) => void;
   onPageUp?: (event: React.KeyboardEvent) => void;
-  onSpace?: (event: React.KeyboardEvent) => void;
   onTab?: (event: React.KeyboardEvent) => void;
   default?: (event: React.KeyboardEvent) => void;
 }) {
@@ -50,7 +46,6 @@ export default function handleKeyDown({
         onEnd?.(event);
         break;
       case KeyCode.enter:
-        onEnter?.(event);
         onActivate?.(event);
         break;
       case KeyCode.escape:
@@ -72,7 +67,6 @@ export default function handleKeyDown({
         direction === 'ltr' ? onInlineEnd?.(event) : onInlineStart?.(event);
         break;
       case KeyCode.space:
-        onSpace?.(event);
         onActivate?.(event);
         break;
       case KeyCode.tab:
