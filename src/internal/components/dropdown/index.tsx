@@ -102,7 +102,8 @@ const TransitionContent = ({
       className={clsx(styles.dropdown, dropdownClasses, {
         [styles.open]: open,
         [styles['with-limited-width']]: !stretchWidth,
-        [styles['hide-block-border']]: stretchWidth,
+        [styles['hide-block-start-border']]: stretchWidth && position?.includes('bottom'),
+        [styles['hide-block-end-border']]: stretchWidth && position?.includes('top'),
         [styles.interior]: interior,
         [styles.refresh]: isRefresh,
         [styles['use-portal']]: expandToViewport && !interior,
