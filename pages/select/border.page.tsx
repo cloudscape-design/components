@@ -3,6 +3,7 @@
 import * as React from 'react';
 import Select, { SelectProps } from '~components/select';
 import Box from '~components/box';
+import ScreenshotArea from '../utils/screenshot-area';
 
 const optionsSemiExtended: SelectProps['options'] = [
   {
@@ -51,18 +52,24 @@ export default function SelectPage() {
   return (
     <article>
       <Box margin="l">
-        <Box variant="h1">Overflow test</Box>
-        <Box variant="p">Dropdown should not be rendered beyond the container with overflow hidden</Box>
-        <div style={{ height: '600px' }}>Placeholder</div>
-        <div style={{ overflow: 'hidden', height: '200px', width: '300px' }}>
-          <Select
-            id="select_overflow"
-            placeholder="Choose option"
-            selectedOption={null}
-            options={optionsSemiExtended}
-            expandToViewport={true}
-          />
-        </div>
+        <Box variant="h1">Borders test</Box>
+        <Box variant="p">Dropdown should have all borders when expandToViewport set to true</Box>
+        <ScreenshotArea
+          style={{
+            // extra space to include dropdown in the screenshot area
+            paddingTop: 350,
+          }}
+        >
+          <div style={{ width: '300px' }}>
+            <Select
+              placeholder="Choose option"
+              selectedOption={null}
+              options={optionsSemiExtended}
+              expandToViewport={true}
+              data-testid="select-border"
+            />
+          </div>
+        </ScreenshotArea>
       </Box>
     </article>
   );
