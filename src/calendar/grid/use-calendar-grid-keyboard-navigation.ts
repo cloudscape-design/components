@@ -14,6 +14,7 @@ import {
   moveMonthDown,
   moveMonthUp,
 } from '../utils/navigation';
+import { KeyCode } from '../../internal/keycode';
 import handleKeyDown from '../../internal/utils/handle-key-down';
 
 export default function useCalendarGridKeyboardNavigation({
@@ -45,9 +46,13 @@ export default function useCalendarGridKeyboardNavigation({
   const onGridKeyDownHandler = (event: React.KeyboardEvent) => {
     let updatedFocusDate;
 
-    if (focusableDate === null) {
+    const keys = [KeyCode.down, KeyCode.left, KeyCode.right, KeyCode.space, KeyCode.enter];
+
+    if (focusableDate === null || keys.indexOf(event.keyCode) === -1) {
       return;
     }
+
+    event.preventDefault();
 
     handleKeyDown({
       onActivate: () => {
