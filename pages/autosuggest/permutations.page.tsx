@@ -26,6 +26,34 @@ const permutations = createPermutations<AutosuggestProps>([
   },
   {
     ariaLabel: ['some label'],
+    placeholder: ['Enter some data'],
+    warning: [true],
+    value: ['op'],
+    options: [
+      [
+        { value: 'option1', label: 'Option 1' },
+        { value: 'option2', label: 'Option 2' },
+      ],
+      undefined,
+    ],
+    enteredTextLabel: [enteredTextLabel],
+  },
+  {
+    ariaLabel: ['some label'],
+    placeholder: ['Enter some data'],
+    invalid: [true],
+    warning: [true],
+    value: ['op'],
+    options: [
+      [
+        { value: 'option1', label: 'Option 1' },
+        { value: 'option2', label: 'Option 2' },
+      ],
+    ],
+    enteredTextLabel: [enteredTextLabel],
+  },
+  {
+    ariaLabel: ['some label'],
     options: [undefined],
     value: ['', 'Some value'],
     empty: [
@@ -41,6 +69,14 @@ const permutations = createPermutations<AutosuggestProps>([
     ariaLabel: ['some label'],
     disabled: [true, false],
     invalid: [true, false],
+    value: ['', 'Some option'],
+    placeholder: ['Enter some data'],
+    enteredTextLabel: [enteredTextLabel],
+  },
+  {
+    ariaLabel: ['some label'],
+    disabled: [true, false],
+    warning: [true],
     value: ['', 'Some option'],
     placeholder: ['Enter some data'],
     enteredTextLabel: [enteredTextLabel],

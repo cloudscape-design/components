@@ -10,6 +10,7 @@ import styles from '../../../lib/components/form-field/styles.css.js';
 const testInput = <Input value="follow me on tiktok" onChange={() => {}} />;
 
 const errorSelector = `:scope > .${styles.hints} .${styles.error}`;
+const warningSelector = `:scope > .${styles.hints} .${styles.warning}`;
 
 function renderFormField(props: FormFieldProps = {}) {
   const renderResult = render(<FormField {...props} />);
@@ -39,6 +40,11 @@ describe('controlId', () => {
       expect(wrapper.find(errorSelector)?.getElement().id).toBe(`${formFieldControlId}-error`);
     });
 
+    test('renders id for warningText based on controlId', () => {
+      const wrapper = renderFormField({ controlId: formFieldControlId, warningText: 'Test warning' });
+      expect(wrapper.find(warningSelector)?.getElement().id).toBe(`${formFieldControlId}-warning`);
+    });
+
     test('renders id for constraintText based on controlId', () => {
       const wrapper = renderFormField({ controlId: formFieldControlId, constraintText: 'Test constraint' });
       expect(wrapper.findConstraint()?.getElement().id).toBe(`${formFieldControlId}-constraint`);
@@ -51,11 +57,28 @@ describe('controlId', () => {
         description: 'desc',
         constraintText: 'constraint',
         errorText: 'error',
+        warningText: 'warning',
       });
 
       expect(wrapper.findLabel()?.getElement()).toHaveAttribute('for', formFieldControlId);
       expect(wrapper.findDescription()?.getElement().id).toBe(`${formFieldControlId}-description`);
       expect(wrapper.find(errorSelector)?.getElement().id).toBe(`${formFieldControlId}-error`);
+      expect(wrapper.find(warningSelector)).toBeUndefined;
+      expect(wrapper.findConstraint()?.getElement().id).toBe(`${formFieldControlId}-constraint`);
+    });
+
+    test('sets the right ids for all props when everything except errorText is set at the sameTime', () => {
+      const wrapper = renderFormField({
+        controlId: formFieldControlId,
+        label: 'label',
+        description: 'desc',
+        constraintText: 'constraint',
+        warningText: 'warning',
+      });
+
+      expect(wrapper.findLabel()?.getElement()).toHaveAttribute('for', formFieldControlId);
+      expect(wrapper.findDescription()?.getElement().id).toBe(`${formFieldControlId}-description`);
+      expect(wrapper.find(warningSelector)?.getElement().id).toBe(`${formFieldControlId}-warning`);
       expect(wrapper.findConstraint()?.getElement().id).toBe(`${formFieldControlId}-constraint`);
     });
 
@@ -115,6 +138,11 @@ describe('controlId', () => {
       expect(wrapper.find(errorSelector)?.getElement()).toHaveAttribute('id');
     });
 
+    test('generates own id and uses it for warningText', () => {
+      const wrapper = renderFormField({ warningText: 'Test warning' });
+      expect(wrapper.find(warningSelector)?.getElement()).toHaveAttribute('id');
+    });
+
     test('generates own id and uses it for constraintText', () => {
       const wrapper = renderFormField({ constraintText: 'Test constraint' });
       expect(wrapper.findConstraint()?.getElement()).toHaveAttribute('id');
@@ -133,6 +161,22 @@ describe('controlId', () => {
       expect(labelId).not.toBeUndefined();
       expect(wrapper.findDescription()?.getElement().id).toBe(labelId?.replace('label', 'description'));
       expect(wrapper.find(errorSelector)?.getElement().id).toBe(labelId?.replace('label', 'error'));
+      expect(wrapper.findConstraint()?.getElement().id).toBe(labelId?.replace('label', 'constraint'));
+    });
+
+    test('generates own id and uses it on all props including warningText', () => {
+      const wrapper = renderFormField({
+        label: 'label',
+        description: 'desc',
+        constraintText: 'constraint',
+        warningText: 'warning',
+      });
+
+      const labelId = wrapper.findLabel()?.getElement().id;
+
+      expect(labelId).not.toBeUndefined();
+      expect(wrapper.findDescription()?.getElement().id).toBe(labelId?.replace('label', 'description'));
+      expect(wrapper.find(warningSelector)?.getElement().id).toBe(labelId?.replace('label', 'warning'));
       expect(wrapper.findConstraint()?.getElement().id).toBe(labelId?.replace('label', 'constraint'));
     });
 

@@ -126,7 +126,7 @@ describe('Textarea', () => {
       expect(textarea).not.toHaveAttribute('aria-invalid');
     });
 
-    test('dis not set when invalid prop is falsy', () => {
+    test('is not set when invalid prop is falsy', () => {
       const { textarea } = renderTextarea({ invalid: false });
       expect(textarea).not.toHaveClass(styles['textarea-invalid']);
       expect(textarea).not.toHaveAttribute('aria-invalid');
@@ -134,6 +134,31 @@ describe('Textarea', () => {
 
     test('can be set', () => {
       const { textarea } = renderTextarea({ invalid: true });
+      expect(textarea).toHaveClass(styles['textarea-invalid']);
+      expect(textarea).toHaveAttribute('aria-invalid');
+    });
+  });
+
+  describe('warning state', () => {
+    test('is not set by default', () => {
+      const { textarea } = renderTextarea();
+
+      expect(textarea).not.toHaveClass(styles['textarea-warning']);
+    });
+
+    test('is not set when warning prop is falsy', () => {
+      const { textarea } = renderTextarea({ warning: false });
+      expect(textarea).not.toHaveClass(styles['textarea-warning']);
+    });
+
+    test('can be set', () => {
+      const { textarea } = renderTextarea({ warning: true });
+      expect(textarea).toHaveClass(styles['textarea-warning']);
+    });
+
+    test('is overriden when invalid is true', () => {
+      const { textarea } = renderTextarea({ warning: true, invalid: true });
+      expect(textarea).not.toHaveClass(styles['textarea-warning']);
       expect(textarea).toHaveClass(styles['textarea-invalid']);
       expect(textarea).toHaveAttribute('aria-invalid');
     });

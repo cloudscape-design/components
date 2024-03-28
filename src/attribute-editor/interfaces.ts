@@ -29,6 +29,7 @@ export namespace AttributeEditorProps {
     info?: React.ReactNode;
     control?: FieldRenderable<T> | React.ReactNode;
     errorText?: FieldRenderable<T> | React.ReactNode;
+    warningText?: FieldRenderable<T> | React.ReactNode;
     constraintText?: FieldRenderable<T> | React.ReactNode;
   }
 
@@ -50,6 +51,7 @@ export namespace AttributeEditorProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   export interface I18nStrings<T = any> {
     errorIconAriaLabel?: string;
+    warningIconAriaLabel?: string;
     itemRemovedAriaLive?: string;
 
     /**
@@ -111,6 +113,8 @@ export interface AttributeEditorProps<T> extends BaseComponentProps {
    * * `info` (ReactNode) - Info link for the form field.
    * * `errorText` ((item, itemIndex) => ReactNode) - Error message text to display as a control validation message.
    *    It renders the form field as invalid if the returned value is not `null` or `undefined`.
+   * * `warningText` ((item, itemIndex) => ReactNode) - Warning message text to display as a control validation message.
+   *    It renders the form field in a warning state if the returned value is not `null` or `undefined`.
    * * `constraintText` ((item, itemIndex) => ReactNode) - Text to display as a constraint message below the field.
    * * `control` ((item, itemIndex) => ReactNode) - A control to use as the input for the field.
    *

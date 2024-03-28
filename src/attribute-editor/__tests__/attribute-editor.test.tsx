@@ -47,6 +47,7 @@ const defaultProps: AttributeEditorProps<Item> = {
   empty: 'empty region',
   i18nStrings: {
     errorIconAriaLabel: 'Error',
+    warningIconAriaLabel: 'Warning',
   },
 };
 
@@ -77,6 +78,15 @@ const expectRowErrorTextContent = (wrapper: AttributeEditorWrapper, rowIndex: nu
     const errorField = row.findFields()[index].findError();
     expect(errorField).not.toBe(null);
     expect(errorField!.getElement()).toHaveTextContent(expectedValue);
+  });
+};
+
+const expectRowWarningTextContent = (wrapper: AttributeEditorWrapper, rowIndex: number, expectedValues: string[]) => {
+  const row = wrapper.findRow(rowIndex + 1)!;
+  expectedValues.forEach((expectedValue, index) => {
+    const warningField = row.findFields()[index].findWarning();
+    expect(warningField).not.toBe(null);
+    expect(warningField!.getElement()).toHaveTextContent(expectedValue);
   });
 };
 
@@ -254,7 +264,7 @@ describe('Attribute Editor', () => {
     });
   });
 
-  ['control', 'errorText', 'constraintText'].forEach(renderableFn => {
+  ['control', 'errorText', 'warningText', 'constraintText'].forEach(renderableFn => {
     describe(renderableFn, () => {
       const renderableFns: Record<string, jest.Mock> = {};
 
@@ -366,6 +376,75 @@ describe('Attribute Editor', () => {
         expectErrorFieldNotToExist(wrapper, 0, valueFieldIndex);
         expectErrorFieldNotToExist(wrapper, 1, valueFieldIndex);
       });
+    });
+  });
+
+  describe('warnings', () => {
+    const warningFns: Record<string, jest.Mock> = {};
+
+    beforeEach(() => {
+      const definition = defaultProps.definition.map(definition => ({ ...definition }));
+      ['key', 'value', 'additional'].forEach((type, i) => {
+        warningFns[type] = jest.fn();
+        definition[i].warningText = warningFns[type];
+      });
+
+      renderAttributeEditor({ ...defaultProps, definition });
+    });
+
+    test('should call the definition `warningText` method for each row item', () => {
+      Object.keys(warningFns).forEach(key => {
+        expect(warningFns[key]).toHaveBeenCalledWith(expect.any(Object), expect.any(Number));
+      });
+    });
+
+    describe('displaying warnings', () => {
+      let wrapper: AttributeEditorWrapper;
+
+      beforeEach(() => {
+        const definition = defaultProps.definition.map(definition => ({ ...definition }));
+        definition[0].warningText = (_item, index) => `Warning with key ${index}`;
+        wrapper = renderAttributeEditor({ ...defaultProps, definition });
+      });
+
+      test('should display the returned values as warning messages', () => {
+        expect(wrapper.findRow(1)!.findFields()[0].find('[role="img"]')!.getElement()).toHaveAttribute(
+          'aria-label',
+          'Warning'
+        );
+        expectRowWarningTextContent(wrapper, 0, ['Warning with key 0']);
+        expectRowWarningTextContent(wrapper, 1, ['Warning with key 1']);
+      });
+
+      test('should not display warnings for items where no warning value is returned', () => {
+        const expectWarningFieldNotToExist = (
+          wrapper: AttributeEditorWrapper,
+          rowIndex: number,
+          fieldIndex: number
+        ) => {
+          const row = wrapper.findRow(rowIndex + 1)!;
+          const warningField = row.findFields()[fieldIndex].findWarning();
+          expect(warningField).toBe(null);
+        };
+
+        const valueFieldIndex = 1;
+        expectWarningFieldNotToExist(wrapper, 0, valueFieldIndex);
+        expectWarningFieldNotToExist(wrapper, 1, valueFieldIndex);
+      });
+    });
+
+    test('should display only errors when values for both error and warning messages are returned', () => {
+      const definition = defaultProps.definition.map(definition => ({ ...definition }));
+      definition[0].warningText = (_item, index) => `Warning with key ${index}`;
+      definition[0].errorText = (_item, index) => `Error with key ${index}`;
+      const wrapper: AttributeEditorWrapper = renderAttributeEditor({ ...defaultProps, definition });
+
+      expect(wrapper.findRow(1)!.findFields()[0].find('[role="img"]')!.getElement()).toHaveAttribute(
+        'aria-label',
+        'Error'
+      );
+      expectRowErrorTextContent(wrapper, 0, ['Error with key 0']);
+      expect(wrapper.findRow(1)!.findFields()[0].findWarning()).toBe(null);
     });
   });
 

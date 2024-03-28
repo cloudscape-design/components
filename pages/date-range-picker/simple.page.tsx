@@ -16,6 +16,8 @@ import { i18nStrings, i18nStringsDateOnly, isValid, relativeOptions } from './co
 export default function DatePickerScenario() {
   const [showRelativeOptions, setShowRelativeOptions] = useState(true);
   const [dateOnly, setDateOnly] = useState(false);
+  const [invalid, setInvalid] = useState(false);
+  const [warning, setWarning] = useState(false);
   const [rangeSelectorMode, setRangeSelectorMode] = useState<DateRangePickerProps.RangeSelectorMode>('default');
   const [value, setValue] = useState<DateRangePickerProps['value']>(null);
 
@@ -39,6 +41,12 @@ export default function DatePickerScenario() {
           <Checkbox checked={dateOnly} onChange={event => setDateOnly(event.detail.checked)}>
             Date-only
           </Checkbox>
+          <Checkbox checked={invalid} onChange={event => setInvalid(event.detail.checked)}>
+            Invalid
+          </Checkbox>
+          <Checkbox checked={warning} onChange={event => setWarning(event.detail.checked)}>
+            Warning
+          </Checkbox>
         </SpaceBetween>
         <Link id="focus-dismiss-helper">Focusable element before the date range picker</Link>
         <FormField label="Date Range Picker field">
@@ -55,6 +63,8 @@ export default function DatePickerScenario() {
             rangeSelectorMode={rangeSelectorMode}
             isDateEnabled={date => date.getDate() !== 15}
             getTimeOffset={date => -1 * date.getTimezoneOffset()}
+            invalid={invalid}
+            warning={warning}
           />
         </FormField>
         <Link id="focusable-element-after-date-picker">Focusable element after the date range picker</Link>

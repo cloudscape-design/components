@@ -49,6 +49,10 @@ export default class FileUploadWrapper extends ComponentWrapper<HTMLElement> {
   findError(): null | ElementWrapper {
     return this.find(`.${fileUploadSelectors.hints} .${formFieldStyles.error} .${formFieldStyles.error__message}`);
   }
+
+  findWarning(): null | ElementWrapper {
+    return this.find(`.${fileUploadSelectors.hints} .${formFieldStyles.warning} .${formFieldStyles.warning__message}`);
+  }
 }
 
 class FileTokenWrapper extends ComponentWrapper {
@@ -70,6 +74,10 @@ class FileTokenWrapper extends ComponentWrapper {
 
   findFileError(): null | ElementWrapper {
     return this.find(`.${formFieldStyles.error} .${formFieldStyles.error__message}`);
+  }
+
+  findFileWarning(): null | ElementWrapper {
+    return this.find(`.${formFieldStyles.warning} .${formFieldStyles.warning__message}`);
   }
 
   findRemoveButton(): ElementWrapper {
