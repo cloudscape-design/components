@@ -11,7 +11,6 @@ import Main from './main';
 import Navigation from './navigation';
 import Notifications from './notifications';
 import SplitPanel from './split-panel';
-import Tools from './tools';
 import UniversalToolbar from './universal-toolbar';
 
 const AppLayoutWithRef = React.forwardRef(function AppLayout(
@@ -35,10 +34,6 @@ const AppLayoutWithRef = React.forwardRef(function AppLayout(
           <Main />
 
           <SplitPanel.Bottom />
-
-          <Tools>
-            <SplitPanel.Side />
-          </Tools>
 
           <Drawers />
         </Layout>

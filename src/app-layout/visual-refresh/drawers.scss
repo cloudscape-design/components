@@ -152,6 +152,19 @@
     align-items: center;
   }
 
+  // Animation for the Drawer opacity and width when it is added to the DOM
+  @keyframes openDrawer {
+    from {
+      opacity: 0;
+      inline-size: 0;
+    }
+
+    to {
+      opacity: 1;
+      inline-size: var(#{custom-props.$drawerSize});
+    }
+  }
+
   &:not(.is-drawer-open) {
     opacity: 0;
     inline-size: 0;
@@ -162,6 +175,17 @@
     border-inline-start: solid awsui.$border-divider-section-width awsui.$color-border-divider-default;
     opacity: 1;
     inline-size: var(#{custom-props.$drawerSize});
+
+    &.animating {
+      @include styles.with-motion {
+        animation: openDrawer awsui.$motion-duration-expressive;
+      }
+    }
+    &:not(.animating) {
+      @include styles.with-motion {
+        transition: ease inline-size awsui.$motion-duration-expressive;
+      }
+    }
   }
 
   @include styles.media-breakpoint-up(styles.$breakpoint-xx-large) {

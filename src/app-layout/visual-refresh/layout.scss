@@ -22,8 +22,8 @@ circumstances regardless of whether the minContentWidth property is
 explicitly set in script.
 */
 .layout {
-  #{custom-props.$contentGapLeft}: awsui.$space-scaled-l;
-  #{custom-props.$contentGapRight}: awsui.$space-scaled-l;
+  #{custom-props.$contentGapLeft}: #{awsui.$space-layout-content-horizontal};
+  #{custom-props.$contentGapRight}: #{awsui.$space-layout-content-horizontal};
   #{custom-props.$contentHeight}: calc(100vh - var(#{custom-props.$headerHeight}) - var(#{custom-props.$footerHeight}));
   #{custom-props.$defaultMaxContentWidth}: 1280px;
   #{custom-props.$defaultMinContentWidth}: 0px;
@@ -145,23 +145,12 @@ explicitly set in script.
   */
   @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
     &.has-content-gap-left {
-      #{custom-props.$contentGapLeft}: #{awsui.$space-layout-content-horizontal};
+      #{custom-props.$contentGapLeft}: #{awsui.$space-scaled-l};
     }
 
     &.has-content-gap-right {
-      #{custom-props.$contentGapRight}: #{awsui.$space-layout-content-horizontal};
+      #{custom-props.$contentGapRight}: #{awsui.$space-scaled-l};
     }
-  }
-
-  /*
-  In mobile viewports the Navigation and Tools drawers are hidden
-  and triggered by the MobileToolbar which then take up the entire viewport.
-  The center column needs permanent space from the horizontal viewport
-  edges regardless of whether or not there is a Navigation or Tools.
-  */
-  @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
-    #{custom-props.$contentGapLeft}: #{awsui.$space-l};
-    #{custom-props.$contentGapRight}: #{awsui.$space-l};
   }
 
   &.has-notifications {
