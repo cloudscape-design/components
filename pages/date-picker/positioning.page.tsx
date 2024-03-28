@@ -10,9 +10,9 @@ export default function DatePickerScenario() {
       <h1>Date picker positioning</h1>
       <div
         style={{
-          width: '180px',
-          marginLeft: '300px',
-          marginTop: '300px',
+          inlineSize: '180px',
+          marginInlineStart: '300px',
+          marginBlockStart: '300px',
         }}
       >
         <DatePicker

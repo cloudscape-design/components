@@ -15,6 +15,7 @@ import {
   moveMonthUp,
 } from '../utils/navigation';
 import { KeyCode } from '../../internal/keycode';
+import handleKeyDown from '../../internal/utils/handle-key-down';
 
 export default function useCalendarGridKeyboardNavigation({
   baseDate,
@@ -45,37 +46,27 @@ export default function useCalendarGridKeyboardNavigation({
   const onGridKeyDownHandler = (event: React.KeyboardEvent) => {
     let updatedFocusDate;
 
-    if (focusableDate === null) {
+    const keys = [KeyCode.up, KeyCode.down, KeyCode.left, KeyCode.right, KeyCode.space, KeyCode.enter];
+
+    if (focusableDate === null || keys.indexOf(event.keyCode) === -1) {
       return;
     }
 
-    switch (event.keyCode) {
-      case KeyCode.space:
-      case KeyCode.enter:
-        event.preventDefault();
-        if (focusableDate) {
-          onFocusDate(null);
-          onSelectDate(focusableDate);
-        }
-        return;
-      case KeyCode.right:
-        event.preventDefault();
-        updatedFocusDate = moveRight(focusableDate, isDateEnabled);
-        break;
-      case KeyCode.left:
-        event.preventDefault();
-        updatedFocusDate = moveLeft(focusableDate, isDateEnabled);
-        break;
-      case KeyCode.up:
-        event.preventDefault();
-        updatedFocusDate = moveUp(focusableDate, isDateEnabled);
-        break;
-      case KeyCode.down:
-        event.preventDefault();
-        updatedFocusDate = moveDown(focusableDate, isDateEnabled);
-        break;
-      default:
-        return;
+    event.preventDefault();
+
+    handleKeyDown({
+      onActivate: () => {
+        onFocusDate(null);
+        onSelectDate(focusableDate);
+      },
+      onBlockEnd: () => (updatedFocusDate = moveDown(focusableDate, isDateEnabled)),
+      onBlockStart: () => (updatedFocusDate = moveUp(focusableDate, isDateEnabled)),
+      onInlineStart: () => (updatedFocusDate = moveLeft(focusableDate, isDateEnabled)),
+      onInlineEnd: () => (updatedFocusDate = moveRight(focusableDate, isDateEnabled)),
+    })(event);
+
+    if (!updatedFocusDate) {
+      return;
     }
 
     if (!isSamePage(updatedFocusDate, baseDate)) {

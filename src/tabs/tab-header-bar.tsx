@@ -5,6 +5,7 @@ import { TabsProps } from './interfaces';
 import clsx from 'clsx';
 import styles from './styles.css.js';
 import { InternalButton } from '../button/internal';
+import handleKeyDown from '../internal/utils/handle-key-down';
 import { KeyCode } from '../internal/keycode';
 import {
   onPaginationClick,
@@ -177,7 +178,7 @@ export function TabHeaderBar({
       onChange({ activeTabId: tab.id, activeTabHref: tab.href });
     };
 
-    const handleKeyDown = function (
+    const onKeyDown = function (
       event: React.KeyboardEvent<HTMLAnchorElement> | React.KeyboardEvent<HTMLButtonElement>
     ) {
       const { keyCode } = event;
@@ -187,38 +188,17 @@ export function TabHeaderBar({
       }
       event.preventDefault();
       const activeIndex = enabledTabsWithCurrentTab.indexOf(tab);
-      switch (keyCode) {
-        case KeyCode.right:
-          if (activeIndex + 1 === enabledTabsWithCurrentTab.length) {
-            highlightTab(0);
-          } else {
-            highlightTab(activeIndex + 1);
-          }
-          return;
-        case KeyCode.left:
-          if (activeIndex === 0) {
-            highlightTab(enabledTabsWithCurrentTab.length - 1);
-          } else {
-            highlightTab(activeIndex - 1);
-          }
-          return;
-        case KeyCode.end:
-          highlightTab(enabledTabsWithCurrentTab.length - 1);
-          return;
-        case KeyCode.home:
-          highlightTab(0);
-          return;
-        case KeyCode.pageDown:
-          if (rightOverflow) {
-            onPaginationClick(headerBarRef, 1);
-          }
-          return;
-        case KeyCode.pageUp:
-          if (leftOverflow) {
-            onPaginationClick(headerBarRef, -1);
-          }
-          return;
-      }
+
+      handleKeyDown({
+        onEnd: () => highlightTab(enabledTabsWithCurrentTab.length - 1),
+        onHome: () => highlightTab(0),
+        onInlineEnd: () =>
+          activeIndex + 1 === enabledTabsWithCurrentTab.length ? highlightTab(0) : highlightTab(activeIndex + 1),
+        onInlineStart: () =>
+          activeIndex === 0 ? highlightTab(enabledTabsWithCurrentTab.length - 1) : highlightTab(activeIndex - 1),
+        onPageDown: () => rightOverflow && onPaginationClick(headerBarRef, 1),
+        onPageUp: () => leftOverflow && onPaginationClick(headerBarRef, -1),
+      })(event);
     };
 
     const clickTab = (event: React.MouseEvent) => {
@@ -280,7 +260,7 @@ export function TabHeaderBar({
       commonProps.tabIndex = 0;
       commonProps.onKeyDown = (
         event: React.KeyboardEvent<HTMLAnchorElement> | React.KeyboardEvent<HTMLButtonElement>
-      ) => handleKeyDown(event);
+      ) => onKeyDown(event);
     } else {
       commonProps.tabIndex = -1;
     }
