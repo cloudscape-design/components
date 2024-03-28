@@ -49,6 +49,16 @@ export interface TokenGroupProps extends BaseComponentProps {
    *  Make sure that you add a listener to this event to update your application state.
    */
   onDismiss?: NonCancelableEventHandler<TokenGroupProps.DismissDetail>;
+  /**
+   * Adds an `aria-label` to the show fewer button.
+   * Use to assign unique labels when there are multiple token group sections with the same limitShowFewer label on one page.
+   */
+  limitShowFewerAriaLabel?: string;
+  /**
+   * Adds an `aria-label` to the show more button.
+   * Use to assign unique labels when there are multiple token group sections with the same limitShowMore label on one page.
+   */
+  limitShowMoreAriaLabel?: string;
 }
 
 export namespace TokenGroupProps {

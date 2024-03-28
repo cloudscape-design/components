@@ -210,6 +210,38 @@ describe('TokenGroup', () => {
       const icon = wrapper.findTokenToggle()!.find('svg');
       expect(icon!.getElement()).toContainHTML(icons['treeview-collapse']);
     });
+
+    test('sets no aria-label text on the expand button by default', () => {
+      const wrapper = renderTokenGroup({ items: generateItems(2), i18nStrings, limit: 1 });
+      expect(wrapper.findTokenToggle()!.getElement()).toHaveTextContent('Show more (+1)');
+      expect(wrapper.findTokenToggle()!.getElement()).not.toHaveAttribute('aria-label');
+    });
+
+    test('sets aria-label text on the expand button when provided', () => {
+      const wrapper = renderTokenGroup({
+        items: generateItems(2),
+        limit: 1,
+        limitShowMoreAriaLabel: 'Show more dummy token',
+      });
+      expect(wrapper.findTokenToggle()!.getElement()!.getAttribute('aria-label')).toBe('Show more dummy token');
+    });
+
+    test('sets no aria-label text on the collapse button by default', () => {
+      const wrapper = renderTokenGroup({ items: generateItems(2), i18nStrings, limit: 1 });
+      wrapper.findTokenToggle()!.click();
+      expect(wrapper.findTokenToggle()!.getElement()).toHaveTextContent('Show less');
+      expect(wrapper.findTokenToggle()!.getElement()).not.toHaveAttribute('aria-label');
+    });
+
+    test('sets aria-label text on the collapse button when provided', () => {
+      const wrapper = renderTokenGroup({
+        items: generateItems(2),
+        limit: 1,
+        limitShowFewerAriaLabel: 'Show fewer dummy token',
+      });
+      wrapper.findTokenToggle()!.click();
+      expect(wrapper.findTokenToggle()!.getElement()!.getAttribute('aria-label')).toBe('Show fewer dummy token');
+    });
   });
 
   describe('Focus management', () => {

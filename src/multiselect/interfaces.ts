@@ -45,6 +45,17 @@ export interface MultiselectProps extends BaseSelectProps {
    * Automatically focuses the trigger when component is mounted.
    */
   autoFocus?: boolean;
+
+  /**
+   * Adds an `aria-label` to the token group sections show fewer button.
+   * Use to assign unique labels when there are multiple multiselects with token group sections with the same `tokenLimitShowFewer` label on one page.
+   */
+  tokenLimitShowFewerAriaLabel?: string;
+  /**
+   * Adds an `aria-label` to the token group sections show more button.
+   * Use to assign unique labels when there are multiple multiselect with token group sections with the same `tokenLimitShowMore` label on one page.
+   */
+  tokenLimitShowMoreAriaLabel?: string;
 }
 
 export namespace MultiselectProps {
