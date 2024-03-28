@@ -6,7 +6,6 @@ import { KeyCode } from '../keycode';
 
 export default function handleKeyDown({
   onActivate,
-  onAll,
   onBlockEnd,
   onBlockStart,
   onEnd,
@@ -17,7 +16,6 @@ export default function handleKeyDown({
   onPageUp,
 }: {
   onActivate?: (event: React.KeyboardEvent) => void;
-  onAll?: (event: React.KeyboardEvent) => void;
   onBlockEnd?: (event: React.KeyboardEvent) => void;
   onBlockStart?: (event: React.KeyboardEvent) => void;
   onEnd?: (event: React.KeyboardEvent) => void;
@@ -28,9 +26,7 @@ export default function handleKeyDown({
   onPageUp?: (event: React.KeyboardEvent) => void;
 }) {
   return function (event: React.KeyboardEvent) {
-    const direction = getComputedStyle(event.currentTarget).direction ?? 'ltr';
-
-    onAll && onAll(event);
+    const direction = getComputedStyle(event.currentTarget).direction === 'rtl' ? 'rtl' : 'ltr';
 
     switch (event.keyCode) {
       case KeyCode.down:
@@ -62,8 +58,6 @@ export default function handleKeyDown({
         break;
       case KeyCode.up:
         onBlockStart?.(event);
-        break;
-      default:
         break;
     }
   };
