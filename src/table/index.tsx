@@ -23,7 +23,6 @@ const Table = React.forwardRef(
         variant,
         wrapLines: props.wrapLines,
         enableKeyboardNavigation: props.enableKeyboardNavigation,
-        expandableRows: !!props.expandableRows,
       },
     });
 
