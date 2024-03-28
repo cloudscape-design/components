@@ -77,7 +77,7 @@ interface AnchorProps {
 }
 
 const Anchor = ({ anchor, onFollow, isActive, index }: AnchorProps) => {
-  checkSafeUrl('SideNavigation', anchor.href);
+  checkSafeUrl('AnchorNavigation', anchor.href);
 
   const onClick = useCallback(
     (event: React.MouseEvent) => {
