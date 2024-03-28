@@ -3,24 +3,35 @@
 import smoothScroll from './smooth-scroll';
 import { isRtl } from '../internal/direction';
 
-export const onPaginationClick = (headerBarRef: React.RefObject<HTMLUListElement>, direction: number): void => {
+export const onPaginationClick = (
+  headerBarRef: React.RefObject<HTMLUListElement>,
+  direction: 'forward' | 'backward'
+): void => {
   if (!headerBarRef?.current) {
     return;
   }
   const element = headerBarRef.current;
+  const { scrollLeft, scrollWidth, offsetWidth } = element;
 
   // Scroll each paginated section by 75% of what is already visible
   const paginatedSectionSize = Math.ceil(element.clientWidth * 0.75);
 
-  if (direction === 1) {
-    smoothScroll(
-      element,
-      Math.min(element.scrollLeft + paginatedSectionSize, element.scrollWidth - element.offsetWidth)
-    );
-  }
-  if (direction === -1) {
-    smoothScroll(element, Math.max(element.scrollLeft - paginatedSectionSize, 0));
-  }
+  console.log(`scrollLeft: ${scrollLeft}`);
+  console.log(`scrollWidth: ${scrollWidth}`);
+  console.log(`offsetWidth: ${offsetWidth}`);
+  console.log(`paginatedSectionSize: ${paginatedSectionSize}`);
+
+  // scrollLeft will be a negative number if the direction is RTL
+  const scrollInlineStart = isRtl(element) ? scrollLeft * -1 : scrollLeft;
+
+  const scrollDistance =
+    direction === 'forward'
+      ? Math.min(scrollInlineStart + paginatedSectionSize, scrollWidth - offsetWidth)
+      : Math.max(scrollInlineStart - paginatedSectionSize, 0);
+
+  const scrollTo = isRtl(element) ? scrollDistance * -1 : scrollDistance;
+
+  smoothScroll(element, scrollTo);
 };
 
 export const hasHorizontalOverflow = (
@@ -35,7 +46,9 @@ export const hasHorizontalOverflow = (
 };
 
 export const hasInlineStartOverflow = (headerBar: HTMLElement): boolean => {
-  return isRtl(headerBar) ? headerBar.scrollLeft < 0 : headerBar.scrollLeft > 0;
+  // scrollLeft will be a negative number if the direction is RTL
+  const scrollInlineStart = isRtl(headerBar) ? headerBar.scrollLeft * -1 : headerBar.scrollLeft;
+  return scrollInlineStart > 0;
 };
 
 export const hasInlineEndOverflow = (headerBar: HTMLElement): boolean => {
@@ -43,9 +56,9 @@ export const hasInlineEndOverflow = (headerBar: HTMLElement): boolean => {
 
   // scrollLeft can be a decimal value on systems using display scaling
   // scrollLeft will be a negative number if the direction is RTL
-  const computedScrollLeft = isRtl(headerBar) ? Math.floor(scrollLeft) * -1 : Math.ceil(scrollLeft);
+  const scrollInlineStart = isRtl(headerBar) ? Math.floor(scrollLeft) * -1 : Math.ceil(scrollLeft);
 
-  return Math.ceil(computedScrollLeft) < scrollWidth - offsetWidth;
+  return Math.ceil(scrollInlineStart) < scrollWidth - offsetWidth;
 };
 
 export const scrollIntoView = (tabHeader: HTMLElement, headerBar: HTMLElement, smooth = true): void => {

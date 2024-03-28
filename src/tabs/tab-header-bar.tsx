@@ -135,7 +135,7 @@ export function TabHeaderBar({
             iconName="angle-left"
             disabled={!inlineStartOverflow}
             __focusable={true}
-            onClick={() => onPaginationClick(headerBarRef, -1)}
+            onClick={() => onPaginationClick(headerBarRef, 'backward')}
             ariaLabel={i18n('i18nStrings.scrollLeftAriaLabel', i18nStrings?.scrollLeftAriaLabel)}
           />
         </span>
@@ -158,7 +158,7 @@ export function TabHeaderBar({
             iconName="angle-right"
             disabled={!inlineEndOverflow}
             __focusable={true}
-            onClick={() => onPaginationClick(headerBarRef, 1)}
+            onClick={() => onPaginationClick(headerBarRef, 'forward')}
             ariaLabel={i18n('i18nStrings.scrollRightAriaLabel', i18nStrings?.scrollRightAriaLabel)}
           />
         </span>
@@ -196,8 +196,8 @@ export function TabHeaderBar({
           activeIndex + 1 === enabledTabsWithCurrentTab.length ? highlightTab(0) : highlightTab(activeIndex + 1),
         onInlineStart: () =>
           activeIndex === 0 ? highlightTab(enabledTabsWithCurrentTab.length - 1) : highlightTab(activeIndex - 1),
-        onPageDown: () => inlineEndOverflow && onPaginationClick(headerBarRef, 1),
-        onPageUp: () => inlineStartOverflow && onPaginationClick(headerBarRef, -1),
+        onPageDown: () => inlineEndOverflow && onPaginationClick(headerBarRef, 'forward'),
+        onPageUp: () => inlineStartOverflow && onPaginationClick(headerBarRef, 'backward'),
       })(event);
     };
 
