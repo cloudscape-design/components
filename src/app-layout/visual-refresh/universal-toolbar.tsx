@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
-import { DesktopTriggers as DrawersToolbarTriggers } from './drawers';
+import { DrawerTriggers } from './drawers';
 import { useAppLayoutInternals } from './context';
 import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
@@ -14,68 +14,20 @@ export default function UniversalToolbar() {
     breadcrumbs,
     disableBodyScroll,
     drawers,
+    drawersTriggerCount,
     __embeddedViewMode,
     handleNavigationClick,
-    handleToolsClick,
     hasDrawerViewportOverlay,
     isMobile,
     isNavigationOpen,
-    isSplitPanelOpen,
     isToolsOpen,
     navigationHide,
     navigationRefs,
     splitPanel,
-    splitPanelDisplayed,
-    splitPanelPosition,
-    toolsControlId,
     toolsHide,
-    toolsRefs,
     toolbarRef,
-    toolbarHeight,
     pinnedToolbar,
   } = useAppLayoutInternals();
-
-  const hasSplitPanel = !!splitPanel && getSplitPanelStatus(splitPanelDisplayed, splitPanelPosition);
-  const showToolsTrigger = getTriggerStatus(hasSplitPanel, isSplitPanelOpen, isToolsOpen, toolsHide);
-
-  /**
-   * This simple function returns the presence of the split panel as a child of the
-   * Tools component. It must exist and be in side position.
-   */
-  function getSplitPanelStatus(splitPanelDisplayed: boolean, splitPanelPosition: string) {
-    return splitPanelDisplayed && splitPanelPosition === 'side' ? true : false;
-  }
-
-  function getTriggerStatus(
-    hasSplitPanel: boolean,
-    isSplitPanelOpen?: boolean,
-    isToolsOpen?: boolean,
-    toolsHide?: boolean
-  ) {
-    let hasToolsForm = false;
-
-    // Both the Split Panel and Tools button are needed
-    if (hasSplitPanel && !toolsHide) {
-      hasToolsForm = true;
-    }
-
-    // The Split Panel button is needed
-    if (hasSplitPanel && !isSplitPanelOpen && toolsHide) {
-      hasToolsForm = true;
-    }
-
-    // The Tools button is needed
-    if (!hasSplitPanel && !toolsHide && !isToolsOpen) {
-      hasToolsForm = true;
-    }
-
-    // Both Tools and Split Panel exist and one or both is open
-    if (hasSplitPanel && !toolsHide && (isSplitPanelOpen || isToolsOpen)) {
-      hasToolsForm = true;
-    }
-
-    return hasToolsForm;
-  }
 
   function useScrollDirection() {
     const [scrollDirection, setScrollDirection] = useState('show');
@@ -92,7 +44,7 @@ export default function UniversalToolbar() {
           setScrollDirection(direction);
         }
         lastScrollY = scrollY > 0 ? scrollY : 0;
-        console.log(lastScrollY, scrollY, direction, toolbarHeight);
+        // console.log(lastScrollY, scrollY, direction, toolbarHeight);
       };
 
       window.addEventListener('scroll', updateScrollDirection);
@@ -148,28 +100,9 @@ export default function UniversalToolbar() {
         {breadcrumbs && (
           <div className={clsx(styles['universal-toolbar-breadcrumbs'], testutilStyles.breadcrumbs)}>{breadcrumbs}</div>
         )}
-
-        <span className={clsx(styles['universal-toolbar-drawers'])}>
-          {!toolsHide && showToolsTrigger && !drawers && (
-            <aside
-              aria-hidden={!hasSplitPanel && !toolsHide && !isToolsOpen}
-              aria-label={ariaLabels?.tools ?? undefined}
-              className={clsx(styles['universal-toolbar-tools'], { [testutilStyles['drawer-closed']]: !isToolsOpen })}
-            >
-              <TriggerButton
-                className={testutilStyles['tools-toggle']}
-                ariaExpanded={isToolsOpen}
-                ariaLabel={ariaLabels?.toolsToggle}
-                ariaControls={toolsControlId}
-                iconName="status-info"
-                onClick={() => handleToolsClick(!isToolsOpen)}
-                ref={toolsRefs.toggle}
-                selected={hasSplitPanel && isToolsOpen}
-              />
-            </aside>
-          )}
-          {<DrawersToolbarTriggers />}
-        </span>
+        {(drawersTriggerCount > 0 || !!splitPanel) && (
+          <span className={clsx(styles['universal-toolbar-drawers'])}>{<DrawerTriggers />}</span>
+        )}
       </div>
     </section>
   );

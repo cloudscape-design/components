@@ -96,7 +96,6 @@ function SplitPanelBottom() {
             [customCssProps.splitPanelReportedHeaderSize]: `${splitPanelReportedHeaderHeight}px`,
           }}
         >
-          <SplitPanel></SplitPanel>
           {splitPanelPosition === 'bottom' && splitPanel}
         </section>
       )}
