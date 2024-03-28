@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
 
@@ -79,27 +79,45 @@ function ChartPopover(
   const baseProps = getBaseProps(restProps);
   const popoverObjectRef = useRef<HTMLDivElement | null>(null);
 
+  // In chart popovers, dismiss button is present when they are pinned, so both values are equivalent.
+  const isPinned = dismissButton;
+
   const popoverRef = useMergeRefs(popoverObjectRef, ref);
 
   useEffect(() => {
-    const onDocumentClick = (event: MouseEvent) => {
+    const handleClickOutside = (event: MouseEvent) => {
       if (
         event.target &&
-        !nodeBelongs(popoverObjectRef.current, event.target as Element) && // click not in popover
-        !nodeContains(container, event.target as Element) // click not in segment
+        !nodeBelongs(popoverObjectRef.current, event.target) && // click not in popover
+        !nodeContains(container, event.target) // click not in segment
       ) {
         onDismiss(true);
       }
     };
 
-    document.addEventListener('mousedown', onDocumentClick, { capture: true });
+    document.addEventListener('mousedown', handleClickOutside, { capture: true });
     return () => {
-      document.removeEventListener('mousedown', onDocumentClick, { capture: true });
+      document.removeEventListener('mousedown', handleClickOutside, { capture: true });
     };
   }, [container, onDismiss]);
 
-  // In chart popovers, dismiss button is present when they are pinned, so both values are equivalent.
-  const isPinned = dismissButton;
+  const handleMouseLeave = useCallback(
+    (event: React.MouseEvent) => {
+      if (onMouseLeave) {
+        onMouseLeave(event);
+      }
+
+      // Dismiss unpinned popover when mouse exits to its inner container or a diffrent chart
+      if (
+        !isPinned &&
+        (!nodeContains(container, event.relatedTarget) || nodeBelongs(popoverObjectRef.current, event.target))
+      ) {
+        onDismiss(true);
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [container, onDismiss, onMouseLeave]
+  );
 
   return (
     <div
@@ -107,7 +125,7 @@ function ChartPopover(
       className={clsx(popoverStyles.root, styles.root, baseProps.className)}
       ref={popoverRef}
       onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
+      onMouseLeave={handleMouseLeave}
       onBlur={onBlur}
       // The tabIndex makes it so that clicking inside popover assigns this element as blur target.
       // That is necessary in charts to ensure the blur target is within the chart and no cleanup is needed.
