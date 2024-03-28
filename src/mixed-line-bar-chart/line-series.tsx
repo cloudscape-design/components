@@ -36,7 +36,14 @@ export default function LineSeries<T>({ axis, series, color, xScale, yScale, cha
       .y((d: MixedLineBarChartProps.Datum<T>) => yScale.d3Scale(d.y) || 0);
 
     // Filter out any data that is not part of the xScale
-    const visibleData = series.data.filter(({ x }) => xScale.d3Scale(x as any) !== undefined);
+    let visibleData = series.data.filter(({ x }) => xScale.d3Scale(x as any) !== undefined);
+
+    if (xScale.isCategorical()) {
+      // sort the data points in the same order as the categories provided in `xDomain`
+      visibleData = visibleData.sort(
+        (a, b) => xScale.domain.indexOf(a.x as string) - xScale.domain.indexOf(b.x as string)
+      );
+    }
 
     return (
       <path
