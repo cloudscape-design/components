@@ -5,6 +5,7 @@ import { TabsProps } from './interfaces';
 import clsx from 'clsx';
 import styles from './styles.css.js';
 import { InternalButton } from '../button/internal';
+import handleKeyDown from '../internal/utils/handle-key-down';
 import { KeyCode } from '../internal/keycode';
 import {
   onPaginationClick,
@@ -14,7 +15,6 @@ import {
   scrollIntoView,
 } from './scroll-utils';
 import { hasModifierKeys, isPlainLeftClick } from '../internal/events';
-import handleKeyDown from '../internal/utils/handle-key-down';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useInternalI18n } from '../i18n/context';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
@@ -181,22 +181,21 @@ export function TabHeaderBar({
     const onKeyDown = function (
       event: React.KeyboardEvent<HTMLAnchorElement> | React.KeyboardEvent<HTMLButtonElement>
     ) {
+      const { keyCode } = event;
       const specialKeys = [KeyCode.right, KeyCode.left, KeyCode.end, KeyCode.home, KeyCode.pageUp, KeyCode.pageDown];
-
-      if (hasModifierKeys(event) || specialKeys.indexOf(event.keyCode) === -1) {
+      if (hasModifierKeys(event) || specialKeys.indexOf(keyCode) === -1) {
         return;
       }
-
       event.preventDefault();
       const activeIndex = enabledTabsWithCurrentTab.indexOf(tab);
 
       handleKeyDown({
         onEnd: () => highlightTab(enabledTabsWithCurrentTab.length - 1),
         onHome: () => highlightTab(0),
-        onInlineStart: () =>
-          activeIndex === 0 ? highlightTab(enabledTabsWithCurrentTab.length - 1) : highlightTab(activeIndex - 1),
         onInlineEnd: () =>
           activeIndex + 1 === enabledTabsWithCurrentTab.length ? highlightTab(0) : highlightTab(activeIndex + 1),
+        onInlineStart: () =>
+          activeIndex === 0 ? highlightTab(enabledTabsWithCurrentTab.length - 1) : highlightTab(activeIndex - 1),
         onPageDown: () => rightOverflow && onPaginationClick(headerBarRef, 1),
         onPageUp: () => leftOverflow && onPaginationClick(headerBarRef, -1),
       })(event);
