@@ -441,22 +441,13 @@ export const AppLayoutInternalsProvider = React.forwardRef(
      *
      * $contentGapRight: #{awsui.$space-layout-content-horizontal};
      *
-     * The second is the width of the element that has the circular buttons for the
-     * Tools and Split Panel. This could be suppressed given the state of the Tools
-     * drawer returning a zero value. It would, however, be rendered if the Split Panel
-     * were to move into the side position. This is calculated in the Tools CSS and
-     * the Trigger button CSS with design tokens:
-     *
-     * padding: awsui.$space-scaled-s awsui.$space-layout-toggle-padding;
-     * width: awsui.$space-layout-toggle-diameter;
-     *
      * These values will be defined below as static integers that are rough approximations
      * of their computed width when rendered in the DOM, but doubled to ensure adequate
      * spacing for the Split Panel to be in side position.
      */
     useLayoutEffect(
       function handleSplitPanelMaxWidth() {
-        const contentGapRight = 50; // Approximately 24px when rendered but doubled for safety
+        const contentGapRight = 40; // Approximately 20px when rendered but doubled for safety
         const getPanelOffsetWidth = () => {
           if (drawers) {
             return activeDrawerId ? drawerSize : 0;
