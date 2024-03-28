@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import smoothScroll from './smooth-scroll';
+import { isRtl } from '../internal/direction';
 
 export const onPaginationClick = (headerBarRef: React.RefObject<HTMLUListElement>, direction: number): void => {
   if (!headerBarRef?.current) {
@@ -24,23 +25,27 @@ export const onPaginationClick = (headerBarRef: React.RefObject<HTMLUListElement
 
 export const hasHorizontalOverflow = (
   headerBar: HTMLElement,
-  leftOverflowButton: React.RefObject<HTMLElement>
+  inlineStartOverflowButton: React.RefObject<HTMLElement>
 ): boolean => {
   const { offsetWidth, scrollWidth } = headerBar;
 
   // Need to account for pagination button width when deciding if there would be overflow without them
-  const paginationButtonsWidth = leftOverflowButton.current && 2 * leftOverflowButton.current.offsetWidth;
+  const paginationButtonsWidth = inlineStartOverflowButton.current && 2 * inlineStartOverflowButton.current.offsetWidth;
   return paginationButtonsWidth ? scrollWidth > offsetWidth + paginationButtonsWidth : scrollWidth > offsetWidth;
 };
 
-export const hasLeftOverflow = (headerBar: HTMLElement): boolean => {
-  return headerBar.scrollLeft > 0;
+export const hasInlineStartOverflow = (headerBar: HTMLElement): boolean => {
+  return isRtl(headerBar) ? headerBar.scrollLeft < 0 : headerBar.scrollLeft > 0;
 };
 
-export const hasRightOverflow = (headerBar: HTMLElement): boolean => {
+export const hasInlineEndOverflow = (headerBar: HTMLElement): boolean => {
   const { offsetWidth, scrollLeft, scrollWidth } = headerBar;
+
   // scrollLeft can be a decimal value on systems using display scaling
-  return Math.ceil(scrollLeft) < scrollWidth - offsetWidth;
+  // scrollLeft will be a negative number if the direction is RTL
+  const computedScrollLeft = isRtl(headerBar) ? Math.floor(scrollLeft) * -1 : Math.ceil(scrollLeft);
+
+  return Math.ceil(computedScrollLeft) < scrollWidth - offsetWidth;
 };
 
 export const scrollIntoView = (tabHeader: HTMLElement, headerBar: HTMLElement, smooth = true): void => {

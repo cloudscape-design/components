@@ -10,8 +10,8 @@ import { KeyCode } from '../internal/keycode';
 import {
   onPaginationClick,
   hasHorizontalOverflow,
-  hasLeftOverflow,
-  hasRightOverflow,
+  hasInlineStartOverflow,
+  hasInlineEndOverflow,
   scrollIntoView,
 } from './scroll-utils';
 import { hasModifierKeys, isPlainLeftClick } from '../internal/events';
@@ -42,7 +42,7 @@ export function TabHeaderBar({
 }: TabHeaderBarProps) {
   const headerBarRef = useRef<HTMLUListElement>(null);
   const activeTabHeaderRef = useRef<HTMLAnchorElement>(null);
-  const leftOverflowButton = useRef<HTMLElement>(null);
+  const inlineStartOverflowButton = useRef<HTMLElement>(null);
   const i18n = useInternalI18n('tabs');
 
   const isVisualRefresh = useVisualRefresh();
@@ -50,14 +50,14 @@ export function TabHeaderBar({
   const [widthChange, containerRef] = useContainerQuery<number>(rect => rect.contentBoxWidth);
   const tabRefs = useRef<Map<string, HTMLElement>>(new Map());
   const [horizontalOverflow, setHorizontalOverflow] = useState(false);
-  const [leftOverflow, setLeftOverflow] = useState(false);
-  const [rightOverflow, setRightOverflow] = useState(false);
+  const [inlineStartOverflow, setInlineStartOverflow] = useState(false);
+  const [inlineEndOverflow, setInlineEndOverflow] = useState(false);
 
   useEffect(() => {
     if (headerBarRef.current) {
-      setHorizontalOverflow(hasHorizontalOverflow(headerBarRef.current, leftOverflowButton));
-      setLeftOverflow(hasLeftOverflow(headerBarRef.current));
-      setRightOverflow(hasRightOverflow(headerBarRef.current));
+      setHorizontalOverflow(hasHorizontalOverflow(headerBarRef.current, inlineStartOverflowButton));
+      setInlineStartOverflow(hasInlineStartOverflow(headerBarRef.current));
+      setInlineEndOverflow(hasInlineEndOverflow(headerBarRef.current));
     }
   }, [widthChange, tabs]);
 
@@ -102,8 +102,8 @@ export function TabHeaderBar({
 
   const onScroll = () => {
     if (headerBarRef.current) {
-      setLeftOverflow(hasLeftOverflow(headerBarRef.current));
-      setRightOverflow(hasRightOverflow(headerBarRef.current));
+      setInlineStartOverflow(hasInlineStartOverflow(headerBarRef.current));
+      setInlineEndOverflow(hasInlineEndOverflow(headerBarRef.current));
     }
   };
 
@@ -115,25 +115,25 @@ export function TabHeaderBar({
   const leftButtonClasses = clsx({
     [styles['pagination-button']]: true,
     [styles['pagination-button-left']]: true,
-    [styles['pagination-button-left-scrollable']]: leftOverflow,
+    [styles['pagination-button-left-scrollable']]: inlineStartOverflow,
   });
 
   const rightButtonClasses = clsx({
     [styles['pagination-button']]: true,
     [styles['pagination-button-right']]: true,
-    [styles['pagination-button-right-scrollable']]: rightOverflow,
+    [styles['pagination-button-right-scrollable']]: inlineEndOverflow,
   });
 
   return (
     //converted span to div as list should not be a child of span for HTML validation
     <div className={classes} ref={containerRef}>
       {horizontalOverflow && (
-        <span ref={leftOverflowButton} className={leftButtonClasses}>
+        <span ref={inlineStartOverflowButton} className={leftButtonClasses}>
           <InternalButton
             formAction="none"
             variant="icon"
             iconName="angle-left"
-            disabled={!leftOverflow}
+            disabled={!inlineStartOverflow}
             __focusable={true}
             onClick={() => onPaginationClick(headerBarRef, -1)}
             ariaLabel={i18n('i18nStrings.scrollLeftAriaLabel', i18nStrings?.scrollLeftAriaLabel)}
@@ -156,7 +156,7 @@ export function TabHeaderBar({
             formAction="none"
             variant="icon"
             iconName="angle-right"
-            disabled={!rightOverflow}
+            disabled={!inlineEndOverflow}
             __focusable={true}
             onClick={() => onPaginationClick(headerBarRef, 1)}
             ariaLabel={i18n('i18nStrings.scrollRightAriaLabel', i18nStrings?.scrollRightAriaLabel)}
@@ -196,8 +196,8 @@ export function TabHeaderBar({
           activeIndex + 1 === enabledTabsWithCurrentTab.length ? highlightTab(0) : highlightTab(activeIndex + 1),
         onInlineStart: () =>
           activeIndex === 0 ? highlightTab(enabledTabsWithCurrentTab.length - 1) : highlightTab(activeIndex - 1),
-        onPageDown: () => rightOverflow && onPaginationClick(headerBarRef, 1),
-        onPageUp: () => leftOverflow && onPaginationClick(headerBarRef, -1),
+        onPageDown: () => inlineEndOverflow && onPaginationClick(headerBarRef, 1),
+        onPageUp: () => inlineStartOverflow && onPaginationClick(headerBarRef, -1),
       })(event);
     };
 

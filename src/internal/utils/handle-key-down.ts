@@ -3,6 +3,7 @@
 
 import React from 'react';
 import { KeyCode } from '../keycode';
+import { isRtl } from '../direction';
 
 export default function handleKeyDown({
   onActivate,
@@ -26,8 +27,6 @@ export default function handleKeyDown({
   onPageUp?: (event: React.KeyboardEvent) => void;
 }) {
   return function (event: React.KeyboardEvent) {
-    const direction = getComputedStyle(event.currentTarget).direction === 'rtl' ? 'rtl' : 'ltr';
-
     switch (event.keyCode) {
       case KeyCode.down:
         onBlockEnd?.(event);
@@ -42,7 +41,7 @@ export default function handleKeyDown({
         onHome?.(event);
         break;
       case KeyCode.left:
-        direction === 'ltr' ? onInlineStart?.(event) : onInlineEnd?.(event);
+        isRtl(event.currentTarget) ? onInlineEnd?.(event) : onInlineStart?.(event);
         break;
       case KeyCode.pageDown:
         onPageDown?.(event);
@@ -51,7 +50,7 @@ export default function handleKeyDown({
         onPageUp?.(event);
         break;
       case KeyCode.right:
-        direction === 'ltr' ? onInlineEnd?.(event) : onInlineStart?.(event);
+        isRtl(event.currentTarget) ? onInlineStart?.(event) : onInlineEnd?.(event);
         break;
       case KeyCode.space:
         onActivate?.(event);

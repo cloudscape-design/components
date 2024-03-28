@@ -17,10 +17,10 @@ jest.mock('../../../lib/components/tabs/scroll-utils', () => {
     ...originalScrollUtilsModule,
     hasHorizontalOverflow: (...args: any) =>
       mockHorizontalOverflow ? true : originalScrollUtilsModule.hasHorizontalOverflow(...args),
-    hasLeftOverflow: (...args: any) =>
-      mockHorizontalOverflow ? true : originalScrollUtilsModule.hasLeftOverflow(...args),
-    hasRightOverflow: (...args: any) =>
-      mockHorizontalOverflow ? true : originalScrollUtilsModule.hasRightOverflow(...args),
+    hasInlineStartOverflow: (...args: any) =>
+      mockHorizontalOverflow ? true : originalScrollUtilsModule.hasInlineStartOverflow(...args),
+    hasInlineEndOverflow: (...args: any) =>
+      mockHorizontalOverflow ? true : originalScrollUtilsModule.hasInlineEndOverflow(...args),
   };
 });
 
