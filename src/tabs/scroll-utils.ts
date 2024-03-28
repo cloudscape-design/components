@@ -13,16 +13,11 @@ export const onPaginationClick = (
   const element = headerBarRef.current;
   const { scrollLeft, scrollWidth, offsetWidth } = element;
 
-  // Scroll each paginated section by 75% of what is already visible
-  const paginatedSectionSize = Math.ceil(element.clientWidth * 0.75);
-
-  console.log(`scrollLeft: ${scrollLeft}`);
-  console.log(`scrollWidth: ${scrollWidth}`);
-  console.log(`offsetWidth: ${offsetWidth}`);
-  console.log(`paginatedSectionSize: ${paginatedSectionSize}`);
-
   // scrollLeft will be a negative number if the direction is RTL
   const scrollInlineStart = isRtl(element) ? scrollLeft * -1 : scrollLeft;
+
+  // Scroll each paginated section by 75% of what is already visible
+  const paginatedSectionSize = Math.ceil(element.clientWidth * 0.75);
 
   const scrollDistance =
     direction === 'forward'
