@@ -15,7 +15,7 @@ describe('onPaginationClick function', () => {
 
   test('scroll to the right direction by 75% of the clientWidth', () => {
     const mockHeaderBarRef = getMockHeaderBarRef(0);
-    onPaginationClick(mockHeaderBarRef, 1);
+    onPaginationClick(mockHeaderBarRef, 'forward');
 
     const expectedScrollLeft = 458; // actual scrollLeft + 75% of the HEADER_BAR_WIDTH rounded to the next largest int
     expect(smoothScroll).toHaveBeenCalledWith(mockHeaderBarRef.current, expectedScrollLeft);
@@ -23,7 +23,7 @@ describe('onPaginationClick function', () => {
 
   test('scroll to the left direction by 75% of the clientWidth', () => {
     const mockHeaderBarRef = getMockHeaderBarRef(460);
-    onPaginationClick(mockHeaderBarRef, -1);
+    onPaginationClick(mockHeaderBarRef, 'backward');
 
     const expectedScrollLeft = 2; // actual scrollLeft - 75% of the HEADER_BAR_WIDTH rounded to the next largest int
     expect(smoothScroll).toHaveBeenCalledWith(mockHeaderBarRef.current, expectedScrollLeft);
@@ -31,7 +31,7 @@ describe('onPaginationClick function', () => {
 
   test('scroll to the right direction without negative scrollLeft', () => {
     const mockHeaderBarRef = getMockHeaderBarRef(0);
-    onPaginationClick(mockHeaderBarRef, -1);
+    onPaginationClick(mockHeaderBarRef, 'backward');
     expect(smoothScroll).toHaveBeenCalledWith(mockHeaderBarRef.current, 0);
   });
 });
