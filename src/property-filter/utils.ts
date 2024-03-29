@@ -114,6 +114,16 @@ export function trimFirstSpace(source: string): string {
   return source[0] === ' ' ? source.slice(1) : source;
 }
 
+export function removeOperator(source: string, operator: string) {
+  const operatorLastIndex = source.indexOf(operator) + operator.length;
+  const textWithoutOperator = source.slice(operatorLastIndex);
+  // We need to remove the first leading space in case the user presses space
+  // after the operator, for example: Owner: admin, will result in value of ` admin`
+  // and we need to remove the first space, if the user added any more spaces only the
+  // first one will be removed.
+  return trimFirstSpace(textWithoutOperator);
+}
+
 function startsWith(source: string, target: string): boolean {
   return source.indexOf(target) === 0;
 }
