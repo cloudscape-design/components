@@ -13,6 +13,7 @@ import { hasValue } from '../../../internal/utils/has-value';
 import { useDateCache } from '../../../internal/hooks/use-date-cache';
 import { moveNextDay, movePrevDay, moveNextWeek, movePrevWeek, getBaseDay } from '../../../calendar/utils/navigation';
 import { findDateToFocus } from '../utils';
+import handleKeyDown from '../../../internal/utils/handle-key-down';
 
 function isVisible(date: Date, baseDate: Date, isSingleGrid: boolean) {
   if (isSingleGrid) {
@@ -85,39 +86,27 @@ export const Grids = ({
     }
   }, [baseDate, focusedDate, isSingleGrid, isDateEnabled, onFocusedDateChange]);
 
-  const onGridKeyDownHandler = (e: React.KeyboardEvent) => {
+  const onGridKeyDownHandler = (event: React.KeyboardEvent) => {
     let updatedFocusDate;
 
-    if (focusedDate === null) {
+    const keys = [KeyCode.up, KeyCode.down, KeyCode.left, KeyCode.right, KeyCode.space, KeyCode.enter];
+
+    if (focusedDate === null || keys.indexOf(event.keyCode) === -1) {
       return;
     }
 
-    switch (e.keyCode) {
-      case KeyCode.space:
-      case KeyCode.enter:
-        e.preventDefault();
-        if (focusedDate) {
-          onSelectDate(focusedDate);
-        }
-        return;
-      case KeyCode.right:
-        e.preventDefault();
-        updatedFocusDate = moveNextDay(focusedDate, isDateEnabled);
-        break;
-      case KeyCode.left:
-        e.preventDefault();
-        updatedFocusDate = movePrevDay(focusedDate, isDateEnabled);
-        break;
-      case KeyCode.up:
-        e.preventDefault();
-        updatedFocusDate = movePrevWeek(focusedDate, isDateEnabled);
-        break;
-      case KeyCode.down:
-        e.preventDefault();
-        updatedFocusDate = moveNextWeek(focusedDate, isDateEnabled);
-        break;
-      default:
-        return;
+    event.preventDefault();
+
+    handleKeyDown({
+      onActivate: () => focusedDate && onSelectDate(focusedDate),
+      onBlockEnd: () => focusedDate && (updatedFocusDate = moveNextWeek(focusedDate, isDateEnabled)),
+      onBlockStart: () => focusedDate && (updatedFocusDate = movePrevWeek(focusedDate, isDateEnabled)),
+      onInlineEnd: () => focusedDate && (updatedFocusDate = moveNextDay(focusedDate, isDateEnabled)),
+      onInlineStart: () => focusedDate && (updatedFocusDate = movePrevDay(focusedDate, isDateEnabled)),
+    })(event);
+
+    if (!updatedFocusDate) {
+      return;
     }
 
     const updatedDateIsVisible = isVisible(updatedFocusDate, baseDate, isSingleGrid);
