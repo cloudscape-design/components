@@ -36,6 +36,7 @@ function wrap(container: HTMLElement) {
 function pressRight(wrapper: TabsWrapper) {
   wrapper.findActiveTab()!.keydown(KeyCode.right);
 }
+
 function pressLeft(wrapper: TabsWrapper) {
   wrapper.findActiveTab()!.keydown(KeyCode.left);
 }
@@ -43,8 +44,17 @@ function pressLeft(wrapper: TabsWrapper) {
 function pressHome(wrapper: TabsWrapper) {
   wrapper.findActiveTab()!.keydown(KeyCode.home);
 }
+
 function pressEnd(wrapper: TabsWrapper) {
   wrapper.findActiveTab()!.keydown(KeyCode.end);
+}
+
+function pressPageUp(wrapper: TabsWrapper) {
+  wrapper.findActiveTab()!.keydown(KeyCode.pageUp);
+}
+
+function pressPageDown(wrapper: TabsWrapper) {
+  wrapper.findActiveTab()!.keydown(KeyCode.pageDown);
 }
 
 function tabListHeader(wrapper: TabsWrapper) {
@@ -495,6 +505,8 @@ describe('Tabs', () => {
           pressLeft(wrapper);
           pressHome(wrapper);
           pressEnd(wrapper);
+          pressPageDown(wrapper);
+          pressPageUp(wrapper);
           expect(changeSpy).not.toHaveBeenCalled();
         });
       });
