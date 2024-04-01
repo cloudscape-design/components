@@ -70,8 +70,8 @@ export function Notifications() {
     <Flashbar
       items={[
         {
-          type: 'success',
-          header: 'Success message',
+          type: 'info',
+          header: 'Flashbar message',
           statusIconAriaLabel: 'success',
           dismissLabel: 'Dismiss notification',
           dismissible: true,

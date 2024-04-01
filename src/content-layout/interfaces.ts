@@ -20,4 +20,18 @@ export interface ContentLayoutProps extends BaseComponentProps {
    * Use this slot to render the header content for the layout.
    */
   header?: React.ReactNode;
+
+  /**
+   * New!
+   */
+
+  headerType?: ContentLayoutProps.HeaderType;
+
+  highContrastHeader?: boolean;
+
+  headerBackground?: string;
+}
+
+export namespace ContentLayoutProps {
+  export type HeaderType = 'homepage' | 'hero' | 'documentation' | 'default';
 }
