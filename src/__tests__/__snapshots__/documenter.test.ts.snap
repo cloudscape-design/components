@@ -716,6 +716,12 @@ Each Drawer is an item in the drawers wrapper with the following properties:
       "type": "string",
     },
     Object {
+      "description": "New!",
+      "name": "headerBackground",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "defaultValue": "'#b #h'",
       "description": "CSS selector for the application header.",
       "name": "headerSelector",
@@ -5441,6 +5447,35 @@ If true, the overlap will be removed.",
       "optional": true,
       "type": "boolean",
       "visualRefreshTag": "",
+    },
+    Object {
+      "name": "headerBackground",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "inlineType": Object {
+        "name": "ContentLayoutProps.HeaderType",
+        "type": "union",
+        "values": Array [
+          "default",
+          "hero",
+        ],
+      },
+      "name": "headerType",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "New!",
+      "name": "heroHeader",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "name": "highContrastHeader",
+      "optional": true,
+      "type": "boolean",
     },
     Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
