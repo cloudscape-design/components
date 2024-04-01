@@ -89,13 +89,13 @@ export type InternalPosition =
   | 'bottom-left';
 
 export interface Offset {
-  left: number;
-  top: number;
+  insetInlineStart: number;
+  insetBlockStart: number;
 }
 
 export interface Dimensions {
-  width: number;
-  height: number;
+  inlineSize: number;
+  blockSize: number;
 }
 
 export type BoundingBox = Dimensions & Offset;

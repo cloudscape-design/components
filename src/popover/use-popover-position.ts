@@ -5,12 +5,12 @@ import React, { useCallback, useRef, useState } from 'react';
 import { BoundingBox, InternalPosition, Offset, PopoverProps } from './interfaces';
 import { calculatePosition, getDimensions, getOffsetDimensions } from './utils/positions';
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
-import {
-  calculateScroll,
-  getFirstScrollableParent,
-  scrollRectangleIntoView,
-} from '../internal/utils/scrollable-containers';
+import // calculateScroll,
+// getFirstScrollableParent,
+// scrollRectangleIntoView,
+'../internal/utils/scrollable-containers';
 import { getContainingBlock } from '../internal/utils/dom';
+import { getLogicalBoundingClientRect } from '../internal/direction';
 
 export default function usePopoverPosition({
   popoverRef,
@@ -65,29 +65,29 @@ export default function usePopoverPosition({
       // Imperatively move body off-screen to give it room to expand.
       // Not doing this in React because this recalculation should happen
       // in the span of a single frame without rerendering anything.
-      const prevTop = popover.style.top;
-      const prevLeft = popover.style.left;
+      const prevInsetBlockStart = popover.style.insetBlockStart;
+      const prevInsetInlineStart = popover.style.insetInlineStart;
 
-      popover.style.top = '0';
-      popover.style.left = '0';
+      popover.style.insetBlockStart = '0';
+      popover.style.insetInlineStart = '0';
       // Imperatively remove body styles that can remain from the previous computation.
-      body.style.maxHeight = '';
+      body.style.maxBlockSize = '';
       body.style.overflowX = '';
       body.style.overflowY = '';
 
       // Get rects representing key elements
       // Use getComputedStyle for arrowRect to avoid modifications made by transform
       const viewportRect = getViewportRect(document.defaultView!);
-      const trackRect = track.getBoundingClientRect();
+      const trackRect = getLogicalBoundingClientRect(track);
       const arrowRect = getDimensions(arrow);
       const containingBlock = getContainingBlock(popover);
-      const containingBlockRect = containingBlock ? containingBlock.getBoundingClientRect() : viewportRect;
+      const containingBlockRect = containingBlock ? getLogicalBoundingClientRect(containingBlock) : viewportRect;
 
       const bodyBorderWidth = getBorderWidth(body);
-      const contentRect = contentRef.current.getBoundingClientRect();
+      const contentRect = getLogicalBoundingClientRect(contentRef.current);
       const contentBoundingBox = {
-        width: contentRect.width + 2 * bodyBorderWidth,
-        height: contentRect.height + 2 * bodyBorderWidth,
+        inlineSize: contentRect.inlineSize + 2 * bodyBorderWidth,
+        blockSize: contentRect.blockSize + 2 * bodyBorderWidth,
       };
 
       // When keepPosition is true and the recalculation was triggered by a resize of the popover content,
@@ -121,12 +121,12 @@ export default function usePopoverPosition({
       const trackRelativeOffset = toRelativePosition(popoverOffset, toRelativePosition(trackRect, containingBlockRect));
 
       // Bring back the container to its original position to prevent any flashing.
-      popover.style.top = prevTop;
-      popover.style.left = prevLeft;
+      popover.style.insetBlockStart = prevInsetBlockStart;
+      popover.style.insetInlineStart = prevInsetInlineStart;
 
       // Allow popover body to scroll if can't fit the popover into the container/viewport otherwise.
       if (scrollable) {
-        body.style.maxHeight = rect.height + 'px';
+        body.style.maxHeight = rect.blockSize + 'px';
         body.style.overflowX = 'hidden';
         body.style.overflowY = 'auto';
       }
@@ -138,23 +138,26 @@ export default function usePopoverPosition({
       const shouldScroll = allowScrollToFit && !shouldKeepPosition;
 
       // Position the popover
-      const top = shouldScroll ? popoverOffset.top + calculateScroll(rect) : popoverOffset.top;
-      setPopoverStyle({ top, left: popoverOffset.left });
+      // RTL TODO SKIP SCROLL
+      // const insetBlockStart = shouldScroll ? popoverOffset.insetBlockStart + calculateScroll(rect) : popoverOffset.insetBlockStart;
+      const insetBlockStart = shouldScroll ? popoverOffset.insetBlockStart : popoverOffset.insetBlockStart;
+      setPopoverStyle({ insetBlockStart, insetInlineStart: popoverOffset.insetInlineStart });
 
       // Scroll if necessary
       if (shouldScroll) {
-        const scrollableParent = getFirstScrollableParent(popover);
-        scrollRectangleIntoView(rect, scrollableParent);
+        // const scrollableParent = getFirstScrollableParent(popover);
+        // RTL TODO SKIP SCROLL
+        // scrollRectangleIntoView(rect, scrollableParent);
       }
 
       positionHandlerRef.current = () => {
         const newTrackOffset = toRelativePosition(
-          track.getBoundingClientRect(),
-          containingBlock ? containingBlock.getBoundingClientRect() : viewportRect
+          getLogicalBoundingClientRect(track),
+          containingBlock ? getLogicalBoundingClientRect(containingBlock) : viewportRect
         );
         setPopoverStyle({
-          top: newTrackOffset.top + trackRelativeOffset.top,
-          left: newTrackOffset.left + trackRelativeOffset.left,
+          insetBlockStart: newTrackOffset.insetBlockStart + trackRelativeOffset.insetBlockStart,
+          insetInlineStart: newTrackOffset.insetInlineStart + trackRelativeOffset.insetInlineStart,
         });
       };
     },
@@ -183,8 +186,8 @@ function getBorderWidth(element: HTMLElement) {
  */
 function toRelativePosition(element: Offset, parent: Offset): Offset {
   return {
-    top: element.top - parent.top,
-    left: element.left - parent.left,
+    insetBlockStart: element.insetBlockStart - parent.insetBlockStart,
+    insetInlineStart: element.insetInlineStart - parent.insetInlineStart,
   };
 }
 
@@ -193,19 +196,25 @@ function toRelativePosition(element: Offset, parent: Offset): Offset {
  */
 function getViewportRect(window: Window): BoundingBox {
   return {
-    top: 0,
-    left: 0,
-    width: window.innerWidth,
-    height: window.innerHeight,
+    insetBlockStart: 0,
+    insetInlineStart: 0,
+    inlineSize: window.innerWidth,
+    blockSize: window.innerHeight,
   };
 }
 
 function getDocumentRect(document: Document): BoundingBox {
-  const { top, left } = document.documentElement.getBoundingClientRect();
+  const { insetBlockStart, insetInlineStart, inlineSize, blockSize } = getLogicalBoundingClientRect(
+    document.documentElement
+  );
+
+  // document.documentElement.scrollWidth
+  // document.documentElement.scrollHeight
+
   return {
-    top,
-    left,
-    width: document.documentElement.scrollWidth,
-    height: document.documentElement.scrollHeight,
+    insetBlockStart,
+    insetInlineStart,
+    inlineSize,
+    blockSize,
   };
 }
