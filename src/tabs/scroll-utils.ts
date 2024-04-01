@@ -16,15 +16,12 @@ export const onPaginationClick = (
   // Scroll each paginated section by 75% of what is already visible
   const paginatedSectionSize = Math.ceil(element.clientWidth * 0.75);
 
-  // scrollLeft will be a negative number if the direction is RTL
-  // convert to a positive for a flow relative scrollDistance computation
-  const scrollInlineStart = isRtl(element) ? scrollLeft * -1 : scrollLeft;
-
   const scrollDistance =
     direction === 'forward'
-      ? Math.min(scrollInlineStart + paginatedSectionSize, scrollWidth - offsetWidth)
-      : Math.max(scrollInlineStart - paginatedSectionSize, 0);
+      ? Math.min(Math.abs(scrollLeft) + paginatedSectionSize, scrollWidth - offsetWidth)
+      : Math.max(Math.abs(scrollLeft) - paginatedSectionSize, 0);
 
+  // scroll destination needs to be a negative number if the direction is RTL
   const scrollTo = isRtl(element) ? scrollDistance * -1 : scrollDistance;
 
   smoothScroll(element, scrollTo);
