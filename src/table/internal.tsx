@@ -118,7 +118,10 @@ const InternalTable = React.forwardRef(
       columnDisplay,
       enableKeyboardNavigation,
       expandableRows,
-      progressiveLoading,
+      loadingStatus,
+      renderLoaderPending,
+      renderLoaderLoading,
+      renderLoaderError,
       onLoadMoreItems,
       __funnelSubStepProps,
       ...rest
@@ -139,7 +142,7 @@ const InternalTable = React.forwardRef(
       expandableRows,
       trackBy,
       ariaLabels,
-      progressiveLoading,
+      loadingStatus,
     });
 
     const [containerWidth, wrapperMeasureRef] = useContainerQuery<number>(rect => rect.contentBoxWidth);
@@ -459,8 +462,7 @@ const InternalTable = React.forwardRef(
                         const isNextSelected =
                           !!selectionType && !lastVisible && isItemSelected(allItems[rowIndex + 1]);
                         const expandableProps = getExpandableItemProps(item);
-                        const hasLoaderRows =
-                          (lastVisible && progressiveLoading) || expandableProps.itemLoaders.length > 0;
+                        const hasLoaderRows = (lastVisible && loadingStatus) || expandableProps.itemLoaders.length > 0;
                         const dataRow = (
                           <tr
                             key={getItemKey(trackBy, item, rowIndex)}
@@ -565,15 +567,19 @@ const InternalTable = React.forwardRef(
                           return (
                             <React.Fragment key={getItemKey(trackBy, item, rowIndex)}>
                               {dataRow}
-                              {expandableProps.itemLoaders.map(({ level, state, parent }, i) => (
+                              {expandableProps.itemLoaders.map(({ level, item, status }, i) => (
                                 <tr key={i}>
                                   <LoaderCell
+                                    item={item}
+                                    level={level}
                                     tableRef={tableRefObject}
                                     containerRef={wrapperMeasureRefObject}
-                                    progressiveLoading={state}
+                                    loadingStatus={status}
+                                    renderLoaderPending={renderLoaderPending}
+                                    renderLoaderLoading={renderLoaderLoading}
+                                    renderLoaderError={renderLoaderError}
                                     totalColumnsCount={totalColumnsCount}
-                                    level={level}
-                                    onLoadMoreItems={() => fireNonCancelableEvent(onLoadMoreItems, { parent })}
+                                    onLoadMoreItems={() => fireNonCancelableEvent(onLoadMoreItems, { item })}
                                   />
                                 </tr>
                               ))}

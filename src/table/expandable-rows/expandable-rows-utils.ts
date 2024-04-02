@@ -22,9 +22,9 @@ export interface ExpandableItemPlacement {
 }
 
 export interface ItemLoader<T> {
+  item: null | T;
   level: number;
-  parent: null | T;
-  state: TableProps.ProgressiveLoading;
+  status: TableProps.LoadingStatus;
 }
 
 // TODO: update name to reflect progressive-loading-only case
@@ -33,13 +33,13 @@ export function useExpandableTableProps<T>({
   expandableRows,
   trackBy,
   ariaLabels,
-  progressiveLoading,
+  loadingStatus,
 }: {
   items: readonly T[];
   expandableRows?: TableProps.ExpandableRows<T>;
   trackBy?: TableProps.TrackBy<T>;
   ariaLabels?: TableProps.AriaLabels<T>;
-  progressiveLoading?: TableProps.ProgressiveLoading;
+  loadingStatus?: TableProps.LoadingStatus;
 }) {
   const i18n = useInternalI18n('table');
   const isExpandable = !!expandableRows;
@@ -93,10 +93,10 @@ export function useExpandableTableProps<T>({
     let currentParent = itemToParent.get(allItems[i]) ?? null;
     let levelsDiff = getItemLevel(allItems[i]) - getItemLevel(allItems[i + 1]);
     while (levelsDiff > 0) {
-      const state = currentParent ? expandableRows?.getItemProgressiveLoading?.(currentParent) : progressiveLoading;
-      if (state) {
+      const status = currentParent ? expandableRows?.getItemLoadingStatus?.(currentParent) : loadingStatus;
+      if (status) {
         const level = currentParent ? getItemLevel(currentParent) : 0;
-        itemLoaders.push({ level, state, parent: currentParent });
+        itemLoaders.push({ item: currentParent, level, status });
       }
       currentParent = (currentParent && itemToParent.get(currentParent)) ?? null;
       levelsDiff--;

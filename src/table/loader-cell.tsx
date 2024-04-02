@@ -6,27 +6,35 @@ import InternalStatusIndicator from '../status-indicator/internal';
 import { supportsStickyPosition } from '../internal/utils/dom';
 import styles from './styles.css.js';
 import LiveRegion from '../internal/components/live-region';
-import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
+import { useResizeObserver, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { TableProps } from './interfaces';
 import InternalButton from '../button/internal';
 
-interface LoaderCellProps {
-  totalColumnsCount: number;
-  progressiveLoading: TableProps.ProgressiveLoading;
+interface LoaderCellProps<T> {
+  item: null | T;
   level: number;
+  totalColumnsCount: number;
+  loadingStatus: TableProps.LoadingStatus;
+  renderLoaderPending?: (detail: TableProps.RenderLoaderDetail<T>) => TableProps.RenderLoaderPendingResult;
+  renderLoaderLoading?: (detail: TableProps.RenderLoaderDetail<T>) => TableProps.RenderLoaderLoadingResult;
+  renderLoaderError?: (detail: TableProps.RenderLoaderDetail<T>) => TableProps.RenderLoaderErrorResult;
   onLoadMoreItems: () => void;
   tableRef: React.RefObject<HTMLTableElement>;
   containerRef: React.RefObject<HTMLElement>;
 }
 
-export function LoaderCell({
-  totalColumnsCount,
-  progressiveLoading,
+export function LoaderCell<T>({
+  item,
   level,
+  totalColumnsCount,
+  loadingStatus,
+  renderLoaderPending,
+  renderLoaderLoading,
+  renderLoaderError,
   onLoadMoreItems,
   tableRef,
   containerRef,
-}: LoaderCellProps) {
+}: LoaderCellProps<T>) {
   const cellContentRef = useRef<HTMLDivElement>(null);
 
   useResizeObserver(containerRef, ({ contentBoxWidth: containerWidth }) => {
@@ -39,22 +47,26 @@ export function LoaderCell({
   });
 
   let content: React.ReactNode = null;
-  if (progressiveLoading.state === 'pending') {
+  if (loadingStatus === 'pending' && renderLoaderPending) {
+    const { buttonContent, buttonAriaLabel } = renderLoaderPending({ item });
     content = (
-      <InternalButton variant="inline-link" iconName="add-plus" onClick={onLoadMoreItems}>
-        {progressiveLoading.buttonContent}
+      <InternalButton variant="inline-link" iconName="add-plus" ariaLabel={buttonAriaLabel} onClick={onLoadMoreItems}>
+        {buttonContent}
       </InternalButton>
     );
-  }
-  if (progressiveLoading.state === 'loading') {
+  } else if (loadingStatus === 'loading' && renderLoaderLoading) {
+    const { loadingText } = renderLoaderLoading({ item });
     content = (
       <LiveRegion visible={true}>
-        <InternalStatusIndicator type="loading">{progressiveLoading.ariaLive}</InternalStatusIndicator>
+        <InternalStatusIndicator type="loading">{loadingText}</InternalStatusIndicator>
       </LiveRegion>
     );
-  }
-  if (progressiveLoading.state === 'error') {
-    content = <LiveRegion visible={true}>{progressiveLoading.cellContent}</LiveRegion>;
+  } else if (loadingStatus === 'error' && renderLoaderError) {
+    const { cellContent } = renderLoaderError({ item });
+    content = <LiveRegion visible={true}>{cellContent}</LiveRegion>;
+  } else {
+    // TODO: message wording
+    warnOnce('Table', 'Must define progressive loading correctly');
   }
 
   return (

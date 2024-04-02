@@ -121,9 +121,7 @@ export default () => {
 
   // Using a special id="ROOT" for progressive loading at the root level.
   const [progressiveLoading, setProgressiveLoading] = useState(
-    new Map<string, TableProps.ProgressiveLoading & { pages: number }>([
-      ['ROOT', { state: 'pending', buttonContent: 'Load more', pages: 1 }],
-    ])
+    new Map<string, { pages: number; status: TableProps.LoadingStatus }>([['ROOT', { status: 'pending', pages: 1 }]])
   );
   const emulateErrorRef = useRef(false);
   emulateErrorRef.current = settings.emulateProgressiveLoadingError;
@@ -131,7 +129,7 @@ export default () => {
     setProgressiveLoading(prev => {
       const next = new Map(prev);
       const pages = next.get(id)?.pages ?? 1;
-      next.set(id, { state: 'loading', ariaLive: 'loading', pages });
+      next.set(id, { status: 'loading', pages });
       return next;
     });
     setTimeout(() => {
@@ -142,18 +140,10 @@ export default () => {
           id,
           emulateErrorRef.current
             ? {
-                state: 'error',
-                cellContent: (
-                  <SpaceBetween direction="horizontal" size="xs">
-                    <Box>Error</Box>
-                    <Button variant="inline-link" onClick={() => triggerItemsLoading(id)}>
-                      Retry
-                    </Button>
-                  </SpaceBetween>
-                ),
+                status: 'error',
                 pages,
               }
-            : { state: 'pending', buttonContent: 'Load more', pages: pages + 1 }
+            : { status: 'pending', pages: pages + 1 }
         );
         return next;
       });
@@ -167,12 +157,12 @@ export default () => {
       const loaded = (progressiveLoading.get(item.name)?.pages ?? 1) * 2;
       return children.slice(0, loaded);
     },
-    getItemProgressiveLoading: settings.useProgressiveLoading
+    getItemLoadingStatus: settings.useProgressiveLoading
       ? item => {
           const children = collectionProps.expandableRows?.getItemChildren(item) ?? [];
-          const state = progressiveLoading.get(item.name) ?? { state: 'pending', buttonContent: 'Load more', pages: 1 };
+          const state = progressiveLoading.get(item.name) ?? { status: 'pending', pages: 1 };
           const loaded = (state?.pages ?? 1) * 2;
-          return loaded < children.length ? state : null;
+          return loaded < children.length ? state.status : null;
         }
       : undefined,
   };
@@ -278,8 +268,24 @@ export default () => {
                 filteringPlaceholder="Search databases"
               />
             }
-            progressiveLoading={settings.useProgressiveLoading ? progressiveLoading.get('ROOT') : undefined}
-            onLoadMoreItems={event => triggerItemsLoading(event.detail.parent?.name ?? 'ROOT')}
+            loadingStatus={settings.useProgressiveLoading ? progressiveLoading.get('ROOT')?.status : undefined}
+            onLoadMoreItems={event => triggerItemsLoading(event.detail.item?.name ?? 'ROOT')}
+            renderLoaderPending={({ item }) =>
+              item ? { buttonContent: `Load more items for ${item.name}` } : { buttonContent: 'Load more items' }
+            }
+            renderLoaderLoading={({ item }) =>
+              item ? { loadingText: `Loading more items for ${item.name}` } : { loadingText: 'Loading more items' }
+            }
+            renderLoaderError={({ item }) => ({
+              cellContent: (
+                <SpaceBetween direction="horizontal" size="xs">
+                  <Box>Error loading items</Box>
+                  <Button variant="inline-link" onClick={() => triggerItemsLoading(item?.name ?? 'ROOT')}>
+                    Retry
+                  </Button>
+                </SpaceBetween>
+              ),
+            })}
           />
         }
       />

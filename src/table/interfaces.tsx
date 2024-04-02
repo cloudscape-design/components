@@ -345,7 +345,19 @@ export interface TableProps<T = any> extends BaseComponentProps {
   /**
    * Experimental API
    */
-  progressiveLoading?: TableProps.ProgressiveLoading;
+  loadingStatus?: TableProps.LoadingStatus;
+  /**
+   * Experimental API
+   */
+  renderLoaderPending?: (detail: TableProps.RenderLoaderDetail<T>) => TableProps.RenderLoaderPendingResult;
+  /**
+   * Experimental API
+   */
+  renderLoaderLoading?: (detail: TableProps.RenderLoaderDetail<T>) => TableProps.RenderLoaderLoadingResult;
+  /**
+   * Experimental API
+   */
+  renderLoaderError?: (detail: TableProps.RenderLoaderDetail<T>) => TableProps.RenderLoaderErrorResult;
   /**
    * Experimental API
    */
@@ -504,7 +516,7 @@ export namespace TableProps {
     isItemExpandable: (item: T) => boolean;
     expandedItems: ReadonlyArray<T>;
     onExpandableItemToggle: TableProps.OnExpandableItemToggle<T>;
-    getItemProgressiveLoading?: (item: T) => null | TableProps.ProgressiveLoading;
+    getItemLoadingStatus?: (item: T) => null | TableProps.LoadingStatus;
   }
 
   export type OnExpandableItemToggle<T> = NonCancelableEventHandler<TableProps.ExpandableItemToggleDetail<T>>;
@@ -514,25 +526,25 @@ export namespace TableProps {
     expanded: boolean;
   }
 
-  export type ProgressiveLoading = ProgressiveLoadingPending | ProgressiveLoadingLoading | ProgressiveLoadingError;
-
-  export interface ProgressiveLoadingPending {
-    state: 'pending';
-    buttonContent: string;
-    buttonAriaLabel?: string;
-  }
-  export interface ProgressiveLoadingLoading {
-    state: 'loading';
-    ariaLive: string;
-  }
-  export interface ProgressiveLoadingError {
-    state: 'error';
-    cellContent: React.ReactNode;
-  }
+  export type LoadingStatus = 'pending' | 'loading' | 'error';
 
   export type OnLoadMoreItems<T> = NonCancelableEventHandler<TableProps.LoadMoreItemsDetail<T>>;
 
   export interface LoadMoreItemsDetail<T> {
-    parent: null | T;
+    item: null | T;
+  }
+
+  export interface RenderLoaderDetail<T> {
+    item: null | T;
+  }
+  export interface RenderLoaderPendingResult {
+    buttonContent: string;
+    buttonAriaLabel?: string;
+  }
+  export interface RenderLoaderLoadingResult {
+    loadingText: string;
+  }
+  export interface RenderLoaderErrorResult {
+    cellContent: React.ReactNode;
   }
 }
