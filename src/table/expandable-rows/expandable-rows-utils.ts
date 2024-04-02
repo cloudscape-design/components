@@ -6,13 +6,13 @@ import { fireNonCancelableEvent } from '../../internal/events';
 import { TableProps } from '../interfaces';
 import { ItemSet } from '../selection/utils';
 
-export interface ExpandableItemProps extends ExpandableItemPlacement {
+export interface ExpandableItemProps<T> extends ExpandableItemPlacement {
   isExpandable: boolean;
   isExpanded: boolean;
   onExpandableItemToggle: () => void;
   expandButtonLabel?: string;
   collapseButtonLabel?: string;
-  itemLoaders: readonly ItemLoader[];
+  itemLoaders: readonly ItemLoader<T>[];
 }
 
 export interface ExpandableItemPlacement {
@@ -21,8 +21,9 @@ export interface ExpandableItemPlacement {
   posInSet: number;
 }
 
-export interface ItemLoader {
+export interface ItemLoader<T> {
   level: number;
+  parent: null | T;
   state: TableProps.ProgressiveLoading;
 }
 
@@ -86,16 +87,16 @@ export function useExpandableTableProps<T>({
     allItems = visibleItems;
   }
 
-  const itemToLoaders = new Map<T, ItemLoader[]>();
+  const itemToLoaders = new Map<T, ItemLoader<T>[]>();
   for (let i = 0; i < allItems.length; i++) {
-    const itemLoaders = new Array<ItemLoader>();
+    const itemLoaders = new Array<ItemLoader<T>>();
     let currentParent = itemToParent.get(allItems[i]) ?? null;
     let levelsDiff = getItemLevel(allItems[i]) - getItemLevel(allItems[i + 1]);
     while (levelsDiff > 0) {
       const state = currentParent ? expandableRows?.getItemProgressiveLoading?.(currentParent) : progressiveLoading;
       if (state) {
         const level = currentParent ? getItemLevel(currentParent) : 0;
-        itemLoaders.push({ level, state });
+        itemLoaders.push({ level, state, parent: currentParent });
       }
       currentParent = (currentParent && itemToParent.get(currentParent)) ?? null;
       levelsDiff--;
@@ -103,7 +104,7 @@ export function useExpandableTableProps<T>({
     itemToLoaders.set(allItems[i], itemLoaders);
   }
 
-  const getExpandableItemProps = (item: T): ExpandableItemProps => {
+  const getExpandableItemProps = (item: T): ExpandableItemProps<T> => {
     const { level, setSize, posInSet } = itemToPlacement.get(item) ?? { level: 1, setSize: 1, posInSet: 1 };
     return {
       level,

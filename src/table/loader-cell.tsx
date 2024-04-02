@@ -8,16 +8,25 @@ import styles from './styles.css.js';
 import LiveRegion from '../internal/components/live-region';
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 import { TableProps } from './interfaces';
+import InternalButton from '../button/internal';
 
 interface LoaderCellProps {
   totalColumnsCount: number;
   progressiveLoading: TableProps.ProgressiveLoading;
   level: number;
+  onLoadMoreItems: () => void;
   tableRef: React.RefObject<HTMLTableElement>;
   containerRef: React.RefObject<HTMLElement>;
 }
 
-export function LoaderCell({ totalColumnsCount, progressiveLoading, level, tableRef, containerRef }: LoaderCellProps) {
+export function LoaderCell({
+  totalColumnsCount,
+  progressiveLoading,
+  level,
+  onLoadMoreItems,
+  tableRef,
+  containerRef,
+}: LoaderCellProps) {
   const cellContentRef = useRef<HTMLDivElement>(null);
 
   useResizeObserver(containerRef, ({ contentBoxWidth: containerWidth }) => {
@@ -29,6 +38,25 @@ export function LoaderCell({ totalColumnsCount, progressiveLoading, level, table
     }
   });
 
+  let content: React.ReactNode = null;
+  if (progressiveLoading.state === 'pending') {
+    content = (
+      <InternalButton variant="inline-link" iconName="add-plus" onClick={onLoadMoreItems}>
+        {progressiveLoading.buttonContent}
+      </InternalButton>
+    );
+  }
+  if (progressiveLoading.state === 'loading') {
+    content = (
+      <LiveRegion visible={true}>
+        <InternalStatusIndicator type="loading">{progressiveLoading.ariaLive}</InternalStatusIndicator>
+      </LiveRegion>
+    );
+  }
+  if (progressiveLoading.state === 'error') {
+    content = <LiveRegion visible={true}>{progressiveLoading.cellContent}</LiveRegion>;
+  }
+
   return (
     <td colSpan={totalColumnsCount} className={clsx(styles['cell-loader'])}>
       <div
@@ -39,7 +67,7 @@ export function LoaderCell({ totalColumnsCount, progressiveLoading, level, table
         )}
         data-awsui-table-suppress-navigation={true}
       >
-        Loader cell {level}
+        {content}
       </div>
     </td>
   );

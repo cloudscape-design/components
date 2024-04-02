@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useState } from 'react';
-import Table from '~components/table';
+import React, { useContext, useRef, useState } from 'react';
+import Table, { TableProps } from '~components/table';
 import Header from '~components/header';
 import SpaceBetween from '~components/space-between';
 import { getMatchesCountText, renderAriaLive } from './shared-configs';
@@ -26,7 +26,7 @@ import { allInstances } from './expandable-rows/expandable-rows-data';
 import messages from '~components/i18n/messages/all.en';
 import I18nProvider from '~components/i18n';
 import { createColumns, createPreferences, filteringProperties } from './expandable-rows/expandable-rows-configs';
-import { ariaLabels, getHeaderCounterText } from './expandable-rows/common';
+import { Instance, ariaLabels, getHeaderCounterText } from './expandable-rows/common';
 
 type PageContext = React.Context<
   AppContextType<{
@@ -39,6 +39,7 @@ type PageContext = React.Context<
     keepSelection: boolean;
     usePagination: boolean;
     useProgressiveLoading: boolean;
+    emulateProgressiveLoadingError: boolean;
   }>
 >;
 
@@ -113,12 +114,73 @@ export default () => {
     },
   });
 
-  const expandableRows = {
+  // add progressive loading state
+  // init it for all items with 3+ children
+  // use fake 1000ms timeout to load items
+  // add checkbox to simulate errors
+
+  // Using a special id="ROOT" for progressive loading at the root level.
+  const [progressiveLoading, setProgressiveLoading] = useState(
+    new Map<string, TableProps.ProgressiveLoading & { pages: number }>([
+      ['ROOT', { state: 'pending', buttonContent: 'Load more', pages: 1 }],
+    ])
+  );
+  const emulateErrorRef = useRef(false);
+  emulateErrorRef.current = settings.emulateProgressiveLoadingError;
+  const triggerItemsLoading = (id: string) => {
+    setProgressiveLoading(prev => {
+      const next = new Map(prev);
+      const pages = next.get(id)?.pages ?? 1;
+      next.set(id, { state: 'loading', ariaLive: 'loading', pages });
+      return next;
+    });
+    setTimeout(() => {
+      setProgressiveLoading(prev => {
+        const next = new Map(prev);
+        const pages = next.get(id)?.pages ?? 1;
+        next.set(
+          id,
+          emulateErrorRef.current
+            ? {
+                state: 'error',
+                cellContent: (
+                  <SpaceBetween direction="horizontal" size="xs">
+                    <Box>Error</Box>
+                    <Button variant="inline-link" onClick={() => triggerItemsLoading(id)}>
+                      Retry
+                    </Button>
+                  </SpaceBetween>
+                ),
+                pages,
+              }
+            : { state: 'pending', buttonContent: 'Load more', pages: pages + 1 }
+        );
+        return next;
+      });
+    }, 2000);
+  };
+
+  const expandableRows: TableProps.ExpandableRows<Instance> = {
     ...collectionProps.expandableRows!,
+    getItemChildren(item) {
+      const children = collectionProps.expandableRows?.getItemChildren(item) ?? [];
+      const loaded = (progressiveLoading.get(item.name)?.pages ?? 1) * 2;
+      return children.slice(0, loaded);
+    },
     getItemProgressiveLoading: settings.useProgressiveLoading
-      ? () => ({ state: 'pending', buttonContent: 'Load more' } as const)
+      ? item => {
+          const children = collectionProps.expandableRows?.getItemChildren(item) ?? [];
+          const state = progressiveLoading.get(item.name) ?? { state: 'pending', buttonContent: 'Load more', pages: 1 };
+          const loaded = (state?.pages ?? 1) * 2;
+          return loaded < children.length ? state : null;
+        }
       : undefined,
   };
+
+  const rootPages = progressiveLoading.get('ROOT')?.pages ?? 1;
+  const paginatedItems = settings.useProgressiveLoading
+    ? items.slice(0, rootPages * (preferences.pageSize ?? 10))
+    : items;
 
   return (
     <I18nProvider messages={[messages]} locale="en">
@@ -139,7 +201,7 @@ export default () => {
             selectionType={settings.selectionType !== 'none' ? settings.selectionType : undefined}
             stripedRows={settings.stripedRows}
             columnDefinitions={columnDefinitions}
-            items={items}
+            items={paginatedItems}
             ariaLabels={ariaLabels}
             wrapLines={preferences.wrapLines}
             pagination={settings.usePagination && <Pagination {...paginationProps} />}
@@ -216,9 +278,8 @@ export default () => {
                 filteringPlaceholder="Search databases"
               />
             }
-            progressiveLoading={
-              settings.useProgressiveLoading ? { state: 'pending', buttonContent: 'Load more' } : undefined
-            }
+            progressiveLoading={settings.useProgressiveLoading ? progressiveLoading.get('ROOT') : undefined}
+            onLoadMoreItems={event => triggerItemsLoading(event.detail.parent?.name ?? 'ROOT')}
           />
         }
       />
@@ -237,6 +298,7 @@ function usePageSettings() {
     keepSelection: urlParams.keepSelection ?? false,
     usePagination: urlParams.usePagination ?? false,
     useProgressiveLoading: urlParams.useProgressiveLoading ?? true,
+    emulateProgressiveLoadingError: urlParams.emulateProgressiveLoadingError ?? false,
     groupResources: urlParams.groupResources ?? true,
     setUrlParams,
   };
@@ -299,6 +361,13 @@ function PageSettings() {
             onChange={event => settings.setUrlParams({ useProgressiveLoading: event.detail.checked })}
           >
             Use progressive loading
+          </Checkbox>
+
+          <Checkbox
+            checked={settings.emulateProgressiveLoadingError}
+            onChange={event => settings.setUrlParams({ emulateProgressiveLoadingError: event.detail.checked })}
+          >
+            Emulate progressive loading error
           </Checkbox>
         </FormField>
 

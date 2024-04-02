@@ -8,16 +8,16 @@ import InternalIcon from '../../icon/internal';
 import { ExpandableItemProps } from './expandable-rows-utils';
 import clsx from 'clsx';
 
-export function ExpandToggle({ isExpandable, ...props }: ExpandableItemProps) {
+export function ExpandToggle<T>({ isExpandable, ...props }: ExpandableItemProps<T>) {
   return isExpandable ? <ExpandToggleButton {...props} /> : null;
 }
 
-function ExpandToggleButton({
+function ExpandToggleButton<T>({
   isExpanded,
   onExpandableItemToggle,
   expandButtonLabel,
   collapseButtonLabel,
-}: Omit<ExpandableItemProps, 'isExpandable'>) {
+}: Omit<ExpandableItemProps<T>, 'isExpandable'>) {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const { tabIndex } = useSingleTabStopNavigation(buttonRef);
   return (

@@ -119,6 +119,7 @@ const InternalTable = React.forwardRef(
       enableKeyboardNavigation,
       expandableRows,
       progressiveLoading,
+      onLoadMoreItems,
       __funnelSubStepProps,
       ...rest
     }: InternalTableProps<T>,
@@ -561,7 +562,7 @@ const InternalTable = React.forwardRef(
                           return (
                             <React.Fragment key={getItemKey(trackBy, item, rowIndex)}>
                               {dataRow}
-                              {expandableProps.itemLoaders.map(({ level, state }, i) => (
+                              {expandableProps.itemLoaders.map(({ level, state, parent }, i) => (
                                 <tr key={i}>
                                   <LoaderCell
                                     tableRef={tableRefObject}
@@ -569,20 +570,10 @@ const InternalTable = React.forwardRef(
                                     progressiveLoading={state}
                                     totalColumnsCount={totalColumnsCount}
                                     level={level}
+                                    onLoadMoreItems={() => fireNonCancelableEvent(onLoadMoreItems, { parent })}
                                   />
                                 </tr>
                               ))}
-                              {/* {lastVisible && progressiveLoading && (
-                                <tr>
-                                  <LoaderCell
-                                    tableRef={tableRefObject}
-                                    containerRef={wrapperMeasureRefObject}
-                                    progressiveLoading={progressiveLoading}
-                                    totalColumnsCount={totalColumnsCount}
-                                    level={0}
-                                  />
-                                </tr>
-                              )} */}
                             </React.Fragment>
                           );
                         }

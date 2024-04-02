@@ -38,7 +38,7 @@ export interface TableTdElementProps {
   stickyState: StickyColumnsModel;
   isVisualRefresh?: boolean;
   tableRole: TableRole;
-  expandableProps?: ExpandableItemProps;
+  expandableProps?: ExpandableItemProps<unknown>;
 }
 
 export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElementProps>(

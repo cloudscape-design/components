@@ -504,7 +504,7 @@ export namespace TableProps {
     isItemExpandable: (item: T) => boolean;
     expandedItems: ReadonlyArray<T>;
     onExpandableItemToggle: TableProps.OnExpandableItemToggle<T>;
-    getItemProgressiveLoading?: (item: T) => TableProps.ProgressiveLoading;
+    getItemProgressiveLoading?: (item: T) => null | TableProps.ProgressiveLoading;
   }
 
   export type OnExpandableItemToggle<T> = NonCancelableEventHandler<TableProps.ExpandableItemToggleDetail<T>>;
