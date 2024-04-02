@@ -27,6 +27,7 @@ import {
   getNameFromSelector,
   getSubStepAllSelector,
 } from '../internal/analytics/selectors';
+import LiveRegion from '../internal/components/live-region';
 
 interface FormFieldErrorProps {
   id?: string;
@@ -38,18 +39,23 @@ export function FormFieldError({ id, children, errorIconAriaLabel }: FormFieldEr
   const i18n = useInternalI18n('form-field');
 
   return (
-    <div id={id} className={styles.error}>
-      <div className={styles['error-icon-shake-wrapper']}>
-        <div
-          role="img"
-          aria-label={i18n('i18nStrings.errorIconAriaLabel', errorIconAriaLabel)}
-          className={styles['error-icon-scale-wrapper']}
-        >
-          <InternalIcon name="status-warning" size="small" />
+    <>
+      <div id={id} className={styles.error}>
+        <div className={styles['error-icon-shake-wrapper']}>
+          <div
+            role="img"
+            aria-label={i18n('i18nStrings.errorIconAriaLabel', errorIconAriaLabel)}
+            className={styles['error-icon-scale-wrapper']}
+          >
+            <InternalIcon name="status-warning" size="small" />
+          </div>
         </div>
+        <span className={styles.error__message}>{children}</span>
       </div>
-      <span className={styles.error__message}>{children}</span>
-    </div>
+      <LiveRegion assertive={true}>
+        {errorIconAriaLabel} {children}
+      </LiveRegion>
+    </>
   );
 }
 

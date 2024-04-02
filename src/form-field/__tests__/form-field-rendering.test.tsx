@@ -4,6 +4,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import FormField, { FormFieldProps } from '../../../lib/components/form-field';
 import createWrapper, { FormFieldWrapper } from '../../../lib/components/test-utils/dom';
+import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
 
 function renderFormField(props: FormFieldProps = {}) {
   const renderResult = render(<FormField {...props} />);
@@ -112,5 +113,17 @@ describe('FormField component', () => {
     });
     expect(wrapper.findConstraint()?.getElement()).toHaveTextContent(constraintText);
     expect(wrapper.findError()?.getElement()).toHaveTextContent(errorText);
+  });
+
+  describe('live-region', () => {
+    test('Should render live region for error text', () => {
+      const errorText = 'Nope do it again';
+      const wrapper = renderFormField({
+        errorText,
+        i18nStrings: { errorIconAriaLabel: 'Error' },
+      });
+
+      expect(wrapper.find(`.${liveRegionStyles.root}`)?.getElement().textContent).toBe(`Error ${errorText}`);
+    });
   });
 });
