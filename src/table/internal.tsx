@@ -50,7 +50,7 @@ import { NoDataCell } from './no-data-cell';
 import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
 import { getContentHeaderClassName } from '../internal/utils/content-header-utils';
 import { useExpandableTableProps } from './expandable-rows/expandable-rows-utils';
-import { LoaderCell } from './loader-cell';
+import { LoaderCell } from './progressive-loading/loader-cell';
 
 const GRID_NAVIGATION_PAGE_SIZE = 10;
 const SELECTION_COLUMN_WIDTH = 54;

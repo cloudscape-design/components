@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
 import React, { useRef } from 'react';
-import InternalStatusIndicator from '../status-indicator/internal';
-import { supportsStickyPosition } from '../internal/utils/dom';
+import InternalStatusIndicator from '../../status-indicator/internal';
+import { supportsStickyPosition } from '../../internal/utils/dom';
 import styles from './styles.css.js';
-import LiveRegion from '../internal/components/live-region';
+import LiveRegion from '../../internal/components/live-region';
 import { useResizeObserver, warnOnce } from '@cloudscape-design/component-toolkit/internal';
-import { TableProps } from './interfaces';
-import InternalButton from '../button/internal';
+import { TableProps } from '../interfaces';
+import InternalButton from '../../button/internal';
 
 interface LoaderCellProps<T> {
   item: null | T;
