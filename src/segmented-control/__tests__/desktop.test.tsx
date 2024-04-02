@@ -6,7 +6,6 @@ import { renderSegmentedControl } from './utils';
 import { SegmentedControlWrapper } from '../../../lib/components/test-utils/dom';
 import SegmentedControl, { SegmentedControlProps } from '../../../lib/components/segmented-control';
 import styles from '../../../lib/components/segmented-control/styles.css.js';
-import { act } from '@testing-library/react';
 
 const defaultOptions: SegmentedControlProps.Option[] = [
   { text: 'Segment-1', iconName: 'settings', id: 'seg-1' },
@@ -144,23 +143,17 @@ describe('selected property', () => {
     expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { selectedId: 'seg-1' } }));
   });
 
-  test('does change selectedId when left/right arrow key is pressed', () => {
+  test('does change focus when left/right arrow key is pressed', () => {
     const { segmentedControlWrapper } = renderSegmentedControl(
       <SegmentedControl selectedId="seg-1" options={defaultOptions} />
     );
 
-    act(() => getSegmentWrapper(segmentedControlWrapper, 0).getElement().focus());
-    act(() => getSegmentWrapper(segmentedControlWrapper, 0).keydown(KeyCode.right));
-    act(() => getSegmentWrapper(segmentedControlWrapper, 0).keyup(KeyCode.right));
-    act(() => getSegmentWrapper(segmentedControlWrapper, 0).keypress(KeyCode.right));
+    getSegmentWrapper(segmentedControlWrapper, 0).getElement().focus();
+    getSegmentWrapper(segmentedControlWrapper, 0).keydown(KeyCode.right);
     expect(document.activeElement).toHaveAttribute('aria-label', 'Icon for Segment-2');
-    act(() => getSegmentWrapper(segmentedControlWrapper, 1).keydown(KeyCode.right));
-    act(() => getSegmentWrapper(segmentedControlWrapper, 1).keyup(KeyCode.right));
-    act(() => getSegmentWrapper(segmentedControlWrapper, 1).keypress(KeyCode.right));
+    getSegmentWrapper(segmentedControlWrapper, 1).keydown(KeyCode.right);
     expect(document.activeElement).not.toHaveAttribute('aria-label');
-    act(() => getSegmentWrapper(segmentedControlWrapper, 3).keydown(KeyCode.left));
-    act(() => getSegmentWrapper(segmentedControlWrapper, 3).keyup(KeyCode.left));
-    act(() => getSegmentWrapper(segmentedControlWrapper, 3).keypress(KeyCode.left));
+    getSegmentWrapper(segmentedControlWrapper, 3).keydown(KeyCode.left);
     expect(document.activeElement).toHaveAttribute('aria-label', 'Icon for Segment-2');
   });
 });
