@@ -5,6 +5,7 @@ import React, { useRef } from 'react';
 import InternalStatusIndicator from '../../status-indicator/internal';
 import { supportsStickyPosition } from '../../internal/utils/dom';
 import styles from './styles.css.js';
+import bodyCellStyles from '../body-cell/styles.css.js';
 import LiveRegion from '../../internal/components/live-region';
 import { useResizeObserver, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { TableProps } from '../interfaces';
@@ -72,7 +73,8 @@ export function LoaderCell<T>({
   }
 
   return (
-    <td colSpan={totalColumnsCount} className={clsx(styles['cell-loader'])}>
+    // TODO: add isLastRow, hasFooter, isPrevSelected, stripedRow, isVisualRefresh, expandable styles
+    <td colSpan={totalColumnsCount} className={clsx(styles['cell-loader'], bodyCellStyles['body-cell'])}>
       <div
         ref={cellContentRef}
         className={clsx(

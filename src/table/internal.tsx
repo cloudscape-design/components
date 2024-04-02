@@ -147,6 +147,7 @@ const InternalTable = React.forwardRef(
     });
     const { getItemLoaders } = useProgressiveLoadingProps({
       items: allItems,
+      expandableRows,
       loadingStatus,
       getItemLevel,
       getItemParent,

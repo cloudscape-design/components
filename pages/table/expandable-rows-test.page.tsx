@@ -146,7 +146,7 @@ export default () => {
       ? item => {
           const children = collectionProps.expandableRows!.getItemChildren(item);
           const state = loadingState.get(item.name) ?? { status: 'pending', pages: 1 };
-          return state.pages * nestedPageSize < children.length ? state.status : null;
+          return state.pages * nestedPageSize < children.length ? state.status : 'finished';
         }
       : undefined,
   };
