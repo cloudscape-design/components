@@ -118,12 +118,15 @@ describe('FormField component', () => {
   describe('live-region', () => {
     test('Should render live region for error text', () => {
       const errorText = 'Nope do it again';
+      const errorIconAriaLabel = 'Error';
       const wrapper = renderFormField({
         errorText,
-        i18nStrings: { errorIconAriaLabel: 'Error' },
+        i18nStrings: { errorIconAriaLabel },
       });
 
-      expect(wrapper.find(`.${liveRegionStyles.root}`)?.getElement().textContent).toBe(`Error ${errorText}`);
+      expect(wrapper.find(`.${liveRegionStyles.root}`)?.getElement().textContent).toBe(
+        `${errorIconAriaLabel}${errorText}`
+      );
     });
   });
 });

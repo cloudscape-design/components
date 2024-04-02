@@ -53,7 +53,8 @@ export function FormFieldError({ id, children, errorIconAriaLabel }: FormFieldEr
         <span className={styles.error__message}>{children}</span>
       </div>
       <LiveRegion assertive={true}>
-        {errorIconAriaLabel} {children}
+        <span>{errorIconAriaLabel}</span>
+        <span>{children}</span>
       </LiveRegion>
     </>
   );
