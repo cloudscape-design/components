@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useRef, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Table, { TableProps } from '~components/table';
 import Header from '~components/header';
 import SpaceBetween from '~components/space-between';
@@ -27,6 +27,8 @@ import messages from '~components/i18n/messages/all.en';
 import I18nProvider from '~components/i18n';
 import { createColumns, createPreferences, filteringProperties } from './expandable-rows/expandable-rows-configs';
 import { Instance, ariaLabels, getHeaderCounterText } from './expandable-rows/common';
+
+type LoadingState = Map<string, { pages: number; status: TableProps.LoadingStatus }>;
 
 type PageContext = React.Context<
   AppContextType<{
@@ -114,64 +116,43 @@ export default () => {
     },
   });
 
-  // add progressive loading state
-  // init it for all items with 3+ children
-  // use fake 1000ms timeout to load items
-  // add checkbox to simulate errors
-
   // Using a special id="ROOT" for progressive loading at the root level.
-  const [progressiveLoading, setProgressiveLoading] = useState(
-    new Map<string, { pages: number; status: TableProps.LoadingStatus }>([['ROOT', { status: 'pending', pages: 1 }]])
-  );
-  const emulateErrorRef = useRef(false);
-  emulateErrorRef.current = settings.emulateProgressiveLoadingError;
+  const [loadingState, setLoadingState] = useState<LoadingState>(new Map([['ROOT', { status: 'pending', pages: 1 }]]));
   const triggerItemsLoading = (id: string) => {
-    setProgressiveLoading(prev => {
-      const next = new Map(prev);
-      const pages = next.get(id)?.pages ?? 1;
-      next.set(id, { status: 'loading', pages });
-      return next;
-    });
-    setTimeout(() => {
-      setProgressiveLoading(prev => {
-        const next = new Map(prev);
-        const pages = next.get(id)?.pages ?? 1;
-        next.set(
-          id,
-          emulateErrorRef.current
-            ? {
-                status: 'error',
-                pages,
-              }
-            : { status: 'pending', pages: pages + 1 }
-        );
-        return next;
-      });
-    }, 2000);
+    const setLoading = (id: string, state: LoadingState) =>
+      new Map([...state, [id, { status: 'loading', pages: state.get(id)?.pages ?? 1 } as const]]);
+    const setError = (id: string, state: LoadingState) =>
+      new Map([...state, [id, { status: 'error', pages: state.get(id)?.pages ?? 1 } as const]]);
+    const setPending = (id: string, state: LoadingState) =>
+      new Map([...state, [id, { status: 'pending', pages: (state.get(id)?.pages ?? 1) + 1 } as const]]);
+    setLoadingState(prev => setLoading(id, prev));
+    setTimeout(
+      () =>
+        setLoadingState(prev => (settings.emulateProgressiveLoadingError ? setError(id, prev) : setPending(id, prev))),
+      2000
+    );
   };
 
+  const rootPageSize = preferences.pageSize ?? 10;
+  const nestedPageSize = 2;
   const expandableRows: TableProps.ExpandableRows<Instance> = {
     ...collectionProps.expandableRows!,
     getItemChildren(item) {
-      const children = collectionProps.expandableRows?.getItemChildren(item) ?? [];
-      const loaded = (progressiveLoading.get(item.name)?.pages ?? 1) * 2;
-      return children.slice(0, loaded);
+      const children = collectionProps.expandableRows!.getItemChildren(item);
+      const pages = loadingState.get(item.name)?.pages ?? 1;
+      return settings.useProgressiveLoading ? children.slice(0, pages * nestedPageSize) : children;
     },
     getItemLoadingStatus: settings.useProgressiveLoading
       ? item => {
-          const children = collectionProps.expandableRows?.getItemChildren(item) ?? [];
-          const state = progressiveLoading.get(item.name) ?? { status: 'pending', pages: 1 };
-          const loaded = (state?.pages ?? 1) * 2;
-          return loaded < children.length ? state.status : null;
+          const children = collectionProps.expandableRows!.getItemChildren(item);
+          const state = loadingState.get(item.name) ?? { status: 'pending', pages: 1 };
+          return state.pages * nestedPageSize < children.length ? state.status : null;
         }
       : undefined,
   };
 
-  const rootPages = progressiveLoading.get('ROOT')?.pages ?? 1;
-  const paginatedItems = settings.useProgressiveLoading
-    ? items.slice(0, rootPages * (preferences.pageSize ?? 10))
-    : items;
-
+  const rootPages = loadingState.get('ROOT')?.pages ?? 1;
+  const paginatedItems = settings.useProgressiveLoading ? items.slice(0, rootPages * rootPageSize) : items;
   return (
     <I18nProvider messages={[messages]} locale="en">
       <AppLayout
@@ -268,14 +249,14 @@ export default () => {
                 filteringPlaceholder="Search databases"
               />
             }
-            loadingStatus={settings.useProgressiveLoading ? progressiveLoading.get('ROOT')?.status : undefined}
+            loadingStatus={settings.useProgressiveLoading ? loadingState.get('ROOT')?.status : undefined}
             onLoadMoreItems={event => triggerItemsLoading(event.detail.item?.name ?? 'ROOT')}
-            renderLoaderPending={({ item }) =>
-              item ? { buttonContent: `Load more items for ${item.name}` } : { buttonContent: 'Load more items' }
-            }
-            renderLoaderLoading={({ item }) =>
-              item ? { loadingText: `Loading more items for ${item.name}` } : { loadingText: 'Loading more items' }
-            }
+            renderLoaderPending={({ item }) => ({
+              buttonContent: item ? `Load more items for ${item.name}` : 'Load more items',
+            })}
+            renderLoaderLoading={({ item }) => ({
+              loadingText: item ? `Loading more items for ${item.name}` : 'Loading more items',
+            })}
             renderLoaderError={({ item }) => ({
               cellContent: (
                 <SpaceBetween direction="horizontal" size="xs">
