@@ -6,13 +6,12 @@ import { fireNonCancelableEvent } from '../../internal/events';
 import { TableProps } from '../interfaces';
 import { ItemSet } from '../selection/utils';
 
-export interface ExpandableItemProps<T> extends ExpandableItemPlacement {
+export interface ExpandableItemProps extends ExpandableItemPlacement {
   isExpandable: boolean;
   isExpanded: boolean;
   onExpandableItemToggle: () => void;
   expandButtonLabel?: string;
   collapseButtonLabel?: string;
-  itemLoaders: readonly ItemLoader<T>[];
 }
 
 export interface ExpandableItemPlacement {
@@ -21,19 +20,11 @@ export interface ExpandableItemPlacement {
   posInSet: number;
 }
 
-export interface ItemLoader<T> {
-  item: null | T;
-  level: number;
-  status: TableProps.LoadingStatus;
-}
-
-// TODO: update name to reflect progressive-loading-only case
 export function useExpandableTableProps<T>({
   items,
   expandableRows,
   trackBy,
   ariaLabels,
-  loadingStatus,
 }: {
   items: readonly T[];
   expandableRows?: TableProps.ExpandableRows<T>;
@@ -50,6 +41,7 @@ export function useExpandableTableProps<T>({
   const itemToParent = new Map<T, null | T>();
   const itemToPlacement = new Map<T, ExpandableItemPlacement>();
   const getItemLevel = (item: T) => itemToPlacement.get(item)?.level ?? 0;
+  const getItemParent = (item: T) => itemToParent.get(item) ?? null;
 
   if (isExpandable) {
     const visibleItems = new Array<T>();
@@ -87,24 +79,7 @@ export function useExpandableTableProps<T>({
     allItems = visibleItems;
   }
 
-  const itemToLoaders = new Map<T, ItemLoader<T>[]>();
-  for (let i = 0; i < allItems.length; i++) {
-    const itemLoaders = new Array<ItemLoader<T>>();
-    let currentParent = itemToParent.get(allItems[i]) ?? null;
-    let levelsDiff = getItemLevel(allItems[i]) - getItemLevel(allItems[i + 1]);
-    while (levelsDiff > 0) {
-      const status = currentParent ? expandableRows?.getItemLoadingStatus?.(currentParent) : loadingStatus;
-      if (status) {
-        const level = currentParent ? getItemLevel(currentParent) : 0;
-        itemLoaders.push({ item: currentParent, level, status });
-      }
-      currentParent = (currentParent && itemToParent.get(currentParent)) ?? null;
-      levelsDiff--;
-    }
-    itemToLoaders.set(allItems[i], itemLoaders);
-  }
-
-  const getExpandableItemProps = (item: T): ExpandableItemProps<T> => {
+  const getExpandableItemProps = (item: T): ExpandableItemProps => {
     const { level, setSize, posInSet } = itemToPlacement.get(item) ?? { level: 1, setSize: 1, posInSet: 1 };
     return {
       level,
@@ -116,9 +91,8 @@ export function useExpandableTableProps<T>({
         fireNonCancelableEvent(expandableRows?.onExpandableItemToggle, { item, expanded: !expandedSet.has(item) }),
       expandButtonLabel: i18n('ariaLabels.expandButtonLabel', ariaLabels?.expandButtonLabel?.(item)),
       collapseButtonLabel: i18n('ariaLabels.collapseButtonLabel', ariaLabels?.collapseButtonLabel?.(item)),
-      itemLoaders: itemToLoaders.get(item) ?? [],
     };
   };
 
-  return { isExpandable, allItems, getExpandableItemProps };
+  return { isExpandable, allItems, getExpandableItemProps, getItemLevel, getItemParent };
 }

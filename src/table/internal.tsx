@@ -51,6 +51,7 @@ import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
 import { getContentHeaderClassName } from '../internal/utils/content-header-utils';
 import { useExpandableTableProps } from './expandable-rows/expandable-rows-utils';
 import { LoaderCell } from './progressive-loading/loader-cell';
+import { useProgressiveLoadingProps } from './progressive-loading/progressive-loading-utils';
 
 const GRID_NAVIGATION_PAGE_SIZE = 10;
 const SELECTION_COLUMN_WIDTH = 54;
@@ -137,12 +138,18 @@ const InternalTable = React.forwardRef(
     stickyHeader = stickyHeader && supportsStickyPosition();
     const isMobile = useMobile();
 
-    const { isExpandable, allItems, getExpandableItemProps } = useExpandableTableProps({
+    const { isExpandable, allItems, getExpandableItemProps, getItemLevel, getItemParent } = useExpandableTableProps({
       items,
       expandableRows,
       trackBy,
       ariaLabels,
       loadingStatus,
+    });
+    const { getItemLoaders } = useProgressiveLoadingProps({
+      items: allItems,
+      loadingStatus,
+      getItemLevel,
+      getItemParent,
     });
 
     const [containerWidth, wrapperMeasureRef] = useContainerQuery<number>(rect => rect.contentBoxWidth);
@@ -462,7 +469,8 @@ const InternalTable = React.forwardRef(
                         const isNextSelected =
                           !!selectionType && !lastVisible && isItemSelected(allItems[rowIndex + 1]);
                         const expandableProps = getExpandableItemProps(item);
-                        const hasLoaderRows = (lastVisible && loadingStatus) || expandableProps.itemLoaders.length > 0;
+                        const itemLoaders = getItemLoaders(item);
+                        const hasLoaderRows = (lastVisible && loadingStatus) || itemLoaders.length > 0;
                         const dataRow = (
                           <tr
                             key={getItemKey(trackBy, item, rowIndex)}
@@ -567,7 +575,7 @@ const InternalTable = React.forwardRef(
                           return (
                             <React.Fragment key={getItemKey(trackBy, item, rowIndex)}>
                               {dataRow}
-                              {expandableProps.itemLoaders.map(({ level, item, status }, i) => (
+                              {itemLoaders.map(({ level, item, status }, i) => (
                                 <tr key={i}>
                                   <LoaderCell
                                     item={item}

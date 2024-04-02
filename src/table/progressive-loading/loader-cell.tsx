@@ -65,8 +65,10 @@ export function LoaderCell<T>({
     const { cellContent } = renderLoaderError({ item });
     content = <LiveRegion visible={true}>{cellContent}</LiveRegion>;
   } else {
-    // TODO: message wording
-    warnOnce('Table', 'Must define progressive loading correctly');
+    warnOnce(
+      'Table',
+      'Must define `renderLoaderPending`, `renderLoaderLoading`, and `renderLoaderError` when using `loadingStatus`.'
+    );
   }
 
   return (
