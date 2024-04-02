@@ -459,6 +459,8 @@ const InternalTable = React.forwardRef(
                         const isNextSelected =
                           !!selectionType && !lastVisible && isItemSelected(allItems[rowIndex + 1]);
                         const expandableProps = getExpandableItemProps(item);
+                        const hasLoaderRows =
+                          (lastVisible && progressiveLoading) || expandableProps.itemLoaders.length > 0;
                         const dataRow = (
                           <tr
                             key={getItemKey(trackBy, item, rowIndex)}
@@ -483,7 +485,7 @@ const InternalTable = React.forwardRef(
                                 className={clsx(styles['selection-control'])}
                                 isVisualRefresh={isVisualRefresh}
                                 isFirstRow={firstVisible}
-                                isLastRow={lastVisible}
+                                isLastRow={lastVisible && !hasLoaderRows}
                                 isSelected={isSelected}
                                 isNextSelected={isNextSelected}
                                 isPrevSelected={isPrevSelected}
@@ -531,7 +533,7 @@ const InternalTable = React.forwardRef(
                                   isEditing={isEditing}
                                   isRowHeader={column.isRowHeader}
                                   isFirstRow={firstVisible}
-                                  isLastRow={lastVisible}
+                                  isLastRow={lastVisible && !hasLoaderRows}
                                   isSelected={isSelected}
                                   isNextSelected={isNextSelected}
                                   isPrevSelected={isPrevSelected}
@@ -558,7 +560,8 @@ const InternalTable = React.forwardRef(
                           </tr>
                         );
 
-                        if ((lastVisible && progressiveLoading) || expandableProps.itemLoaders.length > 0) {
+                        if (hasLoaderRows) {
+                          // TODO: add last-visible style to the last loader row
                           return (
                             <React.Fragment key={getItemKey(trackBy, item, rowIndex)}>
                               {dataRow}
