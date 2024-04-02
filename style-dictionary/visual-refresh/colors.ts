@@ -192,6 +192,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextFormLabel: '{colorTextFormDefault}',
   colorTextFormSecondary: { light: '{colorGrey550}', dark: '{colorGrey450}' },
   colorTextGroupLabel: { light: '{colorGrey600}', dark: '{colorGrey350}' },
+  colorTextLabelGenAi: { light: '{colorPurple600}', dark: '{colorPurple400}' },
   colorTextHeadingDefault: { light: '{colorGrey900}', dark: '{colorGrey300}' },
   colorTextHeadingSecondary: { light: '{colorGrey600}', dark: '{colorGrey450}' },
   colorTextHomeHeaderDefault: '{colorGrey200}',

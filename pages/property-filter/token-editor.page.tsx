@@ -86,6 +86,23 @@ export default function () {
           countText="5 matches"
           i18nStrings={i18nStrings}
         />
+        <PropertyFilter
+          className="property-filter-free-text-operators"
+          query={{
+            tokens: [
+              { operator: '!=', value: 'not equal filtering token' },
+              { operator: '^', value: 'starts with filtering token' },
+            ],
+            operation: 'and',
+          }}
+          onChange={() => {}}
+          filteringProperties={filteringProperties}
+          filteringOptions={[]}
+          freeTextFiltering={{ operators: [':', '!:', '=', '!=', '^', '!^'] }}
+          virtualScroll={true}
+          countText="5 matches"
+          i18nStrings={i18nStrings}
+        />
       </ScreenshotArea>
     </>
   );

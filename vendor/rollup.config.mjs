@@ -6,21 +6,18 @@ import * as path from 'path';
 import { fileURLToPath } from 'url';
 import commenting from 'commenting';
 import { readFileSync } from 'fs';
-import { sync as rimrafSync } from 'rimraf';
 
 const dirName = path.dirname(fileURLToPath(import.meta.url));
-
-const vendorFileName = 'd3-scale.js';
 const vendorFolder = path.join(dirName, '../lib/components/internal/vendor');
-const vendorFile = path.join(vendorFolder, vendorFileName);
-const d3LicencesFile = path.join(dirName, 'generated-third-party-licenses.txt');
+const licensesFile = path.join(dirName, 'generated-third-party-licenses.txt');
 
-export default {
-  input: vendorFile,
+export default ['d3-scale', 'react-virtual'].map(entry => ({
+  input: `./src/internal/vendor/${entry}.js`,
   output: {
-    file: vendorFile,
+    dir: vendorFolder,
     format: 'es',
   },
+  external: ['react', 'react-dom'],
   plugins: [
     resolve({
       extensions: ['.js'],
@@ -28,37 +25,23 @@ export default {
     license({
       thirdParty: {
         output: {
-          file: d3LicencesFile,
+          file: path.join(dirName, `generated-third-party-licenses-${entry}.txt`),
           encoding: 'utf-8',
         },
       },
     }),
-    attach3rdPartyLicenses(),
-    removeVendorFolder(),
+    attach3rdPartyLicenses(entry),
   ],
-};
-
-function removeVendorFolder() {
-  return {
-    name: 'remove-vendor-folder',
-    generateBundle: {
-      sequential: true,
-      order: 'pre',
-      handler() {
-        rimrafSync(vendorFolder);
-      },
-    },
-  };
-}
+}));
 
 // Rollup plugin which prepends the generated 3rd party licences content to the bundled code before writing the file.
-function attach3rdPartyLicenses() {
+function attach3rdPartyLicenses(entry) {
   return {
     name: 'attach-3rd-party-licences',
     generateBundle(_options, bundle) {
-      const content = readFileSync(d3LicencesFile, 'utf8');
+      const content = readFileSync(path.join(dirName, `generated-third-party-licenses-${entry}.txt`), 'utf8');
       const comment = commenting(content, { extension: '.js' });
-      bundle[vendorFileName].code = `${comment}${bundle[vendorFileName].code}`;
+      bundle[`${entry}.js`].code = `${comment}${bundle[`${entry}.js`].code}`;
     },
   };
 }

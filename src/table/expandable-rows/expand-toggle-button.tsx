@@ -9,7 +9,7 @@ import { ExpandableItemProps } from './expandable-rows-utils';
 import clsx from 'clsx';
 
 export function ExpandToggle({ isExpandable, ...props }: ExpandableItemProps) {
-  return isExpandable ? <ExpandToggleButton {...props} /> : <ExpandTogglePlaceholder />;
+  return isExpandable ? <ExpandToggleButton {...props} /> : null;
 }
 
 function ExpandToggleButton({
@@ -35,13 +35,5 @@ function ExpandToggleButton({
         className={clsx(styles['expand-toggle-icon'], isExpanded && styles['expand-toggle-icon-expanded'])}
       />
     </button>
-  );
-}
-
-function ExpandTogglePlaceholder() {
-  return (
-    <div aria-hidden={true} className={styles['expand-toggle-hidden']}>
-      <InternalIcon size="small" name="caret-right-filled" />
-    </div>
   );
 }

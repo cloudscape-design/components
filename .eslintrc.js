@@ -174,6 +174,11 @@ module.exports = {
                 message:
                   '`d3-scale` gets shipped as a bundled dependency. Use `src/internal/vendor/d3-scale` as import source.',
               },
+              {
+                group: ['react-virtual', '!**/vendor/react-virtual'],
+                message:
+                  '`react-virtual` gets shipped as a bundled dependency. Use `src/internal/vendor/react-virtual` as import source.',
+              },
             ],
           },
         ],

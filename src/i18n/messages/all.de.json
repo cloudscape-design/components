@@ -278,6 +278,8 @@
     "ariaLabels.resizerRoleDescription": "Schaltfläche für die Größenänderung",
     "ariaLabels.submittingEditText": "Bearbeitung wird gesendet",
     "ariaLabels.successfulEditLabel": "Bearbeitung erfolgreich",
+    "ariaLabels.expandButtonLabel": "Erweitern",
+    "ariaLabels.collapseButtonLabel": "Minimieren",
     "columnDefinitions.editConfig.errorIconAriaLabel": "Fehler",
     "columnDefinitions.editConfig.editIconAriaLabel": "bearbeitbar"
   },

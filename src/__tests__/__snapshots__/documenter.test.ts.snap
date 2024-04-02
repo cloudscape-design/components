@@ -1788,7 +1788,6 @@ receive focus.",
     },
     Object {
       "description": "Specifies the text to display when a data fetching error occurs. Make sure that you provide \`recoveryText\`.",
-      "i18nTag": true,
       "name": "errorText",
       "optional": true,
       "type": "string",
@@ -2742,8 +2741,12 @@ Sizes are automatically scaled down in compact mode.
       "defaultValue": "\\"div\\"",
       "description": "Defines the style of element to display.
 - If you set it to \`'div'\`, \`'span'\`, \`'h1'\`, \`'h2'\`, \`'h3'\`, \`'h4'\`, \`'h5'\`, \`'p'\`, \`'strong'\`, \`'small'\`, \`'code'\`, \`'pre'\`, or \`'samp'\`, the variant is also used as the HTML tag name.
-- If you set it to \`awsui-key-label\`, the component will display as a \`div\`.
-- If you set it to \`awsui-value-large\`, the component will display as a \`span\`.
+- If you set it to \`awsui-key-label\`, the component will render a \`div\`,
+  styled for use as a key label in key-value pairs.
+- If you set it to \`awsui-gen-ai-label\`, the component will render a \`div\`,
+  styled for use as a label indicating that content is produced by generative AI.
+- If you set it to \`awsui-value-large\`, the component will render a \`span\`,
+  styled using \\"Display large light\\" typography.
 
 Override the HTML tag by using property \`tagOverride\`.
 ",
@@ -2765,6 +2768,7 @@ Override the HTML tag by using property \`tagOverride\`.
           "pre",
           "samp",
           "awsui-key-label",
+          "awsui-gen-ai-label",
           "awsui-value-large",
         ],
       },
@@ -5059,8 +5063,8 @@ It contains the following:
 - \`label\` (string) - Specifies the label for each radio group.
 - \`description\` (string) - Specifies the text displayed below each radio group label.
 
-You must set the current value in the \`preferences.stickyColumns\` property.",
-      "i18nTag": true,
+You must set the current value in the \`preferences.stickyColumns\` property.
+",
       "inlineType": Object {
         "name": "CollectionPreferencesProps.StickyColumnsPreference",
         "properties": Array [
@@ -9565,7 +9569,6 @@ To use it correctly, define an ID for the element you want to use as label and s
     },
     Object {
       "description": "Specifies the text to display when a data fetching error occurs. Make sure that you provide \`recoveryText\`.",
-      "i18nTag": true,
       "name": "errorText",
       "optional": true,
       "type": "string",
@@ -10987,6 +10990,20 @@ Use the \`onLoadItems\` event to perform a recovery action (for example, retryin
       "type": "string",
     },
     Object {
+      "description": "An object configuring the operators for free text filtering, which has the following properties:
+* operators [Array]: A list of all operators supported for free text filtering. If you omit the contains operator because your API does not support it, make sure to set \`defaultOperator\` to a supported operator from this list.
+* defaultOperator [ComparisonOperator]: An optional parameter that changes the default operator used for free text filtering. Use this parameter only if your API does not support \\"contains\\" free test filtering terms.
+",
+      "inlineType": Object {
+        "name": "PropertyFilterProps.FreeTextFiltering",
+        "properties": Array [],
+        "type": "object",
+      },
+      "name": "freeTextFiltering",
+      "optional": true,
+      "type": "PropertyFilterProps.FreeTextFiltering",
+    },
+    Object {
       "description": "If hideOperations it set, the indicator of the operation (that is, \`and\` or \`or\`) and the selection of operations
 (applied to the property and value token) are hidden from the user. Only use when you have a custom
 filtering logic which combines tokens in different way than the default one. When used, ensure that
@@ -12136,7 +12153,6 @@ To use it correctly, define an ID for the element you want to use as label and s
     },
     Object {
       "description": "Specifies the text to display when a data fetching error occurs. Make sure that you provide \`recoveryText\`.",
-      "i18nTag": true,
       "name": "errorText",
       "optional": true,
       "type": "string",

@@ -17,9 +17,10 @@ export default function TokenList<Item>({
   limit,
   after,
   i18nStrings,
-  removedItemIndex,
+  moveFocusNextToIndex,
+  onExpandedClick = () => undefined,
 }: TokenListProps<Item>) {
-  const tokenListRef = useTokenFocusController({ removedItemIndex });
+  const tokenListRef = useTokenFocusController({ moveFocusNextToIndex: moveFocusNextToIndex });
   const controlId = useUniqueId();
 
   const [expanded, setExpanded] = useState(false);
@@ -36,7 +37,11 @@ export default function TokenList<Item>({
         expanded={expanded}
         numberOfHiddenOptions={items.length - visibleItems.length}
         i18nStrings={i18nStrings}
-        onClick={() => setExpanded(!expanded)}
+        onClick={() => {
+          const isExpanded = !expanded;
+          setExpanded(isExpanded);
+          onExpandedClick(isExpanded);
+        }}
       />
     </div>
   ) : null;

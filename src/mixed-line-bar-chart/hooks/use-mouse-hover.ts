@@ -125,7 +125,7 @@ export function useMouseHover<T>({
       return;
     }
     if (
-      !nodeContains(plotRef.current!.svg, event.relatedTarget as Element) ||
+      !nodeContains(plotRef.current!.svg, event.relatedTarget) ||
       (event.relatedTarget && (event.relatedTarget as Element).classList.contains(styles.series))
     ) {
       highlightX(null);
@@ -134,7 +134,7 @@ export function useMouseHover<T>({
   };
 
   const onPopoverLeave = (event: React.MouseEvent) => {
-    if (!isHandlersDisabled && !plotRef.current!.svg.contains(event.relatedTarget as Node)) {
+    if (!isHandlersDisabled && nodeContains(plotRef.current!.svg, event.relatedTarget)) {
       highlightX(null);
       clearHighlightedSeries();
     }

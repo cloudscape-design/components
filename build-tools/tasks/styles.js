@@ -4,7 +4,7 @@ const { parallel, series } = require('gulp');
 const { readFileSync } = require('fs');
 const { createHash } = require('crypto');
 const { join, basename } = require('path');
-const { buildThemedComponentsInternal } = require('@cloudscape-design/theming-build');
+const { buildThemedComponentsInternal } = require('@cloudscape-design/theming-build/internal');
 
 const themes = require('../utils/themes');
 const workspace = require('../utils/workspace');

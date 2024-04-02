@@ -77,6 +77,10 @@ $checkbox-size: awsui.$size-control;
   // Fade out any overflow tokens
   mask-image: linear-gradient(270deg, transparent, white 20px, white);
 
+  @include styles.with-direction('rtl') {
+    mask-image: linear-gradient(-270deg, transparent, white 20px, white);
+  }
+
   > .inline-token {
     display: flex;
     align-items: center;

@@ -278,6 +278,8 @@
     "ariaLabels.resizerRoleDescription": "tombol ubah ukuran",
     "ariaLabels.submittingEditText": "Mengirimkan pengeditan",
     "ariaLabels.successfulEditLabel": "Edit berhasil",
+    "ariaLabels.expandButtonLabel": "Luaskan",
+    "ariaLabels.collapseButtonLabel": "Ciutkan",
     "columnDefinitions.editConfig.errorIconAriaLabel": "Kesalahan",
     "columnDefinitions.editConfig.editIconAriaLabel": "dapat diedit"
   },
