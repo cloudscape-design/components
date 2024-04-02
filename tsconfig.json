@@ -20,7 +20,6 @@
     "src/test-utils/**",
     "**/__integ__/**",
     "**/__a11y__/**",
-    "**/__motion__/**",
-    "src/internal/vendor/**"
+    "**/__motion__/**"
   ]
 }

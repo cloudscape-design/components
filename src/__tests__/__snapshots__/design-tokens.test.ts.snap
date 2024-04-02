@@ -1861,6 +1861,13 @@ Object {
             "light": "#545b64",
           },
         },
+        "color-text-label-gen-ai": Object {
+          "$description": "The default color for labels indicating that content is produced by generative AI.",
+          "$value": Object {
+            "dark": "#bf80ff",
+            "light": "#7300e5",
+          },
+        },
         "color-text-layout-toggle": Object {
           "$description": "The default color of the app layout toggle.",
           "$value": Object {
@@ -4140,6 +4147,13 @@ Object {
           "$value": Object {
             "dark": "#95a5a6",
             "light": "#545b64",
+          },
+        },
+        "color-text-label-gen-ai": Object {
+          "$description": "The default color for labels indicating that content is produced by generative AI.",
+          "$value": Object {
+            "dark": "#bf80ff",
+            "light": "#7300e5",
           },
         },
         "color-text-layout-toggle": Object {
@@ -6423,6 +6437,13 @@ Object {
             "light": "#545b64",
           },
         },
+        "color-text-label-gen-ai": Object {
+          "$description": "The default color for labels indicating that content is produced by generative AI.",
+          "$value": Object {
+            "dark": "#bf80ff",
+            "light": "#7300e5",
+          },
+        },
         "color-text-layout-toggle": Object {
           "$description": "The default color of the app layout toggle.",
           "$value": Object {
@@ -8702,6 +8723,13 @@ Object {
           "$value": Object {
             "dark": "#95a5a6",
             "light": "#545b64",
+          },
+        },
+        "color-text-label-gen-ai": Object {
+          "$description": "The default color for labels indicating that content is produced by generative AI.",
+          "$value": Object {
+            "dark": "#bf80ff",
+            "light": "#7300e5",
           },
         },
         "color-text-layout-toggle": Object {
@@ -10985,6 +11013,13 @@ Object {
             "light": "#95a5a6",
           },
         },
+        "color-text-label-gen-ai": Object {
+          "$description": "The default color for labels indicating that content is produced by generative AI.",
+          "$value": Object {
+            "dark": "#bf80ff",
+            "light": "#bf80ff",
+          },
+        },
         "color-text-layout-toggle": Object {
           "$description": "The default color of the app layout toggle.",
           "$value": Object {
@@ -13264,6 +13299,13 @@ Object {
       "$value": Object {
         "dark": "#95a5a6",
         "light": "#545b64",
+      },
+    },
+    "color-text-label-gen-ai": Object {
+      "$description": "The default color for labels indicating that content is produced by generative AI.",
+      "$value": Object {
+        "dark": "#bf80ff",
+        "light": "#7300e5",
       },
     },
     "color-text-layout-toggle": Object {
@@ -15552,6 +15594,13 @@ Object {
             "light": "#000716",
           },
         },
+        "color-text-label-gen-ai": Object {
+          "$description": "The default color for labels indicating that content is produced by generative AI.",
+          "$value": Object {
+            "dark": "#bf80ff",
+            "light": "#7300e5",
+          },
+        },
         "color-text-layout-toggle": Object {
           "$description": "The default color of the app layout toggle.",
           "$value": Object {
@@ -17831,6 +17880,13 @@ Object {
           "$value": Object {
             "dark": "#d1d5db",
             "light": "#d1d5db",
+          },
+        },
+        "color-text-label-gen-ai": Object {
+          "$description": "The default color for labels indicating that content is produced by generative AI.",
+          "$value": Object {
+            "dark": "#bf80ff",
+            "light": "#bf80ff",
           },
         },
         "color-text-layout-toggle": Object {
@@ -20114,6 +20170,13 @@ Object {
             "light": "#000716",
           },
         },
+        "color-text-label-gen-ai": Object {
+          "$description": "The default color for labels indicating that content is produced by generative AI.",
+          "$value": Object {
+            "dark": "#bf80ff",
+            "light": "#7300e5",
+          },
+        },
         "color-text-layout-toggle": Object {
           "$description": "The default color of the app layout toggle.",
           "$value": Object {
@@ -22393,6 +22456,13 @@ Object {
           "$value": Object {
             "dark": "#d1d5db",
             "light": "#000716",
+          },
+        },
+        "color-text-label-gen-ai": Object {
+          "$description": "The default color for labels indicating that content is produced by generative AI.",
+          "$value": Object {
+            "dark": "#bf80ff",
+            "light": "#7300e5",
           },
         },
         "color-text-layout-toggle": Object {
@@ -24676,6 +24746,13 @@ Object {
             "light": "#000716",
           },
         },
+        "color-text-label-gen-ai": Object {
+          "$description": "The default color for labels indicating that content is produced by generative AI.",
+          "$value": Object {
+            "dark": "#bf80ff",
+            "light": "#7300e5",
+          },
+        },
         "color-text-layout-toggle": Object {
           "$description": "The default color of the app layout toggle.",
           "$value": Object {
@@ -26955,6 +27032,13 @@ Object {
           "$value": Object {
             "dark": "#d1d5db",
             "light": "#d1d5db",
+          },
+        },
+        "color-text-label-gen-ai": Object {
+          "$description": "The default color for labels indicating that content is produced by generative AI.",
+          "$value": Object {
+            "dark": "#bf80ff",
+            "light": "#bf80ff",
           },
         },
         "color-text-layout-toggle": Object {
@@ -29238,6 +29322,13 @@ Object {
             "light": "#d1d5db",
           },
         },
+        "color-text-label-gen-ai": Object {
+          "$description": "The default color for labels indicating that content is produced by generative AI.",
+          "$value": Object {
+            "dark": "#bf80ff",
+            "light": "#bf80ff",
+          },
+        },
         "color-text-layout-toggle": Object {
           "$description": "The default color of the app layout toggle.",
           "$value": Object {
@@ -31517,6 +31608,13 @@ Object {
       "$value": Object {
         "dark": "#d1d5db",
         "light": "#000716",
+      },
+    },
+    "color-text-label-gen-ai": Object {
+      "$description": "The default color for labels indicating that content is produced by generative AI.",
+      "$value": Object {
+        "dark": "#bf80ff",
+        "light": "#7300e5",
       },
     },
     "color-text-layout-toggle": Object {

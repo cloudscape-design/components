@@ -30,7 +30,7 @@ interface ExtendedWindow extends Window {
 declare const window: ExtendedWindow;
 
 function isAppLayoutPage(pageId?: string) {
-  const appLayoutPages = ['app-layout', 'content-layout', 'grid-navigation-custom'];
+  const appLayoutPages = ['app-layout', 'content-layout', 'grid-navigation-custom', 'expandable-rows-test'];
   return pageId !== undefined && appLayoutPages.some(match => pageId.includes(match));
 }
 

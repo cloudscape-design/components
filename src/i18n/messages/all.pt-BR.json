@@ -278,6 +278,8 @@
     "ariaLabels.resizerRoleDescription": "botão de redimensionamento",
     "ariaLabels.submittingEditText": "Envio de edição",
     "ariaLabels.successfulEditLabel": "A edição foi bem sucedida",
+    "ariaLabels.expandButtonLabel": "Expandir",
+    "ariaLabels.collapseButtonLabel": "Recolher",
     "columnDefinitions.editConfig.errorIconAriaLabel": "Erro",
     "columnDefinitions.editConfig.editIconAriaLabel": "editável"
   },

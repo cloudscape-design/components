@@ -190,7 +190,7 @@ function InternalFileUpload(
               limitShowFewer: i18nStrings.limitShowFewer,
               limitShowMore: i18nStrings.limitShowMore,
             }}
-            removedItemIndex={removedFileIndex}
+            moveFocusNextToIndex={removedFileIndex}
           />
         </InternalBox>
       ) : null}

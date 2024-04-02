@@ -343,6 +343,8 @@ export interface I18nFormatArgTypes {
     "ariaLabels.resizerRoleDescription": never;
     "ariaLabels.submittingEditText": never;
     "ariaLabels.successfulEditLabel": never;
+    "ariaLabels.expandButtonLabel": never;
+    "ariaLabels.collapseButtonLabel": never;
     "columnDefinitions.editConfig.errorIconAriaLabel": never;
     "columnDefinitions.editConfig.editIconAriaLabel": never;
   }

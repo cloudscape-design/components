@@ -1795,7 +1795,6 @@ receive focus.",
     },
     Object {
       "description": "Specifies the text to display when a data fetching error occurs. Make sure that you provide \`recoveryText\`.",
-      "i18nTag": true,
       "name": "errorText",
       "optional": true,
       "type": "string",
@@ -2762,8 +2761,12 @@ Sizes are automatically scaled down in compact mode.
       "defaultValue": "\\"div\\"",
       "description": "Defines the style of element to display.
 - If you set it to \`'div'\`, \`'span'\`, \`'h1'\`, \`'h2'\`, \`'h3'\`, \`'h4'\`, \`'h5'\`, \`'p'\`, \`'strong'\`, \`'small'\`, \`'code'\`, \`'pre'\`, or \`'samp'\`, the variant is also used as the HTML tag name.
-- If you set it to \`awsui-key-label\`, the component will display as a \`div\`.
-- If you set it to \`awsui-value-large\`, the component will display as a \`span\`.
+- If you set it to \`awsui-key-label\`, the component will render a \`div\`,
+  styled for use as a key label in key-value pairs.
+- If you set it to \`awsui-gen-ai-label\`, the component will render a \`div\`,
+  styled for use as a label indicating that content is produced by generative AI.
+- If you set it to \`awsui-value-large\`, the component will render a \`span\`,
+  styled using \\"Display large light\\" typography.
 
 Override the HTML tag by using property \`tagOverride\`.
 ",
@@ -2785,6 +2788,7 @@ Override the HTML tag by using property \`tagOverride\`.
           "pre",
           "samp",
           "awsui-key-label",
+          "awsui-gen-ai-label",
           "awsui-value-large",
         ],
       },
@@ -5079,8 +5083,8 @@ It contains the following:
 - \`label\` (string) - Specifies the label for each radio group.
 - \`description\` (string) - Specifies the text displayed below each radio group label.
 
-You must set the current value in the \`preferences.stickyColumns\` property.",
-      "i18nTag": true,
+You must set the current value in the \`preferences.stickyColumns\` property.
+",
       "inlineType": Object {
         "name": "CollectionPreferencesProps.StickyColumnsPreference",
         "properties": Array [
@@ -9665,7 +9669,6 @@ To use it correctly, define an ID for the element you want to use as label and s
     },
     Object {
       "description": "Specifies the text to display when a data fetching error occurs. Make sure that you provide \`recoveryText\`.",
-      "i18nTag": true,
       "name": "errorText",
       "optional": true,
       "type": "string",
@@ -11100,6 +11103,20 @@ Use the \`onLoadItems\` event to perform a recovery action (for example, retryin
       "type": "string",
     },
     Object {
+      "description": "An object configuring the operators for free text filtering, which has the following properties:
+* operators [Array]: A list of all operators supported for free text filtering. If you omit the contains operator because your API does not support it, make sure to set \`defaultOperator\` to a supported operator from this list.
+* defaultOperator [ComparisonOperator]: An optional parameter that changes the default operator used for free text filtering. Use this parameter only if your API does not support \\"contains\\" free test filtering terms.
+",
+      "inlineType": Object {
+        "name": "PropertyFilterProps.FreeTextFiltering",
+        "properties": Array [],
+        "type": "object",
+      },
+      "name": "freeTextFiltering",
+      "optional": true,
+      "type": "PropertyFilterProps.FreeTextFiltering",
+    },
+    Object {
       "description": "If hideOperations it set, the indicator of the operation (that is, \`and\` or \`or\`) and the selection of operations
 (applied to the property and value token) are hidden from the user. Only use when you have a custom
 filtering logic which combines tokens in different way than the default one. When used, ensure that
@@ -12249,7 +12266,6 @@ To use it correctly, define an ID for the element you want to use as label and s
     },
     Object {
       "description": "Specifies the text to display when a data fetching error occurs. Make sure that you provide \`recoveryText\`.",
-      "i18nTag": true,
       "name": "errorText",
       "optional": true,
       "type": "string",
@@ -13292,7 +13308,9 @@ add a meaningful description to the whole selection.
 * \`successfulEditLabel\` (EditableColumnDefinition) => string -
                      Specifies an alternative text for the success icon in editable cells. This text is also announced to screen readers.
 * \`submittingEditText\` (EditableColumnDefinition) => string -
-                     Specifies a text that is announced to screen readers when a cell edit operation is submitted.",
+                     Specifies a text that is announced to screen readers when a cell edit operation is submitted.
+* \`expandButtonLabel\` (Item) => string - Specifies an alternative text for row expand button.
+* \`collapseButtonLabel\` (Item) => string - Specifies an alternative text for row collapse button.",
       "i18nTag": true,
       "inlineType": Object {
         "name": "TableProps.AriaLabels",
@@ -13311,6 +13329,16 @@ add a meaningful description to the whole selection.
             "name": "cancelEditLabel",
             "optional": true,
             "type": "(column: TableProps.ColumnDefinition<any>) => string",
+          },
+          Object {
+            "name": "collapseButtonLabel",
+            "optional": true,
+            "type": "(item: T) => string",
+          },
+          Object {
+            "name": "expandButtonLabel",
+            "optional": true,
+            "type": "(item: T) => string",
           },
           Object {
             "name": "itemSelectionLabel",
@@ -13436,10 +13464,48 @@ Use it in conjunction with the content display preference of the [collection pre
     },
     Object {
       "description": "Use this property to activate advanced keyboard navigation and focusing behaviors.
-When set to \`true\`, table cells become navigable with arrow keys, and the entire table has a single tab stop.",
+When set to \`true\`, table cells become navigable with arrow keys, and the entire table has a single tab stop.
+By default, the keyboard navigation is active for tables with expandable rows.
+",
       "name": "enableKeyboardNavigation",
       "optional": true,
       "type": "boolean",
+    },
+    Object {
+      "description": "Use this property to define expandable table rows. The expandableRows configuration object consists of:
+* \`getItemChildren\` ((Item) => Item[]) - Use it to define nested data that are shown when an item gets expanded.
+* \`isItemExpandable\` ((Item) => boolean) - Use it for items that can be expanded to show nested data.
+* \`expandedItems\` (Item[]) - Use it to represent the expanded state of items.
+* \`onExpandableItemToggle\` (TableProps.OnExpandableItemToggle<T>) - Called when an item's expand toggle is clicked.",
+      "inlineType": Object {
+        "name": "TableProps.ExpandableRows",
+        "properties": Array [
+          Object {
+            "name": "expandedItems",
+            "optional": false,
+            "type": "ReadonlyArray<T>",
+          },
+          Object {
+            "name": "getItemChildren",
+            "optional": false,
+            "type": "(item: T) => typeOperator",
+          },
+          Object {
+            "name": "isItemExpandable",
+            "optional": false,
+            "type": "(item: T) => boolean",
+          },
+          Object {
+            "name": "onExpandableItemToggle",
+            "optional": false,
+            "type": "TableProps.OnExpandableItemToggle<T>",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "expandableRows",
+      "optional": true,
+      "type": "TableProps.ExpandableRows<T>",
     },
     Object {
       "description": " Use this property to inform screen readers which range of items is currently displayed in the table.
@@ -13648,7 +13714,7 @@ If there is an unknown total of items in a table, leave this property undefined.
       "description": "Specifies a property that uniquely identifies an individual item.
 When it's set, it's used to provide [keys for React](https://reactjs.org/docs/lists-and-keys.html#keys)
 for performance optimizations.
-It's also used to connect \`items\` and \`selectedItems\` values when they reference different objects.
+It's also used to connect \`items\` and \`selectedItems\` or \`expandableRows.expandedItems\` values when they reference different objects.
 ",
       "inlineType": Object {
         "name": "TableProps.TrackBy",

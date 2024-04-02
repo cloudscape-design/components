@@ -4,7 +4,6 @@
 import { RefObject, useCallback, useEffect, useMemo } from 'react';
 import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
 import { TableProps } from './interfaces';
-import { TableRole } from './table-role';
 
 function iterateTableCells<T extends HTMLElement>(
   table: T,
@@ -18,7 +17,7 @@ function iterateTableCells<T extends HTMLElement>(
 }
 
 interface TableFocusNavigationProps<T> {
-  tableRole: TableRole;
+  enableKeyboardNavigation?: boolean;
   selectionType: TableProps['selectionType'];
   tableRoot: RefObject<HTMLTableElement>;
   columnDefinitions: Readonly<T[]>;
@@ -35,7 +34,7 @@ interface TableFocusNavigationProps<T> {
  * @param numRows - The number of rows in the table.
  */
 function useTableFocusNavigation<T extends { editConfig?: TableProps.EditConfig<any> }>({
-  tableRole,
+  enableKeyboardNavigation,
   selectionType,
   tableRoot,
   columnDefinitions,
@@ -138,7 +137,7 @@ function useTableFocusNavigation<T extends { editConfig?: TableProps.EditConfig<
   );
 
   useEffect(() => {
-    if (!tableRoot.current || tableRole === 'grid') {
+    if (!tableRoot.current || enableKeyboardNavigation) {
       return;
     }
 
@@ -146,7 +145,7 @@ function useTableFocusNavigation<T extends { editConfig?: TableProps.EditConfig<
     tableRoot.current.addEventListener('keydown', handleArrowKeyEvents);
 
     return () => tableElement && tableElement.removeEventListener('keydown', handleArrowKeyEvents);
-  }, [tableRole, focusableColumns, handleArrowKeyEvents, tableRoot]);
+  }, [enableKeyboardNavigation, focusableColumns, handleArrowKeyEvents, tableRoot]);
 }
 
 export default useTableFocusNavigation;

@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ChartScale, NumericChartScale } from '../../internal/components/cartesian-chart/scales';
-import { ChartModel } from '../model';
+import { ChartScale, NumericChartScale } from '../../../lib/components/internal/components/cartesian-chart/scales';
+import { ChartModel } from '../../../lib/components/area-chart/model';
 import {
   computeDomainX,
   computeDomainY,
@@ -9,7 +9,7 @@ import {
   findClosest,
   circleIndex,
   isSeriesValid,
-} from '../model/utils';
+} from '../../../lib/components/area-chart/model/utils';
 
 function getPointIndices(matrix: ChartModel.PlotPoint<number>[][]) {
   const indices = [];

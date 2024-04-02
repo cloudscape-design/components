@@ -7,6 +7,14 @@
 @use '../../internal/styles/tokens' as awsui;
 @use '../../internal/styles' as styles;
 
+@mixin cell-offset($padding) {
+  padding-inline-start: $padding;
+
+  &.header-cell-content-expandable {
+    padding-inline-start: calc(#{$padding} + #{awsui.$space-m} + #{awsui.$space-xs});
+  }
+}
+
 .header-cell {
   position: relative;
   text-align: start;
@@ -94,7 +102,8 @@
 .header-cell-content {
   position: relative;
   padding-block: awsui.$space-scaled-xxs;
-  padding-inline: awsui.$space-s;
+  @include cell-offset(awsui.$space-s);
+  padding-inline-end: awsui.$space-s;
 
   .header-cell-sortable > & {
     padding-inline-end: calc(#{awsui.$space-xl} + #{awsui.$space-xxs});
@@ -158,15 +167,15 @@ settings icon in the pagination slot.
 */
 .header-cell:not(.is-visual-refresh) {
   &:first-child {
-    padding-inline-start: awsui.$space-xs;
+    @include cell-offset(awsui.$space-xs);
   }
 }
 
 .header-cell.is-visual-refresh {
   &:first-child:not(.has-striped-rows) {
-    padding-inline-start: awsui.$space-xxxs;
+    @include cell-offset(awsui.$space-xxxs);
     &.sticky-cell-pad-left {
-      padding-inline-start: awsui.$space-table-horizontal;
+      @include cell-offset(awsui.$space-table-horizontal);
     }
   }
 
@@ -176,11 +185,11 @@ settings icon in the pagination slot.
   to the table edge.
   */
   &:first-child.has-striped-rows {
-    padding-inline-start: awsui.$space-xxs;
+    @include cell-offset(awsui.$space-xxs);
   }
 
   &:first-child > .header-cell-content {
-    padding-inline-start: 0;
+    @include cell-offset(0px);
   }
 
   &:last-child.header-cell-sortable {

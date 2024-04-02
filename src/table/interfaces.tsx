@@ -57,7 +57,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * When it's set, it's used to provide [keys for React](https://reactjs.org/docs/lists-and-keys.html#keys)
    * for performance optimizations.
    *
-   * It's also used to connect `items` and `selectedItems` values when they reference different objects.
+   * It's also used to connect `items` and `selectedItems` or `expandableRows.expandedItems` values when they reference different objects.
    */
   trackBy?: TableProps.TrackBy<T>;
 
@@ -180,6 +180,8 @@ export interface TableProps<T = any> extends BaseComponentProps {
    *                      Specifies an alternative text for the success icon in editable cells. This text is also announced to screen readers.
    * * `submittingEditText` (EditableColumnDefinition) => string -
    *                      Specifies a text that is announced to screen readers when a cell edit operation is submitted.
+   * * `expandButtonLabel` (Item) => string - Specifies an alternative text for row expand button.
+   * * `collapseButtonLabel` (Item) => string - Specifies an alternative text for row collapse button.
    * @i18n
    */
   ariaLabels?: TableProps.AriaLabels<T>;
@@ -297,12 +299,14 @@ export interface TableProps<T = any> extends BaseComponentProps {
   /**
    * Use this property to inform screen readers how many items there are in a table.
    * It specifies the total count of all items in a table.
-   * If there is an unknown total of items in a table, leave this property undefined.   */
+   * If there is an unknown total of items in a table, leave this property undefined.
+   */
   totalItemsCount?: number;
   /**
    *  Use this property to inform screen readers which range of items is currently displayed in the table.
    *  It specifies the index (1-based) of the first item in the table.
-   *  If the table has no pagination, leave this property undefined.   */
+   *  If the table has no pagination, leave this property undefined.
+   */
   firstIndex?: number;
   /**
    * Use this function to announce page changes to screen reader users.
@@ -324,8 +328,19 @@ export interface TableProps<T = any> extends BaseComponentProps {
   /**
    * Use this property to activate advanced keyboard navigation and focusing behaviors.
    * When set to `true`, table cells become navigable with arrow keys, and the entire table has a single tab stop.
+   *
+   * By default, the keyboard navigation is active for tables with expandable rows.
    */
   enableKeyboardNavigation?: boolean;
+
+  /**
+   * Use this property to define expandable table rows. The expandableRows configuration object consists of:
+   * * `getItemChildren` ((Item) => Item[]) - Use it to define nested data that are shown when an item gets expanded.
+   * * `isItemExpandable` ((Item) => boolean) - Use it for items that can be expanded to show nested data.
+   * * `expandedItems` (Item[]) - Use it to represent the expanded state of items.
+   * * `onExpandableItemToggle` (TableProps.OnExpandableItemToggle<T>) - Called when an item's expand toggle is clicked.
+   */
+  expandableRows?: TableProps.ExpandableRows<T>;
 }
 
 export namespace TableProps {
@@ -414,6 +429,8 @@ export namespace TableProps {
     submitEditLabel?: (column: ColumnDefinition<any>) => string;
     submittingEditText?: (column: ColumnDefinition<any>) => string;
     successfulEditLabel?: (column: ColumnDefinition<any>) => string;
+    expandButtonLabel?: (item: T) => string;
+    collapseButtonLabel?: (item: T) => string;
   }
   export interface SortingState<T> {
     isDescending?: boolean;
@@ -471,5 +488,19 @@ export namespace TableProps {
   export interface ColumnDisplayProperties {
     id: string;
     visible: boolean;
+  }
+
+  export interface ExpandableRows<T> {
+    getItemChildren: (item: T) => readonly T[];
+    isItemExpandable: (item: T) => boolean;
+    expandedItems: ReadonlyArray<T>;
+    onExpandableItemToggle: TableProps.OnExpandableItemToggle<T>;
+  }
+
+  export type OnExpandableItemToggle<T> = NonCancelableEventHandler<TableProps.ExpandableItemToggleDetail<T>>;
+
+  export interface ExpandableItemToggleDetail<T> {
+    item: T;
+    expanded: boolean;
   }
 }

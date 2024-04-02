@@ -323,7 +323,10 @@ class GridNavigationProcessor {
     const cellElement = getClosestCell(from.element);
     const cellFocusables = cellElement ? this.getFocusablesFrom(cellElement) : [];
     const nextElementIndex = from.elementIndex + delta.x;
-    if (delta.x && from.elementIndex !== -1 && 0 <= nextElementIndex && nextElementIndex < cellFocusables.length) {
+    const isValidDirection = !!delta.x;
+    const isValidIndex = from.elementIndex !== -1 && 0 <= nextElementIndex && nextElementIndex < cellFocusables.length;
+    const isTargetDifferent = from.element !== cellFocusables[nextElementIndex];
+    if (isValidDirection && isValidIndex && isTargetDifferent) {
       return cellFocusables[nextElementIndex];
     }
 

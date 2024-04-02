@@ -35,10 +35,10 @@ $size-prefixes-vertical: (
 );
 
 $side-suffixes: (
-  'top': '-top',
-  'right': '-right',
-  'bottom': '-bottom',
-  'left': '-left',
+  'top': '-block-start',
+  'right': '-inline-end',
+  'bottom': '-block-end',
+  'left': '-inline-start',
 );
 
 $sides: (('top', 'vertical'), ('right', 'horizontal'), ('bottom', 'vertical'), ('left', 'horizontal'));
@@ -48,7 +48,8 @@ $prefixes: 'n', 'xxxs', 'xxs', 'xs', 's', 'm', 'l', 'xl', 'xxl', 'xxxl';
 @mixin create-spacing($name, $css_property, $parent-selector) {
   @each $p in $prefixes {
     #{$parent-selector}.#{$name}#{$p} {
-      #{$css_property}: #{map.get($size-prefixes-vertical, $p)} #{map.get($size-prefixes-horizontal, $p)};
+      #{$css_property}-block: #{map.get($size-prefixes-vertical, $p)};
+      #{$css_property}-inline: #{map.get($size-prefixes-horizontal, $p)};
     }
     // creates sides and horizontal(h)/vertical(v) padding classes
     @each $side_a, $side_b in $sides {

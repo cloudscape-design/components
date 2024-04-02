@@ -478,6 +478,13 @@ describe('property filter parts', () => {
         });
         expect(wrapper.findTokens()![0].getElement()).toHaveTextContent('!: first');
       });
+      test('custom operator free text token', () => {
+        const { propertyFilterWrapper: wrapper } = renderComponent({
+          freeTextFiltering: { operators: ['!^'] },
+          query: { tokens: [{ value: 'first', operator: '!^' }], operation: 'or' },
+        });
+        expect(wrapper.findTokens()![0].getElement()).toHaveTextContent('!^ first');
+      });
       test('property token', () => {
         const { propertyFilterWrapper: wrapper } = renderComponent({
           query: { tokens: [{ propertyKey: 'range', value: 'value', operator: '>' }], operation: 'or' },
@@ -627,6 +634,24 @@ describe('property filter parts', () => {
             .findOptions()!
             .map(optionWrapper => optionWrapper.getElement().textContent)
         ).toEqual(['string', 'string-other', 'default', 'string!=', 'state', 'range']);
+      });
+      test('with custom free text operators', () => {
+        const { propertyFilterWrapper: wrapper } = renderComponent({
+          freeTextFiltering: { operators: ['=', '!=', ':', '!:'] },
+          query: { tokens: [{ value: 'first', operator: '!=' }], operation: 'or' },
+        });
+        const [contentWrapper] = openTokenEditor(wrapper);
+        expect(contentWrapper.getElement()).toHaveTextContent(
+          'PropertyAll propertiesOperator!=Does not equalValueCancelApply'
+        );
+        const operatorSelectWrapper = findOperatorSelector(contentWrapper);
+        act(() => operatorSelectWrapper.openDropdown());
+        expect(
+          operatorSelectWrapper
+            .findDropdown()
+            .findOptions()!
+            .map(optionWrapper => optionWrapper.getElement().textContent)
+        ).toEqual(['=Equals', '!=Does not equal', ':Contains', '!:Does not contain']);
       });
       test('preserves fields, when one is edited', () => {
         const { propertyFilterWrapper: wrapper } = renderComponent({

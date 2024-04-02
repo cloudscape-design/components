@@ -2,14 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState, useImperativeHandle, useRef } from 'react';
 
-import useChartModel, { UseChartModelProps } from '../model/use-chart-model';
+import useChartModel, { UseChartModelProps } from '../../../lib/components/area-chart/model/use-chart-model';
 import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
-import { ChartDataTypes } from '../../internal/components/cartesian-chart/interfaces';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
+import { ChartDataTypes } from '../../../lib/components/internal/components/cartesian-chart/interfaces';
 import { act, render, fireEvent } from '@testing-library/react';
-import { AreaChartProps } from '../interfaces';
-import { KeyCode } from '../../internal/keycode';
-import { useReaction } from '../async-store';
-import { ChartModel } from '../model';
+import { AreaChartProps } from '../../../lib/components/area-chart/interfaces';
+import { useReaction } from '../../../lib/components/area-chart/async-store';
+import { ChartModel } from '../../../lib/components/area-chart/model';
 import PlotPoint = ChartModel.PlotPoint;
 
 class UseChartModelWrapper extends ElementWrapper {
@@ -303,6 +303,47 @@ describe('useChartModel', () => {
 
         expect(wrapper.findHighlightedX()?.getElement()).toHaveTextContent('');
       });
+
+      test('clear highlighted X when mouse exited from the page', () => {
+        const { wrapper } = renderChartModelHook({
+          height: 0,
+          highlightedSeries: null,
+          setHighlightedSeries: (_series: AreaChartProps.Series<ChartDataTypes> | null) => _series,
+          setVisibleSeries: (_series: readonly AreaChartProps.Series<ChartDataTypes>[]) => _series,
+          width: 0,
+          xDomain: undefined,
+          xScaleType: 'linear',
+          yScaleType: 'linear',
+          externalSeries: series,
+          visibleSeries: series,
+          popoverRef: { current: null },
+        });
+
+        const mouseMoveEvent = {
+          relatedTarget: wrapper.findPlot()?.getElement(),
+          clientX: 100,
+          clientY: 100,
+        } as any;
+
+        act(() => {
+          fireEvent.mouseMove(wrapper.findPlot()!.getElement(), mouseMoveEvent);
+        });
+
+        expect(wrapper.findHighlightedX()?.getElement()).toHaveTextContent('1');
+
+        const mouseLeaveEvent = {
+          relatedTarget: window, // when mouse exited the page, relatedTarget is set to window.
+          clientX: 0,
+          clientY: 0,
+        } as any;
+
+        act(() => {
+          fireEvent.mouseLeave(wrapper.findDetailPopover()!.getElement(), mouseLeaveEvent);
+        });
+
+        expect(wrapper.findHighlightedX()?.getElement()).toHaveTextContent('');
+      });
+
       test('keep highlighted X when mouse leaves popover but in plot', () => {
         const { wrapper } = renderChartModelHook({
           height: 0,

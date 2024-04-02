@@ -62,7 +62,14 @@ export default function InternalTokenGroup({
           </Token>
         )}
         i18nStrings={i18nStrings}
-        removedItemIndex={removedItemIndex}
+        moveFocusNextToIndex={removedItemIndex}
+        onExpandedClick={isExpanded => {
+          if (isExpanded && limit) {
+            setRemovedItemIndex(limit);
+          } else {
+            setRemovedItemIndex(null);
+          }
+        }}
       />
     </div>
   );

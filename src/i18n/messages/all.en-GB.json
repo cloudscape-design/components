@@ -278,6 +278,8 @@
     "ariaLabels.resizerRoleDescription": "resize button",
     "ariaLabels.submittingEditText": "Submitting edit",
     "ariaLabels.successfulEditLabel": "Edit successful",
+    "ariaLabels.expandButtonLabel": "Expand",
+    "ariaLabels.collapseButtonLabel": "Collapse",
     "columnDefinitions.editConfig.errorIconAriaLabel": "Error",
     "columnDefinitions.editConfig.editIconAriaLabel": "editable"
   },
