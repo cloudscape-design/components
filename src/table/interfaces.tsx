@@ -343,23 +343,32 @@ export interface TableProps<T = any> extends BaseComponentProps {
   expandableRows?: TableProps.ExpandableRows<T>;
 
   /**
-   * Experimental API
-   */
+   * Specifies the current status of loading more items.
+   * * `pending` - Indicates that no request in progress, but more options may be loaded.
+   * * `loading` - Indicates that data fetching is in progress.
+   * * `finished` - Indicates that loading has finished and no more requests are expected.
+   * * `error` - Indicates that an error occurred during fetch.
+   **/
   loadingStatus?: TableProps.LoadingStatus;
   /**
-   * Experimental API
+   * Must be provided when `loadingStatus` is used.
+   * Defines loader properties for pending state.
    */
   renderLoaderPending?: (detail: TableProps.RenderLoaderDetail<T>) => TableProps.RenderLoaderPendingResult;
   /**
-   * Experimental API
+   * Must be provided when `loadingStatus` is used.
+   * Defines loader properties for loading state.
    */
   renderLoaderLoading?: (detail: TableProps.RenderLoaderDetail<T>) => TableProps.RenderLoaderLoadingResult;
   /**
-   * Experimental API
+   * Must be provided when `loadingStatus` is used.
+   * Defines loader properties for error state.
    */
   renderLoaderError?: (detail: TableProps.RenderLoaderDetail<T>) => TableProps.RenderLoaderErrorResult;
   /**
-   * Experimental API
+   * Must be provided when `loadingStatus` is used.
+   * Called when the user clicked at the row load-more button. The event detail might include an item when
+   * used together with expandable rows to indicate which item the request is related to.
    */
   onLoadMoreItems?: TableProps.OnLoadMoreItems<T>;
 }
@@ -526,7 +535,7 @@ export namespace TableProps {
     expanded: boolean;
   }
 
-  export type LoadingStatus = 'pending' | 'loading' | 'error';
+  export type LoadingStatus = 'pending' | 'loading' | 'error' | 'finished';
 
   export type OnLoadMoreItems<T> = NonCancelableEventHandler<TableProps.LoadMoreItemsDetail<T>>;
 

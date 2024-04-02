@@ -13039,6 +13039,14 @@ validation states, or show warning for unsaved changes.",
       "name": "onEditCancel",
     },
     Object {
+      "cancelable": true,
+      "description": "Must be provided when \`loadingStatus\` is used.
+Called when the user clicked at the row load-more button. The event detail might include an item when
+used together with expandable rows to indicate which item the request is related to.",
+      "detailType": "T",
+      "name": "onLoadMoreItems",
+    },
+    Object {
       "cancelable": false,
       "description": "Note: This feature is provided for backwards compatibility. Its use is not recommended,
 and it may be deprecated in the future.
@@ -13365,6 +13373,11 @@ By default, the keyboard navigation is active for tables with expandable rows.
             "type": "(item: T) => typeOperator",
           },
           Object {
+            "name": "getItemLoadingStatus",
+            "optional": true,
+            "type": "(item: T) => TableProps.LoadingStatus | null",
+          },
+          Object {
             "name": "isItemExpandable",
             "optional": false,
             "type": "(item: T) => boolean",
@@ -13428,6 +13441,26 @@ by the \`cell\` property of each column definition in the \`columnDefinitions\` 
       "type": "boolean",
     },
     Object {
+      "description": "Specifies the current status of loading more items.
+* \`pending\` - Indicates that no request in progress, but more options may be loaded.
+* \`loading\` - Indicates that data fetching is in progress.
+* \`finished\` - Indicates that loading has finished and no more requests are expected.
+* \`error\` - Indicates that an error occurred during fetch.",
+      "inlineType": Object {
+        "name": "TableProps.LoadingStatus",
+        "type": "union",
+        "values": Array [
+          "pending",
+          "loading",
+          "error",
+          "finished",
+        ],
+      },
+      "name": "loadingStatus",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Specifies the text that's displayed when the table is in a loading state.",
       "name": "loadingText",
       "optional": true,
@@ -13439,6 +13472,27 @@ Requires the properties firstIndex and totalItemsCount to be set correctly.",
       "name": "renderAriaLive",
       "optional": true,
       "type": "(data: TableProps.LiveAnnouncement) => string",
+    },
+    Object {
+      "description": "Must be provided when \`loadingStatus\` is used.
+Defines loader properties for error state.",
+      "name": "renderLoaderError",
+      "optional": true,
+      "type": "(detail: TableProps.RenderLoaderDetail<T>) => TableProps.RenderLoaderErrorResult",
+    },
+    Object {
+      "description": "Must be provided when \`loadingStatus\` is used.
+Defines loader properties for loading state.",
+      "name": "renderLoaderLoading",
+      "optional": true,
+      "type": "(detail: TableProps.RenderLoaderDetail<T>) => TableProps.RenderLoaderLoadingResult",
+    },
+    Object {
+      "description": "Must be provided when \`loadingStatus\` is used.
+Defines loader properties for pending state.",
+      "name": "renderLoaderPending",
+      "optional": true,
+      "type": "(detail: TableProps.RenderLoaderDetail<T>) => TableProps.RenderLoaderPendingResult",
     },
     Object {
       "description": "Specifies if columns can be resized. If set to \`true\`, users can resize the columns in the table.",
