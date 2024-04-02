@@ -39,7 +39,7 @@ export function LoaderCell({ totalColumnsCount, progressiveLoading, level, table
         )}
         data-awsui-table-suppress-navigation={true}
       >
-        Loader cell
+        Loader cell {level}
       </div>
     </td>
   );

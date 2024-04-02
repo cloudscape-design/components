@@ -138,6 +138,7 @@ const InternalTable = React.forwardRef(
       expandableRows,
       trackBy,
       ariaLabels,
+      progressiveLoading,
     });
 
     const [containerWidth, wrapperMeasureRef] = useContainerQuery<number>(rect => rect.contentBoxWidth);
@@ -560,18 +561,18 @@ const InternalTable = React.forwardRef(
                           return (
                             <React.Fragment key={getItemKey(trackBy, item, rowIndex)}>
                               {dataRow}
-                              {expandableProps.itemLoaders.map((progressiveLoading, i) => (
+                              {expandableProps.itemLoaders.map(({ level, state }, i) => (
                                 <tr key={i}>
                                   <LoaderCell
                                     tableRef={tableRefObject}
                                     containerRef={wrapperMeasureRefObject}
-                                    progressiveLoading={progressiveLoading}
+                                    progressiveLoading={state}
                                     totalColumnsCount={totalColumnsCount}
-                                    level={progressiveLoading.level}
+                                    level={level}
                                   />
                                 </tr>
                               ))}
-                              {lastVisible && progressiveLoading && (
+                              {/* {lastVisible && progressiveLoading && (
                                 <tr>
                                   <LoaderCell
                                     tableRef={tableRefObject}
@@ -581,7 +582,7 @@ const InternalTable = React.forwardRef(
                                     level={0}
                                   />
                                 </tr>
-                              )}
+                              )} */}
                             </React.Fragment>
                           );
                         }

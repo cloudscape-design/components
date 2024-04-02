@@ -12,6 +12,7 @@ export interface ExpandableItemProps extends ExpandableItemPlacement {
   onExpandableItemToggle: () => void;
   expandButtonLabel?: string;
   collapseButtonLabel?: string;
+  itemLoaders: readonly ItemLoader[];
 }
 
 export interface ExpandableItemPlacement {
@@ -20,16 +21,24 @@ export interface ExpandableItemPlacement {
   posInSet: number;
 }
 
+export interface ItemLoader {
+  level: number;
+  state: TableProps.ProgressiveLoading;
+}
+
+// TODO: update name to reflect progressive-loading-only case
 export function useExpandableTableProps<T>({
   items,
   expandableRows,
   trackBy,
   ariaLabels,
+  progressiveLoading,
 }: {
   items: readonly T[];
   expandableRows?: TableProps.ExpandableRows<T>;
   trackBy?: TableProps.TrackBy<T>;
   ariaLabels?: TableProps.AriaLabels<T>;
+  progressiveLoading?: TableProps.ProgressiveLoading;
 }) {
   const i18n = useInternalI18n('table');
   const isExpandable = !!expandableRows;
@@ -37,13 +46,15 @@ export function useExpandableTableProps<T>({
   const expandedSet = new ItemSet(trackBy, expandableRows?.expandedItems ?? []);
 
   let allItems = items;
+  const itemToParent = new Map<T, null | T>();
   const itemToPlacement = new Map<T, ExpandableItemPlacement>();
   const getItemLevel = (item: T) => itemToPlacement.get(item)?.level ?? 0;
 
   if (isExpandable) {
     const visibleItems = new Array<T>();
 
-    const traverse = (item: T, placement: ExpandableItemPlacement) => {
+    const traverse = (item: T, parent: null | T, placement: ExpandableItemPlacement) => {
+      itemToParent.set(item, parent);
       itemToPlacement.set(item, placement);
 
       visibleItems.push(item);
@@ -52,11 +63,11 @@ export function useExpandableTableProps<T>({
         expandableRows
           .getItemChildren(item)
           .forEach((child, index) =>
-            traverse(child, { level: placement.level + 1, setSize: children.length, posInSet: index + 1 })
+            traverse(child, item, { level: placement.level + 1, setSize: children.length, posInSet: index + 1 })
           );
       }
     };
-    items.forEach((item, index) => traverse(item, { level: 1, setSize: items.length, posInSet: index + 1 }));
+    items.forEach((item, index) => traverse(item, null, { level: 1, setSize: items.length, posInSet: index + 1 }));
 
     for (let index = 0; index < visibleItems.length; index++) {
       const item = visibleItems[index];
@@ -75,6 +86,23 @@ export function useExpandableTableProps<T>({
     allItems = visibleItems;
   }
 
+  const itemToLoaders = new Map<T, ItemLoader[]>();
+  for (let i = 0; i < allItems.length; i++) {
+    const itemLoaders = new Array<ItemLoader>();
+    let currentParent = itemToParent.get(allItems[i]) ?? null;
+    let levelsDiff = getItemLevel(allItems[i]) - getItemLevel(allItems[i + 1]);
+    while (levelsDiff > 0) {
+      const state = currentParent ? expandableRows?.getItemProgressiveLoading?.(currentParent) : progressiveLoading;
+      if (state) {
+        const level = currentParent ? getItemLevel(currentParent) : 0;
+        itemLoaders.push({ level, state });
+      }
+      currentParent = (currentParent && itemToParent.get(currentParent)) ?? null;
+      levelsDiff--;
+    }
+    itemToLoaders.set(allItems[i], itemLoaders);
+  }
+
   const getExpandableItemProps = (item: T): ExpandableItemProps => {
     const { level, setSize, posInSet } = itemToPlacement.get(item) ?? { level: 1, setSize: 1, posInSet: 1 };
     return {
@@ -87,6 +115,7 @@ export function useExpandableTableProps<T>({
         fireNonCancelableEvent(expandableRows?.onExpandableItemToggle, { item, expanded: !expandedSet.has(item) }),
       expandButtonLabel: i18n('ariaLabels.expandButtonLabel', ariaLabels?.expandButtonLabel?.(item)),
       collapseButtonLabel: i18n('ariaLabels.collapseButtonLabel', ariaLabels?.collapseButtonLabel?.(item)),
+      itemLoaders: itemToLoaders.get(item) ?? [],
     };
   };
 
