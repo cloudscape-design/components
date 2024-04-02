@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useMemo, useRef } from 'react';
-import { useVirtual as useVirtualDefault, VirtualItem } from 'react-virtual';
+import { useVirtual as useVirtualDefault, VirtualItem } from '../../vendor/react-virtual';
 
 const MAX_ITEM_MOUNTS = 100;
 

@@ -15,5 +15,11 @@
     "incremental": true
   },
   "include": ["src", "types"],
-  "exclude": ["**/__tests__/**", "src/test-utils/**", "**/__integ__/**", "**/__a11y__/**", "src/internal/vendor/**"]
+  "exclude": [
+    "**/__tests__/**",
+    "src/test-utils/**",
+    "**/__integ__/**",
+    "**/__a11y__/**",
+    "**/__motion__/**"
+  ]
 }

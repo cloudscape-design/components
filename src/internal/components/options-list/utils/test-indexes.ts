@@ -18,23 +18,25 @@ export const generateTestIndexes = <T extends ListItem, Group extends object>(
   let throughIndex = 1;
   let groupIndex = 0;
   let inGroupIndex = 1;
-  let currentGroup: Group | null = null;
+  let currentGroup: ListItem | null = null;
   filteredItems.forEach(item => {
-    if (!('type' in item)) {
+    const isGroup = item.type === 'parent';
+    const group = isGroup ? item : getParentGroup(item);
+    if (group && group !== currentGroup) {
+      currentGroup = group;
+      groupIndex += 1;
+      inGroupIndex = 1;
+    }
+    if (isGroup) {
+      testIndexMap.set(item, { groupIndex });
+    } else if (group && item.type === 'child') {
+      testIndexMap.set(item, {
+        throughIndex: throughIndex++,
+        groupIndex,
+        inGroupIndex: inGroupIndex++,
+      });
+    } else if (item.type === 'child' || !item.type) {
       testIndexMap.set(item, { throughIndex: throughIndex++ });
-    } else if (item.type === 'child') {
-      const parentGroup = getParentGroup(item);
-      if (parentGroup && parentGroup !== currentGroup) {
-        currentGroup = parentGroup;
-        inGroupIndex = 1;
-        testIndexMap.set(item, {
-          throughIndex: throughIndex++,
-          groupIndex: ++groupIndex,
-          inGroupIndex: inGroupIndex++,
-        });
-      } else {
-        testIndexMap.set(item, { throughIndex: throughIndex++, groupIndex, inGroupIndex: inGroupIndex++ });
-      }
     }
   });
 };

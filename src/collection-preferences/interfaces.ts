@@ -87,7 +87,6 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    * - `description` (string) - Specifies the text displayed below each radio group label.
    *
    * You must set the current value in the `preferences.stickyColumns` property.
-   * @i18n
    */
   stickyColumnsPreference?: CollectionPreferencesProps.StickyColumnsPreference;
   /**

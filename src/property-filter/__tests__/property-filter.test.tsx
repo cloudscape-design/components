@@ -478,6 +478,13 @@ describe('property filter parts', () => {
         });
         expect(wrapper.findTokens()![0].getElement()).toHaveTextContent('!: first');
       });
+      test('custom operator free text token', () => {
+        const { propertyFilterWrapper: wrapper } = renderComponent({
+          freeTextFiltering: { operators: ['!^'] },
+          query: { tokens: [{ value: 'first', operator: '!^' }], operation: 'or' },
+        });
+        expect(wrapper.findTokens()![0].getElement()).toHaveTextContent('!^ first');
+      });
       test('property token', () => {
         const { propertyFilterWrapper: wrapper } = renderComponent({
           query: { tokens: [{ propertyKey: 'range', value: 'value', operator: '>' }], operation: 'or' },
@@ -627,6 +634,24 @@ describe('property filter parts', () => {
             .findOptions()!
             .map(optionWrapper => optionWrapper.getElement().textContent)
         ).toEqual(['string', 'string-other', 'default', 'string!=', 'state', 'range']);
+      });
+      test('with custom free text operators', () => {
+        const { propertyFilterWrapper: wrapper } = renderComponent({
+          freeTextFiltering: { operators: ['=', '!=', ':', '!:'] },
+          query: { tokens: [{ value: 'first', operator: '!=' }], operation: 'or' },
+        });
+        const [contentWrapper] = openTokenEditor(wrapper);
+        expect(contentWrapper.getElement()).toHaveTextContent(
+          'PropertyAll propertiesOperator!=Does not equalValueCancelApply'
+        );
+        const operatorSelectWrapper = findOperatorSelector(contentWrapper);
+        act(() => operatorSelectWrapper.openDropdown());
+        expect(
+          operatorSelectWrapper
+            .findDropdown()
+            .findOptions()!
+            .map(optionWrapper => optionWrapper.getElement().textContent)
+        ).toEqual(['=Equals', '!=Does not equal', ':Contains', '!:Does not contain']);
       });
       test('preserves fields, when one is edited', () => {
         const { propertyFilterWrapper: wrapper } = renderComponent({
@@ -1424,6 +1449,7 @@ describe('i18n', () => {
       'i18nStrings.operatorLessOrEqualText': 'Custom Less than or equal',
       'i18nStrings.operatorLessText': 'Custom Less than',
       'i18nStrings.operatorStartsWithText': 'Custom Starts with',
+      'i18nStrings.operatorDoesNotStartWithText': 'Custom Does not start with',
       'i18nStrings.operatorText': 'Custom Operator',
       'i18nStrings.operatorsText': 'Custom Operators',
       'i18nStrings.propertyText': 'Custom Property',
@@ -1439,7 +1465,7 @@ describe('i18n', () => {
             {
               key: 'string',
               propertyLabel: 'string',
-              operators: ['!:', ':', '=', '!=', '^'],
+              operators: ['!:', ':', '=', '!=', '^', '!^'],
               groupValuesLabel: 'String values',
             },
           ]}
@@ -1463,6 +1489,7 @@ describe('i18n', () => {
       'Custom Contains',
       'Custom Does not contain',
       'Custom Starts with',
+      'Custom Does not start with',
     ]);
   });
 
@@ -1524,6 +1551,7 @@ describe('i18n', () => {
               contains {Remove filter, {token__propertyKey} Custom contains {token__value}}
               not_contains {Remove filter, {token__propertyKey} Custom does not contain {token__value}}
               starts_with {Remove filter, {token__propertyKey} Custom starts with {token__value}}
+              not_starts_with {Remove filter, {token__propertyKey} Custom does not start with {token__value}}
               other {}}`,
           },
         }}
@@ -1539,6 +1567,7 @@ describe('i18n', () => {
               { propertyKey: 'string', operator: ':', value: 'value3' },
               { propertyKey: 'string', operator: '!:', value: 'value4' },
               { propertyKey: 'string', operator: '^', value: 'value5' },
+              { propertyKey: 'string', operator: '!^', value: 'value6' },
               { propertyKey: 'range', operator: '>', value: '1' },
               { propertyKey: 'range', operator: '<', value: '2' },
               { propertyKey: 'range', operator: '>=', value: '3' },
@@ -1561,10 +1590,11 @@ describe('i18n', () => {
     expect(getRemoveButton(2)).toHaveAccessibleName('Remove filter, string Custom contains value3');
     expect(getRemoveButton(3)).toHaveAccessibleName('Remove filter, string Custom does not contain value4');
     expect(getRemoveButton(4)).toHaveAccessibleName('Remove filter, string Custom starts with value5');
-    expect(getRemoveButton(5)).toHaveAccessibleName('Remove filter, range Custom greater than 1');
-    expect(getRemoveButton(6)).toHaveAccessibleName('Remove filter, range Custom less than 2');
-    expect(getRemoveButton(7)).toHaveAccessibleName('Remove filter, range Custom greater than or equals 3');
-    expect(getRemoveButton(8)).toHaveAccessibleName('Remove filter, range Custom less than or equals 4');
+    expect(getRemoveButton(5)).toHaveAccessibleName('Remove filter, string Custom does not start with value6');
+    expect(getRemoveButton(6)).toHaveAccessibleName('Remove filter, range Custom greater than 1');
+    expect(getRemoveButton(7)).toHaveAccessibleName('Remove filter, range Custom less than 2');
+    expect(getRemoveButton(8)).toHaveAccessibleName('Remove filter, range Custom greater than or equals 3');
+    expect(getRemoveButton(9)).toHaveAccessibleName('Remove filter, range Custom less than or equals 4');
 
     const tokenOperation = wrapper.findTokens()[1].findTokenOperation()!;
     tokenOperation.openDropdown();

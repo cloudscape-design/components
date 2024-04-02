@@ -70,6 +70,9 @@ export interface I18nFormatArgTypes {
     "nextMonthAriaLabel": never;
     "previousMonthAriaLabel": never;
     "todayAriaLabel": never;
+    "i18nStrings.nextYearAriaLabel": never;
+    "i18nStrings.previousYearAriaLabel": never;
+    "i18nStrings.currentMonthAriaLabel": never;
   }
   "cards": {
     "ariaLabels.selectionGroupLabel": never;
@@ -177,6 +180,7 @@ export interface I18nFormatArgTypes {
   }
   "form-field": {
     "i18nStrings.errorIconAriaLabel": never;
+    "i18nStrings.warningIconAriaLabel": never;
   }
   "form": {
     "errorIconAriaLabel": never;
@@ -233,6 +237,7 @@ export interface I18nFormatArgTypes {
     "i18nStrings.operatorLessOrEqualText": never;
     "i18nStrings.operatorLessText": never;
     "i18nStrings.operatorStartsWithText": never;
+    "i18nStrings.operatorDoesNotStartWithText": never;
     "i18nStrings.operatorText": never;
     "i18nStrings.operatorsText": never;
     "i18nStrings.propertyText": never;
@@ -338,6 +343,8 @@ export interface I18nFormatArgTypes {
     "ariaLabels.resizerRoleDescription": never;
     "ariaLabels.submittingEditText": never;
     "ariaLabels.successfulEditLabel": never;
+    "ariaLabels.expandButtonLabel": never;
+    "ariaLabels.collapseButtonLabel": never;
     "columnDefinitions.editConfig.errorIconAriaLabel": never;
     "columnDefinitions.editConfig.editIconAriaLabel": never;
   }

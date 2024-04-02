@@ -35,7 +35,7 @@ const permutations = createPermutations<BoxProps>([
     ],
   },
   {
-    variant: ['awsui-value-large', 'awsui-key-label'],
+    variant: ['awsui-value-large', 'awsui-key-label', 'awsui-gen-ai-label'],
   },
 ]);
 

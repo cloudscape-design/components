@@ -57,7 +57,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * When it's set, it's used to provide [keys for React](https://reactjs.org/docs/lists-and-keys.html#keys)
    * for performance optimizations.
    *
-   * It's also used to connect `items` and `selectedItems` values when they reference different objects.
+   * It's also used to connect `items` and `selectedItems` or `expandableRows.expandedItems` values when they reference different objects.
    */
   trackBy?: TableProps.TrackBy<T>;
 
@@ -95,6 +95,8 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * * * `editConfig.errorIconAriaLabel` (string) - Specifies an ariaLabel for the error icon that is displayed when the validation fails.
    * * * `editConfig.editIconAriaLabel` (string) - Specifies an alternate text for the edit icon used in column header.
    * * * `editConfig.constraintText` (string) - Constraint text that is displayed below the edit control.
+   * * * `editConfig.disabledReason` ((item) => string | undefined) - A function that determines whether inline edit for certain items is disabled, and provides a reason why.
+   *            Return a string from the function to disable inline edit with a reason. Return `undefined` (or no return) from the function allow inline edit.
    * * * `editConfig.validation` ((item, value) => string) - A function that allows you to validate the value of the edit control.
    *            Return a string from the function to display an error message. Return `undefined` (or no return) from the function to indicate that the value is valid.
    * * * `editConfig.editingCell` ((item, cellContext) => ReactNode) - Determines the display of a cell's content when inline editing is active on a cell;
@@ -178,6 +180,8 @@ export interface TableProps<T = any> extends BaseComponentProps {
    *                      Specifies an alternative text for the success icon in editable cells. This text is also announced to screen readers.
    * * `submittingEditText` (EditableColumnDefinition) => string -
    *                      Specifies a text that is announced to screen readers when a cell edit operation is submitted.
+   * * `expandButtonLabel` (Item) => string - Specifies an alternative text for row expand button.
+   * * `collapseButtonLabel` (Item) => string - Specifies an alternative text for row collapse button.
    * @i18n
    */
   ariaLabels?: TableProps.AriaLabels<T>;
@@ -295,12 +299,14 @@ export interface TableProps<T = any> extends BaseComponentProps {
   /**
    * Use this property to inform screen readers how many items there are in a table.
    * It specifies the total count of all items in a table.
-   * If there is an unknown total of items in a table, leave this property undefined.   */
+   * If there is an unknown total of items in a table, leave this property undefined.
+   */
   totalItemsCount?: number;
   /**
    *  Use this property to inform screen readers which range of items is currently displayed in the table.
    *  It specifies the index (1-based) of the first item in the table.
-   *  If the table has no pagination, leave this property undefined.   */
+   *  If the table has no pagination, leave this property undefined.
+   */
   firstIndex?: number;
   /**
    * Use this function to announce page changes to screen reader users.
@@ -318,6 +324,23 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * validation states, or show warning for unsaved changes.
    */
   onEditCancel?: CancelableEventHandler;
+
+  /**
+   * Use this property to activate advanced keyboard navigation and focusing behaviors.
+   * When set to `true`, table cells become navigable with arrow keys, and the entire table has a single tab stop.
+   *
+   * By default, the keyboard navigation is active for tables with expandable rows.
+   */
+  enableKeyboardNavigation?: boolean;
+
+  /**
+   * Use this property to define expandable table rows. The expandableRows configuration object consists of:
+   * * `getItemChildren` ((Item) => Item[]) - Use it to define nested data that are shown when an item gets expanded.
+   * * `isItemExpandable` ((Item) => boolean) - Use it for items that can be expanded to show nested data.
+   * * `expandedItems` (Item[]) - Use it to represent the expanded state of items.
+   * * `onExpandableItemToggle` (TableProps.OnExpandableItemToggle<T>) - Called when an item's expand toggle is clicked.
+   */
+  expandableRows?: TableProps.ExpandableRows<T>;
 }
 
 export namespace TableProps {
@@ -360,6 +383,11 @@ export namespace TableProps {
      * Determines the display of a cell's content when inline edit is active.
      */
     editingCell(item: T, ctx: TableProps.CellContext<any>): React.ReactNode;
+
+    /**
+     * Determines whether inline edit for certain items is disabled, and provides a reason why.
+     */
+    disabledReason?: (item: T) => string | undefined;
   }
 
   export type ColumnDefinition<ItemType> = {
@@ -401,6 +429,8 @@ export namespace TableProps {
     submitEditLabel?: (column: ColumnDefinition<any>) => string;
     submittingEditText?: (column: ColumnDefinition<any>) => string;
     successfulEditLabel?: (column: ColumnDefinition<any>) => string;
+    expandButtonLabel?: (item: T) => string;
+    collapseButtonLabel?: (item: T) => string;
   }
   export interface SortingState<T> {
     isDescending?: boolean;
@@ -458,5 +488,19 @@ export namespace TableProps {
   export interface ColumnDisplayProperties {
     id: string;
     visible: boolean;
+  }
+
+  export interface ExpandableRows<T> {
+    getItemChildren: (item: T) => readonly T[];
+    isItemExpandable: (item: T) => boolean;
+    expandedItems: ReadonlyArray<T>;
+    onExpandableItemToggle: TableProps.OnExpandableItemToggle<T>;
+  }
+
+  export type OnExpandableItemToggle<T> = NonCancelableEventHandler<TableProps.ExpandableItemToggleDetail<T>>;
+
+  export interface ExpandableItemToggleDetail<T> {
+    item: T;
+    expanded: boolean;
   }
 }

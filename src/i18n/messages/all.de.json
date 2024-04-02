@@ -52,7 +52,10 @@
   "calendar": {
     "nextMonthAriaLabel": "Nächster Monat",
     "previousMonthAriaLabel": "Vorheriger Monat",
-    "todayAriaLabel": "Heute"
+    "todayAriaLabel": "Heute",
+    "i18nStrings.nextYearAriaLabel": "Nächstes Jahr",
+    "i18nStrings.previousYearAriaLabel": "Vorheriges Jahr",
+    "i18nStrings.currentMonthAriaLabel": "Aktueller Monat"
   },
   "cards": {
     "ariaLabels.selectionGroupLabel": "Elementauswahl"
@@ -135,7 +138,8 @@
     "i18nStrings.warningIconAriaLabel": "Warnung"
   },
   "form-field": {
-    "i18nStrings.errorIconAriaLabel": "Fehler"
+    "i18nStrings.errorIconAriaLabel": "Fehler",
+    "i18nStrings.warningIconAriaLabel": "Warnung"
   },
   "form": {
     "errorIconAriaLabel": "Fehler"
@@ -188,13 +192,14 @@
     "i18nStrings.operatorLessOrEqualText": "Ist kleiner als oder gleich",
     "i18nStrings.operatorLessText": "Ist kleiner als",
     "i18nStrings.operatorStartsWithText": "Beginnt mit",
+    "i18nStrings.operatorDoesNotStartWithText": "Beginnt nicht mit",
     "i18nStrings.operatorText": "Operator",
     "i18nStrings.operatorsText": "Operatoren",
     "i18nStrings.propertyText": "Eigenschaft",
     "i18nStrings.tokenLimitShowFewer": "Weniger anzeigen",
     "i18nStrings.tokenLimitShowMore": "Mehr anzeigen",
     "i18nStrings.valueText": "Wert",
-    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {Filter entfernen, {token__propertyKey} ist gleich {token__value}} not_equals {Filter entfernen, {token__propertyKey} ist nicht gleich {token__value}} greater_than {Filter entfernen, {token__propertyKey} ist größer als {token__value}} greater_than_equal {Filter entfernen, {token__propertyKey} ist größer oder gleich {token__value}} less_than {Filter entfernen, {token__propertyKey} ist kleiner als {token__value}} less_than_equal {Filter entfernen, {token__propertyKey} ist kleiner als oder gleich {token__value}} contains {Filter entfernen, {token__propertyKey} enthält {token__value}} not_contains {Filter entfernen, {token__propertyKey} enthält nicht {token__value}} starts_with {Filter entfernen, {token__propertyKey} beginnt mit {token__value}} other {}}"
+    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {Filter entfernen, {token__propertyKey} ist gleich {token__value}} not_equals {Filter entfernen, {token__propertyKey} ist nicht gleich {token__value}} greater_than {Filter entfernen, {token__propertyKey} ist größer als {token__value}} greater_than_equal {Filter entfernen, {token__propertyKey} ist größer oder gleich {token__value}} less_than {Filter entfernen, {token__propertyKey} ist kleiner als {token__value}} less_than_equal {Filter entfernen, {token__propertyKey} ist kleiner als oder gleich {token__value}} contains {Filter entfernen, {token__propertyKey} enthält {token__value}} not_contains {Filter entfernen, {token__propertyKey} enthält nicht {token__value}} starts_with {Filter entfernen, {token__propertyKey} beginnt mit {token__value}} not_starts_with {Filter entfernen, {token__propertyKey} beginnt nicht mit {token__value}} other {}}"
   },
   "s3-resource-selector": {
     "i18nStrings.inContextSelectPlaceholder": "Version auswählen",
@@ -204,7 +209,7 @@
     "i18nStrings.inContextLoadingText": "Ressourcen werden geladen",
     "i18nStrings.inContextUriLabel": "S3-URI",
     "i18nStrings.inContextVersionSelectLabel": "Objektversion auswählen",
-    "i18nStrings.modalTitle": "Ein Archiv in S3 auswählen",
+    "i18nStrings.modalTitle": "Wählen Sie ein Objekt in S3",
     "i18nStrings.modalCancelButton": "Abbrechen",
     "i18nStrings.modalSubmitButton": "Auswählen",
     "i18nStrings.modalBreadcrumbRootItem": "S3-Buckets",
@@ -273,6 +278,8 @@
     "ariaLabels.resizerRoleDescription": "Schaltfläche für die Größenänderung",
     "ariaLabels.submittingEditText": "Bearbeitung wird gesendet",
     "ariaLabels.successfulEditLabel": "Bearbeitung erfolgreich",
+    "ariaLabels.expandButtonLabel": "Erweitern",
+    "ariaLabels.collapseButtonLabel": "Minimieren",
     "columnDefinitions.editConfig.errorIconAriaLabel": "Fehler",
     "columnDefinitions.editConfig.editIconAriaLabel": "bearbeitbar"
   },

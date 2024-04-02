@@ -52,7 +52,10 @@
   "calendar": {
     "nextMonthAriaLabel": "来月",
     "previousMonthAriaLabel": "前月",
-    "todayAriaLabel": "今日"
+    "todayAriaLabel": "今日",
+    "i18nStrings.nextYearAriaLabel": "翌年",
+    "i18nStrings.previousYearAriaLabel": "前年",
+    "i18nStrings.currentMonthAriaLabel": "当月"
   },
   "cards": {
     "ariaLabels.selectionGroupLabel": "項目の選択"
@@ -135,7 +138,8 @@
     "i18nStrings.warningIconAriaLabel": "警告"
   },
   "form-field": {
-    "i18nStrings.errorIconAriaLabel": "エラー"
+    "i18nStrings.errorIconAriaLabel": "エラー",
+    "i18nStrings.warningIconAriaLabel": "警告"
   },
   "form": {
     "errorIconAriaLabel": "エラー"
@@ -188,13 +192,14 @@
     "i18nStrings.operatorLessOrEqualText": "次以下",
     "i18nStrings.operatorLessText": "次より少ない",
     "i18nStrings.operatorStartsWithText": "次で始まる:",
+    "i18nStrings.operatorDoesNotStartWithText": "次始まらない:",
     "i18nStrings.operatorText": "演算子",
     "i18nStrings.operatorsText": "演算子",
     "i18nStrings.propertyText": "プロパティ",
     "i18nStrings.tokenLimitShowFewer": "少なく表示",
     "i18nStrings.tokenLimitShowMore": "さらに表示",
     "i18nStrings.valueText": "値",
-    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {フィルターを削除、{token__propertyKey} は {token__value} と等しい} not_equals {フィルターを削除、{token__propertyKey} は {token__value} と等しくない} greater_than {フィルターを削除、{token__propertyKey} は {token__value} より大きい} greater_than_equal {フィルターを削除、{token__propertyKey} は {token__value} 以上} less_than {フィルターを削除、{token__propertyKey} は {token__value} 未満} less_than_equal {フィルターを削除、{token__propertyKey} は {token__value} 以下} contains {フィルターを削除、{token__propertyKey} は {token__value} を含む} not_contains {フィルターを削除、{token__propertyKey} は {token__value} を含まない} starts_with {フィルターを削除、{token__propertyKey} は {token__value} で始まる} other {}}"
+    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {フィルターを削除、{token__propertyKey} は {token__value} と等しい} not_equals {フィルターを削除、{token__propertyKey} は {token__value} と等しくない} greater_than {フィルターを削除、{token__propertyKey} は {token__value} より大きい} greater_than_equal {フィルターを削除、{token__propertyKey} は {token__value} 以上} less_than {フィルターを削除、{token__propertyKey} は {token__value} 未満} less_than_equal {フィルターを削除、{token__propertyKey} は {token__value} 以下} contains {フィルターを削除、{token__propertyKey} は {token__value} を含む} not_contains {フィルターを削除、{token__propertyKey} は {token__value} を含まない} starts_with {フィルターを削除、{token__propertyKey} は {token__value} で始まる} not_starts_with {フィルターを削除、{token__propertyKey} は {token__value} で始まらない} other {}}"
   },
   "s3-resource-selector": {
     "i18nStrings.inContextSelectPlaceholder": "バージョンを選択してください",
@@ -204,7 +209,7 @@
     "i18nStrings.inContextLoadingText": "リソースのロード中",
     "i18nStrings.inContextUriLabel": "S3 URI",
     "i18nStrings.inContextVersionSelectLabel": "オブジェクトのバージョン",
-    "i18nStrings.modalTitle": "S3 のアーカイブを選択",
+    "i18nStrings.modalTitle": "S3 のオブジェクトを選択",
     "i18nStrings.modalCancelButton": "キャンセル",
     "i18nStrings.modalSubmitButton": "選択",
     "i18nStrings.modalBreadcrumbRootItem": "S3 バケット",
@@ -273,6 +278,8 @@
     "ariaLabels.resizerRoleDescription": "[サイズを変更] ボタン",
     "ariaLabels.submittingEditText": "編集を送信中",
     "ariaLabels.successfulEditLabel": "編集に成功しました",
+    "ariaLabels.expandButtonLabel": "展開する",
+    "ariaLabels.collapseButtonLabel": "折りたたむ",
     "columnDefinitions.editConfig.errorIconAriaLabel": "エラー",
     "columnDefinitions.editConfig.editIconAriaLabel": "編集可能"
   },

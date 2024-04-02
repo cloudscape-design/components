@@ -37,6 +37,9 @@ export function getMatchesCountText(count: number) {
   return count === 1 ? `1 match` : `${count} matches`;
 }
 
+export const renderAriaLive: TableProps['renderAriaLive'] = ({ firstIndex, lastIndex, totalItemsCount }) =>
+  `Displaying items ${firstIndex} to ${lastIndex} of ${totalItemsCount}`;
+
 export const stateToStatusIndicator: Record<InstanceState, StatusIndicatorProps> = {
   PENDING: { type: 'pending', children: 'Pending' },
   RUNNING: { type: 'success', children: 'Running' },
@@ -53,7 +56,7 @@ export const selectionLabels: TableProps<Instance>['ariaLabels'] = {
     `${item.id} is ${selectedItems.indexOf(item) < 0 ? 'not ' : ''}selected`,
 };
 
-const columnLabel = (column: string) => (sortState: TableProps.LabelData) => {
+export const columnLabel = (column: string) => (sortState: TableProps.LabelData) => {
   const ascending = !sortState.descending;
   return `${column}, ${sortState.sorted ? `sorted ${ascending ? 'ascending' : 'descending'}` : 'not sorted'}.`;
 };

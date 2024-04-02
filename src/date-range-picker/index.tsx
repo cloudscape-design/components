@@ -16,7 +16,7 @@ import Dropdown from '../internal/components/dropdown';
 import { useFocusTracker } from '../internal/hooks/use-focus-tracker';
 import { useMobile } from '../internal/hooks/use-mobile';
 import ButtonTrigger from '../internal/components/button-trigger';
-import { FormFieldContext, useFormFieldContext } from '../internal/context/form-field-context';
+import { useFormFieldContext } from '../internal/context/form-field-context';
 import InternalIcon from '../icon/internal';
 import { normalizeTimeOffset, shiftTimeOffset } from './time-offset';
 import useBaseComponent from '../internal/hooks/use-base-component';
@@ -30,15 +30,27 @@ import { joinStrings } from '../internal/utils/strings/join-strings';
 import { formatDateRange, isIsoDateOnly } from '../internal/utils/date-time';
 import { useInternalI18n } from '../i18n/context';
 import { formatValue } from './utils';
+import ResetContextsForModal from '../internal/context/reset-contexts-for-modal.js';
 
 export { DateRangePickerProps };
 
-function renderDateRange(
-  range: null | DateRangePickerProps.Value,
-  placeholder: string,
-  formatRelativeRange: DateRangePickerProps.I18nStrings['formatRelativeRange'],
-  timeOffset: { startDate?: number; endDate?: number }
-) {
+function renderDateRange({
+  locale,
+  range,
+  placeholder = '',
+  formatRelativeRange,
+  absoluteFormat,
+  hideTimeOffset,
+  timeOffset,
+}: {
+  locale?: string;
+  range: null | DateRangePickerProps.Value;
+  placeholder?: string;
+  formatRelativeRange: DateRangePickerProps.I18nStrings['formatRelativeRange'];
+  absoluteFormat: DateRangePickerProps.AbsoluteFormat;
+  hideTimeOffset?: boolean;
+  timeOffset: { startDate?: number; endDate?: number };
+}) {
   if (!range) {
     return (
       <span className={styles['label-text']} aria-disabled={true}>
@@ -51,7 +63,16 @@ function renderDateRange(
     range.type === 'relative' ? (
       formatRelativeRange?.(range) ?? ''
     ) : (
-      <BreakSpaces text={formatDateRange(range.startDate, range.endDate, timeOffset)} />
+      <BreakSpaces
+        text={formatDateRange({
+          startDate: range.startDate,
+          endDate: range.endDate,
+          timeOffset,
+          hideTimeOffset,
+          format: absoluteFormat,
+          locale,
+        })}
+      />
     );
 
   return (
@@ -106,11 +127,23 @@ const DateRangePicker = React.forwardRef(
       expandToViewport = false,
       rangeSelectorMode = 'default',
       customAbsoluteRangeControl,
+      absoluteFormat = 'iso',
+      hideTimeOffset,
       ...rest
     }: DateRangePickerProps,
     ref: Ref<DateRangePickerProps.Ref>
   ) => {
-    const { __internalRootRef } = useBaseComponent('DateRangePicker');
+    const { __internalRootRef } = useBaseComponent('DateRangePicker', {
+      props: {
+        absoluteFormat,
+        dateOnly,
+        expandToViewport,
+        rangeSelectorMode,
+        readOnly,
+        showClearButton,
+        timeInputFormat,
+      },
+    });
     checkControlled('DateRangePicker', 'value', value, 'onChange', onChange);
 
     const normalizedTimeOffset = normalizeTimeOffset(value, getTimeOffset, timeOffset);
@@ -228,6 +261,16 @@ const DateRangePicker = React.forwardRef(
       }
     }
 
+    const formattedDate: string | JSX.Element = renderDateRange({
+      locale: normalizedLocale,
+      range: value,
+      placeholder,
+      formatRelativeRange,
+      absoluteFormat,
+      hideTimeOffset,
+      timeOffset: normalizedTimeOffset,
+    });
+
     const trigger = (
       <div className={styles['trigger-wrapper']}>
         <ButtonTrigger
@@ -254,9 +297,7 @@ const DateRangePicker = React.forwardRef(
             <span className={styles['icon-wrapper']}>
               <InternalIcon name="calendar" variant={disabled || readOnly ? 'disabled' : 'normal'} />
             </span>
-            <span id={triggerContentId}>
-              {renderDateRange(value, placeholder ?? '', formatRelativeRange, normalizedTimeOffset)}
-            </span>
+            <span id={triggerContentId}>{formattedDate}</span>
           </span>
         </ButtonTrigger>
       </div>
@@ -268,7 +309,11 @@ const DateRangePicker = React.forwardRef(
       <div
         {...baseProps}
         ref={mergedRef}
-        className={clsx(baseProps.className, styles.root)}
+        className={clsx(
+          baseProps.className,
+          styles.root,
+          absoluteFormat === 'long-localized' && !dateOnly && styles.wide
+        )}
         onKeyDown={onWrapperKeyDownHandler}
       >
         <Dropdown
@@ -282,7 +327,7 @@ const DateRangePicker = React.forwardRef(
           dropdownId={dropdownId}
         >
           {/* Reset form field context to prevent a wrapper form field from labelling all inputs inside the dropdown. */}
-          <FormFieldContext.Provider value={{}}>
+          <ResetContextsForModal>
             {isDropDownOpen && (
               <DateRangePickerDropdown
                 startOfWeek={startOfWeek}
@@ -305,7 +350,7 @@ const DateRangePicker = React.forwardRef(
                 customAbsoluteRangeControl={customAbsoluteRangeControl}
               />
             )}
-          </FormFieldContext.Provider>
+          </ResetContextsForModal>
         </Dropdown>
       </div>
     );

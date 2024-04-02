@@ -19,11 +19,11 @@ $checkbox-size: awsui.$size-control;
 
   > .checkbox {
     position: relative;
-    min-height: $checkbox-size;
-    min-width: $checkbox-size;
-    height: $checkbox-size;
-    width: $checkbox-size;
-    margin-right: styles.$control-padding-horizontal;
+    min-block-size: $checkbox-size;
+    min-inline-size: $checkbox-size;
+    block-size: $checkbox-size;
+    inline-size: $checkbox-size;
+    margin-inline-end: styles.$control-padding-horizontal;
   }
 }
 
@@ -40,7 +40,7 @@ $checkbox-size: awsui.$size-control;
 }
 
 .layout-strut {
-  width: 100%;
+  inline-size: 100%;
   position: relative;
   // Prevent incorrect layer ordering in Safari by making sure
   // this element is also offloaded to the GPU along with the virtual items
@@ -56,14 +56,14 @@ $checkbox-size: awsui.$size-control;
 }
 
 .show-label-tag > .selected-icon {
-  padding-left: awsui.$space-scaled-s;
+  padding-inline-start: awsui.$space-scaled-s;
 }
 
 .inline-token-trigger {
   display: flex;
   flex-wrap: nowrap;
   column-gap: awsui.$space-xxs;
-  width: 100%;
+  inline-size: 100%;
 }
 
 .inline-token-list {
@@ -71,28 +71,40 @@ $checkbox-size: awsui.$size-control;
   flex-wrap: nowrap;
   align-items: center;
   gap: awsui.$space-xxs;
-  width: 100%;
+  inline-size: 100%;
   overflow-x: hidden;
 
   // Fade out any overflow tokens
   mask-image: linear-gradient(270deg, transparent, white 20px, white);
 
+  @include styles.with-direction('rtl') {
+    mask-image: linear-gradient(-270deg, transparent, white 20px, white);
+  }
+
   > .inline-token {
     display: flex;
     align-items: center;
-    min-width: max-content;
-    height: 18px;
+    min-inline-size: max-content;
+    block-size: 18px;
 
-    border: awsui.$border-field-width solid awsui.$color-border-item-selected;
-    padding: 0 awsui.$space-xxs;
+    border-block: awsui.$border-field-width solid awsui.$color-border-item-selected;
+    border-inline: awsui.$border-field-width solid awsui.$color-border-item-selected;
+    padding-block: 0;
+    padding-inline: awsui.$space-xxs;
     background: awsui.$color-background-item-selected;
-    border-radius: awsui.$border-radius-token;
+    border-start-start-radius: awsui.$border-radius-token;
+    border-start-end-radius: awsui.$border-radius-token;
+    border-end-start-radius: awsui.$border-radius-token;
+    border-end-end-radius: awsui.$border-radius-token;
     color: awsui.$color-text-body-default;
   }
 }
 
 .visual-refresh > .inline-token-list > .inline-token {
-  border-radius: awsui.$border-radius-badge;
+  border-start-start-radius: awsui.$border-radius-badge;
+  border-start-end-radius: awsui.$border-radius-badge;
+  border-end-start-radius: awsui.$border-radius-badge;
+  border-end-end-radius: awsui.$border-radius-badge;
 }
 
 .inline-token-hidden-placeholder {

@@ -133,6 +133,7 @@ export function TabHeaderBar({
             variant="icon"
             iconName="angle-left"
             disabled={!leftOverflow}
+            __focusable={true}
             onClick={() => onPaginationClick(headerBarRef, -1)}
             ariaLabel={i18n('i18nStrings.scrollLeftAriaLabel', i18nStrings?.scrollLeftAriaLabel)}
           />
@@ -155,6 +156,7 @@ export function TabHeaderBar({
             variant="icon"
             iconName="angle-right"
             disabled={!rightOverflow}
+            __focusable={true}
             onClick={() => onPaginationClick(headerBarRef, 1)}
             ariaLabel={i18n('i18nStrings.scrollRightAriaLabel', i18nStrings?.scrollRightAriaLabel)}
           />

@@ -13,19 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # ------- Setup -----------------------------------------------------
-      - uses: actions/github-script@v7
-        name: Create a pending status on the commit
-        with:
-          script: |
-            await github.rest.repos.createCommitStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              sha: context.payload.pull_request.head.sha,
-              context: "Bundle size",
-              state: 'pending',
-              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
-            })
-
       - name: Checkout the PR branch
         uses: actions/checkout@v4
         with:
@@ -37,29 +24,12 @@ jobs:
           cd bundle-size
           npm i --force
 
-      # ------- Baseline size measurement ---------------------------------
-
-      - name: Restore the cache for the baseline size measurement
-        uses: actions/cache/restore@v3
-        id: restore-cache-baseline
+      - uses: actions/github-script@v7
+        name: Create a pending status on the commit
         with:
-          path: bundle-size/output-baseline.txt
-          key: bundlesize-${{ hashFiles('bundle-size/build.js','bundle-size/index.html','bundle-size/main.jsx','bundle-size/package-lock.json','bundle-size/package.json') }}
-
-      - name: Measure the baseline size of the Vite project
-        if: steps.restore-cache-baseline.outputs.cache-hit != 'true'
-        run: |
-          cd bundle-size
-          npm run build
-          mv output.txt output-baseline.txt
-          cat output-baseline.txt
-
-      - name: Cache the baseline size
-        uses: actions/cache/save@v3
-        if: steps.restore-cache-baseline.outputs.cache-hit != 'true'
-        with:
-          path: bundle-size/output-baseline.txt
-          key: ${{ steps.restore-cache-baseline.outputs.cache-primary-key }}
+          script: |
+            const { statusReportStart } = await import(process.cwd() + '/bundle-size/status-report.js');
+            await statusReportStart({ context, github });
 
       # ------- Base branch size measurement ------------------------------
 
@@ -69,35 +39,17 @@ jobs:
           ref: ${{ github.event.pull_request.base.sha }}
           path: 'components'
 
-      - name: Restore the cache for the base branch size measurement
-        uses: actions/cache/restore@v3
-        id: restore-cache-basebranch
-        with:
-          path: bundle-size/output-basebranch.txt
-          key: bundlesize-${{ hashFiles('bundle-size/build.js','bundle-size/index.html','bundle-size/main-with-cloudscape.jsx','bundle-size/package-lock.json','bundle-size/package.json') }}-${{ github.event.pull_request.base.sha }}
-
       - name: Measure the bundle size of the base branch
-        if: steps.restore-cache-basebranch.outputs.cache-hit != 'true'
         run: |
           cd components
           npm i --force
           npm run quick-build
 
           cd ../bundle-size
-          rm -rf node_modules/@cloudscape-design/components
-          cp -r $GITHUB_WORKSPACE/components/lib/components node_modules/@cloudscape-design/components
-          cp main-with-cloudscape.jsx main.jsx
           npm run build
 
-          mv output.txt output-basebranch.txt
-          cat output-basebranch.txt
-
-      - name: Cache the base branch size
-        uses: actions/cache/save@v3
-        if: steps.restore-cache-basebranch.outputs.cache-hit != 'true'
-        with:
-          path: bundle-size/output-basebranch.txt
-          key: ${{ steps.restore-cache-basebranch.outputs.cache-primary-key }}
+          mv output.json output-basebranch.json
+          cat output-basebranch.json
 
       # ------- Pull request size measurement -----------------------------
 
@@ -107,49 +59,30 @@ jobs:
           path: 'components'
 
       - name: Measure the bundle size of this PR
+        id: measure
         run: |
           cd components
           npm i --force
           npm run quick-build
 
           cd ../bundle-size
-          rm -rf node_modules/@cloudscape-design/components
-          cp -r $GITHUB_WORKSPACE/components/lib/components node_modules/@cloudscape-design/components
-          cp main-with-cloudscape.jsx main.jsx
           npm run build
 
-          mv output.txt output-pr.txt
-          cat output-pr.txt
+          mv output.json output-pr.json
+          cat output-pr.json
+
+      - name: Upload size report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: size-report
+          path: bundle-size/output-pr.json
 
       - name: Update the commit status with calculated results
         uses: actions/github-script@v7
         with:
           script: |
-            const readFileSync = require('node:fs').readFileSync;
-
-            const baseline = Number(readFileSync("./bundle-size/output-baseline.txt", "utf8"));
-            const basebranch = Number(readFileSync("./bundle-size/output-basebranch.txt", "utf8")) - baseline;
-            const pr = Number(readFileSync("./bundle-size/output-pr.txt", "utf8")) - baseline;
-
-            console.log("Baseline:", baseline)
-            console.log("Base branch (vs baseline):", basebranch);
-            console.log("This PR (vs baseline):", pr);
-
-            const increasePercent = (((pr - basebranch) / basebranch) * 100).toFixed(2)
-            const increaseKb = ((pr - basebranch) / 1000).toFixed(1);
-            const sign = pr > basebranch ? "+" : "";
-
-            const message = `${(pr / 1000).toFixed(1)} KB (${sign}${increasePercent} % / ${sign}${increaseKb} KB in this pull request)`
-
-            await github.rest.repos.createCommitStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              sha: context.payload.pull_request.head.sha,
-              context: "Bundle size",
-              state: 'success',
-              description: message,
-              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
-            })
+            const { statusReportSuccess } = await import(process.cwd() + '/bundle-size/status-report.js');
+            await statusReportSuccess({ context, github });
 
       # ------- Error reporting -------------------------------------------
 
@@ -158,12 +91,5 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            await github.rest.repos.createCommitStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              sha: context.payload.pull_request.head.sha,
-              context: "Bundle size",
-              state: 'error',
-              description: "The workflow encountered an error.",
-              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
-            })
+            const { statusReportFailure } = await import(process.cwd() + '/bundle-size/status-report.js');
+            await statusReportFailure({ context, github });

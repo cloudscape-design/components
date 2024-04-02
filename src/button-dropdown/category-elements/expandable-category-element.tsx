@@ -20,6 +20,7 @@ const ExpandableCategoryElement = ({
   isHighlighted,
   isKeyboardHighlight,
   isExpanded,
+  lastInDropdown,
   highlightItem,
   disabled,
   expandToViewport,
@@ -95,7 +96,11 @@ const ExpandableCategoryElement = ({
         trigger={trigger}
       >
         {item.items && expanded && (
-          <ul role="menu" aria-label={item.text} className={clsx(styles['items-list-container'])}>
+          <ul
+            role="menu"
+            aria-label={item.text}
+            className={clsx(styles['items-list-container'], styles['in-dropdown'])}
+          >
             <ItemsList
               items={item.items}
               onItemActivate={onItemActivate}
@@ -104,6 +109,7 @@ const ExpandableCategoryElement = ({
               isHighlighted={isHighlighted}
               isKeyboardHighlight={isKeyboardHighlight}
               isExpanded={isExpanded}
+              lastInDropdown={lastInDropdown}
               highlightItem={highlightItem}
               variant={variant}
             />

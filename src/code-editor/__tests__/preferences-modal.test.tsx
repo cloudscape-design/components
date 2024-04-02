@@ -6,16 +6,20 @@ import { i18nStrings } from './common';
 import { renderCodeEditor } from './util';
 
 function submitPreferences() {
-  screen.getByText(i18nStrings.preferencesModalConfirm).click();
+  screen.getByText(i18nStrings.preferencesModalConfirm!).click();
 }
 
 function cancelPreferences() {
-  screen.getByText(i18nStrings.preferencesModalCancel).click();
+  screen.getByText(i18nStrings.preferencesModalCancel!).click();
 }
 
 function findWrapLinesCheckbox() {
   return createWrapper().findModal()!.findContent().findCheckbox()!;
 }
+
+afterEach(() => {
+  jest.clearAllMocks();
+});
 
 test('should not render modal when preferences are not displayed', () => {
   const { wrapper } = renderCodeEditor({});
@@ -63,12 +67,20 @@ test('should change syntax theme preference via modal', () => {
   expect(onPreferencesChange).toHaveBeenCalledWith({ theme: 'chrome', wrapLines: true });
 });
 
-test('renders all themes by default', () => {
+test('renders all themes by default except cloud editor themes if not supported', () => {
   const { wrapper } = renderCodeEditor();
   wrapper.findSettingsButton()!.click();
   const select = createWrapper().findModal()!.findContent().findSelect()!;
   select.openDropdown();
   expect(select.findDropdown().findOptions()).toHaveLength(38);
+});
+
+test('renders cloud editor theme if provided', () => {
+  const { wrapper } = renderCodeEditor({ themes: { light: ['cloud_editor'], dark: ['cloud_editor_dark'] } });
+  wrapper.findSettingsButton()!.click();
+  const select = createWrapper().findModal()!.findContent().findSelect()!;
+  select.openDropdown();
+  expect(select.findDropdown().findOptions()).toHaveLength(2);
 });
 
 test('should allow limiting themes selection via property', () => {

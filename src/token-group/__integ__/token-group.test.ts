@@ -56,11 +56,34 @@ describe('Keyboard interaction', () => {
     );
   });
   test(
-    'should not focus on a dismiss button of a disabled token when tabbing',
+    'should focus a dismiss button of a disabled token when tabbing',
     setupTest(async page => {
       await page.resetFocus();
       await page.keys(['Tab', 'Tab']);
+      await expect(page.getActiveElementAttribute('aria-label')).resolves.toBe('Remove item 2');
+    })
+  );
+
+  test(
+    'should focus on a dismiss button of a token when tabbing over a disabled token',
+    setupTest(async page => {
+      await page.resetFocus();
+      await page.keys(['Tab', 'Tab', 'Tab']);
       await expect(page.getActiveElementAttribute('aria-label')).resolves.toBe('Remove item 3');
+    })
+  );
+
+  test(
+    'should not fire the dismiss event when pressing the dismiss button of a disabled token',
+    setupTest(async page => {
+      await page.resetFocus();
+      await page.keys(['Tab', 'Tab']);
+      await expect(page.getActiveElementAttribute('aria-label')).resolves.toBe('Remove item 2');
+
+      // Click the disabled token's removal button and verify token did not get removed:
+      await expect(page.countItems()).resolves.toBe(3);
+      await page.keys(['Enter']);
+      await expect(page.countItems()).resolves.toBe(3);
     })
   );
 });

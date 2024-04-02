@@ -19,8 +19,6 @@ function compileTypescript(theme) {
         '--declarationMap',
         '--sourceMap',
         '--inlineSources',
-        '--sourceRoot',
-        `lib/${theme.name}`,
       ],
       {
         stdio: 'inherit',

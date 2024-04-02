@@ -9,11 +9,13 @@
 .item-element {
   position: relative;
   z-index: 1;
-  border: awsui.$border-item-width solid transparent;
+  border-block: awsui.$border-item-width solid transparent;
+  border-inline: awsui.$border-item-width solid transparent;
   list-style: none;
-  padding: 0;
+  padding-block: 0;
+  padding-inline: 0;
   color: awsui.$color-text-dropdown-item-default;
-  margin-top: calc(-1 * #{styles.$control-border-width});
+  margin-block-start: calc(-1 * #{styles.$control-border-width});
   cursor: pointer;
 
   &.disabled {
@@ -21,10 +23,10 @@
     color: awsui.$color-text-dropdown-item-disabled;
   }
   &:first-child {
-    margin-top: 0;
+    margin-block-start: 0;
   }
-  &.last {
-    border-bottom: awsui.$border-item-width solid awsui.$color-border-dropdown-group;
+  &.show-divider {
+    border-block-end: awsui.$border-item-width solid awsui.$color-border-dropdown-group;
   }
   &.highlighted {
     color: awsui.$color-text-dropdown-item-highlighted;
@@ -36,7 +38,10 @@
     &.variant-primary {
       background-color: awsui.$color-background-dropdown-item-hover;
       border-color: awsui.$color-border-dropdown-item-hover;
-      border-radius: awsui.$border-radius-item;
+      border-start-start-radius: awsui.$border-radius-item;
+      border-start-end-radius: awsui.$border-radius-item;
+      border-end-start-radius: awsui.$border-radius-item;
+      border-end-end-radius: awsui.$border-radius-item;
 
       &.disabled {
         color: awsui.$color-text-dropdown-item-dimmed;
@@ -58,18 +63,17 @@
 
     // Additional spacing for groups of items
     &.first:not(.has-category-header) {
-      padding-top: styles.$option-padding-vertical;
+      padding-block-start: styles.$option-padding-vertical;
     }
     &.last {
-      padding-bottom: styles.$option-padding-vertical;
+      padding-block-end: styles.$option-padding-vertical;
     }
     &.first.last {
-      padding-bottom: styles.$option-padding-vertical;
-      padding-top: styles.$option-padding-vertical;
+      padding-block: styles.$option-padding-vertical;
     }
     // Additional spacing for the very last item in the list
     &.last:last-child {
-      padding-bottom: styles.$option-padding-vertical;
+      padding-block-end: styles.$option-padding-vertical;
     }
   }
 }
@@ -78,7 +82,8 @@
   @include styles.text-wrapping;
   display: flex;
   align-items: flex-start;
-  padding: styles.$option-padding-vertical awsui.$space-button-horizontal;
+  padding-block: styles.$option-padding-vertical;
+  padding-inline: awsui.$space-button-horizontal;
   color: inherit;
   text-decoration: none;
 
@@ -89,15 +94,15 @@
   /* stylelint-disable-next-line selector-max-type */
   .has-category-header > &,
   .has-category-header > span > & {
-    padding-left: calc(#{awsui.$space-s} + #{awsui.$space-button-horizontal});
+    padding-inline-start: calc(#{awsui.$space-s} + #{awsui.$space-button-horizontal});
   }
 }
 
 .icon {
-  padding-right: awsui.$space-xs;
+  padding-inline-end: awsui.$space-xs;
   flex-shrink: 0;
 }
 
 .external-icon {
-  margin-left: awsui.$space-xxs;
+  margin-inline-start: awsui.$space-xxs;
 }

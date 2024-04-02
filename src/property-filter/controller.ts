@@ -8,6 +8,7 @@ import {
   I18nStrings,
   InternalFilteringOption,
   InternalFilteringProperty,
+  InternalFreeTextFiltering,
   JoinOperation,
   ParsedText,
   Query,
@@ -15,7 +16,7 @@ import {
 } from './interfaces';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { AutosuggestProps } from '../autosuggest/interfaces';
-import { matchFilteringProperty, matchOperator, matchOperatorPrefix, trimFirstSpace, trimStart } from './utils';
+import { matchFilteringProperty, matchOperator, matchOperatorPrefix, removeOperator, trimStart } from './utils';
 import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 
 export const getQueryActions = (
@@ -61,7 +62,7 @@ export const getQueryActions = (
 
 export const getAllowedOperators = (property: InternalFilteringProperty): ComparisonOperator[] => {
   const { operators = [], defaultOperator } = property;
-  const operatorOrder = ['=', '!=', ':', '!:', '^', '>=', '<=', '<', '>'] as const;
+  const operatorOrder = ['=', '!=', ':', '!:', '^', '!^', '>=', '<=', '<', '>'] as const;
   const operatorSet = new Set([defaultOperator, ...operators]);
   return operatorOrder.filter(op => operatorSet.has(op));
 };
@@ -75,19 +76,26 @@ export const getAllowedOperators = (property: InternalFilteringProperty): Compar
 export const parseText = (
   filteringText: string,
   filteringProperties: readonly InternalFilteringProperty[],
-  disableFreeTextFiltering: boolean
+  freeTextFiltering: InternalFreeTextFiltering
 ): ParsedText => {
-  const negatedGlobalQuery = /^(!:|!)(.*)/.exec(filteringText);
-  if (!disableFreeTextFiltering && negatedGlobalQuery) {
-    return {
-      step: 'free-text',
-      operator: '!:',
-      value: negatedGlobalQuery[2],
-    };
-  }
-
   const property = matchFilteringProperty(filteringProperties, filteringText);
   if (!property) {
+    if (!freeTextFiltering.disabled) {
+      // For free text filtering, we allow ! as a shortcut for !:
+      const freeTextOperators =
+        freeTextFiltering.operators.indexOf('!:') >= 0
+          ? ['!', ...freeTextFiltering.operators]
+          : freeTextFiltering.operators;
+      const operator = matchOperator(freeTextOperators, filteringText);
+      if (operator) {
+        return {
+          step: 'free-text',
+          operator: operator === '!' ? '!:' : operator,
+          value: removeOperator(filteringText, operator),
+        };
+      }
+    }
+
     return {
       step: 'free-text',
       value: filteringText,
@@ -99,14 +107,12 @@ export const parseText = (
   const textWithoutProperty = filteringText.substring(property.propertyLabel.length);
   const operator = matchOperator(allowedOps, trimStart(textWithoutProperty));
   if (operator) {
-    const operatorLastIndex = textWithoutProperty.indexOf(operator) + operator.length;
-    const textWithoutPropertyAndOperator = textWithoutProperty.slice(operatorLastIndex);
-    // We need to remove the first leading space in case the user presses space
-    // after the operator, for example: Owner: admin, will result in value of ` admin`
-    // and we need to remove the first space, if the user added any more spaces only the
-    // first one will be removed.
-    const value = trimFirstSpace(textWithoutPropertyAndOperator);
-    return { step: 'property', property, operator, value };
+    return {
+      step: 'property',
+      property,
+      operator,
+      value: removeOperator(textWithoutProperty, operator),
+    };
   }
 
   const operatorPrefix = matchOperatorPrefix(allowedOps, trimStart(textWithoutProperty));
@@ -323,6 +329,8 @@ export const operatorToDescription = (operator: ComparisonOperator, i18nStrings:
       return i18nStrings.operatorDoesNotEqualText;
     case '^':
       return i18nStrings.operatorStartsWithText;
+    case '!^':
+      return i18nStrings.operatorDoesNotStartWithText;
     // The line is ignored from coverage because it is not reachable.
     // The purpose of it is to prevent TS errors if ComparisonOperator type gets extended.
     /* istanbul ignore next */

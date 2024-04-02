@@ -1,12 +1,20 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Button from '~components/button';
 import Box from '~components/box';
 import Header from '~components/header';
 import Input from '~components/input';
 import Table, { TableProps } from '~components/table';
 import ScreenshotArea from '../utils/screenshot-area';
+import AppContext, { AppContextType } from '../app/app-context';
+import { Checkbox, SpaceBetween } from '~components';
+
+type PageContext = React.Context<
+  AppContextType<{
+    enableKeyboardNavigation: boolean;
+  }>
+>;
 
 const COLUMN_COUNT = 100;
 
@@ -49,9 +57,11 @@ const columnDefinitions: Array<TableProps.ColumnDefinition<Item>> = [...new Arra
 
 export default function App() {
   const [isActive, setIsActive] = useState(false);
+  const { urlParams, setUrlParams } = useContext(AppContext as PageContext);
   return (
     <ScreenshotArea>
       <h1>Table performance test</h1>
+
       {isActive ? (
         <Table
           columnDefinitions={columnDefinitions}
@@ -71,17 +81,27 @@ export default function App() {
             </Box>
           }
           header={<Header>Table with inline editing</Header>}
+          enableKeyboardNavigation={urlParams.enableKeyboardNavigation}
         />
       ) : (
-        <Button
-          onClick={() => {
-            setIsActive(true);
-            console.time('render');
-            requestAnimationFrame(() => console.timeEnd('render'));
-          }}
-        >
-          Render Table
-        </Button>
+        <SpaceBetween size="s">
+          <Checkbox
+            checked={urlParams.enableKeyboardNavigation}
+            onChange={event => setUrlParams({ enableKeyboardNavigation: event.detail.checked })}
+          >
+            Keyboard navigation
+          </Checkbox>
+
+          <Button
+            onClick={() => {
+              setIsActive(true);
+              console.time('render');
+              requestAnimationFrame(() => console.timeEnd('render'));
+            }}
+          >
+            Render Table
+          </Button>
+        </SpaceBetween>
       )}
     </ScreenshotArea>
   );

@@ -52,7 +52,10 @@
   "calendar": {
     "nextMonthAriaLabel": "Próximo mês",
     "previousMonthAriaLabel": "Mês anterior",
-    "todayAriaLabel": "Hoje"
+    "todayAriaLabel": "Hoje",
+    "i18nStrings.nextYearAriaLabel": "Próximo ano",
+    "i18nStrings.previousYearAriaLabel": "Ano anterior",
+    "i18nStrings.currentMonthAriaLabel": "Mês atual"
   },
   "cards": {
     "ariaLabels.selectionGroupLabel": "Seleção de item"
@@ -135,7 +138,8 @@
     "i18nStrings.warningIconAriaLabel": "Aviso"
   },
   "form-field": {
-    "i18nStrings.errorIconAriaLabel": "Erro"
+    "i18nStrings.errorIconAriaLabel": "Erro",
+    "i18nStrings.warningIconAriaLabel": "Aviso"
   },
   "form": {
     "errorIconAriaLabel": "Erro"
@@ -188,13 +192,14 @@
     "i18nStrings.operatorLessOrEqualText": "Menor que ou igual a",
     "i18nStrings.operatorLessText": "Menor que",
     "i18nStrings.operatorStartsWithText": "Começa com",
+    "i18nStrings.operatorDoesNotStartWithText": "Não começa com",
     "i18nStrings.operatorText": "Operador",
     "i18nStrings.operatorsText": "Operadores",
     "i18nStrings.propertyText": "Propriedade",
     "i18nStrings.tokenLimitShowFewer": "Mostrar menos",
     "i18nStrings.tokenLimitShowMore": "Mostrar mais",
     "i18nStrings.valueText": "Valor",
-    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {Remover filtro, {token__propertyKey} é igual a {token__value}} not_equals {Remover filtro, {token__propertyKey} diferente de {token__value}} greater_than {Remover filtro, {token__propertyKey} é maior que {token__value}} greater_than_equal {Remover filtro, {token__propertyKey} é maior que ou igual a {token__value}} less_than {Remover filtro, {token__propertyKey} é menor que {token__value}} less_than_equal {Remover filtro, {token__propertyKey} é menor que ou igual a {token__value}} contains {Remove filtro, {token__propertyKey} contém {token__value}} not_contains {Remover filtro, {token__propertyKey} não contém {token__value}} starts_with {Remover filtro, {token__propertyKey} começa com {token__value}} other {}}"
+    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {Remover filtro, {token__propertyKey} é igual a {token__value}} not_equals {Remover filtro, {token__propertyKey} diferente de {token__value}} greater_than {Remover filtro, {token__propertyKey} é maior que {token__value}} greater_than_equal {Remover filtro, {token__propertyKey} é maior que ou igual a {token__value}} less_than {Remover filtro, {token__propertyKey} é menor que {token__value}} less_than_equal {Remover filtro, {token__propertyKey} é menor que ou igual a {token__value}} contains {Remove filtro, {token__propertyKey} contém {token__value}} not_contains {Remover filtro, {token__propertyKey} não contém {token__value}} starts_with {Remover filtro, {token__propertyKey} começa com {token__value}} not_starts_with {Remova o filtro, {token__propertyKey} não começa com {token__value}} other {}}"
   },
   "s3-resource-selector": {
     "i18nStrings.inContextSelectPlaceholder": "Escolher uma versão",
@@ -204,7 +209,7 @@
     "i18nStrings.inContextLoadingText": "Carregando recurso",
     "i18nStrings.inContextUriLabel": "URI do S3",
     "i18nStrings.inContextVersionSelectLabel": "Versão do objeto",
-    "i18nStrings.modalTitle": "Escolher um arquivo no S3",
+    "i18nStrings.modalTitle": "Escolha um objeto no S3",
     "i18nStrings.modalCancelButton": "Cancelar",
     "i18nStrings.modalSubmitButton": "Escolher",
     "i18nStrings.modalBreadcrumbRootItem": "Buckets do S3",
@@ -273,6 +278,8 @@
     "ariaLabels.resizerRoleDescription": "botão de redimensionamento",
     "ariaLabels.submittingEditText": "Envio de edição",
     "ariaLabels.successfulEditLabel": "A edição foi bem sucedida",
+    "ariaLabels.expandButtonLabel": "Expandir",
+    "ariaLabels.collapseButtonLabel": "Recolher",
     "columnDefinitions.editConfig.errorIconAriaLabel": "Erro",
     "columnDefinitions.editConfig.editIconAriaLabel": "editável"
   },

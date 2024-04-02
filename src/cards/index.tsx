@@ -31,6 +31,7 @@ import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
+import { shouldRemoveHighContrastHeader } from '../internal/utils/content-header-utils';
 
 export { CardsProps };
 
@@ -64,7 +65,9 @@ const Cards = React.forwardRef(function <T = any>(
   }: CardsProps<T>,
   ref: React.Ref<CardsProps.Ref>
 ) {
-  const { __internalRootRef } = useBaseComponent('Cards');
+  const { __internalRootRef } = useBaseComponent('Cards', {
+    props: { entireCardClickable, selectionType, stickyHeader, variant },
+  });
   const baseProps = getBaseProps(rest);
   const isRefresh = useVisualRefresh();
   const isMobile = useMobile();
@@ -147,7 +150,8 @@ const Cards = React.forwardRef(function <T = any>(
                   className={clsx(
                     styles.header,
                     isRefresh && styles['header-refresh'],
-                    styles[`header-variant-${computedVariant}`]
+                    styles[`header-variant-${computedVariant}`],
+                    shouldRemoveHighContrastHeader() && styles['remove-high-contrast-header']
                   )}
                 >
                   <CollectionLabelContext.Provider value={{ assignId: setHeaderRef }}>
@@ -166,7 +170,14 @@ const Cards = React.forwardRef(function <T = any>(
             __darkHeader={computedVariant === 'full-page'}
             __disableFooterDivider={true}
           >
-            <div className={clsx(hasToolsHeader && styles['has-header'])}>
+            <div
+              className={clsx(
+                hasToolsHeader && styles['has-header'],
+                isRefresh && styles.refresh,
+                styles[`header-variant-${computedVariant}`],
+                shouldRemoveHighContrastHeader() && styles['remove-high-contrast-header']
+              )}
+            >
               {!!renderAriaLive && !!firstIndex && (
                 <LiveRegion>
                   <span>

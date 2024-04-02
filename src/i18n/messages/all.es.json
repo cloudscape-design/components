@@ -52,7 +52,10 @@
   "calendar": {
     "nextMonthAriaLabel": "Próximo mes",
     "previousMonthAriaLabel": "Mes anterior",
-    "todayAriaLabel": "Hoy"
+    "todayAriaLabel": "Hoy",
+    "i18nStrings.nextYearAriaLabel": "Próximo año",
+    "i18nStrings.previousYearAriaLabel": "Año anterior",
+    "i18nStrings.currentMonthAriaLabel": "Mes actual"
   },
   "cards": {
     "ariaLabels.selectionGroupLabel": "Selección de elementos"
@@ -132,10 +135,11 @@
     "i18nStrings.notificationBarAriaLabel": "Todas las notificaciones",
     "i18nStrings.notificationBarText": "Notificaciones",
     "i18nStrings.successIconAriaLabel": "Éxito",
-    "i18nStrings.warningIconAriaLabel": "Aviso"
+    "i18nStrings.warningIconAriaLabel": "Advertencia"
   },
   "form-field": {
-    "i18nStrings.errorIconAriaLabel": "Error"
+    "i18nStrings.errorIconAriaLabel": "Error",
+    "i18nStrings.warningIconAriaLabel": "Advertencia"
   },
   "form": {
     "errorIconAriaLabel": "Error"
@@ -188,13 +192,14 @@
     "i18nStrings.operatorLessOrEqualText": "Menor o igual que",
     "i18nStrings.operatorLessText": "Menor que",
     "i18nStrings.operatorStartsWithText": "Empieza con",
+    "i18nStrings.operatorDoesNotStartWithText": "No empieza con",
     "i18nStrings.operatorText": "Operador",
     "i18nStrings.operatorsText": "Operadores",
     "i18nStrings.propertyText": "Propiedad",
     "i18nStrings.tokenLimitShowFewer": "Mostrar menos",
     "i18nStrings.tokenLimitShowMore": "Mostrar más",
     "i18nStrings.valueText": "Valor",
-    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {Eliminar filtro, {token__propertyKey} igual a {token__value}} not_equals {Eliminar filtro, {token__propertyKey} no es igual a {token__value}} greater_than {Eliminar filtro, {token__propertyKey} es mayor que {token__value}} greater_than_equal {Eliminar filtro, {token__propertyKey} es mayor o igual que {token__value}} less_than {Eliminar filtro, {token__propertyKey} es menor que {token__value}} less_than_equal {Eliminar filtro, {token__propertyKey} es menor o igual que {token__value}} contains {Eliminar filtro, {token__propertyKey} contiene {token__value}} not_contains {Eliminar filtro, {token__propertyKey} no contiene {token__value}} starts_with {Eliminar filtro, {token__propertyKey} comienza con {token__value}} other {}}"
+    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {Eliminar filtro, {token__propertyKey} igual a {token__value}} not_equals {Eliminar filtro, {token__propertyKey} no es igual a {token__value}} greater_than {Eliminar filtro, {token__propertyKey} es mayor que {token__value}} greater_than_equal {Eliminar filtro, {token__propertyKey} es mayor o igual que {token__value}} less_than {Eliminar filtro, {token__propertyKey} es menor que {token__value}} less_than_equal {Eliminar filtro, {token__propertyKey} es menor o igual que {token__value}} contains {Eliminar filtro, {token__propertyKey} contiene {token__value}} not_contains {Eliminar filtro, {token__propertyKey} no contiene {token__value}} starts_with {Eliminar filtro, {token__propertyKey} comienza con {token__value}} not_starts_with {Eliminar filtro, {token__propertyKey} no comienza con {token__value}} other {}}"
   },
   "s3-resource-selector": {
     "i18nStrings.inContextSelectPlaceholder": "Elija una versión",
@@ -204,7 +209,7 @@
     "i18nStrings.inContextLoadingText": "Cargando recurso",
     "i18nStrings.inContextUriLabel": "URI de S3",
     "i18nStrings.inContextVersionSelectLabel": "Versión del objeto",
-    "i18nStrings.modalTitle": "Elija un archivo en S3",
+    "i18nStrings.modalTitle": "Elige un objeto en S3",
     "i18nStrings.modalCancelButton": "Cancelar",
     "i18nStrings.modalSubmitButton": "Elija",
     "i18nStrings.modalBreadcrumbRootItem": "Buckets de S3",
@@ -273,6 +278,8 @@
     "ariaLabels.resizerRoleDescription": "botón de redimensionamiento",
     "ariaLabels.submittingEditText": "Envío de edición",
     "ariaLabels.successfulEditLabel": "Se ha editado correctamente",
+    "ariaLabels.expandButtonLabel": "Ampliar",
+    "ariaLabels.collapseButtonLabel": "Contraer",
     "columnDefinitions.editConfig.errorIconAriaLabel": "Error",
     "columnDefinitions.editConfig.editIconAriaLabel": "editable"
   },

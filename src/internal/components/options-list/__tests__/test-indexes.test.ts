@@ -33,14 +33,14 @@ describe('Test indexes', () => {
       { groupIndex: 2, inGroupIndex: 1, throughIndex: 4 },
     ]);
   });
-  test('skips "use-entered" option and group headers', () => {
+  test('skips "use-entered" option but not group headers', () => {
     const allOptions: ListItem[] = [
       { type: 'use-entered', value: '' },
       options[0],
-      { type: 'parent', options: [] },
+      groups[0],
       options[1],
       options[2],
-      { type: 'parent', options: [] },
+      groups[1],
       options[3],
     ];
     generateTestIndexes(allOptions, getParentGroup);
@@ -48,10 +48,10 @@ describe('Test indexes', () => {
     expect(indexes).toEqual([
       undefined,
       { throughIndex: 1 },
-      undefined,
+      { groupIndex: 1 },
       { groupIndex: 1, inGroupIndex: 1, throughIndex: 2 },
       { groupIndex: 1, inGroupIndex: 2, throughIndex: 3 },
-      undefined,
+      { groupIndex: 2 },
       { groupIndex: 2, inGroupIndex: 1, throughIndex: 4 },
     ]);
   });

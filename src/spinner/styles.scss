@@ -6,36 +6,44 @@
 @use '../internal/styles' as styles;
 @use './mixins' as mixins;
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/generated/custom-css-properties/index' as custom-props;
 
 @keyframes spinner-rotator {
   0% {
-    transform: rotate(0deg);
+    transform: rotate(var(#{custom-props.$spinnerRotatorFrom}));
   }
   100% {
-    transform: rotate(360deg);
+    transform: rotate(var(#{custom-props.$spinnerRotatorTo}));
   }
 }
 
-@mixin swing-animation($name, $from, $to) {
-  @keyframes #{$name} {
-    0% {
-      transform: rotate($from);
-    }
+@keyframes spinner-line-left {
+  0% {
+    transform: rotate(var(#{custom-props.$spinnerLineLeftFrom}));
+  }
 
-    50% {
-      transform: rotate($to);
-    }
+  50% {
+    transform: rotate(var(#{custom-props.$spinnerLineLeftTo}));
+  }
 
-    100% {
-      transform: rotate($from);
-    }
+  100% {
+    transform: rotate(var(#{custom-props.$spinnerLineLeftFrom}));
   }
 }
 
-@include swing-animation(spinner-line-left, 0deg, 120deg);
+@keyframes spinner-line-right {
+  0% {
+    transform: rotate(var(#{custom-props.$spinnerLineRightFrom}));
+  }
 
-// right part of animation requires offset, so it starts from different angle
-@include swing-animation(spinner-line-right, 90deg, -30deg);
+  50% {
+    transform: rotate(var(#{custom-props.$spinnerLineRightTo}));
+  }
+
+  100% {
+    transform: rotate(var(#{custom-props.$spinnerLineRightFrom}));
+  }
+}
 
 @mixin awsui-spinner-circle {
   position: relative;
@@ -43,14 +51,24 @@
     position: absolute;
     box-sizing: border-box;
     content: '';
-    border-radius: 50%;
-    border: 0.2 * styles.$base-size solid;
-    border-right-color: transparent;
-    border-bottom-color: transparent;
+    border-start-start-radius: 50%;
+    border-start-end-radius: 50%;
+    border-end-start-radius: 50%;
+    border-end-end-radius: 50%;
+    border-block: 0.2 * styles.$base-size solid;
+    border-inline: 0.2 * styles.$base-size solid;
+    border-inline-end-color: transparent;
+    border-block-end-color: transparent;
   }
 }
 
 .root {
+  #{custom-props.$spinnerRotatorFrom}: 0deg;
+  #{custom-props.$spinnerRotatorTo}: 360deg;
+  #{custom-props.$spinnerLineLeftFrom}: 0deg;
+  #{custom-props.$spinnerLineLeftTo}: 120deg;
+  #{custom-props.$spinnerLineRightFrom}: 90deg;
+  #{custom-props.$spinnerLineRightTo}: -30deg;
   display: inline-block;
   vertical-align: top;
   // Spinner is an exception from our motion rules, it always has motion
@@ -61,29 +79,38 @@
 
   @include mixins.make-spinner-sizes;
   @include mixins.make-spinner-variants;
+
+  @include styles.with-direction('rtl') {
+    #{custom-props.$spinnerRotatorFrom}: 360deg;
+    #{custom-props.$spinnerRotatorTo}: 0deg;
+    #{custom-props.$spinnerLineLeftFrom}: 0deg;
+    #{custom-props.$spinnerLineLeftTo}: -120deg;
+    #{custom-props.$spinnerLineRightFrom}: -90deg;
+    #{custom-props.$spinnerLineRightTo}: 30deg;
+  }
 }
 
 .circle {
   display: inline-block;
-  width: 50%;
-  height: 100%;
+  inline-size: 50%;
+  block-size: 100%;
   overflow: hidden;
   @include awsui-spinner-circle;
   &:after {
     /*stylelint-disable-next-line @cloudscape-design/no-motion-outside-of-mixin */
     animation: 1.5s ease-in-out infinite;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 200%;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    block-size: 100%;
+    inline-size: 200%;
   }
   &.circle-left:after {
-    left: 0;
+    inset-inline-start: 0;
     /*stylelint-disable-next-line @cloudscape-design/no-motion-outside-of-mixin */
     animation-name: spinner-line-left;
   }
   &.circle-right:after {
-    left: -100%;
+    inset-inline-start: -100%;
     /*stylelint-disable-next-line @cloudscape-design/no-motion-outside-of-mixin */
     animation-name: spinner-line-right;
   }

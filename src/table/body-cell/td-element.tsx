@@ -1,12 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React from 'react';
+import React, { useRef } from 'react';
 import styles from './styles.css.js';
 import { getStickyClassNames } from '../utils';
 import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
 import { TableRole, getTableCellRoleProps } from '../table-role';
-import { useMergeRefs } from '../../internal/hooks/use-merge-refs/index.js';
+import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
+import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
+import { ExpandToggle } from '../expandable-rows/expand-toggle-button';
+import { ExpandableItemProps } from '../expandable-rows/expandable-rows-utils';
 
 export interface TableTdElementProps {
   className?: string;
@@ -35,6 +38,7 @@ export interface TableTdElementProps {
   stickyState: StickyColumnsModel;
   isVisualRefresh?: boolean;
   tableRole: TableRole;
+  expandableProps?: ExpandableItemProps;
 }
 
 export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElementProps>(
@@ -63,6 +67,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       colIndex,
       stickyState,
       tableRole,
+      expandableProps,
     },
     ref
   ) => {
@@ -76,7 +81,9 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       getClassName: props => getStickyClassNames(styles, props),
     });
 
-    const mergedRef = useMergeRefs(stickyStyles.ref, ref);
+    const cellRefObject = useRef<HTMLTableCellElement>(null);
+    const mergedRef = useMergeRefs(stickyStyles.ref, ref, cellRefObject);
+    const { tabIndex: cellTabIndex } = useSingleTabStopNavigation(cellRefObject);
 
     return (
       <Element
@@ -95,6 +102,8 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           isVisualRefresh && styles['is-visual-refresh'],
           hasSelection && styles['has-selection'],
           hasFooter && styles['has-footer'],
+          !!expandableProps && styles['body-cell-expandable'],
+          !!expandableProps && styles[`body-cell-expandable-level-${getLevelClassSuffix(expandableProps.level)}`],
           stickyStyles.className
         )}
         onClick={onClick}
@@ -102,9 +111,19 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
         onMouseLeave={onMouseLeave}
         ref={mergedRef}
         {...nativeAttributes}
+        tabIndex={cellTabIndex}
       >
+        {expandableProps && (
+          <div className={styles['expandable-toggle-wrapper']}>
+            <ExpandToggle {...expandableProps} />
+          </div>
+        )}
         {children}
       </Element>
     );
   }
 );
+
+function getLevelClassSuffix(level: number) {
+  return 1 <= level && level <= 9 ? level : 'next';
+}

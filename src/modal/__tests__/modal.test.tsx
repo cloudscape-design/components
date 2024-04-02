@@ -3,6 +3,8 @@
 import * as React from 'react';
 import { act, render, fireEvent } from '@testing-library/react';
 import Modal, { ModalProps } from '../../../lib/components/modal';
+import FormField from '../../../lib/components/form-field';
+import Input from '../../../lib/components/input';
 import Select from '../../../lib/components/select';
 import Multiselect from '../../../lib/components/multiselect';
 import Autosuggest from '../../../lib/components/autosuggest';
@@ -504,6 +506,26 @@ describe('Modal component', () => {
 
       unmount();
       expect(document.body).not.toHaveClass(styles['modal-open']);
+    });
+  });
+
+  describe('contexts', () => {
+    it('should not label inputs using a FormField context outside the modal', () => {
+      const modalRoot = document.createElement('div');
+      document.body.appendChild(modalRoot);
+      const { container } = render(
+        <FormField label="Outer label">
+          <Modal onDismiss={() => null} visible={true} modalRoot={modalRoot}>
+            <Input value="input" />
+          </Modal>
+        </FormField>,
+        {
+          container: modalRoot,
+        }
+      );
+      const wrapper = createWrapper(container).findModal()!;
+
+      expect(wrapper.findContent().findInput()!.getElement()).not.toHaveAccessibleName('Outer label');
     });
   });
 });

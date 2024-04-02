@@ -61,6 +61,7 @@ export interface DateRangePickerBaseProps {
 
   /**
    * Determines the range selector mode as follows:
+   *
    * * `default` for combined absolute/relative range selector.
    * * `absolute-only` for absolute-only range selector.
    * * `relative-only` for relative-only range selector.
@@ -158,6 +159,23 @@ export interface DateRangePickerProps
    * Specifies an additional control displayed in the dropdown, located below the range calendar.
    */
   customAbsoluteRangeControl?: DateRangePickerProps.AbsoluteRangeControl;
+
+  /**
+   * Specifies the time format to use for displaying the absolute time range.
+   *
+   * It can take the following values:
+   * * `iso`: ISO 8601 format, e.g.: 2024-01-30T13:32:32+01:00 (or 2024-01-30 when `dateOnly` is true)
+   * * `long-localized`: a more human-readable, localized format, e.g.: January 30, 2024, 13:32:32 (UTC+1) (or January 30, 2024 when `dateOnly` is true)
+   *
+   * Defaults to `iso`.
+   */
+  absoluteFormat?: DateRangePickerProps.AbsoluteFormat;
+
+  /**
+   * Specifies whether to hide the time offset in the displayed absolute time range.
+   * Defaults to `false`.
+   */
+  hideTimeOffset?: boolean;
 }
 
 export namespace DateRangePickerProps {
@@ -391,6 +409,8 @@ export namespace DateRangePickerProps {
      */
     renderSelectedAbsoluteRangeAriaLive?: (startDate: string, endDate: string) => string;
   }
+
+  export type AbsoluteFormat = 'iso' | 'long-localized';
 }
 
 export type DayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;

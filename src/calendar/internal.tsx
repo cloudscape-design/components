@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useEffect, useRef, useState } from 'react';
-import { isSameMonth } from 'date-fns';
+import { addMonths, addYears, isSameDay, isSameMonth, isSameYear } from 'date-fns';
 import styles from './styles.css.js';
 import CalendarHeader from './header';
 import Grid from './grid';
-import { normalizeLocale, normalizeStartOfWeek } from '../internal/utils/locale';
+import { normalizeLocale } from '../internal/utils/locale';
 import { formatDate, parseDate } from '../internal/utils/date-time';
 import { fireNonCancelableEvent } from '../internal/events/index.js';
 import checkControlled from '../internal/hooks/check-controlled/index.js';
@@ -14,12 +14,13 @@ import clsx from 'clsx';
 import { CalendarProps } from './interfaces.js';
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
-import { getBaseDate } from './utils/navigation';
+import { getBaseDay, getBaseMonth } from './utils/navigation';
 import { useDateCache } from '../internal/hooks/use-date-cache/index.js';
 import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
-import { useInternalI18n } from '../i18n/context.js';
-
-export type DayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+import useCalendarLabels from './use-calendar-labels';
+import useCalendarGridRows from './grid/use-calendar-grid-rows';
+import useCalendarGridKeyboardNavigation from './grid/use-calendar-grid-keyboard-navigation';
+import CalendarGridHeader from './grid/calendar-grid-header';
 
 export default function Calendar({
   value,
@@ -31,13 +32,18 @@ export default function Calendar({
   ariaDescribedby,
   onChange,
   __internalRootRef,
+  i18nStrings,
+  granularity = 'day',
+  previousMonthAriaLabel,
+  nextMonthAriaLabel,
+  todayAriaLabel,
   ...rest
 }: CalendarProps & InternalBaseComponentProps) {
   checkControlled('Calendar', 'value', value, 'onChange', onChange);
 
   const baseProps = getBaseProps(rest);
   const normalizedLocale = normalizeLocale('Calendar', locale);
-  const normalizedStartOfWeek = normalizeStartOfWeek(startOfWeek, normalizedLocale);
+
   const gridWrapperRef = useRef<HTMLDivElement>(null);
   const [focusedDate, setFocusedDate] = useState<Date | null>(null);
 
@@ -52,10 +58,27 @@ export default function Calendar({
 
   const headingId = useUniqueId('calendar-heading');
 
-  const i18n = useInternalI18n('calendar');
-  const nextMonthAriaLabel = i18n('nextMonthAriaLabel', rest.nextMonthAriaLabel);
-  const previousMonthAriaLabel = i18n('previousMonthAriaLabel', rest.previousMonthAriaLabel);
-  const todayAriaLabel = i18n('todayAriaLabel', rest.todayAriaLabel);
+  const isMonthPicker = granularity === 'month';
+
+  const baseDate = isMonthPicker
+    ? getBaseMonth(displayedDate, isDateEnabled)
+    : getBaseDay(displayedDate, isDateEnabled);
+
+  const isSameDate = isMonthPicker ? isSameMonth : isSameDay;
+  const isSamePage = isMonthPicker ? isSameYear : isSameMonth;
+  const isCurrentPage = (date: Date) => isMonthPicker || isSameMonth(date, baseDate);
+
+  const { previousButtonLabel, nextButtonLabel, renderDate, renderDateAnnouncement, renderHeaderText } =
+    useCalendarLabels({
+      granularity,
+      i18nStrings,
+      locale: normalizedLocale,
+      previousMonthAriaLabel,
+      nextMonthAriaLabel,
+      todayAriaLabel,
+    });
+
+  const gridRows = useCalendarGridRows({ baseDate, granularity, startOfWeek, locale: normalizedLocale });
 
   // Update displayed date if value changes.
   useEffect(() => {
@@ -63,11 +86,11 @@ export default function Calendar({
   }, [memoizedValue]);
 
   const selectFocusedDate = (selected: Date | null, baseDate: Date): Date | null => {
-    if (selected && isDateEnabled(selected) && isSameMonth(selected, baseDate)) {
+    if (selected && isDateEnabled(selected) && isSamePage(selected, baseDate)) {
       return selected;
     }
     const today = new Date();
-    if (isDateEnabled(today) && isSameMonth(today, baseDate)) {
+    if (isDateEnabled(today) && isSamePage(today, baseDate)) {
       return today;
     }
     if (isDateEnabled(baseDate)) {
@@ -76,16 +99,16 @@ export default function Calendar({
     return null;
   };
 
-  const baseDate = getBaseDate(displayedDate, isDateEnabled);
   const focusableDate = focusedDate || selectFocusedDate(memoizedValue, baseDate);
 
-  const onHeaderChangeMonthHandler = (date: Date) => {
-    setDisplayedDate(date);
-    setFocusedDate(null);
+  const onHeaderChangePageHandler = (amount: number) => {
+    const movePage = isMonthPicker ? addYears : addMonths;
+    const newDate = movePage(baseDate, amount);
+    onChangePageHandler(newDate);
   };
 
-  const onGridChangeMonthHandler = (newMonth: Date) => {
-    setDisplayedDate(newMonth);
+  const onChangePageHandler = (newDate: Date) => {
+    setDisplayedDate(newDate);
     setFocusedDate(null);
   };
 
@@ -96,7 +119,7 @@ export default function Calendar({
   };
 
   const onGridSelectDateHandler = (date: Date) => {
-    fireNonCancelableEvent(onChange, { value: formatDate(date) });
+    fireNonCancelableEvent(onChange, { value: formatDate(date, granularity) });
     setFocusedDate(null);
   };
 
@@ -106,6 +129,18 @@ export default function Calendar({
       setFocusedDate(null);
     }
   };
+
+  const onGridKeyDownHandler = useCalendarGridKeyboardNavigation({
+    baseDate,
+    focusableDate,
+    granularity,
+    isDateEnabled,
+    onChangePage: onChangePageHandler,
+    onFocusDate: onGridFocusDateHandler,
+    onSelectDate: onGridSelectDateHandler,
+  });
+
+  const headerText = renderHeaderText(baseDate);
 
   return (
     <div
@@ -119,27 +154,29 @@ export default function Calendar({
     >
       <div className={styles['calendar-inner']}>
         <CalendarHeader
-          baseDate={baseDate}
-          locale={normalizedLocale}
-          onChangeMonth={onHeaderChangeMonthHandler}
-          previousMonthLabel={previousMonthAriaLabel}
-          nextMonthLabel={nextMonthAriaLabel}
+          formattedDate={headerText}
+          onChange={onHeaderChangePageHandler}
+          previousLabel={previousButtonLabel}
+          nextLabel={nextButtonLabel}
           headingId={headingId}
         />
         <div onBlur={onGridBlur} ref={gridWrapperRef}>
           <Grid
-            locale={normalizedLocale}
-            baseDate={baseDate}
             isDateEnabled={isDateEnabled}
             focusedDate={focusedDate}
             focusableDate={focusableDate}
             onSelectDate={onGridSelectDateHandler}
             onFocusDate={onGridFocusDateHandler}
-            onChangeMonth={onGridChangeMonthHandler}
-            startOfWeek={normalizedStartOfWeek}
-            todayAriaLabel={todayAriaLabel}
+            onChangePage={onChangePageHandler}
             selectedDate={memoizedValue}
             ariaLabelledby={headingId}
+            header={isMonthPicker ? null : <CalendarGridHeader locale={normalizedLocale} rows={gridRows} />}
+            rows={gridRows}
+            isCurrentPage={isCurrentPage}
+            renderDate={renderDate}
+            renderDateAnnouncement={renderDateAnnouncement}
+            isSameDate={isSameDate}
+            onGridKeyDownHandler={onGridKeyDownHandler}
           />
         </div>
       </div>

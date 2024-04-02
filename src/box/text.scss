@@ -41,7 +41,12 @@
     &.key-label-variant {
       @include styles.font-label;
       color: awsui.$color-text-label;
-      margin-bottom: awsui.$space-key-value-gap;
+      margin-block-end: awsui.$space-key-value-gap;
+    }
+    &.gen-ai-label-variant {
+      @include styles.font-body-s;
+      font-style: italic;
+      color: awsui.$color-text-label-gen-ai;
     }
     &.value-large-variant {
       @include styles.font-display-l;
@@ -90,10 +95,10 @@
 }
 
 .t-left {
-  text-align: left;
+  text-align: start;
 }
 .t-right {
-  text-align: right;
+  text-align: end;
 }
 .t-center {
   text-align: center;

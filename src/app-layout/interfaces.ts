@@ -13,7 +13,7 @@ export interface AppLayoutProps extends BaseComponentProps {
   contentType?: AppLayoutProps.ContentType;
 
   /**
-   * Drawers property.
+   * Drawers property. If you set both `drawers` and `tools`, `drawers` will take precedence.
  
    * Each Drawer is an item in the drawers wrapper with the following properties:
    * * id (string) - the id of the drawer.
@@ -103,8 +103,6 @@ export interface AppLayoutProps extends BaseComponentProps {
   /**
    * If true, the notification slot is rendered above the scrollable
    * content area so it is always visible.
-   *
-   * Note that sticky notifications are not supported in Internet Explorer.
    */
   stickyNotifications?: boolean;
 

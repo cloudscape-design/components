@@ -1,8 +1,3 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
-
-
 # Section for git-secrets
 
 if ! command -v git-secrets > /dev/null 2>&1

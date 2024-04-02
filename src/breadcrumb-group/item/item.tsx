@@ -7,13 +7,10 @@ import styles from './styles.css.js';
 import clsx from 'clsx';
 import { fireCancelableEvent, isPlainLeftClick } from '../../internal/events';
 import { getEventDetail } from '../internal';
-import { Transition } from '../../internal/components/transition';
-import PopoverContainer from '../../popover/container';
-import PopoverBody from '../../popover/body';
-import Portal from '../../internal/components/portal';
-import popoverStyles from '../../popover/styles.css.js';
+
 import { DATA_ATTR_FUNNEL_KEY } from '../../internal/analytics/selectors';
 import { FUNNEL_KEY_FUNNEL_NAME } from '../../internal/analytics/selectors';
+import Tooltip from '../../internal/components/tooltip';
 
 type BreadcrumbItemWithPopoverProps<T extends BreadcrumbGroupProps.Item> = React.HTMLAttributes<HTMLElement> & {
   item: T;
@@ -45,32 +42,7 @@ const BreadcrumbItemWithPopover = <T extends BreadcrumbGroupProps.Item>({
     return false;
   };
 
-  const popoverContent = (
-    <Portal>
-      <div className={styles['item-popover']}>
-        <Transition in={true}>
-          {() => (
-            <PopoverContainer
-              trackRef={textRef}
-              size="small"
-              fixedWidth={false}
-              position="bottom"
-              arrow={position => (
-                <div className={clsx(popoverStyles.arrow, popoverStyles[`arrow-position-${position}`])}>
-                  <div className={popoverStyles['arrow-outer']} />
-                  <div className={popoverStyles['arrow-inner']} />
-                </div>
-              )}
-            >
-              <PopoverBody dismissButton={false} dismissAriaLabel={undefined} onDismiss={() => {}} header={undefined}>
-                {item.text}
-              </PopoverBody>
-            </PopoverContainer>
-          )}
-        </Transition>
-      </div>
-    </Portal>
-  );
+  const popoverContent = <Tooltip trackRef={textRef} value={item.text} />;
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {

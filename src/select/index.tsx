@@ -21,8 +21,13 @@ const Select = React.forwardRef(
     ref: React.Ref<SelectProps.Ref>
   ) => {
     const baseComponentProps = useBaseComponent('Select', {
-      placeholder: restProps.placeholder,
-      disabled: restProps.disabled,
+      props: {
+        autoFocus: restProps.autoFocus,
+        expandToViewport: restProps.expandToViewport,
+        filteringType,
+        triggerVariant,
+        virtualScroll: restProps.virtualScroll,
+      },
     });
     const externalProps = getExternalProps(restProps);
     return (

@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React from 'react';
+import React, { useRef } from 'react';
 import InternalIcon from '../../icon/internal';
 import { KeyCode } from '../../internal/keycode';
 import { TableProps } from '../interfaces';
@@ -13,6 +13,7 @@ import { useInternalI18n } from '../../i18n/context';
 import { StickyColumnsModel } from '../sticky-columns';
 import { TableRole } from '../table-role';
 import { TableThElement } from './th-element';
+import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
 
 interface TableHeaderCellProps<ItemType> {
   className?: string;
@@ -36,6 +37,7 @@ interface TableHeaderCellProps<ItemType> {
   focusedComponent?: null | string;
   tableRole: TableRole;
   resizerRoleDescription?: string;
+  isExpandable?: boolean;
 }
 
 export function TableHeaderCell<ItemType>({
@@ -60,6 +62,7 @@ export function TableHeaderCell<ItemType>({
   cellRef,
   tableRole,
   resizerRoleDescription,
+  isExpandable,
 }: TableHeaderCellProps<ItemType>) {
   const i18n = useInternalI18n('table');
   const sortable = !!column.sortingComparator || !!column.sortingField;
@@ -84,6 +87,9 @@ export function TableHeaderCell<ItemType>({
 
   const headerId = useUniqueId('table-header-');
 
+  const clickableHeaderRef = useRef<HTMLDivElement>(null);
+  const { tabIndex: clickableHeaderTabIndex } = useSingleTabStopNavigation(clickableHeaderRef, { tabIndex });
+
   return (
     <TableThElement
       className={className}
@@ -91,6 +97,7 @@ export function TableHeaderCell<ItemType>({
       cellRef={cellRef}
       sortingStatus={sortingStatus}
       sortingDisabled={sortingDisabled}
+      focusedComponent={focusedComponent}
       hidden={hidden}
       colIndex={colIndex}
       columnId={columnId}
@@ -98,9 +105,11 @@ export function TableHeaderCell<ItemType>({
       tableRole={tableRole}
     >
       <div
+        ref={clickableHeaderRef}
         data-focus-id={`sorting-control-${String(columnId)}`}
         className={clsx(styles['header-cell-content'], {
           [styles['header-cell-fake-focus']]: focusedComponent === `sorting-control-${String(columnId)}`,
+          [styles['header-cell-content-expandable']]: isExpandable,
         })}
         aria-label={
           column.ariaLabel
@@ -114,7 +123,7 @@ export function TableHeaderCell<ItemType>({
         {...(sortingStatus && !sortingDisabled
           ? {
               onKeyPress: handleKeyPress,
-              tabIndex: tabIndex,
+              tabIndex: clickableHeaderTabIndex,
               role: 'button',
               onClick: handleClick,
             }
@@ -122,7 +131,7 @@ export function TableHeaderCell<ItemType>({
       >
         <div className={clsx(styles['header-cell-text'], wrapLines && styles['header-cell-text-wrap'])} id={headerId}>
           {column.header}
-          {isEditable ? (
+          {isEditable && !isExpandable ? (
             <span
               className={styles['edit-icon']}
               role="img"

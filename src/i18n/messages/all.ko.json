@@ -52,7 +52,10 @@
   "calendar": {
     "nextMonthAriaLabel": "다음 달",
     "previousMonthAriaLabel": "이전 달",
-    "todayAriaLabel": "오늘"
+    "todayAriaLabel": "오늘",
+    "i18nStrings.nextYearAriaLabel": "내년",
+    "i18nStrings.previousYearAriaLabel": "작년",
+    "i18nStrings.currentMonthAriaLabel": "이번 달"
   },
   "cards": {
     "ariaLabels.selectionGroupLabel": "항목 선택"
@@ -135,7 +138,8 @@
     "i18nStrings.warningIconAriaLabel": "경고"
   },
   "form-field": {
-    "i18nStrings.errorIconAriaLabel": "오류"
+    "i18nStrings.errorIconAriaLabel": "오류",
+    "i18nStrings.warningIconAriaLabel": "경고"
   },
   "form": {
     "errorIconAriaLabel": "오류"
@@ -188,13 +192,14 @@
     "i18nStrings.operatorLessOrEqualText": "작거나 같음",
     "i18nStrings.operatorLessText": "보다 작음",
     "i18nStrings.operatorStartsWithText": "로 시작",
+    "i18nStrings.operatorDoesNotStartWithText": "(으)로 시작하지 않음",
     "i18nStrings.operatorText": "연산자",
     "i18nStrings.operatorsText": "연산자",
     "i18nStrings.propertyText": "속성",
     "i18nStrings.tokenLimitShowFewer": "간단히 표시",
     "i18nStrings.tokenLimitShowMore": "자세히 표시",
     "i18nStrings.valueText": "값",
-    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {{token__propertyKey}이(가) {token__value}과(와) 같음 필터 제거} not_equals {{token__propertyKey}이(가) {token__value}과(와) 같지 않음 필터 제거} greater_than {{token__propertyKey}이(가) {token__value}보다 큼 필터 제거} greater_than_equal {{token__propertyKey}이(가) {token__value}보다 크거나 같음 필터 제거} less_than {{token__propertyKey}이(가) {token__value}보다 작음 필터 제거} less_than_equal {{token__propertyKey}이(가) {token__value}보다 작거나 같음 필터 제거} contains {{token__propertyKey}이(가) {token__value}을(를) 포함함 필터 제거} not_contains {{token__propertyKey}이(가) {token__value}을(를) 포함하지 않음 필터 제거} starts_with {필터 제거, {token__value}(으)로 시작하는 {token__propertyKey}} other {}}"
+    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {{token__propertyKey}이(가) {token__value}과(와) 같음 필터 제거} not_equals {{token__propertyKey}이(가) {token__value}과(와) 같지 않음 필터 제거} greater_than {{token__propertyKey}이(가) {token__value}보다 큼 필터 제거} greater_than_equal {{token__propertyKey}이(가) {token__value}보다 크거나 같음 필터 제거} less_than {{token__propertyKey}이(가) {token__value}보다 작음 필터 제거} less_than_equal {{token__propertyKey}이(가) {token__value}보다 작거나 같음 필터 제거} contains {{token__propertyKey}이(가) {token__value}을(를) 포함함 필터 제거} not_contains {{token__propertyKey}이(가) {token__value}을(를) 포함하지 않음 필터 제거} starts_with {필터 제거, {token__value}(으)로 시작하는 {token__propertyKey}} not_starts_with {필터 제거, {token__propertyKey}이(가) {token__value}(으)로 시작하지 않음} other {}}"
   },
   "s3-resource-selector": {
     "i18nStrings.inContextSelectPlaceholder": "버전 선택",
@@ -204,7 +209,7 @@
     "i18nStrings.inContextLoadingText": "리소스 로드 중",
     "i18nStrings.inContextUriLabel": "S3 URI",
     "i18nStrings.inContextVersionSelectLabel": "객체 버전",
-    "i18nStrings.modalTitle": "S3에서 아카이브 선택",
+    "i18nStrings.modalTitle": "S3에서 객체 선택",
     "i18nStrings.modalCancelButton": "취소",
     "i18nStrings.modalSubmitButton": "선택",
     "i18nStrings.modalBreadcrumbRootItem": "S3 버킷",
@@ -273,6 +278,8 @@
     "ariaLabels.resizerRoleDescription": "크기 조정 버튼",
     "ariaLabels.submittingEditText": "편집 제출 중",
     "ariaLabels.successfulEditLabel": "편집 성공",
+    "ariaLabels.expandButtonLabel": "확장",
+    "ariaLabels.collapseButtonLabel": "축소",
     "columnDefinitions.editConfig.errorIconAriaLabel": "오류",
     "columnDefinitions.editConfig.editIconAriaLabel": "편집 가능"
   },

@@ -44,11 +44,11 @@ $_spinner-variants: (
     $margin: calc((#{$supportedLineHeight} - #{$iconSizeMap}) / 2);
 
     &.size-#{$name} {
-      width: $iconSizeMap;
-      height: $iconSizeMap;
-      padding: $padding;
-      margin-top: $margin;
-      margin-bottom: $margin;
+      inline-size: $iconSizeMap;
+      block-size: $iconSizeMap;
+      padding-block: $padding;
+      padding-inline: $padding;
+      margin-block: $margin;
       box-sizing: border-box;
     }
   }

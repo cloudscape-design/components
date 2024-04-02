@@ -62,16 +62,34 @@ describe('Code editor component', () => {
     expect(aceMock.edit).toHaveBeenCalled();
     expect(editorMock.setValue).toHaveBeenCalledWith('const pi = 3.14;', -1); // -1 is hardcoded
     expect(editorMock.session.setMode).toHaveBeenLastCalledWith('ace/mode/javascript');
+  });
+
+  it("sets the default light mode theme to dawn if cloud_editor isn't explicitly provided", () => {
+    renderCodeEditor({ themes: { light: ['textmate', 'dawn'], dark: [] } });
     expect(editorMock.setTheme).toHaveBeenLastCalledWith('ace/theme/dawn');
   });
 
-  it('detects the dark mode if present', () => {
+  it('sets the default light mode theme to cloud_editor if explicitly provided', () => {
+    renderCodeEditor({ themes: { light: ['dawn', 'cloud_editor'], dark: [] } });
+    expect(editorMock.setTheme).toHaveBeenLastCalledWith('ace/theme/cloud_editor');
+  });
+
+  it("sets the default dark mode theme to tomorrow_night_bright if cloud_editor_dark isn't provided", () => {
     render(
       <div className="awsui-polaris-dark-mode">
-        <CodeEditor {...defaultProps} />
+        <CodeEditor {...defaultProps} themes={{ light: [], dark: ['tomorrow_night_bright', 'dracula'] }} />
       </div>
     );
     expect(editorMock.setTheme).toHaveBeenLastCalledWith('ace/theme/tomorrow_night_bright');
+  });
+
+  it('sets the default dark mode theme to cloud_editor_dark if explicitly provided', () => {
+    render(
+      <div className="awsui-polaris-dark-mode">
+        <CodeEditor {...defaultProps} themes={{ light: [], dark: ['tomorrow_night_bright', 'cloud_editor_dark'] }} />
+      </div>
+    );
+    expect(editorMock.setTheme).toHaveBeenLastCalledWith('ace/theme/cloud_editor_dark');
   });
 
   it('detects alternative dark mode class', () => {
@@ -511,12 +529,42 @@ describe('Code editor component', () => {
     expect(warnOnce).not.toHaveBeenCalled();
   });
 
-  test('a11y', async () => {
-    const { wrapper } = renderCodeEditor();
-    await expect(wrapper.getElement()).toValidateA11y();
+  describe('a11y', () => {
+    test('a11y on code editor default state', async () => {
+      const { wrapper } = renderCodeEditor();
+      await expect(wrapper.getElement()).toValidateA11y();
+    });
+
+    test(`panel's aria-labelledby attr points to error button when displaying error details`, () => {
+      editorMock.session.getAnnotations.mockReturnValueOnce([{ type: 'error' }]);
+      const { wrapper } = renderCodeEditor();
+      act(() => emulateAceAnnotationEvent!());
+
+      wrapper.findErrorsTab()!.click();
+      const errorTabId = wrapper.findErrorsTab()!.getElement()!.getAttribute('id');
+
+      expect(errorTabId).toBeDefined();
+      expect(wrapper.findPane()!.getElement().getAttribute('aria-labelledby')).toBe(errorTabId);
+    });
+
+    test(`panel's aria-labelledby attr points to warning button when displaying warning details`, () => {
+      editorMock.session.getAnnotations.mockReturnValueOnce([{ type: 'warning' }]);
+      const { wrapper } = renderCodeEditor();
+      act(() => emulateAceAnnotationEvent!());
+
+      wrapper.findWarningsTab()!.click();
+      const errorTabId = wrapper.findWarningsTab()!.getElement()!.getAttribute('id');
+
+      expect(errorTabId).toBeDefined();
+      expect(wrapper.findPane()!.getElement().getAttribute('aria-labelledby')).toBe(errorTabId);
+    });
   });
 
   describe('i18n', () => {
+    test("doesn't crash if i18nStrings is an empty object", () => {
+      renderCodeEditor({ i18nStrings: {} });
+    });
+
     test('supports using i18nStrings.loadingState from i18n provider', () => {
       const { container } = render(
         <TestI18nProvider messages={{ 'code-editor': { 'i18nStrings.loadingState': 'Custom loading' } }}>

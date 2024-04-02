@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+import { getContentHeaderClassName } from '../../internal/utils/content-header-utils';
 import { getClassName, SVGTableRowProps } from './side-position-refresh';
 
 const TableRow = ({ offset, isHeader }: SVGTableRowProps) => {
@@ -48,8 +49,8 @@ const bottomPositionIcon = (
     <g className="awsui-context-top-navigation">
       <rect x="2" y="2" width="226" height="6" className={getClassName('layout-top')} />
     </g>
-    <g className="awsui-context-content-header">
-      <path d="M0 8H230V23H0V8Z" className={getClassName('layout-main')} />
+    <g className={getContentHeaderClassName()}>
+      <path d="M2 8H228V23H2V8Z" className={getClassName('layout-main')} />
       <g className={getClassName('default')}>
         <path
           d="M9 15.5C9 16.8807 7.88071 18 6.5 18C5.11929 18 4 16.8807 4 15.5C4 14.1193 5.11929 13 6.5 13C7.88071 13 9 14.1193 9 15.5Z"

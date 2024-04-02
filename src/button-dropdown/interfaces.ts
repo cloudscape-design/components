@@ -89,6 +89,7 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
   /**
    * A standalone action that is shown prior to the dropdown trigger.
    * Use it with "primary" and "normal" variant only.
+   *
    * Main action properties:
    * * `text` (string) - Specifies the text shown in the main action.
    * * `external` (boolean) - Marks the main action as external by adding an icon after the text. The link will open in a new tab when clicked. Note that this only works when `href` is also provided.
@@ -185,6 +186,7 @@ export interface CategoryProps extends HighlightProps {
   onGroupToggle: GroupToggle;
   onItemActivate: ItemActivate;
   disabled: boolean;
+  lastInDropdown: boolean;
   expandToViewport?: boolean;
   variant?: ItemListProps['variant'];
 }
@@ -196,6 +198,7 @@ export interface ItemListProps extends HighlightProps {
   categoryDisabled?: boolean;
   hasExpandableGroups?: boolean;
   hasCategoryHeader?: boolean;
+  lastInDropdown: boolean;
   expandToViewport?: boolean;
   variant?: InternalButtonDropdownProps['variant'];
 }
@@ -211,7 +214,8 @@ export interface ItemProps {
   onItemActivate: ItemActivate;
   highlightItem: (item: ButtonDropdownProps.ItemOrGroup) => void;
   first?: boolean;
-  last: boolean;
+  lastInSection: boolean;
+  showDivider: boolean;
   hasCategoryHeader: boolean;
   isKeyboardHighlighted?: boolean;
   variant?: ItemListProps['variant'];

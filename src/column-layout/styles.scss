@@ -54,7 +54,7 @@ $column-breakpoint-spans: (
 
 @mixin remove-useless-vertical-borders($col-size, $direction) {
   $items-per-row: math.div($grid-columns, $col-size);
-  $items-modifier: if($direction == 'left', '+1', '');
+  $items-modifier: if($direction == 'inline-start', '+1', '');
   > *:nth-child(#{$items-per-row}n#{$items-modifier}) {
     border-#{$direction}-width: 0;
   }
@@ -63,10 +63,10 @@ $column-breakpoint-spans: (
 @mixin make-horizontal-borders() {
   /* stylelint-disable selector-max-universal */
   > * {
-    border-bottom: $column-layout-border;
+    border-block-end: $column-layout-border;
 
     &:last-child {
-      border-bottom-width: 0;
+      border-block-end-width: 0;
     }
   }
   /* stylelint-enable selector-max-universal */
@@ -89,7 +89,7 @@ $column-breakpoint-spans: (
       @for $h from 1 through $items-per-row - $m + 1 {
         @if $h > 0 {
           > *:nth-last-child(#{$m}):nth-child(#{$items-per-row}n + #{$h}) {
-            border-bottom-width: 0;
+            border-block-end-width: 0;
           }
         }
       }
@@ -103,29 +103,35 @@ div.column-layout {
   word-wrap: break-word;
 
   > .grid {
-    margin: calc(#{$grid-gutter-width} / -2);
+    margin-block: calc(#{$grid-gutter-width} / -2);
+    margin-inline: calc(#{$grid-gutter-width} / -2);
 
     &.grid-no-gutters {
-      margin: 0;
+      margin-block: 0;
+      margin-inline: 0;
     }
 
     &.grid-variant-text-grid {
-      @include make-vertical-borders('left');
-      margin: calc(-1 * #{$grid-gutter-width} / 2) calc(-1 * #{$grid-gutter-width});
+      @include make-vertical-borders('inline-start');
+      margin-block: calc(-1 * #{$grid-gutter-width} / 2);
+      margin-inline: calc(-1 * #{$grid-gutter-width});
     }
     /* stylelint-disable-next-line selector-max-universal */
     &:not(.grid-no-gutters) > * {
-      padding: calc(#{$grid-gutter-width} / 2);
+      padding-block: calc(#{$grid-gutter-width} / 2);
+      padding-inline: calc(#{$grid-gutter-width} / 2);
     }
 
     /* stylelint-disable-next-line selector-max-universal */
     &:not(.grid-no-gutters).grid-variant-text-grid > * {
-      padding: 0 $grid-gutter-width;
-      margin: calc(#{$grid-gutter-width} / 2) 0;
+      padding-block: 0;
+      padding-inline: $grid-gutter-width;
+      margin-block: calc(#{$grid-gutter-width} / 2);
+      margin-inline: 0;
     }
 
     &.grid-vertical-borders {
-      @include make-vertical-borders('right');
+      @include make-vertical-borders('inline-end');
     }
     &.grid-horizontal-borders {
       @include make-horizontal-borders;

@@ -16,6 +16,14 @@ function iterateTableCells<T extends HTMLElement>(
   });
 }
 
+interface TableFocusNavigationProps<T> {
+  enableKeyboardNavigation?: boolean;
+  selectionType: TableProps['selectionType'];
+  tableRoot: RefObject<HTMLTableElement>;
+  columnDefinitions: Readonly<T[]>;
+  numRows: number;
+}
+
 /**
  * This hook is used to navigate between table cells using the keyboard arrow keys.
  * All the functionality is implemented in the hook, so the table component does not
@@ -25,12 +33,13 @@ function iterateTableCells<T extends HTMLElement>(
  * @param columnDefinitions - The column definitions for the table.
  * @param numRows - The number of rows in the table.
  */
-function useTableFocusNavigation<T extends { editConfig?: TableProps.EditConfig<any> }>(
-  selectionType: TableProps['selectionType'],
-  tableRoot: RefObject<HTMLTableElement>,
-  columnDefinitions: Readonly<T[]>,
-  numRows: number
-) {
+function useTableFocusNavigation<T extends { editConfig?: TableProps.EditConfig<any> }>({
+  enableKeyboardNavigation,
+  selectionType,
+  tableRoot,
+  columnDefinitions,
+  numRows,
+}: TableFocusNavigationProps<T>) {
   const focusableColumns = useMemo(() => {
     const cols = columnDefinitions.map(column => !!column.editConfig);
     if (selectionType) {
@@ -128,7 +137,7 @@ function useTableFocusNavigation<T extends { editConfig?: TableProps.EditConfig<
   );
 
   useEffect(() => {
-    if (!tableRoot.current) {
+    if (!tableRoot.current || enableKeyboardNavigation) {
       return;
     }
 
@@ -136,7 +145,7 @@ function useTableFocusNavigation<T extends { editConfig?: TableProps.EditConfig<
     tableRoot.current.addEventListener('keydown', handleArrowKeyEvents);
 
     return () => tableElement && tableElement.removeEventListener('keydown', handleArrowKeyEvents);
-  }, [focusableColumns, handleArrowKeyEvents, tableRoot]);
+  }, [enableKeyboardNavigation, focusableColumns, handleArrowKeyEvents, tableRoot]);
 }
 
 export default useTableFocusNavigation;

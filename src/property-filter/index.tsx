@@ -22,6 +22,7 @@ import {
   FilteringProperty,
   ExtendedOperator,
   InternalQuery,
+  InternalFreeTextFiltering,
 } from './interfaces';
 import { TokenButton } from './token';
 import { getQueryActions, parseText, getAutosuggestOptions, getAllowedOperators } from './controller';
@@ -59,6 +60,8 @@ function getOperatorI18nString(operator: ComparisonOperator): string {
       return 'not_contains';
     case '^':
       return 'starts_with';
+    case '!^':
+      return 'not_starts_with';
     // The line is ignored from coverage because it is not reachable.
     // The purpose of it is to prevent TS errors if ComparisonOperator type gets extended.
     /* istanbul ignore next */
@@ -79,6 +82,7 @@ const PropertyFilter = React.forwardRef(
       filteringOptions = [],
       customGroupsText = [],
       disableFreeTextFiltering = false,
+      freeTextFiltering,
       onLoadItems,
       virtualScroll,
       customControl,
@@ -98,7 +102,9 @@ const PropertyFilter = React.forwardRef(
     }: PropertyFilterProps,
     ref: React.Ref<Ref>
   ) => {
-    const { __internalRootRef } = useBaseComponent('PropertyFilter');
+    const { __internalRootRef } = useBaseComponent('PropertyFilter', {
+      props: { asyncProperties, disableFreeTextFiltering, expandToViewport, hideOperations, tokenLimit, virtualScroll },
+    });
     const [removedTokenIndex, setRemovedTokenIndex] = useState<null | number>(null);
 
     const inputRef = useRef<AutosuggestInputRef>(null);
@@ -134,6 +140,10 @@ const PropertyFilter = React.forwardRef(
       operatorLessOrEqualText: i18n('i18nStrings.operatorLessOrEqualText', rest.i18nStrings?.operatorLessOrEqualText),
       operatorLessText: i18n('i18nStrings.operatorLessText', rest.i18nStrings?.operatorLessText),
       operatorStartsWithText: i18n('i18nStrings.operatorStartsWithText', rest.i18nStrings?.operatorStartsWithText),
+      operatorDoesNotStartWithText: i18n(
+        'i18nStrings.operatorDoesNotStartWithText',
+        rest.i18nStrings?.operatorDoesNotStartWithText
+      ),
       operatorText: i18n('i18nStrings.operatorText', rest.i18nStrings?.operatorText),
       operatorsText: i18n('i18nStrings.operatorsText', rest.i18nStrings?.operatorsText),
       propertyText: i18n('i18nStrings.propertyText', rest.i18nStrings?.propertyText),
@@ -161,7 +171,7 @@ const PropertyFilter = React.forwardRef(
     );
     const [filteringText, setFilteringText] = useState<string>('');
 
-    const { internalProperties, internalOptions, internalQuery } = (() => {
+    const { internalProperties, internalOptions, internalQuery, internalFreeText } = (() => {
       const propertyByKey = filteringProperties.reduce((acc, property) => {
         const extendedOperators = (property?.operators ?? []).reduce(
           (acc, operator) => (typeof operator === 'object' ? acc.set(operator.operator, operator) : acc),
@@ -198,10 +208,16 @@ const PropertyFilter = React.forwardRef(
         })),
       };
 
-      return { internalProperties: [...propertyByKey.values()], internalOptions, internalQuery };
+      const internalFreeText: InternalFreeTextFiltering = {
+        disabled: disableFreeTextFiltering,
+        operators: freeTextFiltering?.operators ?? [':', '!:'],
+        defaultOperator: freeTextFiltering?.defaultOperator ?? ':',
+      };
+
+      return { internalProperties: [...propertyByKey.values()], internalOptions, internalQuery, internalFreeText };
     })();
 
-    const parsedText = parseText(filteringText, internalProperties, disableFreeTextFiltering);
+    const parsedText = parseText(filteringText, internalProperties, internalFreeText);
     const autosuggestOptions = getAutosuggestOptions(
       parsedText,
       internalProperties,
@@ -211,7 +227,7 @@ const PropertyFilter = React.forwardRef(
     );
 
     const createToken = (currentText: string) => {
-      const parsedText = parseText(currentText, internalProperties, disableFreeTextFiltering);
+      const parsedText = parseText(currentText, internalProperties, internalFreeText);
       let newToken: Token;
       switch (parsedText.step) {
         case 'property': {
@@ -227,20 +243,20 @@ const PropertyFilter = React.forwardRef(
         }
         case 'free-text': {
           newToken = {
-            operator: parsedText.operator || ':',
+            operator: parsedText.operator || internalFreeText.defaultOperator,
             value: parsedText.value,
           };
           break;
         }
         case 'operator': {
           newToken = {
-            operator: ':',
+            operator: internalFreeText.defaultOperator,
             value: currentText,
           };
           break;
         }
       }
-      if (disableFreeTextFiltering && !('propertyKey' in newToken)) {
+      if (internalFreeText.disabled && !('propertyKey' in newToken)) {
         return;
       }
       addToken(newToken);
@@ -310,7 +326,7 @@ const PropertyFilter = React.forwardRef(
       // stop dropdown from closing
       event.preventDefault();
 
-      const parsedText = parseText(value, internalProperties, disableFreeTextFiltering);
+      const parsedText = parseText(value, internalProperties, internalFreeText);
       const loadMoreDetail = getLoadMoreDetail(parsedText, value);
 
       // Insert operator automatically if only one operator is defined for the given property.
@@ -376,7 +392,7 @@ const PropertyFilter = React.forwardRef(
                 />
               )
             }
-            hideEnteredTextOption={disableFreeTextFiltering && parsedText.step !== 'property'}
+            hideEnteredTextOption={internalFreeText.disabled && parsedText.step !== 'property'}
             clearAriaLabel={i18nStrings.clearAriaLabel}
             searchResultsId={showResults ? searchResultsId : undefined}
           />
@@ -412,7 +428,7 @@ const PropertyFilter = React.forwardRef(
                     asyncProperties={asyncProperties}
                     hideOperations={hideOperations}
                     customGroupsText={customGroupsText}
-                    disableFreeTextFiltering={disableFreeTextFiltering}
+                    freeTextFiltering={internalFreeText}
                     disabled={disabled}
                     expandToViewport={expandToViewport}
                   />
@@ -435,7 +451,7 @@ const PropertyFilter = React.forwardRef(
                     </InternalButton>
                   )
                 }
-                removedItemIndex={removedTokenIndex}
+                moveFocusNextToIndex={removedTokenIndex}
               />
             </InternalSpaceBetween>
           </div>

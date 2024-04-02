@@ -52,7 +52,10 @@
   "calendar": {
     "nextMonthAriaLabel": "Bulan berikutnya",
     "previousMonthAriaLabel": "Bulan sebelumnya",
-    "todayAriaLabel": "Hari ini"
+    "todayAriaLabel": "Hari ini",
+    "i18nStrings.nextYearAriaLabel": "Tahun berikutnya",
+    "i18nStrings.previousYearAriaLabel": "Tahun sebelumnya",
+    "i18nStrings.currentMonthAriaLabel": "Bulan saat ini"
   },
   "cards": {
     "ariaLabels.selectionGroupLabel": "Pemilihan item"
@@ -135,7 +138,8 @@
     "i18nStrings.warningIconAriaLabel": "Peringatan"
   },
   "form-field": {
-    "i18nStrings.errorIconAriaLabel": "Kesalahan"
+    "i18nStrings.errorIconAriaLabel": "Kesalahan",
+    "i18nStrings.warningIconAriaLabel": "Peringatan"
   },
   "form": {
     "errorIconAriaLabel": "Kesalahan"
@@ -188,13 +192,14 @@
     "i18nStrings.operatorLessOrEqualText": "Kurang dari atau sama dengan",
     "i18nStrings.operatorLessText": "Kurang dari",
     "i18nStrings.operatorStartsWithText": "Dimulai dengan",
+    "i18nStrings.operatorDoesNotStartWithText": "Tidak dimulai dengan",
     "i18nStrings.operatorText": "Operator",
     "i18nStrings.operatorsText": "Operator",
     "i18nStrings.propertyText": "Properti",
     "i18nStrings.tokenLimitShowFewer": "Tampilkan lebih sedikit",
     "i18nStrings.tokenLimitShowMore": "Tampilkan selengkapnya",
     "i18nStrings.valueText": "Nilai",
-    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {Hapus filter, {token__propertyKey} sama dengan {token__value}} not_equals {Hapus filter, {token__propertyKey} tidak sama dengan {token__value}} greater_than {Hapus filter, {token__propertyKey} lebih besar dari {token__value}} greater_than_equal {Hapus filter, {token__propertyKey} lebih besar dari atau sama dengan {token__value}} less_than {Hapus filter, {token__propertyKey} kurang dari {token__value}} less_than_equal {Hapus filter, {token__propertyKey} kurang dari atau sama dengan {token__value}} contains {Hapus filter, {token__propertyKey} berisi {token__value}} not_contains {Hapus filter, {token__propertyKey} tidak berisi {token__value}} starts_with {Hapus filter, {token__propertyKey} dimulai dengan {token__value}} other {}}"
+    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {Hapus filter, {token__propertyKey} sama dengan {token__value}} not_equals {Hapus filter, {token__propertyKey} tidak sama dengan {token__value}} greater_than {Hapus filter, {token__propertyKey} lebih besar dari {token__value}} greater_than_equal {Hapus filter, {token__propertyKey} lebih besar dari atau sama dengan {token__value}} less_than {Hapus filter, {token__propertyKey} kurang dari {token__value}} less_than_equal {Hapus filter, {token__propertyKey} kurang dari atau sama dengan {token__value}} contains {Hapus filter, {token__propertyKey} berisi {token__value}} not_contains {Hapus filter, {token__propertyKey} tidak berisi {token__value}} starts_with {Hapus filter, {token__propertyKey} dimulai dengan {token__value}} not_starts_with {Hapus filter, {token__propertyKey} tidak dimulai dengan {token__value}} other {}}"
   },
   "s3-resource-selector": {
     "i18nStrings.inContextSelectPlaceholder": "Pilih versi",
@@ -204,7 +209,7 @@
     "i18nStrings.inContextLoadingText": "Memuat sumber daya",
     "i18nStrings.inContextUriLabel": "URI S3",
     "i18nStrings.inContextVersionSelectLabel": "Versi objek",
-    "i18nStrings.modalTitle": "Pilih arsip di S3",
+    "i18nStrings.modalTitle": "Pilih objek di S3",
     "i18nStrings.modalCancelButton": "Batalkan",
     "i18nStrings.modalSubmitButton": "Pilih",
     "i18nStrings.modalBreadcrumbRootItem": "Bucket S3",
@@ -273,6 +278,8 @@
     "ariaLabels.resizerRoleDescription": "tombol ubah ukuran",
     "ariaLabels.submittingEditText": "Mengirimkan pengeditan",
     "ariaLabels.successfulEditLabel": "Edit berhasil",
+    "ariaLabels.expandButtonLabel": "Luaskan",
+    "ariaLabels.collapseButtonLabel": "Ciutkan",
     "columnDefinitions.editConfig.errorIconAriaLabel": "Kesalahan",
     "columnDefinitions.editConfig.editIconAriaLabel": "dapat diedit"
   },

@@ -7,28 +7,56 @@
 @use '../../internal/styles/tokens' as awsui;
 @use '../../internal/styles' as styles;
 
+@mixin cell-offset($padding) {
+  padding-inline-start: $padding;
+
+  &.header-cell-content-expandable {
+    padding-inline-start: calc(#{$padding} + #{awsui.$space-m} + #{awsui.$space-xs});
+  }
+}
+
 .header-cell {
   position: relative;
-  text-align: left;
+  text-align: start;
   box-sizing: border-box;
-  border-bottom: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+  border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
   background: awsui.$color-background-table-header;
   color: awsui.$color-text-column-header;
   font-weight: awsui.$font-weight-heading-s;
   @include styles.font-smoothing;
-  padding: awsui.$space-scaled-xxs awsui.$space-scaled-xs;
+  padding-block: awsui.$space-scaled-xxs;
+  padding-inline: awsui.$space-scaled-xs;
+
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(
+      (
+        'vertical': calc(-1 * #{awsui.$space-scaled-xxs}),
+        'horizontal': calc(-1 * #{awsui.$space-scaled-xxs}),
+      )
+    );
+  }
+  // stylelint-disable-next-line selector-combinator-disallowed-list
+  body[data-awsui-focus-visible='true'] &-fake-focus {
+    @include styles.focus-highlight(
+      (
+        'vertical': calc(-1 * #{awsui.$space-scaled-xxs}),
+        'horizontal': calc(-1 * #{awsui.$space-scaled-xxs}),
+      )
+    );
+  }
+
   &-sticky {
-    border-bottom: awsui.$border-table-sticky-width solid awsui.$color-border-divider-default;
+    border-block-end: awsui.$border-table-sticky-width solid awsui.$color-border-divider-default;
   }
   &-stuck:not(.header-cell-variant-full-page) {
-    border-bottom-color: transparent;
+    border-block-end-color: transparent;
   }
   &-variant-full-page.header-cell-hidden {
-    border-bottom-color: transparent;
+    border-block-end-color: transparent;
   }
   &:last-child,
   &.header-cell-sortable {
-    padding-right: awsui.$space-xs;
+    padding-inline-end: awsui.$space-xs;
   }
 
   &.sticky-cell {
@@ -36,7 +64,7 @@
     background: awsui.$color-background-table-header;
     z-index: 798; // Lower than the AppLayout's notification slot z-index(799)
     &-pad-left:not(.has-selection) {
-      padding-left: awsui.$space-table-horizontal;
+      padding-inline-start: awsui.$space-table-horizontal;
     }
     &-last-left {
       box-shadow: awsui.$shadow-sticky-column-first;
@@ -59,24 +87,26 @@
 
 .sorting-icon {
   position: absolute;
-  top: 50%;
+  inset-block-start: 50%;
   transform: translateY(-50%);
-  right: awsui.$space-xxs;
+  inset-inline-end: awsui.$space-xxs;
   color: awsui.$color-text-column-sorting-icon;
 }
 
 .edit-icon {
-  margin-left: awsui.$space-xxs;
-  margin-top: awsui.$space-scaled-xxs;
+  margin-inline-start: awsui.$space-xxs;
+  margin-block-start: awsui.$space-scaled-xxs;
   color: inherit;
 }
 
 .header-cell-content {
   position: relative;
+  padding-block: awsui.$space-scaled-xxs;
+  @include cell-offset(awsui.$space-s);
+  padding-inline-end: awsui.$space-s;
 
-  padding: awsui.$space-scaled-xxs awsui.$space-s;
   .header-cell-sortable > & {
-    padding-right: calc(#{awsui.$space-xl} + #{awsui.$space-xxs});
+    padding-inline-end: calc(#{awsui.$space-xl} + #{awsui.$space-xxs});
   }
   &:focus {
     outline: none;
@@ -115,8 +145,7 @@
 .header-cell-text {
   line-height: awsui.$line-height-heading-xs;
 
-  padding-top: calc(#{awsui.$space-xxxs} / 2);
-  padding-bottom: calc(#{awsui.$space-xxxs} / 2);
+  padding-block: calc(#{awsui.$space-xxxs} / 2);
 
   &:not(.header-cell-text-wrap) {
     white-space: nowrap;
@@ -138,15 +167,15 @@ settings icon in the pagination slot.
 */
 .header-cell:not(.is-visual-refresh) {
   &:first-child {
-    padding-left: awsui.$space-xs;
+    @include cell-offset(awsui.$space-xs);
   }
 }
 
 .header-cell.is-visual-refresh {
   &:first-child:not(.has-striped-rows) {
-    padding-left: awsui.$space-xxxs;
+    @include cell-offset(awsui.$space-xxxs);
     &.sticky-cell-pad-left {
-      padding-left: awsui.$space-table-horizontal;
+      @include cell-offset(awsui.$space-table-horizontal);
     }
   }
 
@@ -156,14 +185,14 @@ settings icon in the pagination slot.
   to the table edge.
   */
   &:first-child.has-striped-rows {
-    padding-left: awsui.$space-xxs;
+    @include cell-offset(awsui.$space-xxs);
   }
 
   &:first-child > .header-cell-content {
-    padding-left: 0;
+    @include cell-offset(0px);
   }
 
   &:last-child.header-cell-sortable {
-    padding-right: awsui.$space-xxxs;
+    padding-inline-end: awsui.$space-xxxs;
   }
 }

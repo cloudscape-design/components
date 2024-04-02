@@ -33,12 +33,15 @@ export default function Tabs({
   ariaLabelledby,
   disableContentPaddings = false,
   i18nStrings,
+  fitHeight,
   ...rest
 }: TabsProps) {
   for (const tab of tabs) {
     checkSafeUrl('Tabs', tab.href);
   }
-  const { __internalRootRef } = useBaseComponent('Tabs');
+  const { __internalRootRef } = useBaseComponent('Tabs', {
+    props: { disableContentPaddings, variant },
+  });
   const idNamespace = useUniqueId('awsui-tabs-');
 
   const [activeTabId, setActiveTabId] = useControllable(controlledTabId, onChange, firstEnabledTab(tabs)?.id ?? '', {
@@ -114,6 +117,7 @@ export default function Tabs({
         __internalRootRef={__internalRootRef}
         disableContentPaddings={true}
         variant={variant === 'stacked' ? 'stacked' : 'default'}
+        fitHeight={fitHeight}
       >
         {content()}
       </InternalContainer>
@@ -121,7 +125,11 @@ export default function Tabs({
   }
 
   return (
-    <div {...baseProps} className={clsx(baseProps.className, styles.root, styles.tabs)} ref={__internalRootRef}>
+    <div
+      {...baseProps}
+      className={clsx(baseProps.className, styles.root, styles.tabs, { [styles['fit-height']]: fitHeight })}
+      ref={__internalRootRef}
+    >
       {header}
       {content()}
     </div>

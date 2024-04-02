@@ -9,6 +9,7 @@ import { AutosuggestProps } from '../autosuggest/interfaces';
 import { ExpandToViewport } from '../internal/components/dropdown/interfaces';
 import { FormFieldControlProps } from '../internal/context/form-field-context';
 import {
+  PropertyFilterFreeTextFiltering,
   PropertyFilterOperation,
   PropertyFilterOperator,
   PropertyFilterOperatorExtended,
@@ -47,7 +48,7 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
    *
    * * value [string]: The string value of the token to be used as a filter.
    * * propertyKey [string]: The key of the corresponding property in filteringProperties.
-   * * operator ['<' | '<=' | '>' | '>=' | ':' | '!:' | '=' | '!=' | '^']: The operator which indicates how to filter the dataset using this token.
+   * * operator ['<' | '<=' | '>' | '>=' | ':' | '!:' | '=' | '!=' | '^' | '!^']: The operator which indicates how to filter the dataset using this token.
    *
    * `operation` has two valid values [and, or] and controls the join operation to be applied between tokens when filtering the items.
    */
@@ -109,6 +110,13 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
    * instead of a specific property. This would stop the user from creating such tokens.
    */
   disableFreeTextFiltering?: boolean;
+  /**
+   * An object configuring the operators for free text filtering, which has the following properties:
+   *
+   * * operators [Array]: A list of all operators supported for free text filtering. If you omit the contains operator because your API does not support it, make sure to set `defaultOperator` to a supported operator from this list.
+   * * defaultOperator [ComparisonOperator]: An optional parameter that changes the default operator used for free text filtering. Use this parameter only if your API does not support "contains" free test filtering terms.
+   */
+  freeTextFiltering?: PropertyFilterProps.FreeTextFiltering;
   /**
    * Use this event to asynchronously load filteringOptions, component currently needs.  The detail object contains following properties:
    *
@@ -196,6 +204,7 @@ export namespace PropertyFilterProps {
   export type ExtendedOperatorFormat<TokenValue> = PropertyFilterOperatorFormat<TokenValue>;
   export type FilteringOption = PropertyFilterOption;
   export type FilteringProperty = PropertyFilterProperty;
+  export type FreeTextFiltering = PropertyFilterFreeTextFiltering;
 
   export interface Query {
     tokens: ReadonlyArray<PropertyFilterProps.Token>;
@@ -239,6 +248,7 @@ export namespace PropertyFilterProps {
     operatorEqualsText?: string;
     operatorDoesNotEqualText?: string;
     operatorStartsWithText?: string;
+    operatorDoesNotStartWithText?: string;
 
     editTokenHeader?: string;
     propertyText?: string;
@@ -312,6 +322,12 @@ export interface InternalFilteringOption {
   property: null | InternalFilteringProperty;
   value: string;
   label: string;
+}
+
+export interface InternalFreeTextFiltering {
+  disabled: boolean;
+  operators: readonly PropertyFilterOperator[];
+  defaultOperator: PropertyFilterOperator;
 }
 
 export interface InternalToken<TokenValue = any> {

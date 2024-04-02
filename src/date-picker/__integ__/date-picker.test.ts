@@ -182,4 +182,14 @@ describe('Date Picker', () => {
       await expect(page.isInputFocused()).resolves.toBeTruthy();
     })
   );
+
+  test(
+    'announces the month and year when opening the calendar',
+    setupTest(async page => {
+      await page.initLiveAnnouncementsObserver();
+      await page.setInputValue('2024/02/20', false);
+      await page.clickOpenCalendar();
+      await expect(page.getLiveAnnouncements()).resolves.toContain('February 2024');
+    })
+  );
 });

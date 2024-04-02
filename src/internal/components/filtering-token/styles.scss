@@ -14,20 +14,24 @@
 }
 
 .token {
-  border: awsui.$border-field-width solid constants.$token-border-color;
+  border-block: awsui.$border-field-width solid constants.$token-border-color;
+  border-inline: awsui.$border-field-width solid constants.$token-border-color;
   display: flex;
   align-items: stretch;
   background: constants.$token-background;
-  border-radius: awsui.$border-radius-token;
+  border-start-start-radius: awsui.$border-radius-token;
+  border-start-end-radius: awsui.$border-radius-token;
+  border-end-start-radius: awsui.$border-radius-token;
+  border-end-end-radius: awsui.$border-radius-token;
   color: awsui.$color-text-body-default;
-  height: 100%;
+  block-size: 100%;
   box-sizing: border-box;
 }
 
 .show-operation {
-  border-left: none;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
+  border-inline-start: none;
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
 }
 
 .select {
@@ -35,17 +39,21 @@
 }
 
 .token-content {
-  padding: styles.$control-padding-vertical styles.$control-padding-horizontal;
+  padding-block: styles.$control-padding-vertical;
+  padding-inline: styles.$control-padding-horizontal;
 }
 
 .dismiss-button {
-  width: 30px;
-  margin: 0;
-  border: none;
-  padding: 0 awsui.$space-xxs;
+  inline-size: 30px;
+  margin-block: 0;
+  margin-inline: 0;
+  border-block: none;
+  border-inline: none;
+  padding-block: 0;
+  padding-inline: awsui.$space-xxs;
   color: awsui.$color-text-interactive-default;
   background-color: transparent;
-  border-left: styles.$control-border-width solid constants.$token-border-color;
+  border-inline-start: styles.$control-border-width solid constants.$token-border-color;
 
   @include focus-visible.when-visible {
     @include styles.focus-highlight(awsui.$space-filtering-token-dismiss-button-focus-outline-gutter);

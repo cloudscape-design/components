@@ -37,7 +37,7 @@ export function useBottomLabels({
 
   const cacheRef = useRef<{ [label: string]: number }>({});
   const getLabelSpace = (label: string) => {
-    if (cacheRef.current[label] !== undefined) {
+    if (cacheRef.current[label] !== undefined && cacheRef.current[label] !== 0) {
       return cacheRef.current[label];
     }
     if (virtualTextRef.current && virtualTextRef.current.getComputedTextLength) {

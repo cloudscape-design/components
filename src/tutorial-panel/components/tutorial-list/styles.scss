@@ -11,19 +11,26 @@
 
 .tutorial-list {
   @include styles.styles-reset;
-  padding: 0;
-  margin: 0;
+  padding-block: 0;
+  padding-inline: 0;
+  margin-block: 0;
+  margin-inline: 0;
 }
 
 .tutorial-box {
   @include styles.styles-reset;
   list-style: none;
-  border: awsui.$border-divider-section-width solid awsui.$color-border-tutorial;
-  border-radius: awsui.$border-radius-tutorial-panel-item;
-  padding: awsui.$space-m;
+  border-block: awsui.$border-divider-section-width solid awsui.$color-border-tutorial;
+  border-inline: awsui.$border-divider-section-width solid awsui.$color-border-tutorial;
+  border-start-start-radius: awsui.$border-radius-tutorial-panel-item;
+  border-start-end-radius: awsui.$border-radius-tutorial-panel-item;
+  border-end-start-radius: awsui.$border-radius-tutorial-panel-item;
+  border-end-end-radius: awsui.$border-radius-tutorial-panel-item;
+  padding-block: awsui.$space-m;
+  padding-inline: awsui.$space-m;
 
   &:not(:first-child) {
-    margin-top: awsui.$space-l;
+    margin-block-start: awsui.$space-l;
   }
 }
 
@@ -47,7 +54,7 @@
 
 .expandable-section {
   display: none;
-  margin-top: awsui.$space-m;
+  margin-block-start: awsui.$space-m;
 
   &.expanded {
     display: block;
@@ -55,7 +62,8 @@
 }
 
 .button-wrapper {
-  margin: calc(-1 * #{awsui.$space-xxs} - #{styles.$control-border-width});
+  margin-block: calc(-1 * #{awsui.$space-xxs} - #{styles.$control-border-width});
+  margin-inline: calc(-1 * #{awsui.$space-xxs} - #{styles.$control-border-width});
 }
 
 .start {

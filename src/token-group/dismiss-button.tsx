@@ -19,8 +19,8 @@ function DismissButton({ disabled, dismissLabel, onDismiss }: DismissButtonProps
       ref={ref}
       type="button"
       className={clsx(styles['dismiss-button'])}
-      disabled={disabled}
-      onClick={onDismiss}
+      aria-disabled={disabled ? true : undefined}
+      onClick={!disabled && onDismiss ? () => onDismiss() : undefined}
       aria-label={dismissLabel}
     >
       <InternalIcon name="close" />
