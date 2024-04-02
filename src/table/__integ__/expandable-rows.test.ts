@@ -6,14 +6,21 @@ import createWrapper from '../../../lib/components/test-utils/selectors';
 
 const tableWrapper = createWrapper().findTable();
 
-type TestPageOptions = Record<string, string>;
+interface TestPageOptions {
+  useProgressiveLoading?: boolean;
+}
 
 describe('Expandable rows', () => {
-  const setupTest = (options: TestPageOptions, testFn: (page: BasePageObject) => Promise<void>) => {
+  const setupTest = (
+    { useProgressiveLoading = true }: TestPageOptions,
+    testFn: (page: BasePageObject) => Promise<void>
+  ) => {
     return useBrowser(async browser => {
       const page = new BasePageObject(browser);
       await page.setWindowSize({ width: 1200, height: 1000 });
-      const query = new URLSearchParams(options);
+      const query = new URLSearchParams({
+        useProgressiveLoading: String(useProgressiveLoading),
+      });
       await browser.url(`#/light/table/expandable-rows-test?${query.toString()}`);
       await page.waitForVisible(tableWrapper.findBodyCell(2, 1).toSelector());
       await testFn(page);
@@ -22,7 +29,7 @@ describe('Expandable rows', () => {
 
   test(
     'expands and collapses item children by clicking on the expand toggle',
-    setupTest({}, async page => {
+    setupTest({ useProgressiveLoading: false }, async page => {
       await expect(page.getElementsCount(tableWrapper.findRows().toSelector())).resolves.toBe(35);
 
       await page.click(tableWrapper.findExpandToggle(4).toSelector());

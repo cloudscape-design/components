@@ -38,6 +38,7 @@ export function LoaderCell<T>({
 }: LoaderCellProps<T>) {
   const cellContentRef = useRef<HTMLDivElement>(null);
 
+  // TODO: reuse code with no-data-cell
   useResizeObserver(containerRef, ({ contentBoxWidth: containerWidth }) => {
     if (tableRef.current && cellContentRef.current && supportsStickyPosition()) {
       const tablePaddingLeft = parseFloat(getComputedStyle(tableRef.current).paddingLeft) || 0;
