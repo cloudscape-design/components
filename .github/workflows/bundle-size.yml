@@ -39,15 +39,7 @@ jobs:
           ref: ${{ github.event.pull_request.base.sha }}
           path: 'components'
 
-      - name: Restore the cache for the base branch size measurement
-        uses: actions/cache/restore@v3
-        id: restore-cache-basebranch
-        with:
-          path: bundle-size/output-basebranch.json
-          key: bundlesize-${{ hashFiles('bundle-size/build.js','bundle-size/main.js','bundle-size/package-lock.json','bundle-size/package.json') }}-${{ github.event.pull_request.base.sha }}
-
       - name: Measure the bundle size of the base branch
-        if: steps.restore-cache-basebranch.outputs.cache-hit != 'true'
         run: |
           cd components
           npm i --force
@@ -58,13 +50,6 @@ jobs:
 
           mv output.json output-basebranch.json
           cat output-basebranch.json
-
-      - name: Cache the base branch size
-        uses: actions/cache/save@v3
-        if: steps.restore-cache-basebranch.outputs.cache-hit != 'true'
-        with:
-          path: bundle-size/output-basebranch.json
-          key: ${{ steps.restore-cache-basebranch.outputs.cache-primary-key }}
 
       # ------- Pull request size measurement -----------------------------
 
