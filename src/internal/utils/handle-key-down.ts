@@ -35,6 +35,7 @@ export default function handleKeyDown({
         onEnd?.(event);
         break;
       case KeyCode.enter:
+      case KeyCode.space:
         onActivate?.(event);
         break;
       case KeyCode.home:
@@ -51,9 +52,6 @@ export default function handleKeyDown({
         break;
       case KeyCode.right:
         isRtl(event.currentTarget) ? onInlineStart?.(event) : onInlineEnd?.(event);
-        break;
-      case KeyCode.space:
-        onActivate?.(event);
         break;
       case KeyCode.up:
         onBlockStart?.(event);
