@@ -5,7 +5,7 @@
 
 @use '../../internal/styles/tokens' as awsui;
 
-.cell-loader {
+.loader-cell {
   &-content {
     box-sizing: border-box;
     inline-size: 100%;

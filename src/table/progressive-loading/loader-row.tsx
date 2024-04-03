@@ -11,9 +11,11 @@ import { useResizeObserver, warnOnce } from '@cloudscape-design/component-toolki
 import { TableProps } from '../interfaces';
 import InternalButton from '../../button/internal';
 
-interface LoaderCellProps<T> {
+interface LoaderRowProps<T> {
   item: null | T;
   level: number;
+  isExpandable: boolean;
+  hasSelection: boolean;
   totalColumnsCount: number;
   loadingStatus: TableProps.LoadingStatus;
   renderLoaderPending?: (detail: TableProps.RenderLoaderDetail<T>) => TableProps.RenderLoaderPendingResult;
@@ -24,9 +26,11 @@ interface LoaderCellProps<T> {
   containerRef: React.RefObject<HTMLElement>;
 }
 
-export function LoaderCell<T>({
+export function LoaderRow<T>({
   item,
   level,
+  isExpandable,
+  hasSelection,
   totalColumnsCount,
   loadingStatus,
   renderLoaderPending,
@@ -35,10 +39,9 @@ export function LoaderCell<T>({
   onLoadMoreItems,
   tableRef,
   containerRef,
-}: LoaderCellProps<T>) {
+}: LoaderRowProps<T>) {
   const cellContentRef = useRef<HTMLDivElement>(null);
 
-  // TODO: reuse code with no-data-cell
   useResizeObserver(containerRef, ({ contentBoxWidth: containerWidth }) => {
     if (tableRef.current && cellContentRef.current && supportsStickyPosition()) {
       const tablePaddingLeft = parseFloat(getComputedStyle(tableRef.current).paddingLeft) || 0;
@@ -75,18 +78,22 @@ export function LoaderCell<T>({
 
   return (
     // TODO: add isLastRow, hasFooter, isPrevSelected, stripedRow, isVisualRefresh, expandable styles
-    <td colSpan={totalColumnsCount} className={clsx(styles['cell-loader'], bodyCellStyles['body-cell'])}>
-      <div
-        ref={cellContentRef}
+    <tr>
+      {hasSelection && <td className={clsx(bodyCellStyles['body-cell'])}></td>}
+      <td
+        colSpan={hasSelection ? totalColumnsCount - 1 : totalColumnsCount}
         className={clsx(
-          styles['cell-loader-content'],
-          styles[`cell-loader-content-level-${getLevelClassSuffix(level)}`]
+          styles['loader-cell'],
+          bodyCellStyles['body-cell'],
+          isExpandable && bodyCellStyles['body-cell-expandable'],
+          isExpandable && bodyCellStyles[`body-cell-expandable-level-${getLevelClassSuffix(level)}`]
         )}
-        data-awsui-table-suppress-navigation={true}
       >
-        {content}
-      </div>
-    </td>
+        <div ref={cellContentRef} className={styles['loader-cell-content']}>
+          {content}
+        </div>
+      </td>
+    </tr>
   );
 }
 

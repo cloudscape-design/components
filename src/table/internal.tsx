@@ -50,7 +50,7 @@ import { NoDataCell } from './no-data-cell';
 import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
 import { getContentHeaderClassName } from '../internal/utils/content-header-utils';
 import { useExpandableTableProps } from './expandable-rows/expandable-rows-utils';
-import { LoaderCell } from './progressive-loading/loader-cell';
+import { LoaderRow } from './progressive-loading/loader-row';
 import { useProgressiveLoadingProps } from './progressive-loading/progressive-loading-utils';
 
 const GRID_NAVIGATION_PAGE_SIZE = 10;
@@ -577,20 +577,21 @@ const InternalTable = React.forwardRef(
                             <React.Fragment key={getItemKey(trackBy, item, rowIndex)}>
                               {dataRow}
                               {itemLoaders.map(({ level, item, status }, i) => (
-                                <tr key={i}>
-                                  <LoaderCell
-                                    item={item}
-                                    level={level}
-                                    tableRef={tableRefObject}
-                                    containerRef={wrapperMeasureRefObject}
-                                    loadingStatus={status}
-                                    renderLoaderPending={renderLoaderPending}
-                                    renderLoaderLoading={renderLoaderLoading}
-                                    renderLoaderError={renderLoaderError}
-                                    totalColumnsCount={totalColumnsCount}
-                                    onLoadMoreItems={() => fireNonCancelableEvent(onLoadMoreItems, { item })}
-                                  />
-                                </tr>
+                                <LoaderRow
+                                  key={i}
+                                  item={item}
+                                  level={level}
+                                  isExpandable={isExpandable}
+                                  hasSelection={!!selectionType}
+                                  tableRef={tableRefObject}
+                                  containerRef={wrapperMeasureRefObject}
+                                  loadingStatus={status}
+                                  renderLoaderPending={renderLoaderPending}
+                                  renderLoaderLoading={renderLoaderLoading}
+                                  renderLoaderError={renderLoaderError}
+                                  totalColumnsCount={totalColumnsCount}
+                                  onLoadMoreItems={() => fireNonCancelableEvent(onLoadMoreItems, { item })}
+                                />
                               ))}
                             </React.Fragment>
                           );
