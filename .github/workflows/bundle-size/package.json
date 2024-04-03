@@ -7,10 +7,6 @@
     "build": "node build.js"
   },
   "dependencies": {
-    "@vitejs/plugin-react": "^4",
-    "react": "^18",
-    "react-dom": "^18",
-    "typescript": "^5",
-    "vite": "^5"
+    "esbuild": "^0.20.2"
   }
 }

@@ -462,36 +462,31 @@ const InternalTable = React.forwardRef(
                       </tr>
                     ) : (
                       allRows.map((row, rowIndex) => {
-                        const firstVisible = rowIndex === 0;
-                        const lastVisible = rowIndex === allRows.length - 1;
-                        const isEven = rowIndex % 2 === 0;
-                        const isSelected = !!selectionType && isRowSelected(row);
-                        const isPrevSelected = !!selectionType && !firstVisible && isRowSelected(allRows[rowIndex - 1]);
-                        const isNextSelected = !!selectionType && !lastVisible && isRowSelected(allRows[rowIndex + 1]);
+                        const isFirstRow = rowIndex === 0;
+                        const isLastRow = rowIndex === allRows.length - 1;
                         const expandableProps = row.type === 'data' ? getExpandableItemProps(row.item) : undefined;
                         const rowRoleProps = getTableRowRoleProps({ tableRole, firstIndex, rowIndex, expandableProps });
                         const getTableItemKey = (item: T) => getItemKey(trackBy, item, rowIndex);
                         const sharedCellProps = {
                           isVisualRefresh,
-                          isFirstRow: firstVisible,
-                          isLastRow: lastVisible,
-                          isSelected,
-                          isNextSelected,
-                          isPrevSelected,
-                          isEvenRow: isEven,
+                          isFirstRow,
+                          isLastRow,
+                          isSelected: hasSelection && isRowSelected(row),
+                          isPrevSelected: hasSelection && !isFirstRow && isRowSelected(allRows[rowIndex - 1]),
+                          isNextSelected: hasSelection && !isLastRow && isRowSelected(allRows[rowIndex + 1]),
+                          isEvenRow: rowIndex % 2 === 0,
                           stripedRows,
                           hasSelection,
                           hasFooter,
                           stickyState,
                           tableRole,
                         };
-
                         let rowElement: React.ReactNode = null;
                         if (row.type === 'data') {
                           rowElement = (
                             <tr
                               key={getTableItemKey(row.item)}
-                              className={clsx(styles.row, isSelected && styles['row-selected'])}
+                              className={clsx(styles.row, sharedCellProps.isSelected && styles['row-selected'])}
                               onFocus={({ currentTarget }) => {
                                 // When an element inside table row receives focus we want to adjust the scroll.
                                 // However, that behaviour is unwanted when the focus is received as result of a click
