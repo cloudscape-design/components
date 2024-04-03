@@ -60,18 +60,17 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
   box-sizing: border-box;
   padding-block-start: $cell-vertical-padding;
   padding-block-end: $cell-vertical-padding-w-border;
-  @include cell-offset($cell-horizontal-padding);
   padding-inline-end: $cell-horizontal-padding;
   border-block-start: awsui.$border-divider-list-width solid transparent;
   word-wrap: break-word;
   border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-divider-secondary;
   font-weight: inherit;
 
-  @include focus-visible.when-visible {
-    @include cell-focus-outline;
-  }
-
   text-align: start;
+
+  &-content {
+    // This style is empty yet.
+  }
   &:not(.body-cell-wrap) {
     white-space: nowrap;
     overflow: hidden;
@@ -438,5 +437,10 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
     &.body-cell-first-row > .expandable-cell-content > .body-cell-editor-wrapper {
       padding-block-start: awsui.$border-divider-list-width;
     }
+  }
+  @include cell-offset($cell-horizontal-padding);
+
+  @include focus-visible.when-visible {
+    @include cell-focus-outline;
   }
 }
