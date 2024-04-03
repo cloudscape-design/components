@@ -446,19 +446,26 @@ const InternalTable = React.forwardRef(
                       </tr>
                     ) : (
                       allItems.map((item, rowIndex) => {
-                        const firstVisible = rowIndex === 0;
-                        const lastVisible = rowIndex === allItems.length - 1;
-                        const isEven = rowIndex % 2 === 0;
-                        const isSelected = !!selectionType && isItemSelected(item);
-                        const isPrevSelected =
-                          !!selectionType && !firstVisible && isItemSelected(allItems[rowIndex - 1]);
-                        const isNextSelected =
-                          !!selectionType && !lastVisible && isItemSelected(allItems[rowIndex + 1]);
+                        const isFirstRow = rowIndex === 0;
+                        const isLastRow = rowIndex === allItems.length - 1;
+                        const sharedCellProps = {
+                          isFirstRow,
+                          isLastRow,
+                          isVisualRefresh,
+                          isSelected: !!selectionType && isItemSelected(item),
+                          isPrevSelected: !!selectionType && !isFirstRow && isItemSelected(allItems[rowIndex - 1]),
+                          isNextSelected: !!selectionType && !isLastRow && isItemSelected(allItems[rowIndex + 1]),
+                          isEvenRow: rowIndex % 2 === 0,
+                          hasFooter,
+                          stripedRows,
+                          stickyState,
+                          tableRole,
+                        };
                         const expandableProps = getExpandableItemProps(item);
                         return (
                           <tr
                             key={getItemKey(trackBy, item, rowIndex)}
-                            className={clsx(styles.row, isSelected && styles['row-selected'])}
+                            className={clsx(styles.row, sharedCellProps.isSelected && styles['row-selected'])}
                             onFocus={({ currentTarget }) => {
                               // When an element inside table row receives focus we want to adjust the scroll.
                               // However, that behaviour is unwanted when the focus is received as result of a click
@@ -474,24 +481,14 @@ const InternalTable = React.forwardRef(
                             }
                             {...getTableRowRoleProps({ tableRole, firstIndex, rowIndex, expandableProps })}
                           >
-                            {selectionType !== undefined && (
+                            {hasSelection && (
                               <TableTdElement
+                                {...sharedCellProps}
                                 className={clsx(styles['selection-control'])}
-                                isVisualRefresh={isVisualRefresh}
-                                isFirstRow={firstVisible}
-                                isLastRow={lastVisible}
-                                isSelected={isSelected}
-                                isNextSelected={isNextSelected}
-                                isPrevSelected={isPrevSelected}
                                 wrapLines={false}
-                                isEvenRow={isEven}
-                                stripedRows={stripedRows}
-                                hasSelection={hasSelection}
-                                hasFooter={hasFooter}
-                                stickyState={stickyState}
+                                hasSelection={true}
                                 columnId={selectionColumnId}
                                 colIndex={0}
-                                tableRole={tableRole}
                               >
                                 <SelectionControl
                                   tableRole={tableRole}
@@ -510,6 +507,7 @@ const InternalTable = React.forwardRef(
                               return (
                                 <TableBodyCell
                                   key={getColumnKey(column, colIndex)}
+                                  {...sharedCellProps}
                                   style={
                                     resizableColumns
                                       ? {}
@@ -526,25 +524,14 @@ const InternalTable = React.forwardRef(
                                   isEditable={isEditable}
                                   isEditing={isEditing}
                                   isRowHeader={column.isRowHeader}
-                                  isFirstRow={firstVisible}
-                                  isLastRow={lastVisible}
-                                  isSelected={isSelected}
-                                  isNextSelected={isNextSelected}
-                                  isPrevSelected={isPrevSelected}
                                   successfulEdit={successfulEdit}
                                   onEditStart={() => cellEditing.startEdit({ rowIndex, colIndex })}
                                   onEditEnd={editCancelled =>
                                     cellEditing.completeEdit({ rowIndex, colIndex }, editCancelled)
                                   }
                                   submitEdit={cellEditing.submitEdit}
-                                  hasFooter={hasFooter}
-                                  stripedRows={stripedRows}
-                                  isEvenRow={isEven}
                                   columnId={column.id ?? colIndex}
                                   colIndex={colIndex + colIndexOffset}
-                                  stickyState={stickyState}
-                                  isVisualRefresh={isVisualRefresh}
-                                  tableRole={tableRole}
                                   // Expandable props only apply to the first data column of the table.
                                   // When present, the cell content is decorated with expand toggles and extra paddings.
                                   expandableProps={isExpandable && colIndex === 0 ? expandableProps : undefined}
