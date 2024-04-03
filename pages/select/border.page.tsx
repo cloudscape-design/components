@@ -65,7 +65,7 @@ export default function SelectPage() {
               placeholder="Choose option"
               selectedOption={null}
               options={optionsSemiExtended}
-              expandToViewport={true}
+              expandToViewport={false}
               data-testid="select-border"
             />
           </div>
