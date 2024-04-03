@@ -9,9 +9,8 @@ import {
   manyDrawersWithBadges,
   findActiveDrawerLandmark,
 } from './utils';
-import createWrapper from '../../../lib/components/test-utils/dom';
 
-import { render, act } from '@testing-library/react';
+import { act } from '@testing-library/react';
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 
 jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
@@ -48,9 +47,8 @@ describeEachAppLayout(size => {
   });
 
   test('should open active drawer on click of overflow item', () => {
-    const { container } = render(<AppLayout drawers={manyDrawers} />);
-    const wrapper = createWrapper(container).findAppLayout()!;
-    const buttonDropdown = createWrapper(container).findButtonDropdown();
+    const { wrapper } = renderComponent(<AppLayout drawers={manyDrawers} />);
+    const buttonDropdown = wrapper.findDrawersOverflowTrigger();
 
     expect(wrapper.findActiveDrawer()).toBeFalsy();
     buttonDropdown!.openDropdown();
@@ -63,8 +61,8 @@ describeEachAppLayout(size => {
       drawersOverflow: 'Overflow drawers',
       drawersOverflowWithBadge: 'Overflow drawers (Unread notifications)',
     };
-    const { container, rerender } = render(<AppLayout drawers={manyDrawers} ariaLabels={ariaLabels} />);
-    const buttonDropdown = createWrapper(container).findButtonDropdown();
+    const { wrapper, rerender } = renderComponent(<AppLayout drawers={manyDrawers} ariaLabels={ariaLabels} />);
+    const buttonDropdown = wrapper.findDrawersOverflowTrigger();
 
     expect(buttonDropdown!.findNativeButton().getElement()).toHaveAttribute('aria-label', 'Overflow drawers');
 
@@ -75,8 +73,8 @@ describeEachAppLayout(size => {
     );
   });
 
-  test('renders aria-labels', async () => {
-    const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+  test('renders aria-labels', () => {
+    const { wrapper } = renderComponent(<AppLayout drawers={[testDrawer]} />);
     expect(wrapper.findDrawerTriggerById('security')!.getElement()).toHaveAttribute(
       'aria-label',
       'Security trigger button'
@@ -86,8 +84,8 @@ describeEachAppLayout(size => {
     expect(wrapper.findActiveDrawerCloseButton()!.getElement()).toHaveAttribute('aria-label', 'Security close button');
   });
 
-  test('renders resize only on resizable drawer', async () => {
-    const { wrapper } = await renderComponent(
+  test('renders resize only on resizable drawer', () => {
+    const { wrapper } = renderComponent(
       <AppLayout
         drawers={[
           testDrawer,
