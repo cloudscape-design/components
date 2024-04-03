@@ -7,6 +7,22 @@
 @use '../../internal/styles/tokens' as awsui;
 @use '../../internal/styles' as styles;
 
+@mixin when-focus-visible-or-fake {
+  @include focus-visible.when-visible {
+    @content;
+  }
+  // stylelint-disable-next-line selector-combinator-disallowed-list
+  body[data-awsui-focus-visible='true'] &.header-cell-fake-focus {
+    @content;
+  }
+}
+
+@mixin header-cell-focus-outline($gutter) {
+  @include when-focus-visible-or-fake {
+    @include styles.focus-highlight(calc(-1 * #{$gutter}));
+  }
+}
+
 @mixin cell-offset($padding) {
   padding-inline-start: $padding;
 
@@ -27,23 +43,7 @@
   padding-block: awsui.$space-scaled-xxs;
   padding-inline: awsui.$space-scaled-xs;
 
-  @include focus-visible.when-visible {
-    @include styles.focus-highlight(
-      (
-        'vertical': calc(-1 * #{awsui.$space-scaled-xxs}),
-        'horizontal': calc(-1 * #{awsui.$space-scaled-xxs}),
-      )
-    );
-  }
-  // stylelint-disable-next-line selector-combinator-disallowed-list
-  body[data-awsui-focus-visible='true'] &-fake-focus {
-    @include styles.focus-highlight(
-      (
-        'vertical': calc(-1 * #{awsui.$space-scaled-xxs}),
-        'horizontal': calc(-1 * #{awsui.$space-scaled-xxs}),
-      )
-    );
-  }
+  @include header-cell-focus-outline(awsui.$space-scaled-xxs);
 
   &-sticky {
     border-block-end: awsui.$border-table-sticky-width solid awsui.$color-border-divider-default;
@@ -113,14 +113,7 @@
     text-decoration: none;
   }
 
-  @include focus-visible.when-visible {
-    @include styles.focus-highlight(awsui.$space-table-header-focus-outline-gutter);
-  }
-
-  // stylelint-disable-next-line selector-combinator-disallowed-list
-  body[data-awsui-focus-visible='true'] &.header-cell-fake-focus {
-    @include styles.focus-highlight(awsui.$space-table-header-focus-outline-gutter);
-  }
+  @include header-cell-focus-outline(awsui.$space-table-header-focus-outline-gutter);
 
   .header-cell-disabled.header-cell-sorted > & {
     & > .sorting-icon {
