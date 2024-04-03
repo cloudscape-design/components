@@ -15,7 +15,7 @@ import {
   moveMonthUp,
 } from '../utils/navigation';
 import { KeyCode } from '../../internal/keycode';
-import handleKeyDown from '../../internal/utils/handle-key-down';
+import handleKey from '../../internal/utils/handle-key';
 
 export default function useCalendarGridKeyboardNavigation({
   baseDate,
@@ -54,7 +54,7 @@ export default function useCalendarGridKeyboardNavigation({
 
     event.preventDefault();
 
-    handleKeyDown({
+    handleKey({
       onActivate: () => {
         onFocusDate(null);
         onSelectDate(focusableDate);

@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import smoothScroll from './smooth-scroll';
-import { isRtl } from '../internal/direction';
+import { isRtl, getScrollInlineStart } from '../internal/direction';
 
 export const onPaginationClick = (
   headerBarRef: React.RefObject<HTMLUListElement>,
@@ -39,19 +39,11 @@ export const hasHorizontalOverflow = (
 };
 
 export const hasInlineStartOverflow = (headerBar: HTMLElement): boolean => {
-  // scrollLeft will be a negative number if the direction is RTL
-  const scrollInlineStart = isRtl(headerBar) ? headerBar.scrollLeft * -1 : headerBar.scrollLeft;
-  return scrollInlineStart > 0;
+  return getScrollInlineStart(headerBar) > 0;
 };
 
 export const hasInlineEndOverflow = (headerBar: HTMLElement): boolean => {
-  const { offsetWidth, scrollLeft, scrollWidth } = headerBar;
-
-  // scrollLeft can be a decimal value on systems using display scaling
-  // scrollLeft will be a negative number if the direction is RTL
-  const scrollInlineStart = isRtl(headerBar) ? Math.floor(scrollLeft) * -1 : Math.ceil(scrollLeft);
-
-  return Math.ceil(scrollInlineStart) < scrollWidth - offsetWidth;
+  return Math.ceil(getScrollInlineStart(headerBar)) < headerBar.scrollWidth - headerBar.offsetWidth;
 };
 
 export const scrollIntoView = (tabHeader: HTMLElement, headerBar: HTMLElement, smooth = true): void => {

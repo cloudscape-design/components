@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef } from 'react';
 import clsx from 'clsx';
-import handleKeyDown from '../internal/utils/handle-key-down';
+import handleKey from '../internal/utils/handle-key';
 import { KeyCode } from '../internal/keycode';
 import { fireNonCancelableEvent } from '../internal/events';
 import { SegmentedControlProps } from './interfaces';
@@ -30,7 +30,7 @@ export default function InternalSegmentedControl({
 
     let nextIndex = activeIndex;
 
-    handleKeyDown({
+    handleKey({
       onInlineStart: () => (nextIndex = activeIndex === 0 ? enabledSegments.length - 1 : activeIndex - 1),
       onInlineEnd: () => (nextIndex = activeIndex + 1 === enabledSegments.length ? 0 : activeIndex + 1),
     })(event);

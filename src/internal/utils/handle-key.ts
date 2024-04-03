@@ -5,7 +5,7 @@ import React from 'react';
 import { KeyCode } from '../keycode';
 import { isRtl } from '../direction';
 
-export default function handleKeyDown({
+export default function handleKey({
   onActivate,
   onBlockEnd,
   onBlockStart,

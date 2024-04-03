@@ -5,7 +5,7 @@ import { TabsProps } from './interfaces';
 import clsx from 'clsx';
 import styles from './styles.css.js';
 import { InternalButton } from '../button/internal';
-import handleKeyDown from '../internal/utils/handle-key-down';
+import handleKey from '../internal/utils/handle-key';
 import { KeyCode } from '../internal/keycode';
 import {
   onPaginationClick,
@@ -189,7 +189,7 @@ export function TabHeaderBar({
       event.preventDefault();
       const activeIndex = enabledTabsWithCurrentTab.indexOf(tab);
 
-      handleKeyDown({
+      handleKey({
         onEnd: () => highlightTab(enabledTabsWithCurrentTab.length - 1),
         onHome: () => highlightTab(0),
         onInlineEnd: () =>

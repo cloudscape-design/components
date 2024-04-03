@@ -13,7 +13,7 @@ import { hasValue } from '../../../internal/utils/has-value';
 import { useDateCache } from '../../../internal/hooks/use-date-cache';
 import { moveNextDay, movePrevDay, moveNextWeek, movePrevWeek, getBaseDay } from '../../../calendar/utils/navigation';
 import { findDateToFocus } from '../utils';
-import handleKeyDown from '../../../internal/utils/handle-key-down';
+import handleKey from '../../../internal/utils/handle-key';
 
 function isVisible(date: Date, baseDate: Date, isSingleGrid: boolean) {
   if (isSingleGrid) {
@@ -97,7 +97,7 @@ export const Grids = ({
 
     event.preventDefault();
 
-    handleKeyDown({
+    handleKey({
       onActivate: () => focusedDate && onSelectDate(focusedDate),
       onBlockEnd: () => focusedDate && (updatedFocusDate = moveNextWeek(focusedDate, isDateEnabled)),
       onBlockStart: () => focusedDate && (updatedFocusDate = movePrevWeek(focusedDate, isDateEnabled)),
