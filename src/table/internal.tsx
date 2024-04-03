@@ -51,7 +51,7 @@ import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
 import { getContentHeaderClassName } from '../internal/utils/content-header-utils';
 import { useExpandableTableProps } from './expandable-rows/expandable-rows-utils';
 import { LoaderRow } from './progressive-loading/loader-row';
-import { useProgressiveLoadingProps } from './progressive-loading/progressive-loading-utils';
+import { TableRow, useProgressiveLoadingProps } from './progressive-loading/progressive-loading-utils';
 
 const GRID_NAVIGATION_PAGE_SIZE = 10;
 const SELECTION_COLUMN_WIDTH = 54;
@@ -145,7 +145,7 @@ const InternalTable = React.forwardRef(
       ariaLabels,
       loadingStatus,
     });
-    const { getItemLoaders } = useProgressiveLoadingProps({
+    const { allRows } = useProgressiveLoadingProps({
       items: allItems,
       expandableRows,
       loadingStatus,
@@ -214,6 +214,7 @@ const InternalTable = React.forwardRef(
       ariaLabels,
       loading,
     });
+    const isRowSelected = (row: TableRow<T>) => row.type === 'data' && isItemSelected(row.item);
 
     if (isDevelopment) {
       if (resizableColumns) {
@@ -320,7 +321,7 @@ const InternalTable = React.forwardRef(
       selectionType,
       tableRoot: tableRefObject,
       columnDefinitions: visibleColumnDefinitions,
-      numRows: allItems?.length,
+      numRows: allRows?.length,
     });
     const toolsHeaderWrapper = useRef<HTMLDivElement>(null);
     // If is mobile, we take into consideration the AppLayout's mobile bar and we subtract the tools wrapper height so only the table header is sticky
@@ -460,144 +461,137 @@ const InternalTable = React.forwardRef(
                         />
                       </tr>
                     ) : (
-                      allItems.map((item, rowIndex) => {
+                      allRows.map((row, rowIndex) => {
                         const firstVisible = rowIndex === 0;
-                        const lastVisible = rowIndex === allItems.length - 1;
+                        const lastVisible = rowIndex === allRows.length - 1;
                         const isEven = rowIndex % 2 === 0;
-                        const isSelected = !!selectionType && isItemSelected(item);
-                        const isPrevSelected =
-                          !!selectionType && !firstVisible && isItemSelected(allItems[rowIndex - 1]);
-                        const isNextSelected =
-                          !!selectionType && !lastVisible && isItemSelected(allItems[rowIndex + 1]);
-                        const expandableProps = getExpandableItemProps(item);
-                        const itemLoaders = getItemLoaders(item);
-                        const hasLoaderRows = (lastVisible && loadingStatus) || itemLoaders.length > 0;
-                        const dataRow = (
-                          <tr
-                            key={getItemKey(trackBy, item, rowIndex)}
-                            className={clsx(styles.row, isSelected && styles['row-selected'])}
-                            onFocus={({ currentTarget }) => {
-                              // When an element inside table row receives focus we want to adjust the scroll.
-                              // However, that behaviour is unwanted when the focus is received as result of a click
-                              // as it causes the click to never reach the target element.
-                              if (!currentTarget.contains(getMouseDownTarget())) {
-                                stickyHeaderRef.current?.scrollToRow(currentTarget);
-                              }
-                            }}
-                            {...focusMarkers.item}
-                            onClick={onRowClickHandler && onRowClickHandler.bind(null, rowIndex, item)}
-                            onContextMenu={
-                              onRowContextMenuHandler && onRowContextMenuHandler.bind(null, rowIndex, item)
-                            }
-                            {...getTableRowRoleProps({ tableRole, firstIndex, rowIndex, expandableProps })}
-                          >
-                            {selectionType !== undefined && (
-                              <TableTdElement
-                                className={clsx(styles['selection-control'])}
-                                isVisualRefresh={isVisualRefresh}
-                                isFirstRow={firstVisible}
-                                isLastRow={lastVisible && !hasLoaderRows}
-                                isSelected={isSelected}
-                                isNextSelected={isNextSelected}
-                                isPrevSelected={isPrevSelected}
-                                wrapLines={false}
-                                isEvenRow={isEven}
-                                stripedRows={stripedRows}
-                                hasSelection={hasSelection}
-                                hasFooter={hasFooter}
-                                stickyState={stickyState}
-                                columnId={selectionColumnId}
-                                colIndex={0}
-                                tableRole={tableRole}
-                              >
-                                <SelectionControl
-                                  tableRole={tableRole}
-                                  onFocusDown={moveFocusDown}
-                                  onFocusUp={moveFocusUp}
-                                  onShiftToggle={updateShiftToggle}
-                                  {...getItemSelectionProps(item)}
-                                />
-                              </TableTdElement>
-                            )}
+                        const isSelected = !!selectionType && isRowSelected(row);
+                        const isPrevSelected = !!selectionType && !firstVisible && isRowSelected(allRows[rowIndex - 1]);
+                        const isNextSelected = !!selectionType && !lastVisible && isRowSelected(allRows[rowIndex + 1]);
+                        const expandableProps = row.type === 'data' ? getExpandableItemProps(row.item) : undefined;
 
-                            {visibleColumnDefinitions.map((column, colIndex) => {
-                              const isEditing = cellEditing.checkEditing({ rowIndex, colIndex });
-                              const successfulEdit = cellEditing.checkLastSuccessfulEdit({ rowIndex, colIndex });
-                              const isEditable = !!column.editConfig && !cellEditing.isLoading;
-                              return (
-                                <TableBodyCell
-                                  key={getColumnKey(column, colIndex)}
-                                  style={
-                                    resizableColumns
-                                      ? {}
-                                      : {
-                                          width: column.width,
-                                          minWidth: column.minWidth,
-                                          maxWidth: column.maxWidth,
-                                        }
-                                  }
-                                  ariaLabels={ariaLabels}
-                                  column={column}
-                                  item={item}
-                                  wrapLines={wrapLines}
-                                  isEditable={isEditable}
-                                  isEditing={isEditing}
-                                  isRowHeader={column.isRowHeader}
+                        let rowElement: React.ReactNode = null;
+                        if (row.type === 'data') {
+                          rowElement = (
+                            <tr
+                              key={getItemKey(trackBy, row.item, rowIndex)}
+                              className={clsx(styles.row, isSelected && styles['row-selected'])}
+                              onFocus={({ currentTarget }) => {
+                                // When an element inside table row receives focus we want to adjust the scroll.
+                                // However, that behaviour is unwanted when the focus is received as result of a click
+                                // as it causes the click to never reach the target element.
+                                if (!currentTarget.contains(getMouseDownTarget())) {
+                                  stickyHeaderRef.current?.scrollToRow(currentTarget);
+                                }
+                              }}
+                              {...focusMarkers.item}
+                              onClick={onRowClickHandler && onRowClickHandler.bind(null, rowIndex, row.item)}
+                              onContextMenu={
+                                onRowContextMenuHandler && onRowContextMenuHandler.bind(null, rowIndex, row.item)
+                              }
+                              {...getTableRowRoleProps({ tableRole, firstIndex, rowIndex, expandableProps })}
+                            >
+                              {selectionType !== undefined && (
+                                <TableTdElement
+                                  className={clsx(styles['selection-control'])}
+                                  isVisualRefresh={isVisualRefresh}
                                   isFirstRow={firstVisible}
-                                  isLastRow={lastVisible && !hasLoaderRows}
+                                  isLastRow={lastVisible}
                                   isSelected={isSelected}
                                   isNextSelected={isNextSelected}
                                   isPrevSelected={isPrevSelected}
-                                  successfulEdit={successfulEdit}
-                                  onEditStart={() => cellEditing.startEdit({ rowIndex, colIndex })}
-                                  onEditEnd={editCancelled =>
-                                    cellEditing.completeEdit({ rowIndex, colIndex }, editCancelled)
-                                  }
-                                  submitEdit={cellEditing.submitEdit}
-                                  hasFooter={hasFooter}
-                                  stripedRows={stripedRows}
+                                  wrapLines={false}
                                   isEvenRow={isEven}
-                                  columnId={column.id ?? colIndex}
-                                  colIndex={colIndex + colIndexOffset}
+                                  stripedRows={stripedRows}
+                                  hasSelection={hasSelection}
+                                  hasFooter={hasFooter}
                                   stickyState={stickyState}
-                                  isVisualRefresh={isVisualRefresh}
+                                  columnId={selectionColumnId}
+                                  colIndex={0}
                                   tableRole={tableRole}
-                                  // Expandable props only apply to the first data column of the table.
-                                  // When present, the cell content is decorated with expand toggles and extra paddings.
-                                  expandableProps={isExpandable && colIndex === 0 ? expandableProps : undefined}
-                                />
-                              );
-                            })}
-                          </tr>
-                        );
+                                >
+                                  <SelectionControl
+                                    tableRole={tableRole}
+                                    onFocusDown={moveFocusDown}
+                                    onFocusUp={moveFocusUp}
+                                    onShiftToggle={updateShiftToggle}
+                                    {...getItemSelectionProps(row.item)}
+                                  />
+                                </TableTdElement>
+                              )}
 
-                        if (hasLoaderRows) {
-                          // TODO: add last-visible style to the last loader row
-                          return (
-                            <React.Fragment key={getItemKey(trackBy, item, rowIndex)}>
-                              {dataRow}
-                              {itemLoaders.map(({ level, item, status }, i) => (
-                                <LoaderRow
-                                  key={i}
-                                  item={item}
-                                  level={level}
-                                  isExpandable={isExpandable}
-                                  hasSelection={!!selectionType}
-                                  tableRef={tableRefObject}
-                                  containerRef={wrapperMeasureRefObject}
-                                  loadingStatus={status}
-                                  renderLoaderPending={renderLoaderPending}
-                                  renderLoaderLoading={renderLoaderLoading}
-                                  renderLoaderError={renderLoaderError}
-                                  totalColumnsCount={totalColumnsCount}
-                                  onLoadMoreItems={() => fireNonCancelableEvent(onLoadMoreItems, { item })}
-                                />
-                              ))}
-                            </React.Fragment>
+                              {visibleColumnDefinitions.map((column, colIndex) => {
+                                const isEditing = cellEditing.checkEditing({ rowIndex, colIndex });
+                                const successfulEdit = cellEditing.checkLastSuccessfulEdit({ rowIndex, colIndex });
+                                const isEditable = !!column.editConfig && !cellEditing.isLoading;
+                                return (
+                                  <TableBodyCell
+                                    key={getColumnKey(column, colIndex)}
+                                    style={
+                                      resizableColumns
+                                        ? {}
+                                        : {
+                                            width: column.width,
+                                            minWidth: column.minWidth,
+                                            maxWidth: column.maxWidth,
+                                          }
+                                    }
+                                    ariaLabels={ariaLabels}
+                                    column={column}
+                                    item={row.item}
+                                    wrapLines={wrapLines}
+                                    isEditable={isEditable}
+                                    isEditing={isEditing}
+                                    isRowHeader={column.isRowHeader}
+                                    isFirstRow={firstVisible}
+                                    isLastRow={lastVisible}
+                                    isSelected={isSelected}
+                                    isNextSelected={isNextSelected}
+                                    isPrevSelected={isPrevSelected}
+                                    successfulEdit={successfulEdit}
+                                    onEditStart={() => cellEditing.startEdit({ rowIndex, colIndex })}
+                                    onEditEnd={editCancelled =>
+                                      cellEditing.completeEdit({ rowIndex, colIndex }, editCancelled)
+                                    }
+                                    submitEdit={cellEditing.submitEdit}
+                                    hasFooter={hasFooter}
+                                    stripedRows={stripedRows}
+                                    isEvenRow={isEven}
+                                    columnId={column.id ?? colIndex}
+                                    colIndex={colIndex + colIndexOffset}
+                                    stickyState={stickyState}
+                                    isVisualRefresh={isVisualRefresh}
+                                    tableRole={tableRole}
+                                    // Expandable props only apply to the first data column of the table.
+                                    // When present, the cell content is decorated with expand toggles and extra paddings.
+                                    expandableProps={isExpandable && colIndex === 0 ? expandableProps : undefined}
+                                  />
+                                );
+                              })}
+                            </tr>
+                          );
+                        } else if (row.type === 'loader') {
+                          rowElement = (
+                            <LoaderRow
+                              key={
+                                row.item
+                                  ? `${getItemKey(trackBy, row.item, rowIndex)}-row-loader`
+                                  : 'awsui-table-loader'
+                              }
+                              item={row.item}
+                              level={row.level}
+                              isExpandable={isExpandable}
+                              hasSelection={!!selectionType}
+                              loadingStatus={row.status}
+                              renderLoaderPending={renderLoaderPending}
+                              renderLoaderLoading={renderLoaderLoading}
+                              renderLoaderError={renderLoaderError}
+                              totalColumnsCount={totalColumnsCount}
+                              onLoadMoreItems={() => fireNonCancelableEvent(onLoadMoreItems, { item: row.item })}
+                            />
                           );
                         }
-
-                        return dataRow;
+                        return rowElement;
                       })
                     )}
                   </tbody>

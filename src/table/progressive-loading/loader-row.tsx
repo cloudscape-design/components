@@ -3,11 +3,10 @@
 import clsx from 'clsx';
 import React, { useRef } from 'react';
 import InternalStatusIndicator from '../../status-indicator/internal';
-import { supportsStickyPosition } from '../../internal/utils/dom';
 import styles from './styles.css.js';
 import bodyCellStyles from '../body-cell/styles.css.js';
 import LiveRegion from '../../internal/components/live-region';
-import { useResizeObserver, warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { TableProps } from '../interfaces';
 import InternalButton from '../../button/internal';
 
@@ -22,8 +21,6 @@ interface LoaderRowProps<T> {
   renderLoaderLoading?: (detail: TableProps.RenderLoaderDetail<T>) => TableProps.RenderLoaderLoadingResult;
   renderLoaderError?: (detail: TableProps.RenderLoaderDetail<T>) => TableProps.RenderLoaderErrorResult;
   onLoadMoreItems: () => void;
-  tableRef: React.RefObject<HTMLTableElement>;
-  containerRef: React.RefObject<HTMLElement>;
 }
 
 export function LoaderRow<T>({
@@ -37,19 +34,8 @@ export function LoaderRow<T>({
   renderLoaderLoading,
   renderLoaderError,
   onLoadMoreItems,
-  tableRef,
-  containerRef,
 }: LoaderRowProps<T>) {
   const cellContentRef = useRef<HTMLDivElement>(null);
-
-  useResizeObserver(containerRef, ({ contentBoxWidth: containerWidth }) => {
-    if (tableRef.current && cellContentRef.current && supportsStickyPosition()) {
-      const tablePaddingLeft = parseFloat(getComputedStyle(tableRef.current).paddingLeft) || 0;
-      const tablePaddingRight = parseFloat(getComputedStyle(tableRef.current).paddingRight) || 0;
-      const contentWidth = containerWidth + tablePaddingLeft + tablePaddingRight;
-      cellContentRef.current.style.width = Math.floor(contentWidth) + 'px';
-    }
-  });
 
   let content: React.ReactNode = null;
   if (loadingStatus === 'pending' && renderLoaderPending) {

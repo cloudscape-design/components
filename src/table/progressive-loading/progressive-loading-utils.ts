@@ -3,7 +3,15 @@
 
 import { TableProps } from '../interfaces';
 
-export interface ItemLoader<T> {
+export type TableRow<T> = TableDataRow<T> | TableLoaderRow<T>;
+
+export interface TableDataRow<T> {
+  type: 'data';
+  item: T;
+}
+
+export interface TableLoaderRow<T> {
+  type: 'loader';
   item: null | T;
   level: number;
   status: TableProps.LoadingStatus;
@@ -22,24 +30,22 @@ export function useProgressiveLoadingProps<T>({
   getItemLevel: (item: T) => number;
   getItemParent: (item: T) => null | T;
 }) {
-  const itemToLoaders = new Map<T, ItemLoader<T>[]>();
+  const allRows = new Array<TableRow<T>>();
+
   for (let i = 0; i < items.length; i++) {
-    const itemLoaders = new Array<ItemLoader<T>>();
+    allRows.push({ type: 'data', item: items[i] });
     let currentParent = getItemParent(items[i]);
     let levelsDiff = getItemLevel(items[i]) - getItemLevel(items[i + 1]);
     while (levelsDiff > 0) {
       const status = currentParent ? expandableRows?.getItemLoadingStatus?.(currentParent) : loadingStatus;
       if (status && status !== 'finished') {
         const level = currentParent ? getItemLevel(currentParent) : 0;
-        itemLoaders.push({ item: currentParent, level, status });
+        allRows.push({ type: 'loader', item: currentParent, level, status });
       }
       currentParent = currentParent && getItemParent(currentParent);
       levelsDiff--;
     }
-    itemToLoaders.set(items[i], itemLoaders);
   }
 
-  const getItemLoaders = (item: T) => itemToLoaders.get(item) ?? [];
-
-  return { getItemLoaders };
+  return { allRows };
 }
