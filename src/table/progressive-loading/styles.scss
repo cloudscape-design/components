@@ -6,5 +6,8 @@
 @use '../../internal/styles/tokens' as awsui;
 
 .items-loader {
-  /* used in test-utils */
+  position: sticky;
+  inset-inline-start: awsui.$space-m;
+  inline-size: fit-content;
+  z-index: 798;
 }
