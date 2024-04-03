@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React from 'react';
 import InternalStatusIndicator from '../../status-indicator/internal';
 import styles from './styles.css.js';
 import LiveRegion from '../../internal/components/live-region';
@@ -25,8 +25,6 @@ export function ItemsLoader<T>({
   renderLoaderError,
   onLoadMoreItems,
 }: ItemsLoaderProps<T>) {
-  const cellContentRef = useRef<HTMLDivElement>(null);
-
   let content: React.ReactNode = null;
   if (loadingStatus === 'pending' && renderLoaderPending) {
     const { buttonContent, buttonAriaLabel } = renderLoaderPending({ item });
@@ -52,9 +50,5 @@ export function ItemsLoader<T>({
     );
   }
 
-  return (
-    <div ref={cellContentRef} className={styles['items-loader']}>
-      {content}
-    </div>
-  );
+  return <div className={styles['items-loader']}>{content}</div>;
 }

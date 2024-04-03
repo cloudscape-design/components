@@ -6,16 +6,5 @@
 @use '../../internal/styles/tokens' as awsui;
 
 .items-loader {
-  box-sizing: border-box;
-  inline-size: 100%;
-  padding-inline: awsui.$space-xs;
-  /* stylelint-disable plugin/no-unsupported-browser-features */
-  @supports (position: sticky) {
-    position: sticky;
-    inset-inline-start: 0;
-    // Offset table paddings to position centered when sticky
-    margin-block: 0;
-    margin-inline: calc(-2 * #{awsui.$space-table-horizontal});
-  }
-  /* stylelint-enable plugin/no-unsupported-browser-features */
+  /* used in test-utils */
 }

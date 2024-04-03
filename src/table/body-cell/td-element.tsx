@@ -8,7 +8,7 @@ import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
 import { TableRole, getTableCellRoleProps } from '../table-role';
 import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
-import { ExpandToggle } from '../expandable-rows/expand-toggle-button';
+import { ExpandToggleButton } from '../expandable-rows/expand-toggle-button';
 import { ExpandableItemProps } from '../expandable-rows/expandable-rows-utils';
 
 export interface TableTdElementProps {
@@ -116,9 +116,9 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
         {...nativeAttributes}
         tabIndex={cellTabIndex}
       >
-        {expandableProps && (
+        {expandableProps && expandableProps.isExpandable && (
           <div className={styles['expandable-toggle-wrapper']}>
-            <ExpandToggle {...expandableProps} />
+            <ExpandToggleButton {...expandableProps} />
           </div>
         )}
         {children}

@@ -4,7 +4,7 @@ import React, { useContext, useState } from 'react';
 import Table, { TableProps } from '~components/table';
 import Header from '~components/header';
 import SpaceBetween from '~components/space-between';
-import { getMatchesCountText, renderAriaLive } from './shared-configs';
+import { EmptyState, getMatchesCountText, renderAriaLive } from './shared-configs';
 import { useCollection } from '@cloudscape-design/collection-hooks';
 import {
   Alert,
@@ -63,7 +63,21 @@ export default () => {
       pagination: settings.usePagination ? { pageSize: preferences.pageSize } : undefined,
       sorting: {},
       filtering: {},
-      propertyFiltering: { filteringProperties },
+      propertyFiltering: {
+        filteringProperties,
+        empty: <EmptyState title="No instances" subtitle="No instances to display." action={null} />,
+        noMatch: (
+          <EmptyState
+            title="No matches"
+            subtitle="We can’t find a match."
+            action={
+              <Button onClick={() => actions.setPropertyFiltering({ operation: 'and', tokens: [] })}>
+                Clear filter
+              </Button>
+            }
+          />
+        ),
+      },
       selection: { trackBy: 'name', keepSelection: settings.keepSelection },
       expandableRows: settings.groupResources
         ? {

@@ -8,11 +8,7 @@ import InternalIcon from '../../icon/internal';
 import { ExpandableItemProps } from './expandable-rows-utils';
 import clsx from 'clsx';
 
-export function ExpandToggle({ isExpandable, ...props }: ExpandableItemProps) {
-  return isExpandable ? <ExpandToggleButton {...props} /> : null;
-}
-
-function ExpandToggleButton({
+export function ExpandToggleButton({
   isExpanded,
   onExpandableItemToggle,
   expandButtonLabel,
