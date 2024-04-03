@@ -16,8 +16,8 @@ export interface ExpandableItemProps extends ExpandableItemPlacement {
 
 export interface ExpandableItemPlacement {
   level: number;
-  setSize: number;
-  posInSet: number;
+  setSize?: number;
+  posInSet?: number;
 }
 
 export function useExpandableTableProps<T>({

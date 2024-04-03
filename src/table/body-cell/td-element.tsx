@@ -39,6 +39,7 @@ export interface TableTdElementProps {
   isVisualRefresh?: boolean;
   tableRole: TableRole;
   expandableProps?: ExpandableItemProps;
+  colSpan?: number;
 }
 
 export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElementProps>(
@@ -68,6 +69,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       stickyState,
       tableRole,
       expandableProps,
+      colSpan,
     },
     ref
   ) => {
@@ -106,6 +108,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           !!expandableProps && styles[`body-cell-expandable-level-${getLevelClassSuffix(expandableProps.level)}`],
           stickyStyles.className
         )}
+        colSpan={colSpan}
         onClick={onClick}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
@@ -125,5 +128,5 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
 );
 
 function getLevelClassSuffix(level: number) {
-  return 1 <= level && level <= 9 ? level : 'next';
+  return 0 <= level && level <= 9 ? level : 'next';
 }

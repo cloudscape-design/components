@@ -50,7 +50,7 @@ import { NoDataCell } from './no-data-cell';
 import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
 import { getContentHeaderClassName } from '../internal/utils/content-header-utils';
 import { useExpandableTableProps } from './expandable-rows/expandable-rows-utils';
-import { LoaderRow } from './progressive-loading/loader-row';
+import { ItemsLoader } from './progressive-loading/items-loader';
 import { TableRow, useProgressiveLoadingProps } from './progressive-loading/progressive-loading-utils';
 
 const GRID_NAVIGATION_PAGE_SIZE = 10;
@@ -469,12 +469,28 @@ const InternalTable = React.forwardRef(
                         const isPrevSelected = !!selectionType && !firstVisible && isRowSelected(allRows[rowIndex - 1]);
                         const isNextSelected = !!selectionType && !lastVisible && isRowSelected(allRows[rowIndex + 1]);
                         const expandableProps = row.type === 'data' ? getExpandableItemProps(row.item) : undefined;
+                        const rowRoleProps = getTableRowRoleProps({ tableRole, firstIndex, rowIndex, expandableProps });
+                        const getTableItemKey = (item: T) => getItemKey(trackBy, item, rowIndex);
+                        const sharedCellProps = {
+                          isVisualRefresh,
+                          isFirstRow: firstVisible,
+                          isLastRow: lastVisible,
+                          isSelected,
+                          isNextSelected,
+                          isPrevSelected,
+                          isEvenRow: isEven,
+                          stripedRows,
+                          hasSelection,
+                          hasFooter,
+                          stickyState,
+                          tableRole,
+                        };
 
                         let rowElement: React.ReactNode = null;
                         if (row.type === 'data') {
                           rowElement = (
                             <tr
-                              key={getItemKey(trackBy, row.item, rowIndex)}
+                              key={getTableItemKey(row.item)}
                               className={clsx(styles.row, isSelected && styles['row-selected'])}
                               onFocus={({ currentTarget }) => {
                                 // When an element inside table row receives focus we want to adjust the scroll.
@@ -489,26 +505,15 @@ const InternalTable = React.forwardRef(
                               onContextMenu={
                                 onRowContextMenuHandler && onRowContextMenuHandler.bind(null, rowIndex, row.item)
                               }
-                              {...getTableRowRoleProps({ tableRole, firstIndex, rowIndex, expandableProps })}
+                              {...rowRoleProps}
                             >
-                              {selectionType !== undefined && (
+                              {hasSelection && (
                                 <TableTdElement
+                                  {...sharedCellProps}
                                   className={clsx(styles['selection-control'])}
-                                  isVisualRefresh={isVisualRefresh}
-                                  isFirstRow={firstVisible}
-                                  isLastRow={lastVisible}
-                                  isSelected={isSelected}
-                                  isNextSelected={isNextSelected}
-                                  isPrevSelected={isPrevSelected}
                                   wrapLines={false}
-                                  isEvenRow={isEven}
-                                  stripedRows={stripedRows}
-                                  hasSelection={hasSelection}
-                                  hasFooter={hasFooter}
-                                  stickyState={stickyState}
                                   columnId={selectionColumnId}
                                   colIndex={0}
-                                  tableRole={tableRole}
                                 >
                                   <SelectionControl
                                     tableRole={tableRole}
@@ -527,6 +532,7 @@ const InternalTable = React.forwardRef(
                                 return (
                                   <TableBodyCell
                                     key={getColumnKey(column, colIndex)}
+                                    {...sharedCellProps}
                                     style={
                                       resizableColumns
                                         ? {}
@@ -543,25 +549,14 @@ const InternalTable = React.forwardRef(
                                     isEditable={isEditable}
                                     isEditing={isEditing}
                                     isRowHeader={column.isRowHeader}
-                                    isFirstRow={firstVisible}
-                                    isLastRow={lastVisible}
-                                    isSelected={isSelected}
-                                    isNextSelected={isNextSelected}
-                                    isPrevSelected={isPrevSelected}
                                     successfulEdit={successfulEdit}
                                     onEditStart={() => cellEditing.startEdit({ rowIndex, colIndex })}
                                     onEditEnd={editCancelled =>
                                       cellEditing.completeEdit({ rowIndex, colIndex }, editCancelled)
                                     }
                                     submitEdit={cellEditing.submitEdit}
-                                    hasFooter={hasFooter}
-                                    stripedRows={stripedRows}
-                                    isEvenRow={isEven}
                                     columnId={column.id ?? colIndex}
                                     colIndex={colIndex + colIndexOffset}
-                                    stickyState={stickyState}
-                                    isVisualRefresh={isVisualRefresh}
-                                    tableRole={tableRole}
                                     // Expandable props only apply to the first data column of the table.
                                     // When present, the cell content is decorated with expand toggles and extra paddings.
                                     expandableProps={isExpandable && colIndex === 0 ? expandableProps : undefined}
@@ -572,23 +567,49 @@ const InternalTable = React.forwardRef(
                           );
                         } else if (row.type === 'loader') {
                           rowElement = (
-                            <LoaderRow
-                              key={
-                                row.item
-                                  ? `${getItemKey(trackBy, row.item, rowIndex)}-row-loader`
-                                  : 'awsui-table-loader'
-                              }
-                              item={row.item}
-                              level={row.level}
-                              isExpandable={isExpandable}
-                              hasSelection={!!selectionType}
-                              loadingStatus={row.status}
-                              renderLoaderPending={renderLoaderPending}
-                              renderLoaderLoading={renderLoaderLoading}
-                              renderLoaderError={renderLoaderError}
-                              totalColumnsCount={totalColumnsCount}
-                              onLoadMoreItems={() => fireNonCancelableEvent(onLoadMoreItems, { item: row.item })}
-                            />
+                            <tr
+                              key={row.item ? `${getTableItemKey(row.item)}-loader` : 'awsui-table-loader'}
+                              className={styles.row}
+                              {...rowRoleProps}
+                            >
+                              {hasSelection && (
+                                <TableTdElement
+                                  {...sharedCellProps}
+                                  className={clsx(styles['selection-control'])}
+                                  wrapLines={false}
+                                  columnId={selectionColumnId}
+                                  colIndex={0}
+                                >
+                                  {null}
+                                </TableTdElement>
+                              )}
+                              <TableTdElement
+                                {...sharedCellProps}
+                                wrapLines={false}
+                                columnId="items-loader"
+                                colIndex={1}
+                                colSpan={totalColumnsCount - colIndexOffset}
+                                expandableProps={
+                                  isExpandable
+                                    ? {
+                                        level: row.level,
+                                        isExpandable: false,
+                                        isExpanded: false,
+                                        onExpandableItemToggle: () => {},
+                                      }
+                                    : undefined
+                                }
+                              >
+                                <ItemsLoader
+                                  item={row.item}
+                                  loadingStatus={row.status}
+                                  renderLoaderPending={renderLoaderPending}
+                                  renderLoaderLoading={renderLoaderLoading}
+                                  renderLoaderError={renderLoaderError}
+                                  onLoadMoreItems={() => fireNonCancelableEvent(onLoadMoreItems, { item: row.item })}
+                                />
+                              </TableTdElement>
+                            </tr>
                           );
                         }
                         return rowElement;

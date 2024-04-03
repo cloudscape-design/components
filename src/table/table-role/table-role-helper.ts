@@ -75,7 +75,7 @@ export function getTableRowRoleProps(options: {
   tableRole: TableRole;
   rowIndex: number;
   firstIndex?: number;
-  expandableProps?: { level: number; setSize: number; posInSet: number };
+  expandableProps?: { level: number; setSize?: number; posInSet?: number };
 }) {
   const nativeProps: React.HTMLAttributes<HTMLTableRowElement> = {};
 
