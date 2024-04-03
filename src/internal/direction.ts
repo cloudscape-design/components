@@ -2,7 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 
 export function isRtl(element: Element) {
-  return getComputedStyle(element).direction === 'rtl';
+  let isRtl = false;
+
+  if (element instanceof Element) {
+    isRtl = getComputedStyle(element).direction === 'rtl';
+  }
+
+  return isRtl;
 }
 
 export function getScrollInlineStart(element: Element) {
