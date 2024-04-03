@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 import { renderSegmentedControl } from './utils';
 import { SegmentedControlWrapper } from '../../../lib/components/test-utils/dom';
 import SegmentedControl, { SegmentedControlProps } from '../../../lib/components/segmented-control';
@@ -150,10 +150,10 @@ describe('selected property', () => {
 
     getSegmentWrapper(segmentedControlWrapper, 0).getElement().focus();
     getSegmentWrapper(segmentedControlWrapper, 0).keydown(KeyCode.right);
-    expect(document.activeElement).toHaveAttribute('aria-label', 'Icon for Segment-2');
+    expect(getSegmentWrapper(segmentedControlWrapper, 1).getElement()).toHaveFocus();
     getSegmentWrapper(segmentedControlWrapper, 1).keydown(KeyCode.right);
-    expect(document.activeElement).not.toHaveAttribute('aria-label');
+    expect(getSegmentWrapper(segmentedControlWrapper, 3).getElement()).toHaveFocus();
     getSegmentWrapper(segmentedControlWrapper, 3).keydown(KeyCode.left);
-    expect(document.activeElement).toHaveAttribute('aria-label', 'Icon for Segment-2');
+    expect(getSegmentWrapper(segmentedControlWrapper, 1).getElement()).toHaveFocus();
   });
 });
