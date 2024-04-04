@@ -129,7 +129,7 @@ class GridNavigationProcessor {
     // When newly registered element belongs to the focused cell the focus must transition to it.
     if (
       this.focusedCell &&
-      this.focusedCell.element instanceof HTMLTableCellElement &&
+      this.focusedCell.element.tagName === 'TD' &&
       this.focusedCell.element.contains(focusableElement)
     ) {
       focusableElement.focus();
