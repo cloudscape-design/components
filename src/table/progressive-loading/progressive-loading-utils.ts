@@ -36,7 +36,8 @@ export function useProgressiveLoadingProps<T>({
     allRows.push({ type: 'data', item: items[i] });
     let currentParent = getItemParent(items[i]);
     let levelsDiff = getItemLevel(items[i]) - getItemLevel(items[i + 1]);
-    while (levelsDiff > 0) {
+    // Expandable items loaders
+    while (currentParent && levelsDiff > 0) {
       const status = currentParent ? expandableRows?.getItemLoadingStatus?.(currentParent) : loadingStatus;
       if (status && status !== 'finished') {
         const level = currentParent ? getItemLevel(currentParent) : 0;
@@ -44,6 +45,10 @@ export function useProgressiveLoadingProps<T>({
       }
       currentParent = currentParent && getItemParent(currentParent);
       levelsDiff--;
+    }
+    // Root loader
+    if (i === items.length - 1 && loadingStatus && loadingStatus !== 'finished') {
+      allRows.push({ type: 'loader', item: null, level: 0, status: loadingStatus });
     }
   }
 

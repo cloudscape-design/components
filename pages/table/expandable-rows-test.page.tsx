@@ -149,21 +149,23 @@ export default () => {
 
   const rootPageSize = preferences.pageSize ?? 10;
   const nestedPageSize = 2;
-  const expandableRows: TableProps.ExpandableRows<Instance> = {
-    ...collectionProps.expandableRows!,
-    getItemChildren(item) {
-      const children = collectionProps.expandableRows!.getItemChildren(item);
-      const pages = loadingState.get(item.name)?.pages ?? 1;
-      return settings.useProgressiveLoading ? children.slice(0, pages * nestedPageSize) : children;
-    },
-    getItemLoadingStatus: settings.useProgressiveLoading
-      ? item => {
+  const expandableRows: undefined | TableProps.ExpandableRows<Instance> = settings.groupResources
+    ? {
+        ...collectionProps.expandableRows!,
+        getItemChildren(item) {
           const children = collectionProps.expandableRows!.getItemChildren(item);
-          const state = loadingState.get(item.name) ?? { status: 'pending', pages: 1 };
-          return state.pages * nestedPageSize < children.length ? state.status : 'finished';
-        }
-      : undefined,
-  };
+          const pages = loadingState.get(item.name)?.pages ?? 1;
+          return settings.useProgressiveLoading ? children.slice(0, pages * nestedPageSize) : children;
+        },
+        getItemLoadingStatus: settings.useProgressiveLoading
+          ? item => {
+              const children = collectionProps.expandableRows!.getItemChildren(item);
+              const state = loadingState.get(item.name) ?? { status: 'pending', pages: 1 };
+              return state.pages * nestedPageSize < children.length ? state.status : 'finished';
+            }
+          : undefined,
+      }
+    : undefined;
 
   const rootPages = loadingState.get('ROOT')?.pages ?? 1;
   const paginatedItems = settings.useProgressiveLoading ? items.slice(0, rootPages * rootPageSize) : items;
