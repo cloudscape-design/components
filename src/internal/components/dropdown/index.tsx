@@ -97,13 +97,12 @@ const TransitionContent = ({
   ariaDescribedby,
 }: TransitionContentProps) => {
   const contentRef = useMergeRefs(dropdownRef, transitionRef);
-  // const shouldHideBlockBorder = stretchWidth && !(expandToViewport && stretchBeyondTriggerWidth);
   return (
     <div
       className={clsx(styles.dropdown, dropdownClasses, {
         [styles.open]: open,
         [styles['with-limited-width']]: !stretchWidth,
-        [styles['hide-block-start-border']]: stretchWidth,
+        [styles['hide-block-border']]: stretchWidth || stretchBeyondTriggerWidth,
         [styles.interior]: interior,
         [styles.refresh]: isRefresh,
         [styles['use-portal']]: expandToViewport && !interior,
