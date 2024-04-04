@@ -32,48 +32,28 @@
     color: awsui.$color-text-dropdown-item-highlighted;
     z-index: 2;
 
-    &.variant-icon,
-    &.variant-inline-icon,
-    &.variant-normal,
-    &.variant-primary {
-      background-color: awsui.$color-background-dropdown-item-hover;
-      border-color: awsui.$color-border-dropdown-item-hover;
-      border-start-start-radius: awsui.$border-radius-item;
-      border-start-end-radius: awsui.$border-radius-item;
-      border-end-start-radius: awsui.$border-radius-item;
-      border-end-end-radius: awsui.$border-radius-item;
+    background-color: awsui.$color-background-dropdown-item-hover;
+    border-color: awsui.$color-border-dropdown-item-hover;
+    border-start-start-radius: awsui.$border-radius-item;
+    border-start-end-radius: awsui.$border-radius-item;
+    border-end-start-radius: awsui.$border-radius-item;
+    border-end-end-radius: awsui.$border-radius-item;
 
-      &.disabled {
-        color: awsui.$color-text-dropdown-item-dimmed;
-        border-color: awsui.$color-border-dropdown-item-dimmed-hover;
-        background-color: awsui.$color-background-dropdown-item-dimmed;
-      }
+    &.disabled {
+      color: awsui.$color-text-dropdown-item-dimmed;
+      border-color: awsui.$color-border-dropdown-item-dimmed-hover;
+      background-color: awsui.$color-background-dropdown-item-dimmed;
+    }
 
-      &.is-focused {
-        border-color: awsui.$color-border-dropdown-item-focused;
-        box-shadow: inset 0 0 0 awsui.$border-control-focus-ring-shadow-spread awsui.$color-border-item-focused;
-      }
+    &.is-focused {
+      border-color: awsui.$color-border-dropdown-item-focused;
+      box-shadow: inset 0 0 0 awsui.$border-control-focus-ring-shadow-spread awsui.$color-border-item-focused;
     }
   }
 
   &.variant-navigation {
     &.highlighted {
       color: awsui.$color-text-accent;
-    }
-
-    // Additional spacing for groups of items
-    &.first:not(.has-category-header) {
-      padding-block-start: styles.$option-padding-vertical;
-    }
-    &.last {
-      padding-block-end: styles.$option-padding-vertical;
-    }
-    &.first.last {
-      padding-block: styles.$option-padding-vertical;
-    }
-    // Additional spacing for the very last item in the list
-    &.last:last-child {
-      padding-block-end: styles.$option-padding-vertical;
     }
   }
 }

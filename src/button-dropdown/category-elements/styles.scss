@@ -67,15 +67,7 @@
       }
     }
     &.variant-navigation {
-      padding-block-start: awsui.$space-xs;
-      padding-block-end: awsui.$space-xs;
-
       &.highlighted {
-        border-color: transparent;
-        border-block-start-color: awsui.$color-border-dropdown-group;
-        border-block-end-color: awsui.$color-border-dropdown-group;
-
-        background-color: transparent;
         color: awsui.$color-text-accent;
       }
     }
