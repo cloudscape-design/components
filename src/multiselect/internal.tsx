@@ -73,6 +73,8 @@ const InternalMultiselect = React.forwardRef(
       inlineTokens = false,
       hideTokens = false,
       expandToViewport,
+      tokenLimitShowFewerAriaLabel,
+      tokenLimitShowMoreAriaLabel,
       __internalRootRef = null,
       autoFocus,
       ...restProps
@@ -356,6 +358,8 @@ const InternalMultiselect = React.forwardRef(
             items={tokens}
             onDismiss={handleTokenDismiss}
             i18nStrings={tokenGroupI18nStrings}
+            limitShowMoreAriaLabel={tokenLimitShowMoreAriaLabel}
+            limitShowFewerAriaLabel={tokenLimitShowFewerAriaLabel}
             disableOuterPadding={true}
           />
         )}

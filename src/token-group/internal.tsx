@@ -24,6 +24,8 @@ export default function InternalTokenGroup({
   limit,
   i18nStrings,
   disableOuterPadding,
+  limitShowFewerAriaLabel,
+  limitShowMoreAriaLabel,
   __internalRootRef,
   ...props
 }: InternalTokenGroupProps) {
@@ -62,6 +64,8 @@ export default function InternalTokenGroup({
           </Token>
         )}
         i18nStrings={i18nStrings}
+        limitShowFewerAriaLabel={limitShowFewerAriaLabel}
+        limitShowMoreAriaLabel={limitShowMoreAriaLabel}
         moveFocusNextToIndex={removedItemIndex}
         onExpandedClick={isExpanded => {
           if (isExpanded && limit) {
