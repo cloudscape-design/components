@@ -120,7 +120,6 @@ const Thead = React.forwardRef(
             >
               {selectionType === 'multi' ? (
                 <SelectionControl
-                  tableRole={tableRole}
                   onFocusDown={event => {
                     onFocusMove!(event.target as HTMLElement, -1, +1);
                   }}
