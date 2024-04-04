@@ -19,7 +19,7 @@ const FakeSingleTabStopNavigationProvider = forwardRef(
   ) => {
     const focusablesRef = useRef(new Set<Element>());
     const focusHandlersRef = useRef(new Map<Element, FocusableChangeHandler>());
-    const registerFocusable = useCallback((focusable: Element, changeHandler: FocusableChangeHandler) => {
+    const registerFocusable = useCallback((focusable: HTMLElement, changeHandler: FocusableChangeHandler) => {
       focusablesRef.current.add(focusable);
       focusHandlersRef.current.set(focusable, changeHandler);
       return () => {
