@@ -266,7 +266,7 @@ export default () => {
             loadingStatus={settings.useProgressiveLoading ? loadingState.get('ROOT')?.status : undefined}
             onLoadMoreItems={event => triggerItemsLoading(event.detail.item?.name ?? 'ROOT')}
             renderLoaderPending={({ item }) => ({
-              buttonContent: item ? `Load more items for ${item.name}` : 'Load more items',
+              buttonLabel: item ? `Load more items for ${item.name}` : 'Load more items',
             })}
             renderLoaderLoading={({ item }) => ({
               loadingText: item ? `Loading more items for ${item.name}` : 'Loading more items',

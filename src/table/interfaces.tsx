@@ -547,7 +547,7 @@ export namespace TableProps {
     item: null | T;
   }
   export interface RenderLoaderPendingResult {
-    buttonContent: string;
+    buttonLabel: string;
     buttonAriaLabel?: string;
   }
   export interface RenderLoaderLoadingResult {

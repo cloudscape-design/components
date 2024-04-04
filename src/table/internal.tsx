@@ -466,7 +466,13 @@ const InternalTable = React.forwardRef(
                         const isFirstRow = rowIndex === 0;
                         const isLastRow = rowIndex === allRows.length - 1;
                         const expandableProps = row.type === 'data' ? getExpandableItemProps(row.item) : undefined;
-                        const rowRoleProps = getTableRowRoleProps({ tableRole, firstIndex, rowIndex, expandableProps });
+                        const rowRoleProps = getTableRowRoleProps({
+                          tableRole,
+                          firstIndex,
+                          rowIndex,
+                          level: row.type === 'loader' ? row.level : undefined,
+                          ...expandableProps,
+                        });
                         const getTableItemKey = (item: T) => getItemKey(trackBy, item, rowIndex);
                         const sharedCellProps = {
                           isVisualRefresh,

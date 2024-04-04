@@ -30,7 +30,7 @@ export function ItemsLoader<T>({
 }: ItemsLoaderProps<T>) {
   let content: React.ReactNode = null;
   if (loadingStatus === 'pending' && renderLoaderPending) {
-    const { buttonContent, buttonAriaLabel } = renderLoaderPending({ item });
+    const { buttonLabel, buttonAriaLabel } = renderLoaderPending({ item });
     content = (
       <InternalButton
         variant="inline-link"
@@ -39,7 +39,7 @@ export function ItemsLoader<T>({
         onClick={onLoadMoreItems}
         className={styles['items-loader-load-more']}
       >
-        {buttonContent}
+        {buttonLabel}
       </InternalButton>
     );
   } else if (loadingStatus === 'loading' && renderLoaderLoading) {
