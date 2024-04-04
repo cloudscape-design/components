@@ -69,7 +69,7 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
   text-align: start;
 
   &-content {
-    display: inline;
+    /* used for testing */
   }
   &:not(.body-cell-wrap) {
     white-space: nowrap;
