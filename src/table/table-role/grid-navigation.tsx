@@ -126,6 +126,14 @@ class GridNavigationProcessor {
       this.focusablesState.set(focusableElement, newIsFocusable);
       changeHandler(newIsFocusable);
     }
+    // When newly registered element belongs to the focused cell the focus must transition to it.
+    if (
+      this.focusedCell &&
+      this.focusedCell.element instanceof HTMLTableCellElement &&
+      this.focusedCell.element.contains(focusableElement)
+    ) {
+      focusableElement instanceof HTMLElement && focusableElement.focus();
+    }
     return () => this.unregisterFocusable(focusableElement);
   };
 
