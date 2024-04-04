@@ -54,7 +54,7 @@ export default function useCalendarGridKeyboardNavigation({
 
     event.preventDefault();
 
-    handleKey({
+    handleKey(event, {
       onActivate: () => {
         onFocusDate(null);
         onSelectDate(focusableDate);
@@ -63,7 +63,7 @@ export default function useCalendarGridKeyboardNavigation({
       onBlockStart: () => (updatedFocusDate = moveUp(focusableDate, isDateEnabled)),
       onInlineStart: () => (updatedFocusDate = moveLeft(focusableDate, isDateEnabled)),
       onInlineEnd: () => (updatedFocusDate = moveRight(focusableDate, isDateEnabled)),
-    })(event);
+    });
 
     if (!updatedFocusDate) {
       return;

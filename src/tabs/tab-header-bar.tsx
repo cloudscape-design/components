@@ -189,7 +189,7 @@ export function TabHeaderBar({
       event.preventDefault();
       const activeIndex = enabledTabsWithCurrentTab.indexOf(tab);
 
-      handleKey({
+      handleKey(event, {
         onEnd: () => highlightTab(enabledTabsWithCurrentTab.length - 1),
         onHome: () => highlightTab(0),
         onInlineEnd: () =>
@@ -198,7 +198,7 @@ export function TabHeaderBar({
           activeIndex === 0 ? highlightTab(enabledTabsWithCurrentTab.length - 1) : highlightTab(activeIndex - 1),
         onPageDown: () => inlineEndOverflow && onPaginationClick(headerBarRef, 'forward'),
         onPageUp: () => inlineStartOverflow && onPaginationClick(headerBarRef, 'backward'),
-      })(event);
+      });
     };
 
     const clickTab = (event: React.MouseEvent) => {

@@ -97,13 +97,13 @@ export const Grids = ({
 
     event.preventDefault();
 
-    handleKey({
+    handleKey(event, {
       onActivate: () => focusedDate && onSelectDate(focusedDate),
       onBlockEnd: () => focusedDate && (updatedFocusDate = moveNextWeek(focusedDate, isDateEnabled)),
       onBlockStart: () => focusedDate && (updatedFocusDate = movePrevWeek(focusedDate, isDateEnabled)),
       onInlineEnd: () => focusedDate && (updatedFocusDate = moveNextDay(focusedDate, isDateEnabled)),
       onInlineStart: () => focusedDate && (updatedFocusDate = movePrevDay(focusedDate, isDateEnabled)),
-    })(event);
+    });
 
     if (!updatedFocusDate) {
       return;
