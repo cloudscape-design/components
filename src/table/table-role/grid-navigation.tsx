@@ -117,7 +117,7 @@ class GridNavigationProcessor {
     }, 0);
   }
 
-  public registerFocusable = (focusableElement: Element, changeHandler: FocusableChangeHandler) => {
+  public registerFocusable = (focusableElement: HTMLElement, changeHandler: FocusableChangeHandler) => {
     this.focusables.add(focusableElement);
     this.focusHandlers.set(focusableElement, changeHandler);
     const isFocusable = this.focusablesState.get(focusableElement) ?? false;
@@ -125,6 +125,14 @@ class GridNavigationProcessor {
     if (newIsFocusable !== isFocusable) {
       this.focusablesState.set(focusableElement, newIsFocusable);
       changeHandler(newIsFocusable);
+    }
+    // When newly registered element belongs to the focused cell the focus must transition to it.
+    if (
+      this.focusedCell &&
+      this.focusedCell.element.tagName === 'TD' &&
+      this.focusedCell.element.contains(focusableElement)
+    ) {
+      focusableElement.focus();
     }
     return () => this.unregisterFocusable(focusableElement);
   };

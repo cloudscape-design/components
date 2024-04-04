@@ -336,3 +336,30 @@ test('respects element order when navigating between extremes', () => {
   fireEvent.keyDown(table, { keyCode: KeyCode.home });
   expect(readActiveElement()).toBe('BUTTON[1]');
 });
+
+test('focuses on the element registered inside focused table cell', () => {
+  function TestTable({ contentType }: { contentType: 'text' | 'button' }) {
+    const tableRef = useRef<HTMLTableElement>(null);
+    return (
+      <GridNavigationProvider keyboardNavigation={true} pageSize={10} getTable={() => tableRef.current}>
+        <table role="grid" ref={tableRef}>
+          <tbody>
+            <tr aria-rowindex={1}>
+              <Cell tag="td" aria-colindex={1}>
+                {contentType === 'text' ? 'text' : <Button>action</Button>}
+              </Cell>
+            </tr>
+          </tbody>
+        </table>
+      </GridNavigationProvider>
+    );
+  }
+  const { container, rerender } = render(<TestTable contentType="text" />);
+  const cell = container.querySelector('td')!;
+
+  cell.focus();
+  expect(readActiveElement()).toEqual('TD[text]');
+
+  rerender(<TestTable contentType="button" />);
+  expect(readActiveElement()).toEqual('BUTTON[action]');
+});
