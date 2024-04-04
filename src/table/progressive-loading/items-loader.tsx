@@ -7,6 +7,7 @@ import LiveRegion from '../../internal/components/live-region';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { TableProps } from '../interfaces';
 import InternalButton from '../../button/internal';
+import { applyTrackBy } from '../utils';
 
 interface ItemsLoaderProps<T> {
   item: null | T;
@@ -15,6 +16,7 @@ interface ItemsLoaderProps<T> {
   renderLoaderLoading?: (detail: TableProps.RenderLoaderDetail<T>) => TableProps.RenderLoaderLoadingResult;
   renderLoaderError?: (detail: TableProps.RenderLoaderDetail<T>) => TableProps.RenderLoaderErrorResult;
   onLoadMoreItems: () => void;
+  trackBy?: TableProps.TrackBy<T>;
 }
 
 export function ItemsLoader<T>({
@@ -24,12 +26,19 @@ export function ItemsLoader<T>({
   renderLoaderLoading,
   renderLoaderError,
   onLoadMoreItems,
+  trackBy,
 }: ItemsLoaderProps<T>) {
   let content: React.ReactNode = null;
   if (loadingStatus === 'pending' && renderLoaderPending) {
     const { buttonContent, buttonAriaLabel } = renderLoaderPending({ item });
     content = (
-      <InternalButton variant="inline-link" iconName="add-plus" ariaLabel={buttonAriaLabel} onClick={onLoadMoreItems}>
+      <InternalButton
+        variant="inline-link"
+        iconName="add-plus"
+        ariaLabel={buttonAriaLabel}
+        onClick={onLoadMoreItems}
+        className={styles['items-loader-load-more']}
+      >
         {buttonContent}
       </InternalButton>
     );
@@ -50,5 +59,11 @@ export function ItemsLoader<T>({
     );
   }
 
-  return <div className={styles['items-loader']}>{content}</div>;
+  let parentTrackId = item && trackBy ? applyTrackBy(trackBy, item) : undefined;
+  parentTrackId = typeof parentTrackId === 'string' ? parentTrackId : undefined;
+  return (
+    <div className={styles['items-loader']} data-root={item ? 'false' : 'true'} data-parentrow={parentTrackId}>
+      {content}
+    </div>
+  );
 }

@@ -603,6 +603,7 @@ const InternalTable = React.forwardRef(
                                   renderLoaderLoading={renderLoaderLoading}
                                   renderLoaderError={renderLoaderError}
                                   onLoadMoreItems={() => fireNonCancelableEvent(onLoadMoreItems, { item: row.item })}
+                                  trackBy={trackBy}
                                 />
                               </TableTdElement>
                             </tr>

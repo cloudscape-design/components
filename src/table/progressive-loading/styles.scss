@@ -10,4 +10,8 @@
   inset-inline-start: awsui.$space-m;
   inline-size: fit-content;
   z-index: 798;
+
+  &-load-more {
+    /* used in test-utils */
+  }
 }
