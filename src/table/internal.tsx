@@ -530,6 +530,8 @@ const InternalTable = React.forwardRef(
                                 const isEditing = cellEditing.checkEditing({ rowIndex, colIndex });
                                 const successfulEdit = cellEditing.checkLastSuccessfulEdit({ rowIndex, colIndex });
                                 const isEditable = !!column.editConfig && !cellEditing.isLoading;
+                                const cellExpandableProps =
+                                  isExpandable && colIndex === 0 ? expandableProps : undefined;
                                 return (
                                   <TableBodyCell
                                     key={getColumnKey(column, colIndex)}
@@ -558,9 +560,7 @@ const InternalTable = React.forwardRef(
                                     submitEdit={cellEditing.submitEdit}
                                     columnId={column.id ?? colIndex}
                                     colIndex={colIndex + colIndexOffset}
-                                    // Expandable props only apply to the first data column of the table.
-                                    // When present, the cell content is decorated with expand toggles and extra paddings.
-                                    expandableProps={isExpandable && colIndex === 0 ? expandableProps : undefined}
+                                    {...cellExpandableProps}
                                   />
                                 );
                               })}
@@ -591,16 +591,7 @@ const InternalTable = React.forwardRef(
                                 columnId={itemsLoaderColumnId}
                                 colIndex={1}
                                 colSpan={totalColumnsCount - colIndexOffset}
-                                expandableProps={
-                                  isExpandable
-                                    ? {
-                                        level: row.level,
-                                        isExpandable: false,
-                                        isExpanded: false,
-                                        onExpandableItemToggle: () => {},
-                                      }
-                                    : undefined
-                                }
+                                level={isExpandable ? row.level : undefined}
                               >
                                 <ItemsLoader
                                   item={row.item}

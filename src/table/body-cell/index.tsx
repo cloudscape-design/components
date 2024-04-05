@@ -82,7 +82,8 @@ function TableCellEditable<ItemType>({
   return (
     <TableTdElement
       {...rest}
-      expandableProps={!isEditing ? rest.expandableProps : undefined}
+      // Remove expandable offset for cells in editing state to maximize available space.
+      level={!isEditing ? rest.level : undefined}
       nativeAttributes={tdNativeAttributes as TableTdElementProps['nativeAttributes']}
       className={clsx(
         className,
@@ -157,10 +158,12 @@ export function TableBodyCell<ItemType>({
 }: TableBodyCellProps<ItemType> & { isEditable: boolean }) {
   const editDisabledReason = rest.column.editConfig?.disabledReason?.(rest.item);
 
-  if (editDisabledReason && !rest.expandableProps) {
+  // Inline editing is disabled for expandable cells because editable cells are interactive and
+  // cannot include interactive content such as expand toggles.
+  if (editDisabledReason && rest.level === undefined) {
     return <DisabledInlineEditor editDisabledReason={editDisabledReason} {...rest} />;
   }
-  if ((isEditable || rest.isEditing) && !rest.expandableProps) {
+  if ((isEditable || rest.isEditing) && rest.level === undefined) {
     return <TableCellEditable {...rest} />;
   }
 

@@ -5,7 +5,6 @@ import React, { useRef } from 'react';
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
 import styles from './styles.css.js';
 import InternalIcon from '../../icon/internal';
-import { ExpandableItemProps } from './expandable-rows-utils';
 import clsx from 'clsx';
 
 export function ExpandToggleButton({
@@ -13,7 +12,12 @@ export function ExpandToggleButton({
   onExpandableItemToggle,
   expandButtonLabel,
   collapseButtonLabel,
-}: Omit<ExpandableItemProps, 'isExpandable'>) {
+}: {
+  isExpanded?: boolean;
+  onExpandableItemToggle?: () => void;
+  expandButtonLabel?: string;
+  collapseButtonLabel?: string;
+}) {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const { tabIndex } = useSingleTabStopNavigation(buttonRef);
   return (
