@@ -43,7 +43,7 @@ export default function useCalendarGridKeyboardNavigation({
 
   const isSamePage = isMonthPicker ? isSameYear : isSameMonth;
 
-  const onGridKeyDownHandler = (event: React.KeyboardEvent) => {
+  const onGridKeyDownHandler = (event: React.KeyboardEvent<HTMLElement>) => {
     let updatedFocusDate;
 
     const keys = [KeyCode.up, KeyCode.down, KeyCode.left, KeyCode.right, KeyCode.space, KeyCode.enter];

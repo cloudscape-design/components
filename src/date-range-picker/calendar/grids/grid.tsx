@@ -47,7 +47,7 @@ export interface GridProps {
   focusedDateRef: React.RefObject<HTMLTableCellElement>;
 
   onSelectDate: (date: Date) => void;
-  onGridKeyDownHandler: (e: React.KeyboardEvent) => void;
+  onGridKeyDownHandler: (e: React.KeyboardEvent<HTMLElement>) => void;
   onFocusedDateChange: React.Dispatch<React.SetStateAction<Date | null>>;
 
   isDateEnabled: DateRangePickerProps.IsDateEnabledFunction;
