@@ -51,6 +51,8 @@ export default function CollectionPreferences({
 
   preferences,
   customPreference,
+  getModalRoot,
+  removeModalRoot,
   ...rest
 }: CollectionPreferencesProps) {
   const { __internalRootRef } = useBaseComponent('CollectionPreferences');
@@ -121,6 +123,8 @@ export default function CollectionPreferences({
         <InternalModal
           className={styles['modal-root']}
           visible={true}
+          getModalRoot={getModalRoot}
+          removeModalRoot={removeModalRoot}
           header={i18n('title', title)}
           footer={
             <InternalBox float="right">
