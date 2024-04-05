@@ -17,6 +17,8 @@ export default function TokenList<Item>({
   limit,
   after,
   i18nStrings,
+  limitShowFewerAriaLabel,
+  limitShowMoreAriaLabel,
   moveFocusNextToIndex,
   onExpandedClick = () => undefined,
 }: TokenListProps<Item>) {
@@ -37,6 +39,8 @@ export default function TokenList<Item>({
         expanded={expanded}
         numberOfHiddenOptions={items.length - visibleItems.length}
         i18nStrings={i18nStrings}
+        limitShowFewerAriaLabel={limitShowFewerAriaLabel}
+        limitShowMoreAriaLabel={limitShowMoreAriaLabel}
         onClick={() => {
           const isExpanded = !expanded;
           setExpanded(isExpanded);

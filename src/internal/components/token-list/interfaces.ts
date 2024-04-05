@@ -12,6 +12,8 @@ export interface TokenListProps<Item> {
   i18nStrings?: I18nStrings;
   moveFocusNextToIndex?: null | number;
   onExpandedClick?: (isExpanded: boolean) => void;
+  limitShowFewerAriaLabel?: string;
+  limitShowMoreAriaLabel?: string;
 }
 
 export interface I18nStrings {

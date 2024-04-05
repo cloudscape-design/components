@@ -192,6 +192,17 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
    * * `error` - Indicates that an error occurred during fetch. You should use `recoveryText` to enable the user to recover.
    **/
   filteringStatusType?: DropdownStatusProps.StatusType;
+
+  /**
+   * Adds an aria-label to the "Show fewer" button for the token group control.
+   * Use to assign unique labels when there are multiple token groups with the same `tokenLimitShowFewer` label on one page.
+   */
+  tokenLimitShowFewerAriaLabel?: string;
+  /**
+   * Adds an aria-label to the "Show more" button for the token group control.
+   * Use to assign unique labels when there are multiple token groups with the same `tokenLimitShowMore` label on one page.
+   */
+  tokenLimitShowMoreAriaLabel?: string;
 }
 
 export namespace PropertyFilterProps {

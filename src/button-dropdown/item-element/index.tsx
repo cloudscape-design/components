@@ -20,8 +20,6 @@ const ItemElement = ({
   onItemActivate,
   highlighted,
   highlightItem,
-  first = false,
-  lastInSection,
   showDivider,
   hasCategoryHeader,
   isKeyboardHighlighted = false,
@@ -49,8 +47,6 @@ const ItemElement = ({
       className={clsx(styles['item-element'], styles[`variant-${variant}`], {
         [styles.highlighted]: highlighted,
         [styles.disabled]: disabled,
-        [styles.first]: first,
-        [styles.last]: lastInSection,
         [styles['has-category-header']]: hasCategoryHeader,
         [styles['show-divider']]: showDivider,
         [styles['is-focused']]: isKeyboardHighlighted,

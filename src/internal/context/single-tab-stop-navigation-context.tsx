@@ -11,7 +11,7 @@ export interface SingleTabStopNavigationOptions {
 
 export const defaultValue: {
   navigationActive: boolean;
-  registerFocusable(focusable: Element, handler: FocusableChangeHandler): () => void;
+  registerFocusable(focusable: HTMLElement, handler: FocusableChangeHandler): () => void;
 } = {
   navigationActive: false,
   registerFocusable: () => () => {},
@@ -24,7 +24,7 @@ export const defaultValue: {
 export const SingleTabStopNavigationContext = createContext(defaultValue);
 
 export function useSingleTabStopNavigation(
-  focusable: null | React.RefObject<Element>,
+  focusable: null | React.RefObject<HTMLElement>,
   options?: { tabIndex?: number }
 ) {
   const { navigationActive: contextNavigationActive, registerFocusable } = useContext(SingleTabStopNavigationContext);

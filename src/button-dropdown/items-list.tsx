@@ -29,7 +29,6 @@ export default function ItemsList({
 
   const elements = items.map((item, index) => {
     if (!isItemGroup(item)) {
-      const lastInSection = index === items.length - 1 || isItemGroup(items[index + 1]);
       const showDivider = (index === items.length - 1 && !lastInDropdown) || isItemGroup(items[index + 1]);
 
       return (
@@ -41,8 +40,6 @@ export default function ItemsList({
           highlighted={isHighlighted(item)}
           isKeyboardHighlighted={isKeyboardHighlight(item)}
           highlightItem={highlightItem}
-          first={index === 0 || isItemGroup(items[index - 1])}
-          lastInSection={lastInSection}
           showDivider={showDivider}
           hasCategoryHeader={hasCategoryHeader}
           variant={variant}

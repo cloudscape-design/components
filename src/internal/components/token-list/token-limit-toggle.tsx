@@ -15,6 +15,8 @@ interface TokenLimitToggleProps {
   numberOfHiddenOptions: number;
   onClick?: NonCancelableEventHandler<null>;
   i18nStrings?: I18nStrings;
+  limitShowFewerAriaLabel?: string;
+  limitShowMoreAriaLabel?: string;
 }
 
 export default function TokenLimitToggle({
@@ -24,6 +26,8 @@ export default function TokenLimitToggle({
   numberOfHiddenOptions,
   onClick,
   i18nStrings = {},
+  limitShowFewerAriaLabel,
+  limitShowMoreAriaLabel,
 }: TokenLimitToggleProps) {
   const i18n = useInternalI18n('token-group');
 
@@ -31,6 +35,7 @@ export default function TokenLimitToggle({
   const description = expanded
     ? i18n('i18nStrings.limitShowFewer', i18nStrings.limitShowFewer)
     : `${i18n('i18nStrings.limitShowMore', i18nStrings.limitShowMore) || ''} (${numberOfHiddenOptionLabel})`;
+  const ariaLabel = expanded ? limitShowFewerAriaLabel : limitShowMoreAriaLabel;
 
   const handleClick = useCallback(() => {
     fireNonCancelableEvent(onClick, null);
@@ -43,6 +48,7 @@ export default function TokenLimitToggle({
       onClick={handleClick}
       aria-controls={controlId}
       aria-expanded={expanded}
+      aria-label={ariaLabel}
     >
       <InternalIcon name={expanded ? 'treeview-collapse' : 'treeview-expand'} />
       <span className={styles.description}>{description}</span>
