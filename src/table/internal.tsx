@@ -488,9 +488,8 @@ const InternalTable = React.forwardRef(
                           stickyState,
                           tableRole,
                         };
-                        let rowElement: React.ReactNode = null;
                         if (row.type === 'data') {
-                          rowElement = (
+                          return (
                             <tr
                               key={getTableItemKey(row.item)}
                               className={clsx(styles.row, sharedCellProps.isSelected && styles['row-selected'])}
@@ -567,7 +566,7 @@ const InternalTable = React.forwardRef(
                             </tr>
                           );
                         } else if (row.type === 'loader') {
-                          rowElement = (
+                          return (
                             <tr
                               key={row.item ? `${getTableItemKey(row.item)}-loader` : 'awsui-table-loader'}
                               className={styles.row}
@@ -605,8 +604,9 @@ const InternalTable = React.forwardRef(
                               </TableTdElement>
                             </tr>
                           );
+                        } else {
+                          throw new Error('Invariant violation: unexpected row type.');
                         }
-                        return rowElement;
                       })
                     )}
                   </tbody>
