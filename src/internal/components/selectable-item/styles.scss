@@ -31,7 +31,7 @@
 
   &.pad-bottom {
     padding-block-end: calc(#{styles.$option-padding-with-border-placeholder-vertical} + #{awsui.$space-xxxs});
-    //border-block-end-color: transparent;
+    border-block-end-color: transparent;
   }
 
   &:not(:first-child) {
