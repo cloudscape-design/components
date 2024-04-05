@@ -6,7 +6,7 @@ import { KeyCode } from '../keycode';
 import { isRtl } from '../direction';
 
 export default function handleKey(
-  event: React.KeyboardEvent,
+  event: React.KeyboardEvent<HTMLElement>,
   {
     onActivate,
     onBlockEnd,

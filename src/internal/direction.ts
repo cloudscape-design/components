@@ -1,19 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-/**
- * Determine if the direction of a given element is left-to-right
- * or right-to-left. The is the JavaScript equivalent of the
- * with-direction mixin that implements the dir() pseudoclass.
- */
-export function isRtl(element: HTMLElement | EventTarget) {
-  let isRtl = false;
-
-  if (element instanceof HTMLElement) {
-    isRtl = getComputedStyle(element).direction === 'rtl';
-  }
-
-  return isRtl;
+export function isRtl(element: HTMLElement | SVGElement) {
+  return getComputedStyle(element).direction === 'rtl';
 }
 
 /**
