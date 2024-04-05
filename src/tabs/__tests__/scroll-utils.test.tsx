@@ -37,14 +37,22 @@ describe('onPaginationClick function', () => {
 });
 
 function getMockHeaderBarRef(scrollLeft: number) {
-  const headerBarRef = {
-    current: {
-      clientWidth: HEADER_BAR_WIDTH,
-      offsetWidth: HEADER_BAR_WIDTH,
-      scrollWidth: 2770, // random number which does not affect the tests.
-      scrollLeft,
-    },
-  } as React.RefObject<HTMLUListElement>;
+  const dummyHeaderBar = document.createElement('ul');
 
-  return headerBarRef;
+  Object.defineProperties(dummyHeaderBar, {
+    clientWidth: {
+      value: HEADER_BAR_WIDTH,
+    },
+    offsetWidth: {
+      value: HEADER_BAR_WIDTH,
+    },
+    scrollWidth: {
+      value: 2770,
+    },
+    scrollLeft: {
+      value: scrollLeft,
+    },
+  });
+
+  return { current: dummyHeaderBar };
 }
