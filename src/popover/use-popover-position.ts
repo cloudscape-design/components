@@ -28,7 +28,7 @@ export default function usePopoverPosition({
   popoverRef: React.RefObject<HTMLDivElement | null>;
   bodyRef: React.RefObject<HTMLDivElement | null>;
   arrowRef: React.RefObject<HTMLDivElement | null>;
-  trackRef: React.RefObject<Element | null>;
+  trackRef: React.RefObject<HTMLElement | SVGElement | null>;
   contentRef: React.RefObject<HTMLDivElement | null>;
   allowScrollToFit?: boolean;
   allowVerticalOverflow?: boolean;
@@ -207,9 +207,6 @@ function getDocumentRect(document: Document): BoundingBox {
   const { insetBlockStart, insetInlineStart, inlineSize, blockSize } = getLogicalBoundingClientRect(
     document.documentElement
   );
-
-  // document.documentElement.scrollWidth
-  // document.documentElement.scrollHeight
 
   return {
     insetBlockStart,

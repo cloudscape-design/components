@@ -21,7 +21,7 @@ export function getScrollInlineStart(element: HTMLElement) {
  * will be transformed to insetInlineStart based on element direction in order to
  * support direction agnostic position computation.
  */
-export function getLogicalBoundingClientRect(element: Element) {
+export function getLogicalBoundingClientRect(element: HTMLElement | SVGElement) {
   const boundingClientRect = element.getBoundingClientRect();
   const insetInlineStart = isRtl(element) ? window.innerWidth - boundingClientRect.right : boundingClientRect.left;
 
