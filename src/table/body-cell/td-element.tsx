@@ -8,8 +8,7 @@ import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
 import { TableRole, getTableCellRoleProps } from '../table-role';
 import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
-import { ExpandToggle } from '../expandable-rows/expand-toggle-button';
-import { ExpandableItemProps } from '../expandable-rows/expandable-rows-utils';
+import { ExpandToggleButton } from '../expandable-rows/expand-toggle-button';
 
 export interface TableTdElementProps {
   className?: string;
@@ -38,7 +37,12 @@ export interface TableTdElementProps {
   stickyState: StickyColumnsModel;
   isVisualRefresh?: boolean;
   tableRole: TableRole;
-  expandableProps?: ExpandableItemProps;
+  level?: number;
+  isExpandable?: boolean;
+  isExpanded?: boolean;
+  onExpandableItemToggle?: () => void;
+  expandButtonLabel?: string;
+  collapseButtonLabel?: string;
 }
 
 export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElementProps>(
@@ -67,7 +71,12 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       colIndex,
       stickyState,
       tableRole,
-      expandableProps,
+      level,
+      isExpandable,
+      isExpanded,
+      onExpandableItemToggle,
+      expandButtonLabel,
+      collapseButtonLabel,
     },
     ref
   ) => {
@@ -102,8 +111,8 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           isVisualRefresh && styles['is-visual-refresh'],
           hasSelection && styles['has-selection'],
           hasFooter && styles['has-footer'],
-          !!expandableProps && styles['body-cell-expandable'],
-          !!expandableProps && styles[`body-cell-expandable-level-${getLevelClassSuffix(expandableProps.level)}`],
+          level !== undefined && styles['body-cell-expandable'],
+          level !== undefined && styles[`body-cell-expandable-level-${getLevelClassSuffix(level)}`],
           stickyStyles.className
         )}
         onClick={onClick}
@@ -113,9 +122,14 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
         {...nativeAttributes}
         tabIndex={cellTabIndex}
       >
-        {expandableProps && (
+        {level !== undefined && isExpandable && (
           <div className={styles['expandable-toggle-wrapper']}>
-            <ExpandToggle {...expandableProps} />
+            <ExpandToggleButton
+              isExpanded={isExpanded}
+              onExpandableItemToggle={onExpandableItemToggle}
+              expandButtonLabel={expandButtonLabel}
+              collapseButtonLabel={collapseButtonLabel}
+            />
           </div>
         )}
         {children}

@@ -461,7 +461,7 @@ const InternalTable = React.forwardRef(
                           stickyState,
                           tableRole,
                         };
-                        const expandableProps = getExpandableItemProps(item);
+                        const expandableItemProps = getExpandableItemProps(item);
                         return (
                           <tr
                             key={getItemKey(trackBy, item, rowIndex)}
@@ -479,7 +479,7 @@ const InternalTable = React.forwardRef(
                             onContextMenu={
                               onRowContextMenuHandler && onRowContextMenuHandler.bind(null, rowIndex, item)
                             }
-                            {...getTableRowRoleProps({ tableRole, firstIndex, rowIndex, expandableProps })}
+                            {...getTableRowRoleProps({ tableRole, firstIndex, rowIndex, ...expandableItemProps })}
                           >
                             {hasSelection && (
                               <TableTdElement
@@ -504,6 +504,8 @@ const InternalTable = React.forwardRef(
                               const isEditing = cellEditing.checkEditing({ rowIndex, colIndex });
                               const successfulEdit = cellEditing.checkLastSuccessfulEdit({ rowIndex, colIndex });
                               const isEditable = !!column.editConfig && !cellEditing.isLoading;
+                              const expandableCellProps =
+                                isExpandable && colIndex === 0 ? expandableItemProps : undefined;
                               return (
                                 <TableBodyCell
                                   key={getColumnKey(column, colIndex)}
@@ -532,9 +534,7 @@ const InternalTable = React.forwardRef(
                                   submitEdit={cellEditing.submitEdit}
                                   columnId={column.id ?? colIndex}
                                   colIndex={colIndex + colIndexOffset}
-                                  // Expandable props only apply to the first data column of the table.
-                                  // When present, the cell content is decorated with expand toggles and extra paddings.
-                                  expandableProps={isExpandable && colIndex === 0 ? expandableProps : undefined}
+                                  {...expandableCellProps}
                                 />
                               );
                             })}
