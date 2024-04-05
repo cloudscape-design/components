@@ -71,11 +71,12 @@ export const getAvailableSpace = ({
 
   return overflowParents.reduce(
     ({ above, below, left, right }, overflowParent) => {
-      const offsetTop = triggerBottom - overflowParent.top;
+      const offsetTop = triggerBottom - overflowParent.insetBlockStart;
       const currentAbove = offsetTop - trigger.offsetHeight - availableSpaceReserveVertical;
-      const currentBelow = overflowParent.height - offsetTop - availableSpaceReserveVertical;
-      const currentLeft = triggerRight - overflowParent.left - availableSpaceReserveHorizontal;
-      const currentRight = overflowParent.left + overflowParent.width - triggerLeft - availableSpaceReserveHorizontal;
+      const currentBelow = overflowParent.blockSize - offsetTop - availableSpaceReserveVertical;
+      const currentLeft = triggerRight - overflowParent.insetInlineStart - availableSpaceReserveHorizontal;
+      const currentRight =
+        overflowParent.insetInlineStart + overflowParent.inlineSize - triggerLeft - availableSpaceReserveHorizontal;
 
       return {
         above: Math.min(above, currentAbove),
@@ -112,11 +113,12 @@ export const getInteriorAvailableSpace = ({
 
   return overflowParents.reduce(
     ({ above, below, left, right }, overflowParent) => {
-      const currentAbove = triggerBottom - overflowParent.top - AVAILABLE_SPACE_RESERVE_VERTICAL;
-      const currentBelow = overflowParent.height - triggerTop + overflowParent.top - AVAILABLE_SPACE_RESERVE_VERTICAL;
-      const currentLeft = triggerLeft - overflowParent.left - AVAILABLE_SPACE_RESERVE_HORIZONTAL;
+      const currentAbove = triggerBottom - overflowParent.insetBlockStart - AVAILABLE_SPACE_RESERVE_VERTICAL;
+      const currentBelow =
+        overflowParent.blockSize - triggerTop + overflowParent.insetBlockStart - AVAILABLE_SPACE_RESERVE_VERTICAL;
+      const currentLeft = triggerLeft - overflowParent.insetInlineStart - AVAILABLE_SPACE_RESERVE_HORIZONTAL;
       const currentRight =
-        overflowParent.left + overflowParent.width - triggerRight - AVAILABLE_SPACE_RESERVE_HORIZONTAL;
+        overflowParent.insetInlineStart + overflowParent.inlineSize - triggerRight - AVAILABLE_SPACE_RESERVE_HORIZONTAL;
 
       return {
         above: Math.min(above, currentAbove),

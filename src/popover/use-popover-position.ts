@@ -5,10 +5,11 @@ import React, { useCallback, useRef, useState } from 'react';
 import { BoundingBox, InternalPosition, Offset, PopoverProps } from './interfaces';
 import { calculatePosition, getDimensions, getOffsetDimensions } from './utils/positions';
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
-import // calculateScroll,
-// getFirstScrollableParent,
-// scrollRectangleIntoView,
-'../internal/utils/scrollable-containers';
+import {
+  calculateScroll,
+  getFirstScrollableParent,
+  scrollRectangleIntoView,
+} from '../internal/utils/scrollable-containers';
 import { getContainingBlock } from '../internal/utils/dom';
 import { getLogicalBoundingClientRect } from '../internal/direction';
 
@@ -138,16 +139,15 @@ export default function usePopoverPosition({
       const shouldScroll = allowScrollToFit && !shouldKeepPosition;
 
       // Position the popover
-      // RTL TODO SKIP SCROLL
-      // const insetBlockStart = shouldScroll ? popoverOffset.insetBlockStart + calculateScroll(rect) : popoverOffset.insetBlockStart;
-      const insetBlockStart = shouldScroll ? popoverOffset.insetBlockStart : popoverOffset.insetBlockStart;
+      const insetBlockStart = shouldScroll
+        ? popoverOffset.insetBlockStart + calculateScroll(rect)
+        : popoverOffset.insetBlockStart;
       setPopoverStyle({ insetBlockStart, insetInlineStart: popoverOffset.insetInlineStart });
 
       // Scroll if necessary
       if (shouldScroll) {
-        // const scrollableParent = getFirstScrollableParent(popover);
-        // RTL TODO SKIP SCROLL
-        // scrollRectangleIntoView(rect, scrollableParent);
+        const scrollableParent = getFirstScrollableParent(popover);
+        scrollRectangleIntoView(rect, scrollableParent);
       }
 
       positionHandlerRef.current = () => {
