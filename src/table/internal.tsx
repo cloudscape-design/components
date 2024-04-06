@@ -564,48 +564,45 @@ const InternalTable = React.forwardRef(
                               })}
                             </tr>
                           );
-                        } else if (row.type === 'loader') {
-                          return (
-                            <tr
-                              key={(row.item ? getTableItemKey(row.item) : 'awsui-table') + `-loader-${row.first}`}
-                              className={styles.row}
-                              {...rowRoleProps}
-                            >
-                              {hasSelection && (
-                                <TableTdElement
-                                  {...sharedCellProps}
-                                  className={clsx(styles['selection-control'])}
-                                  wrapLines={false}
-                                  columnId={selectionColumnId}
-                                  colIndex={0}
-                                >
-                                  {null}
-                                </TableTdElement>
-                              )}
+                        }
+                        return (
+                          <tr
+                            key={(row.item ? getTableItemKey(row.item) : 'awsui-table') + `-loader-${row.first}`}
+                            className={styles.row}
+                            {...rowRoleProps}
+                          >
+                            {hasSelection && (
                               <TableTdElement
                                 {...sharedCellProps}
-                                style={{ overflow: 'visible' }}
+                                className={clsx(styles['selection-control'])}
                                 wrapLines={false}
-                                columnId={itemsLoaderColumnId}
-                                colIndex={1}
-                                colSpan={totalColumnsCount - colIndexOffset}
-                                level={isExpandable ? row.level : undefined}
+                                columnId={selectionColumnId}
+                                colIndex={0}
                               >
-                                <ItemsLoader
-                                  item={row.item}
-                                  loadingStatus={row.status}
-                                  renderLoaderPending={renderLoaderPending}
-                                  renderLoaderLoading={renderLoaderLoading}
-                                  renderLoaderError={renderLoaderError}
-                                  onLoadMoreItems={() => fireNonCancelableEvent(onLoadMoreItems, { item: row.item })}
-                                  trackBy={trackBy}
-                                />
+                                {null}
                               </TableTdElement>
-                            </tr>
-                          );
-                        } else {
-                          throw new Error('Invariant violation: unexpected row type.');
-                        }
+                            )}
+                            <TableTdElement
+                              {...sharedCellProps}
+                              style={{ overflow: 'visible' }}
+                              wrapLines={false}
+                              columnId={itemsLoaderColumnId}
+                              colIndex={1}
+                              colSpan={totalColumnsCount - colIndexOffset}
+                              level={isExpandable ? row.level : undefined}
+                            >
+                              <ItemsLoader
+                                item={row.item}
+                                loadingStatus={row.status}
+                                renderLoaderPending={renderLoaderPending}
+                                renderLoaderLoading={renderLoaderLoading}
+                                renderLoaderError={renderLoaderError}
+                                onLoadMoreItems={() => fireNonCancelableEvent(onLoadMoreItems, { item: row.item })}
+                                trackBy={trackBy}
+                              />
+                            </TableTdElement>
+                          </tr>
+                        );
                       })
                     )}
                   </tbody>
