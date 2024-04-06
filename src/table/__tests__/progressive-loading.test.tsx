@@ -262,4 +262,49 @@ describe('Progressive loading', () => {
       [false, '[pending] Loader for TABLE ROOT'],
     ]);
   });
+
+  test.each(['loading', 'error'] as const)('loader row with status="%s" is added after empty expanded item', status => {
+    const { table } = renderTable({
+      items: [
+        {
+          name: 'Root-1',
+          children: [],
+        },
+      ],
+      expandableRows: {
+        ...defaultExpandableRows,
+        expandedItems: [{ name: 'Root-1' }],
+        getItemLoadingStatus: () => status,
+      },
+      loadingStatus: status,
+    });
+
+    expect(getTextContent(table.findItemsLoaderByItemId('Root-1')!)).toBe(`[${status}] Loader for Root-1`);
+  });
+
+  test.each([undefined, 'pending', 'finished'] as const)(
+    'loader row with status="%s" is not added after empty expanded item and a warning is shown',
+    status => {
+      const { table } = renderTable({
+        items: [
+          {
+            name: 'Root-1',
+            children: [],
+          },
+        ],
+        expandableRows: {
+          ...defaultExpandableRows,
+          expandedItems: [{ name: 'Root-1' }],
+          getItemLoadingStatus: status ? () => status : undefined,
+        },
+        loadingStatus: status,
+      });
+
+      expect(table.findItemsLoaderByItemId('Root-1')).toBe(null);
+      expect(warnOnce).toHaveBeenCalledWith(
+        'Table',
+        'Expanded items must define children or loading status other than "pending" and "finished".'
+      );
+    }
+  );
 });

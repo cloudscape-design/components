@@ -6,7 +6,7 @@ import { fireNonCancelableEvent } from '../../internal/events';
 import { TableProps } from '../interfaces';
 import { ItemSet } from '../selection/utils';
 
-interface ExpandableItemProps extends ExpandableItemPlacement {
+interface ExpandableItemProps<T> extends ExpandableItemDetail<T> {
   isExpandable: boolean;
   isExpanded: boolean;
   onExpandableItemToggle: () => void;
@@ -14,10 +14,12 @@ interface ExpandableItemProps extends ExpandableItemPlacement {
   collapseButtonLabel?: string;
 }
 
-interface ExpandableItemPlacement {
+interface ExpandableItemDetail<T> {
   level: number;
-  setSize?: number;
-  posInSet?: number;
+  setSize: number;
+  posInSet: number;
+  parent: null | T;
+  children: readonly T[];
 }
 
 export function useExpandableTableProps<T>({
@@ -38,29 +40,26 @@ export function useExpandableTableProps<T>({
   const expandedSet = new ItemSet(trackBy, expandableRows?.expandedItems ?? []);
 
   let allItems = items;
-  const itemToParent = new Map<T, null | T>();
-  const itemToPlacement = new Map<T, ExpandableItemPlacement>();
-  const getItemLevel = (item: T) => itemToPlacement.get(item)?.level ?? 0;
-  const getItemParent = (item: T) => itemToParent.get(item) ?? null;
+  const itemToDetail = new Map<T, ExpandableItemDetail<T>>();
+  const getItemLevel = (item: T) => itemToDetail.get(item)?.level ?? 0;
 
   if (isExpandable) {
     const visibleItems = new Array<T>();
 
-    const traverse = (item: T, parent: null | T, placement: ExpandableItemPlacement) => {
-      itemToParent.set(item, parent);
-      itemToPlacement.set(item, placement);
+    const traverse = (item: T, detail: Omit<ExpandableItemDetail<T>, 'children'>) => {
+      const children = expandableRows.getItemChildren(item);
+      itemToDetail.set(item, { ...detail, children });
 
       visibleItems.push(item);
       if (expandedSet.has(item)) {
-        const children = expandableRows.getItemChildren(item);
-        expandableRows
-          .getItemChildren(item)
-          .forEach((child, index) =>
-            traverse(child, item, { level: placement.level + 1, setSize: children.length, posInSet: index + 1 })
-          );
+        children.forEach((child, index) =>
+          traverse(child, { level: detail.level + 1, setSize: children.length, posInSet: index + 1, parent: item })
+        );
       }
     };
-    items.forEach((item, index) => traverse(item, null, { level: 1, setSize: items.length, posInSet: index + 1 }));
+    items.forEach((item, index) =>
+      traverse(item, { level: 1, setSize: items.length, posInSet: index + 1, parent: null })
+    );
 
     for (let index = 0; index < visibleItems.length; index++) {
       const item = visibleItems[index];
@@ -79,8 +78,8 @@ export function useExpandableTableProps<T>({
     allItems = visibleItems;
   }
 
-  const getExpandableItemProps = (item: T): ExpandableItemProps => {
-    const { level, setSize, posInSet } = itemToPlacement.get(item) ?? { level: 1, setSize: 1, posInSet: 1 };
+  const getExpandableItemProps = (item: T): ExpandableItemProps<T> => {
+    const { level = 1, setSize = 1, posInSet = 1, parent = null, children = [] } = itemToDetail.get(item) ?? {};
     return {
       level,
       setSize,
@@ -91,8 +90,10 @@ export function useExpandableTableProps<T>({
         fireNonCancelableEvent(expandableRows?.onExpandableItemToggle, { item, expanded: !expandedSet.has(item) }),
       expandButtonLabel: i18n('ariaLabels.expandButtonLabel', ariaLabels?.expandButtonLabel?.(item)),
       collapseButtonLabel: i18n('ariaLabels.collapseButtonLabel', ariaLabels?.collapseButtonLabel?.(item)),
+      parent,
+      children,
     };
   };
 
-  return { isExpandable, allItems, getExpandableItemProps, getItemLevel, getItemParent };
+  return { isExpandable, allItems, getExpandableItemProps };
 }

@@ -132,13 +132,14 @@ export default () => {
 
   // Using a special id="ROOT" for progressive loading at the root level.
   const [loadingState, setLoadingState] = useState<LoadingState>(new Map([['ROOT', { status: 'pending', pages: 1 }]]));
-  const triggerItemsLoading = (id: string) => {
+
+  const updateLoading = (id: string) => {
     const setLoading = (id: string, state: LoadingState) =>
-      new Map([...state, [id, { status: 'loading', pages: state.get(id)?.pages ?? 1 } as const]]);
+      new Map([...state, [id, { status: 'loading', pages: state.get(id)?.pages ?? 0 } as const]]);
     const setError = (id: string, state: LoadingState) =>
-      new Map([...state, [id, { status: 'error', pages: state.get(id)?.pages ?? 1 } as const]]);
+      new Map([...state, [id, { status: 'error', pages: state.get(id)?.pages ?? 0 } as const]]);
     const setPending = (id: string, state: LoadingState) =>
-      new Map([...state, [id, { status: 'pending', pages: (state.get(id)?.pages ?? 1) + 1 } as const]]);
+      new Map([...state, [id, { status: 'pending', pages: (state.get(id)?.pages ?? 0) + 1 } as const]]);
     setLoadingState(prev => setLoading(id, prev));
     setTimeout(
       () =>
@@ -154,7 +155,7 @@ export default () => {
         ...collectionProps.expandableRows!,
         getItemChildren(item) {
           const children = collectionProps.expandableRows!.getItemChildren(item);
-          const pages = loadingState.get(item.name)?.pages ?? 1;
+          const pages = loadingState.get(item.name)?.pages ?? 0;
           return settings.useProgressiveLoading ? children.slice(0, pages * nestedPageSize) : children;
         },
         getItemLoadingStatus: settings.useProgressiveLoading
@@ -164,6 +165,12 @@ export default () => {
               return state.pages * nestedPageSize < children.length ? state.status : 'finished';
             }
           : undefined,
+        onExpandableItemToggle: event => {
+          collectionProps.expandableRows!.onExpandableItemToggle(event);
+          if (event.detail.expanded) {
+            updateLoading(event.detail.item.name);
+          }
+        },
       }
     : undefined;
 
@@ -266,7 +273,7 @@ export default () => {
               />
             }
             loadingStatus={settings.useProgressiveLoading ? loadingState.get('ROOT')?.status : undefined}
-            onLoadMoreItems={event => triggerItemsLoading(event.detail.item?.name ?? 'ROOT')}
+            onLoadMoreItems={event => updateLoading(event.detail.item?.name ?? 'ROOT')}
             renderLoaderPending={({ item }) => ({
               buttonLabel: item ? `Load more items for ${item.name}` : 'Load more items',
             })}
@@ -277,7 +284,7 @@ export default () => {
               cellContent: (
                 <SpaceBetween direction="horizontal" size="xs">
                   <Box>Error loading items</Box>
-                  <Button variant="inline-link" onClick={() => triggerItemsLoading(item?.name ?? 'ROOT')}>
+                  <Button variant="inline-link" onClick={() => updateLoading(item?.name ?? 'ROOT')}>
                     Retry
                   </Button>
                 </SpaceBetween>

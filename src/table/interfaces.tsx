@@ -557,3 +557,18 @@ export namespace TableProps {
     cellContent: React.ReactNode;
   }
 }
+
+export type TableRow<T> = TableDataRow<T> | TableLoaderRow<T>;
+
+export interface TableDataRow<T> {
+  type: 'data';
+  item: T;
+}
+
+export interface TableLoaderRow<T> {
+  type: 'loader';
+  item: null | T;
+  level: number;
+  status: TableProps.LoadingStatus;
+  first: boolean;
+}

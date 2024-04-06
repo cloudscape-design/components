@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
 import React, { useCallback, useImperativeHandle, useRef } from 'react';
-import { TableForwardRefType, TableProps } from './interfaces';
+import { TableForwardRefType, TableProps, TableRow } from './interfaces';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import InternalContainer, { InternalContainerProps } from '../container/internal';
 import { getBaseProps } from '../internal/base-component';
@@ -51,7 +51,7 @@ import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
 import { getContentHeaderClassName } from '../internal/utils/content-header-utils';
 import { useExpandableTableProps } from './expandable-rows/expandable-rows-utils';
 import { ItemsLoader } from './progressive-loading/items-loader';
-import { TableRow, useProgressiveLoadingProps } from './progressive-loading/progressive-loading-utils';
+import { useProgressiveLoadingProps } from './progressive-loading/progressive-loading-utils';
 
 const GRID_NAVIGATION_PAGE_SIZE = 10;
 const SELECTION_COLUMN_WIDTH = 54;
@@ -139,7 +139,7 @@ const InternalTable = React.forwardRef(
     stickyHeader = stickyHeader && supportsStickyPosition();
     const isMobile = useMobile();
 
-    const { isExpandable, allItems, getExpandableItemProps, getItemLevel, getItemParent } = useExpandableTableProps({
+    const { isExpandable, allItems, getExpandableItemProps } = useExpandableTableProps({
       items,
       expandableRows,
       trackBy,
@@ -150,8 +150,7 @@ const InternalTable = React.forwardRef(
       items: allItems,
       expandableRows,
       loadingStatus,
-      getItemLevel,
-      getItemParent,
+      getExpandableItemProps,
     });
 
     const [containerWidth, wrapperMeasureRef] = useContainerQuery<number>(rect => rect.contentBoxWidth);
@@ -568,7 +567,7 @@ const InternalTable = React.forwardRef(
                         } else if (row.type === 'loader') {
                           return (
                             <tr
-                              key={row.item ? `${getTableItemKey(row.item)}-loader` : 'awsui-table-loader'}
+                              key={(row.item ? getTableItemKey(row.item) : 'awsui-table') + `-loader-${row.first}`}
                               className={styles.row}
                               {...rowRoleProps}
                             >
