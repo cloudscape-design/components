@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { getBreakpointValue } from '../../breakpoints';
+import { getLogicalBoundingClientRect } from '../../direction';
 import { BoundingBox, getOverflowParents, getOverflowParentDimensions } from '../../utils/scrollable-containers';
 import styles from './styles.css.js';
 
@@ -15,25 +16,25 @@ interface AvailableSpace {
   right: number;
 }
 export interface DropdownPosition {
-  height: string;
-  width: string;
+  blockSize: string;
+  inlineSize: string;
   dropUp: boolean;
   dropLeft: boolean;
-  left: string;
+  insetInlineStart: string;
 }
 export interface InteriorDropdownPosition extends DropdownPosition {
-  bottom: string;
-  top: string;
+  insetBlockEnd: string;
+  insetBlockStart: string;
 }
 
 const getClosestParentDimensions = (element: HTMLElement): any => {
-  const parents = getOverflowParents(element).map(el => {
-    const { height, width, top, left } = el.getBoundingClientRect();
+  const parents = getOverflowParents(element).map(element => {
+    const { blockSize, inlineSize, insetBlockStart, insetInlineStart } = getLogicalBoundingClientRect(element);
     return {
-      height,
-      width,
-      top,
-      left,
+      blockSize,
+      inlineSize,
+      insetBlockStart,
+      insetInlineStart,
     };
   });
 
@@ -67,7 +68,11 @@ export const getAvailableSpace = ({
     : isMobile
     ? AVAILABLE_SPACE_RESERVE_MOBILE_HORIZONTAL
     : AVAILABLE_SPACE_RESERVE_DEFAULT;
-  const { bottom: triggerBottom, left: triggerLeft, right: triggerRight } = trigger.getBoundingClientRect();
+  const {
+    insetBlockEnd: triggerBottom,
+    insetInlineStart: triggerLeft,
+    insetInlineEnd: triggerRight,
+  } = getLogicalBoundingClientRect(trigger);
 
   return overflowParents.reduce(
     ({ above, below, left, right }, overflowParent) => {
@@ -105,11 +110,11 @@ export const getInteriorAvailableSpace = ({
     ? AVAILABLE_SPACE_RESERVE_MOBILE_HORIZONTAL
     : AVAILABLE_SPACE_RESERVE_DEFAULT;
   const {
-    bottom: triggerBottom,
-    top: triggerTop,
-    left: triggerLeft,
-    right: triggerRight,
-  } = trigger.getBoundingClientRect();
+    insetBlockEnd: triggerBottom,
+    insetBlockStart: triggerTop,
+    insetInlineStart: triggerLeft,
+    insetInlineEnd: triggerRight,
+  } = getLogicalBoundingClientRect(trigger);
 
   return overflowParents.reduce(
     ({ above, below, left, right }, overflowParent) => {
@@ -143,13 +148,13 @@ export const getWidths = ({
   stretchBeyondTriggerWidth?: boolean;
 }) => {
   // Determine the width of the trigger
-  const triggerWidth = triggerElement.getBoundingClientRect().width;
+  const { inlineSize: triggerWidth } = getLogicalBoundingClientRect(triggerElement);
   // Minimum width is determined by either an explicit number (desiredMinWidth) or the trigger width
   const minWidth = desiredMinWidth ? Math.min(triggerWidth, desiredMinWidth) : triggerWidth;
   // If stretchBeyondTriggerWidth is true, the maximum width is the XS breakpoint (465px) or the trigger width (if bigger).
   const maxWidth = stretchBeyondTriggerWidth ? Math.max(defaultMaxDropdownWidth, triggerWidth) : Number.MAX_VALUE;
   // Determine the actual dropdown width, the size that it "wants" to be
-  const requiredWidth = dropdownElement.getBoundingClientRect().width;
+  const { inlineSize: requiredWidth } = getLogicalBoundingClientRect(dropdownElement);
   // Try to achieve the required/desired width within the given parameters
   const idealWidth = Math.min(Math.max(requiredWidth, minWidth), maxWidth);
   return { idealWidth, minWidth, triggerWidth };
@@ -231,8 +236,8 @@ export const getDropdownPosition = ({
   });
 
   let dropLeft: boolean;
-  let left: number | null = null;
-  let width = idealWidth;
+  let insetInlineStart: number | null = null;
+  let inlineSize = idealWidth;
 
   //1. Can it be positioned with ideal width to the right?
   if (idealWidth <= availableSpace.right) {
@@ -243,7 +248,7 @@ export const getDropdownPosition = ({
     //3. Fit into biggest available space either on left or right
   } else {
     dropLeft = availableSpace.left > availableSpace.right;
-    width = Math.max(availableSpace.left, availableSpace.right, minWidth);
+    inlineSize = Math.max(availableSpace.left, availableSpace.right, minWidth);
   }
 
   if (preferCenter) {
@@ -255,7 +260,7 @@ export const getDropdownPosition = ({
 
     const fitsInCenter = availableOutsideLeft >= spillOver && availableOutsideRight >= spillOver;
     if (fitsInCenter) {
-      left = -spillOver;
+      insetInlineStart = -spillOver;
     }
   }
 
@@ -267,9 +272,9 @@ export const getDropdownPosition = ({
   return {
     dropUp,
     dropLeft,
-    left: left === null ? 'auto' : `${left}px`,
-    height: `${croppedHeight}px`,
-    width: `${width}px`,
+    insetInlineStart: insetInlineStart === null ? 'auto' : `${insetInlineStart}px`,
+    blockSize: `${croppedHeight}px`,
+    inlineSize: `${inlineSize}px`,
   };
 };
 
@@ -280,23 +285,27 @@ export const getInteriorDropdownPosition = (
   isMobile?: boolean
 ): InteriorDropdownPosition => {
   const availableSpace = getInteriorAvailableSpace({ trigger, overflowParents, isMobile });
-  const { bottom: triggerBottom, top: triggerTop, width: triggerWidth } = trigger.getBoundingClientRect();
-  const { top: parentDropdownTop, height: parentDropdownHeight } = getClosestParentDimensions(trigger);
+  const {
+    insetBlockEnd: triggerBottom,
+    insetBlockStart: triggerTop,
+    inlineSize: triggerWidth,
+  } = getLogicalBoundingClientRect(trigger);
+  const { insetBlockStart: parentDropdownTop, blockSize: parentDropdownHeight } = getClosestParentDimensions(trigger);
 
   let dropLeft;
 
-  let width = dropdown.getBoundingClientRect().width;
-  const top = triggerTop - parentDropdownTop;
-  if (width <= availableSpace.right) {
+  let { inlineSize } = getLogicalBoundingClientRect(dropdown);
+  const insetBlockStart = triggerTop - parentDropdownTop;
+  if (inlineSize <= availableSpace.right) {
     dropLeft = false;
-  } else if (width <= availableSpace.left) {
+  } else if (inlineSize <= availableSpace.left) {
     dropLeft = true;
   } else {
     dropLeft = availableSpace.left > availableSpace.right;
-    width = Math.max(availableSpace.left, availableSpace.right);
+    inlineSize = Math.max(availableSpace.left, availableSpace.right);
   }
 
-  const left = dropLeft ? 0 - width : triggerWidth;
+  const insetInlineStart = dropLeft ? 0 - inlineSize : triggerWidth;
 
   const dropUp = availableSpace.below < dropdown.offsetHeight && availableSpace.above > availableSpace.below;
   const bottom = dropUp ? parentDropdownTop + parentDropdownHeight - triggerBottom : 0;
@@ -307,11 +316,11 @@ export const getInteriorDropdownPosition = (
   return {
     dropUp,
     dropLeft,
-    height: `${croppedHeight}px`,
-    width: `${width}px`,
-    top: `${top}px`,
-    bottom: `${bottom}px`,
-    left: `${left}px`,
+    blockSize: `${croppedHeight}px`,
+    inlineSize: `${inlineSize}px`,
+    insetBlockStart: `${insetBlockStart}px`,
+    insetBlockEnd: `${bottom}px`,
+    insetInlineStart: `${insetInlineStart}px`,
   };
 };
 
@@ -331,10 +340,10 @@ export const calculatePosition = (
   // cleaning previously assigned values,
   // so that they are not reused in case of screen resize and similar events
   verticalContainerElement.style.maxHeight = '';
-  dropdownElement.style.width = '';
-  dropdownElement.style.top = '';
-  dropdownElement.style.bottom = '';
-  dropdownElement.style.left = '';
+  dropdownElement.style.inlineSize = '';
+  dropdownElement.style.insetBlockStart = '';
+  dropdownElement.style.insetBlockEnd = '';
+  dropdownElement.style.insetInlineStart = '';
 
   dropdownElement.classList.remove(styles['dropdown-drop-left']);
   dropdownElement.classList.remove(styles['dropdown-drop-right']);
