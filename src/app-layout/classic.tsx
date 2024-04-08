@@ -6,7 +6,7 @@ import { useControllable } from '../internal/hooks/use-controllable';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { fireNonCancelableEvent } from '../internal/events';
 import { applyDefaults } from './defaults';
-import { AppLayoutProps } from './interfaces';
+import { AppLayoutProps, AppLayoutPropsWithDefaults } from './interfaces';
 import { Notifications } from './notifications';
 import { MobileToolbar } from './mobile-toolbar';
 import { useFocusControl } from './utils/use-focus-control';
@@ -57,13 +57,13 @@ const ClassicAppLayout = React.forwardRef(
       contentHeader,
       disableContentHeaderOverlap,
       content,
-      contentType = 'default',
+      contentType,
       disableContentPaddings,
       disableBodyScroll,
       maxContentWidth,
       minContentWidth,
-      headerSelector = '#b #h',
-      footerSelector = '#b #f',
+      headerSelector,
+      footerSelector,
       ariaLabels,
       splitPanel,
       splitPanelSize: controlledSplitPanelSize,
@@ -78,7 +78,7 @@ const ClassicAppLayout = React.forwardRef(
       onDrawerChange,
       activeDrawerId: controlledActiveDrawerId,
       ...rest
-    }: AppLayoutProps,
+    }: AppLayoutPropsWithDefaults,
     ref: React.Ref<AppLayoutProps.Ref>
   ) => {
     if (isDevelopment) {

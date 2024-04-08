@@ -2,11 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { getGlobalFlag } from '../internal/utils/global-flags';
-import { AppLayoutProps } from './interfaces';
+import { AppLayoutProps, AppLayoutPropsWithDefaults } from './interfaces';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { AppLayoutImplementation } from './implementation';
 
-type AppLayoutType = React.ForwardRefExoticComponent<AppLayoutProps & React.RefAttributes<AppLayoutProps.Ref>>;
+type AppLayoutType = React.ForwardRefExoticComponent<
+  AppLayoutPropsWithDefaults & React.RefAttributes<AppLayoutProps.Ref>
+>;
 
 export function createWidgetizedAppLayout(AppLayoutLoader?: AppLayoutType): AppLayoutType {
   return React.forwardRef((props, ref) => {
