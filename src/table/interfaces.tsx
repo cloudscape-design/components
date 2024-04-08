@@ -339,6 +339,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * * `isItemExpandable` ((Item) => boolean) - Use it for items that can be expanded to show nested data.
    * * `expandedItems` (Item[]) - Use it to represent the expanded state of items.
    * * `onExpandableItemToggle` (TableProps.OnExpandableItemToggle<T>) - Called when an item's expand toggle is clicked.
+   * * `getItemLoadingStatus` (optional, (item: T) => TableProps.LoadingStatus) - Use it to define item's progressive loading state.
    */
   expandableRows?: TableProps.ExpandableRows<T>;
 
@@ -525,7 +526,7 @@ export namespace TableProps {
     isItemExpandable: (item: T) => boolean;
     expandedItems: ReadonlyArray<T>;
     onExpandableItemToggle: TableProps.OnExpandableItemToggle<T>;
-    getItemLoadingStatus?: (item: T) => null | TableProps.LoadingStatus;
+    getItemLoadingStatus?: (item: T) => TableProps.LoadingStatus;
   }
 
   export type OnExpandableItemToggle<T> = NonCancelableEventHandler<TableProps.ExpandableItemToggleDetail<T>>;
