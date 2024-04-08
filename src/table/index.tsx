@@ -24,6 +24,9 @@ const Table = React.forwardRef(
         wrapLines: props.wrapLines,
         enableKeyboardNavigation: props.enableKeyboardNavigation,
       },
+      metadata: {
+        expandableRows: !!props.expandableRows,
+      },
     });
 
     const tableProps: Parameters<typeof InternalTable<T>>[0] = {
