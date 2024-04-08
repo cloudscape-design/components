@@ -118,7 +118,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
             <ExpandToggle {...expandableProps} />
           </div>
         )}
-        {children}
+        <span className={styles['body-cell-content']}>{children}</span>
       </Element>
     );
   }
