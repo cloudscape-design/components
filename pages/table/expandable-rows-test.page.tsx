@@ -15,8 +15,10 @@ import {
   Checkbox,
   CollectionPreferencesProps,
   Drawer,
+  Form,
   FormField,
   Pagination,
+  Popover,
   PropertyFilter,
   Select,
   Toggle,
@@ -27,6 +29,7 @@ import messages from '~components/i18n/messages/all.en';
 import I18nProvider from '~components/i18n';
 import { createColumns, createPreferences, filteringProperties } from './expandable-rows/expandable-rows-configs';
 import { Instance, ariaLabels, getHeaderCounterText } from './expandable-rows/common';
+import StatusIndicator from '~components/status-indicator/internal';
 
 type LoadingState = Map<string, { pages: number; status: TableProps.LoadingStatus }>;
 
@@ -282,12 +285,23 @@ export default () => {
             })}
             renderLoaderError={({ item }) => ({
               cellContent: (
-                <SpaceBetween direction="horizontal" size="xs">
-                  <Box>Error loading items</Box>
-                  <Button variant="inline-link" onClick={() => updateLoading(item?.name ?? 'ROOT')}>
-                    Retry
-                  </Button>
-                </SpaceBetween>
+                <Box color="text-status-error">
+                  <Popover
+                    header="Failed to load instances"
+                    content={
+                      <Form actions={<Button onClick={() => updateLoading(item?.name ?? 'ROOT')}>Retry</Button>}>
+                        <Alert type="error">
+                          {item
+                            ? `Error occurred during loading instances for item ${item.name}. Reason: item ${item.name} not found. Refresh the page.`
+                            : 'Unknown error occurred during loading instances.'}
+                        </Alert>
+                      </Form>
+                    }
+                    renderWithPortal={true}
+                  >
+                    <StatusIndicator type="error">Failed to load instances</StatusIndicator>
+                  </Popover>
+                </Box>
               ),
             })}
           />
