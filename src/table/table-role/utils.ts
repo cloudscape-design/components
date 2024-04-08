@@ -20,7 +20,7 @@ export function defaultIsSuppressed(target: Element) {
   let current: null | Element = target;
   while (current) {
     // Stop checking for parents upon reaching the cell element as the function only aims at the cell content.
-    if (current instanceof HTMLTableCellElement) {
+    if (current.tagName === 'TD') {
       return false;
     }
     if (

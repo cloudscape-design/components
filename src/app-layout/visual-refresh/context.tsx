@@ -13,7 +13,7 @@ import React, {
 import { applyDefaults } from '../defaults';
 import { AppLayoutContext } from '../../internal/context/app-layout-context';
 import { DynamicOverlapContext } from '../../internal/context/dynamic-overlap-context';
-import { AppLayoutProps } from '../interfaces';
+import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
 import { fireNonCancelableEvent } from '../../internal/events';
 import { FocusControlRefs, useFocusControl } from '../utils/use-focus-control';
 import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
@@ -51,8 +51,8 @@ interface AppLayoutInternals extends AppLayoutProps {
   handleSplitPanelPreferencesChange: (detail: AppLayoutProps.SplitPanelPreferences) => void;
   handleSplitPanelResize: (newSize: number) => void;
   handleToolsClick: (value: boolean, skipFocusControl?: boolean) => void;
-  hasBackgroundOverlap: boolean;
   hasDefaultToolsWidth: boolean;
+  hasBackgroundOverlap: boolean;
   hasDrawerViewportOverlay: boolean;
   hasNotificationsContent: boolean;
   hasOpenDrawer?: boolean;
@@ -100,7 +100,7 @@ interface AppLayoutInternals extends AppLayoutProps {
  */
 const AppLayoutInternalsContext = createContext<AppLayoutInternals | null>(null);
 
-interface AppLayoutProviderInternalsProps extends AppLayoutProps {
+interface AppLayoutProviderInternalsProps extends AppLayoutPropsWithDefaults {
   children: React.ReactNode;
 }
 
@@ -119,9 +119,9 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       toolsOpen: controlledToolsOpen,
       navigationHide,
       navigationOpen: controlledNavigationOpen,
-      contentType = 'default',
-      headerSelector = '#b #h',
-      footerSelector = '#b #h',
+      contentType,
+      headerSelector,
+      footerSelector,
       children,
       splitPanel,
       ...props
