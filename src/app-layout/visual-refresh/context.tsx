@@ -31,6 +31,7 @@ import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import useBackgroundOverlap from './use-background-overlap';
 import { useDrawers } from '../utils/use-drawers';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
+import { SPLIT_PANEL_MIN_WIDTH } from '../split-panel';
 
 interface AppLayoutInternals extends AppLayoutProps {
   activeDrawerId: string | null;
@@ -51,7 +52,6 @@ interface AppLayoutInternals extends AppLayoutProps {
   handleSplitPanelPreferencesChange: (detail: AppLayoutProps.SplitPanelPreferences) => void;
   handleSplitPanelResize: (newSize: number) => void;
   handleToolsClick: (value: boolean, skipFocusControl?: boolean) => void;
-  hasDefaultToolsWidth: boolean;
   hasBackgroundOverlap: boolean;
   hasDrawerViewportOverlay: boolean;
   hasNotificationsContent: boolean;
@@ -80,7 +80,6 @@ interface AppLayoutInternals extends AppLayoutProps {
   footerHeight: number;
   splitPanelControlId: string;
   splitPanelMaxWidth: number;
-  splitPanelMinWidth: number;
   splitPanelPosition: AppLayoutProps.SplitPanelPosition;
   splitPanelReportedSize: number;
   splitPanelReportedHeaderHeight: number;
@@ -199,6 +198,8 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       }
     }, [isMobile, handleNavigationClick]);
 
+    const toolsWidth = props.toolsWidth;
+
     /**
      * The useControllable hook will set the default value and manage either
      * the controlled or uncontrolled state of the Tools drawer. The logic
@@ -210,9 +211,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
      * useControllable hook and also fire the onToolsChange function to
      * emit the state change.
      */
-    const toolsWidth = props.toolsWidth ?? 290;
-    const hasDefaultToolsWidth = props.toolsWidth === undefined;
-
     const [isToolsOpen = false, setIsToolsOpen] = useControllable(
       controlledToolsOpen,
       props.onToolsChange,
@@ -249,8 +247,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
      * widths will potentially trigger a side effect that will put the Split Panel into
      * a forced position on the bottom.
      */
-    const splitPanelMinWidth = 280;
-    const [splitPanelMaxWidth, setSplitPanelMaxWidth] = useState(splitPanelMinWidth);
+    const [splitPanelMaxWidth, setSplitPanelMaxWidth] = useState(SPLIT_PANEL_MIN_WIDTH);
 
     /**
      * The useControllable hook will set the default value and manage either
@@ -316,9 +313,9 @@ export const AppLayoutInternalsProvider = React.forwardRef(
 
     useLayoutEffect(
       function handleSplitPanelForcePosition() {
-        setSplitPanelForcedPosition(splitPanelMinWidth > splitPanelMaxWidth);
+        setSplitPanelForcedPosition(SPLIT_PANEL_MIN_WIDTH > splitPanelMaxWidth);
       },
-      [splitPanelMaxWidth, splitPanelMinWidth]
+      [splitPanelMaxWidth]
     );
 
     /**
@@ -401,6 +398,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       drawersRefs,
       isToolsOpen,
       drawersMaxWidth,
+      drawersMinWidth,
     });
 
     const handleDrawersClick = (id: string | null, skipFocusControl?: boolean) => {
@@ -624,7 +622,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           drawersTriggerCount,
           headerHeight,
           footerHeight,
-          hasDefaultToolsWidth,
           hasDrawerViewportOverlay,
           handleDrawersClick,
           handleNavigationClick,
@@ -662,7 +659,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           splitPanelControlId,
           splitPanelDisplayed,
           splitPanelMaxWidth,
-          splitPanelMinWidth,
           splitPanelPosition,
           splitPanelPreferences,
           splitPanelReportedSize,

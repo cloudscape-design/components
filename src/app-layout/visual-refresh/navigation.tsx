@@ -60,8 +60,7 @@ export default function Navigation() {
             [styles.unfocusable]: isUnfocusable,
             [testutilStyles['drawer-closed']]: !isNavigationOpen,
           })}
-          // Overwrite the default nav width (depends on breakpoints) only when the `navigationWidth` property is set.
-          style={{ ...(navigationWidth && { [customCssProps.navigationWidth]: `${navigationWidth}px` }) }}
+          style={{ [customCssProps.navigationWidth]: `${navigationWidth}px` }}
         >
           {!isMobile && (
             <nav
