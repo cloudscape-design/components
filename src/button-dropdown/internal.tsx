@@ -80,7 +80,8 @@ const InternalButtonDropdown = React.forwardRef(
       items,
       onItemClick,
       onItemFollow,
-      onReturnFocus: () => triggerRef.current?.focus(),
+      // Scroll is unnecessary when moving focus back to the dropdown trigger.
+      onReturnFocus: () => triggerRef.current?.focus({ preventScroll: true }),
       expandToViewport,
       hasExpandableGroups: expandableGroups,
       isInRestrictedView,

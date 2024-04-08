@@ -17,6 +17,7 @@ import { Checkbox } from '~components';
 type PageContext = React.Context<
   AppContextType<{
     enableKeyboardNavigation: boolean;
+    stickyActions: boolean;
   }>
 >;
 
@@ -156,38 +157,50 @@ const columnDefinitionsOnlyIcons: TableProps.ColumnDefinition<Instance>[] = [
 ];
 
 export default function () {
-  const { urlParams, setUrlParams } = useContext(AppContext as PageContext);
+  const {
+    urlParams: { enableKeyboardNavigation = false, stickyActions = false },
+    setUrlParams,
+  } = useContext(AppContext as PageContext);
 
   return (
-    <ScreenshotArea style={{ padding: '10px 50px' }}>
-      <Checkbox
-        checked={urlParams.enableKeyboardNavigation}
-        onChange={event => {
-          setUrlParams({ enableKeyboardNavigation: event.detail.checked });
-          window.location.reload();
-        }}
-      >
-        Keyboard navigation
-      </Checkbox>
+    <Box>
+      <Box margin={{ top: 'm', horizontal: 'm' }}>
+        <Checkbox
+          checked={enableKeyboardNavigation}
+          onChange={event => {
+            setUrlParams({ enableKeyboardNavigation: event.detail.checked });
+            window.location.reload();
+          }}
+        >
+          Keyboard navigation
+        </Checkbox>
+        <Checkbox checked={stickyActions} onChange={event => setUrlParams({ stickyActions: event.detail.checked })}>
+          Sticky actions
+        </Checkbox>
+      </Box>
 
-      <Box padding="l">
+      <ScreenshotArea>
         <h1>Tables with inline actions</h1>
+
         <SpaceBetween size="l">
           <Table
             ariaLabels={selectionLabels}
             header={<Header>Table with single actions</Header>}
             columnDefinitions={columnDefinitionsSingle}
             items={items}
-            enableKeyboardNavigation={urlParams.enableKeyboardNavigation}
+            enableKeyboardNavigation={enableKeyboardNavigation}
+            stickyColumns={{ last: stickyActions ? 1 : 0 }}
           />
           <Table
             ariaLabels={selectionLabels}
             header={<Header>Table with multiple actions</Header>}
             columnDefinitions={columnDefinitionsMultiple}
             items={items}
-            enableKeyboardNavigation={urlParams.enableKeyboardNavigation}
+            enableKeyboardNavigation={enableKeyboardNavigation}
+            stickyColumns={{ last: stickyActions ? 1 : 0 }}
           />
           <Table
+            data-testid="table-with-dropdown-actions"
             ariaLabels={selectionLabels}
             header={
               <Header
@@ -212,24 +225,27 @@ export default function () {
             selectionType="multi"
             columnDefinitions={columnDefinitionsDropdown}
             items={items}
-            enableKeyboardNavigation={urlParams.enableKeyboardNavigation}
+            enableKeyboardNavigation={enableKeyboardNavigation}
+            stickyColumns={{ last: stickyActions ? 1 : 0 }}
           />
           <Table
             ariaLabels={selectionLabels}
             header={<Header>Table with mixed actions</Header>}
             columnDefinitions={columnDefinitionsMixed}
             items={items}
-            enableKeyboardNavigation={urlParams.enableKeyboardNavigation}
+            enableKeyboardNavigation={enableKeyboardNavigation}
+            stickyColumns={{ last: stickyActions ? 1 : 0 }}
           />
           <Table
             ariaLabels={selectionLabels}
             header={<Header>Table with only icon actions</Header>}
             columnDefinitions={columnDefinitionsOnlyIcons}
             items={items}
-            enableKeyboardNavigation={urlParams.enableKeyboardNavigation}
+            enableKeyboardNavigation={enableKeyboardNavigation}
+            stickyColumns={{ last: stickyActions ? 1 : 0 }}
           />
         </SpaceBetween>
-      </Box>
-    </ScreenshotArea>
+      </ScreenshotArea>
+    </Box>
   );
 }
