@@ -79,6 +79,7 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
   const mergedRef = useMergeRefs(codeEditorMeasureRef, __internalRootRef);
 
   const paneId = useUniqueId('code-editor-pane');
+  const ariaLabelId = useUniqueId('code-editor-textarea');
 
   const [paneStatus, setPaneStatus] = useState<PaneStatus>('hidden');
   const [annotations, setAnnotations] = useState<Ace.Annotation[]>([]);
@@ -102,7 +103,13 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
     };
   }, [ace, editor]);
 
-  useSyncEditorLabels(editor, { controlId, ariaLabel, ariaLabelledby, ariaDescribedby });
+  useSyncEditorLabels(editor, {
+    controlId,
+    // Treat ariaLabel as if it overrides ariaLabelledby. This is similar to how
+    // other Cloudscape components (e.g. input) behave.
+    ariaLabelledby: ariaLabel && !ariaLabelledby ? ariaLabelId : ariaLabelledby,
+    ariaDescribedby,
+  });
 
   const { onResize } = useSyncEditorSize(editor, { width: codeEditorWidth, height: editorContentHeight });
 
@@ -194,6 +201,12 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
       className={clsx(styles['code-editor'], baseProps.className, { [styles['code-editor-refresh']]: isRefresh })}
       ref={mergedRef}
     >
+      {ariaLabel && (
+        <div id={ariaLabelId} className={styles['aria-label-wrapper']}>
+          {ariaLabel}
+        </div>
+      )}
+
       {loading && (
         <LoadingScreen>
           <LiveRegion visible={true}>{i18n('i18nStrings.loadingState', i18nStrings?.loadingState)}</LiveRegion>

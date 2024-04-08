@@ -233,7 +233,7 @@ describe('Code editor component', () => {
     editorMock.on.mockRestore();
   });
 
-  it('provides ariaLabel to the underlying textarea', () => {
+  it('provides ariaLabel to the underlying textarea using aria-labelledby', () => {
     const textarea = editorMock.renderer.textarea;
     editorMock.renderer.textarea = null as any;
 
@@ -242,7 +242,9 @@ describe('Code editor component', () => {
     editorMock.renderer.textarea = textarea;
 
     renderCodeEditor({ ariaLabel: 'test aria label' });
-    expect(editorMock.renderer.textarea).toHaveAttribute('aria-label', 'test aria label');
+    expect(editorMock.renderer.textarea).toHaveAttribute('aria-labelledby');
+    const ariaLabelledById = editorMock.renderer.textarea.getAttribute('aria-labelledby')!;
+    expect(document.getElementById(ariaLabelledById)).toHaveTextContent('test aria label');
   });
 
   describe('onDelayedChange', () => {
