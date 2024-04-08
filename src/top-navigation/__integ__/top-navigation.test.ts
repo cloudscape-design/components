@@ -114,6 +114,17 @@ describe('Top navigation', () => {
     const overflowMenu = wrapper.findOverflowMenu();
 
     test(
+      'focuses utilities with no href in mobile using keyboard navigation',
+      setupTest(pageWidth, async page => {
+        await page.click(wrapper.findOverflowMenuButton().toSelector());
+        await page.click(overflowMenu.findUtility(3).toSelector());
+        await page.keys(['Tab', 'Tab']);
+        const signOutButton = overflowMenu.findMenuDropdownItemById('signout').toSelector();
+        await expect(page.isFocused(signOutButton)).resolves.toBe(true);
+      })
+    );
+
+    test(
       'collapses all utilities except ones marked "disableUtilityCollapse"',
       setupTest(pageWidth, async page => {
         await expect(page.getElementsCount(wrapper.findUtilities().toSelector())).resolves.toBe(1);
