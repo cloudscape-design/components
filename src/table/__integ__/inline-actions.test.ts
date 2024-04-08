@@ -34,7 +34,7 @@ const setupTest = (
 
 test(
   'dropdown actions in a sticky column do not cause table scroll to the right',
-  setupTest({}, async page => {
+  setupTest({ stickyActions: true }, async page => {
     const tableContainer = getTableContainerSelector(tableWithDropdownActions);
     const actionsDropdown = tableWithDropdownActions.findBodyCell(1, 6).findButtonDropdown();
 
