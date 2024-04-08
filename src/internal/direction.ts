@@ -23,12 +23,20 @@ export function getScrollInlineStart(element: HTMLElement) {
  */
 export function getLogicalBoundingClientRect(element: HTMLElement | SVGElement) {
   const boundingClientRect = element.getBoundingClientRect();
+
+  const blockSize = boundingClientRect.height;
+  const inlineSize = boundingClientRect.width;
+  const insetBlockStart = boundingClientRect.top;
+  const insetBlockEnd = boundingClientRect.bottom;
   const insetInlineStart = isRtl(element) ? window.innerWidth - boundingClientRect.right : boundingClientRect.left;
+  const insetInlineEnd = insetInlineStart + inlineSize;
 
   return {
-    blockSize: boundingClientRect.height,
-    inlineSize: boundingClientRect.width,
-    insetBlockStart: boundingClientRect.top,
+    blockSize,
+    inlineSize,
+    insetBlockStart,
+    insetBlockEnd,
     insetInlineStart,
+    insetInlineEnd,
   };
 }
