@@ -9,6 +9,7 @@ import {
   findTableRowCellByAriaColIndex,
   getClosestCell,
   isElementDisabled,
+  isTableCell,
 } from './utils';
 import { FocusedCell, GridNavigationProps } from './interfaces';
 import { KeyCode } from '../../internal/keycode';
@@ -127,7 +128,8 @@ class GridNavigationProcessor {
       changeHandler(newIsFocusable);
     }
     // When newly registered element belongs to the focused cell the focus must transition to it.
-    if (this.focusedCell?.element.tagName === 'TD' && this.focusedCell?.element.contains(focusableElement)) {
+    const focusedElement = this.focusedCell?.element;
+    if (focusedElement && isTableCell(focusedElement) && focusedElement.contains(focusableElement)) {
       // Scroll is unnecessary when moving focus from a cell to element within the cell.
       focusableElement.focus({ preventScroll: true });
     }
@@ -165,7 +167,7 @@ class GridNavigationProcessor {
     // Focusing on cell is not eligible when it contains focusable elements in the content.
     // If content focusables are available - move the focus to the first one.
     const focusedElement = this.focusedCell.element;
-    const nextTarget = focusedElement.tagName === 'TD' ? this.getFocusablesFrom(focusedElement)[0] : null;
+    const nextTarget = isTableCell(focusedElement) ? this.getFocusablesFrom(focusedElement)[0] : null;
     if (nextTarget) {
       // Scroll is unnecessary when moving focus from a cell to element within the cell.
       nextTarget.focus({ preventScroll: true });
