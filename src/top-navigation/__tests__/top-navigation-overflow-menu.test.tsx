@@ -186,6 +186,22 @@ describe('Submenu', () => {
     act(() => wrapper.click());
     expect(onClose).toBeCalledTimes(1);
   });
+
+  test('renders menu items with role `button` if no href provided', () => {
+    const wrapper = createWrapper(
+      render(
+        <SubmenuView
+          definition={{
+            type: 'menu-dropdown',
+            items: [{ id: 'one', text: 'One' }],
+          }}
+        />
+      ).container
+    ).find('a')!;
+    const element = wrapper.getElement() as HTMLAnchorElement;
+    expect(element.getAttribute('role')).toEqual('button');
+    expect(element.tabIndex).toEqual(0);
+  });
 });
 
 describe('UtilityMenuItem', () => {
