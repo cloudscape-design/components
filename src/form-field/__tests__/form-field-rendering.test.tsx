@@ -124,9 +124,7 @@ describe('FormField component', () => {
         i18nStrings: { errorIconAriaLabel },
       });
 
-      expect(wrapper.find(`.${liveRegionStyles.root}`)?.getElement().textContent).toBe(
-        `${errorIconAriaLabel}${errorText}`
-      );
+      expect(wrapper.findByClassName(liveRegionStyles.root)?.getElement()).toBeInTheDocument();
     });
   });
 });

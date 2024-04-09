@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component';
@@ -37,6 +37,7 @@ interface FormFieldErrorProps {
 
 export function FormFieldError({ id, children, errorIconAriaLabel }: FormFieldErrorProps) {
   const i18n = useInternalI18n('form-field');
+  const contentRef = useRef<HTMLDivElement | null>(null);
 
   return (
     <>
@@ -50,12 +51,12 @@ export function FormFieldError({ id, children, errorIconAriaLabel }: FormFieldEr
             <InternalIcon name="status-warning" size="small" />
           </div>
         </div>
-        <span className={styles.error__message}>{children}</span>
+        <span className={styles.error__message} ref={contentRef}>
+          {children}
+        </span>
       </div>
-      <LiveRegion assertive={true}>
-        <span>{errorIconAriaLabel}</span>
-        <span>{children}</span>
-      </LiveRegion>
+
+      <LiveRegion assertive={true} source={[errorIconAriaLabel, contentRef]} />
     </>
   );
 }
