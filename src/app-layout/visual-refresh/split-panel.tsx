@@ -4,7 +4,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { useAppLayoutInternals } from './context';
 import styles from './styles.css.js';
-import { SplitPanelProvider, SplitPanelProviderProps } from '../split-panel';
+import { SPLIT_PANEL_MIN_WIDTH, SplitPanelProvider, SplitPanelProviderProps } from '../split-panel';
 import { AppLayoutProps } from '../interfaces';
 import { Transition } from '../../internal/components/transition';
 import customCssProps from '../../internal/generated/custom-css-properties';
@@ -121,7 +121,6 @@ function SplitPanelSide() {
     splitPanel,
     splitPanelPosition,
     splitPanelMaxWidth,
-    splitPanelMinWidth,
     splitPanelControlId,
     isToolsOpen,
     activeDrawerId,
@@ -141,7 +140,7 @@ function SplitPanelSide() {
       })}
       style={{
         [customCssProps.splitPanelMaxWidth]: `${splitPanelMaxWidth}px`,
-        [customCssProps.splitPanelMinWidth]: `${splitPanelMinWidth}px`,
+        [customCssProps.splitPanelMinWidth]: `${SPLIT_PANEL_MIN_WIDTH}px`,
       }}
     >
       {splitPanelPosition === 'side' && splitPanel}
