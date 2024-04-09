@@ -12,7 +12,14 @@ export { AppLayoutProps };
 
 const AppLayout = React.forwardRef(
   (
-    { contentType = 'default', headerSelector = '#b #h', footerSelector = '#b #f', ...rest }: AppLayoutProps,
+    {
+      contentType = 'default',
+      headerSelector = '#b #h',
+      footerSelector = '#b #f',
+      navigationWidth = 280,
+      toolsWidth = 290,
+      ...rest
+    }: AppLayoutProps,
     ref: React.Ref<AppLayoutProps.Ref>
   ) => {
     const { __internalRootRef } = useBaseComponent<HTMLDivElement>('AppLayout', {
@@ -20,10 +27,10 @@ const AppLayout = React.forwardRef(
         contentType,
         disableContentPaddings: rest.disableContentPaddings,
         disableBodyScroll: rest.disableBodyScroll,
-        navigationWidth: rest.navigationWidth,
+        navigationWidth,
         navigationHide: rest.navigationHide,
         toolsHide: rest.toolsHide,
-        toolsWidth: rest.toolsWidth,
+        toolsWidth,
         maxContentWidth: rest.maxContentWidth,
         minContentWidth: rest.minContentWidth,
         stickyNotifications: rest.stickyNotifications,
@@ -46,7 +53,7 @@ const AppLayout = React.forwardRef(
     };
 
     // This re-builds the props including the default values
-    const props = { contentType, headerSelector, footerSelector, ...rest, ariaLabels };
+    const props = { contentType, headerSelector, footerSelector, navigationWidth, toolsWidth, ...rest, ariaLabels };
 
     const baseProps = getBaseProps(rest);
 

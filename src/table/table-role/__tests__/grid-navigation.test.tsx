@@ -337,7 +337,7 @@ test('respects element order when navigating between extremes', () => {
   expect(readActiveElement()).toBe('BUTTON[1]');
 });
 
-test('focuses on the element registered inside focused table cell', () => {
+test.each(['td', 'th'] as const)('focuses on the element registered inside focused table %s', tag => {
   function TestTable({ contentType }: { contentType: 'text' | 'button' }) {
     const tableRef = useRef<HTMLTableElement>(null);
     return (
@@ -345,7 +345,7 @@ test('focuses on the element registered inside focused table cell', () => {
         <table role="grid" ref={tableRef}>
           <tbody>
             <tr aria-rowindex={1}>
-              <Cell tag="td" aria-colindex={1}>
+              <Cell tag={tag} aria-colindex={1}>
                 {contentType === 'text' ? 'text' : <Button>action</Button>}
               </Cell>
             </tr>
@@ -355,10 +355,10 @@ test('focuses on the element registered inside focused table cell', () => {
     );
   }
   const { container, rerender } = render(<TestTable contentType="text" />);
-  const cell = container.querySelector('td')!;
+  const cell = container.querySelector('td,th') as HTMLElement;
 
   cell.focus();
-  expect(readActiveElement()).toEqual('TD[text]');
+  expect(readActiveElement()).toEqual(`${tag.toUpperCase()}[text]`);
 
   rerender(<TestTable contentType="button" />);
   expect(readActiveElement()).toEqual('BUTTON[action]');

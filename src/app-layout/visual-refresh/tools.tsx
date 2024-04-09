@@ -30,7 +30,6 @@ export default function Tools({ children }: ToolsProps) {
     drawers,
     handleSplitPanelClick,
     handleToolsClick,
-    hasDefaultToolsWidth,
     hasDrawerViewportOverlay,
     isMobile,
     isSplitPanelOpen,
@@ -73,8 +72,7 @@ export default function Tools({ children }: ToolsProps) {
           })}
           style={{
             [customCssProps.toolsAnimationStartingOpacity]: `${hasSplitPanel && isSplitPanelOpen ? 1 : 0}`,
-            // Overwrite the default tools width (depends on breakpoints) only when the `toolsWidth` property has been set.
-            [customCssProps.toolsWidth]: hasDefaultToolsWidth ? '' : `${toolsWidth}px`,
+            [customCssProps.toolsWidth]: `${toolsWidth}px`,
           }}
           onBlur={e => {
             if (!e.relatedTarget || !e.currentTarget.contains(e.relatedTarget)) {

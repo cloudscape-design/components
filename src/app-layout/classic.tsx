@@ -44,11 +44,11 @@ const ClassicAppLayout = React.forwardRef(
   (
     {
       navigation,
-      navigationWidth = 280,
+      navigationWidth,
       navigationHide,
       navigationOpen: controlledNavigationOpen,
       tools,
-      toolsWidth = 290,
+      toolsWidth,
       toolsHide,
       toolsOpen: controlledToolsOpen,
       breadcrumbs,

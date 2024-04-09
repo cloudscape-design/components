@@ -18,6 +18,8 @@ const defaultProps: AppLayoutPropsWithDefaults = {
   headerSelector: '#h',
   footerSelector: '#f',
   contentType: 'default',
+  navigationWidth: 0,
+  toolsWidth: 0,
 };
 
 function findLoader(container: HTMLElement) {

@@ -6,7 +6,7 @@ import { fireNonCancelableEvent } from '../../internal/events';
 import { TableProps } from '../interfaces';
 import { ItemSet } from '../selection/utils';
 
-export interface ExpandableItemProps extends ExpandableItemPlacement {
+interface ExpandableItemProps extends ExpandableItemPlacement {
   isExpandable: boolean;
   isExpanded: boolean;
   onExpandableItemToggle: () => void;
@@ -14,7 +14,7 @@ export interface ExpandableItemProps extends ExpandableItemPlacement {
   collapseButtonLabel?: string;
 }
 
-export interface ExpandableItemPlacement {
+interface ExpandableItemPlacement {
   level: number;
   setSize: number;
   posInSet: number;
