@@ -89,13 +89,13 @@ export function getTableRowRoleProps(options: {
   else if (options.firstIndex !== undefined) {
     nativeProps['aria-rowindex'] = options.firstIndex + options.rowIndex + 1;
   }
-  if (options.tableRole === 'treegrid' && options.level !== undefined && options.level > 0) {
+  if (options.tableRole === 'treegrid' && options.level && options.level !== 0) {
     nativeProps['aria-level'] = options.level;
   }
-  if (options.tableRole === 'treegrid' && options.setSize !== undefined) {
+  if (options.tableRole === 'treegrid' && options.setSize) {
     nativeProps['aria-setsize'] = options.setSize;
   }
-  if (options.tableRole === 'treegrid' && options.posInSet !== undefined) {
+  if (options.tableRole === 'treegrid' && options.posInSet) {
     nativeProps['aria-posinset'] = options.posInSet;
   }
 
