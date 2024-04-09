@@ -45,7 +45,7 @@ describe('Expandable rows', () => {
     setupTest({ useProgressiveLoading: true }, async page => {
       const targetCluster = 'cluster-33387b6c';
       const loadingMessage = `Loading more items for ${targetCluster}`;
-      const targetClusterLoadMore = tableWrapper.findItemsLoaderByItemId(targetCluster).findLoadMoreButton();
+      const targetClusterLoadMore = tableWrapper.findItemsLoaderByItemId(targetCluster).findButton();
       const clusterLastToggle = tableWrapper.findExpandToggle(6);
       const getRowsCount = () => page.getElementsCount(tableWrapper.findRows().toSelector());
 
