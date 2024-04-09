@@ -7,6 +7,7 @@ import PropertyFilter from '../../../lib/components/property-filter';
 import Select from '../../../lib/components/select';
 import createWrapper, { ElementWrapper, PaginationWrapper, TableWrapper } from '../../../lib/components/test-utils/dom';
 import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
+import bodyCellStyles from '../../../lib/components/table/body-cell/styles.css.js';
 import headerCellStyles from '../../../lib/components/table/header-cell/styles.css.js';
 import styles from '../../../lib/components/table/styles.css.js';
 
@@ -294,10 +295,12 @@ test('should render table with react content', () => {
     },
   ];
   const { wrapper } = renderTable(<Table columnDefinitions={columns} items={defaultItems} />);
+  const findCellContent = (row: number, col: number) =>
+    wrapper.findBodyCell(row, col)!.findByClassName(bodyCellStyles['body-cell-content'])!;
   expect(wrapper.findColumnHeaders().map(getHeaderHtmlContent)).toEqual(['id', 'name', 'Advanced <span>header</span>']);
   expect(wrapper.findRows()).toHaveLength(3);
-  expect(wrapper.findBodyCell(1, 3)!.getElement().innerHTML).toEqual('<input readonly="" value="Apples">');
-  expect(wrapper.findBodyCell(2, 3)!.getElement().innerHTML).toEqual('<input readonly="" value="Oranges">');
+  expect(findCellContent(1, 3)!.getElement().innerHTML).toEqual('<input readonly="" value="Apples">');
+  expect(findCellContent(2, 3)!.getElement().innerHTML).toEqual('<input readonly="" value="Oranges">');
 });
 
 test('should render only columns with id in visibleColumns', () => {

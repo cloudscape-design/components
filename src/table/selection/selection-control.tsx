@@ -33,7 +33,6 @@ export function SelectionControl({
 }: SelectionControlProps) {
   const controlId = useUniqueId();
   const isMultiSelection = selectionType === 'multi';
-
   const { navigationActive } = useContext(SingleTabStopNavigationContext);
 
   const setShiftState = (event: KeyboardEvent | MouseEvent) => {

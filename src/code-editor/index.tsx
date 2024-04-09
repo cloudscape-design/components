@@ -57,6 +57,8 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
     preferences,
     loading,
     themes,
+    getModalRoot,
+    removeModalRoot,
     ...rest
   } = props;
   const { __internalRootRef } = useBaseComponent('CodeEditor', { props: { language } });
@@ -272,6 +274,8 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
           </div>
           {isPreferencesModalVisible && (
             <PreferencesModal
+              getModalRoot={getModalRoot}
+              removeModalRoot={removeModalRoot}
               onConfirm={onPreferencesConfirm}
               onDismiss={onPreferencesDismiss}
               themes={themes ?? DEFAULT_AVAILABLE_THEMES}

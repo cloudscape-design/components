@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 import { renderSegmentedControl } from './utils';
 import { SegmentedControlWrapper } from '../../../lib/components/test-utils/dom';
 import SegmentedControl, { SegmentedControlProps } from '../../../lib/components/segmented-control';
@@ -8,7 +9,7 @@ import styles from '../../../lib/components/segmented-control/styles.css.js';
 
 const defaultOptions: SegmentedControlProps.Option[] = [
   { text: 'Segment-1', iconName: 'settings', id: 'seg-1' },
-  { text: '', iconName: 'settings', iconAlt: 'Settings', id: 'seg-2' },
+  { text: '', iconName: 'settings', iconAlt: 'Icon for Segment-2', id: 'seg-2' },
   { text: 'Segment-3', id: 'seg-3', disabled: true },
   { text: 'Segment-4', iconName: 'settings', id: 'seg-4' },
 ];
@@ -140,5 +141,19 @@ describe('selected property', () => {
     );
     getSegmentWrapper(segmentedControlWrapper, 0).getElement().click();
     expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { selectedId: 'seg-1' } }));
+  });
+
+  test('does change focus when left/right arrow key is pressed', () => {
+    const { segmentedControlWrapper } = renderSegmentedControl(
+      <SegmentedControl selectedId="seg-1" options={defaultOptions} />
+    );
+
+    getSegmentWrapper(segmentedControlWrapper, 0).getElement().focus();
+    getSegmentWrapper(segmentedControlWrapper, 0).keydown(KeyCode.right);
+    expect(getSegmentWrapper(segmentedControlWrapper, 1).getElement()).toHaveFocus();
+    getSegmentWrapper(segmentedControlWrapper, 1).keydown(KeyCode.right);
+    expect(getSegmentWrapper(segmentedControlWrapper, 3).getElement()).toHaveFocus();
+    getSegmentWrapper(segmentedControlWrapper, 3).keydown(KeyCode.left);
+    expect(getSegmentWrapper(segmentedControlWrapper, 1).getElement()).toHaveFocus();
   });
 });

@@ -3,16 +3,22 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { createWidgetizedAppLayout } from '../../../lib/components/app-layout/widget';
-import { AppLayoutProps } from '../../../lib/components/app-layout/interfaces';
+import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../../../lib/components/app-layout/interfaces';
 import { FlagsHolder, awsuiGlobalFlagsSymbol } from '../../../lib/components/internal/utils/global-flags';
 import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
 declare const window: Window & FlagsHolder;
 
-const LoaderSkeleton = React.forwardRef<AppLayoutProps.Ref, AppLayoutProps>(() => {
+const LoaderSkeleton = React.forwardRef<AppLayoutProps.Ref, AppLayoutPropsWithDefaults>(() => {
   return <div data-testid="loader">Loading...</div>;
 });
+
+const defaultProps: AppLayoutPropsWithDefaults = {
+  headerSelector: '#h',
+  footerSelector: '#f',
+  contentType: 'default',
+};
 
 function findLoader(container: HTMLElement) {
   return container.querySelector('[data-testid="loader"]');
@@ -51,14 +57,14 @@ describe('Classic layout', () => {
   });
 
   test('should render normal layout by default', () => {
-    const { wrapper, container } = renderComponent(<WidgetizedLayout />);
+    const { wrapper, container } = renderComponent(<WidgetizedLayout {...defaultProps} />);
     expect(wrapper).toBeTruthy();
     expect(findLoader(container)).toBeFalsy();
   });
 
   describeWithFeatureFlag(() => {
     test('should render normal layout', () => {
-      const { wrapper, container } = renderComponent(<WidgetizedLayout />);
+      const { wrapper, container } = renderComponent(<WidgetizedLayout {...defaultProps} />);
       expect(wrapper).toBeTruthy();
       expect(findLoader(container)).toBeFalsy();
     });
@@ -71,14 +77,14 @@ describe('Refresh layout', () => {
   });
 
   test('should render normal layout by default', () => {
-    const { wrapper, container } = renderComponent(<WidgetizedLayout />);
+    const { wrapper, container } = renderComponent(<WidgetizedLayout {...defaultProps} />);
     expect(wrapper).toBeTruthy();
     expect(findLoader(container)).toBeFalsy();
   });
 
   describeWithFeatureFlag(() => {
     test('should render loader', () => {
-      const { wrapper, container } = renderComponent(<WidgetizedLayout />);
+      const { wrapper, container } = renderComponent(<WidgetizedLayout {...defaultProps} />);
       expect(wrapper).toBeFalsy();
       expect(findLoader(container)).toBeTruthy();
     });

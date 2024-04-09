@@ -30,6 +30,8 @@ interface PreferencesModali18nStrings {
 
 interface PreferencesModalProps {
   preferences?: Partial<CodeEditorProps.Preferences>;
+  getModalRoot: CodeEditorProps['getModalRoot'];
+  removeModalRoot: CodeEditorProps['removeModalRoot'];
 
   i18nStrings: PreferencesModali18nStrings;
 
@@ -70,6 +72,8 @@ export default (props: PreferencesModalProps) => {
     <InternalModal
       size="medium"
       visible={true}
+      getModalRoot={props.getModalRoot}
+      removeModalRoot={props.removeModalRoot}
       onDismiss={props.onDismiss}
       header={props.i18nStrings.header}
       closeAriaLabel={props.i18nStrings.cancel}
