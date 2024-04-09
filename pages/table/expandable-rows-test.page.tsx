@@ -147,7 +147,7 @@ export default () => {
     setTimeout(
       () =>
         setLoadingState(prev => (settings.emulateProgressiveLoadingError ? setError(id, prev) : setPending(id, prev))),
-      2000
+      1500
     );
   };
 
