@@ -6,16 +6,18 @@
 import React, { memo, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
-import ScreenreaderOnly, { ScreenreaderOnlyProps } from '../screenreader-only';
+import { BaseComponentProps } from '../../base-component';
+import { assertive, polite } from './controller';
 
 import styles from './styles.css.js';
 
-export interface LiveRegionProps extends ScreenreaderOnlyProps {
-  assertive?: boolean;
-  delay?: number;
-  visible?: boolean;
+export interface LiveRegionProps extends BaseComponentProps {
   tagName?: 'span' | 'div';
-  id?: string;
+  assertive?: boolean;
+  visible?: boolean;
+  delay?: number;
+  children?: React.ReactNode;
+
   /**
    * Use a list of strings and/or existing DOM elements for building the
    * announcement text. This avoids rendering separate content just for this
@@ -73,98 +75,44 @@ export interface LiveRegionProps extends ScreenreaderOnlyProps {
 export default memo(LiveRegion);
 
 function LiveRegion({
-  assertive = false,
-  delay = 10,
+  assertive: isAssertive = false,
   visible = false,
   tagName: TagName = 'span',
+  delay,
   children,
   id,
   source,
   ...restProps
 }: LiveRegionProps) {
   const sourceRef = useRef<HTMLSpanElement & HTMLDivElement>(null);
-  const targetRef = useRef<HTMLSpanElement & HTMLDivElement>(null);
+  const previousSourceContentRef = useRef<string>();
 
-  /*
-    When React state changes, React often produces too many DOM updates, causing NVDA to
-    issue many announcements for the same logical event (See https://github.com/nvaccess/nvda/issues/7996).
-
-    The code below imitates a debouncing, scheduling a callback every time new React state
-    update is detected. When a callback resolves, it copies content from a muted element
-    to the live region, which is recognized by screen readers as an update.
-
-    If the use case requires no announcement to be ignored, use delay = 0, but ensure it
-    does not impact the performance. If it does, prefer using a string as children prop.
-  */
   useEffect(() => {
-    function getSourceContent() {
-      if (source) {
-        return source
-          .map(item => {
-            if (!item) {
-              return undefined;
-            }
-            if (typeof item === 'string') {
-              return item;
-            }
-            if (item.current) {
-              return extractInnerText(item.current);
-            }
-          })
-          .filter(Boolean)
-          .join(' ');
-      }
+    polite.initialize();
+    assertive.initialize();
+  }, []);
 
-      if (sourceRef.current) {
-        return extractInnerText(sourceRef.current);
-      }
+  useEffect(() => {
+    const content = source
+      ? getSourceContent(source)
+      : sourceRef.current
+        ? extractInnerText(sourceRef.current)
+        : undefined;
+
+    if (content && content !== previousSourceContentRef.current) {
+      (isAssertive ? assertive : polite).announce(content, delay);
+      previousSourceContentRef.current = content;
     }
-    function updateLiveRegion() {
-      const sourceContent = getSourceContent();
-
-      if (targetRef.current && sourceContent) {
-        const targetContent = extractInnerText(targetRef.current);
-        if (targetContent !== sourceContent) {
-          // The aria-atomic does not work properly in Voice Over, causing
-          // certain parts of the content to be ignored. To fix that,
-          // we assign the source text content as a single node.
-          targetRef.current.innerText = sourceContent;
-        }
-      }
-    }
-
-    let timeoutId: null | number;
-    if (delay) {
-      timeoutId = setTimeout(updateLiveRegion, delay);
-    } else {
-      updateLiveRegion();
-    }
-
-    return () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-    };
   });
 
+  if (!visible || source) {
+    return null;
+  }
+
   return (
-    <>
-      {visible && !source && (
-        <TagName ref={sourceRef} id={id} className={styles.source}>
-          {children}
-        </TagName>
-      )}
-
-      <ScreenreaderOnly {...restProps} className={clsx(styles.root, restProps.className)}>
-        {!visible && !source && (
-          <TagName ref={sourceRef} aria-hidden="true" className={styles.source}>
-            {children}
-          </TagName>
-        )}
-
-        <span ref={targetRef} aria-atomic="true" aria-live={assertive ? 'assertive' : 'polite'}></span>
-      </ScreenreaderOnly>
-    </>
+    <TagName ref={sourceRef} id={id} {...restProps} className={clsx(styles.root, restProps.className)}>
+      {children}
+    </TagName>
   );
 }
 
@@ -173,4 +121,21 @@ function LiveRegion({
 // ARIA properties to ignore aria-hidden nodes and read ARIA labels from the live content.
 function extractInnerText(node: HTMLElement) {
   return (node.innerText || '').replace(/\s+/g, ' ').trim();
+}
+
+function getSourceContent(source: Exclude<LiveRegionProps['source'], undefined>) {
+  return source
+    .map(item => {
+      if (!item) {
+        return undefined;
+      }
+      if (typeof item === 'string') {
+        return item;
+      }
+      if (item.current) {
+        return extractInnerText(item.current);
+      }
+    })
+    .filter(Boolean)
+    .join(' ');
 }
