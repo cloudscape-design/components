@@ -13,7 +13,7 @@ export default function Main() {
     disableContentPaddings,
     footerHeight,
     hasDrawerViewportOverlay,
-    isNavigationOpen,
+    navigationOpen,
     isSplitPanelOpen,
     isToolsOpen,
     mainElement,
@@ -33,7 +33,7 @@ export default function Main() {
         {
           [styles['disable-content-paddings']]: disableContentPaddings,
           [styles['has-split-panel']]: splitPanelDisplayed,
-          [styles['is-navigation-open']]: isNavigationOpen,
+          [styles['is-navigation-open']]: navigationOpen,
           [styles['is-tools-open']]: isToolsOpen,
           [styles['has-active-drawer']]: !!activeDrawerId,
           [styles['is-split-panel-open']]: isSplitPanelOpen,

@@ -39,7 +39,6 @@ const defaults: Record<AppLayoutProps.ContentType, AppLayoutState> = {
 
 export interface AppLayoutState {
   navigationOpen?: boolean;
-  toolsOpen?: boolean;
   minContentWidth: number;
   maxContentWidth?: number | undefined;
 }
@@ -57,6 +56,5 @@ export function applyDefaults(
     maxContentWidth: stateFromProps.maxContentWidth ?? contentTypeDefaults.maxContentWidth,
     minContentWidth: stateFromProps.minContentWidth ?? contentTypeDefaults.minContentWidth,
     navigationOpen: stateFromProps.navigationOpen ?? contentTypeDefaults.navigationOpen,
-    toolsOpen: stateFromProps.toolsOpen ?? contentTypeDefaults.toolsOpen,
   };
 }
