@@ -66,9 +66,9 @@ function renderTable(tableProps: Partial<TableProps>) {
       items={nestedItems}
       columnDefinitions={columnDefinitions}
       trackBy="name"
-      renderLoaderPending={({ item }) => ({ buttonLabel: `[pending] Loader for ${item?.name ?? 'TABLE ROOT'}` })}
-      renderLoaderLoading={({ item }) => ({ loadingText: `[loading] Loader for ${item?.name ?? 'TABLE ROOT'}` })}
-      renderLoaderError={({ item }) => ({ cellContent: `[error] Loader for ${item?.name ?? 'TABLE ROOT'}` })}
+      renderLoaderPending={({ item }) => `[pending] Loader for ${item?.name ?? 'TABLE ROOT'}`}
+      renderLoaderLoading={({ item }) => `[loading] Loader for ${item?.name ?? 'TABLE ROOT'}`}
+      renderLoaderError={({ item }) => `[error] Loader for ${item?.name ?? 'TABLE ROOT'}`}
       {...tableProps}
     />
   );
@@ -92,7 +92,7 @@ const getAriaLive = (w: ComponentWrapper) => w.findByClassName(liveRegionStyles.
 
 describe('Progressive loading', () => {
   test('renders loaders in correct order for normal table', () => {
-    const { table } = renderTable({ loadingStatus: 'pending' });
+    const { table } = renderTable({ getLoadingStatus: () => 'pending' });
 
     expect(table.findRows().map(getTextContent)).toEqual(['Root-1', 'Root-2', '[pending] Loader for TABLE ROOT']);
   });
@@ -108,9 +108,8 @@ describe('Progressive loading', () => {
           { name: 'Nested-2.1' },
           { name: 'Nested-2.2' },
         ],
-        getItemLoadingStatus: () => 'pending',
       },
-      loadingStatus: 'pending',
+      getLoadingStatus: () => 'pending',
     });
 
     expect(table.findRows().map(getTextContent)).toEqual([
@@ -142,9 +141,8 @@ describe('Progressive loading', () => {
         expandableRows: {
           ...defaultExpandableRows,
           expandedItems: [{ name: 'Root-1' }, { name: 'Nested-1.2' }],
-          getItemLoadingStatus: () => status,
         },
-        loadingStatus: status,
+        getLoadingStatus: () => status,
       });
 
       expect(table.findRootItemsLoader()).not.toBe(null);
@@ -171,9 +169,8 @@ describe('Progressive loading', () => {
       expandableRows: {
         ...defaultExpandableRows,
         expandedItems: [{ name: 'Root-1' }, { name: 'Nested-1.2' }],
-        getItemLoadingStatus: () => 'finished',
       },
-      loadingStatus: 'finished',
+      getLoadingStatus: () => 'finished',
     });
 
     expect(table.findRootItemsLoader()).toBe(null);
@@ -185,36 +182,13 @@ describe('Progressive loading', () => {
     expect(table.findItemsLoaderByItemId('Nested-1.2.2')).toBe(null);
   });
 
-  test('clicking on load more fires event', () => {
-    const onLoadMoreItems = jest.fn();
-    const { table } = renderTable({
-      expandableRows: {
-        ...defaultExpandableRows,
-        expandedItems: [{ name: 'Root-1' }, { name: 'Nested-1.2' }],
-        getItemLoadingStatus: () => 'pending',
-      },
-      loadingStatus: 'pending',
-      onLoadMoreItems,
-    });
-    const nested12 = nestedItems[0].children?.[1];
-
-    table.findRootItemsLoader()!.findLoadMoreButton()!.click();
-    expect(onLoadMoreItems).toHaveBeenCalledTimes(1);
-    expect(onLoadMoreItems).toHaveBeenCalledWith(expect.objectContaining({ detail: { item: null } }));
-
-    table.findItemsLoaderByItemId('Nested-1.2')!.findLoadMoreButton()!.click();
-    expect(onLoadMoreItems).toHaveBeenCalledTimes(2);
-    expect(onLoadMoreItems).toHaveBeenCalledWith(expect.objectContaining({ detail: { item: nested12 } }));
-  });
-
   test.each(['loading', 'error'] as const)('loader content for status="%s" is announced with aria-live', status => {
     const { table } = renderTable({
       expandableRows: {
         ...defaultExpandableRows,
         expandedItems: [{ name: 'Root-1' }, { name: 'Nested-1.2' }],
-        getItemLoadingStatus: () => status,
       },
-      loadingStatus: status,
+      getLoadingStatus: () => status,
     });
 
     expect(getAriaLive(table.findRootItemsLoader()!)).toBe(`[${status}] Loader for TABLE ROOT`);
@@ -229,7 +203,7 @@ describe('Progressive loading', () => {
         <Table
           items={nestedItems}
           columnDefinitions={columnDefinitions}
-          loadingStatus={status}
+          getLoadingStatus={() => status}
           renderLoaderPending={status === 'pending' ? undefined : () => ({ buttonLabel: 'Load more' })}
           renderLoaderLoading={status === 'loading' ? undefined : () => ({ loadingText: 'Loading' })}
           renderLoaderError={status === 'error' ? undefined : () => ({ cellContent: 'Error' })}
@@ -247,9 +221,8 @@ describe('Progressive loading', () => {
       expandableRows: {
         ...defaultExpandableRows,
         expandedItems: [{ name: 'Root-1' }],
-        getItemLoadingStatus: () => 'pending',
       },
-      loadingStatus: 'pending',
+      getLoadingStatus: () => 'pending',
       selectionType,
     });
 
@@ -274,9 +247,8 @@ describe('Progressive loading', () => {
       expandableRows: {
         ...defaultExpandableRows,
         expandedItems: [{ name: 'Root-1' }],
-        getItemLoadingStatus: () => status,
       },
-      loadingStatus: status,
+      getLoadingStatus: () => status,
     });
 
     expect(getTextContent(table.findItemsLoaderByItemId('Root-1')!)).toBe(`[${status}] Loader for Root-1`);
@@ -295,9 +267,8 @@ describe('Progressive loading', () => {
         expandableRows: {
           ...defaultExpandableRows,
           expandedItems: [{ name: 'Root-1' }],
-          getItemLoadingStatus: status ? () => status : undefined,
         },
-        loadingStatus: status,
+        getLoadingStatus: status ? () => status : undefined,
       });
 
       expect(table.findItemsLoaderByItemId('Root-1')).toBe(null);

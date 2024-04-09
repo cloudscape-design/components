@@ -191,9 +191,9 @@ export default class TableWrapper extends ComponentWrapper {
   /**
    * Returns items loader of the root table level.
    */
-  findRootItemsLoader(): null | TableItemsLoaderWrapper {
-    const selector = `.${TableItemsLoaderWrapper.rootSelector}[data-root="true"]`;
-    return this.findComponent(selector, TableItemsLoaderWrapper);
+  findRootItemsLoader(): null | ElementWrapper {
+    const selector = `.${progressiveLoadingStyles['items-loader']}[data-root="true"]`;
+    return this.find(selector);
   }
 
   /**
@@ -203,16 +203,8 @@ export default class TableWrapper extends ComponentWrapper {
    *
    * Note: when used with collection-hooks the `trackBy` is set automatically from `expandableRows.getId`.
    */
-  findItemsLoaderByItemId(itemId: string): null | TableItemsLoaderWrapper {
-    const selector = `.${TableItemsLoaderWrapper.rootSelector}[data-parentrow="${itemId}"]`;
-    return this.findComponent(selector, TableItemsLoaderWrapper);
-  }
-}
-
-export class TableItemsLoaderWrapper extends ComponentWrapper {
-  static rootSelector: string = progressiveLoadingStyles['items-loader'];
-
-  findLoadMoreButton(): null | ComponentWrapper {
-    return this.findByClassName(progressiveLoadingStyles['items-loader-load-more']);
+  findItemsLoaderByItemId(itemId: string): null | ElementWrapper {
+    const selector = `.${progressiveLoadingStyles['items-loader']}[data-parentrow="${itemId}"]`;
+    return this.find(selector);
   }
 }

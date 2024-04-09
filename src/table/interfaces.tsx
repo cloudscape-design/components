@@ -339,39 +339,30 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * * `isItemExpandable` ((Item) => boolean) - Use it for items that can be expanded to show nested data.
    * * `expandedItems` (Item[]) - Use it to represent the expanded state of items.
    * * `onExpandableItemToggle` (TableProps.OnExpandableItemToggle<T>) - Called when an item's expand toggle is clicked.
-   * * `getItemLoadingStatus` (optional, (item: T) => TableProps.LoadingStatus) - Use it to define item's progressive loading state.
    */
   expandableRows?: TableProps.ExpandableRows<T>;
 
   /**
-   * Specifies the current status of loading more items.
+   * A function that specifies the current status of loading more items. It is called once for the entire
+   * table with `item=null` and then for each expanded item. The function result is one of the four possible states:
    * * `pending` - Indicates that no request in progress, but more options may be loaded.
    * * `loading` - Indicates that data fetching is in progress.
    * * `finished` - Indicates that loading has finished and no more requests are expected.
    * * `error` - Indicates that an error occurred during fetch.
    **/
-  loadingStatus?: TableProps.LoadingStatus;
+  getLoadingStatus?: TableProps.GetLoadingStatus<T>;
   /**
-   * Must be provided when `loadingStatus` is used.
    * Defines loader properties for pending state.
    */
-  renderLoaderPending?: (detail: TableProps.RenderLoaderDetail<T>) => TableProps.RenderLoaderPendingResult;
+  renderLoaderPending?: (detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode;
   /**
-   * Must be provided when `loadingStatus` is used.
    * Defines loader properties for loading state.
    */
-  renderLoaderLoading?: (detail: TableProps.RenderLoaderDetail<T>) => TableProps.RenderLoaderLoadingResult;
+  renderLoaderLoading?: (detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode;
   /**
-   * Must be provided when `loadingStatus` is used.
    * Defines loader properties for error state.
    */
-  renderLoaderError?: (detail: TableProps.RenderLoaderDetail<T>) => TableProps.RenderLoaderErrorResult;
-  /**
-   * Must be provided when `loadingStatus` is used.
-   * Called when the user clicked at the row load-more button. The event detail might include an item when
-   * used together with expandable rows to indicate which item the request is related to.
-   */
-  onLoadMoreItems?: TableProps.OnLoadMoreItems<T>;
+  renderLoaderError?: (detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode;
 }
 
 export namespace TableProps {
@@ -526,7 +517,6 @@ export namespace TableProps {
     isItemExpandable: (item: T) => boolean;
     expandedItems: ReadonlyArray<T>;
     onExpandableItemToggle: TableProps.OnExpandableItemToggle<T>;
-    getItemLoadingStatus?: (item: T) => TableProps.LoadingStatus;
   }
 
   export type OnExpandableItemToggle<T> = NonCancelableEventHandler<TableProps.ExpandableItemToggleDetail<T>>;
@@ -536,26 +526,12 @@ export namespace TableProps {
     expanded: boolean;
   }
 
+  export type GetLoadingStatus<T> = (item: null | T) => TableProps.LoadingStatus;
+
   export type LoadingStatus = 'pending' | 'loading' | 'error' | 'finished';
-
-  export type OnLoadMoreItems<T> = NonCancelableEventHandler<TableProps.LoadMoreItemsDetail<T>>;
-
-  export interface LoadMoreItemsDetail<T> {
-    item: null | T;
-  }
 
   export interface RenderLoaderDetail<T> {
     item: null | T;
-  }
-  export interface RenderLoaderPendingResult {
-    buttonLabel: string;
-    buttonAriaLabel?: string;
-  }
-  export interface RenderLoaderLoadingResult {
-    loadingText: string;
-  }
-  export interface RenderLoaderErrorResult {
-    cellContent: React.ReactNode;
   }
 }
 

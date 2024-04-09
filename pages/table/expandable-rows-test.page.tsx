@@ -161,13 +161,6 @@ export default () => {
           const pages = loadingState.get(item.name)?.pages ?? 0;
           return settings.useProgressiveLoading ? children.slice(0, pages * nestedPageSize) : children;
         },
-        getItemLoadingStatus: settings.useProgressiveLoading
-          ? item => {
-              const children = collectionProps.expandableRows!.getItemChildren(item);
-              const state = loadingState.get(item.name) ?? { status: 'pending', pages: 1 };
-              return state.pages * nestedPageSize < children.length ? state.status : 'finished';
-            }
-          : undefined,
         onExpandableItemToggle: event => {
           collectionProps.expandableRows!.onExpandableItemToggle(event);
           if (event.detail.expanded) {
@@ -275,35 +268,48 @@ export default () => {
                 filteringPlaceholder="Search databases"
               />
             }
-            loadingStatus={settings.useProgressiveLoading ? loadingState.get('ROOT')?.status : undefined}
-            onLoadMoreItems={event => updateLoading(event.detail.item?.name ?? 'ROOT')}
-            renderLoaderPending={({ item }) => ({
-              buttonLabel: item ? `Load more items for ${item.name}` : 'Load more items',
-            })}
-            renderLoaderLoading={({ item }) => ({
-              loadingText: item ? `Loading more items for ${item.name}` : 'Loading more items',
-            })}
-            renderLoaderError={({ item }) => ({
-              cellContent: (
-                <Box color="text-status-error">
-                  <Popover
-                    header="Failed to load instances"
-                    content={
-                      <Form actions={<Button onClick={() => updateLoading(item?.name ?? 'ROOT')}>Retry</Button>}>
-                        <Alert type="error">
-                          {item
-                            ? `Error occurred during loading instances for item ${item.name}. Reason: item ${item.name} not found. Refresh the page.`
-                            : 'Unknown error occurred during loading instances.'}
-                        </Alert>
-                      </Form>
+            getLoadingStatus={
+              settings.useProgressiveLoading
+                ? item => {
+                    if (!item) {
+                      return loadingState.get('ROOT')?.status ?? 'finished';
+                    } else {
+                      const children = collectionProps.expandableRows!.getItemChildren(item);
+                      const state = loadingState.get(item.name) ?? { status: 'pending', pages: 1 };
+                      return state.pages * nestedPageSize < children.length ? state.status : 'finished';
                     }
-                    renderWithPortal={true}
-                  >
-                    <StatusIndicator type="error">Failed to load instances</StatusIndicator>
-                  </Popover>
-                </Box>
-              ),
-            })}
+                  }
+                : undefined
+            }
+            renderLoaderPending={({ item }) => (
+              <Button variant="inline-link" iconName="add-plus" onClick={() => updateLoading(item?.name ?? 'ROOT')}>
+                {item ? `Load more items for ${item.name}` : 'Load more items'}
+              </Button>
+            )}
+            renderLoaderLoading={({ item }) => (
+              <StatusIndicator type="loading">
+                {item ? `Loading more items for ${item.name}` : 'Loading more items'}
+              </StatusIndicator>
+            )}
+            renderLoaderError={({ item }) => (
+              <Box color="text-status-error">
+                <Popover
+                  header="Failed to load instances"
+                  content={
+                    <Form actions={<Button onClick={() => updateLoading(item?.name ?? 'ROOT')}>Retry</Button>}>
+                      <Alert type="error">
+                        {item
+                          ? `Error occurred during loading instances for item ${item.name}. Reason: item ${item.name} not found. Refresh the page.`
+                          : 'Unknown error occurred during loading instances.'}
+                      </Alert>
+                    </Form>
+                  }
+                  renderWithPortal={true}
+                >
+                  <StatusIndicator type="error">Failed to load instances</StatusIndicator>
+                </Popover>
+              </Box>
+            )}
           />
         }
       />

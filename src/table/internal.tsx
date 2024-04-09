@@ -120,11 +120,10 @@ const InternalTable = React.forwardRef(
       columnDisplay,
       enableKeyboardNavigation,
       expandableRows,
-      loadingStatus,
+      getLoadingStatus,
       renderLoaderPending,
       renderLoaderLoading,
       renderLoaderError,
-      onLoadMoreItems,
       __funnelSubStepProps,
       ...rest
     }: InternalTableProps<T>,
@@ -144,12 +143,10 @@ const InternalTable = React.forwardRef(
       expandableRows,
       trackBy,
       ariaLabels,
-      loadingStatus,
     });
     const { allRows } = useProgressiveLoadingProps({
       items: allItems,
-      expandableRows,
-      loadingStatus,
+      getLoadingStatus,
       getExpandableItemProps,
     });
 
@@ -597,7 +594,6 @@ const InternalTable = React.forwardRef(
                                 renderLoaderPending={renderLoaderPending}
                                 renderLoaderLoading={renderLoaderLoading}
                                 renderLoaderError={renderLoaderError}
-                                onLoadMoreItems={() => fireNonCancelableEvent(onLoadMoreItems, { item: row.item })}
                                 trackBy={trackBy}
                               />
                             </TableTdElement>

@@ -6,13 +6,11 @@ import { TableProps, TableRow } from '../interfaces';
 
 export function useProgressiveLoadingProps<T>({
   items,
-  expandableRows,
-  loadingStatus,
+  getLoadingStatus,
   getExpandableItemProps,
 }: {
   items: readonly T[];
-  expandableRows?: TableProps.ExpandableRows<T>;
-  loadingStatus?: TableProps.LoadingStatus;
+  getLoadingStatus?: (item: null | T) => TableProps.LoadingStatus;
   getExpandableItemProps: (item: T) => { level: number; parent: null | T; isExpanded: boolean; children: readonly T[] };
 }) {
   const allRows = new Array<TableRow<T>>();
@@ -27,7 +25,7 @@ export function useProgressiveLoadingProps<T>({
 
     // Insert empty expandable item loader
     if (isItemExpanded(items[i]) && getItemChildren(items[i]).length === 0) {
-      const status = expandableRows?.getItemLoadingStatus?.(items[i]);
+      const status = getLoadingStatus?.(items[i]);
       if (status && status !== 'pending' && status !== 'finished') {
         allRows.push({ type: 'loader', item: items[i], level: getItemLevel(items[i]), status, first: true });
       } else {
@@ -39,7 +37,7 @@ export function useProgressiveLoadingProps<T>({
     let currentParent = getItemParent(items[i]);
     let levelsDiff = getItemLevel(items[i]) - getItemLevel(items[i + 1]);
     while (currentParent && levelsDiff > 0) {
-      const status = currentParent ? expandableRows?.getItemLoadingStatus?.(currentParent) : loadingStatus;
+      const status = getLoadingStatus?.(currentParent);
       if (status && status !== 'finished') {
         const level = currentParent ? getItemLevel(currentParent) : 0;
         allRows.push({ type: 'loader', item: currentParent, level, status, first: false });
@@ -49,8 +47,9 @@ export function useProgressiveLoadingProps<T>({
     }
 
     // Insert root loader
-    if (i === items.length - 1 && loadingStatus && loadingStatus !== 'finished') {
-      allRows.push({ type: 'loader', item: null, level: 0, status: loadingStatus, first: false });
+    const rootLoadingStatus = getLoadingStatus?.(null);
+    if (i === items.length - 1 && rootLoadingStatus && rootLoadingStatus !== 'finished') {
+      allRows.push({ type: 'loader', item: null, level: 0, status: rootLoadingStatus, first: false });
     }
   }
 

@@ -32,7 +32,6 @@ export function useExpandableTableProps<T>({
   expandableRows?: TableProps.ExpandableRows<T>;
   trackBy?: TableProps.TrackBy<T>;
   ariaLabels?: TableProps.AriaLabels<T>;
-  loadingStatus?: TableProps.LoadingStatus;
 }) {
   const i18n = useInternalI18n('table');
   const isExpandable = !!expandableRows;
