@@ -65,14 +65,14 @@ describe('Expandable rows', () => {
       // Ensure state change occurs and the focus stays on the same cell (next load-more)
       await page.waitForAssertion(() => expect(page.getFocusedElementText()).resolves.toBe(loadingMessage));
       await page.waitForAssertion(() => expect(page.isFocused(targetClusterLoadMore.toSelector())).resolves.toBe(true));
-      await expect(getRowsCount()).resolves.toBe(14 + 2);
+      await page.waitForAssertion(() => expect(getRowsCount()).resolves.toBe(14 + 2));
 
       // Trigger subsequent loading
       await page.keys(['Enter']);
       // Ensure state change occurs and the focus stays on the same cell (last cluster's expand toggle)
       await page.waitForAssertion(() => expect(page.getFocusedElementText()).resolves.toBe(loadingMessage));
       await page.waitForAssertion(() => expect(page.isFocused(clusterLastToggle.toSelector())).resolves.toBe(true));
-      await expect(getRowsCount()).resolves.toBe(15 + 1);
+      await page.waitForAssertion(() => expect(getRowsCount()).resolves.toBe(15 + 1));
     })
   );
 });
