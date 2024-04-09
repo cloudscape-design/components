@@ -9,8 +9,8 @@ const windowSize = {
   blockSize: 1000,
 };
 const defaults = {
-  dropLeft: false,
-  dropUp: false,
+  dropInlineStart: false,
+  dropBlockStart: false,
   blockSize: '605px',
   insetInlineStart: 'auto',
   inlineSize: '100px',
@@ -42,7 +42,7 @@ describe('getDropdownPosition', () => {
       getDropdownPosition({ triggerElement: trigger, dropdownElement: dropdown, overflowParents: [windowSize] })
     ).toEqual({
       ...defaults,
-      dropUp: true,
+      dropBlockStart: true,
       blockSize: '853px',
     });
   });
@@ -54,7 +54,7 @@ describe('getDropdownPosition', () => {
       getDropdownPosition({ triggerElement: trigger, dropdownElement: dropdown, overflowParents: [windowSize] })
     ).toEqual({
       ...defaults,
-      dropLeft: true,
+      dropInlineStart: true,
       inlineSize: '550px',
     });
   });
@@ -126,7 +126,7 @@ describe('getDropdownPosition', () => {
       getDropdownPosition({ triggerElement: trigger, dropdownElement: dropdown, overflowParents: [windowSize] })
     ).toEqual({
       ...defaults,
-      dropLeft: true, // TODO: this value is incorrect, should be fixed, see AWSUI-16369 for details
+      dropInlineStart: true, // TODO: this value is incorrect, should be fixed, see AWSUI-16369 for details
     });
   });
 
@@ -145,7 +145,7 @@ describe('getDropdownPosition', () => {
       })
     ).toEqual({
       ...defaults,
-      dropUp: true,
+      dropBlockStart: true,
       blockSize: '140px',
     });
   });
