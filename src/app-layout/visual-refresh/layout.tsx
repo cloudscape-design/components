@@ -32,7 +32,7 @@ export default function Layout({ children }: LayoutProps) {
     headerHeight,
     isBackgroundOverlapDisabled,
     isMobile,
-    isNavigationOpen,
+    navigationOpen,
     layoutElement,
     layoutWidth,
     mainOffsetLeft,
@@ -50,7 +50,7 @@ export default function Layout({ children }: LayoutProps) {
   const contentFirstChild = getContentFirstChild(breadcrumbs, contentHeader, hasNotificationsContent, isMobile);
 
   // Content gaps on the left and right are used with the minmax function in the CSS grid column definition
-  const hasContentGapLeft = isNavigationOpen || navigationHide;
+  const hasContentGapLeft = navigationOpen || navigationHide;
   const hasContentGapRight = drawersTriggerCount === 0 || hasOpenDrawer;
 
   return (

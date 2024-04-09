@@ -19,7 +19,7 @@ export default function MobileToolbar() {
     handleToolsClick,
     hasDrawerViewportOverlay,
     isMobile,
-    isNavigationOpen,
+    navigationOpen,
     __embeddedViewMode,
     isToolsOpen,
     navigationHide,
@@ -52,12 +52,12 @@ export default function MobileToolbar() {
     >
       {!navigationHide && (
         <nav
-          aria-hidden={isNavigationOpen}
-          className={clsx(styles['mobile-toolbar-nav'], { [testutilStyles['drawer-closed']]: !isNavigationOpen })}
+          aria-hidden={navigationOpen}
+          className={clsx(styles['mobile-toolbar-nav'], { [testutilStyles['drawer-closed']]: !navigationOpen })}
         >
           <InternalButton
             ariaLabel={ariaLabels?.navigationToggle ?? undefined}
-            ariaExpanded={isNavigationOpen ? undefined : false}
+            ariaExpanded={navigationOpen ? undefined : false}
             iconName="menu"
             formAction="none"
             onClick={() => handleNavigationClick(true)}
@@ -65,7 +65,7 @@ export default function MobileToolbar() {
             className={testutilStyles['navigation-toggle']}
             ref={navigationRefs.toggle}
             disabled={hasDrawerViewportOverlay}
-            __nativeAttributes={{ 'aria-haspopup': isNavigationOpen ? undefined : true }}
+            __nativeAttributes={{ 'aria-haspopup': navigationOpen ? undefined : true }}
           />
         </nav>
       )}

@@ -67,7 +67,7 @@ function SplitPanelBottom() {
   const {
     disableBodyScroll,
     hasOpenDrawer,
-    isNavigationOpen,
+    navigationOpen,
     isSplitPanelOpen,
     splitPanel,
     splitPanelPosition,
@@ -87,7 +87,7 @@ function SplitPanelBottom() {
             [styles.animating]: state === 'entering',
             [styles['disable-body-scroll']]: disableBodyScroll,
             [styles['has-open-drawer']]: hasOpenDrawer,
-            [styles['is-navigation-open']]: isNavigationOpen,
+            [styles['is-navigation-open']]: navigationOpen,
             [styles['is-split-panel-open']]: isSplitPanelOpen,
           })}
           ref={transitionEventsRef}

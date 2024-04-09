@@ -330,5 +330,12 @@ export namespace AppLayoutProps {
 
 export type AppLayoutPropsWithDefaults = SomeRequired<
   AppLayoutProps,
-  'headerSelector' | 'footerSelector' | 'contentType' | 'navigationWidth' | 'toolsWidth'
+  | 'headerSelector'
+  | 'footerSelector'
+  | 'contentType'
+  | 'navigationWidth'
+  | 'toolsWidth'
+  | 'minContentWidth'
+  | 'navigationOpen'
+  | 'onNavigationChange'
 >;
