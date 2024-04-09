@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { KeyboardEvent, KeyboardEventHandler, MouseEvent } from 'react';
+import React, { KeyboardEvent, KeyboardEventHandler, MouseEvent, useContext } from 'react';
 import { KeyCode } from '../../internal/keycode';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import InternalCheckbox from '../../checkbox/internal';
@@ -9,10 +9,9 @@ import RadioButton from '../../radio-group/radio-button';
 
 import styles from './styles.css.js';
 import { SelectionProps } from './interfaces';
-import { TableRole } from '../table-role';
+import { SingleTabStopNavigationContext } from '../../internal/context/single-tab-stop-navigation-context';
 
 export interface SelectionControlProps extends SelectionProps {
-  tableRole?: TableRole;
   onShiftToggle?(shiftPressed: boolean): void;
   onFocusUp?: KeyboardEventHandler;
   onFocusDown?: KeyboardEventHandler;
@@ -22,7 +21,6 @@ export interface SelectionControlProps extends SelectionProps {
 }
 
 export function SelectionControl({
-  tableRole,
   selectionType,
   indeterminate = false,
   onShiftToggle,
@@ -35,6 +33,7 @@ export function SelectionControl({
 }: SelectionControlProps) {
   const controlId = useUniqueId();
   const isMultiSelection = selectionType === 'multi';
+  const { navigationActive } = useContext(SingleTabStopNavigationContext);
 
   const setShiftState = (event: KeyboardEvent | MouseEvent) => {
     if (isMultiSelection) {
@@ -55,7 +54,7 @@ export function SelectionControl({
   // native checkboxes do not have focus move via keyboard, we implement it here programmatically
   const handleKeyDown = (event: KeyboardEvent) => {
     setShiftState(event);
-    if (isMultiSelection && tableRole !== 'grid') {
+    if (isMultiSelection && !navigationActive) {
       if (event.keyCode === KeyCode.up) {
         event.preventDefault();
         onFocusUp && onFocusUp(event);
