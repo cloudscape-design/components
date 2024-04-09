@@ -8,6 +8,7 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { getBaseProps } from '../internal/base-component';
 import { KeyCode } from '../internal/keycode';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { joinStrings } from '../internal/utils/strings';
 import { CodeEditorProps } from './interfaces';
 import { Pane } from './pane';
 import { useChangeEffect } from './listeners';
@@ -29,6 +30,7 @@ import { useFormFieldContext } from '../internal/context/form-field-context';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useControllable } from '../internal/hooks/use-controllable';
 import LiveRegion from '../internal/components/live-region';
+import ScreenreaderOnly from '../internal/components/screenreader-only';
 
 import styles from './styles.css.js';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
@@ -106,7 +108,8 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
   useSyncEditorLabels(editor, {
     controlId,
     // Treat ariaLabel as if it overrides ariaLabelledby. This is similar to how
-    // other Cloudscape components (e.g. input) behave.
+    // other Cloudscape components (e.g. input) behave. Internally, we do the opposite:
+    // use aria-labelledby to override ace's built-in aria-label.
     ariaLabelledby: ariaLabel && !ariaLabelledby ? ariaLabelId : ariaLabelledby,
     ariaDescribedby,
   });
@@ -201,12 +204,6 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
       className={clsx(styles['code-editor'], baseProps.className, { [styles['code-editor-refresh']]: isRefresh })}
       ref={mergedRef}
     >
-      {ariaLabel && (
-        <div id={ariaLabelId} className={styles['aria-label-wrapper']}>
-          {ariaLabel}
-        </div>
-      )}
-
       {loading && (
         <LoadingScreen>
           <LiveRegion visible={true}>{i18n('i18nStrings.loadingState', i18nStrings?.loadingState)}</LiveRegion>
@@ -224,6 +221,11 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
 
       {ace && !loading && (
         <>
+          {ariaLabel && (
+            <ScreenreaderOnly id={ariaLabelId}>
+              {joinStrings(ariaLabel, i18nStrings?.cursorPositionAriaLabel?.(cursorPosition.row + 1))}
+            </ScreenreaderOnly>
+          )}
           <ResizableBox
             height={Math.max(editorHeight, 20)}
             minHeight={20}

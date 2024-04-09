@@ -247,6 +247,16 @@ describe('Code editor component', () => {
     expect(document.getElementById(ariaLabelledById)).toHaveTextContent('test aria label');
   });
 
+  it('appends cursorPositionAriaLabel to the ariaLabel if provided', () => {
+    renderCodeEditor({
+      ariaLabel: 'test aria label',
+      i18nStrings: { cursorPositionAriaLabel: row => `Cursor at row ${row}` },
+    });
+    expect(editorMock.renderer.textarea).toHaveAttribute('aria-labelledby');
+    const ariaLabelledById = editorMock.renderer.textarea.getAttribute('aria-labelledby')!;
+    expect(document.getElementById(ariaLabelledById)).toHaveTextContent('test aria label Cursor at row 1');
+  });
+
   describe('onDelayedChange', () => {
     beforeEach(() => jest.useFakeTimers());
     afterEach(() => jest.useRealTimers());

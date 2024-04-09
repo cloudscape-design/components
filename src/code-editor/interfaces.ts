@@ -148,6 +148,7 @@ export namespace CodeEditorProps {
 
     editorGroupAriaLabel?: string;
     statusBarGroupAriaLabel?: string;
+    cursorPositionAriaLabel?: (row: number) => string;
 
     cursorPosition?: (row: number, column: number) => string;
     errorsTab?: string;
