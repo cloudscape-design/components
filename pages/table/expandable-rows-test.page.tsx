@@ -170,8 +170,9 @@ export default () => {
       }
     : undefined;
 
+  const rootProgressiveLoading = settings.useProgressiveLoading && !settings.usePagination;
   const rootPages = loadingState.get('ROOT')?.pages ?? 1;
-  const paginatedItems = settings.useProgressiveLoading ? items.slice(0, rootPages * rootPageSize) : items;
+  const paginatedItems = rootProgressiveLoading ? items.slice(0, rootPages * rootPageSize) : items;
   return (
     <I18nProvider messages={[messages]} locale="en">
       <AppLayout
@@ -272,7 +273,7 @@ export default () => {
               settings.useProgressiveLoading
                 ? item => {
                     if (!item) {
-                      return loadingState.get('ROOT')?.status ?? 'finished';
+                      return rootProgressiveLoading ? loadingState.get('ROOT')?.status ?? 'finished' : 'finished';
                     } else {
                       const children = collectionProps.expandableRows!.getItemChildren(item);
                       const state = loadingState.get(item.name) ?? { status: 'pending', pages: 1 };
