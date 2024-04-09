@@ -339,7 +339,7 @@ export const calculatePosition = (
 ): [DropdownPosition, DOMRect] => {
   // cleaning previously assigned values,
   // so that they are not reused in case of screen resize and similar events
-  verticalContainerElement.style.maxHeight = '';
+  verticalContainerElement.style.maxBlockSize = '';
   dropdownElement.style.inlineSize = '';
   dropdownElement.style.insetBlockStart = '';
   dropdownElement.style.insetBlockEnd = '';

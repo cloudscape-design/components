@@ -195,9 +195,9 @@ const Dropdown = ({
     const entireWidth = !interior && stretchWidth;
     if (!stretchWidth) {
       // 1px offset for dropdowns where the dropdown itself needs a border, rather than on the items
-      verticalContainer.style.maxHeight = `${parseInt(position.blockSize) + 1}px`;
+      verticalContainer.style.maxBlockSize = `${parseInt(position.blockSize) + 1}px`;
     } else {
-      verticalContainer.style.maxHeight = position.blockSize;
+      verticalContainer.style.maxBlockSize = position.blockSize;
     }
 
     if (entireWidth && !expandToViewport) {
@@ -205,7 +205,7 @@ const Dropdown = ({
         target.classList.add(styles['occupy-entire-width']);
       }
     } else {
-      target.style.width = position.inlineSize;
+      target.style.inlineSize = position.inlineSize;
     }
 
     // Using styles for main dropdown to adjust its position as preferred alternative

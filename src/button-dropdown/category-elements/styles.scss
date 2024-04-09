@@ -107,7 +107,12 @@
 
   &-right {
     transform: rotate(-90deg);
+
+    @include styles.with-direction('rtl') {
+      transform: rotate(90deg);
+    }
   }
+
   @include styles.with-motion {
     transition: transform awsui.$motion-duration-rotate-180 awsui.$motion-easing-rotate-180;
   }
