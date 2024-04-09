@@ -204,14 +204,12 @@ function getViewportRect(window: Window): BoundingBox {
 }
 
 function getDocumentRect(document: Document): BoundingBox {
-  const { insetBlockStart, insetInlineStart, inlineSize, blockSize } = getLogicalBoundingClientRect(
-    document.documentElement
-  );
+  const { insetBlockStart, insetInlineStart } = getLogicalBoundingClientRect(document.documentElement);
 
   return {
     insetBlockStart,
     insetInlineStart,
-    inlineSize,
-    blockSize,
+    inlineSize: document.documentElement.scrollWidth,
+    blockSize: document.documentElement.scrollHeight,
   };
 }
