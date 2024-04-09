@@ -10,16 +10,16 @@ const AVAILABLE_SPACE_RESERVE_MOBILE_VERTICAL = 19; // 50 - 31
 const AVAILABLE_SPACE_RESERVE_MOBILE_HORIZONTAL = 20;
 
 interface AvailableSpace {
-  above: number;
-  below: number;
-  left: number;
-  right: number;
+  blockStart: number;
+  blockEnd: number;
+  inlineStart: number;
+  inlineEnd: number;
 }
 export interface DropdownPosition {
   blockSize: string;
   inlineSize: string;
-  dropUp: boolean;
-  dropLeft: boolean;
+  dropBlockStart: boolean;
+  dropInlineStart: boolean;
   insetInlineStart: string;
 }
 export interface InteriorDropdownPosition extends DropdownPosition {
@@ -75,7 +75,7 @@ export const getAvailableSpace = ({
   } = getLogicalBoundingClientRect(trigger);
 
   return overflowParents.reduce(
-    ({ above, below, left, right }, overflowParent) => {
+    ({ blockStart, blockEnd, inlineStart, inlineEnd }, overflowParent) => {
       const offsetTop = triggerBottom - overflowParent.insetBlockStart;
       const currentAbove = offsetTop - trigger.offsetHeight - availableSpaceReserveVertical;
       const currentBelow = overflowParent.blockSize - offsetTop - availableSpaceReserveVertical;
@@ -84,13 +84,18 @@ export const getAvailableSpace = ({
         overflowParent.insetInlineStart + overflowParent.inlineSize - triggerLeft - availableSpaceReserveHorizontal;
 
       return {
-        above: Math.min(above, currentAbove),
-        below: Math.min(below, currentBelow),
-        left: Math.min(left, currentLeft),
-        right: Math.min(right, currentRight),
+        blockStart: Math.min(blockStart, currentAbove),
+        blockEnd: Math.min(blockEnd, currentBelow),
+        inlineStart: Math.min(inlineStart, currentLeft),
+        inlineEnd: Math.min(inlineEnd, currentRight),
       };
     },
-    { above: Number.MAX_VALUE, below: Number.MAX_VALUE, left: Number.MAX_VALUE, right: Number.MAX_VALUE }
+    {
+      blockStart: Number.MAX_VALUE,
+      blockEnd: Number.MAX_VALUE,
+      inlineStart: Number.MAX_VALUE,
+      inlineEnd: Number.MAX_VALUE,
+    }
   );
 };
 
@@ -117,7 +122,7 @@ export const getInteriorAvailableSpace = ({
   } = getLogicalBoundingClientRect(trigger);
 
   return overflowParents.reduce(
-    ({ above, below, left, right }, overflowParent) => {
+    ({ blockStart, blockEnd, inlineStart, inlineEnd }, overflowParent) => {
       const currentAbove = triggerBottom - overflowParent.insetBlockStart - AVAILABLE_SPACE_RESERVE_VERTICAL;
       const currentBelow =
         overflowParent.blockSize - triggerTop + overflowParent.insetBlockStart - AVAILABLE_SPACE_RESERVE_VERTICAL;
@@ -126,13 +131,18 @@ export const getInteriorAvailableSpace = ({
         overflowParent.insetInlineStart + overflowParent.inlineSize - triggerRight - AVAILABLE_SPACE_RESERVE_HORIZONTAL;
 
       return {
-        above: Math.min(above, currentAbove),
-        below: Math.min(below, currentBelow),
-        left: Math.min(left, currentLeft),
-        right: Math.min(right, currentRight),
+        blockStart: Math.min(blockStart, currentAbove),
+        blockEnd: Math.min(blockEnd, currentBelow),
+        inlineStart: Math.min(inlineStart, currentLeft),
+        inlineEnd: Math.min(inlineEnd, currentRight),
       };
     },
-    { above: Number.MAX_VALUE, below: Number.MAX_VALUE, left: Number.MAX_VALUE, right: Number.MAX_VALUE }
+    {
+      blockStart: Number.MAX_VALUE,
+      blockEnd: Number.MAX_VALUE,
+      inlineStart: Number.MAX_VALUE,
+      inlineEnd: Number.MAX_VALUE,
+    }
   );
 };
 
@@ -196,7 +206,7 @@ export const hasEnoughSpaceToStretchBeyondTriggerWidth = ({
     stretchHeight,
     isMobile,
   });
-  return idealWidth <= availableSpace.left || idealWidth <= availableSpace.right;
+  return idealWidth <= availableSpace.inlineStart || idealWidth <= availableSpace.inlineEnd;
 };
 
 export const getDropdownPosition = ({
@@ -235,28 +245,28 @@ export const getDropdownPosition = ({
     stretchBeyondTriggerWidth,
   });
 
-  let dropLeft: boolean;
+  let dropInlineStart: boolean;
   let insetInlineStart: number | null = null;
   let inlineSize = idealWidth;
 
   //1. Can it be positioned with ideal width to the right?
-  if (idealWidth <= availableSpace.right) {
-    dropLeft = false;
+  if (idealWidth <= availableSpace.inlineEnd) {
+    dropInlineStart = false;
     //2. Can it be positioned with ideal width to the left?
-  } else if (idealWidth <= availableSpace.left) {
-    dropLeft = true;
+  } else if (idealWidth <= availableSpace.inlineStart) {
+    dropInlineStart = true;
     //3. Fit into biggest available space either on left or right
   } else {
-    dropLeft = availableSpace.left > availableSpace.right;
-    inlineSize = Math.max(availableSpace.left, availableSpace.right, minWidth);
+    dropInlineStart = availableSpace.inlineStart > availableSpace.inlineEnd;
+    inlineSize = Math.max(availableSpace.inlineStart, availableSpace.inlineEnd, minWidth);
   }
 
   if (preferCenter) {
     const spillOver = (idealWidth - triggerWidth) / 2;
 
     // availableSpace always includes the trigger width, but we want to exclude that
-    const availableOutsideLeft = availableSpace.left - triggerWidth;
-    const availableOutsideRight = availableSpace.right - triggerWidth;
+    const availableOutsideLeft = availableSpace.inlineStart - triggerWidth;
+    const availableOutsideRight = availableSpace.inlineEnd - triggerWidth;
 
     const fitsInCenter = availableOutsideLeft >= spillOver && availableOutsideRight >= spillOver;
     if (fitsInCenter) {
@@ -264,14 +274,15 @@ export const getDropdownPosition = ({
     }
   }
 
-  const dropUp = availableSpace.below < dropdownElement.offsetHeight && availableSpace.above > availableSpace.below;
-  const availableHeight = dropUp ? availableSpace.above : availableSpace.below;
+  const dropBlockStart =
+    availableSpace.blockEnd < dropdownElement.offsetHeight && availableSpace.blockStart > availableSpace.blockEnd;
+  const availableHeight = dropBlockStart ? availableSpace.blockStart : availableSpace.blockEnd;
   // Try and crop the bottom item when all options can't be displayed, affordance for "there's more"
   const croppedHeight = stretchHeight ? availableHeight : Math.floor(availableHeight / 31) * 31 + 16;
 
   return {
-    dropUp,
-    dropLeft,
+    dropBlockStart,
+    dropInlineStart,
     insetInlineStart: insetInlineStart === null ? 'auto' : `${insetInlineStart}px`,
     blockSize: `${croppedHeight}px`,
     inlineSize: `${inlineSize}px`,
@@ -292,34 +303,35 @@ export const getInteriorDropdownPosition = (
   } = getLogicalBoundingClientRect(trigger);
   const { insetBlockStart: parentDropdownTop, blockSize: parentDropdownHeight } = getClosestParentDimensions(trigger);
 
-  let dropLeft;
+  let dropInlineStart;
 
   let { inlineSize } = getLogicalBoundingClientRect(dropdown);
   const insetBlockStart = triggerTop - parentDropdownTop;
-  if (inlineSize <= availableSpace.right) {
-    dropLeft = false;
-  } else if (inlineSize <= availableSpace.left) {
-    dropLeft = true;
+  if (inlineSize <= availableSpace.inlineEnd) {
+    dropInlineStart = false;
+  } else if (inlineSize <= availableSpace.inlineStart) {
+    dropInlineStart = true;
   } else {
-    dropLeft = availableSpace.left > availableSpace.right;
-    inlineSize = Math.max(availableSpace.left, availableSpace.right);
+    dropInlineStart = availableSpace.inlineStart > availableSpace.inlineEnd;
+    inlineSize = Math.max(availableSpace.inlineStart, availableSpace.inlineEnd);
   }
 
-  const insetInlineStart = dropLeft ? 0 - inlineSize : triggerWidth;
+  const insetInlineStart = dropInlineStart ? 0 - inlineSize : triggerWidth;
 
-  const dropUp = availableSpace.below < dropdown.offsetHeight && availableSpace.above > availableSpace.below;
-  const bottom = dropUp ? parentDropdownTop + parentDropdownHeight - triggerBottom : 0;
-  const availableHeight = dropUp ? availableSpace.above : availableSpace.below;
+  const dropBlockStart =
+    availableSpace.blockEnd < dropdown.offsetHeight && availableSpace.blockStart > availableSpace.blockEnd;
+  const insetBlockEnd = dropBlockStart ? parentDropdownTop + parentDropdownHeight - triggerBottom : 0;
+  const availableHeight = dropBlockStart ? availableSpace.blockStart : availableSpace.blockEnd;
   // Try and crop the bottom item when all options can't be displayed, affordance for "there's more"
   const croppedHeight = Math.floor(availableHeight / 31) * 31 + 16;
 
   return {
-    dropUp,
-    dropLeft,
+    dropBlockStart,
+    dropInlineStart,
     blockSize: `${croppedHeight}px`,
     inlineSize: `${inlineSize}px`,
     insetBlockStart: `${insetBlockStart}px`,
-    insetBlockEnd: `${bottom}px`,
+    insetBlockEnd: `${insetBlockEnd}px`,
     insetInlineStart: `${insetInlineStart}px`,
   };
 };
