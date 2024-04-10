@@ -383,7 +383,7 @@ const Dropdown = ({
         const triggerRect = getLogicalBoundingClientRect(triggerRef.current);
         const target = dropdownRef.current;
         if (fixedPosition.current) {
-          if (fixedPosition.current.dropInlineStart) {
+          if (fixedPosition.current.dropBlockStart) {
             dropdownRef.current.style.insetBlockEnd = `calc(100% - ${triggerRect.insetBlockStart}px)`;
           } else {
             target.style.insetBlockStart = `${triggerRect.insetBlockEnd}px`;
