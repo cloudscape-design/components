@@ -7,6 +7,7 @@ import { getExternalProps } from '../internal/utils/external-props';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
+import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 
 export { ContainerProps };
 
@@ -17,13 +18,18 @@ export default function Container({
   fitHeight = false,
   ...props
 }: ContainerProps) {
-  const baseComponentProps = useBaseComponent('Container', {
-    props: { disableContentPaddings, disableHeaderPaddings, fitHeight, variant },
-  });
+  const analyticsMetadata = getAnalyticsMetadataProps(props as BasePropsWithAnalyticsMetadata);
+  const baseComponentProps = useBaseComponent(
+    'Container',
+    {
+      props: { disableContentPaddings, disableHeaderPaddings, fitHeight, variant },
+    },
+    analyticsMetadata
+  );
   const externalProps = getExternalProps(props);
 
   return (
-    <AnalyticsFunnelSubStep>
+    <AnalyticsFunnelSubStep instanceId={analyticsMetadata?.instanceId} errorContext={analyticsMetadata?.errorContext}>
       <InternalContainerAsSubstep
         variant={variant}
         disableContentPaddings={disableContentPaddings}
