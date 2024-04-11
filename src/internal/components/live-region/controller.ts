@@ -19,6 +19,10 @@ class LiveRegionController {
       this._element.className = styles.announcer;
       this._element.ariaLive = this.politeness;
       this._element.ariaAtomic = 'true';
+
+      // Doesn't serve a technical purpose, just helps to track this element in the DOM.
+      this._element.dataset.awsuiLiveAnnouncer = 'true';
+
       document.body.appendChild(this._element);
     }
   }
