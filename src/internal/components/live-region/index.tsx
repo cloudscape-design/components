@@ -72,6 +72,7 @@ export interface LiveRegionProps extends BaseComponentProps {
  * The live region is always atomic, because non-atomic regions can be treated by screen readers
  * differently and produce unexpected results. To imitate non-atomic announcements simply use
  * multiple live regions:
+ *
  * ```
  * <>
  *   <LiveRegion source={[title]} />

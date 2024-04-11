@@ -7,7 +7,8 @@ class LiveRegionController {
   private _element: HTMLElement | undefined;
   private _timeoutId: number | undefined;
   private _delay: number;
-  private readonly _nextMessage = new Set<string>();
+  private _lastAnnouncement = '';
+  private readonly _nextMessages = new Set<string>();
 
   constructor(public readonly politeness: 'polite' | 'assertive', public readonly defaultDelay: number = 50) {
     this._delay = defaultDelay;
@@ -28,7 +29,7 @@ class LiveRegionController {
   }
 
   announce(message: string, minDelay?: number) {
-    this._nextMessage.add(message);
+    this._nextMessages.add(message);
 
     // A message was added with a longer delay, so we delay the whole announcement.
     // This is cleaner than potentially having valid announcements collide.
@@ -55,16 +56,24 @@ class LiveRegionController {
       return;
     }
 
-    // TODO: check if next announcement was the same as the last one?
+    let nextAnnouncement = [...this._nextMessages].join(' ');
+    if (nextAnnouncement === this._lastAnnouncement) {
+      // A (generally) safe way of forcing re-announcements is toggling the
+      // terminal period. If we keep adding periods, it's going to be
+      // eventually interpreted as an ellipsis.
+      nextAnnouncement = nextAnnouncement.endsWith('.') ? nextAnnouncement.slice(0, -1) : nextAnnouncement + '.';
+    }
 
     // The aria-atomic does not work properly in Voice Over, causing
     // certain parts of the content to be ignored. To fix that,
     // we assign the source text content as a single node.
-    this._element.innerText = [...this._nextMessage].join(' ');
+    this._element.innerText = nextAnnouncement;
+    this._lastAnnouncement = nextAnnouncement;
 
+    // Reset the state for the next announcement.
     this._timeoutId = undefined;
     this._delay = this.defaultDelay;
-    this._nextMessage.clear();
+    this._nextMessages.clear();
   }
 }
 
