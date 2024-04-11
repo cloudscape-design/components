@@ -140,7 +140,7 @@ function InternalPopover(
     <div
       aria-live={dismissButton ? undefined : 'polite'}
       aria-atomic={dismissButton ? undefined : true}
-      className={clsx(popoverClasses, visible && styles['popover-content'])}
+      className={clsx(popoverClasses, styles['popover-content'])}
       data-awsui-referrer-id={referrerId}
     >
       {visible && (
