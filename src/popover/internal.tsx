@@ -136,11 +136,12 @@ function InternalPopover(
   const { tabIndex: triggerTabIndex } = useSingleTabStopNavigation(triggerRef);
 
   const referrerId = useUniqueId();
+
   const popoverContent = (
     <div
       aria-live={dismissButton ? undefined : 'polite'}
       aria-atomic={dismissButton ? undefined : true}
-      className={clsx(popoverClasses, styles['popover-content'])}
+      className={clsx(popoverClasses, !renderWithPortal && styles['popover-inline-content'])}
       data-awsui-referrer-id={referrerId}
     >
       {visible && (
