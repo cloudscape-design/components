@@ -15,12 +15,11 @@ const LoaderSkeleton = React.forwardRef<AppLayoutProps.Ref, AppLayoutPropsWithDe
 });
 
 const defaultProps: AppLayoutPropsWithDefaults = {
-  headerSelector: '#h',
-  footerSelector: '#f',
   contentType: 'default',
   navigationWidth: 0,
   toolsWidth: 0,
   minContentWidth: 0,
+  placement: { left: 0, top: 0, bottom: 0, right: 0, width: Number.POSITIVE_INFINITY },
   navigationOpen: true,
   onNavigationChange: () => {},
 };

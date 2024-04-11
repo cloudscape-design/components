@@ -48,8 +48,14 @@ export default function Tools({ children }: ToolsProps) {
     toolsWidth,
   } = useAppLayoutInternals();
 
-  const hasSplitPanel = !!splitPanel && getSplitPanelStatus(splitPanelDisplayed, splitPanelPosition);
-  const hasToolsForm = getToolsFormStatus(hasSplitPanel, isMobile, isSplitPanelOpen, isToolsOpen, toolsHide);
+  const hasSplitPanel = !!splitPanel && splitPanelPosition === 'side';
+  const hasToolsForm = getToolsFormStatus(
+    hasSplitPanel && splitPanelDisplayed,
+    isMobile,
+    isSplitPanelOpen,
+    isToolsOpen,
+    toolsHide
+  );
   const hasToolsFormPersistence = getToolsFormPersistence(hasSplitPanel, isSplitPanelOpen, isToolsOpen, toolsHide);
   const isUnfocusable = hasDrawerViewportOverlay && !isToolsOpen;
 
@@ -159,14 +165,6 @@ export default function Tools({ children }: ToolsProps) {
       )}
     </Transition>
   );
-}
-
-/**
- * This simple function returns the presence of the split panel as a child of the
- * Tools component. It must exist and be in side position.
- */
-function getSplitPanelStatus(splitPanelDisplayed: boolean, splitPanelPosition: string) {
-  return splitPanelDisplayed && splitPanelPosition === 'side' ? true : false;
 }
 
 /**
