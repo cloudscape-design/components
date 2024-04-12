@@ -35,7 +35,7 @@ const ContentLayoutWrapper = () => {
   const { urlParams } = useContext(AppContext as DemoContext);
 
   return (
-    <ContentLayout disableOverlap={urlParams.disableOverlap} header={<DemoHeader />}>
+    <ContentLayout disableOverlap={urlParams.disableOverlap} header={<DemoHeader />} headerVariant="high-contrast">
       <DemoContent />
     </ContentLayout>
   );
