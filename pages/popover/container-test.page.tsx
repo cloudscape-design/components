@@ -34,11 +34,7 @@ export default function () {
     <article>
       <h1>Popover container test</h1>
       <ScreenshotArea>
-        <svg
-          width={500}
-          height={500}
-          style={{ margin: '20px', transform: `${isRtl(document.body) ? 'scaleX(-1)' : ''}` }}
-        >
+        <svg width={500} height={500} style={{ margin: '20px', transform: isRtl(document.body) ? 'scaleX(-1)' : '' }}>
           {points.map(point => (
             <circle
               key={point.id}
