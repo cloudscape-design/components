@@ -69,25 +69,28 @@ export const getAvailableSpace = ({
     ? AVAILABLE_SPACE_RESERVE_MOBILE_HORIZONTAL
     : AVAILABLE_SPACE_RESERVE_DEFAULT;
   const {
-    insetBlockEnd: triggerBottom,
-    insetInlineStart: triggerLeft,
-    insetInlineEnd: triggerRight,
+    insetBlockEnd: triggerBlockEnd,
+    insetInlineStart: triggerInlineStart,
+    insetInlineEnd: triggerInlineEnd,
   } = getLogicalBoundingClientRect(trigger);
 
   return overflowParents.reduce(
     ({ blockStart, blockEnd, inlineStart, inlineEnd }, overflowParent) => {
-      const offsetTop = triggerBottom - overflowParent.insetBlockStart;
-      const currentAbove = offsetTop - trigger.offsetHeight - availableSpaceReserveVertical;
-      const currentBelow = overflowParent.blockSize - offsetTop - availableSpaceReserveVertical;
-      const currentLeft = triggerRight - overflowParent.insetInlineStart - availableSpaceReserveHorizontal;
-      const currentRight =
-        overflowParent.insetInlineStart + overflowParent.inlineSize - triggerLeft - availableSpaceReserveHorizontal;
+      const offsetTop = triggerBlockEnd - overflowParent.insetBlockStart;
+      const currentBlockStart = offsetTop - trigger.offsetHeight - availableSpaceReserveVertical;
+      const currentBlockEnd = overflowParent.blockSize - offsetTop - availableSpaceReserveVertical;
+      const currentInlineStart = triggerInlineEnd - overflowParent.insetInlineStart - availableSpaceReserveHorizontal;
+      const currentInlineEnd =
+        overflowParent.insetInlineStart +
+        overflowParent.inlineSize -
+        triggerInlineStart -
+        availableSpaceReserveHorizontal;
 
       return {
-        blockStart: Math.min(blockStart, currentAbove),
-        blockEnd: Math.min(blockEnd, currentBelow),
-        inlineStart: Math.min(inlineStart, currentLeft),
-        inlineEnd: Math.min(inlineEnd, currentRight),
+        blockStart: Math.min(blockStart, currentBlockStart),
+        blockEnd: Math.min(blockEnd, currentBlockEnd),
+        inlineStart: Math.min(inlineStart, currentInlineStart),
+        inlineEnd: Math.min(inlineEnd, currentInlineEnd),
       };
     },
     {
@@ -115,26 +118,33 @@ export const getInteriorAvailableSpace = ({
     ? AVAILABLE_SPACE_RESERVE_MOBILE_HORIZONTAL
     : AVAILABLE_SPACE_RESERVE_DEFAULT;
   const {
-    insetBlockEnd: triggerBottom,
-    insetBlockStart: triggerTop,
-    insetInlineStart: triggerLeft,
-    insetInlineEnd: triggerRight,
+    insetBlockEnd: triggerBlockEnd,
+    insetBlockStart: triggerBlockStart,
+    insetInlineStart: triggerInlineStart,
+    insetInlineEnd: triggerInlineEnd,
   } = getLogicalBoundingClientRect(trigger);
 
   return overflowParents.reduce(
     ({ blockStart, blockEnd, inlineStart, inlineEnd }, overflowParent) => {
-      const currentAbove = triggerBottom - overflowParent.insetBlockStart - AVAILABLE_SPACE_RESERVE_VERTICAL;
-      const currentBelow =
-        overflowParent.blockSize - triggerTop + overflowParent.insetBlockStart - AVAILABLE_SPACE_RESERVE_VERTICAL;
-      const currentLeft = triggerLeft - overflowParent.insetInlineStart - AVAILABLE_SPACE_RESERVE_HORIZONTAL;
-      const currentRight =
-        overflowParent.insetInlineStart + overflowParent.inlineSize - triggerRight - AVAILABLE_SPACE_RESERVE_HORIZONTAL;
+      const currentBlockStart = triggerBlockEnd - overflowParent.insetBlockStart - AVAILABLE_SPACE_RESERVE_VERTICAL;
+      const currentBlockEnd =
+        overflowParent.blockSize -
+        triggerBlockStart +
+        overflowParent.insetBlockStart -
+        AVAILABLE_SPACE_RESERVE_VERTICAL;
+      const currentInlineStart =
+        triggerInlineStart - overflowParent.insetInlineStart - AVAILABLE_SPACE_RESERVE_HORIZONTAL;
+      const currentInlineEnd =
+        overflowParent.insetInlineStart +
+        overflowParent.inlineSize -
+        triggerInlineEnd -
+        AVAILABLE_SPACE_RESERVE_HORIZONTAL;
 
       return {
-        blockStart: Math.min(blockStart, currentAbove),
-        blockEnd: Math.min(blockEnd, currentBelow),
-        inlineStart: Math.min(inlineStart, currentLeft),
-        inlineEnd: Math.min(inlineEnd, currentRight),
+        blockStart: Math.min(blockStart, currentBlockStart),
+        blockEnd: Math.min(blockEnd, currentBlockEnd),
+        inlineStart: Math.min(inlineStart, currentInlineStart),
+        inlineEnd: Math.min(inlineEnd, currentInlineEnd),
       };
     },
     {
@@ -158,16 +168,16 @@ export const getWidths = ({
   stretchBeyondTriggerWidth?: boolean;
 }) => {
   // Determine the width of the trigger
-  const { inlineSize: triggerWidth } = getLogicalBoundingClientRect(triggerElement);
+  const { inlineSize: triggerInlineSize } = getLogicalBoundingClientRect(triggerElement);
   // Minimum width is determined by either an explicit number (desiredMinWidth) or the trigger width
-  const minWidth = desiredMinWidth ? Math.min(triggerWidth, desiredMinWidth) : triggerWidth;
+  const minWidth = desiredMinWidth ? Math.min(triggerInlineSize, desiredMinWidth) : triggerInlineSize;
   // If stretchBeyondTriggerWidth is true, the maximum width is the XS breakpoint (465px) or the trigger width (if bigger).
-  const maxWidth = stretchBeyondTriggerWidth ? Math.max(defaultMaxDropdownWidth, triggerWidth) : Number.MAX_VALUE;
+  const maxWidth = stretchBeyondTriggerWidth ? Math.max(defaultMaxDropdownWidth, triggerInlineSize) : Number.MAX_VALUE;
   // Determine the actual dropdown width, the size that it "wants" to be
   const { inlineSize: requiredWidth } = getLogicalBoundingClientRect(dropdownElement);
   // Try to achieve the required/desired width within the given parameters
   const idealWidth = Math.min(Math.max(requiredWidth, minWidth), maxWidth);
-  return { idealWidth, minWidth, triggerWidth };
+  return { idealWidth, minWidth, triggerInlineSize };
 };
 
 export const hasEnoughSpaceToStretchBeyondTriggerWidth = ({
@@ -238,7 +248,7 @@ export const getDropdownPosition = ({
     stretchHeight,
     isMobile,
   });
-  const { idealWidth, minWidth, triggerWidth } = getWidths({
+  const { idealWidth, minWidth, triggerInlineSize } = getWidths({
     triggerElement,
     dropdownElement,
     desiredMinWidth,
@@ -262,11 +272,11 @@ export const getDropdownPosition = ({
   }
 
   if (preferCenter) {
-    const spillOver = (idealWidth - triggerWidth) / 2;
+    const spillOver = (idealWidth - triggerInlineSize) / 2;
 
     // availableSpace always includes the trigger width, but we want to exclude that
-    const availableOutsideLeft = availableSpace.inlineStart - triggerWidth;
-    const availableOutsideRight = availableSpace.inlineEnd - triggerWidth;
+    const availableOutsideLeft = availableSpace.inlineStart - triggerInlineSize;
+    const availableOutsideRight = availableSpace.inlineEnd - triggerInlineSize;
 
     const fitsInCenter = availableOutsideLeft >= spillOver && availableOutsideRight >= spillOver;
     if (fitsInCenter) {
@@ -297,16 +307,17 @@ export const getInteriorDropdownPosition = (
 ): InteriorDropdownPosition => {
   const availableSpace = getInteriorAvailableSpace({ trigger, overflowParents, isMobile });
   const {
-    insetBlockEnd: triggerBottom,
-    insetBlockStart: triggerTop,
-    inlineSize: triggerWidth,
+    insetBlockEnd: triggerBlockEnd,
+    insetBlockStart: triggerBlockStart,
+    inlineSize: triggerInlineSize,
   } = getLogicalBoundingClientRect(trigger);
-  const { insetBlockStart: parentDropdownTop, blockSize: parentDropdownHeight } = getClosestParentDimensions(trigger);
+  const { insetBlockStart: parentDropdownBlockStart, blockSize: parentDropdownHeight } =
+    getClosestParentDimensions(trigger);
 
   let dropInlineStart;
 
   let { inlineSize } = getLogicalBoundingClientRect(dropdown);
-  const insetBlockStart = triggerTop - parentDropdownTop;
+  const insetBlockStart = triggerBlockStart - parentDropdownBlockStart;
   if (inlineSize <= availableSpace.inlineEnd) {
     dropInlineStart = false;
   } else if (inlineSize <= availableSpace.inlineStart) {
@@ -316,11 +327,11 @@ export const getInteriorDropdownPosition = (
     inlineSize = Math.max(availableSpace.inlineStart, availableSpace.inlineEnd);
   }
 
-  const insetInlineStart = dropInlineStart ? 0 - inlineSize : triggerWidth;
+  const insetInlineStart = dropInlineStart ? 0 - inlineSize : triggerInlineSize;
 
   const dropBlockStart =
     availableSpace.blockEnd < dropdown.offsetHeight && availableSpace.blockStart > availableSpace.blockEnd;
-  const insetBlockEnd = dropBlockStart ? parentDropdownTop + parentDropdownHeight - triggerBottom : 0;
+  const insetBlockEnd = dropBlockStart ? parentDropdownBlockStart + parentDropdownHeight - triggerBlockEnd : 0;
   const availableHeight = dropBlockStart ? availableSpace.blockStart : availableSpace.blockEnd;
   // Try and crop the bottom item when all options can't be displayed, affordance for "there's more"
   const croppedHeight = Math.floor(availableHeight / 31) * 31 + 16;
