@@ -71,16 +71,18 @@ $label-horizontal-spacing: awsui.$space-l;
   display: flex;
   max-inline-size: calc(90% - #{$label-horizontal-spacing});
 
-  & > button {
+  & > div,
+  & > div > button {
     background-color: transparent;
+    display: flex;
+    align-items: center;
+    text-align: start;
   }
 }
 
 .tabs-tab-label {
   display: flex;
   align-items: center;
-  padding-block: awsui.$space-scaled-2x-xxs;
-  padding-inline: $label-horizontal-spacing;
   text-align: start;
   position: relative;
 
@@ -88,10 +90,18 @@ $label-horizontal-spacing: awsui.$space-l;
 }
 
 .tabs-tab:not(:last-child) {
-  & > a > .tabs-tab-label,
-  & > button > .tabs-tab-label {
+  & > div {
     margin-inline-end: calc(-1 * #{awsui.$border-divider-section-width});
-    border-inline-end: awsui.$border-divider-section-width solid $separator-color;
+    &:before {
+      content: '';
+      block-size: 1.7rem;
+      inline-size: #{awsui.$border-divider-section-width};
+      position: absolute;
+      inset-inline-end: 0;
+      margin-inline-end: calc(-1 * #{awsui.$border-divider-section-width});
+      background: $separator-color;
+      opacity: 1;
+    }
   }
 }
 
@@ -125,23 +135,16 @@ $label-horizontal-spacing: awsui.$space-l;
   &:focus {
     outline: none;
   }
-  @include styles.font-smoothing;
+}
 
-  @include focus-visible.when-visible {
-    z-index: 1;
-    @include styles.focus-highlight(awsui.$space-tabs-focus-outline-gutter);
-    & > a > .tabs-tab-label,
-    & > button > .tabs-tab-label {
-      border-inline-end-color: transparent;
-    }
-  }
+.tabs-tab-link-only {
+  margin-inline-end: awsui.$space-scaled-m;
 }
 
 // Remediate focus shadow
 .tabs-tab:first-child {
   margin-inline-start: 1px;
-  & > a > .tabs-tab-label,
-  & > button > .tabs-tab-label {
+  & > div {
     padding-inline-start: calc(#{$label-horizontal-spacing} - 1px);
   }
 }
@@ -149,8 +152,7 @@ $label-horizontal-spacing: awsui.$space-l;
 // Remediate focus shadow
 .tabs-tab:last-child {
   margin-inline-end: 1px;
-  & > a > .tabs-tab-label,
-  & > button > .tabs-tab-label {
+  & > div {
     padding-inline-end: calc(#{$label-horizontal-spacing} - 1px);
   }
 }
@@ -165,7 +167,30 @@ $label-horizontal-spacing: awsui.$space-l;
   }
 }
 
-.tabs-tab-link:not(.tabs-tab-disabled) {
+.tabs-tab-header-content {
+  position: relative;
+
+  border-block: awsui.$border-divider-section-width solid transparent;
+  border-inline: awsui.$border-divider-section-width solid transparent;
+
+  padding-block: awsui.$space-scaled-2x-xxs;
+  padding-inline: $label-horizontal-spacing;
+
+  &:focus {
+    outline: none;
+  }
+  @include styles.font-smoothing;
+
+  @include focus-visible.when-visible {
+    z-index: 1;
+    @include styles.focus-highlight(awsui.$space-tabs-focus-outline-gutter);
+    & > div {
+      border-inline-end-color: transparent;
+    }
+  }
+}
+
+.tabs-tab-header-content:not(.tabs-tab-disabled) {
   // This is the underline for the currently selected tab.
   &:after {
     content: '';
