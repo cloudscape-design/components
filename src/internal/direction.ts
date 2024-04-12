@@ -28,7 +28,9 @@ export function getLogicalBoundingClientRect(element: HTMLElement | SVGElement) 
   const inlineSize = boundingClientRect.width;
   const insetBlockStart = boundingClientRect.top;
   const insetBlockEnd = boundingClientRect.bottom;
-  const insetInlineStart = isRtl(element) ? window.innerWidth - boundingClientRect.right : boundingClientRect.left;
+  const insetInlineStart = isRtl(element)
+    ? document.documentElement.clientWidth - boundingClientRect.right
+    : boundingClientRect.left;
   const insetInlineEnd = insetInlineStart + inlineSize;
 
   return {
