@@ -48,7 +48,6 @@ import { CollectionLabelContext } from '../internal/context/collection-label-con
 import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 import { NoDataCell } from './no-data-cell';
 import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
-import { getContentHeaderClassName } from '../internal/utils/content-header-utils';
 import { useExpandableTableProps } from './expandable-rows/expandable-rows-utils';
 
 const GRID_NAVIGATION_PAGE_SIZE = 10;
@@ -330,10 +329,7 @@ const InternalTable = React.forwardRef(
             header={
               <>
                 {hasHeader && (
-                  <div
-                    ref={overlapElement}
-                    className={clsx(hasDynamicHeight && [styles['dark-header'], getContentHeaderClassName()])}
-                  >
+                  <div ref={overlapElement}>
                     <div
                       ref={toolsHeaderWrapper}
                       className={clsx(styles['header-controls'], styles[`variant-${computedVariant}`])}
