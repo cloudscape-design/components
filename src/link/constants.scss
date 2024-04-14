@@ -104,8 +104,6 @@ $link-variants: (
       'text-color-hover': awsui.$color-text-link-hover,
       'text-color-active': awsui.$color-text-link-hover,
       'font-weight': awsui.$font-link-button-weight,
-      // Decoration fallback is for IE11, and IE11 does not support VR, so no variable needed
-      'decoration-line': underline,
       'decoration-color': awsui.$color-text-link-button-underline,
       'decoration-color-hover': awsui.$color-text-link-button-underline-hover,
       'letter-spacing': awsui.$font-link-button-letter-spacing,

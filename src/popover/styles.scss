@@ -43,12 +43,6 @@
   @include focus-visible.when-visible {
     @include styles.focus-highlight(1px);
   }
-
-  // Prevents trigger from shifting on click in IE11.
-  // https://stackoverflow.com/a/32655269
-  > .trigger-inner-text {
-    position: relative;
-  }
 }
 
 .popover-inline-content {
