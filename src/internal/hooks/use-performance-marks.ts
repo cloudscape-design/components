@@ -33,7 +33,7 @@ export function usePerformanceMarks(
     performance.mark(renderedMarkName, {
       detail: {
         source: 'awsui',
-        instanceId: id,
+        instanceIdentifier: id,
         ...getDetails(),
       },
     });
@@ -58,7 +58,7 @@ export function usePerformanceMarks(
     performance.mark(updatedMarkName, {
       detail: {
         source: 'awsui',
-        instanceId: id,
+        instanceIdentifier: id,
         ...getDetails(),
       },
     });
