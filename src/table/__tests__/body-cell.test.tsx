@@ -8,6 +8,7 @@ import { renderHook } from '../../__tests__/render-hook';
 import { useStickyColumns } from '../../../lib/components/table/sticky-columns';
 import wrapper from '../../../lib/components/test-utils/dom';
 import styles from '../../../lib/components/table/body-cell/styles.selectors.js';
+import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
 
 const tableRole = 'table';
 
@@ -335,5 +336,16 @@ describe('TableBodyCell', () => {
       fireEvent.mouseLeave(container.querySelector('[data-inline-editing-active]')!);
       expect(wrapper(container).findIcon()).toBeNull();
     });
+  });
+
+  test('does not set tab index when negative', () => {
+    const { setCurrentTarget } = renderWithSingleTabStopNavigation(<TestComponent />, { navigationActive: true });
+    const tableCell = wrapper().find('td')!.getElement();
+
+    expect(tableCell).not.toHaveAttribute('tabIndex');
+    setCurrentTarget(tableCell);
+    expect(tableCell).toHaveAttribute('tabIndex', '0');
+    setCurrentTarget(null);
+    expect(tableCell).not.toHaveAttribute('tabIndex');
   });
 });

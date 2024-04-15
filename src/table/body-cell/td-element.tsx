@@ -120,7 +120,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
         onMouseLeave={onMouseLeave}
         ref={mergedRef}
         {...nativeAttributes}
-        tabIndex={cellTabIndex}
+        tabIndex={cellTabIndex === -1 ? undefined : cellTabIndex}
       >
         {level !== undefined && isExpandable && (
           <div className={styles['expandable-toggle-wrapper']}>
