@@ -21,6 +21,7 @@ import {
   Popover,
   PropertyFilter,
   Select,
+  StatusIndicator,
   Toggle,
 } from '~components';
 import AppContext, { AppContextType } from '../app/app-context';
@@ -28,8 +29,7 @@ import { allInstances } from './expandable-rows/expandable-rows-data';
 import messages from '~components/i18n/messages/all.en';
 import I18nProvider from '~components/i18n';
 import { createColumns, createPreferences, filteringProperties } from './expandable-rows/expandable-rows-configs';
-import { Instance, ariaLabels, getHeaderCounterText } from './expandable-rows/common';
-import StatusIndicator from '~components/status-indicator/internal';
+import { ariaLabels, getHeaderCounterText } from './expandable-rows/common';
 
 type LoadingState = Map<string, { pages: number; status: TableProps.LoadingStatus }>;
 
@@ -133,45 +133,50 @@ export default () => {
     },
   });
 
-  // Using a special id="ROOT" for progressive loading at the root level.
-  const [loadingState, setLoadingState] = useState<LoadingState>(new Map([['ROOT', { status: 'pending', pages: 1 }]]));
-
-  const updateLoading = (id: string) => {
-    const setLoading = (id: string, state: LoadingState) =>
-      new Map([...state, [id, { status: 'loading', pages: state.get(id)?.pages ?? 0 } as const]]);
-    const setError = (id: string, state: LoadingState) =>
-      new Map([...state, [id, { status: 'error', pages: state.get(id)?.pages ?? 0 } as const]]);
-    const setPending = (id: string, state: LoadingState) =>
-      new Map([...state, [id, { status: 'pending', pages: (state.get(id)?.pages ?? 0) + 1 } as const]]);
-    setLoadingState(prev => setLoading(id, prev));
-    setTimeout(
-      () =>
-        setLoadingState(prev => (settings.emulateProgressiveLoadingError ? setError(id, prev) : setPending(id, prev))),
-      1500
-    );
-  };
-
   const rootPageSize = preferences.pageSize ?? 10;
   const nestedPageSize = 2;
-  const expandableRows: undefined | TableProps.ExpandableRows<Instance> = settings.groupResources
-    ? {
-        ...collectionProps.expandableRows!,
-        getItemChildren(item) {
-          const children = collectionProps.expandableRows!.getItemChildren(item);
-          const pages = loadingState.get(item.name)?.pages ?? 0;
-          return settings.useProgressiveLoading ? children.slice(0, pages * nestedPageSize) : children;
-        },
-        onExpandableItemToggle: event => {
-          collectionProps.expandableRows!.onExpandableItemToggle(event);
-          if (event.detail.expanded) {
-            updateLoading(event.detail.item.name);
-          }
-        },
-      }
-    : undefined;
 
+  // Using a special id="ROOT" for progressive loading at the root level.
+  const [loadingState, setLoadingState] = useState<LoadingState>(new Map([['ROOT', { status: 'pending', pages: 1 }]]));
+  const resetLoading = (id: string) => (state: LoadingState) => {
+    return new Map([...state, [id, { status: 'loading', pages: 0 }]]) as LoadingState;
+  };
+  const nextLoading = (id: string) => (state: LoadingState) => {
+    return new Map([...state, [id, { status: 'loading', pages: state.get(id)?.pages ?? 0 }]]) as LoadingState;
+  };
+  const nextError = (id: string) => (state: LoadingState) => {
+    return new Map([...state, [id, { status: 'error', pages: state.get(id)?.pages ?? 0 }]]) as LoadingState;
+  };
+  const nextPending = (id: string) => (state: LoadingState) => {
+    return new Map([...state, [id, { status: 'pending', pages: (state.get(id)?.pages ?? 0) + 1 }]]) as LoadingState;
+  };
+
+  const triggerLoading = (id: string) => {
+    setLoadingState(nextLoading(id));
+    setTimeout(() => setLoadingState(settings.emulateProgressiveLoadingError ? nextError(id) : nextPending(id)), 1500);
+  };
+
+  const expandableRows = collectionProps.expandableRows ? { ...collectionProps.expandableRows } : undefined;
+  if (expandableRows && settings.useProgressiveLoading) {
+    // Decorate getItemChildren to paginate nested items.
+    expandableRows.getItemChildren = item => {
+      const children = collectionProps.expandableRows!.getItemChildren(item);
+      const pages = loadingState.get(item.name)?.pages ?? 0;
+      return children.slice(0, pages * nestedPageSize);
+    };
+    // Decorate onExpandableItemToggle to trigger loading when expanded.
+    expandableRows.onExpandableItemToggle = event => {
+      collectionProps.expandableRows!.onExpandableItemToggle(event);
+      if (event.detail.expanded) {
+        triggerLoading(event.detail.item.name);
+      } else {
+        setLoadingState(resetLoading(event.detail.item.name));
+      }
+    };
+  }
+
+  const rootPages = loadingState.get('ROOT')!.pages;
   const rootProgressiveLoading = settings.useProgressiveLoading && !settings.usePagination;
-  const rootPages = loadingState.get('ROOT')?.pages ?? 1;
   const paginatedItems = rootProgressiveLoading ? items.slice(0, rootPages * rootPageSize) : items;
   return (
     <I18nProvider messages={[messages]} locale="en">
@@ -273,17 +278,17 @@ export default () => {
               settings.useProgressiveLoading
                 ? item => {
                     if (!item) {
-                      return rootProgressiveLoading ? loadingState.get('ROOT')?.status ?? 'finished' : 'finished';
+                      return rootProgressiveLoading ? loadingState.get('ROOT')!.status : 'finished';
                     } else {
                       const children = collectionProps.expandableRows!.getItemChildren(item);
-                      const state = loadingState.get(item.name) ?? { status: 'pending', pages: 1 };
+                      const state = loadingState.get(item.name) ?? { status: 'loading', pages: 0 };
                       return state.pages * nestedPageSize < children.length ? state.status : 'finished';
                     }
                   }
                 : undefined
             }
             renderLoaderPending={({ item }) => (
-              <Button variant="inline-link" iconName="add-plus" onClick={() => updateLoading(item?.name ?? 'ROOT')}>
+              <Button variant="inline-link" iconName="add-plus" onClick={() => triggerLoading(item?.name ?? 'ROOT')}>
                 {item ? `Load more items for ${item.name}` : 'Load more items'}
               </Button>
             )}
@@ -297,7 +302,7 @@ export default () => {
                 <Popover
                   header="Failed to load instances"
                   content={
-                    <Form actions={<Button onClick={() => updateLoading(item?.name ?? 'ROOT')}>Retry</Button>}>
+                    <Form actions={<Button onClick={() => triggerLoading(item?.name ?? 'ROOT')}>Retry</Button>}>
                       <Alert type="error">
                         {item
                           ? `Error occurred during loading instances for item ${item.name}. Reason: item ${item.name} not found. Refresh the page.`
