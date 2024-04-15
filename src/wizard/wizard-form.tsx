@@ -75,7 +75,7 @@ export default function WizardForm({
   return (
     <>
       <AnalyticsFunnelStep
-        instanceId={analyticsMetadata?.instanceId}
+        instanceIdentifier={analyticsMetadata?.instanceIdentifier}
         errorContext={analyticsMetadata?.errorContext}
         stepNameSelector={STEP_NAME_SELECTOR}
         stepNumber={activeStepIndex + 1}

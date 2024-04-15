@@ -9,7 +9,7 @@ export interface AnalyticsMetadataStepProps {
 }
 
 export interface AnalyticsMetadata {
-  instanceId?: string;
+  instanceIdentifier?: string;
   flowType?: 'create' | 'edit';
   errorContext?: string;
 }

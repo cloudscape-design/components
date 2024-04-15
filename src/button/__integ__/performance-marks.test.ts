@@ -25,7 +25,7 @@ describe('Button', () => {
       expect(marks[0].name).toBe('primaryButtonRendered');
       expect(marks[0].detail).toMatchObject({
         source: 'awsui',
-        instanceId: expect.any(String),
+        instanceIdentifier: expect.any(String),
         loading: true,
         disabled: false,
         text: 'Primary button',
@@ -44,7 +44,7 @@ describe('Button', () => {
       expect(marks[1].name).toBe('primaryButtonUpdated');
       expect(marks[1].detail).toMatchObject({
         source: 'awsui',
-        instanceId: marks[0].detail.instanceId,
+        instanceIdentifier: marks[0].detail.instanceIdentifier,
         loading: true,
         disabled: true,
         text: 'Primary button',
@@ -52,7 +52,7 @@ describe('Button', () => {
       expect(marks[2].name).toBe('primaryButtonUpdated');
       expect(marks[2].detail).toMatchObject({
         source: 'awsui',
-        instanceId: marks[1].detail.instanceId,
+        instanceIdentifier: marks[1].detail.instanceIdentifier,
         loading: false,
         disabled: true,
         text: 'Primary button',

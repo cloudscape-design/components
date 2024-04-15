@@ -26,7 +26,7 @@ export interface FunnelContextValue {
 }
 
 export interface FunnelStepContextValue {
-  instanceId?: AnalyticsMetadata['instanceId'];
+  instanceIdentifier?: AnalyticsMetadata['instanceIdentifier'];
   stepNameSelector: string;
   stepNumber: number;
   funnelStepProps?: Record<string, string | number | boolean | undefined>;
@@ -39,7 +39,7 @@ export interface FunnelStepContextValue {
 }
 
 export interface FunnelSubStepContextValue {
-  instanceId?: AnalyticsMetadata['instanceId'];
+  instanceIdentifier?: AnalyticsMetadata['instanceIdentifier'];
   subStepId: string;
   subStepSelector: string;
   subStepNameSelector: string;
