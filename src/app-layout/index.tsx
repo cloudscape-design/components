@@ -14,6 +14,8 @@ import { useMobile } from '../internal/hooks/use-mobile';
 import { NonCancelableCustomEvent } from '../internal/events';
 import { isDevelopment } from '../internal/is-development';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useAppLayoutPlacement } from './utils/use-app-layout-placement';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 
 export { AppLayoutProps };
 
@@ -89,11 +91,11 @@ const AppLayout = React.forwardRef(
       controlledOnNavigationChange?.(event);
     };
 
+    const [rootRef, placement] = useAppLayoutPlacement(headerSelector, footerSelector);
+
     // This re-builds the props including the default values
     const props = {
       contentType,
-      headerSelector,
-      footerSelector,
       navigationWidth,
       toolsWidth,
       navigationOpen,
@@ -101,12 +103,13 @@ const AppLayout = React.forwardRef(
       ...restDefaults,
       ...rest,
       ariaLabels,
+      placement,
     };
 
     const baseProps = getBaseProps(rest);
 
     return (
-      <div ref={__internalRootRef} {...baseProps}>
+      <div ref={useMergeRefs(__internalRootRef, rootRef)} {...baseProps}>
         <AppLayoutInternal ref={ref} {...props} />
       </div>
     );
