@@ -1,12 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-
-import React from 'react';
 import { KeyCode } from '../keycode';
 import { isRtl } from '../direction';
 
+interface EventLike {
+  keyCode: number;
+  currentTarget: HTMLElement;
+}
+
 export default function handleKey(
-  event: React.KeyboardEvent<HTMLElement>,
+  event: EventLike,
   {
     onActivate,
     onBlockEnd,
@@ -18,45 +21,45 @@ export default function handleKey(
     onPageDown,
     onPageUp,
   }: {
-    onActivate?: (event: React.KeyboardEvent) => void;
-    onBlockEnd?: (event: React.KeyboardEvent) => void;
-    onBlockStart?: (event: React.KeyboardEvent) => void;
-    onEnd?: (event: React.KeyboardEvent) => void;
-    onHome?: (event: React.KeyboardEvent) => void;
-    onInlineEnd?: (event: React.KeyboardEvent) => void;
-    onInlineStart?: (event: React.KeyboardEvent) => void;
-    onPageDown?: (event: React.KeyboardEvent) => void;
-    onPageUp?: (event: React.KeyboardEvent) => void;
+    onActivate?: () => void;
+    onBlockEnd?: () => void;
+    onBlockStart?: () => void;
+    onEnd?: () => void;
+    onHome?: () => void;
+    onInlineEnd?: () => void;
+    onInlineStart?: () => void;
+    onPageDown?: () => void;
+    onPageUp?: () => void;
   }
 ) {
   switch (event.keyCode) {
     case KeyCode.down:
-      onBlockEnd?.(event);
+      onBlockEnd?.();
       break;
     case KeyCode.end:
-      onEnd?.(event);
+      onEnd?.();
       break;
     case KeyCode.enter:
     case KeyCode.space:
-      onActivate?.(event);
+      onActivate?.();
       break;
     case KeyCode.home:
-      onHome?.(event);
+      onHome?.();
       break;
     case KeyCode.left:
-      isRtl(event.currentTarget) ? onInlineEnd?.(event) : onInlineStart?.(event);
+      isRtl(event.currentTarget) ? onInlineEnd?.() : onInlineStart?.();
       break;
     case KeyCode.pageDown:
-      onPageDown?.(event);
+      onPageDown?.();
       break;
     case KeyCode.pageUp:
-      onPageUp?.(event);
+      onPageUp?.();
       break;
     case KeyCode.right:
-      isRtl(event.currentTarget) ? onInlineStart?.(event) : onInlineEnd?.(event);
+      isRtl(event.currentTarget) ? onInlineStart?.() : onInlineEnd?.();
       break;
     case KeyCode.up:
-      onBlockStart?.(event);
+      onBlockStart?.();
       break;
   }
 }
