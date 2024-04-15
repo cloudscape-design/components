@@ -3,7 +3,11 @@
 import { KeyCode } from '../keycode';
 import { isRtl } from '../direction';
 
-interface EventLike {
+export function isEventLike(event: any): event is EventLike {
+  return event.currentTarget instanceof HTMLElement;
+}
+
+export interface EventLike {
   keyCode: number;
   currentTarget: HTMLElement;
 }
@@ -15,6 +19,7 @@ export default function handleKey(
     onBlockEnd,
     onBlockStart,
     onEnd,
+    onEscape,
     onHome,
     onInlineEnd,
     onInlineStart,
@@ -25,6 +30,7 @@ export default function handleKey(
     onBlockEnd?: () => void;
     onBlockStart?: () => void;
     onEnd?: () => void;
+    onEscape?: () => void;
     onHome?: () => void;
     onInlineEnd?: () => void;
     onInlineStart?: () => void;
@@ -42,6 +48,9 @@ export default function handleKey(
     case KeyCode.enter:
     case KeyCode.space:
       onActivate?.();
+      break;
+    case KeyCode.escape:
+      onEscape?.();
       break;
     case KeyCode.home:
       onHome?.();

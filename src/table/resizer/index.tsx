@@ -10,6 +10,7 @@ import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { getHeaderWidth, getResizerElements } from './resizer-lookup';
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context.js';
 import { getLogicalBoundingClientRect, getLogicalPageX } from '../../internal/direction.js';
+import handleKey, { isEventLike } from '../../internal/utils/handle-key';
 
 interface ResizerProps {
   onWidthUpdate: (newWidth: number) => void;
@@ -123,28 +124,37 @@ export function Resizer({
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (isKeyboardDragging) {
-        // Update width
-        if (event.keyCode === KeyCode.left) {
+        const keys = [KeyCode.left, KeyCode.right, KeyCode.enter, KeyCode.right, KeyCode.space, KeyCode.escape];
+
+        if (keys.indexOf(event.keyCode) !== -1) {
           event.preventDefault();
-          updateColumnWidth(getLogicalBoundingClientRect(elements.header).inlineSize - 10);
-        }
-        if (event.keyCode === KeyCode.right) {
-          event.preventDefault();
-          updateColumnWidth(getLogicalBoundingClientRect(elements.header).inlineSize + 10);
-        }
-        // Exit keyboard dragging mode
-        if (event.keyCode === KeyCode.enter || event.keyCode === KeyCode.space || event.keyCode === KeyCode.escape) {
-          event.preventDefault();
-          setIsKeyboardDragging(false);
-          resizerToggleRef.current?.focus();
-          // The onWidthUpdateCommit is fired from the separator's blur event handler.
+
+          isEventLike(event) &&
+            handleKey(event, {
+              onActivate: () => {
+                setIsKeyboardDragging(false);
+                resizerToggleRef.current?.focus();
+              },
+              onEscape: () => {
+                setIsKeyboardDragging(false);
+                resizerToggleRef.current?.focus();
+              },
+              onInlineStart: () => updateColumnWidth(getLogicalBoundingClientRect(elements.header).inlineSize - 10),
+              onInlineEnd: () => updateColumnWidth(getLogicalBoundingClientRect(elements.header).inlineSize + 10),
+            });
         }
       }
       // Enter keyboard dragging mode
       else if (event.keyCode === KeyCode.enter || event.keyCode === KeyCode.space) {
         event.preventDefault();
-        setIsKeyboardDragging(true);
-        resizerSeparatorRef.current?.focus();
+
+        isEventLike(event) &&
+          handleKey(event, {
+            onActivate: () => {
+              setIsKeyboardDragging(true);
+              resizerSeparatorRef.current?.focus();
+            },
+          });
       }
     };
 

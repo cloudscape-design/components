@@ -21,6 +21,7 @@ import {
   SingleTabStopNavigationContext,
   FocusableChangeHandler,
 } from '../../internal/context/single-tab-stop-navigation-context';
+import handleKey, { isEventLike } from '../../internal/utils/handle-key';
 
 /**
  * Makes table navigable with keyboard commands.
@@ -192,69 +193,62 @@ class GridNavigationProcessor {
       return;
     }
 
+    const keys = [
+      KeyCode.up,
+      KeyCode.down,
+      KeyCode.left,
+      KeyCode.right,
+      KeyCode.pageUp,
+      KeyCode.pageDown,
+      KeyCode.home,
+      KeyCode.end,
+    ];
     const ctrlKey = event.ctrlKey ? 1 : 0;
     const altKey = event.altKey ? 1 : 0;
     const shiftKey = event.shiftKey ? 1 : 0;
     const metaKey = event.metaKey ? 1 : 0;
     const numModifiersPressed = ctrlKey + altKey + shiftKey + metaKey;
 
-    let key = event.keyCode;
-    if (numModifiersPressed === 1 && event.ctrlKey) {
-      key = -key;
-    } else if (numModifiersPressed) {
+    if (numModifiersPressed !== 1 || !event.ctrlKey) {
       return;
     }
+
+    if (
+      this.isSuppressed(document.activeElement) ||
+      !this.isRegistered(document.activeElement) ||
+      keys.indexOf(event.keyCode) === -1
+    ) {
+      return;
+    }
+
+    event.preventDefault();
 
     const from = this.focusedCell;
 
-    if (this.isSuppressed(document.activeElement) || !this.isRegistered(document.activeElement)) {
-      return;
-    }
-
-    switch (key) {
-      case KeyCode.up:
-        event.preventDefault();
-        return this.moveFocusBy(from, { y: -1, x: 0 });
-
-      case KeyCode.down:
-        event.preventDefault();
-        return this.moveFocusBy(from, { y: 1, x: 0 });
-
-      case KeyCode.left:
-        event.preventDefault();
-        return this.moveFocusBy(from, { y: 0, x: -1 });
-
-      case KeyCode.right:
-        event.preventDefault();
-        return this.moveFocusBy(from, { y: 0, x: 1 });
-
-      case KeyCode.pageUp:
-        event.preventDefault();
-        return this.moveFocusBy(from, { y: -this.pageSize, x: 0 });
-
-      case KeyCode.pageDown:
-        event.preventDefault();
-        return this.moveFocusBy(from, { y: this.pageSize, x: 0 });
-
-      case KeyCode.home:
-        event.preventDefault();
-        return this.moveFocusBy(from, { y: 0, x: -Infinity });
-
-      case KeyCode.end:
-        event.preventDefault();
-        return this.moveFocusBy(from, { y: 0, x: Infinity });
-
-      case -KeyCode.home:
-        event.preventDefault();
-        return this.moveFocusBy(from, { y: -Infinity, x: -Infinity });
-
-      case -KeyCode.end:
-        event.preventDefault();
-        return this.moveFocusBy(from, { y: Infinity, x: Infinity });
-
-      default:
-        return;
-    }
+    // TODO RLT what is the dash before the second home
+    isEventLike(event) &&
+      handleKey(event, {
+        onBlockStart: () => this.moveFocusBy(from, { y: -1, x: 0 }),
+        onBlockEnd: () => this.moveFocusBy(from, { y: 1, x: 0 }),
+        onInlineStart: () => this.moveFocusBy(from, { y: 0, x: -1 }),
+        onInlineEnd: () => this.moveFocusBy(from, { y: 0, x: 1 }),
+        onPageUp: () => this.moveFocusBy(from, { y: -this.pageSize, x: 0 }),
+        onPageDown: () => this.moveFocusBy(from, { y: this.pageSize, x: 0 }),
+        onHome: () => {
+          if (numModifiersPressed === 1 && event.ctrlKey) {
+            this.moveFocusBy(from, { y: -Infinity, x: -Infinity });
+          } else {
+            this.moveFocusBy(from, { y: 0, x: -Infinity });
+          }
+        },
+        onEnd: () => {
+          if (numModifiersPressed === 1 && event.ctrlKey) {
+            this.moveFocusBy(from, { y: Infinity, x: Infinity });
+          } else {
+            this.moveFocusBy(from, { y: 0, x: Infinity });
+          }
+        },
+      });
   };
 
   private moveFocusBy(cell: FocusedCell, delta: { x: number; y: number }) {
