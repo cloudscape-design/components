@@ -3,10 +3,10 @@
 
 import { findUpUntil } from './dom';
 export interface BoundingBox {
-  height: number;
-  width: number;
-  top: number;
-  left: number;
+  blockSize: number;
+  inlineSize: number;
+  insetBlockStart: number;
+  insetInlineStart: number;
 }
 
 export const getOverflowParents = (element: HTMLElement): HTMLElement[] => {
@@ -37,27 +37,27 @@ export const getOverflowParentDimensions = ({
         return {
           // Treat the whole scrollable area as the available height
           // if we're allowed to expand past the viewport.
-          height: canExpandOutsideViewport ? el.scrollHeight : height,
-          width,
-          top,
-          left,
+          blockSize: canExpandOutsideViewport ? el.scrollHeight : height,
+          inlineSize: width,
+          insetBlockStart: top,
+          insetInlineStart: left,
         };
       });
 
   if (canExpandOutsideViewport && !expandToViewport) {
     const documentDimensions = document.documentElement.getBoundingClientRect();
     parents.push({
-      width: Math.max(documentDimensions.width, document.documentElement.clientWidth),
-      height: Math.max(documentDimensions.height, document.documentElement.clientHeight),
-      top: documentDimensions.top,
-      left: documentDimensions.left,
+      inlineSize: Math.max(documentDimensions.width, document.documentElement.clientWidth),
+      blockSize: Math.max(documentDimensions.height, document.documentElement.clientHeight),
+      insetBlockStart: documentDimensions.top,
+      insetInlineStart: documentDimensions.left,
     });
   } else {
     parents.push({
-      height: window.innerHeight,
-      width: window.innerWidth,
-      top: 0,
-      left: 0,
+      blockSize: window.innerHeight,
+      inlineSize: window.innerWidth,
+      insetBlockStart: 0,
+      insetInlineStart: 0,
     });
   }
 
@@ -87,14 +87,14 @@ export function scrollElementIntoView(
   element?.scrollIntoView?.(options);
 }
 
-export function calculateScroll({ top, height }: BoundingBox) {
-  if (top < 0) {
-    return top;
-  } else if (top + height > window.innerHeight) {
-    if (height > window.innerHeight) {
-      return top;
+export function calculateScroll({ insetBlockStart, blockSize }: BoundingBox) {
+  if (insetBlockStart < 0) {
+    return insetBlockStart;
+  } else if (insetBlockStart + blockSize > window.innerHeight) {
+    if (blockSize > window.innerHeight) {
+      return insetBlockStart;
     } else {
-      return top + height - window.innerHeight;
+      return insetBlockStart + blockSize - window.innerHeight;
     }
   }
   return 0;

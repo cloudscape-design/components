@@ -27,7 +27,7 @@ export default function DropdownScenario() {
         <div
           id="dropdown1"
           className={clsx(styles['dropdown-container'], styles.middle2)}
-          style={{ left: '100px', height: '800px' }}
+          style={{ insetInlineStart: '100px', blockSize: '800px' }}
         >
           <Dropdown
             stretchWidth={false}
@@ -48,7 +48,7 @@ export default function DropdownScenario() {
         className={clsx(styles.container, styles['container-wide'], styles['container-overflow-y-visible'])}
         id={'container-2'}
       >
-        <div id="dropdown2" className={styles['dropdown-container']} style={{ left: '100px' }}>
+        <div id="dropdown2" className={styles['dropdown-container']} style={{ insetInlineStart: '100px' }}>
           <Dropdown
             stretchWidth={false}
             stretchHeight={false}
@@ -68,7 +68,7 @@ export default function DropdownScenario() {
         className={clsx(styles.container, styles['container-wide'], styles['container-overflow-visible'])}
         id={'container-3'}
       >
-        <div id="dropdown3" className={styles['dropdown-container']} style={{ left: '100px' }}>
+        <div id="dropdown3" className={styles['dropdown-container']} style={{ insetInlineStart: '100px' }}>
           <Dropdown
             stretchWidth={true}
             stretchHeight={true}
@@ -80,7 +80,7 @@ export default function DropdownScenario() {
             open={openParent3}
             onDropdownClose={() => setOpenParent3(false)}
           >
-            <div style={{ width: '400px' }}>
+            <div style={{ inlineSize: '400px' }}>
               <ListContent n={15} withSpaces={true} repeat={20} />
             </div>
           </Dropdown>

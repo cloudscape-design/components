@@ -42,7 +42,7 @@ export default function DropdownScenario() {
         </div>
       </div>
       <div className={clsx(styles.container, styles['container-wide'])}>
-        <div id="centerDropdown" className={styles['dropdown-container']} style={{ left: '100px' }}>
+        <div id="centerDropdown" className={styles['dropdown-container']} style={{ insetInlineStart: '100px' }}>
           <Dropdown
             stretchWidth={false}
             preferCenter={true}
@@ -59,7 +59,7 @@ export default function DropdownScenario() {
         </div>
       </div>
       <div className={clsx(styles.container, styles['container-wide'])}>
-        <div id="rightDropdown" className={styles['dropdown-container']} style={{ left: '250px' }}>
+        <div id="rightDropdown" className={styles['dropdown-container']} style={{ insetInlineStart: '250px' }}>
           <Dropdown
             stretchWidth={false}
             preferCenter={true}
