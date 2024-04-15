@@ -5,7 +5,6 @@ import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } 
 import { useControllable } from '../internal/hooks/use-controllable';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { fireNonCancelableEvent } from '../internal/events';
-import { applyDefaults } from './defaults';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from './interfaces';
 import { Notifications } from './notifications';
 import { MobileToolbar } from './mobile-toolbar';
@@ -32,8 +31,7 @@ import {
   SplitPanelProviderProps,
 } from './split-panel';
 import useAppLayoutRect from './utils/use-app-layout-rect';
-import { isDevelopment } from '../internal/is-development';
-import { useStableCallback, warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
 import { useSplitPanelFocusControl } from './utils/use-split-panel-focus-control';
 import { TOOLS_DRAWER_ID, useDrawers } from './utils/use-drawers';
@@ -44,11 +42,11 @@ const ClassicAppLayout = React.forwardRef(
   (
     {
       navigation,
-      navigationWidth = 280,
+      navigationWidth,
       navigationHide,
-      navigationOpen: controlledNavigationOpen,
+      navigationOpen,
       tools,
-      toolsWidth = 290,
+      toolsWidth,
       toolsHide,
       toolsOpen: controlledToolsOpen,
       breadcrumbs,
@@ -81,35 +79,17 @@ const ClassicAppLayout = React.forwardRef(
     }: AppLayoutPropsWithDefaults,
     ref: React.Ref<AppLayoutProps.Ref>
   ) => {
-    if (isDevelopment) {
-      if (controlledToolsOpen && toolsHide) {
-        warnOnce(
-          'AppLayout',
-          `You have enabled both the \`toolsOpen\` prop and the \`toolsHide\` prop. This is not supported. Set \`toolsOpen\` to \`false\` when you set \`toolsHide\` to \`true\`.`
-        );
-      }
-    }
-
     // Private API for embedded view mode
     const __embeddedViewMode = Boolean((rest as any).__embeddedViewMode);
 
     const rootRef = useRef<HTMLDivElement>(null);
     const isMobile = useMobile();
 
-    const defaults = applyDefaults(contentType, { maxContentWidth, minContentWidth }, false);
-    const [navigationOpen = false, setNavigationOpen] = useControllable(
-      controlledNavigationOpen,
-      onNavigationChange,
-      isMobile ? false : defaults.navigationOpen,
-      { componentName: 'AppLayout', controlledProp: 'navigationOpen', changeHandler: 'onNavigationChange' }
-    );
-
-    const [toolsOpen = false, setToolsOpen] = useControllable(
-      controlledToolsOpen,
-      onToolsChange,
-      isMobile ? false : defaults.toolsOpen,
-      { componentName: 'AppLayout', controlledProp: 'toolsOpen', changeHandler: 'onToolsChange' }
-    );
+    const [toolsOpen = false, setToolsOpen] = useControllable(controlledToolsOpen, onToolsChange, false, {
+      componentName: 'AppLayout',
+      controlledProp: 'toolsOpen',
+      changeHandler: 'onToolsChange',
+    });
     const onToolsToggle = (open: boolean) => {
       setToolsOpen(open);
       focusToolsButtons();
@@ -158,7 +138,6 @@ const ClassicAppLayout = React.forwardRef(
     } = useFocusControl(!!activeDrawerId, true, activeDrawerId);
 
     const onNavigationToggle = useStableCallback((open: boolean) => {
-      setNavigationOpen(open);
       focusNavButtons();
       fireNonCancelableEvent(onNavigationChange, { open });
     });
@@ -309,7 +288,7 @@ const ClassicAppLayout = React.forwardRef(
         leftOffset -
         rightOffset -
         effectiveNavigationWidth -
-        defaults.minContentWidth -
+        minContentWidth -
         contentPadding -
         rightDrawerBarWidth
     );
@@ -327,7 +306,7 @@ const ClassicAppLayout = React.forwardRef(
 
     const navigationClosedWidth = navigationHide || isMobile ? 0 : closedDrawerWidth;
 
-    const contentMaxWidthStyle = !isMobile ? { maxWidth: defaults.maxContentWidth } : undefined;
+    const contentMaxWidthStyle = !isMobile ? { maxWidth: maxContentWidth } : undefined;
 
     const [splitPanelReportedSize, setSplitPanelReportedSize] = useState(0);
     const [splitPanelReportedHeaderHeight, setSplitPanelReportedHeaderHeight] = useState(0);
@@ -367,9 +346,7 @@ const ClassicAppLayout = React.forwardRef(
     const contentWrapperProps: ContentWrapperProps = {
       contentType,
       navigationPadding: navigationHide || !!navigationOpen,
-      contentWidthStyles: !isMobile
-        ? { minWidth: defaults.minContentWidth, maxWidth: defaults.maxContentWidth }
-        : undefined,
+      contentWidthStyles: !isMobile ? { minWidth: minContentWidth, maxWidth: maxContentWidth } : undefined,
       toolsPadding:
         // tools padding is displayed in one of the three cases
         // 1. Nothing on the that screen edge (no tools panel and no split panel)

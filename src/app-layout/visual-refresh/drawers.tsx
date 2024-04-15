@@ -29,12 +29,12 @@ export default function Drawers() {
     drawersTriggerCount,
     hasDrawerViewportOverlay,
     hasOpenDrawer,
-    isNavigationOpen,
+    navigationOpen,
     navigationHide,
     isMobile,
   } = useAppLayoutInternals();
 
-  const isUnfocusable = hasDrawerViewportOverlay && isNavigationOpen && !navigationHide;
+  const isUnfocusable = hasDrawerViewportOverlay && navigationOpen && !navigationHide;
 
   if (!drawers || drawersTriggerCount === 0) {
     return null;
@@ -65,7 +65,7 @@ function ActiveDrawer() {
     handleToolsClick,
     hasDrawerViewportOverlay,
     isMobile,
-    isNavigationOpen,
+    navigationOpen,
     navigationHide,
     loseDrawersFocus,
     resizeHandle,
@@ -83,7 +83,7 @@ function ActiveDrawer() {
   };
 
   const isHidden = !activeDrawerId;
-  const isUnfocusable = isHidden || (hasDrawerViewportOverlay && isNavigationOpen && !navigationHide);
+  const isUnfocusable = isHidden || (hasDrawerViewportOverlay && navigationOpen && !navigationHide);
   const isToolsDrawer = activeDrawerId === TOOLS_DRAWER_ID;
   const toolsContent = drawers?.find(drawer => drawer.id === TOOLS_DRAWER_ID)?.content;
 

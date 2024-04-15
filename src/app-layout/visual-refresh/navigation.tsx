@@ -25,7 +25,7 @@ export default function Navigation() {
     handleNavigationClick,
     hasDrawerViewportOverlay,
     isMobile,
-    isNavigationOpen,
+    navigationOpen,
     isToolsOpen,
     navigation,
     navigationHide,
@@ -49,33 +49,32 @@ export default function Navigation() {
     }
   };
 
-  const isUnfocusable = hasDrawerViewportOverlay && (!isNavigationOpen || (isToolsOpen && !toolsHide));
+  const isUnfocusable = hasDrawerViewportOverlay && (!navigationOpen || (isToolsOpen && !toolsHide));
 
   return (
-    <Transition in={isNavigationOpen}>
+    <Transition in={navigationOpen}>
       {(state, transitionEventsRef) => (
         <div
           className={clsx(styles['navigation-container'], {
             [styles['disable-body-scroll']]: disableBodyScroll,
             [styles.unfocusable]: isUnfocusable,
-            [testutilStyles['drawer-closed']]: !isNavigationOpen,
+            [testutilStyles['drawer-closed']]: !navigationOpen,
           })}
-          // Overwrite the default nav width (depends on breakpoints) only when the `navigationWidth` property is set.
-          style={{ ...(navigationWidth && { [customCssProps.navigationWidth]: `${navigationWidth}px` }) }}
+          style={{ [customCssProps.navigationWidth]: `${navigationWidth}px` }}
         >
           {!isMobile && (
             <nav
-              aria-hidden={isMobile || isNavigationOpen ? true : false}
+              aria-hidden={isMobile || navigationOpen}
               aria-label={ariaLabels?.navigation ?? undefined}
               className={clsx(styles['show-navigation'], {
                 [styles.animating]: state === 'exiting',
-                [styles['is-navigation-open']]: isNavigationOpen,
+                [styles['is-navigation-open']]: navigationOpen,
               })}
               ref={state === 'exiting' ? transitionEventsRef : undefined}
             >
               <TriggerButton
                 ariaLabel={ariaLabels?.navigationToggle}
-                ariaExpanded={isNavigationOpen ? undefined : false}
+                ariaExpanded={navigationOpen ? undefined : false}
                 iconName="menu"
                 className={testutilStyles['navigation-toggle']}
                 onClick={() => handleNavigationClick(true)}
@@ -90,12 +89,12 @@ export default function Navigation() {
               styles.navigation,
               {
                 [styles.animating]: state === 'entering',
-                [styles['is-navigation-open']]: isNavigationOpen,
+                [styles['is-navigation-open']]: navigationOpen,
               },
               testutilStyles.navigation
             )}
             ref={state !== 'exiting' ? transitionEventsRef : undefined}
-            aria-hidden={!isNavigationOpen}
+            aria-hidden={!navigationOpen}
             onClick={event => {
               onNavigationClick && onNavigationClick(event);
             }}

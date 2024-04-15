@@ -23,14 +23,21 @@ export interface DrawerResizeProps {
   drawersRefs: FocusControlRefs;
   isToolsOpen: boolean;
   drawersMaxWidth: number;
+  drawersMinWidth: number;
 }
 
 function useResize(
   drawerRefObject: React.RefObject<HTMLDivElement>,
-  { activeDrawer, activeDrawerSize, onActiveDrawerResize, drawersRefs, isToolsOpen, drawersMaxWidth }: DrawerResizeProps
+  {
+    activeDrawer,
+    activeDrawerSize,
+    onActiveDrawerResize,
+    drawersRefs,
+    isToolsOpen,
+    drawersMinWidth,
+    drawersMaxWidth,
+  }: DrawerResizeProps
 ) {
-  const toolsWidth = 290;
-  const MIN_WIDTH = Math.min(activeDrawer?.defaultSize ?? Number.POSITIVE_INFINITY, toolsWidth);
   const [relativeSize, setRelativeSize] = useState(0);
 
   const drawerSize = !activeDrawer && !isToolsOpen ? 0 : activeDrawerSize;
@@ -40,17 +47,17 @@ function useResize(
     // wait one frame to allow app-layout to complete its calculations
     const handle = requestAnimationFrame(() => {
       const maxSize = drawersMaxWidth;
-      setRelativeSize(((drawerSize - MIN_WIDTH) / (maxSize - MIN_WIDTH)) * 100);
+      setRelativeSize(((drawerSize - drawersMinWidth) / (maxSize - drawersMinWidth)) * 100);
     });
     return () => cancelAnimationFrame(handle);
-  }, [drawerSize, drawersMaxWidth, MIN_WIDTH]);
+  }, [drawerSize, drawersMaxWidth, drawersMinWidth]);
 
   const setSidePanelWidth = (width: number) => {
     const maxWidth = drawersMaxWidth;
-    const size = getLimitedValue(MIN_WIDTH, width, maxWidth);
+    const size = getLimitedValue(drawersMinWidth, width, maxWidth);
     const id = activeDrawer?.id;
 
-    if (id && maxWidth >= MIN_WIDTH) {
+    if (id && maxWidth >= drawersMinWidth) {
       onActiveDrawerResize({ size, id });
     }
   };

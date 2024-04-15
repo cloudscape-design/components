@@ -8,7 +8,6 @@
 @use '../../internal/generated/custom-css-properties/index.scss' as custom-props;
 
 .navigation-container {
-  #{custom-props.$navigationWidth}: 280px;
   display: flex;
   grid-column: 1;
   grid-row: 1 / span 10;
@@ -28,10 +27,6 @@
   the panels and toggle buttons.
   */
   pointer-events: none;
-
-  @include styles.media-breakpoint-up(styles.$breakpoint-xx-large) {
-    #{custom-props.$navigationWidth}: 320px;
-  }
 
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
     inset-inline-start: 0;

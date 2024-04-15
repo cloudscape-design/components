@@ -36,7 +36,7 @@
 .navigation.refresh {
   grid-column: 1;
   grid-row: 1 / span 2;
-  padding-block-start: var(#{custom-props.$containerFirstGap}, 0px);
+  padding-block-start: calc(awsui.$space-xs + awsui.$space-scaled-xxs);
 
   > ul.refresh {
     background: awsui.$color-background-container-content;
@@ -241,13 +241,13 @@
   }
 
   > .form-header > .form-header-content {
-    padding-block-start: calc(var(#{custom-props.$containerFirstGap}, 0px) + awsui.$space-m - awsui.$space-xxxs);
+    padding-block-start: calc(awsui.$space-xl + awsui.$space-scaled-xxxs);
     padding-block-end: awsui.$space-scaled-s;
   }
 
   &:not(.remove-high-contrast-header) {
     > .form-header > .form-header-content {
-      padding-block-start: calc(var(#{custom-props.$containerFirstGap}, 0px) + awsui.$space-s);
+      padding-block-start: calc(awsui.$space-l + awsui.$space-scaled-xxs);
       padding-block-end: awsui.$space-scaled-m;
     }
   }

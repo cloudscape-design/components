@@ -756,6 +756,7 @@ If set to \`Number.MAX_VALUE\`, the main content panel will occupy the full avai
       "type": "boolean",
     },
     Object {
+      "defaultValue": "280",
       "description": "Navigation drawer width in pixels.",
       "name": "navigationWidth",
       "optional": true,
@@ -812,6 +813,7 @@ content area so it is always visible.",
       "type": "boolean",
     },
     Object {
+      "defaultValue": "290",
       "description": "Tools drawer width in pixels.",
       "name": "toolsWidth",
       "optional": true,

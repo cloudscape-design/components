@@ -51,7 +51,7 @@ describe('Default width per contentType', () => {
   const testCases = [
     { viewPortWidth: 1920, navigationWidth: 280, contentWidth: 1280, toolsWidth: 290 }, // XXXS - L breakpoint
     { viewPortWidth: 1921, navigationWidth: 280, contentWidth: 1440, toolsWidth: 290 }, // L -XL breakpoint
-    { viewPortWidth: 2541, navigationWidth: 320, contentWidth: 1620, toolsWidth: 360 }, // XL - > XXL breakpoint
+    { viewPortWidth: 2541, navigationWidth: 280, contentWidth: 1620, toolsWidth: 290 }, // XL - > XXL breakpoint
   ];
 
   testCases.forEach(({ viewPortWidth, navigationWidth, contentWidth, toolsWidth }) => {

@@ -1,6 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+// TODO: Replace with correct type from component-toolkit
+export interface AnalyticsMetadata {
+  instanceId?: string;
+  flowType?: 'create' | 'edit';
+  errorContext?: string;
+}
+
 export type FunnelType = 'single-page' | 'multi-page';
 
 // Common properties for all funnels
@@ -9,6 +16,8 @@ export interface BaseFunnelProps {
 }
 
 export interface FunnelProps extends BaseFunnelProps {
+  instanceId?: AnalyticsMetadata['instanceId'];
+  flowType?: AnalyticsMetadata['flowType'];
   totalFunnelSteps: number;
   optionalStepNumbers: number[];
   funnelType: FunnelType;
@@ -16,6 +25,8 @@ export interface FunnelProps extends BaseFunnelProps {
 }
 
 export interface FunnelStartProps {
+  instanceId?: AnalyticsMetadata['instanceId'];
+  flowType?: AnalyticsMetadata['flowType'];
   funnelNameSelector: string;
   totalFunnelSteps: number;
   optionalStepNumbers: number[];
@@ -34,6 +45,7 @@ export type FunnelStartMethod = (props: FunnelStartProps) => string;
 
 // Define individual method props by extending the base
 export interface FunnelStepProps extends BaseFunnelProps {
+  instanceId?: AnalyticsMetadata['instanceId'];
   stepNumber: number;
   stepName?: string | undefined;
   stepNameSelector: string;
@@ -59,6 +71,7 @@ export interface FunnelStepErrorProps extends FunnelStepProps {
 }
 
 export interface FunnelSubStepProps extends FunnelStepProps {
+  instanceId?: AnalyticsMetadata['instanceId'];
   subStepSelector: string;
   subStepName?: string | undefined;
   subStepNameSelector: string;
@@ -84,6 +97,7 @@ export interface FunnelChangeProps extends BaseFunnelProps {
 }
 
 export interface FunnelStepChangeProps extends BaseFunnelProps {
+  instanceId?: AnalyticsMetadata['instanceId'];
   stepNumber: number;
   stepName: string;
   stepNameSelector: string;

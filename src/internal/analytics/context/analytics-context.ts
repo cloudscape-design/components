@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { MutableRefObject, RefObject, createContext } from 'react';
-import { FunnelType, SubStepConfiguration } from '../interfaces';
+import { AnalyticsMetadata, FunnelType, SubStepConfiguration } from '../interfaces';
 import { getFunnelNameSelector } from '../selectors';
 
 export type FunnelState = 'default' | 'validating' | 'complete' | 'cancelled';
@@ -26,6 +26,7 @@ export interface FunnelContextValue {
 }
 
 export interface FunnelStepContextValue {
+  instanceId?: AnalyticsMetadata['instanceId'];
   stepNameSelector: string;
   stepNumber: number;
   funnelStepProps?: Record<string, string | number | boolean | undefined>;
@@ -38,6 +39,7 @@ export interface FunnelStepContextValue {
 }
 
 export interface FunnelSubStepContextValue {
+  instanceId?: AnalyticsMetadata['instanceId'];
   subStepId: string;
   subStepSelector: string;
   subStepNameSelector: string;

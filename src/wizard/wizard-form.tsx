@@ -2,16 +2,22 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef } from 'react';
 import clsx from 'clsx';
+
+import { useComponentMetadata } from '@cloudscape-design/component-toolkit/internal';
+
 import InternalForm from '../form/internal';
 import InternalHeader from '../header/internal';
 import { useMobile } from '../internal/hooks/use-mobile';
 import WizardActions from './wizard-actions';
 import { WizardProps } from './interfaces';
 import WizardFormHeader from './wizard-form-header';
-import styles from './styles.css.js';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
 import { AnalyticsFunnelStep } from '../internal/analytics/components/analytics-funnel';
 import { DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_STEP_NAME } from '../internal/analytics/selectors';
+import { PACKAGE_VERSION } from '../internal/environment';
+import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
+
+import styles from './styles.css.js';
 
 interface WizardFormProps {
   steps: ReadonlyArray<WizardProps.Step>;
@@ -46,11 +52,13 @@ export default function WizardForm({
   onPrimaryClick,
   onSkipToClick,
 }: WizardFormProps) {
-  const { title, info, description, content, errorText, isOptional } = steps[activeStepIndex] || {};
+  const { title, info, description, content, errorText, isOptional, ...rest } = steps[activeStepIndex] || {};
   const isLastStep = activeStepIndex >= steps.length - 1;
   const skipToTargetIndex = findSkipToTargetIndex(steps, activeStepIndex);
   const isMobile = useMobile();
   const stepHeaderRef = useRef<HTMLDivElement | null>(null);
+  const analyticsMetadata = getAnalyticsMetadataProps(rest as BasePropsWithAnalyticsMetadata);
+  const elementRef = useComponentMetadata('WizardForm', PACKAGE_VERSION, { ...analyticsMetadata });
 
   useEffectOnUpdate(() => {
     if (stepHeaderRef && stepHeaderRef.current) {
@@ -66,7 +74,12 @@ export default function WizardForm({
 
   return (
     <>
-      <AnalyticsFunnelStep stepNameSelector={STEP_NAME_SELECTOR} stepNumber={activeStepIndex + 1}>
+      <AnalyticsFunnelStep
+        instanceId={analyticsMetadata?.instanceId}
+        errorContext={analyticsMetadata?.errorContext}
+        stepNameSelector={STEP_NAME_SELECTOR}
+        stepNumber={activeStepIndex + 1}
+      >
         {({ funnelStepProps }) => (
           <>
             <WizardFormHeader isMobile={isMobile || showCollapsedSteps} isVisualRefresh={isVisualRefresh}>
@@ -87,6 +100,7 @@ export default function WizardForm({
             </WizardFormHeader>
 
             <InternalForm
+              __internalRootRef={elementRef}
               className={clsx(styles['form-component'])}
               actions={
                 <WizardActions

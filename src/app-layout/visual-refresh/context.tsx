@@ -10,29 +10,28 @@ import React, {
   useState,
   useContext,
 } from 'react';
-import { applyDefaults } from '../defaults';
 import { AppLayoutContext } from '../../internal/context/app-layout-context';
 import { DynamicOverlapContext } from '../../internal/context/dynamic-overlap-context';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
 import { fireNonCancelableEvent } from '../../internal/events';
 import { FocusControlRefs, useFocusControl } from '../utils/use-focus-control';
 import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
-import { isDevelopment } from '../../internal/is-development';
 import { getSplitPanelPosition } from './split-panel';
 import { useControllable } from '../../internal/hooks/use-controllable';
 import { SplitPanelFocusControlRefs, useSplitPanelFocusControl } from '../utils/use-split-panel-focus-control';
 import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
 import { useObservedElement } from '../utils/use-observed-element';
 import { useMobile } from '../../internal/hooks/use-mobile';
-import { useStableCallback, warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 import useResize from '../utils/use-resize';
 import styles from './styles.css.js';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import useBackgroundOverlap from './use-background-overlap';
 import { useDrawers } from '../utils/use-drawers';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
+import { SPLIT_PANEL_MIN_WIDTH } from '../split-panel';
 
-interface AppLayoutInternals extends AppLayoutProps {
+interface AppLayoutInternals extends AppLayoutPropsWithDefaults {
   activeDrawerId: string | null;
   drawers: Array<AppLayoutProps.Drawer> | undefined;
   drawersAriaLabel: string | undefined;
@@ -51,7 +50,6 @@ interface AppLayoutInternals extends AppLayoutProps {
   handleSplitPanelPreferencesChange: (detail: AppLayoutProps.SplitPanelPreferences) => void;
   handleSplitPanelResize: (newSize: number) => void;
   handleToolsClick: (value: boolean, skipFocusControl?: boolean) => void;
-  hasDefaultToolsWidth: boolean;
   hasBackgroundOverlap: boolean;
   hasDrawerViewportOverlay: boolean;
   hasNotificationsContent: boolean;
@@ -59,7 +57,6 @@ interface AppLayoutInternals extends AppLayoutProps {
   hasStickyBackground: boolean;
   isBackgroundOverlapDisabled: boolean;
   isMobile: boolean;
-  isNavigationOpen: boolean;
   isSplitPanelForcedPosition: boolean;
   isSplitPanelOpen?: boolean;
   isToolsOpen: boolean;
@@ -80,7 +77,6 @@ interface AppLayoutInternals extends AppLayoutProps {
   footerHeight: number;
   splitPanelControlId: string;
   splitPanelMaxWidth: number;
-  splitPanelMinWidth: number;
   splitPanelPosition: AppLayoutProps.SplitPanelPosition;
   splitPanelReportedSize: number;
   splitPanelReportedHeaderHeight: number;
@@ -113,34 +109,22 @@ export function useAppLayoutInternals() {
 }
 
 export const AppLayoutInternalsProvider = React.forwardRef(
-  (
-    {
+  (props: AppLayoutProviderInternalsProps, forwardRef: React.Ref<AppLayoutProps.Ref>) => {
+    const {
       toolsHide,
       toolsOpen: controlledToolsOpen,
       navigationHide,
-      navigationOpen: controlledNavigationOpen,
+      navigationOpen,
       contentType,
       headerSelector,
       footerSelector,
       children,
       splitPanel,
-      ...props
-    }: AppLayoutProviderInternalsProps,
-    forwardRef: React.Ref<AppLayoutProps.Ref>
-  ) => {
+    } = props;
     const isMobile = useMobile();
 
     // Private API for embedded view mode
     const __embeddedViewMode = Boolean((props as any).__embeddedViewMode);
-
-    if (isDevelopment) {
-      if (controlledToolsOpen && toolsHide) {
-        warnOnce(
-          'AppLayout',
-          `You have enabled both the \`toolsOpen\` prop and the \`toolsHide\` prop. This is not supported. Set \`toolsOpen\` to \`false\` when you set \`toolsHide\` to \`true\`.`
-        );
-      }
-    }
 
     const [hasStickyBackground, setHasStickyBackground] = useState(false);
 
@@ -157,37 +141,9 @@ export const AppLayoutInternalsProvider = React.forwardRef(
         : props.maxContentWidth ?? 0;
     const minContentWidth = props.minContentWidth ?? 280;
 
-    /**
-     * Determine the default state of the Navigation and Tools drawers.
-     * Mobile viewports should be closed by default under all circumstances.
-     * If the navigationOpen prop has been set then that should take precedence
-     * over the contentType prop. Desktop viewports that do not have the
-     * navigationOpen or contentType props set will use the default contentType.
-     */
-    const contentTypeDefaults = applyDefaults(contentType, { maxContentWidth, minContentWidth }, true);
-
-    /**
-     * The useControllable hook will set the default value and manage either
-     * the controlled or uncontrolled state of the Navigation drawer. The logic
-     * for determining the default state is colocated with the Navigation component.
-     *
-     * The callback that will be passed to the Navigation and MobileToolbar
-     * components to handle the click events that will change the state
-     * of the Navigation drawer. It will set the Navigation state with the
-     * useControllable hook and also fire the onNavigationChange function to
-     * emit the state change.
-     */
-    const [isNavigationOpen = false, setIsNavigationOpen] = useControllable(
-      controlledNavigationOpen,
-      props.onNavigationChange,
-      isMobile ? false : contentTypeDefaults.navigationOpen,
-      { componentName: 'AppLayout', controlledProp: 'navigationOpen', changeHandler: 'onNavigationChange' }
-    );
-
-    const { refs: navigationRefs, setFocus: focusNavButtons } = useFocusControl(isNavigationOpen);
+    const { refs: navigationRefs, setFocus: focusNavButtons } = useFocusControl(navigationOpen);
 
     const handleNavigationClick = useStableCallback(function handleNavigationChange(isOpen: boolean) {
-      setIsNavigationOpen(isOpen);
       focusNavButtons();
       fireNonCancelableEvent(props.onNavigationChange, { open: isOpen });
     });
@@ -199,26 +155,12 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       }
     }, [isMobile, handleNavigationClick]);
 
-    /**
-     * The useControllable hook will set the default value and manage either
-     * the controlled or uncontrolled state of the Tools drawer. The logic
-     * for determining the default state is colocated with the Tools component.
-     *
-     * The callback that will be passed to the Navigation and MobileToolbar
-     * components to handle the click events that will change the state
-     * of the Tools drawer. It will set the Tools state with the
-     * useControllable hook and also fire the onToolsChange function to
-     * emit the state change.
-     */
-    const toolsWidth = props.toolsWidth ?? 290;
-    const hasDefaultToolsWidth = props.toolsWidth === undefined;
-
-    const [isToolsOpen = false, setIsToolsOpen] = useControllable(
-      controlledToolsOpen,
-      props.onToolsChange,
-      isMobile ? false : contentTypeDefaults.toolsOpen,
-      { componentName: 'AppLayout', controlledProp: 'toolsOpen', changeHandler: 'onToolsChange' }
-    );
+    const toolsWidth = props.toolsWidth;
+    const [isToolsOpen = false, setIsToolsOpen] = useControllable(controlledToolsOpen, props.onToolsChange, false, {
+      componentName: 'AppLayout',
+      controlledProp: 'toolsOpen',
+      changeHandler: 'onToolsChange',
+    });
 
     const {
       refs: toolsRefs,
@@ -249,8 +191,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
      * widths will potentially trigger a side effect that will put the Split Panel into
      * a forced position on the bottom.
      */
-    const splitPanelMinWidth = 280;
-    const [splitPanelMaxWidth, setSplitPanelMaxWidth] = useState(splitPanelMinWidth);
+    const [splitPanelMaxWidth, setSplitPanelMaxWidth] = useState(SPLIT_PANEL_MIN_WIDTH);
 
     /**
      * The useControllable hook will set the default value and manage either
@@ -316,9 +257,9 @@ export const AppLayoutInternalsProvider = React.forwardRef(
 
     useLayoutEffect(
       function handleSplitPanelForcePosition() {
-        setSplitPanelForcedPosition(splitPanelMinWidth > splitPanelMaxWidth);
+        setSplitPanelForcedPosition(SPLIT_PANEL_MIN_WIDTH > splitPanelMaxWidth);
       },
-      [splitPanelMaxWidth, splitPanelMinWidth]
+      [splitPanelMaxWidth]
     );
 
     /**
@@ -401,6 +342,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       drawersRefs,
       isToolsOpen,
       drawersMaxWidth,
+      drawersMinWidth,
     });
 
     const handleDrawersClick = (id: string | null, skipFocusControl?: boolean) => {
@@ -420,7 +362,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       (!toolsHide && isToolsOpen) ||
       (splitPanelDisplayed && splitPanelPosition === 'side' && isSplitPanelOpen);
     const hasDrawerViewportOverlay =
-      isMobile && (!!activeDrawerId || (!navigationHide && isNavigationOpen) || (!toolsHide && isToolsOpen));
+      isMobile && (!!activeDrawerId || (!navigationHide && navigationOpen) || (!toolsHide && isToolsOpen));
 
     /**
      * The Layout element is not necessarily synonymous with the client
@@ -453,7 +395,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       function handleMainOffsetLeft() {
         setMainOffsetLeft(mainElement?.current?.offsetLeft ?? 0);
       },
-      [layoutWidth, isNavigationOpen, isToolsOpen, splitPanelReportedSize]
+      [layoutWidth, navigationOpen, isToolsOpen, splitPanelReportedSize]
     );
 
     /**
@@ -464,7 +406,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
      */
     useEffect(
       function handleBodyScroll() {
-        if (isMobile && (isNavigationOpen || isToolsOpen || !!activeDrawer)) {
+        if (isMobile && (navigationOpen || isToolsOpen || !!activeDrawer)) {
           document.body.classList.add(styles['block-body-scroll']);
         } else {
           document.body.classList.remove(styles['block-body-scroll']);
@@ -475,7 +417,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           document.body.classList.remove(styles['block-body-scroll']);
         };
       },
-      [isMobile, isNavigationOpen, isToolsOpen, activeDrawer]
+      [isMobile, navigationOpen, isToolsOpen, activeDrawer]
     );
 
     /**
@@ -558,7 +500,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
         activeDrawerId,
         drawerSize,
         drawers,
-        isNavigationOpen,
+        navigationOpen,
         isToolsOpen,
         layoutWidth,
         mainOffsetLeft,
@@ -624,7 +566,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           drawersTriggerCount,
           headerHeight,
           footerHeight,
-          hasDefaultToolsWidth,
           hasDrawerViewportOverlay,
           handleDrawersClick,
           handleNavigationClick,
@@ -638,7 +579,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           hasStickyBackground,
           isBackgroundOverlapDisabled: props.disableContentHeaderOverlap || !hasBackgroundOverlap,
           isMobile,
-          isNavigationOpen: isNavigationOpen ?? false,
           isSplitPanelForcedPosition,
           isSplitPanelOpen,
           isToolsOpen,
@@ -662,7 +602,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           splitPanelControlId,
           splitPanelDisplayed,
           splitPanelMaxWidth,
-          splitPanelMinWidth,
           splitPanelPosition,
           splitPanelPreferences,
           splitPanelReportedSize,
