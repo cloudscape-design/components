@@ -26,8 +26,6 @@ explicitly set in script.
   #{custom-props.$contentGapLeft}: 0px;
   #{custom-props.$contentGapRight}: 0px;
   #{custom-props.$contentHeight}: calc(100vh - var(#{custom-props.$headerHeight}) - var(#{custom-props.$footerHeight}));
-  #{custom-props.$containerFirstGap}: 0px;
-  #{custom-props.$containerFirstOverlapExtension}: 0px;
   #{custom-props.$defaultMaxContentWidth}: 1280px;
   #{custom-props.$defaultMinContentWidth}: 0px;
   #{custom-props.$footerHeight}: 0px;
@@ -227,11 +225,6 @@ explicitly set in script.
     #{custom-props.$mainGap}: #{awsui.$space-xs};
   }
 
-  // Set gap to be used by content that has a container on top (e.g. content-layout without header) when breadcrumbs are present
-  &.has-breadcrumbs:not(.has-header) {
-    #{custom-props.$containerFirstGap}: calc(var(#{custom-props.$breadcrumbsGap}) - var(#{custom-props.$mainGap}));
-  }
-
   // Set the Main gap when it follows the Breadcrumbs without an overlap
   &.has-breadcrumbs:not(.has-header).is-overlap-disabled {
     #{custom-props.$mainGap}: #{awsui.$space-scaled-m};
@@ -251,14 +244,6 @@ explicitly set in script.
   &.content-first-child-main:not(.is-overlap-disabled),
   &.content-first-child-main.is-overlap-disabled:not(.disable-content-paddings) {
     #{custom-props.$mainGap}: #{awsui.$space-scaled-s};
-  }
-
-  // Set an extension of the overlap and an additional gap on top to be used by content-layout without header
-  @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
-    &.content-first-child-main:not(.has-header) {
-      #{custom-props.$containerFirstOverlapExtension}: #{awsui.$space-m};
-      #{custom-props.$containerFirstGap}: #{awsui.$space-xxs};
-    }
   }
 
   /*
