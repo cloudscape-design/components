@@ -16,7 +16,7 @@ jest.mock('../../../lib/components/internal/utils/scrollable-containers', () => 
   browserScrollbarSize: () => ({ width: 20, height: 20 }),
   getOverflowParents: jest.fn(() => {
     const overflowParent = document.createElement('div');
-    overflowParent.style.width = '400px';
+    overflowParent.style.inlineSize = '400px';
     overflowParent.getBoundingClientRect = fakeBoundingClientRect;
     return [overflowParent];
   }),
@@ -457,11 +457,11 @@ test('should set last column width to "auto" when container width exceeds total 
   });
 
   const { wrapper } = renderTable(<Table {...defaultProps} />);
-  expect(wrapper.findColumnHeaders().map(w => w.getElement().style.width)).toEqual(['150px', 'auto']);
+  expect(wrapper.findColumnHeaders().map(w => w.getElement().style.inlineSize)).toEqual(['150px', 'auto']);
 
   fireCallbacks({ contentBoxWidth: totalColumnsWidth } as unknown as ContainerQueryEntry);
-  expect(wrapper.findColumnHeaders().map(w => w.getElement().style.width)).toEqual(['150px', '300px']);
+  expect(wrapper.findColumnHeaders().map(w => w.getElement().style.inlineSize)).toEqual(['150px', '300px']);
 
   fireCallbacks({ contentBoxWidth: totalColumnsWidth + 1 } as unknown as ContainerQueryEntry);
-  expect(wrapper.findColumnHeaders().map(w => w.getElement().style.width)).toEqual(['150px', 'auto']);
+  expect(wrapper.findColumnHeaders().map(w => w.getElement().style.inlineSize)).toEqual(['150px', 'auto']);
 });

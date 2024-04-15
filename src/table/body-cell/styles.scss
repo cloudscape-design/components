@@ -187,16 +187,31 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
         &.sticky-cell-last-right {
           box-shadow: awsui.$shadow-sticky-column-last, 8px 0 0 0 awsui.$color-background-container-content;
           clip-path: inset(0 0 0 -24px);
+
+          @include styles.with-direction('rtl') {
+            box-shadow: awsui.$shadow-sticky-column-first;
+            clip-path: inset(0 -24px 0 0);
+          }
         }
       }
     }
     &-last-left {
       box-shadow: awsui.$shadow-sticky-column-first;
       clip-path: inset(0px -24px 0px 0px);
+
+      @include styles.with-direction('rtl') {
+        box-shadow: awsui.$shadow-sticky-column-last;
+        clip-path: inset(0 0 0 -24px);
+      }
     }
     &-last-right {
       box-shadow: awsui.$shadow-sticky-column-last;
       clip-path: inset(0 0 0 -24px);
+
+      @include styles.with-direction('rtl') {
+        box-shadow: awsui.$shadow-sticky-column-first;
+        clip-path: inset(0 -24px 0 0);
+      }
     }
     @include styles.with-motion {
       transition-property: padding;

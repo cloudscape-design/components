@@ -70,7 +70,7 @@ test('assigns width to middle column to prevent it from collapsing', () => {
     { header: 'last', cell: () => '-', width: 300 },
   ];
   const { wrapper } = renderTable(<Table columnDefinitions={columns} items={defaultItems} resizableColumns={true} />);
-  expect(wrapper.findColumnHeaders().map(column => column.getElement().style.width)).toEqual([
+  expect(wrapper.findColumnHeaders().map(column => column.getElement().style.inlineSize)).toEqual([
     '300px',
     '120px',
     '300px',
@@ -92,7 +92,7 @@ test('should render correct width for newly inserted column', () => {
       resizableColumns={true}
     />
   );
-  expect(wrapper.findColumnHeaders().map(column => column.getElement().style.width)).toEqual(['100px', '300px']);
+  expect(wrapper.findColumnHeaders().map(column => column.getElement().style.inlineSize)).toEqual(['100px', '300px']);
   rerender(
     <Table
       columnDefinitions={columns}
@@ -102,7 +102,7 @@ test('should render correct width for newly inserted column', () => {
     />
   );
 
-  expect(wrapper.findColumnHeaders().map(column => column.getElement().style.width)).toEqual([
+  expect(wrapper.findColumnHeaders().map(column => column.getElement().style.inlineSize)).toEqual([
     '100px',
     '200px',
     '300px',
@@ -119,7 +119,7 @@ test('should use the fallback value for columns without explicit width', () => {
   const { wrapper, rerender } = renderTable(
     <Table columnDefinitions={columns} visibleColumns={['id', 'name']} items={defaultItems} resizableColumns={true} />
   );
-  expect(wrapper.findColumnHeaders().map(column => column.getElement().style.width)).toEqual(['100px', '120px']);
+  expect(wrapper.findColumnHeaders().map(column => column.getElement().style.inlineSize)).toEqual(['100px', '120px']);
   rerender(
     <Table
       columnDefinitions={columns}
@@ -128,7 +128,7 @@ test('should use the fallback value for columns without explicit width', () => {
       resizableColumns={true}
     />
   );
-  expect(wrapper.findColumnHeaders().map(column => column.getElement().style.width)).toEqual([
+  expect(wrapper.findColumnHeaders().map(column => column.getElement().style.inlineSize)).toEqual([
     '100px',
     '120px',
     '120px',
@@ -158,7 +158,7 @@ describe('reading widths from the DOM', () => {
       { id: 'description', header: '', cell: () => '-', minWidth: 200 },
     ];
     const { wrapper } = renderTable(<Table columnDefinitions={columns} items={defaultItems} resizableColumns={true} />);
-    expect(wrapper.findColumnHeaders().map(column => column.getElement().style.width)).toEqual([
+    expect(wrapper.findColumnHeaders().map(column => column.getElement().style.inlineSize)).toEqual([
       '120px',
       '100px',
       '200px',

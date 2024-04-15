@@ -31,7 +31,7 @@ export function fireMouseup(pageX: number) {
 
 // simulate DOMRect using inline styles
 export function fakeBoundingClientRect(this: HTMLElement): DOMRect {
-  const width = parseInt(this.style.width, 10);
+  const width = parseInt(this.style.inlineSize, 10);
   const rect = HTMLElement.prototype.getBoundingClientRect.call(this);
   return {
     ...rect,

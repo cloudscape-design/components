@@ -45,19 +45,19 @@ export const updatePosition = (
   }
 
   if (scrollbarHeight && scrollbarEl && scrollbarContentEl) {
-    scrollbarEl.style.height = `${scrollbarHeight}px`;
-    scrollbarContentEl.style.height = `${scrollbarHeight}px`;
+    scrollbarEl.style.blockSize = `${scrollbarHeight}px`;
+    scrollbarContentEl.style.blockSize = `${scrollbarHeight}px`;
   }
 
   if (tableEl && wrapperEl && scrollbarContentEl && scrollbarEl) {
     const wrapperElRect = wrapperEl.getBoundingClientRect();
     const tableElRect = tableEl.getBoundingClientRect();
-    scrollbarEl.style.width = `${wrapperElRect.width}px`;
-    scrollbarContentEl.style.width = `${tableElRect.width}px`;
+    scrollbarEl.style.inlineSize = `${wrapperElRect.width}px`;
+    scrollbarContentEl.style.inlineSize = `${tableElRect.width}px`;
 
     // when using sticky scrollbars in containers
     // we agreed to ignore dynamic bottom calculations for footer overlap
-    scrollbarEl.style.bottom = hasContainingBlock ? '0px' : `${consideredFooterHeight}px`;
+    scrollbarEl.style.insetBlockEnd = hasContainingBlock ? '0px' : `${consideredFooterHeight}px`;
   }
 };
 

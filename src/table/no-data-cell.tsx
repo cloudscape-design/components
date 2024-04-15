@@ -29,12 +29,12 @@ export function NoDataCell({
 }: NoDataCellProps) {
   const cellContentRef = useRef<HTMLDivElement>(null);
 
-  useResizeObserver(containerRef, ({ contentBoxWidth: containerWidth }) => {
+  useResizeObserver(containerRef, ({ contentBoxWidth: containerInlineSize }) => {
     if (tableRef.current && cellContentRef.current && supportsStickyPosition()) {
-      const tablePaddingLeft = parseFloat(getComputedStyle(tableRef.current).paddingLeft) || 0;
-      const tablePaddingRight = parseFloat(getComputedStyle(tableRef.current).paddingRight) || 0;
-      const contentWidth = containerWidth + tablePaddingLeft + tablePaddingRight;
-      cellContentRef.current.style.width = Math.floor(contentWidth) + 'px';
+      const tablePaddingInlineStart = parseFloat(getComputedStyle(tableRef.current).paddingInlineStart) || 0;
+      const tablePaddingInlineEnd = parseFloat(getComputedStyle(tableRef.current).paddingInlineEnd) || 0;
+      const inlineSize = containerInlineSize + tablePaddingInlineStart + tablePaddingInlineEnd;
+      cellContentRef.current.style.inlineSize = Math.floor(inlineSize) + 'px';
     }
   });
 

@@ -72,11 +72,22 @@
       & > .resize-divider {
         display: none;
       }
+
+      @include styles.with-direction('rtl') {
+        box-shadow: awsui.$shadow-sticky-column-last;
+        clip-path: inset(0 0 0 -24px);
+      }
     }
     &-last-right {
       box-shadow: awsui.$shadow-sticky-column-last;
       clip-path: inset(0 0 0 -24px);
+
+      @include styles.with-direction('rtl') {
+        box-shadow: awsui.$shadow-sticky-column-first;
+        clip-path: inset(0 -24px 0 0);
+      }
     }
+
     @include styles.with-motion {
       transition-property: padding;
       transition-duration: awsui.$motion-duration-transition-show-quick;

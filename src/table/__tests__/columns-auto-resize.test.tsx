@@ -11,7 +11,7 @@ jest.mock('../../../lib/components/internal/utils/scrollable-containers', () => 
   browserScrollbarSize: () => ({ width: 20, height: 20 }),
   getOverflowParents: jest.fn(() => {
     overflowParent = document.createElement('div');
-    overflowParent.style.width = '400px';
+    overflowParent.style.inlineSize = '400px';
     overflowParent.getBoundingClientRect = fakeBoundingClientRect;
     return [overflowParent];
   }),
@@ -53,7 +53,7 @@ test('should not auto-grow when the cursor stops inside table container', () => 
 
   fireMousedown(wrapper.findColumnResizer(1)!);
   fireMouseMove(50);
-  const widthBefore = wrapper.findColumnHeaders()[0].getElement().style.width;
+  const widthBefore = wrapper.findColumnHeaders()[0].getElement().style.inlineSize;
   tick();
   expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: widthBefore });
 });

@@ -86,8 +86,8 @@ export function useStickyColumns({
       }
 
       if (wrapperRef.current) {
-        wrapperRef.current.style.scrollPaddingLeft = state.scrollPaddingLeft + 'px';
-        wrapperRef.current.style.scrollPaddingRight = state.scrollPaddingRight + 'px';
+        wrapperRef.current.style.scrollPaddingInlineStart = state.scrollPaddingInlineStart + 'px';
+        wrapperRef.current.style.scrollPaddingInlineEnd = state.scrollPaddingInlineEnd + 'px';
       }
     };
 
@@ -182,8 +182,10 @@ export function useStickyCellStyles({
               cellElement.classList.remove(key);
             }
           });
-          cellElement.style.left = state?.offset.left !== undefined ? `${state.offset.left}px` : '';
-          cellElement.style.right = state?.offset.right !== undefined ? `${state.offset.right}px` : '';
+          cellElement.style.insetInlineStart =
+            state?.offset.insetInlineStart !== undefined ? `${state.offset.insetInlineStart}px` : '';
+          cellElement.style.insetInlineEnd =
+            state?.offset.insetInlineEnd !== undefined ? `${state.offset.insetInlineEnd}px` : '';
         }
       };
 
@@ -222,15 +224,15 @@ interface UpdateCellStylesProps {
 export default class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
   private cellOffsets: CellOffsets = {
     offsets: new Map(),
-    stickyWidthLeft: 0,
-    stickyWidthRight: 0,
+    stickyWidthInlineStart: 0,
+    stickyWidthInlineEnd: 0,
   };
   private isStuckToTheLeft = false;
   private isStuckToTheRight = false;
   private padLeft = false;
 
   constructor() {
-    super({ cellState: new Map(), wrapperState: { scrollPaddingLeft: 0, scrollPaddingRight: 0 } });
+    super({ cellState: new Map(), wrapperState: { scrollPaddingInlineStart: 0, scrollPaddingInlineEnd: 0 } });
   }
 
   public updateCellStyles(props: UpdateCellStylesProps) {
@@ -243,8 +245,8 @@ export default class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
       this.set(() => ({
         cellState: this.generateCellStyles(props),
         wrapperState: {
-          scrollPaddingLeft: this.cellOffsets.stickyWidthLeft,
-          scrollPaddingRight: this.cellOffsets.stickyWidthRight,
+          scrollPaddingInlineStart: this.cellOffsets.stickyWidthInlineStart,
+          scrollPaddingInlineEnd: this.cellOffsets.stickyWidthInlineEnd,
         },
       }));
     }
@@ -289,12 +291,12 @@ export default class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
       const stickyColumnOffsetRight = this.cellOffsets.offsets.get(columnId)?.last ?? 0;
 
       acc.set(columnId, {
-        padLeft: isFirstColumn && this.padLeft,
-        lastLeft: this.isStuckToTheLeft && lastLeftStickyColumnIndex === index,
-        lastRight: this.isStuckToTheRight && lastRightStickyColumnIndex === index,
+        padInlineStart: isFirstColumn && this.padLeft,
+        lastInsetInlineStart: this.isStuckToTheLeft && lastLeftStickyColumnIndex === index,
+        lastInsetInlineEnd: this.isStuckToTheRight && lastRightStickyColumnIndex === index,
         offset: {
-          left: stickySide === 'left' ? stickyColumnOffsetLeft : undefined,
-          right: stickySide === 'right' ? stickyColumnOffsetRight : undefined,
+          insetInlineStart: stickySide === 'left' ? stickyColumnOffsetLeft : undefined,
+          insetInlineEnd: stickySide === 'right' ? stickyColumnOffsetRight : undefined,
         },
       });
       return acc;
@@ -318,7 +320,7 @@ export default class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
       return false;
     }
 
-    const totalStickySpace = this.cellOffsets.stickyWidthLeft + this.cellOffsets.stickyWidthRight;
+    const totalStickySpace = this.cellOffsets.stickyWidthInlineStart + this.cellOffsets.stickyWidthInlineEnd;
     const tablePaddingLeft = parseFloat(getComputedStyle(props.table).paddingLeft) || 0;
     const tablePaddingRight = parseFloat(getComputedStyle(props.table).paddingRight) || 0;
     const hasEnoughScrollableSpace =

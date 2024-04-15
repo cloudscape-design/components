@@ -112,9 +112,9 @@ test('generates non-empty sticky cell state', () => {
       [
         1,
         {
-          lastLeft: false,
-          lastRight: false,
-          padLeft: false,
+          lastInsetInlineStart: false,
+          lastInsetInlineEnd: false,
+          padInlineStart: false,
           offset: { left: 0 },
         },
       ],
@@ -169,9 +169,9 @@ test('generates non-empty styles for sticky cells', () => {
   rerenderCellStyles({});
 
   expect(getClassName).toHaveBeenCalledWith({
-    lastLeft: false,
-    lastRight: false,
-    padLeft: false,
+    lastInsetInlineStart: false,
+    lastInsetInlineEnd: false,
+    padInlineStart: false,
     offset: { right: 0 },
   });
   expect(cellStylesResult.current.className).toBe('sticky-cell');
@@ -240,7 +240,7 @@ test('cell subscriptions are cleaned up on ref change', () => {
   const subscribe = jest.fn(() => unsubscribe);
   const stickyColumns = {
     store: {
-      get: () => ({ cellState: new Map(), wrapperState: { scrollPaddingLeft: 0, scrollPaddingRight: 0 } }),
+      get: () => ({ cellState: new Map(), wrapperState: { scrollPaddingInlineStart: 0, scrollPaddingInlineEnd: 0 } }),
       subscribe,
       unsubscribe: () => {},
     },
@@ -283,11 +283,11 @@ describe('getStickyClassNames helper', () => {
     });
   });
 
-  it('returns correct styles when props has padLeft and lastLeft property', () => {
+  it('returns correct styles when props has padInlineStart and lastInsetInlineStart property', () => {
     const props = {
-      padLeft: true,
-      lastLeft: true,
-      lastRight: false,
+      padInlineStart: true,
+      lastInsetInlineStart: true,
+      lastInsetInlineEnd: false,
       offset: {},
     };
     const result = getStickyClassNames(styles, props);
@@ -299,11 +299,11 @@ describe('getStickyClassNames helper', () => {
     });
   });
 
-  it('returns correct styles when props has lastRight property', () => {
+  it('returns correct styles when props has lastInsetInlineEnd property', () => {
     const props = {
-      padLeft: false,
-      lastLeft: false,
-      lastRight: true,
+      padInlineStart: false,
+      lastInsetInlineStart: false,
+      lastInsetInlineEnd: true,
       offset: {},
     };
     const result = getStickyClassNames(styles, props);
