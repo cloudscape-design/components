@@ -177,14 +177,6 @@ export function createPreferences({
       cancelLabel="Cancel"
       onConfirm={({ detail }) => setPreferences(detail)}
       preferences={preferences}
-      pageSizePreference={{
-        title: 'Select page size',
-        options: [
-          { value: 10, label: '10 Instances' },
-          { value: 25, label: '25 Instances' },
-          { value: 50, label: '50 Instances' },
-        ],
-      }}
       contentDisplayPreference={{
         title: 'Column preferences',
         description: 'Customize the columns visibility and order.',
