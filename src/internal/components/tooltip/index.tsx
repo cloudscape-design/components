@@ -12,7 +12,7 @@ import styles from './styles.css.js';
 
 export interface TooltipProps {
   value: number | string;
-  trackRef: React.RefObject<Element>;
+  trackRef: React.RefObject<HTMLElement | SVGElement>;
 }
 
 export default function Tooltip({ value, trackRef }: TooltipProps) {

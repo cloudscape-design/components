@@ -329,13 +329,8 @@ export namespace AppLayoutProps {
 }
 
 export type AppLayoutPropsWithDefaults = SomeRequired<
-  AppLayoutProps,
-  | 'headerSelector'
-  | 'footerSelector'
-  | 'contentType'
-  | 'navigationWidth'
-  | 'toolsWidth'
-  | 'minContentWidth'
-  | 'navigationOpen'
-  | 'onNavigationChange'
->;
+  Omit<AppLayoutProps, 'headerSelector' | 'footerSelector'>,
+  'contentType' | 'navigationWidth' | 'toolsWidth' | 'minContentWidth' | 'navigationOpen' | 'onNavigationChange'
+> & {
+  placement: { top: number; bottom: number; left: number; right: number; width: number };
+};

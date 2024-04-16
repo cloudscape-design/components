@@ -3,21 +3,22 @@
 import { getDropdownPosition } from '../../../../../lib/components/internal/components/dropdown/dropdown-fit-handler';
 
 const windowSize = {
-  top: 0,
-  left: 0,
-  width: 1000,
-  height: 1000,
+  insetBlockStart: 0,
+  insetInlineStart: 0,
+  inlineSize: 1000,
+  blockSize: 1000,
 };
 const defaults = {
-  dropLeft: false,
-  dropUp: false,
-  height: '605px',
-  left: 'auto',
-  width: '100px',
+  dropInlineStart: false,
+  dropBlockStart: false,
+  blockSize: '605px',
+  insetInlineStart: 'auto',
+  inlineSize: '100px',
 };
 
 function getSizedElement(width: number, height: number, top = 0, left = 0) {
   const element = document.createElement('div');
+
   element.getBoundingClientRect = () =>
     ({ width, height, top, left, bottom: top + height, right: left + width } as DOMRect);
   Object.defineProperty(element, 'offsetHeight', { value: height });
@@ -41,8 +42,8 @@ describe('getDropdownPosition', () => {
       getDropdownPosition({ triggerElement: trigger, dropdownElement: dropdown, overflowParents: [windowSize] })
     ).toEqual({
       ...defaults,
-      dropUp: true,
-      height: '853px',
+      dropBlockStart: true,
+      blockSize: '853px',
     });
   });
 
@@ -53,8 +54,8 @@ describe('getDropdownPosition', () => {
       getDropdownPosition({ triggerElement: trigger, dropdownElement: dropdown, overflowParents: [windowSize] })
     ).toEqual({
       ...defaults,
-      dropLeft: true,
-      width: '550px',
+      dropInlineStart: true,
+      inlineSize: '550px',
     });
   });
 
@@ -65,7 +66,7 @@ describe('getDropdownPosition', () => {
       getDropdownPosition({ triggerElement: trigger, dropdownElement: dropdown, overflowParents: [windowSize] })
     ).toEqual({
       ...defaults,
-      width: '900px',
+      inlineSize: '900px',
     });
   });
 
@@ -81,7 +82,7 @@ describe('getDropdownPosition', () => {
       })
     ).toEqual({
       ...defaults,
-      width: '300px',
+      inlineSize: '300px',
     });
   });
 
@@ -97,7 +98,7 @@ describe('getDropdownPosition', () => {
       })
     ).toEqual({
       ...defaults,
-      width: '600px',
+      inlineSize: '600px',
     });
   });
 
@@ -113,19 +114,19 @@ describe('getDropdownPosition', () => {
       })
     ).toEqual({
       ...defaults,
-      width: '200px',
+      inlineSize: '200px',
     });
   });
 
   test('dropdown matches trigger width when trigger sticks to the right screen edge', () => {
-    const trigger = getSizedElement(100, 50, 300, windowSize.width - 110);
+    const trigger = getSizedElement(100, 50, 300, windowSize.inlineSize - 110);
     const dropdown = getSizedElement(100, 400);
 
     expect(
       getDropdownPosition({ triggerElement: trigger, dropdownElement: dropdown, overflowParents: [windowSize] })
     ).toEqual({
       ...defaults,
-      dropLeft: true, // TODO: this value is incorrect, should be fixed, see AWSUI-16369 for details
+      dropInlineStart: true, // TODO: this value is incorrect, should be fixed, see AWSUI-16369 for details
     });
   });
 
@@ -135,7 +136,7 @@ describe('getDropdownPosition', () => {
     expect(
       getDropdownPosition({ triggerElement: trigger, dropdownElement: dropdown, overflowParents: [windowSize] })
     ).toEqual(defaults);
-    const scrollableContainer = { top: 100, left: 0, height: 400, width: 400 };
+    const scrollableContainer = { insetBlockStart: 100, insetInlineStart: 0, blockSize: 400, inlineSize: 400 };
     expect(
       getDropdownPosition({
         triggerElement: trigger,
@@ -144,8 +145,8 @@ describe('getDropdownPosition', () => {
       })
     ).toEqual({
       ...defaults,
-      dropUp: true,
-      height: '140px',
+      dropBlockStart: true,
+      blockSize: '140px',
     });
   });
 
@@ -161,8 +162,8 @@ describe('getDropdownPosition', () => {
       })
     ).toEqual({
       ...defaults,
-      width: '200px',
-      left: '-50px',
+      inlineSize: '200px',
+      insetInlineStart: '-50px',
     });
   });
 
@@ -178,7 +179,7 @@ describe('getDropdownPosition', () => {
       })
     ).toEqual({
       ...defaults,
-      width: '200px',
+      inlineSize: '200px',
     });
   });
 
@@ -196,7 +197,7 @@ describe('getDropdownPosition', () => {
         })
       ).toEqual({
         ...defaults,
-        width: '200px',
+        inlineSize: '200px',
       });
     });
 
@@ -213,7 +214,7 @@ describe('getDropdownPosition', () => {
         })
       ).toEqual({
         ...defaults,
-        width: '465px',
+        inlineSize: '465px',
       });
     });
 
@@ -230,7 +231,7 @@ describe('getDropdownPosition', () => {
         })
       ).toEqual({
         ...defaults,
-        width: '700px',
+        inlineSize: '700px',
       });
     });
   });
