@@ -311,7 +311,7 @@ const InternalTable = React.forwardRef(
     const toolsHeaderWrapper = useRef<HTMLDivElement>(null);
     // If is mobile, we take into consideration the AppLayout's mobile bar and we subtract the tools wrapper height so only the table header is sticky
     const toolsHeaderHeight = toolsHeaderWrapper?.current
-      ? getLogicalBoundingClientRect(toolsHeaderWrapper?.current).blockSize
+      ? getLogicalBoundingClientRect(toolsHeaderWrapper.current).blockSize
       : 0;
 
     const colIndexOffset = selectionType ? 1 : 0;
