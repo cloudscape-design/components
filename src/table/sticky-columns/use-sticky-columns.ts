@@ -13,6 +13,7 @@ import {
   StickyColumnsWrapperState,
 } from './interfaces';
 import { isCellStatesEqual, isWrapperStatesEqual, updateCellOffsets } from './utils';
+import { getScrollInlineStart, getLogicalBoundingClientRect } from '../../internal/direction';
 
 // We allow the table to have a minimum of 148px of available space besides the sum of the widths of the sticky columns
 // This value is an UX recommendation and is approximately 1/3 of our smallest breakpoint (465px)
@@ -227,9 +228,9 @@ export default class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
     stickyWidthInlineStart: 0,
     stickyWidthInlineEnd: 0,
   };
-  private isStuckToTheLeft = false;
-  private isStuckToTheRight = false;
-  private padLeft = false;
+  private isStuckToTheInlineStart = false;
+  private isStuckToTheInlineEnd = false;
+  private padInlineStart = false;
 
   constructor() {
     super({ cellState: new Map(), wrapperState: { scrollPaddingInlineStart: 0, scrollPaddingInlineEnd: 0 } });
@@ -253,19 +254,20 @@ export default class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
   }
 
   private updateScroll(props: UpdateCellStylesProps) {
-    const wrapperScrollLeft = props.wrapper.scrollLeft;
+    const wrapperScrollInlineStart = getScrollInlineStart(props.wrapper);
     const wrapperScrollWidth = props.wrapper.scrollWidth;
     const wrapperClientWidth = props.wrapper.clientWidth;
-    const tablePaddingLeft = parseFloat(getComputedStyle(props.table).paddingLeft) || 0;
-    const tablePaddingRight = parseFloat(getComputedStyle(props.table).paddingRight) || 0;
+    const tablePaddingInlineStart = parseFloat(getComputedStyle(props.table).paddingInlineStart) || 0;
+    const tablePaddingInlineEnd = parseFloat(getComputedStyle(props.table).paddingInlineEnd) || 0;
 
-    this.isStuckToTheLeft = wrapperScrollLeft > tablePaddingLeft;
+    this.isStuckToTheInlineStart = wrapperScrollInlineStart > tablePaddingInlineStart;
 
-    // Math.ceil() is used here to address an edge-case in certain browsers, where they return non-integer wrapperScrollLeft values
+    // Math.ceil() is used here to address an edge-case in certain browsers, where they return non-integer wrapperScrollInlineStart values
     // which are lower than expected (sub-pixel difference), resulting in the table always being in the "stuck to the right" state
-    this.isStuckToTheRight = Math.ceil(wrapperScrollLeft) < wrapperScrollWidth - wrapperClientWidth - tablePaddingRight;
+    this.isStuckToTheInlineEnd =
+      Math.ceil(wrapperScrollInlineStart) < wrapperScrollWidth - wrapperClientWidth - tablePaddingInlineEnd;
 
-    this.padLeft = tablePaddingLeft !== 0 && this.isStuckToTheLeft;
+    this.padInlineStart = tablePaddingInlineStart !== 0 && this.isStuckToTheInlineStart;
   }
 
   private generateCellStyles = (props: UpdateCellStylesProps): Map<PropertyKey, StickyColumnsCellState> => {
@@ -276,9 +278,9 @@ export default class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
     return props.visibleColumns.reduce((acc, columnId, index) => {
       let stickySide = 'non-sticky';
       if (index < props.stickyColumnsFirst) {
-        stickySide = 'left';
+        stickySide = 'inline-start';
       } else if (index >= props.visibleColumns.length - props.stickyColumnsLast) {
-        stickySide = 'right';
+        stickySide = 'inline-end';
       }
 
       if (!isEnabled || stickySide === 'non-sticky') {
@@ -291,12 +293,12 @@ export default class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
       const stickyColumnOffsetRight = this.cellOffsets.offsets.get(columnId)?.last ?? 0;
 
       acc.set(columnId, {
-        padInlineStart: isFirstColumn && this.padLeft,
-        lastInsetInlineStart: this.isStuckToTheLeft && lastLeftStickyColumnIndex === index,
-        lastInsetInlineEnd: this.isStuckToTheRight && lastRightStickyColumnIndex === index,
+        padInlineStart: isFirstColumn && this.padInlineStart,
+        lastInsetInlineStart: this.isStuckToTheInlineStart && lastLeftStickyColumnIndex === index,
+        lastInsetInlineEnd: this.isStuckToTheInlineEnd && lastRightStickyColumnIndex === index,
         offset: {
-          insetInlineStart: stickySide === 'left' ? stickyColumnOffsetLeft : undefined,
-          insetInlineEnd: stickySide === 'right' ? stickyColumnOffsetRight : undefined,
+          insetInlineStart: stickySide === 'inline-start' ? stickyColumnOffsetLeft : undefined,
+          insetInlineEnd: stickySide === 'inline-end' ? stickyColumnOffsetRight : undefined,
         },
       });
       return acc;
@@ -313,8 +315,8 @@ export default class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
       return false;
     }
 
-    const wrapperWidth = props.wrapper.getBoundingClientRect().width;
-    const tableWidth = props.table.getBoundingClientRect().width;
+    const wrapperWidth = getLogicalBoundingClientRect(props.wrapper).inlineSize;
+    const tableWidth = getLogicalBoundingClientRect(props.table).inlineSize;
     const isWrapperScrollable = tableWidth > wrapperWidth;
     if (!isWrapperScrollable) {
       return false;

@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { CellOffsets, StickyColumnsCellState, StickyColumnsProps, StickyColumnsWrapperState } from './interfaces';
+import { getLogicalBoundingClientRect } from '../../internal/direction';
 
 export function isCellStatesEqual(s1: null | StickyColumnsCellState, s2: null | StickyColumnsCellState): boolean {
   if (s1 && s2) {
@@ -29,14 +30,14 @@ export function updateCellOffsets(cells: Map<PropertyKey, HTMLElement>, props: S
   const firstColumnsWidths: number[] = [];
   for (let i = 0; i < Math.min(totalColumns, props.stickyColumnsFirst); i++) {
     const element = cells.get(props.visibleColumns[i]);
-    const cellWidth = element?.getBoundingClientRect().width ?? 0;
+    const cellWidth = element ? getLogicalBoundingClientRect(element).inlineSize : 0;
     firstColumnsWidths[i] = (firstColumnsWidths[i - 1] ?? 0) + cellWidth;
   }
 
   const lastColumnsWidths: number[] = [];
   for (let i = 0; i < Math.min(totalColumns, props.stickyColumnsLast); i++) {
     const element = cells.get(props.visibleColumns[totalColumns - 1 - i]);
-    const cellWidth = element?.getBoundingClientRect().width ?? 0;
+    const cellWidth = element ? getLogicalBoundingClientRect(element).inlineSize : 0;
     lastColumnsWidths[i] = (lastColumnsWidths[i - 1] ?? 0) + cellWidth;
   }
 

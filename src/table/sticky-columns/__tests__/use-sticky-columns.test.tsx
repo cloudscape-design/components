@@ -268,18 +268,18 @@ test('cell subscriptions are cleaned up on ref change', () => {
 describe('getStickyClassNames helper', () => {
   const styles = {
     'sticky-cell': 'sticky-cell',
-    'sticky-cell-pad-left': 'sticky-cell-pad-left',
-    'sticky-cell-last-left': 'sticky-cell-last-left',
-    'sticky-cell-last-right': 'sticky-cell-last-right',
+    'sticky-cell-pad-inline-start': 'sticky-cell-pad-inline-start',
+    'sticky-cell-last-inline-start': 'sticky-cell-last-inline-start',
+    'sticky-cell-last-inline-end': 'sticky-cell-last-inline-end',
   };
 
   it('returns correct styles when props is null', () => {
     const result = getStickyClassNames(styles, null);
     expect(result).toEqual({
       'sticky-cell': false,
-      'sticky-cell-pad-left': false,
-      'sticky-cell-last-left': false,
-      'sticky-cell-last-right': false,
+      'sticky-cell-pad-inline-start': false,
+      'sticky-cell-last-inline-start': false,
+      'sticky-cell-last-inline-end': false,
     });
   });
 
@@ -293,9 +293,9 @@ describe('getStickyClassNames helper', () => {
     const result = getStickyClassNames(styles, props);
     expect(result).toEqual({
       'sticky-cell': true,
-      'sticky-cell-pad-left': true,
-      'sticky-cell-last-left': true,
-      'sticky-cell-last-right': false,
+      'sticky-cell-pad-inline-start': true,
+      'sticky-cell-last-inline-start': true,
+      'sticky-cell-last-inline-end': false,
     });
   });
 
@@ -309,9 +309,9 @@ describe('getStickyClassNames helper', () => {
     const result = getStickyClassNames(styles, props);
     expect(result).toEqual({
       'sticky-cell': true,
-      'sticky-cell-pad-left': false,
-      'sticky-cell-last-left': false,
-      'sticky-cell-last-right': true,
+      'sticky-cell-pad-inline-start': false,
+      'sticky-cell-last-inline-start': false,
+      'sticky-cell-last-inline-end': true,
     });
   });
 });

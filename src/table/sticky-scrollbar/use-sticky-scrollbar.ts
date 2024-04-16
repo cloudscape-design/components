@@ -6,6 +6,7 @@ import styles from './styles.css.js';
 import { getContainingBlock, supportsStickyPosition } from '../../internal/utils/dom';
 import { getOverflowParents } from '../../internal/utils/scrollable-containers';
 import { browserScrollbarSize } from '../../internal/utils/browser-scrollbar-size';
+import { getLogicalBoundingClientRect } from '../../internal/direction.js';
 
 export const updatePosition = (
   tableEl: HTMLElement | null,
@@ -19,12 +20,12 @@ export const updatePosition = (
     return;
   }
 
-  const { width: tableWidth } = tableEl.getBoundingClientRect();
-  const { width: wrapperWidth } = wrapperEl.getBoundingClientRect();
+  const { inlineSize: tableInlineSize } = getLogicalBoundingClientRect(tableEl);
+  const { inlineSize: wrapperInlineSize } = getLogicalBoundingClientRect(wrapperEl);
 
   // using 15 px as a height of transparent scrollbar on mac
   const scrollbarHeight = browserScrollbarSize().height;
-  const areaIsScrollable = tableWidth > wrapperWidth;
+  const areaIsScrollable = tableInlineSize > wrapperInlineSize;
 
   if (!areaIsScrollable) {
     scrollbarEl.classList.remove(styles['sticky-scrollbar-visible']);
@@ -33,6 +34,10 @@ export const updatePosition = (
     // that's why syncing it separately
     if (!scrollbarEl.classList.contains(styles['sticky-scrollbar-visible'])) {
       requestAnimationFrame(() => {
+        /**
+         * We don't need to use getScrollInlineStart here instead of scrollLeft because
+         * the negative value isn't being used in computation.
+         */
         scrollbarEl.scrollLeft = wrapperEl.scrollLeft;
       });
     }
@@ -50,10 +55,10 @@ export const updatePosition = (
   }
 
   if (tableEl && wrapperEl && scrollbarContentEl && scrollbarEl) {
-    const wrapperElRect = wrapperEl.getBoundingClientRect();
-    const tableElRect = tableEl.getBoundingClientRect();
-    scrollbarEl.style.inlineSize = `${wrapperElRect.width}px`;
-    scrollbarContentEl.style.inlineSize = `${tableElRect.width}px`;
+    const wrapperElRect = getLogicalBoundingClientRect(wrapperEl);
+    const tableElRect = getLogicalBoundingClientRect(tableEl);
+    scrollbarEl.style.inlineSize = `${wrapperElRect.inlineSize}px`;
+    scrollbarContentEl.style.inlineSize = `${tableElRect.inlineSize}px`;
 
     // when using sticky scrollbars in containers
     // we agreed to ignore dynamic bottom calculations for footer overlap
