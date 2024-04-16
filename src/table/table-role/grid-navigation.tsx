@@ -244,55 +244,6 @@ class GridNavigationProcessor {
           }
         },
       });
-
-    /*
-    let key = event.keyCode;
-
-    switch (key) {
-      case KeyCode.up:
-        event.preventDefault();
-        return this.moveFocusBy(from, { y: -1, x: 0 });
-
-      case KeyCode.down:
-        event.preventDefault();
-        return this.moveFocusBy(from, { y: 1, x: 0 });
-
-      case KeyCode.left:
-        event.preventDefault();
-        return this.moveFocusBy(from, { y: 0, x: -1 });
-
-      case KeyCode.right:
-        event.preventDefault();
-        return this.moveFocusBy(from, { y: 0, x: 1 });
-
-      case KeyCode.pageUp:
-        event.preventDefault();
-        return this.moveFocusBy(from, { y: -this.pageSize, x: 0 });
-
-      case KeyCode.pageDown:
-        event.preventDefault();
-        return this.moveFocusBy(from, { y: this.pageSize, x: 0 });
-
-      case KeyCode.home:
-        event.preventDefault();
-        return this.moveFocusBy(from, { y: 0, x: -Infinity });
-
-      case KeyCode.end:
-        event.preventDefault();
-        return this.moveFocusBy(from, { y: 0, x: Infinity });
-
-      case -KeyCode.home:
-        event.preventDefault();
-        return this.moveFocusBy(from, { y: -Infinity, x: -Infinity });
-
-      case -KeyCode.end:
-        event.preventDefault();
-        return this.moveFocusBy(from, { y: Infinity, x: Infinity });
-
-      default:
-        return;
-    }
-    */
   };
 
   private moveFocusBy(cell: FocusedCell, delta: { x: number; y: number }) {
