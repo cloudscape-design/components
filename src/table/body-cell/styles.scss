@@ -26,6 +26,15 @@ $edit-button-padding-right: calc(
 ); // Cell vertical padding + xxs space that would normally come from the button.
 $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-with-spacing});
 
+@mixin cell-focus-outline {
+  @include styles.focus-highlight(calc(-1 * #{awsui.$space-scaled-xxs}));
+  // @mixin focus-highlight sets cell's position to "relative".
+  // Reinforcing sticky position for it to take precedence.
+  &.sticky-cell {
+    position: sticky;
+  }
+}
+
 .expandable-toggle-wrapper {
   position: absolute;
   inset-block: 0;
@@ -51,28 +60,17 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
   box-sizing: border-box;
   padding-block-start: $cell-vertical-padding;
   padding-block-end: $cell-vertical-padding-w-border;
-  @include cell-offset($cell-horizontal-padding);
   padding-inline-end: $cell-horizontal-padding;
   border-block-start: awsui.$border-divider-list-width solid transparent;
   word-wrap: break-word;
   border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-divider-secondary;
   font-weight: inherit;
 
-  @include focus-visible.when-visible {
-    @include styles.focus-highlight(
-      (
-        'vertical': calc(-1 * #{awsui.$space-scaled-xxs}),
-        'horizontal': calc(-1 * #{awsui.$space-scaled-xxs}),
-      )
-    );
-    // @mixin focus-highlight sets cell's position to "relative".
-    // Reinforcing sticky position for it to take precedence.
-    &.sticky-cell {
-      position: sticky;
-    }
-  }
-
   text-align: start;
+
+  &-content {
+    /* used for testing */
+  }
   &:not(.body-cell-wrap) {
     white-space: nowrap;
     overflow: hidden;
@@ -365,12 +363,7 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
       // It's therefore important to display the focus outline, even when a keyboard use wasn't detected.
       // For example, when an edit button is selected from the VoiceOver rotor menu.
       &.body-cell-interactive:focus-within {
-        @include styles.focus-highlight(
-          (
-            'vertical': calc(-1 * #{awsui.$space-scaled-xxs}),
-            'horizontal': calc(-1 * #{awsui.$space-scaled-xxs}),
-          )
-        );
+        @include cell-focus-outline;
       }
       // When a cell is not interactive the focus outline must be present for the editor button.
       &:not(.body-cell-interactive) > .body-cell-editor-wrapper > .body-cell-editor,
@@ -444,5 +437,10 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
     &.body-cell-first-row > .expandable-cell-content > .body-cell-editor-wrapper {
       padding-block-start: awsui.$border-divider-list-width;
     }
+  }
+  @include cell-offset($cell-horizontal-padding);
+
+  @include focus-visible.when-visible {
+    @include cell-focus-outline;
   }
 }

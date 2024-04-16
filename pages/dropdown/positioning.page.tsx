@@ -50,7 +50,7 @@ export default function DropdownScenario() {
         </div>
       </div>
       <div className={styles.container}>
-        <div id="topRightDropDown" className={styles['dropdown-container']} style={{ left: '80px' }}>
+        <div id="topRightDropDown" className={styles['dropdown-container']} style={{ insetInlineStart: '80px' }}>
           <Dropdown
             stretchWidth={false}
             trigger={
@@ -82,7 +82,7 @@ export default function DropdownScenario() {
         </div>
       </div>
       <div className={styles.container}>
-        <div id="topMiddleDropDown" className={styles['dropdown-container']} style={{ left: '20px' }}>
+        <div id="topMiddleDropDown" className={styles['dropdown-container']} style={{ insetInlineStart: '20px' }}>
           <Dropdown
             stretchWidth={false}
             trigger={
@@ -98,7 +98,11 @@ export default function DropdownScenario() {
         </div>
       </div>
       <div className={styles.container}>
-        <div id="bottomRightDropDown" className={styles['dropdown-container']} style={{ left: '80px', top: '170px' }}>
+        <div
+          id="bottomRightDropDown"
+          className={styles['dropdown-container']}
+          style={{ insetInlineStart: '80px', insetBlockStart: '170px' }}
+        >
           <Dropdown
             stretchWidth={false}
             trigger={

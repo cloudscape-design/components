@@ -29,6 +29,8 @@ export interface S3ModalProps {
   versionsVisibleColumns: ReadonlyArray<string>;
   versionsIsItemDisabled: S3ResourceSelectorProps['versionsIsItemDisabled'];
   i18nStrings: S3ResourceSelectorProps.I18nStrings | undefined;
+  getModalRoot: S3ResourceSelectorProps['getModalRoot'];
+  removeModalRoot: S3ResourceSelectorProps['removeModalRoot'];
   onDismiss: () => void;
   onSubmit: (resource: S3ResourceSelectorProps.Resource) => void;
 }
@@ -103,6 +105,8 @@ export function S3Modal({
   fetchVersions,
   versionsVisibleColumns,
   versionsIsItemDisabled,
+  getModalRoot,
+  removeModalRoot,
   onSubmit,
   onDismiss,
 }: S3ModalProps) {
@@ -121,6 +125,8 @@ export function S3Modal({
       <InternalModal
         visible={true}
         size="max"
+        getModalRoot={getModalRoot}
+        removeModalRoot={removeModalRoot}
         closeAriaLabel={i18nStrings?.labelModalDismiss}
         onDismiss={onDismiss}
         header={i18n('i18nStrings.modalTitle', i18nStrings?.modalTitle)}

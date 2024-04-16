@@ -10,8 +10,6 @@ const customCssPropertiesList = [
   'contentGapLeft',
   'contentGapRight',
   'contentHeight',
-  'containerFirstGap',
-  'containerFirstOverlapExtension',
   'defaultMaxContentWidth',
   'defaultMinContentWidth',
   'drawerSize',

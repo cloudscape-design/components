@@ -756,6 +756,7 @@ If set to \`Number.MAX_VALUE\`, the main content panel will occupy the full avai
       "type": "boolean",
     },
     Object {
+      "defaultValue": "280",
       "description": "Navigation drawer width in pixels.",
       "name": "navigationWidth",
       "optional": true,
@@ -812,6 +813,7 @@ content area so it is always visible.",
       "type": "boolean",
     },
     Object {
+      "defaultValue": "290",
       "description": "Tools drawer width in pixels.",
       "name": "toolsWidth",
       "optional": true,
@@ -4539,6 +4541,13 @@ is provided by its parent form field component.
       "type": "number",
     },
     Object {
+      "description": "Use this property to specify a different dynamic modal root for the dialog.
+The function will be called when a user clicks on the trigger button.",
+      "name": "getModalRoot",
+      "optional": true,
+      "type": "() => Promise<HTMLElement>",
+    },
+    Object {
       "description": "An object containing all the necessary localized strings required by the component.
 The object should contain, among others:
 * \`loadingState\` - Specifies the text to display while the component is loading.
@@ -4704,6 +4713,14 @@ You can use any theme provided by Ace.
       "name": "preferences",
       "optional": true,
       "type": "Partial<CodeEditorProps.Preferences>",
+    },
+    Object {
+      "description": "Use this property when \`getModalRoot\` is used to clean up the modal root
+element after a user closes the dialog. The function receives the return value
+of the most recent getModalRoot call as an argument.",
+      "name": "removeModalRoot",
+      "optional": true,
+      "type": "(rootElement: HTMLElement) => void",
     },
     Object {
       "description": "List of Ace themes available for selection in preferences dialog. Make sure you include at least one light and at
@@ -4978,6 +4995,13 @@ the custom content is displayed at the bottom of the left column within the moda
       "type": "boolean",
     },
     Object {
+      "description": "Use this property to specify a different dynamic modal root for the dialog.
+The function will be called when a user clicks on the trigger button.",
+      "name": "getModalRoot",
+      "optional": true,
+      "type": "() => Promise<HTMLElement>",
+    },
+    Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
@@ -5074,6 +5098,14 @@ It contains the following:
       "name": "preferences",
       "optional": true,
       "type": "CollectionPreferencesProps.Preferences<CustomPreferenceType>",
+    },
+    Object {
+      "description": "Use this property when \`getModalRoot\` is used to clean up the modal root
+element after a user closes the dialog. The function receives the return value
+of the most recent getModalRoot call as an argument.",
+      "name": "removeModalRoot",
+      "optional": true,
+      "type": "(rootElement: HTMLElement) => void",
     },
     Object {
       "description": "Configures the sticky columns preference.
@@ -9438,6 +9470,13 @@ The event detail contains the \`reason\`, which can be any of the following:
       "type": "boolean",
     },
     Object {
+      "description": "Use this property to specify a different dynamic modal root for the dialog.
+The function will be called when a user clicks on the trigger button.",
+      "name": "getModalRoot",
+      "optional": true,
+      "type": "() => Promise<HTMLElement>",
+    },
+    Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
@@ -9446,10 +9485,19 @@ The event detail contains the \`reason\`, which can be any of the following:
     },
     Object {
       "description": "Specifies the HTML element where the modal is rendered.
-If a modal root isn't provided, the modal will render to an element under \`document.body\`.",
+If neither \`modalRoot\` or \`getModalRoot\` properties are provided, the modal will
+render to an element under \`document.body\`.",
       "name": "modalRoot",
       "optional": true,
       "type": "HTMLElement",
+    },
+    Object {
+      "description": "Use this property when \`getModalRoot\` is used to clean up the modal root
+element after a user closes the dialog. The function receives the return value
+of the most recent getModalRoot call as an argument.",
+      "name": "removeModalRoot",
+      "optional": true,
+      "type": "(rootElement: HTMLElement) => void",
     },
     Object {
       "defaultValue": "\\"medium\\"",
@@ -9943,6 +9991,20 @@ Provide an empty array to clear the selection.",
       "name": "tokenLimit",
       "optional": true,
       "type": "number",
+    },
+    Object {
+      "description": "Adds an aria-label to the \\"Show fewer\\" button for the token group control.
+Use to assign unique labels when there are multiple token groups with the same \`tokenLimitShowFewer\` label on one page.",
+      "name": "tokenLimitShowFewerAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds an aria-label to the \\"Show more\\" button for the token group control.
+Use to assign unique labels when there are multiple token groups with the same \`tokenLimitShowMore\` label on one page.",
+      "name": "tokenLimitShowMoreAriaLabel",
+      "optional": true,
+      "type": "string",
     },
     Object {
       "description": "If you have more than 500 options, enable this flag to apply a performance optimization
@@ -11342,6 +11404,20 @@ Each token has the following properties:
       "type": "number",
     },
     Object {
+      "description": "Adds an aria-label to the \\"Show fewer\\" button for the token group control.
+Use to assign unique labels when there are multiple token groups with the same \`tokenLimitShowFewer\` label on one page.",
+      "name": "tokenLimitShowFewerAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds an aria-label to the \\"Show more\\" button for the token group control.
+Use to assign unique labels when there are multiple token groups with the same \`tokenLimitShowMore\` label on one page.",
+      "name": "tokenLimitShowMoreAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "If you have more than 500 \`filteringOptions\`, enable this flag to apply a performance optimization that makes
 the filtering experience smoother. We don't recommend enabling the feature if you have less than 500 options,
 because the improvements to performance are offset by a visible scrolling lag. When you set this flag to true,
@@ -11625,6 +11701,13 @@ The return type of the function should be a promise that resolves to a list of v
       "name": "fetchVersions",
       "optional": false,
       "type": "(bucketName: string, pathPrefix: string) => Promise<ReadonlyArray<S3ResourceSelectorProps.Version>>",
+    },
+    Object {
+      "description": "Use this property to specify a different dynamic modal root for the dialog.
+The function will be called when a user clicks on the trigger button.",
+      "name": "getModalRoot",
+      "optional": true,
+      "type": "() => Promise<HTMLElement>",
     },
     Object {
       "description": "An object containing all the necessary localized strings required by the component.",
@@ -11964,6 +12047,14 @@ and 'Size'.",
       "name": "objectsVisibleColumns",
       "optional": true,
       "type": "ReadonlyArray<string>",
+    },
+    Object {
+      "description": "Use this property when \`getModalRoot\` is used to clean up the modal root
+element after a user closes the dialog. The function receives the return value
+of the most recent getModalRoot call as an argument.",
+      "name": "removeModalRoot",
+      "optional": true,
+      "type": "(rootElement: HTMLElement) => void",
     },
     Object {
       "description": "The current selected resource. Resource has the following properties:
@@ -15374,6 +15465,20 @@ We recommend to always enable this property.",
       "name": "limit",
       "optional": true,
       "type": "number",
+    },
+    Object {
+      "description": "Adds an \`aria-label\` to the \\"Show fewer\\" button.
+Use to assign unique labels when there are multiple token groups with the same \`limitShowFewer\` label on one page.",
+      "name": "limitShowFewerAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds an \`aria-label\` to the \\"Show more\\" button.
+Use to assign unique labels when there are multiple token groups with the same \`limitShowMore\` label on one page.",
+      "name": "limitShowMoreAriaLabel",
+      "optional": true,
+      "type": "string",
     },
   ],
   "regions": Array [],

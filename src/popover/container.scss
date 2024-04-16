@@ -68,6 +68,11 @@
   &-position-right-bottom {
     transform: rotate(-90deg);
     transform-origin: 0 100%;
+
+    @include styles.with-direction('rtl') {
+      transform: rotate(90deg);
+      transform-origin: 100% 100%;
+    }
   }
 
   &-position-right-top {
@@ -84,6 +89,11 @@
   &-position-left-bottom {
     transform: rotate(90deg);
     transform-origin: 100% 100%;
+
+    @include styles.with-direction('rtl') {
+      transform: rotate(-90deg);
+      transform-origin: 0% 100%;
+    }
   }
 
   &-position-left-top {

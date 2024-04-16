@@ -66,19 +66,6 @@
         box-shadow: inset 0 0 0 awsui.$border-control-focus-ring-shadow-spread awsui.$color-border-item-focused;
       }
     }
-    &.variant-navigation {
-      padding-block-start: awsui.$space-xs;
-      padding-block-end: awsui.$space-xs;
-
-      &.highlighted {
-        border-color: transparent;
-        border-block-start-color: awsui.$color-border-dropdown-group;
-        border-block-end-color: awsui.$color-border-dropdown-group;
-
-        background-color: transparent;
-        color: awsui.$color-text-accent;
-      }
-    }
   }
 }
 
@@ -120,7 +107,12 @@
 
   &-right {
     transform: rotate(-90deg);
+
+    @include styles.with-direction('rtl') {
+      transform: rotate(90deg);
+    }
   }
+
   @include styles.with-motion {
     transition: transform awsui.$motion-duration-rotate-180 awsui.$motion-easing-rotate-180;
   }

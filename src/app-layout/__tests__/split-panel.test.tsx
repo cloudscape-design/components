@@ -1,15 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { act, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import AppLayout from '../../../lib/components/app-layout';
 import { AppLayoutProps } from '../../../lib/components/app-layout/interfaces';
 import SplitPanel from '../../../lib/components/split-panel';
 import { KeyCode } from '../../../lib/components/internal/keycode';
 import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
 import { renderComponent, splitPanelI18nStrings } from './utils';
-import splitPanelStyles from '../../../lib/components/split-panel/styles.selectors.js';
 import applayoutTools from '../../../lib/components/app-layout/visual-refresh/styles.selectors.js';
+import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
 
 const defaultSplitPanel = (
   <SplitPanel i18nStrings={splitPanelI18nStrings} header="test header">
@@ -109,11 +109,15 @@ for (const theme of ['refresh', 'classic']) {
             onSplitPanelPreferencesChange={noop}
           />
         );
-        expect(wrapper.findSplitPanel()!.findOpenButton()).not.toBeNull();
-        act(() => wrapper.findSplitPanel()!.findOpenButton()!.click());
-        expect(wrapper.findSplitPanel()!.findOpenButton()).toBeNull();
-        act(() => wrapper.findSplitPanel()!.findCloseButton()!.click());
-        expect(wrapper.findSplitPanel()!.findOpenButton()).not.toBeNull();
+        expect(wrapper.findSplitPanelOpenButton()).not.toBeNull();
+        wrapper.findSplitPanelOpenButton()!.click();
+        if (position === 'side' && theme === 'refresh') {
+          expect(wrapper.findSplitPanelOpenButton()).not.toBeNull();
+        } else {
+          expect(wrapper.findSplitPanelOpenButton()).toBeNull();
+        }
+        wrapper.findSplitPanel()!.findCloseButton()!.click();
+        expect(wrapper.findSplitPanelOpenButton()).not.toBeNull();
       });
 
       test(`Moves focus to slider when opened in ${position} position`, () => {
@@ -124,7 +128,7 @@ for (const theme of ['refresh', 'classic']) {
             onSplitPanelPreferencesChange={noop}
           />
         );
-        act(() => wrapper.findSplitPanel()!.findOpenButton()!.click());
+        wrapper.findSplitPanelOpenButton()!.click();
         expect(wrapper.findSplitPanel()!.findSlider()!.getElement()).toHaveFocus();
       });
 
@@ -136,9 +140,9 @@ for (const theme of ['refresh', 'classic']) {
             onSplitPanelPreferencesChange={noop}
           />
         );
-        act(() => wrapper.findSplitPanel()!.findOpenButton()!.click());
-        act(() => wrapper.findSplitPanel()!.findCloseButton()!.click());
-        expect(wrapper.findSplitPanel()!.findOpenButton()!.getElement()).toHaveFocus();
+        wrapper.findSplitPanelOpenButton()!.click();
+        wrapper.findSplitPanel()!.findCloseButton()!.click();
+        expect(wrapper.findSplitPanelOpenButton()!.getElement()).toHaveFocus();
       });
 
       test(`Moves focus to the slider when focusSplitPanel() is called`, () => {
@@ -189,6 +193,10 @@ describe('Visual refresh only features', () => {
     (useVisualRefresh as jest.Mock).mockReset();
   });
 
+  function isDrawersBarDisplayed(wrapper: AppLayoutWrapper) {
+    return !!wrapper.findByClassName(applayoutTools['has-tools-form']);
+  }
+
   test('does not render the side open-button if split panel is in bottom position', () => {
     const { wrapper } = renderComponent(
       <AppLayout
@@ -200,7 +208,7 @@ describe('Visual refresh only features', () => {
       />
     );
     expect(wrapper.findToolsToggle()).toBeTruthy();
-    expect(wrapper.findSplitPanel()!.findOpenButton()).toBeFalsy();
+    expect(wrapper.findSplitPanelOpenButton()).toBeFalsy();
   });
 
   test('does not render side open-button when single split panel is open in position side', () => {
@@ -215,7 +223,7 @@ describe('Visual refresh only features', () => {
       />
     );
     expect(wrapper.findToolsToggle()).toBeFalsy();
-    expect(wrapper.findSplitPanel()!.findOpenButton()).toBeFalsy();
+    expect(isDrawersBarDisplayed(wrapper)).toBeFalsy();
   });
 
   test('renders side open-button bar when single split panel is closed in position side', () => {
@@ -230,7 +238,8 @@ describe('Visual refresh only features', () => {
       />
     );
     expect(wrapper.findToolsToggle()).toBeFalsy();
-    expect(wrapper.findSplitPanel()!.findOpenButton()).toBeTruthy();
+    expect(isDrawersBarDisplayed(wrapper)).toBeTruthy();
+    expect(wrapper.findSplitPanelOpenButton()).toBeTruthy();
   });
 
   test('does render tools toggle when the drawer is hidden', () => {
@@ -247,7 +256,7 @@ describe('Visual refresh only features', () => {
 
   test('does not render open-button bar in default state', () => {
     const { wrapper } = renderComponent(<AppLayout />);
-    expect(wrapper.find(`.${splitPanelStyles['open-button']}`)).toBeFalsy();
+    expect(wrapper.findSplitPanelOpenButton()).toBeFalsy();
   });
 
   test('should not show background color of split panel drawer when there is no splitPanel', () => {
@@ -263,7 +272,7 @@ describe('Visual refresh only features', () => {
         onSplitPanelResize={noop}
       />
     );
-    expect(wrapper.find('[data-testid="side-split-panel-drawer"]')?.getElement()).not.toHaveClass(
+    expect(wrapper.find('[data-testid="side-split-panel-drawer"]')!.getElement()).not.toHaveClass(
       applayoutTools['has-tools-form-persistence']
     );
     isMocked = false;

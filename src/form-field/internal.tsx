@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component';
@@ -28,6 +28,7 @@ import {
   getNameFromSelector,
   getSubStepAllSelector,
 } from '../internal/analytics/selectors';
+import LiveRegion from '../internal/components/live-region';
 
 interface FormFieldErrorProps {
   id?: string;
@@ -43,20 +44,27 @@ interface FormFieldWarningProps {
 
 export function FormFieldError({ id, children, errorIconAriaLabel }: FormFieldErrorProps) {
   const i18n = useInternalI18n('form-field');
+  const contentRef = useRef<HTMLDivElement | null>(null);
 
   return (
-    <div id={id} className={styles.error}>
-      <div className={styles['error-icon-shake-wrapper']}>
-        <div
-          role="img"
-          aria-label={i18n('i18nStrings.errorIconAriaLabel', errorIconAriaLabel)}
-          className={styles['error-icon-scale-wrapper']}
-        >
-          <InternalIcon name="status-negative" size="small" />
+    <>
+      <div id={id} className={styles.error}>
+        <div className={styles['error-icon-shake-wrapper']}>
+          <div
+            role="img"
+            aria-label={i18n('i18nStrings.errorIconAriaLabel', errorIconAriaLabel)}
+            className={styles['error-icon-scale-wrapper']}
+          >
+            <InternalIcon name="status-negative" size="small" />
+          </div>
         </div>
+        <span className={styles.error__message} ref={contentRef}>
+          {children}
+        </span>
       </div>
-      <span className={styles.error__message}>{children}</span>
-    </div>
+
+      <LiveRegion assertive={true} source={[errorIconAriaLabel, contentRef]} />
+    </>
   );
 }
 

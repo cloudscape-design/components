@@ -55,6 +55,13 @@
       transform: rotate(45deg);
       transform-origin: 0 100%;
     }
+
+    @include styles.with-direction('rtl') {
+      &::after {
+        transform: rotate(-45deg);
+        transform-origin: 100% 100%;
+      }
+    }
   }
 
   &-outer {

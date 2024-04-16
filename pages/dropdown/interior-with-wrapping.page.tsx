@@ -27,7 +27,7 @@ export default function DropdownScenario() {
         <div
           id="parentDropdown5"
           className={clsx(styles['dropdown-container'], styles.middle2)}
-          style={{ left: '100px' }}
+          style={{ insetInlineStart: '100px' }}
         >
           <Dropdown
             stretchWidth={false}
@@ -60,7 +60,11 @@ export default function DropdownScenario() {
         </div>
       </div>
       <div className={clsx(styles.container, styles['container-wide'])}>
-        <div id="parentDropdown6" className={styles['dropdown-container']} style={{ top: '170px', left: '190px' }}>
+        <div
+          id="parentDropdown6"
+          className={styles['dropdown-container']}
+          style={{ insetBlockStart: '170px', insetInlineStart: '190px' }}
+        >
           <Dropdown
             stretchWidth={false}
             trigger={

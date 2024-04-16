@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { AppLayoutInternalsProvider } from './context';
-import { AppLayoutProps } from '../interfaces';
+import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
 import Background from './background';
 import Breadcrumbs from './breadcrumbs';
 import Drawers from './drawers';
@@ -16,7 +16,7 @@ import SplitPanel from './split-panel';
 import Tools from './tools';
 
 const AppLayoutWithRef = React.forwardRef(function AppLayout(
-  props: AppLayoutProps,
+  props: AppLayoutPropsWithDefaults,
   ref: React.Ref<AppLayoutProps.Ref>
 ) {
   return (

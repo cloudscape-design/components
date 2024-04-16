@@ -9,6 +9,7 @@ import {
   findTableRowCellByAriaColIndex,
   getClosestCell,
   isElementDisabled,
+  isTableCell,
 } from './utils';
 import { FocusedCell, GridNavigationProps } from './interfaces';
 import { KeyCode } from '../../internal/keycode';
@@ -117,7 +118,7 @@ class GridNavigationProcessor {
     }, 0);
   }
 
-  public registerFocusable = (focusableElement: Element, changeHandler: FocusableChangeHandler) => {
+  public registerFocusable = (focusableElement: HTMLElement, changeHandler: FocusableChangeHandler) => {
     this.focusables.add(focusableElement);
     this.focusHandlers.set(focusableElement, changeHandler);
     const isFocusable = this.focusablesState.get(focusableElement) ?? false;
@@ -125,6 +126,12 @@ class GridNavigationProcessor {
     if (newIsFocusable !== isFocusable) {
       this.focusablesState.set(focusableElement, newIsFocusable);
       changeHandler(newIsFocusable);
+    }
+    // When newly registered element belongs to the focused cell the focus must transition to it.
+    const focusedElement = this.focusedCell?.element;
+    if (focusedElement && isTableCell(focusedElement) && focusedElement.contains(focusableElement)) {
+      // Scroll is unnecessary when moving focus from a cell to element within the cell.
+      focusableElement.focus({ preventScroll: true });
     }
     return () => this.unregisterFocusable(focusableElement);
   };
@@ -159,10 +166,11 @@ class GridNavigationProcessor {
 
     // Focusing on cell is not eligible when it contains focusable elements in the content.
     // If content focusables are available - move the focus to the first one.
-    const cellElement = getClosestCell(this.focusedCell.element);
-    const nextTarget = this.focusedCell.element === cellElement ? this.getFocusablesFrom(cellElement)[0] : null;
+    const focusedElement = this.focusedCell.element;
+    const nextTarget = isTableCell(focusedElement) ? this.getFocusablesFrom(focusedElement)[0] : null;
     if (nextTarget) {
-      nextTarget.focus();
+      // Scroll is unnecessary when moving focus from a cell to element within the cell.
+      nextTarget.focus({ preventScroll: true });
     } else {
       this.keepUserIndex = false;
     }

@@ -30,17 +30,19 @@ import ResetContextsForModal from '../internal/context/reset-contexts-for-modal'
 
 type InternalModalProps = SomeRequired<ModalProps, 'size'> & InternalBaseComponentProps;
 
-export default function InternalModal({ modalRoot, ...rest }: InternalModalProps) {
+export default function InternalModal({ modalRoot, getModalRoot, removeModalRoot, ...rest }: InternalModalProps) {
   return (
-    <Portal container={modalRoot}>
-      <InnerModal {...rest} />
+    <Portal container={modalRoot} getContainer={getModalRoot} removeContainer={removeModalRoot}>
+      <PortaledModal {...rest} />
     </Portal>
   );
 }
 
+type PortaledModalProps = Omit<InternalModalProps, 'modalRoot' | 'getModalRoot' | 'removeModalRoot'>;
+
 // Separate component to prevent the Portal from getting in the way of refs, as it needs extra cycles to render the inner components.
 // useContainerQuery needs its targeted element to exist on the first render in order to work properly.
-function InnerModal({
+function PortaledModal({
   size,
   visible,
   header,
@@ -50,7 +52,7 @@ function InnerModal({
   onDismiss,
   __internalRootRef = null,
   ...rest
-}: InternalModalProps) {
+}: PortaledModalProps) {
   const instanceUniqueId = useUniqueId();
   const headerId = `${rest.id || instanceUniqueId}-header`;
   const lastMouseDownElementRef = useRef<HTMLElement | null>(null);
