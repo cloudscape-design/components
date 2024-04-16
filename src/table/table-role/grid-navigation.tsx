@@ -13,7 +13,6 @@ import {
   isTableCell,
 } from './utils';
 import { FocusedCell, GridNavigationProps } from './interfaces';
-import { KeyCode } from '../../internal/keycode';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 import { nodeBelongs } from '../../internal/utils/node-belongs';
 import { getAllFocusables } from '../../internal/components/focus-lock/utils';
@@ -193,39 +192,24 @@ class GridNavigationProcessor {
       return;
     }
 
-    const keys = [
-      KeyCode.up,
-      KeyCode.down,
-      KeyCode.left,
-      KeyCode.right,
-      KeyCode.pageUp,
-      KeyCode.pageDown,
-      KeyCode.home,
-      KeyCode.end,
-    ];
     const ctrlKey = event.ctrlKey ? 1 : 0;
     const altKey = event.altKey ? 1 : 0;
     const shiftKey = event.shiftKey ? 1 : 0;
     const metaKey = event.metaKey ? 1 : 0;
     const numModifiersPressed = ctrlKey + altKey + shiftKey + metaKey;
 
-    if (numModifiersPressed !== 1 || !event.ctrlKey) {
+    if (numModifiersPressed && !(numModifiersPressed === 1 && event.ctrlKey)) {
       return;
     }
 
-    if (
-      this.isSuppressed(document.activeElement) ||
-      !this.isRegistered(document.activeElement) ||
-      keys.indexOf(event.keyCode) === -1
-    ) {
+    const from = this.focusedCell;
+
+    if (this.isSuppressed(document.activeElement) || !this.isRegistered(document.activeElement)) {
       return;
     }
 
     event.preventDefault();
 
-    const from = this.focusedCell;
-
-    // TODO RLT what is the dash before the second home
     isEventLike(event) &&
       handleKey(event, {
         onBlockStart: () => this.moveFocusBy(from, { y: -1, x: 0 }),
