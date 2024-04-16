@@ -70,20 +70,27 @@ export function FormFieldError({ id, children, errorIconAriaLabel }: FormFieldEr
 
 export function FormFieldWarning({ id, children, warningIconAriaLabel }: FormFieldWarningProps) {
   const i18n = useInternalI18n('form-field');
+  const contentRef = useRef<HTMLDivElement | null>(null);
 
   return (
-    <div id={id} className={styles.warning}>
-      <div className={styles['warning-icon-shake-wrapper']}>
-        <div
-          role="img"
-          aria-label={i18n('i18nStrings.warningIconAriaLabel', warningIconAriaLabel)}
-          className={styles['warning-icon-scale-wrapper']}
-        >
-          <InternalIcon name="status-warning" size="small" />
+    <>
+      <div id={id} className={styles.warning}>
+        <div className={styles['warning-icon-shake-wrapper']}>
+          <div
+            role="img"
+            aria-label={i18n('i18nStrings.warningIconAriaLabel', warningIconAriaLabel)}
+            className={styles['warning-icon-scale-wrapper']}
+          >
+            <InternalIcon name="status-warning" size="small" />
+          </div>
         </div>
+        <span className={styles.warning__message} ref={contentRef}>
+          {children}
+        </span>
       </div>
-      <span className={styles.warning__message}>{children}</span>
-    </div>
+
+      <LiveRegion assertive={true} source={[warningIconAriaLabel, contentRef]} />
+    </>
   );
 }
 

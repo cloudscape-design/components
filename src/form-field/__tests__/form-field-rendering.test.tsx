@@ -152,5 +152,16 @@ describe('FormField component', () => {
 
       expect(wrapper.findByClassName(liveRegionStyles.root)?.getElement()).toBeInTheDocument();
     });
+
+    test('Should render live region for warning text', () => {
+      const warningText = 'Are you sure?';
+      const warningIconAriaLabel = 'Warning';
+      const wrapper = renderFormField({
+        warningText,
+        i18nStrings: { warningIconAriaLabel },
+      });
+
+      expect(wrapper.findByClassName(liveRegionStyles.root)?.getElement()).toBeInTheDocument();
+    });
   });
 });
