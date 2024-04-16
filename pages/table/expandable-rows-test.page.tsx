@@ -46,7 +46,7 @@ type PageContext = React.Context<
     usePagination: boolean;
     useProgressiveLoading: boolean;
     useServerMock: boolean;
-    emulateProgressiveLoadingError: boolean;
+    emulateServerError: boolean;
   }>
 >;
 
@@ -116,6 +116,13 @@ export default () => {
             renderAriaLive={renderAriaLive}
             loading={tableData.loading}
             loadingText="Loading instances"
+            empty={
+              tableData.error ? (
+                <Alert type="error">Error when fetching table data</Alert>
+              ) : (
+                tableData.collectionProps.empty
+              )
+            }
             header={
               <SpaceBetween size="m">
                 <Header
@@ -234,15 +241,19 @@ function useTableData() {
   const delay = settings.useServerMock ? SERVER_DELAY : 0;
 
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   // Imitate server-side delay when fetching items for the first time.
   const [readyInstances, setReadyInstances] = useState(settings.useServerMock ? [] : allInstances);
   useEffect(() => {
     setLoading(true);
+    setError(false);
     setTimeout(() => {
       setReadyInstances(allInstances);
       setLoading(false);
+      setError(settings.emulateServerError);
     }, delay);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [delay]);
 
   const [selectedCluster, setSelectedCluster] = useState<null | string>(null);
@@ -281,11 +292,14 @@ function useTableData() {
   const [readyItems, setReadyItems] = useState(memoItems);
   useEffect(() => {
     setLoading(true);
+    setError(false);
     const timeoutId = setTimeout(() => {
       setLoading(false);
       setReadyItems(memoItems);
+      setError(settings.emulateServerError);
     }, delay);
     return () => clearTimeout(timeoutId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [delay, memoItems]);
 
   // Decorate path options to only show the last node and not the full path.
@@ -310,7 +324,7 @@ function useTableData() {
 
   const loadItems = (id: string) => {
     setLoadingState(nextLoading(id));
-    setTimeout(() => setLoadingState(settings.emulateProgressiveLoadingError ? nextError(id) : nextPending(id)), delay);
+    setTimeout(() => setLoadingState(settings.emulateServerError ? nextError(id) : nextPending(id)), delay);
   };
 
   const getItemChildren = collectionResult.collectionProps.expandableRows
@@ -358,8 +372,9 @@ function useTableData() {
 
   return {
     ...collectionResult,
+    error: settings.useServerMock ? error : false,
     loading: settings.useServerMock ? loading : false,
-    items: paginatedItems,
+    items: settings.useServerMock && error ? [] : paginatedItems,
     selectedCluster,
     actions: {
       resetClusterFilter: () => setSelectedCluster(null),
@@ -404,9 +419,9 @@ function usePageSettings() {
     keepSelection: urlParams.keepSelection ?? false,
     usePagination: urlParams.usePagination ?? false,
     useProgressiveLoading: urlParams.useProgressiveLoading ?? true,
-    emulateProgressiveLoadingError: urlParams.emulateProgressiveLoadingError ?? false,
     groupResources: urlParams.groupResources ?? true,
     useServerMock: urlParams.useServerMock ?? false,
+    emulateServerError: urlParams.emulateServerError ?? false,
     setUrlParams,
   };
 }
@@ -497,10 +512,10 @@ function PageSettings() {
           </Checkbox>
 
           <Checkbox
-            checked={settings.emulateProgressiveLoadingError}
-            onChange={event => settings.setUrlParams({ emulateProgressiveLoadingError: event.detail.checked })}
+            checked={settings.emulateServerError}
+            onChange={event => settings.setUrlParams({ emulateServerError: event.detail.checked })}
           >
-            Emulate progressive loading error
+            Emulate server error
           </Checkbox>
         </FormField>
       </SpaceBetween>
