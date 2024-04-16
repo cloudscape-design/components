@@ -70,14 +70,6 @@ $label-horizontal-spacing: awsui.$space-l;
   flex-shrink: 0;
   display: flex;
   max-inline-size: calc(90% - #{$label-horizontal-spacing});
-
-  & > div,
-  & > div > button {
-    background-color: transparent;
-    display: flex;
-    align-items: center;
-    text-align: start;
-  }
 }
 
 .tabs-tab-label {
@@ -89,8 +81,63 @@ $label-horizontal-spacing: awsui.$space-l;
   @include styles.text-wrapping;
 }
 
+.tabs-tab-header-content {
+  position: relative;
+
+  border-block: awsui.$border-divider-section-width solid transparent;
+  border-inline: awsui.$border-divider-section-width solid transparent;
+
+  padding-block: awsui.$space-scaled-2x-xxs;
+  padding-inline: $label-horizontal-spacing;
+
+  &,
+  & > button {
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    text-align: start;
+  }
+
+  &:focus {
+    outline: none;
+  }
+  @include styles.font-smoothing;
+
+  @include focus-visible.when-visible {
+    z-index: 1;
+    @include styles.focus-highlight(awsui.$space-tabs-focus-outline-gutter);
+    border-inline-end-color: transparent;
+  }
+}
+
+.tabs-tab-header-content:not(.tabs-tab-disabled) {
+  // This is the underline for the currently selected tab.
+  &:after {
+    content: '';
+    position: absolute;
+    inset-inline-start: 0;
+    inline-size: 100%;
+    inset-block-end: calc(-1 * #{awsui.$border-divider-section-width});
+    block-size: awsui.$border-active-width;
+    border-start-start-radius: awsui.$border-radius-tabs-focus-ring;
+    border-start-end-radius: awsui.$border-radius-tabs-focus-ring;
+    border-end-start-radius: awsui.$border-radius-tabs-focus-ring;
+    border-end-end-radius: awsui.$border-radius-tabs-focus-ring;
+    background: awsui.$color-border-tabs-underline;
+    opacity: 0;
+  }
+
+  &.refresh {
+    &:after {
+      @include styles.with-motion {
+        transition: opacity awsui.$motion-duration-refresh-only-medium awsui.$motion-easing-refresh-only-c;
+      }
+    }
+  }
+}
+
 .tabs-tab:not(:last-child) {
-  & > div {
+  & > .tabs-tab-header-content {
     margin-inline-end: calc(-1 * #{awsui.$border-divider-section-width});
     &:before {
       content: '';
@@ -144,7 +191,7 @@ $label-horizontal-spacing: awsui.$space-l;
 // Remediate focus shadow
 .tabs-tab:first-child {
   margin-inline-start: 1px;
-  & > div {
+  & > .tabs-tab-header-content {
     padding-inline-start: calc(#{$label-horizontal-spacing} - 1px);
   }
 }
@@ -152,7 +199,7 @@ $label-horizontal-spacing: awsui.$space-l;
 // Remediate focus shadow
 .tabs-tab:last-child {
   margin-inline-end: 1px;
-  & > div {
+  & > .tabs-tab-header-content {
     padding-inline-end: calc(#{$label-horizontal-spacing} - 1px);
   }
 }
@@ -164,55 +211,6 @@ $label-horizontal-spacing: awsui.$space-l;
     cursor: default;
     color: awsui.$color-text-interactive-disabled;
     font-weight: awsui.$font-tabs-disabled-weight;
-  }
-}
-
-.tabs-tab-header-content {
-  position: relative;
-
-  border-block: awsui.$border-divider-section-width solid transparent;
-  border-inline: awsui.$border-divider-section-width solid transparent;
-
-  padding-block: awsui.$space-scaled-2x-xxs;
-  padding-inline: $label-horizontal-spacing;
-
-  &:focus {
-    outline: none;
-  }
-  @include styles.font-smoothing;
-
-  @include focus-visible.when-visible {
-    z-index: 1;
-    @include styles.focus-highlight(awsui.$space-tabs-focus-outline-gutter);
-    & > div {
-      border-inline-end-color: transparent;
-    }
-  }
-}
-
-.tabs-tab-header-content:not(.tabs-tab-disabled) {
-  // This is the underline for the currently selected tab.
-  &:after {
-    content: '';
-    position: absolute;
-    inset-inline-start: 0;
-    inline-size: 100%;
-    inset-block-end: calc(-1 * #{awsui.$border-divider-section-width});
-    block-size: awsui.$border-active-width;
-    border-start-start-radius: awsui.$border-radius-tabs-focus-ring;
-    border-start-end-radius: awsui.$border-radius-tabs-focus-ring;
-    border-end-start-radius: awsui.$border-radius-tabs-focus-ring;
-    border-end-end-radius: awsui.$border-radius-tabs-focus-ring;
-    background: awsui.$color-border-tabs-underline;
-    opacity: 0;
-  }
-
-  &.refresh {
-    &:after {
-      @include styles.with-motion {
-        transition: opacity awsui.$motion-duration-refresh-only-medium awsui.$motion-easing-refresh-only-c;
-      }
-    }
   }
 }
 
