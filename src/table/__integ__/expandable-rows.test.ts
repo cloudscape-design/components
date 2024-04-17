@@ -8,11 +8,12 @@ const tableWrapper = createWrapper().findTable();
 
 interface TestPageOptions {
   useProgressiveLoading?: boolean;
+  useServerMock?: boolean;
 }
 
 describe('Expandable rows', () => {
   const setupTest = (
-    { useProgressiveLoading = true }: TestPageOptions,
+    { useProgressiveLoading = false, useServerMock = false }: TestPageOptions,
     testFn: (page: BasePageObject) => Promise<void>
   ) => {
     return useBrowser(async browser => {
@@ -20,6 +21,7 @@ describe('Expandable rows', () => {
       await page.setWindowSize({ width: 1200, height: 1000 });
       const query = new URLSearchParams({
         useProgressiveLoading: String(useProgressiveLoading),
+        useServerMock: String(useServerMock),
       });
       await browser.url(`#/light/table/expandable-rows-test?${query.toString()}`);
       await page.waitForVisible(tableWrapper.findBodyCell(2, 1).toSelector());
@@ -42,7 +44,7 @@ describe('Expandable rows', () => {
 
   test(
     'uses items loader on the first expandable item',
-    setupTest({ useProgressiveLoading: true }, async page => {
+    setupTest({ useProgressiveLoading: true, useServerMock: true }, async page => {
       const targetCluster = 'cluster-33387b6c';
       const loadingMessage = `Loading more items for ${targetCluster}`;
       const targetClusterLoadMore = tableWrapper.findItemsLoaderByItemId(targetCluster).findButton();
