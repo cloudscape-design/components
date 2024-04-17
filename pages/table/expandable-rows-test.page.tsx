@@ -361,12 +361,13 @@ function useTableData() {
     ? (item: null | Instance): TableProps.LoadingStatus => {
         const id = item ? item.name : 'ROOT';
         const state = loadingState.get(id);
-        if (state && state.status === 'pending') {
-          const pageSize = item ? NESTED_PAGE_SIZE : ROOT_PAGE_SIZE;
-          const totalItems = item ? getItemChildren!(item).length : allItems.length;
-          return state.pages * pageSize < totalItems ? 'pending' : 'finished';
+        if (settings.useServerMock && state && (state.status === 'loading' || state.status === 'error')) {
+          return state.status;
         }
-        return state?.status ?? 'loading';
+        const pages = state?.pages ?? 0;
+        const pageSize = item ? NESTED_PAGE_SIZE : ROOT_PAGE_SIZE;
+        const totalItems = item ? getItemChildren!(item).length : allItems.length;
+        return pages * pageSize < totalItems ? 'pending' : 'finished';
       }
     : undefined;
 
