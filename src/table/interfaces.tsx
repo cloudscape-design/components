@@ -461,9 +461,12 @@ export namespace TableProps {
   }
 
   export interface LiveAnnouncement {
-    totalItemsCount?: number;
     firstIndex: number;
     lastIndex: number;
+    // The number of all rendered items of the table (including nested items).
+    visibleItemsCount: number;
+    // The number of all available items of the table if known.
+    totalItemsCount?: number;
   }
 
   export interface Ref {

@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import Table from '~components/table';
 import Header from '~components/header';
 import SpaceBetween from '~components/space-between';
-import { getMatchesCountText, renderAriaLive } from './shared-configs';
+import { getMatchesCountText } from './shared-configs';
 import { useCollection } from '@cloudscape-design/collection-hooks';
 import {
   Alert,
@@ -25,7 +25,12 @@ import AppContext, { AppContextType } from '../app/app-context';
 import { allInstances } from './expandable-rows/expandable-rows-data';
 import messages from '~components/i18n/messages/all.en';
 import I18nProvider from '~components/i18n';
-import { createColumns, createPreferences, filteringProperties } from './expandable-rows/expandable-rows-configs';
+import {
+  createColumns,
+  createPreferences,
+  filteringProperties,
+  renderAriaLive,
+} from './expandable-rows/expandable-rows-configs';
 import { ariaLabels, getHeaderCounterText } from './expandable-rows/common';
 import { isEqual } from 'lodash';
 

@@ -18,6 +18,13 @@ import { Instance } from './common';
 import { columnLabel } from '../shared-configs';
 import { contentDisplayPreferenceI18nStrings } from '../../common/i18n-strings';
 
+export const renderAriaLive: TableProps['renderAriaLive'] = ({
+  firstIndex,
+  lastIndex,
+  totalItemsCount,
+  visibleItemsCount,
+}) => `Displaying root items ${firstIndex} to ${lastIndex} of ${totalItemsCount}, ${visibleItemsCount} items visible`;
+
 export function createColumns({
   getInstanceProps,
 }: {
