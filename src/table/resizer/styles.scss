@@ -50,6 +50,12 @@ th:not(:last-child) > .divider {
   inset-inline-end: calc(-1 * #{$handle-width} / 2);
   inline-size: $handle-width;
   z-index: 10;
+
+  // Allow touch devices to use the resizer horizontally.
+  // The lint isn't correct: "pan-y" and "pinch-zoom" values are supported.
+  // stylelint-disable-next-line plugin/no-unsupported-browser-features
+  touch-action: pan-y pinch-zoom;
+
   &:focus {
     outline: none;
     text-decoration: none;

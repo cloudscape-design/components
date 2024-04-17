@@ -3,29 +3,39 @@
 import { act } from '@testing-library/react';
 import { ElementWrapper } from '../../../../lib/components/test-utils/dom';
 
-export function fireMousedown(wrapper: ElementWrapper, button = 0) {
+beforeEach(() => {
+  // JSDOM does not support PointerEvent, but MouseEvent is probably close enough.
+  window.PointerEvent = MouseEvent as any;
+});
+
+afterEach(() => {
+  // JSDOM does not support PointerEvent, but MouseEvent is probably close enough.
+  delete (window as any).PointerEvent;
+});
+
+export function firePointerdown(wrapper: ElementWrapper, button = 0) {
   act(() => {
-    wrapper.fireEvent(new MouseEvent('mousedown', { button, bubbles: true }));
+    wrapper.fireEvent(new PointerEvent('pointerdown', { button, bubbles: true }));
   });
 }
 
-function createMouseEvent(name: string, pageX: number) {
-  const event = new MouseEvent(name, { bubbles: true });
+function createPointerEvent(name: string, pageX: number) {
+  const event = new PointerEvent(name, { bubbles: true });
   // pageX is not supported in JSDOM
   // https://github.com/jsdom/jsdom/issues/1911
   Object.defineProperty(event, 'pageX', { value: pageX });
   return event;
 }
 
-export function fireMouseMove(pageX: number) {
+export function firePointermove(pageX: number) {
   act(() => {
-    document.body.dispatchEvent(createMouseEvent('mousemove', pageX));
+    document.body.dispatchEvent(createPointerEvent('pointermove', pageX));
   });
 }
 
-export function fireMouseup(pageX: number) {
+export function firePointerup(pageX: number) {
   act(() => {
-    document.body.dispatchEvent(createMouseEvent('mouseup', pageX));
+    document.body.dispatchEvent(createPointerEvent('pointerup', pageX));
   });
 }
 
