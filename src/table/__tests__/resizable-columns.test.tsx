@@ -166,18 +166,6 @@ test('should resize column to grow', () => {
   expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '200px' });
 });
 
-test('should resize column to grow in rtl', () => {
-  document.body.style.direction = 'rtl';
-  const { wrapper } = renderTable(<Table {...defaultProps} />);
-  expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '150px' });
-
-  fireMousedown(wrapper.findColumnResizer(1)!);
-  fireMouseMove(-200);
-  fireMouseup(-200);
-  expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '200px' });
-  document.body.style.direction = 'ltr';
-});
-
 test('should resize column to shrink', () => {
   const { wrapper } = renderTable(<Table {...defaultProps} />);
   expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '150px' });
@@ -476,4 +464,40 @@ test('should set last column width to "auto" when container width exceeds total 
 
   fireCallbacks({ contentBoxWidth: totalColumnsWidth + 1 } as unknown as ContainerQueryEntry);
   expect(wrapper.findColumnHeaders().map(w => w.getElement().style.width)).toEqual(['150px', 'auto']);
+});
+
+describe('resize in rtl', () => {
+  beforeEach(() => {
+    document.body.style.direction = 'rtl';
+  });
+
+  test('should resize column to grow', () => {
+    const { wrapper } = renderTable(<Table {...defaultProps} />);
+    expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '150px' });
+
+    fireMousedown(wrapper.findColumnResizer(1)!);
+    fireMouseMove(-200);
+    fireMouseup(-200);
+    expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '200px' });
+  });
+
+  test('should resize column to shrink', () => {
+    const { wrapper } = renderTable(<Table {...defaultProps} />);
+    expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '150px' });
+
+    fireMousedown(wrapper.findColumnResizer(1)!);
+    fireMouseMove(-130);
+    fireMouseup(-130);
+    expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '130px' });
+  });
+
+  test('should not allow to resize column below the min width', () => {
+    const { wrapper } = renderTable(<Table {...defaultProps} />);
+    expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '150px' });
+
+    fireMousedown(wrapper.findColumnResizer(1)!);
+    fireMouseMove(-10);
+    fireMouseup(-10);
+    expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '80px' });
+  });
 });
