@@ -53,7 +53,7 @@ test('wrapper styles is not empty and wrapper listener is attached when feature 
   );
   result.current.refs.wrapper(tableWrapper);
 
-  expect(result.current.style.wrapper).toEqual({ scrollPaddingLeft: 0, scrollPaddingRight: 0 });
+  expect(result.current.style.wrapper).toEqual({ scrollPaddingInlineStart: 0, scrollPaddingInlineEnd: 0 });
   expect(addTableWrapperOnScrollSpy).toHaveBeenCalledWith('scroll', expect.any(Function));
 });
 
@@ -115,11 +115,11 @@ test('generates non-empty sticky cell state', () => {
           lastInsetInlineStart: false,
           lastInsetInlineEnd: false,
           padInlineStart: false,
-          offset: { left: 0 },
+          offset: { insetInlineStart: 0 },
         },
       ],
     ]),
-    wrapperState: { scrollPaddingLeft: 100, scrollPaddingRight: 0 },
+    wrapperState: { scrollPaddingInlineStart: 100, scrollPaddingInlineEnd: 0 },
   });
 });
 
@@ -134,7 +134,7 @@ test('generates empty cell state if wrapper is not scrollable', () => {
 
   expect(result.current.store.get()).toEqual({
     cellState: new Map(),
-    wrapperState: { scrollPaddingLeft: 100, scrollPaddingRight: 0 },
+    wrapperState: { scrollPaddingInlineStart: 100, scrollPaddingInlineEnd: 0 },
   });
 });
 
@@ -149,7 +149,7 @@ test('generates empty sticky cell state if not enough scrollable space', () => {
 
   expect(result.current.store.get()).toEqual({
     cellState: new Map(),
-    wrapperState: { scrollPaddingLeft: 200, scrollPaddingRight: 0 },
+    wrapperState: { scrollPaddingInlineStart: 200, scrollPaddingInlineEnd: 0 },
   });
 });
 
@@ -172,10 +172,10 @@ test('generates non-empty styles for sticky cells', () => {
     lastInsetInlineStart: false,
     lastInsetInlineEnd: false,
     padInlineStart: false,
-    offset: { right: 0 },
+    offset: { insetInlineEnd: 0 },
   });
   expect(cellStylesResult.current.className).toBe('sticky-cell');
-  expect(cellStylesResult.current.style).toEqual({ right: 0 });
+  expect(cellStylesResult.current.style).toEqual({ insetInlineEnd: 0 });
 });
 
 test('updates sticky cell styles', () => {
