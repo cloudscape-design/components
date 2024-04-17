@@ -193,6 +193,16 @@ class GridNavigationProcessor {
       return;
     }
 
+    const keys = [
+      KeyCode.up,
+      KeyCode.down,
+      KeyCode.left,
+      KeyCode.right,
+      KeyCode.pageUp,
+      KeyCode.pageDown,
+      KeyCode.home,
+      KeyCode.end,
+    ];
     const ctrlKey = event.ctrlKey ? 1 : 0;
     const altKey = event.altKey ? 1 : 0;
     const shiftKey = event.shiftKey ? 1 : 0;
@@ -205,7 +215,8 @@ class GridNavigationProcessor {
     if (
       invalidModiferCombination ||
       this.isSuppressed(document.activeElement) ||
-      !this.isRegistered(document.activeElement)
+      !this.isRegistered(document.activeElement) ||
+      keys.indexOf(event.keyCode) === -1
     ) {
       return;
     }
