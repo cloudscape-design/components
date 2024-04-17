@@ -175,6 +175,7 @@ test('should resize column to grow in rtl', () => {
   fireMouseMove(-200);
   fireMouseup(-200);
   expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '200px' });
+  document.body.style.direction = 'ltr';
 });
 
 test('should resize column to shrink', () => {
