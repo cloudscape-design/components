@@ -166,6 +166,17 @@ test('should resize column to grow', () => {
   expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '200px' });
 });
 
+test.only('should resize column to grow in rtl', () => {
+  document.body.style.direction = 'rtl';
+  const { wrapper } = renderTable(<Table {...defaultProps} />);
+  expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '150px' });
+
+  fireMousedown(wrapper.findColumnResizer(1)!);
+  fireMouseMove(-200);
+  fireMouseup(-200);
+  expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '200px' });
+});
+
 test('should resize column to shrink', () => {
   const { wrapper } = renderTable(<Table {...defaultProps} />);
   expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '150px' });
