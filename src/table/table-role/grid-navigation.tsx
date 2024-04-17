@@ -193,27 +193,19 @@ class GridNavigationProcessor {
       return;
     }
 
-    const keys = [
-      KeyCode.up,
-      KeyCode.down,
-      KeyCode.left,
-      KeyCode.right,
-      KeyCode.pageUp,
-      KeyCode.pageDown,
-      KeyCode.home,
-      KeyCode.end,
-    ];
     const ctrlKey = event.ctrlKey ? 1 : 0;
     const altKey = event.altKey ? 1 : 0;
     const shiftKey = event.shiftKey ? 1 : 0;
     const metaKey = event.metaKey ? 1 : 0;
-    const numModifiersPressed = ctrlKey + altKey + shiftKey + metaKey;
+    const modifiersPressed = ctrlKey + altKey + shiftKey + metaKey;
+    const invalidModiferCombination =
+      (modifiersPressed && !event.ctrlKey) ||
+      (event.ctrlKey && event.keyCode !== KeyCode.home && event.keyCode !== KeyCode.end);
 
     if (
-      (numModifiersPressed && !(numModifiersPressed === 1 && event.ctrlKey)) ||
+      invalidModiferCombination ||
       this.isSuppressed(document.activeElement) ||
-      !this.isRegistered(document.activeElement) ||
-      keys.indexOf(event.keyCode) === -1
+      !this.isRegistered(document.activeElement)
     ) {
       return;
     }
@@ -229,20 +221,14 @@ class GridNavigationProcessor {
         onInlineEnd: () => this.moveFocusBy(from, { y: 0, x: 1 }),
         onPageUp: () => this.moveFocusBy(from, { y: -this.pageSize, x: 0 }),
         onPageDown: () => this.moveFocusBy(from, { y: this.pageSize, x: 0 }),
-        onHome: () => {
-          if (numModifiersPressed === 1 && event.ctrlKey) {
-            this.moveFocusBy(from, { y: -Infinity, x: -Infinity });
-          } else {
-            this.moveFocusBy(from, { y: 0, x: -Infinity });
-          }
-        },
-        onEnd: () => {
-          if (numModifiersPressed === 1 && event.ctrlKey) {
-            this.moveFocusBy(from, { y: Infinity, x: Infinity });
-          } else {
-            this.moveFocusBy(from, { y: 0, x: Infinity });
-          }
-        },
+        onHome: () =>
+          event.ctrlKey
+            ? this.moveFocusBy(from, { y: -Infinity, x: -Infinity })
+            : this.moveFocusBy(from, { y: 0, x: -Infinity }),
+        onEnd: () =>
+          event.ctrlKey
+            ? this.moveFocusBy(from, { y: Infinity, x: Infinity })
+            : this.moveFocusBy(from, { y: 0, x: Infinity }),
       });
   };
 
