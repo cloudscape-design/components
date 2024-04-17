@@ -166,7 +166,7 @@ test('should resize column to grow', () => {
   expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '200px' });
 });
 
-test.only('should resize column to grow in rtl', () => {
+test('should resize column to grow in rtl', () => {
   document.body.style.direction = 'rtl';
   const { wrapper } = renderTable(<Table {...defaultProps} />);
   expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '150px' });
