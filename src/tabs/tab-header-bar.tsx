@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef, useState, useEffect } from 'react';
 import { TabsProps } from './interfaces';
+import { ButtonProps } from '../button/interfaces';
 import clsx from 'clsx';
 import styles from './styles.css.js';
 import { InternalButton } from '../button/internal';
@@ -18,6 +19,19 @@ import { hasModifierKeys, isPlainLeftClick } from '../internal/events';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useInternalI18n } from '../i18n/context';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+
+function dismissButton(dismissLabel: TabsProps.Tab['dismissLabel'], onDismiss: TabsProps.Tab['onDismiss']) {
+  return (
+    <InternalButton
+      onClick={onDismiss}
+      className={styles['dismiss-button']}
+      variant="icon"
+      iconName="close"
+      formAction="none"
+      ariaLabel={dismissLabel}
+    />
+  );
+}
 
 export interface TabHeaderBarProps {
   onChange: (changeDetail: TabsProps.ChangeDetail) => void;
@@ -168,6 +182,11 @@ export function TabHeaderBar({
 
   function renderTabHeader(tab: TabsProps.Tab) {
     const enabledTabsWithCurrentTab = tabs.filter(tab => !tab.disabled || tab.id === activeTabId);
+    const { dismissible, dismissLabel, action, onDismiss } = tab;
+
+    const handleDismiss: ButtonProps['onClick'] = event => {
+      onDismiss && onDismiss(event);
+    };
 
     const highlightTab = function (enabledTabIndex: number) {
       const tab = enabledTabsWithCurrentTab[enabledTabIndex];
@@ -236,6 +255,14 @@ export function TabHeaderBar({
       [styles['tabs-tab-link']]: true,
       [styles.refresh]: isVisualRefresh,
       [styles['tabs-tab-active']]: activeTabId === tab.id && !tab.disabled,
+      [styles['tabs-tab-link-only']]: action || dismissible,
+      [styles['tabs-tab-disabled']]: tab.disabled,
+    });
+
+    const tabHeaderContentClasses = clsx({
+      [styles['tabs-tab-header-content']]: true,
+      [styles.refresh]: isVisualRefresh,
+      [styles['tabs-tab-active']]: activeTabId === tab.id && !tab.disabled,
       [styles['tabs-tab-disabled']]: tab.disabled,
     });
 
@@ -286,7 +313,11 @@ export function TabHeaderBar({
         role="presentation"
         key={tab.id}
       >
-        {trigger}
+        <span className={tabHeaderContentClasses}>
+          {trigger}
+          {action && action}
+          {dismissible && dismissButton(dismissLabel, handleDismiss)}
+        </span>
       </li>
     );
   }

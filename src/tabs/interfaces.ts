@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
+import { ButtonProps } from '../button/interfaces';
 
 export interface TabsProps extends BaseComponentProps {
   /**
@@ -90,6 +91,24 @@ export namespace TabsProps {
      * Whether this tab is disabled.
      */
     disabled?: boolean;
+    /**
+     * (Optional) Determines whether the tab includes a close icon button. By default, the close button is not included.
+     * When a user clicks on this button the `onClose` handler is called.
+     */
+    dismissible?: boolean;
+    /**
+     * (Optional) Specifies an `aria-label` for the close icon button for improved accessibility.
+     */
+    dismissLabel?: string;
+    /**
+     * (Optional) Action for the tab, rendered next to its label. Although it is technically possible to insert any content,
+     * our UX guidelines only allow you to add an icon button or icon button dropdown.
+     */
+    action?: React.ReactNode;
+    /**
+     * (event => void) Called when a user clicks on the close button.
+     */
+    onDismiss?: ButtonProps['onClick'];
     /**
      * You can use this parameter to change the default `href` of the internal tab anchor. The
      * `click` event default behavior is prevented, unless the user clicks the tab with a key modifier (CTRL,
