@@ -20,7 +20,6 @@ import { getSplitPanelPosition } from './split-panel';
 import { useControllable } from '../../internal/hooks/use-controllable';
 import { SplitPanelFocusControlRefs, useSplitPanelFocusControl } from '../utils/use-split-panel-focus-control';
 import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
-import { useObservedElement } from '../utils/use-observed-element';
 import { useMobile } from '../../internal/hooks/use-mobile';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 import useResize from '../utils/use-resize';
@@ -116,8 +115,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       navigationHide,
       navigationOpen,
       contentType,
-      headerSelector,
-      footerSelector,
+      placement,
       children,
       splitPanel,
     } = props;
@@ -176,13 +174,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       },
       [props.onToolsChange, setIsToolsOpen, focusToolsButtons]
     );
-
-    /**
-     * Query the DOM for the header and footer elements based on the selectors provided
-     * by the properties and pass the heights to the custom property definitions.
-     */
-    const headerHeight = useObservedElement(headerSelector);
-    const footerHeight = useObservedElement(footerSelector);
 
     /**
      * Set the default values for the minimum and maximum Split Panel width when it is
@@ -252,15 +243,8 @@ export const AppLayoutInternalsProvider = React.forwardRef(
      * minimum width exceeds this value then there is not enough horizontal space and we must
      * force it to the bottom position.
      */
-    const [isSplitPanelForcedPosition, setSplitPanelForcedPosition] = useState(false);
+    const isSplitPanelForcedPosition = isMobile || SPLIT_PANEL_MIN_WIDTH > splitPanelMaxWidth;
     const splitPanelPosition = getSplitPanelPosition(isSplitPanelForcedPosition, splitPanelPreferences);
-
-    useLayoutEffect(
-      function handleSplitPanelForcePosition() {
-        setSplitPanelForcedPosition(SPLIT_PANEL_MIN_WIDTH > splitPanelMaxWidth);
-      },
-      [splitPanelMaxWidth]
-    );
 
     /**
      * The useControllable hook will set the default size of the SplitPanel based
@@ -364,24 +348,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     const hasDrawerViewportOverlay =
       isMobile && (!!activeDrawerId || (!navigationHide && navigationOpen) || (!toolsHide && isToolsOpen));
 
-    /**
-     * The Layout element is not necessarily synonymous with the client
-     * viewport width. There can be content in the horizontal viewport
-     * that exists on either side of the AppLayout. This resize observer
-     * will set the custom property of the Layout element width that
-     * is used for various horizontal constraints such as the maximum
-     * allowed width of the Tools container.
-     *
-     * The offsetLeft of the Main will return the distance that the
-     * Main element has from the left edge of the Layout component.
-     * The offsetLeft value can vary based on the presence and state
-     * of the Navigation as well as content gaps in the grid definition.
-     * This value is used to determine the max width constraint calculation
-     * for the Tools container.
-     */
-    const [layoutContainerQuery, layoutElement] = useContainerQuery(rect => rect.contentBoxWidth);
-    const layoutWidth = layoutContainerQuery ?? 0;
-
+    const layoutElement = useRef<HTMLDivElement>(null);
     const mainElement = useRef<HTMLDivElement>(null);
     const [mainOffsetLeft, setMainOffsetLeft] = useState(0);
 
@@ -395,7 +362,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       function handleMainOffsetLeft() {
         setMainOffsetLeft(mainElement?.current?.offsetLeft ?? 0);
       },
-      [layoutWidth, navigationOpen, isToolsOpen, splitPanelReportedSize]
+      [placement.width, navigationOpen, isToolsOpen, splitPanelReportedSize]
     );
 
     /**
@@ -441,7 +408,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
      * the SplitPanel component. Ignore the SplitPanel if it is not in the bottom
      * position. Use the size property if it is open and the header height if it is closed.
      */
-    let offsetBottom = footerHeight;
+    let offsetBottom = placement.bottom;
 
     if (splitPanelDisplayed && splitPanelPosition === 'bottom') {
       if (isSplitPanelOpen) {
@@ -486,7 +453,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
         };
 
         setSplitPanelMaxWidth(
-          layoutWidth -
+          placement.width -
             mainOffsetLeft -
             minContentWidth -
             contentGapRight -
@@ -494,7 +461,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
             getPanelOffsetWidth()
         );
 
-        setDrawersMaxWidth(layoutWidth - mainOffsetLeft - minContentWidth - contentGapRight - toolsFormOffsetWidth);
+        setDrawersMaxWidth(placement.width - mainOffsetLeft - minContentWidth - contentGapRight - toolsFormOffsetWidth);
       },
       [
         activeDrawerId,
@@ -502,7 +469,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
         drawers,
         navigationOpen,
         isToolsOpen,
-        layoutWidth,
+        placement.width,
         mainOffsetLeft,
         minContentWidth,
         toolsWidth,
@@ -564,8 +531,8 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           drawerRef,
           resizeHandle,
           drawersTriggerCount,
-          headerHeight,
-          footerHeight,
+          headerHeight: placement.top,
+          footerHeight: placement.bottom,
           hasDrawerViewportOverlay,
           handleDrawersClick,
           handleNavigationClick,
@@ -583,7 +550,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           isSplitPanelOpen,
           isToolsOpen,
           layoutElement,
-          layoutWidth,
+          layoutWidth: placement.width,
           loseToolsFocus,
           loseDrawersFocus,
           mainElement,

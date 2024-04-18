@@ -71,113 +71,117 @@ export const PRIORITY_MAPPING: Record<PopoverProps.Position, InternalPosition[]>
 const RECTANGLE_CALCULATIONS: Record<InternalPosition, (r: ElementGroup) => BoundingBox> = {
   'top-center': ({ body, trigger, arrow }) => {
     return {
-      top: trigger.top - body.height - arrow.height,
-      left: trigger.left + trigger.width / 2 - body.width / 2,
-      width: body.width,
-      height: body.height,
+      insetBlockStart: trigger.insetBlockStart - body.blockSize - arrow.blockSize,
+      insetInlineStart: trigger.insetInlineStart + trigger.inlineSize / 2 - body.inlineSize / 2,
+      inlineSize: body.inlineSize,
+      blockSize: body.blockSize,
     };
   },
   'top-right': ({ body, trigger, arrow }) => {
     return {
-      top: trigger.top - body.height - arrow.height,
-      left: trigger.left + trigger.width / 2 - ARROW_OFFSET - arrow.width / 2,
-      width: body.width,
-      height: body.height,
+      insetBlockStart: trigger.insetBlockStart - body.blockSize - arrow.blockSize,
+      insetInlineStart: trigger.insetInlineStart + trigger.inlineSize / 2 - ARROW_OFFSET - arrow.inlineSize / 2,
+      inlineSize: body.inlineSize,
+      blockSize: body.blockSize,
     };
   },
   'top-left': ({ body, trigger, arrow }) => {
     return {
-      top: trigger.top - body.height - arrow.height,
-      left: trigger.left + trigger.width / 2 + ARROW_OFFSET + arrow.width / 2 - body.width,
-      width: body.width,
-      height: body.height,
+      insetBlockStart: trigger.insetBlockStart - body.blockSize - arrow.blockSize,
+      insetInlineStart:
+        trigger.insetInlineStart + trigger.inlineSize / 2 + ARROW_OFFSET + arrow.inlineSize / 2 - body.inlineSize,
+      inlineSize: body.inlineSize,
+      blockSize: body.blockSize,
     };
   },
   'bottom-center': ({ body, trigger, arrow }) => {
     return {
-      top: trigger.top + trigger.height + arrow.height,
-      left: trigger.left + trigger.width / 2 - body.width / 2,
-      width: body.width,
-      height: body.height,
+      insetBlockStart: trigger.insetBlockStart + trigger.blockSize + arrow.blockSize,
+      insetInlineStart: trigger.insetInlineStart + trigger.inlineSize / 2 - body.inlineSize / 2,
+      inlineSize: body.inlineSize,
+      blockSize: body.blockSize,
     };
   },
   'bottom-right': ({ body, trigger, arrow }) => {
     return {
-      top: trigger.top + trigger.height + arrow.height,
-      left: trigger.left + trigger.width / 2 - ARROW_OFFSET - arrow.width / 2,
-      width: body.width,
-      height: body.height,
+      insetBlockStart: trigger.insetBlockStart + trigger.blockSize + arrow.blockSize,
+      insetInlineStart: trigger.insetInlineStart + trigger.inlineSize / 2 - ARROW_OFFSET - arrow.inlineSize / 2,
+      inlineSize: body.inlineSize,
+      blockSize: body.blockSize,
     };
   },
   'bottom-left': ({ body, trigger, arrow }) => {
     return {
-      top: trigger.top + trigger.height + arrow.height,
-      left: trigger.left + trigger.width / 2 + ARROW_OFFSET + arrow.width / 2 - body.width,
-      width: body.width,
-      height: body.height,
+      insetBlockStart: trigger.insetBlockStart + trigger.blockSize + arrow.blockSize,
+      insetInlineStart:
+        trigger.insetInlineStart + trigger.inlineSize / 2 + ARROW_OFFSET + arrow.inlineSize / 2 - body.inlineSize,
+      inlineSize: body.inlineSize,
+      blockSize: body.blockSize,
     };
   },
   'right-top': ({ body, trigger, arrow }) => {
     return {
-      top: trigger.top + trigger.height / 2 - ARROW_OFFSET - arrow.height,
-      left: trigger.left + trigger.width + arrow.height,
-      width: body.width,
-      height: body.height,
+      insetBlockStart: trigger.insetBlockStart + trigger.blockSize / 2 - ARROW_OFFSET - arrow.blockSize,
+      insetInlineStart: trigger.insetInlineStart + trigger.inlineSize + arrow.blockSize,
+      inlineSize: body.inlineSize,
+      blockSize: body.blockSize,
     };
   },
   'right-bottom': ({ body, trigger, arrow }) => {
     return {
-      top: trigger.top + trigger.height / 2 - body.height + ARROW_OFFSET + arrow.height,
-      left: trigger.left + trigger.width + arrow.height,
-      width: body.width,
-      height: body.height,
+      insetBlockStart:
+        trigger.insetBlockStart + trigger.blockSize / 2 - body.blockSize + ARROW_OFFSET + arrow.blockSize,
+      insetInlineStart: trigger.insetInlineStart + trigger.inlineSize + arrow.blockSize,
+      inlineSize: body.inlineSize,
+      blockSize: body.blockSize,
     };
   },
   'left-top': ({ body, trigger, arrow }) => {
     return {
-      top: trigger.top + trigger.height / 2 - ARROW_OFFSET - arrow.height,
-      left: trigger.left - body.width - arrow.height,
-      width: body.width,
-      height: body.height,
+      insetBlockStart: trigger.insetBlockStart + trigger.blockSize / 2 - ARROW_OFFSET - arrow.blockSize,
+      insetInlineStart: trigger.insetInlineStart - body.inlineSize - arrow.blockSize,
+      inlineSize: body.inlineSize,
+      blockSize: body.blockSize,
     };
   },
   'left-bottom': ({ body, trigger, arrow }) => {
     return {
-      top: trigger.top + trigger.height / 2 - body.height + ARROW_OFFSET + arrow.height,
-      left: trigger.left - body.width - arrow.height,
-      width: body.width,
-      height: body.height,
+      insetBlockStart:
+        trigger.insetBlockStart + trigger.blockSize / 2 - body.blockSize + ARROW_OFFSET + arrow.blockSize,
+      insetInlineStart: trigger.insetInlineStart - body.inlineSize - arrow.blockSize,
+      inlineSize: body.inlineSize,
+      blockSize: body.blockSize,
     };
   },
 };
 
 function fitIntoContainer(inner: BoundingBox, outer: BoundingBox): BoundingBox {
-  let { left, width, top, height } = inner;
+  let { insetInlineStart, inlineSize, insetBlockStart, blockSize } = inner;
 
   // Adjust left boundary.
-  if (left < outer.left) {
-    width = left + width - outer.left;
-    left = outer.left;
+  if (insetInlineStart < outer.insetInlineStart) {
+    inlineSize = insetInlineStart + inlineSize - outer.insetInlineStart;
+    insetInlineStart = outer.insetInlineStart;
   }
   // Adjust right boundary.
-  else if (left + width > outer.left + outer.width) {
-    width = outer.left + outer.width - left;
+  else if (insetInlineStart + inlineSize > outer.insetInlineStart + outer.inlineSize) {
+    inlineSize = outer.insetInlineStart + outer.inlineSize - insetInlineStart;
   }
   // Adjust top boundary.
-  if (top < outer.top) {
-    height = top + height - outer.top;
-    top = outer.top;
+  if (insetBlockStart < outer.insetBlockStart) {
+    blockSize = insetBlockStart + blockSize - outer.insetBlockStart;
+    insetBlockStart = outer.insetBlockStart;
   }
   // Adjust bottom boundary.
-  else if (top + height > outer.top + outer.height) {
-    height = outer.top + outer.height - top;
+  else if (insetBlockStart + blockSize > outer.insetBlockStart + outer.blockSize) {
+    blockSize = outer.insetBlockStart + outer.blockSize - insetBlockStart;
   }
 
-  return { left, width, top, height };
+  return { insetInlineStart, inlineSize, insetBlockStart, blockSize };
 }
 
 function getTallestRect(rect1: BoundingBox, rect2: BoundingBox): BoundingBox {
-  return rect1.height >= rect2.height ? rect1 : rect2;
+  return rect1.blockSize >= rect2.blockSize ? rect1 : rect2;
 }
 
 function getIntersection(rectangles: BoundingBox[]): BoundingBox | null {
@@ -187,18 +191,25 @@ function getIntersection(rectangles: BoundingBox[]): BoundingBox | null {
       boundingBox = currentRect;
       continue;
     }
-    const left = Math.max(boundingBox.left, currentRect.left);
-    const top = Math.max(boundingBox.top, currentRect.top);
-    const right = Math.min(boundingBox.left + boundingBox.width, currentRect.left + currentRect.width);
-    const bottom = Math.min(boundingBox.top + boundingBox.height, currentRect.top + currentRect.height);
-    if (right < left || bottom < top) {
+    const insetInlineStart = Math.max(boundingBox.insetInlineStart, currentRect.insetInlineStart);
+    const insetBlockStart = Math.max(boundingBox.insetBlockStart, currentRect.insetBlockStart);
+    const insetInlineEnd = Math.min(
+      boundingBox.insetInlineStart + boundingBox.inlineSize,
+      currentRect.insetInlineStart + currentRect.inlineSize
+    );
+    const insetBlockEnd = Math.min(
+      boundingBox.insetBlockStart + boundingBox.blockSize,
+      currentRect.insetBlockStart + currentRect.blockSize
+    );
+
+    if (insetInlineEnd < insetInlineStart || insetBlockEnd < insetBlockStart) {
       return null;
     }
     boundingBox = {
-      left,
-      top,
-      width: right - left,
-      height: bottom - top,
+      insetInlineStart,
+      insetBlockStart,
+      inlineSize: insetInlineEnd - insetInlineStart,
+      blockSize: insetBlockEnd - insetBlockStart,
     };
   }
   return boundingBox;
@@ -209,7 +220,7 @@ function getIntersection(rectangles: BoundingBox[]): BoundingBox | null {
  */
 export function intersectRectangles(rectangles: BoundingBox[]): number | null {
   const boundingBox: BoundingBox | null = getIntersection(rectangles);
-  return boundingBox && boundingBox.height * boundingBox.width;
+  return boundingBox && boundingBox.blockSize * boundingBox.inlineSize;
 }
 
 type CandidatePosition = CalculatedPosition & { visibleArea: BoundingBox | null };
@@ -254,7 +265,8 @@ export function calculatePosition({
       ? getIntersection([rect, viewport])
       : getIntersection([rect, viewport, container]);
 
-    const fitsWithoutOverflow = visibleArea && visibleArea.width === body.width && visibleArea.height === body.height;
+    const fitsWithoutOverflow =
+      visibleArea && visibleArea.inlineSize === body.inlineSize && visibleArea.blockSize === body.blockSize;
 
     if (fitsWithoutOverflow) {
       return { internalPosition, rect };
@@ -277,17 +289,17 @@ export function calculatePosition({
   const boundingContainer =
     allowVerticalOverflow && isTopOrBottom(internalPosition)
       ? {
-          top: tallestBoundingContainer.top,
-          height: tallestBoundingContainer.height,
-          left: viewport.left,
-          width: viewport.width,
+          insetBlockStart: tallestBoundingContainer.insetBlockStart,
+          blockSize: tallestBoundingContainer.blockSize,
+          insetInlineStart: viewport.insetInlineStart,
+          inlineSize: viewport.inlineSize,
         }
       : viewport;
 
   const optimizedRect = fitIntoContainer(rect, boundingContainer);
 
   // If largest possible rect is shorter than original - set body scroll.
-  const scrollable = optimizedRect.height < rect.height;
+  const scrollable = optimizedRect.blockSize < rect.blockSize;
 
   return { internalPosition, rect: optimizedRect, scrollable };
 }
@@ -302,11 +314,11 @@ function getBestOption(option1: CandidatePosition, option2: CandidatePosition | 
     return option2;
   }
   // Only if none of the two options overflows horizontally, choose the best based on the visible height.
-  if (option1.visibleArea.width === option2.visibleArea.width) {
-    return option1.visibleArea.height > option2.visibleArea.height ? option1 : option2;
+  if (option1.visibleArea.inlineSize === option2.visibleArea.inlineSize) {
+    return option1.visibleArea.blockSize > option2.visibleArea.blockSize ? option1 : option2;
   }
   // Otherwise, choose the option that is less cut off horizontally.
-  return option1.visibleArea.width > option2.visibleArea.width ? option1 : option2;
+  return option1.visibleArea.inlineSize > option2.visibleArea.inlineSize ? option1 : option2;
 }
 
 export function getOffsetDimensions(element: HTMLElement) {
@@ -316,8 +328,8 @@ export function getOffsetDimensions(element: HTMLElement) {
 export function getDimensions(element: HTMLElement) {
   const computedStyle = getComputedStyle(element);
   return {
-    width: parseFloat(computedStyle.width),
-    height: parseFloat(computedStyle.height),
+    inlineSize: parseFloat(computedStyle.inlineSize),
+    blockSize: parseFloat(computedStyle.blockSize),
   };
 }
 

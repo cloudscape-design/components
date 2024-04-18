@@ -17,15 +17,15 @@ afterEach(() => {
 
 describe('scrollRectangleIntoView', () => {
   test("scrolls up until the rectangle's top position fits the viewport top, if the rectangle's top position was further up", () => {
-    scrollRectangleIntoView({ top: -50, height: 100, width: 100, left: 0 });
+    scrollRectangleIntoView({ insetBlockStart: -50, blockSize: 100, inlineSize: 100, insetInlineStart: 0 });
     expect(window.scrollBy).toHaveBeenCalledWith(0, -50);
   });
   test("scrolls down until the rectangle's bottom position fits the viewport bottom, if the rectangle's bottom position was further down", () => {
-    scrollRectangleIntoView({ top: 300, height: 300, width: 100, left: 0 });
+    scrollRectangleIntoView({ insetBlockStart: 300, blockSize: 300, inlineSize: 100, insetInlineStart: 0 });
     expect(window.scrollBy).toHaveBeenCalledWith(0, 100);
   });
   test("scrolls down only until the rectangle's top position fits the viewport top, if the rectangle's bottom position was further down but it is taller than the viewport", () => {
-    scrollRectangleIntoView({ top: 300, height: 600, width: 100, left: 0 });
+    scrollRectangleIntoView({ insetBlockStart: 300, blockSize: 600, inlineSize: 100, insetInlineStart: 0 });
     expect(window.scrollBy).toHaveBeenCalledWith(0, 300);
   });
 });

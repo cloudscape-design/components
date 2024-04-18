@@ -43,7 +43,7 @@ function ContentNoMatch() {
 
 function ContentSmall() {
   return (
-    <div style={{ width: 200 }}>
+    <div style={{ inlineSize: 200 }}>
       <button>Small</button>
     </div>
   );
@@ -51,7 +51,7 @@ function ContentSmall() {
 
 function ContentMedium() {
   return (
-    <div style={{ width: 350 }}>
+    <div style={{ inlineSize: 350 }}>
       <button>Medium</button>
     </div>
   );
@@ -59,7 +59,7 @@ function ContentMedium() {
 
 function ContentLarge() {
   return (
-    <div style={{ width: 500 }}>
+    <div style={{ inlineSize: 500 }}>
       <button>Large</button>
     </div>
   );

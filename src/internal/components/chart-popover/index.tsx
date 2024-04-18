@@ -20,7 +20,7 @@ export interface ChartPopoverProps extends PopoverProps {
   title?: React.ReactNode;
 
   /** References the element the container is positioned against. */
-  trackRef: React.RefObject<Element>;
+  trackRef: React.RefObject<HTMLElement | SVGElement>;
   /**
     Used to update the container position in case track or track position changes:
     
