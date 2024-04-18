@@ -18,6 +18,7 @@ export default function handleKey(
     onActivate,
     onBlockEnd,
     onBlockStart,
+    onDefault,
     onEnd,
     onEscape,
     onHome,
@@ -29,6 +30,7 @@ export default function handleKey(
     onActivate?: () => void;
     onBlockEnd?: () => void;
     onBlockStart?: () => void;
+    onDefault?: () => void;
     onEnd?: () => void;
     onEscape?: () => void;
     onHome?: () => void;
@@ -69,6 +71,9 @@ export default function handleKey(
       break;
     case KeyCode.up:
       onBlockStart?.();
+      break;
+    default:
+      onDefault?.();
       break;
   }
 }
