@@ -150,12 +150,15 @@ export default function BarSeries<T extends ChartDataTypes>({
                 height: width - widthOffset,
               };
 
+        // Stacked bars only require rounded corners for the min/max segments.
         const isFirst = !stackedBarOffsets || isMin;
         const isLast = !stackedBarOffsets || isMax;
+        // Non-stacked bars have all corners rounded.
         const rxProps = isFirst && isLast ? { rx } : { clipPath: `url(#${clipPathId}-${i})` };
 
         return (
           <React.Fragment key={`bar-${i}`}>
+            {/* Render the clip-path to provide rounded corners for the min/max stacked bars  */}
             {(isFirst || isLast) && (
               <defs aria-hidden="true">
                 <clipPath id={`${clipPathId}-${i}`}>
@@ -175,6 +178,7 @@ export default function BarSeries<T extends ChartDataTypes>({
               </defs>
             )}
 
+            {/* Render the bar rectangle */}
             <rect fill={color} {...rectPlacement} {...rxProps} className={className} />
           </React.Fragment>
         );

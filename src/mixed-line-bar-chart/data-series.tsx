@@ -49,7 +49,6 @@ export default function DataSeries<T extends ChartDataTypes>({
   // Lines get a small extra space at the top and bottom to account for the strokes when they are at the edge of the graph.
   const lineAreaClipPath = useUniqueId('awsui-line-chart__chart-area-');
 
-  // TODO: fix a bug when threshold series is not the last series in a grouped bar chart.
   const stackedBarOffsetMaps = useMemo(() => {
     if (!stackedBars) {
       return null;
@@ -59,6 +58,8 @@ export default function DataSeries<T extends ChartDataTypes>({
     visibleSeries.forEach(({ series }) => {
       if (series.type === 'bar') {
         barData.push(series.data);
+      } else {
+        barData.push([]);
       }
     });
     return calculateOffsetMaps(barData);

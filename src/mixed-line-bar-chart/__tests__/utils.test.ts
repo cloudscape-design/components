@@ -43,7 +43,7 @@ describe('calculateOffsetMaps', () => {
   });
 
   test('without data', () => {
-    expect(calculateOffsetMaps([])).toEqual([]);
+    expect(calculateOffsetMaps([]).seriesOffsets).toEqual([]);
   });
 
   test('with categorical data', () => {
@@ -51,7 +51,7 @@ describe('calculateOffsetMaps', () => {
 
     const actual = calculateOffsetMaps(data);
 
-    expect(actual).toEqual([
+    expect(actual.seriesOffsets).toEqual([
       { positiveOffsets: new Map(), negativeOffsets: new Map() },
       {
         positiveOffsets: new Map([
@@ -80,7 +80,7 @@ describe('calculateOffsetMaps', () => {
 
     const actual = calculateOffsetMaps(data);
 
-    expect(actual).toEqual([
+    expect(actual.seriesOffsets).toEqual([
       { positiveOffsets: new Map(), negativeOffsets: new Map() },
       {
         positiveOffsets: new Map([[date.getTime(), 1]]),
@@ -98,7 +98,7 @@ describe('calculateOffsetMaps', () => {
 
     const actual = calculateOffsetMaps(data);
 
-    expect(actual).toEqual([
+    expect(actual.seriesOffsets).toEqual([
       { positiveOffsets: new Map(), negativeOffsets: new Map() },
       {
         positiveOffsets: new Map([[1, 1]]),
@@ -132,7 +132,7 @@ describe('calculateOffsetMaps', () => {
 
     const actual = calculateOffsetMaps(data);
 
-    expect(actual).toEqual([
+    expect(actual.seriesOffsets).toEqual([
       { positiveOffsets: new Map(), negativeOffsets: new Map() },
       {
         positiveOffsets: new Map([[2, 3]]),
