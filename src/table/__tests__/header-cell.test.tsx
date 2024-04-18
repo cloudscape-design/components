@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import { fireEvent, render } from '@testing-library/react';
-import { TableHeaderCell } from '../../../lib/components/table/header-cell';
+import { TableHeaderCell, TableHeaderCellProps } from '../../../lib/components/table/header-cell';
 import { TableProps } from '../interfaces';
 import { renderHook } from '../../__tests__/render-hook';
 
@@ -10,6 +10,7 @@ import styles from '../../../lib/components/table/header-cell/styles.css.js';
 import resizerStyles from '../../../lib/components/table/resizer/styles.css.js';
 import { useStickyColumns } from '../../../lib/components/table/sticky-columns';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
+import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
 
 const tableRole = 'table';
 
@@ -45,22 +46,28 @@ function TableWrapper({ children }: { children: React.ReactNode }) {
   );
 }
 
+function TestComponent(props: Partial<TableHeaderCellProps<typeof testItem>>) {
+  return (
+    <TableHeaderCell<typeof testItem>
+      column={column}
+      colIndex={0}
+      tabIndex={0}
+      updateColumn={() => {}}
+      onClick={() => {}}
+      onResizeFinish={() => {}}
+      stickyState={result.current}
+      columnId="id"
+      cellRef={() => {}}
+      tableRole={tableRole}
+      {...props}
+    />
+  );
+}
+
 it('renders a fake focus outline on the sort control', () => {
   const { container } = render(
     <TableWrapper>
-      <TableHeaderCell<typeof testItem>
-        focusedComponent="sorting-control-id"
-        column={column}
-        colIndex={0}
-        tabIndex={0}
-        updateColumn={() => {}}
-        onClick={() => {}}
-        onResizeFinish={() => {}}
-        stickyState={result.current}
-        columnId="id"
-        cellRef={() => {}}
-        tableRole={tableRole}
-      />
+      <TestComponent focusedComponent="sorting-control-id" />
     </TableWrapper>
   );
   // Activate focus-visible
@@ -71,20 +78,7 @@ it('renders a fake focus outline on the sort control', () => {
 it('renders a fake focus outline on the resize control', () => {
   const { container } = render(
     <TableWrapper>
-      <TableHeaderCell<typeof testItem>
-        focusedComponent="resize-control-id"
-        column={column}
-        colIndex={0}
-        tabIndex={0}
-        resizableColumns={true}
-        updateColumn={() => {}}
-        onClick={() => {}}
-        onResizeFinish={() => {}}
-        stickyState={result.current}
-        columnId="id"
-        cellRef={() => {}}
-        tableRole={tableRole}
-      />
+      <TestComponent focusedComponent="resize-control-id" resizableColumns={true} />
     </TableWrapper>
   );
   // Activate focus-visible
@@ -97,23 +91,23 @@ describe('i18n', () => {
     const { container } = render(
       <TestI18nProvider messages={{ table: { 'columnDefinitions.editConfig.editIconAriaLabel': 'Custom editable' } }}>
         <TableWrapper>
-          <TableHeaderCell<typeof testItem>
-            column={{ ...column, editConfig: undefined }}
-            colIndex={0}
-            tabIndex={0}
-            resizableColumns={true}
-            updateColumn={() => {}}
-            onClick={() => {}}
-            onResizeFinish={() => {}}
-            stickyState={result.current}
-            columnId="id"
-            isEditable={true}
-            cellRef={() => {}}
-            tableRole={tableRole}
-          />
+          <TestComponent column={{ ...column, editConfig: undefined }} resizableColumns={true} isEditable={true} />
         </TableWrapper>
       </TestI18nProvider>
     );
     expect(container.querySelector(`.${styles['edit-icon']}`)).toHaveAttribute('aria-label', 'Custom editable');
+  });
+
+  test('does not set tab index when negative', () => {
+    const { setCurrentTarget } = renderWithSingleTabStopNavigation(<TestComponent />, {
+      navigationActive: true,
+    });
+    const headerCell = document.querySelector('th')!;
+
+    expect(headerCell).not.toHaveAttribute('tabIndex');
+    setCurrentTarget(headerCell);
+    expect(headerCell).toHaveAttribute('tabIndex', '0');
+    setCurrentTarget(null);
+    expect(headerCell).not.toHaveAttribute('tabIndex');
   });
 });
