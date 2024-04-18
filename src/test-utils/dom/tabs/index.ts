@@ -74,7 +74,7 @@ export default class TabsWrapper extends ComponentWrapper<HTMLButtonElement> {
    * Finds the currently active tab and returns the clickable element from its tab label.
    */
   findActiveTab(): ElementWrapper<HTMLAnchorElement | HTMLButtonElement> | null {
-    return this.find(`.${styles['tabs-tab-active']}`);
+    return this.find(`.${styles['tabs-tab-active']} .${styles['tabs-tab-link']}`);
   }
 
   /**

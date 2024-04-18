@@ -313,11 +313,11 @@ export function TabHeaderBar({
         role="presentation"
         key={tab.id}
       >
-        <div className={tabHeaderContentClasses}>
+        <span className={tabHeaderContentClasses}>
           {trigger}
-          {action && action}
+          {action && <div className="tabs-tab-action">action</div>}
           {dismissible && dismissButton(dismissLabel, handleDismiss)}
-        </div>
+        </span>
       </li>
     );
   }
