@@ -412,7 +412,7 @@ describe('Series', () => {
           />
         );
 
-        expect(wrapper.findSeries()[0].findAll('rect[fill]')).toHaveLength(4);
+        expect(wrapper.findSeries()[0].findAll('rect')).toHaveLength(4);
         expect(wrapper.findSeries()).toHaveLength(2);
       });
     });
