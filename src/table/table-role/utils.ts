@@ -93,3 +93,12 @@ export function findTableRowCellByAriaColIndex(
 export function isTableCell(element: Element) {
   return element.tagName === 'TD' || element.tagName === 'TH';
 }
+
+export function focusNextElement(element: null | HTMLElement) {
+  if (element) {
+    if (isTableCell(element)) {
+      element.tabIndex = 0;
+    }
+    element.focus();
+  }
+}
