@@ -58,6 +58,8 @@ export default function DataSeries<T extends ChartDataTypes>({
     visibleSeries.forEach(({ series }) => {
       if (series.type === 'bar') {
         barData.push(series.data);
+      } else {
+        barData.push([]);
       }
     });
     return calculateOffsetMaps(barData);
