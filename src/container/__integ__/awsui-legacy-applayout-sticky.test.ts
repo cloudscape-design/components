@@ -14,17 +14,9 @@ const flashBarSelector = createWrapper().findFlashbar().toSelector();
 const demoHeaderSelector = '#h';
 
 const CLASSIC_STICKY_OFFSET_SPACE = 0; // No borders on flashbars or additional padding below
-const VISUAL_REFRESH_STICKY_OFFSET_SPACE = 4; // space-xxs - from $offsetTopWithNotifications additional padding
+const VISUAL_REFRESH_STICKY_OFFSET_SPACE = 2; // space-xxxs - from $offsetTopWithNotifications additional padding
 
 class AppLayoutLegacyStickyPage extends BasePageObject {
-  async areNotificationsVisible() {
-    const elements = await this.browser.$$(appLayoutWrapper.findNotifications().toSelector());
-    if (elements.length === 0) {
-      return false;
-    }
-    return elements[0].isDisplayedInViewport();
-  }
-
   scrollTo(params: { top?: number; left?: number }) {
     return this.elementScrollTo(`.${appLayoutSelectors['disable-body-scroll-root']}`, params);
   }

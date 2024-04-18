@@ -6,6 +6,7 @@ import styles from './styles.css.js';
 import { getContainingBlock, supportsStickyPosition } from '../../internal/utils/dom';
 import { getOverflowParents } from '../../internal/utils/scrollable-containers';
 import { browserScrollbarSize } from '../../internal/utils/browser-scrollbar-size';
+import globalVars from '../../internal/styles/global-vars';
 import { getLogicalBoundingClientRect } from '../../internal/direction.js';
 
 export const updatePosition = (
@@ -13,8 +14,7 @@ export const updatePosition = (
   wrapperEl: HTMLElement | null,
   scrollbarEl: HTMLElement | null,
   scrollbarContentEl: HTMLElement | null,
-  hasContainingBlock: boolean,
-  consideredFooterHeight: number
+  inScrollableContainer: boolean
 ) => {
   if (!tableEl || !scrollbarEl || !wrapperEl) {
     return;
@@ -34,10 +34,6 @@ export const updatePosition = (
     // that's why syncing it separately
     if (!scrollbarEl.classList.contains(styles['sticky-scrollbar-visible'])) {
       requestAnimationFrame(() => {
-        /**
-         * We don't need to use getScrollInlineStart here instead of scrollLeft because
-         * the negative value isn't being used in computation.
-         */
         scrollbarEl.scrollLeft = wrapperEl.scrollLeft;
       });
     }
@@ -62,7 +58,9 @@ export const updatePosition = (
 
     // when using sticky scrollbars in containers
     // we agreed to ignore dynamic bottom calculations for footer overlap
-    scrollbarEl.style.insetBlockEnd = hasContainingBlock ? '0px' : `${consideredFooterHeight}px`;
+    scrollbarEl.style.insetBlockEnd = inScrollableContainer
+      ? '0px'
+      : `var(${globalVars.stickyVerticalBottomOffset}, 0px)`;
   }
 };
 
@@ -71,24 +69,14 @@ export function useStickyScrollbar(
   scrollbarContentRef: RefObject<HTMLDivElement>,
   tableRef: RefObject<HTMLTableElement>,
   wrapperRef: RefObject<HTMLDivElement>,
-  footerHeight: number,
   offsetScrollbar: boolean
 ) {
-  // We don't take into account containing-block calculations because that would
-  // unnecessarily overcomplicate the position logic. For now, we assume that a
-  // containing block, if present, is below the app layout and above the overflow
-  // parent, which is a pretty safe assumption.
-  const [hasContainingBlock, setHasContainingBlock] = useState(false);
-  // We don't take into account footer height when the overflow parent is child of document body.
-  // Because in this case, we think the footer is outside the overflow parent.
-  const [hasOverflowParent, setHasOverflowParent] = useState(false);
-  const consideredFooterHeight = hasContainingBlock || hasOverflowParent ? 0 : footerHeight;
+  const [inScrollableContainer, setInScrollableContainer] = useState(false);
 
   const wrapperEl = wrapperRef.current;
   useEffect(() => {
     if (wrapperEl && supportsStickyPosition()) {
-      setHasContainingBlock(!!getContainingBlock(wrapperEl));
-      setHasOverflowParent(!!getOverflowParents(wrapperEl)[0]);
+      setInScrollableContainer(!!getContainingBlock(wrapperEl) || !!getOverflowParents(wrapperEl)[0]);
     }
   }, [wrapperEl]);
 
@@ -102,8 +90,7 @@ export function useStickyScrollbar(
             wrapperRef.current,
             scrollbarRef.current,
             scrollbarContentRef.current,
-            hasContainingBlock,
-            consideredFooterHeight
+            inScrollableContainer
           );
         }
       });
@@ -115,15 +102,7 @@ export function useStickyScrollbar(
         observer.disconnect();
       };
     }
-  }, [
-    scrollbarContentRef,
-    scrollbarRef,
-    tableRef,
-    wrapperRef,
-    consideredFooterHeight,
-    hasContainingBlock,
-    offsetScrollbar,
-  ]);
+  }, [scrollbarContentRef, scrollbarRef, tableRef, wrapperRef, inScrollableContainer, offsetScrollbar]);
 
   // Update scrollbar position when window resizes (vertically).
   useEffect(() => {
@@ -134,8 +113,7 @@ export function useStickyScrollbar(
           wrapperRef.current,
           scrollbarRef.current,
           scrollbarContentRef.current,
-          hasContainingBlock,
-          consideredFooterHeight
+          inScrollableContainer
         );
       };
       resizeHandler();
@@ -144,5 +122,5 @@ export function useStickyScrollbar(
         window.removeEventListener('resize', resizeHandler);
       };
     }
-  }, [tableRef, wrapperRef, scrollbarRef, scrollbarContentRef, hasContainingBlock, consideredFooterHeight]);
+  }, [tableRef, wrapperRef, scrollbarRef, scrollbarContentRef, inScrollableContainer]);
 }

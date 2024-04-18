@@ -15,6 +15,7 @@ interface SplitPanelContentSideProps extends SplitPanelContentProps {
 }
 
 export function SplitPanelContentSide({
+  style,
   baseProps,
   splitPanelRef,
   toggleRef,
@@ -38,6 +39,7 @@ export function SplitPanelContentSide({
       style={{
         width: isOpen && isRefresh ? cappedSize : undefined,
         maxWidth: isRefresh ? '100%' : undefined,
+        ...style,
       }}
       ref={splitPanelRef}
     >

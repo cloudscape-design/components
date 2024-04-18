@@ -91,8 +91,8 @@ window[awsuiVisualRefreshFlag] = () => visualRefresh;
 if (!window[awsuiGlobalFlagsSymbol]) {
   window[awsuiGlobalFlagsSymbol] = {};
 }
-window[awsuiGlobalFlagsSymbol].removeHighContrastHeader = !!removeHighContrastHeader;
-window[awsuiGlobalFlagsSymbol].appLayoutWidget = !!appLayoutWidget;
+window[awsuiGlobalFlagsSymbol].removeHighContrastHeader = removeHighContrastHeader;
+window[awsuiGlobalFlagsSymbol].appLayoutWidget = appLayoutWidget;
 
 // Apply the direction value to the HTML element dir attribute
 document.documentElement.setAttribute('dir', direction);
