@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { SizeControlProps } from './interfaces';
-import handleKey, { isEventLike } from '../../internal/utils/handle-key';
+import handleKey from '../../internal/utils/handle-key';
 
 const KEYBOARD_SINGLE_STEP_SIZE = 10;
 const KEYBOARD_MULTIPLE_STEPS_SIZE = 60;
@@ -22,7 +22,7 @@ const getCurrentSize = (panelRef?: React.RefObject<HTMLDivElement>) => {
 };
 
 export const useKeyboardEvents = ({ position, onResize, panelRef }: SizeControlProps) => {
-  return (event: React.KeyboardEvent) => {
+  return (event: React.KeyboardEvent<HTMLElement>) => {
     let currentSize: number;
     let maxSize: number;
 
@@ -45,26 +45,25 @@ export const useKeyboardEvents = ({ position, onResize, panelRef }: SizeControlP
     const multipleStepUp = () => onResize(currentSize + KEYBOARD_MULTIPLE_STEPS_SIZE);
     const multipleStepDown = () => onResize(currentSize - KEYBOARD_MULTIPLE_STEPS_SIZE);
 
-    isEventLike(event) &&
-      handleKey(event, {
-        onBlockStart: () => {
-          position === 'bottom' ? singleStepUp() : singleStepDown();
-        },
-        onBlockEnd: () => {
-          position === 'bottom' ? singleStepDown() : singleStepUp();
-        },
-        onInlineEnd: () => {
-          position === 'bottom' ? singleStepUp() : singleStepDown();
-        },
-        onInlineStart: () => {
-          position === 'bottom' ? singleStepDown() : singleStepUp();
-        },
-        onPageDown: () => multipleStepUp(),
-        onPageUp: () => multipleStepDown(),
-        onHome: () => onResize(maxSize),
-        onEnd: () => onResize(0),
-        onDefault: () => (isEventHandled = false),
-      });
+    handleKey(event, {
+      onBlockStart: () => {
+        position === 'bottom' ? singleStepUp() : singleStepDown();
+      },
+      onBlockEnd: () => {
+        position === 'bottom' ? singleStepDown() : singleStepUp();
+      },
+      onInlineEnd: () => {
+        position === 'bottom' ? singleStepUp() : singleStepDown();
+      },
+      onInlineStart: () => {
+        position === 'bottom' ? singleStepDown() : singleStepUp();
+      },
+      onPageDown: () => multipleStepDown(),
+      onPageUp: () => multipleStepUp(),
+      onHome: () => onResize(maxSize),
+      onEnd: () => onResize(0),
+      onDefault: () => (isEventHandled = false),
+    });
 
     if (isEventHandled) {
       event.preventDefault();

@@ -9,7 +9,7 @@ export function isEventLike(event: any): event is EventLike {
 
 export interface EventLike {
   keyCode: number;
-  currentTarget: HTMLElement;
+  currentTarget: Document | HTMLElement | SVGElement;
 }
 
 export default function handleKey(
