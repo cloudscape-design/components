@@ -7,14 +7,13 @@ import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 
-import { commonProps, multipleNegativeBarsDataWithThreshold } from '../mixed-line-bar-chart/common';
+import { commonProps, multipleNegativeBarsData as data } from '../mixed-line-bar-chart/common';
 
-const data1 = multipleNegativeBarsDataWithThreshold;
+const thresholdSeries = { type: 'threshold', title: 'Limit', y: 4 } as const;
 
-// Position of the threshold series in a stacked chart must not affect chart's presentation.
-const thresholdSeries = multipleNegativeBarsDataWithThreshold.find(s => s.type === 'threshold')!;
-const data2 = multipleNegativeBarsDataWithThreshold.filter(s => s.type === 'bar');
-data2.splice(Math.floor(Math.random() * data2.length), 0, thresholdSeries);
+const data1 = [...data, thresholdSeries];
+// Position of the threshold series in a stacked chart must not affect chart's plot.
+const data2 = [data[0], thresholdSeries, data[1], data[2]];
 
 /* eslint-disable react/jsx-key */
 const permutations = createPermutations<BarChartProps<string>>([
