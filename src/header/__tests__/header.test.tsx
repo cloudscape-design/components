@@ -3,6 +3,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import createWrapper from '../../../lib/components/test-utils/dom';
+import Container from '../../../lib/components/container';
+import ExpandableSection from '../../../lib/components/expandable-section';
 import Header from '../../../lib/components/header';
 import styles from '../../../lib/components/header/styles.css.js';
 import { DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_SUBSTEP_NAME } from '../../../lib/components/internal/analytics/selectors';
@@ -75,12 +77,43 @@ test('supports title tag name override with non-default variant', () => {
 });
 
 describe('Analytics', () => {
-  test(`adds ${DATA_ATTR_FUNNEL_KEY} attribute for headings of level 2`, () => {
+  test(`adds ${DATA_ATTR_FUNNEL_KEY} attribute for headings inside a Container header slot`, () => {
     const { wrapper } = renderHeader(
-      <Header headingTagOverride="h2" variant="h3">
-        title
-      </Header>
+      <Container
+        header={
+          <Header headingTagOverride="h2" variant="h3">
+            title
+          </Header>
+        }
+      />
     );
+
+    expect(wrapper.findHeadingText().getElement()).toHaveAttribute(DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_SUBSTEP_NAME);
+  });
+
+  test(`adds ${DATA_ATTR_FUNNEL_KEY} attribute for headings inside a ExpandableSection header (deprecated) slot`, () => {
+    const { wrapper } = renderHeader(
+      <ExpandableSection
+        variant="container"
+        header={
+          <Header headingTagOverride="h2" variant="h3">
+            title
+          </Header>
+        }
+      />
+    );
+
+    expect(wrapper.findHeadingText().getElement()).toHaveAttribute(DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_SUBSTEP_NAME);
+  });
+
+  test(`adds ${DATA_ATTR_FUNNEL_KEY} attribute for headings inside a ExpandableSection headerText slot`, () => {
+    const { wrapper } = renderHeader(<ExpandableSection variant="container" headerText="Title" />);
+
+    expect(wrapper.findHeadingText().getElement()).toHaveAttribute(DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_SUBSTEP_NAME);
+  });
+
+  test(`does not add ${DATA_ATTR_FUNNEL_KEY} attribute for headings inside a ExpandableSection headerText slot that is not a container variant`, () => {
+    const { wrapper } = renderHeader(<ExpandableSection variant="container" headerText="Title" />);
 
     expect(wrapper.findHeadingText().getElement()).toHaveAttribute(DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_SUBSTEP_NAME);
   });

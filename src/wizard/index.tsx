@@ -27,7 +27,7 @@ function Wizard({ isLoadingNextStep = false, allowSkipTo = false, ...props }: Wi
 
   return (
     <AnalyticsFunnel
-      instanceId={analyticsMetadata?.instanceId}
+      instanceIdentifier={analyticsMetadata?.instanceIdentifier}
       flowType={analyticsMetadata?.flowType}
       errorContext={analyticsMetadata?.errorContext}
       funnelType="multi-page"

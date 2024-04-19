@@ -305,12 +305,16 @@ export interface TableProps<T = any> extends BaseComponentProps {
   /**
    *  Use this property to inform screen readers which range of items is currently displayed in the table.
    *  It specifies the index (1-based) of the first item in the table.
-   *  If the table has no pagination, leave this property undefined.
    */
   firstIndex?: number;
   /**
    * Use this function to announce page changes to screen reader users.
-   * Requires the properties firstIndex and totalItemsCount to be set correctly.
+   * The function argument takes the following properties:
+   * * `firstIndex` (number) - The provided `firstIndex` property which defaults to 1 when not defined.
+   * * `lastIndex` (number) - The index of the last visible item of the table.
+   * * `visibleItemsCount` (number) - The number of rendered table items.
+   * * `totalItemsCount` (optional, number) - The provided `totalItemsCount` property.
+   * Important: in tables with expandable rows the `firstIndex`, `lastIndex`, and `totalItemsCount` reflect the top-level items only.
    */
   renderAriaLive?: (data: TableProps.LiveAnnouncement) => string;
   /**
@@ -463,9 +467,7 @@ export namespace TableProps {
   export interface LiveAnnouncement {
     firstIndex: number;
     lastIndex: number;
-    // The number of all rendered items of the table (including nested items).
     visibleItemsCount: number;
-    // The number of all available items of the table if known.
     totalItemsCount?: number;
   }
 
