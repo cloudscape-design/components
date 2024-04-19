@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
-import { getContentHeaderClassName } from '../../internal/utils/content-header-utils';
+import { highContrastHeaderClassName } from '../../internal/utils/content-header-utils';
 import { useAppLayoutInternals } from './context';
 import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 
 export default function Breadcrumbs() {
-  const { breadcrumbs, hasStickyBackground, isMobile } = useAppLayoutInternals();
+  const { breadcrumbs, hasStickyBackground, isMobile, headerVariant } = useAppLayoutInternals();
 
   if (isMobile || !breadcrumbs) {
     return null;
@@ -16,14 +16,10 @@ export default function Breadcrumbs() {
 
   return (
     <div
-      className={clsx(
-        styles.breadcrumbs,
-        testutilStyles.breadcrumbs,
-        {
-          [styles['has-sticky-background']]: hasStickyBackground,
-        },
-        getContentHeaderClassName()
-      )}
+      className={clsx(styles.breadcrumbs, testutilStyles.breadcrumbs, {
+        [styles['has-sticky-background']]: hasStickyBackground,
+        [highContrastHeaderClassName]: headerVariant === 'high-contrast',
+      })}
     >
       {breadcrumbs}
     </div>
