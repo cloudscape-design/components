@@ -20,11 +20,22 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useInternalI18n } from '../i18n/context';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
+function manageTabIndexForTabContent(tabContentElement: HTMLElement, isActive: boolean) {
+  const focusableElements = tabContentElement.querySelectorAll('button, a');
+  focusableElements.forEach(element => {
+    if (isActive) {
+      element.removeAttribute('tabIndex');
+    } else {
+      element.setAttribute('tabIndex', '-1');
+    }
+  });
+}
+
 function dismissButton(dismissLabel: TabsProps.Tab['dismissLabel'], onDismiss: TabsProps.Tab['onDismiss']) {
   return (
     <InternalButton
       onClick={onDismiss}
-      className={styles['dismiss-button']}
+      className={styles['tabs-tab-dismiss-button']}
       variant="icon"
       iconName="close"
       formAction="none"
@@ -120,6 +131,14 @@ export function TabHeaderBar({
       setInlineEndOverflow(hasInlineEndOverflow(headerBarRef.current));
     }
   };
+
+  useEffect(() => {
+    const tabContentElements = document.querySelectorAll(`.${styles['tabs-tab-header-content']}`);
+    tabContentElements.forEach(element => {
+      const isActive = element.classList.contains(`${styles['tabs-tab-active']}`);
+      manageTabIndexForTabContent(element as HTMLElement, isActive);
+    });
+  }, [activeTabId]);
 
   const classes = clsx({
     [styles['tabs-header']]: true,

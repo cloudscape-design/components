@@ -171,7 +171,7 @@ describe('Tabs', () => {
     test("allows focusing the current tab even if it's disabled", () => {
       const tabs = renderTabs(<Tabs tabs={defaultTabs} activeTabId="third" onChange={() => void 0} />).wrapper;
 
-      expect(tabs.findTabLinkById('third')!.getElement()).toHaveAttribute('tabindex', '0');
+      expect(tabs.findTabContent()!.getElement()).toHaveAttribute('tabindex', '0');
     });
 
     test('displays empty content if selected tab does not have content property', () => {
