@@ -6,15 +6,71 @@ import BarChart, { BarChartProps } from '~components/bar-chart';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
+import { commonProps } from '../mixed-line-bar-chart/common';
+import { MixedLineBarChartProps } from '~components';
+import { cloneDeep, range, shuffle } from 'lodash';
 
-import { commonProps, multipleNegativeBarsDataWithThreshold } from '../mixed-line-bar-chart/common';
+type BarSeries<T> = MixedLineBarChartProps.BarDataSeries<T> | MixedLineBarChartProps.ThresholdSeries;
 
-const data1 = multipleNegativeBarsDataWithThreshold;
+const seriesAll = shuffle([
+  { type: 'threshold', title: 'Limit', y: 4 } as BarSeries<string>,
+  {
+    title: 'John',
+    type: 'bar',
+    data: [
+      { x: 'Apples', y: 5 },
+      { x: 'Oranges', y: 3 },
+      { x: 'Pears', y: 4 },
+      { x: 'Grapes', y: 7 },
+      { x: 'Bananas', y: 2 },
+    ],
+  } as BarSeries<string>,
+  {
+    title: 'Jane',
+    type: 'bar',
+    data: [
+      { x: 'Apples', y: 2 },
+      { x: 'Oranges', y: 2 },
+      { x: 'Pears', y: 3 },
+      { x: 'Grapes', y: 2 },
+      { x: 'Bananas', y: 1 },
+    ],
+  } as BarSeries<string>,
+  {
+    title: 'Joe',
+    type: 'bar',
+    data: [
+      { x: 'Apples', y: 3 },
+      { x: 'Oranges', y: 4 },
+      { x: 'Pears', y: 4 },
+      { x: 'Grapes', y: 2 },
+      { x: 'Bananas', y: 2 },
+    ],
+  } as BarSeries<string>,
+  ...range(0, 10).map(
+    index =>
+      ({
+        title: `${index + 1}`,
+        type: 'bar',
+        data: [
+          { x: 'Apples', y: Math.random() * 2 - 1 },
+          { x: 'Oranges', y: Math.random() * 2 - 1 },
+          { x: 'Pears', y: Math.random() * 2 - 1 },
+          { x: 'Grapes', y: Math.random() * 2 - 1 },
+          { x: 'Bananas', y: Math.random() * 2 - 1 },
+        ],
+      } as BarSeries<string>)
+  ),
+]);
 
-// Position of the threshold series in a stacked chart must not affect chart's presentation.
-const thresholdSeries = multipleNegativeBarsDataWithThreshold.find(s => s.type === 'threshold')!;
-const data2 = multipleNegativeBarsDataWithThreshold.filter(s => s.type === 'bar');
-data2.splice(Math.floor(Math.random() * data2.length), 0, thresholdSeries);
+const seriesPositive = cloneDeep(seriesAll);
+seriesPositive.forEach(series => {
+  if (series.type === 'bar') {
+    series.data.forEach(datum => {
+      datum.y = Math.abs(datum.y);
+    });
+  }
+});
 
 /* eslint-disable react/jsx-key */
 const permutations = createPermutations<BarChartProps<string>>([
@@ -22,10 +78,23 @@ const permutations = createPermutations<BarChartProps<string>>([
     i18nStrings: [commonProps.i18nStrings],
     ariaLabel: ['Test chart'],
     height: [200],
-    series: [data1, data2],
+    series: [seriesPositive],
     xScaleType: ['categorical'],
     xDomain: [['Apples', 'Oranges', 'Pears', 'Grapes', 'Bananas']],
-    yDomain: [[-6, 10]],
+    yDomain: [[0, 18]],
+    horizontalBars: [true, false],
+    stackedBars: [true],
+    xTitle: ['X Title'],
+    yTitle: ['Y Title'],
+  },
+  {
+    i18nStrings: [commonProps.i18nStrings],
+    ariaLabel: ['Test chart'],
+    height: [200],
+    series: [seriesAll],
+    xScaleType: ['categorical'],
+    xDomain: [['Apples', 'Oranges', 'Pears', 'Grapes', 'Bananas']],
+    yDomain: [[-5, 18]],
     horizontalBars: [true, false],
     stackedBars: [true],
     xTitle: ['X Title'],
