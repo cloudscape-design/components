@@ -1,7 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-export function isRtl(element: Document | HTMLElement | SVGElement) {
+export type IsRtl = boolean;
+export type ElementWithDirection = Document | HTMLElement | SVGElement;
+
+export function getIsRtl(element: ElementWithDirection) {
   if (element instanceof Document) {
     return document.documentElement.dir === 'rtl';
   } else {
@@ -16,7 +19,7 @@ export function isRtl(element: Document | HTMLElement | SVGElement) {
  * systems using display scaling requiring the floor and ceiling calls.
  */
 export function getScrollInlineStart(element: HTMLElement) {
-  return isRtl(element) ? Math.floor(element.scrollLeft) * -1 : Math.ceil(element.scrollLeft);
+  return getIsRtl(element) ? Math.floor(element.scrollLeft) * -1 : Math.ceil(element.scrollLeft);
 }
 
 /**
@@ -32,7 +35,7 @@ export function getLogicalBoundingClientRect(element: HTMLElement | SVGElement) 
   const inlineSize = boundingClientRect.width;
   const insetBlockStart = boundingClientRect.top;
   const insetBlockEnd = boundingClientRect.bottom;
-  const insetInlineStart = isRtl(element)
+  const insetInlineStart = getIsRtl(element)
     ? document.documentElement.clientWidth - boundingClientRect.right
     : boundingClientRect.left;
   const insetInlineEnd = insetInlineStart + inlineSize;
@@ -53,7 +56,16 @@ export function getLogicalBoundingClientRect(element: HTMLElement | SVGElement) 
  * element directions.
  */
 export function getLogicalPageX(event: MouseEvent) {
-  return event.target instanceof HTMLElement && isRtl(event.target)
+  return event.target instanceof HTMLElement && getIsRtl(event.target)
     ? document.documentElement.clientWidth - event.pageX
     : event.pageX;
+}
+
+/**
+ * The clientX position needs to be converted so it is relative to the right of
+ * the document in order for computations to yield the same result in both
+ * element directions.
+ */
+export function getLogicalClientX(event: PointerEvent, IsRtl: IsRtl) {
+  return IsRtl ? document.documentElement.clientWidth - event.clientX : event.clientX;
 }

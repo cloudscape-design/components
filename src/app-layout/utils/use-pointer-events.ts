@@ -3,6 +3,7 @@
 import { useCallback } from 'react';
 import styles from '../styles.css.js';
 import { SizeControlProps } from './interfaces';
+import { getIsRtl, getLogicalClientX, getLogicalBoundingClientRect } from '../../internal/direction.js';
 
 export const usePointerEvents = ({
   position,
@@ -20,19 +21,19 @@ export const usePointerEvents = ({
       panelRef.current.classList.remove(styles['with-motion']);
 
       if (position === 'side') {
-        const mouseClientX = event.clientX || 0;
+        const mouseClientX = getLogicalClientX(event, getIsRtl(panelRef.current)) || 0;
 
         // The handle offset aligns the cursor with the middle of the resize handle.
-        const handleOffset = handleRef.current.getBoundingClientRect().width / 2;
-        const width = panelRef.current.getBoundingClientRect().right - mouseClientX + handleOffset;
+        const handleOffset = getLogicalBoundingClientRect(handleRef.current).inlineSize / 2;
+        const width = getLogicalBoundingClientRect(panelRef.current).insetInlineEnd - mouseClientX + handleOffset;
 
         onResize(width);
       } else {
         const mouseClientY = event.clientY || 0;
 
         // The handle offset aligns the cursor with the middle of the resize handle.
-        const handleOffset = handleRef.current.getBoundingClientRect().height / 2;
-        const height = panelRef.current.getBoundingClientRect().bottom - mouseClientY + handleOffset;
+        const handleOffset = getLogicalBoundingClientRect(handleRef.current).blockSize / 2;
+        const height = getLogicalBoundingClientRect(panelRef.current).insetBlockEnd - mouseClientY + handleOffset;
 
         onResize(height);
       }
