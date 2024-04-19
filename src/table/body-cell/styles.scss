@@ -44,24 +44,34 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
 }
 
 @mixin cell-offset($padding) {
-  padding-inline-start: $padding;
+  & > .body-cell-content {
+    padding-inline-start: $padding;
+  }
 
   @for $i from 1 through 9 {
     &.body-cell-expandable-level-#{$i} {
-      padding-inline-start: calc($padding + $i * (#{awsui.$space-m} + #{awsui.$space-xs}));
+      & > .body-cell-content {
+        padding-inline-start: calc($padding + $i * (#{awsui.$space-m} + #{awsui.$space-xs}));
+      }
     }
   }
   &.body-cell-expandable-level-next {
-    padding-inline-start: calc($padding + 9 * (#{awsui.$space-m} + #{awsui.$space-xs}));
+    & > .body-cell-content {
+      padding-inline-start: calc($padding + 9 * (#{awsui.$space-m} + #{awsui.$space-xs}));
+    }
   }
 }
 
 .body-cell {
   box-sizing: border-box;
-  padding-block-start: $cell-vertical-padding;
-  padding-block-end: $cell-vertical-padding-w-border;
-  padding-inline-end: $cell-horizontal-padding;
-  border-block-start: awsui.$border-divider-list-width solid transparent;
+  padding-block: 0;
+  padding-inline: 0;
+  & > .body-cell-content {
+    padding-block-start: $cell-vertical-padding;
+    padding-block-end: $cell-vertical-padding-w-border;
+    padding-inline: $cell-horizontal-padding;
+    border-block-start: awsui.$border-divider-list-width solid transparent;
+  }
   word-wrap: break-word;
   border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-divider-secondary;
   font-weight: inherit;
@@ -71,7 +81,7 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
   &-content {
     /* used for testing */
   }
-  &:not(.body-cell-wrap) {
+  &:not(.body-cell-wrap) > .body-cell-content {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -81,7 +91,9 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
   }
   &:last-child {
     border-inline-end: $border-placeholder;
-    padding-inline-end: $cell-edge-horizontal-padding;
+    & > .body-cell-content {
+      padding-inline-end: $cell-edge-horizontal-padding;
+    }
   }
   &.is-visual-refresh:first-child {
     &:not(.has-striped-rows) {
@@ -139,11 +151,13 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
     background-color: awsui.$color-background-item-selected;
     border-block-start: $selected-border;
     border-block-end: $selected-border;
-    padding-block-end: $cell-vertical-padding;
+    & > .body-cell-content {
+      padding-block-end: $cell-vertical-padding;
+    }
 
     // Last selected row has a fixed border-bottom width which do not change on selection in visual refresh.
     // Adjust padding-bottom prevents a slight jump in the table height.
-    &.body-cell-last-row.is-visual-refresh {
+    &.body-cell-last-row.is-visual-refresh > .body-cell-content {
       padding-block-end: calc(#{$cell-vertical-padding} + #{awsui.$border-divider-list-width});
     }
 
@@ -206,15 +220,19 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
   }
 
   // Use padding as a selected border placeholder to make sure rows don't change height on selection (visual refresh)
-  &-selected:not(:first-child) {
+  &-selected:not(:first-child) > .body-cell-content {
     padding-block-start: $cell-vertical-padding-w-border;
   }
   &:not(.body-cell-selected).body-cell-next-selected {
     border-block-end: 0;
-    padding-block-end: calc(#{$cell-vertical-padding} + #{awsui.$border-divider-list-width});
+    & > .body-cell-content {
+      padding-block-end: calc(#{$cell-vertical-padding} + #{awsui.$border-divider-list-width});
+    }
   }
   &-selected.body-cell-prev-selected {
-    padding-block-start: $cell-vertical-padding-w-border;
+    & > .body-cell-content {
+      padding-block-start: $cell-vertical-padding-w-border;
+    }
     border-block-start: $selected-border-placeholder;
   }
   &-selected.body-cell-next-selected {
@@ -235,7 +253,7 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
   }
   // Reset padding for selected rows with no adjacent selected row above it,
   // because rows reuse adjacent selected borders (visual refresh)
-  &-selected:not(.body-cell-prev-selected) {
+  &-selected:not(.body-cell-prev-selected) > .body-cell-content {
     padding-block-start: $cell-vertical-padding;
   }
 
