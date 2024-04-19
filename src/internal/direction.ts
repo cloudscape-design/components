@@ -3,7 +3,7 @@
 
 export function isRtl(element: Document | HTMLElement | SVGElement) {
   if (element instanceof Document) {
-    return element.dir === 'rtl';
+    return document.documentElement.dir === 'rtl';
   } else {
     return getComputedStyle(element).direction === 'rtl';
   }

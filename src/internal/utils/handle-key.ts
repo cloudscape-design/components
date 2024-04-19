@@ -4,7 +4,11 @@ import { KeyCode } from '../keycode';
 import { isRtl } from '../direction';
 
 export function isEventLike(event: any): event is EventLike {
-  return event.currentTarget instanceof HTMLElement;
+  return (
+    event.currentTarget instanceof Document ||
+    event.currentTarget instanceof HTMLElement ||
+    event.currentTarget instanceof SVGElement
+  );
 }
 
 export interface EventLike {
