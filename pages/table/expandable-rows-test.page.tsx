@@ -104,8 +104,6 @@ export default () => {
             stripedRows={settings.stripedRows}
             columnDefinitions={columnDefinitions}
             items={tableData.items}
-            // TODO: remove when supplemented by collection hooks (https://github.com/cloudscape-design/collection-hooks/pull/72)
-            totalItemsCount={tableData.items.length}
             ariaLabels={ariaLabels}
             wrapLines={preferences.wrapLines}
             pagination={settings.usePagination && <Pagination {...tableData.paginationProps} />}
