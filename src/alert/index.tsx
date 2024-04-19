@@ -8,14 +8,20 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 import { FunnelMetrics } from '../internal/analytics';
 import { useFunnel, useFunnelStep, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 import { getNameFromSelector, getSubStepAllSelector } from '../internal/analytics/selectors';
+import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 
 export { AlertProps };
 
 const Alert = React.forwardRef(
   ({ type = 'info', visible = true, ...props }: AlertProps, ref: React.Ref<AlertProps.Ref>) => {
-    const baseComponentProps = useBaseComponent<HTMLDivElement>('Alert', {
-      props: { type, visible, dismissible: props.dismissible },
-    });
+    const analyticsMetadata = getAnalyticsMetadataProps(props as BasePropsWithAnalyticsMetadata);
+    const baseComponentProps = useBaseComponent<HTMLDivElement>(
+      'Alert',
+      {
+        props: { type, visible, dismissible: props.dismissible },
+      },
+      analyticsMetadata
+    );
 
     const { funnelInteractionId, submissionAttempt, funnelState, errorCount } = useFunnel();
     const { stepNumber, stepNameSelector } = useFunnelStep();
@@ -42,6 +48,8 @@ const Alert = React.forwardRef(
               stepName,
               stepNameSelector,
               subStepAllSelector: getSubStepAllSelector(),
+              instanceIdentifier: analyticsMetadata?.instanceIdentifier,
+              errorContext: analyticsMetadata?.errorContext,
             });
           } else {
             FunnelMetrics.funnelError({

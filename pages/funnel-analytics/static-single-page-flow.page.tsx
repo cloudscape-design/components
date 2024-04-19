@@ -85,7 +85,7 @@ export default function StaticSinglePageCreatePage() {
       {mounted && (
         <Form
           {...getAnalyticsProps({
-            instanceId: 'single-page',
+            instanceIdentifier: 'single-page',
             flowType: 'create',
           })}
           errorText={errorText}
@@ -135,7 +135,7 @@ export default function StaticSinglePageCreatePage() {
                 </Header>
               }
               {...getAnalyticsProps({
-                instanceId: 'container-1',
+                instanceIdentifier: 'container-1',
               })}
             >
               <SpaceBetween size="s">
@@ -165,7 +165,7 @@ export default function StaticSinglePageCreatePage() {
                 </Header>
               }
               {...getAnalyticsProps({
-                instanceId: 'container-2',
+                instanceIdentifier: 'container-2',
               })}
             >
               <FormField

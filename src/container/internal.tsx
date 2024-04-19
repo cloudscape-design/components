@@ -17,6 +17,7 @@ import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 import { useModalContext } from '../internal/context/modal-context';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { shouldRemoveHighContrastHeader } from '../internal/utils/content-header-utils';
+import { ContainerHeaderContextProvider } from '../internal/context/container-header';
 
 export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>, InternalBaseComponentProps {
   __stickyHeader?: boolean;
@@ -151,33 +152,35 @@ export default function InternalContainer({
         className={clsx(styles['content-wrapper'], fitHeight && styles['content-wrapper-fit-height'])}
       >
         {header && (
-          <StickyHeaderContext.Provider value={{ isStuck }}>
-            <div
-              className={clsx(
-                isRefresh && styles.refresh,
-                styles.header,
-                styles[`header-variant-${variant}`],
-                shouldRemoveHighContrastHeader() && styles['remove-high-contrast-header'],
-                {
-                  [styles['header-sticky-disabled']]: __stickyHeader && !isSticky,
-                  [styles['header-sticky-enabled']]: isSticky,
-                  [styles['header-dynamic-height']]: hasDynamicHeight,
-                  [styles['header-stuck']]: isStuck,
-                  [styles['with-paddings']]: !disableHeaderPaddings,
-                  [styles['with-hidden-content']]: !children || __hiddenContent,
-                  [styles['header-with-media']]: hasMedia,
-                }
-              )}
-              {...stickyStyles}
-              ref={headerMergedRef}
-            >
-              {__darkHeader ? (
-                <div className={clsx(styles['dark-header'], getContentHeaderClassName())}>{header}</div>
-              ) : (
-                header
-              )}
-            </div>
-          </StickyHeaderContext.Provider>
+          <ContainerHeaderContextProvider>
+            <StickyHeaderContext.Provider value={{ isStuck }}>
+              <div
+                className={clsx(
+                  isRefresh && styles.refresh,
+                  styles.header,
+                  styles[`header-variant-${variant}`],
+                  shouldRemoveHighContrastHeader() && styles['remove-high-contrast-header'],
+                  {
+                    [styles['header-sticky-disabled']]: __stickyHeader && !isSticky,
+                    [styles['header-sticky-enabled']]: isSticky,
+                    [styles['header-dynamic-height']]: hasDynamicHeight,
+                    [styles['header-stuck']]: isStuck,
+                    [styles['with-paddings']]: !disableHeaderPaddings,
+                    [styles['with-hidden-content']]: !children || __hiddenContent,
+                    [styles['header-with-media']]: hasMedia,
+                  }
+                )}
+                {...stickyStyles}
+                ref={headerMergedRef}
+              >
+                {__darkHeader ? (
+                  <div className={clsx(styles['dark-header'], getContentHeaderClassName())}>{header}</div>
+                ) : (
+                  header
+                )}
+              </div>
+            </StickyHeaderContext.Provider>
+          </ContainerHeaderContextProvider>
         )}
         <div
           className={clsx(

@@ -7,7 +7,7 @@ import InternalIcon from '../icon/internal';
 import clsx from 'clsx';
 import styles from './styles.css.js';
 import { InternalButton } from '../button/internal';
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useComponentMetadata, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { isDevelopment } from '../internal/is-development';
 import { throttle } from '../internal/utils/throttle';
 import LiveRegion from '../internal/components/live-region';
@@ -21,6 +21,9 @@ import { DATA_ATTR_ANALYTICS_FLASHBAR } from '../internal/analytics/selectors';
 import { createUseDiscoveredAction } from '../internal/plugins/helpers';
 import { awsuiPluginsInternal } from '../internal/plugins/api';
 import { ActionsWrapper } from '../alert/actions-wrapper';
+import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { PACKAGE_VERSION } from '../internal/environment';
 
 const ICON_TYPES = {
   success: 'status-positive',
@@ -103,6 +106,9 @@ export const Flash = React.forwardRef(
       }
     }
 
+    const analyticsMetadata = getAnalyticsMetadataProps(props as BasePropsWithAnalyticsMetadata);
+    const elementRef = useComponentMetadata('Flash', PACKAGE_VERSION, { ...analyticsMetadata });
+    const mergedRef = useMergeRefs(ref, elementRef);
     const { discoveredActions, headerRef, contentRef } = useDiscoveredAction(type);
 
     const iconType = ICON_TYPES[type];
@@ -128,7 +134,7 @@ export const Flash = React.forwardRef(
       // We're not using "polite" or "assertive" here, just turning default behavior off.
       // eslint-disable-next-line @cloudscape-design/prefer-live-region
       <div
-        ref={ref}
+        ref={mergedRef}
         role={ariaRole}
         aria-live={ariaRole ? 'off' : undefined}
         data-itemid={id}
