@@ -3,25 +3,30 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useObservedElement } from './use-observed-element';
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
+import { getLogicalBoundingClientRect } from '../../internal/direction';
 
 export function useAppLayoutPlacement(headerSelector: string, footerSelector: string) {
   const mainElementRef = useRef<HTMLElement>(null);
   const headerHeight = useObservedElement(headerSelector);
   const footerHeight = useObservedElement(footerSelector);
-  const [offsets, setOffsets] = useState({ left: 0, right: 0, width: Number.POSITIVE_INFINITY });
+  const [offsets, setOffsets] = useState({
+    insetInlineStart: 0,
+    insetInlineEnd: 0,
+    inlineSize: Number.POSITIVE_INFINITY,
+  });
 
   const updatePosition = useCallback(() => {
     if (!mainElementRef.current) {
       return;
     }
-    const { left, right, width } = mainElementRef.current.getBoundingClientRect();
+    const { insetInlineStart, insetInlineEnd, inlineSize } = getLogicalBoundingClientRect(mainElementRef.current);
 
     // skip reading sizes in JSDOM
-    if (width === 0) {
+    if (inlineSize === 0) {
       return;
     }
 
-    setOffsets({ left, right: width - right, width });
+    setOffsets({ insetInlineStart, insetInlineEnd, inlineSize });
   }, []);
 
   useEffect(() => {
@@ -31,5 +36,5 @@ export function useAppLayoutPlacement(headerSelector: string, footerSelector: st
 
   useResizeObserver(mainElementRef, updatePosition);
 
-  return [mainElementRef, { ...offsets, top: headerHeight, bottom: footerHeight }] as const;
+  return [mainElementRef, { ...offsets, insetBlockStart: headerHeight, insetBlockEnd: footerHeight }] as const;
 }

@@ -164,9 +164,11 @@ const ClassicAppLayout = React.forwardRef(
     // ResizeOberver warnings due to the algorithm thinking that the change might have side-effects
     // further up the tree, therefore blocking notifications to prevent loops
     useEffect(() => {
-      const id = requestAnimationFrame(() => setHeaderFooterHeight(placement.top + placement.bottom));
+      const id = requestAnimationFrame(() =>
+        setHeaderFooterHeight(placement.insetBlockStart + placement.insetBlockEnd)
+      );
       return () => cancelAnimationFrame(id);
-    }, [placement.top, placement.bottom]);
+    }, [placement.insetBlockStart, placement.insetBlockEnd]);
     const contentHeightStyle = {
       [disableBodyScroll ? 'height' : 'minHeight']: `calc(100vh - ${headerFooterHeight}px)`,
     };
@@ -274,7 +276,8 @@ const ClassicAppLayout = React.forwardRef(
         const availableHeight = legacyScrollRootRef.current.clientHeight;
         return availableHeight < CONSTRAINED_PAGE_HEIGHT ? availableHeight : availableHeight - MAIN_PANEL_MIN_HEIGHT;
       } else {
-        const availableHeight = document.documentElement.clientHeight - placement.top - placement.bottom;
+        const availableHeight =
+          document.documentElement.clientHeight - placement.insetBlockStart - placement.insetBlockEnd;
         return availableHeight < CONSTRAINED_PAGE_HEIGHT
           ? availableHeight - CONSTRAINED_MAIN_PANEL_MIN_HEIGHT
           : availableHeight - MAIN_PANEL_MIN_HEIGHT;
@@ -286,7 +289,7 @@ const ClassicAppLayout = React.forwardRef(
     // all content except split-panel + drawers/tools area
     const resizableSpaceAvailable = Math.max(
       0,
-      placement.width - effectiveNavigationWidth - minContentWidth - contentPadding - rightDrawerBarWidth
+      placement.inlineSize - effectiveNavigationWidth - minContentWidth - contentPadding - rightDrawerBarWidth
     );
 
     // if there is no space to display split panel in the side, force to bottom
@@ -308,11 +311,12 @@ const ClassicAppLayout = React.forwardRef(
     const [splitPanelReportedHeaderHeight, setSplitPanelReportedHeaderHeight] = useState(0);
 
     const splitPanelContextProps: SplitPanelProviderProps = {
-      topOffset: placement.top + (finalSplitPanePosition === 'bottom' ? stickyNotificationsHeight || 0 : 0),
-      bottomOffset: placement.bottom,
+      topOffset: placement.insetBlockStart + (finalSplitPanePosition === 'bottom' ? stickyNotificationsHeight || 0 : 0),
+      bottomOffset: placement.insetBlockEnd,
       leftOffset:
-        placement.left + (isMobile ? 0 : !navigationHide && navigationOpen ? navigationWidth : navigationClosedWidth),
-      rightOffset: isMobile ? 0 : placement.right + effectiveToolsWidth + rightDrawerBarWidth,
+        placement.insetInlineStart +
+        (isMobile ? 0 : !navigationHide && navigationOpen ? navigationWidth : navigationClosedWidth),
+      rightOffset: isMobile ? 0 : placement.insetInlineEnd + effectiveToolsWidth + rightDrawerBarWidth,
       position: finalSplitPanePosition,
       size: splitPanelSize,
       maxWidth: splitPanelMaxWidth,
@@ -392,7 +396,7 @@ const ClassicAppLayout = React.forwardRef(
           <MobileToolbar
             anyPanelOpen={anyPanelOpen}
             toggleRefs={{ navigation: navigationRefs.toggle, tools: toolsRefs.toggle }}
-            topOffset={placement.top}
+            topOffset={placement.insetBlockStart}
             ariaLabels={ariaLabels}
             navigationHide={navigationHide}
             toolsHide={toolsHide}
@@ -420,8 +424,8 @@ const ClassicAppLayout = React.forwardRef(
               toggleClassName={testutilStyles['navigation-toggle']}
               closeClassName={testutilStyles['navigation-close']}
               ariaLabels={togglesConfig.navigation.getLabels(ariaLabels)}
-              bottomOffset={placement.bottom}
-              topOffset={placement.top}
+              bottomOffset={placement.insetBlockEnd}
+              topOffset={placement.insetBlockStart}
               isMobile={isMobile}
               isOpen={navigationOpen}
               onClick={isMobile ? onNavigationClick : undefined}
@@ -451,7 +455,7 @@ const ClassicAppLayout = React.forwardRef(
                   disableContentPaddings={disableContentPaddings}
                   testUtilsClassName={testutilStyles.notifications}
                   labels={ariaLabels}
-                  topOffset={disableBodyScroll ? 0 : placement.top}
+                  topOffset={disableBodyScroll ? 0 : placement.insetBlockStart}
                   sticky={!isMobile && stickyNotifications}
                   ref={notificationsRef}
                 >
@@ -502,9 +506,9 @@ const ClassicAppLayout = React.forwardRef(
                     stickyOffsetTop:
                       // We don't support the table header being sticky in case the deprecated disableBodyScroll is enabled,
                       // therefore we ensure the table header scrolls out of view by offseting a large enough value (9999px)
-                      (disableBodyScroll ? (isMobile ? -9999 : 0) : placement.top) +
+                      (disableBodyScroll ? (isMobile ? -9999 : 0) : placement.insetBlockStart) +
                       (isMobile ? 0 : stickyNotificationsHeight !== null ? stickyNotificationsHeight : 0),
-                    stickyOffsetBottom: placement.bottom + (splitPanelBottomOffset || 0),
+                    stickyOffsetBottom: placement.insetBlockEnd + (splitPanelBottomOffset || 0),
                     mobileBarHeight: mobileBarHeight ?? 0,
                   }}
                 >
@@ -537,8 +541,8 @@ const ClassicAppLayout = React.forwardRef(
               minWidth={minDrawerSize}
               maxWidth={drawerMaxSize}
               width={activeDrawerSize}
-              bottomOffset={placement.bottom}
-              topOffset={placement.top}
+              bottomOffset={placement.insetBlockEnd}
+              topOffset={placement.insetBlockStart}
               isMobile={isMobile}
               onToggle={isOpen => {
                 if (!isOpen) {
@@ -567,8 +571,8 @@ const ClassicAppLayout = React.forwardRef(
                 closeClassName={testutilStyles['tools-close']}
                 ariaLabels={togglesConfig.tools.getLabels(ariaLabels)}
                 width={toolsWidth}
-                bottomOffset={placement.bottom}
-                topOffset={placement.top}
+                bottomOffset={placement.insetBlockEnd}
+                topOffset={placement.insetBlockStart}
                 isMobile={isMobile}
                 onToggle={onToolsToggle}
                 isOpen={toolsOpen}
@@ -583,8 +587,8 @@ const ClassicAppLayout = React.forwardRef(
           {hasDrawers && drawers.length > 0 && (
             <DrawerTriggersBar
               drawerRefs={drawerRefs}
-              bottomOffset={placement.bottom}
-              topOffset={placement.top}
+              bottomOffset={placement.insetBlockEnd}
+              topOffset={placement.insetBlockStart}
               isMobile={isMobile}
               drawers={drawers}
               activeDrawerId={activeDrawerId}
