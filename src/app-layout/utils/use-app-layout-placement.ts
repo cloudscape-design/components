@@ -26,7 +26,7 @@ export function useAppLayoutPlacement(headerSelector: string, footerSelector: st
       return;
     }
 
-    setOffsets({ insetInlineStart, insetInlineEnd, inlineSize });
+    setOffsets({ insetInlineStart, insetInlineEnd: inlineSize - insetInlineEnd, inlineSize });
   }, []);
 
   useEffect(() => {
