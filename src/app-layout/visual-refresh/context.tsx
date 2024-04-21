@@ -29,6 +29,7 @@ import useBackgroundOverlap from './use-background-overlap';
 import { useDrawers } from '../utils/use-drawers';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { SPLIT_PANEL_MIN_WIDTH } from '../split-panel';
+import { getOffsetInlineStart } from '../../internal/direction';
 
 interface AppLayoutInternals extends AppLayoutPropsWithDefaults {
   activeDrawerId: string | null;
@@ -360,7 +361,8 @@ export const AppLayoutInternalsProvider = React.forwardRef(
 
     useLayoutEffect(
       function handleMainOffsetLeft() {
-        setMainOffsetLeft(mainElement?.current?.offsetLeft ?? 0);
+        const offsetInlineStart = mainElement?.current ? getOffsetInlineStart(mainElement?.current) : 0;
+        setMainOffsetLeft(offsetInlineStart);
       },
       [placement.width, navigationOpen, isToolsOpen, splitPanelReportedSize]
     );

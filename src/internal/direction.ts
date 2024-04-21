@@ -12,6 +12,11 @@ export function getIsRtl(element: ElementWithDirection) {
   }
 }
 
+export function getOffsetInlineStart(element: HTMLElement) {
+  const offsetParentWidth = element.offsetParent?.clientWidth ?? 0;
+  return getIsRtl(element) ? offsetParentWidth - element.clientWidth - element.offsetLeft : element.offsetLeft;
+}
+
 /**
  * The scrollLeft value will be a negative number if the direction is RTL and
  * needs to be converted to a positive value for direction independent scroll
@@ -20,6 +25,15 @@ export function getIsRtl(element: ElementWithDirection) {
  */
 export function getScrollInlineStart(element: HTMLElement) {
   return getIsRtl(element) ? Math.floor(element.scrollLeft) * -1 : Math.ceil(element.scrollLeft);
+}
+
+/**
+ * The clientX position needs to be converted so it is relative to the right of
+ * the document in order for computations to yield the same result in both
+ * element directions.
+ */
+export function getLogicalClientX(event: PointerEvent, IsRtl: IsRtl) {
+  return IsRtl ? document.documentElement.clientWidth - event.clientX : event.clientX;
 }
 
 /**
@@ -59,13 +73,4 @@ export function getLogicalPageX(event: MouseEvent) {
   return event.target instanceof HTMLElement && getIsRtl(event.target)
     ? document.documentElement.clientWidth - event.pageX
     : event.pageX;
-}
-
-/**
- * The clientX position needs to be converted so it is relative to the right of
- * the document in order for computations to yield the same result in both
- * element directions.
- */
-export function getLogicalClientX(event: PointerEvent, IsRtl: IsRtl) {
-  return IsRtl ? document.documentElement.clientWidth - event.clientX : event.clientX;
 }
