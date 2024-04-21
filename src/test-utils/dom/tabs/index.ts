@@ -24,6 +24,15 @@ export default class TabsWrapper extends ComponentWrapper<HTMLButtonElement> {
   }
 
   /**
+   * Finds the tab header container at the given position (1-based) and returns the element.
+   *
+   * @param index 1-based index of the clickable element to return
+   */
+  findTabHeaderContentByIndex(index: number): ElementWrapper<HTMLAnchorElement | HTMLButtonElement> | null {
+    return this.find(`.${styles['tabs-tab']}:nth-child(${index}) .${styles['tabs-tab-header-content']}`);
+  }
+
+  /**
    * Finds the tab with the given ID and returns the clickable element from its tab label.
    *
    * @param id ID of the clickable element to return
@@ -33,23 +42,25 @@ export default class TabsWrapper extends ComponentWrapper<HTMLButtonElement> {
   }
 
   /**
-   * Finds the close button by using the tab index
+   * Finds the dimissible button by using the tab index
+   *
    * @param index 1-based index of the clickable element to return
    */
-  findCloseButtonByTabIndex(index: number): ButtonWrapper | null {
+  findDimissibleButtonByTabIndex(index: number): ButtonWrapper | null {
     return this.findComponent(
-      `.${styles['tabs-tab']}:nth-child(${index}) .${styles['tabs-tab-dismiss-button']}`,
+      `.${styles['tabs-tab']}:nth-child(${index}) .${styles['tabs-tab-dismiss']} > button`,
       ButtonWrapper
     );
   }
 
   /**
-   * Finds the close button by using the tab id
+   * Finds the dimissible button by using the tab id
+   *
    * @param id ID of the clickable element to return
    */
-  findCloseButtonByTabId(id: string): ButtonWrapper | null {
+  findDimissibleButtonByTabId(id: string): ButtonWrapper | null {
     return this.findComponent(
-      `.${styles['tabs-tab-link']}[data-testid="${id}"] ~ .${styles['tabs-tab-dismiss-button']}`,
+      `.${styles['tabs-tab']}[data-testid="${id}"] .${styles['tabs-tab-dismiss']}`,
       ButtonWrapper
     );
   }
@@ -59,7 +70,7 @@ export default class TabsWrapper extends ComponentWrapper<HTMLButtonElement> {
    * @param id ID of the clickable element to return
    */
   findActionByTabId(id: string): ElementWrapper | null {
-    return this.find(`.${styles['tabs-tab-link']}[data-testid="${id}"] ~ .${styles['tabs-tab-action']}`);
+    return this.find(`.${styles['tabs-tab-link']}[data-testid="${id}"] .${styles['tabs-tab-action']}`);
   }
 
   /**
@@ -87,8 +98,8 @@ export default class TabsWrapper extends ComponentWrapper<HTMLButtonElement> {
   /**
    * Finds the dismissible button for the active tab
    */
-  findActiveTabCloseButton(): ButtonWrapper | null {
-    return this.findComponent(`.${styles['tabs-tab-active']} ~ .${styles['tabs-tab-dismiss-button']}`, ButtonWrapper);
+  findActiveTabDimissibleButton(): ButtonWrapper | null {
+    return this.findComponent(`.${styles['tabs-tab-active']} .${styles['tabs-tab-dismiss']}`, ButtonWrapper);
   }
 
   /**

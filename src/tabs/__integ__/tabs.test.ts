@@ -105,7 +105,7 @@ test(
 test(
   'adds and removes pagination buttons at the same point',
   setupTest(async page => {
-    const { right } = await page.getBoundingBox(wrapper.findTabLinkByIndex(6).toSelector());
+    const { right } = await page.getBoundingBox(wrapper.findTabHeaderContentByIndex(6).toSelector());
     const width = Math.ceil(right);
     await page.setWindowSize({ width: width - 1, height: 1000 });
     await page.hasPaginationButtons(true);
@@ -192,7 +192,7 @@ test(
 test(
   'adds pagination buttons upon changing the tabs array',
   setupTest(async page => {
-    await page.setWindowSize({ width: 800, height: 1000 });
+    await page.setWindowSize({ width: 750, height: 1000 });
     await page.hasPaginationButtons(false);
     await page.click('#add-tab');
     await page.hasPaginationButtons(true);

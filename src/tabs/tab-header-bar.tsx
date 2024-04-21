@@ -20,27 +20,17 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useInternalI18n } from '../i18n/context';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
-function manageTabIndexForTabContent(tabContentElement: HTMLElement, isActive: boolean) {
+function setTabIndexForTabContent(tabContentElement: HTMLElement, isActive: boolean) {
   const focusableElements = tabContentElement.querySelectorAll('button, a');
   focusableElements.forEach(element => {
-    if (isActive) {
-      element.removeAttribute('tabIndex');
-    } else {
-      element.setAttribute('tabIndex', '-1');
-    }
+    const isFocusable = isActive || tabContentElement.classList.contains(`${styles['tabs-tab-disabled']}`);
+    isFocusable ? element.setAttribute('tabIndex', '0') : element.setAttribute('tabIndex', '-1');
   });
 }
 
 function dismissButton(dismissLabel: TabsProps.Tab['dismissLabel'], onDismiss: TabsProps.Tab['onDismiss']) {
   return (
-    <InternalButton
-      onClick={onDismiss}
-      className={styles['tabs-tab-dismiss-button']}
-      variant="icon"
-      iconName="close"
-      formAction="none"
-      ariaLabel={dismissLabel}
-    />
+    <InternalButton onClick={onDismiss} variant="icon" iconName="close" formAction="none" ariaLabel={dismissLabel} />
   );
 }
 
@@ -136,7 +126,7 @@ export function TabHeaderBar({
     const tabContentElements = document.querySelectorAll(`.${styles['tabs-tab-header-content']}`);
     tabContentElements.forEach(element => {
       const isActive = element.classList.contains(`${styles['tabs-tab-active']}`);
-      manageTabIndexForTabContent(element as HTMLElement, isActive);
+      setTabIndexForTabContent(element as HTMLElement, isActive);
     });
   }, [activeTabId]);
 
@@ -332,11 +322,13 @@ export function TabHeaderBar({
         role="presentation"
         key={tab.id}
       >
-        <span className={tabHeaderContentClasses}>
+        <div className={tabHeaderContentClasses}>
           {trigger}
-          {action && action}
-          {dismissible && dismissButton(dismissLabel, handleDismiss)}
-        </span>
+          {action && <span className={styles['tabs-tab-action']}> {action} </span>}
+          {dismissible && (
+            <span className={styles['tabs-tab-dismiss']}> {dismissButton(dismissLabel, handleDismiss)} </span>
+          )}
+        </div>
       </li>
     );
   }

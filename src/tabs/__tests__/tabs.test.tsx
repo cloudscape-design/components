@@ -87,6 +87,21 @@ const defaultTabs: Array<TabsProps.Tab> = [
   },
 ];
 
+const actionDismissibleTabs: Array<TabsProps.Tab> = [
+  {
+    id: 'first',
+    label: 'first tab',
+    dismissible: true,
+    dismissLabel: 'first-tab-dismissible-button',
+    onDismiss: () => console.log('I have been clicked!'),
+  },
+  {
+    id: 'second',
+    label: 'second tab',
+    action: <button id="second-tab-button"> test button </button>,
+  },
+];
+
 describe('Tabs', () => {
   test('renders an empty tab list correctly', () => {
     const emptyTabs = renderTabs(<Tabs tabs={[]} />).wrapper.findTabLinks();
@@ -171,7 +186,7 @@ describe('Tabs', () => {
     test("allows focusing the current tab even if it's disabled", () => {
       const tabs = renderTabs(<Tabs tabs={defaultTabs} activeTabId="third" onChange={() => void 0} />).wrapper;
 
-      expect(tabs.findTabContent()!.getElement()).toHaveAttribute('tabindex', '0');
+      expect(tabs.findTabLinkById('third')!.getElement()).toHaveAttribute('tabindex', '0');
     });
 
     test('displays empty content if selected tab does not have content property', () => {
@@ -673,6 +688,17 @@ describe('Tabs', () => {
       expect(() =>
         renderTabs(<Tabs tabs={[{ id: 'test', label: 'test', href: "javascript:alert('Hello!')" }]} />)
       ).toThrow('A javascript: URL was blocked as a security precaution.');
+    });
+  });
+
+  describe('Actions', () => {
+    // Will remove this comment, planning on adding more tests in future commit
+    test('displays dismissible button w/ label when dismissible is set to true', () => {
+      const dismissibleButton = renderTabs(
+        <Tabs tabs={actionDismissibleTabs} />
+      ).wrapper.findDimissibleButtonByTabIndex(1);
+      expect(dismissibleButton).toBeTruthy();
+      expect(dismissibleButton?.getElement()).toHaveAttribute('aria-label', 'first-tab-dismissible-button');
     });
   });
 

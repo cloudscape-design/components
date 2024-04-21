@@ -9,7 +9,8 @@
 @use '../internal/hooks/focus-visible' as focus-visible;
 
 $separator-color: awsui.$color-border-tabs-divider;
-$label-horizontal-spacing: awsui.$space-l;
+$label-horizontal-spacing: awsui.$space-xs;
+$tab-link-outline-width: -1px;
 
 .tabs-header {
   margin-block: 0;
@@ -75,6 +76,7 @@ $label-horizontal-spacing: awsui.$space-l;
 .tabs-tab-label {
   display: flex;
   align-items: center;
+  padding-inline: $label-horizontal-spacing;
   text-align: start;
   position: relative;
 
@@ -96,17 +98,6 @@ $label-horizontal-spacing: awsui.$space-l;
     display: flex;
     align-items: center;
     text-align: start;
-  }
-
-  &:focus {
-    outline: none;
-  }
-  @include styles.font-smoothing;
-
-  @include focus-visible.when-visible {
-    z-index: 1;
-    @include styles.focus-highlight(awsui.$space-tabs-focus-outline-gutter);
-    border-inline-end-color: transparent;
   }
 }
 
@@ -182,10 +173,14 @@ $label-horizontal-spacing: awsui.$space-l;
   &:focus {
     outline: none;
   }
-}
 
-.tabs-tab-link-only {
-  margin-inline-end: awsui.$space-scaled-m;
+  @include styles.font-smoothing;
+
+  @include focus-visible.when-visible {
+    z-index: 1;
+    @include styles.focus-highlight($tab-link-outline-width);
+    border-inline-end-color: transparent;
+  }
 }
 
 // Remediate focus shadow
@@ -223,4 +218,10 @@ $label-horizontal-spacing: awsui.$space-l;
 
 .tabs-header-with-divider {
   border-block-end: awsui.$border-divider-section-width solid $separator-color;
+}
+
+.tabs-tab-dismiss,
+.tabs-tab-action {
+  // Used as a selector for tests
+  opacity: 1;
 }
