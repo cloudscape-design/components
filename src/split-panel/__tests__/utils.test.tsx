@@ -85,3 +85,41 @@ describe('use-keyboard-events', () => {
     expect(event?.defaultPrevented).toBeFalsy();
   });
 });
+
+describe('use-keyboard-events in rtl', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test('bottom position, up key', () => {
+    const onKeyDown = useKeyboardEvents({ ...sizeControlProps });
+    const div = document.createElement('div');
+    div.addEventListener('keydown', event => onKeyDown(event as any));
+    fireEvent.keyDown(div, { keyCode: KeyCode.up });
+
+    expect(sizeControlProps.onResize).toHaveBeenCalledTimes(1);
+    expect(sizeControlProps.onResize).toHaveBeenCalledWith(110);
+  });
+
+  test('side position, right key', () => {
+    const onKeyDown = useKeyboardEvents({ ...sizeControlProps, position: 'side' });
+    const div = document.createElement('div');
+    div.style.direction = 'rtl';
+    div.addEventListener('keydown', event => onKeyDown(event as any));
+    fireEvent.keyDown(div, { keyCode: KeyCode.right });
+
+    expect(sizeControlProps.onResize).toHaveBeenCalledTimes(1);
+    expect(sizeControlProps.onResize).toHaveBeenCalledWith(110);
+  });
+
+  test('side position, left key', () => {
+    const onKeyDown = useKeyboardEvents({ ...sizeControlProps, position: 'side' });
+    const div = document.createElement('div');
+    div.style.direction = 'rtl';
+    div.addEventListener('keydown', event => onKeyDown(event as any));
+    fireEvent.keyDown(div, { keyCode: KeyCode.left });
+
+    expect(sizeControlProps.onResize).toHaveBeenCalledTimes(1);
+    expect(sizeControlProps.onResize).toHaveBeenCalledWith(90);
+  });
+});
