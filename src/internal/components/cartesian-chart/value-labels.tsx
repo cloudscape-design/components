@@ -11,10 +11,11 @@ import { formatTicks, getSVGTextSize, getVisibleTicks } from './label-utils';
 import { ChartDataTypes } from '../../../mixed-line-bar-chart/interfaces';
 import { useInternalI18n } from '../../../i18n/context';
 import ResponsiveText from '../responsive-text';
+import { isRtl as getIsRtl } from '../../direction';
 
 const OFFSET_PX = 12;
 
-interface LeftLabelsProps {
+interface ValueLabelsProps {
   axis?: 'x' | 'y';
   plotWidth: number;
   plotHeight: number;
@@ -26,10 +27,10 @@ interface LeftLabelsProps {
   ariaRoleDescription?: string;
 }
 
-export default memo(LeftLabels) as typeof LeftLabels;
+export default memo(ValueLabels) as typeof ValueLabels;
 
-// Renders the visible tick labels on the left axis, as well as their grid lines.
-function LeftLabels({
+// Renders the visible tick labels on the value axis, as well as their grid lines.
+function ValueLabels({
   axis = 'y',
   plotWidth,
   plotHeight,
@@ -39,7 +40,7 @@ function LeftLabels({
   tickFormatter,
   title,
   ariaRoleDescription,
-}: LeftLabelsProps) {
+}: ValueLabelsProps) {
   const i18n = useInternalI18n('[charts]');
   const virtualTextRef = useRef<SVGTextElement>(null);
 
@@ -66,6 +67,8 @@ function LeftLabels({
   const from = 0 - OFFSET_PX - yOffset;
   const until = plotHeight + OFFSET_PX - yOffset;
   const visibleTicks = getVisibleTicks(formattedTicks, from, until);
+
+  const isRtl = virtualTextRef.current ? getIsRtl(virtualTextRef.current) : false;
 
   return (
     <g
@@ -96,8 +99,9 @@ function LeftLabels({
               )}
 
               {lines.map((line, lineIndex) => {
+                const x = -(TICK_LENGTH + TICK_MARGIN);
                 const lineTextProps = {
-                  x: -(TICK_LENGTH + TICK_MARGIN),
+                  x: !isRtl ? x : plotWidth - x,
                   y: (lineIndex - (lines.length - 1) * 0.5) * TICK_LINE_HEIGHT,
                   className: styles.ticks__text,
                   children: line,

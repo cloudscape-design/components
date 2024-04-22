@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
-import LeftLabels from '../../../../../lib/components/internal/components/cartesian-chart/left-labels';
+import ValueLabels from '../../../../../lib/components/internal/components/cartesian-chart/value-labels';
 import {
   getVisibleTicks,
   getSVGTextSize,
@@ -34,7 +34,7 @@ describe('cartesian chart left labels', () => {
     ]);
 
     const { container } = render(
-      <LeftLabels
+      <ValueLabels
         axis="x"
         plotWidth={500}
         plotHeight={300}
@@ -62,7 +62,7 @@ describe('cartesian chart left labels', () => {
       .mockReturnValueOnce({ width: 250, height: 20 });
 
     const { container } = render(
-      <LeftLabels
+      <ValueLabels
         axis="x"
         plotWidth={500}
         plotHeight={300}

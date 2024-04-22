@@ -8,7 +8,7 @@ import { getXTickCount, getYTickCount, createXTicks, createYTicks } from '../int
 import ChartPlot, { ChartPlotRef } from '../internal/components/chart-plot';
 import AxisLabel from '../internal/components/cartesian-chart/axis-label';
 import LabelsMeasure from '../internal/components/cartesian-chart/labels-measure';
-import LeftLabels from '../internal/components/cartesian-chart/left-labels';
+import ValueLabels from '../internal/components/cartesian-chart/value-labels';
 import BottomLabels, { useBottomLabels } from '../internal/components/cartesian-chart/bottom-labels';
 import VerticalGridLines from '../internal/components/cartesian-chart/vertical-grid-lines';
 import EmphasizedBaseline from '../internal/components/cartesian-chart/emphasized-baseline';
@@ -133,14 +133,14 @@ export default function ChartContainer<T extends ChartDataTypes>({
   const plotRef = useRef<ChartPlotRef>(null);
   const verticalMarkerRef = useRef<SVGLineElement>(null);
 
-  const [leftLabelsWidth, setLeftLabelsWidth] = useState(0);
+  const [valueLabelsWidth, setValueLabelsWidth] = useState(0);
   const [verticalMarkerX, setVerticalMarkerX] = useState<VerticalMarkerX<T> | null>(null);
   const [detailsPopoverText, setDetailsPopoverText] = useState('');
   const [containerWidth, containerMeasureRef] = useContainerWidth(fallbackContainerWidth);
-  const maxLeftLabelsWidth = Math.round(containerWidth / 2);
+  const maxValueLabelsWidth = Math.round(containerWidth / 2);
   const plotWidth = containerWidth
-    ? // Calculate the minimum between leftLabelsWidth and maxLeftLabelsWidth for extra safety because leftLabelsWidth could be out of date
-      Math.max(0, containerWidth - Math.min(leftLabelsWidth, maxLeftLabelsWidth) - LEFT_LABELS_MARGIN)
+    ? // Calculate the minimum between valueLabelsWidth and maxValueLabelsWidth for extra safety because valueLabelsWidth could be out of date
+      Math.max(0, containerWidth - Math.min(valueLabelsWidth, maxValueLabelsWidth) - LEFT_LABELS_MARGIN)
     : fallbackContainerWidth;
   const containerRefObject = useRef(null);
   const containerRef = useMergeRefs(containerMeasureRef, containerRefObject);
@@ -506,8 +506,8 @@ export default function ChartContainer<T extends ChartDataTypes>({
           ticks={leftAxisProps.ticks}
           scale={leftAxisProps.scale}
           tickFormatter={leftAxisProps.tickFormatter as TickFormatter}
-          autoWidth={setLeftLabelsWidth}
-          maxLabelsWidth={maxLeftLabelsWidth}
+          autoWidth={setValueLabelsWidth}
+          maxLabelsWidth={maxValueLabelsWidth}
         />
       }
       bottomAxisLabel={<AxisLabel axis={x} position="bottom" title={bottomAxisProps.title} />}
@@ -547,14 +547,14 @@ export default function ChartContainer<T extends ChartDataTypes>({
             style={{ pointerEvents: 'none' }}
           />
 
-          <LeftLabels
+          <ValueLabels
             axis={y}
             ticks={leftAxisProps.ticks}
             scale={leftAxisProps.scale}
             tickFormatter={leftAxisProps.tickFormatter as TickFormatter}
             title={leftAxisProps.title}
             ariaRoleDescription={leftAxisProps.ariaRoleDescription}
-            maxLabelsWidth={maxLeftLabelsWidth}
+            maxLabelsWidth={maxValueLabelsWidth}
             plotWidth={plotWidth}
             plotHeight={plotHeight}
           />
@@ -623,7 +623,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
             ariaRoleDescription={bottomAxisProps.ariaRoleDescription}
             height={plotHeight}
             width={plotWidth}
-            offsetLeft={leftLabelsWidth + BOTTOM_LABELS_OFFSET}
+            offsetLeft={valueLabelsWidth + BOTTOM_LABELS_OFFSET}
             offsetRight={BOTTOM_LABELS_OFFSET}
           />
         </ChartPlot>

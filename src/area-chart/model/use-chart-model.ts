@@ -23,6 +23,7 @@ const SVG_HOVER_THROTTLE = 25;
 const POPOVER_DEADZONE = 12;
 
 export interface UseChartModelProps<T extends AreaChartProps.DataTypes> {
+  isRtl?: boolean;
   fitHeight?: boolean;
   externalSeries: readonly AreaChartProps.Series<T>[];
   visibleSeries: readonly AreaChartProps.Series<T>[];
@@ -40,6 +41,7 @@ export interface UseChartModelProps<T extends AreaChartProps.DataTypes> {
 
 // Represents the core the chart logic, including the model of all allowed user interactions.
 export default function useChartModel<T extends AreaChartProps.DataTypes>({
+  isRtl,
   fitHeight,
   externalSeries: allSeries,
   visibleSeries: series,
@@ -68,6 +70,7 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
   const model = useMemo(() => {
     // Compute scales, ticks and two-dimensional plots.
     const computed = computeChartProps({
+      isRtl,
       series,
       xDomain,
       yDomain,
@@ -174,6 +177,8 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
 
     // A helper function to highlight the next or previous point within selected series.
     const moveWithinSeries = (direction: -1 | 1) => {
+      direction = (!isRtl ? direction : -direction) as -1 | 1;
+
       // Can only use motion when a particular point is highlighted.
       const point = interactions.get().highlightedPoint;
       if (!point) {
@@ -355,7 +360,19 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
         popoverRef,
       },
     };
-  }, [allSeries, series, xDomain, yDomain, xScaleType, yScaleType, height, width, stableSetVisibleSeries, popoverRef]);
+  }, [
+    allSeries,
+    series,
+    xDomain,
+    yDomain,
+    xScaleType,
+    yScaleType,
+    height,
+    width,
+    stableSetVisibleSeries,
+    popoverRef,
+    isRtl,
+  ]);
 
   // Notify client when series highlight change.
   useReaction(model.interactions, state => state.highlightedSeries, setHighlightedSeries);
