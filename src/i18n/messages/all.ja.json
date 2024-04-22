@@ -262,6 +262,9 @@
     "selectedAriaLabel": "選択済み",
     "recoveryText": "再試行"
   },
+  "slider": {
+    "i18nStrings.valueTextRange": "{value}、{previousValue}と{nextValue}の間"
+  },
   "split-panel": {
     "i18nStrings.closeButtonAriaLabel": "パネルを閉じる",
     "i18nStrings.openButtonAriaLabel": "パネルを開く",

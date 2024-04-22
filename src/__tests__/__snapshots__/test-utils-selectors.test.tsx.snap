@@ -450,6 +450,10 @@ Object {
     "awsui_section-group_l0dv0",
     "awsui_section_l0dv0",
   ],
+  "slider": Array [
+    "awsui_root_pcgz5",
+    "awsui_thumb_pcgz5",
+  ],
   "space-between": Array [
     "awsui_root_18582",
   ],
