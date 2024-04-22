@@ -67,67 +67,33 @@ export const matchesX = <T>(x1: T, x2: T) => {
   return x1 === x2;
 };
 
-export type OffsetMap = Map<string | number, number>;
+export type StackedBarValues = Map<string | number, Map<number, number>>;
 
-export interface StackedOffsets {
-  positiveOffsets: OffsetMap;
-  negativeOffsets: OffsetMap;
-}
-
-/**
- * Calculates list of offset maps from all data by accumulating each value
- */
-export function calculateOffsetMaps(data: Array<readonly MixedLineBarChartProps.Datum<ChartDataTypes>[]>) {
-  const minValues = new Map<string | number, number>();
-  const setMinValue = (key: string | number, newOffset: number) => {
-    const currentOffset = minValues.get(key);
-    if (currentOffset === undefined || newOffset < currentOffset) {
-      minValues.set(key, newOffset);
+// Unlike for regular bars, stacked bar series values depend on the predecessors.
+// The function computes all stacked values grouped by X and series index.
+export function calculateStackedBarValues(
+  dataBySeries: Array<readonly MixedLineBarChartProps.Datum<ChartDataTypes>[]>
+): StackedBarValues {
+  const negativeValues = new Map<string | number, number>();
+  const positiveValues = new Map<string | number, number>();
+  const values = new Map<string | number, Map<number, number>>();
+  const addValue = (seriesIndex: number, key: string | number, value: number) => {
+    if (value < 0) {
+      negativeValues.set(key, (negativeValues.get(key) ?? 0) + value);
+    } else {
+      positiveValues.set(key, (positiveValues.get(key) ?? 0) + value);
     }
+    const seriesValue = (value < 0 ? negativeValues.get(key) : positiveValues.get(key)) ?? 0;
+    const valuesByIndex = values.get(key) ?? new Map<number, number>();
+    valuesByIndex.set(seriesIndex, seriesValue);
+    values.set(key, valuesByIndex);
   };
-
-  const maxValues = new Map<string | number, number>();
-  const setMaxValue = (key: string | number, newOffset: number) => {
-    const currentOffset = maxValues.get(key);
-    if (currentOffset === undefined || currentOffset < newOffset) {
-      maxValues.set(key, newOffset);
+  for (let seriesIndex = 0; seriesIndex < dataBySeries.length; seriesIndex++) {
+    for (const datum of dataBySeries[seriesIndex]) {
+      addValue(seriesIndex, getKeyValue(datum.x), datum.y);
     }
-  };
-
-  const seriesOffsets: StackedOffsets[] = data.reduce((acc, curr, idx) => {
-    // First series receives empty offsets map
-    if (idx === 0) {
-      acc.push({ positiveOffsets: new Map(), negativeOffsets: new Map() });
-    }
-    const lastMap = acc[idx];
-    const map: StackedOffsets = lastMap
-      ? { positiveOffsets: new Map(lastMap.positiveOffsets), negativeOffsets: new Map(lastMap.negativeOffsets) }
-      : { positiveOffsets: new Map(), negativeOffsets: new Map() };
-
-    curr.forEach(({ x, y }) => {
-      const key = getKeyValue(x);
-      if (y < 0) {
-        const lastValue = lastMap?.negativeOffsets.get(key) || 0;
-        map.negativeOffsets.set(key, lastValue + y);
-        setMinValue(key, lastValue + y);
-        setMaxValue(key, lastValue + y);
-      } else {
-        const lastValue = lastMap?.positiveOffsets.get(key) || 0;
-        map.positiveOffsets.set(key, lastValue + y);
-        setMinValue(key, lastValue + y);
-        setMaxValue(key, lastValue + y);
-      }
-    });
-
-    // Ignore last value for map but still run it for logging
-    if (idx < data.length - 1) {
-      acc.push(map);
-    }
-
-    return acc;
-  }, [] as StackedOffsets[]);
-
-  return { minValues, maxValues, seriesOffsets };
+  }
+  return values;
 }
 
 /** Returns string or number value for ChartDataTypes key */

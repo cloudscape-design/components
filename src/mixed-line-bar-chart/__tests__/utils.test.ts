@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { matchesX, calculateOffsetMaps } from '../../../lib/components/mixed-line-bar-chart/utils';
+import { matchesX, calculateStackedBarValues } from '../../../lib/components/mixed-line-bar-chart/utils';
 
 import { barSeries, barSeries2 } from './common';
 
@@ -37,78 +37,84 @@ describe('matchesX', () => {
   });
 });
 
-describe('calculateOffsetMaps', () => {
-  afterAll(() => {
-    jest.restoreAllMocks();
-  });
-
+describe('calculateStackedBarValues', () => {
   test('without data', () => {
-    expect(calculateOffsetMaps([]).seriesOffsets).toEqual([]);
+    expect(calculateStackedBarValues([])).toEqual(new Map());
   });
 
   test('with categorical data', () => {
     const data = [barSeries.data, barSeries2.data, barSeries.data];
-
-    const actual = calculateOffsetMaps(data);
-
-    expect(actual.seriesOffsets).toEqual([
-      { positiveOffsets: new Map(), negativeOffsets: new Map() },
-      {
-        positiveOffsets: new Map([
-          ['Potatoes', 77],
-          ['Chocolate', 546],
-          ['Apples', 52],
-          ['Oranges', 47],
-        ]),
-        negativeOffsets: new Map(),
-      },
-      {
-        positiveOffsets: new Map([
-          ['Potatoes', 87],
-          ['Chocolate', 566],
-          ['Apples', 52],
-          ['Oranges', 97],
-        ]),
-        negativeOffsets: new Map(),
-      },
-    ]);
+    const computed = calculateStackedBarValues(data);
+    expect(computed).toEqual(
+      new Map([
+        [
+          'Potatoes',
+          new Map([
+            [0, 77],
+            [1, 77 + 10],
+            [2, 77 + 10 + 77],
+          ]),
+        ],
+        [
+          'Chocolate',
+          new Map([
+            [0, 546],
+            [1, 546 + 20],
+            [2, 546 + 20 + 546],
+          ]),
+        ],
+        [
+          'Apples',
+          new Map([
+            [0, 52],
+            [2, 52 + 0 + 52],
+          ]),
+        ],
+        [
+          'Oranges',
+          new Map([
+            [0, 47],
+            [1, 47 + 50],
+            [2, 47 + 50 + 47],
+          ]),
+        ],
+      ])
+    );
   });
 
   test('with timeseries data', () => {
     const date = new Date('1995-12-17T03:24:00');
     const data = [[{ x: date, y: 1 }], [{ x: date, y: 2 }], [{ x: date, y: 3 }]];
-
-    const actual = calculateOffsetMaps(data);
-
-    expect(actual.seriesOffsets).toEqual([
-      { positiveOffsets: new Map(), negativeOffsets: new Map() },
-      {
-        positiveOffsets: new Map([[date.getTime(), 1]]),
-        negativeOffsets: new Map(),
-      },
-      {
-        positiveOffsets: new Map([[date.getTime(), 3]]),
-        negativeOffsets: new Map(),
-      },
-    ]);
+    const computed = calculateStackedBarValues(data);
+    expect(computed).toEqual(
+      new Map([
+        [
+          date.getTime(),
+          new Map([
+            [0, 1],
+            [1, 1 + 2],
+            [2, 1 + 2 + 3],
+          ]),
+        ],
+      ])
+    );
   });
 
-  test('with number data', () => {
+  test('with numeric data', () => {
     const data = [[{ x: 1, y: 1 }], [{ x: 1, y: 2 }], [{ x: 1, y: 3 }]];
-
-    const actual = calculateOffsetMaps(data);
-
-    expect(actual.seriesOffsets).toEqual([
-      { positiveOffsets: new Map(), negativeOffsets: new Map() },
-      {
-        positiveOffsets: new Map([[1, 1]]),
-        negativeOffsets: new Map(),
-      },
-      {
-        positiveOffsets: new Map([[1, 3]]),
-        negativeOffsets: new Map(),
-      },
-    ]);
+    const computed = calculateStackedBarValues(data);
+    expect(computed).toEqual(
+      new Map([
+        [
+          1,
+          new Map([
+            [0, 1],
+            [1, 1 + 2],
+            [2, 1 + 2 + 3],
+          ]),
+        ],
+      ])
+    );
   });
 
   test('with mixed positive and negative numbers', () => {
@@ -129,29 +135,34 @@ describe('calculateOffsetMaps', () => {
         { x: 3, y: 10 },
       ],
     ];
-
-    const actual = calculateOffsetMaps(data);
-
-    expect(actual.seriesOffsets).toEqual([
-      { positiveOffsets: new Map(), negativeOffsets: new Map() },
-      {
-        positiveOffsets: new Map([[2, 3]]),
-        negativeOffsets: new Map([
-          [1, -1],
-          [3, -4],
-        ]),
-      },
-      {
-        positiveOffsets: new Map([
-          [1, 2],
-          [2, 3],
-        ]),
-        negativeOffsets: new Map([
-          [1, -1],
-          [2, -3],
-          [3, -8],
-        ]),
-      },
-    ]);
+    const computed = calculateStackedBarValues(data);
+    expect(computed).toEqual(
+      new Map([
+        [
+          1,
+          new Map([
+            [0, -1],
+            [1, 2],
+            [2, 2 + 2],
+          ]),
+        ],
+        [
+          2,
+          new Map([
+            [0, 3],
+            [1, -3],
+            [2, -3 + -1],
+          ]),
+        ],
+        [
+          3,
+          new Map([
+            [0, -4],
+            [1, -4 + -4],
+            [2, 10],
+          ]),
+        ],
+      ])
+    );
   });
 });
