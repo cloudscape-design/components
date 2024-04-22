@@ -101,6 +101,16 @@ describe('use-keyboard-events in rtl', () => {
     expect(sizeControlProps.onResize).toHaveBeenCalledWith(110);
   });
 
+  test('bottom position, down key', () => {
+    const onKeyDown = useKeyboardEvents({ ...sizeControlProps });
+    const div = document.createElement('div');
+    div.addEventListener('keydown', event => onKeyDown(event as any));
+    fireEvent.keyDown(div, { keyCode: KeyCode.down });
+
+    expect(sizeControlProps.onResize).toHaveBeenCalledTimes(1);
+    expect(sizeControlProps.onResize).toHaveBeenCalledWith(90);
+  });
+
   test('side position, right key', () => {
     const onKeyDown = useKeyboardEvents({ ...sizeControlProps, position: 'side' });
     const div = document.createElement('div');
@@ -121,5 +131,26 @@ describe('use-keyboard-events in rtl', () => {
 
     expect(sizeControlProps.onResize).toHaveBeenCalledTimes(1);
     expect(sizeControlProps.onResize).toHaveBeenCalledWith(90);
+  });
+
+  test('side position, bottom key', () => {
+    const onKeyDown = useKeyboardEvents({ ...sizeControlProps, position: 'side' });
+    const div = document.createElement('div');
+    div.style.direction = 'rtl';
+    div.addEventListener('keydown', event => onKeyDown(event as any));
+    fireEvent.keyDown(div, { keyCode: KeyCode.down });
+
+    expect(sizeControlProps.onResize).toHaveBeenCalledTimes(1);
+    expect(sizeControlProps.onResize).toHaveBeenCalledWith(110);
+  });
+
+  test('side position, unhandled key', () => {
+    const onKeyDown = useKeyboardEvents({ ...sizeControlProps, position: 'side' });
+    const div = document.createElement('div');
+    div.style.direction = 'rtl';
+    div.addEventListener('keydown', event => onKeyDown(event as any));
+    fireEvent.keyDown(div, { keyCode: KeyCode.tab });
+
+    expect(sizeControlProps.onResize).toHaveBeenCalledTimes(0);
   });
 });
