@@ -61,7 +61,7 @@ export default function DataSeries<T extends ChartDataTypes>({
         barData.push([]);
       }
     });
-    return calculateStackedBarValues([...barData]);
+    return calculateStackedBarValues(barData);
   }, [visibleSeries, stackedBars]);
 
   return (
