@@ -73,11 +73,7 @@ export default function MultiPageCreate() {
           </Container>
           <Container
             header={<Header>Container 2 - header</Header>}
-<<<<<<< HEAD
             {...getAnalyticsProps({ instanceIdentifier: 'step1-container2' })}
-=======
-            {...getAnalyticsProps({ instanceId: 'step1-container2' })}
->>>>>>> 356829d9 (feat: Slider component)
           >
             <SpaceBetween size="s">
               <FormField label="Field 3">
@@ -102,11 +98,7 @@ export default function MultiPageCreate() {
           </Container>
         </SpaceBetween>
       ),
-<<<<<<< HEAD
       ...getAnalyticsProps({ instanceIdentifier: 'step-1' }),
-=======
-      ...getAnalyticsProps({ instanceId: 'step-1' }),
->>>>>>> 356829d9 (feat: Slider component)
     },
     {
       title: 'Step 2',
@@ -117,11 +109,7 @@ export default function MultiPageCreate() {
           <div id="content-text">Content 2</div>
         </div>
       ),
-<<<<<<< HEAD
       ...getAnalyticsProps({ instanceIdentifier: 'step-2' }),
-=======
-      ...getAnalyticsProps({ instanceId: 'step-2' }),
->>>>>>> 356829d9 (feat: Slider component)
     },
     {
       title: 'Step 3',
@@ -136,11 +124,7 @@ export default function MultiPageCreate() {
           ))}
         </div>
       ),
-<<<<<<< HEAD
       ...getAnalyticsProps({ instanceIdentifier: 'step-3' }),
-=======
-      ...getAnalyticsProps({ instanceId: 'step-3' }),
->>>>>>> 356829d9 (feat: Slider component)
     },
   ];
 
@@ -163,11 +147,7 @@ export default function MultiPageCreate() {
       {mounted && (
         <Wizard
           {...getAnalyticsProps({
-<<<<<<< HEAD
             instanceIdentifier: 'multi-page',
-=======
-            instanceId: 'multi-page',
->>>>>>> 356829d9 (feat: Slider component)
             flowType: 'create',
           })}
           i18nStrings={i18nStrings}
