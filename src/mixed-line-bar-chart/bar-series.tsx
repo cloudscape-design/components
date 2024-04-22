@@ -160,7 +160,7 @@ export default function BarSeries<T extends ChartDataTypes>({
         return (
           <React.Fragment key={`bar-${i}`}>
             {/* Render clip paths to provide rounded corners for the min/max stacked bars  */}
-            {isStacked && (isMin || isMax) && (
+            {rxProps.clipPath && (isMin || isMax) && (
               <defs aria-hidden="true">
                 <clipPath id={`${clipPathId}-${i}`}>
                   {isMin && (
