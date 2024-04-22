@@ -58,7 +58,7 @@ const Cards = React.forwardRef(function <T = any>(
     stickyHeaderVerticalOffset,
     variant = 'container',
     renderAriaLive,
-    firstIndex,
+    firstIndex = 1,
     totalItemsCount,
     entireCardClickable,
     ...rest

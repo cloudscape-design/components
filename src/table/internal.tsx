@@ -58,7 +58,7 @@ const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
 const itemsLoaderColumnId = Symbol('items-loader-id');
 
-type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
+type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant' | 'firstIndex'> &
   InternalBaseComponentProps & {
     __funnelSubStepProps?: InternalContainerProps['__funnelSubStepProps'];
   };

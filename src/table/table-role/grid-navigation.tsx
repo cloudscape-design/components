@@ -7,6 +7,7 @@ import {
   defaultIsSuppressed,
   findTableRowByAriaRowIndex,
   findTableRowCellByAriaColIndex,
+  focusNextElement,
   getClosestCell,
   isElementDisabled,
   isTableCell,
@@ -262,7 +263,7 @@ class GridNavigationProcessor {
     if (delta.y !== 0 && delta.x === 0) {
       this.keepUserIndex = true;
     }
-    this.getNextFocusable(cell, delta)?.focus();
+    focusNextElement(this.getNextFocusable(cell, delta));
   }
 
   private updateFocusTarget() {

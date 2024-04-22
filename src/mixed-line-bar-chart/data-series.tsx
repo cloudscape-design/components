@@ -10,7 +10,7 @@ import BarSeries from './bar-series';
 import { ChartDataTypes, InternalChartSeries, MixedLineBarChartProps } from './interfaces';
 
 import styles from './styles.css.js';
-import { calculateOffsetMaps, StackedOffsets } from './utils';
+import { calculateStackedBarValues } from './utils';
 
 // Should have the same value as the `border-line-chart-width` token.
 const STROKE_WIDTH = 2;
@@ -49,18 +49,19 @@ export default function DataSeries<T extends ChartDataTypes>({
   // Lines get a small extra space at the top and bottom to account for the strokes when they are at the edge of the graph.
   const lineAreaClipPath = useUniqueId('awsui-line-chart__chart-area-');
 
-  const stackedBarOffsetMaps: StackedOffsets[] = useMemo(() => {
+  const stackedBarValues = useMemo(() => {
     if (!stackedBars) {
-      return [];
+      return undefined;
     }
-
     const barData: Array<readonly MixedLineBarChartProps.Datum<ChartDataTypes>[]> = [];
     visibleSeries.forEach(({ series }) => {
       if (series.type === 'bar') {
         barData.push(series.data);
+      } else {
+        barData.push([]);
       }
     });
-    return calculateOffsetMaps(barData);
+    return calculateStackedBarValues(barData);
   }, [visibleSeries, stackedBars]);
 
   return (
@@ -118,7 +119,7 @@ export default function DataSeries<T extends ChartDataTypes>({
                   highlighted={isHighlighted}
                   dimmed={isDimmed}
                   chartAreaClipPath={chartAreaClipPath}
-                  stackedBarOffsets={stackedBarOffsetMaps[index]}
+                  stackedBarValues={stackedBarValues}
                   highlightedGroupIndex={highlightedGroupIndex}
                 />
               );

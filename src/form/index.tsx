@@ -42,7 +42,7 @@ export default function Form({ variant = 'full-page', ...props }: FormProps) {
 
   return (
     <AnalyticsFunnel
-      instanceId={analyticsMetadata?.instanceId}
+      instanceIdentifier={analyticsMetadata?.instanceIdentifier}
       flowType={analyticsMetadata?.flowType}
       errorContext={analyticsMetadata?.errorContext}
       funnelType="single-page"
@@ -51,7 +51,7 @@ export default function Form({ variant = 'full-page', ...props }: FormProps) {
       funnelNameSelectors={[funnelNameSelector, `.${formStyles.header}`]}
     >
       <AnalyticsFunnelStep
-        instanceId={analyticsMetadata?.instanceId}
+        instanceIdentifier={analyticsMetadata?.instanceIdentifier}
         errorContext={analyticsMetadata?.errorContext}
         stepNumber={1}
       >
