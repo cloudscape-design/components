@@ -62,26 +62,25 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
   }
 }
 
+/* stylelint-disable no-descending-specificity */
 .body-cell {
   box-sizing: border-box;
   padding-block: 0;
   padding-inline: 0;
-  & > .body-cell-content {
-    padding-block-start: $cell-vertical-padding;
-    padding-block-end: $cell-vertical-padding-w-border;
-    padding-inline: $cell-horizontal-padding;
-    border-block-start: awsui.$border-divider-list-width solid transparent;
-  }
   word-wrap: break-word;
   border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-divider-secondary;
   font-weight: inherit;
 
   text-align: start;
-
-  &-content {
-    /* used for testing */
+  & > .body-cell-content {
+    display: block;
+    padding-block-start: $cell-vertical-padding;
+    padding-block-end: $cell-vertical-padding-w-border;
+    padding-inline: $cell-horizontal-padding;
+    border-block-start: awsui.$border-divider-list-width solid transparent;
   }
-  &:not(.body-cell-wrap) > .body-cell-content {
+
+  &:not(.body-cell-wrap) {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -230,10 +229,10 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
     }
   }
   &-selected.body-cell-prev-selected {
+    border-block-start: $selected-border-placeholder;
     & > .body-cell-content {
       padding-block-start: $cell-vertical-padding-w-border;
     }
-    border-block-start: $selected-border-placeholder;
   }
   &-selected.body-cell-next-selected {
     border-block-end-width: awsui.$border-divider-list-width;
