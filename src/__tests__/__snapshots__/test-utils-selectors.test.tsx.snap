@@ -496,7 +496,10 @@ Object {
   "tabs": Array [
     "awsui_root_14rmt",
     "awsui_tabs-content-active_14rmt",
+    "awsui_tabs-tab-action_14rmt",
     "awsui_tabs-tab-active_14rmt",
+    "awsui_tabs-tab-dismiss_14rmt",
+    "awsui_tabs-tab-header-content_14rmt",
     "awsui_tabs-tab-link_14rmt",
     "awsui_tabs-tab_14rmt",
   ],
