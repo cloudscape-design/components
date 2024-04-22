@@ -211,7 +211,7 @@ describe('Progressive loading', () => {
       );
       expect(warnOnce).toHaveBeenCalledWith(
         'Table',
-        'Must define `renderLoaderPending`, `renderLoaderLoading`, and `renderLoaderError` when using `loadingStatus`.'
+        'Must define `renderLoaderPending`, `renderLoaderLoading`, or `renderLoaderError` when using corresponding loading status.'
       );
     }
   );
@@ -274,7 +274,7 @@ describe('Progressive loading', () => {
       expect(table.findItemsLoaderByItemId('Root-1')).toBe(null);
       expect(warnOnce).toHaveBeenCalledWith(
         'Table',
-        'Expanded items must define children or loading status other than "pending" and "finished".'
+        'Expanded items without children must have "loading" or "error" loading status.'
       );
     }
   );

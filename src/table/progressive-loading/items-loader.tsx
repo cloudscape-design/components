@@ -34,7 +34,7 @@ export function ItemsLoader<T>({
   } else {
     warnOnce(
       'Table',
-      'Must define `renderLoaderPending`, `renderLoaderLoading`, and `renderLoaderError` when using `loadingStatus`.'
+      'Must define `renderLoaderPending`, `renderLoaderLoading`, or `renderLoaderError` when using corresponding loading status.'
     );
   }
 
