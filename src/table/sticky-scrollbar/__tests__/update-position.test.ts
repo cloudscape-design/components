@@ -21,8 +21,8 @@ describe('updatePosition', () => {
     wrapperRef.current.getBoundingClientRect = jest.fn().mockReturnValue({ width: 600 });
 
     updatePosition(tableRef.current, wrapperRef.current, scrollbarRef.current, scrollbarContentRef.current, false, 30);
-    expect(scrollbarRef.current.style.bottom).toBe('30px');
-    expect(scrollbarRef.current.style.width).toBe('600px');
-    expect(scrollbarContentRef.current.style.width).toBe('800px');
+    expect(scrollbarRef.current.style.insetBlockEnd).toBe('30px');
+    expect(scrollbarRef.current.style.inlineSize).toBe('600px');
+    expect(scrollbarContentRef.current.style.inlineSize).toBe('800px');
   });
 });
