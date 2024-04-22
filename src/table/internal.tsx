@@ -55,7 +55,7 @@ const GRID_NAVIGATION_PAGE_SIZE = 10;
 const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
 
-type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
+type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant' | 'firstIndex'> &
   InternalBaseComponentProps & {
     __funnelSubStepProps?: InternalContainerProps['__funnelSubStepProps'];
   };
