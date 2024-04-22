@@ -581,10 +581,9 @@ const InternalTable = React.forwardRef(
                             )}
                             <TableTdElement
                               {...sharedCellProps}
-                              style={{ overflow: 'visible' }}
                               wrapLines={false}
                               columnId={itemsLoaderColumnId}
-                              colIndex={1}
+                              colIndex={colIndexOffset}
                               colSpan={totalColumnsCount - colIndexOffset}
                               level={isExpandable ? row.level : undefined}
                             >
