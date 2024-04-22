@@ -264,7 +264,6 @@ export function TabHeaderBar({
       [styles['tabs-tab-link']]: true,
       [styles.refresh]: isVisualRefresh,
       [styles['tabs-tab-active']]: activeTabId === tab.id && !tab.disabled,
-      [styles['tabs-tab-link-only']]: action || dismissible,
       [styles['tabs-tab-disabled']]: tab.disabled,
     });
 
