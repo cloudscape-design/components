@@ -77,20 +77,18 @@ export function calculateStackedBarValues(
   const negativeValues = new Map<string | number, number>();
   const positiveValues = new Map<string | number, number>();
   const values = new Map<string | number, Map<number, number>>();
-  const addValue = (seriesIndex: number, key: string | number, value: number) => {
-    if (value < 0) {
-      negativeValues.set(key, (negativeValues.get(key) ?? 0) + value);
-    } else {
-      positiveValues.set(key, (positiveValues.get(key) ?? 0) + value);
-    }
-    const seriesValue = (value < 0 ? negativeValues.get(key) : positiveValues.get(key)) ?? 0;
-    const valuesByIndex = values.get(key) ?? new Map<number, number>();
-    valuesByIndex.set(seriesIndex, seriesValue);
-    values.set(key, valuesByIndex);
-  };
   for (let seriesIndex = 0; seriesIndex < dataBySeries.length; seriesIndex++) {
     for (const datum of dataBySeries[seriesIndex]) {
-      addValue(seriesIndex, getKeyValue(datum.x), datum.y);
+      const key = getKeyValue(datum.x);
+      if (datum.y < 0) {
+        negativeValues.set(key, (negativeValues.get(key) ?? 0) + datum.y);
+      } else {
+        positiveValues.set(key, (positiveValues.get(key) ?? 0) + datum.y);
+      }
+      const seriesValue = (datum.y < 0 ? negativeValues.get(key) : positiveValues.get(key)) ?? 0;
+      const valuesByIndex = values.get(key) ?? new Map<number, number>();
+      valuesByIndex.set(seriesIndex, seriesValue);
+      values.set(key, valuesByIndex);
     }
   }
   return values;
