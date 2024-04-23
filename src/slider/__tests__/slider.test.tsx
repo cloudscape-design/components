@@ -37,6 +37,12 @@ const renderSlider = (sliderProps: SliderProps): SliderInternalWrapper => {
 };
 
 describe('Slider value', () => {
+  test('Input has correct default value', () => {
+    const wrapper = renderSlider({ min: 0, max: 100 });
+
+    expect(wrapper.getInputValue()!).toBe('50');
+  });
+
   test('Input has correct value', () => {
     const wrapper = renderSlider({ min: 0, max: 100, value: 50 });
 
@@ -84,6 +90,17 @@ describe('Slider value', () => {
     expect(warnOnce).toHaveBeenCalledWith(
       'Slider',
       'The step value cannot be greater than the difference between the min and max.'
+    );
+  });
+
+  test('Has correct value and shows warning when value is not a multiple of the step', () => {
+    const wrapper = renderSlider({ min: 0, max: 100, value: 50, step: 30 });
+
+    expect(wrapper.getInputValue()!).toBe('60');
+    expect(warnOnce).toHaveBeenCalledTimes(1);
+    expect(warnOnce).toHaveBeenCalledWith(
+      'Slider',
+      'Slider value must be a multiple of the step. The value will round to the nearest step value.'
     );
   });
 });

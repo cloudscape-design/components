@@ -34,7 +34,7 @@ export default function SliderLabels({
 
     const values: Array<number> = [];
 
-    let lastValue = 0;
+    let lastValue = min;
     for (let i = 0; i <= referenceValues.length; i++) {
       if (
         Math.abs(referenceValues[i] - lastValue) >= minDistance &&
@@ -69,7 +69,7 @@ export default function SliderLabels({
 
     return {
       min: colSpan * 2 + roundedHalfCol,
-      max: (max - colSpan) * 2 - roundedHalfCol + 1,
+      max: (max - min - colSpan) * 2 - roundedHalfCol + 1,
       // add one to center the label
       posStart: (positionStart - min) * 2 + 1 + roundedHalfCol,
       posEnd: (positionEnd - min) * 2 - roundedHalfCol,

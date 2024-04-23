@@ -47,7 +47,28 @@ export default function InternalSlider({
   const hasValue = value !== undefined;
   const { ariaLabelledby, ariaDescribedby, controlId, invalid } = useFormFieldContext(rest);
 
-  const percent = hasValue && getPercent(Math.max(Math.min(value, max), min), [min, max]);
+  const getValue = () => {
+    if (value === undefined) {
+      // this is the default html component's fallback value
+      return max < min ? min : min + (max - min) / 2;
+    }
+
+    if (!step) {
+      return value;
+    }
+
+    if (step && (value - min) % step !== 0) {
+      const closest = getStepArray(step, [min, max]).reduce(function (prev, curr) {
+        return Math.abs(curr - value) < Math.abs(prev - value) ? curr : prev;
+      });
+
+      return closest;
+    }
+
+    return value;
+  };
+
+  const percent = getPercent(Math.max(Math.min(getValue(), max), min), [min, max]);
 
   if (referenceValues && valuesAreValid(referenceValues) === false) {
     warnOnce('Slider', 'All reference values must be integers. Non-integer values will not be displayed.');
@@ -61,19 +82,24 @@ export default function InternalSlider({
     warnOnce('Slider', 'The step value cannot be greater than the difference between the min and max.');
   }
 
-  const tooltip = hasValue && <Tooltip value={valueFormatter ? valueFormatter(value) : value} trackRef={handleRef} />;
+  if (step && hasValue && (value - min) % step !== 0) {
+    warnOnce('Slider', 'Slider value must be a multiple of the step. The value will round to the nearest step value.');
+  }
+
+  const tooltip = <Tooltip value={valueFormatter ? valueFormatter(getValue()) : getValue()} trackRef={handleRef} />;
 
   const getAriaValueText = () => {
-    if (value !== undefined && valueFormatter && valueFormatter(value)) {
-      return valueFormatter(value);
+    if (valueFormatter && valueFormatter(getValue())) {
+      return valueFormatter(getValue());
     }
 
-    if (value && valueFormatter && !valueFormatter(value)) {
+    if (valueFormatter && !valueFormatter(getValue())) {
       const middleValues = referenceValues ? referenceValues : [];
-      const valueArray = [min, ...middleValues, value, max];
-      const prevAndNext = findLowerAndHigherValues(valueArray, value);
+      const valueArray = [min, ...middleValues, getValue(), max];
+      const prevAndNext = findLowerAndHigherValues(valueArray, getValue());
       const previousValue = prevAndNext.lower ? valueFormatter(prevAndNext.lower) : valueFormatter(min);
       const nextValue = prevAndNext.higher ? valueFormatter(prevAndNext.higher) : valueFormatter(max);
+      const value = getValue();
 
       return i18n('i18nStrings.valueTextRange', i18nStrings?.valueTextRange(previousValue, value, nextValue), format =>
         format({ value, previousValue, nextValue })
@@ -123,10 +149,10 @@ export default function InternalSlider({
             <div
               key={`step-${index}`}
               className={clsx(styles.tick, {
-                [styles.filled]: !hideFillLine && hasValue && value > step,
-                [styles.active]: !hideFillLine && hasValue && isActive && value > step,
-                [styles.error]: invalid && !hideFillLine && hasValue && value > step,
-                [styles['error-active']]: invalid && isActive && !hideFillLine && hasValue && value > step,
+                [styles.filled]: !hideFillLine && getValue() > step,
+                [styles.active]: !hideFillLine && isActive && getValue() > step,
+                [styles.error]: invalid && !hideFillLine && getValue() > step,
+                [styles['error-active']]: invalid && isActive && !hideFillLine && getValue() > step,
                 [styles.disabled]: disabled,
               })}
             ></div>
@@ -176,7 +202,7 @@ export default function InternalSlider({
           setIsActive(false);
         }}
         step={step}
-        value={value ?? ''}
+        value={getValue()}
         onChange={event => {
           onChange && fireNonCancelableEvent(onChange, { value: Number(event.target.value) });
         }}

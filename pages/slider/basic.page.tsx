@@ -13,7 +13,7 @@ import Grid from '~components/grid';
 import styles from './styles.scss';
 
 function Sliders() {
-  const [value, setValue] = useState<SliderProps['value']>(40);
+  const [value, setValue] = useState<SliderProps['value']>(25);
   const [value2, setValue2] = useState<SliderProps['value']>(200);
   const [value3, setValue3] = useState<SliderProps['value']>(50);
   const [value4, setValue4] = useState<SelectProps.Option>({ value: '2', label: `Not satisfied or unsatisfied` });
@@ -46,10 +46,13 @@ function Sliders() {
     <SpaceBetween size="xxl">
       <Slider
         ariaLabel="slider-example"
-        valueFormatter={value => (value !== 50 ? `${value} is the value` : '')}
+        valueFormatter={value => `${value} is the value`}
         value={value}
         min={0}
         max={100}
+        step={10}
+        tickMarks={true}
+        referenceValues={[25, 50, 75]}
         onChange={({ detail }) => {
           setValue(detail.value);
         }}
@@ -126,10 +129,10 @@ function Sliders() {
             setValue3(detail.value);
           }}
           valueFormatter={value => `${value} is the very long and precise value at this point.`}
-          min={0}
-          max={100}
+          min={100}
+          max={200}
           step={10}
-          referenceValues={[10, 90, 20, 50, 30, 40, 80, 70, 60]}
+          referenceValues={[110, 190, 120, 150, 130, 140, 180, 170, 160]}
           tickMarks={true}
           i18nStrings={i18nStrings}
         />
