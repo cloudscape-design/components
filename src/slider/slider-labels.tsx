@@ -37,6 +37,8 @@ export default function SliderLabels({
     let lastValue = min;
     for (let i = 0; i <= referenceValues.length; i++) {
       if (
+        referenceValues[i] > min &&
+        referenceValues[i] < max &&
         Math.abs(referenceValues[i] - lastValue) >= minDistance &&
         Math.abs(max - referenceValues[i]) >= minDistance &&
         Number.isInteger(referenceValues[i])

@@ -113,7 +113,7 @@ describe('Slider labels', () => {
   });
 
   test('Renders negative reference values correctly', () => {
-    const wrapper = renderSlider({ min: -10, max: 0, value: -5, referenceValues: [-7, 7] });
+    const wrapper = renderSlider({ min: -10, max: 10, value: 0, referenceValues: [-7, 7] });
 
     expect(wrapper.findReferenceLabels()).toHaveLength(2);
   });
@@ -165,7 +165,7 @@ describe('Slider labels', () => {
       min: 0,
       max: 100,
       value: 50,
-      referenceValues: [-1, 101],
+      referenceValues: [-50, 150],
     });
 
     expect(wrapper.findReferenceLabels()).toHaveLength(0);
