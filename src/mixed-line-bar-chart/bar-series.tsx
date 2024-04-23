@@ -159,28 +159,26 @@ export default function BarSeries<T extends ChartDataTypes>({
 
         return (
           <React.Fragment key={`bar-${i}`}>
-            {/* Render clip paths to provide rounded corners for the min/max stacked bars  */}
-            {rxProps.clipPath && (isMin || isMax) && (
-              <defs aria-hidden="true">
-                <clipPath id={`${clipPathId}-${i}`}>
-                  {isMin && (
-                    <rect
-                      {...(axis === 'x' ? clipRect(rectPlacement, 'down') : clipRect(rectPlacement, 'left'))}
-                      rx={rx}
-                    />
-                  )}
-                  {isMax && (
-                    <rect
-                      {...(axis === 'x' ? clipRect(rectPlacement, 'up') : clipRect(rectPlacement, 'right'))}
-                      rx={rx}
-                    />
-                  )}
-                </clipPath>
-              </defs>
-            )}
-
             {/* Render the bar rectangle */}
             <rect fill={color} {...rectPlacement} {...rxProps} className={className} />
+
+            {/* Render clip paths to provide rounded corners for the min/max stacked bars  */}
+            {rxProps.clipPath && (isMin || isMax) && (
+              <clipPath aria-hidden="true" id={`${clipPathId}-${i}`}>
+                {isMin && (
+                  <rect
+                    {...(axis === 'x' ? clipRect(rectPlacement, 'down') : clipRect(rectPlacement, 'left'))}
+                    rx={rx}
+                  />
+                )}
+                {isMax && (
+                  <rect
+                    {...(axis === 'x' ? clipRect(rectPlacement, 'up') : clipRect(rectPlacement, 'right'))}
+                    rx={rx}
+                  />
+                )}
+              </clipPath>
+            )}
           </React.Fragment>
         );
       })}
