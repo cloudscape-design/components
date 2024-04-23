@@ -16,12 +16,12 @@ export default memo(ResponsiveText);
 
 function ResponsiveText({ x, y, className, children, maxWidth }: ResponsiveTextProps) {
   const textRef = useRef<SVGTextElement>(null);
-  const isRtl = textRef.current ? getIsRtl(textRef.current) : false;
 
   // Determine the visible width of the text and if necessary truncate it until it fits.
   useEffect(() => {
+    const isRtl = getIsRtl(textRef.current!);
     renderTextContent(textRef.current!, children, maxWidth, isRtl);
-  }, [maxWidth, children, isRtl]);
+  }, [maxWidth, children]);
 
   return (
     <text ref={textRef} x={x} y={y} style={{ textAnchor: 'end' }} className={className}>
