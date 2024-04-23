@@ -67,6 +67,7 @@ export function TabHeaderBar({
   const [horizontalOverflow, setHorizontalOverflow] = useState(false);
   const [inlineStartOverflow, setInlineStartOverflow] = useState(false);
   const [inlineEndOverflow, setInlineEndOverflow] = useState(false);
+  const [previousTabId, setPreviousTabId] = useState<string | undefined>();
 
   useEffect(() => {
     if (headerBarRef.current) {
@@ -123,6 +124,10 @@ export function TabHeaderBar({
   };
 
   useEffect(() => {
+    /*
+     * Whenever the active tab changes, we need to update the focus to
+     * prioritize any children within the tab header
+     */
     const tabContentElements = document.querySelectorAll(`.${styles['tabs-tab-header-content']}`);
     tabContentElements.forEach(element => {
       const isActive = element.classList.contains(`${styles['tabs-tab-active']}`);
@@ -194,6 +199,12 @@ export function TabHeaderBar({
     const { dismissible, dismissLabel, action, onDismiss } = tab;
 
     const handleDismiss: ButtonProps['onClick'] = event => {
+      if (previousTabId) {
+        // This check deals with the case where the user closes a tab but hasn't clicked on it
+        const nextTabId = activeTabId !== tab.id ? activeTabId : previousTabId;
+        onChange({ activeTabId: nextTabId || '' });
+        setPreviousTabId(undefined);
+      }
       onDismiss && onDismiss(event);
     };
 
@@ -202,7 +213,7 @@ export function TabHeaderBar({
       if (tab.id === activeTabId) {
         return;
       }
-
+      setPreviousTabId(activeTabId);
       onChange({ activeTabId: tab.id, activeTabHref: tab.href });
     };
 
@@ -257,6 +268,7 @@ export function TabHeaderBar({
         return;
       }
 
+      setPreviousTabId(activeTabId);
       onChange({ activeTabId: tab.id, activeTabHref: tab.href });
     };
 
