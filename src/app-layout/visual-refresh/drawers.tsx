@@ -4,7 +4,6 @@ import React, { useRef } from 'react';
 import clsx from 'clsx';
 import customCssProps from '../../internal/generated/custom-css-properties';
 import { InternalButton } from '../../button/internal';
-import SplitPanel from './split-panel';
 import TriggerButton from './trigger-button';
 import { useAppLayoutInternals } from './context';
 import splitPanelStyles from '../../split-panel/styles.css.js';
@@ -48,7 +47,6 @@ export default function Drawers() {
         [styles.unfocusable]: isUnfocusable,
       })}
     >
-      <SplitPanel.Side />
       <ActiveDrawer />
     </div>
   );
