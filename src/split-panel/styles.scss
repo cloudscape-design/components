@@ -31,14 +31,20 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
 .drawer {
   flex-shrink: 0;
   position: relative;
-  @include styles.text-wrapping;
   background-color: awsui.$color-background-layout-panel-content;
   // should be above tools and navigation panels to avoid their shadows
   z-index: 840;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+  overscroll-behavior-y: contain;
+  pointer-events: auto;
+  word-wrap: break-word;
   &-closed {
     cursor: pointer;
     min-inline-size: constants.$sidebar-size-closed;
   }
+  @include styles.text-wrapping;
 }
 
 .drawer-content-side {

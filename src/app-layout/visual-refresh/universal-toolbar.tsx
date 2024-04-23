@@ -24,6 +24,7 @@ export default function UniversalToolbar() {
     navigationHide,
     navigationRefs,
     splitPanel,
+    toolbarHeight,
     toolsHide,
     toolbarRef,
     pinnedToolbar,
@@ -44,7 +45,7 @@ export default function UniversalToolbar() {
           setScrollDirection(direction);
         }
         lastScrollY = scrollY > 0 ? scrollY : 0;
-        // console.log(lastScrollY, scrollY, direction, toolbarHeight);
+        console.log(lastScrollY, scrollY, direction, scrollDirection, toolbarHeight);
       };
 
       window.addEventListener('scroll', updateScrollDirection);
