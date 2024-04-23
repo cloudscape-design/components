@@ -488,6 +488,7 @@ export namespace TableProps {
   export interface LiveAnnouncement {
     firstIndex: number;
     lastIndex: number;
+    visibleItemsCount: number;
     totalItemsCount?: number;
   }
 
