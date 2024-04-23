@@ -12,11 +12,12 @@ jest.mock('../../../../../lib/components/internal/components/responsive-text/res
 }));
 
 jest.mock('../../../../../lib/components/internal/direction', () => ({
+  ...jest.requireActual('../../../../../lib/components/internal/direction'),
   isRtl: jest.fn().mockReturnValue(false),
 }));
 
 describe('responsive SVG text tests', () => {
-  test.each([false, true])('renders full text', rtl => {
+  test.each([{ rtl: false }, { rtl: true }])('renders full text, rtl="$rtl"', ({ rtl }) => {
     jest.mocked(getTextWidth).mockReturnValueOnce(100);
     (isRtl as jest.Mock).mockReturnValue(rtl);
 
