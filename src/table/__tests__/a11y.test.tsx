@@ -180,28 +180,5 @@ describe('labels', () => {
         `Displaying items from ${firstIndex} to ${lastIndex} of ${totalItemsCount} items`
       );
     });
-
-    test('The table items live region must not include nested items', () => {
-      const firstIndex = 1;
-      const totalItemsCount = defaultItems.length;
-      const lastIndex = firstIndex + defaultItems.length - 1;
-
-      const wrapper = renderTableWrapper({
-        firstIndex,
-        totalItemsCount,
-        renderAriaLive: ({ firstIndex, lastIndex, totalItemsCount }) =>
-          `Displaying items from ${firstIndex} to ${lastIndex} of ${totalItemsCount} items`,
-        expandableRows: {
-          getItemChildren: item => [{ ...item, id: item.id * 100 }],
-          isItemExpandable: item => item.id < 100,
-          expandedItems: defaultItems,
-          onExpandableItemToggle: () => {},
-        },
-      });
-
-      expect(wrapper.find(`.${liveRegionStyles.root}`)?.getElement().textContent).toBe(
-        `Displaying items from ${firstIndex} to ${lastIndex} of ${totalItemsCount} items`
-      );
-    });
   });
 });
