@@ -10,7 +10,7 @@
 .drawers-container {
   background-color: transparent;
   display: flex;
-  grid-column: 5;
+  grid-column: 6;
   grid-row: 1 / span 10;
   block-size: var(#{custom-props.$contentHeight});
   pointer-events: none;

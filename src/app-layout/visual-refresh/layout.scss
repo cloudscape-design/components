@@ -37,7 +37,7 @@ explicitly set in script.
   #{custom-props.$maxContentWidth}: 0px;
   #{custom-props.$minContentWidth}: 280px;
   #{custom-props.$mobileBarHeight}: calc(2 * #{awsui.$space-m} + #{awsui.$space-scaled-xs});
-  #{custom-props.$toolbarHeight}: 0px;
+  #{custom-props.$toolbarHeight}: 48px;
   #{custom-props.$notificationsGap}: 0px;
   #{custom-props.$notificationsHeight}: 0px;
   #{custom-props.$offsetTop}: calc(var(#{custom-props.$headerHeight}) + var(#{custom-props.$toolbarHeight}));
@@ -46,22 +46,23 @@ explicitly set in script.
   color: awsui.$color-text-body-default;
   display: grid;
   grid-template-areas:
-    '. . universalToolbar . .'
-    '. . notificationsGap . .'
-    '. . notifications . .'
-    '. . headerGap . .'
-    '. . header . .'
-    '. . mainGap . .'
-    '. . main . .'
-    '. . main . .';
+    '. . universalToolbar . . .'
+    '. . notificationsGap . splitPanel .'
+    '. . notifications . splitPanel .'
+    '. . headerGap . splitPanel .'
+    '. . header . splitPanel .'
+    '. . mainGap . splitPanel .'
+    '. . main . splitPanel .'
+    '. . main . splitPanel .';
   grid-template-columns:
     min-content
     minmax(var(#{custom-props.$contentGapLeft}), 1fr)
     minmax(var(#{custom-props.$defaultMinContentWidth}), var(#{custom-props.$defaultMaxContentWidth}))
     minmax(var(#{custom-props.$contentGapRight}), 1fr)
+    min-content
     min-content;
   grid-template-rows:
-    auto // universalToolbar template area
+    48px // universalToolbar template area
     var(#{custom-props.$notificationsGap})
     auto // notifications template area
     var(#{custom-props.$headerGap})

@@ -235,6 +235,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     const handleSplitPanelClick = useCallback(
       function handleSplitPanelChange() {
         setIsSplitPanelOpen(!isSplitPanelOpen);
+        !isSplitPanelOpen && setToolbarHeight(48);
         setSplitPanelLastInteraction({ type: isSplitPanelOpen ? 'close' : 'open' });
         fireNonCancelableEvent(props.onSplitPanelToggle, { open: !isSplitPanelOpen });
       },

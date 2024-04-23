@@ -35,6 +35,8 @@ const AppLayoutWithRef = React.forwardRef(function AppLayout(
 
           <SplitPanel.Bottom />
 
+          <SplitPanel.Side />
+
           <Drawers />
         </Layout>
       </SplitPanel>
