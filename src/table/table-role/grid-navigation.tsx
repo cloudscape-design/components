@@ -13,7 +13,6 @@ import {
   isTableCell,
 } from './utils';
 import { FocusedCell, GridNavigationProps } from './interfaces';
-import { KeyCode } from '../../internal/keycode';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 import { nodeBelongs } from '../../internal/utils/node-belongs';
 import { getAllFocusables } from '../../internal/components/focus-lock/utils';
@@ -21,6 +20,8 @@ import {
   SingleTabStopNavigationContext,
   FocusableChangeHandler,
 } from '../../internal/context/single-tab-stop-navigation-context';
+import handleKey, { isEventLike } from '../../internal/utils/handle-key';
+import { KeyCode } from '../../internal/keycode';
 
 /**
  * Makes table navigable with keyboard commands.
@@ -192,69 +193,54 @@ class GridNavigationProcessor {
       return;
     }
 
+    const keys = [
+      KeyCode.up,
+      KeyCode.down,
+      KeyCode.left,
+      KeyCode.right,
+      KeyCode.pageUp,
+      KeyCode.pageDown,
+      KeyCode.home,
+      KeyCode.end,
+    ];
     const ctrlKey = event.ctrlKey ? 1 : 0;
     const altKey = event.altKey ? 1 : 0;
     const shiftKey = event.shiftKey ? 1 : 0;
     const metaKey = event.metaKey ? 1 : 0;
-    const numModifiersPressed = ctrlKey + altKey + shiftKey + metaKey;
+    const modifiersPressed = ctrlKey + altKey + shiftKey + metaKey;
+    const invalidModiferCombination =
+      (modifiersPressed && !event.ctrlKey) ||
+      (event.ctrlKey && event.keyCode !== KeyCode.home && event.keyCode !== KeyCode.end);
 
-    let key = event.keyCode;
-    if (numModifiersPressed === 1 && event.ctrlKey) {
-      key = -key;
-    } else if (numModifiersPressed) {
+    if (
+      invalidModiferCombination ||
+      this.isSuppressed(document.activeElement) ||
+      !this.isRegistered(document.activeElement) ||
+      keys.indexOf(event.keyCode) === -1
+    ) {
       return;
     }
 
     const from = this.focusedCell;
+    event.preventDefault();
 
-    if (this.isSuppressed(document.activeElement) || !this.isRegistered(document.activeElement)) {
-      return;
-    }
-
-    switch (key) {
-      case KeyCode.up:
-        event.preventDefault();
-        return this.moveFocusBy(from, { y: -1, x: 0 });
-
-      case KeyCode.down:
-        event.preventDefault();
-        return this.moveFocusBy(from, { y: 1, x: 0 });
-
-      case KeyCode.left:
-        event.preventDefault();
-        return this.moveFocusBy(from, { y: 0, x: -1 });
-
-      case KeyCode.right:
-        event.preventDefault();
-        return this.moveFocusBy(from, { y: 0, x: 1 });
-
-      case KeyCode.pageUp:
-        event.preventDefault();
-        return this.moveFocusBy(from, { y: -this.pageSize, x: 0 });
-
-      case KeyCode.pageDown:
-        event.preventDefault();
-        return this.moveFocusBy(from, { y: this.pageSize, x: 0 });
-
-      case KeyCode.home:
-        event.preventDefault();
-        return this.moveFocusBy(from, { y: 0, x: -Infinity });
-
-      case KeyCode.end:
-        event.preventDefault();
-        return this.moveFocusBy(from, { y: 0, x: Infinity });
-
-      case -KeyCode.home:
-        event.preventDefault();
-        return this.moveFocusBy(from, { y: -Infinity, x: -Infinity });
-
-      case -KeyCode.end:
-        event.preventDefault();
-        return this.moveFocusBy(from, { y: Infinity, x: Infinity });
-
-      default:
-        return;
-    }
+    isEventLike(event) &&
+      handleKey(event, {
+        onBlockStart: () => this.moveFocusBy(from, { y: -1, x: 0 }),
+        onBlockEnd: () => this.moveFocusBy(from, { y: 1, x: 0 }),
+        onInlineStart: () => this.moveFocusBy(from, { y: 0, x: -1 }),
+        onInlineEnd: () => this.moveFocusBy(from, { y: 0, x: 1 }),
+        onPageUp: () => this.moveFocusBy(from, { y: -this.pageSize, x: 0 }),
+        onPageDown: () => this.moveFocusBy(from, { y: this.pageSize, x: 0 }),
+        onHome: () =>
+          event.ctrlKey
+            ? this.moveFocusBy(from, { y: -Infinity, x: -Infinity })
+            : this.moveFocusBy(from, { y: 0, x: -Infinity }),
+        onEnd: () =>
+          event.ctrlKey
+            ? this.moveFocusBy(from, { y: Infinity, x: Infinity })
+            : this.moveFocusBy(from, { y: 0, x: Infinity }),
+      });
   };
 
   private moveFocusBy(cell: FocusedCell, delta: { x: number; y: number }) {

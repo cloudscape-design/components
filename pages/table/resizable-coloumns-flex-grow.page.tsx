@@ -30,7 +30,7 @@ export default function () {
           display: 'flex',
           alignItems: 'stretch',
           flexWrap: 'nowrap',
-          width: 'calc(100% - 32px)',
+          inlineSize: 'calc(100% - 32px)',
           margin: '16px',
         }}
       >

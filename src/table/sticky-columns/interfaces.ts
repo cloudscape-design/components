@@ -14,20 +14,20 @@ export interface StickyColumnsState {
 
 // Cell state is used to apply respective styles and offsets to sticky cells.
 export interface StickyColumnsCellState {
-  padLeft: boolean;
-  lastLeft: boolean;
-  lastRight: boolean;
-  offset: { left?: number; right?: number };
+  padInlineStart: boolean;
+  lastInsetInlineStart: boolean;
+  lastInsetInlineEnd: boolean;
+  offset: { insetInlineStart?: number; insetInlineEnd?: number };
 }
 
 // Scroll padding is applied to table's wrapper so that the table scrolls when focus goes behind sticky column.
 export interface StickyColumnsWrapperState {
-  scrollPaddingLeft: number;
-  scrollPaddingRight: number;
+  scrollPaddingInlineStart: number;
+  scrollPaddingInlineEnd: number;
 }
 
 export interface CellOffsets {
   offsets: Map<PropertyKey, { first: number; last: number }>;
-  stickyWidthLeft: number;
-  stickyWidthRight: number;
+  stickyWidthInlineStart: number;
+  stickyWidthInlineEnd: number;
 }

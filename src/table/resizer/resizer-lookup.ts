@@ -5,6 +5,7 @@ import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 import tableStyles from '../styles.css.js';
 import resizerStyles from './styles.css.js';
 import { getOverflowParents } from '../../internal/utils/scrollable-containers.js';
+import { getLogicalBoundingClientRect } from '../../internal/direction';
 
 export function getResizerElements(resizerElement: null | HTMLElement) {
   if (!resizerElement) {
@@ -42,5 +43,5 @@ export function getResizerElements(resizerElement: null | HTMLElement) {
 
 export function getHeaderWidth(resizerElement: null | HTMLElement): number {
   const header = resizerElement && findUpUntil(resizerElement, element => element.tagName.toLowerCase() === 'th');
-  return header?.getBoundingClientRect().width ?? 0;
+  return header ? getLogicalBoundingClientRect(header).inlineSize : 0;
 }

@@ -3,6 +3,7 @@
 import { useResizeObserver, useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 import React, { useEffect, useRef, useState, createContext, useContext } from 'react';
 import { setElementWidths } from './column-widths-utils';
+import { getLogicalBoundingClientRect } from '../internal/direction';
 
 export const DEFAULT_COLUMN_WIDTH = 120;
 
@@ -27,7 +28,7 @@ function readWidths(
       index !== visibleColumns.length - 1 // skip reading for the last column, because it expands to fully fit the container
     ) {
       const colEl = getCell(column.id);
-      width = colEl?.getBoundingClientRect().width ?? DEFAULT_COLUMN_WIDTH;
+      width = colEl ? getLogicalBoundingClientRect(colEl).inlineSize : DEFAULT_COLUMN_WIDTH;
     }
     result.set(column.id, Math.max(width, minWidth));
   }

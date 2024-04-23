@@ -52,6 +52,7 @@ import { getContentHeaderClassName } from '../internal/utils/content-header-util
 import { useExpandableTableProps } from './expandable-rows/expandable-rows-utils';
 import { ItemsLoader } from './progressive-loading/items-loader';
 import { useProgressiveLoadingProps } from './progressive-loading/progressive-loading-utils';
+import { getLogicalBoundingClientRect } from '../internal/direction';
 
 const GRID_NAVIGATION_PAGE_SIZE = 10;
 const SELECTION_COLUMN_WIDTH = 54;
@@ -322,8 +323,9 @@ const InternalTable = React.forwardRef(
     });
     const toolsHeaderWrapper = useRef<HTMLDivElement>(null);
     // If is mobile, we take into consideration the AppLayout's mobile bar and we subtract the tools wrapper height so only the table header is sticky
-    const toolsHeaderHeight =
-      (toolsHeaderWrapper?.current as HTMLDivElement | null)?.getBoundingClientRect().height ?? 0;
+    const toolsHeaderHeight = toolsHeaderWrapper?.current
+      ? getLogicalBoundingClientRect(toolsHeaderWrapper.current).blockSize
+      : 0;
 
     const colIndexOffset = selectionType ? 1 : 0;
     const totalColumnsCount = visibleColumnDefinitions.length + colIndexOffset;
