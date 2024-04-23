@@ -42,3 +42,14 @@ export function getLogicalBoundingClientRect(element: HTMLElement | SVGElement) 
     insetInlineEnd,
   };
 }
+
+/**
+ * The pageX position needs to be converted so it is relative to the right of
+ * the document in order for computations to yield the same result in both
+ * element directions.
+ */
+export function getLogicalPageX(event: MouseEvent) {
+  return event.target instanceof HTMLElement && isRtl(event.target)
+    ? document.documentElement.clientWidth - event.pageX
+    : event.pageX;
+}
