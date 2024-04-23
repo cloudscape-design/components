@@ -74,9 +74,20 @@ section.split-panel-bottom {
 }
 
 section.split-panel-side {
-  block-size: 100%;
   overflow-x: hidden;
-  pointer-events: auto;
+  grid-area: splitPanel;
+  grid-column: 5;
+  grid-row: 2 / span 10;
+  z-index: 830;
+
+  block-size: var(#{custom-props.$contentHeight});
+  pointer-events: none;
+  position: sticky;
+  inset-block-start: var(#{custom-props.$offsetTop});
+
+  @include styles.with-motion {
+    transition: ease all 0.35s;
+  }
 
   &:not(.is-split-panel-open),
   &.position-bottom {
