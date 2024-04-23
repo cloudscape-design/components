@@ -24,7 +24,7 @@ export default function SliderLabels({
   ariaDescription,
 }: SliderLabelProps) {
   const isMobile = useMobile();
-  const MAX_LABEL_COUNT = isMobile ? 5 : 10;
+  const MAX_LABEL_COUNT = isMobile ? 4 : 10;
   const minDistance = (max - min) / MAX_LABEL_COUNT;
 
   const getVisibleReferenceValues = () => {
