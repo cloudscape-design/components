@@ -112,7 +112,7 @@ export default function InternalSlider({
           />
         )}
       </div>
-      {step && tickMarks && (
+      {!!step && tickMarks && (
         <div
           className={clsx(styles.ticks)}
           style={{
