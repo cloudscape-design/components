@@ -26,6 +26,7 @@ function ResponsiveText({ x, y, rightSide, className, children, containerBoundar
   useEffect(() => {
     // The debouncing is necessary for visual smoothness.
     const timeoutId = setTimeout(() => {
+      const isRtl = getIsRtl(virtualRef.current!);
       const groupRect = virtualRef.current!.getBoundingClientRect();
       const visibleWidth = containerBoundaries ? getVisibleWidth(groupRect, containerBoundaries) : 0;
       renderTextContent(actualRef.current!, children, visibleWidth, isRtl);
@@ -56,6 +57,7 @@ function ResponsiveText({ x, y, rightSide, className, children, containerBoundar
 }
 
 function getVisibleWidth(element: { left: number; right: number }, container: { left: number; right: number }): number {
+  console.log('getVisibleWidth', element, container);
   if (element.left < container.left) {
     return element.right - container.left;
   } else if (element.right > container.right) {

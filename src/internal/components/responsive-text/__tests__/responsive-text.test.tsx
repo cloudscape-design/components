@@ -19,7 +19,7 @@ jest.mock('../../../../../lib/components/internal/direction', () => ({
 describe('responsive SVG text tests', () => {
   test.each([{ rtl: false }, { rtl: true }])('renders full text, rtl="$rtl"', ({ rtl }) => {
     jest.mocked(getTextWidth).mockReturnValueOnce(100);
-    (isRtl as jest.Mock).mockReturnValue(rtl);
+    jest.mocked(isRtl).mockReturnValue(rtl);
 
     const { container } = render(
       <ResponsiveText x={0} y={0} maxWidth={100}>
@@ -32,7 +32,7 @@ describe('responsive SVG text tests', () => {
 
   test('renders truncated text', () => {
     jest.mocked(getTextWidth).mockReturnValueOnce(101);
-    (isRtl as jest.Mock).mockReturnValue(false);
+    jest.mocked(isRtl).mockReturnValue(false);
 
     const { container } = render(
       <ResponsiveText x={0} y={0} maxWidth={100}>
@@ -45,7 +45,7 @@ describe('responsive SVG text tests', () => {
 
   test('renders truncated text RTL', () => {
     jest.mocked(getTextWidth).mockReturnValueOnce(101);
-    (isRtl as jest.Mock).mockReturnValue(true);
+    jest.mocked(isRtl).mockReturnValue(true);
 
     const { container } = render(
       <ResponsiveText x={0} y={0} maxWidth={100}>
