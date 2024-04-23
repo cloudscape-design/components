@@ -57,7 +57,6 @@ function ResponsiveText({ x, y, rightSide, className, children, containerBoundar
 }
 
 function getVisibleWidth(element: { left: number; right: number }, container: { left: number; right: number }): number {
-  console.log('getVisibleWidth', element, container);
   if (element.left < container.left) {
     return element.right - container.left;
   } else if (element.right > container.right) {
