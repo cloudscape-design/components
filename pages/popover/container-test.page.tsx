@@ -3,7 +3,7 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import ScreenshotArea from '../utils/screenshot-area';
 import PopoverContainer from '~components/popover/container';
-import { getIsRtl } from '~components/internal/direction';
+import { isRtl } from '~components/internal/direction';
 import clsx from 'clsx';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -34,7 +34,7 @@ export default function () {
     <article>
       <h1>Popover container test</h1>
       <ScreenshotArea>
-        <svg width={500} height={500} style={{ margin: '20px', transform: getIsRtl(document) ? 'scaleX(-1)' : '' }}>
+        <svg width={500} height={500} style={{ margin: '20px', transform: isRtl(document.body) ? 'scaleX(-1)' : '' }}>
           {points.map(point => (
             <circle
               key={point.id}

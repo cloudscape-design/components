@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import smoothScroll from './smooth-scroll';
-import { getIsRtl, getScrollInlineStart } from '../internal/direction';
+import { isRtl, getScrollInlineStart } from '../internal/direction';
 
 export const onPaginationClick = (
   headerBarRef: React.RefObject<HTMLUListElement>,
@@ -22,7 +22,7 @@ export const onPaginationClick = (
       : Math.max(Math.abs(scrollLeft) - paginatedSectionSize, 0);
 
   // scroll destination needs to be a negative number if the direction is RTL
-  const scrollTo = getIsRtl(element) ? scrollDistance * -1 : scrollDistance;
+  const scrollTo = isRtl(element) ? scrollDistance * -1 : scrollDistance;
 
   smoothScroll(element, scrollTo);
 };

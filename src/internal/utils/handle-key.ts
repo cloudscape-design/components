@@ -1,19 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { KeyCode } from '../keycode';
-import { getIsRtl, ElementWithDirection } from '../direction';
+import { isRtl } from '../direction';
 
 export function isEventLike(event: any): event is EventLike {
-  return (
-    event.currentTarget instanceof Document ||
-    event.currentTarget instanceof HTMLElement ||
-    event.currentTarget instanceof SVGElement
-  );
+  return event.currentTarget instanceof HTMLElement || event.currentTarget instanceof SVGElement;
 }
 
 export interface EventLike {
   keyCode: number;
-  currentTarget: ElementWithDirection;
+  currentTarget: HTMLElement | SVGElement;
 }
 
 export default function handleKey(
@@ -62,7 +58,7 @@ export default function handleKey(
       onHome?.();
       break;
     case KeyCode.left:
-      getIsRtl(event.currentTarget) ? onInlineEnd?.() : onInlineStart?.();
+      isRtl(event.currentTarget) ? onInlineEnd?.() : onInlineStart?.();
       break;
     case KeyCode.pageDown:
       onPageDown?.();
@@ -71,7 +67,7 @@ export default function handleKey(
       onPageUp?.();
       break;
     case KeyCode.right:
-      getIsRtl(event.currentTarget) ? onInlineStart?.() : onInlineEnd?.();
+      isRtl(event.currentTarget) ? onInlineStart?.() : onInlineEnd?.();
       break;
     case KeyCode.up:
       onBlockStart?.();
