@@ -12,6 +12,7 @@ interface AppUrlParams {
   visualRefresh: boolean;
   motionDisabled: boolean;
   removeHighContrastHeader: boolean;
+  appLayoutWidget: boolean;
 }
 
 export interface AppContextType<T = unknown> {
@@ -31,6 +32,7 @@ const appContextDefaults: AppContextType = {
     visualRefresh: THEME === 'default',
     motionDisabled: false,
     removeHighContrastHeader: false,
+    appLayoutWidget: false,
   },
   setMode: () => {},
   setUrlParams: () => {},
