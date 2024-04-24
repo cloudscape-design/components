@@ -16,6 +16,7 @@ import { useInternalI18n } from '../i18n/context';
 import styles from './styles.css.js';
 import { SliderProps } from './interfaces.js';
 import SliderLabels from './slider-labels.js';
+import SliderTickMarks from './tick-marks.js';
 import { getPercent, getStepArray, findLowerAndHigherValues, valuesAreValid, THUMB_SIZE } from './utils.js';
 
 export interface InternalSliderProps extends SliderProps, InternalBaseComponentProps {}
@@ -48,6 +49,8 @@ export default function InternalSlider({
   const { ariaLabelledby, ariaDescribedby, controlId, invalid } = useFormFieldContext(rest);
 
   const getValue = () => {
+    const stepIsValid = step && step < max - min && step > min;
+
     if (value === undefined) {
       // this is the default html component's fallback value
       return max < min ? min : min + (max - min) / 2;
@@ -57,7 +60,7 @@ export default function InternalSlider({
       return value;
     }
 
-    if (step && (value - min) % step !== 0) {
+    if (step && stepIsValid && (value - min) % step !== 0) {
       const closest = getStepArray(step, [min, max]).reduce(function (prev, curr) {
         return Math.abs(curr - value) < Math.abs(prev - value) ? curr : prev;
       });
@@ -111,15 +114,15 @@ export default function InternalSlider({
 
   return (
     <div {...baseProps} ref={__internalRootRef} className={clsx(baseProps.className, styles.root)}>
+      {showTooltip && tooltip}
+      <div
+        ref={handleRef}
+        className={clsx(styles['tooltip-thumb'])}
+        style={{
+          [customCssProps.sliderTooltipPosition]: `calc(${percent}% - ${THUMB_SIZE}px)`,
+        }}
+      />
       <div className={styles.slider}>
-        <div
-          ref={handleRef}
-          className={clsx(styles['tooltip-thumb'])}
-          style={{
-            [customCssProps.sliderTooltipPosition]: `calc(${percent}% - ${THUMB_SIZE}px)`,
-          }}
-        />
-        {showTooltip && tooltip}
         <div
           className={clsx(styles['slider-track'], {
             [styles.disabled]: disabled,
@@ -139,25 +142,16 @@ export default function InternalSlider({
         )}
       </div>
       {!!step && tickMarks && (
-        <div
-          className={clsx(styles.ticks)}
-          style={{
-            [customCssProps.sliderTickCount]: Math.round((max - min) / step),
-          }}
-        >
-          {getStepArray(step, [min, max]).map((step, index) => (
-            <div
-              key={`step-${index}`}
-              className={clsx(styles.tick, {
-                [styles.filled]: !hideFillLine && getValue() > step,
-                [styles.active]: !hideFillLine && isActive && getValue() > step,
-                [styles.error]: invalid && !hideFillLine && getValue() > step,
-                [styles['error-active']]: invalid && isActive && !hideFillLine && getValue() > step,
-                [styles.disabled]: disabled,
-              })}
-            ></div>
-          ))}
-        </div>
+        <SliderTickMarks
+          hideFillLine={hideFillLine}
+          disabled={disabled}
+          invalid={invalid}
+          isActive={isActive}
+          step={step}
+          min={min}
+          max={max}
+          value={getValue()}
+        />
       )}
 
       <input

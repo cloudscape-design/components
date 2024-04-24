@@ -30,7 +30,7 @@ const permutations = createPermutations<SliderProps>([
     value: [0, -100, 100],
     min: [50],
     max: [-50],
-    step: [undefined, 10, 500],
+    step: [10, 500, -500],
   },
   {
     value: [10],

@@ -213,14 +213,23 @@ describe('Slider ticks', () => {
     const wrapper = renderSlider({ min: 0, max: 100, value: 50, tickMarks: true, step: 10 });
 
     const ticks = wrapper.findAllByClassName(styles.filled);
-    expect(ticks).toHaveLength(5);
+    expect(ticks).toHaveLength(6);
   });
 
   test('Properly fills ticks with error', () => {
     const wrapper = renderSlider({ min: 0, max: 100, value: 50, tickMarks: true, step: 10, invalid: true });
 
     const ticks = wrapper.findAllByClassName(styles.error);
-    expect(ticks).toHaveLength(7);
+    expect(ticks).toHaveLength(8);
+  });
+
+  test('Has correct amount of ticks', () => {
+    const wrapper = renderSlider({ min: 0, max: 100, value: 50, tickMarks: true, step: 10 });
+
+    const ticks = wrapper.findAllByClassName(styles.tick);
+    const middleTicks = wrapper.findAllByClassName(styles.middle);
+    expect(ticks).toHaveLength(13);
+    expect(middleTicks).toHaveLength(11);
   });
 });
 

@@ -15,12 +15,12 @@
 
   position: relative;
   max-inline-size: 800px;
-  inline-size: calc(100% - mixins.$thumb-size);
   margin-inline: calc(mixins.$thumb-size / 2);
 }
 
 .slider {
-  inline-size: calc(100% + 8px);
+  inline-size: 100%;
+  position: relative;
   display: flex;
   align-items: center;
 
@@ -32,7 +32,7 @@
     border-end-start-radius: 3px;
     border-end-end-radius: 3px;
     margin-block-start: awsui.$space-xs;
-    margin-inline-start: calc(mixins.$thumb-size / -2);
+    margin-inline: calc(mixins.$thumb-size / -2);
   }
 
   &-track {
@@ -50,7 +50,7 @@
   &-range {
     background-color: awsui.$color-background-slider-handle-default;
     block-size: 4px;
-    inline-size: calc(var(#{custom-props.$sliderRangeInlineSize}) + 8px);
+    inline-size: calc(var(#{custom-props.$sliderRangeInlineSize}) + 16px);
 
     &.error {
       background-color: awsui.$color-text-status-error;
@@ -81,7 +81,7 @@
     3fr;
   grid-auto-rows: 100%;
   padding-block-start: awsui.$space-m;
-  margin-inline: calc(mixins.$thumb-size / -2);
+  margin-inline: 0;
 
   &-noref {
     grid-template-columns: 1fr 1fr;
@@ -99,6 +99,7 @@
     grid-column: 1;
     grid-row: 1;
     grid-column-end: var(#{custom-props.$sliderMinEnd});
+    margin-inline-start: -8px;
   }
 
   &-max {
@@ -107,6 +108,7 @@
     grid-row: 1;
     grid-column-end: calc(var(#{custom-props.$sliderLabelCount}) + 1);
     grid-column-start: var(#{custom-props.$sliderMaxStart});
+    margin-inline-end: -8px;
   }
 
   &-aria-description {
@@ -135,10 +137,16 @@
 .ticks {
   display: grid;
   grid-template-columns: repeat(var(#{custom-props.$sliderTickCount}), 1fr);
-  inline-size: calc(100% + 16px);
-  margin-inline: calc(mixins.$thumb-size / -2);
-  position: relative;
-  block-size: 0;
+  inline-size: calc(100% - 16px);
+  margin-inline: calc(mixins.$thumb-size / 2);
+
+  &-wrapper {
+    block-size: 0;
+    display: flex;
+
+    inline-size: calc(100% + 16px);
+    margin-inline: calc(mixins.$thumb-size / -2);
+  }
 }
 
 .tick {
@@ -149,6 +157,13 @@
   padding-block: 0;
   background: awsui.$color-background-slider-track;
   inset-block-start: -4px;
+
+  &.middle {
+    &:first-child,
+    &:last-child {
+      visibility: hidden;
+    }
+  }
 
   &.filled {
     background: awsui.$color-background-slider-handle-default;
@@ -175,7 +190,7 @@
   position: absolute;
   inline-size: awsui.$space-xxl;
   block-size: awsui.$space-xxl;
-  margin-block-start: awsui.$space-xs;
+  margin-block-start: calc(awsui.$space-s / -1);
   inset-inline-start: var(#{custom-props.$sliderTooltipPosition});
 }
 
@@ -184,9 +199,12 @@
   appearance: none;
   position: absolute;
   block-size: 0;
-  inline-size: calc(100% + mixins.$thumb-size);
-  outline: 0;
+  // inline-size: calc(100% + mixins.$thumb-size);
+  // margin-inline-start: calc(mixins.$thumb-size / -2);
+  inline-size: calc(100% + 16px);
   margin-inline-start: calc(mixins.$thumb-size / -2);
+
+  outline: 0;
   margin-block-start: awsui.$space-xxs;
   cursor: pointer;
   // Desktop Safari doesn't support touch events, but Safari on iOS does.

@@ -131,7 +131,7 @@ function Sliders() {
           valueFormatter={value => `${value} is the very long and precise value at this point.`}
           min={100}
           max={200}
-          step={10}
+          step={5}
           referenceValues={[110, 190, 120, 150, 130, 140, 180, 170, 160]}
           tickMarks={true}
           i18nStrings={i18nStrings}
