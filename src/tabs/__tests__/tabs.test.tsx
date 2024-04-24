@@ -703,7 +703,6 @@ describe('Tabs', () => {
   });
 
   describe('Dismissible / Actions', () => {
-    // Will remove this comment, planning on adding more tests in future commit
     test('renders the correct dismiss label', () => {
       const dismissibleButton = renderTabs(
         <Tabs tabs={actionDismissibleTabs} />
@@ -716,10 +715,11 @@ describe('Tabs', () => {
     });
 
     test('does not render the dismiss button when dismissible false', () => {
-      const dismissibleButton = renderTabs(<Tabs tabs={actionDismissibleTabs} />).wrapper.findDimissibleButtonByTabId(
-        'second'
-      );
-      expect(dismissibleButton).toBeFalsy();
+      const dismissibleButtonWrapper = renderTabs(<Tabs tabs={actionDismissibleTabs} />).wrapper;
+      const dismissibleButtonId = dismissibleButtonWrapper.findDimissibleButtonByTabId('second');
+      const dismissibleButtonIndex = dismissibleButtonWrapper.findDimissibleButtonByTabIndex(2);
+      expect(dismissibleButtonId).toBeFalsy();
+      expect(dismissibleButtonIndex).toBeFalsy();
     });
 
     test('renders correct dismissible button based on activeTabId', () => {

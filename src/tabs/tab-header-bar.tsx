@@ -333,7 +333,7 @@ export function TabHeaderBar({
         role="presentation"
         key={tab.id}
       >
-        <div className={tabHeaderContentClasses} data-testid={`tab-header-id-${tab.id}`}>
+        <div className={tabHeaderContentClasses}>
           {trigger}
           {action && <span className={styles['tabs-tab-action']}> {action} </span>}
           {dismissible && (
