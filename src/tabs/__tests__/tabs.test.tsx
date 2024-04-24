@@ -100,6 +100,17 @@ const actionDismissibleTabs: Array<TabsProps.Tab> = [
     label: 'second tab',
     action: <button id="second-tab-button"> test button </button>,
   },
+  {
+    id: 'third',
+    label: 'third tab',
+    dismissible: true,
+    dismissLabel: 'third-tab-dismissible-button',
+    action: <button id="third-tab-button"> test button </button>,
+  },
+  {
+    id: 'fourth',
+    label: 'fourth tab',
+  },
 ];
 
 describe('Tabs', () => {
@@ -693,12 +704,58 @@ describe('Tabs', () => {
 
   describe('Actions', () => {
     // Will remove this comment, planning on adding more tests in future commit
-    test('displays dismissible button w/ label when dismissible is set to true', () => {
+    test('renders the correct dismiss label', () => {
       const dismissibleButton = renderTabs(
         <Tabs tabs={actionDismissibleTabs} />
       ).wrapper.findDimissibleButtonByTabIndex(1);
       expect(dismissibleButton).toBeTruthy();
-      expect(dismissibleButton?.getElement()).toHaveAttribute('aria-label', 'first-tab-dismissible-button');
+      expect(dismissibleButton?.getElement().firstElementChild).toHaveAttribute(
+        'aria-label',
+        'first-tab-dismissible-button'
+      );
+    });
+
+    test('does not render the dismiss button when dismissible false', () => {
+      const dismissibleButton = renderTabs(<Tabs tabs={actionDismissibleTabs} />).wrapper.findDimissibleButtonByTabId(
+        'second'
+      );
+      expect(dismissibleButton).toBeFalsy();
+    });
+
+    test('renders correct dismissible button based on activeTabId', () => {
+      const wrapper = renderTabs(<Tabs tabs={actionDismissibleTabs} activeTabId="first" />).wrapper;
+      const correctDismissibleButton = wrapper.findDimissibleButtonByTabId('first');
+      const activeDismissibleButton = wrapper.findActiveTabDimissibleButton();
+      expect(activeDismissibleButton).toEqual(correctDismissibleButton);
+    });
+
+    test('triggers onDismiss callback when clicked', () => {
+      const consoleLogSpy = jest.spyOn(console, 'log');
+      const dismissibleButtonWrapper = renderTabs(
+        <Tabs tabs={actionDismissibleTabs} activeTabId="first" />
+      ).wrapper.findDimissibleButtonByTabId('first');
+      console.log('Dismiss Button', dismissibleButtonWrapper);
+      const dismissButton = dismissibleButtonWrapper?.find('button');
+      dismissButton?.click();
+      expect(consoleLogSpy).toHaveBeenCalledWith('I have been clicked!');
+    });
+
+    test('renders action', () => {
+      const actionButton = renderTabs(<Tabs tabs={actionDismissibleTabs} />).wrapper.findActionByTabIndex(2);
+      expect(actionButton).toBeTruthy();
+      expect(actionButton?.getElement().firstElementChild?.id).toBe('second-tab-button');
+    });
+
+    test('does not render action when no action provided', () => {
+      const actionButton = renderTabs(<Tabs tabs={actionDismissibleTabs} />).wrapper.findActionByTabId('fourth');
+      expect(actionButton).toBeFalsy();
+    });
+
+    test('renders correct action based on activeTabId', () => {
+      const wrapper = renderTabs(<Tabs tabs={actionDismissibleTabs} activeTabId="third" />).wrapper;
+      const correctActionButton = wrapper.findActionByTabId('third');
+      const activeActionButton = wrapper.findActiveTabAction();
+      expect(activeActionButton).toEqual(correctActionButton);
     });
   });
 

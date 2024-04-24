@@ -48,7 +48,7 @@ export default class TabsWrapper extends ComponentWrapper<HTMLButtonElement> {
    */
   findDimissibleButtonByTabIndex(index: number): ButtonWrapper | null {
     return this.findComponent(
-      `.${styles['tabs-tab']}:nth-child(${index}) .${styles['tabs-tab-dismiss']} > button`,
+      `.${styles['tabs-tab']}:nth-child(${index}) .${styles['tabs-tab-dismiss']}`,
       ButtonWrapper
     );
   }
@@ -60,7 +60,7 @@ export default class TabsWrapper extends ComponentWrapper<HTMLButtonElement> {
    */
   findDimissibleButtonByTabId(id: string): ButtonWrapper | null {
     return this.findComponent(
-      `.${styles['tabs-tab']}[data-testid="${id}"] .${styles['tabs-tab-dismiss']}`,
+      `.${styles['tabs-tab-link']}[data-testid="${id}"] ~ .${styles['tabs-tab-dismiss']}`,
       ButtonWrapper
     );
   }
@@ -70,7 +70,7 @@ export default class TabsWrapper extends ComponentWrapper<HTMLButtonElement> {
    * @param id ID of the clickable element to return
    */
   findActionByTabId(id: string): ElementWrapper | null {
-    return this.find(`.${styles['tabs-tab-link']}[data-testid="${id}"] .${styles['tabs-tab-action']}`);
+    return this.find(`.${styles['tabs-tab-link']}[data-testid="${id}"] ~ .${styles['tabs-tab-action']}`);
   }
 
   /**
@@ -106,6 +106,6 @@ export default class TabsWrapper extends ComponentWrapper<HTMLButtonElement> {
    * Finds the tab action for the active tab
    */
   findActiveTabAction(): ElementWrapper | null {
-    return this.find(`.${styles['tabs-tab-active']} ~ .${styles['tabs-tab-action']}`);
+    return this.find(`.${styles['tabs-tab-active']} .${styles['tabs-tab-action']}`);
   }
 }
