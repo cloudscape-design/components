@@ -702,7 +702,7 @@ describe('Tabs', () => {
     });
   });
 
-  describe('Actions', () => {
+  describe('Dismissible / Actions', () => {
     // Will remove this comment, planning on adding more tests in future commit
     test('renders the correct dismiss label', () => {
       const dismissibleButton = renderTabs(
@@ -734,7 +734,6 @@ describe('Tabs', () => {
       const dismissibleButtonWrapper = renderTabs(
         <Tabs tabs={actionDismissibleTabs} activeTabId="first" />
       ).wrapper.findDimissibleButtonByTabId('first');
-      console.log('Dismiss Button', dismissibleButtonWrapper);
       const dismissButton = dismissibleButtonWrapper?.find('button');
       dismissButton?.click();
       expect(consoleLogSpy).toHaveBeenCalledWith('I have been clicked!');

@@ -302,3 +302,14 @@ test(
     await expect(page.isFocused(wrapper.findTabContent().toSelector())).resolves.toBe(true);
   })
 );
+
+test(
+  'allows inverse focus trap',
+  setupTest(async page => {
+    await page.focusTabHeader();
+    await page.keys(['ArrowRight']);
+    await page.keys(['ArrowRight']);
+    await page.keys(['Tab', 'Tab']);
+    await expect(page.isFocused(wrapper.findTabContent().toSelector())).resolves.toBe(true);
+  })
+);
