@@ -8,6 +8,7 @@ import { Navigation, Tools, Breadcrumbs } from './utils/content-blocks';
 import * as toolsContent from './utils/tools-content';
 import labels from './utils/labels';
 import Box from '~components/box';
+import { isRtl } from '~components/internal/direction';
 
 export default function () {
   return (
@@ -34,7 +35,7 @@ function ContentFilling() {
           position: 'absolute',
           insetBlockStart: '50%',
           insetInlineStart: '50%',
-          transform: 'translate(-50%, -50%)',
+          transform: isRtl(document.body) ? 'translate(50%, -50%)' : 'translate(-50%, -50%)',
         }}
       >
         <Box fontSize="heading-m">
