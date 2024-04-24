@@ -197,7 +197,7 @@ function Rect({
   isMax: boolean;
   isStacked: boolean;
 }) {
-  if (!isStacked || (isMin && isMax) || Math.random() > 0) {
+  if (!isStacked || (isMin && isMax)) {
     return <rect fill={fill} x={x} y={y} width={width} height={height} rx={rx} className={className} />;
   }
   const coordinates = [
