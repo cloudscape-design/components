@@ -19,7 +19,7 @@ export default function UniversalToolbar() {
     handleNavigationClick,
     hasDrawerViewportOverlay,
     isMobile,
-    isNavigationOpen,
+    navigationOpen,
     isToolsOpen,
     navigationHide,
     navigationRefs,
@@ -75,26 +75,26 @@ export default function UniversalToolbar() {
         [styles['toolbar-hidden']]:
           (scrollDirection === 'hide' && !pinnedToolbar) ||
           // when the toolbar does not have anything to show inside, don't show it at all, but leave it rendered in case triggers come back
-          ((navigationHide || isNavigationOpen) &&
+          ((navigationHide || navigationOpen) &&
             !breadcrumbs &&
             (toolsHide || isToolsOpen) &&
             (!drawers || drawers.length === 0)),
       })}
     >
       <div className={styles['toolbar-container']}>
-        {!navigationHide && !isNavigationOpen && (
+        {!navigationHide && !navigationOpen && (
           <nav
-            aria-hidden={isNavigationOpen}
-            className={clsx(styles['universal-toolbar-nav'], { [testutilStyles['drawer-closed']]: !isNavigationOpen })}
+            aria-hidden={navigationOpen}
+            className={clsx(styles['universal-toolbar-nav'], { [testutilStyles['drawer-closed']]: !navigationOpen })}
           >
             <TriggerButton
               ariaLabel={ariaLabels?.navigationToggle ?? undefined}
-              ariaExpanded={isNavigationOpen ? undefined : false}
+              ariaExpanded={navigationOpen ? undefined : false}
               iconName="menu"
               className={testutilStyles['navigation-toggle']}
-              onClick={() => handleNavigationClick(!isNavigationOpen)}
+              onClick={() => handleNavigationClick(!navigationOpen)}
               ref={navigationRefs.toggle}
-              selected={isNavigationOpen}
+              selected={navigationOpen}
             />
           </nav>
         )}
