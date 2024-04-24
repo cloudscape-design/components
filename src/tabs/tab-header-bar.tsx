@@ -203,7 +203,6 @@ export function TabHeaderBar({
         // This check deals with the case where the user closes a tab but hasn't clicked on it
         const nextTabId = activeTabId !== tab.id ? activeTabId : previousTabId;
         onChange({ activeTabId: nextTabId || '' });
-        setPreviousTabId(undefined);
       }
       onDismiss && onDismiss(event);
     };

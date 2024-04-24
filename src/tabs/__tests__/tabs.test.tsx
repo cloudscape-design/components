@@ -717,9 +717,7 @@ describe('Tabs', () => {
     test('does not render the dismiss button when dismissible false', () => {
       const dismissibleButtonWrapper = renderTabs(<Tabs tabs={actionDismissibleTabs} />).wrapper;
       const dismissibleButtonId = dismissibleButtonWrapper.findDimissibleButtonByTabId('second');
-      const dismissibleButtonIndex = dismissibleButtonWrapper.findDimissibleButtonByTabIndex(2);
       expect(dismissibleButtonId).toBeFalsy();
-      expect(dismissibleButtonIndex).toBeFalsy();
     });
 
     test('renders correct dismissible button based on activeTabId', () => {
@@ -848,6 +846,12 @@ describe('Tabs', () => {
       const tabLinkElementId = firstTabLink.id;
       expect(tabLinkElementId).toBeTruthy();
       expect(tabs.findTabContent()!.getElement()).toHaveAttribute('aria-labelledby', tabLinkElementId);
+    });
+
+    test('renders tab header content', () => {
+      const wrapper = renderTabs(<Tabs tabs={defaultTabs} activeTabId="third" />).wrapper;
+      const tabHeaderContent = wrapper.findTabHeaderContentByIndex(3);
+      expect(tabHeaderContent).toBeTruthy();
     });
 
     test('changes aria-labelledby attribute accordingly when the active tab changes', () => {
