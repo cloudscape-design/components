@@ -9,7 +9,9 @@ import { ChartDataTypes, MixedLineBarChartProps } from './interfaces';
 import { matchesX, getKeyValue, StackedBarValues } from './utils';
 import styles from './styles.css.js';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
+
+type RoundedSide = 'left' | 'right' | 'top' | 'bottom' | 'none';
+
 export interface BarSeriesProps<T> {
   axis: 'x' | 'y';
 
@@ -111,7 +113,6 @@ export default function BarSeries<T extends ChartDataTypes>({
   })();
 
   const highlightedXValue = highlightedGroupIndex !== null ? xScale.domain[highlightedGroupIndex] : null;
-  const clipPathId = useUniqueId();
 
   return (
     <g
@@ -133,7 +134,7 @@ export default function BarSeries<T extends ChartDataTypes>({
         const heightOffset = isSmallBar ? 0 : baseHeightOffset;
         const widthOffset = 2;
 
-        const rx = isRefresh ? (isSmallBar ? '2px' : '4px') : '0px';
+        const rx = isRefresh ? (isSmallBar ? 2 : 4) : 0;
         const className = clsx(styles.series__rect, {
           [styles['series--dimmed']]: highlightedXValue !== null && !matchesX(highlightedXValue, series.data[i].x),
         });
@@ -153,53 +154,129 @@ export default function BarSeries<T extends ChartDataTypes>({
                 height: width - widthOffset,
               };
 
-        // Non-stacked bars have all corners rounded.
-        // Stacked bars only require rounded corners for the min/max segments.
-        const rxProps = !isStacked || (isMin && isMax) ? { rx } : { clipPath: `url(#${clipPathId}-${i})` };
-
         return (
-          <React.Fragment key={`bar-${i}`}>
-            {/* Render the bar rectangle */}
-            <rect fill={color} {...rectPlacement} {...rxProps} className={className} />
-
-            {/* Render clip paths to provide rounded corners for the min/max stacked bars  */}
-            {rxProps.clipPath && (isMin || isMax) && (
-              <clipPath aria-hidden="true" id={`${clipPathId}-${i}`}>
-                {isMin && (
-                  <rect
-                    {...(axis === 'x' ? clipRect(rectPlacement, 'down') : clipRect(rectPlacement, 'left'))}
-                    rx={rx}
-                  />
-                )}
-                {isMax && (
-                  <rect
-                    {...(axis === 'x' ? clipRect(rectPlacement, 'up') : clipRect(rectPlacement, 'right'))}
-                    rx={rx}
-                  />
-                )}
-              </clipPath>
-            )}
-          </React.Fragment>
+          <Rect
+            key={`bar-${i}`}
+            fill={color}
+            className={className}
+            {...rectPlacement}
+            rx={rx}
+            axis={axis}
+            isMin={isMin}
+            isMax={isMax}
+            isStacked={isStacked}
+          />
         );
       })}
     </g>
   );
 }
 
-// Creates a rectangle by adding 10px offset to the provided one in the given direction.
-// This makes one side ignored when using the rectangle in a clip path.
-function clipRect(
-  rect: { x: number; y: number; height: number; width: number },
-  direction: 'left' | 'right' | 'up' | 'down'
-) {
-  switch (direction) {
-    case 'up':
-      return { ...rect, height: rect.height + 10 };
-    case 'down':
-      return { ...rect, y: rect.y - 10, height: rect.height + 10 };
-    case 'left':
-      return { ...rect, width: rect.width + 10 };
-    case 'right':
-      return { ...rect, x: rect.x - 10, width: rect.width + 10 };
+function Rect({
+  x,
+  y,
+  height,
+  width,
+  fill,
+  className,
+  rx,
+  axis,
+  isMin,
+  isMax,
+  isStacked,
+}: {
+  x: number;
+  y: number;
+  height: number;
+  width: number;
+  fill: string;
+  className: string;
+  rx: number;
+  axis: 'x' | 'y';
+  isMin: boolean;
+  isMax: boolean;
+  isStacked: boolean;
+}) {
+  if (!isStacked || (isMin && isMax) || Math.random() > 0) {
+    return <rect fill={fill} x={x} y={y} width={width} height={height} rx={rx} className={className} />;
   }
+  const coordinates = [
+    { x, y },
+    { x: x + width, y },
+    { x: x + width, y: y + height },
+    { x: x, y: y + height },
+  ];
+  const side = getRoundedSide({ axis, isMin, isMax });
+  return <path d={createSemiRoundedRectPath(coordinates, rx, side)} fill={fill} className={className} />;
+}
+
+function getRoundedSide({ axis, isMin, isMax }: { axis: 'x' | 'y'; isMin: boolean; isMax: boolean }): RoundedSide {
+  if (isMin && isMax) {
+    throw new Error('Invariant violation: both sides must be rounded.');
+  }
+  if (axis === 'x' && isMax) {
+    return 'top';
+  }
+  if (axis === 'x' && isMin) {
+    return 'bottom';
+  }
+  if (axis === 'y' && isMax) {
+    return 'right';
+  }
+  if (axis === 'y' && isMin) {
+    return 'left';
+  }
+  return 'none';
+}
+
+// TODO: pass placement instead of coordinates because order matters
+function createSemiRoundedRectPath(coordinates: { x: number; y: number }[], radius: number, side: RoundedSide) {
+  let path = '';
+  const length = coordinates.length + 1;
+  for (let i = 0; i < length; i++) {
+    const a = coordinates[i % coordinates.length];
+    const b = coordinates[(i + 1) % coordinates.length];
+    let t = radius ? Math.min(radius / Math.hypot(b.x - a.x, b.y - a.y), 0.5) : 0;
+
+    const matchedSides = new Array<string>();
+
+    if (i === 0) {
+      matchedSides.push('top');
+      matchedSides.push('right');
+    }
+    if (i === 1) {
+      matchedSides.push('top');
+      matchedSides.push('right');
+      matchedSides.push('bottom');
+    }
+    if (i === 2) {
+      matchedSides.push('right');
+      matchedSides.push('bottom');
+      matchedSides.push('left');
+    }
+    if (i === 3) {
+      matchedSides.push('top');
+      matchedSides.push('bottom');
+      matchedSides.push('left');
+    }
+    if (i === 4) {
+      matchedSides.push('top');
+      matchedSides.push('left');
+    }
+
+    if (!matchedSides.includes(side)) {
+      t = 0;
+    }
+
+    if (i > 0) {
+      path += `Q${a.x},${a.y} ${a.x * (1 - t) + b.x * t},${a.y * (1 - t) + b.y * t}`;
+    }
+    if (i === 0) {
+      path += `M${a.x * (1 - t) + b.x * t},${a.y * (1 - t) + b.y * t}`;
+    }
+    if (i < length - 1) {
+      path += `L${a.x * t + b.x * (1 - t)},${a.y * t + b.y * (1 - t)}`;
+    }
+  }
+  return path + 'Z';
 }
