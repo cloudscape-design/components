@@ -15,7 +15,7 @@ import { isRtl as getIsRtl } from '../../direction';
 
 const OFFSET_PX = 12;
 
-interface ValueLabelsProps {
+interface InlineStartLabelsProps {
   axis?: 'x' | 'y';
   plotWidth: number;
   plotHeight: number;
@@ -27,10 +27,10 @@ interface ValueLabelsProps {
   ariaRoleDescription?: string;
 }
 
-export default memo(ValueLabels) as typeof ValueLabels;
+export default memo(InlineStartLabels) as typeof InlineStartLabels;
 
 // Renders the visible tick labels on the value axis, as well as their grid lines.
-function ValueLabels({
+function InlineStartLabels({
   axis = 'y',
   plotWidth,
   plotHeight,
@@ -40,7 +40,7 @@ function ValueLabels({
   tickFormatter,
   title,
   ariaRoleDescription,
-}: ValueLabelsProps) {
+}: InlineStartLabelsProps) {
   const i18n = useInternalI18n('[charts]');
   const virtualTextRef = useRef<SVGTextElement>(null);
 
