@@ -23,7 +23,6 @@ export function getAllComponents(): string[] {
         name !== 'theming' &&
         name !== 'contexts' &&
         name !== 'i18n' &&
-        name !== 'expandable-section' &&
         !name.includes('.') &&
         !name.includes('LICENSE')
     );
