@@ -326,7 +326,11 @@ function useTableData() {
 
   const loadItems = (id: string) => {
     setLoadingState(nextLoading(id));
-    setTimeout(() => setLoadingState(settings.emulateServerError ? nextError(id) : nextPending(id)), delay);
+    if (delay) {
+      setTimeout(() => setLoadingState(settings.emulateServerError ? nextError(id) : nextPending(id)), delay);
+    } else {
+      setLoadingState(nextPending(id));
+    }
   };
 
   const getItemChildren = collectionResult.collectionProps.expandableRows
