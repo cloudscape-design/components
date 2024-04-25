@@ -89,7 +89,7 @@ function BlockEndLabels({
   return (
     <g
       transform={`translate(0,${height})`}
-      className={styles['labels-bottom']}
+      className={styles['labels-block-end']}
       aria-label={title}
       role="list"
       aria-roledescription={i18n('i18nStrings.chartAriaRoleDescription', ariaRoleDescription)}
