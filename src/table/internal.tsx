@@ -596,7 +596,7 @@ const InternalTable = React.forwardRef(
                               colSpan={totalColumnsCount - colIndexOffset}
                               // Required to make content sticky.
                               style={{ overflow: 'visible' }}
-                              isRowHeader={true}
+                              // isRowHeader={true}
                             >
                               <ItemsLoader
                                 item={row.item}
