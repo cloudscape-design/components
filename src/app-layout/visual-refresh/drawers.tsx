@@ -8,13 +8,13 @@ import TriggerButton from './trigger-button';
 import { useAppLayoutInternals } from './context';
 import splitPanelStyles from '../../split-panel/styles.css.js';
 import styles from './styles.css.js';
+import sharedStyles from '../styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import OverflowMenu from '../drawer/overflow-menu';
 import { splitItems } from '../drawer/drawers-helpers';
 import { TOOLS_DRAWER_ID } from '../utils/use-drawers';
 import { getLimitedValue } from '../../split-panel/utils/size-utils';
-import { Transition } from '../../internal/components/transition';
 
 /**
  * The Drawers root component is mounted in the AppLayout index file. It will only
@@ -87,65 +87,60 @@ function ActiveDrawer() {
   const size = getLimitedValue(drawersMinWidth, drawerSize, drawersMaxWidth);
 
   return (
-    <Transition in={activeDrawerId === activeDrawer?.id}>
-      {(state, transitionEventsRef) => (
-        <aside
-          id={activeDrawerId ?? undefined}
-          aria-hidden={isHidden}
-          aria-label={computedAriaLabels.content}
-          className={clsx(styles.drawer, {
-            [styles.animating]: state === 'entering',
-            [styles['is-drawer-open']]: activeDrawerId,
-            [styles.unfocusable]: isUnfocusable,
-            [testutilStyles['active-drawer']]: activeDrawerId,
-            [testutilStyles.tools]: isToolsDrawer,
-          })}
-          style={{
-            ...(!isMobile && drawerSize && { [customCssProps.drawerSize]: `${size}px` }),
-          }}
-          ref={state !== 'exiting' ? transitionEventsRef : drawerRef}
-          onBlur={e => {
-            if (!e.relatedTarget || !e.currentTarget.contains(e.relatedTarget)) {
-              loseDrawersFocus();
-            }
-          }}
-        >
-          {!isMobile && activeDrawer?.resizable && resizeHandle}
-          <div className={styles['drawer-content-container']}>
-            <div className={clsx(styles['drawer-close-button'])}>
-              <InternalButton
-                ariaLabel={computedAriaLabels.closeButton}
-                className={clsx({
-                  [testutilStyles['active-drawer-close-button']]: activeDrawerId,
-                  [testutilStyles['tools-close']]: isToolsDrawer,
-                })}
-                formAction="none"
-                iconName={isMobile ? 'close' : 'angle-right'}
-                onClick={() => {
-                  handleDrawersClick(activeDrawerId);
-                  handleToolsClick(false);
-                }}
-                ref={drawersRefs.close}
-                variant="icon"
-              />
-            </div>
-            {toolsContent && (
-              <div
-                className={clsx(
-                  styles['drawer-content'],
-                  activeDrawerId !== TOOLS_DRAWER_ID && styles['drawer-content-hidden']
-                )}
-              >
-                {toolsContent}
-              </div>
+    <aside
+      id={activeDrawerId ?? undefined}
+      aria-hidden={isHidden}
+      aria-label={computedAriaLabels.content}
+      className={clsx(styles.drawer, sharedStyles['with-motion'], {
+        [styles['is-drawer-open']]: activeDrawerId,
+        [styles.unfocusable]: isUnfocusable,
+        [testutilStyles['active-drawer']]: activeDrawerId,
+        [testutilStyles.tools]: isToolsDrawer,
+      })}
+      style={{
+        ...(!isMobile && drawerSize && { [customCssProps.drawerSize]: `${size}px` }),
+      }}
+      ref={drawerRef}
+      onBlur={e => {
+        if (!e.relatedTarget || !e.currentTarget.contains(e.relatedTarget)) {
+          loseDrawersFocus();
+        }
+      }}
+    >
+      {!isMobile && activeDrawer?.resizable && resizeHandle}
+      <div className={styles['drawer-content-container']}>
+        <div className={clsx(styles['drawer-close-button'])}>
+          <InternalButton
+            ariaLabel={computedAriaLabels.closeButton}
+            className={clsx({
+              [testutilStyles['active-drawer-close-button']]: activeDrawerId,
+              [testutilStyles['tools-close']]: isToolsDrawer,
+            })}
+            formAction="none"
+            iconName={isMobile ? 'close' : 'angle-right'}
+            onClick={() => {
+              handleDrawersClick(activeDrawerId);
+              handleToolsClick(false);
+            }}
+            ref={drawersRefs.close}
+            variant="icon"
+          />
+        </div>
+        {toolsContent && (
+          <div
+            className={clsx(
+              styles['drawer-content'],
+              activeDrawerId !== TOOLS_DRAWER_ID && styles['drawer-content-hidden']
             )}
-            {activeDrawerId !== TOOLS_DRAWER_ID && (
-              <div className={styles['drawer-content']}>{activeDrawerId && activeDrawer?.content}</div>
-            )}
+          >
+            {toolsContent}
           </div>
-        </aside>
-      )}
-    </Transition>
+        )}
+        {activeDrawerId !== TOOLS_DRAWER_ID && (
+          <div className={styles['drawer-content']}>{activeDrawerId && activeDrawer?.content}</div>
+        )}
+      </div>
+    </aside>
   );
 }
 
