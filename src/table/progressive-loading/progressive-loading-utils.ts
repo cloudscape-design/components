@@ -27,7 +27,7 @@ export function useProgressiveLoadingProps<T>({
     if (isItemExpanded(items[i]) && getItemChildren(items[i]).length === 0) {
       const status = getLoadingStatus?.(items[i]);
       if (status && (status === 'loading' || status === 'error')) {
-        allRows.push({ type: 'loader', item: items[i], level: getItemLevel(items[i]), status, first: true });
+        allRows.push({ type: 'loader', item: items[i], level: getItemLevel(items[i]), status });
       } else {
         warnOnce('Table', 'Expanded items without children must have "loading" or "error" loading status.');
       }
@@ -40,7 +40,7 @@ export function useProgressiveLoadingProps<T>({
       const status = getLoadingStatus?.(currentParent);
       if (status && status !== 'finished') {
         const level = currentParent ? getItemLevel(currentParent) : 0;
-        allRows.push({ type: 'loader', item: currentParent, level, status, first: false });
+        allRows.push({ type: 'loader', item: currentParent, level, status });
       }
       currentParent = currentParent && getItemParent(currentParent);
       levelsDiff--;
@@ -49,7 +49,7 @@ export function useProgressiveLoadingProps<T>({
     // Insert root loader
     const rootLoadingStatus = getLoadingStatus?.(null);
     if (i === items.length - 1 && rootLoadingStatus && rootLoadingStatus !== 'finished') {
-      allRows.push({ type: 'loader', item: null, level: 0, status: rootLoadingStatus, first: false });
+      allRows.push({ type: 'loader', item: null, level: 0, status: rootLoadingStatus });
     }
   }
 

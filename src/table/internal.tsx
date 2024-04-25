@@ -571,7 +571,9 @@ const InternalTable = React.forwardRef(
                         }
                         return (
                           <tr
-                            key={(row.item ? getTableItemKey(row.item) : 'awsui-table') + `-loader-${row.first}`}
+                            // The key includes both unique item identifier and row index to avoid React caching.
+                            // That is to avoid collisions when the next loader is rendered.
+                            key={(row.item ? getTableItemKey(row.item) : 'root') + rowIndex}
                             className={styles.row}
                             {...rowRoleProps}
                           >
@@ -594,6 +596,7 @@ const InternalTable = React.forwardRef(
                               colSpan={totalColumnsCount - colIndexOffset}
                               // Required to make content sticky.
                               style={{ overflow: 'visible' }}
+                              isRowHeader={true}
                             >
                               <ItemsLoader
                                 item={row.item}
