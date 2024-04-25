@@ -253,8 +253,20 @@ describe('Code editor component', () => {
       i18nStrings: { cursorPositionAriaLabel: row => `Cursor at row ${row}` },
     });
     expect(editorMock.renderer.textarea).toHaveAttribute('aria-labelledby');
-    const ariaLabelledById = editorMock.renderer.textarea.getAttribute('aria-labelledby')!;
-    expect(document.getElementById(ariaLabelledById)).toHaveTextContent('test aria label Cursor at row 1');
+    const ariaLabelledByIds = editorMock.renderer.textarea.getAttribute('aria-labelledby')!.split(' ');
+    expect(document.getElementById(ariaLabelledByIds[0])).toHaveTextContent('test aria label');
+    expect(document.getElementById(ariaLabelledByIds[1])).toHaveTextContent('Cursor at row 1');
+  });
+
+  it('appends cursorPositionAriaLabel to the ariaLabelledby if provided', () => {
+    renderCodeEditor({
+      ariaLabelledby: 'test-id',
+      i18nStrings: { cursorPositionAriaLabel: row => `Cursor at row ${row}` },
+    });
+    expect(editorMock.renderer.textarea).toHaveAttribute('aria-labelledby');
+    const ariaLabelledByIds = editorMock.renderer.textarea.getAttribute('aria-labelledby')!.split(' ');
+    expect(ariaLabelledByIds[0]).toBe('test-id');
+    expect(document.getElementById(ariaLabelledByIds[1])).toHaveTextContent('Cursor at row 1');
   });
 
   describe('onDelayedChange', () => {

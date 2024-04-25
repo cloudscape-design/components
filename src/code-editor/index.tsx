@@ -82,6 +82,7 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
 
   const paneId = useUniqueId('code-editor-pane');
   const ariaLabelId = useUniqueId('code-editor-textarea');
+  const cursorPositionLabelId = useUniqueId('code-editor-cursor-position');
 
   const [paneStatus, setPaneStatus] = useState<PaneStatus>('hidden');
   const [annotations, setAnnotations] = useState<Ace.Annotation[]>([]);
@@ -105,12 +106,16 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
     };
   }, [ace, editor]);
 
+  const cursorPositionAriaLabel = i18nStrings?.cursorPositionAriaLabel?.(cursorPosition.row + 1);
   useSyncEditorLabels(editor, {
     controlId,
     // Treat ariaLabel as if it overrides ariaLabelledby. This is similar to how
     // other Cloudscape components (e.g. input) behave. Internally, we do the opposite:
     // use aria-labelledby to override ace's built-in aria-label.
-    ariaLabelledby: ariaLabel && !ariaLabelledby ? ariaLabelId : ariaLabelledby,
+    ariaLabelledby: joinStrings(
+      ariaLabel && !ariaLabelledby ? ariaLabelId : ariaLabelledby,
+      cursorPositionAriaLabel ? cursorPositionLabelId : undefined
+    ),
     ariaDescribedby,
   });
 
@@ -221,11 +226,11 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
 
       {ace && !loading && (
         <>
-          {ariaLabel && (
-            <ScreenreaderOnly id={ariaLabelId}>
-              {joinStrings(ariaLabel, i18nStrings?.cursorPositionAriaLabel?.(cursorPosition.row + 1))}
-            </ScreenreaderOnly>
-          )}
+          <ScreenreaderOnly>
+            <span id={ariaLabelId}>{ariaLabel}</span>
+            <span id={cursorPositionLabelId}>{cursorPositionAriaLabel}</span>
+          </ScreenreaderOnly>
+
           <ResizableBox
             height={Math.max(editorHeight, 20)}
             minHeight={20}
