@@ -10,7 +10,12 @@ import { matchesX, getKeyValue, StackedBarValues } from './utils';
 import styles from './styles.css.js';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 
-type RoundedSide = 'left' | 'right' | 'top' | 'bottom' | 'none';
+interface Placement {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
 
 export interface BarSeriesProps<T> {
   axis: 'x' | 'y';
@@ -52,6 +57,7 @@ export default function BarSeries<T extends ChartDataTypes>({
 }: BarSeriesProps<T>) {
   const isRefresh = useVisualRefresh();
   const isStacked = !!stackedBarValues;
+  const isVertical = axis === 'x';
 
   const xCoordinates = (() => {
     if (series.type !== 'bar' || !xScale.isCategorical()) {
@@ -82,8 +88,8 @@ export default function BarSeries<T extends ChartDataTypes>({
       const key = getKeyValue(d.x);
       let barX = x;
       let yValue = d.y;
-      let isMin = false;
-      let isMax = false;
+      let isMin = !isStacked;
+      let isMax = !isStacked;
 
       // Stacked bars
       if (isStacked) {
@@ -135,147 +141,73 @@ export default function BarSeries<T extends ChartDataTypes>({
         const widthOffset = 2;
 
         const rx = isRefresh ? (isSmallBar ? 2 : 4) : 0;
+        const placement = isVertical
+          ? {
+              x: x + widthOffset / 2,
+              y: y + heightOffset / 2,
+              width: width - widthOffset,
+              height: height - heightOffset,
+            }
+          : {
+              x: y - height + heightOffset / 2,
+              y: x + widthOffset / 2,
+              width: height - heightOffset,
+              height: width - widthOffset,
+            };
+
         const className = clsx(styles.series__rect, {
           [styles['series--dimmed']]: highlightedXValue !== null && !matchesX(highlightedXValue, series.data[i].x),
         });
+        const styleProps = { fill: color, className };
 
-        const rectPlacement =
-          axis === 'x'
-            ? {
-                x: x + widthOffset / 2,
-                y: y + heightOffset / 2,
-                width: width - widthOffset,
-                height: height - heightOffset,
-              }
-            : {
-                x: y - height + heightOffset / 2,
-                y: x + widthOffset / 2,
-                width: height - heightOffset,
-                height: width - widthOffset,
-              };
-
-        return (
-          <Rect
-            key={`bar-${i}`}
-            fill={color}
-            className={className}
-            {...rectPlacement}
-            rx={rx}
-            axis={axis}
-            isMin={isMin}
-            isMax={isMax}
-            isStacked={isStacked}
-          />
-        );
+        if (isMin && isMax) {
+          return <rect key={i} {...placement} {...styleProps} rx={rx} />;
+        }
+        if (!isMin && !isMax) {
+          return <rect key={i} {...placement} {...styleProps} rx={0} />;
+        }
+        const side =
+          !isVertical && !isMax ? 'left' : !isVertical && isMax ? 'right' : isVertical && isMax ? 'top' : 'bottom';
+        return <path key={i} d={createOneSideRoundedRectPath(placement, rx, side)} {...styleProps} {...styleProps} />;
       })}
     </g>
   );
 }
 
-function Rect({
-  x,
-  y,
-  height,
-  width,
-  fill,
-  className,
-  rx,
-  axis,
-  isMin,
-  isMax,
-  isStacked,
-}: {
-  x: number;
-  y: number;
-  height: number;
-  width: number;
-  fill: string;
-  className: string;
-  rx: number;
-  axis: 'x' | 'y';
-  isMin: boolean;
-  isMax: boolean;
-  isStacked: boolean;
-}) {
-  if (!isStacked || (isMin && isMax)) {
-    return <rect fill={fill} x={x} y={y} width={width} height={height} rx={rx} className={className} />;
-  }
+function createOneSideRoundedRectPath(
+  { x, y, width, height }: Placement,
+  radius: number,
+  side: 'left' | 'right' | 'top' | 'bottom'
+) {
   const coordinates = [
     { x, y },
     { x: x + width, y },
     { x: x + width, y: y + height },
     { x: x, y: y + height },
   ];
-  const side = getRoundedSide({ axis, isMin, isMax });
-  return <path d={createSemiRoundedRectPath(coordinates, rx, side)} fill={fill} className={className} />;
-}
 
-function getRoundedSide({ axis, isMin, isMax }: { axis: 'x' | 'y'; isMin: boolean; isMax: boolean }): RoundedSide {
-  if (isMin && isMax) {
-    throw new Error('Invariant violation: both sides must be rounded.');
-  }
-  if (axis === 'x' && isMax) {
-    return 'top';
-  }
-  if (axis === 'x' && isMin) {
-    return 'bottom';
-  }
-  if (axis === 'y' && isMax) {
-    return 'right';
-  }
-  if (axis === 'y' && isMin) {
-    return 'left';
-  }
-  return 'none';
-}
+  // Starting from the target side.
+  const startIndex = { left: 2, right: 0, top: 3, bottom: 1 }[side];
 
-// TODO: pass placement instead of coordinates because order matters
-function createSemiRoundedRectPath(coordinates: { x: number; y: number }[], radius: number, side: RoundedSide) {
   let path = '';
-  const length = coordinates.length + 1;
-  for (let i = 0; i < length; i++) {
-    const a = coordinates[i % coordinates.length];
-    const b = coordinates[(i + 1) % coordinates.length];
-    let t = radius ? Math.min(radius / Math.hypot(b.x - a.x, b.y - a.y), 0.5) : 0;
+  for (let i = startIndex; i < startIndex + coordinates.length + 1; i++) {
+    const start = coordinates[i % coordinates.length];
+    const end = coordinates[(i + 1) % coordinates.length];
 
-    const matchedSides = new Array<string>();
+    // Define curvature for the first 3 points to only add rounded corners to the first side.
+    const c = radius && i < startIndex + 3 ? Math.min(radius / Math.hypot(end.x - start.x, end.y - start.y), 0.5) : 0;
 
-    if (i === 0) {
-      matchedSides.push('top');
-      matchedSides.push('right');
+    // Insert start point. When c=0 the start point is [start.x, start.y].
+    if (i === startIndex) {
+      path += `M${start.x * (1 - c) + end.x * c},${start.y * (1 - c) + end.y * c}`;
     }
-    if (i === 1) {
-      matchedSides.push('top');
-      matchedSides.push('right');
-      matchedSides.push('bottom');
+    // Insert quadratic curve.
+    if (i > startIndex) {
+      path += `Q${start.x},${start.y} ${start.x * (1 - c) + end.x * c},${start.y * (1 - c) + end.y * c}`;
     }
-    if (i === 2) {
-      matchedSides.push('right');
-      matchedSides.push('bottom');
-      matchedSides.push('left');
-    }
-    if (i === 3) {
-      matchedSides.push('top');
-      matchedSides.push('bottom');
-      matchedSides.push('left');
-    }
-    if (i === 4) {
-      matchedSides.push('top');
-      matchedSides.push('left');
-    }
-
-    if (!matchedSides.includes(side)) {
-      t = 0;
-    }
-
-    if (i > 0) {
-      path += `Q${a.x},${a.y} ${a.x * (1 - t) + b.x * t},${a.y * (1 - t) + b.y * t}`;
-    }
-    if (i === 0) {
-      path += `M${a.x * (1 - t) + b.x * t},${a.y * (1 - t) + b.y * t}`;
-    }
-    if (i < length - 1) {
-      path += `L${a.x * t + b.x * (1 - t)},${a.y * t + b.y * (1 - t)}`;
+    // Draw line to the end point. When c=0 the end point is [end.x, end.y].
+    if (i < startIndex + coordinates.length) {
+      path += `L${start.x * c + end.x * (1 - c)},${start.y * c + end.y * (1 - c)}`;
     }
   }
   return path + 'Z';
