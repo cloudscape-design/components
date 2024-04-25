@@ -4542,6 +4542,11 @@ The object should contain, among others:
             "type": "(row: number, column: number) => string",
           },
           Object {
+            "name": "cursorPositionAriaLabel",
+            "optional": true,
+            "type": "(row: number) => string",
+          },
+          Object {
             "name": "editorGroupAriaLabel",
             "optional": true,
             "type": "string",
