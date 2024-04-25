@@ -3,7 +3,7 @@
 import { useCallback } from 'react';
 import styles from '../styles.css.js';
 import { SizeControlProps } from './interfaces';
-import { isRtl, getLogicalClientX, getLogicalBoundingClientRect } from '../../internal/direction.js';
+import { getIsRtl, getLogicalClientX, getLogicalBoundingClientRect } from '../../internal/direction.js';
 
 export const usePointerEvents = ({
   position,
@@ -21,7 +21,7 @@ export const usePointerEvents = ({
       panelRef.current.classList.remove(styles['with-motion']);
 
       if (position === 'side') {
-        const mouseClientX = getLogicalClientX(event, isRtl(panelRef.current)) || 0;
+        const mouseClientX = getLogicalClientX(event, getIsRtl(panelRef.current)) || 0;
 
         // The handle offset aligns the cursor with the middle of the resize handle.
         const handleOffset = getLogicalBoundingClientRect(handleRef.current).inlineSize / 2;

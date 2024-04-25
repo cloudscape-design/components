@@ -9,7 +9,7 @@ import { useStableCallback } from '@cloudscape-design/component-toolkit/internal
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { getHeaderWidth, getResizerElements } from './resizer-lookup';
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context.js';
-import { isRtl, getLogicalBoundingClientRect, getLogicalPageX } from '../../internal/direction.js';
+import { getIsRtl, getLogicalBoundingClientRect, getLogicalPageX } from '../../internal/direction.js';
 import handleKey, { isEventLike } from '../../internal/utils/handle-key';
 
 interface ResizerProps {
@@ -101,7 +101,7 @@ export function Resizer({
       autoGrowTimeout.current = setTimeout(onAutoGrow, AUTO_GROW_INTERVAL);
       // callbacks must be the last calls in the handler, because they may cause an extra update
       updateColumnWidth(inlineSize + AUTO_GROW_INCREMENT);
-      elements.scrollParent.scrollLeft += AUTO_GROW_INCREMENT * (isRtl(elements.scrollParent) ? -1 : 1);
+      elements.scrollParent.scrollLeft += AUTO_GROW_INCREMENT * (getIsRtl(elements.scrollParent) ? -1 : 1);
     };
 
     const onMouseMove = (event: MouseEvent) => {
