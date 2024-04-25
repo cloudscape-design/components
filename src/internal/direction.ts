@@ -1,13 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-export function isRtl(element: HTMLElement | SVGElement) {
+export function getIsRtl(element: HTMLElement | SVGElement) {
   return getComputedStyle(element).direction === 'rtl';
 }
 
 export function getOffsetInlineStart(element: HTMLElement) {
   const offsetParentWidth = element.offsetParent?.clientWidth ?? 0;
-  return isRtl(element) ? offsetParentWidth - element.offsetWidth - element.offsetLeft : element.offsetLeft;
+  return getIsRtl(element) ? offsetParentWidth - element.offsetWidth - element.offsetLeft : element.offsetLeft;
 }
 
 /**
@@ -17,7 +17,7 @@ export function getOffsetInlineStart(element: HTMLElement) {
  * systems using display scaling requiring the floor and ceiling calls.
  */
 export function getScrollInlineStart(element: HTMLElement) {
-  return isRtl(element) ? Math.floor(element.scrollLeft) * -1 : Math.ceil(element.scrollLeft);
+  return getIsRtl(element) ? Math.floor(element.scrollLeft) * -1 : Math.ceil(element.scrollLeft);
 }
 
 /**
@@ -42,7 +42,7 @@ export function getLogicalBoundingClientRect(element: HTMLElement | SVGElement) 
   const inlineSize = boundingClientRect.width;
   const insetBlockStart = boundingClientRect.top;
   const insetBlockEnd = boundingClientRect.bottom;
-  const insetInlineStart = isRtl(element)
+  const insetInlineStart = getIsRtl(element)
     ? document.documentElement.clientWidth - boundingClientRect.right
     : boundingClientRect.left;
   const insetInlineEnd = insetInlineStart + inlineSize;
@@ -63,7 +63,7 @@ export function getLogicalBoundingClientRect(element: HTMLElement | SVGElement) 
  * element directions.
  */
 export function getLogicalPageX(event: MouseEvent) {
-  return event.target instanceof HTMLElement && isRtl(event.target)
+  return event.target instanceof HTMLElement && getIsRtl(event.target)
     ? document.documentElement.clientWidth - event.pageX
     : event.pageX;
 }
