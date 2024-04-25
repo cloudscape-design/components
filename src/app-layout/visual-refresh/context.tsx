@@ -269,7 +269,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       displayed: false,
       ariaLabel: undefined,
     });
-    const splitPanelDisplayed = !!(splitPanelToggle.displayed || isSplitPanelOpen) && !!splitPanel;
+    const splitPanelDisplayed = !!splitPanelToggle.displayed && !!splitPanel;
     const splitPanelControlId = useUniqueId('split-panel-');
     const toolsControlId = useUniqueId('tools-');
 
