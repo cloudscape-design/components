@@ -116,7 +116,7 @@ export default function InternalExpandableSection({
           headerInfo={headerInfo}
           headerActions={headerActions}
           headingTagOverride={headingTagOverride}
-          disableLine={disableLine || false}
+          disableLine={disableLine}
           {...triggerProps}
         />
       }
