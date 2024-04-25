@@ -332,5 +332,11 @@ export type AppLayoutPropsWithDefaults = SomeRequired<
   Omit<AppLayoutProps, 'headerSelector' | 'footerSelector'>,
   'contentType' | 'navigationWidth' | 'toolsWidth' | 'minContentWidth' | 'navigationOpen' | 'onNavigationChange'
 > & {
-  placement: { top: number; bottom: number; left: number; right: number; width: number };
+  placement: {
+    insetBlockStart: number;
+    insetBlockEnd: number;
+    insetInlineStart: number;
+    insetInlineEnd: number;
+    inlineSize: number;
+  };
 };

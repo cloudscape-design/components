@@ -16,7 +16,7 @@
 }
 
 .footer {
-  bottom: 0;
+  inset-block-end: 0;
   width: 100%;
   color: #eee;
   background: #232f3e;
@@ -57,7 +57,7 @@
 .wizard-steps {
   width: 16rem;
   height: 40rem;
-  margin-right: 4rem;
+  margin-inline-end: 4rem;
 }
 
 .wizard-form {
@@ -72,10 +72,10 @@
   }
 
   .wizard-steps {
-    margin-right: 0;
+    margin-inline-end: 0;
   }
 
   .wizard-form {
-    margin-top: 4rem;
+    margin-block-start: 4rem;
   }
 }

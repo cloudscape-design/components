@@ -5,6 +5,11 @@ export function isRtl(element: HTMLElement | SVGElement) {
   return getComputedStyle(element).direction === 'rtl';
 }
 
+export function getOffsetInlineStart(element: HTMLElement) {
+  const offsetParentWidth = element.offsetParent?.clientWidth ?? 0;
+  return isRtl(element) ? offsetParentWidth - element.offsetWidth - element.offsetLeft : element.offsetLeft;
+}
+
 /**
  * The scrollLeft value will be a negative number if the direction is RTL and
  * needs to be converted to a positive value for direction independent scroll
@@ -13,6 +18,15 @@ export function isRtl(element: HTMLElement | SVGElement) {
  */
 export function getScrollInlineStart(element: HTMLElement) {
   return isRtl(element) ? Math.floor(element.scrollLeft) * -1 : Math.ceil(element.scrollLeft);
+}
+
+/**
+ * The clientX position needs to be converted so it is relative to the right of
+ * the document in order for computations to yield the same result in both
+ * element directions.
+ */
+export function getLogicalClientX(event: PointerEvent, IsRtl: boolean) {
+  return IsRtl ? document.documentElement.clientWidth - event.clientX : event.clientX;
 }
 
 /**

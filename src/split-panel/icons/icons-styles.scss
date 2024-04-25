@@ -3,9 +3,15 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
+@use '../../internal/styles' as styles;
 @use '../../internal/styles/tokens' as awsui;
 
 .preference-icon {
+  &--svg {
+    @include styles.with-direction('rtl') {
+      transform: scaleX(-1);
+    }
+  }
   &--layout {
     &-border {
       stroke: awsui.$color-background-home-header;
@@ -40,6 +46,11 @@
 }
 
 .preference-icon-refresh {
+  &--svg {
+    @include styles.with-direction('rtl') {
+      transform: scaleX(-1);
+    }
+  }
   &--layout {
     &-top {
       fill: awsui.$color-background-button-primary-disabled;

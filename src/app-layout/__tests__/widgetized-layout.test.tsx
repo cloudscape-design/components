@@ -19,7 +19,13 @@ const defaultProps: AppLayoutPropsWithDefaults = {
   navigationWidth: 0,
   toolsWidth: 0,
   minContentWidth: 0,
-  placement: { left: 0, top: 0, bottom: 0, right: 0, width: Number.POSITIVE_INFINITY },
+  placement: {
+    insetInlineStart: 0,
+    insetBlockStart: 0,
+    insetBlockEnd: 0,
+    insetInlineEnd: 0,
+    inlineSize: Number.POSITIVE_INFINITY,
+  },
   navigationOpen: true,
   onNavigationChange: () => {},
 };
