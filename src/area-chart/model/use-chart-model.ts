@@ -225,7 +225,7 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
     };
 
     // A callback for svg keydown to enable motions and popover pin with the keyboard.
-    const onSVGKeyDown = (event: React.KeyboardEvent<SVGElement>) => {
+    const onSVGKeyDown = (event: React.KeyboardEvent<HTMLElement | SVGElement>) => {
       const keyCode = event.keyCode;
       if (
         keyCode !== KeyCode.up &&
