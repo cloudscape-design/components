@@ -25,6 +25,7 @@ interface ExpandableDefaultHeaderProps {
   onClick: MouseEventHandler;
   icon: JSX.Element;
   variant: InternalVariant;
+  disableLine: boolean;
 }
 
 interface ExpandableNavigationHeaderProps extends Omit<ExpandableDefaultHeaderProps, 'onKeyUp' | 'onKeyDown'> {
@@ -224,6 +225,7 @@ export const ExpandableSectionHeader = ({
   onKeyUp,
   onKeyDown,
   onClick,
+  disableLine,
 }: ExpandableSectionHeaderProps) => {
   const icon = (
     <InternalIcon
@@ -240,6 +242,7 @@ export const ExpandableSectionHeader = ({
     ariaLabel: ariaLabel,
     onClick: onClick,
     variant,
+    disableLine: disableLine,
   };
 
   if ((headerCounter || headerInfo || headerActions) && !variantSupportsInteractiveElements(variant) && isDevelopment) {
@@ -256,7 +259,7 @@ export const ExpandableSectionHeader = ({
   const wrapperClassName = clsx(
     styles.wrapper,
     styles[`wrapper-${variant}`],
-    (expanded || headerActions !== undefined) && styles['wrapper-expanded']
+    (expanded || (headerActions !== undefined && disableLine === false)) && styles['wrapper-expanded']
   );
   if (variant === 'navigation') {
     return (
