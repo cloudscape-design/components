@@ -17,6 +17,7 @@ import { useReaction } from '../async-store';
 import { useHeightMeasure } from '../../internal/hooks/container-queries/use-height-measure';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 import { nodeBelongs } from '../../internal/utils/node-belongs';
+import handleKey from '../../internal/utils/handle-key';
 
 const MAX_HOVER_MARGIN = 6;
 const SVG_HOVER_THROTTLE = 25;
@@ -177,8 +178,6 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
 
     // A helper function to highlight the next or previous point within selected series.
     const moveWithinSeries = (direction: -1 | 1) => {
-      direction = (!isRtl ? direction : -direction) as -1 | 1;
-
       // Can only use motion when a particular point is highlighted.
       const point = interactions.get().highlightedPoint;
       if (!point) {
@@ -226,7 +225,7 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
     };
 
     // A callback for svg keydown to enable motions and popover pin with the keyboard.
-    const onSVGKeyDown = (event: React.KeyboardEvent) => {
+    const onSVGKeyDown = (event: React.KeyboardEvent<SVGElement>) => {
       const keyCode = event.keyCode;
       if (
         keyCode !== KeyCode.up &&
@@ -247,18 +246,13 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
         return;
       }
 
-      // Move up/down.
-      if (keyCode === KeyCode.down || keyCode === KeyCode.up) {
-        moveBetweenSeries(keyCode === KeyCode.down ? -1 : 1);
-      }
-      // Move left/right.
-      else if (keyCode === KeyCode.left || keyCode === KeyCode.right) {
-        moveWithinXAxis(keyCode === KeyCode.right ? 1 : -1);
-      }
-      // Pin popover.
-      else if (keyCode === KeyCode.enter || keyCode === KeyCode.space) {
-        interactions.pinPopover();
-      }
+      handleKey(event, {
+        onBlockEnd: () => moveBetweenSeries(-1),
+        onBlockStart: () => moveBetweenSeries(1),
+        onInlineStart: () => moveWithinXAxis(-1),
+        onInlineEnd: () => moveWithinXAxis(1),
+        onActivate: () => interactions.pinPopover(),
+      });
     };
 
     const highlightFirstX = () => {
