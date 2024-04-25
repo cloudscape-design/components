@@ -592,7 +592,8 @@ const InternalTable = React.forwardRef(
                               columnId={itemsLoaderColumnId}
                               colIndex={colIndexOffset}
                               colSpan={totalColumnsCount - colIndexOffset}
-                              level={isExpandable ? row.level : undefined}
+                              // Required to make content sticky.
+                              style={{ overflow: 'visible' }}
                             >
                               <ItemsLoader
                                 item={row.item}
