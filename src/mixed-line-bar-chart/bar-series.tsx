@@ -88,16 +88,16 @@ export default function BarSeries<T extends ChartDataTypes>({
       const key = getKeyValue(d.x);
       let barX = x;
       let yValue = d.y;
-      let isMin = !isStacked;
-      let isMax = !isStacked;
+      let isRoundedStart = !isStacked;
+      let isRoundedEnd = !isStacked;
 
       // Stacked bars
       if (isStacked) {
         const allXValues = stackedBarValues.get(key) ?? new Map();
         yValue = allXValues.get(seriesIndex) ?? 0;
         const allXValuesSorted = Array.from(allXValues.values()).sort((a, b) => a - b);
-        isMin = yValue === allXValuesSorted[0];
-        isMax = yValue === allXValuesSorted[allXValuesSorted.length - 1];
+        isRoundedStart = yValue === allXValuesSorted[0];
+        isRoundedEnd = yValue === allXValuesSorted[allXValuesSorted.length - 1];
       }
       // Regular grouped bars
       else if (totalSeriesCount > 1) {
@@ -112,8 +112,8 @@ export default function BarSeries<T extends ChartDataTypes>({
         y: yContinuosScale(yValue) ?? NaN,
         width: barWidth,
         height: Math.abs((yContinuosScale(d.y) ?? NaN) - baseY),
-        isMin,
-        isMax,
+        isRoundedStart,
+        isRoundedEnd,
       };
     });
   })();
@@ -129,7 +129,7 @@ export default function BarSeries<T extends ChartDataTypes>({
         [styles['series--dimmed']]: dimmed,
       })}
     >
-      {xCoordinates.map(({ x, y, width, height, isMin, isMax }, i) => {
+      {xCoordinates.map(({ x, y, width, height, isRoundedStart, isRoundedEnd }, i) => {
         if (!isFinite(x) || !isFinite(height)) {
           return;
         }
@@ -160,15 +160,24 @@ export default function BarSeries<T extends ChartDataTypes>({
         });
         const styleProps = { fill: color, className };
 
-        if (isMin && isMax) {
+        let side: 'left' | 'right' | 'top' | 'bottom' | 'all' | 'none' = 'none';
+        if (isRoundedStart && isRoundedEnd) {
+          side = 'all';
+        } else if (!isRoundedStart && !isRoundedEnd) {
+          side = 'none';
+        } else if (isVertical) {
+          side = isRoundedStart ? 'bottom' : 'top';
+        } else {
+          side = isRoundedStart ? 'left' : 'right';
+        }
+
+        if (side === 'all') {
           return <rect key={i} {...placement} {...styleProps} rx={rx} />;
         }
-        if (!isMin && !isMax) {
+        if (side === 'none') {
           return <rect key={i} {...placement} {...styleProps} rx={0} />;
         }
-        const side =
-          !isVertical && !isMax ? 'left' : !isVertical && isMax ? 'right' : isVertical && isMax ? 'top' : 'bottom';
-        return <path key={i} d={createOneSideRoundedRectPath(placement, rx, side)} {...styleProps} {...styleProps} />;
+        return <path key={i} d={createOneSideRoundedRectPath(placement, rx, side)} {...styleProps} />;
       })}
     </g>
   );
