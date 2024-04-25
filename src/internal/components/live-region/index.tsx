@@ -10,7 +10,9 @@ import { BaseComponentProps } from '../../base-component';
 import { assertive, polite } from './controller';
 
 import styles from './styles.css.js';
-import ScreenreaderOnly from '../screenreader-only';
+
+// Export announcers for components that want to imperatively announce content.
+export { polite, assertive };
 
 export interface LiveRegionProps extends BaseComponentProps {
   /**
@@ -113,8 +115,8 @@ export default function LiveRegion({
     if (content && content !== previousSourceContentRef.current) {
       const announcer = isAssertive ? assertive : polite;
       announcer.announce(content, delay);
-      previousSourceContentRef.current = content;
     }
+    previousSourceContentRef.current = content;
   });
 
   if (source) {
@@ -122,8 +124,8 @@ export default function LiveRegion({
   }
 
   return (
-    <TagName ref={sourceRef} className={clsx(styles.root, className)} {...restProps}>
-      {visible ? children : <ScreenreaderOnly>{children}</ScreenreaderOnly>}
+    <TagName ref={sourceRef} className={clsx(styles.root, className)} hidden={!visible} {...restProps}>
+      {children}
     </TagName>
   );
 }
