@@ -19,7 +19,8 @@ section.universal-toolbar {
   inset-block-start: var(#{custom-props.$headerHeight});
   z-index: 840;
   @include styles.with-motion {
-    transition: ease all 0.35s;
+    transition: ease awsui.$motion-duration-refresh-only-slow;
+    transition-property: top, opacity;
   }
 
   &.disable-body-scroll {
