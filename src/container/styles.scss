@@ -144,7 +144,8 @@
     position: sticky;
     z-index: 830;
     @include styles.with-motion {
-      transition: ease all 0.35s;
+      transition: ease awsui.$motion-duration-refresh-only-slow;
+      transition-property: top;
     }
   }
 

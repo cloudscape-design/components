@@ -86,7 +86,8 @@ section.split-panel-side {
   inset-block-start: var(#{custom-props.$offsetTop});
 
   @include styles.with-motion {
-    transition: ease all 0.35s;
+    transition: ease awsui.$motion-duration-refresh-only-slow;
+    transition-property: height, top;
   }
 
   &:not(.is-split-panel-open),
