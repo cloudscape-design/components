@@ -37,7 +37,6 @@ export interface TableTdElementProps {
   stickyState: StickyColumnsModel;
   isVisualRefresh?: boolean;
   tableRole: TableRole;
-  colSpan?: number;
   level?: number;
   isExpandable?: boolean;
   isExpanded?: boolean;
@@ -78,7 +77,6 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       onExpandableItemToggle,
       expandButtonLabel,
       collapseButtonLabel,
-      colSpan,
     },
     ref
   ) => {
@@ -117,7 +115,6 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           level !== undefined && styles[`expandable-level-${getLevelClassSuffix(level)}`],
           stickyStyles.className
         )}
-        colSpan={colSpan}
         onClick={onClick}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
