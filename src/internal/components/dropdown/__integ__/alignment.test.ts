@@ -7,7 +7,7 @@ import createWrapper from '../../../../../lib/components/test-utils/selectors';
 describe('Dropdown and trigger element alignment', () => {
   describe.each([true, false])('expandToViewport=%s', expandToViewport => {
     const alignments = ['top-left', 'top-right', 'bottom-left', 'bottom-right'] as const;
-    type Alignment = typeof alignments[number];
+    type Alignment = (typeof alignments)[number];
 
     function setupTest(alignment: Alignment, testFn: (page: BasePageObject) => Promise<void>) {
       return useBrowser(async browser => {

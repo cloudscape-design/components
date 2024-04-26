@@ -67,7 +67,8 @@ $gutter: awsui.$space-grid-gutter;
   }
 
   @include styles.with-motion {
-    transition: border-color awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick,
+    transition:
+      border-color awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick,
       background-color awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick;
   }
 }

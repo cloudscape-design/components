@@ -61,16 +61,22 @@ const setupTest = (testFn: (page: ColorTokensMosaikPage) => Promise<void>, vr: b
 const defaultColor = '#23850b';
 const darkColor = '#0d8193';
 const colorTokens = preset.themeable.filter(token => token.startsWith('color'));
-const defaultMap = colorTokens.reduce((acc, current) => {
-  const property = preset.propertiesMap[current];
-  acc[property] = defaultColor;
-  return acc;
-}, {} as Record<string, string>);
-const darkMap = colorTokens.reduce((acc, current) => {
-  const property = preset.propertiesMap[current];
-  acc[property] = darkColor;
-  return acc;
-}, {} as Record<string, string>);
+const defaultMap = colorTokens.reduce(
+  (acc, current) => {
+    const property = preset.propertiesMap[current];
+    acc[property] = defaultColor;
+    return acc;
+  },
+  {} as Record<string, string>
+);
+const darkMap = colorTokens.reduce(
+  (acc, current) => {
+    const property = preset.propertiesMap[current];
+    acc[property] = darkColor;
+    return acc;
+  },
+  {} as Record<string, string>
+);
 
 describe.each<[ThemeMethod]>([['applyTheme'], ['generateThemeStylesheet']])('using %s', (themeMethod: ThemeMethod) => {
   test(

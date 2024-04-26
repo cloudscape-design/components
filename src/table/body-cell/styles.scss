@@ -185,7 +185,9 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
         box-shadow: 4px 0 0 0 awsui.$color-background-container-content;
         clip-path: inset(0 0 0 0);
         &.sticky-cell-last-inline-end {
-          box-shadow: awsui.$shadow-sticky-column-last, 8px 0 0 0 awsui.$color-background-container-content;
+          box-shadow:
+            awsui.$shadow-sticky-column-last,
+            8px 0 0 0 awsui.$color-background-container-content;
           clip-path: inset(0 0 0 -24px);
 
           @include styles.with-direction('rtl') {
