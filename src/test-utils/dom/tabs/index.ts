@@ -29,7 +29,7 @@ export default class TabsWrapper extends ComponentWrapper<HTMLButtonElement> {
    * @param index 1-based index of the clickable element to return
    */
   findTabHeaderContentByIndex(index: number): ElementWrapper<HTMLAnchorElement | HTMLButtonElement> | null {
-    return this.find(`.${styles['tabs-tab']}:nth-child(${index}) .${styles['tabs-tab-header-content']}`);
+    return this.find(`.${styles['tabs-tab']}:nth-child(${index}) .${styles['tabs-tab-header-container']}`);
   }
 
   /**

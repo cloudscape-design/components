@@ -313,3 +313,15 @@ test(
     await expect(page.isFocused(wrapper.findTabContent().toSelector())).resolves.toBe(true);
   })
 );
+
+test(
+  'verifies focus is set on last active tab',
+  setupTest(async page => {
+    await page.focusTabHeader();
+    await page.keys(['ArrowRight']);
+    await page.keys(['ArrowRight']);
+    await page.keys(['Tab']);
+    await page.click(wrapper.findActiveTabDimissibleButton().getElement());
+    await expect(page.isFocused(wrapper.findTabLinkByIndex(2).getElement())).resolves.toBe(true);
+  })
+);

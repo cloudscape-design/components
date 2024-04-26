@@ -20,12 +20,27 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useInternalI18n } from '../i18n/context';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
-function setTabIndexForTabContent(tabContentElement: HTMLElement, isActive: boolean) {
-  const focusableElements = tabContentElement.querySelectorAll('button, a');
+function setTabIndexForTabContainer(
+  tabHeaderContainerElement: HTMLElement,
+  isActive: boolean,
+  activeTabId: string | undefined
+) {
+  const focusableElements = tabHeaderContainerElement.querySelectorAll('button, a');
   focusableElements.forEach(element => {
-    const isFocusable = isActive || tabContentElement.classList.contains(`${styles['tabs-tab-disabled']}`);
+    const isFocusable = isActive || tabHeaderContainerElement.classList.contains(`${styles['tabs-tab-disabled']}`);
     isFocusable ? element.setAttribute('tabIndex', '0') : element.setAttribute('tabIndex', '-1');
   });
+
+  // Handles case where the current tab doesnt focus any elements on tab close
+  const nextActiveTabHeader: HTMLElement | null = tabHeaderContainerElement.querySelector(
+    `[data-testid="${activeTabId}"].${styles['tabs-tab-active']}.${styles['tabs-tab-link']}`
+  );
+  if (nextActiveTabHeader) {
+    // Set focus to the tab header element
+    nextActiveTabHeader.focus();
+  } else {
+    document.body.focus();
+  }
 }
 
 function dismissButton(dismissLabel: TabsProps.Tab['dismissLabel'], onDismiss: TabsProps.Tab['onDismiss']) {
@@ -128,10 +143,10 @@ export function TabHeaderBar({
      * Whenever the active tab changes, we need to update the focus to
      * prioritize any children within the tab header
      */
-    const tabContentElements = document.querySelectorAll(`.${styles['tabs-tab-header-content']}`);
-    tabContentElements.forEach(element => {
+    const tabHeaderContainerElements = document.querySelectorAll(`.${styles['tabs-tab-header-container']}`);
+    tabHeaderContainerElements.forEach(element => {
       const isActive = element.classList.contains(`${styles['tabs-tab-active']}`);
-      setTabIndexForTabContent(element as HTMLElement, isActive);
+      setTabIndexForTabContainer(element as HTMLElement, isActive, activeTabId);
     });
   }, [activeTabId]);
 
@@ -278,8 +293,8 @@ export function TabHeaderBar({
       [styles['tabs-tab-disabled']]: tab.disabled,
     });
 
-    const tabHeaderContentClasses = clsx({
-      [styles['tabs-tab-header-content']]: true,
+    const tabHeaderContainerClasses = clsx({
+      [styles['tabs-tab-header-container']]: true,
       [styles.refresh]: isVisualRefresh,
       [styles['tabs-tab-active']]: activeTabId === tab.id && !tab.disabled,
       [styles['tabs-tab-disabled']]: tab.disabled,
@@ -332,7 +347,7 @@ export function TabHeaderBar({
         role="presentation"
         key={tab.id}
       >
-        <div className={tabHeaderContentClasses}>
+        <div className={tabHeaderContainerClasses}>
           {trigger}
           {action && <span className={styles['tabs-tab-action']}> {action} </span>}
           {dismissible && (

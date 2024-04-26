@@ -83,7 +83,7 @@ $tab-link-outline-width: -1px;
   @include styles.text-wrapping;
 }
 
-.tabs-tab-header-content {
+.tabs-tab-header-container {
   position: relative;
 
   border-block: awsui.$border-divider-section-width solid transparent;
@@ -101,7 +101,7 @@ $tab-link-outline-width: -1px;
   }
 }
 
-.tabs-tab-header-content:not(.tabs-tab-disabled) {
+.tabs-tab-header-container:not(.tabs-tab-disabled) {
   // This is the underline for the currently selected tab.
   &:after {
     content: '';
@@ -128,7 +128,7 @@ $tab-link-outline-width: -1px;
 }
 
 .tabs-tab:not(:last-child) {
-  & > .tabs-tab-header-content {
+  & > .tabs-tab-header-container {
     margin-inline-end: calc(-1 * #{awsui.$border-divider-section-width});
     &:before {
       content: '';
@@ -186,7 +186,7 @@ $tab-link-outline-width: -1px;
 // Remediate focus shadow
 .tabs-tab:first-child {
   margin-inline-start: 1px;
-  & > .tabs-tab-header-content {
+  & > .tabs-tab-header-container {
     padding-inline-start: calc(#{$label-horizontal-spacing} - 1px);
   }
 }
@@ -194,7 +194,7 @@ $tab-link-outline-width: -1px;
 // Remediate focus shadow
 .tabs-tab:last-child {
   margin-inline-end: 1px;
-  & > .tabs-tab-header-content {
+  & > .tabs-tab-header-container {
     padding-inline-end: calc(#{$label-horizontal-spacing} - 1px);
   }
 }
