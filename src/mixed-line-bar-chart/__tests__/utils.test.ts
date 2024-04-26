@@ -1,6 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { matchesX, calculateStackedBarValues } from '../../../lib/components/mixed-line-bar-chart/utils';
+import {
+  matchesX,
+  calculateStackedBarValues,
+  createOneSideRoundedRectPath,
+} from '../../../lib/components/mixed-line-bar-chart/utils';
 
 import { barSeries, barSeries2 } from './common';
 
@@ -164,5 +168,17 @@ describe('calculateStackedBarValues', () => {
         ],
       ])
     );
+  });
+});
+
+describe('createOneSideRoundedRectPath', () => {
+  test.each(['left', 'right', 'top', 'bottom'] as const)('creates path with rx=0 and side="%s"', side => {
+    const path = createOneSideRoundedRectPath({ x: 1, y: 2, width: 3, height: 4 }, 0, side);
+    expect(path).toMatchSnapshot();
+  });
+
+  test.each(['left', 'right', 'top', 'bottom'] as const)('creates path with rx=4 and side="%s"', side => {
+    const path = createOneSideRoundedRectPath({ x: 1, y: 2, width: 3, height: 4 }, 0, side);
+    expect(path).toMatchSnapshot();
   });
 });
