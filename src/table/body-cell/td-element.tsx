@@ -114,7 +114,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           hasSelection && styles['has-selection'],
           hasFooter && styles['has-footer'],
           level !== undefined && styles['body-cell-expandable'],
-          level !== undefined && styles[`body-cell-expandable-level-${getLevelClassSuffix(level)}`],
+          level !== undefined && styles[`expandable-level-${getLevelClassSuffix(level)}`],
           stickyStyles.className
         )}
         colSpan={colSpan}

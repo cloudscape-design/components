@@ -577,30 +577,20 @@ const InternalTable = React.forwardRef(
                             className={styles.row}
                             {...rowRoleProps}
                           >
-                            {hasSelection && (
-                              <TableTdElement
-                                {...sharedCellProps}
-                                className={clsx(styles['selection-control'])}
-                                wrapLines={false}
-                                columnId={selectionColumnId}
-                                colIndex={0}
-                              >
-                                {null}
-                              </TableTdElement>
-                            )}
-                            {visibleColumnDefinitions.length > 0 && (
+                            {(hasSelection || visibleColumnDefinitions.length > 0) && (
                               <TableTdElement
                                 {...sharedCellProps}
                                 wrapLines={false}
                                 columnId={itemsLoaderColumnId}
                                 colIndex={colIndexOffset}
-                                colSpan={totalColumnsCount - colIndexOffset}
+                                colSpan={totalColumnsCount}
                                 // Required to make content sticky.
                                 style={{ overflow: 'visible' }}
-                                level={row.level}
                               >
                                 <ItemsLoader
                                   item={row.item}
+                                  level={row.level}
+                                  hasSelection={hasSelection}
                                   loadingStatus={row.status}
                                   renderLoaderPending={renderLoaderPending}
                                   renderLoaderLoading={renderLoaderLoading}

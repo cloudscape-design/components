@@ -47,11 +47,11 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
   padding-inline-start: $padding;
 
   @for $i from 0 through 9 {
-    &.body-cell-expandable-level-#{$i} {
+    &.expandable-level-#{$i} {
       padding-inline-start: calc($padding + $i * (#{awsui.$space-m} + #{awsui.$space-xs}));
     }
   }
-  &.body-cell-expandable-level-next {
+  &.expandable-level-next {
     padding-inline-start: calc($padding + 9 * (#{awsui.$space-m} + #{awsui.$space-xs}));
   }
 }

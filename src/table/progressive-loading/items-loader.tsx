@@ -6,9 +6,12 @@ import LiveRegion from '../../internal/components/live-region';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { TableProps } from '../interfaces';
 import { applyTrackBy } from '../utils';
+import clsx from 'clsx';
 
 interface ItemsLoaderProps<T> {
   item: null | T;
+  level: number;
+  hasSelection: boolean;
   loadingStatus: TableProps.LoadingStatus;
   renderLoaderPending?: (detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode;
   renderLoaderLoading?: (detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode;
@@ -18,6 +21,8 @@ interface ItemsLoaderProps<T> {
 
 export function ItemsLoader<T>({
   item,
+  level,
+  hasSelection,
   loadingStatus,
   renderLoaderPending,
   renderLoaderLoading,
@@ -41,8 +46,20 @@ export function ItemsLoader<T>({
   let parentTrackId = item && trackBy ? applyTrackBy(trackBy, item) : undefined;
   parentTrackId = typeof parentTrackId === 'string' ? parentTrackId : undefined;
   return (
-    <div className={styles['items-loader']} data-root={item ? 'false' : 'true'} data-parentrow={parentTrackId}>
+    <div
+      data-root={item ? 'false' : 'true'}
+      data-parentrow={parentTrackId}
+      className={clsx(
+        styles['items-loader'],
+        styles[`expandable-level-${getLevelClassSuffix(level)}`],
+        hasSelection && styles['has-selection']
+      )}
+    >
       {content}
     </div>
   );
+}
+
+function getLevelClassSuffix(level: number) {
+  return 0 <= level && level <= 9 ? level : 'next';
 }
