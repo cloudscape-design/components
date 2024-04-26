@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useState, useEffect, useRef } from 'react';
-import Table, { TableProps } from '~components/table';
 import Header from '~components/header';
 import SpaceBetween from '~components/space-between';
 import { EmptyState, getMatchesCountText, renderAriaLive } from './shared-configs';
@@ -23,6 +22,7 @@ import {
   Select,
   StatusIndicator,
   Toggle,
+  TableProps,
 } from '~components';
 import AppContext, { AppContextType } from '../app/app-context';
 import { allInstances } from './expandable-rows/expandable-rows-data';
@@ -31,6 +31,9 @@ import I18nProvider from '~components/i18n';
 import { createColumns, createPreferences, filteringProperties } from './expandable-rows/expandable-rows-configs';
 import { Instance, ariaLabels, getHeaderCounterText } from './expandable-rows/common';
 import { isEqual } from 'lodash';
+
+// TODO: replace with Table once progressive loading API becomes public
+import InternalTable from '~components/table/internal';
 
 type LoadingState = Map<string, { pages: number; status: TableProps.LoadingStatus }>;
 
@@ -96,7 +99,7 @@ export default () => {
         toolsOpen={toolsOpen}
         onToolsChange={({ detail: { open } }) => setToolsOpen(open)}
         content={
-          <Table
+          <InternalTable
             {...tableData.collectionProps}
             stickyColumns={preferences.stickyColumns}
             resizableColumns={settings.resizableColumns}
@@ -106,7 +109,6 @@ export default () => {
             stripedRows={settings.stripedRows}
             columnDefinitions={columnDefinitions}
             items={tableData.items}
-            // TODO: remove when supplemented by collection hooks (https://github.com/cloudscape-design/collection-hooks/pull/72)
             totalItemsCount={tableData.items.length}
             ariaLabels={ariaLabels}
             wrapLines={preferences.wrapLines}

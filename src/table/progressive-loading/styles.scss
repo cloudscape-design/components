@@ -3,30 +3,6 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-@use '../../internal/styles/tokens' as awsui;
-@use '../body-cell/styles' as bodyCellStyles;
-
-@mixin cell-offset($inset) {
-  inset-inline-start: $inset;
-
-  @for $i from 0 through 9 {
-    &.expandable-level-#{$i} {
-      inset-inline-start: calc($inset + $i * (#{awsui.$space-m} + #{awsui.$space-xs}));
-    }
-  }
-  &.expandable-level-next {
-    inset-inline-start: calc($inset + 9 * (#{awsui.$space-m} + #{awsui.$space-xs}));
-  }
-}
-
 .items-loader {
-  position: sticky;
-  inline-size: fit-content;
-  z-index: 798;
-
-  @include cell-offset(awsui.$space-s);
-
-  &.has-selection {
-    @include cell-offset(calc(#{awsui.$space-s} + 57px));
-  }
+  /* used in test utils */
 }

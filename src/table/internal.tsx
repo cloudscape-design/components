@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
 import React, { useCallback, useImperativeHandle, useRef } from 'react';
-import { TableForwardRefType, TableProps, TableRow } from './interfaces';
+import { TableForwardRefType, TableProgressiveLoadingProps, TableProps, TableRow } from './interfaces';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import InternalContainer, { InternalContainerProps } from '../container/internal';
 import { getBaseProps } from '../internal/base-component';
@@ -56,10 +56,10 @@ import { useProgressiveLoadingProps } from './progressive-loading/progressive-lo
 const GRID_NAVIGATION_PAGE_SIZE = 10;
 const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
-const itemsLoaderColumnId = Symbol('items-loader-id');
 
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant' | 'firstIndex'> &
-  InternalBaseComponentProps & {
+  InternalBaseComponentProps &
+  TableProgressiveLoadingProps<T> & {
     __funnelSubStepProps?: InternalContainerProps['__funnelSubStepProps'];
   };
 
@@ -576,28 +576,39 @@ const InternalTable = React.forwardRef(
                             className={styles.row}
                             {...rowRoleProps}
                           >
-                            {(hasSelection || visibleColumnDefinitions.length > 0) && (
+                            {hasSelection && (
                               <TableTdElement
                                 {...sharedCellProps}
+                                className={clsx(styles['selection-control'])}
                                 wrapLines={false}
-                                columnId={itemsLoaderColumnId}
-                                colIndex={colIndexOffset}
-                                colSpan={totalColumnsCount}
-                                // Required to make content sticky.
-                                style={{ overflow: 'visible' }}
+                                columnId={selectionColumnId}
+                                colIndex={0}
                               >
-                                <ItemsLoader
-                                  item={row.item}
-                                  level={row.level}
-                                  hasSelection={hasSelection}
-                                  loadingStatus={row.status}
-                                  renderLoaderPending={renderLoaderPending}
-                                  renderLoaderLoading={renderLoaderLoading}
-                                  renderLoaderError={renderLoaderError}
-                                  trackBy={trackBy}
-                                />
+                                {null}
                               </TableTdElement>
                             )}
+                            {visibleColumnDefinitions.map((column, colIndex) => (
+                              <TableTdElement
+                                key={getColumnKey(column, colIndex)}
+                                {...sharedCellProps}
+                                wrapLines={false}
+                                columnId={column.id ?? colIndex}
+                                colIndex={colIndex + colIndexOffset}
+                                isRowHeader={colIndex === 0}
+                                level={row.level}
+                              >
+                                {colIndex === 0 ? (
+                                  <ItemsLoader
+                                    item={row.item}
+                                    loadingStatus={row.status}
+                                    renderLoaderPending={renderLoaderPending}
+                                    renderLoaderLoading={renderLoaderLoading}
+                                    renderLoaderError={renderLoaderError}
+                                    trackBy={trackBy}
+                                  />
+                                ) : null}
+                              </TableTdElement>
+                            ))}
                           </tr>
                         );
                       })

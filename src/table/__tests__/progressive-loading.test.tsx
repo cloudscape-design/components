@@ -2,11 +2,16 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import { render } from '@testing-library/react';
-import Table, { TableProps } from '../../../lib/components/table';
+import { TableProps } from '../../../lib/components/table';
 import createWrapper from '../../../lib/components/test-utils/dom';
+import progressiveLoadingStyles from '../../../lib/components/table/progressive-loading/styles.css.js';
 import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { ComponentWrapper } from '@cloudscape-design/test-utils-core/dom.js';
+
+// TODO: replace with Table once progressive loading API becomes public
+import Table from '../../../lib/components/table/internal';
+import { TableProgressiveLoadingProps } from '../../../lib/components/table/interfaces';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
@@ -60,7 +65,7 @@ const defaultExpandableRows: TableProps.ExpandableRows<Instance> = {
   onExpandableItemToggle: () => {},
 };
 
-function renderTable(tableProps: Partial<TableProps>) {
+function renderTable(tableProps: Partial<TableProps<Instance>> & Partial<TableProgressiveLoadingProps<Instance>>) {
   const { container } = render(
     <Table
       items={nestedItems}
@@ -72,7 +77,24 @@ function renderTable(tableProps: Partial<TableProps>) {
       {...tableProps}
     />
   );
-  return { container, table: createWrapper(container).findTable()! };
+  const tableWrapper = createWrapper(container).findTable()!;
+  return {
+    container,
+    table: {
+      // TODO: use public test-utils methods
+      findRows: () => {
+        return tableWrapper.findRows();
+      },
+      findRootItemsLoader: () => {
+        const selector = `.${progressiveLoadingStyles['items-loader']}[data-root="true"]`;
+        return tableWrapper.find(selector);
+      },
+      findItemsLoaderByItemId: (itemId: string) => {
+        const selector = `.${progressiveLoadingStyles['items-loader']}[data-parentrow="${itemId}"]`;
+        return tableWrapper.find(selector);
+      },
+    },
+  };
 }
 
 function findParentRow(element: HTMLElement): HTMLTableRowElement {
