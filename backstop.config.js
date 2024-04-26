@@ -15,6 +15,8 @@ const scenarios = findAllPages()
   .filter(pageName => pageName.indexOf('permutations') !== -1 && skippedTests.indexOf(pageName) === -1)
   .map(pageName => ({
     label: pageName,
+    // wait until code-editor is fully loaded and rendered error state
+    readySelector: pageName === 'code-editor/permutations' ? '.ace_error' : undefined,
     url: `http://localhost:8080/#/light/${pageName}`,
     delay: 1000,
   }));
