@@ -214,6 +214,7 @@ describe('Split panel', () => {
       expect(sidePositionTileElement?.disabled).toBeTruthy();
     });
   });
+
   describe('has proper aria properties', () => {
     test('split panel content has correct role', () => {
       const { wrapper } = renderSplitPanel({ contextProps: { position: 'side' } });

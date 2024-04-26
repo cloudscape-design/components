@@ -77,7 +77,7 @@ export default function () {
         }
         content={
           <>
-            <div style={{ marginBottom: '1rem' }}>
+            <div style={{ marginBlockEnd: '1rem' }}>
               <Header variant="h1" description="Basic demo with split panel">
                 Demo page
               </Header>
