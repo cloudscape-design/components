@@ -6,9 +6,10 @@ import { ScaleContinuousNumeric, ScaleTime } from '../internal/vendor/d3-scale';
 
 import { ChartScale, NumericChartScale } from '../internal/components/cartesian-chart/scales';
 import { ChartDataTypes, MixedLineBarChartProps } from './interfaces';
-import { matchesX, getKeyValue, StackedBarValues, createOneSideRoundedRectPath } from './utils';
+import { matchesX, getKeyValue, StackedBarValues } from './utils';
 import styles from './styles.css.js';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { createOneSideRoundedRectPath } from './create-one-side-rounded-rect-path';
 
 export interface BarSeriesProps<T> {
   axis: 'x' | 'y';

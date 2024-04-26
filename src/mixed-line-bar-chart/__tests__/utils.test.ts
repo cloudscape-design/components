@@ -1,10 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import {
-  matchesX,
-  calculateStackedBarValues,
-  createOneSideRoundedRectPath,
-} from '../../../lib/components/mixed-line-bar-chart/utils';
+import { matchesX, calculateStackedBarValues } from '../../../lib/components/mixed-line-bar-chart/utils';
+import { createOneSideRoundedRectPath } from '../../../lib/components/mixed-line-bar-chart/create-one-side-rounded-rect-path';
 
 import { barSeries, barSeries2 } from './common';
 
