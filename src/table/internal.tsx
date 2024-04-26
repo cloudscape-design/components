@@ -588,25 +588,27 @@ const InternalTable = React.forwardRef(
                                 {null}
                               </TableTdElement>
                             )}
-                            <TableTdElement
-                              {...sharedCellProps}
-                              wrapLines={false}
-                              columnId={itemsLoaderColumnId}
-                              colIndex={colIndexOffset}
-                              colSpan={totalColumnsCount - colIndexOffset}
-                              // Required to make content sticky.
-                              style={{ overflow: 'visible' }}
-                              // isRowHeader={true}
-                            >
-                              <ItemsLoader
-                                item={row.item}
-                                loadingStatus={row.status}
-                                renderLoaderPending={renderLoaderPending}
-                                renderLoaderLoading={renderLoaderLoading}
-                                renderLoaderError={renderLoaderError}
-                                trackBy={trackBy}
-                              />
-                            </TableTdElement>
+                            {visibleColumnDefinitions.length > 0 && (
+                              <TableTdElement
+                                {...sharedCellProps}
+                                wrapLines={false}
+                                columnId={itemsLoaderColumnId}
+                                colIndex={colIndexOffset}
+                                colSpan={totalColumnsCount - colIndexOffset}
+                                // Required to make content sticky.
+                                style={{ overflow: 'visible' }}
+                                level={row.level}
+                              >
+                                <ItemsLoader
+                                  item={row.item}
+                                  loadingStatus={row.status}
+                                  renderLoaderPending={renderLoaderPending}
+                                  renderLoaderLoading={renderLoaderLoading}
+                                  renderLoaderError={renderLoaderError}
+                                  trackBy={trackBy}
+                                />
+                              </TableTdElement>
+                            )}
                           </tr>
                         );
                       })
