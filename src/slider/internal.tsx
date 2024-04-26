@@ -45,33 +45,7 @@ export default function InternalSlider({
   const [showTooltip, setShowTooltip] = useState(false);
   const [isActive, setIsActive] = useState(false);
   const labelsId = useUniqueId('labels');
-  const hasValue = value !== undefined;
   const { ariaLabelledby, ariaDescribedby, controlId, invalid } = useFormFieldContext(rest);
-
-  const getValue = () => {
-    const stepIsValid = step && step < max - min && step > min;
-
-    if (value === undefined) {
-      // this is the default html component's fallback value
-      return max < min ? min : min + (max - min) / 2;
-    }
-
-    if (!step) {
-      return value;
-    }
-
-    if (step && stepIsValid && (value - min) % step !== 0) {
-      const closest = getStepArray(step, [min, max]).reduce(function (prev, curr) {
-        return Math.abs(curr - value) < Math.abs(prev - value) ? curr : prev;
-      });
-
-      return closest;
-    }
-
-    return value;
-  };
-
-  const percent = getPercent(Math.max(Math.min(getValue(), max), min), [min, max]);
 
   if (referenceValues && valuesAreValid(referenceValues) === false) {
     warnOnce('Slider', 'All reference values must be integers. Non-integer values will not be displayed.');
@@ -85,24 +59,50 @@ export default function InternalSlider({
     warnOnce('Slider', 'The step value cannot be greater than the difference between the min and max.');
   }
 
-  if (step && hasValue && (value - min) % step !== 0) {
+  if (step && value !== undefined && (value - min) % step !== 0) {
     warnOnce('Slider', 'Slider value must be a multiple of the step. The value will round to the nearest step value.');
   }
 
-  const tooltip = <Tooltip value={valueFormatter ? valueFormatter(getValue()) : getValue()} trackRef={handleRef} />;
+  const getValue = () => {
+    const stepIsValid = step && step < max - min && step > min;
 
-  const getAriaValueText = () => {
-    if (valueFormatter && valueFormatter(getValue())) {
-      return valueFormatter(getValue());
+    if (value === undefined) {
+      // this is the default html input's fallback value
+      return max < min ? min : min + (max - min) / 2;
     }
 
-    if (valueFormatter && !valueFormatter(getValue())) {
+    if (!step) {
+      return value;
+    }
+
+    // if the value is not a multiple of the step, then find the closest step
+    // and make that the value (this is also the native input behavior)
+    if (step && stepIsValid && (value - min) % step !== 0) {
+      const closest = getStepArray(step, [min, max]).reduce(function (prev, curr) {
+        return Math.abs(curr - value) < Math.abs(prev - value) ? curr : prev;
+      });
+
+      return closest;
+    }
+
+    return value;
+  };
+
+  const sliderValue = getValue();
+  const percent = getPercent(Math.max(Math.min(sliderValue, max), min), [min, max]);
+
+  const getAriaValueText = () => {
+    if (valueFormatter && valueFormatter(sliderValue)) {
+      return valueFormatter(sliderValue);
+    }
+
+    if (valueFormatter && !valueFormatter(sliderValue)) {
       const middleValues = referenceValues ? referenceValues : [];
-      const valueArray = [min, ...middleValues, getValue(), max];
-      const prevAndNext = findLowerAndHigherValues(valueArray, getValue());
+      const valueArray = [min, ...middleValues, sliderValue, max];
+      const prevAndNext = findLowerAndHigherValues(valueArray, sliderValue);
       const previousValue = prevAndNext.lower ? valueFormatter(prevAndNext.lower) : valueFormatter(min);
       const nextValue = prevAndNext.higher ? valueFormatter(prevAndNext.higher) : valueFormatter(max);
-      const value = getValue();
+      const value = sliderValue;
 
       return i18n('i18nStrings.valueTextRange', i18nStrings?.valueTextRange(previousValue, value, nextValue), format =>
         format({ value, previousValue, nextValue })
@@ -114,7 +114,9 @@ export default function InternalSlider({
 
   return (
     <div {...baseProps} ref={__internalRootRef} className={clsx(baseProps.className, styles.root)}>
-      {showTooltip && tooltip}
+      {showTooltip && (
+        <Tooltip value={valueFormatter ? valueFormatter(sliderValue) : sliderValue} trackRef={handleRef} />
+      )}
       <div
         ref={handleRef}
         className={clsx(styles['tooltip-thumb'])}
@@ -150,7 +152,7 @@ export default function InternalSlider({
           step={step}
           min={min}
           max={max}
-          value={getValue()}
+          value={sliderValue}
         />
       )}
 
@@ -196,15 +198,15 @@ export default function InternalSlider({
           setIsActive(false);
         }}
         step={step}
-        value={getValue()}
+        value={sliderValue}
         onChange={event => {
           onChange && fireNonCancelableEvent(onChange, { value: Number(event.target.value) });
         }}
         className={clsx(styles.thumb, {
           [styles.error]: invalid,
           [styles.disabled]: disabled,
-          [styles.min]: (hasValue && value <= min) || max < min,
-          [styles.max]: hasValue && value >= max && min < max,
+          [styles.min]: sliderValue <= min || max < min,
+          [styles.max]: sliderValue >= max && min < max,
         })}
       />
 

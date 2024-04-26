@@ -27,6 +27,8 @@ export default function SliderLabels({
   const MAX_LABEL_COUNT = isMobile ? 4 : 10;
   const minDistance = (max - min) / MAX_LABEL_COUNT;
 
+  // Returns only values that have enough distance between them to show properly.
+  // We also remove non-integer values and any values outside of the slider range.
   const getVisibleReferenceValues = () => {
     if (!referenceValues || referenceValues.length === 0) {
       return [];
