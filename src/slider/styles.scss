@@ -19,8 +19,6 @@
 }
 
 .slider {
-  inline-size: 100%;
-  position: relative;
   display: flex;
   align-items: center;
 
@@ -50,7 +48,7 @@
   &-range {
     background-color: awsui.$color-background-slider-handle-default;
     block-size: 4px;
-    inline-size: calc(var(#{custom-props.$sliderRangeInlineSize}) + 16px);
+    inline-size: calc(var(#{custom-props.$sliderRangeInlineSize}) + mixins.$thumb-size);
 
     &.error {
       background-color: awsui.$color-text-status-error;
@@ -81,7 +79,6 @@
     3fr;
   grid-auto-rows: 100%;
   padding-block-start: awsui.$space-m;
-  margin-inline: 0;
 
   &-noref {
     grid-template-columns: 1fr 1fr;
@@ -99,7 +96,7 @@
     grid-column: 1;
     grid-row: 1;
     grid-column-end: var(#{custom-props.$sliderMinEnd});
-    margin-inline-start: -8px;
+    margin-inline-start: calc(mixins.$thumb-size / -2);
   }
 
   &-max {
@@ -108,7 +105,7 @@
     grid-row: 1;
     grid-column-end: calc(var(#{custom-props.$sliderLabelCount}) + 1);
     grid-column-start: var(#{custom-props.$sliderMaxStart});
-    margin-inline-end: -8px;
+    margin-inline-end: calc(mixins.$thumb-size / -2);
   }
 
   &-aria-description {
@@ -137,21 +134,20 @@
 .ticks {
   display: grid;
   grid-template-columns: repeat(var(#{custom-props.$sliderTickCount}), 1fr);
-  inline-size: calc(100% - 16px);
+  inline-size: calc(100% - mixins.$thumb-size);
   margin-inline: calc(mixins.$thumb-size / 2);
 
   &-wrapper {
     block-size: 0;
     display: flex;
 
-    inline-size: calc(100% + 16px);
     margin-inline: calc(mixins.$thumb-size / -2);
   }
 }
 
 .tick {
   grid-row: 1;
-  block-size: 8px;
+  block-size: awsui.$space-xs;
   inline-size: awsui.$space-xxxs;
   padding-inline: 0;
   padding-block: 0;
@@ -199,9 +195,7 @@
   appearance: none;
   position: absolute;
   block-size: 0;
-  // inline-size: calc(100% + mixins.$thumb-size);
-  // margin-inline-start: calc(mixins.$thumb-size / -2);
-  inline-size: calc(100% + 16px);
+  inline-size: calc(100% + mixins.$thumb-size);
   margin-inline-start: calc(mixins.$thumb-size / -2);
 
   outline: 0;
