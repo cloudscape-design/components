@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import Table, { TableProps } from '~components/table';
+import { TableProps } from '~components/table';
 import ScreenshotArea from '../utils/screenshot-area';
 import { Box, Input, Link } from '~components';
 import { columnLabel } from './shared-configs';
@@ -9,6 +9,9 @@ import { range } from 'lodash';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import { ariaLabels } from './expandable-rows/common';
+
+// TODO: replace with Table once progressive loading API becomes public
+import InternalTable from '~components/table/internal';
 
 interface Instance {
   name: string;
@@ -75,6 +78,7 @@ interface Permutation {
   stripedRows?: boolean;
   wrapLines?: boolean;
   selectionType?: 'single' | 'multi';
+  progressiveLoading?: boolean;
 }
 
 const permutations = createPermutations<Permutation>([
@@ -138,6 +142,28 @@ const permutations = createPermutations<Permutation>([
     wrapLines: [false],
     selectionType: ['single'],
   },
+  {
+    title: ['Progressive loading with sticky columns and selection'],
+    items: [itemsMixed],
+    resizableColumns: [false],
+    editableCells: [false],
+    stickyColumns: [true],
+    stripedRows: [false],
+    wrapLines: [false],
+    selectionType: [undefined, 'single'],
+    progressiveLoading: [true],
+  },
+  {
+    title: ['Progressive loading with striped rows and selection'],
+    items: [itemsMixed],
+    resizableColumns: [true],
+    editableCells: [false],
+    stickyColumns: [false],
+    stripedRows: [true],
+    wrapLines: [false],
+    selectionType: [undefined, 'multi'],
+    progressiveLoading: [true],
+  },
 ]);
 
 export default () => {
@@ -151,7 +177,7 @@ export default () => {
         <PermutationsView
           permutations={permutations}
           render={permutation => (
-            <Table
+            <InternalTable
               items={permutation.items}
               header={
                 <Box fontWeight="bold" color="text-status-info">
@@ -216,6 +242,25 @@ export default () => {
                 expandedItems: flatten(permutation.items).filter(item => item.children && item.children.length > 0),
                 onExpandableItemToggle: () => {},
               }}
+              getLoadingStatus={
+                permutation.progressiveLoading
+                  ? item => {
+                      if (!item) {
+                        return 'pending';
+                      }
+                      if (item.name === 'Root-1') {
+                        return 'error';
+                      }
+                      if (item.name === 'Nested-1.3') {
+                        return 'loading';
+                      }
+                      return 'finished';
+                    }
+                  : undefined
+              }
+              renderLoaderPending={({ item }) => `load more for ${item?.name ?? 'root'}`}
+              renderLoaderLoading={({ item }) => `loading items for ${item?.name ?? 'root'}`}
+              renderLoaderError={({ item }) => `error for ${item?.name ?? 'root'}`}
               submitEdit={permutation.editableCells ? () => {} : undefined}
               ariaLabels={{ ...ariaLabels, tableLabel: permutation.title }}
             />
