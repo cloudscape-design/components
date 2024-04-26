@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { Theme, applyTheme } from '../../../lib/components/theming';
+import { Theme, applyTheme, generateThemeStylesheet } from '../../../lib/components/theming';
 
 const findStyleNode = () => document.head.querySelector('style');
 const attachNonceMetaElement = (nonce: string) => {
@@ -36,4 +36,8 @@ test('applyTheme respects nonce meta elements', () => {
   applyTheme({ theme });
 
   expect(findStyleNode()).toHaveAttribute('nonce', nonce);
+});
+
+test('generateThemeStylesheet returns the theme override stylesheet as a string', () => {
+  expect(generateThemeStylesheet({ theme })).toEqual(expect.any(String));
 });
