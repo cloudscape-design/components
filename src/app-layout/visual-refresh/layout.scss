@@ -41,7 +41,6 @@ explicitly set in script.
   #{custom-props.$notificationsGap}: 0px;
   #{custom-props.$notificationsHeight}: 0px;
   #{custom-props.$offsetTop}: var(#{custom-props.$headerHeight});
-  #{custom-props.$offsetTopWithNotifications}: 0px;
   #{custom-props.$overlapHeight}: #{awsui.$space-dark-header-overlap-distance};
   background-color: awsui.$color-background-layout-main;
   color: awsui.$color-text-body-default;
@@ -135,37 +134,6 @@ explicitly set in script.
   @include styles.media-breakpoint-down(styles.$breakpoint-small) {
     #{custom-props.$defaultMinContentWidth}: 0px;
   }
-
-  /*
-  The offset top value for components with position: sticky (AppBar, Navigation, 
-  Notifications, Tools) will be set to the header height value. The offset top value 
-  for AppLayout contentMain children with position: sticky will be the combined value 
-  of the header and notifications height in addition to the notifications top margin
-  and some additional vertical space for aesthetics.
-  */
-  &:not(.has-sticky-notifications):not(.has-sticky-background) {
-    #{custom-props.$offsetTopWithNotifications}: var(#{custom-props.$headerHeight});
-  }
-
-  &:not(.has-sticky-notifications).has-sticky-background {
-    #{custom-props.$offsetTopWithNotifications}: calc(var(#{custom-props.$headerHeight}) + #{awsui.$space-scaled-s});
-  }
-
-  /* stylelint-disable scss/operator-no-newline-after */
-  &.has-sticky-notifications:not(.has-sticky-background) {
-    #{custom-props.$offsetTopWithNotifications}: calc(
-      var(#{custom-props.$offsetTop}) + var(#{custom-props.$notificationsGap}) +
-        var(#{custom-props.$notificationsHeight}) + #{awsui.$space-xxxs}
-    );
-  }
-
-  &.has-sticky-notifications.has-sticky-background {
-    #{custom-props.$offsetTopWithNotifications}: calc(
-      var(#{custom-props.$offsetTop}) + var(#{custom-props.$notificationsGap}) +
-        var(#{custom-props.$notificationsHeight}) + #{awsui.$space-scaled-s}
-    );
-  }
-  /* stylelint-enable scss/operator-no-newline-after */
 
   /*
   In desktop viewports the content gap property for the left and right
@@ -292,17 +260,6 @@ notifications top margin and some additional vertical space for aesthetics.
 
   &.has-split-panel.split-panel-position-bottom {
     #{custom-props.$mainTemplateRows}: repeat(2, auto);
-  }
-
-  &:not(.has-sticky-notifications) {
-    #{custom-props.$offsetTopWithNotifications}: 0px;
-  }
-
-  // #{awsui.$space-xs} token needs to align with the top margin in the notifications CSS
-  &.has-sticky-notifications {
-    #{custom-props.$offsetTopWithNotifications}: calc(
-      var(#{custom-props.$notificationsHeight}) + #{awsui.$space-xs} + #{awsui.$space-xxs}
-    );
   }
 }
 

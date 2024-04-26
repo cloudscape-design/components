@@ -12,7 +12,6 @@ import { useFocusControl } from './utils/use-focus-control';
 import styles from './styles.css.js';
 import testutilStyles from './test-classes/styles.css.js';
 import { findUpUntil } from '../internal/utils/dom';
-import { AppLayoutContext } from '../internal/context/app-layout-context';
 import { SplitPanelSideToggleProps } from '../internal/context/split-panel-context';
 import {
   CONSTRAINED_MAIN_PANEL_MIN_HEIGHT,
@@ -33,6 +32,7 @@ import { useStableCallback } from '@cloudscape-design/component-toolkit/internal
 
 import { useSplitPanelFocusControl } from './utils/use-split-panel-focus-control';
 import { TOOLS_DRAWER_ID, useDrawers } from './utils/use-drawers';
+import { getStickyOffsetVars } from './utils/sticky-offsets';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { togglesConfig } from './toggles';
 
@@ -176,7 +176,7 @@ const ClassicAppLayout = React.forwardRef(
     const [notificationsHeight, notificationsRef] = useContainerQuery(rect => rect.contentBoxHeight);
     const anyPanelOpen = navigationVisible || toolsVisible || !!activeDrawer;
     const hasRenderedNotifications = notificationsHeight ? notificationsHeight > 0 : false;
-    const stickyNotificationsHeight = stickyNotifications ? notificationsHeight : null;
+    const stickyNotificationsHeight = stickyNotifications ? notificationsHeight ?? 0 : 0;
 
     const [splitPanelPreferences, setSplitPanelPreferences] = useControllable(
       controlledSplitPanelPreferences,
@@ -311,7 +311,7 @@ const ClassicAppLayout = React.forwardRef(
     const [splitPanelReportedHeaderHeight, setSplitPanelReportedHeaderHeight] = useState(0);
 
     const splitPanelContextProps: SplitPanelProviderProps = {
-      topOffset: placement.insetBlockStart + (finalSplitPanePosition === 'bottom' ? stickyNotificationsHeight || 0 : 0),
+      topOffset: placement.insetBlockStart + (finalSplitPanePosition === 'bottom' ? stickyNotificationsHeight : 0),
       bottomOffset: placement.insetBlockEnd,
       leftOffset:
         placement.insetInlineStart +
@@ -485,7 +485,6 @@ const ClassicAppLayout = React.forwardRef(
                 {...contentWrapperProps}
                 ref={mainContentRef}
                 disablePaddings={disableContentPaddings}
-                // eslint-disable-next-line react/forbid-component-props
                 className={clsx(
                   !disableContentPaddings && styles['content-wrapper'],
                   !disableContentPaddings &&
@@ -500,20 +499,16 @@ const ClassicAppLayout = React.forwardRef(
                     !contentHeader &&
                     styles['content-wrapper-first-child']
                 )}
+                style={getStickyOffsetVars(
+                  placement.insetBlockStart,
+                  placement.insetBlockEnd + (splitPanelBottomOffset || 0),
+                  `${stickyNotificationsHeight}px`,
+                  mobileBarHeight && !disableBodyScroll ? `${mobileBarHeight}px` : '0px',
+                  !!disableBodyScroll,
+                  isMobile
+                )}
               >
-                <AppLayoutContext.Provider
-                  value={{
-                    stickyOffsetTop:
-                      // We don't support the table header being sticky in case the deprecated disableBodyScroll is enabled,
-                      // therefore we ensure the table header scrolls out of view by offseting a large enough value (9999px)
-                      (disableBodyScroll ? (isMobile ? -9999 : 0) : placement.insetBlockStart) +
-                      (isMobile ? 0 : stickyNotificationsHeight !== null ? stickyNotificationsHeight : 0),
-                    stickyOffsetBottom: placement.insetBlockEnd + (splitPanelBottomOffset || 0),
-                    mobileBarHeight: mobileBarHeight ?? 0,
-                  }}
-                >
-                  {content}
-                </AppLayoutContext.Provider>
+                {content}
               </ContentWrapper>
             </div>
             {finalSplitPanePosition === 'bottom' && splitPanelWrapped}

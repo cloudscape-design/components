@@ -16,13 +16,13 @@ import { SizeControlProps } from '../app-layout/utils/interfaces';
 
 import styles from './styles.css.js';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { AppLayoutContext } from '../internal/context/app-layout-context';
 import { Transition } from '../internal/components/transition';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { SplitPanelContentSide } from './side';
 import { SplitPanelContentBottom } from './bottom';
 import { useInternalI18n } from '../i18n/context';
+import globalVars from '../internal/styles/global-vars';
 
 export { SplitPanelProps };
 
@@ -71,16 +71,10 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
     const onSliderPointerDown = usePointerEvents(sizeControlProps);
     const onKeyDown = useKeyboardEvents(sizeControlProps);
 
-    const wrappedChildren = (
-      <AppLayoutContext.Provider
-        value={{
-          stickyOffsetTop: topOffset,
-          stickyOffsetBottom: bottomOffset,
-        }}
-      >
-        {children}
-      </AppLayoutContext.Provider>
-    );
+    const contentStyle = {
+      [globalVars.stickyVerticalTopOffset]: topOffset,
+      [globalVars.stickyVerticalBottomOffset]: bottomOffset,
+    };
 
     const panelHeaderId = useUniqueId('split-panel-header');
 
@@ -203,6 +197,7 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
           <>
             {position === 'side' && (
               <SplitPanelContentSide
+                style={contentStyle}
                 resizeHandle={resizeHandle}
                 baseProps={baseProps}
                 isOpen={isOpen}
@@ -214,12 +209,13 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
                 header={wrappedHeader}
                 panelHeaderId={panelHeaderId}
               >
-                {wrappedChildren}
+                {children}
               </SplitPanelContentSide>
             )}
 
             {position === 'bottom' && (
               <SplitPanelContentBottom
+                style={contentStyle}
                 resizeHandle={resizeHandle}
                 baseProps={baseProps}
                 isOpen={isOpen}
@@ -232,7 +228,7 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
                 transitioningElementRef={transitioningElementRef}
                 appLayoutMaxWidth={appLayoutMaxWidth}
               >
-                {wrappedChildren}
+                {children}
               </SplitPanelContentBottom>
             )}
             {isPreferencesOpen && (

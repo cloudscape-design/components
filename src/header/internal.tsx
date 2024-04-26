@@ -15,6 +15,7 @@ import { CollectionLabelContext } from '../internal/context/collection-label-con
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_SUBSTEP_NAME } from '../internal/analytics/selectors';
 import { useContainerHeader } from '../internal/context/container-header';
+import { getGlobalFlag } from '../internal/utils/global-flags';
 
 interface InternalHeaderProps extends SomeRequired<HeaderProps, 'variant'>, InternalBaseComponentProps {
   __disableActionsWrapping?: boolean;
@@ -46,6 +47,7 @@ export default function InternalHeader({
   // If is mobile there is no need to have the dynamic variant because it's scrolled out of view
   const dynamicVariant = !isMobile && isStuck ? 'h2' : 'h1';
   const variantOverride = variant === 'awsui-h1-sticky' ? (isRefresh ? dynamicVariant : 'h2') : variant;
+  const hasToolbarHeader = getGlobalFlag('appLayoutWidget');
 
   return (
     <div
@@ -55,6 +57,7 @@ export default function InternalHeader({
         baseProps.className,
         styles[`root-variant-${variantOverride}`],
         isRefresh && styles.refresh,
+        hasToolbarHeader && styles['root-with-toolbar'],
         !actions && [styles[`root-no-actions`]],
         description && [styles[`root-has-description`]]
       )}
