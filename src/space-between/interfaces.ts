@@ -5,6 +5,8 @@ import { BaseComponentProps } from '../internal/base-component';
 export interface SpaceBetweenProps extends BaseComponentProps {
   /**
    * Defines the direction in which the content is laid out.
+   *
+   * @defaultValue 'vertical'
    */
   direction?: SpaceBetweenProps.Direction;
 
