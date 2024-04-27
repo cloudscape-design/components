@@ -56,7 +56,8 @@ export default function InternalWizard({
     controlledProp: 'activeStepIndex',
     changeHandler: 'onNavigate',
   });
-  const { funnelInteractionId, funnelSubmit, funnelCancel, funnelProps, funnelNextOrSubmitAttempt } = useFunnel();
+  const { funnelIdentifier, funnelInteractionId, funnelSubmit, funnelCancel, funnelProps, funnelNextOrSubmitAttempt } =
+    useFunnel();
   const actualActiveStepIndex = activeStepIndex ? Math.min(activeStepIndex, steps.length - 1) : 0;
 
   const farthestStepIndex = useRef<number>(actualActiveStepIndex);
@@ -101,7 +102,7 @@ export default function InternalWizard({
     }
   };
 
-  useFunnelChangeEvent(funnelInteractionId, steps);
+  useFunnelChangeEvent(funnelInteractionId, funnelIdentifier, steps);
 
   const i18n = useInternalI18n('wizard');
   const skipToButtonLabel = i18n(
