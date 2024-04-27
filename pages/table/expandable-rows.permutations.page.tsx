@@ -143,25 +143,36 @@ const permutations = createPermutations<Permutation>([
     selectionType: ['single'],
   },
   {
-    title: ['Progressive loading with sticky columns and selection'],
+    title: ['Progressive loading with sticky columns and no selection'],
     items: [itemsMixed],
     resizableColumns: [false],
     editableCells: [false],
     stickyColumns: [true],
     stripedRows: [false],
     wrapLines: [false],
-    selectionType: [undefined, 'single'],
+    selectionType: [undefined],
     progressiveLoading: [true],
   },
   {
-    title: ['Progressive loading with striped rows and selection'],
+    title: ['Progressive loading with sticky columns and single selection'],
+    items: [itemsMixed],
+    resizableColumns: [false],
+    editableCells: [false],
+    stickyColumns: [true],
+    stripedRows: [false],
+    wrapLines: [false],
+    selectionType: ['single'],
+    progressiveLoading: [true],
+  },
+  {
+    title: ['Progressive loading with striped rows and multi selection'],
     items: [itemsMixed],
     resizableColumns: [true],
     editableCells: [false],
     stickyColumns: [false],
     stripedRows: [true],
     wrapLines: [false],
-    selectionType: [undefined, 'multi'],
+    selectionType: ['multi'],
     progressiveLoading: [true],
   },
 ]);
@@ -178,6 +189,7 @@ export default () => {
           permutations={permutations}
           render={permutation => (
             <InternalTable
+              variant="container"
               items={permutation.items}
               header={
                 <Box fontWeight="bold" color="text-status-info">
