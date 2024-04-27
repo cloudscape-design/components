@@ -91,6 +91,7 @@ export default function InternalFormField({
   __hideLabel,
   __internalRootRef = null,
   __disableGutters = false,
+  __analyticsMetadata = undefined,
   ...rest
 }: InternalFormFieldProps) {
   const baseProps = getBaseProps(rest);
@@ -100,9 +101,9 @@ export default function InternalFormField({
   const generatedControlId = controlId || instanceUniqueId;
   const formFieldId = controlId || generatedControlId;
 
-  const { funnelInteractionId, submissionAttempt, funnelState, errorCount } = useFunnel();
-  const { stepNumber, stepNameSelector } = useFunnelStep();
-  const { subStepSelector, subStepNameSelector } = useFunnelSubStep();
+  const { funnelIdentifier, funnelInteractionId, submissionAttempt, funnelState, errorCount } = useFunnel();
+  const { stepIdentifier, stepNumber, stepNameSelector } = useFunnelStep();
+  const { subStepErrorContext, subStepIdentifier, subStepSelector, subStepNameSelector } = useFunnelSubStep();
 
   const slotIds = getSlotIds(formFieldId, label, description, constraintText, errorText);
 
@@ -140,15 +141,21 @@ export default function InternalFormField({
       if (errorIsVisible) {
         FunnelMetrics.funnelSubStepError({
           funnelInteractionId,
+          funnelIdentifier,
           subStepSelector,
           subStepName,
           subStepNameSelector,
+          subStepIdentifier,
           stepNumber,
           stepName,
           stepNameSelector,
+          stepIdentifier,
+          subStepErrorContext,
           fieldErrorSelector: `${getFieldSlotSeletor(slotIds.error)} .${styles.error__message}`,
           fieldLabelSelector: getFieldSlotSeletor(slotIds.label),
           subStepAllSelector: getSubStepAllSelector(),
+          fieldIdentifier: __analyticsMetadata?.instanceIdentifier,
+          fieldErrorContext: __analyticsMetadata?.errorContext,
         });
       }
 

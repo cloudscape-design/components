@@ -69,9 +69,9 @@ const InternalLink = React.forwardRef(
 
     const infoLinkLabelFromContext = useContext(InfoLinkLabelContext);
 
-    const { funnelInteractionId } = useFunnel();
-    const { stepNumber, stepNameSelector } = useFunnelStep();
-    const { subStepSelector, subStepNameSelector } = useFunnelSubStep();
+    const { funnelIdentifier, funnelInteractionId } = useFunnel();
+    const { stepIdentifier, stepNumber, stepNameSelector } = useFunnelStep();
+    const { subStepIdentifier, subStepSelector, subStepNameSelector } = useFunnelSubStep();
 
     const fireFunnelEvent = (funnelInteractionId: string) => {
       if (variant === 'info') {
@@ -79,9 +79,12 @@ const InternalLink = React.forwardRef(
         const subStepName = getNameFromSelector(subStepNameSelector);
 
         FunnelMetrics.helpPanelInteracted({
+          funnelIdentifier,
           funnelInteractionId,
+          stepIdentifier,
           stepNumber,
           stepName,
+          subStepIdentifier,
           stepNameSelector,
           subStepSelector,
           subStepName,
@@ -94,10 +97,13 @@ const InternalLink = React.forwardRef(
         const subStepName = getNameFromSelector(subStepNameSelector);
 
         FunnelMetrics.externalLinkInteracted({
+          funnelIdentifier,
           funnelInteractionId,
+          stepIdentifier,
           stepNumber,
           stepName,
           stepNameSelector,
+          subStepIdentifier,
           subStepSelector,
           subStepName,
           subStepNameSelector,

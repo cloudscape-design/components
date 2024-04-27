@@ -27,9 +27,9 @@ function Wizard({ isLoadingNextStep = false, allowSkipTo = false, ...props }: Wi
 
   return (
     <AnalyticsFunnel
-      instanceIdentifier={analyticsMetadata?.instanceIdentifier}
-      flowType={analyticsMetadata?.flowType}
-      errorContext={analyticsMetadata?.errorContext}
+      funnelIdentifier={analyticsMetadata?.instanceIdentifier}
+      funnelFlowType={analyticsMetadata?.flowType}
+      funnelErrorContext={analyticsMetadata?.errorContext}
       funnelType="multi-page"
       optionalStepNumbers={props.steps
         .map((step, index) => (step.isOptional ? index + 1 : -1))

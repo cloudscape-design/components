@@ -29,11 +29,11 @@ import { nodeBelongs } from '../../utils/node-belongs';
  */
 export const useFunnelSubStep = () => {
   const context = useContext(FunnelSubStepContext);
-  const { funnelInteractionId, funnelState, latestFocusCleanupFunction } = useFunnel();
-  const { stepNumber, stepNameSelector, subStepConfiguration } = useFunnelStep();
+  const { funnelInteractionId, funnelIdentifier, funnelState, latestFocusCleanupFunction } = useFunnel();
+  const { stepNumber, stepIdentifier, stepNameSelector, subStepConfiguration } = useFunnelStep();
 
   const {
-    instanceIdentifier,
+    subStepIdentifier,
     subStepId,
     subStepSelector,
     subStepNameSelector,
@@ -74,12 +74,14 @@ export const useFunnelSubStep = () => {
         ?.get(stepNumber)
         ?.find(step => step.name === subStepName)?.number;
       FunnelMetrics.funnelSubStepStart({
-        instanceIdentifier,
+        funnelIdentifier,
         funnelInteractionId,
+        subStepIdentifier,
         subStepSelector,
         subStepNameSelector,
         subStepName,
         subStepNumber,
+        stepIdentifier,
         stepNumber,
         stepName,
         stepNameSelector,
@@ -107,12 +109,14 @@ export const useFunnelSubStep = () => {
 
         if (funnelState.current !== 'cancelled') {
           FunnelMetrics.funnelSubStepComplete({
-            instanceIdentifier,
+            funnelIdentifier,
             funnelInteractionId,
+            subStepIdentifier,
             subStepSelector,
             subStepNameSelector,
             subStepName,
             subStepNumber,
+            stepIdentifier,
             stepNumber,
             stepName,
             stepNameSelector,

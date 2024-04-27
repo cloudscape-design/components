@@ -3,6 +3,7 @@
 import { BaseComponentProps } from '../internal/base-component';
 import React from 'react';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { AnalyticsMetadata } from '../internal/analytics/interfaces';
 
 export interface FormFieldProps extends BaseComponentProps {
   /**
@@ -92,4 +93,5 @@ export interface InternalFormFieldProps extends FormFieldProps, InternalBaseComp
    * Disable the gutter applied by default.
    */
   __disableGutters?: boolean;
+  __analyticsMetadata?: AnalyticsMetadata;
 }
