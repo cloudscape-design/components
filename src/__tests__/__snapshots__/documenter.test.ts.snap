@@ -12754,6 +12754,184 @@ Object that represents an expandable group of links.
 }
 `;
 
+exports[`Documenter definition for slider matches the snapshot: slider 1`] = `
+Object {
+  "events": Array [
+    Object {
+      "cancelable": false,
+      "description": "Called when the user selects a value.
+The event \`detail\` contains the current \`value\`.",
+      "detailInlineType": Object {
+        "name": "SliderProps.ChangeDetail",
+        "properties": Array [
+          Object {
+            "name": "value",
+            "optional": false,
+            "type": "number",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "SliderProps.ChangeDetail",
+      "name": "onChange",
+    },
+  ],
+  "functions": Array [],
+  "name": "Slider",
+  "properties": Array [
+    Object {
+      "description": "Adds \`aria-describedby\` to the component. If you're using this component within a form field,
+don't set this property because the form field component automatically sets it.
+Use this property if the component isn't surrounded by a form field, or you want to override the value
+automatically set by the form field (for example, if you have two components within a single form field).
+
+To use it correctly, define an ID for each element that you want to use as a description
+and set the property to a string of each ID separated by spaces (for example, \`\\"id1 id2 id3\\"\`).
+",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds an aria-description for slider labels.
+Use when sliders have formatted reference values.
+",
+      "name": "ariaDescription",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds an \`aria-label\` to the native control.
+Use this if you don't have a visible label for this control.
+",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds \`aria-labelledby\` to the component. If you're using this component within a form field,
+don't set this property because the form field component automatically sets it.
+Use this property if the component isn't surrounded by a form field, or you want to override the value
+automatically set by the form field (for example, if you have two components within a single form field).
+
+To use it correctly, define an ID for the element you want to use as label and set the property to that ID.
+",
+      "name": "ariaLabelledby",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Specifies the ID of the native form element. You can use it to relate
+a label element's \`for\` attribute to this control.
+It defaults to an automatically generated ID that
+is provided by its parent form field component.
+",
+      "name": "controlId",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Whether or not the slider is disabled.",
+      "name": "disabled",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Hides the colored fill line, so only the handle is visible.",
+      "name": "hideFillLine",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "An object containing all the necessary localized strings required by the component.",
+      "i18nTag": true,
+      "inlineType": Object {
+        "name": "SliderProps.I18nStrings",
+        "properties": Array [
+          Object {
+            "name": "valueTextRange",
+            "optional": false,
+            "type": "(previousValue: string, value: number, nextValue: string) => string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "SliderProps.I18nStrings",
+    },
+    Object {
+      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Overrides the invalidation state. Usually the invalid state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.",
+      "name": "invalid",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Indicates the maximum value.",
+      "name": "max",
+      "optional": false,
+      "type": "number",
+    },
+    Object {
+      "description": "Indicates the minimum value.",
+      "name": "min",
+      "optional": false,
+      "type": "number",
+    },
+    Object {
+      "description": "Labels shown between the minimum and maximum values.",
+      "name": "referenceValues",
+      "optional": true,
+      "type": "ReadonlyArray<number>",
+    },
+    Object {
+      "description": "How big the step size is.",
+      "name": "step",
+      "optional": true,
+      "type": "number",
+    },
+    Object {
+      "description": "Show the tick marks along the slider line. Use with stepped sliders, except in extreme cases.",
+      "name": "tickMarks",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Indicates the current value.",
+      "name": "value",
+      "optional": true,
+      "type": "number",
+    },
+    Object {
+      "description": "Formats the values. This will format both the labels and the tooltip.",
+      "name": "valueFormatter",
+      "optional": true,
+      "type": "(value: number) => string",
+    },
+  ],
+  "regions": Array [],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Documenter definition for space-between matches the snapshot: space-between 1`] = `
 Object {
   "events": Array [],

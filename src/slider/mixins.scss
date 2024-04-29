@@ -1,0 +1,67 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+$thumb-size: awsui.$space-m;
+$border-radius-slider-thumb: 50%;
+
+@mixin base-thumb-styles {
+  appearance: none;
+  background: awsui.$color-background-slider-handle-default;
+  border-color: awsui.$color-background-slider-handle-default;
+  border-block-width: 2px;
+  border-inline-width: 2px;
+  border-start-start-radius: $border-radius-slider-thumb;
+  border-start-end-radius: $border-radius-slider-thumb;
+  border-end-start-radius: $border-radius-slider-thumb;
+  border-end-end-radius: $border-radius-slider-thumb;
+  box-shadow: none;
+
+  cursor: pointer;
+  block-size: $thumb-size;
+  inline-size: $thumb-size;
+  pointer-events: all;
+  position: relative;
+}
+
+@mixin base-thumb-hover-styles {
+  box-shadow: 0px 0 0 2px awsui.$color-background-slider-handle-ring,
+    0 0 0 4px awsui.$color-background-slider-handle-default;
+}
+
+@mixin base-thumb-focus-styles {
+  block-size: 20px;
+  inline-size: 20px;
+  box-shadow: 0px 0 0 2px awsui.$color-background-slider-handle-ring,
+    0 0 0 4px awsui.$color-background-slider-handle-active;
+  background: awsui.$color-background-slider-handle-active;
+
+  border-color: awsui.$color-background-slider-handle-active;
+  border-block-width: 2px;
+  border-inline-width: 2px;
+}
+
+@mixin base-thumb-disabled-styles {
+  background-color: awsui.$color-background-control-disabled;
+  border-color: awsui.$color-background-control-disabled;
+  box-shadow: none;
+  pointer-events: none;
+}
+
+@mixin error-thumb-focus-styles {
+  background-color: awsui.$color-background-slider-error-pressed;
+  border-block-width: 2px;
+  border-inline-width: 2px;
+  border-color: awsui.$color-background-slider-error-pressed;
+
+  box-shadow: 0px 0 0 2px awsui.$color-background-slider-handle-ring,
+    0 0 0 4px awsui.$color-background-slider-error-pressed;
+}
+
+@mixin error-thumb-hover-styles {
+  background-color: awsui.$color-text-status-error;
+  box-shadow: 0px 0 0 2px awsui.$color-background-slider-handle-ring, 0 0 0 4px awsui.$color-text-status-error;
+}
