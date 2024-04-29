@@ -140,7 +140,9 @@
 
     > li.active > a > .circle {
       background-color: awsui.$color-background-control-checked;
-      box-shadow: 0 0 0 3px awsui.$color-background-container-content, 0 0 0 5px awsui.$color-background-control-checked,
+      box-shadow:
+        0 0 0 3px awsui.$color-background-container-content,
+        0 0 0 5px awsui.$color-background-control-checked,
         0 0 0 7px awsui.$color-background-container-content;
     }
 
@@ -155,7 +157,9 @@
 
     > li.disabled > a > .circle {
       background-color: awsui.$color-background-container-content;
-      box-shadow: 0 0 0 2px awsui.$color-text-interactive-disabled, 0 0 0 4px awsui.$color-background-container-content;
+      box-shadow:
+        0 0 0 2px awsui.$color-text-interactive-disabled,
+        0 0 0 4px awsui.$color-background-container-content;
     }
 
     > li.disabled > a > .title {
@@ -164,7 +168,9 @@
 
     > li.enabled > a > .circle {
       background-color: awsui.$color-text-interactive-default;
-      box-shadow: 0 0 0 2px awsui.$color-text-interactive-default, 0 0 0 4px awsui.$color-background-container-content;
+      box-shadow:
+        0 0 0 2px awsui.$color-text-interactive-default,
+        0 0 0 4px awsui.$color-background-container-content;
     }
 
     > li.enabled > a > .title {
@@ -173,7 +179,9 @@
 
     > li.enabled > a:hover > .circle {
       background-color: awsui.$color-background-control-checked;
-      box-shadow: 0 0 0 2px awsui.$color-background-control-checked, 0 0 0 4px awsui.$color-background-container-content;
+      box-shadow:
+        0 0 0 2px awsui.$color-background-control-checked,
+        0 0 0 4px awsui.$color-background-container-content;
     }
 
     > li.enabled > a:hover > .title {

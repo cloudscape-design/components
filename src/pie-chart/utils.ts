@@ -100,14 +100,13 @@ export function getDimensionsBySize({
 
 export const defaultDetails =
   (i18n: ComponentFormatFunction<'pie-chart'>, i18nStrings: PieChartProps.I18nStrings) =>
-  (datum: PieChartProps.Datum, dataSum: number) =>
-    [
-      { key: i18n('i18nStrings.detailsValue', i18nStrings.detailsValue) || '', value: datum.value },
-      {
-        key: i18n('i18nStrings.detailsPercentage', i18nStrings.detailsPercentage) || '',
-        value: `${((datum.value * 100) / dataSum).toFixed(0)}%`,
-      },
-    ];
+  (datum: PieChartProps.Datum, dataSum: number) => [
+    { key: i18n('i18nStrings.detailsValue', i18nStrings.detailsValue) || '', value: datum.value },
+    {
+      key: i18n('i18nStrings.detailsPercentage', i18nStrings.detailsPercentage) || '',
+      value: `${((datum.value * 100) / dataSum).toFixed(0)}%`,
+    },
+  ];
 
 /**
  * Adjusts the position of the given label nodes to avoid visual overlapping.

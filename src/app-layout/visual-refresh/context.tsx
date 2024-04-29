@@ -589,13 +589,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           __embeddedViewMode,
         }}
       >
-        <AppLayoutContext.Provider
-          value={{
-            stickyOffsetBottom: offsetBottom,
-            stickyOffsetTop: 0, // not used in this design. Sticky headers read a CSS-var instead
-            setHasStickyBackground,
-          }}
-        >
+        <AppLayoutContext.Provider value={{ setHasStickyBackground }}>
           <DynamicOverlapContext.Provider value={updateBackgroundOverlapHeight}>
             {children}
           </DynamicOverlapContext.Provider>

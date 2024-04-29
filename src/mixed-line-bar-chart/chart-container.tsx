@@ -449,8 +449,8 @@ export default function ChartContainer<T extends ChartDataTypes>({
   const highlightedElementRef = isGroupNavigation
     ? highlightedGroupRef
     : highlightedPoint
-    ? highlightedPointRef
-    : verticalMarkerRef;
+      ? highlightedPointRef
+      : verticalMarkerRef;
 
   const highlightDetails = useMemo(() => {
     if (highlightedX === null) {

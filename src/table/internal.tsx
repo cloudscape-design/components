@@ -227,8 +227,8 @@ const InternalTable = React.forwardRef(
     const computedVariant = isVisualRefresh
       ? variant
       : ['embedded', 'full-page'].indexOf(variant) > -1
-      ? 'container'
-      : variant;
+        ? 'container'
+        : variant;
     const hasHeader = !!(header || filter || pagination || preferences);
     const hasSelection = !!selectionType;
     const hasFooterPagination = isMobile && variant === 'full-page' && !!pagination;

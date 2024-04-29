@@ -2,27 +2,32 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { updatePosition } from '../../../../lib/components/table/sticky-scrollbar/use-sticky-scrollbar';
+import globalVars from '../../../../lib/components/internal/styles/global-vars';
 
 describe('updatePosition', () => {
-  it('satisfies istanbul coverage', () => {
-    const scrollbarRef = {
-      current: document.createElement('div'),
-    };
-    const scrollbarContentRef = {
-      current: document.createElement('div'),
-    };
-    const tableRef = {
-      current: document.createElement('table'),
-    };
-    tableRef.current.getBoundingClientRect = jest.fn().mockReturnValue({ width: 800 });
-    const wrapperRef = {
-      current: document.createElement('div'),
-    };
-    wrapperRef.current.getBoundingClientRect = jest.fn().mockReturnValue({ width: 600 });
+  function setupElements() {
+    const scrollbar = document.createElement('div');
+    const scrollbarContent = document.createElement('div');
+    const table = document.createElement('table');
+    table.getBoundingClientRect = jest.fn().mockReturnValue({ width: 800 });
+    const wrapper = document.createElement('div');
+    wrapper.getBoundingClientRect = jest.fn().mockReturnValue({ width: 600 });
+    return { scrollbar, scrollbarContent, table, wrapper };
+  }
 
-    updatePosition(tableRef.current, wrapperRef.current, scrollbarRef.current, scrollbarContentRef.current, false, 30);
-    expect(scrollbarRef.current.style.insetBlockEnd).toBe('30px');
-    expect(scrollbarRef.current.style.inlineSize).toBe('600px');
-    expect(scrollbarContentRef.current.style.inlineSize).toBe('800px');
+  test('syncs sizes between elements in scrollable container', () => {
+    const { scrollbar, scrollbarContent, table, wrapper } = setupElements();
+    updatePosition(table, wrapper, scrollbar, scrollbarContent, true);
+    expect(scrollbar.style.insetBlockEnd).toBe('0px');
+    expect(scrollbar.style.inlineSize).toBe('600px');
+    expect(scrollbarContent.style.inlineSize).toBe('800px');
+  });
+
+  test('syncs sizes between elements outside scrollable container', () => {
+    const { scrollbar, scrollbarContent, table, wrapper } = setupElements();
+    updatePosition(table, wrapper, scrollbar, scrollbarContent, false);
+    expect(scrollbar.style.insetBlockEnd).toBe(`var(${globalVars.stickyVerticalBottomOffset}, 0px)`);
+    expect(scrollbar.style.inlineSize).toBe('600px');
+    expect(scrollbarContent.style.inlineSize).toBe('800px');
   });
 });

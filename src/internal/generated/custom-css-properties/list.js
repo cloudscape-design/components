@@ -26,7 +26,6 @@ const customCssPropertiesList = [
   'notificationsGap',
   'notificationsHeight',
   'offsetTop',
-  'offsetTopWithNotifications',
   'overlapHeight',
   'navigationWidth',
   'splitPanelReportedHeaderSize',
