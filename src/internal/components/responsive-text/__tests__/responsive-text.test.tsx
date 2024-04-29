@@ -13,7 +13,7 @@ jest.mock('../../../../../lib/components/internal/components/responsive-text/res
 
 jest.mock('../../../../../lib/components/internal/direction', () => ({
   ...jest.requireActual('../../../../../lib/components/internal/direction'),
-  isRtl: jest.fn().mockReturnValue(false),
+  getIsRtl: jest.fn().mockReturnValue(false),
 }));
 
 describe('responsive SVG text tests', () => {
