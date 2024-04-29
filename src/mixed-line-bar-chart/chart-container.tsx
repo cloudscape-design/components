@@ -34,6 +34,7 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { nodeBelongs } from '../internal/utils/node-belongs';
 import { CartesianChartContainer } from '../internal/components/cartesian-chart/chart-container';
 import { useHeightMeasure } from '../internal/hooks/container-queries/use-height-measure';
+import { getIsRtl } from '../internal/direction';
 
 const INLINE_START_LABELS_MARGIN = 16;
 const BLOCK_END_LABELS_OFFSET = 12;
@@ -149,10 +150,15 @@ export default function ChartContainer<T extends ChartDataTypes>({
   const containerRef = useMergeRefs(containerMeasureRef, containerRefObject);
   const popoverRef = useRef<HTMLElement | null>(null);
 
-  const xDomain = (props.xDomain || computeDomainX(series, xScaleType)) as
+  let xDomain = (props.xDomain || computeDomainX(series, xScaleType)) as
     | readonly number[]
     | readonly string[]
     | readonly Date[];
+
+  if (containerRefObject?.current && getIsRtl(containerRefObject.current)) {
+    xDomain = xDomain.slice().reverse();
+  }
+
   const yDomain = (props.yDomain || computeDomainY(series, yScaleType, stackedBars)) as readonly number[];
 
   const linesOnly = series.every(({ series }) => series.type === 'line' || series.type === 'threshold');
@@ -452,8 +458,8 @@ export default function ChartContainer<T extends ChartDataTypes>({
   const highlightedElementRef = isGroupNavigation
     ? highlightedGroupRef
     : highlightedPoint
-      ? highlightedPointRef
-      : verticalMarkerRef;
+    ? highlightedPointRef
+    : verticalMarkerRef;
 
   const highlightDetails = useMemo(() => {
     if (highlightedX === null) {
