@@ -68,7 +68,6 @@ export default function UniversalToolbar() {
       id="toolbar"
       ref={toolbarRef}
       className={clsx(styles['universal-toolbar'], {
-        [styles['has-breadcrumbs']]: breadcrumbs,
         [styles.unfocusable]: hasDrawerViewportOverlay,
         [testutilStyles['mobile-bar']]: isMobile,
         [styles['disable-body-scroll']]: disableBodyScroll,

@@ -37,20 +37,19 @@ section.universal-toolbar {
   > .toolbar-container {
     block-size: 48px;
     align-items: center;
-    display: inline-flex;
+    justify-content: space-between;
+    display: flex;
     column-gap: awsui.$space-static-xs;
-    inline-size: 100%;
 
     > .universal-toolbar-breadcrumbs {
       padding-inline-start: awsui.$space-static-xxs;
       background-color: transparent;
-      flex-shrink: 0;
+      flex: 1 0;
     }
 
     > .universal-toolbar-drawers {
       column-gap: awsui.$space-static-xs;
       display: flex;
-      inline-size: 100%;
       justify-content: flex-end;
     }
   }
