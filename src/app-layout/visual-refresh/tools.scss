@@ -19,8 +19,9 @@ viewport size and state of the Tools drawer.
 .tools-container {
   /* stylelint-disable scss/operator-no-newline-after */
   #{custom-props.$toolsMaxWidth}: calc(
-    var(#{custom-props.$layoutWidth}) - var(#{custom-props.$mainOffsetLeft}) -
-      var(#{custom-props.$defaultMinContentWidth}) - var(#{custom-props.$contentGapRight})
+    var(#{custom-props.$layoutWidth}) - var(#{custom-props.$mainOffsetLeft}) - var(
+        #{custom-props.$defaultMinContentWidth}
+      ) - var(#{custom-props.$contentGapRight})
   );
   /* stylelint-enable scss/operator-no-newline-after */
   display: flex;

@@ -98,8 +98,8 @@ function getVisibleColumnDefinitionsFromVisibleColumns<T>({
 export function getStickyClassNames(styles: Record<string, string>, props: StickyColumnsCellState | null) {
   return {
     [styles['sticky-cell']]: !!props,
-    [styles['sticky-cell-pad-left']]: !!props?.padLeft,
-    [styles['sticky-cell-last-left']]: !!props?.lastLeft,
-    [styles['sticky-cell-last-right']]: !!props?.lastRight,
+    [styles['sticky-cell-pad-inline-start']]: !!props?.padInlineStart,
+    [styles['sticky-cell-last-inline-start']]: !!props?.lastInsetInlineStart,
+    [styles['sticky-cell-last-inline-end']]: !!props?.lastInsetInlineEnd,
   };
 }

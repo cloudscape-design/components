@@ -66,17 +66,28 @@
     &-pad-left:not(.has-selection) {
       padding-inline-start: awsui.$space-table-horizontal;
     }
-    &-last-left {
+    &-last-inline-start {
       box-shadow: awsui.$shadow-sticky-column-first;
       clip-path: inset(0px -24px 0px 0px);
       & > .resize-divider {
         display: none;
       }
+
+      @include styles.with-direction('rtl') {
+        box-shadow: awsui.$shadow-sticky-column-last;
+        clip-path: inset(0 0 0 -24px);
+      }
     }
-    &-last-right {
+    &-last-inline-end {
       box-shadow: awsui.$shadow-sticky-column-last;
       clip-path: inset(0 0 0 -24px);
+
+      @include styles.with-direction('rtl') {
+        box-shadow: awsui.$shadow-sticky-column-first;
+        clip-path: inset(0 -24px 0 0);
+      }
     }
+
     @include styles.with-motion {
       transition-property: padding;
       transition-duration: awsui.$motion-duration-transition-show-quick;
@@ -167,7 +178,7 @@ settings icon in the pagination slot.
 .header-cell.is-visual-refresh {
   &:first-child:not(.has-striped-rows) {
     @include cell-offset(awsui.$space-xxxs);
-    &.sticky-cell-pad-left {
+    &.sticky-cell-pad-inline-start {
       @include cell-offset(awsui.$space-table-horizontal);
     }
   }

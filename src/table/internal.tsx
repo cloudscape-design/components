@@ -156,9 +156,10 @@ const InternalTable = React.forwardRef(
       true,
       tableRefObject,
       () => {
+        /* istanbul ignore next: performance marks do not work in JSDOM */
         const headerText =
-          toolsHeaderWrapper.current?.querySelector<HTMLElement>(`.${headerStyles['heading-text']}`)?.innerText ??
-          toolsHeaderWrapper.current?.innerText;
+          toolsHeaderPerformanceMarkRef.current?.querySelector<HTMLElement>(`.${headerStyles['heading-text']}`)
+            ?.innerText ?? toolsHeaderPerformanceMarkRef.current?.innerText;
 
         return {
           loading: loading ?? false,
@@ -213,8 +214,8 @@ const InternalTable = React.forwardRef(
     const computedVariant = isVisualRefresh
       ? variant
       : ['embedded', 'full-page'].indexOf(variant) > -1
-      ? 'container'
-      : variant;
+        ? 'container'
+        : variant;
     const hasHeader = !!(header || filter || pagination || preferences);
     const hasSelection = !!selectionType;
     const hasFooterPagination = isMobile && variant === 'full-page' && !!pagination;
@@ -307,10 +308,10 @@ const InternalTable = React.forwardRef(
       columnDefinitions: visibleColumnDefinitions,
       numRows: allItems?.length,
     });
-    const toolsHeaderWrapper = useRef<HTMLDivElement>(null);
+    const toolsHeaderPerformanceMarkRef = useRef<HTMLDivElement>(null);
     // If is mobile, we take into consideration the AppLayout's mobile bar and we subtract the tools wrapper height so only the table header is sticky
-    const toolsHeaderHeight =
-      (toolsHeaderWrapper?.current as HTMLDivElement | null)?.getBoundingClientRect().height ?? 0;
+    const [toolsHeaderHeight, toolsHeaderWrapperMeasureRef] = useContainerQuery(rect => rect.borderBoxHeight);
+    const toolsHeaderWrapper = useMergeRefs(toolsHeaderPerformanceMarkRef, toolsHeaderWrapperMeasureRef);
 
     const colIndexOffset = selectionType ? 1 : 0;
     const totalColumnsCount = visibleColumnDefinitions.length + colIndexOffset;
@@ -383,7 +384,7 @@ const InternalTable = React.forwardRef(
               ) : null
             }
             __stickyHeader={stickyHeader}
-            __mobileStickyOffset={toolsHeaderHeight}
+            __mobileStickyOffset={toolsHeaderHeight ?? 0}
             __stickyOffset={stickyHeaderVerticalOffset}
             {...focusMarkers.root}
           >

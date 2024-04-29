@@ -5,7 +5,10 @@ import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objec
 import { SelectWrapper } from '../../../../lib/components/test-utils/selectors';
 
 export default class SelectPageObject<Wrapper extends SelectWrapper = SelectWrapper> extends BasePageObject {
-  constructor(browser: ConstructorParameters<typeof BasePageObject>[0], protected wrapper: Wrapper) {
+  constructor(
+    browser: ConstructorParameters<typeof BasePageObject>[0],
+    protected wrapper: Wrapper
+  ) {
     super(browser);
   }
 

@@ -19,7 +19,7 @@ export default function () {
         tools={<Tools>On mobile, tools panel displayed above navigation</Tools>}
         content={
           <>
-            <div style={{ marginBottom: '1rem' }}>
+            <div style={{ marginBlockEnd: '1rem' }}>
               <Header variant="h1" description="Basic demo">
                 Demo page
               </Header>

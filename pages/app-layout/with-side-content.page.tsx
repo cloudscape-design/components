@@ -24,14 +24,14 @@ export default function () {
           aria-label="Custom side navigation"
           style={{
             backgroundColor: 'orange',
-            width: customNavWidth,
+            inlineSize: customNavWidth,
             color: 'black',
             position: 'fixed',
             boxSizing: 'border-box',
-            bottom: 0,
-            top: 0,
+            insetBlockEnd: 0,
+            insetBlockStart: 0,
             padding: 10,
-            paddingTop: 70,
+            paddingBlockStart: 70,
             zIndex: 900,
           }}
         >
@@ -41,7 +41,7 @@ export default function () {
 
           <p>The split panel should stay inside the AppLayout&apos;s area.</p>
         </nav>
-        <div style={{ paddingLeft: customNavWidth, paddingRight: customToolsWidth }}>
+        <div style={{ paddingInlineStart: customNavWidth, paddingInlineEnd: customToolsWidth }}>
           <AppLayout
             ariaLabels={labels}
             breadcrumbs={<Breadcrumbs />}
@@ -51,7 +51,7 @@ export default function () {
             onSplitPanelToggle={e => setSplitPanelOpen(e.detail.open)}
             content={
               <>
-                <div style={{ marginBottom: '1rem' }}>
+                <div style={{ marginBlockEnd: '1rem' }}>
                   <Header variant="h1" description="Basic demo">
                     Demo page
                   </Header>
@@ -84,15 +84,15 @@ export default function () {
           aria-label="Custom tools panel"
           style={{
             backgroundColor: 'orange',
-            width: customToolsWidth,
+            inlineSize: customToolsWidth,
             color: 'black',
             position: 'fixed',
             boxSizing: 'border-box',
-            bottom: 0,
-            top: 0,
-            right: 0,
+            insetBlockEnd: 0,
+            insetBlockStart: 0,
+            insetInlineEnd: 0,
             padding: 10,
-            paddingTop: 70,
+            paddingBlockStart: 70,
             zIndex: 900,
           }}
         >

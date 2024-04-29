@@ -12,7 +12,7 @@ import { renderHook } from '../../../__tests__/render-hook';
 
 function createElementWithWidth(tag: string, width = 0) {
   const element = document.createElement(tag);
-  jest.spyOn(element, 'getBoundingClientRect').mockImplementation(() => ({ width } as DOMRect));
+  jest.spyOn(element, 'getBoundingClientRect').mockImplementation(() => ({ width }) as DOMRect);
   return element;
 }
 
@@ -53,7 +53,7 @@ test('wrapper styles is not empty and wrapper listener is attached when feature 
   );
   result.current.refs.wrapper(tableWrapper);
 
-  expect(result.current.style.wrapper).toEqual({ scrollPaddingLeft: 0, scrollPaddingRight: 0 });
+  expect(result.current.style.wrapper).toEqual({ scrollPaddingInlineStart: 0, scrollPaddingInlineEnd: 0 });
   expect(addTableWrapperOnScrollSpy).toHaveBeenCalledWith('scroll', expect.any(Function));
 });
 
@@ -112,14 +112,14 @@ test('generates non-empty sticky cell state', () => {
       [
         1,
         {
-          lastLeft: false,
-          lastRight: false,
-          padLeft: false,
-          offset: { left: 0 },
+          lastInsetInlineStart: false,
+          lastInsetInlineEnd: false,
+          padInlineStart: false,
+          offset: { insetInlineStart: 0 },
         },
       ],
     ]),
-    wrapperState: { scrollPaddingLeft: 100, scrollPaddingRight: 0 },
+    wrapperState: { scrollPaddingInlineStart: 100, scrollPaddingInlineEnd: 0 },
   });
 });
 
@@ -134,7 +134,7 @@ test('generates empty cell state if wrapper is not scrollable', () => {
 
   expect(result.current.store.get()).toEqual({
     cellState: new Map(),
-    wrapperState: { scrollPaddingLeft: 100, scrollPaddingRight: 0 },
+    wrapperState: { scrollPaddingInlineStart: 100, scrollPaddingInlineEnd: 0 },
   });
 });
 
@@ -149,7 +149,7 @@ test('generates empty sticky cell state if not enough scrollable space', () => {
 
   expect(result.current.store.get()).toEqual({
     cellState: new Map(),
-    wrapperState: { scrollPaddingLeft: 200, scrollPaddingRight: 0 },
+    wrapperState: { scrollPaddingInlineStart: 200, scrollPaddingInlineEnd: 0 },
   });
 });
 
@@ -169,13 +169,13 @@ test('generates non-empty styles for sticky cells', () => {
   rerenderCellStyles({});
 
   expect(getClassName).toHaveBeenCalledWith({
-    lastLeft: false,
-    lastRight: false,
-    padLeft: false,
-    offset: { right: 0 },
+    lastInsetInlineStart: false,
+    lastInsetInlineEnd: false,
+    padInlineStart: false,
+    offset: { insetInlineEnd: 0 },
   });
   expect(cellStylesResult.current.className).toBe('sticky-cell');
-  expect(cellStylesResult.current.style).toEqual({ right: 0 });
+  expect(cellStylesResult.current.style).toEqual({ insetInlineEnd: 0 });
 });
 
 test('updates sticky cell styles', () => {
@@ -240,7 +240,7 @@ test('cell subscriptions are cleaned up on ref change', () => {
   const subscribe = jest.fn(() => unsubscribe);
   const stickyColumns = {
     store: {
-      get: () => ({ cellState: new Map(), wrapperState: { scrollPaddingLeft: 0, scrollPaddingRight: 0 } }),
+      get: () => ({ cellState: new Map(), wrapperState: { scrollPaddingInlineStart: 0, scrollPaddingInlineEnd: 0 } }),
       subscribe,
       unsubscribe: () => {},
     },
@@ -268,50 +268,50 @@ test('cell subscriptions are cleaned up on ref change', () => {
 describe('getStickyClassNames helper', () => {
   const styles = {
     'sticky-cell': 'sticky-cell',
-    'sticky-cell-pad-left': 'sticky-cell-pad-left',
-    'sticky-cell-last-left': 'sticky-cell-last-left',
-    'sticky-cell-last-right': 'sticky-cell-last-right',
+    'sticky-cell-pad-inline-start': 'sticky-cell-pad-inline-start',
+    'sticky-cell-last-inline-start': 'sticky-cell-last-inline-start',
+    'sticky-cell-last-inline-end': 'sticky-cell-last-inline-end',
   };
 
   it('returns correct styles when props is null', () => {
     const result = getStickyClassNames(styles, null);
     expect(result).toEqual({
       'sticky-cell': false,
-      'sticky-cell-pad-left': false,
-      'sticky-cell-last-left': false,
-      'sticky-cell-last-right': false,
+      'sticky-cell-pad-inline-start': false,
+      'sticky-cell-last-inline-start': false,
+      'sticky-cell-last-inline-end': false,
     });
   });
 
-  it('returns correct styles when props has padLeft and lastLeft property', () => {
+  it('returns correct styles when props has padInlineStart and lastInsetInlineStart property', () => {
     const props = {
-      padLeft: true,
-      lastLeft: true,
-      lastRight: false,
+      padInlineStart: true,
+      lastInsetInlineStart: true,
+      lastInsetInlineEnd: false,
       offset: {},
     };
     const result = getStickyClassNames(styles, props);
     expect(result).toEqual({
       'sticky-cell': true,
-      'sticky-cell-pad-left': true,
-      'sticky-cell-last-left': true,
-      'sticky-cell-last-right': false,
+      'sticky-cell-pad-inline-start': true,
+      'sticky-cell-last-inline-start': true,
+      'sticky-cell-last-inline-end': false,
     });
   });
 
-  it('returns correct styles when props has lastRight property', () => {
+  it('returns correct styles when props has lastInsetInlineEnd property', () => {
     const props = {
-      padLeft: false,
-      lastLeft: false,
-      lastRight: true,
+      padInlineStart: false,
+      lastInsetInlineStart: false,
+      lastInsetInlineEnd: true,
       offset: {},
     };
     const result = getStickyClassNames(styles, props);
     expect(result).toEqual({
       'sticky-cell': true,
-      'sticky-cell-pad-left': false,
-      'sticky-cell-last-left': false,
-      'sticky-cell-last-right': true,
+      'sticky-cell-pad-inline-start': false,
+      'sticky-cell-last-inline-start': false,
+      'sticky-cell-last-inline-end': true,
     });
   });
 });

@@ -98,7 +98,7 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
       */
     &:first-child.has-striped-rows {
       @include cell-offset(awsui.$space-xxs);
-      &-sticky-cell-pad-left {
+      &-sticky-cell-pad-inline-start {
         @include cell-offset(awsui.$space-table-horizontal);
       }
     }
@@ -184,19 +184,36 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
       &:last-child {
         box-shadow: 4px 0 0 0 awsui.$color-background-container-content;
         clip-path: inset(0 0 0 0);
-        &.sticky-cell-last-right {
-          box-shadow: awsui.$shadow-sticky-column-last, 8px 0 0 0 awsui.$color-background-container-content;
+        &.sticky-cell-last-inline-end {
+          box-shadow:
+            awsui.$shadow-sticky-column-last,
+            8px 0 0 0 awsui.$color-background-container-content;
           clip-path: inset(0 0 0 -24px);
+
+          @include styles.with-direction('rtl') {
+            box-shadow: awsui.$shadow-sticky-column-first;
+            clip-path: inset(0 -24px 0 0);
+          }
         }
       }
     }
-    &-last-left {
+    &-last-inline-start {
       box-shadow: awsui.$shadow-sticky-column-first;
       clip-path: inset(0px -24px 0px 0px);
+
+      @include styles.with-direction('rtl') {
+        box-shadow: awsui.$shadow-sticky-column-last;
+        clip-path: inset(0 0 0 -24px);
+      }
     }
-    &-last-right {
+    &-last-inline-end {
       box-shadow: awsui.$shadow-sticky-column-last;
       clip-path: inset(0 0 0 -24px);
+
+      @include styles.with-direction('rtl') {
+        box-shadow: awsui.$shadow-sticky-column-first;
+        clip-path: inset(0 -24px 0 0);
+      }
     }
     @include styles.with-motion {
       transition-property: padding;
