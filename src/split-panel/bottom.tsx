@@ -63,10 +63,10 @@ export function SplitPanelContentBottom({
       })}
       onClick={() => !isOpen && onToggle()}
       style={{
-        bottom: bottomOffset,
-        left: leftOffset,
-        right: rightOffset,
-        height: isOpen ? cappedSize : undefined,
+        insetBlockEnd: bottomOffset,
+        insetInlineStart: leftOffset,
+        insetInlineEnd: rightOffset,
+        blockSize: isOpen ? cappedSize : undefined,
       }}
       ref={transitionContentBottomRef}
     >

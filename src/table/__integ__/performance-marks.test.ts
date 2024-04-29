@@ -25,7 +25,7 @@ describe('Table', () => {
       expect(marks[0].name).toBe('tableRendered');
       expect(marks[0].detail).toEqual({
         source: 'awsui',
-        instanceId: expect.any(String),
+        instanceIdentifier: expect.any(String),
         loading: true,
         header: 'This is my table',
       });
@@ -33,12 +33,12 @@ describe('Table', () => {
       expect(marks[1].name).toBe('tableRendered');
       expect(marks[1].detail).toEqual({
         source: 'awsui',
-        instanceId: expect.any(String),
+        instanceIdentifier: expect.any(String),
         loading: false,
         header: 'A table without the Header component',
       });
 
-      expect(marks[0].detail.instanceId).not.toEqual(marks[1].detail.instanceId);
+      expect(marks[0].detail.instanceIdentifier).not.toEqual(marks[1].detail.instanceIdentifier);
     })
   );
 
@@ -52,7 +52,7 @@ describe('Table', () => {
       expect(marks[2].name).toBe('tableUpdated');
       expect(marks[2].detail).toMatchObject({
         source: 'awsui',
-        instanceId: marks[0].detail.instanceId,
+        instanceIdentifier: marks[0].detail.instanceIdentifier,
         loading: false,
         header: 'This is my table',
       });
@@ -64,7 +64,7 @@ describe('Table', () => {
       expect(marks[3].name).toBe('tableUpdated');
       expect(marks[3].detail).toMatchObject({
         source: 'awsui',
-        instanceId: marks[2].detail.instanceId,
+        instanceIdentifier: marks[2].detail.instanceIdentifier,
         loading: true,
         header: 'This is my table',
       });

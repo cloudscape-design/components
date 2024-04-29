@@ -3,17 +3,10 @@
 import { useContext, createContext } from 'react';
 
 export interface AppLayoutContextProps {
-  stickyOffsetBottom: number;
-  stickyOffsetTop: number;
-  mobileBarHeight?: number;
   setHasStickyBackground?: (hasBackground: boolean) => void;
 }
 
-export const defaultValue: AppLayoutContextProps = {
-  stickyOffsetTop: 0,
-  stickyOffsetBottom: 0,
-  mobileBarHeight: 0,
-};
+export const defaultValue: AppLayoutContextProps = {};
 
 export const AppLayoutContext = createContext(defaultValue);
 

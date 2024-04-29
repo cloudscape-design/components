@@ -12,6 +12,7 @@ import { useFunnel, useFunnelNameSelector, useFunnelStep } from '../internal/ana
 
 import formStyles from './styles.css.js';
 import headerStyles from '../header/styles.css.js';
+import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 
 export { FormProps };
 
@@ -34,20 +35,26 @@ const FormWithAnalytics = ({ variant = 'full-page', actions, ...props }: FormPro
 };
 
 export default function Form({ variant = 'full-page', ...props }: FormProps) {
-  const baseComponentProps = useBaseComponent('Form', {
-    props: { variant },
-  });
+  const analyticsMetadata = getAnalyticsMetadataProps(props as BasePropsWithAnalyticsMetadata);
+  const baseComponentProps = useBaseComponent('Form', { props: { variant } }, analyticsMetadata);
   const inheritedFunnelNameSelector = useFunnelNameSelector();
   const funnelNameSelector = inheritedFunnelNameSelector || `.${headerStyles['heading-text']}`;
 
   return (
     <AnalyticsFunnel
+      instanceIdentifier={analyticsMetadata?.instanceIdentifier}
+      flowType={analyticsMetadata?.flowType}
+      errorContext={analyticsMetadata?.errorContext}
       funnelType="single-page"
       optionalStepNumbers={[]}
       totalFunnelSteps={1}
       funnelNameSelectors={[funnelNameSelector, `.${formStyles.header}`]}
     >
-      <AnalyticsFunnelStep stepNumber={1}>
+      <AnalyticsFunnelStep
+        instanceIdentifier={analyticsMetadata?.instanceIdentifier}
+        errorContext={analyticsMetadata?.errorContext}
+        stepNumber={1}
+      >
         <FormWithAnalytics variant={variant} {...props} {...baseComponentProps} />
       </AnalyticsFunnelStep>
     </AnalyticsFunnel>

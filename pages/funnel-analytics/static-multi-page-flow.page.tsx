@@ -18,6 +18,7 @@ import styles from '../wizard/styles.scss';
 
 import { setFunnelMetrics } from '~components/internal/analytics';
 import { MockedFunnelMetrics } from './mock-funnel';
+import { getAnalyticsProps } from './metadata';
 
 setFunnelMetrics(MockedFunnelMetrics);
 
@@ -37,7 +38,10 @@ export default function MultiPageCreate() {
       errorText,
       content: (
         <SpaceBetween size="s">
-          <Container header={<Header>Container 1 - header</Header>}>
+          <Container
+            header={<Header>Container 1 - header</Header>}
+            {...getAnalyticsProps({ instanceIdentifier: 'step1-container1' })}
+          >
             <SpaceBetween size="s">
               <FormField
                 info={
@@ -67,7 +71,10 @@ export default function MultiPageCreate() {
               </FormField>
             </SpaceBetween>
           </Container>
-          <Container header={<Header>Container 2 - header</Header>}>
+          <Container
+            header={<Header>Container 2 - header</Header>}
+            {...getAnalyticsProps({ instanceIdentifier: 'step1-container2' })}
+          >
             <SpaceBetween size="s">
               <FormField label="Field 3">
                 <Input
@@ -91,6 +98,7 @@ export default function MultiPageCreate() {
           </Container>
         </SpaceBetween>
       ),
+      ...getAnalyticsProps({ instanceIdentifier: 'step-1' }),
     },
     {
       title: 'Step 2',
@@ -101,6 +109,7 @@ export default function MultiPageCreate() {
           <div id="content-text">Content 2</div>
         </div>
       ),
+      ...getAnalyticsProps({ instanceIdentifier: 'step-2' }),
     },
     {
       title: 'Step 3',
@@ -115,6 +124,7 @@ export default function MultiPageCreate() {
           ))}
         </div>
       ),
+      ...getAnalyticsProps({ instanceIdentifier: 'step-3' }),
     },
   ];
 
@@ -136,6 +146,10 @@ export default function MultiPageCreate() {
       </button>
       {mounted && (
         <Wizard
+          {...getAnalyticsProps({
+            instanceIdentifier: 'multi-page',
+            flowType: 'create',
+          })}
           i18nStrings={i18nStrings}
           steps={steps}
           activeStepIndex={activeStepIndex}

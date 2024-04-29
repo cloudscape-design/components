@@ -25,6 +25,7 @@ import { useUniqueId } from '../../hooks/use-unique-id/index.js';
 import customCssProps from '../../generated/custom-css-properties';
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 import { nodeBelongs } from '../../utils/node-belongs';
+import { getLogicalBoundingClientRect } from '../../direction.js';
 
 interface DropdownContainerProps {
   children?: React.ReactNode;
@@ -194,9 +195,9 @@ const Dropdown = ({
     const entireWidth = !interior && stretchWidth;
     if (!stretchWidth) {
       // 1px offset for dropdowns where the dropdown itself needs a border, rather than on the items
-      verticalContainer.style.maxHeight = `${parseInt(position.height) + 1}px`;
+      verticalContainer.style.maxBlockSize = `${parseInt(position.blockSize) + 1}px`;
     } else {
-      verticalContainer.style.maxHeight = position.height;
+      verticalContainer.style.maxBlockSize = position.blockSize;
     }
 
     if (entireWidth && !expandToViewport) {
@@ -204,36 +205,36 @@ const Dropdown = ({
         target.classList.add(styles['occupy-entire-width']);
       }
     } else {
-      target.style.width = position.width;
+      target.style.inlineSize = position.inlineSize;
     }
 
     // Using styles for main dropdown to adjust its position as preferred alternative
-    if (position.dropUp && !interior) {
+    if (position.dropBlockStart && !interior) {
       target.classList.add(styles['dropdown-drop-up']);
       if (!expandToViewport) {
-        target.style.bottom = '100%';
+        target.style.insetBlockEnd = '100%';
       }
     } else {
       target.classList.remove(styles['dropdown-drop-up']);
     }
-    target.classList.add(position.dropLeft ? styles['dropdown-drop-left'] : styles['dropdown-drop-right']);
+    target.classList.add(position.dropInlineStart ? styles['dropdown-drop-left'] : styles['dropdown-drop-right']);
 
-    if (position.left && position.left !== 'auto') {
-      target.style.left = position.left;
+    if (position.insetInlineStart && position.insetInlineStart !== 'auto') {
+      target.style.insetInlineStart = position.insetInlineStart;
     }
 
     // Position normal overflow dropdowns with fixed positioning relative to viewport
     if (expandToViewport && !interior) {
       target.style.position = 'fixed';
-      if (position.dropUp) {
-        target.style.bottom = `calc(100% - ${triggerBox.top}px)`;
+      if (position.dropBlockStart) {
+        target.style.insetBlockEnd = `calc(100% - ${triggerBox.top}px)`;
       } else {
-        target.style.top = `${triggerBox.bottom}px`;
+        target.style.insetBlockStart = `${triggerBox.bottom}px`;
       }
-      if (position.dropLeft) {
-        target.style.left = `calc(${triggerBox.right}px - ${position.width})`;
+      if (position.dropInlineStart) {
+        target.style.insetInlineStart = `calc(${triggerBox.right}px - ${position.inlineSize})`;
       } else {
-        target.style.left = `${triggerBox.left}px`;
+        target.style.insetInlineStart = `${triggerBox.left}px`;
       }
       // Keep track of the initial dropdown position and direction.
       // Dropdown direction doesn't need to change as the user scrolls, just needs to stay attached to the trigger.
@@ -245,19 +246,19 @@ const Dropdown = ({
     // and classes are not enough
     // usage of relative position is impossible due to overwrite of overflow-x
     if (interior && isInteriorPosition(position)) {
-      if (position.dropUp) {
-        target.style.bottom = position.bottom;
+      if (position.dropBlockStart) {
+        target.style.insetBlockEnd = position.insetBlockEnd;
       } else {
-        target.style.top = position.top;
+        target.style.insetBlockStart = position.insetBlockStart;
       }
-      target.style.left = position.left;
+      target.style.insetInlineStart = position.insetInlineStart;
     }
 
-    if (position.dropUp && position.dropLeft) {
+    if (position.dropBlockStart && position.dropInlineStart) {
       setPosition('top-left');
-    } else if (position.dropUp) {
+    } else if (position.dropBlockStart) {
       setPosition('top-right');
-    } else if (position.dropLeft) {
+    } else if (position.dropInlineStart) {
       setPosition('bottom-left');
     } else {
       setPosition('bottom-right');
@@ -379,18 +380,18 @@ const Dropdown = ({
     }
     const updateDropdownPosition = () => {
       if (triggerRef.current && dropdownRef.current && verticalContainerRef.current) {
-        const triggerRect = triggerRef.current.getBoundingClientRect();
+        const triggerRect = getLogicalBoundingClientRect(triggerRef.current);
         const target = dropdownRef.current;
         if (fixedPosition.current) {
-          if (fixedPosition.current.dropUp) {
-            dropdownRef.current.style.bottom = `calc(100% - ${triggerRect.top}px)`;
+          if (fixedPosition.current.dropBlockStart) {
+            dropdownRef.current.style.insetBlockEnd = `calc(100% - ${triggerRect.insetBlockStart}px)`;
           } else {
-            target.style.top = `${triggerRect.bottom}px`;
+            target.style.insetBlockStart = `${triggerRect.insetBlockEnd}px`;
           }
-          if (fixedPosition.current.dropLeft) {
-            target.style.left = `calc(${triggerRect.right}px - ${fixedPosition.current.width})`;
+          if (fixedPosition.current.dropInlineStart) {
+            target.style.insetInlineStart = `calc(${triggerRect.insetInlineEnd}px - ${fixedPosition.current.inlineSize})`;
           } else {
-            target.style.left = `${triggerRect.left}px`;
+            target.style.insetInlineStart = `${triggerRect.insetInlineStart}px`;
           }
         }
       }
@@ -480,6 +481,6 @@ const Dropdown = ({
 
 const isInteriorPosition = (
   position: DropdownPosition | InteriorDropdownPosition
-): position is InteriorDropdownPosition => (position as InteriorDropdownPosition).bottom !== undefined;
+): position is InteriorDropdownPosition => (position as InteriorDropdownPosition).insetBlockEnd !== undefined;
 
 export default Dropdown;

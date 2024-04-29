@@ -8,6 +8,7 @@ import { i18nStrings } from './i18n-strings';
 import { isValidRange } from './is-valid-range';
 import '../../__a11y__/to-validate-a11y';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
+import { KeyCode } from '../../../lib/components/internal/keycode';
 
 const defaultProps: DateRangePickerProps = {
   locale: 'en-US',
@@ -168,6 +169,21 @@ describe('Date range picker', () => {
         expect(wrapper.findDropdown()!.findStartTimeInput()!.findNativeInput().getElement()).toHaveValue('00:00:00');
       });
 
+      test('start date can be selected with keyboard', () => {
+        const { wrapper } = renderDateRangePicker({
+          ...defaultProps,
+          value: { type: 'absolute', startDate: '2021-03-02T05:00:00+08:45', endDate: '2021-03-12T13:05:21+08:45' },
+        });
+        wrapper.findTrigger().click();
+
+        wrapper.findDropdown()!.findDateAt('left', 3, 4).focus();
+        wrapper.findDropdown()!.findDateAt('left', 3, 4).keydown(KeyCode.enter);
+
+        expect(wrapper.findDropdown()!.findSelectedStartDate()!.getElement()).toHaveTextContent('17');
+        expect(wrapper.findDropdown()!.findStartDateInput()!.findNativeInput().getElement()).toHaveValue('2021/03/17');
+        expect(wrapper.findDropdown()!.findStartTimeInput()!.findNativeInput().getElement()).toHaveValue('00:00:00');
+      });
+
       test('end date can be selected', () => {
         const { wrapper } = renderDateRangePicker({
           ...defaultProps,
@@ -177,6 +193,22 @@ describe('Date range picker', () => {
 
         wrapper.findDropdown()!.findDateAt('left', 2, 3).click();
         wrapper.findDropdown()!.findDateAt('left', 3, 4).click();
+
+        expect(wrapper.findDropdown()!.findSelectedEndDate()!.getElement()).toHaveTextContent('17');
+        expect(wrapper.findDropdown()!.findEndDateInput()!.findNativeInput().getElement()).toHaveValue('2021/03/17');
+        expect(wrapper.findDropdown()!.findEndTimeInput()!.findNativeInput().getElement()).toHaveValue('23:59:59');
+      });
+
+      test('end date can be selected with keyboard', () => {
+        const { wrapper } = renderDateRangePicker({
+          ...defaultProps,
+          value: { type: 'absolute', startDate: '2021-03-02T05:00:00+08:45', endDate: '2021-03-12T13:05:21+08:45' },
+        });
+        wrapper.findTrigger().click();
+
+        wrapper.findDropdown()!.findDateAt('left', 2, 3).click();
+        wrapper.findDropdown()!.findDateAt('left', 3, 4).focus();
+        wrapper.findDropdown()!.findDateAt('left', 3, 4).keydown(KeyCode.space);
 
         expect(wrapper.findDropdown()!.findSelectedEndDate()!.getElement()).toHaveTextContent('17');
         expect(wrapper.findDropdown()!.findEndDateInput()!.findNativeInput().getElement()).toHaveValue('2021/03/17');

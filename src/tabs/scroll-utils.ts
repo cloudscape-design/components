@@ -1,46 +1,49 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import smoothScroll from './smooth-scroll';
+import { getIsRtl, getScrollInlineStart } from '../internal/direction';
 
-export const onPaginationClick = (headerBarRef: React.RefObject<HTMLUListElement>, direction: number): void => {
+export const onPaginationClick = (
+  headerBarRef: React.RefObject<HTMLUListElement>,
+  direction: 'forward' | 'backward'
+): void => {
   if (!headerBarRef?.current) {
     return;
   }
   const element = headerBarRef.current;
+  const { scrollLeft, scrollWidth, offsetWidth } = element;
 
   // Scroll each paginated section by 75% of what is already visible
   const paginatedSectionSize = Math.ceil(element.clientWidth * 0.75);
 
-  if (direction === 1) {
-    smoothScroll(
-      element,
-      Math.min(element.scrollLeft + paginatedSectionSize, element.scrollWidth - element.offsetWidth)
-    );
-  }
-  if (direction === -1) {
-    smoothScroll(element, Math.max(element.scrollLeft - paginatedSectionSize, 0));
-  }
+  const scrollDistance =
+    direction === 'forward'
+      ? Math.min(Math.abs(scrollLeft) + paginatedSectionSize, scrollWidth - offsetWidth)
+      : Math.max(Math.abs(scrollLeft) - paginatedSectionSize, 0);
+
+  // scroll destination needs to be a negative number if the direction is RTL
+  const scrollTo = getIsRtl(element) ? scrollDistance * -1 : scrollDistance;
+
+  smoothScroll(element, scrollTo);
 };
 
 export const hasHorizontalOverflow = (
   headerBar: HTMLElement,
-  leftOverflowButton: React.RefObject<HTMLElement>
+  inlineStartOverflowButton: React.RefObject<HTMLElement>
 ): boolean => {
   const { offsetWidth, scrollWidth } = headerBar;
 
   // Need to account for pagination button width when deciding if there would be overflow without them
-  const paginationButtonsWidth = leftOverflowButton.current && 2 * leftOverflowButton.current.offsetWidth;
+  const paginationButtonsWidth = inlineStartOverflowButton.current && 2 * inlineStartOverflowButton.current.offsetWidth;
   return paginationButtonsWidth ? scrollWidth > offsetWidth + paginationButtonsWidth : scrollWidth > offsetWidth;
 };
 
-export const hasLeftOverflow = (headerBar: HTMLElement): boolean => {
-  return headerBar.scrollLeft > 0;
+export const hasInlineStartOverflow = (headerBar: HTMLElement): boolean => {
+  return getScrollInlineStart(headerBar) > 0;
 };
 
-export const hasRightOverflow = (headerBar: HTMLElement): boolean => {
-  const { offsetWidth, scrollLeft, scrollWidth } = headerBar;
-  // scrollLeft can be a decimal value on systems using display scaling
-  return Math.ceil(scrollLeft) < scrollWidth - offsetWidth;
+export const hasInlineEndOverflow = (headerBar: HTMLElement): boolean => {
+  return Math.ceil(getScrollInlineStart(headerBar)) < headerBar.scrollWidth - headerBar.offsetWidth;
 };
 
 export const scrollIntoView = (tabHeader: HTMLElement, headerBar: HTMLElement, smooth = true): void => {

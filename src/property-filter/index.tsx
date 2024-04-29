@@ -98,6 +98,8 @@ const PropertyFilter = React.forwardRef(
       asyncProperties,
       tokenLimit,
       expandToViewport,
+      tokenLimitShowFewerAriaLabel,
+      tokenLimitShowMoreAriaLabel,
       ...rest
     }: PropertyFilterProps,
     ref: React.Ref<Ref>
@@ -409,6 +411,8 @@ const PropertyFilter = React.forwardRef(
                 alignment="inline"
                 limit={tokenLimit}
                 items={internalQuery.tokens}
+                limitShowFewerAriaLabel={tokenLimitShowFewerAriaLabel}
+                limitShowMoreAriaLabel={tokenLimitShowMoreAriaLabel}
                 renderItem={(token, tokenIndex) => (
                   <TokenButton
                     token={token}

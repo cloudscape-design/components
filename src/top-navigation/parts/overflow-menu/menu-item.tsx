@@ -41,6 +41,7 @@ const LinkItem = forwardRef(
   ) => {
     const anchorTarget = target ?? (external ? '_blank' : undefined);
     const anchorRel = rel ?? (anchorTarget === '_blank' ? 'noopener noreferrer' : undefined);
+    const role = !href ? 'button' : undefined;
 
     return (
       <a
@@ -51,6 +52,8 @@ const LinkItem = forwardRef(
           styles['overflow-menu-control-link'],
           context && styles[`overflow-menu-control-${context}`]
         )}
+        role={role}
+        tabIndex={0}
         href={href}
         target={anchorTarget}
         rel={anchorRel}

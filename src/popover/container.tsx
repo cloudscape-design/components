@@ -12,7 +12,7 @@ import usePopoverPosition from './use-popover-position.js';
 
 export interface PopoverContainerProps {
   /** References the element the container is positioned against. */
-  trackRef: React.RefObject<Element>;
+  trackRef: React.RefObject<HTMLElement | SVGElement>;
   /**
     Used to update the container position in case track or track position changes:
     

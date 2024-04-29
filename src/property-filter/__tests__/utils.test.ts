@@ -7,7 +7,7 @@ import { toInternalProperties } from './common';
 
 const filteringProperties = toInternalProperties([
   {
-    key: 'instanceId',
+    key: 'instanceIdentifier',
     propertyLabel: 'Instance ID',
     operators: ['!:', ':'],
     groupValuesLabel: '',

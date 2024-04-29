@@ -27,7 +27,7 @@ function generateLevelItems(level: number, path: string[], parent: null | Instan
   const nextPath = [instanceDetail.name, ...path];
   const children = generateChildren(type, level, nextPath, instanceDetail);
   const selectsPerSecond = getSelectsPerSecond(type, children);
-  const stateGrouped = getGroupedState(type, instanceDetail.state, children);
+  const stateGrouped = getGroupedState(instanceDetail.state, children);
   const sizeGrouped = getGroupedSize(type, instanceDetail.size, children);
   const regionGrouped = getGroupedRegion(type, instanceDetail.region, children);
   return [
@@ -113,16 +113,10 @@ function getSelectsPerSecond(instanceType: InstanceType, children: Instance[]): 
     : sumBy(children, instance => instance.selectsPerSecond ?? 0);
 }
 
-function getGroupedState(instanceType: InstanceType, state: InstanceState, children: Instance[]) {
-  const grouped = { RUNNING: 0, STOPPED: 0, TERMINATED: 0 };
-  if (instanceType === 'instance') {
-    grouped[state] += 1;
-  } else {
-    for (const instance of children) {
-      grouped.RUNNING += instance.stateGrouped.RUNNING;
-      grouped.STOPPED += instance.stateGrouped.STOPPED;
-      grouped.TERMINATED += instance.stateGrouped.TERMINATED;
-    }
+function getGroupedState(state: InstanceState, children: Instance[]) {
+  const grouped = { RUNNING: 0, STOPPED: 0, TERMINATED: 0, [state]: 1 };
+  for (const instance of children) {
+    grouped[instance.state]++;
   }
   return grouped;
 }

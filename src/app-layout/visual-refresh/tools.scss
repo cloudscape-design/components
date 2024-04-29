@@ -23,7 +23,6 @@ viewport size and state of the Tools drawer.
       var(#{custom-props.$defaultMinContentWidth}) - var(#{custom-props.$contentGapRight})
   );
   /* stylelint-enable scss/operator-no-newline-after */
-  #{custom-props.$toolsWidth}: 290px;
   display: flex;
   grid-column: 5;
   grid-row: 1 / span 10;
@@ -34,10 +33,6 @@ viewport size and state of the Tools drawer.
   z-index: 830;
 
   pointer-events: none;
-
-  @include styles.media-breakpoint-up(styles.$breakpoint-xx-large) {
-    #{custom-props.$toolsWidth}: 360px;
-  }
 
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
     #{custom-props.$toolsMaxWidth}: none;

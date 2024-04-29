@@ -9,13 +9,13 @@
   align-items: flex-end;
   order: 0;
   flex-grow: 10;
-  margin-right: 0;
-  margin-bottom: -16px;
+  margin-inline-end: 0;
+  margin-block-end: -16px;
 
   /* stylelint-disable-next-line selector-max-type */
   > div {
-    margin-right: 16px;
-    margin-bottom: 12px;
+    margin-inline-end: 16px;
+    margin-block-end: 12px;
   }
 }
 

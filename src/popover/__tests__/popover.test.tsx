@@ -20,8 +20,8 @@ let originalGetComputedStyle: Window['getComputedStyle'];
 const fakeGetComputedStyle: Window['getComputedStyle'] = (...args) => {
   const result = originalGetComputedStyle(...args);
   result.borderWidth = '2px'; // Approximate mock value for the popover body' border width
-  result.width = '10px'; // Approximate mock value for the popover arrow's width
-  result.height = '10px'; // Approximate mock value for the popover arrow's height
+  result.inlineSize = '10px'; // Approximate mock value for the popover arrow's width
+  result.blockSize = '10px'; // Approximate mock value for the popover arrow's height
   return result;
 };
 

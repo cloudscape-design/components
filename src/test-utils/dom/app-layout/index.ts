@@ -3,6 +3,8 @@
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 import SplitPanelWrapper from '../split-panel';
 import testutilStyles from '../../../app-layout/test-classes/styles.selectors.js';
+import splitPanelStyles from '../../../split-panel/styles.selectors.js';
+import ButtonDropdownWrapper from '../button-dropdown';
 
 export default class AppLayoutWrapper extends ComponentWrapper {
   static rootSelector = testutilStyles.root;
@@ -47,6 +49,10 @@ export default class AppLayoutWrapper extends ComponentWrapper {
     return this.findComponent(`.${SplitPanelWrapper.rootSelector}`, SplitPanelWrapper);
   }
 
+  findSplitPanelOpenButton(): ElementWrapper | null {
+    return this.findByClassName(splitPanelStyles['open-button']);
+  }
+
   findActiveDrawer(): ElementWrapper | null {
     return this.findByClassName(testutilStyles['active-drawer']);
   }
@@ -61,6 +67,10 @@ export default class AppLayoutWrapper extends ComponentWrapper {
 
   findDrawerTriggerById(id: string): ElementWrapper<HTMLButtonElement> | null {
     return this.find(`.${testutilStyles['drawers-trigger']}[data-testid="awsui-app-layout-trigger-${id}"]`);
+  }
+
+  findDrawersOverflowTrigger(): ButtonDropdownWrapper | null {
+    return this.findComponent(`.${testutilStyles['overflow-menu']}`, ButtonDropdownWrapper);
   }
 
   findActiveDrawerResizeHandle(): ElementWrapper | null {

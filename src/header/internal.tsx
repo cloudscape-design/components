@@ -14,6 +14,8 @@ import { InfoLinkLabelContext } from '../internal/context/info-link-label-contex
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_SUBSTEP_NAME } from '../internal/analytics/selectors';
+import { useContainerHeader } from '../internal/context/container-header';
+import { getGlobalFlag } from '../internal/utils/global-flags';
 
 interface InternalHeaderProps extends SomeRequired<HeaderProps, 'variant'>, InternalBaseComponentProps {
   __disableActionsWrapping?: boolean;
@@ -37,6 +39,7 @@ export default function InternalHeader({
   const baseProps = getBaseProps(restProps);
   const isRefresh = useVisualRefresh();
   const assignHeaderId = useContext(CollectionLabelContext).assignId;
+  const isInContainer = useContainerHeader();
   const headingId = useUniqueId('heading');
   if (assignHeaderId !== undefined) {
     assignHeaderId(headingId);
@@ -44,6 +47,7 @@ export default function InternalHeader({
   // If is mobile there is no need to have the dynamic variant because it's scrolled out of view
   const dynamicVariant = !isMobile && isStuck ? 'h2' : 'h1';
   const variantOverride = variant === 'awsui-h1-sticky' ? (isRefresh ? dynamicVariant : 'h2') : variant;
+  const hasToolbarHeader = getGlobalFlag('appLayoutWidget');
 
   return (
     <div
@@ -53,6 +57,7 @@ export default function InternalHeader({
         baseProps.className,
         styles[`root-variant-${variantOverride}`],
         isRefresh && styles.refresh,
+        hasToolbarHeader && styles['root-with-toolbar'],
         !actions && [styles[`root-no-actions`]],
         description && [styles[`root-has-description`]]
       )}
@@ -69,7 +74,7 @@ export default function InternalHeader({
         <div className={clsx(styles.title, styles[`title-variant-${variantOverride}`], isRefresh && styles.refresh)}>
           <HeadingTag className={clsx(styles.heading, styles[`heading-variant-${variantOverride}`])}>
             <span
-              {...(HeadingTag === 'h2' ? { [DATA_ATTR_FUNNEL_KEY]: FUNNEL_KEY_SUBSTEP_NAME } : {})}
+              {...(isInContainer ? { [DATA_ATTR_FUNNEL_KEY]: FUNNEL_KEY_SUBSTEP_NAME } : {})}
               className={clsx(styles['heading-text'], styles[`heading-text-variant-${variantOverride}`])}
               id={headingId}
             >

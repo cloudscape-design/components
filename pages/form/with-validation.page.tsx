@@ -88,6 +88,7 @@ export default function FormScenario() {
                   attemptedToSubmit && value.length > 4 ? 'The text must not be longer than 4 letters' : undefined
                 }
                 constraintText="Maximum length: 4 letters"
+                i18nStrings={{ errorIconAriaLabel: 'Error' }}
               >
                 <Input value={value} onChange={e => setValue(e.detail.value)} disabled={loading} />
               </FormField>

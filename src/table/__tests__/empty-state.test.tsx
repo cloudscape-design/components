@@ -83,23 +83,23 @@ function mockResizeObserver(contentBoxWidth: number) {
 test('should apply width to the empty state container', () => {
   const fireCallbacks = mockResizeObserver(600);
   const { wrapper } = renderTable(<Table columnDefinitions={defaultColumns} items={[]} />);
-  expect(findStickyParent(wrapper).style.width).toEqual('600px');
+  expect(findStickyParent(wrapper).style.inlineSize).toEqual('600px');
 
   fireCallbacks({ contentBoxWidth: 700 } as unknown as ContainerQueryEntry);
-  expect(findStickyParent(wrapper).style.width).toEqual('700px');
+  expect(findStickyParent(wrapper).style.inlineSize).toEqual('700px');
 });
 
 test('should floor the value to prevent unwanted horizontal scrolling', () => {
   mockResizeObserver(123.4);
   const { wrapper } = renderTable(<Table columnDefinitions={defaultColumns} items={[]} />);
-  expect(findStickyParent(wrapper).style.width).toEqual('123px');
+  expect(findStickyParent(wrapper).style.inlineSize).toEqual('123px');
 });
 
 test('should not apply width when browser does not support position sticky', () => {
   mockResizeObserver(600);
   jest.mocked(supportsStickyPosition).mockReturnValue(false);
   const { wrapper } = renderTable(<Table columnDefinitions={defaultColumns} items={[]} />);
-  expect(findStickyParent(wrapper).style.width).toEqual('');
+  expect(findStickyParent(wrapper).style.inlineSize).toEqual('');
 });
 
 test('should set colspan attribute matching to the total number of columns', () => {

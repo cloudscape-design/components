@@ -37,7 +37,7 @@ export interface GridProps {
   renderDate: (date: Date) => string;
   renderDateAnnouncement: (date: Date, isOnCurrentDate: boolean) => string;
   isSameDate: (date: Date, baseDate: Date) => boolean;
-  onGridKeyDownHandler: (event: React.KeyboardEvent) => void;
+  onGridKeyDownHandler: (event: React.KeyboardEvent<HTMLElement>) => void;
 }
 
 export default function Grid({

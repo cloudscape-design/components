@@ -61,3 +61,9 @@ export const colorChartsThresholdNegative: string;
 export const colorChartsThresholdPositive: string;
 export const colorChartsThresholdInfo: string;
 export const colorChartsThresholdNeutral: string;
+
+// Spacing
+export const spaceXs: string;
+export const spaceXxxs: string;
+export const spaceScaledXs: string;
+export const spaceScaledS: string;

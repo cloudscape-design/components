@@ -4,6 +4,7 @@ import React from 'react';
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
 import { IconProps } from '../icon/interfaces';
+import { SomeRequired } from '../internal/types';
 
 export interface AppLayoutProps extends BaseComponentProps {
   /**
@@ -326,3 +327,16 @@ export namespace AppLayoutProps {
     activeDrawerId: string | null;
   }
 }
+
+export type AppLayoutPropsWithDefaults = SomeRequired<
+  Omit<AppLayoutProps, 'headerSelector' | 'footerSelector'>,
+  'contentType' | 'navigationWidth' | 'toolsWidth' | 'minContentWidth' | 'navigationOpen' | 'onNavigationChange'
+> & {
+  placement: {
+    insetBlockStart: number;
+    insetBlockEnd: number;
+    insetInlineStart: number;
+    insetInlineEnd: number;
+    inlineSize: number;
+  };
+};

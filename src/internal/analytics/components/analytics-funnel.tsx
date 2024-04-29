@@ -18,7 +18,13 @@ import { useVisualRefresh } from '../../hooks/use-visual-mode';
 import { PACKAGE_VERSION } from '../../environment';
 
 import { FunnelMetrics } from '../index';
-import { FunnelProps, FunnelStepProps, StepConfiguration, SubStepConfiguration } from '../interfaces';
+import {
+  AnalyticsMetadata,
+  FunnelProps,
+  FunnelStepProps,
+  StepConfiguration,
+  SubStepConfiguration,
+} from '../interfaces';
 
 import {
   DATA_ATTR_FUNNEL_STEP,
@@ -40,6 +46,9 @@ interface AnalyticsFunnelProps {
   funnelType: FunnelProps['funnelType'];
   optionalStepNumbers: FunnelProps['optionalStepNumbers'];
   totalFunnelSteps: FunnelProps['totalFunnelSteps'];
+  instanceIdentifier?: AnalyticsMetadata['instanceIdentifier'];
+  flowType?: AnalyticsMetadata['flowType'];
+  errorContext?: AnalyticsMetadata['errorContext'];
 }
 
 export const AnalyticsFunnel = (props: AnalyticsFunnelProps) => {
@@ -128,6 +137,8 @@ const InnerAnalyticsFunnel = ({ children, stepConfiguration, ...props }: Analyti
       ];
 
       funnelInteractionId = FunnelMetrics.funnelStart({
+        instanceIdentifier: props.instanceIdentifier,
+        flowType: props.flowType,
         funnelNameSelector: funnelNameSelector.current,
         optionalStepNumbers: props.optionalStepNumbers,
         funnelType: props.funnelType,
@@ -233,6 +244,8 @@ const InnerAnalyticsFunnel = ({ children, stepConfiguration, ...props }: Analyti
 };
 
 interface AnalyticsFunnelStepProps {
+  instanceIdentifier?: AnalyticsMetadata['instanceIdentifier'];
+  errorContext?: AnalyticsMetadata['errorContext'];
   children?: React.ReactNode | ((props: FunnelStepContextValue) => React.ReactNode);
   stepNameSelector?: FunnelStepProps['stepNameSelector'];
   stepNumber: FunnelStepProps['stepNumber'];
@@ -303,7 +316,7 @@ function useStepChangeListener(stepNumber: number, handler: (stepConfiguration: 
   return { onStepChange: stepChangeCallback, subStepConfiguration };
 }
 
-const InnerAnalyticsFunnelStep = ({ children, stepNumber, ...rest }: AnalyticsFunnelStepProps) => {
+const InnerAnalyticsFunnelStep = ({ children, stepNumber, instanceIdentifier, ...rest }: AnalyticsFunnelStepProps) => {
   const { funnelInteractionId, funnelNameSelector, funnelState, funnelType } = useFunnel();
   const parentStep = useFunnelStep();
   const parentStepExists = parentStep.isInStep;
@@ -321,6 +334,7 @@ const InnerAnalyticsFunnelStep = ({ children, stepNumber, ...rest }: AnalyticsFu
     const stepName = getNameFromSelector(stepNameSelector) ?? '';
 
     FunnelMetrics.funnelStepChange({
+      instanceIdentifier,
       funnelInteractionId,
       stepNumber,
       stepName,
@@ -353,6 +367,7 @@ const InnerAnalyticsFunnelStep = ({ children, stepNumber, ...rest }: AnalyticsFu
 
     if (funnelState.current === 'default') {
       FunnelMetrics.funnelStepStart({
+        instanceIdentifier,
         funnelInteractionId,
         stepNumber,
         stepName,
@@ -367,6 +382,7 @@ const InnerAnalyticsFunnelStep = ({ children, stepNumber, ...rest }: AnalyticsFu
       // eslint-disable-next-line react-hooks/exhaustive-deps
       if (funnelState.current !== 'cancelled') {
         FunnelMetrics.funnelStepComplete({
+          instanceIdentifier,
           funnelInteractionId,
           stepNumber,
           stepName,
@@ -378,6 +394,7 @@ const InnerAnalyticsFunnelStep = ({ children, stepNumber, ...rest }: AnalyticsFu
       }
     };
   }, [
+    instanceIdentifier,
     funnelInteractionId,
     stepNumber,
     stepNameSelector,
@@ -388,6 +405,7 @@ const InnerAnalyticsFunnelStep = ({ children, stepNumber, ...rest }: AnalyticsFu
   ]);
 
   const contextValue: FunnelStepContextValue = {
+    instanceIdentifier,
     stepNumber,
     stepNameSelector,
     funnelStepProps,
@@ -412,10 +430,12 @@ const InnerAnalyticsFunnelStep = ({ children, stepNumber, ...rest }: AnalyticsFu
   );
 };
 interface AnalyticsFunnelSubStepProps {
+  instanceIdentifier?: AnalyticsMetadata['instanceIdentifier'];
+  errorContext?: AnalyticsMetadata['errorContext'];
   children?: React.ReactNode | ((props: FunnelSubStepContextValue) => React.ReactNode);
 }
 
-export const AnalyticsFunnelSubStep = ({ children }: AnalyticsFunnelSubStepProps) => {
+export const AnalyticsFunnelSubStep = ({ children, instanceIdentifier }: AnalyticsFunnelSubStepProps) => {
   const subStepId = useUniqueId('substep');
   const subStepSelector = getSubStepSelector(subStepId);
   const subStepNameSelector = getSubStepNameSelector(subStepId);
@@ -428,6 +448,7 @@ export const AnalyticsFunnelSubStep = ({ children }: AnalyticsFunnelSubStepProps
   const { stepNumber, stepNameSelector } = useFunnelStep();
 
   const newContext: FunnelSubStepContextValue = {
+    instanceIdentifier,
     subStepSelector,
     subStepNameSelector,
     subStepId,

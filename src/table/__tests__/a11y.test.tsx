@@ -124,33 +124,39 @@ describe('labels', () => {
       expect(wrapper.find('[role=table]')!.getElement().getAttribute('aria-rowcount')).toEqual('-1');
     });
 
-    test('sets aria-rowindex on table rows', () => {
-      const wrapper = renderTableWrapper({ firstIndex: 21 });
+    test.each([undefined, 21])('sets aria-rowindex on table rows', firstIndex => {
+      const expectedFirstIndex = firstIndex ?? 1;
+      const wrapper = renderTableWrapper({ firstIndex });
       const [headerRow, firstRowInTable] = wrapper.findAll('tr');
       // header row is always index 1
       expect(headerRow!.getElement().getAttribute('aria-rowindex')).toEqual('1');
       // rows in a table are index + 1 as header row is index 1
-      expect(firstRowInTable!.getElement().getAttribute('aria-rowindex')).toEqual('22');
+      expect(firstRowInTable!.getElement().getAttribute('aria-rowindex')).toEqual((expectedFirstIndex + 1).toString());
     });
   });
 
   describe('live region', () => {
-    test('Should render a live region with table total count and indices when renderAriaLive and firstIndex are available', () => {
-      const firstIndex = 1;
-      const totalItemsCount = defaultItems.length;
-      const lastIndex = firstIndex + defaultItems.length - 1;
+    test.each([
+      { firstIndex: 1, totalItemsCount: defaultItems.length },
+      { firstIndex: undefined, totalItemsCount: undefined },
+    ])(
+      'Should render a live region when firstIndex="$firstIndex" and totalItemsCount="$totalItemsCount"',
+      ({ firstIndex, totalItemsCount }) => {
+        const expectedFirstIndex = firstIndex ?? 1;
+        const lastIndex = expectedFirstIndex + defaultItems.length - 1;
 
-      const wrapper = renderTableWrapper({
-        firstIndex,
-        totalItemsCount,
-        renderAriaLive: ({ firstIndex, lastIndex, totalItemsCount }) =>
-          `Displaying items from ${firstIndex} to ${lastIndex} of ${totalItemsCount} items`,
-      });
+        const wrapper = renderTableWrapper({
+          firstIndex,
+          totalItemsCount,
+          renderAriaLive: ({ firstIndex, lastIndex, totalItemsCount }) =>
+            `Displaying items from ${firstIndex} to ${lastIndex} of ${totalItemsCount} items`,
+        });
 
-      expect(wrapper.find(`.${liveRegionStyles.root}`)?.getElement().textContent).toBe(
-        `Displaying items from ${firstIndex} to ${lastIndex} of ${totalItemsCount} items`
-      );
-    });
+        expect(wrapper.find(`.${liveRegionStyles.root}`)?.getElement().textContent).toBe(
+          `Displaying items from ${expectedFirstIndex} to ${lastIndex} of ${totalItemsCount} items`
+        );
+      }
+    );
 
     test('The table items live region must not include nested items', () => {
       const firstIndex = 1;

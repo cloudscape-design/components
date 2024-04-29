@@ -9,6 +9,8 @@ import { useStableCallback } from '@cloudscape-design/component-toolkit/internal
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { getHeaderWidth, getResizerElements } from './resizer-lookup';
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context.js';
+import { getIsRtl, getLogicalBoundingClientRect, getLogicalPageX } from '../../internal/direction.js';
+import handleKey, { isEventLike } from '../../internal/utils/handle-key';
 
 interface ResizerProps {
   onWidthUpdate: (newWidth: number) => void;
@@ -63,19 +65,21 @@ export function Resizer({
       return;
     }
 
-    const { left: leftEdge, right: rightEdge } = elements.scrollParent.getBoundingClientRect();
+    const { insetInlineStart: inlineStartEdge, insetInlineEnd: inlineEndEdge } = getLogicalBoundingClientRect(
+      elements.scrollParent
+    );
 
     const updateTrackerPosition = (newOffset: number) => {
-      const { left: scrollParentLeft } = elements.table.getBoundingClientRect();
-      elements.tracker.style.top = elements.header.getBoundingClientRect().height + 'px';
+      const { insetInlineStart: scrollParentInsetInlineStart } = getLogicalBoundingClientRect(elements.table);
+      elements.tracker.style.insetBlockStart = getLogicalBoundingClientRect(elements.header).blockSize + 'px';
       // minus one pixel to offset the cell border
-      elements.tracker.style.left = newOffset - scrollParentLeft - 1 + 'px';
+      elements.tracker.style.insetInlineStart = newOffset - scrollParentInsetInlineStart - 1 + 'px';
     };
 
     const updateColumnWidth = (newWidth: number) => {
-      const { right, width } = elements.header.getBoundingClientRect();
+      const { insetInlineEnd, inlineSize } = getLogicalBoundingClientRect(elements.header);
       const updatedWidth = newWidth < minWidth ? minWidth : newWidth;
-      updateTrackerPosition(right + updatedWidth - width);
+      updateTrackerPosition(insetInlineEnd + updatedWidth - inlineSize);
       if (newWidth >= minWidth) {
         setHeaderCellWidth(newWidth);
       }
@@ -84,8 +88,8 @@ export function Resizer({
     };
 
     const resizeColumn = (offset: number) => {
-      if (offset > leftEdge) {
-        const cellLeft = elements.header.getBoundingClientRect().left;
+      if (offset > inlineStartEdge) {
+        const cellLeft = getLogicalBoundingClientRect(elements.header).insetInlineStart;
         const newWidth = offset - cellLeft;
         // callbacks must be the last calls in the handler, because they may cause an extra update
         updateColumnWidth(newWidth);
@@ -93,17 +97,17 @@ export function Resizer({
     };
 
     const onAutoGrow = () => {
-      const width = elements.header.getBoundingClientRect().width;
+      const inlineSize = getLogicalBoundingClientRect(elements.header).inlineSize;
       autoGrowTimeout.current = setTimeout(onAutoGrow, AUTO_GROW_INTERVAL);
       // callbacks must be the last calls in the handler, because they may cause an extra update
-      updateColumnWidth(width + AUTO_GROW_INCREMENT);
-      elements.scrollParent.scrollLeft += AUTO_GROW_INCREMENT;
+      updateColumnWidth(inlineSize + AUTO_GROW_INCREMENT);
+      elements.scrollParent.scrollLeft += AUTO_GROW_INCREMENT * (getIsRtl(elements.scrollParent) ? -1 : 1);
     };
 
     const onMouseMove = (event: MouseEvent) => {
       clearTimeout(autoGrowTimeout.current);
-      const offset = event.pageX;
-      if (offset > rightEdge) {
+      const offset = getLogicalPageX(event);
+      if (offset > inlineEndEdge) {
         autoGrowTimeout.current = setTimeout(onAutoGrow, AUTO_GROW_START_TIME);
       } else {
         resizeColumn(offset);
@@ -111,7 +115,7 @@ export function Resizer({
     };
 
     const onMouseUp = (event: MouseEvent) => {
-      resizeColumn(event.pageX);
+      resizeColumn(getLogicalPageX(event));
       setIsDragging(false);
       onWidthUpdateCommit();
       clearTimeout(autoGrowTimeout.current);
@@ -119,32 +123,41 @@ export function Resizer({
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (isKeyboardDragging) {
-        // Update width
-        if (event.keyCode === KeyCode.left) {
+        const keys = [KeyCode.left, KeyCode.right, KeyCode.enter, KeyCode.right, KeyCode.space, KeyCode.escape];
+
+        if (keys.indexOf(event.keyCode) !== -1) {
           event.preventDefault();
-          updateColumnWidth(elements.header.getBoundingClientRect().width - 10);
-        }
-        if (event.keyCode === KeyCode.right) {
-          event.preventDefault();
-          updateColumnWidth(elements.header.getBoundingClientRect().width + 10);
-        }
-        // Exit keyboard dragging mode
-        if (event.keyCode === KeyCode.enter || event.keyCode === KeyCode.space || event.keyCode === KeyCode.escape) {
-          event.preventDefault();
-          setIsKeyboardDragging(false);
-          resizerToggleRef.current?.focus();
-          // The onWidthUpdateCommit is fired from the separator's blur event handler.
+
+          isEventLike(event) &&
+            handleKey(event, {
+              onActivate: () => {
+                setIsKeyboardDragging(false);
+                resizerToggleRef.current?.focus();
+              },
+              onEscape: () => {
+                setIsKeyboardDragging(false);
+                resizerToggleRef.current?.focus();
+              },
+              onInlineStart: () => updateColumnWidth(getLogicalBoundingClientRect(elements.header).inlineSize - 10),
+              onInlineEnd: () => updateColumnWidth(getLogicalBoundingClientRect(elements.header).inlineSize + 10),
+            });
         }
       }
       // Enter keyboard dragging mode
       else if (event.keyCode === KeyCode.enter || event.keyCode === KeyCode.space) {
         event.preventDefault();
-        setIsKeyboardDragging(true);
-        resizerSeparatorRef.current?.focus();
+
+        isEventLike(event) &&
+          handleKey(event, {
+            onActivate: () => {
+              setIsKeyboardDragging(true);
+              resizerSeparatorRef.current?.focus();
+            },
+          });
       }
     };
 
-    updateTrackerPosition(elements.header.getBoundingClientRect().right);
+    updateTrackerPosition(getLogicalBoundingClientRect(elements.header).insetInlineEnd);
 
     if (isDragging) {
       document.body.classList.add(styles['resize-active']);

@@ -20,16 +20,16 @@ describe('getGlobalFlag', () => {
   });
 
   test('returns undefined if the global flags object does not exist', () => {
-    expect(getGlobalFlag('removeHighContrastHeader')).toBeUndefined();
+    expect(getGlobalFlag('appLayoutWidget')).toBeUndefined();
   });
   test('returns undefined if the global flags object exists but the flag is not set', () => {
     global[awsuiGlobalFlagsSymbol] = {};
-    expect(getGlobalFlag('removeHighContrastHeader')).toBeUndefined();
+    expect(getGlobalFlag('appLayoutWidget')).toBeUndefined();
   });
-  test('returns removeHighContrastHeader value when defined', () => {
-    global[awsuiGlobalFlagsSymbol] = { removeHighContrastHeader: false };
-    expect(getGlobalFlag('removeHighContrastHeader')).toBe(false);
-    global[awsuiGlobalFlagsSymbol].removeHighContrastHeader = true;
-    expect(getGlobalFlag('removeHighContrastHeader')).toBe(true);
+  test('returns appLayoutWidget value when defined', () => {
+    global[awsuiGlobalFlagsSymbol] = { appLayoutWidget: false };
+    expect(getGlobalFlag('appLayoutWidget')).toBe(false);
+    global[awsuiGlobalFlagsSymbol].appLayoutWidget = true;
+    expect(getGlobalFlag('appLayoutWidget')).toBe(true);
   });
 });

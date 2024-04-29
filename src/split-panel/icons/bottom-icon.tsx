@@ -5,6 +5,7 @@ import styles from '../styles.css.js';
 
 const bottomPositionIcon = (
   <svg
+    className={styles['preference-icon--svg']}
     focusable={false}
     viewBox="0 0 240 134"
     version="1.1"

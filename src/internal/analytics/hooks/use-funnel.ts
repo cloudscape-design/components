@@ -33,6 +33,7 @@ export const useFunnelSubStep = () => {
   const { stepNumber, stepNameSelector, subStepConfiguration } = useFunnelStep();
 
   const {
+    instanceIdentifier,
     subStepId,
     subStepSelector,
     subStepNameSelector,
@@ -73,6 +74,7 @@ export const useFunnelSubStep = () => {
         ?.get(stepNumber)
         ?.find(step => step.name === subStepName)?.number;
       FunnelMetrics.funnelSubStepStart({
+        instanceIdentifier,
         funnelInteractionId,
         subStepSelector,
         subStepNameSelector,
@@ -105,6 +107,7 @@ export const useFunnelSubStep = () => {
 
         if (funnelState.current !== 'cancelled') {
           FunnelMetrics.funnelSubStepComplete({
+            instanceIdentifier,
             funnelInteractionId,
             subStepSelector,
             subStepNameSelector,

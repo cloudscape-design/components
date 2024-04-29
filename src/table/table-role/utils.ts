@@ -20,7 +20,7 @@ export function defaultIsSuppressed(target: Element) {
   let current: null | Element = target;
   while (current) {
     // Stop checking for parents upon reaching the cell element as the function only aims at the cell content.
-    if (current instanceof HTMLTableCellElement) {
+    if (isTableCell(current)) {
       return false;
     }
     if (
@@ -88,4 +88,17 @@ export function findTableRowCellByAriaColIndex(
     }
   }
   return targetCell;
+}
+
+export function isTableCell(element: Element) {
+  return element.tagName === 'TD' || element.tagName === 'TH';
+}
+
+export function focusNextElement(element: null | HTMLElement) {
+  if (element) {
+    if (isTableCell(element)) {
+      element.tabIndex = 0;
+    }
+    element.focus();
+  }
 }

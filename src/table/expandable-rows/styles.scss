@@ -6,15 +6,22 @@
 @use '../../internal/styles/index' as styles;
 @use '../../internal/styles/tokens' as awsui;
 @use '../../internal/hooks/focus-visible' as focus-visible;
-@use '../../internal/styles/tokens' as tokens;
 
 @use './motion';
 
 .expand-toggle-icon {
   transform: rotate(-90deg);
 
+  @include styles.with-direction('rtl') {
+    transform: rotate(90deg);
+  }
+
   &-expanded {
     transform: rotate(0deg);
+
+    @include styles.with-direction('rtl') {
+      transform: rotate(0deg);
+    }
   }
 }
 
