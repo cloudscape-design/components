@@ -28,7 +28,7 @@ interface ExpandableDefaultHeaderProps {
   onClick: MouseEventHandler;
   icon: JSX.Element;
   variant: InternalVariant;
-  disableLine: boolean;
+  disableLine?: boolean;
 }
 
 interface ExpandableNavigationHeaderProps extends Omit<ExpandableDefaultHeaderProps, 'onKeyUp' | 'onKeyDown'> {
