@@ -22,6 +22,7 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { SomeRequired } from '../internal/types';
 import { nodeBelongs } from '../internal/utils/node-belongs';
 import { ChartWrapper } from '../internal/components/chart-wrapper';
+import { getIsRtl } from '../internal/direction';
 
 type InternalAreaChartProps<T extends AreaChartProps.DataTypes> = SomeRequired<
   AreaChartProps<T>,
@@ -94,7 +95,9 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
     controlledHighlightedSeries,
     controlledOnHighlightChange
   );
+  const isRtl = containerRef.current ? getIsRtl(containerRef.current) : false;
   const model = useChartModel({
+    isRtl,
     fitHeight,
     externalSeries,
     visibleSeries,
