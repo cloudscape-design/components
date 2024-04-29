@@ -381,8 +381,8 @@ const ClassicAppLayout = React.forwardRef(
       (!splitPanelDisplayed || finalSplitPanePosition !== 'bottom'
         ? undefined
         : splitPanelOpen
-        ? splitPanelReportedSize
-        : splitPanelReportedHeaderHeight) ?? undefined;
+          ? splitPanelReportedSize
+          : splitPanelReportedHeaderHeight) ?? undefined;
 
     const [mobileBarHeight, mobileBarRef] = useContainerQuery(rect => rect.contentBoxHeight);
 

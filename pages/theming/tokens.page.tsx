@@ -10,13 +10,16 @@ import styles from './styles.scss';
 const isColor: (token: string) => boolean = token => token.slice(0, 5) === 'color';
 const themeableColorTokens = preset.themeable.filter(isColor);
 const theme: Theme = {
-  tokens: themeableColorTokens.reduce((acc: Theme['tokens'], token: string) => {
-    (acc as any)[token] = {
-      light: '#23850b',
-      dark: '#0d8193',
-    };
-    return acc;
-  }, {} as Theme['tokens']),
+  tokens: themeableColorTokens.reduce(
+    (acc: Theme['tokens'], token: string) => {
+      (acc as any)[token] = {
+        light: '#23850b',
+        dark: '#0d8193',
+      };
+      return acc;
+    },
+    {} as Theme['tokens']
+  ),
 };
 
 const tiles: Tile[] = themeableColorTokens

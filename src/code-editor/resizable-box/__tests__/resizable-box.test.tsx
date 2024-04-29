@@ -41,7 +41,7 @@ test('Emits resize events', () => {
 test('Includes offsets into size calculation', () => {
   const onResize = jest.fn();
   render(<ResizableBox {...defaultProps} onResize={onResize} />);
-  findBox().getBoundingClientRect = () => ({ top: 50, bottom: 100 } as DOMRect);
+  findBox().getBoundingClientRect = () => ({ top: 50, bottom: 100 }) as DOMRect;
   fireEvent.mouseDown(findHandle(), { clientY: 95 });
   fireEvent.mouseMove(document.body, { clientY: 130 });
   // +5 offset for mouseDown position (100 - 95)

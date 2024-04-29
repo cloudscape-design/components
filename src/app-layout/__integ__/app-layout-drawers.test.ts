@@ -66,7 +66,7 @@ class AppLayoutDrawersPage extends BasePageObject {
 
 interface SetupTestOptions {
   splitPanelPosition?: string;
-  screenSize?: typeof viewports['desktop' | 'mobile'];
+  screenSize?: (typeof viewports)['desktop' | 'mobile'];
   disableContentPaddings?: string;
   visualRefresh?: string;
 }

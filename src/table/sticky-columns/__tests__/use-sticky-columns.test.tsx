@@ -12,7 +12,7 @@ import { renderHook } from '../../../__tests__/render-hook';
 
 function createElementWithWidth(tag: string, width = 0) {
   const element = document.createElement(tag);
-  jest.spyOn(element, 'getBoundingClientRect').mockImplementation(() => ({ width } as DOMRect));
+  jest.spyOn(element, 'getBoundingClientRect').mockImplementation(() => ({ width }) as DOMRect);
   return element;
 }
 

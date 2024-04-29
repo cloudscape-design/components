@@ -5,7 +5,10 @@ import DropdownWrapper from '../../../../../lib/components/test-utils/selectors/
 
 export class DropdownPageObject extends BasePageObject {
   private dropdownWrapper: DropdownWrapper;
-  constructor(private dropdownId: string, browser: ConstructorParameters<typeof BasePageObject>[0]) {
+  constructor(
+    private dropdownId: string,
+    browser: ConstructorParameters<typeof BasePageObject>[0]
+  ) {
     super(browser);
     this.dropdownWrapper = new DropdownWrapper(`#${this.dropdownId}`);
   }

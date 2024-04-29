@@ -6,7 +6,10 @@ import createWrapper, { PieChartWrapper } from '../../../lib/components/test-uti
 import chartPlotStyles from '../../../lib/components/internal/components/chart-plot/styles.selectors.js';
 
 class PieChartPageObject extends BasePageObject {
-  constructor(browser: ConstructorParameters<typeof BasePageObject>[0], protected wrapper: PieChartWrapper) {
+  constructor(
+    browser: ConstructorParameters<typeof BasePageObject>[0],
+    protected wrapper: PieChartWrapper
+  ) {
     super(browser);
   }
 
