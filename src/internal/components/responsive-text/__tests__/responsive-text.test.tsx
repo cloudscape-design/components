@@ -4,7 +4,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import ResponsiveText from '../../../../../lib/components/internal/components/responsive-text';
 import { getTextWidth } from '../../../../../lib/components/internal/components/responsive-text/responsive-text-utils';
-import { isRtl } from '../../../../../lib/components/internal/direction';
+import { getIsRtl } from '../../../../../lib/components/internal/direction';
 
 jest.mock('../../../../../lib/components/internal/components/responsive-text/responsive-text-utils', () => ({
   ...jest.requireActual('../../../../../lib/components/internal/components/responsive-text/responsive-text-utils'),
@@ -19,7 +19,7 @@ jest.mock('../../../../../lib/components/internal/direction', () => ({
 describe('responsive SVG text tests', () => {
   test.each([{ rtl: false }, { rtl: true }])('renders full text, rtl="$rtl"', ({ rtl }) => {
     jest.mocked(getTextWidth).mockReturnValueOnce(100);
-    jest.mocked(isRtl).mockReturnValue(rtl);
+    jest.mocked(getIsRtl).mockReturnValue(rtl);
 
     const { container } = render(
       <ResponsiveText x={0} y={0} maxWidth={100}>
@@ -32,7 +32,7 @@ describe('responsive SVG text tests', () => {
 
   test('renders truncated text', () => {
     jest.mocked(getTextWidth).mockReturnValueOnce(101);
-    jest.mocked(isRtl).mockReturnValue(false);
+    jest.mocked(getIsRtl).mockReturnValue(false);
 
     const { container } = render(
       <ResponsiveText x={0} y={0} maxWidth={100}>
@@ -45,7 +45,7 @@ describe('responsive SVG text tests', () => {
 
   test('renders truncated text RTL', () => {
     jest.mocked(getTextWidth).mockReturnValueOnce(101);
-    jest.mocked(isRtl).mockReturnValue(true);
+    jest.mocked(getIsRtl).mockReturnValue(true);
 
     const { container } = render(
       <ResponsiveText x={0} y={0} maxWidth={100}>
