@@ -4,7 +4,7 @@ import React from 'react';
 import { render, waitFor } from '@testing-library/react';
 import ResponsiveText from '../../../lib/components/pie-chart/responsive-text';
 import { renderTextContent } from '../../../lib/components/internal/components/responsive-text/index';
-import { getIsRtl } from '../../..//lib/components/internal/direction';
+import { getIsRtl } from '../../../lib/components/internal/direction';
 
 jest.mock('../../../lib/components/internal/components/responsive-text/index', () => ({
   ...jest.requireActual('../../../lib/components/internal/components/responsive-text/index'),
@@ -13,7 +13,7 @@ jest.mock('../../../lib/components/internal/components/responsive-text/index', (
 
 jest.mock('../../../lib/components/internal/direction', () => ({
   ...jest.requireActual('../../../lib/components/internal/direction'),
-  isRtl: jest.fn().mockReturnValue(false),
+  getIsRtl: jest.fn().mockReturnValue(false),
 }));
 
 afterEach(() => {
