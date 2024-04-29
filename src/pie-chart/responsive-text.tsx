@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { memo, useEffect, useRef } from 'react';
 import { renderTextContent } from '../internal/components/responsive-text';
-import { isRtl as getIsRtl } from '../internal/direction';
+import { getIsRtl } from '../internal/direction';
 
 interface ResponsiveTextProps {
   x: number;
