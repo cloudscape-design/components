@@ -56,7 +56,7 @@ export interface FormFieldValidationControlProps extends FormFieldCommonValidati
    * single form field.
    * When you use it, provide additional context with
    * information on the input state, and associate it
-   * with the input using `ariaDescribedBy`.
+   * with the input using `ariaDescribedby`.
    */
   warning?: boolean;
 }
