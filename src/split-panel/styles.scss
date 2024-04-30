@@ -63,6 +63,7 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
     overflow-y: auto;
     position: absolute;
     inset: 0;
+    clip-path: border-box;
   }
 }
 

@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import AppLayout from '~components/app-layout';
 import SplitPanel from '~components/split-panel';
 import Header from '~components/header';
+import Popover from '~components/popover';
 import { Navigation, Tools, Breadcrumbs, Footer } from './utils/content-blocks';
 import * as toolsContent from './utils/tools-content';
 import labels from './utils/labels';
@@ -24,6 +25,12 @@ const DEMO_CONTENT = (
       magnis dis parturient montes nascetur ridiculus mus mauris. Nisi porta lorem mollis aliquam ut porttitor leo a.
       Facilisi morbi tempus iaculis urna. Odio tempor orci dapibus ultrices in iaculis nunc.
     </p>
+    <Popover
+      content="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+      magna aliqua. Augue neque gravida in fermentum."
+    >
+      Show me a popover
+    </Popover>
     <p>
       Ut diam quam nulla porttitor massa id neque. Duis at tellus at urna condimentum mattis pellentesque id nibh. Metus
       vulputate eu scelerisque felis imperdiet proin fermentum.
