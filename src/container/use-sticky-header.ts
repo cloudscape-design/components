@@ -24,7 +24,7 @@ export function computeOffset({
   hasInnerOverflowParents,
 }: ComputeOffsetProps): string {
   const localOffset = isMobile ? (__stickyOffset ?? 0) - (__mobileStickyOffset ?? 0) : __stickyOffset ?? 0;
-  if (hasInnerOverflowParents) {
+  if (hasInnerOverflowParents || __stickyOffset !== undefined) {
     return `${localOffset}px`;
   }
   const globalOffset = `var(${globalVars.stickyVerticalTopOffset}, 0px)`;

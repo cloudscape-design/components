@@ -19,7 +19,7 @@ export interface ChartModel<T extends AreaChartProps.DataTypes> {
     onSVGMouseMove: (event: React.MouseEvent<SVGElement>) => void;
     onSVGMouseOut: (event: React.MouseEvent<SVGElement>) => void;
     onSVGMouseDown: (event: React.MouseEvent<SVGSVGElement>) => void;
-    onSVGKeyDown: (event: React.KeyboardEvent) => void;
+    onSVGKeyDown: (event: React.KeyboardEvent<HTMLElement | SVGElement>) => void;
     onApplicationFocus: (event: React.FocusEvent<Element>, trigger: 'mouse' | 'keyboard') => void;
     onApplicationBlur: (event: React.FocusEvent<Element>) => void;
     onFilterSeries: (series: readonly AreaChartProps.Series<T>[]) => void;

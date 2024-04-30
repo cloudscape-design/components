@@ -262,6 +262,9 @@
     "selectedAriaLabel": "已选定",
     "recoveryText": "重试"
   },
+  "slider": {
+    "i18nStrings.valueTextRange": "{value}，介于 {previousValue} 和 {nextValue} 之间"
+  },
   "split-panel": {
     "i18nStrings.closeButtonAriaLabel": "关闭面板",
     "i18nStrings.openButtonAriaLabel": "打开面板",
