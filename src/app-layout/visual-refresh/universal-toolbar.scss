@@ -37,17 +37,25 @@ section.universal-toolbar {
   > .toolbar-container {
     block-size: 48px;
     align-items: center;
-    justify-content: space-between;
-    display: flex;
+    display: grid;
     column-gap: awsui.$space-static-xs;
+    inline-size: 100%;
+    grid-template-columns: min-content auto minmax(140px, 1fr);
+    grid-template-rows: var(#{custom-props.$toolbarHeight});
+
+    > .universal-toolbar-nav {
+      grid-column: 1;
+      padding-inline-end: awsui.$space-static-xxs;
+    }
 
     > .universal-toolbar-breadcrumbs {
-      padding-inline-start: awsui.$space-static-xxs;
+      grid-column: 2;
       background-color: transparent;
       flex: 1 0;
     }
 
     > .universal-toolbar-drawers {
+      grid-column: 3;
       column-gap: awsui.$space-static-xs;
       display: flex;
       justify-content: flex-end;
