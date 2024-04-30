@@ -124,6 +124,8 @@ describe('FormField component', () => {
         i18nStrings: { errorIconAriaLabel },
       });
 
+      // Since live region in this componennt uses 'source' prop
+      // it is too complex to successfully assert the aria live message
       expect(wrapper.findByClassName(liveRegionStyles.root)?.getElement()).toBeInTheDocument();
     });
   });
