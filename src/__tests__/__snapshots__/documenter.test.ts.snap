@@ -10638,6 +10638,14 @@ that don't have visible text, and to distinguish between multiple triggers with 
       "optional": true,
       "type": "string",
     },
+    Object {
+      "defaultValue": "true",
+      "description": "Specifies if the text trigger content should wrap. If you set it to false, it prevents the text from
+wrapping and truncates it with an ellipsis.",
+      "name": "wrapTriggerText",
+      "optional": true,
+      "type": "boolean",
+    },
   ],
   "regions": Array [
     Object {

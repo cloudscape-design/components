@@ -47,6 +47,7 @@ function InternalPopover(
     content,
     triggerAriaLabel,
 
+    wrapTriggerText = true,
     renderWithPortal = false,
 
     __onOpen,
@@ -187,13 +188,14 @@ function InternalPopover(
       {triggerType === 'text' ? (
         <button
           {...triggerProps}
+          className={clsx(triggerProps.className, wrapTriggerText === false && styles['overflow-ellipsis'])}
           tabIndex={triggerTabIndex}
           type="button"
           aria-haspopup="dialog"
           id={referrerId}
           aria-label={triggerAriaLabel}
         >
-          <span className={styles['trigger-inner-text']}>{children}</span>
+          {children}
         </button>
       ) : (
         <span {...triggerProps} id={referrerId}>
