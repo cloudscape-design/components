@@ -4,15 +4,35 @@ import { computeOffset } from '../../../lib/components/container/use-sticky-head
 import globalVars from '../../../lib/components/internal/styles/global-vars';
 
 describe('computeOffset', () => {
-  test('should calculate offset for mobile', () => {
+  test('should calculate offset for mobile outside overflow parent', () => {
     const result = computeOffset({
       isMobile: true,
-      __stickyOffset: 0,
       __mobileStickyOffset: 10,
       hasInnerOverflowParents: false,
     });
 
     expect(result).toBe(`calc(var(${globalVars.stickyVerticalTopOffset}, 0px) + -10px)`);
+  });
+
+  test('should calculate offset for mobile inside overflow parent', () => {
+    const result = computeOffset({
+      isMobile: true,
+      __mobileStickyOffset: 10,
+      hasInnerOverflowParents: true,
+    });
+
+    expect(result).toBe('-10px');
+  });
+
+  test('should apply explicit sticky offset inside overflow parent', () => {
+    const result = computeOffset({
+      isMobile: true,
+      __stickyOffset: 30,
+      __mobileStickyOffset: 10,
+      hasInnerOverflowParents: true,
+    });
+
+    expect(result).toBe('20px');
   });
 
   test('should calculate offset for non-mobile without inner overflow parents', () => {
@@ -53,6 +73,16 @@ describe('computeOffset', () => {
       hasInnerOverflowParents: false,
     });
 
-    expect(result).toBe(`calc(var(${globalVars.stickyVerticalTopOffset}, 0px) + 60px)`);
+    expect(result).toBe('60px');
+  });
+
+  test('should apply zero sticky offset value', () => {
+    const result = computeOffset({
+      isMobile: false,
+      __stickyOffset: 0,
+      hasInnerOverflowParents: false,
+    });
+
+    expect(result).toBe('0px');
   });
 });
