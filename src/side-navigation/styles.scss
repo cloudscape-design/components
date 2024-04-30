@@ -172,14 +172,15 @@
 .divider {
   border-block: none;
   border-inline: none;
-  border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
 }
 
 .divider-default {
   margin-block: awsui.$space-scaled-2x-xl;
-  margin-inline: calc(-1 * #{awsui.$space-s});
+  margin-inline: calc(-1 * #{awsui.$space-panel-divider-margin-horizontal});
+  border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
 }
 
 .divider-header {
   margin-block-start: 0;
+  border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-panel-header;
 }
