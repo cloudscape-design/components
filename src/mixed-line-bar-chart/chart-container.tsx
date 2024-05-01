@@ -155,11 +155,12 @@ export default function ChartContainer<T extends ChartDataTypes>({
     | readonly string[]
     | readonly Date[];
 
-  if (containerRefObject?.current && getIsRtl(containerRefObject.current)) {
-    xDomain = xDomain.slice().reverse();
-  }
+  let yDomain = (props.yDomain || computeDomainY(series, yScaleType, stackedBars)) as readonly number[];
 
-  const yDomain = (props.yDomain || computeDomainY(series, yScaleType, stackedBars)) as readonly number[];
+  if (containerRefObject?.current && getIsRtl(containerRefObject.current)) {
+    xDomain = !horizontalBars ? xDomain.slice().reverse() : xDomain;
+    yDomain = horizontalBars ? yDomain.slice().reverse() : yDomain;
+  }
 
   const linesOnly = series.every(({ series }) => series.type === 'line' || series.type === 'threshold');
 
