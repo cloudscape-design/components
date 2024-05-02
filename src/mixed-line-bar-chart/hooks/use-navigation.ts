@@ -139,7 +139,7 @@ export function useNavigation<T extends ChartDataTypes>({
       const nextSeries = navigableSeries[nextSeriesIndex];
       const nextInternalSeries = series.filter(({ series }) => series === nextSeries)[0];
 
-      const actualTargetX = targetX ?? startFrom ?? allUniqueX[0].datum?.x ?? null;
+      const actualTargetX = targetX ?? startFrom ?? null;
 
       // 2. Find point in the next series
       let targetXPoint = (xScale.d3Scale(actualTargetX as any) ?? NaN) + xOffset;
@@ -185,7 +185,6 @@ export function useNavigation<T extends ChartDataTypes>({
       targetX,
       scaledSeries,
       yScale,
-      allUniqueX,
     ]
   );
 
