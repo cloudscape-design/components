@@ -144,8 +144,6 @@ export function useNavigation<T extends ChartDataTypes>({
       // 2. Find point in the next series
       let targetXPoint = (xScale.d3Scale(actualTargetX as any) ?? NaN) + xOffset;
       if (!isFinite(targetXPoint)) {
-        // for threshold series and rtl this must be plotWidth instead of 0
-        // but I propose to keep it for now
         targetXPoint = 0;
       }
 

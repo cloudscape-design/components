@@ -149,18 +149,13 @@ export default function ChartContainer<T extends ChartDataTypes>({
   const containerRefObject = useRef(null);
   const containerRef = useMergeRefs(containerMeasureRef, containerRefObject);
   const popoverRef = useRef<HTMLElement | null>(null);
+  const isRtl = containerRefObject?.current && getIsRtl(containerRefObject.current);
 
-  let xDomain = (props.xDomain || computeDomainX(series, xScaleType)) as
+  const xDomain = (props.xDomain || computeDomainX(series, xScaleType)) as
     | readonly number[]
     | readonly string[]
     | readonly Date[];
-
-  let yDomain = (props.yDomain || computeDomainY(series, yScaleType, stackedBars)) as readonly number[];
-
-  if (containerRefObject?.current && getIsRtl(containerRefObject.current)) {
-    xDomain = !horizontalBars ? xDomain.slice().reverse() : xDomain;
-    yDomain = horizontalBars ? yDomain.slice().reverse() : yDomain;
-  }
+  const yDomain = (props.yDomain || computeDomainY(series, yScaleType, stackedBars)) as readonly number[];
 
   const linesOnly = series.every(({ series }) => series.type === 'line' || series.type === 'threshold');
 
@@ -194,12 +189,9 @@ export default function ChartContainer<T extends ChartDataTypes>({
     };
   }
 
-  const isRtl = containerRefObject?.current && getIsRtl(containerRefObject.current);
   const bottomAxisProps = !horizontalBars
     ? getXAxisProps(plotWidth, !isRtl ? [0, plotWidth] : [plotWidth, 0])
-    : // TODO: support horizontal bars in RTL
-      getYAxisProps(plotWidth, [0, plotWidth]);
-
+    : getYAxisProps(plotWidth, [0, plotWidth]);
   const blockEndLabelsProps = useBLockEndLabels({ ...bottomAxisProps });
 
   const plotMeasureRef = useRef<SVGLineElement>(null);
