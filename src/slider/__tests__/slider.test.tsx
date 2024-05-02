@@ -223,6 +223,13 @@ describe('Slider ticks', () => {
     expect(ticks).toHaveLength(8);
   });
 
+  test('Properly fills ticks with warning', () => {
+    const wrapper = renderSlider({ min: 0, max: 100, value: 50, tickMarks: true, step: 10, warning: true });
+
+    const ticks = wrapper.findAllByClassName(styles.warning);
+    expect(ticks).toHaveLength(8);
+  });
+
   test('Has correct amount of ticks', () => {
     const wrapper = renderSlider({ min: 0, max: 100, value: 50, tickMarks: true, step: 10 });
 

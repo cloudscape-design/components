@@ -45,7 +45,9 @@ export default function InternalSlider({
   const [showTooltip, setShowTooltip] = useState(false);
   const [isActive, setIsActive] = useState(false);
   const labelsId = useUniqueId('labels');
-  const { ariaLabelledby, ariaDescribedby, controlId, invalid } = useFormFieldContext(rest);
+  const { ariaLabelledby, ariaDescribedby, controlId, invalid, warning } = useFormFieldContext(rest);
+
+  const showWarning = warning && !invalid;
 
   if (referenceValues && valuesAreValid(referenceValues) === false) {
     warnOnce('Slider', 'All reference values must be integers. Non-integer values will not be displayed.');
@@ -135,8 +137,10 @@ export default function InternalSlider({
           <div
             className={clsx(styles['slider-range'], {
               [styles.error]: invalid,
+              [styles.warning]: showWarning,
               [styles.active]: isActive,
               [styles['error-active']]: invalid && isActive,
+              [styles['warning-active']]: showWarning && isActive,
               [styles.disabled]: disabled,
             })}
             style={{ [customCssProps.sliderRangeInlineSize]: `${percent}%` }}
@@ -148,6 +152,7 @@ export default function InternalSlider({
           hideFillLine={hideFillLine}
           disabled={disabled}
           invalid={invalid}
+          warning={warning}
           isActive={isActive}
           step={step}
           min={min}
@@ -204,6 +209,7 @@ export default function InternalSlider({
         }}
         className={clsx(styles.thumb, {
           [styles.error]: invalid,
+          [styles.warning]: showWarning,
           [styles.disabled]: disabled,
           [styles.min]: sliderValue <= min || max < min,
           [styles.max]: sliderValue >= max && min < max,
