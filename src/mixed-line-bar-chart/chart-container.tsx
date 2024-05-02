@@ -195,10 +195,9 @@ export default function ChartContainer<T extends ChartDataTypes>({
   }
 
   const isRtl = containerRefObject?.current && getIsRtl(containerRefObject.current);
-  // TODO: invert axis for horizontal bars too
   const bottomAxisProps = !horizontalBars
     ? getXAxisProps(plotWidth, !isRtl ? [0, plotWidth] : [plotWidth, 0])
-    : getYAxisProps(plotWidth, [0, plotWidth]);
+    : getYAxisProps(plotWidth, !isRtl ? [0, plotWidth] : [plotWidth, 0]);
 
   const blockEndLabelsProps = useBLockEndLabels({ ...bottomAxisProps });
 
