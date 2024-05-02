@@ -191,7 +191,8 @@ export default function ChartContainer<T extends ChartDataTypes>({
   const isRtl = containerRefObject?.current && getIsRtl(containerRefObject.current);
   const bottomAxisProps = !horizontalBars
     ? getXAxisProps(plotWidth, !isRtl ? [0, plotWidth] : [plotWidth, 0])
-    : getYAxisProps(plotWidth, !isRtl ? [0, plotWidth] : [plotWidth, 0]);
+    : // TODO: support horizontal bars in RTL
+      getYAxisProps(plotWidth, [0, plotWidth]);
 
   const blockEndLabelsProps = useBLockEndLabels({ ...bottomAxisProps });
 
