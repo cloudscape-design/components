@@ -38,12 +38,8 @@ export default function computeChartProps<T extends AreaChartProps.DataTypes>({
   width: number;
 }) {
   const xDomain = externalXDomain ? ([...externalXDomain] as unknown as ChartDomain<T>) : computeDomainX(series);
-  if (isRtl && Array.isArray(xDomain)) {
-    xDomain.reverse();
-  }
-
   const xTickCount = getXTickCount(width);
-  const xScale = new ChartScale(xScaleType, xDomain, [0, width]);
+  const xScale = new ChartScale(xScaleType, xDomain, !isRtl ? [0, width] : [width, 0]);
   const xTicks = xScale.domain.length > 0 ? createXTicks(xScale, xTickCount) : [];
 
   const yDomain = externalYDomain || computeDomainY(series, yScaleType);

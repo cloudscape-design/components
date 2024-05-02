@@ -34,6 +34,7 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { nodeBelongs } from '../internal/utils/node-belongs';
 import { CartesianChartContainer } from '../internal/components/cartesian-chart/chart-container';
 import { useHeightMeasure } from '../internal/hooks/container-queries/use-height-measure';
+import { getIsRtl } from '../internal/direction';
 
 const INLINE_START_LABELS_MARGIN = 16;
 const BLOCK_END_LABELS_OFFSET = 12;
@@ -187,8 +188,10 @@ export default function ChartContainer<T extends ChartDataTypes>({
     };
   }
 
+  const isRtl = containerRefObject?.current && getIsRtl(containerRefObject.current);
+  // TODO: invert axis for horizontal bars too
   const bottomAxisProps = !horizontalBars
-    ? getXAxisProps(plotWidth, [0, plotWidth])
+    ? getXAxisProps(plotWidth, !isRtl ? [0, plotWidth] : [plotWidth, 0])
     : getYAxisProps(plotWidth, [0, plotWidth]);
 
   const blockEndLabelsProps = useBLockEndLabels({ ...bottomAxisProps });
@@ -308,6 +311,8 @@ export default function ChartContainer<T extends ChartDataTypes>({
     highlightX,
     clearHighlightedSeries,
     verticalMarkerX,
+    isRtl: !!isRtl,
+    horizontalBars,
   });
 
   const { onSVGMouseMove, onSVGMouseOut, onPopoverLeave } = useMouseHover<T>({
