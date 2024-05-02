@@ -75,7 +75,11 @@ export function useNavigation<T extends ChartDataTypes>({
   const onLineFocus = () => {
     if (verticalMarkerX === null) {
       const index = !isRtl ? 0 : allUniqueX.length - 1;
-      moveToLineGroupIndex(index);
+      if (containsMultipleSeries) {
+        moveToLineGroupIndex(index);
+      } else {
+        moveBetweenSeries(0, allUniqueX[index].datum?.x);
+      }
     }
   };
 
@@ -101,7 +105,7 @@ export function useNavigation<T extends ChartDataTypes>({
   }, [scaledSeries]);
 
   const moveBetweenSeries = useCallback(
-    (direction: number) => {
+    (direction: number, startFrom?: T) => {
       if (isGroupNavigation) {
         return;
       }
@@ -135,9 +139,13 @@ export function useNavigation<T extends ChartDataTypes>({
       const nextSeries = navigableSeries[nextSeriesIndex];
       const nextInternalSeries = series.filter(({ series }) => series === nextSeries)[0];
 
+      const actualTargetX = targetX ?? startFrom ?? allUniqueX[0].datum?.x ?? null;
+
       // 2. Find point in the next series
-      let targetXPoint = (xScale.d3Scale(targetX as any) ?? NaN) + xOffset;
+      let targetXPoint = (xScale.d3Scale(actualTargetX as any) ?? NaN) + xOffset;
       if (!isFinite(targetXPoint)) {
+        // for threshold series and rtl this must be plotWidth instead of 0
+        // but I propose to keep it for now
         targetXPoint = 0;
       }
 
@@ -149,7 +157,7 @@ export function useNavigation<T extends ChartDataTypes>({
         );
         highlightPoint({ ...closestNextSeriesPoint, color: nextInternalSeries.color, series: nextSeries });
       } else if (isYThreshold(nextSeries)) {
-        const scaledTargetIndex = scaledSeries.map(it => it.datum?.x || null).indexOf(targetX);
+        const scaledTargetIndex = scaledSeries.map(it => it.datum?.x || null).indexOf(actualTargetX);
         highlightPoint({
           x: targetXPoint,
           y: yScale.d3Scale(nextSeries.y) ?? NaN,
@@ -179,6 +187,7 @@ export function useNavigation<T extends ChartDataTypes>({
       targetX,
       scaledSeries,
       yScale,
+      allUniqueX,
     ]
   );
 
