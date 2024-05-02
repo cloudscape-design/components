@@ -28,14 +28,16 @@ $border-radius-slider-thumb: 50%;
 }
 
 @mixin base-thumb-hover-styles {
-  box-shadow: 0px 0 0 2px awsui.$color-background-slider-handle-ring,
+  box-shadow:
+    0px 0 0 2px awsui.$color-background-slider-handle-ring,
     0 0 0 4px awsui.$color-background-slider-handle-default;
 }
 
 @mixin base-thumb-focus-styles {
   block-size: 20px;
   inline-size: 20px;
-  box-shadow: 0px 0 0 2px awsui.$color-background-slider-handle-ring,
+  box-shadow:
+    0px 0 0 2px awsui.$color-background-slider-handle-ring,
     0 0 0 4px awsui.$color-background-slider-handle-active;
   background: awsui.$color-background-slider-handle-active;
 
@@ -57,11 +59,14 @@ $border-radius-slider-thumb: 50%;
   border-inline-width: 2px;
   border-color: awsui.$color-background-slider-error-pressed;
 
-  box-shadow: 0px 0 0 2px awsui.$color-background-slider-handle-ring,
+  box-shadow:
+    0px 0 0 2px awsui.$color-background-slider-handle-ring,
     0 0 0 4px awsui.$color-background-slider-error-pressed;
 }
 
 @mixin error-thumb-hover-styles {
   background-color: awsui.$color-text-status-error;
-  box-shadow: 0px 0 0 2px awsui.$color-background-slider-handle-ring, 0 0 0 4px awsui.$color-text-status-error;
+  box-shadow:
+    0px 0 0 2px awsui.$color-background-slider-handle-ring,
+    0 0 0 4px awsui.$color-text-status-error;
 }
