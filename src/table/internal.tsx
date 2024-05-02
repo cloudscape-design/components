@@ -50,6 +50,8 @@ import { NoDataCell } from './no-data-cell';
 import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
 import { getContentHeaderClassName } from '../internal/utils/content-header-utils';
 import { useExpandableTableProps } from './expandable-rows/expandable-rows-utils';
+import { usePrevious } from '../internal/hooks/use-previous';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 const GRID_NAVIGATION_PAGE_SIZE = 10;
 const SELECTION_COLUMN_WIDTH = 54;
@@ -128,6 +130,15 @@ const InternalTable = React.forwardRef(
     }
 
     const baseProps = getBaseProps(rest);
+
+    const prevStickyHeader = usePrevious(stickyHeader);
+    if (prevStickyHeader !== undefined && !!stickyHeader !== !!prevStickyHeader) {
+      warnOnce(
+        'Table',
+        `\`stickyHeader\` has changed from "${prevStickyHeader}" to "${stickyHeader}". It is not recommended to change the value of this property during the component lifecycle. Please set it to either "true" or "false" unconditionally.`
+      );
+    }
+
     stickyHeader = stickyHeader && supportsStickyPosition();
     const isMobile = useMobile();
 

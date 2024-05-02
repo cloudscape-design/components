@@ -13953,7 +13953,9 @@ Use it in conjunction with the sticky columns preference of the
       "type": "TableProps.StickyColumns",
     },
     Object {
-      "description": "If set to \`true\`, the table header remains visible when the user scrolls down.",
+      "description": "If set to \`true\`, the table header remains visible when the user scrolls down.
+Do not use \`stickyHeader\` conditionally. Instead, keep its value constant during the component lifecycle.
+",
       "name": "stickyHeader",
       "optional": true,
       "type": "boolean",
