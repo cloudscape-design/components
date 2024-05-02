@@ -93,7 +93,7 @@ function Sliders() {
                   setValue2(Number(detail.value));
                   setError(validateValue(Number(detail.value)));
                 }}
-                controlId="validation-input"
+                controlId="validation-input-error"
               />
             </div>
             <Box>Units</Box>
@@ -129,7 +129,7 @@ function Sliders() {
                   setValue6(Number(detail.value));
                   setWarning(validateValue(Number(detail.value)));
                 }}
-                controlId="validation-input"
+                controlId="validation-input-warning"
               />
             </div>
             <Box>Units</Box>
