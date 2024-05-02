@@ -27,6 +27,7 @@ const yScale = new NumericChartScale('linear', [0, 15], [0, 15], null);
 const categoricalScale = new ChartScale('categorical', ['Potatoes', 'Chocolate', 'Apples', 'Oranges'], [0, 100]);
 
 const commonProps: Omit<UseNavigationProps<ChartDataTypes>, 'xScale' | 'yScale' | 'barGroups' | 'scaledSeries'> = {
+  horizontalBars: false,
   highlightedSeries: null,
   isHandlersDisabled: false,
   series: [],
