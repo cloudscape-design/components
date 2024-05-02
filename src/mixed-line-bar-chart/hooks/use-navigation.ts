@@ -29,6 +29,9 @@ export type UseNavigationProps<T extends ChartDataTypes> = Pick<
   highlightX: (verticalMarker: VerticalMarkerX<T> | null) => void;
   clearHighlightedSeries(): void;
   verticalMarkerX: VerticalMarkerX<T> | null;
+
+  isRtl?: boolean;
+  horizontalBars: boolean;
 };
 
 export function useNavigation<T extends ChartDataTypes>({
@@ -48,6 +51,8 @@ export function useNavigation<T extends ChartDataTypes>({
   highlightPoint,
   highlightX,
   verticalMarkerX,
+  isRtl,
+  horizontalBars,
 }: UseNavigationProps<T>) {
   const [targetX, setTargetX] = useState<T | null>(null);
   const [xIndex, setXIndex] = useState(0);
@@ -69,11 +74,8 @@ export function useNavigation<T extends ChartDataTypes>({
 
   const onLineFocus = () => {
     if (verticalMarkerX === null) {
-      if (containsMultipleSeries) {
-        moveToLineGroupIndex(0);
-      } else {
-        moveBetweenSeries(0);
-      }
+      const index = !isRtl ? 0 : allUniqueX.length - 1;
+      moveToLineGroupIndex(index);
     }
   };
 
@@ -200,6 +202,10 @@ export function useNavigation<T extends ChartDataTypes>({
 
         let nextGroupIndex = 0;
         if (highlightedGroupIndex !== null) {
+          if (isRtl && !horizontalBars) {
+            direction = -direction;
+          }
+
           // find next group
           nextGroupIndex = highlightedGroupIndex + direction;
           if (nextGroupIndex > MAX_GROUP_INDEX) {
@@ -224,6 +230,8 @@ export function useNavigation<T extends ChartDataTypes>({
       highlightedGroupIndex,
       barGroups,
       highlightGroup,
+      isRtl,
+      horizontalBars,
     ]
   );
 
