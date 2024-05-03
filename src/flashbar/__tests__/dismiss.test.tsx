@@ -4,6 +4,7 @@
 import React, { useState } from 'react';
 import Flashbar, { FlashbarProps } from '../../../lib/components/flashbar';
 import createWrapper from '../../../lib/components/test-utils/dom';
+import { disableMotion } from '@cloudscape-design/global-styles';
 import { render } from '@testing-library/react';
 
 const defaultItems: FlashbarProps.MessageDefinition[] = [
@@ -36,9 +37,18 @@ function StatefulFlashbar({ stackItems }: { stackItems: boolean }) {
   return <Flashbar stackItems={stackItems} items={itemsWithDismiss} />;
 }
 
+afterEach(() => {
+  disableMotion(false);
+});
+
 test.each([{ stackItems: false }, { stackItems: true }])(
   'items can be dismissed, stackItems=$stackItems',
   ({ stackItems }) => {
+    // Disabling motion is required so that removing the last item when stackItems=true happens instantaneously.
+    if (stackItems) {
+      disableMotion(true);
+    }
+
     render(<StatefulFlashbar stackItems={stackItems} />);
     const flashbar = createWrapper().findFlashbar()!;
 
