@@ -526,6 +526,7 @@ const InternalTable = React.forwardRef(
                                   isEditable={isEditable}
                                   isEditing={isEditing}
                                   isRowHeader={column.isRowHeader}
+                                  resizableColumns={resizableColumns}
                                   successfulEdit={successfulEdit}
                                   onEditStart={() => cellEditing.startEdit({ rowIndex, colIndex })}
                                   onEditEnd={editCancelled =>
