@@ -1,18 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 
 import TopNavigation from '~components/top-navigation';
-import Input, { InputProps } from '~components/input';
-import Autosuggest, { AutosuggestProps } from '~components/autosuggest';
+import Input from '~components/input';
+import Autosuggest from '~components/autosuggest';
 import logo from './logos/simple-logo.svg';
 import { I18N_STRINGS } from './common';
 
 export default function TopNavigationPage() {
   const [valueAutosuggest, setValueAutosuggest] = useState('');
   const [valueInput, setValueInput] = useState('');
-  const inputRef = useRef<InputProps.Ref>(null);
-  const autosuggestRef = useRef<AutosuggestProps.Ref>(null);
   return (
     <article>
       <h1>TopNavigation with search</h1>
@@ -24,12 +22,7 @@ export default function TopNavigationPage() {
           title: 'Input as a search',
         }}
         search={
-          <Input
-            ref={inputRef}
-            ariaLabel="Input field"
-            value={valueInput}
-            onChange={({ detail }) => setValueInput(detail.value)}
-          />
+          <Input ariaLabel="Input field" value={valueInput} onChange={({ detail }) => setValueInput(detail.value)} />
         }
       />
       <br />
@@ -41,7 +34,6 @@ export default function TopNavigationPage() {
         }}
         search={
           <Autosuggest
-            ref={autosuggestRef}
             ariaLabel="Input field"
             onChange={({ detail }) => setValueAutosuggest(detail.value)}
             value={valueAutosuggest}
@@ -58,8 +50,6 @@ export default function TopNavigationPage() {
         }
       />
       <br />
-      <button onClick={() => inputRef.current?.focus()}>Focus input</button>
-      <button onClick={() => autosuggestRef.current?.focus()}>Focus autosuggest</button>
     </article>
   );
 }

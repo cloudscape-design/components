@@ -1,19 +1,19 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { NonCancelableCustomEvent } from '~components';
 
-import Input from '~components/input';
+import Input, { InputProps } from '~components/input';
 import TopNavigation from '~components/top-navigation';
 import { I18N_STRINGS } from './common';
 
 export default function () {
+  const inputRef = useRef<InputProps.Ref>(null);
   const [inputValue, setInputValue] = useState<string>('');
   const [events, setEvents] = useState<string[]>([]);
   const onUtilityClick = (event: NonCancelableCustomEvent<unknown>) => {
     setEvents(events => [...events, JSON.stringify(event.detail)]);
   };
-
   return (
     <article>
       <h1>TopNavigation Integ Page</h1>
@@ -25,6 +25,7 @@ export default function () {
         }}
         search={
           <Input
+            ref={inputRef}
             type="search"
             placeholder="Search..."
             value={inputValue}
@@ -75,6 +76,9 @@ export default function () {
       </code>
       <button type="button" onClick={() => setEvents([])} id="clear">
         Clear events
+      </button>
+      <button type="button" onClick={() => inputRef.current?.focus()} id="focus-input">
+        Focus input
       </button>
     </article>
   );
