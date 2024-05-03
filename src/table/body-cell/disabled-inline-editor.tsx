@@ -30,6 +30,7 @@ export function DisabledInlineEditor<ItemType>({
   editDisabledReason,
   isVisualRefresh,
   interactiveCell = true,
+  resizableColumns = false,
   ...rest
 }: DisabledInlineEditorProps<ItemType>) {
   const clickAwayRef = useClickAway(() => {
@@ -73,6 +74,7 @@ export function DisabledInlineEditor<ItemType>({
         className,
         styles['body-cell-editable'],
         interactiveCell && styles['body-cell-interactive'],
+        resizableColumns && styles['resizable-columns'],
         isEditing && styles['body-cell-edit-disabled-popover'],
         isVisualRefresh && styles['is-visual-refresh']
       )}

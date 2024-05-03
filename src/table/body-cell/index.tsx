@@ -21,6 +21,7 @@ export interface TableBodyCellProps<ItemType> extends TableTdElementProps {
   column: TableProps.ColumnDefinition<ItemType>;
   item: ItemType;
   isEditing: boolean;
+  resizableColumns?: boolean;
   successfulEdit?: boolean;
   onEditStart: () => void;
   onEditEnd: (cancelled: boolean) => void;
@@ -39,6 +40,7 @@ function TableCellEditable<ItemType>({
   submitEdit,
   ariaLabels,
   isVisualRefresh,
+  resizableColumns = false,
   successfulEdit = false,
   interactiveCell = true,
   ...rest
@@ -87,6 +89,7 @@ function TableCellEditable<ItemType>({
         className,
         styles['body-cell-editable'],
         interactiveCell && styles['body-cell-interactive'],
+        resizableColumns && styles['resizable-columns'],
         isEditing && styles['body-cell-edit-active'],
         showSuccessIcon && showIcon && styles['body-cell-has-success'],
         isVisualRefresh && styles['is-visual-refresh']
