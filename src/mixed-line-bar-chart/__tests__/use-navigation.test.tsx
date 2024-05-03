@@ -456,7 +456,7 @@ describe('Mixed charts', () => {
     expect(wrapper.findHighlightedSeries()?.getElement()).toBeEmptyDOMElement();
   });
 
-  test('can navigate horizontally', () => {
+  test('can navigate horizontally in ltr', () => {
     const { wrapper } = renderNavigationHook(chartProps);
 
     act(() => wrapper.focus());
@@ -470,6 +470,23 @@ describe('Mixed charts', () => {
     act(() => wrapper.keydown(KeyCode.left));
     act(() => wrapper.keydown(KeyCode.left));
     act(() => wrapper.keydown(KeyCode.left));
+    expect(wrapper.findHighlightedGroupIndex()?.getElement()).toHaveTextContent('3');
+  });
+
+  test('can navigate horizontally in rtl', () => {
+    const { wrapper } = renderNavigationHook({ ...chartProps, isRtl: true });
+
+    act(() => wrapper.focus());
+    act(() => wrapper.keydown(KeyCode.left));
+    expect(wrapper.findHighlightedGroupIndex()?.getElement()).toHaveTextContent('1');
+
+    act(() => wrapper.keydown(KeyCode.left));
+    expect(wrapper.findHighlightedGroupIndex()?.getElement()).toHaveTextContent('2');
+
+    // Loop back
+    act(() => wrapper.keydown(KeyCode.right));
+    act(() => wrapper.keydown(KeyCode.right));
+    act(() => wrapper.keydown(KeyCode.right));
     expect(wrapper.findHighlightedGroupIndex()?.getElement()).toHaveTextContent('3');
   });
 });
