@@ -3,25 +3,60 @@
 
 /* eslint-disable @cloudscape-design/prefer-live-region */
 
+import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
-import React, { memo, useEffect, useRef } from 'react';
-import ScreenreaderOnly, { ScreenreaderOnlyProps } from '../screenreader-only';
+import { BaseComponentProps } from '../../base-component';
+import { polite, assertive } from './controller';
+
 import styles from './styles.css.js';
 
-export interface LiveRegionProps extends ScreenreaderOnlyProps {
-  assertive?: boolean;
-  delay?: number;
-  visible?: boolean;
-  tagName?: 'span' | 'div';
-  id?: string;
+// Export announcers for components that want to imperatively announce content.
+export { polite, assertive };
+
+export interface LiveRegionProps extends BaseComponentProps {
   /**
-   * Use a list of strings and/or existing DOM elements for building the
-   * announcement text. This avoids rendering separate content just for this
-   * LiveRegion.
+   * Whether the announcements should be made using assertive aria-live.
+   * You should almost always leave this set to false unless you have a good
+   * reason.
+   * @default false
+   */
+  assertive?: boolean;
+
+  /**
+   * The delay between each announcement from this live region. You should
+   * leave this set to the default unless this live region is commonly
+   * interrupted by other actions (like text entry in text filtering).
+   */
+  delay?: number;
+
+  /**
+   * Use a list of strings and/or refs to existing elements for building the
+   * announcement text. This avoids rendering separate content twice just for
+   * this LiveRegion.
    *
    * If this property is set, the `children` will be ignored.
    */
   source?: Array<string | React.RefObject<HTMLElement> | undefined>;
+
+  /**
+   * Use the rendered content as the source for the announcement text.
+   *
+   * If interactive content is rendered inside `children`, it will be visually
+   * hidden, but still interactive. Consider using `source` instead.
+   */
+  children?: React.ReactNode;
+
+  /**
+   * Visibly render the contents of the live region.
+   * @default false
+   */
+  visible?: boolean;
+
+  /**
+   * The tag to render the live region as.
+   * @default "span"
+   */
+  tagName?: 'span' | 'div';
 }
 
 /**
@@ -31,144 +66,86 @@ export interface LiveRegionProps extends ScreenreaderOnlyProps {
  * The way live region works differently in different browsers and screen readers and
  * it is recommended to manually test every new implementation.
  *
- * If you notice there are different words being merged together,
- * check if there are text nodes not being wrapped in elements, like:
  * ```
- * <LiveRegion>
- *   {title}
- *   <span><Details /></span>
- * </LiveRegion>
- * ```
- *
- * To fix, wrap "title" in an element:
- * ```
- * <LiveRegion>
- *   <span>{title}</span>
- *   <span><Details /></span>
- * </LiveRegion>
- * ```
- *
- * Or create a single text node if possible:
- * ```
- * <LiveRegion>
- *   {`${title} ${details}`}
- * </LiveRegion>
+ * <LiveRegion source={[`${title} ${details}`]} />
  * ```
  *
  * The live region is always atomic, because non-atomic regions can be treated by screen readers
  * differently and produce unexpected results. To imitate non-atomic announcements simply use
  * multiple live regions:
+ *
  * ```
  * <>
- *   <LiveRegion>{title}</LiveRegion>
- *   <LiveRegion><Details /></LiveRegion>
+ *   <LiveRegion source={[title]} />
+ *   <LiveRegion source={[someElementRef]} />
  * </>
  * ```
- *
- * If you place interactive content inside the LiveRegion, the content will still be
- * interactive (e.g. as a tab stop). Consider using the `source` property instead.
  */
-export default memo(LiveRegion);
-
-function LiveRegion({
-  assertive = false,
-  delay = 10,
+export default function LiveRegion({
+  assertive: isAssertive = false,
   visible = false,
   tagName: TagName = 'span',
+  delay,
   children,
-  id,
   source,
+  className,
   ...restProps
 }: LiveRegionProps) {
   const sourceRef = useRef<HTMLSpanElement & HTMLDivElement>(null);
-  const targetRef = useRef<HTMLSpanElement & HTMLDivElement>(null);
 
-  /*
-    When React state changes, React often produces too many DOM updates, causing NVDA to
-    issue many announcements for the same logical event (See https://github.com/nvaccess/nvda/issues/7996).
+  // The announcer is a globally managed singleton. We're using a ref
+  // here because we're entering imperative land when using the controller
+  // and we don't want things like double-rendering to double-announce
+  // content.
+  const previousSourceContentRef = useRef<string>();
 
-    The code below imitates a debouncing, scheduling a callback every time new React state
-    update is detected. When a callback resolves, it copies content from a muted element
-    to the live region, which is recognized by screen readers as an update.
-
-    If the use case requires no announcement to be ignored, use delay = 0, but ensure it
-    does not impact the performance. If it does, prefer using a string as children prop.
-  */
   useEffect(() => {
-    function getSourceContent() {
-      if (source) {
-        return source
-          .map(item => {
-            if (!item) {
-              return undefined;
-            }
-            if (typeof item === 'string') {
-              return item;
-            }
-            if (item.current) {
-              return extractInnerText(item.current);
-            }
-          })
-          .filter(Boolean)
-          .join(' ');
-      }
+    polite.initialize();
+    assertive.initialize();
+  }, []);
 
-      if (sourceRef.current) {
-        return extractInnerText(sourceRef.current);
-      }
+  useEffect(() => {
+    const content = source
+      ? getSourceContent(source)
+      : sourceRef.current
+      ? extractInnerText(sourceRef.current)
+      : undefined;
+
+    if (content && content !== previousSourceContentRef.current) {
+      const announcer = isAssertive ? assertive : polite;
+      announcer.announce(content, delay);
     }
-    function updateLiveRegion() {
-      const sourceContent = getSourceContent();
-
-      if (targetRef.current && sourceContent) {
-        const targetContent = extractInnerText(targetRef.current);
-        if (targetContent !== sourceContent) {
-          // The aria-atomic does not work properly in Voice Over, causing
-          // certain parts of the content to be ignored. To fix that,
-          // we assign the source text content as a single node.
-          targetRef.current.innerText = sourceContent;
-        }
-      }
-    }
-
-    let timeoutId: null | number;
-    if (delay) {
-      timeoutId = setTimeout(updateLiveRegion, delay);
-    } else {
-      updateLiveRegion();
-    }
-
-    return () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-    };
+    previousSourceContentRef.current = content;
   });
 
+  if (source) {
+    return null;
+  }
+
   return (
-    <>
-      {visible && !source && (
-        <TagName ref={sourceRef} id={id}>
-          {children}
-        </TagName>
-      )}
-
-      <ScreenreaderOnly {...restProps} className={clsx(styles.root, restProps.className)}>
-        {!visible && !source && (
-          <TagName ref={sourceRef} aria-hidden="true">
-            {children}
-          </TagName>
-        )}
-
-        <span ref={targetRef} aria-atomic="true" aria-live={assertive ? 'assertive' : 'polite'}></span>
-      </ScreenreaderOnly>
-    </>
+    <TagName ref={sourceRef} className={clsx(styles.root, className)} hidden={!visible} {...restProps}>
+      {children}
+    </TagName>
   );
 }
 
-// This only extracts text content from the node including all its children which is enough for now.
-// To make it more powerful, it is possible to create a more sophisticated extractor with respect to
-// ARIA properties to ignore aria-hidden nodes and read ARIA labels from the live content.
-function extractInnerText(node: HTMLElement) {
+function extractInnerText(node: HTMLElement): string {
+  // This only extracts text content from the node including all its children which is enough for now.
+  // To make it more powerful, it is possible to create a more sophisticated extractor with respect to
+  // ARIA properties to ignore aria-hidden nodes and read ARIA labels from the live content.
   return (node.innerText || '').replace(/\s+/g, ' ').trim();
+}
+
+function getSourceContent(source: Array<string | React.RefObject<HTMLElement> | undefined>): string {
+  return source
+    .map(item => {
+      if (!item || typeof item === 'string') {
+        return item;
+      }
+      if (item.current) {
+        return extractInnerText(item.current);
+      }
+    })
+    .filter(Boolean)
+    .join(' ');
 }

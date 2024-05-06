@@ -2,53 +2,65 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render, waitFor } from '@testing-library/react';
-import createWrapper from '../../../../../lib/components/test-utils/dom';
-import LiveRegion from '../../../../../lib/components/internal/components/live-region';
+import LiveRegion, { polite, assertive } from '../../../../../lib/components/internal/components/live-region';
 import { mockInnerText } from '../../../../internal/analytics/__tests__/mocks';
+import styles from '../../../../../lib/components/internal/components/live-region/styles.css.js';
 
 mockInnerText();
 
 const renderLiveRegion = async (jsx: React.ReactElement) => {
   const { container } = render(jsx);
-  const wrapper = createWrapper(container);
-
-  await waitFor(() => expect(wrapper.find('[aria-live]')!.getElement()).not.toBeEmptyDOMElement());
+  await waitFor(() => expect(document.querySelector('[aria-live=polite]')));
 
   return {
-    wrapper,
-    container,
-    visibleSource: wrapper.find(':first-child')?.getElement(),
-    hiddenSource: wrapper.find('[aria-hidden=true]')?.getElement(),
-    liveRegion: wrapper.find('[aria-live]')!.getElement(),
+    visibleSource: container.querySelector(`.${styles.root}`),
+    hiddenSource: container.querySelector('[hidden]'),
+    politeRegion: document.querySelector('[aria-live=polite]')!,
+    assertiveRegion: document.querySelector('[aria-live=assertive]')!,
   };
 };
 
+// The announcers persist throughout the lifecycle of the application.
+// We need to reset them after each test.
+afterEach(() => {
+  polite.reset();
+  assertive.reset();
+});
+
 describe('LiveRegion', () => {
   it('renders', async () => {
-    const { hiddenSource, liveRegion } = await renderLiveRegion(<LiveRegion>Announcement</LiveRegion>);
+    const { hiddenSource, politeRegion } = await renderLiveRegion(<LiveRegion delay={0}>Announcement</LiveRegion>);
 
     expect(hiddenSource).toHaveTextContent('Announcement');
-    expect(liveRegion).toHaveAttribute('aria-live', 'polite');
-    expect(liveRegion).toHaveAttribute('aria-atomic', 'true');
-    expect(liveRegion).toHaveTextContent('Announcement');
+    expect(politeRegion).toHaveAttribute('aria-live', 'polite');
+    expect(politeRegion).toHaveAttribute('aria-atomic', 'true');
+    expect(politeRegion).toHaveTextContent('Announcement');
   });
 
   it('renders with a span by default', async () => {
-    const { hiddenSource, liveRegion } = await renderLiveRegion(<LiveRegion>Announcement</LiveRegion>);
+    const { hiddenSource, politeRegion } = await renderLiveRegion(<LiveRegion delay={0}>Announcement</LiveRegion>);
 
     expect(hiddenSource!.tagName).toBe('SPAN');
-    expect(liveRegion).toHaveTextContent('Announcement');
+    expect(politeRegion).toHaveTextContent('Announcement');
   });
 
   it('wraps visible content in a span by default', async () => {
-    const { visibleSource } = await renderLiveRegion(<LiveRegion visible={true}>Announcement</LiveRegion>);
+    const { visibleSource } = await renderLiveRegion(
+      <LiveRegion delay={0} visible={true}>
+        Announcement
+      </LiveRegion>
+    );
 
     expect(visibleSource!.tagName).toBe('SPAN');
     expect(visibleSource).toHaveTextContent('Announcement');
   });
 
   it('can render with a div', async () => {
-    const { hiddenSource } = await renderLiveRegion(<LiveRegion tagName="div">Announcement</LiveRegion>);
+    const { hiddenSource } = await renderLiveRegion(
+      <LiveRegion delay={0} tagName="div">
+        Announcement
+      </LiveRegion>
+    );
 
     expect(hiddenSource!.tagName).toBe('DIV');
     expect(hiddenSource).toHaveTextContent('Announcement');
@@ -56,7 +68,7 @@ describe('LiveRegion', () => {
 
   it('can wrap visible content in a div', async () => {
     const { visibleSource } = await renderLiveRegion(
-      <LiveRegion tagName="div" visible={true}>
+      <LiveRegion delay={0} tagName="div" visible={true}>
         Announcement
       </LiveRegion>
     );
@@ -65,19 +77,28 @@ describe('LiveRegion', () => {
   });
 
   it('can render assertive live region', async () => {
-    const { liveRegion } = await renderLiveRegion(<LiveRegion assertive={true}>Announcement</LiveRegion>);
-    expect(liveRegion).toHaveAttribute('aria-live', 'assertive');
+    const { politeRegion, assertiveRegion } = await renderLiveRegion(
+      <LiveRegion delay={0} assertive={true}>
+        Announcement
+      </LiveRegion>
+    );
+    console.log({ assertiveRegion, politeRegion });
+    expect(assertiveRegion).toHaveAttribute('aria-live', 'assertive');
+    expect(assertiveRegion).toHaveTextContent('Announcement');
+    expect(politeRegion).toBeEmptyDOMElement();
   });
 
   it('uses the `source` parameter if provided', async () => {
     const ref = { current: null };
-    const { liveRegion } = await renderLiveRegion(
+    const { politeRegion } = await renderLiveRegion(
       <>
-        <LiveRegion source={['static text', ref, undefined, 'more static text']}>Announcement</LiveRegion>
+        <LiveRegion delay={0} source={['static text', ref, undefined, 'more static text']}>
+          Announcement
+        </LiveRegion>
         <span ref={ref}>Element text</span>
       </>
     );
-    expect(liveRegion).toHaveTextContent('static text Element text more static text');
-    expect(liveRegion).not.toHaveTextContent('Announcement');
+    expect(politeRegion).toHaveTextContent('static text Element text more static text');
+    expect(politeRegion).not.toHaveTextContent('Announcement');
   });
 });
