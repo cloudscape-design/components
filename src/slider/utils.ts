@@ -22,19 +22,18 @@ function countDecimals(value: number) {
 
 export const getStepArray = (step: number, [min, max]: [min: number, max: number]) => {
   const steps = [min];
-  let stepNumber = 1;
 
   // JS struggles with rounding errors when using decimals, so include a multiplier
   // to make step calculations integer-based
   const multiplier = Math.pow(10, countDecimals(step));
 
-  while (steps[steps.length - 1] < max) {
-    steps.push((min * multiplier + stepNumber * multiplier * step) / multiplier);
-    stepNumber++;
-  }
+  let currentStep = min;
 
-  if (steps[steps.length - 1] > max) {
-    steps.pop();
+  while (currentStep < max) {
+    currentStep = (multiplier * currentStep + multiplier * step) / multiplier;
+    if (currentStep <= max) {
+      steps.push(currentStep);
+    }
   }
 
   return steps;
