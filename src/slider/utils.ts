@@ -14,10 +14,8 @@ function countDecimals(value: number) {
   // very small numbers, e.g. 1e-9
   if (str.indexOf('-') !== -1) {
     return parseInt(str.split('-')[1], 10) || 0;
-  } else if (str.indexOf('.') !== -1) {
-    return str.split('.')[1].length || 0;
   }
-  return 0;
+  return str.split('.')[1]?.length || 0;
 }
 
 export const getStepArray = (step: number, [min, max]: [min: number, max: number]) => {
