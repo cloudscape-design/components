@@ -34,6 +34,7 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { nodeBelongs } from '../internal/utils/node-belongs';
 import { CartesianChartContainer } from '../internal/components/cartesian-chart/chart-container';
 import { useHeightMeasure } from '../internal/hooks/container-queries/use-height-measure';
+import { getIsRtl } from '../internal/direction';
 
 const INLINE_START_LABELS_MARGIN = 16;
 const BLOCK_END_LABELS_OFFSET = 12;
@@ -148,6 +149,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
   const containerRefObject = useRef(null);
   const containerRef = useMergeRefs(containerMeasureRef, containerRefObject);
   const popoverRef = useRef<HTMLElement | null>(null);
+  const isRtl = containerRefObject?.current && getIsRtl(containerRefObject.current);
 
   const xDomain = (props.xDomain || computeDomainX(series, xScaleType)) as
     | readonly number[]
@@ -188,9 +190,8 @@ export default function ChartContainer<T extends ChartDataTypes>({
   }
 
   const bottomAxisProps = !horizontalBars
-    ? getXAxisProps(plotWidth, [0, plotWidth])
+    ? getXAxisProps(plotWidth, !isRtl ? [0, plotWidth] : [plotWidth, 0])
     : getYAxisProps(plotWidth, [0, plotWidth]);
-
   const blockEndLabelsProps = useBLockEndLabels({ ...bottomAxisProps });
 
   const plotMeasureRef = useRef<SVGLineElement>(null);
@@ -308,6 +309,8 @@ export default function ChartContainer<T extends ChartDataTypes>({
     highlightX,
     clearHighlightedSeries,
     verticalMarkerX,
+    isRtl: !!isRtl,
+    horizontalBars,
   });
 
   const { onSVGMouseMove, onSVGMouseOut, onPopoverLeave } = useMouseHover<T>({
