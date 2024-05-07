@@ -44,8 +44,7 @@
       .name-resize-area,
       .name-shrink,
       .name-undo,
-      .name-view-vertical,
-
+      .name-view-vertical
     ) {
     @include styles.with-direction('rtl') {
       transform: scaleX(-1);
