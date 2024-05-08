@@ -174,9 +174,8 @@ describe('useSelect', () => {
       initialProps: { ...initialProps },
     });
 
-    const { getFilterProps } = hook.result.current;
-    act(() => getFilterProps().onKeyDown!(createTestEvent(KeyCode.down)));
-    act(() => getFilterProps().onKeyDown!(createTestEvent(KeyCode.up)));
+    act(() => hook.result.current.getFilterProps().onKeyDown!(createTestEvent(KeyCode.down)));
+    act(() => hook.result.current.getFilterProps().onKeyDown!(createTestEvent(KeyCode.up)));
     expect(hook.result.current.highlightedOption).toEqual({
       disabled: true,
       option: { disabled: true, label: 'Child 2' },
@@ -189,10 +188,9 @@ describe('useSelect', () => {
       initialProps: { ...initialProps },
     });
 
-    const { getFilterProps } = hook.result.current;
-    act(() => getFilterProps().onKeyDown!(createTestEvent(KeyCode.down)));
-    act(() => getFilterProps().onKeyDown!(createTestEvent(KeyCode.up)));
-    act(() => getFilterProps().onKeyDown!(createTestEvent(KeyCode.down)));
+    act(() => hook.result.current.getFilterProps().onKeyDown!(createTestEvent(KeyCode.down)));
+    act(() => hook.result.current.getFilterProps().onKeyDown!(createTestEvent(KeyCode.up)));
+    act(() => hook.result.current.getFilterProps().onKeyDown!(createTestEvent(KeyCode.down)));
     expect(hook.result.current.highlightedOption).toEqual({
       type: 'child',
       option: {
