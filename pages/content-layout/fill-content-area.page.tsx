@@ -39,7 +39,7 @@ function ContentFilling() {
         style={{
           position: 'absolute',
           insetBlockStart: '50%',
-          insetInlineStart: '50%',
+          left: '50%',
           transform: 'translate(-50%, -50%)',
         }}
       >
