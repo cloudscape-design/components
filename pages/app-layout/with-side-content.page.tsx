@@ -30,7 +30,8 @@ export default function () {
             boxSizing: 'border-box',
             insetBlockEnd: 0,
             insetBlockStart: 0,
-            padding: 10,
+            paddingBlock: 10,
+            paddingInline: 10,
             paddingBlockStart: 70,
             zIndex: 900,
           }}
@@ -91,7 +92,8 @@ export default function () {
             insetBlockEnd: 0,
             insetBlockStart: 0,
             insetInlineEnd: 0,
-            padding: 10,
+            paddingBlock: 10,
+            paddingInline: 10,
             paddingBlockStart: 70,
             zIndex: 900,
           }}

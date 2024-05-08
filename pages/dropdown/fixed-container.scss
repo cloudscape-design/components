@@ -16,7 +16,8 @@
   inset-block-start: 0;
   inline-size: 100%;
   z-index: 1;
-  padding: 10px;
+  padding-block: 10px;
+  padding-inline: 10px;
   box-sizing: border-box;
   background: awsui.$color-background-container-content;
 }
