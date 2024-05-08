@@ -17,7 +17,7 @@
   background-color: grey;
   height: var(--fixed-height);
   position: fixed;
-  left: 0;
+  inset-inline-start: 0;
   width: 100vw;
 }
 

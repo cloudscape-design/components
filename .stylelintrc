@@ -52,6 +52,7 @@
   "overrides": [
     {
       "files": [
+        "./pages/**/*.scss",
         "./src/**/*.scss"
       ],
       "rules": {

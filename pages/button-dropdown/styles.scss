@@ -23,7 +23,7 @@
     overflow: scroll;
     > .inner-container {
       position: relative;
-      left: 300px;
+      inset-inline-start: 300px;
     }
     > :first-child {
       height: 300px;
@@ -38,7 +38,7 @@
     overflow: hidden;
     > .inner-container {
       position: relative;
-      left: 50px;
+      inset-inline-start: 50px;
       top: 75px;
     }
   }
@@ -66,7 +66,7 @@
 }
 
 .positioning-container {
-  left: 200px;
+  inset-inline-start: 200px;
   position: relative;
 }
 
