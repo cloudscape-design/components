@@ -17,39 +17,6 @@ const options = [
   },
 ];
 
-const groupOptions = [
-  {
-    label: 'Group 1',
-    options: [
-      {
-        label: 'Child 1',
-        value: 'child1',
-      },
-      {
-        label: 'Child 2',
-        disabled: true,
-      },
-    ],
-  },
-  {
-    label: 'Option 1',
-    labelTag: 'bx',
-  },
-  {
-    label: 'Group 2',
-    disabled: true,
-    options: [
-      {
-        label: 'Child 1',
-      },
-      {
-        label: 'Child 2',
-        disabled: true,
-      },
-    ],
-  },
-];
-
 const optionsOverflow = range(45).map(index => ({
   value: 'option' + index,
   label: 'option ' + index,
@@ -101,7 +68,6 @@ export default function SelectPage() {
   const [selectedOption3, setSelectedOption3] = React.useState(null);
   const [selectedOption4, setSelectedOption4] = React.useState(null);
   const [selectedOption5, setSelectedOption5] = React.useState(null);
-  const [selectedOption6, setSelectedOption6] = React.useState(null);
 
   return (
     <article>
@@ -151,13 +117,10 @@ export default function SelectPage() {
             />
           </Box>
           <Box padding="s">
-            <Box variant="h1">Group select</Box>
+            <Box variant="h1">Native search tests</Box>
             <Select
-              expandToViewport={true}
-              id="expanded_select"
-              statusType="pending"
-              filteringType="auto"
-              options={groupOptions}
+              id="select_native_search_simple"
+              options={options}
               selectedOption={selectedOption3}
               placeholder="Choose option"
               onChange={(e: any) => {
@@ -166,10 +129,10 @@ export default function SelectPage() {
             />
           </Box>
           <Box padding="s">
-            <Box variant="h1">Native search tests</Box>
+            <Box variant="h1">Native search tests: extended</Box>
             <Select
-              id="select_native_search_simple"
-              options={options}
+              id="select_native_search_extended"
+              options={optionsExtended}
               selectedOption={selectedOption4}
               placeholder="Choose option"
               onChange={(e: any) => {
@@ -178,26 +141,14 @@ export default function SelectPage() {
             />
           </Box>
           <Box padding="s">
-            <Box variant="h1">Native search tests: extended</Box>
-            <Select
-              id="select_native_search_extended"
-              options={optionsExtended}
-              selectedOption={selectedOption5}
-              placeholder="Choose option"
-              onChange={(e: any) => {
-                setSelectedOption5(e.detail.selectedOption);
-              }}
-            />
-          </Box>
-          <Box padding="s">
             <Box variant="h1">Native search tests: semi-extended</Box>
             <Select
               id="select_native_search_semi_extended"
               options={optionsSemiExtended}
-              selectedOption={selectedOption6}
+              selectedOption={selectedOption5}
               placeholder="Choose option"
               onChange={(e: any) => {
-                setSelectedOption6(e.detail.selectedOption);
+                setSelectedOption5(e.detail.selectedOption);
               }}
             />
           </Box>
