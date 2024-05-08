@@ -12,7 +12,7 @@
 
 .container {
   inline-size: 200px;
-  height: 200px;
+  block-size: 200px;
   border: 1px solid cornflowerblue;
   overflow: hidden;
   display: inline-block;
@@ -47,7 +47,7 @@
   display: flex;
   justify-content: space-between;
   flex-direction: column;
-  height: calc(75vh);
+  block-size: calc(75vh);
   box-sizing: border-box;
   > .row {
     display: flex;

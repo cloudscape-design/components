@@ -61,26 +61,30 @@ export default function ColumnLayoutPage() {
       />
 
       <h2>Reports dimensions correctly</h2>
-      <MeasureReporter id="test-dimensions" style={{ width: 300, height: 50 }} type={measureType} />
+      <MeasureReporter id="test-dimensions" style={{ inlineSize: 300, blockSize: 50 }} type={measureType} />
 
       <h2>Reports content-box dimensions when padding is present</h2>
-      <MeasureReporter id="test-content-box" style={{ width: 300, height: 50, padding: 10 }} type={measureType} />
+      <MeasureReporter
+        id="test-content-box"
+        style={{ inlineSize: 300, blockSize: 50, padding: 10 }}
+        type={measureType}
+      />
 
       <h2>Adjusts as the element changes size (resize browser)</h2>
-      <MeasureReporter id="test-updates" style={{ height: 50 }} type={measureType} />
+      <MeasureReporter id="test-updates" style={{ blockSize: 50 }} type={measureType} />
 
       <h2>Returns correct breakpoints</h2>
-      <BreakpointReporter id="test-breakpoints" style={{ height: 50 }} />
+      <BreakpointReporter id="test-breakpoints" style={{ blockSize: 50 }} />
 
       <h2>Skips &quot;m&quot; when not provided in the filter</h2>
       <BreakpointReporter
         id="test-breakpoints-filter"
-        style={{ height: 50 }}
+        style={{ blockSize: 50 }}
         filter={['default', 'xxs', 'xs', 's', 'l', 'xl']}
       />
 
       <h2>Returns default if all breakpoints are filtered</h2>
-      <BreakpointReporter id="test-breakpoints-filter-all" style={{ height: 50 }} filter={[]} />
+      <BreakpointReporter id="test-breakpoints-filter-all" style={{ blockSize: 50 }} filter={[]} />
     </>
   );
 }

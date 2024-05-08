@@ -36,7 +36,7 @@ function MediumContainer() {
   return (
     <ContainerPlayground fitHeight={true} header={<Header>Mid size</Header>} footer="footer">
       <p>Content placeholder</p>
-      <div style={{ height: 100 }} className={styles.placeholder}></div>
+      <div style={{ blockSize: 100 }} className={styles.placeholder}></div>
     </ContainerPlayground>
   );
 }
@@ -47,7 +47,7 @@ function LargeContainer() {
       <p>
         This container overflows available space. <Link href="#">Learn more</Link>.
       </p>
-      <div style={{ height: 400 }} className={styles.placeholder}></div>
+      <div style={{ blockSize: 400 }} className={styles.placeholder}></div>
     </ContainerPlayground>
   );
 }

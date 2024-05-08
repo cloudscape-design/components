@@ -34,7 +34,7 @@ export default function () {
 
 function ContentFilling() {
   return (
-    <div style={{ minHeight: '100%', position: 'relative' }}>
+    <div style={{ minBlockSize: '100%', position: 'relative' }}>
       <div
         style={{
           position: 'absolute',

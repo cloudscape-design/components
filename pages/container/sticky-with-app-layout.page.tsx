@@ -41,7 +41,7 @@ export default function () {
               malesuada.Lorem ipsum dolor sit amet, consectetur adipiscing. Nullam dui tortor, mollis vitae molestie
               sed. Phasellus tincidunt suscipit varius.
             </Container>
-            <div style={{ inlineSize: '100%', height: '100px', overflow: 'auto' }} id="scrollable-div">
+            <div style={{ inlineSize: '100%', minBlockSize: '100px', overflow: 'auto' }} id="scrollable-div">
               <Container disableHeaderPaddings={true} header={'Header content'} __stickyHeader={true} id="inside-div">
                 {/* Dummy button to have a focusable element inside the scrollable container to
                   stop axe from reporting 'scrollable-region-focusable' */}
@@ -58,7 +58,7 @@ export default function () {
               </Container>
             </div>
 
-            <div style={{ inlineSize: '100%', height: '1000px' }}></div>
+            <div style={{ inlineSize: '100%', blockSize: '1000px' }}></div>
           </article>
         }
         navigationHide={true}

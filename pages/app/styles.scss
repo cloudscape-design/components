@@ -24,7 +24,7 @@ body {
     // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant
     ::-webkit-scrollbar {
       inline-size: 0;
-      height: 0;
+      block-size: 0;
     }
   }
 }

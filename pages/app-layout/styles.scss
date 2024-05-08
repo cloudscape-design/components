@@ -39,7 +39,7 @@
 }
 
 .longContent {
-  height: 200vh;
+  block-size: 200vh;
 }
 
 .floatingBlock {
@@ -56,14 +56,14 @@
 
 .wizard-steps {
   inline-size: 16rem;
-  height: 40rem;
+  block-size: 40rem;
   margin-inline-end: 4rem;
 }
 
 .wizard-form {
   min-inline-size: 30rem;
   max-inline-size: 80rem;
-  height: 150rem;
+  block-size: 150rem;
 }
 
 @media (max-width: 703px) {

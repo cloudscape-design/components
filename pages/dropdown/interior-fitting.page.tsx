@@ -74,7 +74,7 @@ export default function DropdownScenario() {
             open={openParent2}
             onDropdownClose={() => setOpenParent2(false)}
           >
-            <ul className={styles.list} style={{ overflowY: 'auto', height: '100px' }}>
+            <ul className={styles.list} style={{ overflowY: 'auto', blockSize: '100px' }}>
               <li id="childDropdown2">
                 <Dropdown
                   interior={true}

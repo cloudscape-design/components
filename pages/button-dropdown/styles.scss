@@ -14,7 +14,7 @@
 
 .overflow-container {
   inline-size: 300px;
-  height: 300px;
+  block-size: 300px;
   border: 1px solid red;
   -ms-overflow-style: none;
 
@@ -26,11 +26,11 @@
       inset-inline-start: 300px;
     }
     > :first-child {
-      height: 300px;
+      block-size: 300px;
       inline-size: 1200px;
     }
     > :last-child {
-      height: 300px;
+      block-size: 300px;
     }
   }
 
@@ -49,7 +49,7 @@
   display: flex;
   justify-content: space-between;
   flex-direction: column;
-  height: calc(80vh);
+  block-size: calc(80vh);
   box-sizing: border-box;
   > .row {
     display: flex;
@@ -61,7 +61,7 @@
   padding: 10px;
   border: red 1px solid;
   inline-size: 600px;
-  height: 600px;
+  block-size: 600px;
   overflow: hidden;
 }
 
@@ -71,5 +71,5 @@
 }
 
 .dropdown-permutation {
-  height: 50px;
+  block-size: 50px;
 }

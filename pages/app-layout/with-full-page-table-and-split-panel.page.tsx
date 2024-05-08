@@ -32,7 +32,7 @@ export default function () {
             variant="full-page"
             stickyHeader={true}
             header={
-              <Header variant="awsui-h1-sticky" actions={<div style={{ height: '50vh' }} />}>
+              <Header variant="awsui-h1-sticky" actions={<div style={{ blockSize: '50vh' }} />}>
                 Sticky Full-Page Header
               </Header>
             }

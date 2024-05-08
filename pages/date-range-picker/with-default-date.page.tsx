@@ -33,7 +33,7 @@ export default function DatePickerScenario() {
         </FormField>
         <br />
         <br />
-        <div style={{ height: 500 }} />
+        <div style={{ blockSize: 500 }} />
       </ScreenshotArea>
     </Box>
   );

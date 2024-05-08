@@ -7,7 +7,7 @@
 
 .bodyScrollOverride {
   overflow-y: scroll;
-  height: 100%;
+  block-size: 100%;
 }
 
 .fixedHeader {
@@ -22,6 +22,6 @@
 }
 
 .placeholder {
-  height: 3000px;
+  block-size: 3000px;
   background: awsui.$color-background-layout-main;
 }

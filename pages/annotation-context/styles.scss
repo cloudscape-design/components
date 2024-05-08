@@ -4,7 +4,7 @@
 */
 
 .parent {
-  height: 180vh;
+  block-size: 180vh;
   inline-size: 50%;
   border: 1px solid black;
   margin-block-end: var(--fixed-height);
@@ -15,7 +15,7 @@
 
 .fixed {
   background-color: grey;
-  height: var(--fixed-height);
+  block-size: var(--fixed-height);
   position: fixed;
   inset-inline-start: 0;
   inline-size: 100vw;

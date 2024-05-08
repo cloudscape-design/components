@@ -62,7 +62,7 @@ export default () => {
   const overflowParentStyle = {
     overflow: 'auto',
     inlineSize: 600,
-    height: 400,
+    blockSize: 400,
     padding: '0px 1px',
   };
 
