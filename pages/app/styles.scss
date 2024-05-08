@@ -23,7 +23,7 @@ body {
     // override scrollbars in macos for stable screenshot tests
     // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant
     ::-webkit-scrollbar {
-      width: 0;
+      inline-size: 0;
       height: 0;
     }
   }

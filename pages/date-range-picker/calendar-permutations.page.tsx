@@ -54,7 +54,7 @@ export default function DateRangePickerCalendarPage() {
             render={permutation => {
               i++;
               return (
-                <div style={{ top: `${i * 400}px`, position: 'relative' }}>
+                <div style={{ insetBlockStart: `${i * 400}px`, position: 'relative' }}>
                   <Dropdown
                     stretchWidth={true}
                     stretchHeight={true}

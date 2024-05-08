@@ -36,7 +36,7 @@ export default () => {
         id="overflow-parent"
         style={{
           overflow: 'auto',
-          width: 600,
+          inlineSize: 600,
           height: 800,
           padding: '0px 1px',
         }}

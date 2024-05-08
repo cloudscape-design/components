@@ -8,15 +8,15 @@
 .custom-table {
   box-sizing: border-box;
   overflow-x: auto;
-  width: 100%;
+  inline-size: 100%;
 
   &.use-wrapper-paddings {
-    width: calc(100% - 64px);
+    inline-size: calc(100% - 64px);
     margin: 0 32px;
   }
 
   &-table {
-    width: 100%;
+    inline-size: 100%;
     box-sizing: border-box;
     border-spacing: 0;
 
@@ -28,7 +28,7 @@
   &-cell {
     position: relative;
     border-inline-start: 1px solid tokens.$color-border-divider-default;
-    border-bottom: 1px solid tokens.$color-border-divider-default;
+    border-block-end: 1px solid tokens.$color-border-divider-default;
     padding: 8px 16px;
 
     overflow: hidden;
@@ -65,7 +65,7 @@
   }
 
   &-selection-cell {
-    width: 40px;
+    inline-size: 40px;
   }
 
   &-sorting-header {
@@ -81,7 +81,7 @@
 .status-trigger-button {
   background-color: initial;
   border: 0;
-  border-bottom: 1px dashed;
+  border-block-end: 1px dashed;
   cursor: pointer;
   margin: 0;
   padding: 0;

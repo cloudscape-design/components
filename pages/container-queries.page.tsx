@@ -9,7 +9,7 @@ import { SegmentedControl } from '~components';
 
 const boxStyles: React.CSSProperties = {
   boxSizing: 'border-box',
-  marginBottom: 15,
+  marginBlockEnd: 15,
   backgroundColor: colorBackgroundContainerHeader,
 };
 

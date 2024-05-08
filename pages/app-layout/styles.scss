@@ -17,7 +17,7 @@
 
 .footer {
   inset-block-end: 0;
-  width: 100%;
+  inline-size: 100%;
   color: #eee;
   background: #232f3e;
   box-sizing: border-box;
@@ -55,14 +55,14 @@
 }
 
 .wizard-steps {
-  width: 16rem;
+  inline-size: 16rem;
   height: 40rem;
   margin-inline-end: 4rem;
 }
 
 .wizard-form {
-  min-width: 30rem;
-  max-width: 80rem;
+  min-inline-size: 30rem;
+  max-inline-size: 80rem;
   height: 150rem;
 }
 

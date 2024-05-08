@@ -14,7 +14,7 @@ export default function () {
   const variants: TableProps.Variant[] = ['container', 'embedded', 'full-page', 'stacked', 'borderless'];
 
   const variantButtons = (
-    <div style={{ paddingBottom: '10px', display: 'inline-flex', gap: '10px' }}>
+    <div style={{ paddingBlockEnd: '10px', display: 'inline-flex', gap: '10px' }}>
       <b>Variant: </b>
       {variants.map((value, i) => {
         return (

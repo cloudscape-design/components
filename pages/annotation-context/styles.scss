@@ -5,9 +5,9 @@
 
 .parent {
   height: 180vh;
-  width: 50%;
+  inline-size: 50%;
   border: 1px solid black;
-  margin-bottom: var(--fixed-height);
+  margin-block-end: var(--fixed-height);
   display: flex;
   flex-flow: column nowrap;
   justify-content: space-between;
@@ -18,13 +18,13 @@
   height: var(--fixed-height);
   position: fixed;
   inset-inline-start: 0;
-  width: 100vw;
+  inline-size: 100vw;
 }
 
 .footer {
-  bottom: 0;
+  inset-block-end: 0;
 }
 
 .header {
-  top: 0;
+  inset-block-start: 0;
 }

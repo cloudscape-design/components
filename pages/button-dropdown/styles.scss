@@ -13,7 +13,7 @@
 }
 
 .overflow-container {
-  width: 300px;
+  inline-size: 300px;
   height: 300px;
   border: 1px solid red;
   -ms-overflow-style: none;
@@ -27,7 +27,7 @@
     }
     > :first-child {
       height: 300px;
-      width: 1200px;
+      inline-size: 1200px;
     }
     > :last-child {
       height: 300px;
@@ -39,7 +39,7 @@
     > .inner-container {
       position: relative;
       inset-inline-start: 50px;
-      top: 75px;
+      inset-block-start: 75px;
     }
   }
 }
@@ -60,7 +60,7 @@
 .restricting-container {
   padding: 10px;
   border: red 1px solid;
-  width: 600px;
+  inline-size: 600px;
   height: 600px;
   overflow: hidden;
 }

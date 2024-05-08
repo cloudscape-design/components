@@ -10,6 +10,6 @@
 
 .popover {
   position: absolute;
-  bottom: 50px;
+  inset-block-end: 50px;
   inset-inline-start: 50px;
 }

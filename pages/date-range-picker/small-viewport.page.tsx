@@ -23,7 +23,7 @@ export default function DatePickerScenario() {
         Focusable element
       </button>
       <div style={sticky ? { minHeight: '200vh' } : {}}>
-        <div style={sticky ? { position: 'sticky', top: 200 } : {}}>
+        <div style={sticky ? { position: 'sticky', insetBlockStart: 200 } : {}}>
           <FormField label="Date Range Picker field">
             <DateRangePicker
               value={value}

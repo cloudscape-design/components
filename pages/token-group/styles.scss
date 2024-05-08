@@ -6,14 +6,14 @@
 @use '~design-tokens' as awsui;
 
 .file-option {
-  width: 100%;
-  min-width: 0;
+  inline-size: 100%;
+  min-inline-size: 0;
   display: flex;
   gap: awsui.$space-scaled-xs;
 }
 
 .file-option-metadata {
-  width: 100%;
+  inline-size: 100%;
   overflow: hidden;
 }
 

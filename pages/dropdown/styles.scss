@@ -11,14 +11,14 @@
 }
 
 .container {
-  width: 200px;
+  inline-size: 200px;
   height: 200px;
   border: 1px solid cornflowerblue;
   overflow: hidden;
   display: inline-block;
 
   &-wide {
-    width: 400px;
+    inline-size: 400px;
   }
 
   &-overflow-visible {

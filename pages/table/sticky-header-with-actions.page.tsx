@@ -22,7 +22,10 @@ export default function () {
     <>
       <h1>Table with a sticky header and actions</h1>
       <ScreenshotArea>
-        <div style={{ height: '400px', width: '500px', overflow: 'auto', padding: '0px 1px' }} id="scroll-container">
+        <div
+          style={{ height: '400px', inlineSize: '500px', overflow: 'auto', padding: '0px 1px' }}
+          id="scroll-container"
+        >
           <div style={{ height: '100px' }} />
           <Table<Instance>
             ariaLabels={selectionLabels}
