@@ -1,10 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useRef } from 'react';
 import ScreenshotArea from '../utils/screenshot-area';
-import Popover from '~components/popover';
+import Popover, { PopoverProps } from '~components/popover';
+import { Button, Link, SpaceBetween } from '~components';
 
 export default function () {
+  const popoverRef = useRef<PopoverProps.Ref>(null);
+
   return (
     <article>
       <h1>Popover header variant</h1>
@@ -13,17 +16,22 @@ export default function () {
           data-testid="popover-without-title"
           size="medium"
           position="bottom"
+          ref={popoverRef}
           content={
-            <>
-              Enabling continuous backup failed, because of the following error: Dummy Point
-              dummyarn:backup:my-region-1:123456123456:recovery-point:continuous:nthcba123456ac4321bd0af/db/system-cl0ud5cape,
-              is in state FAILED, and can not be updated.
-            </>
+            <SpaceBetween size="m">
+              <Button onClick={() => popoverRef.current?.dismissPopover()}> Close Popover </Button>
+
+              <Link href="#/light/popover/header-variant" onFollow={() => popoverRef.current?.dismissPopover()}>
+                navigate and close popover
+              </Link>
+
+              <Link href="#/light/popover/header-variant">navigate and dont close popover</Link>
+            </SpaceBetween>
           }
           dismissAriaLabel="Close"
           fixedWidth={true}
         >
-          Open popover without header and fixed width
+          Open popover
         </Popover>
       </ScreenshotArea>
     </article>

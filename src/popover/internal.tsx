@@ -28,10 +28,6 @@ export interface InternalPopoverProps extends PopoverProps, InternalBaseComponen
   __onOpen?: NonCancelableEventHandler<null>;
 }
 
-export interface InternalPopoverRef {
-  dismissPopover: () => void;
-}
-
 export default React.forwardRef(InternalPopover);
 
 function InternalPopover(
@@ -53,7 +49,7 @@ function InternalPopover(
     __internalRootRef = null,
     ...restProps
   }: InternalPopoverProps,
-  ref: React.Ref<InternalPopoverRef>
+  ref: React.Ref<PopoverProps.Ref>
 ) {
   const baseProps = getBaseProps(restProps);
   const triggerRef = useRef<HTMLElement | null>(null);

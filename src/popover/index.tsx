@@ -11,39 +11,46 @@ import { PopoverProps } from './interfaces';
 
 export { PopoverProps };
 
-export default function Popover({
-  position = 'right',
-  size = 'medium',
-  fixedWidth = false,
-  triggerType = 'text',
-  dismissButton = true,
-  renderWithPortal = false,
-  header,
-  ...rest
-}: PopoverProps) {
-  if (isDevelopment) {
-    if (dismissButton && !header) {
-      warnOnce('Popover', `You should provide a \`header\` when \`dismissButton\` is true.`);
+const Popover = React.forwardRef(
+  (
+    {
+      position = 'right',
+      size = 'medium',
+      fixedWidth = false,
+      triggerType = 'text',
+      dismissButton = true,
+      renderWithPortal = false,
+      header,
+      ...rest
+    }: PopoverProps,
+    ref: React.Ref<PopoverProps.Ref>
+  ) => {
+    if (isDevelopment) {
+      if (dismissButton && !header) {
+        warnOnce('Popover', `You should provide a \`header\` when \`dismissButton\` is true.`);
+      }
     }
-  }
 
-  const baseComponentProps = useBaseComponent('Popover', {
-    props: { dismissButton, fixedWidth, position, renderWithPortal, size, triggerType },
-  });
-  const externalProps = getExternalProps(rest);
-  return (
-    <InternalPopover
-      header={header}
-      position={position}
-      size={size}
-      fixedWidth={fixedWidth}
-      triggerType={triggerType}
-      dismissButton={dismissButton}
-      renderWithPortal={renderWithPortal}
-      {...externalProps}
-      {...baseComponentProps}
-    />
-  );
-}
+    const baseComponentProps = useBaseComponent('Popover', {
+      props: { dismissButton, fixedWidth, position, renderWithPortal, size, triggerType },
+    });
+    const externalProps = getExternalProps(rest);
+    return (
+      <InternalPopover
+        header={header}
+        position={position}
+        size={size}
+        fixedWidth={fixedWidth}
+        triggerType={triggerType}
+        dismissButton={dismissButton}
+        renderWithPortal={renderWithPortal}
+        ref={ref}
+        {...externalProps}
+        {...baseComponentProps}
+      />
+    );
+  }
+);
 
 applyDisplayName(Popover, 'Popover');
+export default Popover;

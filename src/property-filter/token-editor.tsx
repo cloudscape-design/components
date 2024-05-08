@@ -5,7 +5,8 @@ import React, { useState, useRef } from 'react';
 import { SelectProps } from '../select/interfaces';
 import InternalSelect from '../select/internal';
 import InternalAutosuggest from '../autosuggest/internal';
-import InternalPopover, { InternalPopoverRef } from '../popover/internal';
+import InternalPopover from '../popover/internal';
+import { PopoverProps } from '../popover/interfaces';
 import {
   ComparisonOperator,
   GroupText,
@@ -215,7 +216,7 @@ export function TokenEditor({
   triggerComponent,
 }: TokenEditorProps) {
   const [temporaryToken, setTemporaryToken] = useState<InternalToken>(token);
-  const popoverRef = useRef<InternalPopoverRef>(null);
+  const popoverRef = useRef<PopoverProps.Ref>(null);
   const closePopover = () => {
     popoverRef.current && popoverRef.current.dismissPopover();
   };

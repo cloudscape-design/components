@@ -104,4 +104,11 @@ export namespace PopoverProps {
   export type Position = 'top' | 'right' | 'bottom' | 'left';
   export type Size = 'small' | 'medium' | 'large';
   export type TriggerType = 'text' | 'custom';
+
+  export interface Ref {
+    /**
+     * Closes Popover.
+     */
+    dismissPopover(): void;
+  }
 }
