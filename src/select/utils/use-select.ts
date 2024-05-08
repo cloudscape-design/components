@@ -120,7 +120,7 @@ export function useSelect({
 
   const activeKeyDownHandler = useMenuKeyboard({
     goUp: () => {
-      if (highlightedIndex === 0) {
+      if ((highlightedOption?.type === 'child' && highlightedIndex === 1) || highlightedIndex === 0) {
         goEndWithKeyboard();
         return;
       }
