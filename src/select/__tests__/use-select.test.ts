@@ -169,6 +169,39 @@ describe('useSelect', () => {
     expect(hook.result.current.highlightType.moveFocus).toBe(true);
   });
 
+  test('should navigate to the last option by triggering keyboard:up on first option', () => {
+    const hook = renderHook(useSelect, {
+      initialProps: { ...initialProps },
+    });
+
+    const { getFilterProps } = hook.result.current;
+    act(() => getFilterProps().onKeyDown!(createTestEvent(KeyCode.down)));
+    act(() => getFilterProps().onKeyDown!(createTestEvent(KeyCode.up)));
+    expect(hook.result.current.highlightedOption).toEqual({
+      disabled: true,
+      option: { disabled: true, label: 'Child 2' },
+      type: 'child',
+    });
+  });
+
+  test('should navigate to the first option by triggering keyboard:down on last option', () => {
+    const hook = renderHook(useSelect, {
+      initialProps: { ...initialProps },
+    });
+
+    const { getFilterProps } = hook.result.current;
+    act(() => getFilterProps().onKeyDown!(createTestEvent(KeyCode.down)));
+    act(() => getFilterProps().onKeyDown!(createTestEvent(KeyCode.up)));
+    act(() => getFilterProps().onKeyDown!(createTestEvent(KeyCode.down)));
+    expect(hook.result.current.highlightedOption).toEqual({
+      type: 'child',
+      option: {
+        label: 'Child 1',
+        value: 'child1',
+      },
+    });
+  });
+
   test('should open and highlight the selected option (keyboard:enter)', () => {
     const hook = renderHook(useSelect, {
       initialProps: { ...initialProps, filteringType: 'none', selectedOptions: [initialProps.options[1].option] },
