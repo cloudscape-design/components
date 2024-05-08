@@ -20,6 +20,12 @@ describe('getStepArray', () => {
   test('works with negative numbers', () => {
     expect(getStepArray(5, [-10, 10])).toEqual([-10, -5, 0, 5, 10]);
   });
+
+  test('works with decimals', () => {
+    expect(getStepArray(0.1, [0, 1])).toEqual([0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]);
+    expect(getStepArray(0.1, [-1, -0.5])).toEqual([-1, -0.9, -0.8, -0.7, -0.6, -0.5]);
+    expect(getStepArray(0.000000001, [0, 5e-9])).toEqual([0, 1e-9, 2e-9, 3e-9, 4e-9, 5e-9]);
+  });
 });
 
 describe('findLowerAndHigherValues', () => {
