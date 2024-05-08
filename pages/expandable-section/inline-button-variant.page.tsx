@@ -146,6 +146,58 @@ export default function SimpleContainers() {
           </ExpandableSection>
         </SpaceBetween>
 
+        <h2>Default with Actions Security Groups mixed actions and no actions</h2>
+        <SpaceBetween size="xs">
+          <ExpandableSection disableLine={false} headerText="Security group rule 1 (TCP, 22, 0.0.0.0/0)">
+            Configuration Form here
+          </ExpandableSection>
+          <ExpandableSection
+            disableLine={false}
+            headerText="Security group rule 2 (TCP, 0)"
+            headerActions={<Button variant="inline-link">Remove</Button>}
+          >
+            Configuration Form here
+          </ExpandableSection>
+          <ExpandableSection disableLine={false} headerText="Security group rule 3 (TCP, 22)">
+            Configuration Form here
+          </ExpandableSection>
+          <ExpandableSection
+            disableLine={false}
+            headerText="Security group rule 4 (UDP, 22)"
+            headerActions={
+              <Button iconName="copy" variant="inline-icon">
+                Remove
+              </Button>
+            }
+          >
+            Configuration Form here
+          </ExpandableSection>
+        </SpaceBetween>
+
+        <h2>Default with Actions Security Groups 1 action and no actions</h2>
+        <SpaceBetween size="xs">
+          <ExpandableSection disableLine={false} headerText="Security group rule 1 (TCP, 22, 0.0.0.0/0)">
+            Configuration Form here
+          </ExpandableSection>
+          <ExpandableSection disableLine={false} headerText="Security group rule 2 (TCP, 0)">
+            Configuration Form here
+          </ExpandableSection>
+          <ExpandableSection disableLine={false} headerText="Security group rule 3 (TCP, 22)">
+            Configuration Form here
+          </ExpandableSection>
+          <ExpandableSection
+            disableLine={false}
+            headerText="Security group rule 4 (UDP, 22)"
+            headerActions={
+              <Button iconName="copy" variant="inline-icon">
+                Remove
+              </Button>
+            }
+          >
+            Configuration Form here
+          </ExpandableSection>
+        </SpaceBetween>
+
         <h2>Default with Actions Volumes</h2>
         <SpaceBetween size="xs">
           <ExpandableSection
@@ -204,27 +256,6 @@ export default function SimpleContainers() {
             >
               Configuration Form here
             </ExpandableSection>
-            <ExpandableSection
-              disableLine={false}
-              headerText="Volume 2 (Custom) (8 GiB, EBS)"
-              headerActions={<Button variant="inline-link">Remove</Button>}
-            >
-              Configuration Form here
-            </ExpandableSection>
-            <ExpandableSection
-              disableLine={false}
-              headerText="Volume 3 (Custom) (16 GiB, EBS)"
-              headerActions={<Button variant="inline-link">Remove</Button>}
-            >
-              Configuration Form here
-            </ExpandableSection>
-            <ExpandableSection
-              disableLine={false}
-              headerText="Volume 4 (Custom) (64 GiB, EBS, General Purpose SSD (gp3))"
-              headerActions={<Button variant="inline-link">Remove</Button>}
-            >
-              Configuration Form here
-            </ExpandableSection>
           </Container>
         </SpaceBetween>
 
@@ -246,27 +277,6 @@ export default function SimpleContainers() {
                   Remove
                 </Button>
               }
-            >
-              Configuration Form here
-            </ExpandableSection>
-            <ExpandableSection
-              disableLine={false}
-              headerText="Volume 2 (Custom) (8 GiB, EBS)"
-              headerActions={<Button variant="inline-link">Remove</Button>}
-            >
-              Configuration Form here
-            </ExpandableSection>
-            <ExpandableSection
-              disableLine={false}
-              headerText="Volume 3 (Custom) (16 GiB, EBS)"
-              headerActions={<Button variant="inline-link">Remove</Button>}
-            >
-              Configuration Form here
-            </ExpandableSection>
-            <ExpandableSection
-              disableLine={false}
-              headerText="Volume 4 (Custom) (64 GiB, EBS, General Purpose SSD (gp3))"
-              headerActions={<Button variant="inline-link">Remove</Button>}
             >
               Configuration Form here
             </ExpandableSection>
@@ -372,6 +382,58 @@ export default function SimpleContainers() {
             headerText="Security group rule 3 (TCP, 22)"
             headerActions={<Button variant="normal">Remove</Button>}
           >
+            Configuration Form here
+          </ExpandableSection>
+          <ExpandableSection
+            disableLine={true}
+            headerText="Security group rule 4 (UDP, 22)"
+            headerActions={
+              <Button iconName="copy" variant="inline-icon">
+                Remove
+              </Button>
+            }
+          >
+            Configuration Form here
+          </ExpandableSection>
+        </SpaceBetween>
+
+        <h2>Default with Actions Security Groups mixed actions and no actions</h2>
+        <SpaceBetween size="xs">
+          <ExpandableSection disableLine={true} headerText="Security group rule 1 (TCP, 22, 0.0.0.0/0)">
+            Configuration Form here
+          </ExpandableSection>
+          <ExpandableSection
+            disableLine={true}
+            headerText="Security group rule 2 (TCP, 0)"
+            headerActions={<Button variant="inline-link">Remove</Button>}
+          >
+            Configuration Form here
+          </ExpandableSection>
+          <ExpandableSection disableLine={true} headerText="Security group rule 3 (TCP, 22)">
+            Configuration Form here
+          </ExpandableSection>
+          <ExpandableSection
+            disableLine={true}
+            headerText="Security group rule 4 (UDP, 22)"
+            headerActions={
+              <Button iconName="copy" variant="inline-icon">
+                Remove
+              </Button>
+            }
+          >
+            Configuration Form here
+          </ExpandableSection>
+        </SpaceBetween>
+
+        <h2>Default with Actions Security Groups 1 action and no actions</h2>
+        <SpaceBetween size="xs">
+          <ExpandableSection disableLine={true} headerText="Security group rule 1 (TCP, 22, 0.0.0.0/0)">
+            Configuration Form here
+          </ExpandableSection>
+          <ExpandableSection disableLine={true} headerText="Security group rule 2 (TCP, 0)">
+            Configuration Form here
+          </ExpandableSection>
+          <ExpandableSection disableLine={true} headerText="Security group rule 3 (TCP, 22)">
             Configuration Form here
           </ExpandableSection>
           <ExpandableSection
