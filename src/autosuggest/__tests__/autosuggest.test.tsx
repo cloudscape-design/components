@@ -401,7 +401,7 @@ describe('keyboard interactions', () => {
     expect(onChange).toBeCalledTimes(1);
   });
 
-  test('ArrowUp key on first option should highlight last option', () => {
+  test('arrow up key on first option should highlight last option', () => {
     const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} />);
 
     expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
@@ -413,7 +413,7 @@ describe('keyboard interactions', () => {
     expect(wrapper.findDropdown().findHighlightedOption()!.getElement()).toHaveTextContent('2');
   });
 
-  test('ArrowUp key on first option should highlight last option (options with groups)', () => {
+  test('arrow up key on first option should highlight last option (options with groups)', () => {
     const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} options={groupOptions} />);
 
     expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
@@ -425,7 +425,7 @@ describe('keyboard interactions', () => {
     expect(wrapper.findDropdown().findHighlightedOption()!.getElement()).toHaveTextContent('3');
   });
 
-  test('ArrowDown key on last option should highlight first option', () => {
+  test('arrow down key on last option should highlight first option', () => {
     const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} />);
 
     expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
