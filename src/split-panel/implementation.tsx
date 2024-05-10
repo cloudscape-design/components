@@ -23,6 +23,7 @@ import { SplitPanelContentSide } from './side';
 import { SplitPanelContentBottom } from './bottom';
 import { useInternalI18n } from '../i18n/context';
 import globalVars from '../internal/styles/global-vars';
+import { createWidgetizedForwardRef } from '../internal/widgets';
 
 export { SplitPanelProps };
 
@@ -264,3 +265,9 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
     );
   }
 );
+
+export const createWidgetizedSplitPanel = createWidgetizedForwardRef<
+  SplitPanelProps,
+  HTMLElement,
+  typeof SplitPanelImplementation
+>(SplitPanelImplementation);
