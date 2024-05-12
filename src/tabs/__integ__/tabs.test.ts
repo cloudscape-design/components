@@ -321,7 +321,7 @@ test(
     await page.keys(['ArrowRight']);
     await page.keys(['ArrowRight']);
     await page.keys(['Tab']);
-    await page.click(wrapper.findActiveTabDimissibleButton().getElement());
+    await page.click(wrapper.findActiveTabDismissibleButton().getElement());
     await expect(page.isFocused(wrapper.findTabLinkByIndex(2).getElement())).resolves.toBe(true);
   })
 );

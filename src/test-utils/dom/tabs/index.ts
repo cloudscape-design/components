@@ -42,11 +42,11 @@ export default class TabsWrapper extends ComponentWrapper<HTMLButtonElement> {
   }
 
   /**
-   * Finds the dimissible button by using the tab index
+   * Finds the dismissible button by using the tab index.
    *
    * @param index 1-based index of the clickable element to return
    */
-  findDimissibleButtonByTabIndex(index: number): ButtonWrapper | null {
+  findDismissibleButtonByTabIndex(index: number): ButtonWrapper | null {
     return this.findComponent(
       `.${styles['tabs-tab']}:nth-child(${index}) .${styles['tabs-tab-dismiss']}`,
       ButtonWrapper
@@ -54,11 +54,11 @@ export default class TabsWrapper extends ComponentWrapper<HTMLButtonElement> {
   }
 
   /**
-   * Finds the dimissible button by using the tab id
+   * Finds the dismissible button by using the tab id
    *
    * @param id ID of the clickable element to return
    */
-  findDimissibleButtonByTabId(id: string): ButtonWrapper | null {
+  findDismissibleButtonByTabId(id: string): ButtonWrapper | null {
     return this.findComponent(
       `.${styles['tabs-tab-link']}[data-testid="${id}"] ~ .${styles['tabs-tab-dismiss']}`,
       ButtonWrapper
@@ -98,7 +98,7 @@ export default class TabsWrapper extends ComponentWrapper<HTMLButtonElement> {
   /**
    * Finds the dismissible button for the active tab
    */
-  findActiveTabDimissibleButton(): ButtonWrapper | null {
+  findActiveTabDismissibleButton(): ButtonWrapper | null {
     return this.findComponent(`.${styles['tabs-tab-active']} .${styles['tabs-tab-dismiss']}`, ButtonWrapper);
   }
 

@@ -706,7 +706,7 @@ describe('Tabs', () => {
     test('renders the correct dismiss label', () => {
       const dismissibleButton = renderTabs(
         <Tabs tabs={actionDismissibleTabs} />
-      ).wrapper.findDimissibleButtonByTabIndex(1);
+      ).wrapper.findDismissibleButtonByTabIndex(1);
       expect(dismissibleButton).toBeTruthy();
       expect(dismissibleButton?.getElement().firstElementChild).toHaveAttribute(
         'aria-label',
@@ -716,14 +716,14 @@ describe('Tabs', () => {
 
     test('does not render the dismiss button when dismissible false', () => {
       const dismissibleButtonWrapper = renderTabs(<Tabs tabs={actionDismissibleTabs} />).wrapper;
-      const dismissibleButtonId = dismissibleButtonWrapper.findDimissibleButtonByTabId('second');
+      const dismissibleButtonId = dismissibleButtonWrapper.findDismissibleButtonByTabId('second');
       expect(dismissibleButtonId).toBeFalsy();
     });
 
     test('renders correct dismissible button based on activeTabId', () => {
       const wrapper = renderTabs(<Tabs tabs={actionDismissibleTabs} activeTabId="first" />).wrapper;
-      const correctDismissibleButton = wrapper.findDimissibleButtonByTabId('first');
-      const activeDismissibleButton = wrapper.findActiveTabDimissibleButton();
+      const correctDismissibleButton = wrapper.findDismissibleButtonByTabId('first');
+      const activeDismissibleButton = wrapper.findActiveTabDismissibleButton();
       expect(activeDismissibleButton).toEqual(correctDismissibleButton);
     });
 
@@ -731,7 +731,7 @@ describe('Tabs', () => {
       const consoleLogSpy = jest.spyOn(console, 'log');
       const dismissibleButtonWrapper = renderTabs(
         <Tabs tabs={actionDismissibleTabs} activeTabId="first" />
-      ).wrapper.findDimissibleButtonByTabId('first');
+      ).wrapper.findDismissibleButtonByTabId('first');
       const dismissButton = dismissibleButtonWrapper?.find('button');
       dismissButton?.click();
       expect(consoleLogSpy).toHaveBeenCalledWith('I have been clicked!');

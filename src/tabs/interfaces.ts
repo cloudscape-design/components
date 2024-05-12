@@ -92,21 +92,22 @@ export namespace TabsProps {
      */
     disabled?: boolean;
     /**
-     * (Optional) Determines whether the tab includes a close icon button. By default, the close button is not included.
-     * When a user clicks on this button the `onClose` handler is called.
+     * (Optional) Determines whether the tab includes a dismiss icon button. By default, the dismiss button is not included.
+     * When a user clicks on this button the onDismiss handler is called.
      */
     dismissible?: boolean;
     /**
-     * (Optional) Specifies an `aria-label` for the close icon button for improved accessibility.
+     * (Optional) Specifies an aria-label for the dismiss icon button.
      */
     dismissLabel?: string;
     /**
-     * (Optional) Action for the tab, rendered next to its label. Although it is technically possible to insert any content,
-     * our UX guidelines only allow you to add an icon button or icon button dropdown.
+     * (Optional) Action for the tab, rendered next to its corresponding label.
+     * Although it is technically possible to insert any content, our UX guidelines only allow you to add
+     * an icon button or icon button dropdown.
      */
     action?: React.ReactNode;
     /**
-     * (event => void) Called when a user clicks on the close button.
+     * (event => void) Called when a user clicks on the dismiss button.
      */
     onDismiss?: ButtonProps['onClick'];
     /**
