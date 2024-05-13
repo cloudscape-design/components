@@ -183,6 +183,36 @@ describe('useSelect', () => {
     });
   });
 
+  test('should navigate to the first parent option by triggering keyboard:up on second child option (interactive groups)', () => {
+    const hook = renderHook(useSelect, {
+      initialProps: { ...initialProps, useInteractiveGroups: true },
+    });
+
+    act(() => hook.result.current.getFilterProps().onKeyDown!(createTestEvent(KeyCode.down)));
+    act(() => hook.result.current.getFilterProps().onKeyDown!(createTestEvent(KeyCode.down)));
+    expect(hook.result.current.highlightedOption).toEqual({
+      option: { label: 'Child 1', value: 'child1' },
+      type: 'child',
+    });
+    act(() => hook.result.current.getFilterProps().onKeyDown!(createTestEvent(KeyCode.up)));
+    expect(hook.result.current.highlightedOption).toEqual({
+      option: {
+        label: 'Group 1',
+        options: [
+          {
+            label: 'Child 1',
+            value: 'child1',
+          },
+          {
+            label: 'Child 2',
+            disabled: true,
+          },
+        ],
+      },
+      type: 'parent',
+    });
+  });
+
   test('should navigate to the first option by triggering keyboard:down on last option', () => {
     const hook = renderHook(useSelect, {
       initialProps: { ...initialProps },
