@@ -110,5 +110,11 @@ export namespace PopoverProps {
      * Closes Popover.
      */
     dismissPopover(): void;
+
+    /**
+     * Focuses trigger.
+     */
+
+    focusTrigger(): void;
   }
 }

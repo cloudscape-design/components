@@ -375,16 +375,27 @@ describe('table grid navigation support', () => {
     expect(getTrigger()).not.toHaveAttribute('tabIndex');
   });
 
-  describe('dismissPopover function', () => {
+  describe('ref functions', () => {
     test('Calling dismissPopover should close the popover', () => {
       const ref = React.createRef<PopoverProps.Ref>();
       const wrapper = renderPopover({ children: 'Trigger', content: 'Popover' }, ref);
+
       wrapper.findTrigger().click();
       expect(wrapper.findBody()).toBeTruthy();
 
       ref.current?.dismissPopover();
-
       expect(wrapper.findBody()).toBeNull();
+    });
+
+    test('Moves focus to trigger when focusTrigger is called', () => {
+      const ref = React.createRef<PopoverProps.Ref>();
+      const wrapper = renderPopover({ children: 'Trigger', content: 'Popover' }, ref);
+
+      wrapper.findTrigger().click();
+      ref.current?.dismissPopover();
+      ref.current?.focusTrigger();
+
+      expect(document.activeElement).toBe(wrapper.findTrigger().getElement());
     });
   });
 });

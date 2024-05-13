@@ -19,10 +19,22 @@ export default function () {
           ref={popoverRef}
           content={
             <SpaceBetween size="m">
-              <Button onClick={() => popoverRef.current?.dismissPopover()}> Close Popover </Button>
+              <Button
+                onClick={() => {
+                  popoverRef.current?.dismissPopover();
+                  popoverRef.current?.focusTrigger();
+                }}
+              >
+                Close Popover and focus trigger
+              </Button>
 
-              <Link href="#/light/popover/header-variant" onFollow={() => popoverRef.current?.dismissPopover()}>
-                navigate and close popover
+              <Link
+                href="#/light/popover/header-variant"
+                onFollow={() => {
+                  popoverRef.current?.dismissPopover();
+                }}
+              >
+                navigate, close popover and dont focus trigger
               </Link>
 
               <Link href="#/light/popover/header-variant">navigate and dont close popover</Link>

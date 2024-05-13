@@ -760,6 +760,13 @@ describe('property filter parts', () => {
           })
         );
       });
+
+      test('token is focused after closing token editor', () => {
+        act(() => contentWrapper.findButton(`.${styles['token-editor-cancel']}`)!.click());
+        popoverWrapper = wrapper.findTokens()[0]!.find('*')!.findPopover()!;
+
+        expect(document.activeElement).toBe(popoverWrapper.findTrigger().getElement());
+      });
     });
   });
   describe('tokens collapsed/expanded toggle', () => {

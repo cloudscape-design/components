@@ -79,6 +79,10 @@ function InternalPopover(
     focusTrigger();
   }, [focusTrigger]);
 
+  const onPopoverClose = useCallback(() => {
+    setVisible(false);
+  }, []);
+
   const onTriggerKeyDown = useCallback(
     (event: React.KeyboardEvent) => {
       const isEscapeKey = event.keyCode === KeyCode.escape;
@@ -94,7 +98,8 @@ function InternalPopover(
   );
 
   useImperativeHandle(ref, () => ({
-    dismissPopover: onDismiss,
+    dismissPopover: onPopoverClose,
+    focusTrigger,
   }));
 
   useEffect(() => {

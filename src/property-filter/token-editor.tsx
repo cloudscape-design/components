@@ -218,7 +218,10 @@ export function TokenEditor({
   const [temporaryToken, setTemporaryToken] = useState<InternalToken>(token);
   const popoverRef = useRef<PopoverProps.Ref>(null);
   const closePopover = () => {
-    popoverRef.current && popoverRef.current.dismissPopover();
+    if (popoverRef.current) {
+      popoverRef.current.dismissPopover();
+      popoverRef.current.focusTrigger();
+    }
   };
 
   const property = temporaryToken.property;
