@@ -42,8 +42,8 @@ class PopoverInternalWrapper extends PopoverWrapper {
   }
 }
 
-function renderPopover(props: PopoverProps) {
-  const { container } = render(<Popover {...props} />);
+function renderPopover(props: PopoverProps, ref?: React.Ref<PopoverProps.Ref>) {
+  const { container } = render(<Popover {...props} ref={ref} />);
   return new PopoverInternalWrapper(container);
 }
 
@@ -373,5 +373,18 @@ describe('table grid navigation support', () => {
     );
     setCurrentTarget(getTrigger());
     expect(getTrigger()).not.toHaveAttribute('tabIndex');
+  });
+
+  describe('dismissPopover function', () => {
+    test('Calling dismissPopover should close the popover', () => {
+      const ref = React.createRef<PopoverProps.Ref>();
+      const wrapper = renderPopover({ children: 'Trigger', content: 'Popover' }, ref);
+      wrapper.findTrigger().click();
+      expect(wrapper.findBody()).toBeTruthy();
+
+      ref.current?.dismissPopover();
+
+      expect(wrapper.findBody()).toBeNull();
+    });
   });
 });
