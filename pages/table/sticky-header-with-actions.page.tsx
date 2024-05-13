@@ -23,7 +23,13 @@ export default function () {
       <h1>Table with a sticky header and actions</h1>
       <ScreenshotArea>
         <div
-          style={{ blockSize: '400px', inlineSize: '500px', overflow: 'auto', padding: '0px 1px' }}
+          style={{
+            blockSize: '400px',
+            inlineSize: '500px',
+            overflow: 'auto',
+            paddingBlock: '0px',
+            paddingInline: '1px',
+          }}
           id="scroll-container"
         >
           <div style={{ blockSize: '100px' }} />
