@@ -36,7 +36,7 @@ export default function () {
         />
       </label>
 
-      <div style={{ height: 600, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ blockSize: 600, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <Popover
           size="medium"
           header="Lorem ipsum"

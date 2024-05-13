@@ -107,7 +107,7 @@ export default function () {
             />
           }
           header={
-            <Header variant="awsui-h1-sticky" actions={<div style={{ height: '10vh' }} />}>
+            <Header variant="awsui-h1-sticky" actions={<div style={{ blockSize: '10vh' }} />}>
               Sticky Full-Page Header
             </Header>
           }

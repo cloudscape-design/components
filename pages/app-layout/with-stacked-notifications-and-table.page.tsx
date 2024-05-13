@@ -78,7 +78,7 @@ export default function () {
               </Header>
             }
             footer={
-              <div style={{ height: '150vh' }}>
+              <div style={{ blockSize: '150vh' }}>
                 <h1>Table Footer</h1>
                 <p>Long footer to make the main content scrollable.</p>
                 <p>

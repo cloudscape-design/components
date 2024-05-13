@@ -39,7 +39,7 @@ export default function () {
             <h1>Sticky Notifications + Table Header</h1>
             <Table
               header={<Header>Sticky Table Header 1</Header>}
-              footer={<div style={{ height: '100vh' }}></div>}
+              footer={<div style={{ blockSize: '100vh' }}></div>}
               items={[]}
               columnDefinitions={[]}
               stickyHeader={true}

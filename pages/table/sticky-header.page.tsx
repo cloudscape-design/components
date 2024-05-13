@@ -14,7 +14,7 @@ export default function () {
   const variants: TableProps.Variant[] = ['container', 'embedded', 'full-page', 'stacked', 'borderless'];
 
   const variantButtons = (
-    <div style={{ paddingBottom: '10px', display: 'inline-flex', gap: '10px' }}>
+    <div style={{ paddingBlockEnd: '10px', display: 'inline-flex', gap: '10px' }}>
       <b>Variant: </b>
       {variants.map((value, i) => {
         return (
@@ -43,7 +43,7 @@ export default function () {
         stickyHeader={true}
         variant={variant}
       />
-      <div style={{ height: '90vh', padding: 10 }}>Placeholder to allow page scroll beyond table</div>
+      <div style={{ blockSize: '90vh', padding: 10 }}>Placeholder to allow page scroll beyond table</div>
     </ScreenshotArea>
   );
 }
