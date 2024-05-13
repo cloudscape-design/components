@@ -1,0 +1,120 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: MIT-0
+@use '../../internal/styles/' as styles;
+@use '../mixins.scss' as mixins;
+
+// Color variables
+$color-cyan: #99f7ff;
+$color-blue: #0096fa;
+$color-purple-300: #d8b2ff;
+$color-purple-400: #bf80ff;
+$color-purple-500: #9d3cff;
+$color-purple-600: #7300e5;
+$color-purple-700: #5900b2;
+$color-purple-800: #3f0074;
+$color-purple-900: #240047;
+$dot-size: 4px;
+$shadow-size: 8px;
+$shadow-opacity: 0.1;
+
+.root {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 0;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    @include styles.with-motion {
+      animation: gradientMove 3.6s infinite cubic-bezier(0.7, 0, 0.3, 1);
+    }
+    @include mixins.genai-background;
+  }
+}
+// Gradient rotation animation
+@keyframes gradientMove {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  50% {
+    width: 44px;
+    height: 44px;
+  }
+
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.typing {
+  align-items: center;
+  justify-content: space-between;
+  display: flex;
+  width: 18px;
+  height: 28px;
+}
+
+.dot {
+  @include styles.with-motion {
+    animation: dotsDancing 1.2s infinite ease-in-out;
+  }
+  background-color: #ffffff;
+  border-radius: 50px;
+  height: $dot-size;
+  width: $dot-size;
+  z-index: 1;
+}
+
+// Dots dancing animation
+.dot:nth-child(1) {
+  @include styles.with-motion {
+    animation-delay: 100ms;
+  }
+}
+
+.dot:nth-child(2) {
+  @include styles.with-motion {
+    animation-delay: 200ms;
+  }
+}
+
+.dot:nth-child(3) {
+  @include styles.with-motion {
+    animation-delay: 300ms;
+  }
+}
+
+.dot:last-child {
+  @include styles.with-motion {
+    margin-right: 0;
+  }
+}
+
+@keyframes dotsDancing {
+  0% {
+    transform: translateY(0px);
+    background-color: #ffffff;
+  }
+
+  28% {
+    transform: translateY(-4px);
+    background-color: #ffffff;
+  }
+
+  44% {
+    transform: translateY(0px);
+    background-color: #ffffff;
+  }
+}

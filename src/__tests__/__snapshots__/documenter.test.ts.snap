@@ -2054,6 +2054,110 @@ This is displayed when \`statusType\` is set to \`finished\` or it's not set at 
 }
 `;
 
+exports[`Documenter definition for avatar matches the snapshot: avatar 1`] = `
+Object {
+  "events": Array [],
+  "functions": Array [],
+  "name": "Avatar",
+  "properties": Array [
+    Object {
+      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "An object containing all the necessary localized strings required by the component.",
+      "i18nTag": true,
+      "inlineType": Object {
+        "name": "AvatarProps.I18nStrings",
+        "properties": Array [
+          Object {
+            "name": "genAiIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "loading",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "userIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "AvatarProps.I18nStrings",
+    },
+    Object {
+      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Indicates whether avatar is in loading state.
+It can only be used with \\"genai\\" variant.",
+      "name": "loading",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Specifies the size of the icon.
+If you set size to \`inherit\`, an icon size will be assigned based on the icon's inherited line height.
+For icons used alongside text, ensure the icon is placed inside the acompanying text tag.
+The icon will be vertically centered based on the height.
+",
+      "inlineType": Object {
+        "name": "AvatarProps.Size",
+        "type": "union",
+        "values": Array [
+          "small",
+          "normal",
+          "medium",
+        ],
+      },
+      "name": "size",
+      "optional": true,
+      "type": "string",
+      "visualRefreshTag": "\`medium\` size",
+    },
+    Object {
+      "description": "The name of the user agent shown in the tooltip.
+It can only be used with \\"user\\" variant.
+If passed, the avatar will show the first letter.",
+      "name": "userName",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Variant of the avatar.
+It can be \\"user\\" or \\"genai\\"",
+      "inlineType": Object {
+        "name": "AvatarProps.Variant",
+        "type": "union",
+        "values": Array [
+          "user",
+          "genai",
+        ],
+      },
+      "name": "variant",
+      "optional": false,
+      "type": "string",
+    },
+  ],
+  "regions": Array [],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Documenter definition for badge matches the snapshot: badge 1`] = `
 Object {
   "events": Array [],
