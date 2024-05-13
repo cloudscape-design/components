@@ -10641,6 +10641,12 @@ Object {
       "parameters": Array [],
       "returnType": "void",
     },
+    Object {
+      "description": "Focuses trigger.",
+      "name": "focusTrigger",
+      "parameters": Array [],
+      "returnType": "void",
+    },
   ],
   "name": "Popover",
   "properties": Array [
