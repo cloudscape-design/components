@@ -17,11 +17,12 @@
 
 .footer {
   inset-block-end: 0;
-  width: 100%;
+  inline-size: 100%;
   color: #eee;
   background: #232f3e;
   box-sizing: border-box;
-  padding: 0 1rem;
+  padding-block: 0;
+  padding-inline: 1rem;
   line-height: 30px;
   z-index: 1000;
   &:not(.legacyNav) {
@@ -31,7 +32,8 @@
 }
 
 .highlightBorder {
-  border: 1px solid red;
+  border-block: 1px solid red;
+  border-inline: 1px solid red;
 }
 
 .textContent {
@@ -39,7 +41,7 @@
 }
 
 .longContent {
-  height: 200vh;
+  block-size: 200vh;
 }
 
 .floatingBlock {
@@ -55,15 +57,15 @@
 }
 
 .wizard-steps {
-  width: 16rem;
-  height: 40rem;
+  inline-size: 16rem;
+  block-size: 40rem;
   margin-inline-end: 4rem;
 }
 
 .wizard-form {
-  min-width: 30rem;
-  max-width: 80rem;
-  height: 150rem;
+  min-inline-size: 30rem;
+  max-inline-size: 80rem;
+  block-size: 150rem;
 }
 
 @media (max-width: 703px) {

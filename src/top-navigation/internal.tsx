@@ -7,7 +7,6 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { getBaseProps } from '../internal/base-component';
 import { fireCancelableEvent, isPlainLeftClick } from '../internal/events';
 import VisualContext from '../internal/components/visual-context';
-import Portal from '../internal/components/portal';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
 
 import { TopNavigationProps } from './interfaces';
@@ -229,8 +228,11 @@ export default function InternalTopNavigation({
   return (
     <div {...baseProps} ref={__internalRootRef}>
       <VisualContext contextName="top-navigation">
+        {/* Render virtual content first to ensure React refs for content will be assigned on the actual nodes. */}
+        {content(true)}
+
         {content(false)}
-        <Portal>{content(true)}</Portal>
+
         {menuTriggerVisible && overflowMenuOpen && (
           <div className={styles['overflow-menu-drawer']}>
             <OverflowMenu

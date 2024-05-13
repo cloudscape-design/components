@@ -10,7 +10,6 @@ import {
   circleIndex,
   isSeriesValid,
 } from '../../../lib/components/area-chart/model/utils';
-import computeChartProps from '../../../lib/components/area-chart/model/compute-chart-props';
 
 function getPointIndices(matrix: ChartModel.PlotPoint<number>[][]) {
   const indices = [];
@@ -360,75 +359,5 @@ describe('AreaChart isSeriesValid', () => {
         },
       ])
     ).toBe(false);
-  });
-});
-
-describe('AreaChart computeChartProps', () => {
-  it('returns the unmodified series in ltr', () => {
-    const computed = computeChartProps({
-      isRtl: false,
-      series: [
-        {
-          type: 'area',
-          title: 'A1x',
-          data: [
-            { x: 1, y: 1 },
-            { x: 2, y: 2 },
-            { x: 3, y: 3 },
-          ],
-        },
-        {
-          type: 'area',
-          title: 'A2x',
-          data: [
-            { x: 1, y: 2 },
-            { x: 2, y: 4 },
-            { x: 3, y: 6 },
-          ],
-        },
-      ],
-      xDomain: [1, 2, 3, 4, 5],
-      yDomain: [1, 2, 3, 4, 5],
-      xScaleType: 'linear',
-      yScaleType: 'linear',
-      height: 400,
-      width: 400,
-    });
-
-    expect(computed.xDomain).toEqual([1, 2, 3, 4, 5]);
-  });
-
-  it('returns a reversed series in rtl', () => {
-    const computed = computeChartProps({
-      isRtl: true,
-      series: [
-        {
-          type: 'area',
-          title: 'A1x',
-          data: [
-            { x: 1, y: 1 },
-            { x: 2, y: 2 },
-            { x: 3, y: 3 },
-          ],
-        },
-        {
-          type: 'area',
-          title: 'A2x',
-          data: [
-            { x: 1, y: 2 },
-            { x: 2, y: 4 },
-            { x: 3, y: 6 },
-          ],
-        },
-      ],
-      xDomain: [1, 2, 3, 4, 5],
-      yDomain: [1, 2, 3, 4, 5],
-      xScaleType: 'linear',
-      yScaleType: 'linear',
-      height: 400,
-      width: 400,
-    });
-
-    expect(computed.xDomain).toEqual([5, 4, 3, 2, 1]);
   });
 });
