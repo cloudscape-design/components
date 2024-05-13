@@ -1728,6 +1728,20 @@ Object {
             "light": "#687078",
           },
         },
+        "color-text-dropdown-item-default": Object {
+          "$description": "The default text color of dropdown items. For example: label and label tag text color for autosuggest, select, and multiselect.",
+          "$value": Object {
+            "dark": "#d5dbdb",
+            "light": "#16191f",
+          },
+        },
+        "color-text-dropdown-item-disabled": Object {
+          "$description": "The text color of disabled dropdown items. For example: label, label tag, description, and tag text color of a disabled item in a select, multiselect, and autosuggest.",
+          "$value": Object {
+            "dark": "#687078",
+            "light": "#aab7b8",
+          },
+        },
         "color-text-dropdown-item-filter-match": Object {
           "$description": "The color of text matching a user's query. For example: the text matching a query entered into a table filter, select, multiselect, or autosuggest.",
           "$value": Object {
@@ -4014,6 +4028,20 @@ Object {
           "$value": Object {
             "dark": "#95a5a6",
             "light": "#687078",
+          },
+        },
+        "color-text-dropdown-item-default": Object {
+          "$description": "The default text color of dropdown items. For example: label and label tag text color for autosuggest, select, and multiselect.",
+          "$value": Object {
+            "dark": "#d5dbdb",
+            "light": "#16191f",
+          },
+        },
+        "color-text-dropdown-item-disabled": Object {
+          "$description": "The text color of disabled dropdown items. For example: label, label tag, description, and tag text color of a disabled item in a select, multiselect, and autosuggest.",
+          "$value": Object {
+            "dark": "#687078",
+            "light": "#aab7b8",
           },
         },
         "color-text-dropdown-item-filter-match": Object {
@@ -6304,6 +6332,20 @@ Object {
             "light": "#687078",
           },
         },
+        "color-text-dropdown-item-default": Object {
+          "$description": "The default text color of dropdown items. For example: label and label tag text color for autosuggest, select, and multiselect.",
+          "$value": Object {
+            "dark": "#d5dbdb",
+            "light": "#16191f",
+          },
+        },
+        "color-text-dropdown-item-disabled": Object {
+          "$description": "The text color of disabled dropdown items. For example: label, label tag, description, and tag text color of a disabled item in a select, multiselect, and autosuggest.",
+          "$value": Object {
+            "dark": "#687078",
+            "light": "#aab7b8",
+          },
+        },
         "color-text-dropdown-item-filter-match": Object {
           "$description": "The color of text matching a user's query. For example: the text matching a query entered into a table filter, select, multiselect, or autosuggest.",
           "$value": Object {
@@ -8590,6 +8632,20 @@ Object {
           "$value": Object {
             "dark": "#95a5a6",
             "light": "#687078",
+          },
+        },
+        "color-text-dropdown-item-default": Object {
+          "$description": "The default text color of dropdown items. For example: label and label tag text color for autosuggest, select, and multiselect.",
+          "$value": Object {
+            "dark": "#d5dbdb",
+            "light": "#16191f",
+          },
+        },
+        "color-text-dropdown-item-disabled": Object {
+          "$description": "The text color of disabled dropdown items. For example: label, label tag, description, and tag text color of a disabled item in a select, multiselect, and autosuggest.",
+          "$value": Object {
+            "dark": "#687078",
+            "light": "#aab7b8",
           },
         },
         "color-text-dropdown-item-filter-match": Object {
@@ -10880,6 +10936,20 @@ Object {
             "light": "#95a5a6",
           },
         },
+        "color-text-dropdown-item-default": Object {
+          "$description": "The default text color of dropdown items. For example: label and label tag text color for autosuggest, select, and multiselect.",
+          "$value": Object {
+            "dark": "#d5dbdb",
+            "light": "#d5dbdb",
+          },
+        },
+        "color-text-dropdown-item-disabled": Object {
+          "$description": "The text color of disabled dropdown items. For example: label, label tag, description, and tag text color of a disabled item in a select, multiselect, and autosuggest.",
+          "$value": Object {
+            "dark": "#687078",
+            "light": "#687078",
+          },
+        },
         "color-text-dropdown-item-filter-match": Object {
           "$description": "The color of text matching a user's query. For example: the text matching a query entered into a table filter, select, multiselect, or autosuggest.",
           "$value": Object {
@@ -13166,6 +13236,20 @@ Object {
       "$value": Object {
         "dark": "#95a5a6",
         "light": "#687078",
+      },
+    },
+    "color-text-dropdown-item-default": Object {
+      "$description": "The default text color of dropdown items. For example: label and label tag text color for autosuggest, select, and multiselect.",
+      "$value": Object {
+        "dark": "#d5dbdb",
+        "light": "#16191f",
+      },
+    },
+    "color-text-dropdown-item-disabled": Object {
+      "$description": "The text color of disabled dropdown items. For example: label, label tag, description, and tag text color of a disabled item in a select, multiselect, and autosuggest.",
+      "$value": Object {
+        "dark": "#687078",
+        "light": "#aab7b8",
       },
     },
     "color-text-dropdown-item-filter-match": Object {
@@ -15461,6 +15545,20 @@ Object {
             "light": "#5f6b7a",
           },
         },
+        "color-text-dropdown-item-default": Object {
+          "$description": "The default text color of dropdown items. For example: label and label tag text color for autosuggest, select, and multiselect.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#000716",
+          },
+        },
+        "color-text-dropdown-item-disabled": Object {
+          "$description": "The text color of disabled dropdown items. For example: label, label tag, description, and tag text color of a disabled item in a select, multiselect, and autosuggest.",
+          "$value": Object {
+            "dark": "#5f6b7a",
+            "light": "#9ba7b6",
+          },
+        },
         "color-text-dropdown-item-filter-match": Object {
           "$description": "The color of text matching a user's query. For example: the text matching a query entered into a table filter, select, multiselect, or autosuggest.",
           "$value": Object {
@@ -17747,6 +17845,20 @@ Object {
           "$value": Object {
             "dark": "#8d99a8",
             "light": "#8d99a8",
+          },
+        },
+        "color-text-dropdown-item-default": Object {
+          "$description": "The default text color of dropdown items. For example: label and label tag text color for autosuggest, select, and multiselect.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
+          },
+        },
+        "color-text-dropdown-item-disabled": Object {
+          "$description": "The text color of disabled dropdown items. For example: label, label tag, description, and tag text color of a disabled item in a select, multiselect, and autosuggest.",
+          "$value": Object {
+            "dark": "#5f6b7a",
+            "light": "#5f6b7a",
           },
         },
         "color-text-dropdown-item-filter-match": Object {
@@ -20037,6 +20149,20 @@ Object {
             "light": "#5f6b7a",
           },
         },
+        "color-text-dropdown-item-default": Object {
+          "$description": "The default text color of dropdown items. For example: label and label tag text color for autosuggest, select, and multiselect.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#000716",
+          },
+        },
+        "color-text-dropdown-item-disabled": Object {
+          "$description": "The text color of disabled dropdown items. For example: label, label tag, description, and tag text color of a disabled item in a select, multiselect, and autosuggest.",
+          "$value": Object {
+            "dark": "#5f6b7a",
+            "light": "#9ba7b6",
+          },
+        },
         "color-text-dropdown-item-filter-match": Object {
           "$description": "The color of text matching a user's query. For example: the text matching a query entered into a table filter, select, multiselect, or autosuggest.",
           "$value": Object {
@@ -22323,6 +22449,20 @@ Object {
           "$value": Object {
             "dark": "#8d99a8",
             "light": "#5f6b7a",
+          },
+        },
+        "color-text-dropdown-item-default": Object {
+          "$description": "The default text color of dropdown items. For example: label and label tag text color for autosuggest, select, and multiselect.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#000716",
+          },
+        },
+        "color-text-dropdown-item-disabled": Object {
+          "$description": "The text color of disabled dropdown items. For example: label, label tag, description, and tag text color of a disabled item in a select, multiselect, and autosuggest.",
+          "$value": Object {
+            "dark": "#5f6b7a",
+            "light": "#9ba7b6",
           },
         },
         "color-text-dropdown-item-filter-match": Object {
@@ -24613,6 +24753,20 @@ Object {
             "light": "#5f6b7a",
           },
         },
+        "color-text-dropdown-item-default": Object {
+          "$description": "The default text color of dropdown items. For example: label and label tag text color for autosuggest, select, and multiselect.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#000716",
+          },
+        },
+        "color-text-dropdown-item-disabled": Object {
+          "$description": "The text color of disabled dropdown items. For example: label, label tag, description, and tag text color of a disabled item in a select, multiselect, and autosuggest.",
+          "$value": Object {
+            "dark": "#5f6b7a",
+            "light": "#9ba7b6",
+          },
+        },
         "color-text-dropdown-item-filter-match": Object {
           "$description": "The color of text matching a user's query. For example: the text matching a query entered into a table filter, select, multiselect, or autosuggest.",
           "$value": Object {
@@ -26899,6 +27053,20 @@ Object {
           "$value": Object {
             "dark": "#8d99a8",
             "light": "#8d99a8",
+          },
+        },
+        "color-text-dropdown-item-default": Object {
+          "$description": "The default text color of dropdown items. For example: label and label tag text color for autosuggest, select, and multiselect.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
+          },
+        },
+        "color-text-dropdown-item-disabled": Object {
+          "$description": "The text color of disabled dropdown items. For example: label, label tag, description, and tag text color of a disabled item in a select, multiselect, and autosuggest.",
+          "$value": Object {
+            "dark": "#5f6b7a",
+            "light": "#5f6b7a",
           },
         },
         "color-text-dropdown-item-filter-match": Object {
@@ -29189,6 +29357,20 @@ Object {
             "light": "#8d99a8",
           },
         },
+        "color-text-dropdown-item-default": Object {
+          "$description": "The default text color of dropdown items. For example: label and label tag text color for autosuggest, select, and multiselect.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
+          },
+        },
+        "color-text-dropdown-item-disabled": Object {
+          "$description": "The text color of disabled dropdown items. For example: label, label tag, description, and tag text color of a disabled item in a select, multiselect, and autosuggest.",
+          "$value": Object {
+            "dark": "#5f6b7a",
+            "light": "#5f6b7a",
+          },
+        },
         "color-text-dropdown-item-filter-match": Object {
           "$description": "The color of text matching a user's query. For example: the text matching a query entered into a table filter, select, multiselect, or autosuggest.",
           "$value": Object {
@@ -31475,6 +31657,20 @@ Object {
       "$value": Object {
         "dark": "#8d99a8",
         "light": "#5f6b7a",
+      },
+    },
+    "color-text-dropdown-item-default": Object {
+      "$description": "The default text color of dropdown items. For example: label and label tag text color for autosuggest, select, and multiselect.",
+      "$value": Object {
+        "dark": "#d1d5db",
+        "light": "#000716",
+      },
+    },
+    "color-text-dropdown-item-disabled": Object {
+      "$description": "The text color of disabled dropdown items. For example: label, label tag, description, and tag text color of a disabled item in a select, multiselect, and autosuggest.",
+      "$value": Object {
+        "dark": "#5f6b7a",
+        "light": "#9ba7b6",
       },
     },
     "color-text-dropdown-item-filter-match": Object {

@@ -11,7 +11,7 @@ import styles from './styles.css.js';
 import { formatTicks, getVisibleTicks, FormattedTick } from './label-utils';
 import { useInternalI18n } from '../../../i18n/context';
 
-interface BottomLabelsProps {
+interface BlockEndLabelsProps {
   axis?: 'x' | 'y';
   width: number;
   height: number;
@@ -24,7 +24,7 @@ interface BottomLabelsProps {
   formattedTicks: readonly FormattedTick[];
 }
 
-export function useBottomLabels({
+export function useBLockEndLabels({
   ticks,
   scale,
   tickFormatter,
@@ -62,10 +62,10 @@ export function useBottomLabels({
   return { virtualTextRef, formattedTicks, height };
 }
 
-export default memo(BottomLabels) as typeof BottomLabels;
+export default memo(BlockEndLabels) as typeof BlockEndLabels;
 
 // Renders the visible tick labels on the bottom axis, as well as their grid lines.
-function BottomLabels({
+function BlockEndLabels({
   axis = 'x',
   width,
   height,
@@ -76,7 +76,7 @@ function BottomLabels({
   offsetRight = 0,
   virtualTextRef,
   formattedTicks,
-}: BottomLabelsProps) {
+}: BlockEndLabelsProps) {
   const i18n = useInternalI18n('[charts]');
 
   const xOffset = scale.isCategorical() && axis === 'x' ? Math.max(0, scale.d3Scale.bandwidth() - 1) / 2 : 0;
@@ -89,7 +89,7 @@ function BottomLabels({
   return (
     <g
       transform={`translate(0,${height})`}
-      className={styles['labels-bottom']}
+      className={styles['labels-block-end']}
       aria-label={title}
       role="list"
       aria-roledescription={i18n('i18nStrings.chartAriaRoleDescription', ariaRoleDescription)}

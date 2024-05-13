@@ -52,6 +52,8 @@ import { getContentHeaderClassName } from '../internal/utils/content-header-util
 import { useExpandableTableProps } from './expandable-rows/expandable-rows-utils';
 import { ItemsLoader } from './progressive-loading/items-loader';
 import { useProgressiveLoadingProps } from './progressive-loading/progressive-loading-utils';
+import { usePrevious } from '../internal/hooks/use-previous';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 const GRID_NAVIGATION_PAGE_SIZE = 10;
 const SELECTION_COLUMN_WIDTH = 54;
@@ -135,6 +137,15 @@ const InternalTable = React.forwardRef(
     }
 
     const baseProps = getBaseProps(rest);
+
+    const prevStickyHeader = usePrevious(stickyHeader);
+    if (prevStickyHeader !== undefined && !!stickyHeader !== !!prevStickyHeader) {
+      warnOnce(
+        'Table',
+        `\`stickyHeader\` has changed from "${prevStickyHeader}" to "${stickyHeader}". It is not recommended to change the value of this property during the component lifecycle. Please set it to either "true" or "false" unconditionally.`
+      );
+    }
+
     stickyHeader = stickyHeader && supportsStickyPosition();
     const isMobile = useMobile();
 
@@ -554,6 +565,7 @@ const InternalTable = React.forwardRef(
                                     isEditing={isEditing}
                                     isRowHeader={column.isRowHeader}
                                     successfulEdit={successfulEdit}
+                                    resizableColumns={resizableColumns}
                                     onEditStart={() => cellEditing.startEdit({ rowIndex, colIndex })}
                                     onEditEnd={editCancelled =>
                                       cellEditing.completeEdit({ rowIndex, colIndex }, editCancelled)

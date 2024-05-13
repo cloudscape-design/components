@@ -271,6 +271,8 @@ export interface TableProps<T = any> extends BaseComponentProps {
 
   /**
    * If set to `true`, the table header remains visible when the user scrolls down.
+   *
+   * Do not use `stickyHeader` conditionally. Instead, keep its value constant during the component lifecycle.
    */
   stickyHeader?: boolean;
 

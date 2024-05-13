@@ -106,9 +106,11 @@ export default class AreaChartPageObject extends BasePageObject {
   }
 
   async getPointOffset(serialIndex: number, totalPoints: number) {
-    const leftLabelsSelector = this.chart.findByClassName(cartesianChartStyles['labels-left']).toSelector();
+    const inlineStartLabelsSelector = this.chart
+      .findByClassName(cartesianChartStyles['labels-inline-start'])
+      .toSelector();
     const chartWidth = (await this.getBoundingBox(this.chart.toSelector())).width;
-    const labelsWidth = (await this.getBoundingBox(leftLabelsSelector)).width;
+    const labelsWidth = (await this.getBoundingBox(inlineStartLabelsSelector)).width;
     const distanceBetweenPoints = (chartWidth - labelsWidth) / totalPoints;
     return labelsWidth + distanceBetweenPoints * serialIndex;
   }

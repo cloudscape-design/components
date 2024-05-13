@@ -25,6 +25,7 @@ $edit-button-padding-right: calc(
   #{awsui.$space-xs} + #{awsui.$space-xxs}
 ); // Cell vertical padding + xxs space that would normally come from the button.
 $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-with-spacing});
+$interactive-column-padding-inline-end: calc(#{$cell-horizontal-padding} + #{awsui.$space-l});
 
 @mixin cell-focus-outline {
   @include styles.focus-highlight(calc(-1 * #{awsui.$space-scaled-xxs}));
@@ -357,10 +358,15 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
     &:not(.body-cell-edit-active) {
       &.body-cell-interactive {
         cursor: pointer;
+
+        // Include interactive padding even when a cell is not hovered to prevent jittering when resizableColumns=false.
+        &:not(.resizable-columns) {
+          padding-inline-end: $interactive-column-padding-inline-end;
+        }
       }
 
       @mixin focused-editor-styles {
-        padding-inline-end: calc(#{$cell-horizontal-padding} + #{awsui.$space-l});
+        padding-inline-end: $interactive-column-padding-inline-end;
         & > .body-cell-editor-wrapper,
         & > .expandable-cell-content > .body-cell-editor-wrapper {
           opacity: 1;
@@ -393,7 +399,6 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
       &:not(.body-cell-interactive),
       &:focus-within:focus-within,
       &.body-cell-edit-disabled-popover {
-        padding-inline-end: calc(#{$cell-horizontal-padding} + #{awsui.$space-l});
         &.body-cell-has-success {
           // After a successful edit, we display the success icon next to the edit button and need additional padding to not let the text overflow the success icon.
           padding-inline-end: calc(#{$cell-horizontal-padding} + #{awsui.$space-l} + #{$icon-width-with-spacing});

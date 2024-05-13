@@ -10,7 +10,7 @@
 .help-panel {
   @include styles.styles-reset;
   word-wrap: break-word;
-  padding-block-start: awsui.$space-scaled-l;
+  padding-block-start: awsui.$space-panel-header-vertical;
   padding-block-end: 0;
   padding-inline-end: awsui.$space-panel-side-right;
   padding-inline-start: awsui.$space-panel-side-left;
@@ -20,7 +20,7 @@
     border-inline: none;
     border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
     margin-block: awsui.$space-scaled-xl;
-    margin-inline: calc(-1 * #{awsui.$space-xs});
+    margin-inline: calc(-1 * #{awsui.$space-panel-divider-margin-horizontal});
   }
 
   ol,
@@ -85,7 +85,7 @@
   }
   // sets padding at the bottom of the panel
   & > :last-child {
-    margin-block-end: awsui.$space-scaled-xxxl;
+    margin-block-end: awsui.$space-panel-content-bottom;
   }
 
   // add basic font-sizes
@@ -118,14 +118,14 @@
   .header {
     @include styles.font-panel-header;
     color: awsui.$color-text-heading-default;
-    padding-block-end: awsui.$space-scaled-l;
+    padding-block-end: awsui.$space-panel-header-vertical;
     padding-inline: awsui.$space-panel-side-left calc(#{awsui.$space-xl} + #{awsui.$space-scaled-xxl});
     // padding to make sure the header doesn't overlap with the close icon
     border-block: none;
     border-inline: none;
-    border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+    border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-panel-header;
     margin-block-start: 0;
-    margin-block-end: awsui.$space-scaled-l;
+    margin-block-end: awsui.$space-panel-content-top;
     margin-inline-end: calc(-1 * #{awsui.$space-panel-side-right});
     margin-inline-start: calc(-1 * #{awsui.$space-panel-side-left});
 
@@ -161,9 +161,9 @@
   color: awsui.$color-text-body-secondary;
   border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
   margin-block: awsui.$space-scaled-xl;
-  margin-inline: calc(-1 * #{awsui.$space-xs});
+  margin-inline: calc(-1 * #{awsui.$space-panel-divider-margin-horizontal});
   padding-block: 0;
-  padding-inline: awsui.$space-s;
+  padding-inline: awsui.$space-panel-divider-margin-horizontal;
   > :first-child {
     margin-block-start: awsui.$space-scaled-xl;
   }

@@ -12,6 +12,7 @@ declare const window: ExtendedWindow;
 
 const wrapper = createWrapper();
 const FUNNEL_INTERACTION_ID = 'mocked-funnel-id';
+const FUNNEL_IDENTIFIER = 'multi-page-demo';
 
 class MultiPageCreate extends BasePageObject {
   async getFunnelLog() {
@@ -49,27 +50,30 @@ describe('Multi-page create', () => {
         componentVersion: expect.any(String),
         funnelNameSelector: expect.any(String),
         funnelVersion: expect.any(String),
-        instanceIdentifier: expect.any(String),
+        funnelIdentifier: FUNNEL_IDENTIFIER,
         flowType: 'create',
         funnelType: 'multi-page',
         optionalStepNumbers: [2],
-        theme: 'vr',
+        componentTheme: 'vr',
         totalFunnelSteps: 3,
         stepConfiguration: [
           {
             name: 'Step 1',
             number: 1,
             isOptional: false,
+            stepIdentifier: 'step-1',
           },
           {
             name: 'Step 2',
             number: 2,
             isOptional: true,
+            stepIdentifier: 'step-2',
           },
           {
             name: 'Step 3',
             number: 3,
             isOptional: false,
+            stepIdentifier: 'step-3',
           },
         ],
       });
@@ -82,16 +86,19 @@ describe('Multi-page create', () => {
         stepNameSelector: expect.any(String),
         subStepAllSelector: expect.any(String),
         funnelInteractionId: FUNNEL_INTERACTION_ID,
-        instanceIdentifier: expect.any(String),
+        funnelIdentifier: FUNNEL_IDENTIFIER,
+        stepIdentifier: 'step-1',
         stepName: 'Step 1',
         subStepConfiguration: [
           {
             name: 'Container 1 - header',
             number: 1,
+            subStepIdentifier: 'step1-container1',
           },
           {
             name: 'Container 2 - header',
             number: 2,
+            subStepIdentifier: 'step1-container2',
           },
         ],
         stepNumber: 1,
@@ -123,11 +130,13 @@ describe('Multi-page create', () => {
         subStepAllSelector: expect.any(String),
         subStepNameSelector: expect.any(String),
         subStepSelector: expect.any(String),
-        instanceIdentifier: expect.any(String),
+        funnelIdentifier: FUNNEL_IDENTIFIER,
         funnelInteractionId: FUNNEL_INTERACTION_ID,
+        stepIdentifier: 'step-1',
         stepName: 'Step 1',
         subStepName: 'Container 1 - header',
         subStepNumber: 1,
+        subStepIdentifier: 'step1-container1',
         stepNumber: 1,
       });
       expect(funnelSubStep1StartEvent.resolvedProps).toEqual({
@@ -143,11 +152,13 @@ describe('Multi-page create', () => {
         subStepAllSelector: expect.any(String),
         subStepNameSelector: expect.any(String),
         subStepSelector: expect.any(String),
-        instanceIdentifier: expect.any(String),
+        funnelIdentifier: FUNNEL_IDENTIFIER,
         funnelInteractionId: FUNNEL_INTERACTION_ID,
+        stepIdentifier: 'step-1',
         stepName: 'Step 1',
         subStepName: 'Container 1 - header',
         subStepNumber: 1,
+        subStepIdentifier: 'step1-container1',
         stepNumber: 1,
       });
       expect(funnelSubStep1CompleteEvent.resolvedProps).toEqual({
@@ -162,12 +173,14 @@ describe('Multi-page create', () => {
         subStepAllSelector: expect.any(String),
         subStepNameSelector: expect.any(String),
         subStepSelector: expect.any(String),
-        instanceIdentifier: expect.any(String),
+        funnelIdentifier: FUNNEL_IDENTIFIER,
         funnelInteractionId: FUNNEL_INTERACTION_ID,
+        stepIdentifier: 'step-1',
         stepName: 'Step 1',
         subStepName: 'Container 2 - header',
         subStepNumber: 2,
         stepNumber: 1,
+        subStepIdentifier: 'step1-container2',
       });
       expect(funnelSubStep2StartEvent.resolvedProps).toEqual({
         subStepElement: expect.any(Object),
@@ -237,28 +250,18 @@ describe('Multi-page create', () => {
       await page.click(primaryButton); // Create
 
       const { funnelLog, actions } = await page.getFunnelLog();
-      expect(actions).toEqual([
-        'funnelStart',
-        'funnelStepStart', // Step 1 - Start
-        'funnelStepNavigation', // Navigate to Step 2
-        'funnelStepComplete', // Step 1 - Complete
-        'funnelStepStart', // Step 2 - Start
-        'funnelStepNavigation', // Navigate to Step 3
-        'funnelStepComplete', // Step 2 - Complete
-        'funnelStepStart', // Step 3 - Start
-        'funnelComplete',
-        'funnelSuccessful',
-        'funnelStepComplete', // TODO: This is the current order, it needs work :(
-      ]);
 
-      const funnelCompleteEvent = funnelLog[8];
-      const funnelSuccessfulEvent = funnelLog[9];
-
+      const funnelCompleteEventIndex = actions.findIndex(action => action === 'funnelComplete');
+      const funnelCompleteEvent = funnelLog[funnelCompleteEventIndex];
       expect(funnelCompleteEvent.props).toEqual({
+        funnelIdentifier: FUNNEL_IDENTIFIER,
         funnelInteractionId: FUNNEL_INTERACTION_ID,
       });
 
+      const funnelSucessEventIndex = actions.findIndex(action => action === 'funnelSuccessful');
+      const funnelSuccessfulEvent = funnelLog[funnelSucessEventIndex];
       expect(funnelSuccessfulEvent.props).toEqual({
+        funnelIdentifier: FUNNEL_IDENTIFIER,
         funnelInteractionId: FUNNEL_INTERACTION_ID,
       });
     })
@@ -281,6 +284,7 @@ describe('Multi-page create', () => {
       ]);
       const funnelCancelledEvent = funnelLog[5];
       expect(funnelCancelledEvent.props).toEqual({
+        funnelIdentifier: FUNNEL_IDENTIFIER,
         funnelInteractionId: FUNNEL_INTERACTION_ID,
       });
     })
@@ -295,6 +299,7 @@ describe('Multi-page create', () => {
 
       const funnelCancelledEvent = funnelLog[2];
       expect(funnelCancelledEvent.props).toEqual({
+        funnelIdentifier: FUNNEL_IDENTIFIER,
         funnelInteractionId: FUNNEL_INTERACTION_ID,
       });
     })
@@ -317,9 +322,15 @@ describe('Multi-page create', () => {
         subStepSelector: expect.any(String),
         subStepAllSelector: expect.any(String),
         funnelInteractionId: FUNNEL_INTERACTION_ID,
+        funnelIdentifier: FUNNEL_IDENTIFIER,
+        stepIdentifier: 'step-1',
         stepName: 'Step 1',
         stepNumber: 1,
         subStepName: 'Container 1 - header',
+        subStepIdentifier: 'step1-container1',
+        fieldErrorContext: 'errors.triggered',
+        fieldIdentifier: 'field1',
+        subStepErrorContext: 'errors.fields',
       });
 
       expect(funnelSubStepErrorEvent.resolvedProps).toEqual({
@@ -332,26 +343,19 @@ describe('Multi-page create', () => {
   );
 
   test(
-    'Wizard error',
+    'Emits a funnelError when an error is shown on the last step',
     setupTest(async page => {
-      await page.click('[data-testid=field1]');
-      await page.setValue(wrapper.findInput('[data-testid=field1]').findNativeInput().toSelector(), 'error');
-      await page.click(wrapper.findWizard().findPrimaryButton().toSelector());
+      const nextButton = wrapper.findWizard().findPrimaryButton().toSelector();
+      await page.click(nextButton); // Step 1 -> Step 2
+      await page.click(nextButton); // Step 2 -> Step 3 (Last step)
 
       const { funnelLog, actions } = await page.getFunnelLog();
-      expect(actions).toEqual([
-        'funnelStart',
-        'funnelStepStart',
-        'funnelSubStepStart',
-        'funnelSubStepError',
-        'funnelStepNavigation', // Navigation "attempt"
-        'funnelSubStepError', // FIXME: Should be a funnelStepError with error message
-        'funnelError',
-        'funnelSubStepComplete',
-      ]);
-      const funnelErrorEvent = funnelLog[6];
+      const funnelErrorIndex = actions.findIndex(entry => entry === 'funnelError');
+      const funnelErrorEvent = funnelLog[funnelErrorIndex];
       expect(funnelErrorEvent.props).toEqual({
+        funnelIdentifier: FUNNEL_IDENTIFIER,
         funnelInteractionId: FUNNEL_INTERACTION_ID,
+        funnelErrorContext: 'errors.validation',
       });
     })
   );

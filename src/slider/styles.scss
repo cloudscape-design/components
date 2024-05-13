@@ -1,0 +1,289 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use './mixins.scss' as mixins;
+
+.root {
+  @include styles.styles-reset;
+  font-size: awsui.$font-size-body-s;
+  padding-block: awsui.$space-s;
+
+  position: relative;
+  max-inline-size: 800px;
+  margin-inline: calc(mixins.$thumb-size / 2);
+}
+
+.slider {
+  display: flex;
+  align-items: center;
+
+  &-track,
+  &-range {
+    position: absolute;
+    border-start-start-radius: 3px;
+    border-start-end-radius: 3px;
+    border-end-start-radius: 3px;
+    border-end-end-radius: 3px;
+    margin-block-start: awsui.$space-xs;
+    margin-inline: calc(mixins.$thumb-size / -2);
+  }
+
+  &-track {
+    background-color: awsui.$color-background-slider-track;
+    inline-size: calc(100% + mixins.$thumb-size);
+    block-size: 2px;
+    cursor: pointer;
+
+    &.disabled {
+      cursor: default;
+      background-color: awsui.$color-background-control-disabled;
+    }
+  }
+
+  &-range {
+    background-color: awsui.$color-background-slider-handle-default;
+    block-size: 4px;
+    inline-size: calc(var(#{custom-props.$sliderRangeInlineSize}) + mixins.$thumb-size);
+
+    &.error {
+      background-color: awsui.$color-text-status-error;
+    }
+
+    &.active {
+      background-color: awsui.$color-background-slider-handle-active;
+    }
+
+    &.error-active {
+      background-color: awsui.$color-background-slider-error-pressed;
+    }
+
+    &.disabled {
+      background-color: awsui.$color-background-control-disabled;
+    }
+  }
+}
+
+.labels {
+  display: grid;
+  // the first and the last column get extra space, for readability
+  grid-template-columns:
+    3fr repeat(
+      calc((var(#{custom-props.$sliderLabelCount}) - 2) / 2 + (var(#{custom-props.$sliderLabelCount}) - 2) / 2 - 1),
+      2fr
+    )
+    3fr;
+  grid-auto-rows: 100%;
+  padding-block-start: awsui.$space-m;
+
+  &-noref {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  &-reference {
+    grid-column-start: var(#{custom-props.$sliderReferenceColumn});
+    grid-column-end: var(#{custom-props.$sliderNextReferenceColumn});
+    grid-row: 1;
+    justify-self: center;
+    text-align: center;
+  }
+
+  &-min {
+    grid-column: 1;
+    grid-row: 1;
+    grid-column-end: var(#{custom-props.$sliderMinEnd});
+    margin-inline-start: calc(mixins.$thumb-size / -2);
+  }
+
+  &-max {
+    text-align: end;
+    justify-content: flex-end;
+    grid-row: 1;
+    grid-column-end: calc(var(#{custom-props.$sliderLabelCount}) + 1);
+    grid-column-start: var(#{custom-props.$sliderMaxStart});
+    margin-inline-end: calc(mixins.$thumb-size / -2);
+  }
+
+  &-aria-description {
+    display: none;
+  }
+
+  @include styles.media-breakpoint-down(styles.$breakpoint-xx-small) {
+    & {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    &-min {
+      grid-column: 1;
+    }
+
+    &-max {
+      grid-column: 2;
+    }
+
+    > .labels-reference {
+      display: none;
+    }
+  }
+}
+
+.ticks {
+  display: grid;
+  grid-template-columns: repeat(var(#{custom-props.$sliderTickCount}), 1fr);
+  inline-size: calc(100% - mixins.$thumb-size);
+  margin-inline: calc(mixins.$thumb-size / 2);
+
+  &-wrapper {
+    block-size: 0;
+    display: flex;
+
+    margin-inline: calc(mixins.$thumb-size / -2);
+  }
+}
+
+.tick {
+  grid-row: 1;
+  block-size: awsui.$space-xs;
+  inline-size: awsui.$space-xxxs;
+  padding-inline: 0;
+  padding-block: 0;
+  background: awsui.$color-background-slider-track;
+  inset-block-start: -4px;
+
+  &.middle {
+    &:first-child,
+    &:last-child {
+      visibility: hidden;
+    }
+  }
+
+  &.filled {
+    background: awsui.$color-background-slider-handle-default;
+  }
+
+  &.active {
+    background: awsui.$color-background-slider-handle-active;
+  }
+
+  &.error {
+    background: awsui.$color-text-status-error;
+  }
+
+  &.error-active {
+    background-color: awsui.$color-background-slider-error-pressed;
+  }
+
+  &.disabled {
+    background: awsui.$color-background-control-disabled;
+  }
+}
+
+.tooltip-thumb {
+  position: absolute;
+  inline-size: awsui.$space-xxl;
+  block-size: awsui.$space-xxl;
+  margin-block-start: calc(awsui.$space-s / -1);
+  inset-inline-start: var(#{custom-props.$sliderTooltipPosition});
+}
+
+.thumb {
+  background: transparent;
+  appearance: none;
+  position: absolute;
+  block-size: 0;
+  inline-size: calc(100% + mixins.$thumb-size);
+  margin-inline-start: calc(mixins.$thumb-size / -2);
+
+  outline: 0;
+  margin-block-start: awsui.$space-xxs;
+  cursor: pointer;
+  // Desktop Safari doesn't support touch events, but Safari on iOS does.
+  // stylelint-disable-next-line plugin/no-unsupported-browser-features
+  touch-action: none;
+
+  &.disabled {
+    cursor: default;
+  }
+
+  // 1px added to min and max to cover the step line when it exists.
+  &.min {
+    margin-inline-start: calc(-1px + mixins.$thumb-size / -2);
+  }
+
+  &.max {
+    margin-inline-start: calc(1px + mixins.$thumb-size / -2);
+  }
+
+  &::-webkit-slider-thumb {
+    appearance: none;
+    @include mixins.base-thumb-styles();
+  }
+
+  &::-moz-range-thumb {
+    appearance: none;
+    @include mixins.base-thumb-styles();
+  }
+
+  &:hover::-webkit-slider-thumb {
+    @include mixins.base-thumb-hover-styles();
+  }
+
+  &:hover::-moz-range-thumb {
+    @include mixins.base-thumb-hover-styles();
+  }
+
+  &:focus::-webkit-slider-thumb,
+  &:active::-webkit-slider-thumb {
+    @include mixins.base-thumb-focus-styles();
+  }
+
+  &:focus::-moz-range-thumb,
+  &:active::-moz-range-thumb {
+    @include mixins.base-thumb-focus-styles();
+  }
+}
+
+.error {
+  &::-webkit-slider-thumb {
+    background-color: awsui.$color-text-status-error;
+    border-color: awsui.$color-text-status-error;
+  }
+
+  &::-moz-range-thumb {
+    background-color: awsui.$color-text-status-error;
+    border-color: awsui.$color-text-status-error;
+  }
+  &:hover::-webkit-slider-thumb {
+    @include mixins.error-thumb-hover-styles;
+  }
+
+  &:hover::-moz-range-thumb {
+    @include mixins.error-thumb-hover-styles;
+  }
+
+  &:focus::-webkit-slider-thumb,
+  &:active::-webkit-slider-thumb {
+    @include mixins.error-thumb-focus-styles;
+  }
+
+  &:focus::-moz-range-thumb,
+  &:active::-moz-range-thumb {
+    @include mixins.error-thumb-focus-styles;
+  }
+}
+
+.disabled,
+.disabled:hover,
+.disabled:active {
+  &::-webkit-slider-thumb {
+    @include mixins.base-thumb-disabled-styles();
+  }
+
+  &::-moz-range-thumb {
+    @include mixins.base-thumb-disabled-styles();
+  }
+}

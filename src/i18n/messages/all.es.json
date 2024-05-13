@@ -262,6 +262,9 @@
     "selectedAriaLabel": "Seleccionado",
     "recoveryText": "Reintentar"
   },
+  "slider": {
+    "i18nStrings.valueTextRange": "{value}, entre {previousValue} y {nextValue}"
+  },
   "split-panel": {
     "i18nStrings.closeButtonAriaLabel": "Cerrar panel",
     "i18nStrings.openButtonAriaLabel": "Abrir panel",

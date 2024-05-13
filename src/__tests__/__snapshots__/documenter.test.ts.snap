@@ -1364,6 +1364,8 @@ The event \`detail\` contains the index of the corresponding item.",
 * \`info\` (ReactNode) - Info link for the form field.
 * \`errorText\` ((item, itemIndex) => ReactNode) - Error message text to display as a control validation message.
    It renders the form field as invalid if the returned value is not \`null\` or \`undefined\`.
+* \`warningText\` ((item, itemIndex) => ReactNode) - Warning message text to display as a control validation message.
+   It renders the form field in a warning state if the returned value is not \`null\` or \`undefined\`.
 * \`constraintText\` ((item, itemIndex) => ReactNode) - Text to display as a constraint message below the field.
 * \`control\` ((item, itemIndex) => ReactNode) - A control to use as the input for the field.
 
@@ -1398,6 +1400,11 @@ A maximum of four fields are supported.
             "name": "removeButtonAriaLabel",
             "optional": true,
             "type": "(item: T) => string",
+          },
+          Object {
+            "name": "warningIconAriaLabel",
+            "optional": true,
+            "type": "string",
           },
         ],
         "type": "object",
@@ -2018,6 +2025,19 @@ to the correct offset, before performing any operations on them. Use the element
 by the \`findOptionsContainer\` test utility for this.
 ",
       "name": "virtualScroll",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Overrides the warning state. Usually the warning state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.
+When you use it, provide additional context with
+information on the input state, and associate it
+with the input using \`ariaDescribedby\`.",
+      "name": "warning",
       "optional": true,
       "type": "boolean",
     },
@@ -5741,6 +5761,19 @@ Don't use read-only inputs outside a form.
       "optional": false,
       "type": "string",
     },
+    Object {
+      "description": "Overrides the warning state. Usually the warning state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.
+When you use it, provide additional context with
+information on the input state, and associate it
+with the input using \`ariaDescribedby\`.",
+      "name": "warning",
+      "optional": true,
+      "type": "boolean",
+    },
   ],
   "regions": Array [],
   "releaseStatus": "stable",
@@ -6066,6 +6099,19 @@ By default the starting day of the week is defined by the locale, but you can us
       "name": "value",
       "optional": false,
       "type": "string",
+    },
+    Object {
+      "description": "Overrides the warning state. Usually the warning state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.
+When you use it, provide additional context with
+information on the input state, and associate it
+with the input using \`ariaDescribedby\`.",
+      "name": "warning",
+      "optional": true,
+      "type": "boolean",
     },
   ],
   "regions": Array [],
@@ -6583,6 +6629,19 @@ or a relative time range.",
       "optional": false,
       "type": "DateRangePickerProps.Value | null",
     },
+    Object {
+      "description": "Overrides the warning state. Usually the warning state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.
+When you use it, provide additional context with
+information on the input state, and associate it
+with the input using \`ariaDescribedby\`.",
+      "name": "warning",
+      "optional": true,
+      "type": "boolean",
+    },
   ],
   "regions": Array [],
   "releaseStatus": "stable",
@@ -6902,6 +6961,12 @@ is provided by its parent form field component.
       "type": "ReadonlyArray<null | string>",
     },
     Object {
+      "description": "An array of file warnings corresponding to the files in the \`value\`.",
+      "name": "fileWarnings",
+      "optional": true,
+      "type": "ReadonlyArray<null | string>",
+    },
+    Object {
       "description": "An object containing all the localized strings required by the component:
 * \`uploadButtonText\` (function): A function to render the text of the file upload button. It takes \`multiple\` attribute to define plurality.
 * \`dropzoneText\` (function): A function to render the text shown in the dropzone. It takes \`multiple\` attribute to define plurality.
@@ -6909,6 +6974,7 @@ is provided by its parent form field component.
 * \`limitShowFewer\` (string): The text of the show more tokens button.
 * \`limitShowMore\` (string): The text of the show fewer tokens button.
 * \`errorIconAriaLabel\` (string): The ARIA label to be shown on the error file icon.
+* \`warningIconAriaLabel\` (string): The ARIA label to be shown on the warning file icon.
 * \`formatFileSize\` (function): (Optional) A function that takes file size in bytes, and produces a formatted string.
 * \`formatFileLastModified\` (function): (Optional) A function that takes the files last modified date, and produces a formatted string.",
       "inlineType": Object {
@@ -6921,7 +6987,7 @@ is provided by its parent form field component.
           },
           Object {
             "name": "errorIconAriaLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -6953,6 +7019,11 @@ is provided by its parent form field component.
             "name": "uploadButtonText",
             "optional": false,
             "type": "(multiple: boolean) => string",
+          },
+          Object {
+            "name": "warningIconAriaLabel",
+            "optional": true,
+            "type": "string",
           },
         ],
         "type": "object",
@@ -7023,9 +7094,14 @@ If you want to clear the selection, use empty array.",
       "name": "constraintText",
     },
     Object {
-      "description": "Text that displays as a validation message.",
+      "description": "Text that displays as a validation error message.",
       "isDefault": false,
       "name": "errorText",
+    },
+    Object {
+      "description": "Text that displays as a validation warning message.",
+      "isDefault": false,
+      "name": "warningText",
     },
   ],
   "releaseStatus": "stable",
@@ -7271,6 +7347,11 @@ This only works well if you're using a single control in the form field.
             "optional": true,
             "type": "string",
           },
+          Object {
+            "name": "warningIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
         ],
         "type": "object",
       },
@@ -7320,7 +7401,7 @@ additional information about valid formats, etc.",
       "name": "description",
     },
     Object {
-      "description": "Text that displays as a validation message. If this is set to a
+      "description": "Text that displays as a validation error message. If this is set to a
 non-empty string, it will render the form field as invalid.",
       "isDefault": false,
       "name": "errorText",
@@ -7339,6 +7420,12 @@ non-empty string, it will render the form field as invalid.",
       "description": "A secondary control. You can use this for custom actions and content.",
       "isDefault": false,
       "name": "secondaryControl",
+    },
+    Object {
+      "description": "Text that displays as a validation warning message. If this is set to a
+non-empty string, it will render the form field in a warning state.",
+      "isDefault": false,
+      "name": "warningText",
     },
   ],
   "releaseStatus": "stable",
@@ -8228,6 +8315,19 @@ be slightly different across browsers.",
       "name": "value",
       "optional": false,
       "type": "string",
+    },
+    Object {
+      "description": "Overrides the warning state. Usually the warning state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.
+When you use it, provide additional context with
+information on the input state, and associate it
+with the input using \`ariaDescribedby\`.",
+      "name": "warning",
+      "optional": true,
+      "type": "boolean",
     },
   ],
   "regions": Array [],
@@ -9926,6 +10026,19 @@ to the correct offset, before performing any operations on them. Use the element
 by the \`findOptionsContainer\` test utility for this.
 ",
       "name": "virtualScroll",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Overrides the warning state. Usually the warning state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.
+When you use it, provide additional context with
+information on the input state, and associate it
+with the input using \`ariaDescribedby\`.",
+      "name": "warning",
       "optional": true,
       "type": "boolean",
     },
@@ -12511,6 +12624,19 @@ by the \`findOptionsContainer\` test utility for this.
       "optional": true,
       "type": "boolean",
     },
+    Object {
+      "description": "Overrides the warning state. Usually the warning state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.
+When you use it, provide additional context with
+information on the input state, and associate it
+with the input using \`ariaDescribedby\`.",
+      "name": "warning",
+      "optional": true,
+      "type": "boolean",
+    },
   ],
   "regions": Array [
     Object {
@@ -12747,6 +12873,197 @@ Object that represents an expandable group of links.
       "name": "items",
       "optional": true,
       "type": "ReadonlyArray<SideNavigationProps.Item>",
+    },
+  ],
+  "regions": Array [],
+  "releaseStatus": "stable",
+}
+`;
+
+exports[`Documenter definition for slider matches the snapshot: slider 1`] = `
+Object {
+  "events": Array [
+    Object {
+      "cancelable": false,
+      "description": "Called when the user selects a value.
+The event \`detail\` contains the current \`value\`.",
+      "detailInlineType": Object {
+        "name": "SliderProps.ChangeDetail",
+        "properties": Array [
+          Object {
+            "name": "value",
+            "optional": false,
+            "type": "number",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "SliderProps.ChangeDetail",
+      "name": "onChange",
+    },
+  ],
+  "functions": Array [],
+  "name": "Slider",
+  "properties": Array [
+    Object {
+      "description": "Adds \`aria-describedby\` to the component. If you're using this component within a form field,
+don't set this property because the form field component automatically sets it.
+Use this property if the component isn't surrounded by a form field, or you want to override the value
+automatically set by the form field (for example, if you have two components within a single form field).
+
+To use it correctly, define an ID for each element that you want to use as a description
+and set the property to a string of each ID separated by spaces (for example, \`\\"id1 id2 id3\\"\`).
+",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds an aria-description for slider labels.
+Use when sliders have formatted reference values.
+",
+      "name": "ariaDescription",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds an \`aria-label\` to the native control.
+Use this if you don't have a visible label for this control.
+",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds \`aria-labelledby\` to the component. If you're using this component within a form field,
+don't set this property because the form field component automatically sets it.
+Use this property if the component isn't surrounded by a form field, or you want to override the value
+automatically set by the form field (for example, if you have two components within a single form field).
+
+To use it correctly, define an ID for the element you want to use as label and set the property to that ID.
+",
+      "name": "ariaLabelledby",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Specifies the ID of the native form element. You can use it to relate
+a label element's \`for\` attribute to this control.
+It defaults to an automatically generated ID that
+is provided by its parent form field component.
+",
+      "name": "controlId",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Whether or not the slider is disabled.",
+      "name": "disabled",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Hides the colored fill line, so only the handle is visible.",
+      "name": "hideFillLine",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "An object containing all the necessary localized strings required by the component.",
+      "i18nTag": true,
+      "inlineType": Object {
+        "name": "SliderProps.I18nStrings",
+        "properties": Array [
+          Object {
+            "name": "valueTextRange",
+            "optional": false,
+            "type": "(previousValue: string, value: number, nextValue: string) => string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "SliderProps.I18nStrings",
+    },
+    Object {
+      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Overrides the invalidation state. Usually the invalid state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.",
+      "name": "invalid",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Indicates the maximum value.",
+      "name": "max",
+      "optional": false,
+      "type": "number",
+    },
+    Object {
+      "description": "Indicates the minimum value.",
+      "name": "min",
+      "optional": false,
+      "type": "number",
+    },
+    Object {
+      "description": "Labels shown between the minimum and maximum values.",
+      "name": "referenceValues",
+      "optional": true,
+      "type": "ReadonlyArray<number>",
+    },
+    Object {
+      "description": "How big the step size is.",
+      "name": "step",
+      "optional": true,
+      "type": "number",
+    },
+    Object {
+      "description": "Show the tick marks along the slider line. Use with stepped sliders, except in extreme cases.",
+      "name": "tickMarks",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Indicates the current value.",
+      "name": "value",
+      "optional": true,
+      "type": "number",
+    },
+    Object {
+      "description": "Formats the values. This will format both the labels and the tooltip.",
+      "name": "valueFormatter",
+      "optional": true,
+      "type": "(value: number) => string",
+    },
+    Object {
+      "description": "Overrides the warning state. Usually the warning state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.
+When you use it, provide additional context with
+information on the input state, and associate it
+with the input using \`ariaDescribedby\`.",
+      "name": "warning",
+      "optional": true,
+      "type": "boolean",
     },
   ],
   "regions": Array [],
@@ -13636,7 +13953,9 @@ Use it in conjunction with the sticky columns preference of the
       "type": "TableProps.StickyColumns",
     },
     Object {
-      "description": "If set to \`true\`, the table header remains visible when the user scrolls down.",
+      "description": "If set to \`true\`, the table header remains visible when the user scrolls down.
+Do not use \`stickyHeader\` conditionally. Instead, keep its value constant during the component lifecycle.
+",
       "name": "stickyHeader",
       "optional": true,
       "type": "boolean",
@@ -14718,6 +15037,19 @@ inadvertently sending data (such as user passwords) to third parties.
       "optional": false,
       "type": "string",
     },
+    Object {
+      "description": "Overrides the warning state. Usually the warning state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.
+When you use it, provide additional context with
+information on the input state, and associate it
+with the input using \`ariaDescribedby\`.",
+      "name": "warning",
+      "optional": true,
+      "type": "boolean",
+    },
   ],
   "regions": Array [],
   "releaseStatus": "stable",
@@ -15073,6 +15405,19 @@ When using 12-hour format, there is no option for picking AM or PM.",
       "name": "value",
       "optional": false,
       "type": "string",
+    },
+    Object {
+      "description": "Overrides the warning state. Usually the warning state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.
+When you use it, provide additional context with
+information on the input state, and associate it
+with the input using \`ariaDescribedby\`.",
+      "name": "warning",
+      "optional": true,
+      "type": "boolean",
     },
   ],
   "regions": Array [],

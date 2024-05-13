@@ -75,4 +75,8 @@
   &.textarea-invalid {
     @include styles.form-invalid-control();
   }
+
+  &.textarea-warning {
+    @include styles.form-warning-control();
+  }
 }

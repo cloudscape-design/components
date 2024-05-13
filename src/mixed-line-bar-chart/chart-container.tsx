@@ -8,8 +8,8 @@ import { getXTickCount, getYTickCount, createXTicks, createYTicks } from '../int
 import ChartPlot, { ChartPlotRef } from '../internal/components/chart-plot';
 import AxisLabel from '../internal/components/cartesian-chart/axis-label';
 import LabelsMeasure from '../internal/components/cartesian-chart/labels-measure';
-import LeftLabels from '../internal/components/cartesian-chart/left-labels';
-import BottomLabels, { useBottomLabels } from '../internal/components/cartesian-chart/bottom-labels';
+import InlineStartLabels from '../internal/components/cartesian-chart/inline-start-labels';
+import BlockEndLabels, { useBLockEndLabels } from '../internal/components/cartesian-chart/block-end-labels';
 import VerticalGridLines from '../internal/components/cartesian-chart/vertical-grid-lines';
 import EmphasizedBaseline from '../internal/components/cartesian-chart/emphasized-baseline';
 import HighlightedPoint from '../internal/components/cartesian-chart/highlighted-point';
@@ -34,9 +34,10 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { nodeBelongs } from '../internal/utils/node-belongs';
 import { CartesianChartContainer } from '../internal/components/cartesian-chart/chart-container';
 import { useHeightMeasure } from '../internal/hooks/container-queries/use-height-measure';
+import { getIsRtl } from '../internal/direction';
 
-const LEFT_LABELS_MARGIN = 16;
-const BOTTOM_LABELS_OFFSET = 12;
+const INLINE_START_LABELS_MARGIN = 16;
+const BLOCK_END_LABELS_OFFSET = 12;
 
 type TickFormatter = undefined | ((value: ChartDataTypes) => string);
 
@@ -133,18 +134,22 @@ export default function ChartContainer<T extends ChartDataTypes>({
   const plotRef = useRef<ChartPlotRef>(null);
   const verticalMarkerRef = useRef<SVGLineElement>(null);
 
-  const [leftLabelsWidth, setLeftLabelsWidth] = useState(0);
+  const [inlineStartLabelsWidth, setInlineStartLabelsWidth] = useState(0);
   const [verticalMarkerX, setVerticalMarkerX] = useState<VerticalMarkerX<T> | null>(null);
   const [detailsPopoverText, setDetailsPopoverText] = useState('');
   const [containerWidth, containerMeasureRef] = useContainerWidth(fallbackContainerWidth);
-  const maxLeftLabelsWidth = Math.round(containerWidth / 2);
+  const maxInlineStartLabelsWidth = Math.round(containerWidth / 2);
   const plotWidth = containerWidth
-    ? // Calculate the minimum between leftLabelsWidth and maxLeftLabelsWidth for extra safety because leftLabelsWidth could be out of date
-      Math.max(0, containerWidth - Math.min(leftLabelsWidth, maxLeftLabelsWidth) - LEFT_LABELS_MARGIN)
+    ? // Calculate the minimum between inlineStartLabelsWidth and maxInlineStartLabelsWidth for extra safety because inlineStarteLabelsWidth could be out of date
+      Math.max(
+        0,
+        containerWidth - Math.min(inlineStartLabelsWidth, maxInlineStartLabelsWidth) - INLINE_START_LABELS_MARGIN
+      )
     : fallbackContainerWidth;
   const containerRefObject = useRef(null);
   const containerRef = useMergeRefs(containerMeasureRef, containerRefObject);
   const popoverRef = useRef<HTMLElement | null>(null);
+  const isRtl = containerRefObject?.current && getIsRtl(containerRefObject.current);
 
   const xDomain = (props.xDomain || computeDomainX(series, xScaleType)) as
     | readonly number[]
@@ -185,10 +190,9 @@ export default function ChartContainer<T extends ChartDataTypes>({
   }
 
   const bottomAxisProps = !horizontalBars
-    ? getXAxisProps(plotWidth, [0, plotWidth])
+    ? getXAxisProps(plotWidth, !isRtl ? [0, plotWidth] : [plotWidth, 0])
     : getYAxisProps(plotWidth, [0, plotWidth]);
-
-  const bottomLabelsProps = useBottomLabels({ ...bottomAxisProps });
+  const blockEndLabelsProps = useBLockEndLabels({ ...bottomAxisProps });
 
   const plotMeasureRef = useRef<SVGLineElement>(null);
   const measuredHeight = useHeightMeasure(() => plotMeasureRef.current, !fitHeight);
@@ -305,6 +309,8 @@ export default function ChartContainer<T extends ChartDataTypes>({
     highlightX,
     clearHighlightedSeries,
     verticalMarkerX,
+    isRtl: !!isRtl,
+    horizontalBars,
   });
 
   const { onSVGMouseMove, onSVGMouseOut, onPopoverLeave } = useMouseHover<T>({
@@ -498,7 +504,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
   return (
     <CartesianChartContainer
       ref={containerRef}
-      minHeight={explicitPlotHeight + bottomLabelsProps.height}
+      minHeight={explicitPlotHeight + blockEndLabelsProps.height}
       fitHeight={!!fitHeight}
       leftAxisLabel={<AxisLabel axis={y} position="left" title={leftAxisProps.title} />}
       leftAxisLabelMeasure={
@@ -506,8 +512,8 @@ export default function ChartContainer<T extends ChartDataTypes>({
           ticks={leftAxisProps.ticks}
           scale={leftAxisProps.scale}
           tickFormatter={leftAxisProps.tickFormatter as TickFormatter}
-          autoWidth={setLeftLabelsWidth}
-          maxLabelsWidth={maxLeftLabelsWidth}
+          autoWidth={setInlineStartLabelsWidth}
+          maxLabelsWidth={maxInlineStartLabelsWidth}
         />
       }
       bottomAxisLabel={<AxisLabel axis={x} position="bottom" title={bottomAxisProps.title} />}
@@ -515,8 +521,8 @@ export default function ChartContainer<T extends ChartDataTypes>({
         <ChartPlot
           ref={plotRef}
           width="100%"
-          height={fitHeight ? `calc(100% - ${bottomLabelsProps.height}px)` : plotHeight}
-          offsetBottom={bottomLabelsProps.height}
+          height={fitHeight ? `calc(100% - ${blockEndLabelsProps.height}px)` : plotHeight}
+          offsetBottom={blockEndLabelsProps.height}
           isClickable={isPopoverOpen && !isPopoverPinned}
           ariaLabel={ariaLabel}
           ariaLabelledby={ariaLabelledby}
@@ -547,14 +553,14 @@ export default function ChartContainer<T extends ChartDataTypes>({
             style={{ pointerEvents: 'none' }}
           />
 
-          <LeftLabels
+          <InlineStartLabels
             axis={y}
             ticks={leftAxisProps.ticks}
             scale={leftAxisProps.scale}
             tickFormatter={leftAxisProps.tickFormatter as TickFormatter}
             title={leftAxisProps.title}
             ariaRoleDescription={leftAxisProps.ariaRoleDescription}
-            maxLabelsWidth={maxLeftLabelsWidth}
+            maxLabelsWidth={maxInlineStartLabelsWidth}
             plotWidth={plotWidth}
             plotHeight={plotHeight}
           />
@@ -615,16 +621,16 @@ export default function ChartContainer<T extends ChartDataTypes>({
             />
           )}
 
-          <BottomLabels
-            {...bottomLabelsProps}
+          <BlockEndLabels
+            {...blockEndLabelsProps}
             axis={x}
             scale={bottomAxisProps.scale}
             title={bottomAxisProps.title}
             ariaRoleDescription={bottomAxisProps.ariaRoleDescription}
             height={plotHeight}
             width={plotWidth}
-            offsetLeft={leftLabelsWidth + BOTTOM_LABELS_OFFSET}
-            offsetRight={BOTTOM_LABELS_OFFSET}
+            offsetLeft={inlineStartLabelsWidth + BLOCK_END_LABELS_OFFSET}
+            offsetRight={BLOCK_END_LABELS_OFFSET}
           />
         </ChartPlot>
       }

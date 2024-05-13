@@ -11,10 +11,11 @@ import { formatTicks, getSVGTextSize, getVisibleTicks } from './label-utils';
 import { ChartDataTypes } from '../../../mixed-line-bar-chart/interfaces';
 import { useInternalI18n } from '../../../i18n/context';
 import ResponsiveText from '../responsive-text';
+import { getIsRtl } from '../../direction';
 
 const OFFSET_PX = 12;
 
-interface LeftLabelsProps {
+interface InlineStartLabelsProps {
   axis?: 'x' | 'y';
   plotWidth: number;
   plotHeight: number;
@@ -26,10 +27,10 @@ interface LeftLabelsProps {
   ariaRoleDescription?: string;
 }
 
-export default memo(LeftLabels) as typeof LeftLabels;
+export default memo(InlineStartLabels) as typeof InlineStartLabels;
 
-// Renders the visible tick labels on the left axis, as well as their grid lines.
-function LeftLabels({
+// Renders the visible tick labels on the value axis, as well as their grid lines.
+function InlineStartLabels({
   axis = 'y',
   plotWidth,
   plotHeight,
@@ -39,7 +40,7 @@ function LeftLabels({
   tickFormatter,
   title,
   ariaRoleDescription,
-}: LeftLabelsProps) {
+}: InlineStartLabelsProps) {
   const i18n = useInternalI18n('[charts]');
   const virtualTextRef = useRef<SVGTextElement>(null);
 
@@ -67,9 +68,11 @@ function LeftLabels({
   const until = plotHeight + OFFSET_PX - yOffset;
   const visibleTicks = getVisibleTicks(formattedTicks, from, until);
 
+  const isRtl = virtualTextRef.current ? getIsRtl(virtualTextRef.current) : false;
+
   return (
     <g
-      className={clsx(styles['labels-left'])}
+      className={clsx(styles['labels-inline-start'])}
       aria-label={title}
       role="list"
       aria-roledescription={i18n('i18nStrings.chartAriaRoleDescription', ariaRoleDescription)}
@@ -96,8 +99,9 @@ function LeftLabels({
               )}
 
               {lines.map((line, lineIndex) => {
+                const x = -(TICK_LENGTH + TICK_MARGIN);
                 const lineTextProps = {
-                  x: -(TICK_LENGTH + TICK_MARGIN),
+                  x: !isRtl ? x : plotWidth - x,
                   y: (lineIndex - (lines.length - 1) * 0.5) * TICK_LINE_HEIGHT,
                   className: styles.ticks__text,
                   children: line,
