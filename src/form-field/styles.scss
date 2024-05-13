@@ -24,6 +24,7 @@
 }
 
 .info {
+  display: inline-block;
   padding-inline-start: awsui.$space-xs;
   border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
 }
