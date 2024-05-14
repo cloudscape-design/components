@@ -32,6 +32,8 @@ export interface BarSeriesProps<T> {
 
   // Contains values to be used for stacked bars.
   stackedBarValues?: StackedBarValues;
+
+  isRtl?: boolean;
 }
 
 export default function BarSeries<T extends ChartDataTypes>({
@@ -48,6 +50,7 @@ export default function BarSeries<T extends ChartDataTypes>({
   plotSize,
   chartAreaClipPath,
   stackedBarValues,
+  isRtl,
 }: BarSeriesProps<T>) {
   const isRefresh = useVisualRefresh();
   const isStacked = !!stackedBarValues;
@@ -143,7 +146,7 @@ export default function BarSeries<T extends ChartDataTypes>({
               height: height - heightOffset,
             }
           : {
-              x: y - height + heightOffset / 2,
+              x: y - (!isRtl ? height : 0) + heightOffset / 2,
               y: x + widthOffset / 2,
               width: height - heightOffset,
               height: width - widthOffset,
@@ -161,8 +164,10 @@ export default function BarSeries<T extends ChartDataTypes>({
           side = 'none';
         } else if (isVertical) {
           side = isRoundedStart ? 'bottom' : 'top';
-        } else {
+        } else if (!isRtl) {
           side = isRoundedStart ? 'left' : 'right';
+        } else {
+          side = isRoundedStart ? 'right' : 'left';
         }
 
         if (side === 'all') {
