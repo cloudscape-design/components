@@ -3362,6 +3362,11 @@ Object {
         "name": "ButtonDropdownProps.ItemClickDetails",
         "properties": Array [
           Object {
+            "name": "checked",
+            "optional": true,
+            "type": "false | true",
+          },
+          Object {
             "name": "external",
             "optional": true,
             "type": "false | true",
@@ -3394,6 +3399,11 @@ modifier keys (that is, CTRL, ALT, SHIFT, META), and the item has an \`href\` se
       "detailInlineType": Object {
         "name": "ButtonDropdownProps.ItemClickDetails",
         "properties": Array [
+          Object {
+            "name": "checked",
+            "optional": true,
+            "type": "false | true",
+          },
           Object {
             "name": "external",
             "optional": true,

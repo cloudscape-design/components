@@ -33,6 +33,9 @@ const items: ButtonDropdownProps.Items = [
   { id: 'i2', text: 'item2', disabled: true },
   { id: 'i3', text: 'item3', href: 'https://amazon.com', external: true },
   { id: 'i4', text: 'item4', href: 'https://amazon.com', disabled: true },
+  { id: 'i5', text: 'item5', checked: true, itemType: 'checkbox' },
+  { id: 'i6', text: 'item6', checked: false, itemType: 'checkbox' },
+  { id: 'i7', text: 'item7', checked: true, disabled: true, itemType: 'checkbox' },
 ];
 
 [{ expandToViewport: false }, { expandToViewport: true }].forEach(props => {
@@ -101,6 +104,24 @@ const items: ButtonDropdownProps.Items = [
     test('does not hide the dropdown after clicking a disabled item', () => {
       act(() => wrapper.findItemById('i2')!.click());
       expect(wrapper.findOpenDropdown()).not.toBe(null);
+    });
+
+    test('fires the event when a checkbox item is clicked', () => {
+      // Clicking item with checked checkbox should trigger event accordingly
+      wrapper.findItemById('i5')!.click();
+      expect(onClickSpy).toHaveBeenCalledTimes(1);
+      expect(onClickSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { id: 'i5', checked: false } }));
+
+      // Clicking item with unchecked checkbox should trigger event accordingly
+      wrapper.openDropdown();
+      act(() => wrapper.findItemById('i6')!.click());
+      expect(onClickSpy).toHaveBeenCalledTimes(2);
+      expect(onClickSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { id: 'i6', checked: true } }));
+    });
+
+    test('does not fire the event when a disabled checkbox item is clicked', () => {
+      act(() => wrapper.findItemById('i7')!.click());
+      expect(onClickSpy).not.toHaveBeenCalled();
     });
   });
 });

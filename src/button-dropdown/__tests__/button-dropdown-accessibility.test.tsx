@@ -19,17 +19,21 @@ const renderWithTrigger = (props: ButtonDropdownProps, triggerName: string) => {
 
 const items: ButtonDropdownProps.Items = [
   { id: 'i1', text: 'item1', description: 'Item 1 description' },
+  { id: 'i2', text: 'item2', description: 'Item 2 description', checked: true, itemType: 'checkbox' },
   {
     text: 'category1',
     items: [
-      { id: 'i2', text: 'item2' },
       { id: 'i3', text: 'item3' },
+      { id: 'i4', text: 'item4' },
     ],
   },
-  { id: 'i4', text: 'item4' },
+  { id: 'i5', text: 'item5' },
   {
     text: 'category2',
-    items: [{ id: 'i5', text: 'item5' }],
+    items: [
+      { id: 'i6', text: 'item6' },
+      { id: 'i7', text: 'item7', checked: false, itemType: 'checkbox' },
+    ],
   },
 ];
 
@@ -178,4 +182,21 @@ it('a11y: with main action', async () => {
     <ButtonDropdown mainAction={{ text: 'Main action' }} items={items} ariaLabel="Actions" />
   );
   await expect(container).toValidateA11y();
+});
+
+it('a11y: checkbox role and state', () => {
+  const { container } = render(
+    <ButtonDropdown mainAction={{ text: 'Main action' }} items={items} ariaLabel="Actions" />
+  );
+  const wrapper = createWrapper(container).findButtonDropdown()!;
+  wrapper.openDropdown();
+  const menuElement = wrapper.findOpenDropdown()!.find('[role="menu"]')!;
+
+  // Should have 2 elements with the menucheckboxitem role
+  const menuItems = menuElement.findAll('[role="menuitemcheckbox"]');
+  expect(menuItems.length).toBe(2);
+
+  // Checkbox state should be reflected in aria-checked.
+  expect(menuItems[0].getElement()).toHaveAttribute('aria-checked', 'true');
+  expect(menuItems[1].getElement()).toHaveAttribute('aria-checked', 'false');
 });

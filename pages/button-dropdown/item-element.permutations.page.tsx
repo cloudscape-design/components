@@ -139,6 +139,32 @@ const permutations = createPermutations<ItemProps>([
     onItemActivate: [() => {}],
     highlightItem: [() => {}],
   },
+  // With checkbox without icon
+  {
+    item: [
+      { id: '1', text: 'Option', checked: true },
+      { id: '1', text: 'Option', checked: false },
+    ],
+    disabled: [false, true],
+    highlighted: [false, true],
+    hasCategoryHeader: [false],
+    showDivider: [false, true],
+    onItemActivate: [() => {}],
+    highlightItem: [() => {}],
+  },
+  // With checkbox with icon
+  {
+    item: [
+      { id: '1', text: 'Option', checked: true, iconName: 'gen-ai' },
+      { id: '1', text: 'Option', checked: false, iconName: 'gen-ai' },
+    ],
+    disabled: [false, true],
+    highlighted: [false, true],
+    hasCategoryHeader: [false],
+    showDivider: [false, true],
+    onItemActivate: [() => {}],
+    highlightItem: [() => {}],
+  },
 ]);
 
 export default function () {
@@ -149,7 +175,7 @@ export default function () {
         <PermutationsView
           permutations={permutations}
           render={permutation => (
-            <Box margin={{ bottom: 'xxl' }} className={styles['dropdown-permutation']}>
+            <Box margin={{ bottom: 'l' }} className={styles['dropdown-permutation']}>
               <div role="menu">{<ItemElement {...permutation} />}</div>
             </Box>
           )}

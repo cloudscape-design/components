@@ -17,6 +17,7 @@ const items: ButtonDropdownProps.Items = [
   { id: 'i2', text: 'item2', href: 'http://amazon.com' },
   { id: 'i3', text: 'item3', disabled: true },
   { id: 'i4', text: 'item4' },
+  { id: 'i5', text: 'item5', checked: true, itemType: 'checkbox' },
 ];
 
 [{ expandToViewport: false }, { expandToViewport: true }].forEach(props => {
@@ -84,6 +85,31 @@ const items: ButtonDropdownProps.Items = [
       act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.space));
       act(() => wrapper.findOpenDropdown()!.keyup(KeyCode.space));
       expect(onFollowSpy).toHaveBeenCalledTimes(1);
+    });
+
+    test('should fire event correctly when item with checkbox pressed using enter', () => {
+      act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
+      act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
+      act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
+      act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
+
+      // Fire keydown on the 5th element, checkbox should be false after click
+      act(() => wrapper.findItems()[4]!.keydown(KeyCode.enter));
+      expect(onClickSpy).toHaveBeenCalledTimes(1);
+      expect(onClickSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { id: 'i5', checked: false } }));
+    });
+
+    test('should fire event correctly when item with checkbox pressed using space', () => {
+      act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
+      act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
+      act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
+      act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
+
+      // Fire keydown on the 5th element, checkbox should be false after click
+      act(() => wrapper.findItems()[4]!.keydown(KeyCode.space));
+      act(() => wrapper.findItems()[4]!.keyup(KeyCode.space));
+      expect(onClickSpy).toHaveBeenCalledTimes(1);
+      expect(onClickSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { id: 'i5', checked: false } }));
     });
   });
 });

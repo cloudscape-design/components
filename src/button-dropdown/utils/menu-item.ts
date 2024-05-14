@@ -20,3 +20,20 @@ export const getMenuItemProps: (params: GetMenuItemPropsParams) => React.HTMLPro
   'aria-haspopup': parent ? 'true' : undefined,
   'aria-expanded': expanded ? 'true' : parent ? 'false' : undefined,
 });
+
+export interface GetMenuItemCheckboxPropsParams extends GetMenuItemPropsParams {
+  checked: boolean;
+}
+
+export const getMenuItemCheckboxProps: (params: GetMenuItemCheckboxPropsParams) => React.HTMLProps<HTMLElement> = ({
+  disabled,
+  parent,
+  expanded,
+  checked,
+}: GetMenuItemCheckboxPropsParams) => ({
+  role: 'menuitemcheckbox',
+  'aria-disabled': disabled ? 'true' : undefined,
+  'aria-haspopup': parent ? 'true' : undefined,
+  'aria-expanded': expanded ? 'true' : parent ? 'false' : undefined,
+  'aria-checked': checked ? 'true' : 'false',
+});
