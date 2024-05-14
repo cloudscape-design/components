@@ -54,12 +54,20 @@
       background-color: awsui.$color-text-status-error;
     }
 
+    &.warning {
+      background-color: awsui.$color-text-status-warning;
+    }
+
     &.active {
       background-color: awsui.$color-background-slider-handle-active;
     }
 
     &.error-active {
       background-color: awsui.$color-background-slider-error-pressed;
+    }
+
+    &.warning-active {
+      background-color: awsui.$color-background-slider-warning-pressed;
     }
 
     &.disabled {
@@ -173,8 +181,16 @@
     background: awsui.$color-text-status-error;
   }
 
+  &.warning {
+    background: awsui.$color-text-status-warning;
+  }
+
   &.error-active {
     background-color: awsui.$color-background-slider-error-pressed;
+  }
+
+  &.warning-active {
+    background-color: awsui.$color-background-slider-warning-pressed;
   }
 
   &.disabled {
@@ -273,6 +289,35 @@
   &:focus::-moz-range-thumb,
   &:active::-moz-range-thumb {
     @include mixins.error-thumb-focus-styles;
+  }
+}
+
+.warning {
+  &::-webkit-slider-thumb {
+    background-color: awsui.$color-text-status-warning;
+    border-color: awsui.$color-text-status-warning;
+  }
+
+  &::-moz-range-thumb {
+    background-color: awsui.$color-text-status-warning;
+    border-color: awsui.$color-text-status-warning;
+  }
+  &:hover::-webkit-slider-thumb {
+    @include mixins.warning-thumb-hover-styles;
+  }
+
+  &:hover::-moz-range-thumb {
+    @include mixins.warning-thumb-hover-styles;
+  }
+
+  &:focus::-webkit-slider-thumb,
+  &:active::-webkit-slider-thumb {
+    @include mixins.warning-thumb-focus-styles;
+  }
+
+  &:focus::-moz-range-thumb,
+  &:active::-moz-range-thumb {
+    @include mixins.warning-thumb-focus-styles;
   }
 }
 

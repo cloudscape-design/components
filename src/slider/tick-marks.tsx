@@ -11,6 +11,7 @@ export interface SliderTicksProps {
   value: number;
   isActive: boolean;
   invalid?: boolean;
+  warning?: boolean;
   disabled?: boolean;
   min: number;
   max: number;
@@ -22,7 +23,9 @@ export interface SliderTickMarkProps extends SliderTicksProps {
 }
 
 function TickMark(props: SliderTickMarkProps) {
-  const { hideFillLine, value, isActive, invalid, disabled, type, min, max, step } = props;
+  const { hideFillLine, value, isActive, invalid, warning, disabled, type, min, max, step } = props;
+
+  const showWarning = warning && !invalid;
 
   const getType = () => {
     if (type === 'min') {
@@ -40,7 +43,9 @@ function TickMark(props: SliderTickMarkProps) {
         [styles.filled]: !hideFillLine && value > getType(),
         [styles.active]: !hideFillLine && isActive && value > getType(),
         [styles.error]: invalid && !hideFillLine && value > getType(),
+        [styles.warning]: showWarning && !hideFillLine && value > getType(),
         [styles['error-active']]: invalid && isActive && !hideFillLine && value > getType(),
+        [styles['warning-active']]: showWarning && isActive && !hideFillLine && value > getType(),
         [styles.disabled]: disabled,
         [styles.middle]: type === 'step',
       })}
