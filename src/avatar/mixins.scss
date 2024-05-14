@@ -1,3 +1,8 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
 @use '../internal/styles/tokens' as awsui;
 
 $color-cyan: #99f7ff;
@@ -13,11 +18,18 @@ $dot-size: 3px;
 $shadow-size: 8px;
 $shadow-opacity: 0.1;
 
-@mixin genai-background {
+@mixin assistant-background {
   background: radial-gradient(
       circle farthest-corner at bottom left,
       rgba($color-blue, 1) -25%,
       rgba($color-blue, 0) 55%
     ),
     radial-gradient(circle farthest-corner at top left, rgba($color-purple-300, 1) -10%, rgba($color-purple-600, 1) 50%);
+}
+
+@mixin border-radius-avatar {
+  border-start-start-radius: awsui.$border-radius-avatar;
+  border-start-end-radius: awsui.$border-radius-avatar;
+  border-end-start-radius: awsui.$border-radius-avatar;
+  border-end-end-radius: awsui.$border-radius-avatar;
 }

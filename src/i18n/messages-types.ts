@@ -65,7 +65,7 @@ export interface I18nFormatArgTypes {
   }
   "avatar": {
     "i18nStrings.userIconAriaLabel": never
-    "i18nStrings.genAiIconAriaLabel": never
+    "i18nStrings.assistantIconAriaLabel": never
     "i18nStrings.loading": never
   }
   "breadcrumb-group": {

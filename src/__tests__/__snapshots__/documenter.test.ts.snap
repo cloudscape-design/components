@@ -2074,7 +2074,7 @@ Object {
         "name": "AvatarProps.I18nStrings",
         "properties": Array [
           Object {
-            "name": "genAiIconAriaLabel",
+            "name": "assistantIconAriaLabel",
             "optional": true,
             "type": "string",
           },
@@ -2104,7 +2104,7 @@ Object {
     },
     Object {
       "description": "Indicates whether avatar is in loading state.
-It can only be used with \\"genai\\" variant.",
+It can only be used with \\"assistant\\" variant.",
       "name": "loading",
       "optional": true,
       "type": "boolean",
@@ -2139,13 +2139,13 @@ If passed, the avatar will show the first letter.",
     },
     Object {
       "description": "Variant of the avatar.
-It can be \\"user\\" or \\"genai\\"",
+It can be \\"user\\" or \\"assistant\\"",
       "inlineType": Object {
         "name": "AvatarProps.Variant",
         "type": "union",
         "values": Array [
           "user",
-          "genai",
+          "assistant",
         ],
       },
       "name": "variant",

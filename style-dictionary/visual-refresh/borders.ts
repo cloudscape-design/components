@@ -23,6 +23,7 @@ export const tokens: StyleDictionary.BordersDictionary = {
   borderRadiusAlert: '{borderRadiusFlashbar}',
   borderRadiusBadge: '4px',
   borderRadiusButton: '20px',
+  borderRadiusAvatar: '50%',
   borderRadiusCalendarDayFocusRing: '3px',
   borderRadiusCodeEditor: '{borderRadiusInput}',
   borderRadiusContainer: '16px',

@@ -524,6 +524,7 @@ export type BordersTokenName =
   | 'borderRadiusAlert'
   | 'borderRadiusBadge'
   | 'borderRadiusButton'
+  | 'borderRadiusAvatar'
   | 'borderRadiusCalendarDayFocusRing'
   | 'borderRadiusCodeEditor'
   | 'borderRadiusContainer'

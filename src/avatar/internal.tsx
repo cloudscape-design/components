@@ -35,12 +35,12 @@ const AvatarIcon = ({ variant, loading, userName = '', i18nStrings }: AvatarProp
     <div
       role="img"
       aria-label={
-        variant === 'genai'
-          ? i18n('i18nStrings.genAiIconAriaLabel', i18nStrings?.genAiIconAriaLabel)
+        variant === 'assistant'
+          ? i18n('i18nStrings.assistantIconAriaLabel', i18nStrings?.assistantIconAriaLabel)
           : i18n('i18nStrings.userIconAriaLabel', i18nStrings?.userIconAriaLabel)
       }
     >
-      <InternalIcon name={variant === 'genai' ? 'gen-ai' : 'user-profile'} />
+      <InternalIcon name={variant === 'assistant' ? 'gen-ai' : 'user-profile'} />
     </div>
   );
 };
@@ -102,7 +102,7 @@ export default function InternalAvatar({
         ref={handleRef}
         tabIndex={0}
         className={clsx(styles.avatar, {
-          [styles.genai]: variant === 'genai',
+          [styles.assistant]: variant === 'assistant',
         })}
         {...tooltipAttributes}
       >

@@ -1,3 +1,7 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
 @use './mixins.scss' as mixins;
 @use '../internal/styles/tokens' as awsui;
 // Color variables
@@ -14,22 +18,23 @@ $dot-size: 3px;
 $shadow-size: 8px;
 $shadow-opacity: 0.1;
 
+$border-radius: awsui.$border-radius-avatar;
+
 .avatar {
   display: inline-flex;
-  border-radius: 50%;
+  @include mixins.border-radius-avatar;
   background-color: awsui.$color-background-layout-toggle-default;
   color: white;
-  height: 28px;
-  width: 28px;
+  block-size: 28px;
+  inline-size: 28px;
   align-items: center;
   justify-content: center;
-//   margin: auto;
   position: relative;
   overflow: hidden;
   //   @include styles-reset;
 
-  &.genai {
-    @include mixins.genai-background;
+  &.assistant {
+    @include mixins.assistant-background;
   }
 
   &:focus {
@@ -38,7 +43,5 @@ $shadow-opacity: 0.1;
 }
 
 .letter {
-  font-family:
-    AmazonEmber-Regular,
-    Amazon Ember;
+  font-family: awsui.$font-family-base;
 }

@@ -5,13 +5,13 @@ import { BaseComponentProps } from '../internal/base-component';
 export interface AvatarProps extends BaseComponentProps {
   /**
    * Variant of the avatar.
-   * It can be "user" or "genai"
+   * It can be "user" or "assistant"
    */
   variant: AvatarProps.Variant;
 
   /**
    * Indicates whether avatar is in loading state.
-   * It can only be used with "genai" variant.
+   * It can only be used with "assistant" variant.
    */
   loading?: boolean;
 
@@ -51,7 +51,7 @@ export namespace AvatarProps {
     /**
      * Provides a text alternative for the Gen-AI icon.
      */
-    genAiIconAriaLabel?: string;
+    assistantIconAriaLabel?: string;
 
     /**
      * Provides a text alternative for the loading icon.
@@ -61,5 +61,5 @@ export namespace AvatarProps {
 
   export type Size = 'small' | 'normal' | 'medium';
 
-  export type Variant = 'user' | 'genai';
+  export type Variant = 'user' | 'assistant';
 }

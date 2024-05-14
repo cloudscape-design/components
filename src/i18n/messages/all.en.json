@@ -48,7 +48,7 @@
   },
   "avatar": {
     "i18nStrings.userIconAriaLabel": "User",
-    "i18nStrings.genAiIconAriaLabel": "Gen AI",
+    "i18nStrings.assistantIconAriaLabel": "Assistant",
     "i18nStrings.loading": "Loading"
   },
   "breadcrumb-group": {

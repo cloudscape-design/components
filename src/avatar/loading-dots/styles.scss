@@ -1,6 +1,11 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 @use '../../internal/styles/' as styles;
+@use '../../internal/styles/tokens' as awsui;
 @use '../mixins.scss' as mixins;
 
 // Color variables
@@ -17,10 +22,12 @@ $dot-size: 4px;
 $shadow-size: 8px;
 $shadow-opacity: 0.1;
 
+$border-radius: awsui.$border-radius-avatar;
+
 .root {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
+  inline-size: 28px;
+  block-size: 28px;
+  @include mixins.border-radius-avatar;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -31,15 +38,15 @@ $shadow-opacity: 0.1;
   &::after {
     content: '';
     position: absolute;
-    width: 28px;
-    height: 28px;
-    top: 50%;
-    left: 50%;
+    inline-size: 28px;
+    block-size: 28px;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
     transform: translate(-50%, -50%);
     @include styles.with-motion {
       animation: gradientMove 3.6s infinite cubic-bezier(0.7, 0, 0.3, 1);
     }
-    @include mixins.genai-background;
+    @include mixins.assistant-background;
   }
 }
 // Gradient rotation animation
@@ -49,8 +56,8 @@ $shadow-opacity: 0.1;
   }
 
   50% {
-    width: 44px;
-    height: 44px;
+    inline-size: 44px;
+    block-size: 44px;
   }
 
   100% {
@@ -62,8 +69,8 @@ $shadow-opacity: 0.1;
   align-items: center;
   justify-content: space-between;
   display: flex;
-  width: 18px;
-  height: 28px;
+  inline-size: 18px;
+  block-size: 28px;
 }
 
 .dot {
@@ -71,9 +78,9 @@ $shadow-opacity: 0.1;
     animation: dotsDancing 1.2s infinite ease-in-out;
   }
   background-color: #ffffff;
-  border-radius: 50px;
-  height: $dot-size;
-  width: $dot-size;
+  @include mixins.border-radius-avatar;
+  block-size: $dot-size;
+  inline-size: $dot-size;
   z-index: 1;
 }
 
@@ -98,7 +105,7 @@ $shadow-opacity: 0.1;
 
 .dot:last-child {
   @include styles.with-motion {
-    margin-right: 0;
+    margin-inline-end: 0;
   }
 }
 

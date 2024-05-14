@@ -9,6 +9,10 @@ Object {
           "$description": "The border radius of alerts.",
           "$value": "2px",
         },
+        "border-radius-avatar": Object {
+          "$description": "The border radius of avatar.",
+          "$value": "50%",
+        },
         "border-radius-badge": Object {
           "$description": "The border radius of badges.",
           "$value": "16px",
@@ -2310,6 +2314,10 @@ Object {
         "border-radius-alert": Object {
           "$description": "The border radius of alerts.",
           "$value": "2px",
+        },
+        "border-radius-avatar": Object {
+          "$description": "The border radius of avatar.",
+          "$value": "50%",
         },
         "border-radius-badge": Object {
           "$description": "The border radius of badges.",
@@ -4613,6 +4621,10 @@ Object {
           "$description": "The border radius of alerts.",
           "$value": "2px",
         },
+        "border-radius-avatar": Object {
+          "$description": "The border radius of avatar.",
+          "$value": "50%",
+        },
         "border-radius-badge": Object {
           "$description": "The border radius of badges.",
           "$value": "16px",
@@ -6914,6 +6926,10 @@ Object {
         "border-radius-alert": Object {
           "$description": "The border radius of alerts.",
           "$value": "2px",
+        },
+        "border-radius-avatar": Object {
+          "$description": "The border radius of avatar.",
+          "$value": "50%",
         },
         "border-radius-badge": Object {
           "$description": "The border radius of badges.",
@@ -9217,6 +9233,10 @@ Object {
           "$description": "The border radius of alerts.",
           "$value": "2px",
         },
+        "border-radius-avatar": Object {
+          "$description": "The border radius of avatar.",
+          "$value": "50%",
+        },
         "border-radius-badge": Object {
           "$description": "The border radius of badges.",
           "$value": "16px",
@@ -11518,6 +11538,10 @@ Object {
     "border-radius-alert": Object {
       "$description": "The border radius of alerts.",
       "$value": "2px",
+    },
+    "border-radius-avatar": Object {
+      "$description": "The border radius of avatar.",
+      "$value": "50%",
     },
     "border-radius-badge": Object {
       "$description": "The border radius of badges.",
@@ -13826,6 +13850,10 @@ Object {
           "$description": "The border radius of alerts.",
           "$value": "12px",
         },
+        "border-radius-avatar": Object {
+          "$description": "The border radius of avatar.",
+          "$value": "50%",
+        },
         "border-radius-badge": Object {
           "$description": "The border radius of badges.",
           "$value": "4px",
@@ -16127,6 +16155,10 @@ Object {
         "border-radius-alert": Object {
           "$description": "The border radius of alerts.",
           "$value": "12px",
+        },
+        "border-radius-avatar": Object {
+          "$description": "The border radius of avatar.",
+          "$value": "50%",
         },
         "border-radius-badge": Object {
           "$description": "The border radius of badges.",
@@ -18430,6 +18462,10 @@ Object {
           "$description": "The border radius of alerts.",
           "$value": "12px",
         },
+        "border-radius-avatar": Object {
+          "$description": "The border radius of avatar.",
+          "$value": "50%",
+        },
         "border-radius-badge": Object {
           "$description": "The border radius of badges.",
           "$value": "4px",
@@ -20731,6 +20767,10 @@ Object {
         "border-radius-alert": Object {
           "$description": "The border radius of alerts.",
           "$value": "12px",
+        },
+        "border-radius-avatar": Object {
+          "$description": "The border radius of avatar.",
+          "$value": "50%",
         },
         "border-radius-badge": Object {
           "$description": "The border radius of badges.",
@@ -23034,6 +23074,10 @@ Object {
           "$description": "The border radius of alerts.",
           "$value": "12px",
         },
+        "border-radius-avatar": Object {
+          "$description": "The border radius of avatar.",
+          "$value": "50%",
+        },
         "border-radius-badge": Object {
           "$description": "The border radius of badges.",
           "$value": "4px",
@@ -25335,6 +25379,10 @@ Object {
         "border-radius-alert": Object {
           "$description": "The border radius of alerts.",
           "$value": "12px",
+        },
+        "border-radius-avatar": Object {
+          "$description": "The border radius of avatar.",
+          "$value": "50%",
         },
         "border-radius-badge": Object {
           "$description": "The border radius of badges.",
@@ -27638,6 +27686,10 @@ Object {
           "$description": "The border radius of alerts.",
           "$value": "12px",
         },
+        "border-radius-avatar": Object {
+          "$description": "The border radius of avatar.",
+          "$value": "50%",
+        },
         "border-radius-badge": Object {
           "$description": "The border radius of badges.",
           "$value": "4px",
@@ -29939,6 +29991,10 @@ Object {
     "border-radius-alert": Object {
       "$description": "The border radius of alerts.",
       "$value": "12px",
+    },
+    "border-radius-avatar": Object {
+      "$description": "The border radius of avatar.",
+      "$value": "50%",
     },
     "border-radius-badge": Object {
       "$description": "The border radius of badges.",
