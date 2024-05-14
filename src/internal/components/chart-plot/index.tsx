@@ -23,6 +23,7 @@ export interface ChartPlotRef {
 }
 
 export interface ChartPlotProps {
+  id?: string;
   width: number | string;
   height: number | string;
   transform?: string;
@@ -65,6 +66,7 @@ export default forwardRef(ChartPlot);
 
 function ChartPlot(
   {
+    id,
     width,
     height,
     transform,
@@ -169,6 +171,7 @@ function ChartPlot(
   return (
     <>
       <svg
+        id={id}
         onMouseMove={onMouseMove}
         onMouseOut={onMouseOut}
         focusable={plotFocusable}

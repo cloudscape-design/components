@@ -10,7 +10,9 @@ export function usePopover() {
 
   const showPopover = useCallback(() => setState('open'), []);
   const pinPopover = useCallback(() => setState('pinned'), []);
-  const dismissPopover = useCallback(() => setState('closed'), []);
+  const dismissPopover = useCallback(() => {
+    setState('closed');
+  }, []);
 
   return { isPopoverOpen, isPopoverPinned, showPopover, pinPopover, dismissPopover };
 }

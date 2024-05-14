@@ -20,6 +20,7 @@ import useHighlightDetails from './elements/use-highlight-details';
 import useContainerWidth from '../internal/utils/use-container-width';
 import { useSelector } from './async-store';
 import { CartesianChartContainer } from '../internal/components/cartesian-chart/chart-container';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 
 const DEFAULT_CHART_WIDTH = 500;
 const INLINE_START_LABELS_MARGIN = 16;
@@ -76,6 +77,7 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
   yTickFormatter = deprecatedYTickFormatter,
   detailTotalFormatter = deprecatedDetailTotalFormatter,
 }: ChartContainerProps<T>) {
+  const chartId = useUniqueId();
   const [inlineStartLabelsWidth, setInlineStartLabelsWidth] = useState(0);
   const [containerWidth, containerWidthRef] = useContainerWidth(DEFAULT_CHART_WIDTH);
   const maxInlineStartLabelsWidth = Math.round(containerWidth / 2);
@@ -132,6 +134,7 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
       chartPlot={
         <ChartPlot
           ref={model.refs.plot}
+          id={chartId}
           width="100%"
           height={fitHeight ? `calc(100% - ${blockEndLabelsProps.height}px)` : model.height}
           offsetBottom={blockEndLabelsProps.height}
@@ -194,6 +197,7 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
       }
       popover={
         <AreaChartPopover
+          popoverId={chartId}
           model={model}
           highlightDetails={highlightDetails}
           dismissAriaLabel={detailPopoverDismissAriaLabel}

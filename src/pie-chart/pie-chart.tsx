@@ -85,6 +85,7 @@ export default <T extends PieChartProps.Datum>({
   const focusedSegmentRef = useRef<SVGGElement>(null);
   const popoverTrackRef = useRef<SVGCircleElement>(null);
   const popoverRef = useRef<HTMLElement | null>(null);
+  const chartId = useUniqueId();
 
   const hasLabels = !(hideTitles && hideDescriptions);
   const isRefresh = useVisualRefresh();
@@ -301,6 +302,7 @@ export default <T extends PieChartProps.Datum>({
         )}
       >
         <ChartPlot
+          id={chartId}
           ref={plotRef}
           width="100%"
           height={fitHeight ? '100%' : height}
@@ -364,31 +366,31 @@ export default <T extends PieChartProps.Datum>({
           )}
         </div>
       )}
-      {isPopoverOpen && popoverData && (
-        <ChartPopover
-          ref={popoverRef}
-          title={
-            popoverData.series && (
-              <InternalBox className={styles['popover-header']} variant="strong">
-                <SeriesMarker color={popoverData.series.color} type={popoverData.series.markerType} />{' '}
-                {popoverData.series.label}
-              </InternalBox>
-            )
-          }
-          trackRef={popoverData.trackRef}
-          trackKey={popoverData.series.index}
-          dismissButton={pinnedSegment !== null}
-          dismissAriaLabel={i18nStrings.detailPopoverDismissAriaLabel}
-          onDismiss={onPopoverDismiss}
-          container={plotRef.current?.svg || null}
-          size={detailPopoverSize}
-          onMouseLeave={checkMouseLeave}
-          onBlur={onApplicationBlur}
-        >
-          {popoverContent}
-          {detailPopoverFooterContent && <ChartPopoverFooter>{detailPopoverFooterContent}</ChartPopoverFooter>}
-        </ChartPopover>
-      )}
+      <ChartPopover
+        ref={popoverRef}
+        popoverId={chartId}
+        isOpen={isPopoverOpen && !!popoverData}
+        title={
+          popoverData?.series && (
+            <InternalBox className={styles['popover-header']} variant="strong">
+              <SeriesMarker color={popoverData.series.color} type={popoverData.series.markerType} />{' '}
+              {popoverData.series.label}
+            </InternalBox>
+          )
+        }
+        trackRef={popoverData?.trackRef}
+        trackKey={popoverData?.series.index}
+        dismissButton={pinnedSegment !== null}
+        dismissAriaLabel={i18nStrings.detailPopoverDismissAriaLabel}
+        onDismiss={onPopoverDismiss}
+        container={plotRef.current?.svg || null}
+        size={detailPopoverSize}
+        onMouseLeave={checkMouseLeave}
+        onBlur={onApplicationBlur}
+      >
+        {popoverContent}
+        {detailPopoverFooterContent && <ChartPopoverFooter>{detailPopoverFooterContent}</ChartPopoverFooter>}
+      </ChartPopover>
       <LiveRegion source={[popoverContentRef]} />
     </div>
   );

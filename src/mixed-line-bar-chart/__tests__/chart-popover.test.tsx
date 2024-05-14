@@ -3,14 +3,16 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
+import createWrapper from '../../../lib/components/test-utils/dom';
 import ChartPopoverWrapper from '../../../lib/components/test-utils/dom/internal/chart-popover';
 import MixedChartPopover, { MixedChartPopoverProps } from '../../../lib/components/mixed-line-bar-chart/chart-popover';
 import { ChartDataTypes } from '../../../lib/components/mixed-line-bar-chart/interfaces';
 
 const dummyRef = { current: null };
 function renderChart<T extends ChartDataTypes>(props: Partial<MixedChartPopoverProps<T>>) {
-  const { container } = render(
+  render(
     <MixedChartPopover
+      popoverId={''}
       isOpen={props.isOpen ?? false}
       isPinned={props.isPinned ?? false}
       highlightDetails={props.highlightDetails ?? null}
@@ -22,13 +24,14 @@ function renderChart<T extends ChartDataTypes>(props: Partial<MixedChartPopoverP
       setPopoverText={() => null}
     />
   );
-  return new ChartPopoverWrapper(container);
+  const root = createWrapper().findByClassName(ChartPopoverWrapper.rootSelector);
+  return root ? new ChartPopoverWrapper(root.getElement()) : null;
 }
 
 test('not rendered when no position', () => {
   const wrapper = renderChart({ isOpen: true, highlightDetails: null });
 
-  expect(wrapper.findHeader()).toBeNull();
+  expect(wrapper).toBeNull();
 });
 
 test('not rendered when not open', () => {
@@ -37,7 +40,7 @@ test('not rendered when not open', () => {
     highlightDetails: { position: '1', details: [] },
   });
 
-  expect(wrapper.findHeader()).toBeNull();
+  expect(wrapper).toBeNull();
 });
 
 test('contains series details', () => {
@@ -54,8 +57,8 @@ test('contains series details', () => {
     },
   });
 
-  expect(wrapper.findHeader()!.getElement()).toHaveTextContent('Potatoes');
-  expect(wrapper.findContent()!.getElement()).toHaveTextContent('Series123');
+  expect(wrapper!.findHeader()!.getElement()).toHaveTextContent('Potatoes');
+  expect(wrapper!.findContent()!.getElement()).toHaveTextContent('Series123');
 });
 
 test('can contain custom footer content', () => {
@@ -73,5 +76,5 @@ test('can contain custom footer content', () => {
     footer: 'My custom footer',
   });
 
-  expect(wrapper.findContent()!.getElement()).toHaveTextContent('My custom footer');
+  expect(wrapper!.findContent()!.getElement()).toHaveTextContent('My custom footer');
 });

@@ -35,6 +35,7 @@ import { nodeBelongs } from '../internal/utils/node-belongs';
 import { CartesianChartContainer } from '../internal/components/cartesian-chart/chart-container';
 import { useHeightMeasure } from '../internal/hooks/container-queries/use-height-measure';
 import { getIsRtl } from '../internal/direction';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 
 const INLINE_START_LABELS_MARGIN = 16;
 const BLOCK_END_LABELS_OFFSET = 12;
@@ -131,6 +132,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
   detailPopoverSeriesContent,
   ...props
 }: ChartContainerProps<T>) {
+  const chartId = useUniqueId();
   const plotRef = useRef<ChartPlotRef>(null);
   const verticalMarkerRef = useRef<SVGLineElement>(null);
 
@@ -519,6 +521,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
       bottomAxisLabel={<AxisLabel axis={x} position="bottom" title={bottomAxisProps.title} />}
       chartPlot={
         <ChartPlot
+          id={chartId}
           ref={plotRef}
           width="100%"
           height={fitHeight ? `calc(100% - ${blockEndLabelsProps.height}px)` : plotHeight}
@@ -637,6 +640,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
       popover={
         <MixedChartPopover
           ref={popoverRef}
+          popoverId={chartId}
           containerRef={containerRefObject}
           trackRef={highlightedElementRef}
           isOpen={isPopoverOpen}

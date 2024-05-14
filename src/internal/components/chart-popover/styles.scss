@@ -5,6 +5,7 @@
 
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
+@use './motion';
 
 .root {
   @include styles.styles-reset;
