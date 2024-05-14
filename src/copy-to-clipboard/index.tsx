@@ -9,23 +9,13 @@ import { getExternalProps } from '../internal/utils/external-props';
 
 export { CopyToClipboardProps };
 
-export default function CopyToClipboard({
-  variant = 'button',
-  copyButtonAriaLabel,
-  copyButtonText,
-  ...restProps
-}: CopyToClipboardProps) {
+export default function CopyToClipboard({ variant = 'button', ...restProps }: CopyToClipboardProps) {
   const baseProps = useBaseComponent('CopyToClipboard', {
     props: { variant },
   });
-  //const baseProps = getBaseProps(restProps);
   const filteredProps = getExternalProps(restProps);
-  const copyButtonProps =
-    variant === 'button'
-      ? { children: copyButtonText, ariaLabel: copyButtonAriaLabel }
-      : { ariaLabel: copyButtonAriaLabel ?? copyButtonText };
 
-  return <InternalCopyToClipboard variant={variant} {...baseProps} {...copyButtonProps} {...filteredProps} />;
+  return <InternalCopyToClipboard variant={variant} {...baseProps} {...filteredProps} />;
 }
 
 applyDisplayName(CopyToClipboard, 'CopyToClipboard');
