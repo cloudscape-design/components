@@ -41,7 +41,7 @@ export default function DropdownScenario() {
           <ListContent n={10} />
         </Dropdown>
       </div>
-      <div style={{ height: '400px' }} />
+      <div style={{ blockSize: '400px' }} />
     </article>
   );
 }

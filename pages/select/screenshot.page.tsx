@@ -39,7 +39,7 @@ export default function () {
       <ScreenshotArea
         style={{
           // extra space to include dropdown in the screenshot area
-          paddingBottom: 300,
+          paddingBlockEnd: 300,
         }}
       >
         <Select

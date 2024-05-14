@@ -30,7 +30,7 @@ export default function () {
           ariaDescription={barChartInstructions}
           detailPopoverFooter={() => (
             <ExpandableSection headerText="See more details">
-              <div style={{ height: 500 }}>Tall block</div>
+              <div style={{ blockSize: 500 }}>Tall block</div>
             </ExpandableSection>
           )}
         />

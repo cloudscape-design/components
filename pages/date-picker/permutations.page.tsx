@@ -37,7 +37,7 @@ export default function DatePickerScenario() {
       <h1>Date picker permutations</h1>
       <ScreenshotArea>
         <SpaceBetween size="m">
-          <div style={{ height: '300px' }} data-testid="date-picker-expanded-example">
+          <div style={{ blockSize: '300px' }} data-testid="date-picker-expanded-example">
             <DatePicker
               value={'2020-10-26'}
               name={'date-picker-name'}

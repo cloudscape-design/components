@@ -23,7 +23,7 @@ export default function () {
             <>
               <Header variant="awsui-h1-sticky">Header that changes size when scrolling</Header>
               <ExpandableSection headerText="Click to expand header area">
-                <div style={{ height: '300px' }}>Content</div>
+                <div style={{ blockSize: '300px' }}>Content</div>
               </ExpandableSection>
             </>
           }

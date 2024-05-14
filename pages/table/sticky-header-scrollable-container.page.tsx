@@ -24,8 +24,8 @@ export default function () {
   return (
     <>
       <h1>Table with a sticky header in app layout</h1>
-      <div style={{ height: '400px', width: '500px', overflow: 'auto', padding: '0px 1px' }} id="scroll-container">
-        <div style={{ height: '100px' }} />
+      <div style={{ blockSize: '400px', width: '500px', overflow: 'auto', padding: '0px 1px' }} id="scroll-container">
+        <div style={{ blockSize: '100px' }} />
         <HooksTable
           pagination={pagination}
           tableRef={tableRef}

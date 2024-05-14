@@ -6,19 +6,22 @@
 .list-container {
   overflow: auto;
   list-style: none;
-  margin: 0;
-  padding: 0;
+  margin-block: 0;
+  margin-inline: 0;
+  padding-block: 0;
+  padding-inline: 0;
 }
 
 .container {
-  width: 200px;
-  height: 200px;
-  border: 1px solid cornflowerblue;
+  inline-size: 200px;
+  block-size: 200px;
+  border-block: 1px solid cornflowerblue;
+  border-inline: 1px solid cornflowerblue;
   overflow: hidden;
   display: inline-block;
 
   &-wide {
-    width: 400px;
+    inline-size: 400px;
   }
 
   &-overflow-visible {
@@ -36,18 +39,21 @@
 }
 
 .list {
-  padding: 0;
-  margin: 0;
+  padding-block: 0;
+  padding-inline: 0;
+  margin-block: 0;
+  margin-inline: 0;
   list-style: none;
   overflow-y: auto;
 }
 
 .wide-container {
-  padding: 10px;
+  padding-block: 10px;
+  padding-inline: 10px;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
-  height: calc(75vh);
+  block-size: calc(75vh);
   box-sizing: border-box;
   > .row {
     display: flex;

@@ -45,7 +45,7 @@ function TreeItemView({ item }: { item: TreeItem }) {
       ) : (
         <b style={{ fontSize: '1.6rem' }}>{item.name}</b>
       )}
-      <ul style={{ margin: 0 }}>
+      <ul style={{ marginBlock: 0, marginInline: 0 }}>
         {item.items.map(item => (
           <TreeItemView key={item.name} item={item} />
         ))}

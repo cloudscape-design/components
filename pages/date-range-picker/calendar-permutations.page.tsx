@@ -48,13 +48,13 @@ export default function DateRangePickerCalendarPage() {
     <>
       <h1>Date-range-picker calendar page for screenshot tests</h1>
       <ScreenshotArea>
-        <div style={{ height: `${intervals.length * 400}px` }}>
+        <div style={{ blockSize: `${intervals.length * 400}px` }}>
           <PermutationsView
             permutations={permutations}
             render={permutation => {
               i++;
               return (
-                <div style={{ top: `${i * 400}px`, position: 'relative' }}>
+                <div style={{ insetBlockStart: `${i * 400}px`, position: 'relative' }}>
                   <Dropdown
                     stretchWidth={true}
                     stretchHeight={true}

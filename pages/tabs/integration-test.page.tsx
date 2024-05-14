@@ -57,13 +57,13 @@ export default function TabsScenario() {
     <div id="test" style={{ padding: 10 }}>
       <h1>Tabs integration test page</h1>
       <ScreenshotArea disableAnimations={true}>
-        <div id="click-this" tabIndex={0} style={{ height: 10 }} />
+        <div id="click-this" tabIndex={0} style={{ blockSize: 10 }} />
         <Tabs
           id="first-tabs"
           tabs={tabs}
           i18nStrings={{ scrollLeftAriaLabel: 'Scroll left', scrollRightAriaLabel: 'Scroll right' }}
         />
-        <div id="click-this-2" tabIndex={0} style={{ height: 10 }} />
+        <div id="click-this-2" tabIndex={0} style={{ blockSize: 10 }} />
 
         <Tabs
           tabs={tabs}

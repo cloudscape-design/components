@@ -2,5 +2,19 @@
   "extends": "../.stylelintrc",
   "rules": {
     "custom-property-pattern": null
-  }
+  },
+  "overrides": [
+    {
+      "files": [
+        "./**/*.scss"
+      ],
+      "rules": {
+        "property-disallowed-list": ["border", "border-radius", "border-style", "margin", "padding"],
+        "csstools/use-logical": "always"
+      }
+    }
+  ],
+  "plugins": [
+    "stylelint-use-logical"
+  ]
 }
