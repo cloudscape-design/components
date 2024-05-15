@@ -150,6 +150,37 @@ test(
 );
 
 test(
+  'allows to focus the last item by pressing up arrow key on first item',
+  useBrowser(async browser => {
+    await browser.url('/#/light/select/select.test');
+    const page = new SelectPageObject(browser, createWrapper().findSelect('#simple_select'));
+    await page.focusSelect();
+    await page.keys(['Space']);
+    await page.waitForAssertion(() => page.assertDropdownOpen(true));
+    await page.keys(['ArrowDown']);
+    expect(await page.getHighlightedOptionLabel()).toBe('Option 1');
+    await page.keys(['ArrowUp']);
+    expect(await page.getHighlightedOptionLabel()).toBe('Option 2');
+  })
+);
+
+test(
+  'allows to focus the first item by pressing down arrow key on last item',
+  useBrowser(async browser => {
+    await browser.url('/#/light/select/select.test');
+    const page = new SelectPageObject(browser, createWrapper().findSelect('#simple_select'));
+    await page.focusSelect();
+    await page.keys(['Space']);
+    await page.waitForAssertion(() => page.assertDropdownOpen(true));
+    await page.keys(['ArrowDown']);
+    await page.keys(['ArrowDown']);
+    expect(await page.getHighlightedOptionLabel()).toBe('Option 2');
+    await page.keys(['ArrowUp']);
+    expect(await page.getHighlightedOptionLabel()).toBe('Option 1');
+  })
+);
+
+test(
   'allows the select to be closed with space and reopened using mouse',
   useBrowser(async browser => {
     await browser.url('/#/light/select/select.test');
