@@ -69,8 +69,8 @@ export function StatusBar({
         <div role="tablist">
           <TabButton
             id={errorButtonId}
+            count={errorCount}
             text={errorText}
-            // text={minifyCounters ? ` ${errorCount}` : errorText}
             className={styles['tab-button--errors']}
             iconName="status-negative"
             disabled={errorCount === 0}
@@ -83,11 +83,11 @@ export function StatusBar({
             paneId={paneId}
             isRefresh={isRefresh}
           />
-          <span className={styles['tab-button--divider']}></span>
+
           <TabButton
             id={warningButtonId}
+            count={warningCount}
             text={warningText}
-            // text={minifyCounters ? ` ${warningCount}` : warningText}
             className={styles['tab-button--warnings']}
             iconName="status-warning"
             disabled={warningCount === 0}
