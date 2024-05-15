@@ -46,6 +46,11 @@ export interface FormFieldProps extends BaseComponentProps {
   info?: React.ReactNode;
 
   /**
+   * Sets the label to be inline with the input
+   */
+  inlineLabel?: boolean;
+
+  /**
    * The primary form control (for example, input, textarea, etc.).
    * @displayname control
    */

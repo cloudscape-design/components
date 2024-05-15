@@ -2,7 +2,7 @@
  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  SPDX-License-Identifier: Apache-2.0
 */
-
+ /* stylelint-disable */
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/hooks/focus-visible' as focus-visible;
@@ -22,6 +22,35 @@
   @include styles.font-label;
   @include styles.info-link-spacing;
 }
+
+
+.inlineLabelWrapper {
+  position: relative;
+}
+
+.inlineLabel {
+  box-sizing: border-box;
+  color: awsui.$color-text-form-label;
+  @include styles.font-label;
+  @include styles.info-link-spacing;
+  position: absolute;
+  bottom: 3.5em;
+  left: .5em;
+  padding: 0 .25em;
+  font-size: .75em;
+  line-height: 1em;
+  display: inline-block;
+  max-inline-size: calc(100% - 1em);
+  z-index: 1;
+  /* Stepped gradient background for label overlap between input and background. */
+   background-image: linear-gradient(
+       to bottom,
+       transparent calc(100% - 6px),
+       awsui.$color-background-input-default 1px
+   );
+   background-position: bottom;
+}
+ /* stylelint-enable */
 
 .info {
   padding-inline-start: awsui.$space-xs;

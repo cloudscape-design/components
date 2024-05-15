@@ -11,6 +11,7 @@
   flex-grow: 10;
   margin-inline-end: 0;
   margin-block-end: -16px;
+  margin-top: 1em;
 
   /* stylelint-disable-next-line selector-max-type */
   > div {
@@ -21,13 +22,36 @@
 
 .input-filter {
   order: 0;
-  flex-grow: 6;
+  flex-grow: 1;
   inline-size: auto;
-  max-inline-size: 728px;
+  width: 100%;
 }
 
 .select-filter {
-  max-inline-size: 130px;
-  flex-grow: 2;
+  flex-grow: 3;
   inline-size: auto;
+  width: 100%;
+}
+
+@media only screen and (min-width: 48em) {
+  /* small */
+}
+
+@media only screen and (min-width: 600px) {
+  /* medium */
+  .input-filter {
+    order: 0;
+    flex-grow: 1;
+    inline-size: auto;
+    max-inline-size: 728px;
+  }
+  .select-filter {
+    flex-grow: 3;
+    inline-size: auto;
+    width: auto;
+  }
+}
+
+@media only screen and (min-width: 75em) {
+  /* large */
 }

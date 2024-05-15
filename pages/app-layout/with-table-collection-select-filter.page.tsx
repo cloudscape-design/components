@@ -117,8 +117,8 @@ export default function () {
                   clearAriaLabel="clear"
                 />
               </div>
-              <div className="select-filter">
-                <FormField label={'Filter instance type'}>
+              <div className={styles['select-filter']}>
+                <FormField inlineLabel={true} label={'Filter instance type'}>
                   <Select
                     data-testid="instance-type-filter"
                     options={instanceOptions}
@@ -129,8 +129,8 @@ export default function () {
                   />
                 </FormField>
               </div>
-              <div className="select-filter">
-                <FormField label={'Filter status'}>
+              <div className={styles['select-filter']}>
+                <FormField inlineLabel={true} label={'Protokollstreams nach Namen filtern'}>
                   <Select
                     data-testid="state-filter"
                     options={stateOptions}

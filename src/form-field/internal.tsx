@@ -109,6 +109,7 @@ export default function InternalFormField({
   stretch = false,
   label,
   info,
+  inlineLabel = false,
   i18nStrings,
   children,
   secondaryControl,
@@ -214,16 +215,21 @@ export default function InternalFormField({
   return (
     <div
       {...baseProps}
-      className={clsx(baseProps.className, styles.root)}
+      className={clsx(baseProps.className, styles.root, inlineLabel && styles.inlineLabelWrapper)}
       ref={__internalRootRef}
       {...analyticsAttributes}
     >
       <div className={clsx(__hideLabel && styles['visually-hidden'])}>
         {label && (
-          <label className={styles.label} id={slotIds.label} htmlFor={generatedControlId}>
+          <label
+            className={inlineLabel ? styles.inlineLabel : styles.label}
+            id={slotIds.label}
+            htmlFor={generatedControlId}
+          >
             {label}
           </label>
         )}
+
         <InfoLinkLabelContext.Provider value={slotIds.label}>
           {!__hideLabel && info && <span className={styles.info}>{info}</span>}
         </InfoLinkLabelContext.Provider>
