@@ -4,7 +4,7 @@ import React from 'react';
 import { BreadcrumbGroupProps } from './interfaces';
 import { applyDisplayName } from '../internal/utils/apply-display-name.js';
 import useBaseComponent from '../internal/hooks/use-base-component';
-import InternalBreadcrumbGroup from './internal';
+import { InternalBreadcrumbGroup } from './internal';
 
 export { BreadcrumbGroupProps };
 
