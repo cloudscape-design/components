@@ -59,11 +59,6 @@
     border-inline-end: awsui.$border-item-width solid awsui.$color-border-code-editor-default;
   }
 
-  &__left-virtual {
-    flex-wrap: nowrap;
-    white-space: nowrap;
-  }
-
   &__right {
     display: flex;
     align-items: center;
@@ -81,10 +76,6 @@
     padding-block: calc(#{awsui.$space-scaled-xxs} - 1px);
     padding-inline: calc(#{awsui.$space-xs} - 2px);
   }
-}
-
-.status-bar-virtual {
-  @include styles.awsui-util-hide;
 }
 
 .tab-button {
