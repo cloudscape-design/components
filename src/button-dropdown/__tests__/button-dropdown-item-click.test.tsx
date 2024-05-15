@@ -123,6 +123,12 @@ const items: ButtonDropdownProps.Items = [
       act(() => wrapper.findItemById('i7')!.click());
       expect(onClickSpy).not.toHaveBeenCalled();
     });
+
+    test('does not have checked defined in the event when action item is clicked', () => {
+      act(() => wrapper.findItemById('i1')!.click());
+      expect(onClickSpy).toHaveBeenCalled();
+      expect(onClickSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { id: 'i1', checked: undefined } }));
+    });
   });
 });
 

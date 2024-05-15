@@ -193,10 +193,20 @@ it('a11y: checkbox role and state', () => {
   const menuElement = wrapper.findOpenDropdown()!.find('[role="menu"]')!;
 
   // Should have 2 elements with the menucheckboxitem role
-  const menuItems = menuElement.findAll('[role="menuitemcheckbox"]');
-  expect(menuItems.length).toBe(2);
+  const menuCheckboxItems = menuElement.findAll('[role="menuitemcheckbox"]');
+  expect(menuCheckboxItems.length).toBe(2);
+
+  // Should have 5 elements with the menuitem role
+  const menuItems = menuElement.findAll('[role="menuitem"]');
+  expect(menuItems.length).toBe(5);
 
   // Checkbox state should be reflected in aria-checked.
-  expect(menuItems[0].getElement()).toHaveAttribute('aria-checked', 'true');
-  expect(menuItems[1].getElement()).toHaveAttribute('aria-checked', 'false');
+  expect(menuCheckboxItems[0].getElement()).toHaveAttribute('aria-checked', 'true');
+  expect(menuCheckboxItems[1].getElement()).toHaveAttribute('aria-checked', 'false');
+  // Action menu items should not have aria-checked set.
+  expect(menuItems[0].getElement()).not.toHaveAttribute('aria-checked');
+  expect(menuItems[1].getElement()).not.toHaveAttribute('aria-checked');
+  expect(menuItems[2].getElement()).not.toHaveAttribute('aria-checked');
+  expect(menuItems[3].getElement()).not.toHaveAttribute('aria-checked');
+  expect(menuItems[4].getElement()).not.toHaveAttribute('aria-checked');
 });

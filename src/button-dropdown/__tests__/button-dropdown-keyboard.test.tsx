@@ -97,6 +97,14 @@ const items: ButtonDropdownProps.Items = [
       act(() => wrapper.findItems()[4]!.keydown(KeyCode.enter));
       expect(onClickSpy).toHaveBeenCalledTimes(1);
       expect(onClickSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { id: 'i5', checked: false } }));
+
+      // Open button dropdown again
+      act(() => wrapper.findNativeButton().keydown(KeyCode.enter));
+
+      // Fire keydown on the 1st element, checked should be undefined
+      act(() => wrapper.findItems()[0]!.keydown(KeyCode.enter));
+      expect(onClickSpy).toHaveBeenCalledTimes(2);
+      expect(onClickSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { id: 'i1', checked: undefined } }));
     });
 
     test('should fire event correctly when item with checkbox pressed using space', () => {
@@ -110,6 +118,15 @@ const items: ButtonDropdownProps.Items = [
       act(() => wrapper.findItems()[4]!.keyup(KeyCode.space));
       expect(onClickSpy).toHaveBeenCalledTimes(1);
       expect(onClickSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { id: 'i5', checked: false } }));
+
+      // Open button dropdown again
+      act(() => wrapper.findNativeButton().keydown(KeyCode.enter));
+
+      // Fire keydown on the 1st element, checked should be undefined
+      act(() => wrapper.findItems()[0]!.keydown(KeyCode.space));
+      act(() => wrapper.findItems()[0]!.keyup(KeyCode.space));
+      expect(onClickSpy).toHaveBeenCalledTimes(2);
+      expect(onClickSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { id: 'i1', checked: undefined } }));
     });
   });
 });
