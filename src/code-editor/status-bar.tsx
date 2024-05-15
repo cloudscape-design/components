@@ -8,7 +8,6 @@ import { TabButton } from './tab-button';
 import { InternalButton } from '../button/internal';
 import { CodeEditorProps } from './interfaces';
 import { useInternalI18n } from '../i18n/context.js';
-import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { getStatusButtonId, PaneStatus } from './util';
 
 interface StatusBarProps {
@@ -33,13 +32,7 @@ interface StatusBarProps {
   onHeightChange?: (height: number | null) => void;
 }
 
-type InternalStatusBarProps = StatusBarProps & {
-  leftBarRef: React.Ref<HTMLDivElement>;
-  isVirtual: boolean;
-  minifyCounters: boolean;
-};
-
-function InternalStatusBar({
+export function StatusBar({
   languageLabel,
   cursorPosition,
   paneStatus,
@@ -55,43 +48,32 @@ function InternalStatusBar({
   i18nStrings,
   errorCount,
   warningCount,
-  leftBarRef,
-  isVirtual,
-  minifyCounters,
   isRefresh,
-}: InternalStatusBarProps) {
+}: StatusBarProps) {
   const i18n = useInternalI18n('code-editor');
   const errorText = `${i18n('i18nStrings.errorsTab', i18nStrings?.errorsTab)}: ${errorCount}`;
   const warningText = `${i18n('i18nStrings.warningsTab', i18nStrings?.warningsTab)}: ${warningCount}`;
-  const errorButtonId = !isVirtual ? getStatusButtonId({ paneId, paneStatus: 'error' }) : undefined;
-  const warningButtonId = !isVirtual ? getStatusButtonId({ paneId, paneStatus: 'warning' }) : undefined;
-
-  // Virtual status bar is inaccessible for screen readers and keyboard interactions.
+  const errorButtonId = getStatusButtonId({ paneId, paneStatus: 'error' });
+  const warningButtonId = getStatusButtonId({ paneId, paneStatus: 'warning' });
 
   return (
     <div
       className={clsx(styles['status-bar'], {
         [styles['status-bar-with-hidden-pane']]: paneStatus === 'hidden',
-        [styles['status-bar-virtual']]: isVirtual,
       })}
-      aria-hidden={isVirtual}
     >
-      <div
-        className={clsx(styles['status-bar__left'], {
-          [styles['status-bar__left-virtual']]: isVirtual,
-        })}
-        ref={leftBarRef}
-      >
+      <div className={clsx(styles['status-bar__left'])}>
         <span className={styles['status-bar__language-mode']}>{languageLabel}</span>
         <span className={styles['status-bar__cursor-position']}>{cursorPosition}</span>
 
         <div role="tablist">
           <TabButton
             id={errorButtonId}
-            text={minifyCounters ? ` ${errorCount}` : errorText}
+            text={errorText}
+            // text={minifyCounters ? ` ${errorCount}` : errorText}
             className={styles['tab-button--errors']}
             iconName="status-negative"
-            disabled={errorCount === 0 || isVirtual}
+            disabled={errorCount === 0}
             active={paneStatus === 'error'}
             onClick={onErrorPaneToggle}
             onFocus={onTabFocus}
@@ -104,10 +86,11 @@ function InternalStatusBar({
           <span className={styles['tab-button--divider']}></span>
           <TabButton
             id={warningButtonId}
-            text={minifyCounters ? ` ${warningCount}` : warningText}
+            text={warningText}
+            // text={minifyCounters ? ` ${warningCount}` : warningText}
             className={styles['tab-button--warnings']}
             iconName="status-warning"
-            disabled={warningCount === 0 || isVirtual}
+            disabled={warningCount === 0}
             active={paneStatus === 'warning'}
             onClick={onWarningPaneToggle}
             onFocus={onTabFocus}
@@ -129,7 +112,6 @@ function InternalStatusBar({
       <div className={styles['status-bar__right']}>
         <div className={styles['status-bar__cog-button']}>
           <InternalButton
-            disabled={isVirtual}
             formAction="none"
             variant="icon"
             iconName="settings"
@@ -146,26 +128,3 @@ function InternalStatusBar({
     </div>
   );
 }
-
-export const StatusBar = ({ errorsTabRef, warningsTabRef, ...restProps }: StatusBarProps) => {
-  // create a virtual status bar, in order to calculate the width with full tab button text
-  // and decide if tab button text needs to be reduced
-  const [realWidth, statusLeftBarRef] = useContainerQuery(rect => rect.contentBoxWidth);
-  const [virtualWidth, virtualStatusLeftBarRef] = useContainerQuery(rect => rect.contentBoxWidth);
-
-  const minifyCounters = virtualWidth !== null && realWidth !== null && virtualWidth > realWidth;
-
-  return (
-    <>
-      <InternalStatusBar
-        {...restProps}
-        isVirtual={false}
-        leftBarRef={statusLeftBarRef}
-        errorsTabRef={errorsTabRef}
-        warningsTabRef={warningsTabRef}
-        minifyCounters={minifyCounters}
-      />
-      <InternalStatusBar {...restProps} isVirtual={true} leftBarRef={virtualStatusLeftBarRef} minifyCounters={false} />
-    </>
-  );
-};
