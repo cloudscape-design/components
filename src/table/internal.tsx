@@ -493,7 +493,7 @@ const InternalTable = React.forwardRef(
                             }
                             {...getTableRowRoleProps({ tableRole, firstIndex, rowIndex, ...expandableItemProps })}
                           >
-                            {hasSelection && (
+                            {getItemSelectionProps && (
                               <TableTdElement
                                 {...sharedCellProps}
                                 className={clsx(styles['selection-control'])}

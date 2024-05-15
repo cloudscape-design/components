@@ -230,7 +230,7 @@ const CardsList = <T,>({
 > & {
   columns: number | null;
   isItemSelected: (item: T) => boolean;
-  getItemSelectionProps: (item: T) => SelectionControlProps;
+  getItemSelectionProps?: (item: T) => SelectionControlProps;
   onFocus: FocusEventHandler<HTMLElement>;
   ariaLabel?: string;
   ariaLabelledby?: string;
@@ -281,7 +281,7 @@ const CardsList = <T,>({
             onClick={
               canClickEntireCard
                 ? event => {
-                    getItemSelectionProps(item).onChange();
+                    getItemSelectionProps?.(item).onChange();
                     // Manually move focus to the native input (checkbox or radio button)
                     event.currentTarget.querySelector('input')?.focus();
                   }
@@ -292,7 +292,7 @@ const CardsList = <T,>({
               <div className={styles['card-header-inner']}>
                 {cardDefinition.header ? cardDefinition.header(item) : ''}
               </div>
-              {selectable && (
+              {getItemSelectionProps && (
                 <div className={styles['selection-control']}>
                   <SelectionControl
                     onFocusDown={moveFocusDown}

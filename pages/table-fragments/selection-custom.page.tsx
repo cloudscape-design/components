@@ -42,18 +42,18 @@ export default function Page() {
   const columnDefinitions = [
     {
       key: 'selection',
-      header:
-        selectionType === 'multi' ? (
-          <SelectionControl
-            onFocusDown={event => moveFocus?.(event.target as HTMLElement, -1, +1)}
-            {...getSelectAllProps()}
-          />
-        ) : (
-          <ScreenreaderOnly>selection cell</ScreenreaderOnly>
-        ),
-      cell: (item: Instance) => (
-        <SelectionControl onFocusDown={moveFocusDown} onFocusUp={moveFocusUp} {...getItemSelectionProps(item)} />
+      header: getSelectAllProps ? (
+        <SelectionControl
+          onFocusDown={event => moveFocus?.(event.target as HTMLElement, -1, +1)}
+          {...getSelectAllProps()}
+        />
+      ) : (
+        <ScreenreaderOnly>selection cell</ScreenreaderOnly>
       ),
+      cell: (item: Instance) =>
+        getItemSelectionProps ? (
+          <SelectionControl onFocusDown={moveFocusDown} onFocusUp={moveFocusUp} {...getItemSelectionProps(item)} />
+        ) : null,
     },
     {
       key: 'id',
