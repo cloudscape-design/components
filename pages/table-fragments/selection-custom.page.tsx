@@ -24,7 +24,7 @@ export default function Page() {
   const selectionType = urlParams.selectionType ?? 'single';
 
   const [selectedItems, setSelectedItems] = useState<Instance[]>([]);
-  const { getSelectAllProps, getItemSelectionProps, updateShiftToggle } = useSelection({
+  const { getSelectAllProps, getItemSelectionProps } = useSelection({
     items,
     selectedItems,
     selectionType,
@@ -52,12 +52,7 @@ export default function Page() {
           <ScreenreaderOnly>selection cell</ScreenreaderOnly>
         ),
       cell: (item: Instance) => (
-        <SelectionControl
-          onFocusDown={moveFocusDown}
-          onFocusUp={moveFocusUp}
-          onShiftToggle={updateShiftToggle}
-          {...getItemSelectionProps(item)}
-        />
+        <SelectionControl onFocusDown={moveFocusDown} onFocusUp={moveFocusUp} {...getItemSelectionProps(item)} />
       ),
     },
     {

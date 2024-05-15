@@ -89,7 +89,7 @@ const Cards = React.forwardRef(function <T = any>(
   const getMouseDownTarget = useMouseDownTarget();
 
   const i18n = useInternalI18n('cards');
-  const { isItemSelected, getItemSelectionProps, updateShiftToggle } = useSelection({
+  const { isItemSelected, getItemSelectionProps } = useSelection({
     items,
     trackBy,
     selectedItems,
@@ -195,7 +195,6 @@ const Cards = React.forwardRef(function <T = any>(
                   isItemSelected={isItemSelected}
                   getItemSelectionProps={getItemSelectionProps}
                   visibleSections={visibleSections}
-                  updateShiftToggle={updateShiftToggle}
                   onFocus={onCardFocus}
                   ariaLabel={ariaLabels?.cardsLabel}
                   ariaLabelledby={isLabelledByHeader && headerIdRef.current ? headerIdRef.current : undefined}
@@ -221,7 +220,6 @@ const CardsList = <T,>({
   isItemSelected,
   getItemSelectionProps,
   visibleSections,
-  updateShiftToggle,
   onFocus,
   ariaLabelledby,
   ariaLabel,
@@ -233,7 +231,6 @@ const CardsList = <T,>({
   columns: number | null;
   isItemSelected: (item: T) => boolean;
   getItemSelectionProps: (item: T) => SelectionControlProps;
-  updateShiftToggle: (state: boolean) => void;
   onFocus: FocusEventHandler<HTMLElement>;
   ariaLabel?: string;
   ariaLabelledby?: string;
@@ -300,7 +297,6 @@ const CardsList = <T,>({
                   <SelectionControl
                     onFocusDown={moveFocusDown}
                     onFocusUp={moveFocusUp}
-                    onShiftToggle={updateShiftToggle}
                     {...getItemSelectionProps(item)}
                   />
                 </div>

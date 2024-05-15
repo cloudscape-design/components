@@ -143,14 +143,12 @@ export function useSelection<T>({
         checked: isItemSelected(item),
         indeterminate: false,
         onChange: () => handleToggleItem(item),
+        onShiftToggle: (value: boolean) => setShiftPressed(value),
         ariaLabel: joinStrings(
           ariaLabels?.selectionGroupLabel,
           ariaLabels?.itemSelectionLabel?.({ selectedItems }, item)
         ),
       };
-    },
-    updateShiftToggle: (value: boolean) => {
-      setShiftPressed(value);
     },
   };
 }
