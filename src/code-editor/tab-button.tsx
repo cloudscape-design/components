@@ -9,6 +9,7 @@ import InternalIcon from '../icon/internal';
 import styles from './styles.css.js';
 
 interface TabButtonProps {
+  count: number;
   text: string;
   iconName: IconProps.Name;
   active: boolean;
@@ -41,6 +42,7 @@ export const TabButton = React.forwardRef(
       ariaLabel,
       paneId,
       isRefresh,
+      count,
       text,
       className,
       id,
@@ -68,7 +70,9 @@ export const TabButton = React.forwardRef(
         aria-hidden={ariaHidden}
         aria-label={ariaLabel}
       >
-        <InternalIcon name={iconName} /> {text}
+        <InternalIcon name={iconName} />
+        <span className={styles.count}>{count}</span>
+        <span className={styles.text}>{text}</span>
       </button>
     );
   }

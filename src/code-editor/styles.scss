@@ -12,6 +12,8 @@
 
 .code-editor {
   @include styles.styles-reset;
+  container-type: inline-size;
+  container-name: code-editor;
   display: inline-block;
   border-block: awsui.$border-item-width solid awsui.$color-border-code-editor-default;
   border-inline: awsui.$border-item-width solid awsui.$color-border-code-editor-default;
@@ -41,7 +43,6 @@
 .status-bar {
   display: flex;
   vertical-align: middle;
-
   border-block-start: awsui.$border-item-width solid awsui.$color-border-code-editor-default;
   background-color: awsui.$color-background-code-editor-status-bar;
   &-with-hidden-pane {
@@ -80,7 +81,8 @@
 
 .tab-button {
   position: relative;
-  display: inline-block;
+  display: inline-flex;
+  gap: #{awsui.$space-scaled-xxs};
   padding-block: awsui.$space-scaled-xs;
   padding-inline: awsui.$space-s;
   line-height: inherit;
@@ -157,17 +159,33 @@
     @include styles.focus-highlight(awsui.$space-code-editor-status-focus-outline-gutter);
   }
 
-  &--divider {
-    display: inline-block;
-    block-size: awsui.$line-height-body-m;
-    inline-size: awsui.$border-code-editor-status-divider-width;
-    background: awsui.$color-border-tabs-divider;
-    vertical-align: middle;
-  }
-
   &--errors {
     /* used in test-utils */
   }
+
+  /* stylelint-disable plugin/no-unsupported-browser-features */
+  @supports (contain: inline-size) {
+    @container code-editor (min-width: 501px) {
+      > .count {
+        display: none;
+      }
+
+      > .text {
+        display: inline;
+      }
+    }
+
+    @container code-editor (max-width: 500px) {
+      > .count {
+        display: inline;
+      }
+
+      > .text {
+        display: none;
+      }
+    }
+  }
+  /* stylelint-enable plugin/no-unsupported-browser-features */
 }
 
 $default-height: 480px;
