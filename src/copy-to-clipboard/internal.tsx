@@ -9,6 +9,10 @@ import InternalStatusIndicator from '../status-indicator/internal';
 import styles from './styles.css.js';
 import testStyles from './test-classes/styles.css.js';
 import clsx from 'clsx';
+import { getBaseProps } from '../internal/base-component';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+
+export interface InternalCopyToClipboardProps extends CopyToClipboardProps, InternalBaseComponentProps {}
 
 export default function InternalCopyToClipboard({
   variant = 'button',
@@ -17,12 +21,13 @@ export default function InternalCopyToClipboard({
   copySuccessText,
   copyErrorText,
   textToCopy,
-  className,
-  id,
-}: CopyToClipboardProps) {
+  __internalRootRef = null,
+  ...restProps
+}: InternalCopyToClipboardProps) {
   const [status, setStatus] = useState<'pending' | 'success' | 'error'>('pending');
   const [statusText, setStatusText] = useState('');
 
+  const baseProps = getBaseProps(restProps);
   const onClick = () => {
     if (navigator.clipboard) {
       setStatus('pending');
@@ -58,7 +63,7 @@ export default function InternalCopyToClipboard({
       content={<InternalStatusIndicator type={status}>{statusText}</InternalStatusIndicator>}
     >
       <InternalButton
-        ariaLabel={copyButtonAriaLabel}
+        ariaLabel={copyButtonAriaLabel ?? copyButtonText}
         iconName="copy"
         onClick={onClick}
         variant={triggerVariant}
@@ -71,7 +76,7 @@ export default function InternalCopyToClipboard({
   );
 
   return (
-    <span id={id} className={clsx(className, styles.root, testStyles.root)}>
+    <span {...baseProps} ref={__internalRootRef} className={clsx(baseProps.className, styles.root, testStyles.root)}>
       {variant === 'inline' ? (
         <span className={styles['inline-container']}>
           <span className={styles['inline-container-trigger']}>{trigger}</span>

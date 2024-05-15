@@ -5,7 +5,7 @@ import { CopyToClipboardProps } from './interfaces';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import InternalCopyToClipboard from './internal';
-import { getExternalProps } from '../internal/utils/external-props';
+//import { getExternalProps } from '../internal/utils/external-props';
 
 export { CopyToClipboardProps };
 
@@ -13,9 +13,9 @@ export default function CopyToClipboard({ variant = 'button', ...restProps }: Co
   const baseProps = useBaseComponent('CopyToClipboard', {
     props: { variant },
   });
-  const filteredProps = getExternalProps(restProps);
+  //const filteredProps = getExternalProps(restProps);
 
-  return <InternalCopyToClipboard variant={variant} {...baseProps} {...filteredProps} />;
+  return <InternalCopyToClipboard variant={variant} {...baseProps} {...restProps} />;
 }
 
 applyDisplayName(CopyToClipboard, 'CopyToClipboard');
