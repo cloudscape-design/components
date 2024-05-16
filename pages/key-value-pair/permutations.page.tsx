@@ -38,7 +38,11 @@ export default function KeyValueScenario() {
                     {
                       key: 'Label for key',
                       value: 'Value',
-                      info: <Link href="#">link</Link>,
+                      info: (
+                        <Link href="#" variant="info">
+                          link
+                        </Link>
+                      ),
                     },
                     {
                       key: 'Label for key',
@@ -83,7 +87,11 @@ export default function KeyValueScenario() {
                     {
                       key: 'Label for key',
                       value: 'Value',
-                      info: <Link href="#">link</Link>,
+                      info: (
+                        <Link href="#" variant="info">
+                          link
+                        </Link>
+                      ),
                     },
                   ],
                 },
@@ -100,7 +108,11 @@ export default function KeyValueScenario() {
                     {
                       key: 'Label for key',
                       value: 'Value',
-                      info: <Link href="#">link</Link>,
+                      info: (
+                        <Link href="#" variant="info">
+                          link
+                        </Link>
+                      ),
                     },
                     {
                       key: 'Label for key',
@@ -147,7 +159,11 @@ export default function KeyValueScenario() {
                     {
                       key: 'Label for key',
                       value: 'Value',
-                      info: <Link href="#">link</Link>,
+                      info: (
+                        <Link href="#" variant="info">
+                          link
+                        </Link>
+                      ),
                     },
                   ],
                 },
