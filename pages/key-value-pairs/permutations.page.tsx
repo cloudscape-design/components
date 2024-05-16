@@ -33,7 +33,6 @@ export default function KeyValueScenario() {
             <KeyValuePairs
               columns={[
                 {
-                  title: 'Column Title',
                   items: [
                     {
                       key: 'Label for key',
@@ -55,7 +54,6 @@ export default function KeyValueScenario() {
                   ],
                 },
                 {
-                  title: 'Column Title',
                   items: [
                     {
                       key: 'Label for key',
@@ -100,75 +98,138 @@ export default function KeyValueScenario() {
           </Box>
           <Box padding="s">
             <Box variant="h1">With column title and multiple rows</Box>
-            <KeyValuePairs
-              columns={[
-                {
-                  title: 'Column Title',
-                  items: [
-                    {
-                      key: 'Label for key',
-                      value: 'Value',
-                      info: (
-                        <Link href="#" variant="info">
-                          link
-                        </Link>
-                      ),
-                    },
-                    {
-                      key: 'Label for key',
-                      value: <StatusIndicator>Value for positive status</StatusIndicator>,
-                    },
-                    {
-                      key: 'Label for key',
-                      value: <StatusIndicator type="error">Value for negative status</StatusIndicator>,
-                    },
-                  ],
-                },
-                {
-                  title: 'Column Title',
-                  items: [
-                    {
-                      key: 'Label for key',
-                      value: (
-                        <Link external={true} href="#">
-                          Value with external link
-                        </Link>
-                      ),
-                    },
-                    {
-                      key: 'Label for key',
-                      value: 'Value',
-                    },
-                    {
-                      key: 'Label for key',
-                      value: 'Value',
-                    },
-                    {
-                      key: 'Label for key',
-                      value: 'Value',
-                    },
-                    {
-                      key: 'Label for key',
-                      value: 'Value',
-                    },
-                  ],
-                },
-                {
-                  title: 'Column Title',
-                  items: [
-                    {
-                      key: 'Label for key',
-                      value: 'Value',
-                      info: (
-                        <Link href="#" variant="info">
-                          link
-                        </Link>
-                      ),
-                    },
-                  ],
-                },
-              ]}
-            />
+            <SpaceBetween size="l">
+              <KeyValuePairs
+                columns={[
+                  {
+                    title: 'Column Title',
+                    items: [
+                      {
+                        key: 'Label for key',
+                        value: 'Value',
+                        info: (
+                          <Link href="#" variant="info">
+                            link
+                          </Link>
+                        ),
+                      },
+                      {
+                        key: 'Label for key',
+                        value: <StatusIndicator>Value for positive status</StatusIndicator>,
+                      },
+                      {
+                        key: 'Label for key',
+                        value: <StatusIndicator type="error">Value for negative status</StatusIndicator>,
+                      },
+                    ],
+                  },
+                  {
+                    title: 'Column Title',
+                    items: [
+                      {
+                        key: 'Label for key',
+                        value: (
+                          <Link external={true} href="#">
+                            Value with external link
+                          </Link>
+                        ),
+                      },
+                      {
+                        key: 'Label for key',
+                        value: 'Value',
+                      },
+                      {
+                        key: 'Label for key',
+                        value: 'Value',
+                      },
+                      {
+                        key: 'Label for key',
+                        value: 'Value',
+                      },
+                    ],
+                  },
+                  {
+                    title: 'Column Title',
+                    items: [
+                      {
+                        key: 'Label for key',
+                        value: 'Value',
+                        info: (
+                          <Link href="#" variant="info">
+                            link
+                          </Link>
+                        ),
+                      },
+                    ],
+                  },
+                ]}
+              />
+              <KeyValuePairs
+                columns={[
+                  {
+                    title: 'Column Title',
+                    items: [
+                      {
+                        key: 'Label for key',
+                        value: 'Value',
+                        info: (
+                          <Link href="#" variant="info">
+                            link
+                          </Link>
+                        ),
+                      },
+                      {
+                        key: 'Label for key',
+                        value: <StatusIndicator>Value for positive status</StatusIndicator>,
+                      },
+                      {
+                        key: 'Label for key',
+                        value: <StatusIndicator type="error">Value for negative status</StatusIndicator>,
+                      },
+                    ],
+                  },
+                  {
+                    title: 'Column Title',
+                    items: [
+                      {
+                        key: 'Label for key',
+                        value: (
+                          <Link external={true} href="#">
+                            Value with external link
+                          </Link>
+                        ),
+                      },
+                      {
+                        key: 'Label for key',
+                        value: 'Value',
+                      },
+                      {
+                        key: 'Label for key',
+                        value: 'Value',
+                      },
+                      {
+                        key: 'Label for key',
+                        value: 'Value',
+                      },
+                    ],
+                  },
+                  {
+                    title: 'Column Title',
+                    items: [
+                      {
+                        key: 'Label for key',
+                        value: 'Value',
+                        info: (
+                          <Link href="#" variant="info">
+                            link
+                          </Link>
+                        ),
+                      },
+                    ],
+                  },
+                ]}
+              />
+            </SpaceBetween>
           </Box>
         </SpaceBetween>
       </ScreenshotArea>
