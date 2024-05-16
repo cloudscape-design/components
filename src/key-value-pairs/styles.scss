@@ -6,7 +6,7 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 
-.key-value-pair {
+.key-value-pairs {
   @include styles.styles-reset;
   display: flex;
 }
