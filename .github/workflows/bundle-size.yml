@@ -4,6 +4,9 @@ on:
   pull_request:
     branches:
       - main
+  push:
+    branches:
+      - main
 
 permissions:
   statuses: write
@@ -21,6 +24,7 @@ jobs:
       - name: Setup the bundle measurement project
         run: |
           cp -r components/.github/workflows/bundle-size bundle-size
+          cp components/package-lock.json bundle-size/components-package-lock.json
           cd bundle-size
           npm i --force
 
