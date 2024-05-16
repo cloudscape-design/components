@@ -128,6 +128,8 @@ export interface ButtonProps extends BaseComponentProps {
    */
   children?: React.ReactNode;
 
+  disabledReason?: string;
+
   /**
    * Called when the user clicks on the button and the button is not disabled or in loading state.
    */

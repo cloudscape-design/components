@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { fireCancelableEvent, isPlainLeftClick } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import styles from './styles.css.js';
@@ -23,6 +23,7 @@ import { FunnelMetrics } from '../internal/analytics';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
 import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
+import Tooltip from '../internal/components/tooltip';
 
 export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   variant?: ButtonProps['variant'] | 'flashbar-icon' | 'breadcrumb-group' | 'menu-trigger' | 'modal-dismiss';
@@ -55,6 +56,7 @@ export const InternalButton = React.forwardRef(
       target,
       rel,
       download,
+      disabledReason,
       formAction = 'submit',
       ariaLabel,
       ariaDescribedby,
@@ -71,8 +73,15 @@ export const InternalButton = React.forwardRef(
   ) => {
     checkSafeUrl('Button', href);
     const isAnchor = Boolean(href);
+    const [showTooltip, setShowTooltip] = useState(false);
+
+    // The click handler is not invoked in a loading or disabled state
     const isNotInteractive = loading || disabled;
-    const hasAriaDisabled = (loading && !disabled) || (disabled && __focusable);
+    // The tooltip can come from a disabled reason or a loading text
+    const hasTooltip = (disabled && !!disabledReason) || (loading && !disabled && !!loadingText);
+    // Use aria-disabled instead of the regular disabled attribute if the button still needs to accept some user events
+    const hasAriaDisabled = (loading && !disabled) || (disabled && __focusable) || (disabled && !!disabledReason);
+
     const shouldHaveContent =
       children && ['icon', 'inline-icon', 'flashbar-icon', 'modal-dismiss'].indexOf(variant) === -1;
 
@@ -134,12 +143,13 @@ export const InternalButton = React.forwardRef(
       [styles['button-no-wrap']]: !wrapText,
       [styles['button-no-text']]: !shouldHaveContent,
       [styles['full-width']]: shouldHaveContent && fullWidth,
+      [styles['has-tooltip']]: hasTooltip,
     });
 
     const explicitTabIndex =
       __nativeAttributes && 'tabIndex' in __nativeAttributes ? __nativeAttributes.tabIndex : undefined;
     const { tabIndex } = useSingleTabStopNavigation(buttonRef, {
-      tabIndex: isAnchor && isNotInteractive ? -1 : explicitTabIndex,
+      tabIndex: isAnchor && isNotInteractive && !hasTooltip ? -1 : explicitTabIndex,
     });
 
     const buttonProps = {
@@ -156,6 +166,10 @@ export const InternalButton = React.forwardRef(
       title: ariaLabel,
       className: buttonClass,
       onClick: handleClick,
+      onFocus: () => hasTooltip && setShowTooltip(true),
+      onBlur: () => hasTooltip && setShowTooltip(false),
+      onMouseEnter: () => hasTooltip && setShowTooltip(true),
+      onMouseLeave: () => hasTooltip && setShowTooltip(false),
       [DATA_ATTR_FUNNEL_VALUE]: uniqueId,
     } as const;
 
@@ -190,6 +204,16 @@ export const InternalButton = React.forwardRef(
       }
     }, [loading, loadingButtonCount]);
 
+    // Show tooltip for loading text or disabled reason. Loading text takes precedence.
+    const tooltip = showTooltip && (
+      <Tooltip
+        value={loading && !!loadingText ? loadingText : disabledReason!}
+        header={children}
+        trackRef={buttonRef}
+        size="medium"
+      />
+    );
+
     if (isAnchor) {
       return (
         // https://github.com/yannickcr/eslint-plugin-react/issues/2962
@@ -207,6 +231,7 @@ export const InternalButton = React.forwardRef(
             {buttonContent}
           </a>
           {loading && loadingText && <LiveRegion>{loadingText}</LiveRegion>}
+          {tooltip}
         </>
       );
     }
@@ -215,12 +240,14 @@ export const InternalButton = React.forwardRef(
         <button
           {...buttonProps}
           type={formAction === 'none' ? 'button' : 'submit'}
-          disabled={disabled && !__focusable}
+          disabled={disabled && !__focusable && !disabledReason}
           aria-disabled={hasAriaDisabled ? true : undefined}
         >
           {buttonContent}
         </button>
+
         {loading && loadingText && <LiveRegion>{loadingText}</LiveRegion>}
+        {tooltip}
       </>
     );
   }
