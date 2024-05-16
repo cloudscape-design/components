@@ -24,6 +24,7 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
 import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
 import Tooltip from '../internal/components/tooltip';
+import ScreenreaderOnly from '../internal/components/screenreader-only';
 
 export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   variant?: ButtonProps['variant'] | 'flashbar-icon' | 'breadcrumb-group' | 'menu-trigger' | 'modal-dismiss';
@@ -72,6 +73,7 @@ export const InternalButton = React.forwardRef(
     ref: React.Ref<ButtonProps.Ref>
   ) => {
     checkSafeUrl('Button', href);
+    const uniqueId = useUniqueId('button');
     const isAnchor = Boolean(href);
     const [showTooltip, setShowTooltip] = useState(false);
 
@@ -82,6 +84,9 @@ export const InternalButton = React.forwardRef(
     // Use aria-disabled instead of the regular disabled attribute if the button still needs to accept some user events
     const hasAriaDisabled = (loading && !disabled) || (disabled && __focusable) || (disabled && !!disabledReason);
 
+    const ariaDescription = (disabled && disabledReason) || (loading && !disabled && loadingText);
+    const tooltipDescribedBy = ariaDescription ? `${uniqueId}-description` : '';
+
     const shouldHaveContent =
       children && ['icon', 'inline-icon', 'flashbar-icon', 'modal-dismiss'].indexOf(variant) === -1;
 
@@ -89,8 +94,6 @@ export const InternalButton = React.forwardRef(
     useForwardFocus(ref, buttonRef);
 
     const buttonContext = useButtonContext();
-
-    const uniqueId = useUniqueId('button');
     const { funnelInteractionId } = useFunnel();
     const { stepNumber, stepNameSelector } = useFunnelStep();
     const { subStepSelector, subStepNameSelector } = useFunnelSubStep();
@@ -159,7 +162,8 @@ export const InternalButton = React.forwardRef(
       // https://github.com/microsoft/TypeScript/issues/36659
       ref: useMergeRefs(buttonRef, __internalRootRef),
       'aria-label': ariaLabel,
-      'aria-describedby': ariaDescribedby,
+      'aria-describedby':
+        ariaDescribedby || ariaDescription ? `${ariaDescribedby ?? ''} ${tooltipDescribedBy}` : undefined,
       'aria-expanded': ariaExpanded,
       'aria-controls': ariaControls,
       // add ariaLabel as `title` as visible hint text
@@ -232,6 +236,7 @@ export const InternalButton = React.forwardRef(
           </a>
           {loading && loadingText && <LiveRegion>{loadingText}</LiveRegion>}
           {tooltip}
+          {ariaDescription && <ScreenreaderOnly id={tooltipDescribedBy}>{ariaDescription}</ScreenreaderOnly>}
         </>
       );
     }
@@ -248,6 +253,7 @@ export const InternalButton = React.forwardRef(
 
         {loading && loadingText && <LiveRegion>{loadingText}</LiveRegion>}
         {tooltip}
+        {ariaDescription && <ScreenreaderOnly id={tooltipDescribedBy}>{ariaDescription}</ScreenreaderOnly>}
       </>
     );
   }
