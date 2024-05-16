@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import KeyValuePair from '~components/key-value-pair';
+import KeyValuePairs from '~components/key-value-pairs';
 import ScreenshotArea from '../utils/screenshot-area';
 import SpaceBetween from '~components/space-between';
 import StatusIndicator from '~components/status-indicator';
@@ -15,7 +15,7 @@ export default function KeyValueScenario() {
         <SpaceBetween size="s">
           <Box padding="s">
             <Box variant="h1">1 column</Box>
-            <KeyValuePair
+            <KeyValuePairs
               columns={[
                 {
                   items: [
@@ -30,7 +30,7 @@ export default function KeyValueScenario() {
           </Box>
           <Box padding="s">
             <Box variant="h1">2 columns</Box>
-            <KeyValuePair
+            <KeyValuePairs
               columns={[
                 {
                   title: 'Column Title',
@@ -80,7 +80,7 @@ export default function KeyValueScenario() {
           </Box>
           <Box padding="s">
             <Box variant="h1">With info link</Box>
-            <KeyValuePair
+            <KeyValuePairs
               columns={[
                 {
                   items: [
@@ -100,7 +100,7 @@ export default function KeyValueScenario() {
           </Box>
           <Box padding="s">
             <Box variant="h1">With column title and multiple rows</Box>
-            <KeyValuePair
+            <KeyValuePairs
               columns={[
                 {
                   title: 'Column Title',

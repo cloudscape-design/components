@@ -4,14 +4,14 @@ import React from 'react';
 import clsx from 'clsx';
 import styles from './styles.css.js';
 import Header from '../header/internal';
-import { KeyValuePairProps } from './interfaces';
+import { KeyValuePairsProps } from './interfaces';
 import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
 import ColumnLayout from '../column-layout/internal';
 
-export { KeyValuePairProps };
+export { KeyValuePairsProps };
 
-const InternalKeyValuePair = React.forwardRef(
-  ({ columns, className, ...rest }: KeyValuePairProps, ref: React.Ref<HTMLDivElement>) => {
+const InternalKeyValuePairs = React.forwardRef(
+  ({ columns, className, ...rest }: KeyValuePairsProps, ref: React.Ref<HTMLDivElement>) => {
     return (
       <div {...rest} className={clsx(styles['key-value-pair'], className)} ref={ref}>
         <ColumnLayout columns={columns.length} variant="text-grid">
@@ -39,4 +39,4 @@ const InternalKeyValuePair = React.forwardRef(
   }
 );
 
-export default InternalKeyValuePair;
+export default InternalKeyValuePairs;
