@@ -3,21 +3,21 @@
 import { BaseComponentProps } from '../internal/base-component';
 import React from 'react';
 
-export interface KeyValuePairProps extends BaseComponentProps {
+export interface KeyValuePairsProps extends BaseComponentProps {
   /**
    * A list of key-value pair items, grouped by column. A maximum of 4 columns
    * are supported.
    */
-  columns: ReadonlyArray<KeyValuePairProps.Column>;
+  columns: ReadonlyArray<KeyValuePairsProps.Column>;
 }
 
-export namespace KeyValuePairProps {
+export namespace KeyValuePairsProps {
   export interface Column {
     title?: string;
-    items: ReadonlyArray<KeyValuePair>;
+    items: ReadonlyArray<KeyValuePairs>;
   }
 
-  export interface KeyValuePair {
+  export interface KeyValuePairs {
     key: string;
     value: React.ReactNode;
     info?: React.ReactNode;
