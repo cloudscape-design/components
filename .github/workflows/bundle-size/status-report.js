@@ -26,7 +26,7 @@ function getStatusMetadata(context) {
   return {
     owner: context.repo.owner,
     repo: context.repo.repo,
-    sha: context.payload.pull_request.head.sha,
+    sha: context.payload.after,
     context: 'Bundle size',
     state: 'pending',
     target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
