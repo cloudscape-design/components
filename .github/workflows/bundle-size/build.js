@@ -1,11 +1,21 @@
 import { build } from 'esbuild';
 import { gzip } from 'node:zlib';
 import { promisify } from 'node:util';
-import { unlinkSync, writeFileSync } from 'node:fs';
+import { unlinkSync, readFileSync, writeFileSync } from 'node:fs';
+import path from 'node:path';
+
 const compress = promisify(gzip);
 
 function concatFiles(files) {
   return files.reduce((total, current) => total + current.text ?? '', '');
+}
+
+function getInstalledVersions(projectRoot) {
+  const packageLock = JSON.parse(readFileSync(path.join(projectRoot, 'package-lock.json'), 'utf-8'));
+  const entries = Object.entries(packageLock.packages)
+    .filter(([pkg]) => pkg.includes('@cloudscape-design'))
+    .map(([pkg, details]) => [pkg.replace(/^node_modules\//, ''), details.version]);
+  return Object.fromEntries(entries);
 }
 
 async function main() {
@@ -35,6 +45,7 @@ async function main() {
     cssCompressedSize: await getCompressedSize(cssContent),
     jsSize: jsContent.length,
     jsCompressedSize: await getCompressedSize(jsContent),
+    versions: getInstalledVersions('../components'),
   };
 }
 
