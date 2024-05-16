@@ -215,7 +215,7 @@ export default function InternalFormField({
   return (
     <div
       {...baseProps}
-      className={clsx(baseProps.className, styles.root, inlineLabel && styles.inlineLabelWrapper)}
+      className={clsx(baseProps.className, styles.root)}
       ref={__internalRootRef}
       {...analyticsAttributes}
     >
@@ -249,7 +249,9 @@ export default function InternalFormField({
               ...contextValuesWithoutControlId,
             }}
           >
-            {children && <div className={styles.control}>{children}</div>}
+            {children && (
+              <div className={clsx(styles.control, inlineLabel && styles['control-inlineLabel'])}>{children}</div>
+            )}
           </FormFieldContext.Provider>
 
           {secondaryControl && (

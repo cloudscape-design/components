@@ -23,24 +23,19 @@
   @include styles.info-link-spacing;
 }
 
-
-.inlineLabelWrapper {
-  position: relative;
-}
-
 .inlineLabel {
   box-sizing: border-box;
   color: awsui.$color-text-form-label;
   @include styles.font-label;
   @include styles.info-link-spacing;
-  position: absolute;
-  bottom: 3.5em;
+  position: relative;
+  // bottom: 3.5em;
   left: .5em;
   padding: 0 .25em;
   font-size: .75em;
   line-height: 1em;
   display: inline-block;
-  max-inline-size: calc(100% - 1em);
+  max-inline-size: calc(100% - 1.25em);
   z-index: 1;
   /* Stepped gradient background for label overlap between input and background. */
    background-image: linear-gradient(
@@ -79,6 +74,10 @@
 
 .control {
   @include styles.text-wrapping;
+}
+
+.control-inlineLabel {
+  margin-block-start: -1em;
 }
 
 .error {

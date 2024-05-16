@@ -118,7 +118,7 @@ export default function () {
                 />
               </div>
               <div className={styles['select-filter']}>
-                <FormField inlineLabel={true} label={'Filter instance type'}>
+                <FormField inlineLabel={true} label={'Filtrar secuencias de registros por nombre'}>
                   <Select
                     data-testid="instance-type-filter"
                     options={instanceOptions}
