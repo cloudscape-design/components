@@ -62,7 +62,8 @@
 
   &.disabled {
     background: map.get($variant, 'disabled-background');
-    border-color: map.get($variant, 'disabled-border-color');
+    // border-color: map.get($variant, 'disabled-border-color');
+    border-color: awsui.$color-border-input-default;
     color: map.get($variant, 'disabled-color');
     text-decoration: none;
     pointer-events: none;
@@ -70,7 +71,6 @@
 
     &.has-tooltip {
       pointer-events: initial;
-      border-color: awsui.$color-border-input-default;
     }
   }
 }
