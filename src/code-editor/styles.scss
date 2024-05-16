@@ -79,6 +79,11 @@
   }
 }
 
+.tab-list {
+  align-items: center;
+  display: inline-flex;
+}
+
 .tab-button {
   position: relative;
   display: inline-flex;
@@ -159,13 +164,21 @@
     @include styles.focus-highlight(awsui.$space-code-editor-status-focus-outline-gutter);
   }
 
+  &--divider {
+    display: inline-block;
+    block-size: awsui.$line-height-body-m;
+    inline-size: awsui.$border-code-editor-status-divider-width;
+    background: awsui.$color-border-tabs-divider;
+    vertical-align: middle;
+  }
+
   &--errors {
     /* used in test-utils */
   }
 
   /* stylelint-disable plugin/no-unsupported-browser-features */
   @supports (contain: inline-size) {
-    @container code-editor (min-width: 501px) {
+    @container code-editor not (max-width: 500px) {
       > .count {
         display: none;
       }

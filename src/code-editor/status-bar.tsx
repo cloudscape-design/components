@@ -66,7 +66,7 @@ export function StatusBar({
         <span className={styles['status-bar__language-mode']}>{languageLabel}</span>
         <span className={styles['status-bar__cursor-position']}>{cursorPosition}</span>
 
-        <div role="tablist">
+        <div className={styles['tab-list']} role="tablist">
           <TabButton
             id={errorButtonId}
             count={errorCount}
@@ -83,6 +83,8 @@ export function StatusBar({
             paneId={paneId}
             isRefresh={isRefresh}
           />
+
+          <span className={styles['tab-button--divider']}></span>
 
           <TabButton
             id={warningButtonId}
