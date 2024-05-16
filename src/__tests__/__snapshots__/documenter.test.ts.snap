@@ -3067,6 +3067,11 @@ The text will also be added to the \`title\` attribute of the button.",
       "type": "boolean",
     },
     Object {
+      "name": "disabledReason",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Specifies whether the linked URL, when selected, will prompt the user to download instead of navigate.
 You can specify a string value that will be suggested as the name of the downloaded file.
 This property only applies when an \`href\` is provided.",
