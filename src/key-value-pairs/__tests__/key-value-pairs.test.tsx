@@ -70,7 +70,7 @@ describe('KeyValuePairs', () => {
       ],
     });
 
-    expect(wrapper.findTitle()!.getElement()).toHaveTextContent('Title');
+    expect(wrapper.findColumns()[0].findTitle()!.getElement()).toHaveTextContent('Title');
   });
 
   test('renders item correctly', () => {
@@ -87,9 +87,9 @@ describe('KeyValuePairs', () => {
       ],
     });
 
-    expect(wrapper.findKey()!.getElement()).toHaveTextContent('Label for key');
-    expect(wrapper.findInfo()).toBeNull();
-    expect(wrapper.findValue()!.getElement()).toHaveTextContent('Value');
+    expect(wrapper.findColumns()[0].findKey()!.getElement()).toHaveTextContent('Label for key');
+    expect(wrapper.findColumns()[0].findInfo()).toBeNull();
+    expect(wrapper.findColumns()[0].findValue()!.getElement()).toHaveTextContent('Value');
   });
 
   test('renders key with info correctly', () => {
@@ -107,6 +107,6 @@ describe('KeyValuePairs', () => {
       ],
     });
 
-    expect(wrapper.findInfo()!.getElement()).toHaveTextContent('info');
+    expect(wrapper.findColumns()[0].findInfo()!.getElement()).toHaveTextContent('info');
   });
 });
