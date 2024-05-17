@@ -7,10 +7,6 @@ import BoxWrapper from '../box';
 export default class KeyValuePairWrapper extends ComponentWrapper {
   static rootSelector: string = styles['key-value-pairs'];
 
-  findHeader(): ElementWrapper | null {
-    return this.findByClassName(styles.header);
-  }
-
   findColumns(): Array<ElementWrapper> {
     return this.findAllByClassName(styles.column);
   }
