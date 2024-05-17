@@ -21,6 +21,8 @@
   padding-block-end: awsui.$space-table-header-tools-bottom;
   padding-inline: 0;
 
+  container-type: inline-size;
+
   &-filtering {
     @supports (flex-basis: fit-content) {
       flex: 1 1 fit-content;
@@ -30,6 +32,12 @@
     }
     max-inline-size: 100%;
     margin-inline-end: awsui.$space-l;
+
+    @container (max-width: #{styles.$breakpoint-x-small}) {
+      margin-inline-end: 0;
+      margin-block-end: awsui.$space-scaled-xs;
+      flex-basis: 100%;
+    }
   }
 
   &-align-right {
@@ -42,12 +50,6 @@
     box-sizing: border-box;
     margin-inline-start: awsui.$space-xs;
     padding-inline-start: awsui.$space-xs;
-  }
-
-  &-small > &-filtering {
-    margin-inline-end: 0;
-    margin-block-end: awsui.$space-scaled-xs;
-    flex-basis: 100%;
   }
 }
 
