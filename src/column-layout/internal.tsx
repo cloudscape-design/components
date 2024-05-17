@@ -21,14 +21,18 @@ export default function ColumnLayout({
   disableGutters = false,
   minColumnWidth,
   children,
-  __breakpoint,
   __internalRootRef,
+  __noQueryContainer,
   ...restProps
 }: InternalColumnLayoutProps) {
   const baseProps = getBaseProps(restProps);
 
   return (
-    <div {...baseProps} className={clsx(baseProps.className, styles['column-layout'])} ref={__internalRootRef}>
+    <div
+      {...baseProps}
+      className={clsx(baseProps.className, styles['column-layout'], !__noQueryContainer && styles['query-container'])}
+      ref={__internalRootRef}
+    >
       {minColumnWidth ? (
         <FlexibleColumnLayout
           columns={columns}
@@ -40,13 +44,7 @@ export default function ColumnLayout({
           {children}
         </FlexibleColumnLayout>
       ) : (
-        <GridColumnLayout
-          columns={columns}
-          variant={variant}
-          borders={borders}
-          disableGutters={disableGutters}
-          __breakpoint={__breakpoint}
-        >
+        <GridColumnLayout columns={columns} variant={variant} borders={borders} disableGutters={disableGutters}>
           {children}
         </GridColumnLayout>
       )}

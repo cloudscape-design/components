@@ -3,7 +3,6 @@
 import { BaseComponentProps } from '../internal/base-component';
 import React from 'react';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { ColumnLayoutBreakpoint } from './internal';
 
 export interface ColumnLayoutProps extends BaseComponentProps {
   /**
@@ -49,5 +48,10 @@ export namespace ColumnLayoutProps {
 }
 
 export interface InternalColumnLayoutProps extends ColumnLayoutProps, InternalBaseComponentProps {
-  __breakpoint?: ColumnLayoutBreakpoint;
+  /**
+   * Does not mark this element as a named grid container. Use this when wrapping
+   * this with another component and you want to use the parent container as the
+   * query container.
+   */
+  __noQueryContainer?: boolean;
 }

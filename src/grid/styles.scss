@@ -19,9 +19,51 @@ $grid-gutter-width: awsui.$space-grid-gutter;
   margin-inline: calc(#{$grid-gutter-width} / -2);
   pointer-events: none;
 
+  &.query-container {
+    container: awsui-grid / inline-size;
+  }
+
   &.no-gutters {
     margin-block: 0;
     margin-inline: 0;
+  }
+}
+
+@mixin breakpoint-columns($breakpoint-name) {
+  @for $i from 1 through $grid-columns {
+    &.colspan-#{$breakpoint-name}-#{$i} {
+      flex: 0 0 math.percentage(math.div($i, $grid-columns));
+      // Add a `max-width` to ensure content within each column does not blow out
+      // the width of the column. Applies to IE10+ and Firefox. Chrome and Safari
+      // do not appear to require this.
+      max-inline-size: math.percentage(math.div($i, $grid-columns));
+    }
+
+    &.push-#{$breakpoint-name}-#{$i} {
+      inset-inline-start: math.percentage(math.div($i, $grid-columns));
+    }
+
+    &.pull-#{$breakpoint-name}-#{$i} {
+      inset-inline-end: math.percentage(math.div($i, $grid-columns));
+    }
+  }
+
+  &.push-#{$breakpoint-name}-0 {
+    inset-inline-start: auto;
+  }
+
+  &.pull-#{$breakpoint-name}-0 {
+    inset-inline-end: auto;
+  }
+
+  // `$grid-columns - 1` because offsetting by the width of an entire row isn't possible
+  @for $i from 0 through ($grid-columns - 1) {
+    // Avoid emitting useless .offset-0
+    @if $i != 0 {
+      &.offset-#{$breakpoint-name}-#{$i} {
+        margin-inline-start: math.percentage(math.div($i, $grid-columns));
+      }
+    }
   }
 }
 
@@ -37,38 +79,12 @@ $grid-gutter-width: awsui.$space-grid-gutter;
     padding-inline: 0;
   }
 
-  @for $i from 1 through $grid-columns {
-    &.colspan-#{$i} {
-      flex: 0 0 math.percentage(math.div($i, $grid-columns));
-      // Add a `max-width` to ensure content within each column does not blow out
-      // the width of the column. Applies to IE10+ and Firefox. Chrome and Safari
-      // do not appear to require this.
-      max-inline-size: math.percentage(math.div($i, $grid-columns));
-    }
-
-    &.push-#{$i} {
-      inset-inline-start: math.percentage(math.div($i, $grid-columns));
-    }
-
-    &.pull-#{$i} {
-      inset-inline-end: math.percentage(math.div($i, $grid-columns));
-    }
-  }
-
-  &.push-0 {
-    inset-inline-start: auto;
-  }
-
-  &.pull-0 {
-    inset-inline-end: auto;
-  }
-
-  // `$grid-columns - 1` because offsetting by the width of an entire row isn't possible
-  @for $i from 0 through ($grid-columns - 1) {
-    // Avoid emitting useless .offset-0
-    @if $i != 0 {
-      &.offset-#{$i} {
-        margin-inline-start: math.percentage(math.div($i, $grid-columns));
+  @each $breakpoint-name, $size in styles.$container-breakpoints {
+    @if ($size == 0px) {
+      @include breakpoint-columns($breakpoint-name);
+    } @else {
+      @container awsui-grid (inline-size > #{$size}) {
+        @include breakpoint-columns($breakpoint-name);
       }
     }
   }

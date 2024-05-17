@@ -1,47 +1,38 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import clsx, { ClassValue } from 'clsx';
+import clsx from 'clsx';
 import flattenChildren from 'react-keyed-flatten-children';
 import { getBaseProps } from '../internal/base-component';
-import { Breakpoint, matchBreakpointMapping } from '../internal/breakpoints';
+import { Breakpoint } from '../internal/breakpoints';
 import { isDevelopment } from '../internal/is-development';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import styles from './styles.css.js';
 import { GridProps } from './interfaces';
-import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 
 export interface InternalGridProps extends GridProps, InternalBaseComponentProps {
-  __breakpoint?: Breakpoint | null;
-
   /**
-   * The handler that fires when the grid breakpoint changes.
+   * Does not mark this element as a named grid container. Use this when wrapping
+   * this with another component and you want to use the parent container as the
+   * query container.
    */
-  __responsiveClassName?: (breakpoint: Breakpoint | null) => ClassValue;
+  __noQueryContainer?: boolean;
 }
 
 const InternalGrid = React.forwardRef(
   (
     {
-      __breakpoint,
       gridDefinition = [],
       disableGutters = false,
       children,
-      __responsiveClassName,
       __internalRootRef = null,
+      __noQueryContainer = false,
       ...restProps
     }: InternalGridProps,
     ref: React.Ref<HTMLDivElement>
   ) => {
-    let [defaultBreakpoint, defaultRef]: [Breakpoint | null, React.Ref<HTMLDivElement>] =
-      useContainerBreakpoints(undefined);
-    if (__breakpoint !== undefined) {
-      defaultBreakpoint = __breakpoint;
-      defaultRef = ref;
-    }
-
     const baseProps = getBaseProps(restProps);
     /*
    Flattening the children allows us to "see through" React Fragments and nested arrays.
@@ -59,17 +50,15 @@ const InternalGrid = React.forwardRef(
       }
     }
 
-    const mergedRef = useMergeRefs(defaultRef, __internalRootRef);
+    const mergedRef = useMergeRefs(ref, __internalRootRef);
 
     return (
       <div
         {...baseProps}
-        className={clsx(
-          styles.grid,
-          baseProps.className,
-          { [styles['no-gutters']]: disableGutters },
-          __responsiveClassName ? __responsiveClassName(defaultBreakpoint) : null
-        )}
+        className={clsx(styles.grid, baseProps.className, {
+          [styles['no-gutters']]: disableGutters,
+          [styles['query-container']]: !__noQueryContainer,
+        })}
         ref={mergedRef}
       >
         {flattenedChildren.map((child, i) => {
@@ -82,10 +71,10 @@ const InternalGrid = React.forwardRef(
               key={key ? String(key) : undefined}
               className={clsx(
                 styles['grid-column'],
-                getColumnClassNames('colspan', gridDefinition[i]?.colspan, defaultBreakpoint),
-                getColumnClassNames('offset', gridDefinition[i]?.offset, defaultBreakpoint),
-                getColumnClassNames('pull', gridDefinition[i]?.pull, defaultBreakpoint),
-                getColumnClassNames('push', gridDefinition[i]?.push, defaultBreakpoint)
+                getColumnClassNames('colspan', gridDefinition[i]?.colspan),
+                getColumnClassNames('offset', gridDefinition[i]?.offset),
+                getColumnClassNames('pull', gridDefinition[i]?.pull),
+                getColumnClassNames('push', gridDefinition[i]?.push)
               )}
             >
               <div className={styles['restore-pointer-events']}>{child}</div>
@@ -99,16 +88,15 @@ const InternalGrid = React.forwardRef(
 
 function getColumnClassNames(
   prop: string,
-  mapping: undefined | number | GridProps.BreakpointMapping,
-  breakpoint: Breakpoint | null
-): string | null {
+  mapping: undefined | number | GridProps.BreakpointMapping
+): string | string[] | null {
   if (typeof mapping === 'number') {
-    return styles[`${prop}-${mapping}`];
+    return styles[`${prop}-default-${mapping}`];
   }
-  if (breakpoint === null || mapping === undefined) {
+  if (mapping === undefined) {
     return null;
   }
-  return styles[`${prop}-${matchBreakpointMapping(mapping, breakpoint)}`];
+  return Object.keys(mapping).map(breakpoint => styles[`${prop}-${breakpoint}-${mapping[breakpoint as Breakpoint]}`]);
 }
 
 export default InternalGrid;

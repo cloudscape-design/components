@@ -1,29 +1,19 @@
 {
-  "extends": [
-    "stylelint-config-recommended-scss",
-    "stylelint-prettier/recommended"
-  ],
+  "extends": ["stylelint-config-recommended-scss", "stylelint-prettier/recommended"],
   "rules": {
     "custom-property-pattern": "^(?!.+)",
     "scss/comment-no-empty": null,
     "selector-pseudo-class-no-unknown": [
       true,
       {
-        "ignorePseudoClasses": [
-          "global"
-        ]
+        "ignorePseudoClasses": ["global"]
       }
     ],
-    "selector-combinator-disallowed-list": [
-      " "
-    ],
+    "selector-combinator-disallowed-list": [" "],
     "selector-class-pattern": "^(?!awsui).*?",
     "selector-max-type": [0, { "ignore": ["compounded"] }],
     "selector-max-universal": [0],
-    "order/order": [
-      "declarations",
-      "rules"
-    ],
+    "order/order": ["declarations", "rules"],
     "@cloudscape-design/license-headers": [
       true,
       {
@@ -33,11 +23,7 @@
     "@cloudscape-design/no-implicit-descendant": [
       true,
       {
-        "ignoreParents": [
-          ":global",
-          "svg",
-          "@keyframes"
-        ]
+        "ignoreParents": [":global", "svg", "@keyframes"]
       }
     ],
     "@cloudscape-design/no-motion-outside-of-mixin": [true],
@@ -45,15 +31,13 @@
       true,
       {
         "ignorePartialSupport": true,
-        "ignore": ["css-nesting", "css-when-else", "flexbox-gap"]
+        "ignore": ["css-nesting", "css-when-else", "flexbox-gap", "css-container-queries"]
       }
     ]
   },
   "overrides": [
     {
-      "files": [
-        "./src/**/*.scss"
-      ],
+      "files": ["./src/**/*.scss"],
       "rules": {
         "property-disallowed-list": ["border", "border-radius", "border-style", "margin", "padding"],
         "csstools/use-logical": "always"

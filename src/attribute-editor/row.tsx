@@ -72,14 +72,11 @@ export const Row = React.memo(
     return (
       <InternalBox className={styles.row} margin={{ bottom: 's' }}>
         <div role="group" aria-labelledby={`${firstControlId}-label ${firstControlId}`}>
-          <InternalGrid
-            __breakpoint={breakpoint}
-            gridDefinition={removable ? REMOVABLE_GRID_DEFINITION : GRID_DEFINITION}
-          >
+          <InternalGrid gridDefinition={removable ? REMOVABLE_GRID_DEFINITION : GRID_DEFINITION}>
             <InternalColumnLayout
               className={styles['row-control']}
               columns={definition.length}
-              __breakpoint={breakpoint}
+              __noQueryContainer={true} // Use the query container defined by the grid
             >
               {definition.map(({ info, label, constraintText, errorText, warningText, control }, defIndex) => (
                 <InternalFormField
