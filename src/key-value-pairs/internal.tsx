@@ -13,7 +13,7 @@ export { KeyValuePairsProps };
 const InternalKeyValuePairs = React.forwardRef(
   ({ columns, className, ...rest }: KeyValuePairsProps, ref: React.Ref<HTMLDivElement>) => {
     return (
-      <div {...rest} className={clsx(styles['key-value-pair'], className)} ref={ref}>
+      <div {...rest} className={clsx(styles['key-value-pairs'], className)} ref={ref}>
         <ColumnLayout columns={columns.length} variant="text-grid">
           {columns.map((column, columnIndex) => (
             <div className={styles.column} key={columnIndex}>
