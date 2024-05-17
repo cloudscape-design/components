@@ -29,9 +29,8 @@
   @include styles.font-label;
   @include styles.info-link-spacing;
   position: relative;
-  // bottom: 3.5em;
   left: .5em;
-  padding: 0 .25em;
+  padding: .5em .25em 0;
   font-size: .75em;
   line-height: 1em;
   display: inline-block;
