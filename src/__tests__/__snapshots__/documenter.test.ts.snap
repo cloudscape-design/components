@@ -8335,6 +8335,39 @@ with the input using \`ariaDescribedby\`.",
 }
 `;
 
+exports[`Documenter definition for key-value-pairs matches the snapshot: key-value-pairs 1`] = `
+Object {
+  "events": Array [],
+  "functions": Array [],
+  "name": "KeyValuePairs",
+  "properties": Array [
+    Object {
+      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "A list of key-value pair items, grouped by column. A maximum of 4 columns
+are supported.",
+      "name": "columns",
+      "optional": false,
+      "type": "ReadonlyArray<KeyValuePairsProps.Column>",
+    },
+    Object {
+      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+  ],
+  "regions": Array [],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Documenter definition for line-chart matches the snapshot: line-chart 1`] = `
 Object {
   "events": Array [
