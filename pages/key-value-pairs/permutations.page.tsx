@@ -13,6 +13,7 @@ import { CopyToClipboard, ProgressBar } from '~components';
 export default function KeyValueScenario() {
   return (
     <article>
+      <h1>KeyValuePairs permutations</h1>
       <ScreenshotArea>
         <SpaceBetween size="s">
           <Box padding="s">

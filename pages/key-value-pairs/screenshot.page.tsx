@@ -9,6 +9,7 @@ export default function () {
     <article>
       <h1>KeyValuePairs for screenshot</h1>
       <ScreenshotArea>
+        <h2>Simple key-value-pairs</h2>
         <KeyValuePairs
           columns={[
             {
