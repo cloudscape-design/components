@@ -4,7 +4,7 @@
 import { BaseComponentProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { IconProps } from '../icon/interfaces';
-import { BaseNavigationDetail, CancelableEventHandler } from '../internal/events';
+import { CancelableEventHandler } from '../internal/events';
 
 export interface ButtonGroupProps extends BaseComponentProps {
   /** Determines the general styling of the button dropdown.
@@ -19,14 +19,6 @@ export interface ButtonGroupProps extends BaseComponentProps {
    * Array of objects of type 'icon-button' or 'divider'.
    */
   items: ReadonlyArray<ButtonGroupProps.Item>;
-  /**
-   * Item tooltip text shown when the item is not disabled.
-   */
-  itemTooltipText: string;
-  /**
-   * The message shown when the item is clicked.
-   */
-  itemClickTooltipText: string;
   /**
    * Called when the user clicks on an item, and the item is not disabled. The event detail object contains the id of the clicked item.
    */
@@ -63,6 +55,10 @@ export namespace ButtonGroupProps {
    * - `iconUrl` (string) - (Optional) Specifies the URL of a custom icon.
 
    * - `iconSvg` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/icon/).
+
+   * - `tooltipText` (string) - (Optional) Text that appears in a tooltip when the user hovers over the item.
+
+   * - `successText` (string) - (Optional) Text that appears when the user clicks the item. Use to provide feedback to the user.
    */
   export interface IconButton {
     type: 'icon-button';
@@ -76,9 +72,16 @@ export namespace ButtonGroupProps {
     iconName?: IconProps.Name;
     iconUrl?: string;
     iconSvg?: React.ReactNode;
+    tooltipText?: string;
+    successText?: string;
   }
 
-  export interface ItemClickDetails extends BaseNavigationDetail {
+  export interface ItemClickDetails {
     id: string;
   }
+}
+
+export interface ItemProps {
+  item: ButtonGroupProps.Item;
+  onItemClick?: CancelableEventHandler<ButtonGroupProps.ItemClickDetails>;
 }
