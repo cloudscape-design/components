@@ -16,7 +16,7 @@ export default function KeyValueScenario() {
       <ScreenshotArea>
         <SpaceBetween size="s">
           <Box padding="s">
-            <Box variant="h1">1 column</Box>
+            <Box variant="h2">1 column</Box>
             <KeyValuePairs
               columns={[
                 {
@@ -31,7 +31,7 @@ export default function KeyValueScenario() {
             />
           </Box>
           <Box padding="s">
-            <Box variant="h1">3 columns</Box>
+            <Box variant="h2">3 columns</Box>
             <KeyValuePairs
               columns={[
                 {
@@ -92,7 +92,7 @@ export default function KeyValueScenario() {
             />
           </Box>
           <Box padding="s">
-            <Box variant="h1">With info link</Box>
+            <Box variant="h2">With info link</Box>
             <KeyValuePairs
               columns={[
                 {
@@ -112,7 +112,7 @@ export default function KeyValueScenario() {
             />
           </Box>
           <Box padding="s">
-            <Box variant="h1">With column title and multiple rows</Box>
+            <Box variant="h2">With column title and multiple rows</Box>
             <InternalSpaceBetween size="l">
               <KeyValuePairs
                 columns={[
