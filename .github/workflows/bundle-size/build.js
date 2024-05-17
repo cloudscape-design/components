@@ -2,7 +2,6 @@ import { build } from 'esbuild';
 import { gzip } from 'node:zlib';
 import { promisify } from 'node:util';
 import { unlinkSync, readFileSync, writeFileSync } from 'node:fs';
-import path from 'node:path';
 
 const compress = promisify(gzip);
 
