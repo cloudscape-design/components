@@ -8,6 +8,7 @@ import StatusIndicator from '~components/status-indicator';
 import Link from '~components/link';
 import Box from '~components/box';
 import InternalSpaceBetween from '~components/space-between/internal';
+import { CopyToClipboard, ProgressBar } from '~components';
 
 export default function KeyValueScenario() {
   return (
@@ -21,8 +22,8 @@ export default function KeyValueScenario() {
                 {
                   items: [
                     {
-                      key: 'Label for key',
-                      value: 'Value',
+                      key: 'Distribution ID',
+                      value: 'E1WG1ZNPRXT0D4',
                     },
                   ],
                 },
@@ -30,42 +31,60 @@ export default function KeyValueScenario() {
             />
           </Box>
           <Box padding="s">
-            <Box variant="h1">2 columns</Box>
+            <Box variant="h1">3 columns</Box>
             <KeyValuePairs
               columns={[
                 {
                   items: [
                     {
-                      key: 'Label for key',
-                      value: 'Value',
+                      key: 'Distribution ID',
+                      value: 'E1WG1ZNPRXT0D4',
                     },
                     {
-                      key: 'Label for key',
-                      value: <StatusIndicator>Value for positive status</StatusIndicator>,
-                    },
-                    {
-                      key: 'Label for key',
-                      value: <StatusIndicator type="error">Value for negative status</StatusIndicator>,
+                      key: 'ARN',
+                      value: (
+                        <CopyToClipboard
+                          copyButtonAriaLabel="Copy ARN"
+                          copyErrorText="ARN failed to copy"
+                          copySuccessText="ARN copied"
+                          textToCopy="arn:service23G24::111122223333:distribution/23E1WG1ZNPRXT0D4"
+                          variant="inline"
+                        />
+                      ),
                     },
                   ],
                 },
                 {
                   items: [
                     {
-                      key: 'Label for key',
+                      key: 'Status',
+                      value: <StatusIndicator>Available</StatusIndicator>,
+                    },
+                    {
+                      key: 'SSL Certificate',
                       value: (
-                        <Link external={true} href="#">
-                          Value with external link
-                        </Link>
+                        <ProgressBar
+                          value={30}
+                          additionalInfo="Additional information"
+                          description="Progress bar label"
+                        />
                       ),
                     },
+                  ],
+                },
+                {
+                  items: [
                     {
-                      key: 'Label for key',
-                      value: 'Value',
+                      key: 'Price class',
+                      value: 'Use only US, Canada, Europe,',
                     },
                     {
-                      key: 'Label for key',
-                      value: 'Value',
+                      key: 'CNAMEs',
+                      value: (
+                        <Link external={true} href="#">
+                          abc.service23G24.xyz
+                        </Link>
+                      ),
                     },
                   ],
                 },
@@ -79,11 +98,11 @@ export default function KeyValueScenario() {
                 {
                   items: [
                     {
-                      key: 'Label for key',
-                      value: 'Value',
+                      key: 'Distribution ID',
+                      value: 'E1WG1ZNPRXT0D4',
                       info: (
                         <Link variant="info" href="#">
-                          link
+                          Info
                         </Link>
                       ),
                     },
@@ -108,15 +127,15 @@ export default function KeyValueScenario() {
                         key: 'Label for key',
                         value: <StatusIndicator>Value for positive status</StatusIndicator>,
                       },
-                      {
-                        key: 'Label for key',
-                        value: <StatusIndicator type="error">Value for negative status</StatusIndicator>,
-                      },
                     ],
                   },
                   {
                     title: 'Column Title',
                     items: [
+                      {
+                        key: 'Label for key',
+                        value: 'Value',
+                      },
                       {
                         key: 'Label for key',
                         value: (
@@ -124,23 +143,6 @@ export default function KeyValueScenario() {
                             Value with external link
                           </Link>
                         ),
-                      },
-                      {
-                        key: 'Label for key',
-                        value: 'Value',
-                      },
-                      {
-                        key: 'Label for key',
-                        value: 'Value',
-                      },
-                    ],
-                  },
-                  {
-                    title: 'Column Title',
-                    items: [
-                      {
-                        key: 'Label for key',
-                        value: 'Value',
                       },
                     ],
                   },
@@ -159,15 +161,15 @@ export default function KeyValueScenario() {
                         key: 'Label for key',
                         value: <StatusIndicator>Value for positive status</StatusIndicator>,
                       },
-                      {
-                        key: 'Label for key',
-                        value: <StatusIndicator type="error">Value for negative status</StatusIndicator>,
-                      },
                     ],
                   },
                   {
                     title: 'Column Title',
                     items: [
+                      {
+                        key: 'Label for key',
+                        value: 'Value',
+                      },
                       {
                         key: 'Label for key',
                         value: (
@@ -175,31 +177,6 @@ export default function KeyValueScenario() {
                             Value with external link
                           </Link>
                         ),
-                      },
-                      {
-                        key: 'Label for key',
-                        value: 'Value',
-                      },
-                      {
-                        key: 'Label for key',
-                        value: 'Value',
-                      },
-                      {
-                        key: 'Label for key',
-                        value: 'Value',
-                      },
-                      {
-                        key: 'Label for key',
-                        value: 'Value',
-                      },
-                    ],
-                  },
-                  {
-                    title: 'Column Title',
-                    items: [
-                      {
-                        key: 'Label for key',
-                        value: 'Value',
                       },
                     ],
                   },
