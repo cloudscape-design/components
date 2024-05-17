@@ -3,10 +3,10 @@
 import React from 'react';
 import clsx from 'clsx';
 import styles from './styles.css.js';
-import Header from '../header/internal';
 import { KeyValuePairsProps } from './interfaces';
 import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
 import ColumnLayout from '../column-layout/internal';
+import Box from '../box/internal';
 
 export { KeyValuePairsProps };
 
@@ -17,7 +17,11 @@ const InternalKeyValuePairs = React.forwardRef(
         <ColumnLayout columns={columns.length} variant="text-grid">
           {columns.map((column, columnIndex) => (
             <div className={styles.column} key={columnIndex}>
-              {column.title && <Header variant="h3">{column.title}</Header>}
+              {column.title && (
+                <Box variant="h3" padding="n">
+                  {column.title}
+                </Box>
+              )}
               <dl className={styles.list}>
                 {column.items.map((item, itemIndex) => (
                   <div key={columnIndex + itemIndex}>
