@@ -10,14 +10,6 @@ function concatFiles(files) {
   return files.reduce((total, current) => total + current.text ?? '', '');
 }
 
-function getInstalledVersions(projectRoot) {
-  const packageLock = JSON.parse(readFileSync(path.join(projectRoot, 'package-lock.json'), 'utf-8'));
-  const entries = Object.entries(packageLock.packages)
-    .filter(([pkg]) => pkg.includes('@cloudscape-design'))
-    .map(([pkg, details]) => [pkg.replace(/^node_modules\//, ''), details.version]);
-  return Object.fromEntries(entries);
-}
-
 async function main() {
   try {
     unlinkSync('output.json');
@@ -45,7 +37,6 @@ async function main() {
     cssCompressedSize: await getCompressedSize(cssContent),
     jsSize: jsContent.length,
     jsCompressedSize: await getCompressedSize(jsContent),
-    versions: getInstalledVersions('../components'),
   };
 }
 
