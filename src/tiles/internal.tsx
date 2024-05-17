@@ -9,13 +9,10 @@ import styles from './styles.css.js';
 
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { Tile } from './tile';
 import useRadioGroupForwardFocus from '../internal/hooks/forward-focus/radio-group';
-
-const COLUMN_TRIGGERS: TilesProps.Breakpoint[] = ['default', 'xxs', 'xs'];
+import InternalColumnLayout from '../column-layout/internal';
 
 type InternalTilesProps = TilesProps & InternalBaseComponentProps;
 
@@ -40,8 +37,6 @@ const InternalTiles = React.forwardRef(
     const generatedName = useUniqueId('awsui-tiles-');
 
     const [tileRef, tileRefIndex] = useRadioGroupForwardFocus(ref, items, value);
-    const [breakpoint, breakpointRef] = useContainerBreakpoints(COLUMN_TRIGGERS);
-    const mergedRef = useMergeRefs(breakpointRef, __internalRootRef);
 
     const columnCount = getColumnCount(items, columns);
 
@@ -55,9 +50,9 @@ const InternalTiles = React.forwardRef(
         aria-controls={ariaControls}
         {...baseProps}
         className={clsx(baseProps.className, styles.root)}
-        ref={mergedRef}
+        ref={__internalRootRef}
       >
-        <div className={clsx(styles.columns, styles[`column-${columnCount}`])}>
+        <InternalColumnLayout columns={columnCount}>
           {items &&
             items.map((item, index) => (
               <Tile
@@ -66,11 +61,10 @@ const InternalTiles = React.forwardRef(
                 item={item}
                 selected={item.value === value}
                 name={name || generatedName}
-                breakpoint={breakpoint}
                 onChange={onChange}
               />
             ))}
-        </div>
+        </InternalColumnLayout>
       </div>
     );
   }

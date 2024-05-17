@@ -2,16 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 import { act, render } from '@testing-library/react';
-import createWrapper, { ElementWrapper, TilesWrapper } from '../../../lib/components/test-utils/dom';
+import createWrapper from '../../../lib/components/test-utils/dom';
 import TileWrapper from '../../../lib/components/test-utils/dom/tiles/tile';
 import Tiles, { TilesProps } from '../../../lib/components/tiles';
-import styles from '../../../lib/components/tiles/styles.css.js';
-
-class TilesInternalWrapper extends TilesWrapper {
-  findColumns(): ElementWrapper {
-    return this.findByClassName(styles.columns)!;
-  }
-}
+import columnLayoutStyles from '../../../lib/components/column-layout/styles.css.js';
 
 const defaultItems: TilesProps.TilesDefinition[] = [
   { value: 'val1', label: 'Option one', image: 'Imagine img tag here' },
@@ -165,22 +159,30 @@ describe('correct number of columns', () => {
     9: 3,
     10: 3,
   };
-  let items = [{ value: '_', label: '_' }];
+
+  function generateItems(length: number) {
+    return Array.from({ length }, (_, i) => ({ value: `${i}`, label: '_' }));
+  }
+
   for (let nItems = 1; nItems <= 10; nItems++) {
-    it(`can have ${nItems} columns`, () => {
-      const dummyItem = { value: `${nItems}`, label: '_' };
-      const { wrapper } = renderTiles(<Tiles value={null} items={items} />);
-      const internalWrapper = new TilesInternalWrapper(wrapper.getElement());
-      expect(internalWrapper.findColumns().getElement()).toHaveClass(styles[`column-${expected[nItems]}`]);
-      items = [...items, dummyItem];
+    it(`can have ${nItems} items`, () => {
+      const { wrapper } = renderTiles(<Tiles value={null} items={generateItems(nItems)} />);
+
+      const expectedColumnCount = expected[nItems];
+
+      const grid = createWrapper(wrapper.getElement()).findGrid()!;
+      expect(grid.getElement()).toHaveClass(columnLayoutStyles[`grid-columns-${expectedColumnCount}`]);
     });
   }
 
   for (let nColumns = 1; nColumns <= 4; nColumns++) {
     it('keeps the number of columns if supplied by the customer', function () {
-      const { wrapper } = renderTiles(<Tiles value={null} items={items} columns={nColumns} />);
-      const internalWrapper = new TilesInternalWrapper(wrapper.getElement());
-      expect(internalWrapper.findColumns().getElement()).toHaveClass(styles[`column-${nColumns}`]);
+      const { wrapper } = renderTiles(<Tiles value={null} items={generateItems(20)} columns={nColumns} />);
+
+      const expectedColumnCount = nColumns;
+
+      const grid = createWrapper(wrapper.getElement()).findGrid()!;
+      expect(grid.getElement()).toHaveClass(columnLayoutStyles[`grid-columns-${expectedColumnCount}`]);
     });
   }
 });

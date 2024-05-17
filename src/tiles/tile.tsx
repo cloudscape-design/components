@@ -7,7 +7,6 @@ import { TilesProps } from './interfaces';
 import RadioButton from '../radio-group/radio-button';
 import styles from './styles.css.js';
 
-import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import { fireNonCancelableEvent } from '../internal/events';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
@@ -16,12 +15,11 @@ interface TileProps {
   item: TilesProps.TilesDefinition;
   selected: boolean;
   name: string;
-  breakpoint: ReturnType<typeof useContainerBreakpoints>[0];
   onChange: TilesProps['onChange'];
 }
 
 export const Tile = React.forwardRef(
-  ({ item, selected, name, breakpoint, onChange }: TileProps, forwardedRef: React.Ref<HTMLInputElement>) => {
+  ({ item, selected, name, onChange }: TileProps, forwardedRef: React.Ref<HTMLInputElement>) => {
     const internalRef = useRef<HTMLInputElement>(null);
     const isVisualRefresh = useVisualRefresh();
 
@@ -34,8 +32,7 @@ export const Tile = React.forwardRef(
           { [styles['has-metadata']]: item.description || item.image },
           { [styles.selected]: selected },
           { [styles.disabled]: !!item.disabled },
-          { [styles.refresh]: isVisualRefresh },
-          styles[`breakpoint-${breakpoint}`]
+          { [styles.refresh]: isVisualRefresh }
         )}
         data-value={item.value}
         onClick={() => {

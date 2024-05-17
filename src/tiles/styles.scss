@@ -8,7 +8,6 @@
 
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
-@use '../column-layout/styles.scss' as mixins;
 
 $gutter: awsui.$space-grid-gutter;
 
@@ -18,20 +17,11 @@ $gutter: awsui.$space-grid-gutter;
   display: block;
 }
 
-@mixin make-column($nColumns) {
-  $nColumns: math.div(12, $nColumns);
-  $p: math.percentage(math.div(1, $nColumns));
-  flex: 0 0;
-  // IE11 ignores calc functions in flex shorthand declarations
-  // https://github.com/philipwalton/flexbugs#flexbug-8
-  flex-basis: calc(#{$p} - #{$gutter});
-  max-inline-size: calc(#{$p} - #{$gutter});
-}
-
 .tile-container {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  block-size: 100%;
   border-block: styles.$control-border-width solid awsui.$color-border-input-default;
   border-inline: styles.$control-border-width solid awsui.$color-border-input-default;
   border-start-start-radius: awsui.$border-radius-tiles;
@@ -70,29 +60,6 @@ $gutter: awsui.$space-grid-gutter;
     transition:
       border-color awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick,
       background-color awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick;
-  }
-}
-
-.columns {
-  display: flex;
-  flex-wrap: wrap;
-  margin-block: calc(#{$gutter} / -2);
-  margin-inline: calc(#{$gutter} / -2);
-  @each $i, $columns-setting in mixins.$column-breakpoint-spans {
-    &.column-#{$i} {
-      & > .tile-container {
-        margin-block: calc(#{$gutter} / 2);
-        margin-inline: calc(#{$gutter} / 2);
-        box-sizing: border-box;
-        @include make-column(12);
-        &.breakpoint-xs {
-          @include make-column(map.get($columns-setting, 'xs'));
-        }
-        &.breakpoint-xxs {
-          @include make-column(map.get($columns-setting, 'xxs'));
-        }
-      }
-    }
   }
 }
 
