@@ -7367,6 +7367,12 @@ This only works well if you're using a single control in the form field.
       "type": "string",
     },
     Object {
+      "description": "Sets the label to be inline with the input",
+      "name": "inlineLabel",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "defaultValue": "false",
       "description": "Determines whether the primary control should expand to 12 columns.
 By default (or when this property is set to \`false\`), the primary control
