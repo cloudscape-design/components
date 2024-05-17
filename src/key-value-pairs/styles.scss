@@ -35,6 +35,9 @@
 
 .description {
   @include styles.styles-reset;
+  margin-inline-start: 0;
+  margin-block-start: 0;
+  margin-block-end: 0;
 }
 
 .info {
