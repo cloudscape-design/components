@@ -8349,8 +8349,14 @@ Object {
       "type": "string",
     },
     Object {
-      "description": "A list of key-value pair items, grouped by column. A maximum of 4 columns
-are supported.",
+      "description": "An array of column definitions. A maximum of 4 columns are supported per row.
+Each column definition has the following properties:
+* \`title\` (string) - (Optional) An optional title for this column
+* \`items\` (ReadonlyArray<KeyValuePairProps.KeyValuePair>) - An array of
+    key-value pair items. Each item can have the following properties:
+  * \`key\` (string) - The key title.
+  * \`info\` (React.ReactNode) - (Optional) Area next to the key to display an info link.
+  * \`value\` (React.ReactNode) - The corresponding value for the key.",
       "name": "columns",
       "optional": false,
       "type": "ReadonlyArray<KeyValuePairsProps.Column>",
