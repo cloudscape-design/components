@@ -4,13 +4,7 @@ import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-
 import styles from '../../../key-value-pairs/styles.selectors.js';
 import BoxWrapper from '../box';
 
-export default class KeyValuePairWrapper extends ComponentWrapper {
-  static rootSelector: string = styles['key-value-pairs'];
-
-  findColumns(): Array<ElementWrapper> {
-    return this.findAllByClassName(styles.column);
-  }
-
+export class KeyValuePairsColumnWrapper extends ComponentWrapper {
   findTitle(): BoxWrapper | null {
     return this.findComponent(`.${BoxWrapper.rootSelector}`, BoxWrapper);
   }
@@ -25,5 +19,13 @@ export default class KeyValuePairWrapper extends ComponentWrapper {
 
   findInfo(): ElementWrapper | null {
     return this.findByClassName(styles.info);
+  }
+}
+
+export default class KeyValuePairWrapper extends ComponentWrapper {
+  static rootSelector: string = styles['key-value-pairs'];
+
+  findColumns(): Array<KeyValuePairsColumnWrapper> {
+    return this.findAllByClassName(styles.column).map(i => new KeyValuePairsColumnWrapper(i.getElement()));
   }
 }
