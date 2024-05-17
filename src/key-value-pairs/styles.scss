@@ -13,14 +13,14 @@
 .column {
   display: flex;
   flex-direction: column;
-  row-gap: awsui.$space-scaled-l;
+  row-gap: awsui.$space-scaled-m;
 }
 
 .list {
   @include styles.styles-reset;
   display: flex;
   flex-direction: column;
-  row-gap: awsui.$space-scaled-l;
+  row-gap: awsui.$space-scaled-m;
 }
 
 .key {
