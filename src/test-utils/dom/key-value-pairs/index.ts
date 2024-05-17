@@ -22,7 +22,7 @@ export class KeyValuePairsColumnWrapper extends ComponentWrapper {
   }
 }
 
-export default class KeyValuePairWrapper extends ComponentWrapper {
+export default class KeyValuePairsWrapper extends ComponentWrapper {
   static rootSelector: string = styles['key-value-pairs'];
 
   findColumns(): Array<KeyValuePairsColumnWrapper> {
