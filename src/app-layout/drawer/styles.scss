@@ -7,11 +7,6 @@
 @use '../../internal/hooks/focus-visible' as focus-visible;
 @use '../constants' as constants;
 
-// should be above sticky notifications
-$drawer-z-index: 830;
-// should be above mobile toolbar
-$drawer-z-index-mobile: 1001;
-
 .toggle {
   box-sizing: border-box;
   padding-block: constants.$toggle-padding-vertical;
@@ -28,7 +23,7 @@ $drawer-z-index-mobile: 1001;
   word-wrap: break-word;
   box-shadow: awsui.$shadow-panel;
   &:not(.drawer-mobile) {
-    z-index: $drawer-z-index;
+    z-index: constants.$drawer-z-index;
   }
   &-closed {
     min-inline-size: constants.$sidebar-size-closed;
@@ -42,7 +37,7 @@ $drawer-z-index-mobile: 1001;
   overflow: auto;
   background-color: awsui.$color-background-layout-panel-content;
   .drawer-mobile > & {
-    z-index: $drawer-z-index-mobile;
+    z-index: constants.$drawer-z-index-mobile;
     inset: 0;
   }
   .drawer-closed > & {
