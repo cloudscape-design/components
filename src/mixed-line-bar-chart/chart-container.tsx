@@ -149,7 +149,8 @@ export default function ChartContainer<T extends ChartDataTypes>({
   const containerRefObject = useRef(null);
   const containerRef = useMergeRefs(containerMeasureRef, containerRefObject);
   const popoverRef = useRef<HTMLElement | null>(null);
-  const isRtl = containerRefObject?.current && getIsRtl(containerRefObject.current);
+
+  const isRtl = getIsRtl(containerRefObject.current);
 
   const xDomain = (props.xDomain || computeDomainX(series, xScaleType)) as
     | readonly number[]
