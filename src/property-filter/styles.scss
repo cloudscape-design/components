@@ -109,3 +109,8 @@
 .custom-filter-actions {
   /* used in test-utils */
 }
+
+.constraint {
+  padding-block-start: awsui.$space-xxs;
+  @include styles.form-control-description;
+}

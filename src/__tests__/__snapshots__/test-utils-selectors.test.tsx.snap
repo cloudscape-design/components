@@ -411,6 +411,7 @@ Object {
     "awsui_root_11huc",
   ],
   "property-filter": Array [
+    "awsui_constraint_1wzqe",
     "awsui_custom-control_1wzqe",
     "awsui_custom-filter-actions_1wzqe",
     "awsui_remove-all_1wzqe",

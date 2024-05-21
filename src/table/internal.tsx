@@ -201,7 +201,7 @@ const InternalTable = React.forwardRef(
       visibleColumns,
     });
 
-    const { isItemSelected, getSelectAllProps, getItemSelectionProps, updateShiftToggle } = useSelection({
+    const { isItemSelected, getSelectAllProps, getItemSelectionProps } = useSelection({
       items: allItems,
       trackBy,
       selectedItems,
@@ -413,7 +413,12 @@ const InternalTable = React.forwardRef(
               {!!renderAriaLive && !!firstIndex && (
                 <LiveRegion>
                   <span>
-                    {renderAriaLive({ totalItemsCount, firstIndex, lastIndex: firstIndex + items.length - 1 })}
+                    {renderAriaLive({
+                      firstIndex,
+                      lastIndex: firstIndex + items.length - 1,
+                      visibleItemsCount: allItems.length,
+                      totalItemsCount,
+                    })}
                   </span>
                 </LiveRegion>
               )}
@@ -493,7 +498,7 @@ const InternalTable = React.forwardRef(
                             }
                             {...getTableRowRoleProps({ tableRole, firstIndex, rowIndex, ...expandableItemProps })}
                           >
-                            {hasSelection && (
+                            {getItemSelectionProps && (
                               <TableTdElement
                                 {...sharedCellProps}
                                 className={clsx(styles['selection-control'])}
@@ -505,7 +510,6 @@ const InternalTable = React.forwardRef(
                                 <SelectionControl
                                   onFocusDown={moveFocusDown}
                                   onFocusUp={moveFocusUp}
-                                  onShiftToggle={updateShiftToggle}
                                   {...getItemSelectionProps(item)}
                                 />
                               </TableTdElement>

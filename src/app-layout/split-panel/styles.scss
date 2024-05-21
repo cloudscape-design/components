@@ -10,4 +10,5 @@
 
 .drawer-content {
   position: fixed;
+  z-index: constants.$drawer-z-index;
 }
