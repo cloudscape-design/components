@@ -257,7 +257,7 @@ function useTableData() {
       setError(settings.emulateServerError);
     }, delay);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [delay]);
+  }, [delay, setLoading, setError, setReadyInstances]);
 
   const [selectedCluster, setSelectedCluster] = useState<null | string>(null);
   const getScopedInstances = (selected: null | string) =>
@@ -303,7 +303,7 @@ function useTableData() {
     }, delay);
     return () => clearTimeout(timeoutId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [delay, memoItems]);
+  }, [delay, memoItems, setLoading, setError, setReadyItems]);
 
   // Decorate path options to only show the last node and not the full path.
   collectionResult.propertyFilterProps.filteringOptions = collectionResult.propertyFilterProps.filteringOptions.map(
