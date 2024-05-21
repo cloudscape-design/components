@@ -286,7 +286,7 @@ describe('Series', () => {
   );
 
   describe('support multiple bar series', () => {
-    const series = [barSeries, barSeries2];
+    const series = [barSeries, barSeries2, { ...barSeries2, title: 'Bar series 3' }];
     const xDomain = ['Group 1', 'Group 2', 'Group 3', 'Group 4'];
     const yDomain = [0, 20];
 
@@ -295,9 +295,9 @@ describe('Series', () => {
         [true, false].forEach(stackedBars => {
           const testDescription = `${stackedBars ? 'stacked' : 'grouped'} ${horizontalBars ? 'horizontal' : 'vertical'} bars rtl=${isRtl}`;
 
-          jest.mocked(getIsRtl).mockReturnValue(isRtl);
-
           test(`${testDescription}`, () => {
+            jest.mocked(getIsRtl).mockReturnValue(isRtl);
+
             const { wrapper } = renderMixedChart(
               <MixedLineBarChart
                 series={series}
@@ -318,6 +318,8 @@ describe('Series', () => {
           });
 
           test(`${testDescription} with negative values`, () => {
+            jest.mocked(getIsRtl).mockReturnValue(isRtl);
+
             const negativeSeries = [
               { ...barSeries, data: barSeries.data.map(({ x, y }) => ({ x, y: x === 'Group 2' ? -y : y })) },
               { ...barSeries2, data: barSeries2.data.map(({ x, y }) => ({ x, y: x === 'Group 2' ? -y : y })) },
@@ -334,8 +336,8 @@ describe('Series', () => {
               />
             );
 
-            expect(wrapper.findSeries()).toHaveLength(series.length);
-            series.forEach((chartSeries, i) =>
+            expect(wrapper.findSeries()).toHaveLength(negativeSeries.length);
+            negativeSeries.forEach((chartSeries, i) =>
               expect(wrapper.findSeries()[i].getElement()).toHaveAttribute('aria-label', chartSeries.title)
             );
 
