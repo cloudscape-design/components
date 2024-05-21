@@ -8,5 +8,6 @@ export interface SelectionProps {
   indeterminate?: boolean;
   checked: boolean;
   onChange: () => void;
+  onShiftToggle?: (value: boolean) => void;
   ariaLabel?: string;
 }
