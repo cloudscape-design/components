@@ -29,12 +29,12 @@
   @include styles.font-label;
   @include styles.info-link-spacing;
   position: relative;
-  left: .5em;
+  left: .75em;
   padding: .5em .25em 0;
   font-size: .75em;
-  line-height: 1em;
+  line-height: 14px;
   display: inline-block;
-  max-inline-size: calc(100% - 1.25em);
+  max-inline-size: calc(100% - 1.5em);
   z-index: 1;
   /* Stepped gradient background for label overlap between input and background. */
    background-image: linear-gradient(
@@ -76,7 +76,7 @@
 }
 
 .control-inlineLabel {
-  margin-block-start: -1em;
+  margin-block-start: -11px;
 }
 
 .error {
