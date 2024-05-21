@@ -11450,6 +11450,12 @@ When using this slot, make sure to still provide a mechanism to clear all filter
       "name": "customFilterActions",
     },
     Object {
+      "description": "Constraint text that's displayed below the filtering input.
+Use this to provide additional information about supported filters.",
+      "isDefault": false,
+      "name": "filteringConstraintText",
+    },
+    Object {
       "description": "Displayed when there are no options to display.
 This is only shown when \`statusType\` is set to \`finished\` or not set at all.",
       "isDefault": false,
