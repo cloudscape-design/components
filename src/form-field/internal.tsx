@@ -218,7 +218,7 @@ export default function InternalFormField({
       ref={__internalRootRef}
       {...analyticsAttributes}
     >
-      <div className={clsx(__hideLabel && styles['visually-hidden'])}>
+      <div className={clsx(styles['label-wrapper'], __hideLabel && styles['visually-hidden'])}>
         {label && (
           <label className={styles.label} id={slotIds.label} htmlFor={generatedControlId}>
             {label}
