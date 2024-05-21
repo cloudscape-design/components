@@ -4,10 +4,11 @@
 */
 
 .parent {
-  height: 180vh;
-  width: 50%;
-  border: 1px solid black;
-  margin-bottom: var(--fixed-height);
+  block-size: 180vh;
+  inline-size: 50%;
+  border-block: 1px solid black;
+  border-inline: 1px solid black;
+  margin-block-end: var(--fixed-height);
   display: flex;
   flex-flow: column nowrap;
   justify-content: space-between;
@@ -15,16 +16,16 @@
 
 .fixed {
   background-color: grey;
-  height: var(--fixed-height);
+  block-size: var(--fixed-height);
   position: fixed;
-  left: 0;
-  width: 100vw;
+  inset-inline-start: 0;
+  inline-size: 100vw;
 }
 
 .footer {
-  bottom: 0;
+  inset-block-end: 0;
 }
 
 .header {
-  top: 0;
+  inset-block-start: 0;
 }

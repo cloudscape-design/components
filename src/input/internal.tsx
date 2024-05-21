@@ -173,7 +173,12 @@ function InternalInput(
   }
 
   return (
-    <div {...baseProps} className={clsx(baseProps.className, styles['input-container'])} ref={__internalRootRef}>
+    <div
+      {...baseProps}
+      className={clsx(baseProps.className, styles['input-container'])}
+      ref={__internalRootRef}
+      dir={type === 'email' ? 'ltr' : undefined}
+    >
       {__leftIcon && (
         <span onClick={__onLeftIconClick} className={styles['input-icon-left']}>
           <InternalIcon name={__leftIcon} variant={disabled || readOnly ? 'disabled' : __leftIconVariant} />

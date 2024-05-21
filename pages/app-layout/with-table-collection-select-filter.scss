@@ -22,12 +22,12 @@
 .input-filter {
   order: 0;
   flex-grow: 6;
-  width: auto;
-  max-width: 728px;
+  inline-size: auto;
+  max-inline-size: 728px;
 }
 
 .select-filter {
-  max-width: 130px;
+  max-inline-size: 130px;
   flex-grow: 2;
-  width: auto;
+  inline-size: auto;
 }

@@ -71,27 +71,27 @@ export default function () {
           checked={themed}
           onChange={evt => setThemed(evt.currentTarget.checked)}
         />
-        <span style={{ marginLeft: 5 }}>Apply theme</span>
+        <span style={{ marginInlineStart: 5 }}>Apply theme</span>
       </label>
       <label>
         <input
-          style={{ marginLeft: 15 }}
+          style={{ marginInlineStart: 15 }}
           type="checkbox"
           data-testid="set-secondary"
           checked={secondaryTheme}
           onChange={evt => setSecondaryTheme(evt.currentTarget.checked)}
         />
-        <span style={{ marginLeft: 5 }}>Secondary theme</span>
+        <span style={{ marginInlineStart: 5 }}>Secondary theme</span>
       </label>
       <label>
         <input
-          style={{ marginLeft: 15 }}
+          style={{ marginInlineStart: 15 }}
           type="checkbox"
           data-testid="change-theme-method"
           checked={themeMethod === 'applyTheme'}
           onChange={evt => setThemeMethod(evt.currentTarget.checked ? 'applyTheme' : 'generateThemeStylesheet')}
         />
-        <span style={{ marginLeft: 5 }}>Use applyTheme</span>
+        <span style={{ marginInlineStart: 5 }}>Use applyTheme</span>
       </label>
       <ScreenshotArea>
         <SpaceBetween direction="vertical" size="m">

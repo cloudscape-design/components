@@ -313,8 +313,9 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * Use this function to announce page changes to screen reader users.
    * The function argument takes the following properties:
    * * `firstIndex` (number) - The provided `firstIndex` property which defaults to 1 when not defined.
-   * * `totalItemsCount` (optional, number) - The provided `totalItemsCount` property.
    * * `lastIndex` (number) - The index of the last visible item of the table.
+   * * `visibleItemsCount` (number) - The number of rendered table items.
+   * * `totalItemsCount` (optional, number) - The provided `totalItemsCount` property.
    * Important: in tables with expandable rows the `firstIndex`, `lastIndex`, and `totalItemsCount` reflect the top-level items only.
    */
   renderAriaLive?: (data: TableProps.LiveAnnouncement) => string;

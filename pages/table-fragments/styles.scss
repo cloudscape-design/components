@@ -8,28 +8,31 @@
 .custom-table {
   box-sizing: border-box;
   overflow-x: auto;
-  width: 100%;
+  inline-size: 100%;
 
   &.use-wrapper-paddings {
-    width: calc(100% - 64px);
-    margin: 0 32px;
+    inline-size: calc(100% - 64px);
+    margin-block: 0;
+    margin-inline: 32px;
   }
 
   &-table {
-    width: 100%;
+    inline-size: 100%;
     box-sizing: border-box;
     border-spacing: 0;
 
     &:not(.use-wrapper-paddings) {
-      padding: 0 32px;
+      padding-block: 0;
+      padding-inline: 32px;
     }
   }
 
   &-cell {
     position: relative;
-    border-left: 1px solid tokens.$color-border-divider-default;
-    border-bottom: 1px solid tokens.$color-border-divider-default;
-    padding: 8px 16px;
+    border-inline-start: 1px solid tokens.$color-border-divider-default;
+    border-block-end: 1px solid tokens.$color-border-divider-default;
+    padding-block: 8px;
+    padding-inline: 16px;
 
     overflow: hidden;
     text-overflow: ellipsis;
@@ -42,47 +45,53 @@
     }
 
     &:first-child {
-      padding-left: 2px;
-      border-left: none;
+      padding-inline-start: 2px;
+      border-inline-start: none;
     }
     &:last-child {
-      padding-right: 2px;
+      padding-inline-end: 2px;
     }
 
     &.sticky-cell {
       position: sticky;
 
       &-last-left {
-        border-right: 2px solid red;
+        border-inline-end: 2px solid red;
       }
       &-last-right {
-        border-left: 2px solid red !important;
+        border-inline-start: 2px solid red !important;
       }
       &-pad-left {
-        padding-left: 32px;
+        padding-inline-start: 32px;
       }
     }
   }
 
   &-selection-cell {
-    width: 40px;
+    inline-size: 40px;
   }
 
   &-sorting-header {
-    padding: 0;
-    margin: 0;
+    padding-block: 0;
+    padding-inline: 0;
+    margin-block: 0;
+    margin-inline: 0;
     background: none;
-    border: none;
+    border-block: none;
+    border-inline: none;
     font-weight: bold;
-    margin-left: 2px;
+    margin-inline-start: 2px;
   }
 }
 
 .status-trigger-button {
   background-color: initial;
-  border: 0;
-  border-bottom: 1px dashed;
+  border-block: 0;
+  border-inline: 0;
+  border-block-end: 1px dashed;
   cursor: pointer;
-  margin: 0;
-  padding: 0;
+  margin-block: 0;
+  margin-inline: 0;
+  padding-block: 0;
+  padding-inline: 0;
 }

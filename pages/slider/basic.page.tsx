@@ -18,8 +18,10 @@ function Sliders() {
   const [value3, setValue3] = useState<SliderProps['value']>(50);
   const [value4, setValue4] = useState<SelectProps.Option>({ value: '2', label: `Not satisfied or unsatisfied` });
   const [value5, setValue5] = useState<SliderProps['value']>(72.5);
+  const [value6, setValue6] = useState<SliderProps['value']>(60);
   const [ticks, setTicks] = useState<boolean>(false);
   const [error, setError] = useState<string>('Enter a valid unit.');
+  const [warning, setWarning] = useState<string>('Unit is below 80.');
 
   const satisfactionScaleOptions = [
     { value: '0', label: 'Extremely unsatisfied' },
@@ -37,6 +39,10 @@ function Sliders() {
   const validateValue = (value: SliderProps['value']) => {
     if (value && (value < 0 || value > 100 || value % 1 !== 0)) {
       return 'Enter a valid unit.';
+    }
+
+    if (value && value < 80) {
+      return 'Unit is below 80.';
     }
 
     return '';
@@ -59,7 +65,7 @@ function Sliders() {
         i18nStrings={i18nStrings}
       />
       <FormField
-        label="Slider with input and validation"
+        label="Slider with input and error validation"
         errorText={error}
         i18nStrings={{ errorIconAriaLabel: 'Error' }}
       >
@@ -87,7 +93,43 @@ function Sliders() {
                   setValue2(Number(detail.value));
                   setError(validateValue(Number(detail.value)));
                 }}
-                controlId="validation-input"
+                controlId="validation-input-error"
+              />
+            </div>
+            <Box>Units</Box>
+          </SpaceBetween>
+        </div>
+      </FormField>
+      <FormField
+        label="Slider with input and warning validation"
+        warningText={warning}
+        i18nStrings={{ warningIconAriaLabel: 'Warning' }}
+      >
+        <div className={styles['flex-wrapper']}>
+          <div className={styles['slider-wrapper']}>
+            <Slider
+              ariaLabel="validation-slider-example"
+              value={value6}
+              onChange={({ detail }) => {
+                setValue6(detail.value);
+                setWarning(validateValue(detail.value));
+              }}
+              min={0}
+              max={100}
+              i18nStrings={i18nStrings}
+            />
+          </div>
+          <SpaceBetween size="m" alignItems="center" direction="horizontal">
+            <div className={styles['input-wrapper']}>
+              <Input
+                type="number"
+                inputMode="numeric"
+                value={`${value6}`}
+                onChange={({ detail }) => {
+                  setValue6(Number(detail.value));
+                  setWarning(validateValue(Number(detail.value)));
+                }}
+                controlId="validation-input-warning"
               />
             </div>
             <Box>Units</Box>

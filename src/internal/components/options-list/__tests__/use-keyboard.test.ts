@@ -27,7 +27,8 @@ const menuKeys: any = [
 }, {});
 
 const menuInitialProps = {
-  moveHighlight: () => {},
+  goUp: () => {},
+  goDown: () => {},
   selectOption: () => {},
   goHome: () => {},
   goEnd: () => {},
@@ -54,23 +55,23 @@ describe('useTriggerKeyboard', () => {
 });
 
 describe('useMenuKeyboard', () => {
-  test('should move highlight up when pressing up', () => {
-    const moveHighlight = jest.fn();
+  test('should go up when pressing up', () => {
+    const goUp = jest.fn();
     const hook = renderHook(useMenuKeyboard, {
-      initialProps: { ...menuInitialProps, moveHighlight },
+      initialProps: { ...menuInitialProps, goUp },
     });
     act(() => hook.result.current(menuKeys.up));
-    expect(moveHighlight).toHaveBeenCalledWith(-1);
+    expect(goUp).toHaveBeenCalled();
     expect(menuKeys.up.preventDefault).toHaveBeenCalled();
   });
 
-  test('should move highlight down when pressing down', () => {
-    const moveHighlight = jest.fn();
+  test('should go down when pressing down', () => {
+    const goDown = jest.fn();
     const hook = renderHook(useMenuKeyboard, {
-      initialProps: { ...menuInitialProps, moveHighlight },
+      initialProps: { ...menuInitialProps, goDown },
     });
     act(() => hook.result.current(menuKeys.down));
-    expect(moveHighlight).toHaveBeenCalledWith(1);
+    expect(goDown).toHaveBeenCalled();
     expect(menuKeys.down.preventDefault).toHaveBeenCalled();
   });
 

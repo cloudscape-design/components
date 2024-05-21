@@ -14,7 +14,7 @@ export default function () {
   return (
     <Box padding="s">
       <h1>Date picker with month granularity</h1>
-      <ScreenshotArea style={{ height: 300 }}>
+      <ScreenshotArea style={{ blockSize: 300 }}>
         <DatePicker
           value={value}
           locale="en-GB"

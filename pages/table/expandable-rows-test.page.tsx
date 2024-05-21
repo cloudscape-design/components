@@ -109,7 +109,6 @@ export default () => {
             stripedRows={settings.stripedRows}
             columnDefinitions={columnDefinitions}
             items={tableData.items}
-            totalItemsCount={tableData.items.length}
             ariaLabels={ariaLabels}
             wrapLines={preferences.wrapLines}
             pagination={settings.usePagination && <Pagination {...tableData.paginationProps} />}

@@ -136,38 +136,36 @@ describe('labels', () => {
   });
 
   describe('live region', () => {
+    const getLiveRegionText = () => createWrapper().find(`.${liveRegionStyles.root}`)?.getElement().textContent;
+
     test.each([
       { firstIndex: 1, totalItemsCount: defaultItems.length },
       { firstIndex: undefined, totalItemsCount: undefined },
     ])(
-      'Should render a live region when firstIndex="$firstIndex" and totalItemsCount="$totalItemsCount"',
+      'should render a live region when firstIndex="$firstIndex" and totalItemsCount="$totalItemsCount"',
       ({ firstIndex, totalItemsCount }) => {
         const expectedFirstIndex = firstIndex ?? 1;
         const lastIndex = expectedFirstIndex + defaultItems.length - 1;
+        const visibleItemsCount = defaultItems.length;
 
-        const wrapper = renderTableWrapper({
+        renderTableWrapper({
           firstIndex,
           totalItemsCount,
-          renderAriaLive: ({ firstIndex, lastIndex, totalItemsCount }) =>
-            `Displaying items from ${firstIndex} to ${lastIndex} of ${totalItemsCount} items`,
+          renderAriaLive: ({ firstIndex, lastIndex, totalItemsCount, visibleItemsCount }) =>
+            `${firstIndex} ${lastIndex} ${totalItemsCount} ${visibleItemsCount}`,
         });
 
-        expect(wrapper.find(`.${liveRegionStyles.root}`)?.getElement().textContent).toBe(
-          `Displaying items from ${expectedFirstIndex} to ${lastIndex} of ${totalItemsCount} items`
-        );
+        expect(getLiveRegionText()).toBe(`${expectedFirstIndex} ${lastIndex} ${totalItemsCount} ${visibleItemsCount}`);
       }
     );
 
-    test('The table items live region must not include nested items', () => {
-      const firstIndex = 1;
+    test('`totalItemsCount` includes top-level items only, `visibleItemsCount includes all items`', () => {
       const totalItemsCount = defaultItems.length;
-      const lastIndex = firstIndex + defaultItems.length - 1;
+      const visibleItemsCount = defaultItems.length * 2;
 
-      const wrapper = renderTableWrapper({
-        firstIndex,
+      renderTableWrapper({
         totalItemsCount,
-        renderAriaLive: ({ firstIndex, lastIndex, totalItemsCount }) =>
-          `Displaying items from ${firstIndex} to ${lastIndex} of ${totalItemsCount} items`,
+        renderAriaLive: ({ totalItemsCount, visibleItemsCount }) => `${totalItemsCount} ${visibleItemsCount}`,
         expandableRows: {
           getItemChildren: item => [{ ...item, id: item.id * 100 }],
           isItemExpandable: item => item.id < 100,
@@ -176,9 +174,7 @@ describe('labels', () => {
         },
       });
 
-      expect(wrapper.find(`.${liveRegionStyles.root}`)?.getElement().textContent).toBe(
-        `Displaying items from ${firstIndex} to ${lastIndex} of ${totalItemsCount} items`
-      );
+      expect(getLiveRegionText()).toBe(`${totalItemsCount} ${visibleItemsCount}`);
     });
   });
 });

@@ -262,6 +262,12 @@ describe('invalidCharCheck', () => {
 
     const stringContainingEmojis = '💩';
     expect(invalidCharCheck(stringContainingEmojis)).toBe(true);
+
+    // generateStringOfInvalidCharacters method generates invalid characters as a negation of valid ones.
+    // That implies that we have a correct regex in the first place.
+    // However, it's easy to miss backslash, so we test it explicitly
+    const backslash = '\\';
+    expect(invalidCharCheck(backslash)).toBe(true);
   });
 });
 
@@ -277,6 +283,7 @@ function generateStringOfValidCharacters() {
   return [numbers, lowerCaseLetters, upperCaseLetters, specialCharacters, unicodeCharacters].join('');
 }
 
+// currently generates string with following characters: !"#$%&'()*,;<>?[\]^`{|}~
 function generateStringOfInvalidCharacters() {
   const validCharacterSet = new Set(generateStringOfValidCharacters().split(''));
   return Array(128)
