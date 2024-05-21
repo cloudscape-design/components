@@ -27,7 +27,7 @@ export interface TheadProps {
   variant: TableProps.Variant;
   wrapLines: boolean | undefined;
   resizableColumns: boolean | undefined;
-  getSelectAllProps: () => SelectionProps;
+  getSelectAllProps?: () => SelectionProps;
   onFocusMove: ((sourceElement: HTMLElement, fromIndex: number, direction: -1 | 1) => void) | undefined;
   onResizeFinish: (newWidths: Map<PropertyKey, number>) => void;
   onSortingChange: NonCancelableEventHandler<TableProps.SortingState<any>> | undefined;
@@ -118,7 +118,7 @@ const Thead = React.forwardRef(
               columnId={selectionColumnId}
               stickyState={stickyState}
             >
-              {selectionType === 'multi' ? (
+              {getSelectAllProps ? (
                 <SelectionControl
                   onFocusDown={event => {
                     onFocusMove!(event.target as HTMLElement, -1, +1);

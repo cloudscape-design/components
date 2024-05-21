@@ -213,7 +213,7 @@ const InternalTable = React.forwardRef(
       visibleColumns,
     });
 
-    const { isItemSelected, getSelectAllProps, getItemSelectionProps, updateShiftToggle } = useSelection({
+    const { isItemSelected, getSelectAllProps, getItemSelectionProps } = useSelection({
       items: allItems,
       trackBy,
       selectedItems,
@@ -521,7 +521,7 @@ const InternalTable = React.forwardRef(
                               }
                               {...rowRoleProps}
                             >
-                              {hasSelection && (
+                              {getItemSelectionProps && (
                                 <TableTdElement
                                   {...sharedCellProps}
                                   className={clsx(styles['selection-control'])}
@@ -532,7 +532,6 @@ const InternalTable = React.forwardRef(
                                   <SelectionControl
                                     onFocusDown={moveFocusDown}
                                     onFocusUp={moveFocusUp}
-                                    onShiftToggle={updateShiftToggle}
                                     {...getItemSelectionProps(row.item)}
                                   />
                                 </TableTdElement>
@@ -588,7 +587,7 @@ const InternalTable = React.forwardRef(
                             className={styles.row}
                             {...rowRoleProps}
                           >
-                            {hasSelection && (
+                            {getItemSelectionProps && (
                               <TableTdElement
                                 {...sharedCellProps}
                                 className={clsx(styles['selection-control'])}
