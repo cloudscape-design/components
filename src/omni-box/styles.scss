@@ -1,0 +1,82 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+.root {
+  /* used for test-utils */
+}
+
+.textarea {
+  @include styles.styles-reset;
+  // Restore browsers' default resize values
+  resize: auto; /* stylelint-disable-line plugin/no-unsupported-browser-features */
+  // Restore default text cursor
+  cursor: text;
+  // Allow multi-line placeholders
+  white-space: pre-wrap;
+
+  padding-block: styles.$control-padding-vertical;
+  padding-inline: styles.$control-padding-horizontal;
+
+  color: awsui.$color-text-body-default;
+  max-inline-size: 100%;
+  inline-size: 100%;
+  display: block;
+  box-sizing: border-box;
+  background-color: awsui.$color-background-input-default;
+  border-start-start-radius: styles.$control-border-radius;
+  border-start-end-radius: styles.$control-border-radius;
+  border-end-start-radius: styles.$control-border-radius;
+  border-end-end-radius: styles.$control-border-radius;
+  border-block: styles.$control-border-width solid awsui.$color-border-input-default;
+  border-inline: styles.$control-border-width solid awsui.$color-border-input-default;
+  @include styles.font-body-m;
+
+  &.textarea-readonly {
+    @include styles.form-readonly-element;
+  }
+
+  &::placeholder {
+    @include styles.form-placeholder;
+    opacity: 1;
+  }
+
+  &:-ms-input-placeholder {
+    @include styles.form-placeholder;
+  }
+
+  &:focus {
+    @include styles.form-focus-element;
+  }
+
+  &:invalid {
+    // discard built-in invalid styles, customers should use `invalid` property only (AWSUI-3947)
+    box-shadow: none;
+  }
+
+  &:disabled {
+    @include styles.form-disabled-element;
+    cursor: default;
+
+    &::placeholder {
+      @include styles.form-placeholder-disabled;
+      opacity: 1;
+    }
+
+    &:-ms-input-placeholder {
+      @include styles.form-placeholder-disabled;
+    }
+  }
+
+  &.textarea-invalid {
+    @include styles.form-invalid-control();
+  }
+
+  &.textarea-warning {
+    @include styles.form-warning-control();
+  }
+}
