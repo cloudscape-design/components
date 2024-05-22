@@ -580,9 +580,7 @@ const InternalTable = React.forwardRef(
                         }
                         return (
                           <tr
-                            // The key includes both unique item identifier and row index to avoid React caching.
-                            // That is to avoid collisions when the next loader is rendered.
-                            key={(row.item ? getTableItemKey(row.item) : 'root') + rowIndex}
+                            key={(row.item ? getTableItemKey(row.item) : 'root-' + rowIndex) + '-' + row.from}
                             className={styles.row}
                             {...rowRoleProps}
                           >
