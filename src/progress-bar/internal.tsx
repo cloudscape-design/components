@@ -53,11 +53,12 @@ export const Progress = ({ value, isInFlash, ariaLabel, ariaLabelledby }: Progre
 interface SmallTextProps {
   color?: BoxProps.Color;
   children: React.ReactNode;
+  testId?: string;
 }
 
-export const SmallText = ({ color, children }: SmallTextProps) => {
+export const SmallText = ({ color, children, testId }: SmallTextProps) => {
   return (
-    <InternalBox className={styles['word-wrap']} variant="small" display="block" color={color}>
+    <InternalBox className={styles['word-wrap']} variant="small" display="block" color={color} data-testid={testId}>
       {children}
     </InternalBox>
   );

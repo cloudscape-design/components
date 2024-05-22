@@ -223,4 +223,10 @@ describe('Progress updates', () => {
     });
     expect(wrapper.find(`.${liveRegionStyles.root}`)?.getElement().textContent).toBe('Text-optional: 10%');
   });
+
+  test('renders additional info correctly', () => {
+    const wrapper = renderProgressBar({ additionalInfo: 'additional info' });
+
+    expect(wrapper.findAdditionalInfo()!.getElement().textContent).toBe('additional info');
+  });
 });
