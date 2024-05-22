@@ -148,14 +148,14 @@ function LiveRegion({
   return (
     <>
       {visible && !source && (
-        <TagName ref={sourceRef} id={id}>
+        <TagName ref={sourceRef} id={id} className={styles.source}>
           {children}
         </TagName>
       )}
 
       <ScreenreaderOnly {...restProps} className={clsx(styles.root, restProps.className)}>
         {!visible && !source && (
-          <TagName ref={sourceRef} aria-hidden="true">
+          <TagName ref={sourceRef} aria-hidden="true" className={styles.source}>
             {children}
           </TagName>
         )}

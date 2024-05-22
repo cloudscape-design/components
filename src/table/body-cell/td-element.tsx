@@ -112,7 +112,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           hasSelection && styles['has-selection'],
           hasFooter && styles['has-footer'],
           level !== undefined && styles['body-cell-expandable'],
-          level !== undefined && styles[`body-cell-expandable-level-${getLevelClassSuffix(level)}`],
+          level !== undefined && styles[`expandable-level-${getLevelClassSuffix(level)}`],
           stickyStyles.className
         )}
         onClick={onClick}
@@ -139,5 +139,5 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
 );
 
 function getLevelClassSuffix(level: number) {
-  return 1 <= level && level <= 9 ? level : 'next';
+  return 0 <= level && level <= 9 ? level : 'next';
 }

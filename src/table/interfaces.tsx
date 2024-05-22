@@ -17,7 +17,7 @@ import ColumnDisplayProperties = TableProps.ColumnDisplayProperties;
  * function type.
  */
 export interface TableForwardRefType {
-  <T>(props: TableProps<T> & { ref?: React.Ref<TableProps.Ref> }): JSX.Element;
+  <T>(props: TableProps<T> & TableProgressiveLoadingProps<T> & { ref?: React.Ref<TableProps.Ref> }): JSX.Element;
 }
 
 export interface TableProps<T = any> extends BaseComponentProps {
@@ -510,4 +510,50 @@ export namespace TableProps {
     item: T;
     expanded: boolean;
   }
+
+  export type GetLoadingStatus<T> = (item: null | T) => TableProps.LoadingStatus;
+
+  export type LoadingStatus = 'pending' | 'loading' | 'error' | 'finished';
+
+  export interface RenderLoaderDetail<T> {
+    item: null | T;
+  }
+}
+
+export type TableRow<T> = TableDataRow<T> | TableLoaderRow<T>;
+
+export interface TableDataRow<T> {
+  type: 'data';
+  item: T;
+}
+
+export interface TableLoaderRow<T> {
+  type: 'loader';
+  item: null | T;
+  level: number;
+  status: TableProps.LoadingStatus;
+}
+
+export interface TableProgressiveLoadingProps<T> {
+  /**
+   * A function that specifies the current status of loading more items. It is called once for the entire
+   * table with `item=null` and then for each expanded item. The function result is one of the four possible states:
+   * * `pending` - Indicates that no request in progress, but more options may be loaded.
+   * * `loading` - Indicates that data fetching is in progress.
+   * * `finished` - Indicates that loading has finished and no more requests are expected.
+   * * `error` - Indicates that an error occurred during fetch.
+   **/
+  getLoadingStatus?: TableProps.GetLoadingStatus<T>;
+  /**
+   * Defines loader properties for pending state.
+   */
+  renderLoaderPending?: (detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode;
+  /**
+   * Defines loader properties for loading state.
+   */
+  renderLoaderLoading?: (detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode;
+  /**
+   * Defines loader properties for error state.
+   */
+  renderLoaderError?: (detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode;
 }
