@@ -39,7 +39,7 @@ export function createColumns({
       cell: item => <Link href={`#${item.name}`}>{item.name}</Link>,
       ariaLabel: columnLabel('DB Name'),
       sortingField: 'name',
-      minWidth: 200,
+      minWidth: 220,
       isRowHeader: true,
     },
     {

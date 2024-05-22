@@ -197,14 +197,15 @@ export default () => {
                 variant="inline-link"
                 iconName="add-plus"
                 onClick={() => tableData.actions.loadItems(item?.name ?? 'ROOT')}
+                ariaLabel={item ? `Load more items for ${item.name}` : 'Load more items'}
               >
-                {item ? `Load more items for ${item.name}` : 'Load more items'}
+                Load more items
               </Button>
             )}
-            renderLoaderLoading={({ item }) => (
-              <StatusIndicator type="loading">
-                {item ? `Loading more items for ${item.name}` : 'Loading more items'}
-              </StatusIndicator>
+            renderLoaderLoading={() => (
+              <div aria-live="polite">
+                <StatusIndicator type="loading">Loading items</StatusIndicator>
+              </div>
             )}
             renderLoaderError={({ item }) => (
               <Box color="text-status-error">
