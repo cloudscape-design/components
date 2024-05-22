@@ -27,4 +27,8 @@ export default class ProgressBarWrapper extends ComponentWrapper {
     const statusClassName = status ? `.${styles[`result-container-${status}`]} ` : '';
     return this.find(`${statusClassName}.${styles['result-text']}`);
   }
+
+  findAdditionalInfo(): ElementWrapper | null {
+    return this.find(`[data-testid="additional-info"]`);
+  }
 }
