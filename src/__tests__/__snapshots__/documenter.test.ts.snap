@@ -13813,6 +13813,28 @@ By default, the keyboard navigation is active for tables with expandable rows.
       "type": "number",
     },
     Object {
+      "description": "A function that specifies the current status of loading more items. It is called once for the entire
+table with \`item=null\` and then for each expanded item. The function result is one of the four possible states:
+* \`pending\` - Indicates that no request in progress, but more options may be loaded.
+* \`loading\` - Indicates that data fetching is in progress.
+* \`finished\` - Indicates that loading has finished and no more requests are expected.
+* \`error\` - Indicates that an error occurred during fetch.",
+      "inlineType": Object {
+        "name": "TableProps.GetLoadingStatus",
+        "parameters": Array [
+          Object {
+            "name": "item",
+            "type": "T | null",
+          },
+        ],
+        "returnType": "TableProps.LoadingStatus",
+        "type": "function",
+      },
+      "name": "getLoadingStatus",
+      "optional": true,
+      "type": "TableProps.GetLoadingStatus<T>",
+    },
+    Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
@@ -13867,6 +13889,24 @@ Important: in tables with expandable rows the \`firstIndex\`, \`lastIndex\`, and
       "name": "renderAriaLive",
       "optional": true,
       "type": "(data: TableProps.LiveAnnouncement) => string",
+    },
+    Object {
+      "description": "Defines loader properties for error state.",
+      "name": "renderLoaderError",
+      "optional": true,
+      "type": "(detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode",
+    },
+    Object {
+      "description": "Defines loader properties for loading state.",
+      "name": "renderLoaderLoading",
+      "optional": true,
+      "type": "(detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode",
+    },
+    Object {
+      "description": "Defines loader properties for pending state.",
+      "name": "renderLoaderPending",
+      "optional": true,
+      "type": "(detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode",
     },
     Object {
       "description": "Specifies if columns can be resized. If set to \`true\`, users can resize the columns in the table.",

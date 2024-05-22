@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { TableProps } from '~components/table';
+import Table, { TableProps } from '~components/table';
 import ScreenshotArea from '../utils/screenshot-area';
 import { Box, Input, Link } from '~components';
 import { columnLabel } from './shared-configs';
@@ -9,9 +9,6 @@ import { range } from 'lodash';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import { ariaLabels } from './expandable-rows/common';
-
-// TODO: replace with Table once progressive loading API becomes public
-import InternalTable from '~components/table/internal';
 
 interface Instance {
   name: string;
@@ -188,7 +185,7 @@ export default () => {
         <PermutationsView
           permutations={permutations}
           render={permutation => (
-            <InternalTable
+            <Table
               variant="container"
               items={permutation.items}
               header={

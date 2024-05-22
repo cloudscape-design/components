@@ -21,6 +21,7 @@ import {
   PropertyFilter,
   Select,
   StatusIndicator,
+  Table,
   Toggle,
   TableProps,
 } from '~components';
@@ -31,9 +32,6 @@ import I18nProvider from '~components/i18n';
 import { createColumns, createPreferences, filteringProperties } from './expandable-rows/expandable-rows-configs';
 import { Instance, ariaLabels, getHeaderCounterText } from './expandable-rows/common';
 import { isEqual } from 'lodash';
-
-// TODO: replace with Table once progressive loading API becomes public
-import InternalTable from '~components/table/internal';
 
 type LoadingState = Map<string, { pages: number; status: TableProps.LoadingStatus }>;
 
@@ -99,7 +97,7 @@ export default () => {
         toolsOpen={toolsOpen}
         onToolsChange={({ detail: { open } }) => setToolsOpen(open)}
         content={
-          <InternalTable
+          <Table
             {...tableData.collectionProps}
             stickyColumns={preferences.stickyColumns}
             resizableColumns={settings.resizableColumns}
