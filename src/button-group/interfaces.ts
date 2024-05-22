@@ -14,7 +14,7 @@ export interface ButtonGroupProps extends BaseComponentProps {
   /**
    * Max number of visible items in the button group, the rest will be hidden in a dropdown.
    */
-  maxVisibleItems?: number;
+  truncateThreshold?: number;
   /**
    * Array of objects of type 'icon-button' or 'divider'.
    */
@@ -73,7 +73,7 @@ export namespace ButtonGroupProps {
     iconUrl?: string;
     iconSvg?: React.ReactNode;
     tooltipText?: string;
-    successText?: string;
+    actionPopoverText?: string;
   }
 
   export interface ItemClickDetails {

@@ -16,13 +16,13 @@ import { fireCancelableEvent } from '../internal/events';
 
 export default function InternalButtonGroup({
   items = [],
-  maxVisibleItems = 5,
+  truncateThreshold = 5,
   onItemClick,
   __internalRootRef = null,
   ...props
 }: InternalButtonGroupProps) {
   const baseProps = getBaseProps(props);
-  const { visibleItems, collapsedItems } = splitItems(items, maxVisibleItems);
+  const { visibleItems, collapsedItems } = splitItems(items, truncateThreshold);
 
   const onClickHandler = (event: CustomEvent<ButtonDropdownProps.ItemClickDetails>) => {
     if (onItemClick) {
@@ -49,14 +49,14 @@ export default function InternalButtonGroup({
   );
 }
 
-function splitItems(items: readonly ButtonGroupProps.Item[], maxVisibleItems: number) {
-  maxVisibleItems = Math.max(maxVisibleItems, 0);
+function splitItems(items: readonly ButtonGroupProps.Item[], truncateThreshold: number) {
+  truncateThreshold = Math.max(truncateThreshold, 0);
   const visibleItems: ButtonGroupProps.Item[] = [];
   const collapsedItems: ButtonGroupProps.Item[] = [];
 
   let itemIndex = 0;
   for (const item of items) {
-    if (itemIndex < maxVisibleItems) {
+    if (itemIndex < truncateThreshold) {
       visibleItems.push(item);
     } else {
       collapsedItems.push(item);
