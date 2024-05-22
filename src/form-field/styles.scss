@@ -47,6 +47,10 @@
   &:not(.label-hidden) {
     padding-block-start: awsui.$space-xxs;
   }
+
+  .label-wrapper:empty + & {
+    padding-block-start: 0;
+  }
 }
 
 .control {
