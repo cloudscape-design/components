@@ -29,6 +29,6 @@ export default class ProgressBarWrapper extends ComponentWrapper {
   }
 
   findAdditionalInfo(): ElementWrapper | null {
-    return this.find(`[data-testid="additional-info"]`);
+    return this.findByClassName(styles['additional-info']);
   }
 }
