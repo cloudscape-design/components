@@ -215,7 +215,7 @@ export default function InternalFormField({
   return (
     <div
       {...baseProps}
-      className={clsx(baseProps.className, styles.root)}
+      className={clsx(baseProps.className, styles.root, inlineLabel && styles.inlineLabelRoot)}
       ref={__internalRootRef}
       {...analyticsAttributes}
     >

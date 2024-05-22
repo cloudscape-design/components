@@ -12,6 +12,11 @@
 .root {
   @include styles.styles-reset;
   box-sizing: border-box;
+ 
+}
+
+.inlineLabelRoot{
+  margin-top: -8px;
 }
 
 .label {
@@ -30,7 +35,7 @@
   @include styles.info-link-spacing;
   position: relative;
   left: 10px;
-  padding: 8px 4px 0;
+  padding: awsui.$space-scaled-xs awsui.$space-scaled-xxs 0;
   font-size: 12px;
   line-height: 14px;
   display: inline-block;
