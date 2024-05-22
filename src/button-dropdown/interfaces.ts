@@ -14,7 +14,7 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    *
    * The following properties are supported across all types:
    *
-   * - `type` (string) - The type of the item. Can be `action`, `group`, `checkbox` or `radio-group`. Defaults to `action` if `items` undefined and `group` otherwise.
+   * - `type` (string) - The type of the item. Can be `action`, `group`, `checkbox`. Defaults to `action` if `items` undefined and `group` otherwise.
    * - `id` (string) - allows to identify the item that the user clicked on. Mandatory for individual items, optional for categories.
    * - `text` (string) - description shown in the menu for this item. Mandatory for individual items, optional for categories.
    * - `lang` (string) - (Optional) The language of the item, provided as a BCP 47 language tag.
@@ -47,11 +47,6 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    * - `items` (ReadonlyArray<Item>): an array of item objects. Items will be rendered as nested menu items but only for the first nesting level, multi-nesting is not supported.
    * An item which belongs to nested group has the following properties: `id`, `text`, `disabled` and `description`.
    *
-   * ### radio-group
-   *
-   * - `selectedItem` (string) - The id of the item which is shown as selected.
-   * - `items` (ReadonlyArray<Item>): an array of item objects. Items will be rendered as nested menu items but only for the first nesting level, multi-nesting is not supported.
-   * An item which belongs to nested group has the following properties: `id`, `text`, `disabled` and `description`.
    */
   items: ReadonlyArray<ButtonDropdownProps.ItemOrGroup>;
   /**
