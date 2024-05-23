@@ -24,6 +24,7 @@
 }
 
 .info {
+  display: inline-flex;
   padding-inline-start: awsui.$space-xs;
   border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
 }
@@ -45,6 +46,10 @@
 .controls {
   &:not(.label-hidden) {
     padding-block-start: awsui.$space-xxs;
+  }
+
+  .label-wrapper:empty + & {
+    padding-block-start: 0;
   }
 }
 

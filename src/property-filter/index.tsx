@@ -37,6 +37,7 @@ import { PropertyFilterOperator } from '@cloudscape-design/collection-hooks';
 import { useInternalI18n } from '../i18n/context';
 import TokenList from '../internal/components/token-list';
 import { SearchResults } from '../text-filter/search-results';
+import { joinStrings } from '../internal/utils/strings';
 
 export { PropertyFilterProps };
 
@@ -94,6 +95,7 @@ const PropertyFilter = React.forwardRef(
       filteringFinishedText,
       filteringErrorText,
       filteringRecoveryText,
+      filteringConstraintText,
       filteringStatusType,
       asyncProperties,
       tokenLimit,
@@ -349,6 +351,10 @@ const PropertyFilter = React.forwardRef(
       parsedText.step === 'property' && parsedText.property.getValueFormRenderer(parsedText.operator);
 
     const searchResultsId = useUniqueId('property-filter-search-results');
+    const constraintTextId = useUniqueId('property-filter-constraint');
+    const textboxAriaDescribedBy = filteringConstraintText
+      ? joinStrings(rest.ariaDescribedby, constraintTextId)
+      : rest.ariaDescribedby;
 
     return (
       <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
@@ -361,7 +367,7 @@ const PropertyFilter = React.forwardRef(
             ariaLabel={filteringAriaLabel ?? i18nStrings.filteringAriaLabel}
             placeholder={filteringPlaceholder ?? i18nStrings.filteringPlaceholder}
             ariaLabelledby={rest.ariaLabelledby}
-            ariaDescribedby={rest.ariaDescribedby}
+            ariaDescribedby={textboxAriaDescribedBy}
             controlId={rest.controlId}
             value={filteringText}
             disabled={disabled}
@@ -404,6 +410,11 @@ const PropertyFilter = React.forwardRef(
             </div>
           ) : null}
         </div>
+        {filteringConstraintText && (
+          <div id={constraintTextId} className={styles.constraint}>
+            {filteringConstraintText}
+          </div>
+        )}
         {internalQuery.tokens && internalQuery.tokens.length > 0 && (
           <div className={styles.tokens}>
             <InternalSpaceBetween size="xs" direction="horizontal">

@@ -110,6 +110,24 @@ const permutations = createPermutations<Partial<PropertyFilterProps>>([
       <ButtonDropdown key={0} mainAction={{ text: 'Clear filters' }} items={[]} ariaLabel="Filter actions" />,
     ],
   },
+  {
+    query: [
+      { tokens: [], operation: 'and' },
+      {
+        tokens: [
+          { value: '123', operator: ':' },
+          { value: '234', operator: '!:' },
+          { propertyKey: 'instanceid', value: '345', operator: '=' },
+        ],
+        operation: 'and',
+      },
+    ],
+    filteringConstraintText: [
+      <div key={0}>
+        Some <b>bold</b> constraint text
+      </div>,
+    ],
+  },
 ]);
 
 export default function () {

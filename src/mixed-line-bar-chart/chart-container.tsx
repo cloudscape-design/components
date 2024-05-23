@@ -149,7 +149,8 @@ export default function ChartContainer<T extends ChartDataTypes>({
   const containerRefObject = useRef(null);
   const containerRef = useMergeRefs(containerMeasureRef, containerRefObject);
   const popoverRef = useRef<HTMLElement | null>(null);
-  const isRtl = containerRefObject?.current && getIsRtl(containerRefObject.current);
+
+  const isRtl = getIsRtl(containerRefObject.current);
 
   const xDomain = (props.xDomain || computeDomainX(series, xScaleType)) as
     | readonly number[]
@@ -191,7 +192,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
 
   const bottomAxisProps = !horizontalBars
     ? getXAxisProps(plotWidth, !isRtl ? [0, plotWidth] : [plotWidth, 0])
-    : getYAxisProps(plotWidth, [0, plotWidth]);
+    : getYAxisProps(plotWidth, !isRtl ? [0, plotWidth] : [plotWidth, 0]);
   const blockEndLabelsProps = useBLockEndLabels({ ...bottomAxisProps });
 
   const plotMeasureRef = useRef<SVGLineElement>(null);
@@ -584,6 +585,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
             visibleSeries={visibleSeries}
             xScale={xAxisProps.scale}
             yScale={yAxisProps.scale}
+            isRtl={!!isRtl}
           />
 
           {emphasizeBaselineAxis && !linesOnly && (

@@ -54,11 +54,6 @@
       @include styles.link-font-size-style(map.get(constants.$link-font-sizes, $font-size));
     }
   }
-
-  @include styles.with-direction('rtl') {
-    align-items: center;
-    display: inline-flex;
-  }
 }
 
 .icon-wrapper {

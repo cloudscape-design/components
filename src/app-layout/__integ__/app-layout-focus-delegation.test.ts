@@ -110,7 +110,7 @@ function setupTest(
             async page => {
               await page.setWindowSize({ width: 1000, height: 800 });
               await page.click(wrapper.findSplitPanel().findOpenButton().toSelector());
-              await page.keys(['Tab', 'Tab', 'Tab', 'Enter']);
+              await page.keys(['Tab', 'Tab', 'Tab', 'Tab', 'Enter']);
               await expect(page.isFocused(wrapper.findToolsClose().toSelector())).resolves.toBe(true);
             },
             { pageName: 'with-split-panel', visualRefresh, mobile, splitPanelPosition: 'side' }

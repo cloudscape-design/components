@@ -1,7 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-export function getIsRtl(element: HTMLElement | SVGElement) {
+export function getIsRtl(element: null | HTMLElement | SVGElement): boolean {
+  if (!element) {
+    return false;
+  }
   return getComputedStyle(element).direction === 'rtl';
 }
 
