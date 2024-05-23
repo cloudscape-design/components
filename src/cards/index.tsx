@@ -25,6 +25,7 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import LiveRegion from '../internal/components/live-region';
 import useMouseDownTarget from '../internal/hooks/use-mouse-down-target';
 import { useMobile } from '../internal/hooks/use-mobile';
+import { supportsStickyPosition } from '../internal/utils/dom';
 import { useInternalI18n } from '../i18n/context';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
@@ -105,7 +106,7 @@ const Cards = React.forwardRef(function <T = any>(
   const headerRef = useRef<HTMLDivElement>(null);
 
   const { scrollToTop, scrollToItem } = stickyScrolling(refObject, headerRef);
-  stickyHeader = !isMobile && stickyHeader;
+  stickyHeader = supportsStickyPosition() && !isMobile && stickyHeader;
   const onCardFocus: FocusEventHandler<HTMLElement> = event => {
     // When an element inside card receives focus we want to adjust the scroll.
     // However, that behavior is unwanted when the focus is received as result of a click

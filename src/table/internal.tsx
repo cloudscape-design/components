@@ -9,6 +9,7 @@ import { getBaseProps } from '../internal/base-component';
 import ToolsHeader from './tools-header';
 import Thead, { TheadProps } from './thead';
 import { TableBodyCell } from './body-cell';
+import { supportsStickyPosition } from '../internal/utils/dom';
 import { checkSortingState, getColumnKey, getItemKey, getVisibleColumnDefinitions, toContainerVariant } from './utils';
 import { useRowEvents } from './use-row-events';
 import { SelectionControl, focusMarkers, useSelectionFocusMove, useSelection } from './selection';
@@ -145,6 +146,7 @@ const InternalTable = React.forwardRef(
       );
     }
 
+    stickyHeader = stickyHeader && supportsStickyPosition();
     const isMobile = useMobile();
 
     const { isExpandable, allItems, getExpandableItemProps } = useExpandableTableProps({

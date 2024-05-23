@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { RefObject, useRef } from 'react';
+import { supportsStickyPosition } from '../../utils/dom';
 
 /**
  * useScrollSync returns scroll event handler to be attached to synchronized scroll elements.
@@ -10,10 +11,9 @@ import React, { RefObject, useRef } from 'react';
  *    <div ref={ref1} onScroll={handleScroll}/>
  *    <div ref={ref2} onScroll={handleScroll}/>
  */
-export function useScrollSync(refs: Array<RefObject<any>>) {
+export function useScrollSync(refs: Array<RefObject<any>>, disabled = !supportsStickyPosition()) {
   const activeElement = useRef<HTMLElement | null>(null);
-
-  return (event: React.UIEvent) => {
+  const onScroll = (event: React.UIEvent) => {
     const targetElement = event.currentTarget as HTMLElement;
     // remembers the first element that fires onscroll to align with other elements against it
     if (targetElement && (activeElement.current === null || activeElement.current === targetElement)) {
@@ -32,4 +32,6 @@ export function useScrollSync(refs: Array<RefObject<any>>) {
       });
     }
   };
+
+  return !disabled ? onScroll : undefined;
 }

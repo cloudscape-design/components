@@ -14,7 +14,7 @@ it('adds an offset if the scrollbar is an overlay', () => {
   const tableRef = { current: document.createElement('table') };
   const wrapperRef = { current: document.createElement('div') };
 
-  browserScrollbarSizeMock.mockImplementation(() => ({ height: 0, width: 100 }));
+  browserScrollbarSizeMock.mockImplementationOnce(() => ({ height: 0, width: 100 }));
   const { container } = render(<StickyScrollbar tableRef={tableRef} wrapperRef={wrapperRef} />);
   expect(container.querySelector(`.${styles['sticky-scrollbar-offset']}`)).not.toBeNull();
 });
@@ -23,7 +23,7 @@ it('adds an offset if the scrollbar occupies space but the table has sticky colu
   const tableRef = { current: document.createElement('table') };
   const wrapperRef = { current: document.createElement('div') };
 
-  browserScrollbarSizeMock.mockImplementation(() => ({ height: 20, width: 100 }));
+  browserScrollbarSizeMock.mockImplementationOnce(() => ({ height: 20, width: 100 }));
   const { container } = render(<StickyScrollbar tableRef={tableRef} wrapperRef={wrapperRef} hasStickyColumns={true} />);
   expect(container.querySelector(`.${styles['sticky-scrollbar-offset']}`)).not.toBeNull();
 });
@@ -32,7 +32,7 @@ it('does not add an offset if the scrollbar occupies space', () => {
   const tableRef = { current: document.createElement('table') };
   const wrapperRef = { current: document.createElement('div') };
 
-  browserScrollbarSizeMock.mockImplementation(() => ({ height: 20, width: 100 }));
+  browserScrollbarSizeMock.mockImplementationOnce(() => ({ height: 20, width: 100 }));
   const { container } = render(<StickyScrollbar tableRef={tableRef} wrapperRef={wrapperRef} />);
   expect(container.querySelector(`.${styles['sticky-scrollbar-offset']}`)).toBeNull();
 });

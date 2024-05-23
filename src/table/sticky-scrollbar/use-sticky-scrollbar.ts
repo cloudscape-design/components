@@ -3,7 +3,7 @@
 import { ResizeObserver } from '@juggle/resize-observer';
 import { RefObject, useEffect, useState } from 'react';
 import styles from './styles.css.js';
-import { getContainingBlock } from '../../internal/utils/dom';
+import { getContainingBlock, supportsStickyPosition } from '../../internal/utils/dom';
 import { getOverflowParents } from '../../internal/utils/scrollable-containers';
 import { browserScrollbarSize } from '../../internal/utils/browser-scrollbar-size';
 import globalVars from '../../internal/styles/global-vars';
@@ -75,14 +75,14 @@ export function useStickyScrollbar(
 
   const wrapperEl = wrapperRef.current;
   useEffect(() => {
-    if (wrapperEl) {
+    if (wrapperEl && supportsStickyPosition()) {
       setInScrollableContainer(!!getContainingBlock(wrapperEl) || !!getOverflowParents(wrapperEl)[0]);
     }
   }, [wrapperEl]);
 
   // Update scrollbar position wrapper or table size change.
   useEffect(() => {
-    if (wrapperRef.current && tableRef.current) {
+    if (supportsStickyPosition() && wrapperRef.current && tableRef.current) {
       const observer = new ResizeObserver(() => {
         if (scrollbarContentRef.current) {
           updatePosition(
@@ -106,19 +106,21 @@ export function useStickyScrollbar(
 
   // Update scrollbar position when window resizes (vertically).
   useEffect(() => {
-    const resizeHandler = () => {
-      updatePosition(
-        tableRef.current,
-        wrapperRef.current,
-        scrollbarRef.current,
-        scrollbarContentRef.current,
-        inScrollableContainer
-      );
-    };
-    resizeHandler();
-    window.addEventListener('resize', resizeHandler);
-    return () => {
-      window.removeEventListener('resize', resizeHandler);
-    };
+    if (supportsStickyPosition()) {
+      const resizeHandler = () => {
+        updatePosition(
+          tableRef.current,
+          wrapperRef.current,
+          scrollbarRef.current,
+          scrollbarContentRef.current,
+          inScrollableContainer
+        );
+      };
+      resizeHandler();
+      window.addEventListener('resize', resizeHandler);
+      return () => {
+        window.removeEventListener('resize', resizeHandler);
+      };
+    }
   }, [tableRef, wrapperRef, scrollbarRef, scrollbarContentRef, inScrollableContainer]);
 }
