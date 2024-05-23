@@ -29,9 +29,6 @@ export function renderYear(locale: string, date: Date): string {
   });
 }
 
-/*
- `toLocaleDateString` is expensive (10+ ms) to calculate in IE11.
-*/
 const dayLabelCache = new Map<string, string>();
 export function getDateLabel(locale: string, date: Date, mode: 'full' | 'short' = 'full'): string {
   const cacheKey = locale + date.getTime() + mode;
