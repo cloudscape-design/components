@@ -109,7 +109,7 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
 
 export namespace ButtonDropdownProps {
   export type Variant = 'normal' | 'primary' | 'icon' | 'inline-icon';
-  export type ItemType = 'action' | 'group' | 'checkbox';
+  export type ItemType = 'action' | 'group';
 
   export interface MainAction {
     text: string;
@@ -195,7 +195,10 @@ export interface HighlightProps {
 }
 
 export type GroupToggle = (item: ButtonDropdownProps.ItemGroup, event: React.SyntheticEvent) => void;
-export type ItemActivate = (item: ButtonDropdownProps.Item, event: React.MouseEvent | React.KeyboardEvent) => void;
+export type ItemActivate = (
+  item: ButtonDropdownProps.Item | ButtonDropdownProps.CheckboxItem,
+  event: React.MouseEvent | React.KeyboardEvent
+) => void;
 
 export interface CategoryProps extends HighlightProps {
   item: ButtonDropdownProps.ItemGroup;

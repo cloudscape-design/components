@@ -40,7 +40,11 @@ const checkRenderedGroup = (
   }
 };
 
-const checkElementItem = (renderedItem: ElementWrapper, item: ButtonDropdownProps.Item, parentIsDisabled = false) => {
+const checkElementItem = (
+  renderedItem: ElementWrapper,
+  item: ButtonDropdownProps.Item | ButtonDropdownProps.CheckboxItem,
+  parentIsDisabled = false
+) => {
   const element = renderedItem.getElement();
   expect(element).toHaveTextContent(item.text);
 
@@ -369,7 +373,7 @@ const items: ButtonDropdownProps.Items = [
         </svg>
       );
 
-      const iconItems: ButtonDropdownProps['items'] = [
+      const iconItems: Array<ButtonDropdownProps.Item> = [
         { id: 'i1', text: 'item1', iconName: 'settings' },
         { id: 'i2', text: 'item2', iconUrl: url, iconAlt: 'iconAlt' },
         { id: 'i3', text: 'item3', iconSvg: svg },
