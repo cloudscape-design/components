@@ -46,7 +46,6 @@ describe('Expandable rows', () => {
     'uses items loader on the first expandable item',
     setupTest({ useProgressiveLoading: true, useServerMock: true }, async page => {
       const targetCluster = 'cluster-33387b6c';
-      const loadingMessage = `Loading more items for ${targetCluster}`;
       const targetClusterLoadMore = tableWrapper.findItemsLoaderByItemId(targetCluster).findButton();
       const page2Toggle = tableWrapper.findExpandToggle(4);
       const page3Toggle = tableWrapper.findExpandToggle(6);
@@ -66,14 +65,14 @@ describe('Expandable rows', () => {
       // Trigger target cluster load-more
       await page.keys(['Enter']);
       // Ensure state change occurs and the focus stays on the same cell (next load-more)
-      await page.waitForAssertion(() => expect(page.getFocusedElementText()).resolves.toBe(loadingMessage));
+      await page.waitForAssertion(() => expect(page.getFocusedElementText()).resolves.toBe('Loading items'));
       await page.waitForAssertion(() => expect(page.isFocused(page2Toggle.toSelector())).resolves.toBe(true));
       await page.waitForAssertion(() => expect(getRowsCount()).resolves.toBe(14 + 2));
 
       // Trigger subsequent loading
       await page.keys(['ArrowDown', 'ArrowDown', 'Enter']);
       // Ensure state change occurs and the focus stays on the same cell (last cluster's expand toggle)
-      await page.waitForAssertion(() => expect(page.getFocusedElementText()).resolves.toBe(loadingMessage));
+      await page.waitForAssertion(() => expect(page.getFocusedElementText()).resolves.toBe('Loading items'));
       await page.waitForAssertion(() => expect(page.isFocused(page3Toggle.toSelector())).resolves.toBe(true));
       await page.waitForAssertion(() => expect(getRowsCount()).resolves.toBe(15 + 1));
     })
