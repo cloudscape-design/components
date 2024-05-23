@@ -129,15 +129,7 @@ export const Grids = ({
   }, [focusedDate, gridHasFocus]);
 
   const onGridBlur = (event: React.FocusEvent) => {
-    /*
-     IE11 does not support event.relatedTarget, but sets document.activeElement to the newly
-     focused element before the onBlur handler is called.
-
-     However, other browsers do not make any guarantees for the value of document.activeElement
-     during the execution of an onBlur handler. Therefore, we have to use event.relatedTarget
-     instead.
-     */
-    const newFocusTarget = event.relatedTarget || document.activeElement;
+    const newFocusTarget = event.relatedTarget;
     const newFocusTargetIsInGrid = containerRef.current?.contains(newFocusTarget as Node);
     if (newFocusTarget && !newFocusTargetIsInGrid && gridHasFocus) {
       setGridHasFocus(false);
