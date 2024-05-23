@@ -22,8 +22,9 @@ interface ProgressProps {
   isInFlash: boolean;
   ariaLabel?: string;
   ariaLabelledby?: string;
+  ariaDescribedby?: string;
 }
-export const Progress = ({ value, isInFlash, ariaLabel, ariaLabelledby }: ProgressProps) => {
+export const Progress = ({ value, isInFlash, ariaLabel, ariaLabelledby, ariaDescribedby }: ProgressProps) => {
   const roundedValue = Math.round(value);
   const progressValue = clamp(roundedValue, 0, MAX_VALUE);
 
@@ -40,6 +41,7 @@ export const Progress = ({ value, isInFlash, ariaLabel, ariaLabelledby }: Progre
         aria-label={ariaLabel}
         // Ensures aria-label takes precedence over aria-labelledby
         aria-labelledby={!ariaLabel ? ariaLabelledby : undefined}
+        aria-describedby={ariaDescribedby}
       />
       <span aria-hidden="true" className={styles['percentage-container']}>
         <InternalBox className={styles.percentage} variant="small" color={isInFlash ? 'inherit' : undefined}>
@@ -52,13 +54,14 @@ export const Progress = ({ value, isInFlash, ariaLabel, ariaLabelledby }: Progre
 
 interface SmallTextProps {
   color?: BoxProps.Color;
+  id?: string;
   children: React.ReactNode;
   className?: string;
 }
 
-export const SmallText = ({ color, children, className }: SmallTextProps) => {
+export const SmallText = ({ color, children, className, id }: SmallTextProps) => {
   return (
-    <InternalBox className={clsx(styles['word-wrap'], className)} variant="small" display="block" color={color}>
+    <InternalBox className={clsx(styles['word-wrap'], className)} variant="small" display="block" color={color} id={id}>
       {children}
     </InternalBox>
   );
