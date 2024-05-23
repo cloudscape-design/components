@@ -22,8 +22,6 @@ $dot-size: 4px;
 $shadow-size: 8px;
 $shadow-opacity: 0.1;
 
-$border-radius: awsui.$border-radius-avatar;
-
 .root {
   inline-size: 28px;
   block-size: 28px;
@@ -43,10 +41,11 @@ $border-radius: awsui.$border-radius-avatar;
     inset-block-start: 50%;
     inset-inline-start: 50%;
     transform: translate(-50%, -50%);
+    // TODO: separate motion to a separate file
     @include styles.with-motion {
       animation: gradientMove 3.6s infinite cubic-bezier(0.7, 0, 0.3, 1);
     }
-    @include mixins.assistant-background;
+    @include mixins.gen-ai-background;
   }
 }
 // Gradient rotation animation

@@ -7,7 +7,6 @@ import clsx from 'clsx';
 import { getBaseProps } from '../internal/base-component/index.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import Tooltip from '../internal/components/tooltip';
-import { useInternalI18n } from '../i18n/context';
 
 import LoadingDots from './loading-dots';
 import InternalIcon from '../icon/internal.js';
@@ -16,53 +15,55 @@ import styles from './styles.css.js';
 
 export interface InternalAvatarProps extends AvatarProps, InternalBaseComponentProps {}
 
-const AvatarIcon = ({ variant, loading, userName = '', i18nStrings }: AvatarProps) => {
-  const i18n = useInternalI18n('avatar');
-
-  if (loading) {
-    return <LoadingDots ariaLabel={i18n('i18nStrings.loading', i18nStrings?.loading)} />;
+const AvatarContent = ({ type, loading, initials = '', iconName, iconSvg, iconUrl }: AvatarProps) => {
+  if (type === 'gen-ai' && loading) {
+    // TODO: check spinner tests
+    return <LoadingDots />;
   }
 
-  if (userName?.length > 0) {
-    return (
-      <span className={styles.letter} aria-label={userName}>
-        {userName[0]}
-      </span>
-    );
+  if (type === 'user' && initials?.length > 0) {
+    //  TODO: should it allow one letter or two letters or both?
+    const letters = initials.length > 2 ? initials.slice(0, 2) : initials;
+
+    return <span className={styles.letter}>{letters}</span>;
   }
+
+  const iconNameWithDefault = type === 'user' ? 'user-profile' : iconName || 'gen-ai';
 
   return (
-    <div
-      role="img"
-      aria-label={
-        variant === 'assistant'
-          ? i18n('i18nStrings.assistantIconAriaLabel', i18nStrings?.assistantIconAriaLabel)
-          : i18n('i18nStrings.userIconAriaLabel', i18nStrings?.userIconAriaLabel)
-      }
-    >
-      <InternalIcon name={variant === 'assistant' ? 'gen-ai' : 'user-profile'} />
+    <div>
+      {type === 'gen-ai' ? (
+        <InternalIcon name={iconNameWithDefault} svg={iconSvg} url={iconUrl} />
+      ) : (
+        <InternalIcon name={iconNameWithDefault} />
+      )}
     </div>
   );
 };
 
 export default function InternalAvatar({
-  variant,
-  userName = '',
+  type,
+  fullName = '',
+  initials = '',
   loading = false,
-  //   size,
-  i18nStrings,
+  loadingText = '',
+  altText = '',
+  iconName,
+  iconSvg,
+  iconUrl,
   __internalRootRef = null,
   ...rest
 }: InternalAvatarProps) {
   const baseProps = getBaseProps(rest);
-
   const handleRef = useRef<HTMLDivElement>(null);
   const [showTooltip, _setShowTooltip] = useState(false);
 
-  const firstLetter = userName ? userName[0] : '';
+  const showLoadingText = type === 'gen-ai' && loading && loadingText?.length > 0;
+  // When loading, loadingText takes precedence over fullName
+  const tooltipContent = showLoadingText ? loadingText : fullName;
 
   const setShowTooltip = (value: boolean) => {
-    if (firstLetter?.length > 0) {
+    if (fullName?.length > 0 || showLoadingText) {
       return _setShowTooltip(value);
     }
   };
@@ -94,27 +95,50 @@ export default function InternalAvatar({
     },
   };
 
+  const getAriaLabel = () => {
+    let ariaLabel = '';
+
+    // TODO: Should it concatenate avatar and tooltip content into a single aria label?
+    if (initials?.length > 0) {
+      ariaLabel += initials.length > 2 ? initials.slice(0, 2) : initials;
+    } else if (altText?.length > 0) {
+      ariaLabel += altText;
+    }
+
+    if (tooltipContent?.length > 0) {
+      ariaLabel += ` ${tooltipContent}`;
+    }
+
+    return ariaLabel;
+  };
+
   return (
     <span {...baseProps} ref={__internalRootRef} className={clsx(baseProps.className, styles.root)}>
-      {showTooltip && <Tooltip value={userName} trackRef={handleRef} />}
+      {showTooltip && <Tooltip value={tooltipContent} trackRef={handleRef} />}
+
+      {/* TODO: Any meaningful roles this div can have? */}
+      {/* TODO: The default popover aria live may cause double announcement, add test and check if it needs to be disabled */}
 
       <div
         ref={handleRef}
         tabIndex={0}
         className={clsx(styles.avatar, {
-          [styles.assistant]: variant === 'assistant',
+          [styles['gen-ai']]: type === 'gen-ai',
+          [styles.loading]: type === 'gen-ai' && loading,
         })}
+        aria-label={getAriaLabel()}
+        // TODO: To be discussed with a11y
+        aria-roledescription="avatar"
         {...tooltipAttributes}
       >
-        {/* {loading && <LoadingDots />}
-
-        {!loading && firstLetter.length > 0 && (
-          <div style={{ fontFamily: 'AmazonEmber-Regular, Amazon Ember' }}>{firstLetter}</div>
-        )}
-
-        {!loading && firstLetter.length === 0 && <InternalIcon name={variant === 'user' ? 'user-profile' : 'gen-ai'} />} */}
-
-        <AvatarIcon variant={variant} userName={userName} loading={loading} i18nStrings={i18nStrings} />
+        <AvatarContent
+          type={type}
+          initials={initials}
+          loading={loading}
+          iconName={iconName}
+          iconSvg={iconSvg}
+          iconUrl={iconUrl}
+        />
       </div>
     </span>
   );

@@ -63,11 +63,6 @@ export interface I18nFormatArgTypes {
     }
     "recoveryText": never;
   }
-  "avatar": {
-    "i18nStrings.userIconAriaLabel": never
-    "i18nStrings.assistantIconAriaLabel": never
-    "i18nStrings.loading": never
-  }
   "breadcrumb-group": {
     "expandAriaLabel": never;
   }

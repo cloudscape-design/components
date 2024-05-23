@@ -3,7 +3,10 @@
  SPDX-License-Identifier: Apache-2.0
 */
 @use './mixins.scss' as mixins;
+@use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/hooks/focus-visible' as focus-visible;
+
 // Color variables
 $color-cyan: #99f7ff;
 $color-blue: #0096fa;
@@ -18,7 +21,9 @@ $dot-size: 3px;
 $shadow-size: 8px;
 $shadow-opacity: 0.1;
 
-$border-radius: awsui.$border-radius-avatar;
+.root {
+  @include styles.styles-reset;
+}
 
 .avatar {
   display: inline-flex;
@@ -31,14 +36,18 @@ $border-radius: awsui.$border-radius-avatar;
   justify-content: center;
   position: relative;
   overflow: hidden;
-  //   @include styles-reset;
 
-  &.assistant {
-    @include mixins.assistant-background;
+  &.gen-ai {
+    @include mixins.gen-ai-background;
   }
 
-  &:focus {
-    // @include styles.form-focus-element;
+  &.loading {
+    inset-block-end: 2px;
+  }
+
+  @include focus-visible.when-visible {
+    // TODO: Confirm
+    outline: 2px solid awsui.$color-border-item-focused;
   }
 }
 

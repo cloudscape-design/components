@@ -46,11 +46,6 @@
     "enteredTextLabel": "Use: \"{value}\"",
     "recoveryText": "Retry"
   },
-  "avatar": {
-    "i18nStrings.userIconAriaLabel": "User",
-    "i18nStrings.assistantIconAriaLabel": "Assistant",
-    "i18nStrings.loading": "Loading"
-  },
   "breadcrumb-group": {
     "expandAriaLabel": "Show path"
   },

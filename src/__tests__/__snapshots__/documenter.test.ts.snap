@@ -2061,6 +2061,13 @@ Object {
   "name": "Avatar",
   "properties": Array [
     Object {
+      "description": "Text to describe avatar if \\"initials\\" are not passed. We recommend that you provide this for accessibility.
+If both \\"altText\\" and \\"initials\\" are defined, \\"initials\\" take precedence.",
+      "name": "altText",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
@@ -2068,32 +2075,131 @@ Object {
       "type": "string",
     },
     Object {
-      "description": "An object containing all the necessary localized strings required by the component.",
-      "i18nTag": true,
-      "inlineType": Object {
-        "name": "AvatarProps.I18nStrings",
-        "properties": Array [
-          Object {
-            "name": "assistantIconAriaLabel",
-            "optional": true,
-            "type": "string",
-          },
-          Object {
-            "name": "loading",
-            "optional": true,
-            "type": "string",
-          },
-          Object {
-            "name": "userIconAriaLabel",
-            "optional": true,
-            "type": "string",
-          },
-        ],
-        "type": "object",
-      },
-      "name": "i18nStrings",
+      "description": "The full name of agent shown in the tooltip.",
+      "name": "fullName",
       "optional": true,
-      "type": "AvatarProps.I18nStrings",
+      "type": "string",
+    },
+    Object {
+      "description": "Specifies the icon to be displayed in Avatar.
+\\"user-profile\\" icon is used by default for \\"user\\" avatar
+\\"gen-ai\\" icon is used by default for \\"gen-ai\\" avatar",
+      "inlineType": Object {
+        "name": "IconProps.Name",
+        "type": "union",
+        "values": Array [
+          "add-plus",
+          "anchor-link",
+          "angle-left-double",
+          "angle-left",
+          "angle-right-double",
+          "angle-right",
+          "angle-up",
+          "angle-down",
+          "arrow-left",
+          "arrow-right",
+          "audio-full",
+          "audio-half",
+          "audio-off",
+          "bug",
+          "call",
+          "calendar",
+          "caret-down-filled",
+          "caret-down",
+          "caret-left-filled",
+          "caret-right-filled",
+          "caret-up-filled",
+          "caret-up",
+          "check",
+          "contact",
+          "close",
+          "copy",
+          "delete-marker",
+          "download",
+          "drag-indicator",
+          "edit",
+          "ellipsis",
+          "envelope",
+          "expand",
+          "external",
+          "file-open",
+          "file",
+          "filter",
+          "flag",
+          "folder-open",
+          "folder",
+          "gen-ai",
+          "group-active",
+          "group",
+          "heart",
+          "heart-filled",
+          "insert-row",
+          "key",
+          "keyboard",
+          "lock-private",
+          "menu",
+          "microphone",
+          "microphone-off",
+          "multiscreen",
+          "notification",
+          "redo",
+          "refresh",
+          "remove",
+          "resize-area",
+          "script",
+          "search",
+          "security",
+          "settings",
+          "share",
+          "shrink",
+          "star-filled",
+          "star-half",
+          "star",
+          "status-in-progress",
+          "status-info",
+          "status-negative",
+          "status-pending",
+          "status-positive",
+          "status-stopped",
+          "status-warning",
+          "subtract-minus",
+          "suggestions",
+          "thumbs-down-filled",
+          "thumbs-down",
+          "thumbs-up-filled",
+          "thumbs-up",
+          "ticket",
+          "treeview-collapse",
+          "treeview-expand",
+          "undo",
+          "unlocked",
+          "upload-download",
+          "upload",
+          "user-profile-active",
+          "user-profile",
+          "video-off",
+          "video-on",
+          "video-unavailable",
+          "view-full",
+          "view-horizontal",
+          "view-vertical",
+          "zoom-in",
+          "zoom-out",
+          "zoom-to-fit",
+        ],
+      },
+      "name": "iconName",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Specifies the URL of a custom icon. Use this property if the icon you want isn't available, and your custom icon cannot be an SVG.
+For SVG icons, use the \`iconSvg\` slot instead.
+If you set both \`iconUrl\` and \`iconSvg\`, \`iconSvg\` will take precedence.
+",
+      "name": "iconUrl",
+      "optional": true,
+      "type": "string",
     },
     Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
@@ -2103,57 +2209,69 @@ Object {
       "type": "string",
     },
     Object {
+      "description": "The initials of user avatar's name.
+If passed, the avatar will show these initials.
+It should be at max 2 letters. If string is longer, the first 2 letters will be used.
+It can only be used with \\"user\\" avatar.",
+      "name": "initials",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Indicates whether avatar is in loading state.
-It can only be used with \\"assistant\\" variant.",
+It can only be used with \\"gen-ai\\" avatar.",
       "name": "loading",
       "optional": true,
       "type": "boolean",
     },
     Object {
-      "description": "Specifies the size of the icon.
-If you set size to \`inherit\`, an icon size will be assigned based on the icon's inherited line height.
-For icons used alongside text, ensure the icon is placed inside the acompanying text tag.
-The icon will be vertically centered based on the height.
-",
-      "inlineType": Object {
-        "name": "AvatarProps.Size",
-        "type": "union",
-        "values": Array [
-          "small",
-          "normal",
-          "medium",
-        ],
-      },
-      "name": "size",
-      "optional": true,
-      "type": "string",
-      "visualRefreshTag": "\`medium\` size",
-    },
-    Object {
-      "description": "The name of the user agent shown in the tooltip.
-It can only be used with \\"user\\" variant.
-If passed, the avatar will show the first letter.",
-      "name": "userName",
+      "description": "Text to describe avatar's loading state, shown in tooltip.
+It can only be used with \\"gen-ai\\" avatar.",
+      "name": "loadingText",
       "optional": true,
       "type": "string",
     },
     Object {
-      "description": "Variant of the avatar.
-It can be \\"user\\" or \\"assistant\\"",
+      "description": "Type of the avatar.
+It can be \\"user\\" or \\"gen-ai\\"",
       "inlineType": Object {
-        "name": "AvatarProps.Variant",
+        "name": "AvatarProps.Type",
         "type": "union",
         "values": Array [
           "user",
-          "assistant",
+          "gen-ai",
         ],
       },
-      "name": "variant",
+      "name": "type",
       "optional": false,
       "type": "string",
     },
   ],
-  "regions": Array [],
+  "regions": Array [
+    Object {
+      "description": "Specifies the SVG of a custom icon.
+Use this property if the icon you want isn't available, and you want your custom icon to inherit colors dictated by variant or hover states.
+When this property is set, the component will be decorated with \`aria-hidden=\\"true\\"\`. Ensure that the \`svg\` element:
+- has attribute \`focusable=\\"false\\"\`.
+- has \`viewBox=\\"0 0 16 16\\"\`.
+
+If you set the \`svg\` element as the root node of the slot, the component will automatically
+- set \`stroke=\\"currentColor\\"\`, \`fill=\\"none\\"\`, and \`vertical-align=\\"top\\"\`.
+- set the stroke width based on the size of the icon.
+- set the width and height of the SVG element based on the size of the icon.
+
+If you don't want these styles to be automatically set, wrap the \`svg\` element into a \`span\` and ensure icon \`size\` is not set to \`inherit\`.
+You can still set the stroke to \`currentColor\` to inherit the color of the surrounding elements.
+
+If you set both \`iconUrl\` and \`iconSvg\`, \`iconSvg\` will take precedence.
+
+*Note:* Remember to remove any additional elements (for example: \`defs\`) and related CSS classes from SVG files exported from design software.
+In most cases, they aren't needed, as the \`svg\` element inherits styles from the icon component.
+",
+      "isDefault": false,
+      "name": "iconSvg",
+    },
+  ],
   "releaseStatus": "stable",
 }
 `;

@@ -18,7 +18,7 @@ $dot-size: 3px;
 $shadow-size: 8px;
 $shadow-opacity: 0.1;
 
-@mixin assistant-background {
+@mixin gen-ai-background {
   background: radial-gradient(
       circle farthest-corner at bottom left,
       rgba($color-blue, 1) -25%,
