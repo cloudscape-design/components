@@ -114,12 +114,10 @@ function InternalPopover(
       }
     };
 
-    // useCapture=false makes sure this listener is called after the one attached to the element.
-    // the options.capture notation is unsupported by IE.
-    document.addEventListener('mousedown', onDocumentClick, false);
+    document.addEventListener('mousedown', onDocumentClick);
 
     return () => {
-      document.removeEventListener('mousedown', onDocumentClick, false);
+      document.removeEventListener('mousedown', onDocumentClick);
     };
   }, []);
 
