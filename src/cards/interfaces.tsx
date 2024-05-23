@@ -198,8 +198,8 @@ export interface CardsProps<T = any> extends BaseComponentProps {
    * Use this function to announce page changes to screen reader users.
    * The function argument takes the following properties:
    * * `firstIndex` (number) - The provided `firstIndex` property which defaults to 1 when not defined.
-   * * `totalItemsCount` (optional, number) - The provided `totalItemsCount` property.
    * * `lastIndex` (number) - The index of the last visible item of the table.
+   * * `totalItemsCount` (optional, number) - The provided `totalItemsCount` property.
    */
   renderAriaLive?: (data: CardsProps.LiveAnnouncement) => string;
 

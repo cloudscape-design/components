@@ -4084,8 +4084,8 @@ The \`cardDefinition\` property handles the display of this data.
       "description": "Use this function to announce page changes to screen reader users.
 The function argument takes the following properties:
 * \`firstIndex\` (number) - The provided \`firstIndex\` property which defaults to 1 when not defined.
-* \`totalItemsCount\` (optional, number) - The provided \`totalItemsCount\` property.
-* \`lastIndex\` (number) - The index of the last visible item of the table.",
+* \`lastIndex\` (number) - The index of the last visible item of the table.
+* \`totalItemsCount\` (optional, number) - The provided \`totalItemsCount\` property.",
       "name": "renderAriaLive",
       "optional": true,
       "type": "(data: CardsProps.LiveAnnouncement) => string",
@@ -10785,6 +10785,12 @@ Use the \`buttonText\` property and the \`onButtonClick\` event listener of the 
   "name": "ProgressBar",
   "properties": Array [
     Object {
+      "description": "Adds \`aria-describedby\` to the progress bar.",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Adds an \`aria-label\` to the progress bar.",
       "name": "ariaLabel",
       "optional": true,
@@ -11448,6 +11454,12 @@ filter queries only after an initial filter is applied.",
 When using this slot, make sure to still provide a mechanism to clear all filters.",
       "isDefault": false,
       "name": "customFilterActions",
+    },
+    Object {
+      "description": "Constraint text that's displayed below the filtering input.
+Use this to provide additional information about supported filters.",
+      "isDefault": false,
+      "name": "filteringConstraintText",
     },
     Object {
       "description": "Displayed when there are no options to display.
@@ -13710,20 +13722,20 @@ add a meaningful description to the whole selection.
   The comparator must implement ascending ordering, and the output is inverted automatically in case of descending order.
   If present, the \`sortingField\` property is ignored.
 * \`editConfig\` (EditConfig) - Enables inline editing in column when present. The value is used to configure the editing behavior.
-* * \`editConfig.ariaLabel\` (string) - Specifies a label for the edit control. Visually hidden but read by screen readers.
-* * \`editConfig.errorIconAriaLabel\` (string) - Specifies an ariaLabel for the error icon that is displayed when the validation fails.
-* * \`editConfig.editIconAriaLabel\` (string) - Specifies an alternate text for the edit icon used in column header.
-* * \`editConfig.constraintText\` (string) - Constraint text that is displayed below the edit control.
-* * \`editConfig.disabledReason\` ((item) => string | undefined) - A function that determines whether inline edit for certain items is disabled, and provides a reason why.
+  * \`editConfig.ariaLabel\` (string) - Specifies a label for the edit control. Visually hidden but read by screen readers.
+  * \`editConfig.errorIconAriaLabel\` (string) - Specifies an ariaLabel for the error icon that is displayed when the validation fails.
+  * \`editConfig.editIconAriaLabel\` (string) - Specifies an alternate text for the edit icon used in column header.
+  * \`editConfig.constraintText\` (string) - Constraint text that is displayed below the edit control.
+  * \`editConfig.disabledReason\` ((item) => string | undefined) - A function that determines whether inline edit for certain items is disabled, and provides a reason why.
            Return a string from the function to disable inline edit with a reason. Return \`undefined\` (or no return) from the function allow inline edit.
-* * \`editConfig.validation\` ((item, value) => string) - A function that allows you to validate the value of the edit control.
+  * \`editConfig.validation\` ((item, value) => string) - A function that allows you to validate the value of the edit control.
            Return a string from the function to display an error message. Return \`undefined\` (or no return) from the function to indicate that the value is valid.
-* * \`editConfig.editingCell\` ((item, cellContext) => ReactNode) - Determines the display of a cell's content when inline editing is active on a cell;
+  * \`editConfig.editingCell\` ((item, cellContext) => ReactNode) - Determines the display of a cell's content when inline editing is active on a cell;
        You receive the current table row \`item\` and a \`cellContext\` object as arguments.
        The \`cellContext\` object contains the following properties:
- *  * \`cellContext.currentValue\` - State to keep track of a value in input fields while editing.
- *  * \`cellContext.setValue\` - Function to update \`currentValue\`. This should be called when the value in input field changes.
- * \`isRowHeader\` (boolean) - Specifies that cells in this column should be used as row headers.",
+    * \`cellContext.currentValue\` - State to keep track of a value in input fields while editing.
+    * \`cellContext.setValue\` - Function to update \`currentValue\`. This should be called when the value in input field changes.
+* \`isRowHeader\` (boolean) - Specifies that cells in this column should be used as row headers.",
       "name": "columnDefinitions",
       "optional": false,
       "type": "ReadonlyArray<TableProps.ColumnDefinition<T>>",
@@ -13854,8 +13866,9 @@ by the \`cell\` property of each column definition in the \`columnDefinitions\` 
       "description": "Use this function to announce page changes to screen reader users.
 The function argument takes the following properties:
 * \`firstIndex\` (number) - The provided \`firstIndex\` property which defaults to 1 when not defined.
-* \`totalItemsCount\` (optional, number) - The provided \`totalItemsCount\` property.
 * \`lastIndex\` (number) - The index of the last visible item of the table.
+* \`visibleItemsCount\` (number) - The number of rendered table items.
+* \`totalItemsCount\` (optional, number) - The provided \`totalItemsCount\` property.
 Important: in tables with expandable rows the \`firstIndex\`, \`lastIndex\`, and \`totalItemsCount\` reflect the top-level items only.",
       "name": "renderAriaLive",
       "optional": true,

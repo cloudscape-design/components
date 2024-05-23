@@ -403,6 +403,7 @@ Object {
     "awsui_trigger_xjuzf",
   ],
   "progress-bar": Array [
+    "awsui_additional-info_11huc",
     "awsui_percentage_11huc",
     "awsui_result-button_11huc",
     "awsui_result-container-error_11huc",
@@ -411,6 +412,7 @@ Object {
     "awsui_root_11huc",
   ],
   "property-filter": Array [
+    "awsui_constraint_1wzqe",
     "awsui_custom-control_1wzqe",
     "awsui_custom-filter-actions_1wzqe",
     "awsui_remove-all_1wzqe",
