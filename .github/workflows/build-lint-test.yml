@@ -41,6 +41,7 @@ jobs:
     uses: cloudscape-design/actions/.github/workflows/build-lint-test.yml@main
     secrets: inherit
     with:
+      skip-codecov: true
       artifact-path: lib/static-default
       artifact-name: dev-pages
   deploy:

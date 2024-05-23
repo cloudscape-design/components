@@ -8,7 +8,7 @@
 @use '../../internal/generated/custom-css-properties/index.scss' as custom-props;
 
 .breadcrumbs {
-  background-color: awsui.$color-background-layout-main;
+  background-color: transparent;
   grid-area: breadcrumbs;
 
   /*

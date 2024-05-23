@@ -10,13 +10,17 @@
 .notifications {
   color: awsui.$color-text-body-default;
   grid-area: notifications;
-  z-index: 850;
+  z-index: 830;
 
   @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
     &.sticky-notifications {
       #{custom-props.$flashbarStickyBottomMargin}: #{awsui.$space-xxl};
       position: sticky;
       inset-block-start: calc(var(#{custom-props.$offsetTop}) + #{awsui.$space-xs});
+      @include styles.with-motion {
+        transition: ease awsui.$motion-duration-refresh-only-slow;
+        transition-property: top;
+      }
     }
   }
 }

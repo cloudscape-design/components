@@ -4,11 +4,11 @@ import React, { useRef } from 'react';
 import clsx from 'clsx';
 import customCssProps from '../../internal/generated/custom-css-properties';
 import { InternalButton } from '../../button/internal';
-import SplitPanel from './split-panel';
 import TriggerButton from './trigger-button';
 import { useAppLayoutInternals } from './context';
 import splitPanelStyles from '../../split-panel/styles.css.js';
 import styles from './styles.css.js';
+import sharedStyles from '../styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import OverflowMenu from '../drawer/overflow-menu';
@@ -31,7 +31,6 @@ export default function Drawers() {
     hasOpenDrawer,
     navigationOpen,
     navigationHide,
-    isMobile,
   } = useAppLayoutInternals();
 
   const isUnfocusable = hasDrawerViewportOverlay && navigationOpen && !navigationHide;
@@ -48,9 +47,7 @@ export default function Drawers() {
         [styles.unfocusable]: isUnfocusable,
       })}
     >
-      <SplitPanel.Side />
       <ActiveDrawer />
-      {!isMobile && <DesktopTriggers />}
     </div>
   );
 }
@@ -94,7 +91,7 @@ function ActiveDrawer() {
       id={activeDrawerId ?? undefined}
       aria-hidden={isHidden}
       aria-label={computedAriaLabels.content}
-      className={clsx(styles.drawer, {
+      className={clsx(styles.drawer, sharedStyles['with-motion'], {
         [styles['is-drawer-open']]: activeDrawerId,
         [styles.unfocusable]: isUnfocusable,
         [testutilStyles['active-drawer']]: activeDrawerId,
@@ -153,7 +150,7 @@ function ActiveDrawer() {
  * tracked by the previousActiveDrawerId property in order to appropriately apply
  * the ref required to manage focus control.
  */
-function DesktopTriggers() {
+export function DrawerTriggers() {
   const {
     activeDrawerId,
     drawers,
@@ -164,7 +161,9 @@ function DesktopTriggers() {
     drawersTriggerCount,
     handleDrawersClick,
     handleSplitPanelClick,
+    hasDrawerViewportOverlay,
     hasOpenDrawer,
+    isMobile,
     isSplitPanelOpen,
     splitPanel,
     splitPanelControlId,
@@ -172,32 +171,31 @@ function DesktopTriggers() {
     splitPanelPosition,
     splitPanelRefs,
     splitPanelToggle,
-    splitPanelReportedHeaderHeight,
-    splitPanelReportedSize,
   } = useAppLayoutInternals();
 
   const hasMultipleTriggers = drawersTriggerCount > 1;
-  const hasSplitPanel = splitPanel && splitPanelDisplayed && splitPanelPosition === 'side';
+  const hasSplitPanel = splitPanel && splitPanelDisplayed;
+  const splitPanelIcon = splitPanelPosition === 'side' ? 'view-vertical' : 'view-horizontal';
 
   const previousActiveDrawerId = useRef(activeDrawerId);
-  const [containerHeight, triggersContainerRef] = useContainerQuery(rect => rect.contentBoxHeight);
+  const [containerWidth, triggersContainerRef] = useContainerQuery(rect => rect.contentBoxWidth);
+  if (!drawers && !hasSplitPanel) {
+    return null;
+  }
 
   if (activeDrawerId) {
     previousActiveDrawerId.current = activeDrawerId;
   }
 
-  const splitPanelHeight =
-    isSplitPanelOpen && splitPanelPosition === 'bottom' ? splitPanelReportedSize : splitPanelReportedHeaderHeight;
-
   const getIndexOfOverflowItem = () => {
-    if (containerHeight) {
-      const ITEM_HEIGHT = 48;
-      const overflowSpot =
-        activeDrawerId && isSplitPanelOpen
-          ? (containerHeight - splitPanelReportedHeaderHeight) / 1.5
-          : (containerHeight - splitPanelHeight) / 1.5;
+    if (isMobile) {
+      return 2;
+    }
+    if (containerWidth) {
+      const ITEM_WIDTH = 50; // Roughly 34px + padding = 42px but added extra for safety
+      const overflowSpot = containerWidth;
 
-      const index = Math.floor(overflowSpot / ITEM_HEIGHT);
+      const index = Math.floor(overflowSpot / ITEM_WIDTH);
 
       let splitPanelItem = 0;
       if (hasSplitPanel && splitPanelToggle.displayed) {
@@ -205,7 +203,6 @@ function DesktopTriggers() {
       }
       return index - splitPanelItem;
     }
-
     return 0;
   };
 
@@ -217,8 +214,10 @@ function DesktopTriggers() {
       className={clsx(styles['drawers-desktop-triggers-container'], {
         [styles['has-multiple-triggers']]: hasMultipleTriggers,
         [styles['has-open-drawer']]: hasOpenDrawer,
+        [styles.unfocusable]: hasDrawerViewportOverlay,
       })}
       aria-label={drawersAriaLabel}
+      aria-hidden={hasDrawerViewportOverlay}
       ref={triggersContainerRef}
       role="region"
     >
@@ -228,8 +227,20 @@ function DesktopTriggers() {
           [styles['has-open-drawer']]: hasOpenDrawer,
         })}
         role="toolbar"
-        aria-orientation="vertical"
+        aria-orientation="horizontal"
       >
+        {hasSplitPanel && splitPanelToggle.displayed && (
+          <TriggerButton
+            ariaLabel={splitPanelToggle.ariaLabel}
+            ariaControls={splitPanelControlId}
+            ariaExpanded={!!isSplitPanelOpen}
+            className={clsx(styles['drawers-trigger'], splitPanelStyles['open-button'])}
+            iconName={splitPanelIcon}
+            onClick={() => handleSplitPanelClick()}
+            selected={hasSplitPanel && isSplitPanelOpen}
+            ref={splitPanelRefs.toggle}
+          />
+        )}
         {visibleItems.map(item => {
           return (
             <TriggerButton
@@ -241,6 +252,7 @@ function DesktopTriggers() {
                 testutilStyles['drawers-trigger'],
                 item.id === TOOLS_DRAWER_ID && testutilStyles['tools-toggle']
               )}
+              disabled={hasDrawerViewportOverlay}
               iconName={item.trigger.iconName}
               iconSvg={item.trigger.iconSvg}
               key={item.id}
@@ -252,7 +264,6 @@ function DesktopTriggers() {
             />
           );
         })}
-
         {overflowItems.length > 0 && (
           <OverflowMenu
             items={overflowItems}
@@ -271,92 +282,6 @@ function DesktopTriggers() {
             onItemClick={({ detail }) => {
               handleDrawersClick(detail.id);
             }}
-          />
-        )}
-        {hasSplitPanel && splitPanelToggle.displayed && (
-          <TriggerButton
-            ariaLabel={splitPanelToggle.ariaLabel}
-            ariaControls={splitPanelControlId}
-            ariaExpanded={!!isSplitPanelOpen}
-            className={clsx(styles['drawers-trigger'], splitPanelStyles['open-button'])}
-            iconName="view-vertical"
-            onClick={() => handleSplitPanelClick()}
-            selected={hasSplitPanel && isSplitPanelOpen}
-            ref={splitPanelRefs.toggle}
-          />
-        )}
-      </div>
-    </aside>
-  );
-}
-
-/**
- * The MobileTriggers will be mounted inside of the AppBar component and
- * only rendered when Drawers are defined in mobile viewports. The same logic
- * will in the AppBar component will suppress the rendering of the legacy
- * trigger button for the Tools drawer.
- */
-export function MobileTriggers() {
-  const {
-    activeDrawerId,
-    drawers,
-    drawersAriaLabel,
-    drawersOverflowAriaLabel,
-    drawersOverflowWithBadgeAriaLabel,
-    drawersRefs,
-    handleDrawersClick,
-    hasDrawerViewportOverlay,
-  } = useAppLayoutInternals();
-
-  const previousActiveDrawerId = useRef(activeDrawerId);
-
-  if (!drawers) {
-    return null;
-  }
-
-  if (activeDrawerId) {
-    previousActiveDrawerId.current = activeDrawerId;
-  }
-
-  const { visibleItems, overflowItems } = splitItems(drawers, 2, activeDrawerId);
-  const overflowMenuHasBadge = !!overflowItems.find(item => item.badge);
-
-  return (
-    <aside
-      aria-hidden={hasDrawerViewportOverlay}
-      className={clsx({
-        [styles.unfocusable]: hasDrawerViewportOverlay,
-      })}
-      aria-label={drawersAriaLabel}
-      role="region"
-    >
-      <div className={clsx(styles['drawers-mobile-triggers-container'])} role="toolbar" aria-orientation="horizontal">
-        {visibleItems.map(item => (
-          <InternalButton
-            ariaExpanded={item.id === activeDrawerId}
-            ariaLabel={item.ariaLabels?.triggerButton}
-            className={clsx(
-              styles['drawers-trigger'],
-              testutilStyles['drawers-trigger'],
-              item.id === TOOLS_DRAWER_ID && testutilStyles['tools-toggle']
-            )}
-            disabled={hasDrawerViewportOverlay}
-            ref={item.id === previousActiveDrawerId.current ? drawersRefs.toggle : undefined}
-            formAction="none"
-            iconName={item.trigger.iconName}
-            iconSvg={item.trigger.iconSvg}
-            badge={item.badge}
-            key={item.id}
-            onClick={() => handleDrawersClick(item.id)}
-            variant="icon"
-            __nativeAttributes={{ 'aria-haspopup': true, 'data-testid': `awsui-app-layout-trigger-${item.id}` }}
-          />
-        ))}
-        {overflowItems.length > 0 && (
-          <OverflowMenu
-            items={overflowItems}
-            ariaLabel={overflowMenuHasBadge ? drawersOverflowWithBadgeAriaLabel : drawersOverflowAriaLabel}
-            onItemClick={({ detail }) => handleDrawersClick(detail.id)}
           />
         )}
       </div>

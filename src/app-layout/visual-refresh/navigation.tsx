@@ -4,7 +4,6 @@ import React from 'react';
 import clsx from 'clsx';
 import { useAppLayoutInternals } from './context';
 import { InternalButton } from '../../button/internal';
-import TriggerButton from './trigger-button';
 import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 import { Transition } from '../../internal/components/transition';
@@ -62,27 +61,6 @@ export default function Navigation() {
           })}
           style={{ [customCssProps.navigationWidth]: `${navigationWidth}px` }}
         >
-          {!isMobile && (
-            <nav
-              aria-hidden={isMobile || navigationOpen}
-              aria-label={ariaLabels?.navigation ?? undefined}
-              className={clsx(styles['show-navigation'], {
-                [styles.animating]: state === 'exiting',
-                [styles['is-navigation-open']]: navigationOpen,
-              })}
-              ref={state === 'exiting' ? transitionEventsRef : undefined}
-            >
-              <TriggerButton
-                ariaLabel={ariaLabels?.navigationToggle}
-                ariaExpanded={navigationOpen ? undefined : false}
-                iconName="menu"
-                className={testutilStyles['navigation-toggle']}
-                onClick={() => handleNavigationClick(true)}
-                ref={navigationRefs.toggle}
-              />
-            </nav>
-          )}
-
           <nav
             aria-label={ariaLabels?.navigation ?? undefined}
             className={clsx(

@@ -11,6 +11,7 @@ const tokens: StyleDictionary.SizesDictionary = {
   sizeIconMedium: '16px',
   sizeTableSelectionHorizontal: '54px',
   sizeVerticalInput: { comfortable: '32px', compact: '28px' },
+  sizeVerticalPanelIconOffset: { comfortable: '15px', compact: '13px' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedDensityScopeDictionary = merge(

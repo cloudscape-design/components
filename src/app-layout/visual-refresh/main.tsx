@@ -14,7 +14,6 @@ export default function Main() {
     content,
     disableBodyScroll,
     disableContentPaddings,
-    footerHeight,
     hasDrawerViewportOverlay,
     navigationOpen,
     placement,
@@ -30,8 +29,6 @@ export default function Main() {
     splitPanelPosition,
     activeDrawerId,
   } = useAppLayoutInternals();
-
-  const splitPanelHeight = offsetBottom - footerHeight;
 
   return (
     <div
@@ -50,20 +47,17 @@ export default function Main() {
         testutilStyles.content
       )}
       ref={mainElement}
-      style={{
-        [customCssProps.splitPanelHeight]: `${splitPanelHeight}px`,
-        ...getStickyOffsetVars(
-          placement.insetBlockStart,
-          offsetBottom,
-          stickyNotifications && notificationsHeight > 0
-            ? `${tokens.spaceXs} + ${notificationsHeight}px + ${!hasBackgroundOverlap ? tokens.spaceXxxs : '0px'}`
-            : '0px',
-          `var(${customCssProps.mobileBarHeight})`,
-          !!disableBodyScroll,
-          isMobile,
-          hasBackgroundOverlap && !isMobile ? tokens.spaceScaledS : '0px'
-        ),
-      }}
+      style={getStickyOffsetVars(
+        placement.insetBlockStart,
+        offsetBottom,
+        stickyNotifications && notificationsHeight > 0
+          ? `${tokens.spaceXs} + ${notificationsHeight}px + ${!hasBackgroundOverlap ? tokens.spaceXxxs : '0px'}`
+          : '0px',
+        `var(${customCssProps.mobileBarHeight})`,
+        !!disableBodyScroll,
+        isMobile,
+        hasBackgroundOverlap && !isMobile ? tokens.spaceScaledS : '0px'
+      )}
     >
       {content}
     </div>

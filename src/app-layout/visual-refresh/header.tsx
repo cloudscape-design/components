@@ -7,7 +7,7 @@ import { useAppLayoutInternals } from './context';
 import styles from './styles.css.js';
 
 export default function Header() {
-  const { breadcrumbs, contentHeader, hasDrawerViewportOverlay, hasNotificationsContent } = useAppLayoutInternals();
+  const { contentHeader, hasDrawerViewportOverlay, hasNotificationsContent } = useAppLayoutInternals();
 
   if (!contentHeader) {
     return null;
@@ -18,7 +18,6 @@ export default function Header() {
       className={clsx(
         styles.content,
         {
-          [styles['has-breadcrumbs']]: breadcrumbs,
           [styles['has-notifications-content']]: hasNotificationsContent,
           [styles.unfocusable]: hasDrawerViewportOverlay,
         },

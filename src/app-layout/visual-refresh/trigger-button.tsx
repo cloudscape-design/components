@@ -19,6 +19,7 @@ export interface TriggerButtonProps {
   onClick: React.MouseEventHandler<HTMLButtonElement>;
   selected?: boolean;
   badge?: boolean;
+  disabled?: boolean;
 }
 
 function TriggerButton(
@@ -33,6 +34,7 @@ function TriggerButton(
     testId,
     badge,
     selected = false,
+    disabled,
   }: TriggerButtonProps,
   ref: React.Ref<ButtonProps.Ref>
 ) {
@@ -48,6 +50,8 @@ function TriggerButton(
         aria-controls={ariaControls}
         aria-haspopup={true}
         aria-label={ariaLabel}
+        aria-disabled={disabled}
+        disabled={disabled}
         className={clsx(
           styles.trigger,
           {

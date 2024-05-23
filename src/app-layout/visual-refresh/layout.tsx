@@ -19,7 +19,6 @@ interface LayoutProps {
  */
 export default function Layout({ children }: LayoutProps) {
   const {
-    breadcrumbs,
     contentHeader,
     contentType,
     disableBodyScroll,
@@ -31,7 +30,6 @@ export default function Layout({ children }: LayoutProps) {
     hasOpenDrawer,
     headerHeight,
     isBackgroundOverlapDisabled,
-    isMobile,
     navigationOpen,
     layoutElement,
     layoutWidth,
@@ -41,34 +39,34 @@ export default function Layout({ children }: LayoutProps) {
     navigationHide,
     notificationsHeight,
     __embeddedViewMode,
+    offsetBottom,
     splitPanelPosition,
     stickyNotifications,
     splitPanelDisplayed,
+    toolbarHeight,
+    tools,
   } = useAppLayoutInternals();
-
-  // Determine the first content child so the gap will vertically align with the trigger buttons
-  const contentFirstChild = getContentFirstChild(breadcrumbs, contentHeader, hasNotificationsContent, isMobile);
 
   // Content gaps on the left and right are used with the minmax function in the CSS grid column definition
   const hasContentGapLeft = navigationOpen || navigationHide;
-  const hasContentGapRight = drawersTriggerCount === 0 || hasOpenDrawer;
+  const hasContentGapRight = drawersTriggerCount === 0 || hasOpenDrawer || !tools;
 
+  const splitPanelHeight = offsetBottom - footerHeight;
   return (
     <main
       className={clsx(
         styles.layout,
-        styles[`content-first-child-${contentFirstChild}`],
         styles[`content-type-${contentType}`],
         styles[`split-panel-position-${splitPanelPosition ?? 'bottom'}`],
         {
           [styles['disable-body-scroll']]: disableBodyScroll,
           [testutilStyles['disable-body-scroll-root']]: disableBodyScroll,
           [styles['disable-content-paddings']]: disableContentPaddings,
-          [styles['has-breadcrumbs']]: breadcrumbs && !isMobile,
           [styles['has-content-gap-left']]: hasContentGapLeft,
           [styles['has-content-gap-right']]: hasContentGapRight,
           [styles['has-header']]: contentHeader,
           [styles['has-max-content-width']]: maxContentWidth && maxContentWidth > 0,
+          [styles['has-notifications']]: hasNotificationsContent,
           [styles['has-split-panel']]: splitPanelDisplayed,
           [styles['has-sticky-background']]: hasStickyBackground,
           [styles['has-sticky-notifications']]: stickyNotifications && hasNotificationsContent,
@@ -86,34 +84,11 @@ export default function Layout({ children }: LayoutProps) {
         ...(maxContentWidth && { [customCssProps.maxContentWidth]: `${maxContentWidth}px` }),
         ...(minContentWidth && { [customCssProps.minContentWidth]: `${minContentWidth}px` }),
         [customCssProps.notificationsHeight]: `${notificationsHeight}px`,
+        [customCssProps.toolbarHeight]: `${toolbarHeight}px`,
+        [customCssProps.splitPanelHeight]: `${splitPanelHeight}px`,
       }}
     >
       {children}
     </main>
   );
-}
-
-/*
-The Notifications, Breadcrumbs, Header, and Main are all rendered in the center
-column of the grid layout. Any of these could be the first child to render in the
-content area if the previous siblings do not exist. The grid gap before the first
-child will be different to ensure vertical alignment with the trigger buttons.
-*/
-function getContentFirstChild(
-  breadcrumbs: React.ReactNode,
-  contentHeader: React.ReactNode,
-  hasNotificationsContent: boolean,
-  isMobile: boolean
-) {
-  let contentFirstChild = 'main';
-
-  if (hasNotificationsContent) {
-    contentFirstChild = 'notifications';
-  } else if (breadcrumbs && !isMobile) {
-    contentFirstChild = 'breadcrumbs';
-  } else if (contentHeader) {
-    contentFirstChild = 'header';
-  }
-
-  return contentFirstChild;
 }
