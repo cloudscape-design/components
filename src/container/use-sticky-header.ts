@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { RefObject, useState, useLayoutEffect, useCallback, useEffect, createContext } from 'react';
-import { findUpUntil, supportsStickyPosition } from '../internal/utils/dom';
+import { findUpUntil } from '../internal/utils/dom';
 import { getOverflowParents } from '../internal/utils/scrollable-containers';
 import { useMobile } from '../internal/hooks/use-mobile';
 import globalVars from '../internal/styles/global-vars';
@@ -46,7 +46,7 @@ export const useStickyHeader = (
 ) => {
   const isMobile = useMobile();
   const disableSticky = isMobile && __disableMobile;
-  const isSticky = supportsStickyPosition() && !disableSticky && !!__stickyHeader;
+  const isSticky = !disableSticky && !!__stickyHeader;
 
   // If it has overflow parents inside the app layout, we shouldn't apply a sticky offset.
   const [hasInnerOverflowParents, setHasInnerOverflowParents] = useState(false);
