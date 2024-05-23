@@ -91,9 +91,6 @@
 }
 
 .actions {
-  // extra flex container to avoid overflow issues in IE11
-  // https://github.com/philipwalton/flexbugs/issues/170
-  display: flex;
   align-items: flex-start;
   min-block-size: awsui.$size-vertical-input;
 
