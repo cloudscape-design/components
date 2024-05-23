@@ -129,6 +129,56 @@ const items3: ButtonGroupProps['items'] = [
   { type: 'button', variant: 'icon', id: 'search', iconName: 'search', text: 'Search' },
 ];
 
+const items4: ButtonGroupProps['items'] = [
+  {
+    type: 'button',
+    id: 'thump-up',
+    iconName: 'thumbs-up',
+    text: 'Like',
+    tooltipText: 'Like',
+    actionPopoverText: 'Liked',
+  },
+  {
+    type: 'button',
+    id: 'thump-down',
+    text: 'Open',
+    tooltipText: 'Dislike',
+    actionPopoverText: 'Disliked',
+  },
+  { type: 'divider' },
+  {
+    type: 'button',
+    variant: 'icon',
+    id: 'copy',
+    iconName: 'copy',
+    text: 'Copy',
+    tooltipText: 'Copy',
+    actionPopoverText: 'Copied',
+  },
+  { type: 'divider' },
+  {
+    type: 'button',
+    variant: 'icon',
+    id: 'add',
+    iconName: 'add-plus',
+    text: 'Add',
+    tooltipText: 'Add',
+    actionPopoverText: 'Added',
+  },
+  {
+    type: 'button',
+    variant: 'icon',
+    id: 'remove',
+    iconName: 'remove',
+    tooltipText: 'Remove',
+    text: 'Remove',
+    actionPopoverText: 'Removed',
+  },
+  { type: 'button', variant: 'icon', id: 'edit', iconName: 'edit', text: 'Edit' },
+  { type: 'button', variant: 'icon', id: 'open', iconName: 'file-open', text: 'Open' },
+  { type: 'button', id: 'search', text: 'Search' },
+];
+
 export default function ButtonGroupPage() {
   const onItemClick = (event: CustomEvent<ButtonGroupProps.ItemClickDetails>) => {
     console.log('Item clicked:', event.detail.id);
@@ -147,6 +197,10 @@ export default function ButtonGroupPage() {
       <article>
         <h1>Group with overflow</h1>
         <ButtonGroup items={items3} onItemClick={onItemClick} />
+      </article>
+      <article>
+        <h1>Group with different button variants</h1>
+        <ButtonGroup items={items4} onItemClick={onItemClick} />
       </article>
     </ScreenshotArea>
   );

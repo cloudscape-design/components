@@ -29,7 +29,7 @@ export interface InternalButtonGroupProps extends ButtonGroupProps, InternalBase
 
 export namespace ButtonGroupProps {
   export type Variant = 'icon';
-  export type Item = IconButton | Divider;
+  export type Item = Button | Divider;
 
   export interface Divider {
     type: 'divider';
@@ -58,9 +58,9 @@ export namespace ButtonGroupProps {
 
    * - `actionPopoverText` (string) - (Optional) Text that appears when the user clicks the item. Use to provide feedback to the user.
    */
-  export interface IconButton {
+  export interface Button {
     type: 'button';
-    variant: 'icon';
+    variant?: 'icon';
     id: string;
     text: string;
     lang?: string;
