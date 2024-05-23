@@ -102,7 +102,7 @@ export default function ProgressBar({
         </div>
       </div>
       {additionalInfo && (
-        <SmallText testId="additional-info" color={isInFlash ? 'inherit' : undefined}>
+        <SmallText className={styles['additional-info']} color={isInFlash ? 'inherit' : undefined}>
           {additionalInfo}
         </SmallText>
       )}
