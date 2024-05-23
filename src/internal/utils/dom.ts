@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import balanced from 'balanced-match';
-import { calculateOnce } from './calculate-once';
 
 export function findUpUntil(node: HTMLElement, callback: (element: HTMLElement) => boolean): HTMLElement | null {
   let current: HTMLElement | null = node;
@@ -30,26 +29,6 @@ export function supportsStickyPosition() {
 }
 
 /**
- * Returns whether `position: fixed` can be relative to transformed parents or
- * whether it's always relative to the viewport. Returns `true` on all browsers
- * except IE.
- */
-const supportsContainingBlockPositioning = calculateOnce(() => {
-  const parent = document.createElement('div');
-  parent.style.transform = 'translateY(5px)';
-  document.body.appendChild(parent);
-
-  const child = document.createElement('div');
-  child.style.position = 'fixed';
-  child.style.top = '0';
-  parent.appendChild(child);
-
-  const result = parent.getBoundingClientRect().top === child.getBoundingClientRect().top;
-  document.body.removeChild(parent);
-  return result;
-});
-
-/**
  * Returns an element that is used to position the given element.
  * @see https://developer.mozilla.org/en-US/docs/Web/CSS/Containing_block
  */
@@ -58,15 +37,13 @@ export function getContainingBlock(startElement: HTMLElement): HTMLElement | nul
     return null;
   }
 
-  return supportsContainingBlockPositioning()
-    ? (findUpUntil(startElement.parentElement, element => {
-        const computedStyle = getComputedStyle(element);
-        return (
-          (!!computedStyle.transform && computedStyle.transform !== 'none') ||
-          (!!computedStyle.perspective && computedStyle.perspective !== 'none')
-        );
-      }) as HTMLElement)
-    : null;
+  return findUpUntil(startElement.parentElement, element => {
+    const computedStyle = getComputedStyle(element);
+    return (
+      (!!computedStyle.transform && computedStyle.transform !== 'none') ||
+      (!!computedStyle.perspective && computedStyle.perspective !== 'none')
+    );
+  }) as HTMLElement;
 }
 
 const cssVariableExpression = /--.+?\s*,\s*(.+)/;
