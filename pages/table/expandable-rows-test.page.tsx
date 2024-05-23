@@ -224,7 +224,9 @@ export default () => {
                   }
                   renderWithPortal={true}
                 >
-                  <StatusIndicator type="error">Failed to load instances</StatusIndicator>
+                  <div aria-live="polite">
+                    <StatusIndicator type="error">Failed to load instances</StatusIndicator>
+                  </div>
                 </Popover>
               </Box>
             )}
