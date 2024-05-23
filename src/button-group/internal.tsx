@@ -16,13 +16,13 @@ import { fireCancelableEvent } from '../internal/events';
 
 export default function InternalButtonGroup({
   items = [],
-  truncateThreshold = 5,
+  limit = 5,
   onItemClick,
   __internalRootRef = null,
   ...props
 }: InternalButtonGroupProps) {
   const baseProps = getBaseProps(props);
-  const { visibleItems, collapsedItems } = splitItems(items, truncateThreshold);
+  const { visibleItems, collapsedItems } = splitItems(items, limit);
 
   const onClickHandler = (event: CustomEvent<ButtonDropdownProps.ItemClickDetails>) => {
     if (onItemClick) {
@@ -80,7 +80,6 @@ function itemsToDropdownItems(items: readonly ButtonGroupProps.Item[]) {
         text: item.text,
         lang: item.lang,
         disabled: item.disabled,
-        disabledReason: item.disabledReason,
         description: item.description,
         iconAlt: item.iconAlt,
         iconName: item.iconName,

@@ -31,12 +31,12 @@ function IconButtonItemElement({
   onItemClick?: (event: CustomEvent) => void;
 }) {
   const buttonRef = useRef<HTMLDivElement>(null);
-  const [openPopover, setOpenPopover] = useState(false);
+  const [popoverOpen, setPopoverOpen] = useState(false);
   const [isActionPopover, setIsActionPopover] = useState(false);
 
   const onClickHandler = (event: CustomEvent<ClickDetail>) => {
     setIsActionPopover(true);
-    setOpenPopover(true);
+    setPopoverOpen(true);
 
     if (onItemClick) {
       fireCancelableEvent(onItemClick, { id: item.id }, event);
@@ -44,24 +44,25 @@ function IconButtonItemElement({
   };
 
   const onPointerEnter = () => {
-    if (!openPopover) {
+    if (!popoverOpen) {
       setIsActionPopover(false);
-      setOpenPopover(true);
+      setPopoverOpen(true);
     }
   };
 
-  const popoverContent = isActionPopover ? (
-    item.actionPopoverText ? (
-      <StatusIndicator type={'success'}>{item.actionPopoverText}</StatusIndicator>
-    ) : null
-  ) : (
-    item.tooltipText ?? null
-  );
+  const onPointerLeave = () => {
+    if (!isActionPopover) {
+      setPopoverOpen(false);
+    }
+  };
 
-  const popoverTrackKey = (isActionPopover ? item.actionPopoverText : item.tooltipText) ?? '';
+  const onPopoverClose = () => {
+    setPopoverOpen(false);
+    setIsActionPopover(false);
+  };
 
   return (
-    <div ref={buttonRef} onPointerEnter={onPointerEnter}>
+    <div ref={buttonRef} onPointerEnter={onPointerEnter} onPointerLeave={onPointerLeave}>
       <InternalButton
         variant="icon"
         disabled={item.disabled}
@@ -71,19 +72,19 @@ function IconButtonItemElement({
         ariaLabel={item.text}
         onClick={event => onClickHandler(event)}
       />
-      {popoverContent && (
-        <Tooltip
-          trackRef={buttonRef}
-          trackKey={popoverTrackKey}
-          value={popoverContent}
-          open={openPopover}
-          close={() => {
-            setOpenPopover(false);
-            setIsActionPopover(false);
-          }}
-          closeOnLeave={!isActionPopover}
-        />
-      )}
+      <Tooltip
+        trackRef={buttonRef}
+        trackKey={item.id}
+        open={popoverOpen}
+        close={onPopoverClose}
+        content={
+          (isActionPopover && item.actionPopoverText && (
+            <StatusIndicator type={'success'}>{item.actionPopoverText}</StatusIndicator>
+          )) ||
+          item.tooltipText ||
+          null
+        }
+      />
     </div>
   );
 }

@@ -14,7 +14,7 @@ export interface ButtonGroupProps extends BaseComponentProps {
   /**
    * Max number of visible items in the button group, the rest will be hidden in a dropdown.
    */
-  truncateThreshold?: number;
+  limit?: number;
   /**
    * Array of objects of type 'icon-button' or 'divider'.
    */
@@ -58,7 +58,7 @@ export namespace ButtonGroupProps {
 
    * - `tooltipText` (string) - (Optional) Text that appears in a tooltip when the user hovers over the item.
 
-   * - `successText` (string) - (Optional) Text that appears when the user clicks the item. Use to provide feedback to the user.
+   * - `actionPopoverText` (string) - (Optional) Text that appears when the user clicks the item. Use to provide feedback to the user.
    */
   export interface IconButton {
     type: 'icon-button';
@@ -78,6 +78,13 @@ export namespace ButtonGroupProps {
 
   export interface ItemClickDetails {
     id: string;
+  }
+
+  export interface Ref {
+    /**
+     * Focuses the underlying native button for item.
+     */
+    focus(id: string): void;
   }
 }
 
