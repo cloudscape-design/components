@@ -13,13 +13,12 @@ import styles from './styles.css.js';
 export interface TooltipProps {
   trackKey: string;
   trackRef: React.RefObject<HTMLElement | SVGElement>;
-  value: React.ReactNode;
+  content: React.ReactNode;
   open: boolean;
-  closeOnLeave?: boolean;
   close?: () => void;
 }
 
-export default function Tooltip({ trackKey, trackRef, value, open, closeOnLeave, close }: TooltipProps) {
+export default function Tooltip({ trackKey, trackRef, content, open, close }: TooltipProps) {
   useEffect(() => {
     if (!open) {
       return;
@@ -42,13 +41,7 @@ export default function Tooltip({ trackKey, trackRef, value, open, closeOnLeave,
       }
     };
 
-    const handlePointerLeave = () => {
-      if (closeOnLeave && close) {
-        close();
-      }
-    };
-
-    const handleTooltipEvent = (event: CustomEvent) => {
+    const handleTooltipToogleEvent = (event: CustomEvent) => {
       if (event.detail.trackKey !== trackKey && event.detail.open && close) {
         close();
       }
@@ -56,22 +49,20 @@ export default function Tooltip({ trackKey, trackRef, value, open, closeOnLeave,
 
     window.addEventListener('pointerdown', handlePointerDownEvent);
     window.addEventListener('keydown', handleKeyDownEvent);
-    window.addEventListener('tooltip:toggle', handleTooltipEvent as any);
-    currentRef?.addEventListener('pointerleave', handlePointerLeave);
+    window.addEventListener('tooltip:toggle', handleTooltipToogleEvent as any);
 
     return () => {
       window.removeEventListener('pointerdown', handlePointerDownEvent);
       window.removeEventListener('keydown', handleKeyDownEvent);
-      window.removeEventListener('tooltip:toggle', handleTooltipEvent as any);
-      currentRef?.removeEventListener('pointerleave', handlePointerLeave);
+      window.removeEventListener('tooltip:toggle', handleTooltipToogleEvent as any);
     };
-  }, [open, close, closeOnLeave, trackRef, trackKey]);
+  }, [open, close, trackRef, trackKey]);
 
   useEffect(() => {
     window.dispatchEvent(new CustomEvent('tooltip:toggle', { detail: { open, trackKey } }));
   }, [open, trackKey]);
 
-  if (!open) {
+  if (!open || !content) {
     return null;
   }
 
@@ -94,7 +85,7 @@ export default function Tooltip({ trackKey, trackRef, value, open, closeOnLeave,
               )}
             >
               <PopoverBody dismissButton={false} dismissAriaLabel={undefined} onDismiss={undefined} header={undefined}>
-                {value}
+                {content}
               </PopoverBody>
             </PopoverContainer>
           )}
