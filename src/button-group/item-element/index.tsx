@@ -12,7 +12,7 @@ import StatusIndicator from '../../status-indicator/internal.js';
 export default function ItemElement({ item, onItemClick }: ItemProps) {
   if (item.type === 'divider') {
     return <DividerItemElement />;
-  } else if (item.type === 'icon-button') {
+  } else if (item.type === 'button' && item.variant === 'icon') {
     return <IconButtonItemElement item={item} onItemClick={onItemClick} />;
   }
 

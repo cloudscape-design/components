@@ -11,8 +11,8 @@ import {
   InternalItemOrGroup as ButtonDropdownInternalItemOrGroup,
   ButtonDropdownProps,
 } from '../button-dropdown/interfaces';
-import ItemElement from './item-element';
 import { fireCancelableEvent } from '../internal/events';
+import ItemElement from './item-element';
 
 export default function InternalButtonGroup({
   items = [],
@@ -74,7 +74,7 @@ function itemsToDropdownItems(items: readonly ButtonGroupProps.Item[]) {
   const internalItems: ButtonDropdownInternalItemOrGroup[] = [];
 
   for (const item of items) {
-    if (item.type === 'icon-button') {
+    if (item.type === 'button') {
       const dropdownItem: ButtonDropdownInternalItem = {
         id: item.id,
         text: item.text,

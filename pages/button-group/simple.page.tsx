@@ -7,7 +7,8 @@ import ScreenshotArea from '../utils/screenshot-area';
 
 const items1: ButtonGroupProps['items'] = [
   {
-    type: 'icon-button',
+    type: 'button',
+    variant: 'icon',
     id: 'thump-up',
     iconName: 'thumbs-up',
     text: 'Like',
@@ -15,7 +16,8 @@ const items1: ButtonGroupProps['items'] = [
     actionPopoverText: 'Liked',
   },
   {
-    type: 'icon-button',
+    type: 'button',
+    variant: 'icon',
     id: 'thump-down',
     iconName: 'thumbs-down',
     text: 'Dislike',
@@ -26,7 +28,8 @@ const items1: ButtonGroupProps['items'] = [
 
 const items2: ButtonGroupProps['items'] = [
   {
-    type: 'icon-button',
+    type: 'button',
+    variant: 'icon',
     id: 'thump-up',
     iconName: 'thumbs-up',
     text: 'Like',
@@ -34,7 +37,8 @@ const items2: ButtonGroupProps['items'] = [
     actionPopoverText: 'Liked',
   },
   {
-    type: 'icon-button',
+    type: 'button',
+    variant: 'icon',
     id: 'thump-down',
     iconName: 'thumbs-down',
     text: 'Dislike',
@@ -42,10 +46,19 @@ const items2: ButtonGroupProps['items'] = [
     actionPopoverText: 'Disliked',
   },
   { type: 'divider' },
-  { type: 'icon-button', id: 'copy', iconName: 'copy', text: 'Copy', tooltipText: 'Copy', actionPopoverText: 'Copied' },
+  {
+    type: 'button',
+    variant: 'icon',
+    id: 'copy',
+    iconName: 'copy',
+    text: 'Copy',
+    tooltipText: 'Copy',
+    actionPopoverText: 'Copied',
+  },
   { type: 'divider' },
   {
-    type: 'icon-button',
+    type: 'button',
+    variant: 'icon',
     id: 'add',
     iconName: 'add-plus',
     text: 'Add',
@@ -53,7 +66,8 @@ const items2: ButtonGroupProps['items'] = [
     actionPopoverText: 'Added',
   },
   {
-    type: 'icon-button',
+    type: 'button',
+    variant: 'icon',
     id: 'remove',
     iconName: 'remove',
     text: 'Remove',
@@ -64,7 +78,8 @@ const items2: ButtonGroupProps['items'] = [
 
 const items3: ButtonGroupProps['items'] = [
   {
-    type: 'icon-button',
+    type: 'button',
+    variant: 'icon',
     id: 'thump-up',
     iconName: 'thumbs-up',
     text: 'Like',
@@ -72,7 +87,8 @@ const items3: ButtonGroupProps['items'] = [
     actionPopoverText: 'Liked',
   },
   {
-    type: 'icon-button',
+    type: 'button',
+    variant: 'icon',
     id: 'thump-down',
     iconName: 'thumbs-down',
     text: 'Dislike',
@@ -80,10 +96,19 @@ const items3: ButtonGroupProps['items'] = [
     actionPopoverText: 'Disliked',
   },
   { type: 'divider' },
-  { type: 'icon-button', id: 'copy', iconName: 'copy', text: 'Copy', tooltipText: 'Copy', actionPopoverText: 'Copied' },
+  {
+    type: 'button',
+    variant: 'icon',
+    id: 'copy',
+    iconName: 'copy',
+    text: 'Copy',
+    tooltipText: 'Copy',
+    actionPopoverText: 'Copied',
+  },
   { type: 'divider' },
   {
-    type: 'icon-button',
+    type: 'button',
+    variant: 'icon',
     id: 'add',
     iconName: 'add-plus',
     text: 'Add',
@@ -91,16 +116,17 @@ const items3: ButtonGroupProps['items'] = [
     actionPopoverText: 'Added',
   },
   {
-    type: 'icon-button',
+    type: 'button',
+    variant: 'icon',
     id: 'remove',
     iconName: 'remove',
     tooltipText: 'Remove',
     text: 'Remove',
     actionPopoverText: 'Removed',
   },
-  { type: 'icon-button', id: 'edit', iconName: 'edit', text: 'Edit' },
-  { type: 'icon-button', id: 'open', iconName: 'file-open', text: 'Open' },
-  { type: 'icon-button', id: 'search', iconName: 'search', text: 'Search' },
+  { type: 'button', variant: 'icon', id: 'edit', iconName: 'edit', text: 'Edit' },
+  { type: 'button', variant: 'icon', id: 'open', iconName: 'file-open', text: 'Open' },
+  { type: 'button', variant: 'icon', id: 'search', iconName: 'search', text: 'Search' },
 ];
 
 export default function ButtonGroupPage() {

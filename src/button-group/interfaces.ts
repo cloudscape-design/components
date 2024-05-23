@@ -44,8 +44,6 @@ export namespace ButtonGroupProps {
 
    * - `disabled` (boolean) - whether the item is disabled. Disabled items are not clickable, but they can be highlighted with the keyboard to make them accessible.
 
-   * - `disabledReason` (string) - (Optional) Displays text near the `text` property when item is disabled. Use to provide additional context.
-
    * - `description` (string) - additional data that will be passed to a `data-description` attribute.
 
    * - `iconName` (string) - (Optional) Specifies the name of the icon, used with the [icon component](/components/icon/).
@@ -61,12 +59,12 @@ export namespace ButtonGroupProps {
    * - `actionPopoverText` (string) - (Optional) Text that appears when the user clicks the item. Use to provide feedback to the user.
    */
   export interface IconButton {
-    type: 'icon-button';
+    type: 'button';
+    variant: 'icon';
     id: string;
     text: string;
     lang?: string;
     disabled?: boolean;
-    disabledReason?: string;
     description?: string;
     iconAlt?: string;
     iconName?: IconProps.Name;
