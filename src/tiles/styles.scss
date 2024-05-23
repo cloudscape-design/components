@@ -104,7 +104,6 @@ $gutter: awsui.$space-grid-gutter;
 
 .image {
   text-align: center;
-  flex: none; // needed to have IE11 calculate the height of this region correctly
 
   // This manipulates a (optionally) passed img element for the image attribute of
   // an item. We do not have control over the img element.
