@@ -12,8 +12,8 @@ import StatusIndicator from '../../status-indicator/internal.js';
 export default function ItemElement({ item, onItemClick }: ItemProps) {
   if (item.type === 'divider') {
     return <DividerItemElement />;
-  } else if (item.type === 'button' && item.variant === 'icon') {
-    return <IconButtonItemElement item={item} onItemClick={onItemClick} />;
+  } else if (item.type === 'button') {
+    return <ButtonItemElement item={item} onItemClick={onItemClick} />;
   }
 
   throw new Error('Unsupported item type.');
@@ -23,11 +23,11 @@ function DividerItemElement() {
   return <div className={styles.divider} />;
 }
 
-function IconButtonItemElement({
+function ButtonItemElement({
   item,
   onItemClick,
 }: {
-  item: ButtonGroupProps.IconButton;
+  item: ButtonGroupProps.Button;
   onItemClick?: (event: CustomEvent) => void;
 }) {
   const buttonRef = useRef<HTMLDivElement>(null);
@@ -64,14 +64,16 @@ function IconButtonItemElement({
   return (
     <div ref={buttonRef} onPointerEnter={onPointerEnter} onPointerLeave={onPointerLeave}>
       <InternalButton
-        variant="icon"
+        variant={item.variant}
         disabled={item.disabled}
         iconName={item.iconName}
         iconAlt={item.tooltipText}
         iconSvg={item.iconSvg}
         ariaLabel={item.text}
         onClick={event => onClickHandler(event)}
-      />
+      >
+        {item.text}
+      </InternalButton>
       <Tooltip
         trackRef={buttonRef}
         trackKey={item.id}
