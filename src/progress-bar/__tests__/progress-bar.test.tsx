@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import ProgressBarWrapper from '../../../lib/components/test-utils/dom/progress-bar';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import ProgressBar, { ProgressBarProps } from '../../../lib/components/progress-bar';
@@ -106,6 +106,51 @@ allVariants.forEach(variant => {
       test('ignores aria-labelledby if aria-label is provided', () => {
         const wrapper = renderProgressBar({ variant, value: 100, ariaLabelledby: 'testid', ariaLabel: 'hello' });
         expect(wrapper.find('progress')!.getElement()).not.toHaveAttribute('aria-labelledby');
+      });
+
+      describe('aria-describedby', () => {
+        test('associate progress element with description prop', () => {
+          const wrapper = renderProgressBar({ variant, description: 'dummy description' });
+          const descriptionId = screen.queryByText('dummy description')!.id;
+          expect(wrapper.find('progress')!.getElement()).toHaveAttribute('aria-describedby', descriptionId);
+        });
+
+        test('associate progress element with additionalInfo prop', () => {
+          const wrapper = renderProgressBar({ variant, additionalInfo: 'dummy additional info' });
+          const additionalInfoId = screen.queryByText('dummy additional info')!.id;
+          expect(wrapper.find('progress')!.getElement()).toHaveAttribute('aria-describedby', additionalInfoId);
+        });
+
+        test('associate progress element with ariaDescribedby prop', () => {
+          const wrapper = renderProgressBar({
+            variant,
+            ariaDescribedby: 'dummy-reference-element-id',
+          });
+          expect(wrapper.find('progress')!.getElement()).toHaveAttribute(
+            'aria-describedby',
+            'dummy-reference-element-id'
+          );
+        });
+
+        test('associate progress element with description, additionalInfo and ariaDescribedby props', () => {
+          const wrapper = renderProgressBar({
+            variant,
+            description: 'dummy description',
+            additionalInfo: 'dummy additional info',
+            ariaDescribedby: 'dummy-reference-element-id',
+          });
+          const descriptionId = screen.queryByText('dummy description')!.id;
+          const additionalInfoId = screen.queryByText('dummy additional info')!.id;
+          const ariaDescribedByValue = wrapper.find('progress')!.getElement().getAttribute('aria-describedby');
+          expect(ariaDescribedByValue).toContain(descriptionId);
+          expect(ariaDescribedByValue).toContain(additionalInfoId);
+          expect(ariaDescribedByValue).toContain('dummy-reference-element-id');
+        });
+
+        test('is ignored when additionalInfo, description and ariaDescribedby props are not present', () => {
+          const wrapper = renderProgressBar({ variant, value: 100 });
+          expect(wrapper.find('progress')!.getElement()).not.toHaveAttribute('aria-describedby');
+        });
       });
     });
   });
