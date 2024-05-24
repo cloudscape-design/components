@@ -41,8 +41,6 @@ export const editorMock = {
     setAnnotations: jest.fn(),
     clearAnnotations: jest.fn(),
   },
-  getOption: jest.fn(),
-  setOption: jest.fn(),
   setOptions: jest.fn(),
   setAutoScrollEditorIntoView: jest.fn(),
   setHighlightActiveLine: jest.fn(),

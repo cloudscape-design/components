@@ -16,6 +16,7 @@ export default function ButtonsPerformanceMarkPage() {
         visible={true}
         footer={<Button variant="primary">Button INSIDE modal</Button>}
         header="Performance marks on this page"
+        closeAriaLabel="Close"
       >
         <pre>
           {marks.map((m, index) => (
