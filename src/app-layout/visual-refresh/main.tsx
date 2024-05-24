@@ -29,6 +29,7 @@ export default function Main() {
     splitPanelDisplayed,
     splitPanelPosition,
     activeDrawerId,
+    hasStickyBackground,
   } = useAppLayoutInternals();
 
   const splitPanelHeight = offsetBottom - footerHeight;
@@ -61,7 +62,7 @@ export default function Main() {
           `var(${customCssProps.mobileBarHeight})`,
           !!disableBodyScroll,
           isMobile,
-          hasBackgroundOverlap && !isMobile ? tokens.spaceScaledS : '0px'
+          hasBackgroundOverlap && hasStickyBackground && !isMobile ? tokens.spaceScaledS : '0px'
         ),
       }}
     >
