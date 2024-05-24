@@ -339,19 +339,19 @@ test('should work in controlled context', () => {
 
   // Click the item and verify it called the onClickSpy with the correct state and has correct value
   wrapper.openDropdown();
-  expect(wrapper.findItemValueById('id')).toBe('true');
+  expect(wrapper.findItemCheckedById('id')).toBe('true');
   wrapper.findItems()[0].click();
   expect(onClickSpy).toHaveBeenCalledTimes(1);
   expect(onClickSpy).toHaveBeenCalledWith(expect.objectContaining({ checked: false }));
 
   wrapper.openDropdown();
-  expect(wrapper.findItemValueById('id')).toBe('false');
+  expect(wrapper.findItemCheckedById('id')).toBe('false');
   wrapper.findItems()[0].click();
   expect(onClickSpy).toHaveBeenCalledTimes(2);
   expect(onClickSpy).toHaveBeenCalledWith(expect.objectContaining({ checked: true }));
 
   wrapper.openDropdown();
-  expect(wrapper.findItemValueById('id')).toBe('true');
+  expect(wrapper.findItemCheckedById('id')).toBe('true');
   wrapper.findItems()[0].click();
   expect(onClickSpy).toHaveBeenCalledTimes(3);
   expect(onClickSpy).toHaveBeenCalledWith(expect.objectContaining({ checked: false }));
@@ -364,11 +364,11 @@ test('checkbox item test util should return null if not a checkbox item', () => 
   wrapper.openDropdown();
 
   // findItemValueById should return null if item not checkbox
-  expect(wrapper.findItemValueById('i1')).toBeNull();
+  expect(wrapper.findItemCheckedById('i1')).toBeNull();
 
   // findItemValueById should return null if item doesn't exist
-  expect(wrapper.findItemValueById('not-existing')).toBeNull();
+  expect(wrapper.findItemCheckedById('not-existing')).toBeNull();
 
   // findItemValueById should return the value if item checkbox
-  expect(wrapper.findItemValueById('i5')).toBe('true');
+  expect(wrapper.findItemCheckedById('i5')).toBe('true');
 });
