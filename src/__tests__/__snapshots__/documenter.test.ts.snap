@@ -10801,6 +10801,12 @@ Use the \`buttonText\` property and the \`onButtonClick\` event listener of the 
   "name": "ProgressBar",
   "properties": Array [
     Object {
+      "description": "Adds \`aria-describedby\` to the progress bar.",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Adds an \`aria-label\` to the progress bar.",
       "name": "ariaLabel",
       "optional": true,
