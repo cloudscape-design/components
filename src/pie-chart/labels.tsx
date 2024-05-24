@@ -45,6 +45,7 @@ function LabelElement({
 }: LabelElementProps) {
   return (
     // Reset the transform property to prepare for `balanceLabelNodes`.
+    // The dataset attributes are also needed in the function for IE11 support.
     <g className={styles['label-text']} transform="" data-x={x} data-y={y}>
       {!hideTitles && (
         <ResponsiveText x={x} y={y} rightSide={rightSide} containerBoundaries={containerBoundaries}>
