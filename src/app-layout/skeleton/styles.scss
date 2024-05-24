@@ -1,0 +1,82 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '../../internal/styles' as styles;
+@use '../../internal/styles/tokens' as awsui;
+@use '../../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use '../constants' as constants;
+
+.root {
+  #{custom-props.$maxContentWidth}: 100%;
+  display: grid;
+  grid-template-areas:
+    'navigation topBar       topBar        topBar    tools'
+    'navigation .         notifications    .         tools'
+    'navigation .             main         .         tools';
+  grid-template-columns:
+    min-content
+    minmax(#{awsui.$space-layout-content-horizontal}, 1fr)
+    minmax(var(#{custom-props.$minContentWidth}), var(#{custom-props.$maxContentWidth}))
+    minmax(#{awsui.$space-layout-content-horizontal}, 1fr)
+    min-content;
+  grid-template-rows: min-content min-content 1fr min-content;
+
+  &.has-adaptive-widths-default {
+    @each $breakpoint, $width in constants.$adaptive-content-widths {
+      @include styles.media-breakpoint-up($breakpoint) {
+        #{custom-props.$maxContentWidth}: $width;
+      }
+    }
+  }
+
+  &.has-adaptive-widths-dashboard {
+    @each $breakpoint, $width in constants.$dashboard-content-widths {
+      @include styles.media-breakpoint-up($breakpoint) {
+        #{custom-props.$maxContentWidth}: $width;
+      }
+    }
+  }
+}
+
+.main-landmark {
+  // does not participate in the layout, rendered for accessibility grouping
+  display: contents;
+}
+
+.navigation {
+  grid-area: navigation;
+  border-inline-end: 1px solid awsui.$color-border-divider-panel-side;
+}
+
+.tools {
+  grid-area: tools;
+  border-inline-start: 1px solid awsui.$color-border-divider-panel-side;
+}
+
+.top-bar {
+  grid-area: topBar;
+  block-size: 48px;
+  border-block-end: 1px solid awsui.$color-border-divider-panel-bottom;
+}
+
+.notifications {
+  grid-area: notifications;
+  &:not(:empty) {
+    padding-block-start: awsui.$space-scaled-xs;
+  }
+}
+
+.main {
+  grid-area: main;
+  margin-block-start: awsui.$space-scaled-s;
+  margin-block-end: awsui.$space-layout-content-bottom;
+  &-disable-paddings {
+    grid-column: 2 / span 3;
+    margin-block: 0;
+  }
+}
+
+.content-header {
+  margin-block-end: awsui.$space-content-header-padding-bottom;
+}
