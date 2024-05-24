@@ -15,7 +15,6 @@ interface SkeletonLayoutProps
     | 'contentHeader'
     | 'content'
     | 'contentType'
-    | 'minContentWidth'
     | 'maxContentWidth'
     | 'disableContentPaddings'
     | 'navigation'
@@ -39,7 +38,6 @@ export function SkeletonLayout({
   placement,
   contentType,
   maxContentWidth,
-  minContentWidth,
   disableContentPaddings,
 }: SkeletonLayoutProps) {
   const isMaxWidth = maxContentWidth === Number.MAX_VALUE || maxContentWidth === Number.MAX_SAFE_INTEGER;
@@ -52,15 +50,12 @@ export function SkeletonLayout({
       style={{
         minBlockSize: `calc(100vh - ${placement.insetBlockStart}px - ${placement.insetBlockEnd}px)`,
         [customCssProps.maxContentWidth]: isMaxWidth ? '100%' : maxContentWidth ? `${maxContentWidth}px` : '',
-        [customCssProps.minContentWidth]: `${minContentWidth}px`,
+        [customCssProps.navigationWidth]: `${navigationWidth}px`,
+        [customCssProps.toolsWidth]: `${toolsWidth}px`,
       }}
     >
       <section className={styles['top-bar']}>{topBar}</section>
-      {navigation && (
-        <div className={styles.navigation} style={{ inlineSize: navigationWidth }}>
-          {navigation}
-        </div>
-      )}
+      {navigation && <div className={styles.navigation}>{navigation}</div>}
       <main className={styles['main-landmark']}>
         {notifications && <div className={styles.notifications}>{notifications}</div>}
         <div className={clsx(styles.main, { [styles['main-disable-paddings']]: disableContentPaddings })}>
@@ -68,11 +63,7 @@ export function SkeletonLayout({
           <div>{content}</div>
         </div>
       </main>
-      {tools && (
-        <div className={styles.tools} style={{ inlineSize: toolsWidth }}>
-          {tools}
-        </div>
-      )}
+      {tools && <div className={styles.tools}>{tools}</div>}
     </div>
   );
 }
