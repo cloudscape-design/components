@@ -56,7 +56,7 @@ export default () => {
   const [toolsOpen, setToolsOpen] = useState(true);
   const [preferences, setPreferences] = useState<CollectionPreferencesProps.Preferences>({
     wrapLines: true,
-    stickyColumns: { first: 0, last: 1 },
+    stickyColumns: { first: 0, last: 0 },
   });
 
   const tableData = useTableData();
