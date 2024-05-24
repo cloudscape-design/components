@@ -44,7 +44,6 @@ export default class ButtonDropdownWrapper extends ComponentWrapper {
    * This utility does not open the dropdown. To find dropdown items, call `openDropdown()` first.
    */
   @usesDom findItemValueById(id: string): string | null {
-    console.log('yay');
     const itemSelector = `.${itemStyles['item-element']}[data-testid="${id}"]`;
     const item = this.findOpenDropdown()?.find(itemSelector) || this.find(itemSelector);
     if (!item) {
