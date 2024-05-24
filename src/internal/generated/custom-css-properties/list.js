@@ -5,7 +5,10 @@
  * This file is only needed to generate the proper js ans scss files at build step generateCustomCssPropertiesMap
  */
 const customCssPropertiesList = [
-  // AppLayout Custom Properties
+  // AppLayout Custom Properties,
+  'maxContentWidth',
+  'minContentWidth',
+  // AppLayout Custom Properties (deprecated)
   'breadcrumbsGap',
   'contentGapLeft',
   'contentGapRight',
@@ -20,8 +23,6 @@ const customCssPropertiesList = [
   'mainGap',
   'mainOffsetLeft',
   'mainTemplateRows',
-  'maxContentWidth',
-  'minContentWidth',
   'mobileBarHeight',
   'notificationsGap',
   'notificationsHeight',
