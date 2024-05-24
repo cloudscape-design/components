@@ -113,4 +113,21 @@ describe.each([[true], [false]])('visualRefresh=%s', visualRefresh => {
       }
     )
   );
+
+  test(
+    'should not leave any space between page header and sticky header in content layout',
+    setupTest(
+      {
+        url: `#/light/app-layout/with-sticky-header-table-in-content-layout?visualRefresh=${visualRefresh}`,
+      },
+      async page => {
+        const pageHeaderSelector = '#h';
+        const tableStickyHeaderSelector = createWrapper().findTable().findHeaderSlot();
+        const pageHeaderBottom = (await page.getBoundingBox(pageHeaderSelector)).bottom;
+        await page.windowScrollTo({ top: 200 });
+        const tableStickyHeaderTop = (await page.getBoundingBox(tableStickyHeaderSelector.toSelector())).top;
+        expect(tableStickyHeaderTop).toEqual(pageHeaderBottom);
+      }
+    )
+  );
 });
