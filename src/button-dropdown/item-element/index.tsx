@@ -163,7 +163,7 @@ const MenuItemIcon = (props: InternalIconProps) => (
 );
 
 // Toggle has aria-hidden set because it's just used as a graphical element,
-// a11y attributes for the checkmar are communicated through the role and aria-checked state
+// a11y attributes for the checkmark are communicated through the role and aria-checked state
 // of the menu element item.
 const MenuItemCheckmark = ({ disabled, checked }: { disabled: boolean; checked: boolean }) => {
   const checkmark = <InternalIcon variant={disabled ? 'disabled' : 'normal'} name="check" />;
