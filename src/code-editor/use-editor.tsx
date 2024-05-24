@@ -42,33 +42,16 @@ export function useSyncEditorLabels(
     if (!editor) {
       return;
     }
-
     const { textarea } = editor.renderer as unknown as { textarea: HTMLTextAreaElement };
     if (!textarea) {
       return;
     }
-
-    // Update attributes on the textarea element manually. This is fine as long as ace
-    // doesn't touch these attributes as well.
-    const updateAttribute = (attribute: string, value: string | undefined) => {
-      if (value) {
-        textarea.setAttribute(attribute, value);
-      } else {
-        textarea.removeAttribute(attribute);
-      }
-    };
+    const updateAttribute = (attribute: string, value: string | undefined) =>
+      value ? textarea.setAttribute(attribute, value) : textarea.removeAttribute(attribute);
     updateAttribute('id', controlId);
+    updateAttribute('aria-label', ariaLabel);
     updateAttribute('aria-labelledby', ariaLabelledby);
     updateAttribute('aria-describedby', ariaDescribedby);
-
-    // Ace (starting from v1.34.0) has a built-in setting to provide an aria-label.
-    // For older versions (before aria-label was managed by ace), we still use the
-    // attribute method.
-    if (typeof editor.getOption('textInputAriaLabel') === 'string') {
-      editor.setOption('textInputAriaLabel', ariaLabel ?? '');
-    } else {
-      updateAttribute('aria-label', ariaLabel);
-    }
   }, [ariaLabel, ariaDescribedby, ariaLabelledby, controlId, editor]);
 }
 
