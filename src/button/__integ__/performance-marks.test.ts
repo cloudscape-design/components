@@ -3,13 +3,10 @@
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 
-function setupTest(
-  pageName: string,
-  testFn: (page: BasePageObject, getMarks: () => Promise<PerformanceMark[]>) => Promise<void>
-) {
+function setupTest(testFn: (page: BasePageObject, getMarks: () => Promise<PerformanceMark[]>) => Promise<void>) {
   return useBrowser(async browser => {
     const page = new BasePageObject(browser);
-    await browser.url(`#/light/button/${pageName}`);
+    await browser.url('#/light/button/performance-marks');
     const getMarks = async () => {
       const marks = await browser.execute(() => performance.getEntriesByType('mark') as PerformanceMark[]);
       return marks.filter(m => m.detail?.source === 'awsui');
@@ -21,7 +18,7 @@ function setupTest(
 describe('Button', () => {
   test(
     'Emits a mark only for primary visible buttons',
-    setupTest('performance-marks', async (_, getMarks) => {
+    setupTest(async (_, getMarks) => {
       const marks = await getMarks();
 
       expect(marks).toHaveLength(1);
@@ -38,7 +35,7 @@ describe('Button', () => {
 
   test(
     'Emits a mark when properties change',
-    setupTest('performance-marks', async (page, getMarks) => {
+    setupTest(async (page, getMarks) => {
       await page.click('#disabled');
       await page.click('#loading');
       const marks = await getMarks();
@@ -59,18 +56,6 @@ describe('Button', () => {
         loading: false,
         disabled: true,
         text: 'Primary button',
-      });
-    })
-  );
-
-  test(
-    'Does not emit a mark when inside a modal',
-    setupTest('performance-marks-in-modal', async (page, getMarks) => {
-      const marks = await getMarks();
-
-      expect(marks).toHaveLength(1);
-      expect(marks[0].detail).toMatchObject({
-        text: 'Button OUTSIDE modal',
       });
     })
   );

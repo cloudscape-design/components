@@ -4,7 +4,6 @@
 import { useEffect } from 'react';
 import { useUniqueId } from './use-unique-id';
 import { useEffectOnUpdate } from './use-effect-on-update';
-import { useModalContext } from '../context/modal-context';
 
 export function usePerformanceMarks(
   name: string,
@@ -14,10 +13,9 @@ export function usePerformanceMarks(
   dependencies: React.DependencyList
 ) {
   const id = useUniqueId();
-  const { isInModal } = useModalContext();
 
   useEffect(() => {
-    if (!enabled || !elementRef.current || isInModal) {
+    if (!enabled || !elementRef.current) {
       return;
     }
 
@@ -43,7 +41,7 @@ export function usePerformanceMarks(
   }, []);
 
   useEffectOnUpdate(() => {
-    if (!enabled || !elementRef.current || isInModal) {
+    if (!enabled || !elementRef.current) {
       return;
     }
     const elementVisible =
