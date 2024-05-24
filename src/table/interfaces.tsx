@@ -105,16 +105,26 @@ export interface TableProps<T = any> extends BaseComponentProps {
    *     * `cellContext.currentValue` - State to keep track of a value in input fields while editing.
    *     * `cellContext.setValue` - Function to update `currentValue`. This should be called when the value in input field changes.
    * * `isRowHeader` (boolean) - Specifies that cells in this column should be used as row headers.
+   * * `loaderCell` (optional, (null | item) => ReactNode) - Called for every item that has defined loading status other than "finished".
+   *    Also called with `null` for the root loader if defined.
    */
   columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T>>;
+
   /**
-   * Specifies the selection type (`'single' | 'multi'`).
+   * Specifies the selection type (`'single' | 'multi' | 'group'`).
    */
   selectionType?: TableProps.SelectionType;
   /**
    * List of selected items.
+   *
+   * When `selectionType="group"` the `selectedItems` represents selection tree and requires `selectionInverted` for completeness.
+   * For example, the combination `selectionInverted=true` and `selectedItems=[{ id: "1" }]` means select all but the one with `id="1"`.
    */
   selectedItems?: ReadonlyArray<T>;
+  /**
+   * Specifies if select all was used when `selectionType="group"`.
+   */
+  selectionInverted?: boolean;
 
   /**
    * Use this slot to add filtering controls to the table.
@@ -246,7 +256,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
 
   /**
    * Fired when a user interaction triggers a change in the list of selected items.
-   * The event `detail` contains the current list of `selectedItems`.
+   * The event `detail` contains the new state for `selectedItems` and `selectionInverted` (when `selectionType="group"`).
    */
   onSelectionChange?: NonCancelableEventHandler<TableProps.SelectionChangeDetail<T>>;
 
@@ -405,6 +415,7 @@ export namespace TableProps {
     maxWidth?: number | string;
     editConfig?: EditConfig<ItemType>;
     isRowHeader?: boolean;
+    loaderCell?(item: ItemType): React.ReactNode;
     cell(item: ItemType): React.ReactNode;
   } & SortingColumn<ItemType>;
 
@@ -413,13 +424,14 @@ export namespace TableProps {
     last?: number;
   }
 
-  export type SelectionType = 'single' | 'multi';
+  export type SelectionType = 'single' | 'multi' | 'group';
   export type Variant = 'container' | 'embedded' | 'borderless' | 'stacked' | 'full-page';
   export interface SelectionState<T> {
     selectedItems: ReadonlyArray<T>;
   }
   export interface SelectionChangeDetail<T> {
     selectedItems: T[];
+    selectionInverted?: boolean;
   }
   export type IsItemDisabled<T> = (item: T) => boolean;
   export interface AriaLabels<T> {
