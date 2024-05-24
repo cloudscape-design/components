@@ -27,7 +27,7 @@ const testCases = [
     height: 300,
     nodes: (
       <>
-        <g data-x="-125" data-y="120">
+        <g>
           <text x="-125" y="120">
             Test
           </text>
@@ -42,12 +42,12 @@ const testCases = [
     height: 300,
     nodes: (
       <>
-        <g data-x="125" data-y="0">
+        <g>
           <text x="125" y="0">
             Test
           </text>
         </g>
-        <g data-x="-125" data-y="0">
+        <g>
           <text x="-125" y="0">
             Test
           </text>
@@ -65,37 +65,37 @@ const testCases = [
     height: 300,
     nodes: (
       <>
-        <g data-x="125" data-y="-119">
+        <g>
           <text x="125" y="-119">
             Segment 1
           </text>
         </g>
-        <g data-x="125" data-y="-117">
+        <g>
           <text x="125" y="-117">
             Segment 2
           </text>
         </g>
-        <g data-x="125" data-y="-113">
+        <g>
           <text x="125" y="-113">
             Segment 3
           </text>
         </g>
-        <g data-x="125" data-y="-108">
+        <g>
           <text x="125" y="-108">
             Segment 4
           </text>
         </g>
-        <g data-x="125" data-y="-100">
+        <g>
           <rect x="125" y="-100">
             Segment 5
           </rect>
         </g>
-        <g data-x="125" data-y="-92">
+        <g>
           <text x="125" y="-92">
             Segment 6
           </text>
         </g>
-        <g data-x="-125" data-y="111">
+        <g>
           <text x="-125" y="111">
             Segment 7
           </text>
@@ -118,37 +118,37 @@ const testCases = [
     height: 300,
     nodes: (
       <>
-        <g data-x="125" data-y="111">
+        <g>
           <text x="125" y="111">
             Segment 1
           </text>
         </g>
-        <g data-x="-125" data-y="-92">
+        <g>
           <text x="-125" y="-92">
             Segment 2
           </text>
         </g>
-        <g data-x="-125" data-y="-100">
+        <g>
           <text x="-125" y="-100">
             Segment 3
           </text>
         </g>
-        <g data-x="-125" data-y="-108">
+        <g>
           <text x="-125" y="-108">
             Segment 4
           </text>
         </g>
-        <g data-x="-125" data-y="-114">
+        <g>
           <rect x="-125" y="-114">
             Segment 5
           </rect>
         </g>
-        <g data-x="-125" data-y="-118">
+        <g>
           <text x="-125" y="-118">
             Segment 6
           </text>
         </g>
-        <g data-x="-125" data-y="-120">
+        <g>
           <text x="-125" y="-120">
             Segment 7
           </text>
@@ -171,37 +171,37 @@ const testCases = [
     height: 300,
     nodes: (
       <>
-        <g data-x="125" data-y="-120">
+        <g>
           <text x="125" y="-120">
             Segment 1
           </text>
         </g>
-        <g data-x="125" data-y="-116">
+        <g>
           <text x="125" y="-116">
             Segment 2
           </text>
         </g>
-        <g data-x="125" data-y="-109">
+        <g>
           <text x="125" y="-109">
             Segment 3
           </text>
         </g>
-        <g data-x="125" data-y="120">
+        <g>
           <text x="125" y="120">
             Segment 4
           </text>
         </g>
-        <g data-x="-125" data-y="-109">
+        <g>
           <rect x="-125" y="-109">
             Segment 5
           </rect>
         </g>
-        <g data-x="-125" data-y="-118">
+        <g>
           <text x="-125" y="-118">
             Segment 6
           </text>
         </g>
-        <g data-x="-125" data-y="-120">
+        <g>
           <text x="-125" y="-120">
             Segment 7
           </text>
@@ -224,27 +224,27 @@ const testCases = [
     height: 300,
     nodes: (
       <>
-        <g data-x="125" data-y="45">
+        <g>
           <text x="125" y="45">
             Segment 1
           </text>
         </g>
-        <g data-x="-125" data-y="45">
+        <g>
           <text x="-125" y="45">
             Segment 2
           </text>
         </g>
-        <g data-x="-125" data-y="-45">
+        <g>
           <text x="-125" y="-45">
             Segment 3
           </text>
         </g>
-        <g data-x="-125" data-y="-113">
+        <g>
           <text x="-125" y="-113">
             Segment 4
           </text>
         </g>
-        <g data-x="-125" data-y="-119">
+        <g>
           <rect x="-125" y="-119">
             Segment 5
           </rect>
@@ -265,22 +265,22 @@ const testCases = [
     height: 300,
     nodes: (
       <>
-        <g data-x="20" data-y="-50">
+        <g>
           <text x="20" y="-50">
             Segment 1
           </text>
         </g>
-        <g data-x="20" data-y="-20">
+        <g>
           <text x="20" y="-20">
             Segment 2
           </text>
         </g>
-        <g data-x="-20" data-y="50">
+        <g>
           <text x="-20" y="50">
             Segment 3
           </text>
         </g>
-        <g data-x="-20" data-y="20">
+        <g>
           <text x="-20" y="20">
             Segment 4
           </text>
@@ -300,22 +300,22 @@ const testCases = [
     height: 300,
     nodes: (
       <>
-        <g data-x="20" data-y="-50">
+        <g>
           <text x="20" y="-50">
             Segment 1
           </text>
         </g>
-        <g data-x="20" data-y="-49">
+        <g>
           <text x="20" y="-49">
             Segment 2
           </text>
         </g>
-        <g data-x="-20" data-y="21">
+        <g>
           <text x="-20" y="21">
             Segment 3
           </text>
         </g>
-        <g data-x="-20" data-y="20">
+        <g>
           <text x="-20" y="20">
             Segment 4
           </text>
@@ -348,6 +348,20 @@ describe('balanceLabelNodes', () => {
       bottom: 0,
       right: 0,
       toJSON: () => {},
+    });
+    // getBBox does not work by default in jest env
+    // introduced the hacky way to make it work and return proper coordinates
+    // otherwise, it won't be possible to test this behaviour
+    Object.defineProperty(window.SVGElement.prototype, 'getBBox', {
+      writable: true,
+      value: function () {
+        const childProps = this[Object.keys(this)[0]].child.pendingProps;
+
+        return {
+          x: parseFloat(childProps?.x || '0') || 0,
+          y: parseFloat(childProps?.y || '0') || 0,
+        };
+      },
     });
   });
   afterAll(() => {

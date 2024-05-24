@@ -61,6 +61,13 @@ const dataWithZero: Array<PieChartProps.Datum> = [
 const originalCSS = window.CSS;
 beforeEach(() => {
   window.CSS.supports = () => true;
+  Object.defineProperty(window.SVGElement.prototype, 'getBBox', {
+    writable: true,
+    value: jest.fn().mockReturnValue({
+      x: 0,
+      y: 0,
+    }),
+  });
 });
 afterEach(() => {
   window.CSS = originalCSS;

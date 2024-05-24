@@ -3,8 +3,6 @@
 exports[`balanceLabelNodes changes xOffset if vertical overlap 1`] = `
 NodeList [
   <g
-    data-x="20"
-    data-y="-50"
     transform=""
   >
     <text
@@ -15,8 +13,6 @@ NodeList [
     </text>
   </g>,
   <g
-    data-x="20"
-    data-y="-49"
     transform="translate(79.67948635501689 25)"
   >
     <text
@@ -27,8 +23,6 @@ NodeList [
     </text>
   </g>,
   <g
-    data-x="-20"
-    data-y="21"
     transform="translate(-68.79189152169245 25)"
   >
     <text
@@ -39,8 +33,6 @@ NodeList [
     </text>
   </g>,
   <g
-    data-x="-20"
-    data-y="20"
     transform=""
   >
     <text
@@ -56,8 +48,6 @@ NodeList [
 exports[`balanceLabelNodes does not change xOffset if no vertical overlap 1`] = `
 NodeList [
   <g
-    data-x="20"
-    data-y="-50"
     transform=""
   >
     <text
@@ -68,8 +58,6 @@ NodeList [
     </text>
   </g>,
   <g
-    data-x="20"
-    data-y="-20"
     transform=""
   >
     <text
@@ -80,8 +68,6 @@ NodeList [
     </text>
   </g>,
   <g
-    data-x="-20"
-    data-y="50"
     transform=""
   >
     <text
@@ -92,8 +78,6 @@ NodeList [
     </text>
   </g>,
   <g
-    data-x="-20"
-    data-y="20"
     transform=""
   >
     <text
@@ -111,8 +95,6 @@ exports[`balanceLabelNodes empty 1`] = `NodeList []`;
 exports[`balanceLabelNodes heavy overlap on both sides 1`] = `
 NodeList [
   <g
-    data-x="125"
-    data-y="-120"
     transform=""
   >
     <text
@@ -123,8 +105,6 @@ NodeList [
     </text>
   </g>,
   <g
-    data-x="125"
-    data-y="-116"
     transform="translate(0 22)"
   >
     <text
@@ -135,8 +115,6 @@ NodeList [
     </text>
   </g>,
   <g
-    data-x="125"
-    data-y="-109"
     transform="translate(0 41)"
   >
     <text
@@ -147,8 +125,6 @@ NodeList [
     </text>
   </g>,
   <g
-    data-x="125"
-    data-y="120"
     transform=""
   >
     <text
@@ -159,8 +135,6 @@ NodeList [
     </text>
   </g>,
   <g
-    data-x="-125"
-    data-y="-109"
     transform="translate(0 41)"
   >
     <rect
@@ -171,8 +145,6 @@ NodeList [
     </rect>
   </g>,
   <g
-    data-x="-125"
-    data-y="-118"
     transform="translate(0 24)"
   >
     <text
@@ -183,8 +155,6 @@ NodeList [
     </text>
   </g>,
   <g
-    data-x="-125"
-    data-y="-120"
     transform=""
   >
     <text
@@ -200,8 +170,6 @@ NodeList [
 exports[`balanceLabelNodes heavy overlap on the left side 1`] = `
 NodeList [
   <g
-    data-x="125"
-    data-y="111"
     transform=""
   >
     <text
@@ -212,8 +180,6 @@ NodeList [
     </text>
   </g>,
   <g
-    data-x="-125"
-    data-y="-92"
     transform="translate(0 102)"
   >
     <text
@@ -224,8 +190,6 @@ NodeList [
     </text>
   </g>,
   <g
-    data-x="-125"
-    data-y="-100"
     transform="translate(0 84)"
   >
     <text
@@ -236,8 +200,6 @@ NodeList [
     </text>
   </g>,
   <g
-    data-x="-125"
-    data-y="-108"
     transform="translate(0 66)"
   >
     <text
@@ -248,8 +210,6 @@ NodeList [
     </text>
   </g>,
   <g
-    data-x="-125"
-    data-y="-114"
     transform="translate(0 46)"
   >
     <rect
@@ -260,8 +220,6 @@ NodeList [
     </rect>
   </g>,
   <g
-    data-x="-125"
-    data-y="-118"
     transform="translate(0 24)"
   >
     <text
@@ -272,8 +230,6 @@ NodeList [
     </text>
   </g>,
   <g
-    data-x="-125"
-    data-y="-120"
     transform=""
   >
     <text
@@ -289,8 +245,6 @@ NodeList [
 exports[`balanceLabelNodes heavy overlap on the right side 1`] = `
 NodeList [
   <g
-    data-x="125"
-    data-y="-119"
     transform=""
   >
     <text
@@ -301,8 +255,6 @@ NodeList [
     </text>
   </g>,
   <g
-    data-x="125"
-    data-y="-117"
     transform="translate(0 24)"
   >
     <text
@@ -313,8 +265,6 @@ NodeList [
     </text>
   </g>,
   <g
-    data-x="125"
-    data-y="-113"
     transform="translate(0 46)"
   >
     <text
@@ -325,8 +275,6 @@ NodeList [
     </text>
   </g>,
   <g
-    data-x="125"
-    data-y="-108"
     transform="translate(0 67)"
   >
     <text
@@ -337,8 +285,6 @@ NodeList [
     </text>
   </g>,
   <g
-    data-x="125"
-    data-y="-100"
     transform="translate(0 85)"
   >
     <rect
@@ -349,8 +295,6 @@ NodeList [
     </rect>
   </g>,
   <g
-    data-x="125"
-    data-y="-92"
     transform="translate(0 103)"
   >
     <text
@@ -361,8 +305,6 @@ NodeList [
     </text>
   </g>,
   <g
-    data-x="-125"
-    data-y="111"
     transform=""
   >
     <text
@@ -378,8 +320,6 @@ NodeList [
 exports[`balanceLabelNodes one segment 1`] = `
 NodeList [
   <g
-    data-x="-125"
-    data-y="120"
     transform=""
   >
     <text
@@ -395,8 +335,6 @@ NodeList [
 exports[`balanceLabelNodes overlap on the left, but not all labels need to be moved 1`] = `
 NodeList [
   <g
-    data-x="125"
-    data-y="45"
     transform=""
   >
     <text
@@ -407,8 +345,6 @@ NodeList [
     </text>
   </g>,
   <g
-    data-x="-125"
-    data-y="45"
     transform=""
   >
     <text
@@ -419,8 +355,6 @@ NodeList [
     </text>
   </g>,
   <g
-    data-x="-125"
-    data-y="-45"
     transform=""
   >
     <text
@@ -431,8 +365,6 @@ NodeList [
     </text>
   </g>,
   <g
-    data-x="-125"
-    data-y="-113"
     transform="translate(0 20)"
   >
     <text
@@ -443,8 +375,6 @@ NodeList [
     </text>
   </g>,
   <g
-    data-x="-125"
-    data-y="-119"
     transform=""
   >
     <rect
@@ -460,8 +390,6 @@ NodeList [
 exports[`balanceLabelNodes two equal segments 1`] = `
 NodeList [
   <g
-    data-x="125"
-    data-y="0"
     transform=""
   >
     <text
@@ -472,8 +400,6 @@ NodeList [
     </text>
   </g>,
   <g
-    data-x="-125"
-    data-y="0"
     transform=""
   >
     <text
