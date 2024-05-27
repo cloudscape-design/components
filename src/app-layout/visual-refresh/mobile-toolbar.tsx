@@ -2,13 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
-import { getContentHeaderClassName } from '../../internal/utils/content-header-utils';
+import { highContrastHeaderClassName } from '../../internal/utils/content-header-utils';
 import { InternalButton } from '../../button/internal';
 import { MobileTriggers as DrawersMobileTriggers } from './drawers';
 import { useAppLayoutInternals } from './context';
 import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
-import { shouldRemoveHighContrastHeader } from '../../internal/utils/content-header-utils';
 
 export default function MobileToolbar() {
   const {
@@ -26,6 +25,7 @@ export default function MobileToolbar() {
     navigationRefs,
     toolsHide,
     toolsRefs,
+    headerVariant,
   } = useAppLayoutInternals();
 
   if (
@@ -44,10 +44,10 @@ export default function MobileToolbar() {
         {
           [styles['has-breadcrumbs']]: breadcrumbs,
           [styles.unfocusable]: hasDrawerViewportOverlay,
+          [highContrastHeaderClassName]: headerVariant === 'high-contrast',
         },
         testutilStyles['mobile-bar'],
-        getContentHeaderClassName(),
-        shouldRemoveHighContrastHeader() && styles['remove-high-contrast-header']
+        headerVariant !== 'high-contrast' && styles['remove-high-contrast-header']
       )}
     >
       {!navigationHide && (

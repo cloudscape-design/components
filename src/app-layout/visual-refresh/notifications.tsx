@@ -2,14 +2,20 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
-import { getContentHeaderClassName } from '../../internal/utils/content-header-utils';
+import { highContrastHeaderClassName } from '../../internal/utils/content-header-utils';
 import { useAppLayoutInternals } from './context';
 import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 
 export default function Notifications() {
-  const { ariaLabels, hasDrawerViewportOverlay, notifications, notificationsElement, stickyNotifications } =
-    useAppLayoutInternals();
+  const {
+    ariaLabels,
+    hasDrawerViewportOverlay,
+    notifications,
+    notificationsElement,
+    stickyNotifications,
+    headerVariant,
+  } = useAppLayoutInternals();
 
   if (!notifications) {
     return null;
@@ -28,9 +34,9 @@ export default function Notifications() {
         {
           [styles['sticky-notifications']]: stickyNotifications,
           [styles.unfocusable]: hasDrawerViewportOverlay,
+          [highContrastHeaderClassName]: headerVariant === 'high-contrast',
         },
-        testutilStyles.notifications,
-        getContentHeaderClassName()
+        testutilStyles.notifications
       )}
     >
       <div ref={notificationsElement}>{notifications}</div>
