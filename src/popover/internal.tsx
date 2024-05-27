@@ -191,7 +191,7 @@ function InternalPopover(
           id={referrerId}
           aria-label={triggerAriaLabel}
         >
-          <span className={styles['trigger-inner-text']}>{children}</span>
+          {children}
         </button>
       ) : (
         <span {...triggerProps} id={referrerId}>
