@@ -17,7 +17,7 @@ import ColumnDisplayProperties = TableProps.ColumnDisplayProperties;
  * function type.
  */
 export interface TableForwardRefType {
-  <T>(props: TableProps<T> & { ref?: React.Ref<TableProps.Ref> }): JSX.Element;
+  <T>(props: TableProps<T> & TableProgressiveLoadingProps<T> & { ref?: React.Ref<TableProps.Ref> }): JSX.Element;
 }
 
 export interface TableProps<T = any> extends BaseComponentProps {
@@ -347,28 +347,6 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * * `onExpandableItemToggle` (TableProps.OnExpandableItemToggle<T>) - Called when an item's expand toggle is clicked.
    */
   expandableRows?: TableProps.ExpandableRows<T>;
-
-  /**
-   * A function that specifies the current status of loading more items. It is called once for the entire
-   * table with `item=null` and then for each expanded item. The function result is one of the four possible states:
-   * * `pending` - Indicates that no request in progress, but more options may be loaded.
-   * * `loading` - Indicates that data fetching is in progress.
-   * * `finished` - Indicates that loading has finished and no more requests are expected.
-   * * `error` - Indicates that an error occurred during fetch.
-   **/
-  getLoadingStatus?: TableProps.GetLoadingStatus<T>;
-  /**
-   * Defines loader properties for pending state.
-   */
-  renderLoaderPending?: (detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode;
-  /**
-   * Defines loader properties for loading state.
-   */
-  renderLoaderLoading?: (detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode;
-  /**
-   * Defines loader properties for error state.
-   */
-  renderLoaderError?: (detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode;
 }
 
 export namespace TableProps {
@@ -555,4 +533,28 @@ export interface TableLoaderRow<T> {
   level: number;
   status: TableProps.LoadingStatus;
   from: number;
+}
+
+export interface TableProgressiveLoadingProps<T> {
+  /**
+   * A function that specifies the current status of loading more items. It is called once for the entire
+   * table with `item=null` and then for each expanded item. The function result is one of the four possible states:
+   * * `pending` - Indicates that no request in progress, but more options may be loaded.
+   * * `loading` - Indicates that data fetching is in progress.
+   * * `finished` - Indicates that loading has finished and no more requests are expected.
+   * * `error` - Indicates that an error occurred during fetch.
+   **/
+  getLoadingStatus?: TableProps.GetLoadingStatus<T>;
+  /**
+   * Defines loader properties for pending state.
+   */
+  renderLoaderPending?: (detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode;
+  /**
+   * Defines loader properties for loading state.
+   */
+  renderLoaderLoading?: (detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode;
+  /**
+   * Defines loader properties for error state.
+   */
+  renderLoaderError?: (detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode;
 }

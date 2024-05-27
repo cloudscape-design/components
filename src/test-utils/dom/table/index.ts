@@ -7,7 +7,6 @@ import bodyCellStyles from '../../../table/body-cell/styles.selectors.js';
 import selectionStyles from '../../../table/selection/styles.selectors.js';
 import resizerStyles from '../../../table/resizer/styles.selectors.js';
 import expandableRowsStyles from '../../../table/expandable-rows/styles.selectors.js';
-import progressiveLoadingStyles from '../../../table/progressive-loading/styles.selectors.js';
 import CollectionPreferencesWrapper from '../collection-preferences';
 import ContainerWrapper from '../container';
 import PaginationWrapper from '../pagination';
@@ -186,25 +185,5 @@ export default class TableWrapper extends ComponentWrapper {
   @usesDom
   isRowToggled(rowIndex: number): boolean {
     return this.findExpandToggle(rowIndex)?.getElement().getAttribute('aria-expanded') === 'true';
-  }
-
-  /**
-   * Returns items loader of the root table level.
-   */
-  findRootItemsLoader(): null | ElementWrapper {
-    const selector = `.${progressiveLoadingStyles['items-loader']}[data-root="true"]`;
-    return this.find(selector);
-  }
-
-  /**
-   * Returns items loader of the specific item (matched by item's track ID).
-   *
-   * @param itemId the (expandable) item ID provided with `trackBy` property.
-   *
-   * Note: when used with collection-hooks the `trackBy` is set automatically from `expandableRows.getId`.
-   */
-  findItemsLoaderByItemId(itemId: string): null | ElementWrapper {
-    const selector = `.${progressiveLoadingStyles['items-loader']}[data-parentrow="${itemId}"]`;
-    return this.find(selector);
   }
 }

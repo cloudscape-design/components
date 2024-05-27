@@ -3,6 +3,7 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import createWrapper from '../../../lib/components/test-utils/selectors';
+import progressiveLoadingStyles from '../../../lib/components/table/progressive-loading/styles.selectors.js';
 
 const tableWrapper = createWrapper().findTable();
 
@@ -46,7 +47,10 @@ describe('Expandable rows', () => {
     'uses items loader on the first expandable item',
     setupTest({ useProgressiveLoading: true, useServerMock: true }, async page => {
       const targetCluster = 'cluster-33387b6c';
-      const targetClusterLoadMore = tableWrapper.findItemsLoaderByItemId(targetCluster).findButton();
+      // TODO: use public test utils method
+      const targetClusterLoadMore = tableWrapper
+        .find(`.${progressiveLoadingStyles['items-loader']}[data-parentrow="${targetCluster}"]`)
+        .findButton();
       const page2Toggle = tableWrapper.findExpandToggle(4);
       const page3Toggle = tableWrapper.findExpandToggle(6);
       const getRowsCount = () => page.getElementsCount(tableWrapper.findRows().toSelector());
