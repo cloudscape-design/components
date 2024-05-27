@@ -15,6 +15,12 @@ class AppLayoutStickyPage extends BasePageObject {
   findStickyTableHeader() {
     return wrapper.findContentRegion().findTable().findHeaderSlot();
   }
+
+  async getAlertTextAndDismiss() {
+    const alertText = await this.browser.getAlertText();
+    await this.browser.dismissAlert();
+    return alertText;
+  }
 }
 
 function setupTest({ viewport = viewports.desktop, url = '' }, testFn: (page: AppLayoutStickyPage) => Promise<void>) {
@@ -71,3 +77,57 @@ test(
     }
   )
 );
+
+describe.each([[true], [false]])('visualRefresh=%s', visualRefresh => {
+  test(
+    'should render popover from split panel above sticky header',
+    setupTest(
+      {
+        url: `#/light/app-layout/with-full-page-table-and-split-panel?visualRefresh=${visualRefresh}&splitPanelPosition=side`,
+      },
+      async page => {
+        const popover = createWrapper().findPopover('[data-testid="split-panel"]');
+        await page.click(popover.findTrigger().toSelector());
+        await page.click(popover.findContent().findButton().toSelector());
+        await expect(page.getAlertTextAndDismiss()).resolves.toEqual('It worked');
+      }
+    )
+  );
+
+  test(
+    'should render popover from help panel above sticky header',
+    setupTest(
+      {
+        url: `#/light/app-layout/with-full-page-table-and-split-panel?visualRefresh=${visualRefresh}&splitPanelPosition=side`,
+      },
+      async page => {
+        // close split panel which is open by default
+        await page.click(wrapper.findSplitPanel().findCloseButton().toSelector());
+        // open help panel
+        await page.click(wrapper.findToolsToggle().toSelector());
+        // do the test
+        const popover = createWrapper().findPopover('[data-testid="help-panel"]');
+        await page.click(popover.findTrigger().toSelector());
+        await page.click(popover.findContent().findButton().toSelector());
+        await expect(page.getAlertTextAndDismiss()).resolves.toEqual('It worked');
+      }
+    )
+  );
+
+  test(
+    'should not leave any space between page header and sticky header in content layout',
+    setupTest(
+      {
+        url: `#/light/app-layout/with-sticky-header-table-in-content-layout?visualRefresh=${visualRefresh}`,
+      },
+      async page => {
+        const pageHeaderSelector = '#h';
+        const tableStickyHeaderSelector = createWrapper().findTable().findHeaderSlot();
+        const pageHeaderBottom = (await page.getBoundingBox(pageHeaderSelector)).bottom;
+        await page.windowScrollTo({ top: 200 });
+        const tableStickyHeaderTop = (await page.getBoundingBox(tableStickyHeaderSelector.toSelector())).top;
+        expect(tableStickyHeaderTop).toEqual(pageHeaderBottom);
+      }
+    )
+  );
+});

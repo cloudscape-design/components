@@ -6,7 +6,6 @@ import InternalContainer from '../../../lib/components/container/internal';
 import { AppLayoutContext } from '../../../lib/components/internal/context/app-layout-context';
 import { useStickyHeader } from '../use-sticky-header';
 import { renderHook, act } from '../../__tests__/render-hook';
-import { supportsStickyPosition } from '../../internal/utils/dom';
 jest.mock('../../../lib/components/container/use-sticky-header', () => ({
   useStickyHeader: () => ({ isSticky: true }),
 }));
@@ -19,7 +18,6 @@ jest.mock('../../internal/hooks/use-visual-mode', () => ({
 }));
 
 jest.mock('../../internal/utils/dom', () => ({
-  supportsStickyPosition: jest.fn(),
   findUpUntil: jest.fn(),
 }));
 
@@ -53,8 +51,6 @@ test('should not report sticky state in default variant', () => {
 });
 
 test('should set isStuck to true when rootTop is less than headerTop', () => {
-  (supportsStickyPosition as jest.Mock).mockReturnValue(true);
-
   const rootRef = {
     current: document.createElement('div'),
   };
@@ -74,8 +70,6 @@ test('should set isStuck to true when rootTop is less than headerTop', () => {
 });
 
 test('should set isStuck to false when rootTop is larger than than headerTop', () => {
-  (supportsStickyPosition as jest.Mock).mockReturnValue(true);
-
   const rootRef = {
     current: document.createElement('div'),
   };
@@ -95,8 +89,6 @@ test('should set isStuck to false when rootTop is larger than than headerTop', (
 });
 
 test('should not set isStuck to true when rootTop has a border and is larger than than headerTop', () => {
-  (supportsStickyPosition as jest.Mock).mockReturnValue(true);
-
   const rootRef = {
     current: document.createElement('div'),
   };
@@ -117,8 +109,6 @@ test('should not set isStuck to true when rootTop has a border and is larger tha
 });
 
 test('should set isStuck to false when headerRef is null', () => {
-  (supportsStickyPosition as jest.Mock).mockReturnValue(true);
-
   const rootRef = {
     current: document.createElement('div'),
   };

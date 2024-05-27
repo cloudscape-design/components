@@ -47,12 +47,12 @@ $interactive-column-padding-inline-end: calc(#{$cell-horizontal-padding} + #{aws
 @mixin cell-offset($padding) {
   padding-inline-start: $padding;
 
-  @for $i from 1 through 9 {
-    &.body-cell-expandable-level-#{$i} {
+  @for $i from 0 through 9 {
+    &.expandable-level-#{$i} {
       padding-inline-start: calc($padding + $i * (#{awsui.$space-m} + #{awsui.$space-xs}));
     }
   }
-  &.body-cell-expandable-level-next {
+  &.expandable-level-next {
     padding-inline-start: calc($padding + 9 * (#{awsui.$space-m} + #{awsui.$space-xs}));
   }
 }

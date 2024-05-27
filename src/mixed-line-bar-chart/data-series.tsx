@@ -30,6 +30,7 @@ export interface DataSeriesProps<T> {
   visibleSeries: ReadonlyArray<InternalChartSeries<T>>;
   xScale: ChartScale;
   yScale: NumericChartScale;
+  isRtl?: boolean;
 }
 
 export default function DataSeries<T extends ChartDataTypes>({
@@ -43,6 +44,7 @@ export default function DataSeries<T extends ChartDataTypes>({
   visibleSeries,
   xScale,
   yScale,
+  isRtl,
 }: DataSeriesProps<T>) {
   const chartAreaClipPath = useUniqueId('awsui-mixed-line-bar-chart__chart-area-');
 
@@ -121,6 +123,7 @@ export default function DataSeries<T extends ChartDataTypes>({
                   chartAreaClipPath={chartAreaClipPath}
                   stackedBarValues={stackedBarValues}
                   highlightedGroupIndex={highlightedGroupIndex}
+                  isRtl={isRtl}
                 />
               );
           }
