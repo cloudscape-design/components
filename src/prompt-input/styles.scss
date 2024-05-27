@@ -2,18 +2,19 @@
  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  SPDX-License-Identifier: Apache-2.0
 */
+/* stylelint-disable */
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 
 .root {
-  /* used for test-utils */
+  position: relative;
 }
 
 .textarea {
   @include styles.styles-reset;
   // Restore browsers' default resize values
-  resize: auto; /* stylelint-disable-line plugin/no-unsupported-browser-features */
+  resize: none;
   // Restore default text cursor
   cursor: text;
   // Allow multi-line placeholders
@@ -78,5 +79,14 @@
 
   &.textarea-warning {
     @include styles.form-warning-control();
+  }
+}
+.button {
+  position: absolute;
+  right: 0px;
+  bottom: 0px;
+  svg,
+  svg * {
+    stroke-width: 0px !important;
   }
 }
