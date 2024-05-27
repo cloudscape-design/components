@@ -1,29 +1,29 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import OmniBox from '~components/omni-box';
+import PromptInput from '~components/prompt-input';
 import SpaceBetween from '~components/space-between';
 
-function OmniBoxes() {
+function PromptInputes() {
   const [textareaValue, setTextareaValue] = useState('something');
   return (
     <SpaceBetween size="xs">
-      <OmniBox
+      <PromptInput
         ariaLabel="textarea"
         value={textareaValue}
         onChange={(event: any) => setTextareaValue(event.detail.value)}
       />
-      <OmniBox ariaLabel="textarea" placeholder="Enter something" value="" readOnly={true} />
-      <OmniBox ariaLabel="Disabled textarea" disabled={true} placeholder="Enter something" value="" />
+      <PromptInput ariaLabel="textarea" placeholder="Enter something" value="" readOnly={true} />
+      <PromptInput ariaLabel="Disabled textarea" disabled={true} placeholder="Enter something" value="" />
     </SpaceBetween>
   );
 }
 
-export default function OmniBoxPage() {
+export default function PromptInputPage() {
   return (
     <div style={{ padding: 10 }}>
-      <h1>OmniBox demo</h1>
-      <OmniBoxes />
+      <h1>PromptInput demo</h1>
+      <PromptInputes />
     </div>
   );
 }
