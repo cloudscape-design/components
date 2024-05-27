@@ -13,6 +13,10 @@ export function useProgressiveLoadingProps<T>({
   getLoadingStatus?: (item: null | T) => TableProps.LoadingStatus;
   getExpandableItemProps: (item: T) => { level: number; parent: null | T; isExpanded: boolean; children: readonly T[] };
 }) {
+  // The rows are either data or loader.
+  // A loader row can be added to the root level (level=0) in which case it has no associated item (item=null).
+  // Loader rows can be added to expandable rows (level>0) in which case they have an associated item (item!=null).
+  // The "from" property of the loader row is the index of the first item to be loaded starting 0. It is used to generate unique React keys.
   const allRows = new Array<TableRow<T>>();
 
   const getItemParent = (item: T) => getExpandableItemProps(item).parent;
