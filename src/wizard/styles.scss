@@ -24,9 +24,6 @@
     grid-template-columns: minmax(0, 1fr) 0;
     row-gap: awsui.$space-scaled-l;
   }
-  &:not(.remove-high-contrast-header) {
-    row-gap: awsui.$space-scaled-xl;
-  }
 }
 
 .wizard:not(.refresh) {
@@ -48,14 +45,6 @@
     padding-inline: 0;
     inline-size: 260px;
     box-sizing: border-box;
-    &:not(.remove-high-contrast-header) {
-      @include styles.container-style;
-      padding-block-start: awsui.$space-scaled-m;
-      padding-block-end: awsui.$space-scaled-l;
-      padding-inline-start: awsui.$space-m;
-      padding-inline-end: awsui.$space-l;
-      inline-size: 280px;
-    }
 
     > li {
       display: grid;
@@ -251,13 +240,6 @@
   > .form-header > .form-header-content {
     padding-block-start: calc(awsui.$space-xl + awsui.$space-scaled-xxxs);
     padding-block-end: awsui.$space-scaled-s;
-  }
-
-  &:not(.remove-high-contrast-header) {
-    > .form-header > .form-header-content {
-      padding-block-start: calc(awsui.$space-l + awsui.$space-scaled-xxs);
-      padding-block-end: awsui.$space-scaled-m;
-    }
   }
 
   > .form-component {

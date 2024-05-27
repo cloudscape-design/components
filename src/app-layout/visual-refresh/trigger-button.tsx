@@ -6,7 +6,6 @@ import Icon from '../../icon/internal';
 import styles from './styles.css.js';
 import { ButtonProps } from '../../button/interfaces';
 import { IconProps } from '../../icon/interfaces';
-import { shouldRemoveHighContrastHeader } from '../../internal/utils/content-header-utils';
 
 export interface TriggerButtonProps {
   ariaLabel?: string;
@@ -19,6 +18,7 @@ export interface TriggerButtonProps {
   onClick: React.MouseEventHandler<HTMLButtonElement>;
   selected?: boolean;
   badge?: boolean;
+  highContrastHeader?: boolean;
 }
 
 function TriggerButton(
@@ -33,16 +33,12 @@ function TriggerButton(
     testId,
     badge,
     selected = false,
+    highContrastHeader,
   }: TriggerButtonProps,
   ref: React.Ref<ButtonProps.Ref>
 ) {
   return (
-    <div
-      className={clsx(
-        styles['trigger-wrapper'],
-        shouldRemoveHighContrastHeader() && styles['remove-high-contrast-header']
-      )}
-    >
+    <div className={clsx(styles['trigger-wrapper'], !highContrastHeader && styles['remove-high-contrast-header'])}>
       <button
         aria-expanded={ariaExpanded}
         aria-controls={ariaControls}
