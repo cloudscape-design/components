@@ -21,7 +21,6 @@ export function AppLayoutSkeleton({
   placement,
   contentType,
   maxContentWidth,
-  minContentWidth,
   disableContentPaddings,
 }: AppLayoutPropsWithDefaults) {
   // render nothing in the skeleton state
@@ -39,7 +38,6 @@ export function AppLayoutSkeleton({
       placement={placement}
       contentType={contentType}
       maxContentWidth={maxContentWidth}
-      minContentWidth={minContentWidth}
       disableContentPaddings={disableContentPaddings}
     />
   );
