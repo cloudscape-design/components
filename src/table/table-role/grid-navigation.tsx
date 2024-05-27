@@ -8,6 +8,7 @@ import {
   findTableRowByAriaRowIndex,
   findTableRowCellByAriaColIndex,
   focusNextElement,
+  getRemovedNodes,
   getClosestCell,
   isElementDisabled,
   isTableCell,
@@ -88,16 +89,18 @@ class GridNavigationProcessor {
     this._table = table;
 
     this.table.addEventListener('focusin', this.onFocusin);
-    this.table.addEventListener('focusout', this.onFocusout);
     this.table.addEventListener('keydown', this.onKeydown);
 
     this.updateFocusTarget();
 
+    const tableNodesObserver = new MutationObserver(this.onTableNodeMutation);
+    tableNodesObserver.observe(table, { childList: true, subtree: true });
+
     this.cleanup = () => {
       this.table.removeEventListener('focusin', this.onFocusin);
-      this.table.removeEventListener('focusout', this.onFocusout);
       this.table.removeEventListener('keydown', this.onKeydown);
       this.focusables.forEach(this.unregisterFocusable);
+      tableNodesObserver.disconnect();
     };
   }
 
@@ -178,14 +181,16 @@ class GridNavigationProcessor {
     }
   };
 
-  private onFocusout = () => {
-    // When focus leaves the cell and the cell no longer belong to the table it indicates the focused element has been unmounted.
-    // In that case the focus needs to be restored on the same coordinates.
-    setTimeout(() => {
-      if (this.focusedCell && !nodeBelongs(this.table, this.focusedCell.element)) {
-        this.moveFocusBy(this.focusedCell, { x: 0, y: 0 });
-      }
-    }, 0);
+  // Finding if the focused node has been removed to re-apply focus on a cell with the same or closest coordinates.
+  private onTableNodeMutation = (mutationRecords: MutationRecord[]) => {
+    const cell = this.focusedCell;
+
+    // Only re-apply focus if it is on the body to prevent focus stealing.
+    if (cell && document.activeElement === document.body) {
+      const removedNode = getRemovedNodes(mutationRecords).find(node => nodeBelongs(node, cell.element));
+      // Timeout ensures the newly rendered content elements are registered.
+      removedNode && setTimeout(() => this.moveFocusBy(cell, { x: 0, y: 0 }), 0);
+    }
   };
 
   private onKeydown = (event: KeyboardEvent) => {
@@ -208,12 +213,12 @@ class GridNavigationProcessor {
     const shiftKey = event.shiftKey ? 1 : 0;
     const metaKey = event.metaKey ? 1 : 0;
     const modifiersPressed = ctrlKey + altKey + shiftKey + metaKey;
-    const invalidModiferCombination =
+    const invalidModifierCombination =
       (modifiersPressed && !event.ctrlKey) ||
       (event.ctrlKey && event.keyCode !== KeyCode.home && event.keyCode !== KeyCode.end);
 
     if (
-      invalidModiferCombination ||
+      invalidModifierCombination ||
       this.isSuppressed(document.activeElement) ||
       !this.isRegistered(document.activeElement) ||
       keys.indexOf(event.keyCode) === -1
