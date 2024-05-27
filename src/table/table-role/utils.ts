@@ -102,15 +102,3 @@ export function focusNextElement(element: null | HTMLElement) {
     element.focus();
   }
 }
-
-export function getRemovedNodes(mutationRecords: MutationRecord[]) {
-  const removedNodes: Node[] = [];
-  for (const record of mutationRecords) {
-    if (record.type === 'childList') {
-      for (const removedNode of Array.from(record.removedNodes)) {
-        removedNodes.push(removedNode);
-      }
-    }
-  }
-  return removedNodes;
-}

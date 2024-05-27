@@ -8,7 +8,6 @@ import {
   findTableRowByAriaRowIndex,
   findTableRowCellByAriaColIndex,
   focusNextElement,
-  getRemovedNodes,
   getClosestCell,
   isElementDisabled,
   isTableCell,
@@ -93,14 +92,10 @@ class GridNavigationProcessor {
 
     this.updateFocusTarget();
 
-    const tableNodesObserver = new MutationObserver(this.onTableNodeMutation);
-    tableNodesObserver.observe(table, { childList: true, subtree: true });
-
     this.cleanup = () => {
       this.table.removeEventListener('focusin', this.onFocusin);
       this.table.removeEventListener('keydown', this.onKeydown);
       this.focusables.forEach(this.unregisterFocusable);
-      tableNodesObserver.disconnect();
     };
   }
 
@@ -144,6 +139,18 @@ class GridNavigationProcessor {
   public unregisterFocusable = (focusable: Element) => {
     this.focusables.delete(focusable);
     this.focusHandlers.delete(focusable);
+
+    const isUnregisteringFocusedNode = this.focusedCell && nodeBelongs(focusable, this.focusedCell.element);
+    const isFocusInsideTable = nodeBelongs(this.table, document.activeElement);
+    if (isUnregisteringFocusedNode && isFocusInsideTable) {
+      setTimeout(() => {
+        // If the focused cell appears to be no longer attached to the table we need to re-apply
+        // focus to a cell with the same or closest position.
+        if (this.focusedCell && !nodeBelongs(this.table, this.focusedCell.element)) {
+          this.moveFocusBy(this.focusedCell, { x: 0, y: 0 });
+        }
+      }, 0);
+    }
   };
 
   private get pageSize() {
@@ -178,18 +185,6 @@ class GridNavigationProcessor {
       nextTarget.focus({ preventScroll: true });
     } else {
       this.keepUserIndex = false;
-    }
-  };
-
-  // Finding if the focused node has been removed to re-apply focus on a cell with the same or closest coordinates.
-  private onTableNodeMutation = (mutationRecords: MutationRecord[]) => {
-    const cell = this.focusedCell;
-
-    // Only re-apply focus if it is on the body to prevent focus stealing.
-    if (cell && document.activeElement === document.body) {
-      const removedNode = getRemovedNodes(mutationRecords).find(node => nodeBelongs(node, cell.element));
-      // Timeout ensures the newly rendered content elements are registered.
-      removedNode && setTimeout(() => this.moveFocusBy(cell, { x: 0, y: 0 }), 0);
     }
   };
 
