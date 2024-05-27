@@ -226,23 +226,7 @@
       // This polygon only shows the part of the shadow that is lower than the element itself.
       clip-path: polygon(-999% 100%, 999% 100%, 999% 999%, -999% 999%);
     }
-
-    &:not(.remove-high-contrast-header) {
-      &::before {
-        content: '';
-        border-block-end: none;
-      }
-    }
   }
-}
-
-/*
-The dynamic height dark header needs a background that will cover
-the default white background of the container component.
-*/
-.dark-header {
-  background-color: awsui.$color-background-layout-main;
-  color: awsui.$color-text-body-default;
 }
 
 .content {

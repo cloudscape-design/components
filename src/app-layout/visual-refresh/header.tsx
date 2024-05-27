@@ -2,12 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
-import { getContentHeaderClassName } from '../../internal/utils/content-header-utils';
+import { highContrastHeaderClassName } from '../../internal/utils/content-header-utils';
 import { useAppLayoutInternals } from './context';
 import styles from './styles.css.js';
 
 export default function Header() {
-  const { breadcrumbs, contentHeader, hasDrawerViewportOverlay, hasNotificationsContent } = useAppLayoutInternals();
+  const { breadcrumbs, contentHeader, hasDrawerViewportOverlay, hasNotificationsContent, headerVariant } =
+    useAppLayoutInternals();
 
   if (!contentHeader) {
     return null;
@@ -15,15 +16,12 @@ export default function Header() {
 
   return (
     <header
-      className={clsx(
-        styles.content,
-        {
-          [styles['has-breadcrumbs']]: breadcrumbs,
-          [styles['has-notifications-content']]: hasNotificationsContent,
-          [styles.unfocusable]: hasDrawerViewportOverlay,
-        },
-        getContentHeaderClassName()
-      )}
+      className={clsx(styles.content, {
+        [styles['has-breadcrumbs']]: breadcrumbs,
+        [styles['has-notifications-content']]: hasNotificationsContent,
+        [styles.unfocusable]: hasDrawerViewportOverlay,
+        [highContrastHeaderClassName]: headerVariant === 'high-contrast',
+      })}
     >
       {contentHeader}
     </header>

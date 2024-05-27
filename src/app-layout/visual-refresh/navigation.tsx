@@ -32,6 +32,7 @@ export default function Navigation() {
     navigationRefs,
     navigationWidth,
     toolsHide,
+    headerVariant,
   } = useAppLayoutInternals();
 
   if (navigationHide) {
@@ -79,6 +80,7 @@ export default function Navigation() {
                 className={testutilStyles['navigation-toggle']}
                 onClick={() => handleNavigationClick(true)}
                 ref={navigationRefs.toggle}
+                highContrastHeader={headerVariant === 'high-contrast'}
               />
             </nav>
           )}

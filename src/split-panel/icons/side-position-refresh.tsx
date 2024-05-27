@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { getContentHeaderClassName } from '../../internal/utils/content-header-utils';
 import styles from '../styles.css.js';
 
 export interface SVGTableRowProps {
@@ -56,7 +55,7 @@ const bottomPositionIcon = (
     <g className="awsui-context-top-navigation">
       <rect x="2" y="2" width="212" height="6" className={getClassName('layout-top')} />
     </g>
-    <g className={getContentHeaderClassName()}>
+    <g>
       <path d="M2 8H214V23H2V8Z" className={getClassName('layout-main')} />
       <g className={getClassName('default')}>
         <path
