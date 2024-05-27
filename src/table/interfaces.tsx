@@ -532,6 +532,7 @@ export interface TableLoaderRow<T> {
   item: null | T;
   level: number;
   status: TableProps.LoadingStatus;
+  from: number;
 }
 
 export interface TableProgressiveLoadingProps<T> {
