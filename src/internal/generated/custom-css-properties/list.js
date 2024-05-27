@@ -13,6 +13,9 @@ const customCssPropertiesList = [
   'contentGapLeft',
   'contentGapRight',
   'contentHeight',
+  'contentLayoutDefaultHorizontalPadding',
+  'contentLayoutMaxContentWidth',
+  'contentLayoutMainGap',
   'defaultMaxContentWidth',
   'defaultMinContentWidth',
   'drawerSize',
@@ -63,5 +66,7 @@ const customCssPropertiesList = [
   'sliderMinEnd',
   'sliderRangeInlineSize',
   'sliderTooltipPosition',
+  'togglesLeftWidth',
+  'togglesRightWidth',
 ];
 module.exports = customCssPropertiesList;

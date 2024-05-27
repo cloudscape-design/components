@@ -42,6 +42,8 @@ explicitly set in script.
   #{custom-props.$notificationsHeight}: 0px;
   #{custom-props.$offsetTop}: var(#{custom-props.$headerHeight});
   #{custom-props.$overlapHeight}: #{awsui.$space-dark-header-overlap-distance};
+  #{custom-props.$togglesLeftWidth}: 0px;
+  #{custom-props.$togglesRightWidth}: 0px;
   background-color: awsui.$color-background-layout-main;
   color: awsui.$color-text-body-default;
   display: grid;
@@ -193,13 +195,8 @@ explicitly set in script.
     #{custom-props.$mainGap}: #{awsui.$space-xs};
   }
 
-  // Set the Main gap when it follows the Breadcrumbs without an overlap
-  &.has-breadcrumbs:not(.has-header).is-overlap-disabled {
-    #{custom-props.$mainGap}: #{awsui.$space-scaled-m};
-  }
-
-  // Set the Main gap when it follows the Breadcrumbs with an overlap
-  &.has-breadcrumbs:not(.has-header):not(.is-overlap-disabled) {
+  // Set the Main gap when it follows the Breadcrumbs
+  &.has-breadcrumbs:not(.has-header) {
     #{custom-props.$mainGap}: #{awsui.$space-scaled-xxs};
   }
 
@@ -209,9 +206,11 @@ explicitly set in script.
   }
 
   // Set the Main gap when it is the first page content
-  &.content-first-child-main:not(.is-overlap-disabled),
-  &.content-first-child-main.is-overlap-disabled:not(.disable-content-paddings) {
+  &.content-first-child-main:not(.disable-content-paddings) {
     #{custom-props.$mainGap}: #{awsui.$space-scaled-s};
+  }
+  &.content-first-child-main.disable-content-paddings {
+    #{custom-props.$mainGap}: 0px;
   }
 
   /*
@@ -232,13 +231,20 @@ explicitly set in script.
     }
 
     &.content-first-child-notifications:not(.has-breadcrumbs):not(.has-header),
-    &.content-first-child-main:not(.is-overlap-disabled) {
+    &.content-first-child-main:not(.disable-content-paddings) {
       #{custom-props.$mainGap}: #{awsui.$space-scaled-s};
     }
 
-    &.content-first-child-main.is-overlap-disabled:not(.disable-content-paddings) {
-      #{custom-props.$mainGap}: #{awsui.$space-scaled-m};
+    &.content-first-child-main.disable-content-paddings {
+      #{custom-props.$mainGap}: 0px;
     }
+  }
+
+  &.has-left-toggles-gutter {
+    #{custom-props.$togglesLeftWidth}: calc(#{awsui.$space-layout-toggle-padding} + 36px);
+  }
+  &.has-right-toggles-gutter {
+    #{custom-props.$togglesRightWidth}: calc(#{awsui.$space-layout-toggle-padding} + 36px);
   }
 }
 

@@ -147,15 +147,6 @@ filter search icon.
   }
 }
 
-/*
-The dynamic height dark header needs a background that will cover
-the default white background of the container component.
-*/
-.dark-header {
-  background-color: awsui.$color-background-layout-main;
-  color: awsui.$color-text-body-default;
-}
-
 .header-secondary {
   overflow: auto;
   -ms-overflow-style: none; /* Internet Explorer 10+ */
