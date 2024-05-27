@@ -15,7 +15,7 @@ const InternalKeyValuePairs = React.forwardRef(
     return (
       <div {...rest} className={clsx(styles['key-value-pairs'], className)} ref={ref}>
         {!!columns?.length && (
-          <ColumnLayout columns={columns.length} variant="text-grid">
+          <ColumnLayout columns={Math.min(columns.length, 4)} variant="text-grid">
             {columns.map((column, columnIndex) => (
               <div className={styles.column} key={columnIndex}>
                 {column.title && (
