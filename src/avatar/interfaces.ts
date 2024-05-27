@@ -36,10 +36,9 @@ export interface AvatarProps extends BaseComponentProps {
   loadingText?: string;
 
   /**
-   * Text to describe avatar if "initials" are not passed. We recommend that you provide this for accessibility.
-   * If both "altText" and "initials" are defined, "initials" take precedence.
+   * Text to describe avatar icon/content.
    */
-  altText?: string;
+  ariaLabel?: string;
 
   /**
    * Specifies the icon to be displayed in Avatar.
@@ -78,8 +77,19 @@ export interface AvatarProps extends BaseComponentProps {
    * In most cases, they aren't needed, as the `svg` element inherits styles from the icon component.
    */
   iconSvg?: React.ReactNode;
+
+  i18nStrings?: AvatarProps.I18nStrings;
 }
 
 export namespace AvatarProps {
   export type Type = 'user' | 'gen-ai';
+
+  /**
+   * An object containing all the necessary localized strings required by the component.
+   * @i18n
+   */
+  export interface I18nStrings {
+    /** ARIA role description of avatar, e.g. "Avatar" */
+    avatarAriaRoleDescription?: string;
+  }
 }

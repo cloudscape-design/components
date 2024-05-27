@@ -31,21 +31,21 @@ export default function AvatarsPage() {
       <h1>Avatar demo</h1>
 
       <FormField label="Default user and gen-ai avatars">
-        <Avatar type="user" altText="User avatar" />
-        <Avatar type="gen-ai" altText="Gen AI avatar" />
-        <Avatar type="gen-ai" loading={true} altText="Gen AI avatar loading" />
+        <Avatar type="user" ariaLabel="User avatar" i18nStrings={{ avatarAriaRoleDescription: 'Avatar' }} />
+        <Avatar type="gen-ai" ariaLabel="Gen AI avatar" />
+        <Avatar type="gen-ai" ariaLabel="Gen AI avatar loading" loading={true} />
       </FormField>
 
       <br />
 
       <FormField label="Different combinations with tooltip">
-        <Avatar type="user" fullName="Timothee Fontaka" altText="User avatar" />
-        <Avatar type="user" fullName="Timothee Fontaka" initials="TF" />
-        <Avatar type="gen-ai" fullName="Gen AI assistant" />
-        <Avatar type="gen-ai" iconName="star-filled" fullName="Existing icon" altText="AI assistant" />
-        <Avatar type="gen-ai" iconSvg={customIconSvg} fullName="Custom icon SVG" altText="AI assistant" />
-        <Avatar type="gen-ai" iconUrl={img} altText="AI assistant" fullName="Custom icon URL" />
-        <Avatar type="gen-ai" loading={true} loadingText="Generating response" />
+        <Avatar type="user" ariaLabel="User avatar" fullName="Timothee Fontaka" />
+        <Avatar type="user" ariaLabel="User avatar" fullName="Timothee Fontaka" initials="TF" />
+        <Avatar type="gen-ai" ariaLabel="Gen AI avatar" fullName="Gen AI assistant" />
+        <Avatar type="gen-ai" ariaLabel="Gen AI avatar" iconName="star-filled" fullName="Existing icon" />
+        <Avatar type="gen-ai" ariaLabel="Gen AI avatar" iconSvg={customIconSvg} fullName="Custom icon SVG" />
+        <Avatar type="gen-ai" ariaLabel="Gen AI avatar" iconUrl={img} fullName="Custom icon URL" />
+        <Avatar type="gen-ai" ariaLabel="Gen AI avatar" loading={true} loadingText="Generating response" />
       </FormField>
     </div>
   );

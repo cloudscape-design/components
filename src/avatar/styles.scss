@@ -25,6 +25,10 @@ $shadow-opacity: 0.1;
   @include styles.styles-reset;
 }
 
+.aria-description {
+  display: none;
+}
+
 .avatar {
   display: inline-flex;
   @include mixins.border-radius-avatar;
@@ -48,6 +52,7 @@ $shadow-opacity: 0.1;
   @include focus-visible.when-visible {
     // TODO: Confirm
     outline: 2px solid awsui.$color-border-item-focused;
+    outline-offset: 1px;
   }
 }
 

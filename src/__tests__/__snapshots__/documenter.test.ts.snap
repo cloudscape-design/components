@@ -2061,9 +2061,8 @@ Object {
   "name": "Avatar",
   "properties": Array [
     Object {
-      "description": "Text to describe avatar if \\"initials\\" are not passed. We recommend that you provide this for accessibility.
-If both \\"altText\\" and \\"initials\\" are defined, \\"initials\\" take precedence.",
-      "name": "altText",
+      "description": "Text to describe avatar icon/content.",
+      "name": "ariaLabel",
       "optional": true,
       "type": "string",
     },
@@ -2079,6 +2078,22 @@ If both \\"altText\\" and \\"initials\\" are defined, \\"initials\\" take preced
       "name": "fullName",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "inlineType": Object {
+        "name": "AvatarProps.I18nStrings",
+        "properties": Array [
+          Object {
+            "name": "avatarAriaRoleDescription",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "AvatarProps.I18nStrings",
     },
     Object {
       "description": "Specifies the icon to be displayed in Avatar.

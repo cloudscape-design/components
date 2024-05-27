@@ -3,6 +3,7 @@
 import React, { useState, useRef } from 'react';
 import clsx from 'clsx';
 // import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 
 import { getBaseProps } from '../internal/base-component/index.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -15,13 +16,13 @@ import styles from './styles.css.js';
 
 export interface InternalAvatarProps extends AvatarProps, InternalBaseComponentProps {}
 
-const AvatarContent = ({ type, loading, initials = '', iconName, iconSvg, iconUrl }: AvatarProps) => {
+const AvatarContent = ({ type, ariaLabel, loading, initials, iconName, iconSvg, iconUrl }: AvatarProps) => {
   if (type === 'gen-ai' && loading) {
     // TODO: check spinner tests
     return <LoadingDots />;
   }
 
-  if (type === 'user' && initials?.length > 0) {
+  if (type === 'user' && initials) {
     //  TODO: should it allow one letter or two letters or both?
     const letters = initials.length > 2 ? initials.slice(0, 2) : initials;
 
@@ -33,7 +34,7 @@ const AvatarContent = ({ type, loading, initials = '', iconName, iconSvg, iconUr
   return (
     <div>
       {type === 'gen-ai' ? (
-        <InternalIcon name={iconNameWithDefault} svg={iconSvg} url={iconUrl} />
+        <InternalIcon name={iconNameWithDefault} svg={iconSvg} url={iconUrl} alt={ariaLabel} />
       ) : (
         <InternalIcon name={iconNameWithDefault} />
       )}
@@ -43,11 +44,11 @@ const AvatarContent = ({ type, loading, initials = '', iconName, iconSvg, iconUr
 
 export default function InternalAvatar({
   type,
-  fullName = '',
-  initials = '',
+  fullName,
+  initials,
   loading = false,
-  loadingText = '',
-  altText = '',
+  loadingText,
+  ariaLabel,
   iconName,
   iconSvg,
   iconUrl,
@@ -58,12 +59,14 @@ export default function InternalAvatar({
   const handleRef = useRef<HTMLDivElement>(null);
   const [showTooltip, _setShowTooltip] = useState(false);
 
-  const showLoadingText = type === 'gen-ai' && loading && loadingText?.length > 0;
+  const descriptionId = useUniqueId('avatar__description');
+
+  const showLoadingText = type === 'gen-ai' && loading && loadingText;
   // When loading, loadingText takes precedence over fullName
   const tooltipContent = showLoadingText ? loadingText : fullName;
 
   const setShowTooltip = (value: boolean) => {
-    if (fullName?.length > 0 || showLoadingText) {
+    if (fullName || showLoadingText) {
       return _setShowTooltip(value);
     }
   };
@@ -95,29 +98,18 @@ export default function InternalAvatar({
     },
   };
 
-  const getAriaLabel = () => {
-    let ariaLabel = '';
-
-    // TODO: Should it concatenate avatar and tooltip content into a single aria label?
-    if (initials?.length > 0) {
-      ariaLabel += initials.length > 2 ? initials.slice(0, 2) : initials;
-    } else if (altText?.length > 0) {
-      ariaLabel += altText;
-    }
-
-    if (tooltipContent?.length > 0) {
-      ariaLabel += ` ${tooltipContent}`;
-    }
-
-    return ariaLabel;
-  };
+  const avatarAriaLabel =
+    ariaLabel && ariaLabel.length > 0 && tooltipContent && tooltipContent.length > 0
+      ? [ariaLabel, tooltipContent].join(' ')
+      : ariaLabel || tooltipContent;
 
   return (
     <span {...baseProps} ref={__internalRootRef} className={clsx(baseProps.className, styles.root)}>
-      {showTooltip && <Tooltip value={tooltipContent} trackRef={handleRef} />}
+      {showTooltip && tooltipContent && <Tooltip value={tooltipContent} trackRef={handleRef} />}
 
-      {/* TODO: Any meaningful roles this div can have? */}
-      {/* TODO: The default popover aria live may cause double announcement, add test and check if it needs to be disabled */}
+      {/* <div className={styles['aria-description']} id={descriptionId}>
+        {tooltipContent || ''}
+      </div> */}
 
       <div
         ref={handleRef}
@@ -126,9 +118,15 @@ export default function InternalAvatar({
           [styles['gen-ai']]: type === 'gen-ai',
           [styles.loading]: type === 'gen-ai' && loading,
         })}
-        aria-label={getAriaLabel()}
+        role="img"
+        aria-label={avatarAriaLabel}
+        aria-describedby={descriptionId}
         // TODO: To be discussed with a11y
-        aria-roledescription="avatar"
+        // aria-roledescription="avatar" -> a11y sync (is it needed?)
+        // tooltip content aria label vs aria describedby -> a11y sync
+        //    is there a difference for screen reader users if we use both aria-label and aria-describedby props or
+        //    if we simply concatenate both strings?
+        // aria-roledescription={i18n('avatarAriaRoleDescription', i18nStrings?.avatarAriaRoleDescription)}
         {...tooltipAttributes}
       >
         <AvatarContent
@@ -138,6 +136,7 @@ export default function InternalAvatar({
           iconName={iconName}
           iconSvg={iconSvg}
           iconUrl={iconUrl}
+          ariaLabel={avatarAriaLabel}
         />
       </div>
     </span>

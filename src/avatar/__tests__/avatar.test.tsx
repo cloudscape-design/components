@@ -6,6 +6,14 @@ import Avatar, { AvatarProps } from '../../../lib/components/avatar';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import loadingDotsStyles from '../../../lib/components/avatar/loading-dots/styles.selectors.js';
 
+// screenshot test scenarios
+// renders a user avatar
+// renders a default gen-ai avatar
+// renders gen-ai avatar with a different existing icon
+// renders gen-ai avatar with custom icon SVG
+// renders gen-ai avatar with custom icon URL
+// renders gen-ai avatar in loading state
+
 function renderAvatar(props: AvatarProps) {
   const { container } = render(<Avatar {...props} />);
 
@@ -13,17 +21,28 @@ function renderAvatar(props: AvatarProps) {
 }
 
 describe('Avatar component', () => {
-  describe('Type', () => {
-    test.each(['gen-ai', 'user'] as AvatarProps.Type[])('renders %s avatar with fullName', type => {
-      const fullName = 'Jane Doe';
-      const wrapper = renderAvatar({ type, fullName });
-      const avatarBody = wrapper.findAvatarBody()?.getElement();
+  describe('Default', () => {
+    (['gen-ai', 'user'] as AvatarProps.Type[]).forEach(type => {
+      test(`renders ${type} avatar`, () => {
+        const wrapper = renderAvatar({ type });
+        const avatarBody = wrapper.findAvatarBody()?.getElement();
+        expect(avatarBody).toBeInTheDocument();
 
-      avatarBody?.focus();
-      expect(wrapper.findTooltip()?.getElement()).toHaveTextContent(fullName);
+        avatarBody?.focus();
+        expect(wrapper.findTooltip()?.getElement()).toBeUndefined();
+      });
 
-      avatarBody?.blur();
-      expect(wrapper.findTooltip()?.getElement()).toBeUndefined();
+      test(`renders a ${type} avatar with fullName`, () => {
+        const fullName = 'Jane Doe';
+        const wrapper = renderAvatar({ type, fullName });
+        const avatarBody = wrapper.findAvatarBody()?.getElement();
+
+        avatarBody?.focus();
+        expect(wrapper.findTooltip()?.getElement()).toHaveTextContent(fullName);
+
+        avatarBody?.blur();
+        expect(wrapper.findTooltip()?.getElement()).toBeUndefined();
+      });
     });
 
     test('renders user avatar with initials', () => {
@@ -33,7 +52,9 @@ describe('Avatar component', () => {
 
       expect(avatarBody).toHaveTextContent(initials);
     });
+  });
 
+  describe('Loading state', () => {
     test('renders gen-ai avatar in loading state', () => {
       const wrapper = renderAvatar({ type: 'gen-ai', loading: true });
 
@@ -42,10 +63,45 @@ describe('Avatar component', () => {
     });
 
     test('does not render user avatar in loading state', () => {
-      const wrapper = renderAvatar({ type: 'user', loading: true });
+      const wrapper = renderAvatar({ type: 'user', loading: true, loadingText: 'Loading' });
 
       const loading = wrapper.findByClassName(loadingDotsStyles.root)?.getElement();
       expect(loading).toBeUndefined();
+
+      const avatarBody = wrapper.findAvatarBody()?.getElement();
+      avatarBody?.focus();
+      expect(wrapper.findTooltip()?.getElement()).toBeUndefined();
+    });
+
+    test('shows loadingText in tooltip when loading', () => {
+      const loadingText = 'Generating response';
+      const wrapper = renderAvatar({ type: 'gen-ai', loading: true, loadingText });
+
+      const avatarBody = wrapper.findAvatarBody()?.getElement();
+      avatarBody?.focus();
+      expect(wrapper.findTooltip()?.getElement()).toHaveTextContent(loadingText);
+      avatarBody?.blur();
+      expect(wrapper.findTooltip()?.getElement()).toBeUndefined();
+    });
+
+    test('loadingText takes precedence over fullName when loading', () => {
+      const loadingText = 'Generating response';
+      const fullName = 'Gen AI assistant';
+      const wrapper = renderAvatar({ type: 'gen-ai', loading: true, loadingText, fullName });
+
+      const avatarBody = wrapper.findAvatarBody()?.getElement();
+      avatarBody?.focus();
+      expect(wrapper.findTooltip()?.getElement()).toHaveTextContent(loadingText);
+    });
+
+    test('fullName takes precedence over loadingText when not loading', () => {
+      const loadingText = 'Generating response';
+      const fullName = 'Gen AI assistant';
+      const wrapper = renderAvatar({ type: 'gen-ai', loading: false, loadingText, fullName });
+
+      const avatarBody = wrapper.findAvatarBody()?.getElement();
+      avatarBody?.focus();
+      expect(wrapper.findTooltip()?.getElement()).toHaveTextContent(fullName);
     });
   });
 
@@ -56,27 +112,25 @@ describe('Avatar component', () => {
     });
 
     test.each([
-      { props: { type: 'user', altText: 'User avatar' }, expectedAriaLabel: 'User avatar' },
-      { props: { type: 'user', initials: 'TF' }, expectedAriaLabel: 'TF' },
-      { props: { type: 'user', initials: 'TF', altText: 'User avatar' }, expectedAriaLabel: 'TF' },
+      { props: { type: 'user', ariaLabel: 'User avatar' }, expectedAriaLabel: 'User avatar' },
+      { props: { type: 'user', fullName: 'Jane Doe' }, expectedAriaLabel: 'Jane Doe' },
       {
-        props: { type: 'user', initials: 'TF', fullName: 'Timothee Fontaka' },
-        expectedAriaLabel: 'TF Timothee Fontaka',
+        props: { type: 'user', fullName: 'Jane Doe', ariaLabel: 'User avatar' },
+        expectedAriaLabel: 'User avatar Jane Doe',
       },
-      { props: { type: 'gen-ai', altText: 'Gen AI avatar' }, expectedAriaLabel: 'Gen AI avatar' },
-
+      { props: { type: 'gen-ai', ariaLabel: 'Gen AI avatar' }, expectedAriaLabel: 'Gen AI avatar' },
       {
-        props: { type: 'gen-ai', altText: 'Gen AI avatar', fullName: 'Gen AI assistant' },
+        props: { type: 'gen-ai', ariaLabel: 'Gen AI avatar', fullName: 'Gen AI assistant' },
         expectedAriaLabel: 'Gen AI avatar Gen AI assistant',
       },
       {
-        props: { type: 'gen-ai', altText: 'Gen AI avatar', loadingText: 'Generating response' },
+        props: { type: 'gen-ai', ariaLabel: 'Gen AI avatar', loadingText: 'Generating response' },
         expectedAriaLabel: 'Gen AI avatar',
       },
       {
         props: {
           type: 'gen-ai',
-          altText: 'Gen AI avatar',
+          ariaLabel: 'Gen AI avatar',
           fullName: 'Gen AI assistant',
           loadingText: 'Generating response',
         },
@@ -85,10 +139,10 @@ describe('Avatar component', () => {
       {
         props: {
           type: 'gen-ai',
-          altText: 'Gen AI avatar',
+          ariaLabel: 'Gen AI avatar',
           fullName: 'Gen AI assistant',
-          loading: true,
           loadingText: 'Generating response',
+          loading: true,
         },
         expectedAriaLabel: 'Gen AI avatar Generating response',
       },
