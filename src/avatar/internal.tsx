@@ -3,7 +3,7 @@
 import React, { useState, useRef } from 'react';
 import clsx from 'clsx';
 // import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
+// import { useUniqueId } from '../internal/hooks/use-unique-id';
 
 import { getBaseProps } from '../internal/base-component/index.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -59,7 +59,7 @@ export default function InternalAvatar({
   const handleRef = useRef<HTMLDivElement>(null);
   const [showTooltip, _setShowTooltip] = useState(false);
 
-  const descriptionId = useUniqueId('avatar__description');
+  // const descriptionId = useUniqueId('avatar__description');
 
   const showLoadingText = type === 'gen-ai' && loading && loadingText;
   // When loading, loadingText takes precedence over fullName
@@ -120,7 +120,7 @@ export default function InternalAvatar({
         })}
         role="img"
         aria-label={avatarAriaLabel}
-        aria-describedby={descriptionId}
+        // aria-describedby={descriptionId}
         // TODO: To be discussed with a11y
         // aria-roledescription="avatar" -> a11y sync (is it needed?)
         // tooltip content aria label vs aria describedby -> a11y sync
