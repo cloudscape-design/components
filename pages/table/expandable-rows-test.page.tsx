@@ -159,11 +159,7 @@ export default () => {
                 Load more items
               </Button>
             )}
-            renderLoaderLoading={() => (
-              <div aria-live="polite">
-                <StatusIndicator type="loading">Loading items</StatusIndicator>
-              </div>
-            )}
+            renderLoaderLoading={() => <StatusIndicator type="loading">Loading items</StatusIndicator>}
             renderLoaderError={({ item }) => (
               <Box color="text-status-error">
                 <Popover
@@ -181,9 +177,7 @@ export default () => {
                   }
                   renderWithPortal={true}
                 >
-                  <div aria-live="polite">
-                    <StatusIndicator type="error">Failed to load instances</StatusIndicator>
-                  </div>
+                  <StatusIndicator type="error">Failed to load instances</StatusIndicator>
                 </Popover>
               </Box>
             )}
