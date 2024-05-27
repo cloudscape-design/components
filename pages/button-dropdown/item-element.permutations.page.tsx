@@ -175,7 +175,7 @@ export default function () {
         <PermutationsView
           permutations={permutations}
           render={permutation => (
-            <Box margin={{ bottom: 'l' }} className={styles['dropdown-permutation']}>
+            <Box margin={{ bottom: 'xxl' }} className={styles['dropdown-permutation']}>
               <div role="menu">{<ItemElement {...permutation} />}</div>
             </Box>
           )}
