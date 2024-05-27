@@ -17,18 +17,6 @@ export function findUpUntil(node: HTMLElement, callback: (element: HTMLElement) 
 }
 
 /**
- * Returns whether the browser supports CSS position sticky.
- * In our list of supported browsers, only returns false for IE11.
- */
-export function supportsStickyPosition() {
-  if (typeof window === 'undefined') {
-    // render no-sticky UI on server-side
-    return false;
-  }
-  return window.CSS?.supports?.('position', 'sticky') ?? false;
-}
-
-/**
  * Returns an element that is used to position the given element.
  * @see https://developer.mozilla.org/en-US/docs/Web/CSS/Containing_block
  */
