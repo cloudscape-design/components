@@ -9,7 +9,7 @@ import { useStableCallback } from '@cloudscape-design/component-toolkit/internal
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { getHeaderWidth, getResizerElements } from './resizer-lookup';
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context.js';
-import { getIsRtl, getLogicalBoundingClientRect, getLogicalPageX } from '../../internal/direction.js';
+import { getIsRtl, getLogicalBoundingClientRect, getLogicalPageX } from '@cloudscape-design/component-toolkit/internal';
 import handleKey, { isEventLike } from '../../internal/utils/handle-key';
 
 interface ResizerProps {
