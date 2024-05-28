@@ -18,7 +18,7 @@ describe('KeyValuePairs', () => {
           {
             items: [
               {
-                key: 'Label for key',
+                label: 'Label for key',
                 value: 'Value',
               },
             ],
@@ -35,7 +35,7 @@ describe('KeyValuePairs', () => {
           {
             items: [
               {
-                key: 'Label for key',
+                label: 'Label for key',
                 value: 'Value',
               },
             ],
@@ -43,7 +43,7 @@ describe('KeyValuePairs', () => {
           {
             items: [
               {
-                key: 'Label for key',
+                label: 'Label for key',
                 value: 'Value',
               },
             ],
@@ -62,7 +62,7 @@ describe('KeyValuePairs', () => {
           title: 'Title',
           items: [
             {
-              key: 'Label for key',
+              label: 'Label for key',
               value: 'Value',
             },
           ],
@@ -79,7 +79,11 @@ describe('KeyValuePairs', () => {
         {
           items: [
             {
-              key: 'Label for key',
+              label: 'Label for key',
+              value: 'Value',
+            },
+            {
+              label: 'Label for key',
               value: 'Value',
             },
           ],
@@ -98,7 +102,7 @@ describe('KeyValuePairs', () => {
         {
           items: [
             {
-              key: 'Label for key',
+              label: 'Label for key',
               value: 'Value',
               info: 'info',
             },

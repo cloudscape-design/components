@@ -16,11 +16,11 @@ export default function () {
               title: 'Title',
               items: [
                 {
-                  key: 'Label for key',
+                  label: 'Label for key',
                   value: 'Value',
                 },
                 {
-                  key: 'Label for key',
+                  label: 'Label for key',
                   value: 'Value',
                 },
               ],
