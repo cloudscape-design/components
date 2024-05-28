@@ -39,13 +39,24 @@ export default function AvatarsPage() {
       <br />
 
       <FormField label="Different combinations with tooltip">
-        <Avatar type="user" ariaLabel="User avatar" fullName="Timothee Fontaka" />
+        <Avatar type="user" ariaLabel="User avatar" fullName="Timothee Fontaka" data-testid="user-avatar-with-name" />
         <Avatar type="user" ariaLabel="User avatar" fullName="Timothee Fontaka" initials="TF" />
-        <Avatar type="gen-ai" ariaLabel="Gen AI avatar" fullName="Gen AI assistant" />
+        <Avatar
+          type="gen-ai"
+          ariaLabel="Gen AI avatar"
+          fullName="Gen AI assistant"
+          data-testid="gen-ai-avatar-with-name"
+        />
         <Avatar type="gen-ai" ariaLabel="Gen AI avatar" iconName="star-filled" fullName="Existing icon" />
         <Avatar type="gen-ai" ariaLabel="Gen AI avatar" iconSvg={customIconSvg} fullName="Custom icon SVG" />
         <Avatar type="gen-ai" ariaLabel="Gen AI avatar" iconUrl={img} fullName="Custom icon URL" />
-        <Avatar type="gen-ai" ariaLabel="Gen AI avatar" loading={true} loadingText="Generating response" />
+        <Avatar
+          type="gen-ai"
+          ariaLabel="Gen AI avatar"
+          loading={true}
+          loadingText="Generating response"
+          data-testid="gen-ai-avatar-with-loadingText"
+        />
       </FormField>
     </div>
   );
