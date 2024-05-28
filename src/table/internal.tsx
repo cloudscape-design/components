@@ -9,7 +9,6 @@ import { getBaseProps } from '../internal/base-component';
 import ToolsHeader from './tools-header';
 import Thead, { TheadProps } from './thead';
 import { TableBodyCell } from './body-cell';
-import { supportsStickyPosition } from '../internal/utils/dom';
 import { checkSortingState, getColumnKey, getItemKey, getVisibleColumnDefinitions, toContainerVariant } from './utils';
 import { useRowEvents } from './use-row-events';
 import { SelectionControl, focusMarkers, useSelectionFocusMove, useSelection } from './selection';
@@ -48,7 +47,6 @@ import { CollectionLabelContext } from '../internal/context/collection-label-con
 import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 import { NoDataCell } from './no-data-cell';
 import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
-import { getContentHeaderClassName } from '../internal/utils/content-header-utils';
 import { useExpandableTableProps } from './expandable-rows/expandable-rows-utils';
 import { ItemsLoader } from './progressive-loading/items-loader';
 import { useProgressiveLoadingProps } from './progressive-loading/progressive-loading-utils';
@@ -146,7 +144,6 @@ const InternalTable = React.forwardRef(
       );
     }
 
-    stickyHeader = stickyHeader && supportsStickyPosition();
     const isMobile = useMobile();
 
     const { isExpandable, allItems, getExpandableItemProps } = useExpandableTableProps({
@@ -355,10 +352,7 @@ const InternalTable = React.forwardRef(
             header={
               <>
                 {hasHeader && (
-                  <div
-                    ref={overlapElement}
-                    className={clsx(hasDynamicHeight && [styles['dark-header'], getContentHeaderClassName()])}
-                  >
+                  <div ref={overlapElement}>
                     <div
                       ref={toolsHeaderWrapper}
                       className={clsx(styles['header-controls'], styles[`variant-${computedVariant}`])}
@@ -581,9 +575,7 @@ const InternalTable = React.forwardRef(
                         }
                         return (
                           <tr
-                            // The key includes both unique item identifier and row index to avoid React caching.
-                            // That is to avoid collisions when the next loader is rendered.
-                            key={(row.item ? getTableItemKey(row.item) : 'root') + rowIndex}
+                            key={(row.item ? getTableItemKey(row.item) : 'root-' + rowIndex) + '-' + row.from}
                             className={styles.row}
                             {...rowRoleProps}
                           >

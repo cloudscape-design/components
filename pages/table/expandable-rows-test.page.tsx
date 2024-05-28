@@ -33,7 +33,7 @@ import { Instance, ariaLabels, getHeaderCounterText } from './expandable-rows/co
 import { isEqual } from 'lodash';
 
 // TODO: replace with Table once progressive loading API becomes public
-import InternalTable from '~components/table/internal';
+import Table from '~components/table/internal';
 
 type LoadingState = Map<string, { pages: number; status: TableProps.LoadingStatus }>;
 
@@ -58,37 +58,12 @@ export default () => {
   const [toolsOpen, setToolsOpen] = useState(true);
   const [preferences, setPreferences] = useState<CollectionPreferencesProps.Preferences>({
     wrapLines: true,
-    stickyColumns: { first: 0, last: 1 },
+    stickyColumns: { first: 0, last: 0 },
   });
 
   const tableData = useTableData();
 
-  const columnDefinitions = createColumns({
-    getInstanceProps: instance => {
-      const children = tableData.collectionProps.expandableRows?.getItemChildren(instance).length ?? 0;
-      const instanceActions = [
-        {
-          id: 'drill-down',
-          text: `Show ${instance.name} cluster only`,
-          hidden: !children,
-          onClick: () => tableData.actions.drillDown(instance.name),
-        },
-        {
-          id: 'expand-all',
-          text: `Expand cluster`,
-          hidden: !children,
-          onClick: () => tableData.actions.expandDeep(instance.name),
-        },
-        {
-          id: 'collapse-all',
-          text: `Collapse cluster`,
-          hidden: !children,
-          onClick: () => tableData.actions.collapseDeep(instance.name),
-        },
-      ];
-      return { children, actions: instanceActions };
-    },
-  });
+  const columnDefinitions = createColumns();
 
   return (
     <I18nProvider messages={[messages]} locale="en">
@@ -99,7 +74,7 @@ export default () => {
         toolsOpen={toolsOpen}
         onToolsChange={({ detail: { open } }) => setToolsOpen(open)}
         content={
-          <InternalTable
+          <Table
             {...tableData.collectionProps}
             stickyColumns={preferences.stickyColumns}
             resizableColumns={settings.resizableColumns}
@@ -127,64 +102,44 @@ export default () => {
               )
             }
             header={
-              <SpaceBetween size="m">
-                <Header
-                  variant="h1"
-                  description="Table with expandable rows test page"
-                  counter={getHeaderCounterText(allInstances, tableData.collectionProps.selectedItems)}
-                  actions={
-                    <SpaceBetween size="s" direction="horizontal" alignItems="center">
-                      <Toggle
-                        checked={settings.groupResources}
-                        onChange={event => settings.setUrlParams({ groupResources: event.detail.checked })}
-                      >
-                        Group resources
-                      </Toggle>
+              <Header
+                variant="h1"
+                description="Table with expandable rows test page"
+                counter={getHeaderCounterText(allInstances, tableData.collectionProps.selectedItems)}
+                actions={
+                  <SpaceBetween size="s" direction="horizontal" alignItems="center">
+                    <Toggle
+                      checked={settings.groupResources}
+                      onChange={event => settings.setUrlParams({ groupResources: event.detail.checked })}
+                    >
+                      Group resources
+                    </Toggle>
 
-                      <ButtonDropdown
-                        variant="normal"
-                        items={[
-                          { id: 'expand-all', text: 'Expand all', disabled: !settings.groupResources },
-                          { id: 'collapse-all', text: 'Collapse all', disabled: !settings.groupResources },
-                          {
-                            id: 'terminate-selected',
-                            text: 'Terminate selected instances',
-                            disabled: tableData.collectionProps.selectedItems?.length === 0,
-                          },
-                        ]}
-                        onItemClick={event => {
-                          switch (event.detail.id) {
-                            case 'expand-all':
-                              return tableData.actions.expandAll();
-                            case 'collapse-all':
-                              return tableData.actions.collapseAll();
-                            case 'terminate-selected':
-                              return tableData.actions.clearSelection();
-                            default:
-                              throw new Error('Invariant violation: unsupported action.');
-                          }
-                        }}
-                      >
-                        Actions
-                      </ButtonDropdown>
-                    </SpaceBetween>
-                  }
-                >
-                  Databases
-                </Header>
-                {tableData.selectedCluster && (
-                  <Alert
-                    type="info"
-                    action={<Button onClick={() => tableData.actions.resetClusterFilter()}>Show all databases</Button>}
-                  >
-                    Showing databases that belong to{' '}
-                    <Box variant="span" fontWeight="bold">
-                      {tableData.selectedCluster}
-                    </Box>{' '}
-                    cluster.
-                  </Alert>
-                )}
-              </SpaceBetween>
+                    <ButtonDropdown
+                      variant="normal"
+                      items={[
+                        {
+                          id: 'terminate-selected',
+                          text: 'Terminate selected instances',
+                          disabled: tableData.collectionProps.selectedItems?.length === 0,
+                        },
+                      ]}
+                      onItemClick={event => {
+                        switch (event.detail.id) {
+                          case 'terminate-selected':
+                            return tableData.actions.clearSelection();
+                          default:
+                            throw new Error('Invariant violation: unsupported action.');
+                        }
+                      }}
+                    >
+                      Actions
+                    </ButtonDropdown>
+                  </SpaceBetween>
+                }
+              >
+                Databases
+              </Header>
             }
             filter={
               <PropertyFilter
@@ -199,15 +154,12 @@ export default () => {
                 variant="inline-link"
                 iconName="add-plus"
                 onClick={() => tableData.actions.loadItems(item?.name ?? 'ROOT')}
+                ariaLabel={item ? `Load more items for ${item.name}` : 'Load more items'}
               >
-                {item ? `Load more items for ${item.name}` : 'Load more items'}
+                Load more items
               </Button>
             )}
-            renderLoaderLoading={({ item }) => (
-              <StatusIndicator type="loading">
-                {item ? `Loading more items for ${item.name}` : 'Loading more items'}
-              </StatusIndicator>
-            )}
+            renderLoaderLoading={() => <StatusIndicator type="loading">Loading items</StatusIndicator>}
             renderLoaderError={({ item }) => (
               <Box color="text-status-error">
                 <Popover
@@ -259,11 +211,7 @@ function useTableData() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [delay, setLoading, setError, setReadyInstances]);
 
-  const [selectedCluster, setSelectedCluster] = useState<null | string>(null);
-  const getScopedInstances = (selected: null | string) =>
-    selected === null ? readyInstances : readyInstances.filter(i => i.path.includes(selected));
-
-  const collectionResult = useCollection(getScopedInstances(selectedCluster), {
+  const collectionResult = useCollection(readyInstances, {
     pagination: settings.usePagination ? { pageSize: ROOT_PAGE_SIZE } : undefined,
     sorting: {},
     filtering: {},
@@ -285,7 +233,7 @@ function useTableData() {
     expandableRows: settings.groupResources
       ? {
           getId: item => item.name,
-          getParentId: item => (item.name === selectedCluster ? null : item.parentName),
+          getParentId: item => item.parentName,
         }
       : undefined,
   });
@@ -383,30 +331,7 @@ function useTableData() {
     error: settings.useServerMock ? error : false,
     loading: settings.useServerMock ? loading : false,
     items: settings.useServerMock && error ? [] : paginatedItems,
-    selectedCluster,
     actions: {
-      resetClusterFilter: () => setSelectedCluster(null),
-      drillDown: (instanceName: string) => {
-        const scopedInstances = getScopedInstances(instanceName);
-        collectionResult.actions.setExpandedItems(scopedInstances);
-        setSelectedCluster(instanceName);
-      },
-      expandDeep: (instanceName: string) => {
-        const expandedInstances = collectionResult.collectionProps.expandableRows?.expandedItems ?? [];
-        const scopedInstances = getScopedInstances(instanceName);
-        collectionResult.actions.setExpandedItems([...expandedInstances, ...scopedInstances]);
-      },
-      collapseDeep: (instanceName: string) => {
-        const expandedInstances = collectionResult.collectionProps.expandableRows?.expandedItems ?? [];
-        const scopedInstances = getScopedInstances(instanceName);
-        collectionResult.actions.setExpandedItems(expandedInstances.filter(i => !scopedInstances.includes(i)));
-      },
-      expandAll: () => {
-        collectionResult.actions.setExpandedItems(allInstances);
-      },
-      collapseAll: () => {
-        collectionResult.actions.setExpandedItems([]);
-      },
       clearSelection: () => {
         collectionResult.actions.setSelectedItems([]);
       },
