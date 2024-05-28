@@ -176,9 +176,12 @@ Object {
     "awsui_root_14iqq",
   ],
   "content-layout": Array [
+    "awsui_breadcrumbs_64tge",
     "awsui_content_5gtk3",
-    "awsui_header_5gtk3",
+    "awsui_header_64tge",
     "awsui_layout_5gtk3",
+    "awsui_notifications_64tge",
+    "awsui_secondary-header_64tge",
   ],
   "copy-to-clipboard": Array [
     "awsui_root_ljpwc",

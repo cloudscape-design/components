@@ -25,13 +25,11 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import LiveRegion from '../internal/components/live-region';
 import useMouseDownTarget from '../internal/hooks/use-mouse-down-target';
 import { useMobile } from '../internal/hooks/use-mobile';
-import { supportsStickyPosition } from '../internal/utils/dom';
 import { useInternalI18n } from '../i18n/context';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
-import { shouldRemoveHighContrastHeader } from '../internal/utils/content-header-utils';
 
 export { CardsProps };
 
@@ -106,7 +104,7 @@ const Cards = React.forwardRef(function <T = any>(
   const headerRef = useRef<HTMLDivElement>(null);
 
   const { scrollToTop, scrollToItem } = stickyScrolling(refObject, headerRef);
-  stickyHeader = supportsStickyPosition() && !isMobile && stickyHeader;
+  stickyHeader = !isMobile && stickyHeader;
   const onCardFocus: FocusEventHandler<HTMLElement> = event => {
     // When an element inside card receives focus we want to adjust the scroll.
     // However, that behavior is unwanted when the focus is received as result of a click
@@ -150,8 +148,7 @@ const Cards = React.forwardRef(function <T = any>(
                   className={clsx(
                     styles.header,
                     isRefresh && styles['header-refresh'],
-                    styles[`header-variant-${computedVariant}`],
-                    shouldRemoveHighContrastHeader() && styles['remove-high-contrast-header']
+                    styles[`header-variant-${computedVariant}`]
                   )}
                 >
                   <CollectionLabelContext.Provider value={{ assignId: setHeaderRef }}>
@@ -167,15 +164,14 @@ const Cards = React.forwardRef(function <T = any>(
             __stickyHeader={stickyHeader}
             __stickyOffset={stickyHeaderVerticalOffset}
             __headerRef={headerRef}
-            __darkHeader={computedVariant === 'full-page'}
+            __fullPage={computedVariant === 'full-page'}
             __disableFooterDivider={true}
           >
             <div
               className={clsx(
                 hasToolsHeader && styles['has-header'],
                 isRefresh && styles.refresh,
-                styles[`header-variant-${computedVariant}`],
-                shouldRemoveHighContrastHeader() && styles['remove-high-contrast-header']
+                styles[`header-variant-${computedVariant}`]
               )}
             >
               {!!renderAriaLive && !!firstIndex && (

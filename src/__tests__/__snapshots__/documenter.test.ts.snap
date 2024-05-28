@@ -723,6 +723,23 @@ Each Drawer is an item in the drawers wrapper with the following properties:
       "type": "string",
     },
     Object {
+      "description": "Determines the visual treatment for the breadcrumbs and notifications slots. Specifically:
+* \`default\` - Does not apply any visual treatment.
+* \`high-contrast\` - Applies high-contrast to both slots. Use in conjunction with \`headerVariant=\\"high-contrast\\"\` in ContentLayout.",
+      "inlineType": Object {
+        "name": "",
+        "type": "union",
+        "values": Array [
+          "default",
+          "high-contrast",
+        ],
+      },
+      "name": "headerVariant",
+      "optional": true,
+      "type": "string",
+      "visualRefreshTag": "",
+    },
+    Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
@@ -5493,6 +5510,13 @@ Object {
       "type": "string",
     },
     Object {
+      "description": "Set it to \`true\` if your page uses the [app layout component](/components/app-layout/) with \`disableContentPaddings=true\`.
+In that case, the content layout will become sensitive to the state of drawers in app layout and leave the necessary padding to avoid visual overlap with those elements.",
+      "name": "defaultPadding",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "description": "Determines whether the layout has an overlap between the header and content.
 If true, the overlap will be removed.",
       "name": "disableOverlap",
@@ -5501,14 +5525,64 @@ If true, the overlap will be removed.",
       "visualRefreshTag": "",
     },
     Object {
+      "description": "Use this property to style the background of the header.
+It can be:
+* a string representing the CSS \`background\` value for the header element.
+* a function that receives the mode (\\"light\\" or \\"dark\\") as a parameter and returns a string.
+
+ The header background spans across the full available width, independent of the specified \`maxContentWidth\`.
+ If set, the component will not add the default background color to the header.
+",
+      "name": "headerBackgroundStyle",
+      "optional": true,
+      "type": "((mode: \\"dark\\" | \\"light\\") => string) | string",
+    },
+    Object {
+      "description": "Determines the visual treatment for the header. Specifically:
+* \`default\` - Does not apply any visual treatment.
+* \`high-contrast\` - Applies high-contrast to the background of the header and the elements contained within it.
+    If you are using the AppLayout component, set \`headerVariant=\\"high-contrast\\"\` to apply the same treatment to the breadcrumbs and notifications slots.
+* \`divider\` - Adds a horizontal separator between the header and the content.",
+      "inlineType": Object {
+        "name": "",
+        "type": "union",
+        "values": Array [
+          "default",
+          "high-contrast",
+          "divider",
+        ],
+      },
+      "name": "headerVariant",
+      "optional": true,
+      "type": "string",
+      "visualRefreshTag": "\`high-contrast\` headerVariant",
+    },
+    Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
       "type": "string",
     },
+    Object {
+      "description": "Maximum width for the content.
+If set, all elements of the content layout (header, content, notifications, breadcrumbs) will be center-aligned and have the desired maximum width.
+If not set, all elements will occupy the full available width.",
+      "name": "maxContentWidth",
+      "optional": true,
+      "type": "number",
+    },
   ],
   "regions": Array [
+    Object {
+      "description": "Use this slot to add the [breadcrumb group component](/components/breadcrumb-group/) to the content layout:
+* if your application does not use the [app layout component](/components/app-layout/), which already offers a \`breadcrumbs\` slot.
+* If your page uses the [app layout component](/components/app-layout/) with \`disableContentPaddings=true\`.
+Do not use in conjunction with the \`breadcrumbs\` slot in the [app layout component](/components/app-layout/).
+",
+      "isDefault": false,
+      "name": "breadcrumbs",
+    },
     Object {
       "description": "Use this slot to render the main content of the layout below the header.",
       "displayName": "content",
@@ -5519,6 +5593,21 @@ If true, the overlap will be removed.",
       "description": "Use this slot to render the header content for the layout.",
       "isDefault": false,
       "name": "header",
+    },
+    Object {
+      "description": "Use this slot to display [notifications](/components/flashbar/) to the content layout:
+* If your page does not use the [app layout component](/components/app-layout/), which already offers a \`notifications\` slot.
+* If your page uses the [app layout component](/components/app-layout/) with \`disableContentPaddings=true\`.
+Do not use in conjunction with the \`notifications\` slot in the [app layout component](/components/app-layout/).
+",
+      "isDefault": false,
+      "name": "notifications",
+    },
+    Object {
+      "description": "Use this slot to add a secondary element inside the header. The secondary element will be displayed next to main header and occupy 25% of the available space.
+Note that the secondary header will not have a high-contrast treatement, even if you set \`headerVariant\` to \`high-contrast\`.",
+      "isDefault": false,
+      "name": "secondaryHeader",
     },
   ],
   "releaseStatus": "stable",
@@ -10784,6 +10873,12 @@ Use the \`buttonText\` property and the \`onButtonClick\` event listener of the 
   "functions": Array [],
   "name": "ProgressBar",
   "properties": Array [
+    Object {
+      "description": "Adds \`aria-describedby\` to the progress bar.",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
     Object {
       "description": "Adds an \`aria-label\` to the progress bar.",
       "name": "ariaLabel",
