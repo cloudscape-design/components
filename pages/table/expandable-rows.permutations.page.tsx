@@ -11,7 +11,7 @@ import PermutationsView from '../utils/permutations-view';
 import { ariaLabels } from './expandable-rows/common';
 
 // TODO: replace with Table once progressive loading API becomes public
-import InternalTable from '~components/table/internal';
+import Table from '~components/table/internal';
 
 interface Instance {
   name: string;
@@ -188,7 +188,7 @@ export default () => {
         <PermutationsView
           permutations={permutations}
           render={permutation => (
-            <InternalTable
+            <Table
               variant="container"
               items={permutation.items}
               header={
