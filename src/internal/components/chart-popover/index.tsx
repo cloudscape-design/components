@@ -14,14 +14,13 @@ import { useMergeRefs } from '../../hooks/use-merge-refs';
 
 import styles from './styles.css.js';
 import { nodeBelongs } from '../../utils/node-belongs';
-import { Transition } from '../transition';
 
 export interface ChartPopoverProps extends PopoverProps {
   /** Title of the popover */
   title?: React.ReactNode;
 
   /** References the element the container is positioned against. */
-  trackRef: React.RefObject<HTMLElement | SVGElement> | undefined;
+  trackRef: React.RefObject<HTMLElement | SVGElement>;
   /**
     Used to update the container position in case track or track position changes:
     
@@ -32,9 +31,6 @@ export interface ChartPopoverProps extends PopoverProps {
     </>)
   */
   trackKey?: string | number;
-
-  /** whether the popover is open */
-  isOpen: boolean;
 
   /** Optional container element that prevents any clicks in there from dismissing the popover */
   container: Element | null;
@@ -58,7 +54,6 @@ export default React.forwardRef(ChartPopover);
 
 function ChartPopover(
   {
-    isOpen,
     position = 'right',
     size = 'medium',
     fixedWidth = false,
@@ -107,54 +102,46 @@ function ChartPopover(
   const isPinned = dismissButton;
 
   return (
-    <Transition in={isOpen}>
-      {(state, ref) => (
-        <div ref={ref} className={clsx(state === 'exiting' && styles.exiting)}>
-          {isOpen && trackRef && (
-            <div
-              {...baseProps}
-              className={clsx(popoverStyles.root, styles.root, baseProps.className)}
-              ref={popoverRef}
-              onMouseEnter={onMouseEnter}
-              onMouseLeave={onMouseLeave}
-              onBlur={onBlur}
-              // The tabIndex makes it so that clicking inside popover assigns this element as blur target.
-              // That is necessary in charts to ensure the blur target is within the chart and no cleanup is needed.
-              tabIndex={-1}
-            >
-              <PopoverContainer
-                size={size}
-                fixedWidth={fixedWidth}
-                position={position}
-                trackRef={trackRef}
-                trackKey={trackKey}
-                arrow={position => (
-                  <div className={clsx(popoverStyles.arrow, popoverStyles[`arrow-position-${position}`])}>
-                    <div className={popoverStyles['arrow-outer']} />
-                    <div className={popoverStyles['arrow-inner']} />
-                  </div>
-                )}
-                keepPosition={true}
-                allowVerticalOverflow={true}
-                allowScrollToFit={isPinned}
-              >
-                <div className={styles['hover-area']}>
-                  <PopoverBody
-                    dismissButton={dismissButton}
-                    dismissAriaLabel={dismissAriaLabel}
-                    header={title}
-                    onDismiss={onDismiss}
-                    overflowVisible="content"
-                    className={styles['popover-body']}
-                  >
-                    {children}
-                  </PopoverBody>
-                </div>
-              </PopoverContainer>
-            </div>
-          )}
+    <div
+      {...baseProps}
+      className={clsx(popoverStyles.root, styles.root, baseProps.className)}
+      ref={popoverRef}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      onBlur={onBlur}
+      // The tabIndex makes it so that clicking inside popover assigns this element as blur target.
+      // That is necessary in charts to ensure the blur target is within the chart and no cleanup is needed.
+      tabIndex={-1}
+    >
+      <PopoverContainer
+        size={size}
+        fixedWidth={fixedWidth}
+        position={position}
+        trackRef={trackRef}
+        trackKey={trackKey}
+        arrow={position => (
+          <div className={clsx(popoverStyles.arrow, popoverStyles[`arrow-position-${position}`])}>
+            <div className={popoverStyles['arrow-outer']} />
+            <div className={popoverStyles['arrow-inner']} />
+          </div>
+        )}
+        keepPosition={true}
+        allowVerticalOverflow={true}
+        allowScrollToFit={isPinned}
+      >
+        <div className={styles['hover-area']}>
+          <PopoverBody
+            dismissButton={dismissButton}
+            dismissAriaLabel={dismissAriaLabel}
+            header={title}
+            onDismiss={onDismiss}
+            overflowVisible="content"
+            className={styles['popover-body']}
+          >
+            {children}
+          </PopoverBody>
         </div>
-      )}
-    </Transition>
+      </PopoverContainer>
+    </div>
   );
 }

@@ -364,30 +364,31 @@ export default <T extends PieChartProps.Datum>({
           )}
         </div>
       )}
-      <ChartPopover
-        ref={popoverRef}
-        isOpen={isPopoverOpen && !!popoverData}
-        title={
-          popoverData?.series && (
-            <InternalBox className={styles['popover-header']} variant="strong">
-              <SeriesMarker color={popoverData.series.color} type={popoverData.series.markerType} />{' '}
-              {popoverData.series.label}
-            </InternalBox>
-          )
-        }
-        trackRef={popoverData?.trackRef}
-        trackKey={popoverData?.series.index}
-        dismissButton={pinnedSegment !== null}
-        dismissAriaLabel={i18nStrings.detailPopoverDismissAriaLabel}
-        onDismiss={onPopoverDismiss}
-        container={plotRef.current?.svg || null}
-        size={detailPopoverSize}
-        onMouseLeave={checkMouseLeave}
-        onBlur={onApplicationBlur}
-      >
-        {popoverContent}
-        {detailPopoverFooterContent && <ChartPopoverFooter>{detailPopoverFooterContent}</ChartPopoverFooter>}
-      </ChartPopover>
+      {isPopoverOpen && popoverData && (
+        <ChartPopover
+          ref={popoverRef}
+          title={
+            popoverData.series && (
+              <InternalBox className={styles['popover-header']} variant="strong">
+                <SeriesMarker color={popoverData.series.color} type={popoverData.series.markerType} />{' '}
+                {popoverData.series.label}
+              </InternalBox>
+            )
+          }
+          trackRef={popoverData.trackRef}
+          trackKey={popoverData.series.index}
+          dismissButton={pinnedSegment !== null}
+          dismissAriaLabel={i18nStrings.detailPopoverDismissAriaLabel}
+          onDismiss={onPopoverDismiss}
+          container={plotRef.current?.svg || null}
+          size={detailPopoverSize}
+          onMouseLeave={checkMouseLeave}
+          onBlur={onApplicationBlur}
+        >
+          {popoverContent}
+          {detailPopoverFooterContent && <ChartPopoverFooter>{detailPopoverFooterContent}</ChartPopoverFooter>}
+        </ChartPopover>
+      )}
       <LiveRegion source={[popoverContentRef]} />
     </div>
   );
