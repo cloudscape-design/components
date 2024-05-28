@@ -25,7 +25,11 @@
   margin-block-end: 0;
 }
 
-.key {
+.item {
+  /* used in test-utils */
+}
+
+.label {
   @include styles.font-label;
   color: awsui.$color-text-label;
   margin-block-end: awsui.$space-key-value-gap;
