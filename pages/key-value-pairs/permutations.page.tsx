@@ -23,7 +23,7 @@ export default function KeyValueScenario() {
                 {
                   items: [
                     {
-                      key: 'Distribution ID',
+                      label: 'Distribution ID',
                       value: 'E1WG1ZNPRXT0D4',
                     },
                   ],
@@ -38,11 +38,11 @@ export default function KeyValueScenario() {
                 {
                   items: [
                     {
-                      key: 'Distribution ID',
+                      label: 'Distribution ID',
                       value: 'E1WG1ZNPRXT0D4',
                     },
                     {
-                      key: 'ARN',
+                      label: 'ARN',
                       value: (
                         <CopyToClipboard
                           copyButtonAriaLabel="Copy ARN"
@@ -58,11 +58,11 @@ export default function KeyValueScenario() {
                 {
                   items: [
                     {
-                      key: 'Status',
+                      label: 'Status',
                       value: <StatusIndicator>Available</StatusIndicator>,
                     },
                     {
-                      key: 'SSL Certificate',
+                      label: 'SSL Certificate',
                       value: (
                         <ProgressBar
                           value={30}
@@ -76,11 +76,11 @@ export default function KeyValueScenario() {
                 {
                   items: [
                     {
-                      key: 'Price class',
+                      label: 'Price class',
                       value: 'Use only US, Canada, Europe,',
                     },
                     {
-                      key: 'CNAMEs',
+                      label: 'CNAMEs',
                       value: (
                         <Link external={true} href="#">
                           abc.service23G24.xyz
@@ -99,7 +99,7 @@ export default function KeyValueScenario() {
                 {
                   items: [
                     {
-                      key: 'Distribution ID',
+                      label: 'Distribution ID',
                       value: 'E1WG1ZNPRXT0D4',
                       info: (
                         <Link variant="info" href="#">
@@ -121,11 +121,11 @@ export default function KeyValueScenario() {
                     title: 'Column Title',
                     items: [
                       {
-                        key: 'Label for key',
+                        label: 'Label for key',
                         value: 'Value',
                       },
                       {
-                        key: 'Label for key',
+                        label: 'Label for key',
                         value: <StatusIndicator>Value for positive status</StatusIndicator>,
                       },
                     ],
@@ -134,11 +134,11 @@ export default function KeyValueScenario() {
                     title: 'Column Title',
                     items: [
                       {
-                        key: 'Label for key',
+                        label: 'Label for key',
                         value: 'Value',
                       },
                       {
-                        key: 'Label for key',
+                        label: 'Label for key',
                         value: (
                           <Link external={true} href="#">
                             Value with external link
@@ -155,11 +155,11 @@ export default function KeyValueScenario() {
                     title: 'Column Title',
                     items: [
                       {
-                        key: 'Label for key',
+                        label: 'Label for key',
                         value: 'Value',
                       },
                       {
-                        key: 'Label for key',
+                        label: 'Label for key',
                         value: <StatusIndicator>Value for positive status</StatusIndicator>,
                       },
                     ],
@@ -168,11 +168,11 @@ export default function KeyValueScenario() {
                     title: 'Column Title',
                     items: [
                       {
-                        key: 'Label for key',
+                        label: 'Label for key',
                         value: 'Value',
                       },
                       {
-                        key: 'Label for key',
+                        label: 'Label for key',
                         value: (
                           <Link external={true} href="#">
                             Value with external link

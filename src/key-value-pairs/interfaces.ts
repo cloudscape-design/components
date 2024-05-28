@@ -5,12 +5,12 @@ import React from 'react';
 
 export interface KeyValuePairsProps extends BaseComponentProps {
   /**
-   * An array of column definitions. A maximum of 4 columns are supported per row.
+   * An array of column definitions. A maximum of 4 columns are supported.
    * Each column definition has the following properties:
    * * `title` (string) - (Optional) An optional title for this column
    * * `items` (ReadonlyArray<KeyValuePairProps.KeyValuePair>) - An array of
    *     key-value pair items. Each item can have the following properties:
-   *   * `key` (string) - The key title.
+   *   * `label` (string) - The key title.
    *   * `info` (React.ReactNode) - (Optional) Area next to the key to display an info link.
    *   * `value` (React.ReactNode) - The corresponding value for the key.
    */
@@ -24,7 +24,7 @@ export namespace KeyValuePairsProps {
   }
 
   export interface KeyValuePairs {
-    key: string;
+    label: string;
     value: React.ReactNode;
     info?: React.ReactNode;
   }

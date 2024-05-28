@@ -21,6 +21,8 @@
   display: flex;
   flex-direction: column;
   row-gap: awsui.$space-scaled-m;
+  margin-block-start: 0;
+  margin-block-end: 0;
 }
 
 .key {
