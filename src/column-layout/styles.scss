@@ -37,17 +37,18 @@ $column-breakpoint-spans: (
     border-#{$direction}: $column-layout-border;
   }
 
-  &.grid-breakpoint-default {
+  @container awsui-grid (inline-size <= #{map.get(styles.$container-breakpoints, "xxs")}) {
     @include remove-useless-vertical-borders(12, $direction);
   }
 
   @each $i, $columns-setting in $column-breakpoint-spans {
-    &.grid-columns-#{$i}.grid-breakpoint-xxs {
-      @include remove-useless-vertical-borders(map.get($columns-setting, 'xxs'), $direction);
-    }
-
-    &.grid-columns-#{$i}.grid-breakpoint-xs {
-      @include remove-useless-vertical-borders(map.get($columns-setting, 'xs'), $direction);
+    &.grid-columns-#{$i} {
+      @container awsui-grid (inline-size > #{map.get(styles.$container-breakpoints, "xxs")}) and (inline-size <= #{map.get(styles.$container-breakpoints, "xs")}) {
+        @include remove-useless-vertical-borders(map.get($columns-setting, 'xxs'), $direction);
+      }
+      @container awsui-grid (inline-size > #{map.get(styles.$container-breakpoints, "xs")}) {
+        @include remove-useless-vertical-borders(map.get($columns-setting, 'xs'), $direction);
+      }
     }
   }
 }
@@ -72,12 +73,13 @@ $column-breakpoint-spans: (
   /* stylelint-enable selector-max-universal */
 
   @each $i, $columns-setting in $column-breakpoint-spans {
-    &.grid-columns-#{$i}.grid-breakpoint-xxs {
-      @include remove-useless-horizontal-borders(map.get($columns-setting, 'xxs'));
-    }
-
-    &.grid-columns-#{$i}.grid-breakpoint-xs {
-      @include remove-useless-horizontal-borders(map.get($columns-setting, 'xs'));
+    &.grid-columns-#{$i} {
+      @container awsui-grid (inline-size > #{map.get(styles.$container-breakpoints, "xxs")}) and (inline-size <= #{map.get(styles.$container-breakpoints, "xs")}) {
+        @include remove-useless-horizontal-borders(map.get($columns-setting, 'xxs'));
+      }
+      @container awsui-grid (inline-size > #{map.get(styles.$container-breakpoints, "xs")}) {
+        @include remove-useless-horizontal-borders(map.get($columns-setting, 'xs'));
+      }
     }
   }
 }
@@ -101,6 +103,10 @@ $column-breakpoint-spans: (
 div.column-layout {
   @include styles.styles-reset;
   word-wrap: break-word;
+
+  &.query-container {
+    container: awsui-grid / inline-size;
+  }
 
   > .grid {
     margin-block: calc(#{$grid-gutter-width} / -2);

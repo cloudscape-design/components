@@ -3,7 +3,18 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-// Breakpoints
+// Container breakpoints
+$container-breakpoints: (
+  'default': 0px,
+  'xxs': 465px,
+  'xs': 688px,
+  's': 912px,
+  'm': 1120px,
+  'l': 1320px,
+  'xl': 1840px,
+);
+
+// Media breakpoints
 $breakpoint-xxx-small: 0;
 $breakpoint-xx-small: 576px;
 $breakpoint-x-small: 688px;
@@ -20,7 +31,7 @@ $_largest_breakpoint: $breakpoint-x-large;
 // Makes the @content apply to the wider than given breakpoint.
 @mixin media-breakpoint-up($breakpoint) {
   @if $breakpoint != $_smallest_breakpoint {
-    @media (min-width: $breakpoint + 1px) {
+    @media (min-width: ($breakpoint + 1px)) {
       @content;
     }
   } @else {
