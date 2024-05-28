@@ -965,17 +965,16 @@ describe('Details popover', () => {
 
     // Should be visible but unpinned first
     expect(wrapper.findDetailPopover()).not.toBeNull();
-    expect(wrapper.findDetailPopover()?.findDismissButton()).toBeNull();
+    expect(wrapper.findDetailPopover()!.findDismissButton()).toBeNull();
 
     // Can be pinned
     wrapper.findChart()!.click();
 
-    expect(wrapper.findDetailPopover()?.findDismissButton()).not.toBeNull();
-    expect(wrapper.findByClassName(styles.exiting)).toBeNull();
+    expect(wrapper.findDetailPopover()!.findDismissButton()).not.toBeNull();
 
     // Can be unpinned
-    wrapper.findDetailPopover()?.findDismissButton()?.click();
-    expect(wrapper.findByClassName(styles.exiting)).not.toBeNull();
+    wrapper.findDetailPopover()!.findDismissButton()?.click();
+    expect(wrapper.findDetailPopover()).toBeNull();
   });
 
   test('delegates focus back to chart when unpinned in a non-grouped chart', async () => {
