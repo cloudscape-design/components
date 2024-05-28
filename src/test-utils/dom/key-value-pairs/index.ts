@@ -4,12 +4,8 @@ import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-
 import styles from '../../../key-value-pairs/styles.selectors.js';
 import BoxWrapper from '../box';
 
-export class KeyValuePairsColumnWrapper extends ComponentWrapper {
-  findTitle(): BoxWrapper | null {
-    return this.findComponent(`.${BoxWrapper.rootSelector}`, BoxWrapper);
-  }
-
-  findKey(): ElementWrapper | null {
+export class KeyValuePairsPairWrapper extends ComponentWrapper {
+  findLabel(): ElementWrapper | null {
     return this.findByClassName(styles['key-label']);
   }
 
@@ -19,6 +15,16 @@ export class KeyValuePairsColumnWrapper extends ComponentWrapper {
 
   findInfo(): ElementWrapper | null {
     return this.findByClassName(styles.info);
+  }
+}
+
+export class KeyValuePairsColumnWrapper extends ComponentWrapper {
+  findTitle(): BoxWrapper | null {
+    return this.findComponent(`.${BoxWrapper.rootSelector}`, BoxWrapper);
+  }
+
+  findPairs(): Array<KeyValuePairsPairWrapper> {
+    return this.findAllByClassName(styles.item).map(i => new KeyValuePairsPairWrapper(i.getElement()));
   }
 }
 
