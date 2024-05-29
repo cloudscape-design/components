@@ -91,6 +91,8 @@
 }
 
 .actions {
+  display: flex;
+  align-items: flex-start;
   min-block-size: awsui.$size-vertical-input;
 
   // we can align actions to center in most cases, cause if the header is too long, actions will wrap the first.
