@@ -18,33 +18,42 @@ interface SkeletonLayoutProps
     | 'maxContentWidth'
     | 'disableContentPaddings'
     | 'navigation'
+    | 'navigationOpen'
     | 'navigationWidth'
     | 'tools'
+    | 'toolsOpen'
     | 'toolsWidth'
     | 'placement'
   > {
-  topBar?: React.ReactNode;
+  style?: React.CSSProperties;
+  toolbar?: React.ReactNode;
+  splitPanelOpen?: boolean;
   sideSplitPanel?: React.ReactNode;
   bottomSplitPanel?: React.ReactNode;
 }
 
 export function SkeletonLayout({
+  style,
   notifications,
   contentHeader,
   content,
   navigation,
+  navigationOpen,
   navigationWidth,
   tools,
+  toolsOpen,
   toolsWidth,
-  topBar,
+  toolbar,
   sideSplitPanel,
   bottomSplitPanel,
+  splitPanelOpen,
   placement,
   contentType,
   maxContentWidth,
   disableContentPaddings,
 }: SkeletonLayoutProps) {
   const isMaxWidth = maxContentWidth === Number.MAX_VALUE || maxContentWidth === Number.MAX_SAFE_INTEGER;
+  const anyPanelOpen = navigationOpen || toolsOpen;
   return (
     <div
       className={clsx(styles.root, {
@@ -58,19 +67,39 @@ export function SkeletonLayout({
         [customCssProps.toolsWidth]: `${toolsWidth}px`,
       }}
     >
-      {/*TODO: render conditionally*/}
-      <section className={styles['top-bar']}>{topBar}</section>
-      {navigation && <div className={styles.navigation}>{navigation}</div>}
-      <main className={styles['main-landmark']}>
-        {notifications && <div className={styles.notifications}>{notifications}</div>}
-        <div className={clsx(styles.main, { [styles['main-disable-paddings']]: disableContentPaddings })}>
+      {navigation && (
+        <div
+          className={clsx(
+            styles.navigation,
+            !navigationOpen && styles['panel-hidden'],
+            toolsOpen && styles['unfocusable-mobile']
+          )}
+        >
+          {navigation}
+        </div>
+      )}
+      {toolbar}
+      <main className={clsx(styles['main-landmark'], anyPanelOpen && styles['unfocusable-mobile'])}>
+        {notifications}
+        <div className={clsx(styles.main, { [styles['main-disable-paddings']]: disableContentPaddings })} style={style}>
           {contentHeader && <div className={styles['content-header']}>{contentHeader}</div>}
           <div>{content}</div>
         </div>
-        {bottomSplitPanel}
+        {bottomSplitPanel && (
+          <div
+            className={clsx(styles['split-panel-bottom'], !splitPanelOpen && styles['split-panel-hidden'])}
+            style={{ insetBlockEnd: placement.insetBlockEnd }}
+          >
+            {bottomSplitPanel}
+          </div>
+        )}
       </main>
-      {sideSplitPanel && <div className={styles['split-panel-side']}>{sideSplitPanel}</div>}
-      {tools && <div className={styles.tools}>{tools}</div>}
+      {sideSplitPanel && (
+        <div className={clsx(styles['split-panel-side'], !splitPanelOpen && styles['panel-hidden'])}>
+          {sideSplitPanel}
+        </div>
+      )}
+      {tools && <div className={clsx(styles.tools, !toolsOpen && styles['panel-hidden'])}>{tools}</div>}
     </div>
   );
 }

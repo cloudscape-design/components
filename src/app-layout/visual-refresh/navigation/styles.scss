@@ -3,9 +3,9 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-@use '../../internal/styles' as styles;
-@use '../../internal/styles/tokens' as awsui;
-@use '../../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use '../../../internal/styles' as styles;
+@use '../../../internal/styles/tokens' as awsui;
+@use '../../../internal/generated/custom-css-properties/index.scss' as custom-props;
 
 .navigation {
   position: sticky;
@@ -18,9 +18,9 @@
   overscroll-behavior-y: contain;
   word-wrap: break-word;
   pointer-events: auto;
-  //border-inline-end: solid awsui.$border-divider-section-width awsui.$color-border-divider-default;
+  z-index: 1001;
 
-  // TODO: find a way to implement
+  // TODO:re-enable all transitions
   @keyframes openNavigation {
     from {
       opacity: 0;

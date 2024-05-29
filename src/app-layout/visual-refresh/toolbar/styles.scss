@@ -7,18 +7,17 @@
 @use '../../../internal/styles/tokens' as awsui;
 @use '../../../internal/generated/custom-css-properties/index.scss' as custom-props;
 
-section.universal-toolbar {
+.universal-toolbar {
   background-color: awsui.$color-background-layout-panel-content;
   border-block-end: awsui.$border-divider-layout-width solid awsui.$color-border-divider-panel-bottom;
   box-sizing: border-box;
   padding-block: 0;
   padding-inline: awsui.$space-m;
   position: sticky;
-  inset-block-start: var(#{custom-props.$headerHeight});
   z-index: 840;
   @include styles.with-motion {
     transition: ease awsui.$motion-duration-refresh-only-slow;
-    transition-property: top, opacity;
+    transition-property: inset-block-start, opacity;
   }
 
   &.disable-body-scroll {
@@ -26,10 +25,7 @@ section.universal-toolbar {
   }
 
   &.toolbar-hidden {
-    inset-block-start: -60px;
     opacity: 0;
-    block-size: 0px;
-    border-block-end: none;
   }
 
   > .toolbar-container {
@@ -39,7 +35,7 @@ section.universal-toolbar {
     column-gap: awsui.$space-static-xs;
     inline-size: 100%;
     grid-template-columns: min-content auto minmax(140px, 1fr);
-    grid-template-rows: var(#{custom-props.$toolbarHeight});
+    grid-template-rows: 1fr;
 
     > .universal-toolbar-nav {
       grid-column: 1;

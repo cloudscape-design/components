@@ -178,13 +178,8 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
       return <></>;
     }
 
-    /**
-     * The AppLayout factor moved the circular buttons out of the
-     * SplitPanel and into the Tools component. This conditional
-     * is still needed for the early return to prevent execution
-     * of the following code.
-     */
-    if (isRefresh && !isOpen && position === 'side') {
+    // In visual refresh design, closed split panel does not render
+    if (isRefresh && !isOpen) {
       return <></>;
     }
 

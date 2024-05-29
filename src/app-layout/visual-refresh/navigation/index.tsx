@@ -9,7 +9,7 @@ import styles from './styles.css.js';
 import testutilStyles from '../../test-classes/styles.css.js';
 
 export function Navigation() {
-  const { ariaLabels, handleNavigationClick, isMobile, navigationOpen, navigation, navigationRefs, placement } =
+  const { ariaLabels, onNavigationToggle, isMobile, navigationOpen, navigation, navigationFocusControl, placement } =
     useAppLayoutInternals();
 
   // Close the Navigation drawer on mobile when a user clicks a link inside.
@@ -19,7 +19,7 @@ export function Navigation() {
       node => node.tagName === 'A' && !!(node as HTMLAnchorElement).href
     );
     if (hasLink && isMobile) {
-      handleNavigationClick(false);
+      onNavigationToggle(false);
     }
   };
 
@@ -45,11 +45,11 @@ export function Navigation() {
           <InternalButton
             ariaLabel={ariaLabels?.navigationClose ?? undefined}
             iconName={isMobile ? 'close' : 'angle-left'}
-            onClick={() => handleNavigationClick(false)}
+            onClick={() => onNavigationToggle(false)}
             variant="icon"
             formAction="none"
             className={testutilStyles['navigation-close']}
-            ref={navigationRefs.close}
+            ref={navigationFocusControl.refs.close}
           />
         </div>
         {navigation}

@@ -7,6 +7,12 @@
 @use '../../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '../constants' as constants;
 
+@mixin desktop-only {
+  @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
+    @content;
+  }
+}
+
 .root {
   @include styles.styles-reset;
   color: awsui.$color-text-body-default;
@@ -27,9 +33,9 @@
   grid-template-rows: min-content min-content 1fr;
 
   // desktop grid
-  @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
+  @include desktop-only {
     grid-template-areas:
-      'navigation topBar       topBar        topBar    topBar          tools'
+      'navigation toolbar      toolbar       toolbar   toolbar         tools'
       'navigation .         notifications    .         sideSplitPanel  tools'
       'navigation .             main         .         sideSplitPanel  tools';
     grid-template-columns:
@@ -64,11 +70,11 @@
   grid-row: 1 / -1;
   grid-column: 1/ -1;
   background: awsui.$color-background-container-content;
-  z-index: 1;
+  z-index: 850;
 }
 
 .navigation {
-  @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
+  @include desktop-only {
     grid-area: navigation;
     inline-size: var(#{custom-props.$navigationWidth});
     border-inline-end: 1px solid awsui.$color-border-divider-panel-side;
@@ -76,7 +82,7 @@
 }
 
 .tools {
-  @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
+  @include desktop-only {
     grid-area: tools;
     inline-size: var(#{custom-props.$toolsWidth});
     border-inline-start: 1px solid awsui.$color-border-divider-panel-side;
@@ -84,21 +90,36 @@
 }
 
 .split-panel-side {
-  display: none;
-  @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
-    display: block;
+  @include desktop-only {
     grid-area: sideSplitPanel;
     border-inline-start: 1px solid awsui.$color-border-divider-panel-side;
   }
 }
 
-.top-bar {
-  grid-area: topBar;
-  block-size: 48px;
-  border-block-end: 1px solid awsui.$color-border-divider-panel-bottom;
+.split-panel-bottom {
+  position: sticky;
+  z-index: 840;
+  align-self: end;
+  grid-area: main;
+  grid-column: 1 / -1;
+  @include desktop-only {
+    grid-column: 2 / span 3;
+  }
 }
 
-.notifications {
+.panel-hidden {
+  display: none;
+}
+
+.toolbar-container {
+  grid-area: toolbar;
+  &:not(:empty) {
+    block-size: 48px;
+    border-block-end: 1px solid awsui.$color-border-divider-panel-bottom;
+  }
+}
+
+.notifications-container {
   grid-area: notifications;
   &:not(:empty) {
     padding-block-start: awsui.$space-scaled-xs;
@@ -116,7 +137,7 @@
   margin-block-end: awsui.$space-layout-content-bottom;
   &-disable-paddings {
     grid-column: 1 / -1;
-    @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
+    @include desktop-only {
       grid-column: 2 / span 3;
     }
     margin-block: 0;
@@ -125,4 +146,12 @@
 
 .content-header {
   margin-block-end: awsui.$space-content-header-padding-bottom;
+}
+
+/* stylelint-disable-next-line selector-combinator-disallowed-list, selector-max-universal */
+.unfocusable-mobile * {
+  visibility: hidden;
+  @include desktop-only {
+    visibility: visible;
+  }
 }

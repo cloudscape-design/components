@@ -15,6 +15,7 @@ import { CollectionLabelContext } from '../internal/context/collection-label-con
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_SUBSTEP_NAME } from '../internal/analytics/selectors';
 import { useContainerHeader } from '../internal/context/container-header';
+import { getGlobalFlag } from '../internal/utils/global-flags';
 
 interface InternalHeaderProps extends SomeRequired<HeaderProps, 'variant'>, InternalBaseComponentProps {
   __disableActionsWrapping?: boolean;
