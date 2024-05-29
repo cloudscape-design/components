@@ -8,6 +8,10 @@
 @use '../constants' as constants;
 
 .root {
+  @include styles.styles-reset;
+  color: awsui.$color-text-body-default;
+  background-color: awsui.$color-background-layout-main;
+
   #{custom-props.$maxContentWidth}: 100%;
   display: grid;
 

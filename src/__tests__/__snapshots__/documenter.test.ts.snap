@@ -8910,6 +8910,43 @@ exports[`Documenter definition for link matches the snapshot: link 1`] = `
 Object {
   "events": Array [
     Object {
+      "cancelable": false,
+      "description": "Called when the user clicks on the link. Do not use this handler for navigation, use the \`onFollow\` event instead.",
+      "detailInlineType": Object {
+        "name": "ClickDetail",
+        "properties": Array [
+          Object {
+            "name": "altKey",
+            "optional": false,
+            "type": "boolean",
+          },
+          Object {
+            "name": "button",
+            "optional": false,
+            "type": "number",
+          },
+          Object {
+            "name": "ctrlKey",
+            "optional": false,
+            "type": "boolean",
+          },
+          Object {
+            "name": "metaKey",
+            "optional": false,
+            "type": "boolean",
+          },
+          Object {
+            "name": "shiftKey",
+            "optional": false,
+            "type": "boolean",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "ClickDetail",
+      "name": "onClick",
+    },
+    Object {
       "cancelable": true,
       "description": "Called when a link is clicked without any modifier keys. If the link has no \`href\` provided, it will be called on
 all clicks.

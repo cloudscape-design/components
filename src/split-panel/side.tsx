@@ -6,8 +6,9 @@ import { ButtonProps } from '../button/interfaces';
 import InternalButton from '../button/internal';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { SplitPanelContentProps } from './interfaces';
-import styles from './styles.css.js';
 import { useSplitPanelContext } from '../internal/context/split-panel-context';
+import styles from './styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
 
 interface SplitPanelContentSideProps extends SplitPanelContentProps {
   openButtonAriaLabel?: string;
@@ -33,7 +34,8 @@ export function SplitPanelContentSide({
   return (
     <div
       {...baseProps}
-      className={clsx(baseProps.className, styles.drawer, styles.root, styles['position-side'], {
+      className={clsx(baseProps.className, styles.drawer, styles['position-side'], testUtilStyles.root, {
+        [testUtilStyles['open-position-side']]: isOpen,
         [styles['drawer-closed']]: !isOpen,
       })}
       style={{
@@ -57,7 +59,7 @@ export function SplitPanelContentSide({
           <div className={styles['slider-wrapper-side']}>{resizeHandle}</div>
         ) : (
           <InternalButton
-            className={clsx(styles['open-button'], styles['open-button-side'])}
+            className={clsx(testUtilStyles['open-button'], styles['open-button-side'])}
             iconName="angle-left"
             variant="icon"
             formAction="none"

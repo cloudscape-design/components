@@ -25,7 +25,7 @@ import { useUniqueId } from '../../hooks/use-unique-id/index.js';
 import customCssProps from '../../generated/custom-css-properties';
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 import { nodeBelongs } from '../../utils/node-belongs';
-import { getLogicalBoundingClientRect } from '../../direction.js';
+import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
 interface DropdownContainerProps {
   children?: React.ReactNode;
