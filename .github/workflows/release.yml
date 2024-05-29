@@ -6,7 +6,6 @@ on:
   push:
     branches:
       - main
-      - 'dev-v3-*'
 
 permissions:
   id-token: write
