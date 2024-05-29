@@ -201,48 +201,38 @@
     }
   }
 
-  &-variant-full-page.header-stuck {
-    box-shadow: none;
-
-    &::before {
-      content: '';
-
-      position: absolute;
-      pointer-events: none;
-      inset-inline-end: 0;
-      inset-inline-start: 0;
-      inset-block-end: 0;
-      inset-block-start: 0;
-      border-block-end: solid awsui.$border-divider-section-width awsui.$color-border-divider-default;
+  &-variant-full-page {
+    &.with-toolbar {
+      padding-block-start: awsui.$space-scaled-s;
     }
 
-    &::after {
-      content: '';
+    &.header-stuck {
+      box-shadow: none;
 
-      position: absolute;
-      inset: 0;
-
-      box-shadow: awsui.$shadow-sticky;
-      // This polygon only shows the part of the shadow that is lower than the element itself.
-      clip-path: polygon(-999% 100%, 999% 100%, 999% 999%, -999% 999%);
-    }
-
-    &:not(.remove-high-contrast-header) {
       &::before {
         content: '';
-        border-block-end: none;
+
+        position: absolute;
+        pointer-events: none;
+        inset-inline-end: 0;
+        inset-inline-start: 0;
+        inset-block-end: 0;
+        inset-block-start: 0;
+        border-block-end: solid awsui.$border-divider-section-width awsui.$color-border-divider-default;
+      }
+
+      &::after {
+        content: '';
+
+        position: absolute;
+        inset: 0;
+
+        box-shadow: awsui.$shadow-sticky;
+        // This polygon only shows the part of the shadow that is lower than the element itself.
+        clip-path: polygon(-999% 100%, 999% 100%, 999% 999%, -999% 999%);
       }
     }
   }
-}
-
-/*
-The dynamic height dark header needs a background that will cover
-the default white background of the container component.
-*/
-.dark-header {
-  background-color: awsui.$color-background-layout-main;
-  color: awsui.$color-text-body-default;
 }
 
 .content {

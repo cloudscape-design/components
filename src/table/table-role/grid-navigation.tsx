@@ -88,14 +88,12 @@ class GridNavigationProcessor {
     this._table = table;
 
     this.table.addEventListener('focusin', this.onFocusin);
-    this.table.addEventListener('focusout', this.onFocusout);
     this.table.addEventListener('keydown', this.onKeydown);
 
     this.updateFocusTarget();
 
     this.cleanup = () => {
       this.table.removeEventListener('focusin', this.onFocusin);
-      this.table.removeEventListener('focusout', this.onFocusout);
       this.table.removeEventListener('keydown', this.onKeydown);
       this.focusables.forEach(this.unregisterFocusable);
     };
@@ -141,6 +139,18 @@ class GridNavigationProcessor {
   public unregisterFocusable = (focusable: Element) => {
     this.focusables.delete(focusable);
     this.focusHandlers.delete(focusable);
+
+    const isUnregisteringFocusedNode = nodeBelongs(focusable, document.activeElement);
+    if (isUnregisteringFocusedNode) {
+      // Wait for unmounted node to get removed from the DOM.
+      setTimeout(() => {
+        // If the focused cell appears to be no longer attached to the table we need to re-apply
+        // focus to a cell with the same or closest position.
+        if (this.focusedCell && !nodeBelongs(this.table, this.focusedCell.element)) {
+          this.moveFocusBy(this.focusedCell, { x: 0, y: 0 });
+        }
+      }, 0);
+    }
   };
 
   private get pageSize() {
@@ -178,16 +188,6 @@ class GridNavigationProcessor {
     }
   };
 
-  private onFocusout = () => {
-    // When focus leaves the cell and the cell no longer belong to the table it indicates the focused element has been unmounted.
-    // In that case the focus needs to be restored on the same coordinates.
-    setTimeout(() => {
-      if (this.focusedCell && !nodeBelongs(this.table, this.focusedCell.element)) {
-        this.moveFocusBy(this.focusedCell, { x: 0, y: 0 });
-      }
-    }, 0);
-  };
-
   private onKeydown = (event: KeyboardEvent) => {
     if (!this.focusedCell) {
       return;
@@ -208,12 +208,12 @@ class GridNavigationProcessor {
     const shiftKey = event.shiftKey ? 1 : 0;
     const metaKey = event.metaKey ? 1 : 0;
     const modifiersPressed = ctrlKey + altKey + shiftKey + metaKey;
-    const invalidModiferCombination =
+    const invalidModifierCombination =
       (modifiersPressed && !event.ctrlKey) ||
       (event.ctrlKey && event.keyCode !== KeyCode.home && event.keyCode !== KeyCode.end);
 
     if (
-      invalidModiferCombination ||
+      invalidModifierCombination ||
       this.isSuppressed(document.activeElement) ||
       !this.isRegistered(document.activeElement) ||
       keys.indexOf(event.keyCode) === -1

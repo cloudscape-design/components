@@ -34,7 +34,7 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { nodeBelongs } from '../internal/utils/node-belongs';
 import { CartesianChartContainer } from '../internal/components/cartesian-chart/chart-container';
 import { useHeightMeasure } from '../internal/hooks/container-queries/use-height-measure';
-import { getIsRtl } from '../internal/direction';
+import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
 
 const INLINE_START_LABELS_MARGIN = 16;
 const BLOCK_END_LABELS_OFFSET = 12;

@@ -6,7 +6,6 @@ import { ContainerProps } from './interfaces';
 import { getBaseProps } from '../internal/base-component';
 import { useAppLayoutContext } from '../internal/context/app-layout-context';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { getContentHeaderClassName } from '../internal/utils/content-header-utils';
 import { StickyHeaderContext, useStickyHeader } from './use-sticky-header';
 import { useDynamicOverlap } from '../internal/hooks/use-dynamic-overlap';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
@@ -16,8 +15,8 @@ import styles from './styles.css.js';
 import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 import { useModalContext } from '../internal/context/modal-context';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { shouldRemoveHighContrastHeader } from '../internal/utils/content-header-utils';
 import { ContainerHeaderContextProvider } from '../internal/context/container-header';
+import { getGlobalFlag } from '../internal/utils/global-flags';
 
 export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>, InternalBaseComponentProps {
   __stickyHeader?: boolean;
@@ -27,7 +26,7 @@ export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>,
   __disableFooterPaddings?: boolean;
   __hiddenContent?: boolean;
   __headerRef?: React.RefObject<HTMLDivElement>;
-  __darkHeader?: boolean;
+  __fullPage?: boolean;
   __disableStickyMobile?: boolean;
   /**
    * Additional internal variant:
@@ -71,7 +70,7 @@ export default function InternalContainer({
   __disableFooterPaddings = false,
   __hiddenContent = false,
   __headerRef,
-  __darkHeader = false,
+  __fullPage = false,
   __disableStickyMobile = true,
   __funnelSubStepProps,
   __subStepRef,
@@ -94,7 +93,7 @@ export default function InternalContainer({
   const isRefresh = useVisualRefresh();
 
   const hasDynamicHeight = isRefresh && variant === 'full-page';
-  const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight || !__darkHeader });
+  const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight || !__fullPage });
 
   const mergedRef = useMergeRefs(rootRef, __internalRootRef);
   const headerMergedRef = useMergeRefs(headerRef, overlapElement, __headerRef);
@@ -122,6 +121,7 @@ export default function InternalContainer({
   const shouldHaveStickyStyles = isSticky && !isMobile;
 
   const hasMedia = !!media?.content;
+  const hasToolbar = getGlobalFlag('appLayoutWidget');
   const mediaPosition = media?.position ?? 'top';
   return (
     <div
@@ -155,42 +155,28 @@ export default function InternalContainer({
           <ContainerHeaderContextProvider>
             <StickyHeaderContext.Provider value={{ isStuck }}>
               <div
-                className={clsx(
-                  isRefresh && styles.refresh,
-                  styles.header,
-                  styles[`header-variant-${variant}`],
-                  shouldRemoveHighContrastHeader() && styles['remove-high-contrast-header'],
-                  {
-                    [styles['header-sticky-disabled']]: __stickyHeader && !isSticky,
-                    [styles['header-sticky-enabled']]: isSticky,
-                    [styles['header-dynamic-height']]: hasDynamicHeight,
-                    [styles['header-stuck']]: isStuck,
-                    [styles['with-paddings']]: !disableHeaderPaddings,
-                    [styles['with-hidden-content']]: !children || __hiddenContent,
-                    [styles['header-with-media']]: hasMedia,
-                  }
-                )}
+                className={clsx(isRefresh && styles.refresh, styles.header, styles[`header-variant-${variant}`], {
+                  [styles['header-sticky-disabled']]: __stickyHeader && !isSticky,
+                  [styles['header-sticky-enabled']]: isSticky,
+                  [styles['header-dynamic-height']]: hasDynamicHeight,
+                  [styles['header-stuck']]: isStuck,
+                  [styles['with-paddings']]: !disableHeaderPaddings,
+                  [styles['with-toolbar']]: hasToolbar,
+                  [styles['with-hidden-content']]: !children || __hiddenContent,
+                  [styles['header-with-media']]: hasMedia,
+                })}
                 {...stickyStyles}
                 ref={headerMergedRef}
               >
-                {__darkHeader ? (
-                  <div className={clsx(styles['dark-header'], getContentHeaderClassName())}>{header}</div>
-                ) : (
-                  header
-                )}
+                {header}
               </div>
             </StickyHeaderContext.Provider>
           </ContainerHeaderContextProvider>
         )}
         <div
-          className={clsx(
-            styles.content,
-            fitHeight && styles['content-fit-height'],
-            shouldRemoveHighContrastHeader() && styles['remove-high-contrast-header'],
-            {
-              [styles['with-paddings']]: !disableContentPaddings,
-            }
-          )}
+          className={clsx(styles.content, fitHeight && styles['content-fit-height'], {
+            [styles['with-paddings']]: !disableContentPaddings,
+          })}
         >
           {children}
         </div>

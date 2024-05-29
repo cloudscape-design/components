@@ -8,50 +8,78 @@
 @use '../constants' as constants;
 
 .root {
+  @include styles.styles-reset;
+  color: awsui.$color-text-body-default;
+  background-color: awsui.$color-background-layout-main;
+
   #{custom-props.$maxContentWidth}: 100%;
   display: grid;
-  grid-template-areas:
-    'navigation topBar       topBar        topBar    tools'
-    'navigation .         notifications    .         tools'
-    'navigation .             main         .         tools';
-  grid-template-columns:
-    min-content
-    minmax(#{awsui.$space-layout-content-horizontal}, 1fr)
-    minmax(var(#{custom-props.$minContentWidth}), var(#{custom-props.$maxContentWidth}))
-    minmax(#{awsui.$space-layout-content-horizontal}, 1fr)
-    min-content;
-  grid-template-rows: min-content min-content 1fr min-content;
 
-  &.has-adaptive-widths-default {
-    @each $breakpoint, $width in constants.$adaptive-content-widths {
-      @include styles.media-breakpoint-up($breakpoint) {
-        #{custom-props.$maxContentWidth}: $width;
+  // mobile grid
+  grid-template-areas:
+    'topBar    topBar     topBar'
+    '.      notifications .'
+    '.          main      .';
+  grid-template-columns:
+    awsui.$space-layout-content-horizontal
+    1fr
+    awsui.$space-layout-content-horizontal;
+  grid-template-rows: min-content min-content 1fr;
+
+  // desktop grid
+  @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
+    grid-template-areas:
+      'navigation topBar       topBar        topBar    tools'
+      'navigation .         notifications    .         tools'
+      'navigation .             main         .         tools';
+    grid-template-columns:
+      min-content
+      minmax(#{awsui.$space-layout-content-horizontal}, 1fr)
+      minmax(0, var(#{custom-props.$maxContentWidth}))
+      minmax(#{awsui.$space-layout-content-horizontal}, 1fr)
+      min-content;
+    grid-template-rows: min-content min-content 1fr min-content;
+
+    &.has-adaptive-widths-default {
+      @each $breakpoint, $width in constants.$adaptive-content-widths {
+        @include styles.media-breakpoint-up($breakpoint) {
+          #{custom-props.$maxContentWidth}: $width;
+        }
       }
     }
-  }
 
-  &.has-adaptive-widths-dashboard {
-    @each $breakpoint, $width in constants.$dashboard-content-widths {
-      @include styles.media-breakpoint-up($breakpoint) {
-        #{custom-props.$maxContentWidth}: $width;
+    &.has-adaptive-widths-dashboard {
+      @each $breakpoint, $width in constants.$dashboard-content-widths {
+        @include styles.media-breakpoint-up($breakpoint) {
+          #{custom-props.$maxContentWidth}: $width;
+        }
       }
     }
   }
 }
 
-.main-landmark {
-  // does not participate in the layout, rendered for accessibility grouping
-  display: contents;
+.navigation,
+.tools {
+  grid-row: 1 / -1;
+  grid-column: 1/ -1;
+  background: awsui.$color-background-container-content;
+  z-index: 1;
 }
 
 .navigation {
-  grid-area: navigation;
-  border-inline-end: 1px solid awsui.$color-border-divider-panel-side;
+  @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
+    grid-area: navigation;
+    inline-size: var(#{custom-props.$navigationWidth});
+    border-inline-end: 1px solid awsui.$color-border-divider-panel-side;
+  }
 }
 
 .tools {
-  grid-area: tools;
-  border-inline-start: 1px solid awsui.$color-border-divider-panel-side;
+  @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
+    grid-area: tools;
+    inline-size: var(#{custom-props.$toolsWidth});
+    border-inline-start: 1px solid awsui.$color-border-divider-panel-side;
+  }
 }
 
 .top-bar {
@@ -67,12 +95,20 @@
   }
 }
 
+.main-landmark {
+  // does not participate in the layout, rendered for accessibility grouping
+  display: contents;
+}
+
 .main {
   grid-area: main;
   margin-block-start: awsui.$space-scaled-s;
   margin-block-end: awsui.$space-layout-content-bottom;
   &-disable-paddings {
-    grid-column: 2 / span 3;
+    grid-column: 1 / -1;
+    @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
+      grid-column: 2 / span 3;
+    }
     margin-block: 0;
   }
 }

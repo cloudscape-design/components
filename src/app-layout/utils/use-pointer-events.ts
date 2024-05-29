@@ -3,7 +3,11 @@
 import { useCallback } from 'react';
 import styles from '../styles.css.js';
 import { SizeControlProps } from './interfaces';
-import { getIsRtl, getLogicalClientX, getLogicalBoundingClientRect } from '../../internal/direction.js';
+import {
+  getIsRtl,
+  getLogicalClientX,
+  getLogicalBoundingClientRect,
+} from '@cloudscape-design/component-toolkit/internal';
 
 export const usePointerEvents = ({
   position,

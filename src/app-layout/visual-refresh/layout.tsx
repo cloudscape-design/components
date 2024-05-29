@@ -74,6 +74,8 @@ export default function Layout({ children }: LayoutProps) {
           [styles['has-sticky-notifications']]: stickyNotifications && hasNotificationsContent,
           [styles['is-overlap-disabled']]: isBackgroundOverlapDisabled,
           [styles['is-hide-mobile-toolbar']]: __embeddedViewMode,
+          [styles['has-left-toggles-gutter']]: !(isMobile || navigationHide || navigationOpen),
+          [styles['has-right-toggles-gutter']]: !isMobile && !hasContentGapRight,
         },
         testutilStyles.root
       )}
