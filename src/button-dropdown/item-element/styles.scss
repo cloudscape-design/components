@@ -66,8 +66,8 @@
   }
 
   /* stylelint-disable-next-line selector-max-type */
-  .has-category-header > &,
-  .has-category-header > span > & {
+  .has-category-header:not(.has-checkmark) > &,
+  .has-category-header:not(.has-checkmark) > span > & {
     padding-inline-start: calc(#{awsui.$space-xs} + #{awsui.$space-l});
   }
 }

@@ -26,6 +26,7 @@ const ItemElement = ({
   variant = 'normal',
 }: ItemProps) => {
   const isLink = isLinkItem(item);
+  const isCheckbox = isCheckboxItem(item);
   const onClick = (event: React.MouseEvent) => {
     // Stop propagation to parent node and handle event exclusively in here. This ensures
     // that no group will interfere with the default behavior of links
@@ -48,6 +49,7 @@ const ItemElement = ({
         [styles.highlighted]: highlighted,
         [styles.disabled]: disabled,
         [styles['has-category-header']]: hasCategoryHeader,
+        [styles['has-checkmark']]: isCheckbox,
         [styles['show-divider']]: showDivider,
         [styles['is-focused']]: isKeyboardHighlighted,
       })}
