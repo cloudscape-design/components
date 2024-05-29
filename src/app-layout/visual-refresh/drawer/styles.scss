@@ -8,6 +8,7 @@
 
 .drawer {
   position: sticky;
+  z-index: 830;
   background-color: awsui.$color-background-container-content;
   display: grid;
   grid-template-columns: awsui.$space-m 1fr;

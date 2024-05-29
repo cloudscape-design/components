@@ -7,7 +7,7 @@
 @use '../../../internal/styles/tokens' as awsui;
 @use '../../../internal/generated/custom-css-properties' as custom-props;
 
-section.split-panel-side {
+.split-panel-side {
   position: sticky;
   z-index: 830;
 }
