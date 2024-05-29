@@ -14,7 +14,6 @@ import { usePointerEvents } from '../app-layout/utils/use-pointer-events';
 import { useKeyboardEvents } from '../app-layout/utils/use-keyboard-events';
 import { SizeControlProps } from '../app-layout/utils/interfaces';
 
-import styles from './styles.css.js';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { Transition } from '../internal/components/transition';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
@@ -24,6 +23,8 @@ import { SplitPanelContentBottom } from './bottom';
 import { useInternalI18n } from '../i18n/context';
 import globalVars from '../internal/styles/global-vars';
 import { createWidgetizedForwardRef } from '../internal/widgets';
+import styles from './styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
 
 export { SplitPanelProps };
 
@@ -81,14 +82,14 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
 
     const wrappedHeader = (
       <div className={styles.header} style={appLayoutMaxWidth}>
-        <h2 className={styles['header-text']} id={panelHeaderId}>
+        <h2 className={clsx(styles['header-text'], testUtilStyles['header-text'])} id={panelHeaderId}>
           {header}
         </h2>
         <div className={styles['header-actions']}>
           {!hidePreferencesButton && isOpen && (
             <>
               <InternalButton
-                className={styles['preferences-button']}
+                className={testUtilStyles['preferences-button']}
                 iconName="settings"
                 variant="icon"
                 onClick={() => setPreferencesOpen(true)}
@@ -102,7 +103,7 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
 
           {isOpen ? (
             <InternalButton
-              className={styles['close-button']}
+              className={testUtilStyles['close-button']}
               iconName={
                 isRefresh && closeBehavior === 'collapse'
                   ? position === 'side'
@@ -118,7 +119,7 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
             />
           ) : position === 'side' ? null : (
             <InternalButton
-              className={styles['open-button']}
+              className={testUtilStyles['open-button']}
               iconName="angle-up"
               variant="icon"
               formAction="none"
@@ -143,7 +144,7 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
         // but match aria keyboard behavior of using left/right to decrease/increase
         // the slider value.
         aria-valuenow={position === 'bottom' ? relativeSize : 100 - relativeSize}
-        className={clsx(styles.slider, styles[`slider-${position}`])}
+        className={clsx(styles.slider, styles[`slider-${position}`], testUtilStyles.slider)}
         onKeyDown={onKeyDown}
         onPointerDown={onSliderPointerDown}
       >
