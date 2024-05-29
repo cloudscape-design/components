@@ -329,7 +329,7 @@ test('popover size is assigned', () => {
     // Show popover for the first data point.
     wrapper.findApplication()!.focus();
 
-    expect(wrapper.findDetailPopover()!.findByClassName(popoverStyles[`container-body-size-${size}`])).not.toBe(null);
+    expect(wrapper.findByClassName(popoverStyles[`container-body-size-${size}`])).not.toBe(null);
   }
 });
 

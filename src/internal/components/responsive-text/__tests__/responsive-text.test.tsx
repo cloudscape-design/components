@@ -4,15 +4,15 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import ResponsiveText from '../../../../../lib/components/internal/components/responsive-text';
 import { getTextWidth } from '../../../../../lib/components/internal/components/responsive-text/responsive-text-utils';
-import { getIsRtl } from '../../../../../lib/components/internal/direction';
+import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
 
 jest.mock('../../../../../lib/components/internal/components/responsive-text/responsive-text-utils', () => ({
   ...jest.requireActual('../../../../../lib/components/internal/components/responsive-text/responsive-text-utils'),
   getTextWidth: jest.fn().mockReturnValue(0),
 }));
 
-jest.mock('../../../../../lib/components/internal/direction', () => ({
-  ...jest.requireActual('../../../../../lib/components/internal/direction'),
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
   getIsRtl: jest.fn().mockReturnValue(false),
 }));
 

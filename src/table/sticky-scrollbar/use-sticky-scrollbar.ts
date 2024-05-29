@@ -7,7 +7,7 @@ import { getContainingBlock } from '../../internal/utils/dom';
 import { getOverflowParents } from '../../internal/utils/scrollable-containers';
 import { browserScrollbarSize } from '../../internal/utils/browser-scrollbar-size';
 import globalVars from '../../internal/styles/global-vars';
-import { getLogicalBoundingClientRect } from '../../internal/direction.js';
+import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
 export const updatePosition = (
   tableEl: HTMLElement | null,

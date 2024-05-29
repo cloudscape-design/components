@@ -29,7 +29,7 @@ import useBackgroundOverlap from './use-background-overlap';
 import { useDrawers } from '../utils/use-drawers';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { SPLIT_PANEL_MIN_WIDTH } from '../split-panel';
-import { getOffsetInlineStart } from '../../internal/direction';
+import { getOffsetInlineStart } from '@cloudscape-design/component-toolkit/internal';
 
 interface AppLayoutInternals extends AppLayoutPropsWithDefaults {
   activeDrawerId: string | null;
