@@ -110,7 +110,7 @@ function ActiveDrawer() {
         }
       }}
     >
-      {!isMobile && activeDrawer?.resizable && resizeHandle}
+      {!isMobile && activeDrawer?.resizable && <div className={styles['drawer-slider']}>{resizeHandle}</div>}
       <div className={styles['drawer-content-container']}>
         <div className={clsx(styles['drawer-close-button'])}>
           <InternalButton
