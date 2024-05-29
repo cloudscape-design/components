@@ -17,9 +17,6 @@
   inline-size: 100%;
   flex-wrap: wrap;
   justify-content: space-between;
-  &-with-toolbar {
-    padding-block-start: awsui.$space-scaled-s;
-  }
 
   &.refresh,
   &:not(.root-no-actions) {
