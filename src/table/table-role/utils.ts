@@ -97,7 +97,7 @@ export function isTableCell(element: Element) {
 export function focusNextElement(element: null | HTMLElement) {
   if (element) {
     if (isTableCell(element)) {
-      element.tabIndex = 0;
+      element.tabIndex = -1;
     }
     element.focus();
   }
