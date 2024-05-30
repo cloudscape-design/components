@@ -63,6 +63,7 @@ const InternalButtonGroup = React.forwardRef(
               items={itemsToDropdownItems(collapsedItems)}
               onItemClick={(event: CustomEvent<ButtonDropdownProps.ItemClickDetails>) => onClickHandler(event)}
               expandToViewport={dropdownExpandToViewport}
+              ariaLabel="More actions"
             />
           )}
         </SpaceBetween>
