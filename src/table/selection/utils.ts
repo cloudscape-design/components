@@ -20,6 +20,18 @@ export class ItemSet<T> {
   forEach = this.map.forEach.bind(this.map);
 }
 
+export class ItemMap<T> {
+  constructor(trackBy: TableProps.TrackBy<T> | undefined) {
+    this.trackBy = trackBy;
+  }
+  private trackBy: TableProps.TrackBy<T> | undefined;
+  private map: Map<unknown, boolean> = new Map();
+  set = (item: T, value: boolean) => this.map.set.call(this.map, getTrackableValue(this.trackBy, item), value);
+  get = (item: T) => this.map.get.call(this.map, getTrackableValue(this.trackBy, item));
+  has = (item: T) => this.map.has.call(this.map, getTrackableValue(this.trackBy, item));
+  forEach = this.map.forEach.bind(this.map);
+}
+
 export const focusMarkers = {
   item: { ['data-' + SELECTION_ITEM]: 'item' },
   all: { ['data-' + SELECTION_ITEM]: 'all' },

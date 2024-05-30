@@ -7,7 +7,7 @@ import { TableProps } from '../interfaces';
 import { getTrackableValue } from '../utils';
 import { joinStrings } from '../../internal/utils/strings';
 import { SelectionProps } from './interfaces';
-import { ItemSet } from './utils';
+import { ItemMap, ItemSet } from './utils';
 
 // When selectionType="grouped" the checkboxes cannot be disabled so the `isItemDisabled` property is ignored.
 // That is because selecting a group implies selection of children even if children are not loaded so that
@@ -16,7 +16,9 @@ import { ItemSet } from './utils';
 type SelectionOptions<T> = Pick<
   TableProps<T>,
   'ariaLabels' | 'items' | 'onSelectionChange' | 'selectedItems' | 'selectionInverted' | 'selectionType' | 'trackBy'
->;
+> & {
+  getExpandableItemProps: (item: T) => { level: number; parent: null | T; children: readonly T[] };
+};
 
 export function useGroupSelection<T>({
   ariaLabels,
@@ -26,6 +28,7 @@ export function useGroupSelection<T>({
   selectionInverted = false,
   selectionType,
   trackBy,
+  getExpandableItemProps,
 }: SelectionOptions<T>): {
   isItemSelected: (item: T) => boolean;
   getSelectAllProps?: () => SelectionProps;
@@ -40,17 +43,13 @@ export function useGroupSelection<T>({
     return { isItemSelected: () => false };
   }
 
-  // Selection state for individual items.
-  const selectedSet = new ItemSet(trackBy, selectedItems);
-  const isItemSelected = selectedSet.has.bind(selectedSet);
-
-  // Derived selection state for all-items checkbox.
-  let allEnabledItemsSelected = true;
-  for (const item of items) {
-    allEnabledItemsSelected = allEnabledItemsSelected && isItemSelected(item);
-  }
-  const allItemsCheckboxSelected = selectedItems.length > 0 && allEnabledItemsSelected;
-  const allItemsCheckboxIndeterminate = selectedItems.length > 0 && !allEnabledItemsSelected;
+  const selectionTree = createSelectionTree({
+    items,
+    selectedItems,
+    selectionInverted,
+    trackBy,
+    getExpandableItemProps,
+  });
 
   // Shift-selection helpers.
   const itemIndexesMap = new Map<T, number>();
@@ -70,18 +69,16 @@ export function useGroupSelection<T>({
     return [item];
   };
 
-  // Select items that are not already selected or disabled.
   const selectItems = (requestedItems: readonly T[]) => {
     const newSelectedItems = [...selectedItems];
     requestedItems.forEach(newItem => {
-      if (!isItemSelected(newItem)) {
+      if (!selectionTree.isItemSelected(newItem)) {
         newSelectedItems.push(newItem);
       }
     });
     return newSelectedItems;
   };
 
-  // Unselect items unless they are disabled.
   const deselectItems = (requestedItems: readonly T[]) => {
     const requestedItemsSet = new ItemSet(trackBy, requestedItems);
     const newSelectedItems: Array<T> = [];
@@ -95,58 +92,36 @@ export function useGroupSelection<T>({
   };
 
   const handleToggleAll = () => {
-    const newSelectedItems = allEnabledItemsSelected ? deselectItems(items) : selectItems(items);
-    fireNonCancelableEvent(onSelectionChange, { selectedItems: newSelectedItems });
+    if (selectionTree.isAllSelected) {
+      fireNonCancelableEvent(onSelectionChange, { selectionInverted: false, selectedItems: [] });
+    } else {
+      fireNonCancelableEvent(onSelectionChange, { selectionInverted: true, selectedItems: [] });
+    }
   };
 
   const handleToggleItem = (item: T) => {
     const requestedItems = shiftPressed ? getShiftSelectedItems(item) : [item];
-    const selectedItems = isItemSelected(item) ? deselectItems(requestedItems) : selectItems(requestedItems);
-    fireNonCancelableEvent(onSelectionChange, { selectedItems });
+    const hasChildren = (item: T) => getExpandableItemProps(item).children.length > 0;
+    const isRequestedItemsValid = requestedItems.length === 1 || requestedItems.filter(hasChildren).length === 0;
+    if (!isRequestedItemsValid) {
+      return;
+    }
+    const selectedItems = selectionTree.isItemSelected(item)
+      ? deselectItems(requestedItems)
+      : selectItems(requestedItems);
+    fireNonCancelableEvent(onSelectionChange, selectionTree.updateSelection(selectedItems));
     setLastClickedItem(item);
   };
 
-  // TODO:
-  /**
-   * Create data structure
-   *
-   * For every item need to check:
-   *  - if item itself is selected
-   *  - if item parent is selected recursively
-   *  - if selection is inverted
-   *  - if item has children
-   *  - if some item children selected recursively
-   *  - if all item children selected recursively
-   */
-
-  // TODO:
-  // Must perform selection optimization so that the assumptions hold:
-  // 1. If group is selected but no children are selected (deeply) - then everything is selected in fact
-
-  // TODO:
-  // Consider progressive loading which must be have a disabled checkbox for completeness
-  // What is the state of the loader checkbox?
-
   return {
-    // TODO:
-    // this function says item is selected when it is actually selected, not indeterminate
-    isItemSelected,
+    isItemSelected: selectionTree.isItemSelected,
     getSelectAllProps: (): SelectionProps => ({
       name: selectionControlName,
       selectionType: 'multi',
       disabled: false,
-      // TODO:
-      // True when all children are effectively selected
-      checked: allItemsCheckboxSelected,
-      // TODO:
-      // True when some but not all children are effectively selected
-      indeterminate: allItemsCheckboxIndeterminate,
-      // TODO:
-      // If checked -> set inverted=false and selectedItems=[]
-      // If indeterminate -> set inverted=true and selectedItems=[]
-      // If neither -> set inverted=true and selectedItems=[]
+      checked: selectionTree.isAllSelected,
+      indeterminate: selectionTree.isAllIndeterminate,
       onChange: handleToggleAll,
-      // TODO: pass inverted here too
       ariaLabel: joinStrings(
         ariaLabels?.selectionGroupLabel,
         ariaLabels?.allItemsSelectionLabel?.({ selectedItems, selectionInverted })
@@ -156,25 +131,100 @@ export function useGroupSelection<T>({
       name: selectionControlName,
       selectionType: 'multi',
       disabled: false,
-      // TODO:
-      // True when effectively selected or when all children are effectively selected
-      checked: isItemSelected(item),
-      // TODO:
-      // True when some but not all children are effectively selected
-      indeterminate: false,
-      // TODO:
-      // Optimize or not optimize?
-      // Make item effectively selected
+      checked: selectionTree.isItemSelected(item),
+      indeterminate: selectionTree.isItemIndeterminate(item),
       onChange: () => handleToggleItem(item),
-      // TODO:
-      // Ensure this works as in all imaginable combinations
       onShiftToggle: (value: boolean) => setShiftPressed(value),
       ariaLabel: joinStrings(
-        // TODO: see what this label is for and if it needs to be different for groups and items
         ariaLabels?.selectionGroupLabel,
-        // TODO: pass inverted here too
         ariaLabels?.itemSelectionLabel?.({ selectedItems, selectionInverted }, item)
       ),
     }),
   };
+}
+
+function createSelectionTree<T>({
+  items,
+  selectedItems = [],
+  selectionInverted = false,
+  trackBy,
+  getExpandableItemProps,
+}: Pick<SelectionOptions<T>, 'items' | 'selectedItems' | 'selectionInverted' | 'trackBy' | 'getExpandableItemProps'>) {
+  const selfSelectedSet = new ItemSet(trackBy, selectedItems);
+  const effectivelySelectedMap = new ItemMap(trackBy);
+  const effectivelyIndeterminateMap = new ItemMap(trackBy);
+
+  const isItemSelected = (item: T): boolean => {
+    const cachedValue = effectivelySelectedMap.get(item);
+    if (cachedValue !== undefined) {
+      return cachedValue;
+    }
+    const { parent } = getExpandableItemProps(item);
+    const isSelfSelected = selfSelectedSet.has(item);
+    const isParentSelected = parent ? isItemSelected(parent) : selectionInverted;
+    const isSelected = (isSelfSelected && !isParentSelected) || (!isSelfSelected && isParentSelected);
+    effectivelySelectedMap.set(item, isSelected);
+    return isSelected;
+  };
+
+  const isItemIndeterminate = (item: T): boolean => {
+    const cachedValue = effectivelyIndeterminateMap.get(item);
+    if (cachedValue !== undefined) {
+      return cachedValue;
+    }
+    const { children } = getExpandableItemProps(item);
+    let allChildrenSelected = true;
+    let someChildrenSelected = false;
+    for (const childItem of children) {
+      const isSelected = isItemSelected(childItem);
+      const isIndeterminate = isItemIndeterminate(childItem);
+      allChildrenSelected = allChildrenSelected && isSelected && !isIndeterminate;
+      someChildrenSelected = someChildrenSelected || isSelected || isIndeterminate;
+    }
+    const isIndeterminate = children.length > 0 && !allChildrenSelected && someChildrenSelected;
+    effectivelyIndeterminateMap.set(item, isIndeterminate);
+    return isIndeterminate;
+  };
+
+  let allChildrenSelected = true;
+  let someChildrenSelected = false;
+  for (const item of items) {
+    const isSelected = isItemSelected(item);
+    const isIndeterminate = isItemIndeterminate(item);
+    allChildrenSelected = allChildrenSelected && isSelected && !isIndeterminate;
+    someChildrenSelected = someChildrenSelected || isSelected || isIndeterminate;
+  }
+  const isAllSelected = allChildrenSelected;
+  const isAllIndeterminate = items.length > 0 && !allChildrenSelected && someChildrenSelected;
+
+  const updateSelection = (selectedItems: T[]): { selectedItems: T[]; selectionInverted: boolean } => {
+    const nextSelectionTree = createSelectionTree({
+      items,
+      selectedItems,
+      selectionInverted,
+      trackBy,
+      getExpandableItemProps,
+    });
+    const nextSelectionInverted = selectionInverted || nextSelectionTree.isAllSelected;
+    const nextSelectedItems: T[] = [];
+
+    function checkItemSelection(item: T, parentState: boolean) {
+      const itemState = nextSelectionTree.isItemSelected(item);
+      if (itemState !== parentState) {
+        nextSelectedItems.push(item);
+      }
+      for (const childItem of getExpandableItemProps(item).children) {
+        checkItemSelection(childItem, itemState);
+      }
+    }
+    for (const item of items) {
+      const { level } = getExpandableItemProps(item);
+      if (level === 1) {
+        checkItemSelection(item, nextSelectionInverted);
+      }
+    }
+    return { selectionInverted: nextSelectionInverted, selectedItems: nextSelectedItems };
+  };
+
+  return { isAllSelected, isAllIndeterminate, isItemSelected, isItemIndeterminate, updateSelection };
 }
