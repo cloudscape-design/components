@@ -33,7 +33,7 @@ $shadow-opacity: 0.1;
   z-index: 0;
   overflow: hidden;
 
-  &::after {
+  &.gen-ai::after {
     content: '';
     position: absolute;
     inline-size: 28px;
@@ -48,6 +48,7 @@ $shadow-opacity: 0.1;
     @include mixins.gen-ai-background;
   }
 }
+
 // Gradient rotation animation
 @keyframes gradientMove {
   0% {

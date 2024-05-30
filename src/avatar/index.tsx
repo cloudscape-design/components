@@ -8,8 +8,8 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 
 export { AvatarProps };
 
-export default function Avatar({ type, fullName, ...props }: AvatarProps) {
-  const baseComponentProps = useBaseComponent('Avatar', { props: { type, fullName: !!fullName } });
-  return <InternalAvatar type={type} fullName={fullName} {...props} {...baseComponentProps} />;
+export default function Avatar({ color, tooltipText, ...props }: AvatarProps) {
+  const baseComponentProps = useBaseComponent('Avatar', { props: { color, tooltipText: !!tooltipText } });
+  return <InternalAvatar color={color} tooltipText={tooltipText} {...props} {...baseComponentProps} />;
 }
 applyDisplayName(Avatar, 'Avatar');

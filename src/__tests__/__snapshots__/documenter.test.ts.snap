@@ -2078,7 +2078,10 @@ Object {
   "name": "Avatar",
   "properties": Array [
     Object {
-      "description": "Text to describe avatar icon/content.",
+      "description": "Text to describe the avatar for assistive technology.
+When more than one avatar is used, provide a unique label to each.
+For example, \\"User avatar\\" and \\"AI assistant avatar\\". Or \\"Your avatar\\" and \\"User avatar for John Doe\\".
+We suggest you include the \`tooltipText\` inside ariaLabel to ensure tooltipText is accessible.",
       "name": "ariaLabel",
       "optional": true,
       "type": "string",
@@ -2091,31 +2094,25 @@ Object {
       "type": "string",
     },
     Object {
-      "description": "The full name of agent shown in the tooltip.",
-      "name": "fullName",
+      "description": "Determines the color of the avatar.
+Use \`gen-ai\` for AI assistants and \`default\` for people and everything else.",
+      "inlineType": Object {
+        "name": "AvatarProps.Color",
+        "type": "union",
+        "values": Array [
+          "default",
+          "gen-ai",
+        ],
+      },
+      "name": "color",
       "optional": true,
       "type": "string",
     },
     Object {
-      "inlineType": Object {
-        "name": "AvatarProps.I18nStrings",
-        "properties": Array [
-          Object {
-            "name": "avatarAriaRoleDescription",
-            "optional": true,
-            "type": "string",
-          },
-        ],
-        "type": "object",
-      },
-      "name": "i18nStrings",
-      "optional": true,
-      "type": "AvatarProps.I18nStrings",
-    },
-    Object {
-      "description": "Specifies the icon to be displayed in Avatar.
-\\"user-profile\\" icon is used by default for \\"user\\" avatar
-\\"gen-ai\\" icon is used by default for \\"gen-ai\\" avatar",
+      "description": "Specifies the icon to be displayed as Avatar.
+If you set both \`iconName\` and \`initials\`, \`initials\` will take precedence.
+By default, \\"user-profile\\" icon is used for avatars with variant=\`default\`.
+By default, \\"gen-ai\\" icon is used for avatars with variant=\`gen-ai\`",
       "inlineType": Object {
         "name": "IconProps.Name",
         "type": "union",
@@ -2241,41 +2238,26 @@ If you set both \`iconUrl\` and \`iconSvg\`, \`iconSvg\` will take precedence.
       "type": "string",
     },
     Object {
-      "description": "The initials of user avatar's name.
-If passed, the avatar will show these initials.
-It should be at max 2 letters. If string is longer, the first 2 letters will be used.
-It can only be used with \\"user\\" avatar.",
+      "description": "The text content shown directly in the avatar's body.
+Can be 1 or 2 symbols long, every subsequent symbol is ignored.
+Use it to define initials that uniquely identify the avatar's owner.",
       "name": "initials",
       "optional": true,
       "type": "string",
     },
     Object {
       "description": "Indicates whether avatar is in loading state.
-It can only be used with \\"gen-ai\\" avatar.",
+??Note: this property is ignored for avatars with variant=\`default\`.??",
       "name": "loading",
       "optional": true,
       "type": "boolean",
     },
     Object {
-      "description": "Text to describe avatar's loading state, shown in tooltip.
-It can only be used with \\"gen-ai\\" avatar.",
-      "name": "loadingText",
+      "description": "The text content shown in the avatar's on-hover tooltip.
+Use it to define the entity the avatar belongs to which can be the name of the user (like \\"John Doe\\") or the AI assistant (like \\"Configuration Buddy\\").
+You can keep the property empty if the information is clear from the context in which case no tooltip will be shown.",
+      "name": "tooltipText",
       "optional": true,
-      "type": "string",
-    },
-    Object {
-      "description": "Type of the avatar.
-It can be \\"user\\" or \\"gen-ai\\"",
-      "inlineType": Object {
-        "name": "AvatarProps.Type",
-        "type": "union",
-        "values": Array [
-          "user",
-          "gen-ai",
-        ],
-      },
-      "name": "type",
-      "optional": false,
       "type": "string",
     },
   ],

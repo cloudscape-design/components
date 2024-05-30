@@ -30,32 +30,34 @@ export default function AvatarsPage() {
     <div style={{ padding: 30 }}>
       <h1>Avatar demo</h1>
 
-      <FormField label="Default user and gen-ai avatars">
-        <Avatar type="user" ariaLabel="User avatar" i18nStrings={{ avatarAriaRoleDescription: 'Avatar' }} />
-        <Avatar type="gen-ai" ariaLabel="Gen AI avatar" />
-        <Avatar type="gen-ai" ariaLabel="Gen AI avatar loading" loading={true} />
+      <FormField label="Default and gen-ai avatars without tooltip">
+        <Avatar color="default" ariaLabel="User avatar" />
+        <Avatar color="default" ariaLabel="User avatar" loading={true} />
+        <Avatar color="gen-ai" iconName="gen-ai" ariaLabel="Gen AI avatar" />
+        <Avatar color="gen-ai" iconName="gen-ai" ariaLabel="Gen AI avatar loading" loading={true} />
       </FormField>
 
       <br />
 
-      <FormField label="Different combinations with tooltip">
-        <Avatar type="user" ariaLabel="User avatar" fullName="Timothee Fontaka" data-testid="user-avatar-with-name" />
-        <Avatar type="user" ariaLabel="User avatar" fullName="Timothee Fontaka" initials="TF" />
+      <FormField label="Different avatar combinations with tooltip">
+        <Avatar color="default" ariaLabel="User avatar" tooltipText="Timothee Fontaka" />
+        <Avatar color="default" ariaLabel="User avatar" tooltipText="Timothee Fontaka" initials="TF" />
+        <Avatar color="default" ariaLabel="User avatar" iconName="star-filled" tooltipText="Timothee Fontaka" />
+        <Avatar color="default" ariaLabel="User avatar" iconSvg={customIconSvg} tooltipText="Custom icon SVG" />
+        <Avatar color="default" ariaLabel="User avatar" iconUrl={img} tooltipText="Custom icon SVG" />
+        <Avatar color="default" ariaLabel="User avatar loading" loading={true} tooltipText="Typing" />
+
+        <Avatar color="gen-ai" iconName="gen-ai" ariaLabel="Gen AI avatar" tooltipText="Gen AI assistant" />
+        <Avatar color="gen-ai" ariaLabel="Gen AI avatar" tooltipText="AI assistant" initials="AI" />
+        <Avatar color="gen-ai" ariaLabel="Gen AI avatar" iconName="star-filled" tooltipText="Existing icon" />
+        <Avatar color="gen-ai" ariaLabel="Gen AI avatar" iconSvg={customIconSvg} tooltipText="Custom icon SVG" />
+        <Avatar color="gen-ai" ariaLabel="Gen AI avatar" iconUrl={img} tooltipText="Custom icon URL" />
         <Avatar
-          type="gen-ai"
-          ariaLabel="Gen AI avatar"
-          fullName="Gen AI assistant"
-          data-testid="gen-ai-avatar-with-name"
-        />
-        <Avatar type="gen-ai" ariaLabel="Gen AI avatar" iconName="star-filled" fullName="Existing icon" />
-        <Avatar type="gen-ai" ariaLabel="Gen AI avatar" iconSvg={customIconSvg} fullName="Custom icon SVG" />
-        <Avatar type="gen-ai" ariaLabel="Gen AI avatar" iconUrl={img} fullName="Custom icon URL" />
-        <Avatar
-          type="gen-ai"
+          color="gen-ai"
+          iconName="gen-ai"
           ariaLabel="Gen AI avatar"
           loading={true}
-          loadingText="Generating response"
-          data-testid="gen-ai-avatar-with-loadingText"
+          tooltipText="Generating response"
         />
       </FormField>
     </div>

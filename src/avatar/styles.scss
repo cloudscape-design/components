@@ -46,6 +46,10 @@ $shadow-opacity: 0.1;
   }
 
   &.loading {
+    inset-block-end: 5px;
+  }
+
+  &.initials {
     inset-block-end: 2px;
   }
 

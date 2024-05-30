@@ -46,9 +46,6 @@
     "enteredTextLabel": "Use: \"{value}\"",
     "recoveryText": "Retry"
   },
-  "avatar": {
-    "avatarAriaRoleDescription": "Avatar"
-  },
   "breadcrumb-group": {
     "expandAriaLabel": "Show path"
   },

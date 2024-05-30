@@ -29,7 +29,7 @@ const customIconSvg = (
 
 const permutations = createPermutations<AvatarProps>([
   {
-    type: ['user', 'gen-ai'],
+    color: ['default', 'gen-ai'],
     initials: [undefined, 'JD'],
     loading: [false, true],
     iconName: [undefined, 'star-filled'],

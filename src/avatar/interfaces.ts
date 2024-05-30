@@ -5,45 +5,44 @@ import { IconProps } from '../icon/interfaces';
 
 export interface AvatarProps extends BaseComponentProps {
   /**
-   * Type of the avatar.
-   * It can be "user" or "gen-ai"
+   * Determines the color of the avatar.
+   * Use `gen-ai` for AI assistants and `default` for people and everything else.
    */
-  type: AvatarProps.Type;
+  color?: AvatarProps.Color;
 
   /**
-   * The full name of agent shown in the tooltip.
+   * The text content shown in the avatar's on-hover tooltip.
+   * Use it to define the entity the avatar belongs to which can be the name of the user (like "John Doe") or the AI assistant (like "Configuration Buddy").
+   * You can keep the property empty if the information is clear from the context in which case no tooltip will be shown.
    */
-  fullName?: string;
+  tooltipText?: string;
 
   /**
-   * The initials of user avatar's name.
-   * If passed, the avatar will show these initials.
-   * It should be at max 2 letters. If string is longer, the first 2 letters will be used.
-   * It can only be used with "user" avatar.
+   * The text content shown directly in the avatar's body.
+   * Can be 1 or 2 symbols long, every subsequent symbol is ignored.
+   * Use it to define initials that uniquely identify the avatar's owner.
    */
   initials?: string;
 
   /**
    * Indicates whether avatar is in loading state.
-   * It can only be used with "gen-ai" avatar.
+   * ??Note: this property is ignored for avatars with variant=`default`.??
    */
   loading?: boolean;
 
   /**
-   * Text to describe avatar's loading state, shown in tooltip.
-   * It can only be used with "gen-ai" avatar.
-   */
-  loadingText?: string;
-
-  /**
-   * Text to describe avatar icon/content.
+   * Text to describe the avatar for assistive technology.
+   * When more than one avatar is used, provide a unique label to each.
+   * For example, "User avatar" and "AI assistant avatar". Or "Your avatar" and "User avatar for John Doe".
+   * We suggest you include the `tooltipText` inside ariaLabel to ensure tooltipText is accessible.
    */
   ariaLabel?: string;
 
   /**
-   * Specifies the icon to be displayed in Avatar.
-   * "user-profile" icon is used by default for "user" avatar
-   * "gen-ai" icon is used by default for "gen-ai" avatar
+   * Specifies the icon to be displayed as Avatar.
+   * If you set both `iconName` and `initials`, `initials` will take precedence.
+   * By default, "user-profile" icon is used for avatars with variant=`default`.
+   * By default, "gen-ai" icon is used for avatars with variant=`gen-ai`
    */
   iconName?: IconProps.Name;
 
@@ -77,19 +76,8 @@ export interface AvatarProps extends BaseComponentProps {
    * In most cases, they aren't needed, as the `svg` element inherits styles from the icon component.
    */
   iconSvg?: React.ReactNode;
-
-  i18nStrings?: AvatarProps.I18nStrings;
 }
 
 export namespace AvatarProps {
-  export type Type = 'user' | 'gen-ai';
-
-  /**
-   * An object containing all the necessary localized strings required by the component.
-   * @i18n
-   */
-  export interface I18nStrings {
-    /** ARIA role description of avatar, e.g. "Avatar" */
-    avatarAriaRoleDescription?: string;
-  }
+  export type Color = 'default' | 'gen-ai';
 }
