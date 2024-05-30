@@ -25,7 +25,6 @@ import { getLimitedValue } from '../../split-panel/utils/size-utils';
 export default function Drawers() {
   const {
     disableBodyScroll,
-    drawers,
     drawersTriggerCount,
     hasDrawerViewportOverlay,
     hasOpenDrawer,
@@ -36,7 +35,7 @@ export default function Drawers() {
 
   const isUnfocusable = hasDrawerViewportOverlay && navigationOpen && !navigationHide;
 
-  if (!drawers || drawersTriggerCount === 0) {
+  if (drawersTriggerCount === 0) {
     return null;
   }
 
@@ -75,7 +74,7 @@ function ActiveDrawer() {
     drawerRef,
   } = useAppLayoutInternals();
 
-  const activeDrawer = drawers?.find(item => item.id === activeDrawerId) ?? null;
+  const activeDrawer = drawers.find(item => item.id === activeDrawerId) ?? null;
 
   const computedAriaLabels = {
     closeButton: activeDrawerId ? activeDrawer?.ariaLabels?.closeButton : ariaLabels?.toolsClose,
@@ -85,7 +84,7 @@ function ActiveDrawer() {
   const isHidden = !activeDrawerId;
   const isUnfocusable = isHidden || (hasDrawerViewportOverlay && navigationOpen && !navigationHide);
   const isToolsDrawer = activeDrawerId === TOOLS_DRAWER_ID;
-  const toolsContent = drawers?.find(drawer => drawer.id === TOOLS_DRAWER_ID)?.content;
+  const toolsContent = drawers.find(drawer => drawer.id === TOOLS_DRAWER_ID)?.content;
 
   const size = getLimitedValue(drawersMinWidth, drawerSize, drawersMaxWidth);
 
@@ -210,7 +209,7 @@ function DesktopTriggers() {
     return 0;
   };
 
-  const { visibleItems, overflowItems } = splitItems(drawers ?? undefined, getIndexOfOverflowItem(), activeDrawerId);
+  const { visibleItems, overflowItems } = splitItems(drawers, getIndexOfOverflowItem(), activeDrawerId);
   const overflowMenuHasBadge = !!overflowItems.find(item => item.badge);
 
   return (
@@ -313,10 +312,6 @@ export function MobileTriggers() {
   } = useAppLayoutInternals();
 
   const previousActiveDrawerId = useRef(activeDrawerId);
-
-  if (!drawers) {
-    return null;
-  }
 
   if (activeDrawerId) {
     previousActiveDrawerId.current = activeDrawerId;

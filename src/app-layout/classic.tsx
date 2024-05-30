@@ -23,8 +23,8 @@ import ContentWrapper, { ContentWrapperProps } from './content-wrapper';
 import { Drawer, DrawerTriggersBar } from './drawer';
 import { ResizableDrawer } from './drawer/resizable-drawer';
 import {
-  SPLIT_PANEL_MIN_WIDTH,
   SideSplitPanelDrawer,
+  SPLIT_PANEL_MIN_WIDTH,
   SplitPanelProvider,
   SplitPanelProviderProps,
 } from './split-panel';
@@ -120,14 +120,12 @@ const ClassicAppLayout = React.forwardRef(
       }
     );
     ariaLabels = ariaLabelsWithDrawers;
-    const hasDrawers = !!drawers;
 
     const { refs: navigationRefs, setFocus: focusNavButtons } = useFocusControl(navigationOpen);
-    const {
-      refs: toolsRefs,
-      setFocus: focusToolsButtons,
-      loseFocus: loseToolsFocus,
-    } = useFocusControl(toolsOpen || activeDrawer !== undefined, true);
+    const { refs: toolsRefs, setFocus: focusToolsButtons } = useFocusControl(
+      toolsOpen || activeDrawer !== undefined,
+      true
+    );
     const {
       refs: drawerRefs,
       setFocus: focusDrawersButtons,
@@ -351,7 +349,7 @@ const ClassicAppLayout = React.forwardRef(
         // tools padding is displayed in one of the three cases
         // 1. Nothing on the that screen edge (no tools panel and no split panel)
         toolsHide ||
-        (hasDrawers && !activeDrawer && (!splitPanelDisplayed || finalSplitPanePosition !== 'side')) ||
+        (!activeDrawer && (!splitPanelDisplayed || finalSplitPanePosition !== 'side')) ||
         // 2. Tools panel is present and open
         toolsVisible ||
         // 3. Split panel is open in side position
@@ -366,13 +364,7 @@ const ClassicAppLayout = React.forwardRef(
           onNavigationToggle(false);
         }
       },
-      focusToolsClose: () => {
-        if (hasDrawers) {
-          focusDrawersButtons(true);
-        } else {
-          focusToolsButtons(true);
-        }
-      },
+      focusToolsClose: () => focusDrawersButtons(true),
       focusActiveDrawer: () => focusDrawersButtons(true),
       focusSplitPanel: () => splitPanelRefs.slider.current?.focus(),
     }));
@@ -516,70 +508,42 @@ const ClassicAppLayout = React.forwardRef(
 
           {finalSplitPanePosition === 'side' && splitPanelWrapped}
 
-          {hasDrawers ? (
-            <ResizableDrawer
-              contentClassName={clsx(
-                activeDrawerId && testutilStyles['active-drawer'],
-                activeDrawerId === TOOLS_DRAWER_ID && testutilStyles.tools
-              )}
-              toggleClassName={testutilStyles['tools-toggle']}
-              closeClassName={clsx(
-                testutilStyles['active-drawer-close-button'],
-                activeDrawerId === TOOLS_DRAWER_ID && testutilStyles['tools-close']
-              )}
-              ariaLabels={{
-                openLabel: activeDrawer?.ariaLabels?.triggerButton,
-                closeLabel: activeDrawer?.ariaLabels?.closeButton,
-                mainLabel: activeDrawer?.ariaLabels?.drawerName,
-                resizeHandle: activeDrawer?.ariaLabels?.resizeHandle,
-              }}
-              minWidth={minDrawerSize}
-              maxWidth={drawerMaxSize}
-              width={activeDrawerSize}
-              bottomOffset={placement.insetBlockEnd}
-              topOffset={placement.insetBlockStart}
-              isMobile={isMobile}
-              onToggle={isOpen => {
-                if (!isOpen) {
-                  focusToolsButtons();
-                  focusDrawersButtons();
-                  onActiveDrawerChange(null);
-                }
-              }}
-              isOpen={true}
-              hideOpenButton={true}
-              toggleRefs={drawerRefs}
-              type="tools"
-              onLoseFocus={loseDrawersFocus}
-              activeDrawer={activeDrawer}
-              onResize={changeDetail => onActiveDrawerResize(changeDetail)}
-              refs={drawerRefs}
-              toolsContent={drawers?.find(drawer => drawer.id === TOOLS_DRAWER_ID)?.content}
-            >
-              {activeDrawer?.content}
-            </ResizableDrawer>
-          ) : (
-            !toolsHide && (
-              <Drawer
-                contentClassName={testutilStyles.tools}
-                toggleClassName={testutilStyles['tools-toggle']}
-                closeClassName={testutilStyles['tools-close']}
-                ariaLabels={togglesConfig.tools.getLabels(ariaLabels)}
-                width={toolsWidth}
-                bottomOffset={placement.insetBlockEnd}
-                topOffset={placement.insetBlockStart}
-                isMobile={isMobile}
-                onToggle={onToolsToggle}
-                isOpen={toolsOpen}
-                toggleRefs={toolsRefs}
-                type="tools"
-                onLoseFocus={loseToolsFocus}
-              >
-                {tools}
-              </Drawer>
-            )
-          )}
-          {hasDrawers && drawers.length > 0 && (
+          <ResizableDrawer
+            contentClassName={clsx(activeDrawerId && testutilStyles['active-drawer'], testutilStyles.tools)}
+            toggleClassName={testutilStyles['tools-toggle']}
+            closeClassName={clsx(testutilStyles['active-drawer-close-button'], testutilStyles['tools-close'])}
+            ariaLabels={{
+              openLabel: activeDrawer?.ariaLabels?.triggerButton,
+              closeLabel: activeDrawer?.ariaLabels?.closeButton,
+              mainLabel: activeDrawer?.ariaLabels?.drawerName,
+              resizeHandle: activeDrawer?.ariaLabels?.resizeHandle,
+            }}
+            minWidth={minDrawerSize}
+            maxWidth={drawerMaxSize}
+            width={activeDrawerSize}
+            bottomOffset={placement.insetBlockEnd}
+            topOffset={placement.insetBlockStart}
+            isMobile={isMobile}
+            onToggle={isOpen => {
+              if (!isOpen) {
+                focusToolsButtons();
+                focusDrawersButtons();
+                onActiveDrawerChange(null);
+              }
+            }}
+            isOpen={true}
+            hideOpenButton={true}
+            toggleRefs={drawerRefs}
+            type="tools"
+            onLoseFocus={loseDrawersFocus}
+            activeDrawer={activeDrawer}
+            onResize={changeDetail => onActiveDrawerResize(changeDetail)}
+            refs={drawerRefs}
+            toolsContent={drawers?.find(drawer => drawer.id === TOOLS_DRAWER_ID)?.content}
+          >
+            {activeDrawer?.content}
+          </ResizableDrawer>
+          {drawers.length > 0 && (
             <DrawerTriggersBar
               drawerRefs={drawerRefs}
               bottomOffset={placement.insetBlockEnd}

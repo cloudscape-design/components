@@ -33,7 +33,7 @@ import { getOffsetInlineStart } from '@cloudscape-design/component-toolkit/inter
 
 interface AppLayoutInternals extends AppLayoutPropsWithDefaults {
   activeDrawerId: string | null;
-  drawers: Array<AppLayoutProps.Drawer> | undefined;
+  drawers: Array<AppLayoutProps.Drawer>;
   drawersAriaLabel: string | undefined;
   drawersOverflowAriaLabel: string | undefined;
   drawersOverflowWithBadgeAriaLabel: string | undefined;
@@ -311,7 +311,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     });
 
     const [drawersMaxWidth, setDrawersMaxWidth] = useState(toolsWidth);
-    const hasDrawers = !!drawers && drawers.length > 0;
+    const hasDrawers = drawers.length > 0;
 
     const {
       refs: drawersRefs,
@@ -338,7 +338,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       !skipFocusControl && focusDrawersButtons();
     };
 
-    let drawersTriggerCount = drawers ? drawers.length : !toolsHide ? 1 : 0;
+    let drawersTriggerCount = drawers.length;
     if (splitPanelDisplayed && splitPanelPosition === 'side') {
       drawersTriggerCount++;
     }
@@ -447,12 +447,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       function handleSplitPanelMaxWidth() {
         const contentGapRight = 50; // Approximately 24px when rendered but doubled for safety
         const toolsFormOffsetWidth = 120; // Approximately 60px when rendered but doubled for safety
-        const getPanelOffsetWidth = () => {
-          if (drawers) {
-            return activeDrawerId ? drawerSize : 0;
-          }
-          return isToolsOpen ? toolsWidth : 0;
-        };
+        const getPanelOffsetWidth = () => (activeDrawerId ? drawerSize : 0);
 
         setSplitPanelMaxWidth(
           placement.inlineSize -

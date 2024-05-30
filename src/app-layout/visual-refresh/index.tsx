@@ -13,7 +13,6 @@ import MobileToolbar from './mobile-toolbar';
 import Navigation from './navigation';
 import Notifications from './notifications';
 import SplitPanel from './split-panel';
-import Tools from './tools';
 
 const AppLayoutWithRef = React.forwardRef(function AppLayout(
   props: AppLayoutPropsWithDefaults,
@@ -38,10 +37,6 @@ const AppLayoutWithRef = React.forwardRef(function AppLayout(
           <Main />
 
           <SplitPanel.Bottom />
-
-          <Tools>
-            <SplitPanel.Side />
-          </Tools>
 
           <Drawers />
         </Layout>

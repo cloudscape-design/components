@@ -123,41 +123,40 @@ export function MobileToolbar({
           onClick={onToolsOpen}
         />
       )}
-      {drawers && (
-        <aside aria-label={ariaLabels?.drawers} role="region">
-          <div className={clsx(styles['drawers-container'])} role="toolbar" aria-orientation="horizontal">
-            {visibleItems.map((item, index) => (
-              <div
-                className={clsx(styles['mobile-toggle'], styles['mobile-toggle-type-drawer'])}
-                key={index}
-                onClick={() => onDrawerChange(item.id)}
-              >
-                <ToggleButton
-                  className={clsx(
-                    testutilStyles['drawers-trigger'],
-                    item.id === TOOLS_DRAWER_ID && testutilStyles['tools-toggle']
-                  )}
-                  iconName={item.trigger.iconName}
-                  iconSvg={item.trigger.iconSvg}
-                  badge={item.badge}
-                  ariaLabel={item.ariaLabels?.triggerButton}
-                  ariaExpanded={activeDrawerId === item.id}
-                  testId={`awsui-app-layout-trigger-${item.id}`}
-                />
-              </div>
-            ))}
-            {overflowItems.length > 0 && (
-              <div className={clsx(styles['mobile-toggle'], styles['mobile-toggle-type-drawer'])}>
-                <OverflowMenu
-                  ariaLabel={overflowMenuHasBadge ? ariaLabels?.drawersOverflowWithBadge : ariaLabels?.drawersOverflow}
-                  items={overflowItems}
-                  onItemClick={({ detail }) => onDrawerChange(detail.id)}
-                />
-              </div>
-            )}
-          </div>
-        </aside>
-      )}
+
+      <aside aria-label={ariaLabels?.drawers} role="region">
+        <div className={clsx(styles['drawers-container'])} role="toolbar" aria-orientation="horizontal">
+          {visibleItems.map((item, index) => (
+            <div
+              className={clsx(styles['mobile-toggle'], styles['mobile-toggle-type-drawer'])}
+              key={index}
+              onClick={() => onDrawerChange(item.id)}
+            >
+              <ToggleButton
+                className={clsx(
+                  testutilStyles['drawers-trigger'],
+                  item.id === TOOLS_DRAWER_ID && testutilStyles['tools-toggle']
+                )}
+                iconName={item.trigger.iconName}
+                iconSvg={item.trigger.iconSvg}
+                badge={item.badge}
+                ariaLabel={item.ariaLabels?.triggerButton}
+                ariaExpanded={activeDrawerId === item.id}
+                testId={`awsui-app-layout-trigger-${item.id}`}
+              />
+            </div>
+          ))}
+          {overflowItems.length > 0 && (
+            <div className={clsx(styles['mobile-toggle'], styles['mobile-toggle-type-drawer'])}>
+              <OverflowMenu
+                ariaLabel={overflowMenuHasBadge ? ariaLabels?.drawersOverflowWithBadge : ariaLabels?.drawersOverflow}
+                items={overflowItems}
+                onItemClick={({ detail }) => onDrawerChange(detail.id)}
+              />
+            </div>
+          )}
+        </div>
+      </aside>
     </div>
   );
 }

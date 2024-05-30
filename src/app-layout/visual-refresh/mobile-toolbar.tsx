@@ -15,24 +15,17 @@ export default function MobileToolbar() {
     breadcrumbs,
     drawers,
     handleNavigationClick,
-    handleToolsClick,
     hasDrawerViewportOverlay,
     isMobile,
     navigationOpen,
     __embeddedViewMode,
-    isToolsOpen,
     navigationHide,
     navigationRefs,
     toolsHide,
-    toolsRefs,
     headerVariant,
   } = useAppLayoutInternals();
 
-  if (
-    !isMobile ||
-    __embeddedViewMode ||
-    (navigationHide && !breadcrumbs && toolsHide && (!drawers || drawers.length === 0))
-  ) {
+  if (!isMobile || __embeddedViewMode || (navigationHide && !breadcrumbs && toolsHide && drawers.length === 0)) {
     return null;
   }
 
@@ -74,30 +67,7 @@ export default function MobileToolbar() {
         <div className={clsx(styles['mobile-toolbar-breadcrumbs'], testutilStyles.breadcrumbs)}>{breadcrumbs}</div>
       )}
 
-      {drawers ? (
-        <DrawersMobileTriggers />
-      ) : (
-        !toolsHide && (
-          <aside
-            aria-hidden={isToolsOpen}
-            aria-label={ariaLabels?.tools ?? undefined}
-            className={clsx(styles['mobile-toolbar-tools'], { [testutilStyles['drawer-closed']]: !isToolsOpen })}
-          >
-            <InternalButton
-              className={testutilStyles['tools-toggle']}
-              ariaExpanded={isToolsOpen}
-              disabled={hasDrawerViewportOverlay}
-              ariaLabel={ariaLabels?.toolsToggle ?? undefined}
-              iconName="status-info"
-              formAction="none"
-              onClick={() => handleToolsClick(true)}
-              variant="icon"
-              ref={toolsRefs.toggle}
-              __nativeAttributes={{ 'aria-haspopup': true }}
-            />
-          </aside>
-        )
-      )}
+      <DrawersMobileTriggers />
     </section>
   );
 }
