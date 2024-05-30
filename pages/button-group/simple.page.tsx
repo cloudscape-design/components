@@ -13,6 +13,7 @@ const items1: ButtonGroupProps['items'] = [
     iconName: 'thumbs-up',
     text: 'Like',
     actionPopoverText: 'Liked',
+    tooltipDisabled: true,
   },
   {
     type: 'button',
@@ -21,6 +22,13 @@ const items1: ButtonGroupProps['items'] = [
     iconName: 'thumbs-down',
     text: 'Dislike',
     actionPopoverText: 'Disliked',
+  },
+  {
+    type: 'button',
+    variant: 'icon',
+    id: 'thump-down',
+    iconName: 'treeview-expand',
+    text: 'View',
   },
 ];
 
