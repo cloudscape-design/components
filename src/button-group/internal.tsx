@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useImperativeHandle, useRef } from 'react';
+import React, { useImperativeHandle, useRef, useState } from 'react';
 import { getBaseProps } from '../internal/base-component';
 import { ButtonGroupProps, InternalButtonGroupProps } from './interfaces';
 import SpaceBetween from '../space-between/internal';
@@ -10,9 +10,11 @@ import {
   InternalItemOrGroup as ButtonDropdownInternalItemOrGroup,
   ButtonDropdownProps,
 } from '../button-dropdown/interfaces';
-import { fireCancelableEvent } from '../internal/events';
+import { CancelableEventHandler, fireCancelableEvent } from '../internal/events';
 import { ButtonProps } from '@cloudscape-design/components';
 import ItemElement from './item-element';
+import Tooltip from './tooltip';
+import StatusIndicator from '../status-indicator/internal';
 
 const InternalButtonGroup = React.forwardRef(
   (
@@ -44,12 +46,6 @@ const InternalButtonGroup = React.forwardRef(
       itemsRef.current[item.id] = element;
     };
 
-    const onClickHandler = (event: CustomEvent<ButtonDropdownProps.ItemClickDetails>) => {
-      if (onItemClick) {
-        fireCancelableEvent(onItemClick, { id: event.detail.id }, event);
-      }
-    };
-
     return (
       <div {...baseProps} ref={__internalRootRef}>
         <SpaceBetween direction="horizontal" size="xxs">
@@ -57,13 +53,10 @@ const InternalButtonGroup = React.forwardRef(
             <ItemElement key={index} item={item} onItemClick={onItemClick} ref={el => onSetButtonRef(item, el)} />
           ))}
           {collapsedItems.length > 0 && (
-            <ButtonDropdown
-              variant="icon"
-              mainAction={{ iconName: 'ellipsis', text: 'More' }}
-              items={itemsToDropdownItems(collapsedItems)}
-              onItemClick={(event: CustomEvent<ButtonDropdownProps.ItemClickDetails>) => onClickHandler(event)}
-              expandToViewport={dropdownExpandToViewport}
-              ariaLabel="More actions"
+            <ItemsDropdown
+              items={collapsedItems}
+              onItemClick={onItemClick}
+              dropdownExpandToViewport={dropdownExpandToViewport}
             />
           )}
         </SpaceBetween>
@@ -71,6 +64,72 @@ const InternalButtonGroup = React.forwardRef(
     );
   }
 );
+
+function ItemsDropdown({
+  items,
+  onItemClick,
+  dropdownExpandToViewport,
+}: {
+  items: ButtonGroupProps.Item[];
+  onItemClick?: CancelableEventHandler<ButtonGroupProps.ItemClickDetails>;
+  dropdownExpandToViewport?: boolean;
+}) {
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [popoverOpen, setPopoverOpen] = useState(false);
+  const [popoverText, setPopoverText] = useState('');
+
+  const onClickHandler = (event: CustomEvent<ButtonDropdownProps.ItemClickDetails>) => {
+    const itemId = event.detail.id;
+    setPopoverText('');
+
+    for (const item of items) {
+      if (item.type !== 'button') {
+        continue;
+      }
+
+      if (item.id === itemId && item.actionPopoverText) {
+        setPopoverText(item.actionPopoverText);
+        setPopoverOpen(true);
+        break;
+      }
+    }
+
+    if (onItemClick) {
+      fireCancelableEvent(onItemClick, { id: itemId }, event);
+    }
+  };
+
+  const onPopoverClose = () => {
+    setPopoverOpen(false);
+  };
+
+  const onPointerDown = () => {
+    setPopoverOpen(false);
+  };
+
+  const trackKey = items.map(item => (item.type === 'button' ? item.id : '')).join('-');
+
+  return (
+    <div ref={dropdownRef} onPointerDown={onPointerDown}>
+      <ButtonDropdown
+        variant="icon"
+        mainAction={{ iconName: 'ellipsis', text: 'More' }}
+        items={itemsToDropdownItems(items)}
+        onItemClick={(event: CustomEvent<ButtonDropdownProps.ItemClickDetails>) => onClickHandler(event)}
+        expandToViewport={dropdownExpandToViewport}
+        ref={dropdownRef}
+        ariaLabel="More actions"
+      />
+      <Tooltip
+        trackRef={dropdownRef}
+        trackKey={trackKey}
+        open={popoverOpen && popoverText.length > 0}
+        close={onPopoverClose}
+        content={<StatusIndicator type="success">{popoverText}</StatusIndicator>}
+      />
+    </div>
+  );
+}
 
 function splitItems(items: readonly ButtonGroupProps.Item[], truncateThreshold: number) {
   truncateThreshold = Math.max(truncateThreshold, 0);

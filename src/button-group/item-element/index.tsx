@@ -84,7 +84,7 @@ const ButtonItemElement = React.forwardRef(
           close={onPopoverClose}
           content={
             (isActionPopover && item.actionPopoverText && (
-              <StatusIndicator type={'success'}>{item.actionPopoverText}</StatusIndicator>
+              <StatusIndicator type="success">{item.actionPopoverText}</StatusIndicator>
             )) ||
             (!item.tooltipDisabled && item.text)
           }
