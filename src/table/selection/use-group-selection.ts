@@ -106,6 +106,9 @@ export function useGroupSelection<T>({
     if (!isRequestedItemsValid) {
       return;
     }
+    // TODO: remove all children when selecting/deselecting items
+    // Logic:
+    // For each requested: select/deselect it and unselect all of its children
     const selectedItems = selectionTree.isItemSelected(item)
       ? deselectItems(requestedItems)
       : selectItems(requestedItems);
