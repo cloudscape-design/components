@@ -8,7 +8,7 @@ import { getBaseProps } from '../internal/base-component';
 import { useSplitPanelContext } from '../internal/context/split-panel-context';
 
 import { SplitPanelProps } from './interfaces';
-import ResizeHandler from './icons/resize-handler';
+import PanelResizeHandle from '../internal/components/panel-resize-handle';
 import PreferencesModal from './preferences-modal';
 import { usePointerEvents } from '../app-layout/utils/use-pointer-events';
 import { useKeyboardEvents } from '../app-layout/utils/use-keyboard-events';
@@ -133,23 +133,18 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
     );
 
     const resizeHandle = (
-      <div
+      <PanelResizeHandle
         ref={refs.slider}
-        role="slider"
-        tabIndex={0}
-        aria-label={i18n('i18nStrings.resizeHandleAriaLabel', i18nStrings?.resizeHandleAriaLabel)}
-        aria-valuemax={100}
-        aria-valuemin={0}
+        className={testUtilStyles.slider}
+        ariaLabel={i18n('i18nStrings.resizeHandleAriaLabel', i18nStrings?.resizeHandleAriaLabel)}
         // Allows us to use the logical left/right keys to move the slider left/right,
         // but match aria keyboard behavior of using left/right to decrease/increase
         // the slider value.
-        aria-valuenow={position === 'bottom' ? relativeSize : 100 - relativeSize}
-        className={clsx(styles.slider, styles[`slider-${position}`], testUtilStyles.slider)}
+        ariaValuenow={position === 'bottom' ? relativeSize : 100 - relativeSize}
+        position={position}
         onKeyDown={onKeyDown}
         onPointerDown={onSliderPointerDown}
-      >
-        <ResizeHandler className={clsx(styles['slider-icon'], styles[`slider-icon-${position}`])} />
-      </div>
+      />
     );
 
     /*

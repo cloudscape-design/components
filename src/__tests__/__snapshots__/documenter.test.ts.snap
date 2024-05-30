@@ -7353,9 +7353,10 @@ Object {
     },
     Object {
       "defaultValue": "\\"full-page\\"",
+      "deprecatedTag": "You can safely remove this property as there is no longer any visual difference between \`full-page\` and \`embedded\` variants.",
       "description": "Specify a form variant with one of the following:
-* \`full-page\` - Use this variant when the form contains the entire content of the page. Full page variants implement the high contrast header and content behavior automatically.
-* \`embedded\` - Use this variant when the form doesn't occupy the full page. This variant doesn't use a high contrast header.",
+* \`full-page\` - Use this variant when the form contains the entire content of the page.
+* \`embedded\` - Use this variant when the form doesn't occupy the full page.",
       "inlineType": Object {
         "name": "",
         "type": "union",
@@ -7367,7 +7368,6 @@ Object {
       "name": "variant",
       "optional": true,
       "type": "string",
-      "visualRefreshTag": "",
     },
   ],
   "regions": Array [
