@@ -60,7 +60,7 @@ export namespace ButtonGroupProps {
    */
   export interface Button {
     type: 'button';
-    variant?: Variant;
+    variant: Variant;
     id: string;
     text: string;
     lang?: string;
