@@ -246,9 +246,6 @@ export default <T extends PieChartProps.Datum>({
   );
   const onApplicationFocus = useCallback(
     (_event: any, target: 'keyboard' | 'mouse') => {
-      // We need to make sure that we do not re-show the popover when we focus the segment after the popover is dismissed.
-      // Normally we would check `event.relatedTarget` for the previously focused element,
-      // but this is not supported for SVG elements in IE11. The workaround is this `popoverDismissedRecently` ref.
       if (pinnedSegment !== null || popoverDismissedRecently.current || target === 'mouse') {
         return;
       }
