@@ -8,14 +8,17 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 import { ButtonGroupProps } from './interfaces';
 // internal instance
 import InternalButtonGroup from './internal';
+import { getBaseProps } from '../internal/base-component';
 
 // export type definitions for public use
 export { ButtonGroupProps };
 
-export default function ButtonGroup(props: ButtonGroupProps) {
+const ButtonGroup = React.forwardRef((props: ButtonGroupProps, ref: React.Ref<ButtonGroupProps.Ref>) => {
+  const baseProps = getBaseProps(props);
   const baseComponentProps = useBaseComponent('ButtonGroup');
   const filteredProps = getExternalProps(props);
-  return <InternalButtonGroup {...baseComponentProps} {...filteredProps} />;
-}
+  return <InternalButtonGroup {...baseProps} {...baseComponentProps} {...filteredProps} ref={ref} />;
+});
 
 applyDisplayName(ButtonGroup, 'ButtonGroup');
+export default ButtonGroup;
