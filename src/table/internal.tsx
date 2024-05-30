@@ -596,7 +596,7 @@ const InternalTable = React.forwardRef(
                             className={styles.row}
                             {...rowRoleProps}
                           >
-                            {getItemSelectionProps && (
+                            {getItemSelectionProps && getSelectAllProps && (
                               <TableTdElement
                                 {...sharedCellProps}
                                 className={clsx(styles['selection-control'])}
@@ -604,7 +604,14 @@ const InternalTable = React.forwardRef(
                                 columnId={selectionColumnId}
                                 colIndex={0}
                               >
-                                {null}
+                                {selectionType === 'group' ? (
+                                  <SelectionControl
+                                    onFocusDown={moveFocusDown}
+                                    onFocusUp={moveFocusUp}
+                                    {...(row.item ? getItemSelectionProps(row.item) : getSelectAllProps())}
+                                    disabled={true}
+                                  />
+                                ) : null}
                               </TableTdElement>
                             )}
                             {visibleColumnDefinitions.map((column, colIndex) => (
