@@ -15,7 +15,7 @@ import { ItemSet } from './utils';
 
 type SelectionOptions<T> = Pick<
   TableProps<T>,
-  'ariaLabels' | 'items' | 'onSelectionChange' | 'selectedItems' | 'selectionType' | 'trackBy'
+  'ariaLabels' | 'items' | 'onSelectionChange' | 'selectedItems' | 'selectionInverted' | 'selectionType' | 'trackBy'
 >;
 
 export function useGroupSelection<T>({
@@ -23,6 +23,7 @@ export function useGroupSelection<T>({
   items,
   onSelectionChange,
   selectedItems = [],
+  selectionInverted = false,
   selectionType,
   trackBy,
 }: SelectionOptions<T>): {
@@ -127,7 +128,10 @@ export function useGroupSelection<T>({
       // If neither -> set inverted=true and selectedItems=[]
       onChange: handleToggleAll,
       // TODO: pass inverted here too
-      ariaLabel: joinStrings(ariaLabels?.selectionGroupLabel, ariaLabels?.allItemsSelectionLabel?.({ selectedItems })),
+      ariaLabel: joinStrings(
+        ariaLabels?.selectionGroupLabel,
+        ariaLabels?.allItemsSelectionLabel?.({ selectedItems, selectionInverted })
+      ),
     }),
     getItemSelectionProps: (item: T): SelectionProps => ({
       name: selectionControlName,
@@ -150,7 +154,7 @@ export function useGroupSelection<T>({
         // TODO: see what this label is for and if it needs to be different for groups and items
         ariaLabels?.selectionGroupLabel,
         // TODO: pass inverted here too
-        ariaLabels?.itemSelectionLabel?.({ selectedItems }, item)
+        ariaLabels?.itemSelectionLabel?.({ selectedItems, selectionInverted }, item)
       ),
     }),
   };

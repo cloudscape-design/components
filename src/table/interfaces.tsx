@@ -428,6 +428,7 @@ export namespace TableProps {
   export type Variant = 'container' | 'embedded' | 'borderless' | 'stacked' | 'full-page';
   export interface SelectionState<T> {
     selectedItems: ReadonlyArray<T>;
+    selectionInverted?: boolean;
   }
   export interface SelectionChangeDetail<T> {
     selectedItems: T[];
