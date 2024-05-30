@@ -38,7 +38,7 @@ export namespace ButtonGroupProps {
   /**
    * - `id` (string) - allows to identify the item that the user clicked on. Mandatory for individual items, optional for categories.
 
-   * - `text` (string) - description shown in the menu for this item.
+   * - `text` (string) - description shown as a tooltip or in the menu for this item.
 
    * - `lang` (string) - (Optional) The language of the item, provided as a BCP 47 language tag.
 
@@ -54,8 +54,6 @@ export namespace ButtonGroupProps {
 
    * - `iconSvg` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/icon/).
 
-   * - `tooltipText` (string) - (Optional) Text that appears in a tooltip when the user hovers over the item.
-
    * - `actionPopoverText` (string) - (Optional) Text that appears when the user clicks the item. Use to provide feedback to the user.
    */
   export interface Button {
@@ -70,7 +68,6 @@ export namespace ButtonGroupProps {
     iconName?: IconProps.Name;
     iconUrl?: string;
     iconSvg?: React.ReactNode;
-    tooltipText?: string;
     actionPopoverText?: string;
   }
 

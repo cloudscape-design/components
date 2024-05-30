@@ -67,7 +67,7 @@ function ButtonItemElement({
         variant={item.variant}
         disabled={item.disabled}
         iconName={item.iconName}
-        iconAlt={item.tooltipText}
+        iconAlt={item.text}
         iconSvg={item.iconSvg}
         ariaLabel={item.text}
         onClick={event => onClickHandler(event)}
@@ -83,8 +83,7 @@ function ButtonItemElement({
           (isActionPopover && item.actionPopoverText && (
             <StatusIndicator type={'success'}>{item.actionPopoverText}</StatusIndicator>
           )) ||
-          item.tooltipText ||
-          null
+          item.text
         }
       />
     </div>
