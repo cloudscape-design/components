@@ -1,6 +1,5 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-
 import React, { useImperativeHandle, useRef } from 'react';
 import { getBaseProps } from '../internal/base-component';
 import { ButtonGroupProps, InternalButtonGroupProps } from './interfaces';
@@ -17,7 +16,14 @@ import ItemElement from './item-element';
 
 const InternalButtonGroup = React.forwardRef(
   (
-    { items = [], limit = 5, onItemClick, __internalRootRef = null, ...props }: InternalButtonGroupProps,
+    {
+      items = [],
+      limit = 5,
+      onItemClick,
+      __internalRootRef = null,
+      dropdownExpandToViewport,
+      ...props
+    }: InternalButtonGroupProps,
     ref: React.Ref<ButtonGroupProps.Ref>
   ) => {
     const itemsRef = useRef<Record<string, ButtonProps.Ref | null>>({});
@@ -56,6 +62,7 @@ const InternalButtonGroup = React.forwardRef(
               mainAction={{ iconName: 'ellipsis', text: 'More' }}
               items={itemsToDropdownItems(collapsedItems)}
               onItemClick={(event: CustomEvent<ButtonDropdownProps.ItemClickDetails>) => onClickHandler(event)}
+              expandToViewport={dropdownExpandToViewport}
             />
           )}
         </SpaceBetween>
