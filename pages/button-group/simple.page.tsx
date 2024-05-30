@@ -4,6 +4,7 @@ import * as React from 'react';
 
 import ButtonGroup, { ButtonGroupProps } from '~components/button-group';
 import ScreenshotArea from '../utils/screenshot-area';
+import { Button } from '~components';
 
 const items1: ButtonGroupProps['items'] = [
   {
@@ -126,8 +127,14 @@ const items3: ButtonGroupProps['items'] = [
 ];
 
 export default function ButtonGroupPage() {
+  const ref = React.useRef<ButtonGroupProps.Ref>(null);
+
   const onItemClick = (event: CustomEvent<ButtonGroupProps.ItemClickDetails>) => {
     console.log('Item clicked:', event.detail.id);
+  };
+
+  const onFocusButtonClick = () => {
+    ref.current?.focus('copy');
   };
 
   return (
@@ -147,7 +154,9 @@ export default function ButtonGroupPage() {
       </article>
       <article>
         <h1>Group with overflow</h1>
-        <ButtonGroup items={items3} onItemClick={onItemClick} />
+        <ButtonGroup items={items3} onItemClick={onItemClick} ref={ref} />
+        <br />
+        <Button onClick={onFocusButtonClick}>Focus on copy</Button>
       </article>
     </ScreenshotArea>
   );

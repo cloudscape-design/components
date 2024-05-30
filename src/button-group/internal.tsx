@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React from 'react';
+import React, { useImperativeHandle, useRef } from 'react';
 import { getBaseProps } from '../internal/base-component';
 import { ButtonGroupProps, InternalButtonGroupProps } from './interfaces';
 import SpaceBetween from '../space-between/internal';
@@ -12,42 +12,57 @@ import {
   ButtonDropdownProps,
 } from '../button-dropdown/interfaces';
 import { fireCancelableEvent } from '../internal/events';
+import { ButtonProps } from '@cloudscape-design/components';
 import ItemElement from './item-element';
 
-export default function InternalButtonGroup({
-  items = [],
-  limit = 5,
-  onItemClick,
-  __internalRootRef = null,
-  ...props
-}: InternalButtonGroupProps) {
-  const baseProps = getBaseProps(props);
-  const { visibleItems, collapsedItems } = splitItems(items, limit);
+const InternalButtonGroup = React.forwardRef(
+  (
+    { items = [], limit = 5, onItemClick, __internalRootRef = null, ...props }: InternalButtonGroupProps,
+    ref: React.Ref<ButtonGroupProps.Ref>
+  ) => {
+    const itemsRef = useRef<Record<string, ButtonProps.Ref | null>>({});
+    const baseProps = getBaseProps(props);
+    const { visibleItems, collapsedItems } = splitItems(items, limit);
 
-  const onClickHandler = (event: CustomEvent<ButtonDropdownProps.ItemClickDetails>) => {
-    if (onItemClick) {
-      fireCancelableEvent(onItemClick, { id: event.detail.id }, event);
-    }
-  };
+    useImperativeHandle(ref, () => ({
+      focus: id => {
+        itemsRef.current[id]?.focus();
+      },
+    }));
 
-  return (
-    <div {...baseProps} ref={__internalRootRef}>
-      <SpaceBetween direction="horizontal" size="xxs">
-        {visibleItems.map((item, index) => (
-          <ItemElement key={index} item={item} onItemClick={onItemClick} />
-        ))}
-        {collapsedItems.length > 0 && (
-          <ButtonDropdown
-            variant="icon"
-            mainAction={{ iconName: 'ellipsis', text: 'More' }}
-            items={itemsToDropdownItems(collapsedItems)}
-            onItemClick={(event: CustomEvent<ButtonDropdownProps.ItemClickDetails>) => onClickHandler(event)}
-          />
-        )}
-      </SpaceBetween>
-    </div>
-  );
-}
+    const onSetButtonRef = (item: ButtonGroupProps.Item, element: ButtonProps.Ref | null) => {
+      if (item.type !== 'button') {
+        return;
+      }
+
+      itemsRef.current[item.id] = element;
+    };
+
+    const onClickHandler = (event: CustomEvent<ButtonDropdownProps.ItemClickDetails>) => {
+      if (onItemClick) {
+        fireCancelableEvent(onItemClick, { id: event.detail.id }, event);
+      }
+    };
+
+    return (
+      <div {...baseProps} ref={__internalRootRef}>
+        <SpaceBetween direction="horizontal" size="xxs">
+          {visibleItems.map((item, index) => (
+            <ItemElement key={index} item={item} onItemClick={onItemClick} ref={el => onSetButtonRef(item, el)} />
+          ))}
+          {collapsedItems.length > 0 && (
+            <ButtonDropdown
+              variant="icon"
+              mainAction={{ iconName: 'ellipsis', text: 'More' }}
+              items={itemsToDropdownItems(collapsedItems)}
+              onItemClick={(event: CustomEvent<ButtonDropdownProps.ItemClickDetails>) => onClickHandler(event)}
+            />
+          )}
+        </SpaceBetween>
+      </div>
+    );
+  }
+);
 
 function splitItems(items: readonly ButtonGroupProps.Item[], truncateThreshold: number) {
   truncateThreshold = Math.max(truncateThreshold, 0);
@@ -93,3 +108,5 @@ function itemsToDropdownItems(items: readonly ButtonGroupProps.Item[]) {
 
   return internalItems;
 }
+
+export default InternalButtonGroup;
