@@ -43,14 +43,7 @@ const VirtualList = ({
   }, [autosuggestItemsState.highlightType, autosuggestItemsState.highlightedIndex, rowVirtualizer]);
 
   return (
-    <OptionsList
-      {...menuProps}
-      onLoadMore={handleLoadMore}
-      ref={scrollRef}
-      open={true}
-      // to prevent closing the list when clicking the scrollbar on IE11
-      nativeAttributes={{ unselectable: 'on' }}
-    >
+    <OptionsList {...menuProps} onLoadMore={handleLoadMore} ref={scrollRef} open={true}>
       <div
         aria-hidden="true"
         key="total-size"

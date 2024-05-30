@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useLayoutEffect, useState } from 'react';
 
 export type FocusableChangeHandler = (isFocusable: boolean) => void;
 
@@ -32,7 +32,7 @@ export function useSingleTabStopNavigation(
   const navigationDisabled = options?.tabIndex && options?.tabIndex < 0;
   const navigationActive = contextNavigationActive && !navigationDisabled;
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (navigationActive && focusable && focusable.current) {
       const unregister = registerFocusable(focusable.current, isFocusable => setFocusTargetActive(isFocusable));
       return () => unregister();
