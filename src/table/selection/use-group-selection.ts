@@ -9,92 +9,33 @@ import { joinStrings } from '../../internal/utils/strings';
 import { SelectionProps } from './interfaces';
 import { ItemSet } from './utils';
 
+// When selectionType="grouped" the checkboxes cannot be disabled so the `isItemDisabled` property is ignored.
+// That is because selecting a group implies selection of children even if children are not loaded so that
+// we cannot check if the children are disabled.
+
 type SelectionOptions<T> = Pick<
   TableProps<T>,
-  | 'ariaLabels'
-  | 'isItemDisabled'
-  | 'items'
-  | 'loading'
-  | 'onSelectionChange'
-  | 'selectedItems'
-  | 'selectionType'
-  | 'trackBy'
+  'ariaLabels' | 'items' | 'onSelectionChange' | 'selectedItems' | 'selectionType' | 'trackBy'
 >;
 
-export function useSelection<T>(options: SelectionOptions<T>): {
+export function useGroupSelection<T>({
+  ariaLabels,
+  items,
+  onSelectionChange,
+  selectedItems = [],
+  selectionType,
+  trackBy,
+}: SelectionOptions<T>): {
   isItemSelected: (item: T) => boolean;
   getSelectAllProps?: () => SelectionProps;
   getItemSelectionProps?: (item: T) => SelectionProps;
 } {
-  const singleSelectionProps = useSingleSelection(options);
-  const multiSelectionProps = useMultiSelection(options);
-  switch (options.selectionType) {
-    case 'single':
-      return singleSelectionProps;
-    case 'multi':
-      return multiSelectionProps;
-    default:
-      return { isItemSelected: () => false };
-  }
-}
-
-function useSingleSelection<T>({
-  ariaLabels,
-  isItemDisabled = () => false,
-  onSelectionChange,
-  selectedItems = [],
-  selectionType,
-  trackBy,
-}: SelectionOptions<T>) {
-  // The name assigned to all controls to combine them in a single group.
-  const selectionControlName = useUniqueId();
-
-  if (selectionType !== 'single') {
-    return { isItemSelected: () => false };
-  }
-
-  // Selection state for individual items.
-  const selectedSet = new ItemSet(trackBy, selectedItems.slice(0, 1));
-  const isItemSelected = selectedSet.has.bind(selectedSet);
-
-  const handleToggleItem = (item: T) => {
-    if (!isItemDisabled(item) && !isItemSelected(item)) {
-      fireNonCancelableEvent(onSelectionChange, { selectedItems: [item] });
-    }
-  };
-
-  return {
-    isItemSelected,
-    getItemSelectionProps: (item: T): SelectionProps => ({
-      name: selectionControlName,
-      selectionType: 'single',
-      disabled: isItemDisabled(item),
-      checked: isItemSelected(item),
-      onChange: () => handleToggleItem(item),
-      ariaLabel: joinStrings(
-        ariaLabels?.selectionGroupLabel,
-        ariaLabels?.itemSelectionLabel?.({ selectedItems }, item)
-      ),
-    }),
-  };
-}
-
-function useMultiSelection<T>({
-  ariaLabels,
-  isItemDisabled = () => false,
-  items,
-  loading,
-  onSelectionChange,
-  selectedItems = [],
-  selectionType,
-  trackBy,
-}: SelectionOptions<T>) {
   // The name assigned to all controls to combine them in a single group.
   const selectionControlName = useUniqueId();
   const [shiftPressed, setShiftPressed] = useState(false);
   const [lastClickedItem, setLastClickedItem] = useState<null | T>(null);
 
-  if (selectionType !== 'multi') {
+  if (selectionType !== 'group') {
     return { isItemSelected: () => false };
   }
 
@@ -103,11 +44,9 @@ function useMultiSelection<T>({
   const isItemSelected = selectedSet.has.bind(selectedSet);
 
   // Derived selection state for all-items checkbox.
-  let allItemsDisabled = true;
   let allEnabledItemsSelected = true;
   for (const item of items) {
-    allItemsDisabled = allItemsDisabled && isItemDisabled(item);
-    allEnabledItemsSelected = allEnabledItemsSelected && (isItemSelected(item) || isItemDisabled(item));
+    allEnabledItemsSelected = allEnabledItemsSelected && isItemSelected(item);
   }
   const allItemsCheckboxSelected = selectedItems.length > 0 && allEnabledItemsSelected;
   const allItemsCheckboxIndeterminate = selectedItems.length > 0 && !allEnabledItemsSelected;
@@ -134,7 +73,7 @@ function useMultiSelection<T>({
   const selectItems = (requestedItems: readonly T[]) => {
     const newSelectedItems = [...selectedItems];
     requestedItems.forEach(newItem => {
-      if (!isItemSelected(newItem) && !isItemDisabled(newItem)) {
+      if (!isItemSelected(newItem)) {
         newSelectedItems.push(newItem);
       }
     });
@@ -147,7 +86,7 @@ function useMultiSelection<T>({
     const newSelectedItems: Array<T> = [];
     selectedItems.forEach(selectedItem => {
       const shouldUnselect = requestedItemsSet.has(selectedItem);
-      if (!shouldUnselect || isItemDisabled(selectedItem)) {
+      if (!shouldUnselect) {
         newSelectedItems.push(selectedItem);
       }
     });
@@ -160,34 +99,57 @@ function useMultiSelection<T>({
   };
 
   const handleToggleItem = (item: T) => {
-    if (!isItemDisabled(item)) {
-      const requestedItems = shiftPressed ? getShiftSelectedItems(item) : [item];
-      const selectedItems = isItemSelected(item) ? deselectItems(requestedItems) : selectItems(requestedItems);
-      fireNonCancelableEvent(onSelectionChange, { selectedItems });
-      setLastClickedItem(item);
-    }
+    const requestedItems = shiftPressed ? getShiftSelectedItems(item) : [item];
+    const selectedItems = isItemSelected(item) ? deselectItems(requestedItems) : selectItems(requestedItems);
+    fireNonCancelableEvent(onSelectionChange, { selectedItems });
+    setLastClickedItem(item);
   };
 
+  // TODO:
+  // consider selected items optimization on every change
   return {
+    // TODO:
+    // this function says item is selected when it is actually selected, not indeterminate
     isItemSelected,
     getSelectAllProps: (): SelectionProps => ({
       name: selectionControlName,
       selectionType: 'multi',
-      disabled: allItemsDisabled || !!loading,
+      disabled: false,
+      // TODO:
+      // True when all children are effectively selected
       checked: allItemsCheckboxSelected,
+      // TODO:
+      // True when some but not all children are effectively selected
       indeterminate: allItemsCheckboxIndeterminate,
+      // TODO:
+      // If checked -> set inverted=false and selectedItems=[]
+      // If indeterminate -> set inverted=true and selectedItems=[]
+      // If neither -> set inverted=true and selectedItems=[]
       onChange: handleToggleAll,
+      // TODO: pass inverted here too
       ariaLabel: joinStrings(ariaLabels?.selectionGroupLabel, ariaLabels?.allItemsSelectionLabel?.({ selectedItems })),
     }),
     getItemSelectionProps: (item: T): SelectionProps => ({
       name: selectionControlName,
       selectionType: 'multi',
-      disabled: isItemDisabled(item),
+      disabled: false,
+      // TODO:
+      // True when effectively selected or when all children are effectively selected
       checked: isItemSelected(item),
+      // TODO:
+      // True when some but not all children are effectively selected
+      indeterminate: false,
+      // TODO:
+      // Optimize or not optimize?
+      // Make item effectively selected
       onChange: () => handleToggleItem(item),
+      // TODO:
+      // Ensure this works as in all imaginable combinations
       onShiftToggle: (value: boolean) => setShiftPressed(value),
       ariaLabel: joinStrings(
+        // TODO: see what this label is for and if it needs to be different for groups and items
         ariaLabels?.selectionGroupLabel,
+        // TODO: pass inverted here too
         ariaLabels?.itemSelectionLabel?.({ selectedItems }, item)
       ),
     }),

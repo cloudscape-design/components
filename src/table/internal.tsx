@@ -54,6 +54,7 @@ import { ItemsLoader } from './progressive-loading/items-loader';
 import { useProgressiveLoadingProps } from './progressive-loading/progressive-loading-utils';
 import { usePrevious } from '../internal/hooks/use-previous';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useGroupSelection } from './selection/use-group-selection';
 
 const GRID_NAVIGATION_PAGE_SIZE = 10;
 const SELECTION_COLUMN_WIDTH = 54;
@@ -213,7 +214,7 @@ const InternalTable = React.forwardRef(
       visibleColumns,
     });
 
-    const { isItemSelected, getSelectAllProps, getItemSelectionProps } = useSelection({
+    const selectionProps = {
       items: allItems,
       trackBy,
       selectedItems,
@@ -222,7 +223,12 @@ const InternalTable = React.forwardRef(
       onSelectionChange,
       ariaLabels,
       loading,
-    });
+    };
+    const normalSelection = useSelection(selectionProps);
+    const groupSelection = useGroupSelection(selectionProps);
+    const { isItemSelected, getSelectAllProps, getItemSelectionProps } =
+      selectionType === 'group' ? groupSelection : normalSelection;
+
     const isRowSelected = (row: TableRow<T>) => row.type === 'data' && isItemSelected(row.item);
 
     if (isDevelopment) {
