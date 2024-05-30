@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect } from 'react';
 import clsx from 'clsx';
-
 import { Transition } from '../../internal/components/transition/index.js';
 import popoverStyles from '../../popover/styles.css.js';
 import PopoverContainer from '../../popover/container.js';

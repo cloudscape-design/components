@@ -1,6 +1,5 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-
 import { BaseComponentProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { IconProps } from '../icon/interfaces';
@@ -12,17 +11,29 @@ export interface ButtonGroupProps extends BaseComponentProps {
    */
   variant?: ButtonGroupProps.Variant;
   /**
-   * Max number of visible items in the button group, the rest will be hidden in a dropdown.
-   */
-  limit?: number;
-  /**
    * Array of objects of type 'icon-button' or 'divider'.
    */
   items: ReadonlyArray<ButtonGroupProps.Item>;
   /**
+   * Max number of visible items in the button group, the rest will be hidden in a dropdown.
+   */
+  limit?: number;
+  /**
    * Called when the user clicks on an item, and the item is not disabled. The event detail object contains the id of the clicked item.
    */
   onItemClick?: CancelableEventHandler<ButtonGroupProps.ItemClickDetails>;
+  /**
+   * By default, the dropdown height is constrained to fit inside the height of its next scrollable container element.
+   * Enabling this property will allow the dropdown to extend beyond that container by using fixed positioning and
+   * [React Portals](https://reactjs.org/docs/portals.html).
+   *
+   * Set this property if the dropdown would otherwise be constrained by a scrollable container,
+   * for example inside table and split view layouts.
+   *
+   * However, use discretion. We recommend you don't enable this property unless necessary
+   * because fixed positioning results in a slight, visible lag when scrolling complex pages.
+   */
+  dropdownExpandToViewport?: boolean;
 }
 
 export interface InternalButtonGroupProps extends ButtonGroupProps, InternalBaseComponentProps {}
