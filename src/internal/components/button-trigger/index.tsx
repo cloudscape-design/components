@@ -74,7 +74,7 @@ const ButtonTrigger = (
       inFilteringToken && styles['in-filtering-token'],
       inlineTokens && styles['inline-tokens']
     ),
-    disabled: disabled || readOnly,
+    disabled: disabled,
     'aria-expanded': pressed,
     'aria-label': ariaLabel,
     'aria-labelledby': ariaLabelledby,
@@ -84,7 +84,7 @@ const ButtonTrigger = (
     onKeyDown: onKeyDown && (event => fireKeyboardEvent(onKeyDown, event)),
     onKeyUp: onKeyUp && (event => fireKeyboardEvent(onKeyUp, event)),
     onMouseDown: onMouseDown && (event => fireCancelableEvent(onMouseDown, {}, event)),
-    onClick: onClick && (event => fireCancelableEvent(onClick, {}, event)),
+    onClick: readOnly ? undefined : onClick && (event => fireCancelableEvent(onClick, {}, event)),
     onFocus: onFocus && (event => fireCancelableEvent(onFocus, {}, event)),
     onBlur: onBlur && (event => fireCancelableEvent(onBlur, { relatedTarget: event.relatedTarget }, event)),
     autoFocus,
