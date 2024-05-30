@@ -107,7 +107,26 @@ export function useGroupSelection<T>({
   };
 
   // TODO:
-  // consider selected items optimization on every change
+  /**
+   * Create data structure
+   *
+   * For every item need to check:
+   *  - if item itself is selected
+   *  - if item parent is selected recursively
+   *  - if selection is inverted
+   *  - if item has children
+   *  - if some item children selected recursively
+   *  - if all item children selected recursively
+   */
+
+  // TODO:
+  // Must perform selection optimization so that the assumptions hold:
+  // 1. If group is selected but no children are selected (deeply) - then everything is selected in fact
+
+  // TODO:
+  // Consider progressive loading which must be have a disabled checkbox for completeness
+  // What is the state of the loader checkbox?
+
   return {
     // TODO:
     // this function says item is selected when it is actually selected, not indeterminate
