@@ -35,8 +35,12 @@ function ButtonItemElement({
   const [isActionPopover, setIsActionPopover] = useState(false);
 
   const onClickHandler = (event: CustomEvent<ClickDetail>) => {
-    setIsActionPopover(true);
-    setPopoverOpen(true);
+    if (item.actionPopoverText) {
+      setIsActionPopover(true);
+      setPopoverOpen(true);
+    } else {
+      setPopoverOpen(false);
+    }
 
     if (onItemClick) {
       fireCancelableEvent(onItemClick, { id: item.id }, event);

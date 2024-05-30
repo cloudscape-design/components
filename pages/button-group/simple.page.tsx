@@ -26,7 +26,7 @@ const items1: ButtonGroupProps['items'] = [
   {
     type: 'button',
     variant: 'icon',
-    id: 'thump-down',
+    id: 'expand',
     iconName: 'treeview-expand',
     text: 'View',
   },
