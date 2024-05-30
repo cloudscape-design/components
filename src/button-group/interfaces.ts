@@ -54,6 +54,8 @@ export namespace ButtonGroupProps {
 
    * - `iconSvg` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/icon/).
 
+   * - `tooltipDisabled` (boolean) - (Optional) Disables the tooltip for the item.
+
    * - `actionPopoverText` (string) - (Optional) Text that appears when the user clicks the item. Use to provide feedback to the user.
    */
   export interface Button {
@@ -68,6 +70,7 @@ export namespace ButtonGroupProps {
     iconName?: IconProps.Name;
     iconUrl?: string;
     iconSvg?: React.ReactNode;
+    tooltipDisabled?: boolean;
     actionPopoverText?: string;
   }
 

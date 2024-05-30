@@ -83,7 +83,7 @@ function ButtonItemElement({
           (isActionPopover && item.actionPopoverText && (
             <StatusIndicator type={'success'}>{item.actionPopoverText}</StatusIndicator>
           )) ||
-          item.text
+          (!item.tooltipDisabled && item.text)
         }
       />
     </div>
