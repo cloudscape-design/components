@@ -96,8 +96,14 @@ export function isTableCell(element: Element) {
 
 export function focusNextElement(element: null | HTMLElement) {
   if (element) {
+    // Table cells are not focusable by default (tabIndex=undefined) and cell.focus() is ignored.
+    // To force focusing we have to imperatively set tabIndex to -1. When focused, the grid navigation
+    // will update the tabIndex to 0 if the cell gets focused or set it to undefined if the cell content
+    // gets focused instead.
+    // We cannot make cells have tabIndex=-1 by default due to an associated bug with text selection,
+    // see: https://github.com/cloudscape-design/components/pull/2158.
     if (isTableCell(element)) {
-      element.tabIndex = 0;
+      element.tabIndex = -1;
     }
     element.focus();
   }
