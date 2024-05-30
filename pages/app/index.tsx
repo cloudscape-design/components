@@ -18,7 +18,6 @@ import StrictModeWrapper from './components/strict-mode-wrapper';
 import AppContext, { AppContextProvider, parseQuery } from './app-context';
 
 interface GlobalFlags {
-  removeHighContrastHeader?: boolean;
   appLayoutWidget?: boolean;
 }
 const awsuiVisualRefreshFlag = Symbol.for('awsui-visual-refresh-flag');
@@ -84,14 +83,13 @@ function App() {
 }
 
 const history = createHashHistory();
-const { direction, visualRefresh, appLayoutWidget, removeHighContrastHeader } = parseQuery(history.location.search);
+const { direction, visualRefresh, appLayoutWidget } = parseQuery(history.location.search);
 
 // The VR class needs to be set before any React rendering occurs.
 window[awsuiVisualRefreshFlag] = () => visualRefresh;
 if (!window[awsuiGlobalFlagsSymbol]) {
   window[awsuiGlobalFlagsSymbol] = {};
 }
-window[awsuiGlobalFlagsSymbol].removeHighContrastHeader = removeHighContrastHeader;
 window[awsuiGlobalFlagsSymbol].appLayoutWidget = appLayoutWidget;
 
 // Apply the direction value to the HTML element dir attribute
