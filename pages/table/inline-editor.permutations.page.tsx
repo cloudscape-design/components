@@ -2,14 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { TableBodyCell } from '~components/table/body-cell';
-import { TableProps } from '~components/table';
-import Input from '~components/input';
-import Multiselect from '~components/multiselect';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 import { useStickyColumns } from '~components/table/sticky-columns';
-import { Box } from '~components';
+import { Box, Select, Multiselect, Input, TableProps } from '~components';
 
 const baseColumnDefinition = {
   cell: () => 'Editable cell content shown inline when not editing',
@@ -17,6 +14,12 @@ const baseColumnDefinition = {
 };
 
 const options = ['A', 'B', 'C', 'D', 'E', 'F'].map(value => ({ value, label: `Option ${value}` }));
+
+const unevenOptions = [
+  { value: 'A', label: 'A' },
+  { value: 'B', label: 'B' },
+  { value: 'C', label: 'C (this option label is very long and can cause an overflow)' },
+];
 
 interface PermutationProps extends TableProps.EditConfig<unknown> {
   isEditing: boolean;
@@ -67,6 +70,20 @@ const editPermutations = createPermutations<PermutationProps>([
     isEditing: [false],
     interactiveCell: [false, true],
     disabledReason: [() => 'Disabled reason popover content'],
+  },
+  // Select overflow permutation
+  {
+    ariaLabel: ['Editable column'],
+    editIconAriaLabel: ['editable'],
+    errorIconAriaLabel: ['Error'],
+    editingCell: [
+      () => <Select options={unevenOptions} selectedOption={unevenOptions[2]} placeholder="Choose an option" />,
+      () => <Multiselect options={unevenOptions} selectedOptions={[unevenOptions[2]]} placeholder="Choose an option" />,
+    ],
+    constraintText: [undefined],
+    validation: [undefined],
+    isEditing: [true],
+    interactiveCell: [false],
   },
 ]);
 

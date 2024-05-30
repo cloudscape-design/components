@@ -29,6 +29,7 @@ export const tlsVersions = [
   { label: 'TLS 1.1', value: 'TLS 1.1' },
   { label: 'TLS 1.2', value: 'TLS 1.2' },
   { label: 'TLS 1.3', value: 'TLS 1.3' },
+  { label: 'TLS 1.4 (The newest and the greatest of them all)', value: 'TLS 1.4' },
 ];
 
 export const tagOptions = [
