@@ -121,8 +121,8 @@ const items3: ButtonGroupProps['items'] = [
     text: 'Remove',
     actionPopoverText: 'Removed',
   },
-  { type: 'button', variant: 'icon', id: 'edit', iconName: 'edit', text: 'Edit' },
-  { type: 'button', variant: 'icon', id: 'open', iconName: 'file-open', text: 'Open' },
+  { type: 'button', variant: 'icon', id: 'edit', iconName: 'edit', text: 'Edit', actionPopoverText: 'Edited' },
+  { type: 'button', variant: 'icon', id: 'open', iconName: 'file-open', text: 'Open', actionPopoverText: 'Opened' },
   { type: 'button', variant: 'icon', id: 'search', iconName: 'search', text: 'Search' },
 ];
 
