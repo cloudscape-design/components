@@ -46,6 +46,7 @@ const permutations = createPermutations<CheckboxProps>([
     disabled: [false, true],
     checked: [false, true],
     indeterminate: [false, true],
+    readOnly: [false, true],
     children: ['Some label'],
     description: ['', 'Short description'],
   },

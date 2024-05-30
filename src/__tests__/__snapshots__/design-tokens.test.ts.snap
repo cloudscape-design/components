@@ -1665,6 +1665,13 @@ Object {
             "light": "#ffffff",
           },
         },
+        "color-foreground-control-read-only": Object {
+          "$description": "The color used to mark readonly form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
+          "$value": Object {
+            "dark": "#95a5a6",
+            "light": "#687078",
+          },
+        },
         "color-text-accent": Object {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": Object {
@@ -4014,6 +4021,13 @@ Object {
           "$value": Object {
             "dark": "#687078",
             "light": "#ffffff",
+          },
+        },
+        "color-foreground-control-read-only": Object {
+          "$description": "The color used to mark readonly form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
+          "$value": Object {
+            "dark": "#95a5a6",
+            "light": "#687078",
           },
         },
         "color-text-accent": Object {
@@ -6367,6 +6381,13 @@ Object {
             "light": "#ffffff",
           },
         },
+        "color-foreground-control-read-only": Object {
+          "$description": "The color used to mark readonly form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
+          "$value": Object {
+            "dark": "#95a5a6",
+            "light": "#687078",
+          },
+        },
         "color-text-accent": Object {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": Object {
@@ -8716,6 +8737,13 @@ Object {
           "$value": Object {
             "dark": "#687078",
             "light": "#ffffff",
+          },
+        },
+        "color-foreground-control-read-only": Object {
+          "$description": "The color used to mark readonly form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
+          "$value": Object {
+            "dark": "#95a5a6",
+            "light": "#687078",
           },
         },
         "color-text-accent": Object {
@@ -11069,6 +11097,13 @@ Object {
             "light": "#687078",
           },
         },
+        "color-foreground-control-read-only": Object {
+          "$description": "The color used to mark readonly form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
+          "$value": Object {
+            "dark": "#95a5a6",
+            "light": "#95a5a6",
+          },
+        },
         "color-text-accent": Object {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": Object {
@@ -13418,6 +13453,13 @@ Object {
       "$value": Object {
         "dark": "#687078",
         "light": "#ffffff",
+      },
+    },
+    "color-foreground-control-read-only": Object {
+      "$description": "The color used to mark readonly form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
+      "$value": Object {
+        "dark": "#95a5a6",
+        "light": "#687078",
       },
     },
     "color-text-accent": Object {
@@ -15776,6 +15818,13 @@ Object {
             "light": "#ffffff",
           },
         },
+        "color-foreground-control-read-only": Object {
+          "$description": "The color used to mark readonly form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
+          "$value": Object {
+            "dark": "#8d99a8",
+            "light": "#5f6b7a",
+          },
+        },
         "color-text-accent": Object {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": Object {
@@ -18125,6 +18174,13 @@ Object {
           "$value": Object {
             "dark": "#0f1b2a",
             "light": "#0f1b2a",
+          },
+        },
+        "color-foreground-control-read-only": Object {
+          "$description": "The color used to mark readonly form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
+          "$value": Object {
+            "dark": "#8d99a8",
+            "light": "#8d99a8",
           },
         },
         "color-text-accent": Object {
@@ -20478,6 +20534,13 @@ Object {
             "light": "#ffffff",
           },
         },
+        "color-foreground-control-read-only": Object {
+          "$description": "The color used to mark readonly form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
+          "$value": Object {
+            "dark": "#8d99a8",
+            "light": "#5f6b7a",
+          },
+        },
         "color-text-accent": Object {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": Object {
@@ -22827,6 +22890,13 @@ Object {
           "$value": Object {
             "dark": "#0f1b2a",
             "light": "#ffffff",
+          },
+        },
+        "color-foreground-control-read-only": Object {
+          "$description": "The color used to mark readonly form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
+          "$value": Object {
+            "dark": "#8d99a8",
+            "light": "#5f6b7a",
           },
         },
         "color-text-accent": Object {
@@ -25180,6 +25250,13 @@ Object {
             "light": "#ffffff",
           },
         },
+        "color-foreground-control-read-only": Object {
+          "$description": "The color used to mark readonly form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
+          "$value": Object {
+            "dark": "#8d99a8",
+            "light": "#5f6b7a",
+          },
+        },
         "color-text-accent": Object {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": Object {
@@ -27529,6 +27606,13 @@ Object {
           "$value": Object {
             "dark": "#0f1b2a",
             "light": "#0f1b2a",
+          },
+        },
+        "color-foreground-control-read-only": Object {
+          "$description": "The color used to mark readonly form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
+          "$value": Object {
+            "dark": "#8d99a8",
+            "light": "#8d99a8",
           },
         },
         "color-text-accent": Object {
@@ -29882,6 +29966,13 @@ Object {
             "light": "#0f1b2a",
           },
         },
+        "color-foreground-control-read-only": Object {
+          "$description": "The color used to mark readonly form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
+          "$value": Object {
+            "dark": "#8d99a8",
+            "light": "#8d99a8",
+          },
+        },
         "color-text-accent": Object {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": Object {
@@ -32231,6 +32322,13 @@ Object {
       "$value": Object {
         "dark": "#0f1b2a",
         "light": "#ffffff",
+      },
+    },
+    "color-foreground-control-read-only": Object {
+      "$description": "The color used to mark readonly form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
+      "$value": Object {
+        "dark": "#8d99a8",
+        "light": "#5f6b7a",
       },
     },
     "color-text-accent": Object {

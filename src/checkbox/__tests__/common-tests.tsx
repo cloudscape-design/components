@@ -119,6 +119,17 @@ export function createCommonTests(Component: React.ComponentType<BaseCheckboxPro
       expect(labelElement).toHaveAttribute('aria-disabled', 'true');
     });
 
+    test('aria-readonly is set to true, but native control remains the same when readOnly', () => {
+      const { wrapper, rerender } = renderComponent(<Component checked={false} readOnly={false} />);
+      const nativeInput = wrapper.findNativeInput().getElement();
+
+      expect(nativeInput).not.toHaveAttribute('aria-readonly');
+
+      rerender(<Component checked={false} readOnly={true} />);
+      expect(nativeInput).not.toHaveAttribute('readonly');
+      expect(nativeInput).toHaveAttribute('aria-readonly', 'true');
+    });
+
     test('triggers a focus and blur events', () => {
       const onFocus = jest.fn();
       const onBlur = jest.fn();

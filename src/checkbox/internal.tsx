@@ -25,6 +25,7 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
       name,
       checked,
       disabled,
+      readOnly,
       ariaRequired,
       indeterminate,
       children,
@@ -61,6 +62,7 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
         outlineClassName={styles.outline}
         controlId={controlId}
         disabled={disabled}
+        readOnly={readOnly}
         label={children}
         description={description}
         descriptionBottomPadding={true}
@@ -85,6 +87,13 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
           />
         )}
         onClick={() => {
+          // readonly attribute is not applicable to type="checkbox"
+          // it does not automatically prevent the input controller from sending the click event
+          // see - https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox
+          if (readOnly) {
+            return;
+          }
+
           checkboxRef.current?.focus();
           fireNonCancelableEvent(
             onChange,
@@ -92,7 +101,9 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
             indeterminate ? { checked: true, indeterminate: false } : { checked: !checked, indeterminate: false }
           );
         }}
-        styledControl={<CheckboxIcon checked={checked} indeterminate={indeterminate} disabled={disabled} />}
+        styledControl={
+          <CheckboxIcon checked={checked} indeterminate={indeterminate} disabled={disabled} readOnly={readOnly} />
+        }
         __internalRootRef={__internalRootRef}
       />
     );
