@@ -144,6 +144,9 @@ const defaultProps: Record<string, Record<string, any>> = {
       uploadButtonText: () => 'Choose file(s)',
     },
   },
+  'key-value-pairs': {
+    columns: [],
+  },
 };
 
 export function getRequiredPropsForComponent(componentName: string): Record<string, any> {
