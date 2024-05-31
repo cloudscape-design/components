@@ -31,6 +31,13 @@ const items1: ButtonGroupProps.ItemOrGroup[] = [
     text: 'View',
   },
   {
+    id: 'thump-up',
+    iconName: 'thumbs-up',
+    text: 'Like',
+    actionPopoverText: 'Liked',
+    loading: true,
+  },
+  {
     id: 'script',
     iconName: 'script',
     text: 'Script',
@@ -155,33 +162,6 @@ const items3: ButtonGroupProps.ItemOrGroup[] = [
   },
 ];
 
-const items4: ButtonGroupProps.ItemOrGroup[] = [
-  {
-    id: 'vote',
-    text: 'Vote',
-    items: [
-      {
-        id: 'thump-up',
-        iconName: 'thumbs-up',
-        text: 'Like',
-        actionPopoverText: 'Liked',
-        loading: true,
-      },
-      {
-        id: 'thump-down',
-        iconName: 'thumbs-down',
-        text: 'Dislike',
-        actionPopoverText: 'Disliked',
-      },
-    ],
-  },
-  {
-    id: 'expand',
-    iconName: 'treeview-expand',
-    text: 'View',
-  },
-];
-
 export default function ButtonGroupPage() {
   const ref = React.useRef<ButtonGroupProps.Ref>(null);
 
@@ -202,6 +182,7 @@ export default function ButtonGroupPage() {
             <li>Tooltip disabled</li>
             <li>Tooltip enabled and actionPopoverText</li>
             <li>Tooltip enabled no actionPopoverText</li>
+            <li>Loading</li>
             <li>Disabled</li>
           </ol>
           <ButtonGroup items={items1} onItemClick={onItemClick} />
@@ -215,10 +196,6 @@ export default function ButtonGroupPage() {
           <ButtonGroup items={items3} onItemClick={onItemClick} ref={ref} />
           <br />
           <Button onClick={onFocusButtonClick}>Focus on copy</Button>
-        </article>
-        <article>
-          <h1>Loading</h1>
-          <ButtonGroup items={items4} onItemClick={onItemClick} />
         </article>
       </ScreenshotArea>
     </>

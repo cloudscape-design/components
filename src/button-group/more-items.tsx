@@ -7,7 +7,7 @@ import { CancelableEventHandler, fireCancelableEvent } from '../internal/events'
 import { hasLoadingItems, toDropdownItems } from './utils';
 import ButtonDropdown from '../button-dropdown/internal';
 
-export default function ItemDropdown({
+export default function MoreItems({
   items,
   onItemClick,
   dropdownExpandToViewport,

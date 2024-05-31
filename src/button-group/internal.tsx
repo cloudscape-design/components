@@ -7,7 +7,7 @@ import { isItemGroup, splitItems } from './utils';
 import { ButtonProps } from '../button/interfaces';
 import SpaceBetween from '../space-between/internal';
 import ItemElement from './item-element';
-import ItemDropdown from './item-dropdown';
+import MoreItems from './more-items';
 import styles from './styles.css.js';
 
 const InternalButtonGroup = React.forwardRef(
@@ -24,7 +24,7 @@ const InternalButtonGroup = React.forwardRef(
   ) => {
     const itemsRef = useRef<Record<string, ButtonProps.Ref | null>>({});
     const baseProps = getBaseProps(props);
-    const { visible, collapsed } = splitItems(items, limit);
+    const { primary, secondary } = splitItems(items, limit);
 
     useImperativeHandle(ref, () => ({
       focus: id => {
@@ -39,7 +39,7 @@ const InternalButtonGroup = React.forwardRef(
     return (
       <div {...baseProps} ref={__internalRootRef}>
         <SpaceBetween direction="horizontal" size="xxs">
-          {visible.map((current, index) =>
+          {primary.map((current, index) =>
             isItemGroup(current) && current.items.length > 0 ? (
               <>
                 {current.items.map(item => (
@@ -47,23 +47,23 @@ const InternalButtonGroup = React.forwardRef(
                     key={item.id}
                     item={item}
                     onItemClick={onItemClick}
-                    ref={el => onSetButtonRef(current, el)}
+                    ref={element => onSetButtonRef(current, element)}
                   />
                 ))}
-                {index < visible.length - 1 && <div className={styles.divider} />}
+                {index < primary.length - 1 && <div className={styles.divider} />}
               </>
             ) : (
               <ItemElement
                 key={current.id}
                 item={current}
                 onItemClick={onItemClick}
-                ref={el => onSetButtonRef(current, el)}
+                ref={element => onSetButtonRef(current, element)}
               />
             )
           )}
-          {collapsed.length > 0 && (
-            <ItemDropdown
-              items={collapsed}
+          {secondary.length > 0 && (
+            <MoreItems
+              items={secondary}
               onItemClick={onItemClick}
               dropdownExpandToViewport={dropdownExpandToViewport}
             />
