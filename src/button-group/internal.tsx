@@ -3,10 +3,12 @@
 import React, { useImperativeHandle, useRef } from 'react';
 import { getBaseProps } from '../internal/base-component';
 import { ButtonGroupProps, InternalButtonGroupProps } from './interfaces';
+import { isItemGroup, splitItems } from './utils';
+import { ButtonProps } from '../button/interfaces';
 import SpaceBetween from '../space-between/internal';
-import { ButtonProps } from '@cloudscape-design/components';
 import ItemElement from './item-element';
-import ItemsDropdown from './items-dropdown';
+import ItemDropdown from './item-dropdown';
+import styles from './styles.css.js';
 
 const InternalButtonGroup = React.forwardRef(
   (
@@ -22,7 +24,7 @@ const InternalButtonGroup = React.forwardRef(
   ) => {
     const itemsRef = useRef<Record<string, ButtonProps.Ref | null>>({});
     const baseProps = getBaseProps(props);
-    const { visibleItems, collapsedItems } = splitItems(items, limit);
+    const { visible, collapsed } = splitItems(items, limit);
 
     useImperativeHandle(ref, () => ({
       focus: id => {
@@ -31,22 +33,37 @@ const InternalButtonGroup = React.forwardRef(
     }));
 
     const onSetButtonRef = (item: ButtonGroupProps.Item, element: ButtonProps.Ref | null) => {
-      if (item.type !== 'button') {
-        return;
-      }
-
       itemsRef.current[item.id] = element;
     };
 
     return (
       <div {...baseProps} ref={__internalRootRef}>
         <SpaceBetween direction="horizontal" size="xxs">
-          {visibleItems.map((item, index) => (
-            <ItemElement key={index} item={item} onItemClick={onItemClick} ref={el => onSetButtonRef(item, el)} />
-          ))}
-          {collapsedItems.length > 0 && (
-            <ItemsDropdown
-              items={collapsedItems}
+          {visible.map((current, index) =>
+            isItemGroup(current) && current.items.length > 0 ? (
+              <>
+                {current.items.map(item => (
+                  <ItemElement
+                    key={item.id}
+                    item={item}
+                    onItemClick={onItemClick}
+                    ref={el => onSetButtonRef(current, el)}
+                  />
+                ))}
+                {index < visible.length - 1 && <div className={styles.divider} />}
+              </>
+            ) : (
+              <ItemElement
+                key={current.id}
+                item={current}
+                onItemClick={onItemClick}
+                ref={el => onSetButtonRef(current, el)}
+              />
+            )
+          )}
+          {collapsed.length > 0 && (
+            <ItemDropdown
+              items={collapsed}
               onItemClick={onItemClick}
               dropdownExpandToViewport={dropdownExpandToViewport}
             />
@@ -56,26 +73,5 @@ const InternalButtonGroup = React.forwardRef(
     );
   }
 );
-
-function splitItems(items: readonly ButtonGroupProps.Item[], truncateThreshold: number) {
-  truncateThreshold = Math.max(truncateThreshold, 0);
-  const visibleItems: ButtonGroupProps.Item[] = [];
-  const collapsedItems: ButtonGroupProps.Item[] = [];
-
-  let itemIndex = 0;
-  for (const item of items) {
-    if (itemIndex < truncateThreshold) {
-      visibleItems.push(item);
-    } else {
-      collapsedItems.push(item);
-    }
-
-    if (item.type !== 'divider') {
-      itemIndex++;
-    }
-  }
-
-  return { visibleItems, collapsedItems };
-}
 
 export default InternalButtonGroup;
