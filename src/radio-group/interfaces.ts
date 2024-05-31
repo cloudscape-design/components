@@ -55,6 +55,13 @@ export interface RadioGroupProps extends BaseComponentProps, FormFieldControlPro
    * @deprecated Has no effect.
    */
   controlId?: string;
+
+  /**
+   * Specifies if the whole group is readOnly, which prevents the
+   * user from modifying the value, but does not prevent the value from
+   * being included in a form submission. A readOnly control is still focusable.
+   */
+  readOnly?: boolean;
 }
 
 export namespace RadioGroupProps {
@@ -64,6 +71,7 @@ export namespace RadioGroupProps {
     description?: React.ReactNode;
     disabled?: boolean;
     controlId?: string;
+    readOnly?: boolean;
   }
 
   export interface ChangeDetail {

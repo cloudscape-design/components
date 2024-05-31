@@ -110,6 +110,31 @@ describe('items', () => {
     expect(onChange).not.toHaveBeenCalled();
   });
 
+  test('can be readOnly', () => {
+    const { wrapper } = renderRadioGroup(<RadioGroup value="val1" name="test" items={defaultItems} readOnly={true} />);
+
+    expect(wrapper.getElement()).toHaveAttribute('aria-readonly', 'true');
+  });
+
+  test('does not trigger change handler if readOnly', () => {
+    const onChange = jest.fn();
+    const { wrapper } = renderRadioGroup(
+      <RadioGroup value="val1" name="test" items={defaultItems} readOnly={true} onChange={onChange} />
+    );
+
+    act(() => wrapper.findButtons()[0].findLabel().click());
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  test('can receive focus if readOnly', () => {
+    let radioGroupRef: RadioGroupProps.Ref | null = null;
+    const { wrapper } = renderRadioGroup(
+      <RadioGroup value={null} items={defaultItems} ref={ref => (radioGroupRef = ref)} readOnly={true} />
+    );
+    radioGroupRef!.focus();
+    expect(wrapper.findInputByValue('val1')!.getElement()).toHaveFocus();
+  });
+
   test('displays the proper label', () => {
     const { wrapper } = renderRadioGroup(<RadioGroup value={null} items={[{ value: '1', label: 'Please select' }]} />);
 

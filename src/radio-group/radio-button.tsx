@@ -17,7 +17,7 @@ interface RadioButtonProps extends RadioGroupProps.RadioButtonDefinition {
 }
 
 export default React.forwardRef(function RadioButton(
-  { name, label, value, checked, description, disabled, controlId, onChange }: RadioButtonProps,
+  { name, label, value, checked, description, disabled, controlId, onChange, readOnly }: RadioButtonProps,
   ref: React.Ref<HTMLInputElement>
 ) {
   const isVisualRefresh = useVisualRefresh();
@@ -35,6 +35,7 @@ export default React.forwardRef(function RadioButton(
       description={description}
       disabled={disabled}
       controlId={controlId}
+      readOnly={readOnly}
       nativeControl={nativeControlProps => (
         <input
           {...nativeControlProps}
@@ -49,6 +50,12 @@ export default React.forwardRef(function RadioButton(
         />
       )}
       onClick={() => {
+        // readonly attribute is not applicable to type="radio"
+        // it does not automatically prevent the input controller from sending the click event
+        // see - https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly
+        if (readOnly) {
+          return;
+        }
         radioButtonRef.current?.focus();
         if (checked) {
           return;
@@ -58,7 +65,10 @@ export default React.forwardRef(function RadioButton(
       styledControl={
         <svg viewBox="0 0 100 100" focusable="false" aria-hidden="true">
           <circle
-            className={clsx(styles['styled-circle-border'], { [styles['styled-circle-disabled']]: disabled })}
+            className={clsx(styles['styled-circle-border'], {
+              [styles['styled-circle-disabled']]: disabled,
+              [styles['styled-circle-readonly']]: readOnly,
+            })}
             strokeWidth={isVisualRefresh ? 12 : 8}
             cx={50}
             cy={50}
@@ -68,6 +78,7 @@ export default React.forwardRef(function RadioButton(
             className={clsx(styles['styled-circle-fill'], {
               [styles['styled-circle-disabled']]: disabled,
               [styles['styled-circle-checked']]: checked,
+              [styles['styled-circle-readonly']]: readOnly,
             })}
             strokeWidth={30}
             cx={50}
