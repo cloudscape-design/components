@@ -35,7 +35,8 @@ export interface ButtonGroupProps extends BaseComponentProps {
    */
   dropdownExpandToViewport?: boolean;
   /**
-   *
+   * An object containing all the necessary localized strings required by the component.
+   * @i18n
    */
   i18nStrings?: ButtonGroupProps.I18nStrings;
 }
