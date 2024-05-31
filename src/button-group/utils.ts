@@ -12,23 +12,23 @@ export function isItemGroup(item: ButtonGroupProps.ItemOrGroup): item is ButtonG
 
 export function splitItems(items: readonly ButtonGroupProps.ItemOrGroup[], limit: number) {
   limit = Math.max(limit, 0);
-  const visible: ButtonGroupProps.ItemOrGroup[] = [];
-  const collapsed: ButtonGroupProps.ItemOrGroup[] = [];
+  const primary: ButtonGroupProps.ItemOrGroup[] = [];
+  const secondary: ButtonGroupProps.ItemOrGroup[] = [];
 
   let total = 0;
   for (const item of items) {
     const itemLength = isItemGroup(item) ? item.items.length : 1;
 
     if (total + itemLength <= limit) {
-      visible.push(item);
+      primary.push(item);
     } else {
-      collapsed.push(item);
+      secondary.push(item);
     }
 
     total += itemLength;
   }
 
-  return { visible, collapsed };
+  return { primary, secondary };
 }
 
 export function toDropdownItems(items: readonly ButtonGroupProps.ItemOrGroup[]) {
