@@ -11,9 +11,9 @@ export interface ButtonGroupProps extends BaseComponentProps {
    */
   variant?: ButtonGroupProps.Variant;
   /**
-   * Array of objects of type 'icon-button' or 'divider'.
+   * Array of objects of type Item or or ItemGroup.
    */
-  items: ReadonlyArray<ButtonGroupProps.Item>;
+  items: ReadonlyArray<ButtonGroupProps.ItemOrGroup>;
   /**
    * Max number of visible items in the button group, the rest will be hidden in a dropdown.
    */
@@ -34,28 +34,37 @@ export interface ButtonGroupProps extends BaseComponentProps {
    * because fixed positioning results in a slight, visible lag when scrolling complex pages.
    */
   dropdownExpandToViewport?: boolean;
+  /**
+   *
+   */
+  i18nStrings?: ButtonGroupProps.I18nStrings;
 }
 
 export interface InternalButtonGroupProps extends ButtonGroupProps, InternalBaseComponentProps {}
 
 export namespace ButtonGroupProps {
   export type Variant = 'icon';
-  export type Item = Button | Divider;
+  export type ItemOrGroup = Item | ItemGroup;
+  /**
+   * - `id` (string) - allows to identify groups of items
 
-  export interface Divider {
-    type: 'divider';
+   * - `text` (string) - description shown as a text in the menu for this item.
+
+   * - `items` (Item[]) - an array of items that belong to this group.
+  */
+  export interface ItemGroup {
+    id: string;
+    text: string;
+    items: ReadonlyArray<Item>;
   }
-
   /**
    * - `id` (string) - allows to identify the item that the user clicked on. Mandatory for individual items, optional for categories.
 
    * - `text` (string) - description shown as a tooltip or in the menu for this item.
 
-   * - `lang` (string) - (Optional) The language of the item, provided as a BCP 47 language tag.
+   * - `loading` (boolean) - whether the item is in a loading state.
 
    * - `disabled` (boolean) - whether the item is disabled. Disabled items are not clickable, but they can be highlighted with the keyboard to make them accessible.
-
-   * - `description` (string) - additional data that will be passed to a `data-description` attribute.
 
    * - `iconName` (string) - (Optional) Specifies the name of the icon, used with the [icon component](/components/icon/).
 
@@ -68,17 +77,14 @@ export namespace ButtonGroupProps {
    * - `tooltipDisabled` (boolean) - (Optional) Disables the tooltip for the item.
 
    * - `actionPopoverText` (string) - (Optional) Text that appears when the user clicks the item. Use to provide feedback to the user.
-   */
-  export interface Button {
-    type: 'button';
-    variant: Variant;
+  */
+  export interface Item {
     id: string;
     text: string;
-    lang?: string;
+    loading?: boolean;
     disabled?: boolean;
-    description?: string;
-    iconAlt?: string;
     iconName?: IconProps.Name;
+    iconAlt?: string;
     iconUrl?: string;
     iconSvg?: React.ReactNode;
     tooltipDisabled?: boolean;
@@ -94,6 +100,10 @@ export namespace ButtonGroupProps {
      * Focuses the underlying native button for item.
      */
     focus(id: string): void;
+  }
+
+  export interface I18nStrings {
+    showMoreButtonAriaLabel?: string;
   }
 }
 
