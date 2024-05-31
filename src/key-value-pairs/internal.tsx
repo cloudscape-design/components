@@ -24,7 +24,7 @@ const InternalKeyValuePairs = React.forwardRef(
               )}
               <dl className={styles.list}>
                 {column.items.map((item, itemIndex) => (
-                  <div key={columnIndex + itemIndex} className={styles.item}>
+                  <div key={columnIndex.toString() + itemIndex.toString()} className={styles.item}>
                     <dt className={styles.label}>
                       <label className={styles['key-label']}>{item.label}</label>
                       <InfoLinkLabelContext.Provider value={item.label}>
