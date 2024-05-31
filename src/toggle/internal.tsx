@@ -65,6 +65,7 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
             type="checkbox"
             checked={checked}
             name={name}
+            aria-readonly={readOnly ? 'true' : undefined}
             onFocus={() => fireNonCancelableEvent(onFocus)}
             onBlur={() => fireNonCancelableEvent(onBlur)}
             // empty handler to suppress React controllability warning
