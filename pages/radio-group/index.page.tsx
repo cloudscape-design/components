@@ -20,18 +20,6 @@ export default function RadiosPage() {
           { label: 'Three', value: 'three', disabled: true },
         ]}
       />
-      <h2>Simple readOnly group</h2>
-      <RadioGroup
-        id="simpleReadOnly"
-        value="twoReadOnly"
-        onChange={() => {}}
-        items={[
-          { label: 'One', value: 'oneReadOnly' },
-          { label: 'Two', value: 'twoReadOnly' },
-          { label: 'Three', value: 'threeReadOnly' },
-        ]}
-        readOnly={true}
-      />
       <div className={styles.scrollableContainer} id="scrollable-container">
         <h2>Group in container</h2>
         <RadioGroup
