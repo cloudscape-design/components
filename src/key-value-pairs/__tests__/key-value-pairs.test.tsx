@@ -6,8 +6,8 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 import KeyValuePairs, { KeyValuePairsProps } from '../../../lib/components/key-value-pairs';
 
 function renderKeyValuePairs(props: KeyValuePairsProps) {
-  const { container, debug } = render(<KeyValuePairs {...props} />);
-  return { wrapper: createWrapper(container).findKeyValuePairs()!, debug };
+  const { container } = render(<KeyValuePairs {...props} />);
+  return { wrapper: createWrapper(container).findKeyValuePairs()! };
 }
 
 describe('KeyValuePairs', () => {
