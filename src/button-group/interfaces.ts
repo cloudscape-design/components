@@ -106,8 +106,3 @@ export namespace ButtonGroupProps {
     showMoreButtonAriaLabel?: string;
   }
 }
-
-export interface ItemProps {
-  item: ButtonGroupProps.Item;
-  onItemClick?: CancelableEventHandler<ButtonGroupProps.ItemClickDetails>;
-}
