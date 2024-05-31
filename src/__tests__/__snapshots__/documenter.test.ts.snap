@@ -11848,6 +11848,14 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     Object {
+      "description": "Specifies if the whole group is readOnly, which prevents the
+user from modifying the value, but does not prevent the value from
+being included in a form submission. A readOnly control is still focusable.",
+      "name": "readOnly",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "description": "Sets the value of the selected radio button.
 If you want to clear the selection, use \`null\`.",
       "name": "value",
