@@ -7,7 +7,6 @@ import Checkbox from '~components/checkbox';
 export default function CheckboxSimpleScenario() {
   const [state, setState] = useState({ checked: false, indeterminate: false });
   const [state2, setState2] = useState(false);
-  const [state3, setState3] = useState(true);
   return (
     <>
       <h1>Checkboxes demo</h1>
@@ -27,18 +26,6 @@ export default function CheckboxSimpleScenario() {
         onChange={event => setState({ ...state, indeterminate: event.detail.checked })}
       >
         Make the first checkbox indeterminate
-      </Checkbox>
-      <Checkbox checked={false} readOnly={true}>
-        Unchecked and readOnly
-      </Checkbox>
-      <Checkbox
-        checked={state3}
-        onChange={event => {
-          setState3(event.detail.checked);
-        }}
-        readOnly={true}
-      >
-        Checked and readOnly
       </Checkbox>
       <Checkbox checked={false} disabled={true}>
         Unchecked and disabled
