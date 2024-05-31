@@ -79,6 +79,26 @@ test('does not trigger change handler if disabled', () => {
   expect(onChange).not.toHaveBeenCalled();
 });
 
+test('does not trigger change handler if readOnly', () => {
+  const onChange = jest.fn();
+  const { wrapper } = renderToggle(<Toggle checked={false} readOnly={true} onChange={onChange} />);
+
+  act(() => wrapper.findLabel().click());
+
+  expect(wrapper.findNativeInput().getElement()).not.toBeChecked();
+  expect(onChange).not.toHaveBeenCalled();
+});
+
+test('can receive focus if readOnly', () => {
+  let toggleRef: ToggleProps.Ref | null = null;
+
+  const { wrapper } = renderToggle(<Toggle ref={ref => (toggleRef = ref)} checked={false} readOnly={true} />);
+  expect(toggleRef).toBeDefined();
+
+  toggleRef!.focus();
+  expect(wrapper.findNativeInput().getElement()).toHaveFocus();
+});
+
 test('can be focused via API', () => {
   const onFocus = jest.fn();
   let toggleRef: ToggleProps.Ref | null = null;
