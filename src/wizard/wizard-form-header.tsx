@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
 import React from 'react';
-import { useDynamicOverlap } from '../internal/hooks/use-dynamic-overlap';
 import styles from './styles.css.js';
 
 interface WizardFormHeaderProps {
@@ -12,10 +11,8 @@ interface WizardFormHeaderProps {
 }
 
 export default function WizardFormHeader({ children, isVisualRefresh }: WizardFormHeaderProps) {
-  const overlapElement = useDynamicOverlap();
-
   return (
-    <div className={clsx(styles['form-header'], isVisualRefresh && styles['form-header-refresh'])} ref={overlapElement}>
+    <div className={clsx(styles['form-header'], isVisualRefresh && styles['form-header-refresh'])}>
       <div className={clsx(styles['form-header-content'])}>{children}</div>
     </div>
   );
