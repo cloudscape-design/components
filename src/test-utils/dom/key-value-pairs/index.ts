@@ -19,8 +19,8 @@ export class KeyValuePairsPairWrapper extends ComponentWrapper {
 }
 
 export class KeyValuePairsColumnWrapper extends ComponentWrapper {
-  findTitle(): BoxWrapper | null {
-    return this.findComponent(`.${BoxWrapper.rootSelector}`, BoxWrapper);
+  findTitle(): ElementWrapper | null {
+    return this.findComponent(`.${BoxWrapper.rootSelector}`, ElementWrapper);
   }
 
   findPairs(): Array<KeyValuePairsPairWrapper> {
