@@ -50,7 +50,6 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
         outlineClassName={styles.outline}
         controlId={controlId}
         disabled={disabled}
-        readOnly={readOnly}
         label={children}
         description={description}
         descriptionBottomPadding={true}

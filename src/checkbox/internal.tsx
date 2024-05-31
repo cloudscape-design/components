@@ -62,7 +62,6 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
         outlineClassName={styles.outline}
         controlId={controlId}
         disabled={disabled}
-        readOnly={readOnly}
         label={children}
         description={description}
         descriptionBottomPadding={true}
