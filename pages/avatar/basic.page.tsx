@@ -32,7 +32,7 @@ export default function AvatarsPage() {
 
       <FormField label="Default and gen-ai avatars without tooltip">
         <Avatar color="default" ariaLabel="User avatar" />
-        <Avatar color="default" ariaLabel="User avatar" loading={true} />
+        <Avatar color="default" ariaLabel="User avatar loading" loading={true} />
         <Avatar color="gen-ai" iconName="gen-ai" ariaLabel="Gen AI avatar" />
         <Avatar color="gen-ai" iconName="gen-ai" ariaLabel="Gen AI avatar loading" loading={true} />
       </FormField>
@@ -40,22 +40,57 @@ export default function AvatarsPage() {
       <br />
 
       <FormField label="Different avatar combinations with tooltip">
-        <Avatar color="default" ariaLabel="User avatar" tooltipText="Timothee Fontaka" />
-        <Avatar color="default" ariaLabel="User avatar" tooltipText="Timothee Fontaka" initials="TF" />
-        <Avatar color="default" ariaLabel="User avatar" iconName="star-filled" tooltipText="Timothee Fontaka" />
-        <Avatar color="default" ariaLabel="User avatar" iconSvg={customIconSvg} tooltipText="Custom icon SVG" />
-        <Avatar color="default" ariaLabel="User avatar" iconUrl={img} tooltipText="Custom icon SVG" />
-        <Avatar color="default" ariaLabel="User avatar loading" loading={true} tooltipText="Typing" />
+        <Avatar color="default" ariaLabel="User avatar Timothee Fontaka" tooltipText="Timothee Fontaka" />
+        <Avatar
+          color="default"
+          ariaLabel="User avatar Timothee Fontaka TF"
+          tooltipText="Timothee Fontaka"
+          initials="TF"
+        />
+        <Avatar
+          color="default"
+          ariaLabel="User avatar with star icon Timothee Fontaka"
+          iconName="star-filled"
+          tooltipText="Timothee Fontaka"
+        />
+        <Avatar
+          color="default"
+          ariaLabel="User avatar with custom icon SVG"
+          iconSvg={customIconSvg}
+          tooltipText="Custom icon SVG"
+        />
+        <Avatar
+          color="default"
+          ariaLabel="User avatar with custom icon URL"
+          iconUrl={img}
+          tooltipText="Custom icon URL"
+        />
+        <Avatar color="default" ariaLabel="User avatar typing" loading={true} tooltipText="Typing" />
 
-        <Avatar color="gen-ai" iconName="gen-ai" ariaLabel="Gen AI avatar" tooltipText="Gen AI assistant" />
-        <Avatar color="gen-ai" ariaLabel="Gen AI avatar" tooltipText="AI assistant" initials="AI" />
-        <Avatar color="gen-ai" ariaLabel="Gen AI avatar" iconName="star-filled" tooltipText="Existing icon" />
-        <Avatar color="gen-ai" ariaLabel="Gen AI avatar" iconSvg={customIconSvg} tooltipText="Custom icon SVG" />
-        <Avatar color="gen-ai" ariaLabel="Gen AI avatar" iconUrl={img} tooltipText="Custom icon URL" />
+        <Avatar color="gen-ai" iconName="gen-ai" ariaLabel="Avatar Gen AI assistant" tooltipText="Gen AI assistant" />
+        <Avatar color="gen-ai" ariaLabel="Gen AI avatar AI" tooltipText="AI assistant" initials="AI" />
+        <Avatar
+          color="gen-ai"
+          ariaLabel="Gen AI avatar with existing icon"
+          iconName="star-filled"
+          tooltipText="Existing icon"
+        />
+        <Avatar
+          color="gen-ai"
+          ariaLabel="Gen AI avatar with custom icon SVG"
+          iconSvg={customIconSvg}
+          tooltipText="Custom icon SVG"
+        />
+        <Avatar
+          color="gen-ai"
+          ariaLabel="Gen AI avatar with custom icon URL"
+          iconUrl={img}
+          tooltipText="Custom icon URL"
+        />
         <Avatar
           color="gen-ai"
           iconName="gen-ai"
-          ariaLabel="Gen AI avatar"
+          ariaLabel="Gen AI avatar generating response"
           loading={true}
           tooltipText="Generating response"
         />

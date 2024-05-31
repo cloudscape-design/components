@@ -30,6 +30,7 @@ const customIconSvg = (
 const permutations = createPermutations<AvatarProps>([
   {
     color: ['default', 'gen-ai'],
+    ariaLabel: ['Avatar'],
     initials: [undefined, 'JD'],
     loading: [false, true],
     iconName: [undefined, 'star-filled'],
@@ -43,10 +44,7 @@ export default function AvatarPermutations() {
     <>
       <h1>Avatar permutations</h1>
       <ScreenshotArea disableAnimations={true}>
-        <PermutationsView
-          permutations={permutations}
-          render={permutation => <Avatar ariaLabel="Avatar" {...permutation} />}
-        />
+        <PermutationsView permutations={permutations} render={permutation => <Avatar {...permutation} />} />
       </ScreenshotArea>
     </>
   );

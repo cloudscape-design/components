@@ -25,10 +25,10 @@ const AvatarContent = ({ color, loading, initials, iconName, iconSvg, iconUrl, a
     const letters = initials.length > 2 ? initials.slice(0, 2) : initials;
 
     if (initials.length > 2) {
-      warnOnce('Avatar', `"initials" is longer than 2 letters. Only the first two letters are added to the component.`);
+      warnOnce('Avatar', `"initials" is longer than 2 letters. Only the first two letters are shown.`);
     }
 
-    return <span className={styles.letter}>{letters}</span>;
+    return <span className={styles.initials}>{letters}</span>;
   }
 
   return (
@@ -87,11 +87,6 @@ export default function InternalAvatar({
     },
   };
 
-  const avatarAriaLabel =
-    ariaLabel && ariaLabel.length > 0 && tooltipText && tooltipText.length > 0
-      ? [ariaLabel, tooltipText].join(' ')
-      : ariaLabel || tooltipText;
-
   return (
     <span {...baseProps} ref={__internalRootRef} className={clsx(baseProps.className, styles.root)}>
       {showTooltip && tooltipText && <Tooltip value={tooltipText} trackRef={handleRef} />}
@@ -102,15 +97,14 @@ export default function InternalAvatar({
         className={clsx(styles.avatar, {
           [styles['gen-ai']]: color === 'gen-ai',
           [styles.loading]: loading,
-          [styles.initials]: initials,
         })}
         role="img"
-        aria-label={avatarAriaLabel}
+        aria-label={ariaLabel}
         {...tooltipAttributes}
       >
         <AvatarContent
           color={color}
-          ariaLabel={avatarAriaLabel}
+          ariaLabel={ariaLabel}
           initials={initials}
           loading={loading}
           iconName={iconName}

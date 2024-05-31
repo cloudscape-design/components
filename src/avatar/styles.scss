@@ -46,10 +46,6 @@ $shadow-opacity: 0.1;
   }
 
   &.loading {
-    inset-block-end: 5px;
-  }
-
-  &.initials {
     inset-block-end: 2px;
   }
 
@@ -60,7 +56,7 @@ $shadow-opacity: 0.1;
   }
 }
 
-.letter {
+.initials {
   background-color: inherit;
   font-family: awsui.$font-family-base;
 }
