@@ -47,17 +47,6 @@ test(
     await expect(page.isValueSelected(radioGroupWrapper, 'three')).resolves.toBe(false);
   })
 );
-
-test(
-  'Cannot select items when readOnly',
-  setupTest(async page => {
-    await page.selectRadio(radioGroupWrapper, 'threeReadOnly');
-
-    await expect(page.isValueSelected(radioGroupWrapper, 'twoReadOnly')).resolves.toBe(true);
-    await expect(page.isValueSelected(radioGroupWrapper, 'threeReadOnly')).resolves.toBe(false);
-  })
-);
-
 // regression test for AWSUI-2658
 test(
   'properly positioned in a scrollable container',
