@@ -18,7 +18,6 @@ export default function Main() {
     hasDrawerViewportOverlay,
     navigationOpen,
     placement,
-    hasBackgroundOverlap,
     isMobile,
     isSplitPanelOpen,
     isToolsOpen,
@@ -29,7 +28,6 @@ export default function Main() {
     splitPanelDisplayed,
     splitPanelPosition,
     activeDrawerId,
-    hasStickyBackground,
   } = useAppLayoutInternals();
 
   const splitPanelHeight = offsetBottom - footerHeight;
@@ -56,13 +54,10 @@ export default function Main() {
         ...getStickyOffsetVars(
           placement.insetBlockStart,
           offsetBottom,
-          stickyNotifications && notificationsHeight > 0
-            ? `${tokens.spaceXs} + ${notificationsHeight}px + ${!hasBackgroundOverlap ? tokens.spaceXxxs : '0px'}`
-            : '0px',
+          stickyNotifications && notificationsHeight > 0 ? `${tokens.spaceXs} + ${notificationsHeight}px` : '0px',
           `var(${customCssProps.mobileBarHeight})`,
           !!disableBodyScroll,
-          isMobile,
-          hasBackgroundOverlap && hasStickyBackground && !isMobile ? tokens.spaceScaledS : '0px'
+          isMobile
         ),
       }}
     >
