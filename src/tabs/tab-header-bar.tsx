@@ -335,41 +335,32 @@ export function TabHeaderBar({
       tabRefs.current.set(tab.id, tabElement as HTMLElement);
     };
 
-    let trigger = null;
-    if (tab.href) {
-      const anchorProps = commonProps as JSX.IntrinsicElements['a'];
-      anchorProps.href = tab.href;
-      trigger = <AnchorTrigger {...anchorProps} ref={setElement} />;
-    } else {
-      const buttonProps = commonProps as JSX.IntrinsicElements['button'];
-      buttonProps.type = 'button';
-      if (tab.disabled) {
-        buttonProps.disabled = true;
-      }
-      trigger = <ButtonTrigger {...buttonProps} ref={setElement} />;
-    }
-
     return (
       <li className={styles['tabs-tab']} role="presentation" key={tab.id}>
-        {trigger}
+        <TabTrigger ref={setElement} tab={tab} elementProps={commonProps} />
       </li>
     );
   }
 }
 
-const AnchorTrigger = forwardRef((props: React.HTMLAttributes<HTMLAnchorElement>, ref: React.Ref<HTMLElement>) => {
-  const refObject = useRef<HTMLAnchorElement>(null);
-  const mergedRef = useMergeRefs(refObject, ref);
-  const { tabIndex } = useSingleTabStopNavigation(refObject);
-  return <a ref={mergedRef} {...props} tabIndex={tabIndex} />;
-});
-
-const ButtonTrigger = forwardRef((props: React.HTMLAttributes<HTMLButtonElement>, ref: React.Ref<HTMLElement>) => {
-  const refObject = useRef<HTMLAnchorElement>(null);
-  const mergedRef = useMergeRefs(refObject, ref);
-  const { tabIndex } = useSingleTabStopNavigation(refObject);
-  return <button ref={mergedRef} {...props} tabIndex={tabIndex} />;
-});
+const TabTrigger = forwardRef(
+  (
+    {
+      tab,
+      elementProps,
+    }: { tab: TabsProps.Tab; elementProps: React.HTMLAttributes<HTMLAnchorElement | HTMLButtonElement> },
+    ref: React.Ref<HTMLElement>
+  ) => {
+    const refObject = useRef<HTMLElement>(null);
+    const mergedRef = useMergeRefs(refObject, ref);
+    const { tabIndex } = useSingleTabStopNavigation(refObject);
+    return tab.href ? (
+      <a {...elementProps} href={tab.href} ref={mergedRef} tabIndex={tabIndex} />
+    ) : (
+      <button {...elementProps} type="button" disabled={tab.disabled} ref={mergedRef} tabIndex={tabIndex} />
+    );
+  }
+);
 
 export function getTabElementId({ namespace, tabId }: { namespace: string; tabId: string }) {
   return namespace + '-' + tabId;
