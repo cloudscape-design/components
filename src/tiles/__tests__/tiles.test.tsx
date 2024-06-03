@@ -110,6 +110,20 @@ describe('items', () => {
     expect(onChange).not.toHaveBeenCalled();
   });
 
+  test('can be readOnly', () => {
+    const { wrapper } = renderTiles(<Tiles value={null} items={defaultItems} readOnly={true} />);
+
+    expect(wrapper.getElement()).toHaveAttribute('aria-readonly', 'true');
+  });
+
+  test('does not trigger change handler if readOnly', () => {
+    const onChange = jest.fn();
+    const { wrapper } = renderTiles(<Tiles value={null} items={defaultItems} onChange={onChange} readOnly={true} />);
+
+    act(() => wrapper.findItems()[1].findLabel().click());
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
   test('displays the proper label', () => {
     const { wrapper } = renderTiles(<Tiles value={null} items={[{ value: '1', label: 'Please select' }]} />);
     expect(wrapper.findItems()[0].findLabel().getElement()).toHaveTextContent('Please select');
