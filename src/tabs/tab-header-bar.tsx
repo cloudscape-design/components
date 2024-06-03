@@ -26,8 +26,8 @@ import {
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { getAllFocusables } from '../internal/components/focus-lock/utils';
 
-const tabSelector = `[role="tab"]`;
-const activeTabSelector = `[role="tab"][aria-selected="true"]`;
+const tabSelector = '[role="tab"]';
+const activeTabSelector = '[role="tab"][aria-selected="true"]';
 
 export interface TabHeaderBarProps {
   onChange: (changeDetail: TabsProps.ChangeDetail) => void;
@@ -61,7 +61,6 @@ export function TabHeaderBar({
   const [widthChange, containerMeasureRef] = useContainerQuery<number>(rect => rect.contentBoxWidth);
   const containerRef = useMergeRefs(containerObjectRef, containerMeasureRef);
   const tabRefs = useRef<Map<string, HTMLElement>>(new Map());
-  const tabsById = tabs.reduce((map, tab) => map.set(tab.id, tab), new Map<string, TabsProps.Tab>());
   const [horizontalOverflow, setHorizontalOverflow] = useState(false);
   const [inlineStartOverflow, setInlineStartOverflow] = useState(false);
   const [inlineEndOverflow, setInlineEndOverflow] = useState(false);
@@ -137,11 +136,17 @@ export function TabHeaderBar({
     [styles['pagination-button-right-scrollable']]: inlineEndOverflow,
   });
 
+  // A set of registered focusable elements that can use keyboard navigation.
   const focusables = useRef(new Set<Element>());
+  // A map of registered focusable element handlers to update the respective tab indices.
   const focusHandlers = useRef(new Map<Element, FocusableChangeHandler>());
+  // A map of focusable element states to avoid issuing unnecessary updates to registered elements.
   const focusablesState = useRef(new WeakMap<Element, boolean>());
+  // A reference to the currently focused element (tab or tab action).
   const focusTarget = useRef<null | HTMLElement>(null);
 
+  // Register a focusable element to allow navigation into it.
+  // The focusable element tabIndex is only set to 0 if the element matches the focus target.
   function registerFocusable(focusableElement: Element, changeHandler: FocusableChangeHandler) {
     focusables.current.add(focusableElement);
     focusHandlers.current.set(focusableElement, changeHandler);
@@ -153,12 +158,12 @@ export function TabHeaderBar({
     }
     return () => unregisterFocusable(focusableElement);
   }
-
   function unregisterFocusable(focusable: Element) {
     focusables.current.delete(focusable);
     focusHandlers.current.delete(focusable);
   }
 
+  // Update focus target with active tab and notify all registered focusables of a change.
   function updateFocusTarget() {
     focusTarget.current = getSingleFocusable();
     for (const focusableElement of focusables.current) {
@@ -170,31 +175,24 @@ export function TabHeaderBar({
       }
     }
   }
-
   function getSingleFocusable(): null | HTMLElement {
-    if (containerObjectRef.current) {
-      const tabElements: HTMLButtonElement[] = Array.from(containerObjectRef.current.querySelectorAll(tabSelector));
-      return tabElements.find(tab => tab.matches(activeTabSelector)) ?? tabElements.find(tab => !tab.disabled) ?? null;
+    if (!containerObjectRef.current) {
+      return null;
     }
-    return null;
+    const tabElements: HTMLButtonElement[] = Array.from(containerObjectRef.current.querySelectorAll(tabSelector));
+    return tabElements.find(tab => tab.matches(activeTabSelector)) ?? tabElements.find(tab => !tab.disabled) ?? null;
   }
-
   useEffect(() => {
     updateFocusTarget();
   });
-
-  function focusElement(element: HTMLElement) {
-    element.focus();
-
-    for (const [tabId, tabTriggerElement] of tabRefs.current.entries()) {
-      if (tabId !== activeTabId && tabTriggerElement === element) {
-        onChange({ activeTabId: tabId, activeTabHref: tabsById.get(tabId)?.href });
-        break;
-      }
-    }
+  function onFocus() {
+    updateFocusTarget();
+  }
+  function onBlur() {
+    updateFocusTarget();
   }
 
-  const onKeyDown = function (event: React.KeyboardEvent) {
+  function onKeyDown(event: React.KeyboardEvent) {
     const specialKeys = [KeyCode.right, KeyCode.left, KeyCode.end, KeyCode.home, KeyCode.pageUp, KeyCode.pageDown];
     if (hasModifierKeys(event) || specialKeys.indexOf(event.keyCode) === -1) {
       return;
@@ -214,17 +212,27 @@ export function TabHeaderBar({
       onPageDown: () => inlineEndOverflow && onPaginationClick(headerBarRef, 'forward'),
       onPageUp: () => inlineStartOverflow && onPaginationClick(headerBarRef, 'backward'),
     });
-  };
-
-  function getFocusablesFrom(target: HTMLElement) {
-    return getAllFocusables(target).filter(el => focusables.current.has(el) && !isElementDisabled(el));
   }
-
-  function isElementDisabled(element: HTMLElement) {
-    if (element instanceof HTMLButtonElement) {
-      return element.disabled && element.getAttribute('aria-selected') !== 'true';
+  function focusElement(element: HTMLElement) {
+    element.focus();
+    // If focusable element is a tab - fire the onChange for it.
+    const tabsById = tabs.reduce((map, tab) => map.set(tab.id, tab), new Map<string, TabsProps.Tab>());
+    for (const [tabId, tabTriggerElement] of tabRefs.current.entries()) {
+      if (tabId !== activeTabId && tabTriggerElement === element) {
+        onChange({ activeTabId: tabId, activeTabHref: tabsById.get(tabId)?.href });
+        break;
+      }
     }
-    return false;
+  }
+  // List all non-disabled and registered focusables: those are eligible for keyboard navigation.
+  function getFocusablesFrom(target: HTMLElement) {
+    function isElementDisabled(element: HTMLElement) {
+      if (element instanceof HTMLButtonElement) {
+        return element.disabled && element.getAttribute('aria-selected') !== 'true';
+      }
+      return false;
+    }
+    return getAllFocusables(target).filter(el => focusables.current.has(el) && !isElementDisabled(el));
   }
 
   return (
@@ -252,8 +260,8 @@ export function TabHeaderBar({
           ref={headerBarRef}
           onScroll={onScroll}
           onKeyDown={onKeyDown}
-          onFocus={() => updateFocusTarget()}
-          onBlur={() => updateFocusTarget()}
+          onFocus={onFocus}
+          onBlur={onBlur}
         >
           {tabs.map(renderTabHeader)}
         </ul>
