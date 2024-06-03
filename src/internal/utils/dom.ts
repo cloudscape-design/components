@@ -31,7 +31,7 @@ export function getContainingBlock(startElement: HTMLElement): HTMLElement | nul
       (!!computedStyle.transform && computedStyle.transform !== 'none') ||
       (!!computedStyle.perspective && computedStyle.perspective !== 'none') ||
       (!!computedStyle.containerType && computedStyle.containerType !== 'normal') ||
-      computedStyle.contain.split(' ').some(s => ['layout', 'paint', 'strict', 'content'].includes(s))
+      computedStyle.contain?.split(' ').some(s => ['layout', 'paint', 'strict', 'content'].includes(s))
     );
   }) as HTMLElement;
 }
