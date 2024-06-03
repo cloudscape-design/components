@@ -142,6 +142,13 @@ export interface BaseSelectProps
    * Called when input focus is set onto the UI control.
    */
   onFocus?: NonCancelableEventHandler;
+
+  /**
+   * Specifies if the control is readOnly, which prevents the
+   * user from modifying the value, but does not prevent the value from
+   * being included in a form submission. A readOnly control is still focusable.
+   */
+  readOnly?: boolean;
 }
 
 export interface SelectProps extends BaseSelectProps {

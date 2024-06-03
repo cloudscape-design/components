@@ -81,9 +81,9 @@ const ButtonTrigger = (
     'aria-describedby': ariaDescribedby,
     'aria-haspopup': ariaHasPopup ?? 'listbox',
     'aria-controls': ariaControls,
-    onKeyDown: onKeyDown && (event => fireKeyboardEvent(onKeyDown, event)),
-    onKeyUp: onKeyUp && (event => fireKeyboardEvent(onKeyUp, event)),
-    onMouseDown: onMouseDown && (event => fireCancelableEvent(onMouseDown, {}, event)),
+    onKeyDown: readOnly ? undefined : onKeyDown && (event => fireKeyboardEvent(onKeyDown, event)),
+    onKeyUp: readOnly ? undefined : onKeyUp && (event => fireKeyboardEvent(onKeyUp, event)),
+    onMouseDown: readOnly ? undefined : onMouseDown && (event => fireCancelableEvent(onMouseDown, {}, event)),
     onClick: readOnly ? undefined : onClick && (event => fireCancelableEvent(onClick, {}, event)),
     onFocus: onFocus && (event => fireCancelableEvent(onFocus, {}, event)),
     onBlur: onBlur && (event => fireCancelableEvent(onBlur, { relatedTarget: event.relatedTarget }, event)),
@@ -99,7 +99,7 @@ const ButtonTrigger = (
       {children}
       {!hideCaret && (
         <span className={styles.arrow}>
-          <InternalIcon name="caret-down-filled" variant={disabled ? 'disabled' : 'normal'} />
+          <InternalIcon name="caret-down-filled" variant={disabled || readOnly ? 'disabled' : 'normal'} />
         </span>
       )}
     </button>
