@@ -51,7 +51,7 @@ export function TabHeaderBar({
   i18nStrings,
 }: TabHeaderBarProps) {
   const headerBarRef = useRef<HTMLUListElement>(null);
-  const activeTabHeaderRef = useRef<HTMLElement>(null);
+  const activeTabHeaderRef = useRef<null | HTMLElement>(null);
   const inlineStartOverflowButton = useRef<HTMLElement>(null);
   const i18n = useInternalI18n('tabs');
 
@@ -79,8 +79,8 @@ export function TabHeaderBar({
       return;
     }
     const activeTabRef = tabRefs.current.get(activeTabId);
-    if (activeTabRef && headerBarRef.current) {
-      scrollIntoView(activeTabRef, headerBarRef.current, smooth);
+    if (activeTabRef && activeTabRef.parentElement && headerBarRef.current) {
+      scrollIntoView(activeTabRef.parentElement, headerBarRef.current, smooth);
     }
   };
 
@@ -186,8 +186,7 @@ export function TabHeaderBar({
   function focusElement(element: HTMLElement) {
     element.focus();
 
-    for (const [tabId, tabLiElement] of tabRefs.current.entries()) {
-      const tabTriggerElement = tabLiElement.querySelector('a,button');
+    for (const [tabId, tabTriggerElement] of tabRefs.current.entries()) {
       if (tabId !== activeTabId && tabTriggerElement === element) {
         onChange({ activeTabId: tabId, activeTabHref: tabsById.get(tabId)?.href });
         break;
@@ -291,11 +290,10 @@ export function TabHeaderBar({
       event.preventDefault();
       // for browsers that do not focus buttons on button click
       if (!tab.href) {
-        const clickedTabRef = tabRefs.current.get(tab.id);
+        const clickedTabRef = tabRefs.current.get(tab.id) as undefined | HTMLButtonElement;
         if (clickedTabRef) {
-          const childElement = clickedTabRef.firstChild as HTMLButtonElement;
-          if (childElement && childElement !== document.activeElement) {
-            childElement.focus({ preventScroll: true });
+          if (clickedTabRef && clickedTabRef !== document.activeElement) {
+            clickedTabRef.focus({ preventScroll: true });
           }
         }
       }
@@ -330,27 +328,29 @@ export function TabHeaderBar({
       commonProps.onClick = clickTab;
     }
 
+    const setElement = (tabElement: null | HTMLElement) => {
+      if (tab.id === activeTabId) {
+        activeTabHeaderRef.current = tabElement;
+      }
+      tabRefs.current.set(tab.id, tabElement as HTMLElement);
+    };
+
     let trigger = null;
     if (tab.href) {
       const anchorProps = commonProps as JSX.IntrinsicElements['a'];
       anchorProps.href = tab.href;
-      trigger = <AnchorTrigger {...anchorProps} ref={tab.id === activeTabId ? activeTabHeaderRef : undefined} />;
+      trigger = <AnchorTrigger {...anchorProps} ref={setElement} />;
     } else {
       const buttonProps = commonProps as JSX.IntrinsicElements['button'];
       buttonProps.type = 'button';
       if (tab.disabled) {
         buttonProps.disabled = true;
       }
-      trigger = <ButtonTrigger {...buttonProps} ref={tab.id === activeTabId ? activeTabHeaderRef : undefined} />;
+      trigger = <ButtonTrigger {...buttonProps} ref={setElement} />;
     }
 
     return (
-      <li
-        ref={element => tabRefs.current.set(tab.id, element as HTMLElement)}
-        className={styles['tabs-tab']}
-        role="presentation"
-        key={tab.id}
-      >
+      <li className={styles['tabs-tab']} role="presentation" key={tab.id}>
         {trigger}
       </li>
     );
