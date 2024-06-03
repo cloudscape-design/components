@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, forwardRef } from 'react';
 import { TabsProps } from './interfaces';
 import { ButtonProps } from '../button/interfaces';
 import clsx from 'clsx';
@@ -19,16 +19,14 @@ import { hasModifierKeys, isPlainLeftClick } from '../internal/events';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useInternalI18n } from '../i18n/context';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
-
-function getNextAvailableTabId(closedTabIndex: number, tabs: TabsProps.Tab[]): string {
-  if (closedTabIndex > -1 && closedTabIndex < tabs.length - 1) {
-    return tabs[closedTabIndex + 1].id;
-  } else if (closedTabIndex === 0) {
-    return tabs[1].id;
-  } else {
-    return '';
-  }
-}
+import {
+  FocusableChangeHandler,
+  SingleTabStopNavigationContext,
+  useSingleTabStopNavigation,
+} from '../internal/context/single-tab-stop-navigation-context';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { getAllFocusables } from '../internal/components/focus-lock/utils';
+import { nodeBelongs } from '../internal/utils/node-belongs';
 
 function dismissButton(dismissLabel: TabsProps.Tab['dismissLabel'], onDismiss: TabsProps.Tab['onDismiss']) {
   return (
@@ -64,12 +62,13 @@ export function TabHeaderBar({
 
   const isVisualRefresh = useVisualRefresh();
 
-  const [widthChange, containerRef] = useContainerQuery<number>(rect => rect.contentBoxWidth);
+  const containerObjectRef = useRef<HTMLDivElement>(null);
+  const [widthChange, containerMeasureRef] = useContainerQuery<number>(rect => rect.contentBoxWidth);
+  const containerRef = useMergeRefs(containerObjectRef, containerMeasureRef);
   const tabRefs = useRef<Map<string, HTMLElement>>(new Map());
   const [horizontalOverflow, setHorizontalOverflow] = useState(false);
   const [inlineStartOverflow, setInlineStartOverflow] = useState(false);
   const [inlineEndOverflow, setInlineEndOverflow] = useState(false);
-  const [previousTabId, setPreviousTabId] = useState<string | undefined>();
 
   useEffect(() => {
     if (headerBarRef.current) {
@@ -125,33 +124,6 @@ export function TabHeaderBar({
     }
   };
 
-  useEffect(() => {
-    /*
-     * Whenever the active tab changes, we need to update the focus to
-     * prioritize any children within the tab header
-     */
-    const tabHeaderContainerElements = document.querySelectorAll(`.${styles['tabs-tab-header-container']}`);
-    tabHeaderContainerElements.forEach(tabHeaderContainerElement => {
-      const focusableElements = tabHeaderContainerElement.querySelectorAll('button, a');
-      const isActive = tabHeaderContainerElement.classList.contains(`${styles['tabs-tab-active']}`);
-      console.log('focusableElements', focusableElements);
-      focusableElements.forEach(element => {
-        const isFocusable = isActive || element.classList.contains(`${styles['tabs-tab-disabled']}`);
-        element.setAttribute('tabIndex', isFocusable ? '0' : '-1');
-      });
-
-      const nextActiveTabHeader: HTMLElement | null = tabHeaderContainerElement.querySelector(
-        `[data-testid="${activeTabId}"].${styles['tabs-tab-active']}.${styles['tabs-tab-link']}`
-      );
-      if (nextActiveTabHeader) {
-        // Set focus to the tab header element
-        nextActiveTabHeader.focus();
-      } else {
-        document.body.focus();
-      }
-    });
-  }, [activeTabId]);
-
   const classes = clsx({
     [styles['tabs-header']]: true,
     [styles['tabs-header-with-divider']]: variant === 'default' || isVisualRefresh,
@@ -169,95 +141,191 @@ export function TabHeaderBar({
     [styles['pagination-button-right-scrollable']]: inlineEndOverflow,
   });
 
+  // The code below is largely taken from src/table/table-role/grid-navigation
+  // There is an opportunity to reuse the large part of it instead of copying
+
+  const focusables = useRef(new Set<Element>());
+  const focusHandlers = useRef(new Map<Element, FocusableChangeHandler>());
+  const focusablesState = useRef(new WeakMap<Element, boolean>());
+  const focusTarget = useRef<null | Element>(null);
+
+  function registerFocusable(focusableElement: Element, changeHandler: FocusableChangeHandler) {
+    focusables.current.add(focusableElement);
+    focusHandlers.current.set(focusableElement, changeHandler);
+    const isFocusable = !!focusablesState.current.get(focusableElement);
+    const newIsFocusable = focusTarget.current === focusableElement;
+    if (newIsFocusable !== isFocusable) {
+      focusablesState.current.set(focusableElement, newIsFocusable);
+      changeHandler(newIsFocusable);
+    }
+    return () => unregisterFocusable(focusableElement);
+  }
+
+  function unregisterFocusable(focusable: Element) {
+    focusables.current.delete(focusable);
+    focusHandlers.current.delete(focusable);
+
+    const isUnregisteringFocusedNode = nodeBelongs(focusable, document.activeElement);
+    if (isUnregisteringFocusedNode) {
+      // Wait for unmounted node to get removed from the DOM.
+      setTimeout(() => updateAndRefocus(), 0);
+    }
+  }
+
+  function updateAndRefocus() {
+    if (
+      !containerObjectRef.current ||
+      !focusTarget.current ||
+      nodeBelongs(containerObjectRef.current, focusTarget.current)
+    ) {
+      return;
+    }
+    updateFocusTarget();
+    if (focusTarget.current instanceof HTMLElement) {
+      focusTarget.current.focus();
+    }
+  }
+
+  function updateFocusTarget() {
+    focusTarget.current = getSingleFocusable();
+    for (const focusableElement of focusables.current) {
+      const isFocusable = focusablesState.current.get(focusableElement) ?? false;
+      const newIsFocusable = focusTarget.current === focusableElement;
+      if (newIsFocusable !== isFocusable) {
+        focusablesState.current.set(focusableElement, newIsFocusable);
+        focusHandlers.current.get(focusableElement)!(newIsFocusable);
+      }
+    }
+  }
+
+  function getSingleFocusable(): null | Element {
+    if (!containerObjectRef.current) {
+      return null;
+    }
+    const activeElement = document.activeElement;
+    if (activeElement && containerObjectRef.current.contains(activeElement) && focusables.current.has(activeElement)) {
+      return document.activeElement;
+    }
+    const activeStyle = styles['tabs-tab-active'];
+    const activeTab = containerObjectRef.current.querySelector(`a.${activeStyle},button.${activeStyle}`);
+    if (activeTab) {
+      return activeTab;
+    }
+    const firstTab = containerObjectRef.current.querySelector(`a[role="tab"],button[role="tab"]`);
+    return firstTab;
+  }
+
+  useEffect(() => {
+    // Timeout ensures the newly rendered content elements are registered.
+    setTimeout(() => updateFocusTarget(), 0);
+  });
+
+  function focusElement(element: HTMLElement) {
+    element.focus();
+
+    // TODO: should we decouple navigation and activation by requiring Space/Enter keypress to select a tab?
+    if (element.role === 'tab' && element.dataset.testid) {
+      onChange({ activeTabId: element.dataset.testid, activeTabHref: element.getAttribute('href') ?? undefined });
+    }
+  }
+
+  const onKeyDown = function (event: React.KeyboardEvent) {
+    const specialKeys = [KeyCode.right, KeyCode.left, KeyCode.end, KeyCode.home, KeyCode.pageUp, KeyCode.pageDown];
+    if (hasModifierKeys(event) || specialKeys.indexOf(event.keyCode) === -1) {
+      return;
+    }
+    if (!containerObjectRef.current || !focusTarget.current) {
+      return;
+    }
+    event.preventDefault();
+
+    const focusables = getFocusablesFrom(containerObjectRef.current);
+    const activeIndex = focusables.indexOf(focusTarget.current as HTMLElement);
+    handleKey(event as any, {
+      onHome: () => focusElement(focusables[0]),
+      onEnd: () => focusElement(focusables[focusables.length - 1]),
+      onInlineStart: () => focusElement(focusables[Math.max(0, activeIndex - 1)]),
+      onInlineEnd: () => focusElement(focusables[Math.min(focusables.length - 1, activeIndex + 1)]),
+      onPageDown: () => inlineEndOverflow && onPaginationClick(headerBarRef, 'forward'),
+      onPageUp: () => inlineStartOverflow && onPaginationClick(headerBarRef, 'backward'),
+    });
+  };
+
+  function getFocusablesFrom(target: HTMLElement) {
+    return getAllFocusables(target).filter(el => focusables.current.has(el) && !isElementDisabled(el));
+  }
+
+  function isElementDisabled(element: HTMLElement) {
+    if (element instanceof HTMLButtonElement) {
+      return element.disabled;
+    }
+    return false;
+  }
+
   return (
-    //converted span to div as list should not be a child of span for HTML validation
-    <div className={classes} ref={containerRef}>
-      {horizontalOverflow && (
-        <span ref={inlineStartOverflowButton} className={leftButtonClasses}>
-          <InternalButton
-            formAction="none"
-            variant="icon"
-            iconName="angle-left"
-            disabled={!inlineStartOverflow}
-            __focusable={true}
-            onClick={() => onPaginationClick(headerBarRef, 'backward')}
-            ariaLabel={i18n('i18nStrings.scrollLeftAriaLabel', i18nStrings?.scrollLeftAriaLabel)}
-          />
-        </span>
-      )}
-      <ul
-        role="tablist"
-        className={styles['tabs-header-list']}
-        aria-label={ariaLabel}
-        aria-labelledby={ariaLabelledby}
-        ref={headerBarRef}
-        onScroll={onScroll}
-      >
-        {tabs.map(renderTabHeader)}
-      </ul>
-      {horizontalOverflow && (
-        <span className={rightButtonClasses}>
-          <InternalButton
-            formAction="none"
-            variant="icon"
-            iconName="angle-right"
-            disabled={!inlineEndOverflow}
-            __focusable={true}
-            onClick={() => onPaginationClick(headerBarRef, 'forward')}
-            ariaLabel={i18n('i18nStrings.scrollRightAriaLabel', i18nStrings?.scrollRightAriaLabel)}
-          />
-        </span>
-      )}
-    </div>
+    <SingleTabStopNavigationContext.Provider value={{ navigationActive: true, registerFocusable }}>
+      {/* converted span to div as list should not be a child of span for HTML validation */}
+      <div className={classes} ref={containerRef}>
+        {horizontalOverflow && (
+          <span ref={inlineStartOverflowButton} className={leftButtonClasses}>
+            <InternalButton
+              formAction="none"
+              variant="icon"
+              iconName="angle-left"
+              disabled={!inlineStartOverflow}
+              __focusable={true}
+              onClick={() => onPaginationClick(headerBarRef, 'backward')}
+              ariaLabel={i18n('i18nStrings.scrollLeftAriaLabel', i18nStrings?.scrollLeftAriaLabel)}
+            />
+          </span>
+        )}
+        <ul
+          role="tablist"
+          className={styles['tabs-header-list']}
+          aria-label={ariaLabel}
+          aria-labelledby={ariaLabelledby}
+          ref={headerBarRef}
+          onScroll={onScroll}
+          onKeyDown={onKeyDown}
+          onFocus={() => updateFocusTarget()}
+          onBlur={() => updateFocusTarget()}
+        >
+          {tabs.map(renderTabHeader)}
+        </ul>
+        {horizontalOverflow && (
+          <span className={rightButtonClasses}>
+            <InternalButton
+              formAction="none"
+              variant="icon"
+              iconName="angle-right"
+              disabled={!inlineEndOverflow}
+              __focusable={true}
+              onClick={() => onPaginationClick(headerBarRef, 'forward')}
+              ariaLabel={i18n('i18nStrings.scrollRightAriaLabel', i18nStrings?.scrollRightAriaLabel)}
+            />
+          </span>
+        )}
+      </div>
+    </SingleTabStopNavigationContext.Provider>
   );
 
   function renderTabHeader(tab: TabsProps.Tab) {
-    const enabledTabsWithCurrentTab = tabs.filter(tab => !tab.disabled || tab.id === activeTabId);
     const { dismissible, dismissLabel, action, onDismiss } = tab;
 
     const handleDismiss: ButtonProps['onClick'] = event => {
-      let newActiveTabId: string | null;
-
-      if (activeTabId === tab.id) {
-        const activeIndex = enabledTabsWithCurrentTab.indexOf(tab);
-        newActiveTabId = previousTabId || getNextAvailableTabId(activeIndex, enabledTabsWithCurrentTab);
-      } else {
-        newActiveTabId = activeTabId || '';
+      if (!containerObjectRef.current) {
+        return;
       }
-      onChange({ activeTabId: newActiveTabId });
+
+      const tabElements = getFocusablesFrom(containerObjectRef.current).filter(el => el.role === 'tab');
+      const activeTabIndex = tabElements.findIndex(el => el.dataset.testid === tab.id);
+      tabElements.splice(activeTabIndex, 1);
+      const nextActive = tabElements[Math.min(tabElements.length - 1, activeTabIndex)];
+      const nextActiveId = nextActive && nextActive.dataset.testid;
+      if (nextActiveId) {
+        onChange({ activeTabId: nextActiveId });
+      }
       onDismiss?.(event);
-    };
-
-    const highlightTab = function (enabledTabIndex: number) {
-      const tab = enabledTabsWithCurrentTab[enabledTabIndex];
-      if (tab.id === activeTabId) {
-        return;
-      }
-      setPreviousTabId(activeTabId);
-      onChange({ activeTabId: tab.id, activeTabHref: tab.href });
-    };
-
-    const onKeyDown = function (
-      event: React.KeyboardEvent<HTMLAnchorElement> | React.KeyboardEvent<HTMLButtonElement>
-    ) {
-      const { keyCode } = event;
-      const specialKeys = [KeyCode.right, KeyCode.left, KeyCode.end, KeyCode.home, KeyCode.pageUp, KeyCode.pageDown];
-      if (hasModifierKeys(event) || specialKeys.indexOf(keyCode) === -1) {
-        return;
-      }
-      event.preventDefault();
-      const activeIndex = enabledTabsWithCurrentTab.indexOf(tab);
-
-      handleKey(event, {
-        onEnd: () => highlightTab(enabledTabsWithCurrentTab.length - 1),
-        onHome: () => highlightTab(0),
-        onInlineEnd: () =>
-          activeIndex + 1 === enabledTabsWithCurrentTab.length ? highlightTab(0) : highlightTab(activeIndex + 1),
-        onInlineStart: () =>
-          activeIndex === 0 ? highlightTab(enabledTabsWithCurrentTab.length - 1) : highlightTab(activeIndex - 1),
-        onPageDown: () => inlineEndOverflow && onPaginationClick(headerBarRef, 'forward'),
-        onPageUp: () => inlineStartOverflow && onPaginationClick(headerBarRef, 'backward'),
-      });
     };
 
     const clickTab = (event: React.MouseEvent) => {
@@ -288,7 +356,6 @@ export function TabHeaderBar({
         return;
       }
 
-      setPreviousTabId(activeTabId);
       onChange({ activeTabId: tab.id, activeTabHref: tab.href });
     };
 
@@ -323,28 +390,18 @@ export function TabHeaderBar({
       commonProps.onClick = clickTab;
     }
 
-    if (tab.id === activeTabId) {
-      commonProps.ref = activeTabHeaderRef;
-      commonProps.tabIndex = 0;
-      commonProps.onKeyDown = (
-        event: React.KeyboardEvent<HTMLAnchorElement> | React.KeyboardEvent<HTMLButtonElement>
-      ) => onKeyDown(event);
-    } else {
-      commonProps.tabIndex = -1;
-    }
-
     let trigger = null;
     if (tab.href) {
       const anchorProps = commonProps as JSX.IntrinsicElements['a'];
       anchorProps.href = tab.href;
-      trigger = <a {...anchorProps} />;
+      trigger = <TriggerA {...anchorProps} ref={tab.id === activeTabId ? activeTabHeaderRef : undefined} />;
     } else {
       const buttonProps = commonProps as JSX.IntrinsicElements['button'];
       buttonProps.type = 'button';
       if (tab.disabled) {
         buttonProps.disabled = true;
       }
-      trigger = <button {...buttonProps} />;
+      trigger = <TriggerB {...buttonProps} ref={tab.id === activeTabId ? activeTabHeaderRef : undefined} />;
     }
 
     return (
@@ -370,6 +427,18 @@ export function TabHeaderBar({
   }
 }
 
+const TriggerA = forwardRef((props: React.HTMLAttributes<HTMLAnchorElement>, ref: React.Ref<HTMLElement>) => {
+  const triggerRef = useRef(null);
+  const mergedRef = useMergeRefs(triggerRef, ref);
+  const { tabIndex: triggerTabIndex } = useSingleTabStopNavigation(triggerRef);
+  return <a ref={mergedRef} {...props} tabIndex={triggerTabIndex} />;
+});
+const TriggerB = forwardRef((props: React.HTMLAttributes<HTMLButtonElement>, ref: React.Ref<HTMLElement>) => {
+  const triggerRef = useRef(null);
+  const mergedRef = useMergeRefs(triggerRef, ref);
+  const { tabIndex: triggerTabIndex } = useSingleTabStopNavigation(triggerRef);
+  return <button ref={mergedRef} {...props} tabIndex={triggerTabIndex} />;
+});
 export function getTabElementId({ namespace, tabId }: { namespace: string; tabId: string }) {
   return namespace + '-' + tabId;
 }
