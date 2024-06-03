@@ -31,7 +31,7 @@ export default class TableWrapper extends ComponentWrapper {
   }
 
   /**
-   * Alias for findHeader method for compatibility with previous versions
+   * Alias for findHeaderSlot method for compatibility with previous versions
    * @deprecated
    */
   findHeaderRegion(): ElementWrapper | null {
