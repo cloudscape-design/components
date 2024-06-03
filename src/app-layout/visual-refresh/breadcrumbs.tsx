@@ -8,7 +8,7 @@ import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 
 export default function Breadcrumbs() {
-  const { breadcrumbs, hasStickyBackground, isMobile, headerVariant } = useAppLayoutInternals();
+  const { breadcrumbs, isMobile, headerVariant } = useAppLayoutInternals();
 
   if (isMobile || !breadcrumbs) {
     return null;
@@ -17,7 +17,6 @@ export default function Breadcrumbs() {
   return (
     <div
       className={clsx(styles.breadcrumbs, testutilStyles.breadcrumbs, {
-        [styles['has-sticky-background']]: hasStickyBackground,
         [highContrastHeaderClassName]: headerVariant === 'high-contrast',
       })}
     >
