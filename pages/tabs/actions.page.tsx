@@ -86,7 +86,7 @@ export default function TabsDemoPage() {
       label: 'Athena-like tab',
       dismissible: true,
       dismissLabel: 'third-dismiss-button',
-      onDismiss: () => setTabsBoth(prevTabs => prevTabs.splice(0, 2)),
+      onDismiss: () => setTabsBoth(prevTabs => prevTabs.slice(0, 2)),
       action: (
         <ButtonDropdown
           variant="icon"

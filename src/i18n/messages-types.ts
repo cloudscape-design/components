@@ -351,6 +351,7 @@ export interface I18nFormatArgTypes {
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": never;
     "i18nStrings.scrollRightAriaLabel": never;
+    "i18nStrings.tabAriaRoleDescription": never;
   }
   "tag-editor": {
     "i18nStrings.keyPlaceholder": never;

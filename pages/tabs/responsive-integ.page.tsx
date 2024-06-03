@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Tabs, { TabsProps } from '~components/tabs';
 import styles from './responsive.scss';
+import { ButtonDropdown } from '~components';
 
 export default function TabsDemoPage() {
   const defaultTabs: Array<TabsProps.Tab> = [
@@ -44,6 +45,21 @@ export default function TabsDemoPage() {
       id: 'sixth',
       content:
         'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.',
+      action: (
+        <ButtonDropdown
+          variant="icon"
+          ariaLabel="Query actions"
+          items={[
+            { id: 'save', text: 'Save', disabled: true },
+            { id: 'saveAs', text: 'Save as' },
+            { id: 'rename', text: 'Rename', disabled: true },
+            { id: 'delete', text: 'Delete', disabled: true },
+          ]}
+          expandToViewport={true}
+        />
+      ),
+      dismissible: true,
+      dismissLabel: 'six-tab-dismissible-label',
     },
   ];
 

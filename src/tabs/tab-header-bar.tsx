@@ -20,26 +20,13 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useInternalI18n } from '../i18n/context';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
-function setTabIndexForTabContainer(
-  tabHeaderContainerElement: HTMLElement,
-  isActive: boolean,
-  activeTabId: string | undefined
-) {
-  const focusableElements = tabHeaderContainerElement.querySelectorAll('button, a');
-  focusableElements.forEach(element => {
-    const isFocusable = isActive || tabHeaderContainerElement.classList.contains(`${styles['tabs-tab-disabled']}`);
-    isFocusable ? element.setAttribute('tabIndex', '0') : element.setAttribute('tabIndex', '-1');
-  });
-
-  // Handles case where the current tab doesnt focus any elements on tab close
-  const nextActiveTabHeader: HTMLElement | null = tabHeaderContainerElement.querySelector(
-    `[data-testid="${activeTabId}"].${styles['tabs-tab-active']}.${styles['tabs-tab-link']}`
-  );
-  if (nextActiveTabHeader) {
-    // Set focus to the tab header element
-    nextActiveTabHeader.focus();
+function getNextAvailableTabId(closedTabIndex: number, tabs: TabsProps.Tab[]): string {
+  if (closedTabIndex > -1 && closedTabIndex < tabs.length - 1) {
+    return tabs[closedTabIndex + 1].id;
+  } else if (closedTabIndex === 0) {
+    return tabs[1].id;
   } else {
-    document.body.focus();
+    return '';
   }
 }
 
@@ -144,9 +131,24 @@ export function TabHeaderBar({
      * prioritize any children within the tab header
      */
     const tabHeaderContainerElements = document.querySelectorAll(`.${styles['tabs-tab-header-container']}`);
-    tabHeaderContainerElements.forEach(element => {
-      const isActive = element.classList.contains(`${styles['tabs-tab-active']}`);
-      setTabIndexForTabContainer(element as HTMLElement, isActive, activeTabId);
+    tabHeaderContainerElements.forEach(tabHeaderContainerElement => {
+      const focusableElements = tabHeaderContainerElement.querySelectorAll('button, a');
+      const isActive = tabHeaderContainerElement.classList.contains(`${styles['tabs-tab-active']}`);
+      console.log('focusableElements', focusableElements);
+      focusableElements.forEach(element => {
+        const isFocusable = isActive || element.classList.contains(`${styles['tabs-tab-disabled']}`);
+        element.setAttribute('tabIndex', isFocusable ? '0' : '-1');
+      });
+
+      const nextActiveTabHeader: HTMLElement | null = tabHeaderContainerElement.querySelector(
+        `[data-testid="${activeTabId}"].${styles['tabs-tab-active']}.${styles['tabs-tab-link']}`
+      );
+      if (nextActiveTabHeader) {
+        // Set focus to the tab header element
+        nextActiveTabHeader.focus();
+      } else {
+        document.body.focus();
+      }
     });
   }, [activeTabId]);
 
@@ -214,12 +216,16 @@ export function TabHeaderBar({
     const { dismissible, dismissLabel, action, onDismiss } = tab;
 
     const handleDismiss: ButtonProps['onClick'] = event => {
-      if (previousTabId) {
-        // This check deals with the case where the user closes a tab but hasn't clicked on it
-        const nextTabId = activeTabId !== tab.id ? activeTabId : previousTabId;
-        onChange({ activeTabId: nextTabId || '' });
+      let newActiveTabId: string | null;
+
+      if (activeTabId === tab.id) {
+        const activeIndex = enabledTabsWithCurrentTab.indexOf(tab);
+        newActiveTabId = previousTabId || getNextAvailableTabId(activeIndex, enabledTabsWithCurrentTab);
+      } else {
+        newActiveTabId = activeTabId || '';
       }
-      onDismiss && onDismiss(event);
+      onChange({ activeTabId: newActiveTabId });
+      onDismiss?.(event);
     };
 
     const highlightTab = function (enabledTabIndex: number) {
@@ -303,7 +309,8 @@ export function TabHeaderBar({
     const commonProps: (JSX.IntrinsicElements['a'] | JSX.IntrinsicElements['button']) & { 'data-testid': string } = {
       className: classes,
       role: 'tab',
-      'aria-selected': tab.id === activeTabId,
+      'aria-selected': activeTabId === tab.id,
+      'aria-expanded': activeTabId === tab.id,
       'aria-controls': `${idNamespace}-${tab.id}-panel`,
       'data-testid': tab.id,
       id: getTabElementId({ namespace: idNamespace, tabId: tab.id }),
@@ -347,9 +354,13 @@ export function TabHeaderBar({
         role="presentation"
         key={tab.id}
       >
-        <div className={tabHeaderContainerClasses}>
+        <div className={tabHeaderContainerClasses} role="group" aria-labelledby={commonProps.id}>
           {trigger}
-          {action && <span className={styles['tabs-tab-action']}> {action} </span>}
+          {action && (
+            <span className={styles['tabs-tab-action']} aria-label="More Actions" aria-haspopup="true">
+              {action}
+            </span>
+          )}
           {dismissible && (
             <span className={styles['tabs-tab-dismiss']}> {dismissButton(dismissLabel, handleDismiss)} </span>
           )}
