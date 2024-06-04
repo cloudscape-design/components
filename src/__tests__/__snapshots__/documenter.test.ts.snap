@@ -13328,6 +13328,14 @@ single form field.",
       "type": "number",
     },
     Object {
+      "description": "Specifies if the control is readOnly, which prevents the
+user from modifying the value, but does not prevent the value from
+being included in a form submission. A readOnly control is still focusable.",
+      "name": "readOnly",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "description": "Labels shown between the minimum and maximum values.",
       "name": "referenceValues",
       "optional": true,
