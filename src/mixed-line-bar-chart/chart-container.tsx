@@ -531,10 +531,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
           ariaRoleDescription={i18nStrings?.chartAriaRoleDescription}
           ariaLiveRegion={activeLiveRegion}
           activeElementRef={highlightedElementRef}
-          activeElementKey={
-            highlightedGroupIndex?.toString() ??
-            (isLineXKeyboardFocused ? `point-index-${handlers.xIndex}` : point?.key)
-          }
+          activeElementKey={activeAriaLabel}
           activeElementFocusOffset={isGroupNavigation ? 0 : isLineXKeyboardFocused ? { x: 8, y: 0 } : 3}
           onMouseMove={onSVGMouseMove}
           onMouseOut={onSVGMouseOut}
