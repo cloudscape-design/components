@@ -43,6 +43,11 @@
       cursor: default;
       background-color: awsui.$color-background-control-disabled;
     }
+
+    &.readonly {
+      cursor: default;
+      background-color: awsui.$color-background-control-disabled;
+    }
   }
 
   &-range {
@@ -72,6 +77,10 @@
 
     &.disabled {
       background-color: awsui.$color-background-control-disabled;
+    }
+
+    &.readonly {
+      background-color: awsui.$color-foreground-control-read-only;
     }
   }
 }
@@ -171,6 +180,10 @@
 
   &.filled {
     background: awsui.$color-background-slider-handle-default;
+
+    &.readonly {
+      background: awsui.$color-foreground-control-read-only;
+    }
   }
 
   &.active {
@@ -194,6 +207,10 @@
   }
 
   &.disabled {
+    background: awsui.$color-background-control-disabled;
+  }
+
+  &.readonly {
     background: awsui.$color-background-control-disabled;
   }
 }
@@ -223,6 +240,20 @@
 
   &.disabled {
     cursor: default;
+  }
+
+  &.readonly {
+    cursor: default;
+
+    &:focus::-webkit-slider-thumb,
+    &:active::-webkit-slider-thumb {
+      @include mixins.base-thumb-focus-readonly-styles();
+    }
+
+    &:focus::-moz-range-thumb,
+    &:active::-moz-range-thumb {
+      @include mixins.base-thumb-focus-readonly-styles();
+    }
   }
 
   // 1px added to min and max to cover the step line when it exists.
@@ -330,5 +361,17 @@
 
   &::-moz-range-thumb {
     @include mixins.base-thumb-disabled-styles();
+  }
+}
+
+.readonly,
+.readonly:hover,
+.readonly:active {
+  &::-webkit-slider-thumb {
+    @include mixins.base-thumb-readonly-styles();
+  }
+
+  &::-moz-range-thumb {
+    @include mixins.base-thumb-readonly-styles();
   }
 }

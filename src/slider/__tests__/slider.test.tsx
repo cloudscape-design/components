@@ -444,4 +444,26 @@ describe('Slider a11y', () => {
 
     expect(labels).toHaveAttribute('aria-hidden', 'true');
   });
+
+  test('aria-readonly is set to true when readOnly', () => {
+    const wrapper = renderSlider({ min: 0, max: 100, value: 50, readOnly: true });
+    const input = wrapper.findNativeInput()?.getElement();
+
+    expect(input).toHaveAttribute('aria-readonly', 'true');
+  });
+
+  test('does not trigger onChange when readOnly', () => {
+    const onChange = jest.fn();
+    const wrapper = renderSlider({
+      min: 0,
+      max: 100,
+      value: 50,
+      onChange: event => onChange(event.detail),
+      readOnly: true,
+    });
+
+    wrapper.setInputValue('60');
+
+    expect(onChange).not.toHaveBeenCalled();
+  });
 });

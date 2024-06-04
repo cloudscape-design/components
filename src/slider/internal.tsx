@@ -28,6 +28,7 @@ export default function InternalSlider({
   onChange,
   step,
   disabled,
+  readOnly,
   ariaLabel,
   ariaDescription,
   referenceValues,
@@ -130,6 +131,7 @@ export default function InternalSlider({
         <div
           className={clsx(styles['slider-track'], {
             [styles.disabled]: disabled,
+            [styles.readonly]: readOnly,
           })}
         />
 
@@ -142,6 +144,7 @@ export default function InternalSlider({
               [styles['error-active']]: invalid && isActive,
               [styles['warning-active']]: showWarning && isActive,
               [styles.disabled]: disabled,
+              [styles.readonly]: readOnly,
             })}
             style={{ [customCssProps.sliderRangeInlineSize]: `${percent}%` }}
           />
@@ -151,6 +154,7 @@ export default function InternalSlider({
         <SliderTickMarks
           hideFillLine={hideFillLine}
           disabled={disabled}
+          readOnly={readOnly}
           invalid={invalid}
           warning={warning}
           isActive={isActive}
@@ -175,11 +179,13 @@ export default function InternalSlider({
         }
         aria-valuetext={getAriaValueText()}
         aria-invalid={invalid ? 'true' : undefined}
+        aria-readonly={readOnly ? 'true' : undefined}
         id={controlId}
         type="range"
         min={min}
         max={max}
         disabled={disabled}
+        readOnly={readOnly}
         onFocus={() => {
           setShowTooltip(true);
           setIsActive(true);
@@ -205,12 +211,17 @@ export default function InternalSlider({
         step={step}
         value={sliderValue}
         onChange={event => {
+          if (readOnly) {
+            return;
+          }
+
           onChange && fireNonCancelableEvent(onChange, { value: Number(event.target.value) });
         }}
         className={clsx(styles.thumb, {
           [styles.error]: invalid,
           [styles.warning]: showWarning,
           [styles.disabled]: disabled,
+          [styles.readonly]: readOnly,
           [styles.min]: sliderValue <= min || max < min,
           [styles.max]: sliderValue >= max && min < max,
         })}
