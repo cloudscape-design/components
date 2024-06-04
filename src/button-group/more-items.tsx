@@ -6,6 +6,7 @@ import { ButtonDropdownProps } from '../button-dropdown/interfaces';
 import { CancelableEventHandler, fireCancelableEvent } from '../internal/events';
 import { getFirstLoadingItem, toDropdownItems } from './utils';
 import ButtonDropdown from '../button-dropdown/internal';
+import styles from './styles.css.js';
 
 export default function MoreItems({
   items,
@@ -41,6 +42,7 @@ export default function MoreItems({
       expandToViewport={dropdownExpandToViewport}
       ref={dropdownRef}
       ariaLabel={ariaLabel}
+      className={styles['more-button']}
     />
   );
 }

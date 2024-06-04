@@ -45,36 +45,48 @@ const items1: ButtonGroupProps.ItemOrGroup[] = [
   },
 ];
 
-// TODO: use button group test utils to find items
 test('renders all items inline when limit=9', () => {
   const wrapper = renderButtonGroup({ items: items1, limit: 9 });
 
-  expect(wrapper.findAll('button')).toHaveLength(9);
+  expect(wrapper.findInlineItems()).toHaveLength(9);
+  expect(wrapper.findShowMoreButton()).toBe(null);
 });
 test('moves misc items to under menu when limit=8', () => {
   const wrapper = renderButtonGroup({ items: items1, limit: 8 });
 
-  // 6 inline items and 1 menu dropdown
-  expect(wrapper.findAll('button')).toHaveLength(6 + 1);
+  expect(wrapper.findInlineItems()).toHaveLength(6);
+  expect(wrapper.findShowMoreButton()).not.toBe(null);
 });
 test('moves misc items and search to under menu when limit=5', () => {
   const wrapper = renderButtonGroup({ items: items1, limit: 5 });
 
-  // 6 inline items and 1 menu dropdown
-  expect(wrapper.findAll('button')).toHaveLength(5 + 1);
+  expect(wrapper.findInlineItems()).toHaveLength(5);
+  expect(wrapper.findShowMoreButton()).not.toBe(null);
 });
 test.each([0, 1])('moves all items to under menu when limit=%s', limit => {
   const wrapper = renderButtonGroup({ items: items1, limit });
 
-  // 1 menu dropdown
-  expect(wrapper.findAll('button')).toHaveLength(1);
+  expect(wrapper.findInlineItems()).toHaveLength(0);
+  expect(wrapper.findShowMoreButton()).not.toBe(null);
 });
 
-// TODO: use button group test utils to find items
+test('can find inline item by id', () => {
+  const wrapper = renderButtonGroup({ items: items1, limit: 5 });
+
+  expect(wrapper.findInlineItemById('copy')!.getElement()).toHaveAccessibleName('Copy');
+});
+test('can find menu item by id', () => {
+  const wrapper = renderButtonGroup({ items: items1, limit: 5 });
+
+  wrapper.findShowMoreButton()!.openDropdown();
+
+  expect(wrapper.findShowMoreButton()!.findItemById('edit')!.getElement()).toHaveTextContent('Edit');
+});
+
 describe('i18n', () => {
   test('uses showMoreButtonAriaLabel from I18nProvider', () => {
     const wrapper = renderButtonGroup({ items: items1, limit: 0 });
-    expect(wrapper.find('button')!.getElement()).toHaveAccessibleName('Show more');
+    expect(wrapper.findShowMoreButton()!.findNativeButton().getElement()).toHaveAccessibleName('Show more');
   });
 
   test('uses showMoreButtonAriaLabel from i18nStrings', () => {
@@ -83,6 +95,8 @@ describe('i18n', () => {
       limit: 0,
       i18nStrings: { showMoreButtonAriaLabel: 'Show more from i18nStrings' },
     });
-    expect(wrapper.find('button')!.getElement()).toHaveAccessibleName('Show more from i18nStrings');
+    expect(wrapper.findShowMoreButton()!.findNativeButton().getElement()).toHaveAccessibleName(
+      'Show more from i18nStrings'
+    );
   });
 });

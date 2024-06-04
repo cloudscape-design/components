@@ -7,6 +7,7 @@ import { ClickDetail, fireCancelableEvent } from '../internal/events/index.js';
 import { ButtonProps } from '../button/interfaces.js';
 import Tooltip from './tooltip/index.js';
 import StatusIndicator from '../status-indicator/internal.js';
+import styles from './styles.css.js';
 
 const ItemElement = React.forwardRef(
   (
@@ -61,6 +62,8 @@ const ItemElement = React.forwardRef(
           ariaLabel={item.text}
           onClick={event => onClickHandler(event)}
           ref={ref}
+          data-testid={item.id}
+          className={styles['inline-button']}
         >
           {item.text}
         </InternalButton>
