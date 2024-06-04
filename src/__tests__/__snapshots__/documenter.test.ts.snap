@@ -3671,6 +3671,135 @@ The main action also supports the following properties of the [button](/componen
 }
 `;
 
+exports[`Documenter definition for button-group matches the snapshot: button-group 1`] = `
+Object {
+  "events": Array [
+    Object {
+      "cancelable": true,
+      "description": "Called when the user clicks on an item, and the item is not disabled. The event detail object contains the id of the clicked item.",
+      "detailInlineType": Object {
+        "name": "InternalButtonGroupProps.ItemClickDetails",
+        "properties": Array [
+          Object {
+            "name": "id",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "InternalButtonGroupProps.ItemClickDetails",
+      "name": "onItemClick",
+    },
+  ],
+  "functions": Array [
+    Object {
+      "name": "focus",
+      "parameters": Array [
+        Object {
+          "name": "itemId",
+          "type": "string",
+        },
+      ],
+      "returnType": "void",
+    },
+  ],
+  "name": "ButtonGroup",
+  "properties": Array [
+    Object {
+      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "By default, the dropdown height is constrained to fit inside the height of its next scrollable container element.
+Enabling this property will allow the dropdown to extend beyond that container by using fixed positioning and
+[React Portals](https://reactjs.org/docs/portals.html).
+Set this property if the dropdown would otherwise be constrained by a scrollable container,
+for example inside table and split view layouts.
+
+However, use discretion. We recommend you don't enable this property unless necessary
+because fixed positioning results in a slight, visible lag when scrolling complex pages.
+",
+      "name": "dropdownExpandToViewport",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "An object containing all the necessary localized strings required by the component.",
+      "i18nTag": true,
+      "inlineType": Object {
+        "name": "ButtonGroupProps.I18nStrings",
+        "properties": Array [
+          Object {
+            "name": "showMoreButtonAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "ButtonGroupProps.I18nStrings",
+    },
+    Object {
+      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Array of objects of type Item or ItemGroup. The following properties are supported:
+### ItemGroup
+
+* \`id\` (string) - The unique identifier of the group.
+* \`text\` (string) - The name of the group shown as a text in the menu for this item.
+* \`items\` (Item[]) - The array of items that belong to this group.
+
+### Item
+
+* \`id\` (string) - The unique identifier of the item, used as detail in \`onItemClick\` handler.
+* \`text\` (string) - The name shown as a tooltip or menu text for this item.
+* \`loading\` (optional, boolean) - The loading state indication for the item.
+* \`disabled\` (optional, boolean) - The disabled state indication for the item.
+* \`iconName\` (optional, string) - Specifies the name of the icon, used with the [icon component](/components/icon/).
+* \`iconAlt\` (optional, string) - Specifies alternate text for the icon when using \`iconUrl\`.
+* \`iconUrl\` (optional, string) - Specifies the URL of a custom icon.
+* \`iconSvg\` (optional, ReactNode) - Custom SVG icon. Equivalent to the \`svg\` slot of the [icon component](/components/icon/).
+* \`actionPopoverText\` (optional, string) - Text that appears when the user clicks the item. Use to provide feedback to the user.
+",
+      "name": "items",
+      "optional": false,
+      "type": "ReadonlyArray<ButtonGroupProps.ItemOrGroup>",
+    },
+    Object {
+      "description": "Max number of visible items in the button group, the rest will be hidden in a dropdown.",
+      "name": "limit",
+      "optional": true,
+      "type": "number",
+    },
+    Object {
+      "description": "Determines the general styling of the button dropdown.
+* \`icon\` for icon buttons",
+      "inlineType": Object {
+        "name": "ButtonGroupProps.Variant",
+        "properties": Array [],
+        "type": "object",
+      },
+      "name": "variant",
+      "optional": true,
+      "type": "ButtonGroupProps.Variant",
+    },
+  ],
+  "regions": Array [],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Documenter definition for calendar matches the snapshot: calendar 1`] = `
 Object {
   "events": Array [

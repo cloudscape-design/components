@@ -4,13 +4,10 @@ import React from 'react';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { getExternalProps } from '../internal/utils/external-props';
 import useBaseComponent from '../internal/hooks/use-base-component';
-// type definitions
 import { ButtonGroupProps } from './interfaces';
-// internal instance
 import InternalButtonGroup from './internal';
 import { getBaseProps } from '../internal/base-component';
 
-// export type definitions for public use
 export { ButtonGroupProps };
 
 const ButtonGroup = React.forwardRef((props: ButtonGroupProps, ref: React.Ref<ButtonGroupProps.Ref>) => {
