@@ -9,6 +9,8 @@ import SpaceBetween from '../space-between/internal';
 import ItemElement from './item-element';
 import MoreItems from './more-items';
 import styles from './styles.css.js';
+import clsx from 'clsx';
+import { useInternalI18n } from '../i18n/context';
 
 const InternalButtonGroup = React.forwardRef(
   (
@@ -18,6 +20,7 @@ const InternalButtonGroup = React.forwardRef(
       onItemClick,
       __internalRootRef = null,
       dropdownExpandToViewport,
+      i18nStrings,
       ...props
     }: InternalButtonGroupProps,
     ref: React.Ref<ButtonGroupProps.Ref>
@@ -36,8 +39,10 @@ const InternalButtonGroup = React.forwardRef(
       itemsRef.current[item.id] = element;
     };
 
+    const i18n = useInternalI18n('button-group');
+
     return (
-      <div {...baseProps} ref={__internalRootRef}>
+      <div {...baseProps} className={clsx(styles.root, baseProps.className)} ref={__internalRootRef}>
         <SpaceBetween direction="horizontal" size="xxs">
           {primary.map((current, index) =>
             isItemGroup(current) && current.items.length > 0 ? (
@@ -66,6 +71,7 @@ const InternalButtonGroup = React.forwardRef(
               items={secondary}
               onItemClick={onItemClick}
               dropdownExpandToViewport={dropdownExpandToViewport}
+              ariaLabel={i18n('i18nStrings.showMoreButtonAriaLabel', i18nStrings?.showMoreButtonAriaLabel)}
             />
           )}
         </SpaceBetween>

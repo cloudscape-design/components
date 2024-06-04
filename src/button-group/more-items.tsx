@@ -11,10 +11,12 @@ export default function MoreItems({
   items,
   onItemClick,
   dropdownExpandToViewport,
+  ariaLabel,
 }: {
   items: ButtonGroupProps.ItemOrGroup[];
   onItemClick?: CancelableEventHandler<ButtonGroupProps.ItemClickDetails>;
   dropdownExpandToViewport?: boolean;
+  ariaLabel?: string;
 }) {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const dropdownItems = toDropdownItems(items);
@@ -37,7 +39,7 @@ export default function MoreItems({
       onItemClick={(event: CustomEvent<ButtonDropdownProps.ItemClickDetails>) => onClickHandler(event)}
       expandToViewport={dropdownExpandToViewport}
       ref={dropdownRef}
-      ariaLabel="More actions"
+      ariaLabel={ariaLabel}
     />
   );
 }
