@@ -73,6 +73,20 @@ Object {
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "2px",
         },
+        "color-background-avatar-default": Object {
+          "$description": "The default background color of avatar.",
+          "$value": Object {
+            "dark": "#687078",
+            "light": "#545b64",
+          },
+        },
+        "color-background-avatar-gen-ai": Object {
+          "$description": "The gen-ai background color of avatar.",
+          "$value": Object {
+            "dark": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+            "light": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+          },
+        },
         "color-background-button-normal-active": Object {
           "$description": "The background color of normal buttons in active state.",
           "$value": Object {
@@ -2378,6 +2392,20 @@ Object {
         "border-radius-tutorial-panel-item": Object {
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "2px",
+        },
+        "color-background-avatar-default": Object {
+          "$description": "The default background color of avatar.",
+          "$value": Object {
+            "dark": "#687078",
+            "light": "#545b64",
+          },
+        },
+        "color-background-avatar-gen-ai": Object {
+          "$description": "The gen-ai background color of avatar.",
+          "$value": Object {
+            "dark": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+            "light": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+          },
         },
         "color-background-button-normal-active": Object {
           "$description": "The background color of normal buttons in active state.",
@@ -4685,6 +4713,20 @@ Object {
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "2px",
         },
+        "color-background-avatar-default": Object {
+          "$description": "The default background color of avatar.",
+          "$value": Object {
+            "dark": "#687078",
+            "light": "#545b64",
+          },
+        },
+        "color-background-avatar-gen-ai": Object {
+          "$description": "The gen-ai background color of avatar.",
+          "$value": Object {
+            "dark": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+            "light": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+          },
+        },
         "color-background-button-normal-active": Object {
           "$description": "The background color of normal buttons in active state.",
           "$value": Object {
@@ -6990,6 +7032,20 @@ Object {
         "border-radius-tutorial-panel-item": Object {
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "2px",
+        },
+        "color-background-avatar-default": Object {
+          "$description": "The default background color of avatar.",
+          "$value": Object {
+            "dark": "#687078",
+            "light": "#545b64",
+          },
+        },
+        "color-background-avatar-gen-ai": Object {
+          "$description": "The gen-ai background color of avatar.",
+          "$value": Object {
+            "dark": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+            "light": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+          },
         },
         "color-background-button-normal-active": Object {
           "$description": "The background color of normal buttons in active state.",
@@ -9297,6 +9353,20 @@ Object {
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "2px",
         },
+        "color-background-avatar-default": Object {
+          "$description": "The default background color of avatar.",
+          "$value": Object {
+            "dark": "#687078",
+            "light": "#687078",
+          },
+        },
+        "color-background-avatar-gen-ai": Object {
+          "$description": "The gen-ai background color of avatar.",
+          "$value": Object {
+            "dark": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+            "light": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+          },
+        },
         "color-background-button-normal-active": Object {
           "$description": "The background color of normal buttons in active state.",
           "$value": Object {
@@ -11602,6 +11672,20 @@ Object {
     "border-radius-tutorial-panel-item": Object {
       "$description": "The border radius of tutorials inside a tutorial panel.",
       "$value": "2px",
+    },
+    "color-background-avatar-default": Object {
+      "$description": "The default background color of avatar.",
+      "$value": Object {
+        "dark": "#687078",
+        "light": "#545b64",
+      },
+    },
+    "color-background-avatar-gen-ai": Object {
+      "$description": "The gen-ai background color of avatar.",
+      "$value": Object {
+        "dark": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+        "light": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+      },
     },
     "color-background-button-normal-active": Object {
       "$description": "The background color of normal buttons in active state.",
@@ -13914,6 +13998,20 @@ Object {
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "8px",
         },
+        "color-background-avatar-default": Object {
+          "$description": "The default background color of avatar.",
+          "$value": Object {
+            "dark": "#5f6b7a",
+            "light": "#414d5c",
+          },
+        },
+        "color-background-avatar-gen-ai": Object {
+          "$description": "The gen-ai background color of avatar.",
+          "$value": Object {
+            "dark": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+            "light": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+          },
+        },
         "color-background-button-normal-active": Object {
           "$description": "The background color of normal buttons in active state.",
           "$value": Object {
@@ -16219,6 +16317,20 @@ Object {
         "border-radius-tutorial-panel-item": Object {
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "8px",
+        },
+        "color-background-avatar-default": Object {
+          "$description": "The default background color of avatar.",
+          "$value": Object {
+            "dark": "#5f6b7a",
+            "light": "#5f6b7a",
+          },
+        },
+        "color-background-avatar-gen-ai": Object {
+          "$description": "The gen-ai background color of avatar.",
+          "$value": Object {
+            "dark": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+            "light": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+          },
         },
         "color-background-button-normal-active": Object {
           "$description": "The background color of normal buttons in active state.",
@@ -18526,6 +18638,20 @@ Object {
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "8px",
         },
+        "color-background-avatar-default": Object {
+          "$description": "The default background color of avatar.",
+          "$value": Object {
+            "dark": "#5f6b7a",
+            "light": "#414d5c",
+          },
+        },
+        "color-background-avatar-gen-ai": Object {
+          "$description": "The gen-ai background color of avatar.",
+          "$value": Object {
+            "dark": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+            "light": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+          },
+        },
         "color-background-button-normal-active": Object {
           "$description": "The background color of normal buttons in active state.",
           "$value": Object {
@@ -20831,6 +20957,20 @@ Object {
         "border-radius-tutorial-panel-item": Object {
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "8px",
+        },
+        "color-background-avatar-default": Object {
+          "$description": "The default background color of avatar.",
+          "$value": Object {
+            "dark": "#5f6b7a",
+            "light": "#414d5c",
+          },
+        },
+        "color-background-avatar-gen-ai": Object {
+          "$description": "The gen-ai background color of avatar.",
+          "$value": Object {
+            "dark": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+            "light": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+          },
         },
         "color-background-button-normal-active": Object {
           "$description": "The background color of normal buttons in active state.",
@@ -23138,6 +23278,20 @@ Object {
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "8px",
         },
+        "color-background-avatar-default": Object {
+          "$description": "The default background color of avatar.",
+          "$value": Object {
+            "dark": "#5f6b7a",
+            "light": "#414d5c",
+          },
+        },
+        "color-background-avatar-gen-ai": Object {
+          "$description": "The gen-ai background color of avatar.",
+          "$value": Object {
+            "dark": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+            "light": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+          },
+        },
         "color-background-button-normal-active": Object {
           "$description": "The background color of normal buttons in active state.",
           "$value": Object {
@@ -25443,6 +25597,20 @@ Object {
         "border-radius-tutorial-panel-item": Object {
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "8px",
+        },
+        "color-background-avatar-default": Object {
+          "$description": "The default background color of avatar.",
+          "$value": Object {
+            "dark": "#5f6b7a",
+            "light": "#5f6b7a",
+          },
+        },
+        "color-background-avatar-gen-ai": Object {
+          "$description": "The gen-ai background color of avatar.",
+          "$value": Object {
+            "dark": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+            "light": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+          },
         },
         "color-background-button-normal-active": Object {
           "$description": "The background color of normal buttons in active state.",
@@ -27750,6 +27918,20 @@ Object {
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "8px",
         },
+        "color-background-avatar-default": Object {
+          "$description": "The default background color of avatar.",
+          "$value": Object {
+            "dark": "#5f6b7a",
+            "light": "#5f6b7a",
+          },
+        },
+        "color-background-avatar-gen-ai": Object {
+          "$description": "The gen-ai background color of avatar.",
+          "$value": Object {
+            "dark": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+            "light": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+          },
+        },
         "color-background-button-normal-active": Object {
           "$description": "The background color of normal buttons in active state.",
           "$value": Object {
@@ -30055,6 +30237,20 @@ Object {
     "border-radius-tutorial-panel-item": Object {
       "$description": "The border radius of tutorials inside a tutorial panel.",
       "$value": "8px",
+    },
+    "color-background-avatar-default": Object {
+      "$description": "The default background color of avatar.",
+      "$value": Object {
+        "dark": "#5f6b7a",
+        "light": "#414d5c",
+      },
+    },
+    "color-background-avatar-gen-ai": Object {
+      "$description": "The gen-ai background color of avatar.",
+      "$value": Object {
+        "dark": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+        "light": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+      },
     },
     "color-background-button-normal-active": Object {
       "$description": "The background color of normal buttons in active state.",
