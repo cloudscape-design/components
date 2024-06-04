@@ -53,6 +53,7 @@ const ItemElement = React.forwardRef(
         <InternalButton
           variant="icon"
           loading={item.loading}
+          loadingText={item.loadingText}
           disabled={item.disabled}
           iconName={item.iconName}
           iconAlt={item.text}

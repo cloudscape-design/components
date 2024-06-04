@@ -75,6 +75,7 @@ export namespace ButtonGroupProps {
     id: string;
     text: string;
     loading?: boolean;
+    loadingText?: string;
     disabled?: boolean;
     iconName?: IconProps.Name;
     iconAlt?: string;

@@ -57,12 +57,11 @@ export function toDropdownItems(items: readonly ButtonGroupProps.ItemOrGroup[]) 
   });
 }
 
-export function hasLoadingItems(items: readonly ButtonGroupProps.ItemOrGroup[]): boolean {
-  return items.some(item => {
-    if (isItemGroup(item)) {
-      return hasLoadingItems(item.items);
-    } else {
-      return item.loading || false;
+export function getFirstLoadingItem(items: readonly ButtonGroupProps.Item[]): null | ButtonGroupProps.Item {
+  for (const item of items) {
+    if (item.loading) {
+      return item;
     }
-  });
+  }
+  return null;
 }
