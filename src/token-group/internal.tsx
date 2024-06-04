@@ -26,6 +26,7 @@ export default function InternalTokenGroup({
   disableOuterPadding,
   limitShowFewerAriaLabel,
   limitShowMoreAriaLabel,
+  readOnly,
   __internalRootRef,
   ...props
 }: InternalTokenGroupProps) {
@@ -55,10 +56,15 @@ export default function InternalTokenGroup({
             ariaLabel={item.label}
             dismissLabel={item.dismissLabel}
             onDismiss={() => {
+              if (readOnly) {
+                return;
+              }
+
               fireNonCancelableEvent(onDismiss, { itemIndex });
               setRemovedItemIndex(itemIndex);
             }}
             disabled={item.disabled}
+            readOnly={readOnly}
           >
             <Option option={item} isGenericGroup={false} />
           </Token>

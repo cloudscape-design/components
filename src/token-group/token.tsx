@@ -16,6 +16,7 @@ interface TokenProps {
   dismissLabel?: string;
   onDismiss?: () => void;
   disabled?: boolean;
+  readOnly?: boolean;
   errorText?: React.ReactNode;
   errorIconAriaLabel?: string;
   warningText?: React.ReactNode;
@@ -26,6 +27,7 @@ interface TokenProps {
 export function Token({
   ariaLabel,
   disabled,
+  readOnly,
   dismissLabel,
   onDismiss,
   children,
@@ -49,11 +51,13 @@ export function Token({
       aria-label={ariaLabel}
       aria-describedby={errorText ? errorId : warningText ? warningId : undefined}
       aria-disabled={disabled}
+      aria-readonly={readOnly ? 'true' : undefined}
     >
       <div
         className={clsx(
           styles['token-box'],
           disabled && styles['token-box-disabled'],
+          readOnly && styles['token-box-readonly'],
           errorText && styles['token-box-error'],
           showWarning && styles['token-box-warning']
         )}

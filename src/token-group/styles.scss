@@ -86,6 +86,21 @@
   border-color: awsui.$color-border-status-warning;
   @include token-box-validation;
 }
+.token-box-readonly {
+  border-color: awsui.$color-border-control-disabled;
+  background-color: awsui.$color-background-container-content;
+  pointer-events: none;
+
+  > .dismiss-button {
+    color: awsui.$color-text-button-inline-icon-disabled;
+
+    &:hover {
+      /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+      cursor: initial;
+      color: awsui.$color-text-button-inline-icon-disabled;
+    }
+  }
+}
 .token-box-disabled.token-box-disabled {
   border-color: awsui.$color-border-control-disabled;
   background-color: awsui.$color-background-container-content;
