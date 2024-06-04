@@ -9,6 +9,11 @@
   @include styles.styles-reset;
 }
 
+.inline-button,
+.more-button {
+  /* used in test-utils */
+}
+
 .divider {
   border-inline-end-color: awsui.$color-border-divider-active;
   border-inline-end-style: solid;

@@ -83,7 +83,13 @@ export default function Tooltip({ trackKey, trackRef, content, open, close }: To
                 </div>
               )}
             >
-              <PopoverBody dismissButton={false} dismissAriaLabel={undefined} onDismiss={undefined} header={undefined}>
+              <PopoverBody
+                dismissButton={false}
+                dismissAriaLabel={undefined}
+                onDismiss={undefined}
+                header={undefined}
+                className={styles.body}
+              >
                 {content}
               </PopoverBody>
             </PopoverContainer>

@@ -46,7 +46,7 @@ const InternalButtonGroup = React.forwardRef(
         <SpaceBetween direction="horizontal" size="xxs">
           {primary.map((current, index) =>
             isItemGroup(current) && current.items.length > 0 ? (
-              <>
+              <React.Fragment key={current.id}>
                 {current.items.map(item => (
                   <ItemElement
                     key={item.id}
@@ -56,7 +56,7 @@ const InternalButtonGroup = React.forwardRef(
                   />
                 ))}
                 {index < primary.length - 1 && <div className={styles.divider} />}
-              </>
+              </React.Fragment>
             ) : (
               <ItemElement
                 key={current.id}
