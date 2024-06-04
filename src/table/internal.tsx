@@ -515,7 +515,7 @@ const InternalTable = React.forwardRef(
                               {getItemSelectionProps && (
                                 <TableTdElement
                                   {...sharedCellProps}
-                                  className={clsx(styles['selection-control'])}
+                                  className={styles['selection-control']}
                                   wrapLines={false}
                                   columnId={selectionColumnId}
                                   colIndex={0}
@@ -579,7 +579,7 @@ const InternalTable = React.forwardRef(
                             {getItemSelectionProps && (
                               <TableTdElement
                                 {...sharedCellProps}
-                                className={clsx(styles['selection-control'])}
+                                className={styles['selection-control']}
                                 wrapLines={false}
                                 columnId={selectionColumnId}
                                 colIndex={0}

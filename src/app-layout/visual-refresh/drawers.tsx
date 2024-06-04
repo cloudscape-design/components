@@ -112,7 +112,7 @@ function ActiveDrawer() {
     >
       {!isMobile && activeDrawer?.resizable && <div className={styles['drawer-slider']}>{resizeHandle}</div>}
       <div className={styles['drawer-content-container']}>
-        <div className={clsx(styles['drawer-close-button'])}>
+        <div className={styles['drawer-close-button']}>
           <InternalButton
             ariaLabel={computedAriaLabels.closeButton}
             className={clsx({
@@ -334,7 +334,7 @@ export function MobileTriggers() {
       aria-label={drawersAriaLabel}
       role="region"
     >
-      <div className={clsx(styles['drawers-mobile-triggers-container'])} role="toolbar" aria-orientation="horizontal">
+      <div className={styles['drawers-mobile-triggers-container']} role="toolbar" aria-orientation="horizontal">
         {visibleItems.map(item => (
           <InternalButton
             ariaExpanded={item.id === activeDrawerId}
