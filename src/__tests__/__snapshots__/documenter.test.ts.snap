@@ -2095,6 +2095,7 @@ If \\"tooltipText\\" or \\"initials\\" are used make sure to include them in the
       "type": "string",
     },
     Object {
+      "defaultValue": "\\"default\\"",
       "description": "Determines the color of the avatar.
 Use \`gen-ai\` for AI assistants and \`default\` otherwise.",
       "inlineType": Object {

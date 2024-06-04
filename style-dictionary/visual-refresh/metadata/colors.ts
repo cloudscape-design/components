@@ -234,7 +234,7 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   colorBackgroundAvatarDefault: {
     description: 'The default background color of avatar.',
-    themeable: true,
+    themeable: false,
     public: true,
   },
   colorBackgroundAvatarGenAi: {
