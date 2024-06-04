@@ -8,7 +8,7 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 
 export { AvatarProps };
 
-export default function Avatar({ color, tooltipText, ...props }: AvatarProps) {
+export default function Avatar({ color = 'default', tooltipText, ...props }: AvatarProps) {
   const baseComponentProps = useBaseComponent('Avatar', { props: { color, tooltipText: !!tooltipText } });
   return <InternalAvatar color={color} tooltipText={tooltipText} {...props} {...baseComponentProps} />;
 }
