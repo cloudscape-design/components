@@ -4,7 +4,7 @@ import React, { useRef } from 'react';
 import { ButtonGroupProps } from './interfaces';
 import { ButtonDropdownProps } from '../button-dropdown/interfaces';
 import { CancelableEventHandler, fireCancelableEvent } from '../internal/events';
-import { hasLoadingItems, toDropdownItems } from './utils';
+import { getFirstLoadingItem, toDropdownItems } from './utils';
 import ButtonDropdown from '../button-dropdown/internal';
 
 export default function MoreItems({
@@ -20,7 +20,7 @@ export default function MoreItems({
 }) {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const dropdownItems = toDropdownItems(items);
-  const loading = hasLoadingItems(items);
+  const loadingItem = getFirstLoadingItem(items);
 
   const onClickHandler = (event: CustomEvent<ButtonDropdownProps.ItemClickDetails>) => {
     const itemId = event.detail.id;
@@ -33,7 +33,8 @@ export default function MoreItems({
   return (
     <ButtonDropdown
       variant="icon"
-      loading={loading}
+      loading={loadingItem?.loading}
+      loadingText={loadingItem?.loadingText}
       mainAction={{ iconName: 'ellipsis', text: 'More' }}
       items={dropdownItems}
       onItemClick={(event: CustomEvent<ButtonDropdownProps.ItemClickDetails>) => onClickHandler(event)}
