@@ -11,7 +11,25 @@ export interface ButtonGroupProps extends BaseComponentProps {
    */
   variant?: ButtonGroupProps.Variant;
   /**
-   * Array of objects of type Item or or ItemGroup.
+   * Array of objects of type Item or ItemGroup. The following properties are supported:
+   *
+   * ### ItemGroup
+   *
+   * * `id` (string) - The unique identifier of the group.
+   * * `text` (string) - The name of the group shown as a text in the menu for this item.
+   * * `items` (Item[]) - The array of items that belong to this group.
+   *
+   * ### Item
+   *
+   * * `id` (string) - The unique identifier of the item, used as detail in `onItemClick` handler.
+   * * `text` (string) - The name shown as a tooltip or menu text for this item.
+   * * `loading` (optional, boolean) - The loading state indication for the item.
+   * * `disabled` (optional, boolean) - The disabled state indication for the item.
+   * * `iconName` (optional, string) - Specifies the name of the icon, used with the [icon component](/components/icon/).
+   * * `iconAlt` (optional, string) - Specifies alternate text for the icon when using `iconUrl`.
+   * * `iconUrl` (optional, string) - Specifies the URL of a custom icon.
+   * * `iconSvg` (optional, ReactNode) - Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/icon/).
+   * * `actionPopoverText` (optional, string) - Text that appears when the user clicks the item. Use to provide feedback to the user.
    */
   items: ReadonlyArray<ButtonGroupProps.ItemOrGroup>;
   /**
@@ -46,39 +64,13 @@ export interface InternalButtonGroupProps extends ButtonGroupProps, InternalBase
 export namespace ButtonGroupProps {
   export type Variant = 'icon';
   export type ItemOrGroup = Item | ItemGroup;
-  /**
-   * - `id` (string) - allows to identify groups of items
 
-   * - `text` (string) - description shown as a text in the menu for this item.
-
-   * - `items` (Item[]) - an array of items that belong to this group.
-  */
   export interface ItemGroup {
     id: string;
     text: string;
     items: ReadonlyArray<Item>;
   }
-  /**
-   * - `id` (string) - allows to identify the item that the user clicked on. Mandatory for individual items, optional for categories.
 
-   * - `text` (string) - description shown as a tooltip or in the menu for this item.
-
-   * - `loading` (boolean) - whether the item is in a loading state.
-
-   * - `disabled` (boolean) - whether the item is disabled. Disabled items are not clickable, but they can be highlighted with the keyboard to make them accessible.
-
-   * - `iconName` (string) - (Optional) Specifies the name of the icon, used with the [icon component](/components/icon/).
-
-   * - `iconAlt` (string) - (Optional) Specifies alternate text for the icon when using `iconUrl`.
-
-   * - `iconUrl` (string) - (Optional) Specifies the URL of a custom icon.
-
-   * - `iconSvg` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/icon/).
-
-   * - `tooltipDisabled` (boolean) - (Optional) Disables the tooltip for the item.
-
-   * - `actionPopoverText` (string) - (Optional) Text that appears when the user clicks the item. Use to provide feedback to the user.
-  */
   export interface Item {
     id: string;
     text: string;
@@ -97,10 +89,7 @@ export namespace ButtonGroupProps {
   }
 
   export interface Ref {
-    /**
-     * Focuses the underlying native button for item.
-     */
-    focus(id: string): void;
+    focus(itemId: string): void;
   }
 
   export interface I18nStrings {
