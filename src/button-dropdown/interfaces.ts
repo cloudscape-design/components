@@ -10,43 +10,37 @@ import { ButtonProps } from '../button/interfaces';
 
 export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewport {
   /**
-   * Array of objects with a number of suppoted types.
-   *
-   * The following properties are supported across all types:
-   *
-   * - `type` (string) - The type of the item. Can be `action`, `group`, `checkbox`. Defaults to `action` if `items` undefined and `group` otherwise.
+   * Array of objects, each having the following properties:
+
    * - `id` (string) - allows to identify the item that the user clicked on. Mandatory for individual items, optional for categories.
+
    * - `text` (string) - description shown in the menu for this item. Mandatory for individual items, optional for categories.
+
    * - `lang` (string) - (Optional) The language of the item, provided as a BCP 47 language tag.
+
    * - `disabled` (boolean) - whether the item is disabled. Disabled items are not clickable, but they can be highlighted with the keyboard to make them accessible.
+
    * - `disabledReason` (string) - (Optional) Displays text near the `text` property when item is disabled. Use to provide additional context.
+
+   * - `items` (ReadonlyArray<Item>): an array of item objects. Items will be rendered as nested menu items but only for the first nesting level, multi-nesting is not supported.
+   * An item which belongs to nested group has the following properties: `id`, `text`, `disabled` and `description`.
+
    * - `description` (string) - additional data that will be passed to a `data-description` attribute.
-   *
-   * ### action
-   *
+
    * - `href` (string) - (Optional) Defines the target URL of the menu item, turning it into a link.
+
    * - `external` (boolean) - Marks a menu item as external by adding an icon after the menu item text. The link will open in a new tab when clicked. Note that this only works when `href` is also provided.
+
    * - `externalIconAriaLabel` (string) - Adds an `aria-label` to the external icon.
+
    * - `iconName` (string) - (Optional) Specifies the name of the icon, used with the [icon component](/components/icon/).
+
    * - `iconAlt` (string) - (Optional) Specifies alternate text for the icon when using `iconUrl`.
+
    * - `iconUrl` (string) - (Optional) Specifies the URL of a custom icon.
+
    * - `iconSvg` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/icon/).
-   *
-   * ### checkbox
-   *
-   * When `type` is set to "checkbox", the values set to `href`, `external` and `externalIconAriaLabel` will be ignored.
-   *
-   * - `checked` (boolean) - Controls the state of the checkbox item.
-   * - `iconName` (string) - (Optional) Specifies the name of the icon, used with the [icon component](/components/icon/).
-   * - `iconAlt` (string) - (Optional) Specifies alternate text for the icon when using `iconUrl`.
-   * - `iconUrl` (string) - (Optional) Specifies the URL of a custom icon.
-   * - `iconSvg` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/icon/).
-   *
-   * ### group
-   *
-   * - `items` (ReadonlyArray<Item>) - an array of item objects. Items will be rendered as nested menu items but only for the first nesting level, multi-nesting is not supported.
-   * An item which belongs to nested group has the following properties: `id`, `text`, `disabled`, and `description`.
-   *
+
    */
   items: ReadonlyArray<ButtonDropdownProps.ItemOrGroup>;
   /**
@@ -109,7 +103,6 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
 
 export namespace ButtonDropdownProps {
   export type Variant = 'normal' | 'primary' | 'icon' | 'inline-icon';
-  export type ItemType = 'action' | 'group';
 
   export interface MainAction {
     text: string;
@@ -132,7 +125,6 @@ export namespace ButtonDropdownProps {
   }
 
   export interface Item {
-    itemType?: ItemType;
     id: string;
     text: string;
     lang?: string;
@@ -148,26 +140,18 @@ export namespace ButtonDropdownProps {
     iconSvg?: React.ReactNode;
   }
 
-  export interface CheckboxItem
-    extends Omit<ButtonDropdownProps.Item, 'href' | 'external' | 'externalIconAriaLabel' | 'itemType'> {
-    itemType: 'checkbox';
-    checked: boolean;
-  }
-
-  export interface ItemGroup extends Omit<Item, 'id' | 'text' | 'itemType'> {
-    itemType?: 'group';
+  export interface ItemGroup extends Omit<Item, 'id' | 'text'> {
     id?: string;
     text?: string;
     items: Items;
   }
 
-  export type ItemOrGroup = Item | CheckboxItem | ItemGroup;
+  export type ItemOrGroup = Item | ItemGroup;
 
   export type Items = ReadonlyArray<ItemOrGroup>;
 
   export interface ItemClickDetails extends BaseNavigationDetail {
     id: string;
-    checked?: boolean;
   }
 
   export interface Ref {
@@ -195,10 +179,7 @@ export interface HighlightProps {
 }
 
 export type GroupToggle = (item: ButtonDropdownProps.ItemGroup, event: React.SyntheticEvent) => void;
-export type ItemActivate = (
-  item: ButtonDropdownProps.Item | ButtonDropdownProps.CheckboxItem,
-  event: React.MouseEvent | React.KeyboardEvent
-) => void;
+export type ItemActivate = (item: ButtonDropdownProps.Item, event: React.MouseEvent | React.KeyboardEvent) => void;
 
 export interface CategoryProps extends HighlightProps {
   item: ButtonDropdownProps.ItemGroup;
@@ -227,7 +208,7 @@ export interface LinkItem extends ButtonDropdownProps.Item {
 }
 
 export interface ItemProps {
-  item: ButtonDropdownProps.Item | ButtonDropdownProps.CheckboxItem | LinkItem;
+  item: ButtonDropdownProps.Item | LinkItem;
   disabled: boolean;
   highlighted: boolean;
   onItemActivate: ItemActivate;
@@ -248,7 +229,7 @@ export interface InternalItemGroup extends Omit<ButtonDropdownProps.ItemGroup, '
 
 export type InternalItems = ReadonlyArray<InternalItemOrGroup>;
 
-export type InternalItemOrGroup = InternalItem | ButtonDropdownProps.CheckboxItem | InternalItemGroup;
+export type InternalItemOrGroup = InternalItem | InternalItemGroup;
 
 export interface InternalButtonDropdownProps
   extends Omit<ButtonDropdownProps, 'variant' | 'items'>,

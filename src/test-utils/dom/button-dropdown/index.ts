@@ -39,24 +39,6 @@ export default class ButtonDropdownWrapper extends ComponentWrapper {
   }
 
   /**
-   * Finds `checked` value of item in the open dropdown by item id. Returns null if there is no open dropdown or the item is not a checkbox item.
-   *
-   * This utility does not open the dropdown. To find dropdown items, call `openDropdown()` first.
-   */
-  @usesDom findItemCheckedById(id: string): string | null {
-    const itemSelector = `.${itemStyles['item-element']}[data-testid="${id}"]`;
-    const item = this.findOpenDropdown()?.find(itemSelector) || this.find(itemSelector);
-    if (!item) {
-      return null;
-    }
-    const menuItem = item.find('[role="menuitemcheckbox"]');
-    if (!menuItem) {
-      return null;
-    }
-    return menuItem.getElement().getAttribute('aria-checked');
-  }
-
-  /**
    * Finds an expandable category in the open dropdown by category id. Returns null if there is no open dropdown.
    *
    * This utility does not open the dropdown. To find dropdown items, call `openDropdown()` first.

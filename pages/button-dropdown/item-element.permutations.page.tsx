@@ -139,32 +139,6 @@ const permutations = createPermutations<ItemProps>([
     onItemActivate: [() => {}],
     highlightItem: [() => {}],
   },
-  // With checkbox without icon
-  {
-    item: [
-      { id: '1', text: 'Option', checked: true, itemType: 'checkbox' },
-      { id: '1', text: 'Option', checked: false, itemType: 'checkbox' },
-    ],
-    disabled: [false, true],
-    highlighted: [false, true],
-    hasCategoryHeader: [false],
-    showDivider: [false, true],
-    onItemActivate: [() => {}],
-    highlightItem: [() => {}],
-  },
-  // With checkbox with icon
-  {
-    item: [
-      { id: '1', text: 'Option', checked: true, itemType: 'checkbox', iconName: 'gen-ai' },
-      { id: '1', text: 'Option', checked: false, itemType: 'checkbox', iconName: 'gen-ai' },
-    ],
-    disabled: [false, true],
-    highlighted: [false, true],
-    hasCategoryHeader: [false],
-    showDivider: [false, true],
-    onItemActivate: [() => {}],
-    highlightItem: [() => {}],
-  },
 ]);
 
 export default function () {

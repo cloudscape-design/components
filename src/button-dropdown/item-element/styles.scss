@@ -57,7 +57,7 @@
   display: flex;
   align-items: flex-start;
   padding-block: styles.$option-padding-vertical;
-  padding-inline: awsui.$space-l;
+  padding-inline: awsui.$space-button-horizontal;
   color: inherit;
   text-decoration: none;
 
@@ -66,22 +66,15 @@
   }
 
   /* stylelint-disable-next-line selector-max-type */
-  .has-category-header:not(.has-checkmark) > &,
-  .has-category-header:not(.has-checkmark) > span > & {
-    padding-inline-start: calc(#{awsui.$space-s} + #{awsui.$space-l});
+  .has-category-header > &,
+  .has-category-header > span > & {
+    padding-inline-start: calc(#{awsui.$space-s} + #{awsui.$space-button-horizontal});
   }
 }
 
 .icon {
   padding-inline-end: awsui.$space-xs;
   flex-shrink: 0;
-
-  &.checkmark {
-    color: awsui.$color-text-status-info;
-  }
-  &.disabled {
-    color: awsui.$color-text-interactive-disabled;
-  }
 }
 
 .external-icon {

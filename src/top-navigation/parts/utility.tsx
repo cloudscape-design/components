@@ -14,7 +14,6 @@ import styles from '../styles.css.js';
 import { checkSafeUrl } from '../../internal/utils/check-safe-url';
 import { joinStrings } from '../../internal/utils/strings';
 import { fireCancelableEvent } from '../../internal/events';
-import { isLinkItem } from '../../button-dropdown/utils/utils';
 
 export interface UtilityProps {
   hideText: boolean;
@@ -130,9 +129,7 @@ export default function Utility({ hideText, definition, offsetRight }: UtilityPr
 
 function checkSafeUrlRecursively(itemOrGroup: MenuDropdownProps['items']) {
   for (const item of itemOrGroup) {
-    if (isLinkItem(item)) {
-      checkSafeUrl('TopNavigation', item.href);
-    }
+    checkSafeUrl('TopNavigation', item.href);
 
     if ('items' in item) {
       checkSafeUrlRecursively(item.items);

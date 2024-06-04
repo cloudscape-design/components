@@ -8,9 +8,6 @@ export const isItemGroup = (item: ButtonDropdownProps.ItemOrGroup): item is Butt
 export const isLinkItem = (item: LinkItem | ButtonDropdownProps.ItemOrGroup): item is LinkItem =>
   item && (item as LinkItem).href !== undefined;
 
-export const isCheckboxItem = (item: ButtonDropdownProps.ItemOrGroup): item is ButtonDropdownProps.CheckboxItem =>
-  item && (item as ButtonDropdownProps.CheckboxItem).itemType === 'checkbox';
-
 export const getItemTarget = (item: ButtonDropdownProps.Item) => (item.external ? '_blank' : undefined);
 
 export function indexIncludes(source: number[], target: number[]) {

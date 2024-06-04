@@ -202,28 +202,6 @@ describe('TopNavigation Component', () => {
       expect(onItemClick).toHaveBeenCalledWith(expect.objectContaining({ detail: { id: 'one' } }));
     });
   });
-
-  test('throws warning when menu-dropdown item with checkbox is provided', () => {
-    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
-    expect(console.warn).toHaveBeenCalledTimes(0);
-    renderTopNavigation({
-      identity: { href: '#' },
-      utilities: [
-        {
-          type: 'menu-dropdown',
-          text: 'Menu dropdown',
-          title: 'Jane Doe',
-          description: 'jane.doe@example.com',
-          items: [{ id: 'one', text: 'First', itemType: 'checkbox', checked: true }],
-        },
-      ],
-    });
-    expect(console.warn).toHaveBeenCalledTimes(1);
-    expect(console.warn).toHaveBeenCalledWith(
-      '[AwsUi] [TopNavigation] The TopNavigation component does not support menu-dropdown items with `itemType` equal to `checkbox`, this might change in the future.'
-    );
-    consoleWarnSpy.mockRestore();
-  });
 });
 
 describe('URL sanitization', () => {
