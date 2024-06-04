@@ -246,9 +246,6 @@ export default <T extends PieChartProps.Datum>({
   );
   const onApplicationFocus = useCallback(
     (_event: any, target: 'keyboard' | 'mouse') => {
-      // We need to make sure that we do not re-show the popover when we focus the segment after the popover is dismissed.
-      // Normally we would check `event.relatedTarget` for the previously focused element,
-      // but this is not supported for SVG elements in IE11. The workaround is this `popoverDismissedRecently` ref.
       if (pinnedSegment !== null || popoverDismissedRecently.current || target === 'mouse') {
         return;
       }
@@ -364,30 +361,31 @@ export default <T extends PieChartProps.Datum>({
           )}
         </div>
       )}
-      <ChartPopover
-        ref={popoverRef}
-        isOpen={isPopoverOpen && !!popoverData}
-        title={
-          popoverData?.series && (
-            <InternalBox className={styles['popover-header']} variant="strong">
-              <SeriesMarker color={popoverData.series.color} type={popoverData.series.markerType} />{' '}
-              {popoverData.series.label}
-            </InternalBox>
-          )
-        }
-        trackRef={popoverData?.trackRef}
-        trackKey={popoverData?.series.index}
-        dismissButton={pinnedSegment !== null}
-        dismissAriaLabel={i18nStrings.detailPopoverDismissAriaLabel}
-        onDismiss={onPopoverDismiss}
-        container={plotRef.current?.svg || null}
-        size={detailPopoverSize}
-        onMouseLeave={checkMouseLeave}
-        onBlur={onApplicationBlur}
-      >
-        {popoverContent}
-        {detailPopoverFooterContent && <ChartPopoverFooter>{detailPopoverFooterContent}</ChartPopoverFooter>}
-      </ChartPopover>
+      {isPopoverOpen && popoverData && (
+        <ChartPopover
+          ref={popoverRef}
+          title={
+            popoverData.series && (
+              <InternalBox className={styles['popover-header']} variant="strong">
+                <SeriesMarker color={popoverData.series.color} type={popoverData.series.markerType} />{' '}
+                {popoverData.series.label}
+              </InternalBox>
+            )
+          }
+          trackRef={popoverData.trackRef}
+          trackKey={popoverData.series.index}
+          dismissButton={pinnedSegment !== null}
+          dismissAriaLabel={i18nStrings.detailPopoverDismissAriaLabel}
+          onDismiss={onPopoverDismiss}
+          container={plotRef.current?.svg || null}
+          size={detailPopoverSize}
+          onMouseLeave={checkMouseLeave}
+          onBlur={onApplicationBlur}
+        >
+          {popoverContent}
+          {detailPopoverFooterContent && <ChartPopoverFooter>{detailPopoverFooterContent}</ChartPopoverFooter>}
+        </ChartPopover>
+      )}
       <LiveRegion source={[popoverContentRef]} />
     </div>
   );

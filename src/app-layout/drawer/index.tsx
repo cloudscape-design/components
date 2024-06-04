@@ -119,7 +119,7 @@ export const Drawer = React.forwardRef(
             aria-label={mainLabel}
             aria-hidden={!isOpen}
           >
-            {!isMobile && isOpen && resizeHandle}
+            {!isMobile && isOpen && <div className={styles['resize-handle-wrapper']}>{resizeHandle}</div>}
             <CloseButton
               ref={toggleRefs.close}
               className={closeClassName}

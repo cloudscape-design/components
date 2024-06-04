@@ -26,28 +26,31 @@ export default function AreaChartPopover<T extends AreaChartProps.DataTypes>({
   size?: 'small' | 'medium' | 'large';
   onBlur?: (event: React.FocusEvent) => void;
 }) {
+  if (!highlightDetails) {
+    return null;
+  }
+
+  const popoverProps = {
+    title: highlightDetails.formattedX,
+    trackRef: model.refs.verticalMarker,
+    trackKey: highlightDetails.highlightIndex,
+    dismissButton: highlightDetails.isPopoverPinned,
+    onDismiss: model.handlers.onPopoverDismiss,
+    onMouseLeave: model.handlers.onPopoverLeave,
+    ref: model.refs.popoverRef,
+  };
+
   return (
     <ChartPopover
-      isOpen={!!highlightDetails}
-      ref={model.refs.popoverRef}
-      title={highlightDetails?.formattedX}
-      trackRef={model.refs.verticalMarker}
-      trackKey={highlightDetails?.highlightIndex}
-      dismissButton={highlightDetails?.isPopoverPinned}
-      onDismiss={model.handlers.onPopoverDismiss}
-      onMouseLeave={model.handlers.onPopoverLeave}
+      {...popoverProps}
       container={model.refs.container.current}
       dismissAriaLabel={dismissAriaLabel}
       size={size}
       onBlur={onBlur}
     >
-      {highlightDetails && (
-        <>
-          <ChartSeriesDetails details={highlightDetails.seriesDetails} />
-          <div className={styles['popover-divider']} />
-          <ChartSeriesDetails details={highlightDetails.totalDetails} />
-        </>
-      )}
+      <ChartSeriesDetails details={highlightDetails.seriesDetails} />
+      <div className={styles['popover-divider']} />
+      <ChartSeriesDetails details={highlightDetails.totalDetails} />
       {footer && <ChartPopoverFooter>{footer}</ChartPopoverFooter>}
     </ChartPopover>
   );

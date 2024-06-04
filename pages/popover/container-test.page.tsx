@@ -3,7 +3,7 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import ScreenshotArea from '../utils/screenshot-area';
 import PopoverContainer from '~components/popover/container';
-import { getIsRtl } from '~components/internal/direction';
+import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
 import clsx from 'clsx';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment

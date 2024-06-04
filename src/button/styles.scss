@@ -162,7 +162,6 @@
   &.button-no-text > .icon {
     margin-inline-start: auto;
     margin-inline-end: auto;
-    // IE does not understand `initial`
     inset-inline: 0;
   }
 }

@@ -17,6 +17,7 @@ const items: ButtonDropdownProps.Items = [
   { id: 'i2', text: 'item2', href: 'http://amazon.com' },
   { id: 'i3', text: 'item3', disabled: true },
   { id: 'i4', text: 'item4' },
+  { id: 'i5', text: 'item5', checked: true, itemType: 'checkbox' },
 ];
 
 [{ expandToViewport: false }, { expandToViewport: true }].forEach(props => {
@@ -85,5 +86,36 @@ const items: ButtonDropdownProps.Items = [
       act(() => wrapper.findOpenDropdown()!.keyup(KeyCode.space));
       expect(onFollowSpy).toHaveBeenCalledTimes(1);
     });
+
+    test.each([KeyCode.enter, KeyCode.space])(
+      'should fire event correctly when items with checkbox pressed using key=%s',
+      keyCode => {
+        act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
+        act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
+        act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
+        act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
+
+        // Fire keydown on the 5th element, checkbox should be false after click
+        act(() => wrapper.findItems()[4]!.keydown(keyCode));
+        // Space handling is triggered on keyup
+        if (keyCode === KeyCode.space) {
+          act(() => wrapper.findItems()[4]!.keyup(keyCode));
+        }
+        expect(onClickSpy).toHaveBeenCalledTimes(1);
+        expect(onClickSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { id: 'i5', checked: false } }));
+
+        // Open button dropdown again
+        act(() => wrapper.findNativeButton().keydown(KeyCode.enter));
+
+        // Fire keydown on the 1st element, checked should be undefined
+        act(() => wrapper.findItems()[0]!.keydown(keyCode));
+        // Space handling is triggered on keyup
+        if (keyCode === KeyCode.space) {
+          act(() => wrapper.findItems()[0]!.keyup(keyCode));
+        }
+        expect(onClickSpy).toHaveBeenCalledTimes(2);
+        expect(onClickSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { id: 'i1', checked: undefined } }));
+      }
+    );
   });
 });

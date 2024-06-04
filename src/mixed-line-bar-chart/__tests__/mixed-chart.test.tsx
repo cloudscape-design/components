@@ -12,7 +12,7 @@ import { lineSeries3, renderMixedChart } from './common';
 import createComputedTextLengthMock from './computed-text-length-mock';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
 import positions from '../../../lib/components/popover/utils/positions';
-import { getIsRtl } from '../../../lib/components/internal/direction';
+import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
 
 jest.mock('../../../lib/components/popover/utils/positions', () => {
   return {
@@ -21,8 +21,8 @@ jest.mock('../../../lib/components/popover/utils/positions', () => {
   };
 });
 
-jest.mock('../../../lib/components/internal/direction', () => ({
-  ...jest.requireActual('../../../lib/components/internal/direction'),
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
   getIsRtl: jest.fn().mockReturnValue(false),
 }));
 
@@ -965,16 +965,17 @@ describe('Details popover', () => {
 
     // Should be visible but unpinned first
     expect(wrapper.findDetailPopover()).not.toBeNull();
-    expect(wrapper.findDetailPopover()!.findDismissButton()).toBeNull();
+    expect(wrapper.findDetailPopover()?.findDismissButton()).toBeNull();
 
     // Can be pinned
     wrapper.findChart()!.click();
 
-    expect(wrapper.findDetailPopover()!.findDismissButton()).not.toBeNull();
+    expect(wrapper.findDetailPopover()?.findDismissButton()).not.toBeNull();
+    expect(wrapper.findByClassName(styles.exiting)).toBeNull();
 
     // Can be unpinned
-    wrapper.findDetailPopover()!.findDismissButton()?.click();
-    expect(wrapper.findDetailPopover()).toBeNull();
+    wrapper.findDetailPopover()?.findDismissButton()?.click();
+    expect(wrapper.findByClassName(styles.exiting)).not.toBeNull();
   });
 
   test('delegates focus back to chart when unpinned in a non-grouped chart', async () => {

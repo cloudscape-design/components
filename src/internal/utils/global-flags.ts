@@ -3,7 +3,6 @@
 export const awsuiGlobalFlagsSymbol = Symbol.for('awsui-global-flags');
 
 interface GlobalFlags {
-  removeHighContrastHeader?: boolean;
   appLayoutWidget?: boolean;
 }
 
