@@ -49,6 +49,9 @@
   "breadcrumb-group": {
     "expandAriaLabel": "Show path"
   },
+  "button-group": {
+    "i18nStrings.showMoreButtonAriaLabel": "Show more"
+  },
   "calendar": {
     "nextMonthAriaLabel": "Next month",
     "previousMonthAriaLabel": "Previous month",
