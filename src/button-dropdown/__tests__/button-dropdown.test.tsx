@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useState } from 'react';
 import { act, render, screen } from '@testing-library/react';
 
 import ButtonDropdown, { ButtonDropdownProps } from '../../../lib/components/button-dropdown';
@@ -47,6 +47,7 @@ const items: ButtonDropdownProps.Items = [
     ],
   },
   { id: 'i4', text: 'item4' },
+  { id: 'i5', text: 'item5', checked: true, itemType: 'checkbox' },
 ];
 
 [false, true].forEach(expandToViewport => {
@@ -316,4 +317,58 @@ describe('with main action', () => {
 
     expect(wrapper.findMainAction()!.getElement()).toHaveFocus();
   });
+});
+
+test('should work in controlled context', () => {
+  const onClickSpy = jest.fn();
+  function StateWrapper() {
+    const [checked, setChecked] = useState(true);
+    return (
+      <ButtonDropdown
+        items={[{ id: 'id', text: 'option', checked: checked, itemType: 'checkbox' }]}
+        onItemClick={event => {
+          onClickSpy(event.detail);
+          setChecked(event.detail.checked!);
+        }}
+      />
+    );
+  }
+
+  const { container } = render(<StateWrapper />);
+  const wrapper = createWrapper(container).findButtonDropdown()!;
+
+  // Click the item and verify it called the onClickSpy with the correct state and has correct value
+  wrapper.openDropdown();
+  expect(wrapper.findItemCheckedById('id')).toBe('true');
+  wrapper.findItems()[0].click();
+  expect(onClickSpy).toHaveBeenCalledTimes(1);
+  expect(onClickSpy).toHaveBeenCalledWith(expect.objectContaining({ checked: false }));
+
+  wrapper.openDropdown();
+  expect(wrapper.findItemCheckedById('id')).toBe('false');
+  wrapper.findItems()[0].click();
+  expect(onClickSpy).toHaveBeenCalledTimes(2);
+  expect(onClickSpy).toHaveBeenCalledWith(expect.objectContaining({ checked: true }));
+
+  wrapper.openDropdown();
+  expect(wrapper.findItemCheckedById('id')).toBe('true');
+  wrapper.findItems()[0].click();
+  expect(onClickSpy).toHaveBeenCalledTimes(3);
+  expect(onClickSpy).toHaveBeenCalledWith(expect.objectContaining({ checked: false }));
+});
+
+test('checkbox item test util should return null if not a checkbox item', () => {
+  const wrapper = renderButtonDropdown({ items });
+
+  // Open the buttondropdown
+  wrapper.openDropdown();
+
+  // findItemValueById should return null if item not checkbox
+  expect(wrapper.findItemCheckedById('i1')).toBeNull();
+
+  // findItemValueById should return null if item doesn't exist
+  expect(wrapper.findItemCheckedById('not-existing')).toBeNull();
+
+  // findItemValueById should return the value if item checkbox
+  expect(wrapper.findItemCheckedById('i5')).toBe('true');
 });

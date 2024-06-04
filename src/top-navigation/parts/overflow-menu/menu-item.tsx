@@ -13,6 +13,7 @@ import InternalIcon from '../../../icon/internal';
 import { useNavigate } from './router';
 import { TopNavigationProps } from '../../interfaces';
 import styles from '../../styles.css.js';
+import { isLinkItem } from '../../../button-dropdown/utils/utils';
 
 interface ListItemProps {
   startIcon?: React.ReactNode;
@@ -253,6 +254,7 @@ function dropdownComponentFactory(
 ) {
   const label = item.text;
   const hasIcon = !!item.iconName || !!item.iconUrl || !!item.iconAlt || !!item.iconSvg;
+  const isLink = isLinkItem(item);
   const startIcon = hasIcon && (
     <InternalIcon name={item.iconName} url={item.iconUrl} alt={item.iconAlt} svg={item.iconSvg} />
   );
@@ -268,14 +270,14 @@ function dropdownComponentFactory(
   return (
     <LinkItem
       startIcon={startIcon}
-      href={item.href}
-      external={item.external}
+      href={isLink ? item.href : undefined}
+      external={isLink ? item.external : undefined}
       context="dropdown-menu"
       testId={item.id}
       onClick={event => onItemClick(event, item as ButtonDropdownProps.Item)}
     >
       {label}
-      {item.external && (
+      {isLink && item.external && (
         <>
           {' '}
           <span aria-label={item.externalIconAriaLabel} role={item.externalIconAriaLabel ? 'img' : undefined}>
