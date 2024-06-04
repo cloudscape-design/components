@@ -78,7 +78,14 @@ const editPermutations = createPermutations<PermutationProps>([
     errorIconAriaLabel: ['Error'],
     editingCell: [
       () => <Select options={unevenOptions} selectedOption={unevenOptions[2]} placeholder="Choose an option" />,
-      () => <Multiselect options={unevenOptions} selectedOptions={[unevenOptions[2]]} placeholder="Choose an option" />,
+      () => (
+        <Multiselect
+          options={unevenOptions}
+          selectedOptions={[unevenOptions[2]]}
+          placeholder="Choose an option"
+          deselectAriaLabel={() => 'Dismiss'}
+        />
+      ),
     ],
     constraintText: [undefined],
     validation: [undefined],
