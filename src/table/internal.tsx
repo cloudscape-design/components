@@ -5,7 +5,7 @@ import React, { useCallback, useImperativeHandle, useRef } from 'react';
 import { TableForwardRefType, TableProps, TableRow } from './interfaces';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import InternalContainer, { InternalContainerProps } from '../container/internal';
-import { getBaseProps } from '../internal/base-component';
+import { getAnalyticsMetadataProps, getBaseProps } from '../internal/base-component';
 import ToolsHeader from './tools-header';
 import Thead, { TheadProps } from './thead';
 import { TableBodyCell } from './body-cell';
@@ -52,6 +52,7 @@ import { ItemsLoader } from './progressive-loading/items-loader';
 import { useProgressiveLoadingProps } from './progressive-loading/progressive-loading-utils';
 import { usePrevious } from '../internal/hooks/use-previous';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useTableInteractionMetrics } from '../internal/hooks/use-table-interaction-metrics';
 
 const GRID_NAVIGATION_PAGE_SIZE = 10;
 const SELECTION_COLUMN_WIDTH = 54;
@@ -188,6 +189,17 @@ const InternalTable = React.forwardRef(
       [loading]
     );
 
+    const analyticsMetadata = getAnalyticsMetadataProps(rest);
+
+    const { setLastUserAction } = useTableInteractionMetrics({
+      loading,
+      instanceIdentifier: analyticsMetadata?.instanceIdentifier,
+      itemCount: items.length,
+      getComponentIdentifier: () =>
+        toolsHeaderPerformanceMarkRef.current?.querySelector<HTMLElement>(`.${headerStyles['heading-text']}`)
+          ?.innerText ?? toolsHeaderPerformanceMarkRef.current?.innerText,
+    });
+
     useImperativeHandle(
       ref,
       () => ({
@@ -306,6 +318,7 @@ const InternalTable = React.forwardRef(
       selectionColumnId,
       tableRole,
       isExpandable,
+      setLastUserAction,
     };
 
     const wrapperRef = useMergeRefs(wrapperRefObject, stickyState.refs.wrapper);
@@ -362,6 +375,7 @@ const InternalTable = React.forwardRef(
                           filter={filter}
                           pagination={pagination}
                           preferences={preferences}
+                          setLastUserAction={setLastUserAction}
                         />
                       </CollectionLabelContext.Provider>
                     </div>
