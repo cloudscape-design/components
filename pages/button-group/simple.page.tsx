@@ -66,15 +66,9 @@ const items2: ButtonGroupProps.ItemOrGroup[] = [
   },
   {
     id: 'copy',
+    iconName: 'copy',
     text: 'Copy',
-    items: [
-      {
-        id: 'copy',
-        iconName: 'copy',
-        text: 'Copy',
-        actionPopoverText: 'Copied',
-      },
-    ],
+    actionPopoverText: 'Copied',
   },
   {
     id: 'add',
@@ -111,15 +105,9 @@ const items3: ButtonGroupProps.ItemOrGroup[] = [
   },
   {
     id: 'copy',
+    iconName: 'copy',
     text: 'Copy',
-    items: [
-      {
-        id: 'copy',
-        iconName: 'copy',
-        text: 'Copy',
-        actionPopoverText: 'Copied',
-      },
-    ],
+    actionPopoverText: 'Copied',
   },
   {
     id: 'actions',
