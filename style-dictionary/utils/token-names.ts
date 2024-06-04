@@ -295,6 +295,8 @@ export type ColorsTokenName =
   | 'colorBackgroundTilesDisabled'
   | 'colorBackgroundToggleCheckedDisabled'
   | 'colorBackgroundToggleDefault'
+  | 'colorBackgroundAvatarDefault'
+  | 'colorBackgroundAvatarGenAi'
   | 'colorBorderButtonNormalActive'
   | 'colorBorderButtonNormalDefault'
   | 'colorBorderButtonNormalDisabled'
