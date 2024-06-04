@@ -26,7 +26,7 @@ viewport size and state of the Tools drawer.
   /* stylelint-enable scss/operator-no-newline-after */
   display: flex;
   grid-column: 5;
-  grid-row: 1 / span 10;
+  grid-row: 1 / span 9;
   block-size: var(#{custom-props.$contentHeight});
   max-inline-size: var(#{custom-props.$toolsMaxWidth});
   position: sticky;
