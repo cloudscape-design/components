@@ -4,7 +4,7 @@ import React from 'react';
 import ScreenshotArea from '../utils/screenshot-area';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
-import { PopoverProps } from '~components/popover';
+import Popover, { PopoverProps } from '~components/popover';
 import PopoverBody, { PopoverBodyProps } from '~components/popover/body';
 
 const noop = () => {};
@@ -15,8 +15,19 @@ const sizeMap: Record<PopoverProps.Size, number> = {
   large: 480,
 };
 
-/* eslint-disable react/jsx-key */
-const permutations = createPermutations<PopoverBodyProps & { size: PopoverProps.Size }>([
+const triggerPermutations = createPermutations<PopoverProps & { size: PopoverProps.Size }>([
+  {
+    size: ['small', 'medium', 'large'],
+    children: [
+      'Hello!',
+      'Really long popover content with a lot of text that will probably overflow the popover trigger',
+      'Reallylongpopovercontentwithalotoftextbutnospacesthatwillprobablyoverflowthepopovertrigger',
+    ],
+    wrapTriggerText: [true, false],
+  },
+]);
+
+const bodyPermutations = createPermutations<PopoverBodyProps & { size: PopoverProps.Size }>([
   {
     size: ['small', 'medium', 'large'],
     header: [
@@ -40,7 +51,6 @@ const permutations = createPermutations<PopoverBodyProps & { size: PopoverProps.
     overflowVisible: ['both'],
   },
 ]);
-/* eslint-enable react/jsx-key */
 
 export default function () {
   return (
@@ -48,7 +58,21 @@ export default function () {
       <h1>Popover text wrapping</h1>
       <ScreenshotArea>
         <PermutationsView
-          permutations={permutations}
+          permutations={triggerPermutations}
+          render={({ size, ...permutation }) => (
+            <div
+              style={{
+                width: sizeMap[size],
+                maxWidth: sizeMap[size],
+              }}
+            >
+              <Popover {...permutation} />
+            </div>
+          )}
+        />
+
+        <PermutationsView
+          permutations={bodyPermutations}
           render={({ size, ...permutation }) => (
             <div
               style={{
