@@ -79,17 +79,17 @@ $interactive-column-padding-inline-end: calc(#{$cell-horizontal-padding} + #{aws
 }
 @mixin cell-padding-block($padding) {
   > .body-cell-content {
-    padding-block: $padding;
+    padding-block: calc(#{$padding} - 1 * #{awsui.$border-divider-list-width});
   }
 }
 @mixin cell-padding-block-start($padding) {
   > .body-cell-content {
-    padding-block-start: $padding;
+    padding-block-start: calc(#{$padding} - 1 * #{awsui.$border-divider-list-width});
   }
 }
 @mixin cell-padding-block-end($padding) {
   > .body-cell-content {
-    padding-block-end: $padding;
+    padding-block-end: calc(#{$padding} - 1 * #{awsui.$border-divider-list-width});
   }
 }
 
@@ -153,8 +153,8 @@ $interactive-column-padding-inline-end: calc(#{$cell-horizontal-padding} + #{aws
     // Give extra space on the edge to allow slight content overflow.
     // That is to prevent focus outline on cell content from being cut out.
     > .body-cell-content {
-      padding-inline-start: awsui.$space-scaled-xxs;
-      margin-inline-start: calc(-1 * #{awsui.$space-scaled-xxs});
+      padding-inline-start: awsui.$border-divider-list-width;
+      margin-inline-start: calc(-1 * #{awsui.$border-divider-list-width});
     }
   }
   &:first-child:not(.is-visual-refresh) {
