@@ -59,14 +59,16 @@ $interactive-column-padding-inline-end: calc(#{$cell-horizontal-padding} + #{aws
 }
 
 @mixin cell-padding-inline-start($padding) {
-  padding-inline-start: $padding;
+  > .body-cell-content {
+    padding-inline-start: $padding;
+  }
 
   @for $i from 0 through 9 {
-    &.expandable-level-#{$i} {
+    &.expandable-level-#{$i} > .body-cell-content {
       padding-inline-start: calc($padding + $i * (#{awsui.$space-m} + #{awsui.$space-xs}));
     }
   }
-  &.expandable-level-next {
+  &.expandable-level-next > .body-cell-content {
     padding-inline-start: calc($padding + 9 * (#{awsui.$space-m} + #{awsui.$space-xs}));
   }
 }
