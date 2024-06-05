@@ -56,11 +56,26 @@ $interactive-column-padding-inline-end: calc(#{$cell-horizontal-padding} + #{aws
     padding-inline-start: calc($padding + 9 * (#{awsui.$space-m} + #{awsui.$space-xs}));
   }
 }
+@mixin content-padding-block($padding) {
+  > .body-cell-content {
+    padding-block: $padding;
+  }
+}
+@mixin content-padding-block-start($padding) {
+  > .body-cell-content {
+    padding-block-start: $padding;
+  }
+}
+@mixin content-padding-block-end($padding) {
+  > .body-cell-content {
+    padding-block-end: $padding;
+  }
+}
 
 .body-cell {
   box-sizing: border-box;
-  padding-block-start: $cell-vertical-padding;
-  padding-block-end: $cell-vertical-padding-w-border;
+  @include content-padding-block-start($cell-vertical-padding);
+  @include content-padding-block-end($cell-vertical-padding-w-border);
   padding-inline-end: $cell-horizontal-padding;
   border-block-start: awsui.$border-divider-list-width solid transparent;
   word-wrap: break-word;
@@ -72,7 +87,7 @@ $interactive-column-padding-inline-end: calc(#{$cell-horizontal-padding} + #{aws
   &-content {
     /* used for testing */
   }
-  &:not(.body-cell-wrap) {
+  &:not(.body-cell-wrap) > .body-cell-content {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -140,12 +155,12 @@ $interactive-column-padding-inline-end: calc(#{$cell-horizontal-padding} + #{aws
     background-color: awsui.$color-background-item-selected;
     border-block-start: $selected-border;
     border-block-end: $selected-border;
-    padding-block-end: $cell-vertical-padding;
+    @include content-padding-block-end($cell-vertical-padding);
 
     // Last selected row has a fixed border-bottom width which do not change on selection in visual refresh.
     // Adjust padding-bottom prevents a slight jump in the table height.
     &.body-cell-last-row.is-visual-refresh {
-      padding-block-end: calc(#{$cell-vertical-padding} + #{awsui.$border-divider-list-width});
+      @include content-padding-block-end(calc(#{$cell-vertical-padding} + #{awsui.$border-divider-list-width}));
     }
 
     &:first-child {
@@ -225,14 +240,14 @@ $interactive-column-padding-inline-end: calc(#{$cell-horizontal-padding} + #{aws
 
   // Use padding as a selected border placeholder to make sure rows don't change height on selection (visual refresh)
   &-selected:not(:first-child) {
-    padding-block-start: $cell-vertical-padding-w-border;
+    @include content-padding-block-start($cell-vertical-padding-w-border);
   }
   &:not(.body-cell-selected).body-cell-next-selected {
     border-block-end: 0;
-    padding-block-end: calc(#{$cell-vertical-padding} + #{awsui.$border-divider-list-width});
+    @include content-padding-block-end(calc(#{$cell-vertical-padding} + #{awsui.$border-divider-list-width}));
   }
   &-selected.body-cell-prev-selected {
-    padding-block-start: $cell-vertical-padding-w-border;
+    @include content-padding-block-start($cell-vertical-padding-w-border);
     border-block-start: $selected-border-placeholder;
   }
   &-selected.body-cell-next-selected {
@@ -254,7 +269,7 @@ $interactive-column-padding-inline-end: calc(#{$cell-horizontal-padding} + #{aws
   // Reset padding for selected rows with no adjacent selected row above it,
   // because rows reuse adjacent selected borders (visual refresh)
   &-selected:not(.body-cell-prev-selected) {
-    padding-block-start: $cell-vertical-padding;
+    @include content-padding-block-start($cell-vertical-padding);
   }
 
   &-editor-wrapper {
@@ -349,7 +364,9 @@ $interactive-column-padding-inline-end: calc(#{$cell-horizontal-padding} + #{aws
     }
 
     &.body-cell-edit-active {
-      overflow: visible;
+      > .body-cell-content {
+        overflow: visible;
+      }
       &.sticky-cell {
         position: sticky;
       }
@@ -430,13 +447,17 @@ $interactive-column-padding-inline-end: calc(#{$cell-horizontal-padding} + #{aws
         }
         &.body-cell-last-row.body-cell-selected,
         &.body-cell-next-selected {
-          padding-block: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width} / 2));
+          @include content-padding-block(
+            calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width} / 2))
+          );
         }
         &.body-cell-last-row:not(.body-cell-selected) {
-          padding-block-start: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width}));
+          @include content-padding-block-start(
+            calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width}))
+          );
         }
         &.body-cell-first-row:not(.body-cell-selected) {
-          padding-block: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width}));
+          @include content-padding-block(calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width})));
         }
         &.sticky-cell {
           position: sticky;
@@ -457,7 +478,7 @@ $interactive-column-padding-inline-end: calc(#{$cell-horizontal-padding} + #{aws
     &.body-cell-first-row > .body-cell-success,
     &.body-cell-first-row > .body-cell-editor-wrapper,
     &.body-cell-first-row > .expandable-cell-content > .body-cell-editor-wrapper {
-      padding-block-start: awsui.$border-divider-list-width;
+      @include content-padding-block-start(awsui.$border-divider-list-width);
     }
   }
   @include cell-offset($cell-horizontal-padding);

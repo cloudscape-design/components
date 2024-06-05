@@ -132,7 +132,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
             />
           </div>
         )}
-        <span className={styles['body-cell-content']}>{children}</span>
+        <div className={styles['body-cell-content']}>{children}</div>
       </Element>
     );
   }
