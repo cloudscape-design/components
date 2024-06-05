@@ -59,6 +59,7 @@ export interface SingleTabStopNavigationProviderProps {
   navigationActive: boolean;
   children: React.ReactNode;
   getNextFocusTarget: () => null | HTMLElement;
+  isElementSuppressed?(focusableElement: Element): boolean;
   onRegisterFocusable?(focusableElement: Element): void;
   onUnregisterFocusable?(focusableElement: Element): void;
 }
@@ -75,6 +76,7 @@ export const SingleTabStopNavigationProvider = forwardRef(
       navigationActive,
       children,
       getNextFocusTarget,
+      isElementSuppressed,
       onRegisterFocusable,
       onUnregisterFocusable,
     }: SingleTabStopNavigationProviderProps,
@@ -95,7 +97,7 @@ export const SingleTabStopNavigationProvider = forwardRef(
       focusables.current.add(focusableElement);
       focusHandlers.current.set(focusableElement, changeHandler);
       const isFocusable = !!focusablesState.current.get(focusableElement);
-      const newIsFocusable = focusTarget.current === focusableElement;
+      const newIsFocusable = focusTarget.current === focusableElement || !!isElementSuppressed?.(focusableElement);
       if (newIsFocusable !== isFocusable) {
         focusablesState.current.set(focusableElement, newIsFocusable);
         changeHandler(newIsFocusable);
@@ -114,7 +116,7 @@ export const SingleTabStopNavigationProvider = forwardRef(
       focusTarget.current = getNextFocusTarget();
       for (const focusableElement of focusables.current) {
         const isFocusable = focusablesState.current.get(focusableElement) ?? false;
-        const newIsFocusable = focusTarget.current === focusableElement;
+        const newIsFocusable = focusTarget.current === focusableElement || !!isElementSuppressed?.(focusableElement);
         if (newIsFocusable !== isFocusable) {
           focusablesState.current.set(focusableElement, newIsFocusable);
           focusHandlers.current.get(focusableElement)!(newIsFocusable);

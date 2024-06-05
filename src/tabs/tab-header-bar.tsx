@@ -136,7 +136,7 @@ export function TabHeaderBar({
     [styles['pagination-button-right-scrollable']]: inlineEndOverflow,
   });
 
-  const singleTabStopNavigationAPI = useRef<SingleTabStopNavigationAPI>(null);
+  const navigationAPI = useRef<SingleTabStopNavigationAPI>(null);
 
   function getNextFocusTarget(): null | HTMLElement {
     if (!containerObjectRef.current) {
@@ -147,17 +147,17 @@ export function TabHeaderBar({
   }
 
   useEffect(() => {
-    singleTabStopNavigationAPI.current?.updateFocusTarget();
+    navigationAPI.current?.updateFocusTarget();
   });
   function onFocus() {
-    singleTabStopNavigationAPI.current?.updateFocusTarget();
+    navigationAPI.current?.updateFocusTarget();
   }
   function onBlur() {
-    singleTabStopNavigationAPI.current?.updateFocusTarget();
+    navigationAPI.current?.updateFocusTarget();
   }
 
   function onKeyDown(event: React.KeyboardEvent) {
-    const focusTarget = singleTabStopNavigationAPI.current?.getFocusTarget();
+    const focusTarget = navigationAPI.current?.getFocusTarget();
     const specialKeys = [KeyCode.right, KeyCode.left, KeyCode.end, KeyCode.home, KeyCode.pageUp, KeyCode.pageDown];
     if (hasModifierKeys(event) || specialKeys.indexOf(event.keyCode) === -1) {
       return;
@@ -192,7 +192,7 @@ export function TabHeaderBar({
   // List all non-disabled and registered focusables: those are eligible for keyboard navigation.
   function getFocusablesFrom(target: HTMLElement) {
     function isElementRegistered(element: HTMLElement) {
-      return singleTabStopNavigationAPI.current?.isRegistered(element) ?? false;
+      return navigationAPI.current?.isRegistered(element) ?? false;
     }
     function isElementDisabled(element: HTMLElement) {
       if (element instanceof HTMLButtonElement) {
@@ -220,7 +220,7 @@ export function TabHeaderBar({
         </span>
       )}
       <SingleTabStopNavigationProvider
-        ref={singleTabStopNavigationAPI}
+        ref={navigationAPI}
         navigationActive={true}
         getNextFocusTarget={getNextFocusTarget}
       >
