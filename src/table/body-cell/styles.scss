@@ -56,27 +56,32 @@ $interactive-column-padding-inline-end: calc(#{$cell-horizontal-padding} + #{aws
     padding-inline-start: calc($padding + 9 * (#{awsui.$space-m} + #{awsui.$space-xs}));
   }
 }
-@mixin content-padding-block($padding) {
+@mixin cell-padding-block($padding) {
   > .body-cell-content {
     padding-block: $padding;
   }
 }
-@mixin content-padding-block-start($padding) {
+@mixin cell-padding-block-start($padding) {
   > .body-cell-content {
     padding-block-start: $padding;
   }
 }
-@mixin content-padding-block-end($padding) {
+@mixin cell-padding-block-end($padding) {
   > .body-cell-content {
     padding-block-end: $padding;
+  }
+}
+@mixin cell-padding-inline-end($padding) {
+  > .body-cell-content {
+    padding-inline-end: $padding;
   }
 }
 
 .body-cell {
   box-sizing: border-box;
-  @include content-padding-block-start($cell-vertical-padding);
-  @include content-padding-block-end($cell-vertical-padding-w-border);
-  padding-inline-end: $cell-horizontal-padding;
+  @include cell-padding-block-start($cell-vertical-padding);
+  @include cell-padding-block-end($cell-vertical-padding-w-border);
+  @include cell-padding-inline-end($cell-horizontal-padding);
   border-block-start: awsui.$border-divider-list-width solid transparent;
   word-wrap: break-word;
   border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-divider-secondary;
@@ -97,7 +102,7 @@ $interactive-column-padding-inline-end: calc(#{$cell-horizontal-padding} + #{aws
   }
   &:last-child {
     border-inline-end: $border-placeholder;
-    padding-inline-end: $cell-edge-horizontal-padding;
+    @include cell-padding-inline-end($cell-edge-horizontal-padding);
   }
   &.is-visual-refresh:first-child {
     &:not(.has-striped-rows) {
@@ -155,12 +160,12 @@ $interactive-column-padding-inline-end: calc(#{$cell-horizontal-padding} + #{aws
     background-color: awsui.$color-background-item-selected;
     border-block-start: $selected-border;
     border-block-end: $selected-border;
-    @include content-padding-block-end($cell-vertical-padding);
+    @include cell-padding-block-end($cell-vertical-padding);
 
     // Last selected row has a fixed border-bottom width which do not change on selection in visual refresh.
     // Adjust padding-bottom prevents a slight jump in the table height.
     &.body-cell-last-row.is-visual-refresh {
-      @include content-padding-block-end(calc(#{$cell-vertical-padding} + #{awsui.$border-divider-list-width}));
+      @include cell-padding-block-end(calc(#{$cell-vertical-padding} + #{awsui.$border-divider-list-width}));
     }
 
     &:first-child {
@@ -240,14 +245,14 @@ $interactive-column-padding-inline-end: calc(#{$cell-horizontal-padding} + #{aws
 
   // Use padding as a selected border placeholder to make sure rows don't change height on selection (visual refresh)
   &-selected:not(:first-child) {
-    @include content-padding-block-start($cell-vertical-padding-w-border);
+    @include cell-padding-block-start($cell-vertical-padding-w-border);
   }
   &:not(.body-cell-selected).body-cell-next-selected {
     border-block-end: 0;
-    @include content-padding-block-end(calc(#{$cell-vertical-padding} + #{awsui.$border-divider-list-width}));
+    @include cell-padding-block-end(calc(#{$cell-vertical-padding} + #{awsui.$border-divider-list-width}));
   }
   &-selected.body-cell-prev-selected {
-    @include content-padding-block-start($cell-vertical-padding-w-border);
+    @include cell-padding-block-start($cell-vertical-padding-w-border);
     border-block-start: $selected-border-placeholder;
   }
   &-selected.body-cell-next-selected {
@@ -269,7 +274,7 @@ $interactive-column-padding-inline-end: calc(#{$cell-horizontal-padding} + #{aws
   // Reset padding for selected rows with no adjacent selected row above it,
   // because rows reuse adjacent selected borders (visual refresh)
   &-selected:not(.body-cell-prev-selected) {
-    @include content-padding-block-start($cell-vertical-padding);
+    @include cell-padding-block-start($cell-vertical-padding);
   }
 
   &-editor-wrapper {
@@ -378,12 +383,12 @@ $interactive-column-padding-inline-end: calc(#{$cell-horizontal-padding} + #{aws
 
         // Include interactive padding even when a cell is not hovered to prevent jittering when resizableColumns=false.
         &:not(.resizable-columns) {
-          padding-inline-end: $interactive-column-padding-inline-end;
+          @include cell-padding-inline-end($interactive-column-padding-inline-end);
         }
       }
 
       @mixin focused-editor-styles {
-        padding-inline-end: $interactive-column-padding-inline-end;
+        @include cell-padding-inline-end($interactive-column-padding-inline-end);
         & > .body-cell-editor-wrapper,
         & > .expandable-cell-content > .body-cell-editor-wrapper {
           opacity: 1;
@@ -418,7 +423,9 @@ $interactive-column-padding-inline-end: calc(#{$cell-horizontal-padding} + #{aws
       &.body-cell-edit-disabled-popover {
         &.body-cell-has-success {
           // After a successful edit, we display the success icon next to the edit button and need additional padding to not let the text overflow the success icon.
-          padding-inline-end: calc(#{$cell-horizontal-padding} + #{awsui.$space-l} + #{$icon-width-with-spacing});
+          @include cell-padding-inline-end(
+            calc(#{$cell-horizontal-padding} + #{awsui.$space-l} + #{$icon-width-with-spacing})
+          );
         }
         @include focused-editor-styles;
         &.sticky-cell {
@@ -439,25 +446,27 @@ $interactive-column-padding-inline-end: calc(#{$cell-horizontal-padding} + #{aws
 
         & > .body-cell-editor-wrapper,
         & > .expandable-cell-content > .body-cell-editor-wrapper {
-          padding-inline-end: calc(#{$edit-button-padding-right} - (2 * #{awsui.$border-divider-list-width}));
+          @include cell-padding-inline-end(
+            calc(#{$edit-button-padding-right} - (2 * #{awsui.$border-divider-list-width}))
+          );
         }
         & > .body-cell-success {
           // Update padding to avoid a jumping icon because of the additional borders added when hovering an editable cell.
-          padding-inline-end: calc(#{$success-icon-padding-right} - (2 * #{awsui.$border-divider-list-width}));
+          @include cell-padding-inline-end(
+            calc(#{$success-icon-padding-right} - (2 * #{awsui.$border-divider-list-width}))
+          );
         }
         &.body-cell-last-row.body-cell-selected,
         &.body-cell-next-selected {
-          @include content-padding-block(
-            calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width} / 2))
-          );
+          @include cell-padding-block(calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width} / 2)));
         }
         &.body-cell-last-row:not(.body-cell-selected) {
-          @include content-padding-block-start(
+          @include cell-padding-block-start(
             calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width}))
           );
         }
         &.body-cell-first-row:not(.body-cell-selected) {
-          @include content-padding-block(calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width})));
+          @include cell-padding-block(calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width})));
         }
         &.sticky-cell {
           position: sticky;
@@ -478,7 +487,7 @@ $interactive-column-padding-inline-end: calc(#{$cell-horizontal-padding} + #{aws
     &.body-cell-first-row > .body-cell-success,
     &.body-cell-first-row > .body-cell-editor-wrapper,
     &.body-cell-first-row > .expandable-cell-content > .body-cell-editor-wrapper {
-      @include content-padding-block-start(awsui.$border-divider-list-width);
+      @include cell-padding-block-start(awsui.$border-divider-list-width);
     }
   }
   @include cell-offset($cell-horizontal-padding);
