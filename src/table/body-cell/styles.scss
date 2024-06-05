@@ -147,6 +147,13 @@ $interactive-column-padding-inline-end: calc(#{$cell-horizontal-padding} + #{aws
     &:not(.has-selection):not(.body-cell-editable) {
       border-inline-start: none;
     }
+
+    // Give extra space on the edge to allow slight content overflow.
+    // That is to prevent focus outline on cell content from being cut out.
+    > .body-cell-content {
+      padding-inline-start: awsui.$space-scaled-xxs;
+      margin-inline-start: calc(-1 * #{awsui.$space-scaled-xxs});
+    }
   }
   &:first-child:not(.is-visual-refresh) {
     @include cell-padding-inline-start($cell-edge-horizontal-padding);
