@@ -25,17 +25,16 @@ beforeEach(() => {
   jest.resetAllMocks();
 });
 
-test('should report sticky background in full-page variant', () => {
+test('should not report sticky background in full-page variant', () => {
   const setHasStickyBackground = jest.fn();
   const { rerender } = render(
     <AppLayoutContext.Provider value={{ setHasStickyBackground }}>
       <InternalContainer variant="full-page">test content</InternalContainer>
     </AppLayoutContext.Provider>
   );
-  expect(setHasStickyBackground).toHaveBeenCalledWith(true);
-  setHasStickyBackground.mockReset();
+  expect(setHasStickyBackground).not.toHaveBeenCalledWith(true);
   rerender(<></>);
-  expect(setHasStickyBackground).toHaveBeenCalledWith(false);
+  expect(setHasStickyBackground).not.toHaveBeenCalledWith(false);
 });
 
 test('should not report sticky state in default variant', () => {

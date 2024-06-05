@@ -15,6 +15,7 @@ export default function Notifications() {
     notificationsElement,
     stickyNotifications,
     headerVariant,
+    hasNotificationsContent,
   } = useAppLayoutInternals();
 
   if (!notifications) {
@@ -33,8 +34,10 @@ export default function Notifications() {
         styles.notifications,
         {
           [styles['sticky-notifications']]: stickyNotifications,
+          [styles['has-notification-content']]: hasNotificationsContent,
           [styles.unfocusable]: hasDrawerViewportOverlay,
           [highContrastHeaderClassName]: headerVariant === 'high-contrast',
+          [styles['high-contrast']]: headerVariant === 'high-contrast',
         },
         testutilStyles.notifications
       )}
