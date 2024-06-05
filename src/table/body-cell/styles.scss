@@ -332,7 +332,8 @@ $interactive-column-padding-inline-end: calc(#{$cell-horizontal-padding} + #{aws
       flex-shrink: 0;
     }
     &-row-editor {
-      max-inline-size: calc(100% - 6 * #{awsui.$space-xxxs} - 2 * #{awsui.$size-icon-normal});
+      // 6 space-xxs: 2 * icon left padding + 2 * icon right padding + space between icons + space between icons and editor
+      max-inline-size: calc(100% - 6 * #{awsui.$space-xxs} - 2 * #{awsui.$size-icon-normal});
     }
   }
 
