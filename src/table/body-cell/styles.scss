@@ -105,7 +105,7 @@ $interactive-column-padding-inline-end: calc(#{$cell-horizontal-padding} + #{aws
   text-align: start;
 
   &-content {
-    /* used for testing */
+    box-sizing: border-box;
   }
   &:not(.body-cell-wrap) > .body-cell-content {
     white-space: nowrap;
