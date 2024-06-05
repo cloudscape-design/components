@@ -60,7 +60,7 @@ $interactive-column-padding-inline-end: calc(#{$cell-horizontal-padding} + #{aws
 
 @mixin cell-padding-inline-start($padding) {
   > .body-cell-content {
-    padding-inline-start: $padding;
+    padding-inline-start: calc(#{$padding} - 1 * #{awsui.$border-divider-list-width});
   }
 
   @for $i from 0 through 9 {
@@ -74,7 +74,7 @@ $interactive-column-padding-inline-end: calc(#{$cell-horizontal-padding} + #{aws
 }
 @mixin cell-padding-inline-end($padding) {
   > .body-cell-content {
-    padding-inline-end: $padding;
+    padding-inline-end: calc(#{$padding} - 1 * #{awsui.$border-divider-list-width});
   }
 }
 @mixin cell-padding-block($padding) {
