@@ -26,7 +26,6 @@ export interface TableHeaderCellProps<ItemType> {
   wrapLines?: boolean;
   hidden?: boolean;
   onClick(detail: TableProps.SortingState<any>): void;
-  onClickCapture(): void;
   onResizeFinish: () => void;
   colIndex: number;
   updateColumn: (columnId: PropertyKey, newWidth: number) => void;
@@ -53,7 +52,6 @@ export function TableHeaderCell<ItemType>({
   focusedComponent,
   hidden,
   onClick,
-  onClickCapture,
   colIndex,
   updateColumn,
   resizableColumns,
@@ -82,7 +80,6 @@ export function TableHeaderCell<ItemType>({
   // https://bugzilla.mozilla.org/show_bug.cgi?id=843003
   const handleKeyPress = ({ nativeEvent: e }: React.KeyboardEvent) => {
     if (e.keyCode === KeyCode.enter || e.keyCode === KeyCode.space) {
-      onClickCapture();
       e.preventDefault();
       handleClick();
     }
@@ -129,7 +126,6 @@ export function TableHeaderCell<ItemType>({
               tabIndex: clickableHeaderTabIndex,
               role: 'button',
               onClick: handleClick,
-              onClickCapture,
             }
           : {})}
       >

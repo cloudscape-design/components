@@ -2,12 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef, useState } from 'react';
 import { useCollection } from '@cloudscape-design/collection-hooks';
+import Box from '~components/box';
 import Button from '~components/button';
 import CollectionPreferences, { CollectionPreferencesProps } from '~components/collection-preferences';
 import Header from '~components/header';
 import Pagination from '~components/pagination';
+import SpaceBetween from '~components/space-between';
 import Table from '~components/table';
 import TextFilter from '~components/text-filter';
+import { setPerformanceMetrics } from '~components/internal/analytics';
 import { Instance, generateItems } from './generate-data';
 import {
   columnsConfig,
@@ -21,9 +24,6 @@ import {
 import { contentDisplayPreferenceI18nStrings } from '../common/i18n-strings';
 
 const allItems = generateItems();
-import { setPerformanceMetrics } from '~components/internal/analytics';
-import Box from '~components/box';
-import SpaceBetween from '~components/space-between';
 
 (window as any).tableInteractionMetrics = (window as any).tableInteractionMetrics ?? [];
 

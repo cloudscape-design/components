@@ -54,7 +54,6 @@ function TestComponent(props: Partial<TableHeaderCellProps<typeof testItem>>) {
       tabIndex={0}
       updateColumn={() => {}}
       onClick={() => {}}
-      onClickCapture={() => {}}
       onResizeFinish={() => {}}
       stickyState={result.current}
       columnId="id"

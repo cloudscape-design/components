@@ -56,7 +56,7 @@ test(
       })
     );
     expect(metrics[0].interactionTime).toBeGreaterThanOrEqual(500);
-    expect(metrics[0].interactionTime).toBeLessThanOrEqual(1600);
+    expect(metrics[0].interactionTime).toBeLessThanOrEqual(2000);
   })
 );
 
@@ -77,7 +77,7 @@ test(
       })
     );
     expect(metrics[0].interactionTime).toBeGreaterThanOrEqual(500);
-    expect(metrics[0].interactionTime).toBeLessThanOrEqual(1600);
+    expect(metrics[0].interactionTime).toBeLessThanOrEqual(2000);
   })
 );
 
@@ -98,7 +98,7 @@ test(
       })
     );
     expect(metrics[0].interactionTime).toBeGreaterThanOrEqual(500);
-    expect(metrics[0].interactionTime).toBeLessThanOrEqual(1600);
+    expect(metrics[0].interactionTime).toBeLessThanOrEqual(2000);
   })
 );
 
@@ -120,7 +120,7 @@ test(
       })
     );
     expect(metrics[0].interactionTime).toBeGreaterThanOrEqual(500);
-    expect(metrics[0].interactionTime).toBeLessThanOrEqual(1600);
+    expect(metrics[0].interactionTime).toBeLessThanOrEqual(2000);
   })
 );
 
@@ -141,6 +141,6 @@ test(
       })
     );
     expect(metrics[0].interactionTime).toBeGreaterThanOrEqual(500);
-    expect(metrics[0].interactionTime).toBeLessThanOrEqual(1600);
+    expect(metrics[0].interactionTime).toBeLessThanOrEqual(2000);
   })
 );

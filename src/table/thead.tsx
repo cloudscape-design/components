@@ -43,7 +43,7 @@ export interface TheadProps {
   onFocusedComponentChange?: (focusId: null | string) => void;
   tableRole: TableRole;
   isExpandable?: boolean;
-  setLastUserAction?: (name: string) => void;
+  setLastUserAction: (name: string) => void;
 }
 
 const Thead = React.forwardRef(
@@ -156,8 +156,10 @@ const Thead = React.forwardRef(
                 updateColumn={updateColumn}
                 onResizeFinish={() => onResizeFinish(columnWidths)}
                 resizableColumns={resizableColumns}
-                onClickCapture={() => setLastUserAction?.('sorting')}
-                onClick={detail => fireNonCancelableEvent(onSortingChange, detail)}
+                onClick={detail => {
+                  setLastUserAction('sorting');
+                  fireNonCancelableEvent(onSortingChange, detail);
+                }}
                 isEditable={!!column.editConfig}
                 stickyState={stickyState}
                 cellRef={node => setCell(sticky, columnId, node)}

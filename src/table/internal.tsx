@@ -171,21 +171,19 @@ const InternalTable = React.forwardRef(
     const scrollbarRef = React.useRef<HTMLDivElement>(null);
     const { cancelEdit, ...cellEditing } = useCellEditing({ onCancel: onEditCancel, onSubmit: submitEdit });
 
+    /* istanbul ignore next: performance marks do not work in JSDOM */
+    const getHeaderText = () =>
+      toolsHeaderPerformanceMarkRef.current?.querySelector<HTMLElement>(`.${headerStyles['heading-text']}`)
+        ?.innerText ?? toolsHeaderPerformanceMarkRef.current?.innerText;
+
     usePerformanceMarks(
       'table',
       true,
       tableRefObject,
-      () => {
-        /* istanbul ignore next: performance marks do not work in JSDOM */
-        const headerText =
-          toolsHeaderPerformanceMarkRef.current?.querySelector<HTMLElement>(`.${headerStyles['heading-text']}`)
-            ?.innerText ?? toolsHeaderPerformanceMarkRef.current?.innerText;
-
-        return {
-          loading: loading ?? false,
-          header: headerText,
-        };
-      },
+      () => ({
+        loading: loading ?? false,
+        header: getHeaderText(),
+      }),
       [loading]
     );
 
@@ -195,9 +193,7 @@ const InternalTable = React.forwardRef(
       loading,
       instanceIdentifier: analyticsMetadata?.instanceIdentifier,
       itemCount: items.length,
-      getComponentIdentifier: () =>
-        toolsHeaderPerformanceMarkRef.current?.querySelector<HTMLElement>(`.${headerStyles['heading-text']}`)
-          ?.innerText ?? toolsHeaderPerformanceMarkRef.current?.innerText,
+      getComponentIdentifier: getHeaderText,
     });
 
     useImperativeHandle(
