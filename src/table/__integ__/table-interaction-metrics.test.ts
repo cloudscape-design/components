@@ -30,6 +30,7 @@ const setupTest = (
     await testFn({ page, wrapper, getInteractionMetrics, waitForLoadingFinished });
   });
 };
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 test(
   'has no metrics when the table does not load anything',
@@ -106,6 +107,7 @@ test(
   'emits a metric when the user changes preferences',
   setupTest(async ({ page, wrapper, getInteractionMetrics, waitForLoadingFinished }) => {
     await page.click(wrapper.findCollectionPreferences().findTriggerButton().toSelector());
+    await delay(4000);
     await page.click(wrapper.findCollectionPreferences().findModal().findConfirmButton().toSelector());
     await waitForLoadingFinished();
 

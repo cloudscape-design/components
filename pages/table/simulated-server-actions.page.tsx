@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useCollection } from '@cloudscape-design/collection-hooks';
 import Box from '~components/box';
 import Button from '~components/button';
@@ -25,15 +25,6 @@ import { contentDisplayPreferenceI18nStrings } from '../common/i18n-strings';
 
 const allItems = generateItems();
 
-(window as any).tableInteractionMetrics = (window as any).tableInteractionMetrics ?? [];
-
-setPerformanceMetrics({
-  tableInteraction(props) {
-    (window as any).tableInteractionMetrics.push(props);
-    console.log('tableInteraction:', props);
-  },
-});
-
 const MINIMUM_LOADING_TIME_MS = 500;
 const MAXIMUM_ADDITIONAL_LOADING_TIME_MS = 1000;
 
@@ -55,6 +46,22 @@ function useLoading() {
 }
 
 export default function TableLatencyMetricsPage() {
+  useEffect(() => {
+    (window as any).tableInteractionMetrics = [];
+
+    setPerformanceMetrics({
+      tableInteraction(props) {
+        (window as any).tableInteractionMetrics.push(props);
+        console.log('tableInteraction:', props);
+      },
+    });
+
+    return () => {
+      setPerformanceMetrics({ tableInteraction: () => {} });
+      delete (window as any).tableInteractionMetrics;
+    };
+  }, []);
+
   const [preferences, setPreferences] = useState<CollectionPreferencesProps.Preferences>(defaultPreferences);
   const { loading, load } = useLoading();
 
