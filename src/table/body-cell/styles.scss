@@ -29,6 +29,20 @@ $interactive-column-padding-inline-end: calc(#{$cell-horizontal-padding} + #{aws
 
 @mixin cell-focus-outline {
   @include styles.focus-highlight(calc(-1 * #{awsui.$space-scaled-xxs}));
+
+  // Give extra space on the left (inline start) to compensate for missing body cell padding.
+  &.is-visual-refresh:first-child {
+    @include styles.focus-highlight(
+      (
+        'vertical': calc(-1 * #{awsui.$space-scaled-xxs}),
+        'horizontal': (
+          'left': calc(1 * #{awsui.$space-scaled-xxs}),
+          'right': calc(-1 * #{awsui.$space-scaled-xxs}),
+        ),
+      )
+    );
+  }
+
   // @mixin focus-highlight sets cell's position to "relative".
   // Reinforcing sticky position for it to take precedence.
   &.sticky-cell {
