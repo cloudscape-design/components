@@ -19,8 +19,8 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useInternalI18n } from '../i18n/context';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import {
-  FocusableChangeHandler,
-  SingleTabStopNavigationContext,
+  SingleTabStopNavigationAPI,
+  SingleTabStopNavigationProvider,
   useSingleTabStopNavigation,
 } from '../internal/context/single-tab-stop-navigation-context';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
@@ -136,74 +136,39 @@ export function TabHeaderBar({
     [styles['pagination-button-right-scrollable']]: inlineEndOverflow,
   });
 
-  // A set of registered focusable elements that can use keyboard navigation.
-  const focusables = useRef(new Set<Element>());
-  // A map of registered focusable element handlers to update the respective tab indices.
-  const focusHandlers = useRef(new Map<Element, FocusableChangeHandler>());
-  // A map of focusable element states to avoid issuing unnecessary updates to registered elements.
-  const focusablesState = useRef(new WeakMap<Element, boolean>());
-  // A reference to the currently focused element (tab or tab action).
-  const focusTarget = useRef<null | HTMLElement>(null);
+  const singleTabStopNavigationAPI = useRef<SingleTabStopNavigationAPI>(null);
 
-  // Register a focusable element to allow navigation into it.
-  // The focusable element tabIndex is only set to 0 if the element matches the focus target.
-  function registerFocusable(focusableElement: Element, changeHandler: FocusableChangeHandler) {
-    focusables.current.add(focusableElement);
-    focusHandlers.current.set(focusableElement, changeHandler);
-    const isFocusable = !!focusablesState.current.get(focusableElement);
-    const newIsFocusable = focusTarget.current === focusableElement;
-    if (newIsFocusable !== isFocusable) {
-      focusablesState.current.set(focusableElement, newIsFocusable);
-      changeHandler(newIsFocusable);
-    }
-    return () => unregisterFocusable(focusableElement);
-  }
-  function unregisterFocusable(focusable: Element) {
-    focusables.current.delete(focusable);
-    focusHandlers.current.delete(focusable);
-  }
-
-  // Update focus target with active tab and notify all registered focusables of a change.
-  function updateFocusTarget() {
-    focusTarget.current = getSingleFocusable();
-    for (const focusableElement of focusables.current) {
-      const isFocusable = focusablesState.current.get(focusableElement) ?? false;
-      const newIsFocusable = focusTarget.current === focusableElement;
-      if (newIsFocusable !== isFocusable) {
-        focusablesState.current.set(focusableElement, newIsFocusable);
-        focusHandlers.current.get(focusableElement)!(newIsFocusable);
-      }
-    }
-  }
-  function getSingleFocusable(): null | HTMLElement {
+  function getNextFocusTarget(): null | HTMLElement {
     if (!containerObjectRef.current) {
       return null;
     }
     const tabElements: HTMLButtonElement[] = Array.from(containerObjectRef.current.querySelectorAll(tabSelector));
     return tabElements.find(tab => tab.matches(activeTabSelector)) ?? tabElements.find(tab => !tab.disabled) ?? null;
   }
+
   useEffect(() => {
-    updateFocusTarget();
+    singleTabStopNavigationAPI.current?.updateFocusTarget();
   });
   function onFocus() {
-    updateFocusTarget();
+    singleTabStopNavigationAPI.current?.updateFocusTarget();
   }
   function onBlur() {
-    updateFocusTarget();
+    singleTabStopNavigationAPI.current?.updateFocusTarget();
   }
 
   function onKeyDown(event: React.KeyboardEvent) {
+    const focusTarget = singleTabStopNavigationAPI.current?.getFocusTarget();
     const specialKeys = [KeyCode.right, KeyCode.left, KeyCode.end, KeyCode.home, KeyCode.pageUp, KeyCode.pageDown];
     if (hasModifierKeys(event) || specialKeys.indexOf(event.keyCode) === -1) {
       return;
     }
-    if (!containerObjectRef.current || !focusTarget.current) {
+    if (!containerObjectRef.current || !focusTarget) {
       return;
     }
     event.preventDefault();
 
     const focusables = getFocusablesFrom(containerObjectRef.current);
-    const activeIndex = focusables.indexOf(focusTarget.current as HTMLElement);
+    const activeIndex = focusables.indexOf(focusTarget);
     handleKey(event as any, {
       onHome: () => focusElement(focusables[0]),
       onEnd: () => focusElement(focusables[focusables.length - 1]),
@@ -226,13 +191,16 @@ export function TabHeaderBar({
   }
   // List all non-disabled and registered focusables: those are eligible for keyboard navigation.
   function getFocusablesFrom(target: HTMLElement) {
+    function isElementRegistered(element: HTMLElement) {
+      return singleTabStopNavigationAPI.current?.isRegistered(element) ?? false;
+    }
     function isElementDisabled(element: HTMLElement) {
       if (element instanceof HTMLButtonElement) {
         return element.disabled && element.getAttribute('aria-selected') !== 'true';
       }
       return false;
     }
-    return getAllFocusables(target).filter(el => focusables.current.has(el) && !isElementDisabled(el));
+    return getAllFocusables(target).filter(el => isElementRegistered(el) && !isElementDisabled(el));
   }
 
   return (
@@ -251,7 +219,11 @@ export function TabHeaderBar({
           />
         </span>
       )}
-      <SingleTabStopNavigationContext.Provider value={{ navigationActive: true, registerFocusable }}>
+      <SingleTabStopNavigationProvider
+        ref={singleTabStopNavigationAPI}
+        navigationActive={true}
+        getNextFocusTarget={getNextFocusTarget}
+      >
         <ul
           role="tablist"
           className={styles['tabs-header-list']}
@@ -265,7 +237,7 @@ export function TabHeaderBar({
         >
           {tabs.map(renderTabHeader)}
         </ul>
-      </SingleTabStopNavigationContext.Provider>
+      </SingleTabStopNavigationProvider>
       {horizontalOverflow && (
         <span className={rightButtonClasses}>
           <InternalButton
