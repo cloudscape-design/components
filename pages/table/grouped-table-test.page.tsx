@@ -43,7 +43,6 @@ type PageContext = React.Context<
     resizableColumns: boolean;
     sortingDisabled: boolean;
     stripedRows: boolean;
-    keepSelection: boolean;
     usePagination: boolean;
     useProgressiveLoading: boolean;
     useServerMock: boolean;
@@ -119,6 +118,9 @@ export default () => {
             resizableColumns={settings.resizableColumns}
             sortingDisabled={settings.sortingDisabled}
             selectionType="group"
+            selectionInverted={tableData.selectionInverted}
+            selectedItems={tableData.selectedItems}
+            onSelectionChange={tableData.onSelectionChange}
             stripedRows={settings.stripedRows}
             columnDefinitions={columnDefinitions}
             items={tableData.items}
@@ -322,12 +324,14 @@ function useTableData() {
         />
       ),
     },
-    selection: { trackBy: 'key', keepSelection: settings.keepSelection },
     expandableRows: {
       getId: item => item.key,
       getParentId: item => item.parent,
     },
   });
+
+  const [selectionInverted, setSelectionInverted] = useState(false);
+  const [selectedItems, setSelectedItems] = useState<TransactionRow[]>([]);
 
   // Imitate server-side delay when items update.
   const memoItems = useEqualsMemo(collectionResult.items);
@@ -487,6 +491,12 @@ function useTableData() {
     loading: settings.useServerMock ? loading : false,
     items: settings.useServerMock && error ? [] : paginatedItems,
     groups,
+    selectedItems,
+    selectionInverted,
+    onSelectionChange: ({ detail }: { detail: TableProps.SelectionChangeDetail<TransactionRow> }) => {
+      setSelectionInverted(detail.selectionInverted ?? false);
+      setSelectedItems(detail.selectedItems);
+    },
     actions: {
       expandAll: () => {
         collectionResult.actions.setExpandedItems(allTransactionRows);
@@ -514,7 +524,6 @@ function usePageSettings() {
     resizableColumns: urlParams.resizableColumns ?? true,
     sortingDisabled: urlParams.sortingDisabled ?? false,
     stripedRows: urlParams.stripedRows ?? false,
-    keepSelection: urlParams.keepSelection ?? false,
     usePagination: urlParams.usePagination ?? false,
     useProgressiveLoading: urlParams.useProgressiveLoading ?? true,
     useServerMock: urlParams.useServerMock ?? false,
@@ -548,13 +557,6 @@ function PageSettings() {
             onChange={event => settings.setUrlParams({ stripedRows: event.detail.checked })}
           >
             Striped rows
-          </Checkbox>
-
-          <Checkbox
-            checked={settings.keepSelection}
-            onChange={event => settings.setUrlParams({ keepSelection: event.detail.checked })}
-          >
-            Keep selection
           </Checkbox>
 
           <Checkbox

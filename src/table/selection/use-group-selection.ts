@@ -112,6 +112,7 @@ export function useGroupSelection<T>({
     const selectedItems = selectionTree.isItemSelected(item)
       ? deselectItems(requestedItems)
       : selectItems(requestedItems);
+
     fireNonCancelableEvent(onSelectionChange, selectionTree.updateSelection(selectedItems));
     setLastClickedItem(item);
   };
@@ -226,6 +227,7 @@ function createSelectionTree<T>({
         checkItemSelection(item, nextSelectionInverted);
       }
     }
+
     return { selectionInverted: nextSelectionInverted, selectedItems: nextSelectedItems };
   };
 
