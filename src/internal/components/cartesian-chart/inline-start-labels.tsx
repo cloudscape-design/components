@@ -72,7 +72,7 @@ function InlineStartLabels({
 
   return (
     <g
-      className={clsx(styles['labels-inline-start'])}
+      className={styles['labels-inline-start']}
       aria-label={title}
       role="list"
       aria-roledescription={i18n('i18nStrings.chartAriaRoleDescription', ariaRoleDescription)}
