@@ -44,11 +44,7 @@ export function useTableInteractionMetrics({
   }, [loading]);
 
   useEffectOnUpdate(() => {
-    if (!loading) {
-      if (loadingStartTime.current === null) {
-        return;
-      }
-
+    if (!loading && loadingStartTime.current !== null) {
       const loadingDuration = performance.now() - loadingStartTime.current;
       loadingStartTime.current = null;
 
