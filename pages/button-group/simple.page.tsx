@@ -15,7 +15,6 @@ const items1: ButtonGroupProps.ItemOrGroup[] = [
         iconName: 'thumbs-up',
         text: 'Like',
         actionPopoverText: 'Liked',
-        tooltipDisabled: true,
       },
       {
         id: 'thump-down',
@@ -145,7 +144,7 @@ const items3: ButtonGroupProps.ItemOrGroup[] = [
     items: [
       { id: 'edit', iconName: 'edit', text: 'Edit', actionPopoverText: 'Edited' },
       { id: 'open', iconName: 'file-open', text: 'Open', actionPopoverText: 'Opened' },
-      { id: 'search', iconName: 'search', text: 'Search' },
+      { id: 'search', iconName: 'search', text: 'Search', actionPopoverText: 'Search' },
     ],
   },
 ];
@@ -157,8 +156,12 @@ export default function ButtonGroupPage() {
     console.log('Item clicked:', event.detail.id);
   };
 
-  const onFocusButtonClick = () => {
+  const onFocusOnCopyButtonClick = () => {
     ref.current?.focus('copy');
+  };
+
+  const onFocusOnCutButtonClick = () => {
+    ref.current?.focus('cut');
   };
 
   return (
@@ -167,11 +170,9 @@ export default function ButtonGroupPage() {
         <article>
           <h1>Few Buttons</h1>
           <ol>
-            <li>Tooltip disabled</li>
-            <li>Tooltip enabled and actionPopoverText</li>
-            <li>Tooltip enabled no actionPopoverText</li>
-            <li>Loading</li>
-            <li>Disabled</li>
+            <li>no actionPopoverText</li>
+            <li>loading</li>
+            <li>disabled</li>
           </ol>
           <ButtonGroup items={items1} onItemClick={onItemClick} />
         </article>
@@ -183,7 +184,8 @@ export default function ButtonGroupPage() {
           <h1>Group with overflow</h1>
           <ButtonGroup items={items3} onItemClick={onItemClick} ref={ref} />
           <br />
-          <Button onClick={onFocusButtonClick}>Focus on copy</Button>
+          <Button onClick={onFocusOnCopyButtonClick}>Focus on copy</Button>&nbsp;
+          <Button onClick={onFocusOnCutButtonClick}>Focus on aditional items</Button>
         </article>
       </ScreenshotArea>
     </>

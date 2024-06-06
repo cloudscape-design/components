@@ -76,7 +76,7 @@ const ItemElement = React.forwardRef(
             (isActionPopover && item.actionPopoverText && (
               <StatusIndicator type="success">{item.actionPopoverText}</StatusIndicator>
             )) ||
-            (!item.tooltipDisabled && item.text)
+            item.text
           }
         />
       </div>

@@ -81,7 +81,6 @@ export namespace ButtonGroupProps {
     iconAlt?: string;
     iconUrl?: string;
     iconSvg?: React.ReactNode;
-    tooltipDisabled?: boolean;
     actionPopoverText?: string;
   }
 
