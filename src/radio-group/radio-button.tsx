@@ -34,6 +34,7 @@ export default React.forwardRef(function RadioButton(
       label={label}
       description={description}
       disabled={disabled}
+      readOnly={readOnly}
       controlId={controlId}
       nativeControl={nativeControlProps => (
         <input
