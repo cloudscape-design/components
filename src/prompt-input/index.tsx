@@ -22,16 +22,16 @@ const PromptInput = React.forwardRef(
       autoComplete = true,
       disabled,
       readOnly,
+      actionButtonIconName,
       disableBrowserAutocorrect,
-      disableBrowserSpellcheck,
-      disableSendButton,
+      disableActionButton,
       spellcheck,
       onKeyDown,
       onKeyUp,
       onChange,
       onBlur,
       onFocus,
-      //onSend,
+      onAction,
       ariaRequired,
       name,
       placeholder,
@@ -44,7 +44,7 @@ const PromptInput = React.forwardRef(
     ref: Ref<PromptInputProps.Ref>
   ) => {
     const { __internalRootRef } = useBaseComponent('Textarea', {
-      props: { autoComplete, autoFocus, disableBrowserAutocorrect, disableBrowserSpellcheck, readOnly, spellcheck },
+      props: { autoComplete, autoFocus, disableBrowserAutocorrect, readOnly, spellcheck },
     });
     const { ariaLabelledby, ariaDescribedby, controlId, invalid, warning } = useFormFieldContext(rest);
 
@@ -54,12 +54,10 @@ const PromptInput = React.forwardRef(
 
     useForwardFocus(ref, textareaRef);
 
-    const onSend = () => console.log('SENDING');
-
     const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
       if (event.key === 'Enter' && !event.shiftKey) {
         event.preventDefault();
-        onSend();
+        onAction && onAction();
       }
       if (onKeyDown) {
         fireKeyboardEvent(onKeyDown, event);
@@ -86,7 +84,7 @@ const PromptInput = React.forwardRef(
 
     useEffect(() => {
       adjustTextareaHeight();
-    }, [value, adjustTextareaHeight]);
+    }, [value, adjustTextareaHeight, maxRows]);
 
     const attributes: React.TextareaHTMLAttributes<HTMLTextAreaElement> = {
       'aria-label': ariaLabel,
@@ -121,37 +119,15 @@ const PromptInput = React.forwardRef(
       attributes.autoCapitalize = 'off';
     }
 
-    if (disableBrowserSpellcheck) {
-      attributes.spellCheck = 'false';
-    }
-
     return (
       <span {...baseProps} className={clsx(styles.root, baseProps.className)} ref={__internalRootRef}>
         <textarea ref={textareaRef} id={controlId} {...attributes} />
         <div className={styles.button}>
           <InternalButton
-            onClick={onSend}
-            disabled={disableSendButton}
+            iconName={actionButtonIconName}
+            onClick={() => onAction && onAction()}
+            disabled={disableActionButton}
             variant="icon"
-            iconSvg={
-              <svg
-                focusable={true}
-                xmlns="http://www.w3.org/2000/svg"
-                height="100%"
-                width="100%"
-                fill="none"
-                strokeWidth={0}
-                viewBox="0 0 16 17"
-              >
-                <title> Send Message (enter)</title>
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M1.44731 0.182767C1.07815 -0.00184172 0.6335 0.0593217 0.327895 0.336747C0.0222903 0.614172 -0.0814707 1.05085 0.0666757 1.4361L2.61935 8.07411L0.0668605 14.7015C-0.0814777 15.0866 0.0220426 15.5233 0.327477 15.8009C0.632912 16.0785 1.07751 16.1399 1.44676 15.9555L15.439 8.96906C15.7779 8.79981 15.9921 8.45355 15.9922 8.07469C15.9924 7.69583 15.7784 7.34944 15.4395 7.17998L1.44731 0.182767ZM4.37769 7.07439L2.85886 3.12479L10.7568 7.07439H4.37769ZM4.37731 9.07439L2.85977 13.0146L10.751 9.07439H4.37731Z"
-                  fill={'#555C65'}
-                />
-              </svg>
-            }
           />
         </div>
       </span>
