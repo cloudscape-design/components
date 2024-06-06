@@ -34,6 +34,7 @@ export interface ButtonGroupProps extends BaseComponentProps {
   items: ReadonlyArray<ButtonGroupProps.ItemOrGroup>;
   /**
    * Max number of visible items in the button group, the rest will be hidden in a dropdown.
+   * Default limit is 5
    */
   limit?: number;
   /**
