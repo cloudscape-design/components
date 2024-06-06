@@ -71,7 +71,6 @@ export namespace RadioGroupProps {
     description?: React.ReactNode;
     disabled?: boolean;
     controlId?: string;
-    readOnly?: boolean;
   }
 
   export interface ChangeDetail {

@@ -14,6 +14,7 @@ interface RadioButtonProps extends RadioGroupProps.RadioButtonDefinition {
   name: string;
   checked: boolean;
   onChange?: NonCancelableEventHandler<RadioGroupProps.ChangeDetail>;
+  readOnly?: boolean;
 }
 
 export default React.forwardRef(function RadioButton(
