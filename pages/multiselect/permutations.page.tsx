@@ -62,15 +62,6 @@ const permutations = createPermutations<MultiselectProps & { inlineTokens?: bool
     i18nStrings: [i18nStrings],
     inlineTokens: [undefined, true],
   },
-  {
-    placeholder: ['Select an item'],
-    readOnly: [true],
-    tokenLimit: [2],
-    options: [options],
-    selectedOptions: [[options[0], options[1]]],
-    deselectAriaLabel: [deselectAriaLabel],
-    i18nStrings: [i18nStrings],
-  },
   // Inline tokens with many selected options
   {
     placeholder: ['Select an item'],
@@ -90,6 +81,16 @@ const permutations = createPermutations<MultiselectProps & { inlineTokens?: bool
     ],
     i18nStrings: [i18nStrings],
     inlineTokens: [true],
+  },
+  {
+    placeholder: ['Select an item'],
+    readOnly: [true],
+    tokenLimit: [2],
+    options: [options],
+    selectedOptions: [[options[0], options[1]]],
+    deselectAriaLabel: [deselectAriaLabel],
+    i18nStrings: [i18nStrings],
+    inlineTokens: [true, false],
   },
 ]);
 

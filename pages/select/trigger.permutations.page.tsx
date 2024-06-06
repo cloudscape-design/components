@@ -50,13 +50,6 @@ const permutations = createPermutations<any>([
   },
   {
     placeholder: ['Select an item'],
-    readOnly: [true],
-    triggerVariant: ['label'],
-    triggerProps: [{}],
-    selectedOption: [complexOption],
-  },
-  {
-    placeholder: ['Select an item'],
     disabled: [true],
     triggerVariant: ['option'],
     triggerProps: [{}],
@@ -102,6 +95,13 @@ const permutations = createPermutations<any>([
     triggerVariant: ['option'],
     triggerProps: [{}],
     selectedOption: [complexOptionWithCustomSvg],
+  },
+  {
+    placeholder: ['Select an item'],
+    readOnly: [true],
+    triggerVariant: ['label'],
+    triggerProps: [{}],
+    selectedOption: [complexOption, undefined],
   },
 ]);
 
