@@ -17,13 +17,11 @@ property. The content gap right is computed in the Layout styles based on the
 viewport size and state of the Tools drawer.
 */
 .tools-container {
-  /* stylelint-disable scss/operator-no-newline-after */
   #{custom-props.$toolsMaxWidth}: calc(
     var(#{custom-props.$layoutWidth}) - var(#{custom-props.$mainOffsetLeft}) - var(
         #{custom-props.$defaultMinContentWidth}
       ) - var(#{custom-props.$contentGapRight})
   );
-  /* stylelint-enable scss/operator-no-newline-after */
   display: flex;
   grid-column: 5;
   grid-row: 1 / span 10;

@@ -65,9 +65,9 @@
   }
 }
 
-/* stylelint-disable selector-max-type */
 .control {
   position: relative;
+  /* stylelint-disable selector-max-type */
   & > input,
   & > svg,
   & > .outline {
@@ -85,5 +85,5 @@
     margin-block: 0;
     margin-inline: 0;
   }
+  /* stylelint-enable selector-max-type */
 }
-/* stylelint-enable selector-max-type */

@@ -46,12 +46,11 @@ $header-row-margin-block-end: awsui.$space-xs;
   @include styles.font-heading-xs;
   flex: 1 1 auto;
 
-  /* stylelint-disable selector-max-type */
+  /* stylelint-disable-next-line selector-max-type */
   > h2 {
     @include styles.font-heading-xs;
     display: inline;
   }
-  /* stylelint-enable selector-max-type */
 }
 
 .content {
