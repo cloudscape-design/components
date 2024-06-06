@@ -7,7 +7,7 @@ import { TableProps } from '../interfaces';
 import { getTrackableValue } from '../utils';
 import { joinStrings } from '../../internal/utils/strings';
 import { SelectionProps } from './interfaces';
-import { ItemMap, ItemSet } from './utils';
+import { ItemMap, ItemSelectionTree, ItemSet } from './utils';
 
 // When selectionType="grouped" the checkboxes cannot be disabled so the `isItemDisabled` property is ignored.
 // That is because selecting a group implies selection of children even if children are not loaded so that
@@ -129,6 +129,12 @@ function createSelectionTree<T>({
   const effectivelySelectedMap = new ItemMap(trackBy);
   const effectivelyIndeterminateMap = new ItemMap(trackBy);
 
+  // TODO: take root items as argument
+  const rootItems = items.filter(item => getExpandableItemProps(item).level === 1);
+  const getChildren = (item: T) => getExpandableItemProps(item).children;
+  const testItemsTree = new ItemSelectionTree(rootItems, selectedItems, selectionInverted, trackBy, getChildren);
+  console.log('state', testItemsTree);
+
   const isItemSelected = (item: T): boolean => {
     const cachedValue = effectivelySelectedMap.get(item);
     if (cachedValue !== undefined) {
@@ -181,6 +187,10 @@ function createSelectionTree<T>({
   const isAllIndeterminate = items.length > 0 && !allChildrenSelected && someChildrenSelected;
 
   const updateSelection = (requestedItems: readonly T[]): { selectedItems: T[]; selectionInverted: boolean } => {
+    const nextState = new ItemSelectionTree(rootItems, selectedItems, selectionInverted, trackBy, getChildren);
+    nextState.toggleSome(requestedItems);
+    console.log('next', requestedItems, nextState);
+
     const selfSelectedSet = new ItemSet(trackBy, selectedItems);
     const unselectDeep = (item: T) => {
       selfSelectedSet.delete(item);
