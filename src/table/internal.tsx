@@ -175,7 +175,7 @@ const InternalTable = React.forwardRef(
       toolsHeaderPerformanceMarkRef.current?.querySelector<HTMLElement>(`.${headerStyles['heading-text']}`)
         ?.innerText ?? toolsHeaderPerformanceMarkRef.current?.innerText;
 
-    usePerformanceMarks(
+    const performanceMarkAttributes = usePerformanceMarks(
       'table',
       true,
       tableRefObject,
@@ -442,6 +442,7 @@ const InternalTable = React.forwardRef(
                 getTable={() => tableRefObject.current}
               >
                 <table
+                  {...performanceMarkAttributes}
                   ref={tableRef}
                   className={clsx(
                     styles.table,

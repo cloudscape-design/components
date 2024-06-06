@@ -3,7 +3,7 @@
 import React, { useRef } from 'react';
 
 let counter = 0;
-const useIdFallback = () => {
+export const useIdFallback = () => {
   const idRef = useRef<string | null>(null);
   if (!idRef.current) {
     idRef.current = `${counter++}-${Date.now()}-${Math.round(Math.random() * 10000)}`;
