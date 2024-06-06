@@ -144,7 +144,7 @@ export default () => {
                 <Header
                   variant="h1"
                   description="Table with expandable rows test page"
-                  counter={getHeaderCounterText(tableData.total, tableData.collectionProps.selectedItems)}
+                  counter={getHeaderCounterText(tableData.totalItemsCount, tableData.collectionProps.selectedItems)}
                   actions={
                     <SpaceBetween size="s" direction="horizontal" alignItems="center">
                       <Button>Update selected</Button>
@@ -465,9 +465,24 @@ function useTableData() {
     );
   };
 
+  const totalItemsCount = readyTransactions.filter(t => t.children.length === 0).length;
+
+  let filteredItemsCount = 0;
+  function count(item: TransactionRow) {
+    // Count actual items only.
+    if (item.children.length === 0) {
+      filteredItemsCount += 1;
+    }
+    const children = getItemChildren?.(item) ?? [];
+    children.forEach(count);
+  }
+  collectionResult.allPageItems.forEach(count);
+  const showFilteredItemsCount = collectionResult.propertyFilterProps.query.tokens.length > 0;
+
   return {
-    total: allTransactionRows.filter(t => t.children.length === 0).length,
     ...collectionResult,
+    totalItemsCount,
+    filteredItemsCount: showFilteredItemsCount ? filteredItemsCount : undefined,
     error: settings.useServerMock ? error : false,
     loading: settings.useServerMock ? loading : false,
     items: settings.useServerMock && error ? [] : paginatedItems,
