@@ -69,28 +69,6 @@ export function useGroupSelection<T>({
     return [item];
   };
 
-  const selectItems = (requestedItems: readonly T[]) => {
-    const newSelectedItems = [...selectedItems];
-    requestedItems.forEach(newItem => {
-      if (!selectionTree.isItemSelected(newItem)) {
-        newSelectedItems.push(newItem);
-      }
-    });
-    return newSelectedItems;
-  };
-
-  const deselectItems = (requestedItems: readonly T[]) => {
-    const requestedItemsSet = new ItemSet(trackBy, requestedItems);
-    const newSelectedItems: Array<T> = [];
-    selectedItems.forEach(selectedItem => {
-      const shouldUnselect = requestedItemsSet.has(selectedItem);
-      if (!shouldUnselect) {
-        newSelectedItems.push(selectedItem);
-      }
-    });
-    return newSelectedItems;
-  };
-
   const handleToggleAll = () => {
     if (selectionTree.isAllSelected) {
       fireNonCancelableEvent(onSelectionChange, { selectionInverted: false, selectedItems: [] });
@@ -106,14 +84,7 @@ export function useGroupSelection<T>({
     if (!isRequestedItemsValid) {
       return;
     }
-    // TODO: remove all children when selecting/deselecting items
-    // Logic:
-    // For each requested: select/deselect it and unselect all of its children
-    const selectedItems = selectionTree.isItemSelected(item)
-      ? deselectItems(requestedItems)
-      : selectItems(requestedItems);
-
-    fireNonCancelableEvent(onSelectionChange, selectionTree.updateSelection(selectedItems));
+    fireNonCancelableEvent(onSelectionChange, selectionTree.updateSelection(requestedItems));
     setLastClickedItem(item);
   };
 
@@ -201,10 +172,29 @@ function createSelectionTree<T>({
   const isAllSelected = allChildrenSelected;
   const isAllIndeterminate = items.length > 0 && !allChildrenSelected && someChildrenSelected;
 
-  const updateSelection = (selectedItems: T[]): { selectedItems: T[]; selectionInverted: boolean } => {
+  const updateSelection = (requestedItems: readonly T[]): { selectedItems: T[]; selectionInverted: boolean } => {
+    const selfSelectedSet = new ItemSet(trackBy, selectedItems);
+    const unselectDeep = (item: T) => {
+      selfSelectedSet.delete(item);
+      for (const child of getExpandableItemProps(item).children) {
+        unselectDeep(child);
+      }
+    };
+    for (const requested of requestedItems) {
+      if (selfSelectedSet.has(requested)) {
+        unselectDeep(requested);
+        selfSelectedSet.delete(requested);
+      } else {
+        unselectDeep(requested);
+        selfSelectedSet.put(requested);
+      }
+    }
+    const tempSelectedItems: T[] = [];
+    selfSelectedSet.forEach(item => tempSelectedItems.push(item));
+
     const nextSelectionTree = createSelectionTree({
       items,
-      selectedItems,
+      selectedItems: tempSelectedItems,
       selectionInverted,
       trackBy,
       getExpandableItemProps,

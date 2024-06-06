@@ -16,6 +16,7 @@ export class ItemSet<T> {
   private trackBy: TableProps.TrackBy<T> | undefined;
   private map: Map<unknown, T> = new Map();
   put = (item: T) => this.map.set.call(this.map, getTrackableValue(this.trackBy, item), item);
+  delete = (item: T) => this.map.delete.call(this.map, getTrackableValue(this.trackBy, item));
   has = (item: T) => this.map.has.call(this.map, getTrackableValue(this.trackBy, item));
   forEach = this.map.forEach.bind(this.map);
 }
