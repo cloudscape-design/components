@@ -10778,7 +10778,7 @@ Object {
   "events": Array [],
   "functions": Array [
     Object {
-      "description": "Sets focus on the popover's text trigger button.",
+      "description": "Sets focus on the popover's trigger.",
       "name": "focus",
       "parameters": Array [],
       "returnType": "void",

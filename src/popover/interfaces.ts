@@ -113,7 +113,7 @@ export namespace PopoverProps {
 
   export interface Ref {
     /**
-     * Sets focus on the popover's text trigger button.
+     * Sets focus on the popover's trigger.
      */
     focus(): void;
   }
