@@ -26,6 +26,7 @@ $edit-button-padding-right: calc(
 ); // Cell vertical padding + xxs space that would normally come from the button.
 $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-with-spacing});
 $interactive-column-padding-inline-end: calc(#{$cell-horizontal-padding} + #{awsui.$space-l});
+$cell-offset: calc(#{awsui.$space-m} + #{awsui.$space-xs});
 
 @mixin cell-focus-outline {
   @include styles.focus-highlight(calc(-1 * #{awsui.$space-scaled-xxs}));
@@ -55,7 +56,7 @@ $interactive-column-padding-inline-end: calc(#{$cell-horizontal-padding} + #{aws
   inset-block: 0;
   display: flex;
   align-items: center;
-  margin-inline-start: calc(-1 * (#{awsui.$space-m} + #{awsui.$space-xs}));
+  margin-inline-start: calc(-1 * #{$cell-offset});
 }
 
 @mixin cell-padding-inline-start($padding) {
@@ -65,11 +66,11 @@ $interactive-column-padding-inline-end: calc(#{$cell-horizontal-padding} + #{aws
 
   @for $i from 0 through 9 {
     &.expandable-level-#{$i} > .body-cell-content {
-      padding-inline-start: calc($padding + $i * (#{awsui.$space-m} + #{awsui.$space-xs}));
+      padding-inline-start: calc($padding + $i * $cell-offset - 1 * awsui.$border-divider-list-width);
     }
   }
   &.expandable-level-next > .body-cell-content {
-    padding-inline-start: calc($padding + 9 * (#{awsui.$space-m} + #{awsui.$space-xs}));
+    padding-inline-start: calc(#{$padding} + 9 * #{$cell-offset} - 1 * #{awsui.$border-divider-list-width});
   }
 }
 @mixin cell-padding-inline-end($padding) {
