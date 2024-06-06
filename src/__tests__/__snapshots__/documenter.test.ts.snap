@@ -10776,7 +10776,14 @@ Make sure you update the \`data\` property when any of your custom filters chang
 exports[`Documenter definition for popover matches the snapshot: popover 1`] = `
 Object {
   "events": Array [],
-  "functions": Array [],
+  "functions": Array [
+    Object {
+      "description": "Sets focus on the popover's text trigger button.",
+      "name": "focus",
+      "parameters": Array [],
+      "returnType": "void",
+    },
+  ],
   "name": "Popover",
   "properties": Array [
     Object {
@@ -10822,7 +10829,7 @@ For example, use it when you need to place a column layout in the popover conten
       "type": "string",
     },
     Object {
-      "defaultValue": "\\"right\\"",
+      "defaultValue": "'right'",
       "description": "Determines where the popover is displayed when opened, relative to the trigger.
 If the popover doesn't have enough space to open in this direction, it
 automatically chooses a better direction based on available space.",
@@ -10854,7 +10861,7 @@ Note: Using popover rendered with portal within a Modal is not supported.
       "type": "boolean",
     },
     Object {
-      "defaultValue": "\\"medium\\"",
+      "defaultValue": "'medium'",
       "description": "Determines the maximum width for the popover.",
       "inlineType": Object {
         "name": "PopoverProps.Size",
@@ -10877,7 +10884,7 @@ that don't have visible text, and to distinguish between multiple triggers with 
       "type": "string",
     },
     Object {
-      "defaultValue": "\\"text\\"",
+      "defaultValue": "'text'",
       "description": "Specifies the type of content inside the trigger region. The following types are available:
 - \`text\` - Use for inline text triggers.
 - \`custom\` - Use for the [button](/components/button/) component.",
