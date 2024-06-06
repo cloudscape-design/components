@@ -15,6 +15,7 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 
 export interface InternalGridProps extends GridProps, InternalBaseComponentProps {
   __breakpoint?: Breakpoint | null;
+  tagOverride?: string;
 
   /**
    * The handler that fires when the grid breakpoint changes.
@@ -29,6 +30,7 @@ const InternalGrid = React.forwardRef(
       gridDefinition = [],
       disableGutters = false,
       children,
+      tagOverride,
       __responsiveClassName,
       __internalRootRef = null,
       ...restProps
@@ -60,9 +62,10 @@ const InternalGrid = React.forwardRef(
     }
 
     const mergedRef = useMergeRefs(defaultRef, __internalRootRef);
+    const Tag = (tagOverride ?? 'div') as 'div';
 
     return (
-      <div
+      <Tag
         {...baseProps}
         className={clsx(
           styles.grid,
@@ -92,7 +95,7 @@ const InternalGrid = React.forwardRef(
             </div>
           );
         })}
-      </div>
+      </Tag>
     );
   }
 );

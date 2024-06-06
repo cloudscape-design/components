@@ -29,7 +29,7 @@ const InternalKeyValuePairs = React.forwardRef((props: KeyValuePairsProps, ref: 
 
     return (
       <div id={props.id} className={clsx(styles['key-value-pairs'], className)} ref={ref}>
-        <ColumnLayout columns={Math.min(columns.length, 4)} variant="text-grid">
+        <ColumnLayout tagOverride="dl" columns={Math.min(columns.length, 4)} variant="text-grid">
           {columns.map((column, columnIndex) => (
             <div className={styles.column} key={columnIndex}>
               {column.title && (
@@ -53,7 +53,7 @@ const InternalKeyValuePairs = React.forwardRef((props: KeyValuePairsProps, ref: 
 
   return (
     <div id={props.id} className={clsx(styles['key-value-pairs'], className)} ref={ref}>
-      <ColumnLayout columns={columnsNumber} variant="text-grid">
+      <ColumnLayout tagOverride="dl" columns={columnsNumber} variant="text-grid">
         {pairs.map((item, index) => (
           <InternalKeyValuePair key={index} {...item} />
         ))}
