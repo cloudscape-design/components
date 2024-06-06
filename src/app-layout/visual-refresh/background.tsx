@@ -7,15 +7,8 @@ import { useAppLayoutInternals } from './context';
 import styles from './styles.css.js';
 
 export default function Background() {
-  const {
-    breadcrumbs,
-    hasBackgroundOverlap,
-    hasNotificationsContent,
-    hasStickyBackground,
-    isMobile,
-    stickyNotifications,
-    headerVariant,
-  } = useAppLayoutInternals();
+  const { breadcrumbs, hasBackgroundOverlap, hasNotificationsContent, isMobile, headerVariant } =
+    useAppLayoutInternals();
 
   if (!hasNotificationsContent && (!breadcrumbs || isMobile) && !hasBackgroundOverlap) {
     return null;
@@ -24,14 +17,6 @@ export default function Background() {
   return (
     <div className={clsx(styles.background, { [highContrastHeaderClassName]: headerVariant === 'high-contrast' })}>
       <div className={styles['scrolling-background']} />
-
-      {!isMobile && hasStickyBackground && (
-        <div
-          className={clsx(styles['sticky-background'], {
-            [styles['has-sticky-notifications']]: stickyNotifications,
-          })}
-        />
-      )}
     </div>
   );
 }

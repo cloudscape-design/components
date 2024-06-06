@@ -5,7 +5,6 @@ import { FormFieldContext } from './form-field-context';
 import { ButtonContext } from './button-context';
 import { CollectionLabelContext } from './collection-label-context';
 import { InfoLinkLabelContext } from './info-link-label-context';
-import { AppLayoutContext, defaultValue as appLayoutDefaultValue } from './app-layout-context';
 import { LinkDefaultVariantContext, defaultValue as linkDefaultValue } from './link-default-variant-context';
 import {
   SingleTabStopNavigationContext,
@@ -17,21 +16,19 @@ import {
  of the modal should not be affected by the surrounding components/DOM.
  */
 const ResetContextsForModal = ({ children }: { children: React.ReactNode }) => (
-  <AppLayoutContext.Provider value={appLayoutDefaultValue}>
-    <ButtonContext.Provider value={{ onClick: () => {} }}>
-      <CollectionLabelContext.Provider value={{ assignId: () => {} }}>
-        <FormFieldContext.Provider value={{}}>
-          <InfoLinkLabelContext.Provider value="">
-            <LinkDefaultVariantContext.Provider value={linkDefaultValue}>
-              <SingleTabStopNavigationContext.Provider value={singleTabStopDefaultValue}>
-                {children}
-              </SingleTabStopNavigationContext.Provider>
-            </LinkDefaultVariantContext.Provider>
-          </InfoLinkLabelContext.Provider>
-        </FormFieldContext.Provider>
-      </CollectionLabelContext.Provider>
-    </ButtonContext.Provider>
-  </AppLayoutContext.Provider>
+  <ButtonContext.Provider value={{ onClick: () => {} }}>
+    <CollectionLabelContext.Provider value={{ assignId: () => {} }}>
+      <FormFieldContext.Provider value={{}}>
+        <InfoLinkLabelContext.Provider value="">
+          <LinkDefaultVariantContext.Provider value={linkDefaultValue}>
+            <SingleTabStopNavigationContext.Provider value={singleTabStopDefaultValue}>
+              {children}
+            </SingleTabStopNavigationContext.Provider>
+          </LinkDefaultVariantContext.Provider>
+        </InfoLinkLabelContext.Provider>
+      </FormFieldContext.Provider>
+    </CollectionLabelContext.Provider>
+  </ButtonContext.Provider>
 );
 
 export default ResetContextsForModal;

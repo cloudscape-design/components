@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
 import React, { useCallback, useImperativeHandle, useRef } from 'react';
-import { TableForwardRefType, TableProgressiveLoadingProps, TableProps, TableRow } from './interfaces';
+import { TableForwardRefType, TableProps, TableRow } from './interfaces';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import InternalContainer, { InternalContainerProps } from '../container/internal';
 import { getBaseProps } from '../internal/base-component';
@@ -24,7 +24,6 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import StickyHeader, { StickyHeaderRef } from './sticky-header';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import useMouseDownTarget from '../internal/hooks/use-mouse-down-target';
-import { useDynamicOverlap } from '../internal/hooks/use-dynamic-overlap';
 import LiveRegion from '../internal/components/live-region';
 import useTableFocusNavigation from './use-table-focus-navigation';
 import { SomeRequired } from '../internal/types';
@@ -58,8 +57,7 @@ const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
 
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant' | 'firstIndex'> &
-  InternalBaseComponentProps &
-  TableProgressiveLoadingProps<T> & {
+  InternalBaseComponentProps & {
     __funnelSubStepProps?: InternalContainerProps['__funnelSubStepProps'];
   };
 
@@ -320,8 +318,6 @@ const InternalTable = React.forwardRef(
 
     const getMouseDownTarget = useMouseDownTarget();
 
-    const hasDynamicHeight = computedVariant === 'full-page';
-    const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
     useTableFocusNavigation({
       enableKeyboardNavigation,
       selectionType,
@@ -349,10 +345,11 @@ const InternalTable = React.forwardRef(
             __internalRootRef={__internalRootRef}
             className={clsx(baseProps.className, styles.root)}
             __funnelSubStepProps={__funnelSubStepProps}
+            __fullPage={variant === 'full-page'}
             header={
               <>
                 {hasHeader && (
-                  <div ref={overlapElement}>
+                  <div>
                     <div
                       ref={toolsHeaderWrapper}
                       className={clsx(styles['header-controls'], styles[`variant-${computedVariant}`])}

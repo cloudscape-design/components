@@ -26,7 +26,6 @@ export interface SplitPanelContextBaseProps {
   onResize: (newSize: number) => void;
   onToggle: () => void;
   onPreferencesChange: (detail: { position: 'side' | 'bottom' }) => void;
-  reportSize: (pixels: number) => void;
   reportHeaderHeight: (pixels: number) => void;
   setSplitPanelToggle: (config: SplitPanelSideToggleProps) => void;
   refs: SplitPanelFocusControlRefs;

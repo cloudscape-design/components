@@ -173,8 +173,6 @@ const Dropdown = ({
   const triggerRef = useRef<HTMLDivElement | null>(null);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const dropdownContainerRef = useRef<HTMLDivElement | null>(null);
-  // This container is only needed to apply max-height to. We can't move max-height to it's parent
-  // because of an IE11 issue with flexbox. https://github.com/philipwalton/flexbugs/issues/216
   const verticalContainerRef = useRef<HTMLDivElement>(null);
   // To keep track of the initial position (drop up/down) which is kept the same during fixed repositioning
   const fixedPosition = useRef<DropdownPosition | null>(null);

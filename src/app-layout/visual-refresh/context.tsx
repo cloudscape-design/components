@@ -10,7 +10,6 @@ import React, {
   useState,
   useContext,
 } from 'react';
-import { AppLayoutContext } from '../../internal/context/app-layout-context';
 import { DynamicOverlapContext } from '../../internal/context/dynamic-overlap-context';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
 import { fireNonCancelableEvent } from '../../internal/events';
@@ -54,7 +53,6 @@ interface AppLayoutInternals extends AppLayoutPropsWithDefaults {
   hasDrawerViewportOverlay: boolean;
   hasNotificationsContent: boolean;
   hasOpenDrawer?: boolean;
-  hasStickyBackground: boolean;
   isBackgroundOverlapDisabled: boolean;
   isMobile: boolean;
   isSplitPanelForcedPosition: boolean;
@@ -70,7 +68,6 @@ interface AppLayoutInternals extends AppLayoutPropsWithDefaults {
   notificationsElement: React.Ref<HTMLDivElement>;
   notificationsHeight: number;
   offsetBottom: number;
-  setHasStickyBackground: (value: boolean) => void;
   setSplitPanelReportedSize: (value: number) => void;
   setSplitPanelReportedHeaderHeight: (value: number) => void;
   headerHeight: number;
@@ -124,8 +121,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
 
     // Private API for embedded view mode
     const __embeddedViewMode = Boolean((props as any).__embeddedViewMode);
-
-    const [hasStickyBackground, setHasStickyBackground] = useState(false);
 
     /**
      * Set the default values for minimum and maximum content width.
@@ -547,7 +542,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           hasBackgroundOverlap,
           hasNotificationsContent,
           hasOpenDrawer,
-          hasStickyBackground,
           isBackgroundOverlapDisabled: props.disableContentHeaderOverlap || !hasBackgroundOverlap,
           isMobile,
           isSplitPanelForcedPosition,
@@ -566,7 +560,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           notificationsElement,
           notificationsHeight,
           offsetBottom,
-          setHasStickyBackground,
           setSplitPanelReportedSize,
           setSplitPanelReportedHeaderHeight,
           splitPanel,
@@ -589,11 +582,9 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           __embeddedViewMode,
         }}
       >
-        <AppLayoutContext.Provider value={{ setHasStickyBackground }}>
-          <DynamicOverlapContext.Provider value={updateBackgroundOverlapHeight}>
-            {children}
-          </DynamicOverlapContext.Provider>
-        </AppLayoutContext.Provider>
+        <DynamicOverlapContext.Provider value={updateBackgroundOverlapHeight}>
+          {children}
+        </DynamicOverlapContext.Provider>
       </AppLayoutInternalsContext.Provider>
     );
   }

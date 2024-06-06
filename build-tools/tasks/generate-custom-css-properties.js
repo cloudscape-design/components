@@ -18,7 +18,7 @@ function writeJsFile() {
   writeFile(
     filepath,
     `
-      const customCSSPropertiesMap: Record<string,string> = {
+      const customCSSPropertiesMap = {
         ${customCssPropertiesList.map(property => `"${property}": "${getHashedProperty(property)}",`).join('\n')}
       };
       export default customCSSPropertiesMap;
