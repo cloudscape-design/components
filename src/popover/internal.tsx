@@ -30,6 +30,7 @@ export interface InternalPopoverProps extends PopoverProps, InternalBaseComponen
 
 export interface InternalPopoverRef {
   dismissPopover: () => void;
+  focus: HTMLElement['focus'];
 }
 
 export default React.forwardRef(InternalPopover);
@@ -100,6 +101,10 @@ function InternalPopover(
 
   useImperativeHandle(ref, () => ({
     dismissPopover: onDismiss,
+    focus: () => {
+      setVisible(false);
+      focusTrigger();
+    },
   }));
 
   useEffect(() => {

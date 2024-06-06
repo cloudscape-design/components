@@ -110,4 +110,11 @@ export namespace PopoverProps {
   export type Position = 'top' | 'right' | 'bottom' | 'left';
   export type Size = 'small' | 'medium' | 'large';
   export type TriggerType = 'text' | 'custom';
+
+  export interface Ref {
+    /**
+     * Sets focus on the popover's text trigger button.
+     */
+    focus(): void;
+  }
 }
