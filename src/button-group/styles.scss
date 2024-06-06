@@ -15,8 +15,7 @@
 }
 
 .divider {
-  border-inline-end-color: awsui.$color-border-divider-active;
-  border-inline-end-style: solid;
+  background-color: awsui.$color-border-divider-active;
   margin-inline: awsui.$space-static-xxs;
   inline-size: awsui.$border-divider-section-width;
   block-size: 80%;
