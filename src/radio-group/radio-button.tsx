@@ -49,12 +49,6 @@ export default React.forwardRef(function RadioButton(
         />
       )}
       onClick={() => {
-        // readonly attribute is not applicable to type="radio"
-        // it does not automatically prevent the input controller from sending the click event
-        // see - https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly
-        if (readOnly) {
-          return;
-        }
         radioButtonRef.current?.focus();
         if (checked) {
           return;

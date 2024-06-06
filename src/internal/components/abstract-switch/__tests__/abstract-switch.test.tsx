@@ -3,6 +3,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import AbstractSwitch, { AbstractSwitchProps } from '../../../../../lib/components/internal/components/abstract-switch';
+import styles from '../../../../../lib/components/internal/components/abstract-switch/styles.selectors.js';
 import createWrapper from '../../../../../lib/components/test-utils/dom';
 import '../../../../__a11y__/to-validate-a11y';
 
@@ -91,6 +92,46 @@ describe('Abstract switch', () => {
       const nativeControl = wrapper.find('.switch-element')!.getElement();
       expect(nativeControl).toHaveAccessibleName('Default label Custom label');
       expect(nativeControl).toHaveAccessibleDescription('Custom description Default description');
+    });
+
+    test('does not trigger onClick when disabled', () => {
+      const onClick = jest.fn();
+      const wrapper = renderAbstractSwitch({
+        controlClassName: '',
+        outlineClassName: '',
+        styledControl: <div />,
+        controlId: 'custom-id',
+        ariaLabelledby: 'some-custom-label',
+        ariaDescribedby: 'some-custom-description',
+        label: 'Default label',
+        description: 'Default description',
+        disabled: true,
+        nativeControl: nativeControlProps => <input {...nativeControlProps} className="switch-element" type="radio" />,
+        onClick,
+      });
+
+      wrapper.findByClassName(styles['label-wrapper'])!.click();
+      expect(onClick).not.toHaveBeenCalled();
+    });
+
+    test('does not trigger onClick when readOnly', () => {
+      const onClick = jest.fn();
+      const wrapper = renderAbstractSwitch({
+        controlClassName: '',
+        outlineClassName: '',
+        styledControl: <div />,
+        controlId: 'custom-id',
+        ariaLabelledby: 'some-custom-label',
+        ariaDescribedby: 'some-custom-description',
+        label: 'Default label',
+        description: 'Default description',
+        readOnly: true,
+        nativeControl: nativeControlProps => <input {...nativeControlProps} className="switch-element" type="radio" />,
+        onClick,
+      });
+
+      wrapper.findByClassName(styles['label-wrapper'])!.click();
+      expect(onClick).not.toHaveBeenCalled();
     });
   });
 });

@@ -81,6 +81,7 @@ const ButtonTrigger = (
     'aria-describedby': ariaDescribedby,
     'aria-haspopup': ariaHasPopup ?? 'listbox',
     'aria-controls': ariaControls,
+    'aria-readonly': readOnly ? 'true' : undefined,
     onKeyDown: readOnly ? undefined : onKeyDown && (event => fireKeyboardEvent(onKeyDown, event)),
     onKeyUp: readOnly ? undefined : onKeyUp && (event => fireKeyboardEvent(onKeyUp, event)),
     onMouseDown: readOnly ? undefined : onMouseDown && (event => fireCancelableEvent(onMouseDown, {}, event)),

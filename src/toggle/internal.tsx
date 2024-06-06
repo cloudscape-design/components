@@ -50,6 +50,7 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
         outlineClassName={styles.outline}
         controlId={controlId}
         disabled={disabled}
+        readOnly={readOnly}
         label={children}
         description={description}
         descriptionBottomPadding={true}
@@ -72,13 +73,6 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
           />
         )}
         onClick={() => {
-          // readonly attribute is not applicable to type="checkbox"
-          // it does not automatically prevent the input controller from sending the click event
-          // see - https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox
-          if (readOnly) {
-            return;
-          }
-
           checkboxRef.current?.focus();
           fireNonCancelableEvent(onChange, { checked: !checked });
         }}

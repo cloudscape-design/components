@@ -185,7 +185,6 @@ export default function InternalSlider({
         min={min}
         max={max}
         disabled={disabled}
-        readOnly={readOnly}
         onFocus={() => {
           setShowTooltip(true);
           setIsActive(true);

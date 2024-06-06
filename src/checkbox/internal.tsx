@@ -87,13 +87,6 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
           />
         )}
         onClick={() => {
-          // readonly attribute is not applicable to type="checkbox"
-          // it does not automatically prevent the input controller from sending the click event
-          // see - https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox
-          if (readOnly) {
-            return;
-          }
-
           checkboxRef.current?.focus();
           fireNonCancelableEvent(
             onChange,
