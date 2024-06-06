@@ -48,6 +48,12 @@ const permutations = createPermutations<ButtonTriggerProps>([
     disabled: [true],
     children: [<Option option={{ ...option2, disabled: true }} />],
   },
+  {
+    pressed: [false],
+    disabled: [false],
+    readOnly: [true],
+    children: [<Option option={{ ...option2, disabled: true }} />],
+  },
 ]);
 /* eslint-enable react/jsx-key */
 
