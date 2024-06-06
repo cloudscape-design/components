@@ -76,8 +76,8 @@ export default function SelectPage() {
           <Box padding="s">
             <Box variant="h1">Overflow test</Box>
             <Box variant="p">Dropdown should not be rendered beyond the container with overflow hidden</Box>
-            <div id="smallest_container" style={{ overflow: 'hidden', height: '500px', padding: 0 }}>
-              <div style={{ overflow: 'hidden', height: '900px' }}>
+            <div id="smallest_container" style={{ overflow: 'hidden', blockSize: '500px', padding: 0 }}>
+              <div style={{ overflow: 'hidden', blockSize: '900px' }}>
                 <Select
                   id="select_overflow"
                   placeholder="Choose option"

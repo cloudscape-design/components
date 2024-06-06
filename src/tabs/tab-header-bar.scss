@@ -50,14 +50,18 @@ $tab-link-outline-width: -1px;
     border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-control-disabled;
     &-scrollable {
       z-index: 1;
-      box-shadow: 5px 0px 4px -3px awsui.$color-border-tabs-shadow, 1px 0px 0px 0px awsui.$color-border-tabs-shadow;
+      box-shadow:
+        5px 0px 4px -3px awsui.$color-border-tabs-shadow,
+        1px 0px 0px 0px awsui.$color-border-tabs-shadow;
     }
   }
   &-right {
     border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-control-disabled;
     &-scrollable {
       z-index: 1;
-      box-shadow: -5px 0px 4px -3px awsui.$color-border-tabs-shadow, -1px 0px 0px 0 awsui.$color-border-tabs-shadow;
+      box-shadow:
+        -5px 0px 4px -3px awsui.$color-border-tabs-shadow,
+        -1px 0px 0px 0 awsui.$color-border-tabs-shadow;
     }
   }
 }

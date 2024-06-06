@@ -12,12 +12,22 @@ import { lineSeries3, renderMixedChart } from './common';
 import createComputedTextLengthMock from './computed-text-length-mock';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
 import positions from '../../../lib/components/popover/utils/positions';
+import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
 
 jest.mock('../../../lib/components/popover/utils/positions', () => {
   return {
     ...jest.requireActual('../../../lib/components/popover/utils/positions'),
     getOffsetDimensions: () => ({ offsetWidth: 200, offsetHeight: 300 }), // Approximate mock value for the popover dimensions
   };
+});
+
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
+  getIsRtl: jest.fn().mockReturnValue(false),
+}));
+
+afterEach(() => {
+  jest.mocked(getIsRtl).mockReset();
 });
 
 const statusTypes: Array<MixedLineBarChartProps<number>['statusType']> = ['finished', 'loading', 'error'];
@@ -276,59 +286,65 @@ describe('Series', () => {
   );
 
   describe('support multiple bar series', () => {
-    const series = [barSeries, barSeries2];
+    const series = [barSeries, barSeries2, { ...barSeries2, title: 'Bar series 3' }];
     const xDomain = ['Group 1', 'Group 2', 'Group 3', 'Group 4'];
     const yDomain = [0, 20];
 
-    [true, false].forEach(horizontalBars =>
-      [true, false].forEach(stackedBars => {
-        test(`${stackedBars ? 'stacked' : 'grouped'} ${horizontalBars ? 'horizontal' : 'vertical'} bars`, () => {
-          const { wrapper } = renderMixedChart(
-            <MixedLineBarChart
-              series={series}
-              xScaleType="categorical"
-              xDomain={xDomain}
-              yDomain={yDomain}
-              horizontalBars={horizontalBars}
-              stackedBars={stackedBars}
-            />
-          );
+    [true, false].forEach(isRtl =>
+      [true, false].forEach(horizontalBars =>
+        [true, false].forEach(stackedBars => {
+          const testDescription = `${stackedBars ? 'stacked' : 'grouped'} ${horizontalBars ? 'horizontal' : 'vertical'} bars rtl=${isRtl}`;
 
-          expect(wrapper.findSeries()).toHaveLength(series.length);
-          series.forEach((chartSeries, i) =>
-            expect(wrapper.findSeries()[i].getElement()).toHaveAttribute('aria-label', chartSeries.title)
-          );
+          test(`${testDescription}`, () => {
+            jest.mocked(getIsRtl).mockReturnValue(isRtl);
 
-          expect(consoleSpy).not.toBeCalled();
-        });
+            const { wrapper } = renderMixedChart(
+              <MixedLineBarChart
+                series={series}
+                xScaleType="categorical"
+                xDomain={xDomain}
+                yDomain={yDomain}
+                horizontalBars={horizontalBars}
+                stackedBars={stackedBars}
+              />
+            );
 
-        test(`${stackedBars ? 'stacked' : 'grouped'} ${
-          horizontalBars ? 'horizontal' : 'vertical'
-        } bars with negative values`, () => {
-          const negativeSeries = [
-            { ...barSeries, data: barSeries.data.map(({ x, y }) => ({ x, y: x === 'Group 2' ? -y : y })) },
-            { ...barSeries2, data: barSeries2.data.map(({ x, y }) => ({ x, y: x === 'Group 2' ? -y : y })) },
-          ];
+            expect(wrapper.findSeries()).toHaveLength(series.length);
+            series.forEach((chartSeries, i) =>
+              expect(wrapper.findSeries()[i].getElement()).toHaveAttribute('aria-label', chartSeries.title)
+            );
 
-          const { wrapper } = renderMixedChart(
-            <MixedLineBarChart
-              series={negativeSeries}
-              xScaleType="categorical"
-              xDomain={xDomain}
-              yDomain={[-10, 10]}
-              horizontalBars={horizontalBars}
-              stackedBars={stackedBars}
-            />
-          );
+            expect(consoleSpy).not.toBeCalled();
+          });
 
-          expect(wrapper.findSeries()).toHaveLength(series.length);
-          series.forEach((chartSeries, i) =>
-            expect(wrapper.findSeries()[i].getElement()).toHaveAttribute('aria-label', chartSeries.title)
-          );
+          test(`${testDescription} with negative values`, () => {
+            jest.mocked(getIsRtl).mockReturnValue(isRtl);
 
-          expect(consoleSpy).not.toBeCalled();
-        });
-      })
+            const negativeSeries = [
+              { ...barSeries, data: barSeries.data.map(({ x, y }) => ({ x, y: x === 'Group 2' ? -y : y })) },
+              { ...barSeries2, data: barSeries2.data.map(({ x, y }) => ({ x, y: x === 'Group 2' ? -y : y })) },
+            ];
+
+            const { wrapper } = renderMixedChart(
+              <MixedLineBarChart
+                series={negativeSeries}
+                xScaleType="categorical"
+                xDomain={xDomain}
+                yDomain={[-10, 10]}
+                horizontalBars={horizontalBars}
+                stackedBars={stackedBars}
+              />
+            );
+
+            expect(wrapper.findSeries()).toHaveLength(negativeSeries.length);
+            negativeSeries.forEach((chartSeries, i) =>
+              expect(wrapper.findSeries()[i].getElement()).toHaveAttribute('aria-label', chartSeries.title)
+            );
+
+            expect(consoleSpy).not.toBeCalled();
+          });
+        })
+      )
     );
   });
 

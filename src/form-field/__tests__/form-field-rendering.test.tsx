@@ -19,6 +19,7 @@ describe('FormField component', () => {
       { slot: 'info', finder: (wrapper: FormFieldWrapper) => wrapper.findInfo() },
       { slot: 'constraintText', finder: (wrapper: FormFieldWrapper) => wrapper.findConstraint() },
       { slot: 'errorText', finder: (wrapper: FormFieldWrapper) => wrapper.findError() },
+      { slot: 'warningText', finder: (wrapper: FormFieldWrapper) => wrapper.findWarning() },
       { slot: 'children', finder: (wrapper: FormFieldWrapper) => wrapper.findControl() },
       { slot: 'secondaryControl', finder: (wrapper: FormFieldWrapper) => wrapper.findSecondaryControl() },
     ].forEach(({ slot, finder }) => {
@@ -104,6 +105,20 @@ describe('FormField component', () => {
     expect(errorLabel?.getElement()).toHaveAttribute('aria-label', errorIconAriaLabel);
   });
 
+  test('warningIcon has an accessible text alternative', () => {
+    const warningText = 'You sure?';
+    const warningIconAriaLabel = 'Warning';
+    const wrapper = renderFormField({
+      warningText,
+      i18nStrings: { warningIconAriaLabel },
+    });
+
+    const warningLabel = wrapper.find(`:scope [aria-label]`);
+
+    expect(warningLabel?.getElement()).not.toBeNull();
+    expect(warningLabel?.getElement()).toHaveAttribute('aria-label', warningIconAriaLabel);
+  });
+
   test('constraintText region displays constraint content text when error-text is also set', () => {
     const constraintText = 'let this be a lesson to you';
     const errorText = 'wrong, do it again';
@@ -115,6 +130,17 @@ describe('FormField component', () => {
     expect(wrapper.findError()?.getElement()).toHaveTextContent(errorText);
   });
 
+  test('constraintText region displays constraint content text when warning-text is also set', () => {
+    const constraintText = 'think twice';
+    const warningText = 'warning you, check once again';
+    const wrapper = renderFormField({
+      constraintText,
+      warningText,
+    });
+    expect(wrapper.findConstraint()?.getElement()).toHaveTextContent(constraintText);
+    expect(wrapper.findWarning()?.getElement()).toHaveTextContent(warningText);
+  });
+
   describe('live-region', () => {
     test('Should render live region for error text', () => {
       const errorText = 'Nope do it again';
@@ -124,6 +150,21 @@ describe('FormField component', () => {
         i18nStrings: { errorIconAriaLabel },
       });
 
+      // Since live region in this componennt uses 'source' prop
+      // it is too complex to successfully assert the aria live message
+      expect(wrapper.findByClassName(liveRegionStyles.root)?.getElement()).toBeInTheDocument();
+    });
+
+    test('Should render live region for warning text', () => {
+      const warningText = 'Are you sure?';
+      const warningIconAriaLabel = 'Warning';
+      const wrapper = renderFormField({
+        warningText,
+        i18nStrings: { warningIconAriaLabel },
+      });
+
+      // Since live region in this componennt uses 'source' prop
+      // it is too complex to successfully assert the aria live message
       expect(wrapper.findByClassName(liveRegionStyles.root)?.getElement()).toBeInTheDocument();
     });
   });

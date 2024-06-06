@@ -49,6 +49,11 @@ export interface ProgressBarProps extends BaseComponentProps {
   ariaLabelledby?: string;
 
   /**
+   * Adds `aria-describedby` to the progress bar.
+   */
+  ariaDescribedby?: string;
+
+  /**
    * Short description of the operation that appears at the top of the component.
    *
    * Make sure that you always provide a label for accessibility.

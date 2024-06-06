@@ -104,6 +104,7 @@ export default function InlineEditorPermutations() {
                       columnId="id"
                       colIndex={0}
                       stickyState={stickyState}
+                      resizableColumns={true}
                       tableRole="grid"
                       {...permutation}
                     />

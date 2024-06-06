@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import InternalIcon from '../icon/internal';
 import styles from './styles.css.js';
 import { getBaseProps } from '../internal/base-component';
-import { fireCancelableEvent, isPlainLeftClick } from '../internal/events';
+import { fireCancelableEvent, fireNonCancelableEvent, isPlainLeftClick } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { KeyCode } from '../internal/keycode';
 import { LinkProps } from './interfaces';
@@ -46,6 +46,7 @@ const InternalLink = React.forwardRef(
       ariaLabel,
       externalIconAriaLabel,
       onFollow,
+      onClick,
       children,
       __internalRootRef = null,
       ...props
@@ -69,9 +70,9 @@ const InternalLink = React.forwardRef(
 
     const infoLinkLabelFromContext = useContext(InfoLinkLabelContext);
 
-    const { funnelInteractionId } = useFunnel();
-    const { stepNumber, stepNameSelector } = useFunnelStep();
-    const { subStepSelector, subStepNameSelector } = useFunnelSubStep();
+    const { funnelIdentifier, funnelInteractionId } = useFunnel();
+    const { stepIdentifier, stepNumber, stepNameSelector } = useFunnelStep();
+    const { subStepIdentifier, subStepSelector, subStepNameSelector } = useFunnelSubStep();
 
     const fireFunnelEvent = (funnelInteractionId: string) => {
       if (variant === 'info') {
@@ -79,9 +80,12 @@ const InternalLink = React.forwardRef(
         const subStepName = getNameFromSelector(subStepNameSelector);
 
         FunnelMetrics.helpPanelInteracted({
+          funnelIdentifier,
           funnelInteractionId,
+          stepIdentifier,
           stepNumber,
           stepName,
+          subStepIdentifier,
           stepNameSelector,
           subStepSelector,
           subStepName,
@@ -94,10 +98,13 @@ const InternalLink = React.forwardRef(
         const subStepName = getNameFromSelector(subStepNameSelector);
 
         FunnelMetrics.externalLinkInteracted({
+          funnelIdentifier,
           funnelInteractionId,
+          stepIdentifier,
           stepNumber,
           stepName,
           stepNameSelector,
+          subStepIdentifier,
           subStepSelector,
           subStepName,
           subStepNameSelector,
@@ -115,20 +122,31 @@ const InternalLink = React.forwardRef(
       fireCancelableEvent(onFollow, { href, external, target: anchorTarget }, event);
     };
 
+    const fireClickEvent = (event: React.MouseEvent | React.KeyboardEvent) => {
+      const { altKey, ctrlKey, metaKey, shiftKey } = event;
+      const button = 'button' in event ? event.button : 0;
+      // make onClick non-cancelable to prevent it from being used to block full page reload
+      // for navigation use `onFollow` event instead
+      fireNonCancelableEvent(onClick, { altKey, button, ctrlKey, metaKey, shiftKey });
+    };
+
     const handleLinkClick = (event: React.MouseEvent) => {
       if (isPlainLeftClick(event)) {
         fireFollowEvent(event);
       }
+      fireClickEvent(event);
     };
 
     const handleButtonClick = (event: React.MouseEvent) => {
       fireFollowEvent(event);
+      fireClickEvent(event);
     };
 
     const handleButtonKeyDown = (event: React.KeyboardEvent) => {
       if (event.keyCode === KeyCode.space || event.keyCode === KeyCode.enter) {
         event.preventDefault();
         fireFollowEvent(event);
+        fireClickEvent(event);
       }
     };
 

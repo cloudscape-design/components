@@ -147,7 +147,7 @@ export default function ButtonDropdownPage() {
       disableAnimations={true}
       style={{
         // extra space to include dropdown in the screenshot area
-        paddingBottom: 100,
+        paddingBlockEnd: 100,
       }}
     >
       <article>

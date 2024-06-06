@@ -176,9 +176,12 @@ Object {
     "awsui_root_14iqq",
   ],
   "content-layout": Array [
+    "awsui_breadcrumbs_64tge",
     "awsui_content_5gtk3",
-    "awsui_header_5gtk3",
+    "awsui_header_64tge",
     "awsui_layout_5gtk3",
+    "awsui_notifications_64tge",
+    "awsui_secondary-header_64tge",
   ],
   "copy-to-clipboard": Array [
     "awsui_root_ljpwc",
@@ -275,6 +278,8 @@ Object {
     "awsui_label_14mhv",
     "awsui_root_14mhv",
     "awsui_secondary-control_14mhv",
+    "awsui_warning_14mhv",
+    "awsui_warning__message_14mhv",
   ],
   "grid": Array [
     "awsui_grid-column_14yj0",
@@ -401,6 +406,7 @@ Object {
     "awsui_trigger_xjuzf",
   ],
   "progress-bar": Array [
+    "awsui_additional-info_11huc",
     "awsui_percentage_11huc",
     "awsui_result-button_11huc",
     "awsui_result-container-error_11huc",
@@ -409,6 +415,7 @@ Object {
     "awsui_root_11huc",
   ],
   "property-filter": Array [
+    "awsui_constraint_1wzqe",
     "awsui_custom-control_1wzqe",
     "awsui_custom-filter-actions_1wzqe",
     "awsui_remove-all_1wzqe",
@@ -450,6 +457,10 @@ Object {
     "awsui_section-group_l0dv0",
     "awsui_section_l0dv0",
   ],
+  "slider": Array [
+    "awsui_root_pcgz5",
+    "awsui_thumb_pcgz5",
+  ],
   "space-between": Array [
     "awsui_root_18582",
   ],
@@ -457,15 +468,14 @@ Object {
     "awsui_root_1612d",
   ],
   "split-panel": Array [
-    "awsui_close-button_1r9lg",
-    "awsui_drawer-closed_1r9lg",
-    "awsui_header-text_1r9lg",
-    "awsui_open-button_1r9lg",
-    "awsui_position-bottom_1r9lg",
-    "awsui_position-side_1r9lg",
-    "awsui_preferences-button_1r9lg",
-    "awsui_root_1r9lg",
-    "awsui_slider_1r9lg",
+    "awsui_close-button_rjqu5",
+    "awsui_header-text_rjqu5",
+    "awsui_open-button_rjqu5",
+    "awsui_open-position-bottom_rjqu5",
+    "awsui_open-position-side_rjqu5",
+    "awsui_preferences-button_rjqu5",
+    "awsui_root_rjqu5",
+    "awsui_slider_rjqu5",
   ],
   "status-indicator": Array [
     "awsui_root_1cbgc",
@@ -480,6 +490,7 @@ Object {
     "awsui_header-cell-ascending_1spae",
     "awsui_header-cell-descending_1spae",
     "awsui_header-controls_wih1l",
+    "awsui_items-loader_115pt",
     "awsui_loading_wih1l",
     "awsui_resizer_x7peu",
     "awsui_root_1s55x",

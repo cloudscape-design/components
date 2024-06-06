@@ -149,6 +149,17 @@
   @content;
 }
 
+@mixin form-warning-control {
+  color: awsui.$color-text-status-warning;
+  border-color: awsui.$color-text-status-warning;
+  padding-inline-start: constants.$invalid-control-left-padding;
+  border-inline-start-width: constants.$invalid-control-left-border;
+  &:focus {
+    box-shadow: foundation.$box-shadow-focused-light-invalid;
+  }
+  @content;
+}
+
 @mixin label-info-link {
   margin-inline-start: typography.$base-size;
 }

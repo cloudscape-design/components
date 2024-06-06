@@ -53,7 +53,6 @@
   border-block: styles.$control-border-width solid awsui.$color-border-input-default;
   border-inline: styles.$control-border-width solid awsui.$color-border-input-default;
   @include styles.font-body-m;
-  // IE requires input height to be explicitly set
   block-size: awsui.$size-vertical-input;
 
   &.input-readonly {
@@ -90,14 +89,18 @@
     }
   }
 
+  &.input-warning {
+    @include styles.form-warning-control();
+    &.input-has-icon-left {
+      padding-inline-start: calc(
+        #{styles.$control-icon-horizontal-padding} - (#{styles.$invalid-control-left-border} - #{styles.$control-border-width})
+      );
+    }
+  }
+
   &.input-type-search {
     box-sizing: border-box; // Overrides the [type='search'] CSS from normalize
     -webkit-appearance: none; /* stylelint-disable-line plugin/no-unsupported-browser-features */
-
-    &::-ms-clear {
-      // Override IE clear field display
-      display: none;
-    }
 
     &::-webkit-search-decoration {
       // Remove extra space for default Safari browser search icon

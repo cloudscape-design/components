@@ -10,4 +10,5 @@ export const i18nStrings: FileUploadProps.I18nStrings = {
   limitShowFewer: 'Show fewer files',
   limitShowMore: 'Show more files',
   errorIconAriaLabel: 'Error',
+  warningIconAriaLabel: 'Warning',
 };

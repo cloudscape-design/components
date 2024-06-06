@@ -170,6 +170,14 @@ export interface AppLayoutProps extends BaseComponentProps {
   disableContentHeaderOverlap?: boolean;
 
   /**
+   * Determines the visual treatment for the breadcrumbs and notifications slots. Specifically:
+   * * `default` - Does not apply any visual treatment.
+   * * `high-contrast` - Applies high-contrast to both slots. Use in conjunction with `headerVariant="high-contrast"` in ContentLayout.
+   * @visualrefresh
+   */
+  headerVariant?: 'default' | 'high-contrast';
+
+  /**
    * Main content.
    */
   content?: React.ReactNode;
@@ -332,5 +340,11 @@ export type AppLayoutPropsWithDefaults = SomeRequired<
   Omit<AppLayoutProps, 'headerSelector' | 'footerSelector'>,
   'contentType' | 'navigationWidth' | 'toolsWidth' | 'minContentWidth' | 'navigationOpen' | 'onNavigationChange'
 > & {
-  placement: { top: number; bottom: number; left: number; right: number; width: number };
+  placement: {
+    insetBlockStart: number;
+    insetBlockEnd: number;
+    insetInlineStart: number;
+    insetInlineEnd: number;
+    inlineSize: number;
+  };
 };

@@ -97,7 +97,7 @@ export default function SimpleContainers() {
               tortor, mollis vitae molestie sed, malesuada.
             </Container>
           </div>
-          <div style={{ display: 'grid', minHeight: 300 }}>
+          <div style={{ display: 'grid', minBlockSize: 300 }}>
             <Container fitHeight={true} header={<Header variant="h2">Fixed Height Container</Header>} footer="Footer">
               Content area takes the available vertical space
             </Container>

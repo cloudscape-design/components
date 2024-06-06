@@ -23,9 +23,10 @@ const Alert = React.forwardRef(
       analyticsMetadata
     );
 
-    const { funnelInteractionId, submissionAttempt, funnelState, errorCount } = useFunnel();
-    const { stepNumber, stepNameSelector } = useFunnelStep();
-    const { subStepSelector, subStepNameSelector } = useFunnelSubStep();
+    const { funnelIdentifier, funnelInteractionId, funnelErrorContext, submissionAttempt, funnelState, errorCount } =
+      useFunnel();
+    const { stepNumber, stepNameSelector, stepIdentifier } = useFunnelStep();
+    const { subStepSelector, subStepNameSelector, subStepIdentifier, subStepErrorContext } = useFunnelSubStep();
 
     useEffect(() => {
       if (funnelInteractionId && visible && type === 'error' && funnelState.current !== 'complete') {
@@ -41,6 +42,8 @@ const Alert = React.forwardRef(
           if (subStepSelector) {
             FunnelMetrics.funnelSubStepError({
               funnelInteractionId,
+              funnelIdentifier,
+              stepIdentifier,
               subStepSelector,
               subStepName,
               subStepNameSelector,
@@ -48,12 +51,14 @@ const Alert = React.forwardRef(
               stepName,
               stepNameSelector,
               subStepAllSelector: getSubStepAllSelector(),
-              instanceIdentifier: analyticsMetadata?.instanceIdentifier,
-              errorContext: analyticsMetadata?.errorContext,
+              subStepIdentifier,
+              subStepErrorContext,
             });
           } else {
             FunnelMetrics.funnelError({
+              funnelIdentifier,
               funnelInteractionId,
+              funnelErrorContext,
             });
           }
         }

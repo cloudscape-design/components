@@ -64,6 +64,23 @@ const permutations = createPermutations<any>([
     isOpen: [false, true],
   },
   {
+    placeholder: ['Select an item'],
+    triggerVariant: ['label'],
+    warning: [true],
+    triggerProps: [{}],
+    selectedOption: [complexOption],
+    isOpen: [false, true],
+  },
+  {
+    placeholder: ['Select an item'],
+    triggerVariant: ['label'],
+    warning: [true],
+    invalid: [true],
+    triggerProps: [{}],
+    selectedOption: [complexOption],
+    isOpen: [false],
+  },
+  {
     placeholder: [
       'A very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very long placeholder',
     ],

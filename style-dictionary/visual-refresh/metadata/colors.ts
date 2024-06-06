@@ -458,10 +458,14 @@ const metadata: StyleDictionary.MetadataIndex = {
   colorTextDropdownItemDefault: {
     description:
       'The default text color of dropdown items. For example: label and label tag text color for autosuggest, select, and multiselect.',
+    themeable: true,
+    public: true,
   },
   colorTextDropdownItemDisabled: {
     description:
       'The text color of disabled dropdown items. For example: label, label tag, description, and tag text color of a disabled item in a select, multiselect, and autosuggest.',
+    themeable: true,
+    public: true,
   },
   colorTextDropdownItemFilterMatch: {
     description:

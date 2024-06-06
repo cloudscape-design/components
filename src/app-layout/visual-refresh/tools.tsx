@@ -6,8 +6,8 @@ import { InternalButton } from '../../button/internal';
 import { useAppLayoutInternals } from './context';
 import TriggerButton from './trigger-button';
 import styles from './styles.css.js';
-import splitPanelStyles from '../../split-panel/styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
+import splitPanelTestUtilStyles from '../../split-panel/test-classes/styles.css.js';
 import { Transition } from '../../internal/components/transition';
 import customCssProps from '../../internal/generated/custom-css-properties';
 
@@ -46,6 +46,7 @@ export default function Tools({ children }: ToolsProps) {
     toolsHide,
     toolsRefs,
     toolsWidth,
+    headerVariant,
   } = useAppLayoutInternals();
 
   const hasSplitPanel = !!splitPanel && splitPanelPosition === 'side';
@@ -144,6 +145,7 @@ export default function Tools({ children }: ToolsProps) {
                   selected={hasSplitPanel && isToolsOpen}
                   className={testutilStyles['tools-toggle']}
                   ref={toolsRefs.toggle}
+                  highContrastHeader={headerVariant === 'high-contrast'}
                 />
               )}
 
@@ -155,8 +157,9 @@ export default function Tools({ children }: ToolsProps) {
                   iconName="view-vertical"
                   onClick={() => handleSplitPanelClick()}
                   selected={hasSplitPanel && isSplitPanelOpen}
-                  className={splitPanelStyles['open-button']}
+                  className={splitPanelTestUtilStyles['open-button']}
                   ref={splitPanelRefs.toggle}
+                  highContrastHeader={headerVariant === 'high-contrast'}
                 />
               )}
             </aside>

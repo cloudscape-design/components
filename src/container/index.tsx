@@ -30,8 +30,8 @@ export default function Container({
 
   return (
     <AnalyticsFunnelSubStep
-      instanceIdentifier={analyticsMetadata?.instanceIdentifier}
-      errorContext={analyticsMetadata?.errorContext}
+      subStepIdentifier={analyticsMetadata?.instanceIdentifier}
+      subStepErrorContext={analyticsMetadata?.errorContext}
     >
       <InternalContainerAsSubstep
         variant={variant}

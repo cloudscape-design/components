@@ -25,9 +25,9 @@ export const useStickyHeader = (
       // Using the tableRef offsetWidth instead of the theadRef because in VR
       // the tableRef adds extra padding to the table and by default the theadRef will have a width
       // without the padding and will make the sticky header width incorrect.
-      secondaryTableRef.current.style.width = `${tableRef.current.offsetWidth}px`;
+      secondaryTableRef.current.style.inlineSize = `${tableRef.current.offsetWidth}px`;
 
-      tableWrapperRef.current.style.marginTop = `-${theadRef.current.offsetHeight}px`;
+      tableWrapperRef.current.style.marginBlockStart = `-${theadRef.current.offsetHeight}px`;
     }
   }, [theadRef, secondaryTheadRef, secondaryTableRef, tableWrapperRef, tableRef]);
   useLayoutEffect(() => {

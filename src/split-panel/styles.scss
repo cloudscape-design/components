@@ -9,26 +9,14 @@
 @use '../app-layout/constants' as constants;
 
 @import './motion';
-@import './icons/icons-styles';
 
 $slider-width: 16px;
 
 // Values taken from app layout
 $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{awsui.$space-layout-toggle-padding});
 
-.root {
-  @include styles.styles-reset;
-}
-
-.preferences-button {
-  /* used in test-utils */
-}
-
-.close-button {
-  /* used in test-utils */
-}
-
 .drawer {
+  @include styles.styles-reset;
   flex-shrink: 0;
   position: relative;
   @include styles.text-wrapping;
@@ -63,6 +51,8 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
     overflow-y: auto;
     position: absolute;
     inset: 0;
+    // Make sure that fixed position elements like popovers don't leak out
+    clip-path: border-box;
   }
 }
 
@@ -102,34 +92,6 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   block-size: 100%;
 }
 
-.slider {
-  padding-block: 0;
-  padding-inline: 0;
-  cursor: ns-resize;
-  margin-block-start: 2px;
-  margin-block-end: 0;
-  margin-inline: 0;
-  block-size: $slider-width;
-  // Desktop Safari doesn't support touch events, but Safari on iOS does.
-  // stylelint-disable-next-line plugin/no-unsupported-browser-features
-  touch-action: none;
-
-  &:focus {
-    outline: none;
-  }
-
-  @include focus-visible.when-visible {
-    @include styles.focus-highlight(0px);
-  }
-}
-
-.slider-side {
-  cursor: ew-resize;
-  margin-block: 0;
-  margin-inline-start: 2px;
-  margin-inline-end: 0;
-}
-
 .slider-wrapper-bottom {
   position: absolute;
   inset-block-start: 0;
@@ -152,10 +114,6 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   z-index: 1;
 }
 
-.open-button {
-  /* used in test-utils */
-}
-
 .open-button-side {
   flex: 0 0 auto;
   align-self: flex-start;
@@ -163,20 +121,6 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   margin-block-start: awsui.$space-xxs;
   margin-block-end: 0;
   margin-inline: auto;
-}
-
-.slider-icon {
-  stroke: awsui.$color-text-interactive-default;
-  &:hover {
-    stroke: awsui.$color-text-interactive-hover;
-  }
-  &-bottom {
-    margin-block: auto;
-    margin-inline: auto;
-  }
-  &-side {
-    transform: rotate(90deg);
-  }
 }
 
 .pane-header-wrapper-bottom {
@@ -258,6 +202,7 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
     padding-inline-start: awsui.$space-panel-side-left;
     padding-inline-end: awsui.$space-panel-side-right;
     margin-block-start: awsui.$space-panel-split-top;
+    margin-block-end: awsui.$space-panel-split-bottom;
   }
 }
 

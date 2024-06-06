@@ -17,6 +17,6 @@ export function useContainerBreakpoints<T extends readonly Breakpoint[], E exten
   // eslint-disable-next-line react-hooks/exhaustive-deps
   return useContainerQuery(rect => getMatchingBreakpoint(rect.contentBoxWidth, triggers), [triggersDep]) as [
     'default' | T[number] | null,
-    React.Ref<E>
+    React.Ref<E>,
   ];
 }

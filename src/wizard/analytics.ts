@@ -4,8 +4,13 @@
 import { useRef, useEffect } from 'react';
 import { FunnelMetrics } from '../internal/analytics';
 import { WizardProps } from './interfaces';
+import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 
-export function useFunnelChangeEvent(funnelInteractionId: string | undefined, steps: WizardProps['steps']) {
+export function useFunnelChangeEvent(
+  funnelInteractionId: string | undefined,
+  funnelIdentifier: string | undefined,
+  steps: WizardProps['steps']
+) {
   const listenForStepChanges = useRef(false);
 
   useEffect(() => {
@@ -26,6 +31,7 @@ export function useFunnelChangeEvent(funnelInteractionId: string | undefined, st
 
     FunnelMetrics.funnelChange({
       funnelInteractionId,
+      funnelIdentifier,
       stepConfiguration: getStepConfiguration(steps),
     });
 
@@ -37,9 +43,14 @@ export function useFunnelChangeEvent(funnelInteractionId: string | undefined, st
 }
 
 export function getStepConfiguration(steps: WizardProps['steps']) {
-  return steps.map((step, index) => ({
-    name: step.title,
-    number: index + 1,
-    isOptional: step.isOptional ?? false,
-  }));
+  return steps.map((step, index) => {
+    const stepAnalyticsMetadata = getAnalyticsMetadataProps(step as BasePropsWithAnalyticsMetadata);
+
+    return {
+      name: step.title,
+      number: index + 1,
+      isOptional: step.isOptional ?? false,
+      stepIdentifier: stepAnalyticsMetadata?.instanceIdentifier,
+    };
+  });
 }

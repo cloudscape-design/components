@@ -9,7 +9,7 @@ import GridColumnLayout from './grid-column-layout';
 import styles from './styles.css.js';
 
 export const COLUMN_TRIGGERS = ['default', 'xxs', 'xs'] as const;
-export type ColumnLayoutBreakpoint = typeof COLUMN_TRIGGERS[number] | null;
+export type ColumnLayoutBreakpoint = (typeof COLUMN_TRIGGERS)[number] | null;
 
 /**
  * A responsive grid layout.

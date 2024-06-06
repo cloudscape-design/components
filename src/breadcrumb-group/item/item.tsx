@@ -6,11 +6,11 @@ import InternalIcon from '../../icon/internal';
 import styles from './styles.css.js';
 import clsx from 'clsx';
 import { fireCancelableEvent, isPlainLeftClick } from '../../internal/events';
-import { getEventDetail } from '../internal';
 
 import { DATA_ATTR_FUNNEL_KEY } from '../../internal/analytics/selectors';
 import { FUNNEL_KEY_FUNNEL_NAME } from '../../internal/analytics/selectors';
 import Tooltip from '../../internal/components/tooltip';
+import { getEventDetail } from '../utils';
 
 type BreadcrumbItemWithPopoverProps<T extends BreadcrumbGroupProps.Item> = React.HTMLAttributes<HTMLElement> & {
   item: T;

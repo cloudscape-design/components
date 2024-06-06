@@ -25,13 +25,11 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import LiveRegion from '../internal/components/live-region';
 import useMouseDownTarget from '../internal/hooks/use-mouse-down-target';
 import { useMobile } from '../internal/hooks/use-mobile';
-import { supportsStickyPosition } from '../internal/utils/dom';
 import { useInternalI18n } from '../i18n/context';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
-import { shouldRemoveHighContrastHeader } from '../internal/utils/content-header-utils';
 
 export { CardsProps };
 
@@ -89,7 +87,7 @@ const Cards = React.forwardRef(function <T = any>(
   const getMouseDownTarget = useMouseDownTarget();
 
   const i18n = useInternalI18n('cards');
-  const { isItemSelected, getItemSelectionProps, updateShiftToggle } = useSelection({
+  const { isItemSelected, getItemSelectionProps } = useSelection({
     items,
     trackBy,
     selectedItems,
@@ -106,7 +104,7 @@ const Cards = React.forwardRef(function <T = any>(
   const headerRef = useRef<HTMLDivElement>(null);
 
   const { scrollToTop, scrollToItem } = stickyScrolling(refObject, headerRef);
-  stickyHeader = supportsStickyPosition() && !isMobile && stickyHeader;
+  stickyHeader = !isMobile && stickyHeader;
   const onCardFocus: FocusEventHandler<HTMLElement> = event => {
     // When an element inside card receives focus we want to adjust the scroll.
     // However, that behavior is unwanted when the focus is received as result of a click
@@ -150,8 +148,7 @@ const Cards = React.forwardRef(function <T = any>(
                   className={clsx(
                     styles.header,
                     isRefresh && styles['header-refresh'],
-                    styles[`header-variant-${computedVariant}`],
-                    shouldRemoveHighContrastHeader() && styles['remove-high-contrast-header']
+                    styles[`header-variant-${computedVariant}`]
                   )}
                 >
                   <CollectionLabelContext.Provider value={{ assignId: setHeaderRef }}>
@@ -167,15 +164,14 @@ const Cards = React.forwardRef(function <T = any>(
             __stickyHeader={stickyHeader}
             __stickyOffset={stickyHeaderVerticalOffset}
             __headerRef={headerRef}
-            __darkHeader={computedVariant === 'full-page'}
+            __fullPage={computedVariant === 'full-page'}
             __disableFooterDivider={true}
           >
             <div
               className={clsx(
                 hasToolsHeader && styles['has-header'],
                 isRefresh && styles.refresh,
-                styles[`header-variant-${computedVariant}`],
-                shouldRemoveHighContrastHeader() && styles['remove-high-contrast-header']
+                styles[`header-variant-${computedVariant}`]
               )}
             >
               {!!renderAriaLive && !!firstIndex && (
@@ -195,7 +191,6 @@ const Cards = React.forwardRef(function <T = any>(
                   isItemSelected={isItemSelected}
                   getItemSelectionProps={getItemSelectionProps}
                   visibleSections={visibleSections}
-                  updateShiftToggle={updateShiftToggle}
                   onFocus={onCardFocus}
                   ariaLabel={ariaLabels?.cardsLabel}
                   ariaLabelledby={isLabelledByHeader && headerIdRef.current ? headerIdRef.current : undefined}
@@ -221,7 +216,6 @@ const CardsList = <T,>({
   isItemSelected,
   getItemSelectionProps,
   visibleSections,
-  updateShiftToggle,
   onFocus,
   ariaLabelledby,
   ariaLabel,
@@ -232,8 +226,7 @@ const CardsList = <T,>({
 > & {
   columns: number | null;
   isItemSelected: (item: T) => boolean;
-  getItemSelectionProps: (item: T) => SelectionControlProps;
-  updateShiftToggle: (state: boolean) => void;
+  getItemSelectionProps?: (item: T) => SelectionControlProps;
   onFocus: FocusEventHandler<HTMLElement>;
   ariaLabel?: string;
   ariaLabelledby?: string;
@@ -284,7 +277,7 @@ const CardsList = <T,>({
             onClick={
               canClickEntireCard
                 ? event => {
-                    getItemSelectionProps(item).onChange();
+                    getItemSelectionProps?.(item).onChange();
                     // Manually move focus to the native input (checkbox or radio button)
                     event.currentTarget.querySelector('input')?.focus();
                   }
@@ -295,12 +288,11 @@ const CardsList = <T,>({
               <div className={styles['card-header-inner']}>
                 {cardDefinition.header ? cardDefinition.header(item) : ''}
               </div>
-              {selectable && (
+              {getItemSelectionProps && (
                 <div className={styles['selection-control']}>
                   <SelectionControl
                     onFocusDown={moveFocusDown}
                     onFocusUp={moveFocusUp}
-                    onShiftToggle={updateShiftToggle}
                     {...getItemSelectionProps(item)}
                   />
                 </div>

@@ -3,28 +3,29 @@
 import { ResizeObserver } from '@juggle/resize-observer';
 import { RefObject, useEffect, useState } from 'react';
 import styles from './styles.css.js';
-import { getContainingBlock, supportsStickyPosition } from '../../internal/utils/dom';
+import { getContainingBlock } from '../../internal/utils/dom';
 import { getOverflowParents } from '../../internal/utils/scrollable-containers';
 import { browserScrollbarSize } from '../../internal/utils/browser-scrollbar-size';
+import globalVars from '../../internal/styles/global-vars';
+import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
 export const updatePosition = (
   tableEl: HTMLElement | null,
   wrapperEl: HTMLElement | null,
   scrollbarEl: HTMLElement | null,
   scrollbarContentEl: HTMLElement | null,
-  hasContainingBlock: boolean,
-  consideredFooterHeight: number
+  inScrollableContainer: boolean
 ) => {
   if (!tableEl || !scrollbarEl || !wrapperEl) {
     return;
   }
 
-  const { width: tableWidth } = tableEl.getBoundingClientRect();
-  const { width: wrapperWidth } = wrapperEl.getBoundingClientRect();
+  const { inlineSize: tableInlineSize } = getLogicalBoundingClientRect(tableEl);
+  const { inlineSize: wrapperInlineSize } = getLogicalBoundingClientRect(wrapperEl);
 
   // using 15 px as a height of transparent scrollbar on mac
   const scrollbarHeight = browserScrollbarSize().height;
-  const areaIsScrollable = tableWidth > wrapperWidth;
+  const areaIsScrollable = tableInlineSize > wrapperInlineSize;
 
   if (!areaIsScrollable) {
     scrollbarEl.classList.remove(styles['sticky-scrollbar-visible']);
@@ -45,19 +46,21 @@ export const updatePosition = (
   }
 
   if (scrollbarHeight && scrollbarEl && scrollbarContentEl) {
-    scrollbarEl.style.height = `${scrollbarHeight}px`;
-    scrollbarContentEl.style.height = `${scrollbarHeight}px`;
+    scrollbarEl.style.blockSize = `${scrollbarHeight}px`;
+    scrollbarContentEl.style.blockSize = `${scrollbarHeight}px`;
   }
 
   if (tableEl && wrapperEl && scrollbarContentEl && scrollbarEl) {
-    const wrapperElRect = wrapperEl.getBoundingClientRect();
-    const tableElRect = tableEl.getBoundingClientRect();
-    scrollbarEl.style.width = `${wrapperElRect.width}px`;
-    scrollbarContentEl.style.width = `${tableElRect.width}px`;
+    const wrapperElRect = getLogicalBoundingClientRect(wrapperEl);
+    const tableElRect = getLogicalBoundingClientRect(tableEl);
+    scrollbarEl.style.inlineSize = `${wrapperElRect.inlineSize}px`;
+    scrollbarContentEl.style.inlineSize = `${tableElRect.inlineSize}px`;
 
     // when using sticky scrollbars in containers
     // we agreed to ignore dynamic bottom calculations for footer overlap
-    scrollbarEl.style.bottom = hasContainingBlock ? '0px' : `${consideredFooterHeight}px`;
+    scrollbarEl.style.insetBlockEnd = inScrollableContainer
+      ? '0px'
+      : `var(${globalVars.stickyVerticalBottomOffset}, 0px)`;
   }
 };
 
@@ -66,30 +69,20 @@ export function useStickyScrollbar(
   scrollbarContentRef: RefObject<HTMLDivElement>,
   tableRef: RefObject<HTMLTableElement>,
   wrapperRef: RefObject<HTMLDivElement>,
-  footerHeight: number,
   offsetScrollbar: boolean
 ) {
-  // We don't take into account containing-block calculations because that would
-  // unnecessarily overcomplicate the position logic. For now, we assume that a
-  // containing block, if present, is below the app layout and above the overflow
-  // parent, which is a pretty safe assumption.
-  const [hasContainingBlock, setHasContainingBlock] = useState(false);
-  // We don't take into account footer height when the overflow parent is child of document body.
-  // Because in this case, we think the footer is outside the overflow parent.
-  const [hasOverflowParent, setHasOverflowParent] = useState(false);
-  const consideredFooterHeight = hasContainingBlock || hasOverflowParent ? 0 : footerHeight;
+  const [inScrollableContainer, setInScrollableContainer] = useState(false);
 
   const wrapperEl = wrapperRef.current;
   useEffect(() => {
-    if (wrapperEl && supportsStickyPosition()) {
-      setHasContainingBlock(!!getContainingBlock(wrapperEl));
-      setHasOverflowParent(!!getOverflowParents(wrapperEl)[0]);
+    if (wrapperEl) {
+      setInScrollableContainer(!!getContainingBlock(wrapperEl) || !!getOverflowParents(wrapperEl)[0]);
     }
   }, [wrapperEl]);
 
   // Update scrollbar position wrapper or table size change.
   useEffect(() => {
-    if (supportsStickyPosition() && wrapperRef.current && tableRef.current) {
+    if (wrapperRef.current && tableRef.current) {
       const observer = new ResizeObserver(() => {
         if (scrollbarContentRef.current) {
           updatePosition(
@@ -97,8 +90,7 @@ export function useStickyScrollbar(
             wrapperRef.current,
             scrollbarRef.current,
             scrollbarContentRef.current,
-            hasContainingBlock,
-            consideredFooterHeight
+            inScrollableContainer
           );
         }
       });
@@ -110,34 +102,23 @@ export function useStickyScrollbar(
         observer.disconnect();
       };
     }
-  }, [
-    scrollbarContentRef,
-    scrollbarRef,
-    tableRef,
-    wrapperRef,
-    consideredFooterHeight,
-    hasContainingBlock,
-    offsetScrollbar,
-  ]);
+  }, [scrollbarContentRef, scrollbarRef, tableRef, wrapperRef, inScrollableContainer, offsetScrollbar]);
 
   // Update scrollbar position when window resizes (vertically).
   useEffect(() => {
-    if (supportsStickyPosition()) {
-      const resizeHandler = () => {
-        updatePosition(
-          tableRef.current,
-          wrapperRef.current,
-          scrollbarRef.current,
-          scrollbarContentRef.current,
-          hasContainingBlock,
-          consideredFooterHeight
-        );
-      };
-      resizeHandler();
-      window.addEventListener('resize', resizeHandler);
-      return () => {
-        window.removeEventListener('resize', resizeHandler);
-      };
-    }
-  }, [tableRef, wrapperRef, scrollbarRef, scrollbarContentRef, hasContainingBlock, consideredFooterHeight]);
+    const resizeHandler = () => {
+      updatePosition(
+        tableRef.current,
+        wrapperRef.current,
+        scrollbarRef.current,
+        scrollbarContentRef.current,
+        inScrollableContainer
+      );
+    };
+    resizeHandler();
+    window.addEventListener('resize', resizeHandler);
+    return () => {
+      window.removeEventListener('resize', resizeHandler);
+    };
+  }, [tableRef, wrapperRef, scrollbarRef, scrollbarContentRef, inScrollableContainer]);
 }

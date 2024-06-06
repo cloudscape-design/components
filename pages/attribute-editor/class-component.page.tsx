@@ -53,6 +53,7 @@ export default class AttributeEditorPage extends React.Component<any, StateProps
           <Input value={item.key || ''} onChange={onFieldChange('key', itemIndex)} />
         ),
         errorText: (item: Item) => (item.key && item.key.match(/^AWS/i) ? 'Key cannot start with "AWS"' : null),
+        warningText: (item: Item) => (item.key && item.key.includes(' ') ? 'Key has empty characters' : null),
       },
       {
         label: 'Value label',
@@ -64,6 +65,12 @@ export default class AttributeEditorPage extends React.Component<any, StateProps
           item.value && item.value.length > 5 ? (
             <span>
               Value {item.value} is longer than 5 characters, <Link variant="info">Info</Link>
+            </span>
+          ) : null,
+        warningText: (item: Item) =>
+          item.value && item.value.includes(' ') ? (
+            <span>
+              Value has empty characters, <Link variant="info">Info</Link>
             </span>
           ) : null,
       },

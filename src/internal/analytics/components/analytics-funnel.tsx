@@ -20,7 +20,7 @@ import { PACKAGE_VERSION } from '../../environment';
 import { FunnelMetrics } from '../index';
 import {
   AnalyticsMetadata,
-  FunnelProps,
+  FunnelStartProps,
   FunnelStepProps,
   StepConfiguration,
   SubStepConfiguration,
@@ -43,12 +43,12 @@ interface AnalyticsFunnelProps {
   children?: React.ReactNode;
   stepConfiguration?: StepConfiguration[];
   funnelNameSelectors?: string[];
-  funnelType: FunnelProps['funnelType'];
-  optionalStepNumbers: FunnelProps['optionalStepNumbers'];
-  totalFunnelSteps: FunnelProps['totalFunnelSteps'];
-  instanceIdentifier?: AnalyticsMetadata['instanceIdentifier'];
-  flowType?: AnalyticsMetadata['flowType'];
-  errorContext?: AnalyticsMetadata['errorContext'];
+  funnelType: FunnelStartProps['funnelType'];
+  optionalStepNumbers: FunnelStartProps['optionalStepNumbers'];
+  totalFunnelSteps: FunnelStartProps['totalFunnelSteps'];
+  funnelIdentifier?: AnalyticsMetadata['instanceIdentifier'];
+  funnelFlowType?: AnalyticsMetadata['flowType'];
+  funnelErrorContext?: AnalyticsMetadata['errorContext'];
 }
 
 export const AnalyticsFunnel = (props: AnalyticsFunnelProps) => {
@@ -74,12 +74,24 @@ const dispatchCreateEditFlowDoneEvent = () => {
   }
 };
 
-const onFunnelCancelled = ({ funnelInteractionId }: { funnelInteractionId: string }) => {
-  FunnelMetrics.funnelCancelled({ funnelInteractionId });
+const onFunnelCancelled = ({
+  funnelInteractionId,
+  funnelIdentifier,
+}: {
+  funnelInteractionId: string;
+  funnelIdentifier?: string;
+}) => {
+  FunnelMetrics.funnelCancelled({ funnelInteractionId, funnelIdentifier });
 };
 
-const onFunnelComplete = ({ funnelInteractionId }: { funnelInteractionId: string }) => {
-  FunnelMetrics.funnelComplete({ funnelInteractionId });
+const onFunnelComplete = ({
+  funnelInteractionId,
+  funnelIdentifier,
+}: {
+  funnelInteractionId: string;
+  funnelIdentifier?: string;
+}) => {
+  FunnelMetrics.funnelComplete({ funnelInteractionId, funnelIdentifier });
   dispatchCreateEditFlowDoneEvent();
 };
 
@@ -133,18 +145,23 @@ const InnerAnalyticsFunnel = ({ children, stepConfiguration, ...props }: Analyti
       funnelState.current = 'default';
 
       const singleStepFlowStepConfiguration = [
-        { number: 1, isOptional: false, name: getNameFromSelector(funnelNameSelector.current) ?? '' },
+        {
+          number: 1,
+          isOptional: false,
+          name: getNameFromSelector(funnelNameSelector.current) ?? '',
+          stepIdentifier: props.funnelIdentifier,
+        },
       ];
 
       funnelInteractionId = FunnelMetrics.funnelStart({
-        instanceIdentifier: props.instanceIdentifier,
-        flowType: props.flowType,
+        funnelIdentifier: props.funnelIdentifier,
+        flowType: props.funnelFlowType,
         funnelNameSelector: funnelNameSelector.current,
         optionalStepNumbers: props.optionalStepNumbers,
         funnelType: props.funnelType,
         totalFunnelSteps: props.totalFunnelSteps,
         componentVersion: PACKAGE_VERSION,
-        theme: isVisualRefresh ? 'vr' : 'classic',
+        componentTheme: isVisualRefresh ? 'vr' : 'classic',
         funnelVersion: FUNNEL_VERSION,
         stepConfiguration: stepConfiguration ?? singleStepFlowStepConfiguration,
       });
@@ -164,14 +181,14 @@ const InnerAnalyticsFunnel = ({ children, stepConfiguration, ...props }: Analyti
 
       if (funnelState.current === 'validating') {
         // Finish the validation phase early.
-        onFunnelComplete({ funnelInteractionId });
+        onFunnelComplete({ funnelInteractionId, funnelIdentifier: props.funnelIdentifier });
         funnelState.current = 'complete';
       }
 
       if (funnelState.current === 'complete') {
-        FunnelMetrics.funnelSuccessful({ funnelInteractionId });
+        FunnelMetrics.funnelSuccessful({ funnelInteractionId, funnelIdentifier: props.funnelIdentifier });
       } else {
-        onFunnelCancelled({ funnelInteractionId });
+        onFunnelCancelled({ funnelInteractionId, funnelIdentifier: props.funnelIdentifier });
         funnelState.current = 'cancelled';
       }
     };
@@ -223,6 +240,9 @@ const InnerAnalyticsFunnel = ({ children, stepConfiguration, ...props }: Analyti
 
   const funnelContextValue: FunnelContextValue = {
     funnelInteractionId,
+    funnelIdentifier: props.funnelIdentifier,
+    funnelFlowType: props.funnelFlowType,
+    funnelErrorContext: props.funnelErrorContext,
     setFunnelInteractionId,
     funnelType: props.funnelType,
     optionalStepNumbers: props.optionalStepNumbers,
@@ -244,8 +264,8 @@ const InnerAnalyticsFunnel = ({ children, stepConfiguration, ...props }: Analyti
 };
 
 interface AnalyticsFunnelStepProps {
-  instanceIdentifier?: AnalyticsMetadata['instanceIdentifier'];
-  errorContext?: AnalyticsMetadata['errorContext'];
+  stepIdentifier?: AnalyticsMetadata['instanceIdentifier'];
+  stepErrorContext?: AnalyticsMetadata['errorContext'];
   children?: React.ReactNode | ((props: FunnelStepContextValue) => React.ReactNode);
   stepNameSelector?: FunnelStepProps['stepNameSelector'];
   stepNumber: FunnelStepProps['stepNumber'];
@@ -263,10 +283,14 @@ function getSubStepConfiguration(): SubStepConfiguration[] {
   const subSteps = Array.from(document.querySelectorAll<HTMLElement>(getSubStepAllSelector()));
 
   const subStepConfiguration = subSteps.map((substep, index) => {
+    const subStepIdentifier = (substep as any)?.__awsuiMetadata__?.analytics?.instanceIdentifier;
+
     const name = substep.querySelector<HTMLElement>(getSubStepNameSelector())?.innerText?.trim() ?? '';
+
     return {
       name,
       number: index + 1,
+      subStepIdentifier,
     };
   });
   return subStepConfiguration;
@@ -316,8 +340,14 @@ function useStepChangeListener(stepNumber: number, handler: (stepConfiguration: 
   return { onStepChange: stepChangeCallback, subStepConfiguration };
 }
 
-const InnerAnalyticsFunnelStep = ({ children, stepNumber, instanceIdentifier, ...rest }: AnalyticsFunnelStepProps) => {
-  const { funnelInteractionId, funnelNameSelector, funnelState, funnelType } = useFunnel();
+const InnerAnalyticsFunnelStep = ({
+  children,
+  stepNumber,
+  stepIdentifier,
+  stepErrorContext,
+  ...rest
+}: AnalyticsFunnelStepProps) => {
+  const { funnelInteractionId, funnelIdentifier, funnelNameSelector, funnelState, funnelType } = useFunnel();
   const parentStep = useFunnelStep();
   const parentStepExists = parentStep.isInStep;
   const parentStepFunnelInteractionId = parentStep.funnelInteractionId;
@@ -331,13 +361,12 @@ const InnerAnalyticsFunnelStep = ({ children, stepNumber, instanceIdentifier, ..
     if (!funnelInteractionId) {
       return;
     }
-    const stepName = getNameFromSelector(stepNameSelector) ?? '';
 
     FunnelMetrics.funnelStepChange({
-      instanceIdentifier,
+      stepIdentifier,
+      funnelIdentifier,
       funnelInteractionId,
       stepNumber,
-      stepName,
       stepNameSelector,
       subStepAllSelector: getSubStepAllSelector(),
       totalSubSteps: subStepCount.current,
@@ -367,7 +396,8 @@ const InnerAnalyticsFunnelStep = ({ children, stepNumber, instanceIdentifier, ..
 
     if (funnelState.current === 'default') {
       FunnelMetrics.funnelStepStart({
-        instanceIdentifier,
+        stepIdentifier,
+        funnelIdentifier,
         funnelInteractionId,
         stepNumber,
         stepName,
@@ -382,8 +412,9 @@ const InnerAnalyticsFunnelStep = ({ children, stepNumber, instanceIdentifier, ..
       // eslint-disable-next-line react-hooks/exhaustive-deps
       if (funnelState.current !== 'cancelled') {
         FunnelMetrics.funnelStepComplete({
-          instanceIdentifier,
+          funnelIdentifier,
           funnelInteractionId,
+          stepIdentifier,
           stepNumber,
           stepName,
           stepNameSelector,
@@ -394,7 +425,8 @@ const InnerAnalyticsFunnelStep = ({ children, stepNumber, instanceIdentifier, ..
       }
     };
   }, [
-    instanceIdentifier,
+    stepIdentifier,
+    funnelIdentifier,
     funnelInteractionId,
     stepNumber,
     stepNameSelector,
@@ -405,7 +437,7 @@ const InnerAnalyticsFunnelStep = ({ children, stepNumber, instanceIdentifier, ..
   ]);
 
   const contextValue: FunnelStepContextValue = {
-    instanceIdentifier,
+    stepIdentifier,
     stepNumber,
     stepNameSelector,
     funnelStepProps,
@@ -414,6 +446,7 @@ const InnerAnalyticsFunnelStep = ({ children, stepNumber, instanceIdentifier, ..
     funnelInteractionId,
     onStepChange,
     subStepConfiguration,
+    stepErrorContext,
   };
 
   /*
@@ -430,12 +463,16 @@ const InnerAnalyticsFunnelStep = ({ children, stepNumber, instanceIdentifier, ..
   );
 };
 interface AnalyticsFunnelSubStepProps {
-  instanceIdentifier?: AnalyticsMetadata['instanceIdentifier'];
-  errorContext?: AnalyticsMetadata['errorContext'];
+  subStepIdentifier?: AnalyticsMetadata['instanceIdentifier'];
+  subStepErrorContext?: AnalyticsMetadata['errorContext'];
   children?: React.ReactNode | ((props: FunnelSubStepContextValue) => React.ReactNode);
 }
 
-export const AnalyticsFunnelSubStep = ({ children, instanceIdentifier }: AnalyticsFunnelSubStepProps) => {
+export const AnalyticsFunnelSubStep = ({
+  children,
+  subStepIdentifier,
+  subStepErrorContext,
+}: AnalyticsFunnelSubStepProps) => {
   const subStepId = useUniqueId('substep');
   const subStepSelector = getSubStepSelector(subStepId);
   const subStepNameSelector = getSubStepNameSelector(subStepId);
@@ -448,7 +485,8 @@ export const AnalyticsFunnelSubStep = ({ children, instanceIdentifier }: Analyti
   const { stepNumber, stepNameSelector } = useFunnelStep();
 
   const newContext: FunnelSubStepContextValue = {
-    instanceIdentifier,
+    subStepIdentifier,
+    subStepErrorContext,
     subStepSelector,
     subStepNameSelector,
     subStepId,

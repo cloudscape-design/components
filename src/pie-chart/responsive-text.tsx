@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { memo, useEffect, useRef } from 'react';
 import { renderTextContent } from '../internal/components/responsive-text';
+import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
 
 interface ResponsiveTextProps {
   x: number;
@@ -18,13 +19,17 @@ function ResponsiveText({ x, y, rightSide, className, children, containerBoundar
   const actualRef = useRef<SVGTextElement>(null);
   const virtualRef = useRef<SVGTextElement>(null);
 
+  const isRtl = actualRef.current ? getIsRtl(actualRef.current) : false;
+  rightSide = !isRtl ? rightSide : !rightSide;
+
   // Determine the visible width of the text and if necessary truncate it until it fits.
   useEffect(() => {
     // The debouncing is necessary for visual smoothness.
     const timeoutId = setTimeout(() => {
+      const isRtl = getIsRtl(virtualRef.current!);
       const groupRect = virtualRef.current!.getBoundingClientRect();
       const visibleWidth = containerBoundaries ? getVisibleWidth(groupRect, containerBoundaries) : 0;
-      renderTextContent(actualRef.current!, children, visibleWidth);
+      renderTextContent(actualRef.current!, children, visibleWidth, isRtl);
     }, 25);
     return () => clearTimeout(timeoutId);
   });

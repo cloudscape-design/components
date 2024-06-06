@@ -50,6 +50,7 @@ export namespace SplitPanelProps {
 }
 
 export interface SplitPanelContentProps {
+  style: React.CSSProperties;
   baseProps: BaseComponentProps;
   isOpen?: boolean;
   splitPanelRef?: React.Ref<any>;

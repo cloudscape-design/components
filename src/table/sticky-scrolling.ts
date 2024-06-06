@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { getOverflowParents } from '../internal/utils/scrollable-containers';
+import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
 /**
  * @param containerRef ref to surrounding container with sticky element
@@ -25,8 +26,8 @@ export default function stickyScrolling(
     if (!item || !containerRef.current || !stickyRef.current) {
       return;
     }
-    const stickyBottom = stickyRef.current.getBoundingClientRect().bottom;
-    const scrollingOffset = stickyBottom - item.getBoundingClientRect().top;
+    const stickyBottom = getLogicalBoundingClientRect(stickyRef.current).insetBlockEnd;
+    const scrollingOffset = stickyBottom - getLogicalBoundingClientRect(item).insetBlockStart;
     if (scrollingOffset > 0) {
       scrollUpBy(scrollingOffset, containerRef.current);
     }
@@ -46,9 +47,9 @@ export default function stickyScrolling(
  * @param containerOffset caused by borders or paddings
  */
 export function calculateScrollingOffset(container: HTMLElement, sticky: HTMLElement) {
-  const stickyRect = sticky.getBoundingClientRect();
-  const containerRect = container.getBoundingClientRect();
-  return stickyRect.top - containerRect.top;
+  const stickyRect = getLogicalBoundingClientRect(sticky);
+  const containerRect = getLogicalBoundingClientRect(container);
+  return stickyRect.insetBlockStart - containerRect.insetBlockStart;
 }
 
 /**

@@ -51,7 +51,7 @@ describe('Form Analytics', () => {
         funnelNameSelector: `.${headerStyles['heading-text']}`,
         funnelVersion: expect.any(String),
         componentVersion: expect.any(String),
-        theme: expect.any(String),
+        componentTheme: expect.any(String),
         stepConfiguration: [{ isOptional: false, name: 'My funnel', number: 1 }],
       })
     );

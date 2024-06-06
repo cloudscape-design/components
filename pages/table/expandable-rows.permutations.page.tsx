@@ -75,6 +75,7 @@ interface Permutation {
   stripedRows?: boolean;
   wrapLines?: boolean;
   selectionType?: 'single' | 'multi';
+  progressiveLoading?: boolean;
 }
 
 const permutations = createPermutations<Permutation>([
@@ -138,6 +139,39 @@ const permutations = createPermutations<Permutation>([
     wrapLines: [false],
     selectionType: ['single'],
   },
+  {
+    title: ['Progressive loading with sticky columns and no selection'],
+    items: [itemsMixed],
+    resizableColumns: [false],
+    editableCells: [false],
+    stickyColumns: [true],
+    stripedRows: [false],
+    wrapLines: [false],
+    selectionType: [undefined],
+    progressiveLoading: [true],
+  },
+  {
+    title: ['Progressive loading with sticky columns and single selection'],
+    items: [itemsMixed],
+    resizableColumns: [false],
+    editableCells: [false],
+    stickyColumns: [true],
+    stripedRows: [false],
+    wrapLines: [false],
+    selectionType: ['single'],
+    progressiveLoading: [true],
+  },
+  {
+    title: ['Progressive loading with striped rows and multi selection'],
+    items: [itemsMixed],
+    resizableColumns: [true],
+    editableCells: [false],
+    stickyColumns: [false],
+    stripedRows: [true],
+    wrapLines: [false],
+    selectionType: ['multi'],
+    progressiveLoading: [true],
+  },
 ]);
 
 export default () => {
@@ -152,6 +186,7 @@ export default () => {
           permutations={permutations}
           render={permutation => (
             <Table
+              variant="container"
               items={permutation.items}
               header={
                 <Box fontWeight="bold" color="text-status-info">
@@ -216,6 +251,25 @@ export default () => {
                 expandedItems: flatten(permutation.items).filter(item => item.children && item.children.length > 0),
                 onExpandableItemToggle: () => {},
               }}
+              getLoadingStatus={
+                permutation.progressiveLoading
+                  ? item => {
+                      if (!item) {
+                        return 'pending';
+                      }
+                      if (item.name === 'Root-1') {
+                        return 'error';
+                      }
+                      if (item.name === 'Nested-1.3') {
+                        return 'loading';
+                      }
+                      return 'finished';
+                    }
+                  : undefined
+              }
+              renderLoaderPending={({ item }) => `load more for ${item?.name ?? 'root'}`}
+              renderLoaderLoading={({ item }) => `loading items for ${item?.name ?? 'root'}`}
+              renderLoaderError={({ item }) => `error for ${item?.name ?? 'root'}`}
               submitEdit={permutation.editableCells ? () => {} : undefined}
               ariaLabels={{ ...ariaLabels, tableLabel: permutation.title }}
             />

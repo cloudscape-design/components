@@ -8,21 +8,23 @@ import { getBaseProps } from '../internal/base-component';
 import { useSplitPanelContext } from '../internal/context/split-panel-context';
 
 import { SplitPanelProps } from './interfaces';
-import ResizeHandler from './icons/resize-handler';
+import PanelResizeHandle from '../internal/components/panel-resize-handle';
 import PreferencesModal from './preferences-modal';
 import { usePointerEvents } from '../app-layout/utils/use-pointer-events';
 import { useKeyboardEvents } from '../app-layout/utils/use-keyboard-events';
 import { SizeControlProps } from '../app-layout/utils/interfaces';
 
-import styles from './styles.css.js';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { AppLayoutContext } from '../internal/context/app-layout-context';
 import { Transition } from '../internal/components/transition';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { SplitPanelContentSide } from './side';
 import { SplitPanelContentBottom } from './bottom';
 import { useInternalI18n } from '../i18n/context';
+import globalVars from '../internal/styles/global-vars';
+import { createWidgetizedForwardRef } from '../internal/widgets';
+import styles from './styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
 
 export { SplitPanelProps };
 
@@ -71,29 +73,23 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
     const onSliderPointerDown = usePointerEvents(sizeControlProps);
     const onKeyDown = useKeyboardEvents(sizeControlProps);
 
-    const wrappedChildren = (
-      <AppLayoutContext.Provider
-        value={{
-          stickyOffsetTop: topOffset,
-          stickyOffsetBottom: bottomOffset,
-        }}
-      >
-        {children}
-      </AppLayoutContext.Provider>
-    );
+    const contentStyle = {
+      [globalVars.stickyVerticalTopOffset]: topOffset,
+      [globalVars.stickyVerticalBottomOffset]: bottomOffset,
+    };
 
     const panelHeaderId = useUniqueId('split-panel-header');
 
     const wrappedHeader = (
       <div className={styles.header} style={appLayoutMaxWidth}>
-        <h2 className={styles['header-text']} id={panelHeaderId}>
+        <h2 className={clsx(styles['header-text'], testUtilStyles['header-text'])} id={panelHeaderId}>
           {header}
         </h2>
         <div className={styles['header-actions']}>
           {!hidePreferencesButton && isOpen && (
             <>
               <InternalButton
-                className={styles['preferences-button']}
+                className={testUtilStyles['preferences-button']}
                 iconName="settings"
                 variant="icon"
                 onClick={() => setPreferencesOpen(true)}
@@ -107,7 +103,7 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
 
           {isOpen ? (
             <InternalButton
-              className={styles['close-button']}
+              className={testUtilStyles['close-button']}
               iconName={
                 isRefresh && closeBehavior === 'collapse'
                   ? position === 'side'
@@ -123,7 +119,7 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
             />
           ) : position === 'side' ? null : (
             <InternalButton
-              className={styles['open-button']}
+              className={testUtilStyles['open-button']}
               iconName="angle-up"
               variant="icon"
               formAction="none"
@@ -137,23 +133,18 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
     );
 
     const resizeHandle = (
-      <div
+      <PanelResizeHandle
         ref={refs.slider}
-        role="slider"
-        tabIndex={0}
-        aria-label={i18n('i18nStrings.resizeHandleAriaLabel', i18nStrings?.resizeHandleAriaLabel)}
-        aria-valuemax={100}
-        aria-valuemin={0}
+        className={testUtilStyles.slider}
+        ariaLabel={i18n('i18nStrings.resizeHandleAriaLabel', i18nStrings?.resizeHandleAriaLabel)}
         // Allows us to use the logical left/right keys to move the slider left/right,
         // but match aria keyboard behavior of using left/right to decrease/increase
         // the slider value.
-        aria-valuenow={position === 'bottom' ? relativeSize : 100 - relativeSize}
-        className={clsx(styles.slider, styles[`slider-${position}`])}
+        ariaValuenow={position === 'bottom' ? relativeSize : 100 - relativeSize}
+        position={position}
         onKeyDown={onKeyDown}
         onPointerDown={onSliderPointerDown}
-      >
-        <ResizeHandler className={clsx(styles['slider-icon'], styles[`slider-icon-${position}`])} />
-      </div>
+      />
     );
 
     /*
@@ -203,6 +194,7 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
           <>
             {position === 'side' && (
               <SplitPanelContentSide
+                style={contentStyle}
                 resizeHandle={resizeHandle}
                 baseProps={baseProps}
                 isOpen={isOpen}
@@ -214,12 +206,13 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
                 header={wrappedHeader}
                 panelHeaderId={panelHeaderId}
               >
-                {wrappedChildren}
+                {children}
               </SplitPanelContentSide>
             )}
 
             {position === 'bottom' && (
               <SplitPanelContentBottom
+                style={contentStyle}
                 resizeHandle={resizeHandle}
                 baseProps={baseProps}
                 isOpen={isOpen}
@@ -232,7 +225,7 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
                 transitioningElementRef={transitioningElementRef}
                 appLayoutMaxWidth={appLayoutMaxWidth}
               >
-                {wrappedChildren}
+                {children}
               </SplitPanelContentBottom>
             )}
             {isPreferencesOpen && (
@@ -268,3 +261,9 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
     );
   }
 );
+
+export const createWidgetizedSplitPanel = createWidgetizedForwardRef<
+  SplitPanelProps,
+  HTMLElement,
+  typeof SplitPanelImplementation
+>(SplitPanelImplementation);

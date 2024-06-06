@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
-import Autosuggest from '~components/autosuggest';
+import React, { useRef, useState } from 'react';
+import Autosuggest, { AutosuggestProps } from '~components/autosuggest';
 
 const empty = <span>Nothing found</span>;
 const options = [
@@ -15,11 +15,12 @@ export default function AutosuggestPage() {
   const [value, setValue] = useState('');
   const [readOnly, setReadOnly] = useState(false);
   const [hasOptions, setHasOptions] = useState(true);
-
+  const ref = useRef<AutosuggestProps.Ref>(null);
   return (
     <div style={{ padding: 10 }}>
       <h1>Simple autosuggest</h1>
       <Autosuggest
+        ref={ref}
         value={value}
         readOnly={readOnly}
         options={hasOptions ? options : []}
@@ -36,6 +37,7 @@ export default function AutosuggestPage() {
       <button id="set-read-only" onClick={() => setReadOnly(true)}>
         set read only
       </button>
+      <button onClick={() => ref.current?.focus()}>focus</button>
     </div>
   );
 }

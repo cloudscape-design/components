@@ -8,6 +8,9 @@ export type FunnelState = 'default' | 'validating' | 'complete' | 'cancelled';
 
 export interface FunnelContextValue {
   funnelInteractionId: string | undefined;
+  funnelIdentifier?: AnalyticsMetadata['instanceIdentifier'];
+  funnelErrorContext?: AnalyticsMetadata['errorContext'];
+  funnelFlowType?: AnalyticsMetadata['flowType'];
   funnelType: FunnelType;
   funnelNameSelector: string;
   optionalStepNumbers: number[];
@@ -26,7 +29,8 @@ export interface FunnelContextValue {
 }
 
 export interface FunnelStepContextValue {
-  instanceIdentifier?: AnalyticsMetadata['instanceIdentifier'];
+  stepIdentifier?: AnalyticsMetadata['instanceIdentifier'];
+  stepErrorContext?: AnalyticsMetadata['errorContext'];
   stepNameSelector: string;
   stepNumber: number;
   funnelStepProps?: Record<string, string | number | boolean | undefined>;
@@ -39,7 +43,8 @@ export interface FunnelStepContextValue {
 }
 
 export interface FunnelSubStepContextValue {
-  instanceIdentifier?: AnalyticsMetadata['instanceIdentifier'];
+  subStepIdentifier?: AnalyticsMetadata['instanceIdentifier'];
+  subStepErrorContext?: AnalyticsMetadata['errorContext'];
   subStepId: string;
   subStepSelector: string;
   subStepNameSelector: string;

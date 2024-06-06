@@ -2,35 +2,21 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
-import { getContentHeaderClassName } from '../../internal/utils/content-header-utils';
+import { highContrastHeaderClassName } from '../../internal/utils/content-header-utils';
 import { useAppLayoutInternals } from './context';
 import styles from './styles.css.js';
 
 export default function Background() {
-  const {
-    breadcrumbs,
-    hasBackgroundOverlap,
-    hasNotificationsContent,
-    hasStickyBackground,
-    isMobile,
-    stickyNotifications,
-  } = useAppLayoutInternals();
+  const { breadcrumbs, hasBackgroundOverlap, hasNotificationsContent, isMobile, headerVariant } =
+    useAppLayoutInternals();
 
   if (!hasNotificationsContent && (!breadcrumbs || isMobile) && !hasBackgroundOverlap) {
     return null;
   }
 
   return (
-    <div className={clsx(styles.background, getContentHeaderClassName())}>
+    <div className={clsx(styles.background, { [highContrastHeaderClassName]: headerVariant === 'high-contrast' })}>
       <div className={styles['scrolling-background']} />
-
-      {!isMobile && hasStickyBackground && (
-        <div
-          className={clsx(styles['sticky-background'], {
-            [styles['has-sticky-notifications']]: stickyNotifications,
-          })}
-        />
-      )}
     </div>
   );
 }

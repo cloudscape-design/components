@@ -24,9 +24,6 @@
     grid-template-columns: minmax(0, 1fr) 0;
     row-gap: awsui.$space-scaled-l;
   }
-  &:not(.remove-high-contrast-header) {
-    row-gap: awsui.$space-scaled-xl;
-  }
 }
 
 .wizard:not(.refresh) {
@@ -48,14 +45,6 @@
     padding-inline: 0;
     inline-size: 260px;
     box-sizing: border-box;
-    &:not(.remove-high-contrast-header) {
-      @include styles.container-style;
-      padding-block-start: awsui.$space-scaled-m;
-      padding-block-end: awsui.$space-scaled-l;
-      padding-inline-start: awsui.$space-m;
-      padding-inline-end: awsui.$space-l;
-      inline-size: 280px;
-    }
 
     > li {
       display: grid;
@@ -140,7 +129,9 @@
 
     > li.active > a > .circle {
       background-color: awsui.$color-background-control-checked;
-      box-shadow: 0 0 0 3px awsui.$color-background-container-content, 0 0 0 5px awsui.$color-background-control-checked,
+      box-shadow:
+        0 0 0 3px awsui.$color-background-container-content,
+        0 0 0 5px awsui.$color-background-control-checked,
         0 0 0 7px awsui.$color-background-container-content;
     }
 
@@ -155,7 +146,9 @@
 
     > li.disabled > a > .circle {
       background-color: awsui.$color-background-container-content;
-      box-shadow: 0 0 0 2px awsui.$color-text-interactive-disabled, 0 0 0 4px awsui.$color-background-container-content;
+      box-shadow:
+        0 0 0 2px awsui.$color-text-interactive-disabled,
+        0 0 0 4px awsui.$color-background-container-content;
     }
 
     > li.disabled > a > .title {
@@ -164,7 +157,9 @@
 
     > li.enabled > a > .circle {
       background-color: awsui.$color-text-interactive-default;
-      box-shadow: 0 0 0 2px awsui.$color-text-interactive-default, 0 0 0 4px awsui.$color-background-container-content;
+      box-shadow:
+        0 0 0 2px awsui.$color-text-interactive-default,
+        0 0 0 4px awsui.$color-background-container-content;
     }
 
     > li.enabled > a > .title {
@@ -173,7 +168,9 @@
 
     > li.enabled > a:hover > .circle {
       background-color: awsui.$color-background-control-checked;
-      box-shadow: 0 0 0 2px awsui.$color-background-control-checked, 0 0 0 4px awsui.$color-background-container-content;
+      box-shadow:
+        0 0 0 2px awsui.$color-background-control-checked,
+        0 0 0 4px awsui.$color-background-container-content;
     }
 
     > li.enabled > a:hover > .title {
@@ -226,13 +223,6 @@
   @include styles.text-wrapping;
   display: contents;
 
-  > .background {
-    background-color: awsui.$color-background-layout-main;
-    grid-column: 1 / span 2;
-    grid-row: 1;
-    color: awsui.$color-text-body-default;
-  }
-
   > .form-header {
     background-color: awsui.$color-background-layout-main;
     grid-column: 2;
@@ -243,13 +233,6 @@
   > .form-header > .form-header-content {
     padding-block-start: calc(awsui.$space-xl + awsui.$space-scaled-xxxs);
     padding-block-end: awsui.$space-scaled-s;
-  }
-
-  &:not(.remove-high-contrast-header) {
-    > .form-header > .form-header-content {
-      padding-block-start: calc(awsui.$space-l + awsui.$space-scaled-xxs);
-      padding-block-end: awsui.$space-scaled-m;
-    }
   }
 
   > .form-component {

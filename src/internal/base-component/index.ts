@@ -40,6 +40,6 @@ export interface BasePropsWithAnalyticsMetadata {
   __analyticsMetadata?: AnalyticsMetadata;
 }
 
-export function getAnalyticsMetadataProps(props: BasePropsWithAnalyticsMetadata) {
-  return props.__analyticsMetadata;
+export function getAnalyticsMetadataProps(props?: BasePropsWithAnalyticsMetadata) {
+  return props?.__analyticsMetadata;
 }

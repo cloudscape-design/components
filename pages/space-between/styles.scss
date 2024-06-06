@@ -7,15 +7,18 @@
 
 .border-box-outer,
 .box {
-  border: 1px solid tokens.$color-border-status-info;
+  border-block: 1px solid tokens.$color-border-status-info;
+  border-inline: 1px solid tokens.$color-border-status-info;
 }
 
 .border-box-inner {
-  border: 1px solid tokens.$color-border-status-error;
+  border-block: 1px solid tokens.$color-border-status-error;
+  border-inline: 1px solid tokens.$color-border-status-error;
 }
 
 .box {
   background-color: tokens.$color-background-status-info;
   display: inline-block;
-  padding: 1rem;
+  padding-block: 1rem;
+  padding-inline: 1rem;
 }

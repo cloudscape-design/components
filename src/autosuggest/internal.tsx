@@ -139,10 +139,23 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   };
 
   const handlePressArrowDown = () => {
+    if (autosuggestItemsState.items.length - 1 === autosuggestItemsState.highlightedIndex) {
+      autosuggestItemsHandlers.goHomeWithKeyboard();
+      return;
+    }
+
     autosuggestItemsHandlers.moveHighlightWithKeyboard(1);
   };
 
   const handlePressArrowUp = () => {
+    if (
+      (autosuggestItemsState.highlightedOption?.type === 'child' && autosuggestItemsState.highlightedIndex === 1) ||
+      autosuggestItemsState.highlightedIndex === 0
+    ) {
+      autosuggestItemsHandlers.goEndWithKeyboard();
+      return;
+    }
+
     autosuggestItemsHandlers.moveHighlightWithKeyboard(-1);
   };
 

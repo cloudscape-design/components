@@ -34,34 +34,34 @@ export const MockedFunnelMetrics: IFunnelMetrics = {
   },
 
   funnelStepStart(props): void {
-    const stepName = document.querySelector(props.stepNameSelector)?.innerHTML;
+    const stepName = document.querySelector(props.stepNameSelector!)?.innerHTML;
     funnelMetricsLog.push({ action: 'funnelStepStart', props, resolvedProps: { stepName } });
   },
 
   funnelStepComplete(props): void {
-    const stepName = document.querySelector(props.stepNameSelector)?.innerHTML;
+    const stepName = document.querySelector(props.stepNameSelector!)?.innerHTML;
     funnelMetricsLog.push({ action: 'funnelStepComplete', props, resolvedProps: { stepName } });
   },
 
   funnelStepNavigation(props): void {
-    const stepName = document.querySelector(props.stepNameSelector)?.innerHTML;
+    const stepName = document.querySelector(props.stepNameSelector!)?.innerHTML;
     // const subStepAllElements = document.querySelectorAll(props.subStepAllSelector); // TODO: Does not work
 
     funnelMetricsLog.push({ action: 'funnelStepNavigation', props, resolvedProps: { stepName } });
   },
 
   funnelStepError(props): void {
-    const stepName = document.querySelector(props.stepNameSelector)?.innerHTML;
+    const stepName = document.querySelector(props.stepNameSelector!)?.innerHTML;
     funnelMetricsLog.push({ action: 'funnelStepError', props, resolvedProps: { stepName } });
   },
 
   funnelStepChange(props): void {
-    const stepName = document.querySelector(props.stepNameSelector)?.innerHTML;
+    const stepName = document.querySelector(props.stepNameSelector!)?.innerHTML;
     funnelMetricsLog.push({ action: 'funnelStepChange', props, resolvedProps: { stepName } });
   },
 
   funnelSubStepStart(props): void {
-    const stepName = document.querySelector(props.stepNameSelector)?.innerHTML;
+    const stepName = document.querySelector(props.stepNameSelector!)?.innerHTML;
     const subStepName = document.querySelector(props.subStepNameSelector)?.innerHTML;
     const subStepAllElements = document.querySelectorAll(props.subStepAllSelector);
     const subStepElement = document.querySelector(props.subStepSelector);
@@ -74,7 +74,7 @@ export const MockedFunnelMetrics: IFunnelMetrics = {
   },
 
   funnelSubStepComplete(props): void {
-    const stepName = document.querySelector(props.stepNameSelector)?.innerHTML;
+    const stepName = document.querySelector(props.stepNameSelector!)?.innerHTML;
     const subStepName = document.querySelector(props.subStepNameSelector)?.innerHTML;
     const subStepAllElements = document.querySelectorAll(props.subStepAllSelector);
     const subStepElement = document.querySelector(props.subStepSelector);
@@ -87,7 +87,7 @@ export const MockedFunnelMetrics: IFunnelMetrics = {
   },
 
   funnelSubStepError(props): void {
-    const stepName = document.querySelector(props.stepNameSelector)?.innerHTML;
+    const stepName = document.querySelector(props.stepNameSelector!)?.innerHTML;
     const subStepName = document.querySelector(props.subStepNameSelector)?.innerHTML;
     const fieldLabel = document.querySelector(props.fieldLabelSelector!)?.innerHTML;
     const fieldError = document.querySelector(props.fieldErrorSelector!)?.innerHTML;
@@ -100,7 +100,7 @@ export const MockedFunnelMetrics: IFunnelMetrics = {
   },
 
   helpPanelInteracted(props): void {
-    const stepName = document.querySelector(props.stepNameSelector)?.innerHTML;
+    const stepName = document.querySelector(props.stepNameSelector!)?.innerHTML;
     const subStepName = document.querySelector(props.subStepNameSelector)?.innerHTML;
     const subStepElement = document.querySelectorAll(props.subStepSelector);
     const subStepAllElements = document.querySelectorAll(props.subStepAllSelector);
@@ -114,7 +114,7 @@ export const MockedFunnelMetrics: IFunnelMetrics = {
   },
 
   externalLinkInteracted(props): void {
-    const stepName = document.querySelector(props.stepNameSelector)?.innerHTML;
+    const stepName = document.querySelector(props.stepNameSelector!)?.innerHTML;
     const subStepName = document.querySelector(props.subStepNameSelector)?.innerHTML;
     const subStepElement = document.querySelectorAll(props.subStepSelector);
     const subStepAllElements = document.querySelectorAll(props.subStepAllSelector);

@@ -7,9 +7,9 @@ import { InternalButton } from '../../button/internal';
 import SplitPanel from './split-panel';
 import TriggerButton from './trigger-button';
 import { useAppLayoutInternals } from './context';
-import splitPanelStyles from '../../split-panel/styles.css.js';
 import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
+import splitPanelTestUtilStyles from '../../split-panel/test-classes/styles.css.js';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import OverflowMenu from '../drawer/overflow-menu';
 import { splitItems } from '../drawer/drawers-helpers';
@@ -110,7 +110,7 @@ function ActiveDrawer() {
         }
       }}
     >
-      {!isMobile && activeDrawer?.resizable && resizeHandle}
+      {!isMobile && activeDrawer?.resizable && <div className={styles['drawer-slider']}>{resizeHandle}</div>}
       <div className={styles['drawer-content-container']}>
         <div className={clsx(styles['drawer-close-button'])}>
           <InternalButton
@@ -174,6 +174,7 @@ function DesktopTriggers() {
     splitPanelToggle,
     splitPanelReportedHeaderHeight,
     splitPanelReportedSize,
+    headerVariant,
   } = useAppLayoutInternals();
 
   const hasMultipleTriggers = drawersTriggerCount > 1;
@@ -249,6 +250,7 @@ function DesktopTriggers() {
               selected={item.id === activeDrawerId}
               badge={item.badge}
               testId={`awsui-app-layout-trigger-${item.id}`}
+              highContrastHeader={headerVariant === 'high-contrast'}
             />
           );
         })}
@@ -266,6 +268,7 @@ function DesktopTriggers() {
                 className={clsx(styles['drawers-trigger'], testutilStyles['drawers-trigger'], testUtilsClass)}
                 iconName="ellipsis"
                 onClick={onClick}
+                highContrastHeader={headerVariant === 'high-contrast'}
               />
             )}
             onItemClick={({ detail }) => {
@@ -278,11 +281,12 @@ function DesktopTriggers() {
             ariaLabel={splitPanelToggle.ariaLabel}
             ariaControls={splitPanelControlId}
             ariaExpanded={!!isSplitPanelOpen}
-            className={clsx(styles['drawers-trigger'], splitPanelStyles['open-button'])}
+            className={clsx(styles['drawers-trigger'], splitPanelTestUtilStyles['open-button'])}
             iconName="view-vertical"
             onClick={() => handleSplitPanelClick()}
             selected={hasSplitPanel && isSplitPanelOpen}
             ref={splitPanelRefs.toggle}
+            highContrastHeader={headerVariant === 'high-contrast'}
           />
         )}
       </div>

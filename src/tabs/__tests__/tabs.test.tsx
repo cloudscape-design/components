@@ -294,7 +294,7 @@ describe('Tabs', () => {
       expect(changeSpy).not.toHaveBeenCalled();
     });
 
-    test('fires a change event on right and left arrow key press', () => {
+    test('fires a change event on right arrow key press', () => {
       const changeSpy = jest.fn();
       const wrapper = renderTabs(<Tabs tabs={defaultTabs} activeTabId="first" onChange={changeSpy} />).wrapper;
       expect(changeSpy).not.toHaveBeenCalled();
@@ -310,10 +310,16 @@ describe('Tabs', () => {
           },
         })
       );
+    });
+
+    test('fires a change event on left arrow key press', () => {
+      const changeSpy = jest.fn();
+      const wrapper = renderTabs(<Tabs tabs={defaultTabs} activeTabId="first" onChange={changeSpy} />).wrapper;
+      expect(changeSpy).not.toHaveBeenCalled();
 
       pressLeft(wrapper);
 
-      expect(changeSpy).toHaveBeenCalledTimes(2);
+      expect(changeSpy).toHaveBeenCalledTimes(1);
       expect(changeSpy).toHaveBeenCalledWith(
         expect.objectContaining({
           detail: {

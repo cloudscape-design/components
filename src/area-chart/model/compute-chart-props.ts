@@ -3,7 +3,13 @@
 import { AreaChartProps } from '../interfaces';
 import { computePlotPoints, computeDomainX, computeDomainY } from './utils';
 
-import { XDomain, XScaleType, YDomain, YScaleType } from '../../internal/components/cartesian-chart/interfaces';
+import {
+  ChartDomain,
+  XDomain,
+  XScaleType,
+  YDomain,
+  YScaleType,
+} from '../../internal/components/cartesian-chart/interfaces';
 import {
   createXTicks,
   createYTicks,
@@ -13,6 +19,7 @@ import {
 import { ChartScale, NumericChartScale } from '../../internal/components/cartesian-chart/scales';
 
 export default function computeChartProps<T extends AreaChartProps.DataTypes>({
+  isRtl,
   series,
   xDomain: externalXDomain,
   yDomain: externalYDomain,
@@ -21,6 +28,7 @@ export default function computeChartProps<T extends AreaChartProps.DataTypes>({
   height,
   width,
 }: {
+  isRtl?: boolean;
   series: readonly AreaChartProps.Series<T>[];
   xDomain?: XDomain<T>;
   yDomain?: YDomain;
@@ -29,9 +37,9 @@ export default function computeChartProps<T extends AreaChartProps.DataTypes>({
   height: number;
   width: number;
 }) {
-  const xDomain = externalXDomain || computeDomainX(series);
+  const xDomain = externalXDomain ? ([...externalXDomain] as unknown as ChartDomain<T>) : computeDomainX(series);
   const xTickCount = getXTickCount(width);
-  const xScale = new ChartScale(xScaleType, xDomain, [0, width]);
+  const xScale = new ChartScale(xScaleType, xDomain, !isRtl ? [0, width] : [width, 0]);
   const xTicks = xScale.domain.length > 0 ? createXTicks(xScale, xTickCount) : [];
 
   const yDomain = externalYDomain || computeDomainY(series, yScaleType);

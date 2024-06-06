@@ -723,6 +723,23 @@ Each Drawer is an item in the drawers wrapper with the following properties:
       "type": "string",
     },
     Object {
+      "description": "Determines the visual treatment for the breadcrumbs and notifications slots. Specifically:
+* \`default\` - Does not apply any visual treatment.
+* \`high-contrast\` - Applies high-contrast to both slots. Use in conjunction with \`headerVariant=\\"high-contrast\\"\` in ContentLayout.",
+      "inlineType": Object {
+        "name": "",
+        "type": "union",
+        "values": Array [
+          "default",
+          "high-contrast",
+        ],
+      },
+      "name": "headerVariant",
+      "optional": true,
+      "type": "string",
+      "visualRefreshTag": "",
+    },
+    Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
@@ -1364,6 +1381,8 @@ The event \`detail\` contains the index of the corresponding item.",
 * \`info\` (ReactNode) - Info link for the form field.
 * \`errorText\` ((item, itemIndex) => ReactNode) - Error message text to display as a control validation message.
    It renders the form field as invalid if the returned value is not \`null\` or \`undefined\`.
+* \`warningText\` ((item, itemIndex) => ReactNode) - Warning message text to display as a control validation message.
+   It renders the form field in a warning state if the returned value is not \`null\` or \`undefined\`.
 * \`constraintText\` ((item, itemIndex) => ReactNode) - Text to display as a constraint message below the field.
 * \`control\` ((item, itemIndex) => ReactNode) - A control to use as the input for the field.
 
@@ -1398,6 +1417,11 @@ A maximum of four fields are supported.
             "name": "removeButtonAriaLabel",
             "optional": true,
             "type": "(item: T) => string",
+          },
+          Object {
+            "name": "warningIconAriaLabel",
+            "optional": true,
+            "type": "string",
           },
         ],
         "type": "object",
@@ -2018,6 +2042,19 @@ to the correct offset, before performing any operations on them. Use the element
 by the \`findOptionsContainer\` test utility for this.
 ",
       "name": "virtualScroll",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Overrides the warning state. Usually the warning state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.
+When you use it, provide additional context with
+information on the input state, and associate it
+with the input using \`ariaDescribedby\`.",
+      "name": "warning",
       "optional": true,
       "type": "boolean",
     },
@@ -3126,6 +3163,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "angle-up",
           "angle-down",
           "arrow-left",
+          "arrow-right",
           "audio-full",
           "audio-half",
           "audio-off",
@@ -3160,6 +3198,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "group-active",
           "group",
           "heart",
+          "heart-filled",
           "insert-row",
           "key",
           "keyboard",
@@ -3189,6 +3228,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "status-positive",
           "status-stopped",
           "status-warning",
+          "subtract-minus",
           "suggestions",
           "thumbs-down-filled",
           "thumbs-down",
@@ -3339,6 +3379,11 @@ Object {
         "name": "ButtonDropdownProps.ItemClickDetails",
         "properties": Array [
           Object {
+            "name": "checked",
+            "optional": true,
+            "type": "false | true",
+          },
+          Object {
             "name": "external",
             "optional": true,
             "type": "false | true",
@@ -3371,6 +3416,11 @@ modifier keys (that is, CTRL, ALT, SHIFT, META), and the item has an \`href\` se
       "detailInlineType": Object {
         "name": "ButtonDropdownProps.ItemClickDetails",
         "properties": Array [
+          Object {
+            "name": "checked",
+            "optional": true,
+            "type": "false | true",
+          },
           Object {
             "name": "external",
             "optional": true,
@@ -3459,35 +3509,41 @@ because fixed positioning results in a slight, visible lag when scrolling comple
       "type": "string",
     },
     Object {
-      "description": "Array of objects, each having the following properties:
+      "description": "Array of objects with a number of suppoted types.
+The following properties are supported across all types:
+
+- \`type\` (string) - The type of the item. Can be \`action\`, \`group\`, \`checkbox\`. Defaults to \`action\` if \`items\` undefined and \`group\` otherwise.
 - \`id\` (string) - allows to identify the item that the user clicked on. Mandatory for individual items, optional for categories.
-
 - \`text\` (string) - description shown in the menu for this item. Mandatory for individual items, optional for categories.
-
 - \`lang\` (string) - (Optional) The language of the item, provided as a BCP 47 language tag.
-
 - \`disabled\` (boolean) - whether the item is disabled. Disabled items are not clickable, but they can be highlighted with the keyboard to make them accessible.
-
 - \`disabledReason\` (string) - (Optional) Displays text near the \`text\` property when item is disabled. Use to provide additional context.
-
-- \`items\` (ReadonlyArray<Item>): an array of item objects. Items will be rendered as nested menu items but only for the first nesting level, multi-nesting is not supported.
-An item which belongs to nested group has the following properties: \`id\`, \`text\`, \`disabled\` and \`description\`.
-
 - \`description\` (string) - additional data that will be passed to a \`data-description\` attribute.
 
+### action
+
 - \`href\` (string) - (Optional) Defines the target URL of the menu item, turning it into a link.
-
 - \`external\` (boolean) - Marks a menu item as external by adding an icon after the menu item text. The link will open in a new tab when clicked. Note that this only works when \`href\` is also provided.
-
 - \`externalIconAriaLabel\` (string) - Adds an \`aria-label\` to the external icon.
-
 - \`iconName\` (string) - (Optional) Specifies the name of the icon, used with the [icon component](/components/icon/).
-
 - \`iconAlt\` (string) - (Optional) Specifies alternate text for the icon when using \`iconUrl\`.
-
 - \`iconUrl\` (string) - (Optional) Specifies the URL of a custom icon.
-
 - \`iconSvg\` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the \`svg\` slot of the [icon component](/components/icon/).
+
+### checkbox
+
+When \`type\` is set to \\"checkbox\\", the values set to \`href\`, \`external\` and \`externalIconAriaLabel\` will be ignored.
+
+- \`checked\` (boolean) - Controls the state of the checkbox item.
+- \`iconName\` (string) - (Optional) Specifies the name of the icon, used with the [icon component](/components/icon/).
+- \`iconAlt\` (string) - (Optional) Specifies alternate text for the icon when using \`iconUrl\`.
+- \`iconUrl\` (string) - (Optional) Specifies the URL of a custom icon.
+- \`iconSvg\` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the \`svg\` slot of the [icon component](/components/icon/).
+
+### group
+
+- \`items\` (ReadonlyArray<Item>) - an array of item objects. Items will be rendered as nested menu items but only for the first nesting level, multi-nesting is not supported.
+An item which belongs to nested group has the following properties: \`id\`, \`text\`, \`disabled\`, and \`description\`.
 
 ",
       "name": "items",
@@ -4061,8 +4117,8 @@ The \`cardDefinition\` property handles the display of this data.
       "description": "Use this function to announce page changes to screen reader users.
 The function argument takes the following properties:
 * \`firstIndex\` (number) - The provided \`firstIndex\` property which defaults to 1 when not defined.
-* \`totalItemsCount\` (optional, number) - The provided \`totalItemsCount\` property.
-* \`lastIndex\` (number) - The index of the last visible item of the table.",
+* \`lastIndex\` (number) - The index of the last visible item of the table.
+* \`totalItemsCount\` (optional, number) - The provided \`totalItemsCount\` property.",
       "name": "renderAriaLive",
       "optional": true,
       "type": "(data: CardsProps.LiveAnnouncement) => string",
@@ -5470,6 +5526,13 @@ Object {
       "type": "string",
     },
     Object {
+      "description": "Set it to \`true\` if your page uses the [app layout component](/components/app-layout/) with \`disableContentPaddings=true\`.
+In that case, the content layout will become sensitive to the state of drawers in app layout and leave the necessary padding to avoid visual overlap with those elements.",
+      "name": "defaultPadding",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "description": "Determines whether the layout has an overlap between the header and content.
 If true, the overlap will be removed.",
       "name": "disableOverlap",
@@ -5478,14 +5541,64 @@ If true, the overlap will be removed.",
       "visualRefreshTag": "",
     },
     Object {
+      "description": "Use this property to style the background of the header.
+It can be:
+* a string representing the CSS \`background\` value for the header element.
+* a function that receives the mode (\\"light\\" or \\"dark\\") as a parameter and returns a string.
+
+ The header background spans across the full available width, independent of the specified \`maxContentWidth\`.
+ If set, the component will not add the default background color to the header.
+",
+      "name": "headerBackgroundStyle",
+      "optional": true,
+      "type": "((mode: \\"dark\\" | \\"light\\") => string) | string",
+    },
+    Object {
+      "description": "Determines the visual treatment for the header. Specifically:
+* \`default\` - Does not apply any visual treatment.
+* \`high-contrast\` - Applies high-contrast to the background of the header and the elements contained within it.
+    If you are using the AppLayout component, set \`headerVariant=\\"high-contrast\\"\` to apply the same treatment to the breadcrumbs and notifications slots.
+* \`divider\` - Adds a horizontal separator between the header and the content.",
+      "inlineType": Object {
+        "name": "",
+        "type": "union",
+        "values": Array [
+          "default",
+          "high-contrast",
+          "divider",
+        ],
+      },
+      "name": "headerVariant",
+      "optional": true,
+      "type": "string",
+      "visualRefreshTag": "\`high-contrast\` headerVariant",
+    },
+    Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
       "type": "string",
     },
+    Object {
+      "description": "Maximum width for the content.
+If set, all elements of the content layout (header, content, notifications, breadcrumbs) will be center-aligned and have the desired maximum width.
+If not set, all elements will occupy the full available width.",
+      "name": "maxContentWidth",
+      "optional": true,
+      "type": "number",
+    },
   ],
   "regions": Array [
+    Object {
+      "description": "Use this slot to add the [breadcrumb group component](/components/breadcrumb-group/) to the content layout:
+* if your application does not use the [app layout component](/components/app-layout/), which already offers a \`breadcrumbs\` slot.
+* If your page uses the [app layout component](/components/app-layout/) with \`disableContentPaddings=true\`.
+Do not use in conjunction with the \`breadcrumbs\` slot in the [app layout component](/components/app-layout/).
+",
+      "isDefault": false,
+      "name": "breadcrumbs",
+    },
     Object {
       "description": "Use this slot to render the main content of the layout below the header.",
       "displayName": "content",
@@ -5496,6 +5609,21 @@ If true, the overlap will be removed.",
       "description": "Use this slot to render the header content for the layout.",
       "isDefault": false,
       "name": "header",
+    },
+    Object {
+      "description": "Use this slot to display [notifications](/components/flashbar/) to the content layout:
+* If your page does not use the [app layout component](/components/app-layout/), which already offers a \`notifications\` slot.
+* If your page uses the [app layout component](/components/app-layout/) with \`disableContentPaddings=true\`.
+Do not use in conjunction with the \`notifications\` slot in the [app layout component](/components/app-layout/).
+",
+      "isDefault": false,
+      "name": "notifications",
+    },
+    Object {
+      "description": "Use this slot to add a secondary element inside the header. The secondary element will be displayed next to main header and occupy 25% of the available space.
+Note that the secondary header will not have a high-contrast treatement, even if you set \`headerVariant\` to \`high-contrast\`.",
+      "isDefault": false,
+      "name": "secondaryHeader",
     },
   ],
   "releaseStatus": "stable",
@@ -5737,6 +5865,19 @@ Don't use read-only inputs outside a form.
       "name": "value",
       "optional": false,
       "type": "string",
+    },
+    Object {
+      "description": "Overrides the warning state. Usually the warning state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.
+When you use it, provide additional context with
+information on the input state, and associate it
+with the input using \`ariaDescribedby\`.",
+      "name": "warning",
+      "optional": true,
+      "type": "boolean",
     },
   ],
   "regions": Array [],
@@ -6063,6 +6204,19 @@ By default the starting day of the week is defined by the locale, but you can us
       "name": "value",
       "optional": false,
       "type": "string",
+    },
+    Object {
+      "description": "Overrides the warning state. Usually the warning state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.
+When you use it, provide additional context with
+information on the input state, and associate it
+with the input using \`ariaDescribedby\`.",
+      "name": "warning",
+      "optional": true,
+      "type": "boolean",
     },
   ],
   "regions": Array [],
@@ -6580,6 +6734,19 @@ or a relative time range.",
       "optional": false,
       "type": "DateRangePickerProps.Value | null",
     },
+    Object {
+      "description": "Overrides the warning state. Usually the warning state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.
+When you use it, provide additional context with
+information on the input state, and associate it
+with the input using \`ariaDescribedby\`.",
+      "name": "warning",
+      "optional": true,
+      "type": "boolean",
+    },
   ],
   "regions": Array [],
   "releaseStatus": "stable",
@@ -6899,6 +7066,12 @@ is provided by its parent form field component.
       "type": "ReadonlyArray<null | string>",
     },
     Object {
+      "description": "An array of file warnings corresponding to the files in the \`value\`.",
+      "name": "fileWarnings",
+      "optional": true,
+      "type": "ReadonlyArray<null | string>",
+    },
+    Object {
       "description": "An object containing all the localized strings required by the component:
 * \`uploadButtonText\` (function): A function to render the text of the file upload button. It takes \`multiple\` attribute to define plurality.
 * \`dropzoneText\` (function): A function to render the text shown in the dropzone. It takes \`multiple\` attribute to define plurality.
@@ -6906,6 +7079,7 @@ is provided by its parent form field component.
 * \`limitShowFewer\` (string): The text of the show more tokens button.
 * \`limitShowMore\` (string): The text of the show fewer tokens button.
 * \`errorIconAriaLabel\` (string): The ARIA label to be shown on the error file icon.
+* \`warningIconAriaLabel\` (string): The ARIA label to be shown on the warning file icon.
 * \`formatFileSize\` (function): (Optional) A function that takes file size in bytes, and produces a formatted string.
 * \`formatFileLastModified\` (function): (Optional) A function that takes the files last modified date, and produces a formatted string.",
       "inlineType": Object {
@@ -6918,7 +7092,7 @@ is provided by its parent form field component.
           },
           Object {
             "name": "errorIconAriaLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -6950,6 +7124,11 @@ is provided by its parent form field component.
             "name": "uploadButtonText",
             "optional": false,
             "type": "(multiple: boolean) => string",
+          },
+          Object {
+            "name": "warningIconAriaLabel",
+            "optional": true,
+            "type": "string",
           },
         ],
         "type": "object",
@@ -7020,9 +7199,14 @@ If you want to clear the selection, use empty array.",
       "name": "constraintText",
     },
     Object {
-      "description": "Text that displays as a validation message.",
+      "description": "Text that displays as a validation error message.",
       "isDefault": false,
       "name": "errorText",
+    },
+    Object {
+      "description": "Text that displays as a validation warning message.",
+      "isDefault": false,
+      "name": "warningText",
     },
   ],
   "releaseStatus": "stable",
@@ -7185,9 +7369,10 @@ Object {
     },
     Object {
       "defaultValue": "\\"full-page\\"",
+      "deprecatedTag": "You can safely remove this property as there is no longer any visual difference between \`full-page\` and \`embedded\` variants.",
       "description": "Specify a form variant with one of the following:
-* \`full-page\` - Use this variant when the form contains the entire content of the page. Full page variants implement the high contrast header and content behavior automatically.
-* \`embedded\` - Use this variant when the form doesn't occupy the full page. This variant doesn't use a high contrast header.",
+* \`full-page\` - Use this variant when the form contains the entire content of the page.
+* \`embedded\` - Use this variant when the form doesn't occupy the full page.",
       "inlineType": Object {
         "name": "",
         "type": "union",
@@ -7199,7 +7384,6 @@ Object {
       "name": "variant",
       "optional": true,
       "type": "string",
-      "visualRefreshTag": "",
     },
   ],
   "regions": Array [
@@ -7268,6 +7452,11 @@ This only works well if you're using a single control in the form field.
             "optional": true,
             "type": "string",
           },
+          Object {
+            "name": "warningIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
         ],
         "type": "object",
       },
@@ -7317,7 +7506,7 @@ additional information about valid formats, etc.",
       "name": "description",
     },
     Object {
-      "description": "Text that displays as a validation message. If this is set to a
+      "description": "Text that displays as a validation error message. If this is set to a
 non-empty string, it will render the form field as invalid.",
       "isDefault": false,
       "name": "errorText",
@@ -7336,6 +7525,12 @@ non-empty string, it will render the form field as invalid.",
       "description": "A secondary control. You can use this for custom actions and content.",
       "isDefault": false,
       "name": "secondaryControl",
+    },
+    Object {
+      "description": "Text that displays as a validation warning message. If this is set to a
+non-empty string, it will render the form field in a warning state.",
+      "isDefault": false,
+      "name": "warningText",
     },
   ],
   "releaseStatus": "stable",
@@ -7688,6 +7883,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "angle-up",
           "angle-down",
           "arrow-left",
+          "arrow-right",
           "audio-full",
           "audio-half",
           "audio-off",
@@ -7722,6 +7918,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "group-active",
           "group",
           "heart",
+          "heart-filled",
           "insert-row",
           "key",
           "keyboard",
@@ -7751,6 +7948,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "status-positive",
           "status-stopped",
           "status-warning",
+          "subtract-minus",
           "suggestions",
           "thumbs-down-filled",
           "thumbs-down",
@@ -8223,6 +8421,19 @@ be slightly different across browsers.",
       "optional": false,
       "type": "string",
     },
+    Object {
+      "description": "Overrides the warning state. Usually the warning state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.
+When you use it, provide additional context with
+information on the input state, and associate it
+with the input using \`ariaDescribedby\`.",
+      "name": "warning",
+      "optional": true,
+      "type": "boolean",
+    },
   ],
   "regions": Array [],
   "releaseStatus": "stable",
@@ -8675,6 +8886,43 @@ Make sure to update the \`data\` property when any of your custom filters change
 exports[`Documenter definition for link matches the snapshot: link 1`] = `
 Object {
   "events": Array [
+    Object {
+      "cancelable": false,
+      "description": "Called when the user clicks on the link. Do not use this handler for navigation, use the \`onFollow\` event instead.",
+      "detailInlineType": Object {
+        "name": "ClickDetail",
+        "properties": Array [
+          Object {
+            "name": "altKey",
+            "optional": false,
+            "type": "boolean",
+          },
+          Object {
+            "name": "button",
+            "optional": false,
+            "type": "number",
+          },
+          Object {
+            "name": "ctrlKey",
+            "optional": false,
+            "type": "boolean",
+          },
+          Object {
+            "name": "metaKey",
+            "optional": false,
+            "type": "boolean",
+          },
+          Object {
+            "name": "shiftKey",
+            "optional": false,
+            "type": "boolean",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "ClickDetail",
+      "name": "onClick",
+    },
     Object {
       "cancelable": true,
       "description": "Called when a link is clicked without any modifier keys. If the link has no \`href\` provided, it will be called on
@@ -9923,6 +10171,19 @@ by the \`findOptionsContainer\` test utility for this.
       "optional": true,
       "type": "boolean",
     },
+    Object {
+      "description": "Overrides the warning state. Usually the warning state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.
+When you use it, provide additional context with
+information on the input state, and associate it
+with the input using \`ariaDescribedby\`.",
+      "name": "warning",
+      "optional": true,
+      "type": "boolean",
+    },
   ],
   "regions": Array [
     Object {
@@ -10632,6 +10893,14 @@ that don't have visible text, and to distinguish between multiple triggers with 
       "optional": true,
       "type": "string",
     },
+    Object {
+      "defaultValue": "true",
+      "description": "Specifies if the text trigger content should wrap. If you set it to false, it prevents the text from
+wrapping and truncates it with an ellipsis.",
+      "name": "wrapTriggerText",
+      "optional": true,
+      "type": "boolean",
+    },
   ],
   "regions": Array [
     Object {
@@ -10665,6 +10934,12 @@ Use the \`buttonText\` property and the \`onButtonClick\` event listener of the 
   "functions": Array [],
   "name": "ProgressBar",
   "properties": Array [
+    Object {
+      "description": "Adds \`aria-describedby\` to the progress bar.",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
     Object {
       "description": "Adds an \`aria-label\` to the progress bar.",
       "name": "ariaLabel",
@@ -11329,6 +11604,12 @@ filter queries only after an initial filter is applied.",
 When using this slot, make sure to still provide a mechanism to clear all filters.",
       "isDefault": false,
       "name": "customFilterActions",
+    },
+    Object {
+      "description": "Constraint text that's displayed below the filtering input.
+Use this to provide additional information about supported filters.",
+      "isDefault": false,
+      "name": "filteringConstraintText",
     },
     Object {
       "description": "Displayed when there are no options to display.
@@ -12505,6 +12786,19 @@ by the \`findOptionsContainer\` test utility for this.
       "optional": true,
       "type": "boolean",
     },
+    Object {
+      "description": "Overrides the warning state. Usually the warning state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.
+When you use it, provide additional context with
+information on the input state, and associate it
+with the input using \`ariaDescribedby\`.",
+      "name": "warning",
+      "optional": true,
+      "type": "boolean",
+    },
   ],
   "regions": Array [
     Object {
@@ -12741,6 +13035,197 @@ Object that represents an expandable group of links.
       "name": "items",
       "optional": true,
       "type": "ReadonlyArray<SideNavigationProps.Item>",
+    },
+  ],
+  "regions": Array [],
+  "releaseStatus": "stable",
+}
+`;
+
+exports[`Documenter definition for slider matches the snapshot: slider 1`] = `
+Object {
+  "events": Array [
+    Object {
+      "cancelable": false,
+      "description": "Called when the user selects a value.
+The event \`detail\` contains the current \`value\`.",
+      "detailInlineType": Object {
+        "name": "SliderProps.ChangeDetail",
+        "properties": Array [
+          Object {
+            "name": "value",
+            "optional": false,
+            "type": "number",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "SliderProps.ChangeDetail",
+      "name": "onChange",
+    },
+  ],
+  "functions": Array [],
+  "name": "Slider",
+  "properties": Array [
+    Object {
+      "description": "Adds \`aria-describedby\` to the component. If you're using this component within a form field,
+don't set this property because the form field component automatically sets it.
+Use this property if the component isn't surrounded by a form field, or you want to override the value
+automatically set by the form field (for example, if you have two components within a single form field).
+
+To use it correctly, define an ID for each element that you want to use as a description
+and set the property to a string of each ID separated by spaces (for example, \`\\"id1 id2 id3\\"\`).
+",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds an aria-description for slider labels.
+Use when sliders have formatted reference values.
+",
+      "name": "ariaDescription",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds an \`aria-label\` to the native control.
+Use this if you don't have a visible label for this control.
+",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds \`aria-labelledby\` to the component. If you're using this component within a form field,
+don't set this property because the form field component automatically sets it.
+Use this property if the component isn't surrounded by a form field, or you want to override the value
+automatically set by the form field (for example, if you have two components within a single form field).
+
+To use it correctly, define an ID for the element you want to use as label and set the property to that ID.
+",
+      "name": "ariaLabelledby",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Specifies the ID of the native form element. You can use it to relate
+a label element's \`for\` attribute to this control.
+It defaults to an automatically generated ID that
+is provided by its parent form field component.
+",
+      "name": "controlId",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Whether or not the slider is disabled.",
+      "name": "disabled",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Hides the colored fill line, so only the handle is visible.",
+      "name": "hideFillLine",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "An object containing all the necessary localized strings required by the component.",
+      "i18nTag": true,
+      "inlineType": Object {
+        "name": "SliderProps.I18nStrings",
+        "properties": Array [
+          Object {
+            "name": "valueTextRange",
+            "optional": false,
+            "type": "(previousValue: string, value: number, nextValue: string) => string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "SliderProps.I18nStrings",
+    },
+    Object {
+      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Overrides the invalidation state. Usually the invalid state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.",
+      "name": "invalid",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Indicates the maximum value.",
+      "name": "max",
+      "optional": false,
+      "type": "number",
+    },
+    Object {
+      "description": "Indicates the minimum value.",
+      "name": "min",
+      "optional": false,
+      "type": "number",
+    },
+    Object {
+      "description": "Labels shown between the minimum and maximum values.",
+      "name": "referenceValues",
+      "optional": true,
+      "type": "ReadonlyArray<number>",
+    },
+    Object {
+      "description": "How big the step size is.",
+      "name": "step",
+      "optional": true,
+      "type": "number",
+    },
+    Object {
+      "description": "Show the tick marks along the slider line. Use with stepped sliders, except in extreme cases.",
+      "name": "tickMarks",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Indicates the current value.",
+      "name": "value",
+      "optional": true,
+      "type": "number",
+    },
+    Object {
+      "description": "Formats the values. This will format both the labels and the tooltip.",
+      "name": "valueFormatter",
+      "optional": true,
+      "type": "(value: number) => string",
+    },
+    Object {
+      "description": "Overrides the warning state. Usually the warning state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.
+When you use it, provide additional context with
+information on the input state, and associate it
+with the input using \`ariaDescribedby\`.",
+      "name": "warning",
+      "optional": true,
+      "type": "boolean",
     },
   ],
   "regions": Array [],
@@ -13387,20 +13872,20 @@ add a meaningful description to the whole selection.
   The comparator must implement ascending ordering, and the output is inverted automatically in case of descending order.
   If present, the \`sortingField\` property is ignored.
 * \`editConfig\` (EditConfig) - Enables inline editing in column when present. The value is used to configure the editing behavior.
-* * \`editConfig.ariaLabel\` (string) - Specifies a label for the edit control. Visually hidden but read by screen readers.
-* * \`editConfig.errorIconAriaLabel\` (string) - Specifies an ariaLabel for the error icon that is displayed when the validation fails.
-* * \`editConfig.editIconAriaLabel\` (string) - Specifies an alternate text for the edit icon used in column header.
-* * \`editConfig.constraintText\` (string) - Constraint text that is displayed below the edit control.
-* * \`editConfig.disabledReason\` ((item) => string | undefined) - A function that determines whether inline edit for certain items is disabled, and provides a reason why.
+  * \`editConfig.ariaLabel\` (string) - Specifies a label for the edit control. Visually hidden but read by screen readers.
+  * \`editConfig.errorIconAriaLabel\` (string) - Specifies an ariaLabel for the error icon that is displayed when the validation fails.
+  * \`editConfig.editIconAriaLabel\` (string) - Specifies an alternate text for the edit icon used in column header.
+  * \`editConfig.constraintText\` (string) - Constraint text that is displayed below the edit control.
+  * \`editConfig.disabledReason\` ((item) => string | undefined) - A function that determines whether inline edit for certain items is disabled, and provides a reason why.
            Return a string from the function to disable inline edit with a reason. Return \`undefined\` (or no return) from the function allow inline edit.
-* * \`editConfig.validation\` ((item, value) => string) - A function that allows you to validate the value of the edit control.
+  * \`editConfig.validation\` ((item, value) => string) - A function that allows you to validate the value of the edit control.
            Return a string from the function to display an error message. Return \`undefined\` (or no return) from the function to indicate that the value is valid.
-* * \`editConfig.editingCell\` ((item, cellContext) => ReactNode) - Determines the display of a cell's content when inline editing is active on a cell;
+  * \`editConfig.editingCell\` ((item, cellContext) => ReactNode) - Determines the display of a cell's content when inline editing is active on a cell;
        You receive the current table row \`item\` and a \`cellContext\` object as arguments.
        The \`cellContext\` object contains the following properties:
- *  * \`cellContext.currentValue\` - State to keep track of a value in input fields while editing.
- *  * \`cellContext.setValue\` - Function to update \`currentValue\`. This should be called when the value in input field changes.
- * \`isRowHeader\` (boolean) - Specifies that cells in this column should be used as row headers.",
+    * \`cellContext.currentValue\` - State to keep track of a value in input fields while editing.
+    * \`cellContext.setValue\` - Function to update \`currentValue\`. This should be called when the value in input field changes.
+* \`isRowHeader\` (boolean) - Specifies that cells in this column should be used as row headers.",
       "name": "columnDefinitions",
       "optional": false,
       "type": "ReadonlyArray<TableProps.ColumnDefinition<T>>",
@@ -13484,6 +13969,28 @@ By default, the keyboard navigation is active for tables with expandable rows.
       "type": "number",
     },
     Object {
+      "description": "A function that specifies the current status of loading more items. It is called once for the entire
+table with \`item=null\` and then for each expanded item. The function result is one of the four possible states:
+* \`pending\` - Indicates that no request in progress, but more options may be loaded.
+* \`loading\` - Indicates that data fetching is in progress.
+* \`finished\` - Indicates that loading has finished and no more requests are expected.
+* \`error\` - Indicates that an error occurred during fetch.",
+      "inlineType": Object {
+        "name": "TableProps.GetLoadingStatus",
+        "parameters": Array [
+          Object {
+            "name": "item",
+            "type": "T | null",
+          },
+        ],
+        "returnType": "TableProps.LoadingStatus",
+        "type": "function",
+      },
+      "name": "getLoadingStatus",
+      "optional": true,
+      "type": "TableProps.GetLoadingStatus<T>",
+    },
+    Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
@@ -13531,12 +14038,31 @@ by the \`cell\` property of each column definition in the \`columnDefinitions\` 
       "description": "Use this function to announce page changes to screen reader users.
 The function argument takes the following properties:
 * \`firstIndex\` (number) - The provided \`firstIndex\` property which defaults to 1 when not defined.
-* \`totalItemsCount\` (optional, number) - The provided \`totalItemsCount\` property.
 * \`lastIndex\` (number) - The index of the last visible item of the table.
+* \`visibleItemsCount\` (number) - The number of rendered table items.
+* \`totalItemsCount\` (optional, number) - The provided \`totalItemsCount\` property.
 Important: in tables with expandable rows the \`firstIndex\`, \`lastIndex\`, and \`totalItemsCount\` reflect the top-level items only.",
       "name": "renderAriaLive",
       "optional": true,
       "type": "(data: TableProps.LiveAnnouncement) => string",
+    },
+    Object {
+      "description": "Defines loader properties for error state.",
+      "name": "renderLoaderError",
+      "optional": true,
+      "type": "(detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode",
+    },
+    Object {
+      "description": "Defines loader properties for loading state.",
+      "name": "renderLoaderLoading",
+      "optional": true,
+      "type": "(detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode",
+    },
+    Object {
+      "description": "Defines loader properties for pending state.",
+      "name": "renderLoaderPending",
+      "optional": true,
+      "type": "(detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode",
     },
     Object {
       "description": "Specifies if columns can be resized. If set to \`true\`, users can resize the columns in the table.",
@@ -13630,7 +14156,9 @@ Use it in conjunction with the sticky columns preference of the
       "type": "TableProps.StickyColumns",
     },
     Object {
-      "description": "If set to \`true\`, the table header remains visible when the user scrolls down.",
+      "description": "If set to \`true\`, the table header remains visible when the user scrolls down.
+Do not use \`stickyHeader\` conditionally. Instead, keep its value constant during the component lifecycle.
+",
       "name": "stickyHeader",
       "optional": true,
       "type": "boolean",
@@ -14712,6 +15240,19 @@ inadvertently sending data (such as user passwords) to third parties.
       "optional": false,
       "type": "string",
     },
+    Object {
+      "description": "Overrides the warning state. Usually the warning state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.
+When you use it, provide additional context with
+information on the input state, and associate it
+with the input using \`ariaDescribedby\`.",
+      "name": "warning",
+      "optional": true,
+      "type": "boolean",
+    },
   ],
   "regions": Array [],
   "releaseStatus": "stable",
@@ -15067,6 +15608,19 @@ When using 12-hour format, there is no option for picking AM or PM.",
       "name": "value",
       "optional": false,
       "type": "string",
+    },
+    Object {
+      "description": "Overrides the warning state. Usually the warning state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.
+When you use it, provide additional context with
+information on the input state, and associate it
+with the input using \`ariaDescribedby\`.",
+      "name": "warning",
+      "optional": true,
+      "type": "boolean",
     },
   ],
   "regions": Array [],

@@ -11,6 +11,8 @@ declare const window: ExtendedWindow;
 
 const wrapper = createWrapper();
 const FUNNEL_INTERACTION_ID = 'mocked-funnel-id';
+const FUNNEL_IDENTIFIER = 'single-page-demo';
+const STEP_IDENTIFIER = FUNNEL_IDENTIFIER;
 
 class SinglePageCreate extends BasePageObject {
   getFormAttribute(attribute: string) {
@@ -48,17 +50,18 @@ describe('Single-page create', () => {
         componentVersion: expect.any(String),
         funnelNameSelector: expect.any(String),
         funnelVersion: expect.any(String),
-        instanceIdentifier: expect.any(String),
+        funnelIdentifier: FUNNEL_IDENTIFIER,
         flowType: 'create',
         funnelType: 'single-page',
         optionalStepNumbers: [],
-        theme: 'vr',
+        componentTheme: 'vr',
         totalFunnelSteps: 1,
         stepConfiguration: [
           {
             name: 'Form Header',
             isOptional: false,
             number: 1,
+            stepIdentifier: FUNNEL_IDENTIFIER,
           },
         ],
       });
@@ -69,12 +72,13 @@ describe('Single-page create', () => {
       expect(funnelStepStartEvent.props).toEqual({
         stepNameSelector: expect.any(String),
         subStepAllSelector: expect.any(String),
-        instanceIdentifier: expect.any(String),
+        funnelIdentifier: FUNNEL_IDENTIFIER,
+        stepIdentifier: STEP_IDENTIFIER,
         funnelInteractionId: FUNNEL_INTERACTION_ID,
         stepName: 'Form Header',
         subStepConfiguration: [
-          { name: 'Container 1 - header', number: 1 },
-          { name: 'Container 2 - header', number: 2 },
+          { name: 'Container 1 - header', number: 1, subStepIdentifier: 'container-1' },
+          { name: 'Container 2 - header', number: 2, subStepIdentifier: 'container-2' },
         ],
         stepNumber: 1,
         totalSubSteps: 2,
@@ -106,8 +110,10 @@ describe('Single-page create', () => {
         subStepNameSelector: expect.any(String),
         subStepAllSelector: expect.any(String),
         subStepSelector: expect.any(String),
-        instanceIdentifier: expect.any(String),
         funnelInteractionId: FUNNEL_INTERACTION_ID,
+        funnelIdentifier: FUNNEL_IDENTIFIER,
+        stepIdentifier: STEP_IDENTIFIER,
+        subStepIdentifier: 'container-1',
         stepName: 'Form Header',
         stepNumber: 1,
         subStepName: 'Container 1 - header',
@@ -127,8 +133,10 @@ describe('Single-page create', () => {
         subStepNameSelector: expect.any(String),
         subStepAllSelector: expect.any(String),
         subStepSelector: expect.any(String),
-        instanceIdentifier: expect.any(String),
         funnelInteractionId: FUNNEL_INTERACTION_ID,
+        funnelIdentifier: FUNNEL_IDENTIFIER,
+        stepIdentifier: STEP_IDENTIFIER,
+        subStepIdentifier: 'container-1',
         stepName: 'Form Header',
         stepNumber: 1,
         subStepName: 'Container 1 - header',
@@ -148,8 +156,10 @@ describe('Single-page create', () => {
         subStepNameSelector: expect.any(String),
         subStepAllSelector: expect.any(String),
         subStepSelector: expect.any(String),
-        instanceIdentifier: expect.any(String),
         funnelInteractionId: FUNNEL_INTERACTION_ID,
+        funnelIdentifier: FUNNEL_IDENTIFIER,
+        stepIdentifier: STEP_IDENTIFIER,
+        subStepIdentifier: 'container-2',
         stepName: 'Form Header',
         stepNumber: 1,
         subStepName: 'Container 2 - header',
@@ -169,8 +179,10 @@ describe('Single-page create', () => {
         subStepNameSelector: expect.any(String),
         subStepAllSelector: expect.any(String),
         subStepSelector: expect.any(String),
-        instanceIdentifier: expect.any(String),
         funnelInteractionId: FUNNEL_INTERACTION_ID,
+        funnelIdentifier: FUNNEL_IDENTIFIER,
+        stepIdentifier: STEP_IDENTIFIER,
+        subStepIdentifier: 'container-2',
         stepName: 'Form Header',
         stepNumber: 1,
         subStepName: 'Container 2 - header',
@@ -201,17 +213,20 @@ describe('Single-page create', () => {
 
       const [, , funnelCompleteEvent, funnelSuccessfulEvent, funnelStepCompleteEvent] = funnelLog;
       expect(funnelCompleteEvent.props).toEqual({
+        funnelIdentifier: FUNNEL_IDENTIFIER,
         funnelInteractionId: FUNNEL_INTERACTION_ID,
       });
       expect(funnelSuccessfulEvent.props).toEqual({
+        funnelIdentifier: FUNNEL_IDENTIFIER,
         funnelInteractionId: FUNNEL_INTERACTION_ID,
       });
 
       expect(funnelStepCompleteEvent.props).toEqual({
         stepNameSelector: expect.any(String),
         subStepAllSelector: expect.any(String),
-        instanceIdentifier: expect.any(String),
         funnelInteractionId: FUNNEL_INTERACTION_ID,
+        funnelIdentifier: FUNNEL_IDENTIFIER,
+        stepIdentifier: STEP_IDENTIFIER,
         stepName: 'Form Header',
         stepNumber: 1,
         totalSubSteps: 2,
@@ -232,6 +247,7 @@ describe('Single-page create', () => {
       const funnelCancelledEvent = funnelLog[2];
       expect(funnelCancelledEvent.props).toEqual({
         funnelInteractionId: FUNNEL_INTERACTION_ID,
+        funnelIdentifier: FUNNEL_IDENTIFIER,
       });
     })
   );
@@ -246,6 +262,7 @@ describe('Single-page create', () => {
       const [, , funnelCancelledEvent] = funnelLog;
       expect(funnelCancelledEvent.props).toEqual({
         funnelInteractionId: FUNNEL_INTERACTION_ID,
+        funnelIdentifier: FUNNEL_IDENTIFIER,
       });
     })
   );
@@ -267,9 +284,15 @@ describe('Single-page create', () => {
         subStepSelector: expect.any(String),
         subStepAllSelector: expect.any(String),
         funnelInteractionId: FUNNEL_INTERACTION_ID,
+        funnelIdentifier: FUNNEL_IDENTIFIER,
+        stepIdentifier: STEP_IDENTIFIER,
+        subStepIdentifier: 'container-1',
         stepName: 'Form Header',
         stepNumber: 1,
         subStepName: 'Container 1 - header',
+        fieldErrorContext: 'errors.triggered',
+        fieldIdentifier: 'field1',
+        subStepErrorContext: 'errors.fields',
       });
 
       expect(funnelSubStepErrorEvent.resolvedProps).toEqual({
@@ -301,6 +324,8 @@ describe('Single-page create', () => {
       const funnelErrorEvent = funnelLog[5];
       expect(funnelErrorEvent.props).toEqual({
         funnelInteractionId: FUNNEL_INTERACTION_ID,
+        funnelIdentifier: FUNNEL_IDENTIFIER,
+        funnelErrorContext: 'errors.validation',
       });
     })
   );
@@ -320,6 +345,9 @@ describe('Single-page create', () => {
         subStepNameSelector: expect.any(String),
         subStepSelector: expect.any(String),
         funnelInteractionId: FUNNEL_INTERACTION_ID,
+        funnelIdentifier: FUNNEL_IDENTIFIER,
+        stepIdentifier: STEP_IDENTIFIER,
+        subStepIdentifier: 'container-1',
         stepName: 'Form Header',
         subStepName: 'Container 1 - header',
         stepNumber: 1,
@@ -349,6 +377,9 @@ describe('Single-page create', () => {
         subStepNameSelector: expect.any(String),
         subStepSelector: expect.any(String),
         funnelInteractionId: FUNNEL_INTERACTION_ID,
+        funnelIdentifier: FUNNEL_IDENTIFIER,
+        stepIdentifier: STEP_IDENTIFIER,
+        subStepIdentifier: 'container-2',
         stepName: 'Form Header',
         subStepName: 'Container 2 - header',
         stepNumber: 1,
@@ -391,7 +422,7 @@ describe('Embedded Form', () => {
         funnelVersion: expect.any(String),
         funnelType: 'single-page',
         optionalStepNumbers: [],
-        theme: 'vr',
+        componentTheme: 'vr',
         totalFunnelSteps: 1,
         stepConfiguration: [
           {

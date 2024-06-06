@@ -24,3 +24,8 @@ $dashboard-content-widths: (
   styles.$breakpoint-x-large: 1620px,
   styles.$breakpoint-xx-large: 2160px,
 );
+
+// should be above sticky notifications
+$drawer-z-index: 830;
+// should be above mobile toolbar
+$drawer-z-index-mobile: 1001;

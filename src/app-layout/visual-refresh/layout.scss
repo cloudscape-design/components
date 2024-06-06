@@ -41,8 +41,9 @@ explicitly set in script.
   #{custom-props.$notificationsGap}: 0px;
   #{custom-props.$notificationsHeight}: 0px;
   #{custom-props.$offsetTop}: var(#{custom-props.$headerHeight});
-  #{custom-props.$offsetTopWithNotifications}: 0px;
   #{custom-props.$overlapHeight}: #{awsui.$space-dark-header-overlap-distance};
+  #{custom-props.$togglesLeftWidth}: 0px;
+  #{custom-props.$togglesRightWidth}: 0px;
   background-color: awsui.$color-background-layout-main;
   color: awsui.$color-text-body-default;
   display: grid;
@@ -137,37 +138,6 @@ explicitly set in script.
   }
 
   /*
-  The offset top value for components with position: sticky (AppBar, Navigation, 
-  Notifications, Tools) will be set to the header height value. The offset top value 
-  for AppLayout contentMain children with position: sticky will be the combined value 
-  of the header and notifications height in addition to the notifications top margin
-  and some additional vertical space for aesthetics.
-  */
-  &:not(.has-sticky-notifications):not(.has-sticky-background) {
-    #{custom-props.$offsetTopWithNotifications}: var(#{custom-props.$headerHeight});
-  }
-
-  &:not(.has-sticky-notifications).has-sticky-background {
-    #{custom-props.$offsetTopWithNotifications}: calc(var(#{custom-props.$headerHeight}) + #{awsui.$space-scaled-s});
-  }
-
-  /* stylelint-disable scss/operator-no-newline-after */
-  &.has-sticky-notifications:not(.has-sticky-background) {
-    #{custom-props.$offsetTopWithNotifications}: calc(
-      var(#{custom-props.$offsetTop}) + var(#{custom-props.$notificationsGap}) +
-        var(#{custom-props.$notificationsHeight}) + #{awsui.$space-xxxs}
-    );
-  }
-
-  &.has-sticky-notifications.has-sticky-background {
-    #{custom-props.$offsetTopWithNotifications}: calc(
-      var(#{custom-props.$offsetTop}) + var(#{custom-props.$notificationsGap}) +
-        var(#{custom-props.$notificationsHeight}) + #{awsui.$space-scaled-s}
-    );
-  }
-  /* stylelint-enable scss/operator-no-newline-after */
-
-  /*
   In desktop viewports the content gap property for the left and right
   columns should override the default of zero if the navigationHide
   or toolsHide property is set. This ensures adequate horizontal space
@@ -199,11 +169,6 @@ explicitly set in script.
     #{custom-props.$contentGapRight}: #{awsui.$space-l};
   }
 
-  // Vertically align the notifications with the trigger buttons
-  &.content-first-child-notifications {
-    #{custom-props.$notificationsGap}: #{awsui.$space-xs};
-  }
-
   // Vertically align the breadcrumbs with the trigger buttons
   &.has-breadcrumbs {
     #{custom-props.$breadcrumbsGap}: #{awsui.$space-scaled-m};
@@ -225,13 +190,8 @@ explicitly set in script.
     #{custom-props.$mainGap}: #{awsui.$space-xs};
   }
 
-  // Set the Main gap when it follows the Breadcrumbs without an overlap
-  &.has-breadcrumbs:not(.has-header).is-overlap-disabled {
-    #{custom-props.$mainGap}: #{awsui.$space-scaled-m};
-  }
-
-  // Set the Main gap when it follows the Breadcrumbs with an overlap
-  &.has-breadcrumbs:not(.has-header):not(.is-overlap-disabled) {
+  // Set the Main gap when it follows the Breadcrumbs
+  &.has-breadcrumbs:not(.has-header) {
     #{custom-props.$mainGap}: #{awsui.$space-scaled-xxs};
   }
 
@@ -241,9 +201,11 @@ explicitly set in script.
   }
 
   // Set the Main gap when it is the first page content
-  &.content-first-child-main:not(.is-overlap-disabled),
-  &.content-first-child-main.is-overlap-disabled:not(.disable-content-paddings) {
+  &.content-first-child-main:not(.disable-content-paddings) {
     #{custom-props.$mainGap}: #{awsui.$space-scaled-s};
+  }
+  &.content-first-child-main.disable-content-paddings {
+    #{custom-props.$mainGap}: 0px;
   }
 
   /*
@@ -251,10 +213,6 @@ explicitly set in script.
   components for mobile viewports.
   */
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
-    &.content-first-child-notifications {
-      #{custom-props.$notificationsGap}: #{awsui.$space-scaled-s};
-    }
-
     &.content-first-child-header {
       #{custom-props.$headerGap}: #{awsui.$space-scaled-s};
     }
@@ -264,13 +222,20 @@ explicitly set in script.
     }
 
     &.content-first-child-notifications:not(.has-breadcrumbs):not(.has-header),
-    &.content-first-child-main:not(.is-overlap-disabled) {
+    &.content-first-child-main:not(.disable-content-paddings) {
       #{custom-props.$mainGap}: #{awsui.$space-scaled-s};
     }
 
-    &.content-first-child-main.is-overlap-disabled:not(.disable-content-paddings) {
-      #{custom-props.$mainGap}: #{awsui.$space-scaled-m};
+    &.content-first-child-main.disable-content-paddings {
+      #{custom-props.$mainGap}: 0px;
     }
+  }
+
+  &.has-left-toggles-gutter {
+    #{custom-props.$togglesLeftWidth}: calc(#{awsui.$space-layout-toggle-padding} + 36px);
+  }
+  &.has-right-toggles-gutter {
+    #{custom-props.$togglesRightWidth}: calc(#{awsui.$space-layout-toggle-padding} + 36px);
   }
 }
 
@@ -292,17 +257,6 @@ notifications top margin and some additional vertical space for aesthetics.
 
   &.has-split-panel.split-panel-position-bottom {
     #{custom-props.$mainTemplateRows}: repeat(2, auto);
-  }
-
-  &:not(.has-sticky-notifications) {
-    #{custom-props.$offsetTopWithNotifications}: 0px;
-  }
-
-  // #{awsui.$space-xs} token needs to align with the top margin in the notifications CSS
-  &.has-sticky-notifications {
-    #{custom-props.$offsetTopWithNotifications}: calc(
-      var(#{custom-props.$notificationsHeight}) + #{awsui.$space-xs} + #{awsui.$space-xxs}
-    );
   }
 }
 

@@ -91,20 +91,20 @@ export interface TableProps<T = any> extends BaseComponentProps {
    *   The comparator must implement ascending ordering, and the output is inverted automatically in case of descending order.
    *   If present, the `sortingField` property is ignored.
    * * `editConfig` (EditConfig) - Enables inline editing in column when present. The value is used to configure the editing behavior.
-   * * * `editConfig.ariaLabel` (string) - Specifies a label for the edit control. Visually hidden but read by screen readers.
-   * * * `editConfig.errorIconAriaLabel` (string) - Specifies an ariaLabel for the error icon that is displayed when the validation fails.
-   * * * `editConfig.editIconAriaLabel` (string) - Specifies an alternate text for the edit icon used in column header.
-   * * * `editConfig.constraintText` (string) - Constraint text that is displayed below the edit control.
-   * * * `editConfig.disabledReason` ((item) => string | undefined) - A function that determines whether inline edit for certain items is disabled, and provides a reason why.
+   *   * `editConfig.ariaLabel` (string) - Specifies a label for the edit control. Visually hidden but read by screen readers.
+   *   * `editConfig.errorIconAriaLabel` (string) - Specifies an ariaLabel for the error icon that is displayed when the validation fails.
+   *   * `editConfig.editIconAriaLabel` (string) - Specifies an alternate text for the edit icon used in column header.
+   *   * `editConfig.constraintText` (string) - Constraint text that is displayed below the edit control.
+   *   * `editConfig.disabledReason` ((item) => string | undefined) - A function that determines whether inline edit for certain items is disabled, and provides a reason why.
    *            Return a string from the function to disable inline edit with a reason. Return `undefined` (or no return) from the function allow inline edit.
-   * * * `editConfig.validation` ((item, value) => string) - A function that allows you to validate the value of the edit control.
+   *   * `editConfig.validation` ((item, value) => string) - A function that allows you to validate the value of the edit control.
    *            Return a string from the function to display an error message. Return `undefined` (or no return) from the function to indicate that the value is valid.
-   * * * `editConfig.editingCell` ((item, cellContext) => ReactNode) - Determines the display of a cell's content when inline editing is active on a cell;
+   *   * `editConfig.editingCell` ((item, cellContext) => ReactNode) - Determines the display of a cell's content when inline editing is active on a cell;
    *        You receive the current table row `item` and a `cellContext` object as arguments.
    *        The `cellContext` object contains the following properties:
-   *  *  * `cellContext.currentValue` - State to keep track of a value in input fields while editing.
-   *  *  * `cellContext.setValue` - Function to update `currentValue`. This should be called when the value in input field changes.
-   *  * `isRowHeader` (boolean) - Specifies that cells in this column should be used as row headers.
+   *     * `cellContext.currentValue` - State to keep track of a value in input fields while editing.
+   *     * `cellContext.setValue` - Function to update `currentValue`. This should be called when the value in input field changes.
+   * * `isRowHeader` (boolean) - Specifies that cells in this column should be used as row headers.
    */
   columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T>>;
   /**
@@ -271,6 +271,8 @@ export interface TableProps<T = any> extends BaseComponentProps {
 
   /**
    * If set to `true`, the table header remains visible when the user scrolls down.
+   *
+   * Do not use `stickyHeader` conditionally. Instead, keep its value constant during the component lifecycle.
    */
   stickyHeader?: boolean;
 
@@ -311,8 +313,9 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * Use this function to announce page changes to screen reader users.
    * The function argument takes the following properties:
    * * `firstIndex` (number) - The provided `firstIndex` property which defaults to 1 when not defined.
-   * * `totalItemsCount` (optional, number) - The provided `totalItemsCount` property.
    * * `lastIndex` (number) - The index of the last visible item of the table.
+   * * `visibleItemsCount` (number) - The number of rendered table items.
+   * * `totalItemsCount` (optional, number) - The provided `totalItemsCount` property.
    * Important: in tables with expandable rows the `firstIndex`, `lastIndex`, and `totalItemsCount` reflect the top-level items only.
    */
   renderAriaLive?: (data: TableProps.LiveAnnouncement) => string;
@@ -344,6 +347,28 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * * `onExpandableItemToggle` (TableProps.OnExpandableItemToggle<T>) - Called when an item's expand toggle is clicked.
    */
   expandableRows?: TableProps.ExpandableRows<T>;
+
+  /**
+   * A function that specifies the current status of loading more items. It is called once for the entire
+   * table with `item=null` and then for each expanded item. The function result is one of the four possible states:
+   * * `pending` - Indicates that no request in progress, but more options may be loaded.
+   * * `loading` - Indicates that data fetching is in progress.
+   * * `finished` - Indicates that loading has finished and no more requests are expected.
+   * * `error` - Indicates that an error occurred during fetch.
+   **/
+  getLoadingStatus?: TableProps.GetLoadingStatus<T>;
+  /**
+   * Defines loader properties for pending state.
+   */
+  renderLoaderPending?: (detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode;
+  /**
+   * Defines loader properties for loading state.
+   */
+  renderLoaderLoading?: (detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode;
+  /**
+   * Defines loader properties for error state.
+   */
+  renderLoaderError?: (detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode;
 }
 
 export namespace TableProps {
@@ -466,6 +491,7 @@ export namespace TableProps {
   export interface LiveAnnouncement {
     firstIndex: number;
     lastIndex: number;
+    visibleItemsCount: number;
     totalItemsCount?: number;
   }
 
@@ -506,4 +532,27 @@ export namespace TableProps {
     item: T;
     expanded: boolean;
   }
+
+  export type GetLoadingStatus<T> = (item: null | T) => TableProps.LoadingStatus;
+
+  export type LoadingStatus = 'pending' | 'loading' | 'error' | 'finished';
+
+  export interface RenderLoaderDetail<T> {
+    item: null | T;
+  }
+}
+
+export type TableRow<T> = TableDataRow<T> | TableLoaderRow<T>;
+
+export interface TableDataRow<T> {
+  type: 'data';
+  item: T;
+}
+
+export interface TableLoaderRow<T> {
+  type: 'loader';
+  item: null | T;
+  level: number;
+  status: TableProps.LoadingStatus;
+  from: number;
 }

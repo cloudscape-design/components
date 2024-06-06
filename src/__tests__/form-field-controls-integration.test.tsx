@@ -62,6 +62,10 @@ const formFieldControlComponents = [
     componentName: 'file-upload',
     findNativeElement: (wrapper: ElementWrapper) => wrapper.findFileUpload()?.findNativeInput().getElement(),
   },
+  {
+    componentName: 'slider',
+    findNativeElement: (wrapper: ElementWrapper) => wrapper.findSlider()?.findNativeInput().getElement(),
+  },
 ];
 
 formFieldControlComponents.forEach(({ componentName, findNativeElement }) => {

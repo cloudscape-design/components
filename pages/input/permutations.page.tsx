@@ -11,6 +11,7 @@ const permutations = createPermutations<InputProps>([
     disabled: [false, true],
     type: ['text', 'password', 'search', 'email', 'url'] as const,
     invalid: [false, true],
+    warning: [false, true],
     value: [
       '',
       'Short value',
