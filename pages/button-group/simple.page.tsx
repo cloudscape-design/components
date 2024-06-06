@@ -170,6 +170,7 @@ export default function ButtonGroupPage() {
           <h1>Few Buttons</h1>
           <ol>
             <li>fallback</li>
+            <li>actionPopoverText</li>
             <li>no actionPopoverText</li>
             <li>loading</li>
             <li>disabled</li>
