@@ -158,6 +158,12 @@ function createSelectionTree<T>({
     }
     const isIndeterminate = children.length > 0 && !allChildrenSelected && someChildrenSelected;
     effectivelyIndeterminateMap.set(item, isIndeterminate);
+
+    // Fix invalid selection state when both parent and all children are explicitly set as selected.
+    if (selfSelectedSet.has(item) && children.length > 0 && !someChildrenSelected) {
+      effectivelySelectedMap.set(item, false);
+    }
+
     return isIndeterminate;
   };
 
