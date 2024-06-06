@@ -63,7 +63,9 @@ export function Token({
         )}
       >
         {children}
-        {onDismiss && <DismissButton disabled={disabled} dismissLabel={dismissLabel} onDismiss={onDismiss} />}
+        {onDismiss && (
+          <DismissButton disabled={disabled} dismissLabel={dismissLabel} onDismiss={onDismiss} readOnly={readOnly} />
+        )}
       </div>
       {errorText && (
         <FormFieldError id={errorId} errorIconAriaLabel={errorIconAriaLabel}>

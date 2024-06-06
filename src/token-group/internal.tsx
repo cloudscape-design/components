@@ -56,10 +56,6 @@ export default function InternalTokenGroup({
             ariaLabel={item.label}
             dismissLabel={item.dismissLabel}
             onDismiss={() => {
-              if (readOnly) {
-                return;
-              }
-
               fireNonCancelableEvent(onDismiss, { itemIndex });
               setRemovedItemIndex(itemIndex);
             }}
