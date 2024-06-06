@@ -85,18 +85,14 @@ const ButtonTrigger = (
   };
 
   if (!readOnly) {
-    const handlers: ButtonHTMLAttributes<HTMLButtonElement> = {
+    attributes = {
+      ...attributes,
       onKeyDown: onKeyDown && (event => fireKeyboardEvent(onKeyDown, event)),
       onKeyUp: onKeyUp && (event => fireKeyboardEvent(onKeyUp, event)),
       onMouseDown: onMouseDown && (event => fireCancelableEvent(onMouseDown, {}, event)),
       onClick: onClick && (event => fireCancelableEvent(onClick, {}, event)),
       onFocus: onFocus && (event => fireCancelableEvent(onFocus, {}, event)),
       onBlur: onBlur && (event => fireCancelableEvent(onBlur, { relatedTarget: event.relatedTarget }, event)),
-    };
-
-    attributes = {
-      ...attributes,
-      ...handlers,
     };
   }
 
