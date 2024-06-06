@@ -51,7 +51,6 @@ export function Token({
       aria-label={ariaLabel}
       aria-describedby={errorText ? errorId : warningText ? warningId : undefined}
       aria-disabled={disabled}
-      aria-readonly={readOnly ? 'true' : undefined}
     >
       <div
         className={clsx(

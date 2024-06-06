@@ -59,7 +59,7 @@ const ButtonTrigger = (
   ref: React.Ref<HTMLButtonElement>
 ) => {
   const baseProps = getBaseProps(restProps);
-  const attributes: ButtonHTMLAttributes<HTMLButtonElement> = {
+  let attributes: ButtonHTMLAttributes<HTMLButtonElement> = {
     ...baseProps,
     type: 'button',
     className: clsx(
@@ -81,15 +81,24 @@ const ButtonTrigger = (
     'aria-describedby': ariaDescribedby,
     'aria-haspopup': ariaHasPopup ?? 'listbox',
     'aria-controls': ariaControls,
-    'aria-readonly': readOnly ? 'true' : undefined,
-    onKeyDown: readOnly ? undefined : onKeyDown && (event => fireKeyboardEvent(onKeyDown, event)),
-    onKeyUp: readOnly ? undefined : onKeyUp && (event => fireKeyboardEvent(onKeyUp, event)),
-    onMouseDown: readOnly ? undefined : onMouseDown && (event => fireCancelableEvent(onMouseDown, {}, event)),
-    onClick: readOnly ? undefined : onClick && (event => fireCancelableEvent(onClick, {}, event)),
-    onFocus: onFocus && (event => fireCancelableEvent(onFocus, {}, event)),
-    onBlur: onBlur && (event => fireCancelableEvent(onBlur, { relatedTarget: event.relatedTarget }, event)),
     autoFocus,
   };
+
+  if (!readOnly) {
+    const handlers: ButtonHTMLAttributes<HTMLButtonElement> = {
+      onKeyDown: onKeyDown && (event => fireKeyboardEvent(onKeyDown, event)),
+      onKeyUp: onKeyUp && (event => fireKeyboardEvent(onKeyUp, event)),
+      onMouseDown: onMouseDown && (event => fireCancelableEvent(onMouseDown, {}, event)),
+      onClick: onClick && (event => fireCancelableEvent(onClick, {}, event)),
+      onFocus: onFocus && (event => fireCancelableEvent(onFocus, {}, event)),
+      onBlur: onBlur && (event => fireCancelableEvent(onBlur, { relatedTarget: event.relatedTarget }, event)),
+    };
+
+    attributes = {
+      ...attributes,
+      ...handlers,
+    };
+  }
 
   if (invalid) {
     attributes['aria-invalid'] = invalid;
