@@ -19,6 +19,7 @@ export default function KeyValueScenario() {
           <Box padding="s">
             <Box variant="h2">1 column</Box>
             <KeyValuePairs
+              layout="columns"
               columns={[
                 {
                   items: [
@@ -34,6 +35,7 @@ export default function KeyValueScenario() {
           <Box padding="s">
             <Box variant="h2">3 columns</Box>
             <KeyValuePairs
+              layout="columns"
               columns={[
                 {
                   items: [
@@ -95,6 +97,7 @@ export default function KeyValueScenario() {
           <Box padding="s">
             <Box variant="h2">With info link</Box>
             <KeyValuePairs
+              layout="columns"
               columns={[
                 {
                   items: [
@@ -116,6 +119,7 @@ export default function KeyValueScenario() {
             <Box variant="h2">With column title and multiple rows</Box>
             <InternalSpaceBetween size="l">
               <KeyValuePairs
+                layout="columns"
                 columns={[
                   {
                     title: 'Column Title',
@@ -150,6 +154,7 @@ export default function KeyValueScenario() {
                 ]}
               />
               <KeyValuePairs
+                layout="columns"
                 columns={[
                   {
                     title: 'Column Title',
@@ -184,6 +189,99 @@ export default function KeyValueScenario() {
                 ]}
               />
             </InternalSpaceBetween>
+          </Box>
+          <Box padding="s">
+            <Box variant="h2">With auto layout</Box>
+            <KeyValuePairs
+              layout="auto"
+              columnsNumber={4}
+              pairs={[
+                {
+                  label: 'Label for key',
+                  value: 'Value',
+                },
+                {
+                  label: 'Label for key',
+                  value: (
+                    <Link external={true} href="#">
+                      Value with external link
+                    </Link>
+                  ),
+                },
+                {
+                  label: 'Label for key',
+                  value: 'Value',
+                },
+                {
+                  label: 'Label for key',
+                  value: (
+                    <Link external={true} href="#">
+                      Value with external link
+                    </Link>
+                  ),
+                },
+                {
+                  label: 'Label for key',
+                  value: 'Value',
+                },
+                {
+                  label: 'Label for key',
+                  value: (
+                    <Link external={true} href="#">
+                      Value with external link
+                    </Link>
+                  ),
+                },
+                {
+                  label: 'Label for key',
+                  value: 'Value',
+                },
+                {
+                  label: 'Label for key',
+                  value: (
+                    <Link external={true} href="#">
+                      Value with external link
+                    </Link>
+                  ),
+                },
+                {
+                  label: 'Label for key',
+                  value: 'Value',
+                },
+                {
+                  label: 'Label for key',
+                  value: (
+                    <Link external={true} href="#">
+                      Value with external link
+                    </Link>
+                  ),
+                },
+                {
+                  label: 'Label for key',
+                  value: 'Value',
+                },
+                {
+                  label: 'Label for key',
+                  value: (
+                    <Link external={true} href="#">
+                      Value with external link
+                    </Link>
+                  ),
+                },
+                {
+                  label: 'Label for key',
+                  value: 'Value',
+                },
+                {
+                  label: 'Label for key',
+                  value: (
+                    <Link external={true} href="#">
+                      Value with external link
+                    </Link>
+                  ),
+                },
+              ]}
+            />
           </Box>
         </SpaceBetween>
       </ScreenshotArea>

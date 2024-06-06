@@ -10,10 +10,25 @@ import Box from '../box/internal';
 
 export { KeyValuePairsProps };
 
-const InternalKeyValuePairs = React.forwardRef(
-  ({ columns, className, ...rest }: KeyValuePairsProps, ref: React.Ref<HTMLDivElement>) => {
+const InternalKeyValuePair = (props: KeyValuePairsProps.KeyValuePair) => (
+  <div className={styles.item}>
+    <dt className={styles.label}>
+      <label className={styles['key-label']}>{props.label}</label>
+      <InfoLinkLabelContext.Provider value={props.label}>
+        {props.info && <span className={styles.info}>{props.info}</span>}
+      </InfoLinkLabelContext.Provider>
+    </dt>
+    <dd className={styles.description}>{props.value}</dd>
+  </div>
+);
+
+const InternalKeyValuePairs = React.forwardRef((props: KeyValuePairsProps, ref: React.Ref<HTMLDivElement>) => {
+  const { layout, className } = props;
+  if (layout === 'columns') {
+    const { columns } = props;
+
     return (
-      <div {...rest} className={clsx(styles['key-value-pairs'], className)} ref={ref}>
+      <div id={props.id} className={clsx(styles['key-value-pairs'], className)} ref={ref}>
         <ColumnLayout columns={Math.min(columns.length, 4)} variant="text-grid">
           {columns.map((column, columnIndex) => (
             <div className={styles.column} key={columnIndex}>
@@ -24,15 +39,7 @@ const InternalKeyValuePairs = React.forwardRef(
               )}
               <dl className={styles.list}>
                 {column.items.map((item, itemIndex) => (
-                  <div key={itemIndex} className={styles.item}>
-                    <dt className={styles.label}>
-                      <label className={styles['key-label']}>{item.label}</label>
-                      <InfoLinkLabelContext.Provider value={item.label}>
-                        {item.info && <span className={styles.info}>{item.info}</span>}
-                      </InfoLinkLabelContext.Provider>
-                    </dt>
-                    <dd className={styles.description}>{item.value}</dd>
-                  </div>
+                  <InternalKeyValuePair key={itemIndex} {...item} />
                 ))}
               </dl>
             </div>
@@ -41,6 +48,18 @@ const InternalKeyValuePairs = React.forwardRef(
       </div>
     );
   }
-);
+
+  const { columnsNumber, pairs } = props;
+
+  return (
+    <div id={props.id} className={clsx(styles['key-value-pairs'], className)} ref={ref}>
+      <ColumnLayout columns={columnsNumber} variant="text-grid">
+        {pairs.map((item, index) => (
+          <InternalKeyValuePair key={index} {...item} />
+        ))}
+      </ColumnLayout>
+    </div>
+  );
+});
 
 export default InternalKeyValuePairs;

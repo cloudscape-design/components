@@ -3,7 +3,30 @@
 import { BaseComponentProps } from '../internal/base-component';
 import React from 'react';
 
-export interface KeyValuePairsProps extends BaseComponentProps {
+interface KeyValuePairsAutoLayoutProps {
+  /**
+   * Defines a way how key-value pairs will be arranged.
+   * * `auto`
+   * * `columns`
+   */
+  layout: 'auto';
+  /**
+   * Flat list of ungrouped key-value pairs.
+   */
+  pairs: ReadonlyArray<KeyValuePairsProps.KeyValuePair>;
+  /**
+   * Defines a number of columns.
+   */
+  columnsNumber: number;
+}
+
+interface KeyValuePairsColumnLayoutProps {
+  /**
+   * Defines a way how key-value pairs will be arranged.
+   * * `auto`
+   * * `columns`
+   */
+  layout: 'columns';
   /**
    * An array of column definitions. A maximum of 4 columns are supported.
    * Each column definition has the following properties:
@@ -17,13 +40,15 @@ export interface KeyValuePairsProps extends BaseComponentProps {
   columns: ReadonlyArray<KeyValuePairsProps.Column>;
 }
 
+export type KeyValuePairsProps = (KeyValuePairsAutoLayoutProps | KeyValuePairsColumnLayoutProps) & BaseComponentProps;
+
 export namespace KeyValuePairsProps {
   export interface Column {
     title?: string;
-    items: ReadonlyArray<KeyValuePairs>;
+    items: ReadonlyArray<KeyValuePair>;
   }
 
-  export interface KeyValuePairs {
+  export interface KeyValuePair {
     label: string;
     value: React.ReactNode;
     info?: React.ReactNode;

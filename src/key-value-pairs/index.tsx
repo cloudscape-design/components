@@ -9,11 +9,11 @@ import InternalKeyValuePairs from './internal';
 
 export { KeyValuePairsProps };
 
-export default function KeyValuePairs({ columns, ...rest }: KeyValuePairsProps) {
+export default function KeyValuePairs({ ...rest }: KeyValuePairsProps) {
   const { __internalRootRef } = useBaseComponent('KeyValuePairs');
   const baseProps = getBaseProps(rest);
 
-  return <InternalKeyValuePairs columns={columns} {...baseProps} ref={__internalRootRef} />;
+  return <InternalKeyValuePairs {...rest} {...baseProps} ref={__internalRootRef} />;
 }
 
 applyDisplayName(KeyValuePairs, 'KeyValuePairs');
