@@ -17,6 +17,7 @@ const ItemElement = React.forwardRef(
     const buttonRef = useRef<HTMLDivElement>(null);
     const [popoverOpen, setPopoverOpen] = useState(false);
     const [isActionPopover, setIsActionPopover] = useState(false);
+    const hasIcon = item.iconName || item.iconUrl || item.iconSvg;
 
     const onClickHandler = (event: CustomEvent<ClickDetail>) => {
       if (item.actionPopoverText) {
@@ -56,7 +57,7 @@ const ItemElement = React.forwardRef(
           loading={item.loading}
           loadingText={item.loadingText}
           disabled={item.disabled}
-          iconName={item.iconName}
+          iconName={hasIcon ? item.iconName : 'close'}
           iconAlt={item.text}
           iconSvg={item.iconSvg}
           ariaLabel={item.text}

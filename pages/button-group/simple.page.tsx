@@ -12,7 +12,6 @@ const items1: ButtonGroupProps.ItemOrGroup[] = [
     items: [
       {
         id: 'thump-up',
-        iconName: 'thumbs-up',
         text: 'Like',
         actionPopoverText: 'Liked',
       },
@@ -170,6 +169,7 @@ export default function ButtonGroupPage() {
         <article>
           <h1>Few Buttons</h1>
           <ol>
+            <li>fallback</li>
             <li>no actionPopoverText</li>
             <li>loading</li>
             <li>disabled</li>
