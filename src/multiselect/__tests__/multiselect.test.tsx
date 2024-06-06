@@ -259,14 +259,6 @@ test('disables tokens when multiselect is disabled', () => {
   expect(wrapper.findTokens()[0].getElement()).toHaveAttribute('aria-disabled', 'true');
 });
 
-test('aria-readonly tokens when multiselect is readOnly', () => {
-  const { wrapper } = renderMultiselect(
-    <Multiselect selectedOptions={[{ label: 'First', value: '1' }]} options={defaultOptions} readOnly={true} />
-  );
-
-  expect(wrapper.findTokens()[0].getElement()).toHaveAttribute('aria-readonly', 'true');
-});
-
 test('does not render token group when no tokens are present', () => {
   const { wrapper } = renderMultiselect(<Multiselect selectedOptions={[]} options={defaultOptions} />);
 

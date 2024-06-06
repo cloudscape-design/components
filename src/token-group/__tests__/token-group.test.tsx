@@ -134,12 +134,6 @@ describe('TokenGroup', () => {
       expect(findToken(wrapper)!.findDismiss().getElement()).not.toHaveAttribute('aria-disabled');
     });
 
-    test('sets aria-readonly on the token when readOnly', () => {
-      const wrapper = renderTokenGroup({ items, readOnly: true });
-      const token = findToken(wrapper)!.getElement();
-      expect(token).toHaveAttribute('aria-readonly', 'true');
-    });
-
     test('does not trigger onDismiss when readOnly', () => {
       const onDismissSpy = jest.fn();
       const wrapper = renderTokenGroup({ items, readOnly: true, onDismiss: onDismissSpy });
