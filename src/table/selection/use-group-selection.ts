@@ -78,14 +78,14 @@ export function useGroupSelection<T>({
   };
 
   const handleToggleItem = (item: T) => {
+    setLastClickedItem(item);
+
     const requestedItems = shiftPressed ? getShiftSelectedItems(item) : [item];
     const hasChildren = (item: T) => getExpandableItemProps(item).children.length > 0;
     const isRequestedItemsValid = requestedItems.length === 1 || requestedItems.filter(hasChildren).length === 0;
-    if (!isRequestedItemsValid) {
-      return;
+    if (isRequestedItemsValid) {
+      fireNonCancelableEvent(onSelectionChange, selectionTree.updateSelection(requestedItems));
     }
-    fireNonCancelableEvent(onSelectionChange, selectionTree.updateSelection(requestedItems));
-    setLastClickedItem(item);
   };
 
   return {
