@@ -162,6 +162,8 @@ function createSelectionTree<T>({
     // Fix invalid selection state when both parent and all children are explicitly set as selected.
     if (selfSelectedSet.has(item) && children.length > 0 && !someChildrenSelected) {
       effectivelySelectedMap.set(item, false);
+    } else if (children.length > 0 && allChildrenSelected) {
+      effectivelySelectedMap.set(item, true);
     }
 
     return isIndeterminate;
@@ -186,12 +188,18 @@ function createSelectionTree<T>({
         unselectDeep(child);
       }
     };
+    const checkParentSelected = (item: T) => {
+      const { parent } = getExpandableItemProps(item);
+      return parent ? isItemSelected(parent) : selectionInverted;
+    };
     for (const requested of requestedItems) {
-      if (selfSelectedSet.has(requested)) {
-        unselectDeep(requested);
+      unselectDeep(requested);
+
+      const isSelected = !(isItemSelected(requested) && !isItemIndeterminate(requested));
+      const isParentSelected = checkParentSelected(requested);
+      if ((isParentSelected && isSelected) || (!isParentSelected && !isSelected)) {
         selfSelectedSet.delete(requested);
       } else {
-        unselectDeep(requested);
         selfSelectedSet.put(requested);
       }
     }
