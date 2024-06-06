@@ -5,12 +5,13 @@ import { getBaseProps } from '../internal/base-component';
 import { ButtonGroupProps, InternalButtonGroupProps } from './interfaces';
 import { isItemGroup, splitItems } from './utils';
 import { ButtonProps } from '../button/interfaces';
+import { useInternalI18n } from '../i18n/context';
+import { ButtonDropdownProps } from '../button-dropdown/interfaces';
 import SpaceBetween from '../space-between/internal';
 import ItemElement from './item-element';
 import MoreItems from './more-items';
 import styles from './styles.css.js';
 import clsx from 'clsx';
-import { useInternalI18n } from '../i18n/context';
 
 const InternalButtonGroup = React.forwardRef(
   (
@@ -26,12 +27,18 @@ const InternalButtonGroup = React.forwardRef(
     ref: React.Ref<ButtonGroupProps.Ref>
   ) => {
     const itemsRef = useRef<Record<string, ButtonProps.Ref | null>>({});
+    const moreItemsRef = useRef<ButtonDropdownProps.Ref | null>(null);
     const baseProps = getBaseProps(props);
     const { primary, secondary } = splitItems(items, limit);
 
     useImperativeHandle(ref, () => ({
       focus: id => {
-        itemsRef.current[id]?.focus();
+        const current = itemsRef.current[id];
+        if (current) {
+          current.focus();
+        } else if (secondary.some(item => item.id === id)) {
+          moreItemsRef.current?.focus();
+        }
       },
     }));
 
@@ -68,6 +75,7 @@ const InternalButtonGroup = React.forwardRef(
           )}
           {secondary.length > 0 && (
             <MoreItems
+              ref={moreItemsRef}
               items={secondary}
               onItemClick={onItemClick}
               dropdownExpandToViewport={dropdownExpandToViewport}

@@ -31,6 +31,22 @@ export function splitItems(items: readonly ButtonGroupProps.ItemOrGroup[], limit
   return { primary, secondary };
 }
 
+export function findItemById(items: readonly ButtonGroupProps.ItemOrGroup[], id: string): ButtonGroupProps.Item | null {
+  for (const item of items) {
+    if (isItemGroup(item)) {
+      const found = findItemById(item.items, id);
+
+      if (found) {
+        return found;
+      }
+    } else if (item.id === id) {
+      return item;
+    }
+  }
+
+  return null;
+}
+
 export function toDropdownItems(items: readonly ButtonGroupProps.ItemOrGroup[]) {
   return items.map(current => {
     if (isItemGroup(current)) {
