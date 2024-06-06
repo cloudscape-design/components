@@ -81,12 +81,9 @@
     @include styles.form-warning-control();
   }
 }
+
 .button {
   position: absolute;
-  right: 0px;
-  bottom: 0px;
-  svg,
-  svg * {
-    stroke-width: 0px !important;
-  }
+  right: awsui.$space-static-xs;
+  bottom: awsui.$space-static-xs;
 }
