@@ -209,6 +209,14 @@
     &.header-stuck {
       box-shadow: none;
 
+      > .header-cover {
+        background-color: awsui.$color-background-layout-main;
+        inline-size: 100%;
+        position: absolute;
+        block-size: awsui.$space-scaled-s;
+        inset-block-start: calc(-1 * awsui.$space-scaled-s);
+      }
+
       &::before {
         content: '';
 

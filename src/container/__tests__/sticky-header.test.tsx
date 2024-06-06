@@ -1,9 +1,5 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
-import { render } from '@testing-library/react';
-import InternalContainer from '../../../lib/components/container/internal';
-import { AppLayoutContext } from '../../../lib/components/internal/context/app-layout-context';
 import { useStickyHeader } from '../use-sticky-header';
 import { renderHook, act } from '../../__tests__/render-hook';
 jest.mock('../../../lib/components/container/use-sticky-header', () => ({
@@ -23,31 +19,6 @@ jest.mock('../../internal/utils/dom', () => ({
 
 beforeEach(() => {
   jest.resetAllMocks();
-});
-
-test('should report sticky background in full-page variant', () => {
-  const setHasStickyBackground = jest.fn();
-  const { rerender } = render(
-    <AppLayoutContext.Provider value={{ setHasStickyBackground }}>
-      <InternalContainer variant="full-page">test content</InternalContainer>
-    </AppLayoutContext.Provider>
-  );
-  expect(setHasStickyBackground).toHaveBeenCalledWith(true);
-  setHasStickyBackground.mockReset();
-  rerender(<></>);
-  expect(setHasStickyBackground).toHaveBeenCalledWith(false);
-});
-
-test('should not report sticky state in default variant', () => {
-  const setHasStickyBackground = jest.fn();
-  const { rerender } = render(
-    <AppLayoutContext.Provider value={{ setHasStickyBackground }}>
-      <InternalContainer variant="default">test content</InternalContainer>
-    </AppLayoutContext.Provider>
-  );
-  expect(setHasStickyBackground).not.toHaveBeenCalled();
-  rerender(<></>);
-  expect(setHasStickyBackground).not.toHaveBeenCalled();
 });
 
 test('should set isStuck to true when rootTop is less than headerTop', () => {

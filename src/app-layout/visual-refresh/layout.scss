@@ -169,11 +169,6 @@ explicitly set in script.
     #{custom-props.$contentGapRight}: #{awsui.$space-l};
   }
 
-  // Vertically align the notifications with the trigger buttons
-  &.content-first-child-notifications {
-    #{custom-props.$notificationsGap}: #{awsui.$space-xs};
-  }
-
   // Vertically align the breadcrumbs with the trigger buttons
   &.has-breadcrumbs {
     #{custom-props.$breadcrumbsGap}: #{awsui.$space-scaled-m};
@@ -218,10 +213,6 @@ explicitly set in script.
   components for mobile viewports.
   */
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
-    &.content-first-child-notifications {
-      #{custom-props.$notificationsGap}: #{awsui.$space-scaled-s};
-    }
-
     &.content-first-child-header {
       #{custom-props.$headerGap}: #{awsui.$space-scaled-s};
     }
