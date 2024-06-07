@@ -23,7 +23,15 @@ export function findSelectionIds({
     throw new Error('Missing getItemChildren');
   }
 
-  const selectionTree = new ItemSelectionTree(items, selectedItems, selectionInverted, trackBy, getItemChildren);
+  const isComplete = () => true;
+  const selectionTree = new ItemSelectionTree(
+    items,
+    selectedItems,
+    selectionInverted,
+    trackBy,
+    getItemChildren,
+    isComplete
+  );
   const allIds: string[] = [];
 
   function traverseItem(item: TransactionRow) {

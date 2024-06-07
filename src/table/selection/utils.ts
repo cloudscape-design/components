@@ -28,6 +28,7 @@ export class ItemSelectionTree<T> {
   private rootItems: readonly T[];
   private trackBy: TableProps.TrackBy<T> | undefined;
   private getChildren: (item: T) => readonly T[];
+  private isComplete: (item: null | T) => boolean;
   private itemKeyToItem = new Map<unknown, T>();
   private itemSelectionState = new Set<unknown>();
   private itemEffectiveSelectionState = new Set<unknown>();
@@ -38,11 +39,13 @@ export class ItemSelectionTree<T> {
     selectedItems: readonly T[],
     selectionInverted: boolean,
     trackBy: TableProps.TrackBy<T> | undefined,
-    getChildren: (item: T) => readonly T[]
+    getChildren: (item: T) => readonly T[],
+    isComplete: (item: null | T) => boolean
   ) {
     this.rootItems = rootItems;
     this.trackBy = trackBy;
     this.getChildren = getChildren;
+    this.isComplete = isComplete;
 
     // Record input selection state as is.
     if (selectionInverted) {
@@ -89,6 +92,10 @@ export class ItemSelectionTree<T> {
       for (const bucket of levelBuckets) {
         // No optimization possible for 1-element buckets.
         if (bucket.length === 1) {
+          continue;
+        }
+        // Cannot optimize incomplete buckets.
+        if (this.isComplete(this.itemKeyToItem.get(bucket[0]) ?? null) === false) {
           continue;
         }
         let selectedCount = 0;
@@ -144,8 +151,7 @@ export class ItemSelectionTree<T> {
     };
     this.rootItems.forEach(item => {
       const isRootSelected = this.itemSelectionState.has(rootItemKey);
-      const isRootIndeterminate = this.itemEffectiveIndeterminateState.has(rootItemKey);
-      if (isRootSelected && !isRootIndeterminate) {
+      if (isRootSelected) {
         this.itemEffectiveSelectionState.add(rootItemKey);
       }
       setItemEffectiveSelection(item, isRootSelected);
@@ -156,9 +162,10 @@ export class ItemSelectionTree<T> {
 
   isItemIndeterminate = (item: T) => this.itemEffectiveIndeterminateState.has(getTrackableValue(this.trackBy, item));
 
-  isAllItemsSelected = () => this.itemEffectiveSelectionState.has(rootItemKey);
+  isAllItemsSelected = () =>
+    this.itemEffectiveSelectionState.has(rootItemKey) && !this.itemEffectiveIndeterminateState.has(rootItemKey);
 
-  isSomeItemsIndeterminate = () => this.itemEffectiveIndeterminateState.has(rootItemKey);
+  isSomeItemsSelected = () => this.itemEffectiveIndeterminateState.has(rootItemKey);
 
   getState = (): { selectionInverted: boolean; selectedItems: T[] } => {
     const selectionInverted = this.itemSelectionState.has(rootItemKey);
@@ -213,7 +220,7 @@ export class ItemSelectionTree<T> {
   };
 
   private clone(): ItemSelectionTree<T> {
-    const clone = new ItemSelectionTree([], [], false, this.trackBy, this.getChildren);
+    const clone = new ItemSelectionTree([], [], false, this.trackBy, this.getChildren, this.isComplete);
     clone.rootItems = [...this.rootItems];
     clone.itemKeyToItem = new Map(this.itemKeyToItem);
     clone.itemSelectionState = new Set(this.itemSelectionState);

@@ -226,6 +226,7 @@ const InternalTable = React.forwardRef(
       ariaLabels,
       loading,
       getExpandableItemProps,
+      getLoadingStatus,
     };
     const normalSelection = useSelection(selectionProps);
     const groupSelection = useGroupSelection(selectionProps);

@@ -18,6 +18,7 @@ type SelectionOptions<T> = Pick<
   'ariaLabels' | 'items' | 'onSelectionChange' | 'selectedItems' | 'selectionInverted' | 'selectionType' | 'trackBy'
 > & {
   getExpandableItemProps: (item: T) => { level: number; parent: null | T; children: readonly T[] };
+  getLoadingStatus?: TableProps.GetLoadingStatus<T>;
 };
 
 export function useGroupSelection<T>({
@@ -29,6 +30,7 @@ export function useGroupSelection<T>({
   selectionType,
   trackBy,
   getExpandableItemProps,
+  getLoadingStatus,
 }: SelectionOptions<T>): {
   isItemSelected: (item: T) => boolean;
   getSelectAllProps?: () => SelectionProps;
@@ -45,7 +47,16 @@ export function useGroupSelection<T>({
 
   const rootItems = items.filter(item => getExpandableItemProps(item).level === 1);
   const getChildren = (item: T) => getExpandableItemProps(item).children;
-  const selectionTree = new ItemSelectionTree(rootItems, selectedItems, selectionInverted, trackBy, getChildren);
+  const isComplete = (item: null | T) =>
+    getLoadingStatus?.(item) === undefined || getLoadingStatus?.(item) === 'finished';
+  const selectionTree = new ItemSelectionTree(
+    rootItems,
+    selectedItems,
+    selectionInverted,
+    trackBy,
+    getChildren,
+    isComplete
+  );
 
   // Shift-selection helpers.
   const itemIndexesMap = new Map<T, number>();
@@ -86,8 +97,8 @@ export function useGroupSelection<T>({
       name: selectionControlName,
       selectionType: 'multi',
       disabled: false,
-      checked: selectionTree.isAllItemsSelected(),
-      indeterminate: selectionTree.isSomeItemsIndeterminate(),
+      checked: selectionInverted,
+      indeterminate: selectionTree.isSomeItemsSelected(),
       onChange: handleToggleAll,
       ariaLabel: joinStrings(
         ariaLabels?.selectionGroupLabel,
