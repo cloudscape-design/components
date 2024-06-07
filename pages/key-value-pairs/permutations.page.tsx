@@ -159,13 +159,114 @@ export default function KeyValueScenario() {
             />
           </Box>
           <Box padding="s">
-            <Box variant="h2">With auto layout</Box>
+            <Box variant="h2">Flat list</Box>
             <KeyValuePairs
               columns={4}
               items={[
                 {
                   label: 'Label for key',
                   value: 'Value',
+                },
+                {
+                  label: 'Label for key',
+                  value: (
+                    <Link external={true} href="#">
+                      Value with external link
+                    </Link>
+                  ),
+                },
+                {
+                  label: 'Label for key',
+                  value: 'Value',
+                },
+                {
+                  label: 'Label for key',
+                  value: (
+                    <Link external={true} href="#">
+                      Value with external link
+                    </Link>
+                  ),
+                },
+                {
+                  label: 'Label for key',
+                  value: 'Value',
+                },
+                {
+                  label: 'Label for key',
+                  value: (
+                    <Link external={true} href="#">
+                      Value with external link
+                    </Link>
+                  ),
+                },
+                {
+                  label: 'Label for key',
+                  value: 'Value',
+                },
+                {
+                  label: 'Label for key',
+                  value: (
+                    <Link external={true} href="#">
+                      Value with external link
+                    </Link>
+                  ),
+                },
+                {
+                  label: 'Label for key',
+                  value: 'Value',
+                },
+                {
+                  label: 'Label for key',
+                  value: (
+                    <Link external={true} href="#">
+                      Value with external link
+                    </Link>
+                  ),
+                },
+                {
+                  label: 'Label for key',
+                  value: 'Value',
+                },
+                {
+                  label: 'Label for key',
+                  value: (
+                    <Link external={true} href="#">
+                      Value with external link
+                    </Link>
+                  ),
+                },
+                {
+                  label: 'Label for key',
+                  value: 'Value',
+                },
+                {
+                  label: 'Label for key',
+                  value: (
+                    <Link external={true} href="#">
+                      Value with external link
+                    </Link>
+                  ),
+                },
+              ]}
+            />
+          </Box>
+          <Box padding="s">
+            <Box variant="h2">Combined list</Box>
+            <KeyValuePairs
+              columns={4}
+              items={[
+                {
+                  title: 'Title for the column',
+                  items: [
+                    {
+                      label: 'Label for key (belongs to column)',
+                      value: 'Value',
+                    },
+                    {
+                      label: 'Label for key (belongs to column)',
+                      value: 'Value',
+                    },
+                  ],
                 },
                 {
                   label: 'Label for key',
