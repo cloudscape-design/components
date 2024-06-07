@@ -11,12 +11,59 @@ function renderKeyValuePairs(jsx: React.ReactElement) {
 }
 
 describe('KeyValuePairs', () => {
-  describe('columns', () => {
-    test(`renders 1 column correctly`, () => {
+  describe('item rendering', () => {
+    test('renders correctly', () => {
       const { wrapper } = renderKeyValuePairs(
         <KeyValuePairs
-          columns={1}
           items={[
+            {
+              label: 'Label for key',
+              value: 'Value',
+            },
+          ]}
+        />
+      );
+
+      expect(wrapper.findItems()[0].findPair()!.getElement()).not.toBeNull();
+      expect(wrapper.findItems()[0].findPair()!.findLabel()!.getElement()).toHaveTextContent('Label for key');
+      expect(wrapper.findItems()[0].findPair()!.findValue()!.getElement()).toHaveTextContent('Value');
+    });
+
+    test('renders label with info correctly', () => {
+      const { wrapper } = renderKeyValuePairs(
+        <KeyValuePairs
+          items={[
+            {
+              label: 'Label for key',
+              value: 'Value',
+              info: 'Info',
+            },
+          ]}
+        />
+      );
+
+      expect(wrapper.findItems()[0].findPair()!.findInfo()!.getElement()).toHaveTextContent('Info');
+    });
+  });
+
+  describe('column layout', () => {
+    test('renders correctly', () => {
+      const { wrapper } = renderKeyValuePairs(
+        <KeyValuePairs
+          items={[
+            {
+              title: 'Title',
+              items: [
+                {
+                  label: 'Label for key',
+                  value: 'Value',
+                },
+                {
+                  label: 'Label for key',
+                  value: 'Value',
+                },
+              ],
+            },
             {
               items: [
                 {
@@ -29,123 +76,72 @@ describe('KeyValuePairs', () => {
         />
       );
 
-      expect(wrapper.findColumns()).toHaveLength(1);
+      expect(wrapper.findItems()).toHaveLength(2);
+      expect(wrapper.findItems()[0].findTitle()!.getElement()).toHaveTextContent('Title');
+      expect(wrapper.findItems()[0].findItemPairs()).toHaveLength(2);
+      expect(wrapper.findItems()[1].findItemPairs()).toHaveLength(1);
     });
+  });
 
-    test(`renders multiple columns correctly`, () => {
+  describe('flat layout', () => {
+    test('renders correctly', () => {
       const { wrapper } = renderKeyValuePairs(
         <KeyValuePairs
-          columns={2}
           items={[
             {
-              items: [
-                {
-                  label: 'Label for key',
-                  value: 'Value',
-                },
-              ],
+              label: 'Label for key',
+              value: 'Value',
             },
             {
-              items: [
-                {
-                  label: 'Label for key',
-                  value: 'Value',
-                },
-              ],
+              label: 'Label for key',
+              value: 'Value',
+            },
+            {
+              label: 'Label for key',
+              value: 'Value',
             },
           ]}
         />
       );
 
-      expect(wrapper.findColumns()).toHaveLength(2);
+      expect(wrapper.findItems()).toHaveLength(3);
     });
   });
 
-  test('renders title correctly', () => {
-    const { wrapper } = renderKeyValuePairs(
-      <KeyValuePairs
-        columns={1}
-        items={[
-          {
-            title: 'Title',
-            items: [
-              {
-                label: 'Label for key',
-                value: 'Value',
-              },
-            ],
-          },
-        ]}
-      />
-    );
+  describe('combined layout', () => {
+    test('renders correctly', () => {
+      const { wrapper } = renderKeyValuePairs(
+        <KeyValuePairs
+          items={[
+            {
+              title: 'Column title',
+              items: [
+                { label: 'Column label 1', value: 'Column value 1' },
+                { label: 'Column label 2', value: 'Column value 2' },
+              ],
+            },
+            {
+              label: 'Label for key',
+              value: 'Value',
+            },
+            {
+              label: 'Label for key',
+              value: 'Value',
+            },
+            {
+              label: 'Label for key',
+              value: 'Value',
+            },
+          ]}
+        />
+      );
 
-    expect(wrapper.findColumns()[0].findTitle()!.getElement()).toHaveTextContent('Title');
-  });
-
-  test('renders pairs correctly', () => {
-    const { wrapper } = renderKeyValuePairs(
-      <KeyValuePairs
-        columns={2}
-        items={[
-          {
-            title: 'Column title 1',
-            items: [
-              {
-                label: 'Label for key 1',
-                value: 'Value 1',
-              },
-              {
-                label: 'Label for key 2',
-                value: 'Value 2',
-              },
-            ],
-          },
-          {
-            title: 'Column title 2',
-            items: [
-              {
-                label: 'Label for key 3',
-                value: 'Value 3',
-              },
-              {
-                label: 'Label for key 4',
-                value: 'Value 4',
-              },
-            ],
-          },
-        ]}
-      />
-    );
-
-    expect(wrapper.findColumns()[0].findTitle()!.getElement().textContent).toBe('Column title 1');
-    expect(wrapper.findColumns()[0].findPairs()[0].findLabel()!.getElement().textContent).toBe('Label for key 1');
-    expect(wrapper.findColumns()[0].findPairs()[0].findInfo()).toBeNull();
-    expect(wrapper.findColumns()[0].findPairs()[0].findValue()!.getElement().textContent).toBe('Value 1');
-    expect(wrapper.findColumns()[0].findPairs()[1].findLabel()!.getElement().textContent).toBe('Label for key 2');
-    expect(wrapper.findColumns()[0].findPairs()[1].findValue()!.getElement().textContent).toBe('Value 2');
-    expect(wrapper.findColumns()[1].findTitle()!.getElement().textContent).toBe('Column title 2');
-    expect(wrapper.findColumns()[1].findPairs()[0].findLabel()!.getElement().textContent).toBe('Label for key 3');
-    expect(wrapper.findColumns()[1].findPairs()[0].findValue()!.getElement().textContent).toBe('Value 3');
-  });
-
-  test('renders label with info correctly', () => {
-    const { wrapper } = renderKeyValuePairs(
-      <KeyValuePairs
-        columns={1}
-        items={[
-          {
-            items: [
-              {
-                label: 'Label for key',
-                value: 'Value',
-                info: 'info',
-              },
-            ],
-          },
-        ]}
-      />
-    );
-
-    expect(wrapper.findColumns()[0].findPairs()[0].findInfo()!.getElement()).toHaveTextContent('info');
+      expect(wrapper.findItems()).toHaveLength(4);
+      expect(wrapper.findItems()[0].findItemPairs()).toHaveLength(2);
+      expect(wrapper.findItems()[0].findItemPairs()![0].findLabel()!.getElement()).toHaveTextContent('Column label 1');
+      expect(wrapper.findItems()[0].findItemPairs()![0].findValue()!.getElement()).toHaveTextContent('Column value 1');
+      expect(wrapper.findItems()[1].findPair()!.findLabel()!.getElement()).toHaveTextContent('Label for key');
+      expect(wrapper.findItems()[1].findPair()!.findValue()!.getElement()).toHaveTextContent('Value');
+    });
   });
 });

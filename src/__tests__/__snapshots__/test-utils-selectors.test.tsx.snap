@@ -363,12 +363,13 @@ Object {
     "awsui_wrapper_1wepg",
   ],
   "key-value-pairs": Array [
-    "awsui_column_1y9fy",
     "awsui_description_1y9fy",
     "awsui_info_1y9fy",
     "awsui_item_1y9fy",
     "awsui_key-label_1y9fy",
     "awsui_key-value-pairs_1y9fy",
+    "awsui_list_1y9fy",
+    "awsui_pair_1y9fy",
   ],
   "line-chart": Array [
     "awsui_root_g9v3m",

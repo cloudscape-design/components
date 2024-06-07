@@ -18,20 +18,27 @@ export class KeyValuePairsPairWrapper extends ComponentWrapper {
   }
 }
 
-export class KeyValuePairsColumnWrapper extends ComponentWrapper {
+export class KeyValuePairsItemWrapper extends ComponentWrapper {
   findTitle(): ElementWrapper | null {
     return this.findComponent(`.${BoxWrapper.rootSelector}`, ElementWrapper);
   }
 
-  findPairs(): Array<KeyValuePairsPairWrapper> {
-    return this.findAllByClassName(styles.item).map(i => new KeyValuePairsPairWrapper(i.getElement()));
+  findItemPairs(): Array<KeyValuePairsPairWrapper> | null {
+    return this.findByClassName(styles.list)!
+      .findAllByClassName(styles.pair)
+      .map(i => new KeyValuePairsPairWrapper(i.getElement()));
+  }
+
+  findPair(): KeyValuePairsPairWrapper | null {
+    const element = this.findByClassName(styles.pair)!.getElement();
+    return element ? new KeyValuePairsPairWrapper(element) : null;
   }
 }
 
 export default class KeyValuePairsWrapper extends ComponentWrapper {
   static rootSelector: string = styles['key-value-pairs'];
 
-  findColumns(): Array<KeyValuePairsColumnWrapper> {
-    return this.findAllByClassName(styles.column).map(i => new KeyValuePairsColumnWrapper(i.getElement()));
+  findItems(): Array<KeyValuePairsItemWrapper> {
+    return this.findAllByClassName(styles.item).map(i => new KeyValuePairsItemWrapper(i.getElement()));
   }
 }
