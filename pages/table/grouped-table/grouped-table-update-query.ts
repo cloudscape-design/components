@@ -52,11 +52,14 @@ export function findSelectionIds({
 //   }
 // ): string {}
 
-// export function createIdsQuery(
-//   filteredRows: TransactionRow[],
-//   {
-//     selectionInverted,
-//     selectedItems,
-//     groups,
-//   }: { selectionInverted: boolean; selectedItems: TransactionRow[]; groups: GroupDefinition[] }
-// ): string {}
+export function createIdsQuery(selectedIds: string[]): string {
+  const limit = 100;
+  let whereClause = selectedIds
+    .slice(0, limit)
+    .map(id => `id = "${id}"`)
+    .join(' AND ');
+  if (selectedIds.length > limit) {
+    whereClause += ` AND ...${selectedIds.length - limit} more`;
+  }
+  return `UPDATE transactions SET reviewed = true WHERE ${whereClause}`;
+}

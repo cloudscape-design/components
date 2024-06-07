@@ -17,6 +17,7 @@ import {
   ExpandableSection,
   Form,
   FormField,
+  Modal,
   Pagination,
   Popover,
   PropertyFilter,
@@ -35,7 +36,7 @@ import { isEqual } from 'lodash';
 
 // TODO: replace with Table once progressive loading API becomes public
 import InternalTable from '~components/table/internal';
-import { findSelectionIds } from './grouped-table/grouped-table-update-query';
+import { createIdsQuery, findSelectionIds } from './grouped-table/grouped-table-update-query';
 
 type LoadingState = Map<string, { pages: number; status: TableProps.LoadingStatus }>;
 
@@ -95,6 +96,7 @@ const groupOptions = [
 export default () => {
   const settings = usePageSettings();
   const [toolsOpen, setToolsOpen] = useState(true);
+  const [updateModalVisible, setUpdateModalVisible] = useState(false);
   const [preferences, setPreferences] = useState<CollectionPreferencesProps.Preferences>({
     wrapLines: false,
     stickyColumns: { first: 1, last: 0 },
@@ -150,7 +152,36 @@ export default () => {
                   counter={getHeaderCounterText(tableData.totalItemsCount, selectedIds)}
                   actions={
                     <SpaceBetween size="s" direction="horizontal" alignItems="center">
-                      <Button>Update selected</Button>
+                      <Button disabled={selectedIds.length === 0} onClick={() => setUpdateModalVisible(true)}>
+                        Update selected
+                      </Button>
+
+                      <Modal
+                        header="Update query viewer"
+                        visible={updateModalVisible}
+                        onDismiss={() => setUpdateModalVisible(false)}
+                      >
+                        <ExpandableSection headerText="Selection state">
+                          <Box variant="code">
+                            {JSON.stringify(
+                              {
+                                selectionInverted: tableData.selectionInverted,
+                                selectedItems: tableData.selectedItems.map(item => ({ key: item.group })),
+                              },
+                              null,
+                              2
+                            )}
+                          </Box>
+                        </ExpandableSection>
+
+                        <ExpandableSection headerText="WYSIWYG update query">
+                          <Box variant="code">TBA</Box>
+                        </ExpandableSection>
+
+                        <ExpandableSection headerText="Long update query">
+                          <Box variant="code">{createIdsQuery(selectedIds)}</Box>
+                        </ExpandableSection>
+                      </Modal>
                     </SpaceBetween>
                   }
                 >
