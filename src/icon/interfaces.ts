@@ -127,6 +127,7 @@ export namespace IconProps {
     | 'search'
     | 'security'
     | 'settings'
+    | 'send'
     | 'share'
     | 'shrink'
     | 'star-filled'

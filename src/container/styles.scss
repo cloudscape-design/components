@@ -87,7 +87,7 @@
   overflow: hidden;
   flex-shrink: 0;
 
-  // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant, selector-max-type
+  // stylelint-disable @cloudscape-design/no-implicit-descendant, selector-max-type
   img,
   video,
   picture {
@@ -97,13 +97,13 @@
     object-position: center;
   }
 
-  // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant, selector-max-type
   iframe {
     inline-size: 100%;
     block-size: 100%;
     border-block: 0;
     border-inline: 0;
   }
+  // stylelint-enable @cloudscape-design/no-implicit-descendant, selector-max-type
 
   // reduce border-radius size to fill the visual gap between the parent border and image
   &-top {
@@ -208,6 +208,14 @@
 
     &.header-stuck {
       box-shadow: none;
+
+      > .header-cover {
+        background-color: awsui.$color-background-layout-main;
+        inline-size: 100%;
+        position: absolute;
+        block-size: awsui.$space-scaled-s;
+        inset-block-start: calc(-1 * awsui.$space-scaled-s);
+      }
 
       &::before {
         content: '';

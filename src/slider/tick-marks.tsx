@@ -57,10 +57,10 @@ export default function SliderTickMarks(props: SliderTicksProps) {
   const { min, max, step } = props;
 
   return (
-    <div className={clsx(styles['ticks-wrapper'])}>
+    <div className={styles['ticks-wrapper']}>
       <TickMark {...props} type="min" />
       <div
-        className={clsx(styles.ticks)}
+        className={styles.ticks}
         style={{
           [customCssProps.sliderTickCount]: Math.round((max - min) / step),
         }}

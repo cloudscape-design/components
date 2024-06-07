@@ -78,8 +78,8 @@ const Option = ({
   return (
     <span data-value={option.value} className={className} lang={option.lang} {...genericGroupProps} {...baseProps}>
       {icon}
-      <span className={clsx(styles.content)}>
-        <span className={clsx(styles['label-content'])}>
+      <span className={styles.content}>
+        <span className={styles['label-content']}>
           <Label
             label={option.label ?? option.value}
             prefix={option.__labelPrefix}

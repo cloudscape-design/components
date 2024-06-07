@@ -3,7 +3,6 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-/* stylelint-disable @cloudscape-design/no-implicit-descendant, selector-max-type */
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
 
@@ -15,6 +14,7 @@
   padding-inline-end: awsui.$space-panel-side-right;
   padding-inline-start: awsui.$space-panel-side-left;
 
+  /* stylelint-disable @cloudscape-design/no-implicit-descendant, selector-max-type */
   hr {
     border-block: none;
     border-inline: none;
@@ -114,8 +114,9 @@
   strong {
     font-weight: styles.$font-weight-bold;
   }
+  /* stylelint-enable @cloudscape-design/no-implicit-descendant, selector-max-type */
 
-  .header {
+  & > .header {
     @include styles.font-panel-header;
     color: awsui.$color-text-heading-default;
     padding-block-end: awsui.$space-panel-header-vertical;
@@ -129,6 +130,7 @@
     margin-inline-end: calc(-1 * #{awsui.$space-panel-side-right});
     margin-inline-start: calc(-1 * #{awsui.$space-panel-side-left});
 
+    /* stylelint-disable @cloudscape-design/no-implicit-descendant, selector-max-type */
     h2,
     h3,
     h4,
@@ -138,12 +140,14 @@
       padding-block: 0;
       margin-block: 0;
     }
+    /* stylelint-enable @cloudscape-design/no-implicit-descendant, selector-max-type */
   }
 }
 
 .content {
   color: awsui.$color-text-body-secondary;
 
+  /* stylelint-disable @cloudscape-design/no-implicit-descendant, selector-max-type */
   h2:first-child,
   h3:first-child,
   h4:first-child,
@@ -155,6 +159,7 @@
   a {
     @include styles.link-inline;
   }
+  /* stylelint-enable @cloudscape-design/no-implicit-descendant, selector-max-type */
 }
 
 .footer {
@@ -167,6 +172,7 @@
   > :first-child {
     margin-block-start: awsui.$space-scaled-xl;
   }
+  /* stylelint-disable @cloudscape-design/no-implicit-descendant, selector-max-type */
   ul {
     list-style: none;
     padding-inline-start: 0;
@@ -174,11 +180,14 @@
   a {
     @include styles.link-default;
   }
+  /* stylelint-enable @cloudscape-design/no-implicit-descendant, selector-max-type */
 }
 
 .content,
 .footer {
+  /* stylelint-disable @cloudscape-design/no-implicit-descendant, selector-max-type */
   a:focus {
     @include styles.link-focus;
   }
+  /* stylelint-enable @cloudscape-design/no-implicit-descendant, selector-max-type */
 }

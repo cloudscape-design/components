@@ -13,7 +13,7 @@ interface WizardFormHeaderProps {
 export default function WizardFormHeader({ children, isVisualRefresh }: WizardFormHeaderProps) {
   return (
     <div className={clsx(styles['form-header'], isVisualRefresh && styles['form-header-refresh'])}>
-      <div className={clsx(styles['form-header-content'])}>{children}</div>
+      <div className={styles['form-header-content']}>{children}</div>
     </div>
   );
 }

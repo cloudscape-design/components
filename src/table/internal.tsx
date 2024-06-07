@@ -5,7 +5,7 @@ import React, { useCallback, useImperativeHandle, useRef } from 'react';
 import { TableForwardRefType, TableProps, TableRow } from './interfaces';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import InternalContainer, { InternalContainerProps } from '../container/internal';
-import { getBaseProps } from '../internal/base-component';
+import { getAnalyticsMetadataProps, getBaseProps } from '../internal/base-component';
 import ToolsHeader from './tools-header';
 import Thead, { TheadProps } from './thead';
 import { TableBodyCell } from './body-cell';
@@ -24,7 +24,6 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import StickyHeader, { StickyHeaderRef } from './sticky-header';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import useMouseDownTarget from '../internal/hooks/use-mouse-down-target';
-import { useDynamicOverlap } from '../internal/hooks/use-dynamic-overlap';
 import LiveRegion from '../internal/components/live-region';
 import useTableFocusNavigation from './use-table-focus-navigation';
 import { SomeRequired } from '../internal/types';
@@ -52,6 +51,7 @@ import { ItemsLoader } from './progressive-loading/items-loader';
 import { useProgressiveLoadingProps } from './progressive-loading/progressive-loading-utils';
 import { usePrevious } from '../internal/hooks/use-previous';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useTableInteractionMetrics } from '../internal/hooks/use-table-interaction-metrics';
 
 const GRID_NAVIGATION_PAGE_SIZE = 10;
 const SELECTION_COLUMN_WIDTH = 54;
@@ -170,23 +170,30 @@ const InternalTable = React.forwardRef(
     const scrollbarRef = React.useRef<HTMLDivElement>(null);
     const { cancelEdit, ...cellEditing } = useCellEditing({ onCancel: onEditCancel, onSubmit: submitEdit });
 
+    /* istanbul ignore next: performance marks do not work in JSDOM */
+    const getHeaderText = () =>
+      toolsHeaderPerformanceMarkRef.current?.querySelector<HTMLElement>(`.${headerStyles['heading-text']}`)
+        ?.innerText ?? toolsHeaderPerformanceMarkRef.current?.innerText;
+
     usePerformanceMarks(
       'table',
       true,
       tableRefObject,
-      () => {
-        /* istanbul ignore next: performance marks do not work in JSDOM */
-        const headerText =
-          toolsHeaderPerformanceMarkRef.current?.querySelector<HTMLElement>(`.${headerStyles['heading-text']}`)
-            ?.innerText ?? toolsHeaderPerformanceMarkRef.current?.innerText;
-
-        return {
-          loading: loading ?? false,
-          header: headerText,
-        };
-      },
+      () => ({
+        loading: loading ?? false,
+        header: getHeaderText(),
+      }),
       [loading]
     );
+
+    const analyticsMetadata = getAnalyticsMetadataProps(rest);
+
+    const { setLastUserAction } = useTableInteractionMetrics({
+      loading,
+      instanceIdentifier: analyticsMetadata?.instanceIdentifier,
+      itemCount: items.length,
+      getComponentIdentifier: getHeaderText,
+    });
 
     useImperativeHandle(
       ref,
@@ -306,6 +313,7 @@ const InternalTable = React.forwardRef(
       selectionColumnId,
       tableRole,
       isExpandable,
+      setLastUserAction,
     };
 
     const wrapperRef = useMergeRefs(wrapperRefObject, stickyState.refs.wrapper);
@@ -319,8 +327,6 @@ const InternalTable = React.forwardRef(
 
     const getMouseDownTarget = useMouseDownTarget();
 
-    const hasDynamicHeight = computedVariant === 'full-page';
-    const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
     useTableFocusNavigation({
       enableKeyboardNavigation,
       selectionType,
@@ -348,10 +354,11 @@ const InternalTable = React.forwardRef(
             __internalRootRef={__internalRootRef}
             className={clsx(baseProps.className, styles.root)}
             __funnelSubStepProps={__funnelSubStepProps}
+            __fullPage={variant === 'full-page'}
             header={
               <>
                 {hasHeader && (
-                  <div ref={overlapElement}>
+                  <div>
                     <div
                       ref={toolsHeaderWrapper}
                       className={clsx(styles['header-controls'], styles[`variant-${computedVariant}`])}
@@ -362,6 +369,7 @@ const InternalTable = React.forwardRef(
                           filter={filter}
                           pagination={pagination}
                           preferences={preferences}
+                          setLastUserAction={setLastUserAction}
                         />
                       </CollectionLabelContext.Provider>
                     </div>
@@ -517,7 +525,7 @@ const InternalTable = React.forwardRef(
                               {getItemSelectionProps && (
                                 <TableTdElement
                                   {...sharedCellProps}
-                                  className={clsx(styles['selection-control'])}
+                                  className={styles['selection-control']}
                                   wrapLines={false}
                                   columnId={selectionColumnId}
                                   colIndex={0}
@@ -581,7 +589,7 @@ const InternalTable = React.forwardRef(
                             {getItemSelectionProps && (
                               <TableTdElement
                                 {...sharedCellProps}
-                                className={clsx(styles['selection-control'])}
+                                className={styles['selection-control']}
                                 wrapLines={false}
                                 columnId={selectionColumnId}
                                 colIndex={0}

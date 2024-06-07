@@ -76,7 +76,7 @@ export default function InternalContentLayout({
       >
         {headerBackgroundStyle && (
           <div
-            className={clsx(styles['header-background'])}
+            className={styles['header-background']}
             style={{
               background:
                 typeof headerBackgroundStyle === 'function' ? headerBackgroundStyle(mode) : headerBackgroundStyle,
@@ -111,7 +111,7 @@ export default function InternalContentLayout({
         >
           <InternalGrid gridDefinition={[{ colspan: { default: 12, xs: 9 } }, { colspan: { default: 12, xs: 3 } }]}>
             <div className={clsx(testutilStyles.header, contentHeaderClassName)}>{header}</div>
-            <div className={clsx(testutilStyles['secondary-header'])}>{secondaryHeader}</div>
+            <div className={testutilStyles['secondary-header']}>{secondaryHeader}</div>
           </InternalGrid>
         </div>
       )}
