@@ -10071,6 +10071,12 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     Object {
+      "description": "Adds an small label inline with the input for saving vertical space in a compact UI.",
+      "name": "inlineLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Overrides the invalidation state. Usually the invalid state
 comes from the parent \`FormField\`component,
 however sometimes you need to override its
@@ -12711,6 +12717,12 @@ use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/
 use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds an small label inline with the input for saving vertical space in a compact UI.",
+      "name": "inlineLabel",
       "optional": true,
       "type": "string",
     },
