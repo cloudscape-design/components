@@ -2,29 +2,16 @@
  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  SPDX-License-Identifier: Apache-2.0
 */
-// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
-// SPDX-License-Identifier: MIT-0
 @use '../../internal/styles/' as styles;
 @use '../../internal/styles/tokens' as awsui;
 @use '../mixins.scss' as mixins;
+@use './motion.scss';
 
-// Color variables
-$color-cyan: #99f7ff;
-$color-blue: #0096fa;
-$color-purple-300: #d8b2ff;
-$color-purple-400: #bf80ff;
-$color-purple-500: #9d3cff;
-$color-purple-600: #7300e5;
-$color-purple-700: #5900b2;
-$color-purple-800: #3f0074;
-$color-purple-900: #240047;
 $dot-size: 4px;
-$shadow-size: 8px;
-$shadow-opacity: 0.1;
 
 .root {
-  inline-size: 28px;
-  block-size: 28px;
+  inline-size: inherit;
+  block-size: inherit;
   @include mixins.border-radius-avatar;
   display: flex;
   justify-content: center;
@@ -36,32 +23,12 @@ $shadow-opacity: 0.1;
   &.gen-ai::after {
     content: '';
     position: absolute;
-    inline-size: 28px;
-    block-size: 28px;
+    inline-size: inherit;
+    block-size: inherit;
     inset-block-start: 50%;
     inset-inline-start: 50%;
     transform: translate(-50%, -50%);
     background: awsui.$color-background-avatar-gen-ai;
-    // TODO: separate motion to a separate file
-    @include styles.with-motion {
-      animation: gradientMove 3.6s infinite cubic-bezier(0.7, 0, 0.3, 1);
-    }
-  }
-}
-
-// Gradient rotation animation
-@keyframes gradientMove {
-  0% {
-    transform: translate(-50%, -50%) rotate(0deg);
-  }
-
-  50% {
-    inline-size: 44px;
-    block-size: 44px;
-  }
-
-  100% {
-    transform: translate(-50%, -50%) rotate(360deg);
   }
 }
 
@@ -74,54 +41,9 @@ $shadow-opacity: 0.1;
 }
 
 .dot {
-  @include styles.with-motion {
-    animation: dotsDancing 1.2s infinite ease-in-out;
-  }
-  background-color: #ffffff;
+  background-color: awsui.$color-text-avatar;
   @include mixins.border-radius-avatar;
   block-size: $dot-size;
   inline-size: $dot-size;
   z-index: 1;
-}
-
-// Dots dancing animation
-.dot:nth-child(1) {
-  @include styles.with-motion {
-    animation-delay: 100ms;
-  }
-}
-
-.dot:nth-child(2) {
-  @include styles.with-motion {
-    animation-delay: 200ms;
-  }
-}
-
-.dot:nth-child(3) {
-  @include styles.with-motion {
-    animation-delay: 300ms;
-  }
-}
-
-.dot:last-child {
-  @include styles.with-motion {
-    margin-inline-end: 0;
-  }
-}
-
-@keyframes dotsDancing {
-  0% {
-    transform: translateY(0px);
-    background-color: #ffffff;
-  }
-
-  28% {
-    transform: translateY(-4px);
-    background-color: #ffffff;
-  }
-
-  44% {
-    transform: translateY(0px);
-    background-color: #ffffff;
-  }
 }

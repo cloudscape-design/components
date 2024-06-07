@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { render } from '@testing-library/react';
+import { render, act, fireEvent } from '@testing-library/react';
 import React from 'react';
 import Avatar, { AvatarProps } from '../../../lib/components/avatar';
 import createWrapper from '../../../lib/components/test-utils/dom';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import loadingDotsStyles from '../../../lib/components/avatar/loading-dots/styles.selectors.js';
 
 const defaultAvatarProps: AvatarProps = { ariaLabel: 'Avatar' };
@@ -14,48 +15,79 @@ function renderAvatar(props: AvatarProps) {
   return createWrapper(container).findAvatar()!;
 }
 
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
+  warnOnce: jest.fn(),
+}));
+afterEach(() => {
+  (warnOnce as jest.Mock).mockReset();
+});
+
 describe('Avatar component', () => {
   describe('Basic', () => {
-    (['gen-ai', 'default'] as AvatarProps.Color[]).forEach(color => {
-      test(`renders ${color} color avatar`, () => {
-        const wrapper = renderAvatar({ ...defaultAvatarProps, color });
-        const avatarBody = wrapper.findAvatarBody()?.getElement();
-        expect(avatarBody).toBeInTheDocument();
+    test('Renders avatar', () => {
+      const wrapper = renderAvatar({ ...defaultAvatarProps });
+      wrapper.focus();
+    });
 
-        avatarBody?.focus();
-        expect(wrapper.findTooltip()?.getElement()).toBeUndefined();
+    test('Shows tooltip on hover', () => {
+      const tooltipText = 'Jane Doe';
+      const wrapper = renderAvatar({ ...defaultAvatarProps, color: 'default', tooltipText });
+      wrapper.focus();
+      expect(wrapper.findTooltip()?.getElement()).toHaveTextContent(tooltipText);
+
+      wrapper?.blur();
+      expect(wrapper.findTooltip()?.getElement()).toBeUndefined();
+    });
+
+    test('Shows tooltip on mouse enter', () => {
+      const tooltipText = 'Jane Doe';
+      const wrapper = renderAvatar({ ...defaultAvatarProps, color: 'default', tooltipText });
+      act(() => {
+        fireEvent.mouseEnter(wrapper.getElement());
       });
+      expect(wrapper.findTooltip()?.getElement()).toHaveTextContent(tooltipText);
 
-      test(`renders ${color} color avatar with tooltipText`, () => {
-        const tooltipText = 'Jane Doe';
-        const wrapper = renderAvatar({ ...defaultAvatarProps, color, tooltipText });
-        const avatarBody = wrapper.findAvatarBody()?.getElement();
-
-        avatarBody?.focus();
-        expect(wrapper.findTooltip()?.getElement()).toHaveTextContent(tooltipText);
-
-        avatarBody?.blur();
-        expect(wrapper.findTooltip()?.getElement()).toBeUndefined();
+      act(() => {
+        fireEvent.mouseLeave(wrapper.getElement());
       });
+      expect(wrapper.findTooltip()?.getElement()).toBeUndefined();
+    });
 
-      test(`renders ${color} color avatar in loading state`, () => {
-        const wrapper = renderAvatar({ ...defaultAvatarProps, color, loading: true });
+    test('Does not render tooltip when tooltipText is not passed', () => {
+      const wrapper = renderAvatar({ ...defaultAvatarProps, color: 'default' });
+      wrapper.focus();
+      expect(wrapper.findTooltip()?.getElement()).toBeUndefined();
+    });
 
-        const loading = wrapper.findByClassName(loadingDotsStyles.root)?.getElement();
-        expect(loading).toBeInTheDocument();
-      });
+    test('Renders avatar in loading state', () => {
+      const wrapper = renderAvatar({ ...defaultAvatarProps, loading: true });
 
-      test(`renders ${color} color avatar with initials`, () => {
-        const initials = 'JD';
-        const wrapper = renderAvatar({ ...defaultAvatarProps, color, initials });
+      const loading = wrapper.findByClassName(loadingDotsStyles.root)?.getElement();
+      expect(loading).toBeInTheDocument();
+    });
 
-        expect(wrapper.getElement()).toHaveTextContent(initials);
-      });
+    test('Renders avatar with initials', () => {
+      const initials = 'JD';
+      const wrapper = renderAvatar({ ...defaultAvatarProps, initials });
+
+      expect(wrapper.getElement()).toHaveTextContent(initials);
+    });
+
+    test('Shows warning when initials length is longer than 2', () => {
+      const initials = 'JDD';
+      renderAvatar({ ...defaultAvatarProps, initials });
+
+      expect(warnOnce).toHaveBeenCalledTimes(1);
+      expect(warnOnce).toHaveBeenCalledWith(
+        'Avatar',
+        `"initials" is longer than 2 characters. Only the first two characters are shown.`
+      );
     });
   });
 
   describe('a11y', () => {
-    test('validates', () => {
+    test('Validates', () => {
       const wrapper = renderAvatar({
         color: 'default',
         initials: 'JD',
@@ -68,8 +100,7 @@ describe('Avatar component', () => {
     test('ariaLabel is directly used', () => {
       const ariaLabel = 'User avatar JD Jane Doe';
       const wrapper = renderAvatar({ ariaLabel, initials: 'JD', tooltipText: 'Jane Doe' });
-      const avatarBody = wrapper.findAvatarBody()?.getElement();
-      expect(avatarBody).toHaveAttribute('aria-label', ariaLabel);
+      expect(wrapper.getElement()).toHaveAttribute('aria-label', ariaLabel);
     });
   });
 });

@@ -242,6 +242,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: false,
     public: true,
   },
+  colorTextAvatar: {
+    description: 'The text and icon color of avatar.',
+    themeable: false,
+    public: true,
+  },
   colorBorderButtonNormalActive: {
     description: 'The border color of normal buttons in active state.',
     themeable: true,

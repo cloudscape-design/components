@@ -1,0 +1,72 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '../../internal/styles/' as styles;
+
+.gen-ai::after {
+  @include styles.with-motion {
+    animation: gradientMove 3.6s infinite cubic-bezier(0.7, 0, 0.3, 1);
+  }
+}
+
+.dot {
+  @include styles.with-motion {
+    animation: dotsDancing 1.2s infinite ease-in-out;
+  }
+}
+
+// Dots dancing animation
+.dot:nth-child(1) {
+  @include styles.with-motion {
+    animation-delay: 100ms;
+  }
+}
+
+.dot:nth-child(2) {
+  @include styles.with-motion {
+    animation-delay: 200ms;
+  }
+}
+
+.dot:nth-child(3) {
+  @include styles.with-motion {
+    animation-delay: 300ms;
+  }
+}
+
+.dot:last-child {
+  @include styles.with-motion {
+    margin-inline-end: 0;
+  }
+}
+
+// Gradient rotation animation
+@keyframes gradientMove {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  50% {
+    inline-size: 44px;
+    block-size: 44px;
+  }
+
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes dotsDancing {
+  0% {
+    transform: translateY(0px);
+  }
+
+  28% {
+    transform: translateY(-4px);
+  }
+
+  44% {
+    transform: translateY(0px);
+  }
+}

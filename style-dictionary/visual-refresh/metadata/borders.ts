@@ -27,11 +27,6 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
-  borderRadiusAvatar: {
-    description: 'The border radius of avatar.',
-    public: true,
-    themeable: true,
-  },
   borderRadiusCalendarDayFocusRing: {
     description: 'The border radius of the focused day in date picker and date range picker.',
     public: true,

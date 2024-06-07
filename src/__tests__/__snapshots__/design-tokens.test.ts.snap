@@ -9,10 +9,6 @@ Object {
           "$description": "The border radius of alerts.",
           "$value": "2px",
         },
-        "border-radius-avatar": Object {
-          "$description": "The border radius of avatar.",
-          "$value": "50%",
-        },
         "border-radius-badge": Object {
           "$description": "The border radius of badges.",
           "$value": "16px",
@@ -1667,6 +1663,13 @@ Object {
           "$value": Object {
             "dark": "#44b9d6",
             "light": "#0073bb",
+          },
+        },
+        "color-text-avatar": Object {
+          "$description": "The text and icon color of avatar.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#ffffff",
           },
         },
         "color-text-body-default": Object {
@@ -2329,10 +2332,6 @@ Object {
           "$description": "The border radius of alerts.",
           "$value": "2px",
         },
-        "border-radius-avatar": Object {
-          "$description": "The border radius of avatar.",
-          "$value": "50%",
-        },
         "border-radius-badge": Object {
           "$description": "The border radius of badges.",
           "$value": "16px",
@@ -3987,6 +3986,13 @@ Object {
           "$value": Object {
             "dark": "#44b9d6",
             "light": "#0073bb",
+          },
+        },
+        "color-text-avatar": Object {
+          "$description": "The text and icon color of avatar.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#ffffff",
           },
         },
         "color-text-body-default": Object {
@@ -4649,10 +4655,6 @@ Object {
           "$description": "The border radius of alerts.",
           "$value": "2px",
         },
-        "border-radius-avatar": Object {
-          "$description": "The border radius of avatar.",
-          "$value": "50%",
-        },
         "border-radius-badge": Object {
           "$description": "The border radius of badges.",
           "$value": "16px",
@@ -6307,6 +6309,13 @@ Object {
           "$value": Object {
             "dark": "#44b9d6",
             "light": "#0073bb",
+          },
+        },
+        "color-text-avatar": Object {
+          "$description": "The text and icon color of avatar.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#ffffff",
           },
         },
         "color-text-body-default": Object {
@@ -6969,10 +6978,6 @@ Object {
           "$description": "The border radius of alerts.",
           "$value": "2px",
         },
-        "border-radius-avatar": Object {
-          "$description": "The border radius of avatar.",
-          "$value": "50%",
-        },
         "border-radius-badge": Object {
           "$description": "The border radius of badges.",
           "$value": "16px",
@@ -8629,6 +8634,13 @@ Object {
             "light": "#0073bb",
           },
         },
+        "color-text-avatar": Object {
+          "$description": "The text and icon color of avatar.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
         "color-text-body-default": Object {
           "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
           "$value": Object {
@@ -9288,10 +9300,6 @@ Object {
         "border-radius-alert": Object {
           "$description": "The border radius of alerts.",
           "$value": "2px",
-        },
-        "border-radius-avatar": Object {
-          "$description": "The border radius of avatar.",
-          "$value": "50%",
         },
         "border-radius-badge": Object {
           "$description": "The border radius of badges.",
@@ -10949,6 +10957,13 @@ Object {
             "light": "#44b9d6",
           },
         },
+        "color-text-avatar": Object {
+          "$description": "The text and icon color of avatar.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
         "color-text-body-default": Object {
           "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
           "$value": Object {
@@ -11608,10 +11623,6 @@ Object {
     "border-radius-alert": Object {
       "$description": "The border radius of alerts.",
       "$value": "2px",
-    },
-    "border-radius-avatar": Object {
-      "$description": "The border radius of avatar.",
-      "$value": "50%",
     },
     "border-radius-badge": Object {
       "$description": "The border radius of badges.",
@@ -13269,6 +13280,13 @@ Object {
         "light": "#0073bb",
       },
     },
+    "color-text-avatar": Object {
+      "$description": "The text and icon color of avatar.",
+      "$value": Object {
+        "dark": "#ffffff",
+        "light": "#ffffff",
+      },
+    },
     "color-text-body-default": Object {
       "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
       "$value": Object {
@@ -13933,10 +13951,6 @@ Object {
         "border-radius-alert": Object {
           "$description": "The border radius of alerts.",
           "$value": "12px",
-        },
-        "border-radius-avatar": Object {
-          "$description": "The border radius of avatar.",
-          "$value": "50%",
         },
         "border-radius-badge": Object {
           "$description": "The border radius of badges.",
@@ -15594,6 +15608,13 @@ Object {
             "light": "#0972d3",
           },
         },
+        "color-text-avatar": Object {
+          "$description": "The text and icon color of avatar.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
         "color-text-body-default": Object {
           "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
           "$value": Object {
@@ -16253,10 +16274,6 @@ Object {
         "border-radius-alert": Object {
           "$description": "The border radius of alerts.",
           "$value": "12px",
-        },
-        "border-radius-avatar": Object {
-          "$description": "The border radius of avatar.",
-          "$value": "50%",
         },
         "border-radius-badge": Object {
           "$description": "The border radius of badges.",
@@ -17914,6 +17931,13 @@ Object {
             "light": "#539fe5",
           },
         },
+        "color-text-avatar": Object {
+          "$description": "The text and icon color of avatar.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
         "color-text-body-default": Object {
           "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
           "$value": Object {
@@ -18573,10 +18597,6 @@ Object {
         "border-radius-alert": Object {
           "$description": "The border radius of alerts.",
           "$value": "12px",
-        },
-        "border-radius-avatar": Object {
-          "$description": "The border radius of avatar.",
-          "$value": "50%",
         },
         "border-radius-badge": Object {
           "$description": "The border radius of badges.",
@@ -20234,6 +20254,13 @@ Object {
             "light": "#0972d3",
           },
         },
+        "color-text-avatar": Object {
+          "$description": "The text and icon color of avatar.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
         "color-text-body-default": Object {
           "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
           "$value": Object {
@@ -20893,10 +20920,6 @@ Object {
         "border-radius-alert": Object {
           "$description": "The border radius of alerts.",
           "$value": "12px",
-        },
-        "border-radius-avatar": Object {
-          "$description": "The border radius of avatar.",
-          "$value": "50%",
         },
         "border-radius-badge": Object {
           "$description": "The border radius of badges.",
@@ -22554,6 +22577,13 @@ Object {
             "light": "#0972d3",
           },
         },
+        "color-text-avatar": Object {
+          "$description": "The text and icon color of avatar.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
         "color-text-body-default": Object {
           "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
           "$value": Object {
@@ -23213,10 +23243,6 @@ Object {
         "border-radius-alert": Object {
           "$description": "The border radius of alerts.",
           "$value": "12px",
-        },
-        "border-radius-avatar": Object {
-          "$description": "The border radius of avatar.",
-          "$value": "50%",
         },
         "border-radius-badge": Object {
           "$description": "The border radius of badges.",
@@ -24874,6 +24900,13 @@ Object {
             "light": "#0972d3",
           },
         },
+        "color-text-avatar": Object {
+          "$description": "The text and icon color of avatar.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
         "color-text-body-default": Object {
           "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
           "$value": Object {
@@ -25533,10 +25566,6 @@ Object {
         "border-radius-alert": Object {
           "$description": "The border radius of alerts.",
           "$value": "12px",
-        },
-        "border-radius-avatar": Object {
-          "$description": "The border radius of avatar.",
-          "$value": "50%",
         },
         "border-radius-badge": Object {
           "$description": "The border radius of badges.",
@@ -27192,6 +27221,13 @@ Object {
           "$value": Object {
             "dark": "#539fe5",
             "light": "#539fe5",
+          },
+        },
+        "color-text-avatar": Object {
+          "$description": "The text and icon color of avatar.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#ffffff",
           },
         },
         "color-text-body-default": Object {
@@ -27854,10 +27890,6 @@ Object {
           "$description": "The border radius of alerts.",
           "$value": "12px",
         },
-        "border-radius-avatar": Object {
-          "$description": "The border radius of avatar.",
-          "$value": "50%",
-        },
         "border-radius-badge": Object {
           "$description": "The border radius of badges.",
           "$value": "4px",
@@ -29514,6 +29546,13 @@ Object {
             "light": "#539fe5",
           },
         },
+        "color-text-avatar": Object {
+          "$description": "The text and icon color of avatar.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
         "color-text-body-default": Object {
           "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
           "$value": Object {
@@ -30173,10 +30212,6 @@ Object {
     "border-radius-alert": Object {
       "$description": "The border radius of alerts.",
       "$value": "12px",
-    },
-    "border-radius-avatar": Object {
-      "$description": "The border radius of avatar.",
-      "$value": "50%",
     },
     "border-radius-badge": Object {
       "$description": "The border radius of badges.",
@@ -31832,6 +31867,13 @@ Object {
       "$value": Object {
         "dark": "#539fe5",
         "light": "#0972d3",
+      },
+    },
+    "color-text-avatar": Object {
+      "$description": "The text and icon color of avatar.",
+      "$value": Object {
+        "dark": "#ffffff",
+        "light": "#ffffff",
       },
     },
     "color-text-body-default": Object {

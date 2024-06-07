@@ -17,7 +17,6 @@ export interface InternalAvatarProps extends AvatarProps, InternalBaseComponentP
 
 const AvatarContent = ({ color, loading, initials, iconName, iconSvg, iconUrl, ariaLabel }: AvatarProps) => {
   if (loading) {
-    // TODO: check spinner tests
     return <LoadingDots color={color} />;
   }
 
@@ -52,37 +51,25 @@ export default function InternalAvatar({
 }: InternalAvatarProps) {
   const baseProps = getBaseProps(rest);
   const handleRef = useRef<HTMLDivElement>(null);
-  const [showTooltip, _setShowTooltip] = useState(false);
-
-  const setShowTooltip = (value: boolean) => {
-    if (tooltipText) {
-      return _setShowTooltip(value);
-    }
-  };
+  const [showTooltip, setShowTooltip] = useState(false);
 
   const tooltipAttributes = {
     onFocus: () => {
-      console.log('focused');
       setShowTooltip(true);
     },
     onBlur: () => {
-      console.log('blurred');
       setShowTooltip(false);
     },
     onMouseEnter: () => {
-      console.log('mouse entered');
       setShowTooltip(true);
     },
     onMouseLeave: () => {
-      console.log('mouse left');
       setShowTooltip(false);
     },
     onTouchStart: () => {
-      console.log('touch started');
       setShowTooltip(true);
     },
     onTouchEnd: () => {
-      console.log('touch ended');
       setShowTooltip(false);
     },
   };

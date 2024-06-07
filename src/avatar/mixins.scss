@@ -3,11 +3,9 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-@use '../internal/styles/tokens' as awsui;
-
 @mixin border-radius-avatar {
-  border-start-start-radius: awsui.$border-radius-avatar;
-  border-start-end-radius: awsui.$border-radius-avatar;
-  border-end-start-radius: awsui.$border-radius-avatar;
-  border-end-end-radius: awsui.$border-radius-avatar;
+  border-start-start-radius: 50%;
+  border-start-end-radius: 50%;
+  border-end-start-radius: 50%;
+  border-end-end-radius: 50%;
 }

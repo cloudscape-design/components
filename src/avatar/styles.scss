@@ -7,20 +7,22 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/hooks/focus-visible' as focus-visible;
 
+$avatar-size: 28px;
+
 .root {
   @include styles.styles-reset;
 }
 
 .avatar {
   display: inline-flex;
-  @include mixins.border-radius-avatar;
-  color: white;
-  block-size: 28px;
-  inline-size: 28px;
+  color: awsui.$color-text-avatar;
+  block-size: $avatar-size;
+  inline-size: $avatar-size;
   align-items: center;
   justify-content: center;
   position: relative;
   overflow: hidden;
+  @include mixins.border-radius-avatar;
 
   &.avatar-color-default {
     background-color: awsui.$color-background-avatar-default;
@@ -39,7 +41,6 @@
   }
 
   @include focus-visible.when-visible {
-    // TODO: Confirm
     outline: 2px solid awsui.$color-border-item-focused;
   }
 }
