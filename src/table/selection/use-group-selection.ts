@@ -7,7 +7,7 @@ import { TableProps } from '../interfaces';
 import { getTrackableValue } from '../utils';
 import { joinStrings } from '../../internal/utils/strings';
 import { SelectionProps } from './interfaces';
-import { ItemMap, ItemSelectionTree, ItemSet } from './utils';
+import { ItemSelectionTree } from './utils';
 
 // When selectionType="grouped" the checkboxes cannot be disabled so the `isItemDisabled` property is ignored.
 // That is because selecting a group implies selection of children even if children are not loaded so that
@@ -43,13 +43,9 @@ export function useGroupSelection<T>({
     return { isItemSelected: () => false };
   }
 
-  const selectionTree = createSelectionTree({
-    items,
-    selectedItems,
-    selectionInverted,
-    trackBy,
-    getExpandableItemProps,
-  });
+  const rootItems = items.filter(item => getExpandableItemProps(item).level === 1);
+  const getChildren = (item: T) => getExpandableItemProps(item).children;
+  const selectionTree = new ItemSelectionTree(rootItems, selectedItems, selectionInverted, trackBy, getChildren);
 
   // Shift-selection helpers.
   const itemIndexesMap = new Map<T, number>();
@@ -70,11 +66,7 @@ export function useGroupSelection<T>({
   };
 
   const handleToggleAll = () => {
-    if (selectionTree.isAllSelected) {
-      fireNonCancelableEvent(onSelectionChange, { selectionInverted: false, selectedItems: [] });
-    } else {
-      fireNonCancelableEvent(onSelectionChange, { selectionInverted: true, selectedItems: [] });
-    }
+    fireNonCancelableEvent(onSelectionChange, selectionTree.toggleAll().getState());
   };
 
   const handleToggleItem = (item: T) => {
@@ -84,7 +76,7 @@ export function useGroupSelection<T>({
     const hasChildren = (item: T) => getExpandableItemProps(item).children.length > 0;
     const isRequestedItemsValid = requestedItems.length === 1 || requestedItems.filter(hasChildren).length === 0;
     if (isRequestedItemsValid) {
-      fireNonCancelableEvent(onSelectionChange, selectionTree.updateSelection(requestedItems));
+      fireNonCancelableEvent(onSelectionChange, selectionTree.toggleSome(requestedItems).getState());
     }
   };
 
@@ -94,8 +86,8 @@ export function useGroupSelection<T>({
       name: selectionControlName,
       selectionType: 'multi',
       disabled: false,
-      checked: selectionTree.isAllSelected,
-      indeterminate: selectionTree.isAllIndeterminate,
+      checked: selectionTree.isAllItemsSelected(),
+      indeterminate: selectionTree.isSomeItemsIndeterminate(),
       onChange: handleToggleAll,
       ariaLabel: joinStrings(
         ariaLabels?.selectionGroupLabel,
@@ -116,134 +108,4 @@ export function useGroupSelection<T>({
       ),
     }),
   };
-}
-
-function createSelectionTree<T>({
-  items,
-  selectedItems = [],
-  selectionInverted = false,
-  trackBy,
-  getExpandableItemProps,
-}: Pick<SelectionOptions<T>, 'items' | 'selectedItems' | 'selectionInverted' | 'trackBy' | 'getExpandableItemProps'>) {
-  const selfSelectedSet = new ItemSet(trackBy, selectedItems);
-  const effectivelySelectedMap = new ItemMap(trackBy);
-  const effectivelyIndeterminateMap = new ItemMap(trackBy);
-
-  // TODO: take root items as argument
-  const rootItems = items.filter(item => getExpandableItemProps(item).level === 1);
-  const getChildren = (item: T) => getExpandableItemProps(item).children;
-  const testItemsTree = new ItemSelectionTree(rootItems, selectedItems, selectionInverted, trackBy, getChildren);
-  console.log('state', testItemsTree);
-
-  const isItemSelected = (item: T): boolean => {
-    const cachedValue = effectivelySelectedMap.get(item);
-    if (cachedValue !== undefined) {
-      return cachedValue;
-    }
-    const { parent } = getExpandableItemProps(item);
-    const isSelfSelected = selfSelectedSet.has(item);
-    const isParentSelected = parent ? isItemSelected(parent) : selectionInverted;
-    const isSelected = (isSelfSelected && !isParentSelected) || (!isSelfSelected && isParentSelected);
-    effectivelySelectedMap.set(item, isSelected);
-    return isSelected;
-  };
-
-  const isItemIndeterminate = (item: T): boolean => {
-    const cachedValue = effectivelyIndeterminateMap.get(item);
-    if (cachedValue !== undefined) {
-      return cachedValue;
-    }
-    const { children } = getExpandableItemProps(item);
-    let allChildrenSelected = true;
-    let someChildrenSelected = false;
-    for (const childItem of children) {
-      const isSelected = isItemSelected(childItem);
-      const isIndeterminate = isItemIndeterminate(childItem);
-      allChildrenSelected = allChildrenSelected && isSelected && !isIndeterminate;
-      someChildrenSelected = someChildrenSelected || isSelected || isIndeterminate;
-    }
-    const isIndeterminate = children.length > 0 && !allChildrenSelected && someChildrenSelected;
-    effectivelyIndeterminateMap.set(item, isIndeterminate);
-
-    // Fix invalid selection state when both parent and all children are explicitly set as selected.
-    if (selfSelectedSet.has(item) && children.length > 0 && !someChildrenSelected) {
-      effectivelySelectedMap.set(item, false);
-    } else if (children.length > 0 && allChildrenSelected) {
-      effectivelySelectedMap.set(item, true);
-    }
-
-    return isIndeterminate;
-  };
-
-  let allChildrenSelected = true;
-  let someChildrenSelected = false;
-  for (const item of items) {
-    const isSelected = isItemSelected(item);
-    const isIndeterminate = isItemIndeterminate(item);
-    allChildrenSelected = allChildrenSelected && isSelected && !isIndeterminate;
-    someChildrenSelected = someChildrenSelected || isSelected || isIndeterminate;
-  }
-  const isAllSelected = allChildrenSelected;
-  const isAllIndeterminate = items.length > 0 && !allChildrenSelected && someChildrenSelected;
-
-  const updateSelection = (requestedItems: readonly T[]): { selectedItems: T[]; selectionInverted: boolean } => {
-    const nextState = new ItemSelectionTree(rootItems, selectedItems, selectionInverted, trackBy, getChildren);
-    nextState.toggleSome(requestedItems);
-    console.log('next', requestedItems, nextState);
-
-    const selfSelectedSet = new ItemSet(trackBy, selectedItems);
-    const unselectDeep = (item: T) => {
-      selfSelectedSet.delete(item);
-      for (const child of getExpandableItemProps(item).children) {
-        unselectDeep(child);
-      }
-    };
-    const checkParentSelected = (item: T) => {
-      const { parent } = getExpandableItemProps(item);
-      return parent ? isItemSelected(parent) : selectionInverted;
-    };
-    for (const requested of requestedItems) {
-      unselectDeep(requested);
-
-      const isSelected = !(isItemSelected(requested) && !isItemIndeterminate(requested));
-      const isParentSelected = checkParentSelected(requested);
-      if ((isParentSelected && isSelected) || (!isParentSelected && !isSelected)) {
-        selfSelectedSet.delete(requested);
-      } else {
-        selfSelectedSet.put(requested);
-      }
-    }
-    const tempSelectedItems: T[] = [];
-    selfSelectedSet.forEach(item => tempSelectedItems.push(item));
-
-    const nextSelectionTree = createSelectionTree({
-      items,
-      selectedItems: tempSelectedItems,
-      selectionInverted,
-      trackBy,
-      getExpandableItemProps,
-    });
-    const nextSelectionInverted = selectionInverted || nextSelectionTree.isAllSelected;
-    const nextSelectedItems: T[] = [];
-
-    function checkItemSelection(item: T, parentState: boolean) {
-      const itemState = nextSelectionTree.isItemSelected(item);
-      if (itemState !== parentState) {
-        nextSelectedItems.push(item);
-      }
-      for (const childItem of getExpandableItemProps(item).children) {
-        checkItemSelection(childItem, itemState);
-      }
-    }
-    for (const item of items) {
-      const { level } = getExpandableItemProps(item);
-      if (level === 1) {
-        checkItemSelection(item, nextSelectionInverted);
-      }
-    }
-
-    return { selectionInverted: nextSelectionInverted, selectedItems: nextSelectedItems };
-  };
-
-  return { isAllSelected, isAllIndeterminate, isItemSelected, isItemIndeterminate, updateSelection };
 }

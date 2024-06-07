@@ -10,7 +10,7 @@ export const SELECTION_ROOT = 'selection-root';
 // A set, that compares items by their "trackables" (the results of applying `trackBy` to them)
 export class ItemSet<T> {
   private trackBy: TableProps.TrackBy<T> | undefined;
-  private map: Map<unknown, T> = new Map();
+  private map = new Map<unknown, T>();
 
   constructor(trackBy: TableProps.TrackBy<T> | undefined, items: ReadonlyArray<T>) {
     this.trackBy = trackBy;
@@ -18,21 +18,6 @@ export class ItemSet<T> {
   }
 
   put = (item: T) => this.map.set.call(this.map, getTrackableValue(this.trackBy, item), item);
-  delete = (item: T) => this.map.delete.call(this.map, getTrackableValue(this.trackBy, item));
-  has = (item: T) => this.map.has.call(this.map, getTrackableValue(this.trackBy, item));
-  forEach = this.map.forEach.bind(this.map);
-}
-
-export class ItemMap<T> {
-  private trackBy: TableProps.TrackBy<T> | undefined;
-  private map: Map<unknown, boolean> = new Map();
-
-  constructor(trackBy: TableProps.TrackBy<T> | undefined) {
-    this.trackBy = trackBy;
-  }
-
-  set = (item: T, value: boolean) => this.map.set.call(this.map, getTrackableValue(this.trackBy, item), value);
-  get = (item: T) => this.map.get.call(this.map, getTrackableValue(this.trackBy, item));
   has = (item: T) => this.map.has.call(this.map, getTrackableValue(this.trackBy, item));
   forEach = this.map.forEach.bind(this.map);
 }
@@ -160,55 +145,83 @@ export class ItemSelectionTree<T> {
     };
     this.rootItems.forEach(item => {
       const isRootSelected = this.itemSelectionState.has(rootItemKey);
+      const isRootIndeterminate = this.itemEffectiveIndeterminateState.has(rootItemKey);
+      if (isRootSelected && !isRootIndeterminate) {
+        this.itemEffectiveSelectionState.add(rootItemKey);
+      }
       setItemEffectiveSelection(item, isRootSelected);
     });
   }
 
-  toggleAll = () => {
-    if (this.isAllItemsSelected()) {
-      this.itemSelectionState = new Set<unknown>();
-      this.itemEffectiveSelectionState = new Set<unknown>();
-      this.itemEffectiveIndeterminateState = new Set<unknown>();
-    } else {
-      this.itemSelectionState = new Set<unknown>([rootItemKey]);
-      this.itemEffectiveSelectionState = new Set<unknown>();
-      this.itemEffectiveIndeterminateState = new Set<unknown>();
-    }
+  isItemSelected = (item: T) => this.itemEffectiveSelectionState.has(getTrackableValue(this.trackBy, item));
+
+  isItemIndeterminate = (item: T) => this.itemEffectiveIndeterminateState.has(getTrackableValue(this.trackBy, item));
+
+  isAllItemsSelected = () => this.itemEffectiveSelectionState.has(rootItemKey);
+
+  isSomeItemsIndeterminate = () => this.itemEffectiveIndeterminateState.has(rootItemKey);
+
+  getState = (): { selectionInverted: boolean; selectedItems: T[] } => {
+    const selectionInverted = this.itemSelectionState.has(rootItemKey);
+    const selectedItems = Array.from(this.itemSelectionState)
+      .filter(itemKey => itemKey !== rootItemKey)
+      .map(itemKey => this.itemKeyToItem.get(itemKey)!);
+    return { selectionInverted, selectedItems };
   };
 
-  toggleSome = (requestedItems: readonly T[]) => {
-    this.itemEffectiveSelectionState = new Set<unknown>();
-    this.itemEffectiveIndeterminateState = new Set<unknown>();
+  toggleAll = (): ItemSelectionTree<T> => {
+    const clone = this.clone();
+
+    if (clone.isAllItemsSelected()) {
+      clone.itemSelectionState = new Set<unknown>();
+      clone.itemEffectiveSelectionState = new Set<unknown>();
+      clone.itemEffectiveIndeterminateState = new Set<unknown>();
+    } else {
+      clone.itemSelectionState = new Set<unknown>([rootItemKey]);
+      clone.itemEffectiveSelectionState = new Set<unknown>();
+      clone.itemEffectiveIndeterminateState = new Set<unknown>();
+    }
+    clone.computeState();
+
+    return clone;
+  };
+
+  toggleSome = (requestedItems: readonly T[]): ItemSelectionTree<T> => {
+    const clone = this.clone();
 
     const unselectDeep = (item: T) => {
-      this.itemSelectionState.delete(getTrackableValue(this.trackBy, item));
-      for (const child of this.getChildren(item)) {
+      clone.itemSelectionState.delete(getTrackableValue(clone.trackBy, item));
+      for (const child of clone.getChildren(item)) {
         unselectDeep(child);
       }
     };
 
     for (const requested of requestedItems) {
-      const requestedItemKey = getTrackableValue(this.trackBy, requested);
-      const isSelected = this.itemSelectionState.has(requestedItemKey);
+      const requestedItemKey = getTrackableValue(clone.trackBy, requested);
+      const isIndeterminate = clone.itemEffectiveIndeterminateState.has(requestedItemKey);
+      const isSelfSelected = clone.itemSelectionState.has(requestedItemKey);
 
       unselectDeep(requested);
-      if (!isSelected) {
-        this.itemSelectionState.add(requestedItemKey);
+      if (isIndeterminate || !isSelfSelected) {
+        clone.itemSelectionState.add(requestedItemKey);
       }
     }
+    clone.itemEffectiveSelectionState = new Set<unknown>();
+    clone.itemEffectiveIndeterminateState = new Set<unknown>();
+    clone.computeState();
 
-    this.computeState();
+    return clone;
   };
 
-  isSelected = (item: T) => this.itemEffectiveSelectionState.has(getTrackableValue(this.trackBy, item));
-
-  isIndeterminate = (item: T) => this.itemEffectiveIndeterminateState.has(getTrackableValue(this.trackBy, item));
-
-  isAllItemsSelected = () => this.itemEffectiveSelectionState.has(rootItemKey);
-
-  isSomeItemsSelected = () => this.itemEffectiveIndeterminateState.has(rootItemKey);
-
-  getSelectionState = (): T[] => Array.from(this.itemSelectionState).map(itemKey => this.itemKeyToItem.get(itemKey)!);
+  private clone(): ItemSelectionTree<T> {
+    const clone = new ItemSelectionTree([], [], false, this.trackBy, this.getChildren);
+    clone.rootItems = [...this.rootItems];
+    clone.itemKeyToItem = new Map(this.itemKeyToItem);
+    clone.itemSelectionState = new Set(this.itemSelectionState);
+    clone.itemEffectiveSelectionState = new Set(this.itemEffectiveSelectionState);
+    clone.itemEffectiveIndeterminateState = new Set(this.itemEffectiveIndeterminateState);
+    return clone;
+  }
 }
 
 export const focusMarkers = {
