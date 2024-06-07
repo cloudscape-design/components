@@ -11,6 +11,8 @@ export default function PromptInputPage() {
       <h1>PromptInput demo</h1>
       <PromptInput
         ariaLabel="textarea"
+        actionButtonIconName="send"
+        actionButtonAriaLabel="Submit prompt"
         value={textareaValue}
         onChange={(event: any) => setTextareaValue(event.detail.value)}
         placeholder="Ask a question"

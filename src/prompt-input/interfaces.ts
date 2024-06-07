@@ -26,7 +26,7 @@ export interface PromptInputProps
    */
   onAction?: () => void;
 
-  actionButtonIconName: IconProps.Name;
+  actionButtonIconName?: IconProps.Name;
 
   /**
    * Adds an aria-label to the action button.
