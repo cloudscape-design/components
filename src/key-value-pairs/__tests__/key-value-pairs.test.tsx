@@ -15,7 +15,8 @@ describe('KeyValuePairs', () => {
     test(`renders 1 column correctly`, () => {
       const { wrapper } = renderKeyValuePairs(
         <KeyValuePairs
-          columns={[
+          columns={1}
+          items={[
             {
               items: [
                 {
@@ -34,7 +35,8 @@ describe('KeyValuePairs', () => {
     test(`renders multiple columns correctly`, () => {
       const { wrapper } = renderKeyValuePairs(
         <KeyValuePairs
-          columns={[
+          columns={2}
+          items={[
             {
               items: [
                 {
@@ -62,7 +64,8 @@ describe('KeyValuePairs', () => {
   test('renders title correctly', () => {
     const { wrapper } = renderKeyValuePairs(
       <KeyValuePairs
-        columns={[
+        columns={1}
+        items={[
           {
             title: 'Title',
             items: [
@@ -82,7 +85,8 @@ describe('KeyValuePairs', () => {
   test('renders pairs correctly', () => {
     const { wrapper } = renderKeyValuePairs(
       <KeyValuePairs
-        columns={[
+        columns={2}
+        items={[
           {
             title: 'Column title 1',
             items: [
@@ -127,7 +131,8 @@ describe('KeyValuePairs', () => {
   test('renders label with info correctly', () => {
     const { wrapper } = renderKeyValuePairs(
       <KeyValuePairs
-        columns={[
+        columns={1}
+        items={[
           {
             items: [
               {

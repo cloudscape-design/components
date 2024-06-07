@@ -8454,17 +8454,11 @@ Object {
       "type": "string",
     },
     Object {
-      "description": "An array of column definitions. A maximum of 4 columns are supported.
-Each column definition has the following properties:
-* \`title\` (string) - (Optional) An optional title for this column.
-* \`items\` (ReadonlyArray<KeyValuePairProps.KeyValuePair>) - An array of
-    key-value pair items. Each item can have the following properties:
-  * \`label\` (string) - The key label.
-  * \`info\` (React.ReactNode) - (Optional) Area next to the key to display an info link.
-  * \`value\` (React.ReactNode) - The corresponding value for the key.",
+      "description": "Specifies the number of columns in each grid row.
+Valid values are any integer between 1 and 4. It defaults to 1.",
       "name": "columns",
       "optional": false,
-      "type": "ReadonlyArray<KeyValuePairsProps.Column>",
+      "type": "number",
     },
     Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
@@ -8472,6 +8466,20 @@ Each column definition has the following properties:
       "name": "id",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "An array of either key-value pairs or column definitions.
+Each key-value pair definition has the following properties:
+  * \`label\` (string) - The key label.
+  * \`info\` (React.ReactNode) - (Optional) Area next to the key to display an info link.
+  * \`value\` (React.ReactNode) - The corresponding value for the key.
+Each column definition has the following properties:
+* \`title\` (string) - (Optional) An optional title for this column.
+* \`items\` (ReadonlyArray<KeyValuePairProps.KeyValuePair>) - An array of
+    key-value pair items.",
+      "name": "items",
+      "optional": false,
+      "type": "ReadonlyArray<KeyValuePairsProps.Column | KeyValuePairsProps.KeyValuePair>",
     },
   ],
   "regions": Array [],

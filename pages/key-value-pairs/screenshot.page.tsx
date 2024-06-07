@@ -11,7 +11,8 @@ export default function () {
       <ScreenshotArea>
         <h2>Simple key-value-pairs</h2>
         <KeyValuePairs
-          columns={[
+          columns={1}
+          items={[
             {
               title: 'Title',
               items: [

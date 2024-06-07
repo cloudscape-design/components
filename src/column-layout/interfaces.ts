@@ -50,4 +50,8 @@ export namespace ColumnLayoutProps {
 
 export interface InternalColumnLayoutProps extends ColumnLayoutProps, InternalBaseComponentProps {
   __breakpoint?: ColumnLayoutBreakpoint;
+  /**
+   * Overrides the default wrapper HTML tag.
+   */
+  tagOverride?: string;
 }
