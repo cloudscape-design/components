@@ -2100,7 +2100,7 @@ If \\"tooltipText\\" or \\"initials\\" are used make sure to include them in the
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -2193,6 +2193,7 @@ If you set both \`iconName\` and \`initials\`, \`initials\` will take precedence
           "search",
           "security",
           "settings",
+          "send",
           "share",
           "shrink",
           "star-filled",
@@ -2245,7 +2246,9 @@ If you set both \`iconUrl\` and \`iconSvg\`, \`iconSvg\` will take precedence.
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
