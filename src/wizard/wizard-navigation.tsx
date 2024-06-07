@@ -173,9 +173,9 @@ function NavigationStepVisualRefresh({
         role="button"
         tabIndex={status === Statuses.Visited || status === Statuses.Next ? 0 : undefined}
       >
-        <div className={clsx(styles.circle)} />
+        <div className={styles.circle} />
 
-        <span className={clsx(styles.title)}>{step.title}</span>
+        <span className={styles.title}>{step.title}</span>
       </a>
     </li>
   );
@@ -201,7 +201,7 @@ function NavigationStepClassic({ i18nStrings, index, onStepClick, onSkipToClick,
       <div>
         {status === Statuses.Visited || status === Statuses.Next ? (
           <InternalLink
-            className={clsx(styles['navigation-link'])}
+            className={styles['navigation-link']}
             onFollow={evt => {
               evt.preventDefault();
               status === Statuses.Visited ? onStepClick(index) : onSkipToClick(index);

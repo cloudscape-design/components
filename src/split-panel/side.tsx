@@ -46,7 +46,7 @@ export function SplitPanelContentSide({
       ref={splitPanelRef}
     >
       <div
-        className={clsx(styles['drawer-content-side'])}
+        className={styles['drawer-content-side']}
         style={{
           top: topOffset,
           bottom: bottomOffset,
@@ -69,8 +69,8 @@ export function SplitPanelContentSide({
           />
         )}
         <div className={styles['content-side']} aria-hidden={!isOpen}>
-          <div className={clsx(styles['pane-header-wrapper-side'])}>{header}</div>
-          <div className={clsx(styles['pane-content-wrapper-side'])}>{children}</div>
+          <div className={styles['pane-header-wrapper-side']}>{header}</div>
+          <div className={styles['pane-content-wrapper-side']}>{children}</div>
         </div>
       </div>
     </div>

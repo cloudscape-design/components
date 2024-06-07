@@ -105,8 +105,8 @@ export default function Tools({ children }: ToolsProps) {
               )}
               ref={state !== 'exiting' ? transitionEventsRef : undefined}
             >
-              <div className={clsx(styles['animated-content'])}>
-                <div className={clsx(styles['hide-tools'])}>
+              <div className={styles['animated-content']}>
+                <div className={styles['hide-tools']}>
                   <InternalButton
                     ariaLabel={ariaLabels?.toolsClose ?? undefined}
                     iconName={isMobile ? 'close' : 'angle-right'}
