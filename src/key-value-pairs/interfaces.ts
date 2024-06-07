@@ -8,9 +8,10 @@ export interface KeyValuePairsProps extends BaseComponentProps {
    * Specifies the number of columns in each grid row.
    * Valid values are any integer between 1 and 4. It defaults to 1.
    */
-  columns: number;
+  columns?: number;
   /**
-   * An array of either key-value pairs or column definitions.
+   * An array of either key-value pairs and column definitions.
+   * They could be combined.
    * Each key-value pair definition has the following properties:
    *   * `label` (string) - The key label.
    *   * `info` (React.ReactNode) - (Optional) Area next to the key to display an info link.
