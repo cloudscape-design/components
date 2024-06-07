@@ -2,19 +2,20 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { useEffect, useRef } from 'react';
-import { useIdFallback } from '../use-unique-id';
+import { useRandomId } from '../use-unique-id';
 import { useEffectOnUpdate } from '../use-effect-on-update';
 import { useModalContext } from '../../context/modal-context';
 
 /*
 This hook allows setting an HTML attribute after the first render, without rerendering the component.
 */
-function useAttributeWithoutRerendering(elementRef: React.RefObject<HTMLElement>, value: string) {
+function usePerformanceMarkAttribute(elementRef: React.RefObject<HTMLElement>, value: string) {
   const attributeName = 'data-analytics-performance-mark';
 
   const attributeValueRef = useRef<string | undefined>();
 
   useEffect(() => {
+    // With this effect, we apply the attribute only on the client, to avoid hydration errors.
     attributeValueRef.current = value;
     elementRef.current?.setAttribute(attributeName, value);
   }, [value, elementRef]);
@@ -36,9 +37,9 @@ export function usePerformanceMarks(
   getDetails: () => Record<string, string | boolean | number | undefined>,
   dependencies: React.DependencyList
 ) {
-  const id = useIdFallback();
+  const id = useRandomId();
   const { isInModal } = useModalContext();
-  const attributes = useAttributeWithoutRerendering(elementRef, id);
+  const attributes = usePerformanceMarkAttribute(elementRef, id);
 
   useEffect(() => {
     if (!enabled || !elementRef.current || isInModal) {

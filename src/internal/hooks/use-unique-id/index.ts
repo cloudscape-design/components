@@ -3,7 +3,7 @@
 import React, { useRef } from 'react';
 
 let counter = 0;
-export const useIdFallback = () => {
+export const useRandomId = () => {
   const idRef = useRef<string | null>(null);
   if (!idRef.current) {
     idRef.current = `${counter++}-${Date.now()}-${Math.round(Math.random() * 10000)}`;
@@ -11,7 +11,7 @@ export const useIdFallback = () => {
   return idRef.current;
 };
 
-const useId: typeof useIdFallback = (React as any).useId ?? useIdFallback;
+const useId: typeof useRandomId = (React as any).useId ?? useRandomId;
 
 export function useUniqueId(prefix?: string) {
   return `${prefix ? prefix : ''}` + useId();

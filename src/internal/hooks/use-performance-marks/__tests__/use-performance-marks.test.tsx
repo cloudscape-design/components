@@ -15,19 +15,19 @@ describe('Data attribute', () => {
   test('the attribute should be present after the first render', () => {
     const { getByTestId } = render(<Demo />);
 
-    expect(getByTestId('element')).toHaveAttribute('data-analytics-performance-marker');
+    expect(getByTestId('element')).toHaveAttribute('data-analytics-performance-mark');
   });
 
   test('the attribute should be present after re-rendering', () => {
     const { getByTestId, rerender } = render(<Demo />);
 
-    const attributeValueBefore = getByTestId('element').getAttribute('data-analytics-performance-marker');
+    const attributeValueBefore = getByTestId('element').getAttribute('data-analytics-performance-mark');
 
     rerender(<Demo />);
 
-    expect(getByTestId('element')).toHaveAttribute('data-analytics-performance-marker');
+    expect(getByTestId('element')).toHaveAttribute('data-analytics-performance-mark');
 
-    const attributeValueAfter = getByTestId('element').getAttribute('data-analytics-performance-marker');
+    const attributeValueAfter = getByTestId('element').getAttribute('data-analytics-performance-mark');
 
     expect(attributeValueAfter).toBe(attributeValueBefore);
   });
