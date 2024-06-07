@@ -6,7 +6,7 @@
 
 .root {
   margin-block-start: awsui.$space-xs;
-  /* stylelint-disable selector-max-type */
+  /* stylelint-disable-next-line selector-max-type */
   > hr {
     border-block: none;
     border-inline: none;
