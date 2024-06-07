@@ -141,6 +141,7 @@ export function getGroupedTransactions(groups: GroupDefinition[]): TransactionRo
         ...t,
         key: parent ? `${parent}-${t.id}` : t.id,
         group: t.id,
+        groupKey: 'id',
         transactions: 1,
         children: [],
         parent,
@@ -153,6 +154,7 @@ export function getGroupedTransactions(groups: GroupDefinition[]): TransactionRo
         return {
           key: key,
           group: groupKey,
+          groupKey: `${group.property}_${group.basis.value}`,
           parent,
           transactions: groupTransactions.length,
           children: makeGroups(groupTransactions, groupIndex + 1, key),

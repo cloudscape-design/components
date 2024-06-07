@@ -3,7 +3,6 @@
 
 import { PropertyFilterProps } from '~components';
 import { TransactionRow } from './grouped-table-common';
-import { GroupDefinition } from './grouped-table-data';
 import { ItemSelectionTree } from '~components/table/selection/utils';
 
 export function findSelectionIds({
@@ -46,27 +45,74 @@ export function findSelectionIds({
 }
 
 export function createWysiwygQuery({
+  allPageItems: items,
   selectionInverted,
   selectedItems,
-  groups,
-  filter,
+  propertyFilterProps: { query: filter },
+  getItemChildren,
 }: {
+  allPageItems: readonly TransactionRow[];
   selectionInverted: boolean;
   selectedItems: TransactionRow[];
-  groups: GroupDefinition[];
-  filter: PropertyFilterProps.Query;
+  propertyFilterProps: PropertyFilterProps;
+  getItemChildren?: (row: TransactionRow) => TransactionRow[];
 }): string {
+  if (!getItemChildren) {
+    throw new Error('Missing getItemChildren');
+  }
+
   const whereTokens: string[] = [];
+
+  function joinTokens(tokens: string[], operation: string) {
+    tokens = tokens.filter(Boolean);
+    if (tokens.length === 0) {
+      return '';
+    }
+    if (tokens.length === 1) {
+      return tokens[0];
+    }
+    return `(${tokens.join(' ' + operation.toUpperCase() + ' ')})`;
+  }
 
   if (filter.tokens.length > 0) {
     const filterTokens: string[] = [];
     for (const token of filter.tokens) {
       filterTokens.push(`${token.propertyKey} ${token.operator} ${JSON.stringify(token.value)}`);
     }
-    whereTokens.push(`(${filterTokens.join(' ' + filter.operation.toUpperCase() + ' ')})`);
+    whereTokens.push(joinTokens(filterTokens, filter.operation));
   }
 
-  const whereClause = whereTokens.length > 0 ? ` WHERE ${whereTokens.join(' AND ')}` : '';
+  if (selectedItems.length > 0) {
+    const generateQuery = (items: readonly TransactionRow[], isParentSelected: boolean): string[] => {
+      const itemTokens: string[] = [];
+
+      for (const item of items) {
+        const isSelected = !!selectedItems.find(selected => selected.key === item.key);
+        const token = `${item.groupKey} ${isParentSelected ? '!=' : '='} ${JSON.stringify(item.group)}`;
+        if (isSelected) {
+          const childrenTokens = joinTokens(
+            generateQuery(getItemChildren(item), !isParentSelected),
+            isParentSelected ? 'OR' : 'AND'
+          );
+          if (childrenTokens) {
+            itemTokens.push(joinTokens([token, childrenTokens], isParentSelected ? 'OR' : 'AND'));
+          } else {
+            itemTokens.push(token);
+          }
+        } else {
+          itemTokens.push(...generateQuery(getItemChildren(item), isParentSelected));
+        }
+      }
+
+      return itemTokens;
+    };
+
+    const selectionTokens = joinTokens(generateQuery(items, selectionInverted), selectionInverted ? 'AND' : 'OR');
+
+    whereTokens.push(selectionTokens);
+  }
+
+  const whereClause = whereTokens.length > 0 ? ` WHERE ${joinTokens(whereTokens, 'AND')}` : '';
   return `UPDATE transactions SET reviewed = true${whereClause}`;
 }
 

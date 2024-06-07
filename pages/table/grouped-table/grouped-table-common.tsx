@@ -20,6 +20,7 @@ export interface Transaction {
 export interface TransactionRow {
   key: string;
   group: string;
+  groupKey: string;
   transactions: number;
   parent: null | string;
   children: TransactionRow[];

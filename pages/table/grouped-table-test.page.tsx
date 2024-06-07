@@ -175,14 +175,7 @@ export default () => {
                         </ExpandableSection>
 
                         <ExpandableSection headerText="WYSIWYG update query">
-                          <Box variant="code">
-                            {createWysiwygQuery({
-                              selectionInverted: tableData.selectionInverted,
-                              selectedItems: tableData.selectedItems,
-                              groups: tableData.groups,
-                              filter: tableData.propertyFilterProps.query,
-                            })}
-                          </Box>
+                          <Box variant="code">{createWysiwygQuery(tableData)}</Box>
                         </ExpandableSection>
 
                         <ExpandableSection headerText="Long update query">
