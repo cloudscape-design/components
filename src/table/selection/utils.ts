@@ -134,9 +134,8 @@ export class ItemSelectionTree<T> {
     const setItemEffectiveSelection = (item: T, isParentSelected: boolean) => {
       const itemKey = getTrackableValue(this.trackBy, item);
       const isSelfSelected = this.itemSelectionState.has(itemKey);
-      const isIndeterminate = this.itemEffectiveIndeterminateState.has(itemKey);
       const isSelected = (isSelfSelected && !isParentSelected) || (!isSelfSelected && isParentSelected);
-      if (isSelected && !isIndeterminate) {
+      if (isSelected) {
         this.itemEffectiveSelectionState.add(itemKey);
       }
       for (const child of this.getChildren(item)) {

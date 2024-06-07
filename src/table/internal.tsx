@@ -593,6 +593,9 @@ const InternalTable = React.forwardRef(
                           getItemSelectionProps &&
                           getSelectAllProps &&
                           (row.item ? getItemSelectionProps(row.item) : getSelectAllProps());
+                        if (loaderSelectionProps) {
+                          loaderSelectionProps.indeterminate = false;
+                        }
 
                         return (
                           <tr
