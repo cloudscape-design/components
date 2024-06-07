@@ -41,10 +41,6 @@ export interface ColumnLayoutProps extends BaseComponentProps {
    * The columns to render.
    */
   children?: React.ReactNode;
-  /**
-   * Overrides the default wrapper HTML tag.
-   */
-  tagOverride?: string;
 }
 
 export namespace ColumnLayoutProps {
@@ -54,4 +50,8 @@ export namespace ColumnLayoutProps {
 
 export interface InternalColumnLayoutProps extends ColumnLayoutProps, InternalBaseComponentProps {
   __breakpoint?: ColumnLayoutBreakpoint;
+  /**
+   * Overrides the default wrapper HTML tag.
+   */
+  tagOverride?: string;
 }
