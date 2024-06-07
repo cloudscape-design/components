@@ -588,6 +588,12 @@ const InternalTable = React.forwardRef(
                             </tr>
                           );
                         }
+
+                        const loaderSelectionProps =
+                          getItemSelectionProps &&
+                          getSelectAllProps &&
+                          (row.item ? getItemSelectionProps(row.item) : getSelectAllProps());
+
                         return (
                           <tr
                             // The key includes both unique item identifier and row index to avoid React caching.
@@ -596,7 +602,7 @@ const InternalTable = React.forwardRef(
                             className={styles.row}
                             {...rowRoleProps}
                           >
-                            {getItemSelectionProps && getSelectAllProps && (
+                            {loaderSelectionProps && (
                               <TableTdElement
                                 {...sharedCellProps}
                                 className={clsx(styles['selection-control'])}
@@ -608,7 +614,7 @@ const InternalTable = React.forwardRef(
                                   <SelectionControl
                                     onFocusDown={moveFocusDown}
                                     onFocusUp={moveFocusUp}
-                                    {...(row.item ? getItemSelectionProps(row.item) : getSelectAllProps())}
+                                    {...loaderSelectionProps}
                                     disabled={true}
                                   />
                                 ) : null}

@@ -35,6 +35,7 @@ import { isEqual } from 'lodash';
 
 // TODO: replace with Table once progressive loading API becomes public
 import InternalTable from '~components/table/internal';
+import { findSelectionIds } from './grouped-table/grouped-table-update-query';
 
 type LoadingState = Map<string, { pages: number; status: TableProps.LoadingStatus }>;
 
@@ -100,8 +101,8 @@ export default () => {
   });
 
   const tableData = useTableData();
-
   const columnDefinitions = createColumns();
+  const selectedIds = findSelectionIds(tableData);
 
   return (
     <I18nProvider messages={[messages]} locale="en">
@@ -146,7 +147,7 @@ export default () => {
                 <Header
                   variant="h1"
                   description="Table with expandable rows test page"
-                  counter={getHeaderCounterText(tableData.totalItemsCount, tableData.collectionProps.selectedItems)}
+                  counter={getHeaderCounterText(tableData.totalItemsCount, selectedIds)}
                   actions={
                     <SpaceBetween size="s" direction="horizontal" alignItems="center">
                       <Button>Update selected</Button>
@@ -497,6 +498,8 @@ function useTableData() {
       setSelectionInverted(detail.selectionInverted ?? false);
       setSelectedItems(detail.selectedItems);
     },
+    trackBy: (row: TransactionRow) => row.key,
+    getItemChildren,
     actions: {
       expandAll: () => {
         collectionResult.actions.setExpandedItems(allTransactionRows);
