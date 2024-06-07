@@ -23,7 +23,7 @@ const InternalKeyValuePair = ({ label, info, value }: KeyValuePairsProps.KeyValu
 );
 
 const InternalKeyValuePairs = React.forwardRef(
-  ({ columns, items, className, ...rest }: KeyValuePairsProps, ref: React.Ref<HTMLDivElement>) => {
+  ({ columns = 1, items, className, ...rest }: KeyValuePairsProps, ref: React.Ref<HTMLDivElement>) => {
     return (
       <div {...rest} className={clsx(styles['key-value-pairs'], className)} ref={ref}>
         <ColumnLayout tagOverride="dl" columns={Math.min(columns, 4)} variant="text-grid">
