@@ -61,7 +61,7 @@ function TriggerButton(
           <Icon name={iconName} svg={iconSvg} />
         </span>
       </button>
-      {badge && <div className={clsx(styles.dot)} />}
+      {badge && <div className={styles.dot} />}
     </div>
   );
 }

@@ -4,6 +4,7 @@
 */
 
 @use 'sass:map';
+@use 'sass:meta';
 @use '../tokens' as awsui;
 @use '../typography' as typography;
 @use '../foundation' as foundation;
@@ -46,7 +47,7 @@
 ) {
   $gutter-vertical: $gutter;
   $gutter-horizontal: $gutter;
-  @if type-of($gutter) == 'map' {
+  @if meta.type-of($gutter) == 'map' {
     $gutter-vertical: map.get($gutter, 'vertical');
     $gutter-horizontal: map.get($gutter, 'horizontal');
   }

@@ -108,7 +108,6 @@
     padding-block-start: awsui.$space-scaled-m;
     padding-block-end: awsui.$space-scaled-l;
     padding-inline: awsui.$space-l;
-    /* stylelint-disable plugin/no-unsupported-browser-features */
     @supports (position: sticky) {
       position: sticky;
       inset-inline-start: 0;
@@ -116,7 +115,6 @@
       margin-block: 0;
       margin-inline: calc(-2 * #{awsui.$space-table-horizontal});
     }
-    /* stylelint-enable plugin/no-unsupported-browser-features */
   }
 }
 

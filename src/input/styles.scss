@@ -100,11 +100,11 @@
 
   &.input-type-search {
     box-sizing: border-box; // Overrides the [type='search'] CSS from normalize
-    -webkit-appearance: none; /* stylelint-disable-line plugin/no-unsupported-browser-features */
+    -webkit-appearance: none;
 
     &::-webkit-search-decoration {
       // Remove extra space for default Safari browser search icon
-      -webkit-appearance: none; /* stylelint-disable-line plugin/no-unsupported-browser-features */
+      -webkit-appearance: none;
     }
 
     &::-webkit-search-cancel-button {
