@@ -34,10 +34,8 @@
   }
 }
 
-//Since IE does not support grid-auto-columns, grid will work for maximum of 6 segments
 @for $i from 2 through 6 {
   .segment-count-#{$i} {
-    -ms-grid-columns: repeatValue(1fr, $i);
     // The repeat syntax is not used since it is broken when using with SASS together
     grid-template-columns: repeatValue(1fr, $i);
   }

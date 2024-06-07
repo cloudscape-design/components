@@ -640,6 +640,7 @@ export type SpacingTokenName =
   | 'spacePanelSideLeft'
   | 'spacePanelSideRight'
   | 'spacePanelSplitTop'
+  | 'spacePanelSplitBottom'
   | 'spaceSegmentedControlFocusOutlineGutter'
   | 'spaceTableHeaderFocusOutlineGutter'
   | 'spaceTabsContentTop'

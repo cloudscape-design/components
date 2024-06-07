@@ -9,13 +9,12 @@ export function getStickyOffsetVars(
   stickyNotificationsHeight: string,
   mobileToolbarHeight: string,
   disableBodyScroll: boolean,
-  isMobile: boolean,
-  extraTopOffset?: string
+  isMobile: boolean
 ) {
   return {
     [globalVars.stickyVerticalTopOffset]: `calc(${!disableBodyScroll ? headerHeight : 0}px + ${
       isMobile ? mobileToolbarHeight : stickyNotificationsHeight
-    } + ${extraTopOffset ?? '0px'})`,
+    })`,
     [globalVars.stickyVerticalBottomOffset]: `${!disableBodyScroll ? footerHeight : 0}px`,
   };
 }

@@ -27,7 +27,7 @@ when the \`dismissible\` property is set to \`true\`.",
   "name": "Alert",
   "properties": Array [
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -48,7 +48,9 @@ An \`onDismiss\` event is fired when a user clicks the button.",
       "type": "boolean",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -220,14 +222,16 @@ To use it correctly, define an ID for the element either as label, and set the p
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -635,7 +639,7 @@ Example:
       "type": "AppLayoutProps.Labels",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -723,7 +727,26 @@ Each Drawer is an item in the drawers wrapper with the following properties:
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Determines the visual treatment for the breadcrumbs and notifications slots. Specifically:
+* \`default\` - Does not apply any visual treatment.
+* \`high-contrast\` - Applies high-contrast to both slots. Use in conjunction with \`headerVariant=\\"high-contrast\\"\` in ContentLayout.",
+      "inlineType": Object {
+        "name": "",
+        "type": "union",
+        "values": Array [
+          "default",
+          "high-contrast",
+        ],
+      },
+      "name": "headerVariant",
+      "optional": true,
+      "type": "string",
+      "visualRefreshTag": "",
+    },
+    Object {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -939,7 +962,7 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -1109,7 +1132,9 @@ A value of \`null\` means no series is highlighted.
       "type": "AreaChartProps.I18nStrings<T>",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -1352,7 +1377,7 @@ The event \`detail\` contains the index of the corresponding item.",
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -1414,7 +1439,9 @@ A maximum of four fields are supported.
       "type": "AttributeEditorProps.I18nStrings<T>",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -1727,7 +1754,7 @@ scrolled out of the viewport.",
       "type": "boolean",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -1858,7 +1885,9 @@ Note: Manual filtering doesn't disable match highlighting.
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -2061,7 +2090,7 @@ Object {
   "name": "Badge",
   "properties": Array [
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -2085,7 +2114,9 @@ Object {
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -2175,7 +2206,7 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -2365,7 +2396,9 @@ This can only be used when the chart consists exclusively of bar series.",
       "type": "CartesianChartProps.I18nStrings<T>",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -2569,7 +2602,7 @@ Object {
   "name": "Box",
   "properties": Array [
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -2682,7 +2715,9 @@ Note: If you don't set it, the display depends on the variant.
       "visualRefreshTag": "'heavy'",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -2900,7 +2935,7 @@ without pressing modifier keys (that is, CTRL, ALT, SHIFT, META).",
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -2914,7 +2949,9 @@ without pressing modifier keys (that is, CTRL, ALT, SHIFT, META).",
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -3053,7 +3090,7 @@ The text will also be added to the \`title\` attribute of the button.",
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -3199,6 +3236,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "search",
           "security",
           "settings",
+          "send",
           "share",
           "shrink",
           "star-filled",
@@ -3250,7 +3288,9 @@ If you set both \`iconUrl\` and \`iconSvg\`, \`iconSvg\` will take precedence.
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -3362,6 +3402,11 @@ Object {
         "name": "ButtonDropdownProps.ItemClickDetails",
         "properties": Array [
           Object {
+            "name": "checked",
+            "optional": true,
+            "type": "false | true",
+          },
+          Object {
             "name": "external",
             "optional": true,
             "type": "false | true",
@@ -3394,6 +3439,11 @@ modifier keys (that is, CTRL, ALT, SHIFT, META), and the item has an \`href\` se
       "detailInlineType": Object {
         "name": "ButtonDropdownProps.ItemClickDetails",
         "properties": Array [
+          Object {
+            "name": "checked",
+            "optional": true,
+            "type": "false | true",
+          },
           Object {
             "name": "external",
             "optional": true,
@@ -3439,7 +3489,7 @@ Use this to provide an accessible name for buttons that don't have visible text.
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -3475,42 +3525,50 @@ because fixed positioning results in a slight, visible lag when scrolling comple
       "type": "boolean",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
       "type": "string",
     },
     Object {
-      "description": "Array of objects, each having the following properties:
+      "description": "Array of objects with a number of suppoted types.
+The following properties are supported across all types:
+
+- \`type\` (string) - The type of the item. Can be \`action\`, \`group\`, \`checkbox\`. Defaults to \`action\` if \`items\` undefined and \`group\` otherwise.
 - \`id\` (string) - allows to identify the item that the user clicked on. Mandatory for individual items, optional for categories.
-
 - \`text\` (string) - description shown in the menu for this item. Mandatory for individual items, optional for categories.
-
 - \`lang\` (string) - (Optional) The language of the item, provided as a BCP 47 language tag.
-
 - \`disabled\` (boolean) - whether the item is disabled. Disabled items are not clickable, but they can be highlighted with the keyboard to make them accessible.
-
 - \`disabledReason\` (string) - (Optional) Displays text near the \`text\` property when item is disabled. Use to provide additional context.
-
-- \`items\` (ReadonlyArray<Item>): an array of item objects. Items will be rendered as nested menu items but only for the first nesting level, multi-nesting is not supported.
-An item which belongs to nested group has the following properties: \`id\`, \`text\`, \`disabled\` and \`description\`.
-
 - \`description\` (string) - additional data that will be passed to a \`data-description\` attribute.
 
+### action
+
 - \`href\` (string) - (Optional) Defines the target URL of the menu item, turning it into a link.
-
 - \`external\` (boolean) - Marks a menu item as external by adding an icon after the menu item text. The link will open in a new tab when clicked. Note that this only works when \`href\` is also provided.
-
 - \`externalIconAriaLabel\` (string) - Adds an \`aria-label\` to the external icon.
-
 - \`iconName\` (string) - (Optional) Specifies the name of the icon, used with the [icon component](/components/icon/).
-
 - \`iconAlt\` (string) - (Optional) Specifies alternate text for the icon when using \`iconUrl\`.
-
 - \`iconUrl\` (string) - (Optional) Specifies the URL of a custom icon.
-
 - \`iconSvg\` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the \`svg\` slot of the [icon component](/components/icon/).
+
+### checkbox
+
+When \`type\` is set to \\"checkbox\\", the values set to \`href\`, \`external\` and \`externalIconAriaLabel\` will be ignored.
+
+- \`checked\` (boolean) - Controls the state of the checkbox item.
+- \`iconName\` (string) - (Optional) Specifies the name of the icon, used with the [icon component](/components/icon/).
+- \`iconAlt\` (string) - (Optional) Specifies alternate text for the icon when using \`iconUrl\`.
+- \`iconUrl\` (string) - (Optional) Specifies the URL of a custom icon.
+- \`iconSvg\` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the \`svg\` slot of the [icon component](/components/icon/).
+
+### group
+
+- \`items\` (ReadonlyArray<Item>) - an array of item objects. Items will be rendered as nested menu items but only for the first nesting level, multi-nesting is not supported.
+An item which belongs to nested group has the following properties: \`id\`, \`text\`, \`disabled\`, and \`description\`.
 
 ",
       "name": "items",
@@ -3715,7 +3773,7 @@ The event \`detail\` contains the current value of the field.",
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -3782,7 +3840,9 @@ the component.",
       "type": "CalendarProps.I18nStrings",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -4014,7 +4074,7 @@ Default value:
       "type": "ReadonlyArray<CardsProps.CardsLayout>",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -4036,7 +4096,9 @@ Don't use this property if the card has any other interactive elements.",
       "type": "number",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -4309,7 +4371,7 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "boolean",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -4331,7 +4393,9 @@ receive focus.",
       "type": "boolean",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -4524,7 +4588,7 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -4672,7 +4736,9 @@ The object should contain, among others:
       "type": "CodeEditorProps.I18nStrings",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -4848,7 +4914,7 @@ The values for all configured preferences are present even if the user didn't ch
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -5008,7 +5074,9 @@ The function will be called when a user clicks on the trigger button.",
       "type": "() => Promise<HTMLElement>",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -5282,7 +5350,7 @@ Note: This is not supported when used with \`minColumnWidth\`.
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -5304,7 +5372,9 @@ When \`minColumnWidth\` is not set, only up to 4 columns are supported.",
       "type": "boolean",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -5353,7 +5423,7 @@ Object {
   "name": "Container",
   "properties": Array [
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -5385,7 +5455,9 @@ all containers to the height of the longest one, to avoid extra vertical scroll 
       "type": "boolean",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -5486,11 +5558,18 @@ Object {
   "name": "ContentLayout",
   "properties": Array [
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Set it to \`true\` if your page uses the [app layout component](/components/app-layout/) with \`disableContentPaddings=true\`.
+In that case, the content layout will become sensitive to the state of drawers in app layout and leave the necessary padding to avoid visual overlap with those elements.",
+      "name": "defaultPadding",
+      "optional": true,
+      "type": "boolean",
     },
     Object {
       "description": "Determines whether the layout has an overlap between the header and content.
@@ -5501,14 +5580,66 @@ If true, the overlap will be removed.",
       "visualRefreshTag": "",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Use this property to style the background of the header.
+It can be:
+* a string representing the CSS \`background\` value for the header element.
+* a function that receives the mode (\\"light\\" or \\"dark\\") as a parameter and returns a string.
+
+ The header background spans across the full available width, independent of the specified \`maxContentWidth\`.
+ If set, the component will not add the default background color to the header.
+",
+      "name": "headerBackgroundStyle",
+      "optional": true,
+      "type": "((mode: \\"dark\\" | \\"light\\") => string) | string",
+    },
+    Object {
+      "description": "Determines the visual treatment for the header. Specifically:
+* \`default\` - Does not apply any visual treatment.
+* \`high-contrast\` - Applies high-contrast to the background of the header and the elements contained within it.
+    If you are using the AppLayout component, set \`headerVariant=\\"high-contrast\\"\` to apply the same treatment to the breadcrumbs and notifications slots.
+* \`divider\` - Adds a horizontal separator between the header and the content.",
+      "inlineType": Object {
+        "name": "",
+        "type": "union",
+        "values": Array [
+          "default",
+          "high-contrast",
+          "divider",
+        ],
+      },
+      "name": "headerVariant",
+      "optional": true,
+      "type": "string",
+      "visualRefreshTag": "\`high-contrast\` headerVariant",
+    },
+    Object {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
       "type": "string",
     },
+    Object {
+      "description": "Maximum width for the content.
+If set, all elements of the content layout (header, content, notifications, breadcrumbs) will be center-aligned and have the desired maximum width.
+If not set, all elements will occupy the full available width.",
+      "name": "maxContentWidth",
+      "optional": true,
+      "type": "number",
+    },
   ],
   "regions": Array [
+    Object {
+      "description": "Use this slot to add the [breadcrumb group component](/components/breadcrumb-group/) to the content layout:
+* if your application does not use the [app layout component](/components/app-layout/), which already offers a \`breadcrumbs\` slot.
+* If your page uses the [app layout component](/components/app-layout/) with \`disableContentPaddings=true\`.
+Do not use in conjunction with the \`breadcrumbs\` slot in the [app layout component](/components/app-layout/).
+",
+      "isDefault": false,
+      "name": "breadcrumbs",
+    },
     Object {
       "description": "Use this slot to render the main content of the layout below the header.",
       "displayName": "content",
@@ -5519,6 +5650,21 @@ If true, the overlap will be removed.",
       "description": "Use this slot to render the header content for the layout.",
       "isDefault": false,
       "name": "header",
+    },
+    Object {
+      "description": "Use this slot to display [notifications](/components/flashbar/) to the content layout:
+* If your page does not use the [app layout component](/components/app-layout/), which already offers a \`notifications\` slot.
+* If your page uses the [app layout component](/components/app-layout/) with \`disableContentPaddings=true\`.
+Do not use in conjunction with the \`notifications\` slot in the [app layout component](/components/app-layout/).
+",
+      "isDefault": false,
+      "name": "notifications",
+    },
+    Object {
+      "description": "Use this slot to add a secondary element inside the header. The secondary element will be displayed next to main header and occupy 25% of the available space.
+Note that the secondary header will not have a high-contrast treatement, even if you set \`headerVariant\` to \`high-contrast\`.",
+      "isDefault": false,
+      "name": "secondaryHeader",
     },
   ],
   "releaseStatus": "stable",
@@ -5532,7 +5678,7 @@ Object {
   "name": "CopyToClipboard",
   "properties": Array [
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -5564,7 +5710,9 @@ and to distinguish between multiple buttons with identical visible text. The tex
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -5691,7 +5839,7 @@ scrolled out of the viewport.",
       "type": "boolean",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -5717,7 +5865,9 @@ receive focus.",
       "type": "boolean",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -5875,7 +6025,7 @@ scrolled out of the viewport.",
       "type": "boolean",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -5976,7 +6126,9 @@ the component.",
       "type": "DatePickerProps.I18nStrings",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -6210,7 +6362,7 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -6463,7 +6615,9 @@ Defaults to \`false\`.",
       "type": "DateRangePickerProps.I18nStrings",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -6655,7 +6809,7 @@ Object {
   "name": "Drawer",
   "properties": Array [
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -6680,7 +6834,9 @@ Object {
       "type": "I18nStrings",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -6737,7 +6893,7 @@ The event \`detail\` contains the current value of the \`expanded\` property.",
   "name": "ExpandableSection",
   "properties": Array [
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -6804,7 +6960,9 @@ slot (not with the deprecated \`header\`), and not with the navigation variant."
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -6938,7 +7096,7 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "boolean",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -7033,7 +7191,9 @@ is provided by its parent form field component.
       "type": "FileUploadProps.I18nStrings",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -7115,7 +7275,7 @@ Object {
   "name": "Flashbar",
   "properties": Array [
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -7186,7 +7346,9 @@ If \`stackItems\` is set to \`true\`, it should also contain:
       "type": "FlashbarProps.I18nStrings",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -7242,7 +7404,7 @@ Object {
   "name": "Form",
   "properties": Array [
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -7256,7 +7418,9 @@ Object {
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -7264,9 +7428,10 @@ Object {
     },
     Object {
       "defaultValue": "\\"full-page\\"",
+      "deprecatedTag": "You can safely remove this property as there is no longer any visual difference between \`full-page\` and \`embedded\` variants.",
       "description": "Specify a form variant with one of the following:
-* \`full-page\` - Use this variant when the form contains the entire content of the page. Full page variants implement the high contrast header and content behavior automatically.
-* \`embedded\` - Use this variant when the form doesn't occupy the full page. This variant doesn't use a high contrast header.",
+* \`full-page\` - Use this variant when the form contains the entire content of the page.
+* \`embedded\` - Use this variant when the form doesn't occupy the full page.",
       "inlineType": Object {
         "name": "",
         "type": "union",
@@ -7278,7 +7443,6 @@ Object {
       "name": "variant",
       "optional": true,
       "type": "string",
-      "visualRefreshTag": "",
     },
   ],
   "regions": Array [
@@ -7319,7 +7483,7 @@ Object {
   "name": "FormField",
   "properties": Array [
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -7360,7 +7524,9 @@ This only works well if you're using a single control in the form field.
       "type": "FormFieldProps.I18nStrings",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -7439,7 +7605,7 @@ Object {
   "name": "Grid",
   "properties": Array [
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -7474,7 +7640,9 @@ for accessibility reasons.
       "type": "ReadonlyArray<GridProps.ElementDefinition>",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -7503,7 +7671,7 @@ Object {
   "name": "Header",
   "properties": Array [
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -7535,7 +7703,9 @@ provided by the variant. Using this property does not change the visual appearan
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -7599,14 +7769,16 @@ Object {
   "name": "HelpPanel",
   "properties": Array [
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -7659,7 +7831,7 @@ Object {
   "name": "Hotspot",
   "properties": Array [
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -7693,7 +7865,9 @@ throughout your whole application.",
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -7750,14 +7924,16 @@ This property is ignored if you use a predefined icon or if you set your custom 
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -7831,6 +8007,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "search",
           "security",
           "settings",
+          "send",
           "share",
           "shrink",
           "star-filled",
@@ -8157,7 +8334,7 @@ scrolled out of the viewport.",
       "type": "boolean",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -8200,7 +8377,9 @@ receive focus.",
       "type": "boolean",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -8407,7 +8586,7 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -8589,7 +8768,9 @@ A value of \`null\` means no series is highlighted.
       "type": "CartesianChartProps.I18nStrings<T>",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -8782,6 +8963,43 @@ exports[`Documenter definition for link matches the snapshot: link 1`] = `
 Object {
   "events": Array [
     Object {
+      "cancelable": false,
+      "description": "Called when the user clicks on the link. Do not use this handler for navigation, use the \`onFollow\` event instead.",
+      "detailInlineType": Object {
+        "name": "ClickDetail",
+        "properties": Array [
+          Object {
+            "name": "altKey",
+            "optional": false,
+            "type": "boolean",
+          },
+          Object {
+            "name": "button",
+            "optional": false,
+            "type": "number",
+          },
+          Object {
+            "name": "ctrlKey",
+            "optional": false,
+            "type": "boolean",
+          },
+          Object {
+            "name": "metaKey",
+            "optional": false,
+            "type": "boolean",
+          },
+          Object {
+            "name": "shiftKey",
+            "optional": false,
+            "type": "boolean",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "ClickDetail",
+      "name": "onClick",
+    },
+    Object {
       "cancelable": true,
       "description": "Called when a link is clicked without any modifier keys. If the link has no \`href\` provided, it will be called on
 all clicks.
@@ -8830,7 +9048,7 @@ If you want to implement client-side routing yourself, use this event and preven
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -8903,7 +9121,9 @@ If an \`href\` is not provided, the component will render using a
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -9043,7 +9263,7 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -9233,7 +9453,9 @@ This can only be used when the chart consists exclusively of bar series.",
       "type": "CartesianChartProps.I18nStrings<T>",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -9459,7 +9681,7 @@ The event detail contains the \`reason\`, which can be any of the following:
   "name": "Modal",
   "properties": Array [
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -9486,7 +9708,9 @@ The function will be called when a user clicks on the trigger button.",
       "type": "() => Promise<HTMLElement>",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -9681,7 +9905,7 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "boolean",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -9838,7 +10062,9 @@ because it will be added by the component automatically.",
       "type": "MultiselectProps.I18nStrings",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -10287,7 +10513,7 @@ Use either \`ariaLabel\` or \`ariaLabelledby\` (you can't use both).",
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -10484,7 +10710,9 @@ A value of \`null\` means no segment is being highlighted.
       "type": "PieChartProps.I18nStrings",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -10638,7 +10866,7 @@ Object {
   "name": "Popover",
   "properties": Array [
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -10673,7 +10901,9 @@ For example, use it when you need to place a column layout in the popover conten
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -10751,6 +10981,14 @@ that don't have visible text, and to distinguish between multiple triggers with 
       "optional": true,
       "type": "string",
     },
+    Object {
+      "defaultValue": "true",
+      "description": "Specifies if the text trigger content should wrap. If you set it to false, it prevents the text from
+wrapping and truncates it with an ellipsis.",
+      "name": "wrapTriggerText",
+      "optional": true,
+      "type": "boolean",
+    },
   ],
   "regions": Array [
     Object {
@@ -10803,14 +11041,16 @@ Use the \`buttonText\` property and the \`onButtonClick\` event listener of the 
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -11016,7 +11256,7 @@ events to fire calling for more properties.",
       "type": "boolean",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -11376,7 +11616,9 @@ operations are communicated to the user in another way.",
       "type": "PropertyFilterProps.I18nStrings",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -11549,7 +11791,7 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "boolean",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -11563,7 +11805,9 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -11686,7 +11930,7 @@ and 'Region'.",
       "type": "ReadonlyArray<string>",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -12024,7 +12268,9 @@ The function will be called when a user clicks on the trigger button.",
       "type": "S3ResourceSelectorProps.I18nStrings",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -12178,14 +12424,16 @@ Object {
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -12351,7 +12599,7 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "boolean",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -12458,7 +12706,9 @@ Note: Manual filtering doesn't disable match highlighting.
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -12772,7 +13022,7 @@ property explicitly set to \`false\`.
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -12811,7 +13061,9 @@ It contains the following:
       "type": "SideNavigationProps.Header",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -12959,7 +13211,7 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -13006,7 +13258,9 @@ is provided by its parent form field component.
       "type": "SliderProps.I18nStrings",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -13105,7 +13359,7 @@ Object {
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -13127,7 +13381,9 @@ Object {
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -13172,14 +13428,16 @@ Object {
   "name": "Spinner",
   "properties": Array [
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -13230,7 +13488,7 @@ Object {
   "name": "SplitPanel",
   "properties": Array [
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -13338,7 +13596,9 @@ Object {
       "type": "SplitPanelProps.I18nStrings",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -13362,7 +13622,7 @@ Object {
   "name": "StatusIndicator",
   "properties": Array [
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -13393,7 +13653,9 @@ use this to communicate additional context.",
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -13691,7 +13953,7 @@ add a meaningful description to the whole selection.
       "type": "TableProps.AriaLabels<T>",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -13826,7 +14088,31 @@ By default, the keyboard navigation is active for tables with expandable rows.
       "type": "number",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "A function that specifies the current status of loading more items. It is called once for the entire
+table with \`item=null\` and then for each expanded item. The function result is one of the four possible states:
+* \`pending\` - Indicates that no request in progress, but more options may be loaded.
+* \`loading\` - Indicates that data fetching is in progress.
+* \`finished\` - Indicates that loading has finished and no more requests are expected.
+* \`error\` - Indicates that an error occurred during fetch.",
+      "inlineType": Object {
+        "name": "TableProps.GetLoadingStatus",
+        "parameters": Array [
+          Object {
+            "name": "item",
+            "type": "T | null",
+          },
+        ],
+        "returnType": "TableProps.LoadingStatus",
+        "type": "function",
+      },
+      "name": "getLoadingStatus",
+      "optional": true,
+      "type": "TableProps.GetLoadingStatus<T>",
+    },
+    Object {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -13880,6 +14166,24 @@ Important: in tables with expandable rows the \`firstIndex\`, \`lastIndex\`, and
       "name": "renderAriaLive",
       "optional": true,
       "type": "(data: TableProps.LiveAnnouncement) => string",
+    },
+    Object {
+      "description": "Defines loader properties for error state.",
+      "name": "renderLoaderError",
+      "optional": true,
+      "type": "(detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode",
+    },
+    Object {
+      "description": "Defines loader properties for loading state.",
+      "name": "renderLoaderLoading",
+      "optional": true,
+      "type": "(detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode",
+    },
+    Object {
+      "description": "Defines loader properties for pending state.",
+      "name": "renderLoaderPending",
+      "optional": true,
+      "type": "(detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode",
     },
     Object {
       "description": "Specifies if columns can be resized. If set to \`true\`, users can resize the columns in the table.",
@@ -14193,7 +14497,7 @@ Don't use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -14237,7 +14541,9 @@ If the tab content is too short, it will stretch. If the tab content is too long
       "type": "TabsProps.I18nStrings",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -14332,7 +14638,7 @@ character validation. You should use this property only when absolutely necessar
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -14527,7 +14833,9 @@ character validation. You should use this property only when absolutely necessar
       "type": "TagEditorProps.I18nStrings",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -14591,14 +14899,16 @@ Object {
   "name": "TextContent",
   "properties": Array [
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -14692,7 +15002,7 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -14751,7 +15061,9 @@ in order to prevent the user from changing the filtering text.",
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -14957,7 +15269,7 @@ scrolled out of the viewport.",
       "type": "boolean",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -15004,7 +15316,9 @@ receive focus.",
       "type": "boolean",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -15163,7 +15477,7 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "boolean",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -15188,7 +15502,9 @@ is provided by its parent form field component.
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -15330,7 +15646,7 @@ scrolled out of the viewport.",
       "type": "boolean",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -15384,7 +15700,9 @@ Use it to restrict the granularity of time that the user can enter.
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -15542,7 +15860,7 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "boolean",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -15564,7 +15882,9 @@ receive focus.",
       "type": "boolean",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -15635,7 +15955,7 @@ Object {
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -15672,7 +15992,9 @@ We recommend to always enable this property.",
       "type": "TokenGroupProps.I18nStrings",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -15729,7 +16051,7 @@ Object {
   "name": "TopNavigation",
   "properties": Array [
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -15779,7 +16101,9 @@ Object {
       "type": "TopNavigationProps.I18nStrings",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -15900,7 +16224,7 @@ Object {
   "name": "TutorialPanel",
   "properties": Array [
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -16020,7 +16344,9 @@ Object {
       "type": "TutorialPanelProps.I18nStrings",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -16161,7 +16487,7 @@ Defaults to \`false\`.
       "type": "boolean",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -16257,7 +16583,9 @@ Defaults to \`false\`.
       "type": "WizardProps.I18nStrings",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,

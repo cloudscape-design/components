@@ -47,7 +47,7 @@ export async function statusReportFailure({ github, context }) {
 
 export async function statusReportSuccess({ github, context }) {
   const basebranch = readJson('./bundle-size/output-basebranch.json');
-  const pr = readJson('./bundle-size/output-pr.json');
+  const pr = readJson('./bundle-size/output.json');
 
   console.log('Base branch:', basebranch);
   console.log('This PR:', pr);

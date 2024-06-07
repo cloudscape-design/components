@@ -35,6 +35,12 @@ export interface PopoverProps extends BaseComponentProps {
   triggerAriaLabel?: string;
 
   /**
+   * Specifies if the text trigger content should wrap. If you set it to false, it prevents the text from
+   * wrapping and truncates it with an ellipsis.
+   */
+  wrapTriggerText?: boolean;
+
+  /**
    * Element that triggers the popover when selected by the user.
    * @displayname trigger
    */

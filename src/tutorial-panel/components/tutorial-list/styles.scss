@@ -47,7 +47,6 @@
 .tutorial-description {
   /* stylelint-disable-next-line @cloudscape-design/no-implicit-descendant, selector-max-type -- Customers can nest their list items inside Box components. */
   ul {
-    /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
     list-style-type: initial;
   }
 }

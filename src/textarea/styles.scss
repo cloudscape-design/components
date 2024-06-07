@@ -13,7 +13,7 @@
 .textarea {
   @include styles.styles-reset;
   // Restore browsers' default resize values
-  resize: auto; /* stylelint-disable-line plugin/no-unsupported-browser-features */
+  resize: auto;
   // Restore default text cursor
   cursor: text;
   // Allow multi-line placeholders

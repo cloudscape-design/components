@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useObservedElement } from './use-observed-element';
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
-import { getLogicalBoundingClientRect } from '../../internal/direction';
+import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
 export function useAppLayoutPlacement(headerSelector: string, footerSelector: string) {
   const mainElementRef = useRef<HTMLElement>(null);

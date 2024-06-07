@@ -17,9 +17,6 @@
   inline-size: 100%;
   flex-wrap: wrap;
   justify-content: space-between;
-  &-with-toolbar {
-    padding-block-start: awsui.$space-scaled-s;
-  }
 
   &.refresh,
   &:not(.root-no-actions) {
@@ -91,8 +88,6 @@
 }
 
 .actions {
-  // extra flex container to avoid overflow issues in IE11
-  // https://github.com/philipwalton/flexbugs/issues/170
   display: flex;
   align-items: flex-start;
   min-block-size: awsui.$size-vertical-input;

@@ -35,6 +35,28 @@ export interface FunnelStartProps extends Omit<BaseFunnelProps, 'funnelInteracti
 // A function type for a generic funnel method
 export type FunnelMethod<T extends BaseFunnelProps> = (props: T) => void;
 
+// Interface for table interaction method props
+export interface TableInteractionProps {
+  // Time to render table in either no data state or with data after user actions like filtering, pagination.
+  // in milliseconds
+  interactionTime: number;
+  // User action like sorting, filtering, pagination which triggered new data load in table.
+  userAction: string;
+  // Unique instance identifier for the component.
+  // Default: ''
+  instanceIdentifier?: string;
+  // Component identifier like table header which can be used to identify the table
+  // Default: ''
+  componentIdentifier?: string;
+  // Number of resources in table after user action
+  // Default: 0
+  noOfResourcesInTable?: number;
+  // Additional metadata related to user interaction
+  interactionMetadata?: string;
+}
+
+export type TableInteractionMethod = (props: TableInteractionProps) => void;
+
 // A function type specifically for funnelStart
 export type FunnelStartMethod = (props: FunnelStartProps) => string;
 
@@ -126,4 +148,8 @@ export interface IFunnelMetrics {
 
   helpPanelInteracted: FunnelMethod<FunnelLinkInteractionProps>;
   externalLinkInteracted: FunnelMethod<FunnelLinkInteractionProps>;
+}
+
+export interface IPerformanceMetrics {
+  tableInteraction: TableInteractionMethod;
 }

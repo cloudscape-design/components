@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { computeOffset } from '../../../lib/components/container/use-sticky-header';
 import globalVars from '../../../lib/components/internal/styles/global-vars';
+import * as tokens from '../../../lib/components/internal/generated/styles/tokens';
 
 describe('computeOffset', () => {
   test('should calculate offset for mobile outside overflow parent', () => {
@@ -11,7 +12,7 @@ describe('computeOffset', () => {
       hasInnerOverflowParents: false,
     });
 
-    expect(result).toBe(`calc(var(${globalVars.stickyVerticalTopOffset}, 0px) + -10px)`);
+    expect(result).toBe(`calc(var(${globalVars.stickyVerticalTopOffset}, 0px) + -10px + 0px)`);
   });
 
   test('should calculate offset for mobile inside overflow parent', () => {
@@ -42,7 +43,18 @@ describe('computeOffset', () => {
       hasInnerOverflowParents: false,
     });
 
-    expect(result).toBe(`calc(var(${globalVars.stickyVerticalTopOffset}, 0px) + 0px)`);
+    expect(result).toBe(`calc(var(${globalVars.stickyVerticalTopOffset}, 0px) + 0px + 0px)`);
+  });
+
+  test('should calculate include additional offset', () => {
+    const result = computeOffset({
+      isMobile: false,
+      __mobileStickyOffset: 10,
+      hasInnerOverflowParents: false,
+      __additionalOffset: true,
+    });
+
+    expect(result).toBe(`calc(var(${globalVars.stickyVerticalTopOffset}, 0px) + 0px + ${tokens.spaceScaledS})`);
   });
 
   test('should calculate offset for non-mobile with inner overflow parents', () => {

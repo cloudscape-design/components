@@ -23,13 +23,11 @@
   }
 
   @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
-    /* stylelint-disable scss/operator-no-newline-after */
     max-inline-size: calc(
       var(#{custom-props.$layoutWidth}) - var(#{custom-props.$mainOffsetLeft}) - var(
           #{custom-props.$defaultMinContentWidth}
         ) - var(#{custom-props.$contentGapRight})
     );
-    /* stylelint-enable scss/operator-no-newline-after */
   }
 
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {

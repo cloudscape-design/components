@@ -5,7 +5,7 @@ import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 import tableStyles from '../styles.css.js';
 import resizerStyles from './styles.css.js';
 import { getOverflowParents } from '../../internal/utils/scrollable-containers.js';
-import { getLogicalBoundingClientRect } from '../../internal/direction';
+import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
 export function getResizerElements(resizerElement: null | HTMLElement) {
   if (!resizerElement) {

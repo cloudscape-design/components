@@ -37,9 +37,9 @@ export function HelpPanelImplementation({
     </div>
   ) : (
     <div {...containerProps} ref={__internalRootRef}>
-      {header && <div className={clsx(styles.header)}>{header}</div>}
+      {header && <div className={styles.header}>{header}</div>}
       <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
-        <div className={clsx(styles.content)}>{children}</div>
+        <div className={styles.content}>{children}</div>
       </LinkDefaultVariantContext.Provider>
       {footer && <div className={styles.footer}>{footer}</div>}
     </div>

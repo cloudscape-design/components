@@ -20,6 +20,7 @@ import { isDevelopment } from '../internal/is-development';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
 import { useFunnel } from '../internal/analytics/hooks/use-funnel.js';
+import { isLinkItem } from './utils/utils.js';
 
 const InternalButtonDropdown = React.forwardRef(
   (
@@ -48,7 +49,9 @@ const InternalButtonDropdown = React.forwardRef(
     const isInRestrictedView = useMobile();
     const dropdownId = useUniqueId('dropdown');
     for (const item of items) {
-      checkSafeUrl('ButtonDropdown', item.href);
+      if (isLinkItem(item)) {
+        checkSafeUrl('ButtonDropdown', item.href);
+      }
     }
     if (mainAction) {
       checkSafeUrl('ButtonDropdown', mainAction.href);

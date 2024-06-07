@@ -1,10 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { RefObject, useState, useLayoutEffect, useCallback, useEffect, createContext } from 'react';
-import { findUpUntil, supportsStickyPosition } from '../internal/utils/dom';
+import { findUpUntil } from '../internal/utils/dom';
 import { getOverflowParents } from '../internal/utils/scrollable-containers';
 import { useMobile } from '../internal/hooks/use-mobile';
 import globalVars from '../internal/styles/global-vars';
+import * as tokens from '../internal/generated/styles/tokens';
 
 interface StickyHeaderContextProps {
   isStuck: boolean;
@@ -15,6 +16,7 @@ interface ComputeOffsetProps {
   __stickyOffset?: number;
   __mobileStickyOffset?: number;
   hasInnerOverflowParents: boolean;
+  __additionalOffset?: boolean;
 }
 
 export function computeOffset({
@@ -22,6 +24,7 @@ export function computeOffset({
   __stickyOffset,
   __mobileStickyOffset,
   hasInnerOverflowParents,
+  __additionalOffset,
 }: ComputeOffsetProps): string {
   const localOffset = isMobile ? (__stickyOffset ?? 0) - (__mobileStickyOffset ?? 0) : __stickyOffset ?? 0;
   if (hasInnerOverflowParents || __stickyOffset !== undefined) {
@@ -29,7 +32,7 @@ export function computeOffset({
   }
   const globalOffset = `var(${globalVars.stickyVerticalTopOffset}, 0px)`;
 
-  return `calc(${globalOffset} + ${localOffset}px)`;
+  return `calc(${globalOffset} + ${localOffset}px + ${__additionalOffset ? tokens.spaceScaledS : '0px'})`;
 }
 
 export const StickyHeaderContext = createContext<StickyHeaderContextProps>({
@@ -42,11 +45,12 @@ export const useStickyHeader = (
   __stickyHeader?: boolean,
   __stickyOffset?: number,
   __mobileStickyOffset?: number,
-  __disableMobile = true
+  __disableMobile?: boolean,
+  __additionalOffset = false
 ) => {
   const isMobile = useMobile();
   const disableSticky = isMobile && __disableMobile;
-  const isSticky = supportsStickyPosition() && !disableSticky && !!__stickyHeader;
+  const isSticky = !disableSticky && !!__stickyHeader;
 
   // If it has overflow parents inside the app layout, we shouldn't apply a sticky offset.
   const [hasInnerOverflowParents, setHasInnerOverflowParents] = useState(false);
@@ -68,6 +72,7 @@ export const useStickyHeader = (
     __stickyOffset,
     __mobileStickyOffset,
     hasInnerOverflowParents,
+    __additionalOffset,
   });
 
   const stickyStyles = isSticky

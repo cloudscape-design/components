@@ -121,7 +121,7 @@ export default function InternalSlider({
       )}
       <div
         ref={handleRef}
-        className={clsx(styles['tooltip-thumb'])}
+        className={styles['tooltip-thumb']}
         style={{
           [customCssProps.sliderTooltipPosition]: `calc(${percent}% - ${THUMB_SIZE}px)`,
         }}

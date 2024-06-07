@@ -3,7 +3,6 @@
 
 import React from 'react';
 import {
-  ButtonDropdown,
   CollectionPreferences,
   CollectionPreferencesProps,
   Input,
@@ -18,20 +17,7 @@ import { Instance } from './common';
 import { columnLabel } from '../shared-configs';
 import { contentDisplayPreferenceI18nStrings } from '../../common/i18n-strings';
 
-export function createColumns({
-  getInstanceProps,
-}: {
-  getInstanceProps: (instance: Instance) => {
-    children: number;
-    actions: ReadonlyArray<{
-      id: string;
-      text: string;
-      disabled?: boolean;
-      hidden?: boolean;
-      onClick: () => void;
-    }>;
-  };
-}): TableProps.ColumnDefinition<Instance>[] {
+export function createColumns(): TableProps.ColumnDefinition<Instance>[] {
   return [
     {
       id: 'name',
@@ -39,13 +25,13 @@ export function createColumns({
       cell: item => <Link href={`#${item.name}`}>{item.name}</Link>,
       ariaLabel: columnLabel('DB Name'),
       sortingField: 'name',
-      minWidth: 200,
+      minWidth: 220,
       isRowHeader: true,
     },
     {
       id: 'role',
       header: 'Role',
-      cell: item => (item.type === 'instance' ? item.role : `${item.role} (${getInstanceProps(item).children})`),
+      cell: item => (item.type === 'instance' ? item.role : item.role),
       ariaLabel: columnLabel('Role'),
       sortingField: 'role',
     },
@@ -133,32 +119,6 @@ export function createColumns({
           item.terminationReason?.includes('automatically') ? 'Cannot edit automatically added description' : '',
       },
       minWidth: 250,
-    },
-    {
-      id: 'actions',
-      header: 'Actions',
-      cell: item => {
-        const { actions } = getInstanceProps(item);
-        if (actions.filter(action => !action.hidden).length === 0) {
-          return (
-            <ButtonDropdown
-              variant="inline-icon"
-              ariaLabel={`Instance ${item.name} actions`}
-              disabled={true}
-              items={[]}
-            />
-          );
-        }
-        return (
-          <ButtonDropdown
-            expandToViewport={true}
-            items={actions.filter(action => !action.hidden)}
-            variant="inline-icon"
-            ariaLabel={`Instance ${item.name} actions`}
-            onItemClick={event => actions.find(action => action.id === event.detail.id)!.onClick()}
-          />
-        );
-      },
     },
   ];
 }

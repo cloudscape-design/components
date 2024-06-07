@@ -2,30 +2,30 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, createWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 import ButtonWrapper from '../button';
-import styles from '../../../split-panel/styles.selectors.js';
+import testUtilStyles from '../../../split-panel/test-classes/styles.selectors.js';
 
 export default class SplitPanelWrapper extends ComponentWrapper {
-  static rootSelector: string = styles.root;
+  static rootSelector: string = testUtilStyles.root;
 
   findHeader(): ElementWrapper {
-    return this.find(`.${styles['header-text']}`)!;
+    return this.find(`.${testUtilStyles['header-text']}`)!;
   }
 
   findPreferencesButton(): ButtonWrapper | null {
-    return this.findComponent(`.${styles['preferences-button']}`, ButtonWrapper);
+    return this.findComponent(`.${testUtilStyles['preferences-button']}`, ButtonWrapper);
   }
 
   findCloseButton(): ButtonWrapper | null {
-    return this.findComponent(`.${styles['close-button']}`, ButtonWrapper);
+    return this.findComponent(`.${testUtilStyles['close-button']}`, ButtonWrapper);
   }
 
   findOpenButton(): ButtonWrapper | null {
     const wrapper = createWrapper();
-    return wrapper.findComponent(`.${styles['open-button']}`, ButtonWrapper);
+    return wrapper.findComponent(`.${testUtilStyles['open-button']}`, ButtonWrapper);
   }
 
   findSlider(): ElementWrapper | null {
-    return this.findByClassName(styles.slider);
+    return this.findByClassName(testUtilStyles.slider);
   }
 
   /**
@@ -33,7 +33,7 @@ export default class SplitPanelWrapper extends ComponentWrapper {
    * Use this method to assert the panel position.
    */
   findOpenPanelBottom(): SplitPanelWrapper | null {
-    return this.matches(`.${styles['position-bottom']}:not(.${styles['drawer-closed']})`);
+    return this.matches(`.${testUtilStyles['open-position-bottom']}`);
   }
 
   /**
@@ -41,6 +41,6 @@ export default class SplitPanelWrapper extends ComponentWrapper {
    * Use this method to assert the panel position.
    */
   findOpenPanelSide(): SplitPanelWrapper | null {
-    return this.matches(`.${styles['position-side']}:not(.${styles['drawer-closed']})`);
+    return this.matches(`.${testUtilStyles['open-position-side']}`);
   }
 }

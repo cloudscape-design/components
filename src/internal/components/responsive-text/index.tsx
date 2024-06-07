@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { memo, useEffect, useRef } from 'react';
 import { getTextWidth } from './responsive-text-utils';
-import { getIsRtl } from '../../direction';
+import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
 
 interface ResponsiveTextProps {
   x: number;

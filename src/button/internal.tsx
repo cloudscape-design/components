@@ -86,7 +86,7 @@ export const InternalButton = React.forwardRef(
     const { stepNumber, stepNameSelector } = useFunnelStep();
     const { subStepSelector, subStepNameSelector } = useFunnelSubStep();
 
-    usePerformanceMarks(
+    const performanceMarkAttributes = usePerformanceMarks(
       'primaryButton',
       variant === 'primary',
       buttonRef,
@@ -145,6 +145,7 @@ export const InternalButton = React.forwardRef(
     const buttonProps = {
       ...props,
       ...__nativeAttributes,
+      ...performanceMarkAttributes,
       tabIndex,
       // https://github.com/microsoft/TypeScript/issues/36659
       ref: useMergeRefs(buttonRef, __internalRootRef),

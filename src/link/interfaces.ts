@@ -2,7 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import { BaseComponentProps } from '../internal/base-component';
 import React from 'react';
-import { BaseNavigationDetail, CancelableEventHandler } from '../internal/events';
+import {
+  BaseNavigationDetail,
+  CancelableEventHandler,
+  NonCancelableEventHandler,
+  ClickDetail as _ClickDetail,
+} from '../internal/events';
 
 export interface LinkProps extends BaseComponentProps {
   /**
@@ -91,6 +96,11 @@ export interface LinkProps extends BaseComponentProps {
   onFollow?: CancelableEventHandler<LinkProps.FollowDetail>;
 
   /**
+   * Called when the user clicks on the link. Do not use this handler for navigation, use the `onFollow` event instead.
+   */
+  onClick?: NonCancelableEventHandler<LinkProps.ClickDetail>;
+
+  /**
    * Adds a `rel` attribute to the link. If the `rel` property is provided, it overrides the default behaviour.
    * By default, the component sets the `rel` attribute to "noopener noreferrer" when `external` is `true` or `target` is `"_blank"`.
    */
@@ -119,4 +129,6 @@ export namespace LinkProps {
      */
     focus(): void;
   }
+
+  export type ClickDetail = _ClickDetail;
 }

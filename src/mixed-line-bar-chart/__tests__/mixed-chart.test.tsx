@@ -12,7 +12,7 @@ import { lineSeries3, renderMixedChart } from './common';
 import createComputedTextLengthMock from './computed-text-length-mock';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
 import positions from '../../../lib/components/popover/utils/positions';
-import { getIsRtl } from '../../../lib/components/internal/direction';
+import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
 
 jest.mock('../../../lib/components/popover/utils/positions', () => {
   return {
@@ -21,8 +21,8 @@ jest.mock('../../../lib/components/popover/utils/positions', () => {
   };
 });
 
-jest.mock('../../../lib/components/internal/direction', () => ({
-  ...jest.requireActual('../../../lib/components/internal/direction'),
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
   getIsRtl: jest.fn().mockReturnValue(false),
 }));
 

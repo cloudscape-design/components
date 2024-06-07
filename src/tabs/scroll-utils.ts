@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import smoothScroll from './smooth-scroll';
-import { getIsRtl, getScrollInlineStart } from '../internal/direction';
+import { getIsRtl, getScrollInlineStart } from '@cloudscape-design/component-toolkit/internal';
 
 export const onPaginationClick = (
   headerBarRef: React.RefObject<HTMLUListElement>,

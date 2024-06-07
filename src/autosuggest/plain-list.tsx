@@ -60,14 +60,7 @@ const PlainList = ({
   }, [autosuggestItemsState.highlightType, autosuggestItemsState.highlightedIndex]);
 
   return (
-    <OptionsList
-      {...menuProps}
-      onLoadMore={handleLoadMore}
-      open={true}
-      ref={listRef}
-      // to prevent closing the list when clicking the scrollbar on IE11
-      nativeAttributes={{ unselectable: 'on' }}
-    >
+    <OptionsList {...menuProps} onLoadMore={handleLoadMore} open={true} ref={listRef}>
       {autosuggestItemsState.items.map((item, index) => {
         const optionProps = getOptionProps(
           index,

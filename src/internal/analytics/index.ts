@@ -2,10 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 /* istanbul ignore file */
 
-import { IFunnelMetrics } from './interfaces';
+import { IFunnelMetrics, IPerformanceMetrics } from './interfaces';
 
 export function setFunnelMetrics(funnelMetrics: IFunnelMetrics) {
   FunnelMetrics = funnelMetrics;
+}
+export function setPerformanceMetrics(performanceMetrics: IPerformanceMetrics) {
+  PerformanceMetrics = performanceMetrics;
 }
 
 /**
@@ -32,4 +35,12 @@ export let FunnelMetrics: IFunnelMetrics = {
   funnelSubStepError(): void {},
   helpPanelInteracted(): void {},
   externalLinkInteracted(): void {},
+};
+
+/**
+ * This is a stub implementation of the PerformanceMetrics interface and will be replaced during
+ * build time with the actual implementation.
+ */
+export let PerformanceMetrics: IPerformanceMetrics = {
+  tableInteraction(): void {},
 };

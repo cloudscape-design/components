@@ -23,6 +23,7 @@ import {
   PropertyFilter,
   Select,
   StatusIndicator,
+  Table,
   TableProps,
   Toggle,
 } from '~components';
@@ -34,8 +35,6 @@ import { createColumns, createPreferences, filteringProperties } from './grouped
 import { TransactionRow, ariaLabels, getHeaderCounterText } from './grouped-table/grouped-table-common';
 import { isEqual } from 'lodash';
 
-// TODO: replace with Table once progressive loading API becomes public
-import InternalTable from '~components/table/internal';
 import { createIdsQuery, createWysiwygQuery, findSelectionIds } from './grouped-table/grouped-table-update-query';
 
 type LoadingState = Map<string, { pages: number; status: TableProps.LoadingStatus }>;
@@ -115,7 +114,7 @@ export default () => {
         toolsOpen={toolsOpen}
         onToolsChange={({ detail: { open } }) => setToolsOpen(open)}
         content={
-          <InternalTable
+          <Table
             {...tableData.collectionProps}
             stickyColumns={preferences.stickyColumns}
             resizableColumns={settings.resizableColumns}

@@ -32,7 +32,7 @@ const CategoryElement = ({
           {item.text}
         </p>
       )}
-      <ul className={clsx(styles['items-list-container'])} role="group" aria-label={item.text}>
+      <ul className={styles['items-list-container']} role="group" aria-label={item.text}>
         {item.items && (
           <ItemsList
             items={item.items}

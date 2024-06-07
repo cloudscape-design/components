@@ -128,7 +128,7 @@ export default function SliderLabels({
         </span>
       </div>
       {ariaDescription && (
-        <div className={clsx(styles['labels-aria-description'])} id={labelsId}>
+        <div className={styles['labels-aria-description']} id={labelsId}>
           {ariaDescription}
         </div>
       )}

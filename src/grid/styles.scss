@@ -40,9 +40,6 @@ $grid-gutter-width: awsui.$space-grid-gutter;
   @for $i from 1 through $grid-columns {
     &.colspan-#{$i} {
       flex: 0 0 math.percentage(math.div($i, $grid-columns));
-      // Add a `max-width` to ensure content within each column does not blow out
-      // the width of the column. Applies to IE10+ and Firefox. Chrome and Safari
-      // do not appear to require this.
       max-inline-size: math.percentage(math.div($i, $grid-columns));
     }
 

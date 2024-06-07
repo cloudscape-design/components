@@ -18,6 +18,7 @@ export default function Popover({
   triggerType = 'text',
   dismissButton = true,
   renderWithPortal = false,
+  wrapTriggerText = true,
   header,
   ...rest
 }: PopoverProps) {
@@ -40,6 +41,7 @@ export default function Popover({
       triggerType={triggerType}
       dismissButton={dismissButton}
       renderWithPortal={renderWithPortal}
+      wrapTriggerText={wrapTriggerText}
       {...externalProps}
       {...baseComponentProps}
     />

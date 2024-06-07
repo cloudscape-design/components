@@ -1,0 +1,50 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../styles' as styles;
+@use '../../styles/tokens' as awsui;
+@use '../../hooks/focus-visible' as focus-visible;
+
+.slider {
+  padding-block: 0;
+  padding-inline: 0;
+  cursor: ns-resize;
+  margin-block-start: 2px;
+  margin-block-end: 0;
+  margin-inline: 0;
+  block-size: 16px;
+  // Desktop Safari doesn't support touch events, but Safari on iOS does.
+  // stylelint-disable-next-line plugin/no-unsupported-browser-features
+  touch-action: none;
+
+  &:focus {
+    outline: none;
+  }
+
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(0px);
+  }
+}
+
+.slider-side {
+  cursor: ew-resize;
+  margin-block: 0;
+  margin-inline-start: 2px;
+  margin-inline-end: 0;
+}
+
+.slider-icon {
+  stroke: awsui.$color-text-interactive-default;
+  &:hover {
+    stroke: awsui.$color-text-interactive-hover;
+  }
+  &-bottom {
+    margin-block: auto;
+    margin-inline: auto;
+  }
+  &-side {
+    transform: rotate(90deg);
+  }
+}

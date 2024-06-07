@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 import { ItemProps } from '../interfaces';
-import { isLinkItem } from '../utils/utils';
+import { isCheckboxItem, isLinkItem } from '../utils/utils';
 import styles from './styles.css.js';
 import Tooltip from '../tooltip';
 
@@ -12,7 +12,7 @@ import { getItemTarget } from '../utils/utils';
 import useHiddenDescription from '../utils/use-hidden-description';
 import InternalIcon, { InternalIconProps } from '../../icon/internal';
 import { useDropdownContext } from '../../internal/components/dropdown/context';
-import { getMenuItemProps } from '../utils/menu-item';
+import { getMenuItemProps, getMenuItemCheckboxProps } from '../utils/menu-item';
 
 const ItemElement = ({
   item,
@@ -26,6 +26,7 @@ const ItemElement = ({
   variant = 'normal',
 }: ItemProps) => {
   const isLink = isLinkItem(item);
+  const isCheckbox = isCheckboxItem(item);
   const onClick = (event: React.MouseEvent) => {
     // Stop propagation to parent node and handle event exclusively in here. This ensures
     // that no group will interfere with the default behavior of links
@@ -48,6 +49,7 @@ const ItemElement = ({
         [styles.highlighted]: highlighted,
         [styles.disabled]: disabled,
         [styles['has-category-header']]: hasCategoryHeader,
+        [styles['has-checkmark']]: isCheckbox,
         [styles['show-divider']]: showDivider,
         [styles['is-focused']]: isKeyboardHighlighted,
       })}
@@ -67,14 +69,19 @@ export type InternalItemProps = ButtonDropdownProps.Item & {
   badge?: boolean;
 };
 
+export type InternalCheckboxItemProps = ButtonDropdownProps.CheckboxItem & {
+  badge?: boolean;
+};
+
 interface MenuItemProps {
-  item: InternalItemProps;
+  item: InternalItemProps | InternalCheckboxItemProps;
   disabled: boolean;
   highlighted: boolean;
 }
 
 function MenuItem({ item, disabled, highlighted }: MenuItemProps) {
   const menuItemRef = useRef<(HTMLSpanElement & HTMLAnchorElement) | null>(null);
+  const isCheckbox = isCheckboxItem(item);
 
   useEffect(() => {
     if (highlighted && menuItemRef.current) {
@@ -92,7 +99,7 @@ function MenuItem({ item, disabled, highlighted }: MenuItemProps) {
     // The current element will always have tabindex=0 which means that it can be tabbed to,
     // while all other items have tabindex=-1 so we can focus them when necessary.
     tabIndex: highlighted ? 0 : -1,
-    ...getMenuItemProps({ disabled }),
+    ...(isCheckbox ? getMenuItemCheckboxProps({ disabled, checked: item.checked }) : getMenuItemProps({ disabled })),
     ...(isDisabledWithReason ? targetProps : {}),
   };
 
@@ -123,11 +130,19 @@ function MenuItem({ item, disabled, highlighted }: MenuItemProps) {
   );
 }
 
-const MenuItemContent = ({ item, disabled }: { item: InternalItemProps; disabled: boolean }) => {
+const MenuItemContent = ({
+  item,
+  disabled,
+}: {
+  item: InternalItemProps | InternalCheckboxItemProps;
+  disabled: boolean;
+}) => {
   const hasIcon = !!(item.iconName || item.iconUrl || item.iconSvg);
   const hasExternal = isLinkItem(item) && item.external;
+  const isCheckbox = isCheckboxItem(item);
   return (
     <>
+      {isCheckbox && <MenuItemCheckmark checked={item.checked} disabled={disabled} />}
       {hasIcon && (
         <MenuItemIcon
           name={item.iconName}
@@ -136,8 +151,9 @@ const MenuItemContent = ({ item, disabled }: { item: InternalItemProps; disabled
           alt={item.iconAlt}
           badge={item.badge}
         />
-      )}{' '}
-      {item.text} {hasExternal && <ExternalIcon disabled={disabled} ariaLabel={item.externalIconAriaLabel} />}
+      )}
+      {item.text}
+      {hasExternal && <ExternalIcon disabled={disabled} ariaLabel={item.externalIconAriaLabel} />}
     </>
   );
 };
@@ -147,6 +163,22 @@ const MenuItemIcon = (props: InternalIconProps) => (
     <InternalIcon {...props} />
   </span>
 );
+
+// Toggle has aria-hidden set because it's just used as a graphical element,
+// a11y attributes for the checkmark are communicated through the role and aria-checked state
+// of the menu element item.
+const MenuItemCheckmark = ({ disabled, checked }: { disabled: boolean; checked: boolean }) => {
+  const checkmark = <InternalIcon variant={disabled ? 'disabled' : 'normal'} name="check" />;
+  return (
+    <span
+      className={clsx(styles.icon, styles.checkmark, { [styles.disabled]: disabled })}
+      aria-hidden="true"
+      style={{ visibility: checked ? 'visible' : 'hidden' }}
+    >
+      {checkmark}
+    </span>
+  );
+};
 
 const ExternalIcon = ({ disabled, ariaLabel }: { disabled: boolean; ariaLabel?: string }) => {
   const icon = <InternalIcon variant={disabled ? 'disabled' : 'normal'} name="external" />;

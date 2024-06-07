@@ -22,7 +22,7 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { SomeRequired } from '../internal/types';
 import { nodeBelongs } from '../internal/utils/node-belongs';
 import { ChartWrapper } from '../internal/components/chart-wrapper';
-import { getIsRtl } from '../internal/direction';
+import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
 
 type InternalAreaChartProps<T extends AreaChartProps.DataTypes> = SomeRequired<
   AreaChartProps<T>,

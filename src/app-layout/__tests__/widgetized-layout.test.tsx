@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
-import { createWidgetizedAppLayout } from '../../../lib/components/app-layout/widget';
+import { createWidgetizedAppLayout } from '../../../lib/components/app-layout/implementation';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../../../lib/components/app-layout/interfaces';
 import { FlagsHolder, awsuiGlobalFlagsSymbol } from '../../../lib/components/internal/utils/global-flags';
 import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';

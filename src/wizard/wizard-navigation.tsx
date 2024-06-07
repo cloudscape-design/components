@@ -6,7 +6,6 @@ import InternalLink from '../link/internal';
 import InternalBox from '../box/internal';
 import { WizardProps } from './interfaces';
 import styles from './styles.css.js';
-import { shouldRemoveHighContrastHeader } from '../internal/utils/content-header-utils';
 
 interface NavigationProps {
   activeStepIndex: number;
@@ -51,20 +50,10 @@ export default function Navigation({
 }: NavigationProps) {
   return (
     <nav
-      className={clsx(
-        styles.navigation,
-        hidden && styles.hidden,
-        isVisualRefresh && styles.refresh,
-        shouldRemoveHighContrastHeader() && styles['remove-high-contrast-header']
-      )}
+      className={clsx(styles.navigation, hidden && styles.hidden, isVisualRefresh && styles.refresh)}
       aria-label={i18nStrings.navigationAriaLabel}
     >
-      <ul
-        className={clsx(
-          isVisualRefresh && styles.refresh,
-          shouldRemoveHighContrastHeader() && styles['remove-high-contrast-header']
-        )}
-      >
+      <ul className={clsx(isVisualRefresh && styles.refresh)}>
         {steps.map((step, index: number) =>
           isVisualRefresh ? (
             <NavigationStepVisualRefresh
@@ -184,9 +173,9 @@ function NavigationStepVisualRefresh({
         role="button"
         tabIndex={status === Statuses.Visited || status === Statuses.Next ? 0 : undefined}
       >
-        <div className={clsx(styles.circle)} />
+        <div className={styles.circle} />
 
-        <span className={clsx(styles.title)}>{step.title}</span>
+        <span className={styles.title}>{step.title}</span>
       </a>
     </li>
   );
@@ -212,7 +201,7 @@ function NavigationStepClassic({ i18nStrings, index, onStepClick, onSkipToClick,
       <div>
         {status === Statuses.Visited || status === Statuses.Next ? (
           <InternalLink
-            className={clsx(styles['navigation-link'])}
+            className={styles['navigation-link']}
             onFollow={evt => {
               evt.preventDefault();
               status === Statuses.Visited ? onStepClick(index) : onSkipToClick(index);

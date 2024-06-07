@@ -8,7 +8,7 @@ import { Navigation, Tools, Breadcrumbs } from './utils/content-blocks';
 import * as toolsContent from './utils/tools-content';
 import labels from './utils/labels';
 import Box from '~components/box';
-import { getIsRtl } from '~components/internal/direction';
+import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
 
 export default function () {
   return (

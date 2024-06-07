@@ -4,12 +4,9 @@
 */
 
 @use '../internal/styles' as styles;
+@use './text';
+@use './layout';
 
 .root {
   @include styles.default-text-style;
 }
-
-/* stylelint-disable no-invalid-position-at-import-rule */
-@import './text';
-@import './layout';
-/* stylelint-enable no-invalid-position-at-import-rule */

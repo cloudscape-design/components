@@ -43,12 +43,6 @@
     background-color: awsui.$color-background-dropdown-item-default;
     outline: none;
     @include styles.dropdown-shadow;
-    // HACK: because of the issues with IE's box shadow rendering we draw
-    // a border and don't mind the pixel fitting
-    @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
-      border-block: styles.$control-border-width solid awsui.$color-border-container-top;
-      border-inline: styles.$control-border-width solid awsui.$color-border-container-top;
-    }
 
     // Don't show dropdown border when there's no dropdown content
     &.is-empty::after {

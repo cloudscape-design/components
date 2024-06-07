@@ -3,10 +3,9 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-/* stylelint-disable plugin/no-unsupported-browser-features */
 @mixin with-direction($direction) {
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
   &:dir(#{$direction}) {
     @content;
   }
 }
-/* stylelint-enable plugin/no-unsupported-browser-features */

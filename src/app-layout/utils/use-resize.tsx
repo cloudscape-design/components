@@ -2,17 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState, useEffect } from 'react';
 
-import clsx from 'clsx';
-
-import ResizeHandler from '../../split-panel/icons/resize-handler';
+import PanelResizeHandle from '../../internal/components/panel-resize-handle';
 import { getLimitedValue } from '../../split-panel/utils/size-utils';
 import { usePointerEvents } from './use-pointer-events';
 import { useKeyboardEvents } from './use-keyboard-events';
 import { AppLayoutProps } from '../interfaces';
 
-import splitPanelStyles from '../../split-panel/styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
-import styles from '../visual-refresh/styles.css.js';
 import { FocusControlRefs } from './use-focus-control';
 import { SizeControlProps } from './interfaces';
 
@@ -74,23 +70,18 @@ function useResize(
   const onKeyDown = useKeyboardEvents(sizeControlProps);
 
   const resizeHandle = (
-    <div
+    <PanelResizeHandle
       ref={drawersRefs.slider}
-      role="slider"
-      tabIndex={0}
-      aria-label={activeDrawer?.ariaLabels?.resizeHandle}
-      aria-valuemax={100}
-      aria-valuemin={0}
-      aria-valuenow={relativeSize}
-      className={clsx(splitPanelStyles.slider, splitPanelStyles[`slider-side`], testutilStyles['drawers-slider'])}
+      position="side"
+      ariaLabel={activeDrawer?.ariaLabels?.resizeHandle}
+      ariaValuenow={relativeSize}
+      className={testutilStyles['drawers-slider']}
       onKeyDown={onKeyDown}
       onPointerDown={onSliderPointerDown}
-    >
-      <ResizeHandler className={clsx(splitPanelStyles['slider-icon'], splitPanelStyles[`slider-icon-side`])} />
-    </div>
+    />
   );
 
-  return { resizeHandle: <div className={styles['drawer-slider']}>{resizeHandle}</div>, drawerSize };
+  return { resizeHandle, drawerSize };
 }
 
 export default useResize;

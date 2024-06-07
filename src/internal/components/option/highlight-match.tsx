@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import styles from './styles.css.js';
-import clsx from 'clsx';
 
 const splitOnFiltering = (str: string, highlightText: string) => {
   // We match by creating a regex using user-provided strings, so we skip
@@ -26,7 +25,7 @@ export interface HighlightMatchProps {
 }
 
 const Highlight = ({ str }: HighlightMatchProps) =>
-  str ? <span className={clsx(styles['filtering-match-highlight'])}>{str}</span> : null;
+  str ? <span className={styles['filtering-match-highlight']}>{str}</span> : null;
 
 export default function HighlightMatch({ str, highlightText }: HighlightMatchProps) {
   if (!str || !highlightText) {

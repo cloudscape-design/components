@@ -344,6 +344,13 @@ describe('Slider a11y', () => {
     expect(input).toHaveAttribute('aria-labelledby', 'testid');
   });
 
+  test('Renders correct aria description', () => {
+    const wrapper = renderSlider({ min: 0, max: 100, value: 50, ariaDescription: 'slider description' });
+    const description = wrapper.findByClassName(styles['labels-aria-description'])?.getElement();
+
+    expect(description).toHaveTextContent('slider description');
+  });
+
   test('Renders correct aria value text when has value', () => {
     const wrapper = renderSlider({
       min: 0,

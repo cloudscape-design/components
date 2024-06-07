@@ -13,19 +13,13 @@ const containerHeaderSelector = containerWrapper.findHeader().toSelector();
 const flashBarSelector = createWrapper().findFlashbar().toSelector();
 const demoHeaderSelector = '#h';
 
-const CLASSIC_STICKY_OFFSET_SPACE = 0; // No borders on flashbars or additional padding below
-const VISUAL_REFRESH_STICKY_OFFSET_SPACE = 2; // space-xxxs - from $offsetTopWithNotifications additional padding
-
 class AppLayoutLegacyStickyPage extends BasePageObject {
   scrollTo(params: { top?: number; left?: number }) {
     return this.elementScrollTo(`.${appLayoutSelectors['disable-body-scroll-root']}`, params);
   }
 }
 
-describe.each([
-  ['classic', CLASSIC_STICKY_OFFSET_SPACE],
-  ['visualRefresh', VISUAL_REFRESH_STICKY_OFFSET_SPACE],
-])('In %s', (type, stickyOffset) => {
+describe.each(['classic', 'visualRefresh'])('In %s', type => {
   function setupTest({ viewport = viewports.desktop }, testFn: (page: AppLayoutLegacyStickyPage) => Promise<void>) {
     return useBrowser(async browser => {
       const page = new AppLayoutLegacyStickyPage(browser);
@@ -47,7 +41,7 @@ describe.each([
       await page.scrollTo({ top: 400 });
       const { top: containerTopAfter } = await page.getBoundingBox(containerHeaderSelector);
       const { bottom: flashBarBottomAfter } = await page.getBoundingBox(flashBarSelector);
-      expect(containerTopAfter).toEqual(flashBarBottomAfter + stickyOffset);
+      expect(containerTopAfter).toEqual(flashBarBottomAfter);
     })
   );
 

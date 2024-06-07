@@ -34,17 +34,15 @@ function setupTest({ viewport = viewports.desktop, url = '' }, testFn: (page: Ap
 }
 
 test(
-  'keeps consistent spacing between sticky notifications and table header in visual refresh',
+  'correctly stacks table header below notifications in visual refresh',
   setupTest({ url: '#/light/app-layout/with-sticky-notifications-and-header?visualRefresh=true' }, async page => {
     await page.windowScrollTo({ top: viewports.desktop.height });
 
-    const { bottom: firstNotificationBottom } = await page.getBoundingBox(page.findNotificationByIndex(1).toSelector());
-    const { top: secondNotificationTop, bottom: secondNotificationBottom } = await page.getBoundingBox(
+    const { bottom: secondNotificationBottom } = await page.getBoundingBox(
       page.findNotificationByIndex(2).toSelector()
     );
     const { top: tableHeaderTop } = await page.getBoundingBox(page.findStickyTableHeader().toSelector());
-    const expected = secondNotificationTop - firstNotificationBottom;
-    expect(tableHeaderTop - secondNotificationBottom).toEqual(expected);
+    expect(tableHeaderTop - secondNotificationBottom).toEqual(0);
   })
 );
 
@@ -110,6 +108,23 @@ describe.each([[true], [false]])('visualRefresh=%s', visualRefresh => {
         await page.click(popover.findTrigger().toSelector());
         await page.click(popover.findContent().findButton().toSelector());
         await expect(page.getAlertTextAndDismiss()).resolves.toEqual('It worked');
+      }
+    )
+  );
+
+  test(
+    'should not leave any space between page header and sticky header in content layout',
+    setupTest(
+      {
+        url: `#/light/app-layout/with-sticky-header-table-in-content-layout?visualRefresh=${visualRefresh}`,
+      },
+      async page => {
+        const pageHeaderSelector = '#h';
+        const tableStickyHeaderSelector = createWrapper().findTable().findHeaderSlot();
+        const pageHeaderBottom = (await page.getBoundingBox(pageHeaderSelector)).bottom;
+        await page.windowScrollTo({ top: 200 });
+        const tableStickyHeaderTop = (await page.getBoundingBox(tableStickyHeaderSelector.toSelector())).top;
+        expect(tableStickyHeaderTop).toEqual(pageHeaderBottom);
       }
     )
   );

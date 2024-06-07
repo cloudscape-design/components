@@ -1,13 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-const stylelint = require('stylelint');
+import stylelint from 'stylelint';
+import { configBasedir } from './common.js';
 
 function runPlugin(code) {
   return stylelint.lint({
     code,
-    configBasedir: __dirname,
+    configBasedir,
     config: {
-      plugins: ['../no-implicit-descendant'],
+      plugins: ['../no-implicit-descendant.js'],
       rules: {
         '@cloudscape-design/no-implicit-descendant': [true, { ignoreParents: ['.ignore'] }],
       },

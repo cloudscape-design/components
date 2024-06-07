@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { getOverflowParents } from '../internal/utils/scrollable-containers';
-import { getLogicalBoundingClientRect } from '../internal/direction';
+import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
 /**
  * @param containerRef ref to surrounding container with sticky element

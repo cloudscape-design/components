@@ -11,7 +11,7 @@ import { formatTicks, getSVGTextSize, getVisibleTicks } from './label-utils';
 import { ChartDataTypes } from '../../../mixed-line-bar-chart/interfaces';
 import { useInternalI18n } from '../../../i18n/context';
 import ResponsiveText from '../responsive-text';
-import { getIsRtl } from '../../direction';
+import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
 
 const OFFSET_PX = 12;
 
@@ -72,7 +72,7 @@ function InlineStartLabels({
 
   return (
     <g
-      className={clsx(styles['labels-inline-start'])}
+      className={styles['labels-inline-start']}
       aria-label={title}
       role="list"
       aria-roledescription={i18n('i18nStrings.chartAriaRoleDescription', ariaRoleDescription)}

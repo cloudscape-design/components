@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { getBreakpointValue } from '../../breakpoints';
-import { getLogicalBoundingClientRect } from '../../direction';
+import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 import { BoundingBox, getOverflowParents, getOverflowParentDimensions } from '../../utils/scrollable-containers';
 import styles from './styles.css.js';
 

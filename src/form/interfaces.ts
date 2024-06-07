@@ -37,15 +37,9 @@ export interface FormProps extends BaseComponentProps {
 
   /**
    * Specify a form variant with one of the following:
-   * * `full-page` - Use this variant when the form contains the entire content of the page. Full page variants implement the high contrast header and content behavior automatically.
-   * * `embedded` - Use this variant when the form doesn't occupy the full page. This variant doesn't use a high contrast header.
-   * @visualrefresh
+   * * `full-page` - Use this variant when the form contains the entire content of the page.
+   * * `embedded` - Use this variant when the form doesn't occupy the full page.
+   * @deprecated You can safely remove this property as there is no longer any visual difference between `full-page` and `embedded` variants.
    */
   variant?: 'full-page' | 'embedded';
-}
-
-export interface FormLayoutProps {
-  children?: React.ReactNode;
-  header?: React.ReactNode;
-  variant: FormProps['variant'];
 }
