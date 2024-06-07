@@ -84,6 +84,6 @@
 
 .button {
   position: absolute;
-  right: awsui.$space-static-xs;
-  bottom: awsui.$space-static-xs;
+  inset-inline-end: awsui.$space-static-xs;
+  inset-block-end: 0;
 }

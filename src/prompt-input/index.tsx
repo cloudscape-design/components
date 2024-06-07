@@ -19,26 +19,26 @@ const PromptInput = React.forwardRef(
   (
     {
       value,
-      autoComplete = true,
-      disabled,
-      readOnly,
+      actionButtonAriaLabel,
       actionButtonIconName,
-      disableBrowserAutocorrect,
+      ariaLabel,
+      autoComplete = true,
+      autoFocus,
       disableActionButton,
-      spellcheck,
+      disableBrowserAutocorrect,
+      disabled,
+      maxRows,
+      minRows,
+      name,
+      onAction,
+      onBlur,
+      onChange,
+      onFocus,
       onKeyDown,
       onKeyUp,
-      onChange,
-      onBlur,
-      onFocus,
-      onAction,
-      ariaRequired,
-      name,
       placeholder,
-      autoFocus,
-      ariaLabel,
-      minRows,
-      maxRows,
+      readOnly,
+      spellcheck,
       ...rest
     }: PromptInputProps,
     ref: Ref<PromptInputProps.Ref>
@@ -83,6 +83,30 @@ const PromptInput = React.forwardRef(
     }, [maxRows]);
 
     useEffect(() => {
+      const handleResize = () => {
+        adjustTextareaHeight();
+      };
+
+      const handleFontLoad = () => {
+        adjustTextareaHeight();
+      };
+
+      window.addEventListener('resize', handleResize);
+
+      if (document.fonts) {
+        document.fonts.addEventListener('loadingdone', handleFontLoad);
+      }
+
+      return () => {
+        window.removeEventListener('resize', handleResize);
+
+        if (document.fonts) {
+          document.fonts.removeEventListener('loadingdone', handleFontLoad);
+        }
+      };
+    }, [adjustTextareaHeight]);
+
+    useEffect(() => {
       adjustTextareaHeight();
     }, [value, adjustTextareaHeight, maxRows]);
 
@@ -90,7 +114,6 @@ const PromptInput = React.forwardRef(
       'aria-label': ariaLabel,
       'aria-labelledby': ariaLabelledby,
       'aria-describedby': ariaDescribedby,
-      'aria-required': ariaRequired ? 'true' : undefined,
       'aria-invalid': invalid ? 'true' : undefined,
       name,
       placeholder,
@@ -123,12 +146,15 @@ const PromptInput = React.forwardRef(
       <span {...baseProps} className={clsx(styles.root, baseProps.className)} ref={__internalRootRef}>
         <textarea ref={textareaRef} id={controlId} {...attributes} />
         <div className={styles.button}>
-          <InternalButton
-            iconName={actionButtonIconName}
-            onClick={() => onAction && onAction()}
-            disabled={disableActionButton}
-            variant="icon"
-          />
+          {actionButtonIconName && (
+            <InternalButton
+              ariaLabel={actionButtonAriaLabel}
+              disabled={disableActionButton}
+              iconName={actionButtonIconName}
+              onClick={() => onAction && onAction()}
+              variant="icon"
+            />
+          )}
         </div>
       </span>
     );
