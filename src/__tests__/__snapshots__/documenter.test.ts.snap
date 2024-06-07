@@ -5353,6 +5353,12 @@ and the maximum number of columns as defined by the \`columns\` property.
       "type": "number",
     },
     Object {
+      "description": "Overrides the default wrapper HTML tag.",
+      "name": "tagOverride",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "defaultValue": "\\"default\\"",
       "description": "Specifies the content type. This determines the spacing of the grid.",
       "inlineType": Object {
@@ -8445,35 +8451,7 @@ Object {
   "events": Array [],
   "functions": Array [],
   "name": "KeyValuePairs",
-  "properties": Array [
-    Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
-      "description": "Adds the specified classes to the root element of the component.",
-      "name": "className",
-      "optional": true,
-      "type": "string",
-    },
-    Object {
-      "description": "An array of column definitions. A maximum of 4 columns are supported.
-Each column definition has the following properties:
-* \`title\` (string) - (Optional) An optional title for this column.
-* \`items\` (ReadonlyArray<KeyValuePairProps.KeyValuePair>) - An array of
-    key-value pair items. Each item can have the following properties:
-  * \`label\` (string) - The key label.
-  * \`info\` (React.ReactNode) - (Optional) Area next to the key to display an info link.
-  * \`value\` (React.ReactNode) - The corresponding value for the key.",
-      "name": "columns",
-      "optional": false,
-      "type": "ReadonlyArray<KeyValuePairsProps.Column>",
-    },
-    Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
-      "description": "Adds the specified ID to the root element of the component.",
-      "name": "id",
-      "optional": true,
-      "type": "string",
-    },
-  ],
+  "properties": Array [],
   "regions": Array [],
   "releaseStatus": "stable",
 }

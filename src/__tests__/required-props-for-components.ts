@@ -146,6 +146,8 @@ const defaultProps: Record<string, Record<string, any>> = {
   },
   'key-value-pairs': {
     columns: [],
+    pairs: [],
+    columnsNumber: 4,
   },
 };
 

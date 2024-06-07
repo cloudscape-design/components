@@ -49,10 +49,10 @@ const InternalKeyValuePairs = React.forwardRef((props: KeyValuePairsProps, ref: 
     );
   }
 
-  const { columnsNumber, pairs } = props;
+  const { columnsNumber, pairs, ...rest } = props;
 
   return (
-    <div id={props.id} className={clsx(styles['key-value-pairs'], className)} ref={ref}>
+    <div {...rest} className={clsx(styles['key-value-pairs'], className)} ref={ref}>
       <ColumnLayout tagOverride="dl" columns={columnsNumber} variant="text-grid">
         {pairs.map((item, index) => (
           <InternalKeyValuePair key={index} {...item} />
