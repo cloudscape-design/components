@@ -11,10 +11,8 @@ $avatar-size: 28px;
 
 .root {
   @include styles.styles-reset;
-}
 
-.avatar {
-  display: inline-flex;
+  display: flex;
   color: awsui.$color-text-avatar;
   block-size: $avatar-size;
   inline-size: $avatar-size;
@@ -32,12 +30,10 @@ $avatar-size: 28px;
     background: awsui.$color-background-avatar-gen-ai;
   }
 
-  &.loading {
-    inset-block-end: 3px;
-  }
-
   &.initials {
     font-family: awsui.$font-family-base;
+    font-size: 12px;
+    line-height: 16px;
   }
 
   @include focus-visible.when-visible {

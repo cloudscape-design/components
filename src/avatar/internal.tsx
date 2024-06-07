@@ -6,6 +6,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { getBaseProps } from '../internal/base-component/index.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import Tooltip from '../internal/components/tooltip';
 
 import LoadingDots from './loading-dots';
@@ -30,11 +31,7 @@ const AvatarContent = ({ color, loading, initials, iconName, iconSvg, iconUrl, a
     return <span>{letters}</span>;
   }
 
-  return (
-    <div>
-      <InternalIcon name={iconName || 'user-profile'} svg={iconSvg} url={iconUrl} alt={ariaLabel} />
-    </div>
-  );
+  return <InternalIcon name={iconName || 'user-profile'} svg={iconSvg} url={iconUrl} alt={ariaLabel} />;
 };
 
 export default function InternalAvatar({
@@ -52,6 +49,8 @@ export default function InternalAvatar({
   const baseProps = getBaseProps(rest);
   const handleRef = useRef<HTMLDivElement>(null);
   const [showTooltip, setShowTooltip] = useState(false);
+
+  const mergedRef = useMergeRefs(handleRef, __internalRootRef);
 
   const tooltipAttributes = {
     onFocus: () => {
@@ -75,30 +74,28 @@ export default function InternalAvatar({
   };
 
   return (
-    <span {...baseProps} ref={__internalRootRef} className={clsx(baseProps.className, styles.root)}>
+    <div
+      {...baseProps}
+      ref={mergedRef}
+      tabIndex={0}
+      className={clsx(baseProps.className, styles.root, styles[`avatar-color-${color}`], {
+        [styles.initials]: initials,
+      })}
+      role="img"
+      aria-label={ariaLabel}
+      {...tooltipAttributes}
+    >
       {showTooltip && tooltipText && <Tooltip value={tooltipText} trackRef={handleRef} />}
 
-      <div
-        ref={handleRef}
-        tabIndex={0}
-        className={clsx(styles.avatar, styles[`avatar-color-${color}`], {
-          [styles.loading]: loading,
-          [styles.initials]: initials,
-        })}
-        role="img"
-        aria-label={ariaLabel}
-        {...tooltipAttributes}
-      >
-        <AvatarContent
-          color={color}
-          ariaLabel={ariaLabel}
-          initials={initials}
-          loading={loading}
-          iconName={iconName}
-          iconSvg={iconSvg}
-          iconUrl={iconUrl}
-        />
-      </div>
-    </span>
+      <AvatarContent
+        color={color}
+        ariaLabel={ariaLabel}
+        initials={initials}
+        loading={loading}
+        iconName={iconName}
+        iconSvg={iconSvg}
+        iconUrl={iconUrl}
+      />
+    </div>
   );
 }

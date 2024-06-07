@@ -2,7 +2,6 @@
  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  SPDX-License-Identifier: Apache-2.0
 */
-@use '../../internal/styles/' as styles;
 @use '../../internal/styles/tokens' as awsui;
 @use '../mixins.scss' as mixins;
 @use './motion.scss';
@@ -37,7 +36,6 @@ $dot-size: 4px;
   justify-content: space-between;
   display: flex;
   inline-size: 18px;
-  block-size: 28px;
 }
 
 .dot {
