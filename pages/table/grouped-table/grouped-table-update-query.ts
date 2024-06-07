@@ -7,13 +7,13 @@ import { GroupDefinition } from './grouped-table-data';
 import { ItemSelectionTree } from '~components/table/selection/utils';
 
 export function findSelectionIds({
-  items,
+  allPageItems: items,
   selectionInverted,
   selectedItems,
   trackBy,
   getItemChildren,
 }: {
-  items: readonly TransactionRow[];
+  allPageItems: readonly TransactionRow[];
   selectionInverted: boolean;
   selectedItems: TransactionRow[];
   trackBy: (row: TransactionRow) => string;
