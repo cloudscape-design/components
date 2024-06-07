@@ -46,6 +46,7 @@ const InternalSelect = React.forwardRef(
       filteringAriaLabel,
       filteringClearAriaLabel,
       filteringResultsText,
+      inlineLabel,
       ariaRequired,
       placeholder,
       disabled,
@@ -171,6 +172,7 @@ const InternalSelect = React.forwardRef(
         selectedOption={selectedOption}
         isOpen={isOpen}
         inFilteringToken={__inFilteringToken}
+        inlineLabel={inlineLabel}
         {...formFieldContext}
         controlId={controlId}
         ariaLabelledby={joinStrings(formFieldContext.ariaLabelledby, selectAriaLabelId)}
@@ -272,7 +274,7 @@ const InternalSelect = React.forwardRef(
             highlightType={highlightType}
           />
         </Dropdown>
-        <ScreenreaderOnly id={selectAriaLabelId}>{ariaLabel}</ScreenreaderOnly>
+        <ScreenreaderOnly id={selectAriaLabelId}>{ariaLabel || inlineLabel}</ScreenreaderOnly>
       </div>
     );
   }

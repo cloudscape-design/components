@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import AppLayout from '~components/app-layout';
 import Box from '~components/box';
-import FormField from '~components/form-field';
 import Table from '~components/table';
 import Link from '~components/link';
 import SpaceBetween from '~components/space-between';
@@ -117,29 +116,27 @@ export default function () {
                   clearAriaLabel="clear"
                 />
               </div>
-              <div className="select-filter">
-                <FormField label={'Filter instance type'}>
-                  <Select
-                    data-testid="instance-type-filter"
-                    options={instanceOptions}
-                    selectedAriaLabel="Selected"
-                    selectedOption={instanceOptions[0]}
-                    onChange={() => {}}
-                    expandToViewport={true}
-                  />
-                </FormField>
+              <div className={styles['select-filter']}>
+                <Select
+                  data-testid="instance-type-filter"
+                  inlineLabel="Instance type"
+                  options={instanceOptions}
+                  selectedAriaLabel="Selected"
+                  selectedOption={instanceOptions[0]}
+                  onChange={() => {}}
+                  expandToViewport={true}
+                />
               </div>
-              <div className="select-filter">
-                <FormField label={'Filter status'}>
-                  <Select
-                    data-testid="state-filter"
-                    options={stateOptions}
-                    selectedAriaLabel="Selected"
-                    selectedOption={stateOptions[0]}
-                    onChange={() => {}}
-                    expandToViewport={true}
-                  />
-                </FormField>
+              <div className={styles['select-filter']}>
+                <Select
+                  data-testid="state-filter"
+                  inlineLabel="Filtrar secuencias de registros por nombre"
+                  options={stateOptions}
+                  selectedAriaLabel="Selected"
+                  selectedOption={stateOptions[0]}
+                  onChange={() => {}}
+                  expandToViewport={true}
+                />
               </div>
             </div>
           }

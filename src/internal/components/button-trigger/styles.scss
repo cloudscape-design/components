@@ -114,3 +114,33 @@
     padding-block: 0;
   }
 }
+
+.inlineLabelWrapper {
+  display: block;
+  margin-top: calc(awsui.$space-scaled-xs * -1);
+}
+
+.inlineLabel {
+  box-sizing: border-box;
+  display: inline-block;
+  color: awsui.$color-text-form-label;
+  font-weight: awsui.$font-display-label-weight;
+  font-size: 12px;
+  line-height: 14px;
+  position: relative;
+  left: 10px;
+  padding-block: awsui.$space-scaled-xs awsui.$space-scaled-xxs 0;
+  max-inline-size: calc(100% - 22px);
+  // Stepped gradient background for label overlap between input and background.
+  background-image: linear-gradient(
+    to bottom,
+    transparent calc(100% - (awsui.$space-scaled-xs + 1px)),
+    awsui.$color-background-input-default 1px
+  );
+  background-position: bottom;
+  z-index: 1;
+}
+
+.buttonTrigger-inlineLabel {
+  margin-block-start: -7px;
+}

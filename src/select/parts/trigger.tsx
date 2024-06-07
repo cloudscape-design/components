@@ -20,6 +20,7 @@ export interface TriggerProps extends FormFieldValidationControlProps {
   disabled: boolean | undefined;
   triggerProps: SelectTriggerProps;
   selectedOption: OptionDefinition | null;
+  inlineLabel?: string;
   isOpen?: boolean;
   triggerVariant?: SelectProps.TriggerVariant | MultiselectProps.TriggerVariant;
   inFilteringToken?: boolean;
@@ -33,6 +34,7 @@ const Trigger = React.forwardRef(
       ariaDescribedby,
       controlId,
       invalid,
+      inlineLabel,
       warning,
       triggerProps,
       selectedOption,
@@ -109,6 +111,7 @@ const Trigger = React.forwardRef(
         ref={mergedRef}
         pressed={isOpen}
         disabled={disabled}
+        inlineLabel={inlineLabel}
         invalid={invalid}
         warning={warning && !invalid}
         inFilteringToken={inFilteringToken}

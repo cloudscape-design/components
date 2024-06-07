@@ -91,6 +91,10 @@ export interface BaseSelectProps
    */
   filteringClearAriaLabel?: string;
   /**
+   * Adds an small label inline with the input for saving vertical space in a compact UI.
+   */
+  inlineLabel?: string;
+  /**
    * @deprecated Has no effect.
    */
   name?: string;
