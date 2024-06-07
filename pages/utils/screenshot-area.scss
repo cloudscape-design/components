@@ -4,7 +4,7 @@
 */
 // Spinner animations do not follow our general motion configuration, we need to disable them explicitly to get stable
 // screenshot testing results
-/* stylelint-disable selector-combinator-disallowed-list, selector-max-universal, @cloudscape-design/no-motion-outside-of-mixin, @cloudscape-design/no-implicit-descendant */
+/* stylelint-disable selector-max-universal, @cloudscape-design/no-motion-outside-of-mixin, @cloudscape-design/no-implicit-descendant */
 .noAnimation {
   *,
   *:before,
