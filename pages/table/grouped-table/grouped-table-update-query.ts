@@ -37,20 +37,30 @@ export function findSelectionIds({
   return allIds;
 }
 
-// export function createWysiwygQuery(
-//   filteredRows: TransactionRow[],
-//   {
-//     selectionInverted,
-//     selectedItems,
-//     groups,
-//     filter,
-//   }: {
-//     selectionInverted: boolean;
-//     selectedItems: TransactionRow[];
-//     groups: GroupDefinition[];
-//     filter: PropertyFilterProps.Query;
-//   }
-// ): string {}
+export function createWysiwygQuery({
+  selectionInverted,
+  selectedItems,
+  groups,
+  filter,
+}: {
+  selectionInverted: boolean;
+  selectedItems: TransactionRow[];
+  groups: GroupDefinition[];
+  filter: PropertyFilterProps.Query;
+}): string {
+  const whereTokens: string[] = [];
+
+  if (filter.tokens.length > 0) {
+    const filterTokens: string[] = [];
+    for (const token of filter.tokens) {
+      filterTokens.push(`${token.propertyKey} ${token.operator} ${JSON.stringify(token.value)}`);
+    }
+    whereTokens.push(`(${filterTokens.join(' ' + filter.operation.toUpperCase() + ' ')})`);
+  }
+
+  const whereClause = whereTokens.length > 0 ? ` WHERE ${whereTokens.join(' AND ')}` : '';
+  return `UPDATE transactions SET reviewed = true${whereClause}`;
+}
 
 export function createIdsQuery(selectedIds: string[]): string {
   const limit = 100;

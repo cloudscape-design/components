@@ -36,7 +36,7 @@ import { isEqual } from 'lodash';
 
 // TODO: replace with Table once progressive loading API becomes public
 import InternalTable from '~components/table/internal';
-import { createIdsQuery, findSelectionIds } from './grouped-table/grouped-table-update-query';
+import { createIdsQuery, createWysiwygQuery, findSelectionIds } from './grouped-table/grouped-table-update-query';
 
 type LoadingState = Map<string, { pages: number; status: TableProps.LoadingStatus }>;
 
@@ -175,7 +175,14 @@ export default () => {
                         </ExpandableSection>
 
                         <ExpandableSection headerText="WYSIWYG update query">
-                          <Box variant="code">TBA</Box>
+                          <Box variant="code">
+                            {createWysiwygQuery({
+                              selectionInverted: tableData.selectionInverted,
+                              selectedItems: tableData.selectedItems,
+                              groups: tableData.groups,
+                              filter: tableData.propertyFilterProps.query,
+                            })}
+                          </Box>
                         </ExpandableSection>
 
                         <ExpandableSection headerText="Long update query">
@@ -247,6 +254,9 @@ export default () => {
             filter={
               <PropertyFilter
                 {...tableData.propertyFilterProps}
+                filteringOptions={tableData.propertyFilterProps.filteringOptions.filter(
+                  o => o.value !== '[object Object]'
+                )}
                 countText={getMatchesCountText(tableData.filteredItemsCount ?? 0)}
                 filteringPlaceholder="Search transactions"
               />
