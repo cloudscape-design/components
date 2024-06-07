@@ -5,25 +5,31 @@ import React from 'react';
 
 export interface KeyValuePairsProps extends BaseComponentProps {
   /**
-   * An array of column definitions. A maximum of 4 columns are supported.
-   * Each column definition has the following properties:
-   * * `title` (string) - (Optional) An optional title for this column.
-   * * `items` (ReadonlyArray<KeyValuePairProps.KeyValuePair>) - An array of
-   *     key-value pair items. Each item can have the following properties:
+   * Specifies the number of columns in each grid row.
+   * Valid values are any integer between 1 and 4. It defaults to 1.
+   */
+  columns: number;
+  /**
+   * An array of either key-value pairs or column definitions.
+   * Each key-value pair definition has the following properties:
    *   * `label` (string) - The key label.
    *   * `info` (React.ReactNode) - (Optional) Area next to the key to display an info link.
    *   * `value` (React.ReactNode) - The corresponding value for the key.
+   * Each column definition has the following properties:
+   * * `title` (string) - (Optional) An optional title for this column.
+   * * `items` (ReadonlyArray<KeyValuePairProps.KeyValuePair>) - An array of
+   *     key-value pair items.
    */
-  columns: ReadonlyArray<KeyValuePairsProps.Column>;
+  items: ReadonlyArray<KeyValuePairsProps.KeyValuePair | KeyValuePairsProps.Column>;
 }
 
 export namespace KeyValuePairsProps {
   export interface Column {
     title?: string;
-    items: ReadonlyArray<KeyValuePairs>;
+    items: ReadonlyArray<KeyValuePair>;
   }
 
-  export interface KeyValuePairs {
+  export interface KeyValuePair {
     label: string;
     value: React.ReactNode;
     info?: React.ReactNode;

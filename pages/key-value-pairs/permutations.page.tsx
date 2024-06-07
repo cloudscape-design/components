@@ -7,7 +7,6 @@ import SpaceBetween from '~components/space-between';
 import StatusIndicator from '~components/status-indicator';
 import Link from '~components/link';
 import Box from '~components/box';
-import InternalSpaceBetween from '~components/space-between/internal';
 import { CopyToClipboard, ProgressBar } from '~components';
 
 export default function KeyValueScenario() {
@@ -19,14 +18,11 @@ export default function KeyValueScenario() {
           <Box padding="s">
             <Box variant="h2">1 column</Box>
             <KeyValuePairs
-              columns={[
+              columns={1}
+              items={[
                 {
-                  items: [
-                    {
-                      label: 'Distribution ID',
-                      value: 'E1WG1ZNPRXT0D4',
-                    },
-                  ],
+                  label: 'Distribution ID',
+                  value: 'E1WG1ZNPRXT0D4',
                 },
               ]}
             />
@@ -34,60 +30,45 @@ export default function KeyValueScenario() {
           <Box padding="s">
             <Box variant="h2">3 columns</Box>
             <KeyValuePairs
-              columns={[
+              columns={3}
+              items={[
                 {
-                  items: [
-                    {
-                      label: 'Distribution ID',
-                      value: 'E1WG1ZNPRXT0D4',
-                    },
-                    {
-                      label: 'ARN',
-                      value: (
-                        <CopyToClipboard
-                          copyButtonAriaLabel="Copy ARN"
-                          copyErrorText="ARN failed to copy"
-                          copySuccessText="ARN copied"
-                          textToCopy="arn:service23G24::111122223333:distribution/23E1WG1ZNPRXT0D4"
-                          variant="inline"
-                        />
-                      ),
-                    },
-                  ],
+                  label: 'Distribution ID',
+                  value: 'E1WG1ZNPRXT0D4',
                 },
                 {
-                  items: [
-                    {
-                      label: 'Status',
-                      value: <StatusIndicator>Available</StatusIndicator>,
-                    },
-                    {
-                      label: 'SSL Certificate',
-                      value: (
-                        <ProgressBar
-                          value={30}
-                          additionalInfo="Additional information"
-                          description="Progress bar label"
-                        />
-                      ),
-                    },
-                  ],
+                  label: 'ARN',
+                  value: (
+                    <CopyToClipboard
+                      copyButtonAriaLabel="Copy ARN"
+                      copyErrorText="ARN failed to copy"
+                      copySuccessText="ARN copied"
+                      textToCopy="arn:service23G24::111122223333:distribution/23E1WG1ZNPRXT0D4"
+                      variant="inline"
+                    />
+                  ),
                 },
                 {
-                  items: [
-                    {
-                      label: 'Price class',
-                      value: 'Use only US, Canada, Europe,',
-                    },
-                    {
-                      label: 'CNAMEs',
-                      value: (
-                        <Link external={true} href="#">
-                          abc.service23G24.xyz
-                        </Link>
-                      ),
-                    },
-                  ],
+                  label: 'Status',
+                  value: <StatusIndicator>Available</StatusIndicator>,
+                },
+                {
+                  label: 'SSL Certificate',
+                  value: (
+                    <ProgressBar value={30} additionalInfo="Additional information" description="Progress bar label" />
+                  ),
+                },
+                {
+                  label: 'Price class',
+                  value: 'Use only US, Canada, Europe,',
+                },
+                {
+                  label: 'CNAMEs',
+                  value: (
+                    <Link external={true} href="#">
+                      abc.service23G24.xyz
+                    </Link>
+                  ),
                 },
               ]}
             />
@@ -95,15 +76,80 @@ export default function KeyValueScenario() {
           <Box padding="s">
             <Box variant="h2">With info link</Box>
             <KeyValuePairs
-              columns={[
+              columns={1}
+              items={[
                 {
+                  label: 'Distribution ID',
+                  value: 'E1WG1ZNPRXT0D4',
+                  info: (
+                    <Link variant="info" href="#">
+                      Info
+                    </Link>
+                  ),
+                },
+              ]}
+            />
+          </Box>
+          <Box padding="s">
+            <Box variant="h2">With column title and multiple rows</Box>
+            <KeyValuePairs
+              columns={2}
+              items={[
+                {
+                  title: 'Column Title',
                   items: [
                     {
-                      label: 'Distribution ID',
-                      value: 'E1WG1ZNPRXT0D4',
-                      info: (
-                        <Link variant="info" href="#">
-                          Info
+                      label: 'Label for key',
+                      value: 'Value',
+                    },
+                    {
+                      label: 'Label for key',
+                      value: <StatusIndicator>Value for positive status</StatusIndicator>,
+                    },
+                  ],
+                },
+                {
+                  title: 'Column Title',
+                  items: [
+                    {
+                      label: 'Label for key',
+                      value: 'Value',
+                    },
+                    {
+                      label: 'Label for key',
+                      value: (
+                        <Link external={true} href="#">
+                          Value with external link
+                        </Link>
+                      ),
+                    },
+                  ],
+                },
+                {
+                  title: 'Column Title',
+                  items: [
+                    {
+                      label: 'Label for key',
+                      value: 'Value',
+                    },
+                    {
+                      label: 'Label for key',
+                      value: <StatusIndicator>Value for positive status</StatusIndicator>,
+                    },
+                  ],
+                },
+                {
+                  title: 'Column Title',
+                  items: [
+                    {
+                      label: 'Label for key',
+                      value: 'Value',
+                    },
+                    {
+                      label: 'Label for key',
+                      value: (
+                        <Link external={true} href="#">
+                          Value with external link
                         </Link>
                       ),
                     },
@@ -113,77 +159,96 @@ export default function KeyValueScenario() {
             />
           </Box>
           <Box padding="s">
-            <Box variant="h2">With column title and multiple rows</Box>
-            <InternalSpaceBetween size="l">
-              <KeyValuePairs
-                columns={[
-                  {
-                    title: 'Column Title',
-                    items: [
-                      {
-                        label: 'Label for key',
-                        value: 'Value',
-                      },
-                      {
-                        label: 'Label for key',
-                        value: <StatusIndicator>Value for positive status</StatusIndicator>,
-                      },
-                    ],
-                  },
-                  {
-                    title: 'Column Title',
-                    items: [
-                      {
-                        label: 'Label for key',
-                        value: 'Value',
-                      },
-                      {
-                        label: 'Label for key',
-                        value: (
-                          <Link external={true} href="#">
-                            Value with external link
-                          </Link>
-                        ),
-                      },
-                    ],
-                  },
-                ]}
-              />
-              <KeyValuePairs
-                columns={[
-                  {
-                    title: 'Column Title',
-                    items: [
-                      {
-                        label: 'Label for key',
-                        value: 'Value',
-                      },
-                      {
-                        label: 'Label for key',
-                        value: <StatusIndicator>Value for positive status</StatusIndicator>,
-                      },
-                    ],
-                  },
-                  {
-                    title: 'Column Title',
-                    items: [
-                      {
-                        label: 'Label for key',
-                        value: 'Value',
-                      },
-                      {
-                        label: 'Label for key',
-                        value: (
-                          <Link external={true} href="#">
-                            Value with external link
-                          </Link>
-                        ),
-                      },
-                    ],
-                  },
-                ]}
-              />
-            </InternalSpaceBetween>
+            <Box variant="h2">With auto layout</Box>
+            <KeyValuePairs
+              columns={4}
+              items={[
+                {
+                  label: 'Label for key',
+                  value: 'Value',
+                },
+                {
+                  label: 'Label for key',
+                  value: (
+                    <Link external={true} href="#">
+                      Value with external link
+                    </Link>
+                  ),
+                },
+                {
+                  label: 'Label for key',
+                  value: 'Value',
+                },
+                {
+                  label: 'Label for key',
+                  value: (
+                    <Link external={true} href="#">
+                      Value with external link
+                    </Link>
+                  ),
+                },
+                {
+                  label: 'Label for key',
+                  value: 'Value',
+                },
+                {
+                  label: 'Label for key',
+                  value: (
+                    <Link external={true} href="#">
+                      Value with external link
+                    </Link>
+                  ),
+                },
+                {
+                  label: 'Label for key',
+                  value: 'Value',
+                },
+                {
+                  label: 'Label for key',
+                  value: (
+                    <Link external={true} href="#">
+                      Value with external link
+                    </Link>
+                  ),
+                },
+                {
+                  label: 'Label for key',
+                  value: 'Value',
+                },
+                {
+                  label: 'Label for key',
+                  value: (
+                    <Link external={true} href="#">
+                      Value with external link
+                    </Link>
+                  ),
+                },
+                {
+                  label: 'Label for key',
+                  value: 'Value',
+                },
+                {
+                  label: 'Label for key',
+                  value: (
+                    <Link external={true} href="#">
+                      Value with external link
+                    </Link>
+                  ),
+                },
+                {
+                  label: 'Label for key',
+                  value: 'Value',
+                },
+                {
+                  label: 'Label for key',
+                  value: (
+                    <Link external={true} href="#">
+                      Value with external link
+                    </Link>
+                  ),
+                },
+              ]}
+            />
           </Box>
         </SpaceBetween>
       </ScreenshotArea>

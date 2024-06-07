@@ -10,33 +10,43 @@ import Box from '../box/internal';
 
 export { KeyValuePairsProps };
 
+const InternalKeyValuePair = ({ label, info, value }: KeyValuePairsProps.KeyValuePair) => (
+  <div className={styles.item}>
+    <dt className={styles.label}>
+      <label className={styles['key-label']}>{label}</label>
+      <InfoLinkLabelContext.Provider value={label}>
+        {info && <span className={styles.info}>{info}</span>}
+      </InfoLinkLabelContext.Provider>
+    </dt>
+    <dd className={styles.description}>{value}</dd>
+  </div>
+);
+
 const InternalKeyValuePairs = React.forwardRef(
-  ({ columns, className, ...rest }: KeyValuePairsProps, ref: React.Ref<HTMLDivElement>) => {
+  ({ columns, items, className, ...rest }: KeyValuePairsProps, ref: React.Ref<HTMLDivElement>) => {
     return (
       <div {...rest} className={clsx(styles['key-value-pairs'], className)} ref={ref}>
-        <ColumnLayout columns={Math.min(columns.length, 4)} variant="text-grid">
-          {columns.map((column, columnIndex) => (
-            <div className={styles.column} key={columnIndex}>
-              {column.title && (
-                <Box variant="h3" padding="n">
-                  {column.title}
-                </Box>
-              )}
-              <dl className={styles.list}>
-                {column.items.map((item, itemIndex) => (
-                  <div key={itemIndex} className={styles.item}>
-                    <dt className={styles.label}>
-                      <label className={styles['key-label']}>{item.label}</label>
-                      <InfoLinkLabelContext.Provider value={item.label}>
-                        {item.info && <span className={styles.info}>{item.info}</span>}
-                      </InfoLinkLabelContext.Provider>
-                    </dt>
-                    <dd className={styles.description}>{item.value}</dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-          ))}
+        <ColumnLayout tagOverride="dl" columns={Math.min(columns, 4)} variant="text-grid">
+          {items.map((pair, pairIndex) => {
+            if ('items' in pair) {
+              return (
+                <div className={styles.column} key={pairIndex}>
+                  {pair.title && (
+                    <Box variant="h3" padding="n">
+                      {pair.title}
+                    </Box>
+                  )}
+                  <dl className={styles.list}>
+                    {pair.items.map((item, itemIndex) => (
+                      <InternalKeyValuePair key={itemIndex} {...item} />
+                    ))}
+                  </dl>
+                </div>
+              );
+            }
+
+            return <InternalKeyValuePair key={pairIndex} {...pair} />;
+          })}
         </ColumnLayout>
       </div>
     );
