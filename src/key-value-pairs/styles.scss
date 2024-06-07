@@ -30,6 +30,10 @@
   /* used in test-utils */
 }
 
+.pair {
+  /* used in test-utils */
+}
+
 .label {
   @include styles.font-label;
   color: awsui.$color-text-label;
