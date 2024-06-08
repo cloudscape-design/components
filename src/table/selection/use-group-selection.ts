@@ -24,7 +24,7 @@ type SelectionOptions<T> = Pick<
   | 'trackBy'
   | 'getLoadingStatus'
 > & {
-  getExpandableItemProps: (item: T) => { level: number; parent: null | T; children: readonly T[] };
+  getExpandableItemProps: (item: T) => { level: number; children: readonly T[] };
 };
 
 export function useGroupSelection<T>({

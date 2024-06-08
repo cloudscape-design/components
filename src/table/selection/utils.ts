@@ -50,6 +50,12 @@ export class ItemSelectionTree<T> {
     for (const item of selectedItems) {
       this.itemSelectionState.add(this.getKey(item));
     }
+    // Populate item key to item mapping.
+    const traverse = (item: T) => {
+      this.itemKeyToItem.set(this.getKey(item), item);
+      treeProps.getChildren(item).forEach(traverse);
+    };
+    treeProps.rootItems.forEach(traverse);
 
     this.computeState();
   }
@@ -75,8 +81,6 @@ export class ItemSelectionTree<T> {
     const selectionBuckets = new Map<number, ItemKey[][]>();
     const createSelectionBuckets = (item: T, level: number) => {
       const itemKey = this.getKey(item);
-      this.itemKeyToItem.set(itemKey, item);
-
       const levelBuckets = selectionBuckets.get(level) ?? [];
       const children = this.treeProps.getChildren(item);
       const bucket: ItemKey[] = [itemKey];
