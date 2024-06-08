@@ -15,10 +15,16 @@ import { ItemSelectionTree } from './utils';
 
 type SelectionOptions<T> = Pick<
   TableProps<T>,
-  'ariaLabels' | 'items' | 'onSelectionChange' | 'selectedItems' | 'selectionInverted' | 'selectionType' | 'trackBy'
+  | 'ariaLabels'
+  | 'items'
+  | 'onSelectionChange'
+  | 'selectedItems'
+  | 'selectionInverted'
+  | 'selectionType'
+  | 'trackBy'
+  | 'getLoadingStatus'
 > & {
   getExpandableItemProps: (item: T) => { level: number; parent: null | T; children: readonly T[] };
-  getLoadingStatus?: TableProps.GetLoadingStatus<T>;
 };
 
 export function useGroupSelection<T>({
@@ -47,16 +53,9 @@ export function useGroupSelection<T>({
 
   const rootItems = items.filter(item => getExpandableItemProps(item).level === 1);
   const getChildren = (item: T) => getExpandableItemProps(item).children;
-  const isComplete = (item: null | T) =>
-    getLoadingStatus?.(item) === undefined || getLoadingStatus?.(item) === 'finished';
-  const selectionTree = new ItemSelectionTree(
-    rootItems,
-    selectedItems,
-    selectionInverted,
-    trackBy,
-    getChildren,
-    isComplete
-  );
+  const isComplete = (item: null | T) => !getLoadingStatus || getLoadingStatus(item) === 'finished';
+  const treeProps = { rootItems, trackBy, getChildren, isComplete };
+  const selectionTree = new ItemSelectionTree(selectionInverted, selectedItems, treeProps);
 
   // Shift-selection helpers.
   const itemIndexesMap = new Map<T, number>();
@@ -84,9 +83,9 @@ export function useGroupSelection<T>({
     setLastClickedItem(item);
 
     const requestedItems = shiftPressed ? getShiftSelectedItems(item) : [item];
-    const hasChildren = (item: T) => getExpandableItemProps(item).children.length > 0;
-    const isRequestedItemsValid = requestedItems.length === 1 || requestedItems.filter(hasChildren).length === 0;
-    if (isRequestedItemsValid) {
+    const hasChildren = (item: T) => getChildren(item).length > 0;
+    // Shift-selection is only allowed on the last level items.
+    if (requestedItems.length === 1 || requestedItems.filter(hasChildren).length === 0) {
       fireNonCancelableEvent(onSelectionChange, selectionTree.toggleSome(requestedItems).getState());
     }
   };

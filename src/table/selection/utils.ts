@@ -22,189 +22,189 @@ export class ItemSet<T> {
   forEach = this.map.forEach.bind(this.map);
 }
 
+type ItemKey = unknown;
+
+interface TreeProps<T> {
+  rootItems: readonly T[];
+  trackBy: TableProps.TrackBy<T> | undefined;
+  getChildren: (item: T) => readonly T[];
+  isComplete: (item: null | T) => boolean;
+}
+
 const rootItemKey = Symbol('selection-tree-root');
 
 export class ItemSelectionTree<T> {
-  private rootItems: readonly T[];
-  private trackBy: TableProps.TrackBy<T> | undefined;
-  private getChildren: (item: T) => readonly T[];
-  private isComplete: (item: null | T) => boolean;
-  private itemKeyToItem = new Map<unknown, T>();
-  private itemSelectionState = new Set<unknown>();
-  private itemEffectiveSelectionState = new Set<unknown>();
-  private itemEffectiveIndeterminateState = new Set<unknown>();
+  private treeProps: TreeProps<T>;
+  private itemKeyToItem = new Map<ItemKey, T>();
+  private itemSelectionState = new Set<ItemKey>();
+  private itemProjectedSelectionState = new Set<ItemKey>();
+  private itemProjectedIndeterminateState = new Set<ItemKey>();
 
-  constructor(
-    rootItems: readonly T[],
-    selectedItems: readonly T[],
-    selectionInverted: boolean,
-    trackBy: TableProps.TrackBy<T> | undefined,
-    getChildren: (item: T) => readonly T[],
-    isComplete: (item: null | T) => boolean
-  ) {
-    this.rootItems = rootItems;
-    this.trackBy = trackBy;
-    this.getChildren = getChildren;
-    this.isComplete = isComplete;
+  constructor(selectionInverted: boolean, selectedItems: readonly T[], treeProps: TreeProps<T>) {
+    this.treeProps = treeProps;
 
     // Record input selection state as is.
     if (selectionInverted) {
       this.itemSelectionState.add(rootItemKey);
     }
     for (const item of selectedItems) {
-      this.itemSelectionState.add(getTrackableValue(trackBy, item));
+      this.itemSelectionState.add(this.getKey(item));
     }
 
     this.computeState();
   }
 
+  private getKey(item: T): ItemKey {
+    return getTrackableValue(this.treeProps.trackBy, item);
+  }
+
+  private getItemForKey(itemKey: ItemKey): null | T {
+    if (itemKey === rootItemKey) {
+      return null;
+    }
+    return this.itemKeyToItem.get(itemKey)!;
+  }
+
   private computeState() {
+    this.itemProjectedSelectionState = new Set();
+    this.itemProjectedIndeterminateState = new Set();
+
     // Transform input items tree to selection buckets.
-    const selectionBuckets = new Map<number, unknown[][]>();
+    // Selection buckets are organized in a map by level.
+    // Each bucket has a parent element (index=0) and might have children elements (index>=1).
+    const selectionBuckets = new Map<number, ItemKey[][]>();
     const createSelectionBuckets = (item: T, level: number) => {
-      const itemKey = getTrackableValue(this.trackBy, item);
+      const itemKey = this.getKey(item);
       this.itemKeyToItem.set(itemKey, item);
 
       const levelBuckets = selectionBuckets.get(level) ?? [];
-      const children = this.getChildren(item);
-      const bucket: unknown[] = [itemKey];
+      const children = this.treeProps.getChildren(item);
+      const bucket: ItemKey[] = [itemKey];
       for (const child of children) {
-        bucket.push(getTrackableValue(this.trackBy, child));
+        bucket.push(this.getKey(child));
         createSelectionBuckets(child, level + 1);
       }
       levelBuckets.push(bucket);
       selectionBuckets.set(level, levelBuckets);
     };
-    const rootBucket: unknown[] = [rootItemKey];
-    for (const item of this.rootItems) {
-      rootBucket.push(getTrackableValue(this.trackBy, item));
+    // On level=0 there is a root bucket to hold the selection-inverted state.
+    // On level>0 there are buckets that represent selection for every item.
+    const rootBucket: ItemKey[] = [rootItemKey];
+    for (const item of this.treeProps.rootItems) {
+      rootBucket.push(this.getKey(item));
       createSelectionBuckets(item, 1);
     }
     selectionBuckets.set(0, [rootBucket]);
 
-    // Reverse buckets to start from the deepest level first.
+    // Transform buckets map to an array of buckets where those with bigger levels come first.
     const selectionBucketEntries = Array.from(selectionBuckets.entries())
       .sort(([a], [b]) => b - a)
-      .map(([, v]) => v);
+      .flatMap(([, v]) => v);
 
     // Normalize selection state.
-    for (const levelBuckets of selectionBucketEntries) {
-      for (const bucket of levelBuckets) {
-        // No optimization possible for 1-element buckets.
-        if (bucket.length === 1) {
-          continue;
+    for (const bucket of selectionBucketEntries) {
+      // Cannot normalize 1-element buckets.
+      if (bucket.length === 1) {
+        continue;
+      }
+      // Cannot optimize incomplete buckets (those where not all children are loaded).
+      // That is alright because the "show-more" item cannot be selected by the user,
+      // which means the normalization conditions are never met.
+      if (this.treeProps.isComplete(this.getItemForKey(bucket[0])) === false) {
+        continue;
+      }
+      let selectedCount = 0;
+      for (const itemKey of bucket) {
+        if (this.itemSelectionState.has(itemKey)) {
+          selectedCount++;
+        } else {
+          break;
         }
-        // Cannot optimize incomplete buckets.
-        if (this.isComplete(this.itemKeyToItem.get(bucket[0]) ?? null) === false) {
-          continue;
-        }
-        let selectedCount = 0;
-        for (const itemKey of bucket) {
-          if (this.itemSelectionState.has(itemKey)) {
-            selectedCount++;
-          } else {
-            break;
-          }
-        }
-        // Remove selection state from buckets where both the parent and all children are selected.
-        if (selectedCount === bucket.length) {
-          for (const itemKey of bucket) {
-            this.itemSelectionState.delete(itemKey);
-          }
-        }
-        // Optimize selection state when all children are selected but the parent is not.
-        if (selectedCount === bucket.length - 1 && !this.itemSelectionState.has(bucket[0])) {
-          for (const itemKey of bucket) {
-            this.itemSelectionState.delete(itemKey);
-          }
-          this.itemSelectionState.add(bucket[0]);
-        }
+      }
+      // Normalize selection state when all children are selected but the parent is not.
+      if (selectedCount === bucket.length - 1 && !this.itemSelectionState.has(bucket[0])) {
+        bucket.forEach(itemKey => this.itemSelectionState.delete(itemKey));
+        this.itemSelectionState.add(bucket[0]);
+      }
+      // Normalize selection state when all children and the parent are selected.
+      if (selectedCount === bucket.length) {
+        bucket.forEach(itemKey => this.itemSelectionState.delete(itemKey));
       }
     }
 
-    // Compute effective indeterminate state.
-    for (const levelBuckets of selectionBucketEntries) {
-      for (const bucket of levelBuckets) {
-        let indeterminate = false;
-        for (let i = 1; i < bucket.length; i++) {
-          if (this.itemSelectionState.has(bucket[i]) || this.itemEffectiveIndeterminateState.has(bucket[i])) {
-            indeterminate = true;
-            break;
-          }
+    // Compute projected indeterminate state.
+    // The parent (bucket[0]) is indeterminate when any of its children (bucket[1+]) is selected or indeterminate.
+    for (const bucket of selectionBucketEntries) {
+      let indeterminate = false;
+      for (let i = 1; i < bucket.length; i++) {
+        if (this.itemSelectionState.has(bucket[i]) || this.itemProjectedIndeterminateState.has(bucket[i])) {
+          indeterminate = true;
+          break;
         }
-        if (indeterminate) {
-          this.itemEffectiveIndeterminateState.add(bucket[0]);
-        }
+      }
+      if (indeterminate) {
+        this.itemProjectedIndeterminateState.add(bucket[0]);
       }
     }
 
-    const setItemEffectiveSelection = (item: T, isParentSelected: boolean) => {
-      const itemKey = getTrackableValue(this.trackBy, item);
+    // Compute projected selected state.
+    // An item is selected either when it is present in selection state but its parent is not selected,
+    // or when it is not present in selection state but its parent is selected.
+    // An item can be selected and indeterminate at the same time.
+    const setItemProjectedSelection = (item: T, isParentSelected: boolean) => {
+      const itemKey = this.getKey(item);
       const isSelfSelected = this.itemSelectionState.has(itemKey);
       const isSelected = (isSelfSelected && !isParentSelected) || (!isSelfSelected && isParentSelected);
       if (isSelected) {
-        this.itemEffectiveSelectionState.add(itemKey);
+        this.itemProjectedSelectionState.add(itemKey);
       }
-      for (const child of this.getChildren(item)) {
-        setItemEffectiveSelection(child, isSelected);
-      }
+      this.treeProps.getChildren(item).forEach(child => setItemProjectedSelection(child, isSelected));
     };
-    this.rootItems.forEach(item => {
+    // The projected selection computation starts from the root pseudo-item (selection inverted state).
+    this.treeProps.rootItems.forEach(item => {
       const isRootSelected = this.itemSelectionState.has(rootItemKey);
       if (isRootSelected) {
-        this.itemEffectiveSelectionState.add(rootItemKey);
+        this.itemProjectedSelectionState.add(rootItemKey);
       }
-      setItemEffectiveSelection(item, isRootSelected);
+      setItemProjectedSelection(item, isRootSelected);
     });
   }
 
-  isItemSelected = (item: T) => this.itemEffectiveSelectionState.has(getTrackableValue(this.trackBy, item));
+  isItemSelected = (item: T) => this.itemProjectedSelectionState.has(this.getKey(item));
 
-  isItemIndeterminate = (item: T) => this.itemEffectiveIndeterminateState.has(getTrackableValue(this.trackBy, item));
+  isItemIndeterminate = (item: T) => this.itemProjectedIndeterminateState.has(this.getKey(item));
 
   isAllItemsSelected = () =>
-    this.itemEffectiveSelectionState.has(rootItemKey) && !this.itemEffectiveIndeterminateState.has(rootItemKey);
+    this.itemProjectedSelectionState.has(rootItemKey) && !this.itemProjectedIndeterminateState.has(rootItemKey);
 
-  isSomeItemsSelected = () => this.itemEffectiveIndeterminateState.has(rootItemKey);
+  isSomeItemsSelected = () => this.itemProjectedIndeterminateState.has(rootItemKey);
 
+  // The selection state might be different from the input selectionInverted and selectedItems
+  // because of the applied normalization.
   getState = (): { selectionInverted: boolean; selectedItems: T[] } => {
     const selectionInverted = this.itemSelectionState.has(rootItemKey);
     const selectedItems = Array.from(this.itemSelectionState)
       .filter(itemKey => itemKey !== rootItemKey)
-      .map(itemKey => this.itemKeyToItem.get(itemKey)!);
+      .map(itemKey => this.getItemForKey(itemKey)!);
     return { selectionInverted, selectedItems };
   };
 
   toggleAll = (): ItemSelectionTree<T> => {
-    const clone = this.clone();
-
-    if (clone.isAllItemsSelected()) {
-      clone.itemSelectionState = new Set<unknown>();
-      clone.itemEffectiveSelectionState = new Set<unknown>();
-      clone.itemEffectiveIndeterminateState = new Set<unknown>();
-    } else {
-      clone.itemSelectionState = new Set<unknown>([rootItemKey]);
-      clone.itemEffectiveSelectionState = new Set<unknown>();
-      clone.itemEffectiveIndeterminateState = new Set<unknown>();
-    }
-    clone.computeState();
-
-    return clone;
+    return this.isAllItemsSelected()
+      ? new ItemSelectionTree(false, [], this.treeProps)
+      : new ItemSelectionTree(true, [], this.treeProps);
   };
 
   toggleSome = (requestedItems: readonly T[]): ItemSelectionTree<T> => {
     const clone = this.clone();
 
     const unselectDeep = (item: T) => {
-      clone.itemSelectionState.delete(getTrackableValue(clone.trackBy, item));
-      for (const child of clone.getChildren(item)) {
-        unselectDeep(child);
-      }
+      clone.itemSelectionState.delete(this.getKey(item));
+      clone.treeProps.getChildren(item).forEach(child => unselectDeep(child));
     };
-
     for (const requested of requestedItems) {
-      const requestedItemKey = getTrackableValue(clone.trackBy, requested);
-      const isIndeterminate = clone.itemEffectiveIndeterminateState.has(requestedItemKey);
+      const requestedItemKey = this.getKey(requested);
+      const isIndeterminate = clone.itemProjectedIndeterminateState.has(requestedItemKey);
       const isSelfSelected = clone.itemSelectionState.has(requestedItemKey);
 
       unselectDeep(requested);
@@ -212,20 +212,17 @@ export class ItemSelectionTree<T> {
         clone.itemSelectionState.add(requestedItemKey);
       }
     }
-    clone.itemEffectiveSelectionState = new Set<unknown>();
-    clone.itemEffectiveIndeterminateState = new Set<unknown>();
     clone.computeState();
 
     return clone;
   };
 
   private clone(): ItemSelectionTree<T> {
-    const clone = new ItemSelectionTree([], [], false, this.trackBy, this.getChildren, this.isComplete);
-    clone.rootItems = [...this.rootItems];
+    const clone = new ItemSelectionTree(false, [], this.treeProps);
     clone.itemKeyToItem = new Map(this.itemKeyToItem);
     clone.itemSelectionState = new Set(this.itemSelectionState);
-    clone.itemEffectiveSelectionState = new Set(this.itemEffectiveSelectionState);
-    clone.itemEffectiveIndeterminateState = new Set(this.itemEffectiveIndeterminateState);
+    clone.itemProjectedSelectionState = new Set(this.itemProjectedSelectionState);
+    clone.itemProjectedIndeterminateState = new Set(this.itemProjectedIndeterminateState);
     return clone;
   }
 }

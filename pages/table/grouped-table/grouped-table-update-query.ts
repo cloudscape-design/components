@@ -10,7 +10,7 @@ export function findSelectionIds({
   selectionInverted,
   selectedItems,
   trackBy,
-  getItemChildren,
+  getItemChildren: getChildren,
 }: {
   allPageItems: readonly TransactionRow[];
   selectionInverted: boolean;
@@ -18,26 +18,20 @@ export function findSelectionIds({
   trackBy: (row: TransactionRow) => string;
   getItemChildren?: (row: TransactionRow) => TransactionRow[];
 }) {
-  if (!getItemChildren) {
+  if (!getChildren) {
     throw new Error('Missing getItemChildren');
   }
 
   const isComplete = () => true;
-  const selectionTree = new ItemSelectionTree(
-    items,
-    selectedItems,
-    selectionInverted,
-    trackBy,
-    getItemChildren,
-    isComplete
-  );
+  const treeProps = { rootItems: items, trackBy, getChildren, isComplete };
+  const selectionTree = new ItemSelectionTree(selectionInverted, selectedItems, treeProps);
   const allIds: string[] = [];
 
   function traverseItem(item: TransactionRow) {
     if (typeof item.type === 'string' && selectionTree.isItemSelected(item)) {
       allIds.push(item.group);
     }
-    getItemChildren!(item).forEach(traverseItem);
+    getChildren!(item).forEach(traverseItem);
   }
   items.forEach(traverseItem);
 
