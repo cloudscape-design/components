@@ -118,8 +118,8 @@ export class ItemSelectionTree<T> {
         continue;
       }
       let selectedCount = 0;
-      for (const itemKey of bucket) {
-        if (this.itemSelectionState.has(itemKey)) {
+      for (let i = bucket.length - 1; i >= 0; i--) {
+        if (this.itemSelectionState.has(bucket[i])) {
           selectedCount++;
         } else {
           break;
