@@ -83,9 +83,10 @@ export function useGroupSelection<T>({
     setLastClickedItem(item);
 
     const requestedItems = shiftPressed ? getShiftSelectedItems(item) : [item];
-    const hasChildren = (item: T) => getChildren(item).length > 0;
-    // Shift-selection is only allowed on the last level items.
-    if (requestedItems.length === 1 || requestedItems.filter(hasChildren).length === 0) {
+    const getLevel = (item: T) => getExpandableItemProps(item).level;
+    const requestedItemLevels = requestedItems.reduce((set, item) => set.add(getLevel(item)), new Set<number>());
+    // Shift-selection is only allowed on the items of the same level.
+    if (requestedItemLevels.size === 1) {
       fireNonCancelableEvent(onSelectionChange, selectionTree.toggleSome(requestedItems).getState());
     }
   };
