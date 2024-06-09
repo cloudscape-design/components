@@ -206,9 +206,8 @@ export class ItemSelectionTree<T> {
 
     const clone = this.clone();
     const lastItemKey = clone.getKey(requestedItems[requestedItems.length - 1]);
-    const isLastItemIndeterminate = clone.itemProjectedIndeterminateState.has(lastItemKey);
-    const isLastItemSelfSelected = clone.itemSelectionState.has(lastItemKey);
-    const shouldSelect = !isLastItemIndeterminate && !isLastItemSelfSelected;
+    const isSelfSelected = clone.itemSelectionState.has(lastItemKey);
+    const shouldSelect = !isSelfSelected;
 
     for (const requested of requestedItems) {
       clone.unselectDeep(requested);
