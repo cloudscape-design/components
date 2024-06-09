@@ -23,11 +23,14 @@ export function createColumns(): TableProps.ColumnDefinition<TransactionRow>[] {
       header: 'Group',
       cell: item => (
         <SpaceBetween direction="horizontal" size="xs" alignItems="center">
-          {item.children.length === 0 ? <Link href={`#${item.group}`}>{item.group}</Link> : item.group}
-          {item.children.length > 0 && <Box color="text-body-secondary">({item.transactions})</Box>}
+          <Box>{item.children.length === 0 ? <Link href={`#${item.group}`}>{item.group}</Link> : item.group}</Box>
+          {item.children.length > 0 && (
+            <Box key="counter" color="text-body-secondary">
+              ({item.transactions})
+            </Box>
+          )}
         </SpaceBetween>
       ),
-      ariaLabel: columnLabel('Group'),
       minWidth: 200,
       width: 300,
       isRowHeader: true,
