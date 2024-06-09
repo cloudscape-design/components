@@ -52,44 +52,20 @@ type PageContext = React.Context<
 >;
 
 const groupOptions = [
-  {
-    value: 'date',
-    label: 'Date',
-    bases: [
-      { type: 'date', value: 'year' },
-      { type: 'date', value: 'quarter' },
-      { type: 'date', value: 'month' },
-      { type: 'date', value: 'day' },
-    ],
-  },
-  { value: 'origin', label: 'Origin', bases: [{ type: 'unique', value: 'unique' }] },
-  { value: 'recipient', label: 'Recipient', bases: [{ type: 'unique', value: 'unique' }] },
-  { value: 'currency', label: 'Currency', bases: [{ type: 'unique', value: 'unique' }] },
-  {
-    value: 'amountEur',
-    label: 'Amount EUR',
-    bases: [
-      { type: 'number', value: '100' },
-      { type: 'number', value: '250' },
-      { type: 'number', value: '500' },
-      { type: 'number', value: '1000' },
-      { type: 'number', value: '5000' },
-      { type: 'number', value: '10000' },
-    ],
-  },
-  {
-    value: 'amountUsd',
-    label: 'Amount USD',
-    bases: [
-      { type: 'number', value: '100' },
-      { type: 'number', value: '250' },
-      { type: 'number', value: '500' },
-      { type: 'number', value: '1000' },
-      { type: 'number', value: '5000' },
-      { type: 'number', value: '10000' },
-    ],
-  },
-  { value: 'paymentMethod', label: 'Payment Method', bases: [{ type: 'unique', value: 'unique' }] },
+  { value: 'date_year', label: 'Date (year)' },
+  { value: 'date_quarter', label: 'Date (quarter)' },
+  { value: 'date_month', label: 'Date (month)' },
+  { value: 'date_day', label: 'Date (day)' },
+  { value: 'origin', label: 'Origin' },
+  { value: 'recipient', label: 'Recipient' },
+  { value: 'currency', label: 'Currency' },
+  { value: 'amountEur_100', label: 'Amount EUR (100)' },
+  { value: 'amountEur_500', label: 'Amount EUR (500)' },
+  { value: 'amountEur_1000', label: 'Amount EUR (1000)' },
+  { value: 'amountUsd_100', label: 'Amount USD (100)' },
+  { value: 'amountUsd_500', label: 'Amount USD (500)' },
+  { value: 'amountUsd_1000', label: 'Amount USD (1000)' },
+  { value: 'paymentMethod', label: 'Payment Method' },
 ] as const;
 
 export default () => {
@@ -208,22 +184,6 @@ export default () => {
                           ),
                         },
                         {
-                          label: 'Basis',
-                          control: (item, index) => (
-                            <Select
-                              selectedOption={
-                                (groupOptions as unknown as any[])
-                                  .find((o: any) => o.value === item.property)!
-                                  .bases.find((b: any) => b === item.basis)!
-                              }
-                              options={groupOptions.find(o => o.value === item.property)!.bases}
-                              onChange={event =>
-                                tableData.actions.setGroupBasis(index, event.detail.selectedOption as any)
-                              }
-                            />
-                          ),
-                        },
-                        {
                           label: 'Sorting',
                           control: (item, index) => (
                             <Toggle
@@ -307,18 +267,15 @@ function useTableData() {
 
   const [groups, setGroups] = useState<GroupDefinition[]>([
     {
-      property: 'date',
-      basis: groupOptions.find(o => o.value === 'date')!.bases[0],
+      property: 'date_year',
       sorting: 'desc',
     },
     {
-      property: 'date',
-      basis: groupOptions.find(o => o.value === 'date')!.bases[1] as any,
+      property: 'date_quarter',
       sorting: 'desc',
     },
     {
-      property: 'amountEur',
-      basis: groupOptions.find(o => o.value === 'amountEur')!.bases[0],
+      property: 'amountEur_500',
       sorting: 'asc',
     },
   ]);
@@ -456,10 +413,7 @@ function useTableData() {
     : undefined;
 
   const addGroup = () => {
-    setGroups(prev => [
-      ...prev,
-      { property: 'date', basis: groupOptions.find(o => o.value === 'date')!.bases[0], sorting: 'asc' },
-    ]);
+    setGroups(prev => [...prev, { property: 'date_year', sorting: 'asc' }]);
   };
   const deleteGroup = (index: number) => {
     setGroups(prev => {
@@ -474,21 +428,7 @@ function useTableData() {
         if (index !== groupIndex) {
           return group;
         }
-        return {
-          property,
-          basis: groupOptions.find(o => o.value === property)!.bases[0],
-          sorting: group.sorting,
-        } as GroupDefinition;
-      })
-    );
-  };
-  const setGroupBasis = (index: number, basis: GroupDefinition['basis']) => {
-    setGroups(prev =>
-      prev.map((group, groupIndex) => {
-        if (index !== groupIndex) {
-          return group;
-        }
-        return { ...group, basis };
+        return { property, sorting: group.sorting };
       })
     );
   };
@@ -547,7 +487,6 @@ function useTableData() {
       addGroup,
       deleteGroup,
       setGroupProperty,
-      setGroupBasis,
       setGroupSorting,
     },
     getLoadingStatus,

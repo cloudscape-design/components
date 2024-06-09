@@ -9,11 +9,21 @@ export interface Transaction {
   id: string;
   type: TransactionType;
   date: Date;
+  date_year: string;
+  date_quarter: string;
+  date_month: string;
+  date_day: string;
   origin: string;
   recipient: string;
   currency: string;
   amountEur: number;
+  amountEur_100: string;
+  amountEur_500: string;
+  amountEur_1000: string;
   amountUsd: number;
+  amountUsd_100: string;
+  amountUsd_500: string;
+  amountUsd_1000: string;
   paymentMethod: string;
 }
 

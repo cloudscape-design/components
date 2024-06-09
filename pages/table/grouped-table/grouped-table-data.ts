@@ -20,11 +20,10 @@ import {
 
 export interface GroupDefinition {
   property: string;
-  basis: { type: string; value: string };
   sorting: 'asc' | 'desc';
 }
 
-type TransactionDefinition = Omit<Transaction, 'id' | 'date' | 'amountEur' | 'amountEur' | 'amountUsd'> & {
+type TransactionDefinition = Pick<Transaction, 'type' | 'origin' | 'recipient' | 'currency' | 'paymentMethod'> & {
   amount: () => number;
 };
 
@@ -49,7 +48,40 @@ function addTransaction({ amount: getAmount, ...t }: TransactionDefinition) {
     default:
       throw new Error('Unsupported currency');
   }
-  allTransactions.push({ id: generateId(), ...t, date: currentMoment, amountUsd, amountEur });
+  allTransactions.push({
+    id: generateId(),
+    ...t,
+    date: currentMoment,
+    date_year: getDateBase(currentMoment, 'year'),
+    date_quarter: getDateBase(currentMoment, 'quarter'),
+    date_month: getDateBase(currentMoment, 'month'),
+    date_day: getDateBase(currentMoment, 'day'),
+    amountUsd,
+    amountEur,
+    amountUsd_100: getNumericBase(amountUsd, 100),
+    amountUsd_500: getNumericBase(amountUsd, 500),
+    amountUsd_1000: getNumericBase(amountUsd, 1000),
+    amountEur_100: getNumericBase(amountEur, 100),
+    amountEur_500: getNumericBase(amountEur, 500),
+    amountEur_1000: getNumericBase(amountEur, 1000),
+  });
+}
+function getNumericBase(value: number, basis: number) {
+  return (Math.ceil(value / basis) * basis).toFixed(0);
+}
+function getDateBase(value: Date, basis: string) {
+  switch (basis) {
+    case 'year':
+      return format(startOfYear(value), 'yyyy');
+    case 'quarter':
+      return format(startOfQuarter(value), 'QQQ yyyy');
+    case 'month':
+      return format(startOfMonth(value), 'MMMM yyyy');
+    case 'day':
+      return format(startOfDay(value), 'yyyy-MM-dd');
+    default:
+      throw new Error('Unsupported date base.');
+  }
 }
 function transfer(from: string, to: string, currency: string, amount: () => number): TransactionDefinition {
   return { type: 'TRANSFER', origin: from, recipient: to, currency, amount, paymentMethod: 'Bank transfer' };
@@ -65,8 +97,8 @@ function withdraw(from: string, currency: string, amount: () => number): Transac
   };
 }
 
-function repeat(transaction: TransactionDefinition, increment: (date: Date) => Date, until = new Date('2024-01-01')) {
-  while (currentMoment < until && currentMoment < new Date('2024-01-01')) {
+function repeat(transaction: TransactionDefinition, increment: (date: Date) => Date, until = new Date('2015-01-01')) {
+  while (currentMoment < until && currentMoment < new Date('2015-01-01')) {
     addTransaction(transaction);
     currentMoment = increment(currentMoment);
   }
@@ -147,14 +179,14 @@ export function getGroupedTransactions(groups: GroupDefinition[]): TransactionRo
         parent,
       }));
     }
-    const byProperty = groupBy(transactions, t => getGroupBy(t, group));
+    const byProperty = groupBy(transactions, group.property);
     const rows = orderBy(
       Object.entries(byProperty).map(([groupKey, groupTransactions]) => {
         const key = parent ? `${parent}-${groupKey}` : groupKey;
         return {
           key: key,
           group: groupKey,
-          groupKey: `${group.property}_${group.basis.value}`,
+          groupKey: group.property,
           parent,
           transactions: groupTransactions.length,
           children: makeGroups(groupTransactions, groupIndex + 1, key),
@@ -201,29 +233,4 @@ function averageBy(transactions: Transaction[], property: 'amountEur' | 'amountU
   }
   const total = sumBy(transactions, property);
   return total / transactions.length;
-}
-
-function getGroupBy(transaction: Transaction, group: GroupDefinition): string {
-  if (group.basis.type === 'unique') {
-    return (transaction as any)[group.property];
-  }
-  if (group.basis.type === 'number') {
-    const transactionValue = (transaction as any)[group.property];
-    const basisValue = parseInt(group.basis.value);
-    return (Math.ceil(transactionValue / basisValue) * basisValue).toFixed(2);
-  }
-  if (group.basis.type === 'date') {
-    const transactionValue = (transaction as any)[group.property];
-    switch (group.basis.value) {
-      case 'year':
-        return format(startOfYear(transactionValue), 'yyyy');
-      case 'quarter':
-        return format(startOfQuarter(transactionValue), 'QQQ yyyy');
-      case 'month':
-        return format(startOfMonth(transactionValue), 'MMMM yyyy');
-      case 'day':
-        return format(startOfDay(transactionValue), 'yyyy-MM-dd');
-    }
-  }
-  throw new Error('Unsupported group basis');
 }
