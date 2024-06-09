@@ -59,9 +59,9 @@ describe('Shift selection', () => {
     expect(selectedItems).toHaveLength(arr.length);
     expect(selectedItems).toEqual(expect.arrayContaining(arr));
   };
-  it.each(['multi', 'group'] as const)('should select six items', selectionType => {
+  it('should select six items', () => {
     tableWrapper = renderTable({
-      selectionType,
+      selectionType: 'multi',
       selectedItems: [],
       onSelectionChange: handleSelectionChange,
     });

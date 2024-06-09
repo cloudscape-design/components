@@ -200,25 +200,30 @@ export class ItemSelectionTree<T> {
   };
 
   toggleSome = (requestedItems: readonly T[]): ItemSelectionTree<T> => {
+    if (requestedItems.length === 0) {
+      return this;
+    }
+
     const clone = this.clone();
+    const lastItemKey = clone.getKey(requestedItems[requestedItems.length - 1]);
+    const isLastItemIndeterminate = clone.itemProjectedIndeterminateState.has(lastItemKey);
+    const isLastItemSelfSelected = clone.itemSelectionState.has(lastItemKey);
+    const shouldSelect = !isLastItemIndeterminate && !isLastItemSelfSelected;
 
-    const unselectDeep = (item: T) => {
-      clone.itemSelectionState.delete(this.getKey(item));
-      clone.treeProps.getChildren(item).forEach(child => unselectDeep(child));
-    };
     for (const requested of requestedItems) {
-      const requestedItemKey = this.getKey(requested);
-      const isIndeterminate = clone.itemProjectedIndeterminateState.has(requestedItemKey);
-      const isSelfSelected = clone.itemSelectionState.has(requestedItemKey);
-
-      unselectDeep(requested);
-      if (isIndeterminate || !isSelfSelected) {
-        clone.itemSelectionState.add(requestedItemKey);
+      clone.unselectDeep(requested);
+      if (shouldSelect) {
+        clone.itemSelectionState.add(this.getKey(requested));
       }
     }
     clone.computeState();
 
     return clone;
+  };
+
+  private unselectDeep = (item: T) => {
+    this.itemSelectionState.delete(this.getKey(item));
+    this.treeProps.getChildren(item).forEach(child => this.unselectDeep(child));
   };
 
   private clone(): ItemSelectionTree<T> {

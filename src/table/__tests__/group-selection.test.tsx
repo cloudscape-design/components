@@ -7,41 +7,28 @@ import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/
 
 interface Item {
   id: string;
-  name: string;
   children?: Item[];
 }
 
-const columnDefinitions: TableProps.ColumnDefinition<Item>[] = [
-  { header: 'id', cell: item => item.id },
-  { header: 'name', cell: item => item.name },
-];
+const columnDefinitions: TableProps.ColumnDefinition<Item>[] = [{ header: 'id', cell: item => item.id }];
 
 const items: Item[] = [
   {
     id: '1',
-    name: 'Apples',
     children: [
-      { id: '1.1', name: 'Gala' },
-      { id: '1.2', name: 'Red Delicious' },
+      { id: '1.1' },
+      { id: '1.2' },
       {
         id: '1.3',
-        name: 'Fuji',
-        children: [
-          { id: '1.3.1', name: 'Fuji 1' },
-          { id: '1.3.2', name: 'Fuji 2' },
-        ],
+        children: [{ id: '1.3.1' }, { id: '1.3.2' }],
       },
     ],
   },
   {
     id: '2',
-    name: 'Oranges',
-    children: [
-      { id: '2.1', name: 'Dream navel' },
-      { id: '2.2', name: 'Tangerine' },
-    ],
+    children: [{ id: '2.1' }, { id: '2.2' }],
   },
-  { id: '3', name: 'Bananas', children: [{ id: '3.1', name: 'Cavendish' }] },
+  { id: '3', children: [{ id: '3.1' }] },
 ];
 
 function SelectableTable(tableProps: TableProps<Item>) {
@@ -68,12 +55,12 @@ function renderTable(tableProps: Partial<TableProps>, selectedItems: string[], e
     selectionType: 'group',
     trackBy: 'id',
     selectionInverted: selectedItems.includes('ALL'),
-    selectedItems: selectedItems.filter(id => id !== 'ALL').map(id => ({ id, name: '' })),
+    selectedItems: selectedItems.filter(id => id !== 'ALL').map(id => ({ id })),
     expandableRows: expandedItems
       ? {
           getItemChildren: item => item.children ?? [],
           isItemExpandable: item => !!item.children,
-          expandedItems: expandedItems.map(id => ({ id, name: '' })),
+          expandedItems: expandedItems.map(id => ({ id })),
           onExpandableItemToggle: () => {},
         }
       : undefined,
@@ -90,7 +77,7 @@ function renderTable(tableProps: Partial<TableProps>, selectedItems: string[], e
 function getTableSelection(tableWrapper: TableWrapper) {
   const selectionState: Record<string, 'empty' | 'indeterminate' | 'checked'> = {};
   const getInputState = (input: HTMLInputElement): 'empty' | 'indeterminate' | 'checked' => {
-    return input.checked ? 'checked' : input.indeterminate ? 'indeterminate' : 'empty';
+    return input.indeterminate ? 'indeterminate' : input.checked ? 'checked' : 'empty';
   };
 
   const selectAllInput = tableWrapper.findSelectAllTrigger()!.find<HTMLInputElement>('input')!.getElement();
@@ -106,6 +93,16 @@ function getTableSelection(tableWrapper: TableWrapper) {
   }
 
   return selectionState;
+}
+
+function clickRow(tableWrapper: TableWrapper, index: number) {
+  tableWrapper.findRowSelectionArea(index)?.find('input')!.click();
+}
+function shiftClickRow(tableWrapper: TableWrapper, index: number) {
+  const input = tableWrapper.findRowSelectionArea(index)?.find('input');
+  input?.fireEvent(new MouseEvent('mousedown', { shiftKey: true, bubbles: true }));
+  input?.fireEvent(new MouseEvent('click', { shiftKey: true, bubbles: true }));
+  input?.fireEvent(new MouseEvent('mouseup', { shiftKey: false, bubbles: true }));
 }
 
 test('selects all items one by one and makes select-all indeterminate and then checked', () => {
@@ -193,5 +190,51 @@ test('unselects all items using select-all when all items selected', () => {
     '1': 'empty',
     '2': 'empty',
     '3': 'empty',
+  });
+});
+
+test.each([false, true])('shift selection on top level, selectionInverted=%s', selectionInverted => {
+  const items = [{ id: '1' }, { id: '2' }, { id: '3' }, { id: '4' }, { id: '5' }, { id: '6' }, { id: '7' }];
+  const { wrapper } = renderTable({ items }, selectionInverted ? ['ALL'] : []);
+  const empty = !selectionInverted ? 'empty' : 'checked';
+  const checked = !selectionInverted ? 'checked' : 'empty';
+
+  clickRow(wrapper, 3);
+  shiftClickRow(wrapper, 5);
+  expect(getTableSelection(wrapper)).toEqual({
+    ALL: 'indeterminate',
+    '1': empty,
+    '2': empty,
+    '3': checked,
+    '4': checked,
+    '5': checked,
+    '6': empty,
+    '7': empty,
+  });
+
+  clickRow(wrapper, 5);
+  shiftClickRow(wrapper, 7);
+  expect(getTableSelection(wrapper)).toEqual({
+    ALL: 'indeterminate',
+    '1': empty,
+    '2': empty,
+    '3': checked,
+    '4': checked,
+    '5': checked,
+    '6': checked,
+    '7': checked,
+  });
+
+  clickRow(wrapper, 1);
+  shiftClickRow(wrapper, 4);
+  expect(getTableSelection(wrapper)).toEqual({
+    ALL: 'indeterminate',
+    '1': empty,
+    '2': empty,
+    '3': empty,
+    '4': empty,
+    '5': checked,
+    '6': checked,
+    '7': checked,
   });
 });

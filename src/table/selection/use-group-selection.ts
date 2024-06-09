@@ -70,7 +70,8 @@ export function useGroupSelection<T>({
       const currentItemIndex = itemIndexesMap.get(getTrackableValue(trackBy, item))!;
       const start = Math.min(currentItemIndex, lastClickedItemIndex);
       const end = Math.max(currentItemIndex, lastClickedItemIndex);
-      return items.slice(start, end + 1);
+      const requestedItems = items.slice(start, end + 1);
+      return lastClickedItemIndex < currentItemIndex ? requestedItems : requestedItems.reverse();
     }
     return [item];
   };
