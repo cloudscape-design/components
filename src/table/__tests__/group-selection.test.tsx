@@ -44,6 +44,9 @@ function SelectableTable(tableProps: TableProps<Item>) {
         setSelectedItems(event.detail.selectedItems);
         tableProps.onSelectionChange?.(event);
       }}
+      renderLoaderPending={({ item }) => (item ? `${item.id}-loader` : 'root-loader')}
+      renderLoaderLoading={({ item }) => (item ? `${item.id}-loader` : 'root-loader')}
+      renderLoaderError={({ item }) => (item ? `${item.id}-loader` : 'root-loader')}
     />
   );
 }
@@ -238,3 +241,101 @@ test.each([false, true])('shift selection on top level, selectionInverted=%s', s
     '7': checked,
   });
 });
+
+test.each(['pending', 'loading', 'error'] as const)(
+  'progressive loader with status=%s selection state is derived from parent selection choice',
+  status => {
+    const { wrapper } = renderTable({ getLoadingStatus: () => status }, []);
+    expect(getTableSelection(wrapper)).toEqual({
+      ALL: 'empty',
+      '1': 'empty',
+      '2': 'empty',
+      '3': 'empty',
+      'root-loader': 'empty',
+    });
+
+    wrapper.findRowSelectionArea(1)!.click();
+    expect(getTableSelection(wrapper)).toEqual({
+      ALL: 'indeterminate',
+      '1': 'checked',
+      '2': 'empty',
+      '3': 'empty',
+      'root-loader': 'empty',
+    });
+
+    wrapper.findSelectAllTrigger()!.click();
+    expect(getTableSelection(wrapper)).toEqual({
+      ALL: 'checked',
+      '1': 'checked',
+      '2': 'checked',
+      '3': 'checked',
+      'root-loader': 'checked',
+    });
+
+    wrapper.findRowSelectionArea(1)!.click();
+    expect(getTableSelection(wrapper)).toEqual({
+      ALL: 'indeterminate',
+      '1': 'empty',
+      '2': 'checked',
+      '3': 'checked',
+      'root-loader': 'checked',
+    });
+  }
+);
+
+test.each([false, true])(
+  'selection is lifted when progressive loading status="finished", selectionInverted=%s',
+  selectionInverted => {
+    const { wrapper } = renderTable({ getLoadingStatus: () => 'finished' }, selectionInverted ? ['ALL'] : []);
+    const empty = !selectionInverted ? 'empty' : 'checked';
+    const checked = !selectionInverted ? 'checked' : 'empty';
+
+    expect(getTableSelection(wrapper)).toEqual({
+      ALL: empty,
+      '1': empty,
+      '2': empty,
+      '3': empty,
+    });
+
+    wrapper.findRowSelectionArea(1)!.click();
+    wrapper.findRowSelectionArea(2)!.click();
+    wrapper.findRowSelectionArea(3)!.click();
+    expect(getTableSelection(wrapper)).toEqual({
+      ALL: checked,
+      '1': checked,
+      '2': checked,
+      '3': checked,
+    });
+  }
+);
+
+test.each([false, true])(
+  'selection is not lifted when progressive loading status!="finished", selectionInverted=%s',
+  selectionInverted => {
+    const status = (['pending', 'loading', 'error'] as const)[Math.floor(Math.random() * 3)];
+    const { wrapper } = renderTable({ getLoadingStatus: () => status }, selectionInverted ? ['ALL'] : []);
+    const empty = !selectionInverted ? 'empty' : 'checked';
+    const checked = !selectionInverted ? 'checked' : 'empty';
+
+    expect(getTableSelection(wrapper)).toEqual({
+      ALL: empty,
+      '1': empty,
+      '2': empty,
+      '3': empty,
+      'root-loader': empty,
+    });
+
+    wrapper.findRowSelectionArea(1)!.click();
+    wrapper.findRowSelectionArea(2)!.click();
+    wrapper.findRowSelectionArea(3)!.click();
+    expect(getTableSelection(wrapper)).toEqual({
+      ALL: 'indeterminate',
+      '1': checked,
+      '2': checked,
+      '3': checked,
+      'root-loader': empty,
+    });
+  }
+);
+
+// TODO: test with expandable rows
