@@ -119,7 +119,7 @@ export function WizardForm({
 
       <InternalForm
         __internalRootRef={__internalRootRef}
-        className={clsx(styles['form-component'])}
+        className={styles['form-component']}
         actions={
           <WizardActions
             cancelButtonText={i18nStrings.cancelButton}

@@ -3,7 +3,6 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-/* stylelint-disable selector-max-universal, selector-max-type */
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/hooks/focus-visible' as focus-visible;
@@ -35,6 +34,7 @@
   grid-row: 1 / span 2;
   padding-block-start: calc(awsui.$space-xs + awsui.$space-scaled-xxs);
 
+  /* stylelint-disable selector-max-type */
   > ul.refresh {
     background: awsui.$color-background-container-content;
     position: relative;
@@ -177,6 +177,7 @@
       color: awsui.$color-background-control-checked;
     }
   }
+  /* stylelint-enable selector-max-type */
 }
 
 .navigation:not(.refresh) {
@@ -187,6 +188,7 @@
   padding-block-start: awsui.$space-xxs;
   inline-size: 20 * styles.$base-size;
 
+  /* stylelint-disable selector-max-type */
   > ul:not(.refresh) {
     list-style: none;
     padding-block: 0;
@@ -207,6 +209,7 @@
       border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-layout;
     }
   }
+  /* stylelint-enable selector-max-type */
 }
 
 .form:not(.refresh) {

@@ -26,7 +26,6 @@
   line-height: 30px;
   z-index: 1000;
   &:not(.legacyNav) {
-    /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
     position: sticky;
   }
 }
