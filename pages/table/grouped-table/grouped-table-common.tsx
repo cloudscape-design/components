@@ -46,7 +46,7 @@ export interface TransactionRow {
 
 export const ariaLabels: TableProps<{ group: string }>['ariaLabels'] = {
   selectionGroupLabel: 'group label',
-  // TODO: compute considering the group type of selection
+  // TODO: compute considering selectionType="group"
   allItemsSelectionLabel: ({ selectedItems }) =>
     `${selectedItems.length} ${selectedItems.length === 1 ? 'item' : 'items'} selected`,
   itemSelectionLabel: ({ selectedItems }, item) => {
