@@ -38,6 +38,7 @@ export class ItemSelectionTree<T> {
   private itemKeyToItem = new Map<ItemKey, T>();
   private itemSelectionState = new Set<ItemKey>();
   private itemProjectedSelectionState = new Set<ItemKey>();
+  private itemProjectedParentSelectionState = new Set<ItemKey>();
   private itemProjectedIndeterminateState = new Set<ItemKey>();
 
   constructor(selectionInverted: boolean, selectedItems: readonly T[], treeProps: TreeProps<T>) {
@@ -162,6 +163,9 @@ export class ItemSelectionTree<T> {
       if (isSelected) {
         this.itemProjectedSelectionState.add(itemKey);
       }
+      if (isParentSelected) {
+        this.itemProjectedParentSelectionState.add(itemKey);
+      }
       this.treeProps.getChildren(item).forEach(child => setItemProjectedSelection(child, isSelected));
     };
     // The projected selection computation starts from the root pseudo-item (selection inverted state).
@@ -206,12 +210,15 @@ export class ItemSelectionTree<T> {
 
     const clone = this.clone();
     const lastItemKey = clone.getKey(requestedItems[requestedItems.length - 1]);
-    const isSelfSelected = clone.itemSelectionState.has(lastItemKey);
-    const shouldSelect = !isSelfSelected;
+    const isParentSelected = clone.itemProjectedParentSelectionState.has(lastItemKey);
+    const isSelected = clone.itemProjectedSelectionState.has(lastItemKey);
+    const isIndeterminate = clone.itemProjectedIndeterminateState.has(lastItemKey);
+    const nextIsSelected = !(isSelected && !isIndeterminate);
+    const nextIsSelfSelected = (isParentSelected && !nextIsSelected) || (!isParentSelected && nextIsSelected);
 
     for (const requested of requestedItems) {
       clone.unselectDeep(requested);
-      if (shouldSelect) {
+      if (nextIsSelfSelected) {
         clone.itemSelectionState.add(this.getKey(requested));
       }
     }
@@ -230,6 +237,7 @@ export class ItemSelectionTree<T> {
     clone.itemKeyToItem = new Map(this.itemKeyToItem);
     clone.itemSelectionState = new Set(this.itemSelectionState);
     clone.itemProjectedSelectionState = new Set(this.itemProjectedSelectionState);
+    clone.itemProjectedParentSelectionState = new Set(this.itemProjectedParentSelectionState);
     clone.itemProjectedIndeterminateState = new Set(this.itemProjectedIndeterminateState);
     return clone;
   }

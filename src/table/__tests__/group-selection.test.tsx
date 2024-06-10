@@ -429,23 +429,62 @@ test.each([false, true])('selection state is lifted, selectionInverted=%s', sele
   });
 });
 
-test.each([false, true])(
-  'selecting a parent makes all children selection consistent, selectionInverted=%s',
-  selectionInverted => {
-    const wrapper = renderTable({}, selectionInverted ? ['ALL'] : [], ['1']);
-    const empty = !selectionInverted ? 'empty' : 'checked';
-    const checked = !selectionInverted ? 'checked' : 'empty';
+test('selecting a parent makes all children selection consistent, selectionInverted=false', () => {
+  const wrapper = renderTable({}, [], ['1']);
 
-    wrapper.findRowSelectionArea(2)!.click(); // click 1.1
-    wrapper.findRowSelectionArea(1)!.click(); // click 1
-    expect(getTableSelection(wrapper)).toEqual({
-      ALL: 'indeterminate',
-      '1': checked,
-      '1.1': checked,
-      '1.2': checked,
-      '1.3': checked,
-      '2': empty,
-      '3': empty,
-    });
-  }
-);
+  // Selecting intermediate group when group is not self selected.
+  wrapper.findRowSelectionArea(2)!.click(); // click 1.1
+  wrapper.findRowSelectionArea(1)!.click(); // click 1
+  expect(getTableSelection(wrapper)).toEqual({
+    ALL: 'indeterminate',
+    '1': 'checked',
+    '1.1': 'checked',
+    '1.2': 'checked',
+    '1.3': 'checked',
+    '2': 'empty',
+    '3': 'empty',
+  });
+
+  // Selecting intermediate group when group is self selected.
+  wrapper.findRowSelectionArea(2)!.click(); // click 1.1
+  wrapper.findRowSelectionArea(1)!.click(); // click 1
+  expect(getTableSelection(wrapper)).toEqual({
+    ALL: 'indeterminate',
+    '1': 'checked',
+    '1.1': 'checked',
+    '1.2': 'checked',
+    '1.3': 'checked',
+    '2': 'empty',
+    '3': 'empty',
+  });
+});
+
+test('selecting a parent makes all children selection consistent, selectionInverted=true', () => {
+  const wrapper = renderTable({}, ['ALL'], ['1']);
+
+  // Selecting intermediate group when group is not self selected.
+  wrapper.findRowSelectionArea(2)!.click(); // click 1.1
+  wrapper.findRowSelectionArea(1)!.click(); // click 1
+  expect(getTableSelection(wrapper)).toEqual({
+    ALL: 'checked',
+    '1': 'checked',
+    '1.1': 'checked',
+    '1.2': 'checked',
+    '1.3': 'checked',
+    '2': 'checked',
+    '3': 'checked',
+  });
+
+  // Selecting intermediate group when group is self selected.
+  wrapper.findRowSelectionArea(2)!.click(); // click 1.1
+  wrapper.findRowSelectionArea(1)!.click(); // click 1
+  expect(getTableSelection(wrapper)).toEqual({
+    ALL: 'checked',
+    '1': 'checked',
+    '1.1': 'checked',
+    '1.2': 'checked',
+    '1.3': 'checked',
+    '2': 'checked',
+    '3': 'checked',
+  });
+});
