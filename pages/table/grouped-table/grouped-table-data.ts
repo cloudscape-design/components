@@ -66,8 +66,8 @@ function addTransaction({ amount: getAmount, ...t }: TransactionDefinition) {
     amountEur_1000: getNumericBase(amountEur, 1000),
   });
 }
-function getNumericBase(value: number, basis: number) {
-  return (Math.ceil(value / basis) * basis).toFixed(0);
+function getNumericBase(value: number, basis: number): number {
+  return parseInt((Math.ceil(value / basis) * basis).toFixed(0));
 }
 function getDateBase(value: Date, basis: string) {
   switch (basis) {
@@ -162,11 +162,14 @@ repeat(
   withdraw('Jane Doe', 'EUR', () => pseudoRandom() * 120),
   everyWeekOrSo
 );
+allTransactions.sort((a, b) => b.date.getTime() - a.date.getTime());
 
-export function getGroupedTransactions(items: readonly Transaction[], groups: GroupDefinition[]): TransactionRow[] {
-  const data = orderBy(items, 'date', 'desc');
-
-  function makeGroups(transactions: Transaction[], groupIndex: number, parent: null | string): TransactionRow[] {
+export function getGroupedTransactions(data: readonly Transaction[], groups: GroupDefinition[]): TransactionRow[] {
+  function makeGroups(
+    transactions: readonly Transaction[],
+    groupIndex: number,
+    parent: null | string
+  ): TransactionRow[] {
     const group = groups[groupIndex];
     if (!group) {
       return transactions.map(t => ({

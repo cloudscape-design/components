@@ -15,13 +15,13 @@ export interface Transaction {
   recipient: string;
   currency: string;
   amountEur: number;
-  amountEur_100: string;
-  amountEur_500: string;
-  amountEur_1000: string;
+  amountEur_100: number;
+  amountEur_500: number;
+  amountEur_1000: number;
   amountUsd: number;
-  amountUsd_100: string;
-  amountUsd_500: string;
-  amountUsd_1000: string;
+  amountUsd_100: number;
+  amountUsd_500: number;
+  amountUsd_1000: number;
   paymentMethod: string;
 }
 

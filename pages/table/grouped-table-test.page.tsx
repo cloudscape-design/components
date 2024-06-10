@@ -226,10 +226,11 @@ function useTableData() {
     },
     {
       property: 'amountEur_500',
-      sorting: 'asc',
+      sorting: 'desc',
     },
   ]);
   const collectionResultTransactions = useCollection(allTransactions, {
+    sorting: {},
     propertyFiltering: {
       filteringProperties,
       noMatch: (
@@ -247,7 +248,6 @@ function useTableData() {
   });
   const collectionResult = useCollection(getGroupedTransactions(collectionResultTransactions.items, groups), {
     pagination: settings.usePagination ? { pageSize: ROOT_PAGE_SIZE } : undefined,
-    sorting: {},
     expandableRows: {
       getId: item => item.key,
       getParentId: item => item.parent,
@@ -340,6 +340,12 @@ function useTableData() {
 
   return {
     ...collectionResult,
+    collectionProps: {
+      ...collectionResult.collectionProps,
+      sortingColumn: collectionResultTransactions.collectionProps.sortingColumn as any,
+      sortingDescending: collectionResultTransactions.collectionProps.sortingDescending,
+      onSortingChange: collectionResultTransactions.collectionProps.onSortingChange as any,
+    },
     propertyFilterProps: collectionResultTransactions.propertyFilterProps,
     filteredItemsCount: collectionResultTransactions.filteredItemsCount,
     totalItemsCount: collectionResultTransactions.allPageItems.length,
