@@ -25,7 +25,6 @@ import {
   StatusIndicator,
   Table,
   TableProps,
-  Toggle,
 } from '~components';
 import AppContext, { AppContextType } from '../app/app-context';
 import { GroupDefinition, getGroupedTransactions } from './grouped-table/grouped-table-data';
@@ -66,6 +65,11 @@ const groupOptions = [
   { value: 'amountUsd_500', label: 'Amount USD (500)' },
   { value: 'amountUsd_1000', label: 'Amount USD (1000)' },
   { value: 'paymentMethod', label: 'Payment Method' },
+] as const;
+
+const sortOptions = [
+  { value: 'asc', label: 'Ascending (A to Z)' },
+  { value: 'desc', label: 'Descending (Z to A)' },
 ] as const;
 
 export default () => {
@@ -177,8 +181,8 @@ export default () => {
                             <Select
                               selectedOption={groupOptions.find(o => o.value === item.property)!}
                               options={groupOptions}
-                              onChange={event =>
-                                tableData.actions.setGroupProperty(index, event.detail.selectedOption.value!)
+                              onChange={({ detail }) =>
+                                tableData.actions.setGroupProperty(index, detail.selectedOption.value!)
                               }
                             />
                           ),
@@ -186,14 +190,13 @@ export default () => {
                         {
                           label: 'Sorting',
                           control: (item, index) => (
-                            <Toggle
-                              checked={item.sorting === 'desc'}
+                            <Select
+                              selectedOption={sortOptions.find(o => o.value === item.sorting)!}
+                              options={sortOptions}
                               onChange={({ detail }) =>
-                                tableData.actions.setGroupSorting(index, detail.checked ? 'desc' : 'asc')
+                                tableData.actions.setGroupSorting(index, detail.selectedOption.value as 'asc' | 'desc')
                               }
-                            >
-                              Sort descending
-                            </Toggle>
+                            />
                           ),
                         },
                       ]}
