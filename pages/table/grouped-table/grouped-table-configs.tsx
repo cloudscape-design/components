@@ -17,7 +17,7 @@ export function createColumns(): TableProps.ColumnDefinition<TransactionRow>[] {
           <Box>{item.children.length === 0 ? <Link href={`#${item.group}`}>{item.group}</Link> : item.group}</Box>
           {item.children.length > 0 && (
             <Box key="counter" color="text-body-secondary">
-              ({item.transactions})
+              ({item.transactions.length})
             </Box>
           )}
         </SpaceBetween>
@@ -109,7 +109,7 @@ export const filteringProperties: PropertyFilterProps.FilteringProperty[] = [
   },
   {
     key: 'origin',
-    propertyLabel: 'origin',
+    propertyLabel: 'Origin',
     groupValuesLabel: 'Origin values',
     operators: ['=', '!='],
   },

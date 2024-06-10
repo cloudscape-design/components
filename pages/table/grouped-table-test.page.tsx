@@ -22,7 +22,7 @@ import {
   TableProps,
 } from '~components';
 import AppContext, { AppContextType } from '../app/app-context';
-import { GroupDefinition, getGroupedTransactions } from './grouped-table/grouped-table-data';
+import { GroupDefinition, allTransactions, getGroupedTransactions } from './grouped-table/grouped-table-data';
 import messages from '~components/i18n/messages/all.en';
 import I18nProvider from '~components/i18n';
 import { createColumns, filteringProperties } from './grouped-table/grouped-table-configs';
@@ -229,10 +229,7 @@ function useTableData() {
       sorting: 'asc',
     },
   ]);
-  const allTransactionRows = getGroupedTransactions(groups);
-  const collectionResult = useCollection(allTransactionRows, {
-    pagination: settings.usePagination ? { pageSize: ROOT_PAGE_SIZE } : undefined,
-    sorting: {},
+  const collectionResultTransactions = useCollection(allTransactions, {
     propertyFiltering: {
       filteringProperties,
       noMatch: (
@@ -247,6 +244,10 @@ function useTableData() {
         />
       ),
     },
+  });
+  const collectionResult = useCollection(getGroupedTransactions(collectionResultTransactions.items, groups), {
+    pagination: settings.usePagination ? { pageSize: ROOT_PAGE_SIZE } : undefined,
+    sorting: {},
     expandableRows: {
       getId: item => item.key,
       getParentId: item => item.parent,
@@ -337,24 +338,11 @@ function useTableData() {
     );
   };
 
-  const totalItemsCount = allItems.filter(t => t.children.length === 0).length;
-
-  let filteredItemsCount = 0;
-  function count(item: TransactionRow) {
-    // Count actual items only.
-    if (item.children.length === 0) {
-      filteredItemsCount += 1;
-    }
-    const children = getItemChildren?.(item) ?? [];
-    children.forEach(count);
-  }
-  collectionResult.allPageItems.forEach(count);
-  const showFilteredItemsCount = collectionResult.propertyFilterProps.query.tokens.length > 0;
-
   return {
     ...collectionResult,
-    totalItemsCount,
-    filteredItemsCount: showFilteredItemsCount ? filteredItemsCount : undefined,
+    propertyFilterProps: collectionResultTransactions.propertyFilterProps,
+    filteredItemsCount: collectionResultTransactions.filteredItemsCount,
+    totalItemsCount: collectionResultTransactions.allPageItems.length,
     items: paginatedItems,
     groups,
     selectedItems,

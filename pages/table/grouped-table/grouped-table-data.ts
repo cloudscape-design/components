@@ -27,7 +27,7 @@ type TransactionDefinition = Pick<Transaction, 'type' | 'origin' | 'recipient' |
   amount: () => number;
 };
 
-const allTransactions: Transaction[] = [];
+export const allTransactions: Transaction[] = [];
 
 let currentMoment = new Date('2000-01-01T12:00:00');
 const reset = (date = new Date('2000-01-01T12:00:00')) => (currentMoment = date);
@@ -163,8 +163,8 @@ repeat(
   everyWeekOrSo
 );
 
-export function getGroupedTransactions(groups: GroupDefinition[]): TransactionRow[] {
-  const data = orderBy(allTransactions, 'date', 'desc');
+export function getGroupedTransactions(items: readonly Transaction[], groups: GroupDefinition[]): TransactionRow[] {
+  const data = orderBy(items, 'date', 'desc');
 
   function makeGroups(transactions: Transaction[], groupIndex: number, parent: null | string): TransactionRow[] {
     const group = groups[groupIndex];
@@ -174,7 +174,7 @@ export function getGroupedTransactions(groups: GroupDefinition[]): TransactionRo
         key: parent ? `${parent}-${t.id}` : t.id,
         group: t.id,
         groupKey: 'id',
-        transactions: 1,
+        transactions: [t],
         children: [],
         parent,
       }));
@@ -188,7 +188,7 @@ export function getGroupedTransactions(groups: GroupDefinition[]): TransactionRo
           group: groupKey,
           groupKey: group.property,
           parent,
-          transactions: groupTransactions.length,
+          transactions: groupTransactions,
           children: makeGroups(groupTransactions, groupIndex + 1, key),
           type: { uniqueTypes: uniq(groupTransactions.map(t => t.type)).length },
           date: [min(groupTransactions.map(t => t.date)), max(groupTransactions.map(t => t.date))],

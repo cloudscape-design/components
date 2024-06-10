@@ -29,7 +29,7 @@ export interface TransactionRow {
   key: string;
   group: string;
   groupKey: string;
-  transactions: number;
+  transactions: Transaction[];
   parent: null | string;
   children: TransactionRow[];
   type: TransactionType | { uniqueTypes: number };
