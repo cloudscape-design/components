@@ -53,6 +53,8 @@ class TabsPage extends BasePageObject {
   }
 
   async navigateTabList() {
+    // TODO: understand why the following line does not work, and keys have to be sent in a different way
+    // await page.keys(['ArrowRight', 'ArrowRight', 'ArrowRight', 'ArrowRight']);
     await this.keys(['ArrowRight']);
     await this.keys(['ArrowRight']);
     await this.keys(['ArrowRight']);
@@ -144,8 +146,6 @@ test(
     await page.focusTabHeader();
     // arrows have a focus ring (and a tab stop) even in disabled state
     await page.keys(['Tab']);
-    // TODO: understand why the following line does not work, and keys have to be sent in a different way
-    // await page.keys(['ArrowRight', 'ArrowRight', 'ArrowRight', 'ArrowRight']);
     await page.navigateTabList();
     await expect(page.isExisting(page.paginationButton('left', true))).resolves.toBe(true);
     await expect(page.isExisting(page.paginationButton('right', true))).resolves.toBe(false);
@@ -262,8 +262,6 @@ test(
       }
       await page.keys(['Tab', 'ArrowRight']);
       await expect(page.findActiveTabIndex()).resolves.toBe(1);
-      // TODO: understand why the following line does not work, and keys have to be sent in a different way
-      // await page.keys(['ArrowRight', 'ArrowRight', 'ArrowRight', 'ArrowRight']);
       await page.navigateTabList();
       await expect(page.findActiveTabIndex()).resolves.toBe(0);
       await page.keys(['ArrowLeft']);
