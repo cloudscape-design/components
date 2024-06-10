@@ -709,6 +709,9 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: false,
     public: false,
   },
+  colorBorderPopover: {
+    public: true,
+  },
 };
 
 export default metadata;
