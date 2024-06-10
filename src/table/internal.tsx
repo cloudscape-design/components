@@ -250,6 +250,7 @@ const InternalTable = React.forwardRef(
 
     const headerIdRef = useRef<string | undefined>(undefined);
     const isLabelledByHeader = !ariaLabels?.tableLabel && !!header;
+    const ariaLabelledby = isLabelledByHeader && headerIdRef.current ? headerIdRef.current : undefined;
     const setHeaderRef = useCallback((id: string) => {
       headerIdRef.current = id;
     }, []);
@@ -323,6 +324,7 @@ const InternalTable = React.forwardRef(
       tableRole,
       isScrollable: !!(tableWidth && containerWidth && tableWidth > containerWidth),
       ariaLabel: ariaLabels?.tableLabel,
+      ariaLabelledby,
     });
 
     const getMouseDownTarget = useMouseDownTarget();
@@ -454,7 +456,7 @@ const InternalTable = React.forwardRef(
                     totalItemsCount,
                     totalColumnsCount: totalColumnsCount,
                     ariaLabel: ariaLabels?.tableLabel,
-                    ariaLabelledBy: isLabelledByHeader && headerIdRef.current ? headerIdRef.current : undefined,
+                    ariaLabelledby,
                   })}
                 >
                   <Thead

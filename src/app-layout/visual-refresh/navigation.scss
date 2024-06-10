@@ -10,7 +10,7 @@
 .navigation-container {
   display: flex;
   grid-column: 1;
-  grid-row: 1 / span 10;
+  grid-row: 1 / span 9;
   block-size: var(#{custom-props.$contentHeight});
   position: sticky;
   inset-block-start: var(#{custom-props.$offsetTop});
