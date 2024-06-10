@@ -452,6 +452,17 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
     });
   });
 
+  describe('Inline Label', () => {
+    test('should render', () => {
+      const testLabel = 'Test label';
+      const { wrapper } = renderSelect({ inlineLabel: testLabel });
+      const labelElement = wrapper.findInlineLabel();
+      expect(labelElement).not.toBeNull();
+      expect(labelElement?.getElement()).toHaveTextContent(testLabel);
+      expect(labelElement?.getElement().tagName).toBe('LABEL');
+    });
+  });
+
   test('should render with focus when autoFocus=true', () => {
     const { wrapper } = renderSelect({ autoFocus: true });
     expect(wrapper.findTrigger().getElement()).toHaveFocus();

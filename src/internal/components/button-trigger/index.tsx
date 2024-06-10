@@ -75,7 +75,7 @@ const ButtonTrigger = (
       readOnly && styles['read-only'],
       inFilteringToken && styles['in-filtering-token'],
       inlineTokens && styles['inline-tokens'],
-      inlineLabel && styles['buttonTrigger-inlineLabel']
+      inlineLabel && styles['has-inlineLabel']
     ),
     disabled: disabled || readOnly,
     'aria-expanded': pressed,
@@ -111,8 +111,8 @@ const ButtonTrigger = (
   return (
     <>
       {inlineLabel ? (
-        <span className={styles.inlineLabelWrapper}>
-          <label className={styles.inlineLabel}>{inlineLabel}</label>
+        <span className={styles['inline-label-wrapper']}>
+          <label className={styles['inline-label']}>{inlineLabel}</label>
           {triggerButton}
         </span>
       ) : (
