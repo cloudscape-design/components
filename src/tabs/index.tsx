@@ -13,7 +13,6 @@ import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { useInternalI18n } from '../i18n/context';
 
 export { TabsProps };
 
@@ -44,7 +43,6 @@ export default function Tabs({
     props: { disableContentPaddings, variant },
   });
   const idNamespace = useUniqueId('awsui-tabs-');
-  const i18n = useInternalI18n('tabs');
 
   const [activeTabId, setActiveTabId] = useControllable(controlledTabId, onChange, firstEnabledTab(tabs)?.id ?? '', {
     componentName: 'Tabs',
@@ -53,18 +51,6 @@ export default function Tabs({
   });
 
   const baseProps = getBaseProps(rest);
-
-  const showTabActionAttributes = tabs.some(tab => tab.action || tab.dismissible);
-  const tabsWithActionsAriaRoleDescription = 'Tabs with Actions';
-  const tabActionAttributes = showTabActionAttributes
-    ? {
-        role: 'application',
-        'aria-roledescription': i18n(
-          'i18nStrings.tabsWithActionsAriaRoleDescription',
-          tabsWithActionsAriaRoleDescription
-        ),
-      }
-    : {};
 
   const content = () => {
     const selectedTab = tabs.filter(tab => tab.id === activeTabId)[0];
@@ -143,7 +129,6 @@ export default function Tabs({
       {...baseProps}
       className={clsx(baseProps.className, styles.root, styles.tabs, { [styles['fit-height']]: fitHeight })}
       ref={__internalRootRef}
-      {...tabActionAttributes}
     >
       {header}
       {content()}
