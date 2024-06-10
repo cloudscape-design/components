@@ -23,7 +23,13 @@ function DismissButton(
       type="button"
       className={styles['dismiss-button']}
       aria-disabled={disabled ? true : undefined}
-      onClick={!disabled && !readOnly && onDismiss ? () => onDismiss() : undefined}
+      onClick={() => {
+        if (disabled || readOnly || !onDismiss) {
+          return;
+        }
+
+        onDismiss();
+      }}
       aria-label={dismissLabel}
     >
       <InternalIcon name="close" />

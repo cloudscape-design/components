@@ -110,7 +110,7 @@ describe('items', () => {
     expect(onChange).not.toHaveBeenCalled();
   });
 
-  test('can be readOnly', () => {
+  test('Adds aria-readonly when readOnly is set to true', () => {
     const { wrapper } = renderRadioGroup(<RadioGroup value="val1" name="test" items={defaultItems} readOnly={true} />);
 
     expect(wrapper.getElement()).toHaveAttribute('aria-readonly', 'true');
@@ -119,7 +119,7 @@ describe('items', () => {
   test('does not trigger change handler if readOnly', () => {
     const onChange = jest.fn();
     const { wrapper } = renderRadioGroup(
-      <RadioGroup value="val1" name="test" items={defaultItems} readOnly={true} onChange={onChange} />
+      <RadioGroup value="val2" name="test" items={defaultItems} readOnly={true} onChange={onChange} />
     );
 
     act(() => wrapper.findButtons()[0].findLabel().click());

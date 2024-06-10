@@ -35,7 +35,7 @@ export const Tile = React.forwardRef(
           { [styles['has-metadata']]: item.description || item.image },
           { [styles.selected]: selected },
           { [styles.disabled]: !!item.disabled },
-          { [styles['read-only']]: readOnly },
+          { [styles.readonly]: readOnly },
           { [styles.refresh]: isVisualRefresh },
           styles[`breakpoint-${breakpoint}`]
         )}

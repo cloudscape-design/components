@@ -63,7 +63,7 @@ $gutter: awsui.$space-grid-gutter;
     background: awsui.$color-background-tiles-disabled;
   }
 
-  &.read-only {
+  &.readonly {
     @include styles.form-readonly-element;
   }
 

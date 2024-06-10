@@ -3,13 +3,12 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import AbstractSwitch, { AbstractSwitchProps } from '../../../../../lib/components/internal/components/abstract-switch';
-import styles from '../../../../../lib/components/internal/components/abstract-switch/styles.selectors.js';
-import createWrapper from '../../../../../lib/components/test-utils/dom';
+import AbstractSwitchWrapper from '../../../../../lib/components/test-utils/dom/internal/abstract-switch';
 import '../../../../__a11y__/to-validate-a11y';
 
 function renderAbstractSwitch(props: AbstractSwitchProps) {
   const { container } = render(<AbstractSwitch {...props} />);
-  return createWrapper(container);
+  return new AbstractSwitchWrapper(container);
 }
 const noop = () => {};
 
@@ -110,7 +109,7 @@ describe('Abstract switch', () => {
         onClick,
       });
 
-      wrapper.findByClassName(styles['label-wrapper'])!.click();
+      wrapper.findLabel().click();
       expect(onClick).not.toHaveBeenCalled();
     });
 
@@ -130,7 +129,7 @@ describe('Abstract switch', () => {
         onClick,
       });
 
-      wrapper.findByClassName(styles['label-wrapper'])!.click();
+      wrapper.findLabel().click();
       expect(onClick).not.toHaveBeenCalled();
     });
   });

@@ -27,8 +27,8 @@ export interface BaseCheckboxProps extends BaseComponentProps, FormFieldControlP
   /**
    * Specifies if the control is readOnly, which prevents the
    * user from modifying the value, but does not prevent the value from
-   * being included in a form submission. A readOnly control is still focusable.
-   * Should not be set together with `disabled: true`
+   * being included in a form submission. A read-only control is still focusable.
+   * Should not be set together with `disabled: true`.
    */
   readOnly?: boolean;
 

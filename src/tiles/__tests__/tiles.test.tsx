@@ -110,7 +110,7 @@ describe('items', () => {
     expect(onChange).not.toHaveBeenCalled();
   });
 
-  test('can be readOnly', () => {
+  test('Adds aria-readonly when readOnly is set to true', () => {
     const { wrapper } = renderTiles(<Tiles value={null} items={defaultItems} readOnly={true} />);
 
     expect(wrapper.getElement()).toHaveAttribute('aria-readonly', 'true');

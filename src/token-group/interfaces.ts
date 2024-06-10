@@ -62,7 +62,7 @@ export interface TokenGroupProps extends BaseComponentProps {
   /**
    * Specifies if the control is readOnly, which prevents the
    * user from modifying the value, but does not prevent the value from
-   * being included in a form submission. A readOnly control is still focusable.
+   * being included in a form submission. A read-only control is still focusable.
    */
   readOnly?: boolean;
 }

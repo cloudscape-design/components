@@ -4418,8 +4418,8 @@ in the native control.",
     Object {
       "description": "Specifies if the control is readOnly, which prevents the
 user from modifying the value, but does not prevent the value from
-being included in a form submission. A readOnly control is still focusable.
-Should not be set together with \`disabled: true\`",
+being included in a form submission. A read-only control is still focusable.
+Should not be set together with \`disabled: true\`.",
       "name": "readOnly",
       "optional": true,
       "type": "boolean",
@@ -10157,8 +10157,7 @@ on your own.
     },
     Object {
       "description": "Specifies if the control is readOnly, which prevents the
-user from modifying the value and opening the dropdown, but does not prevent the value from
-being included in a form submission. A readOnly control is still focusable.",
+user from modifying the value and opening the dropdown. A read-only control is still focusable.",
       "name": "readOnly",
       "optional": true,
       "type": "boolean",
@@ -11859,7 +11858,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
     Object {
       "description": "Specifies if the whole group is readOnly, which prevents the
 user from modifying the value, but does not prevent the value from
-being included in a form submission. A readOnly control is still focusable.",
+being included in a form submission. A read-only control is still focusable.",
       "name": "readOnly",
       "optional": true,
       "type": "boolean",
@@ -12817,8 +12816,7 @@ on your own.
     },
     Object {
       "description": "Specifies if the control is readOnly, which prevents the
-user from modifying the value and opening the dropdown, but does not prevent the value from
-being included in a form submission. A readOnly control is still focusable.",
+user from modifying the value and opening the dropdown. A read-only control is still focusable.",
       "name": "readOnly",
       "optional": true,
       "type": "boolean",
@@ -13331,7 +13329,7 @@ single form field.",
     Object {
       "description": "Specifies if the control is readOnly, which prevents the
 user from modifying the value, but does not prevent the value from
-being included in a form submission. A readOnly control is still focusable.",
+being included in a form submission. A read-only control is still focusable.",
       "name": "readOnly",
       "optional": true,
       "type": "boolean",
@@ -15564,7 +15562,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
     Object {
       "description": "Specifies if the control is readOnly, which prevents the
 user from modifying the value, but does not prevent the value from
-being included in a form submission. A readOnly control is still focusable.",
+being included in a form submission. A read-only control is still focusable.",
       "name": "readOnly",
       "optional": true,
       "type": "boolean",
@@ -15938,8 +15936,8 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
     Object {
       "description": "Specifies if the control is readOnly, which prevents the
 user from modifying the value, but does not prevent the value from
-being included in a form submission. A readOnly control is still focusable.
-Should not be set together with \`disabled: true\`",
+being included in a form submission. A read-only control is still focusable.
+Should not be set together with \`disabled: true\`.",
       "name": "readOnly",
       "optional": true,
       "type": "boolean",
@@ -16089,7 +16087,7 @@ Use to assign unique labels when there are multiple token groups with the same \
     Object {
       "description": "Specifies if the control is readOnly, which prevents the
 user from modifying the value, but does not prevent the value from
-being included in a form submission. A readOnly control is still focusable.",
+being included in a form submission. A read-only control is still focusable.",
       "name": "readOnly",
       "optional": true,
       "type": "boolean",

@@ -145,8 +145,7 @@ export interface BaseSelectProps
 
   /**
    * Specifies if the control is readOnly, which prevents the
-   * user from modifying the value and opening the dropdown, but does not prevent the value from
-   * being included in a form submission. A readOnly control is still focusable.
+   * user from modifying the value and opening the dropdown. A read-only control is still focusable.
    */
   readOnly?: boolean;
 }
