@@ -28,8 +28,8 @@ import { getAllFocusables } from '../internal/components/focus-lock/utils';
 import { nodeBelongs } from '../internal/utils/node-belongs';
 import { ButtonProps } from '../button/interfaces';
 
-const tabSelector = `.${styles['tabs-tab-link']}`;
-const activeTabSelector = `${tabSelector}.${styles['tabs-tab-active']}`;
+const tabSelector = '[role="tab"]';
+const activeTabSelector = '[role="tab"][aria-selected="true"]';
 
 function dismissButton(dismissLabel: TabsProps.Tab['dismissLabel'], onDismiss: TabsProps.Tab['onDismiss']) {
   return (
@@ -72,19 +72,6 @@ export function TabHeaderBar({
   const [horizontalOverflow, setHorizontalOverflow] = useState(false);
   const [inlineStartOverflow, setInlineStartOverflow] = useState(false);
   const [inlineEndOverflow, setInlineEndOverflow] = useState(false);
-  const showTabActionAttributes = tabs.some(tab => tab.action || tab.dismissible);
-  const tabsWithActionsAriaRoleDescription = 'Tabs with Actions';
-  const tabActionAttributes = showTabActionAttributes
-    ? {
-        role: 'application',
-        'aria-roledescription': i18n(
-          'i18nStrings.tabsWithActionsAriaRoleDescription',
-          tabsWithActionsAriaRoleDescription
-        ),
-      }
-    : {
-        role: 'tablist',
-      };
 
   useEffect(() => {
     if (headerBarRef.current) {
@@ -257,6 +244,7 @@ export function TabHeaderBar({
         onUnregisterFocusable={onUnregisterFocusable}
       >
         <ul
+          role="tablist"
           className={styles['tabs-header-list']}
           aria-label={ariaLabel}
           aria-labelledby={ariaLabelledby}
@@ -265,7 +253,6 @@ export function TabHeaderBar({
           onKeyDown={onKeyDown}
           onFocus={onFocus}
           onBlur={onBlur}
-          {...tabActionAttributes}
         >
           {tabs.map(renderTabHeader)}
         </ul>
@@ -288,8 +275,6 @@ export function TabHeaderBar({
 
   function renderTabHeader(tab: TabsProps.Tab) {
     const { dismissible, dismissLabel, action, onDismiss } = tab;
-    const hasActionOrDismissible = action || dismissible;
-    const groupRole = hasActionOrDismissible ? 'group' : undefined;
 
     const clickTab = (event: React.MouseEvent) => {
       if (tab.disabled) {
@@ -337,16 +322,13 @@ export function TabHeaderBar({
 
     const commonProps: (JSX.IntrinsicElements['a'] | JSX.IntrinsicElements['button']) & { 'data-testid': string } = {
       className: classes,
-      role: hasActionOrDismissible ? 'button' : 'tab',
+      role: 'tab',
+      'aria-selected': activeTabId === tab.id,
       'aria-controls': `${idNamespace}-${tab.id}-panel`,
       'data-testid': tab.id,
       id: getTabElementId({ namespace: idNamespace, tabId: tab.id }),
       children: <span className={styles['tabs-tab-label']}>{tab.label}</span>,
     };
-
-    if (!hasActionOrDismissible) {
-      commonProps['aria-selected'] = activeTabId === tab.id;
-    }
 
     if (tab.disabled) {
       commonProps['aria-disabled'] = 'true';
@@ -386,7 +368,7 @@ export function TabHeaderBar({
         role="presentation"
         key={tab.id}
       >
-        <div className={tabHeaderContainerClasses} role={groupRole}>
+        <div className={tabHeaderContainerClasses} role="group" aria-labelledby={commonProps.id}>
           <TabTrigger ref={setElement} tab={tab} elementProps={commonProps} />
           {action && <span className={styles['tabs-tab-action']}>{action}</span>}
           {dismissible && (
@@ -403,10 +385,7 @@ const TabTrigger = forwardRef(
     {
       tab,
       elementProps,
-    }: {
-      tab: TabsProps.Tab;
-      elementProps: React.HTMLAttributes<HTMLAnchorElement | HTMLButtonElement>;
-    },
+    }: { tab: TabsProps.Tab; elementProps: React.HTMLAttributes<HTMLAnchorElement | HTMLButtonElement> },
     ref: React.Ref<HTMLElement>
   ) => {
     const refObject = useRef<HTMLElement>(null);
