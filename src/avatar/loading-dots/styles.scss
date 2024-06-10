@@ -18,17 +18,6 @@ $dot-size: 4px;
   position: relative;
   z-index: 0;
   overflow: hidden;
-
-  &.gen-ai::after {
-    content: '';
-    position: absolute;
-    inline-size: inherit;
-    block-size: inherit;
-    inset-block-start: 50%;
-    inset-inline-start: 50%;
-    transform: translate(-50%, -50%);
-    background: awsui.$color-background-avatar-gen-ai;
-  }
 }
 
 .typing {

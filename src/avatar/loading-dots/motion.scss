@@ -3,10 +3,41 @@
  SPDX-License-Identifier: Apache-2.0
 */
 @use '../../internal/styles/' as styles;
+@use '../../internal/styles/tokens' as awsui;
 
-.gen-ai::after {
-  @include styles.with-motion {
-    animation: gradientMove 3.6s infinite cubic-bezier(0.7, 0, 0.3, 1);
+.gen-ai {
+  &::after {
+    content: '';
+    position: absolute;
+    inline-size: inherit;
+    block-size: inherit;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    transform: translate(-50%, -50%);
+    background: awsui.$color-background-avatar-gen-ai;
+    @include styles.with-motion {
+      animation: gradientMove 3.6s infinite cubic-bezier(0.7, 0, 0.3, 1);
+    }
+  }
+
+  @include styles.with-direction('rtl') {
+    &::after {
+      inset-inline-start: -50%;
+      @include styles.with-motion {
+        animation-direction: reverse;
+      }
+    }
+  }
+}
+
+// Gradient rotation animation
+@keyframes gradientMove {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
   }
 }
 
@@ -38,22 +69,6 @@
 .dot:last-child {
   @include styles.with-motion {
     margin-inline-end: 0;
-  }
-}
-
-// Gradient rotation animation
-@keyframes gradientMove {
-  0% {
-    transform: translate(-50%, -50%) rotate(0deg);
-  }
-
-  50% {
-    inline-size: 44px;
-    block-size: 44px;
-  }
-
-  100% {
-    transform: translate(-50%, -50%) rotate(360deg);
   }
 }
 
