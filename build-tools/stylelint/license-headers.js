@@ -1,13 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-const stylelint = require('stylelint');
+import stylelint from 'stylelint';
 
 const ruleName = '@cloudscape-design/license-headers';
 const messages = stylelint.utils.ruleMessages(ruleName, {
   rejected: 'Missing license header',
 });
 
-module.exports = stylelint.createPlugin(ruleName, (enabled, { header }, context) => {
+function licenseHeadersPlugin(enabled, { header }, context) {
   if (!enabled) {
     return;
   }
@@ -48,7 +48,9 @@ module.exports = stylelint.createPlugin(ruleName, (enabled, { header }, context)
       }
     }
   };
-});
+}
 
-module.exports.ruleName = ruleName;
-module.exports.messages = messages;
+licenseHeadersPlugin.ruleName = ruleName;
+licenseHeadersPlugin.messages = messages;
+
+export default stylelint.createPlugin(ruleName, licenseHeadersPlugin);

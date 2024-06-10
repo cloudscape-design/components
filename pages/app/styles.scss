@@ -14,11 +14,12 @@ body {
 /* stylelint-disable-next-line selector-class-pattern */
 :global(.awsui-motion-disabled) {
   // disable blinking caret for stable screenshot tests
-  // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant, selector-max-type
+  // stylelint-disable @cloudscape-design/no-implicit-descendant, selector-max-type
   input,
   textarea {
     caret-color: transparent !important;
   }
+  // stylelint-enable @cloudscape-design/no-implicit-descendant, selector-max-type
 
   &.macos {
     // override scrollbars in macos for stable screenshot tests

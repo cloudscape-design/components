@@ -3,7 +3,6 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-/* stylelint-disable @cloudscape-design/no-implicit-descendant, selector-max-type */
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
 
@@ -28,6 +27,7 @@
   margin-inline-end: calc(-1 * #{awsui.$space-panel-side-right});
   margin-inline-start: calc(-1 * #{awsui.$space-panel-side-left});
 
+  /* stylelint-disable @cloudscape-design/no-implicit-descendant, selector-max-type */
   h2,
   h3,
   h4,
@@ -37,6 +37,7 @@
     padding-block: 0;
     margin-block: 0;
   }
+  /* stylelint-enable @cloudscape-design/no-implicit-descendant, selector-max-type */
 }
 
 .test-utils-drawer-content {
