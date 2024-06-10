@@ -26,7 +26,7 @@ import { GroupDefinition, getGroupedTransactions } from './grouped-table/grouped
 import messages from '~components/i18n/messages/all.en';
 import I18nProvider from '~components/i18n';
 import { createColumns, filteringProperties } from './grouped-table/grouped-table-configs';
-import { TransactionRow, ariaLabels, getHeaderCounterText } from './grouped-table/grouped-table-common';
+import { TransactionRow, getHeaderCounterText } from './grouped-table/grouped-table-common';
 import { createIdsQuery, createWysiwygQuery, findSelectionIds } from './grouped-table/grouped-table-update-query';
 
 type LoadingState = Map<string, { pages: number; status: TableProps.LoadingStatus }>;
@@ -66,7 +66,7 @@ export default () => {
   const [updateModalVisible, setUpdateModalVisible] = useState(false);
   const tableData = useTableData();
   const columnDefinitions = createColumns();
-  const selectedIds = findSelectionIds(tableData);
+  const [selectedIds, selectedGroups] = findSelectionIds(tableData);
   return (
     <I18nProvider messages={[messages]} locale="en">
       <AppLayout
@@ -86,7 +86,16 @@ export default () => {
             onSelectionChange={tableData.onSelectionChange}
             columnDefinitions={columnDefinitions}
             items={tableData.items}
-            ariaLabels={ariaLabels}
+            ariaLabels={{
+              tableLabel: 'Transactions table',
+              selectionGroupLabel: 'Transactions selection',
+              allItemsSelectionLabel: () =>
+                `${selectedIds.length} ${selectedIds.length === 1 ? 'item' : 'items'} selected`,
+              itemSelectionLabel: (_, item) => {
+                const isSelected = selectedGroups.some(id => id === item.group);
+                return `${item.group} is ${isSelected ? '' : 'not'} selected`;
+              },
+            }}
             wrapLines={false}
             pagination={settings.usePagination && <Pagination {...tableData.paginationProps} />}
             variant="full-page"

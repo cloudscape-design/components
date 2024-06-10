@@ -26,16 +26,20 @@ export function findSelectionIds({
   const treeProps = { rootItems: items, trackBy, getChildren, isComplete };
   const selectionTree = new ItemSelectionTree(selectionInverted, selectedItems, treeProps);
   const allIds: string[] = [];
+  const allGroups: string[] = [];
 
   function traverseItem(item: TransactionRow) {
-    if (typeof item.type === 'string' && selectionTree.isItemSelected(item)) {
-      allIds.push(item.group);
+    if (selectionTree.isItemSelected(item)) {
+      if (typeof item.type === 'string') {
+        allIds.push(item.group);
+      }
+      allGroups.push(item.group);
     }
     getChildren!(item).forEach(traverseItem);
   }
   items.forEach(traverseItem);
 
-  return allIds;
+  return [allIds, allGroups];
 }
 
 export function createWysiwygQuery({
