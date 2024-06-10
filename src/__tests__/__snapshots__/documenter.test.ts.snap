@@ -4418,7 +4418,8 @@ in the native control.",
     Object {
       "description": "Specifies if the control is readOnly, which prevents the
 user from modifying the value, but does not prevent the value from
-being included in a form submission. A readOnly control is still focusable.",
+being included in a form submission. A readOnly control is still focusable.
+Should not be set together with \`disabled: true\`",
       "name": "readOnly",
       "optional": true,
       "type": "boolean",
@@ -10156,7 +10157,7 @@ on your own.
     },
     Object {
       "description": "Specifies if the control is readOnly, which prevents the
-user from modifying the value, but does not prevent the value from
+user from modifying the value and opening the dropdown, but does not prevent the value from
 being included in a form submission. A readOnly control is still focusable.",
       "name": "readOnly",
       "optional": true,
@@ -12816,7 +12817,7 @@ on your own.
     },
     Object {
       "description": "Specifies if the control is readOnly, which prevents the
-user from modifying the value, but does not prevent the value from
+user from modifying the value and opening the dropdown, but does not prevent the value from
 being included in a form submission. A readOnly control is still focusable.",
       "name": "readOnly",
       "optional": true,
@@ -15937,7 +15938,8 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
     Object {
       "description": "Specifies if the control is readOnly, which prevents the
 user from modifying the value, but does not prevent the value from
-being included in a form submission. A readOnly control is still focusable.",
+being included in a form submission. A readOnly control is still focusable.
+Should not be set together with \`disabled: true\`",
       "name": "readOnly",
       "optional": true,
       "type": "boolean",
