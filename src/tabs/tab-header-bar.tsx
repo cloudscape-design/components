@@ -28,8 +28,7 @@ import { getAllFocusables } from '../internal/components/focus-lock/utils';
 import { nodeBelongs } from '../internal/utils/node-belongs';
 import { ButtonProps } from '../button/interfaces';
 
-const tabSelector = '[role="tab"]';
-const activeTabSelector = '[role="tab"][aria-selected="true"]';
+const tabSelector = `.${styles['tabs-tab-link']}`;
 
 function dismissButton(dismissLabel: TabsProps.Tab['dismissLabel'], onDismiss: TabsProps.Tab['onDismiss']) {
   return (
@@ -72,6 +71,19 @@ export function TabHeaderBar({
   const [horizontalOverflow, setHorizontalOverflow] = useState(false);
   const [inlineStartOverflow, setInlineStartOverflow] = useState(false);
   const [inlineEndOverflow, setInlineEndOverflow] = useState(false);
+  const hasActionOrDismissible = tabs.some(tab => tab.action || tab.dismissible);
+  const tabsWithActionsAriaRoleDescription = 'Tabs with Actions';
+  const tabActionAttributes = hasActionOrDismissible
+    ? {
+        role: 'application',
+        'aria-roledescription': i18n(
+          'i18nStrings.tabsWithActionsAriaRoleDescription',
+          tabsWithActionsAriaRoleDescription
+        ),
+      }
+    : {
+        role: 'tablist',
+      };
 
   useEffect(() => {
     if (headerBarRef.current) {
@@ -151,6 +163,8 @@ export function TabHeaderBar({
       return null;
     }
     const tabElements: HTMLButtonElement[] = Array.from(containerObjectRef.current.querySelectorAll(tabSelector));
+    const tabAriaSelector = hasActionOrDismissible ? '[aria-expanded="true"]' : '[aria-selected="true"]';
+    const activeTabSelector = `${tabSelector}${tabAriaSelector}`;
     return tabElements.find(tab => tab.matches(activeTabSelector)) ?? tabElements.find(tab => !tab.disabled) ?? null;
   }
 
@@ -243,19 +257,35 @@ export function TabHeaderBar({
         getNextFocusTarget={getNextFocusTarget}
         onUnregisterFocusable={onUnregisterFocusable}
       >
-        <ul
-          role="tablist"
-          className={styles['tabs-header-list']}
-          aria-label={ariaLabel}
-          aria-labelledby={ariaLabelledby}
-          ref={headerBarRef}
-          onScroll={onScroll}
-          onKeyDown={onKeyDown}
-          onFocus={onFocus}
-          onBlur={onBlur}
-        >
-          {tabs.map(renderTabHeader)}
-        </ul>
+        {hasActionOrDismissible ? (
+          <div
+            {...tabActionAttributes}
+            className={styles['tabs-header-list']}
+            aria-label={ariaLabel}
+            aria-labelledby={ariaLabelledby}
+            ref={headerBarRef as never}
+            onScroll={onScroll}
+            onKeyDown={onKeyDown}
+            onFocus={onFocus}
+            onBlur={onBlur}
+          >
+            {tabs.map(renderTabHeader)}
+          </div>
+        ) : (
+          <ul
+            {...tabActionAttributes}
+            className={styles['tabs-header-list']}
+            aria-label={ariaLabel}
+            aria-labelledby={ariaLabelledby}
+            ref={headerBarRef}
+            onScroll={onScroll}
+            onKeyDown={onKeyDown}
+            onFocus={onFocus}
+            onBlur={onBlur}
+          >
+            {tabs.map(renderTabHeader)}
+          </ul>
+        )}
       </SingleTabStopNavigationProvider>
       {horizontalOverflow && (
         <span className={rightButtonClasses}>
@@ -322,13 +352,26 @@ export function TabHeaderBar({
 
     const commonProps: (JSX.IntrinsicElements['a'] | JSX.IntrinsicElements['button']) & { 'data-testid': string } = {
       className: classes,
-      role: 'tab',
-      'aria-selected': activeTabId === tab.id,
+      role: hasActionOrDismissible ? undefined : 'tab',
+      // role: 'tab',
       'aria-controls': `${idNamespace}-${tab.id}-panel`,
       'data-testid': tab.id,
       id: getTabElementId({ namespace: idNamespace, tabId: tab.id }),
       children: <span className={styles['tabs-tab-label']}>{tab.label}</span>,
     };
+
+    const tabHeaderContainerAriaProps = hasActionOrDismissible
+      ? {
+          role: 'group',
+          'aria-labelledby': commonProps.id,
+        }
+      : {};
+
+    if (!hasActionOrDismissible) {
+      commonProps['aria-selected'] = activeTabId === tab.id;
+    } else {
+      commonProps['aria-expanded'] = activeTabId === tab.id;
+    }
 
     if (tab.disabled) {
       commonProps['aria-disabled'] = 'true';
@@ -350,7 +393,9 @@ export function TabHeaderBar({
       if (tabs.length <= 1) {
         return;
       }
-      const tabElements = getFocusablesFrom(containerObjectRef.current).filter(el => el.role === 'tab');
+      const tabElements = getFocusablesFrom(containerObjectRef.current).filter(el =>
+        el.classList.contains(styles['tabs-tab-link'])
+      );
       const activeTabIndex = tabElements.findIndex(el => el.dataset.testid === tab.id);
       tabElements.splice(activeTabIndex, 1);
       const nextActive = tabElements[Math.min(tabElements.length - 1, activeTabIndex)];
@@ -361,14 +406,29 @@ export function TabHeaderBar({
       onDismiss?.(event);
     };
 
-    return (
+    return hasActionOrDismissible ? (
+      <div
+        ref={element => tabRefs.current.set(tab.id, element as HTMLElement)}
+        className={styles['tabs-tab']}
+        role="presentation"
+        key={tab.id}
+      >
+        <div className={tabHeaderContainerClasses} {...tabHeaderContainerAriaProps}>
+          <TabTrigger ref={setElement} tab={tab} elementProps={commonProps} />
+          {action && <span className={styles['tabs-tab-action']}>{action}</span>}
+          {dismissible && (
+            <span className={styles['tabs-tab-dismiss']}> {dismissButton(dismissLabel, handleDismiss)} </span>
+          )}
+        </div>
+      </div>
+    ) : (
       <li
         ref={element => tabRefs.current.set(tab.id, element as HTMLElement)}
         className={styles['tabs-tab']}
         role="presentation"
         key={tab.id}
       >
-        <div className={tabHeaderContainerClasses} role="group" aria-labelledby={commonProps.id}>
+        <div className={tabHeaderContainerClasses} {...tabHeaderContainerAriaProps}>
           <TabTrigger ref={setElement} tab={tab} elementProps={commonProps} />
           {action && <span className={styles['tabs-tab-action']}>{action}</span>}
           {dismissible && (
