@@ -5,6 +5,7 @@ import ScreenshotArea from '../utils/screenshot-area';
 import Tabs, { TabsProps } from '~components/tabs';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
+import ButtonDropdown from '~components/button-dropdown';
 
 const permutations = createPermutations<TabsProps>([
   {
@@ -12,7 +13,14 @@ const permutations = createPermutations<TabsProps>([
     variant: ['default', 'container'],
     tabs: [
       [
-        { label: 'First tab', id: 'first', content: 'First content', href: '#first' },
+        {
+          label: 'First tab',
+          id: 'first',
+          content: 'First content',
+          href: '#first',
+          dismissible: true,
+          dismissLabel: 'first-tab-dismissible-label',
+        },
         { label: 'Second tab', id: 'second', href: '#second' },
       ],
       [
@@ -33,6 +41,27 @@ const permutations = createPermutations<TabsProps>([
           label: 'Third tab',
           id: 'third',
           content: "Third tab's content",
+          action: (
+            <ButtonDropdown
+              variant="icon"
+              ariaLabel="Query actions"
+              items={[
+                { id: 'save', text: 'Save', disabled: true },
+                { id: 'saveAs', text: 'Save as' },
+                { id: 'rename', text: 'Rename', disabled: true },
+                { id: 'delete', text: 'Delete', disabled: true },
+              ]}
+              expandToViewport={true}
+            />
+          ),
+          dismissible: true,
+          dismissLabel: 'third-tab-dismissible-label',
+        },
+        {
+          label: 'fifth tab',
+          id: 'fifth',
+          dismissible: true,
+          dismissLabel: 'fifth-tab-dismissible-label',
         },
       ],
     ],

@@ -63,6 +63,38 @@ export default function TabsDemoPage() {
     },
   ];
 
+  const [tabsDismissibles, setTabDismissibles] = useState([
+    {
+      label: 'First tab',
+      id: 'first',
+      dismissible: true,
+      dismissLabel: 'Dismiss message',
+      onDismiss: () => setTabDismissibles(prevTabs => prevTabs.slice(1)),
+      content: (
+        <>
+          Diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et
+          accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
+          dolor sit amet.,
+        </>
+      ),
+    },
+    {
+      label: 'Second tab',
+      id: 'second',
+      dismissible: true,
+      dismissLabel: 'Dismiss message (second tab)',
+      onDismiss: () => setTabDismissibles(prevTabs => prevTabs.slice(0, 1)),
+      content: (
+        <>
+          Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Diam nonumy eirmod tempor
+          invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo
+          dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Stet
+          clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.,
+        </>
+      ),
+    },
+  ]);
+
   const extraTab: TabsProps.Tab = {
     label: 'Seventh tab',
     id: 'seventh',
@@ -79,6 +111,7 @@ export default function TabsDemoPage() {
       <input type="text" id="before" aria-label="before" />
       <form action="/">
         <Tabs
+          ariaLabel="General Tabs"
           tabs={tabs}
           activeTabId={selectedTab}
           onChange={event => setSelectedTab(event.detail.activeTabId)}
@@ -92,6 +125,12 @@ export default function TabsDemoPage() {
       <button id="add-tab" onClick={() => setTabs(tabs.concat([extraTab]))}>
         Add tab
       </button>
+      <Tabs
+        id="dismiss-tabs"
+        ariaLabel="Dismissible Tabs"
+        tabs={tabsDismissibles}
+        i18nStrings={{ scrollLeftAriaLabel: 'Scroll left', scrollRightAriaLabel: 'Scroll right' }}
+      />
     </div>
   );
 }

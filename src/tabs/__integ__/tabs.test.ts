@@ -7,6 +7,8 @@ import styles from '../../../lib/components/tabs/styles.selectors.js';
 
 const wrapper = createWrapper().findTabs();
 
+const dismissibleWrapper = createWrapper().findTabs('#dismiss-tabs');
+
 const tabsHeaders = ['First tab', 'Second tab', 'Third tab', 'Fourth tab', 'Fifth tab', 'Sixth tab'];
 
 class TabsPage extends BasePageObject {
@@ -48,6 +50,16 @@ class TabsPage extends BasePageObject {
 
   async toggleSmallSize() {
     await this.click('#size-toggle');
+  }
+
+  async navigateTabList() {
+    await this.keys(['ArrowRight']);
+    await this.keys(['ArrowRight']);
+    await this.keys(['ArrowRight']);
+    await this.keys(['ArrowRight']);
+    await this.keys(['ArrowRight']);
+    await this.keys(['ArrowRight']);
+    await this.keys(['ArrowRight']);
   }
 
   getUrl() {
@@ -134,10 +146,7 @@ test(
     await page.keys(['Tab']);
     // TODO: understand why the following line does not work, and keys have to be sent in a different way
     // await page.keys(['ArrowRight', 'ArrowRight', 'ArrowRight', 'ArrowRight']);
-    await page.keys(['ArrowRight']);
-    await page.keys(['ArrowRight']);
-    await page.keys(['ArrowRight']);
-    await page.keys(['ArrowRight']);
+    await page.navigateTabList();
     await expect(page.isExisting(page.paginationButton('left', true))).resolves.toBe(true);
     await expect(page.isExisting(page.paginationButton('right', true))).resolves.toBe(false);
   }, true)
@@ -147,7 +156,7 @@ test(
   'scrolls when clicking on left/right pagination buttons',
   setupTest(async page => {
     // This test assumes that one pagination event leads to the end/beginning of the tabs header
-    await page.setWindowSize({ width: 500, height: 1000 });
+    await page.setWindowSize({ width: 550, height: 1000 });
     await page.click(page.paginationButton('right', true));
     await expect(page.isExisting(page.paginationButton('left', true))).resolves.toBe(true);
     await expect(page.isExisting(page.paginationButton('right', true))).resolves.toBe(false);
@@ -160,7 +169,7 @@ test(
 test(
   'scrolls when using the left/right pagination buttons with the keyboard',
   setupTest(async page => {
-    await page.setWindowSize({ width: 500, height: 1000 });
+    await page.setWindowSize({ width: 550, height: 1000 });
     await page.focusTabHeader();
     // arrows have a focus ring (and a tab stop) even in disabled state
     await page.keys(['Tab', 'Tab', 'Space']);
@@ -176,7 +185,7 @@ test(
   'scrolls when pressing pageUp/pageDown',
   setupTest(async page => {
     // This test assumes that one pagination event leads to the end/beginning of the tabs header
-    await page.setWindowSize({ width: 500, height: 1000 });
+    await page.setWindowSize({ width: 550, height: 1000 });
     await page.focusTabHeader();
     // arrows have a focus ring (and a tab stop) even in disabled state
     await page.keys('Tab');
@@ -255,11 +264,10 @@ test(
       await expect(page.findActiveTabIndex()).resolves.toBe(1);
       // TODO: understand why the following line does not work, and keys have to be sent in a different way
       // await page.keys(['ArrowRight', 'ArrowRight', 'ArrowRight', 'ArrowRight']);
-      await page.keys(['ArrowRight']);
-      await page.keys(['ArrowRight']);
-      await page.keys(['ArrowRight']);
-      await page.keys(['ArrowRight']);
+      await page.navigateTabList();
       await expect(page.findActiveTabIndex()).resolves.toBe(0);
+      await page.keys(['ArrowLeft']);
+      await page.keys(['ArrowLeft']);
       await page.keys(['ArrowLeft']);
       await expect(page.findActiveTabIndex()).resolves.toBe(5);
       await page.keys(['ArrowLeft']);
@@ -275,6 +283,13 @@ test(
         await page.keys('Tab');
       }
       await page.keys(['End']);
+      /*
+       * Navigating to an action or dismissible buttons does not focus the tab
+       * Because the buttons are considered as part of the tab stop navigation
+       * The tab will not be considered active until you navigate to the label.
+       */
+      await page.keys(['ArrowLeft']);
+      await page.keys(['ArrowLeft']);
       await expect(page.findActiveTabIndex()).resolves.toBe(5);
       await page.keys(['Home']);
       await expect(page.findActiveTabIndex()).resolves.toBe(0);
@@ -304,24 +319,87 @@ test(
 );
 
 test(
-  'allows inverse focus trap',
+  'verifies focus moves to dismissible via keyboard',
   setupTest(async page => {
     await page.focusTabHeader();
+    await page.click(wrapper.findTabLinkByIndex(3).toSelector());
     await page.keys(['ArrowRight']);
+    // Since the focus doesn't actually update on the action/dismissible buttons,
+    // we evaluate a valid focus by making it sure it hasn't moved to the next tab.
+    await expect(page.isDisplayed(wrapper.findTabLinkByIndex(3).toSelector())).resolves.toBe(true);
+    await expect(page.isFocused(wrapper.findTabLinkByIndex(4).toSelector())).resolves.toBe(false);
+  })
+);
+
+test(
+  'verifies focus moves from dismissible to tab content on tab press',
+  setupTest(async page => {
+    await page.focusTabHeader();
+    await page.click(wrapper.findTabLinkByIndex(3).toSelector());
     await page.keys(['ArrowRight']);
-    await page.keys(['Tab', 'Tab']);
+    await page.keys(['Tab']);
     await expect(page.isFocused(wrapper.findTabContent().toSelector())).resolves.toBe(true);
   })
 );
 
 test(
-  'verifies focus is set on last active tab',
+  'verifies focus moves from dismissible button after the dismissible button is clicked',
   setupTest(async page => {
     await page.focusTabHeader();
+    await page.click(wrapper.findTabLinkByIndex(3).toSelector());
+    await page.keys(['ArrowRight']);
+    await page.keys(['Tab']);
+    await page.keys(['Enter']);
+    await expect(page.isFocused(wrapper.findTabLinkByIndex(3).toSelector())).resolves.toBe(false);
+  })
+);
+
+test(
+  'verifies focus moves to action via keyboard',
+  setupTest(async page => {
+    await page.focusTabHeader();
+    await page.click(wrapper.findTabLinkByIndex(6).toSelector());
+    await page.keys(['ArrowRight']);
+    await page.keys(['ArrowRight']);
+    // Since the focus doesn't actually update on the action/dismissible buttons,
+    // we evaluate a valid focus by making it sure it hasn't moved to the next tab.
+    await expect(page.isDisplayed(wrapper.findTabLinkByIndex(6).toSelector())).resolves.toBe(true);
+    await expect(page.isFocused(wrapper.findTabLinkByIndex(1).toSelector())).resolves.toBe(false);
+  })
+);
+
+test(
+  'verifies focus moves from action to tab content on tab press',
+  setupTest(async page => {
+    await page.focusTabHeader();
+    await page.click(wrapper.findTabLinkByIndex(6).toSelector());
     await page.keys(['ArrowRight']);
     await page.keys(['ArrowRight']);
     await page.keys(['Tab']);
-    await page.click(wrapper.findActiveTabDismissibleButton().getElement());
-    await expect(page.isFocused(wrapper.findTabLinkByIndex(2).getElement())).resolves.toBe(true);
+    await expect(page.isFocused(wrapper.findTabContent().toSelector())).resolves.toBe(true);
+  })
+);
+
+test(
+  'verifies dismissible event fires',
+  setupTest(async page => {
+    await page.click(dismissibleWrapper.findTabLinkByIndex(1).toSelector());
+    await page.keys(['ArrowRight']);
+    await page.keys(['Enter']);
+    await expect(page.isFocused(dismissibleWrapper.findTabLinkByIndex(1).toSelector())).resolves.toBe(true);
+  })
+);
+
+test(
+  'prevents user from calling dismiss event twice in tab list of two',
+  setupTest(async page => {
+    await page.click(dismissibleWrapper.findTabLinkByIndex(1).toSelector());
+    await page.keys(['ArrowRight']);
+    await page.keys(['Enter']);
+    await expect(page.isFocused(dismissibleWrapper.findTabLinkByIndex(1).toSelector())).resolves.toBe(true);
+    await page.keys(['ArrowRight']);
+    await page.keys(['Enter']);
+    await page.keys(['ArrowLeft']);
+    await expect(page.isFocused(dismissibleWrapper.findTabLinkByIndex(1).toSelector())).resolves.toBe(true);
   })
 );

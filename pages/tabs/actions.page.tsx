@@ -7,6 +7,38 @@ import SpaceBetween from '~components/space-between';
 import Tabs, { TabsProps } from '~components/tabs';
 
 export default function TabsDemoPage() {
+  const [tabsDismissibles, setTabDismissibles] = useState([
+    {
+      label: 'First tab',
+      id: 'first',
+      dismissible: true,
+      dismissLabel: 'Dismiss message',
+      onDismiss: () => setTabDismissibles(prevTabs => prevTabs.slice(1)),
+      content: (
+        <>
+          Diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et
+          accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
+          dolor sit amet.,
+        </>
+      ),
+    },
+    {
+      label: 'Second tab',
+      id: 'second',
+      dismissible: true,
+      dismissLabel: 'Dismiss message (second tab)',
+      onDismiss: () => setTabDismissibles(prevTabs => prevTabs.slice(0, 1)),
+      content: (
+        <>
+          Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Diam nonumy eirmod tempor
+          invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo
+          dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Stet
+          clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.,
+        </>
+      ),
+    },
+  ]);
+
   const tabsNoActions: Array<TabsProps.Tab> = [
     {
       label: 'First tab',
@@ -119,6 +151,13 @@ export default function TabsDemoPage() {
       <h1>Tabs</h1>
 
       <SpaceBetween size="xs">
+        <div>
+          <h2>Tabs with dismissibles</h2>
+          <Tabs
+            tabs={tabsDismissibles}
+            i18nStrings={{ scrollLeftAriaLabel: 'Scroll left', scrollRightAriaLabel: 'Scroll right' }}
+          />
+        </div>
         <div>
           <h2>Tabs with no actions</h2>
           <Tabs

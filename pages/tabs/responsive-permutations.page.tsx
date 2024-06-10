@@ -7,6 +7,7 @@ import SpaceBetween from '~components/space-between';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import { colorBackgroundLayoutMain } from '~design-tokens';
+import ButtonDropdown from '~components/button-dropdown';
 
 const permutations = createPermutations<TabsProps>([
   {
@@ -26,9 +27,33 @@ const permutations = createPermutations<TabsProps>([
         },
         { label: 'Third tab', id: 'third' },
         { label: 'Fourth tab', id: 'fourth', href: '/fourth' },
-        { label: 'Fifth tab', id: 'fifth', href: '/fifth' },
+        {
+          label: 'Fifth tab',
+          id: 'fifth',
+          href: '/fifth',
+          dismissible: true,
+          dismissLabel: 'fifth-tab-dismissible-label',
+        },
         { label: 'Sixth tab', id: 'sixth' },
-        { label: 'Seventh tab', id: 'seventh' },
+        {
+          label: 'Seventh tab',
+          id: 'seventh',
+          action: (
+            <ButtonDropdown
+              variant="icon"
+              ariaLabel="Query actions"
+              items={[
+                { id: 'save', text: 'Save', disabled: true },
+                { id: 'saveAs', text: 'Save as' },
+                { id: 'rename', text: 'Rename', disabled: true },
+                { id: 'delete', text: 'Delete', disabled: true },
+              ]}
+              expandToViewport={true}
+            />
+          ),
+          dismissible: true,
+          dismissLabel: 'seventh-tab-dismissible-label',
+        },
         { label: 'Eighth tab', id: 'eighth' },
         {
           label: 'ThistabhasalongheaderwithseveralwordswithoutspacesinitsothatIcantesthowthetextwrapswithhref',

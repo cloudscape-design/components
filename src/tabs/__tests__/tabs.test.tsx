@@ -297,6 +297,8 @@ describe('Tabs', () => {
     test('fires a change event on right arrow key press', () => {
       const changeSpy = jest.fn();
       const wrapper = renderTabs(<Tabs tabs={defaultTabs} activeTabId="first" onChange={changeSpy} />).wrapper;
+      wrapper.findActiveTab()!.getElement().focus();
+
       expect(changeSpy).not.toHaveBeenCalled();
 
       pressRight(wrapper);
@@ -548,6 +550,8 @@ describe('Tabs', () => {
       const changeSpy = jest.fn();
 
       const wrapper = renderTabs(<Tabs tabs={defaultTabs} onChange={changeSpy} />).wrapper;
+      wrapper.findActiveTab()!.getElement().focus();
+
       expect(changeSpy).not.toHaveBeenCalled();
 
       pressRight(wrapper);
@@ -731,16 +735,6 @@ describe('Tabs', () => {
       const correctDismissibleButton = wrapper.findDismissibleButtonByTabId('first');
       const activeDismissibleButton = wrapper.findActiveTabDismissibleButton();
       expect(activeDismissibleButton).toEqual(correctDismissibleButton);
-    });
-
-    test('triggers onDismiss callback when clicked', () => {
-      const consoleLogSpy = jest.spyOn(console, 'log');
-      const dismissibleButtonWrapper = renderTabs(
-        <Tabs tabs={actionDismissibleTabs} activeTabId="first" />
-      ).wrapper.findDismissibleButtonByTabId('first');
-      const dismissButton = dismissibleButtonWrapper?.find('button');
-      dismissButton?.click();
-      expect(consoleLogSpy).toHaveBeenCalledWith('I have been clicked!');
     });
 
     test('renders action', () => {

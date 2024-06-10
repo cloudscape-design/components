@@ -55,12 +55,14 @@ export default function Tabs({
   const baseProps = getBaseProps(rest);
 
   const showTabActionAttributes = tabs.some(tab => tab.action || tab.dismissible);
-  const tabAriaRoleDescription = 'Tabs with Actions';
+  const tabsWithActionsAriaRoleDescription = 'Tabs with Actions';
   const tabActionAttributes = showTabActionAttributes
     ? {
         role: 'application',
-        'aria-roledescription': i18n('i18nStrings.tabAriaRoleDescription', tabAriaRoleDescription),
-        'aria-label': 'Tabs Container',
+        'aria-roledescription': i18n(
+          'i18nStrings.tabsWithActionsAriaRoleDescription',
+          tabsWithActionsAriaRoleDescription
+        ),
       }
     : {};
 

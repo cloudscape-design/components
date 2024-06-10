@@ -86,8 +86,8 @@ export function TabHeaderBar({
       return;
     }
     const activeTabRef = tabRefs.current.get(activeTabId);
-    if (activeTabRef && activeTabRef.parentElement && headerBarRef.current) {
-      scrollIntoView(activeTabRef.parentElement, headerBarRef.current, smooth);
+    if (activeTabRef && headerBarRef.current) {
+      scrollIntoView(activeTabRef, headerBarRef.current, smooth);
     }
   };
 
@@ -156,7 +156,8 @@ export function TabHeaderBar({
 
   function onUnregisterFocusable(focusableElement: HTMLElement) {
     const isUnregisteringFocusedNode = nodeBelongs(focusableElement, document.activeElement);
-    if (isUnregisteringFocusedNode) {
+    const isActionOrDismissible = !focusableElement.classList.contains(styles['tabs-tab-link']);
+    if (isUnregisteringFocusedNode && !isActionOrDismissible) {
       // Wait for unmounted node to get removed from the DOM.
       setTimeout(() => navigationAPI.current?.getFocusTarget()?.focus(), 0);
     }
@@ -198,8 +199,9 @@ export function TabHeaderBar({
     element.focus();
     // If focusable element is a tab - fire the onChange for it.
     const tabsById = tabs.reduce((map, tab) => map.set(tab.id, tab), new Map<string, TabsProps.Tab>());
-    for (const [tabId, tabTriggerElement] of tabRefs.current.entries()) {
-      if (tabId !== activeTabId && tabTriggerElement === element) {
+    for (const [tabId, focusTargetTabTriggerElement] of tabRefs.current.entries()) {
+      const focusTargetTabLabelElement = focusTargetTabTriggerElement?.querySelector(`.${styles['tabs-tab-link']}`);
+      if (tabId !== activeTabId && focusTargetTabLabelElement === element) {
         onChange({ activeTabId: tabId, activeTabHref: tabsById.get(tabId)?.href });
         break;
       }
@@ -322,7 +324,6 @@ export function TabHeaderBar({
       className: classes,
       role: 'tab',
       'aria-selected': activeTabId === tab.id,
-      'aria-expanded': activeTabId === tab.id,
       'aria-controls': `${idNamespace}-${tab.id}-panel`,
       'data-testid': tab.id,
       id: getTabElementId({ namespace: idNamespace, tabId: tab.id }),
@@ -347,11 +348,16 @@ export function TabHeaderBar({
         return;
       }
       const tabElements = getFocusablesFrom(containerObjectRef.current).filter(el => el.role === 'tab');
+      const isTabElementDismissible = tabElements.length > 1;
+      if (!isTabElementDismissible) {
+        return;
+      }
       const activeTabIndex = tabElements.findIndex(el => el.dataset.testid === tab.id);
       tabElements.splice(activeTabIndex, 1);
       const nextActive = tabElements[Math.min(tabElements.length - 1, activeTabIndex)];
       if (nextActive && nextActive.dataset.testid) {
         onChange({ activeTabId: nextActive.dataset.testid });
+        nextActive.focus();
       }
       onDismiss?.(event);
     };
@@ -365,11 +371,7 @@ export function TabHeaderBar({
       >
         <div className={tabHeaderContainerClasses} role="group" aria-labelledby={commonProps.id}>
           <TabTrigger ref={setElement} tab={tab} elementProps={commonProps} />
-          {action && (
-            <span className={styles['tabs-tab-action']} aria-label="More Actions" aria-haspopup="true">
-              {action}
-            </span>
-          )}
+          {action && <span className={styles['tabs-tab-action']}>{action}</span>}
           {dismissible && (
             <span className={styles['tabs-tab-dismiss']}> {dismissButton(dismissLabel, handleDismiss)} </span>
           )}
