@@ -43,6 +43,7 @@ const groupOptions = [
   { value: 'date_quarter', label: 'Date (quarter)' },
   { value: 'date_month', label: 'Date (month)' },
   { value: 'date_day', label: 'Date (day)' },
+  { value: 'type', label: 'Type' },
   { value: 'origin', label: 'Origin' },
   { value: 'recipient', label: 'Recipient' },
   { value: 'currency', label: 'Currency' },
