@@ -347,11 +347,10 @@ export function TabHeaderBar({
       if (!containerObjectRef.current) {
         return;
       }
-      const tabElements = getFocusablesFrom(containerObjectRef.current).filter(el => el.role === 'tab');
-      const isTabElementDismissible = tabElements.length > 1;
-      if (!isTabElementDismissible) {
+      if (tabs.length <= 1) {
         return;
       }
+      const tabElements = getFocusablesFrom(containerObjectRef.current).filter(el => el.role === 'tab');
       const activeTabIndex = tabElements.findIndex(el => el.dataset.testid === tab.id);
       tabElements.splice(activeTabIndex, 1);
       const nextActive = tabElements[Math.min(tabElements.length - 1, activeTabIndex)];
