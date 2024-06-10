@@ -96,7 +96,6 @@
     color: awsui.$color-text-button-inline-icon-disabled;
 
     &:hover {
-      /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
       cursor: initial;
       color: awsui.$color-text-button-inline-icon-disabled;
     }

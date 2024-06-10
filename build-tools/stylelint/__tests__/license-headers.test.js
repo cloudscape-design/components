@@ -1,14 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-const stylelint = require('stylelint');
+import stylelint from 'stylelint';
+import { configBasedir } from './common.js';
 
 function runPlugin(code, header, fix = false) {
   return stylelint.lint({
     code,
-    configBasedir: __dirname,
+    configBasedir,
     fix,
     config: {
-      plugins: ['../license-headers'],
+      plugins: ['../license-headers.js'],
       rules: {
         '@cloudscape-design/license-headers': [true, { header }],
       },

@@ -19,7 +19,7 @@ const getAriaSort = (sortingState: SortingStatus) => stateToAriaSort[sortingStat
 export function getTableRoleProps(options: {
   tableRole: TableRole;
   ariaLabel?: string;
-  ariaLabelledBy?: string;
+  ariaLabelledby?: string;
   totalItemsCount?: number;
   totalColumnsCount?: number;
 }): React.TableHTMLAttributes<HTMLTableElement> {
@@ -30,7 +30,7 @@ export function getTableRoleProps(options: {
   nativeProps.role = options.tableRole === 'grid-default' ? 'grid' : options.tableRole;
 
   nativeProps['aria-label'] = options.ariaLabel;
-  nativeProps['aria-labelledby'] = options.ariaLabelledBy;
+  nativeProps['aria-labelledby'] = options.ariaLabelledby;
 
   // Incrementing the total count by one to account for the header row.
   nativeProps['aria-rowcount'] = options.totalItemsCount ? options.totalItemsCount + 1 : -1;
@@ -47,7 +47,12 @@ export function getTableRoleProps(options: {
   return nativeProps;
 }
 
-export function getTableWrapperRoleProps(options: { tableRole: TableRole; isScrollable: boolean; ariaLabel?: string }) {
+export function getTableWrapperRoleProps(options: {
+  tableRole: TableRole;
+  isScrollable: boolean;
+  ariaLabel?: string;
+  ariaLabelledby?: string;
+}) {
   const nativeProps: React.HTMLAttributes<HTMLDivElement> = {};
 
   // When the table is scrollable, the wrapper is made focusable so that keyboard users can scroll it horizontally with arrow keys.
@@ -55,6 +60,7 @@ export function getTableWrapperRoleProps(options: { tableRole: TableRole; isScro
     nativeProps.role = 'region';
     nativeProps.tabIndex = 0;
     nativeProps['aria-label'] = options.ariaLabel;
+    nativeProps['aria-labelledby'] = options.ariaLabelledby;
   }
 
   return nativeProps;

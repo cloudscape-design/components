@@ -65,11 +65,12 @@
     outline: none;
   }
 
-  /* stylelint-disable-next-line selector-max-type */
+  /* stylelint-disable selector-max-type */
   .has-category-header:not(.has-checkmark) > &,
   .has-category-header:not(.has-checkmark) > span > & {
     padding-inline-start: calc(#{awsui.$space-s} + #{awsui.$space-l});
   }
+  /* stylelint-enable selector-max-type */
 }
 
 .icon {
