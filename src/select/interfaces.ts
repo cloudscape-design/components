@@ -170,9 +170,9 @@ export namespace SelectProps {
   export type FilteringType = OptionsFilteringType;
   export type TriggerVariant = 'label' | 'option';
 
-  export type Option = OptionDefinition;
-  export type OptionGroup = OptionGroupDefinition;
-  export type Options = ReadonlyArray<Option | OptionGroup>;
+  export type Option<ValueType extends string = string> = OptionDefinition<ValueType>;
+  export type OptionGroup<ValueType extends string = string> = OptionGroupDefinition<ValueType>;
+  export type Options<ValueType extends string = string> = ReadonlyArray<Option<ValueType> | OptionGroup<ValueType>>;
 
   export type LoadItemsDetail = OptionsLoadItemsDetail;
 

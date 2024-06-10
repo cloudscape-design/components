@@ -24,8 +24,17 @@ beforeEach(() => {
   (warnOnce as any).mockClear();
 });
 
+export declare const SelectValues: {
+  readonly FIRST: '1';
+  readonly SECOND: '2';
+  readonly THIRD: '3';
+  readonly FORTH: 'Option 4, test"2';
+};
+
+export type EnumStringType = (typeof SelectValues)[keyof typeof SelectValues];
+
 const VALUE_WITH_SPECIAL_CHARS = 'Option 4, test"2';
-const defaultOptions: SelectProps.Options = [
+const defaultOptions: SelectProps.Options<EnumStringType> = [
   { label: 'First', value: '1' },
   { label: 'Second', value: '2' },
   {
@@ -60,7 +69,7 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
   }
 
   test('renders selected option', () => {
-    const { wrapper } = renderSelect({ selectedOption: { label: 'First', value: '1' } });
+    const { wrapper } = renderSelect({ selectedOption: { label: 'First', value: '10' } });
     expect(wrapper.findTrigger().getElement().textContent).toBe('First');
   });
 
