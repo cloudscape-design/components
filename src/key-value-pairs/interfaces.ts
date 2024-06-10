@@ -10,22 +10,22 @@ export interface KeyValuePairsProps extends BaseComponentProps {
    */
   columns?: number;
   /**
-   * An array of either key-value pairs and column definitions.
+   * An array of either key-value pairs individual items or groups.
    * They could be combined.
    * Each key-value pair definition has the following properties:
    *   * `label` (string) - The key label.
    *   * `info` (React.ReactNode) - (Optional) Area next to the key to display an info link.
    *   * `value` (React.ReactNode) - The corresponding value for the key.
-   * Each column definition has the following properties:
+   * Each group definition has the following properties:
    * * `title` (string) - (Optional) An optional title for this column.
    * * `items` (ReadonlyArray<KeyValuePairProps.KeyValuePair>) - An array of
    *     key-value pair items.
    */
-  items: ReadonlyArray<KeyValuePairsProps.KeyValuePair | KeyValuePairsProps.Column>;
+  items: ReadonlyArray<KeyValuePairsProps.KeyValuePair | KeyValuePairsProps.Group>;
 }
 
 export namespace KeyValuePairsProps {
-  export interface Column {
+  export interface Group {
     title?: string;
     items: ReadonlyArray<KeyValuePair>;
   }
