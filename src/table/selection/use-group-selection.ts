@@ -15,24 +15,18 @@ import { ItemSelectionTree } from './utils';
 
 type SelectionOptions<T> = Pick<
   TableProps<T>,
-  | 'ariaLabels'
-  | 'items'
-  | 'onSelectionChange'
-  | 'selectedItems'
-  | 'selectionInverted'
-  | 'selectionType'
-  | 'trackBy'
-  | 'getLoadingStatus'
-> & {
-  getExpandableItemProps: (item: T) => { level: number; children: readonly T[] };
-};
+  'ariaLabels' | 'items' | 'onSelectionChange' | 'selectionType' | 'trackBy' | 'getLoadingStatus'
+> &
+  Pick<Required<TableProps>, 'selectedItems' | 'selectionInverted'> & {
+    getExpandableItemProps: (item: T) => { level: number; children: readonly T[] };
+  };
 
 export function useGroupSelection<T>({
   ariaLabels,
   items,
   onSelectionChange,
-  selectedItems = [],
-  selectionInverted = false,
+  selectedItems,
+  selectionInverted,
   selectionType,
   trackBy,
   getExpandableItemProps,
