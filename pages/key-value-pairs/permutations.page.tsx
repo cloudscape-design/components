@@ -96,27 +96,27 @@ export default function KeyValueScenario() {
               columns={2}
               items={[
                 {
-                  title: 'Column Title',
+                  title: 'Column Title 1',
                   items: [
                     {
-                      label: 'Label for key',
-                      value: 'Value',
+                      label: 'Label for key 1.1',
+                      value: 'Value 1',
                     },
                     {
-                      label: 'Label for key',
+                      label: 'Label for key 1.2',
                       value: <StatusIndicator>Value for positive status</StatusIndicator>,
                     },
                   ],
                 },
                 {
-                  title: 'Column Title',
+                  title: 'Column Title 2',
                   items: [
                     {
-                      label: 'Label for key',
+                      label: 'Label for key 2.1',
                       value: 'Value',
                     },
                     {
-                      label: 'Label for key',
+                      label: 'Label for key 2.2',
                       value: (
                         <Link external={true} href="#">
                           Value with external link
@@ -126,27 +126,27 @@ export default function KeyValueScenario() {
                   ],
                 },
                 {
-                  title: 'Column Title',
+                  title: 'Column Title 3',
                   items: [
                     {
-                      label: 'Label for key',
+                      label: 'Label for key 3.1',
                       value: 'Value',
                     },
                     {
-                      label: 'Label for key',
+                      label: 'Label for key 3.2',
                       value: <StatusIndicator>Value for positive status</StatusIndicator>,
                     },
                   ],
                 },
                 {
-                  title: 'Column Title',
+                  title: 'Column Title 4',
                   items: [
                     {
-                      label: 'Label for key',
+                      label: 'Label for key 4.1',
                       value: 'Value',
                     },
                     {
-                      label: 'Label for key',
+                      label: 'Label for key 4.2',
                       value: (
                         <Link external={true} href="#">
                           Value with external link
@@ -164,11 +164,11 @@ export default function KeyValueScenario() {
               columns={4}
               items={[
                 {
-                  label: 'Label for key',
+                  label: 'Label for key 1',
                   value: 'Value',
                 },
                 {
-                  label: 'Label for key',
+                  label: 'Label for key 2',
                   value: (
                     <Link external={true} href="#">
                       Value with external link
@@ -176,11 +176,11 @@ export default function KeyValueScenario() {
                   ),
                 },
                 {
-                  label: 'Label for key',
+                  label: 'Label for key 3',
                   value: 'Value',
                 },
                 {
-                  label: 'Label for key',
+                  label: 'Label for key 4',
                   value: (
                     <Link external={true} href="#">
                       Value with external link
@@ -188,11 +188,11 @@ export default function KeyValueScenario() {
                   ),
                 },
                 {
-                  label: 'Label for key',
+                  label: 'Label for key 5',
                   value: 'Value',
                 },
                 {
-                  label: 'Label for key',
+                  label: 'Label for key 6',
                   value: (
                     <Link external={true} href="#">
                       Value with external link
@@ -200,11 +200,11 @@ export default function KeyValueScenario() {
                   ),
                 },
                 {
-                  label: 'Label for key',
+                  label: 'Label for key 7',
                   value: 'Value',
                 },
                 {
-                  label: 'Label for key',
+                  label: 'Label for key 8',
                   value: (
                     <Link external={true} href="#">
                       Value with external link
@@ -212,11 +212,11 @@ export default function KeyValueScenario() {
                   ),
                 },
                 {
-                  label: 'Label for key',
+                  label: 'Label for key 9',
                   value: 'Value',
                 },
                 {
-                  label: 'Label for key',
+                  label: 'Label for key 10',
                   value: (
                     <Link external={true} href="#">
                       Value with external link
@@ -224,11 +224,11 @@ export default function KeyValueScenario() {
                   ),
                 },
                 {
-                  label: 'Label for key',
+                  label: 'Label for key 11',
                   value: 'Value',
                 },
                 {
-                  label: 'Label for key',
+                  label: 'Label for key 12',
                   value: (
                     <Link external={true} href="#">
                       Value with external link
@@ -236,11 +236,11 @@ export default function KeyValueScenario() {
                   ),
                 },
                 {
-                  label: 'Label for key',
+                  label: 'Label for key 13',
                   value: 'Value',
                 },
                 {
-                  label: 'Label for key',
+                  label: 'Label for key 14',
                   value: (
                     <Link external={true} href="#">
                       Value with external link
@@ -256,20 +256,32 @@ export default function KeyValueScenario() {
               columns={4}
               items={[
                 {
-                  title: 'Title for the column',
+                  label: 'Label for key 1',
+                  value: (
+                    <Link external={true} href="#">
+                      Value with external link
+                    </Link>
+                  ),
+                },
+                {
+                  title: 'Title for the column 2',
                   items: [
                     {
-                      label: 'Label for key (belongs to column)',
+                      label: 'Label for key (belongs to column) 2.1',
                       value: 'Value',
                     },
                     {
-                      label: 'Label for key (belongs to column)',
+                      label: 'Label for key (belongs to column) 2.2',
                       value: 'Value',
                     },
                   ],
                 },
                 {
-                  label: 'Label for key',
+                  label: 'Label for key 3',
+                  value: 'Value',
+                },
+                {
+                  label: 'Label for key 4',
                   value: (
                     <Link external={true} href="#">
                       Value with external link
@@ -277,11 +289,11 @@ export default function KeyValueScenario() {
                   ),
                 },
                 {
-                  label: 'Label for key',
+                  label: 'Label for key 5',
                   value: 'Value',
                 },
                 {
-                  label: 'Label for key',
+                  label: 'Label for key 6',
                   value: (
                     <Link external={true} href="#">
                       Value with external link
@@ -289,11 +301,20 @@ export default function KeyValueScenario() {
                   ),
                 },
                 {
-                  label: 'Label for key',
-                  value: 'Value',
+                  title: 'Title for the column 7',
+                  items: [
+                    {
+                      label: 'Label for key (belongs to column) 7.1',
+                      value: 'Value',
+                    },
+                    {
+                      label: 'Label for key (belongs to column) 7.2',
+                      value: 'Value',
+                    },
+                  ],
                 },
                 {
-                  label: 'Label for key',
+                  label: 'Label for key 8',
                   value: (
                     <Link external={true} href="#">
                       Value with external link
@@ -301,11 +322,11 @@ export default function KeyValueScenario() {
                   ),
                 },
                 {
-                  label: 'Label for key',
+                  label: 'Label for key 9',
                   value: 'Value',
                 },
                 {
-                  label: 'Label for key',
+                  label: 'Label for key 10',
                   value: (
                     <Link external={true} href="#">
                       Value with external link
@@ -313,11 +334,11 @@ export default function KeyValueScenario() {
                   ),
                 },
                 {
-                  label: 'Label for key',
+                  label: 'Label for key 11',
                   value: 'Value',
                 },
                 {
-                  label: 'Label for key',
+                  label: 'Label for key 12',
                   value: (
                     <Link external={true} href="#">
                       Value with external link
@@ -325,23 +346,11 @@ export default function KeyValueScenario() {
                   ),
                 },
                 {
-                  label: 'Label for key',
+                  label: 'Label for key 13',
                   value: 'Value',
                 },
                 {
-                  label: 'Label for key',
-                  value: (
-                    <Link external={true} href="#">
-                      Value with external link
-                    </Link>
-                  ),
-                },
-                {
-                  label: 'Label for key',
-                  value: 'Value',
-                },
-                {
-                  label: 'Label for key',
+                  label: 'Label for key 14',
                   value: (
                     <Link external={true} href="#">
                       Value with external link
