@@ -10,6 +10,7 @@ interface LoadingDotsProps {
 
 export default function LoadingDots({ color }: LoadingDotsProps) {
   return (
+    // "gen-ai" class is added so that the gradient background animates.
     <div className={clsx(styles.root, { [styles['gen-ai']]: color === 'gen-ai' })}>
       <div className={styles.typing}>
         <div className={styles.dot}></div>
