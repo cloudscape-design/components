@@ -215,188 +215,329 @@ test('unselects all items using select-all when all items selected', () => {
   });
 });
 
-test.each([false, true])('shift selection on top level, selectionInverted=%s', selectionInverted => {
-  const items = [{ id: '1' }, { id: '2' }, { id: '3' }, { id: '4' }, { id: '5' }, { id: '6' }, { id: '7' }];
-  const { wrapper } = renderTable({ items }, selectionInverted ? ['ALL'] : []);
-  const empty = !selectionInverted ? 'empty' : 'checked';
-  const checked = !selectionInverted ? 'checked' : 'empty';
+describe('With progressive loading', () => {
+  test.each(['pending', 'loading', 'error'] as const)(
+    'progressive loader with status=%s selection state is derived from parent selection choice',
+    status => {
+      const { wrapper } = renderTable({ getLoadingStatus: () => status }, []);
+      expect(getTableSelection(wrapper)).toEqual({
+        ALL: 'empty',
+        '1': 'empty',
+        '2': 'empty',
+        '3': 'empty',
+        'root-loader': 'empty',
+      });
 
-  clickRow(wrapper, 3);
-  shiftClickRow(wrapper, 5);
-  expect(getTableSelection(wrapper)).toEqual({
-    ALL: 'indeterminate',
-    '1': empty,
-    '2': empty,
-    '3': checked,
-    '4': checked,
-    '5': checked,
-    '6': empty,
-    '7': empty,
-  });
+      wrapper.findRowSelectionArea(1)!.click();
+      expect(getTableSelection(wrapper)).toEqual({
+        ALL: 'indeterminate',
+        '1': 'checked',
+        '2': 'empty',
+        '3': 'empty',
+        'root-loader': 'empty',
+      });
 
-  clickRow(wrapper, 5);
-  shiftClickRow(wrapper, 7);
-  expect(getTableSelection(wrapper)).toEqual({
-    ALL: 'indeterminate',
-    '1': empty,
-    '2': empty,
-    '3': checked,
-    '4': checked,
-    '5': checked,
-    '6': checked,
-    '7': checked,
-  });
+      wrapper.findSelectAllTrigger()!.click();
+      expect(getTableSelection(wrapper)).toEqual({
+        ALL: 'checked',
+        '1': 'checked',
+        '2': 'checked',
+        '3': 'checked',
+        'root-loader': 'checked',
+      });
 
-  clickRow(wrapper, 1);
-  shiftClickRow(wrapper, 4);
-  expect(getTableSelection(wrapper)).toEqual({
-    ALL: 'indeterminate',
-    '1': empty,
-    '2': empty,
-    '3': empty,
-    '4': empty,
-    '5': checked,
-    '6': checked,
-    '7': checked,
-  });
+      wrapper.findRowSelectionArea(1)!.click();
+      expect(getTableSelection(wrapper)).toEqual({
+        ALL: 'indeterminate',
+        '1': 'empty',
+        '2': 'checked',
+        '3': 'checked',
+        'root-loader': 'checked',
+      });
+    }
+  );
+
+  test.each([false, true])(
+    'selection is lifted when progressive loading status="finished", selectionInverted=%s',
+    selectionInverted => {
+      const { wrapper } = renderTable({ getLoadingStatus: () => 'finished' }, selectionInverted ? ['ALL'] : []);
+      const empty = !selectionInverted ? 'empty' : 'checked';
+      const checked = !selectionInverted ? 'checked' : 'empty';
+
+      expect(getTableSelection(wrapper)).toEqual({
+        ALL: empty,
+        '1': empty,
+        '2': empty,
+        '3': empty,
+      });
+
+      wrapper.findRowSelectionArea(1)!.click();
+      wrapper.findRowSelectionArea(2)!.click();
+      wrapper.findRowSelectionArea(3)!.click();
+      expect(getTableSelection(wrapper)).toEqual({
+        ALL: checked,
+        '1': checked,
+        '2': checked,
+        '3': checked,
+      });
+    }
+  );
+
+  test.each([false, true])(
+    'selection is not lifted when progressive loading status!="finished", selectionInverted=%s',
+    selectionInverted => {
+      const status = (['pending', 'loading', 'error'] as const)[Math.floor(Math.random() * 3)];
+      const { wrapper } = renderTable({ getLoadingStatus: () => status }, selectionInverted ? ['ALL'] : []);
+      const empty = !selectionInverted ? 'empty' : 'checked';
+      const checked = !selectionInverted ? 'checked' : 'empty';
+
+      expect(getTableSelection(wrapper)).toEqual({
+        ALL: empty,
+        '1': empty,
+        '2': empty,
+        '3': empty,
+        'root-loader': empty,
+      });
+
+      wrapper.findRowSelectionArea(1)!.click();
+      wrapper.findRowSelectionArea(2)!.click();
+      wrapper.findRowSelectionArea(3)!.click();
+      expect(getTableSelection(wrapper)).toEqual({
+        ALL: 'indeterminate',
+        '1': checked,
+        '2': checked,
+        '3': checked,
+        'root-loader': empty,
+      });
+    }
+  );
 });
 
-test('shift selection is not performed when last item is no longer present', () => {
-  const items = [{ id: '1' }, { id: '2' }, { id: '3' }, { id: '4' }, { id: '5' }];
-  const { wrapper, rerender } = renderTable({ items }, []);
+describe('With expandable rows', () => {
+  test.each([false, true])(
+    'selection is preserved when expandable state changes, selectionInverted=%s',
+    selectionInverted => {
+      const { wrapper } = renderTable({}, selectionInverted ? ['ALL'] : [], []);
+      const empty = !selectionInverted ? 'empty' : 'checked';
+      const checked = !selectionInverted ? 'checked' : 'empty';
 
-  clickRow(wrapper, 3);
-  rerender({ items: items.filter(item => item.id !== '3') }, ['3']);
-  shiftClickRow(wrapper, 4);
-  expect(getTableSelection(wrapper)).toEqual({
-    ALL: 'indeterminate',
-    '1': 'empty',
-    '2': 'empty',
-    '4': 'empty',
-    '5': 'checked',
-  });
-});
+      expect(getTableSelection(wrapper)).toEqual({
+        ALL: empty,
+        '1': empty,
+        '2': empty,
+        '3': empty,
+      });
 
-test.each(['pending', 'loading', 'error'] as const)(
-  'progressive loader with status=%s selection state is derived from parent selection choice',
-  status => {
-    const { wrapper } = renderTable({ getLoadingStatus: () => status }, []);
-    expect(getTableSelection(wrapper)).toEqual({
-      ALL: 'empty',
-      '1': 'empty',
-      '2': 'empty',
-      '3': 'empty',
-      'root-loader': 'empty',
-    });
+      wrapper.findRowSelectionArea(1)!.click();
+      expect(getTableSelection(wrapper)).toEqual({
+        ALL: 'indeterminate',
+        '1': checked,
+        '2': empty,
+        '3': empty,
+      });
 
-    wrapper.findRowSelectionArea(1)!.click();
-    expect(getTableSelection(wrapper)).toEqual({
-      ALL: 'indeterminate',
-      '1': 'checked',
-      '2': 'empty',
-      '3': 'empty',
-      'root-loader': 'empty',
-    });
+      wrapper.findExpandToggle(1)!.click();
+      wrapper.findRowSelectionArea(2)!.click();
+      expect(getTableSelection(wrapper)).toEqual({
+        ALL: 'indeterminate',
+        '1': 'indeterminate',
+        '1.1': empty,
+        '1.2': checked,
+        '1.3': checked,
+        '2': empty,
+        '3': empty,
+      });
 
-    wrapper.findSelectAllTrigger()!.click();
-    expect(getTableSelection(wrapper)).toEqual({
-      ALL: 'checked',
-      '1': 'checked',
-      '2': 'checked',
-      '3': 'checked',
-      'root-loader': 'checked',
-    });
+      wrapper.findExpandToggle(1)!.click();
+      expect(getTableSelection(wrapper)).toEqual({
+        ALL: 'indeterminate',
+        '1': 'indeterminate',
+        '2': empty,
+        '3': empty,
+      });
+    }
+  );
 
-    wrapper.findRowSelectionArea(1)!.click();
-    expect(getTableSelection(wrapper)).toEqual({
-      ALL: 'indeterminate',
-      '1': 'empty',
-      '2': 'checked',
-      '3': 'checked',
-      'root-loader': 'checked',
-    });
-  }
-);
-
-test.each([false, true])(
-  'selection is lifted when progressive loading status="finished", selectionInverted=%s',
-  selectionInverted => {
-    const { wrapper } = renderTable({ getLoadingStatus: () => 'finished' }, selectionInverted ? ['ALL'] : []);
+  test.each([false, true])('selection state is lifted, selectionInverted=%s', selectionInverted => {
+    const { wrapper } = renderTable({}, selectionInverted ? ['ALL'] : [], ['1', '1.3']);
     const empty = !selectionInverted ? 'empty' : 'checked';
     const checked = !selectionInverted ? 'checked' : 'empty';
 
+    wrapper.findRowSelectionArea(2)!.click(); // click 1.1
+    wrapper.findRowSelectionArea(3)!.click(); // click 1.2
+    wrapper.findRowSelectionArea(5)!.click(); // click 1.3.1
+    wrapper.findRowSelectionArea(7)!.click(); // click 2
+    wrapper.findRowSelectionArea(8)!.click(); // click 3
     expect(getTableSelection(wrapper)).toEqual({
-      ALL: empty,
-      '1': empty,
-      '2': empty,
-      '3': empty,
+      ALL: 'indeterminate',
+      '1': 'indeterminate',
+      '1.1': checked,
+      '1.2': checked,
+      '1.3': 'indeterminate',
+      '1.3.1': checked,
+      '1.3.2': empty,
+      '2': checked,
+      '3': checked,
     });
 
-    wrapper.findRowSelectionArea(1)!.click();
-    wrapper.findRowSelectionArea(2)!.click();
-    wrapper.findRowSelectionArea(3)!.click();
+    wrapper.findRowSelectionArea(6)!.click(); // click 1.3.2
     expect(getTableSelection(wrapper)).toEqual({
       ALL: checked,
       '1': checked,
+      '1.1': checked,
+      '1.2': checked,
+      '1.3': checked,
+      '1.3.1': checked,
+      '1.3.2': checked,
       '2': checked,
       '3': checked,
     });
-  }
-);
+  });
 
-test.each([false, true])(
-  'selection is not lifted when progressive loading status!="finished", selectionInverted=%s',
-  selectionInverted => {
-    const status = (['pending', 'loading', 'error'] as const)[Math.floor(Math.random() * 3)];
-    const { wrapper } = renderTable({ getLoadingStatus: () => status }, selectionInverted ? ['ALL'] : []);
+  test('selecting a parent makes all children selection consistent, selectionInverted=false', () => {
+    const { wrapper } = renderTable({}, [], ['1']);
+
+    // Selecting intermediate group when group is not self selected.
+    wrapper.findRowSelectionArea(2)!.click(); // click 1.1
+    wrapper.findRowSelectionArea(1)!.click(); // click 1
+    expect(getTableSelection(wrapper)).toEqual({
+      ALL: 'indeterminate',
+      '1': 'checked',
+      '1.1': 'checked',
+      '1.2': 'checked',
+      '1.3': 'checked',
+      '2': 'empty',
+      '3': 'empty',
+    });
+
+    // Selecting intermediate group when group is self selected.
+    wrapper.findRowSelectionArea(2)!.click(); // click 1.1
+    wrapper.findRowSelectionArea(1)!.click(); // click 1
+    expect(getTableSelection(wrapper)).toEqual({
+      ALL: 'indeterminate',
+      '1': 'checked',
+      '1.1': 'checked',
+      '1.2': 'checked',
+      '1.3': 'checked',
+      '2': 'empty',
+      '3': 'empty',
+    });
+  });
+
+  test('selecting a parent makes all children selection consistent, selectionInverted=true', () => {
+    const { wrapper } = renderTable({}, ['ALL'], ['1']);
+
+    // Selecting intermediate group when group is not self selected.
+    wrapper.findRowSelectionArea(2)!.click(); // click 1.1
+    wrapper.findRowSelectionArea(1)!.click(); // click 1
+    expect(getTableSelection(wrapper)).toEqual({
+      ALL: 'checked',
+      '1': 'checked',
+      '1.1': 'checked',
+      '1.2': 'checked',
+      '1.3': 'checked',
+      '2': 'checked',
+      '3': 'checked',
+    });
+
+    // Selecting intermediate group when group is self selected.
+    wrapper.findRowSelectionArea(2)!.click(); // click 1.1
+    wrapper.findRowSelectionArea(1)!.click(); // click 1
+    expect(getTableSelection(wrapper)).toEqual({
+      ALL: 'checked',
+      '1': 'checked',
+      '1.1': 'checked',
+      '1.2': 'checked',
+      '1.3': 'checked',
+      '2': 'checked',
+      '3': 'checked',
+    });
+  });
+});
+
+describe('Shift selection', () => {
+  test.each([false, true])('shift selection on top level, selectionInverted=%s', selectionInverted => {
+    const items = [{ id: '1' }, { id: '2' }, { id: '3' }, { id: '4' }, { id: '5' }, { id: '6' }, { id: '7' }];
+    const { wrapper } = renderTable({ items }, selectionInverted ? ['ALL'] : []);
     const empty = !selectionInverted ? 'empty' : 'checked';
     const checked = !selectionInverted ? 'checked' : 'empty';
 
-    expect(getTableSelection(wrapper)).toEqual({
-      ALL: empty,
-      '1': empty,
-      '2': empty,
-      '3': empty,
-      'root-loader': empty,
-    });
-
-    wrapper.findRowSelectionArea(1)!.click();
-    wrapper.findRowSelectionArea(2)!.click();
-    wrapper.findRowSelectionArea(3)!.click();
+    clickRow(wrapper, 3);
+    shiftClickRow(wrapper, 5);
     expect(getTableSelection(wrapper)).toEqual({
       ALL: 'indeterminate',
-      '1': checked,
-      '2': checked,
+      '1': empty,
+      '2': empty,
       '3': checked,
-      'root-loader': empty,
+      '4': checked,
+      '5': checked,
+      '6': empty,
+      '7': empty,
     });
-  }
-);
 
-test.each([false, true])(
-  'selection is preserved when expandable state changes, selectionInverted=%s',
-  selectionInverted => {
-    const { wrapper } = renderTable({}, selectionInverted ? ['ALL'] : [], []);
-    const empty = !selectionInverted ? 'empty' : 'checked';
-    const checked = !selectionInverted ? 'checked' : 'empty';
-
+    clickRow(wrapper, 5);
+    shiftClickRow(wrapper, 7);
     expect(getTableSelection(wrapper)).toEqual({
-      ALL: empty,
+      ALL: 'indeterminate',
+      '1': empty,
+      '2': empty,
+      '3': checked,
+      '4': checked,
+      '5': checked,
+      '6': checked,
+      '7': checked,
+    });
+
+    clickRow(wrapper, 1);
+    shiftClickRow(wrapper, 4);
+    expect(getTableSelection(wrapper)).toEqual({
+      ALL: 'indeterminate',
       '1': empty,
       '2': empty,
       '3': empty,
+      '4': empty,
+      '5': checked,
+      '6': checked,
+      '7': checked,
     });
+  });
 
-    wrapper.findRowSelectionArea(1)!.click();
+  test('item can be selected when the first click is done with shift', () => {
+    const items = [{ id: '1' }, { id: '2' }, { id: '3' }];
+    const { wrapper } = renderTable({ items }, []);
+
+    shiftClickRow(wrapper, 2);
     expect(getTableSelection(wrapper)).toEqual({
       ALL: 'indeterminate',
-      '1': checked,
-      '2': empty,
-      '3': empty,
+      '1': 'empty',
+      '2': 'checked',
+      '3': 'empty',
     });
+  });
 
-    wrapper.findExpandToggle(1)!.click();
-    wrapper.findRowSelectionArea(2)!.click();
+  test('shift selection is not performed when last item is no longer present', () => {
+    const items = [{ id: '1' }, { id: '2' }, { id: '3' }, { id: '4' }, { id: '5' }];
+    const { wrapper, rerender } = renderTable({ items }, []);
+
+    clickRow(wrapper, 3);
+    rerender({ items: items.filter(item => item.id !== '3') }, ['3']);
+    shiftClickRow(wrapper, 4);
+    expect(getTableSelection(wrapper)).toEqual({
+      ALL: 'indeterminate',
+      '1': 'empty',
+      '2': 'empty',
+      '4': 'empty',
+      '5': 'checked',
+    });
+  });
+
+  test.each([false, true])('shift selection on nested items, selectionInverted=%s', selectionInverted => {
+    const { wrapper } = renderTable({}, selectionInverted ? ['ALL'] : [], ['1']);
+    const empty = !selectionInverted ? 'empty' : 'checked';
+    const checked = !selectionInverted ? 'checked' : 'empty';
+
+    clickRow(wrapper, 3);
+    shiftClickRow(wrapper, 4);
     expect(getTableSelection(wrapper)).toEqual({
       ALL: 'indeterminate',
       '1': 'indeterminate',
@@ -407,108 +548,54 @@ test.each([false, true])(
       '3': empty,
     });
 
-    wrapper.findExpandToggle(1)!.click();
+    clickRow(wrapper, 3);
+    shiftClickRow(wrapper, 2);
     expect(getTableSelection(wrapper)).toEqual({
       ALL: 'indeterminate',
-      '1': 'indeterminate',
+      '1': checked,
+      '1.1': checked,
+      '1.2': checked,
+      '1.3': checked,
       '2': empty,
       '3': empty,
     });
-  }
-);
 
-test.each([false, true])('selection state is lifted, selectionInverted=%s', selectionInverted => {
-  const { wrapper } = renderTable({}, selectionInverted ? ['ALL'] : [], ['1', '1.3']);
-  const empty = !selectionInverted ? 'empty' : 'checked';
-  const checked = !selectionInverted ? 'checked' : 'empty';
-
-  wrapper.findRowSelectionArea(2)!.click(); // click 1.1
-  wrapper.findRowSelectionArea(3)!.click(); // click 1.2
-  wrapper.findRowSelectionArea(5)!.click(); // click 1.3.1
-  wrapper.findRowSelectionArea(7)!.click(); // click 2
-  wrapper.findRowSelectionArea(8)!.click(); // click 3
-  expect(getTableSelection(wrapper)).toEqual({
-    ALL: 'indeterminate',
-    '1': 'indeterminate',
-    '1.1': checked,
-    '1.2': checked,
-    '1.3': 'indeterminate',
-    '1.3.1': checked,
-    '1.3.2': empty,
-    '2': checked,
-    '3': checked,
+    clickRow(wrapper, 3);
+    shiftClickRow(wrapper, 4);
+    expect(getTableSelection(wrapper)).toEqual({
+      ALL: 'indeterminate',
+      '1': 'indeterminate',
+      '1.1': checked,
+      '1.2': empty,
+      '1.3': empty,
+      '2': empty,
+      '3': empty,
+    });
   });
 
-  wrapper.findRowSelectionArea(6)!.click(); // click 1.3.2
-  expect(getTableSelection(wrapper)).toEqual({
-    ALL: checked,
-    '1': checked,
-    '1.1': checked,
-    '1.2': checked,
-    '1.3': checked,
-    '1.3.1': checked,
-    '1.3.2': checked,
-    '2': checked,
-    '3': checked,
-  });
-});
+  test('shift selection across levels is not allowed', () => {
+    const { wrapper } = renderTable({}, [], ['2']);
 
-test('selecting a parent makes all children selection consistent, selectionInverted=false', () => {
-  const { wrapper } = renderTable({}, [], ['1']);
+    clickRow(wrapper, 1);
+    shiftClickRow(wrapper, 5);
+    expect(getTableSelection(wrapper)).toEqual({
+      ALL: 'indeterminate',
+      '1': 'checked',
+      '2': 'empty',
+      '2.1': 'empty',
+      '2.2': 'empty',
+      '3': 'empty',
+    });
 
-  // Selecting intermediate group when group is not self selected.
-  wrapper.findRowSelectionArea(2)!.click(); // click 1.1
-  wrapper.findRowSelectionArea(1)!.click(); // click 1
-  expect(getTableSelection(wrapper)).toEqual({
-    ALL: 'indeterminate',
-    '1': 'checked',
-    '1.1': 'checked',
-    '1.2': 'checked',
-    '1.3': 'checked',
-    '2': 'empty',
-    '3': 'empty',
-  });
-
-  // Selecting intermediate group when group is self selected.
-  wrapper.findRowSelectionArea(2)!.click(); // click 1.1
-  wrapper.findRowSelectionArea(1)!.click(); // click 1
-  expect(getTableSelection(wrapper)).toEqual({
-    ALL: 'indeterminate',
-    '1': 'checked',
-    '1.1': 'checked',
-    '1.2': 'checked',
-    '1.3': 'checked',
-    '2': 'empty',
-    '3': 'empty',
-  });
-});
-
-test('selecting a parent makes all children selection consistent, selectionInverted=true', () => {
-  const { wrapper } = renderTable({}, ['ALL'], ['1']);
-
-  // Selecting intermediate group when group is not self selected.
-  wrapper.findRowSelectionArea(2)!.click(); // click 1.1
-  wrapper.findRowSelectionArea(1)!.click(); // click 1
-  expect(getTableSelection(wrapper)).toEqual({
-    ALL: 'checked',
-    '1': 'checked',
-    '1.1': 'checked',
-    '1.2': 'checked',
-    '1.3': 'checked',
-    '2': 'checked',
-    '3': 'checked',
-  });
-
-  // Selecting intermediate group when group is self selected.
-  wrapper.findRowSelectionArea(2)!.click(); // click 1.1
-  wrapper.findRowSelectionArea(1)!.click(); // click 1
-  expect(getTableSelection(wrapper)).toEqual({
-    ALL: 'checked',
-    '1': 'checked',
-    '1.1': 'checked',
-    '1.2': 'checked',
-    '1.3': 'checked',
-    '2': 'checked',
-    '3': 'checked',
+    clickRow(wrapper, 3);
+    shiftClickRow(wrapper, 1);
+    expect(getTableSelection(wrapper)).toEqual({
+      ALL: 'indeterminate',
+      '1': 'checked',
+      '2': 'indeterminate',
+      '2.1': 'checked',
+      '2.2': 'empty',
+      '3': 'empty',
+    });
   });
 });
