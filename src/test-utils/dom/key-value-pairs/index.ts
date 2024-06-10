@@ -19,11 +19,11 @@ export class KeyValuePairsPairWrapper extends ComponentWrapper {
 }
 
 export class KeyValuePairsItemWrapper extends ComponentWrapper {
-  findTitle(): ElementWrapper | null {
+  findGroupTitle(): ElementWrapper | null {
     return this.findComponent(`.${BoxWrapper.rootSelector}`, ElementWrapper);
   }
 
-  findItemPairs(): Array<KeyValuePairsPairWrapper> | null {
+  findGroupPairs(): Array<KeyValuePairsPairWrapper> | null {
     return this.findByClassName(styles.list)!
       .findAllByClassName(styles.pair)
       .map(i => new KeyValuePairsPairWrapper(i.getElement()));

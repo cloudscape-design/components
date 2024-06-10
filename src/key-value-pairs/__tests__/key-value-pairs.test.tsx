@@ -77,9 +77,9 @@ describe('KeyValuePairs', () => {
       );
 
       expect(wrapper.findItems()).toHaveLength(2);
-      expect(wrapper.findItems()[0].findTitle()!.getElement()).toHaveTextContent('Title');
-      expect(wrapper.findItems()[0].findItemPairs()).toHaveLength(2);
-      expect(wrapper.findItems()[1].findItemPairs()).toHaveLength(1);
+      expect(wrapper.findItems()[0].findGroupTitle()!.getElement()).toHaveTextContent('Title');
+      expect(wrapper.findItems()[0].findGroupPairs()).toHaveLength(2);
+      expect(wrapper.findItems()[1].findGroupPairs()).toHaveLength(1);
     });
   });
 
@@ -137,9 +137,9 @@ describe('KeyValuePairs', () => {
       );
 
       expect(wrapper.findItems()).toHaveLength(4);
-      expect(wrapper.findItems()[0].findItemPairs()).toHaveLength(2);
-      expect(wrapper.findItems()[0].findItemPairs()![0].findLabel()!.getElement()).toHaveTextContent('Column label 1');
-      expect(wrapper.findItems()[0].findItemPairs()![0].findValue()!.getElement()).toHaveTextContent('Column value 1');
+      expect(wrapper.findItems()[0].findGroupPairs()).toHaveLength(2);
+      expect(wrapper.findItems()[0].findGroupPairs()![0].findLabel()!.getElement()).toHaveTextContent('Column label 1');
+      expect(wrapper.findItems()[0].findGroupPairs()![0].findValue()!.getElement()).toHaveTextContent('Column value 1');
       expect(wrapper.findItems()[1].findPair()!.findLabel()!.getElement()).toHaveTextContent('Label for key');
       expect(wrapper.findItems()[1].findPair()!.findValue()!.getElement()).toHaveTextContent('Value');
     });
