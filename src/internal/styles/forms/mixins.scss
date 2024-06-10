@@ -53,13 +53,13 @@
   }
   $gutter-top: $gutter-vertical;
   $gutter-bottom: $gutter-vertical;
-  @if type-of($gutter-vertical) == 'map' {
+  @if meta.type-of($gutter-vertical) == 'map' {
     $gutter-top: map.get($gutter-vertical, 'top');
     $gutter-bottom: map.get($gutter-vertical, 'bottom');
   }
   $gutter-left: $gutter-horizontal;
   $gutter-right: $gutter-horizontal;
-  @if type-of($gutter-horizontal) == 'map' {
+  @if meta.type-of($gutter-horizontal) == 'map' {
     $gutter-left: map.get($gutter-horizontal, 'left');
     $gutter-right: map.get($gutter-horizontal, 'right');
   }
