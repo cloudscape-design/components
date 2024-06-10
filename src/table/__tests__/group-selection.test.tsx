@@ -33,7 +33,7 @@ const items: Item[] = [
 
 function InteractiveTable(tableProps: TableProps<Item>) {
   const [selectionInverted, setSelectionInverted] = useState(tableProps.selectionInverted ?? false);
-  const [selectedItems, setSelectedItems] = useState(tableProps.selectedItems ?? []);
+  const [selectedItems, setSelectedItems] = useState(tableProps.selectedItems);
   const [expandedItems, setExpandedItems] = useState(tableProps.expandableRows?.expandedItems ?? []);
   const expandableRows: TableProps['expandableRows'] = tableProps.expandableRows
     ? {
@@ -66,18 +66,18 @@ function InteractiveTable(tableProps: TableProps<Item>) {
   );
 }
 
-function renderTable(tableProps: Partial<TableProps>, selectedItems: string[], expandedItems?: string[]) {
+function renderTable(tableProps: Partial<TableProps>, selectedItems?: string[], expandedItems?: string[]) {
   const makeProps = (
     tableProps: Partial<TableProps>,
-    selectedItems: string[],
+    selectedItems?: string[],
     expandedItems?: string[]
   ): TableProps => ({
     items,
     columnDefinitions,
     selectionType: 'group',
     trackBy: 'id',
-    selectionInverted: selectedItems.includes('ALL'),
-    selectedItems: selectedItems.filter(id => id !== 'ALL').map(id => ({ id })),
+    selectionInverted: selectedItems?.includes('ALL'),
+    selectedItems: selectedItems && selectedItems.filter(id => id !== 'ALL').map(id => ({ id })),
     expandableRows: expandedItems
       ? {
           getItemChildren: item => item.children ?? [],
@@ -91,7 +91,7 @@ function renderTable(tableProps: Partial<TableProps>, selectedItems: string[], e
   const { container, rerender } = render(<InteractiveTable {...makeProps(tableProps, selectedItems, expandedItems)} />);
   return {
     wrapper: createWrapper(container).findTable()!,
-    rerender: (tableProps: Partial<TableProps>, selectedItems: string[], expandedItems?: string[]) =>
+    rerender: (tableProps: Partial<TableProps>, selectedItems?: string[], expandedItems?: string[]) =>
       rerender(<InteractiveTable {...makeProps(tableProps, selectedItems, expandedItems)} />),
   };
 }
@@ -128,7 +128,7 @@ function shiftClickRow(tableWrapper: TableWrapper, index: number) {
 }
 
 test('selects all items one by one and makes select-all indeterminate and then checked', () => {
-  const { wrapper } = renderTable({}, []);
+  const { wrapper } = renderTable({});
   expect(getTableSelection(wrapper)).toEqual({
     ALL: 'empty',
     '1': 'empty',
@@ -162,7 +162,7 @@ test('selects all items one by one and makes select-all indeterminate and then c
 });
 
 test('selects all items using select-all when no items selected', () => {
-  const { wrapper } = renderTable({}, []);
+  const { wrapper } = renderTable({});
   expect(getTableSelection(wrapper)).toEqual({
     ALL: 'empty',
     '1': 'empty',
