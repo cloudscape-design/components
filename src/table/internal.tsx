@@ -606,7 +606,7 @@ const InternalTable = React.forwardRef(
                             className={styles.row}
                             {...rowRoleProps}
                           >
-                            {loaderSelectionProps && (
+                            {selectionType && (
                               <TableTdElement
                                 {...sharedCellProps}
                                 className={styles['selection-control']}
@@ -614,7 +614,7 @@ const InternalTable = React.forwardRef(
                                 columnId={selectionColumnId}
                                 colIndex={0}
                               >
-                                {selectionType === 'group' ? (
+                                {selectionType === 'group' && loaderSelectionProps ? (
                                   <SelectionControl
                                     onFocusDown={moveFocusDown}
                                     onFocusUp={moveFocusUp}
