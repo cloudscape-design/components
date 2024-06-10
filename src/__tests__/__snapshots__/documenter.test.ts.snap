@@ -14202,6 +14202,7 @@ For example, the combination \`selectionInverted=true\` and \`selectedItems=[{ i
       "type": "ReadonlyArray<T>",
     },
     Object {
+      "defaultValue": "false",
       "description": "Specifies if select all was used when \`selectionType=\\"group\\"\`.",
       "name": "selectionInverted",
       "optional": true,
