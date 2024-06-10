@@ -67,7 +67,11 @@ function InteractiveTable(tableProps: TableProps<Item>) {
 }
 
 function renderTable(tableProps: Partial<TableProps>, selectedItems: string[], expandedItems?: string[]) {
-  const props: TableProps = {
+  const makeProps = (
+    tableProps: Partial<TableProps>,
+    selectedItems: string[],
+    expandedItems?: string[]
+  ): TableProps => ({
     items,
     columnDefinitions,
     selectionType: 'group',
@@ -83,9 +87,13 @@ function renderTable(tableProps: Partial<TableProps>, selectedItems: string[], e
         }
       : undefined,
     ...tableProps,
+  });
+  const { container, rerender } = render(<InteractiveTable {...makeProps(tableProps, selectedItems, expandedItems)} />);
+  return {
+    wrapper: createWrapper(container).findTable()!,
+    rerender: (tableProps: Partial<TableProps>, selectedItems: string[], expandedItems?: string[]) =>
+      rerender(<InteractiveTable {...makeProps(tableProps, selectedItems, expandedItems)} />),
   };
-  const { container } = render(<InteractiveTable {...props} />);
-  return createWrapper(container).findTable()!;
 }
 
 function getTableSelection(tableWrapper: TableWrapper) {
@@ -120,7 +128,7 @@ function shiftClickRow(tableWrapper: TableWrapper, index: number) {
 }
 
 test('selects all items one by one and makes select-all indeterminate and then checked', () => {
-  const wrapper = renderTable({}, []);
+  const { wrapper } = renderTable({}, []);
   expect(getTableSelection(wrapper)).toEqual({
     ALL: 'empty',
     '1': 'empty',
@@ -154,7 +162,7 @@ test('selects all items one by one and makes select-all indeterminate and then c
 });
 
 test('selects all items using select-all when no items selected', () => {
-  const wrapper = renderTable({}, []);
+  const { wrapper } = renderTable({}, []);
   expect(getTableSelection(wrapper)).toEqual({
     ALL: 'empty',
     '1': 'empty',
@@ -172,7 +180,7 @@ test('selects all items using select-all when no items selected', () => {
 });
 
 test('selects all items using select-all when some items selected', () => {
-  const wrapper = renderTable({}, ['2', '3']);
+  const { wrapper } = renderTable({}, ['2', '3']);
   expect(getTableSelection(wrapper)).toEqual({
     ALL: 'indeterminate',
     '1': 'empty',
@@ -190,7 +198,7 @@ test('selects all items using select-all when some items selected', () => {
 });
 
 test('unselects all items using select-all when all items selected', () => {
-  const wrapper = renderTable({}, ['ALL']);
+  const { wrapper } = renderTable({}, ['ALL']);
   expect(getTableSelection(wrapper)).toEqual({
     ALL: 'checked',
     '1': 'checked',
@@ -209,7 +217,7 @@ test('unselects all items using select-all when all items selected', () => {
 
 test.each([false, true])('shift selection on top level, selectionInverted=%s', selectionInverted => {
   const items = [{ id: '1' }, { id: '2' }, { id: '3' }, { id: '4' }, { id: '5' }, { id: '6' }, { id: '7' }];
-  const wrapper = renderTable({ items }, selectionInverted ? ['ALL'] : []);
+  const { wrapper } = renderTable({ items }, selectionInverted ? ['ALL'] : []);
   const empty = !selectionInverted ? 'empty' : 'checked';
   const checked = !selectionInverted ? 'checked' : 'empty';
 
@@ -253,10 +261,26 @@ test.each([false, true])('shift selection on top level, selectionInverted=%s', s
   });
 });
 
+test('shift selection is not performed when last item is no longer present', () => {
+  const items = [{ id: '1' }, { id: '2' }, { id: '3' }, { id: '4' }, { id: '5' }];
+  const { wrapper, rerender } = renderTable({ items }, []);
+
+  clickRow(wrapper, 3);
+  rerender({ items: items.filter(item => item.id !== '3') }, ['3']);
+  shiftClickRow(wrapper, 4);
+  expect(getTableSelection(wrapper)).toEqual({
+    ALL: 'indeterminate',
+    '1': 'empty',
+    '2': 'empty',
+    '4': 'empty',
+    '5': 'checked',
+  });
+});
+
 test.each(['pending', 'loading', 'error'] as const)(
   'progressive loader with status=%s selection state is derived from parent selection choice',
   status => {
-    const wrapper = renderTable({ getLoadingStatus: () => status }, []);
+    const { wrapper } = renderTable({ getLoadingStatus: () => status }, []);
     expect(getTableSelection(wrapper)).toEqual({
       ALL: 'empty',
       '1': 'empty',
@@ -297,7 +321,7 @@ test.each(['pending', 'loading', 'error'] as const)(
 test.each([false, true])(
   'selection is lifted when progressive loading status="finished", selectionInverted=%s',
   selectionInverted => {
-    const wrapper = renderTable({ getLoadingStatus: () => 'finished' }, selectionInverted ? ['ALL'] : []);
+    const { wrapper } = renderTable({ getLoadingStatus: () => 'finished' }, selectionInverted ? ['ALL'] : []);
     const empty = !selectionInverted ? 'empty' : 'checked';
     const checked = !selectionInverted ? 'checked' : 'empty';
 
@@ -324,7 +348,7 @@ test.each([false, true])(
   'selection is not lifted when progressive loading status!="finished", selectionInverted=%s',
   selectionInverted => {
     const status = (['pending', 'loading', 'error'] as const)[Math.floor(Math.random() * 3)];
-    const wrapper = renderTable({ getLoadingStatus: () => status }, selectionInverted ? ['ALL'] : []);
+    const { wrapper } = renderTable({ getLoadingStatus: () => status }, selectionInverted ? ['ALL'] : []);
     const empty = !selectionInverted ? 'empty' : 'checked';
     const checked = !selectionInverted ? 'checked' : 'empty';
 
@@ -352,7 +376,7 @@ test.each([false, true])(
 test.each([false, true])(
   'selection is preserved when expandable state changes, selectionInverted=%s',
   selectionInverted => {
-    const wrapper = renderTable({}, selectionInverted ? ['ALL'] : [], []);
+    const { wrapper } = renderTable({}, selectionInverted ? ['ALL'] : [], []);
     const empty = !selectionInverted ? 'empty' : 'checked';
     const checked = !selectionInverted ? 'checked' : 'empty';
 
@@ -394,7 +418,7 @@ test.each([false, true])(
 );
 
 test.each([false, true])('selection state is lifted, selectionInverted=%s', selectionInverted => {
-  const wrapper = renderTable({}, selectionInverted ? ['ALL'] : [], ['1', '1.3']);
+  const { wrapper } = renderTable({}, selectionInverted ? ['ALL'] : [], ['1', '1.3']);
   const empty = !selectionInverted ? 'empty' : 'checked';
   const checked = !selectionInverted ? 'checked' : 'empty';
 
@@ -430,7 +454,7 @@ test.each([false, true])('selection state is lifted, selectionInverted=%s', sele
 });
 
 test('selecting a parent makes all children selection consistent, selectionInverted=false', () => {
-  const wrapper = renderTable({}, [], ['1']);
+  const { wrapper } = renderTable({}, [], ['1']);
 
   // Selecting intermediate group when group is not self selected.
   wrapper.findRowSelectionArea(2)!.click(); // click 1.1
@@ -460,7 +484,7 @@ test('selecting a parent makes all children selection consistent, selectionInver
 });
 
 test('selecting a parent makes all children selection consistent, selectionInverted=true', () => {
-  const wrapper = renderTable({}, ['ALL'], ['1']);
+  const { wrapper } = renderTable({}, ['ALL'], ['1']);
 
   // Selecting intermediate group when group is not self selected.
   wrapper.findRowSelectionArea(2)!.click(); // click 1.1

@@ -191,9 +191,11 @@ export class ItemSelectionTree<T> {
   // because of the applied normalization.
   getState = (): { selectionInverted: boolean; selectedItems: T[] } => {
     const selectionInverted = this.itemSelectionState.has(rootItemKey);
-    const selectedItems = Array.from(this.itemSelectionState)
-      .filter(itemKey => itemKey !== rootItemKey)
-      .map(itemKey => this.getItemForKey(itemKey)!);
+    const selectedItems: T[] = [];
+    for (const itemKey of Array.from(this.itemSelectionState)) {
+      const item = this.getItemForKey(itemKey);
+      item && selectedItems.push(item);
+    }
     return { selectionInverted, selectedItems };
   };
 
@@ -204,10 +206,6 @@ export class ItemSelectionTree<T> {
   };
 
   toggleSome = (requestedItems: readonly T[]): ItemSelectionTree<T> => {
-    if (requestedItems.length === 0) {
-      return this;
-    }
-
     const clone = this.clone();
     const lastItemKey = clone.getKey(requestedItems[requestedItems.length - 1]);
     const isParentSelected = clone.itemProjectedParentSelectionState.has(lastItemKey);
