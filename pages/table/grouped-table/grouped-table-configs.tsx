@@ -2,18 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
-import {
-  Box,
-  CollectionPreferences,
-  CollectionPreferencesProps,
-  Link,
-  PropertyFilterProps,
-  SpaceBetween,
-  TableProps,
-} from '~components';
+import { Box, Link, PropertyFilterProps, SpaceBetween, TableProps } from '~components';
 import { TransactionRow } from './grouped-table-common';
 import { columnLabel } from '../shared-configs';
-import { contentDisplayPreferenceI18nStrings } from '../../common/i18n-strings';
 import { format } from 'date-fns';
 
 export function createColumns(): TableProps.ColumnDefinition<TransactionRow>[] {
@@ -107,91 +98,6 @@ export function createColumns(): TableProps.ColumnDefinition<TransactionRow>[] {
       sortingField: 'paymentMethod',
     },
   ];
-}
-
-export function createPreferences({
-  preferences,
-  setPreferences,
-}: {
-  preferences: CollectionPreferencesProps.Preferences;
-  setPreferences: (next: CollectionPreferencesProps.Preferences) => void;
-}) {
-  return (
-    <CollectionPreferences
-      title="Preferences"
-      confirmLabel="Confirm"
-      cancelLabel="Cancel"
-      onConfirm={({ detail }) => setPreferences(detail)}
-      preferences={preferences}
-      contentDisplayPreference={{
-        title: 'Column preferences',
-        description: 'Customize the columns visibility and order.',
-        options: [
-          {
-            id: 'group',
-            label: 'Group',
-            alwaysVisible: true,
-          },
-          {
-            id: 'type',
-            label: 'Type',
-          },
-          {
-            id: 'date',
-            label: 'Date',
-          },
-          {
-            id: 'origin',
-            label: 'Origin',
-          },
-          {
-            id: 'recipient',
-            label: 'Recipient',
-          },
-          {
-            id: 'currency',
-            label: 'Currency',
-          },
-          {
-            id: 'amountEur',
-            label: 'Amount EUR',
-          },
-          {
-            id: 'amountUsd',
-            label: 'Amount USD',
-          },
-          {
-            id: 'paymentMethod',
-            label: 'Payment Method',
-          },
-        ],
-        ...contentDisplayPreferenceI18nStrings,
-      }}
-      wrapLinesPreference={{
-        label: 'Wrap lines',
-        description: 'Wrap lines description',
-      }}
-      stickyColumnsPreference={{
-        firstColumns: {
-          title: 'First column(s)',
-          description: 'Keep the first column(s) visible while horizontally scrolling table content.',
-          options: [
-            { label: 'None', value: 0 },
-            { label: 'First column', value: 1 },
-            { label: 'First two columns', value: 2 },
-          ],
-        },
-        lastColumns: {
-          title: 'Stick last visible column',
-          description: 'Keep the last column visible when tables are wider than the viewport.',
-          options: [
-            { label: 'Last column', value: 1 },
-            { label: 'Last two columns', value: 2 },
-          ],
-        },
-      }}
-    />
-  );
 }
 
 export const filteringProperties: PropertyFilterProps.FilteringProperty[] = [
