@@ -38,10 +38,6 @@ export default class SelectWrapper extends DropdownHostComponentWrapper {
     return this.findDropdown(options).findComponent(`.${inputStyles['input-container']}`, InputWrapper);
   }
 
-  findInlineLabel(): ElementWrapper | null {
-    return this.findByClassName(buttonTriggerStyles['inline-label']);
-  }
-
   findPlaceholder(): ElementWrapper | null {
     return this.findByClassName(selectPartsStyles.placeholder);
   }
