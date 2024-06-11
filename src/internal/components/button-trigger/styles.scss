@@ -34,6 +34,10 @@
     padding-inline-end: styles.$control-icon-horizontal-padding;
   }
 
+  &.has-inlineLabelText {
+    margin-block-start: -7px;
+  }
+
   > .placeholder {
     @include styles.form-placeholder;
   }
@@ -113,4 +117,31 @@
     // Remove default paddings and just rely on center alignment of the content
     padding-block: 0;
   }
+}
+
+.inline-label-wrapper {
+  display: block;
+  margin-block-start: calc(awsui.$space-scaled-xs * -1);
+}
+
+.inline-label {
+  box-sizing: border-box;
+  display: inline-block;
+  color: awsui.$color-text-form-label;
+  font-weight: awsui.$font-display-label-weight;
+  font-size: 12px;
+  line-height: 14px;
+  position: relative;
+  inset-inline-start: 10px;
+  padding-block: awsui.$space-scaled-xs 0;
+  padding-inline: awsui.$space-scaled-xxs;
+  max-inline-size: calc(100% - 22px);
+  // Stepped gradient background for background of label overlap between input and background.
+  background-image: linear-gradient(
+    to bottom,
+    transparent calc(100% - (styles.$control-border-width + 3px)),
+    awsui.$color-background-input-default 1px
+  );
+  background-position: bottom;
+  z-index: 1;
 }
