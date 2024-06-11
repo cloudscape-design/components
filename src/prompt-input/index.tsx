@@ -43,7 +43,7 @@ const PromptInput = React.forwardRef(
     }: PromptInputProps,
     ref: Ref<PromptInputProps.Ref>
   ) => {
-    const { __internalRootRef } = useBaseComponent('Textarea', {
+    const { __internalRootRef } = useBaseComponent('PromptInput', {
       props: { autoComplete, autoFocus, disableBrowserAutocorrect, readOnly, spellcheck },
     });
     const { ariaLabelledby, ariaDescribedby, controlId, invalid, warning } = useFormFieldContext(rest);
@@ -57,7 +57,7 @@ const PromptInput = React.forwardRef(
     const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
       if (event.key === 'Enter' && !event.shiftKey) {
         event.preventDefault();
-        onAction && onAction();
+        fireNonCancelableEvent(onAction, { value });
       }
       if (onKeyDown) {
         fireKeyboardEvent(onKeyDown, event);
@@ -65,9 +65,7 @@ const PromptInput = React.forwardRef(
     };
 
     const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-      if (onChange) {
-        fireNonCancelableEvent(onChange, { value: event.target.value });
-      }
+      fireNonCancelableEvent(onChange, { value: event.target.value });
       adjustTextareaHeight();
     };
 
@@ -151,7 +149,7 @@ const PromptInput = React.forwardRef(
               ariaLabel={actionButtonAriaLabel}
               disabled={disableActionButton}
               iconName={actionButtonIconName}
-              onClick={() => onAction && onAction()}
+              onClick={() => fireNonCancelableEvent(onAction, { value })}
               variant="icon"
             />
           )}
