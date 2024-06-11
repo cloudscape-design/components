@@ -16,7 +16,7 @@ const items: ButtonGroupProps.ItemOrGroup[] = [
 ];
 
 describe('InternalButtonGroup Component', () => {
-  it('focuses the correct item using imperative handle', () => {
+  it('focuses the correct item', () => {
     const TestComponent = () => {
       const ref = useRef<ButtonGroupProps.Ref>(null);
 
@@ -35,7 +35,7 @@ describe('InternalButtonGroup Component', () => {
     expect(button).toHaveFocus();
   });
 
-  it('focuses on the more items', () => {
+  it('focuses on more items button', () => {
     const TestComponent = () => {
       const ref = useRef<ButtonGroupProps.Ref>(null);
 
