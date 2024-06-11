@@ -24,9 +24,8 @@ describe('KeyValuePairs', () => {
         />
       );
 
-      expect(wrapper.findItems()[0].findPair()!.getElement()).not.toBeNull();
-      expect(wrapper.findItems()[0].findPair()!.findLabel()!.getElement()).toHaveTextContent('Label for key');
-      expect(wrapper.findItems()[0].findPair()!.findValue()!.getElement()).toHaveTextContent('Value');
+      expect(wrapper.findItems()[0]!.findLabel()!.getElement()).toHaveTextContent('Label for key');
+      expect(wrapper.findItems()[0]!.findValue()!.getElement()).toHaveTextContent('Value');
     });
 
     test('renders label with info correctly', () => {
@@ -42,7 +41,7 @@ describe('KeyValuePairs', () => {
         />
       );
 
-      expect(wrapper.findItems()[0].findPair()!.findInfo()!.getElement()).toHaveTextContent('Info');
+      expect(wrapper.findItems()[0]!.findInfo()!.getElement()).toHaveTextContent('Info');
     });
   });
 
@@ -140,8 +139,8 @@ describe('KeyValuePairs', () => {
       expect(wrapper.findItems()[0].findGroupPairs()).toHaveLength(2);
       expect(wrapper.findItems()[0].findGroupPairs()![0].findLabel()!.getElement()).toHaveTextContent('Column label 1');
       expect(wrapper.findItems()[0].findGroupPairs()![0].findValue()!.getElement()).toHaveTextContent('Column value 1');
-      expect(wrapper.findItems()[1].findPair()!.findLabel()!.getElement()).toHaveTextContent('Label for key');
-      expect(wrapper.findItems()[1].findPair()!.findValue()!.getElement()).toHaveTextContent('Value');
+      expect(wrapper.findItems()[1]!.findLabel()!.getElement()).toHaveTextContent('Label for key');
+      expect(wrapper.findItems()[1]!.findValue()!.getElement()).toHaveTextContent('Value');
     });
   });
 });

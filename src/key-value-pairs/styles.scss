@@ -10,24 +10,22 @@
   @include styles.styles-reset;
 }
 
-.column {
-  display: flex;
-  flex-direction: column;
-  row-gap: awsui.$space-scaled-m;
+.groupTitle {
+  padding-block-end: awsui.$space-scaled-m;
 }
 
-.list {
+.groupList {
   @include styles.styles-reset-dl;
   display: flex;
   flex-direction: column;
   row-gap: awsui.$space-scaled-m;
 }
 
-.groupTitle {
-  padding-block-end: awsui.$space-scaled-m;
+.groupListItem {
+  /* used in test-utils */
 }
 
-.label {
+.term {
   @include styles.font-label;
   color: awsui.$color-text-label;
   margin-block-end: awsui.$space-key-value-gap;
@@ -37,7 +35,7 @@
   @include styles.info-link-spacing;
 }
 
-.description {
+.detail {
   @include styles.styles-reset;
   margin-inline-start: 0;
   margin-block-start: 0;

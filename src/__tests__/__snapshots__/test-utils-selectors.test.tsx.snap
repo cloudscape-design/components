@@ -166,6 +166,7 @@ Object {
   ],
   "column-layout": Array [
     "awsui_column-layout_vvxn7",
+    "awsui_item_zqq3x",
   ],
   "container": Array [
     "awsui_content-wrapper_14iqq",
@@ -364,13 +365,11 @@ Object {
     "awsui_wrapper_1wepg",
   ],
   "key-value-pairs": Array [
-    "awsui_description_1y9fy",
+    "awsui_detail_1y9fy",
+    "awsui_groupListItem_1y9fy",
     "awsui_info_1y9fy",
-    "awsui_item_1y9fy",
     "awsui_key-label_1y9fy",
     "awsui_key-value-pairs_1y9fy",
-    "awsui_list_1y9fy",
-    "awsui_pair_1y9fy",
   ],
   "line-chart": Array [
     "awsui_root_g9v3m",
