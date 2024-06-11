@@ -4,7 +4,7 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import Tooltip from '../../../lib/components/button-group/tooltip';
 
-describe('Tooltip component', () => {
+describe('Tooltip Component', () => {
   let trackRef: {
     current: HTMLDivElement;
   };
