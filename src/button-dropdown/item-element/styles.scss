@@ -68,13 +68,13 @@
   /* stylelint-disable selector-max-type */
   .has-category-header:not(.has-checkmark) > &,
   .has-category-header:not(.has-checkmark) > span > & {
-    padding-inline-start: calc(#{awsui.$space-s} + #{awsui.$space-l});
+    padding-inline-start: calc(#{awsui.$space-xs} + #{awsui.$space-l});
   }
   /* stylelint-enable selector-max-type */
 }
 
 .icon {
-  padding-inline-end: awsui.$space-xs;
+  padding-inline-end: awsui.$space-xxs;
   flex-shrink: 0;
 
   &.checkmark {
