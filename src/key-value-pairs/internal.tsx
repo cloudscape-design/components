@@ -10,8 +10,8 @@ import Box from '../box/internal';
 
 export { KeyValuePairsProps };
 
-export const InternalKeyValuePair = ({ label, info, value }: KeyValuePairsProps.KeyValuePair) => (
-  <div className={styles.pair}>
+const InternalKeyValuePair = ({ label, info, value }: KeyValuePairsProps.KeyValuePair) => (
+  <>
     <dt className={styles.label}>
       <label className={styles['key-label']}>{label}</label>
       <InfoLinkLabelContext.Provider value={label}>
@@ -19,39 +19,54 @@ export const InternalKeyValuePair = ({ label, info, value }: KeyValuePairsProps.
       </InfoLinkLabelContext.Provider>
     </dt>
     <dd className={styles.description}>{value}</dd>
-  </div>
+  </>
+);
+
+const InternalKeyValuePairGroup = ({ label, value }: { label?: React.ReactNode; value: React.ReactNode }) => (
+  <>
+    {label && <dt className={styles.groupTitle}>{label}</dt>}
+    <dd className={styles.description}>{value}</dd>
+  </>
 );
 
 const InternalKeyValuePairs = React.forwardRef(
   ({ columns = 1, items, className, ...rest }: KeyValuePairsProps, ref: React.Ref<HTMLDivElement>) => {
     return (
       <div {...rest} className={clsx(styles['key-value-pairs'], className)} ref={ref}>
-        <ColumnLayout tagOverride="dl" columns={Math.min(columns, 4)} variant="text-grid">
+        {/*
+          minColumnWidth={150} is set to use FlexibleColumnLayout which has only 1 nested div wrapper for column items,
+          otherwise GridColumnLayout will be used which has 2 nested div, which is not a11y compatible for dl -> dt/dd relationship
+        */}
+        <ColumnLayout tagOverride="dl" columns={Math.min(columns, 4)} variant="text-grid" minColumnWidth={150}>
           {items.map((pair, index) => {
             if ('items' in pair) {
               return (
-                <div className={styles.item} key={index}>
-                  <div className={styles.column}>
-                    {pair.title && (
+                /* InternalKeyValuePairGroup tells react to treat the dt-dd pair inside as an individual item.
+                 * Otherwise, without this component, they will be rendered as a list, which ruins the html structure.
+                 *  */
+                <InternalKeyValuePairGroup
+                  key={index}
+                  label={
+                    pair.title && (
                       <Box variant="h3" padding="n">
                         {pair.title}
                       </Box>
-                    )}
+                    )
+                  }
+                  value={
                     <dl className={styles.list}>
                       {pair.items.map((item, itemIndex) => (
-                        <InternalKeyValuePair key={itemIndex} {...item} />
+                        <div key={itemIndex}>
+                          <InternalKeyValuePair {...item} />
+                        </div>
                       ))}
                     </dl>
-                  </div>
-                </div>
+                  }
+                />
               );
             }
 
-            return (
-              <div className={styles.item} key={index}>
-                <InternalKeyValuePair {...pair} />
-              </div>
-            );
+            return <InternalKeyValuePair key={index} {...pair} />;
           })}
         </ColumnLayout>
       </div>

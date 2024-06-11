@@ -17,21 +17,14 @@
 }
 
 .list {
+  @include styles.styles-reset-dl;
   display: flex;
   flex-direction: column;
   row-gap: awsui.$space-scaled-m;
-  margin-block-start: 0;
-  margin-block-end: 0;
-  margin-inline-start: 0;
-  margin-inline-end: 0;
 }
 
-.item {
-  /* used in test-utils */
-}
-
-.pair {
-  /* used in test-utils */
+.groupTitle {
+  padding-block-end: awsui.$space-scaled-m;
 }
 
 .label {

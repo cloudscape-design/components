@@ -3,6 +3,11 @@
  SPDX-License-Identifier: Apache-2.0
 */
 @use '../../internal/styles/tokens' as awsui;
+@use '../../internal/styles' as styles;
+
+dl.css-grid {
+  @include styles.styles-reset-dl;
+}
 
 .css-grid {
   display: grid;
