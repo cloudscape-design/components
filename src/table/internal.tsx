@@ -175,7 +175,7 @@ const InternalTable = React.forwardRef(
       toolsHeaderPerformanceMarkRef.current?.querySelector<HTMLElement>(`.${headerStyles['heading-text']}`)
         ?.innerText ?? toolsHeaderPerformanceMarkRef.current?.innerText;
 
-    usePerformanceMarks(
+    const performanceMarkAttributes = usePerformanceMarks(
       'table',
       true,
       tableRefObject,
@@ -250,6 +250,7 @@ const InternalTable = React.forwardRef(
 
     const headerIdRef = useRef<string | undefined>(undefined);
     const isLabelledByHeader = !ariaLabels?.tableLabel && !!header;
+    const ariaLabelledby = isLabelledByHeader && headerIdRef.current ? headerIdRef.current : undefined;
     const setHeaderRef = useCallback((id: string) => {
       headerIdRef.current = id;
     }, []);
@@ -323,6 +324,7 @@ const InternalTable = React.forwardRef(
       tableRole,
       isScrollable: !!(tableWidth && containerWidth && tableWidth > containerWidth),
       ariaLabel: ariaLabels?.tableLabel,
+      ariaLabelledby,
     });
 
     const getMouseDownTarget = useMouseDownTarget();
@@ -442,6 +444,7 @@ const InternalTable = React.forwardRef(
                 getTable={() => tableRefObject.current}
               >
                 <table
+                  {...performanceMarkAttributes}
                   ref={tableRef}
                   className={clsx(
                     styles.table,
@@ -453,7 +456,7 @@ const InternalTable = React.forwardRef(
                     totalItemsCount,
                     totalColumnsCount: totalColumnsCount,
                     ariaLabel: ariaLabels?.tableLabel,
-                    ariaLabelledBy: isLabelledByHeader && headerIdRef.current ? headerIdRef.current : undefined,
+                    ariaLabelledby,
                   })}
                 >
                   <Thead

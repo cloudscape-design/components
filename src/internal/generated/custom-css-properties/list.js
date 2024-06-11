@@ -27,7 +27,6 @@ const customCssPropertiesList = [
   'mainOffsetLeft',
   'mainTemplateRows',
   'mobileBarHeight',
-  'notificationsGap',
   'notificationsHeight',
   'offsetTop',
   'overlapHeight',
