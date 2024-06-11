@@ -13,7 +13,6 @@
 .code-editor {
   @include styles.styles-reset;
   container-type: inline-size;
-  container-name: code-editor;
   display: block;
   border-block: awsui.$border-item-width solid awsui.$color-border-code-editor-default;
   border-inline: awsui.$border-item-width solid awsui.$color-border-code-editor-default;
@@ -178,7 +177,7 @@
 
   /* stylelint-disable plugin/no-unsupported-browser-features */
   @supports (contain: inline-size) {
-    @container code-editor not (max-width: 500px) {
+    @container not (max-width: 500px) {
       > .count {
         display: none;
       }
@@ -188,7 +187,7 @@
       }
     }
 
-    @container code-editor (max-width: 500px) {
+    @container (max-width: 500px) {
       > .count {
         display: inline;
       }
@@ -198,8 +197,8 @@
       }
     }
   }
-  /* stylelint-enable plugin/no-unsupported-browser-features */
 }
+/* stylelint-enable plugin/no-unsupported-browser-features */
 
 $default-height: 480px;
 .loading-screen,
