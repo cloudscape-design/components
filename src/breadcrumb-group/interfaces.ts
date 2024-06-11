@@ -3,6 +3,7 @@
 import { BaseNavigationDetail, CancelableEventHandler } from '../internal/events';
 import { LinkItem } from '../button-dropdown/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 
 export interface BreadcrumbGroupProps<T extends BreadcrumbGroupProps.Item = BreadcrumbGroupProps.Item>
   extends BaseComponentProps {
@@ -53,6 +54,9 @@ export namespace BreadcrumbGroupProps {
     href: string;
   }
 }
+
+export type InternalBreadcrumbGroupProps<T extends BreadcrumbGroupProps.Item = BreadcrumbGroupProps.Item> =
+  BreadcrumbGroupProps<T> & InternalBaseComponentProps;
 
 export interface BreadcrumbItemProps<T extends BreadcrumbGroupProps.Item> {
   item: T;
