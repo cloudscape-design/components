@@ -6,16 +6,19 @@ import clsx from 'clsx';
 import { Transition } from '../transition';
 import PopoverContainer from '../../../popover/container';
 import PopoverBody from '../../../popover/body';
+import { PopoverProps } from '../../../popover/interfaces';
 import Portal from '../portal';
 import popoverStyles from '../../../popover/styles.css.js';
 import styles from './styles.css.js';
 
 export interface TooltipProps {
   value: number | string;
+  header?: React.ReactNode;
+  size?: PopoverProps.Size;
   trackRef: React.RefObject<HTMLElement | SVGElement>;
 }
 
-export default function Tooltip({ value, trackRef }: TooltipProps) {
+export default function Tooltip({ value, header, trackRef, size = 'small' }: TooltipProps) {
   return (
     <Portal>
       <div className={styles.root}>
@@ -24,7 +27,7 @@ export default function Tooltip({ value, trackRef }: TooltipProps) {
             <PopoverContainer
               trackRef={trackRef}
               trackKey={value}
-              size="small"
+              size={size}
               fixedWidth={false}
               position="top"
               arrow={position => (
@@ -34,7 +37,7 @@ export default function Tooltip({ value, trackRef }: TooltipProps) {
                 </div>
               )}
             >
-              <PopoverBody dismissButton={false} dismissAriaLabel={undefined} onDismiss={undefined} header={undefined}>
+              <PopoverBody dismissButton={false} dismissAriaLabel={undefined} onDismiss={undefined} header={header}>
                 {value}
               </PopoverBody>
             </PopoverContainer>

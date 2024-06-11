@@ -67,6 +67,11 @@
     text-decoration: none;
     pointer-events: none;
     cursor: auto;
+
+    &.has-tooltip {
+      pointer-events: initial;
+      border-color: awsui.$color-border-input-default;
+    }
   }
 }
 
