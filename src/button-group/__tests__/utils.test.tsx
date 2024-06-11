@@ -10,7 +10,7 @@ import {
 } from '../../../lib/components/button-group/utils';
 
 describe('isItemGroup', () => {
-  it('should return true if item is a group', () => {
+  test('should return true if item is a group', () => {
     const itemGroup: ButtonGroupProps.ItemOrGroup = {
       id: '1',
       text: 'Item Group 1',
@@ -23,7 +23,7 @@ describe('isItemGroup', () => {
     expect(isItemGroup(itemGroup)).toBe(true);
   });
 
-  it('should return false if item is not a group', () => {
+  test('should return false if item is not a group', () => {
     const item: ButtonGroupProps.ItemOrGroup = {
       id: '1',
       text: 'Item 1',
@@ -32,7 +32,7 @@ describe('isItemGroup', () => {
     expect(isItemGroup(item)).toBe(false);
   });
 
-  it('should split items into primary and secondary based on the limit', () => {
+  test('should split items into primary and secondary based on the limit', () => {
     const items: ButtonGroupProps.ItemOrGroup[] = [
       { id: '1', text: 'Item 1' },
       { id: '2', text: 'Item 2' },
@@ -47,7 +47,7 @@ describe('isItemGroup', () => {
     expect(result.secondary.length).toBe(1);
   });
 
-  it('should place all items in secondary if limit is 0', () => {
+  test('should place all items in secondary if limit is 0', () => {
     const items: ButtonGroupProps.ItemOrGroup[] = [
       { id: '1', text: 'Item 1' },
       { id: '2', text: 'Item 2' },
@@ -62,7 +62,7 @@ describe('isItemGroup', () => {
     expect(result.secondary.length).toBe(6);
   });
 
-  it('should find item by id in a flat structure', () => {
+  test('should find item by id in a flat structure', () => {
     const items: ButtonGroupProps.ItemOrGroup[] = [
       { id: '1', text: 'Item 1' },
       { id: '2', text: 'Item 2' },
@@ -72,11 +72,11 @@ describe('isItemGroup', () => {
     expect(findItemById(items, '1')).toEqual({ id: '1', text: 'Item 1' });
   });
 
-  it('should return null if item is not found', () => {
+  test('should return null if item is not found', () => {
     expect(findItemById([], '5')).toBe(null);
   });
 
-  it('should find item by id in a nested structure', () => {
+  test('should find item by id in a nested structure', () => {
     const items: ButtonGroupProps.ItemOrGroup[] = [
       { id: '1', text: 'Item 1' },
       { id: '2', text: 'Item 2' },
@@ -94,7 +94,7 @@ describe('isItemGroup', () => {
     expect(findItemById(items, '5')).toEqual({ id: '5', text: 'Item 5' });
   });
 
-  it('should convert items to dropdown items', () => {
+  test('should convert items to dropdown items', () => {
     const items: ButtonGroupProps.ItemOrGroup[] = [
       { id: '1', text: 'Item 1' },
       { id: '2', text: 'Item 2' },
@@ -113,7 +113,7 @@ describe('isItemGroup', () => {
     ]);
   });
 
-  it('should return the first loading item', () => {
+  test('should return the first loading item', () => {
     const items: ButtonGroupProps.ItemOrGroup[] = [
       { id: '1', text: 'Item 1' },
       { id: '2', text: 'Item 2', loading: true },
@@ -123,7 +123,7 @@ describe('isItemGroup', () => {
     expect(getFirstLoadingItem(items)).toEqual({ id: '2', text: 'Item 2', loading: true });
   });
 
-  it('should return null if no item is loading', () => {
+  test('should return null if no item is loading', () => {
     const items: ButtonGroupProps.ItemOrGroup[] = [
       { id: '1', text: 'Item 1' },
       { id: '2', text: 'Item 2' },
