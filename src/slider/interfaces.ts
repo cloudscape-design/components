@@ -77,7 +77,7 @@ export interface SliderProps extends BaseComponentProps, FormFieldValidationCont
   i18nStrings?: SliderProps.I18nStrings;
 
   /**
-   * Specifies if the control is readOnly, which prevents the
+   * Specifies if the control is read-only, which prevents the
    * user from modifying the value, but does not prevent the value from
    * being included in a form submission. A read-only control is still focusable.
    */

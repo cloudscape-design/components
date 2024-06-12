@@ -144,7 +144,7 @@ export interface BaseSelectProps
   onFocus?: NonCancelableEventHandler;
 
   /**
-   * Specifies if the control is readOnly, which prevents the
+   * Specifies if the control is read-only, which prevents the
    * user from modifying the value and opening the dropdown. A read-only control is still focusable.
    */
   readOnly?: boolean;

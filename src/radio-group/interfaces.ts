@@ -57,7 +57,7 @@ export interface RadioGroupProps extends BaseComponentProps, FormFieldControlPro
   controlId?: string;
 
   /**
-   * Specifies if the whole group is readOnly, which prevents the
+   * Specifies if the whole group is read-only, which prevents the
    * user from modifying the value, but does not prevent the value from
    * being included in a form submission. A read-only control is still focusable.
    */
