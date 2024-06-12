@@ -175,8 +175,8 @@
     /* used in test-utils */
   }
 
-  /* stylelint-disable plugin/no-unsupported-browser-features */
   @supports (contain: inline-size) {
+    /* stylelint-disable plugin/no-unsupported-browser-features */
     @container not (max-width: 500px) {
       > .count {
         display: none;
@@ -196,9 +196,9 @@
         display: none;
       }
     }
+    /* stylelint-enable plugin/no-unsupported-browser-features */
   }
 }
-/* stylelint-enable plugin/no-unsupported-browser-features */
 
 $default-height: 480px;
 .loading-screen,
