@@ -6,6 +6,7 @@ import Avatar, { AvatarProps } from '../../../lib/components/avatar';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import loadingDotsStyles from '../../../lib/components/avatar/loading-dots/styles.selectors.js';
+import '../../__a11y__/to-validate-a11y';
 
 const defaultAvatarProps: AvatarProps = { ariaLabel: 'Avatar' };
 
@@ -25,12 +26,7 @@ afterEach(() => {
 
 describe('Avatar component', () => {
   describe('Basic', () => {
-    test('Renders avatar', () => {
-      const wrapper = renderAvatar({ ...defaultAvatarProps });
-      wrapper.focus();
-    });
-
-    test('Shows tooltip on hover', () => {
+    test('Shows tooltip on focus', () => {
       const tooltipText = 'Jane Doe';
       const wrapper = renderAvatar({ ...defaultAvatarProps, color: 'default', tooltipText });
       wrapper.focus();
@@ -87,14 +83,15 @@ describe('Avatar component', () => {
   });
 
   describe('a11y', () => {
-    test('Validates', () => {
-      const wrapper = renderAvatar({
+    test('Validates', async () => {
+      const props: AvatarProps = {
         color: 'default',
         initials: 'JD',
         tooltipText: 'Jane Doe',
         ariaLabel: 'User avatar',
-      });
-      expect(wrapper.getElement()).toValidateA11y;
+      };
+      const { container } = render(<Avatar {...props} />);
+      await expect(container).toValidateA11y();
     });
 
     test('ariaLabel is directly used', () => {
