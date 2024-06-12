@@ -87,7 +87,7 @@ const permutations = createPermutations<MultiselectProps & { inlineTokens?: bool
     readOnly: [true],
     tokenLimit: [2],
     options: [options],
-    selectedOptions: [[options[0], options[1]]],
+    selectedOptions: [[options[0], options[1], options[1]]],
     deselectAriaLabel: [deselectAriaLabel],
     i18nStrings: [i18nStrings],
     inlineTokens: [true, false],

@@ -295,6 +295,19 @@ describe('Token group', () => {
     expect(wrapper.findTokenToggle()!.getElement()).toHaveTextContent('Show more (+1)');
   });
 
+  test('displays show more button when tokenLimit is collapsed (readOnly state)', () => {
+    const { wrapper } = renderMultiselect(
+      <Multiselect
+        selectedOptions={defaultOptions.slice(0, 2)}
+        options={defaultOptions}
+        i18nStrings={i18nStrings}
+        tokenLimit={1}
+        readOnly={true}
+      />
+    );
+    expect(wrapper.findTokenToggle()!.getElement()).toHaveTextContent('Show more (+1)');
+  });
+
   test('displays show fewer button when tokenlist is expanded', () => {
     const { wrapper } = renderMultiselect(
       <Multiselect
