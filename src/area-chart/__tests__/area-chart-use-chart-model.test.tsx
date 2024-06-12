@@ -167,7 +167,7 @@ describe('useChartModel', () => {
       expect(wrapper.findHighlightedPoint()?.getElement()).toBeEmptyDOMElement();
     });
 
-    describe('navigation across X axis', () => {
+    describe('navigation across X axis, ltr', () => {
       it('highlights next or previous point in the data series when a series is focused', () => {
         const { wrapper } = renderChartModelHook({
           height: 0,
@@ -189,6 +189,16 @@ describe('useChartModel', () => {
 
         act(() => wrapper.keydown(KeyCode.right));
         expect(wrapper.findHighlightedPoint()?.getElement()).toHaveTextContent('1,4');
+
+        act(() => wrapper.keydown(KeyCode.right));
+        expect(wrapper.findHighlightedPoint()?.getElement()).toHaveTextContent('2,6');
+
+        act(() => wrapper.keydown(KeyCode.left));
+        expect(wrapper.findHighlightedPoint()?.getElement()).toHaveTextContent('1,4');
+
+        act(() => wrapper.keydown(KeyCode.down));
+        act(() => wrapper.keydown(KeyCode.up));
+        expect(wrapper.findHighlightedPoint()?.getElement()).toHaveTextContent('1,4');
       });
 
       it('highlights next or previous X when no series is focused', () => {
@@ -209,6 +219,67 @@ describe('useChartModel', () => {
         expect(wrapper.findHighlightedX()?.getElement()).toHaveTextContent('0');
 
         act(() => wrapper.keydown(KeyCode.right));
+        expect(wrapper.findHighlightedX()?.getElement()).toHaveTextContent('1');
+      });
+    });
+
+    describe('navigation across X axis, rtl', () => {
+      it('highlights next or previous point in the data series when a series is focused', () => {
+        const { wrapper } = renderChartModelHook({
+          height: 0,
+          highlightedSeries: null,
+          setHighlightedSeries: (_series: AreaChartProps.Series<ChartDataTypes> | null) => _series,
+          setVisibleSeries: (_series: readonly AreaChartProps.Series<ChartDataTypes>[]) => _series,
+          width: 0,
+          xDomain: undefined,
+          xScaleType: 'linear',
+          yScaleType: 'linear',
+          externalSeries: series,
+          visibleSeries: series,
+          popoverRef: { current: null },
+        });
+        act(() => wrapper.focus());
+
+        wrapper.getElement().style.direction = 'rtl';
+
+        act(() => wrapper.keydown(KeyCode.down));
+        expect(wrapper.findHighlightedPoint()?.getElement()).toHaveTextContent('0,2');
+
+        act(() => wrapper.keydown(KeyCode.left));
+        expect(wrapper.findHighlightedPoint()?.getElement()).toHaveTextContent('1,4');
+
+        act(() => wrapper.keydown(KeyCode.left));
+        expect(wrapper.findHighlightedPoint()?.getElement()).toHaveTextContent('2,6');
+
+        act(() => wrapper.keydown(KeyCode.right));
+        expect(wrapper.findHighlightedPoint()?.getElement()).toHaveTextContent('1,4');
+
+        act(() => wrapper.keydown(KeyCode.down));
+        act(() => wrapper.keydown(KeyCode.up));
+        expect(wrapper.findHighlightedPoint()?.getElement()).toHaveTextContent('1,4');
+      });
+
+      it('highlights next or previous X when no series is focused', () => {
+        const { wrapper } = renderChartModelHook({
+          height: 0,
+          highlightedSeries: null,
+          setHighlightedSeries: (_series: AreaChartProps.Series<ChartDataTypes> | null) => _series,
+          setVisibleSeries: (_series: readonly AreaChartProps.Series<ChartDataTypes>[]) => _series,
+          width: 0,
+          xDomain: undefined,
+          xScaleType: 'linear',
+          yScaleType: 'linear',
+          externalSeries: series,
+          visibleSeries: series,
+          popoverRef: { current: null },
+        });
+        act(() => wrapper.focus());
+
+        wrapper.getElement().style.direction = 'rtl';
+
+        expect(wrapper.findHighlightedX()?.getElement()).toHaveTextContent('0');
+
+        act(() => wrapper.keydown(KeyCode.left));
         expect(wrapper.findHighlightedX()?.getElement()).toHaveTextContent('1');
       });
     });

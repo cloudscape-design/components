@@ -27,7 +27,6 @@ export default function Layout({ children }: LayoutProps) {
     drawersTriggerCount,
     footerHeight,
     hasNotificationsContent,
-    hasStickyBackground,
     hasOpenDrawer,
     headerHeight,
     isBackgroundOverlapDisabled,
@@ -42,7 +41,6 @@ export default function Layout({ children }: LayoutProps) {
     notificationsHeight,
     __embeddedViewMode,
     splitPanelPosition,
-    stickyNotifications,
     splitPanelDisplayed,
   } = useAppLayoutInternals();
 
@@ -70,10 +68,10 @@ export default function Layout({ children }: LayoutProps) {
           [styles['has-header']]: contentHeader,
           [styles['has-max-content-width']]: maxContentWidth && maxContentWidth > 0,
           [styles['has-split-panel']]: splitPanelDisplayed,
-          [styles['has-sticky-background']]: hasStickyBackground,
-          [styles['has-sticky-notifications']]: stickyNotifications && hasNotificationsContent,
           [styles['is-overlap-disabled']]: isBackgroundOverlapDisabled,
           [styles['is-hide-mobile-toolbar']]: __embeddedViewMode,
+          [styles['has-left-toggles-gutter']]: !(isMobile || navigationHide || navigationOpen),
+          [styles['has-right-toggles-gutter']]: !isMobile && !hasContentGapRight,
         },
         testutilStyles.root
       )}

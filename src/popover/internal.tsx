@@ -30,6 +30,7 @@ export interface InternalPopoverProps extends PopoverProps, InternalBaseComponen
 
 export interface InternalPopoverRef {
   dismissPopover: () => void;
+  focus: HTMLElement['focus'];
 }
 
 export default React.forwardRef(InternalPopover);
@@ -47,6 +48,7 @@ function InternalPopover(
     content,
     triggerAriaLabel,
 
+    wrapTriggerText = true,
     renderWithPortal = false,
 
     __onOpen,
@@ -99,6 +101,10 @@ function InternalPopover(
 
   useImperativeHandle(ref, () => ({
     dismissPopover: onDismiss,
+    focus: () => {
+      setVisible(false);
+      focusTrigger();
+    },
   }));
 
   useEffect(() => {
@@ -114,12 +120,10 @@ function InternalPopover(
       }
     };
 
-    // useCapture=false makes sure this listener is called after the one attached to the element.
-    // the options.capture notation is unsupported by IE.
-    document.addEventListener('mousedown', onDocumentClick, false);
+    document.addEventListener('mousedown', onDocumentClick);
 
     return () => {
-      document.removeEventListener('mousedown', onDocumentClick, false);
+      document.removeEventListener('mousedown', onDocumentClick);
     };
   }, []);
 
@@ -187,13 +191,14 @@ function InternalPopover(
       {triggerType === 'text' ? (
         <button
           {...triggerProps}
+          className={clsx(triggerProps.className, wrapTriggerText === false && styles['overflow-ellipsis'])}
           tabIndex={triggerTabIndex}
           type="button"
           aria-haspopup="dialog"
           id={referrerId}
           aria-label={triggerAriaLabel}
         >
-          <span className={styles['trigger-inner-text']}>{children}</span>
+          {children}
         </button>
       ) : (
         <span {...triggerProps} id={referrerId}>

@@ -13,7 +13,10 @@ export default class FocusTracker {
 
   private currentlyFocused = false;
 
-  constructor(private node: HTMLElement, { onFocusEnter, onFocusLeave }: FocusTrackerOptions) {
+  constructor(
+    private node: HTMLElement,
+    { onFocusEnter, onFocusLeave }: FocusTrackerOptions
+  ) {
     this.onFocusEnter = onFocusEnter;
     this.onFocusLeave = onFocusLeave;
   }

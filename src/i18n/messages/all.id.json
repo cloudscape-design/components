@@ -262,6 +262,9 @@
     "selectedAriaLabel": "Dipilih",
     "recoveryText": "Coba lagi"
   },
+  "slider": {
+    "i18nStrings.valueTextRange": "{value}, antara {previousValue} dan {nextValue}"
+  },
   "split-panel": {
     "i18nStrings.closeButtonAriaLabel": "Tutup panel",
     "i18nStrings.openButtonAriaLabel": "Buka panel",

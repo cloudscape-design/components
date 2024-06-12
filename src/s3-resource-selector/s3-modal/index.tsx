@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useReducer, useRef } from 'react';
-import InternalBreadcrumbGroup from '../../breadcrumb-group/internal';
+import { BreadcrumbGroupImplementation } from '../../breadcrumb-group/implementation';
 import { InternalButton } from '../../button/internal';
 import InternalModal from '../../modal/internal';
 import InternalSpaceBetween from '../../space-between/internal';
@@ -148,7 +148,7 @@ export function S3Modal({
         }
       >
         <InternalSpaceBetween size={isVisualRefresh ? 'xxs' : 'xs'}>
-          <InternalBreadcrumbGroup
+          <BreadcrumbGroupImplementation
             ariaLabel={i18n('i18nStrings.labelBreadcrumbs', i18nStrings?.labelBreadcrumbs)}
             expandAriaLabel={i18nStrings?.labelExpandBreadcrumbs}
             onFollow={event => {

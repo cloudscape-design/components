@@ -11,7 +11,7 @@ import {
   scrollRectangleIntoView,
 } from '../internal/utils/scrollable-containers';
 import { getContainingBlock } from '../internal/utils/dom';
-import { getLogicalBoundingClientRect } from '../internal/direction';
+import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
 export default function usePopoverPosition({
   popoverRef,

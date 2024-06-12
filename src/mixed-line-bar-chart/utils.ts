@@ -67,47 +67,31 @@ export const matchesX = <T>(x1: T, x2: T) => {
   return x1 === x2;
 };
 
-export type OffsetMap = Map<string | number, number>;
+export type StackedBarValues = Map<string | number, Map<number, number>>;
 
-export interface StackedOffsets {
-  positiveOffsets: OffsetMap;
-  negativeOffsets: OffsetMap;
-}
-
-/**
- * Calculates list of offset maps from all data by accumulating each value
- */
-export function calculateOffsetMaps(
-  data: Array<readonly MixedLineBarChartProps.Datum<ChartDataTypes>[]>
-): StackedOffsets[] {
-  return data.reduce((acc, curr, idx) => {
-    // First series receives empty offsets map
-    if (idx === 0) {
-      acc.push({ positiveOffsets: new Map(), negativeOffsets: new Map() });
-    }
-    const lastMap = acc[idx];
-    const map: StackedOffsets = lastMap
-      ? { positiveOffsets: new Map(lastMap.positiveOffsets), negativeOffsets: new Map(lastMap.negativeOffsets) }
-      : { positiveOffsets: new Map(), negativeOffsets: new Map() };
-
-    curr.forEach(({ x, y }) => {
-      const key = getKeyValue(x);
-      if (y < 0) {
-        const lastValue = lastMap?.negativeOffsets.get(key) || 0;
-        map.negativeOffsets.set(key, lastValue + y);
+// Unlike for regular bars, stacked bar series values depend on the predecessors.
+// The function computes all stacked values grouped by X and series index.
+export function calculateStackedBarValues(
+  dataBySeries: Array<readonly MixedLineBarChartProps.Datum<ChartDataTypes>[]>
+): StackedBarValues {
+  const negativeValues = new Map<string | number, number>();
+  const positiveValues = new Map<string | number, number>();
+  const values = new Map<string | number, Map<number, number>>();
+  for (let seriesIndex = 0; seriesIndex < dataBySeries.length; seriesIndex++) {
+    for (const datum of dataBySeries[seriesIndex]) {
+      const key = getKeyValue(datum.x);
+      if (datum.y < 0) {
+        negativeValues.set(key, (negativeValues.get(key) ?? 0) + datum.y);
       } else {
-        const lastValue = lastMap?.positiveOffsets.get(key) || 0;
-        map.positiveOffsets.set(key, lastValue + y);
+        positiveValues.set(key, (positiveValues.get(key) ?? 0) + datum.y);
       }
-    });
-
-    // Ignore last value for map but still run it for logging
-    if (idx < data.length - 1) {
-      acc.push(map);
+      const seriesValue = (datum.y < 0 ? negativeValues.get(key) : positiveValues.get(key)) ?? 0;
+      const valuesByIndex = values.get(key) ?? new Map<number, number>();
+      valuesByIndex.set(seriesIndex, seriesValue);
+      values.set(key, valuesByIndex);
     }
-
-    return acc;
-  }, [] as StackedOffsets[]);
+  }
+  return values;
 }
 
 /** Returns string or number value for ChartDataTypes key */

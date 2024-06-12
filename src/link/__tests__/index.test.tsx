@@ -15,6 +15,7 @@ import { FunnelMetrics } from '../../../lib/components/internal/analytics';
 
 import { mockedFunnelInteractionId, mockFunnelMetrics } from '../../internal/analytics/__tests__/mocks';
 import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
+import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils.js';
 
 function renderLink(props: LinkProps = {}) {
   const renderResult = render(<Link {...props} />);
@@ -301,5 +302,77 @@ describe('table grid navigation support', () => {
     setCurrentTarget(getLink('#link1'));
     expect(getLink('#link1')).toHaveAttribute('tabIndex', '0');
     expect(getLink('#link2')).toHaveAttribute('tabIndex', '-1');
+  });
+});
+
+describe('"onClick" event', () => {
+  test('call onClick without modifiers when the anchor is normally clicked', () => {
+    const onClickSpy = jest.fn();
+    const wrapper = renderLink({ href: '#', onClick: onClickSpy });
+    wrapper.click();
+    expect(onClickSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: { button: 0, ctrlKey: false, shiftKey: false, altKey: false, metaKey: false },
+      })
+    );
+  });
+
+  test('calls onClick with modifiers when the anchor is clicked with modifiers', () => {
+    const onClickSpy = jest.fn();
+    const wrapper = renderLink({ href: '#', onClick: onClickSpy });
+    wrapper.click({ button: 0, ctrlKey: true, shiftKey: true, altKey: true, metaKey: true });
+
+    expect(onClickSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: { button: 0, ctrlKey: true, shiftKey: true, altKey: true, metaKey: true },
+      })
+    );
+  });
+
+  test('call onClick without metakey when the button is normally clicked', () => {
+    const onClickSpy = jest.fn();
+    const wrapper = renderLink({ onClick: onClickSpy });
+    wrapper.click();
+    expect(onClickSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: { button: 0, ctrlKey: false, shiftKey: false, altKey: false, metaKey: false },
+      })
+    );
+  });
+
+  test('calls onClick with modifiers when the button is clicked with modifiers', () => {
+    const onClickSpy = jest.fn();
+    const wrapper = renderLink({ onClick: onClickSpy });
+    wrapper.click({ button: 0, ctrlKey: true, shiftKey: true, altKey: true, metaKey: true });
+
+    expect(onClickSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: { button: 0, ctrlKey: true, shiftKey: true, altKey: true, metaKey: true },
+      })
+    );
+  });
+
+  test('calls onClick with keyboard Enter', () => {
+    const onClickSpy = jest.fn();
+    const wrapper = renderLink({ onClick: onClickSpy });
+    wrapper.keydown(KeyCode.enter);
+
+    expect(onClickSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: { button: 0, ctrlKey: false, shiftKey: false, altKey: false, metaKey: false },
+      })
+    );
+  });
+
+  test('calls onClick with keyboard Space', () => {
+    const onClickSpy = jest.fn();
+    const wrapper = renderLink({ onClick: onClickSpy });
+    wrapper.keydown(KeyCode.space);
+
+    expect(onClickSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: { button: 0, ctrlKey: false, shiftKey: false, altKey: false, metaKey: false },
+      })
+    );
   });
 });

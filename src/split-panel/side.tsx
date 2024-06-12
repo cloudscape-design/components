@@ -6,8 +6,9 @@ import { ButtonProps } from '../button/interfaces';
 import InternalButton from '../button/internal';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { SplitPanelContentProps } from './interfaces';
-import styles from './styles.css.js';
 import { useSplitPanelContext } from '../internal/context/split-panel-context';
+import styles from './styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
 
 interface SplitPanelContentSideProps extends SplitPanelContentProps {
   openButtonAriaLabel?: string;
@@ -15,6 +16,7 @@ interface SplitPanelContentSideProps extends SplitPanelContentProps {
 }
 
 export function SplitPanelContentSide({
+  style,
   baseProps,
   splitPanelRef,
   toggleRef,
@@ -32,17 +34,19 @@ export function SplitPanelContentSide({
   return (
     <div
       {...baseProps}
-      className={clsx(baseProps.className, styles.drawer, styles.root, styles['position-side'], {
+      className={clsx(baseProps.className, styles.drawer, styles['position-side'], testUtilStyles.root, {
+        [testUtilStyles['open-position-side']]: isOpen,
         [styles['drawer-closed']]: !isOpen,
       })}
       style={{
         width: isOpen && isRefresh ? cappedSize : undefined,
         maxWidth: isRefresh ? '100%' : undefined,
+        ...style,
       }}
       ref={splitPanelRef}
     >
       <div
-        className={clsx(styles['drawer-content-side'])}
+        className={styles['drawer-content-side']}
         style={{
           top: topOffset,
           bottom: bottomOffset,
@@ -55,7 +59,7 @@ export function SplitPanelContentSide({
           <div className={styles['slider-wrapper-side']}>{resizeHandle}</div>
         ) : (
           <InternalButton
-            className={clsx(styles['open-button'], styles['open-button-side'])}
+            className={clsx(testUtilStyles['open-button'], styles['open-button-side'])}
             iconName="angle-left"
             variant="icon"
             formAction="none"
@@ -65,8 +69,8 @@ export function SplitPanelContentSide({
           />
         )}
         <div className={styles['content-side']} aria-hidden={!isOpen}>
-          <div className={clsx(styles['pane-header-wrapper-side'])}>{header}</div>
-          <div className={clsx(styles['pane-content-wrapper-side'])}>{children}</div>
+          <div className={styles['pane-header-wrapper-side']}>{header}</div>
+          <div className={styles['pane-content-wrapper-side']}>{children}</div>
         </div>
       </div>
     </div>

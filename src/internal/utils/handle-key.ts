@@ -1,11 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { KeyCode } from '../keycode';
-import { isRtl } from '../direction';
+import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
 
-interface EventLike {
+export function isEventLike(event: any): event is EventLike {
+  return event.currentTarget instanceof HTMLElement || event.currentTarget instanceof SVGElement;
+}
+
+export interface EventLike {
   keyCode: number;
-  currentTarget: HTMLElement;
+  currentTarget: HTMLElement | SVGElement;
 }
 
 export default function handleKey(
@@ -14,7 +18,9 @@ export default function handleKey(
     onActivate,
     onBlockEnd,
     onBlockStart,
+    onDefault,
     onEnd,
+    onEscape,
     onHome,
     onInlineEnd,
     onInlineStart,
@@ -24,7 +30,9 @@ export default function handleKey(
     onActivate?: () => void;
     onBlockEnd?: () => void;
     onBlockStart?: () => void;
+    onDefault?: () => void;
     onEnd?: () => void;
+    onEscape?: () => void;
     onHome?: () => void;
     onInlineEnd?: () => void;
     onInlineStart?: () => void;
@@ -43,11 +51,14 @@ export default function handleKey(
     case KeyCode.space:
       onActivate?.();
       break;
+    case KeyCode.escape:
+      onEscape?.();
+      break;
     case KeyCode.home:
       onHome?.();
       break;
     case KeyCode.left:
-      isRtl(event.currentTarget) ? onInlineEnd?.() : onInlineStart?.();
+      getIsRtl(event.currentTarget) ? onInlineEnd?.() : onInlineStart?.();
       break;
     case KeyCode.pageDown:
       onPageDown?.();
@@ -56,10 +67,13 @@ export default function handleKey(
       onPageUp?.();
       break;
     case KeyCode.right:
-      isRtl(event.currentTarget) ? onInlineStart?.() : onInlineEnd?.();
+      getIsRtl(event.currentTarget) ? onInlineStart?.() : onInlineEnd?.();
       break;
     case KeyCode.up:
       onBlockStart?.();
+      break;
+    default:
+      onDefault?.();
       break;
   }
 }

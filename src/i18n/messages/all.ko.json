@@ -262,6 +262,9 @@
     "selectedAriaLabel": "선택됨",
     "recoveryText": "재시도"
   },
+  "slider": {
+    "i18nStrings.valueTextRange": "{value}, {previousValue}~{nextValue} 범위 내"
+  },
   "split-panel": {
     "i18nStrings.closeButtonAriaLabel": "패널 닫기",
     "i18nStrings.openButtonAriaLabel": "패널 열기",

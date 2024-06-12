@@ -34,8 +34,15 @@ export default function () {
 
 function ContentFilling() {
   return (
-    <div style={{ minHeight: '100%', position: 'relative' }}>
-      <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
+    <div style={{ minBlockSize: '100%', position: 'relative' }}>
+      <div
+        style={{
+          position: 'absolute',
+          insetBlockStart: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+        }}
+      >
         <Box fontSize="heading-m">
           In Visual Refresh, there should be a cross exactly in each corner of <br />
           the content area, without any scrollbars.

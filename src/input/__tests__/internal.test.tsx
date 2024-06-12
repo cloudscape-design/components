@@ -49,6 +49,17 @@ test('inherits form-field properties', () => {
   expect(element).toHaveAttribute('aria-invalid', 'true');
 });
 
+test('inherits form-field properties for warning state', () => {
+  render(
+    <InternalFormField controlId="control-id" warningText="warning">
+      <InternalInput value="" __inheritFormFieldProps={true} />
+    </InternalFormField>
+  );
+  const element = createWrapper().find('input')!.getElement();
+
+  expect(element).toHaveAttribute('aria-describedby', 'control-id-warning');
+});
+
 test('overrides form-field properties', () => {
   render(
     <InternalFormField controlId="control-id" label="Label" description="description" errorText="error">

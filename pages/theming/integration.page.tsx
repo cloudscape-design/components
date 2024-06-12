@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useState } from 'react';
 import { Button, Link, SpaceBetween } from '~components';
-import { Theme, applyTheme } from '~components/theming';
+import { Theme, applyTheme, generateThemeStylesheet } from '~components/theming';
 import * as Tokens from '~design-tokens';
 import ScreenshotArea from '../utils/screenshot-area';
 
@@ -35,15 +35,31 @@ const theme: Theme = {
 export default function () {
   const [themed, setThemed] = useState<boolean>(false);
   const [secondaryTheme, setSecondaryTheme] = useState<boolean>(false);
+  const [themeMethod, setThemeMethod] = useState<'applyTheme' | 'generateThemeStylesheet'>('applyTheme');
 
   useEffect(() => {
     let reset: () => void = () => {};
     if (themed) {
-      const result = applyTheme({ theme, baseThemeId: secondaryTheme ? 'visual-refresh' : undefined });
-      reset = result.reset;
+      if (themeMethod === 'applyTheme') {
+        const result = applyTheme({ theme, baseThemeId: secondaryTheme ? 'visual-refresh' : undefined });
+        reset = result.reset;
+      } else {
+        const stylesheet = generateThemeStylesheet({
+          theme,
+          baseThemeId: secondaryTheme ? 'visual-refresh' : undefined,
+        });
+
+        const styleNode = document.createElement('style');
+        styleNode.appendChild(document.createTextNode(stylesheet));
+        document.head.appendChild(styleNode);
+
+        reset = () => {
+          styleNode.remove();
+        };
+      }
     }
     return reset;
-  }, [themed, secondaryTheme]);
+  }, [themed, secondaryTheme, themeMethod]);
   return (
     <div style={{ padding: 15 }}>
       <h1>Theming Integration Page</h1>
@@ -55,17 +71,27 @@ export default function () {
           checked={themed}
           onChange={evt => setThemed(evt.currentTarget.checked)}
         />
-        <span style={{ marginLeft: 5 }}>Apply theme</span>
+        <span style={{ marginInlineStart: 5 }}>Apply theme</span>
       </label>
       <label>
         <input
-          style={{ marginLeft: 15 }}
+          style={{ marginInlineStart: 15 }}
           type="checkbox"
           data-testid="set-secondary"
           checked={secondaryTheme}
           onChange={evt => setSecondaryTheme(evt.currentTarget.checked)}
         />
-        <span style={{ marginLeft: 5 }}>Secondary theme</span>
+        <span style={{ marginInlineStart: 5 }}>Secondary theme</span>
+      </label>
+      <label>
+        <input
+          style={{ marginInlineStart: 15 }}
+          type="checkbox"
+          data-testid="change-theme-method"
+          checked={themeMethod === 'applyTheme'}
+          onChange={evt => setThemeMethod(evt.currentTarget.checked ? 'applyTheme' : 'generateThemeStylesheet')}
+        />
+        <span style={{ marginInlineStart: 5 }}>Use applyTheme</span>
       </label>
       <ScreenshotArea>
         <SpaceBetween direction="vertical" size="m">

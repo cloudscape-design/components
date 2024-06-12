@@ -186,16 +186,20 @@ export interface CardsProps<T = any> extends BaseComponentProps {
   /**
    * Use this property to inform screen readers how many cards there are.
    * It specifies the total number of cards.
-   * If there is an unknown total number of cards, leave this property undefined.   */
+   * If there is an unknown total number of cards, leave this property undefined.
+   */
   totalItemsCount?: number;
   /**
    *  Use this property to inform screen readers which range of cards is currently displayed.
    *  It specifies the index (1-based) of the first card.
-   *  If the cards list has no pagination, leave this property undefined.   */
+   */
   firstIndex?: number;
   /**
    * Use this function to announce page changes to screen reader users.
-   * Requires the properties firstIndex and totalItemsCount to be set correctly.
+   * The function argument takes the following properties:
+   * * `firstIndex` (number) - The provided `firstIndex` property which defaults to 1 when not defined.
+   * * `lastIndex` (number) - The index of the last visible item of the table.
+   * * `totalItemsCount` (optional, number) - The provided `totalItemsCount` property.
    */
   renderAriaLive?: (data: CardsProps.LiveAnnouncement) => string;
 
@@ -254,9 +258,9 @@ export namespace CardsProps {
   }
 
   export interface LiveAnnouncement {
-    totalItemsCount?: number;
     firstIndex: number;
     lastIndex: number;
+    totalItemsCount?: number;
   }
 
   export interface Ref {

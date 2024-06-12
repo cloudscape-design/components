@@ -40,7 +40,7 @@ function LabelsMeasure({ scale, ticks, tickFormatter, autoWidth, maxLabelsWidth 
     return (
       <Fragment key={`${value}`}>
         {lines.map((line, lineIndex) => (
-          <div key={lineIndex} className={styles['labels-left__label']} aria-hidden="true">
+          <div key={lineIndex} className={styles['labels-inline-start__label']} aria-hidden="true">
             {line}
           </div>
         ))}
@@ -51,7 +51,7 @@ function LabelsMeasure({ scale, ticks, tickFormatter, autoWidth, maxLabelsWidth 
   return (
     <div
       ref={ref}
-      className={clsx(styles['labels-left'], styles['labels-left--hidden'])}
+      className={clsx(styles['labels-inline-start'], styles['labels-inline-start--hidden'])}
       style={{ maxWidth: maxLabelsWidth }}
     >
       {ticks.map(labelMapper)}

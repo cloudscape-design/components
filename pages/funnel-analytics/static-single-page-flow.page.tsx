@@ -85,8 +85,9 @@ export default function StaticSinglePageCreatePage() {
       {mounted && (
         <Form
           {...getAnalyticsProps({
-            instanceId: 'single-page',
+            instanceIdentifier: 'single-page-demo',
             flowType: 'create',
+            ...(errorText ? { errorContext: 'errors.validation' } : {}),
           })}
           errorText={errorText}
           actions={
@@ -135,7 +136,8 @@ export default function StaticSinglePageCreatePage() {
                 </Header>
               }
               {...getAnalyticsProps({
-                instanceId: 'container-1',
+                instanceIdentifier: 'container-1',
+                errorContext: value === 'error' ? 'errors.fields' : undefined,
               })}
             >
               <SpaceBetween size="s">
@@ -147,6 +149,10 @@ export default function StaticSinglePageCreatePage() {
                   }
                   errorText={value === 'error' ? 'Trigger error' : ''}
                   label="This is an ordinary text field"
+                  {...getAnalyticsProps({
+                    instanceIdentifier: 'field1',
+                    errorContext: value === 'error' ? 'errors.triggered' : undefined,
+                  })}
                 >
                   <Input
                     data-testid="field1"
@@ -165,7 +171,7 @@ export default function StaticSinglePageCreatePage() {
                 </Header>
               }
               {...getAnalyticsProps({
-                instanceId: 'container-2',
+                instanceIdentifier: 'container-2',
               })}
             >
               <FormField

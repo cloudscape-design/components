@@ -106,7 +106,7 @@ const components = {
     const [value, setValue] = useState('');
 
     return (
-      <div style={{ width: '200px' }}>
+      <div style={{ inlineSize: '200px' }}>
         <Autosuggest
           id={id}
           value={value}

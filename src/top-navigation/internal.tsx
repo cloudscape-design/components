@@ -7,7 +7,6 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { getBaseProps } from '../internal/base-component';
 import { fireCancelableEvent, isPlainLeftClick } from '../internal/events';
 import VisualContext from '../internal/components/visual-context';
-import Portal from '../internal/components/portal';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
 
 import { TopNavigationProps } from './interfaces';
@@ -20,6 +19,7 @@ import styles from './styles.css.js';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import { SomeRequired } from '../internal/types';
 import { useInternalI18n } from '../i18n/context';
+import { isDevelopment, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 export type InternalTopNavigationProps = SomeRequired<TopNavigationProps, 'utilities'> & InternalBaseComponentProps;
 
@@ -42,6 +42,19 @@ export default function InternalTopNavigation({
   const isMediumViewport = breakpoint === 'xxs';
   const isLargeViewport = breakpoint === 's';
   const i18n = useInternalI18n('top-navigation');
+
+  // ButtonDropdown supports checkbox items but we don't support these in TopNavigation. Shown an error in development mode
+  // to alert users of this and that it might change in the future.
+  if (isDevelopment) {
+    if (
+      utilities.some(item => item.type === 'menu-dropdown' && item.items.some(item => item.itemType === 'checkbox'))
+    ) {
+      warnOnce(
+        'TopNavigation',
+        'The TopNavigation component does not support menu-dropdown items with `itemType` equal to `checkbox`, this might change in the future.'
+      );
+    }
+  }
 
   const onIdentityClick = (event: React.MouseEvent) => {
     if (isPlainLeftClick(event)) {
@@ -229,8 +242,11 @@ export default function InternalTopNavigation({
   return (
     <div {...baseProps} ref={__internalRootRef}>
       <VisualContext contextName="top-navigation">
+        {/* Render virtual content first to ensure React refs for content will be assigned on the actual nodes. */}
+        {content(true)}
+
         {content(false)}
-        <Portal>{content(true)}</Portal>
+
         {menuTriggerVisible && overflowMenuOpen && (
           <div className={styles['overflow-menu-drawer']}>
             <OverflowMenu

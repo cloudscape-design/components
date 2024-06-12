@@ -15,7 +15,7 @@ import { TableRole } from '../table-role';
 import { TableThElement } from './th-element';
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
 
-interface TableHeaderCellProps<ItemType> {
+export interface TableHeaderCellProps<ItemType> {
   className?: string;
   style?: React.CSSProperties;
   tabIndex: number;

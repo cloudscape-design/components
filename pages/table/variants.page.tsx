@@ -126,7 +126,7 @@ const items = [
   { name: 'banana', color: 'yellow' },
 ];
 
-type ItemType = typeof items[number];
+type ItemType = (typeof items)[number];
 
 function BaseTable(props: Partial<TableProps>) {
   const [selectedItems, setSelectedItems] = useState<ItemType[]>([]);

@@ -27,7 +27,7 @@ export default function () {
           selectionType="multi"
           onSelectionChange={e => setSelectedItems(e.detail.selectedItems)}
         />
-        <div style={{ height: '90vh', padding: 10 }}>Placeholder to allow page scroll beyond table</div>
+        <div style={{ blockSize: '90vh', padding: 10 }}>Placeholder to allow page scroll beyond table</div>
       </ScreenshotArea>
     </>
   );

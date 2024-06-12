@@ -3,6 +3,7 @@
 import { BaseComponentProps } from '../internal/base-component';
 import React from 'react';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { AnalyticsMetadata } from '../internal/analytics/interfaces';
 
 export interface FormFieldProps extends BaseComponentProps {
   /**
@@ -67,10 +68,16 @@ export interface FormFieldProps extends BaseComponentProps {
   constraintText?: React.ReactNode;
 
   /**
-   * Text that displays as a validation message. If this is set to a
+   * Text that displays as a validation error message. If this is set to a
    * non-empty string, it will render the form field as invalid.
    */
   errorText?: React.ReactNode;
+
+  /**
+   * Text that displays as a validation warning message. If this is set to a
+   * non-empty string, it will render the form field in a warning state.
+   */
+  warningText?: React.ReactNode;
 }
 
 export namespace FormFieldProps {
@@ -79,6 +86,11 @@ export namespace FormFieldProps {
      * Provides a text alternative for the error icon in the error message.
      */
     errorIconAriaLabel?: string;
+
+    /**
+     * Provides a text alternative for the warning icon in the warning message.
+     */
+    warningIconAriaLabel?: string;
   }
 }
 
@@ -92,4 +104,5 @@ export interface InternalFormFieldProps extends FormFieldProps, InternalBaseComp
    * Disable the gutter applied by default.
    */
   __disableGutters?: boolean;
+  __analyticsMetadata?: AnalyticsMetadata;
 }

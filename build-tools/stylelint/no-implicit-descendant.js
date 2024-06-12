@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-const stylelint = require('stylelint');
+import stylelint from 'stylelint';
 
 const ruleName = '@cloudscape-design/no-implicit-descendant';
 const messages = stylelint.utils.ruleMessages(ruleName, {
@@ -25,7 +25,7 @@ const getContainerName = container => {
   }
 };
 
-module.exports = stylelint.createPlugin(ruleName, (enabled, { ignoreParents } = defaultOptions) => {
+function noImplicitDescendantPlugin(enabled, { ignoreParents } = defaultOptions) {
   if (!enabled) {
     return;
   }
@@ -71,7 +71,8 @@ module.exports = stylelint.createPlugin(ruleName, (enabled, { ignoreParents } = 
       }
     });
   };
-});
+}
+noImplicitDescendantPlugin.ruleName = ruleName;
+noImplicitDescendantPlugin.messages = messages;
 
-module.exports.ruleName = ruleName;
-module.exports.messages = messages;
+export default stylelint.createPlugin(ruleName, noImplicitDescendantPlugin);

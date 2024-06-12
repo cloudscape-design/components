@@ -57,6 +57,10 @@ const AppLayout = React.forwardRef(
         stickyNotifications: rest.stickyNotifications,
         disableContentHeaderOverlap: rest.disableContentHeaderOverlap,
       },
+      metadata: {
+        drawersCount: rest.drawers?.length ?? null,
+        hasContentHeader: !!rest.contentHeader,
+      },
     });
     const isRefresh = useVisualRefresh();
     const isMobile = useMobile();

@@ -12,11 +12,21 @@
   grid-area: notifications;
   z-index: 850;
 
+  &.has-notification-content {
+    padding-block-start: awsui.$space-scaled-s;
+  }
+
   @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
     &.sticky-notifications {
       #{custom-props.$flashbarStickyBottomMargin}: #{awsui.$space-xxl};
       position: sticky;
-      inset-block-start: calc(var(#{custom-props.$offsetTop}) + #{awsui.$space-xs});
+      inset-block-start: var(#{custom-props.$offsetTop});
+      &:not(.high-contrast) {
+        background-color: awsui.$color-background-layout-main;
+      }
+    }
+    &.has-notification-content {
+      padding-block-start: awsui.$space-xs;
     }
   }
 }

@@ -51,8 +51,8 @@ export function animate({
             y: (oldRect.top + oldRect.bottom) / 2 - (newRect.top + newRect.bottom) / 2,
           }
         : newElementInitialState
-        ? newElementInitialState(newRect)
-        : {};
+          ? newElementInitialState(newRect)
+          : {};
       const inverseTransform = { ...noOpTransform, ...calculatedInverseTransform };
       // Apply this initial change, without animating
       element.style.transitionProperty = 'none';

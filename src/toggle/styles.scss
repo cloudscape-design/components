@@ -74,7 +74,8 @@ $shadow-color: rgba(0, 0, 0, 0.25);
     // Exception: The toggle state transition does not follow the motion guidelines
     // for the "State transition (quick)" group and is therefore not using
     // standard variables from that group.
-    transition: transform awsui.$motion-duration-fast awsui.$motion-easing-ease-out-quart,
+    transition:
+      transform awsui.$motion-duration-fast awsui.$motion-easing-ease-out-quart,
       background-color awsui.$motion-duration-fast awsui.$motion-easing-ease-out-quart;
   }
 }

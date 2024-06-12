@@ -13,7 +13,10 @@ export type NonCancelableCustomEvent<DetailType> = Omit<CustomEvent<DetailType>,
 class CustomEventStub<T> {
   defaultPrevented = false;
   cancelBubble = false;
-  constructor(public cancelable: boolean = false, public detail: T | null = null) {}
+  constructor(
+    public cancelable: boolean = false,
+    public detail: T | null = null
+  ) {}
 
   preventDefault() {
     this.defaultPrevented = true;

@@ -3,7 +3,7 @@
 import { ComponentFormatFunction } from '../i18n/context';
 import { TagEditorProps } from './interfaces';
 
-const DEFAULT_CHAR_REGEX = /^([\p{L}\p{Z}\p{N}_.:/=+\\@-]*)$/u;
+const DEFAULT_CHAR_REGEX = /^([\p{L}\p{Z}\p{N}_.:/=+\-@]*)$/u;
 
 const SYSTEM_TAG_PREFIX = 'aws:';
 const MAX_KEY_LENGTH = 128;

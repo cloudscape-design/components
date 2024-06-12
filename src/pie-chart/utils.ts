@@ -100,14 +100,13 @@ export function getDimensionsBySize({
 
 export const defaultDetails =
   (i18n: ComponentFormatFunction<'pie-chart'>, i18nStrings: PieChartProps.I18nStrings) =>
-  (datum: PieChartProps.Datum, dataSum: number) =>
-    [
-      { key: i18n('i18nStrings.detailsValue', i18nStrings.detailsValue) || '', value: datum.value },
-      {
-        key: i18n('i18nStrings.detailsPercentage', i18nStrings.detailsPercentage) || '',
-        value: `${((datum.value * 100) / dataSum).toFixed(0)}%`,
-      },
-    ];
+  (datum: PieChartProps.Datum, dataSum: number) => [
+    { key: i18n('i18nStrings.detailsValue', i18nStrings.detailsValue) || '', value: datum.value },
+    {
+      key: i18n('i18nStrings.detailsPercentage', i18nStrings.detailsPercentage) || '',
+      value: `${((datum.value * 100) / dataSum).toFixed(0)}%`,
+    },
+  ];
 
 /**
  * Adjusts the position of the given label nodes to avoid visual overlapping.
@@ -132,10 +131,6 @@ export const balanceLabelNodes = (
   while ((leftSide && i >= 0) || (!leftSide && i < nodes.length)) {
     const node = nodes[i];
 
-    // Currently using dataset attributes to determine the base position.
-    // This implementation can be changed back to using `getBBox` when we drop IE11 support.
-    // Unfortunately, there is no good alternative for `getBBox` that is supported by IE11.
-    // `getBoundingClientRect` works for width and height calculations in SVG, but the x/y positions are inaccurate.
     const x = parseFloat(node.getAttribute('data-x') || '0');
     const y = parseFloat(node.getAttribute('data-y') || '0');
     const box = {

@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-const stylelint = require('stylelint');
+import stylelint from 'stylelint';
+import { configBasedir } from './common.js';
 
 // This is for prettier format: https://github.com/prettier/prettier/issues/2330
 // String.raw is an identity function in this context
@@ -9,9 +10,9 @@ const css = String.raw;
 function runPlugin(code) {
   return stylelint.lint({
     code,
-    configBasedir: __dirname,
+    configBasedir,
     config: {
-      plugins: ['../no-motion-outside-of-mixin'],
+      plugins: ['../no-motion-outside-of-mixin.js'],
       rules: {
         '@cloudscape-design/no-motion-outside-of-mixin': [true],
       },

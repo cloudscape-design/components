@@ -106,9 +106,7 @@
   margin-block-start: awsui.$space-grid-gutter;
   &.refresh {
     &.header-variant-full-page {
-      &.remove-high-contrast-header {
-        margin-block-start: awsui.$space-scaled-s;
-      }
+      margin-block-start: awsui.$space-scaled-s;
     }
   }
 }

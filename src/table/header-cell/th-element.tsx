@@ -68,7 +68,7 @@ export function TableThElement({
       style={{ ...style, ...stickyStyles.style }}
       ref={mergedRef}
       {...getTableColHeaderRoleProps({ tableRole, sortingStatus, colIndex })}
-      tabIndex={cellTabIndex}
+      tabIndex={cellTabIndex === -1 ? undefined : cellTabIndex}
     >
       {children}
     </th>

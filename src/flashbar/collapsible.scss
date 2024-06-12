@@ -125,7 +125,6 @@ the grid layout will be:
     margin-block-start: calc(-1 * #{$top-overlap} + #{$offset-bottom});
     /* $notification-bar-line-height + 2 * $notification-bar-padding-vertical + 2 * $border-width
     is the full height of the notification bar */
-    /* stylelint-disable scss/operator-no-newline-after */
     margin-block-end: calc(
       #{$top-overlap} - #{$notification-bar-line-height} - 2 * #{$notification-bar-padding-vertical} - 2 * #{$border-width} -
         #{$offset-bottom}

@@ -11,12 +11,18 @@ import { FormFieldProps } from './interfaces';
 export { FormFieldProps };
 
 export default function FormField({ stretch = false, ...props }: FormFieldProps) {
-  const baseComponentProps = useBaseComponent(
-    'FormField',
-    { props: { stretch } },
-    getAnalyticsMetadataProps(props as BasePropsWithAnalyticsMetadata)
+  const analyticsMetadata = getAnalyticsMetadataProps(props as BasePropsWithAnalyticsMetadata);
+  const baseComponentProps = useBaseComponent('FormField', { props: { stretch } }, analyticsMetadata);
+
+  return (
+    <InternalFormField
+      stretch={stretch}
+      {...props}
+      __hideLabel={false}
+      __analyticsMetadata={analyticsMetadata}
+      {...baseComponentProps}
+    />
   );
-  return <InternalFormField stretch={stretch} {...props} __hideLabel={false} {...baseComponentProps} />;
 }
 
 applyDisplayName(FormField, 'FormField');

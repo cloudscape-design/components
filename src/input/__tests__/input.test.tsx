@@ -212,12 +212,11 @@ describe('Input', () => {
   describe('invalid state', () => {
     test('is not set by default', () => {
       const { input } = renderInput();
-
       expect(input).not.toHaveClass(styles['input-invalid']);
       expect(input).not.toHaveAttribute('aria-invalid');
     });
 
-    test('dis not set when invalid prop is falsy', () => {
+    test('is not set when invalid prop is falsy', () => {
       const { input } = renderInput({ invalid: false });
       expect(input).not.toHaveClass(styles['input-invalid']);
       expect(input).not.toHaveAttribute('aria-invalid');
@@ -225,6 +224,30 @@ describe('Input', () => {
 
     test('can be set', () => {
       const { input } = renderInput({ invalid: true });
+      expect(input).toHaveClass(styles['input-invalid']);
+      expect(input).toHaveAttribute('aria-invalid');
+    });
+  });
+
+  describe('warning state', () => {
+    test('is not set by default', () => {
+      const { input } = renderInput();
+      expect(input).not.toHaveClass(styles['input-warning']);
+    });
+
+    test('is not set when warning prop is falsy', () => {
+      const { input } = renderInput({ warning: false });
+      expect(input).not.toHaveClass(styles['input-warning']);
+    });
+
+    test('can be set', () => {
+      const { input } = renderInput({ warning: true });
+      expect(input).toHaveClass(styles['input-warning']);
+    });
+
+    test('is overriden when invalid is true', () => {
+      const { input } = renderInput({ warning: true, invalid: true });
+      expect(input).not.toHaveClass(styles['input-warning']);
       expect(input).toHaveClass(styles['input-invalid']);
       expect(input).toHaveAttribute('aria-invalid');
     });

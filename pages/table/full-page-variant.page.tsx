@@ -16,7 +16,6 @@ export default function App() {
       variant="full-page"
       columnDefinitions={columnsConfig}
       items={items}
-      ariaLabels={{ tableLabel: 'Full-page table' }}
     />
   );
 }

@@ -58,7 +58,7 @@ export default function () {
                   </Header>
                 }
               >
-                <div style={{ height: '400px', overflow: 'auto' }}>
+                <div style={{ blockSize: '400px', overflow: 'auto' }}>
                   <Table<Instance>
                     header={
                       <Header headingTagOverride="h1" counter={`(${allItems.length})`}>

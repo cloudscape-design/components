@@ -7,6 +7,7 @@ import { SPLIT_PANEL_MIN_HEIGHT, SPLIT_PANEL_MIN_WIDTH } from './constants';
 
 export interface SplitPanelProviderProps extends SplitPanelContextBaseProps {
   maxWidth: number;
+  reportSize: (size: number) => void;
   getMaxHeight: () => number;
   children?: React.ReactNode;
 }
@@ -16,10 +17,11 @@ export function SplitPanelProvider({
   size,
   getMaxHeight,
   maxWidth,
+  reportSize,
   onResize,
   ...rest
 }: SplitPanelProviderProps) {
-  const { position, reportSize, isOpen } = rest;
+  const { position, isOpen } = rest;
   const [maxHeight, setMaxHeight] = useState(size);
   const minSize = position === 'bottom' ? SPLIT_PANEL_MIN_HEIGHT : SPLIT_PANEL_MIN_WIDTH;
   const maxSize = position === 'bottom' ? maxHeight : maxWidth;

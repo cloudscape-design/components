@@ -47,6 +47,17 @@ describe('animate', () => {
     expect(element.style.transform).toEqual('scale(2) translate(3px, 5px)');
   });
 
+  it('applies no-op transform when no input is provided', () => {
+    const element = document.createElement('div');
+    animate({
+      oldState: {},
+      elements: {
+        a: element,
+      },
+    });
+    expect(element.style.transform).toEqual('scale(1) translate(0px, 0px)');
+  });
+
   it("removes transforms once it's finished", done => {
     const element = document.createElement('div');
     animate({

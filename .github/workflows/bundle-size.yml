@@ -4,6 +4,9 @@ on:
   pull_request:
     branches:
       - main
+  push:
+    branches:
+      - main
 
 permissions:
   statuses: write
@@ -68,14 +71,13 @@ jobs:
           cd ../bundle-size
           npm run build
 
-          mv output.json output-pr.json
-          cat output-pr.json
+          cat output.json
 
       - name: Upload size report artifact
         uses: actions/upload-artifact@v4
         with:
           name: size-report
-          path: bundle-size/output-pr.json
+          path: bundle-size/output.json
 
       - name: Update the commit status with calculated results
         uses: actions/github-script@v7

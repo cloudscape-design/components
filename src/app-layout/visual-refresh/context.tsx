@@ -10,7 +10,6 @@ import React, {
   useState,
   useContext,
 } from 'react';
-import { AppLayoutContext } from '../../internal/context/app-layout-context';
 import { DynamicOverlapContext } from '../../internal/context/dynamic-overlap-context';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
 import { fireNonCancelableEvent } from '../../internal/events';
@@ -29,6 +28,7 @@ import useBackgroundOverlap from './use-background-overlap';
 import { useDrawers } from '../utils/use-drawers';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { SPLIT_PANEL_MIN_WIDTH } from '../split-panel';
+import { getOffsetInlineStart } from '@cloudscape-design/component-toolkit/internal';
 
 interface AppLayoutInternals extends AppLayoutPropsWithDefaults {
   activeDrawerId: string | null;
@@ -53,7 +53,6 @@ interface AppLayoutInternals extends AppLayoutPropsWithDefaults {
   hasDrawerViewportOverlay: boolean;
   hasNotificationsContent: boolean;
   hasOpenDrawer?: boolean;
-  hasStickyBackground: boolean;
   isBackgroundOverlapDisabled: boolean;
   isMobile: boolean;
   isSplitPanelForcedPosition: boolean;
@@ -69,7 +68,6 @@ interface AppLayoutInternals extends AppLayoutPropsWithDefaults {
   notificationsElement: React.Ref<HTMLDivElement>;
   notificationsHeight: number;
   offsetBottom: number;
-  setHasStickyBackground: (value: boolean) => void;
   setSplitPanelReportedSize: (value: number) => void;
   setSplitPanelReportedHeaderHeight: (value: number) => void;
   headerHeight: number;
@@ -123,8 +121,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
 
     // Private API for embedded view mode
     const __embeddedViewMode = Boolean((props as any).__embeddedViewMode);
-
-    const [hasStickyBackground, setHasStickyBackground] = useState(false);
 
     /**
      * Set the default values for minimum and maximum content width.
@@ -360,9 +356,10 @@ export const AppLayoutInternalsProvider = React.forwardRef(
 
     useLayoutEffect(
       function handleMainOffsetLeft() {
-        setMainOffsetLeft(mainElement?.current?.offsetLeft ?? 0);
+        const offsetInlineStart = mainElement?.current ? getOffsetInlineStart(mainElement?.current) : 0;
+        setMainOffsetLeft(offsetInlineStart);
       },
-      [placement.width, navigationOpen, isToolsOpen, splitPanelReportedSize]
+      [placement.inlineSize, navigationOpen, isToolsOpen, splitPanelReportedSize]
     );
 
     /**
@@ -408,7 +405,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
      * the SplitPanel component. Ignore the SplitPanel if it is not in the bottom
      * position. Use the size property if it is open and the header height if it is closed.
      */
-    let offsetBottom = placement.bottom;
+    let offsetBottom = placement.insetBlockEnd;
 
     if (splitPanelDisplayed && splitPanelPosition === 'bottom') {
       if (isSplitPanelOpen) {
@@ -453,7 +450,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
         };
 
         setSplitPanelMaxWidth(
-          placement.width -
+          placement.inlineSize -
             mainOffsetLeft -
             minContentWidth -
             contentGapRight -
@@ -461,7 +458,9 @@ export const AppLayoutInternalsProvider = React.forwardRef(
             getPanelOffsetWidth()
         );
 
-        setDrawersMaxWidth(placement.width - mainOffsetLeft - minContentWidth - contentGapRight - toolsFormOffsetWidth);
+        setDrawersMaxWidth(
+          placement.inlineSize - mainOffsetLeft - minContentWidth - contentGapRight - toolsFormOffsetWidth
+        );
       },
       [
         activeDrawerId,
@@ -469,7 +468,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
         drawers,
         navigationOpen,
         isToolsOpen,
-        placement.width,
+        placement.inlineSize,
         mainOffsetLeft,
         minContentWidth,
         toolsWidth,
@@ -531,8 +530,8 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           drawerRef,
           resizeHandle,
           drawersTriggerCount,
-          headerHeight: placement.top,
-          footerHeight: placement.bottom,
+          headerHeight: placement.insetBlockStart,
+          footerHeight: placement.insetBlockEnd,
           hasDrawerViewportOverlay,
           handleDrawersClick,
           handleNavigationClick,
@@ -543,14 +542,13 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           hasBackgroundOverlap,
           hasNotificationsContent,
           hasOpenDrawer,
-          hasStickyBackground,
           isBackgroundOverlapDisabled: props.disableContentHeaderOverlap || !hasBackgroundOverlap,
           isMobile,
           isSplitPanelForcedPosition,
           isSplitPanelOpen,
           isToolsOpen,
           layoutElement,
-          layoutWidth: placement.width,
+          layoutWidth: placement.inlineSize,
           loseToolsFocus,
           loseDrawersFocus,
           mainElement,
@@ -562,7 +560,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           notificationsElement,
           notificationsHeight,
           offsetBottom,
-          setHasStickyBackground,
           setSplitPanelReportedSize,
           setSplitPanelReportedHeaderHeight,
           splitPanel,
@@ -585,17 +582,9 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           __embeddedViewMode,
         }}
       >
-        <AppLayoutContext.Provider
-          value={{
-            stickyOffsetBottom: offsetBottom,
-            stickyOffsetTop: 0, // not used in this design. Sticky headers read a CSS-var instead
-            setHasStickyBackground,
-          }}
-        >
-          <DynamicOverlapContext.Provider value={updateBackgroundOverlapHeight}>
-            {children}
-          </DynamicOverlapContext.Provider>
-        </AppLayoutContext.Provider>
+        <DynamicOverlapContext.Provider value={updateBackgroundOverlapHeight}>
+          {children}
+        </DynamicOverlapContext.Provider>
       </AppLayoutInternalsContext.Provider>
     );
   }

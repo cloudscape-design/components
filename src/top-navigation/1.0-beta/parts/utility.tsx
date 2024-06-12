@@ -11,6 +11,7 @@ import { TopNavigationProps } from '../interfaces';
 
 import styles from '../styles.css.js';
 import { checkSafeUrl } from '../../../internal/utils/check-safe-url';
+import { isLinkItem } from '../../../button-dropdown/utils/utils';
 
 export interface UtilityProps {
   hideText: boolean;
@@ -114,7 +115,9 @@ function hasIcon(definition: TopNavigationProps.Utility): boolean {
 
 function checkSafeUrlRecursively(itemOrGroup: MenuDropdownProps['items']) {
   for (const item of itemOrGroup) {
-    checkSafeUrl('TopNavigation', item.href);
+    if (isLinkItem(item)) {
+      checkSafeUrl('TopNavigation', item.href);
+    }
 
     if ('items' in item) {
       checkSafeUrlRecursively(item.items);

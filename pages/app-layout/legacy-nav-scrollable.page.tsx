@@ -24,7 +24,7 @@ export default function () {
         tools={<Tools>{toolsContent.long}</Tools>}
         content={
           <>
-            <div style={{ marginBottom: '1rem' }}>
+            <div style={{ marginBlockEnd: '1rem' }}>
               <Header variant="h1" description="Uses scrollable container instead of body">
                 Legacy AppLayout
               </Header>

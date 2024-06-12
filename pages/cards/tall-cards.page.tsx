@@ -17,7 +17,7 @@ const cardDefinition: CardsProps.CardDefinition<Item> = {
       id: 'description',
       header: 'Description',
       content: item => (
-        <div style={{ height: '400px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+        <div style={{ blockSize: '400px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
           <div>{item.description}</div>
           <div>
             <Button id={`button-${item.id}`}>button-{item.id}</Button>
@@ -36,8 +36,8 @@ export default () => {
         id="overflow-parent"
         style={{
           overflow: 'auto',
-          width: 600,
-          height: 800,
+          inlineSize: 600,
+          blockSize: 800,
           padding: '0px 1px',
         }}
       >

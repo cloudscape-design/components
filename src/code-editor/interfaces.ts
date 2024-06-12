@@ -125,11 +125,11 @@ export interface CodeEditorProps extends BaseComponentProps, FormFieldControlPro
 // See: https://github.com/microsoft/TypeScript/issues/29729
 type LiteralUnion<LiteralType, BaseType extends string> = LiteralType | (BaseType & { _?: never });
 
-type BuiltInLanguage = typeof AceModes[number]['value'];
+type BuiltInLanguage = (typeof AceModes)[number]['value'];
 
 export namespace CodeEditorProps {
   export type Language = LiteralUnion<BuiltInLanguage, string>;
-  export type Theme = typeof LightThemes[number]['value'] | typeof DarkThemes[number]['value'];
+  export type Theme = (typeof LightThemes)[number]['value'] | (typeof DarkThemes)[number]['value'];
 
   export interface AvailableThemes {
     light: ReadonlyArray<string>;

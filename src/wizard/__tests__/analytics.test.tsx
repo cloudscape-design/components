@@ -63,7 +63,7 @@ describe('Wizard Analytics', () => {
         funnelNameSelector: expect.any(String),
         funnelVersion: expect.any(String),
         componentVersion: expect.any(String),
-        theme: expect.any(String),
+        componentTheme: expect.any(String),
         stepConfiguration: [
           { isOptional: false, name: 'Step 1', number: 1 },
           { isOptional: true, name: 'Step 2', number: 2 },
@@ -372,7 +372,7 @@ describe('Wizard Analytics', () => {
         funnelNameSelector: expect.any(String),
         funnelVersion: expect.any(String),
         componentVersion: expect.any(String),
-        theme: expect.any(String),
+        componentTheme: expect.any(String),
         stepConfiguration: [
           { isOptional: false, name: 'Step 1', number: 1 },
           { isOptional: true, name: 'Step 2', number: 2 },

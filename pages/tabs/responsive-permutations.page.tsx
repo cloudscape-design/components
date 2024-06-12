@@ -48,7 +48,7 @@ export default function ResponsiveTabsPermutations() {
   return (
     <>
       <h1>Tabs permutations - small container</h1>
-      <div style={{ maxWidth: 700 }}>
+      <div style={{ maxInlineSize: 700 }}>
         <ScreenshotArea>
           <SpaceBetween size="xs">
             <PermutationsView

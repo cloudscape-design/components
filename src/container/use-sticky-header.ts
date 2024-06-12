@@ -1,66 +1,38 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { RefObject, useState, useLayoutEffect, useCallback, useEffect, createContext } from 'react';
-import { useAppLayoutContext } from '../internal/context/app-layout-context';
-import { findUpUntil, supportsStickyPosition } from '../internal/utils/dom';
+import { findUpUntil } from '../internal/utils/dom';
 import { getOverflowParents } from '../internal/utils/scrollable-containers';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import customCssProps from '../internal/generated/custom-css-properties';
 import { useMobile } from '../internal/hooks/use-mobile';
+import globalVars from '../internal/styles/global-vars';
+import * as tokens from '../internal/generated/styles/tokens';
+
 interface StickyHeaderContextProps {
   isStuck: boolean;
 }
 
 interface ComputeOffsetProps {
   isMobile: boolean;
-  isVisualRefresh: boolean;
-  customCssProps: Record<string, string>;
   __stickyOffset?: number;
   __mobileStickyOffset?: number;
-  mobileBarHeight?: number;
-  stickyOffsetTop: number;
   hasInnerOverflowParents: boolean;
+  __additionalOffset?: boolean;
 }
 
 export function computeOffset({
   isMobile,
-  isVisualRefresh,
-  customCssProps,
   __stickyOffset,
   __mobileStickyOffset,
-  mobileBarHeight = 0,
-  stickyOffsetTop,
   hasInnerOverflowParents,
-}: ComputeOffsetProps) {
-  const effectiveStickyOffset = __stickyOffset ?? (hasInnerOverflowParents ? 0 : stickyOffsetTop);
-  /**
-   * The AppLayout refactor removed the need for passing the sticky offset in px all the time through the
-   * AppLayoutDomContext provider because that information already exists on the DOM in a custom property
-   * on the Layout subcomponent. Thus, if the Container header is sticky, we are in Visual Refresh and use
-   * body scroll then we will use that property. When a component is used outside AppLayout, we fall back
-   * to the default offset calculated in AppLayoutDomContext.
-   */
-  let computedOffset = `${effectiveStickyOffset}px`;
-  if (isMobile) {
-    // This mobile offset is only relevant for full page tables in the mobile viewport.
-    // It is obtained by the sum of stickyOffsetTop (AppLayout header height), mobileBarHeight (AppLayout mobile bar height) and
-    // __stickyOffset (value of the stickyHeaderVerticalOffset, set by users), from which we subtract __mobileStickyOffset (which is the table tools header height).
-
-    // Classic offset is calculated using the AppLayout context
-    const classicOffset = `${
-      stickyOffsetTop + mobileBarHeight + (__stickyOffset ?? 0) - (__mobileStickyOffset ?? 0)
-    }px`;
-
-    // VR offset is calculated using CSS custom properties
-    const visualRefreshOffset = `calc(var(${customCssProps.offsetTop}, 0px) + var(${
-      customCssProps.mobileBarHeight
-    }, 0px) + ${(__stickyOffset ?? 0) - (__mobileStickyOffset ?? 0)}px)`;
-
-    computedOffset = isVisualRefresh ? visualRefreshOffset : classicOffset;
-  } else if (isVisualRefresh && !hasInnerOverflowParents) {
-    computedOffset = `var(${customCssProps.offsetTopWithNotifications}, ${computedOffset})`;
+  __additionalOffset,
+}: ComputeOffsetProps): string {
+  const localOffset = isMobile ? (__stickyOffset ?? 0) - (__mobileStickyOffset ?? 0) : __stickyOffset ?? 0;
+  if (hasInnerOverflowParents || __stickyOffset !== undefined) {
+    return `${localOffset}px`;
   }
-  return computedOffset;
+  const globalOffset = `var(${globalVars.stickyVerticalTopOffset}, 0px)`;
+
+  return `calc(${globalOffset} + ${localOffset}px + ${__additionalOffset ? tokens.spaceScaledS : '0px'})`;
 }
 
 export const StickyHeaderContext = createContext<StickyHeaderContextProps>({
@@ -73,15 +45,12 @@ export const useStickyHeader = (
   __stickyHeader?: boolean,
   __stickyOffset?: number,
   __mobileStickyOffset?: number,
-  __disableMobile = true
+  __disableMobile?: boolean,
+  __additionalOffset = false
 ) => {
   const isMobile = useMobile();
-  // We reach into AppLayoutContext in case sticky header needs to be offset down by the height
-  // of other sticky elements positioned on top of the view.
-  const { stickyOffsetTop, mobileBarHeight } = useAppLayoutContext();
   const disableSticky = isMobile && __disableMobile;
-  const isSticky = supportsStickyPosition() && !disableSticky && !!__stickyHeader;
-  const isVisualRefresh = useVisualRefresh();
+  const isSticky = !disableSticky && !!__stickyHeader;
 
   // If it has overflow parents inside the app layout, we shouldn't apply a sticky offset.
   const [hasInnerOverflowParents, setHasInnerOverflowParents] = useState(false);
@@ -100,13 +69,10 @@ export const useStickyHeader = (
 
   const computedOffset = computeOffset({
     isMobile,
-    isVisualRefresh,
-    customCssProps,
     __stickyOffset,
     __mobileStickyOffset,
-    mobileBarHeight,
-    stickyOffsetTop,
     hasInnerOverflowParents,
+    __additionalOffset,
   });
 
   const stickyStyles = isSticky

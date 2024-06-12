@@ -16,7 +16,6 @@
     @if ($selector == ':root') {
       @include _themed-background-inline-svg($path, $tokens, $stroke, $fill, 'light');
       // dark mode is not supported in browsers that do not support css variables
-      /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
       @supports (--css-variable-support-check: #000) {
         @include theming.dark-mode-only {
           @include _themed-background-inline-svg($path, $tokens, $stroke, $fill, 'dark');
@@ -24,7 +23,6 @@
       }
     } @else {
       // secondary themes (e.g. visual refresh) are not supported in browsers that do not support css variables
-      /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
       @supports (--css-variable-support-check: #000) {
         :global(#{$selector}) & {
           @include _themed-background-inline-svg($path, $tokens, $stroke, $fill, 'light');

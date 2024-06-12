@@ -56,7 +56,7 @@ const DEMO_CONTENT = (
       columnDefinitions={columnsConfig}
       items={generateItems(10)}
     />
-    <div style={{ height: '20px' }}></div>
+    <div style={{ blockSize: '20px' }}></div>
   </div>
 );
 

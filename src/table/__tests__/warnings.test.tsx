@@ -85,3 +85,30 @@ describe('Sorting comparator validation', () => {
     );
   });
 });
+
+describe('Sticky header validation', () => {
+  test('prints a warning when stickyHeader changes', () => {
+    const baseProps = {
+      items: [],
+      columnDefinitions: [
+        { header: 'id', cell: () => 'id' },
+        { header: 'name', cell: () => 'name' },
+      ],
+    };
+    const { rerender } = render(<Table {...baseProps} stickyHeader={true} />);
+
+    rerender(<Table {...baseProps} stickyHeader={false} />);
+    expect(warnOnce).toHaveBeenCalledWith(
+      'Table',
+      '`stickyHeader` has changed from "true" to "false". It is not recommended to change the value of this property during the component lifecycle. Please set it to either "true" or "false" unconditionally.'
+    );
+
+    rerender(<Table {...baseProps} stickyHeader={true} />);
+    expect(warnOnce).toHaveBeenCalledWith(
+      'Table',
+      '`stickyHeader` has changed from "false" to "true". It is not recommended to change the value of this property during the component lifecycle. Please set it to either "true" or "false" unconditionally.'
+    );
+
+    expect(warnOnce).toHaveBeenCalledTimes(2);
+  });
+});

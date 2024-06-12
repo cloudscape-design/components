@@ -387,7 +387,7 @@ function SortingHeader({
 function InlineInput({ value: initialValue }: { value: string }) {
   const [value, setValue] = useState(initialValue);
   return (
-    <div style={{ minWidth: 200 }}>
+    <div style={{ minInlineSize: 200 }}>
       <Input ariaLabel="Inline input" value={value} onChange={e => setValue(e.detail.value)} />
     </div>
   );
@@ -410,7 +410,7 @@ function InlineRadio({ value: initialValue }: { value: string }) {
   const items = range(0, 2).map(i => ({ value: initialValue + i, label: initialValue + i }));
   const [value, setValue] = useState(initialValue + 0);
   return (
-    <div style={{ minWidth: 200 }}>
+    <div style={{ minInlineSize: 200 }}>
       <RadioGroup items={items} value={value} onChange={e => setValue(e.detail.value)} />
     </div>
   );

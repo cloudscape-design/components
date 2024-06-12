@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { getBreakpointValue } from '../../breakpoints';
-import { getLogicalBoundingClientRect } from '../../direction';
+import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 import { BoundingBox, getOverflowParents, getOverflowParentDimensions } from '../../utils/scrollable-containers';
 import styles from './styles.css.js';
 
@@ -61,13 +61,13 @@ export const getAvailableSpace = ({
   const availableSpaceReserveVertical = stretchHeight
     ? 0
     : isMobile
-    ? AVAILABLE_SPACE_RESERVE_MOBILE_VERTICAL
-    : AVAILABLE_SPACE_RESERVE_DEFAULT;
+      ? AVAILABLE_SPACE_RESERVE_MOBILE_VERTICAL
+      : AVAILABLE_SPACE_RESERVE_DEFAULT;
   const availableSpaceReserveHorizontal = stretchWidth
     ? 0
     : isMobile
-    ? AVAILABLE_SPACE_RESERVE_MOBILE_HORIZONTAL
-    : AVAILABLE_SPACE_RESERVE_DEFAULT;
+      ? AVAILABLE_SPACE_RESERVE_MOBILE_HORIZONTAL
+      : AVAILABLE_SPACE_RESERVE_DEFAULT;
   const {
     insetBlockEnd: triggerBlockEnd,
     insetInlineStart: triggerInlineStart,

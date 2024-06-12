@@ -19,24 +19,6 @@ describe('Form Component', () => {
       expect(wrapper.findHeader()).toBeNull();
     });
 
-    it('does not use content layout when no header is set', () => {
-      const { container } = render(<Form />);
-      const wrapper = createWrapper(container);
-      expect(wrapper.findContentLayout()).toBeNull();
-    });
-
-    it('does not use content layout in embedded variant', () => {
-      const { container } = render(<Form variant="embedded" />);
-      const wrapper = createWrapper(container);
-      expect(wrapper.findContentLayout()).toBeNull();
-    });
-
-    it('uses content layout by default when header is present', () => {
-      const { container } = render(<Form header={<h1>Form header</h1>} />);
-      const wrapper = createWrapper(container);
-      expect(wrapper.findContentLayout()).not.toBeNull();
-    });
-
     it('displays header - custom html', () => {
       const wrapper = renderForm({ header: <h1>Form header</h1> });
       expect(wrapper.findHeader()!.getElement()).toHaveTextContent('Form header');

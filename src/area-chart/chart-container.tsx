@@ -6,8 +6,8 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import ChartPlot from '../internal/components/chart-plot';
 import AxisLabel from '../internal/components/cartesian-chart/axis-label';
 import LabelsMeasure from '../internal/components/cartesian-chart/labels-measure';
-import LeftLabels from '../internal/components/cartesian-chart/left-labels';
-import BottomLabels, { useBottomLabels } from '../internal/components/cartesian-chart/bottom-labels';
+import InlineStartLabels from '../internal/components/cartesian-chart/inline-start-labels';
+import BlockEndLabels, { useBLockEndLabels } from '../internal/components/cartesian-chart/block-end-labels';
 import EmphasizedBaseline from '../internal/components/cartesian-chart/emphasized-baseline';
 import { AreaChartProps } from './interfaces';
 import { ChartModel } from './model';
@@ -22,8 +22,8 @@ import { useSelector } from './async-store';
 import { CartesianChartContainer } from '../internal/components/cartesian-chart/chart-container';
 
 const DEFAULT_CHART_WIDTH = 500;
-const LEFT_LABELS_MARGIN = 16;
-const BOTTOM_LABELS_OFFSET = 12;
+const INLINE_START_LABELS_MARGIN = 16;
+const BLOCK_END_LABELS_OFFSET = 12;
 
 type TickFormatter = undefined | ((value: AreaChartProps.DataTypes) => string);
 
@@ -76,18 +76,18 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
   yTickFormatter = deprecatedYTickFormatter,
   detailTotalFormatter = deprecatedDetailTotalFormatter,
 }: ChartContainerProps<T>) {
-  const [leftLabelsWidth, setLeftLabelsWidth] = useState(0);
+  const [inlineStartLabelsWidth, setInlineStartLabelsWidth] = useState(0);
   const [containerWidth, containerWidthRef] = useContainerWidth(DEFAULT_CHART_WIDTH);
-  const maxLeftLabelsWidth = Math.round(containerWidth / 2);
+  const maxInlineStartLabelsWidth = Math.round(containerWidth / 2);
 
-  const bottomLabelsProps = useBottomLabels({
+  const blockEndLabelsProps = useBLockEndLabels({
     ticks: model.computed.xTicks,
     scale: model.computed.xScale,
     tickFormatter: xTickFormatter as TickFormatter,
   });
 
   // Calculate the width of the plot area and tell it to the parent.
-  const plotWidth = Math.max(0, containerWidth - leftLabelsWidth - LEFT_LABELS_MARGIN);
+  const plotWidth = Math.max(0, containerWidth - inlineStartLabelsWidth - INLINE_START_LABELS_MARGIN);
   useEffect(() => {
     autoWidth(plotWidth);
   }, [autoWidth, plotWidth]);
@@ -116,7 +116,7 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
   return (
     <CartesianChartContainer
       ref={mergedRef}
-      minHeight={minHeight + bottomLabelsProps.height}
+      minHeight={minHeight + blockEndLabelsProps.height}
       fitHeight={!!fitHeight}
       leftAxisLabel={<AxisLabel axis="y" position="left" title={yTitle} />}
       leftAxisLabelMeasure={
@@ -124,8 +124,8 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
           scale={model.computed.yScale}
           ticks={model.computed.yTicks}
           tickFormatter={yTickFormatter as TickFormatter}
-          autoWidth={setLeftLabelsWidth}
-          maxLabelsWidth={maxLeftLabelsWidth}
+          autoWidth={setInlineStartLabelsWidth}
+          maxLabelsWidth={maxInlineStartLabelsWidth}
         />
       }
       bottomAxisLabel={<AxisLabel axis="x" position="bottom" title={xTitle} />}
@@ -133,8 +133,8 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
         <ChartPlot
           ref={model.refs.plot}
           width="100%"
-          height={fitHeight ? `calc(100% - ${bottomLabelsProps.height}px)` : model.height}
-          offsetBottom={bottomLabelsProps.height}
+          height={fitHeight ? `calc(100% - ${blockEndLabelsProps.height}px)` : model.height}
+          offsetBottom={blockEndLabelsProps.height}
           ariaLabel={ariaLabel}
           ariaLabelledby={ariaLabelledby}
           ariaDescription={ariaDescription}
@@ -161,7 +161,7 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
             style={{ pointerEvents: 'none' }}
           />
 
-          <LeftLabels
+          <InlineStartLabels
             plotWidth={model.width}
             plotHeight={model.height}
             scale={model.computed.yScale}
@@ -169,20 +169,20 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
             tickFormatter={yTickFormatter}
             title={yTitle}
             ariaRoleDescription={yAxisAriaRoleDescription}
-            maxLabelsWidth={maxLeftLabelsWidth}
+            maxLabelsWidth={maxInlineStartLabelsWidth}
           />
 
           <AreaDataSeries model={model} />
 
-          <BottomLabels
-            {...bottomLabelsProps}
+          <BlockEndLabels
+            {...blockEndLabelsProps}
             width={model.width}
             height={model.height}
             scale={model.computed.xScale}
             title={xTitle}
             ariaRoleDescription={xAxisAriaRoleDescription}
-            offsetLeft={leftLabelsWidth + BOTTOM_LABELS_OFFSET}
-            offsetRight={BOTTOM_LABELS_OFFSET}
+            offsetLeft={inlineStartLabelsWidth + BLOCK_END_LABELS_OFFSET}
+            offsetRight={BLOCK_END_LABELS_OFFSET}
           />
 
           <EmphasizedBaseline width={model.width} height={model.height} scale={model.computed.yScale} />

@@ -6,24 +6,21 @@ import InternalIcon from '../../icon/internal';
 import styles from './styles.css.js';
 import clsx from 'clsx';
 import { fireCancelableEvent, isPlainLeftClick } from '../../internal/events';
-import { getEventDetail } from '../internal';
 
-import { DATA_ATTR_FUNNEL_KEY } from '../../internal/analytics/selectors';
-import { FUNNEL_KEY_FUNNEL_NAME } from '../../internal/analytics/selectors';
 import Tooltip from '../../internal/components/tooltip';
+import { getEventDetail } from '../utils';
+import { FunnelBreadcrumbItem } from './funnel';
 
 type BreadcrumbItemWithPopoverProps<T extends BreadcrumbGroupProps.Item> = React.HTMLAttributes<HTMLElement> & {
   item: T;
   isLast: boolean;
   anchorAttributes: React.AnchorHTMLAttributes<HTMLAnchorElement>;
-  funnelAttributes: Record<string, string>;
 };
 
 const BreadcrumbItemWithPopover = <T extends BreadcrumbGroupProps.Item>({
   item,
   isLast,
   anchorAttributes,
-  funnelAttributes,
   ...itemAttributes
 }: BreadcrumbItemWithPopoverProps<T>) => {
   const [showPopover, setShowPopover] = useState(false);
@@ -73,9 +70,7 @@ const BreadcrumbItemWithPopover = <T extends BreadcrumbGroupProps.Item>({
         onMouseLeave={() => setShowPopover(false)}
         anchorAttributes={anchorAttributes}
       >
-        <span {...funnelAttributes} className={styles.text} ref={textRef}>
-          {item.text}
-        </span>
+        <FunnelBreadcrumbItem ref={textRef} text={item.text} last={isLast} />
         <span className={styles['virtual-item']} ref={virtualTextRef}>
           {item.text}
         </span>
@@ -122,11 +117,6 @@ export function BreadcrumbItem<T extends BreadcrumbGroupProps.Item>({
     onClick: isLast ? preventDefault : onClickHandler,
   };
 
-  const funnelAttributes: Record<string, string> = {};
-  if (isLast) {
-    funnelAttributes[DATA_ATTR_FUNNEL_KEY] = FUNNEL_KEY_FUNNEL_NAME;
-  }
-
   return (
     <div className={clsx(styles.breadcrumb, isLast && styles.last)}>
       {isDisplayed && isCompressed ? (
@@ -134,14 +124,11 @@ export function BreadcrumbItem<T extends BreadcrumbGroupProps.Item>({
           item={item}
           isLast={isLast}
           anchorAttributes={anchorAttributes}
-          funnelAttributes={funnelAttributes}
           {...itemAttributes}
         />
       ) : (
         <Item isLast={isLast} anchorAttributes={anchorAttributes} {...itemAttributes}>
-          <span {...funnelAttributes} className={styles.text}>
-            {item.text}
-          </span>
+          <FunnelBreadcrumbItem text={item.text} last={isLast} />
         </Item>
       )}
       {!isLast ? (

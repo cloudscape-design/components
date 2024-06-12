@@ -4,9 +4,9 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 
 import '../../../lib/components/test-utils/selectors';
-import TopNavigationWrapper from '../../../lib/components/test-utils/selectors/top-navigation';
+import { createWrapper } from '@cloudscape-design/test-utils-core/selectors';
 
-const wrapper = new TopNavigationWrapper(`.${TopNavigationWrapper.rootSelector}`);
+const wrapper = createWrapper().findTopNavigation();
 
 class TopNavigationPage extends BasePageObject {
   getLocation() {
@@ -222,4 +222,14 @@ describe('Top navigation', () => {
       })
     );
   });
+
+  test(
+    'can focus search input programmatically',
+    setupTest(1000, async page => {
+      const searchInputSelector = wrapper.findSearch()!.findInput().findNativeInput().toSelector();
+
+      await page.click('#focus-input');
+      await expect(page.isFocused(searchInputSelector)).resolves.toBe(true);
+    })
+  );
 });

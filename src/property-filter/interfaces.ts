@@ -185,6 +185,11 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
    **/
   filteringRecoveryText?: string;
   /**
+   * Constraint text that's displayed below the filtering input.
+   * Use this to provide additional information about supported filters.
+   */
+  filteringConstraintText?: React.ReactNode;
+  /**
    * Specifies the current status of loading more options.
    * * `pending` - Indicates that no request in progress, but more options may be loaded.
    * * `loading` - Indicates that data fetching is in progress.

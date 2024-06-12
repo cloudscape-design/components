@@ -327,6 +327,13 @@ export interface I18nFormatArgTypes {
     "selectedAriaLabel": never;
     "recoveryText": never;
   }
+  "slider": {
+    "i18nStrings.valueTextRange": {
+      "value": string | number;
+      "previousValue": string | number;
+      "nextValue": string | number;
+    }
+  }
   "split-panel": {
     "i18nStrings.closeButtonAriaLabel": never;
     "i18nStrings.openButtonAriaLabel": never;

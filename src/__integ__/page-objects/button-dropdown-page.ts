@@ -6,7 +6,10 @@ import ButtonDropdownWrapper from '../../../lib/components/test-utils/selectors/
 
 const wrapper = createWrapper();
 export default class ButtonDropdownPage extends BasePageObject {
-  constructor(private id: string, browser: ConstructorParameters<typeof BasePageObject>[0]) {
+  constructor(
+    private id: string,
+    browser: ConstructorParameters<typeof BasePageObject>[0]
+  ) {
     super(browser);
     this.id = id;
   }

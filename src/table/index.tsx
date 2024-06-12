@@ -10,7 +10,14 @@ import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analyti
 export { TableProps };
 const Table = React.forwardRef(
   <T,>(
-    { items = [], selectedItems = [], variant = 'container', contentDensity = 'comfortable', ...props }: TableProps<T>,
+    {
+      items = [],
+      selectedItems = [],
+      variant = 'container',
+      contentDensity = 'comfortable',
+      firstIndex = 1,
+      ...props
+    }: TableProps<T>,
     ref: React.Ref<TableProps.Ref>
   ) => {
     const baseComponentProps = useBaseComponent('Table', {
@@ -34,6 +41,7 @@ const Table = React.forwardRef(
       selectedItems,
       variant,
       contentDensity,
+      firstIndex,
       ...props,
       ...baseComponentProps,
       ref,

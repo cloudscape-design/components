@@ -131,7 +131,7 @@ describe.each<
   [
     name: string,
     getComponent: (disabled: boolean) => React.ReactElement,
-    getWrapper: (container: HTMLElement) => BaseInputWrapper
+    getWrapper: (container: HTMLElement) => BaseInputWrapper,
   ]
 >([
   [

@@ -271,27 +271,32 @@ describe('Cards', () => {
     });
   });
   describe('live region', () => {
-    test('Should render a live region with table total count and indices when renderAriaLive and firstIndex are available', () => {
-      const firstIndex = 1;
-      const totalItemsCount = defaultItems.length;
-      const lastIndex = firstIndex + defaultItems.length - 1;
+    test.each([
+      { firstIndex: 1, totalItemsCount: defaultItems.length },
+      { firstIndex: undefined, totalItemsCount: undefined },
+    ])(
+      'Should render a live region when firstIndex="$firstIndex" and totalItemsCount="$totalItemsCount"',
+      ({ firstIndex, totalItemsCount }) => {
+        const expectedFirstIndex = firstIndex ?? 1;
+        const lastIndex = expectedFirstIndex + defaultItems.length - 1;
 
-      const wrapper = renderCards(
-        <Cards<Item>
-          cardDefinition={cardDefinition}
-          items={defaultItems}
-          firstIndex={firstIndex}
-          totalItemsCount={totalItemsCount}
-          renderAriaLive={({ firstIndex, lastIndex, totalItemsCount }) =>
-            `Displaying items from ${firstIndex} to ${lastIndex} of ${totalItemsCount} items`
-          }
-        />
-      ).wrapper;
+        const wrapper = renderCards(
+          <Cards<Item>
+            cardDefinition={cardDefinition}
+            items={defaultItems}
+            firstIndex={firstIndex}
+            totalItemsCount={totalItemsCount}
+            renderAriaLive={({ firstIndex, lastIndex, totalItemsCount }) =>
+              `Displaying items from ${firstIndex} to ${lastIndex} of ${totalItemsCount} items`
+            }
+          />
+        ).wrapper;
 
-      expect(wrapper.find(`.${liveRegionStyles.root}`)?.getElement().textContent).toBe(
-        `Displaying items from ${firstIndex} to ${lastIndex} of ${totalItemsCount} items`
-      );
-    });
+        expect(wrapper.find(`.${liveRegionStyles.root}`)?.getElement().textContent).toBe(
+          `Displaying items from ${expectedFirstIndex} to ${lastIndex} of ${totalItemsCount} items`
+        );
+      }
+    );
   });
 
   describe('i18n', () => {

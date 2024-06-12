@@ -24,7 +24,7 @@ export default function Page() {
   const selectionType = urlParams.selectionType ?? 'single';
 
   const [selectedItems, setSelectedItems] = useState<Instance[]>([]);
-  const { getSelectAllProps, getItemSelectionProps, updateShiftToggle } = useSelection({
+  const { getSelectAllProps, getItemSelectionProps } = useSelection({
     items,
     selectedItems,
     selectionType,
@@ -42,23 +42,18 @@ export default function Page() {
   const columnDefinitions = [
     {
       key: 'selection',
-      header:
-        selectionType === 'multi' ? (
-          <SelectionControl
-            onFocusDown={event => moveFocus?.(event.target as HTMLElement, -1, +1)}
-            {...getSelectAllProps()}
-          />
-        ) : (
-          <ScreenreaderOnly>selection cell</ScreenreaderOnly>
-        ),
-      cell: (item: Instance) => (
+      header: getSelectAllProps ? (
         <SelectionControl
-          onFocusDown={moveFocusDown}
-          onFocusUp={moveFocusUp}
-          onShiftToggle={updateShiftToggle}
-          {...getItemSelectionProps(item)}
+          onFocusDown={event => moveFocus?.(event.target as HTMLElement, -1, +1)}
+          {...getSelectAllProps()}
         />
+      ) : (
+        <ScreenreaderOnly>selection cell</ScreenreaderOnly>
       ),
+      cell: (item: Instance) =>
+        getItemSelectionProps ? (
+          <SelectionControl onFocusDown={moveFocusDown} onFocusUp={moveFocusUp} {...getItemSelectionProps(item)} />
+        ) : null,
     },
     {
       key: 'id',

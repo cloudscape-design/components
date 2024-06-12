@@ -50,12 +50,12 @@
   dominant-baseline: hanging;
 }
 
-.labels-left > .ticks > .ticks__text {
+.labels-inline-start > .ticks > .ticks__text {
   text-anchor: end;
   dominant-baseline: central;
 }
 
-.labels-left {
+.labels-inline-start {
   position: relative;
   margin-inline-end: 12px;
 
@@ -66,20 +66,20 @@
   }
 }
 
-.labels-left__label {
+.labels-inline-start__label {
   position: absolute;
 }
 
-.labels-left--hidden {
+.labels-inline-start--hidden {
   visibility: hidden;
 
-  > .labels-left__label {
+  > .labels-inline-start__label {
     position: relative;
     white-space: nowrap;
   }
 }
 
-.labels-bottom {
+.labels-block-end {
   position: relative;
   display: block;
   inline-size: 100%;

@@ -37,6 +37,21 @@ const definition4 = [
 const definition2 = definition4.slice(0, 2);
 const definition3 = definition4.slice(0, 3);
 
+const validationDefinitions = [
+  {
+    label: 'Key label',
+    control: (item: Item) => <Input value={item.key} placeholder="Enter key" onChange={() => {}} />,
+    warningText: (item: Item) => (item.key.includes(' ') ? 'Key contains empty characters' : null),
+    errorText: (item: Item) => (item.key.length < 10 ? 'Key should be longer than 10 characters' : null),
+  },
+  {
+    label: 'Value label 4',
+    control: (item: Item) => <Input value={item.value} placeholder="Enter value" onChange={() => {}} />,
+    warningText: (item: Item) => (item.value.includes(' ') ? 'Value contains empty characters' : null),
+    errorText: (item: Item) => (item.value.length < 10 ? 'Value should be longer than 10 characters' : null),
+  },
+];
+
 const defaultItems: Item[] = [
   {
     key: '',
@@ -47,7 +62,7 @@ const defaultItems: Item[] = [
     value: 'The first value',
   },
   {
-    key: 'attr2',
+    key: 'attr2 ',
     value: 'The second value',
   },
   {
@@ -99,6 +114,13 @@ export const permutations = createPermutations<AttributeEditorProps<Item>>([
   },
   {
     definition: [definition3, definition4],
+    items: [defaultItems],
+    addButtonText: ['Add item'],
+    removeButtonText: ['Remove item'],
+  },
+  {
+    definition: [validationDefinitions],
+    i18nStrings: [{ errorIconAriaLabel: 'Error', warningIconAriaLabel: 'Warning' }],
     items: [defaultItems],
     addButtonText: ['Add item'],
     removeButtonText: ['Remove item'],

@@ -9,112 +9,153 @@ import { joinStrings } from '../../internal/utils/strings';
 import { SelectionProps } from './interfaces';
 import { ItemSet } from './utils';
 
-export function useSelection<T>({
-  items,
-  selectedItems = [],
-  selectionType,
-  isItemDisabled = () => false,
-  trackBy,
-  onSelectionChange,
-  ariaLabels,
-  loading,
-}: Pick<
+type SelectionOptions<T> = Pick<
   TableProps<T>,
   | 'ariaLabels'
+  | 'isItemDisabled'
   | 'items'
+  | 'loading'
+  | 'onSelectionChange'
   | 'selectedItems'
   | 'selectionType'
-  | 'isItemDisabled'
   | 'trackBy'
-  | 'onSelectionChange'
-  | 'loading'
->) {
-  const [shiftPressed, setShiftPressed] = useState(false);
-  const [lastClickedItem, setLastClickedItem] = useState<T | null>(null);
-  const selectionName = useUniqueId();
-  const finalSelectedItems = selectionType === 'single' ? selectedItems.slice(0, 1) : selectedItems;
-  const selectedSet = new ItemSet(trackBy, finalSelectedItems);
-  const itemIndexesMap = new Map();
-  items.forEach((item, i) => itemIndexesMap.set(getTrackableValue(trackBy, item), i));
+>;
+
+export function useSelection<T>(options: SelectionOptions<T>): {
+  isItemSelected: (item: T) => boolean;
+  getSelectAllProps?: () => SelectionProps;
+  getItemSelectionProps?: (item: T) => SelectionProps;
+} {
+  const singleSelectionProps = useSingleSelection(options);
+  const multiSelectionProps = useMultiSelection(options);
+  return options.selectionType === 'single' ? singleSelectionProps : multiSelectionProps;
+}
+
+function useSingleSelection<T>({
+  ariaLabels,
+  isItemDisabled = () => false,
+  onSelectionChange,
+  selectedItems = [],
+  selectionType,
+  trackBy,
+}: SelectionOptions<T>) {
+  // The name assigned to all controls to combine them in a single group.
+  const selectionControlName = useUniqueId();
+
+  if (selectionType !== 'single') {
+    return { isItemSelected: () => false };
+  }
+
+  // Selection state for individual items.
+  const selectedSet = new ItemSet(trackBy, selectedItems.slice(0, 1));
   const isItemSelected = selectedSet.has.bind(selectedSet);
-  const getItemState = (item: T) => ({
-    disabled: isItemDisabled(item),
-    selected: isItemSelected(item),
-  });
-  const [allDisabled, allEnabledSelected] = selectionType
-    ? items.reduce(
-        ([allDisabled, allEnabledSelected], item) => {
-          const { disabled, selected } = getItemState(item);
-          return [
-            // all items are disabled (or none are present)
-            allDisabled && disabled,
-            // all enabled items are selected (or none are present)
-            allEnabledSelected && (selected || disabled),
-          ];
-        },
-        [true, true]
-      )
-    : [true, true];
 
-  // the page has at least one selected item
-  const hasSelected = finalSelectedItems.length > 0;
-
-  const handleToggleAll = () => {
-    const requestedItems = new ItemSet(trackBy, items);
-    const newSelectedItems = allEnabledSelected ? deselectItems(requestedItems) : selectItems(requestedItems);
-    fireNonCancelableEvent(onSelectionChange, { selectedItems: newSelectedItems });
+  const handleToggleItem = (item: T) => {
+    if (!isItemDisabled(item) && !isItemSelected(item)) {
+      fireNonCancelableEvent(onSelectionChange, { selectedItems: [item] });
+    }
   };
 
-  const getRequestedItems = (item: T) => {
-    const requestedItems = new ItemSet(trackBy, [item]);
-    let lastClickedItemIndex = lastClickedItem ? itemIndexesMap.get(getTrackableValue(trackBy, lastClickedItem)) : -1;
-    if (lastClickedItemIndex === undefined) {
-      lastClickedItemIndex = -1;
-    }
-    // we use lastClickedItemIndex to determine if filtering/sorting/pagination
-    // made previously selected item invisible, therefore we reset state for shift-select
-    if (shiftPressed && lastClickedItemIndex !== -1) {
-      // item is always in items
-      const currentItemIndex = itemIndexesMap.get(getTrackableValue(trackBy, item)) as number;
+  return {
+    isItemSelected,
+    getItemSelectionProps: (item: T): SelectionProps => ({
+      name: selectionControlName,
+      selectionType: 'single',
+      disabled: isItemDisabled(item),
+      checked: isItemSelected(item),
+      onChange: () => handleToggleItem(item),
+      ariaLabel: joinStrings(
+        ariaLabels?.selectionGroupLabel,
+        ariaLabels?.itemSelectionLabel?.({ selectedItems }, item)
+      ),
+    }),
+  };
+}
+
+function useMultiSelection<T>({
+  ariaLabels,
+  isItemDisabled = () => false,
+  items,
+  loading,
+  onSelectionChange,
+  selectedItems = [],
+  selectionType,
+  trackBy,
+}: SelectionOptions<T>) {
+  // The name assigned to all controls to combine them in a single group.
+  const selectionControlName = useUniqueId();
+  const [shiftPressed, setShiftPressed] = useState(false);
+  const [lastClickedItem, setLastClickedItem] = useState<null | T>(null);
+
+  if (selectionType !== 'multi') {
+    return { isItemSelected: () => false };
+  }
+
+  // Selection state for individual items.
+  const selectedSet = new ItemSet(trackBy, selectedItems);
+  const isItemSelected = selectedSet.has.bind(selectedSet);
+
+  // Derived selection state for all-items checkbox.
+  let allItemsDisabled = true;
+  let allEnabledItemsSelected = true;
+  for (const item of items) {
+    allItemsDisabled = allItemsDisabled && isItemDisabled(item);
+    allEnabledItemsSelected = allEnabledItemsSelected && (isItemSelected(item) || isItemDisabled(item));
+  }
+  const allItemsCheckboxSelected = selectedItems.length > 0 && allEnabledItemsSelected;
+  const allItemsCheckboxIndeterminate = selectedItems.length > 0 && !allEnabledItemsSelected;
+
+  // Shift-selection helpers.
+  const itemIndexesMap = new Map<T, number>();
+  items.forEach((item, i) => itemIndexesMap.set(getTrackableValue(trackBy, item), i));
+  const getShiftSelectedItems = (item: T): T[] => {
+    const lastClickedItemIndex = lastClickedItem
+      ? itemIndexesMap.get(getTrackableValue(trackBy, lastClickedItem))
+      : undefined;
+    // We use lastClickedItemIndex to determine if filtering/sorting/pagination
+    // made previously selected item invisible, therefore we reset state for shift-select.
+    if (lastClickedItemIndex !== undefined) {
+      const currentItemIndex = itemIndexesMap.get(getTrackableValue(trackBy, item))!;
       const start = Math.min(currentItemIndex, lastClickedItemIndex);
       const end = Math.max(currentItemIndex, lastClickedItemIndex);
-      items.slice(start, end + 1).forEach(item => requestedItems.put(item));
+      return items.slice(start, end + 1);
     }
-    return requestedItems;
+    return [item];
   };
 
-  const deselectItems = (requestedItems: ItemSet<T>) => {
-    const newSelectedItems: Array<T> = [];
-    selectedItems.forEach(selectedItem => {
-      const toUnselect = requestedItems.has(selectedItem);
-      if (!toUnselect || isItemDisabled(selectedItem)) {
-        newSelectedItems.push(selectedItem);
-      }
-    });
-    return newSelectedItems;
-  };
-
-  const selectItems = (requestedItems: ItemSet<T>) => {
+  // Select items that are not already selected or disabled.
+  const selectItems = (requestedItems: readonly T[]) => {
     const newSelectedItems = [...selectedItems];
     requestedItems.forEach(newItem => {
-      const { selected, disabled } = getItemState(newItem);
-      if (!selected && !disabled) {
+      if (!isItemSelected(newItem) && !isItemDisabled(newItem)) {
         newSelectedItems.push(newItem);
       }
     });
     return newSelectedItems;
   };
 
-  const handleToggleItem = (item: T) => () => {
-    const { disabled, selected } = getItemState(item);
-    if (disabled || (selectionType === 'single' && selected)) {
-      return;
-    }
-    if (selectionType === 'single') {
-      fireNonCancelableEvent(onSelectionChange, { selectedItems: [item] });
-    } else {
-      const requestedItems = getRequestedItems(item);
-      const selectedItems = selected ? deselectItems(requestedItems) : selectItems(requestedItems);
+  // Unselect items unless they are disabled.
+  const deselectItems = (requestedItems: readonly T[]) => {
+    const requestedItemsSet = new ItemSet(trackBy, requestedItems);
+    const newSelectedItems: Array<T> = [];
+    selectedItems.forEach(selectedItem => {
+      const shouldUnselect = requestedItemsSet.has(selectedItem);
+      if (!shouldUnselect || isItemDisabled(selectedItem)) {
+        newSelectedItems.push(selectedItem);
+      }
+    });
+    return newSelectedItems;
+  };
+
+  const handleToggleAll = () => {
+    const newSelectedItems = allEnabledItemsSelected ? deselectItems(items) : selectItems(items);
+    fireNonCancelableEvent(onSelectionChange, { selectedItems: newSelectedItems });
+  };
+
+  const handleToggleItem = (item: T) => {
+    if (!isItemDisabled(item)) {
+      const requestedItems = shiftPressed ? getShiftSelectedItems(item) : [item];
+      const selectedItems = isItemSelected(item) ? deselectItems(requestedItems) : selectItems(requestedItems);
       fireNonCancelableEvent(onSelectionChange, { selectedItems });
       setLastClickedItem(item);
     }
@@ -122,41 +163,26 @@ export function useSelection<T>({
 
   return {
     isItemSelected,
-    getSelectAllProps: (): SelectionProps => {
-      if (!selectionType) {
-        throw new Error('Invariant violation: calling selection props with missing selection type.');
-      }
-      return {
-        name: selectionName,
-        disabled: allDisabled || !!loading,
-        selectionType: selectionType,
-        indeterminate: hasSelected && !allEnabledSelected,
-        checked: hasSelected && allEnabledSelected,
-        onChange: handleToggleAll,
-        ariaLabel: joinStrings(
-          ariaLabels?.selectionGroupLabel,
-          ariaLabels?.allItemsSelectionLabel?.({ selectedItems })
-        ),
-      };
-    },
-    getItemSelectionProps: (item: T): SelectionProps => {
-      if (!selectionType) {
-        throw new Error('Invariant violation: calling selection props with missing selection type.');
-      }
-      return {
-        name: selectionName,
-        selectionType: selectionType,
-        ariaLabel: joinStrings(
-          ariaLabels?.selectionGroupLabel,
-          ariaLabels?.itemSelectionLabel?.({ selectedItems }, item)
-        ),
-        onChange: handleToggleItem(item),
-        checked: isItemSelected(item),
-        disabled: isItemDisabled(item),
-      };
-    },
-    updateShiftToggle: (value: boolean) => {
-      setShiftPressed(value);
-    },
+    getSelectAllProps: (): SelectionProps => ({
+      name: selectionControlName,
+      selectionType: 'multi',
+      disabled: allItemsDisabled || !!loading,
+      checked: allItemsCheckboxSelected,
+      indeterminate: allItemsCheckboxIndeterminate,
+      onChange: handleToggleAll,
+      ariaLabel: joinStrings(ariaLabels?.selectionGroupLabel, ariaLabels?.allItemsSelectionLabel?.({ selectedItems })),
+    }),
+    getItemSelectionProps: (item: T): SelectionProps => ({
+      name: selectionControlName,
+      selectionType: 'multi',
+      disabled: isItemDisabled(item),
+      checked: isItemSelected(item),
+      onChange: () => handleToggleItem(item),
+      onShiftToggle: (value: boolean) => setShiftPressed(value),
+      ariaLabel: joinStrings(
+        ariaLabels?.selectionGroupLabel,
+        ariaLabels?.itemSelectionLabel?.({ selectedItems }, item)
+      ),
+    }),
   };
 }

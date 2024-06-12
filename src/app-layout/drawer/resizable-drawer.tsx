@@ -10,8 +10,7 @@ import { SizeControlProps } from '../utils/interfaces';
 import { Drawer } from './index';
 import testutilStyles from '../test-classes/styles.css.js';
 
-import ResizeHandler from '../../split-panel/icons/resize-handler';
-import splitPanelStyles from '../../split-panel/styles.css.js';
+import PanelResizeHandle from '../../internal/components/panel-resize-handle';
 import styles from './styles.css.js';
 import { ResizableDrawerProps } from './interfaces';
 import { TOOLS_DRAWER_ID } from '../utils/use-drawers';
@@ -51,23 +50,6 @@ export const ResizableDrawer = ({
   const onSliderPointerDown = usePointerEvents(sizeControlProps);
   const onKeyDown = useKeyboardEvents(sizeControlProps);
 
-  const resizeHandle = (
-    <div
-      ref={refs.slider}
-      role="slider"
-      tabIndex={0}
-      aria-label={activeDrawer?.ariaLabels?.resizeHandle}
-      aria-valuemax={100}
-      aria-valuemin={0}
-      aria-valuenow={relativeSize}
-      className={clsx(splitPanelStyles.slider, splitPanelStyles[`slider-side`], testutilStyles['drawers-slider'])}
-      onKeyDown={onKeyDown}
-      onPointerDown={onSliderPointerDown}
-    >
-      <ResizeHandler className={clsx(splitPanelStyles['slider-icon'], splitPanelStyles[`slider-icon-side`])} />
-    </div>
-  );
-
   return (
     <Drawer
       {...props}
@@ -77,7 +59,17 @@ export const ResizableDrawer = ({
       isHidden={!activeDrawer}
       resizeHandle={
         !isMobile &&
-        activeDrawer?.resizable && <div className={splitPanelStyles['slider-wrapper-side']}>{resizeHandle}</div>
+        activeDrawer?.resizable && (
+          <PanelResizeHandle
+            ref={refs.slider}
+            position="side"
+            className={testutilStyles['drawers-slider']}
+            ariaLabel={activeDrawer?.ariaLabels?.resizeHandle}
+            ariaValuenow={relativeSize}
+            onKeyDown={onKeyDown}
+            onPointerDown={onSliderPointerDown}
+          />
+        )
       }
       ariaLabels={{
         openLabel: activeDrawer?.ariaLabels?.triggerButton,

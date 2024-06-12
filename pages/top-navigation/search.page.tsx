@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import * as React from 'react';
+import React, { useState } from 'react';
 
 import TopNavigation from '~components/top-navigation';
 import Input from '~components/input';
@@ -9,8 +9,8 @@ import logo from './logos/simple-logo.svg';
 import { I18N_STRINGS } from './common';
 
 export default function TopNavigationPage() {
-  const [valueAutosuggest, setValueAutosuggest] = React.useState('');
-  const [valueInput, setValueInput] = React.useState('');
+  const [valueAutosuggest, setValueAutosuggest] = useState('');
+  const [valueInput, setValueInput] = useState('');
   return (
     <article>
       <h1>TopNavigation with search</h1>
@@ -49,6 +49,7 @@ export default function TopNavigationPage() {
           />
         }
       />
+      <br />
     </article>
   );
 }

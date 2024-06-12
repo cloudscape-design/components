@@ -5,11 +5,11 @@
 
 .html,
 .body {
-  height: 100%;
+  block-size: 100%;
 }
 
 .popover {
   position: absolute;
-  bottom: 50px;
-  left: 50px;
+  inset-block-end: 50px;
+  inset-inline-start: 50px;
 }

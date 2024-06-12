@@ -21,9 +21,9 @@ function formatElement(element: Element) {
   return `${tagName}[${text}]`;
 }
 
-test('updates interactive elements tab indices', () => {
+test('updates interactive elements tab indices', async () => {
   render(<TestTable columns={[nameColumn, valueColumn]} items={items} />);
-  expect(readFocusableElements()).toEqual(['BUTTON[Sort by name]']);
+  await waitFor(() => expect(readFocusableElements()).toEqual(['BUTTON[Sort by name]']));
 });
 
 test.each([0, 5])('supports arrow keys navigation for startIndex=%s', startIndex => {
@@ -243,10 +243,10 @@ test('restores focus when the node gets removed', async () => {
   await waitFor(() => expect(editButtonCell).toHaveFocus());
 });
 
-test('all elements focus is restored if table changes role after being rendered as grid', () => {
+test('all elements focus is restored if table changes role after being rendered as grid', async () => {
   const { rerender } = render(<TestTable columns={[valueColumn, idColumn]} items={items} />);
 
-  expect(readFocusableElements()).toEqual(['BUTTON[Sort by value]']);
+  await waitFor(() => expect(readFocusableElements()).toEqual(['BUTTON[Sort by value]']));
 
   rerender(<TestTable keyboardNavigation={false} columns={[valueColumn, idColumn]} items={items} />);
 

@@ -22,8 +22,8 @@ export default function DatePickerScenario() {
       <button id="focus-dismiss-helper" type="button">
         Focusable element
       </button>
-      <div style={sticky ? { minHeight: '200vh' } : {}}>
-        <div style={sticky ? { position: 'sticky', top: 200 } : {}}>
+      <div style={sticky ? { minBlockSize: '200vh' } : {}}>
+        <div style={sticky ? { position: 'sticky', insetBlockStart: 200 } : {}}>
           <FormField label="Date Range Picker field">
             <DateRangePicker
               value={value}

@@ -43,10 +43,9 @@ function stylesTask(theme) {
     const secondary = theme.secondaryThemePaths ? theme.secondaryThemePaths.map(path => getTheme(path)) : [];
     const styleDictionaryName = basename(theme.primaryThemePath);
 
-    const metadata = require(join(
-      rootDir,
-      `${workspace.compiledStyleDictionary}/${styleDictionaryName}/metadata`
-    )).default;
+    const metadata = require(
+      join(rootDir, `${workspace.compiledStyleDictionary}/${styleDictionaryName}/metadata`)
+    ).default;
     const exposed = [];
     const themeable = [];
     const variablesMap = {};

@@ -9,25 +9,25 @@
   align-items: flex-end;
   order: 0;
   flex-grow: 10;
-  margin-right: 0;
-  margin-bottom: -16px;
+  margin-inline-end: 0;
+  margin-block-end: -16px;
 
   /* stylelint-disable-next-line selector-max-type */
   > div {
-    margin-right: 16px;
-    margin-bottom: 12px;
+    margin-inline-end: 16px;
+    margin-block-end: 12px;
   }
 }
 
 .input-filter {
   order: 0;
   flex-grow: 6;
-  width: auto;
-  max-width: 728px;
+  inline-size: auto;
+  max-inline-size: 728px;
 }
 
 .select-filter {
-  max-width: 130px;
+  max-inline-size: 130px;
   flex-grow: 2;
-  width: auto;
+  inline-size: auto;
 }

@@ -464,6 +464,34 @@ describe('property filter parts', () => {
     });
   });
 
+  describe('constraint text', () => {
+    test('is not displayed when constraint text is empty', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        filteringConstraintText: '',
+        query: { tokens: [{ propertyKey: 'string', value: 'first', operator: ':' }], operation: 'or' },
+      });
+      expect(wrapper.findConstraint()).toBe(null);
+    });
+    test('is visible when the constraint text is not empty', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        filteringConstraintText: <div>This is my constraint</div>,
+        query: { tokens: [{ propertyKey: 'string', value: 'first', operator: ':' }], operation: 'or' },
+      });
+      expect(wrapper.findConstraint()!.getElement()).toHaveTextContent('This is my constraint');
+    });
+    test('is used as ARIA description for the autosuggest input', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        ariaDescribedby: 'my-custom-description',
+        filteringConstraintText: <div>This is my constraint</div>,
+        query: { tokens: [{ propertyKey: 'string', value: 'first', operator: ':' }], operation: 'or' },
+      });
+      expect(wrapper.findNativeInput().getElement()).toHaveAttribute(
+        'aria-describedby',
+        'my-custom-description' + ' ' + wrapper.findConstraint()!.getElement().id
+      );
+    });
+  });
+
   describe('filtering  tokens', () => {
     describe('content', () => {
       test('free text token', () => {

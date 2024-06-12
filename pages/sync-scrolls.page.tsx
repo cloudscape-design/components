@@ -17,11 +17,11 @@ export default function App() {
           numberOfCallsRef.current?.setAttribute('data-call-number', n.toString());
         }}
       >
-        <div id="element1" ref={ref1} style={{ width: '400px', overflow: 'scroll' }} onScroll={handleScroll}>
-          <div style={{ width: '800px', height: '100px', backgroundColor: 'lightpink' }} />
+        <div id="element1" ref={ref1} style={{ inlineSize: '400px', overflow: 'scroll' }} onScroll={handleScroll}>
+          <div style={{ inlineSize: '800px', blockSize: '100px', backgroundColor: 'lightpink' }} />
         </div>
         <div id="element2" ref={ref2} style={{ width: '400px', overflow: 'scroll' }} onScroll={handleScroll}>
-          <div style={{ width: '800px', height: '100px', backgroundColor: 'lightblue' }} />
+          <div style={{ inlineSize: '800px', blockSize: '100px', backgroundColor: 'lightblue' }} />
         </div>
         <div ref={numberOfCallsRef} id="numberOfCalls">
           Placeholder for a value stored in DOM and used in integration tests

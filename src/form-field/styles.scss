@@ -24,6 +24,7 @@
 }
 
 .info {
+  display: inline-flex;
   padding-inline-start: awsui.$space-xs;
   border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
 }
@@ -34,7 +35,7 @@
 }
 
 .hints,
-.constraint-has-error {
+.constraint-has-validation-text {
   padding-block-start: awsui.$space-xxs;
 }
 
@@ -45,6 +46,10 @@
 .controls {
   &:not(.label-hidden) {
     padding-block-start: awsui.$space-xxs;
+  }
+
+  .label-wrapper:empty + & {
+    padding-block-start: 0;
   }
 }
 
@@ -60,7 +65,16 @@
   align-items: flex-start;
 }
 
-.error__message {
+.warning {
+  color: awsui.$color-text-status-warning;
+  @include styles.font-body-s;
+
+  display: flex;
+  align-items: flex-start;
+}
+
+.error__message,
+.warning__message {
   margin-inline-start: awsui.$space-xxs;
 }
 

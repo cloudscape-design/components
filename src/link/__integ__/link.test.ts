@@ -41,7 +41,7 @@ describe('Link', () => {
     );
   });
 
-  describe('role="button"', () => {
+  describe('Button Link', () => {
     test(
       'enter key and space key trigger link',
       useBrowser(async browser => {

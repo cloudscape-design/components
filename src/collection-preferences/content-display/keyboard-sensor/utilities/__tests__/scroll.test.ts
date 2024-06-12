@@ -19,7 +19,7 @@ describe('applyScroll', () => {
         right: 0,
         bottom: 10,
         left: 0,
-      } as DOMRect)
+      }) as DOMRect
   );
   const currentCoordinates = { x: 0, y: 0 };
   const newCoordinates = { x: 0, y: 10 };

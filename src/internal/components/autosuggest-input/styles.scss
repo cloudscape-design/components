@@ -8,7 +8,6 @@
 }
 
 .dropdown-footer {
-  // Fixes incorrect flex height calculation in IE11.
   overflow: hidden;
   flex-shrink: 0;
 }

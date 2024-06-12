@@ -4,19 +4,26 @@ import React from 'react';
 import clsx from 'clsx';
 import { useAppLayoutInternals } from './context';
 import customCssProps from '../../internal/generated/custom-css-properties';
+import { getStickyOffsetVars } from '../utils/sticky-offsets';
 import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
+import * as tokens from '../../internal/generated/styles/tokens';
 
 export default function Main() {
   const {
     content,
+    disableBodyScroll,
     disableContentPaddings,
     footerHeight,
     hasDrawerViewportOverlay,
     navigationOpen,
+    placement,
+    isMobile,
     isSplitPanelOpen,
     isToolsOpen,
     mainElement,
+    notificationsHeight,
+    stickyNotifications,
     offsetBottom,
     splitPanelDisplayed,
     splitPanelPosition,
@@ -44,6 +51,14 @@ export default function Main() {
       ref={mainElement}
       style={{
         [customCssProps.splitPanelHeight]: `${splitPanelHeight}px`,
+        ...getStickyOffsetVars(
+          placement.insetBlockStart,
+          offsetBottom,
+          stickyNotifications && notificationsHeight > 0 ? `${tokens.spaceXs} + ${notificationsHeight}px` : '0px',
+          `var(${customCssProps.mobileBarHeight})`,
+          !!disableBodyScroll,
+          isMobile
+        ),
       }}
     >
       {content}

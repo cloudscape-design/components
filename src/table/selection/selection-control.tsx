@@ -100,8 +100,7 @@ export function SelectionControl({
       >
         {selector}
       </label>
-      {/* HACK: IE11 collapses td's height to 0, if it contains only an absolutely positioned label */}
-      <span className={clsx(styles.stud)} aria-hidden={true}>
+      <span className={styles.stud} aria-hidden={true}>
         &nbsp;
       </span>
     </>

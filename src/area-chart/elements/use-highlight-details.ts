@@ -59,8 +59,8 @@ export default function useHighlightDetails<T extends AreaChartProps.DataTypes>(
       value: detailTotalFormatter
         ? detailTotalFormatter(detailsTotal)
         : yTickFormatter
-        ? yTickFormatter(detailsTotal)
-        : detailsTotal,
+          ? yTickFormatter(detailsTotal)
+          : detailsTotal,
     },
   ];
   const pointDetails = hPoint ? seriesDetails[hPoint.index.s] : null;

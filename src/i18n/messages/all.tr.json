@@ -262,6 +262,9 @@
     "selectedAriaLabel": "Seçili",
     "recoveryText": "Yeniden dene"
   },
+  "slider": {
+    "i18nStrings.valueTextRange": "{value},{previousValue} ve {nextValue} arasında"
+  },
   "split-panel": {
     "i18nStrings.closeButtonAriaLabel": "Paneli kapat",
     "i18nStrings.openButtonAriaLabel": "Paneli aç",

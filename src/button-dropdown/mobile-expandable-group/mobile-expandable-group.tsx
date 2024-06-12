@@ -21,7 +21,7 @@ export interface MobileExpandableGroupProps {
 
 const MobileExpandableGroup = ({ children, trigger, open }: MobileExpandableGroupProps) => {
   return (
-    <div className={clsx(styles.root)}>
+    <div className={styles.root}>
       <div className={styles.trigger}>{trigger}</div>
       <div className={clsx(styles.dropdown, { [styles.open]: open })} data-open={open}>
         {children}

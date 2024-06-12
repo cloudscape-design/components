@@ -21,10 +21,7 @@ $gutter: awsui.$space-grid-gutter;
 @mixin make-column($nColumns) {
   $nColumns: math.div(12, $nColumns);
   $p: math.percentage(math.div(1, $nColumns));
-  flex: 0 0;
-  // IE11 ignores calc functions in flex shorthand declarations
-  // https://github.com/philipwalton/flexbugs#flexbug-8
-  flex-basis: calc(#{$p} - #{$gutter});
+  flex: 0 0 calc(#{$p} - #{$gutter});
   max-inline-size: calc(#{$p} - #{$gutter});
 }
 
@@ -67,7 +64,8 @@ $gutter: awsui.$space-grid-gutter;
   }
 
   @include styles.with-motion {
-    transition: border-color awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick,
+    transition:
+      border-color awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick,
       background-color awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick;
   }
 }
@@ -106,7 +104,6 @@ $gutter: awsui.$space-grid-gutter;
 
 .image {
   text-align: center;
-  flex: none; // needed to have IE11 calculate the height of this region correctly
 
   // This manipulates a (optionally) passed img element for the image attribute of
   // an item. We do not have control over the img element.

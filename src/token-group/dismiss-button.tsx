@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { forwardRef, Ref } from 'react';
-import clsx from 'clsx';
 import styles from './styles.css.js';
 import InternalIcon from '../icon/internal';
 
@@ -18,7 +17,7 @@ function DismissButton({ disabled, dismissLabel, onDismiss }: DismissButtonProps
     <button
       ref={ref}
       type="button"
-      className={clsx(styles['dismiss-button'])}
+      className={styles['dismiss-button']}
       aria-disabled={disabled ? true : undefined}
       onClick={!disabled && onDismiss ? () => onDismiss() : undefined}
       aria-label={dismissLabel}

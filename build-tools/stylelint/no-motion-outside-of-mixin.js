@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-const stylelint = require('stylelint');
+import stylelint from 'stylelint';
 
 const ruleName = '@cloudscape-design/no-motion-outside-of-mixin';
 const messages = stylelint.utils.ruleMessages(ruleName, {
@@ -15,7 +15,7 @@ function findUpUntil(node, callback) {
   return current;
 }
 
-module.exports = stylelint.createPlugin(ruleName, () => {
+function noMotionOutsideOfMixinPlugin() {
   return (root, result) => {
     root.walkDecls(/animation|transition/, decl => {
       // sass variables are okay, because they do not produce CSS
@@ -37,7 +37,8 @@ module.exports = stylelint.createPlugin(ruleName, () => {
       }
     });
   };
-});
+}
+noMotionOutsideOfMixinPlugin.ruleName = ruleName;
+noMotionOutsideOfMixinPlugin.messages = messages;
 
-module.exports.ruleName = ruleName;
-module.exports.messages = messages;
+export default stylelint.createPlugin(ruleName, noMotionOutsideOfMixinPlugin);

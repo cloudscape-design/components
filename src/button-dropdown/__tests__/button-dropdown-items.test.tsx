@@ -7,7 +7,7 @@ import ButtonDropdown, { ButtonDropdownProps } from '../../../lib/components/but
 import { InternalButtonDropdownProps } from '../../../lib/components/button-dropdown/interfaces';
 import createWrapper, { IconWrapper } from '../../../lib/components/test-utils/dom';
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
-import { isItemGroup } from '../utils/utils';
+import { isItemGroup, isLinkItem } from '../utils/utils';
 
 import itemStyles from '../../../lib/components/button-dropdown/item-element/styles.css.js';
 import categoryStyles from '../../../lib/components/button-dropdown/category-elements/styles.css.js';
@@ -40,13 +40,17 @@ const checkRenderedGroup = (
   }
 };
 
-const checkElementItem = (renderedItem: ElementWrapper, item: ButtonDropdownProps.Item, parentIsDisabled = false) => {
+const checkElementItem = (
+  renderedItem: ElementWrapper,
+  item: ButtonDropdownProps.Item | ButtonDropdownProps.CheckboxItem,
+  parentIsDisabled = false
+) => {
   const element = renderedItem.getElement();
   expect(element).toHaveTextContent(item.text);
 
   const disabled = parentIsDisabled || item.disabled;
 
-  if (item.href) {
+  if (isLinkItem(item) && item.href) {
     const anchor = renderedItem.find('a')!.getElement();
     if (disabled) {
       expect(anchor).not.toHaveAttribute('href');
@@ -369,7 +373,7 @@ const items: ButtonDropdownProps.Items = [
         </svg>
       );
 
-      const iconItems: ButtonDropdownProps['items'] = [
+      const iconItems: Array<ButtonDropdownProps.Item> = [
         { id: 'i1', text: 'item1', iconName: 'settings' },
         { id: 'i2', text: 'item2', iconUrl: url, iconAlt: 'iconAlt' },
         { id: 'i3', text: 'item3', iconSvg: svg },

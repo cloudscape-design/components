@@ -8,6 +8,7 @@ import { KeyCode } from '../../keycode';
 import SeriesMarker, { ChartSeriesMarkerType } from '../chart-series-marker';
 import styles from './styles.css.js';
 import { useInternalI18n } from '../../../i18n/context';
+import handleKey from '../../utils/handle-key';
 
 export interface ChartLegendItem<T> {
   label: string;
@@ -41,33 +42,27 @@ function ChartLegend<T>({
 
   const highlightedSeriesIndex = findSeriesIndex(series, highlightedSeries);
 
-  const highlightLeft = () => {
+  const highlightInlineStart = () => {
     const currentIndex = highlightedSeriesIndex ?? 0;
     const nextIndex = currentIndex - 1 >= 0 ? currentIndex - 1 : series.length - 1;
     segmentsRef.current[nextIndex]?.focus();
   };
 
-  const highlightRight = () => {
+  const highlightInlineEnd = () => {
     const currentIndex = highlightedSeriesIndex ?? 0;
     const nextIndex = currentIndex + 1 < series.length ? currentIndex + 1 : 0;
     segmentsRef.current[nextIndex]?.focus();
   };
 
-  const handleKeyPress = (event: React.KeyboardEvent) => {
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLElement>) => {
     if (event.keyCode === KeyCode.right || event.keyCode === KeyCode.left) {
       // Preventing default fixes an issue in Safari+VO when VO additionally interprets arrow keys as its commands.
       event.preventDefault();
 
-      switch (event.keyCode) {
-        case KeyCode.left:
-          return highlightLeft();
-
-        case KeyCode.right:
-          return highlightRight();
-
-        default:
-          return;
-      }
+      handleKey(event, {
+        onInlineStart: () => highlightInlineStart(),
+        onInlineEnd: () => highlightInlineEnd(),
+      });
     }
   };
 

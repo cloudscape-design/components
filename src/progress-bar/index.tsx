@@ -28,6 +28,7 @@ export default function ProgressBar({
   label,
   ariaLabel,
   ariaLabelledby,
+  ariaDescribedby,
   description,
   additionalInfo,
   resultText,
@@ -43,6 +44,9 @@ export default function ProgressBar({
   const labelId = `${generatedName}-label`;
   const isInFlash = variant === 'flash';
   const isInProgressState = status === 'in-progress';
+
+  const descriptionId = useUniqueId('progressbar-description-');
+  const additionalInfoId = useUniqueId('progressbar-additional-info-');
 
   const [announcedValue, setAnnouncedValue] = useState('');
   const throttledAssertion = useMemo(() => {
@@ -72,7 +76,11 @@ export default function ProgressBar({
         <div className={clsx(styles['word-wrap'], styles[`label-${variant}`])} id={labelId}>
           {label}
         </div>
-        {description && <SmallText color={isInFlash ? 'inherit' : undefined}>{description}</SmallText>}
+        {description && (
+          <SmallText color={isInFlash ? 'inherit' : undefined} id={descriptionId}>
+            {description}
+          </SmallText>
+        )}
         <div>
           {isInProgressState ? (
             <>
@@ -80,6 +88,11 @@ export default function ProgressBar({
                 value={value}
                 ariaLabel={ariaLabel}
                 ariaLabelledby={joinStrings(labelId, ariaLabelledby)}
+                ariaDescribedby={joinStrings(
+                  description ? descriptionId : undefined,
+                  additionalInfo ? additionalInfoId : undefined,
+                  ariaDescribedby
+                )}
                 isInFlash={isInFlash}
               />
               <LiveRegion delay={0}>
@@ -101,7 +114,15 @@ export default function ProgressBar({
           )}
         </div>
       </div>
-      {additionalInfo && <SmallText color={isInFlash ? 'inherit' : undefined}>{additionalInfo}</SmallText>}
+      {additionalInfo && (
+        <SmallText
+          className={styles['additional-info']}
+          color={isInFlash ? 'inherit' : undefined}
+          id={additionalInfoId}
+        >
+          {additionalInfo}
+        </SmallText>
+      )}
     </div>
   );
 }

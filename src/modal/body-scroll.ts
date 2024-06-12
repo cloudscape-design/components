@@ -3,6 +3,12 @@
 import styles from './styles.css.js';
 import { browserScrollbarSize } from '../internal/utils/browser-scrollbar-size';
 
+// Read this before making changes to the code below.
+//
+// When a modal is used from an iframe the body scrolling utils take no effect because they need to be applied to another document.
+// The customers replicate this behavior by running the same code on the correct document instance, see AWSUI-41915.
+// Hence, we should avoid making changes to the component that break the body scrolling logic in its current form.
+
 let initialBodyPaddingRightStyle: string | undefined = undefined;
 
 export function disableBodyScrolling() {

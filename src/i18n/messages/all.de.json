@@ -262,6 +262,9 @@
     "selectedAriaLabel": "Ausgewählt",
     "recoveryText": "Wiederholen"
   },
+  "slider": {
+    "i18nStrings.valueTextRange": "{value}, zwischen {previousValue} und {nextValue}"
+  },
   "split-panel": {
     "i18nStrings.closeButtonAriaLabel": "Bereich schließen",
     "i18nStrings.openButtonAriaLabel": "Bereich öffnen",
@@ -324,7 +327,7 @@
     "i18nStrings.limitShowMore": "Mehr anzeigen"
   },
   "top-navigation": {
-    "i18nStrings.searchIconAriaLabel": "Suche",
+    "i18nStrings.searchIconAriaLabel": "Suchen",
     "i18nStrings.searchDismissIconAriaLabel": "Suche schließen",
     "i18nStrings.overflowMenuTriggerText": "Mehr",
     "i18nStrings.overflowMenuDismissIconAriaLabel": "Menü schließen",

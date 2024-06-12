@@ -22,7 +22,8 @@
 .dialog {
   @include styles.with-motion {
     @include styles.animation-fade-in-0;
-    animation: modal-slide-up awsui.$motion-duration-slow ease-out,
+    animation:
+      modal-slide-up awsui.$motion-duration-slow ease-out,
       awsui-motion-fade-in-0 awsui.$motion-duration-slow ease-out;
     animation-delay: awsui.$motion-duration-fast;
     animation-fill-mode: both;

@@ -15,6 +15,10 @@ const defaultOptions: AutosuggestProps.Options = [
   { value: '1', label: 'One' },
   { value: '2', lang: 'fr' },
 ];
+const groupOptions: AutosuggestProps.Options = [
+  { label: 'Group 1', options: [{ value: '1' }, { value: '2' }] },
+  { label: 'Group 2', options: [{ value: '3' }] },
+];
 const defaultProps: AutosuggestProps = {
   enteredTextLabel: () => 'Use value',
   value: '',
@@ -396,6 +400,44 @@ describe('keyboard interactions', () => {
     expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
     expect(onChange).toBeCalledTimes(1);
   });
+
+  test('arrow up key on first option should highlight last option', () => {
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} />);
+
+    expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    expect(wrapper.findDropdown()!.findOpenDropdown()).not.toBe(null);
+
+    expect(wrapper.findDropdown().findHighlightedOption()!.getElement()).toHaveTextContent('One');
+    wrapper.findNativeInput().keydown(KeyCode.up);
+    expect(wrapper.findDropdown().findHighlightedOption()!.getElement()).toHaveTextContent('2');
+  });
+
+  test('arrow up key on first option should highlight last option (options with groups)', () => {
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} options={groupOptions} />);
+
+    expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    expect(wrapper.findDropdown()!.findOpenDropdown()).not.toBe(null);
+
+    expect(wrapper.findDropdown().findHighlightedOption()!.getElement()).toHaveTextContent('1');
+    wrapper.findNativeInput().keydown(KeyCode.up);
+    expect(wrapper.findDropdown().findHighlightedOption()!.getElement()).toHaveTextContent('3');
+  });
+
+  test('arrow down key on last option should highlight first option', () => {
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} />);
+
+    expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    expect(wrapper.findDropdown()!.findOpenDropdown()).not.toBe(null);
+
+    expect(wrapper.findDropdown().findHighlightedOption()!.getElement()).toHaveTextContent('One');
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    expect(wrapper.findDropdown().findHighlightedOption()!.getElement()).toHaveTextContent('2');
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    expect(wrapper.findDropdown().findHighlightedOption()!.getElement()).toHaveTextContent('One');
+  });
 });
 
 describe('Check if should render dropdown', () => {
@@ -474,15 +516,7 @@ describe('Ref', () => {
 
 test('findOptionInGroup', () => {
   const { container } = render(
-    <Autosuggest
-      value=""
-      onChange={() => {}}
-      enteredTextLabel={() => 'Use value'}
-      options={[
-        { label: 'Group 1', options: [{ value: '1' }, { value: '2' }] },
-        { label: 'Group 2', options: [{ value: '3' }] },
-      ]}
-    />
+    <Autosuggest value="" onChange={() => {}} enteredTextLabel={() => 'Use value'} options={groupOptions} />
   );
   const wrapper = createWrapper(container).findAutosuggest()!;
   wrapper.findNativeInput().focus();

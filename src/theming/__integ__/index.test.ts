@@ -10,6 +10,9 @@ class ThemingPage extends BasePageObject {
   switchTheme() {
     return this.click('[data-testid="change-theme"]');
   }
+  switchThemeMethod() {
+    return this.click('[data-testid="change-theme-method"]');
+  }
   toggleDarkMode() {
     return this.click('#mode-toggle');
   }
@@ -55,11 +58,16 @@ const linkTextColor = {
   test(
     `applies theme to components${vr ? ' in Visual Refresh' : ''}`,
     setupTest(async page => {
-      // Using a component is not ideal. Changes to the component will effect this test case.
+      // Using a component is not ideal. Changes to the component will affect this test case.
       await expect(page.getButtonBackgroundColor()).resolves.not.toBe(buttonBackgroundColor.light);
       await expect(page.getLinkTextColor()).resolves.not.toBe(linkTextColor.light);
 
       await page.switchTheme();
+
+      await expect(page.getButtonBackgroundColor()).resolves.toBe(buttonBackgroundColor.light);
+      await expect(page.getLinkTextColor()).resolves.toBe(linkTextColor.light);
+
+      await page.switchThemeMethod();
 
       await expect(page.getButtonBackgroundColor()).resolves.toBe(buttonBackgroundColor.light);
       await expect(page.getLinkTextColor()).resolves.toBe(linkTextColor.light);
@@ -70,6 +78,11 @@ const linkTextColor = {
       await expect(page.getLinkTextColor()).resolves.toBe(linkTextColor.dark);
 
       await page.switchTheme();
+
+      await expect(page.getButtonBackgroundColor()).resolves.not.toBe(buttonBackgroundColor.dark);
+      await expect(page.getLinkTextColor()).resolves.not.toBe(linkTextColor.dark);
+
+      await page.switchThemeMethod();
 
       await expect(page.getButtonBackgroundColor()).resolves.not.toBe(buttonBackgroundColor.dark);
       await expect(page.getLinkTextColor()).resolves.not.toBe(linkTextColor.dark);
@@ -85,11 +98,19 @@ const linkTextColor = {
 
       await expect(page.getFakeLinkTextColor()).resolves.toBe(linkTextColor.light);
 
+      await page.switchThemeMethod();
+
+      await expect(page.getFakeLinkTextColor()).resolves.toBe(linkTextColor.light);
+
       await page.toggleDarkMode();
 
       await expect(page.getFakeLinkTextColor()).resolves.toBe(linkTextColor.dark);
 
       await page.switchTheme();
+
+      await expect(page.getFakeLinkTextColor()).resolves.not.toBe(linkTextColor.dark);
+
+      await page.switchThemeMethod();
 
       await expect(page.getFakeLinkTextColor()).resolves.not.toBe(linkTextColor.dark);
     }, vr)

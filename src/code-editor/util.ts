@@ -8,10 +8,10 @@ import { CodeEditorProps } from './interfaces';
 
 export type PaneStatus = 'error' | 'warning' | 'hidden';
 
-const CLOUD_EDITOR_LIGHT_THEME: typeof LightThemes[number]['value'] = 'cloud_editor';
-const CLOUD_EDITOR_DARK_THEME: typeof DarkThemes[number]['value'] = 'cloud_editor_dark';
-const FALLBACK_LIGHT_THEME: typeof LightThemes[number]['value'] = 'dawn';
-const FALLBACK_DARK_THEME: typeof DarkThemes[number]['value'] = 'tomorrow_night_bright';
+const CLOUD_EDITOR_LIGHT_THEME: (typeof LightThemes)[number]['value'] = 'cloud_editor';
+const CLOUD_EDITOR_DARK_THEME: (typeof DarkThemes)[number]['value'] = 'cloud_editor_dark';
+const FALLBACK_LIGHT_THEME: (typeof LightThemes)[number]['value'] = 'dawn';
+const FALLBACK_DARK_THEME: (typeof DarkThemes)[number]['value'] = 'tomorrow_night_bright';
 
 export const DEFAULT_AVAILABLE_THEMES = {
   light: LightThemes.map(theme => theme.value).filter(value => value !== CLOUD_EDITOR_LIGHT_THEME),

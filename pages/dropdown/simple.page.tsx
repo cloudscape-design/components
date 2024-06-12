@@ -44,14 +44,14 @@ export default function DropdownScenario() {
           }
           open={open2}
           onDropdownClose={() => setOpen2(false)}
-          header={<div style={{ height: '30px' }} />}
-          footer={<div className="footer" style={{ height: '30px' }} />}
+          header={<div style={{ blockSize: '30px' }} />}
+          footer={<div className="footer" style={{ blockSize: '30px' }} />}
         >
           <ListContent n={100} />
         </Dropdown>
       </div>
 
-      <div style={{ height: '400px' }} />
+      <div style={{ blockSize: '400px' }} />
       <div id="largeDropUp">
         <Dropdown
           trigger={
@@ -66,7 +66,7 @@ export default function DropdownScenario() {
         </Dropdown>
       </div>
 
-      <div style={{ height: '400px' }} />
+      <div style={{ blockSize: '400px' }} />
     </article>
   );
 }

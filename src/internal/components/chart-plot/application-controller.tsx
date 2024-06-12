@@ -89,7 +89,7 @@ function ApplicationController(
 // Focuses application but before copies aria-attributes from the target.
 function focusApplication(app: SVGGElement, target: null | SVGGElement) {
   // Remove prev attributes.
-  for (const attributeName of getAttributeNames(app)) {
+  for (const attributeName of app.getAttributeNames()) {
     if (attributeName === 'role' || attributeName.slice(0, 4) === 'aria') {
       app.removeAttribute(attributeName);
     }
@@ -97,7 +97,7 @@ function focusApplication(app: SVGGElement, target: null | SVGGElement) {
 
   // Copy new attributes.
   if (target) {
-    for (const attributeName of getAttributeNames(target)) {
+    for (const attributeName of target.getAttributeNames()) {
       if (attributeName === 'role' || attributeName.slice(0, 4) === 'aria') {
         const attributeValue = target.getAttribute(attributeName);
         attributeValue && app.setAttribute(attributeName, attributeValue);
@@ -117,7 +117,7 @@ function focusApplication(app: SVGGElement, target: null | SVGGElement) {
 // The application is to be only focused programmatically.
 function muteApplication(app: SVGGElement) {
   // Remove prev attributes.
-  for (const attributeName of getAttributeNames(app)) {
+  for (const attributeName of app.getAttributeNames()) {
     if (attributeName === 'role' || attributeName.slice(0, 4) === 'aria') {
       app.removeAttribute(attributeName);
     }
@@ -127,15 +127,4 @@ function muteApplication(app: SVGGElement) {
   app.tabIndex = -1;
   app.setAttribute('focusable', 'false');
   app.setAttribute('aria-hidden', 'true');
-}
-
-// Polyfill for element.getAttributeNames(), IE11
-// https://developer.mozilla.org/en-US/docs/Web/API/Element/getAttributeNames#polyfill
-function getAttributeNames(element: Element) {
-  const attributes = element.attributes;
-  const result = new Array(attributes.length);
-  for (let i = 0; i < attributes.length; i++) {
-    result[i] = attributes[i].name;
-  }
-  return result;
 }

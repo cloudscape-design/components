@@ -1,14 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useMemo } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import { ScaleContinuousNumeric, ScaleTime } from '../internal/vendor/d3-scale';
 
 import { ChartScale, NumericChartScale } from '../internal/components/cartesian-chart/scales';
 import { ChartDataTypes, MixedLineBarChartProps } from './interfaces';
-import { matchesX, getKeyValue, StackedOffsets } from './utils';
+import { matchesX, getKeyValue, StackedBarValues } from './utils';
 import styles from './styles.css.js';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { createOneSideRoundedRectPath } from './create-one-side-rounded-rect-path';
+
 export interface BarSeriesProps<T> {
   axis: 'x' | 'y';
 
@@ -28,8 +30,10 @@ export interface BarSeriesProps<T> {
   dimmed: boolean;
   highlightedGroupIndex: number | null;
 
-  // Contains the cumulative offset for each x value in a stacked bar chart
-  stackedBarOffsets?: StackedOffsets;
+  // Contains values to be used for stacked bars.
+  stackedBarValues?: StackedBarValues;
+
+  isRtl?: boolean;
 }
 
 export default function BarSeries<T extends ChartDataTypes>({
@@ -41,15 +45,18 @@ export default function BarSeries<T extends ChartDataTypes>({
   highlighted,
   dimmed,
   highlightedGroupIndex,
-  stackedBarOffsets,
   totalSeriesCount,
   seriesIndex,
   plotSize,
   chartAreaClipPath,
+  stackedBarValues,
+  isRtl,
 }: BarSeriesProps<T>) {
   const isRefresh = useVisualRefresh();
+  const isStacked = !!stackedBarValues;
+  const isVertical = axis === 'x';
 
-  const xCoordinates = useMemo(() => {
+  const xCoordinates = (() => {
     if (series.type !== 'bar' || !xScale.isCategorical()) {
       return [];
     }
@@ -67,7 +74,7 @@ export default function BarSeries<T extends ChartDataTypes>({
     const PADDING = 4;
     const MINWIDTH = 4;
 
-    if (!stackedBarOffsets && totalSeriesCount > 1) {
+    if (!isStacked && totalSeriesCount > 1) {
       // Regular grouped bars
       barWidth = (barWidth - (totalSeriesCount - 1) * PADDING) / totalSeriesCount;
       barWidth = Math.max(barWidth, MINWIDTH);
@@ -75,15 +82,22 @@ export default function BarSeries<T extends ChartDataTypes>({
 
     return xPoints.map((x, i) => {
       const d = series.data[i];
+      const key = getKeyValue(d.x);
       let barX = x;
       let yValue = d.y;
+      let isRoundedStart = !isStacked;
+      let isRoundedEnd = !isStacked;
 
-      if (stackedBarOffsets) {
-        // Stacked bars
-        const offsetMap = d.y < 0 ? stackedBarOffsets.negativeOffsets : stackedBarOffsets.positiveOffsets;
-        yValue = d.y + (offsetMap.get(getKeyValue(d.x)) || 0);
-      } else if (totalSeriesCount > 1) {
-        // Regular grouped bars
+      // Stacked bars
+      if (isStacked) {
+        const allXValues = stackedBarValues.get(key) ?? new Map();
+        yValue = allXValues.get(seriesIndex) ?? 0;
+        const allXValuesSorted = Array.from(allXValues.values()).sort((a, b) => a - b);
+        isRoundedStart = yValue === allXValuesSorted[0];
+        isRoundedEnd = yValue === allXValuesSorted[allXValuesSorted.length - 1];
+      }
+      // Regular grouped bars
+      else if (totalSeriesCount > 1) {
         barX += seriesIndex * (barWidth + PADDING);
       }
 
@@ -95,9 +109,11 @@ export default function BarSeries<T extends ChartDataTypes>({
         y: yContinuosScale(yValue) ?? NaN,
         width: barWidth,
         height: Math.abs((yContinuosScale(d.y) ?? NaN) - baseY),
+        isRoundedStart,
+        isRoundedEnd,
       };
     });
-  }, [series, xScale, yScale, plotSize, stackedBarOffsets, totalSeriesCount, seriesIndex]);
+  })();
 
   const highlightedXValue = highlightedGroupIndex !== null ? xScale.domain[highlightedGroupIndex] : null;
 
@@ -110,45 +126,57 @@ export default function BarSeries<T extends ChartDataTypes>({
         [styles['series--dimmed']]: dimmed,
       })}
     >
-      {xCoordinates.map(({ x, y, width, height }, i) => {
+      {xCoordinates.map(({ x, y, width, height, isRoundedStart, isRoundedEnd }, i) => {
         if (!isFinite(x) || !isFinite(height)) {
           return;
         }
 
         // Create margins between stacked series but only when series data is not too small.
-        const baseHeightOffset = stackedBarOffsets ? 3 : 0;
+        const baseHeightOffset = isStacked ? 3 : 0;
         const isSmallBar = height < 4;
         const heightOffset = isSmallBar ? 0 : baseHeightOffset;
         const widthOffset = 2;
 
-        const rx = isRefresh ? (isSmallBar ? '2px' : '4px') : '0px';
+        const rx = isRefresh ? (isSmallBar ? 2 : 4) : 0;
+        const placement = isVertical
+          ? {
+              x: x + widthOffset / 2,
+              y: y + heightOffset / 2,
+              width: width - widthOffset,
+              height: height - heightOffset,
+            }
+          : {
+              x: y - (!isRtl ? height : 0) + heightOffset / 2,
+              y: x + widthOffset / 2,
+              width: height - heightOffset,
+              height: width - widthOffset,
+            };
+
         const className = clsx(styles.series__rect, {
           [styles['series--dimmed']]: highlightedXValue !== null && !matchesX(highlightedXValue, series.data[i].x),
         });
+        const styleProps = { fill: color, className };
 
-        return axis === 'x' ? (
-          <rect
-            key={`bar-${i}`}
-            fill={color}
-            x={x + widthOffset / 2}
-            y={y + heightOffset / 2}
-            width={width - widthOffset}
-            height={height - heightOffset}
-            rx={rx}
-            className={className}
-          />
-        ) : (
-          <rect
-            key={`bar-${i}`}
-            fill={color}
-            x={y - height + heightOffset / 2}
-            y={x + widthOffset / 2}
-            width={height - heightOffset}
-            height={width - widthOffset}
-            rx={rx}
-            className={className}
-          />
-        );
+        let side: 'left' | 'right' | 'top' | 'bottom' | 'all' | 'none' = 'none';
+        if (isRoundedStart && isRoundedEnd) {
+          side = 'all';
+        } else if (!isRoundedStart && !isRoundedEnd) {
+          side = 'none';
+        } else if (isVertical) {
+          side = isRoundedStart ? 'bottom' : 'top';
+        } else if (!isRtl) {
+          side = isRoundedStart ? 'left' : 'right';
+        } else {
+          side = isRoundedStart ? 'right' : 'left';
+        }
+
+        if (side === 'all') {
+          return <rect key={i} {...placement} {...styleProps} rx={rx} />;
+        }
+        if (side === 'none') {
+          return <rect key={i} {...placement} {...styleProps} rx={0} />;
+        }
+        return <path key={i} d={createOneSideRoundedRectPath(placement, rx, side)} {...styleProps} />;
       })}
     </g>
   );

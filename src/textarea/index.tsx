@@ -42,7 +42,8 @@ const Textarea = React.forwardRef(
     const { __internalRootRef } = useBaseComponent('Textarea', {
       props: { autoComplete, autoFocus, disableBrowserAutocorrect, disableBrowserSpellcheck, readOnly, spellcheck },
     });
-    const { ariaLabelledby, ariaDescribedby, controlId, invalid } = useFormFieldContext(rest);
+    const { ariaLabelledby, ariaDescribedby, controlId, invalid, warning } = useFormFieldContext(rest);
+
     const baseProps = getBaseProps(rest);
 
     const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -60,6 +61,7 @@ const Textarea = React.forwardRef(
       className: clsx(styles.textarea, {
         [styles['textarea-readonly']]: readOnly,
         [styles['textarea-invalid']]: invalid,
+        [styles['textarea-warning']]: warning && !invalid,
       }),
       autoComplete: convertAutoComplete(autoComplete),
       spellCheck: spellcheck,

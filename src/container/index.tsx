@@ -29,7 +29,10 @@ export default function Container({
   const externalProps = getExternalProps(props);
 
   return (
-    <AnalyticsFunnelSubStep instanceId={analyticsMetadata?.instanceId} errorContext={analyticsMetadata?.errorContext}>
+    <AnalyticsFunnelSubStep
+      subStepIdentifier={analyticsMetadata?.instanceIdentifier}
+      subStepErrorContext={analyticsMetadata?.errorContext}
+    >
       <InternalContainerAsSubstep
         variant={variant}
         disableContentPaddings={disableContentPaddings}

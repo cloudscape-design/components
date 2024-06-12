@@ -366,6 +366,92 @@ const permutations = createPermutations<SideNavigationProps>([
       ],
     ],
   },
+  {
+    header: [{ text: 'Nested items', href: '#/' }],
+    items: [
+      [
+        {
+          type: 'section',
+          text: 'Section level 1',
+          items: [
+            {
+              type: 'section',
+              text: 'Section level 2',
+              items: [
+                {
+                  type: 'section',
+                  text: 'Section level 3',
+                  items: [
+                    { type: 'section', text: 'Section level 4', items: [{ type: 'link', text: 'Link', href: '#/' }] },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: 'link-group',
+          text: 'Link Group level 1',
+          href: '#/',
+          items: [
+            {
+              type: 'link-group',
+              text: 'Link Group level 2',
+              href: '#/',
+              items: [
+                {
+                  type: 'link-group',
+                  text: 'Link Group level 3',
+                  href: '#/',
+                  items: [
+                    {
+                      type: 'link-group',
+                      text: 'Link Group level 4',
+                      href: '#/',
+                      items: [{ type: 'link', text: 'Link', href: '#/' }],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: 'expandable-link-group',
+          text: 'Expandable Link Group level 1',
+          href: '#/',
+          defaultExpanded: true,
+          items: [
+            {
+              type: 'expandable-link-group',
+              text: 'Expandable Link Group level 2',
+              href: '#/',
+              defaultExpanded: true,
+
+              items: [
+                {
+                  type: 'expandable-link-group',
+                  text: 'Expandable Link Group level 3',
+                  href: '#/',
+                  defaultExpanded: true,
+
+                  items: [
+                    {
+                      type: 'expandable-link-group',
+                      text: 'Expandable Link Group level 3',
+                      href: '#/',
+                      defaultExpanded: true,
+                      items: [{ type: 'link', text: 'Link', href: '#/' }],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    ],
+  },
 ]);
 
 export default function SideNavigationPermutations() {

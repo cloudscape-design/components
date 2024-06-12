@@ -16,6 +16,7 @@ import AppContext, { AppContextType } from '../app/app-context';
 
 type PageContext = React.Context<
   AppContextType<{
+    resizableColumns: boolean;
     enableKeyboardNavigation: boolean;
   }>
 >;
@@ -218,7 +219,9 @@ const Demo = forwardRef(
     tableRef: ForwardedRef<TableProps.Ref>
   ) => {
     const [items, setItems] = useState(initialItems);
-    const { urlParams } = useContext(AppContext as PageContext);
+    const {
+      urlParams: { resizableColumns = true, enableKeyboardNavigation = false },
+    } = useContext(AppContext as PageContext);
 
     const handleSubmit: TableProps.SubmitEditFunction<DistributionInfo> = async (currentItem, column, newValue) => {
       let value = newValue;
@@ -264,17 +267,20 @@ const Demo = forwardRef(
         }}
         columnDefinitions={columns}
         items={items}
-        resizableColumns={true}
         ariaLabels={ariaLabels}
         stickyHeader={true}
-        enableKeyboardNavigation={urlParams.enableKeyboardNavigation}
+        resizableColumns={resizableColumns}
+        enableKeyboardNavigation={enableKeyboardNavigation}
       />
     );
   }
 );
 
 export default function () {
-  const { urlParams, setUrlParams } = useContext(AppContext as PageContext);
+  const {
+    urlParams: { resizableColumns = true, enableKeyboardNavigation = false },
+    setUrlParams,
+  } = useContext(AppContext as PageContext);
   const [modalVisible, setModalVisible] = useState(false);
   const tableRef = useRef<TableProps.Ref>(null);
 
@@ -293,15 +299,27 @@ export default function () {
   return (
     <Box margin="s">
       <SpaceBetween size="s">
-        <Checkbox
-          checked={urlParams.enableKeyboardNavigation}
-          onChange={event => {
-            setUrlParams({ enableKeyboardNavigation: event.detail.checked });
-            window.location.reload();
-          }}
-        >
-          Keyboard navigation
-        </Checkbox>
+        <SpaceBetween size="s" direction="horizontal">
+          <Checkbox
+            checked={resizableColumns}
+            onChange={event => {
+              setUrlParams({ resizableColumns: event.detail.checked });
+              window.location.reload();
+            }}
+          >
+            Resizable columns
+          </Checkbox>
+
+          <Checkbox
+            checked={enableKeyboardNavigation}
+            onChange={event => {
+              setUrlParams({ enableKeyboardNavigation: event.detail.checked });
+              window.location.reload();
+            }}
+          >
+            Keyboard navigation
+          </Checkbox>
+        </SpaceBetween>
 
         <input data-testid="focus" aria-label="focus input" />
       </SpaceBetween>

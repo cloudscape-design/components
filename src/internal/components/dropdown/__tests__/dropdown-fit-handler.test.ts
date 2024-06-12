@@ -20,7 +20,7 @@ function getSizedElement(width: number, height: number, top = 0, left = 0) {
   const element = document.createElement('div');
 
   element.getBoundingClientRect = () =>
-    ({ width, height, top, left, bottom: top + height, right: left + width } as DOMRect);
+    ({ width, height, top, left, bottom: top + height, right: left + width }) as DOMRect;
   Object.defineProperty(element, 'offsetHeight', { value: height });
   Object.defineProperty(element, 'offsetWidth', { value: width });
   return element;

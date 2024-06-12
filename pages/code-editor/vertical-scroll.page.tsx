@@ -31,7 +31,7 @@ export default function () {
     <article>
       <Box padding="m">
         <h1>Code Editor - Vertical scroll</h1>
-        <div style={{ height: 600 }}>
+        <div style={{ blockSize: 600 }}>
           <p>Scroll the page below to see the code editor</p>
         </div>
         <CodeEditor
@@ -44,7 +44,7 @@ export default function () {
           loading={loading}
           i18nStrings={i18nStrings}
         />
-        <div style={{ height: 400 }}>
+        <div style={{ blockSize: 400 }}>
           <p>Extra empty content</p>
         </div>
       </Box>

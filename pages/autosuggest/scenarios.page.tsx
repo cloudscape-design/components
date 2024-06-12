@@ -79,7 +79,7 @@ export default function AutosuggestScenario() {
   return (
     <>
       <h1>Autosuggest scenarios</h1>
-      <ScreenshotArea disableAnimations={true} style={{ height: '500px' }}>
+      <ScreenshotArea disableAnimations={true} style={{ blockSize: '500px' }}>
         <Autosuggest
           value={value}
           onChange={handleChange}

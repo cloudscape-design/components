@@ -27,7 +27,7 @@ export default function AppLayoutStatefulDemo() {
       tools={<Counter id="tools" />}
       content={
         <>
-          <div style={{ marginBottom: '1rem' }}>
+          <div style={{ marginBlockEnd: '1rem' }}>
             <Header variant="h1" description="Basic demo">
               Stateful components demo
             </Header>

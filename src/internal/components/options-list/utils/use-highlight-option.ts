@@ -3,7 +3,10 @@
 import { useCallback, useState } from 'react';
 
 export class HighlightType {
-  constructor(public type: 'keyboard' | 'mouse', public moveFocus: boolean = type === 'keyboard') {}
+  constructor(
+    public type: 'keyboard' | 'mouse',
+    public moveFocus: boolean = type === 'keyboard'
+  ) {}
 }
 
 export interface HighlightedOptionProps<OptionType> {

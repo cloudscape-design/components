@@ -7,11 +7,13 @@
 
 .container-inverted {
   // Prevent color contrast violations for inverted link color.
-  padding: 5px;
+  padding-block: 5px;
+  padding-inline: 5px;
   background-color: tokens.$color-background-notification-blue;
 }
 
 .narrow {
-  border: 1px solid red;
-  max-width: 12ch;
+  border-block: 1px solid red;
+  border-inline: 1px solid red;
+  max-inline-size: 12ch;
 }

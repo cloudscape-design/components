@@ -66,7 +66,7 @@ const fitHeightPermutations = createPermutations<TabsProps>([
         {
           label: 'Second tab',
           id: 'second',
-          content: <div style={{ height: '100%', display: 'flex', alignItems: 'flex-end' }}>Second content</div>,
+          content: <div style={{ blockSize: '100%', display: 'flex', alignItems: 'flex-end' }}>Second content</div>,
         },
       ],
     ],
@@ -91,7 +91,7 @@ export default function TabsPermutations() {
         <PermutationsView
           permutations={fitHeightPermutations}
           render={permutation => (
-            <div style={{ height: '200px' }}>
+            <div style={{ blockSize: '200px' }}>
               <Tabs
                 {...permutation}
                 activeTabId={permutation.activeTabId}

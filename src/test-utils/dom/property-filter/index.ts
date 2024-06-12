@@ -48,4 +48,11 @@ export default class PropertyFilterWrapper extends AutosuggestWrapper {
   findCustomFilterActions(): ElementWrapper | null {
     return this.findByClassName(styles['custom-filter-actions']);
   }
+
+  /**
+   * Returns the element containing the `filteringConstraintText` slot.
+   */
+  findConstraint(): ElementWrapper | null {
+    return this.findByClassName(styles.constraint);
+  }
 }

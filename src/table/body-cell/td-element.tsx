@@ -112,7 +112,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           hasSelection && styles['has-selection'],
           hasFooter && styles['has-footer'],
           level !== undefined && styles['body-cell-expandable'],
-          level !== undefined && styles[`body-cell-expandable-level-${getLevelClassSuffix(level)}`],
+          level !== undefined && styles[`expandable-level-${getLevelClassSuffix(level)}`],
           stickyStyles.className
         )}
         onClick={onClick}
@@ -120,24 +120,26 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
         onMouseLeave={onMouseLeave}
         ref={mergedRef}
         {...nativeAttributes}
-        tabIndex={cellTabIndex}
+        tabIndex={cellTabIndex === -1 ? undefined : cellTabIndex}
       >
-        {level !== undefined && isExpandable && (
-          <div className={styles['expandable-toggle-wrapper']}>
-            <ExpandToggleButton
-              isExpanded={isExpanded}
-              onExpandableItemToggle={onExpandableItemToggle}
-              expandButtonLabel={expandButtonLabel}
-              collapseButtonLabel={collapseButtonLabel}
-            />
-          </div>
-        )}
-        <span className={styles['body-cell-content']}>{children}</span>
+        <div className={styles['body-cell-content']}>
+          {level !== undefined && isExpandable && (
+            <div className={styles['expandable-toggle-wrapper']}>
+              <ExpandToggleButton
+                isExpanded={isExpanded}
+                onExpandableItemToggle={onExpandableItemToggle}
+                expandButtonLabel={expandButtonLabel}
+                collapseButtonLabel={collapseButtonLabel}
+              />
+            </div>
+          )}
+          {children}
+        </div>
       </Element>
     );
   }
 );
 
 function getLevelClassSuffix(level: number) {
-  return 1 <= level && level <= 9 ? level : 'next';
+  return 0 <= level && level <= 9 ? level : 'next';
 }

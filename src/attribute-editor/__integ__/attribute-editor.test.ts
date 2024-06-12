@@ -42,6 +42,10 @@ class AttributeEditorPage extends BasePageObject {
     return this.isExisting(attributeEditorWrapper.findRow(row).findField(fieldIndex).findError().toSelector());
   }
 
+  hasFieldWarning(row: number, fieldIndex: number) {
+    return this.isExisting(attributeEditorWrapper.findRow(row).findField(fieldIndex).findWarning().toSelector());
+  }
+
   isFieldInputFocussed(row: number, fieldIndex: number) {
     return this.isFocused(
       attributeEditorWrapper.findRow(row).findField(fieldIndex).findControl().findInput().findNativeInput().toSelector()
@@ -177,6 +181,32 @@ describe('Attribute Editor', () => {
 
       await expect(page.hasFieldError(1, 1)).resolves.toBe(false);
       await expect(page.hasFieldError(1, 2)).resolves.toBe(true);
+    })
+  );
+
+  test(
+    'displays a warning message',
+    setupTest(async page => {
+      await expect(page.hasFieldWarning(1, 1)).resolves.toBe(false);
+      await expect(page.hasFieldWarning(1, 2)).resolves.toBe(false);
+
+      await page.typeIntoFieldInput(1, 2, '*');
+
+      await expect(page.hasFieldWarning(1, 1)).resolves.toBe(false);
+      await expect(page.hasFieldWarning(1, 2)).resolves.toBe(true);
+    })
+  );
+
+  test(
+    'displays only the error message when both error and warning text exist',
+    setupTest(async page => {
+      await expect(page.hasFieldError(1, 2)).resolves.toBe(false);
+      await expect(page.hasFieldWarning(1, 2)).resolves.toBe(false);
+
+      await page.typeIntoFieldInput(1, 2, 'longtext*');
+
+      await expect(page.hasFieldError(1, 2)).resolves.toBe(true);
+      await expect(page.hasFieldWarning(1, 2)).resolves.toBe(false);
     })
   );
 

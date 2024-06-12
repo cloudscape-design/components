@@ -37,7 +37,7 @@ export default function () {
         stickyHeader={true}
         variant="container"
       />
-      <div style={{ height: '90vh', padding: 10 }}>Placeholder to allow page scroll beyond table</div>
+      <div style={{ blockSize: '90vh', padding: 10 }}>Placeholder to allow page scroll beyond table</div>
     </Box>
   );
 }

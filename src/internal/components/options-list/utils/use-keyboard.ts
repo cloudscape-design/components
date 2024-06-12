@@ -9,7 +9,8 @@ const END = 35;
 
 interface UseMenuKeyboard {
   (inputProps: {
-    moveHighlight: (direction: -1 | 1, startIndex?: number) => void;
+    goUp: () => void;
+    goDown: () => void;
     selectOption: () => void;
     goHome: () => void;
     goEnd: () => void;
@@ -19,7 +20,8 @@ interface UseMenuKeyboard {
 }
 
 export const useMenuKeyboard: UseMenuKeyboard = ({
-  moveHighlight,
+  goUp,
+  goDown,
   selectOption,
   goHome,
   goEnd,
@@ -31,11 +33,11 @@ export const useMenuKeyboard: UseMenuKeyboard = ({
       switch (e.detail.keyCode) {
         case KeyCode.up:
           e.preventDefault();
-          moveHighlight(-1);
+          goUp();
           break;
         case KeyCode.down:
           e.preventDefault();
-          moveHighlight(1);
+          goDown();
           break;
         case HOME:
           goHome();
@@ -58,7 +60,7 @@ export const useMenuKeyboard: UseMenuKeyboard = ({
           }
       }
     },
-    [moveHighlight, selectOption, goHome, goEnd, closeDropdown, preventNativeSpace]
+    [selectOption, goHome, goEnd, closeDropdown, preventNativeSpace, goUp, goDown]
   );
 };
 

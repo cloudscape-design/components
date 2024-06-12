@@ -219,8 +219,8 @@ export default function () {
       <h1>Dropdown width</h1>
       <SpaceBetween size="l">
         <SettingsForm />
-        <div style={{ width: containerWidth, height: '300px', overflow: 'hidden', border: `1px solid blue` }}>
-          <div style={{ width: triggerWidth }}>
+        <div style={{ inlineSize: containerWidth, blockSize: '300px', overflow: 'hidden', border: `1px solid blue` }}>
+          <div style={{ inlineSize: triggerWidth }}>
             {component === 'autosuggest' && (
               <CustomAutosuggest
                 virtualScroll={virtualScroll}

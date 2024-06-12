@@ -15,7 +15,6 @@ export const defaultSplitPanelContextProps: SplitPanelContextProps = {
   onResize: jest.fn(),
   onToggle: jest.fn(),
   onPreferencesChange: jest.fn(),
-  reportSize: jest.fn(),
   reportHeaderHeight: jest.fn(),
   setSplitPanelToggle: jest.fn(),
   refs: {

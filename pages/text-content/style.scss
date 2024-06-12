@@ -6,7 +6,8 @@
 @use '~design-tokens' as awsui;
 
 .permutation-box {
-  border: 1px solid awsui.$color-text-body-default;
+  border-block: 1px solid awsui.$color-text-body-default;
+  border-inline: 1px solid awsui.$color-text-body-default;
   background-color: awsui.$color-background-container-content;
 }
 .inverted {

@@ -119,7 +119,7 @@ export const Drawer = React.forwardRef(
             aria-label={mainLabel}
             aria-hidden={!isOpen}
           >
-            {!isMobile && isOpen && resizeHandle}
+            {!isMobile && isOpen && <div className={styles['resize-handle-wrapper']}>{resizeHandle}</div>}
             <CloseButton
               ref={toggleRefs.close}
               className={closeClassName}
@@ -235,7 +235,7 @@ export const DrawerTriggersBar = ({
       >
         {!isMobile && (
           <aside aria-label={ariaLabels?.drawers} role="region">
-            <div className={clsx(styles['drawer-triggers-wrapper'])} role="toolbar" aria-orientation="vertical">
+            <div className={styles['drawer-triggers-wrapper']} role="toolbar" aria-orientation="vertical">
               {visibleItems.map((item, index) => {
                 return (
                   <DrawerTrigger
@@ -261,7 +261,7 @@ export const DrawerTriggersBar = ({
                 );
               })}
               {overflowItems.length > 0 && (
-                <div className={clsx(styles['drawer-trigger'])}>
+                <div className={styles['drawer-trigger']}>
                   <OverflowMenu
                     ariaLabel={
                       overflowMenuHasBadge ? ariaLabels?.drawersOverflowWithBadge : ariaLabels?.drawersOverflow

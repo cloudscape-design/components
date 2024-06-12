@@ -6,10 +6,11 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { TransitionStatus } from '../internal/components/transition';
 import { SplitPanelContentProps } from './interfaces';
-import styles from './styles.css.js';
 import { useSplitPanelContext } from '../internal/context/split-panel-context';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
+import styles from './styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
 
 interface SplitPanelContentBottomProps extends SplitPanelContentProps {
   state: TransitionStatus;
@@ -54,7 +55,8 @@ export function SplitPanelContentBottom({
   return (
     <div
       {...baseProps}
-      className={clsx(baseProps.className, styles.root, styles.drawer, styles['position-bottom'], {
+      className={clsx(baseProps.className, styles.drawer, styles['position-bottom'], testUtilStyles.root, {
+        [testUtilStyles['open-position-bottom']]: isOpen,
         [styles['drawer-closed']]: !isOpen,
         [styles['drawer-mobile']]: isMobile,
         [styles['drawer-disable-content-paddings']]: disableContentPaddings,
@@ -63,10 +65,10 @@ export function SplitPanelContentBottom({
       })}
       onClick={() => !isOpen && onToggle()}
       style={{
-        bottom: bottomOffset,
-        left: leftOffset,
-        right: rightOffset,
-        height: isOpen ? cappedSize : undefined,
+        insetBlockEnd: bottomOffset,
+        insetInlineStart: leftOffset,
+        insetInlineEnd: rightOffset,
+        blockSize: isOpen ? cappedSize : undefined,
       }}
       ref={transitionContentBottomRef}
     >

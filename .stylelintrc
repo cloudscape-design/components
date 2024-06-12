@@ -6,6 +6,7 @@
   "rules": {
     "custom-property-pattern": "^(?!.+)",
     "scss/comment-no-empty": null,
+    "scss/operator-no-newline-after": null,
     "selector-pseudo-class-no-unknown": [
       true,
       {

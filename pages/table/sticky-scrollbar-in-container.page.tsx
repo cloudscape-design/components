@@ -18,7 +18,7 @@ export default function App() {
   });
   return (
     <ScreenshotArea>
-      <div style={{ height: '400px', overflow: 'scroll' }}>
+      <div style={{ blockSize: '400px', overflow: 'scroll' }}>
         <Table<Instance>
           header={
             <Header headingTagOverride="h1" counter={`(${allItems.length})`}>

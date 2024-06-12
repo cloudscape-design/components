@@ -3,24 +3,24 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-/* stylelint-disable @cloudscape-design/no-implicit-descendant, selector-max-type */
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
 
 .help-panel {
   @include styles.styles-reset;
   word-wrap: break-word;
-  padding-block-start: awsui.$space-scaled-l;
+  padding-block-start: awsui.$space-panel-header-vertical;
   padding-block-end: 0;
   padding-inline-end: awsui.$space-panel-side-right;
   padding-inline-start: awsui.$space-panel-side-left;
 
+  /* stylelint-disable @cloudscape-design/no-implicit-descendant, selector-max-type */
   hr {
     border-block: none;
     border-inline: none;
     border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
     margin-block: awsui.$space-scaled-xl;
-    margin-inline: calc(-1 * #{awsui.$space-xs});
+    margin-inline: calc(-1 * #{awsui.$space-panel-divider-margin-horizontal});
   }
 
   ol,
@@ -85,7 +85,7 @@
   }
   // sets padding at the bottom of the panel
   & > :last-child {
-    margin-block-end: awsui.$space-scaled-xxxl;
+    margin-block-end: awsui.$space-panel-content-bottom;
   }
 
   // add basic font-sizes
@@ -114,21 +114,23 @@
   strong {
     font-weight: styles.$font-weight-bold;
   }
+  /* stylelint-enable @cloudscape-design/no-implicit-descendant, selector-max-type */
 
-  .header {
+  & > .header {
     @include styles.font-panel-header;
     color: awsui.$color-text-heading-default;
-    padding-block-end: awsui.$space-scaled-l;
+    padding-block-end: awsui.$space-panel-header-vertical;
     padding-inline: awsui.$space-panel-side-left calc(#{awsui.$space-xl} + #{awsui.$space-scaled-xxl});
     // padding to make sure the header doesn't overlap with the close icon
     border-block: none;
     border-inline: none;
-    border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+    border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-panel-header;
     margin-block-start: 0;
-    margin-block-end: awsui.$space-scaled-l;
+    margin-block-end: awsui.$space-panel-content-top;
     margin-inline-end: calc(-1 * #{awsui.$space-panel-side-right});
     margin-inline-start: calc(-1 * #{awsui.$space-panel-side-left});
 
+    /* stylelint-disable @cloudscape-design/no-implicit-descendant, selector-max-type */
     h2,
     h3,
     h4,
@@ -138,12 +140,14 @@
       padding-block: 0;
       margin-block: 0;
     }
+    /* stylelint-enable @cloudscape-design/no-implicit-descendant, selector-max-type */
   }
 }
 
 .content {
   color: awsui.$color-text-body-secondary;
 
+  /* stylelint-disable @cloudscape-design/no-implicit-descendant, selector-max-type */
   h2:first-child,
   h3:first-child,
   h4:first-child,
@@ -155,18 +159,20 @@
   a {
     @include styles.link-inline;
   }
+  /* stylelint-enable @cloudscape-design/no-implicit-descendant, selector-max-type */
 }
 
 .footer {
   color: awsui.$color-text-body-secondary;
   border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
   margin-block: awsui.$space-scaled-xl;
-  margin-inline: calc(-1 * #{awsui.$space-xs});
+  margin-inline: calc(-1 * #{awsui.$space-panel-divider-margin-horizontal});
   padding-block: 0;
-  padding-inline: awsui.$space-s;
+  padding-inline: awsui.$space-panel-divider-margin-horizontal;
   > :first-child {
     margin-block-start: awsui.$space-scaled-xl;
   }
+  /* stylelint-disable @cloudscape-design/no-implicit-descendant, selector-max-type */
   ul {
     list-style: none;
     padding-inline-start: 0;
@@ -174,11 +180,14 @@
   a {
     @include styles.link-default;
   }
+  /* stylelint-enable @cloudscape-design/no-implicit-descendant, selector-max-type */
 }
 
 .content,
 .footer {
+  /* stylelint-disable @cloudscape-design/no-implicit-descendant, selector-max-type */
   a:focus {
     @include styles.link-focus;
   }
+  /* stylelint-enable @cloudscape-design/no-implicit-descendant, selector-max-type */
 }

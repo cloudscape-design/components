@@ -24,7 +24,7 @@
   margin-block: calc(-1 * #{awsui.$space-xs});
   margin-inline: calc(-1 * #{awsui.$space-xs});
 
-  /* stylelint-disable selector-max-universal */
+  /* stylelint-disable-next-line selector-max-universal */
   & > * {
     margin-block: awsui.$space-xs;
     margin-inline: awsui.$space-xs;

@@ -119,7 +119,25 @@ export function useSelect({
   };
 
   const activeKeyDownHandler = useMenuKeyboard({
-    moveHighlight: moveHighlightWithKeyboard,
+    goUp: () => {
+      if (
+        (!useInteractiveGroups && highlightedOption?.type === 'child' && highlightedIndex === 1) ||
+        highlightedIndex === 0
+      ) {
+        goEndWithKeyboard();
+        return;
+      }
+
+      moveHighlightWithKeyboard(-1);
+    },
+    goDown: () => {
+      if (highlightedIndex === options.length - 1) {
+        goHomeWithKeyboard();
+        return;
+      }
+
+      moveHighlightWithKeyboard(1);
+    },
     selectOption,
     goHome: goHomeWithKeyboard,
     goEnd: goEndWithKeyboard,

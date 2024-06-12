@@ -7,6 +7,7 @@ import { AppLayoutProps } from '../interfaces';
 
 export interface ContentWrapperProps {
   className?: string;
+  style?: React.CSSProperties;
   contentType: AppLayoutProps.ContentType;
   children?: React.ReactNode;
   isMobile: boolean;
@@ -20,6 +21,7 @@ const ContentWrapper = React.forwardRef(
   (
     {
       className,
+      style,
       contentType,
       children,
       toolsPadding,
@@ -32,7 +34,7 @@ const ContentWrapper = React.forwardRef(
   ) => {
     if (disablePaddings) {
       return (
-        <div className={className} ref={ref}>
+        <div className={className} ref={ref} style={style}>
           {children}
         </div>
       );
@@ -46,6 +48,7 @@ const ContentWrapper = React.forwardRef(
           !toolsPadding && styles['content-wrapper-no-tools-padding'],
           isMobile && styles['content-wrapper-mobile']
         )}
+        style={style}
       >
         <div style={contentWidthStyles} className={clsx(className, styles[`content-type-${contentType}`])}>
           {children}

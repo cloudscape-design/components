@@ -29,6 +29,9 @@ export type UseNavigationProps<T extends ChartDataTypes> = Pick<
   highlightX: (verticalMarker: VerticalMarkerX<T> | null) => void;
   clearHighlightedSeries(): void;
   verticalMarkerX: VerticalMarkerX<T> | null;
+
+  isRtl?: boolean;
+  horizontalBars: boolean;
 };
 
 export function useNavigation<T extends ChartDataTypes>({
@@ -48,6 +51,8 @@ export function useNavigation<T extends ChartDataTypes>({
   highlightPoint,
   highlightX,
   verticalMarkerX,
+  isRtl,
+  horizontalBars,
 }: UseNavigationProps<T>) {
   const [targetX, setTargetX] = useState<T | null>(null);
   const [xIndex, setXIndex] = useState(0);
@@ -69,10 +74,11 @@ export function useNavigation<T extends ChartDataTypes>({
 
   const onLineFocus = () => {
     if (verticalMarkerX === null) {
+      const index = !isRtl ? 0 : allUniqueX.length - 1;
       if (containsMultipleSeries) {
-        moveToLineGroupIndex(0);
+        moveToLineGroupIndex(index);
       } else {
-        moveBetweenSeries(0);
+        moveBetweenSeries(0, allUniqueX[index].datum?.x);
       }
     }
   };
@@ -99,7 +105,7 @@ export function useNavigation<T extends ChartDataTypes>({
   }, [scaledSeries]);
 
   const moveBetweenSeries = useCallback(
-    (direction: number) => {
+    (direction: number, startFrom?: T) => {
       if (isGroupNavigation) {
         return;
       }
@@ -133,8 +139,10 @@ export function useNavigation<T extends ChartDataTypes>({
       const nextSeries = navigableSeries[nextSeriesIndex];
       const nextInternalSeries = series.filter(({ series }) => series === nextSeries)[0];
 
+      const actualTargetX = targetX ?? startFrom ?? null;
+
       // 2. Find point in the next series
-      let targetXPoint = (xScale.d3Scale(targetX as any) ?? NaN) + xOffset;
+      let targetXPoint = (xScale.d3Scale(actualTargetX as any) ?? NaN) + xOffset;
       if (!isFinite(targetXPoint)) {
         targetXPoint = 0;
       }
@@ -147,7 +155,7 @@ export function useNavigation<T extends ChartDataTypes>({
         );
         highlightPoint({ ...closestNextSeriesPoint, color: nextInternalSeries.color, series: nextSeries });
       } else if (isYThreshold(nextSeries)) {
-        const scaledTargetIndex = scaledSeries.map(it => it.datum?.x || null).indexOf(targetX);
+        const scaledTargetIndex = scaledSeries.map(it => it.datum?.x || null).indexOf(actualTargetX);
         highlightPoint({
           x: targetXPoint,
           y: yScale.d3Scale(nextSeries.y) ?? NaN,
@@ -200,6 +208,10 @@ export function useNavigation<T extends ChartDataTypes>({
 
         let nextGroupIndex = 0;
         if (highlightedGroupIndex !== null) {
+          if (isRtl && !horizontalBars) {
+            direction = -direction;
+          }
+
           // find next group
           nextGroupIndex = highlightedGroupIndex + direction;
           if (nextGroupIndex > MAX_GROUP_INDEX) {
@@ -224,6 +236,8 @@ export function useNavigation<T extends ChartDataTypes>({
       highlightedGroupIndex,
       barGroups,
       highlightGroup,
+      isRtl,
+      horizontalBars,
     ]
   );
 

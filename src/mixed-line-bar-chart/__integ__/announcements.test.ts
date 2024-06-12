@@ -75,3 +75,27 @@ describe('Popover content is announced as plain text on hover', () => {
     );
   });
 });
+
+describe('Application aria label', () => {
+  const chartWrapper = createWrapper().findMixedLineBarChart('#chart');
+  test(
+    'is updated when navigating in a bar chart with keyboard',
+    setupTest('#/light/bar-chart/test', async page => {
+      // Hover over first group in the first chart
+      await page.click('#focus-target');
+      await page.keys(['Tab', 'Tab', 'ArrowRight']);
+      await page.waitForAssertion(async () => {
+        await expect(page.getElementAttribute(chartWrapper.findApplication().toSelector(), 'aria-label')).resolves.toBe(
+          'Potatoes, Calories 77'
+        );
+      });
+
+      await page.keys(['ArrowRight']);
+      await page.waitForAssertion(async () => {
+        await expect(page.getElementAttribute(chartWrapper.findApplication().toSelector(), 'aria-label')).resolves.toBe(
+          'Chocolate, Calories 546'
+        );
+      });
+    })
+  );
+});

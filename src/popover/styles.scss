@@ -24,6 +24,11 @@
   text-align: inherit;
 }
 
+.overflow-ellipsis {
+  @include styles.text-overflow-ellipsis;
+  @include styles.text-wrapping;
+}
+
 .trigger-type-text {
   border-block: 0;
   border-inline: 0;
@@ -42,12 +47,6 @@
 
   @include focus-visible.when-visible {
     @include styles.focus-highlight(1px);
-  }
-
-  // Prevents trigger from shifting on click in IE11.
-  // https://stackoverflow.com/a/32655269
-  > .trigger-inner-text {
-    position: relative;
   }
 }
 

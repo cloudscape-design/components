@@ -27,7 +27,8 @@
       stroke: awsui.$color-border-control-disabled;
     }
     @include styles.with-motion {
-      transition: fill awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick,
+      transition:
+        fill awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick,
         stroke awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick;
     }
   }

@@ -3,7 +3,6 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-/* stylelint-disable selector-max-universal, selector-max-type */
 @use 'sass:map';
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
@@ -95,6 +94,7 @@ $_icon-sizes: (
 }
 
 @mixin style-svg {
+  /* stylelint-disable selector-max-type, selector-max-universal */
   > svg {
     fill: none;
 
@@ -118,4 +118,5 @@ $_icon-sizes: (
       }
     }
   }
+  /* stylelint-enable selector-max-type, selector-max-universal */
 }

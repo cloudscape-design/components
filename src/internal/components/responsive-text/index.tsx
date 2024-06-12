@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { memo, useEffect, useRef } from 'react';
 import { getTextWidth } from './responsive-text-utils';
+import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
 
 interface ResponsiveTextProps {
   x: number;
@@ -18,7 +19,8 @@ function ResponsiveText({ x, y, className, children, maxWidth }: ResponsiveTextP
 
   // Determine the visible width of the text and if necessary truncate it until it fits.
   useEffect(() => {
-    renderTextContent(textRef.current!, children, maxWidth);
+    const isRtl = getIsRtl(textRef.current!);
+    renderTextContent(textRef.current!, children, maxWidth, isRtl);
   }, [maxWidth, children]);
 
   return (
@@ -28,10 +30,10 @@ function ResponsiveText({ x, y, className, children, maxWidth }: ResponsiveTextP
   );
 }
 
-export function renderTextContent(textNode: SVGTextElement, text: string, maxWidth: number) {
+export function renderTextContent(textNode: SVGTextElement, text: string, maxWidth: number, isRtl: boolean) {
   let visibleLength = text.length;
   while (visibleLength >= 0) {
-    textNode.textContent = truncateText(text, visibleLength);
+    textNode.textContent = truncateText(text, visibleLength, isRtl);
 
     if (getTextWidth(textNode) <= maxWidth) {
       return;
@@ -41,9 +43,12 @@ export function renderTextContent(textNode: SVGTextElement, text: string, maxWid
   }
 }
 
-function truncateText(text: string, maxLength: number) {
+function truncateText(text: string, maxLength: number, isRtl: boolean) {
   if (text.length === maxLength) {
     return text;
+  }
+  if (isRtl) {
+    return text.slice(text.length - maxLength) + '…';
   }
   return text.slice(0, maxLength) + '…';
 }

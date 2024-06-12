@@ -30,6 +30,7 @@ const permutations = createPermutations<TextareaProps>([
     value: ['Non-empty value: Placeholder should be hidden'],
     placeholder: ['Short placeholder'],
     invalid: [false, true],
+    warning: [false, true],
   },
   {
     readOnly: [true],

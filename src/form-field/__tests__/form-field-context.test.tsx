@@ -11,6 +11,7 @@ import {
 import styles from '../../../lib/components/form-field/styles.css.js';
 
 const errorSelector = `:scope > .${styles.hints} .${styles.error}`;
+const warningSelector = `:scope > .${styles.hints} .${styles.warning}`;
 
 const TestControl = () => {
   const contextValues = useFormFieldContext({});
@@ -79,6 +80,7 @@ function getWrapperAndContextSecondaryControl(props: FormFieldProps = {}) {
       test('form field generates describedby with the right values in the right order', () => {
         const check = (
           errorText: string | undefined,
+          warningText: string | undefined,
           description: string | undefined,
           constraintText: string | undefined
         ) => {
@@ -86,47 +88,55 @@ function getWrapperAndContextSecondaryControl(props: FormFieldProps = {}) {
 
           const {
             context: { ariaDescribedby },
-          } = getWrapperAndContext({ controlId, errorText, description, constraintText });
+          } = getWrapperAndContext({ controlId, errorText, warningText, description, constraintText });
 
           const errorTextId = `${controlId}-error`;
+          const warningTextId = `${controlId}-warning`;
           const descriptionId = `${controlId}-description`;
           const constraintId = `${controlId}-constraint`;
 
+          const showWarning = warningText && !errorText;
+
           const expectedDescribedBy =
-            !errorText && !description && !constraintText
+            !errorText && !warningText && !description && !constraintText
               ? undefined
-              : `${errorText ? errorTextId : ''}${description ? ' ' + descriptionId : ''}${
-                  constraintText ? ' ' + constraintId : ''
-                }`.trimLeft();
+              : `${errorText ? errorTextId : ''}${showWarning ? warningTextId : ''}${
+                  description ? ' ' + descriptionId : ''
+                }${constraintText ? ' ' + constraintId : ''}`.trimLeft();
 
           expect(ariaDescribedby).toBe(expectedDescribedBy);
         };
 
         const errorText = 'errorText';
+        const warningText = 'warningText';
         const description = 'description';
         const constraintText = 'constraintText';
 
-        check(errorText, description, constraintText);
+        check(errorText, warningText, description, constraintText);
 
-        check(undefined, description, constraintText);
-        check(errorText, undefined, constraintText);
-        check(errorText, description, undefined);
+        check(undefined, warningText, description, constraintText);
+        check(errorText, warningText, undefined, constraintText);
+        check(errorText, undefined, description, constraintText);
+        check(errorText, warningText, description, undefined);
 
-        check(undefined, undefined, constraintText);
-        check(errorText, undefined, undefined);
-        check(undefined, description, undefined);
+        check(undefined, undefined, undefined, constraintText);
+        check(errorText, undefined, undefined, undefined);
+        check(undefined, warningText, undefined, undefined);
+        check(undefined, undefined, description, undefined);
 
-        check(undefined, undefined, undefined);
+        check(undefined, undefined, undefined, undefined);
 
-        check('', description, constraintText);
-        check(errorText, '', constraintText);
-        check(errorText, description, '');
+        check('', warningText, description, constraintText);
+        check(errorText, '', description, constraintText);
+        check(errorText, warningText, '', constraintText);
+        check(errorText, warningText, description, '');
 
-        check('', '', constraintText);
-        check(errorText, '', '');
-        check('', description, '');
+        check('', '', '', constraintText);
+        check(errorText, '', '', '');
+        check('', warningText, '', '');
+        check('', '', description, '');
 
-        check('', '', '');
+        check('', '', '', '');
       });
 
       test('form field passes a describedBy value to children in case appropriate slots are set', () => {
@@ -159,6 +169,36 @@ function getWrapperAndContextSecondaryControl(props: FormFieldProps = {}) {
         const { wrapper, context } = getWrapperAndContext({ errorText });
         expect(context.invalid).toBe(true);
         expect(wrapper.findError()?.getElement()).toHaveTextContent(errorText);
+      });
+    });
+
+    describe('warning', () => {
+      test('form field passes a warning=false flag to children when warningText is not set', () => {
+        const { wrapper, context } = getWrapperAndContext();
+        expect(context.warning).toBe(false);
+        expect(wrapper.findWarning()).toBeNull();
+      });
+
+      test('form field passes a warning=false flag to children when warningText is set to an empty string', () => {
+        const { wrapper, context } = getWrapperAndContext({ warningText: '' });
+        expect(context.warning).toBe(false);
+        expect(wrapper.findWarning()).toBeNull();
+      });
+
+      test('form field passes a warning=true flag to children when warningText is set to a non-empty string', () => {
+        const warningText = 'warned, be aware';
+        const { wrapper, context } = getWrapperAndContext({ warningText });
+        expect(context.warning).toBe(true);
+        expect(wrapper.findWarning()?.getElement()).toHaveTextContent(warningText);
+      });
+
+      test('form field passes a warning=false, invalid=true flag to children when both warningText and errorText is set to a non-empty string', () => {
+        const errorText = 'wrong, do it again';
+        const warningText = 'warned, be aware';
+        const { wrapper, context } = getWrapperAndContext({ errorText, warningText });
+        expect(context.invalid).toBe(true);
+        expect(context.warning).toBe(false);
+        expect(wrapper.findWarning()).toBeNull();
       });
     });
   });
@@ -220,8 +260,8 @@ describe('nested form fields', () => {
           id="inner"
           label="inner label"
           description="inner description"
-          constraintText="outer description"
-          errorText="outer description"
+          constraintText="inner constrainttext"
+          errorText="inner errortext"
         >
           <TestControl />
         </FormField>
@@ -248,8 +288,8 @@ describe('nested form fields', () => {
           id="inner"
           label="inner label"
           description="inner description"
-          constraintText="outer description"
-          errorText="outer description"
+          constraintText="inner constrainttext"
+          errorText="inner errortext"
         >
           <TestControl />
         </FormField>
@@ -272,6 +312,48 @@ describe('nested form fields', () => {
     );
   });
 
+  test("inner form fields combine their description with the outer form field's description - with warningText", () => {
+    const { outerFormFieldWrapper, innerFormFieldWrapper } = renderNestedFormFields(
+      <FormField
+        id="outer"
+        label="outer label"
+        description="outer description"
+        constraintText="outer constrainttext"
+        warningText="outer warningtext"
+      >
+        <FormField
+          id="inner"
+          label="inner label"
+          description="inner description"
+          constraintText="outer constrainttext"
+          warningText="outer warningtext"
+        >
+          <TestControl />
+        </FormField>
+      </FormField>
+    );
+
+    const outerWarningId = outerFormFieldWrapper.find(warningSelector)?.getElement().id;
+    const outerDescriptionId = outerFormFieldWrapper.findDescription()?.getElement().id;
+    const outerConstraintId = outerFormFieldWrapper.findConstraint()?.getElement().id;
+
+    const innerWarningId = innerFormFieldWrapper.find(warningSelector)?.getElement().id;
+    const innerDescriptionId = innerFormFieldWrapper.findDescription()?.getElement().id;
+    const innerConstraintId = innerFormFieldWrapper.findConstraint()?.getElement().id;
+
+    const context = getContext(innerFormFieldWrapper.findControl());
+    expect(context.ariaDescribedby).toBe(
+      [
+        outerWarningId,
+        outerDescriptionId,
+        outerConstraintId,
+        innerWarningId,
+        innerDescriptionId,
+        innerConstraintId,
+      ].join(' ')
+    );
+  });
+
   test('inner form fields are marked as invalid when the outer form field is invalid', () => {
     const { innerFormFieldWrapper } = renderNestedFormFields(
       <FormField
@@ -289,6 +371,25 @@ describe('nested form fields', () => {
 
     const context = getContext(innerFormFieldWrapper.findControl());
     expect(context.invalid).toBe(true);
+  });
+
+  test('inner form fields are marked as warning when the outer form field is warning', () => {
+    const { innerFormFieldWrapper } = renderNestedFormFields(
+      <FormField
+        id="outer"
+        label="outer label"
+        description="outer description"
+        constraintText="outer constrainttext"
+        warningText="outer warningtext"
+      >
+        <FormField id="inner" label="inner label" description="inner description" constraintText="outer description">
+          <TestControl />
+        </FormField>
+      </FormField>
+    );
+
+    const context = getContext(innerFormFieldWrapper.findControl());
+    expect(context.warning).toBe(true);
   });
 
   test("outer form fields don't override nested form field's controlId for control", () => {

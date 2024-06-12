@@ -27,7 +27,7 @@ export interface TheadProps {
   variant: TableProps.Variant;
   wrapLines: boolean | undefined;
   resizableColumns: boolean | undefined;
-  getSelectAllProps: () => SelectionProps;
+  getSelectAllProps?: () => SelectionProps;
   onFocusMove: ((sourceElement: HTMLElement, fromIndex: number, direction: -1 | 1) => void) | undefined;
   onResizeFinish: (newWidths: Map<PropertyKey, number>) => void;
   onSortingChange: NonCancelableEventHandler<TableProps.SortingState<any>> | undefined;
@@ -43,6 +43,7 @@ export interface TheadProps {
   onFocusedComponentChange?: (focusId: null | string) => void;
   tableRole: TableRole;
   isExpandable?: boolean;
+  setLastUserAction: (name: string) => void;
 }
 
 const Thead = React.forwardRef(
@@ -72,6 +73,7 @@ const Thead = React.forwardRef(
       tableRole,
       resizerRoleDescription,
       isExpandable,
+      setLastUserAction,
     }: TheadProps,
     outerRef: React.Ref<HTMLTableRowElement>
   ) => {
@@ -118,7 +120,7 @@ const Thead = React.forwardRef(
               columnId={selectionColumnId}
               stickyState={stickyState}
             >
-              {selectionType === 'multi' ? (
+              {getSelectAllProps ? (
                 <SelectionControl
                   onFocusDown={event => {
                     onFocusMove!(event.target as HTMLElement, -1, +1);
@@ -154,7 +156,10 @@ const Thead = React.forwardRef(
                 updateColumn={updateColumn}
                 onResizeFinish={() => onResizeFinish(columnWidths)}
                 resizableColumns={resizableColumns}
-                onClick={detail => fireNonCancelableEvent(onSortingChange, detail)}
+                onClick={detail => {
+                  setLastUserAction('sorting');
+                  fireNonCancelableEvent(onSortingChange, detail);
+                }}
                 isEditable={!!column.editConfig}
                 stickyState={stickyState}
                 cellRef={node => setCell(sticky, columnId, node)}

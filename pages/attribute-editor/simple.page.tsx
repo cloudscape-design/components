@@ -52,6 +52,7 @@ export default function AttributeEditorPage() {
         info: <Link variant="info">Info</Link>,
         control: ({ key = '' }, itemIndex) => <Control prop="key" value={key} index={itemIndex} setItems={setItems} />,
         errorText: (item: Tag) => (item.key && item.key.match(/^AWS/i) ? 'Key cannot start with "AWS"' : null),
+        warningText: (item: Tag) => (item.key && item.key.includes(' ') ? 'Key has empty character' : null),
       },
       {
         label: 'Value label',
@@ -63,6 +64,12 @@ export default function AttributeEditorPage() {
           item.value && item.value.length > 5 ? (
             <span>
               Value {item.value} is longer than 5 characters, <Link variant="info">Info</Link>
+            </span>
+          ) : null,
+        warningText: (item: Tag) =>
+          item.value && item.value.includes('*') ? (
+            <span>
+              Value {item.value} includes wildcard, <Link variant="info">Info</Link>
             </span>
           ) : null,
       },
