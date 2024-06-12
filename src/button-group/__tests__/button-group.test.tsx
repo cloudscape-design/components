@@ -114,13 +114,13 @@ describe('focus', () => {
       );
     };
 
-    console.log(items1);
     const { container } = render(<TestComponent />);
     const buttonGroup = createWrapper(container).findButtonGroup()!;
     fireEvent.click(screen.getByText('Focus on copy'));
 
     expect(buttonGroup.findInlineItemById('copy')!.getElement()).toHaveFocus();
   });
+
   test('focuses on show more button', () => {
     const TestComponent = () => {
       const ref = useRef<ButtonGroupProps.Ref>(null);
