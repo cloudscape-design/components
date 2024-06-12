@@ -7,6 +7,8 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 
+$send-icon-right-spacing: awsui.$space-static-xxs;
+
 .root {
   position: relative;
 }
@@ -80,10 +82,13 @@
   &.textarea-warning {
     @include styles.form-warning-control();
   }
+  &.textarea-with-button {
+    padding-inline-end: calc(styles.$control-padding-horizontal + $send-icon-right-spacing + awsui.$size-icon-normal);
+  }
 }
 
 .button {
   position: absolute;
-  inset-inline-end: awsui.$space-static-xs;
+  inset-inline-end: $send-icon-right-spacing;
   inset-block-end: 0;
 }
