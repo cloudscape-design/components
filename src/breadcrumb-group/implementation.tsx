@@ -8,11 +8,10 @@ import InternalButtonDropdown from '../button-dropdown/internal';
 import { CustomTriggerProps, LinkItem } from '../button-dropdown/interfaces';
 import { InternalButton } from '../button/internal';
 import { BreadcrumbItem } from './item/item';
-import { BreadcrumbGroupProps, EllipsisDropdownProps } from './interfaces';
+import { BreadcrumbGroupProps, EllipsisDropdownProps, InternalBreadcrumbGroupProps } from './interfaces';
 import { fireCancelableEvent } from '../internal/events';
 import { getBaseProps } from '../internal/base-component';
 import { useMobile } from '../internal/hooks/use-mobile';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import { useInternalI18n } from '../i18n/context';
 import { createWidgetizedComponent } from '../internal/widgets';
@@ -74,9 +73,6 @@ const EllipsisDropdown = ({
     </li>
   );
 };
-
-type InternalBreadcrumbGroupProps<T extends BreadcrumbGroupProps.Item = BreadcrumbGroupProps.Item> =
-  BreadcrumbGroupProps<T> & InternalBaseComponentProps;
 
 export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Item = BreadcrumbGroupProps.Item>({
   items = [],

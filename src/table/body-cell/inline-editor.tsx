@@ -123,7 +123,7 @@ export function InlineEditor<ItemType>({
             errorText={validation(item, currentEditValue)}
           >
             <div className={styles['body-cell-editor-row']}>
-              {editingCell(item, cellContext)}
+              <div className={styles['body-cell-editor-row-editor']}>{editingCell(item, cellContext)}</div>
               <span className={styles['body-cell-editor-controls']}>
                 <SpaceBetween direction="horizontal" size="xxs">
                   {!currentEditLoading ? (
