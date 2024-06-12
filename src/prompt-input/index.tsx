@@ -120,6 +120,7 @@ const PromptInput = React.forwardRef(
         [styles['textarea-readonly']]: readOnly,
         [styles['textarea-invalid']]: invalid,
         [styles['textarea-warning']]: warning && !invalid,
+        [styles['textarea-with-button']]: actionButtonIconName,
       }),
       autoComplete: convertAutoComplete(autoComplete),
       spellCheck: spellcheck,
