@@ -30,6 +30,10 @@ import { DropdownStatusProps } from '../internal/components/dropdown-status/inte
 import InternalButton from '../button/internal';
 import InternalFormField from '../form-field/internal';
 import { matchTokenValue } from './utils';
+import ButtonTrigger from '../internal/components/button-trigger';
+import Dropdown from '../internal/components/dropdown';
+import { useFormFieldContext } from '../contexts/form-field';
+import { PropertyEditorForm } from './property-editor';
 
 interface PropertyInputProps {
   asyncProps: null | DropdownStatusProps;
@@ -137,11 +141,11 @@ interface ValueInputProps {
   asyncProps: DropdownStatusProps;
   filteringOptions: readonly InternalFilteringOption[];
   i18nStrings: I18nStrings;
-  onChangeValue: (value: string) => void;
+  onChangeValue: (value: unknown) => void;
   onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
   operator: undefined | ComparisonOperator;
   property: null | InternalFilteringProperty;
-  value: undefined | string;
+  value: unknown;
 }
 
 function ValueInput({
@@ -167,9 +171,40 @@ function ValueInput({
   const [matchedOption] = valueOptions.filter(option => option.value === value);
 
   const OperatorForm = property?.propertyKey && operator && property?.getValueFormRenderer(operator);
+  const formattedValue = property?.getValueFormatter(operator)?.(value) ?? value;
+  const [isDropdownOpen, setDropdownOpen] = useState(false);
+  const formFieldProps = useFormFieldContext({});
 
   return OperatorForm ? (
-    <OperatorForm value={value} onChange={onChangeValue} operator={operator} />
+    <Dropdown
+      minWidth={200}
+      stretchBeyondTriggerWidth={true}
+      open={isDropdownOpen}
+      onDropdownClose={() => setDropdownOpen(false)}
+      trigger={
+        <ButtonTrigger
+          hideCaret={true}
+          onClick={() => setDropdownOpen(true)}
+          ariaHasPopup="dialog"
+          pressed={isDropdownOpen}
+          ariaLabelledby={formFieldProps.ariaLabelledby}
+        >
+          {typeof formattedValue === 'string' ? formattedValue : ''}
+        </ButtonTrigger>
+      }
+    >
+      <PropertyEditorForm
+        value={value}
+        property={property}
+        customForm={(value, onChange) => <OperatorForm value={value} onChange={onChange} operator={operator} />}
+        onCancel={() => setDropdownOpen(false)}
+        onSubmit={value => {
+          onChangeValue(value);
+          setDropdownOpen(false);
+        }}
+        i18nStrings={i18nStrings}
+      />
+    </Dropdown>
   ) : (
     <InternalAutosuggest
       enteredTextLabel={i18nStrings.enteredTextLabel ?? (value => value)}
@@ -241,7 +276,7 @@ export function TokenEditor({
   };
 
   const value = temporaryToken.value;
-  const onChangeValue = (newValue: string) => {
+  const onChangeValue = (newValue: unknown) => {
     setTemporaryToken({ ...temporaryToken, value: newValue });
   };
 
