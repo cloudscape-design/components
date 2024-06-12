@@ -105,8 +105,7 @@ export function getFormattedToken(group: InternalTokenGroup) {
   const propertyLabel = firstToken.property && firstToken.property.propertyLabel;
   const tokenValue = valueFormatter ? valueFormatter(firstToken.value) : firstToken.value;
   // TODO: use i18n
-  const suffix =
-    firstLevelTokens.length > 1 ? ` ${group.operation} ${firstLevelTokens.length - 1} more properties` : '';
+  const suffix = firstLevelTokens.length > 1 ? ` ${group.operation} …${firstLevelTokens.length - 1} more` : '';
   const label = `${propertyLabel ?? ''} ${firstToken.operator} ${tokenValue}${suffix}`;
   return { property: propertyLabel ?? '', operator: firstToken.operator, value: tokenValue, suffix, label };
 }

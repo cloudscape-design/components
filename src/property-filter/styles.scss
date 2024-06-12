@@ -73,6 +73,12 @@
     // The below code cancels horizontal padding of the popover and horizontal margin of the token-editor.
     padding-inline-end: calc(#{awsui.$space-m} + #{awsui.$space-xxs});
     margin-inline: calc(-1 * #{awsui.$space-m} + -1 * #{awsui.$space-xxs});
+    margin-top: awsui.$space-s;
+  }
+  &-form {
+    border-radius: 4px;
+    border: 2px solid awsui.$color-border-divider-default;
+    padding: awsui.$space-xs;
   }
 }
 .property-editor {
