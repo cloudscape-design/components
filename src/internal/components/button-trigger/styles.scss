@@ -120,8 +120,7 @@
 }
 
 .inline-label-wrapper {
-  display: block;
-  margin-block-start: calc(awsui.$space-scaled-xs * -1);
+  margin-block-start: -8px;
 }
 
 .inline-label {
@@ -133,10 +132,10 @@
   line-height: 14px;
   position: relative;
   inset-inline-start: 10px;
-  padding-block: awsui.$space-scaled-xs 0;
+  margin-block-start: awsui.$space-scaled-xs;
   padding-inline: awsui.$space-scaled-xxs;
   max-inline-size: calc(100% - 22px);
-  // Stepped gradient background for background of label overlap between input and background.
+  // Stepped gradient background for inline label overlap between input and background.
   background-image: linear-gradient(
     to bottom,
     transparent calc(100% - (styles.$control-border-width + 3px)),

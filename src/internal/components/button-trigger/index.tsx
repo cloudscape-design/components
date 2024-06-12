@@ -111,10 +111,10 @@ const ButtonTrigger = (
   return (
     <>
       {inlineLabelText ? (
-        <span className={styles['inline-label-wrapper']}>
+        <div className={styles['inline-label-wrapper']}>
           <label className={styles['inline-label']}>{inlineLabelText}</label>
           {triggerButton}
-        </span>
+        </div>
       ) : (
         <>{triggerButton}</>
       )}
