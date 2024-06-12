@@ -21,6 +21,10 @@ function getComponentsExports() {
     // TypeScript interfaces, can be imported separately from components
     './interfaces': './interfaces.js',
     './contexts/form-field': './contexts/form-field.js',
+    // Public internal components
+    './internal/components/tooltip': './internal/components/tooltip/index.js',
+    './test-utils/dom/internal/tooltip': './test-utils/dom/internal/tooltip.js',
+    './test-utils/selectors/internal/tooltip': './test-utils/selectors/internal/tooltip.js',
   };
   let components = listPublicItems('src');
 
