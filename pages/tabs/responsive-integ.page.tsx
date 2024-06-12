@@ -68,7 +68,7 @@ export default function TabsDemoPage() {
       label: 'First tab',
       id: 'first',
       dismissible: true,
-      dismissLabel: 'Dismiss message',
+      dismissLabel: 'Dismiss first tab',
       onDismiss: () => setTabDismissibles(prevTabs => prevTabs.slice(1)),
       content: (
         <>
@@ -82,7 +82,7 @@ export default function TabsDemoPage() {
       label: 'Second tab',
       id: 'second',
       dismissible: true,
-      dismissLabel: 'Dismiss message (second tab)',
+      dismissLabel: 'Dismiss second tab',
       onDismiss: () => setTabDismissibles(prevTabs => prevTabs.slice(0, 1)),
       content: (
         <>

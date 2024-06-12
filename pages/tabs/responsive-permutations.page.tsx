@@ -32,7 +32,7 @@ const permutations = createPermutations<TabsProps>([
           id: 'fifth',
           href: '/fifth',
           dismissible: true,
-          dismissLabel: 'fifth-tab-dismissible-label',
+          dismissLabel: 'Dismiss fifth tab',
         },
         { label: 'Sixth tab', id: 'sixth' },
         {
@@ -52,7 +52,7 @@ const permutations = createPermutations<TabsProps>([
             />
           ),
           dismissible: true,
-          dismissLabel: 'seventh-tab-dismissible-label',
+          dismissLabel: 'Dismiss seventh tab',
         },
         { label: 'Eighth tab', id: 'eighth' },
         {
