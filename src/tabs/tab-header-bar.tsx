@@ -235,6 +235,8 @@ export function TabHeaderBar({
     return getAllFocusables(target).filter(el => isElementRegistered(el) && !isElementDisabled(el));
   }
 
+  const TabList = hasActionOrDismissible ? 'div' : 'ul';
+
   return (
     //converted span to div as list should not be a child of span for HTML validation
     <div className={classes} ref={containerRef}>
@@ -257,35 +259,19 @@ export function TabHeaderBar({
         getNextFocusTarget={getNextFocusTarget}
         onUnregisterFocusable={onUnregisterFocusable}
       >
-        {hasActionOrDismissible ? (
-          <div
-            {...tabActionAttributes}
-            className={styles['tabs-header-list']}
-            aria-label={ariaLabel}
-            aria-labelledby={ariaLabelledby}
-            ref={headerBarRef as never}
-            onScroll={onScroll}
-            onKeyDown={onKeyDown}
-            onFocus={onFocus}
-            onBlur={onBlur}
-          >
-            {tabs.map(renderTabHeader)}
-          </div>
-        ) : (
-          <ul
-            {...tabActionAttributes}
-            className={styles['tabs-header-list']}
-            aria-label={ariaLabel}
-            aria-labelledby={ariaLabelledby}
-            ref={headerBarRef}
-            onScroll={onScroll}
-            onKeyDown={onKeyDown}
-            onFocus={onFocus}
-            onBlur={onBlur}
-          >
-            {tabs.map(renderTabHeader)}
-          </ul>
-        )}
+        <TabList
+          {...tabActionAttributes}
+          className={styles['tabs-header-list']}
+          aria-label={ariaLabel}
+          aria-labelledby={ariaLabelledby}
+          ref={headerBarRef as never}
+          onScroll={onScroll}
+          onKeyDown={onKeyDown}
+          onFocus={onFocus}
+          onBlur={onBlur}
+        >
+          {tabs.map(renderTabHeader)}
+        </TabList>
       </SingleTabStopNavigationProvider>
       {horizontalOverflow && (
         <span className={rightButtonClasses}>
@@ -352,7 +338,6 @@ export function TabHeaderBar({
 
     const commonProps: (JSX.IntrinsicElements['a'] | JSX.IntrinsicElements['button']) & { 'data-testid': string } = {
       className: classes,
-      role: hasActionOrDismissible ? undefined : 'tab',
       // role: 'tab',
       'aria-controls': `${idNamespace}-${tab.id}-panel`,
       'data-testid': tab.id,
@@ -369,6 +354,7 @@ export function TabHeaderBar({
 
     if (!hasActionOrDismissible) {
       commonProps['aria-selected'] = activeTabId === tab.id;
+      commonProps.role = 'tab';
     } else {
       commonProps['aria-expanded'] = activeTabId === tab.id;
     }
@@ -406,9 +392,11 @@ export function TabHeaderBar({
       onDismiss?.(event);
     };
 
-    return hasActionOrDismissible ? (
-      <div
-        ref={element => tabRefs.current.set(tab.id, element as HTMLElement)}
+    const TabItem = hasActionOrDismissible ? 'div' : 'li';
+
+    return (
+      <TabItem
+        ref={(element: any) => tabRefs.current.set(tab.id, element as HTMLElement)}
         className={styles['tabs-tab']}
         role="presentation"
         key={tab.id}
@@ -420,22 +408,7 @@ export function TabHeaderBar({
             <span className={styles['tabs-tab-dismiss']}> {dismissButton(dismissLabel, handleDismiss)} </span>
           )}
         </div>
-      </div>
-    ) : (
-      <li
-        ref={element => tabRefs.current.set(tab.id, element as HTMLElement)}
-        className={styles['tabs-tab']}
-        role="presentation"
-        key={tab.id}
-      >
-        <div className={tabHeaderContainerClasses} {...tabHeaderContainerAriaProps}>
-          <TabTrigger ref={setElement} tab={tab} elementProps={commonProps} />
-          {action && <span className={styles['tabs-tab-action']}>{action}</span>}
-          {dismissible && (
-            <span className={styles['tabs-tab-dismiss']}> {dismissButton(dismissLabel, handleDismiss)} </span>
-          )}
-        </div>
-      </li>
+      </TabItem>
     );
   }
 }

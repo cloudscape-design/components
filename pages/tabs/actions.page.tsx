@@ -12,7 +12,7 @@ export default function TabsDemoPage() {
       label: 'First tab',
       id: 'first',
       dismissible: true,
-      dismissLabel: 'Dismiss message',
+      dismissLabel: 'Dismiss first tab (dismissibles variant)',
       onDismiss: () => setTabDismissibles(prevTabs => prevTabs.slice(1)),
       content: (
         <>
@@ -26,7 +26,7 @@ export default function TabsDemoPage() {
       label: 'Second tab',
       id: 'second',
       dismissible: true,
-      dismissLabel: 'Dismiss message (second tab)',
+      dismissLabel: 'Dismiss second tab (dismissibles variant)',
       onDismiss: () => setTabDismissibles(prevTabs => prevTabs.slice(0, 1)),
       content: (
         <>
@@ -58,7 +58,7 @@ export default function TabsDemoPage() {
       label: 'First tab',
       id: 'first',
       dismissible: true,
-      dismissLabel: 'Dismiss message',
+      dismissLabel: 'Dismiss first tab (xor actions variant)',
       onDismiss: () => setTabsXORActions(prevTabs => prevTabs.slice(1)),
       content: (
         <>
@@ -117,7 +117,7 @@ export default function TabsDemoPage() {
       id: 'third',
       label: 'Athena-like tab',
       dismissible: true,
-      dismissLabel: 'third-dismiss-button',
+      dismissLabel: 'Dismiss third button (combined tabs variant)',
       onDismiss: () => setTabsBoth(prevTabs => prevTabs.slice(0, 2)),
       action: (
         <ButtonDropdown

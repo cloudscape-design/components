@@ -25,7 +25,7 @@ export default function TabsDemoPage() {
       content:
         'Diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.',
       dismissible: true,
-      dismissLabel: 'third-tab-dismissible-label',
+      dismissLabel: 'Dismiss third tab',
     },
     {
       label: 'Fourth tab',
@@ -48,7 +48,7 @@ export default function TabsDemoPage() {
       action: (
         <ButtonDropdown
           variant="icon"
-          ariaLabel="Query actions"
+          ariaLabel="Query actions for Sixth Tab"
           items={[
             { id: 'save', text: 'Save', disabled: true },
             { id: 'saveAs', text: 'Save as' },
@@ -59,7 +59,7 @@ export default function TabsDemoPage() {
         />
       ),
       dismissible: true,
-      dismissLabel: 'six-tab-dismissible-label',
+      dismissLabel: 'Dismiss sixth tab',
     },
   ];
 
