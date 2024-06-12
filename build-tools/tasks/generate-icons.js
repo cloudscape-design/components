@@ -12,10 +12,46 @@ function escapeContent(source) {
     .replace(/\u2029/g, '\\u2029');
 }
 
-function getIcon(content) {
+// only the shape attributes are allowed, all styling should be external
+const safeAttributes = [
+  'xmlns',
+  'viewBox',
+  'class',
+  'd',
+  'cx',
+  'cy',
+  'r',
+  'rx',
+  'ry',
+  'x',
+  'y',
+  'x1',
+  'x2',
+  'y1',
+  'y2',
+  'width',
+  'height',
+];
+
+function getIcon(iconName, content) {
   const { data } = Svgo.optimize(content, {
     plugins: [
       'preset-default',
+      {
+        name: 'awsuiValidateAttributes',
+        type: 'visitor',
+        fn: () => ({
+          element: {
+            enter: node => {
+              for (const attribute of Object.keys(node.attributes)) {
+                if (!safeAttributes.includes(attribute)) {
+                  throw new Error(`Unexpected attribute ${attribute} in ${iconName}`);
+                }
+              }
+            },
+          },
+        }),
+      },
       {
         name: 'addAttributesToSVGElement',
         params: {
@@ -42,8 +78,9 @@ function generateIconsTask(theme) {
       .pipe(
         through(
           file => {
-            const icon = getIcon(file.contents.toString());
-            icons.push({ content: icon, name: file.stem });
+            const iconName = file.stem;
+            const icon = getIcon(iconName, file.contents.toString());
+            icons.push({ content: icon, name: iconName });
           },
           push => {
             push({
