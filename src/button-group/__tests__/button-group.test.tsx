@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
-import { render } from '@testing-library/react';
+import React, { useRef } from 'react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import ButtonGroup, { ButtonGroupProps } from '../../../lib/components/button-group';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
@@ -40,7 +40,7 @@ const items1: ButtonGroupProps.ItemOrGroup[] = [
     items: [
       { id: 'edit', iconName: 'edit', text: 'Edit' },
       { id: 'open', iconName: 'file-open', text: 'Open' },
-      { id: 'search', iconName: 'search', text: 'Search' },
+      { id: 'upload', iconName: 'upload', text: 'Upload' },
     ],
   },
 ];
@@ -98,5 +98,46 @@ describe('i18n', () => {
     expect(wrapper.findShowMoreButton()!.findNativeButton().getElement()).toHaveAccessibleName(
       'Show more from i18nStrings'
     );
+  });
+});
+
+describe('focus', () => {
+  test('focuses the correct item', () => {
+    const TestComponent = () => {
+      const ref = useRef<ButtonGroupProps.Ref>(null);
+
+      return (
+        <div>
+          <button onClick={() => ref.current?.focus('copy')}>Focus on copy</button>
+          <ButtonGroup ref={ref} items={items1} limit={5} />
+        </div>
+      );
+    };
+
+    console.log(items1);
+    const { container } = render(<TestComponent />);
+    const buttonGroup = createWrapper(container).findButtonGroup()!;
+    fireEvent.click(screen.getByText('Focus on copy'));
+
+    expect(buttonGroup.findInlineItemById('copy')!.getElement()).toHaveFocus();
+  });
+  test('focuses on show more button', () => {
+    const TestComponent = () => {
+      const ref = useRef<ButtonGroupProps.Ref>(null);
+
+      return (
+        <div>
+          <button onClick={() => ref.current?.focus('upload')}>Focus on upload</button>
+          <ButtonGroup ref={ref} items={items1} limit={5} />
+        </div>
+      );
+    };
+
+    const { container } = render(<TestComponent />);
+    const buttonGroup = createWrapper(container).findButtonGroup()!;
+
+    fireEvent.click(screen.getByText('Focus on upload'));
+    const showMoreButton = buttonGroup.findShowMoreButton()!.getElement();
+    expect(showMoreButton.getElementsByTagName('button')[0]).toHaveFocus();
   });
 });

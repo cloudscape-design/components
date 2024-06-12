@@ -3,7 +3,7 @@
 import React, { useImperativeHandle, useRef } from 'react';
 import { getBaseProps } from '../internal/base-component';
 import { ButtonGroupProps, InternalButtonGroupProps } from './interfaces';
-import { isItemGroup, splitItems } from './utils';
+import { findItemById, isItemGroup, splitItems } from './utils';
 import { ButtonProps } from '../button/interfaces';
 import { useInternalI18n } from '../i18n/context';
 import { ButtonDropdownProps } from '../button-dropdown/interfaces';
@@ -36,7 +36,7 @@ const InternalButtonGroup = React.forwardRef(
         const current = itemsRef.current[id];
         if (current) {
           current.focus();
-        } else if (secondary.some(item => item.id === id)) {
+        } else if (findItemById(secondary, id)) {
           moreItemsRef.current?.focus();
         }
       },
@@ -59,7 +59,7 @@ const InternalButtonGroup = React.forwardRef(
                     key={item.id}
                     item={item}
                     onItemClick={onItemClick}
-                    ref={element => onSetButtonRef(current, element)}
+                    ref={element => onSetButtonRef(item, element)}
                   />
                 ))}
                 {index < primary.length - 1 && <div className={styles.divider} />}
