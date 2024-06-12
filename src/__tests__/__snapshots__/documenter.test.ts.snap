@@ -4416,7 +4416,7 @@ in the native control.",
       "type": "string",
     },
     Object {
-      "description": "Specifies if the control is readOnly, which prevents the
+      "description": "Specifies if the control is read-only, which prevents the
 user from modifying the value, but does not prevent the value from
 being included in a form submission. A read-only control is still focusable.
 If both \`readOnly\` and \`disabled\` are set, \`disabled\` takes precedence.",
@@ -10156,7 +10156,7 @@ on your own.
       "type": "string",
     },
     Object {
-      "description": "Specifies if the control is readOnly, which prevents the
+      "description": "Specifies if the control is read-only, which prevents the
 user from modifying the value and opening the dropdown. A read-only control is still focusable.",
       "name": "readOnly",
       "optional": true,
@@ -11856,7 +11856,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     Object {
-      "description": "Specifies if the whole group is readOnly, which prevents the
+      "description": "Specifies if the whole group is read-only, which prevents the
 user from modifying the value, but does not prevent the value from
 being included in a form submission. A read-only control is still focusable.",
       "name": "readOnly",
@@ -12815,7 +12815,7 @@ on your own.
       "type": "string",
     },
     Object {
-      "description": "Specifies if the control is readOnly, which prevents the
+      "description": "Specifies if the control is read-only, which prevents the
 user from modifying the value and opening the dropdown. A read-only control is still focusable.",
       "name": "readOnly",
       "optional": true,
@@ -13327,7 +13327,7 @@ single form field.",
       "type": "number",
     },
     Object {
-      "description": "Specifies if the control is readOnly, which prevents the
+      "description": "Specifies if the control is read-only, which prevents the
 user from modifying the value, but does not prevent the value from
 being included in a form submission. A read-only control is still focusable.",
       "name": "readOnly",
@@ -15560,7 +15560,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     Object {
-      "description": "Specifies if the control is readOnly, which prevents the
+      "description": "Specifies if the control is read-only, which prevents the
 user from modifying the value, but does not prevent the value from
 being included in a form submission. A read-only control is still focusable.",
       "name": "readOnly",
@@ -15934,7 +15934,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     Object {
-      "description": "Specifies if the control is readOnly, which prevents the
+      "description": "Specifies if the control is read-only, which prevents the
 user from modifying the value, but does not prevent the value from
 being included in a form submission. A read-only control is still focusable.
 If both \`readOnly\` and \`disabled\` are set, \`disabled\` takes precedence.",
@@ -16085,7 +16085,7 @@ Use to assign unique labels when there are multiple token groups with the same \
       "type": "string",
     },
     Object {
-      "description": "Specifies if the control is readOnly, which prevents the
+      "description": "Specifies if the control is read-only, which prevents the
 user from modifying the value, but does not prevent the value from
 being included in a form submission. A read-only control is still focusable.",
       "name": "readOnly",
