@@ -11,12 +11,12 @@ const items1: ButtonGroupProps.ItemOrGroup[] = [
     text: 'Vote',
     items: [
       {
-        id: 'thump-up',
+        id: 'thumbs-up',
         text: 'Like',
         actionPopoverText: 'Liked',
       },
       {
-        id: 'thump-down',
+        id: 'thumbs-down',
         iconName: 'thumbs-down',
         text: 'Dislike',
         actionPopoverText: 'Disliked',
@@ -29,10 +29,10 @@ const items1: ButtonGroupProps.ItemOrGroup[] = [
     text: 'View',
   },
   {
-    id: 'thump-up',
-    iconName: 'thumbs-up',
-    text: 'Like',
-    actionPopoverText: 'Liked',
+    id: 'favorite',
+    iconName: 'star',
+    text: 'Favorite',
+    actionPopoverText: 'Added to favorites',
     loading: true,
   },
   {
@@ -49,13 +49,13 @@ const items2: ButtonGroupProps.ItemOrGroup[] = [
     text: 'Vote',
     items: [
       {
-        id: 'thump-up',
+        id: 'thumbs-up',
         iconName: 'thumbs-up',
         text: 'Like',
         actionPopoverText: 'Liked',
       },
       {
-        id: 'thump-down',
+        id: 'thumbs-down',
         iconName: 'thumbs-down',
         text: 'Dislike',
         actionPopoverText: 'Disliked',
@@ -84,17 +84,17 @@ const items2: ButtonGroupProps.ItemOrGroup[] = [
 
 const items3: ButtonGroupProps.ItemOrGroup[] = [
   {
-    id: 'vote',
+    id: 'vote1',
     text: 'Vote',
     items: [
       {
-        id: 'thump-up',
+        id: 'thumbs-up',
         iconName: 'thumbs-up',
         text: 'Like',
         actionPopoverText: 'Liked',
       },
       {
-        id: 'thump-down',
+        id: 'thumbs-down',
         iconName: 'thumbs-down',
         text: 'Dislike',
         actionPopoverText: 'Disliked',
@@ -155,12 +155,12 @@ export default function ButtonGroupPage() {
     console.log('Item clicked:', event.detail.id);
   };
 
-  const onFocusOnCopyButtonClick = () => {
-    ref.current?.focus('copy');
+  const onFocusOnThumbsUpButtonClick = () => {
+    ref.current?.focus('thumbs-up');
   };
 
   const onFocusOnCutButtonClick = () => {
-    ref.current?.focus('cut');
+    ref.current?.focus('search');
   };
 
   return (
@@ -185,7 +185,7 @@ export default function ButtonGroupPage() {
           <h1>Group with overflow</h1>
           <ButtonGroup items={items3} onItemClick={onItemClick} ref={ref} />
           <br />
-          <Button onClick={onFocusOnCopyButtonClick}>Focus on copy</Button>&nbsp;
+          <Button onClick={onFocusOnThumbsUpButtonClick}>Focus on thumbs-up</Button>&nbsp;
           <Button onClick={onFocusOnCutButtonClick}>Focus on aditional items</Button>
         </article>
       </ScreenshotArea>
