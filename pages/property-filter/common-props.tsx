@@ -3,7 +3,7 @@
 import { PropertyFilterProps } from '~components/property-filter';
 import { states, TableItem } from './table.data';
 import {
-  DateForm,
+  DateRangeForm,
   DateTimeForm,
   formatDateTime,
   formatOwners,
@@ -172,6 +172,8 @@ export const filteringProperties: readonly PropertyFilterProps.FilteringProperty
   let operators: any[] = [];
   let defaultOperator: PropertyFilterProps.ComparisonOperator = '=';
   let groupValuesLabel = `${def.propertyLabel} values`;
+  let form: undefined | PropertyFilterProps.ExtendedOperatorForm<any> = undefined;
+  let format: undefined | ((tokenValue: unknown) => string) = undefined;
 
   if (def.type === 'enum') {
     operators = ['=', '!='].map(operator => ({ operator, format: def.getLabel }));
@@ -187,11 +189,25 @@ export const filteringProperties: readonly PropertyFilterProps.FilteringProperty
 
   if (def.type === 'date') {
     groupValuesLabel = `${def.propertyLabel} value`;
-    operators = ['=', '!=', '<', '<=', '>', '>='].map(operator => ({
-      operator,
-      form: DateForm,
-      match: 'date',
-    }));
+    operators = [
+      {
+        operator: '=',
+        match: () => false, // TODO: need a date-range match
+      },
+    ];
+    form = DateRangeForm;
+    format = (tokenValue: unknown) => {
+      if (!tokenValue) {
+        return '';
+      }
+      if (typeof tokenValue === 'string') {
+        return tokenValue;
+      }
+      if (Array.isArray(tokenValue)) {
+        return (tokenValue as [string, string]).map(date => date || '*').join(', ');
+      }
+      return '';
+    };
   }
 
   if (def.type === 'datetime') {
@@ -233,6 +249,8 @@ export const filteringProperties: readonly PropertyFilterProps.FilteringProperty
   return {
     key: def.id,
     operators: operators,
+    form,
+    format,
     defaultOperator,
     propertyLabel: def.propertyLabel,
     groupValuesLabel,

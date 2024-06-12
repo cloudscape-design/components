@@ -6,7 +6,7 @@ import { ExtendedOperatorFormProps } from '~components/property-filter/interface
 import Calendar from '~components/calendar';
 import DateInput from '~components/date-input';
 import Multiselect from '~components/multiselect';
-import { FormField, RadioGroup, TimeInput } from '~components';
+import { Box, ColumnLayout, FormField, RadioGroup, TimeInput } from '~components';
 import styles from './custom-forms.scss';
 import { allItems } from './table.data';
 
@@ -96,50 +96,118 @@ export function DateTimeForm({ filter, operator, value, onChange }: ExtendedOper
   );
 }
 
-export function DateForm({ filter, value, onChange }: ExtendedOperatorFormProps<string>) {
-  const [{ dateValue }, setState] = useState(parseValue(value ?? ''));
+export function DateRangeForm({
+  filter,
+  value: initialValue,
+  operator,
+  onChange,
+}: ExtendedOperatorFormProps<string | [string, string]>) {
+  let [initialStart, initialEnd] = Array.isArray(initialValue) ? initialValue : ['', ''];
+  if (typeof initialValue === 'string') {
+    if (operator === '=') {
+      initialStart = initialValue;
+      initialEnd = initialValue;
+    }
+    if (operator === '>=') {
+      initialStart = initialValue;
+    }
+    if (operator === '<') {
+      initialEnd = initialValue;
+    }
+  }
 
-  const onChangeDate = (dateValue: string) => {
-    setState(state => ({ ...state, dateValue }));
+  const [value, setState] = useState([initialStart, initialEnd]);
+
+  const startDate = parseValue(value[0]).dateValue;
+  const onChangeStartDate = (startDate: string) => {
+    setState(([, endDate]) => [startDate, endDate]);
+  };
+
+  const endDate = parseValue(value[1]).dateValue;
+  const onChangeEndDate = (endDate: string) => {
+    setState(([startDate]) => [startDate, endDate]);
   };
 
   // Parse value from filter text when it changes.
   useEffect(() => {
-    filter && setState(parseDateTimeFilter(filter.trim()));
+    if (filter) {
+      const [startDateStr = '', endDateStr = ''] = filter.trim().split(',');
+      const startDate = parseDateTimeFilter(startDateStr).dateValue;
+      const endDate = parseDateTimeFilter(endDateStr).dateValue;
+      setState([startDate, endDate]);
+    }
   }, [filter]);
 
   // Call onChange only when the value is valid.
   useEffect(
     () => {
-      if (!dateValue.trim()) {
-        onChange(null);
-      } else if (isValidIsoDate(dateValue)) {
-        onChange(dateValue);
+      const isStartDateValid = !startDate.trim() || isValidIsoDate(startDate);
+      const isEndDateValid = !endDate.trim() || isValidIsoDate(endDate);
+      if (isStartDateValid && isEndDateValid) {
+        let operator = ':';
+        if (startDate && !endDate) {
+          operator = '>=';
+        }
+        if (endDate && !startDate) {
+          operator = '<';
+        }
+        if (startDate === endDate) {
+          operator = '=';
+        }
+        if (operator === ':') {
+          onChange([startDate, endDate], operator);
+        } else {
+          onChange(startDate || endDate, operator);
+        }
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [dateValue]
+    [startDate, endDate]
   );
 
   return (
     <div className={styles['date-form']}>
-      <FormField>
-        <DateInput
-          name="date"
-          placeholder="YYYY/MM/DD"
-          onChange={event => onChangeDate(event.detail.value)}
-          value={dateValue}
-        />
-      </FormField>
+      <ColumnLayout columns={2}>
+        <Box>
+          <FormField description="Start date">
+            <DateInput
+              name="start-date"
+              placeholder="YYYY/MM/DD"
+              onChange={event => onChangeStartDate(event.detail.value)}
+              value={startDate}
+            />
+          </FormField>
 
-      <Calendar
-        value={dateValue}
-        locale="en-GB"
-        previousMonthAriaLabel="Previous month"
-        nextMonthAriaLabel="Next month"
-        todayAriaLabel="Today"
-        onChange={event => onChangeDate(event.detail.value)}
-      />
+          <Calendar
+            value={startDate}
+            locale="en-GB"
+            previousMonthAriaLabel="Previous month"
+            nextMonthAriaLabel="Next month"
+            todayAriaLabel="Today"
+            onChange={event => onChangeStartDate(event.detail.value)}
+          />
+        </Box>
+
+        <Box>
+          <FormField description="End date">
+            <DateInput
+              name="end-date"
+              placeholder="YYYY/MM/DD"
+              onChange={event => onChangeEndDate(event.detail.value)}
+              value={endDate}
+            />
+          </FormField>
+
+          <Calendar
+            value={endDate}
+            locale="en-GB"
+            previousMonthAriaLabel="Previous month"
+            nextMonthAriaLabel="Next month"
+            todayAriaLabel="Today"
+            onChange={event => onChangeEndDate(event.detail.value)}
+          />
+        </Box>
+      </ColumnLayout>
     </div>
   );
 }
