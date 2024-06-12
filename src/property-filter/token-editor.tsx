@@ -14,8 +14,9 @@ import {
   InternalFilteringProperty,
   InternalFreeTextFiltering,
   InternalToken,
+  InternalTokenGroup,
   LoadItemsDetail,
-  Token,
+  TokenGroup,
 } from './interfaces';
 import styles from './styles.css.js';
 import { useLoadItems } from './use-load-items';
@@ -195,8 +196,8 @@ interface TokenEditorProps {
   filteringOptions: readonly InternalFilteringOption[];
   i18nStrings: I18nStrings;
   onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
-  setToken: (newToken: Token) => void;
-  token: InternalToken;
+  setToken: (newToken: TokenGroup) => void;
+  token: InternalTokenGroup;
   triggerComponent?: React.ReactNode;
 }
 
@@ -214,7 +215,8 @@ export function TokenEditor({
   token,
   triggerComponent,
 }: TokenEditorProps) {
-  const [temporaryToken, setTemporaryToken] = useState<InternalToken>(token);
+  const firstToken = token.tokens[0] as InternalToken;
+  const [temporaryToken, setTemporaryToken] = useState<InternalToken>(firstToken);
   const popoverRef = useRef<InternalPopoverRef>(null);
   const closePopover = () => {
     popoverRef.current && popoverRef.current.dismissPopover();
@@ -254,7 +256,7 @@ export function TokenEditor({
       size="large"
       position="right"
       dismissAriaLabel={i18nStrings.dismissAriaLabel}
-      __onOpen={() => setTemporaryToken(token)}
+      __onOpen={() => setTemporaryToken(firstToken)}
       renderWithPortal={expandToViewport}
       content={
         <div className={styles['token-editor']}>
@@ -309,7 +311,7 @@ export function TokenEditor({
               className={styles['token-editor-submit']}
               formAction="none"
               onClick={() => {
-                setToken(matchTokenValue(temporaryToken, filteringOptions));
+                setToken({ operation: token.operation, tokens: [matchTokenValue(temporaryToken, filteringOptions)] });
                 closePopover();
               }}
             >

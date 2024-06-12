@@ -6,6 +6,7 @@ import {
   InternalFilteringOption,
   InternalFilteringProperty,
   InternalToken,
+  InternalTokenGroup,
   Token,
 } from './interfaces';
 
@@ -90,12 +91,24 @@ export function matchTokenValue(
   return bestMatch;
 }
 
-export function getFormattedToken(token: InternalToken) {
-  const valueFormatter = token.property?.getValueFormatter(token.operator);
-  const propertyLabel = token.property && token.property.propertyLabel;
-  const tokenValue = valueFormatter ? valueFormatter(token.value) : token.value;
-  const label = `${propertyLabel ?? ''} ${token.operator} ${tokenValue}`;
-  return { property: propertyLabel ?? '', operator: token.operator, value: tokenValue, label };
+export function getFormattedToken(group: InternalTokenGroup) {
+  const firstLevelTokens: InternalToken[] = [];
+  for (const tokenOrGroup of group.tokens) {
+    if ('operation' in tokenOrGroup) {
+      // ignore as deeply nested tokens are not supported
+    } else {
+      firstLevelTokens.push(tokenOrGroup);
+    }
+  }
+  const firstToken = firstLevelTokens[0];
+  const valueFormatter = firstToken.property?.getValueFormatter(firstToken.operator);
+  const propertyLabel = firstToken.property && firstToken.property.propertyLabel;
+  const tokenValue = valueFormatter ? valueFormatter(firstToken.value) : firstToken.value;
+  // TODO: use i18n
+  const suffix =
+    firstLevelTokens.length > 1 ? ` ${group.operation} ${firstLevelTokens.length - 1} more properties` : '';
+  const label = `${propertyLabel ?? ''} ${firstToken.operator} ${tokenValue}${suffix}`;
+  return { property: propertyLabel ?? '', operator: firstToken.operator, value: tokenValue, suffix, label };
 }
 
 export function trimStart(source: string): string {

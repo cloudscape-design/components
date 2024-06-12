@@ -9,9 +9,11 @@ import {
   InternalFilteringProperty,
   InternalFreeTextFiltering,
   InternalToken,
+  InternalTokenGroup,
   JoinOperation,
   LoadItemsDetail,
   Token,
+  TokenGroup,
 } from './interfaces';
 import styles from './styles.css.js';
 import { TokenEditor } from './token-editor';
@@ -37,8 +39,8 @@ interface TokenProps {
   operation: JoinOperation;
   removeToken: () => void;
   setOperation: (newOperation: JoinOperation) => void;
-  setToken: (newToken: Token) => void;
-  token: InternalToken;
+  setToken: (newToken: TokenGroup) => void;
+  token: InternalTokenGroup;
 }
 
 export const TokenButton = ({
@@ -60,7 +62,17 @@ export const TokenButton = ({
   freeTextFiltering,
   expandToViewport,
 }: TokenProps) => {
-  const externalToken = { ...token, propertyKey: token.property?.propertyKey };
+  const flatTokens: Token[] = [];
+  function traverse(tokenOrGroup: InternalTokenGroup | InternalToken) {
+    if ('operation' in tokenOrGroup) {
+      tokenOrGroup.tokens.forEach(traverse);
+    } else {
+      flatTokens.push({ ...tokenOrGroup, propertyKey: tokenOrGroup.property?.propertyKey });
+    }
+  }
+  traverse(token);
+
+  const externalToken = flatTokens[0];
   const formattedToken = getFormattedToken(token);
   return (
     <FilteringToken
@@ -79,7 +91,12 @@ export const TokenButton = ({
         setToken={setToken}
         triggerComponent={
           <span className={styles['token-trigger']}>
-            <TokenTrigger property={formattedToken.property} operator={token.operator} value={formattedToken.value} />
+            <TokenTrigger
+              property={formattedToken.property}
+              operator={formattedToken.operator}
+              value={formattedToken.value}
+              suffix={formattedToken.suffix}
+            />
           </span>
         }
         filteringProperties={filteringProperties}
@@ -101,10 +118,12 @@ const TokenTrigger = ({
   property,
   operator,
   value,
+  suffix,
 }: {
   property?: string;
   operator?: ComparisonOperator;
   value: string;
+  suffix: string;
 }) => {
   if (property) {
     property += ' ';
@@ -116,6 +135,7 @@ const TokenTrigger = ({
       {property}
       <span className={styles['token-operator']}>{operatorText}</span>
       {value}
+      {suffix}
     </>
   );
 };

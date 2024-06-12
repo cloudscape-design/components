@@ -23,6 +23,9 @@ import {
   ExtendedOperator,
   InternalQuery,
   InternalFreeTextFiltering,
+  InternalToken,
+  InternalTokenGroup,
+  TokenGroup,
 } from './interfaces';
 import { TokenButton } from './token';
 import { getQueryActions, parseText, getAutosuggestOptions, getAllowedOperators } from './controller';
@@ -38,6 +41,7 @@ import { useInternalI18n } from '../i18n/context';
 import TokenList from '../internal/components/token-list';
 import { SearchResults } from '../text-filter/search-results';
 import { joinStrings } from '../internal/utils/strings';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 export { PropertyFilterProps };
 
@@ -167,7 +171,8 @@ const PropertyFilter = React.forwardRef(
     };
 
     useImperativeHandle(ref, () => ({ focus: () => inputRef.current?.focus() }), []);
-    const showResults = !!query.tokens?.length && !disabled && !!countText;
+    const hasTokens = !!(query.tokens.length || query.tokenGroups?.length);
+    const showResults = hasTokens && !disabled && !!countText;
     const { addToken, removeToken, setToken, setOperation, removeAllTokens } = getQueryActions(
       query,
       onChange,
@@ -203,13 +208,37 @@ const PropertyFilter = React.forwardRef(
         label: option.label ?? option.value ?? '',
       }));
 
+      const toInternalTokens = (
+        tokenOrGroup: PropertyFilterProps.Token | PropertyFilterProps.TokenGroup
+      ): InternalToken | InternalTokenGroup => {
+        if ('operation' in tokenOrGroup) {
+          return { operation: tokenOrGroup.operation, tokens: tokenOrGroup.tokens.map(toInternalTokens) };
+        } else {
+          return {
+            property: tokenOrGroup.propertyKey ? getProperty(tokenOrGroup.propertyKey) : null,
+            operator: tokenOrGroup.operator,
+            value: tokenOrGroup.value,
+          };
+        }
+      };
+
+      const tokensOrGroups = query.tokenGroups ?? query.tokens;
+      if (query.tokens.length > 0 && query.tokenGroups) {
+        warnOnce(
+          'PropertyFilter',
+          'Both `query.tokens` and `query.tokenGroups` are present. Using `query.tokenGroups` only.'
+        );
+      }
       const internalQuery: InternalQuery = {
+        supportsGroups: !!query.tokenGroups,
         operation: query.operation,
-        tokens: query.tokens.map(token => ({
-          property: token.propertyKey ? getProperty(token.propertyKey) : null,
-          operator: token.operator,
-          value: token.value,
-        })),
+        tokens: tokensOrGroups.map(tokenOrGroup => {
+          const internalTokenOrGroup = toInternalTokens(tokenOrGroup);
+          if ('operation' in internalTokenOrGroup) {
+            return internalTokenOrGroup;
+          }
+          return { operation: query.operation === 'and' ? 'or' : 'and', tokens: [internalTokenOrGroup] };
+        }),
       };
 
       const internalFreeText: InternalFreeTextFiltering = {
@@ -263,7 +292,7 @@ const PropertyFilter = React.forwardRef(
       if (internalFreeText.disabled && !('propertyKey' in newToken)) {
         return;
       }
-      addToken(newToken);
+      addToken({ operation: query.operation === 'and' ? 'or' : 'and', tokens: [newToken] });
       setFilteringText('');
     };
     const ignoreKeyDown = useRef<boolean>(false);
@@ -392,7 +421,7 @@ const PropertyFilter = React.forwardRef(
                     inputRef.current?.focus({ preventDropdown: true });
                   }}
                   onSubmit={token => {
-                    addToken(token);
+                    addToken({ operation: query.operation === 'and' ? 'or' : 'and', tokens: [token] });
                     setFilteringText('');
                     inputRef.current?.focus({ preventDropdown: true });
                     inputRef.current?.close();
@@ -433,7 +462,7 @@ const PropertyFilter = React.forwardRef(
                       removeToken(tokenIndex);
                       setRemovedTokenIndex(tokenIndex);
                     }}
-                    setToken={(newToken: Token) => setToken(tokenIndex, newToken)}
+                    setToken={(newToken: TokenGroup) => setToken(tokenIndex, newToken)}
                     setOperation={setOperation}
                     filteringProperties={internalProperties}
                     filteringOptions={internalOptions}

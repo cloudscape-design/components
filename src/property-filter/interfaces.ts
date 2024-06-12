@@ -225,6 +225,12 @@ export namespace PropertyFilterProps {
   export interface Query {
     tokens: ReadonlyArray<PropertyFilterProps.Token>;
     operation: PropertyFilterProps.JoinOperation;
+    tokenGroups?: ReadonlyArray<PropertyFilterProps.TokenGroup>;
+  }
+
+  export interface TokenGroup {
+    operation: PropertyFilterProps.JoinOperation;
+    tokens: ReadonlyArray<PropertyFilterProps.TokenGroup | PropertyFilterProps.Token>;
   }
 
   export interface LoadItemsDetail {
@@ -278,6 +284,7 @@ export namespace PropertyFilterProps {
     tokenLimitShowFewer?: string;
     clearFiltersText?: string;
     tokenOperatorAriaLabel?: string;
+    // TODO: add token group as second argument
     removeTokenButtonAriaLabel?: (token: PropertyFilterProps.Token) => string;
     enteredTextLabel?: AutosuggestProps.EnteredTextLabel;
   }
@@ -304,6 +311,7 @@ export namespace PropertyFilterProps {
 // Re-exported namespace interfaces to use module-style imports internally
 
 export type Token = PropertyFilterProps.Token;
+export type TokenGroup = PropertyFilterProps.TokenGroup;
 export type JoinOperation = PropertyFilterProps.JoinOperation;
 export type ComparisonOperator = PropertyFilterProps.ComparisonOperator;
 export type ExtendedOperator<TokenValue> = PropertyFilterOperatorExtended<TokenValue>;
@@ -353,8 +361,14 @@ export interface InternalToken<TokenValue = any> {
 }
 
 export interface InternalQuery {
+  supportsGroups: boolean;
   operation: PropertyFilterOperation;
-  tokens: readonly InternalToken[];
+  tokens: readonly InternalTokenGroup[];
+}
+
+export interface InternalTokenGroup {
+  operation: PropertyFilterOperation;
+  tokens: readonly (InternalTokenGroup | InternalToken)[];
 }
 
 export type ParsedText =
