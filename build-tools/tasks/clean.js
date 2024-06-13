@@ -8,6 +8,7 @@ module.exports = task('clean', () => {
   rimrafSync(
     [
       'src/index.ts',
+      'src/icon/generated/**',
       'src/test-utils/dom/index.ts',
       `${workspace.npmModulesTarget}/**`,
       `${workspace.targetPath}/**`,
