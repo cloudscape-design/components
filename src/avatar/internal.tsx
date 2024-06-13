@@ -87,15 +87,17 @@ export default function InternalAvatar({
     >
       {showTooltip && tooltipText && <Tooltip value={tooltipText} trackRef={handleRef} />}
 
-      <AvatarContent
-        color={color}
-        ariaLabel={ariaLabel}
-        initials={initials}
-        loading={loading}
-        iconName={iconName}
-        iconSvg={iconSvg}
-        iconUrl={iconUrl}
-      />
+      <div className={styles.content}>
+        <AvatarContent
+          color={color}
+          ariaLabel={ariaLabel}
+          initials={initials}
+          loading={loading}
+          iconName={iconName}
+          iconSvg={iconSvg}
+          iconUrl={iconUrl}
+        />
+      </div>
     </div>
   );
 }
