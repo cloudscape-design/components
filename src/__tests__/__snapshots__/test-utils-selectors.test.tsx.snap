@@ -82,6 +82,7 @@ Object {
   "button": Array [
     "awsui_button_vjswe",
     "awsui_content_vjswe",
+    "awsui_disabled-reason-tooltip_vjswe",
     "awsui_icon-left_vjswe",
   ],
   "button-dropdown": Array [

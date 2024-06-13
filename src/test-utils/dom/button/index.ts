@@ -19,4 +19,12 @@ export default class ButtonWrapper extends ComponentWrapper<HTMLButtonElement> {
   isDisabled(): boolean {
     return this.element.disabled || this.element.getAttribute('aria-disabled') === 'true';
   }
+
+  findDisabledReason(): ElementWrapper | null {
+    return this.find(`.${styles['disabled-reason-tooltip']}`);
+  }
+
+  findDisabledReasonDescription(): ElementWrapper | null {
+    return this.find('span[hidden]');
+  }
 }
