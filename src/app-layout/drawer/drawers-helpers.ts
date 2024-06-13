@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 export function splitItems<T extends { id: string }>(
-  maybeItems: Array<T> | undefined,
+  maybeItems: ReadonlyArray<T> | undefined,
   splitIndex: number,
   activeId: string | null
 ) {

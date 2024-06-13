@@ -111,6 +111,7 @@ const ClassicAppLayout = React.forwardRef(
       },
       ariaLabels,
       {
+        disableDrawersMerge: true,
         ariaLabels,
         tools,
         toolsOpen,

@@ -297,6 +297,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       activeDrawerSize,
       ...drawersProps
     } = useDrawers(props, props.ariaLabels, {
+      disableDrawersMerge: true,
       ariaLabels: props.ariaLabels,
       toolsHide,
       toolsOpen: isToolsOpen,

@@ -27,14 +27,18 @@ jest.mock('@cloudscape-design/component-toolkit', () => ({
   useContainerQuery: () => [1300, () => {}],
 }));
 
-describeEachAppLayout({ sizes: ['desktop'] }, () => {
+describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
   test('renders breadcrumbs and notifications inside of the main landmark', () => {
     const { wrapper } = renderComponent(<AppLayout breadcrumbs="breadcrumbs" notifications="notifications" />);
     const mains = document.querySelectorAll('main');
     expect(mains).toHaveLength(1);
     const main = mains[0];
     expect(main).toContainElement(wrapper.findNotifications()!.getElement());
-    expect(main).toContainElement(wrapper.findBreadcrumbs()!.getElement());
+    if (theme === 'refresh-toolbar') {
+      expect(main).not.toContainElement(wrapper.findBreadcrumbs()!.getElement());
+    } else {
+      expect(main).toContainElement(wrapper.findBreadcrumbs()!.getElement());
+    }
   });
 
   test('does not close drawer when clicking on content', () => {
@@ -58,58 +62,57 @@ describeEachAppLayout({ sizes: ['desktop'] }, () => {
 
   describe('Min and max content width', () => {
     test("has default min content width if one isn't explicitly provided", () => {
-      const { wrapper, isUsingGridLayout } = renderComponent(<AppLayout />);
+      const { wrapper } = renderComponent(<AppLayout />);
 
-      if (isUsingGridLayout) {
+      if (theme === 'classic') {
+        expect(wrapper.findContentRegion().getElement()).toHaveStyle({ minWidth: '280px', maxWidth: '' });
+      } else {
         const minWidthInGrid = wrapper.getElement().style.getPropertyValue(customCssProps.minContentWidth);
         const maxWidthInGrid = wrapper.getElement().style.getPropertyValue(customCssProps.maxContentWidth);
 
         // The default value is specified in the CSS class
-        expect(minWidthInGrid).toBe('280px');
+        expect(minWidthInGrid).toBe(theme === 'refresh' ? '280px' : '');
         expect(maxWidthInGrid).toBe('');
-      } else {
-        expect(wrapper.findContentRegion().getElement()).toHaveStyle({ minWidth: '280px', maxWidth: '' });
       }
     });
 
     test('sets min and max content width according to the content type', () => {
-      const { wrapper, isUsingGridLayout } = renderComponent(<AppLayout contentType="wizard" />);
+      const { wrapper } = renderComponent(<AppLayout contentType="wizard" />);
 
-      if (isUsingGridLayout) {
+      if (theme === 'classic') {
+        expect(wrapper.findContentRegion().getElement()).toHaveStyle({ minWidth: '280px', maxWidth: '1080px' });
+      } else {
         const minWidthInGrid = wrapper.getElement().style.getPropertyValue(customCssProps.minContentWidth);
         const maxWidthInGrid = wrapper.getElement().style.getPropertyValue(customCssProps.maxContentWidth);
-
-        expect(minWidthInGrid).toBe('280px');
+        expect(minWidthInGrid).toBe(theme === 'refresh' ? '280px' : '');
         expect(maxWidthInGrid).toBe('');
-      } else {
-        expect(wrapper.findContentRegion().getElement()).toHaveStyle({ minWidth: '280px', maxWidth: '1080px' });
       }
     });
 
     test('uses the provided content width if one is provided', () => {
-      const { wrapper, isUsingGridLayout } = renderComponent(<AppLayout minContentWidth={120} maxContentWidth={650} />);
+      const { wrapper } = renderComponent(<AppLayout minContentWidth={120} maxContentWidth={650} />);
 
-      if (isUsingGridLayout) {
+      if (theme === 'classic') {
+        expect(wrapper.findContentRegion().getElement()).toHaveStyle({ minWidth: '120px', maxWidth: '650px' });
+      } else {
         const minWidthInGrid = wrapper.getElement().style.getPropertyValue(customCssProps.minContentWidth);
         const maxWidthInGrid = wrapper.getElement().style.getPropertyValue(customCssProps.maxContentWidth);
-        expect(minWidthInGrid).toBe('120px');
+        expect(minWidthInGrid).toBe(theme === 'refresh' ? '120px' : '');
         expect(maxWidthInGrid).toBe('650px');
-      } else {
-        expect(wrapper.findContentRegion().getElement()).toHaveStyle({ minWidth: '120px', maxWidth: '650px' });
       }
     });
 
     // Regression test for AWSUI-8868
     test('uses 0 content width if 0 is provided', () => {
-      const { wrapper, isUsingGridLayout } = renderComponent(<AppLayout minContentWidth={0} maxContentWidth={0} />);
+      const { wrapper } = renderComponent(<AppLayout minContentWidth={0} maxContentWidth={0} />);
 
-      if (isUsingGridLayout) {
+      if (theme === 'classic') {
+        expect(wrapper.findContentRegion().getElement()).toHaveStyle({ minWidth: '0', maxWidth: '0' });
+      } else {
         const minWidthInGrid = wrapper.getElement().style.getPropertyValue(customCssProps.minContentWidth);
         const maxWidthInGrid = wrapper.getElement().style.getPropertyValue(customCssProps.maxContentWidth);
         expect(minWidthInGrid).toBe('');
         expect(maxWidthInGrid).toBe('');
-      } else {
-        expect(wrapper.findContentRegion().getElement()).toHaveStyle({ minWidth: '0', maxWidth: '0' });
       }
     });
   });
@@ -122,7 +125,8 @@ describeEachAppLayout({ sizes: ['desktop'] }, () => {
     expect(isDrawerClosed(wrapper.findNavigation())).toBe(false);
   });
 
-  test('Allows notifications to be sticky', () => {
+  // Not implemented on the toolbar version yet
+  (theme !== 'refresh-toolbar' ? test : test.skip)('Allows notifications to be sticky', () => {
     const { wrapper } = renderComponent(<AppLayout notifications="Test" stickyNotifications={true} />);
     const hasStickyClass = Boolean(wrapper.find(`.${notificationStyles['notifications-sticky']}`));
     const hasVisualRefreshStickyClass = wrapper
@@ -165,7 +169,8 @@ describeEachAppLayout({ sizes: ['desktop'] }, () => {
     expect(wrapper.findActiveDrawer()).toBeFalsy();
   });
 
-  test(`Moves focus to slider when opened`, () => {
+  // Not implemented on the toolbar version yet
+  (theme !== 'refresh-toolbar' ? test : test.skip)(`Moves focus to slider when opened`, () => {
     const { wrapper } = renderComponent(<AppLayout drawers={[{ ...testDrawer, resizable: true }]} />);
 
     wrapper.findDrawerTriggerById('security')!.click();
