@@ -29,20 +29,25 @@ export default function InternalCopyToClipboard({
 
   const baseProps = getBaseProps(restProps);
   const onClick = () => {
-    if (navigator.clipboard) {
-      setStatus('pending');
-      setStatusText('');
-      navigator.clipboard
-        .writeText(textToCopy)
-        .then(() => {
-          setStatus('success');
-          setStatusText(copySuccessText);
-        })
-        .catch(() => {
-          setStatus('error');
-          setStatusText(copyErrorText);
-        });
+    if (!navigator.clipboard) {
+      // The clipboard API is not available in insecure contexts.
+      setStatus('error');
+      setStatusText(copyErrorText);
+      return;
     }
+
+    setStatus('pending');
+    setStatusText('');
+    navigator.clipboard
+      .writeText(textToCopy)
+      .then(() => {
+        setStatus('success');
+        setStatusText(copySuccessText);
+      })
+      .catch(() => {
+        setStatus('error');
+        setStatusText(copyErrorText);
+      });
   };
 
   const triggerVariant = (
