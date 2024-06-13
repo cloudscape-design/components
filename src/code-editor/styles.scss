@@ -198,6 +198,16 @@
     }
     /* stylelint-enable plugin/no-unsupported-browser-features */
   }
+
+  @supports not (contain: inline-size) {
+    > .count {
+      display: none;
+    }
+
+    > .text {
+      display: inline;
+    }
+  }
 }
 
 $default-height: 480px;
