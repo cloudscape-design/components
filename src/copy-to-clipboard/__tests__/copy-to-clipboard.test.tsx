@@ -84,4 +84,19 @@ describe('CopyToClipboard', () => {
     wrapper.findCopyButton().click();
     await waitFor(() => expect(wrapper.findStatusText()!.getElement().textContent).toBe('Failed to copy to clipboard'));
   });
+
+  describe('when the clipboard API is not available', () => {
+    beforeEach(() => Object.assign(global.navigator, { clipboard: undefined }));
+    afterEach(() => Object.assign(global.navigator, { clipboard: originalNavigatorClipboard }));
+
+    test('fails to copy to clipboard and shows error message', async () => {
+      const { container } = render(<CopyToClipboard {...defaultProps} textToCopy="Text to copy with error" />);
+      const wrapper = createWrapper(container).findCopyToClipboard()!;
+
+      wrapper.findCopyButton().click();
+      await waitFor(() =>
+        expect(wrapper.findStatusText()!.getElement().textContent).toBe('Failed to copy to clipboard')
+      );
+    });
+  });
 });
