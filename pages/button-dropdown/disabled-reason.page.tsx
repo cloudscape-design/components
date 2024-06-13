@@ -114,8 +114,13 @@ export default function DescriptionPage() {
         Right Align
       </label>
       <ScreenshotArea disableAnimations={true}>
-        <div style={{ float: isRightAligned ? 'right' : undefined }}>
+        <div style={{ float: isRightAligned ? 'right' : undefined, marginBottom: '100px' }}>
           <ButtonDropdown items={actionsItems} expandableGroups={true} data-testid="buttonDropdown">
+            Actions
+          </ButtonDropdown>
+        </div>
+        <div style={{ float: isRightAligned ? 'right' : undefined }}>
+          <ButtonDropdown items={actionsItems} expandableGroups={true} disabled={true} disabledReason="disabled reason">
             Actions
           </ButtonDropdown>
         </div>

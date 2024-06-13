@@ -17,6 +17,7 @@ const ButtonDropdown = React.forwardRef(
       loading = false,
       loadingText,
       disabled = false,
+      disabledReason,
       expandableGroups = false,
       expandToViewport = false,
       ariaLabel,
@@ -42,6 +43,7 @@ const ButtonDropdown = React.forwardRef(
         loading={loading}
         loadingText={loadingText}
         disabled={disabled}
+        disabledReason={disabledReason}
         expandableGroups={expandableGroups}
         expandToViewport={expandToViewport}
         ariaLabel={ariaLabel}

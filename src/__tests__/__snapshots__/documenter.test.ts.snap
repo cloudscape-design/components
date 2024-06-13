@@ -3511,6 +3511,13 @@ Use this to provide an accessible name for buttons that don't have visible text.
       "type": "boolean",
     },
     Object {
+      "description": "Provides a reason why the button dropdown is disabled (only when \`disabled\` is \`true\`).
+If provided, the disabled button becomes focusable.",
+      "name": "disabledReason",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "defaultValue": "false",
       "description": "By default, the dropdown height is constrained to fit inside the height of its next scrollable container element.
 Enabling this property will allow the dropdown to extend beyond that container by using fixed positioning and
@@ -3620,6 +3627,11 @@ The main action also supports the following properties of the [button](/componen
             "name": "disabled",
             "optional": true,
             "type": "false | true",
+          },
+          Object {
+            "name": "disabledReason",
+            "optional": true,
+            "type": "string",
           },
           Object {
             "name": "download",

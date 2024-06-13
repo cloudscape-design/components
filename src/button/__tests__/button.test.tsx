@@ -154,7 +154,7 @@ describe('Button Component', () => {
       expect(wrapper.findDisabledReason()!.getElement()).toHaveTextContent('reason');
     });
 
-    test('closes tooltip on mouseleave', () => {
+    test('close tooltip on mouseleave', () => {
       const wrapper = renderButton({ disabled: true, disabledReason: 'reason' });
 
       fireEvent.mouseEnter(wrapper.getElement());
