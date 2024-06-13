@@ -35,6 +35,19 @@ const permutations = createPermutations<TabsProps>([
               cow, prosciutto hamburger bresaola pork.
             </p>
           ),
+          action: (
+            <ButtonDropdown
+              variant="icon"
+              ariaLabel="Query actions for first tab"
+              items={[
+                { id: 'save', text: 'Save', disabled: true },
+                { id: 'saveAs', text: 'Save as' },
+                { id: 'rename', text: 'Rename', disabled: true },
+                { id: 'delete', text: 'Delete', disabled: true },
+              ]}
+              expandToViewport={true}
+            />
+          ),
         },
         { label: 'Second tab', id: 'second', disabled: true },
         {
@@ -44,7 +57,7 @@ const permutations = createPermutations<TabsProps>([
           action: (
             <ButtonDropdown
               variant="icon"
-              ariaLabel="Query actions"
+              ariaLabel="Query actions for third tab"
               items={[
                 { id: 'save', text: 'Save', disabled: true },
                 { id: 'saveAs', text: 'Save as' },

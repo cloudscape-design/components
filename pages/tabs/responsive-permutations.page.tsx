@@ -41,7 +41,7 @@ const permutations = createPermutations<TabsProps>([
           action: (
             <ButtonDropdown
               variant="icon"
-              ariaLabel="Query actions"
+              ariaLabel="Query actions for seventh tab"
               items={[
                 { id: 'save', text: 'Save', disabled: true },
                 { id: 'saveAs', text: 'Save as' },
@@ -59,6 +59,19 @@ const permutations = createPermutations<TabsProps>([
           label: 'ThistabhasalongheaderwithseveralwordswithoutspacesinitsothatIcantesthowthetextwrapswithhref',
           id: 'ninth',
           href: '/ninth',
+          action: (
+            <ButtonDropdown
+              variant="icon"
+              ariaLabel="Query actions for ninth tab"
+              items={[
+                { id: 'save', text: 'Save', disabled: true },
+                { id: 'saveAs', text: 'Save as' },
+                { id: 'rename', text: 'Rename', disabled: true },
+                { id: 'delete', text: 'Delete', disabled: true },
+              ]}
+              expandToViewport={true}
+            />
+          ),
         },
         {
           label: 'ThistabhasalongheaderwithseveralwordswithoutspacesinitsothatIcantesthowthetextwrapswithouthref',
