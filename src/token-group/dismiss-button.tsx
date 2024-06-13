@@ -22,7 +22,7 @@ function DismissButton(
       ref={ref}
       type="button"
       className={styles['dismiss-button']}
-      aria-disabled={disabled ? true : undefined}
+      aria-disabled={disabled || readOnly ? true : undefined}
       onClick={() => {
         if (disabled || readOnly || !onDismiss) {
           return;
