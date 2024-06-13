@@ -103,8 +103,7 @@ const Trigger = React.forwardRef(
     }
 
     const mergedRef = useMergeRefs(triggerProps.ref, ref);
-
-    return (
+    const triggerButton = (
       <ButtonTrigger
         {...triggerProps}
         id={id}
@@ -112,7 +111,6 @@ const Trigger = React.forwardRef(
         pressed={isOpen}
         disabled={disabled}
         invalid={invalid}
-        inlineLabelText={inlineLabelText}
         warning={warning && !invalid}
         inFilteringToken={inFilteringToken}
         inlineTokens={triggerVariant === 'tokens'}
@@ -121,6 +119,18 @@ const Trigger = React.forwardRef(
       >
         {triggerContent}
       </ButtonTrigger>
+    );
+    return (
+      <>
+        {inlineLabelText ? (
+          <div className={styles['inline-label-wrapper']}>
+            <label className={styles['inline-label']}>{inlineLabelText}</label>
+            <div className={styles['inline-label-trigger-wrapper']}>{triggerButton}</div>
+          </div>
+        ) : (
+          <>{triggerButton}</>
+        )}
+      </>
     );
   }
 );

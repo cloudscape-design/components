@@ -17,7 +17,6 @@ export interface ButtonTriggerProps extends BaseComponentProps {
   warning?: boolean;
   inFilteringToken?: boolean;
   inlineTokens?: boolean;
-  inlineLabelText?: string;
   ariaHasPopup?: 'true' | 'listbox' | 'dialog';
   ariaControls?: string;
   ariaLabel?: string;
@@ -42,7 +41,6 @@ const ButtonTrigger = (
     invalid = false,
     warning = false,
     inlineTokens,
-    inlineLabelText,
     inFilteringToken,
     ariaHasPopup,
     ariaLabel,
@@ -74,8 +72,7 @@ const ButtonTrigger = (
       !hideCaret && styles['has-caret'],
       readOnly && styles['read-only'],
       inFilteringToken && styles['in-filtering-token'],
-      inlineTokens && styles['inline-tokens'],
-      inlineLabelText && styles['has-inlineLabelText']
+      inlineTokens && styles['inline-tokens']
     ),
     disabled: disabled || readOnly,
     'aria-expanded': pressed,
@@ -97,7 +94,7 @@ const ButtonTrigger = (
     attributes['aria-invalid'] = invalid;
   }
 
-  const triggerButton = (
+  return (
     <button ref={ref} {...attributes}>
       {children}
       {!hideCaret && (
@@ -106,19 +103,6 @@ const ButtonTrigger = (
         </span>
       )}
     </button>
-  );
-
-  return (
-    <>
-      {inlineLabelText ? (
-        <div className={styles['inline-label-wrapper']}>
-          <label className={styles['inline-label']}>{inlineLabelText}</label>
-          {triggerButton}
-        </div>
-      ) : (
-        <>{triggerButton}</>
-      )}
-    </>
   );
 };
 

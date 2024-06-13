@@ -121,3 +121,33 @@ $checkbox-size: awsui.$size-control;
     color: awsui.$color-text-disabled;
   }
 }
+
+.inline-label-trigger-wrapper {
+  margin-block-start: -7px;
+}
+
+.inline-label-wrapper {
+  margin-block-start: -8px;
+}
+
+.inline-label {
+  box-sizing: border-box;
+  display: inline-block;
+  color: awsui.$color-text-form-label;
+  font-weight: awsui.$font-display-label-weight;
+  font-size: 12px;
+  line-height: 14px;
+  position: relative;
+  inset-inline-start: 10px;
+  margin-block-start: awsui.$space-scaled-xs;
+  padding-inline: awsui.$space-scaled-xxs;
+  max-inline-size: calc(100% - 22px);
+  // Stepped gradient background for inline label overlap between input and background.
+  background-image: linear-gradient(
+    to bottom,
+    transparent calc(100% - (styles.$control-border-width + 3px)),
+    awsui.$color-background-input-default 1px
+  );
+  background-position: bottom;
+  z-index: 1;
+}

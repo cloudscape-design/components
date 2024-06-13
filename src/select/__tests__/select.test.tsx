@@ -8,7 +8,6 @@ import Select, { SelectProps } from '../../../lib/components/select';
 import selectPartsStyles from '../../../lib/components/select/parts/styles.css.js';
 import '../../__a11y__/to-validate-a11y';
 import statusIconStyles from '../../../lib/components/status-indicator/styles.selectors.js';
-import buttonTriggerStyles from '../../../lib/components/internal/components/button-trigger/styles.selectors.js';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => {
@@ -457,7 +456,7 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
     test('should render', () => {
       const testLabel = 'Test label';
       const { wrapper } = renderSelect({ inlineLabelText: testLabel });
-      const labelElement = wrapper.findByClassName(buttonTriggerStyles['inline-label']);
+      const labelElement = wrapper.findByClassName(selectPartsStyles['inline-label']);
       expect(labelElement).not.toBeNull();
       expect(labelElement?.getElement()).toHaveTextContent(testLabel);
       expect(labelElement?.getElement().tagName).toBe('LABEL');
