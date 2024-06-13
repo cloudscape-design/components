@@ -46,6 +46,7 @@ export default React.forwardRef(function RadioButton(
           name={name}
           value={value}
           checked={checked}
+          aria-disabled={readOnly ? 'true' : undefined}
           // empty handler to suppress React controllability warning
           onChange={() => {}}
         />
