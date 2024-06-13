@@ -16,7 +16,8 @@
     transform: translate(-50%, -50%);
     background: awsui.$color-background-avatar-gen-ai;
     @include styles.with-motion {
-      animation: gradientMove 3.6s infinite cubic-bezier(0.7, 0, 0.3, 1);
+      animation: gradientMove awsui.$motion-duration-avatar-gen-ai-gradient infinite
+        awsui.$motion-easing-avatar-gen-ai-gradient;
     }
   }
 
@@ -43,7 +44,7 @@
 
 .dot {
   @include styles.with-motion {
-    animation: dotsDancing 1.2s infinite ease-in-out;
+    animation: dotsDancing awsui.$motion-duration-avatar-loading-dots infinite ease-in-out;
   }
 }
 
