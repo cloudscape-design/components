@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { act, render } from '@testing-library/react';
+import { act, render, fireEvent } from '@testing-library/react';
 import Button, { ButtonProps } from '../../../lib/components/button';
 import InternalButton from '../../../lib/components/button/internal';
 import createWrapper, { ButtonWrapper } from '../../../lib/components/test-utils/dom';
@@ -141,6 +141,28 @@ describe('Button Component', () => {
       expect(wrapper.findDisabledReason()!.getElement()).toHaveTextContent('reason');
 
       wrapper.getElement()!.blur();
+
+      expect(wrapper.findDisabledReason()).toBeNull();
+    });
+
+    test('open tooltip on mouseenter', () => {
+      const wrapper = renderButton({ disabled: true, disabledReason: 'reason' });
+
+      fireEvent.mouseEnter(wrapper.getElement());
+
+      expect(wrapper.findDisabledReason()).not.toBeNull();
+      expect(wrapper.findDisabledReason()!.getElement()).toHaveTextContent('reason');
+    });
+
+    test('closes tooltip on mouseleave', () => {
+      const wrapper = renderButton({ disabled: true, disabledReason: 'reason' });
+
+      fireEvent.mouseEnter(wrapper.getElement());
+
+      expect(wrapper.findDisabledReason()).not.toBeNull();
+      expect(wrapper.findDisabledReason()!.getElement()).toHaveTextContent('reason');
+
+      fireEvent.mouseLeave(wrapper.getElement());
 
       expect(wrapper.findDisabledReason()).toBeNull();
     });
