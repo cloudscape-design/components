@@ -27,13 +27,13 @@ export interface AvatarProps extends BaseComponentProps {
   initials?: string;
 
   /**
-   * When set to true a loading indicator is shown in avatar.
+   * When set to true, a loading indicator is shown in avatar.
    */
   loading?: boolean;
 
   /**
    * Text to describe the avatar for assistive technology.
-   * When more than one avatar is used, provide a unique label to each.
+   * When more than one avatar is used, provide a unique label for each.
    * For example, "User avatar" and "AI assistant avatar". Or "Your avatar" and "User avatar for John Doe".
    *
    * If "tooltipText" or "initials" are used make sure to include them in the "ariaLabel".
@@ -49,7 +49,7 @@ export interface AvatarProps extends BaseComponentProps {
   iconName?: IconProps.Name;
 
   /**
-   * Specifies the URL of a custom icon. Use this property if the icon you want isn't available, and your custom icon cannot be an SVG.
+   * Specifies the URL of a custom icon. Use this property if the icon you want isn't available, and your custom icon can't be an SVG.
    * For SVG icons, use the `iconSvg` slot instead.
    *
    * If you set both `iconUrl` and `iconSvg`, `iconSvg` will take precedence.
