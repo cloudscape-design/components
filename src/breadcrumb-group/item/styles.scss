@@ -54,3 +54,7 @@
   @include styles.awsui-util-hide;
   visibility: hidden;
 }
+
+.text-hidden {
+  display: none;
+}

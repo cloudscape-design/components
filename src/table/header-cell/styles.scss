@@ -23,6 +23,21 @@
   }
 }
 
+@mixin header-cell-focus-outline-first($gutter) {
+  @include when-focus-visible-or-fake {
+    // Give extra space on the left (inline start) to compensate for missing header cell padding.
+    @include styles.focus-highlight(
+      (
+        'vertical': calc(-1 * #{$gutter}),
+        'horizontal': (
+          'left': calc(-1 * #{$gutter} + #{awsui.$space-scaled-xxs}),
+          'right': calc(-1 * #{$gutter}),
+        ),
+      )
+    );
+  }
+}
+
 @mixin cell-offset($padding) {
   padding-inline-start: $padding;
 
@@ -176,6 +191,14 @@ settings icon in the pagination slot.
 }
 
 .header-cell.is-visual-refresh {
+  &:first-child {
+    @include header-cell-focus-outline-first(awsui.$space-scaled-xxs);
+  }
+  &:first-child > .header-cell-content {
+    @include cell-offset(0px);
+    @include header-cell-focus-outline-first(awsui.$space-table-header-focus-outline-gutter);
+  }
+
   &:first-child:not(.has-striped-rows) {
     @include cell-offset(awsui.$space-xxxs);
     &.sticky-cell-pad-inline-start {
@@ -190,10 +213,6 @@ settings icon in the pagination slot.
   */
   &:first-child.has-striped-rows {
     @include cell-offset(awsui.$space-xxs);
-  }
-
-  &:first-child > .header-cell-content {
-    @include cell-offset(0px);
   }
 
   &:last-child.header-cell-sortable {

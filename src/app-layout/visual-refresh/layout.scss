@@ -38,7 +38,6 @@ explicitly set in script.
   #{custom-props.$maxContentWidth}: 0px;
   #{custom-props.$minContentWidth}: 280px;
   #{custom-props.$mobileBarHeight}: calc(2 * #{awsui.$space-m} + #{awsui.$space-scaled-xs});
-  #{custom-props.$notificationsGap}: 0px;
   #{custom-props.$notificationsHeight}: 0px;
   #{custom-props.$offsetTop}: var(#{custom-props.$headerHeight});
   #{custom-props.$overlapHeight}: #{awsui.$space-dark-header-overlap-distance};
@@ -49,7 +48,6 @@ explicitly set in script.
   display: grid;
   grid-template-areas:
     '. . mobileToolbar . .'
-    '. . notificationsGap . .'
     '. . notifications . .'
     '. . breadcrumbsGap . .'
     '. . breadcrumbs . .'
@@ -66,7 +64,6 @@ explicitly set in script.
     min-content;
   grid-template-rows:
     auto // mobileToolbar template area
-    var(#{custom-props.$notificationsGap})
     auto // notifications template area
     var(#{custom-props.$breadcrumbsGap})
     auto // breadcrumbs template area

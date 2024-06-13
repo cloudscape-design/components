@@ -62,25 +62,25 @@ test(
   'sets role=region and aria-label on scrollable wrapper when overflowing',
   useBrowser(async browser => {
     const tableWrapper = createWrapper().findTable();
-    const tableLabel = 'Full-page table';
+    const tableHeading = 'Full-page table';
     await browser.url('#/light/table/full-page-variant?visualRefresh=true');
     const page = new BasePageObject(browser);
 
     // Find the scrollable wrapper element
     const scrollableWrapperSelector = tableWrapper.findByClassName(styles.wrapper).toSelector();
 
-    let role, ariaLabel;
     // Get the 'role' and 'aria-label' attributes of the scrollable wrapper
-    role = await page.getElementAttribute(scrollableWrapperSelector, 'role');
-    ariaLabel = await page.getElementAttribute(scrollableWrapperSelector, 'aria-label');
+    let role = await page.getElementAttribute(scrollableWrapperSelector, 'role');
+    let ariaLabelledby = await page.getElementAttribute(scrollableWrapperSelector, 'aria-labelledby');
 
     // Verify that the 'role' and 'aria-label' attributes are set correctly
-    await expect(role).toBeNull();
-    await expect(ariaLabel).toBeNull();
+    expect(role).toBeNull();
+    expect(ariaLabelledby).toBeNull();
     await page.setWindowSize({ width: 400, height: 800 });
     role = await page.getElementAttribute(scrollableWrapperSelector, 'role');
-    ariaLabel = await page.getElementAttribute(scrollableWrapperSelector, 'aria-label');
-    await expect(role).toEqual('region');
-    await expect(ariaLabel).toEqual(tableLabel);
+    ariaLabelledby = await page.getElementAttribute(scrollableWrapperSelector, 'aria-labelledby');
+    expect(role).toEqual('region');
+    expect(ariaLabelledby).not.toBeFalsy();
+    await expect(page.getElementsText(`#${ariaLabelledby}`)).resolves.toEqual([tableHeading]);
   })
 );

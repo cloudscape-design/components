@@ -51,6 +51,19 @@
     $gutter-vertical: map.get($gutter, 'vertical');
     $gutter-horizontal: map.get($gutter, 'horizontal');
   }
+  $gutter-top: $gutter-vertical;
+  $gutter-bottom: $gutter-vertical;
+  @if meta.type-of($gutter-vertical) == 'map' {
+    $gutter-top: map.get($gutter-vertical, 'top');
+    $gutter-bottom: map.get($gutter-vertical, 'bottom');
+  }
+  $gutter-left: $gutter-horizontal;
+  $gutter-right: $gutter-horizontal;
+  @if meta.type-of($gutter-horizontal) == 'map' {
+    $gutter-left: map.get($gutter-horizontal, 'left');
+    $gutter-right: map.get($gutter-horizontal, 'right');
+  }
+
   position: relative;
   // Add a special outline for Window High Contrast Mode.
   // This mode will remove all box shadows from the side and can only use outline
@@ -59,7 +72,7 @@
   // are transparent.
   & {
     outline: 2px dotted transparent;
-    outline-offset: calc(#{$gutter-horizontal} - 1px);
+    outline-offset: calc(#{$gutter-left} - 1px);
   }
 
   // Regular rounded outline for all other browsers and modes
@@ -67,10 +80,10 @@
     content: ' ';
     display: block;
     position: absolute;
-    inset-inline-start: calc(-1 * #{$gutter-horizontal});
-    inset-block-start: calc(-1 * #{$gutter-vertical});
-    inline-size: calc(100% + 2 * #{$gutter-horizontal});
-    block-size: calc(100% + 2 * #{$gutter-vertical});
+    inset-inline-start: calc(-1 * #{$gutter-left});
+    inset-block-start: calc(-1 * #{$gutter-top});
+    inline-size: calc(100% + #{$gutter-left} + #{$gutter-right});
+    block-size: calc(100% + #{$gutter-top} + #{$gutter-bottom});
     border-start-start-radius: $border-radius;
     border-start-end-radius: $border-radius;
     border-end-start-radius: $border-radius;

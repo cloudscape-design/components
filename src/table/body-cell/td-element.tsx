@@ -122,17 +122,19 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
         {...nativeAttributes}
         tabIndex={cellTabIndex === -1 ? undefined : cellTabIndex}
       >
-        {level !== undefined && isExpandable && (
-          <div className={styles['expandable-toggle-wrapper']}>
-            <ExpandToggleButton
-              isExpanded={isExpanded}
-              onExpandableItemToggle={onExpandableItemToggle}
-              expandButtonLabel={expandButtonLabel}
-              collapseButtonLabel={collapseButtonLabel}
-            />
-          </div>
-        )}
-        <span className={styles['body-cell-content']}>{children}</span>
+        <div className={styles['body-cell-content']}>
+          {level !== undefined && isExpandable && (
+            <div className={styles['expandable-toggle-wrapper']}>
+              <ExpandToggleButton
+                isExpanded={isExpanded}
+                onExpandableItemToggle={onExpandableItemToggle}
+                expandButtonLabel={expandButtonLabel}
+                collapseButtonLabel={collapseButtonLabel}
+              />
+            </div>
+          )}
+          {children}
+        </div>
       </Element>
     );
   }
