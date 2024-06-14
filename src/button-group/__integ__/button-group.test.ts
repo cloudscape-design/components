@@ -12,9 +12,9 @@ test(
     const page = new BasePageObject(browser);
     await browser.url('#/light/button-group/test');
 
-    await page.click(buttonGroup.findInlineItemById('like').toSelector());
-    await page.waitForVisible(buttonGroup.findActionPopover().toSelector());
-    await expect(page.getText(buttonGroup.findActionPopover().toSelector())).resolves.toBe('Liked');
+    await page.click(buttonGroup.findButtonById('like').toSelector());
+    await page.waitForVisible(buttonGroup.findTooltip().toSelector());
+    await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Liked');
     await expect(page.getText('#last-clicked')).resolves.toBe('like');
   })
 );
@@ -25,8 +25,8 @@ test(
     const page = new BasePageObject(browser);
     await browser.url('#/light/button-group/test');
 
-    await page.click(buttonGroup.findShowMoreButton().toSelector());
-    await page.click(buttonGroup.findShowMoreButton().findItemById('edit').toSelector());
+    await page.click(buttonGroup.findMenuById('more-actions').toSelector());
+    await page.click(buttonGroup.findMenuById('more-actions').findItemById('edit').toSelector());
     await expect(page.getText('#last-clicked')).resolves.toBe('edit');
   })
 );

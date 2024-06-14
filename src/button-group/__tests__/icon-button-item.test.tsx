@@ -3,10 +3,11 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { ButtonGroupProps } from '../../../lib/components/button-group/interfaces';
-import ItemElement from '../../../lib/components/button-group/item-element';
+import IconButtonItem from '../../../lib/components/button-group/icon-button-item';
 
-describe('ItemElement', () => {
-  const item: ButtonGroupProps.Item = {
+describe('IconButtonItem', () => {
+  const item: ButtonGroupProps.IconButton = {
+    type: 'icon-button',
     id: 'test-button',
     text: 'Test Button',
     iconName: 'add-plus',
@@ -17,14 +18,14 @@ describe('ItemElement', () => {
   };
 
   test('renders the button', () => {
-    render(<ItemElement item={item} />);
+    render(<IconButtonItem item={item} />);
     const button = screen.getByTestId('test-button');
 
     expect(button).toBeInTheDocument();
   });
 
   test('shows the tooltip on hover', () => {
-    render(<ItemElement item={item} />);
+    render(<IconButtonItem item={item} />);
 
     const button = screen.getByTestId('test-button');
     fireEvent.pointerEnter(button);
@@ -34,7 +35,7 @@ describe('ItemElement', () => {
 
   test('shows the action popover text on click', () => {
     const onItemClick = jest.fn();
-    render(<ItemElement item={item} onItemClick={onItemClick} />);
+    render(<IconButtonItem item={item} onItemClick={onItemClick} />);
 
     const button = screen.getByTestId('test-button');
     fireEvent.click(button);
@@ -45,7 +46,7 @@ describe('ItemElement', () => {
 
   test('shows the action popover text on click after pointer leaves', () => {
     const onItemClick = jest.fn();
-    render(<ItemElement item={item} onItemClick={onItemClick} />);
+    render(<IconButtonItem item={item} onItemClick={onItemClick} />);
 
     const button = screen.getByTestId('test-button');
     fireEvent.click(button);
@@ -57,7 +58,7 @@ describe('ItemElement', () => {
 
   test('handles click event correctly', () => {
     const onItemClick = jest.fn();
-    render(<ItemElement item={item} onItemClick={onItemClick} />);
+    render(<IconButtonItem item={item} onItemClick={onItemClick} />);
 
     const button = screen.getByTestId('test-button');
     fireEvent.click(button);
@@ -66,7 +67,7 @@ describe('ItemElement', () => {
   });
 
   test('closes the popover when document pointerdown called', () => {
-    render(<ItemElement item={item} />);
+    render(<IconButtonItem item={item} />);
 
     const button = screen.getByTestId('test-button');
     fireEvent.click(button);

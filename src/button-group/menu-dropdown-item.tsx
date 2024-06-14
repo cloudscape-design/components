@@ -4,46 +4,29 @@ import React, { useRef, useState } from 'react';
 import { ButtonGroupProps } from './interfaces';
 import { ButtonDropdownProps } from '../button-dropdown/interfaces';
 import { CancelableEventHandler, fireCancelableEvent } from '../internal/events';
-import { findItemById, getFirstLoadingItem, isItemGroup, toDropdownItems } from './utils';
 import ButtonDropdown from '../button-dropdown/internal';
 import Tooltip from './tooltip';
-import StatusIndicator from '../status-indicator/internal';
 import styles from './styles.css.js';
 
-const MoreItems = React.forwardRef(
+const MenuDropdownItem = React.forwardRef(
   (
     {
-      items,
+      item,
       onItemClick,
       dropdownExpandToViewport,
-      ariaLabel,
     }: {
-      items: ButtonGroupProps.ItemOrGroup[];
+      item: ButtonGroupProps.MenuDropdown;
       onItemClick?: CancelableEventHandler<ButtonGroupProps.ItemClickDetails>;
       dropdownExpandToViewport?: boolean;
-      ariaLabel?: string;
     },
     ref: React.Ref<ButtonDropdownProps.Ref>
   ) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const [popoverOpen, setPopoverOpen] = useState(false);
-    const [popoverText, setPopoverText] = useState('');
-    const dropdownItems = toDropdownItems(items);
-    const loadingItem = getFirstLoadingItem(items);
+    const [isActionPopover, setIsActionPopover] = useState(false);
 
     const onClickHandler = (event: CustomEvent<ButtonDropdownProps.ItemClickDetails>) => {
-      const itemId = event.detail.id;
-      setPopoverText('');
-
-      const item = findItemById(items, itemId);
-      if (item && item.actionPopoverText) {
-        setPopoverText(item.actionPopoverText);
-        setPopoverOpen(true);
-      }
-
-      if (onItemClick) {
-        fireCancelableEvent(onItemClick, { id: itemId }, event);
-      }
+      fireCancelableEvent(onItemClick, { id: event.detail.id }, event);
     };
 
     const onPopoverClose = () => {
@@ -54,32 +37,48 @@ const MoreItems = React.forwardRef(
       setPopoverOpen(false);
     };
 
-    const trackKey = items.map(item => (!isItemGroup(item) ? item.id : '')).join('-');
+    const onPointerEnter = () => {
+      if (!popoverOpen) {
+        setIsActionPopover(false);
+        setPopoverOpen(true);
+      }
+    };
+
+    const onPointerLeave = () => {
+      if (!isActionPopover) {
+        setPopoverOpen(false);
+      }
+    };
 
     return (
-      <div ref={containerRef} onPointerDown={onPointerDown}>
+      <div
+        ref={containerRef}
+        onPointerDown={onPointerDown}
+        onPointerEnter={onPointerEnter}
+        onPointerLeave={onPointerLeave}
+      >
         <ButtonDropdown
+          ref={ref}
           variant="icon"
-          loading={loadingItem?.loading}
-          loadingText={loadingItem?.loadingText}
-          mainAction={{ iconName: 'ellipsis', text: 'More' }}
-          items={dropdownItems}
+          loading={item.loading}
+          loadingText={item?.loadingText}
+          disabled={item?.disabled}
+          items={item.items}
           onItemClick={(event: CustomEvent<ButtonDropdownProps.ItemClickDetails>) => onClickHandler(event)}
           expandToViewport={dropdownExpandToViewport}
-          ref={ref}
-          ariaLabel={ariaLabel}
-          className={styles['more-button']}
+          data-testid={item.id}
+          className={styles.item}
         />
         <Tooltip
           trackRef={containerRef}
-          trackKey={trackKey}
-          open={popoverOpen && popoverText.length > 0}
+          trackKey={item.id}
+          open={popoverOpen}
           close={onPopoverClose}
-          content={<StatusIndicator type="success">{popoverText}</StatusIndicator>}
+          content={item.text}
         />
       </div>
     );
   }
 );
 
-export default MoreItems;
+export default MenuDropdownItem;
