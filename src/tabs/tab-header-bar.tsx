@@ -71,6 +71,7 @@ export function TabHeaderBar({
   const [horizontalOverflow, setHorizontalOverflow] = useState(false);
   const [inlineStartOverflow, setInlineStartOverflow] = useState(false);
   const [inlineEndOverflow, setInlineEndOverflow] = useState(false);
+  const [previousActiveTabId, setPreviousActiveTabId] = useState<string | undefined>(activeTabId);
   const hasActionOrDismissible = tabs.some(tab => tab.action || tab.dismissible);
   const tabsWithActionsAriaRoleDescription = 'Tabs with Actions';
   const tabActionAttributes = hasActionOrDismissible
@@ -170,8 +171,8 @@ export function TabHeaderBar({
 
   function onUnregisterFocusable(focusableElement: HTMLElement) {
     const isUnregisteringFocusedNode = nodeBelongs(focusableElement, document.activeElement);
-    const isActionOrDismissible = !focusableElement.classList.contains(styles['tabs-tab-link']);
-    if (isUnregisteringFocusedNode && !isActionOrDismissible) {
+    const isFocusableActionOrDismissible = !focusableElement.classList.contains(styles['tabs-tab-link']);
+    if (isUnregisteringFocusedNode && !isFocusableActionOrDismissible) {
       // Wait for unmounted node to get removed from the DOM.
       setTimeout(() => navigationAPI.current?.getFocusTarget()?.focus(), 0);
     }
@@ -190,10 +191,14 @@ export function TabHeaderBar({
   function onKeyDown(event: React.KeyboardEvent) {
     const focusTarget = document.activeElement;
     const specialKeys = [KeyCode.right, KeyCode.left, KeyCode.end, KeyCode.home, KeyCode.pageUp, KeyCode.pageDown];
+    const isActionOpen = document.querySelector(`.${styles['tabs-tab-action']} [aria-expanded="true"]`);
     if (hasModifierKeys(event) || specialKeys.indexOf(event.keyCode) === -1) {
       return;
     }
     if (!containerObjectRef.current || !focusTarget) {
+      return;
+    }
+    if (isActionOpen) {
       return;
     }
     event.preventDefault();
@@ -216,6 +221,7 @@ export function TabHeaderBar({
     for (const [tabId, focusTargetTabTriggerElement] of tabRefs.current.entries()) {
       const focusTargetTabLabelElement = focusTargetTabTriggerElement?.querySelector(`.${styles['tabs-tab-link']}`);
       if (tabId !== activeTabId && focusTargetTabLabelElement === element) {
+        setPreviousActiveTabId(activeTabId);
         onChange({ activeTabId: tabId, activeTabHref: tabsById.get(tabId)?.href });
         break;
       }
@@ -319,6 +325,7 @@ export function TabHeaderBar({
         return;
       }
 
+      setPreviousActiveTabId(tab.id);
       onChange({ activeTabId: tab.id, activeTabHref: tab.href });
     };
 
@@ -334,6 +341,11 @@ export function TabHeaderBar({
       [styles.refresh]: isVisualRefresh,
       [styles['tabs-tab-active']]: activeTabId === tab.id && !tab.disabled,
       [styles['tabs-tab-disabled']]: tab.disabled,
+    });
+
+    const tabActionClasses = clsx({
+      [styles['tabs-tab-action']]: true,
+      [styles['tabs-tab-active']]: activeTabId === tab.id && !tab.disabled,
     });
 
     const commonProps: (JSX.IntrinsicElements['a'] | JSX.IntrinsicElements['button']) & { 'data-testid': string } = {
@@ -373,10 +385,7 @@ export function TabHeaderBar({
     };
 
     const handleDismiss: ButtonProps['onClick'] = event => {
-      if (!containerObjectRef.current) {
-        return;
-      }
-      if (tabs.length <= 1) {
+      if (!containerObjectRef.current || tabs.length <= 1) {
         return;
       }
       const tabElements = getFocusablesFrom(containerObjectRef.current).filter(el =>
@@ -384,7 +393,13 @@ export function TabHeaderBar({
       );
       const activeTabIndex = tabElements.findIndex(el => el.dataset.testid === tab.id);
       tabElements.splice(activeTabIndex, 1);
-      const nextActive = tabElements[Math.min(tabElements.length - 1, activeTabIndex)];
+      let nextActive: HTMLElement | undefined;
+      if (previousActiveTabId && previousActiveTabId !== tab.id) {
+        nextActive = tabElements.find(el => el.dataset.testid === previousActiveTabId);
+      }
+      if (!nextActive) {
+        nextActive = tabElements[Math.min(tabElements.length - 1, activeTabIndex)];
+      }
       if (nextActive && nextActive.dataset.testid) {
         onChange({ activeTabId: nextActive.dataset.testid });
         nextActive.focus();
@@ -393,7 +408,6 @@ export function TabHeaderBar({
     };
 
     const TabItem = hasActionOrDismissible ? 'div' : 'li';
-
     return (
       <TabItem
         ref={(element: any) => tabRefs.current.set(tab.id, element as HTMLElement)}
@@ -403,7 +417,7 @@ export function TabHeaderBar({
       >
         <div className={tabHeaderContainerClasses} {...tabHeaderContainerAriaProps}>
           <TabTrigger ref={setElement} tab={tab} elementProps={commonProps} />
-          {action && <span className={styles['tabs-tab-action']}>{action}</span>}
+          {action && <span className={tabActionClasses}>{action}</span>}
           {dismissible && (
             <span className={styles['tabs-tab-dismiss']}> {dismissButton(dismissLabel, handleDismiss)} </span>
           )}

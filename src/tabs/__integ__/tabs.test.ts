@@ -320,14 +320,29 @@ test(
 );
 
 test(
-  'verifies focus moves from dismissible button after the dismissible button is clicked',
+  '(Keyboard) verifies focus moves from dismissible tab to next tab after dismiss fires',
   setupTest(async page => {
     await page.focusTabHeader();
-    await page.click(wrapper.findTabLinkByIndex(3).toSelector());
-    await page.navigateTabList(1);
-    await page.keys(['Tab']);
+    await page.navigateTabList(4);
     await page.keys(['Enter']);
-    await expect(page.isFocused(wrapper.findTabLinkByIndex(3).toSelector())).resolves.toBe(false);
+    await expect(page.isFocused(wrapper.findTabLinkByIndex(4).toSelector())).resolves.toBe(true);
+  })
+);
+
+test(
+  '(Mouse) verifies focus moves from dismissible tab to next tab after dismiss fires',
+  setupTest(async page => {
+    await page.click(wrapper.findTabLinkByIndex(3).toSelector());
+    await page.click(wrapper.findActiveTabDismissibleButton().getElement());
+    await expect(page.isFocused(wrapper.findTabLinkByIndex(4).toSelector())).resolves.toBe(true);
+  })
+);
+
+test(
+  'Verifies focus remains on first active tab when dismiss fires',
+  setupTest(async page => {
+    await page.click(wrapper.findDismissibleButtonByTabIndex(3).toSelector());
+    await expect(page.isFocused(wrapper.findTabLinkByIndex(1).toSelector())).resolves.toBe(true);
   })
 );
 
@@ -360,9 +375,23 @@ test(
   setupTest(async page => {
     await page.focusTabHeader();
     await page.click(wrapper.findTabLinkByIndex(6).toSelector());
-    await page.navigateTabList(2);
+    await page.navigateTabList(1);
     await page.keys(['Tab']);
     await expect(page.isFocused(wrapper.findTabContent().toSelector())).resolves.toBe(true);
+  })
+);
+
+test(
+  'verifies focus is trapped when action is open',
+  setupTest(async page => {
+    await page.focusTabHeader();
+    await page.click(wrapper.findTabLinkByIndex(6).toSelector());
+    await page.navigateTabList(1);
+    await page.keys(['Enter']);
+    await expect(page.isDisplayed(wrapper.findTabLinkByIndex(6).toSelector())).resolves.toBe(true);
+    await page.navigateTabList(2);
+    await page.navigateTabList(-3);
+    await expect(page.isDisplayed(wrapper.findTabLinkByIndex(6).toSelector())).resolves.toBe(true);
   })
 );
 
