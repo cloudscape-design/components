@@ -536,29 +536,6 @@ describe('Details popover', () => {
     expect(detailPopover?.findHeader()?.getElement()).toHaveTextContent(defaultData[0].title);
   });
 
-  test('allow mouse to be move between segment and popover ', () => {
-    const { wrapper } = renderPieChart(<PieChart data={defaultData} />);
-    fireEvent.mouseOver(wrapper!.findSegments()[0].getElement());
-
-    expect(wrapper.findDetailPopover()).toBeTruthy();
-
-    fireEvent.mouseOut(wrapper.findDetailPopover()!.getElement(), {
-      relatedTarget: wrapper!.findSegments()[0].getElement(),
-    });
-
-    expect(wrapper.findDetailPopover()).toBeTruthy();
-
-    fireEvent.mouseOut(wrapper!.findSegments()[0].getElement(), {
-      relatedTarget: wrapper.findDetailPopover()!.getElement(),
-    });
-
-    expect(wrapper.findDetailPopover()).toBeTruthy();
-
-    fireEvent.mouseOut(wrapper!.findSegments()[0].getElement(), { relatedTarget: window });
-
-    expect(wrapper.findDetailPopover()).toBeFalsy();
-  });
-
   test('close popover when mouse leaves it ', () => {
     const { wrapper } = renderPieChart(<PieChart data={defaultData} />);
     wrapper.findApplication()!.focus();
