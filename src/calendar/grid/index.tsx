@@ -1,11 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React, { TdHTMLAttributes, useRef, forwardRef, useState } from 'react';
 import styles from '../styles.css.js';
 import { DatePickerProps } from '../../date-picker/interfaces';
+import { CalendarProps } from '../interfaces';
 import clsx from 'clsx';
 import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update.js';
 import ScreenreaderOnly from '../../internal/components/screenreader-only/index.js';
+import { applyDisplayName } from '../../internal/utils/apply-display-name';
+import useHiddenDescription from '../../internal/hooks/use-hidden-description';
+import Tooltip from '../../internal/components/tooltip';
+import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 
 /**
  * Calendar grid supports two mechanisms of keyboard navigation:
@@ -24,6 +29,7 @@ import ScreenreaderOnly from '../../internal/components/screenreader-only/index.
 
 export interface GridProps {
   isDateEnabled: DatePickerProps.IsDateEnabledFunction;
+  dateDisabledReason: CalendarProps.DateDisabledReasonFunction;
   focusedDate: Date | null;
   focusableDate: Date | null;
   onSelectDate: (date: Date) => void;
@@ -40,8 +46,53 @@ export interface GridProps {
   onGridKeyDownHandler: (event: React.KeyboardEvent<HTMLElement>) => void;
 }
 
+interface GridCellProps extends TdHTMLAttributes<HTMLTableCellElement> {
+  disabledReason?: string;
+}
+
+const GridCell = forwardRef((props: GridCellProps, focusedDateRef: React.Ref<HTMLTableCellElement>) => {
+  const { disabledReason, ...rest } = props;
+  const isDisabledWithReason = !!disabledReason;
+  const { targetProps, descriptionEl } = useHiddenDescription(disabledReason);
+  const ref = useRef<HTMLTableCellElement>(null);
+  const [showTooltip, setShowTooltip] = useState(false);
+
+  return (
+    <td
+      ref={useMergeRefs(focusedDateRef, ref)}
+      {...(isDisabledWithReason ? targetProps : {})}
+      {...rest}
+      onFocus={() => {
+        setShowTooltip(true);
+      }}
+      onBlur={() => {
+        setShowTooltip(false);
+      }}
+      onMouseEnter={() => {
+        setShowTooltip(true);
+      }}
+      onMouseLeave={() => {
+        setShowTooltip(false);
+      }}
+    >
+      {props.children}
+      {isDisabledWithReason && (
+        <>
+          {descriptionEl}
+          {showTooltip && (
+            <Tooltip className={styles['disabled-reason-tooltip']} trackRef={ref} value={disabledReason!} />
+          )}
+        </>
+      )}
+    </td>
+  );
+});
+
+applyDisplayName(GridCell, 'GridCell');
+
 export default function Grid({
   isDateEnabled,
+  dateDisabledReason,
   focusedDate,
   focusableDate,
   onSelectDate,
@@ -83,20 +134,22 @@ export default function Grid({
               const isFocusable = !!focusableDate && isSameDate(date, focusableDate);
               const isSelected = !!selectedDate && isSameDate(date, selectedDate);
               const isEnabled = !isDateEnabled || isDateEnabled(date);
+              const disabledReason = dateDisabledReason(date);
+              const isDisabledWithReason = !isEnabled && !!disabledReason;
               const isCurrentDate = isSameDate(date, new Date());
 
               // Can't be focused.
               let tabIndex = undefined;
-              if (isFocusable && isEnabled) {
+              if (isFocusable && (isEnabled || isDisabledWithReason)) {
                 // Next focus target.
                 tabIndex = 0;
-              } else if (isEnabled) {
+              } else if (isEnabled || isDisabledWithReason) {
                 // Can be focused programmatically.
                 tabIndex = -1;
               }
 
               return (
-                <td
+                <GridCell
                   key={`${rowIndex}:${dateIndex}`}
                   ref={tabIndex === 0 ? focusedDateRef : undefined}
                   tabIndex={tabIndex}
@@ -112,13 +165,14 @@ export default function Grid({
                     [styles['calendar-date-current']]: isCurrentDate,
                     [styles['calendar-date-dense']]: denseGrid,
                   })}
+                  disabledReason={isDisabledWithReason ? disabledReason : undefined}
                 >
                   <span className={styles['date-inner']} aria-hidden="true">
                     {renderDate(date)}
                   </span>
                   {/* Screen-reader announcement for the focused date. */}
                   <ScreenreaderOnly>{renderDateAnnouncement(date, isCurrentDate)}</ScreenreaderOnly>
-                </td>
+                </GridCell>
               );
             })}
           </tr>

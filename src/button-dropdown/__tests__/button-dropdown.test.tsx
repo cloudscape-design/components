@@ -103,7 +103,13 @@ const items: ButtonDropdownProps.Items = [
         });
 
         describe('disabled with reason', () => {
-          jest.spyOn(ReactDOM, 'createPortal').mockImplementation((element: any) => element);
+          beforeEach(() => {
+            jest.spyOn(ReactDOM, 'createPortal').mockImplementation((element: any) => element);
+          });
+
+          afterEach(() => {
+            jest.restoreAllMocks();
+          });
           // disabledReason behavior is already tested for button component, which acts as the trigger for this component
           // here we need to check the basic logic without diving deep into details
           test('open tooltip on mouseenter', () => {
@@ -260,7 +266,13 @@ describe('with main action', () => {
   });
 
   describe('disabled with reason', () => {
-    jest.spyOn(ReactDOM, 'createPortal').mockImplementation((element: any) => element);
+    beforeEach(() => {
+      jest.spyOn(ReactDOM, 'createPortal').mockImplementation((element: any) => element);
+    });
+
+    afterEach(() => {
+      jest.restoreAllMocks();
+    });
     // disabledReason behavior is already tested for button component, which acts as the trigger for this component
     // here we need to check the basic logic without diving deep into details
     test('open tooltip on mouseenter', () => {

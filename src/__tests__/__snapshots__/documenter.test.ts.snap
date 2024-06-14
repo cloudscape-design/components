@@ -3800,6 +3800,24 @@ The event \`detail\` contains the current value of the field.",
       "type": "string",
     },
     Object {
+      "description": "Provides a reason why a particular date in the calendar is not enabled (only when \`isDateEnabled\` returns \`false\`).
+If provided, the date becomes focusable.",
+      "inlineType": Object {
+        "name": "CalendarProps.DateDisabledReasonFunction",
+        "parameters": Array [
+          Object {
+            "name": "date",
+            "type": "Date",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "dateDisabledReason",
+      "optional": true,
+      "type": "CalendarProps.DateDisabledReasonFunction",
+    },
+    Object {
       "defaultValue": "\\"day\\"",
       "description": "Specifies the granularity at which users will be able to select a date.
 Defaults to \`day\`.",
@@ -6060,6 +6078,24 @@ is provided by its parent form field component.
       "name": "controlId",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Provides a reason why a particular date in the calendar is not enabled (only when \`isDateEnabled\` returns \`false\`).
+If provided, the date becomes focusable.",
+      "inlineType": Object {
+        "name": "CalendarProps.DateDisabledReasonFunction",
+        "parameters": Array [
+          Object {
+            "name": "date",
+            "type": "Date",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "dateDisabledReason",
+      "optional": true,
+      "type": "CalendarProps.DateDisabledReasonFunction",
     },
     Object {
       "defaultValue": "false",

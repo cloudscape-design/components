@@ -4,6 +4,16 @@ import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-
 import styles from '../../../calendar/styles.selectors.js';
 import ButtonWrapper from '../button';
 
+export class CalendarDateWrapper extends ComponentWrapper {
+  findDisabledReason(): ElementWrapper | null {
+    return this.find(`.${styles['disabled-reason-tooltip']}`);
+  }
+
+  findDisabledReasonDescription(): ElementWrapper | null {
+    return this.find('span[hidden]');
+  }
+}
+
 export default class CalendarWrapper extends ComponentWrapper {
   static rootSelector: string = styles.root;
   /**
@@ -12,8 +22,11 @@ export default class CalendarWrapper extends ComponentWrapper {
    * @param row 1-based row index of the day or month.
    * @param column 1-based column index of the day or month.
    */
-  findDateAt(row: number, column: number): ElementWrapper {
-    return this.find(`.${styles['calendar-row']}:nth-child(${row}) .${styles['calendar-date']}:nth-child(${column})`)!;
+  findDateAt(row: number, column: number): CalendarDateWrapper {
+    return this.findComponent(
+      `.${styles['calendar-row']}:nth-child(${row}) .${styles['calendar-date']}:nth-child(${column})`,
+      CalendarDateWrapper
+    )!;
   }
 
   findHeader(): ElementWrapper {

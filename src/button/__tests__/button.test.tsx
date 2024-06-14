@@ -93,7 +93,13 @@ describe('Button Component', () => {
   });
 
   describe('disabled with reason', () => {
-    jest.spyOn(ReactDOM, 'createPortal').mockImplementation((element: any) => element);
+    beforeEach(() => {
+      jest.spyOn(ReactDOM, 'createPortal').mockImplementation((element: any) => element);
+    });
+
+    afterEach(() => {
+      jest.restoreAllMocks();
+    });
 
     test('renders button as normal when disabledReason is set and button is not disabled', () => {
       const wrapper = renderButton({ disabled: false, disabledReason: 'reason' });
