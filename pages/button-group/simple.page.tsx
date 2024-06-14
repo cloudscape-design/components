@@ -5,17 +5,19 @@ import ButtonGroup, { ButtonGroupProps } from '~components/button-group';
 import { Button } from '~components';
 import ScreenshotArea from '../utils/screenshot-area';
 
-const items1: ButtonGroupProps.ItemOrGroup[] = [
+const items1: ButtonGroupProps.Item[] = [
   {
-    id: 'vote',
+    type: 'group',
     text: 'Vote',
     items: [
       {
+        type: 'icon-button',
         id: 'thumbs-up',
         text: 'Like',
         actionPopoverText: 'Liked',
       },
       {
+        type: 'icon-button',
         id: 'thumbs-down',
         iconName: 'thumbs-down',
         text: 'Dislike',
@@ -24,11 +26,13 @@ const items1: ButtonGroupProps.ItemOrGroup[] = [
     ],
   },
   {
+    type: 'icon-button',
     id: 'expand',
     iconName: 'treeview-expand',
     text: 'View',
   },
   {
+    type: 'icon-button',
     id: 'favorite',
     iconName: 'star',
     text: 'Favorite',
@@ -36,6 +40,7 @@ const items1: ButtonGroupProps.ItemOrGroup[] = [
     loading: true,
   },
   {
+    type: 'icon-button',
     id: 'script',
     iconName: 'script',
     text: 'Script',
@@ -43,18 +48,20 @@ const items1: ButtonGroupProps.ItemOrGroup[] = [
   },
 ];
 
-const items2: ButtonGroupProps.ItemOrGroup[] = [
+const items2: ButtonGroupProps.Item[] = [
   {
-    id: 'vote',
+    type: 'group',
     text: 'Vote',
     items: [
       {
+        type: 'icon-button',
         id: 'thumbs-up',
         iconName: 'thumbs-up',
         text: 'Like',
         actionPopoverText: 'Liked',
       },
       {
+        type: 'icon-button',
         id: 'thumbs-down',
         iconName: 'thumbs-down',
         text: 'Dislike',
@@ -63,18 +70,21 @@ const items2: ButtonGroupProps.ItemOrGroup[] = [
     ],
   },
   {
+    type: 'icon-button',
     id: 'copy',
     iconName: 'copy',
     text: 'Copy',
     actionPopoverText: 'Copied',
   },
   {
+    type: 'icon-button',
     id: 'add',
     iconName: 'add-plus',
     text: 'Add',
     actionPopoverText: 'Added',
   },
   {
+    type: 'icon-button',
     id: 'remove',
     iconName: 'remove',
     text: 'Remove',
@@ -82,18 +92,20 @@ const items2: ButtonGroupProps.ItemOrGroup[] = [
   },
 ];
 
-const items3: ButtonGroupProps.ItemOrGroup[] = [
+const items3: ButtonGroupProps.Item[] = [
   {
-    id: 'vote1',
+    type: 'group',
     text: 'Vote',
     items: [
       {
+        type: 'icon-button',
         id: 'thumbs-up',
         iconName: 'thumbs-up',
         text: 'Like',
         actionPopoverText: 'Liked',
       },
       {
+        type: 'icon-button',
         id: 'thumbs-down',
         iconName: 'thumbs-down',
         text: 'Dislike',
@@ -102,22 +114,25 @@ const items3: ButtonGroupProps.ItemOrGroup[] = [
     ],
   },
   {
+    type: 'icon-button',
     id: 'copy',
     iconName: 'copy',
     text: 'Copy',
     actionPopoverText: 'Copied',
   },
   {
-    id: 'actions',
+    type: 'group',
     text: 'Actions',
     items: [
       {
+        type: 'icon-button',
         id: 'add',
         iconName: 'add-plus',
         text: 'Add',
         actionPopoverText: 'Added',
       },
       {
+        type: 'icon-button',
         id: 'remove',
         iconName: 'remove',
         text: 'Remove',
@@ -126,24 +141,28 @@ const items3: ButtonGroupProps.ItemOrGroup[] = [
     ],
   },
   {
-    id: 'cut',
-    iconName: 'delete-marker',
-    text: 'Cut',
-    actionPopoverText: 'Cutted',
-  },
-  {
-    id: 'paste',
-    iconName: 'add-plus',
-    text: 'Paste',
-    actionPopoverText: 'Pasted',
-  },
-  {
-    id: 'misc',
-    text: 'Misc',
+    type: 'menu-dropdown',
+    id: 'more-actions',
+    text: 'More actions',
     items: [
-      { id: 'edit', iconName: 'edit', text: 'Edit', actionPopoverText: 'Edited' },
-      { id: 'open', iconName: 'file-open', text: 'Open', actionPopoverText: 'Opened' },
-      { id: 'search', iconName: 'search', text: 'Search', actionPopoverText: 'Search' },
+      {
+        id: 'cut',
+        iconName: 'delete-marker',
+        text: 'Cut',
+      },
+      {
+        id: 'paste',
+        iconName: 'add-plus',
+        text: 'Paste',
+      },
+      {
+        text: 'Misc',
+        items: [
+          { id: 'edit', iconName: 'edit', text: 'Edit' },
+          { id: 'open', iconName: 'file-open', text: 'Open' },
+          { id: 'search', iconName: 'search', text: 'Search' },
+        ],
+      },
     ],
   },
 ];
@@ -151,7 +170,7 @@ const items3: ButtonGroupProps.ItemOrGroup[] = [
 export default function ButtonGroupPage() {
   const ref = React.useRef<ButtonGroupProps.Ref>(null);
 
-  const onItemClick = (event: CustomEvent<ButtonGroupProps.ItemClickDetails>) => {
+  const onItemClick: ButtonGroupProps['onItemClick'] = event => {
     console.log('Item clicked:', event.detail.id);
   };
 
@@ -175,15 +194,15 @@ export default function ButtonGroupPage() {
             <li>loading</li>
             <li>disabled</li>
           </ol>
-          <ButtonGroup items={items1} onItemClick={onItemClick} />
+          <ButtonGroup variant="icon" items={items1} onItemClick={onItemClick} />
         </article>
         <article>
           <h1>More Buttons</h1>
-          <ButtonGroup items={items2} onItemClick={onItemClick} />
+          <ButtonGroup variant="icon" items={items2} onItemClick={onItemClick} />
         </article>
         <article>
           <h1>Group with overflow</h1>
-          <ButtonGroup items={items3} onItemClick={onItemClick} ref={ref} />
+          <ButtonGroup variant="icon" items={items3} onItemClick={onItemClick} ref={ref} />
           <br />
           <Button onClick={onFocusOnThumbsUpButtonClick}>Focus on thumbs-up</Button>&nbsp;
           <Button onClick={onFocusOnCutButtonClick}>Focus on aditional items</Button>

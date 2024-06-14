@@ -1,87 +1,77 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useImperativeHandle, useRef } from 'react';
+import React, { useImperativeHandle, useRef, forwardRef } from 'react';
 import { getBaseProps } from '../internal/base-component';
 import { ButtonGroupProps, InternalButtonGroupProps } from './interfaces';
-import { findItemById, isItemGroup, splitItems } from './utils';
 import { ButtonProps } from '../button/interfaces';
-import { useInternalI18n } from '../i18n/context';
-import { ButtonDropdownProps } from '../button-dropdown/interfaces';
 import SpaceBetween from '../space-between/internal';
 import ItemElement from './item-element';
-import MoreItems from './more-items';
 import styles from './styles.css.js';
 import clsx from 'clsx';
 
-const InternalButtonGroup = React.forwardRef(
+const InternalButtonGroup = forwardRef(
   (
     {
+      variant,
       items = [],
-      limit = 5,
       onItemClick,
       __internalRootRef = null,
       dropdownExpandToViewport,
-      i18nStrings,
       ...props
     }: InternalButtonGroupProps,
     ref: React.Ref<ButtonGroupProps.Ref>
   ) => {
+    if (!variant) {
+      throw new Error('Invariant violation: ButtonGroup variant is not set.');
+    }
+
     const itemsRef = useRef<Record<string, ButtonProps.Ref | null>>({});
-    const moreItemsRef = useRef<ButtonDropdownProps.Ref | null>(null);
     const baseProps = getBaseProps(props);
-    const { primary, secondary } = splitItems(items, limit);
 
     useImperativeHandle(ref, () => ({
       focus: id => {
-        const current = itemsRef.current[id];
-        if (current) {
-          current.focus();
-        } else if (findItemById(secondary, id)) {
-          moreItemsRef.current?.focus();
-        }
+        itemsRef.current[id]?.focus();
       },
     }));
 
-    const onSetButtonRef = (item: ButtonGroupProps.Item, element: ButtonProps.Ref | null) => {
+    const onSetButtonRef = (
+      item: ButtonGroupProps.IconButton | ButtonGroupProps.MenuDropdown,
+      element: ButtonProps.Ref | null
+    ) => {
       itemsRef.current[item.id] = element;
     };
-
-    const i18n = useInternalI18n('button-group');
 
     return (
       <div {...baseProps} className={clsx(styles.root, baseProps.className)} ref={__internalRootRef}>
         <SpaceBetween direction="horizontal" size="xxs">
-          {primary.map((current, index) =>
-            isItemGroup(current) && current.items.length > 0 ? (
-              <React.Fragment key={current.id}>
-                {current.items.map(item => (
-                  <ItemElement
-                    key={item.id}
-                    item={item}
-                    onItemClick={onItemClick}
-                    ref={element => onSetButtonRef(item, element)}
-                  />
-                ))}
-                {index < primary.length - 1 && <div className={styles.divider} />}
+          {items.map((itemOrGroup, index) => {
+            if (itemOrGroup.type === 'group') {
+              return (
+                <div key={itemOrGroup.text} role="group" aria-label={itemOrGroup.text} className={styles.group}>
+                  {itemOrGroup.items.map(item => (
+                    <ItemElement
+                      key={item.id}
+                      item={item}
+                      onItemClick={onItemClick}
+                      dropdownExpandToViewport={dropdownExpandToViewport}
+                      ref={element => onSetButtonRef(item, element)}
+                    />
+                  ))}
+                </div>
+              );
+            }
+            return (
+              <React.Fragment key={itemOrGroup.id}>
+                {items[index - 1].type === 'group' && <div className={styles.divider} />}
+                <ItemElement
+                  item={itemOrGroup}
+                  onItemClick={onItemClick}
+                  dropdownExpandToViewport={dropdownExpandToViewport}
+                  ref={element => onSetButtonRef(itemOrGroup, element)}
+                />
               </React.Fragment>
-            ) : (
-              <ItemElement
-                key={current.id}
-                item={current}
-                onItemClick={onItemClick}
-                ref={element => onSetButtonRef(current, element)}
-              />
-            )
-          )}
-          {secondary.length > 0 && (
-            <MoreItems
-              ref={moreItemsRef}
-              items={secondary}
-              onItemClick={onItemClick}
-              dropdownExpandToViewport={dropdownExpandToViewport}
-              ariaLabel={i18n('i18nStrings.showMoreButtonAriaLabel', i18nStrings?.showMoreButtonAriaLabel)}
-            />
-          )}
+            );
+          })}
         </SpaceBetween>
       </div>
     );

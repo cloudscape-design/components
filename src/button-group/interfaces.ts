@@ -3,45 +3,50 @@
 import { BaseComponentProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { IconProps } from '../icon/interfaces';
-import { CancelableEventHandler } from '../internal/events';
+import { NonCancelableEventHandler } from '../internal/events';
+import { ButtonDropdownProps } from '../button-dropdown/interfaces';
 
 export interface ButtonGroupProps extends BaseComponentProps {
-  /** Determines the general styling of the button dropdown.
-   * * `icon` for icon buttons
-   */
-  variant?: ButtonGroupProps.Variant;
   /**
-   * Array of objects of type Item or ItemGroup. The following properties are supported:
+   * Determines the general styling of the button dropdown.
+   * * `icon` for icon buttons.
+   */
+  variant: ButtonGroupProps.Variant;
+  /**
+   * Array of objects of type "icon-button", "group", or "menu-dropdown".
    *
-   * ### ItemGroup
-   *
-   * * `id` (string) - The unique identifier of the group.
-   * * `text` (string) - The name of the group shown as a text in the menu for this item.
-   * * `items` (Item[]) - The array of items that belong to this group.
-   *
-   * ### Item
-   *
-   * * `id` (string) - The unique identifier of the item, used as detail in `onItemClick` handler.
-   * * `text` (string) - The name shown as a tooltip or menu text for this item.
-   * * `loading` (optional, boolean) - The loading state indication for the item.
-   * * `disabled` (optional, boolean) - The disabled state indication for the item.
+   * ### type="icon-button"
+   * * `id` (string) - The unique identifier of the button, used as detail in `onItemClick` handler and to focus the button using `ref.focus(id)`.
+   * * `text` (string) - The name shown as a tooltip or menu text for this button.
+   * * `loading` (optional, boolean) - The loading state indication for the button.
+   * * `loadingText` (optional, string) - The loading text announced to screen-readers.
+   * * `disabled` (optional, boolean) - The disabled state indication for the button.
    * * `iconName` (optional, string) - Specifies the name of the icon, used with the [icon component](/components/icon/).
    * * `iconAlt` (optional, string) - Specifies alternate text for the icon when using `iconUrl`.
    * * `iconUrl` (optional, string) - Specifies the URL of a custom icon.
    * * `iconSvg` (optional, ReactNode) - Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/icon/).
-   * * `actionPopoverText` (optional, string) - Text that appears when the user clicks the item. Use to provide feedback to the user.
+   * * `actionPopoverText` (optional, string) - Text that appears when the user clicks the button. Use to provide feedback to the user.
+   *
+   * ### type="group"
+   * * `text` (string) - The name of the group rendered as ARIA label for this group.
+   * * `items` ((ButtonGroupProps.IconButton | ButtonGroupProps.MenuDropdown)[]) - The array of items that belong to this group.
+   *
+   * ### type="button-dropdown"
+   * * `id` (string) - The unique identifier of the button, used to focus the button using `ref.focus(id)`.
+   * * `text` (string) - The name of the menu button shown as a tooltip.
+   * * `loading` (optional, boolean) - The loading state indication for the menu button.
+   * * `loadingText` (optional, string) - The loading text announced to screen-readers.
+   * * `disabled` (optional, boolean) - The disabled state indication for the menu button.
+   * * `items` (ButtonDropdownProps.ItemOrGroup[]) - The array of dropdown items that belong to this menu.
    */
-  items: ReadonlyArray<ButtonGroupProps.ItemOrGroup>;
-  /**
-   * Max number of visible items in the button group, the rest will be hidden in a dropdown.
-   * Default limit is 5
-   */
-  limit?: number;
+  items: ReadonlyArray<ButtonGroupProps.Item>;
   /**
    * Called when the user clicks on an item, and the item is not disabled. The event detail object contains the id of the clicked item.
    */
-  onItemClick?: CancelableEventHandler<ButtonGroupProps.ItemClickDetails>;
+  onItemClick?: NonCancelableEventHandler<ButtonGroupProps.ItemClickDetails>;
   /**
+   * Use this property to determine dropdown placement strategy for all menu dropdown items.
+   *
    * By default, the dropdown height is constrained to fit inside the height of its next scrollable container element.
    * Enabling this property will allow the dropdown to extend beyond that container by using fixed positioning and
    * [React Portals](https://reactjs.org/docs/portals.html).
@@ -53,36 +58,43 @@ export interface ButtonGroupProps extends BaseComponentProps {
    * because fixed positioning results in a slight, visible lag when scrolling complex pages.
    */
   dropdownExpandToViewport?: boolean;
-  /**
-   * An object containing all the necessary localized strings required by the component.
-   * @i18n
-   */
-  i18nStrings?: ButtonGroupProps.I18nStrings;
 }
 
 export interface InternalButtonGroupProps extends ButtonGroupProps, InternalBaseComponentProps {}
 
 export namespace ButtonGroupProps {
   export type Variant = 'icon';
-  export type ItemOrGroup = Item | ItemGroup;
 
-  export interface ItemGroup {
+  export type Item = IconButton | MenuDropdown | Group;
+
+  export interface IconButton {
+    type: 'icon-button';
     id: string;
     text: string;
-    items: ReadonlyArray<Item>;
-  }
-
-  export interface Item {
-    id: string;
-    text: string;
+    disabled?: boolean;
     loading?: boolean;
     loadingText?: string;
-    disabled?: boolean;
     iconName?: IconProps.Name;
     iconAlt?: string;
     iconUrl?: string;
     iconSvg?: React.ReactNode;
     actionPopoverText?: string;
+  }
+
+  export interface MenuDropdown {
+    type: 'menu-dropdown';
+    id: string;
+    text: string;
+    disabled?: boolean;
+    loading?: boolean;
+    loadingText?: string;
+    items: ReadonlyArray<ButtonDropdownProps.ItemOrGroup>;
+  }
+
+  export interface Group {
+    type: 'group';
+    text: string;
+    items: ReadonlyArray<IconButton | MenuDropdown>;
   }
 
   export interface ItemClickDetails {
@@ -91,9 +103,5 @@ export namespace ButtonGroupProps {
 
   export interface Ref {
     focus(itemId: string): void;
-  }
-
-  export interface I18nStrings {
-    showMoreButtonAriaLabel?: string;
   }
 }

@@ -11,36 +11,34 @@ export default class ButtonGroupWrapper extends ComponentWrapper {
   static rootSelector: string = styles.root;
 
   /**
-   * Finds an item button by its id. If an item is inside the show-more dropdown the
-   * dropdown needs to be open first. Returns null if there is no matching item or the item
-   * is inside a closed dropdown.
-   *
-   * This utility does not open the show-more dropdown. To find the dropdown items, call `openDropdown()` first.
+   * Finds all button and menu items.
    */
-  findInlineItemById(id: string): null | ElementWrapper {
-    const inlineItemSelector = `.${styles['inline-button']}[data-testid="${id}"]`;
-    return this.find(inlineItemSelector);
+  findItems(): Array<ElementWrapper> {
+    return this.findAllByClassName(styles.item);
   }
 
   /**
-   * Finds all inline items. Returns empty array if no items are defined or all items are inside the show-more dropdown.
+   * Finds a button item by its id.
    */
-  findInlineItems(): Array<ButtonWrapper> {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    return this.findAllByClassName(styles['inline-button']).map(item => new ButtonWrapper(item.getElement()));
+  findButtonById(id: string): null | ButtonWrapper {
+    const inlineItemSelector = `.${styles.item}[data-testid="${id}"]`;
+    const wrapper = this.find(inlineItemSelector) as ElementWrapper<HTMLButtonElement>;
+    return wrapper && new ButtonWrapper(wrapper.getElement());
   }
 
-  findShowMoreButton(): null | ButtonDropdownWrapper {
-    const menuWrapper = this.findByClassName(styles['more-button']);
-    return menuWrapper && new ButtonDropdownWrapper(menuWrapper.getElement());
+  /**
+   * Finds a menu item by its id.
+   */
+  findMenuById(id: string): null | ButtonDropdownWrapper {
+    const inlineItemSelector = `.${styles.item}[data-testid="${id}"]`;
+    const wrapper = this.find(inlineItemSelector);
+    return wrapper && new ButtonDropdownWrapper(wrapper.getElement());
   }
 
+  /**
+   * Finds the currently opened tooltip.
+   */
   findTooltip(): null | ElementWrapper {
-    return createWrapper().findByClassName(tooltipStyles.body);
-  }
-
-  findActionPopover(): null | ElementWrapper {
     return createWrapper().findByClassName(tooltipStyles.body);
   }
 }

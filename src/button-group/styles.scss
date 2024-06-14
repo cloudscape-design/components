@@ -9,9 +9,12 @@
   @include styles.styles-reset;
 }
 
-.inline-button,
-.more-button {
+.item {
   /* used in test-utils */
+}
+
+.group {
+  display: flex;
 }
 
 .divider {
