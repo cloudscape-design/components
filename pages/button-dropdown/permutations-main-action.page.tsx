@@ -39,7 +39,7 @@ const permutations = createPermutations<ButtonDropdownProps>([
       ],
     ],
     disabled: [false, true],
-    disabledReason: [undefined, undefined, 'disabled reason'],
+    disabledReason: ['', '', 'disabled reason'],
     loading: [false, true],
     variant: ['primary', 'normal'],
   },
