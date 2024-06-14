@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import * as React from 'react';
+import ReactDOM from 'react-dom';
 import MockDate from 'mockdate';
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import Calendar, { CalendarProps } from '../../../lib/components/calendar';
 import styles from '../../../lib/components/calendar/styles.selectors.js';
 import createWrapper, { CalendarWrapper } from '../../../lib/components/test-utils/dom';
@@ -262,6 +263,238 @@ describe('disabled date', () => {
         expect(wrapper.findDateAt(row, col).getElement()).toHaveAttribute('aria-disabled', String(matchesDisabled));
       }
     }
+  });
+
+  describe('disabled with reason', () => {
+    beforeEach(() => {
+      jest.spyOn(ReactDOM, 'createPortal').mockImplementation((element: any) => element);
+    });
+    afterEach(() => {
+      jest.restoreAllMocks();
+    });
+
+    test('has no tooltip open by default', () => {
+      const { container } = render(
+        <Calendar
+          {...defaultProps}
+          value="2022-01-03"
+          isDateEnabled={(date: Date) => date.getDay() !== 6 && date.getDay() !== 0}
+          dateDisabledReason={(date: Date) => {
+            if (date.getDay() === 6) {
+              return 'disabled on Saturdays';
+            }
+
+            if (date.getDay() === 0) {
+              return 'disabled on Sundays';
+            }
+
+            return '';
+          }}
+        />
+      );
+      const wrapper = createWrapper(container).findCalendar()!;
+
+      expect(wrapper.findDateAt(1, 6).findDisabledReason()).toBe(null);
+    });
+
+    test('has no tooltip without disabledReason', () => {
+      const { container } = render(
+        <Calendar
+          {...defaultProps}
+          value="2022-01-03"
+          isDateEnabled={(date: Date) => date.getDay() !== 6 && date.getDay() !== 0}
+        />
+      );
+      const wrapper = createWrapper(container).findCalendar()!;
+
+      wrapper.findDateAt(1, 6).focus();
+
+      expect(wrapper.findDateAt(1, 6).findDisabledReason()).toBe(null);
+    });
+
+    test('open tooltip on focus', () => {
+      const { container } = render(
+        <Calendar
+          {...defaultProps}
+          value="2022-01-03"
+          isDateEnabled={(date: Date) => date.getDay() !== 6 && date.getDay() !== 0}
+          dateDisabledReason={(date: Date) => {
+            if (date.getDay() === 6) {
+              return 'Disabled on Saturdays';
+            }
+
+            if (date.getDay() === 0) {
+              return 'Disabled on Sundays';
+            }
+
+            return '';
+          }}
+        />
+      );
+      const wrapper = createWrapper(container).findCalendar()!;
+
+      wrapper.findDateAt(1, 6).focus();
+
+      expect(wrapper.findDateAt(1, 6).findDisabledReason()!.getElement()).toHaveTextContent('Disabled on Saturdays');
+    });
+
+    test('closes tooltip on blur', () => {
+      const { container } = render(
+        <Calendar
+          {...defaultProps}
+          value="2022-01-03"
+          isDateEnabled={(date: Date) => date.getDay() !== 6 && date.getDay() !== 0}
+          dateDisabledReason={(date: Date) => {
+            if (date.getDay() === 6) {
+              return 'Disabled on Saturdays';
+            }
+
+            if (date.getDay() === 0) {
+              return 'Disabled on Sundays';
+            }
+
+            return '';
+          }}
+        />
+      );
+      const wrapper = createWrapper(container).findCalendar()!;
+
+      wrapper.findDateAt(1, 6).focus();
+
+      expect(wrapper.findDateAt(1, 6).findDisabledReason()!.getElement()).toHaveTextContent('Disabled on Saturdays');
+
+      wrapper.findDateAt(1, 6).blur();
+
+      expect(wrapper.findDateAt(1, 6).findDisabledReason()).toBe(null);
+    });
+
+    test('open tooltip on mouseenter', () => {
+      const { container } = render(
+        <Calendar
+          {...defaultProps}
+          value="2022-01-03"
+          isDateEnabled={(date: Date) => date.getDay() !== 6 && date.getDay() !== 0}
+          dateDisabledReason={(date: Date) => {
+            if (date.getDay() === 6) {
+              return 'Disabled on Saturdays';
+            }
+
+            if (date.getDay() === 0) {
+              return 'Disabled on Sundays';
+            }
+
+            return '';
+          }}
+        />
+      );
+      const wrapper = createWrapper(container).findCalendar()!;
+
+      fireEvent.mouseEnter(wrapper.findDateAt(1, 6).getElement());
+
+      expect(wrapper.findDateAt(1, 6).findDisabledReason()!.getElement()).toHaveTextContent('Disabled on Saturdays');
+    });
+
+    test('close tooltip on mouseleave', () => {
+      const { container } = render(
+        <Calendar
+          {...defaultProps}
+          value="2022-01-03"
+          isDateEnabled={(date: Date) => date.getDay() !== 6 && date.getDay() !== 0}
+          dateDisabledReason={(date: Date) => {
+            if (date.getDay() === 6) {
+              return 'Disabled on Saturdays';
+            }
+
+            if (date.getDay() === 0) {
+              return 'Disabled on Sundays';
+            }
+
+            return '';
+          }}
+        />
+      );
+      const wrapper = createWrapper(container).findCalendar()!;
+
+      fireEvent.mouseEnter(wrapper.findDateAt(1, 6).getElement());
+
+      expect(wrapper.findDateAt(1, 6).findDisabledReason()!.getElement()).toHaveTextContent('Disabled on Saturdays');
+
+      fireEvent.mouseLeave(wrapper.findDateAt(1, 6).getElement());
+
+      expect(wrapper.findDateAt(1, 6).findDisabledReason()).toBe(null);
+    });
+
+    test('has no aria-describedby by default', () => {
+      const { container } = render(<Calendar {...defaultProps} value="2022-01-03" />);
+      const wrapper = createWrapper(container).findCalendar()!;
+
+      expect(wrapper.findDateAt(1, 6).getElement()).not.toHaveAttribute('aria-describedby');
+    });
+
+    test('has no aria-describedby without disabledReason', () => {
+      const { container } = render(
+        <Calendar
+          {...defaultProps}
+          value="2022-01-03"
+          isDateEnabled={(date: Date) => date.getDay() !== 6 && date.getDay() !== 0}
+        />
+      );
+      const wrapper = createWrapper(container).findCalendar()!;
+
+      expect(wrapper.findDateAt(1, 6).getElement()).not.toHaveAttribute('aria-describedby');
+    });
+
+    test('has aria-describedby with disabledReason', () => {
+      const { container } = render(
+        <Calendar
+          {...defaultProps}
+          value="2022-01-03"
+          isDateEnabled={(date: Date) => date.getDay() !== 6 && date.getDay() !== 0}
+          dateDisabledReason={(date: Date) => {
+            if (date.getDay() === 6) {
+              return 'Disabled on Saturdays';
+            }
+
+            if (date.getDay() === 0) {
+              return 'Disabled on Sundays';
+            }
+
+            return '';
+          }}
+        />
+      );
+
+      const wrapper = createWrapper(container).findCalendar()!;
+
+      expect(wrapper.findDateAt(1, 6).getElement()).toHaveAttribute('aria-describedby');
+    });
+
+    test('has hidden element (linked to aria-describedby) with disabledReason', () => {
+      const { container } = render(
+        <Calendar
+          {...defaultProps}
+          value="2022-01-03"
+          isDateEnabled={(date: Date) => date.getDay() !== 6 && date.getDay() !== 0}
+          dateDisabledReason={(date: Date) => {
+            if (date.getDay() === 6) {
+              return 'Disabled on Saturdays';
+            }
+
+            if (date.getDay() === 0) {
+              return 'Disabled on Sundays';
+            }
+
+            return '';
+          }}
+        />
+      );
+
+      const wrapper = createWrapper(container).findCalendar()!;
+
+      expect(wrapper.findDateAt(1, 6).findDisabledReasonDescription()!.getElement()).toHaveTextContent(
+        'Disabled on Saturdays'
+      );
+    });
   });
 });
 
