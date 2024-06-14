@@ -5,8 +5,6 @@ import { Container, Header } from '~components';
 import ButtonDropdown from '~components/button-dropdown';
 import SpaceBetween from '~components/space-between';
 import Tabs, { TabsProps } from '~components/tabs';
-import { I18nProvider } from '~components/i18n';
-import messages from '~components/i18n/messages/all.es';
 
 export default function TabsDemoPage() {
   const [tabsDismissibles, setTabDismissibles] = useState([
@@ -149,7 +147,7 @@ export default function TabsDemoPage() {
   ]);
 
   return (
-    <I18nProvider messages={[messages]} locale="es">
+    <>
       <h1>Tabs</h1>
 
       <SpaceBetween size="xs">
@@ -182,6 +180,6 @@ export default function TabsDemoPage() {
           />
         </div>
       </SpaceBetween>
-    </I18nProvider>
+    </>
   );
 }
