@@ -13,6 +13,7 @@ module.exports = task('test:a11y', async () => {
     },
   };
   const shard = parseArgs({ options, strict: false }).values.shard;
+  console.log(shard);
   const devServer = execa('webpack', ['serve', '--config', 'pages/webpack.config.integ.js'], {
     env: {
       NODE_ENV: 'development',
