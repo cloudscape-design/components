@@ -22,7 +22,7 @@ function getComponentsExports() {
     './interfaces': './interfaces.js',
     './contexts/form-field': './contexts/form-field.js',
     // Public internal components
-    './internal/components/tooltip': './internal/components/tooltip/index.js',
+    './internal/tooltip-do-not-use': './internal/tooltip-do-not-use/index.js',
     './test-utils/dom/internal/tooltip': './test-utils/dom/internal/tooltip.js',
     './test-utils/selectors/internal/tooltip': './test-utils/selectors/internal/tooltip.js',
   };
