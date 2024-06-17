@@ -10,7 +10,7 @@ export interface SplitPanelFocusControlRefs {
   slider: RefObject<HTMLDivElement>;
   preferences: RefObject<ButtonProps.Ref>;
 }
-interface SplitPanelFocusControlState {
+export interface SplitPanelFocusControlState {
   refs: SplitPanelFocusControlRefs;
   setLastInteraction: (interaction: SplitPanelLastInteraction) => void;
 }

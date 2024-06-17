@@ -9,7 +9,7 @@ export interface FocusControlRefs {
   slider: RefObject<HTMLDivElement>;
 }
 
-interface FocusControlState {
+export interface FocusControlState {
   refs: FocusControlRefs;
   setFocus: (force?: boolean) => void;
   loseFocus: () => void;

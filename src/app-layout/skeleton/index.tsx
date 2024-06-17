@@ -3,6 +3,7 @@
 import React from 'react';
 import { AppLayoutPropsWithDefaults } from '../interfaces';
 import { SkeletonLayout } from './layout';
+import { NotificationsContainer, ToolbarContainer } from './containers';
 
 export function AppLayoutSkeleton({
   notifications,
@@ -27,13 +28,17 @@ export function AppLayoutSkeleton({
   const placeholder = <></>;
   return (
     <SkeletonLayout
-      topBar={placeholder}
-      notifications={notifications}
+      // TODO support conditional toolbar rendering based on props
+      toolbar={<ToolbarContainer>{placeholder}</ToolbarContainer>}
+      notifications={notifications && <NotificationsContainer>{notifications}</NotificationsContainer>}
       contentHeader={contentHeader}
       content={content}
-      navigation={!navigationHide && navigationOpen && navigation && placeholder}
+      navigation={!navigationHide && navigation && placeholder}
+      navigationOpen={navigationOpen}
       navigationWidth={navigationWidth}
-      tools={!toolsHide && toolsOpen && tools && placeholder}
+      // TODO: support drawers prop
+      tools={!toolsHide && tools && placeholder}
+      toolsOpen={toolsOpen}
       toolsWidth={toolsWidth}
       placement={placement}
       contentType={contentType}

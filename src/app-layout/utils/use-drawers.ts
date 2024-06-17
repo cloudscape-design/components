@@ -77,9 +77,10 @@ function useRuntimeDrawers(
 
 function applyToolsDrawer(toolsProps: ToolsProps, runtimeDrawers: DrawersLayout) {
   const drawers = [...runtimeDrawers.before, ...runtimeDrawers.after];
-  if (drawers.length === 0) {
-    return null;
-  }
+  // TODO: re-enable this line for classic only
+  // if (drawers.length === 0) {
+  //   return null;
+  // }
   const toolsItem = getToolsDrawerItem(toolsProps);
   if (toolsItem) {
     drawers.unshift(toolsItem);

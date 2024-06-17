@@ -142,7 +142,11 @@
     inset-block-start: 0;
     /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
     position: sticky;
-    z-index: 800;
+    z-index: 830;
+    @include styles.with-motion {
+      transition: ease awsui.$motion-duration-refresh-only-slow;
+      transition-property: top;
+    }
   }
 
   &-stuck {
