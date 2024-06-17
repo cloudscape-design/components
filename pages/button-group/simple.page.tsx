@@ -178,7 +178,7 @@ export default function ButtonGroupPage() {
     ref.current?.focus('thumbs-up');
   };
 
-  const onFocusOnCutButtonClick = () => {
+  const onFocusOnSearchButtonClick = () => {
     ref.current?.focus('search');
   };
 
@@ -205,7 +205,7 @@ export default function ButtonGroupPage() {
           <ButtonGroup variant="icon" items={items3} onItemClick={onItemClick} ref={ref} />
           <br />
           <Button onClick={onFocusOnThumbsUpButtonClick}>Focus on thumbs-up</Button>&nbsp;
-          <Button onClick={onFocusOnCutButtonClick}>Focus on aditional items</Button>
+          <Button onClick={onFocusOnSearchButtonClick}>Focus on aditional items</Button>
         </article>
       </ScreenshotArea>
     </>

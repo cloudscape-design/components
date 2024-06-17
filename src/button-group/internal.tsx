@@ -8,6 +8,7 @@ import SpaceBetween from '../space-between/internal';
 import ItemElement from './item-element';
 import styles from './styles.css.js';
 import clsx from 'clsx';
+import { ButtonDropdownProps } from '../button-dropdown/interfaces';
 
 const InternalButtonGroup = forwardRef(
   (
@@ -38,7 +39,39 @@ const InternalButtonGroup = forwardRef(
       item: ButtonGroupProps.IconButton | ButtonGroupProps.MenuDropdown,
       element: ButtonProps.Ref | null
     ) => {
-      itemsRef.current[item.id] = element;
+      const isItemGroup = (item: ButtonDropdownProps.ItemOrGroup): item is ButtonDropdownProps.ItemGroup => {
+        return 'items' in item;
+      };
+
+      const getAllIdsItemOrGroup = (item: ButtonDropdownProps.ItemOrGroup): string[] => {
+        if (isItemGroup(item)) {
+          const values = item.items.flatMap(getAllIdsItemOrGroup);
+          if (typeof item.id !== 'undefined') {
+            values.push(item.id);
+          }
+
+          return values;
+        } else {
+          return [item.id];
+        }
+      };
+
+      const getAllIds = (item: ButtonGroupProps.IconButton | ButtonGroupProps.MenuDropdown) => {
+        if (item.type === 'icon-button') {
+          return [item.id];
+        } else {
+          const values = getAllIdsItemOrGroup(item);
+          if (typeof item.id !== 'undefined') {
+            values.push(item.id);
+          }
+
+          return values;
+        }
+      };
+
+      getAllIds(item).forEach(id => {
+        itemsRef.current[id] = element;
+      });
     };
 
     return (

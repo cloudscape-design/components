@@ -5,6 +5,7 @@ import { ButtonGroupProps } from './interfaces.js';
 import { InternalButton } from '../button/internal.js';
 import { ClickDetail, fireCancelableEvent } from '../internal/events/index.js';
 import { ButtonProps } from '../button/interfaces.js';
+import LiveRegion from '../internal/components/live-region/index.js';
 import Tooltip from './tooltip/index.js';
 import StatusIndicator from '../status-indicator/internal.js';
 import styles from './styles.css.js';
@@ -20,12 +21,15 @@ const IconButtonItem = forwardRef(
     },
     ref: React.Ref<ButtonProps.Ref>
   ) => {
+    const [clickIdx, setClickIdx] = useState(0);
     const buttonRef = useRef<HTMLDivElement>(null);
     const [popoverOpen, setPopoverOpen] = useState(false);
     const [isActionPopover, setIsActionPopover] = useState(false);
     const hasIcon = item.iconName || item.iconUrl || item.iconSvg;
 
     const onClickHandler = (event: CustomEvent<ClickDetail>) => {
+      setClickIdx(idx => idx + 1);
+
       if (item.actionPopoverText) {
         setIsActionPopover(true);
         setPopoverOpen(true);
@@ -86,6 +90,7 @@ const IconButtonItem = forwardRef(
             item.text
           }
         />
+        {popoverOpen && <LiveRegion key={clickIdx}>{isActionPopover && item.actionPopoverText}</LiveRegion>}
       </div>
     );
   }
