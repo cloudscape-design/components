@@ -170,7 +170,7 @@ test(
     await page.keys(['Tab', 'Tab', 'Space']);
     await expect(page.isExisting(page.paginationButton('left', true))).resolves.toBe(true);
     await expect(page.isExisting(page.paginationButton('right', true))).resolves.toBe(false);
-    await page.keys(['Shift', 'Tab', 'Tab', 'Space']);
+    await page.keys(['Shift', 'Tab', 'Shift', 'Tab', 'Space']);
     await expect(page.isExisting(page.paginationButton('left', true))).resolves.toBe(false);
     await expect(page.isExisting(page.paginationButton('right', true))).resolves.toBe(true);
   }, true)
