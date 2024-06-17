@@ -11,6 +11,8 @@ import { useCollection } from '@cloudscape-design/collection-hooks';
 import AppContext, { AppContextType } from '../app/app-context';
 import { Checkbox, SpaceBetween } from '~components';
 
+const allExpandableInstances = allInstances.filter(i => i.children > 0);
+
 type PageContext = React.Context<
   AppContextType<{
     expandableRows: boolean;
@@ -29,7 +31,7 @@ export default function App() {
       ? {
           getId: item => item.name,
           getParentId: item => item.parentName,
-          defaultExpandedItems: allInstances,
+          defaultExpandedItems: allExpandableInstances,
         }
       : undefined,
   });
@@ -41,7 +43,7 @@ export default function App() {
         <SpaceBetween size="s">
           <Button
             onClick={() => {
-              actions.setExpandedItems(allInstances);
+              actions.setExpandedItems(allExpandableInstances);
               console.time('expand-all');
               requestAnimationFrame(() => console.timeEnd('expand-all'));
             }}
