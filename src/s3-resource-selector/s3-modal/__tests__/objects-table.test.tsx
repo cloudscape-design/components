@@ -3,7 +3,7 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
 import createWrapper from '../../../../lib/components/test-utils/dom';
-import icons from '../../../../lib/components/icon/icons';
+import { getIconHTML } from '../../../icon/__tests__/utils';
 import { ObjectsTable } from '../../../../lib/components/s3-resource-selector/s3-modal/objects-table';
 import { i18nStrings, objects } from '../../__tests__/fixtures';
 import {
@@ -98,8 +98,8 @@ test('Renders correct table content', async () => {
 
 test('renders separate icons for folder and file', async () => {
   const wrapper = await renderTable(<ObjectsTable {...defaultProps} />);
-  expect(wrapper.findBodyCell(1, 2)!.findIcon()!.getElement()).toContainHTML(icons.folder);
-  expect(wrapper.findBodyCell(2, 2)!.findIcon()!.getElement()).toContainHTML(icons.file);
+  expect(wrapper.findBodyCell(1, 2)!.findIcon()!.getElement()).toContainHTML(getIconHTML('folder'));
+  expect(wrapper.findBodyCell(2, 2)!.findIcon()!.getElement()).toContainHTML(getIconHTML('file'));
 });
 
 test('Renders selection labels', async () => {
