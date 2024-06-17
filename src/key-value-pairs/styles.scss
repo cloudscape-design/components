@@ -10,18 +10,18 @@
   @include styles.styles-reset;
 }
 
-.groupTitle {
+.group-title {
   padding-block-end: awsui.$space-scaled-m;
 }
 
-.groupList {
+.group-list {
   @include styles.styles-reset-dl;
   display: flex;
   flex-direction: column;
   row-gap: awsui.$space-scaled-m;
 }
 
-.groupListItem {
+.group-list-item {
   /* used in test-utils */
 }
 

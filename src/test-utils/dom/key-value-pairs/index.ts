@@ -25,7 +25,7 @@ export class KeyValuePairsItemWrapper extends KeyValuePairsPairWrapper {
   }
 
   findGroupPairs(): Array<KeyValuePairsPairWrapper> | null {
-    return this.findAllByClassName(styles.groupListItem).map(i => new KeyValuePairsPairWrapper(i.getElement()));
+    return this.findAllByClassName(styles['group-list-item']).map(i => new KeyValuePairsPairWrapper(i.getElement()));
   }
 }
 
