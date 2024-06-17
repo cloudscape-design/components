@@ -445,11 +445,18 @@ describe('Slider a11y', () => {
     expect(labels).toHaveAttribute('aria-hidden', 'true');
   });
 
-  test('aria-readonly is set to true when readOnly', () => {
+  test('aria-disabled is set to true when readOnly', () => {
     const wrapper = renderSlider({ min: 0, max: 100, value: 50, readOnly: true });
     const input = wrapper.findNativeInput()?.getElement();
 
-    expect(input).toHaveAttribute('aria-readonly', 'true');
+    expect(input).toHaveAttribute('aria-disabled', 'true');
+  });
+
+  test('aria-disabled is set when both readOnly and disabled are true', () => {
+    const wrapper = renderSlider({ min: 0, max: 100, value: 50, readOnly: true, disabled: true });
+    const input = wrapper.findNativeInput()?.getElement();
+
+    expect(input).not.toHaveAttribute('aria-disabled');
   });
 
   test('does not trigger onChange when readOnly', () => {
