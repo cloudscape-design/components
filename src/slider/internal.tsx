@@ -179,7 +179,7 @@ export default function InternalSlider({
         }
         aria-valuetext={getAriaValueText()}
         aria-invalid={invalid ? 'true' : undefined}
-        aria-readonly={readOnly ? 'true' : undefined}
+        aria-disabled={readOnly && !disabled ? 'true' : undefined}
         id={controlId}
         type="range"
         min={min}
