@@ -202,13 +202,6 @@ Object {
             "light": "#f2f3f3",
           },
         },
-        "color-background-gen-ai-gradient": Object {
-          "$description": "The gradient background color of generative AI components.",
-          "$value": Object {
-            "dark": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
-            "light": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
-          },
-        },
         "color-background-home-header": Object {
           "$description": "The background color of the home header, displayed on the Service's home page.",
           "$value": Object {
@@ -2530,13 +2523,6 @@ Object {
           "$value": Object {
             "dark": "#414750",
             "light": "#f2f3f3",
-          },
-        },
-        "color-background-gen-ai-gradient": Object {
-          "$description": "The gradient background color of generative AI components.",
-          "$value": Object {
-            "dark": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
-            "light": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
           },
         },
         "color-background-home-header": Object {
@@ -4862,13 +4848,6 @@ Object {
             "light": "#f2f3f3",
           },
         },
-        "color-background-gen-ai-gradient": Object {
-          "$description": "The gradient background color of generative AI components.",
-          "$value": Object {
-            "dark": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
-            "light": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
-          },
-        },
         "color-background-home-header": Object {
           "$description": "The background color of the home header, displayed on the Service's home page.",
           "$value": Object {
@@ -7190,13 +7169,6 @@ Object {
           "$value": Object {
             "dark": "#414750",
             "light": "#f2f3f3",
-          },
-        },
-        "color-background-gen-ai-gradient": Object {
-          "$description": "The gradient background color of generative AI components.",
-          "$value": Object {
-            "dark": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
-            "light": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
           },
         },
         "color-background-home-header": Object {
@@ -9522,13 +9494,6 @@ Object {
             "light": "#414750",
           },
         },
-        "color-background-gen-ai-gradient": Object {
-          "$description": "The gradient background color of generative AI components.",
-          "$value": Object {
-            "dark": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
-            "light": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
-          },
-        },
         "color-background-home-header": Object {
           "$description": "The background color of the home header, displayed on the Service's home page.",
           "$value": Object {
@@ -11850,13 +11815,6 @@ Object {
       "$value": Object {
         "dark": "#414750",
         "light": "#f2f3f3",
-      },
-    },
-    "color-background-gen-ai-gradient": Object {
-      "$description": "The gradient background color of generative AI components.",
-      "$value": Object {
-        "dark": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
-        "light": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
       },
     },
     "color-background-home-header": Object {
@@ -14187,13 +14145,6 @@ Object {
             "light": "#f4f4f4",
           },
         },
-        "color-background-gen-ai-gradient": Object {
-          "$description": "The gradient background color of generative AI components.",
-          "$value": Object {
-            "dark": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
-            "light": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
-          },
-        },
         "color-background-home-header": Object {
           "$description": "The background color of the home header, displayed on the Service's home page.",
           "$value": Object {
@@ -16515,13 +16466,6 @@ Object {
           "$value": Object {
             "dark": "#081120",
             "light": "#081120",
-          },
-        },
-        "color-background-gen-ai-gradient": Object {
-          "$description": "The gradient background color of generative AI components.",
-          "$value": Object {
-            "dark": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
-            "light": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
           },
         },
         "color-background-home-header": Object {
@@ -18847,13 +18791,6 @@ Object {
             "light": "#f4f4f4",
           },
         },
-        "color-background-gen-ai-gradient": Object {
-          "$description": "The gradient background color of generative AI components.",
-          "$value": Object {
-            "dark": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
-            "light": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
-          },
-        },
         "color-background-home-header": Object {
           "$description": "The background color of the home header, displayed on the Service's home page.",
           "$value": Object {
@@ -21175,13 +21112,6 @@ Object {
           "$value": Object {
             "dark": "#081120",
             "light": "#f4f4f4",
-          },
-        },
-        "color-background-gen-ai-gradient": Object {
-          "$description": "The gradient background color of generative AI components.",
-          "$value": Object {
-            "dark": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
-            "light": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
           },
         },
         "color-background-home-header": Object {
@@ -23507,13 +23437,6 @@ Object {
             "light": "#f4f4f4",
           },
         },
-        "color-background-gen-ai-gradient": Object {
-          "$description": "The gradient background color of generative AI components.",
-          "$value": Object {
-            "dark": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
-            "light": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
-          },
-        },
         "color-background-home-header": Object {
           "$description": "The background color of the home header, displayed on the Service's home page.",
           "$value": Object {
@@ -25835,13 +25758,6 @@ Object {
           "$value": Object {
             "dark": "#081120",
             "light": "#081120",
-          },
-        },
-        "color-background-gen-ai-gradient": Object {
-          "$description": "The gradient background color of generative AI components.",
-          "$value": Object {
-            "dark": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
-            "light": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
           },
         },
         "color-background-home-header": Object {
@@ -28167,13 +28083,6 @@ Object {
             "light": "#081120",
           },
         },
-        "color-background-gen-ai-gradient": Object {
-          "$description": "The gradient background color of generative AI components.",
-          "$value": Object {
-            "dark": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
-            "light": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
-          },
-        },
         "color-background-home-header": Object {
           "$description": "The background color of the home header, displayed on the Service's home page.",
           "$value": Object {
@@ -30495,13 +30404,6 @@ Object {
       "$value": Object {
         "dark": "#081120",
         "light": "#f4f4f4",
-      },
-    },
-    "color-background-gen-ai-gradient": Object {
-      "$description": "The gradient background color of generative AI components.",
-      "$value": Object {
-        "dark": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
-        "light": "radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
       },
     },
     "color-background-home-header": Object {

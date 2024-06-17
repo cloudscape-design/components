@@ -295,7 +295,6 @@ export type ColorsTokenName =
   | 'colorBackgroundTilesDisabled'
   | 'colorBackgroundToggleCheckedDisabled'
   | 'colorBackgroundToggleDefault'
-  | 'colorBackgroundGenAiGradient'
   | 'colorBackgroundAvatarGenAi'
   | 'colorBackgroundAvatarDefault'
   | 'colorTextAvatar'

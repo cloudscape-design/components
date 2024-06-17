@@ -232,11 +232,6 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
-  colorBackgroundGenAiGradient: {
-    description: 'The gradient background color of generative AI components.',
-    themeable: false,
-    public: true,
-  },
   colorBackgroundAvatarDefault: {
     description: 'The default background color of avatar.',
     themeable: false,
