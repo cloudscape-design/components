@@ -45,7 +45,8 @@ export default function DatePickerScenario() {
               locale="en-GB"
               i18nStrings={i18nStrings}
               placeholder={'YYYY/MM/DD'}
-              isDateEnabled={date => date.getDay() !== 0}
+              isDateEnabled={date => date.getDay() !== 0 && date.getDay() !== 6}
+              dateDisabledReason={date => (date.getDay() === 6 ? 'Saturday' : '')}
               openCalendarAriaLabel={openCalendarAriaLabel}
             />
           </div>
