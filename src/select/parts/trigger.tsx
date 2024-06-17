@@ -118,7 +118,6 @@ const Trigger = React.forwardRef(
         inlineTokens={triggerVariant === 'tokens'}
         ariaDescribedby={ariaDescribedby}
         ariaLabelledby={ariaLabelledbyIds}
-        ariaDisabled={readOnly}
       >
         {triggerContent}
       </ButtonTrigger>
