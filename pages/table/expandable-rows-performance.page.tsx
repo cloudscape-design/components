@@ -22,7 +22,7 @@ const columnDefinitions = createColumns();
 export default function App() {
   const { urlParams, setUrlParams } = useContext(AppContext as PageContext);
   const [isActive, setIsActive] = useState(false);
-  const { items, collectionProps } = useCollection(allInstances, {
+  const { items, collectionProps, actions } = useCollection(allInstances, {
     sorting: {},
     selection: { trackBy: 'name' },
     expandableRows: urlParams.expandableRows
@@ -38,13 +38,33 @@ export default function App() {
       <h1>Table with expandable rows performance test</h1>
 
       {isActive ? (
-        <Table
-          columnDefinitions={columnDefinitions}
-          items={items}
-          {...collectionProps}
-          resizableColumns={true}
-          header={<Header counter={allInstances.length.toString()}>Table with many items</Header>}
-        />
+        <SpaceBetween size="s">
+          <Button
+            onClick={() => {
+              actions.setExpandedItems(allInstances);
+              console.time('expand-all');
+              requestAnimationFrame(() => console.timeEnd('expand-all'));
+            }}
+          >
+            Expand all
+          </Button>
+          <Button
+            onClick={() => {
+              actions.setExpandedItems([]);
+              console.time('collapse-all');
+              requestAnimationFrame(() => console.timeEnd('collapse-all'));
+            }}
+          >
+            Collapse all
+          </Button>
+          <Table
+            columnDefinitions={columnDefinitions}
+            items={items}
+            {...collectionProps}
+            resizableColumns={true}
+            header={<Header counter={allInstances.length.toString()}>Table with many items</Header>}
+          />
+        </SpaceBetween>
       ) : (
         <SpaceBetween size="s">
           <Checkbox
