@@ -66,6 +66,7 @@ const MenuDropdownItem = React.forwardRef(
           items={item.items}
           onItemClick={(event: CustomEvent<ButtonDropdownProps.ItemClickDetails>) => onClickHandler(event)}
           expandToViewport={dropdownExpandToViewport}
+          ariaLabel={item.text}
           data-testid={item.id}
           className={styles.item}
         />
