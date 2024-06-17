@@ -116,6 +116,28 @@ describe('items', () => {
     expect(wrapper.getElement()).toHaveAttribute('aria-readonly', 'true');
   });
 
+  test('Adds aria-disabled to items when readOnly is true', () => {
+    const { wrapper } = renderRadioGroup(<RadioGroup value="val1" name="test" items={defaultItems} readOnly={true} />);
+    const items = wrapper.findButtons();
+
+    expect(items[0].findNativeInput().getElement()).toHaveAttribute('aria-disabled', 'true');
+  });
+
+  test('Does not add aria-disabled to items when readOnly is true and disabled is true', () => {
+    const { wrapper } = renderRadioGroup(
+      <RadioGroup
+        value="val1"
+        name="test"
+        items={[{ ...defaultItems[0], disabled: true }, defaultItems[1]]}
+        readOnly={true}
+      />
+    );
+    const items = wrapper.findButtons();
+
+    expect(items[0].findNativeInput().getElement()).not.toHaveAttribute('aria-disabled');
+    expect(items[0].findNativeInput().getElement()).toHaveAttribute('disabled');
+  });
+
   test('does not trigger change handler if readOnly', () => {
     const onChange = jest.fn();
     const { wrapper } = renderRadioGroup(
