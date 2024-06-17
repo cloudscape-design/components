@@ -79,7 +79,7 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
             checked={checked}
             name={name}
             aria-required={ariaRequired ? 'true' : undefined}
-            aria-disabled={readOnly ? 'true' : undefined}
+            aria-disabled={readOnly && !disabled ? 'true' : undefined}
             tabIndex={tabIndex}
             onFocus={() => fireNonCancelableEvent(onFocus)}
             onBlur={() => fireNonCancelableEvent(onBlur)}
