@@ -24,7 +24,7 @@ const InternalKeyValuePair = ({ label, info, value }: KeyValuePairsProps.KeyValu
 
 const InternalKeyValuePairGroup = ({ label, value }: { label?: React.ReactNode; value: React.ReactNode }) => (
   <>
-    {label && <dt className={styles.groupTitle}>{label}</dt>}
+    {label && <dt className={styles['group-title']}>{label}</dt>}
     <dd className={styles.detail}>{value}</dd>
   </>
 );
@@ -55,9 +55,9 @@ const InternalKeyValuePairs = React.forwardRef(
                     )
                   }
                   value={
-                    <dl className={styles.groupList}>
+                    <dl className={styles['group-list']}>
                       {pair.items.map((item, itemIndex) => (
-                        <div key={itemIndex} className={styles.groupListItem}>
+                        <div key={itemIndex} className={styles['group-list-item']}>
                           <InternalKeyValuePair {...item} />
                         </div>
                       ))}
