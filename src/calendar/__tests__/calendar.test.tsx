@@ -10,6 +10,7 @@ import styles from '../../../lib/components/calendar/styles.selectors.js';
 import createWrapper, { CalendarWrapper } from '../../../lib/components/test-utils/dom';
 import '../../__a11y__/to-validate-a11y';
 import screenreaderOnlyStyles from '../../../lib/components/internal/components/screenreader-only/styles.selectors.js';
+import { KeyCode } from '../../../lib/components/internal/keycode';
 
 // The calendar is mostly tested here: src/date-picker/__tests__/date-picker-calendar.test.tsx
 
@@ -494,6 +495,70 @@ describe('disabled date', () => {
       expect(wrapper.findDateAt(1, 6).findDisabledReasonDescription()!.getElement()).toHaveTextContent(
         'Disabled on Saturdays'
       );
+    });
+
+    test('space keydown does not trigger onChange when disabled with reason', () => {
+      const onChange = jest.fn();
+      const { container } = render(
+        <Calendar
+          {...defaultProps}
+          value="2022-01-01"
+          isDateEnabled={(date: Date) => date.getDay() !== 6 && date.getDay() !== 0}
+          dateDisabledReason={(date: Date) => {
+            if (date.getDay() === 6) {
+              return 'Disabled on Saturdays';
+            }
+
+            if (date.getDay() === 0) {
+              return 'Disabled on Sundays';
+            }
+
+            return '';
+          }}
+          onChange={onChange}
+        />
+      );
+
+      const wrapper = createWrapper(container).findCalendar()!;
+
+      wrapper.findDateAt(1, 6).focus();
+      wrapper.keydown(KeyCode.space);
+
+      fireEvent.keyDown(wrapper.findDateAt(1, 6).getElement(), { keyCode: KeyCode.space });
+
+      expect(onChange).not.toHaveBeenCalled();
+    });
+
+    test('enter keydown does not trigger onChange when disabled with reason', () => {
+      const onChange = jest.fn();
+      const { container } = render(
+        <Calendar
+          {...defaultProps}
+          value="2022-01-01"
+          isDateEnabled={(date: Date) => date.getDay() !== 6 && date.getDay() !== 0}
+          dateDisabledReason={(date: Date) => {
+            if (date.getDay() === 6) {
+              return 'Disabled on Saturdays';
+            }
+
+            if (date.getDay() === 0) {
+              return 'Disabled on Sundays';
+            }
+
+            return '';
+          }}
+          onChange={onChange}
+        />
+      );
+
+      const wrapper = createWrapper(container).findCalendar()!;
+
+      wrapper.findDateAt(1, 6).focus();
+      wrapper.keydown(KeyCode.space);
+
+      fireEvent.keyDown(wrapper.findDateAt(1, 6).getElement(), { keyCode: KeyCode.enter });
+
+      expect(onChange).not.toHaveBeenCalled();
     });
   });
 });
