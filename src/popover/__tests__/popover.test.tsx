@@ -42,7 +42,7 @@ class PopoverInternalWrapper extends PopoverWrapper {
   }
 }
 
-function renderPopover(props: PopoverProps) {
+function renderPopover(props: PopoverProps & { ref?: React.Ref<PopoverProps.Ref> }) {
   const { container } = render(<Popover {...props} />);
   return new PopoverInternalWrapper(container);
 }
@@ -373,5 +373,37 @@ describe('table grid navigation support', () => {
     );
     setCurrentTarget(getTrigger());
     expect(getTrigger()).not.toHaveAttribute('tabIndex');
+  });
+});
+
+describe('ref support', () => {
+  test('focuses when focus() is called on the ref', () => {
+    const ref: React.RefObject<PopoverProps.Ref> = { current: null };
+    const wrapper = renderPopover({ children: 'Trigger', content: 'Popover', ref });
+    ref.current?.focus();
+    expect(document.activeElement).toBe(wrapper.findTrigger().getElement());
+    expect(wrapper.findContent()?.getElement()).toBeFalsy();
+  });
+
+  test('focuses the first interactive element when focus() is called with a custom trigger', () => {
+    const ref: React.RefObject<PopoverProps.Ref> = { current: null };
+    const wrapper = renderPopover({
+      triggerType: 'custom',
+      children: <button id="test">Custom</button>,
+      content: 'Popover',
+      ref,
+    });
+    ref.current?.focus();
+    expect(document.activeElement).toBe(document.getElementById('test'));
+    expect(wrapper.findContent()?.getElement()).toBeFalsy();
+  });
+
+  test('closes an open popover when focus() is called on the ref', () => {
+    const ref: React.RefObject<PopoverProps.Ref> = { current: null };
+    const wrapper = renderPopover({ children: 'Trigger', content: 'Popover', ref });
+    wrapper.findTrigger().getElement().click();
+    expect(wrapper.findContent()?.getElement()).toBeInTheDocument();
+    ref.current?.focus();
+    expect(wrapper.findContent()?.getElement()).toBeFalsy();
   });
 });

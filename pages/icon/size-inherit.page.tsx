@@ -7,7 +7,7 @@ import Box from '~components/box';
 import ScreenshotArea from '../utils/screenshot-area';
 import SpaceBetween from '~components/space-between';
 import customIcon from './custom-icon.png';
-import icons from '~components/icon/icons';
+import icons from '~components/icon/generated/icons';
 import AppContext, { AppContextType } from '../app/app-context';
 
 const UNITS = 'px';
