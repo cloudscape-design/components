@@ -99,6 +99,19 @@ test('can receive focus if readOnly', () => {
   expect(wrapper.findNativeInput().getElement()).toHaveFocus();
 });
 
+test('should set aria-disabled to native input for readOnly state', () => {
+  const { wrapper } = renderToggle(<Toggle checked={false} readOnly={true} />);
+
+  expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-disabled', 'true');
+});
+
+test('should not set aria-disabled to native input when both readOnly and disabled are true', () => {
+  const { wrapper } = renderToggle(<Toggle checked={false} readOnly={true} disabled={true} />);
+
+  expect(wrapper.findNativeInput().getElement()).toHaveAttribute('disabled');
+  expect(wrapper.findNativeInput().getElement()).not.toHaveAttribute('aria-disabled', 'true');
+});
+
 test('can be focused via API', () => {
   const onFocus = jest.fn();
   let toggleRef: ToggleProps.Ref | null = null;
