@@ -336,7 +336,7 @@ describeEachThemeAppLayout(true, theme => {
   test('closes navigation via ref', () => {
     let ref: AppLayoutProps.Ref | null = null;
     const { wrapper } = renderComponent(<AppLayout ref={newRef => (ref = newRef)} />);
-    act(() => wrapper.findNavigationToggle().click());
+    wrapper.findNavigationToggle().click();
     expect(isDrawerClosed(wrapper.findNavigation())).toBe(false);
     expect(wrapper.findNavigationClose().getElement()).toEqual(document.activeElement);
     act(() => ref!.closeNavigationIfNecessary());

@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { act, screen, within } from '@testing-library/react';
+import { act, fireEvent, screen, within } from '@testing-library/react';
 
 import {
   describeEachThemeAppLayout,
@@ -159,9 +159,9 @@ describeEachThemeAppLayout(false, () => {
 
   test(`should toggle drawer on click`, () => {
     const { wrapper } = renderComponent(<AppLayout toolsHide={true} drawers={[testDrawer]} />);
-    act(() => wrapper.findDrawersTriggers()![0].click());
+    wrapper.findDrawersTriggers()![0].click();
     expect(wrapper.findActiveDrawer()).toBeTruthy();
-    act(() => wrapper.findDrawersTriggers()![0].click());
+    wrapper.findDrawersTriggers()![0].click();
     expect(wrapper.findActiveDrawer()).toBeFalsy();
   });
 
@@ -253,9 +253,9 @@ describe('Classic only features', () => {
     const { wrapper } = renderComponent(
       <AppLayout toolsHide={true} drawers={[testDrawer]} ariaLabels={{ drawers: 'Drawers' }} />
     );
-    act(() => screen.getByLabelText('Drawers').click());
+    fireEvent.click(screen.getByLabelText('Drawers'));
     expect(wrapper.findActiveDrawer()).toBeTruthy();
-    act(() => screen.getByLabelText('Drawers').click());
+    fireEvent.click(screen.getByLabelText('Drawers'));
     expect(wrapper.findActiveDrawer()).toBeFalsy();
   });
 
@@ -263,7 +263,7 @@ describe('Classic only features', () => {
     const { wrapper } = renderComponent(
       <AppLayout toolsHide={true} drawers={manyDrawers} ariaLabels={{ drawers: 'Drawers' }} />
     );
-    act(() => screen.getByLabelText('Drawers').click());
+    fireEvent.click(screen.getByLabelText('Drawers'));
     expect(wrapper.findActiveDrawer()).toBeFalsy();
   });
 
