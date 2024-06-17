@@ -81,7 +81,7 @@ const ButtonTrigger = (
     'aria-describedby': ariaDescribedby,
     'aria-haspopup': ariaHasPopup ?? 'listbox',
     'aria-controls': ariaControls,
-    'aria-disabled': readOnly ? 'true' : undefined,
+    'aria-disabled': readOnly && !disabled ? 'true' : undefined,
     autoFocus,
   };
 
