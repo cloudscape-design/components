@@ -30,9 +30,7 @@ import clsx from 'clsx';
 import { getFirstFocusable } from '../internal/components/focus-lock/utils';
 import { filterOptions } from './filter-options';
 import { joinStrings } from '../internal/utils/strings';
-
-const DROPDOWN_WIDTH_OPTIONS_LIST = 300;
-const DROPDOWN_WIDTH_CUSTOM_FORM = 200;
+import { DROPDOWN_WIDTH_CUSTOM_FORM, DROPDOWN_WIDTH_OPTIONS_LIST } from './utils';
 
 export interface PropertyFilterAutosuggestProps
   extends Omit<AutosuggestProps, 'filteringResultsText'>,

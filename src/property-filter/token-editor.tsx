@@ -25,12 +25,15 @@ import { NonCancelableEventHandler } from '../internal/events';
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
 import InternalButton from '../button/internal';
 import InternalFormField from '../form-field/internal';
-import { matchTokenValue } from './utils';
 import clsx from 'clsx';
+import { DROPDOWN_WIDTH_CUSTOM_FORM, matchTokenValue } from './utils';
 import ButtonTrigger from '../internal/components/button-trigger';
 import Dropdown from '../internal/components/dropdown';
 import { useFormFieldContext } from '../contexts/form-field';
 import { PropertyEditorForm } from './property-editor';
+import ScreenreaderOnly from '../internal/components/screenreader-only';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { joinStrings } from '../internal/utils/strings';
 
 interface PropertyInputProps {
   asyncProps: null | DropdownStatusProps;
@@ -159,23 +162,26 @@ function ValueInput({
   const formattedValue = property?.getValueFormatter(operator)?.(value) ?? value;
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const formFieldProps = useFormFieldContext({});
+  const valueId = useUniqueId();
 
   return OperatorForm ? (
     <Dropdown
-      minWidth={200}
+      minWidth={DROPDOWN_WIDTH_CUSTOM_FORM}
       stretchBeyondTriggerWidth={true}
       open={isDropdownOpen}
       onDropdownClose={() => setDropdownOpen(false)}
       trigger={
-        <ButtonTrigger
-          hideCaret={true}
-          onClick={() => setDropdownOpen(true)}
-          ariaHasPopup="dialog"
-          pressed={isDropdownOpen}
-          ariaLabelledby={formFieldProps.ariaLabelledby}
-        >
-          {typeof formattedValue === 'string' ? formattedValue : ''}
-        </ButtonTrigger>
+        <>
+          <ButtonTrigger
+            onClick={() => setDropdownOpen(true)}
+            ariaHasPopup="dialog"
+            pressed={isDropdownOpen}
+            ariaLabelledby={joinStrings(formFieldProps.ariaLabelledby, formattedValue ? valueId : undefined)}
+          >
+            {typeof formattedValue === 'string' ? formattedValue : ''}
+          </ButtonTrigger>
+          <ScreenreaderOnly id={valueId}>{formattedValue}</ScreenreaderOnly>
+        </>
       }
     >
       <PropertyEditorForm
