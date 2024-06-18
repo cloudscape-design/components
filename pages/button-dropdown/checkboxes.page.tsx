@@ -78,7 +78,16 @@ function ButtonDropdownComponent({ variant }: { variant: 'normal' | 'nested' | '
       items={
         variant === 'normal'
           ? getItems(firstChecked, secondChecked, thirdChecked, fourthChecked)
-          : [{ items: getItems(firstChecked, secondChecked, thirdChecked, fourthChecked), text: 'Category' }]
+          : [
+              { items: getItems(firstChecked, secondChecked, thirdChecked, fourthChecked), text: 'Category' },
+              {
+                text: 'Non selectable category',
+                items: [
+                  { text: 'Option 1', id: 'option-1' },
+                  { text: 'Option 2', id: 'option-2' },
+                ],
+              },
+            ]
       }
       onItemClick={onClick}
       expandableGroups={variant === 'expandable'}
