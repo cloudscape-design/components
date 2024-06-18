@@ -127,7 +127,7 @@ $checkbox-size: awsui.$size-control;
 }
 
 .inline-label-wrapper {
-  margin-block-start: -8px;
+  margin-block-start: calc(awsui.$space-scaled-xs * -1);
 }
 
 .inline-label {
@@ -138,10 +138,10 @@ $checkbox-size: awsui.$size-control;
   font-size: 12px;
   line-height: 14px;
   position: relative;
-  inset-inline-start: 10px;
+  inset-inline-start: calc(styles.$control-border-width + awsui.$space-field-horizontal - awsui.$space-scaled-xxs);
   margin-block-start: awsui.$space-scaled-xs;
   padding-inline: awsui.$space-scaled-xxs;
-  max-inline-size: calc(100% - 22px);
+  max-inline-size: calc(100% - (2 * awsui.$space-field-horizontal));
   // Stepped gradient background for inline label overlap between input and background.
   background-image: linear-gradient(
     to bottom,
