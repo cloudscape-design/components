@@ -151,7 +151,4 @@ export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Ite
   );
 }
 
-export const createWidgetizedBreadcrumbGroup = createWidgetizedComponent<
-  BreadcrumbGroupProps,
-  typeof BreadcrumbGroupImplementation
->(BreadcrumbGroupImplementation);
+export const createWidgetizedBreadcrumbGroup = createWidgetizedComponent(BreadcrumbGroupImplementation);
