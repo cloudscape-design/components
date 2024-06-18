@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { act } from 'react-dom/test-utils';
 import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
 import { describeEachAppLayout, isDrawerClosed, renderComponent, testDrawer, testDrawerWithoutLabels } from './utils';
 import AppLayout from '../../../lib/components/app-layout';
@@ -207,10 +206,10 @@ describeEachAppLayout(size => {
           const { wrapper } = renderComponent(<AppLayout contentType="form" />);
           expect(isDrawerClosed(findElement(wrapper))).toBe(true);
 
-          act(() => findToggle(wrapper).click());
+          findToggle(wrapper).click();
           expect(isDrawerClosed(findElement(wrapper))).toBe(false);
 
-          act(() => findClose(wrapper).click());
+          findClose(wrapper).click();
           expect(isDrawerClosed(findElement(wrapper))).toBe(true);
         });
 
@@ -218,10 +217,10 @@ describeEachAppLayout(size => {
           // use content type with initial closed state for all drawers
           const { wrapper } = renderComponent(<AppLayout contentType="form" />);
 
-          act(() => findToggle(wrapper).click());
+          findToggle(wrapper).click();
           expect(findClose(wrapper).getElement()).toBe(document.activeElement);
 
-          act(() => findClose(wrapper).click());
+          findClose(wrapper).click();
           expect(findToggle(wrapper).getElement()).toBe(document.activeElement);
         });
 
@@ -314,7 +313,7 @@ describeEachAppLayout(size => {
       wrapper.findDrawerTriggerById('security')!.find('span')!.click();
       expect(wrapper.findActiveDrawer()).not.toBeNull();
 
-      act(() => wrapper.findActiveDrawerCloseButton()!.click());
+      wrapper.findActiveDrawerCloseButton()!.click();
       expect(wrapper.findActiveDrawer()).toBeNull();
     });
   });
