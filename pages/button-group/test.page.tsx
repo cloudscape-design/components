@@ -34,24 +34,18 @@ const items: ButtonGroupProps.Item[] = [
     actionPopoverText: 'Copied',
   },
   {
-    type: 'group',
-    text: 'Actions',
-    items: [
-      {
-        type: 'icon-button',
-        id: 'add',
-        iconName: 'add-plus',
-        text: 'Add',
-        actionPopoverText: 'Added',
-      },
-      {
-        type: 'icon-button',
-        id: 'remove',
-        iconName: 'remove',
-        text: 'Remove',
-        actionPopoverText: 'Removed',
-      },
-    ],
+    type: 'icon-button',
+    id: 'add',
+    iconName: 'add-plus',
+    text: 'Add',
+    actionPopoverText: 'Added',
+  },
+  {
+    type: 'icon-button',
+    id: 'remove',
+    iconName: 'remove',
+    text: 'Remove',
+    actionPopoverText: 'Removed',
   },
   {
     type: 'menu-dropdown',
