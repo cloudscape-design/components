@@ -10,14 +10,14 @@ import PopoverBody from '../../popover/body.js';
 import styles from './styles.css.js';
 
 export interface TooltipProps {
-  trackKey: string;
+  value: number | string | React.ReactNode;
   trackRef: React.RefObject<HTMLElement | SVGElement>;
-  content: React.ReactNode;
-  open: boolean;
+  trackKey: string;
+  open?: boolean;
   close?: () => void;
 }
 
-export default function Tooltip({ trackKey, trackRef, content, open, close }: TooltipProps) {
+export default function Tooltip({ trackKey, trackRef, value, open, close }: TooltipProps) {
   useEffect(() => {
     if (!open) {
       return;
@@ -61,7 +61,7 @@ export default function Tooltip({ trackKey, trackRef, content, open, close }: To
     window.dispatchEvent(new CustomEvent('tooltip:toggle', { detail: { open, trackKey } }));
   }, [open, trackKey]);
 
-  if (!open || !content) {
+  if (!open || !value) {
     return null;
   }
 
@@ -90,7 +90,7 @@ export default function Tooltip({ trackKey, trackRef, content, open, close }: To
                 header={undefined}
                 className={styles.body}
               >
-                {content}
+                {value}
               </PopoverBody>
             </PopoverContainer>
           )}

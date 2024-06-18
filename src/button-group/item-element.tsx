@@ -86,7 +86,7 @@ const ItemElement = forwardRef(
           trackKey={item.id}
           open={popoverOpen}
           close={onPopoverClose}
-          content={
+          value={
             (isActionPopover && actionPopoverText && (
               <StatusIndicator type="success">{item.actionPopoverText}</StatusIndicator>
             )) ||
