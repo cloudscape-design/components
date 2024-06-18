@@ -37,9 +37,7 @@ const IconButtonItem = forwardRef(
         setPopoverOpen(false);
       }
 
-      if (onItemClick) {
-        fireCancelableEvent(onItemClick, { id: item.id }, event);
-      }
+      fireCancelableEvent(onItemClick, { id: item.id }, event);
     };
 
     const showTooltip = () => {
