@@ -87,8 +87,12 @@ export default function ButtonGroupPage() {
     document.querySelector('#last-clicked')!.textContent = event.detail.id;
   };
 
-  const onFocusButtonClick = () => {
+  const onFocusOnCopyButtonClick = () => {
     ref.current?.focus('copy');
+  };
+
+  const onFocusOnSearchButtonClick = () => {
+    ref.current?.focus('search');
   };
 
   return (
@@ -98,7 +102,8 @@ export default function ButtonGroupPage() {
           <h1>Button Group test page</h1>
           <ButtonGroup variant="icon" items={items} onItemClick={onItemClick} ref={ref} />
           <br />
-          <Button onClick={onFocusButtonClick}>Focus on copy</Button>
+          <Button onClick={onFocusOnCopyButtonClick}>Focus on copy</Button>&nbsp;
+          <Button onClick={onFocusOnSearchButtonClick}>Focus on item in the menu</Button>
           <br />
           <br />
           <div id="last-clicked"></div>
