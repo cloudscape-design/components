@@ -20,6 +20,7 @@ import {
   PropertyFilterProperty,
   PropertyFilterToken,
 } from '@cloudscape-design/collection-hooks';
+import { PropertyFilterQuery, PropertyFilterTokenGroup } from '@cloudscape-design/collection-hooks/cjs/interfaces';
 
 export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewport, FormFieldControlProps {
   /**
@@ -212,6 +213,8 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
 
 export namespace PropertyFilterProps {
   export type Token = PropertyFilterToken;
+  export type TokenGroup = PropertyFilterTokenGroup;
+  export type Query = PropertyFilterQuery;
   export type JoinOperation = PropertyFilterOperation;
   export type ComparisonOperator = PropertyFilterOperator;
   export type ExtendedOperator<TokenValue> = PropertyFilterOperatorExtended<TokenValue>;
@@ -221,17 +224,6 @@ export namespace PropertyFilterProps {
   export type FilteringOption = PropertyFilterOption;
   export type FilteringProperty = PropertyFilterProperty;
   export type FreeTextFiltering = PropertyFilterFreeTextFiltering;
-
-  export interface Query {
-    tokens: ReadonlyArray<PropertyFilterProps.Token>;
-    operation: PropertyFilterProps.JoinOperation;
-    tokenGroups?: ReadonlyArray<PropertyFilterProps.TokenGroup>;
-  }
-
-  export interface TokenGroup {
-    operation: PropertyFilterProps.JoinOperation;
-    tokens: ReadonlyArray<PropertyFilterProps.TokenGroup | PropertyFilterProps.Token>;
-  }
 
   export interface LoadItemsDetail {
     filteringProperty?: FilteringProperty;

@@ -1,11 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React from 'react';
 import AppLayout from '~components/app-layout';
 import SplitPanel from '~components/split-panel';
 import Box from '~components/box';
 import Table from '~components/table';
-import PropertyFilter, { PropertyFilterProps } from '~components/property-filter';
+import PropertyFilter from '~components/property-filter';
 import Header from '~components/header';
 import Button from '~components/button';
 import ScreenshotArea from '../utils/screenshot-area';
@@ -36,24 +36,21 @@ export default function () {
         </Box>
       ),
       filteringProperties,
-      defaultQuery: { tokens: [{ propertyKey: 'averagelatency', operator: '!=', value: '30' }], operation: 'and' },
+      defaultQuery: {
+        tokens: [],
+        tokenGroups: [
+          {
+            operation: 'or',
+            tokens: [
+              { propertyKey: 'state', operator: '=', value: '0' },
+              { propertyKey: 'state', operator: '=', value: '1' },
+            ],
+          },
+        ],
+        operation: 'or',
+      },
     },
     sorting: {},
-  });
-
-  // TODO: add collection-hooks support for nested queries
-  const [query, setQuery] = useState<PropertyFilterProps.Query>({
-    tokens: [],
-    tokenGroups: [
-      {
-        operation: 'and',
-        tokens: [
-          { propertyKey: 'averagelatency', operator: '>=', value: '30' },
-          { propertyKey: 'averagelatency', operator: '<', value: '60' },
-        ],
-      },
-    ],
-    operation: 'or',
   });
 
   const filteringOptions = propertyFilterProps.filteringOptions.map(option => {
@@ -100,8 +97,6 @@ export default function () {
             filter={
               <PropertyFilter
                 {...propertyFilterProps}
-                query={query}
-                onChange={event => setQuery(event.detail)}
                 filteringOptions={filteringOptions}
                 virtualScroll={true}
                 countText={`${items.length} matches`}
