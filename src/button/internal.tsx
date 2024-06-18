@@ -32,6 +32,7 @@ export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
     | Record<`data-${string}`, string>;
   __iconClass?: string;
   __focusable?: boolean;
+  __iconWithLabel?: boolean;
 } & InternalBaseComponentProps<HTMLAnchorElement | HTMLButtonElement>;
 
 export const InternalButton = React.forwardRef(
@@ -65,6 +66,7 @@ export const InternalButton = React.forwardRef(
       __nativeAttributes,
       __internalRootRef = null,
       __focusable = false,
+      __iconWithLabel = false,
       ...props
     }: InternalButtonProps,
     ref: React.Ref<ButtonProps.Ref>
@@ -73,8 +75,12 @@ export const InternalButton = React.forwardRef(
     const isAnchor = Boolean(href);
     const isNotInteractive = loading || disabled;
     const hasAriaDisabled = (loading && !disabled) || (disabled && __focusable);
-    const shouldHaveContent =
+
+    let shouldHaveContent =
       children && ['icon', 'inline-icon', 'flashbar-icon', 'modal-dismiss'].indexOf(variant) === -1;
+    if (children && __iconWithLabel) {
+      shouldHaveContent = true;
+    }
 
     const buttonRef = useRef<HTMLElement>(null);
     useForwardFocus(ref, buttonRef);

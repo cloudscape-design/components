@@ -32,7 +32,7 @@ const ItemElement = forwardRef(
     const onClickHandler = (event: CustomEvent<ClickDetail>) => {
       setClickIdx(idx => idx + 1);
 
-      if ('actionPopoverText' in item && item.actionPopoverText) {
+      if ('feedbackText' in item && item.feedbackText) {
         setIsActionPopover(true);
         setPopoverOpen(true);
       } else {
@@ -60,7 +60,8 @@ const ItemElement = forwardRef(
       setIsActionPopover(false);
     };
 
-    const actionPopoverText = 'actionPopoverText' in item && item.actionPopoverText;
+    const actionPopoverText = 'feedbackText' in item && item.feedbackText;
+    const showFeedbackInPopover = !('feedbackMode' in item) || item.feedbackMode === 'popover';
 
     return (
       <div
@@ -87,8 +88,8 @@ const ItemElement = forwardRef(
           open={popoverOpen}
           close={onPopoverClose}
           value={
-            (isActionPopover && actionPopoverText && (
-              <StatusIndicator type="success">{item.actionPopoverText}</StatusIndicator>
+            (isActionPopover && actionPopoverText && showFeedbackInPopover && (
+              <StatusIndicator type={item.popoverFeedbackType ?? 'success'}>{item.feedbackText}</StatusIndicator>
             )) ||
             item.text
           }

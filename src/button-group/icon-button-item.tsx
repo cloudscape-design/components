@@ -34,8 +34,10 @@ const IconButtonItem = forwardRef(
         ref={ref}
         data-testid={item.id}
         className={styles.item}
+        __iconWithLabel={true}
+        __focusable={!!(item.feedbackMode === 'inline' && item.feedbackText)}
       >
-        {item.text}
+        {item.feedbackMode === 'inline' && item.feedbackText ? <span>{item.feedbackText}</span> : null}
       </InternalButton>
     );
   }

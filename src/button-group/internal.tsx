@@ -20,7 +20,15 @@ import { KeyCode } from '../internal/keycode';
 
 const InternalButtonGroup = forwardRef(
   (
-    { items = [], onItemClick, __internalRootRef = null, dropdownExpandToViewport, ...props }: InternalButtonGroupProps,
+    {
+      items = [],
+      onItemClick,
+      ariaLabel,
+      ariaLabelledby,
+      dropdownExpandToViewport,
+      __internalRootRef = null,
+      ...props
+    }: InternalButtonGroupProps,
     ref: React.Ref<ButtonGroupProps.Ref>
   ) => {
     const itemsRef = useRef<Record<string, ButtonProps.Ref | null>>({});
@@ -122,13 +130,14 @@ const InternalButtonGroup = forwardRef(
       function isElementRegistered(element: HTMLElement) {
         return navigationAPI.current?.isRegistered(element) ?? false;
       }
+      // TODO: allow for disabled with feedback text
       function isElementDisabled(element: HTMLElement) {
         if (element instanceof HTMLButtonElement) {
-          return element.disabled && element.getAttribute('aria-selected') !== 'true';
+          return element.disabled;
         }
         return false;
       }
-      return getAllFocusables(target).filter(el => isElementRegistered(el) && !isElementDisabled(el));
+      return getAllFocusables(target).filter(el => isElementRegistered(el));
     }
 
     return (
@@ -137,7 +146,8 @@ const InternalButtonGroup = forwardRef(
         className={clsx(styles.root, baseProps.className)}
         ref={containerRef}
         role="toolbar"
-        aria-label="Chat actions"
+        aria-label={ariaLabel}
+        aria-labelledby={ariaLabelledby}
         onFocus={onFocus}
         onBlur={onBlur}
         onKeyDown={onKeyDown}
@@ -169,9 +179,14 @@ const InternalButtonGroup = forwardRef(
                   ref={element => onSetButtonRef(itemOrGroup, element)}
                 />
               );
+
+            const isGroupBefore = items[index - 1]?.type === 'group';
+            const isGroupNow = items[index]?.type === 'group';
+            const shouldAddDivider = isGroupBefore || (!isGroupBefore && isGroupNow && index !== 0);
+
             return (
               <React.Fragment key={itemOrGroup.type === 'group' ? itemOrGroup.text : itemOrGroup.id}>
-                {items[index - 1]?.type === 'group' && <div className={styles.divider} />}
+                {shouldAddDivider && <div className={styles.divider} />}
                 {content}
               </React.Fragment>
             );

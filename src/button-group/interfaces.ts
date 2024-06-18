@@ -44,6 +44,9 @@ export interface ButtonGroupProps extends BaseComponentProps {
    * Called when the user clicks on an item, and the item is not disabled. The event detail object contains the id of the clicked item.
    */
   onItemClick?: NonCancelableEventHandler<ButtonGroupProps.ItemClickDetails>;
+  // TODO: add API docs
+  ariaLabel?: string;
+  ariaLabelledby?: string;
   /**
    * Use this property to determine dropdown placement strategy for all menu dropdown items.
    *
@@ -78,7 +81,9 @@ export namespace ButtonGroupProps {
     iconAlt?: string;
     iconUrl?: string;
     iconSvg?: React.ReactNode;
-    actionPopoverText?: string;
+    feedbackText?: string;
+    popoverFeedbackType?: 'success' | 'error'; // Defaults to "success"
+    feedbackMode?: 'popover' | 'inline'; // Defaults to "popover"
   }
 
   export interface MenuDropdown {
