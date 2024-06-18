@@ -225,7 +225,7 @@ export default function TabsPermutations() {
           )}
         />
       </ScreenshotArea>
-      <h1>Tabs permutations</h1>
+      <h1>Actionable Tabs permutations</h1>
       <ScreenshotArea disableAnimations={true}>
         <PermutationsView
           permutations={tabActionPermutations}
