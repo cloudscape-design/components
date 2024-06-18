@@ -4,7 +4,6 @@ import React, { useImperativeHandle, useRef, forwardRef } from 'react';
 import { getBaseProps } from '../internal/base-component';
 import { ButtonGroupProps, InternalButtonGroupProps } from './interfaces';
 import { ButtonProps } from '../button/interfaces';
-import SpaceBetween from '../space-between/internal';
 import ItemElement from './item-element';
 import styles from './styles.css.js';
 import clsx from 'clsx';
@@ -76,36 +75,35 @@ const InternalButtonGroup = forwardRef(
 
     return (
       <div {...baseProps} className={clsx(styles.root, baseProps.className)} ref={__internalRootRef}>
-        <SpaceBetween direction="horizontal" size="xxs">
-          {items.map((itemOrGroup, index) => {
-            if (itemOrGroup.type === 'group') {
-              return (
-                <div key={itemOrGroup.text} role="group" aria-label={itemOrGroup.text} className={styles.group}>
-                  {itemOrGroup.items.map(item => (
-                    <ItemElement
-                      key={item.id}
-                      item={item}
-                      onItemClick={onItemClick}
-                      dropdownExpandToViewport={dropdownExpandToViewport}
-                      ref={element => onSetButtonRef(item, element)}
-                    />
-                  ))}
-                </div>
-              );
-            }
-            return (
-              <React.Fragment key={itemOrGroup.id}>
-                {items[index - 1].type === 'group' && <div className={styles.divider} />}
-                <ItemElement
-                  item={itemOrGroup}
-                  onItemClick={onItemClick}
-                  dropdownExpandToViewport={dropdownExpandToViewport}
-                  ref={element => onSetButtonRef(itemOrGroup, element)}
-                />
-              </React.Fragment>
+        {items.map((itemOrGroup, index) => {
+          const content =
+            itemOrGroup.type === 'group' ? (
+              <div key={itemOrGroup.text} role="group" aria-label={itemOrGroup.text} className={styles.group}>
+                {itemOrGroup.items.map(item => (
+                  <ItemElement
+                    key={item.id}
+                    item={item}
+                    onItemClick={onItemClick}
+                    dropdownExpandToViewport={dropdownExpandToViewport}
+                    ref={element => onSetButtonRef(item, element)}
+                  />
+                ))}
+              </div>
+            ) : (
+              <ItemElement
+                item={itemOrGroup}
+                onItemClick={onItemClick}
+                dropdownExpandToViewport={dropdownExpandToViewport}
+                ref={element => onSetButtonRef(itemOrGroup, element)}
+              />
             );
-          })}
-        </SpaceBetween>
+          return (
+            <React.Fragment key={itemOrGroup.type === 'group' ? itemOrGroup.text : itemOrGroup.id}>
+              {items[index - 1]?.type === 'group' && <div className={styles.divider} />}
+              {content}
+            </React.Fragment>
+          );
+        })}
       </div>
     );
   }

@@ -42,14 +42,14 @@ const IconButtonItem = forwardRef(
       }
     };
 
-    const onPointerEnter = () => {
+    const showTooltip = () => {
       if (!popoverOpen) {
         setIsActionPopover(false);
         setPopoverOpen(true);
       }
     };
 
-    const onPointerLeave = () => {
+    const hideTooltip = () => {
       if (!isActionPopover) {
         setPopoverOpen(false);
       }
@@ -61,7 +61,14 @@ const IconButtonItem = forwardRef(
     };
 
     return (
-      <div ref={buttonRef} onPointerEnter={onPointerEnter} onPointerLeave={onPointerLeave}>
+      <div
+        ref={buttonRef}
+        onPointerEnter={showTooltip}
+        onPointerLeave={hideTooltip}
+        onFocus={showTooltip}
+        onBlur={hideTooltip}
+        className={styles['item-wrapper']}
+      >
         <InternalButton
           variant="icon"
           loading={item.loading}
