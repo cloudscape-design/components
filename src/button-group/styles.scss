@@ -7,6 +7,15 @@
 
 .root {
   @include styles.styles-reset;
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: awsui.$space-scaled-xs;
+}
+
+.item-wrapper {
+  display: inline-block;
 }
 
 .item {
@@ -14,13 +23,11 @@
 }
 
 .group {
-  display: flex;
+  display: contents;
 }
 
 .divider {
-  background-color: awsui.$color-border-divider-active;
-  margin-inline: awsui.$space-static-xxs;
+  background-color: awsui.$color-border-divider-default;
   inline-size: awsui.$border-divider-section-width;
-  block-size: 80%;
-  margin-block-start: 0.2em;
+  margin-block: awsui.$space-static-xs;
 }

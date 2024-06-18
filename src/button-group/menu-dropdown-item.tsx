@@ -21,7 +21,7 @@ const MenuDropdownItem = React.forwardRef(
     },
     ref: React.Ref<ButtonDropdownProps.Ref>
   ) => {
-    const containerRef = useRef<HTMLDivElement>(null);
+    const menuRef = useRef<HTMLDivElement>(null);
     const [popoverOpen, setPopoverOpen] = useState(false);
     const [isActionPopover, setIsActionPopover] = useState(false);
 
@@ -37,14 +37,14 @@ const MenuDropdownItem = React.forwardRef(
       setPopoverOpen(false);
     };
 
-    const onPointerEnter = () => {
+    const showTooltip = () => {
       if (!popoverOpen) {
         setIsActionPopover(false);
         setPopoverOpen(true);
       }
     };
 
-    const onPointerLeave = () => {
+    const hideTooltip = () => {
       if (!isActionPopover) {
         setPopoverOpen(false);
       }
@@ -52,10 +52,13 @@ const MenuDropdownItem = React.forwardRef(
 
     return (
       <div
-        ref={containerRef}
+        ref={menuRef}
         onPointerDown={onPointerDown}
-        onPointerEnter={onPointerEnter}
-        onPointerLeave={onPointerLeave}
+        onPointerEnter={showTooltip}
+        onPointerLeave={hideTooltip}
+        onFocus={showTooltip}
+        onBlur={hideTooltip}
+        className={styles['item-wrapper']}
       >
         <ButtonDropdown
           ref={ref}
@@ -70,13 +73,7 @@ const MenuDropdownItem = React.forwardRef(
           data-testid={item.id}
           className={styles.item}
         />
-        <Tooltip
-          trackRef={containerRef}
-          trackKey={item.id}
-          open={popoverOpen}
-          close={onPopoverClose}
-          content={item.text}
-        />
+        <Tooltip trackRef={menuRef} trackKey={item.id} open={popoverOpen} close={onPopoverClose} content={item.text} />
       </div>
     );
   }
