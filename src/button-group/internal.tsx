@@ -11,20 +11,9 @@ import { ButtonDropdownProps } from '../button-dropdown/interfaces';
 
 const InternalButtonGroup = forwardRef(
   (
-    {
-      variant,
-      items = [],
-      onItemClick,
-      __internalRootRef = null,
-      dropdownExpandToViewport,
-      ...props
-    }: InternalButtonGroupProps,
+    { items = [], onItemClick, __internalRootRef = null, dropdownExpandToViewport, ...props }: InternalButtonGroupProps,
     ref: React.Ref<ButtonGroupProps.Ref>
   ) => {
-    if (!variant) {
-      throw new Error('Invariant violation: ButtonGroup variant is not set.');
-    }
-
     const itemsRef = useRef<Record<string, ButtonProps.Ref | null>>({});
     const baseProps = getBaseProps(props);
 
