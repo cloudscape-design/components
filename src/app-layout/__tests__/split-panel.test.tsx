@@ -92,8 +92,8 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
     isMocked = false;
   });
 
-  (['bottom', 'side'] as const).forEach(position => {
-    test(`split panel can open and close in ${position} position`, () => {
+  describe.each(['bottom', 'side'] as const)('%s position', position => {
+    test('split panel can open and close', () => {
       const { wrapper } = renderComponent(
         <AppLayout
           splitPanel={defaultSplitPanel}
@@ -112,7 +112,7 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
       expect(wrapper.findSplitPanelOpenButton()).not.toBeNull();
     });
 
-    test(`Moves focus to slider when opened in ${position} position`, () => {
+    test('Moves focus to slider when opened', () => {
       const { wrapper } = renderComponent(
         <AppLayout
           splitPanel={defaultSplitPanel}
@@ -124,7 +124,7 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
       expect(wrapper.findSplitPanel()!.findSlider()!.getElement()).toHaveFocus();
     });
 
-    test(`Moves focus to open button when closed in ${position} position`, () => {
+    test('Moves focus to open button when closed', () => {
       const { wrapper } = renderComponent(
         <AppLayout
           splitPanel={defaultSplitPanel}
@@ -168,7 +168,7 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
     });
   });
 
-  test(`should not render split panel when it is not defined in ${theme}`, () => {
+  test('should not render split panel when it is not defined', () => {
     const { wrapper, rerender } = renderComponent(<AppLayout splitPanel={defaultSplitPanel} />);
     expect(wrapper.findSplitPanel()).toBeTruthy();
     rerender(<AppLayout />);
