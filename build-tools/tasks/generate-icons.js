@@ -5,13 +5,6 @@ const { src, dest, parallel } = require('gulp');
 const themes = require('../utils/themes');
 const { through, task } = require('../utils/gulp-utils');
 
-// taken from webpack raw-loader: https://github.com/webpack-contrib/raw-loader/blob/master/src/index.js#L14
-function escapeContent(source) {
-  return JSON.stringify(source)
-    .replace(/\u2028/g, '\\u2028')
-    .replace(/\u2029/g, '\\u2029');
-}
-
 // only the shape attributes are allowed, all styling should be external
 const safeAttributes = [
   'xmlns',
@@ -58,20 +51,37 @@ function getIcon(iconName, content) {
           attributes: [{ focusable: 'false' }, { 'aria-hidden': 'true' }],
         },
       },
+      {
+        name: 'awsuiClassToClassName',
+        description: 'Replace SVG class attribute with className for JSX',
+        type: 'visitor',
+        fn: () => ({
+          element: {
+            enter: node => {
+              if (node.attributes.class) {
+                node.attributes.className = node.attributes.class;
+                delete node.attributes.class;
+              }
+            },
+          },
+        }),
+      },
     ],
   });
   return data;
 }
 
 function getModuleContent(icons) {
-  return `export default {
-  ${icons.map(({ name, content }) => `${escapeContent(name)}: ${escapeContent(content)}`)}
-  }`;
+  return `import React from 'react';
+  const icons = {
+  ${icons.map(({ name, content }) => `${JSON.stringify(name)}: ${content}`).join(',\n')}
+  };
+  export default icons;`;
 }
 
 function generateIconsTask(theme) {
-  const srcPath = 'themes/icons/*.svg';
-  const destPath = `${theme.outputPath}/icon`;
+  const srcPath = 'src/icon/icons/*.svg';
+  const destPath = 'src/icon/generated';
   const icons = [];
   return task(`generateIcons:${theme.name}`, () =>
     src(srcPath)
@@ -84,11 +94,7 @@ function generateIconsTask(theme) {
           },
           push => {
             push({
-              path: 'icons.d.ts',
-              contents: Buffer.from('declare const icons: Record<string, string>;export default icons;', 'utf8'),
-            });
-            push({
-              path: 'icons.js',
+              path: 'icons.tsx',
               contents: Buffer.from(getModuleContent(icons), 'utf8'),
             });
           }
