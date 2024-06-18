@@ -39,30 +39,31 @@ export function renderComponent(jsx: React.ReactElement) {
   return { wrapper, rerender, isUsingGridLayout, isUsingMobile, container };
 }
 
-export function describeEachThemeAppLayout(isMobile: boolean, callback: (theme: string) => void) {
-  for (const theme of ['refresh', 'classic']) {
-    describe(`${isMobile ? 'Mobile' : 'Desktop'}, Theme=${theme}`, () => {
-      beforeEach(() => {
-        (useMobile as jest.Mock).mockReturnValue(isMobile);
-        (useVisualRefresh as jest.Mock).mockReturnValue(theme === 'refresh');
-      });
-      afterEach(() => {
-        (useMobile as jest.Mock).mockReset();
-        (useVisualRefresh as jest.Mock).mockReset();
-      });
-      test('mocks applied correctly', () => {
-        const { isUsingGridLayout, isUsingMobile } = renderComponent(<AppLayout />);
-        expect(isUsingGridLayout).toEqual(theme === 'refresh');
-        expect(isUsingMobile).toEqual(isMobile);
-      });
-      callback(theme);
-    });
-  }
+type Theme = 'refresh' | 'classic';
+type Size = 'desktop' | 'mobile';
+
+interface AppLayoutTestConfig {
+  themes: Array<Theme>;
+  sizes: Array<Size>;
 }
 
-export function describeEachAppLayout(callback: (size: 'desktop' | 'mobile') => void) {
-  for (const theme of ['refresh', 'classic']) {
-    for (const size of ['desktop', 'mobile'] as const) {
+type AppLayoutTestSuite = (config: { theme: Theme; size: Size }) => void;
+
+const defaultTestConfig: AppLayoutTestConfig = {
+  themes: ['classic', 'refresh'],
+  sizes: ['desktop', 'mobile'],
+};
+
+export function describeEachAppLayout(callback: AppLayoutTestSuite): void;
+export function describeEachAppLayout(config: Partial<AppLayoutTestConfig>, callback: AppLayoutTestSuite): void;
+export function describeEachAppLayout(
+  ...args: [AppLayoutTestSuite] | [Partial<AppLayoutTestConfig>, AppLayoutTestSuite]
+) {
+  const config = args.length === 1 ? defaultTestConfig : { ...defaultTestConfig, ...args[0] };
+  const callback = args.length === 1 ? args[0] : args[1];
+
+  for (const theme of config.themes) {
+    for (const size of config.sizes) {
       describe(`Theme=${theme}, Size=${size}`, () => {
         beforeEach(() => {
           (useMobile as jest.Mock).mockReturnValue(size === 'mobile');
@@ -77,7 +78,7 @@ export function describeEachAppLayout(callback: (size: 'desktop' | 'mobile') => 
           expect(isUsingGridLayout).toEqual(theme === 'refresh');
           expect(isUsingMobile).toEqual(size === 'mobile');
         });
-        callback(size);
+        callback({ theme, size });
       });
     }
   }

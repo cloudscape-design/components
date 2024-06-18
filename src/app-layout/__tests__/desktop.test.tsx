@@ -4,7 +4,7 @@ import React from 'react';
 import { act, fireEvent, screen, within } from '@testing-library/react';
 
 import {
-  describeEachThemeAppLayout,
+  describeEachAppLayout,
   isDrawerClosed,
   renderComponent,
   testDrawer,
@@ -27,7 +27,7 @@ jest.mock('@cloudscape-design/component-toolkit', () => ({
   useContainerQuery: () => [1300, () => {}],
 }));
 
-describeEachThemeAppLayout(false, () => {
+describeEachAppLayout({ sizes: ['desktop'] }, () => {
   test('renders breadcrumbs and notifications inside of the main landmark', () => {
     const { wrapper } = renderComponent(<AppLayout breadcrumbs="breadcrumbs" notifications="notifications" />);
     const mains = document.querySelectorAll('main');
