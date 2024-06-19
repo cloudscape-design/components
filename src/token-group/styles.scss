@@ -87,7 +87,7 @@
   @include token-box-validation;
 }
 .token-box-readonly {
-  border-color: awsui.$color-border-control-disabled;
+  border-color: awsui.$color-border-input-disabled;
   background-color: awsui.$color-background-container-content;
   pointer-events: none;
 
