@@ -23,9 +23,9 @@
 
   @include styles.with-direction('rtl') {
     &::after {
-      inset-inline-start: -50%;
       @include styles.with-motion {
-        animation-direction: reverse;
+        animation: gradientMoveReverse awsui.$motion-duration-avatar-gen-ai-gradient infinite
+          awsui.$motion-easing-avatar-gen-ai-gradient;
       }
     }
   }
@@ -37,8 +37,31 @@
     transform: translate(-50%, -50%) rotate(0deg);
   }
 
+  50% {
+    block-size: 44px;
+    inline-size: 44px;
+  }
+
   100% {
     transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes gradientMoveReverse {
+  0% {
+    transform: translate(-50%, -50%) rotate(360deg);
+    inset-inline-start: -50%;
+  }
+
+  50% {
+    block-size: 44px;
+    inline-size: 44px;
+    inset-inline-start: -100%;
+  }
+
+  100% {
+    transform: translate(-50%, -50%) rotate(0deg);
+    inset-inline-start: -50%;
   }
 }
 
