@@ -98,6 +98,7 @@ const permutations = createPermutations<any>([
   },
   {
     placeholder: ['Select an item'],
+    disabled: [false, true],
     readOnly: [true],
     triggerVariant: ['label'],
     triggerProps: [{}],

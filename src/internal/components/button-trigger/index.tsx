@@ -70,7 +70,7 @@ const ButtonTrigger = (
       invalid && styles.invalid,
       warning && !invalid && styles.warning,
       !hideCaret && styles['has-caret'],
-      readOnly && styles['read-only'],
+      readOnly && styles.readonly,
       inFilteringToken && styles['in-filtering-token'],
       inlineTokens && styles['inline-tokens']
     ),
