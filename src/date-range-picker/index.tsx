@@ -142,6 +142,7 @@ const DateRangePicker = React.forwardRef(
         readOnly,
         showClearButton,
         timeInputFormat,
+        hideTimeOffset,
       },
     });
     checkControlled('DateRangePicker', 'value', value, 'onChange', onChange);

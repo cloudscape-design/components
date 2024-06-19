@@ -6,12 +6,11 @@ import TokenGroup, { TokenGroupProps } from '../../../lib/components/token-group
 import { Token } from '../../../lib/components/token-group/token';
 import createWrapper, { TokenGroupWrapper, IconWrapper } from '../../../lib/components/test-utils/dom';
 
-import icons from '../../../lib/components/icon/icons';
-
 import selectors from '../../../lib/components/token-group/styles.selectors.js';
 import optionSelectors from '../../../lib/components/internal/components/option/styles.selectors.js';
 import tokenListSelectors from '../../../lib/components/internal/components/token-list/styles.selectors.js';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
+import { getIconHTML } from '../../icon/__tests__/utils';
 
 function renderTokenGroup(props: TokenGroupProps = {}): TokenGroupWrapper {
   const { container } = render(<TokenGroup {...props} />);
@@ -200,7 +199,7 @@ describe('TokenGroup', () => {
       const wrapper = renderTokenGroup({ items: generateItems(5), i18nStrings, limit: 2 });
       const icon = wrapper.findTokenToggle()!.find('svg');
 
-      expect(icon!.getElement()).toContainHTML(icons['treeview-expand']);
+      expect(icon!.getElement()).toContainHTML(getIconHTML('treeview-expand'));
     });
 
     test('shows collapse icon when there tokens hidden', () => {
@@ -208,7 +207,7 @@ describe('TokenGroup', () => {
       wrapper.findTokenToggle()!.click();
 
       const icon = wrapper.findTokenToggle()!.find('svg');
-      expect(icon!.getElement()).toContainHTML(icons['treeview-collapse']);
+      expect(icon!.getElement()).toContainHTML(getIconHTML('treeview-collapse'));
     });
 
     test('sets no aria-label text on the expand button by default', () => {

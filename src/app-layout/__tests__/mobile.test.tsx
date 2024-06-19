@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { act } from 'react-dom/test-utils';
 import { within } from '@testing-library/react';
 import {
-  describeEachThemeAppLayout,
+  describeEachAppLayout,
   isDrawerClosed,
   renderComponent,
   testDrawer,
@@ -50,7 +50,7 @@ function AppLayoutWithControlledNavigation({
   );
 }
 
-describeEachThemeAppLayout(true, theme => {
+describeEachAppLayout({ sizes: ['mobile'] }, ({ theme }) => {
   // In refactored Visual Refresh different styles are used compared to Classic
   const mobileBarClassName = theme === 'refresh' ? testUtilsStyles['mobile-bar'] : toolbarStyles['mobile-bar'];
   const drawerBarClassName =
@@ -336,7 +336,7 @@ describeEachThemeAppLayout(true, theme => {
   test('closes navigation via ref', () => {
     let ref: AppLayoutProps.Ref | null = null;
     const { wrapper } = renderComponent(<AppLayout ref={newRef => (ref = newRef)} />);
-    act(() => wrapper.findNavigationToggle().click());
+    wrapper.findNavigationToggle().click();
     expect(isDrawerClosed(wrapper.findNavigation())).toBe(false);
     expect(wrapper.findNavigationClose().getElement()).toEqual(document.activeElement);
     act(() => ref!.closeNavigationIfNecessary());

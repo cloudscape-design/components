@@ -43,7 +43,7 @@ const drawerDefaults: DrawerConfig = {
   unmountContent: () => {},
 };
 
-describeEachAppLayout(size => {
+describeEachAppLayout(({ size }) => {
   test('does not render runtime drawers when it is explicitly disabled', async () => {
     awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
     const { wrapper } = await renderComponent(<AppLayout {...({ __disableRuntimeDrawers: true } as any)} />);

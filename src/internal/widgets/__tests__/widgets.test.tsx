@@ -2,11 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
-import { FlagsHolder, awsuiGlobalFlagsSymbol } from '../../../../lib/components/internal/utils/global-flags';
 import { useVisualRefresh } from '../../../../lib/components/internal/hooks/use-visual-mode';
 import { createWidgetizedComponent, createWidgetizedForwardRef } from '../../../../lib/components/internal/widgets';
-
-declare const window: Window & FlagsHolder;
+import { describeWithAppLayoutFeatureFlagEnabled } from './utils';
 
 const LoaderSkeleton = () => <div data-testid="loader">Loading...</div>;
 const RealComponent = () => <div data-testid="content">Real content</div>;
@@ -39,20 +37,6 @@ jest.mock('../../../../lib/components/internal/hooks/use-visual-mode', () => ({
   useVisualRefresh: jest.fn().mockReturnValue(false),
 }));
 
-function describeWithFeatureFlag(tests: () => void) {
-  describe('when feature flag is active', () => {
-    beforeEach(() => {
-      window[awsuiGlobalFlagsSymbol] = { appLayoutWidget: true };
-    });
-
-    afterEach(() => {
-      delete window[awsuiGlobalFlagsSymbol];
-    });
-
-    tests();
-  });
-}
-
 describe('Classic design', () => {
   beforeEach(() => {
     jest.mocked(useVisualRefresh).mockReturnValue(false);
@@ -64,7 +48,7 @@ describe('Classic design', () => {
     expect(findLoader(container)).toBeFalsy();
   });
 
-  describeWithFeatureFlag(() => {
+  describeWithAppLayoutFeatureFlagEnabled(() => {
     test('should render normal layout', () => {
       const { container } = render(<WidgetizedComponent />);
       expect(findContent(container)).toBeTruthy();
@@ -84,7 +68,7 @@ describe('Refresh design', () => {
     expect(findLoader(container)).toBeFalsy();
   });
 
-  describeWithFeatureFlag(() => {
+  describeWithAppLayoutFeatureFlagEnabled(() => {
     test('should render loader', () => {
       const { container } = render(<WidgetizedComponent />);
       expect(findContent(container)).toBeFalsy();
@@ -102,7 +86,7 @@ describe('Ref handling', () => {
     expect(ref.current).toHaveTextContent('Real content');
   });
 
-  describeWithFeatureFlag(() => {
+  describeWithAppLayoutFeatureFlagEnabled(() => {
     test('should forward ref to loader', () => {
       const ref = React.createRef<HTMLDivElement>();
       const { container } = render(<WidgetizedComponentWithRef ref={ref} />);

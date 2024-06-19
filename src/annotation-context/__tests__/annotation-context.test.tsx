@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import { act, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import AnnotationContext from '../../../lib/components/annotation-context';
 import Hotspot from '../../../lib/components/hotspot';
 import createWrapper from '../../../lib/components/test-utils/dom';
@@ -210,13 +210,13 @@ test('does not run into an endless loop in (un)registerHotspot when toggling Hot
   const { wrapper, onStepChange } = renderAnnotationContext(<ToggleExample />);
   const toggleButton = wrapper.find('#toggle-button')!;
 
-  act(() => toggleButton.click()); // hide the first hotspot
+  toggleButton.click(); // hide the first hotspot
   expect(onStepChange).toHaveBeenCalledWith(
     expect.objectContaining({ detail: expect.objectContaining({ reason: 'auto-fallback' }) })
   );
   onStepChange.mockClear();
 
-  act(() => toggleButton.click()); // show the first hotspot again
+  toggleButton.click(); // show the first hotspot again
   expect(onStepChange).not.toHaveBeenCalled();
 
   /*
