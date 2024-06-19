@@ -7,7 +7,7 @@ import { AppLayoutProps } from '../../../lib/components/app-layout/interfaces';
 import SplitPanel from '../../../lib/components/split-panel';
 import { KeyCode } from '../../../lib/components/internal/keycode';
 import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
-import { renderComponent, splitPanelI18nStrings } from './utils';
+import { describeEachAppLayout, renderComponent, splitPanelI18nStrings } from './utils';
 import applayoutTools from '../../../lib/components/app-layout/visual-refresh/styles.selectors.js';
 import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
 
@@ -63,127 +63,118 @@ afterEach(() => {
   window.getComputedStyle = originalGetComputedStyle;
 });
 
-for (const theme of ['refresh', 'classic']) {
-  describe(`Theme=${theme}`, () => {
-    beforeEach(() => {
-      (useVisualRefresh as jest.Mock).mockReturnValue(theme === 'refresh');
-    });
-    afterEach(() => {
-      (useVisualRefresh as jest.Mock).mockReset();
-    });
+describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
+  test('should render split panel in bottom position', () => {
+    const { wrapper } = renderComponent(
+      <AppLayout
+        splitPanel={defaultSplitPanel}
+        splitPanelOpen={true}
+        onSplitPanelToggle={noop}
+        splitPanelPreferences={{ position: 'bottom' }}
+        onSplitPanelPreferencesChange={noop}
+      />
+    );
+    expect(wrapper.findSplitPanel()!.findOpenPanelBottom()).not.toBeNull();
+  });
 
-    test('should render split panel in bottom position', () => {
+  test('should render split panel in side position', () => {
+    isMocked = true;
+    const { wrapper } = renderComponent(
+      <AppLayout
+        splitPanel={defaultSplitPanel}
+        splitPanelOpen={true}
+        onSplitPanelToggle={noop}
+        splitPanelPreferences={{ position: 'side' }}
+        onSplitPanelPreferencesChange={noop}
+      />
+    );
+    expect(wrapper.findSplitPanel()!.findOpenPanelSide()).not.toBeNull();
+    isMocked = false;
+  });
+
+  describe.each(['bottom', 'side'] as const)('%s position', position => {
+    test('split panel can open and close', () => {
       const { wrapper } = renderComponent(
         <AppLayout
           splitPanel={defaultSplitPanel}
-          splitPanelOpen={true}
-          onSplitPanelToggle={noop}
-          splitPanelPreferences={{ position: 'bottom' }}
+          splitPanelPreferences={{ position }}
           onSplitPanelPreferencesChange={noop}
         />
       );
-      expect(wrapper.findSplitPanel()!.findOpenPanelBottom()).not.toBeNull();
+      expect(wrapper.findSplitPanelOpenButton()).not.toBeNull();
+      wrapper.findSplitPanelOpenButton()!.click();
+      if (position === 'side' && theme === 'refresh') {
+        expect(wrapper.findSplitPanelOpenButton()).not.toBeNull();
+      } else {
+        expect(wrapper.findSplitPanelOpenButton()).toBeNull();
+      }
+      wrapper.findSplitPanel()!.findCloseButton()!.click();
+      expect(wrapper.findSplitPanelOpenButton()).not.toBeNull();
     });
 
-    test('should render split panel in side position', () => {
-      isMocked = true;
+    test('Moves focus to slider when opened', () => {
       const { wrapper } = renderComponent(
         <AppLayout
           splitPanel={defaultSplitPanel}
-          splitPanelOpen={true}
-          onSplitPanelToggle={noop}
-          splitPanelPreferences={{ position: 'side' }}
+          splitPanelPreferences={{ position }}
           onSplitPanelPreferencesChange={noop}
         />
       );
-      expect(wrapper.findSplitPanel()!.findOpenPanelSide()).not.toBeNull();
-      isMocked = false;
+      wrapper.findSplitPanelOpenButton()!.click();
+      expect(wrapper.findSplitPanel()!.findSlider()!.getElement()).toHaveFocus();
     });
 
-    (['bottom', 'side'] as const).forEach(position => {
-      test(`split panel can open and close in ${position} position`, () => {
-        const { wrapper } = renderComponent(
-          <AppLayout
-            splitPanel={defaultSplitPanel}
-            splitPanelPreferences={{ position }}
-            onSplitPanelPreferencesChange={noop}
-          />
-        );
-        expect(wrapper.findSplitPanelOpenButton()).not.toBeNull();
-        wrapper.findSplitPanelOpenButton()!.click();
-        if (position === 'side' && theme === 'refresh') {
-          expect(wrapper.findSplitPanelOpenButton()).not.toBeNull();
-        } else {
-          expect(wrapper.findSplitPanelOpenButton()).toBeNull();
-        }
-        wrapper.findSplitPanel()!.findCloseButton()!.click();
-        expect(wrapper.findSplitPanelOpenButton()).not.toBeNull();
-      });
-
-      test(`Moves focus to slider when opened in ${position} position`, () => {
-        const { wrapper } = renderComponent(
-          <AppLayout
-            splitPanel={defaultSplitPanel}
-            splitPanelPreferences={{ position }}
-            onSplitPanelPreferencesChange={noop}
-          />
-        );
-        wrapper.findSplitPanelOpenButton()!.click();
-        expect(wrapper.findSplitPanel()!.findSlider()!.getElement()).toHaveFocus();
-      });
-
-      test(`Moves focus to open button when closed in ${position} position`, () => {
-        const { wrapper } = renderComponent(
-          <AppLayout
-            splitPanel={defaultSplitPanel}
-            splitPanelPreferences={{ position }}
-            onSplitPanelPreferencesChange={noop}
-          />
-        );
-        wrapper.findSplitPanelOpenButton()!.click();
-        wrapper.findSplitPanel()!.findCloseButton()!.click();
-        expect(wrapper.findSplitPanelOpenButton()!.getElement()).toHaveFocus();
-      });
-
-      test(`Moves focus to the slider when focusSplitPanel() is called`, () => {
-        const ref: React.MutableRefObject<AppLayoutProps.Ref | null> = React.createRef();
-        const { wrapper } = renderComponent(
-          <AppLayout
-            ref={ref}
-            splitPanel={defaultSplitPanel}
-            splitPanelOpen={true}
-            splitPanelPreferences={{ position }}
-            onSplitPanelPreferencesChange={noop}
-          />
-        );
-        ref.current!.focusSplitPanel();
-        expect(wrapper.findSplitPanel()!.findSlider()!.getElement()).toHaveFocus();
-      });
-
-      test(`Does nothing when focusSplitPanel() is called but split panel is closed`, () => {
-        const ref: React.MutableRefObject<AppLayoutProps.Ref | null> = React.createRef();
-        renderComponent(
-          <AppLayout
-            ref={ref}
-            splitPanel={defaultSplitPanel}
-            splitPanelPreferences={{ position }}
-            onSplitPanelPreferencesChange={noop}
-          />
-        );
-        const previouslyFocusedElement = document.activeElement;
-        ref.current!.focusSplitPanel();
-        expect(previouslyFocusedElement).toHaveFocus();
-      });
+    test('Moves focus to open button when closed', () => {
+      const { wrapper } = renderComponent(
+        <AppLayout
+          splitPanel={defaultSplitPanel}
+          splitPanelPreferences={{ position }}
+          onSplitPanelPreferencesChange={noop}
+        />
+      );
+      wrapper.findSplitPanelOpenButton()!.click();
+      wrapper.findSplitPanel()!.findCloseButton()!.click();
+      expect(wrapper.findSplitPanelOpenButton()!.getElement()).toHaveFocus();
     });
 
-    test(`should not render split panel when it is not defined in ${theme}`, () => {
-      const { wrapper, rerender } = renderComponent(<AppLayout splitPanel={defaultSplitPanel} />);
-      expect(wrapper.findSplitPanel()).toBeTruthy();
-      rerender(<AppLayout />);
-      expect(wrapper.findSplitPanel()).toBeFalsy();
+    test(`Moves focus to the slider when focusSplitPanel() is called`, () => {
+      const ref: React.MutableRefObject<AppLayoutProps.Ref | null> = React.createRef();
+      const { wrapper } = renderComponent(
+        <AppLayout
+          ref={ref}
+          splitPanel={defaultSplitPanel}
+          splitPanelOpen={true}
+          splitPanelPreferences={{ position }}
+          onSplitPanelPreferencesChange={noop}
+        />
+      );
+      ref.current!.focusSplitPanel();
+      expect(wrapper.findSplitPanel()!.findSlider()!.getElement()).toHaveFocus();
+    });
+
+    test(`Does nothing when focusSplitPanel() is called but split panel is closed`, () => {
+      const ref: React.MutableRefObject<AppLayoutProps.Ref | null> = React.createRef();
+      renderComponent(
+        <AppLayout
+          ref={ref}
+          splitPanel={defaultSplitPanel}
+          splitPanelPreferences={{ position }}
+          onSplitPanelPreferencesChange={noop}
+        />
+      );
+      const previouslyFocusedElement = document.activeElement;
+      ref.current!.focusSplitPanel();
+      expect(previouslyFocusedElement).toHaveFocus();
     });
   });
-}
+
+  test('should not render split panel when it is not defined', () => {
+    const { wrapper, rerender } = renderComponent(<AppLayout splitPanel={defaultSplitPanel} />);
+    expect(wrapper.findSplitPanel()).toBeTruthy();
+    rerender(<AppLayout />);
+    expect(wrapper.findSplitPanel()).toBeFalsy();
+  });
+});
 
 describe('Visual refresh only features', () => {
   beforeEach(() => {
