@@ -6436,6 +6436,25 @@ is provided by its parent form field component.
       "type": "DateRangePickerProps.AbsoluteRangeControl",
     },
     Object {
+      "defaultValue": "() => ''",
+      "description": "Provides a reason why a particular date in the calendar is not enabled (only when \`isDateEnabled\` returns \`false\`).
+If provided, the date becomes focusable.",
+      "inlineType": Object {
+        "name": "DateRangePickerProps.DateDisabledReasonFunction",
+        "parameters": Array [
+          Object {
+            "name": "date",
+            "type": "Date",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "dateDisabledReason",
+      "optional": true,
+      "type": "DateRangePickerProps.DateDisabledReasonFunction",
+    },
+    Object {
       "defaultValue": "false",
       "description": "Hides time inputs and changes the input format to date-only, e.g. 2021-04-06.
 Do not use \`dateOnly\` flag conditionally. The component does not trigger the value update

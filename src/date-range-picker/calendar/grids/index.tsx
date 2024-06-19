@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { KeyCode } from '../../../internal/keycode';
 import { isSameMonth, isAfter, isBefore, addMonths, min, max } from 'date-fns';
 
@@ -34,6 +34,7 @@ export interface GridProps {
   onFocusedDateChange: React.Dispatch<React.SetStateAction<Date | null>>;
 
   isDateEnabled: DateRangePickerProps.IsDateEnabledFunction;
+  dateDisabledReason: DateRangePickerProps.DateDisabledReasonFunction;
   isSingleGrid: boolean;
 
   onSelectDate: (date: Date) => void;
@@ -54,6 +55,7 @@ export const Grids = ({
   onFocusedDateChange,
 
   isDateEnabled,
+  dateDisabledReason,
   isSingleGrid,
 
   onSelectDate,
@@ -73,18 +75,25 @@ export const Grids = ({
   baseDate = dateCache(baseDate);
   focusedDate = focusedDate ? dateCache(focusedDate) : null;
 
+  const isDateFocusable = useCallback(
+    (date: Date) => {
+      return isDateEnabled(date) || (!isDateEnabled(date) && !!dateDisabledReason(date));
+    },
+    [isDateEnabled, dateDisabledReason]
+  );
+
   useEffect(() => {
     if (focusedDate && !isVisible(focusedDate, baseDate, isSingleGrid)) {
       const direction = isAfter(focusedDate, baseDate) ? -1 : 1;
 
       const newMonth = !isSingleGrid && direction === -1 ? addMonths(baseDate, -1) : baseDate;
-      const nearestBaseDate = getBaseDay(newMonth, isDateEnabled);
+      const nearestBaseDate = getBaseDay(newMonth, isDateFocusable);
 
-      const newFocusedDate = findDateToFocus(focusedDate, nearestBaseDate, isDateEnabled);
+      const newFocusedDate = findDateToFocus(focusedDate, nearestBaseDate, isDateFocusable);
 
       onFocusedDateChange(newFocusedDate);
     }
-  }, [baseDate, focusedDate, isSingleGrid, isDateEnabled, onFocusedDateChange]);
+  }, [baseDate, focusedDate, isSingleGrid, isDateFocusable, onFocusedDateChange]);
 
   const onGridKeyDownHandler = (event: React.KeyboardEvent<HTMLElement>) => {
     let updatedFocusDate;
@@ -98,11 +107,17 @@ export const Grids = ({
     event.preventDefault();
 
     handleKey(event, {
-      onActivate: () => focusedDate && onSelectDate(focusedDate),
-      onBlockEnd: () => focusedDate && (updatedFocusDate = moveNextWeek(focusedDate, isDateEnabled)),
-      onBlockStart: () => focusedDate && (updatedFocusDate = movePrevWeek(focusedDate, isDateEnabled)),
-      onInlineEnd: () => focusedDate && (updatedFocusDate = moveNextDay(focusedDate, isDateEnabled)),
-      onInlineStart: () => focusedDate && (updatedFocusDate = movePrevDay(focusedDate, isDateEnabled)),
+      onActivate: () => {
+        if (!focusedDate || !isDateEnabled(focusedDate)) {
+          return;
+        }
+
+        onSelectDate(focusedDate);
+      },
+      onBlockEnd: () => focusedDate && (updatedFocusDate = moveNextWeek(focusedDate, isDateFocusable)),
+      onBlockStart: () => focusedDate && (updatedFocusDate = movePrevWeek(focusedDate, isDateFocusable)),
+      onInlineEnd: () => focusedDate && (updatedFocusDate = moveNextDay(focusedDate, isDateFocusable)),
+      onInlineStart: () => focusedDate && (updatedFocusDate = movePrevDay(focusedDate, isDateFocusable)),
     });
 
     if (!updatedFocusDate) {
@@ -163,6 +178,7 @@ export const Grids = ({
             focusedDate={focusedDate}
             focusedDateRef={focusedDateRef}
             isDateEnabled={isDateEnabled}
+            dateDisabledReason={dateDisabledReason}
             onSelectDate={onSelectDate}
             onGridKeyDownHandler={onGridKeyDownHandler}
             onFocusedDateChange={onFocusedDateChange}
@@ -182,6 +198,7 @@ export const Grids = ({
           focusedDate={focusedDate}
           focusedDateRef={focusedDateRef}
           isDateEnabled={isDateEnabled}
+          dateDisabledReason={dateDisabledReason}
           onSelectDate={onSelectDate}
           onGridKeyDownHandler={onGridKeyDownHandler}
           onFocusedDateChange={onFocusedDateChange}
