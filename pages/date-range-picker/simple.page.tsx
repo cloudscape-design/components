@@ -61,7 +61,8 @@ export default function DatePickerScenario() {
             dateOnly={dateOnly}
             timeInputFormat="hh:mm"
             rangeSelectorMode={rangeSelectorMode}
-            isDateEnabled={date => date.getDate() !== 15}
+            isDateEnabled={date => date.getDate() !== 14 && date.getDate() !== 15}
+            dateDisabledReason={date => (date.getDate() === 14 || date.getDate() === 15 ? 'Disabled reason' : '')}
             getTimeOffset={date => -1 * date.getTimezoneOffset()}
             invalid={invalid}
             warning={warning}

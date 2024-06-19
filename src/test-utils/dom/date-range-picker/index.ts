@@ -11,6 +11,16 @@ import RadioGroupWrapper from '../radio-group';
 import InputWrapper from '../input';
 import SegmentedControlWrapper from '../segmented-control';
 
+export class CalendarDateWrapper extends ComponentWrapper {
+  findDisabledReason(): ElementWrapper | null {
+    return this.find(`.${gridStyles['disabled-reason-tooltip']}`);
+  }
+
+  findDisabledReasonDescription(): ElementWrapper | null {
+    return this.find('span[hidden]');
+  }
+}
+
 export default class DateRangePickerWrapper extends ComponentWrapper {
   static rootSelector: string = styles.root;
 
@@ -107,10 +117,15 @@ export class DrpDropdownWrapper extends ComponentWrapper {
    * @param row 1-based row index of the day.
    * @param column 1-based column index of the day.
    */
-  findDateAt(grid: 'left' | 'right', row: 1 | 2 | 3 | 4 | 5 | 6, column: 1 | 2 | 3 | 4 | 5 | 6 | 7): ElementWrapper {
+  findDateAt(
+    grid: 'left' | 'right',
+    row: 1 | 2 | 3 | 4 | 5 | 6,
+    column: 1 | 2 | 3 | 4 | 5 | 6 | 7
+  ): CalendarDateWrapper {
     const gridClassName = grid === 'right' ? styles['second-grid'] : styles['first-grid'];
-    return this.find(
-      `.${gridClassName} .${gridStyles.week}:nth-child(${row}) .${gridStyles.day}:nth-child(${column})`
+    return this.findComponent(
+      `.${gridClassName} .${gridStyles.week}:nth-child(${row}) .${gridStyles.day}:nth-child(${column})`,
+      CalendarDateWrapper
     )!;
   }
 

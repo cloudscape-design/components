@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
+import ReactDOM from 'react-dom';
 import Mockdate from 'mockdate';
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import DateRangePickerWrapper from '../../../../lib/components/test-utils/dom/date-range-picker';
 import DateRangePicker, { DateRangePickerProps } from '../../../../lib/components/date-range-picker';
 import styles from '../../../../lib/components/date-range-picker/styles.selectors.js';
@@ -357,6 +358,7 @@ describe('Date range picker calendar', () => {
 
   describe('disabled date', () => {
     const isDateEnabled = (date: Date) => date.getDate() < 15;
+    const dateDisabledReason = (date: Date) => (date.getDate() >= 15 ? 'Disabled with a reason' : '');
 
     test('should be able to select enabled date', () => {
       const { wrapper } = renderDateRangePicker({
@@ -390,6 +392,197 @@ describe('Date range picker calendar', () => {
 
       expect(wrapper.findDropdown()!.findSelectedStartDate()!.getElement()).toHaveTextContent('1');
       expect(wrapper.findDropdown()!.findStartDateInput()!.findNativeInput().getElement().value).toBe('2018/03/01');
+    });
+
+    describe('disabled with reason', () => {
+      beforeEach(() => {
+        jest.spyOn(ReactDOM, 'createPortal').mockImplementation((element: any) => element);
+      });
+      afterEach(() => {
+        jest.restoreAllMocks();
+      });
+
+      test('has no tooltip open by default', () => {
+        const { wrapper } = renderDateRangePicker({
+          ...defaultProps,
+          value: { type: 'absolute', startDate: '2018-03-01T00:00:00', endDate: '2018-03-01T00:00:00' },
+          isDateEnabled,
+          dateDisabledReason,
+        });
+        changeMode(wrapper, 'absolute');
+
+        expect(wrapper.findDropdown()!.findDateAt('left', 4, 1).findDisabledReason()).toBe(null);
+      });
+
+      test('has no tooltip without disabledReason', () => {
+        const { wrapper } = renderDateRangePicker({
+          ...defaultProps,
+          value: { type: 'absolute', startDate: '2018-03-01T00:00:00', endDate: '2018-03-01T00:00:00' },
+          isDateEnabled,
+        });
+        changeMode(wrapper, 'absolute');
+
+        // The calendar date handles two onFocus events to show the disabled reason popup: one to make the date focus, and the other to show the popup.
+        // wrapper.findDropdown()!.findDateAt(...).focus() triggers only one of them
+        fireEvent.focus(wrapper.findDropdown()!.findDateAt('left', 4, 1)!.getElement());
+
+        expect(wrapper.findDropdown()!.findDateAt('left', 4, 1).findDisabledReason()).toBe(null);
+      });
+
+      test('open tooltip on focus', () => {
+        const { wrapper } = renderDateRangePicker({
+          ...defaultProps,
+          value: { type: 'absolute', startDate: '2018-03-01T00:00:00', endDate: '2018-03-01T00:00:00' },
+          isDateEnabled,
+          dateDisabledReason,
+        });
+        changeMode(wrapper, 'absolute');
+
+        fireEvent.focus(wrapper.findDropdown()!.findDateAt('left', 4, 1)!.getElement());
+
+        expect(wrapper.findDropdown()!.findDateAt('left', 4, 1).findDisabledReason()!.getElement()).toHaveTextContent(
+          'Disabled with a reason'
+        );
+      });
+
+      test('closes tooltip on blur', () => {
+        const { wrapper } = renderDateRangePicker({
+          ...defaultProps,
+          value: { type: 'absolute', startDate: '2018-03-01T00:00:00', endDate: '2018-03-01T00:00:00' },
+          isDateEnabled,
+          dateDisabledReason,
+        });
+        changeMode(wrapper, 'absolute');
+
+        fireEvent.focus(wrapper.findDropdown()!.findDateAt('left', 4, 1)!.getElement());
+
+        expect(wrapper.findDropdown()!.findDateAt('left', 4, 1).findDisabledReason()!.getElement()).toHaveTextContent(
+          'Disabled with a reason'
+        );
+
+        fireEvent.blur(wrapper.findDropdown()!.findDateAt('left', 4, 1)!.getElement());
+
+        expect(wrapper.findDropdown()!.findDateAt('left', 4, 1).findDisabledReason()).toBe(null);
+      });
+
+      test('open tooltip on mouseenter', () => {
+        const { wrapper } = renderDateRangePicker({
+          ...defaultProps,
+          value: { type: 'absolute', startDate: '2018-03-01T00:00:00', endDate: '2018-03-01T00:00:00' },
+          isDateEnabled,
+          dateDisabledReason,
+        });
+        changeMode(wrapper, 'absolute');
+
+        fireEvent.mouseEnter(wrapper.findDropdown()!.findDateAt('left', 4, 1).getElement());
+
+        expect(wrapper.findDropdown()!.findDateAt('left', 4, 1).findDisabledReason()!.getElement()).toHaveTextContent(
+          'Disabled with a reason'
+        );
+      });
+
+      test('close tooltip on mouseleave', () => {
+        const { wrapper } = renderDateRangePicker({
+          ...defaultProps,
+          value: { type: 'absolute', startDate: '2018-03-01T00:00:00', endDate: '2018-03-01T00:00:00' },
+          isDateEnabled,
+          dateDisabledReason,
+        });
+        changeMode(wrapper, 'absolute');
+
+        fireEvent.mouseEnter(wrapper.findDropdown()!.findDateAt('left', 4, 1).getElement());
+
+        expect(wrapper.findDropdown()!.findDateAt('left', 4, 1).findDisabledReason()!.getElement()).toHaveTextContent(
+          'Disabled with a reason'
+        );
+
+        fireEvent.mouseLeave(wrapper.findDropdown()!.findDateAt('left', 4, 1).getElement());
+
+        expect(wrapper.findDropdown()!.findDateAt('left', 4, 1).findDisabledReason()).toBe(null);
+      });
+
+      test('has no aria-describedby by default', () => {
+        const { wrapper } = renderDateRangePicker({
+          ...defaultProps,
+          value: { type: 'absolute', startDate: '2018-03-01T00:00:00', endDate: '2018-03-01T00:00:00' },
+        });
+        changeMode(wrapper, 'absolute');
+
+        expect(wrapper.findDropdown()!.findDateAt('left', 4, 1).getElement()).not.toHaveAttribute('aria-describedby');
+      });
+
+      test('has no aria-describedby without disabledReason', () => {
+        const { wrapper } = renderDateRangePicker({
+          ...defaultProps,
+          value: { type: 'absolute', startDate: '2018-03-01T00:00:00', endDate: '2018-03-01T00:00:00' },
+          isDateEnabled,
+        });
+        changeMode(wrapper, 'absolute');
+
+        expect(wrapper.findDropdown()!.findDateAt('left', 4, 1).getElement()).not.toHaveAttribute('aria-describedby');
+      });
+
+      test('has aria-describedby with disabledReason', () => {
+        const { wrapper } = renderDateRangePicker({
+          ...defaultProps,
+          value: { type: 'absolute', startDate: '2018-03-01T00:00:00', endDate: '2018-03-01T00:00:00' },
+          isDateEnabled,
+          dateDisabledReason,
+        });
+        changeMode(wrapper, 'absolute');
+
+        expect(wrapper.findDropdown()!.findDateAt('left', 4, 1).getElement()).toHaveAttribute('aria-describedby');
+      });
+
+      test('has hidden element (linked to aria-describedby) with disabledReason', () => {
+        const { wrapper } = renderDateRangePicker({
+          ...defaultProps,
+          value: { type: 'absolute', startDate: '2018-03-01T00:00:00', endDate: '2018-03-01T00:00:00' },
+          isDateEnabled,
+          dateDisabledReason,
+        });
+        changeMode(wrapper, 'absolute');
+
+        expect(
+          wrapper.findDropdown()!.findDateAt('left', 4, 1).findDisabledReasonDescription()!.getElement()
+        ).toHaveTextContent('Disabled with a reason');
+      });
+
+      test('disabled with reason start date can not be selected on space keydown', () => {
+        const { wrapper } = renderDateRangePicker({
+          ...defaultProps,
+          value: { type: 'absolute', startDate: '2018-03-01T00:00:00', endDate: '2018-03-01T00:00:00' },
+          isDateEnabled,
+          dateDisabledReason,
+        });
+        changeMode(wrapper, 'absolute');
+
+        expect(wrapper.findDropdown()!.findStartDateInput()!.findNativeInput().getElement()).toHaveValue('2018/03/01');
+
+        wrapper.findDropdown()!.findDateAt('left', 4, 1).focus();
+        wrapper.findDropdown()!.findDateAt('left', 4, 1).keydown(KeyCode.space);
+
+        // selected date remains the same
+        expect(wrapper.findDropdown()!.findStartDateInput()!.findNativeInput().getElement()).toHaveValue('2018/03/01');
+      });
+
+      test('disabled with reason start date can not be selected on enter keydown', () => {
+        const { wrapper } = renderDateRangePicker({
+          ...defaultProps,
+          value: { type: 'absolute', startDate: '2018-03-01T00:00:00', endDate: '2018-03-01T00:00:00' },
+          isDateEnabled,
+          dateDisabledReason,
+        });
+        changeMode(wrapper, 'absolute');
+
+        expect(wrapper.findDropdown()!.findStartDateInput()!.findNativeInput().getElement()).toHaveValue('2018/03/01');
+
+        wrapper.findDropdown()!.findDateAt('left', 4, 1).focus();
+        wrapper.findDropdown()!.findDateAt('left', 4, 1).keydown(KeyCode.enter);
+
+        // selected date remains the same
+        expect(wrapper.findDropdown()!.findStartDateInput()!.findNativeInput().getElement()).toHaveValue('2018/03/01');
+      });
     });
   });
 

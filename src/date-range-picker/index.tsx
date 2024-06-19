@@ -109,6 +109,7 @@ const DateRangePicker = React.forwardRef(
       locale = '',
       startOfWeek,
       isDateEnabled = () => true,
+      dateDisabledReason = () => '',
       value,
       placeholder,
       readOnly = false,
@@ -339,6 +340,7 @@ const DateRangePicker = React.forwardRef(
                 value={value}
                 showClearButton={showClearButton}
                 isDateEnabled={isDateEnabled}
+                dateDisabledReason={dateDisabledReason}
                 i18nStrings={i18nStrings}
                 onClear={onClear}
                 onApply={onApply}
