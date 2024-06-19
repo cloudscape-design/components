@@ -79,7 +79,7 @@
       background-color: awsui.$color-background-control-disabled;
     }
 
-    &.readonly {
+    &.readonly:not(&.disabled) {
       background-color: awsui.$color-foreground-control-read-only;
     }
   }
@@ -181,7 +181,7 @@
   &.filled {
     background: awsui.$color-background-slider-handle-default;
 
-    &.readonly {
+    &.readonly:not(.tick-disabled) {
       background: awsui.$color-foreground-control-read-only;
     }
   }
@@ -242,7 +242,7 @@
     cursor: default;
   }
 
-  &.readonly {
+  &.readonly:not(&.disabled) {
     cursor: default;
 
     &:focus::-webkit-slider-thumb,
@@ -364,9 +364,9 @@
   }
 }
 
-.readonly,
-.readonly:hover,
-.readonly:active {
+.readonly:not(.disabled),
+.readonly:not(.disabled):hover,
+.readonly:not(.disabled):active {
   &::-webkit-slider-thumb {
     @include mixins.base-thumb-readonly-styles();
   }

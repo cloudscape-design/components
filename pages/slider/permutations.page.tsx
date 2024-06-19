@@ -77,6 +77,7 @@ const permutations = createPermutations<SliderProps>([
     max: [3],
     valueFormatter: [undefined, value => `${value} is the value.`],
     referenceValues: [undefined, [-2, -1, 0, 1, 2]],
+    disabled: [false, true],
     readOnly: [true],
   },
 ]);
