@@ -37,7 +37,7 @@ import {
 import { useDebounceCallback } from '../../hooks/use-debounce-callback';
 import { nodeBelongs } from '../../utils/node-belongs';
 
-export const FUNNEL_VERSION = '1.4';
+export const FUNNEL_VERSION = '1.5';
 
 interface AnalyticsFunnelProps {
   children?: React.ReactNode;
