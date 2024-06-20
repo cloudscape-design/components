@@ -7,9 +7,9 @@ import { Transition } from '../transition';
 import PopoverContainer from '../../../popover/container';
 import PopoverBody from '../../../popover/body';
 import Portal from '../portal';
+import { PopoverProps } from '../../../popover/interfaces';
 import popoverStyles from '../../../popover/styles.css.js';
 import styles from './styles.css.js';
-import { PopoverProps } from '../../../../lib/components';
 
 export interface TooltipProps {
   value: number | string;
