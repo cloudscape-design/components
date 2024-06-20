@@ -121,3 +121,7 @@ $checkbox-size: awsui.$size-control;
     color: awsui.$color-text-disabled;
   }
 }
+
+.disabled-reason-tooltip {
+  /* used in test-utils or tests */
+}

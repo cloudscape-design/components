@@ -55,6 +55,12 @@ const options: Record<string, DropdownOption> = {
     type: 'child',
     disabled: true,
   },
+  disabledWithReason: {
+    option: { value: 'Disabled with reason' },
+    type: 'child',
+    disabled: true,
+    disabledReason: 'Disabled reason',
+  },
   simpleOptionWithCustomSvg: {
     option: {
       value: 'With custom svg',
@@ -128,6 +134,10 @@ const permutations = createPermutations<ItemProps>([
     highlightType: ['keyboard'],
     selected: [true],
     hasCheckbox: [false],
+  },
+  {
+    highlighted: [true],
+    option: [options.disabledWithReason],
   },
 ]);
 
