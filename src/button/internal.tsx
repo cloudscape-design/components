@@ -33,6 +33,7 @@ export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   __iconClass?: string;
   __focusable?: boolean;
   __iconWithLabel?: boolean;
+  __pressed?: boolean;
 } & InternalBaseComponentProps<HTMLAnchorElement | HTMLButtonElement>;
 
 export const InternalButton = React.forwardRef(
@@ -67,6 +68,7 @@ export const InternalButton = React.forwardRef(
       __internalRootRef = null,
       __focusable = false,
       __iconWithLabel = false,
+      __pressed,
       ...props
     }: InternalButtonProps,
     ref: React.Ref<ButtonProps.Ref>
@@ -137,6 +139,7 @@ export const InternalButton = React.forwardRef(
 
     const buttonClass = clsx(props.className, styles.button, styles[`variant-${variant}`], {
       [styles.disabled]: isNotInteractive,
+      [styles.pressed]: __pressed,
       [styles['button-no-wrap']]: !wrapText,
       [styles['button-no-text']]: !shouldHaveContent,
       [styles['full-width']]: shouldHaveContent && fullWidth,
@@ -159,6 +162,7 @@ export const InternalButton = React.forwardRef(
       'aria-describedby': ariaDescribedby,
       'aria-expanded': ariaExpanded,
       'aria-controls': ariaControls,
+      'aria-pressed': __pressed,
       // add ariaLabel as `title` as visible hint text
       title: ariaLabel,
       className: buttonClass,

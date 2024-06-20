@@ -131,12 +131,12 @@ const InternalButtonGroup = forwardRef(
         return navigationAPI.current?.isRegistered(element) ?? false;
       }
       // TODO: allow for disabled with feedback text
-      function isElementDisabled(element: HTMLElement) {
-        if (element instanceof HTMLButtonElement) {
-          return element.disabled;
-        }
-        return false;
-      }
+      // function isElementDisabled(element: HTMLElement) {
+      //   if (element instanceof HTMLButtonElement) {
+      //     return element.disabled;
+      //   }
+      //   return false;
+      // }
       return getAllFocusables(target).filter(el => isElementRegistered(el));
     }
 
