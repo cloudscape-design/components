@@ -9,6 +9,7 @@ import { ButtonGroup, ButtonGroupProps } from '~components';
 const permutations = createPermutations<ButtonGroupProps>([
   {
     variant: ['icon'],
+    ariaLabel: ['Chat actions'],
     dropdownExpandToViewport: [true, false],
     items: [
       [

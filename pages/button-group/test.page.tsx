@@ -100,7 +100,7 @@ export default function ButtonGroupPage() {
       <ScreenshotArea disableAnimations={true}>
         <article>
           <h1>Button Group test page</h1>
-          <ButtonGroup variant="icon" items={items} onItemClick={onItemClick} ref={ref} />
+          <ButtonGroup ariaLabel="Chat actions" variant="icon" items={items} onItemClick={onItemClick} ref={ref} />
           <br />
           <Button onClick={onFocusOnCopyButtonClick}>Focus on copy</Button>&nbsp;
           <Button onClick={onFocusOnSearchButtonClick}>Focus on item in the menu</Button>
