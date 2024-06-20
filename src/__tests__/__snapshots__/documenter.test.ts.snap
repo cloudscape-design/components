@@ -3765,6 +3765,12 @@ Object {
   "name": "ButtonGroup",
   "properties": Array [
     Object {
+      "description": "Adds \`aria-label\` to the button group toolbar element.",
+      "name": "ariaLabel",
+      "optional": false,
+      "type": "string",
+    },
+    Object {
       "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",

@@ -21,7 +21,14 @@ import { getAllFocusables } from '../internal/components/focus-lock/utils';
 
 const InternalButtonGroup = forwardRef(
   (
-    { items = [], onItemClick, __internalRootRef = null, dropdownExpandToViewport, ...props }: InternalButtonGroupProps,
+    {
+      ariaLabel,
+      items = [],
+      onItemClick,
+      __internalRootRef = null,
+      dropdownExpandToViewport,
+      ...props
+    }: InternalButtonGroupProps,
     ref: React.Ref<ButtonGroupProps.Ref>
   ) => {
     const containerObjectRef = useRef<HTMLDivElement>(null);
@@ -138,6 +145,8 @@ const InternalButtonGroup = forwardRef(
       <div
         {...baseProps}
         className={clsx(styles.root, baseProps.className)}
+        role="toolbar"
+        aria-label={ariaLabel}
         ref={containerRef}
         onFocus={onFocus}
         onBlur={onBlur}
