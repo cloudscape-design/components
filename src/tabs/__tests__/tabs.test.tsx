@@ -758,6 +758,14 @@ describe('Tabs', () => {
       consoleSpy.mockClear();
     });
 
+    test('moves focus from any non-active dismissible button to active tab content', () => {
+      const wrapper = renderTabs(<Tabs tabs={actionDismissibleTabs} activeTabId="fourth" />).wrapper;
+      wrapper.findActiveTab()!.getElement().focus();
+      pressLeft(wrapper);
+      wrapper.findActiveTab()!.keydown({ keyCode: KeyCode.tab });
+      expect(wrapper.findTabContent()?.getElement()).toHaveFocus();
+    });
+
     test('does not call onDismiss event for tab list w/ one dismissible tab', () => {
       const consoleSpy = jest.spyOn(console, 'log').mockImplementation();
       const dismissibleButtonWrapper = renderTabs(
