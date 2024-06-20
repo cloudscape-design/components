@@ -7,6 +7,7 @@ import { BaseComponentProps } from '../../base-component';
 export interface BaseOption {
   label?: string;
   disabled?: boolean;
+  disabledReason?: string;
 }
 
 export interface OptionDefinition extends BaseOption {
@@ -34,6 +35,7 @@ export interface OptionGroup extends BaseOption {
 export interface DropdownOption {
   type?: string;
   disabled?: boolean;
+  disabledReason?: string;
   option: OptionDefinition | OptionGroup;
 }
 

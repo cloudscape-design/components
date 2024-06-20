@@ -9,15 +9,23 @@ import PopoverBody from '../../../popover/body';
 import Portal from '../portal';
 import popoverStyles from '../../../popover/styles.css.js';
 import styles from './styles.css.js';
+import { PopoverProps } from '../../../../lib/components';
 
 export interface TooltipProps {
   value: number | string;
   trackRef: React.RefObject<HTMLElement | SVGElement>;
+  position?: PopoverProps.Position;
   className?: string;
   contentAttributes?: React.HTMLAttributes<HTMLDivElement>;
 }
 
-export default function Tooltip({ value, trackRef, className, contentAttributes = {} }: TooltipProps) {
+export default function Tooltip({
+  value,
+  trackRef,
+  className,
+  contentAttributes = {},
+  position = 'top',
+}: TooltipProps) {
   return (
     <Portal>
       <div className={clsx(styles.root, className)} {...contentAttributes}>
@@ -28,7 +36,7 @@ export default function Tooltip({ value, trackRef, className, contentAttributes 
               trackKey={value}
               size="small"
               fixedWidth={false}
-              position="top"
+              position={position}
               arrow={position => (
                 <div className={clsx(popoverStyles.arrow, popoverStyles[`arrow-position-${position}`])}>
                   <div className={popoverStyles['arrow-outer']} />

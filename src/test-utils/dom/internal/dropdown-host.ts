@@ -11,6 +11,7 @@ import selectableStyles from '../../../internal/components/selectable-item/style
 import dropdownStyles from '../../../internal/components/dropdown/styles.selectors.js';
 import footerStyles from '../../../internal/components/dropdown-status/styles.selectors.js';
 import optionStyles from '../../../internal/components/option/styles.selectors.js';
+import SelectableItemWrapper from './selectable-item';
 
 export default abstract class DropdownHostComponentWrapper extends ComponentWrapper {
   abstract findTrigger(): ElementWrapper;
@@ -152,6 +153,18 @@ export class DropdownContentWrapper extends ComponentWrapper {
   findOpenDropdown(): ElementWrapper | null {
     const dropdown = new DropdownWrapper(this.getElement());
     return dropdown.findOpenDropdown();
+  }
+
+  /**
+   * Returns a selectable item (option wrapper) from the dropdown.
+   *
+   * @param optionIndex 1-based index of the option to select.
+   */
+  findSelectableItem(optionIndex: number): SelectableItemWrapper | null {
+    return this.findComponent(
+      `.${selectableStyles['selectable-item']}[data-test-index="${optionIndex}"]`,
+      SelectableItemWrapper
+    );
   }
 
   /**
