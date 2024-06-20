@@ -768,6 +768,18 @@ describe('Tabs', () => {
       expect(consoleSpy).not.toHaveBeenCalledWith('I have been called!');
       consoleSpy.mockClear();
     });
+
+    test('does not render dismissible button if only one tab that is dismissible', () => {
+      const consoleSpy = jest.spyOn(console, 'log').mockImplementation();
+      const dismissibleButtonWrapper = renderTabs(
+        <Tabs tabs={dismissibleOnly} activeTabId="first" />
+      ).wrapper.findDismissibleButtonByTabId('first');
+      const dismissibleButton = dismissibleButtonWrapper?.find('button');
+      dismissibleButton?.click();
+      expect(consoleSpy).not.toHaveBeenCalledWith('I have been called!');
+      expect(dismissibleButton?.getElement().attributes.getNamedItem('disabled')).toBeTruthy();
+      consoleSpy.mockClear();
+    });
   });
 
   describe('Actions', () => {
