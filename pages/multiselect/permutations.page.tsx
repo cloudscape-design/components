@@ -28,6 +28,7 @@ const options: MultiselectProps.Options = [
   { value: 'more2', label: 'More options with very long texts 2' },
   { value: 'more3', label: 'More options with very long texts 3' },
   { value: 'more4', label: 'More options with very long texts 4' },
+  { value: 'more5', label: 'With disabled reason', disabled: true, disabledReason: 'disabled reason' },
 ];
 
 const _getGroupOptions = (option: OptionDefinition | OptionGroup) => ('options' in option ? option.options : [option]);
