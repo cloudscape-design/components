@@ -2114,6 +2114,20 @@ Object {
           "$description": "The default line height for h5s.",
           "$value": "20px",
         },
+        "motion-duration-avatar-gen-ai-gradient": Object {
+          "$description": "The duration for gradient motion of gen-ai avatar.",
+          "$value": Object {
+            "default": "3600ms",
+            "disabled": "0ms",
+          },
+        },
+        "motion-duration-avatar-loading-dots": Object {
+          "$description": "The duration for loading motion of avatar.",
+          "$value": Object {
+            "default": "1200ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-duration-complex": Object {
           "$description": "The duration for drawing more attention or accommodating for more complexity.",
           "$value": Object {
@@ -2133,6 +2147,13 @@ Object {
           "$value": Object {
             "default": "135ms",
             "disabled": "0ms",
+          },
+        },
+        "motion-easing-avatar-gen-ai-gradient": Object {
+          "$description": "The easing curve for gradient motion of gen-ai avatar.",
+          "$value": Object {
+            "default": "cubic-bezier(0.7, 0, 0.3, 1)",
+            "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
           },
         },
         "motion-easing-expressive": Object {
@@ -4444,6 +4465,20 @@ Object {
           "$description": "The default line height for h5s.",
           "$value": "20px",
         },
+        "motion-duration-avatar-gen-ai-gradient": Object {
+          "$description": "The duration for gradient motion of gen-ai avatar.",
+          "$value": Object {
+            "default": "3600ms",
+            "disabled": "0ms",
+          },
+        },
+        "motion-duration-avatar-loading-dots": Object {
+          "$description": "The duration for loading motion of avatar.",
+          "$value": Object {
+            "default": "1200ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-duration-complex": Object {
           "$description": "The duration for drawing more attention or accommodating for more complexity.",
           "$value": Object {
@@ -4463,6 +4498,13 @@ Object {
           "$value": Object {
             "default": "135ms",
             "disabled": "0ms",
+          },
+        },
+        "motion-easing-avatar-gen-ai-gradient": Object {
+          "$description": "The easing curve for gradient motion of gen-ai avatar.",
+          "$value": Object {
+            "default": "cubic-bezier(0.7, 0, 0.3, 1)",
+            "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
           },
         },
         "motion-easing-expressive": Object {
@@ -6774,6 +6816,20 @@ Object {
           "$description": "The default line height for h5s.",
           "$value": "20px",
         },
+        "motion-duration-avatar-gen-ai-gradient": Object {
+          "$description": "The duration for gradient motion of gen-ai avatar.",
+          "$value": Object {
+            "default": "3600ms",
+            "disabled": "0ms",
+          },
+        },
+        "motion-duration-avatar-loading-dots": Object {
+          "$description": "The duration for loading motion of avatar.",
+          "$value": Object {
+            "default": "1200ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-duration-complex": Object {
           "$description": "The duration for drawing more attention or accommodating for more complexity.",
           "$value": Object {
@@ -6793,6 +6849,13 @@ Object {
           "$value": Object {
             "default": "135ms",
             "disabled": "0ms",
+          },
+        },
+        "motion-easing-avatar-gen-ai-gradient": Object {
+          "$description": "The easing curve for gradient motion of gen-ai avatar.",
+          "$value": Object {
+            "default": "cubic-bezier(0.7, 0, 0.3, 1)",
+            "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
           },
         },
         "motion-easing-expressive": Object {
@@ -9104,6 +9167,20 @@ Object {
           "$description": "The default line height for h5s.",
           "$value": "20px",
         },
+        "motion-duration-avatar-gen-ai-gradient": Object {
+          "$description": "The duration for gradient motion of gen-ai avatar.",
+          "$value": Object {
+            "default": "3600ms",
+            "disabled": "0ms",
+          },
+        },
+        "motion-duration-avatar-loading-dots": Object {
+          "$description": "The duration for loading motion of avatar.",
+          "$value": Object {
+            "default": "1200ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-duration-complex": Object {
           "$description": "The duration for drawing more attention or accommodating for more complexity.",
           "$value": Object {
@@ -9123,6 +9200,13 @@ Object {
           "$value": Object {
             "default": "135ms",
             "disabled": "0ms",
+          },
+        },
+        "motion-easing-avatar-gen-ai-gradient": Object {
+          "$description": "The easing curve for gradient motion of gen-ai avatar.",
+          "$value": Object {
+            "default": "cubic-bezier(0.7, 0, 0.3, 1)",
+            "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
           },
         },
         "motion-easing-expressive": Object {
@@ -11434,6 +11518,20 @@ Object {
           "$description": "The default line height for h5s.",
           "$value": "20px",
         },
+        "motion-duration-avatar-gen-ai-gradient": Object {
+          "$description": "The duration for gradient motion of gen-ai avatar.",
+          "$value": Object {
+            "default": "3600ms",
+            "disabled": "0ms",
+          },
+        },
+        "motion-duration-avatar-loading-dots": Object {
+          "$description": "The duration for loading motion of avatar.",
+          "$value": Object {
+            "default": "1200ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-duration-complex": Object {
           "$description": "The duration for drawing more attention or accommodating for more complexity.",
           "$value": Object {
@@ -11453,6 +11551,13 @@ Object {
           "$value": Object {
             "default": "135ms",
             "disabled": "0ms",
+          },
+        },
+        "motion-easing-avatar-gen-ai-gradient": Object {
+          "$description": "The easing curve for gradient motion of gen-ai avatar.",
+          "$value": Object {
+            "default": "cubic-bezier(0.7, 0, 0.3, 1)",
+            "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
           },
         },
         "motion-easing-expressive": Object {
@@ -13764,6 +13869,20 @@ Object {
       "$description": "The default line height for h5s.",
       "$value": "20px",
     },
+    "motion-duration-avatar-gen-ai-gradient": Object {
+      "$description": "The duration for gradient motion of gen-ai avatar.",
+      "$value": Object {
+        "default": "3600ms",
+        "disabled": "0ms",
+      },
+    },
+    "motion-duration-avatar-loading-dots": Object {
+      "$description": "The duration for loading motion of avatar.",
+      "$value": Object {
+        "default": "1200ms",
+        "disabled": "0ms",
+      },
+    },
     "motion-duration-complex": Object {
       "$description": "The duration for drawing more attention or accommodating for more complexity.",
       "$value": Object {
@@ -13783,6 +13902,13 @@ Object {
       "$value": Object {
         "default": "135ms",
         "disabled": "0ms",
+      },
+    },
+    "motion-easing-avatar-gen-ai-gradient": Object {
+      "$description": "The easing curve for gradient motion of gen-ai avatar.",
+      "$value": Object {
+        "default": "cubic-bezier(0.7, 0, 0.3, 1)",
+        "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
       },
     },
     "motion-easing-expressive": Object {
@@ -16099,6 +16225,20 @@ Object {
           "$description": "The default line height for h5s.",
           "$value": "18px",
         },
+        "motion-duration-avatar-gen-ai-gradient": Object {
+          "$description": "The duration for gradient motion of gen-ai avatar.",
+          "$value": Object {
+            "default": "3600ms",
+            "disabled": "0ms",
+          },
+        },
+        "motion-duration-avatar-loading-dots": Object {
+          "$description": "The duration for loading motion of avatar.",
+          "$value": Object {
+            "default": "1200ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-duration-complex": Object {
           "$description": "The duration for drawing more attention or accommodating for more complexity.",
           "$value": Object {
@@ -16118,6 +16258,13 @@ Object {
           "$value": Object {
             "default": "115ms",
             "disabled": "0ms",
+          },
+        },
+        "motion-easing-avatar-gen-ai-gradient": Object {
+          "$description": "The easing curve for gradient motion of gen-ai avatar.",
+          "$value": Object {
+            "default": "cubic-bezier(0.7, 0, 0.3, 1)",
+            "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
           },
         },
         "motion-easing-expressive": Object {
@@ -18429,6 +18576,20 @@ Object {
           "$description": "The default line height for h5s.",
           "$value": "18px",
         },
+        "motion-duration-avatar-gen-ai-gradient": Object {
+          "$description": "The duration for gradient motion of gen-ai avatar.",
+          "$value": Object {
+            "default": "3600ms",
+            "disabled": "0ms",
+          },
+        },
+        "motion-duration-avatar-loading-dots": Object {
+          "$description": "The duration for loading motion of avatar.",
+          "$value": Object {
+            "default": "1200ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-duration-complex": Object {
           "$description": "The duration for drawing more attention or accommodating for more complexity.",
           "$value": Object {
@@ -18448,6 +18609,13 @@ Object {
           "$value": Object {
             "default": "115ms",
             "disabled": "0ms",
+          },
+        },
+        "motion-easing-avatar-gen-ai-gradient": Object {
+          "$description": "The easing curve for gradient motion of gen-ai avatar.",
+          "$value": Object {
+            "default": "cubic-bezier(0.7, 0, 0.3, 1)",
+            "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
           },
         },
         "motion-easing-expressive": Object {
@@ -20759,6 +20927,20 @@ Object {
           "$description": "The default line height for h5s.",
           "$value": "18px",
         },
+        "motion-duration-avatar-gen-ai-gradient": Object {
+          "$description": "The duration for gradient motion of gen-ai avatar.",
+          "$value": Object {
+            "default": "3600ms",
+            "disabled": "0ms",
+          },
+        },
+        "motion-duration-avatar-loading-dots": Object {
+          "$description": "The duration for loading motion of avatar.",
+          "$value": Object {
+            "default": "1200ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-duration-complex": Object {
           "$description": "The duration for drawing more attention or accommodating for more complexity.",
           "$value": Object {
@@ -20778,6 +20960,13 @@ Object {
           "$value": Object {
             "default": "115ms",
             "disabled": "0ms",
+          },
+        },
+        "motion-easing-avatar-gen-ai-gradient": Object {
+          "$description": "The easing curve for gradient motion of gen-ai avatar.",
+          "$value": Object {
+            "default": "cubic-bezier(0.7, 0, 0.3, 1)",
+            "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
           },
         },
         "motion-easing-expressive": Object {
@@ -23089,6 +23278,20 @@ Object {
           "$description": "The default line height for h5s.",
           "$value": "18px",
         },
+        "motion-duration-avatar-gen-ai-gradient": Object {
+          "$description": "The duration for gradient motion of gen-ai avatar.",
+          "$value": Object {
+            "default": "3600ms",
+            "disabled": "0ms",
+          },
+        },
+        "motion-duration-avatar-loading-dots": Object {
+          "$description": "The duration for loading motion of avatar.",
+          "$value": Object {
+            "default": "1200ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-duration-complex": Object {
           "$description": "The duration for drawing more attention or accommodating for more complexity.",
           "$value": Object {
@@ -23108,6 +23311,13 @@ Object {
           "$value": Object {
             "default": "115ms",
             "disabled": "0ms",
+          },
+        },
+        "motion-easing-avatar-gen-ai-gradient": Object {
+          "$description": "The easing curve for gradient motion of gen-ai avatar.",
+          "$value": Object {
+            "default": "cubic-bezier(0.7, 0, 0.3, 1)",
+            "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
           },
         },
         "motion-easing-expressive": Object {
@@ -25419,6 +25629,20 @@ Object {
           "$description": "The default line height for h5s.",
           "$value": "18px",
         },
+        "motion-duration-avatar-gen-ai-gradient": Object {
+          "$description": "The duration for gradient motion of gen-ai avatar.",
+          "$value": Object {
+            "default": "3600ms",
+            "disabled": "0ms",
+          },
+        },
+        "motion-duration-avatar-loading-dots": Object {
+          "$description": "The duration for loading motion of avatar.",
+          "$value": Object {
+            "default": "1200ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-duration-complex": Object {
           "$description": "The duration for drawing more attention or accommodating for more complexity.",
           "$value": Object {
@@ -25438,6 +25662,13 @@ Object {
           "$value": Object {
             "default": "115ms",
             "disabled": "0ms",
+          },
+        },
+        "motion-easing-avatar-gen-ai-gradient": Object {
+          "$description": "The easing curve for gradient motion of gen-ai avatar.",
+          "$value": Object {
+            "default": "cubic-bezier(0.7, 0, 0.3, 1)",
+            "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
           },
         },
         "motion-easing-expressive": Object {
@@ -27749,6 +27980,20 @@ Object {
           "$description": "The default line height for h5s.",
           "$value": "18px",
         },
+        "motion-duration-avatar-gen-ai-gradient": Object {
+          "$description": "The duration for gradient motion of gen-ai avatar.",
+          "$value": Object {
+            "default": "3600ms",
+            "disabled": "0ms",
+          },
+        },
+        "motion-duration-avatar-loading-dots": Object {
+          "$description": "The duration for loading motion of avatar.",
+          "$value": Object {
+            "default": "1200ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-duration-complex": Object {
           "$description": "The duration for drawing more attention or accommodating for more complexity.",
           "$value": Object {
@@ -27768,6 +28013,13 @@ Object {
           "$value": Object {
             "default": "115ms",
             "disabled": "0ms",
+          },
+        },
+        "motion-easing-avatar-gen-ai-gradient": Object {
+          "$description": "The easing curve for gradient motion of gen-ai avatar.",
+          "$value": Object {
+            "default": "cubic-bezier(0.7, 0, 0.3, 1)",
+            "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
           },
         },
         "motion-easing-expressive": Object {
@@ -30079,6 +30331,20 @@ Object {
           "$description": "The default line height for h5s.",
           "$value": "18px",
         },
+        "motion-duration-avatar-gen-ai-gradient": Object {
+          "$description": "The duration for gradient motion of gen-ai avatar.",
+          "$value": Object {
+            "default": "3600ms",
+            "disabled": "0ms",
+          },
+        },
+        "motion-duration-avatar-loading-dots": Object {
+          "$description": "The duration for loading motion of avatar.",
+          "$value": Object {
+            "default": "1200ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-duration-complex": Object {
           "$description": "The duration for drawing more attention or accommodating for more complexity.",
           "$value": Object {
@@ -30098,6 +30364,13 @@ Object {
           "$value": Object {
             "default": "115ms",
             "disabled": "0ms",
+          },
+        },
+        "motion-easing-avatar-gen-ai-gradient": Object {
+          "$description": "The easing curve for gradient motion of gen-ai avatar.",
+          "$value": Object {
+            "default": "cubic-bezier(0.7, 0, 0.3, 1)",
+            "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
           },
         },
         "motion-easing-expressive": Object {
@@ -32409,6 +32682,20 @@ Object {
       "$description": "The default line height for h5s.",
       "$value": "18px",
     },
+    "motion-duration-avatar-gen-ai-gradient": Object {
+      "$description": "The duration for gradient motion of gen-ai avatar.",
+      "$value": Object {
+        "default": "3600ms",
+        "disabled": "0ms",
+      },
+    },
+    "motion-duration-avatar-loading-dots": Object {
+      "$description": "The duration for loading motion of avatar.",
+      "$value": Object {
+        "default": "1200ms",
+        "disabled": "0ms",
+      },
+    },
     "motion-duration-complex": Object {
       "$description": "The duration for drawing more attention or accommodating for more complexity.",
       "$value": Object {
@@ -32428,6 +32715,13 @@ Object {
       "$value": Object {
         "default": "115ms",
         "disabled": "0ms",
+      },
+    },
+    "motion-easing-avatar-gen-ai-gradient": Object {
+      "$description": "The easing curve for gradient motion of gen-ai avatar.",
+      "$value": Object {
+        "default": "cubic-bezier(0.7, 0, 0.3, 1)",
+        "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
       },
     },
     "motion-easing-expressive": Object {
