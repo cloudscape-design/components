@@ -87,7 +87,10 @@ const InternalButtonGroup = forwardRef(
       if (!containerObjectRef.current) {
         return null;
       }
-      if (containerObjectRef.current.contains(document.activeElement)) {
+      if (
+        containerObjectRef.current.contains(document.activeElement) &&
+        document.activeElement?.matches(`.${styles.item}`)
+      ) {
         return document.activeElement as HTMLElement;
       }
       const items: HTMLButtonElement[] = Array.from(containerObjectRef.current.querySelectorAll(`.${styles.item}`));
