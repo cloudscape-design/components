@@ -8,18 +8,13 @@ import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
 import popoverStyles from '../../../lib/components/popover/styles.css.js';
 import chartWrapperStyles from '../../../lib/components/internal/components/chart-wrapper/styles.css.js';
 import cartesianStyles from '../../../lib/components/internal/components/cartesian-chart/styles.css.js';
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { clearMessageCache } from '@cloudscape-design/component-toolkit/internal';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
 import { cloneDeep } from 'lodash';
 import '../../__a11y__/to-validate-a11y';
 
-jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
-  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
-  warnOnce: jest.fn(),
-}));
-
 afterEach(() => {
-  (warnOnce as jest.Mock).mockReset();
+  clearMessageCache();
 });
 
 function renderAreaChart(jsx: React.ReactElement) {
@@ -459,34 +454,65 @@ test('filter selected aria label is assigned', () => {
   expect(wrapper.findDefaultFilter()!.findDropdown()!.getElement()).toContainHTML('Series:');
 });
 
-test('warns when visibleSeries is provided without onFilterChange', () => {
-  renderAreaChart(<AreaChart series={[areaSeries1]} statusType="finished" visibleSeries={[areaSeries1]} />);
+describe('console warnings', () => {
+  let consoleWarnSpy: jest.SpyInstance;
+  beforeEach(() => {
+    consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+  });
 
-  expect(warnOnce).toHaveBeenCalledTimes(1);
-});
+  afterEach(() => {
+    consoleWarnSpy.mockReset();
+  });
 
-test('warns when highlightedSeries is provided without onHighlightChange', () => {
-  renderAreaChart(<AreaChart series={[areaSeries1]} statusType="finished" highlightedSeries={areaSeries1} />);
+  test('warns when visibleSeries is provided without onFilterChange', () => {
+    renderAreaChart(<AreaChart series={[areaSeries1]} statusType="finished" visibleSeries={[areaSeries1]} />);
 
-  expect(warnOnce).toHaveBeenCalledTimes(1);
-});
+    expect(console.warn).toHaveBeenCalledTimes(1);
+    expect(console.warn).toHaveBeenCalledWith(
+      expect.stringContaining(
+        'You provided a `visibleSeries` prop without an `onFilterChange` handler. This will render a non-interactive component.'
+      )
+    );
+  });
 
-test('warns when data series are of different lengths', () => {
-  const s1 = areaSeries1;
-  const s2 = cloneDeep(areaSeries2);
-  s2.data = s2.data.slice(0, -1);
-  renderAreaChart(<AreaChart series={[s1, s2]} statusType="finished" />);
+  test('warns when highlightedSeries is provided without onHighlightChange', () => {
+    renderAreaChart(<AreaChart series={[areaSeries1]} statusType="finished" highlightedSeries={areaSeries1} />);
 
-  expect(warnOnce).toHaveBeenCalledTimes(1);
-});
+    expect(console.warn).toHaveBeenCalledTimes(1);
+    expect(console.warn).toHaveBeenCalledWith(
+      expect.stringContaining(
+        'You provided a `highlightedSeries` prop without an `onHighlightChange` handler. This will render a non-interactive component.'
+      )
+    );
+  });
 
-test('warns when data series have different x values', () => {
-  const s1 = areaSeries1;
-  const s2 = cloneDeep(areaSeries2);
-  s2.data[2].x++;
-  renderAreaChart(<AreaChart series={[s1, s2]} statusType="finished" />);
+  test('warns when data series are of different lengths', () => {
+    const s1 = areaSeries1;
+    const s2 = cloneDeep(areaSeries2);
+    s2.data = s2.data.slice(0, -1);
+    renderAreaChart(<AreaChart series={[s1, s2]} statusType="finished" />);
 
-  expect(warnOnce).toHaveBeenCalledTimes(1);
+    expect(console.warn).toHaveBeenCalledTimes(1);
+    expect(console.warn).toHaveBeenCalledWith(
+      expect.stringContaining(
+        "The `series` property violates the component's constraints: all `area` series must have `data` arrays of the same length and with the same x-values."
+      )
+    );
+  });
+
+  test('warns when data series have different x values', () => {
+    const s1 = areaSeries1;
+    const s2 = cloneDeep(areaSeries2);
+    s2.data[2].x++;
+    renderAreaChart(<AreaChart series={[s1, s2]} statusType="finished" />);
+
+    expect(console.warn).toHaveBeenCalledTimes(1);
+    expect(console.warn).toHaveBeenCalledWith(
+      expect.stringContaining(
+        "The `series` property violates the component's constraints: all `area` series must have `data` arrays of the same length and with the same x-values."
+      )
+    );
+  });
 });
 
 describe('i18n', () => {
