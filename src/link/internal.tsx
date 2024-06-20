@@ -191,7 +191,7 @@ const InternalLink = React.forwardRef(
               aria-label={renderedExternalIconAriaLabel}
               role={renderedExternalIconAriaLabel ? 'img' : undefined}
             >
-              <InternalIcon name="external" size="inherit" />
+              <InternalIcon name="external" size="inherit" inline={true} />
             </span>
           </span>
         )}

@@ -16,6 +16,10 @@
     align-items: center;
   }
 
+  &.inline {
+    display: inline;
+  }
+
   /* stylelint-disable-next-line selector-max-type */
   > svg {
     // SVG is focusable by default
