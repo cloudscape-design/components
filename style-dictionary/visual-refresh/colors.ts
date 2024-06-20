@@ -90,8 +90,8 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundToggleCheckedDisabled: { light: '{colorBlue300}', dark: '{colorBlue800}' },
   colorBackgroundToggleDefault: { light: '{colorGrey600}', dark: '{colorGrey500}' },
   colorBackgroundAvatarGenAi:
-    'radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)',
-  colorBackgroundAvatarDefault: { light: '{colorGrey600}', dark: '{colorGrey550}' },
+    'radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)',
+  colorBackgroundAvatarDefault: '{colorGrey600}',
   colorTextAvatar: '{colorWhite}',
   colorBorderButtonNormalActive: { light: '{colorBlue800}', dark: '{colorBlue400}' },
   colorBorderButtonNormalDefault: { light: '{colorBlue600}', dark: '{colorBlue500}' },
