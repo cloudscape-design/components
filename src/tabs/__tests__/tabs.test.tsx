@@ -256,6 +256,25 @@ describe('Tabs', () => {
       expect(changeSpy).toHaveBeenCalledTimes(1);
     });
 
+    test('does not fire a change event when clicking on a disabled tab', () => {
+      const changeSpy = jest.fn();
+
+      const wrapper = renderTabs(<Tabs tabs={defaultTabs} activeTabId="third" onChange={changeSpy} />).wrapper;
+      expect(changeSpy).not.toHaveBeenCalled();
+
+      wrapper.findTabLinkByIndex(3)!.click();
+
+      expect(changeSpy).not.toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: {
+            activeTabId: 'third',
+            activeTabHref: undefined,
+          },
+        })
+      );
+      expect(changeSpy).toHaveBeenCalledTimes(0);
+    });
+
     test('fires a change event when clicking on tab with container variant', () => {
       const changeSpy = jest.fn();
 
@@ -768,16 +787,14 @@ describe('Tabs', () => {
 
     test('does not call onDismiss event for tab list w/ one dismissible tab', () => {
       const consoleSpy = jest.spyOn(console, 'log').mockImplementation();
-      const dismissibleButtonWrapper = renderTabs(
-        <Tabs tabs={dismissibleOnly} activeTabId="first" />
-      ).wrapper.findDismissibleButtonByTabId('first');
-      const dismissibleButton = dismissibleButtonWrapper?.find('button');
+      const wrapper = renderTabs(<Tabs tabs={dismissibleOnly} activeTabId="first" />).wrapper;
+      const dismissibleButton = wrapper.findDismissibleButtonByTabId('first')?.find('button');
       dismissibleButton?.click();
       expect(consoleSpy).not.toHaveBeenCalledWith('I have been called!');
       consoleSpy.mockClear();
     });
 
-    test('does not render dismissible button if only one tab that is dismissible', () => {
+    test('disables dismissible button if only one tab that is dismissible', () => {
       const consoleSpy = jest.spyOn(console, 'log').mockImplementation();
       const dismissibleButtonWrapper = renderTabs(
         <Tabs tabs={dismissibleOnly} activeTabId="first" />
