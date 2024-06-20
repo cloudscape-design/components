@@ -247,6 +247,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: false,
     public: true,
   },
+  colorBackgroundLoadingBarGenAi: {
+    description: 'The background color of gen-ai loading bars.',
+    themeable: false,
+    public: true,
+  },
   colorBorderButtonNormalActive: {
     description: 'The border color of normal buttons in active state.',
     themeable: true,

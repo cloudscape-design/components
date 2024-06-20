@@ -93,6 +93,8 @@ const tokens: StyleDictionary.ColorsDictionary = {
     'radial-gradient(circle farthest-corner at bottom left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top left, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)',
   colorBackgroundAvatarDefault: { light: '{colorGrey600}', dark: '{colorGrey550}' },
   colorTextAvatar: '{colorWhite}',
+  colorBackgroundLoadingBarGenAi:
+    'linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)',
   colorBorderButtonNormalActive: { light: '{colorBlue800}', dark: '{colorBlue400}' },
   colorBorderButtonNormalDefault: { light: '{colorBlue600}', dark: '{colorBlue500}' },
   colorBorderButtonNormalDisabled: { light: '{colorGrey400}', dark: '{colorGrey550}' },

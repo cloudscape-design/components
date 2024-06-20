@@ -279,6 +279,13 @@ Object {
             "light": "#0a4a74",
           },
         },
+        "color-background-loading-bar-gen-ai": Object {
+          "$description": "The background color of gen-ai loading bars.",
+          "$value": Object {
+            "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+            "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+          },
+        },
         "color-background-notification-blue": Object {
           "$description": "Background color for blue notifications. For example: blue badges and info flash messages.",
           "$value": Object {
@@ -2600,6 +2607,13 @@ Object {
           "$value": Object {
             "dark": "#44b9d6",
             "light": "#0a4a74",
+          },
+        },
+        "color-background-loading-bar-gen-ai": Object {
+          "$description": "The background color of gen-ai loading bars.",
+          "$value": Object {
+            "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+            "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
           },
         },
         "color-background-notification-blue": Object {
@@ -4925,6 +4939,13 @@ Object {
             "light": "#0a4a74",
           },
         },
+        "color-background-loading-bar-gen-ai": Object {
+          "$description": "The background color of gen-ai loading bars.",
+          "$value": Object {
+            "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+            "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+          },
+        },
         "color-background-notification-blue": Object {
           "$description": "Background color for blue notifications. For example: blue badges and info flash messages.",
           "$value": Object {
@@ -7246,6 +7267,13 @@ Object {
           "$value": Object {
             "dark": "#44b9d6",
             "light": "#0a4a74",
+          },
+        },
+        "color-background-loading-bar-gen-ai": Object {
+          "$description": "The background color of gen-ai loading bars.",
+          "$value": Object {
+            "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+            "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
           },
         },
         "color-background-notification-blue": Object {
@@ -9571,6 +9599,13 @@ Object {
             "light": "#44b9d6",
           },
         },
+        "color-background-loading-bar-gen-ai": Object {
+          "$description": "The background color of gen-ai loading bars.",
+          "$value": Object {
+            "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+            "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+          },
+        },
         "color-background-notification-blue": Object {
           "$description": "Background color for blue notifications. For example: blue badges and info flash messages.",
           "$value": Object {
@@ -11892,6 +11927,13 @@ Object {
       "$value": Object {
         "dark": "#44b9d6",
         "light": "#0a4a74",
+      },
+    },
+    "color-background-loading-bar-gen-ai": Object {
+      "$description": "The background color of gen-ai loading bars.",
+      "$value": Object {
+        "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+        "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
       },
     },
     "color-background-notification-blue": Object {
@@ -14222,6 +14264,13 @@ Object {
             "light": "#065299",
           },
         },
+        "color-background-loading-bar-gen-ai": Object {
+          "$description": "The background color of gen-ai loading bars.",
+          "$value": Object {
+            "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+            "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+          },
+        },
         "color-background-notification-blue": Object {
           "$description": "Background color for blue notifications. For example: blue badges and info flash messages.",
           "$value": Object {
@@ -16543,6 +16592,13 @@ Object {
           "$value": Object {
             "dark": "#89bdee",
             "light": "#89bdee",
+          },
+        },
+        "color-background-loading-bar-gen-ai": Object {
+          "$description": "The background color of gen-ai loading bars.",
+          "$value": Object {
+            "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+            "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
           },
         },
         "color-background-notification-blue": Object {
@@ -18868,6 +18924,13 @@ Object {
             "light": "#065299",
           },
         },
+        "color-background-loading-bar-gen-ai": Object {
+          "$description": "The background color of gen-ai loading bars.",
+          "$value": Object {
+            "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+            "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+          },
+        },
         "color-background-notification-blue": Object {
           "$description": "Background color for blue notifications. For example: blue badges and info flash messages.",
           "$value": Object {
@@ -21189,6 +21252,13 @@ Object {
           "$value": Object {
             "dark": "#89bdee",
             "light": "#065299",
+          },
+        },
+        "color-background-loading-bar-gen-ai": Object {
+          "$description": "The background color of gen-ai loading bars.",
+          "$value": Object {
+            "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+            "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
           },
         },
         "color-background-notification-blue": Object {
@@ -23514,6 +23584,13 @@ Object {
             "light": "#065299",
           },
         },
+        "color-background-loading-bar-gen-ai": Object {
+          "$description": "The background color of gen-ai loading bars.",
+          "$value": Object {
+            "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+            "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+          },
+        },
         "color-background-notification-blue": Object {
           "$description": "Background color for blue notifications. For example: blue badges and info flash messages.",
           "$value": Object {
@@ -25835,6 +25912,13 @@ Object {
           "$value": Object {
             "dark": "#89bdee",
             "light": "#89bdee",
+          },
+        },
+        "color-background-loading-bar-gen-ai": Object {
+          "$description": "The background color of gen-ai loading bars.",
+          "$value": Object {
+            "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+            "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
           },
         },
         "color-background-notification-blue": Object {
@@ -28160,6 +28244,13 @@ Object {
             "light": "#89bdee",
           },
         },
+        "color-background-loading-bar-gen-ai": Object {
+          "$description": "The background color of gen-ai loading bars.",
+          "$value": Object {
+            "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+            "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+          },
+        },
         "color-background-notification-blue": Object {
           "$description": "Background color for blue notifications. For example: blue badges and info flash messages.",
           "$value": Object {
@@ -30481,6 +30572,13 @@ Object {
       "$value": Object {
         "dark": "#89bdee",
         "light": "#065299",
+      },
+    },
+    "color-background-loading-bar-gen-ai": Object {
+      "$description": "The background color of gen-ai loading bars.",
+      "$value": Object {
+        "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+        "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
       },
     },
     "color-background-notification-blue": Object {
