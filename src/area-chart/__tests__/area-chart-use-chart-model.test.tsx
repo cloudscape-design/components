@@ -6,7 +6,7 @@ import useChartModel, { UseChartModelProps } from '../../../lib/components/area-
 import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 import { ChartDataTypes } from '../../../lib/components/internal/components/cartesian-chart/interfaces';
-import { act, render, fireEvent } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import { AreaChartProps } from '../../../lib/components/area-chart/interfaces';
 import { useReaction } from '../../../lib/components/area-chart/async-store';
 import { ChartModel } from '../../../lib/components/area-chart/model';
@@ -147,22 +147,22 @@ describe('useChartModel', () => {
         visibleSeries: series,
         popoverRef: { current: null },
       });
-      act(() => wrapper.focus());
+      wrapper.focus();
 
       // Show all series
       expect(wrapper.findHighlightedX()?.getElement()).toHaveTextContent('0');
       expect(wrapper.findHighlightedPoint()?.getElement()).toBeEmptyDOMElement();
 
       // Show first series (from the end)
-      act(() => wrapper.keydown(KeyCode.down));
+      wrapper.keydown(KeyCode.down);
       expect(wrapper.findHighlightedPoint()?.getElement()).toHaveTextContent('0,2');
 
       // Show second series (from the end)
-      act(() => wrapper.keydown(KeyCode.down));
+      wrapper.keydown(KeyCode.down);
       expect(wrapper.findHighlightedPoint()?.getElement()).toHaveTextContent('0,1');
 
       // Loop back to show all series
-      act(() => wrapper.keydown(KeyCode.down));
+      wrapper.keydown(KeyCode.down);
       expect(wrapper.findHighlightedX()?.getElement()).toHaveTextContent('0');
       expect(wrapper.findHighlightedPoint()?.getElement()).toBeEmptyDOMElement();
     });
@@ -182,22 +182,22 @@ describe('useChartModel', () => {
           visibleSeries: series,
           popoverRef: { current: null },
         });
-        act(() => wrapper.focus());
+        wrapper.focus();
 
-        act(() => wrapper.keydown(KeyCode.down));
+        wrapper.keydown(KeyCode.down);
         expect(wrapper.findHighlightedPoint()?.getElement()).toHaveTextContent('0,2');
 
-        act(() => wrapper.keydown(KeyCode.right));
+        wrapper.keydown(KeyCode.right);
         expect(wrapper.findHighlightedPoint()?.getElement()).toHaveTextContent('1,4');
 
-        act(() => wrapper.keydown(KeyCode.right));
+        wrapper.keydown(KeyCode.right);
         expect(wrapper.findHighlightedPoint()?.getElement()).toHaveTextContent('2,6');
 
-        act(() => wrapper.keydown(KeyCode.left));
+        wrapper.keydown(KeyCode.left);
         expect(wrapper.findHighlightedPoint()?.getElement()).toHaveTextContent('1,4');
 
-        act(() => wrapper.keydown(KeyCode.down));
-        act(() => wrapper.keydown(KeyCode.up));
+        wrapper.keydown(KeyCode.down);
+        wrapper.keydown(KeyCode.up);
         expect(wrapper.findHighlightedPoint()?.getElement()).toHaveTextContent('1,4');
       });
 
@@ -215,10 +215,10 @@ describe('useChartModel', () => {
           visibleSeries: series,
           popoverRef: { current: null },
         });
-        act(() => wrapper.focus());
+        wrapper.focus();
         expect(wrapper.findHighlightedX()?.getElement()).toHaveTextContent('0');
 
-        act(() => wrapper.keydown(KeyCode.right));
+        wrapper.keydown(KeyCode.right);
         expect(wrapper.findHighlightedX()?.getElement()).toHaveTextContent('1');
       });
     });
@@ -238,24 +238,24 @@ describe('useChartModel', () => {
           visibleSeries: series,
           popoverRef: { current: null },
         });
-        act(() => wrapper.focus());
+        wrapper.focus();
 
         wrapper.getElement().style.direction = 'rtl';
 
-        act(() => wrapper.keydown(KeyCode.down));
+        wrapper.keydown(KeyCode.down);
         expect(wrapper.findHighlightedPoint()?.getElement()).toHaveTextContent('0,2');
 
-        act(() => wrapper.keydown(KeyCode.left));
+        wrapper.keydown(KeyCode.left);
         expect(wrapper.findHighlightedPoint()?.getElement()).toHaveTextContent('1,4');
 
-        act(() => wrapper.keydown(KeyCode.left));
+        wrapper.keydown(KeyCode.left);
         expect(wrapper.findHighlightedPoint()?.getElement()).toHaveTextContent('2,6');
 
-        act(() => wrapper.keydown(KeyCode.right));
+        wrapper.keydown(KeyCode.right);
         expect(wrapper.findHighlightedPoint()?.getElement()).toHaveTextContent('1,4');
 
-        act(() => wrapper.keydown(KeyCode.down));
-        act(() => wrapper.keydown(KeyCode.up));
+        wrapper.keydown(KeyCode.down);
+        wrapper.keydown(KeyCode.up);
         expect(wrapper.findHighlightedPoint()?.getElement()).toHaveTextContent('1,4');
       });
 
@@ -273,13 +273,13 @@ describe('useChartModel', () => {
           visibleSeries: series,
           popoverRef: { current: null },
         });
-        act(() => wrapper.focus());
+        wrapper.focus();
 
         wrapper.getElement().style.direction = 'rtl';
 
         expect(wrapper.findHighlightedX()?.getElement()).toHaveTextContent('0');
 
-        act(() => wrapper.keydown(KeyCode.left));
+        wrapper.keydown(KeyCode.left);
         expect(wrapper.findHighlightedX()?.getElement()).toHaveTextContent('1');
       });
     });
@@ -304,11 +304,9 @@ describe('useChartModel', () => {
           relatedTarget: wrapper.findPlot()?.getElement(),
           clientX: 100,
           clientY: 100,
-        } as any;
+        };
 
-        act(() => {
-          fireEvent.mouseMove(wrapper.findPlot()!.getElement(), mouseMoveEvent);
-        });
+        fireEvent.mouseMove(wrapper.findPlot()!.getElement(), mouseMoveEvent);
 
         expect(wrapper.findHighlightedX()?.getElement()).toHaveTextContent('1');
 
@@ -316,11 +314,9 @@ describe('useChartModel', () => {
           relatedTarget: wrapper.findDetailPopover()?.getElement(),
           clientX: 0,
           clientY: 0,
-        } as any;
+        };
 
-        act(() => {
-          fireEvent.mouseOut(wrapper.findPlot()!.getElement(), mouseOutEvent);
-        });
+        fireEvent.mouseOut(wrapper.findPlot()!.getElement(), mouseOutEvent);
 
         expect(wrapper.findHighlightedX()?.getElement()).toHaveTextContent('1');
       });
@@ -344,11 +340,9 @@ describe('useChartModel', () => {
           relatedTarget: wrapper.findPlot()?.getElement(),
           clientX: 100,
           clientY: 100,
-        } as any;
+        };
 
-        act(() => {
-          fireEvent.mouseMove(wrapper.findPlot()!.getElement(), mouseMoveEvent);
-        });
+        fireEvent.mouseMove(wrapper.findPlot()!.getElement(), mouseMoveEvent);
 
         expect(wrapper.findHighlightedX()?.getElement()).toHaveTextContent('1');
 
@@ -356,21 +350,17 @@ describe('useChartModel', () => {
           relatedTarget: wrapper.findDetailPopover()?.getElement(),
           clientX: 0,
           clientY: 0,
-        } as any;
+        };
 
-        act(() => {
-          fireEvent.mouseOut(wrapper.findPlot()!.getElement(), mouseOutEvent);
-        });
+        fireEvent.mouseOut(wrapper.findPlot()!.getElement(), mouseOutEvent);
 
         const mouseLeaveEvent = {
           relatedTarget: wrapper.getElement(),
           clientX: 400,
           clientY: 400,
-        } as any;
+        };
 
-        act(() => {
-          fireEvent.mouseLeave(wrapper.findDetailPopover()!.getElement(), mouseLeaveEvent);
-        });
+        fireEvent.mouseLeave(wrapper.findDetailPopover()!.getElement(), mouseLeaveEvent);
 
         expect(wrapper.findHighlightedX()?.getElement()).toHaveTextContent('');
       });
@@ -394,11 +384,9 @@ describe('useChartModel', () => {
           relatedTarget: wrapper.findPlot()?.getElement(),
           clientX: 100,
           clientY: 100,
-        } as any;
+        };
 
-        act(() => {
-          fireEvent.mouseMove(wrapper.findPlot()!.getElement(), mouseMoveEvent);
-        });
+        fireEvent.mouseMove(wrapper.findPlot()!.getElement(), mouseMoveEvent);
 
         expect(wrapper.findHighlightedX()?.getElement()).toHaveTextContent('1');
 
@@ -406,11 +394,9 @@ describe('useChartModel', () => {
           relatedTarget: window, // when mouse exited the page, relatedTarget is set to window.
           clientX: 0,
           clientY: 0,
-        } as any;
+        };
 
-        act(() => {
-          fireEvent.mouseLeave(wrapper.findDetailPopover()!.getElement(), mouseLeaveEvent);
-        });
+        fireEvent.mouseLeave(wrapper.findDetailPopover()!.getElement(), mouseLeaveEvent);
 
         expect(wrapper.findHighlightedX()?.getElement()).toHaveTextContent('');
       });
@@ -434,11 +420,9 @@ describe('useChartModel', () => {
           relatedTarget: wrapper.findPlot()?.getElement(),
           clientX: 100,
           clientY: 100,
-        } as any;
+        };
 
-        act(() => {
-          fireEvent.mouseMove(wrapper.findPlot()!.getElement(), mouseMoveEvent);
-        });
+        fireEvent.mouseMove(wrapper.findPlot()!.getElement(), mouseMoveEvent);
 
         expect(wrapper.findHighlightedX()?.getElement()).toHaveTextContent('1');
 
@@ -446,21 +430,17 @@ describe('useChartModel', () => {
           relatedTarget: wrapper.findDetailPopover()?.getElement(),
           clientX: 0,
           clientY: 0,
-        } as any;
+        };
 
-        act(() => {
-          fireEvent.mouseOut(wrapper.findPlot()!.getElement(), mouseOutEvent);
-        });
+        fireEvent.mouseOut(wrapper.findPlot()!.getElement(), mouseOutEvent);
 
         const mouseLeaveEvent = {
           relatedTarget: wrapper.findPlot()!.getElement(),
           clientX: 100,
           clientY: 100,
-        } as any;
+        };
 
-        act(() => {
-          fireEvent.mouseLeave(wrapper.findDetailPopover()!.getElement(), mouseLeaveEvent);
-        });
+        fireEvent.mouseLeave(wrapper.findDetailPopover()!.getElement(), mouseLeaveEvent);
 
         expect(wrapper.findHighlightedX()?.getElement()).toHaveTextContent('1');
       });

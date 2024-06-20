@@ -69,6 +69,20 @@ Object {
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "2px",
         },
+        "color-background-avatar-default": Object {
+          "$description": "The default background color of avatar.",
+          "$value": Object {
+            "dark": "#545b64",
+            "light": "#545b64",
+          },
+        },
+        "color-background-avatar-gen-ai": Object {
+          "$description": "The gen-ai background color of avatar.",
+          "$value": Object {
+            "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+            "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+          },
+        },
         "color-background-button-normal-active": Object {
           "$description": "The background color of normal buttons in active state.",
           "$value": Object {
@@ -263,6 +277,13 @@ Object {
           "$value": Object {
             "dark": "#44b9d6",
             "light": "#0a4a74",
+          },
+        },
+        "color-background-loading-bar-gen-ai": Object {
+          "$description": "The background color of gen-ai loading bars.",
+          "$value": Object {
+            "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+            "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
           },
         },
         "color-background-notification-blue": Object {
@@ -1649,6 +1670,13 @@ Object {
           "$value": Object {
             "dark": "#44b9d6",
             "light": "#0073bb",
+          },
+        },
+        "color-text-avatar": Object {
+          "$description": "The text and icon color of avatar.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#ffffff",
           },
         },
         "color-text-body-default": Object {
@@ -2371,6 +2399,20 @@ Object {
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "2px",
         },
+        "color-background-avatar-default": Object {
+          "$description": "The default background color of avatar.",
+          "$value": Object {
+            "dark": "#545b64",
+            "light": "#545b64",
+          },
+        },
+        "color-background-avatar-gen-ai": Object {
+          "$description": "The gen-ai background color of avatar.",
+          "$value": Object {
+            "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+            "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+          },
+        },
         "color-background-button-normal-active": Object {
           "$description": "The background color of normal buttons in active state.",
           "$value": Object {
@@ -2565,6 +2607,13 @@ Object {
           "$value": Object {
             "dark": "#44b9d6",
             "light": "#0a4a74",
+          },
+        },
+        "color-background-loading-bar-gen-ai": Object {
+          "$description": "The background color of gen-ai loading bars.",
+          "$value": Object {
+            "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+            "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
           },
         },
         "color-background-notification-blue": Object {
@@ -3951,6 +4000,13 @@ Object {
           "$value": Object {
             "dark": "#44b9d6",
             "light": "#0073bb",
+          },
+        },
+        "color-text-avatar": Object {
+          "$description": "The text and icon color of avatar.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#ffffff",
           },
         },
         "color-text-body-default": Object {
@@ -4673,6 +4729,20 @@ Object {
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "2px",
         },
+        "color-background-avatar-default": Object {
+          "$description": "The default background color of avatar.",
+          "$value": Object {
+            "dark": "#545b64",
+            "light": "#545b64",
+          },
+        },
+        "color-background-avatar-gen-ai": Object {
+          "$description": "The gen-ai background color of avatar.",
+          "$value": Object {
+            "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+            "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+          },
+        },
         "color-background-button-normal-active": Object {
           "$description": "The background color of normal buttons in active state.",
           "$value": Object {
@@ -4867,6 +4937,13 @@ Object {
           "$value": Object {
             "dark": "#44b9d6",
             "light": "#0a4a74",
+          },
+        },
+        "color-background-loading-bar-gen-ai": Object {
+          "$description": "The background color of gen-ai loading bars.",
+          "$value": Object {
+            "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+            "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
           },
         },
         "color-background-notification-blue": Object {
@@ -6253,6 +6330,13 @@ Object {
           "$value": Object {
             "dark": "#44b9d6",
             "light": "#0073bb",
+          },
+        },
+        "color-text-avatar": Object {
+          "$description": "The text and icon color of avatar.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#ffffff",
           },
         },
         "color-text-body-default": Object {
@@ -6975,6 +7059,20 @@ Object {
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "2px",
         },
+        "color-background-avatar-default": Object {
+          "$description": "The default background color of avatar.",
+          "$value": Object {
+            "dark": "#545b64",
+            "light": "#545b64",
+          },
+        },
+        "color-background-avatar-gen-ai": Object {
+          "$description": "The gen-ai background color of avatar.",
+          "$value": Object {
+            "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+            "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+          },
+        },
         "color-background-button-normal-active": Object {
           "$description": "The background color of normal buttons in active state.",
           "$value": Object {
@@ -7169,6 +7267,13 @@ Object {
           "$value": Object {
             "dark": "#44b9d6",
             "light": "#0a4a74",
+          },
+        },
+        "color-background-loading-bar-gen-ai": Object {
+          "$description": "The background color of gen-ai loading bars.",
+          "$value": Object {
+            "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+            "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
           },
         },
         "color-background-notification-blue": Object {
@@ -8557,6 +8662,13 @@ Object {
             "light": "#0073bb",
           },
         },
+        "color-text-avatar": Object {
+          "$description": "The text and icon color of avatar.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
         "color-text-body-default": Object {
           "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
           "$value": Object {
@@ -9277,6 +9389,20 @@ Object {
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "2px",
         },
+        "color-background-avatar-default": Object {
+          "$description": "The default background color of avatar.",
+          "$value": Object {
+            "dark": "#545b64",
+            "light": "#545b64",
+          },
+        },
+        "color-background-avatar-gen-ai": Object {
+          "$description": "The gen-ai background color of avatar.",
+          "$value": Object {
+            "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+            "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+          },
+        },
         "color-background-button-normal-active": Object {
           "$description": "The background color of normal buttons in active state.",
           "$value": Object {
@@ -9471,6 +9597,13 @@ Object {
           "$value": Object {
             "dark": "#44b9d6",
             "light": "#44b9d6",
+          },
+        },
+        "color-background-loading-bar-gen-ai": Object {
+          "$description": "The background color of gen-ai loading bars.",
+          "$value": Object {
+            "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+            "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
           },
         },
         "color-background-notification-blue": Object {
@@ -10859,6 +10992,13 @@ Object {
             "light": "#44b9d6",
           },
         },
+        "color-text-avatar": Object {
+          "$description": "The text and icon color of avatar.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
         "color-text-body-default": Object {
           "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
           "$value": Object {
@@ -11579,6 +11719,20 @@ Object {
       "$description": "The border radius of tutorials inside a tutorial panel.",
       "$value": "2px",
     },
+    "color-background-avatar-default": Object {
+      "$description": "The default background color of avatar.",
+      "$value": Object {
+        "dark": "#545b64",
+        "light": "#545b64",
+      },
+    },
+    "color-background-avatar-gen-ai": Object {
+      "$description": "The gen-ai background color of avatar.",
+      "$value": Object {
+        "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+        "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+      },
+    },
     "color-background-button-normal-active": Object {
       "$description": "The background color of normal buttons in active state.",
       "$value": Object {
@@ -11773,6 +11927,13 @@ Object {
       "$value": Object {
         "dark": "#44b9d6",
         "light": "#0a4a74",
+      },
+    },
+    "color-background-loading-bar-gen-ai": Object {
+      "$description": "The background color of gen-ai loading bars.",
+      "$value": Object {
+        "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+        "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
       },
     },
     "color-background-notification-blue": Object {
@@ -13161,6 +13322,13 @@ Object {
         "light": "#0073bb",
       },
     },
+    "color-text-avatar": Object {
+      "$description": "The text and icon color of avatar.",
+      "$value": Object {
+        "dark": "#ffffff",
+        "light": "#ffffff",
+      },
+    },
     "color-text-body-default": Object {
       "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
       "$value": Object {
@@ -13886,6 +14054,20 @@ Object {
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "8px",
         },
+        "color-background-avatar-default": Object {
+          "$description": "The default background color of avatar.",
+          "$value": Object {
+            "dark": "#414d5c",
+            "light": "#414d5c",
+          },
+        },
+        "color-background-avatar-gen-ai": Object {
+          "$description": "The gen-ai background color of avatar.",
+          "$value": Object {
+            "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+            "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+          },
+        },
         "color-background-button-normal-active": Object {
           "$description": "The background color of normal buttons in active state.",
           "$value": Object {
@@ -14080,6 +14262,13 @@ Object {
           "$value": Object {
             "dark": "#89bdee",
             "light": "#065299",
+          },
+        },
+        "color-background-loading-bar-gen-ai": Object {
+          "$description": "The background color of gen-ai loading bars.",
+          "$value": Object {
+            "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+            "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
           },
         },
         "color-background-notification-blue": Object {
@@ -15466,6 +15655,13 @@ Object {
           "$value": Object {
             "dark": "#539fe5",
             "light": "#0972d3",
+          },
+        },
+        "color-text-avatar": Object {
+          "$description": "The text and icon color of avatar.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#ffffff",
           },
         },
         "color-text-body-default": Object {
@@ -16188,6 +16384,20 @@ Object {
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "8px",
         },
+        "color-background-avatar-default": Object {
+          "$description": "The default background color of avatar.",
+          "$value": Object {
+            "dark": "#414d5c",
+            "light": "#414d5c",
+          },
+        },
+        "color-background-avatar-gen-ai": Object {
+          "$description": "The gen-ai background color of avatar.",
+          "$value": Object {
+            "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+            "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+          },
+        },
         "color-background-button-normal-active": Object {
           "$description": "The background color of normal buttons in active state.",
           "$value": Object {
@@ -16382,6 +16592,13 @@ Object {
           "$value": Object {
             "dark": "#89bdee",
             "light": "#89bdee",
+          },
+        },
+        "color-background-loading-bar-gen-ai": Object {
+          "$description": "The background color of gen-ai loading bars.",
+          "$value": Object {
+            "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+            "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
           },
         },
         "color-background-notification-blue": Object {
@@ -17768,6 +17985,13 @@ Object {
           "$value": Object {
             "dark": "#539fe5",
             "light": "#539fe5",
+          },
+        },
+        "color-text-avatar": Object {
+          "$description": "The text and icon color of avatar.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#ffffff",
           },
         },
         "color-text-body-default": Object {
@@ -18490,6 +18714,20 @@ Object {
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "8px",
         },
+        "color-background-avatar-default": Object {
+          "$description": "The default background color of avatar.",
+          "$value": Object {
+            "dark": "#414d5c",
+            "light": "#414d5c",
+          },
+        },
+        "color-background-avatar-gen-ai": Object {
+          "$description": "The gen-ai background color of avatar.",
+          "$value": Object {
+            "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+            "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+          },
+        },
         "color-background-button-normal-active": Object {
           "$description": "The background color of normal buttons in active state.",
           "$value": Object {
@@ -18684,6 +18922,13 @@ Object {
           "$value": Object {
             "dark": "#89bdee",
             "light": "#065299",
+          },
+        },
+        "color-background-loading-bar-gen-ai": Object {
+          "$description": "The background color of gen-ai loading bars.",
+          "$value": Object {
+            "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+            "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
           },
         },
         "color-background-notification-blue": Object {
@@ -20070,6 +20315,13 @@ Object {
           "$value": Object {
             "dark": "#539fe5",
             "light": "#0972d3",
+          },
+        },
+        "color-text-avatar": Object {
+          "$description": "The text and icon color of avatar.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#ffffff",
           },
         },
         "color-text-body-default": Object {
@@ -20792,6 +21044,20 @@ Object {
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "8px",
         },
+        "color-background-avatar-default": Object {
+          "$description": "The default background color of avatar.",
+          "$value": Object {
+            "dark": "#414d5c",
+            "light": "#414d5c",
+          },
+        },
+        "color-background-avatar-gen-ai": Object {
+          "$description": "The gen-ai background color of avatar.",
+          "$value": Object {
+            "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+            "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+          },
+        },
         "color-background-button-normal-active": Object {
           "$description": "The background color of normal buttons in active state.",
           "$value": Object {
@@ -20986,6 +21252,13 @@ Object {
           "$value": Object {
             "dark": "#89bdee",
             "light": "#065299",
+          },
+        },
+        "color-background-loading-bar-gen-ai": Object {
+          "$description": "The background color of gen-ai loading bars.",
+          "$value": Object {
+            "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+            "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
           },
         },
         "color-background-notification-blue": Object {
@@ -22372,6 +22645,13 @@ Object {
           "$value": Object {
             "dark": "#539fe5",
             "light": "#0972d3",
+          },
+        },
+        "color-text-avatar": Object {
+          "$description": "The text and icon color of avatar.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#ffffff",
           },
         },
         "color-text-body-default": Object {
@@ -23094,6 +23374,20 @@ Object {
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "8px",
         },
+        "color-background-avatar-default": Object {
+          "$description": "The default background color of avatar.",
+          "$value": Object {
+            "dark": "#414d5c",
+            "light": "#414d5c",
+          },
+        },
+        "color-background-avatar-gen-ai": Object {
+          "$description": "The gen-ai background color of avatar.",
+          "$value": Object {
+            "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+            "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+          },
+        },
         "color-background-button-normal-active": Object {
           "$description": "The background color of normal buttons in active state.",
           "$value": Object {
@@ -23288,6 +23582,13 @@ Object {
           "$value": Object {
             "dark": "#89bdee",
             "light": "#065299",
+          },
+        },
+        "color-background-loading-bar-gen-ai": Object {
+          "$description": "The background color of gen-ai loading bars.",
+          "$value": Object {
+            "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+            "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
           },
         },
         "color-background-notification-blue": Object {
@@ -24676,6 +24977,13 @@ Object {
             "light": "#0972d3",
           },
         },
+        "color-text-avatar": Object {
+          "$description": "The text and icon color of avatar.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
         "color-text-body-default": Object {
           "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
           "$value": Object {
@@ -25396,6 +25704,20 @@ Object {
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "8px",
         },
+        "color-background-avatar-default": Object {
+          "$description": "The default background color of avatar.",
+          "$value": Object {
+            "dark": "#414d5c",
+            "light": "#414d5c",
+          },
+        },
+        "color-background-avatar-gen-ai": Object {
+          "$description": "The gen-ai background color of avatar.",
+          "$value": Object {
+            "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+            "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+          },
+        },
         "color-background-button-normal-active": Object {
           "$description": "The background color of normal buttons in active state.",
           "$value": Object {
@@ -25590,6 +25912,13 @@ Object {
           "$value": Object {
             "dark": "#89bdee",
             "light": "#89bdee",
+          },
+        },
+        "color-background-loading-bar-gen-ai": Object {
+          "$description": "The background color of gen-ai loading bars.",
+          "$value": Object {
+            "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+            "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
           },
         },
         "color-background-notification-blue": Object {
@@ -26976,6 +27305,13 @@ Object {
           "$value": Object {
             "dark": "#539fe5",
             "light": "#539fe5",
+          },
+        },
+        "color-text-avatar": Object {
+          "$description": "The text and icon color of avatar.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#ffffff",
           },
         },
         "color-text-body-default": Object {
@@ -27698,6 +28034,20 @@ Object {
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "8px",
         },
+        "color-background-avatar-default": Object {
+          "$description": "The default background color of avatar.",
+          "$value": Object {
+            "dark": "#414d5c",
+            "light": "#414d5c",
+          },
+        },
+        "color-background-avatar-gen-ai": Object {
+          "$description": "The gen-ai background color of avatar.",
+          "$value": Object {
+            "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+            "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+          },
+        },
         "color-background-button-normal-active": Object {
           "$description": "The background color of normal buttons in active state.",
           "$value": Object {
@@ -27892,6 +28242,13 @@ Object {
           "$value": Object {
             "dark": "#89bdee",
             "light": "#89bdee",
+          },
+        },
+        "color-background-loading-bar-gen-ai": Object {
+          "$description": "The background color of gen-ai loading bars.",
+          "$value": Object {
+            "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+            "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
           },
         },
         "color-background-notification-blue": Object {
@@ -29280,6 +29637,13 @@ Object {
             "light": "#539fe5",
           },
         },
+        "color-text-avatar": Object {
+          "$description": "The text and icon color of avatar.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
         "color-text-body-default": Object {
           "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
           "$value": Object {
@@ -30000,6 +30364,20 @@ Object {
       "$description": "The border radius of tutorials inside a tutorial panel.",
       "$value": "8px",
     },
+    "color-background-avatar-default": Object {
+      "$description": "The default background color of avatar.",
+      "$value": Object {
+        "dark": "#414d5c",
+        "light": "#414d5c",
+      },
+    },
+    "color-background-avatar-gen-ai": Object {
+      "$description": "The gen-ai background color of avatar.",
+      "$value": Object {
+        "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+        "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+      },
+    },
     "color-background-button-normal-active": Object {
       "$description": "The background color of normal buttons in active state.",
       "$value": Object {
@@ -30194,6 +30572,13 @@ Object {
       "$value": Object {
         "dark": "#89bdee",
         "light": "#065299",
+      },
+    },
+    "color-background-loading-bar-gen-ai": Object {
+      "$description": "The background color of gen-ai loading bars.",
+      "$value": Object {
+        "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+        "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
       },
     },
     "color-background-notification-blue": Object {
@@ -31580,6 +31965,13 @@ Object {
       "$value": Object {
         "dark": "#539fe5",
         "light": "#0972d3",
+      },
+    },
+    "color-text-avatar": Object {
+      "$description": "The text and icon color of avatar.",
+      "$value": Object {
+        "dark": "#ffffff",
+        "light": "#ffffff",
       },
     },
     "color-text-body-default": Object {

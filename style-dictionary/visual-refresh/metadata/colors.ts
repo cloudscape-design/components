@@ -232,6 +232,26 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  colorBackgroundAvatarDefault: {
+    description: 'The default background color of avatar.',
+    themeable: false,
+    public: true,
+  },
+  colorBackgroundAvatarGenAi: {
+    description: 'The gen-ai background color of avatar.',
+    themeable: false,
+    public: true,
+  },
+  colorTextAvatar: {
+    description: 'The text and icon color of avatar.',
+    themeable: false,
+    public: true,
+  },
+  colorBackgroundLoadingBarGenAi: {
+    description: 'The background color of gen-ai loading bars.',
+    themeable: false,
+    public: true,
+  },
   colorBorderButtonNormalActive: {
     description: 'The border color of normal buttons in active state.',
     themeable: true,
