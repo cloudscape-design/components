@@ -17,6 +17,7 @@ import { getAllFocusables } from '../internal/components/focus-lock/utils';
 import handleKey from '../internal/utils/handle-key';
 import { hasModifierKeys } from '../internal/events';
 import { KeyCode } from '../internal/keycode';
+import { nodeBelongs } from '../internal/utils/node-belongs';
 
 const InternalButtonGroup = forwardRef(
   (
@@ -41,9 +42,13 @@ const InternalButtonGroup = forwardRef(
     }));
 
     const onSetButtonRef = (
-      item: ButtonGroupProps.IconButton | ButtonGroupProps.MenuDropdown,
+      item: ButtonGroupProps.IconButton | ButtonGroupProps.Feedback | ButtonGroupProps.MenuDropdown,
       element: ButtonProps.Ref | null
     ) => {
+      if (item.type === 'feedback') {
+        return;
+      }
+
       const isItemGroup = (item: ButtonDropdownProps.ItemOrGroup): item is ButtonDropdownProps.ItemGroup => {
         return 'items' in item;
       };
@@ -79,18 +84,36 @@ const InternalButtonGroup = forwardRef(
       });
     };
 
+    const focusedItemIdRef = useRef<null | string>(null);
     const containerObjectRef = useRef<HTMLDivElement>(null);
     const containerRef = useMergeRefs(containerObjectRef, __internalRootRef);
     const navigationAPI = useRef<SingleTabStopNavigationAPI>(null);
     function getNextFocusTarget(): null | HTMLElement {
-      if (!containerObjectRef.current) {
-        return null;
+      const nextTarget = (() => {
+        if (!containerObjectRef.current) {
+          return null;
+        }
+        if (document.activeElement && containerObjectRef.current.contains(document.activeElement)) {
+          return document.activeElement as HTMLElement;
+        }
+        const buttons: HTMLButtonElement[] = Array.from(containerObjectRef.current.querySelectorAll(`.${styles.item}`));
+        const activeButtons = buttons.filter(button => !button.disabled);
+        return (
+          activeButtons.find(button => button.dataset.testid === focusedItemIdRef.current) ?? activeButtons[0] ?? null
+        );
+      })();
+      if (nextTarget) {
+        focusedItemIdRef.current = nextTarget.dataset.testid ?? null;
       }
-      if (document.activeElement && containerObjectRef.current.contains(document.activeElement)) {
-        return document.activeElement as HTMLElement;
+      return nextTarget;
+    }
+
+    function onUnregisterFocusable(focusableElement: HTMLElement) {
+      const isUnregisteringFocusedNode = nodeBelongs(focusableElement, document.activeElement);
+      if (isUnregisteringFocusedNode) {
+        // Wait for unmounted node to get removed from the DOM.
+        setTimeout(() => navigationAPI.current?.getFocusTarget()?.focus(), 0);
       }
-      const buttons: HTMLButtonElement[] = Array.from(containerObjectRef.current.querySelectorAll('button'));
-      return buttons.find(button => !button.disabled) ?? null;
     }
 
     useEffect(() => {
@@ -131,12 +154,12 @@ const InternalButtonGroup = forwardRef(
         return navigationAPI.current?.isRegistered(element) ?? false;
       }
       // TODO: allow for disabled with feedback text
-      function isElementDisabled(element: HTMLElement) {
-        if (element instanceof HTMLButtonElement) {
-          return element.disabled;
-        }
-        return false;
-      }
+      // function isElementDisabled(element: HTMLElement) {
+      //   if (element instanceof HTMLButtonElement) {
+      //     return element.disabled;
+      //   }
+      //   return false;
+      // }
       return getAllFocusables(target).filter(el => isElementRegistered(el));
     }
 
@@ -156,6 +179,7 @@ const InternalButtonGroup = forwardRef(
           ref={navigationAPI}
           navigationActive={true}
           getNextFocusTarget={getNextFocusTarget}
+          onUnregisterFocusable={onUnregisterFocusable}
         >
           {items.map((itemOrGroup, index) => {
             const content =
@@ -163,7 +187,7 @@ const InternalButtonGroup = forwardRef(
                 <div key={itemOrGroup.text} role="group" aria-label={itemOrGroup.text} className={styles.group}>
                   {itemOrGroup.items.map(item => (
                     <ItemElement
-                      key={item.id}
+                      key={item.type === 'feedback' ? item.text : item.id}
                       item={item}
                       onItemClick={onItemClick}
                       dropdownExpandToViewport={dropdownExpandToViewport}
@@ -185,7 +209,11 @@ const InternalButtonGroup = forwardRef(
             const shouldAddDivider = isGroupBefore || (!isGroupBefore && isGroupNow && index !== 0);
 
             return (
-              <React.Fragment key={itemOrGroup.type === 'group' ? itemOrGroup.text : itemOrGroup.id}>
+              <React.Fragment
+                key={
+                  itemOrGroup.type === 'group' || itemOrGroup.type === 'feedback' ? itemOrGroup.text : itemOrGroup.id
+                }
+              >
                 {shouldAddDivider && <div className={styles.divider} />}
                 {content}
               </React.Fragment>

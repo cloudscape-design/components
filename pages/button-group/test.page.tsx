@@ -10,21 +10,21 @@ const copyAction: ButtonGroupProps.Item = {
   id: 'copy',
   iconName: 'copy',
   text: 'Copy',
-  feedbackText: 'Copied',
+  popoverFeedbackText: 'Copied',
 };
 const addAction: ButtonGroupProps.Item = {
   type: 'icon-button',
   id: 'add',
   iconName: 'add-plus',
   text: 'Add',
-  feedbackText: 'Added',
+  popoverFeedbackText: 'Added',
 };
 const removeAction: ButtonGroupProps.Item = {
   type: 'icon-button',
   id: 'remove',
   iconName: 'remove',
   text: 'Remove',
-  feedbackText: 'Failed to remove',
+  popoverFeedbackText: 'Failed to remove',
   popoverFeedbackType: 'error',
 };
 const moreActions: ButtonGroupProps.MenuDropdown = {
@@ -84,13 +84,10 @@ const itemsLiked: ButtonGroupProps.Item[] = [
     text: 'Feedback',
     items: [
       {
-        type: 'icon-button',
+        type: 'feedback',
         id: 'like',
         iconName: 'thumbs-up-filled',
-        text: 'Thanks for providing feedback',
-        feedbackText: 'Helpful',
-        feedbackMode: 'inline',
-        disabled: true,
+        text: 'Helpful',
       },
     ],
   },
@@ -106,13 +103,10 @@ const itemsDisliked: ButtonGroupProps.Item[] = [
     text: 'Feedback',
     items: [
       {
-        type: 'icon-button',
+        type: 'feedback',
         id: 'dislike',
         iconName: 'thumbs-down-filled',
-        text: 'Thanks for providing feedback',
-        feedbackText: 'Not helpful',
-        feedbackMode: 'inline',
-        disabled: true,
+        text: 'Not helpful',
       },
     ],
   },

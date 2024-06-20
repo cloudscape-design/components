@@ -10,6 +10,7 @@ import Tooltip from './tooltip/index.js';
 import LiveRegion from '../internal/components/live-region/index.js';
 import StatusIndicator from '../status-indicator/internal.js';
 import styles from './styles.css.js';
+import FeedbackItem from './feedback-item.js';
 
 const ItemElement = forwardRef(
   (
@@ -18,7 +19,7 @@ const ItemElement = forwardRef(
       onItemClick,
       dropdownExpandToViewport,
     }: {
-      item: ButtonGroupProps.IconButton | ButtonGroupProps.MenuDropdown;
+      item: ButtonGroupProps.IconButton | ButtonGroupProps.Feedback | ButtonGroupProps.MenuDropdown;
       onItemClick?: (event: CustomEvent) => void;
       dropdownExpandToViewport?: boolean;
     },
@@ -30,9 +31,13 @@ const ItemElement = forwardRef(
     const [isActionPopover, setIsActionPopover] = useState(false);
 
     const onClickHandler = (event: CustomEvent<ClickDetail>) => {
+      if (item.type === 'feedback') {
+        return;
+      }
+
       setClickIdx(idx => idx + 1);
 
-      if ('feedbackText' in item && item.feedbackText) {
+      if ('popoverFeedbackText' in item && item.popoverFeedbackText) {
         setIsActionPopover(true);
         setPopoverOpen(true);
       } else {
@@ -60,8 +65,7 @@ const ItemElement = forwardRef(
       setIsActionPopover(false);
     };
 
-    const actionPopoverText = 'feedbackText' in item && item.feedbackText;
-    const showFeedbackInPopover = !('feedbackMode' in item) || item.feedbackMode === 'popover';
+    const actionPopoverText = 'popoverFeedbackText' in item && item.popoverFeedbackText;
 
     return (
       <div
@@ -74,6 +78,8 @@ const ItemElement = forwardRef(
       >
         {item.type === 'icon-button' ? (
           <IconButtonItem ref={ref} item={item} onItemClick={onClickHandler} />
+        ) : item.type === 'feedback' ? (
+          <FeedbackItem item={item} />
         ) : (
           <MenuDropdownItem
             ref={ref}
@@ -82,18 +88,22 @@ const ItemElement = forwardRef(
             dropdownExpandToViewport={dropdownExpandToViewport}
           />
         )}
-        <Tooltip
-          trackRef={buttonRef}
-          trackKey={item.id}
-          open={popoverOpen}
-          close={onPopoverClose}
-          value={
-            (isActionPopover && actionPopoverText && showFeedbackInPopover && (
-              <StatusIndicator type={item.popoverFeedbackType ?? 'success'}>{item.feedbackText}</StatusIndicator>
-            )) ||
-            item.text
-          }
-        />
+        {item.type !== 'feedback' && (
+          <Tooltip
+            trackRef={buttonRef}
+            trackKey={item.id}
+            open={popoverOpen}
+            close={onPopoverClose}
+            value={
+              (isActionPopover && actionPopoverText && (
+                <StatusIndicator type={item.popoverFeedbackType ?? 'success'}>
+                  {item.popoverFeedbackText}
+                </StatusIndicator>
+              )) ||
+              item.text
+            }
+          />
+        )}
         {popoverOpen && <LiveRegion key={clickIdx}>{isActionPopover && actionPopoverText}</LiveRegion>}
       </div>
     );

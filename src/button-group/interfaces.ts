@@ -70,7 +70,7 @@ export namespace ButtonGroupProps {
   // When a union only has one element the resulting type for it is not string but object.
   export type Variant = 'icon' | 'icon';
 
-  export type Item = IconButton | MenuDropdown | Group;
+  export type Item = IconButton | Feedback | MenuDropdown | Group;
 
   export interface IconButton {
     type: 'icon-button';
@@ -83,9 +83,18 @@ export namespace ButtonGroupProps {
     iconAlt?: string;
     iconUrl?: string;
     iconSvg?: React.ReactNode;
-    feedbackText?: string;
-    popoverFeedbackType?: 'success' | 'error'; // Defaults to "success"
-    feedbackMode?: 'popover' | 'inline'; // Defaults to "popover"
+    popoverFeedbackText?: string;
+    popoverFeedbackType?: 'success' | 'error';
+  }
+
+  export interface Feedback {
+    type: 'feedback';
+    id: string;
+    text: string;
+    iconName?: IconProps.Name;
+    iconAlt?: string;
+    iconUrl?: string;
+    iconSvg?: React.ReactNode;
   }
 
   export interface MenuDropdown {
@@ -101,7 +110,7 @@ export namespace ButtonGroupProps {
   export interface Group {
     type: 'group';
     text: string;
-    items: ReadonlyArray<IconButton | MenuDropdown>;
+    items: ReadonlyArray<IconButton | Feedback | MenuDropdown>;
   }
 
   export interface ItemClickDetails {
