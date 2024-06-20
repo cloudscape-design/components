@@ -1,7 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
+import ReactDOM from 'react-dom';
 import { render } from '@testing-library/react';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import Multiselect, { MultiselectProps } from '../../../lib/components/multiselect';
 import tokenGroupStyles from '../../../lib/components/token-group/styles.css.js';
@@ -676,5 +678,180 @@ describe('With inline tokens (private API)', () => {
     expect(wrapper.findTrigger().getElement()).toHaveTextContent('Second');
     expect(wrapper.findTrigger().getElement()).toHaveTextContent('Third');
     expect(wrapper.findTrigger().getElement()).toHaveTextContent('(3)');
+  });
+});
+
+describe('Disabled item with reason', () => {
+  beforeEach(() => {
+    jest.spyOn(ReactDOM, 'createPortal').mockImplementation((element: any) => element);
+  });
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  test('has no tooltip open by default', () => {
+    const { wrapper } = renderMultiselect(
+      <Multiselect
+        options={defaultOptions.map((item, index) => {
+          if (index === 0) {
+            return {
+              ...item,
+              disabled: true,
+              disabledReason: 'disabled reason',
+            };
+          }
+
+          return item;
+        })}
+        selectedOptions={[]}
+      />
+    );
+    wrapper.openDropdown();
+
+    expect(wrapper.findDropdown().findSelectableItem(1)!.findDisabledReason()).toBe(null);
+  });
+
+  test('has no tooltip without disabledReason', () => {
+    const { wrapper } = renderMultiselect(
+      <Multiselect
+        options={defaultOptions.map((item, index) => {
+          if (index === 0) {
+            return {
+              ...item,
+              disabled: true,
+            };
+          }
+
+          return item;
+        })}
+        selectedOptions={[]}
+      />
+    );
+    wrapper.openDropdown();
+    wrapper.findTrigger()!.keydown(KeyCode.down);
+
+    expect(wrapper.findDropdown().findSelectableItem(1)!.findDisabledReason()).toBe(null);
+  });
+
+  test('open tooltip when the item is highlighted', () => {
+    const { wrapper } = renderMultiselect(
+      <Multiselect
+        options={defaultOptions.map((item, index) => {
+          if (index === 0) {
+            return {
+              ...item,
+              disabled: true,
+              disabledReason: 'disabled reason',
+            };
+          }
+
+          return item;
+        })}
+        selectedOptions={[]}
+      />
+    );
+    wrapper.openDropdown();
+    wrapper.findTrigger().keydown(KeyCode.down);
+
+    expect(wrapper.findDropdown().findSelectableItem(1)!.findDisabledReason()!.getElement()).toHaveTextContent(
+      'disabled reason'
+    );
+  });
+
+  test('has no aria-describedby by default', () => {
+    const { wrapper } = renderMultiselect(<Multiselect options={defaultOptions} selectedOptions={[]} />);
+    wrapper.openDropdown();
+
+    expect(wrapper.findDropdown().findSelectableItem(1)!.getElement()).not.toHaveAttribute('aria-describedby');
+  });
+
+  test('has no aria-describedby without disabledReason', () => {
+    const { wrapper } = renderMultiselect(
+      <Multiselect
+        options={defaultOptions.map((item, index) => {
+          if (index === 0) {
+            return {
+              ...item,
+              disabled: true,
+            };
+          }
+
+          return item;
+        })}
+        selectedOptions={[]}
+      />
+    );
+    wrapper.openDropdown();
+
+    expect(wrapper.findDropdown().findSelectableItem(1)!.getElement()).not.toHaveAttribute('aria-describedby');
+  });
+
+  test('has aria-describedby with disabledReason', () => {
+    const { wrapper } = renderMultiselect(
+      <Multiselect
+        options={defaultOptions.map((item, index) => {
+          if (index === 0) {
+            return {
+              ...item,
+              disabled: true,
+              disabledReason: 'disabled reason',
+            };
+          }
+
+          return item;
+        })}
+        selectedOptions={[]}
+      />
+    );
+    wrapper.openDropdown();
+
+    expect(wrapper.findDropdown().findSelectableItem(1)!.getElement()).toHaveAttribute('aria-describedby');
+  });
+
+  test('has hidden element (linked to aria-describedby) with disabledReason', () => {
+    const { wrapper } = renderMultiselect(
+      <Multiselect
+        options={defaultOptions.map((item, index) => {
+          if (index === 0) {
+            return {
+              ...item,
+              disabled: true,
+              disabledReason: 'disabled reason',
+            };
+          }
+
+          return item;
+        })}
+        selectedOptions={[]}
+      />
+    );
+    wrapper.openDropdown();
+
+    expect(
+      wrapper.findDropdown().findSelectableItem(1)!.findDisabledReasonDescription()!.getElement()
+    ).toHaveTextContent('disabled reason');
+  });
+
+  test('can not select disabled with reason option', () => {
+    const onChange = jest.fn();
+    const { wrapper } = renderMultiselect(
+      <Multiselect
+        options={defaultOptions.map((item, index) => {
+          if (index === 0) {
+            return {
+              ...item,
+              disabled: true,
+              disabledReason: 'disabled reason',
+            };
+          }
+
+          return item;
+        })}
+        selectedOptions={[]}
+      />
+    );
+    wrapper.openDropdown();
+    wrapper.selectOptionByValue('1');
+    expect(onChange).not.toHaveBeenCalled();
   });
 });

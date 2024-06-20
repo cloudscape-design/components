@@ -54,10 +54,10 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
   };
 
   function renderSelect(props?: Partial<SelectProps>) {
-    const { container, rerender, debug } = render(<Select {...defaultProps} {...props} />);
+    const { container, rerender } = render(<Select {...defaultProps} {...props} />);
     const wrapper = createWrapper(container).findSelect()!;
     const patchedRerender = (props?: Partial<SelectProps>) => rerender(<Select {...defaultProps} {...props} />);
-    return { container, wrapper, rerender: patchedRerender, debug };
+    return { container, wrapper, rerender: patchedRerender };
   }
 
   test('renders selected option', () => {

@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useRef } from 'react';
 import clsx from 'clsx';
 import styles from './styles.css.js';
 import Option from '../../internal/components/option';
@@ -9,6 +9,9 @@ import { getBaseProps } from '../../internal/base-component';
 import { OptionDefinition } from '../../internal/components/option/interfaces';
 import CheckboxIcon from '../../internal/components/checkbox-icon';
 import { ItemProps } from './item';
+import useHiddenDescription from '../../internal/hooks/use-hidden-description';
+import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
+import Tooltip from '../../internal/components/tooltip';
 interface MultiselectItemProps extends ItemProps {
   indeterminate?: boolean;
 }
@@ -38,9 +41,17 @@ const MultiSelectItem = (
   const isChild = option.type === 'child';
   const wrappedOption: OptionDefinition = option.option;
   const disabled = option.disabled || wrappedOption.disabled;
+  const disabledReason =
+    disabled && (option.disabledReason || wrappedOption.disabledReason)
+      ? option.disabledReason || wrappedOption.disabledReason
+      : '';
+  const isDisabledWithReason = !!disabledReason;
+  const internalRef = useRef<HTMLDivElement>(null);
   const className = clsx(styles.item, {
     [styles.disabled]: disabled,
   });
+
+  const { targetProps, descriptionEl } = useHiddenDescription(disabledReason);
 
   return (
     <SelectableItem
@@ -52,13 +63,14 @@ const MultiSelectItem = (
       isParent={isParent}
       isChild={isChild}
       highlightType={highlightType}
-      ref={ref}
+      ref={useMergeRefs(ref, internalRef)}
       virtualPosition={virtualPosition}
       padBottom={padBottom}
       useInteractiveGroups={true}
       screenReaderContent={screenReaderContent}
       ariaPosinset={ariaPosinset}
       ariaSetsize={ariaSetsize}
+      {...(isDisabledWithReason ? targetProps : {})}
       {...baseProps}
     >
       <div className={className}>
@@ -75,6 +87,19 @@ const MultiSelectItem = (
           isGroupOption={isParent}
         />
       </div>
+      {isDisabledWithReason && (
+        <>
+          {descriptionEl}
+          {highlighted && (
+            <Tooltip
+              className={styles['disabled-reason-tooltip']}
+              trackRef={internalRef}
+              value={disabledReason!}
+              position="right"
+            />
+          )}
+        </>
+      )}
     </SelectableItem>
   );
 };
