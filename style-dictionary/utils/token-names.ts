@@ -298,6 +298,7 @@ export type ColorsTokenName =
   | 'colorBackgroundAvatarGenAi'
   | 'colorBackgroundAvatarDefault'
   | 'colorTextAvatar'
+  | 'colorBackgroundLoadingBarGenAi'
   | 'colorBorderButtonNormalActive'
   | 'colorBorderButtonNormalDefault'
   | 'colorBorderButtonNormalDisabled'
