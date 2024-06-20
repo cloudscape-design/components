@@ -31,7 +31,6 @@ import { DropdownStatusProps } from '../internal/components/dropdown-status/inte
 import InternalButton from '../button/internal';
 import InternalFormField from '../form-field/internal';
 import { matchTokenValue } from './utils';
-import InternalBox from '../box/internal';
 
 interface PropertyInputProps {
   asyncProps: null | DropdownStatusProps;
@@ -120,7 +119,6 @@ function OperatorInput({ property, operator, onChangeOperator, i18nStrings, free
   return (
     <InternalSelect
       options={operatorOptions}
-      triggerVariant="option"
       selectedOption={
         operator
           ? {
@@ -277,88 +275,95 @@ export function TokenEditor({
       triggerType="text"
       header={i18nStrings.editTokenHeader}
       size="large"
+      __maxSize={true}
+      fixedWidth={true}
       position="right"
       dismissAriaLabel={i18nStrings.dismissAriaLabel}
       __onOpen={() => setTemp(firstLevelTokens)}
       renderWithPortal={expandToViewport}
       content={
         <div className={styles['token-editor']}>
-          <InternalBox margin={{ bottom: 's' }}>
-            {/* TODO: i18n */}
-            <InternalFormField label="Operation">
-              <InternalSelect
-                options={operationOptions}
-                selectedOption={operationOptions.find(option => option.value === operation)!}
-                onChange={event => setOperation(event.detail.selectedOption.value as 'and' | 'or')}
-              />
-            </InternalFormField>
-          </InternalBox>
-
           {groups.map((group, index) => (
-            <div key={index} className={styles['token-editor-form']}>
-              <InternalFormField label={i18nStrings.propertyText} className={styles['token-editor-field-property']}>
-                <PropertyInput
-                  property={group.property}
-                  onChangePropertyKey={group.onChangePropertyKey}
-                  asyncProps={asyncProperties ? asyncProps : null}
-                  filteringProperties={filteringProperties}
-                  onLoadItems={onLoadItems}
-                  customGroupsText={customGroupsText}
-                  i18nStrings={i18nStrings}
-                  freeTextFiltering={freeTextFiltering}
-                />
-              </InternalFormField>
+            <React.Fragment key={index}>
+              <div className={styles['token-editor-form']}>
+                <InternalFormField label={i18nStrings.propertyText} className={styles['token-editor-field-property']}>
+                  <PropertyInput
+                    property={group.property}
+                    onChangePropertyKey={group.onChangePropertyKey}
+                    asyncProps={asyncProperties ? asyncProps : null}
+                    filteringProperties={filteringProperties}
+                    onLoadItems={onLoadItems}
+                    customGroupsText={customGroupsText}
+                    i18nStrings={i18nStrings}
+                    freeTextFiltering={freeTextFiltering}
+                  />
+                </InternalFormField>
 
-              <InternalFormField label={i18nStrings.operatorText} className={styles['token-editor-field-operator']}>
-                <OperatorInput
-                  property={group.property}
-                  operator={group.operator}
-                  onChangeOperator={group.onChangeOperator}
-                  i18nStrings={i18nStrings}
-                  freeTextFiltering={freeTextFiltering}
-                />
-              </InternalFormField>
+                <InternalFormField label={i18nStrings.operatorText} className={styles['token-editor-field-operator']}>
+                  <OperatorInput
+                    property={group.property}
+                    operator={group.operator}
+                    onChangeOperator={group.onChangeOperator}
+                    i18nStrings={i18nStrings}
+                    freeTextFiltering={freeTextFiltering}
+                  />
+                </InternalFormField>
 
-              <InternalFormField label={i18nStrings.valueText} className={styles['token-editor-field-value']}>
-                <ValueInput
-                  property={group.property}
-                  operator={group.operator}
-                  value={group.value}
-                  onChangeValue={group.onChangeValue}
-                  asyncProps={asyncProps}
-                  filteringOptions={filteringOptions}
-                  onLoadItems={onLoadItems}
-                  i18nStrings={i18nStrings}
-                />
-              </InternalFormField>
+                <InternalFormField label={i18nStrings.valueText} className={styles['token-editor-field-value']}>
+                  <ValueInput
+                    property={group.property}
+                    operator={group.operator}
+                    value={group.value}
+                    onChangeValue={group.onChangeValue}
+                    asyncProps={asyncProps}
+                    filteringOptions={filteringOptions}
+                    onLoadItems={onLoadItems}
+                    i18nStrings={i18nStrings}
+                  />
+                </InternalFormField>
+
+                {/* TODO: i18n */}
+                {groups.length > 1 && (
+                  <div className={styles['token-editor-remove-token']}>
+                    <InternalButton
+                      iconName="remove"
+                      onClick={() =>
+                        setTemp(prev => {
+                          const copy = [...prev];
+                          copy.splice(index, 1);
+                          return copy;
+                        })
+                      }
+                    >
+                      Remove token
+                    </InternalButton>
+                  </div>
+                )}
+              </div>
 
               {/* TODO: i18n */}
-              {groups.length > 1 && (
-                <InternalBox margin={{ top: 'xs' }}>
-                  <InternalButton
-                    iconName="remove"
-                    onClick={() =>
-                      setTemp(prev => {
-                        const copy = [...prev];
-                        copy.splice(index, 1);
-                        return copy;
-                      })
-                    }
-                  >
-                    Remove token
-                  </InternalButton>
-                </InternalBox>
-              )}
-            </div>
+              {index < groups.length - 1 ? (
+                <div className={styles['token-editor-operation']}>
+                  <InternalSelect
+                    options={operationOptions}
+                    selectedOption={operationOptions.find(option => option.value === operation)!}
+                    onChange={event => setOperation(event.detail.selectedOption.value as 'and' | 'or')}
+                    ariaLabel="Operation"
+                  />
+                </div>
+              ) : null}
+            </React.Fragment>
           ))}
 
           {/* TODO: i18n */}
-          <InternalButton
-            iconName="add-plus"
-            onClick={() => setTemp(prev => [...prev, { property: null, operator: ':', value: null }])}
-          >
-            Add token
-          </InternalButton>
+          <div className={styles['token-editor-add-token']}>
+            <InternalButton
+              iconName="add-plus"
+              onClick={() => setTemp(prev => [...prev, { property: null, operator: ':', value: null }])}
+            >
+              Add token
+            </InternalButton>
+          </div>
 
           <div className={styles['token-editor-actions']}>
             <InternalButton

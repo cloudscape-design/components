@@ -56,6 +56,17 @@
   }
 }
 
+.container-body-size-max {
+  max-inline-size: 800px;
+  @media (max-width: 800px) {
+    // On viewports smaller than 800px, we default to the body-size-medium width
+    max-inline-size: 310px;
+  }
+  &.fixed-width {
+    inline-size: 800px;
+  }
+}
+
 .container-arrow {
   $arrow-offset: 12px;
   $arrow-width: 20px;

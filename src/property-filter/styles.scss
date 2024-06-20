@@ -43,23 +43,20 @@
   margin-block: awsui.$space-xxs;
   margin-inline: awsui.$space-xxs;
 
-  &-form {
-    margin-block-end: awsui.$space-scaled-l;
-  }
   &-field-property {
-    /* used in test-utils */
+    flex-grow: 2;
   }
   &-field-operator {
-    margin-block-start: awsui.$space-scaled-l;
+    flex-grow: 1;
   }
   &-field-value {
-    margin-block-start: awsui.$space-scaled-l;
+    flex-grow: 2;
   }
   &-cancel {
     margin-inline-end: awsui.$space-xs;
   }
   &-submit {
-    /* used in test-utils */
+    /* used for testing */
   }
   &-actions {
     display: flex;
@@ -69,16 +66,36 @@
   }
 }
 .token-editor {
+  display: flex;
+  flex-direction: column;
+  gap: awsui.$space-s;
+
   &-actions {
     // The below code cancels horizontal padding of the popover and horizontal margin of the token-editor.
     padding-inline-end: calc(#{awsui.$space-m} + #{awsui.$space-xxs});
     margin-inline: calc(-1 * #{awsui.$space-m} + -1 * #{awsui.$space-xxs});
-    margin-top: awsui.$space-s;
+    margin-block-start: awsui.$space-s;
   }
   &-form {
-    border-radius: 4px;
-    border: 2px solid awsui.$color-border-divider-default;
-    padding: awsui.$space-xs;
+    display: flex;
+    align-items: flex-end;
+    gap: awsui.$space-s;
+
+    @media (max-width: 800px) {
+      flex-direction: column;
+      align-items: stretch;
+      padding-block-end: awsui.$space-xs;
+      border-block-end: 1px solid awsui.$color-border-divider-default;
+    }
+  }
+  &-operation {
+    align-self: flex-start;
+  }
+  &-add-token {
+    margin-block-start: awsui.$space-xxs;
+  }
+  &-remove-token {
+    /* used for testing */
   }
 }
 .property-editor {
