@@ -192,13 +192,21 @@ export function TabHeaderBar({
     const focusTarget = document.activeElement;
     const specialKeys = [KeyCode.right, KeyCode.left, KeyCode.end, KeyCode.home, KeyCode.pageUp, KeyCode.pageDown];
     const isActionOpen = document.querySelector(`.${styles['tabs-tab-action']} [aria-expanded="true"]`);
+    const isDismissOrActionFocused = !focusTarget?.classList.contains(styles['tabs-tab-link']);
+
+    if (isActionOpen) {
+      return;
+    }
+    if (event.key === 'Tab' && isDismissOrActionFocused) {
+      event.preventDefault();
+      const panelId = `${idNamespace}-${activeTabId}-panel`;
+      const panel = document.getElementById(panelId);
+      panel?.focus();
+    }
     if (hasModifierKeys(event) || specialKeys.indexOf(event.keyCode) === -1) {
       return;
     }
     if (!containerObjectRef.current || !focusTarget) {
-      return;
-    }
-    if (isActionOpen) {
       return;
     }
     event.preventDefault();
@@ -221,7 +229,7 @@ export function TabHeaderBar({
     for (const [tabId, focusTargetTabTriggerElement] of tabRefs.current.entries()) {
       const focusTargetTabLabelElement = focusTargetTabTriggerElement?.querySelector(`.${styles['tabs-tab-link']}`);
       if (tabId !== activeTabId && focusTargetTabLabelElement === element) {
-        setPreviousActiveTabId(activeTabId);
+        setPreviousActiveTabId(tabId);
         onChange({ activeTabId: tabId, activeTabHref: tabsById.get(tabId)?.href });
         break;
       }
@@ -234,7 +242,7 @@ export function TabHeaderBar({
     }
     function isElementDisabled(element: HTMLElement) {
       if (element instanceof HTMLButtonElement) {
-        return element.disabled && element.getAttribute('aria-selected') !== 'true';
+        return element.disabled || element.closest(`.${styles['tabs-tab-disabled']}`);
       }
       return false;
     }
@@ -385,7 +393,8 @@ export function TabHeaderBar({
     };
 
     const handleDismiss: ButtonProps['onClick'] = event => {
-      if (!containerObjectRef.current || tabs.length <= 1) {
+      const focusableTabsLength = tabs.filter(tab => !tab.disabled);
+      if (!containerObjectRef.current || focusableTabsLength.length <= 1) {
         return;
       }
       const tabElements = getFocusablesFrom(containerObjectRef.current).filter(el =>

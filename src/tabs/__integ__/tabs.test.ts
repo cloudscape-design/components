@@ -135,6 +135,7 @@ test(
 test(
   'left/right arrow should have aria-disabled when first/last tab is selected',
   setupTest(async page => {
+    await page.setWindowSize({ width: 550, height: 1000 });
     await page.hasPaginationButtons(true);
     await expect(page.isExisting(page.paginationButton('left', true))).resolves.toBe(false);
     await expect(page.isExisting(page.paginationButton('right', true))).resolves.toBe(true);
@@ -144,7 +145,7 @@ test(
     await page.navigateTabList(7);
     await expect(page.isExisting(page.paginationButton('left', true))).resolves.toBe(true);
     await expect(page.isExisting(page.paginationButton('right', true))).resolves.toBe(false);
-  }, true)
+  })
 );
 
 test(
@@ -217,13 +218,14 @@ test(
 test(
   'allows to click on dynamically added tabs',
   setupTest(async page => {
+    await page.setWindowSize({ width: 500, height: 1000 });
     await page.click('#add-tab');
     await page.click(page.paginationButton('right', true));
     await page.click(wrapper.findTabLinkByIndex(7).toSelector());
     await page.waitForAssertion(async () =>
       expect(await page.isExisting(page.paginationButton('right', true))).toBe(false)
     );
-  }, true)
+  })
 );
 
 test(
@@ -320,6 +322,34 @@ test(
 );
 
 test(
+  'verifies focus moves from non-active tab dismissible/action to active tab content on tab press',
+  setupTest(async page => {
+    await page.focusTabHeader();
+    // Tests focus shifts from dismissible -> active tab content
+    await page.click(wrapper.findTabLinkByIndex(1).toSelector());
+    await page.navigateTabList(-1);
+    await page.keys(['Tab']);
+    await expect(page.isFocused(wrapper.findTabContent().toSelector())).resolves.toBe(true);
+    // Tests focus shifts from action -> active tab content
+    await page.click(wrapper.findTabLinkByIndex(1).toSelector());
+    await page.navigateTabList(-2);
+    await page.keys(['Tab']);
+    await expect(page.isFocused(wrapper.findTabContent().toSelector())).resolves.toBe(true);
+  })
+);
+
+test(
+  'Verifies focus moves to last active tab after dismiss fires',
+  setupTest(async page => {
+    await page.focusTabHeader();
+    await page.navigateTabList(2);
+    await page.navigateTabList(-3);
+    await page.keys(['Enter']);
+    await expect(page.isFocused(wrapper.findTabLinkByIndex(1).toSelector())).resolves.toBe(true);
+  })
+);
+
+test(
   '(Keyboard) verifies focus moves from dismissible tab to next tab after dismiss fires',
   setupTest(async page => {
     await page.focusTabHeader();
@@ -349,7 +379,7 @@ test(
 test(
   'verifies dismissible event fires',
   setupTest(async page => {
-    await page.click(dismissibleWrapper.findTabLinkByIndex(2).toSelector());
+    await page.click(dismissibleWrapper.findTabLinkByIndex(3).toSelector());
     await page.navigateTabList(1);
     await page.keys(['Enter']);
     await expect(page.isFocused(dismissibleWrapper.findTabLinkByIndex(1).toSelector())).resolves.toBe(true);
@@ -359,7 +389,7 @@ test(
 test(
   'prevents user from calling dismiss event twice in tab list of two',
   setupTest(async page => {
-    await page.click(dismissibleWrapper.findTabLinkByIndex(2).toSelector());
+    await page.click(dismissibleWrapper.findTabLinkByIndex(3).toSelector());
     await page.navigateTabList(1);
     await page.keys(['Enter']);
     await expect(page.isFocused(dismissibleWrapper.findTabLinkByIndex(1).toSelector())).resolves.toBe(true);

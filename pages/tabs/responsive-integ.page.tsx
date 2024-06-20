@@ -81,9 +81,31 @@ export default function TabsDemoPage() {
     {
       label: 'Second tab',
       id: 'second',
+      disabled: true,
       dismissible: true,
-      dismissLabel: 'Dismiss second tab',
-      onDismiss: () => setTabDismissibles(prevTabs => prevTabs.slice(0, 1)),
+      dismissLabel: 'Dismiss second tab (disabled)',
+      action: (
+        <ButtonDropdown
+          variant="icon"
+          ariaLabel="Query actions for second tab"
+          items={[
+            { id: 'save', text: 'Save', disabled: true },
+            { id: 'saveAs', text: 'Save as' },
+            { id: 'rename', text: 'Rename', disabled: true },
+            { id: 'delete', text: 'Delete', disabled: true },
+          ]}
+          expandToViewport={true}
+        />
+      ),
+      content:
+        'Diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.',
+    },
+    {
+      label: 'Third tab',
+      id: 'third',
+      dismissible: true,
+      dismissLabel: 'Dismiss third tab',
+      onDismiss: () => setTabDismissibles(prevTabs => prevTabs.filter(tab => tab.id !== 'third')),
       content: (
         <>
           Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Diam nonumy eirmod tempor
@@ -129,7 +151,10 @@ export default function TabsDemoPage() {
         id="dismiss-tabs"
         ariaLabel="Dismissible Tabs"
         tabs={tabsDismissibles}
-        i18nStrings={{ scrollLeftAriaLabel: 'Scroll left', scrollRightAriaLabel: 'Scroll right' }}
+        i18nStrings={{
+          scrollLeftAriaLabel: 'Scroll left (Dismissible Tabs)',
+          scrollRightAriaLabel: 'Scroll right (Dismissible Tabs)',
+        }}
       />
     </div>
   );

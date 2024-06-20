@@ -199,7 +199,11 @@ $label-horizontal-spacing: awsui.$space-xs;
   }
 }
 
-.tabs-tab-disabled {
+/* stylelint-disable selector-combinator-disallowed-list */
+// Because the action is provided by the user, combining selectors is more robust
+.tabs-tab-disabled,
+.tabs-tab-disabled .tabs-tab-action button,
+.tabs-tab-disabled .tabs-tab-dismiss button {
   &,
   &:hover {
     pointer-events: none;
@@ -208,6 +212,7 @@ $label-horizontal-spacing: awsui.$space-xs;
     font-weight: awsui.$font-tabs-disabled-weight;
   }
 }
+/* stylelint-enable selector-combinator-disallowed-list */
 
 .tabs-tab-active:not(.tabs-tab-disabled) {
   color: awsui.$color-text-accent;
