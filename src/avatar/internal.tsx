@@ -85,7 +85,14 @@ export default function InternalAvatar({
       aria-label={ariaLabel}
       {...tooltipAttributes}
     >
-      {showTooltip && tooltipText && <Tooltip value={tooltipText} trackRef={handleRef} />}
+      {showTooltip && tooltipText && (
+        <Tooltip
+          value={tooltipText}
+          trackRef={handleRef}
+          // This is added to ensure tooltip is closed when clicked for consistency with other tooltip usages
+          contentAttributes={{ onPointerDown: () => setShowTooltip(false) }}
+        />
+      )}
 
       <div className={styles.content}>
         <AvatarContent

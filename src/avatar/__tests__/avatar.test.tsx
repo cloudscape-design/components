@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { render, act, fireEvent } from '@testing-library/react';
+import { render, act, fireEvent, screen } from '@testing-library/react';
 import React from 'react';
 import Avatar, { AvatarProps } from '../../../lib/components/avatar';
 import createWrapper from '../../../lib/components/test-utils/dom';
@@ -79,6 +79,21 @@ describe('Avatar component', () => {
         'Avatar',
         `"initials" is longer than 2 characters. Only the first two characters are shown.`
       );
+    });
+
+    test('Tooltip is closed on pointer down', () => {
+      const tooltipText = 'Tooltip text for avatar';
+      const wrapper = renderAvatar({ ...defaultAvatarProps, tooltipText });
+
+      act(() => {
+        fireEvent.mouseEnter(wrapper.getElement());
+      });
+      expect(wrapper.findTooltip()?.getElement()).toHaveTextContent(tooltipText);
+
+      act(() => {
+        fireEvent.pointerDown(screen.getByText(tooltipText));
+      });
+      expect(wrapper.findTooltip()?.getElement()).toBeUndefined();
     });
   });
 
