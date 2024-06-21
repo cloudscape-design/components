@@ -80,6 +80,7 @@ $label-horizontal-spacing: awsui.$space-xs;
   display: flex;
   align-items: center;
   padding-inline: $label-horizontal-spacing;
+  padding-block: awsui.$space-scaled-2x-xxs;
   text-align: start;
   position: relative;
 
@@ -113,7 +114,7 @@ $label-horizontal-spacing: awsui.$space-xs;
     content: '';
     position: absolute;
     inset-inline-start: 0;
-    inline-size: 100%;
+    inline-size: calc(100% - 1px);
     inset-block-end: calc(-1 * #{awsui.$border-divider-section-width});
     block-size: awsui.$border-active-width;
     border-start-start-radius: awsui.$border-radius-tabs-focus-ring;
@@ -140,8 +141,12 @@ $label-horizontal-spacing: awsui.$space-xs;
       content: '';
       position: absolute;
       border-inline-end: awsui.$border-divider-section-width solid $separator-color;
-      inset: calc(#{awsui.$space-scaled-s} - #{awsui.$border-active-width}) 0;
+      inset: calc(#{awsui.$space-scaled-s}) 0;
       opacity: 1;
+    }
+
+    &.refresh:before {
+      inset: calc(#{awsui.$space-scaled-s} - #{awsui.$border-active-width}) 0;
     }
   }
 }
@@ -152,8 +157,9 @@ $label-horizontal-spacing: awsui.$space-xs;
   align-items: stretch;
   text-decoration: none;
   cursor: pointer;
-  padding-block-start: calc(#{awsui.$space-scaled-s} - 1px);
-  padding-block-end: awsui.$space-scaled-s;
+  padding-block-start: calc(#{awsui.$space-scaled-s} - 2px);
+  padding-block-end: calc(#{awsui.$space-scaled-s} - 1px);
+
   padding-inline: 0;
   margin-block-start: 1px;
   border-block: awsui.$border-divider-section-width solid transparent;
@@ -163,10 +169,15 @@ $label-horizontal-spacing: awsui.$space-xs;
   line-height: awsui.$font-tabs-line-height;
   font-weight: awsui.$font-wayfinding-link-active-weight;
   color: awsui.$color-text-interactive-default;
+
+  padding-inline-start: calc(#{awsui.$space-xxs} - 1px);
+  padding-inline-end: awsui.$space-xxs;
+
   &.refresh {
     padding-block-start: calc(awsui.$space-static-xs - 1px);
-    padding-block-end: awsui.$space-static-xs;
-    padding-inline: 0;
+    padding-block-end: calc(#{awsui.$space-xxs} - 1px);
+
+    margin-block-start: 0;
   }
 
   &:hover {
