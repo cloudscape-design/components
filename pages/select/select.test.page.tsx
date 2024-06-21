@@ -10,8 +10,6 @@ const options = [
   {
     value: '1',
     label: 'Option 1',
-    disabled: true,
-    disabledReason: 'disabled reason',
   },
   {
     value: '2',
