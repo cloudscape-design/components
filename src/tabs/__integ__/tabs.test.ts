@@ -276,11 +276,6 @@ test(
         await page.keys('Tab');
       }
       await page.keys(['End']);
-      /*
-       * Navigating to an action or dismissible buttons does not focus the tab
-       * Because the buttons are considered as part of the tab stop navigation
-       * The tab will not be considered active until you navigate to the label.
-       */
       await page.navigateTabList(-2);
       await expect(page.findActiveTabIndex()).resolves.toBe(5);
       await page.keys(['Home']);
@@ -382,20 +377,6 @@ test(
     await page.click(dismissibleWrapper.findTabLinkByIndex(3).toSelector());
     await page.navigateTabList(1);
     await page.keys(['Enter']);
-    await expect(page.isFocused(dismissibleWrapper.findTabLinkByIndex(1).toSelector())).resolves.toBe(true);
-  })
-);
-
-test(
-  'prevents user from calling dismiss event twice in tab list of two',
-  setupTest(async page => {
-    await page.click(dismissibleWrapper.findTabLinkByIndex(3).toSelector());
-    await page.navigateTabList(1);
-    await page.keys(['Enter']);
-    await expect(page.isFocused(dismissibleWrapper.findTabLinkByIndex(1).toSelector())).resolves.toBe(true);
-    await page.navigateTabList(1);
-    await page.keys(['Enter']);
-    await page.navigateTabList(-1);
     await expect(page.isFocused(dismissibleWrapper.findTabLinkByIndex(1).toSelector())).resolves.toBe(true);
   })
 );

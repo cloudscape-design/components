@@ -113,16 +113,6 @@ const actionDismissibleTabs: Array<TabsProps.Tab> = [
   },
 ];
 
-const dismissibleOnly: Array<TabsProps.Tab> = [
-  {
-    id: 'first',
-    label: 'first tab',
-    dismissible: true,
-    dismissLabel: 'first-tab-dismissible-button',
-    onDismiss: () => console.log('I have been called!'),
-  },
-];
-
 describe('Tabs', () => {
   test('renders an empty tab list correctly', () => {
     const emptyTabs = renderTabs(<Tabs tabs={[]} />).wrapper.findTabLinks();
@@ -780,27 +770,6 @@ describe('Tabs', () => {
       pressLeft(wrapper);
       wrapper.findActiveTab()!.keydown({ keyCode: KeyCode.tab });
       expect(wrapper.findTabContent()?.getElement()).toHaveFocus();
-    });
-
-    test('does not call onDismiss event for tab list w/ one dismissible tab', () => {
-      const consoleSpy = jest.spyOn(console, 'log').mockImplementation();
-      const wrapper = renderTabs(<Tabs tabs={dismissibleOnly} activeTabId="first" />).wrapper;
-      const dismissibleButton = wrapper.findDismissibleButtonByTabId('first')?.find('button');
-      dismissibleButton?.click();
-      expect(consoleSpy).not.toHaveBeenCalledWith('I have been called!');
-      consoleSpy.mockClear();
-    });
-
-    test('disables dismissible button if only one tab that is dismissible', () => {
-      const consoleSpy = jest.spyOn(console, 'log').mockImplementation();
-      const dismissibleButtonWrapper = renderTabs(
-        <Tabs tabs={dismissibleOnly} activeTabId="first" />
-      ).wrapper.findDismissibleButtonByTabId('first');
-      const dismissibleButton = dismissibleButtonWrapper?.find('button');
-      dismissibleButton?.click();
-      expect(consoleSpy).not.toHaveBeenCalledWith('I have been called!');
-      expect(dismissibleButton?.getElement().attributes.getNamedItem('disabled')).toBeTruthy();
-      consoleSpy.mockClear();
     });
   });
 

@@ -30,20 +30,9 @@ import { ButtonProps } from '../button/interfaces';
 
 const tabSelector = `.${styles['tabs-tab-link']}`;
 
-function dismissButton(
-  dismissLabel: TabsProps.Tab['dismissLabel'],
-  onDismiss: TabsProps.Tab['onDismiss'],
-  isTabDismissible: boolean
-) {
+function dismissButton(dismissLabel: TabsProps.Tab['dismissLabel'], onDismiss: TabsProps.Tab['onDismiss']) {
   return (
-    <InternalButton
-      onClick={onDismiss}
-      variant="icon"
-      iconName="close"
-      disabled={!isTabDismissible}
-      formAction="none"
-      ariaLabel={dismissLabel}
-    />
+    <InternalButton onClick={onDismiss} variant="icon" iconName="close" formAction="none" ariaLabel={dismissLabel} />
   );
 }
 
@@ -320,7 +309,6 @@ export function TabHeaderBar({
 
   function renderTabHeader(tab: TabsProps.Tab) {
     const { dismissible, dismissLabel, action, onDismiss } = tab;
-    const isTabDismissible = tabs.filter(tab => !tab.disabled).length > 1;
 
     const clickTab = (event: React.MouseEvent) => {
       if (tab.disabled) {
@@ -409,7 +397,7 @@ export function TabHeaderBar({
     };
 
     const handleDismiss: ButtonProps['onClick'] = event => {
-      if (!containerObjectRef.current || !isTabDismissible) {
+      if (!containerObjectRef.current) {
         return;
       }
       const tabElements = getFocusablesFrom(containerObjectRef.current).filter(el =>
@@ -443,9 +431,7 @@ export function TabHeaderBar({
           <TabTrigger ref={setElement} tab={tab} elementProps={commonProps} />
           {action && <span className={tabActionClasses}>{action}</span>}
           {dismissible && (
-            <span className={styles['tabs-tab-dismiss']}>
-              {dismissButton(dismissLabel, handleDismiss, isTabDismissible)}
-            </span>
+            <span className={styles['tabs-tab-dismiss']}> {dismissButton(dismissLabel, handleDismiss)} </span>
           )}
         </div>
       </TabItem>
