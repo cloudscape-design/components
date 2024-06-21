@@ -502,6 +502,50 @@ describe('Tabs', () => {
           expect(wrapper.findActiveTab()!.getElement()).toHaveFocus();
         });
 
+        test('does not focus on disabled tab', () => {
+          const { wrapper } = renderTabs(
+            <Tabs
+              tabs={defaultTabs.map(item => {
+                if (item.id === 'second') {
+                  return {
+                    ...item,
+                    disabled: true,
+                    href: undefined,
+                  };
+                }
+                return item;
+              })}
+            />
+          );
+
+          wrapper.findActiveTab()!.getElement().focus();
+          pressRight(wrapper);
+
+          expect(wrapper.findFocusedTab()!.getElement()).toHaveTextContent('Fourth tab');
+        });
+
+        test('does not focus on disabled tab with href', () => {
+          const { wrapper } = renderTabs(
+            <Tabs
+              tabs={defaultTabs.map(item => {
+                if (item.id === 'second') {
+                  return {
+                    ...item,
+                    disabled: true,
+                    href: '#second',
+                  };
+                }
+                return item;
+              })}
+            />
+          );
+
+          wrapper.findActiveTab()!.getElement().focus();
+          pressRight(wrapper);
+
+          expect(wrapper.findFocusedTab()!.getElement()).toHaveTextContent('Fourth tab');
+        });
+
         test('does not fire the change event upon key interactions', () => {
           const changeSpy = jest.fn();
 
@@ -1003,9 +1047,29 @@ describe('Tabs', () => {
         );
       });
 
-      test.todo('show previously selected tab content when disabled with reason tab is focused');
+      test('show previously selected tab content when disabled with reason tab is focused', () => {
+        const { wrapper } = renderTabs(
+          <Tabs
+            tabs={defaultTabs.map(item => {
+              if (item.id === 'second') {
+                return {
+                  ...item,
+                  disabled: true,
+                  disabledReason: 'disabled reason',
+                };
+              }
 
-      test.todo('should not open link when disabled with reason tab is clicked');
+              return item;
+            })}
+          />
+        );
+
+        pressRight(wrapper);
+
+        expect(wrapper.findActiveTab()!.getElement()).toHaveTextContent('First tab');
+        expect(wrapper.findTabContent()!.getElement()).toHaveTextContent('First content');
+        expect(wrapper.findFocusedTab()!.getElement()).toHaveTextContent('Second tab');
+      });
     });
   });
 
