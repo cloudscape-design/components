@@ -139,9 +139,7 @@ export function TabHeaderBar({
     */
     if (headerBarRef.current?.contains(document.activeElement)) {
       if (document.activeElement !== activeTabHeaderRef.current) {
-        requestAnimationFrame(() => {
-          activeTabHeaderRef.current?.focus({ preventScroll: true });
-        });
+        activeTabHeaderRef.current?.focus({ preventScroll: true });
       }
     }
   }, [activeTabId]);
@@ -189,10 +187,8 @@ export function TabHeaderBar({
       // Wait for unmounted node to get removed from the DOM.
       requestAnimationFrame(() => {
         const nextFocusTarget = navigationAPI.current?.getFocusTarget();
-        if (nextFocusTarget) {
-          const tabLinkButton = nextFocusTarget.querySelector(`.${styles['tabs-tab-link']}`) as HTMLElement;
-          tabLinkButton?.focus();
-        }
+        const tabLinkButton = nextFocusTarget?.querySelector(`.${styles['tabs-tab-link']}`) as HTMLElement;
+        tabLinkButton?.focus();
       });
     }
   }
