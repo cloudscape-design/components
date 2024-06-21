@@ -70,14 +70,14 @@ Object {
           "$value": "2px",
         },
         "color-background-avatar-default": Object {
-          "$description": "The default background color of avatar.",
+          "$description": "The default background color of avatars.",
           "$value": Object {
             "dark": "#545b64",
             "light": "#545b64",
           },
         },
         "color-background-avatar-gen-ai": Object {
-          "$description": "The gen-ai background color of avatar.",
+          "$description": "The gen-ai background color of avatars.",
           "$value": Object {
             "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
             "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
@@ -1673,7 +1673,7 @@ Object {
           },
         },
         "color-text-avatar": Object {
-          "$description": "The text and icon color of avatar.",
+          "$description": "The text and icon color of avatars.",
           "$value": Object {
             "dark": "#ffffff",
             "light": "#ffffff",
@@ -2115,14 +2115,14 @@ Object {
           "$value": "20px",
         },
         "motion-duration-avatar-gen-ai-gradient": Object {
-          "$description": "The duration for gradient motion of gen-ai avatar.",
+          "$description": "The duration for gradient motion of gen-ai avatars.",
           "$value": Object {
             "default": "3600ms",
             "disabled": "0ms",
           },
         },
         "motion-duration-avatar-loading-dots": Object {
-          "$description": "The duration for loading motion of avatar.",
+          "$description": "The duration for loading motion of avatars.",
           "$value": Object {
             "default": "1200ms",
             "disabled": "0ms",
@@ -2150,7 +2150,7 @@ Object {
           },
         },
         "motion-easing-avatar-gen-ai-gradient": Object {
-          "$description": "The easing curve for gradient motion of gen-ai avatar.",
+          "$description": "The easing curve for gradient motion of gen-ai avatars.",
           "$value": Object {
             "default": "cubic-bezier(0.7, 0, 0.3, 1)",
             "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
@@ -2421,14 +2421,14 @@ Object {
           "$value": "2px",
         },
         "color-background-avatar-default": Object {
-          "$description": "The default background color of avatar.",
+          "$description": "The default background color of avatars.",
           "$value": Object {
             "dark": "#545b64",
             "light": "#545b64",
           },
         },
         "color-background-avatar-gen-ai": Object {
-          "$description": "The gen-ai background color of avatar.",
+          "$description": "The gen-ai background color of avatars.",
           "$value": Object {
             "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
             "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
@@ -4024,7 +4024,7 @@ Object {
           },
         },
         "color-text-avatar": Object {
-          "$description": "The text and icon color of avatar.",
+          "$description": "The text and icon color of avatars.",
           "$value": Object {
             "dark": "#ffffff",
             "light": "#ffffff",
@@ -4466,14 +4466,14 @@ Object {
           "$value": "20px",
         },
         "motion-duration-avatar-gen-ai-gradient": Object {
-          "$description": "The duration for gradient motion of gen-ai avatar.",
+          "$description": "The duration for gradient motion of gen-ai avatars.",
           "$value": Object {
             "default": "3600ms",
             "disabled": "0ms",
           },
         },
         "motion-duration-avatar-loading-dots": Object {
-          "$description": "The duration for loading motion of avatar.",
+          "$description": "The duration for loading motion of avatars.",
           "$value": Object {
             "default": "1200ms",
             "disabled": "0ms",
@@ -4501,7 +4501,7 @@ Object {
           },
         },
         "motion-easing-avatar-gen-ai-gradient": Object {
-          "$description": "The easing curve for gradient motion of gen-ai avatar.",
+          "$description": "The easing curve for gradient motion of gen-ai avatars.",
           "$value": Object {
             "default": "cubic-bezier(0.7, 0, 0.3, 1)",
             "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
@@ -4772,14 +4772,14 @@ Object {
           "$value": "2px",
         },
         "color-background-avatar-default": Object {
-          "$description": "The default background color of avatar.",
+          "$description": "The default background color of avatars.",
           "$value": Object {
             "dark": "#545b64",
             "light": "#545b64",
           },
         },
         "color-background-avatar-gen-ai": Object {
-          "$description": "The gen-ai background color of avatar.",
+          "$description": "The gen-ai background color of avatars.",
           "$value": Object {
             "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
             "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
@@ -6375,7 +6375,7 @@ Object {
           },
         },
         "color-text-avatar": Object {
-          "$description": "The text and icon color of avatar.",
+          "$description": "The text and icon color of avatars.",
           "$value": Object {
             "dark": "#ffffff",
             "light": "#ffffff",
@@ -6817,14 +6817,14 @@ Object {
           "$value": "20px",
         },
         "motion-duration-avatar-gen-ai-gradient": Object {
-          "$description": "The duration for gradient motion of gen-ai avatar.",
+          "$description": "The duration for gradient motion of gen-ai avatars.",
           "$value": Object {
             "default": "3600ms",
             "disabled": "0ms",
           },
         },
         "motion-duration-avatar-loading-dots": Object {
-          "$description": "The duration for loading motion of avatar.",
+          "$description": "The duration for loading motion of avatars.",
           "$value": Object {
             "default": "1200ms",
             "disabled": "0ms",
@@ -6852,7 +6852,7 @@ Object {
           },
         },
         "motion-easing-avatar-gen-ai-gradient": Object {
-          "$description": "The easing curve for gradient motion of gen-ai avatar.",
+          "$description": "The easing curve for gradient motion of gen-ai avatars.",
           "$value": Object {
             "default": "cubic-bezier(0.7, 0, 0.3, 1)",
             "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
@@ -7123,14 +7123,14 @@ Object {
           "$value": "2px",
         },
         "color-background-avatar-default": Object {
-          "$description": "The default background color of avatar.",
+          "$description": "The default background color of avatars.",
           "$value": Object {
             "dark": "#545b64",
             "light": "#545b64",
           },
         },
         "color-background-avatar-gen-ai": Object {
-          "$description": "The gen-ai background color of avatar.",
+          "$description": "The gen-ai background color of avatars.",
           "$value": Object {
             "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
             "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
@@ -8726,7 +8726,7 @@ Object {
           },
         },
         "color-text-avatar": Object {
-          "$description": "The text and icon color of avatar.",
+          "$description": "The text and icon color of avatars.",
           "$value": Object {
             "dark": "#ffffff",
             "light": "#ffffff",
@@ -9168,14 +9168,14 @@ Object {
           "$value": "20px",
         },
         "motion-duration-avatar-gen-ai-gradient": Object {
-          "$description": "The duration for gradient motion of gen-ai avatar.",
+          "$description": "The duration for gradient motion of gen-ai avatars.",
           "$value": Object {
             "default": "3600ms",
             "disabled": "0ms",
           },
         },
         "motion-duration-avatar-loading-dots": Object {
-          "$description": "The duration for loading motion of avatar.",
+          "$description": "The duration for loading motion of avatars.",
           "$value": Object {
             "default": "1200ms",
             "disabled": "0ms",
@@ -9203,7 +9203,7 @@ Object {
           },
         },
         "motion-easing-avatar-gen-ai-gradient": Object {
-          "$description": "The easing curve for gradient motion of gen-ai avatar.",
+          "$description": "The easing curve for gradient motion of gen-ai avatars.",
           "$value": Object {
             "default": "cubic-bezier(0.7, 0, 0.3, 1)",
             "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
@@ -9474,14 +9474,14 @@ Object {
           "$value": "2px",
         },
         "color-background-avatar-default": Object {
-          "$description": "The default background color of avatar.",
+          "$description": "The default background color of avatars.",
           "$value": Object {
             "dark": "#545b64",
             "light": "#545b64",
           },
         },
         "color-background-avatar-gen-ai": Object {
-          "$description": "The gen-ai background color of avatar.",
+          "$description": "The gen-ai background color of avatars.",
           "$value": Object {
             "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
             "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
@@ -11077,7 +11077,7 @@ Object {
           },
         },
         "color-text-avatar": Object {
-          "$description": "The text and icon color of avatar.",
+          "$description": "The text and icon color of avatars.",
           "$value": Object {
             "dark": "#ffffff",
             "light": "#ffffff",
@@ -11519,14 +11519,14 @@ Object {
           "$value": "20px",
         },
         "motion-duration-avatar-gen-ai-gradient": Object {
-          "$description": "The duration for gradient motion of gen-ai avatar.",
+          "$description": "The duration for gradient motion of gen-ai avatars.",
           "$value": Object {
             "default": "3600ms",
             "disabled": "0ms",
           },
         },
         "motion-duration-avatar-loading-dots": Object {
-          "$description": "The duration for loading motion of avatar.",
+          "$description": "The duration for loading motion of avatars.",
           "$value": Object {
             "default": "1200ms",
             "disabled": "0ms",
@@ -11554,7 +11554,7 @@ Object {
           },
         },
         "motion-easing-avatar-gen-ai-gradient": Object {
-          "$description": "The easing curve for gradient motion of gen-ai avatar.",
+          "$description": "The easing curve for gradient motion of gen-ai avatars.",
           "$value": Object {
             "default": "cubic-bezier(0.7, 0, 0.3, 1)",
             "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
@@ -11825,14 +11825,14 @@ Object {
       "$value": "2px",
     },
     "color-background-avatar-default": Object {
-      "$description": "The default background color of avatar.",
+      "$description": "The default background color of avatars.",
       "$value": Object {
         "dark": "#545b64",
         "light": "#545b64",
       },
     },
     "color-background-avatar-gen-ai": Object {
-      "$description": "The gen-ai background color of avatar.",
+      "$description": "The gen-ai background color of avatars.",
       "$value": Object {
         "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
         "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
@@ -13428,7 +13428,7 @@ Object {
       },
     },
     "color-text-avatar": Object {
-      "$description": "The text and icon color of avatar.",
+      "$description": "The text and icon color of avatars.",
       "$value": Object {
         "dark": "#ffffff",
         "light": "#ffffff",
@@ -13870,14 +13870,14 @@ Object {
       "$value": "20px",
     },
     "motion-duration-avatar-gen-ai-gradient": Object {
-      "$description": "The duration for gradient motion of gen-ai avatar.",
+      "$description": "The duration for gradient motion of gen-ai avatars.",
       "$value": Object {
         "default": "3600ms",
         "disabled": "0ms",
       },
     },
     "motion-duration-avatar-loading-dots": Object {
-      "$description": "The duration for loading motion of avatar.",
+      "$description": "The duration for loading motion of avatars.",
       "$value": Object {
         "default": "1200ms",
         "disabled": "0ms",
@@ -13905,7 +13905,7 @@ Object {
       },
     },
     "motion-easing-avatar-gen-ai-gradient": Object {
-      "$description": "The easing curve for gradient motion of gen-ai avatar.",
+      "$description": "The easing curve for gradient motion of gen-ai avatars.",
       "$value": Object {
         "default": "cubic-bezier(0.7, 0, 0.3, 1)",
         "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
@@ -14181,14 +14181,14 @@ Object {
           "$value": "8px",
         },
         "color-background-avatar-default": Object {
-          "$description": "The default background color of avatar.",
+          "$description": "The default background color of avatars.",
           "$value": Object {
             "dark": "#414d5c",
             "light": "#414d5c",
           },
         },
         "color-background-avatar-gen-ai": Object {
-          "$description": "The gen-ai background color of avatar.",
+          "$description": "The gen-ai background color of avatars.",
           "$value": Object {
             "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
             "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
@@ -15784,7 +15784,7 @@ Object {
           },
         },
         "color-text-avatar": Object {
-          "$description": "The text and icon color of avatar.",
+          "$description": "The text and icon color of avatars.",
           "$value": Object {
             "dark": "#ffffff",
             "light": "#ffffff",
@@ -16226,14 +16226,14 @@ Object {
           "$value": "18px",
         },
         "motion-duration-avatar-gen-ai-gradient": Object {
-          "$description": "The duration for gradient motion of gen-ai avatar.",
+          "$description": "The duration for gradient motion of gen-ai avatars.",
           "$value": Object {
             "default": "3600ms",
             "disabled": "0ms",
           },
         },
         "motion-duration-avatar-loading-dots": Object {
-          "$description": "The duration for loading motion of avatar.",
+          "$description": "The duration for loading motion of avatars.",
           "$value": Object {
             "default": "1200ms",
             "disabled": "0ms",
@@ -16261,7 +16261,7 @@ Object {
           },
         },
         "motion-easing-avatar-gen-ai-gradient": Object {
-          "$description": "The easing curve for gradient motion of gen-ai avatar.",
+          "$description": "The easing curve for gradient motion of gen-ai avatars.",
           "$value": Object {
             "default": "cubic-bezier(0.7, 0, 0.3, 1)",
             "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
@@ -16532,14 +16532,14 @@ Object {
           "$value": "8px",
         },
         "color-background-avatar-default": Object {
-          "$description": "The default background color of avatar.",
+          "$description": "The default background color of avatars.",
           "$value": Object {
             "dark": "#414d5c",
             "light": "#414d5c",
           },
         },
         "color-background-avatar-gen-ai": Object {
-          "$description": "The gen-ai background color of avatar.",
+          "$description": "The gen-ai background color of avatars.",
           "$value": Object {
             "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
             "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
@@ -18135,7 +18135,7 @@ Object {
           },
         },
         "color-text-avatar": Object {
-          "$description": "The text and icon color of avatar.",
+          "$description": "The text and icon color of avatars.",
           "$value": Object {
             "dark": "#ffffff",
             "light": "#ffffff",
@@ -18577,14 +18577,14 @@ Object {
           "$value": "18px",
         },
         "motion-duration-avatar-gen-ai-gradient": Object {
-          "$description": "The duration for gradient motion of gen-ai avatar.",
+          "$description": "The duration for gradient motion of gen-ai avatars.",
           "$value": Object {
             "default": "3600ms",
             "disabled": "0ms",
           },
         },
         "motion-duration-avatar-loading-dots": Object {
-          "$description": "The duration for loading motion of avatar.",
+          "$description": "The duration for loading motion of avatars.",
           "$value": Object {
             "default": "1200ms",
             "disabled": "0ms",
@@ -18612,7 +18612,7 @@ Object {
           },
         },
         "motion-easing-avatar-gen-ai-gradient": Object {
-          "$description": "The easing curve for gradient motion of gen-ai avatar.",
+          "$description": "The easing curve for gradient motion of gen-ai avatars.",
           "$value": Object {
             "default": "cubic-bezier(0.7, 0, 0.3, 1)",
             "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
@@ -18883,14 +18883,14 @@ Object {
           "$value": "8px",
         },
         "color-background-avatar-default": Object {
-          "$description": "The default background color of avatar.",
+          "$description": "The default background color of avatars.",
           "$value": Object {
             "dark": "#414d5c",
             "light": "#414d5c",
           },
         },
         "color-background-avatar-gen-ai": Object {
-          "$description": "The gen-ai background color of avatar.",
+          "$description": "The gen-ai background color of avatars.",
           "$value": Object {
             "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
             "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
@@ -20486,7 +20486,7 @@ Object {
           },
         },
         "color-text-avatar": Object {
-          "$description": "The text and icon color of avatar.",
+          "$description": "The text and icon color of avatars.",
           "$value": Object {
             "dark": "#ffffff",
             "light": "#ffffff",
@@ -20928,14 +20928,14 @@ Object {
           "$value": "18px",
         },
         "motion-duration-avatar-gen-ai-gradient": Object {
-          "$description": "The duration for gradient motion of gen-ai avatar.",
+          "$description": "The duration for gradient motion of gen-ai avatars.",
           "$value": Object {
             "default": "3600ms",
             "disabled": "0ms",
           },
         },
         "motion-duration-avatar-loading-dots": Object {
-          "$description": "The duration for loading motion of avatar.",
+          "$description": "The duration for loading motion of avatars.",
           "$value": Object {
             "default": "1200ms",
             "disabled": "0ms",
@@ -20963,7 +20963,7 @@ Object {
           },
         },
         "motion-easing-avatar-gen-ai-gradient": Object {
-          "$description": "The easing curve for gradient motion of gen-ai avatar.",
+          "$description": "The easing curve for gradient motion of gen-ai avatars.",
           "$value": Object {
             "default": "cubic-bezier(0.7, 0, 0.3, 1)",
             "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
@@ -21234,14 +21234,14 @@ Object {
           "$value": "8px",
         },
         "color-background-avatar-default": Object {
-          "$description": "The default background color of avatar.",
+          "$description": "The default background color of avatars.",
           "$value": Object {
             "dark": "#414d5c",
             "light": "#414d5c",
           },
         },
         "color-background-avatar-gen-ai": Object {
-          "$description": "The gen-ai background color of avatar.",
+          "$description": "The gen-ai background color of avatars.",
           "$value": Object {
             "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
             "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
@@ -22837,7 +22837,7 @@ Object {
           },
         },
         "color-text-avatar": Object {
-          "$description": "The text and icon color of avatar.",
+          "$description": "The text and icon color of avatars.",
           "$value": Object {
             "dark": "#ffffff",
             "light": "#ffffff",
@@ -23279,14 +23279,14 @@ Object {
           "$value": "18px",
         },
         "motion-duration-avatar-gen-ai-gradient": Object {
-          "$description": "The duration for gradient motion of gen-ai avatar.",
+          "$description": "The duration for gradient motion of gen-ai avatars.",
           "$value": Object {
             "default": "3600ms",
             "disabled": "0ms",
           },
         },
         "motion-duration-avatar-loading-dots": Object {
-          "$description": "The duration for loading motion of avatar.",
+          "$description": "The duration for loading motion of avatars.",
           "$value": Object {
             "default": "1200ms",
             "disabled": "0ms",
@@ -23314,7 +23314,7 @@ Object {
           },
         },
         "motion-easing-avatar-gen-ai-gradient": Object {
-          "$description": "The easing curve for gradient motion of gen-ai avatar.",
+          "$description": "The easing curve for gradient motion of gen-ai avatars.",
           "$value": Object {
             "default": "cubic-bezier(0.7, 0, 0.3, 1)",
             "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
@@ -23585,14 +23585,14 @@ Object {
           "$value": "8px",
         },
         "color-background-avatar-default": Object {
-          "$description": "The default background color of avatar.",
+          "$description": "The default background color of avatars.",
           "$value": Object {
             "dark": "#414d5c",
             "light": "#414d5c",
           },
         },
         "color-background-avatar-gen-ai": Object {
-          "$description": "The gen-ai background color of avatar.",
+          "$description": "The gen-ai background color of avatars.",
           "$value": Object {
             "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
             "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
@@ -25188,7 +25188,7 @@ Object {
           },
         },
         "color-text-avatar": Object {
-          "$description": "The text and icon color of avatar.",
+          "$description": "The text and icon color of avatars.",
           "$value": Object {
             "dark": "#ffffff",
             "light": "#ffffff",
@@ -25630,14 +25630,14 @@ Object {
           "$value": "18px",
         },
         "motion-duration-avatar-gen-ai-gradient": Object {
-          "$description": "The duration for gradient motion of gen-ai avatar.",
+          "$description": "The duration for gradient motion of gen-ai avatars.",
           "$value": Object {
             "default": "3600ms",
             "disabled": "0ms",
           },
         },
         "motion-duration-avatar-loading-dots": Object {
-          "$description": "The duration for loading motion of avatar.",
+          "$description": "The duration for loading motion of avatars.",
           "$value": Object {
             "default": "1200ms",
             "disabled": "0ms",
@@ -25665,7 +25665,7 @@ Object {
           },
         },
         "motion-easing-avatar-gen-ai-gradient": Object {
-          "$description": "The easing curve for gradient motion of gen-ai avatar.",
+          "$description": "The easing curve for gradient motion of gen-ai avatars.",
           "$value": Object {
             "default": "cubic-bezier(0.7, 0, 0.3, 1)",
             "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
@@ -25936,14 +25936,14 @@ Object {
           "$value": "8px",
         },
         "color-background-avatar-default": Object {
-          "$description": "The default background color of avatar.",
+          "$description": "The default background color of avatars.",
           "$value": Object {
             "dark": "#414d5c",
             "light": "#414d5c",
           },
         },
         "color-background-avatar-gen-ai": Object {
-          "$description": "The gen-ai background color of avatar.",
+          "$description": "The gen-ai background color of avatars.",
           "$value": Object {
             "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
             "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
@@ -27539,7 +27539,7 @@ Object {
           },
         },
         "color-text-avatar": Object {
-          "$description": "The text and icon color of avatar.",
+          "$description": "The text and icon color of avatars.",
           "$value": Object {
             "dark": "#ffffff",
             "light": "#ffffff",
@@ -27981,14 +27981,14 @@ Object {
           "$value": "18px",
         },
         "motion-duration-avatar-gen-ai-gradient": Object {
-          "$description": "The duration for gradient motion of gen-ai avatar.",
+          "$description": "The duration for gradient motion of gen-ai avatars.",
           "$value": Object {
             "default": "3600ms",
             "disabled": "0ms",
           },
         },
         "motion-duration-avatar-loading-dots": Object {
-          "$description": "The duration for loading motion of avatar.",
+          "$description": "The duration for loading motion of avatars.",
           "$value": Object {
             "default": "1200ms",
             "disabled": "0ms",
@@ -28016,7 +28016,7 @@ Object {
           },
         },
         "motion-easing-avatar-gen-ai-gradient": Object {
-          "$description": "The easing curve for gradient motion of gen-ai avatar.",
+          "$description": "The easing curve for gradient motion of gen-ai avatars.",
           "$value": Object {
             "default": "cubic-bezier(0.7, 0, 0.3, 1)",
             "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
@@ -28287,14 +28287,14 @@ Object {
           "$value": "8px",
         },
         "color-background-avatar-default": Object {
-          "$description": "The default background color of avatar.",
+          "$description": "The default background color of avatars.",
           "$value": Object {
             "dark": "#414d5c",
             "light": "#414d5c",
           },
         },
         "color-background-avatar-gen-ai": Object {
-          "$description": "The gen-ai background color of avatar.",
+          "$description": "The gen-ai background color of avatars.",
           "$value": Object {
             "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
             "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
@@ -29890,7 +29890,7 @@ Object {
           },
         },
         "color-text-avatar": Object {
-          "$description": "The text and icon color of avatar.",
+          "$description": "The text and icon color of avatars.",
           "$value": Object {
             "dark": "#ffffff",
             "light": "#ffffff",
@@ -30332,14 +30332,14 @@ Object {
           "$value": "18px",
         },
         "motion-duration-avatar-gen-ai-gradient": Object {
-          "$description": "The duration for gradient motion of gen-ai avatar.",
+          "$description": "The duration for gradient motion of gen-ai avatars.",
           "$value": Object {
             "default": "3600ms",
             "disabled": "0ms",
           },
         },
         "motion-duration-avatar-loading-dots": Object {
-          "$description": "The duration for loading motion of avatar.",
+          "$description": "The duration for loading motion of avatars.",
           "$value": Object {
             "default": "1200ms",
             "disabled": "0ms",
@@ -30367,7 +30367,7 @@ Object {
           },
         },
         "motion-easing-avatar-gen-ai-gradient": Object {
-          "$description": "The easing curve for gradient motion of gen-ai avatar.",
+          "$description": "The easing curve for gradient motion of gen-ai avatars.",
           "$value": Object {
             "default": "cubic-bezier(0.7, 0, 0.3, 1)",
             "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
@@ -30638,14 +30638,14 @@ Object {
       "$value": "8px",
     },
     "color-background-avatar-default": Object {
-      "$description": "The default background color of avatar.",
+      "$description": "The default background color of avatars.",
       "$value": Object {
         "dark": "#414d5c",
         "light": "#414d5c",
       },
     },
     "color-background-avatar-gen-ai": Object {
-      "$description": "The gen-ai background color of avatar.",
+      "$description": "The gen-ai background color of avatars.",
       "$value": Object {
         "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
         "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
@@ -32241,7 +32241,7 @@ Object {
       },
     },
     "color-text-avatar": Object {
-      "$description": "The text and icon color of avatar.",
+      "$description": "The text and icon color of avatars.",
       "$value": Object {
         "dark": "#ffffff",
         "light": "#ffffff",
@@ -32683,14 +32683,14 @@ Object {
       "$value": "18px",
     },
     "motion-duration-avatar-gen-ai-gradient": Object {
-      "$description": "The duration for gradient motion of gen-ai avatar.",
+      "$description": "The duration for gradient motion of gen-ai avatars.",
       "$value": Object {
         "default": "3600ms",
         "disabled": "0ms",
       },
     },
     "motion-duration-avatar-loading-dots": Object {
-      "$description": "The duration for loading motion of avatar.",
+      "$description": "The duration for loading motion of avatars.",
       "$value": Object {
         "default": "1200ms",
         "disabled": "0ms",
@@ -32718,7 +32718,7 @@ Object {
       },
     },
     "motion-easing-avatar-gen-ai-gradient": Object {
-      "$description": "The easing curve for gradient motion of gen-ai avatar.",
+      "$description": "The easing curve for gradient motion of gen-ai avatars.",
       "$value": Object {
         "default": "cubic-bezier(0.7, 0, 0.3, 1)",
         "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
