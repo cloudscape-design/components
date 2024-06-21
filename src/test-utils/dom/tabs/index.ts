@@ -42,6 +42,13 @@ export default class TabsWrapper extends ComponentWrapper<HTMLButtonElement> {
   }
 
   /**
+   * Finds the currently focused tab, which might not be active if disabled with a reason.
+   */
+  findFocusedTab(): ElementWrapper<HTMLAnchorElement | HTMLButtonElement> | null {
+    return this.find(`.${styles['tabs-tab-focused']}`);
+  }
+
+  /**
    * Finds the currently active tab and returns the clickable element from its tab label.
    */
   findActiveTab(): ElementWrapper<HTMLAnchorElement | HTMLButtonElement> | null {

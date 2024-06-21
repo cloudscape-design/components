@@ -29,7 +29,7 @@ import useHiddenDescription from '../internal/hooks/use-hidden-description';
 import Tooltip from '../internal/components/tooltip';
 
 const tabSelector = '[role="tab"]';
-const activeTabSelector = '[role="tab"][aria-selected="true"]';
+const focusedTabSelector = `[role="tab"].${styles['tabs-tab-focused']}`;
 
 export interface TabHeaderBarProps {
   onChange: (changeDetail: TabsProps.ChangeDetail) => void;
@@ -66,6 +66,7 @@ export function TabHeaderBar({
   const [horizontalOverflow, setHorizontalOverflow] = useState(false);
   const [inlineStartOverflow, setInlineStartOverflow] = useState(false);
   const [inlineEndOverflow, setInlineEndOverflow] = useState(false);
+  const [focusedTabId, setFocusedTabId] = useState(activeTabId);
 
   useEffect(() => {
     if (headerBarRef.current) {
@@ -145,7 +146,7 @@ export function TabHeaderBar({
       return null;
     }
     const tabElements: HTMLButtonElement[] = Array.from(containerObjectRef.current.querySelectorAll(tabSelector));
-    return tabElements.find(tab => tab.matches(activeTabSelector)) ?? tabElements.find(tab => !tab.disabled) ?? null;
+    return tabElements.find(tab => tab.matches(focusedTabSelector)) ?? tabElements.find(tab => !tab.disabled) ?? null;
   }
 
   useEffect(() => {
@@ -186,7 +187,11 @@ export function TabHeaderBar({
     const tabsById = tabs.reduce((map, tab) => map.set(tab.id, tab), new Map<string, TabsProps.Tab>());
     for (const [tabId, tabTriggerElement] of tabRefs.current.entries()) {
       if (tabId !== activeTabId && tabTriggerElement === element) {
-        onChange({ activeTabId: tabId, activeTabHref: tabsById.get(tabId)?.href });
+        setFocusedTabId(tabId);
+
+        if (!tabsById.get(tabId)?.disabled) {
+          onChange({ activeTabId: tabId, activeTabHref: tabsById.get(tabId)?.href });
+        }
         break;
       }
     }
@@ -196,13 +201,18 @@ export function TabHeaderBar({
     function isElementRegistered(element: HTMLElement) {
       return navigationAPI.current?.isRegistered(element) ?? false;
     }
-    function isElementDisabled(element: HTMLElement) {
+    function isElementFocusable(element: HTMLElement) {
       if (element instanceof HTMLButtonElement) {
         return element.disabled && element.getAttribute('aria-selected') !== 'true';
       }
+      if (element instanceof HTMLAnchorElement) {
+        // aria-describedby is present only if the element is disabled with reason. in this case it should be focusable, otherwise no
+        return element.getAttribute('aria-disabled') === 'true' && !element.hasAttribute('aria-describedby');
+      }
+
       return false;
     }
-    return getAllFocusables(target).filter(el => isElementRegistered(el) && !isElementDisabled(el));
+    return getAllFocusables(target).filter(el => isElementRegistered(el) && !isElementFocusable(el));
   }
 
   return (
@@ -284,6 +294,7 @@ export function TabHeaderBar({
         return;
       }
 
+      setFocusedTabId(tab.id);
       onChange({ activeTabId: tab.id, activeTabHref: tab.href });
     };
 
@@ -291,6 +302,7 @@ export function TabHeaderBar({
       [styles['tabs-tab-link']]: true,
       [styles.refresh]: isVisualRefresh,
       [styles['tabs-tab-active']]: activeTabId === tab.id && !tab.disabled,
+      [styles['tabs-tab-focused']]: focusedTabId === tab.id,
       [styles['tabs-tab-disabled']]: tab.disabled,
     });
 
@@ -336,7 +348,7 @@ const TabTrigger = forwardRef(
     ref: React.Ref<HTMLElement>
   ) => {
     const refObject = useRef<HTMLElement>(null);
-    const childrenRefObject = useRef<HTMLElement>(null);
+    const childRefObject = useRef<HTMLElement>(null);
     const mergedRef = useMergeRefs(refObject, ref);
     const { tabIndex } = useSingleTabStopNavigation(refObject);
     const isDisabledWithReason = tab.disabled && !!tab.disabledReason;
@@ -344,7 +356,7 @@ const TabTrigger = forwardRef(
     const { targetProps, descriptionEl } = useHiddenDescription(tab.disabledReason);
     const children = (
       <>
-        <span className={styles['tabs-tab-label']} ref={childrenRefObject}>
+        <span className={styles['tabs-tab-label']} ref={childRefObject}>
           {tab.label}
         </span>
         {isDisabledWithReason && (
@@ -353,7 +365,7 @@ const TabTrigger = forwardRef(
             {showTooltip && (
               <Tooltip
                 className={styles['disabled-reason-tooltip']}
-                trackRef={childrenRefObject}
+                trackRef={childRefObject}
                 value={tab.disabledReason!}
               />
             )}
