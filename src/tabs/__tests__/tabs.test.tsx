@@ -2,7 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 /* eslint-disable @typescript-eslint/no-var-requires */
 import React from 'react';
-import { render } from '@testing-library/react';
+import ReactDOM from 'react-dom';
+import { fireEvent, render } from '@testing-library/react';
 import Tabs, { TabsProps } from '../../../lib/components/tabs';
 import styles from '../../../lib/components/tabs/styles.css.js';
 import createWrapper, { TabsWrapper } from '../../../lib/components/test-utils/dom';
@@ -751,6 +752,260 @@ describe('Tabs', () => {
           expect(scrollRightButton.getElement()).toHaveAttribute('aria-label', 'Custom scroll right');
         });
       });
+    });
+
+    describe('Disabled with reason', () => {
+      beforeEach(() => {
+        jest.spyOn(ReactDOM, 'createPortal').mockImplementation((element: any) => element);
+      });
+
+      afterEach(() => {
+        jest.restoreAllMocks();
+      });
+
+      test('has no tooltip open by default', () => {
+        const firstTabId = defaultTabs[0].id;
+        const { wrapper } = renderTabs(
+          <Tabs
+            tabs={defaultTabs.map(item => {
+              if (item.id === 'second') {
+                return {
+                  ...item,
+                  disabled: true,
+                  disabledReason: 'disabled reason',
+                };
+              }
+
+              return item;
+            })}
+            activeTabId={firstTabId}
+            onChange={() => void 0}
+          />
+        );
+
+        expect(wrapper.findTabLinkById('second')!.findDisabledReason()).toBe(null);
+      });
+
+      test('has no tooltip without disabledReason', () => {
+        const firstTabId = defaultTabs[0].id;
+        const { wrapper } = renderTabs(
+          <Tabs
+            tabs={defaultTabs.map(item => {
+              if (item.id === 'second') {
+                return {
+                  ...item,
+                  disabled: true,
+                };
+              }
+
+              return item;
+            })}
+            activeTabId={firstTabId}
+            onChange={() => void 0}
+          />
+        );
+
+        wrapper.findTabLinkById('second')!.focus();
+
+        expect(wrapper.findTabLinkById('second')!.findDisabledReason()).toBe(null);
+      });
+
+      test('open tooltip on focus', () => {
+        const firstTabId = defaultTabs[0].id;
+        const { wrapper } = renderTabs(
+          <Tabs
+            tabs={defaultTabs.map(item => {
+              if (item.id === 'second') {
+                return {
+                  ...item,
+                  disabled: true,
+                  disabledReason: 'disabled reason',
+                };
+              }
+
+              return item;
+            })}
+            activeTabId={firstTabId}
+            onChange={() => void 0}
+          />
+        );
+
+        wrapper.findTabLinkById('second')!.focus();
+
+        expect(wrapper.findTabLinkById('second')!.findDisabledReason()!.getElement()).toHaveTextContent(
+          'disabled reason'
+        );
+      });
+
+      test('closes tooltip on blur', () => {
+        const firstTabId = defaultTabs[0].id;
+        const { wrapper } = renderTabs(
+          <Tabs
+            tabs={defaultTabs.map(item => {
+              if (item.id === 'second') {
+                return {
+                  ...item,
+                  disabled: true,
+                  disabledReason: 'disabled reason',
+                };
+              }
+
+              return item;
+            })}
+            activeTabId={firstTabId}
+            onChange={() => void 0}
+          />
+        );
+
+        wrapper.findTabLinkById('second')!.focus();
+
+        expect(wrapper.findTabLinkById('second')!.findDisabledReason()!.getElement()).toHaveTextContent(
+          'disabled reason'
+        );
+
+        wrapper.findTabLinkById('second')!.blur();
+
+        expect(wrapper.findTabLinkById('second')!.findDisabledReason()).toBe(null);
+      });
+
+      test('open tooltip on mouseenter', () => {
+        const firstTabId = defaultTabs[0].id;
+        const { wrapper } = renderTabs(
+          <Tabs
+            tabs={defaultTabs.map(item => {
+              if (item.id === 'second') {
+                return {
+                  ...item,
+                  disabled: true,
+                  disabledReason: 'disabled reason',
+                };
+              }
+
+              return item;
+            })}
+            activeTabId={firstTabId}
+            onChange={() => void 0}
+          />
+        );
+
+        fireEvent.mouseEnter(wrapper.findTabLinkById('second')!.getElement());
+
+        expect(wrapper.findTabLinkById('second')!.findDisabledReason()!.getElement()).toHaveTextContent(
+          'disabled reason'
+        );
+      });
+
+      test('close tooltip on mouseleave', () => {
+        const firstTabId = defaultTabs[0].id;
+        const { wrapper } = renderTabs(
+          <Tabs
+            tabs={defaultTabs.map(item => {
+              if (item.id === 'second') {
+                return {
+                  ...item,
+                  disabled: true,
+                  disabledReason: 'disabled reason',
+                };
+              }
+
+              return item;
+            })}
+            activeTabId={firstTabId}
+            onChange={() => void 0}
+          />
+        );
+
+        fireEvent.mouseEnter(wrapper.findTabLinkById('second')!.getElement());
+
+        expect(wrapper.findTabLinkById('second')!.findDisabledReason()!.getElement()).toHaveTextContent(
+          'disabled reason'
+        );
+
+        fireEvent.mouseLeave(wrapper.findTabLinkById('second')!.getElement());
+
+        expect(wrapper.findTabLinkById('second')!.findDisabledReason()).toBe(null);
+      });
+
+      test('has no aria-describedby by default', () => {
+        const firstTabId = defaultTabs[0].id;
+        const { wrapper } = renderTabs(<Tabs tabs={defaultTabs} activeTabId={firstTabId} onChange={() => void 0} />);
+
+        expect(wrapper.findTabLinkById('second')!.getElement()).not.toHaveAttribute('aria-describedby');
+      });
+
+      test('has no aria-describedby without disabledReason', () => {
+        const firstTabId = defaultTabs[0].id;
+        const { wrapper } = renderTabs(
+          <Tabs
+            tabs={defaultTabs.map(item => {
+              if (item.id === 'second') {
+                return {
+                  ...item,
+                  disabled: true,
+                };
+              }
+
+              return item;
+            })}
+            activeTabId={firstTabId}
+            onChange={() => void 0}
+          />
+        );
+
+        expect(wrapper.findTabLinkById('second')!.getElement()).not.toHaveAttribute('aria-describedby');
+      });
+
+      test('has aria-describedby with disabledReason', () => {
+        const firstTabId = defaultTabs[0].id;
+        const { wrapper } = renderTabs(
+          <Tabs
+            tabs={defaultTabs.map(item => {
+              if (item.id === 'second') {
+                return {
+                  ...item,
+                  disabled: true,
+                  disabledReason: 'disabled reason',
+                };
+              }
+
+              return item;
+            })}
+            activeTabId={firstTabId}
+            onChange={() => void 0}
+          />
+        );
+
+        expect(wrapper.findTabLinkById('second')!.getElement()).toHaveAttribute('aria-describedby');
+      });
+
+      test('has hidden element (linked to aria-describedby) with disabledReason', () => {
+        const firstTabId = defaultTabs[0].id;
+        const { wrapper } = renderTabs(
+          <Tabs
+            tabs={defaultTabs.map(item => {
+              if (item.id === 'second') {
+                return {
+                  ...item,
+                  disabled: true,
+                  disabledReason: 'disabled reason',
+                };
+              }
+
+              return item;
+            })}
+            activeTabId={firstTabId}
+            onChange={() => void 0}
+          />
+        );
+
+        expect(wrapper.findTabLinkById('second')!.findDisabledReasonDescription()!.getElement()).toHaveTextContent(
+          'disabled reason'
+        );
+      });
+
+      test.todo('show previously selected tab content when disabled with reason tab is focused');
+
+      test.todo('should not open link when disabled with reason tab is clicked');
     });
   });
 

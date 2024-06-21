@@ -25,6 +25,8 @@ import {
 } from '../internal/context/single-tab-stop-navigation-context';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { getAllFocusables } from '../internal/components/focus-lock/utils';
+import useHiddenDescription from '../internal/hooks/use-hidden-description';
+import Tooltip from '../internal/components/tooltip';
 
 const tabSelector = '[role="tab"]';
 const activeTabSelector = '[role="tab"][aria-selected="true"]';
@@ -299,11 +301,13 @@ export function TabHeaderBar({
       'aria-controls': `${idNamespace}-${tab.id}-panel`,
       'data-testid': tab.id,
       id: getTabElementId({ namespace: idNamespace, tabId: tab.id }),
-      children: <span className={styles['tabs-tab-label']}>{tab.label}</span>,
     };
 
     if (tab.disabled) {
       commonProps['aria-disabled'] = 'true';
+      commonProps.onClick = (event: React.MouseEvent) => {
+        event.preventDefault();
+      };
     } else {
       commonProps.onClick = clickTab;
     }
@@ -332,12 +336,55 @@ const TabTrigger = forwardRef(
     ref: React.Ref<HTMLElement>
   ) => {
     const refObject = useRef<HTMLElement>(null);
+    const childrenRefObject = useRef<HTMLElement>(null);
     const mergedRef = useMergeRefs(refObject, ref);
     const { tabIndex } = useSingleTabStopNavigation(refObject);
+    const isDisabledWithReason = tab.disabled && !!tab.disabledReason;
+    const [showTooltip, setShowTooltip] = useState(false);
+    const { targetProps, descriptionEl } = useHiddenDescription(tab.disabledReason);
+    const children = (
+      <>
+        <span className={styles['tabs-tab-label']} ref={childrenRefObject}>
+          {tab.label}
+        </span>
+        {isDisabledWithReason && (
+          <>
+            {descriptionEl}
+            {showTooltip && (
+              <Tooltip
+                className={styles['disabled-reason-tooltip']}
+                trackRef={childrenRefObject}
+                value={tab.disabledReason!}
+              />
+            )}
+          </>
+        )}
+      </>
+    );
+
+    const handlers = {
+      onFocus: isDisabledWithReason ? () => setShowTooltip(true) : undefined,
+      onBlur: isDisabledWithReason ? () => setShowTooltip(false) : undefined,
+      onMouseEnter: isDisabledWithReason ? () => setShowTooltip(true) : undefined,
+      onMouseLeave: isDisabledWithReason ? () => setShowTooltip(false) : undefined,
+    };
+
+    const commonProps = {
+      ...elementProps,
+      ...(isDisabledWithReason ? targetProps : {}),
+      ...handlers,
+      ref: mergedRef,
+      tabIndex: tabIndex,
+    };
+
     return tab.href ? (
-      <a {...elementProps} href={tab.href} ref={mergedRef} tabIndex={tabIndex} />
+      <a {...commonProps} href={tab.href}>
+        {children}
+      </a>
     ) : (
-      <button {...elementProps} type="button" disabled={tab.disabled} ref={mergedRef} tabIndex={tabIndex} />
+      <button {...commonProps} type="button" disabled={tab.disabled && !isDisabledWithReason}>
+        {children}
+      </button>
     );
   }
 );
