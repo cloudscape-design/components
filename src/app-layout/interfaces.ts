@@ -15,17 +15,17 @@ export interface AppLayoutProps extends BaseComponentProps {
 
   /**
    * Drawers property. If you set both `drawers` and `tools`, `drawers` will take precedence.
- 
+
    * Each Drawer is an item in the drawers wrapper with the following properties:
    * * id (string) - the id of the drawer.
    * * content (React.ReactNode) - the content in the drawer.
-   * * trigger (DrawerTrigger) - the button that opens and closes the active drawer. 
+   * * trigger (DrawerTrigger) - the button that opens and closes the active drawer.
    * * ariaLabels (DrawerAriaLabels) - the labels for the interactive elements of the drawer.
    * * badge (boolean) - Adds a badge to the corner of the icon to indicate a state change. For example: Unread notifications.
    * * resizable (boolean) - if the drawer is resizable or not.
    * * defaultSize (number) - starting size of the drawer. if not set, defaults to 290.
    * * onResize (({ size: number }) => void) - Fired when the active drawer is resized.
-   * 
+   *
    * #### DrawerTrigger
    * - `iconName` (IconProps.Name) - (Optional) Specifies the icon to be displayed.
    * - `iconSvg` (React.ReactNode) - (Optional) Specifies the SVG of a custom icon. For more information, see [SVG icon guidelines](/components/icon/?tabId=api#slots)
