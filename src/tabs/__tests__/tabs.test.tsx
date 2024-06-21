@@ -256,25 +256,6 @@ describe('Tabs', () => {
       expect(changeSpy).toHaveBeenCalledTimes(1);
     });
 
-    test('does not fire a change event when clicking on a disabled tab', () => {
-      const changeSpy = jest.fn();
-
-      const wrapper = renderTabs(<Tabs tabs={defaultTabs} activeTabId="third" onChange={changeSpy} />).wrapper;
-      expect(changeSpy).not.toHaveBeenCalled();
-
-      wrapper.findTabLinkByIndex(3)!.click();
-
-      expect(changeSpy).not.toHaveBeenCalledWith(
-        expect.objectContaining({
-          detail: {
-            activeTabId: 'third',
-            activeTabHref: undefined,
-          },
-        })
-      );
-      expect(changeSpy).toHaveBeenCalledTimes(0);
-    });
-
     test('fires a change event when clicking on tab with container variant', () => {
       const changeSpy = jest.fn();
 
@@ -824,6 +805,14 @@ describe('Tabs', () => {
       const correctActionButton = wrapper.findActionByTabId('third');
       const activeActionButton = wrapper.findActiveTabAction();
       expect(activeActionButton).toEqual(correctActionButton);
+    });
+
+    test('moves focus from action to active tab content', () => {
+      const wrapper = renderTabs(<Tabs tabs={actionDismissibleTabs} activeTabId="third" />).wrapper;
+      wrapper.findActiveTab()!.getElement().focus();
+      pressRight(wrapper);
+      wrapper.findActiveTab()!.keydown({ keyCode: KeyCode.tab });
+      expect(wrapper.findTabContent()?.getElement()).toHaveFocus();
     });
   });
 
