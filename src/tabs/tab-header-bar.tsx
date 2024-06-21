@@ -185,11 +185,7 @@ export function TabHeaderBar({
     const isFocusableActionOrDismissible = !focusableElement.classList.contains(styles['tabs-tab-link']);
     if (isUnregisteringFocusedNode && !isFocusableActionOrDismissible) {
       // Wait for unmounted node to get removed from the DOM.
-      requestAnimationFrame(() => {
-        const nextFocusTarget = navigationAPI.current?.getFocusTarget();
-        const tabLinkButton = nextFocusTarget?.querySelector(`.${styles['tabs-tab-link']}`) as HTMLElement;
-        tabLinkButton?.focus();
-      });
+      setTimeout(() => navigationAPI.current?.getFocusTarget()?.focus(), 25);
     }
   }
 

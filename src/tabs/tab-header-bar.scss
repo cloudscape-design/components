@@ -92,7 +92,6 @@ $label-horizontal-spacing: awsui.$space-xs;
   border-block: awsui.$border-divider-section-width solid transparent;
   border-inline: awsui.$border-divider-section-width solid transparent;
 
-  padding-block: awsui.$space-scaled-2x-xxs;
   padding-inline: $label-horizontal-spacing;
 
   &,
@@ -101,6 +100,10 @@ $label-horizontal-spacing: awsui.$space-xs;
     display: flex;
     align-items: center;
     text-align: start;
+  }
+
+  &.refresh {
+    padding-block-end: awsui.$space-static-xxs;
   }
 }
 
