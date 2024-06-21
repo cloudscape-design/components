@@ -197,7 +197,7 @@ test(
 test(
   'adds pagination buttons upon changing the tabs array',
   setupTest(async page => {
-    await page.setWindowSize({ width: 750, height: 1000 });
+    await page.setWindowSize({ width: 800, height: 1000 });
     await page.hasPaginationButtons(false);
     await page.click('#add-tab');
     await page.hasPaginationButtons(true);

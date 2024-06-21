@@ -723,6 +723,22 @@ describe('Tabs', () => {
   });
 
   describe('Dismissible', () => {
+    test('scalls requestAnimationFrame for focus updates', () => {
+      const time = 0;
+      const requestAnimationFrameSpy: jest.SpyInstance<number> = jest
+        .spyOn(window, 'requestAnimationFrame')
+        .mockImplementation(callback => {
+          callback(time);
+          return time;
+        });
+
+      const wrapper = renderTabs(<Tabs tabs={actionDismissibleTabs} activeTabId="fourth" />).wrapper;
+      wrapper.findActiveTab()!.getElement().focus();
+      pressRight(wrapper);
+
+      expect(requestAnimationFrameSpy).not.toBeCalledTimes(0);
+      requestAnimationFrameSpy.mockRestore();
+    });
     test('renders the correct dismiss label', () => {
       const dismissibleButton = renderTabs(
         <Tabs tabs={actionDismissibleTabs} />
