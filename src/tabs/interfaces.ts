@@ -11,6 +11,7 @@ export interface TabsProps extends BaseComponentProps {
    * - `label` (ReactNode) - Tab label shown in the UI.
    * - `content` (ReactNode) - (Optional) Tab content to render in the container.
    * - `disabled` (boolean) - (Optional) Specifies if this tab is disabled.
+   * - `disabledReason` (string) - (Optional) Displays tooltip near the tab when disabled. Use to provide additional context.
    * - `href` (string) - (Optional) You can use this parameter to change the default `href` of the internal tab anchor. The
    *    `click` event default behavior is prevented, unless the user clicks the tab with a key modifier (that is, CTRL,
    *    ALT, SHIFT, META). This enables the user to open new browser tabs with an initially selected component tab,
@@ -90,6 +91,10 @@ export namespace TabsProps {
      * Whether this tab is disabled.
      */
     disabled?: boolean;
+    /**
+     * Provides a reason why this tab is disabled.
+     */
+    disabledReason?: string;
     /**
      * You can use this parameter to change the default `href` of the internal tab anchor. The
      * `click` event default behavior is prevented, unless the user clicks the tab with a key modifier (CTRL,

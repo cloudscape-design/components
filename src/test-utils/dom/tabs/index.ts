@@ -3,6 +3,16 @@
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 import styles from '../../../tabs/styles.selectors.js';
 
+export class TabWrapper extends ComponentWrapper {
+  findDisabledReason(): ElementWrapper | null {
+    return this.find(`.${styles['disabled-reason-tooltip']}`);
+  }
+
+  findDisabledReasonDescription(): ElementWrapper | null {
+    return this.find('span[hidden]');
+  }
+}
+
 export default class TabsWrapper extends ComponentWrapper<HTMLButtonElement> {
   static rootSelector: string = styles.root;
 
@@ -18,17 +28,17 @@ export default class TabsWrapper extends ComponentWrapper<HTMLButtonElement> {
    *
    * @param index 1-based index of the clickable element to return
    */
-  findTabLinkByIndex(index: number): ElementWrapper<HTMLAnchorElement | HTMLButtonElement> | null {
-    return this.find(`.${styles['tabs-tab']}:nth-child(${index}) .${styles['tabs-tab-link']}`);
+  findTabLinkByIndex(index: number): TabWrapper | null {
+    return this.findComponent(`.${styles['tabs-tab']}:nth-child(${index}) .${styles['tabs-tab-link']}`, TabWrapper);
   }
 
   /**
    * Finds the tab with the given ID and returns the clickable element from its tab label.
    *
-   * @param index ID of the clickable element to return
+   * @param id ID of the clickable element to return
    */
-  findTabLinkById(id: string): ElementWrapper<HTMLAnchorElement | HTMLButtonElement> | null {
-    return this.find(`.${styles['tabs-tab-link']}[data-testid="${id}"]`);
+  findTabLinkById(id: string): TabWrapper | null {
+    return this.findComponent(`.${styles['tabs-tab-link']}[data-testid="${id}"]`, TabWrapper);
   }
 
   /**
