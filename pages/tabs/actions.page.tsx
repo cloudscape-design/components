@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import { Container, Header } from '~components';
+import { Button, Container, Header } from '~components';
 import ButtonDropdown from '~components/button-dropdown';
 import SpaceBetween from '~components/space-between';
 import Tabs, { TabsProps } from '~components/tabs';
@@ -71,19 +71,7 @@ export default function TabsDemoPage() {
     {
       label: 'Second tab',
       id: 'second',
-      action: (
-        <ButtonDropdown
-          variant="icon"
-          ariaLabel="Query actions for second tab (Either or component)"
-          items={[
-            { id: 'save', text: 'Save', disabled: true },
-            { id: 'saveAs', text: 'Save as' },
-            { id: 'rename', text: 'Rename', disabled: true },
-            { id: 'delete', text: 'Delete', disabled: true },
-          ]}
-          expandToViewport={true}
-        />
-      ),
+      action: <Button iconName="copy" variant="icon" ariaLabel="Action button for the Second tab" />,
       content:
         'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.',
     },

@@ -87,6 +87,11 @@ $label-horizontal-spacing: awsui.$space-xs;
   @include styles.text-wrapping;
 }
 
+.tabs-tab-dismiss,
+.tabs-tab-action {
+  /* Used as a selector for tests */
+}
+
 .tabs-tab-header-container {
   position: relative;
 
@@ -94,17 +99,19 @@ $label-horizontal-spacing: awsui.$space-xs;
   border-inline: awsui.$border-divider-section-width solid transparent;
 
   padding-inline: $label-horizontal-spacing;
+  display: flex;
+  align-items: stretch;
 
   &,
   & > button {
     background-color: transparent;
-    display: flex;
-    align-items: center;
-    text-align: start;
+    text-align: stretch;
   }
 
-  &.refresh {
-    padding-block-end: awsui.$space-static-xxs;
+  & > .tabs-tab-dismiss,
+  & > .tabs-tab-action {
+    display: flex;
+    align-items: center;
   }
 }
 
@@ -175,7 +182,7 @@ $label-horizontal-spacing: awsui.$space-xs;
 
   &.refresh {
     padding-block-start: calc(awsui.$space-static-xs - 1px);
-    padding-block-end: calc(#{awsui.$space-xxs} - 1px);
+    padding-block-end: awsui.$space-static-xs;
 
     margin-block-start: 0;
   }
@@ -237,9 +244,4 @@ $label-horizontal-spacing: awsui.$space-xs;
 
 .tabs-header-with-divider {
   border-block-end: awsui.$border-divider-section-width solid $separator-color;
-}
-
-.tabs-tab-dismiss,
-.tabs-tab-action {
-  /* Used as a selector for tests */
 }
