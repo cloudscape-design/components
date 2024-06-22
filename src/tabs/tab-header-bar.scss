@@ -113,6 +113,10 @@ $label-horizontal-spacing: awsui.$space-xs;
     display: flex;
     align-items: center;
   }
+
+  & > span:first-of-type {
+    margin-inline-start: calc(-1 * awsui.$space-scaled-xs);
+  }
 }
 
 .tabs-tab-header-container:not(.tabs-tab-disabled) {
