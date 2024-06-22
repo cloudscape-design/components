@@ -27,7 +27,7 @@ export default function TabsDemoPage() {
       id: 'second',
       dismissible: true,
       dismissLabel: 'Dismiss second tab (dismissibles variant)',
-      onDismiss: () => setTabDismissibles(prevTabs => prevTabs.slice(0, 1)),
+      onDismiss: () => setTabDismissibles(prevTabs => prevTabs.filter(tab => tab.id !== 'second')),
       content: (
         <>
           Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Diam nonumy eirmod tempor
