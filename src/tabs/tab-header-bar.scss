@@ -114,7 +114,7 @@ $label-horizontal-spacing: awsui.$space-xs;
     align-items: center;
   }
 
-  & > span:first-of-type {
+  &.refresh > span:first-of-type {
     margin-inline-start: calc(-1 * awsui.$space-scaled-xs);
   }
 }
