@@ -182,7 +182,7 @@ $label-horizontal-spacing: awsui.$space-xs;
 
   &.refresh {
     padding-block-start: calc(awsui.$space-static-xs - 1px);
-    padding-block-end: awsui.$space-static-xs;
+    padding-block-end: calc(awsui.$space-static-xs - 1px);
 
     margin-block-start: 0;
   }
