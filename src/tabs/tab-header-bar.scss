@@ -112,7 +112,6 @@ $label-horizontal-spacing: awsui.$space-xs;
   & > .tabs-tab-action {
     display: flex;
     align-items: center;
-    margin-inline-start: calc(-1 * awsui.$space-scaled-xxxs);
   }
 }
 
