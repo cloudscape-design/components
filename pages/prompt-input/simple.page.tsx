@@ -50,6 +50,7 @@ export default function PromptInputPage() {
             </>
           }
           label={<span>User prompt</span>}
+          i18nStrings={{ errorIconAriaLabel: 'Error' }}
         >
           <PromptInput
             actionButtonIconName="send"
@@ -61,7 +62,7 @@ export default function PromptInputPage() {
             maxRows={6}
             disabled={isDisabled}
             readOnly={isReadOnly}
-            invalid={isInvalid}
+            invalid={isInvalid || textareaValue.length > MAX_CHARS}
             warning={hasWarning}
           />
         </FormField>
