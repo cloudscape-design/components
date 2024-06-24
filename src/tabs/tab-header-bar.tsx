@@ -73,13 +73,12 @@ export function TabHeaderBar({
   const [inlineEndOverflow, setInlineEndOverflow] = useState(false);
   const [previousActiveTabId, setPreviousActiveTabId] = useState<string | undefined>(activeTabId);
   const hasActionOrDismissible = tabs.some(tab => tab.action || tab.dismissible);
-  const tabsWithActionsAriaRoleDescription = 'Tabs with Actions';
   const tabActionAttributes = hasActionOrDismissible
     ? {
         role: 'application',
         'aria-roledescription': i18n(
           'i18nStrings.tabsWithActionsAriaRoleDescription',
-          tabsWithActionsAriaRoleDescription
+          i18nStrings?.tabsWithActionsAriaRoleDescription
         ),
       }
     : {
@@ -362,7 +361,6 @@ export function TabHeaderBar({
 
     const commonProps: (JSX.IntrinsicElements['a'] | JSX.IntrinsicElements['button']) & { 'data-testid': string } = {
       className: classes,
-      // role: 'tab',
       'aria-controls': `${idNamespace}-${tab.id}-panel`,
       'data-testid': tab.id,
       id: getTabElementId({ namespace: idNamespace, tabId: tab.id }),

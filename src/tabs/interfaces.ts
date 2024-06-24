@@ -147,5 +147,10 @@ export namespace TabsProps {
      * ARIA label for the scroll right button that appears when the tab header is wider than the container.
      */
     scrollRightAriaLabel?: string;
+    /**
+     * ARIA role description for the Tabs component when an action or dismissible prop is in use. This is used
+     * with role="application" to provide further information on the purpose of this component
+     */
+    tabsWithActionsAriaRoleDescription?: string;
   }
 }
