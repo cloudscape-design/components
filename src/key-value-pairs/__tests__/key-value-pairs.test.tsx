@@ -66,6 +66,7 @@ describe('KeyValuePairs', () => {
             },
             {
               type: 'group',
+              title: 'Title 2',
               items: [
                 {
                   label: 'Label for key',

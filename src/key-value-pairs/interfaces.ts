@@ -30,7 +30,7 @@ export namespace KeyValuePairsProps {
 
   export interface Group {
     type: 'group';
-    title?: string;
+    title: string;
     items: ReadonlyArray<Pair>;
   }
 
