@@ -14523,6 +14523,11 @@ If the tab content is too short, it will stretch. If the tab content is too long
             "optional": true,
             "type": "string",
           },
+          Object {
+            "name": "tabsWithActionsAriaRoleDescription",
+            "optional": true,
+            "type": "string",
+          },
         ],
         "type": "object",
       },
