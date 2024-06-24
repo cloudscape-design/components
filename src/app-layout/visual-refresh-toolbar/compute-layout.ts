@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { SPLIT_PANEL_MIN_WIDTH } from '../split-panel';
-import { AppLayoutPropsWithDefaults } from '../interfaces';
+import { AppLayoutInternalProps } from '../interfaces';
 
 interface HorizontalLayoutInput {
   navigationOpen: boolean;
   navigationWidth: number;
-  placement: AppLayoutPropsWithDefaults['placement'];
+  placement: AppLayoutInternalProps['placement'];
   minContentWidth: number;
   activeDrawerSize: number;
   splitPanelOpen: boolean;

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
-import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
+import { AppLayoutProps, AppLayoutInternalProps } from '../interfaces';
 import { FocusControlState } from '../utils/use-focus-control';
 import { SplitPanelFocusControlState } from '../utils/use-split-panel-focus-control';
 import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
@@ -11,10 +11,10 @@ import { VerticalLayoutOutput } from './compute-layout';
 // Widgetization notice: structures in this file are shared multiple app layout instances, possibly different minor versions.
 // Treat thsese structures as an API and do not make incompatible changes.
 export interface AppLayoutInternals {
-  ariaLabels: AppLayoutPropsWithDefaults['ariaLabels'];
-  headerVariant: AppLayoutPropsWithDefaults['headerVariant'];
-  placement: AppLayoutPropsWithDefaults['placement'];
-  navigationOpen: AppLayoutPropsWithDefaults['navigationOpen'];
+  ariaLabels: AppLayoutInternalProps['ariaLabels'];
+  headerVariant: AppLayoutInternalProps['headerVariant'];
+  placement: AppLayoutInternalProps['placement'];
+  navigationOpen: AppLayoutInternalProps['navigationOpen'];
   navigationFocusControl: FocusControlState;
   navigation: React.ReactNode;
   splitPanelPosition: AppLayoutProps.SplitPanelPreferences['position'];
@@ -29,7 +29,7 @@ export interface AppLayoutInternals {
   maxDrawerSize: number;
   drawers: ReadonlyArray<AppLayoutProps.Drawer>;
   drawersFocusControl: FocusControlState;
-  stickyNotifications: AppLayoutPropsWithDefaults['stickyNotifications'];
+  stickyNotifications: AppLayoutInternalProps['stickyNotifications'];
   breadcrumbs: React.ReactNode;
   toolbarState: 'show' | 'hide';
   setToolbarState: (state: 'show' | 'hide') => void;
