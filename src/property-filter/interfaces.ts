@@ -30,6 +30,10 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
   disabled?: boolean;
   /**
    * An object containing all the necessary localized strings required by the component.
+   *
+   * The properties `filteringAriaLabel` and `filteringPlaceholder` on `i18nStrings` are deprecated.
+   * Provide these properties at the top-level instead.
+   *
    * @i18n
    */
   i18nStrings?: PropertyFilterProps.I18nStrings;
