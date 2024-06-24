@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
+import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 import { NotificationsSlot } from '../skeleton/slot-wrappers';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { AppLayoutInternals } from '../interfaces';
@@ -17,10 +18,19 @@ export function AppLayoutNotificationsImplementation({
   appLayoutInternals,
   children,
 }: AppLayoutNotificationsImplementationProps) {
-  const { ariaLabels, stickyNotifications, notificationsRef, verticalOffsets } = appLayoutInternals;
+  const { ariaLabels, stickyNotifications, setNotificationsHeight, verticalOffsets } = appLayoutInternals;
+  const ref = useRef<HTMLElement>(null);
+  useResizeObserver(ref, entry => setNotificationsHeight(entry.borderBoxHeight));
+  useEffect(() => {
+    return () => {
+      setNotificationsHeight(0);
+    };
+    // unmount effect only
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <NotificationsSlot
-      ref={notificationsRef}
+      ref={ref}
       className={clsx(stickyNotifications && styles['sticky-notifications'])}
       style={{
         insetBlockStart: stickyNotifications ? verticalOffsets.notifications : undefined,

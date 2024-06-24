@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useImperativeHandle, useState } from 'react';
-import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { useControllable } from '../../internal/hooks/use-controllable';
 import { fireNonCancelableEvent } from '../../internal/events';
 import { useFocusControl } from '../utils/use-focus-control';
@@ -66,6 +65,8 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef(
     const embeddedViewMode = (rest as any).__embeddedViewMode;
     const splitPanelControlId = useUniqueId('split-panel');
     const [toolbarState, setToolbarState] = useState<'show' | 'hide'>('show');
+    const [toolbarHeight, setToolbarHeight] = useState(0);
+    const [notificationsHeight, setNotificationsHeight] = useState(0);
 
     const onNavigationToggle = (open: boolean) => {
       fireNonCancelableEvent(onNavigationChange, { open });
@@ -163,10 +164,6 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef(
       focusSplitPanel: () => splitPanelFocusControl.refs.slider.current?.focus(),
     }));
 
-    // TODO move into respective components
-    const [notificationsHeight, notificationsRef] = useContainerQuery(rect => rect.borderBoxHeight);
-    const [toolbarHeight, toolbarRef] = useContainerQuery(rect => rect.borderBoxHeight);
-
     const resolvedNavigation = navigationHide ? null : navigation ?? <></>;
     const { maxDrawerSize, maxSplitPanelSize, splitPanelForcedPosition, splitPanelPosition } = computeHorizontalLayout({
       activeDrawerSize,
@@ -215,8 +212,8 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef(
       toolbarState,
       setToolbarState,
       verticalOffsets,
-      notificationsRef,
-      toolbarRef,
+      setToolbarHeight,
+      setNotificationsHeight,
       onSplitPanelToggle: onSplitPanelToggleHandler,
       onNavigationToggle,
       onActiveDrawerChange,
