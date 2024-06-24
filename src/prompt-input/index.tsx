@@ -142,7 +142,7 @@ const PromptInput = React.forwardRef(
     }
 
     return (
-      <span {...baseProps} className={clsx(styles.root, baseProps.className)} ref={__internalRootRef}>
+      <div {...baseProps} className={clsx(styles.root, baseProps.className)} ref={__internalRootRef}>
         <textarea ref={textareaRef} id={controlId} {...attributes} />
         <div className={styles.button}>
           {actionButtonIconName && (
@@ -155,7 +155,7 @@ const PromptInput = React.forwardRef(
             />
           )}
         </div>
-      </span>
+      </div>
     );
   }
 );
