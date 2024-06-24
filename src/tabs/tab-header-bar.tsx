@@ -201,7 +201,7 @@ export function TabHeaderBar({
     if (isActionOpen) {
       return;
     }
-    if (event.key === 'Tab' && isDismissOrActionFocused) {
+    if (event.key === 'Tab' && !event.shiftKey && isDismissOrActionFocused) {
       event.preventDefault();
       const panelId = `${idNamespace}-${activeTabId}-panel`;
       const panel = document.getElementById(panelId);
