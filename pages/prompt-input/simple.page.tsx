@@ -1,34 +1,43 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Checkbox } from '~components';
 import ColumnLayout from '~components/column-layout';
 import FormField from '~components/form-field';
 import PromptInput from '~components/prompt-input';
+import AppContext, { AppContextType } from '../app/app-context';
 
 const MAX_CHARS = 200;
 
+type DemoContext = React.Context<
+  AppContextType<{
+    isDisabled: boolean;
+    isReadOnly: boolean;
+    isInvalid: boolean;
+    hasWarning: boolean;
+  }>
+>;
+
 export default function PromptInputPage() {
   const [textareaValue, setTextareaValue] = useState('');
-  const [isDisabled, setIsDisabled] = useState(false);
-  const [isReadOnly, setIsReadOnly] = useState(false);
-  const [isInvalid, setIsInvalid] = useState(false);
-  const [hasWarning, setHasWarning] = useState(false);
+  const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
+
+  const { isDisabled, isReadOnly, isInvalid, hasWarning } = urlParams;
 
   return (
     <div style={{ padding: 10 }}>
       <h1>PromptInput demo</h1>
       <FormField label="Settings">
-        <Checkbox checked={isDisabled} onChange={() => setIsDisabled(!isDisabled)}>
+        <Checkbox checked={isDisabled} onChange={() => setUrlParams({ isDisabled: !isDisabled })}>
           Disabled
         </Checkbox>
-        <Checkbox checked={isReadOnly} onChange={() => setIsReadOnly(!isReadOnly)}>
+        <Checkbox checked={isReadOnly} onChange={() => setUrlParams({ isReadOnly: !isReadOnly })}>
           Read-only
         </Checkbox>
-        <Checkbox checked={isInvalid} onChange={() => setIsInvalid(!isInvalid)}>
+        <Checkbox checked={isInvalid} onChange={() => setUrlParams({ isInvalid: !isInvalid })}>
           Invalid
         </Checkbox>
-        <Checkbox checked={hasWarning} onChange={() => setHasWarning(!hasWarning)}>
+        <Checkbox checked={hasWarning} onChange={() => setUrlParams({ hasWarning: !hasWarning })}>
           Warning
         </Checkbox>
       </FormField>
