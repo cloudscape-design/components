@@ -51,6 +51,7 @@ describe('KeyValuePairs', () => {
         <KeyValuePairs
           items={[
             {
+              type: 'group',
               title: 'Title',
               items: [
                 {
@@ -64,6 +65,7 @@ describe('KeyValuePairs', () => {
               ],
             },
             {
+              type: 'group',
               items: [
                 {
                   label: 'Label for key',
@@ -113,6 +115,7 @@ describe('KeyValuePairs', () => {
         <KeyValuePairs
           items={[
             {
+              type: 'group',
               title: 'Column title',
               items: [
                 { label: 'Column label 1', value: 'Column value 1' },
