@@ -369,9 +369,11 @@
 .readonly:not(.disabled):active {
   &::-webkit-slider-thumb {
     @include mixins.base-thumb-readonly-styles();
+    cursor: initial;
   }
 
   &::-moz-range-thumb {
     @include mixins.base-thumb-readonly-styles();
+    cursor: initial;
   }
 }
