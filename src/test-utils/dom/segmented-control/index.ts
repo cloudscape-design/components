@@ -3,6 +3,16 @@
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 import styles from '../../../segmented-control/styles.selectors.js';
 
+export class SegmentWrapper extends ComponentWrapper {
+  findDisabledReason(): ElementWrapper | null {
+    return this.find(`.${styles['disabled-reason-tooltip']}`);
+  }
+
+  findDisabledReasonDescription(): ElementWrapper | null {
+    return this.find('span[hidden]');
+  }
+}
+
 export default class SegmentedControlWrapper extends ComponentWrapper {
   static rootSelector: string = styles.root;
 
@@ -12,5 +22,14 @@ export default class SegmentedControlWrapper extends ComponentWrapper {
 
   findSelectedSegment(): ElementWrapper | null {
     return this.findByClassName(styles.selected);
+  }
+
+  /**
+   * Finds the segment with the given ID and returns the element.
+   *
+   * @param id ID of the element to return
+   */
+  findSegmentById(id: string): SegmentWrapper | null {
+    return this.findComponent(`.${styles.segment}[data-testid="${id}"]`, SegmentWrapper);
   }
 }
