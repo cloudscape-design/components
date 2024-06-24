@@ -20,6 +20,10 @@ export interface InternalGridProps extends GridProps, InternalBaseComponentProps
    * The handler that fires when the grid breakpoint changes.
    */
   __responsiveClassName?: (breakpoint: Breakpoint | null) => ClassValue;
+  /**
+   * Overrides the default wrapper HTML tag.
+   */
+  tagOverride?: string;
 }
 
 const InternalGrid = React.forwardRef(
@@ -29,6 +33,7 @@ const InternalGrid = React.forwardRef(
       gridDefinition = [],
       disableGutters = false,
       children,
+      tagOverride,
       __responsiveClassName,
       __internalRootRef = null,
       ...restProps
@@ -47,6 +52,7 @@ const InternalGrid = React.forwardRef(
    Flattening the children allows us to "see through" React Fragments and nested arrays.
    */
     const flattenedChildren = flattenChildren(children);
+    const Tag = (tagOverride ?? 'div') as 'div';
 
     if (isDevelopment) {
       const columnCount = gridDefinition.length;
@@ -62,7 +68,7 @@ const InternalGrid = React.forwardRef(
     const mergedRef = useMergeRefs(defaultRef, __internalRootRef);
 
     return (
-      <div
+      <Tag
         {...baseProps}
         className={clsx(
           styles.grid,
@@ -92,7 +98,7 @@ const InternalGrid = React.forwardRef(
             </div>
           );
         })}
-      </div>
+      </Tag>
     );
   }
 );
