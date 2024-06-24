@@ -34,8 +34,8 @@ export interface AppLayoutInternals {
   toolbarState: 'show' | 'hide';
   setToolbarState: (state: 'show' | 'hide') => void;
   verticalOffsets: VerticalLayoutOutput;
-  notificationsRef: React.Ref<HTMLElement>;
-  toolbarRef: React.Ref<HTMLElement>;
+  setNotificationsHeight: (height: number) => void;
+  setToolbarHeight: (height: number) => void;
   onSplitPanelToggle: () => void;
   onNavigationToggle: (open: boolean) => void;
   onActiveDrawerChange: (newDrawerId: string | null) => void;

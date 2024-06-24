@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 import styles from './styles.css.js';
 import testutilStyles from '../../test-classes/styles.css.js';
@@ -9,6 +9,7 @@ import TriggerButton from './trigger-button';
 import { ToolbarSlot } from '../skeleton/slot-wrappers';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { AppLayoutInternals } from '../interfaces';
+import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
 interface AppLayoutToolbarImplementationProps {
   appLayoutInternals: AppLayoutInternals;
@@ -19,7 +20,7 @@ export function AppLayoutToolbarImplementation({ appLayoutInternals }: AppLayout
     ariaLabels,
     breadcrumbs,
     drawers,
-    toolbarRef,
+    setToolbarHeight,
     verticalOffsets,
     onNavigationToggle,
     isMobile,
@@ -32,6 +33,15 @@ export function AppLayoutToolbarImplementation({ appLayoutInternals }: AppLayout
   } = appLayoutInternals;
   // TODO: expose configuration property
   const pinnedToolbar = false;
+  const ref = useRef<HTMLElement>(null);
+  useResizeObserver(ref, entry => setToolbarHeight(entry.borderBoxHeight));
+  useEffect(() => {
+    return () => {
+      setToolbarHeight(0);
+    };
+    // unmount effect only
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     let lastScrollY = window.scrollY;
@@ -62,7 +72,7 @@ export function AppLayoutToolbarImplementation({ appLayoutInternals }: AppLayout
 
   return (
     <ToolbarSlot
-      ref={toolbarRef}
+      ref={ref}
       className={clsx(styles['universal-toolbar'], {
         [testutilStyles['mobile-bar']]: isMobile,
         [styles['toolbar-hidden']]: toolbarHidden,
