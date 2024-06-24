@@ -4417,7 +4417,7 @@ in the native control.",
     },
     Object {
       "description": "Specifies if the control is read-only, which prevents the
-user from modifying the value. Should be used inside forms.
+user from modifying the value. Should be used only inside forms.
 A read-only control is still focusable.
 If both \`readOnly\` and \`disabled\` are set, \`disabled\` takes precedence.",
       "name": "readOnly",
@@ -15935,7 +15935,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
     },
     Object {
       "description": "Specifies if the control is read-only, which prevents the
-user from modifying the value. Should be used inside forms.
+user from modifying the value. Should be used only inside forms.
 A read-only control is still focusable.
 If both \`readOnly\` and \`disabled\` are set, \`disabled\` takes precedence.",
       "name": "readOnly",
