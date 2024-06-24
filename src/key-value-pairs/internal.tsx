@@ -10,7 +10,7 @@ import Box from '../box/internal';
 
 export { KeyValuePairsProps };
 
-const InternalKeyValuePair = ({ label, info, value }: KeyValuePairsProps.KeyValuePair) => (
+const InternalKeyValuePair = ({ label, info, value }: KeyValuePairsProps.Pair) => (
   <>
     <dt className={styles.term}>
       <label className={styles['key-label']}>{label}</label>
@@ -39,7 +39,7 @@ const InternalKeyValuePairs = React.forwardRef(
         */}
         <ColumnLayout tagOverride="dl" columns={Math.min(columns, 4)} variant="text-grid" minColumnWidth={150}>
           {items.map((pair, index) => {
-            if ('items' in pair) {
+            if (pair.type === 'group') {
               return (
                 /* InternalKeyValuePairGroup tells react to treat the dt-dd pair as an individual layout item.
                  * Otherwise, without this component, they will be rendered as a list, which ruins the html structure.

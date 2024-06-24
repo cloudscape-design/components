@@ -14,6 +14,7 @@ export default function () {
           columns={1}
           items={[
             {
+              type: 'group',
               title: 'Title',
               items: [
                 {

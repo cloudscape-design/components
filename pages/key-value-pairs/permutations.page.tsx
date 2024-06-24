@@ -96,6 +96,7 @@ export default function KeyValueScenario() {
               columns={2}
               items={[
                 {
+                  type: 'group',
                   title: 'Column Title 1',
                   items: [
                     {
@@ -109,6 +110,7 @@ export default function KeyValueScenario() {
                   ],
                 },
                 {
+                  type: 'group',
                   title: 'Column Title 2',
                   items: [
                     {
@@ -126,6 +128,7 @@ export default function KeyValueScenario() {
                   ],
                 },
                 {
+                  type: 'group',
                   title: 'Column Title 3',
                   items: [
                     {
@@ -139,6 +142,7 @@ export default function KeyValueScenario() {
                   ],
                 },
                 {
+                  type: 'group',
                   title: 'Column Title 4',
                   items: [
                     {
@@ -264,6 +268,7 @@ export default function KeyValueScenario() {
                   ),
                 },
                 {
+                  type: 'group',
                   title: 'Title for the column 2',
                   items: [
                     {
@@ -301,6 +306,7 @@ export default function KeyValueScenario() {
                   ),
                 },
                 {
+                  type: 'group',
                   title: 'Title for the column 7',
                   items: [
                     {
