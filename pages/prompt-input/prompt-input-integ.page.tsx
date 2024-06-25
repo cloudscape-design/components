@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import Input from '~components/input';
+import PromptInput from '~components/prompt-input';
 
 export default function Page() {
   const [value, setValue] = useState('');
@@ -10,7 +10,7 @@ export default function Page() {
 
   return (
     <div id="test">
-      <h1>Input submit check</h1>
+      <h1>Prompt input submit check</h1>
       {submitStatus ? <div id="submit-success">Submitted</div> : null}
       <form
         onSubmit={event => {
@@ -19,12 +19,13 @@ export default function Page() {
           setSubmitStatus(true);
         }}
       >
-        <Input
+        <PromptInput
           ariaLabel="test input"
-          type="number"
-          step={0.2}
+          actionButtonIconName="send"
+          actionButtonAriaLabel="Send"
           value={value}
           onChange={event => setValue(event.detail.value)}
+          onAction={() => window.alert('Sent message!')}
           onKeyDown={event => {
             if (isKeyboardSubmittingDisabled) {
               console.log('prevent!');
