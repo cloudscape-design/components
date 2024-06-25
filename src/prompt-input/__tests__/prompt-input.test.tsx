@@ -35,6 +35,16 @@ describe('action button', () => {
     const { wrapper } = renderPromptInput({ value: '', actionButtonIconName: 'send' });
     expect(wrapper.findSubmitButton().getElement()).toBeInTheDocument();
   });
+
+  test('disabled when in disabled state', () => {
+    const { wrapper } = renderPromptInput({ value: '', actionButtonIconName: 'send', disabled: true });
+    expect(wrapper.findSubmitButton().getElement()).toHaveAttribute('disabled');
+  });
+
+  test('disabled when in read-only state', () => {
+    const { wrapper } = renderPromptInput({ value: '', actionButtonIconName: 'send', readOnly: true });
+    expect(wrapper.findSubmitButton().getElement()).toHaveAttribute('disabled');
+  });
 });
 
 describe('a11y', () => {

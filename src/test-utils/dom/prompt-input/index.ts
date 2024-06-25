@@ -12,7 +12,7 @@ export default class PromptInputWrapper extends ComponentWrapper {
   }
 
   findSubmitButton(): ElementWrapper<HTMLButtonElement> {
-    return this.findByClassName(styles.button)!;
+    return this.findByClassName<HTMLButtonElement>(styles['action-button'])!;
   }
 
   /**

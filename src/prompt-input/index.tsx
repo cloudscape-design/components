@@ -147,8 +147,9 @@ const PromptInput = React.forwardRef(
         {actionButtonIconName && (
           <div className={styles.button}>
             <InternalButton
+              className={styles['action-button']}
               ariaLabel={actionButtonAriaLabel}
-              disabled={disableActionButton}
+              disabled={disabled || readOnly || disableActionButton}
               iconName={actionButtonIconName}
               onClick={() => fireNonCancelableEvent(onAction, { value })}
               variant="icon"

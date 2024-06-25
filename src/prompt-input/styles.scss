@@ -92,3 +92,7 @@ $send-icon-right-spacing: awsui.$space-static-xxs;
   inset-inline-end: $send-icon-right-spacing;
   inset-block-end: 0;
 }
+
+.action-button {
+  /* used in test-utils */
+}
