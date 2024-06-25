@@ -6,18 +6,13 @@ import customCssProps from '../../internal/generated/custom-css-properties';
 import { useAppLayoutInternals } from './context';
 import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
+import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
-/**
- * The layoutElement ref will be used by the resize observers to calculate the offset from
- * the top and bottom of the viewport based on the header and footer elements. This is to
- * ensure the Layout component minimum height will fill 100% of the viewport less those
- * cumulative heights.
- */
-export default function Layout({ children }: LayoutProps) {
+const Layout = React.forwardRef<HTMLDivElement, LayoutProps>(({ children }, ref) => {
   const {
     breadcrumbs,
     contentHeader,
@@ -50,9 +45,11 @@ export default function Layout({ children }: LayoutProps) {
   // Content gaps on the left and right are used with the minmax function in the CSS grid column definition
   const hasContentGapLeft = navigationOpen || navigationHide;
   const hasContentGapRight = drawersTriggerCount === 0 || hasOpenDrawer;
+  const mergedRef = useMergeRefs(ref, layoutElement);
 
   return (
     <main
+      ref={mergedRef}
       className={clsx(
         styles.layout,
         styles[`content-first-child-${contentFirstChild}`],
@@ -75,7 +72,6 @@ export default function Layout({ children }: LayoutProps) {
         },
         testutilStyles.root
       )}
-      ref={layoutElement}
       style={{
         [customCssProps.headerHeight]: `${headerHeight}px`,
         [customCssProps.footerHeight]: `${footerHeight}px`,
@@ -89,7 +85,9 @@ export default function Layout({ children }: LayoutProps) {
       {children}
     </main>
   );
-}
+});
+
+export default Layout;
 
 /*
 The Notifications, Breadcrumbs, Header, and Main are all rendered in the center

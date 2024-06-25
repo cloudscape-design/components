@@ -6,7 +6,7 @@ import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal
 import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
 export function useAppLayoutPlacement(headerSelector: string, footerSelector: string) {
-  const mainElementRef = useRef<HTMLElement>(null);
+  const mainElementRef = useRef<HTMLDivElement>(null);
   const headerHeight = useObservedElement(headerSelector);
   const footerHeight = useObservedElement(footerSelector);
   const [offsets, setOffsets] = useState({

@@ -14,15 +14,17 @@ import Navigation from './navigation';
 import Notifications from './notifications';
 import SplitPanel from './split-panel';
 import Tools from './tools';
+import { useAppLayout } from '../utils/use-app-layout';
 
 const AppLayoutWithRef = React.forwardRef(function AppLayout(
   props: AppLayoutPropsWithDefaults,
   ref: React.Ref<AppLayoutProps.Ref>
 ) {
+  const { props: resolvedProps, rootRef } = useAppLayout(props);
   return (
-    <AppLayoutInternalsProvider {...props} ref={ref}>
+    <AppLayoutInternalsProvider {...resolvedProps} ref={ref}>
       <SplitPanel>
-        <Layout>
+        <Layout ref={rootRef}>
           <Background />
 
           <Navigation />

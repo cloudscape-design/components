@@ -24,43 +24,45 @@ import {
   AppLayoutToolbar,
 } from './internal';
 import { AppLayoutInternals } from './interfaces';
+import { useAppLayout } from '../utils/use-app-layout';
 
 const AppLayoutVisualRefreshToolbar = React.forwardRef(
-  (
-    {
-      ariaLabels,
-      contentHeader,
-      content,
-      navigationOpen,
-      navigationWidth,
-      navigation,
-      navigationHide,
-      onNavigationChange,
-      tools,
-      toolsOpen: controlledToolsOpen,
-      onToolsChange,
-      toolsHide,
-      toolsWidth,
-      contentType,
-      headerVariant,
-      breadcrumbs,
-      notifications,
-      stickyNotifications,
-      splitPanelPreferences: controlledSplitPanelPreferences,
-      splitPanelOpen: controlledSplitPanelOpen,
-      splitPanel,
-      splitPanelSize: controlledSplitPanelSize,
-      onSplitPanelToggle,
-      onSplitPanelResize,
-      onSplitPanelPreferencesChange,
-      disableContentPaddings,
-      minContentWidth,
-      maxContentWidth,
-      placement,
-      ...rest
-    }: AppLayoutPropsWithDefaults,
-    forwardRef: React.Ref<AppLayoutProps.Ref>
-  ) => {
+  (props: AppLayoutPropsWithDefaults, forwardRef: React.Ref<AppLayoutProps.Ref>) => {
+    const {
+      rootRef,
+      props: {
+        ariaLabels,
+        contentHeader,
+        content,
+        navigationOpen,
+        navigationWidth,
+        navigation,
+        navigationHide,
+        onNavigationChange,
+        tools,
+        toolsOpen: controlledToolsOpen,
+        onToolsChange,
+        toolsHide,
+        toolsWidth,
+        contentType,
+        headerVariant,
+        breadcrumbs,
+        notifications,
+        stickyNotifications,
+        splitPanelPreferences: controlledSplitPanelPreferences,
+        splitPanelOpen: controlledSplitPanelOpen,
+        splitPanel,
+        splitPanelSize: controlledSplitPanelSize,
+        onSplitPanelToggle,
+        onSplitPanelResize,
+        onSplitPanelPreferencesChange,
+        disableContentPaddings,
+        minContentWidth,
+        maxContentWidth,
+        placement,
+        ...rest
+      },
+    } = useAppLayout(props);
     const isMobile = useMobile();
     const embeddedViewMode = (rest as any).__embeddedViewMode;
     const splitPanelControlId = useUniqueId('split-panel');
@@ -249,6 +251,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef(
 
     return (
       <SkeletonLayout
+        ref={rootRef}
         style={{
           [globalVars.stickyVerticalTopOffset]: `${verticalOffsets.header}px`,
           [globalVars.stickyVerticalBottomOffset]: `${placement.insetBlockEnd}px`,
