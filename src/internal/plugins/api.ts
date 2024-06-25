@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { BreadcrumbGroupProps } from '../../breadcrumb-group/interfaces';
 import { ActionButtonsController, ActionsApiInternal, ActionsApiPublic } from './controllers/action-buttons';
+import { AppLayoutWidgetApiInternal, AppLayoutWidgetController } from './controllers/app-layout-widget';
 import { BreadcrumbsApiInternal, BreadcrumbsController } from './controllers/breadcrumbs';
 import { DrawersApiInternal, DrawersApiPublic, DrawersController } from './controllers/drawers';
 
@@ -15,6 +16,7 @@ interface AwsuiApi {
   };
   awsuiPluginsInternal: {
     appLayout: DrawersApiInternal;
+    appLayoutWidget: AppLayoutWidgetApiInternal;
     alert: ActionsApiInternal;
     flashbar: ActionsApiInternal;
     breadcrumbs: BreadcrumbsApiInternal<BreadcrumbGroupProps>;
@@ -64,6 +66,11 @@ function installApi(api: DeepPartial<AwsuiApi>): AwsuiApi {
   const appLayoutDrawers = new DrawersController();
   api.awsuiPlugins.appLayout = appLayoutDrawers.installPublic(api.awsuiPlugins.appLayout);
   api.awsuiPluginsInternal.appLayout = appLayoutDrawers.installInternal(api.awsuiPluginsInternal.appLayout);
+
+  const appLayoutController = new AppLayoutWidgetController();
+  api.awsuiPluginsInternal.appLayoutWidget = appLayoutController.installInternal(
+    api.awsuiPluginsInternal.appLayoutWidget
+  );
 
   const alertActions = new ActionButtonsController();
   api.awsuiPlugins.alert = alertActions.installPublic(api.awsuiPlugins.alert);

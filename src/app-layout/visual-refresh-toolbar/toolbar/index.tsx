@@ -7,43 +7,75 @@ import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal
 
 import { InternalBreadcrumbGroup } from '../../../breadcrumb-group/internal';
 import { createWidgetizedComponent } from '../../../internal/widgets';
+import { AppLayoutProps } from '../../interfaces';
+import { Focusable } from '../../utils/use-focus-control';
 import { AppLayoutInternals } from '../interfaces';
 import { ToolbarSlot } from '../skeleton/slot-wrappers';
-import { DrawerTriggers } from './drawer-triggers';
+import { DrawerTriggers, SplitPanelToggleProps } from './drawer-triggers';
 import TriggerButton from './trigger-button';
 
 import testutilStyles from '../../test-classes/styles.css.js';
 import styles from './styles.css.js';
 
-interface AppLayoutToolbarImplementationProps {
-  appLayoutInternals: AppLayoutInternals;
+export { SplitPanelToggleProps };
+
+export interface ToolbarProps {
+  ariaLabels?: AppLayoutProps.Labels;
+  // navigation
+  hasNavigation?: boolean;
+  navigationOpen?: boolean;
+  onNavigationToggle?: (open: boolean) => void;
+  navigationFocusRef?: React.Ref<Focusable>;
+
+  // breadcrumbs
+  hasBreadcrumbsPortal?: boolean;
+
+  // split panel
+  hasSplitPanel?: boolean;
+  splitPanelToggleProps?: SplitPanelToggleProps;
+  splitPanelFocusRef?: React.Ref<Focusable>;
+  onSplitPanelToggle?: () => void;
+
+  // drawers
+  activeDrawerId?: string | null;
+  drawers?: ReadonlyArray<AppLayoutProps.Drawer>;
+  drawersFocusRef?: React.Ref<Focusable>;
+  onActiveDrawerChange?: (drawerId: string | null) => void;
 }
 
-export function AppLayoutToolbarImplementation({ appLayoutInternals }: AppLayoutToolbarImplementationProps) {
+interface AppLayoutToolbarImplementationProps {
+  appLayoutInternals: AppLayoutInternals;
+  toolbarProps: ToolbarProps;
+}
+
+export function AppLayoutToolbarImplementation({
+  appLayoutInternals,
+  toolbarProps,
+}: AppLayoutToolbarImplementationProps) {
   const {
-    ariaLabels,
     breadcrumbs,
     discoveredBreadcrumbs,
-    activeDrawer,
-    drawers,
-    drawersFocusControl,
-    setToolbarHeight,
     verticalOffsets,
-    onNavigationToggle,
     isMobile,
     toolbarState,
     setToolbarState,
-    navigationOpen,
-    navigation,
-    navigationFocusControl,
-    splitPanelControlId,
-    splitPanelPosition,
-    splitPanelToggleConfig,
-    splitPanelFocusControl,
-    onSplitPanelToggle,
-    splitPanelOpen,
-    onActiveDrawerChange,
+    setToolbarHeight,
   } = appLayoutInternals;
+  const {
+    ariaLabels,
+    activeDrawerId,
+    drawers,
+    drawersFocusRef,
+    onActiveDrawerChange,
+    hasNavigation,
+    navigationOpen,
+    navigationFocusRef,
+    onNavigationToggle,
+    hasSplitPanel,
+    splitPanelFocusRef,
+    splitPanelToggleProps,
+    onSplitPanelToggle,
+  } = toolbarProps;
   // TODO: expose configuration property
   const pinnedToolbar = true;
   const ref = useRef<HTMLElement>(null);
@@ -95,18 +127,15 @@ export function AppLayoutToolbarImplementation({ appLayoutInternals }: AppLayout
       }}
     >
       <div className={styles['toolbar-container']}>
-        {navigation && !navigationOpen && (
-          <nav
-            aria-hidden={navigationOpen}
-            className={clsx(styles['universal-toolbar-nav'], { [testutilStyles['drawer-closed']]: !navigationOpen })}
-          >
+        {hasNavigation && !navigationOpen && (
+          <nav className={clsx(styles['universal-toolbar-nav'], testutilStyles['drawer-closed'])}>
             <TriggerButton
               ariaLabel={ariaLabels?.navigationToggle ?? undefined}
-              ariaExpanded={navigationOpen ? undefined : false}
+              ariaExpanded={false}
               iconName="menu"
               className={testutilStyles['navigation-toggle']}
-              onClick={() => onNavigationToggle(!navigationOpen)}
-              ref={navigationFocusControl.refs.toggle}
+              onClick={() => onNavigationToggle?.(true)}
+              ref={navigationFocusRef}
               selected={navigationOpen}
             />
           </nav>
@@ -117,25 +146,16 @@ export function AppLayoutToolbarImplementation({ appLayoutInternals }: AppLayout
             {discoveredBreadcrumbs && <InternalBreadcrumbGroup {...discoveredBreadcrumbs} />}
           </div>
         )}
-        {(drawers.length > 0 || splitPanelToggleConfig.displayed) && (
+        {((drawers && drawers.length > 0) || (hasSplitPanel && splitPanelToggleProps?.displayed)) && (
           <span className={clsx(styles['universal-toolbar-drawers'])}>
             <DrawerTriggers
               ariaLabels={ariaLabels}
-              activeDrawerId={activeDrawer?.id ?? null}
-              drawers={drawers}
-              drawersFocusRef={drawersFocusControl.refs.toggle}
+              activeDrawerId={activeDrawerId ?? null}
+              drawers={drawers ?? []}
+              drawersFocusRef={drawersFocusRef}
               onActiveDrawerChange={onActiveDrawerChange}
-              splitPanelToggleProps={
-                splitPanelToggleConfig.displayed
-                  ? {
-                      ...splitPanelToggleConfig,
-                      controlId: splitPanelControlId,
-                      active: splitPanelOpen,
-                      position: splitPanelPosition,
-                    }
-                  : undefined
-              }
-              splitPanelFocusRef={splitPanelFocusControl.refs.toggle}
+              splitPanelToggleProps={splitPanelToggleProps?.displayed ? splitPanelToggleProps : undefined}
+              splitPanelFocusRef={splitPanelFocusRef}
               onSplitPanelToggle={onSplitPanelToggle}
             />
           </span>
