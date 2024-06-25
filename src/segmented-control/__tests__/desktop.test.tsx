@@ -384,9 +384,9 @@ describe('Segment disabled property', () => {
         />
       );
 
-      expect(
-        segmentedControlWrapper.findSegmentById('seg-2')!.findDisabledReasonDescription()!.getElement()
-      ).toHaveTextContent('disabled reason');
+      expect(segmentedControlWrapper.findSegmentById('seg-2')!.find('span[hidden]')!.getElement()).toHaveTextContent(
+        'disabled reason'
+      );
     });
 
     test('does not trigger onChange on disabled with reason segment', () => {
