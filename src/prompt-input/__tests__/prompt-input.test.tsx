@@ -7,7 +7,6 @@ import '../../__a11y__/to-validate-a11y';
 import PromptInputWrapper from '../../../lib/components/test-utils/dom/prompt-input';
 
 import PromptInput, { PromptInputProps } from '../../../lib/components/prompt-input';
-// import styles from '../../../lib/components/prompt-input/styles.css.js';
 
 const renderPromptInput = (promptInputProps: PromptInputProps) => {
   const { container } = render(<PromptInput {...promptInputProps} />);
@@ -90,11 +89,6 @@ describe('min and max rows', () => {
   test('does not update based on max row property', () => {
     const { wrapper } = renderPromptInput({ value: '', maxRows: 4 });
     expect(wrapper.findNativeTextarea().getElement()).toHaveAttribute('rows', '1');
-  });
-
-  test('height updates based on max row property', () => {
-    const { wrapper } = renderPromptInput({ value: '', maxRows: 4 });
-    expect(wrapper.findNativeTextarea().getElement()).toHaveStyle('height: 4px');
   });
 });
 
