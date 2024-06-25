@@ -29,7 +29,7 @@ const permutations = createPermutations<ButtonDropdownProps>([
   {
     mainAction: [
       { ...launchInstanceItem },
-      { ...launchInstanceItem, disabled: true, disabledReason: 'disabled reason' },
+      { ...launchInstanceItem, disabled: true },
       { ...launchInstanceItem, loading: true, loadingText: 'Loading' },
     ],
     items: [
@@ -39,7 +39,6 @@ const permutations = createPermutations<ButtonDropdownProps>([
       ],
     ],
     disabled: [false, true],
-    disabledReason: ['', 'disabled reason'],
     loading: [false, true],
     variant: ['primary', 'normal'],
   },
