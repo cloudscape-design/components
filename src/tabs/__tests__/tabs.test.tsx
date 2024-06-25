@@ -1042,7 +1042,7 @@ describe('Tabs', () => {
           />
         );
 
-        expect(wrapper.findTabLinkById('second')!.findDisabledReasonDescription()!.getElement()).toHaveTextContent(
+        expect(wrapper.findTabLinkById('second')!.find('span[hidden]')!.getElement()).toHaveTextContent(
           'disabled reason'
         );
       });

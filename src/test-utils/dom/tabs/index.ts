@@ -7,10 +7,6 @@ export class TabWrapper extends ComponentWrapper {
   findDisabledReason(): ElementWrapper | null {
     return this.find(`.${styles['disabled-reason-tooltip']}`);
   }
-
-  findDisabledReasonDescription(): ElementWrapper | null {
-    return this.find('span[hidden]');
-  }
 }
 
 export default class TabsWrapper extends ComponentWrapper<HTMLButtonElement> {
