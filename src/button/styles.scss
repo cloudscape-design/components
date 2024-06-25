@@ -165,6 +165,10 @@
   }
 }
 
+.link.disabled {
+  pointer-events: none;
+}
+
 .disabled-reason-tooltip {
   /* used in test-utils or tests */
 }
