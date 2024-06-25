@@ -11,7 +11,6 @@ const permutations = createPermutations<ButtonProps>([
   {
     disabled: [false, true],
     loading: [false, true],
-    disabledReason: ['disabled reason'],
     iconName: [undefined, 'settings'],
     iconAlign: ['left', 'right'],
     children: [
