@@ -188,7 +188,7 @@ describe('Button Component', () => {
     test('has hidden element (linked to aria-describedby) with disabledReason', () => {
       const wrapper = renderButton({ disabled: true, disabledReason: 'reason' });
 
-      expect(wrapper.findDisabledReasonDescription()!.getElement()).toHaveTextContent('reason');
+      expect(wrapper.find('span[hidden]')!.getElement()).toHaveTextContent('reason');
     });
   });
 
