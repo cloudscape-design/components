@@ -543,9 +543,9 @@ describe('Date range picker calendar', () => {
         });
         changeMode(wrapper, 'absolute');
 
-        expect(
-          wrapper.findDropdown()!.findDateAt('left', 4, 1).findDisabledReasonDescription()!.getElement()
-        ).toHaveTextContent('Disabled with a reason');
+        expect(wrapper.findDropdown()!.findDateAt('left', 4, 1).find('span[hidden]')!.getElement()).toHaveTextContent(
+          'Disabled with a reason'
+        );
       });
 
       test('disabled with reason start date can not be selected on space keydown', () => {

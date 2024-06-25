@@ -492,9 +492,7 @@ describe('disabled date', () => {
 
       const wrapper = createWrapper(container).findCalendar()!;
 
-      expect(wrapper.findDateAt(1, 6).findDisabledReasonDescription()!.getElement()).toHaveTextContent(
-        'Disabled on Saturdays'
-      );
+      expect(wrapper.findDateAt(1, 6).find('span[hidden]')!.getElement()).toHaveTextContent('Disabled on Saturdays');
     });
 
     test('space keydown does not trigger onChange when disabled with reason', () => {

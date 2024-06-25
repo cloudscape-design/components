@@ -15,10 +15,6 @@ export class CalendarDateWrapper extends ComponentWrapper {
   findDisabledReason(): ElementWrapper | null {
     return this.find(`.${gridStyles['disabled-reason-tooltip']}`);
   }
-
-  findDisabledReasonDescription(): ElementWrapper | null {
-    return this.find('span[hidden]');
-  }
 }
 
 export default class DateRangePickerWrapper extends ComponentWrapper {
