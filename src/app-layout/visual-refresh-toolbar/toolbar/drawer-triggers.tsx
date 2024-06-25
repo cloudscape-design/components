@@ -5,41 +5,51 @@ import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { splitItems } from '../../drawer/drawers-helpers';
 import clsx from 'clsx';
 import styles from './styles.css.js';
+import { useMobile } from '../../../internal/hooks/use-mobile';
 import { TOOLS_DRAWER_ID } from '../../utils/use-drawers';
+import { Focusable } from '../../utils/use-focus-control';
 import OverflowMenu from '../../drawer/overflow-menu';
 import TriggerButton from './trigger-button';
 import testutilStyles from '../../test-classes/styles.css.js';
 import splitPanelTestUtilStyles from '../../../split-panel/test-classes/styles.css.js';
-import { AppLayoutInternals } from '../interfaces';
+import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../../interfaces';
 
 interface DrawerTriggersProps {
-  appLayoutInternals: AppLayoutInternals;
+  ariaLabels: AppLayoutPropsWithDefaults['ariaLabels'];
+
+  activeDrawerId: string | null;
+  drawersFocusRef: React.Ref<Focusable>;
+  drawers: ReadonlyArray<AppLayoutProps.Drawer>;
+  onActiveDrawerChange: (drawerId: string | null) => void;
+
+  splitPanelToggleProps:
+    | undefined
+    | {
+        ariaLabel: string | undefined;
+        controlId: string | undefined;
+        active: boolean;
+        position: AppLayoutProps.SplitPanelPosition;
+      };
+  splitPanelFocusRef: React.Ref<Focusable>;
+  onSplitPanelToggle: () => void;
 }
 
-export function DrawerTriggers({ appLayoutInternals }: DrawerTriggersProps) {
-  const {
-    ariaLabels,
-    activeDrawer,
-    drawers,
-    drawersFocusControl,
-    isMobile,
-    splitPanelOpen,
-    splitPanelControlId,
-    splitPanelPosition,
-    splitPanelFocusControl,
-    splitPanelToggleConfig,
-    headerVariant,
-    onSplitPanelToggle,
-    onActiveDrawerChange,
-  } = appLayoutInternals;
-
+export function DrawerTriggers({
+  ariaLabels,
+  activeDrawerId,
+  drawers,
+  drawersFocusRef,
+  onActiveDrawerChange,
+  splitPanelFocusRef,
+  splitPanelToggleProps,
+  onSplitPanelToggle,
+}: DrawerTriggersProps) {
+  const isMobile = useMobile();
   const hasMultipleTriggers = drawers.length > 1;
-  const activeDrawerId = activeDrawer?.id;
-  const splitPanelIcon = splitPanelPosition === 'side' ? 'view-vertical' : 'view-horizontal';
 
   const previousActiveDrawerId = useRef(activeDrawerId);
   const [containerWidth, triggersContainerRef] = useContainerQuery(rect => rect.contentBoxWidth);
-  if (!drawers && !splitPanelToggleConfig.displayed) {
+  if (!drawers && !splitPanelToggleProps) {
     return null;
   }
 
@@ -58,7 +68,7 @@ export function DrawerTriggers({ appLayoutInternals }: DrawerTriggersProps) {
       const index = Math.floor(overflowSpot / ITEM_WIDTH);
 
       let splitPanelItem = 0;
-      if (splitPanelToggleConfig.displayed) {
+      if (splitPanelToggleProps) {
         splitPanelItem = 1;
       }
       return index - splitPanelItem;
@@ -74,7 +84,7 @@ export function DrawerTriggers({ appLayoutInternals }: DrawerTriggersProps) {
     <aside
       className={clsx(styles['drawers-desktop-triggers-container'], {
         [styles['has-multiple-triggers']]: hasMultipleTriggers,
-        [styles['has-open-drawer']]: activeDrawer,
+        [styles['has-open-drawer']]: activeDrawerId,
       })}
       aria-label={ariaLabels?.drawers}
       ref={triggersContainerRef}
@@ -83,21 +93,21 @@ export function DrawerTriggers({ appLayoutInternals }: DrawerTriggersProps) {
       <div
         className={clsx(styles['drawers-trigger-content'], {
           [styles['has-multiple-triggers']]: hasMultipleTriggers,
-          [styles['has-open-drawer']]: activeDrawer,
+          [styles['has-open-drawer']]: activeDrawerId,
         })}
         role="toolbar"
         aria-orientation="horizontal"
       >
-        {splitPanelToggleConfig.displayed && (
+        {splitPanelToggleProps && (
           <TriggerButton
-            ariaLabel={splitPanelToggleConfig.ariaLabel}
-            ariaControls={splitPanelControlId}
-            ariaExpanded={splitPanelOpen}
+            ariaLabel={splitPanelToggleProps.ariaLabel}
+            ariaControls={splitPanelToggleProps.controlId}
+            ariaExpanded={splitPanelToggleProps.active}
             className={clsx(styles['drawers-trigger'], splitPanelTestUtilStyles['open-button'])}
-            iconName={splitPanelIcon}
+            iconName={splitPanelToggleProps.position === 'side' ? 'view-vertical' : 'view-horizontal'}
             onClick={() => onSplitPanelToggle()}
-            selected={splitPanelOpen}
-            ref={splitPanelFocusControl.refs.toggle}
+            selected={splitPanelToggleProps.active}
+            ref={splitPanelFocusRef}
           />
         )}
         {visibleItems.map(item => {
@@ -115,11 +125,10 @@ export function DrawerTriggers({ appLayoutInternals }: DrawerTriggersProps) {
               iconSvg={item.trigger.iconSvg}
               key={item.id}
               onClick={() => onActiveDrawerChange(activeDrawerId !== item.id ? item.id : null)}
-              ref={item.id === previousActiveDrawerId.current ? drawersFocusControl.refs.toggle : undefined}
+              ref={item.id === previousActiveDrawerId.current ? drawersFocusRef : undefined}
               selected={item.id === activeDrawerId}
               badge={item.badge}
               testId={`awsui-app-layout-trigger-${item.id}`}
-              highContrastHeader={headerVariant === 'high-contrast'}
             />
           );
         })}
@@ -136,7 +145,6 @@ export function DrawerTriggers({ appLayoutInternals }: DrawerTriggersProps) {
                 className={clsx(styles['drawers-trigger'], testutilStyles['drawers-trigger'], testUtilsClass)}
                 iconName="ellipsis"
                 onClick={onClick}
-                highContrastHeader={headerVariant === 'high-contrast'}
               />
             )}
             onItemClick={event => onActiveDrawerChange(event.detail.id)}
