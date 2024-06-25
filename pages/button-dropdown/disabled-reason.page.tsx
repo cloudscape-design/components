@@ -119,10 +119,26 @@ export default function DescriptionPage() {
             Actions
           </ButtonDropdown>
         </div>
-        <div style={{ float: isRightAligned ? 'right' : undefined }}>
+        <div style={{ float: isRightAligned ? 'right' : undefined, marginBottom: '100px' }}>
           <ButtonDropdown items={actionsItems} expandableGroups={true} disabled={true} disabledReason="disabled reason">
             Actions
           </ButtonDropdown>
+        </div>
+        <div style={{ float: isRightAligned ? 'right' : undefined, marginBottom: '100px' }}>
+          <ButtonDropdown
+            items={actionsItems}
+            mainAction={{ text: 'Launch instance', disabled: true, disabledReason: 'disabled reason' }}
+            variant="primary"
+          />
+        </div>
+        <div style={{ float: isRightAligned ? 'right' : undefined, marginBottom: '100px' }}>
+          <ButtonDropdown
+            items={actionsItems}
+            mainAction={{ text: 'Launch instance' }}
+            variant="primary"
+            disabled={true}
+            disabledReason="disabled reason"
+          />
         </div>
       </ScreenshotArea>
     </>
