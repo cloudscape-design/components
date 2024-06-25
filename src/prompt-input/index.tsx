@@ -144,8 +144,8 @@ const PromptInput = React.forwardRef(
     return (
       <div {...baseProps} className={clsx(styles.root, baseProps.className)} ref={__internalRootRef}>
         <textarea ref={textareaRef} id={controlId} {...attributes} />
-        <div className={styles.button}>
-          {actionButtonIconName && (
+        {actionButtonIconName && (
+          <div className={styles.button}>
             <InternalButton
               ariaLabel={actionButtonAriaLabel}
               disabled={disableActionButton}
@@ -153,8 +153,8 @@ const PromptInput = React.forwardRef(
               onClick={() => fireNonCancelableEvent(onAction, { value })}
               variant="icon"
             />
-          )}
-        </div>
+          </div>
+        )}
       </div>
     );
   }
