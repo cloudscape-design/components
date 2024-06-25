@@ -25,10 +25,12 @@ import {
 } from './internal';
 import { AppLayoutInternals } from './interfaces';
 import { useAppLayout } from '../utils/use-app-layout';
+import { useMultiAppLayout } from './multi-layout';
 import { useGetGlobalBreadcrumbs } from '../../internal/plugins/helpers/use-global-breadcrumbs';
+import ScreenreaderOnly from '../../internal/components/screenreader-only';
 
-const AppLayoutVisualRefreshToolbar = React.forwardRef(
-  (props: AppLayoutPropsWithDefaults, forwardRef: React.Ref<AppLayoutProps.Ref>) => {
+const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLayoutPropsWithDefaults>(
+  (props, forwardRef) => {
     const {
       rootRef,
       props: {
@@ -179,20 +181,34 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef(
       splitPanelPosition: splitPanelPreferences?.position,
     });
 
+    const { registered, toolbarProps } = useMultiAppLayout({
+      ariaLabels: ariaLabelsWithDrawers,
+      navigation,
+      navigationOpen,
+      onNavigationToggle,
+      navigationFocusRef: navigationFocusControl.refs.toggle,
+      breadcrumbs,
+      activeDrawerId: activeDrawer?.id ?? null,
+      // only pass it down if there are non-empty drawers or tools
+      drawers: drawers?.length || !toolsHide ? drawers : undefined,
+      onActiveDrawerChange,
+      drawersFocusRef: drawersFocusControl.refs.toggle,
+      splitPanel,
+      splitPanelToggleProps: {
+        ...splitPanelToggleConfig,
+        active: splitPanelOpen,
+        controlId: splitPanelControlId,
+        position: splitPanelPosition,
+      },
+      splitPanelFocusRef: splitPanelFocusControl.refs.toggle,
+      onSplitPanelToggle: onSplitPanelToggleHandler,
+    });
+    const hasToolbar = !embeddedViewMode && !!toolbarProps;
     const discoveredBreadcrumbs = useGetGlobalBreadcrumbs();
-
-    const hasToolbar = Boolean(
-      !embeddedViewMode &&
-        (resolvedNavigation ||
-          breadcrumbs ||
-          discoveredBreadcrumbs ||
-          splitPanelToggleConfig.displayed ||
-          drawers!.length > 0)
-    );
 
     const verticalOffsets = computeVerticalLayout({
       topOffset: placement.insetBlockStart,
-      hasToolbar: hasToolbar && toolbarState !== 'hide',
+      hasVisibleToolbar: hasToolbar && toolbarState !== 'hide',
       notificationsHeight: notificationsHeight ?? 0,
       toolbarHeight: toolbarHeight ?? 0,
       stickyNotifications: !!stickyNotifications,
@@ -259,51 +275,60 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef(
     };
 
     return (
-      <SkeletonLayout
-        ref={rootRef}
-        style={{
-          [globalVars.stickyVerticalTopOffset]: `${verticalOffsets.header}px`,
-          [globalVars.stickyVerticalBottomOffset]: `${placement.insetBlockEnd}px`,
-          paddingBlockEnd: splitPanelOpen ? splitPanelReportedSize : '',
-        }}
-        toolbar={hasToolbar && <AppLayoutToolbar appLayoutInternals={appLayoutInternals} />}
-        notifications={
-          notifications && (
-            <AppLayoutNotifications appLayoutInternals={appLayoutInternals}>{notifications}</AppLayoutNotifications>
-          )
-        }
-        contentHeader={contentHeader}
-        content={content}
-        navigation={resolvedNavigation && <AppLayoutNavigation appLayoutInternals={appLayoutInternals} />}
-        navigationOpen={navigationOpen}
-        navigationWidth={navigationWidth}
-        tools={activeDrawer && <AppLayoutDrawer appLayoutInternals={appLayoutInternals} />}
-        toolsOpen={!!activeDrawer}
-        toolsWidth={activeDrawerSize}
-        sideSplitPanel={
-          splitPanelPosition === 'side' &&
-          splitPanel && (
-            <AppLayoutSplitPanelSide appLayoutInternals={appLayoutInternals} splitPanelInternals={splitPanelInternals}>
-              {splitPanel}
-            </AppLayoutSplitPanelSide>
-          )
-        }
-        bottomSplitPanel={
-          splitPanelPosition === 'bottom' && (
-            <AppLayoutSplitPanelBottom
-              appLayoutInternals={appLayoutInternals}
-              splitPanelInternals={splitPanelInternals}
-            >
-              {splitPanel}
-            </AppLayoutSplitPanelBottom>
-          )
-        }
-        splitPanelOpen={splitPanelOpen}
-        placement={placement}
-        contentType={contentType}
-        maxContentWidth={maxContentWidth}
-        disableContentPaddings={disableContentPaddings}
-      />
+      <>
+        {/* Rendering a hidden copy of breadcrumbs to trigger their deduplication */}
+        {!hasToolbar && breadcrumbs ? <ScreenreaderOnly>{breadcrumbs}</ScreenreaderOnly> : null}
+        <SkeletonLayout
+          ref={rootRef}
+          style={{
+            [globalVars.stickyVerticalTopOffset]: `${verticalOffsets.header}px`,
+            [globalVars.stickyVerticalBottomOffset]: `${placement.insetBlockEnd}px`,
+            paddingBlockEnd: splitPanelOpen ? splitPanelReportedSize : '',
+          }}
+          toolbar={
+            hasToolbar && <AppLayoutToolbar appLayoutInternals={appLayoutInternals} toolbarProps={toolbarProps} />
+          }
+          notifications={
+            notifications && (
+              <AppLayoutNotifications appLayoutInternals={appLayoutInternals}>{notifications}</AppLayoutNotifications>
+            )
+          }
+          contentHeader={contentHeader}
+          content={registered ? content : null}
+          navigation={resolvedNavigation && <AppLayoutNavigation appLayoutInternals={appLayoutInternals} />}
+          navigationOpen={navigationOpen}
+          navigationWidth={navigationWidth}
+          tools={activeDrawer && <AppLayoutDrawer appLayoutInternals={appLayoutInternals} />}
+          toolsOpen={!!activeDrawer}
+          toolsWidth={activeDrawerSize}
+          sideSplitPanel={
+            splitPanelPosition === 'side' &&
+            splitPanel && (
+              <AppLayoutSplitPanelSide
+                appLayoutInternals={appLayoutInternals}
+                splitPanelInternals={splitPanelInternals}
+              >
+                {splitPanel}
+              </AppLayoutSplitPanelSide>
+            )
+          }
+          bottomSplitPanel={
+            splitPanelPosition === 'bottom' && (
+              <AppLayoutSplitPanelBottom
+                appLayoutInternals={appLayoutInternals}
+                splitPanelInternals={splitPanelInternals}
+              >
+                {splitPanel}
+              </AppLayoutSplitPanelBottom>
+            )
+          }
+          splitPanelOpen={splitPanelOpen}
+          placement={placement}
+          contentType={contentType}
+          maxContentWidth={maxContentWidth}
+          disableContentPaddings={disableContentPaddings}
+        />
+      </>
     );
   }
 );

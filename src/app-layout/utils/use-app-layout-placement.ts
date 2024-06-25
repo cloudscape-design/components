@@ -7,8 +7,8 @@ import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolk
 
 export function useAppLayoutPlacement(headerSelector: string, footerSelector: string) {
   const mainElementRef = useRef<HTMLDivElement>(null);
-  const headerHeight = useObservedElement(headerSelector);
-  const footerHeight = useObservedElement(footerSelector);
+  const headerHeight = useObservedElement(mainElementRef, headerSelector);
+  const footerHeight = useObservedElement(mainElementRef, footerSelector);
   const [offsets, setOffsets] = useState({
     insetInlineStart: 0,
     insetInlineEnd: 0,

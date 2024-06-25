@@ -50,7 +50,7 @@ export function computeHorizontalLayout({
 
 interface VerticalLayoutInput {
   topOffset: number;
-  hasToolbar: boolean;
+  hasVisibleToolbar: boolean;
   toolbarHeight: number;
   stickyNotifications: boolean;
   notificationsHeight: number;
@@ -64,14 +64,14 @@ export interface VerticalLayoutOutput {
 
 export function computeVerticalLayout({
   topOffset,
-  hasToolbar,
+  hasVisibleToolbar,
   toolbarHeight,
   stickyNotifications,
   notificationsHeight,
 }: VerticalLayoutInput): VerticalLayoutOutput {
   const toolbar = topOffset;
   let notifications = topOffset;
-  if (hasToolbar) {
+  if (hasVisibleToolbar) {
     notifications += toolbarHeight;
   }
   let header = notifications;

@@ -140,6 +140,29 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     expect(wrapper.find('[data-testid="second"]')!.findAppLayout()!.findBreadcrumbs()).toBeFalsy();
   });
 
+  test.skip('when multiple nested app layouts rendered, the top instance receives breadcrumbs', async () => {
+    await renderAsync(
+      <>
+        <AppLayout
+          data-testid="first"
+          content={<AppLayout data-testid="second" breadcrumbs={<BreadcrumbGroup items={defaultBreadcrumbs} />} />}
+        />
+      </>
+    );
+    expect(findAllBreadcrumbsInstances()).toHaveLength(1);
+    expect(
+      wrapper
+        .find('[data-testid="first"]')!
+        .findAppLayout()!
+        .findBreadcrumbs()!
+        .findBreadcrumbGroup()!
+        .findBreadcrumbLinks()
+    ).toHaveLength(2);
+    expect(
+      wrapper.find('[data-testid="second"]')!.findAppLayout()!.findBreadcrumbs()!.findBreadcrumbGroup()
+    ).toBeFalsy();
+  });
+
   test('updates when a single breadcrumbs instance changes', async () => {
     function DynamicBreadcrumb() {
       const [changed, setChanged] = useState(false);
