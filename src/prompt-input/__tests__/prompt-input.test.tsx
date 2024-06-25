@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { render } from '@testing-library/react';
+import { render, act } from '@testing-library/react';
 import '../../__a11y__/to-validate-a11y';
 
 import PromptInputWrapper from '../../../lib/components/test-utils/dom/prompt-input';
@@ -44,6 +44,57 @@ describe('action button', () => {
   test('disabled when in read-only state', () => {
     const { wrapper } = renderPromptInput({ value: '', actionButtonIconName: 'send', readOnly: true });
     expect(wrapper.findSubmitButton().getElement()).toHaveAttribute('disabled');
+  });
+});
+
+describe('events', () => {
+  test('fire a change event with correct parameters', () => {
+    const onChange = jest.fn();
+    const { wrapper } = renderPromptInput({
+      value: 'value',
+      onChange: event => onChange(event.detail),
+    });
+
+    wrapper.setTextareaValue('updated value');
+
+    expect(onChange).toHaveBeenCalledWith({ value: 'updated value' });
+  });
+
+  test('fire an action event with correct parameters', () => {
+    const onAction = jest.fn();
+    const { wrapper } = renderPromptInput({
+      value: 'value',
+      actionButtonIconName: 'send',
+      onAction: event => onAction(event.detail),
+    });
+
+    act(() => {
+      wrapper.findSubmitButton().click();
+    });
+
+    expect(onAction).toHaveBeenCalled();
+  });
+});
+
+describe('min and max rows', () => {
+  test('defaults to 1', () => {
+    const { wrapper } = renderPromptInput({ value: '' });
+    expect(wrapper.findNativeTextarea().getElement()).toHaveAttribute('rows', '1');
+  });
+
+  test('updates based on min row property', () => {
+    const { wrapper } = renderPromptInput({ value: '', minRows: 4 });
+    expect(wrapper.findNativeTextarea().getElement()).toHaveAttribute('rows', '4');
+  });
+
+  test('does not update based on max row property', () => {
+    const { wrapper } = renderPromptInput({ value: '', maxRows: 4 });
+    expect(wrapper.findNativeTextarea().getElement()).toHaveAttribute('rows', '1');
+  });
+
+  test('height updates based on max row property', () => {
+    const { wrapper } = renderPromptInput({ value: '', maxRows: 4 });
+    expect(wrapper.findNativeTextarea().getElement()).toHaveStyle('height: 4px');
   });
 });
 
