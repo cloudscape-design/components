@@ -127,6 +127,7 @@ export default function DescriptionPage() {
         <div style={{ float: isRightAligned ? 'right' : undefined, marginBottom: '100px' }}>
           <ButtonDropdown
             items={actionsItems}
+            ariaLabel="Instance actions"
             mainAction={{ text: 'Launch instance', disabled: true, disabledReason: 'disabled reason' }}
             variant="primary"
           />
@@ -134,6 +135,7 @@ export default function DescriptionPage() {
         <div style={{ float: isRightAligned ? 'right' : undefined, marginBottom: '100px' }}>
           <ButtonDropdown
             items={actionsItems}
+            ariaLabel="Instance actions"
             mainAction={{ text: 'Launch instance' }}
             variant="primary"
             disabled={true}
