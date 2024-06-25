@@ -16,7 +16,6 @@ export default function ButtonsScenario() {
         <Button disabled={true} disabledReason="disabled reason">
           Default
         </Button>
-        <Button iconName="settings" disabled={true} disabledReason="disabled reason" />
       </ScreenshotArea>
     </article>
   );
