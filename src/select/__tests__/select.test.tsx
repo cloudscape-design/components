@@ -582,9 +582,9 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
         });
         wrapper.openDropdown();
 
-        expect(
-          wrapper.findDropdown().findSelectableItem(1)!.findDisabledReasonDescription()!.getElement()
-        ).toHaveTextContent('disabled reason');
+        expect(wrapper.findDropdown().findSelectableItem(1)!.find('span[hidden]')!.getElement()).toHaveTextContent(
+          'disabled reason'
+        );
       });
 
       test('can not select disabled with reason option', () => {

@@ -10,8 +10,4 @@ export default class SelectableItemWrapper extends ComponentWrapper {
   findDisabledReason(): ElementWrapper | null {
     return this.find(`.${selectPartsStyles['disabled-reason-tooltip']}`);
   }
-
-  findDisabledReasonDescription(): ElementWrapper | null {
-    return this.find('span[hidden]');
-  }
 }
