@@ -19,7 +19,9 @@ export function AppLayoutToolbarImplementation({ appLayoutInternals }: AppLayout
   const {
     ariaLabels,
     breadcrumbs,
+    activeDrawer,
     drawers,
+    drawersFocusControl,
     setToolbarHeight,
     verticalOffsets,
     onNavigationToggle,
@@ -29,7 +31,13 @@ export function AppLayoutToolbarImplementation({ appLayoutInternals }: AppLayout
     navigationOpen,
     navigation,
     navigationFocusControl,
+    splitPanelControlId,
+    splitPanelPosition,
     splitPanelToggleConfig,
+    splitPanelFocusControl,
+    onSplitPanelToggle,
+    splitPanelOpen,
+    onActiveDrawerChange,
   } = appLayoutInternals;
   // TODO: expose configuration property
   const pinnedToolbar = false;
@@ -103,7 +111,25 @@ export function AppLayoutToolbarImplementation({ appLayoutInternals }: AppLayout
         )}
         {(drawers.length > 0 || splitPanelToggleConfig.displayed) && (
           <span className={clsx(styles['universal-toolbar-drawers'])}>
-            {<DrawerTriggers appLayoutInternals={appLayoutInternals} />}
+            <DrawerTriggers
+              ariaLabels={ariaLabels}
+              activeDrawerId={activeDrawer?.id ?? null}
+              drawers={drawers}
+              drawersFocusRef={drawersFocusControl.refs.toggle}
+              onActiveDrawerChange={onActiveDrawerChange}
+              splitPanelToggleProps={
+                splitPanelToggleConfig.displayed
+                  ? {
+                      ...splitPanelToggleConfig,
+                      controlId: splitPanelControlId,
+                      active: splitPanelOpen,
+                      position: splitPanelPosition,
+                    }
+                  : undefined
+              }
+              splitPanelFocusRef={splitPanelFocusControl.refs.toggle}
+              onSplitPanelToggle={onSplitPanelToggle}
+            />
           </span>
         )}
       </div>
