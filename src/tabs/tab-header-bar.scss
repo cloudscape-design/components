@@ -79,7 +79,7 @@ $label-horizontal-spacing: awsui.$space-xs;
 .tabs-tab-label {
   display: flex;
   align-items: center;
-  padding-inline: $label-horizontal-spacing;
+  padding-inline: awsui.$space-scaled-s;
   padding-block: awsui.$space-scaled-2x-xxs;
   text-align: start;
   position: relative;
