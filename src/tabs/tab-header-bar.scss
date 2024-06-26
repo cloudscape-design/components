@@ -73,7 +73,7 @@ $label-horizontal-spacing: awsui.$space-xs;
 
   flex-shrink: 0;
   display: flex;
-  max-inline-size: calc(90% - #{$label-horizontal-spacing});
+  max-inline-size: calc(90% - awsui.$space-l);
 }
 
 .tabs-tab-label {
