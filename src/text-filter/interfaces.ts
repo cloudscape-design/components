@@ -63,5 +63,10 @@ export namespace TextFilterProps {
      * Sets focus on the underlying input control.
      */
     focus(): void;
+
+    /**
+     * TODO: Reannounce the `countText`. Call this function if a filtering...
+     */
+    reannounceCountText(): void;
   }
 }

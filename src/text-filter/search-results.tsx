@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React from 'react';
+import React, { useImperativeHandle, useState } from 'react';
 import styles from './styles.css.js';
 import LiveRegion from '../internal/components/live-region';
 
@@ -13,12 +13,33 @@ interface SearchResultsProps {
   children: string;
 }
 
-export function SearchResults({ id, children }: SearchResultsProps) {
-  return (
-    <span className={styles.results}>
-      <LiveRegion delay={LIVE_REGION_DELAY} visible={true}>
-        <span id={id}>{children}</span>
-      </LiveRegion>
-    </span>
-  );
+export namespace SearchResultsProps {
+  export interface Ref {
+    reannounceCountText(): void;
+  }
 }
+
+export const SearchResults = React.forwardRef(
+  ({ id, children }: SearchResultsProps, ref?: React.Ref<SearchResultsProps.Ref>) => {
+    const [reannounceToggle, setReannounceToggle] = useState(false);
+
+    useImperativeHandle(
+      ref,
+      () => ({
+        reannounceCountText: () => {
+          setReannounceToggle(prevCheck => !prevCheck);
+        },
+      }),
+      []
+    );
+
+    return (
+      <>
+        <span className={styles.results}>{children}</span>
+        <LiveRegion delay={LIVE_REGION_DELAY} visible={false}>
+          <span id={id}>{`${children}${reannounceToggle ? '.' : ''}`}</span>
+        </LiveRegion>
+      </>
+    );
+  }
+);

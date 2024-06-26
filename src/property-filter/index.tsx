@@ -36,7 +36,7 @@ import { matchTokenValue } from './utils';
 import { PropertyFilterOperator } from '@cloudscape-design/collection-hooks';
 import { useInternalI18n } from '../i18n/context';
 import TokenList from '../internal/components/token-list';
-import { SearchResults } from '../text-filter/search-results';
+import { SearchResults, SearchResultsProps } from '../text-filter/search-results';
 import { joinStrings } from '../internal/utils/strings';
 
 export { PropertyFilterProps };
@@ -112,6 +112,7 @@ const PropertyFilter = React.forwardRef(
     const [removedTokenIndex, setRemovedTokenIndex] = useState<null | number>(null);
 
     const inputRef = useRef<AutosuggestInputRef>(null);
+    const searchResultsRef = useRef<SearchResultsProps.Ref>(null);
     const baseProps = getBaseProps(rest);
 
     const i18n = useInternalI18n('property-filter');
@@ -166,7 +167,16 @@ const PropertyFilter = React.forwardRef(
       ),
     };
 
-    useImperativeHandle(ref, () => ({ focus: () => inputRef.current?.focus() }), []);
+    useImperativeHandle(
+      ref,
+      () => ({
+        focus: () => inputRef.current?.focus(),
+        reannounceCountText: () => {
+          searchResultsRef.current?.reannounceCountText();
+        },
+      }),
+      []
+    );
     const showResults = !!query.tokens?.length && !disabled && !!countText;
     const { addToken, removeToken, setToken, setOperation, removeAllTokens } = getQueryActions(
       query,
@@ -406,7 +416,9 @@ const PropertyFilter = React.forwardRef(
           />
           {showResults ? (
             <div className={styles.results}>
-              <SearchResults id={searchResultsId}>{countText}</SearchResults>
+              <SearchResults id={searchResultsId} ref={searchResultsRef}>
+                {countText}
+              </SearchResults>
             </div>
           ) : null}
         </div>
