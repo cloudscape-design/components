@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
-import { render } from '@testing-library/react';
+import React, { createRef } from 'react';
+import { act, render, waitFor } from '@testing-library/react';
 
 import '../../__a11y__/to-validate-a11y';
 import FormField from '../../../lib/components/form-field';
@@ -136,6 +136,25 @@ describe('countText', () => {
 
     expect(document.getElementById(ariaDescribedby[0])).toHaveTextContent('10 matches');
     expect(ariaDescribedby[1]).toBe('test-description');
+  });
+
+  test('re-announces the same count text when calling reannounceCountText', async () => {
+    jest.useFakeTimers();
+    const ref = createRef<TextFilterProps.Ref>();
+    renderTextFilter(<TextFilter ref={ref} filteringText="test" countText="10 matches" />);
+
+    const politeRegionSelector = '[aria-live=polite]';
+    await waitFor(() => expect(document.querySelector(politeRegionSelector)));
+    act(() => void jest.runAllTimers());
+    act(() => void jest.runAllTimers());
+    const liveRegionText = document.querySelector(politeRegionSelector)!;
+    expect(liveRegionText.textContent).toBe('10 matches');
+
+    ref.current!.reannounceCountText();
+    act(() => void jest.runAllTimers());
+    // Expected suffixed dot which is attached when re-announcing the same count text.
+    expect(liveRegionText.textContent).toBe('10 matches.');
+    jest.clearAllTimers();
   });
 });
 

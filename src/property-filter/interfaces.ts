@@ -41,7 +41,7 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
   /**
    * Accepts a human-readable, localized string that indicates the number of results. For example, "1 match" or "165 matches."
    * If the total number of results is unknown, also include an indication that there may be more results than
-   * the number listed. For example, "25+ matches."
+   * the number listed. For example, "25+ matches.". When the count text changes, it will be announced to assistive technologies.
    *
    * The count text is only displayed when `query.tokens` isn't empty.
    */
@@ -332,6 +332,14 @@ export namespace PropertyFilterProps {
      * Sets focus on the underlying input control.
      */
     focus(): void;
+
+    /**
+     * Force announcement of `countText` to assistive technologies, even if unchanged.
+     *
+     * This is useful to ensure that assistive technologies users are informed of filter updates,
+     * even when the `countText` doesn't change.
+     */
+    reannounceCountText(): void;
   }
 }
 
