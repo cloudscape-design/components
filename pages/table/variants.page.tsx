@@ -53,7 +53,18 @@ export default function () {
             </SpaceBetween>
           </ExpandableSection>
           <div>
-            <Container disableContentPaddings={true} header={<Header>Container with borderless table</Header>}>
+            <Container
+              disableContentPaddings={true}
+              header={<Header>Container (without paddings) with borderless table</Header>}
+            >
+              <BorderlessTable />
+            </Container>
+          </div>
+          <div>
+            <Container
+              disableContentPaddings={false}
+              header={<Header>Container (with paddings) with borderless table</Header>}
+            >
               <BorderlessTable />
             </Container>
           </div>
