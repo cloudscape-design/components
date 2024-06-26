@@ -10,6 +10,7 @@ import { ToolbarSlot } from '../skeleton/slot-wrappers';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { AppLayoutInternals } from '../interfaces';
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
+import { InternalBreadcrumbGroup } from '../../../breadcrumb-group/internal';
 
 interface AppLayoutToolbarImplementationProps {
   appLayoutInternals: AppLayoutInternals;
@@ -19,6 +20,7 @@ export function AppLayoutToolbarImplementation({ appLayoutInternals }: AppLayout
   const {
     ariaLabels,
     breadcrumbs,
+    discoveredBreadcrumbs,
     activeDrawer,
     drawers,
     drawersFocusControl,
@@ -106,8 +108,11 @@ export function AppLayoutToolbarImplementation({ appLayoutInternals }: AppLayout
             />
           </nav>
         )}
-        {breadcrumbs && (
-          <div className={clsx(styles['universal-toolbar-breadcrumbs'], testutilStyles.breadcrumbs)}>{breadcrumbs}</div>
+        {(breadcrumbs || discoveredBreadcrumbs) && (
+          <div className={clsx(styles['universal-toolbar-breadcrumbs'], testutilStyles.breadcrumbs)}>
+            {breadcrumbs}
+            {discoveredBreadcrumbs && <InternalBreadcrumbGroup {...discoveredBreadcrumbs} />}
+          </div>
         )}
         {(drawers.length > 0 || splitPanelToggleConfig.displayed) && (
           <span className={clsx(styles['universal-toolbar-drawers'])}>
