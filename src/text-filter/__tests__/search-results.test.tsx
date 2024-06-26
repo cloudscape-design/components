@@ -27,9 +27,7 @@ describe('SearchResults Component', () => {
         123 results found
       </SearchResults>
     );
-    act(() => {
-      jest.runAllTimers();
-    });
+    act(() => void jest.runAllTimers());
 
     const visibleResultText = container.querySelector(`.${styles.results}`)!;
     const liveRegionText = container.querySelector(`[aria-live="polite"]`)!;
@@ -46,9 +44,7 @@ describe('SearchResults Component', () => {
     const liveRegionText = container.querySelector(`[aria-live="polite"]`)!;
 
     // Initial state
-    act(() => {
-      jest.runAllTimers();
-    });
+    act(() => void jest.runAllTimers());
     expect(liveRegionText.textContent).toBe('123 results found');
 
     // Trigger the re-announcement which suffixes the dot.
@@ -75,9 +71,7 @@ describe('SearchResults Component', () => {
     const liveRegionText = container.querySelector(`[aria-live="polite"]`)!;
 
     // Initial state
-    act(() => {
-      jest.runAllTimers();
-    });
+    act(() => void jest.runAllTimers());
     expect(liveRegionText.textContent).toBe('123 results found');
 
     // Trigger multiple re-announce which suffixes the dot.
@@ -123,16 +117,12 @@ describe('SearchResults Component', () => {
 
   test('live announce initial countText and changed count text', () => {
     const { container, rerender } = render(<SearchResults id="search-results-id">18 matches</SearchResults>);
-    act(() => {
-      jest.runAllTimers();
-    });
+    act(() => void jest.runAllTimers());
     const liveRegionText = container.querySelector(`[aria-live="polite"]`)!;
     expect(liveRegionText.textContent).toBe('18 matches');
 
     rerender(<SearchResults id="search-results-id">9999 matches</SearchResults>);
-    act(() => {
-      jest.runAllTimers();
-    });
+    act(() => void jest.runAllTimers());
     expect(liveRegionText.textContent).toBe('9999 matches');
   });
 
@@ -142,9 +132,7 @@ describe('SearchResults Component', () => {
         18 matches
       </SearchResults>
     );
-    act(() => {
-      jest.runAllTimers();
-    });
+    act(() => void jest.runAllTimers());
     const liveRegionText = container.querySelector(`[aria-live="polite"]`)!;
     expect(liveRegionText.textContent).toBe('18 matches');
     act(() => {
@@ -157,9 +145,7 @@ describe('SearchResults Component', () => {
         9999 matches
       </SearchResults>
     );
-    act(() => {
-      jest.runAllTimers();
-    });
+    act(() => void jest.runAllTimers());
     expect(liveRegionText.textContent).toBe('9999 matches');
     act(() => {
       ref.current!.renderCountTextAriaLive();
