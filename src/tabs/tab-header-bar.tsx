@@ -395,7 +395,7 @@ export function TabHeaderBar({
     };
 
     const handleDismiss: ButtonProps['onClick'] = event => {
-      if (!containerObjectRef.current) {
+      if (!containerObjectRef.current || !onDismiss) {
         return;
       }
       const tabElements = getFocusablesFrom(containerObjectRef.current).filter(el =>
@@ -406,15 +406,14 @@ export function TabHeaderBar({
       let nextActive: HTMLElement | undefined;
       if (previousActiveTabId && previousActiveTabId !== tab.id) {
         nextActive = tabElements.find(el => el.dataset.testid === previousActiveTabId);
-      }
-      if (!nextActive) {
+      } else {
         nextActive = tabElements[Math.min(tabElements.length - 1, activeTabIndex)];
       }
       if (nextActive && nextActive.dataset.testid) {
         onChange({ activeTabId: nextActive.dataset.testid });
         nextActive.focus();
       }
-      onDismiss?.(event);
+      onDismiss(event);
     };
 
     const TabItem = hasActionOrDismissible ? 'div' : 'li';

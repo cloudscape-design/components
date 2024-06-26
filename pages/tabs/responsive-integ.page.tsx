@@ -60,6 +60,7 @@ export default function TabsDemoPage() {
       ),
       dismissible: true,
       dismissLabel: 'Dismiss sixth tab',
+      onDismiss: () => console.log('I have been clicked!'),
     },
   ];
 

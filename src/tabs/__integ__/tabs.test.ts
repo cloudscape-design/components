@@ -348,7 +348,7 @@ test(
   '(Keyboard) verifies focus moves from dismissible tab to next tab after dismiss fires',
   setupTest(async page => {
     await page.focusTabHeader();
-    await page.navigateTabList(4);
+    await page.navigateTabList(7);
     await page.keys(['Enter']);
     await expect(page.isFocused(wrapper.findTabLinkByIndex(4).toSelector())).resolves.toBe(true);
   })
@@ -357,7 +357,7 @@ test(
 test(
   '(Mouse) verifies focus moves from dismissible tab to next tab after dismiss fires',
   setupTest(async page => {
-    await page.click(wrapper.findTabLinkByIndex(3).toSelector());
+    await page.click(wrapper.findTabLinkByIndex(6).toSelector());
     await page.click(wrapper.findActiveTabDismissibleButton().getElement());
     await expect(page.isFocused(wrapper.findTabLinkByIndex(4).toSelector())).resolves.toBe(true);
   })
@@ -366,7 +366,7 @@ test(
 test(
   'Verifies focus remains on first active tab when dismiss fires',
   setupTest(async page => {
-    await page.click(wrapper.findDismissibleButtonByTabIndex(3).toSelector());
+    await page.click(wrapper.findDismissibleButtonByTabIndex(6).toSelector());
     await expect(page.isFocused(wrapper.findTabLinkByIndex(1).toSelector())).resolves.toBe(true);
   })
 );
@@ -422,5 +422,26 @@ test(
     await expect(currentTabDismissible).not.toBe(originalTabDismissible);
     await expect(page.isDisplayed(currentTabAction.toSelector())).resolves.toBe(true);
     await expect(page.isDisplayed(currentTabDismissible.toSelector())).resolves.toBe(true);
+  })
+);
+
+test(
+  '(Keyboard) verifies focus does NOT move on a static dismissible tab',
+  setupTest(async page => {
+    await page.focusTabHeader();
+    await page.navigateTabList(3);
+    await page.keys(['Enter']);
+    await page.navigateTabList(-1);
+    await expect(page.isFocused(wrapper.findTabLinkByIndex(3).toSelector())).resolves.toBe(true);
+  })
+);
+
+test(
+  '(Mouse) verifies focus does NOT move on a static dismissible tab',
+  setupTest(async page => {
+    await page.click(wrapper.findTabLinkByIndex(3).toSelector());
+    await page.click(wrapper.findActiveTabDismissibleButton().getElement());
+    await page.navigateTabList(-1);
+    await expect(page.isFocused(wrapper.findTabLinkByIndex(3).toSelector())).resolves.toBe(true);
   })
 );
