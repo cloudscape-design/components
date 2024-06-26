@@ -11,6 +11,10 @@
 $grid-columns: 12;
 $grid-gutter-width: awsui.$space-grid-gutter;
 
+dl.grid {
+  @include styles.styles-reset-dl;
+}
+
 .grid {
   @include styles.styles-reset;
   display: flex;
