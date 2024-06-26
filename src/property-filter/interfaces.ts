@@ -331,6 +331,12 @@ export namespace PropertyFilterProps {
      * Sets focus on the underlying input control.
      */
     focus(): void;
+
+    /**
+     * Use this function to re-announce the unchanged `countText` to screen reader users.
+     * Announcing the countText is handled automatically when it's initially added or it changes.
+     */
+    renderCountTextAriaLive(): void;
   }
 }
 
