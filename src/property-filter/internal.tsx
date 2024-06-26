@@ -388,7 +388,9 @@ const PropertyFilterInternal = React.forwardRef(
             />
             {showResults ? (
               <div className={styles.results}>
-                <SearchResults id={searchResultsId} ref={searchResultsRef}>{countText}</SearchResults>
+                <SearchResults id={searchResultsId} ref={searchResultsRef}>
+                  {countText}
+                </SearchResults>
               </div>
             ) : null}
           </div>

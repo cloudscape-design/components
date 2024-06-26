@@ -6,6 +6,7 @@ import { act, render } from '@testing-library/react';
 
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
+import { TextFilterProps } from '../../../lib/components';
 import PropertyFilter from '../../../lib/components/property-filter';
 import {
   FilteringOption,
@@ -14,6 +15,7 @@ import {
   Ref,
 } from '../../../lib/components/property-filter/interfaces';
 import createWrapper from '../../../lib/components/test-utils/dom';
+import { mockInnerText } from '../../internal/analytics/__tests__/mocks';
 import { createDefaultProps } from './common';
 
 const states: Record<string, string> = {
@@ -389,6 +391,8 @@ describe('filtering input', () => {
 });
 
 describe('count text', () => {
+  mockInnerText(); // Used to test the live announcement (<LiveRegion />)
+
   test('is not displayed when count text is empty', () => {
     const { propertyFilterWrapper: wrapper } = renderComponent({
       countText: '',
@@ -417,6 +421,25 @@ describe('count text', () => {
       query: { operation: 'or', tokens: [], tokenGroups: [{ propertyKey: 'string', value: 'first', operator: ':' }] },
     });
     expect(wrapper.findResultsCount()!.getElement()).toHaveTextContent('5 matches');
+  });
+
+  test('re-announces count text when calling renderCountTextAriaLive', () => {
+    jest.useFakeTimers();
+    let ref: TextFilterProps.Ref;
+    const { propertyFilterWrapper: wrapper } = renderComponent({
+      countText: '5 matches',
+      query: { tokens: [{ propertyKey: 'string', value: 'first', operator: ':' }], operation: 'or' },
+      ref: value => (ref = value!),
+    });
+    act(() => void jest.runAllTimers());
+    const liveRegionText = wrapper.getElement().querySelector(`[aria-live="polite"]`)!;
+    expect(liveRegionText.textContent).toBe('5 matches');
+
+    ref!.renderCountTextAriaLive();
+    act(() => void jest.runAllTimers());
+    // Expected suffixed dot which is attached when re-announcing the same count text.
+    expect(liveRegionText.textContent).toBe('5 matches.');
+    jest.useRealTimers();
   });
 });
 

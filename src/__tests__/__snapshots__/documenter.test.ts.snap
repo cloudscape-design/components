@@ -12165,11 +12165,11 @@ exports[`Documenter definition for property-filter matches the snapshot: propert
       "parameters": [],
       "returnType": "void",
     },
-    Object {
+    {
       "description": "Use this function to re-announce the unchanged \`countText\` to screen reader users.
 Announcing the countText is handled automatically when it's initially added or it changes.",
       "name": "renderCountTextAriaLive",
-      "parameters": Array [],
+      "parameters": [],
       "returnType": "void",
     },
   ],
@@ -16102,11 +16102,11 @@ period of time. If you want a delayed handler to invoke a filtering API call, yo
       "parameters": [],
       "returnType": "void",
     },
-    Object {
+    {
       "description": "Use this function to re-announce the unchanged \`countText\` to screen reader users.
 Announcing the countText is handled automatically when it's initially added or it changes.",
       "name": "renderCountTextAriaLive",
-      "parameters": Array [],
+      "parameters": [],
       "returnType": "void",
     },
   ],
