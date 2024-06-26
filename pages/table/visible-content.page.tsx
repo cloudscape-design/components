@@ -94,7 +94,7 @@ export default function App() {
         visibleColumns={preferences.visibleContent}
         preferences={
           <CollectionPreferences
-            title="Preferences"
+            title="Preferences" // jowe
             confirmLabel="Confirm"
             cancelLabel="Cancel"
             onConfirm={({ detail }) => setPreferences(detail)}
