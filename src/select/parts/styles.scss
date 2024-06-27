@@ -151,4 +151,12 @@ $checkbox-size: awsui.$size-control;
   );
   background-position: bottom;
   z-index: 1;
+
+  &.inline-label-disabled {
+    background-image: linear-gradient(
+      to bottom,
+      transparent calc(100% - (styles.$control-border-width + 3px)),
+      awsui.$color-background-input-disabled 1px
+    );
+  }
 }

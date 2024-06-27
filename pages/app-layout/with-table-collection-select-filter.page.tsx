@@ -129,6 +129,7 @@ export default function () {
               </div>
               <div className={styles['select-filter']}>
                 <Select
+                  disabled={true}
                   data-testid="state-filter"
                   inlineLabelText="Filtrar secuencias de registros por nombre"
                   options={stateOptions}
