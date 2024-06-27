@@ -88,7 +88,7 @@ $label-horizontal-spacing: awsui.$space-xs;
 }
 
 .tabs-tab-no-actions > .tabs-tab-label {
-  padding-inline: awsui.$space-l;
+  padding-inline: calc(awsui.$space-l - 1px);
 }
 
 .tabs-tab-dismiss,
