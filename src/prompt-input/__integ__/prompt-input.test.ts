@@ -12,6 +12,7 @@ class PromptInputPage extends BasePageObject {
     return height;
   }
 }
+
 const setupTest = (testFn: (page: PromptInputPage) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new PromptInputPage(browser);

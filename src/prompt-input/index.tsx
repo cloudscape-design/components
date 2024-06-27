@@ -21,6 +21,8 @@ const PromptInput = React.forwardRef(
       value,
       actionButtonAriaLabel,
       actionButtonIconName,
+      actionButtonIconUrl,
+      actionButtonIconSvg,
       ariaLabel,
       autoComplete = true,
       autoFocus,
@@ -57,6 +59,10 @@ const PromptInput = React.forwardRef(
     const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
       if (event.key === 'Enter' && !event.shiftKey) {
         event.preventDefault();
+        if ('form' in event.target) {
+          (event.target.form as HTMLFormElement).requestSubmit();
+        }
+
         fireNonCancelableEvent(onAction, { value });
       }
       if (onKeyDown) {
@@ -136,6 +142,8 @@ const PromptInput = React.forwardRef(
       onFocus: onFocus && (() => fireNonCancelableEvent(onFocus)),
     };
 
+    const hasActionButton = actionButtonIconName || actionButtonIconSvg || actionButtonIconUrl;
+
     if (disableBrowserAutocorrect) {
       attributes.autoCorrect = 'off';
       attributes.autoCapitalize = 'off';
@@ -144,13 +152,15 @@ const PromptInput = React.forwardRef(
     return (
       <div {...baseProps} className={clsx(styles.root, baseProps.className)} ref={__internalRootRef}>
         <textarea ref={textareaRef} id={controlId} {...attributes} />
-        {actionButtonIconName && (
+        {hasActionButton && (
           <div className={styles.button}>
             <InternalButton
               className={styles['action-button']}
               ariaLabel={actionButtonAriaLabel}
               disabled={disabled || readOnly || disableActionButton}
               iconName={actionButtonIconName}
+              iconUrl={actionButtonIconUrl}
+              iconSvg={actionButtonIconSvg}
               onClick={() => fireNonCancelableEvent(onAction, { value })}
               variant="icon"
             />
