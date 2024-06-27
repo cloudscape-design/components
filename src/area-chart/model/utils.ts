@@ -169,17 +169,6 @@ export function findClosest<T>(sortedArray: readonly T[], target: number, getter
   return delta(sortedArray[lo]) < delta(sortedArray[hi]) ? sortedArray[lo] : sortedArray[hi];
 }
 
-// Returns given index if it is in range or the opposite range boundary otherwise.
-export function circleIndex(index: number, [from, to]: [number, number]): number {
-  if (index < from) {
-    return to;
-  }
-  if (index > to) {
-    return from;
-  }
-  return index;
-}
-
 // Compares all x-values between series to ensure they are consistent.
 export function isSeriesValid<T>(series: readonly AreaChartProps.Series<T>[]) {
   const sampleXValues = getXValues(series);

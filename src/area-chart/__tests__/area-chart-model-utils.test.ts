@@ -7,7 +7,6 @@ import {
   computeDomainY,
   computePlotPoints,
   findClosest,
-  circleIndex,
   isSeriesValid,
 } from '../../../lib/components/area-chart/model/utils';
 
@@ -241,18 +240,6 @@ describe('AreaChart findClosest', () => {
   it('finds closest in an desc sorted array', () => {
     const closest = findClosest([6, 5, 3.5, 3, 2, 1], 4, x => x);
     expect(closest).toBe(3.5);
-  });
-});
-
-describe('AreaChart circleIndex', () => {
-  it('returns same index if in range', () => {
-    expect(circleIndex(1, [1, 5])).toBe(1);
-    expect(circleIndex(5, [1, 5])).toBe(5);
-  });
-
-  it('returns opposite boundary if not in range', () => {
-    expect(circleIndex(0, [1, 5])).toBe(5);
-    expect(circleIndex(6, [1, 5])).toBe(1);
   });
 });
 

@@ -129,6 +129,10 @@ const defaultProps: Record<string, Record<string, any>> = {
     filteringProperties: [],
     onChange: () => {},
   },
+  'button-group': {
+    variant: 'icon',
+    items: [],
+  },
   'button-dropdown': {
     items: [],
   },

@@ -25,6 +25,7 @@ import {
 } from '../internal/context/single-tab-stop-navigation-context';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { getAllFocusables } from '../internal/components/focus-lock/utils';
+import { circleIndex } from '../internal/utils/circle-index';
 
 const tabSelector = '[role="tab"]';
 const activeTabSelector = '[role="tab"][aria-selected="true"]';
@@ -344,14 +345,4 @@ const TabTrigger = forwardRef(
 
 export function getTabElementId({ namespace, tabId }: { namespace: string; tabId: string }) {
   return namespace + '-' + tabId;
-}
-
-function circleIndex(index: number, [from, to]: [number, number]): number {
-  if (index < from) {
-    return to;
-  }
-  if (index > to) {
-    return from;
-  }
-  return index;
 }
