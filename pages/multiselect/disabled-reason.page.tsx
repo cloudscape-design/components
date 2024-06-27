@@ -24,7 +24,7 @@ const options: MultiselectProps.Options = [
   },
 ];
 
-export default function SelectPage() {
+export default function MultiselectPage() {
   return (
     <article>
       <ScreenshotArea>
