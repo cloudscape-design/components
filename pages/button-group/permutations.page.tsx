@@ -92,6 +92,8 @@ const permutations = createPermutations<ButtonGroupProps>([
               iconName: 'add-plus',
               text: 'Add',
               actionPopoverText: 'Added',
+              disabled: true,
+              disabledReason: 'No content to add',
             },
             {
               type: 'icon-button',
@@ -99,6 +101,7 @@ const permutations = createPermutations<ButtonGroupProps>([
               iconName: 'remove',
               text: 'Remove',
               actionPopoverText: 'Removed',
+              popoverFeedbackType: 'error',
             },
           ],
         },
@@ -116,6 +119,8 @@ const permutations = createPermutations<ButtonGroupProps>([
               id: 'paste',
               iconName: 'add-plus',
               text: 'Paste',
+              disabled: true,
+              disabledReason: 'No content to paste',
             },
             {
               text: 'Misc',

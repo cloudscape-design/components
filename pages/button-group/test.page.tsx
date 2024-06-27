@@ -43,6 +43,8 @@ const items: ButtonGroupProps.Item[] = [
         iconName: 'add-plus',
         text: 'Add',
         actionPopoverText: 'Added',
+        disabled: true,
+        disabledReason: 'No content to add',
       },
       {
         type: 'icon-button',
@@ -50,6 +52,7 @@ const items: ButtonGroupProps.Item[] = [
         iconName: 'remove',
         text: 'Remove',
         actionPopoverText: 'Removed',
+        popoverFeedbackType: 'error',
       },
     ],
   },
@@ -67,6 +70,8 @@ const items: ButtonGroupProps.Item[] = [
         id: 'paste',
         iconName: 'add-plus',
         text: 'Paste',
+        disabled: true,
+        disabledReason: 'No content to paste',
       },
       {
         text: 'Misc',

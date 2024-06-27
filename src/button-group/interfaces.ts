@@ -75,7 +75,14 @@ export namespace ButtonGroupProps {
     type: 'icon-button';
     id: string;
     text: string;
+    // Instructs icon button to display its text inline and not as tooltip.
+    // When true, the text is shown adjacent to the button's icon and the button has no tooltip.
+    inlineText?: boolean;
     disabled?: boolean;
+    // Works pretty much the same as in button dropdown items.
+    // When the item is disabled it shows a tooltip with explanation.
+    // We expect this feature to be added to all buttons in the future.
+    disabledReason?: string;
     loading?: boolean;
     loadingText?: string;
     iconName?: IconProps.Name;
@@ -83,6 +90,9 @@ export namespace ButtonGroupProps {
     iconUrl?: string;
     iconSvg?: React.ReactNode;
     actionPopoverText?: string;
+    // Defaults to "success"
+    // The status indicator type in the popover feedback
+    popoverFeedbackType?: 'success' | 'error';
   }
 
   export interface MenuDropdown {
@@ -90,6 +100,7 @@ export namespace ButtonGroupProps {
     id: string;
     text: string;
     disabled?: boolean;
+    disabledReason?: string;
     loading?: boolean;
     loadingText?: string;
     items: ReadonlyArray<ButtonDropdownProps.ItemOrGroup>;

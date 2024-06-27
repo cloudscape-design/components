@@ -131,9 +131,11 @@ const ItemElement = forwardRef(
               trackKey={item.id}
               value={
                 (isActionPopover && actionPopoverText && (
-                  <StatusIndicator type="success">{item.actionPopoverText}</StatusIndicator>
+                  <StatusIndicator type={item.popoverFeedbackType ?? 'success'}>
+                    {item.actionPopoverText}
+                  </StatusIndicator>
                 )) ||
-                item.text
+                (item.disabled && item.disabledReason ? item.disabledReason : item.text)
               }
             />
             <LiveRegion key={clickIdx}>{isActionPopover && actionPopoverText}</LiveRegion>
