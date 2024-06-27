@@ -88,7 +88,7 @@ $label-horizontal-spacing: awsui.$space-xs;
 }
 
 .tabs-tab-no-actions > .tabs-tab-label {
-  padding-inline: calc(awsui.$space-l);
+  padding-inline: calc(awsui.$space-l - 1px);
 }
 
 .tabs-tab-dismiss,
@@ -222,7 +222,7 @@ $label-horizontal-spacing: awsui.$space-xs;
 // Remediate focus shadow
 .tabs-tab:first-child {
   margin-inline-start: 1px;
-  & > .tabs-tab-header-container {
+  & > .tabs-tab-header-container:not(.tabs-tab-no-actions) {
     padding-inline-start: calc(#{$label-horizontal-spacing} - 1px);
   }
 }
@@ -230,7 +230,7 @@ $label-horizontal-spacing: awsui.$space-xs;
 // Remediate focus shadow
 .tabs-tab:last-child {
   margin-inline-end: 1px;
-  & > .tabs-tab-header-container {
+  & > .tabs-tab-header-container:not(.tabs-tab-no-actions) {
     padding-inline-end: calc(#{$label-horizontal-spacing} - 1px);
   }
 }
