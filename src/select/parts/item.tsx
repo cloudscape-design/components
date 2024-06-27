@@ -53,10 +53,7 @@ const Item = (
   const isChild = option.type === 'child';
   const wrappedOption: OptionDefinition = option.option;
   const disabled = option.disabled || wrappedOption.disabled;
-  const disabledReason =
-    disabled && (option.disabledReason || wrappedOption.disabledReason)
-      ? option.disabledReason || wrappedOption.disabledReason
-      : '';
+  const disabledReason = disabled && wrappedOption.disabledReason ? wrappedOption.disabledReason : '';
   const isDisabledWithReason = !!disabledReason;
   const internalRef = useRef<HTMLDivElement>(null);
 

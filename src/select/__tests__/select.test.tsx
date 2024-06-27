@@ -496,7 +496,7 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
 
       test('has no aria-describedby without disabledReason', () => {
         const { wrapper } = renderSelect({
-          options: [{ label: 'First', value: '1', disabled: true, disabledReason: 'disabled reason' }],
+          options: [{ label: 'First', value: '1', disabled: true }],
         });
         wrapper.openDropdown();
 
