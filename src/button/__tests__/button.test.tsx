@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { act, render, fireEvent } from '@testing-library/react';
 import Button, { ButtonProps } from '../../../lib/components/button';
 import InternalButton from '../../../lib/components/button/internal';
@@ -93,8 +92,6 @@ describe('Button Component', () => {
   });
 
   describe('disabled with reason', () => {
-    jest.spyOn(ReactDOM, 'createPortal').mockImplementation((element: any) => element);
-
     test('renders button as normal when disabledReason is set and button is not disabled', () => {
       const wrapper = renderButton({ disabled: false, disabledReason: 'reason' });
 

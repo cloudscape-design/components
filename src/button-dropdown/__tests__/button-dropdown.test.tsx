@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 
 import ButtonDropdown, { ButtonDropdownProps } from '../../../lib/components/button-dropdown';
@@ -103,7 +102,6 @@ const items: ButtonDropdownProps.Items = [
         });
 
         describe('disabled with reason', () => {
-          jest.spyOn(ReactDOM, 'createPortal').mockImplementation((element: any) => element);
           // disabledReason behavior is already tested for button component, which acts as the trigger for this component
           // here we need to check the basic logic without diving deep into details
           test('open tooltip on mouseenter', () => {
@@ -260,7 +258,6 @@ describe('with main action', () => {
   });
 
   describe('disabled with reason', () => {
-    jest.spyOn(ReactDOM, 'createPortal').mockImplementation((element: any) => element);
     // disabledReason behavior is already tested for button component, which acts as the trigger for this component
     // here we need to check the basic logic without diving deep into details
     test('open tooltip on mouseenter', () => {
