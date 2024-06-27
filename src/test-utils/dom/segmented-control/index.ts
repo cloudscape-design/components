@@ -1,11 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
+import { ComponentWrapper, ElementWrapper, createWrapper } from '@cloudscape-design/test-utils-core/dom';
 import styles from '../../../segmented-control/styles.selectors.js';
 
 export class SegmentWrapper extends ComponentWrapper {
   findDisabledReason(): ElementWrapper | null {
-    return this.find(`.${styles['disabled-reason-tooltip']}`);
+    return createWrapper().find(`.${styles['disabled-reason-tooltip']}`);
   }
 }
 

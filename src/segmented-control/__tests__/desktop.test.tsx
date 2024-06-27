@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { fireEvent } from '@testing-library/react';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 import { renderSegmentedControl } from './utils';
@@ -119,14 +118,6 @@ describe('Segment disabled property', () => {
   });
 
   describe('Disabled with reason', () => {
-    beforeEach(() => {
-      jest.spyOn(ReactDOM, 'createPortal').mockImplementation((element: any) => element);
-    });
-
-    afterEach(() => {
-      jest.restoreAllMocks();
-    });
-
     test('has no disabled property when disabled with reason', () => {
       const { segmentedControlWrapper } = renderSegmentedControl(
         <SegmentedControl
