@@ -454,17 +454,7 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
     describe('Disabled item with reason', () => {
       test('has no tooltip open by default', () => {
         const { wrapper } = renderSelect({
-          options: defaultOptions.map((item, index) => {
-            if (index === 0) {
-              return {
-                ...item,
-                disabled: true,
-                disabledReason: 'disabled reason',
-              };
-            }
-
-            return item;
-          }),
+          options: [{ label: 'First', value: '1', disabled: true, disabledReason: 'disabled reason' }],
         });
         wrapper.openDropdown();
 
@@ -473,16 +463,7 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
 
       test('has no tooltip without disabledReason', () => {
         const { wrapper } = renderSelect({
-          options: defaultOptions.map((item, index) => {
-            if (index === 0) {
-              return {
-                ...item,
-                disabled: true,
-              };
-            }
-
-            return item;
-          }),
+          options: [{ label: 'First', value: '1', disabled: true }],
         });
         wrapper.openDropdown();
         wrapper.findTrigger()!.keydown(KeyCode.down);
@@ -492,17 +473,7 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
 
       test('open tooltip when the item is highlighted', () => {
         const { wrapper } = renderSelect({
-          options: defaultOptions.map((item, index) => {
-            if (index === 0) {
-              return {
-                ...item,
-                disabled: true,
-                disabledReason: 'disabled reason',
-              };
-            }
-
-            return item;
-          }),
+          options: [{ label: 'First', value: '1', disabled: true, disabledReason: 'disabled reason' }],
         });
         wrapper.openDropdown();
         wrapper.findTrigger().keydown(KeyCode.down);
@@ -525,16 +496,7 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
 
       test('has no aria-describedby without disabledReason', () => {
         const { wrapper } = renderSelect({
-          options: defaultOptions.map((item, index) => {
-            if (index === 0) {
-              return {
-                ...item,
-                disabled: true,
-              };
-            }
-
-            return item;
-          }),
+          options: [{ label: 'First', value: '1', disabled: true, disabledReason: 'disabled reason' }],
         });
         wrapper.openDropdown();
 
@@ -545,17 +507,7 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
 
       test('has aria-describedby with disabledReason', () => {
         const { wrapper } = renderSelect({
-          options: defaultOptions.map((item, index) => {
-            if (index === 0) {
-              return {
-                ...item,
-                disabled: true,
-                disabledReason: 'disabled reason',
-              };
-            }
-
-            return item;
-          }),
+          options: [{ label: 'First', value: '1', disabled: true, disabledReason: 'disabled reason' }],
         });
         wrapper.openDropdown();
 
@@ -566,17 +518,7 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
 
       test('has hidden element (linked to aria-describedby) with disabledReason', () => {
         const { wrapper } = renderSelect({
-          options: defaultOptions.map((item, index) => {
-            if (index === 0) {
-              return {
-                ...item,
-                disabled: true,
-                disabledReason: 'disabled reason',
-              };
-            }
-
-            return item;
-          }),
+          options: [{ label: 'First', value: '1', disabled: true, disabledReason: 'disabled reason' }],
         });
         wrapper.openDropdown();
 
@@ -588,17 +530,7 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
       test('can not select disabled with reason option', () => {
         const onChange = jest.fn();
         const { wrapper } = renderSelect({
-          options: defaultOptions.map((item, index) => {
-            if (index === 0) {
-              return {
-                ...item,
-                disabled: true,
-                disabledReason: 'disabled reason',
-              };
-            }
-
-            return item;
-          }),
+          options: [{ label: 'First', value: '1', disabled: true, disabledReason: 'disabled reason' }],
         });
         wrapper.openDropdown();
         wrapper.selectOptionByValue('1', { expandToViewport });
