@@ -1,14 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { forwardRef, useRef, useState } from 'react';
+import React, { forwardRef, useEffect, useRef, useState } from 'react';
 import { ButtonGroupProps } from './interfaces.js';
 import { ButtonProps } from '../button/interfaces.js';
 import { ClickDetail, fireCancelableEvent } from '../internal/events/index.js';
 import IconButtonItem from './icon-button-item.js';
 import MenuDropdownItem from './menu-dropdown-item.js';
-import Tooltip from './tooltip/index.js';
 import LiveRegion from '../internal/components/live-region/index.js';
 import StatusIndicator from '../status-indicator/internal.js';
+import Tooltip from '../internal/components/tooltip/index.js';
 import styles from './styles.css.js';
 
 const ItemElement = forwardRef(
@@ -26,7 +26,7 @@ const ItemElement = forwardRef(
   ) => {
     const buttonRef = useRef<HTMLDivElement>(null);
     const [clickIdx, setClickIdx] = useState(0);
-    const [popoverOpen, setPopoverOpen] = useState(false);
+    const [showTooltip, setShowTooltip] = useState(false);
     const [isActionPopover, setIsActionPopover] = useState(false);
 
     const onClickHandler = (event: CustomEvent<ClickDetail>) => {
@@ -34,41 +34,84 @@ const ItemElement = forwardRef(
 
       if ('actionPopoverText' in item && item.actionPopoverText) {
         setIsActionPopover(true);
-        setPopoverOpen(true);
+        setShowTooltip(true);
       } else {
-        setPopoverOpen(false);
+        setShowTooltip(false);
       }
 
       fireCancelableEvent(onItemClick, { id: item.id }, event);
     };
 
-    const showTooltip = () => {
-      if (!popoverOpen) {
+    const onShowTooltip = () => {
+      if (!showTooltip) {
         setIsActionPopover(false);
-        setPopoverOpen(true);
+        setShowTooltip(true);
       }
     };
 
-    const hideTooltip = () => {
+    const onHideTooltip = () => {
       if (!isActionPopover) {
-        setPopoverOpen(false);
+        setShowTooltip(false);
       }
     };
 
-    const onPopoverClose = () => {
-      setPopoverOpen(false);
-      setIsActionPopover(false);
-    };
+    useEffect(() => {
+      if (!showTooltip) {
+        return;
+      }
+
+      const close = () => {
+        setShowTooltip(false);
+        setIsActionPopover(false);
+      };
+
+      const currentRef = buttonRef.current;
+      const handlePointerDownEvent = (event: PointerEvent) => {
+        if (event.target && currentRef && currentRef.contains(event.target as HTMLElement)) {
+          return;
+        }
+
+        if (close) {
+          close();
+        }
+      };
+
+      const handleKeyDownEvent = (event: KeyboardEvent) => {
+        if (event.key === 'Escape' && close) {
+          close();
+        }
+      };
+
+      const handleTooltipToogleEvent = (event: CustomEvent) => {
+        if (event.detail.trackKey !== item.id && event.detail.open && close) {
+          close();
+        }
+      };
+
+      window.addEventListener('pointerdown', handlePointerDownEvent);
+      window.addEventListener('keydown', handleKeyDownEvent);
+      window.addEventListener('tooltip:toggle', handleTooltipToogleEvent as any);
+
+      return () => {
+        window.removeEventListener('pointerdown', handlePointerDownEvent);
+        window.removeEventListener('keydown', handleKeyDownEvent);
+        window.removeEventListener('tooltip:toggle', handleTooltipToogleEvent as any);
+      };
+    }, [item.id, showTooltip]);
+
+    useEffect(() => {
+      window.dispatchEvent(new CustomEvent('tooltip:toggle', { detail: { open: showTooltip, trackKey: item.id } }));
+    }, [showTooltip, item.id]);
 
     const actionPopoverText = 'actionPopoverText' in item && item.actionPopoverText;
 
     return (
       <div
         ref={buttonRef}
-        onPointerEnter={showTooltip}
-        onPointerLeave={hideTooltip}
-        onFocus={showTooltip}
-        onBlur={hideTooltip}
+        onPointerEnter={onShowTooltip}
+        onPointerLeave={onHideTooltip}
+        onFocus={onShowTooltip}
+        onBlur={onHideTooltip}
         className={styles['item-wrapper']}
       >
         {item.type === 'icon-button' ? (
@@ -81,19 +124,21 @@ const ItemElement = forwardRef(
             dropdownExpandToViewport={dropdownExpandToViewport}
           />
         )}
-        <Tooltip
-          trackRef={buttonRef}
-          trackKey={item.id}
-          open={popoverOpen}
-          close={onPopoverClose}
-          value={
-            (isActionPopover && actionPopoverText && (
-              <StatusIndicator type="success">{item.actionPopoverText}</StatusIndicator>
-            )) ||
-            item.text
-          }
-        />
-        {popoverOpen && <LiveRegion key={clickIdx}>{isActionPopover && actionPopoverText}</LiveRegion>}
+        {showTooltip && (
+          <>
+            <Tooltip
+              trackRef={buttonRef}
+              trackKey={item.id}
+              value={
+                (isActionPopover && actionPopoverText && (
+                  <StatusIndicator type="success">{item.actionPopoverText}</StatusIndicator>
+                )) ||
+                item.text
+              }
+            />
+            <LiveRegion key={clickIdx}>{isActionPopover && actionPopoverText}</LiveRegion>
+          </>
+        )}
       </div>
     );
   }
