@@ -57,16 +57,17 @@ const PromptInput = React.forwardRef(
     useForwardFocus(ref, textareaRef);
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+      if (onKeyDown) {
+        fireKeyboardEvent(onKeyDown, event);
+      }
+
       if (event.key === 'Enter' && !event.shiftKey) {
-        event.preventDefault();
-        if ('form' in event.target) {
+        if ('form' in event.target && !event.isDefaultPrevented()) {
           (event.target.form as HTMLFormElement).requestSubmit();
         }
 
+        event.preventDefault();
         fireNonCancelableEvent(onAction, { value });
-      }
-      if (onKeyDown) {
-        fireKeyboardEvent(onKeyDown, event);
       }
     };
 
