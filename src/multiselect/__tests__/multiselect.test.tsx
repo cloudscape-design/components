@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import ReactDOM from 'react-dom';
 import { render } from '@testing-library/react';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 import createWrapper from '../../../lib/components/test-utils/dom';
@@ -682,13 +681,6 @@ describe('With inline tokens (private API)', () => {
 });
 
 describe('Disabled item with reason', () => {
-  beforeEach(() => {
-    jest.spyOn(ReactDOM, 'createPortal').mockImplementation((element: any) => element);
-  });
-  afterEach(() => {
-    jest.restoreAllMocks();
-  });
-
   test('has no tooltip open by default', () => {
     const { wrapper } = renderMultiselect(
       <Multiselect

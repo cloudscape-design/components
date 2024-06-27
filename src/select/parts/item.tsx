@@ -102,20 +102,20 @@ const Item = (
             <InternalIcon name="check" />
           </div>
         )}
+        {isDisabledWithReason && (
+          <>
+            {descriptionEl}
+            {highlighted && (
+              <Tooltip
+                className={styles['disabled-reason-tooltip']}
+                trackRef={internalRef}
+                value={disabledReason!}
+                position="right"
+              />
+            )}
+          </>
+        )}
       </div>
-      {isDisabledWithReason && (
-        <>
-          {descriptionEl}
-          {highlighted && (
-            <Tooltip
-              className={styles['disabled-reason-tooltip']}
-              trackRef={internalRef}
-              value={disabledReason!}
-              position="right"
-            />
-          )}
-        </>
-      )}
     </SelectableItem>
   );
 };

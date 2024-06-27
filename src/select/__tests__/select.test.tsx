@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import ReactDOM from 'react-dom';
 import { render, waitFor } from '@testing-library/react';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 import createWrapper from '../../../lib/components/test-utils/dom';
@@ -453,13 +452,6 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
     });
 
     describe('Disabled item with reason', () => {
-      beforeEach(() => {
-        jest.spyOn(ReactDOM, 'createPortal').mockImplementation((element: any) => element);
-      });
-      afterEach(() => {
-        jest.restoreAllMocks();
-      });
-
       test('has no tooltip open by default', () => {
         const { wrapper } = renderSelect({
           options: defaultOptions.map((item, index) => {
@@ -476,7 +468,7 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
         });
         wrapper.openDropdown();
 
-        expect(wrapper.findDropdown().findSelectableItem(1)!.findDisabledReason()).toBe(null);
+        expect(wrapper.findDropdown({ expandToViewport }).findSelectableItem(1)!.findDisabledReason()).toBe(null);
       });
 
       test('has no tooltip without disabledReason', () => {
@@ -495,7 +487,7 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
         wrapper.openDropdown();
         wrapper.findTrigger()!.keydown(KeyCode.down);
 
-        expect(wrapper.findDropdown().findSelectableItem(1)!.findDisabledReason()).toBe(null);
+        expect(wrapper.findDropdown({ expandToViewport }).findSelectableItem(1)!.findDisabledReason()).toBe(null);
       });
 
       test('open tooltip when the item is highlighted', () => {
@@ -515,9 +507,9 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
         wrapper.openDropdown();
         wrapper.findTrigger().keydown(KeyCode.down);
 
-        expect(wrapper.findDropdown().findSelectableItem(1)!.findDisabledReason()!.getElement()).toHaveTextContent(
-          'disabled reason'
-        );
+        expect(
+          wrapper.findDropdown({ expandToViewport }).findSelectableItem(1)!.findDisabledReason()!.getElement()
+        ).toHaveTextContent('disabled reason');
       });
 
       test('has no aria-describedby by default', () => {
@@ -526,7 +518,9 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
         });
         wrapper.openDropdown();
 
-        expect(wrapper.findDropdown().findSelectableItem(1)!.getElement()).not.toHaveAttribute('aria-describedby');
+        expect(wrapper.findDropdown({ expandToViewport }).findSelectableItem(1)!.getElement()).not.toHaveAttribute(
+          'aria-describedby'
+        );
       });
 
       test('has no aria-describedby without disabledReason', () => {
@@ -544,7 +538,9 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
         });
         wrapper.openDropdown();
 
-        expect(wrapper.findDropdown().findSelectableItem(1)!.getElement()).not.toHaveAttribute('aria-describedby');
+        expect(wrapper.findDropdown({ expandToViewport }).findSelectableItem(1)!.getElement()).not.toHaveAttribute(
+          'aria-describedby'
+        );
       });
 
       test('has aria-describedby with disabledReason', () => {
@@ -563,7 +559,9 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
         });
         wrapper.openDropdown();
 
-        expect(wrapper.findDropdown().findSelectableItem(1)!.getElement()).toHaveAttribute('aria-describedby');
+        expect(wrapper.findDropdown({ expandToViewport }).findSelectableItem(1)!.getElement()).toHaveAttribute(
+          'aria-describedby'
+        );
       });
 
       test('has hidden element (linked to aria-describedby) with disabledReason', () => {
@@ -582,9 +580,9 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
         });
         wrapper.openDropdown();
 
-        expect(wrapper.findDropdown().findSelectableItem(1)!.find('span[hidden]')!.getElement()).toHaveTextContent(
-          'disabled reason'
-        );
+        expect(
+          wrapper.findDropdown({ expandToViewport }).findSelectableItem(1)!.find('span[hidden]')!.getElement()
+        ).toHaveTextContent('disabled reason');
       });
 
       test('can not select disabled with reason option', () => {
@@ -603,7 +601,7 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
           }),
         });
         wrapper.openDropdown();
-        wrapper.selectOptionByValue('1');
+        wrapper.selectOptionByValue('1', { expandToViewport });
         expect(onChange).not.toHaveBeenCalled();
       });
     });
