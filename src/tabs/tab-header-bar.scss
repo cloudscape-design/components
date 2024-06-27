@@ -87,6 +87,10 @@ $label-horizontal-spacing: awsui.$space-xs;
   @include styles.text-wrapping;
 }
 
+.tabs-tab-no-actions > .tabs-tab-label {
+  padding-inline: awsui.$space-l;
+}
+
 .tabs-tab-dismiss,
 .tabs-tab-action {
   /* Used as a selector for tests */
@@ -112,6 +116,10 @@ $label-horizontal-spacing: awsui.$space-xs;
   & > .tabs-tab-action {
     display: flex;
     align-items: center;
+  }
+
+  &.tabs-tab-no-actions {
+    padding-inline: 0;
   }
 
   &.refresh > span:first-of-type {
@@ -171,7 +179,6 @@ $label-horizontal-spacing: awsui.$space-xs;
   padding-block-start: calc(#{awsui.$space-scaled-s} - 2px);
   padding-block-end: calc(#{awsui.$space-scaled-s} - 1px);
 
-  padding-inline: 0;
   margin-block-start: 1px;
   border-block: awsui.$border-divider-section-width solid transparent;
   border-inline: awsui.$border-divider-section-width solid transparent;
@@ -189,6 +196,10 @@ $label-horizontal-spacing: awsui.$space-xs;
     padding-block-end: calc(awsui.$space-static-xs - 1px);
 
     margin-block-start: 0;
+  }
+
+  &.tabs-tab-no-actions {
+    padding-inline: 0;
   }
 
   &:hover {
@@ -209,14 +220,6 @@ $label-horizontal-spacing: awsui.$space-xs;
 }
 
 // Remediate focus shadow
-.tabs-tab:first-child {
-  margin-inline-start: 1px;
-  & > .tabs-tab-header-container {
-    padding-inline-start: calc(#{$label-horizontal-spacing} - 1px);
-  }
-}
-
-// Remediate focus shadow
 .tabs-tab:last-child {
   margin-inline-end: 1px;
   & > .tabs-tab-header-container {
@@ -224,8 +227,15 @@ $label-horizontal-spacing: awsui.$space-xs;
   }
 }
 
+// Remediate focus shadow
+.tabs-tab:first-child {
+  margin-inline-start: 1px;
+  & > .tabs-tab-header-container:not(.tabs-tab-no-actions) {
+    padding-inline-start: calc(#{$label-horizontal-spacing} - 1px);
+  }
+}
+
 /* stylelint-disable selector-combinator-disallowed-list */
-// Because the action is provided by the user, combining selectors is more robust
 .tabs-tab-disabled,
 .tabs-tab-disabled .tabs-tab-action button,
 .tabs-tab-disabled .tabs-tab-dismiss button {

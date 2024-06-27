@@ -308,6 +308,8 @@ export function TabHeaderBar({
 
   function renderTabHeader(tab: TabsProps.Tab) {
     const { dismissible, dismissLabel, action, onDismiss } = tab;
+    const isActive = activeTabId === tab.id && !tab.disabled;
+    const hasActionOrDismissibleForTab = action || dismissible;
 
     const clickTab = (event: React.MouseEvent) => {
       if (tab.disabled) {
@@ -343,20 +345,22 @@ export function TabHeaderBar({
     const classes = clsx({
       [styles['tabs-tab-link']]: true,
       [styles.refresh]: isVisualRefresh,
-      [styles['tabs-tab-active']]: activeTabId === tab.id && !tab.disabled,
+      [styles['tabs-tab-active']]: isActive,
       [styles['tabs-tab-disabled']]: tab.disabled,
+      [styles['tabs-tab-no-actions']]: !hasActionOrDismissibleForTab,
     });
 
     const tabHeaderContainerClasses = clsx({
       [styles['tabs-tab-header-container']]: true,
       [styles.refresh]: isVisualRefresh,
-      [styles['tabs-tab-active']]: activeTabId === tab.id && !tab.disabled,
+      [styles['tabs-tab-active']]: isActive,
       [styles['tabs-tab-disabled']]: tab.disabled,
+      [styles['tabs-tab-no-actions']]: !hasActionOrDismissibleForTab,
     });
 
     const tabActionClasses = clsx({
       [styles['tabs-tab-action']]: true,
-      [styles['tabs-tab-active']]: activeTabId === tab.id && !tab.disabled,
+      [styles['tabs-tab-active']]: isActive,
     });
 
     const commonProps: (JSX.IntrinsicElements['a'] | JSX.IntrinsicElements['button']) & { 'data-testid': string } = {
