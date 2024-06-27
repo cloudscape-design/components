@@ -39,7 +39,8 @@ export default function PromptInputPage() {
     if (textareaValue !== placeholderText) {
       setUrlParams({ hasText: false });
     }
-  }, [textareaValue, setUrlParams]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [textareaValue]);
 
   return (
     <div style={{ padding: 10 }}>

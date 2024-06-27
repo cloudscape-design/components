@@ -26,9 +26,38 @@ export interface PromptInputProps
    * The event `detail` contains the current value of the field.
    */
   onAction?: NonCancelableEventHandler<PromptInputProps.ActionDetail>;
-
+  /**
+   * Determines what icon to display in the action button.
+   */
   actionButtonIconName?: IconProps.Name;
-
+  /**
+   * Specifies the URL of a custom icon. Use this property if the icon you want isn't available.
+   *
+   * If you set both `actionButtonIconUrl` and `actionButtonIconSvg`, `actionButtonIconSvg` will take precedence.
+   */
+  actionButtonIconUrl?: string;
+  /**
+   * Specifies the SVG of a custom icon.
+   *
+   * Use this property if you want your custom icon to inherit colors dictated by variant or hover states.
+   * When this property is set, the component will be decorated with `aria-hidden="true"`. Ensure that the `svg` element:
+   * - has attribute `focusable="false"`.
+   * - has `viewBox="0 0 16 16"`.
+   *
+   * If you set the `svg` element as the root node of the slot, the component will automatically
+   * - set `stroke="currentColor"`, `fill="none"`, and `vertical-align="top"`.
+   * - set the stroke width based on the size of the icon.
+   * - set the width and height of the SVG element based on the size of the icon.
+   *
+   * If you don't want these styles to be automatically set, wrap the `svg` element into a `span`.
+   * You can still set the stroke to `currentColor` to inherit the color of the surrounding elements.
+   *
+   * If you set both `actionButtonIconUrl` and `actionButtonIconSvg`, `iconSvg` will take precedence.
+   *
+   * *Note:* Remember to remove any additional elements (for example: `defs`) and related CSS classes from SVG files exported from design software.
+   * In most cases, they aren't needed, as the `svg` element inherits styles from the icon component.
+   */
+  actionButtonIconSvg?: React.ReactNode;
   /**
    * Adds an aria-label to the action button.
    * @i18n

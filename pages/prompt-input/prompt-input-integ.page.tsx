@@ -20,7 +20,7 @@ export default function Page() {
         }}
       >
         <PromptInput
-          ariaLabel="test input"
+          ariaLabel="test prompt input"
           actionButtonIconName="send"
           actionButtonAriaLabel="Send"
           value={value}
