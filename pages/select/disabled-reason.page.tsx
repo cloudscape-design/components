@@ -20,15 +20,13 @@ const options = [
 
 export default function SelectPage() {
   return (
-    <article>
-      <ScreenshotArea>
-        <Box variant="h1">Select with disabled reason</Box>
-        <Box padding="l">
-          <div style={{ width: '400px' }}>
-            <Select placeholder="Choose option" selectedOption={null} options={options} />
-          </div>
-        </Box>
-      </ScreenshotArea>
-    </article>
+    <ScreenshotArea>
+      <Box variant="h1">Select with disabled reason</Box>
+      <Box padding="l">
+        <div style={{ width: '400px' }}>
+          <Select placeholder="Choose option" selectedOption={null} options={options} />
+        </div>
+      </Box>
+    </ScreenshotArea>
   );
 }

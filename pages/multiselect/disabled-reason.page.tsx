@@ -26,15 +26,13 @@ const options: MultiselectProps.Options = [
 
 export default function MultiselectPage() {
   return (
-    <article>
-      <ScreenshotArea>
-        <Box variant="h1">Multiselect with disabled reason</Box>
-        <Box padding="l">
-          <div style={{ width: '400px' }}>
-            <Multiselect placeholder="Choose option" selectedOptions={[]} options={options} />
-          </div>
-        </Box>
-      </ScreenshotArea>
-    </article>
+    <ScreenshotArea>
+      <Box variant="h1">Multiselect with disabled reason</Box>
+      <Box padding="l">
+        <div style={{ width: '400px' }}>
+          <Multiselect placeholder="Choose option" selectedOptions={[]} options={options} />
+        </div>
+      </Box>
+    </ScreenshotArea>
   );
 }
