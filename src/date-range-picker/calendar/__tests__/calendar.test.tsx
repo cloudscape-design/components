@@ -422,7 +422,7 @@ describe('Date range picker calendar', () => {
         });
         changeMode(wrapper, 'absolute');
 
-        // The calendar date handles two onFocus events to show the disabled reason popup: one to make the date focus, and the other to show the popup.
+        // The calendar date handles two onFocus events to show the disabled reason popup: one to make the date focused, and the other to show the popup.
         // wrapper.findDropdown()!.findDateAt(...).focus() triggers only one of them
         fireEvent.focus(wrapper.findDropdown()!.findDateAt('left', 4, 1)!.getElement());
 

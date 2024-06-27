@@ -520,8 +520,6 @@ describe('disabled date', () => {
       const wrapper = createWrapper(container).findCalendar()!;
 
       wrapper.findDateAt(1, 6).focus();
-      wrapper.keydown(KeyCode.space);
-
       fireEvent.keyDown(wrapper.findDateAt(1, 6).getElement(), { keyCode: KeyCode.space });
 
       expect(onChange).not.toHaveBeenCalled();
@@ -552,8 +550,6 @@ describe('disabled date', () => {
       const wrapper = createWrapper(container).findCalendar()!;
 
       wrapper.findDateAt(1, 6).focus();
-      wrapper.keydown(KeyCode.space);
-
       fireEvent.keyDown(wrapper.findDateAt(1, 6).getElement(), { keyCode: KeyCode.enter });
 
       expect(onChange).not.toHaveBeenCalled();

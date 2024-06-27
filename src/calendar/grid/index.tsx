@@ -62,18 +62,10 @@ const GridCell = forwardRef((props: GridCellProps, focusedDateRef: React.Ref<HTM
       ref={useMergeRefs(focusedDateRef, ref)}
       {...(isDisabledWithReason ? targetProps : {})}
       {...rest}
-      onFocus={() => {
-        setShowTooltip(true);
-      }}
-      onBlur={() => {
-        setShowTooltip(false);
-      }}
-      onMouseEnter={() => {
-        setShowTooltip(true);
-      }}
-      onMouseLeave={() => {
-        setShowTooltip(false);
-      }}
+      onFocus={() => (isDisabledWithReason ? setShowTooltip(true) : undefined)}
+      onBlur={() => (isDisabledWithReason ? setShowTooltip(false) : undefined)}
+      onMouseEnter={() => (isDisabledWithReason ? setShowTooltip(true) : undefined)}
+      onMouseLeave={() => (isDisabledWithReason ? setShowTooltip(false) : undefined)}
     >
       {props.children}
       {isDisabledWithReason && (
