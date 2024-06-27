@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import * as React from 'react';
-import ReactDOM from 'react-dom';
 import MockDate from 'mockdate';
 import { fireEvent, render } from '@testing-library/react';
 import Calendar, { CalendarProps } from '../../../lib/components/calendar';
@@ -267,13 +266,6 @@ describe('disabled date', () => {
   });
 
   describe('disabled with reason', () => {
-    beforeEach(() => {
-      jest.spyOn(ReactDOM, 'createPortal').mockImplementation((element: any) => element);
-    });
-    afterEach(() => {
-      jest.restoreAllMocks();
-    });
-
     test('has no tooltip open by default', () => {
       const { container } = render(
         <Calendar

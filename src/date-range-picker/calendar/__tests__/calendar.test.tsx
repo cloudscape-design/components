@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import ReactDOM from 'react-dom';
 import Mockdate from 'mockdate';
 import { fireEvent, render } from '@testing-library/react';
 import DateRangePickerWrapper from '../../../../lib/components/test-utils/dom/date-range-picker';
@@ -395,13 +394,6 @@ describe('Date range picker calendar', () => {
     });
 
     describe('disabled with reason', () => {
-      beforeEach(() => {
-        jest.spyOn(ReactDOM, 'createPortal').mockImplementation((element: any) => element);
-      });
-      afterEach(() => {
-        jest.restoreAllMocks();
-      });
-
       test('has no tooltip open by default', () => {
         const { wrapper } = renderDateRangePicker({
           ...defaultProps,

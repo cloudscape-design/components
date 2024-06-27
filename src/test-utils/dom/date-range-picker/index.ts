@@ -13,7 +13,7 @@ import SegmentedControlWrapper from '../segmented-control';
 
 export class CalendarDateWrapper extends ComponentWrapper {
   findDisabledReason(): ElementWrapper | null {
-    return this.find(`.${gridStyles['disabled-reason-tooltip']}`);
+    return createWrapper().find(`.${gridStyles['disabled-reason-tooltip']}`);
   }
 }
 
