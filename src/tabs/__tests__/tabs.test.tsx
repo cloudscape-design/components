@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 /* eslint-disable @typescript-eslint/no-var-requires */
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { fireEvent, render } from '@testing-library/react';
 import Tabs, { TabsProps } from '../../../lib/components/tabs';
 import styles from '../../../lib/components/tabs/styles.css.js';
@@ -799,14 +798,6 @@ describe('Tabs', () => {
     });
 
     describe('Disabled with reason', () => {
-      beforeEach(() => {
-        jest.spyOn(ReactDOM, 'createPortal').mockImplementation((element: any) => element);
-      });
-
-      afterEach(() => {
-        jest.restoreAllMocks();
-      });
-
       test('has no tooltip open by default', () => {
         const firstTabId = defaultTabs[0].id;
         const { wrapper } = renderTabs(
