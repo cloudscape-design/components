@@ -1961,7 +1961,7 @@ on your own.
       "type": "string",
     },
     Object {
-      "description": "Specifies if the control is read only, which prevents the
+      "description": "Specifies if the control is read-only, which prevents the
 user from modifying the value but includes it in a form
 submission. A read-only control can receive focus.
 Don't use read-only inputs outside a form.
@@ -5905,7 +5905,7 @@ single form field.",
       "type": "string",
     },
     Object {
-      "description": "Specifies if the control is read only, which prevents the
+      "description": "Specifies if the control is read-only, which prevents the
 user from modifying the value but includes it in a form
 submission. A read-only control can receive focus.
 Don't use read-only inputs outside a form.
@@ -6231,7 +6231,7 @@ a human-readable localised string representing the current value of the input.
     },
     Object {
       "defaultValue": "false",
-      "description": "Specifies if the control is read only, which prevents the
+      "description": "Specifies if the control is read-only, which prevents the
 user from modifying the value but includes it in a form
 submission. A read-only control can receive focus.
 Do not use read-only inputs outside of a form.
@@ -8439,7 +8439,7 @@ single form field.",
       "type": "string",
     },
     Object {
-      "description": "Specifies if the control is read only, which prevents the
+      "description": "Specifies if the control is read-only, which prevents the
 user from modifying the value but includes it in a form
 submission. A read-only control can receive focus.
 Don't use read-only inputs outside a form.
@@ -10156,7 +10156,7 @@ on your own.
       "type": "string",
     },
     Object {
-      "description": "Specifies if the control is readOnly, which prevents the
+      "description": "Specifies if the control is read-only, which prevents the
 user from both modifying the value and opening the dropdown. A read-only control is still focusable.",
       "name": "readOnly",
       "optional": true,
@@ -12815,7 +12815,7 @@ on your own.
       "type": "string",
     },
     Object {
-      "description": "Specifies if the control is readOnly, which prevents the
+      "description": "Specifies if the control is read-only, which prevents the
 user from both modifying the value and opening the dropdown. A read-only control is still focusable.",
       "name": "readOnly",
       "optional": true,
@@ -15376,7 +15376,7 @@ single form field.",
       "type": "string",
     },
     Object {
-      "description": "Specifies if the control is read only, which prevents the
+      "description": "Specifies if the control is read-only, which prevents the
 user from modifying the value but includes it in a form
 submission. A read-only control can receive focus.
 Don't use read-only inputs outside a form.
@@ -15768,7 +15768,7 @@ single form field.",
       "type": "string",
     },
     Object {
-      "description": "Specifies if the control is read only, which prevents the
+      "description": "Specifies if the control is read-only, which prevents the
 user from modifying the value but includes it in a form
 submission. A read-only control can receive focus.
 Don't use read-only inputs outside a form.
