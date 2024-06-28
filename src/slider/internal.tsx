@@ -17,7 +17,14 @@ import styles from './styles.css.js';
 import { SliderProps } from './interfaces.js';
 import SliderLabels from './slider-labels.js';
 import SliderTickMarks from './tick-marks.js';
-import { getPercent, getStepArray, findLowerAndHigherValues, valuesAreValid, THUMB_SIZE } from './utils.js';
+import {
+  getPercent,
+  getStepArray,
+  findLowerAndHigherValues,
+  valuesAreValid,
+  THUMB_SIZE,
+  THUMB_READONLY_SIZE,
+} from './utils.js';
 
 export interface InternalSliderProps extends SliderProps, InternalBaseComponentProps {}
 
@@ -115,6 +122,8 @@ export default function InternalSlider({
     return undefined;
   };
 
+  const thumbSize = readOnly ? THUMB_READONLY_SIZE : THUMB_SIZE;
+
   return (
     <div {...baseProps} ref={__internalRootRef} className={clsx(baseProps.className, styles.root)}>
       {showTooltip && (
@@ -122,9 +131,11 @@ export default function InternalSlider({
       )}
       <div
         ref={handleRef}
-        className={styles['tooltip-thumb']}
+        className={clsx(styles['tooltip-thumb'], {
+          [styles.readonly]: readOnly,
+        })}
         style={{
-          [customCssProps.sliderTooltipPosition]: `calc(${percent}% - ${THUMB_SIZE}px)`,
+          [customCssProps.sliderTooltipPosition]: `calc(${percent}% - ${thumbSize}px)`,
         }}
       />
       <div className={styles.slider}>
