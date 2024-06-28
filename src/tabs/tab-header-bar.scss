@@ -224,8 +224,6 @@ $label-horizontal-spacing: awsui.$space-xs;
   }
 }
 
-/* stylelint-disable selector-combinator-disallowed-list */
-// Because the action is provided by the user, combining selectors is more robust
 .tabs-tab-disabled {
   &,
   &:hover {
@@ -235,7 +233,6 @@ $label-horizontal-spacing: awsui.$space-xs;
     font-weight: awsui.$font-tabs-disabled-weight;
   }
 }
-/* stylelint-enable selector-combinator-disallowed-list */
 
 .tabs-tab-active:not(.tabs-tab-disabled) {
   color: awsui.$color-text-accent;
@@ -246,4 +243,8 @@ $label-horizontal-spacing: awsui.$space-xs;
 
 .tabs-header-with-divider {
   border-block-end: awsui.$border-divider-section-width solid $separator-color;
+}
+
+.tabs-tab-no-actions {
+  /* Used as a selector for tests */
 }
