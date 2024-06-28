@@ -11,7 +11,6 @@ import { KeyCode } from '../internal/keycode';
 import { LinkProps } from './interfaces';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import { useInternalI18n } from '../i18n/context';
 import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
@@ -30,7 +29,7 @@ import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-
 
 type InternalLinkProps = InternalBaseComponentProps<HTMLAnchorElement> &
   Omit<LinkProps, 'variant'> & {
-    variant?: LinkProps['variant'] | 'top-navigation' | 'link' | 'recovery';
+    variant?: LinkProps['variant'] | 'top-navigation' | 'recovery';
   };
 
 const InternalLink = React.forwardRef(
@@ -57,8 +56,6 @@ const InternalLink = React.forwardRef(
     const isButton = !href;
     const { defaultVariant } = useContext(LinkDefaultVariantContext);
     const variant = providedVariant || defaultVariant;
-    const specialStyles = ['top-navigation', 'link', 'recovery'];
-    const hasSpecialStyle = specialStyles.indexOf(variant) > -1;
 
     const i18n = useInternalI18n('link');
     const baseProps = getBaseProps(props);
@@ -151,11 +148,7 @@ const InternalLink = React.forwardRef(
     };
 
     const linkRef = useRef<HTMLElement>(null);
-    const isVisualRefresh = useVisualRefresh();
     useForwardFocus(ref, linkRef);
-
-    // Visual refresh should only add styles to buttons that don't already have unique styles (e.g. primary/secondary variants)
-    const applyButtonStyles = isButton && isVisualRefresh && !hasSpecialStyle;
 
     const sharedProps = {
       id: linkId,
@@ -165,7 +158,6 @@ const InternalLink = React.forwardRef(
       className: clsx(
         styles.link,
         baseProps.className,
-        applyButtonStyles ? styles.button : null,
         styles[getVariantStyle(variant)],
         styles[getFontSizeStyle(variant, fontSize)],
         styles[getColorStyle(variant, color)]
