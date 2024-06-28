@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { SPLIT_PANEL_MIN_WIDTH } from '../split-panel';
-import { AppLayoutPropsWithDefaults } from '../interfaces';
+import { AppLayoutInternalProps } from '../interfaces';
 
 interface HorizontalLayoutInput {
   navigationOpen: boolean;
   navigationWidth: number;
-  placement: AppLayoutPropsWithDefaults['placement'];
+  placement: AppLayoutInternalProps['placement'];
   minContentWidth: number;
   activeDrawerSize: number;
   splitPanelOpen: boolean;
@@ -50,7 +50,7 @@ export function computeHorizontalLayout({
 
 interface VerticalLayoutInput {
   topOffset: number;
-  hasToolbar: boolean;
+  hasVisibleToolbar: boolean;
   toolbarHeight: number;
   stickyNotifications: boolean;
   notificationsHeight: number;
@@ -64,14 +64,14 @@ export interface VerticalLayoutOutput {
 
 export function computeVerticalLayout({
   topOffset,
-  hasToolbar,
+  hasVisibleToolbar,
   toolbarHeight,
   stickyNotifications,
   notificationsHeight,
 }: VerticalLayoutInput): VerticalLayoutOutput {
   const toolbar = topOffset;
   let notifications = topOffset;
-  if (hasToolbar) {
+  if (hasVisibleToolbar) {
     notifications += toolbarHeight;
   }
   let header = notifications;

@@ -337,9 +337,14 @@ export namespace AppLayoutProps {
 }
 
 export type AppLayoutPropsWithDefaults = SomeRequired<
-  Omit<AppLayoutProps, 'headerSelector' | 'footerSelector'>,
-  'contentType' | 'navigationWidth' | 'toolsWidth' | 'minContentWidth' | 'navigationOpen' | 'onNavigationChange'
-> & {
+  AppLayoutProps,
+  'contentType' | 'navigationWidth' | 'toolsWidth' | 'headerSelector' | 'footerSelector'
+>;
+
+export interface AppLayoutInternalProps extends Omit<AppLayoutPropsWithDefaults, 'headerSelector' | 'footerSelector'> {
+  navigationOpen: boolean;
+  onNavigationChange: NonCancelableEventHandler<AppLayoutProps.ChangeDetail>;
+  minContentWidth: number;
   placement: {
     insetBlockStart: number;
     insetBlockEnd: number;
@@ -347,4 +352,4 @@ export type AppLayoutPropsWithDefaults = SomeRequired<
     insetInlineEnd: number;
     inlineSize: number;
   };
-};
+}

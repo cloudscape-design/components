@@ -15,23 +15,15 @@ import {
 import { CodeEditorWrapper, ElementWrapper } from '../../../lib/components/test-utils/dom';
 import styles from '../../../lib/components/code-editor/styles.css.js';
 import resizableStyles from '../../../lib/components/code-editor/resizable-box/styles.css.js';
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { clearMessageCache } from '@cloudscape-design/component-toolkit/internal';
 import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
 import { createWrapper } from '@cloudscape-design/test-utils-core/dom';
 import '../../__a11y__/to-validate-a11y';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
 
-jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
-  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
-  warnOnce: jest.fn(),
-}));
-
-afterEach(() => {
-  (warnOnce as jest.Mock).mockReset();
-});
-
 describe('Code editor component', () => {
   afterEach(() => {
+    clearMessageCache();
     jest.clearAllMocks();
   });
 
@@ -522,17 +514,29 @@ describe('Code editor component', () => {
     renderCodeEditor({ editorContentHeight: 240 });
     expect(editorMock.resize).toBeCalledTimes(1);
   });
-  it('should log a warning when no onEditorContentResize is undefined', () => {
-    render(<CodeEditor {...defaultProps} editorContentHeight={240} />);
-    expect(warnOnce).toHaveBeenCalledTimes(1);
-    expect(warnOnce).toHaveBeenCalledWith(
-      'code-editor',
-      'You provided a `editorContentHeight` prop without an `onEditorContentResize` handler. This will render a non-interactive component.'
-    );
-  });
-  it('should not log a warning when onEditorContentResize is passed', () => {
-    render(<CodeEditor {...defaultProps} editorContentHeight={240} onEditorContentResize={() => {}} />);
-    expect(warnOnce).not.toHaveBeenCalled();
+  describe('console warnings', () => {
+    let consoleWarnSpy: jest.SpyInstance;
+    beforeEach(() => {
+      consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+    });
+
+    afterEach(() => {
+      consoleWarnSpy.mockReset();
+    });
+
+    it('should log a warning when no onEditorContentResize is undefined', () => {
+      render(<CodeEditor {...defaultProps} editorContentHeight={240} />);
+      expect(consoleWarnSpy).toHaveBeenCalledTimes(1);
+      expect(consoleWarnSpy).toHaveBeenCalledWith(
+        expect.stringContaining(
+          'You provided a `editorContentHeight` prop without an `onEditorContentResize` handler. This will render a non-interactive component.'
+        )
+      );
+    });
+    it('should not log a warning when onEditorContentResize is passed', () => {
+      render(<CodeEditor {...defaultProps} editorContentHeight={240} onEditorContentResize={() => {}} />);
+      expect(consoleWarnSpy).not.toHaveBeenCalled();
+    });
   });
 
   describe('a11y', () => {
