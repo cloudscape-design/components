@@ -3,12 +3,12 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import AbstractSwitch, { AbstractSwitchProps } from '../../../../../lib/components/internal/components/abstract-switch';
-import createWrapper from '../../../../../lib/components/test-utils/dom';
+import AbstractSwitchWrapper from '../../../../../lib/components/test-utils/dom/internal/abstract-switch';
 import '../../../../__a11y__/to-validate-a11y';
 
 function renderAbstractSwitch(props: AbstractSwitchProps) {
   const { container } = render(<AbstractSwitch {...props} />);
-  return createWrapper(container);
+  return new AbstractSwitchWrapper(container);
 }
 const noop = () => {};
 
@@ -91,6 +91,46 @@ describe('Abstract switch', () => {
       const nativeControl = wrapper.find('.switch-element')!.getElement();
       expect(nativeControl).toHaveAccessibleName('Default label Custom label');
       expect(nativeControl).toHaveAccessibleDescription('Custom description Default description');
+    });
+
+    test('does not trigger onClick when disabled', () => {
+      const onClick = jest.fn();
+      const wrapper = renderAbstractSwitch({
+        controlClassName: '',
+        outlineClassName: '',
+        styledControl: <div />,
+        controlId: 'custom-id',
+        ariaLabelledby: 'some-custom-label',
+        ariaDescribedby: 'some-custom-description',
+        label: 'Default label',
+        description: 'Default description',
+        disabled: true,
+        nativeControl: nativeControlProps => <input {...nativeControlProps} className="switch-element" type="radio" />,
+        onClick,
+      });
+
+      wrapper.findLabel().click();
+      expect(onClick).not.toHaveBeenCalled();
+    });
+
+    test('does not trigger onClick when readOnly', () => {
+      const onClick = jest.fn();
+      const wrapper = renderAbstractSwitch({
+        controlClassName: '',
+        outlineClassName: '',
+        styledControl: <div />,
+        controlId: 'custom-id',
+        ariaLabelledby: 'some-custom-label',
+        ariaDescribedby: 'some-custom-description',
+        label: 'Default label',
+        description: 'Default description',
+        readOnly: true,
+        nativeControl: nativeControlProps => <input {...nativeControlProps} className="switch-element" type="radio" />,
+        onClick,
+      });
+
+      wrapper.findLabel().click();
+      expect(onClick).not.toHaveBeenCalled();
     });
   });
 });

@@ -179,6 +179,68 @@ const permutations = createPermutations<TokenGroupProps>([
       ],
     ],
   },
+  {
+    i18nStrings: [i18nStrings],
+    limit: [undefined],
+    readOnly: [true],
+    alignment: ['horizontal'],
+    items: [
+      [
+        {
+          label: 'Item 1',
+          labelTag: '128Gb',
+          iconAlt: 'amazon-logo',
+          iconUrl: img,
+          description: 'This is item 1',
+          tags: ['CPU-v2', '2Gb RAM'],
+          disabled: false,
+          dismissLabel: 'dismiss',
+        },
+        {
+          label: 'Item 1',
+          labelTag: '128Gb',
+          description: 'This is item 1',
+          tags: [
+            'CPU-v2',
+            '2Gb RAM',
+            'CPU-v2',
+            '2Gb RAM',
+            'CPU-v2',
+            '2Gb RAM',
+            'CPU-v2',
+            '2Gb RAM',
+            'CPU-v2',
+            '2Gb RAM',
+            'CPU-v2',
+            '2Gb RAM',
+            'CPU-v2',
+            '2Gb RAM',
+          ],
+          disabled: false,
+          dismissLabel: 'dismiss',
+        },
+        {
+          label: 'Item 1',
+          labelTag: '128Gb',
+          iconName: 'calendar',
+          disabled: true,
+          dismissLabel: 'dismiss',
+        },
+        {
+          label: 'Item 1',
+          labelTag: '128Gb',
+          iconName: 'calendar',
+          disabled: false,
+          dismissLabel: 'dismiss',
+        },
+        {
+          label: 'Simple and basic',
+          disabled: true,
+          dismissLabel: 'dismiss',
+        },
+      ],
+    ],
+  },
 ]);
 
 export default function TokenGroupPermutations() {
