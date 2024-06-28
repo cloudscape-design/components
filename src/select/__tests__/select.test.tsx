@@ -528,7 +528,7 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
         });
         wrapper.openDropdown();
         wrapper.selectOptionByValue('1', { expandToViewport });
-        expect(wrapper.findDropdown({ expandToViewport }).getElement()).not.toBe(null);
+        expect(wrapper.findDropdown({ expandToViewport })?.findOpenDropdown()).toBeTruthy();
       });
     });
   });
