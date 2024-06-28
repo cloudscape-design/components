@@ -5,13 +5,28 @@ import { RadioGroupProps } from './interfaces';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import InternalRadioGroup from './internal';
+import { getAnalyticsMetadataAttribute } from '../internal/analytics/autocapture/utils';
 
 export { RadioGroupProps };
 
+const componentName = 'RadioGroup';
+
 const RadioGroup = React.forwardRef((props: RadioGroupProps, ref: React.Ref<RadioGroupProps.Ref>) => {
-  const baseComponentProps = useBaseComponent('RadioGroup');
-  return <InternalRadioGroup ref={ref} {...props} {...baseComponentProps} />;
+  const baseComponentProps = useBaseComponent(componentName);
+  return (
+    <InternalRadioGroup
+      ref={ref}
+      {...props}
+      {...baseComponentProps}
+      {...getAnalyticsMetadataAttribute({
+        component: {
+          name: componentName,
+          label: '&',
+        },
+      })}
+    />
+  );
 });
 
-applyDisplayName(RadioGroup, 'RadioGroup');
+applyDisplayName(RadioGroup, componentName);
 export default RadioGroup;

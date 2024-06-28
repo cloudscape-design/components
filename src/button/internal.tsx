@@ -23,6 +23,8 @@ import { FunnelMetrics } from '../internal/analytics';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
 import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
+import { getAnalyticsMetadataAttribute } from '../internal/analytics/autocapture/utils';
+import { AutoCaptureMetadata } from '../internal/analytics/autocapture/interfaces';
 
 export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   variant?: ButtonProps['variant'] | 'flashbar-icon' | 'breadcrumb-group' | 'menu-trigger' | 'modal-dismiss';
@@ -32,6 +34,7 @@ export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
     | Record<`data-${string}`, string>;
   __iconClass?: string;
   __focusable?: boolean;
+  __injectAnalyticsComponentMetadata?: boolean;
 } & InternalBaseComponentProps<HTMLAnchorElement | HTMLButtonElement>;
 
 export const InternalButton = React.forwardRef(
@@ -65,6 +68,7 @@ export const InternalButton = React.forwardRef(
       __nativeAttributes,
       __internalRootRef = null,
       __focusable = false,
+      __injectAnalyticsComponentMetadata = false,
       ...props
     }: InternalButtonProps,
     ref: React.Ref<ButtonProps.Ref>
@@ -142,6 +146,18 @@ export const InternalButton = React.forwardRef(
       tabIndex: isAnchor && isNotInteractive ? -1 : explicitTabIndex,
     });
 
+    const analyticsMetadata: AutoCaptureMetadata = {
+      action: 'click',
+      detail: { label: children ? `.${styles.content}` : '&' },
+    };
+    if (__injectAnalyticsComponentMetadata) {
+      analyticsMetadata.component = {
+        name: 'Button',
+        label: children ? `.${styles.content}` : '&',
+        properties: { variant },
+      };
+    }
+
     const buttonProps = {
       ...props,
       ...__nativeAttributes,
@@ -158,6 +174,7 @@ export const InternalButton = React.forwardRef(
       className: buttonClass,
       onClick: handleClick,
       [DATA_ATTR_FUNNEL_VALUE]: uniqueId,
+      ...getAnalyticsMetadataAttribute(analyticsMetadata),
     } as const;
 
     const iconProps: ButtonIconProps = {

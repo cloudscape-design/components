@@ -21,6 +21,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
 import { useFunnel } from '../internal/analytics/hooks/use-funnel.js';
 import { isLinkItem } from './utils/utils.js';
+import { getAnalyticsMetadataAttribute } from '../internal/analytics/autocapture/utils.js';
 
 const InternalButtonDropdown = React.forwardRef(
   (
@@ -200,7 +201,7 @@ const InternalButtonDropdown = React.forwardRef(
               ref={mainActionRef}
               {...mainActionProps}
               {...mainActionIconProps}
-              className={styles['trigger-button']}
+              className={clsx(styles['trigger-button'], styles['trigger-label'])}
               variant={variant}
               ariaLabel={mainActionAriaLabel}
               formAction="none"
@@ -214,6 +215,12 @@ const InternalButtonDropdown = React.forwardRef(
               styles['dropdown-trigger'],
               isVisualRefresh && styles['visual-refresh']
             )}
+            {...getAnalyticsMetadataAttribute({
+              action: 'expand',
+              detail: {
+                expanded: `${!isOpen}`,
+              },
+            })}
           >
             <InternalButton ref={triggerRef} {...baseTriggerProps} />
           </div>
@@ -221,8 +228,22 @@ const InternalButtonDropdown = React.forwardRef(
       );
     } else {
       trigger = (
-        <div className={styles['dropdown-trigger']}>
-          <InternalButton ref={triggerRef} id={triggerId} {...baseTriggerProps} badge={triggerHasBadge()}>
+        <div
+          className={styles['dropdown-trigger']}
+          {...getAnalyticsMetadataAttribute({
+            action: 'expand',
+            detail: {
+              expanded: `${!isOpen}`,
+            },
+          })}
+        >
+          <InternalButton
+            ref={triggerRef}
+            id={triggerId}
+            {...baseTriggerProps}
+            badge={triggerHasBadge()}
+            className={clsx(styles['trigger-button'], styles['test-utils-button-trigger'], styles['trigger-label'])}
+          >
             {children}
           </InternalButton>
         </div>

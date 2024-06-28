@@ -9,6 +9,7 @@ import { TableRole, getTableCellRoleProps } from '../table-role';
 import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
 import { ExpandToggleButton } from '../expandable-rows/expand-toggle-button';
+import { copyAnalyticsMetadataAttribute } from '../../internal/analytics/autocapture/utils.js';
 
 export interface TableTdElementProps {
   className?: string;
@@ -77,6 +78,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       onExpandableItemToggle,
       expandButtonLabel,
       collapseButtonLabel,
+      ...rest
     },
     ref
   ) => {
@@ -121,6 +123,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
         ref={mergedRef}
         {...nativeAttributes}
         tabIndex={cellTabIndex === -1 ? undefined : cellTabIndex}
+        {...copyAnalyticsMetadataAttribute(rest)}
       >
         <div className={styles['body-cell-content']}>
           {level !== undefined && isExpandable && (

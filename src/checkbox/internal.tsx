@@ -12,10 +12,13 @@ import CheckboxIcon from '../internal/components/checkbox-icon';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
+import { getAnalyticsMetadataAttribute } from '../internal/analytics/autocapture/utils';
+import { AutoCaptureMetadata } from '../internal/analytics/autocapture/interfaces';
 
 interface InternalProps extends CheckboxProps, InternalBaseComponentProps {
   tabIndex?: -1;
   showOutline?: boolean;
+  __injectAnalyticsComponentMetadata?: boolean;
 }
 
 const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
@@ -38,6 +41,7 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
       showOutline,
       ariaControls,
       __internalRootRef,
+      __injectAnalyticsComponentMetadata = false,
       ...rest
     },
     ref
@@ -53,6 +57,18 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
     });
 
     const { tabIndex } = useSingleTabStopNavigation(checkboxRef, { tabIndex: explicitTabIndex });
+
+    const analyticsMetadata: AutoCaptureMetadata = {
+      detail: {
+        selected: `${!checked}`,
+      },
+    };
+    if (__injectAnalyticsComponentMetadata) {
+      analyticsMetadata.component = {
+        name: 'Checkbox',
+        label: '&',
+      };
+    }
 
     return (
       <AbstractSwitch
@@ -99,6 +115,7 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
           <CheckboxIcon checked={checked} indeterminate={indeterminate} disabled={disabled} readOnly={readOnly} />
         }
         __internalRootRef={__internalRootRef}
+        {...getAnalyticsMetadataAttribute(analyticsMetadata)}
       />
     );
   }

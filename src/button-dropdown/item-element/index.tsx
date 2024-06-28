@@ -13,8 +13,10 @@ import useHiddenDescription from '../utils/use-hidden-description';
 import InternalIcon, { InternalIconProps } from '../../icon/internal';
 import { useDropdownContext } from '../../internal/components/dropdown/context';
 import { getMenuItemProps, getMenuItemCheckboxProps } from '../utils/menu-item';
+import { getAnalyticsMetadataAttribute } from '../../internal/analytics/autocapture/utils';
 
 const ItemElement = ({
+  position = '1',
   item,
   disabled,
   onItemActivate,
@@ -59,6 +61,14 @@ const ItemElement = ({
       onClick={onClick}
       onMouseEnter={onHover}
       onTouchStart={onHover}
+      {...getAnalyticsMetadataAttribute({
+        action: 'click',
+        detail: {
+          position,
+          id: item.id,
+          label: `.${styles['menu-item']}`,
+        },
+      })}
     >
       <MenuItem item={item} disabled={disabled} highlighted={highlighted} />
     </li>

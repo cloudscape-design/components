@@ -17,6 +17,7 @@ import { getTableHeaderRowRoleProps, TableRole } from './table-role';
 import { TableThElement } from './header-cell/th-element';
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 import { Divider } from './resizer';
+import { getAnalyticsMetadataAttribute } from '../internal/analytics/autocapture/utils';
 
 export interface TheadProps {
   selectionType: TableProps.SelectionType | undefined;
@@ -119,6 +120,9 @@ const Thead = React.forwardRef(
               focusedComponent={focusedComponent}
               columnId={selectionColumnId}
               stickyState={stickyState}
+              {...getAnalyticsMetadataAttribute({
+                action: 'selectAll',
+              })}
             >
               {getSelectAllProps ? (
                 <SelectionControl

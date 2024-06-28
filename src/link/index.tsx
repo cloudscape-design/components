@@ -5,6 +5,7 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { LinkProps } from './interfaces';
 import InternalLink from './internal';
+import { getLinkAnalyticsMetadataAttribute } from './analytics';
 
 export { LinkProps };
 
@@ -13,6 +14,7 @@ const Link = React.forwardRef(
     const baseComponentProps = useBaseComponent('Link', {
       props: { color, external, fontSize, rel: props.rel, target: props.target, variant: props.variant },
     });
+
     return (
       <InternalLink
         fontSize={fontSize}
@@ -21,6 +23,7 @@ const Link = React.forwardRef(
         {...props}
         {...baseComponentProps}
         ref={ref}
+        {...getLinkAnalyticsMetadataAttribute(props)}
       />
     );
   }

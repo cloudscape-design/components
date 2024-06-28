@@ -14,6 +14,7 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { Tile } from './tile';
 import useRadioGroupForwardFocus from '../internal/hooks/forward-focus/radio-group';
+import { getAnalyticsMetadataAttribute } from '../internal/analytics/autocapture/utils';
 
 const COLUMN_TRIGGERS: TilesProps.Breakpoint[] = ['default', 'xxs', 'xs'];
 
@@ -71,6 +72,13 @@ const InternalTiles = React.forwardRef(
                 breakpoint={breakpoint}
                 onChange={onChange}
                 readOnly={readOnly}
+                {...getAnalyticsMetadataAttribute({
+                  action: 'select',
+                  detail: {
+                    position: `${index + 1}`,
+                    value: item.value,
+                  },
+                })}
               />
             ))}
         </div>

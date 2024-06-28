@@ -10,6 +10,7 @@ import RadioButton from '../../radio-group/radio-button';
 import styles from './styles.css.js';
 import { SelectionProps } from './interfaces';
 import { SingleTabStopNavigationContext } from '../../internal/context/single-tab-stop-navigation-context';
+import { getAnalyticsMetadataAttribute } from '../../internal/analytics/autocapture/utils';
 
 export interface SelectionControlProps extends SelectionProps {
   onShiftToggle?(shiftPressed: boolean): void;
@@ -18,6 +19,8 @@ export interface SelectionControlProps extends SelectionProps {
   ariaLabel?: string;
   tabIndex?: -1;
   focusedComponent?: null | string;
+  rowIndex?: number;
+  itemKey?: string;
 }
 
 export function SelectionControl({
@@ -29,6 +32,8 @@ export function SelectionControl({
   name,
   ariaLabel,
   focusedComponent,
+  rowIndex,
+  itemKey,
   ...sharedProps
 }: SelectionControlProps) {
   const controlId = useUniqueId();
@@ -97,6 +102,14 @@ export function SelectionControl({
         className={clsx(styles.label, styles.root)}
         aria-label={ariaLabel}
         title={ariaLabel}
+        {...(rowIndex !== undefined
+          ? getAnalyticsMetadataAttribute({
+              detail: {
+                position: `${rowIndex + 1}`,
+                item: itemKey || '',
+              },
+            })
+          : {})}
       >
         {selector}
       </label>

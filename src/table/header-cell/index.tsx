@@ -14,6 +14,7 @@ import { StickyColumnsModel } from '../sticky-columns';
 import { TableRole } from '../table-role';
 import { TableThElement } from './th-element';
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
+import { getAnalyticsMetadataAttribute } from '../../internal/analytics/autocapture/utils';
 
 export interface TableHeaderCellProps<ItemType> {
   className?: string;
@@ -103,6 +104,17 @@ export function TableHeaderCell<ItemType>({
       columnId={columnId}
       stickyState={stickyState}
       tableRole={tableRole}
+      {...(sortingDisabled
+        ? {}
+        : getAnalyticsMetadataAttribute({
+            action: 'sort',
+            detail: {
+              position: `${colIndex + 1}`,
+              columnId: column.id ? `${column.id}` : '',
+              label: `.${styles['header-cell-text']}`,
+              oder: sortingDescending ? 'DESC' : 'ASC',
+            },
+          }))}
     >
       <div
         ref={clickableHeaderRef}

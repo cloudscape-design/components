@@ -6,6 +6,7 @@ import { applyDisplayName } from '../internal/utils/apply-display-name';
 import InternalTable, { InternalTableAsSubstep } from './internal';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
+import { getAnalyticsMetadataAttribute } from '../internal/analytics/autocapture/utils';
 
 export { TableProps };
 const Table = React.forwardRef(
@@ -47,6 +48,17 @@ const Table = React.forwardRef(
       ...props,
       ...baseComponentProps,
       ref,
+      ...getAnalyticsMetadataAttribute({
+        component: {
+          name: 'Table',
+          label: '&',
+          properties: {
+            selectionType: props.selectionType || 'none',
+            itemsCount: `${items.length}`,
+            selectedItemsCount: `${selectedItems.length}`,
+          },
+        },
+      }),
     };
 
     if (variant === 'borderless' || variant === 'embedded') {

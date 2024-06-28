@@ -38,6 +38,7 @@ export function TableThElement({
   cellRef,
   tableRole,
   children,
+  ...props
 }: TableThElementProps) {
   const stickyStyles = useStickyCellStyles({
     stickyColumns: stickyState,
@@ -69,6 +70,7 @@ export function TableThElement({
       ref={mergedRef}
       {...getTableColHeaderRoleProps({ tableRole, sortingStatus, colIndex })}
       tabIndex={cellTabIndex === -1 ? undefined : cellTabIndex}
+      {...props}
     >
       {children}
     </th>

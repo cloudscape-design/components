@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import styles from './styles.css.js';
 import { useUniqueId } from '../../hooks/use-unique-id';
 import { InternalBaseComponentProps } from '../../hooks/use-base-component/index.js';
+import { getAnalyticsMetadataAttribute, getAnalyticslabelAttribute } from '../../analytics/autocapture/utils.js';
 
 export interface AbstractSwitchProps extends React.HTMLAttributes<HTMLElement>, InternalBaseComponentProps {
   controlId?: string;
@@ -72,11 +73,22 @@ export default function AbstractSwitch({
   }
 
   return (
-    <span {...rest} className={clsx(styles.wrapper, rest.className)} ref={__internalRootRef}>
+    <span
+      {...rest}
+      className={clsx(styles.wrapper, rest.className)}
+      ref={__internalRootRef}
+      {...getAnalyticslabelAttribute(`.${styles.label}`)}
+    >
       <span
         className={styles['label-wrapper']}
         aria-disabled={disabled ? 'true' : undefined}
         onClick={disabled || readOnly ? undefined : onClick}
+        {...getAnalyticsMetadataAttribute({
+          action: 'select',
+          detail: {
+            label: `.${styles.label}`,
+          },
+        })}
       >
         <span className={clsx(styles.control, controlClassName)}>
           {styledControl}

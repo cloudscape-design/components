@@ -8,6 +8,7 @@ import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
+import { getAnalyticsMetadataAttribute } from '../internal/analytics/autocapture/utils';
 
 export { ContainerProps };
 
@@ -41,6 +42,12 @@ export default function Container({
         {...props}
         {...externalProps}
         {...baseComponentProps}
+        {...getAnalyticsMetadataAttribute({
+          component: {
+            name: 'Container',
+            label: '&',
+          },
+        })}
       />
     </AnalyticsFunnelSubStep>
   );

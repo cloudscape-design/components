@@ -5,15 +5,29 @@ import { TilesProps } from './interfaces';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import InternalTiles from './internal';
+import { getAnalyticsMetadataAttribute } from '../internal/analytics/autocapture/utils';
 
 export { TilesProps };
+const componentName = 'Tiles';
 
 const Tiles = React.forwardRef((props: TilesProps, ref: React.Ref<TilesProps.Ref>) => {
-  const baseComponentProps = useBaseComponent('Tiles', {
+  const baseComponentProps = useBaseComponent(componentName, {
     props: { columns: props.columns },
   });
-  return <InternalTiles ref={ref} {...props} {...baseComponentProps} />;
+  return (
+    <InternalTiles
+      ref={ref}
+      {...props}
+      {...baseComponentProps}
+      {...getAnalyticsMetadataAttribute({
+        component: {
+          name: componentName,
+          label: '&',
+        },
+      })}
+    />
+  );
 });
 
-applyDisplayName(Tiles, 'Tiles');
+applyDisplayName(Tiles, componentName);
 export default Tiles;

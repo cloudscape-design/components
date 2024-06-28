@@ -15,6 +15,7 @@ import { useModalContext } from '../internal/context/modal-context';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { ContainerHeaderContextProvider } from '../internal/context/container-header';
 import { getGlobalFlag } from '../internal/utils/global-flags';
+import { getAnalyticslabelAttribute } from '../internal/analytics/autocapture/utils';
 
 export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>, InternalBaseComponentProps {
   __stickyHeader?: boolean;
@@ -116,6 +117,7 @@ export default function InternalContainer({
         isRefresh && styles.refresh
       )}
       ref={mergedRef}
+      {...getAnalyticslabelAttribute(`.${styles.header} h1, .${styles.header} h2, .${styles.header} h3`)}
     >
       {hasMedia && (
         <div

@@ -22,7 +22,10 @@ interface TileProps {
 }
 
 export const Tile = React.forwardRef(
-  ({ item, selected, name, breakpoint, onChange, readOnly }: TileProps, forwardedRef: React.Ref<HTMLInputElement>) => {
+  (
+    { item, selected, name, breakpoint, onChange, readOnly, ...rest }: TileProps,
+    forwardedRef: React.Ref<HTMLInputElement>
+  ) => {
     const internalRef = useRef<HTMLInputElement>(null);
     const isVisualRefresh = useVisualRefresh();
 
@@ -49,6 +52,7 @@ export const Tile = React.forwardRef(
             fireNonCancelableEvent(onChange, { value: item.value });
           }
         }}
+        {...rest}
       >
         <div className={clsx(styles.control, { [styles['no-image']]: !item.image })}>
           <RadioButton

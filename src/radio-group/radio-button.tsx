@@ -18,7 +18,7 @@ interface RadioButtonProps extends RadioGroupProps.RadioButtonDefinition {
 }
 
 export default React.forwardRef(function RadioButton(
-  { name, label, value, checked, description, disabled, controlId, onChange, readOnly }: RadioButtonProps,
+  { name, label, value, checked, description, disabled, controlId, onChange, readOnly, ...rest }: RadioButtonProps,
   ref: React.Ref<HTMLInputElement>
 ) {
   const isVisualRefresh = useVisualRefresh();
@@ -37,6 +37,7 @@ export default React.forwardRef(function RadioButton(
       disabled={disabled}
       readOnly={readOnly}
       controlId={controlId}
+      {...rest}
       nativeControl={nativeControlProps => (
         <input
           {...nativeControlProps}

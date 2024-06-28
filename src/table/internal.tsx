@@ -52,6 +52,8 @@ import { useProgressiveLoadingProps } from './progressive-loading/progressive-lo
 import { usePrevious } from '../internal/hooks/use-previous';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { useTableInteractionMetrics } from '../internal/hooks/use-table-interaction-metrics';
+import { getAnalyticsMetadataAttribute } from '../internal/analytics/autocapture/utils';
+import { AutoCaptureMetadata } from '../internal/analytics/autocapture/interfaces';
 
 const GRID_NAVIGATION_PAGE_SIZE = 10;
 const SELECTION_COLUMN_WIDTH = 54;
@@ -537,6 +539,8 @@ const InternalTable = React.forwardRef(
                                     onFocusDown={moveFocusDown}
                                     onFocusUp={moveFocusUp}
                                     {...getItemSelectionProps(row.item)}
+                                    rowIndex={rowIndex}
+                                    itemKey={`${getTableItemKey(row.item)}`}
                                   />
                                 </TableTdElement>
                               )}
@@ -547,6 +551,18 @@ const InternalTable = React.forwardRef(
                                 const isEditable = !!column.editConfig && !cellEditing.isLoading;
                                 const cellExpandableProps =
                                   isExpandable && colIndex === 0 ? expandableProps : undefined;
+
+                                const analyticsMetadata: AutoCaptureMetadata = {
+                                  component: {
+                                    innerContext: {
+                                      position: `${rowIndex + 1},${colIndex + 1}`,
+                                      columnId: column.id ? `${column.id}` : '',
+                                      columnLabel: `^ table thead tr th:nth-child(${colIndex + (selectionType ? 2 : 1)})`,
+                                      item: `${getTableItemKey(row.item)}`,
+                                    },
+                                  },
+                                };
+
                                 return (
                                   <TableBodyCell
                                     key={getColumnKey(column, colIndex)}
@@ -577,6 +593,7 @@ const InternalTable = React.forwardRef(
                                     columnId={column.id ?? colIndex}
                                     colIndex={colIndex + colIndexOffset}
                                     {...cellExpandableProps}
+                                    {...getAnalyticsMetadataAttribute(analyticsMetadata)}
                                   />
                                 );
                               })}

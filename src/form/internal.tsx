@@ -10,8 +10,12 @@ import { FormProps } from './interfaces';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import LiveRegion from '../internal/components/live-region';
 import { useInternalI18n } from '../i18n/context';
+import { getAnalyticsMetadataAttribute } from '../internal/analytics/autocapture/utils';
 
-type InternalFormProps = FormProps & InternalBaseComponentProps;
+type InternalFormProps = {
+  __injectAnalyticsComponentMetadata?: boolean;
+} & FormProps &
+  InternalBaseComponentProps;
 
 export default function InternalForm({
   children,
@@ -21,6 +25,7 @@ export default function InternalForm({
   actions,
   secondaryActions,
   __internalRootRef,
+  __injectAnalyticsComponentMetadata,
   ...props
 }: InternalFormProps) {
   const baseProps = getBaseProps(props);
@@ -28,7 +33,19 @@ export default function InternalForm({
   const errorIconAriaLabel = i18n('errorIconAriaLabel', errorIconAriaLabelOverride);
 
   return (
-    <div {...baseProps} ref={__internalRootRef} className={clsx(styles.root, baseProps.className)}>
+    <div
+      {...baseProps}
+      ref={__internalRootRef}
+      className={clsx(styles.root, baseProps.className)}
+      {...(__injectAnalyticsComponentMetadata
+        ? getAnalyticsMetadataAttribute({
+            component: {
+              name: 'Form',
+              label: `.${styles.header} h1, .${styles.header} h2, .${styles.header} h3`,
+            },
+          })
+        : {})}
+    >
       {header && <div className={styles.header}>{header}</div>}
       {children && <div className={styles.content}>{children}</div>}
       {errorText && (

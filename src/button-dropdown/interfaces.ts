@@ -208,6 +208,7 @@ export interface CategoryProps extends HighlightProps {
   lastInDropdown: boolean;
   expandToViewport?: boolean;
   variant?: ItemListProps['variant'];
+  position?: string;
 }
 
 export interface ItemListProps extends HighlightProps {
@@ -220,6 +221,7 @@ export interface ItemListProps extends HighlightProps {
   lastInDropdown: boolean;
   expandToViewport?: boolean;
   variant?: InternalButtonDropdownProps['variant'];
+  position?: string;
 }
 
 export interface LinkItem extends ButtonDropdownProps.Item {
@@ -236,6 +238,7 @@ export interface ItemProps {
   hasCategoryHeader: boolean;
   isKeyboardHighlighted?: boolean;
   variant?: ItemListProps['variant'];
+  position?: string;
 }
 
 export interface InternalItem extends ButtonDropdownProps.Item {

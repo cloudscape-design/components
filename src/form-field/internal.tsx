@@ -29,6 +29,7 @@ import {
   getSubStepAllSelector,
 } from '../internal/analytics/selectors';
 import LiveRegion from '../internal/components/live-region';
+import { copyAnalyticsMetadataAttribute } from '../internal/analytics/autocapture/utils';
 
 interface FormFieldErrorProps {
   id?: string;
@@ -217,6 +218,7 @@ export default function InternalFormField({
       className={clsx(baseProps.className, styles.root)}
       ref={__internalRootRef}
       {...analyticsAttributes}
+      {...copyAnalyticsMetadataAttribute(rest)}
     >
       <div className={clsx(styles['label-wrapper'], __hideLabel && styles['visually-hidden'])}>
         {label && (

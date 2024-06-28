@@ -7,12 +7,15 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 
 import { FormFieldProps } from './interfaces';
+import { getAnalyticsMetadataAttribute } from '../internal/analytics/autocapture/utils';
+import styles from './styles.css.js';
 
 export { FormFieldProps };
+const componentName = 'FormField';
 
 export default function FormField({ stretch = false, ...props }: FormFieldProps) {
   const analyticsMetadata = getAnalyticsMetadataProps(props as BasePropsWithAnalyticsMetadata);
-  const baseComponentProps = useBaseComponent('FormField', { props: { stretch } }, analyticsMetadata);
+  const baseComponentProps = useBaseComponent(componentName, { props: { stretch } }, analyticsMetadata);
 
   return (
     <InternalFormField
@@ -21,6 +24,12 @@ export default function FormField({ stretch = false, ...props }: FormFieldProps)
       __hideLabel={false}
       __analyticsMetadata={analyticsMetadata}
       {...baseComponentProps}
+      {...getAnalyticsMetadataAttribute({
+        component: {
+          name: componentName,
+          label: `.${styles.label}`,
+        },
+      })}
     />
   );
 }

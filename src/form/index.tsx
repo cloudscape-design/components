@@ -57,6 +57,7 @@ const FormWithAnalytics = ({ variant = 'full-page', actions, errorText, ...props
         {...props}
         {...funnelProps}
         {...funnelStepProps}
+        __injectAnalyticsComponentMetadata={true}
       />
     </ButtonContext.Provider>
   );

@@ -11,6 +11,7 @@ import { CategoryProps } from '../interfaces';
 import useHiddenDescription from '../utils/use-hidden-description';
 import Tooltip from '../tooltip.js';
 import { getMenuItemProps } from '../utils/menu-item';
+import { getAnalyticsMetadataAttribute } from '../../internal/analytics/autocapture/utils.js';
 
 const ExpandableCategoryElement = ({
   item,
@@ -25,6 +26,7 @@ const ExpandableCategoryElement = ({
   disabled,
   expandToViewport,
   variant,
+  position,
 }: CategoryProps) => {
   const highlighted = isHighlighted(item);
   const expanded = isExpanded(item);
@@ -66,6 +68,14 @@ const ExpandableCategoryElement = ({
       ref={triggerRef}
       {...getMenuItemProps({ parent: true, expanded, disabled })}
       {...(isDisabledWithReason ? targetProps : {})}
+      {...getAnalyticsMetadataAttribute({
+        action: 'expand',
+        detail: {
+          position: position || '0',
+          label: '&',
+          expanded: `${!expanded}`,
+        },
+      })}
     >
       {item.text}
       <span className={clsx(styles['expand-icon'], styles['expand-icon-right'])}>
@@ -112,6 +122,7 @@ const ExpandableCategoryElement = ({
               lastInDropdown={lastInDropdown}
               highlightItem={highlightItem}
               variant={variant}
+              position={position}
             />
           </ul>
         )}

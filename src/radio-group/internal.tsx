@@ -10,6 +10,7 @@ import { useFormFieldContext } from '../internal/context/form-field-context';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import useRadioGroupForwardFocus from '../internal/hooks/forward-focus/radio-group';
+import { getAnalyticsMetadataAttribute } from '../internal/analytics/autocapture/utils';
 
 type InternalRadioGroupProps = RadioGroupProps & InternalBaseComponentProps;
 
@@ -62,6 +63,12 @@ const InternalRadioGroup = React.forwardRef(
               onChange={onChange}
               controlId={item.controlId}
               readOnly={readOnly}
+              {...getAnalyticsMetadataAttribute({
+                detail: {
+                  position: `${index + 1}`,
+                  value: item.value,
+                },
+              })}
             />
           ))}
       </div>

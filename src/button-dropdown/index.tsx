@@ -6,6 +6,8 @@ import InternalButtonDropdown from './internal';
 import { getBaseProps } from '../internal/base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
+import styles from './styles.css.js';
+import { getAnalyticsMetadataAttribute } from '../internal/analytics/autocapture/utils';
 
 export { ButtonDropdownProps };
 
@@ -48,6 +50,13 @@ const ButtonDropdown = React.forwardRef(
         onItemClick={onItemClick}
         onItemFollow={onItemFollow}
         mainAction={mainAction}
+        {...getAnalyticsMetadataAttribute({
+          component: {
+            name: 'ButtonDropdown',
+            label: `.${styles['trigger-label']}`,
+            properties: { variant },
+          },
+        })}
       >
         {children}
       </InternalButtonDropdown>
