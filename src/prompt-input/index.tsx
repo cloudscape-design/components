@@ -62,7 +62,7 @@ const PromptInput = React.forwardRef(
       }
 
       if (event.key === 'Enter' && !event.shiftKey) {
-        if ('form' in event.target && !event.isDefaultPrevented()) {
+        if ('form' in event.target && event.target.form !== null && !event.isDefaultPrevented()) {
           (event.target.form as HTMLFormElement).requestSubmit();
         }
 
