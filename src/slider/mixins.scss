@@ -50,6 +50,9 @@ $border-radius-slider-thumb: 50%;
 @mixin base-thumb-focus-readonly-styles {
   block-size: $thumb-readonly-size;
   inline-size: $thumb-readonly-size;
+  box-shadow:
+    0px 0 0 2px awsui.$color-background-slider-handle-ring,
+    0 0 0 4px awsui.$color-foreground-control-read-only;
   background: awsui.$color-foreground-control-read-only;
 
   border-color: awsui.$color-background-slider-handle-active;
