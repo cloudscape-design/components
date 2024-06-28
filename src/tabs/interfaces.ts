@@ -13,9 +13,6 @@ export interface TabsProps extends BaseComponentProps {
    * - `content` (ReactNode) - (Optional) Tab content to render in the container.
    * - `disabled` (boolean) - (Optional) Specifies if this tab is disabled.
    * - `dismissible` (boolean) - (Optional) Determines whether the tab includes a dismiss icon button. By default, the dismiss button is not included.
-   * - `dismissLabel` (boolean) - (Optional) Specifies an aria-label for the dismiss icon button.
-   *    When a user clicks on this button the onDismiss handler is called.
-   * - `dismissDisabled` (boolean) - (Optional) Determines whether the dismissible button is disabled. We recommend using this only when the dismissible is present
    * - `action` (ReactNode) - (Optional) Action for the tab, rendered next to its corresponding label.
    *    Although it is technically possible to insert any content, our UX guidelines only allow you to add
    *    an icon button or icon button dropdown.
@@ -109,7 +106,7 @@ export namespace TabsProps {
      */
     dismissLabel?: string;
     /**
-     * (Optional) Determines whether the dismissible button is disabled. We recommend using this only when the dismissible is present
+     * (Optional) Determines whether the dismiss button is disabled.
      */
     dismissDisabled?: boolean;
     /**
