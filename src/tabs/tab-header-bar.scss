@@ -87,6 +87,10 @@ $label-horizontal-spacing: awsui.$space-xs;
   @include styles.text-wrapping;
 }
 
+.tabs-tab-no-actions > .tabs-tab-label {
+  padding-inline: awsui.$space-l;
+}
+
 .tabs-tab-dismiss,
 .tabs-tab-action {
   /* Used as a selector for tests */
@@ -105,13 +109,16 @@ $label-horizontal-spacing: awsui.$space-xs;
   &,
   & > button {
     background-color: transparent;
-    text-align: stretch;
   }
 
   & > .tabs-tab-dismiss,
   & > .tabs-tab-action {
     display: flex;
     align-items: center;
+  }
+
+  &.tabs-tab-no-actions {
+    padding-inline: 0;
   }
 
   &.refresh > span:first-of-type {
@@ -160,6 +167,9 @@ $label-horizontal-spacing: awsui.$space-xs;
       inset: calc(#{awsui.$space-scaled-s} - #{awsui.$border-active-width}) 0;
     }
   }
+  & > .tabs-tab-header-container.tabs-tab-no-actions {
+    margin-inline-end: calc(-1 * awsui.$space-scaled-xxxs);
+  }
 }
 
 .tabs-tab-link {
@@ -171,7 +181,6 @@ $label-horizontal-spacing: awsui.$space-xs;
   padding-block-start: calc(#{awsui.$space-scaled-s} - 2px);
   padding-block-end: calc(#{awsui.$space-scaled-s} - 1px);
 
-  padding-inline: 0;
   margin-block-start: 1px;
   border-block: awsui.$border-divider-section-width solid transparent;
   border-inline: awsui.$border-divider-section-width solid transparent;
@@ -189,6 +198,10 @@ $label-horizontal-spacing: awsui.$space-xs;
     padding-block-end: calc(awsui.$space-static-xs - 1px);
 
     margin-block-start: 0;
+  }
+
+  &.tabs-tab-no-actions {
+    padding-inline: 0;
   }
 
   &:hover {
@@ -211,16 +224,24 @@ $label-horizontal-spacing: awsui.$space-xs;
 // Remediate focus shadow
 .tabs-tab:first-child {
   margin-inline-start: 1px;
-  & > .tabs-tab-header-container {
+  & > .tabs-tab-header-container:not(.tabs-tab-no-actions) {
     padding-inline-start: calc(#{$label-horizontal-spacing} - 1px);
+  }
+
+  & > .tabs-tab-header-container > .tabs-tab-link.tabs-tab-no-actions > .tabs-tab-label {
+    padding-inline-start: calc(awsui.$space-l - 2px);
   }
 }
 
 // Remediate focus shadow
 .tabs-tab:last-child {
   margin-inline-end: 1px;
-  & > .tabs-tab-header-container {
+  & > .tabs-tab-header-container:not(.tabs-tab-no-actions) {
     padding-inline-end: calc(#{$label-horizontal-spacing} - 1px);
+  }
+
+  & > .tabs-tab-header-container > .tabs-tab-link.tabs-tab-no-actions > .tabs-tab-label {
+    padding-inline-end: calc(awsui.$space-l - 2px);
   }
 }
 
@@ -243,8 +264,4 @@ $label-horizontal-spacing: awsui.$space-xs;
 
 .tabs-header-with-divider {
   border-block-end: awsui.$border-divider-section-width solid $separator-color;
-}
-
-.tabs-tab-no-actions {
-  /* Used as a selector for tests */
 }
