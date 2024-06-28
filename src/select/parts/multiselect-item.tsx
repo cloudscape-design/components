@@ -51,7 +51,7 @@ const MultiSelectItem = (
     [styles.disabled]: disabled,
   });
 
-  const { targetProps, descriptionEl } = useHiddenDescription(disabledReason);
+  const { descriptionId, descriptionEl } = useHiddenDescription(disabledReason);
 
   return (
     <SelectableItem
@@ -70,7 +70,7 @@ const MultiSelectItem = (
       screenReaderContent={screenReaderContent}
       ariaPosinset={ariaPosinset}
       ariaSetsize={ariaSetsize}
-      {...(isDisabledWithReason ? targetProps : {})}
+      ariaDescribedby={isDisabledWithReason ? descriptionId : ''}
       {...baseProps}
     >
       <div className={className}>

@@ -57,7 +57,7 @@ const Item = (
   const isDisabledWithReason = !!disabledReason;
   const internalRef = useRef<HTMLDivElement>(null);
 
-  const { targetProps, descriptionEl } = useHiddenDescription(disabledReason);
+  const { descriptionEl, descriptionId } = useHiddenDescription(disabledReason);
 
   return (
     <SelectableItem
@@ -75,8 +75,8 @@ const Item = (
       ariaPosinset={ariaPosinset}
       ariaSetsize={ariaSetsize}
       highlightType={highlightType}
+      ariaDescribedby={isDisabledWithReason ? descriptionId : ''}
       {...baseProps}
-      {...(isDisabledWithReason ? targetProps : {})}
     >
       <div className={clsx(styles.item, !isParent && wrappedOption.labelTag && styles['show-label-tag'])}>
         {hasCheckbox && !isParent && (
