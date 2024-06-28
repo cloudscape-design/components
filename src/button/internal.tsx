@@ -5,6 +5,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { fireCancelableEvent, isPlainLeftClick } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import styles from './styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
 import { ButtonIconProps, LeftIcon, RightIcon } from './icon-helper';
 import { ButtonProps } from './interfaces';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -77,7 +78,7 @@ export const InternalButton = React.forwardRef(
     checkSafeUrl('Button', href);
     const isAnchor = Boolean(href);
     const isNotInteractive = loading || disabled;
-    const hasAriaDisabled = (loading && !disabled) || (disabled && __focusable) || (disabled && disabledReason);
+    const hasAriaDisabled = (loading && !disabled) || (disabled && __focusable) || (disabled && !!disabledReason);
     const isDisabledWithReason = !!disabledReason && disabled;
     const shouldHaveContent =
       children && ['icon', 'inline-icon', 'flashbar-icon', 'modal-dismiss'].indexOf(variant) === -1;
@@ -228,18 +229,10 @@ export const InternalButton = React.forwardRef(
           type={formAction === 'none' ? 'button' : 'submit'}
           disabled={disabled && !__focusable && !disabledReason}
           aria-disabled={hasAriaDisabled ? true : undefined}
-          onFocus={() => {
-            setShowTooltip(true);
-          }}
-          onBlur={() => {
-            setShowTooltip(false);
-          }}
-          onMouseEnter={() => {
-            setShowTooltip(true);
-          }}
-          onMouseLeave={() => {
-            setShowTooltip(false);
-          }}
+          onFocus={isDisabledWithReason ? () => setShowTooltip(true) : undefined}
+          onBlur={isDisabledWithReason ? () => setShowTooltip(false) : undefined}
+          onMouseEnter={isDisabledWithReason ? () => setShowTooltip(true) : undefined}
+          onMouseLeave={isDisabledWithReason ? () => setShowTooltip(false) : undefined}
           {...(isDisabledWithReason ? targetProps : {})}
         >
           {buttonContent}
@@ -247,7 +240,11 @@ export const InternalButton = React.forwardRef(
             <>
               {descriptionEl}
               {showTooltip && (
-                <Tooltip className={styles['disabled-reason-tooltip']} trackRef={buttonRef} value={disabledReason!} />
+                <Tooltip
+                  className={testUtilStyles['disabled-reason-tooltip']}
+                  trackRef={buttonRef}
+                  value={disabledReason!}
+                />
               )}
             </>
           )}

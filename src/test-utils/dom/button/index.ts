@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper, usesDom, createWrapper } from '@cloudscape-design/test-utils-core/dom';
 import styles from '../../../button/styles.selectors.js';
+import buttonTestUtilsStyles from '../../../button/test-classes/styles.css.js';
 import spinnerStyles from '../../../spinner/styles.selectors.js';
 
 export default class ButtonWrapper extends ComponentWrapper<HTMLButtonElement> {
@@ -21,6 +22,6 @@ export default class ButtonWrapper extends ComponentWrapper<HTMLButtonElement> {
   }
 
   findDisabledReason(): ElementWrapper | null {
-    return createWrapper().find(`.${styles['disabled-reason-tooltip']}`);
+    return createWrapper().find(`.${buttonTestUtilsStyles['disabled-reason-tooltip']}`);
   }
 }
