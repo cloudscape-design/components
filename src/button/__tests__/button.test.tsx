@@ -187,6 +187,15 @@ describe('Button Component', () => {
 
       expect(wrapper.find('span[hidden]')!.getElement()).toHaveTextContent('reason');
     });
+
+    test('does not trigger onClick handler when disabled with reason', () => {
+      const onClick = jest.fn();
+      const wrapper = renderButton({ disabled: true, disabledReason: 'reason', onClick });
+
+      wrapper.click();
+
+      expect(onClick).not.toHaveBeenCalled();
+    });
   });
 
   describe('iconName property', () => {
