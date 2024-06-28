@@ -95,7 +95,7 @@ export function ObjectsTable({
               <>
                 <InternalIcon name={item.IsFolder ? 'folder' : 'file'} />{' '}
                 {isClickable ? (
-                  <InternalLink onFollow={() => item.Key && onDrilldown(item)} variant="link">
+                  <InternalLink onFollow={() => item.Key && onDrilldown(item)} variant="secondary">
                     {item.Key}
                   </InternalLink>
                 ) : (
