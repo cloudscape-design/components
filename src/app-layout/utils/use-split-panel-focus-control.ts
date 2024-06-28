@@ -1,14 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { DependencyList, RefObject, useEffect, useRef } from 'react';
-import { ButtonProps } from '../../button/interfaces';
+import { Focusable } from './use-focus-control';
 
 export type SplitPanelLastInteraction = { type: 'open' } | { type: 'close' } | { type: 'position' };
 
 export interface SplitPanelFocusControlRefs {
-  toggle: RefObject<ButtonProps.Ref>;
+  toggle: RefObject<Focusable>;
   slider: RefObject<HTMLDivElement>;
-  preferences: RefObject<ButtonProps.Ref>;
+  preferences: RefObject<Focusable>;
 }
 export interface SplitPanelFocusControlState {
   refs: SplitPanelFocusControlRefs;
@@ -17,9 +17,9 @@ export interface SplitPanelFocusControlState {
 
 export function useSplitPanelFocusControl(dependencies: DependencyList): SplitPanelFocusControlState {
   const refs = {
-    toggle: useRef<ButtonProps.Ref>(null),
+    toggle: useRef<Focusable>(null),
     slider: useRef<HTMLDivElement>(null),
-    preferences: useRef<ButtonProps.Ref>(null),
+    preferences: useRef<Focusable>(null),
   };
   const lastInteraction = useRef<SplitPanelLastInteraction | null>(null);
 
