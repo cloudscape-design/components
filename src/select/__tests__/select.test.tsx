@@ -515,10 +515,20 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
         const onChange = jest.fn();
         const { wrapper } = renderSelect({
           options: [{ label: 'First', value: '1', disabled: true, disabledReason: 'disabled reason' }],
+          onChange,
         });
         wrapper.openDropdown();
         wrapper.selectOptionByValue('1', { expandToViewport });
         expect(onChange).not.toHaveBeenCalled();
+      });
+
+      test('click on disabled with reason option does not close dropdown', () => {
+        const { wrapper } = renderSelect({
+          options: [{ label: 'First', value: '1', disabled: true, disabledReason: 'disabled reason' }],
+        });
+        wrapper.openDropdown();
+        wrapper.selectOptionByValue('1', { expandToViewport });
+        expect(wrapper.findDropdown({ expandToViewport }).getElement()).not.toBe(null);
       });
     });
   });
