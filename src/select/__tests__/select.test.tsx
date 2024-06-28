@@ -458,7 +458,7 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
         });
         wrapper.openDropdown();
 
-        expect(wrapper.findDropdown({ expandToViewport }).findSelectableItem(1)!.findDisabledReason()).toBe(null);
+        expect(wrapper.findDropdown({ expandToViewport }).findOption(1)!.findDisabledReason()).toBe(null);
       });
 
       test('has no tooltip without disabledReason', () => {
@@ -468,7 +468,7 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
         wrapper.openDropdown();
         wrapper.findTrigger()!.keydown(KeyCode.down);
 
-        expect(wrapper.findDropdown({ expandToViewport }).findSelectableItem(1)!.findDisabledReason()).toBe(null);
+        expect(wrapper.findDropdown({ expandToViewport }).findOption(1)!.findDisabledReason()).toBe(null);
       });
 
       test('open tooltip when the item is highlighted', () => {
@@ -479,51 +479,35 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
         wrapper.findTrigger().keydown(KeyCode.down);
 
         expect(
-          wrapper.findDropdown({ expandToViewport }).findSelectableItem(1)!.findDisabledReason()!.getElement()
+          wrapper.findDropdown({ expandToViewport }).findOption(1)!.findDisabledReason()!.getElement()
         ).toHaveTextContent('disabled reason');
       });
 
-      test('has no aria-describedby by default', () => {
+      test('has no disabledReason a11y attributes by default', () => {
         const { wrapper } = renderSelect({
           options: defaultOptions,
         });
         wrapper.openDropdown();
 
-        expect(wrapper.findDropdown({ expandToViewport }).findSelectableItem(1)!.getElement()).not.toHaveAttribute(
-          'aria-describedby'
-        );
-      });
-
-      test('has no aria-describedby without disabledReason', () => {
-        const { wrapper } = renderSelect({
-          options: [{ label: 'First', value: '1', disabled: true }],
-        });
-        wrapper.openDropdown();
-
-        expect(wrapper.findDropdown({ expandToViewport }).findSelectableItem(1)!.getElement()).not.toHaveAttribute(
-          'aria-describedby'
-        );
-      });
-
-      test('has aria-describedby with disabledReason', () => {
-        const { wrapper } = renderSelect({
-          options: [{ label: 'First', value: '1', disabled: true, disabledReason: 'disabled reason' }],
-        });
-        wrapper.openDropdown();
-
-        expect(wrapper.findDropdown({ expandToViewport }).findSelectableItem(1)!.getElement()).toHaveAttribute(
-          'aria-describedby'
-        );
-      });
-
-      test('has hidden element (linked to aria-describedby) with disabledReason', () => {
-        const { wrapper } = renderSelect({
-          options: [{ label: 'First', value: '1', disabled: true, disabledReason: 'disabled reason' }],
-        });
-        wrapper.openDropdown();
-
         expect(
-          wrapper.findDropdown({ expandToViewport }).findSelectableItem(1)!.find('span[hidden]')!.getElement()
+          wrapper.findDropdown({ expandToViewport })!.find('[data-test-index="1"]')!.getElement()
+        ).not.toHaveAttribute('aria-describedby');
+        expect(wrapper.findDropdown({ expandToViewport })!.find('[data-test-index="1"]')!.find('span[hidden]')).toBe(
+          null
+        );
+      });
+
+      test('has disabledReason a11y attributes', () => {
+        const { wrapper } = renderSelect({
+          options: [{ label: 'First', value: '1', disabled: true, disabledReason: 'disabled reason' }],
+        });
+        wrapper.openDropdown();
+
+        expect(wrapper.findDropdown({ expandToViewport })!.find('[data-test-index="1"]')!.getElement()).toHaveAttribute(
+          'aria-describedby'
+        );
+        expect(
+          wrapper.findDropdown({ expandToViewport })!.find('[data-test-index="1"]')!.find('span[hidden]')!.getElement()
         ).toHaveTextContent('disabled reason');
       });
 

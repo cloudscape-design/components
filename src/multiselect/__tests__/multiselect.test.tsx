@@ -684,142 +684,59 @@ describe('Disabled item with reason', () => {
   test('has no tooltip open by default', () => {
     const { wrapper } = renderMultiselect(
       <Multiselect
-        options={defaultOptions.map((item, index) => {
-          if (index === 0) {
-            return {
-              ...item,
-              disabled: true,
-              disabledReason: 'disabled reason',
-            };
-          }
-
-          return item;
-        })}
+        options={[{ label: 'First', value: '1', disabled: true, disabledReason: 'disabled reason' }]}
         selectedOptions={[]}
       />
     );
     wrapper.openDropdown();
 
-    expect(wrapper.findDropdown().findSelectableItem(1)!.findDisabledReason()).toBe(null);
+    expect(wrapper.findDropdown().findOption(1)!.findDisabledReason()).toBe(null);
   });
 
   test('has no tooltip without disabledReason', () => {
     const { wrapper } = renderMultiselect(
-      <Multiselect
-        options={defaultOptions.map((item, index) => {
-          if (index === 0) {
-            return {
-              ...item,
-              disabled: true,
-            };
-          }
-
-          return item;
-        })}
-        selectedOptions={[]}
-      />
+      <Multiselect options={[{ label: 'First', value: '1', disabled: true }]} selectedOptions={[]} />
     );
     wrapper.openDropdown();
     wrapper.findTrigger()!.keydown(KeyCode.down);
 
-    expect(wrapper.findDropdown().findSelectableItem(1)!.findDisabledReason()).toBe(null);
+    expect(wrapper.findDropdown().findOption(1)!.findDisabledReason()).toBe(null);
   });
 
   test('open tooltip when the item is highlighted', () => {
     const { wrapper } = renderMultiselect(
       <Multiselect
-        options={defaultOptions.map((item, index) => {
-          if (index === 0) {
-            return {
-              ...item,
-              disabled: true,
-              disabledReason: 'disabled reason',
-            };
-          }
-
-          return item;
-        })}
+        options={[{ label: 'First', value: '1', disabled: true, disabledReason: 'disabled reason' }]}
         selectedOptions={[]}
       />
     );
     wrapper.openDropdown();
     wrapper.findTrigger().keydown(KeyCode.down);
 
-    expect(wrapper.findDropdown().findSelectableItem(1)!.findDisabledReason()!.getElement()).toHaveTextContent(
+    expect(wrapper.findDropdown().findOption(1)!.findDisabledReason()!.getElement()).toHaveTextContent(
       'disabled reason'
     );
   });
 
-  test('has no aria-describedby by default', () => {
+  test('has no disabledReason a11y attributes by default', () => {
     const { wrapper } = renderMultiselect(<Multiselect options={defaultOptions} selectedOptions={[]} />);
     wrapper.openDropdown();
 
-    expect(wrapper.findDropdown().findSelectableItem(1)!.getElement()).not.toHaveAttribute('aria-describedby');
+    expect(wrapper.findDropdown()!.find('[data-test-index="1"]')!.getElement()).not.toHaveAttribute('aria-describedby');
+    expect(wrapper.findDropdown()!.find('[data-test-index="1"]')!.find('span[hidden]')).toBe(null);
   });
 
-  test('has no aria-describedby without disabledReason', () => {
+  test('has disabledReason a11y attributes', () => {
     const { wrapper } = renderMultiselect(
       <Multiselect
-        options={defaultOptions.map((item, index) => {
-          if (index === 0) {
-            return {
-              ...item,
-              disabled: true,
-            };
-          }
-
-          return item;
-        })}
+        options={[{ label: 'First', value: '1', disabled: true, disabledReason: 'disabled reason' }]}
         selectedOptions={[]}
       />
     );
     wrapper.openDropdown();
 
-    expect(wrapper.findDropdown().findSelectableItem(1)!.getElement()).not.toHaveAttribute('aria-describedby');
-  });
-
-  test('has aria-describedby with disabledReason', () => {
-    const { wrapper } = renderMultiselect(
-      <Multiselect
-        options={defaultOptions.map((item, index) => {
-          if (index === 0) {
-            return {
-              ...item,
-              disabled: true,
-              disabledReason: 'disabled reason',
-            };
-          }
-
-          return item;
-        })}
-        selectedOptions={[]}
-      />
-    );
-    wrapper.openDropdown();
-
-    expect(wrapper.findDropdown().findSelectableItem(1)!.getElement()).toHaveAttribute('aria-describedby');
-  });
-
-  test('has hidden element (linked to aria-describedby) with disabledReason', () => {
-    const { wrapper } = renderMultiselect(
-      <Multiselect
-        options={defaultOptions.map((item, index) => {
-          if (index === 0) {
-            return {
-              ...item,
-              disabled: true,
-              disabledReason: 'disabled reason',
-            };
-          }
-
-          return item;
-        })}
-        selectedOptions={[]}
-      />
-    );
-    wrapper.openDropdown();
-
-    expect(wrapper.findDropdown().findSelectableItem(1)!.find('span[hidden]')!.getElement()).toHaveTextContent(
+    expect(wrapper.findDropdown()!.find('[data-test-index="1"]')!.getElement()).toHaveAttribute('aria-describedby');
+    expect(wrapper.findDropdown()!.find('[data-test-index="1"]')!.find('span[hidden]')!.getElement()).toHaveTextContent(
       'disabled reason'
     );
   });
@@ -828,17 +745,7 @@ describe('Disabled item with reason', () => {
     const onChange = jest.fn();
     const { wrapper } = renderMultiselect(
       <Multiselect
-        options={defaultOptions.map((item, index) => {
-          if (index === 0) {
-            return {
-              ...item,
-              disabled: true,
-              disabledReason: 'disabled reason',
-            };
-          }
-
-          return item;
-        })}
+        options={[{ label: 'First', value: '1', disabled: true, disabledReason: 'disabled reason' }]}
         selectedOptions={[]}
       />
     );
