@@ -1,0 +1,19 @@
+# This workflow releases the current package to a dedicated private CodeArtifact repository.
+# One repository may publish more than one package. For more details refer to the release-package Action.
+name: Release to dev branch
+
+on:
+  push:
+    branches:
+      - 'dev-v3-*'
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  release:
+    uses: cloudscape-design/actions/.github/workflows/release.yml@main
+    secrets: inherit
+    with:
+      skip-test: true
