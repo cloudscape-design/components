@@ -73,7 +73,7 @@ $shadow-color: rgba(0, 0, 0, 0.25);
     box-shadow: none;
   }
 
-  &-readonly {
+  &-readonly:not(&-disabled) {
     box-shadow: none;
     &.toggle-handle-checked {
       background: awsui.$color-foreground-control-read-only;
