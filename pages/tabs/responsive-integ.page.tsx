@@ -85,6 +85,7 @@ export default function TabsDemoPage() {
       disabled: true,
       dismissible: true,
       dismissLabel: 'Dismiss second tab (disabled)',
+      dismissDisabled: true,
       action: (
         <ButtonDropdown
           variant="icon"
@@ -96,6 +97,7 @@ export default function TabsDemoPage() {
             { id: 'delete', text: 'Delete', disabled: true },
           ]}
           expandToViewport={true}
+          disabled={true}
         />
       ),
       content:

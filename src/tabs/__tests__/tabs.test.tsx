@@ -111,6 +111,18 @@ const actionDismissibleTabs: Array<TabsProps.Tab> = [
     id: 'fourth',
     label: 'fourth tab',
   },
+  {
+    id: 'fifth',
+    label: 'fifth tab',
+    dismissible: true,
+    dismissLabel: 'Dismiss fifth tab (disabled)',
+    dismissDisabled: true,
+    disabled: true,
+  },
+  {
+    id: 'sixth',
+    label: 'sixth tab',
+  },
 ];
 
 describe('Tabs', () => {
@@ -762,6 +774,15 @@ describe('Tabs', () => {
       dismissibleButton?.click();
       expect(consoleSpy).toHaveBeenCalledWith('I have been called!');
       consoleSpy.mockClear();
+    });
+
+    test('skips dismissible on right and left arrow key press', () => {
+      const wrapper = renderTabs(<Tabs tabs={actionDismissibleTabs} activeTabId="fourth" />).wrapper;
+      wrapper.findActiveTab()!.getElement().focus();
+      pressRight(wrapper);
+      expect(wrapper.findTabLinkByIndex(6)?.getElement()).toHaveFocus();
+      pressLeft(wrapper);
+      expect(wrapper.findTabLinkByIndex(4)?.getElement()).toHaveFocus();
     });
 
     test('moves focus from any non-active dismissible button to active tab content', () => {
