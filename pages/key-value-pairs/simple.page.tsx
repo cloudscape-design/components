@@ -7,8 +7,9 @@ import ScreenshotArea from '../utils/screenshot-area';
 export default function () {
   return (
     <article>
-      <h2>Simple key-value-pairs</h2>
+      <h1>Key-value pairs component</h1>
       <ScreenshotArea>
+        <h2>Simple key-value-pairs</h2>
         <KeyValuePairs
           columns={1}
           items={[
