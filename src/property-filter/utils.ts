@@ -9,6 +9,9 @@ import {
   Token,
 } from './interfaces';
 
+export const DROPDOWN_WIDTH_OPTIONS_LIST = 300;
+export const DROPDOWN_WIDTH_CUSTOM_FORM = 200;
+
 // Finds the longest property the filtering text starts from.
 export function matchFilteringProperty(
   filteringProperties: readonly InternalFilteringProperty[],
