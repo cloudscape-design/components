@@ -77,12 +77,17 @@ const PromptInput = React.forwardRef(
     };
 
     const adjustTextareaHeight = useCallback(() => {
+      const PADDING = 4;
+      const LINE_HEIGHT = 20;
       if (textareaRef.current) {
         textareaRef.current.style.height = 'auto';
 
         // eslint-disable-next-line no-warning-comments
         // TODO: calculatenodeheight for this newHeight
-        const newHeight = Math.min(textareaRef.current.scrollHeight + 4, (maxRows ?? 3) * 22 + 4);
+        const newHeight = Math.min(
+          textareaRef.current.scrollHeight + PADDING,
+          (maxRows ?? 3) * LINE_HEIGHT + PADDING + PADDING / 2
+        );
         textareaRef.current.style.height = `${newHeight}px`;
       }
     }, [maxRows]);
