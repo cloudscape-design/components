@@ -4,9 +4,10 @@ import React from 'react';
 import { getGlobalFlag } from '../utils/global-flags';
 import { useVisualRefresh } from '../hooks/use-visual-mode';
 
-export function createWidgetizedComponent<Props, Component extends React.ComponentType<Props>>(
-  Implementation: Component
-) {
+// Built-in React.FunctionComponent has always present `children` property which is not desired
+type FunctionComponent<Props> = (props: Props) => JSX.Element;
+
+export function createWidgetizedComponent<Component extends FunctionComponent<any>>(Implementation: Component) {
   return (Loader?: Component): Component => {
     return (props => {
       const isRefresh = useVisualRefresh();

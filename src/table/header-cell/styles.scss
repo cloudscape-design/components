@@ -66,6 +66,9 @@
   &-stuck:not(.header-cell-variant-full-page) {
     border-block-end-color: transparent;
   }
+  &-variant-full-page {
+    background: awsui.$color-background-layout-main;
+  }
   &-variant-full-page.header-cell-hidden {
     border-block-end-color: transparent;
   }

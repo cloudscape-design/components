@@ -232,6 +232,26 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  colorBackgroundAvatarDefault: {
+    description: 'The default background color of avatars.',
+    themeable: false,
+    public: true,
+  },
+  colorBackgroundAvatarGenAi: {
+    description: 'The gen-ai background color of avatars.',
+    themeable: false,
+    public: true,
+  },
+  colorTextAvatar: {
+    description: 'The text and icon color of avatars.',
+    themeable: false,
+    public: true,
+  },
+  colorBackgroundLoadingBarGenAi: {
+    description: 'The background color of gen-ai loading bars.',
+    themeable: false,
+    public: true,
+  },
   colorBorderButtonNormalActive: {
     description: 'The border color of normal buttons in active state.',
     themeable: true,
@@ -366,6 +386,12 @@ const metadata: StyleDictionary.MetadataIndex = {
   colorForegroundControlDisabled: {
     description:
       'The color used to mark disabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.',
+    public: true,
+    themeable: true,
+  },
+  colorForegroundControlReadOnly: {
+    description:
+      'The color used to mark readonly form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.',
     public: true,
     themeable: true,
   },

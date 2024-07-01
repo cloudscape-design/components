@@ -22,7 +22,8 @@
       fill: awsui.$color-background-control-checked;
       stroke: awsui.$color-border-control-checked;
     }
-    &-disabled {
+    &-disabled,
+    &-readonly {
       fill: awsui.$color-background-control-disabled;
       stroke: awsui.$color-border-control-disabled;
     }
@@ -39,6 +40,9 @@
     fill: none;
     &-disabled {
       stroke: awsui.$color-foreground-control-disabled;
+    }
+    &-readonly {
+      stroke: awsui.$color-foreground-control-read-only;
     }
   }
 }

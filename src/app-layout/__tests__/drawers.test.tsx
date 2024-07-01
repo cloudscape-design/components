@@ -24,7 +24,7 @@ jest.mock('@cloudscape-design/component-toolkit', () => ({
   useContainerQuery: () => [100, () => {}],
 }));
 
-describeEachAppLayout(size => {
+describeEachAppLayout(({ size }) => {
   test(`should not render drawer when it is not defined`, () => {
     const { wrapper, rerender } = renderComponent(<AppLayout toolsHide={true} drawers={[testDrawer]} />);
     expect(wrapper.findDrawersTriggers()).toHaveLength(1);

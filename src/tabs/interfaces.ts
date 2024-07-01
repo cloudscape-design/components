@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
+import { ButtonProps } from '../button/interfaces';
 
 export interface TabsProps extends BaseComponentProps {
   /**
@@ -11,6 +12,13 @@ export interface TabsProps extends BaseComponentProps {
    * - `label` (ReactNode) - Tab label shown in the UI.
    * - `content` (ReactNode) - (Optional) Tab content to render in the container.
    * - `disabled` (boolean) - (Optional) Specifies if this tab is disabled.
+   * - `dismissible` (boolean) - (Optional) Determines whether the tab includes a dismiss icon button. By default, the dismiss button is not included.
+   * - `dismissLabel` (boolean) - (Optional) Specifies an aria-label for the dismiss icon button.
+   * - `dismissDisabled` (boolean) - (Optional) Determines whether the dismiss button is disabled.
+   * - `action` (ReactNode) - (Optional) Action for the tab, rendered next to its corresponding label.
+   *    Although it is technically possible to insert any content, our UX guidelines only allow you to add
+   *    an icon button or icon button dropdown.
+   * - `onDismiss` (ButtonProps['onClick']) - (Optional) Called when a user clicks on the dismiss button.
    * - `href` (string) - (Optional) You can use this parameter to change the default `href` of the internal tab anchor. The
    *    `click` event default behavior is prevented, unless the user clicks the tab with a key modifier (that is, CTRL,
    *    ALT, SHIFT, META). This enables the user to open new browser tabs with an initially selected component tab,
@@ -91,6 +99,29 @@ export namespace TabsProps {
      */
     disabled?: boolean;
     /**
+     * (Optional) Determines whether the tab includes a dismiss icon button. By default, the dismiss button is not included.
+     * When a user clicks on this button the onDismiss handler is called.
+     */
+    dismissible?: boolean;
+    /**
+     * (Optional) Specifies an aria-label for the dismiss icon button.
+     */
+    dismissLabel?: string;
+    /**
+     * (Optional) Determines whether the dismiss button is disabled.
+     */
+    dismissDisabled?: boolean;
+    /**
+     * (Optional) Action for the tab, rendered next to its corresponding label.
+     * Although it is technically possible to insert any content, our UX guidelines only allow you to add
+     * an icon button or icon button dropdown.
+     */
+    action?: React.ReactNode;
+    /**
+     * (event => void) Called when a user clicks on the dismiss button.
+     */
+    onDismiss?: ButtonProps['onClick'];
+    /**
      * You can use this parameter to change the default `href` of the internal tab anchor. The
      * `click` event default behavior is prevented, unless the user clicks the tab with a key modifier (CTRL,
      * ALT, SHIFT, META). This allows to open new browser tabs with an initially selected component tab,
@@ -120,5 +151,10 @@ export namespace TabsProps {
      * ARIA label for the scroll right button that appears when the tab header is wider than the container.
      */
     scrollRightAriaLabel?: string;
+    /**
+     * ARIA role description for the Tabs component when an action or dismissible prop is in use. This is used
+     * with role="application" to provide further information on the purpose of this component
+     */
+    tabsWithActionsAriaRoleDescription?: string;
   }
 }

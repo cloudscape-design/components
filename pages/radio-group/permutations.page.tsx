@@ -92,6 +92,17 @@ const permutations = createPermutations<RadioGroupProps>([
       ],
     ],
   },
+  {
+    readOnly: [true],
+    value: ['first'],
+    items: [
+      [
+        { value: 'first', label: 'First Button' },
+        { value: 'second', label: 'Second Button' },
+        { value: 'third', label: 'Third Button', disabled: true },
+      ],
+    ],
+  },
 ]);
 
 export default function RadioGroupPermutations() {

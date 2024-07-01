@@ -70,7 +70,7 @@
     }
   }
 
-  &.read-only {
+  &.readonly:not(&.disabled) {
     @include styles.form-readonly-element;
   }
 
