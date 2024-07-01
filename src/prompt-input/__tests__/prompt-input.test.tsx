@@ -26,6 +26,31 @@ describe('value', () => {
   });
 });
 
+describe('disableBrowserAutocorrect', () => {
+  test('does not modify autocorrect features by default', () => {
+    const { wrapper } = renderPromptInput({ value: '' });
+    const textarea = wrapper.findNativeTextarea().getElement();
+    expect(textarea).not.toHaveAttribute('autocorrect');
+    expect(textarea).not.toHaveAttribute('autocapitalize');
+  });
+
+  test('does not modify autocorrect features when falsy', () => {
+    const { wrapper } = renderPromptInput({ value: '', disableBrowserAutocorrect: false });
+    const textarea = wrapper.findNativeTextarea().getElement();
+
+    expect(textarea).not.toHaveAttribute('autocorrect');
+    expect(textarea).not.toHaveAttribute('autocapitalize');
+  });
+
+  test('can disable autocorrect features when set', () => {
+    const { wrapper } = renderPromptInput({ value: '', disableBrowserAutocorrect: true });
+    const textarea = wrapper.findNativeTextarea().getElement();
+
+    expect(textarea).toHaveAttribute('autocorrect', 'off');
+    expect(textarea).toHaveAttribute('autocapitalize', 'off');
+  });
+});
+
 describe('action button', () => {
   test('not present if not added to props', () => {
     const { wrapper } = renderPromptInput({ value: '' });
