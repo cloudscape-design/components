@@ -288,9 +288,7 @@ const DateRangePicker = React.forwardRef(
           })}
           hideCaret={true}
           onClick={() => {
-            if (!readOnly && !disabled) {
-              setIsDropDownOpen(true);
-            }
+            setIsDropDownOpen(true);
           }}
           disabled={disabled}
           readOnly={readOnly}

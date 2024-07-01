@@ -438,7 +438,3 @@ export type RangeCalendarI18nStrings = Pick<
   | 'dateTimeConstraintText'
   | 'renderSelectedAbsoluteRangeAriaLive'
 >;
-
-export interface Focusable {
-  focus(): void;
-}
