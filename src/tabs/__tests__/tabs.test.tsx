@@ -1016,7 +1016,7 @@ describe('Tabs', () => {
         );
       });
 
-      test('show previously selected tab content when disabled with reason tab is focused', () => {
+      test('shows active tab content when disabled with reason tab is focused', () => {
         const { wrapper } = renderTabs(
           <Tabs
             tabs={defaultTabs.map(item => {
