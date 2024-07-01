@@ -1173,6 +1173,7 @@ describe('Tabs', () => {
           />
         );
 
+        pressHome(wrapper);
         pressRight(wrapper);
 
         expect(wrapper.findActiveTab()!.getElement()).toHaveTextContent('First tab');

@@ -262,16 +262,19 @@ export function TabHeaderBar({
     }
     function isElementFocusable(element: HTMLElement) {
       if (element instanceof HTMLButtonElement) {
-        return element.disabled || element.closest(`.${styles['tabs-tab-disabled']}`);
+        return !(
+          element.disabled ||
+          (element.closest(`.${styles['tabs-tab-disabled']}`) && !element.closest(`.${styles['tabs-tab-focusable']}`))
+        );
       }
       if (element instanceof HTMLAnchorElement) {
         // aria-describedby is present only if the element is disabled with reason. in this case it should be focusable, otherwise no
-        return element.getAttribute('aria-disabled') === 'true' && !element.hasAttribute('aria-describedby');
+        return !(element.getAttribute('aria-disabled') === 'true' && !element.hasAttribute('aria-describedby'));
       }
 
       return false;
     }
-    return getAllFocusables(target).filter(el => isElementRegistered(el) && !isElementFocusable(el));
+    return getAllFocusables(target).filter(el => isElementRegistered(el) && isElementFocusable(el));
   }
 
   const TabList = hasActionOrDismissible ? 'div' : 'ul';
@@ -372,6 +375,7 @@ export function TabHeaderBar({
       [styles['tabs-tab-focused']]: focusedTabId === tab.id,
       [styles['tabs-tab-active']]: isActive,
       [styles['tabs-tab-disabled']]: tab.disabled,
+      [styles['tabs-tab-focusable']]: !tab.disabled || (tab.disabled && !!tab.disabledReason),
       [styles['tabs-tab-no-actions']]: !hasActionOrDismissibleForTab,
     });
 
@@ -380,6 +384,7 @@ export function TabHeaderBar({
       [styles.refresh]: isVisualRefresh,
       [styles['tabs-tab-active']]: isActive,
       [styles['tabs-tab-disabled']]: tab.disabled,
+      [styles['tabs-tab-focusable']]: !tab.disabled || (tab.disabled && !!tab.disabledReason),
       [styles['tabs-tab-no-actions']]: !hasActionOrDismissibleForTab,
     });
 
@@ -411,6 +416,9 @@ export function TabHeaderBar({
 
     if (tab.disabled) {
       commonProps['aria-disabled'] = 'true';
+      commonProps.onClick = (event: React.MouseEvent) => {
+        event.preventDefault();
+      };
     } else {
       commonProps.onClick = clickTab;
     }
