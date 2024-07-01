@@ -389,6 +389,12 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorForegroundControlReadOnly: {
+    description:
+      'The color used to mark readonly form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.',
+    public: true,
+    themeable: true,
+  },
   colorTextAccent: {
     description:
       'The accent text color used to guide a user. For example: the highlighted page in the side navigation, active tab text, selected day text color in date picker, and hover state in expandable section.',

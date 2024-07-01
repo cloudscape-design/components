@@ -30,6 +30,7 @@ const InternalTiles = React.forwardRef(
       ariaControls,
       columns,
       onChange,
+      readOnly,
       __internalRootRef = null,
       ...rest
     }: InternalTilesProps,
@@ -53,6 +54,7 @@ const InternalTiles = React.forwardRef(
         aria-describedby={ariaDescribedby}
         aria-required={ariaRequired}
         aria-controls={ariaControls}
+        aria-readonly={readOnly ? 'true' : undefined}
         {...baseProps}
         className={clsx(baseProps.className, styles.root)}
         ref={mergedRef}
@@ -68,6 +70,7 @@ const InternalTiles = React.forwardRef(
                 name={name || generatedName}
                 breakpoint={breakpoint}
                 onChange={onChange}
+                readOnly={readOnly}
               />
             ))}
         </div>
