@@ -11456,6 +11456,7 @@ about modifiers (that is, CTRL, ALT, SHIFT, META, etc.).",
       "type": "string",
     },
     Object {
+      "description": "Determines what icon to display in the action button.",
       "inlineType": Object {
         "name": "IconProps.Name",
         "type": "union",
@@ -11566,6 +11567,14 @@ about modifiers (that is, CTRL, ALT, SHIFT, META, etc.).",
       "type": "string",
     },
     Object {
+      "description": "Specifies the URL of a custom icon. Use this property if the icon you want isn't available.
+If you set both \`actionButtonIconUrl\` and \`actionButtonIconSvg\`, \`actionButtonIconSvg\` will take precedence.
+",
+      "name": "actionButtonIconUrl",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Adds \`aria-describedby\` to the component. If you're using this component within a form field,
 don't set this property because the form field component automatically sets it.
 Use this property if the component isn't surrounded by a form field, or you want to override the value
@@ -11605,7 +11614,6 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "boolean",
     },
     Object {
-      "defaultValue": "true",
       "description": "Specifies whether to enable a browser's autocomplete functionality for this input.
 In some cases it might be appropriate to disable autocomplete (for example, for security-sensitive fields).
 To use it correctly, set the \`name\` property.
@@ -11712,7 +11720,7 @@ single form field.",
       "type": "string",
     },
     Object {
-      "description": "Specifies if the control is read only, which prevents the
+      "description": "Specifies if the control is read-only, which prevents the
 user from modifying the value but includes it in a form
 submission. A read-only control can receive focus.
 Don't use read-only inputs outside a form.
@@ -11754,7 +11762,31 @@ with the input using \`ariaDescribedby\`.",
       "type": "boolean",
     },
   ],
-  "regions": Array [],
+  "regions": Array [
+    Object {
+      "description": "Specifies the SVG of a custom icon.
+Use this property if you want your custom icon to inherit colors dictated by variant or hover states.
+When this property is set, the component will be decorated with \`aria-hidden=\\"true\\"\`. Ensure that the \`svg\` element:
+- has attribute \`focusable=\\"false\\"\`.
+- has \`viewBox=\\"0 0 16 16\\"\`.
+
+If you set the \`svg\` element as the root node of the slot, the component will automatically
+- set \`stroke=\\"currentColor\\"\`, \`fill=\\"none\\"\`, and \`vertical-align=\\"top\\"\`.
+- set the stroke width based on the size of the icon.
+- set the width and height of the SVG element based on the size of the icon.
+
+If you don't want these styles to be automatically set, wrap the \`svg\` element into a \`span\`.
+You can still set the stroke to \`currentColor\` to inherit the color of the surrounding elements.
+
+If you set both \`actionButtonIconUrl\` and \`actionButtonIconSvg\`, \`iconSvg\` will take precedence.
+
+*Note:* Remember to remove any additional elements (for example: \`defs\`) and related CSS classes from SVG files exported from design software.
+In most cases, they aren't needed, as the \`svg\` element inherits styles from the icon component.
+",
+      "isDefault": false,
+      "name": "actionButtonIconSvg",
+    },
+  ],
   "releaseStatus": "stable",
 }
 `;

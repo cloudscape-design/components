@@ -426,6 +426,11 @@ Object {
     "awsui_result-text_11huc",
     "awsui_root_11huc",
   ],
+  "prompt-input": Array [
+    "awsui_action-button_55fkh",
+    "awsui_root_55fkh",
+    "awsui_textarea_55fkh",
+  ],
   "property-filter": Array [
     "awsui_constraint_1wzqe",
     "awsui_custom-control_1wzqe",
