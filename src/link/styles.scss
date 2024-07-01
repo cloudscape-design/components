@@ -28,17 +28,11 @@
     }
   }
 
-  &.button {
-    @include styles.font-smoothing;
-    @include styles.link-variant-style(map.get(constants.$link-styles, 'button'));
-  }
-
   &.color-inverted {
     color: awsui.$color-text-notification-default;
-    &:not(.button) {
-      text-decoration-line: underline;
-      text-decoration-color: currentColor;
-    }
+    text-decoration-line: underline;
+    text-decoration-color: currentColor;
+
     &:hover {
       color: awsui.$color-text-link-inverted-hover;
     }

@@ -83,7 +83,7 @@ export function BucketsTable({
           cell: item => {
             const isClickable = includes(selectableItemsTypes, 'objects') || includes(selectableItemsTypes, 'versions');
             return isClickable ? (
-              <InternalLink onFollow={() => item.Name && onDrilldown(item.Name)} variant="link">
+              <InternalLink onFollow={() => item.Name && onDrilldown(item.Name)} variant="secondary">
                 {item.Name}
               </InternalLink>
             ) : (
