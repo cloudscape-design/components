@@ -87,6 +87,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBorderTutorial: { light: '{colorGrey400}', dark: '{colorGrey500}' },
   colorForegroundControlDefault: { dark: '{colorWhite}' },
   colorForegroundControlDisabled: { dark: '{colorGrey550}' },
+  colorForegroundControlReadOnly: { light: '{colorGrey550}', dark: '{colorGrey450}' },
   colorStrokeCodeEditorResizeHandler: '{colorGrey550}',
   colorStrokeCodeEditorGutterActiveLineDefault: { dark: '{colorGrey650}' },
   colorTextAccent: { light: '{colorBlue600}', dark: '{colorBlue400}' },

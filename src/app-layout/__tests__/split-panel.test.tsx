@@ -103,16 +103,17 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
       );
       expect(wrapper.findSplitPanelOpenButton()).not.toBeNull();
       wrapper.findSplitPanelOpenButton()!.click();
-      if (position === 'side' && theme === 'refresh') {
-        expect(wrapper.findSplitPanelOpenButton()).not.toBeNull();
-      } else {
+      if (theme === 'classic' || (theme === 'refresh' && position === 'bottom')) {
         expect(wrapper.findSplitPanelOpenButton()).toBeNull();
+      } else {
+        expect(wrapper.findSplitPanelOpenButton()).not.toBeNull();
       }
       wrapper.findSplitPanel()!.findCloseButton()!.click();
       expect(wrapper.findSplitPanelOpenButton()).not.toBeNull();
     });
 
-    test('Moves focus to slider when opened', () => {
+    // Not implemented on the toolbar version yet
+    (theme !== 'refresh-toolbar' ? test : test.skip)('Moves focus to slider when opened', () => {
       const { wrapper } = renderComponent(
         <AppLayout
           splitPanel={defaultSplitPanel}
@@ -124,7 +125,8 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
       expect(wrapper.findSplitPanel()!.findSlider()!.getElement()).toHaveFocus();
     });
 
-    test('Moves focus to open button when closed', () => {
+    // Not implemented on the toolbar version yet
+    (theme !== 'refresh-toolbar' ? test : test.skip)('Moves focus to open button when closed', () => {
       const { wrapper } = renderComponent(
         <AppLayout
           splitPanel={defaultSplitPanel}
@@ -173,6 +175,57 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
     expect(wrapper.findSplitPanel()).toBeTruthy();
     rerender(<AppLayout />);
     expect(wrapper.findSplitPanel()).toBeFalsy();
+  });
+
+  test('should fire split panel toggle event', () => {
+    const onSplitPanelToggle = jest.fn();
+    const { wrapper } = renderComponent(
+      <AppLayout
+        splitPanel={defaultSplitPanel}
+        onSplitPanelToggle={event => onSplitPanelToggle(event.detail)}
+        splitPanelPreferences={{ position: 'bottom' }}
+        onSplitPanelPreferencesChange={noop}
+      />
+    );
+    wrapper.findSplitPanel()!.findOpenButton()!.click();
+    expect(onSplitPanelToggle).toHaveBeenCalledWith({ open: true });
+    onSplitPanelToggle.mockClear();
+    wrapper.findSplitPanel()!.findCloseButton()!.click();
+    expect(onSplitPanelToggle).toHaveBeenCalledWith({ open: false });
+  });
+
+  test('should change split panel position in uncontrolled mode', () => {
+    const onPreferencesChange = jest.fn();
+    const { wrapper } = renderComponent(
+      <AppLayout
+        splitPanel={defaultSplitPanel}
+        splitPanelOpen={true}
+        onSplitPanelToggle={noop}
+        onSplitPanelPreferencesChange={event => onPreferencesChange(event.detail)}
+      />
+    );
+    expect(wrapper.findSplitPanel()!.findOpenPanelBottom()).not.toBeNull();
+    wrapper.findSplitPanel()!.findPreferencesButton()!.click();
+    expect(screen.getByRole('radio', { name: 'Bottom' })).toBeChecked();
+    expect(screen.getByRole('radio', { name: 'Side' })).toBeEnabled();
+    screen.getByRole('radio', { name: 'Side' }).click();
+    screen.getByRole('button', { name: 'Confirm' }).click();
+    expect(wrapper.findSplitPanel()!.findOpenPanelSide()).not.toBeNull();
+    expect(onPreferencesChange).toHaveBeenCalledWith({ position: 'side' });
+  });
+
+  test('should fire split panel resize event', () => {
+    const onSplitPanelResize = jest.fn();
+    const { wrapper } = renderComponent(
+      <AppLayout
+        splitPanel={defaultSplitPanel}
+        splitPanelOpen={true}
+        onSplitPanelToggle={noop}
+        onSplitPanelResize={event => onSplitPanelResize(event.detail)}
+      />
+    );
+    wrapper.findSplitPanel()!.findSlider()!.keydown(KeyCode.pageUp);
+    expect(onSplitPanelResize).toHaveBeenCalled();
   });
 });
 
@@ -268,57 +321,6 @@ describe('Visual refresh only features', () => {
     );
     isMocked = false;
   });
-});
-
-test('should fire split panel toggle event', () => {
-  const onSplitPanelToggle = jest.fn();
-  const { wrapper } = renderComponent(
-    <AppLayout
-      splitPanel={defaultSplitPanel}
-      onSplitPanelToggle={event => onSplitPanelToggle(event.detail)}
-      splitPanelPreferences={{ position: 'bottom' }}
-      onSplitPanelPreferencesChange={noop}
-    />
-  );
-  wrapper.findSplitPanel()!.findOpenButton()!.click();
-  expect(onSplitPanelToggle).toHaveBeenCalledWith({ open: true });
-  onSplitPanelToggle.mockClear();
-  wrapper.findSplitPanel()!.findCloseButton()!.click();
-  expect(onSplitPanelToggle).toHaveBeenCalledWith({ open: false });
-});
-
-test('should change split panel position in uncontrolled mode', () => {
-  const onPreferencesChange = jest.fn();
-  const { wrapper } = renderComponent(
-    <AppLayout
-      splitPanel={defaultSplitPanel}
-      splitPanelOpen={true}
-      onSplitPanelToggle={noop}
-      onSplitPanelPreferencesChange={event => onPreferencesChange(event.detail)}
-    />
-  );
-  expect(wrapper.findSplitPanel()!.findOpenPanelBottom()).not.toBeNull();
-  wrapper.findSplitPanel()!.findPreferencesButton()!.click();
-  expect(screen.getByRole('radio', { name: 'Bottom' })).toBeChecked();
-  expect(screen.getByRole('radio', { name: 'Side' })).toBeEnabled();
-  screen.getByRole('radio', { name: 'Side' }).click();
-  screen.getByRole('button', { name: 'Confirm' }).click();
-  expect(wrapper.findSplitPanel()!.findOpenPanelSide()).not.toBeNull();
-  expect(onPreferencesChange).toHaveBeenCalledWith({ position: 'side' });
-});
-
-test('should fire split panel resize event', () => {
-  const onSplitPanelResize = jest.fn();
-  const { wrapper } = renderComponent(
-    <AppLayout
-      splitPanel={defaultSplitPanel}
-      splitPanelOpen={true}
-      onSplitPanelToggle={noop}
-      onSplitPanelResize={event => onSplitPanelResize(event.detail)}
-    />
-  );
-  wrapper.findSplitPanel()!.findSlider()!.keydown(KeyCode.pageUp);
-  expect(onSplitPanelResize).toHaveBeenCalled();
 });
 
 test('should not set width on split panel drawer when there is no splitPanel', () => {

@@ -1,7 +1,6 @@
 build
 node_modules
 coverage
-backstop/report
 .idea
 # build output
 lib
