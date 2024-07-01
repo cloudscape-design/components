@@ -479,7 +479,7 @@ const TabTrigger = forwardRef(
     ref: React.Ref<HTMLElement>
   ) => {
     const refObject = useRef<HTMLElement>(null);
-    const childRefObject = useRef<HTMLElement>(null);
+    const tabLabelRefObject = useRef<HTMLElement>(null);
     const mergedRef = useMergeRefs(refObject, ref);
     const { tabIndex } = useSingleTabStopNavigation(refObject);
     const isDisabledWithReason = tab.disabled && !!tab.disabledReason;
@@ -487,7 +487,7 @@ const TabTrigger = forwardRef(
     const { targetProps, descriptionEl } = useHiddenDescription(tab.disabledReason);
     const children = (
       <>
-        <span className={styles['tabs-tab-label']} ref={childRefObject}>
+        <span className={styles['tabs-tab-label']} ref={tabLabelRefObject}>
           {tab.label}
         </span>
         {isDisabledWithReason && (
@@ -496,7 +496,7 @@ const TabTrigger = forwardRef(
             {showTooltip && (
               <Tooltip
                 className={styles['disabled-reason-tooltip']}
-                trackRef={childRefObject}
+                trackRef={tabLabelRefObject}
                 value={tab.disabledReason!}
               />
             )}
@@ -506,16 +506,16 @@ const TabTrigger = forwardRef(
     );
 
     const handlers = {
-      onFocus: isDisabledWithReason ? () => setShowTooltip(true) : undefined,
-      onBlur: isDisabledWithReason ? () => setShowTooltip(false) : undefined,
-      onMouseEnter: isDisabledWithReason ? () => setShowTooltip(true) : undefined,
-      onMouseLeave: isDisabledWithReason ? () => setShowTooltip(false) : undefined,
+      onFocus: () => setShowTooltip(true),
+      onBlur: () => setShowTooltip(false),
+      onMouseEnter: () => setShowTooltip(true),
+      onMouseLeave: () => setShowTooltip(false),
     };
 
     const commonProps = {
       ...elementProps,
       ...(isDisabledWithReason ? targetProps : {}),
-      ...handlers,
+      ...(isDisabledWithReason ? handlers : {}),
       ref: mergedRef,
       tabIndex: tabIndex,
     };
