@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 import styles from './styles.css.js';
 import testutilStyles from '../../test-classes/styles.css.js';
@@ -9,6 +9,8 @@ import TriggerButton from './trigger-button';
 import { ToolbarSlot } from '../skeleton/slot-wrappers';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { AppLayoutInternals } from '../interfaces';
+import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
+import { InternalBreadcrumbGroup } from '../../../breadcrumb-group/internal';
 
 interface AppLayoutToolbarImplementationProps {
   appLayoutInternals: AppLayoutInternals;
@@ -18,8 +20,11 @@ export function AppLayoutToolbarImplementation({ appLayoutInternals }: AppLayout
   const {
     ariaLabels,
     breadcrumbs,
+    discoveredBreadcrumbs,
+    activeDrawer,
     drawers,
-    toolbarRef,
+    drawersFocusControl,
+    setToolbarHeight,
     verticalOffsets,
     onNavigationToggle,
     isMobile,
@@ -28,10 +33,25 @@ export function AppLayoutToolbarImplementation({ appLayoutInternals }: AppLayout
     navigationOpen,
     navigation,
     navigationFocusControl,
+    splitPanelControlId,
+    splitPanelPosition,
     splitPanelToggleConfig,
+    splitPanelFocusControl,
+    onSplitPanelToggle,
+    splitPanelOpen,
+    onActiveDrawerChange,
   } = appLayoutInternals;
   // TODO: expose configuration property
   const pinnedToolbar = false;
+  const ref = useRef<HTMLElement>(null);
+  useResizeObserver(ref, entry => setToolbarHeight(entry.borderBoxHeight));
+  useEffect(() => {
+    return () => {
+      setToolbarHeight(0);
+    };
+    // unmount effect only
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     let lastScrollY = window.scrollY;
@@ -62,7 +82,7 @@ export function AppLayoutToolbarImplementation({ appLayoutInternals }: AppLayout
 
   return (
     <ToolbarSlot
-      ref={toolbarRef}
+      ref={ref}
       className={clsx(styles['universal-toolbar'], {
         [testutilStyles['mobile-bar']]: isMobile,
         [styles['toolbar-hidden']]: toolbarHidden,
@@ -88,12 +108,33 @@ export function AppLayoutToolbarImplementation({ appLayoutInternals }: AppLayout
             />
           </nav>
         )}
-        {breadcrumbs && (
-          <div className={clsx(styles['universal-toolbar-breadcrumbs'], testutilStyles.breadcrumbs)}>{breadcrumbs}</div>
+        {(breadcrumbs || discoveredBreadcrumbs) && (
+          <div className={clsx(styles['universal-toolbar-breadcrumbs'], testutilStyles.breadcrumbs)}>
+            {breadcrumbs}
+            {discoveredBreadcrumbs && <InternalBreadcrumbGroup {...discoveredBreadcrumbs} />}
+          </div>
         )}
         {(drawers.length > 0 || splitPanelToggleConfig.displayed) && (
           <span className={clsx(styles['universal-toolbar-drawers'])}>
-            {<DrawerTriggers appLayoutInternals={appLayoutInternals} />}
+            <DrawerTriggers
+              ariaLabels={ariaLabels}
+              activeDrawerId={activeDrawer?.id ?? null}
+              drawers={drawers}
+              drawersFocusRef={drawersFocusControl.refs.toggle}
+              onActiveDrawerChange={onActiveDrawerChange}
+              splitPanelToggleProps={
+                splitPanelToggleConfig.displayed
+                  ? {
+                      ...splitPanelToggleConfig,
+                      controlId: splitPanelControlId,
+                      active: splitPanelOpen,
+                      position: splitPanelPosition,
+                    }
+                  : undefined
+              }
+              splitPanelFocusRef={splitPanelFocusControl.refs.toggle}
+              onSplitPanelToggle={onSplitPanelToggle}
+            />
           </span>
         )}
       </div>

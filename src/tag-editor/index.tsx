@@ -214,10 +214,10 @@ const TagEditor = React.forwardRef(
         },
         {
           label: (
-            <>
+            <span>
               {i18n('i18nStrings.valueHeader', i18nStrings?.valueHeader)} -{' '}
               <i>{i18n('i18nStrings.optional', i18nStrings?.optional)}</i>
-            </>
+            </span>
           ),
           control: ({ tag }: InternalTag, row: number) =>
             tag.markedForRemoval ? (
