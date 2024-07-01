@@ -21,13 +21,12 @@
 
 .input-filter {
   order: 0;
-  flex-grow: 6;
+  flex-grow: 1;
   inline-size: auto;
   max-inline-size: 728px;
 }
 
 .select-filter {
-  max-inline-size: 130px;
-  flex-grow: 2;
+  flex-grow: 1;
   inline-size: auto;
 }

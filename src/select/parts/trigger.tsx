@@ -21,6 +21,7 @@ export interface TriggerProps extends FormFieldValidationControlProps {
   readOnly?: boolean;
   triggerProps: SelectTriggerProps;
   selectedOption: OptionDefinition | null;
+  inlineLabelText?: string;
   isOpen?: boolean;
   triggerVariant?: SelectProps.TriggerVariant | MultiselectProps.TriggerVariant;
   inFilteringToken?: boolean;
@@ -34,6 +35,7 @@ const Trigger = React.forwardRef(
       ariaDescribedby,
       controlId,
       invalid,
+      inlineLabelText,
       warning,
       triggerProps,
       selectedOption,
@@ -103,8 +105,7 @@ const Trigger = React.forwardRef(
     }
 
     const mergedRef = useMergeRefs(triggerProps.ref, ref);
-
-    return (
+    const triggerButton = (
       <ButtonTrigger
         {...triggerProps}
         id={id}
@@ -121,6 +122,23 @@ const Trigger = React.forwardRef(
       >
         {triggerContent}
       </ButtonTrigger>
+    );
+    return (
+      <>
+        {inlineLabelText ? (
+          <div className={styles['inline-label-wrapper']}>
+            <label
+              htmlFor={controlId}
+              className={clsx(styles['inline-label'], disabled && styles['inline-label-disabled'])}
+            >
+              {inlineLabelText}
+            </label>
+            <div className={styles['inline-label-trigger-wrapper']}>{triggerButton}</div>
+          </div>
+        ) : (
+          <>{triggerButton}</>
+        )}
+      </>
     );
   }
 );
