@@ -35,6 +35,7 @@ function isAppLayoutPage(pageId?: string) {
     'content-layout',
     'grid-navigation-custom',
     'expandable-rows-test',
+    'grouped-table-test',
     'container/sticky-permutations',
   ];
   return pageId !== undefined && appLayoutPages.some(match => pageId.includes(match));

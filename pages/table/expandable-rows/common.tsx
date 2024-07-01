@@ -41,8 +41,6 @@ export const ariaLabels: TableProps<{ name: string }>['ariaLabels'] = {
     return `${item.name} is ${isItemSelected ? '' : 'not'} selected`;
   },
   tableLabel: 'Databases table',
-  expandButtonLabel: () => 'expand row',
-  collapseButtonLabel: () => 'collapse row',
 };
 
 export function getHeaderCounterText<T>(items: ReadonlyArray<T>, selectedItems: ReadonlyArray<T> | undefined) {
