@@ -35,6 +35,22 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: false,
   },
 
+  motionDurationAvatarGenAiGradient: {
+    description: 'The duration for gradient motion of gen-ai avatars.',
+    public: true,
+    themeable: false,
+  },
+  motionDurationAvatarLoadingDots: {
+    description: 'The duration for loading motion of avatars.',
+    public: true,
+    themeable: false,
+  },
+  motionEasingAvatarGenAiGradient: {
+    description: 'The easing curve for gradient motion of gen-ai avatars.',
+    public: true,
+    themeable: false,
+  },
+
   motionKeyframesFadeIn: {
     description: 'The CSS keyframes for showing an element.',
     public: true,

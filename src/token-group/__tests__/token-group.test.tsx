@@ -134,6 +134,15 @@ describe('TokenGroup', () => {
       expect(findToken(wrapper)!.findDismiss().getElement()).not.toHaveAttribute('aria-disabled');
     });
 
+    test('does not trigger onDismiss when readOnly', () => {
+      const onDismissSpy = jest.fn();
+      const wrapper = renderTokenGroup({ items, readOnly: true, onDismiss: onDismissSpy });
+
+      findToken(wrapper)!.findDismiss()!.click();
+
+      expect(onDismissSpy).not.toHaveBeenCalled();
+    });
+
     test('fires dismiss event on mouse click', () => {
       const onDismissSpy = jest.fn();
       const wrapper = renderTokenGroup({ items, onDismiss: onDismissSpy });

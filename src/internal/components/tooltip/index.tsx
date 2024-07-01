@@ -13,12 +13,13 @@ import styles from './styles.css.js';
 export interface TooltipProps {
   value: number | string;
   trackRef: React.RefObject<HTMLElement | SVGElement>;
+  contentAttributes?: React.HTMLAttributes<HTMLDivElement>;
 }
 
-export default function Tooltip({ value, trackRef }: TooltipProps) {
+export default function Tooltip({ value, trackRef, contentAttributes = {} }: TooltipProps) {
   return (
     <Portal>
-      <div className={styles.root}>
+      <div className={styles.root} {...contentAttributes}>
         <Transition in={true}>
           {() => (
             <PopoverContainer

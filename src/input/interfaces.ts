@@ -29,7 +29,7 @@ export interface BaseInputProps {
   disabled?: boolean;
 
   /**
-   * Specifies if the control is read only, which prevents the
+   * Specifies if the control is read-only, which prevents the
    * user from modifying the value but includes it in a form
    * submission. A read-only control can receive focus.
    *

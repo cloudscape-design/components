@@ -50,7 +50,7 @@ function AppLayoutWithControlledNavigation({
   );
 }
 
-describeEachAppLayout({ sizes: ['mobile'] }, ({ theme }) => {
+describeEachAppLayout({ themes: ['classic', 'refresh'], sizes: ['mobile'] }, ({ theme }) => {
   // In refactored Visual Refresh different styles are used compared to Classic
   const mobileBarClassName = theme === 'refresh' ? testUtilsStyles['mobile-bar'] : toolbarStyles['mobile-bar'];
   const drawerBarClassName =

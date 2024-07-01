@@ -54,7 +54,7 @@ export interface TopNavigationProps extends BaseComponentProps {
    * ### menu-dropdown
    *
    * * `description` (string) - The description displayed inside the dropdown.
-   * * `items` (ButtonDropdownProps.Items) - An array of dropdown items. This follows the same structure as the `items` property of the [button dropdown component](/components/button-dropdown).
+   * * `items` (ButtonDropdownProps.Items) - An array of dropdown items. This follows the same structure as the `items` property of the [button dropdown component](/components/button-dropdown), with the exception of the checkbox item type.
    * * `onItemClick` (NonCancelableEventHandler<ButtonDropdownProps.ItemClickDetails>) - Specifies the event handler called when a dropdown item is selected.
    * * `onItemFollow` (NonCancelableEventHandler<ButtonDropdownProps.ItemClickDetails>) - Specifies the event handler called when a dropdown item is selected without pressing modifier keys, and the item has an `href` set.
    * * `expandableGroups` (boolean) - Controls expandability of the item groups.

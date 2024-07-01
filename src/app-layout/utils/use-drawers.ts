@@ -19,6 +19,7 @@ interface ToolsProps {
   tools: React.ReactNode | undefined;
   onToolsToggle: (newOpen: boolean) => void;
   ariaLabels: AppLayoutProps.Labels | undefined;
+  disableDrawersMerge?: boolean;
 }
 
 function getToolsDrawerItem(props: ToolsProps): AppLayoutProps.Drawer | null {
@@ -77,7 +78,7 @@ function useRuntimeDrawers(
 
 function applyToolsDrawer(toolsProps: ToolsProps, runtimeDrawers: DrawersLayout) {
   const drawers = [...runtimeDrawers.before, ...runtimeDrawers.after];
-  if (drawers.length === 0) {
+  if (drawers.length === 0 && toolsProps.disableDrawersMerge) {
     return null;
   }
   const toolsItem = getToolsDrawerItem(toolsProps);

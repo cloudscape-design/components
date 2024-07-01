@@ -151,6 +151,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBorderTutorial: { light: '{colorGrey300}', dark: '{colorGrey600}' },
   colorForegroundControlDefault: { light: '{colorWhite}', dark: '{colorGrey900}' },
   colorForegroundControlDisabled: { light: '{colorWhite}', dark: '{colorGrey800}' },
+  colorForegroundControlReadOnly: { light: '{colorGrey550}', dark: '{colorGrey450}' },
   colorShadowDefault: '{colorGreyTransparentHeavy}',
   colorShadowMedium: '{colorGreyTransparent}',
   colorShadowSide: '{colorGreyTransparentLight}',

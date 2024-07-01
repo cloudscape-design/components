@@ -17,7 +17,14 @@ import styles from './styles.css.js';
 import { SliderProps } from './interfaces.js';
 import SliderLabels from './slider-labels.js';
 import SliderTickMarks from './tick-marks.js';
-import { getPercent, getStepArray, findLowerAndHigherValues, valuesAreValid, THUMB_SIZE } from './utils.js';
+import {
+  getPercent,
+  getStepArray,
+  findLowerAndHigherValues,
+  valuesAreValid,
+  THUMB_SIZE,
+  THUMB_READONLY_SIZE,
+} from './utils.js';
 
 export interface InternalSliderProps extends SliderProps, InternalBaseComponentProps {}
 
@@ -28,6 +35,7 @@ export default function InternalSlider({
   onChange,
   step,
   disabled,
+  readOnly,
   ariaLabel,
   ariaDescription,
   referenceValues,
@@ -114,6 +122,8 @@ export default function InternalSlider({
     return undefined;
   };
 
+  const thumbSize = readOnly ? THUMB_READONLY_SIZE : THUMB_SIZE;
+
   return (
     <div {...baseProps} ref={__internalRootRef} className={clsx(baseProps.className, styles.root)}>
       {showTooltip && (
@@ -121,15 +131,18 @@ export default function InternalSlider({
       )}
       <div
         ref={handleRef}
-        className={styles['tooltip-thumb']}
+        className={clsx(styles['tooltip-thumb'], {
+          [styles.readonly]: readOnly,
+        })}
         style={{
-          [customCssProps.sliderTooltipPosition]: `calc(${percent}% - ${THUMB_SIZE}px)`,
+          [customCssProps.sliderTooltipPosition]: `calc(${percent}% - ${thumbSize}px)`,
         }}
       />
       <div className={styles.slider}>
         <div
           className={clsx(styles['slider-track'], {
             [styles.disabled]: disabled,
+            [styles.readonly]: readOnly,
           })}
         />
 
@@ -142,6 +155,7 @@ export default function InternalSlider({
               [styles['error-active']]: invalid && isActive,
               [styles['warning-active']]: showWarning && isActive,
               [styles.disabled]: disabled,
+              [styles.readonly]: readOnly,
             })}
             style={{ [customCssProps.sliderRangeInlineSize]: `${percent}%` }}
           />
@@ -151,6 +165,7 @@ export default function InternalSlider({
         <SliderTickMarks
           hideFillLine={hideFillLine}
           disabled={disabled}
+          readOnly={readOnly}
           invalid={invalid}
           warning={warning}
           isActive={isActive}
@@ -175,6 +190,7 @@ export default function InternalSlider({
         }
         aria-valuetext={getAriaValueText()}
         aria-invalid={invalid ? 'true' : undefined}
+        aria-disabled={readOnly && !disabled ? 'true' : undefined}
         id={controlId}
         type="range"
         min={min}
@@ -205,12 +221,17 @@ export default function InternalSlider({
         step={step}
         value={sliderValue}
         onChange={event => {
+          if (readOnly) {
+            return;
+          }
+
           onChange && fireNonCancelableEvent(onChange, { value: Number(event.target.value) });
         }}
         className={clsx(styles.thumb, {
           [styles.error]: invalid,
           [styles.warning]: showWarning,
           [styles.disabled]: disabled,
+          [styles.readonly]: readOnly,
           [styles.min]: sliderValue <= min || max < min,
           [styles.max]: sliderValue >= max && min < max,
         })}

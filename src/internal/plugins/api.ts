@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { DrawersApiInternal, DrawersApiPublic, DrawersController } from './controllers/drawers';
 import { ActionsApiInternal, ActionsApiPublic, ActionButtonsController } from './controllers/action-buttons';
+import { BreadcrumbsApiInternal, BreadcrumbsController } from './controllers/breadcrumbs';
+import { BreadcrumbGroupProps } from '../../breadcrumb-group/interfaces';
 
 const storageKey = Symbol.for('awsui-plugin-api');
 
@@ -15,6 +17,7 @@ interface AwsuiApi {
     appLayout: DrawersApiInternal;
     alert: ActionsApiInternal;
     flashbar: ActionsApiInternal;
+    breadcrumbs: BreadcrumbsApiInternal<BreadcrumbGroupProps>;
   };
 }
 
@@ -69,6 +72,9 @@ function installApi(api: DeepPartial<AwsuiApi>): AwsuiApi {
   const flashbarActions = new ActionButtonsController();
   api.awsuiPlugins.flashbar = flashbarActions.installPublic(api.awsuiPlugins.flashbar);
   api.awsuiPluginsInternal.flashbar = flashbarActions.installInternal(api.awsuiPluginsInternal.flashbar);
+
+  const breadcrumbs = new BreadcrumbsController<BreadcrumbGroupProps>();
+  api.awsuiPluginsInternal.breadcrumbs = breadcrumbs.installInternal(api.awsuiPluginsInternal.breadcrumbs);
 
   return api as AwsuiApi;
 }

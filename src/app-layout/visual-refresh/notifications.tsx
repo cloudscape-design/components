@@ -1,26 +1,41 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 import { highContrastHeaderClassName } from '../../internal/utils/content-header-utils';
 import { useAppLayoutInternals } from './context';
 import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
+import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
 export default function Notifications() {
+  const { notifications } = useAppLayoutInternals();
+  if (!notifications) {
+    return null;
+  }
+  return <NotificationsImplementation />;
+}
+
+function NotificationsImplementation() {
   const {
     ariaLabels,
     hasDrawerViewportOverlay,
     notifications,
-    notificationsElement,
+    setNotificationsHeight,
     stickyNotifications,
     headerVariant,
     hasNotificationsContent,
   } = useAppLayoutInternals();
+  const ref = useRef<HTMLDivElement>(null);
 
-  if (!notifications) {
-    return null;
-  }
+  useResizeObserver(ref, entry => setNotificationsHeight(entry.contentBoxHeight));
+  useEffect(() => {
+    return () => {
+      setNotificationsHeight(0);
+    };
+    // unmount effect only
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   /**
    * The notificationsElement ref is assigned to an inner div to prevent internal bottom margin
@@ -42,7 +57,7 @@ export default function Notifications() {
         testutilStyles.notifications
       )}
     >
-      <div ref={notificationsElement}>{notifications}</div>
+      <div ref={ref}>{notifications}</div>
     </div>
   );
 }

@@ -96,6 +96,14 @@ const permutations = createPermutations<any>([
     triggerProps: [{}],
     selectedOption: [complexOptionWithCustomSvg],
   },
+  {
+    placeholder: ['Select an item'],
+    disabled: [false, true],
+    readOnly: [true],
+    triggerVariant: ['label'],
+    triggerProps: [{}],
+    selectedOption: [complexOption, undefined],
+  },
 ]);
 
 export default function InputPermutations() {

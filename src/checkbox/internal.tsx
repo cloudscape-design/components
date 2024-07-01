@@ -25,6 +25,7 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
       name,
       checked,
       disabled,
+      readOnly,
       ariaRequired,
       indeterminate,
       children,
@@ -61,6 +62,7 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
         outlineClassName={styles.outline}
         controlId={controlId}
         disabled={disabled}
+        readOnly={readOnly}
         label={children}
         description={description}
         descriptionBottomPadding={true}
@@ -77,6 +79,7 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
             checked={checked}
             name={name}
             aria-required={ariaRequired ? 'true' : undefined}
+            aria-disabled={readOnly && !disabled ? 'true' : undefined}
             tabIndex={tabIndex}
             onFocus={() => fireNonCancelableEvent(onFocus)}
             onBlur={() => fireNonCancelableEvent(onBlur)}
@@ -92,7 +95,9 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
             indeterminate ? { checked: true, indeterminate: false } : { checked: !checked, indeterminate: false }
           );
         }}
-        styledControl={<CheckboxIcon checked={checked} indeterminate={indeterminate} disabled={disabled} />}
+        styledControl={
+          <CheckboxIcon checked={checked} indeterminate={indeterminate} disabled={disabled} readOnly={readOnly} />
+        }
         __internalRootRef={__internalRootRef}
       />
     );

@@ -18,6 +18,7 @@ import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 export interface TriggerProps extends FormFieldValidationControlProps {
   placeholder: string | undefined;
   disabled: boolean | undefined;
+  readOnly?: boolean;
   triggerProps: SelectTriggerProps;
   selectedOption: OptionDefinition | null;
   isOpen?: boolean;
@@ -42,6 +43,7 @@ const Trigger = React.forwardRef(
       isOpen,
       placeholder,
       disabled,
+      readOnly,
     }: TriggerProps,
     ref: React.Ref<HTMLButtonElement>
   ) => {
@@ -109,6 +111,7 @@ const Trigger = React.forwardRef(
         ref={mergedRef}
         pressed={isOpen}
         disabled={disabled}
+        readOnly={readOnly}
         invalid={invalid}
         warning={warning && !invalid}
         inFilteringToken={inFilteringToken}

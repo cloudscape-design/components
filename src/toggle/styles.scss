@@ -41,6 +41,9 @@ $shadow-color: rgba(0, 0, 0, 0.25);
       background: awsui.$color-background-toggle-checked-disabled;
     }
   }
+  &-readonly {
+    background: awsui.$color-background-control-disabled;
+  }
 }
 
 .toggle-handle {
@@ -68,6 +71,13 @@ $shadow-color: rgba(0, 0, 0, 0.25);
   &-disabled {
     background: awsui.$color-foreground-control-disabled;
     box-shadow: none;
+  }
+
+  &-readonly:not(&-disabled) {
+    box-shadow: none;
+    &.toggle-handle-checked {
+      background: awsui.$color-foreground-control-read-only;
+    }
   }
 
   @include styles.with-motion {

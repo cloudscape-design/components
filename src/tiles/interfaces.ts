@@ -59,6 +59,13 @@ export interface TilesProps extends BaseComponentProps, FormFieldControlProps {
    * If the component controls any secondary content (for example, another form field), use this to provide an ID referring to the secondary content.
    */
   ariaControls?: string;
+
+  /**
+   * Specifies if the control is read-only, which prevents the
+   * user from modifying the value, but does not prevent the value from
+   * being included in a form submission. A read-only control is still focusable.
+   */
+  readOnly?: boolean;
 }
 
 export namespace TilesProps {

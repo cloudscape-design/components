@@ -43,7 +43,7 @@ const drawerDefaults: DrawerConfig = {
   unmountContent: () => {},
 };
 
-describeEachAppLayout(({ size }) => {
+describeEachAppLayout(({ theme, size }) => {
   test('does not render runtime drawers when it is explicitly disabled', async () => {
     awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
     const { wrapper } = await renderComponent(<AppLayout {...({ __disableRuntimeDrawers: true } as any)} />);
@@ -155,17 +155,17 @@ describeEachAppLayout(({ size }) => {
     expect(isDrawerTriggerWithBadge(wrapper, drawerDefaults.id)).toEqual(true);
   });
 
-  test('supports defaultSize property', async () => {
+  // always full-screen on mobile
+  (size === 'desktop' ? test : test.skip)('supports defaultSize property', async () => {
     awsuiPlugins.appLayout.registerDrawer({
       ...drawerDefaults,
       defaultSize: 400,
     });
     const { wrapper } = await renderComponent(<AppLayout navigationOpen={false} onNavigationChange={() => {}} />);
     wrapper.findToolsToggle()!.click();
-    // always full-screen on mobile
-    expect(getActiveDrawerWidth(wrapper)).toEqual(size === 'desktop' ? '290px' : '');
+    expect(getActiveDrawerWidth(wrapper)).toEqual('290px');
     wrapper.findDrawerTriggerById(drawerDefaults.id)!.click();
-    expect(getActiveDrawerWidth(wrapper)).toEqual(size === 'desktop' ? '400px' : '');
+    expect(getActiveDrawerWidth(wrapper)).toEqual('400px');
   });
 
   test('accepts drawers registration after initial rendering', async () => {
@@ -320,39 +320,43 @@ describeEachAppLayout(({ size }) => {
       expect(onToolsChange).toHaveBeenCalledWith({ open: true });
     });
 
-    test('preserves tools inner state while switching drawers', async () => {
-      function Counter() {
-        const [count, setCount] = useState(0);
-        return (
-          <>
-            <button data-testid="count-increment" onClick={() => setCount(count + 1)}>
-              Inc
-            </button>
-            <div>Count: {count}</div>
-          </>
-        );
+    // Not implemented on the toolbar version yet
+    (theme !== 'refresh-toolbar' ? test : test.skip)(
+      'preserves tools inner state while switching drawers',
+      async () => {
+        function Counter() {
+          const [count, setCount] = useState(0);
+          return (
+            <>
+              <button data-testid="count-increment" onClick={() => setCount(count + 1)}>
+                Inc
+              </button>
+              <div>Count: {count}</div>
+            </>
+          );
+        }
+
+        awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
+        const { wrapper } = await renderComponent(<AppLayout tools={<Counter />} />);
+        wrapper.findToolsToggle().click();
+        expect(wrapper.findTools().getElement()).toHaveTextContent('Count: 0');
+        wrapper.find('[data-testid="count-increment"]')!.click();
+
+        expect(wrapper.findTools().getElement()).toHaveTextContent('Count: 1');
+
+        wrapper.findToolsClose().click();
+        expect(wrapper.findTools()).toBeFalsy();
+
+        wrapper.findToolsToggle().click();
+        expect(wrapper.findTools().getElement()).toHaveTextContent('Count: 1');
+
+        wrapper.findDrawerTriggerById(drawerDefaults.id)!.click();
+        expect(wrapper.findTools()).toBeFalsy();
+
+        wrapper.findDrawerTriggerById(TOOLS_DRAWER_ID)!.click();
+        expect(wrapper.findTools().getElement()).toHaveTextContent('Count: 1');
       }
-
-      awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
-      const { wrapper } = await renderComponent(<AppLayout tools={<Counter />} />);
-      wrapper.findToolsToggle().click();
-      expect(wrapper.findTools().getElement()).toHaveTextContent('Count: 0');
-      wrapper.find('[data-testid="count-increment"]')!.click();
-
-      expect(wrapper.findTools().getElement()).toHaveTextContent('Count: 1');
-
-      wrapper.findToolsClose().click();
-      expect(wrapper.findTools()).toBeFalsy();
-
-      wrapper.findToolsToggle().click();
-      expect(wrapper.findTools().getElement()).toHaveTextContent('Count: 1');
-
-      wrapper.findDrawerTriggerById(drawerDefaults.id)!.click();
-      expect(wrapper.findTools()).toBeFalsy();
-
-      wrapper.findDrawerTriggerById(TOOLS_DRAWER_ID)!.click();
-      expect(wrapper.findTools().getElement()).toHaveTextContent('Count: 1');
-    });
+    );
   });
 
   test('updates active drawer if multiple are registered', async () => {

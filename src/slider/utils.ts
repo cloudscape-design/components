@@ -58,3 +58,4 @@ export const valuesAreValid = (referenceValues: ReadonlyArray<number>) => {
 };
 
 export const THUMB_SIZE = 16;
+export const THUMB_READONLY_SIZE = 12;

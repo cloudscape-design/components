@@ -10,6 +10,7 @@ import img from './assets/amazon.svg';
 const permutations = createPermutations<TilesProps>([
   {
     value: ['first'],
+    readOnly: [false, true],
     items: [
       [
         { value: 'first', description: 'Short description', label: 'First Button', disabled: true },

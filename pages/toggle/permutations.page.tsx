@@ -40,6 +40,7 @@ const permutations = createPermutations<ToggleProps>([
   {
     disabled: [false, true],
     checked: [false, true],
+    readOnly: [false, true],
     children: ['Some label'],
     description: ['', 'Short description'],
   },

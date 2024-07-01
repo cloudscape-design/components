@@ -23,6 +23,7 @@ const InternalRadioGroup = React.forwardRef(
       ariaRequired,
       ariaControls,
       onChange,
+      readOnly,
       __internalRootRef = null,
       ...props
     }: InternalRadioGroupProps,
@@ -42,6 +43,7 @@ const InternalRadioGroup = React.forwardRef(
         aria-describedby={ariaDescribedby}
         aria-required={ariaRequired}
         aria-controls={ariaControls}
+        aria-readonly={readOnly ? 'true' : undefined}
         {...baseProps}
         className={clsx(baseProps.className, styles.root)}
         ref={__internalRootRef}
@@ -59,6 +61,7 @@ const InternalRadioGroup = React.forwardRef(
               disabled={item.disabled}
               onChange={onChange}
               controlId={item.controlId}
+              readOnly={readOnly}
             />
           ))}
       </div>

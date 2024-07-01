@@ -31,6 +31,10 @@
     border-end-end-radius: 3px;
     margin-block-start: awsui.$space-xs;
     margin-inline: calc(mixins.$thumb-size / -2);
+
+    &.readonly:not(&.disabled) {
+      margin-inline: calc(mixins.$thumb-readonly-size / -2);
+    }
   }
 
   &-track {
@@ -42,6 +46,12 @@
     &.disabled {
       cursor: default;
       background-color: awsui.$color-background-control-disabled;
+    }
+
+    &.readonly:not(&.disabled) {
+      cursor: default;
+      background-color: awsui.$color-background-control-disabled;
+      inline-size: calc(100% + mixins.$thumb-readonly-size);
     }
   }
 
@@ -72,6 +82,11 @@
 
     &.disabled {
       background-color: awsui.$color-background-control-disabled;
+    }
+
+    &.readonly:not(&.disabled) {
+      inline-size: calc(var(#{custom-props.$sliderRangeInlineSize}) + mixins.$thumb-readonly-size);
+      background-color: awsui.$color-foreground-control-read-only;
     }
   }
 }
@@ -171,6 +186,10 @@
 
   &.filled {
     background: awsui.$color-background-slider-handle-default;
+
+    &.readonly:not(.tick-disabled) {
+      background: awsui.$color-foreground-control-read-only;
+    }
   }
 
   &.active {
@@ -196,6 +215,10 @@
   &.disabled {
     background: awsui.$color-background-control-disabled;
   }
+
+  &.readonly {
+    background: awsui.$color-background-control-disabled;
+  }
 }
 
 .tooltip-thumb {
@@ -204,6 +227,12 @@
   block-size: awsui.$space-xxl;
   margin-block-start: calc(awsui.$space-s / -1);
   inset-inline-start: var(#{custom-props.$sliderTooltipPosition});
+
+  &.readonly {
+    inline-size: awsui.$space-xl;
+    block-size: awsui.$space-xl;
+    margin-block-start: calc(awsui.$space-xs / -1);
+  }
 }
 
 .thumb {
@@ -223,6 +252,20 @@
 
   &.disabled {
     cursor: default;
+  }
+
+  &.readonly:not(&.disabled) {
+    cursor: default;
+
+    &:focus::-webkit-slider-thumb,
+    &:active::-webkit-slider-thumb {
+      @include mixins.base-thumb-focus-readonly-styles();
+    }
+
+    &:focus::-moz-range-thumb,
+    &:active::-moz-range-thumb {
+      @include mixins.base-thumb-focus-readonly-styles();
+    }
   }
 
   // 1px added to min and max to cover the step line when it exists.
@@ -330,5 +373,19 @@
 
   &::-moz-range-thumb {
     @include mixins.base-thumb-disabled-styles();
+  }
+}
+
+.readonly:not(.disabled),
+.readonly:not(.disabled):hover,
+.readonly:not(.disabled):active {
+  &::-webkit-slider-thumb {
+    @include mixins.base-thumb-readonly-styles();
+    cursor: initial;
+  }
+
+  &::-moz-range-thumb {
+    @include mixins.base-thumb-readonly-styles();
+    cursor: initial;
   }
 }

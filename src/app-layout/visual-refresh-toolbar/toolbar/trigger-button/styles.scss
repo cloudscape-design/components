@@ -1,0 +1,126 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../../../internal/styles' as styles;
+@use '../../../../internal/styles/tokens' as awsui;
+@use '../../../../internal/hooks/focus-visible' as focus-visible;
+
+@mixin trigger-selected-styles {
+  background: awsui.$color-background-layout-toggle-selected-default;
+  color: awsui.$color-text-layout-toggle-selected;
+  border-block: awsui.$border-field-width solid awsui.$color-background-layout-toggle-selected-default;
+  border-inline: awsui.$border-field-width solid awsui.$color-background-layout-toggle-selected-default;
+
+  &:hover {
+    background: awsui.$color-background-layout-toggle-selected-hover;
+    border-color: awsui.$color-background-layout-toggle-selected-hover;
+  }
+  &:active {
+    background: awsui.$color-background-layout-toggle-selected-active;
+    border-color: awsui.$color-background-layout-toggle-selected-active;
+  }
+}
+
+@mixin trigger-button-styles {
+  background: transparent;
+  color: awsui.$color-text-interactive-default;
+  border-block: awsui.$border-field-width solid transparent;
+  border-inline: awsui.$border-field-width solid transparent;
+  border-start-start-radius: 50%;
+  border-start-end-radius: 50%;
+  border-end-start-radius: 50%;
+  border-end-end-radius: 50%;
+  block-size: awsui.$space-layout-toggle-diameter;
+  inline-size: awsui.$space-layout-toggle-diameter;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+
+  &:hover {
+    background: awsui.$color-background-input-disabled;
+    color: awsui.$color-text-interactive-hover;
+    border-color: awsui.$color-background-input-disabled;
+  }
+
+  &:active {
+    background: awsui.$color-background-control-disabled;
+    color: awsui.$color-text-interactive-hover;
+    border-color: awsui.$color-background-control-disabled;
+  }
+}
+
+.trigger-badge-wrapper {
+  @include trigger-button-styles();
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  clip-path: path(
+    'M34.2193 10.1845C33.3961 10.579 32.4739 10.8 31.5 10.8C28.0206 10.8 25.2 7.97939 25.2 4.5C25.2 3.52614 25.421 2.6039 25.8155 1.78066C23.4518 0.639587 20.8006 0 18 0C8.05887 0 0 8.05887 0 18C0 27.9411 8.05887 36 18 36C27.9411 36 36 27.9411 36 18C36 15.1994 35.3604 12.5482 34.2193 10.1845Z'
+  );
+
+  @include styles.with-direction('rtl') {
+    clip-path: path(
+      'M1.78066 10.1845C2.6039 10.579 3.52615 10.8 4.5 10.8C7.97939 10.8 10.8 7.97939 10.8 4.5C10.8 3.52614 10.579 2.6039 10.1845 1.78066C12.5482 0.639587 15.1994 0 18 0C27.9411 0 36 8.05887 36 18C36 27.9411 27.9411 36 18 36C8.05887 36 0 27.9411 0 18C0 15.1994 0.639587 12.5482 1.78066 10.1845Z'
+    );
+  }
+}
+
+/*
+Warning! If these design tokens for width change it will adversely impact 
+the calculation used to determine the Split Panel maximum width in the 
+handleSplitPanelMaxWidth function in the context.
+*/
+.trigger {
+  @include trigger-button-styles();
+  cursor: pointer;
+  pointer-events: auto;
+
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(3px);
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &.selected {
+    @include trigger-selected-styles();
+
+    > .trigger-badge-wrapper {
+      @include trigger-selected-styles();
+    }
+  }
+
+  &.badge,
+  &.badge:hover,
+  &.badge:active {
+    background: transparent;
+  }
+}
+
+.trigger-wrapper {
+  position: relative;
+  border-start-start-radius: 50%;
+  border-start-end-radius: 50%;
+  border-end-start-radius: 50%;
+  border-end-end-radius: 50%;
+}
+
+.dot {
+  position: absolute;
+  inline-size: 9px;
+  block-size: 9px;
+  border-start-start-radius: 8px;
+  border-start-end-radius: 8px;
+  border-end-start-radius: 8px;
+  border-end-end-radius: 8px;
+  background-color: awsui.$color-background-badge-icon;
+  inset-block-start: 1px;
+  inset-inline-end: 1px;
+}

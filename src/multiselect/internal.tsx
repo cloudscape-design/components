@@ -52,6 +52,7 @@ const InternalMultiselect = React.forwardRef(
       ariaRequired,
       placeholder,
       disabled,
+      readOnly,
       ariaLabel,
       statusType = 'finished',
       empty,
@@ -230,6 +231,7 @@ const InternalMultiselect = React.forwardRef(
       <Trigger
         placeholder={placeholder}
         disabled={disabled}
+        readOnly={readOnly}
         triggerProps={getTriggerProps(disabled, autoFocus)}
         selectedOption={null}
         selectedOptions={selectedOptions}
@@ -361,6 +363,7 @@ const InternalMultiselect = React.forwardRef(
             limitShowMoreAriaLabel={tokenLimitShowMoreAriaLabel}
             limitShowFewerAriaLabel={tokenLimitShowFewerAriaLabel}
             disableOuterPadding={true}
+            readOnly={readOnly}
           />
         )}
         <ScreenreaderOnly id={multiSelectAriaLabelId}>{ariaLabel}</ScreenreaderOnly>

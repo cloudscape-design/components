@@ -10,7 +10,7 @@ jest.mock('@cloudscape-design/component-toolkit', () => ({
   useContainerQuery: () => [100, () => {}],
 }));
 
-describeEachAppLayout(({ size }) => {
+describeEachAppLayout({ themes: ['classic', 'refresh'] }, ({ size }) => {
   test('Default state', () => {
     const { wrapper } = renderComponent(<AppLayout />);
 

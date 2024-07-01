@@ -151,6 +151,16 @@ test('does not trigger change handler if disabled', () => {
   expect(onChange).not.toHaveBeenCalled();
 });
 
+test('does not trigger change handler if readOnly', () => {
+  const onChange = jest.fn();
+  const { wrapper } = renderCheckbox(<Checkbox checked={false} readOnly={true} onChange={onChange} />);
+
+  wrapper.findLabel().click();
+
+  expect(wrapper.findNativeInput().getElement()).not.toBeChecked();
+  expect(onChange).not.toHaveBeenCalled();
+});
+
 test('can be focused via API', () => {
   const onFocus = jest.fn();
   let checkboxRef: CheckboxProps.Ref | null = null;

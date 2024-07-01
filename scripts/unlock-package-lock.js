@@ -4,11 +4,7 @@
 
 const fs = require('node:fs');
 
-const lockfiles = [
-  'package-lock.json',
-  'backstop/package-lock.json',
-  '.github/workflows/bundle-size/package-lock.json',
-];
+const lockfiles = ['package-lock.json', '.github/workflows/bundle-size/package-lock.json'];
 
 for (const filename of lockfiles) {
   unlock(filename);

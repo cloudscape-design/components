@@ -20,6 +20,7 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
       checked,
       name,
       disabled,
+      readOnly,
       children,
       description,
       ariaLabel,
@@ -44,10 +45,12 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
         controlClassName={clsx(styles['toggle-control'], {
           [styles['toggle-control-checked']]: checked,
           [styles['toggle-control-disabled']]: disabled,
+          [styles['toggle-control-readonly']]: readOnly,
         })}
         outlineClassName={styles.outline}
         controlId={controlId}
         disabled={disabled}
+        readOnly={readOnly}
         label={children}
         description={description}
         descriptionBottomPadding={true}
@@ -62,6 +65,7 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
             type="checkbox"
             checked={checked}
             name={name}
+            aria-disabled={readOnly && !disabled ? 'true' : undefined}
             onFocus={() => fireNonCancelableEvent(onFocus)}
             onBlur={() => fireNonCancelableEvent(onBlur)}
             // empty handler to suppress React controllability warning
@@ -78,6 +82,7 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
             className={clsx(styles['toggle-handle'], {
               [styles['toggle-handle-checked']]: checked,
               [styles['toggle-handle-disabled']]: disabled,
+              [styles['toggle-handle-readonly']]: readOnly,
             })}
           />
         }

@@ -177,32 +177,6 @@ Unzip the downloaded archive and open the `html_report/index.html` file in your 
 If there are unexpected regressions, fix your pull request.
 If the changes are expected, call this out in your pull request comments.
 
-#### Running visual tests locally
-
-The visual tests use `backstopjs`, which is installed in the `backstop` folder to keep the dependencies separate from the main dependencies.
-Install it from inside the `backstop` folder with: `cd backstop && npm install`.
-
-As a first step, generate the reference images for comparison.
-Checkout a version of the package before your changes were applied, build the components, and generate the reference images:
-
-```bash
-git checkout main
-npx gulp quick-build
-npm run start:integ
-npm run test:visual reference # from a different shell session
-```
-
-Afterwards, repeat the process with your changes, but run the backstop `test` command instead:
-
-```bash
-git checkout branch/with-your-changes
-npx gulp quick-build
-npm run start:integ
-npm run test:visual test # from a different shell session
-```
-
-After the test is done, you can find a report in `backstop/html_report/index.html` or open it using `npm run test:visual openReport`.
-
 ### Directory layout
 
 ```

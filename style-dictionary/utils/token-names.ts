@@ -355,6 +355,7 @@ export type ColorsTokenName =
   | 'colorBorderTutorial'
   | 'colorForegroundControlDefault'
   | 'colorForegroundControlDisabled'
+  | 'colorForegroundControlReadOnly'
   | 'colorShadowDefault'
   | 'colorShadowMedium'
   | 'colorShadowSide'
