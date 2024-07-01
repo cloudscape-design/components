@@ -8,7 +8,7 @@ import InternalIcon from '../../icon/internal';
 import ItemsList from '../items-list';
 import Dropdown from '../../internal/components/dropdown';
 import { CategoryProps } from '../interfaces';
-import useHiddenDescription from '../utils/use-hidden-description';
+import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import Tooltip from '../tooltip.js';
 import { getMenuItemProps } from '../utils/menu-item';
 

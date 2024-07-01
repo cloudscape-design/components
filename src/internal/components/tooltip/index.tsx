@@ -13,13 +13,21 @@ import styles from './styles.css.js';
 export interface TooltipProps {
   value: number | string;
   trackRef: React.RefObject<HTMLElement | SVGElement>;
+  position?: 'top' | 'right' | 'bottom' | 'left';
+  className?: string;
   contentAttributes?: React.HTMLAttributes<HTMLDivElement>;
 }
 
-export default function Tooltip({ value, trackRef, contentAttributes = {} }: TooltipProps) {
+export default function Tooltip({
+  value,
+  trackRef,
+  className,
+  contentAttributes = {},
+  position = 'top',
+}: TooltipProps) {
   return (
     <Portal>
-      <div className={styles.root} {...contentAttributes}>
+      <div className={clsx(styles.root, className)} {...contentAttributes}>
         <Transition in={true}>
           {() => (
             <PopoverContainer
@@ -27,7 +35,7 @@ export default function Tooltip({ value, trackRef, contentAttributes = {} }: Too
               trackKey={value}
               size="small"
               fixedWidth={false}
-              position="top"
+              position={position}
               arrow={position => (
                 <div className={clsx(popoverStyles.arrow, popoverStyles[`arrow-position-${position}`])}>
                   <div className={popoverStyles['arrow-outer']} />

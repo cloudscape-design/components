@@ -27,6 +27,7 @@ export interface BaseSelectProps
    * - `lang` (string) - (Optional) The language of the option, provided as a BCP 47 language tag.
    * - `description` (string) - (Optional) Further information about the option that appears below the label.
    * - `disabled` (boolean) - (Optional) Determines whether the option is disabled.
+   * - `disabledReason` (string) - (Optional) Displays tooltip near the item when disabled. Use to provide additional context.
    * - `labelTag` (string) - (Optional) A label tag that provides additional guidance, shown next to the label.
    * - `tags` [string[]] - (Optional) A list of tags giving further guidance about the option.
    * - `filteringTags` [string[]] - (Optional) A list of additional tags used for automatic filtering.

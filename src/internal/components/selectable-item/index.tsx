@@ -22,6 +22,7 @@ export type SelectableItemProps = BaseComponentProps & {
   ariaPosinset?: number;
   ariaSetsize?: number;
   highlightType?: HighlightType['type'];
+  ariaDescribedby?: string;
 } & ({ ariaSelected?: boolean; ariaChecked?: never } | { ariaSelected?: never; ariaChecked?: boolean | 'mixed' });
 
 const SelectableItem = (
@@ -108,6 +109,10 @@ const SelectableItem = (
   if (ariaPosinset && ariaSetsize) {
     a11yProperties['aria-posinset'] = ariaPosinset;
     a11yProperties['aria-setsize'] = ariaSetsize;
+  }
+
+  if (restProps.ariaDescribedby) {
+    a11yProperties['aria-describedby'] = restProps.ariaDescribedby;
   }
 
   return (

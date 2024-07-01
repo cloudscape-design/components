@@ -153,7 +153,6 @@ export class DropdownContentWrapper extends ComponentWrapper {
     const dropdown = new DropdownWrapper(this.getElement());
     return dropdown.findOpenDropdown();
   }
-
   /**
    * Returns an option from the dropdown.
    *
