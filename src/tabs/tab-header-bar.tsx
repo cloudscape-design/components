@@ -317,9 +317,6 @@ export function TabHeaderBar({
 
     if (tab.disabled) {
       commonProps['aria-disabled'] = 'true';
-      commonProps.onClick = (event: React.MouseEvent) => {
-        event.preventDefault();
-      };
     } else {
       commonProps.onClick = clickTab;
     }
