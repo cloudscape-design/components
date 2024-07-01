@@ -13,20 +13,25 @@ interface PropertyEditorProps<TokenValue> {
   filter: string;
   operatorForm: ExtendedOperatorForm<TokenValue>;
   onCancel: () => void;
-  onSubmit: (value: Token) => void;
+  onSubmit: (value: Token, operator?: string) => void;
   i18nStrings: I18nStrings;
 }
 
 export function PropertyEditor<TokenValue = any>({
   property,
-  operator,
+  operator: initialOperator,
   filter,
   operatorForm,
   onCancel,
   onSubmit,
   i18nStrings,
 }: PropertyEditorProps<TokenValue>) {
-  const [value, onChange] = useState<null | TokenValue>(null);
+  const [value, setValue] = useState<null | TokenValue>(null);
+  const [operator, setOperator] = useState(initialOperator);
+  const onChange: any = (value: TokenValue, operator?: string) => {
+    setValue(value);
+    setOperator(operator ?? initialOperator);
+  };
   const submitToken = () => onSubmit({ propertyKey: property.propertyKey, operator, value });
   return (
     <div className={styles['property-editor']}>

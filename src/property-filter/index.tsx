@@ -188,8 +188,16 @@ const PropertyFilter = React.forwardRef(
           propertyGroup: property?.group,
           operators: (property?.operators ?? []).map(op => (typeof op === 'string' ? op : op.operator)),
           defaultOperator: property?.defaultOperator ?? '=',
-          getValueFormatter: operator => (operator ? extendedOperators.get(operator)?.format ?? null : null),
-          getValueFormRenderer: operator => (operator ? extendedOperators.get(operator)?.form ?? null : null),
+          getValueFormatter: operator => {
+            let formatter = operator ? extendedOperators.get(operator)?.format ?? null : null;
+            formatter = formatter ?? (property as any).format;
+            return formatter;
+          },
+          getValueFormRenderer: operator => {
+            let renderer = operator ? extendedOperators.get(operator)?.form ?? null : null;
+            renderer = renderer ?? (property as any).form;
+            return renderer;
+          },
           externalProperty: property,
         });
         return acc;
