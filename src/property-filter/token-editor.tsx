@@ -14,8 +14,9 @@ import {
   InternalFilteringProperty,
   InternalFreeTextFiltering,
   InternalToken,
+  InternalTokenGroup,
   LoadItemsDetail,
-  Token,
+  TokenGroup,
 } from './interfaces';
 import styles from './styles.css.js';
 import { useLoadItems } from './use-load-items';
@@ -118,7 +119,6 @@ function OperatorInput({ property, operator, onChangeOperator, i18nStrings, free
   return (
     <InternalSelect
       options={operatorOptions}
-      triggerVariant="option"
       selectedOption={
         operator
           ? {
@@ -195,8 +195,8 @@ interface TokenEditorProps {
   filteringOptions: readonly InternalFilteringOption[];
   i18nStrings: I18nStrings;
   onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
-  setToken: (newToken: Token) => void;
-  token: InternalToken;
+  setToken: (newToken: TokenGroup) => void;
+  token: InternalTokenGroup;
   triggerComponent?: React.ReactNode;
 }
 
@@ -214,36 +214,59 @@ export function TokenEditor({
   token,
   triggerComponent,
 }: TokenEditorProps) {
-  const [temporaryToken, setTemporaryToken] = useState<InternalToken>(token);
+  const firstLevelTokens: InternalToken[] = [];
+  for (const tokenOrGroup of token.tokens) {
+    if ('operation' in tokenOrGroup) {
+      // ignore as deeply nested tokens are not supported
+    } else {
+      firstLevelTokens.push(tokenOrGroup);
+    }
+  }
+  const [operation, setOperation] = useState(token.operation);
+  const [temp, setTemp] = useState<InternalToken[]>(firstLevelTokens);
   const popoverRef = useRef<InternalPopoverRef>(null);
   const closePopover = () => {
     popoverRef.current && popoverRef.current.dismissPopover();
   };
 
-  const property = temporaryToken.property;
-  const onChangePropertyKey = (newPropertyKey: undefined | string) => {
-    const filteringProperty = filteringProperties.reduce<InternalFilteringProperty | undefined>(
-      (acc, property) => (property.propertyKey === newPropertyKey ? property : acc),
-      undefined
-    );
-    const allowedOperators = filteringProperty ? getAllowedOperators(filteringProperty) : freeTextFiltering.operators;
-    const operator =
-      temporaryToken.operator && allowedOperators.indexOf(temporaryToken.operator) !== -1
-        ? temporaryToken.operator
-        : allowedOperators[0];
-    const matchedProperty = filteringProperties.find(property => property.propertyKey === newPropertyKey) ?? null;
-    setTemporaryToken({ ...temporaryToken, property: matchedProperty, operator });
-  };
+  const groups = temp.map((temporaryToken, index) => {
+    const setTemporaryToken = (newToken: InternalToken) => {
+      setTemp(prev => {
+        const copy = [...prev];
+        copy[index] = newToken;
+        return copy;
+      });
+    };
 
-  const operator = temporaryToken.operator;
-  const onChangeOperator = (newOperator: ComparisonOperator) => {
-    setTemporaryToken({ ...temporaryToken, operator: newOperator });
-  };
+    const property = temporaryToken.property;
+    const onChangePropertyKey = (newPropertyKey: undefined | string) => {
+      const filteringProperty = filteringProperties.reduce<InternalFilteringProperty | undefined>(
+        (acc, property) => (property.propertyKey === newPropertyKey ? property : acc),
+        undefined
+      );
+      const allowedOperators = filteringProperty ? getAllowedOperators(filteringProperty) : freeTextFiltering.operators;
+      const operator =
+        temporaryToken.operator && allowedOperators.indexOf(temporaryToken.operator) !== -1
+          ? temporaryToken.operator
+          : allowedOperators[0];
+      const matchedProperty = filteringProperties.find(property => property.propertyKey === newPropertyKey) ?? null;
+      setTemporaryToken({ ...temporaryToken, property: matchedProperty, operator });
+    };
 
-  const value = temporaryToken.value;
-  const onChangeValue = (newValue: string) => {
-    setTemporaryToken({ ...temporaryToken, value: newValue });
-  };
+    const operator = temporaryToken.operator;
+    const onChangeOperator = (newOperator: ComparisonOperator) => {
+      setTemporaryToken({ ...temporaryToken, operator: newOperator });
+    };
+
+    const value = temporaryToken.value;
+    const onChangeValue = (newValue: string) => {
+      setTemporaryToken({ ...temporaryToken, value: newValue });
+    };
+
+    return { property, onChangePropertyKey, operator, onChangeOperator, value, onChangeValue };
+  });
+
+  const operationOptions = [{ value: 'and' }, { value: 'or' }];
 
   return (
     <InternalPopover
@@ -252,48 +275,94 @@ export function TokenEditor({
       triggerType="text"
       header={i18nStrings.editTokenHeader}
       size="large"
+      __maxSize={true}
+      fixedWidth={true}
       position="right"
       dismissAriaLabel={i18nStrings.dismissAriaLabel}
-      __onOpen={() => setTemporaryToken(token)}
+      __onOpen={() => setTemp(firstLevelTokens)}
       renderWithPortal={expandToViewport}
       content={
         <div className={styles['token-editor']}>
-          <div className={styles['token-editor-form']}>
-            <InternalFormField label={i18nStrings.propertyText} className={styles['token-editor-field-property']}>
-              <PropertyInput
-                property={property}
-                onChangePropertyKey={onChangePropertyKey}
-                asyncProps={asyncProperties ? asyncProps : null}
-                filteringProperties={filteringProperties}
-                onLoadItems={onLoadItems}
-                customGroupsText={customGroupsText}
-                i18nStrings={i18nStrings}
-                freeTextFiltering={freeTextFiltering}
-              />
-            </InternalFormField>
+          {groups.map((group, index) => (
+            <React.Fragment key={index}>
+              <div className={styles['token-editor-form']}>
+                <InternalFormField label={i18nStrings.propertyText} className={styles['token-editor-field-property']}>
+                  <PropertyInput
+                    property={group.property}
+                    onChangePropertyKey={group.onChangePropertyKey}
+                    asyncProps={asyncProperties ? asyncProps : null}
+                    filteringProperties={filteringProperties}
+                    onLoadItems={onLoadItems}
+                    customGroupsText={customGroupsText}
+                    i18nStrings={i18nStrings}
+                    freeTextFiltering={freeTextFiltering}
+                  />
+                </InternalFormField>
 
-            <InternalFormField label={i18nStrings.operatorText} className={styles['token-editor-field-operator']}>
-              <OperatorInput
-                property={property}
-                operator={operator}
-                onChangeOperator={onChangeOperator}
-                i18nStrings={i18nStrings}
-                freeTextFiltering={freeTextFiltering}
-              />
-            </InternalFormField>
+                <InternalFormField label={i18nStrings.operatorText} className={styles['token-editor-field-operator']}>
+                  <OperatorInput
+                    property={group.property}
+                    operator={group.operator}
+                    onChangeOperator={group.onChangeOperator}
+                    i18nStrings={i18nStrings}
+                    freeTextFiltering={freeTextFiltering}
+                  />
+                </InternalFormField>
 
-            <InternalFormField label={i18nStrings.valueText} className={styles['token-editor-field-value']}>
-              <ValueInput
-                property={property}
-                operator={operator}
-                value={value}
-                onChangeValue={onChangeValue}
-                asyncProps={asyncProps}
-                filteringOptions={filteringOptions}
-                onLoadItems={onLoadItems}
-                i18nStrings={i18nStrings}
-              />
-            </InternalFormField>
+                <InternalFormField label={i18nStrings.valueText} className={styles['token-editor-field-value']}>
+                  <ValueInput
+                    property={group.property}
+                    operator={group.operator}
+                    value={group.value}
+                    onChangeValue={group.onChangeValue}
+                    asyncProps={asyncProps}
+                    filteringOptions={filteringOptions}
+                    onLoadItems={onLoadItems}
+                    i18nStrings={i18nStrings}
+                  />
+                </InternalFormField>
+
+                {/* TODO: i18n */}
+                {groups.length > 1 && (
+                  <div className={styles['token-editor-remove-token']}>
+                    <InternalButton
+                      iconName="remove"
+                      onClick={() =>
+                        setTemp(prev => {
+                          const copy = [...prev];
+                          copy.splice(index, 1);
+                          return copy;
+                        })
+                      }
+                    >
+                      Remove token
+                    </InternalButton>
+                  </div>
+                )}
+              </div>
+
+              {/* TODO: i18n */}
+              {index < groups.length - 1 ? (
+                <div className={styles['token-editor-operation']}>
+                  <InternalSelect
+                    options={operationOptions}
+                    selectedOption={operationOptions.find(option => option.value === operation)!}
+                    onChange={event => setOperation(event.detail.selectedOption.value as 'and' | 'or')}
+                    ariaLabel="Operation"
+                  />
+                </div>
+              ) : null}
+            </React.Fragment>
+          ))}
+
+          {/* TODO: i18n */}
+          <div className={styles['token-editor-add-token']}>
+            <InternalButton
+              iconName="add-plus"
+              onClick={() => setTemp(prev => [...prev, { property: null, operator: ':', value: null }])}
+            >
+              Add token
+            </InternalButton>
           </div>
 
           <div className={styles['token-editor-actions']}>
@@ -309,7 +378,10 @@ export function TokenEditor({
               className={styles['token-editor-submit']}
               formAction="none"
               onClick={() => {
-                setToken(matchTokenValue(temporaryToken, filteringOptions));
+                setToken({
+                  operation,
+                  tokens: temp.map(temporaryToken => matchTokenValue(temporaryToken, filteringOptions)),
+                });
                 closePopover();
               }}
             >
