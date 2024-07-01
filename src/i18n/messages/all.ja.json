@@ -288,8 +288,7 @@
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "左にスクロール",
-    "i18nStrings.scrollRightAriaLabel": "右にスクロール",
-    "i18nStrings.tabsWithActionsAriaRoleDescription": "アクション付きのタブ"
+    "i18nStrings.scrollRightAriaLabel": "右にスクロール"
   },
   "tag-editor": {
     "i18nStrings.keyPlaceholder": "キーを入力",

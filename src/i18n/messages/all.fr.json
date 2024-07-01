@@ -288,8 +288,7 @@
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "Faire défiler vers la gauche",
-    "i18nStrings.scrollRightAriaLabel": "Faire défiler vers la droite",
-    "i18nStrings.tabsWithActionsAriaRoleDescription": "Onglets avec des actions"
+    "i18nStrings.scrollRightAriaLabel": "Faire défiler vers la droite"
   },
   "tag-editor": {
     "i18nStrings.keyPlaceholder": "Saisir une clé",

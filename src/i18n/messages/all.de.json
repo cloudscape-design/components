@@ -288,8 +288,7 @@
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "Nach links scrollen",
-    "i18nStrings.scrollRightAriaLabel": "Nach rechts scrollen",
-    "i18nStrings.tabsWithActionsAriaRoleDescription": "Tabs mit Aktionen"
+    "i18nStrings.scrollRightAriaLabel": "Nach rechts scrollen"
   },
   "tag-editor": {
     "i18nStrings.keyPlaceholder": "Schlüssel eingeben",

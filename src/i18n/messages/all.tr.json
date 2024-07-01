@@ -288,8 +288,7 @@
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "Sola kaydır",
-    "i18nStrings.scrollRightAriaLabel": "Sağa kaydır",
-    "i18nStrings.tabsWithActionsAriaRoleDescription": "Eylem içeren sekmeler"
+    "i18nStrings.scrollRightAriaLabel": "Sağa kaydır"
   },
   "tag-editor": {
     "i18nStrings.keyPlaceholder": "Enter tuşu",

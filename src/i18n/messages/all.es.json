@@ -288,8 +288,7 @@
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "Desplácese hacia la izquierda",
-    "i18nStrings.scrollRightAriaLabel": "Desplácese hacia la derecha",
-    "i18nStrings.tabsWithActionsAriaRoleDescription": "Pestañas con acciones"
+    "i18nStrings.scrollRightAriaLabel": "Desplácese hacia la derecha"
   },
   "tag-editor": {
     "i18nStrings.keyPlaceholder": "Ingresar clave",
