@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper, usesDom, createWrapper } from '@cloudscape-design/test-utils-core/dom';
 import styles from '../../../button/styles.selectors.js';
-import buttonTestUtilsStyles from '../../../button/test-classes/styles.css.js';
+import buttonTestUtilsStyles from '../../../button/test-classes/styles.selectors.js';
 import spinnerStyles from '../../../spinner/styles.selectors.js';
 
 export default class ButtonWrapper extends ComponentWrapper<HTMLButtonElement> {
