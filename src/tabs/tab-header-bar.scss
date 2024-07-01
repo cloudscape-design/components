@@ -9,7 +9,7 @@
 @use '../internal/hooks/focus-visible' as focus-visible;
 
 $separator-color: awsui.$color-border-tabs-divider;
-$label-horizontal-spacing: awsui.$space-l;
+$label-horizontal-spacing: awsui.$space-xs;
 
 .tabs-header {
   margin-block: 0;
@@ -73,108 +73,66 @@ $label-horizontal-spacing: awsui.$space-l;
 
   flex-shrink: 0;
   display: flex;
-  max-inline-size: calc(90% - #{$label-horizontal-spacing});
-
-  & > button {
-    background-color: transparent;
-  }
+  max-inline-size: calc(90% - awsui.$space-l);
 }
 
 .tabs-tab-label {
   display: flex;
   align-items: center;
-  padding-block: awsui.$space-scaled-2x-xxs;
   padding-inline: $label-horizontal-spacing;
+  padding-block: awsui.$space-scaled-2x-xxs;
   text-align: start;
   position: relative;
 
   @include styles.text-wrapping;
 }
 
-.tabs-tab:not(:last-child) {
-  & > a > .tabs-tab-label,
-  & > button > .tabs-tab-label {
-    margin-inline-end: calc(-1 * #{awsui.$border-divider-section-width});
-    border-inline-end: awsui.$border-divider-section-width solid $separator-color;
-  }
+.tabs-tab-no-actions > .tabs-tab-label {
+  padding-inline: awsui.$space-l;
 }
 
-.tabs-tab-link {
+.tabs-tab-dismiss,
+.tabs-tab-action {
+  /* Used as a selector for tests */
+}
+
+.tabs-tab-header-container {
   position: relative;
-  display: flex;
-  align-items: stretch;
-  text-decoration: none;
-  cursor: pointer;
-  padding-block-start: calc(#{awsui.$space-scaled-s} - 1px);
-  padding-block-end: awsui.$space-scaled-s;
-  padding-inline: 0;
-  margin-block-start: 1px;
+
   border-block: awsui.$border-divider-section-width solid transparent;
   border-inline: awsui.$border-divider-section-width solid transparent;
 
-  font-size: awsui.$font-tabs-size;
-  line-height: awsui.$font-tabs-line-height;
-  font-weight: awsui.$font-wayfinding-link-active-weight;
-  color: awsui.$color-text-interactive-default;
-  &.refresh {
-    padding-block-start: calc(awsui.$space-static-xs - 1px);
-    padding-block-end: awsui.$space-static-xs;
+  padding-inline: $label-horizontal-spacing;
+  display: flex;
+  align-items: stretch;
+
+  &,
+  & > button {
+    background-color: transparent;
+  }
+
+  & > .tabs-tab-dismiss,
+  & > .tabs-tab-action {
+    display: flex;
+    align-items: center;
+  }
+
+  &.tabs-tab-no-actions {
     padding-inline: 0;
   }
 
-  &:hover {
-    color: awsui.$color-text-accent;
-  }
-
-  &:focus {
-    outline: none;
-  }
-  @include styles.font-smoothing;
-
-  @include focus-visible.when-visible {
-    z-index: 1;
-    @include styles.focus-highlight(awsui.$space-tabs-focus-outline-gutter);
-    & > a > .tabs-tab-label,
-    & > button > .tabs-tab-label {
-      border-inline-end-color: transparent;
-    }
+  &.refresh > span:first-of-type {
+    margin-inline-start: calc(-1 * awsui.$space-scaled-xs);
   }
 }
 
-// Remediate focus shadow
-.tabs-tab:first-child {
-  margin-inline-start: 1px;
-  & > a > .tabs-tab-label,
-  & > button > .tabs-tab-label {
-    padding-inline-start: calc(#{$label-horizontal-spacing} - 1px);
-  }
-}
-
-// Remediate focus shadow
-.tabs-tab:last-child {
-  margin-inline-end: 1px;
-  & > a > .tabs-tab-label,
-  & > button > .tabs-tab-label {
-    padding-inline-end: calc(#{$label-horizontal-spacing} - 1px);
-  }
-}
-
-.tabs-tab-disabled {
-  &,
-  &:hover {
-    cursor: default;
-    color: awsui.$color-text-interactive-disabled;
-    font-weight: awsui.$font-tabs-disabled-weight;
-  }
-}
-
-.tabs-tab-link:not(.tabs-tab-disabled) {
+.tabs-tab-header-container:not(.tabs-tab-disabled) {
   // This is the underline for the currently selected tab.
   &:after {
     content: '';
     position: absolute;
     inset-inline-start: 0;
-    inline-size: 100%;
+    inline-size: calc(100% - 1px);
     inset-block-end: calc(-1 * #{awsui.$border-divider-section-width});
     block-size: awsui.$border-active-width;
     border-start-start-radius: awsui.$border-radius-tabs-focus-ring;
@@ -191,6 +149,108 @@ $label-horizontal-spacing: awsui.$space-l;
         transition: opacity awsui.$motion-duration-refresh-only-medium awsui.$motion-easing-refresh-only-c;
       }
     }
+  }
+}
+
+.tabs-tab:not(:last-child) {
+  & > .tabs-tab-header-container {
+    margin-inline-end: calc(-1 * #{awsui.$border-divider-section-width});
+    &:before {
+      content: '';
+      position: absolute;
+      border-inline-end: awsui.$border-divider-section-width solid $separator-color;
+      inset: calc(#{awsui.$space-scaled-s}) 0;
+      opacity: 1;
+    }
+
+    &.refresh:before {
+      inset: calc(#{awsui.$space-scaled-s} - #{awsui.$border-active-width}) 0;
+    }
+  }
+  & > .tabs-tab-header-container.tabs-tab-no-actions {
+    margin-inline-end: calc(-1 * awsui.$space-scaled-xxxs);
+  }
+}
+
+.tabs-tab-link {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  text-decoration: none;
+  cursor: pointer;
+  padding-block-start: calc(#{awsui.$space-scaled-s} - 2px);
+  padding-block-end: calc(#{awsui.$space-scaled-s} - 1px);
+
+  margin-block-start: 1px;
+  border-block: awsui.$border-divider-section-width solid transparent;
+  border-inline: awsui.$border-divider-section-width solid transparent;
+
+  font-size: awsui.$font-tabs-size;
+  line-height: awsui.$font-tabs-line-height;
+  font-weight: awsui.$font-wayfinding-link-active-weight;
+  color: awsui.$color-text-interactive-default;
+
+  padding-inline-start: calc(#{awsui.$space-xxs} - 1px);
+  padding-inline-end: awsui.$space-xxs;
+
+  &.refresh {
+    padding-block-start: calc(awsui.$space-static-xs - 1px);
+    padding-block-end: calc(awsui.$space-static-xs - 1px);
+
+    margin-block-start: 0;
+  }
+
+  &.tabs-tab-no-actions {
+    padding-inline: 0;
+  }
+
+  &:hover {
+    color: awsui.$color-text-accent;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  @include styles.font-smoothing;
+
+  @include focus-visible.when-visible {
+    z-index: 1;
+    @include styles.focus-highlight(awsui.$space-tabs-focus-outline-gutter);
+    border-inline-end-color: transparent;
+  }
+}
+
+// Remediate focus shadow
+.tabs-tab:first-child {
+  margin-inline-start: 1px;
+  & > .tabs-tab-header-container:not(.tabs-tab-no-actions) {
+    padding-inline-start: calc(#{$label-horizontal-spacing} - 1px);
+  }
+
+  & > .tabs-tab-header-container > .tabs-tab-link.tabs-tab-no-actions > .tabs-tab-label {
+    padding-inline-start: calc(awsui.$space-l - 2px);
+  }
+}
+
+// Remediate focus shadow
+.tabs-tab:last-child {
+  margin-inline-end: 1px;
+  & > .tabs-tab-header-container:not(.tabs-tab-no-actions) {
+    padding-inline-end: calc(#{$label-horizontal-spacing} - 1px);
+  }
+
+  & > .tabs-tab-header-container > .tabs-tab-link.tabs-tab-no-actions > .tabs-tab-label {
+    padding-inline-end: calc(awsui.$space-l - 2px);
+  }
+}
+
+.tabs-tab-disabled {
+  &,
+  &:hover {
+    cursor: default;
+    color: awsui.$color-text-interactive-disabled;
+    font-weight: awsui.$font-tabs-disabled-weight;
   }
 }
 

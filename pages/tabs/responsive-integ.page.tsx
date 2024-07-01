@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Tabs, { TabsProps } from '~components/tabs';
 import styles from './responsive.scss';
+import { ButtonDropdown } from '~components';
 
 export default function TabsDemoPage() {
   const defaultTabs: Array<TabsProps.Tab> = [
@@ -23,6 +24,8 @@ export default function TabsDemoPage() {
       id: 'third',
       content:
         'Diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.',
+      dismissible: true,
+      dismissLabel: 'Dismiss third tab',
     },
     {
       label: 'Fourth tab',
@@ -42,8 +45,80 @@ export default function TabsDemoPage() {
       id: 'sixth',
       content:
         'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.',
+      action: (
+        <ButtonDropdown
+          variant="icon"
+          ariaLabel="Query actions for Sixth Tab"
+          items={[
+            { id: 'save', text: 'Save', disabled: true },
+            { id: 'saveAs', text: 'Save as' },
+            { id: 'rename', text: 'Rename', disabled: true },
+            { id: 'delete', text: 'Delete', disabled: true },
+          ]}
+          expandToViewport={true}
+        />
+      ),
+      dismissible: true,
+      dismissLabel: 'Dismiss sixth tab',
+      onDismiss: () => console.log('I have been clicked!'),
     },
   ];
+
+  const [tabsDismissibles, setTabDismissibles] = useState([
+    {
+      label: 'First tab',
+      id: 'first',
+      dismissible: true,
+      dismissLabel: 'Dismiss first tab',
+      onDismiss: () => setTabDismissibles(prevTabs => prevTabs.slice(1)),
+      content: (
+        <>
+          Diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et
+          accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
+          dolor sit amet.,
+        </>
+      ),
+    },
+    {
+      label: 'Second tab',
+      id: 'second',
+      disabled: true,
+      dismissible: true,
+      dismissLabel: 'Dismiss second tab (disabled)',
+      dismissDisabled: true,
+      action: (
+        <ButtonDropdown
+          variant="icon"
+          ariaLabel="Query actions for second tab"
+          items={[
+            { id: 'save', text: 'Save', disabled: true },
+            { id: 'saveAs', text: 'Save as' },
+            { id: 'rename', text: 'Rename', disabled: true },
+            { id: 'delete', text: 'Delete', disabled: true },
+          ]}
+          expandToViewport={true}
+          disabled={true}
+        />
+      ),
+      content:
+        'Diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.',
+    },
+    {
+      label: 'Third tab',
+      id: 'third',
+      dismissible: true,
+      dismissLabel: 'Dismiss third tab',
+      onDismiss: () => setTabDismissibles(prevTabs => prevTabs.filter(tab => tab.id !== 'third')),
+      content: (
+        <>
+          Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Diam nonumy eirmod tempor
+          invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo
+          dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Stet
+          clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.,
+        </>
+      ),
+    },
+  ]);
 
   const extraTab: TabsProps.Tab = {
     label: 'Seventh tab',
@@ -61,6 +136,7 @@ export default function TabsDemoPage() {
       <input type="text" id="before" aria-label="before" />
       <form action="/">
         <Tabs
+          ariaLabel="General Tabs"
           tabs={tabs}
           activeTabId={selectedTab}
           onChange={event => setSelectedTab(event.detail.activeTabId)}
@@ -74,6 +150,15 @@ export default function TabsDemoPage() {
       <button id="add-tab" onClick={() => setTabs(tabs.concat([extraTab]))}>
         Add tab
       </button>
+      <Tabs
+        id="dismiss-tabs"
+        ariaLabel="Dismissible Tabs"
+        tabs={tabsDismissibles}
+        i18nStrings={{
+          scrollLeftAriaLabel: 'Scroll left (Dismissible Tabs)',
+          scrollRightAriaLabel: 'Scroll right (Dismissible Tabs)',
+        }}
+      />
     </div>
   );
 }
