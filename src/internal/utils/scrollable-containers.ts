@@ -54,8 +54,8 @@ export const getOverflowParentDimensions = ({
     });
   } else {
     parents.push({
-      blockSize: window.innerHeight,
-      inlineSize: window.innerWidth,
+      blockSize: window.visualViewport?.height ?? window.innerHeight,
+      inlineSize: window.visualViewport?.width ?? window.innerWidth,
       insetBlockStart: 0,
       insetInlineStart: 0,
     });
