@@ -990,7 +990,7 @@ describe('Tabs', () => {
         expect(wrapper.findTabLinkById('second')!.getElement()).not.toHaveAttribute('aria-describedby');
       });
 
-      test('has aria-describedby with disabledReason', () => {
+      test('has disabledReason a11y attributes', () => {
         const firstTabId = defaultTabs[0].id;
         const { wrapper } = renderTabs(
           <Tabs
@@ -1011,28 +1011,6 @@ describe('Tabs', () => {
         );
 
         expect(wrapper.findTabLinkById('second')!.getElement()).toHaveAttribute('aria-describedby');
-      });
-
-      test('has hidden element (linked to aria-describedby) with disabledReason', () => {
-        const firstTabId = defaultTabs[0].id;
-        const { wrapper } = renderTabs(
-          <Tabs
-            tabs={defaultTabs.map(item => {
-              if (item.id === 'second') {
-                return {
-                  ...item,
-                  disabled: true,
-                  disabledReason: 'disabled reason',
-                };
-              }
-
-              return item;
-            })}
-            activeTabId={firstTabId}
-            onChange={() => void 0}
-          />
-        );
-
         expect(wrapper.findTabLinkById('second')!.find('span[hidden]')!.getElement()).toHaveTextContent(
           'disabled reason'
         );
