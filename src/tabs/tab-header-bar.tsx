@@ -32,6 +32,7 @@ import { ButtonProps } from '../button/interfaces';
 
 const tabSelector = `.${styles['tabs-tab-link']}`;
 const focusedTabSelector = `[role="tab"].${styles['tabs-tab-focused']}`;
+const focusableTabSelector = `[role="tab"].${styles['tabs-tab-focusable']}`;
 
 function dismissButton(
   dismissLabel: TabsProps.Tab['dismissLabel'],
@@ -268,8 +269,7 @@ export function TabHeaderBar({
         );
       }
       if (element instanceof HTMLAnchorElement) {
-        // aria-describedby is present only if the element is disabled with reason. in this case it should be focusable, otherwise no
-        return !(element.getAttribute('aria-disabled') === 'true' && !element.hasAttribute('aria-describedby'));
+        return element.matches(focusableTabSelector);
       }
 
       return false;

@@ -264,3 +264,7 @@ $label-horizontal-spacing: awsui.$space-xs;
 .tabs-header-with-divider {
   border-block-end: awsui.$border-divider-section-width solid $separator-color;
 }
+
+.tabs-tab-focusable {
+  /* used to manage focusable logic */
+}
