@@ -288,8 +288,7 @@
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "Rolar para a esquerda",
-    "i18nStrings.scrollRightAriaLabel": "Rolar para a direita",
-    "i18nStrings.tabsWithActionsAriaRoleDescription": "Guias com ações"
+    "i18nStrings.scrollRightAriaLabel": "Rolar para a direita"
   },
   "tag-editor": {
     "i18nStrings.keyPlaceholder": "Inserir chave",

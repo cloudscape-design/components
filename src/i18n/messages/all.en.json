@@ -288,8 +288,7 @@
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "Scroll left",
-    "i18nStrings.scrollRightAriaLabel": "Scroll right",
-    "i18nStrings.tabsWithActionsAriaRoleDescription": "Tabs with actions"
+    "i18nStrings.scrollRightAriaLabel": "Scroll right"
   },
   "tag-editor": {
     "i18nStrings.keyPlaceholder": "Enter key",

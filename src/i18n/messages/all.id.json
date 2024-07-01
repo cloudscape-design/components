@@ -288,8 +288,7 @@
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "Gulir ke kiri",
-    "i18nStrings.scrollRightAriaLabel": "Gulir ke kanan",
-    "i18nStrings.tabsWithActionsAriaRoleDescription": "Tab dengan tindakan"
+    "i18nStrings.scrollRightAriaLabel": "Gulir ke kanan"
   },
   "tag-editor": {
     "i18nStrings.keyPlaceholder": "Masukkan kunci",

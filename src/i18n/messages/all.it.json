@@ -288,8 +288,7 @@
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "Scorri a sinistra",
-    "i18nStrings.scrollRightAriaLabel": "Scorri a destra",
-    "i18nStrings.tabsWithActionsAriaRoleDescription": "Schede con azioni"
+    "i18nStrings.scrollRightAriaLabel": "Scorri a destra"
   },
   "tag-editor": {
     "i18nStrings.keyPlaceholder": "Inserisci chiave",
