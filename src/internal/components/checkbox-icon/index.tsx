@@ -10,6 +10,7 @@ export interface CheckboxIconProps extends BaseComponentProps {
   checked?: boolean;
   indeterminate?: boolean;
   disabled?: boolean;
+  readOnly?: boolean;
 }
 export interface Dimension {
   viewBox: string;
@@ -40,7 +41,13 @@ export const dimensionsByTheme: Record<NonNullable<'default' | 'refresh'>, Dimen
   },
 };
 
-const CheckboxIcon = ({ checked, indeterminate, disabled = false, ...restProps }: CheckboxIconProps) => {
+const CheckboxIcon = ({
+  checked,
+  indeterminate,
+  disabled = false,
+  readOnly = false,
+  ...restProps
+}: CheckboxIconProps) => {
   const baseProps = getBaseProps(restProps);
   const theme = useVisualRefresh() ? 'refresh' : 'default';
   const dimensions = dimensionsByTheme[theme];
@@ -51,6 +58,7 @@ const CheckboxIcon = ({ checked, indeterminate, disabled = false, ...restProps }
           [styles['styled-box-checked']]: checked,
           [styles['styled-box-indeterminate']]: indeterminate,
           [styles['styled-box-disabled']]: disabled,
+          [styles['styled-box-readonly']]: readOnly,
         })}
         x={dimensions.xy}
         y={dimensions.xy}
@@ -61,7 +69,10 @@ const CheckboxIcon = ({ checked, indeterminate, disabled = false, ...restProps }
       />
       {checked || indeterminate ? (
         <polyline
-          className={clsx(styles['styled-line'], { [styles['styled-line-disabled']]: disabled })}
+          className={clsx(styles['styled-line'], {
+            [styles['styled-line-disabled']]: disabled,
+            [styles['styled-line-readonly']]: readOnly,
+          })}
           points={indeterminate ? dimensions.indeterminate : dimensions.checked}
         />
       ) : null}

@@ -1961,7 +1961,7 @@ on your own.
       "type": "string",
     },
     Object {
-      "description": "Specifies if the control is read only, which prevents the
+      "description": "Specifies if the control is read-only, which prevents the
 user from modifying the value but includes it in a form
 submission. A read-only control can receive focus.
 Don't use read-only inputs outside a form.
@@ -4235,8 +4235,7 @@ It's also used for connecting \`items\` and \`selectedItems\` values when they d
       "defaultValue": "'container'",
       "description": "Specify a cards variant with one of the following:
 * \`container\` - Use this variant to have the cards displayed as a container.
-* \`full-page\` – Use this variant when cards are the entire content of a page. Full page variants
-                implement the high contrast header and content behavior automatically.",
+* \`full-page\` – Use this variant when cards are the entire content of a page.",
       "inlineType": Object {
         "name": "",
         "type": "union",
@@ -4434,6 +4433,15 @@ in the native control.",
       "name": "name",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Specifies if the control is read-only, which prevents the
+user from modifying the value. Should be used only inside forms.
+A read-only control is still focusable.
+If both \`readOnly\` and \`disabled\` are set, \`disabled\` takes precedence.",
+      "name": "readOnly",
+      "optional": true,
+      "type": "boolean",
     },
   ],
   "regions": Array [
@@ -5916,7 +5924,7 @@ single form field.",
       "type": "string",
     },
     Object {
-      "description": "Specifies if the control is read only, which prevents the
+      "description": "Specifies if the control is read-only, which prevents the
 user from modifying the value but includes it in a form
 submission. A read-only control can receive focus.
 Don't use read-only inputs outside a form.
@@ -6242,7 +6250,7 @@ a human-readable localised string representing the current value of the input.
     },
     Object {
       "defaultValue": "false",
-      "description": "Specifies if the control is read only, which prevents the
+      "description": "Specifies if the control is read-only, which prevents the
 user from modifying the value but includes it in a form
 submission. A read-only control can receive focus.
 Do not use read-only inputs outside of a form.
@@ -8450,7 +8458,7 @@ single form field.",
       "type": "string",
     },
     Object {
-      "description": "Specifies if the control is read only, which prevents the
+      "description": "Specifies if the control is read-only, which prevents the
 user from modifying the value but includes it in a form
 submission. A read-only control can receive focus.
 Don't use read-only inputs outside a form.
@@ -10167,6 +10175,13 @@ on your own.
       "type": "string",
     },
     Object {
+      "description": "Specifies if the control is read-only, which prevents the
+user from both modifying the value and opening the dropdown. A read-only control is still focusable.",
+      "name": "readOnly",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "description": "Specifies the text for the recovery button. The text is displayed next to the error text.
 Use the \`onLoadItems\` event to perform a recovery action (for example, retrying the request).",
       "i18nTag": true,
@@ -11860,6 +11875,14 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     Object {
+      "description": "Specifies if the whole group is read-only, which prevents the
+user from modifying the value, but does not prevent the value from
+being included in a form submission. A read-only control is still focusable.",
+      "name": "readOnly",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "description": "Sets the value of the selected radio button.
 If you want to clear the selection, use \`null\`.",
       "name": "value",
@@ -12811,6 +12834,13 @@ on your own.
       "type": "string",
     },
     Object {
+      "description": "Specifies if the control is read-only, which prevents the
+user from both modifying the value and opening the dropdown. A read-only control is still focusable.",
+      "name": "readOnly",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "description": "Specifies the text for the recovery button. The text is displayed next to the error text.
 Use the \`onLoadItems\` event to perform a recovery action (for example, retrying the request).",
       "i18nTag": true,
@@ -13314,6 +13344,14 @@ single form field.",
       "name": "min",
       "optional": false,
       "type": "number",
+    },
+    Object {
+      "description": "Specifies if the control is read-only, which prevents the
+user from modifying the value, but does not prevent the value from
+being included in a form submission. A read-only control is still focusable.",
+      "name": "readOnly",
+      "optional": true,
+      "type": "boolean",
     },
     Object {
       "description": "Labels shown between the minimum and maximum values.",
@@ -14380,8 +14418,7 @@ It's also used to connect \`items\` and \`selectedItems\` or \`expandableRows.ex
                **Deprecated**, replaced by \`borderless\` and \`container\`.
 * \`stacked\` - Use this variant adjacent to other stacked containers (such as a container,
               table).
-* \`full-page\` – Use this variant when the table is the entire content of a page. Full page variants
-                implement the high contrast header and content behavior automatically.",
+* \`full-page\` – Use this variant when the table is the entire content of a page.",
       "inlineType": Object {
         "name": "TableProps.Variant",
         "type": "union",
@@ -15357,7 +15394,7 @@ single form field.",
       "type": "string",
     },
     Object {
-      "description": "Specifies if the control is read only, which prevents the
+      "description": "Specifies if the control is read-only, which prevents the
 user from modifying the value but includes it in a form
 submission. A read-only control can receive focus.
 Don't use read-only inputs outside a form.
@@ -15539,6 +15576,14 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "name": "name",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Specifies if the control is read-only, which prevents the
+user from modifying the value, but does not prevent the value from
+being included in a form submission. A read-only control is still focusable.",
+      "name": "readOnly",
+      "optional": true,
+      "type": "boolean",
     },
     Object {
       "description": "Specifies the value of the selected tile.
@@ -15741,7 +15786,7 @@ single form field.",
       "type": "string",
     },
     Object {
-      "description": "Specifies if the control is read only, which prevents the
+      "description": "Specifies if the control is read-only, which prevents the
 user from modifying the value but includes it in a form
 submission. A read-only control can receive focus.
 Don't use read-only inputs outside a form.
@@ -15906,6 +15951,15 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "optional": true,
       "type": "string",
     },
+    Object {
+      "description": "Specifies if the control is read-only, which prevents the
+user from modifying the value. Should be used only inside forms.
+A read-only control is still focusable.
+If both \`readOnly\` and \`disabled\` are set, \`disabled\` takes precedence.",
+      "name": "readOnly",
+      "optional": true,
+      "type": "boolean",
+    },
   ],
   "regions": Array [
     Object {
@@ -16048,6 +16102,13 @@ Use to assign unique labels when there are multiple token groups with the same \
       "optional": true,
       "type": "string",
     },
+    Object {
+      "description": "Specifies if the control is read-only, which prevents the
+user from modifying the value. A read-only control is still focusable.",
+      "name": "readOnly",
+      "optional": true,
+      "type": "boolean",
+    },
   ],
   "regions": Array [],
   "releaseStatus": "stable",
@@ -16188,7 +16249,7 @@ The following properties are supported across all utility types:
 ### menu-dropdown
 
 * \`description\` (string) - The description displayed inside the dropdown.
-* \`items\` (ButtonDropdownProps.Items) - An array of dropdown items. This follows the same structure as the \`items\` property of the [button dropdown component](/components/button-dropdown).
+* \`items\` (ButtonDropdownProps.Items) - An array of dropdown items. This follows the same structure as the \`items\` property of the [button dropdown component](/components/button-dropdown), with the exception of the checkbox item type.
 * \`onItemClick\` (NonCancelableEventHandler<ButtonDropdownProps.ItemClickDetails>) - Specifies the event handler called when a dropdown item is selected.
 * \`onItemFollow\` (NonCancelableEventHandler<ButtonDropdownProps.ItemClickDetails>) - Specifies the event handler called when a dropdown item is selected without pressing modifier keys, and the item has an \`href\` set.
 * \`expandableGroups\` (boolean) - Controls expandability of the item groups.

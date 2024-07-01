@@ -24,6 +24,7 @@ import {
   AppLayoutToolbar,
 } from './internal';
 import { AppLayoutInternals } from './interfaces';
+import { useGetGlobalBreadcrumbs } from '../../internal/plugins/helpers/use-global-breadcrumbs';
 
 const AppLayoutVisualRefreshToolbar = React.forwardRef(
   (
@@ -176,9 +177,16 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef(
       splitPanelPosition: splitPanelPreferences?.position,
     });
 
-    const hasToolbar =
+    const discoveredBreadcrumbs = useGetGlobalBreadcrumbs();
+
+    const hasToolbar = Boolean(
       !embeddedViewMode &&
-      (!!resolvedNavigation || !!breadcrumbs || splitPanelToggleConfig.displayed || drawers!.length > 0);
+        (resolvedNavigation ||
+          breadcrumbs ||
+          discoveredBreadcrumbs ||
+          splitPanelToggleConfig.displayed ||
+          drawers!.length > 0)
+    );
 
     const verticalOffsets = computeVerticalLayout({
       topOffset: placement.insetBlockStart,
@@ -193,6 +201,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef(
       headerVariant,
       isMobile,
       breadcrumbs,
+      discoveredBreadcrumbs,
       stickyNotifications,
       navigationOpen,
       navigation: resolvedNavigation,

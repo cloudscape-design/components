@@ -14,10 +14,11 @@ interface RadioButtonProps extends RadioGroupProps.RadioButtonDefinition {
   name: string;
   checked: boolean;
   onChange?: NonCancelableEventHandler<RadioGroupProps.ChangeDetail>;
+  readOnly?: boolean;
 }
 
 export default React.forwardRef(function RadioButton(
-  { name, label, value, checked, description, disabled, controlId, onChange }: RadioButtonProps,
+  { name, label, value, checked, description, disabled, controlId, onChange, readOnly }: RadioButtonProps,
   ref: React.Ref<HTMLInputElement>
 ) {
   const isVisualRefresh = useVisualRefresh();
@@ -34,6 +35,7 @@ export default React.forwardRef(function RadioButton(
       label={label}
       description={description}
       disabled={disabled}
+      readOnly={readOnly}
       controlId={controlId}
       nativeControl={nativeControlProps => (
         <input
@@ -44,6 +46,7 @@ export default React.forwardRef(function RadioButton(
           name={name}
           value={value}
           checked={checked}
+          aria-disabled={readOnly && !disabled ? 'true' : undefined}
           // empty handler to suppress React controllability warning
           onChange={() => {}}
         />
@@ -58,7 +61,10 @@ export default React.forwardRef(function RadioButton(
       styledControl={
         <svg viewBox="0 0 100 100" focusable="false" aria-hidden="true">
           <circle
-            className={clsx(styles['styled-circle-border'], { [styles['styled-circle-disabled']]: disabled })}
+            className={clsx(styles['styled-circle-border'], {
+              [styles['styled-circle-disabled']]: disabled,
+              [styles['styled-circle-readonly']]: readOnly,
+            })}
             strokeWidth={isVisualRefresh ? 12 : 8}
             cx={50}
             cy={50}
@@ -68,6 +74,7 @@ export default React.forwardRef(function RadioButton(
             className={clsx(styles['styled-circle-fill'], {
               [styles['styled-circle-disabled']]: disabled,
               [styles['styled-circle-checked']]: checked,
+              [styles['styled-circle-readonly']]: readOnly,
             })}
             strokeWidth={30}
             cx={50}
