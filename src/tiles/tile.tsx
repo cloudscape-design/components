@@ -18,10 +18,11 @@ interface TileProps {
   name: string;
   breakpoint: ReturnType<typeof useContainerBreakpoints>[0];
   onChange: TilesProps['onChange'];
+  readOnly?: boolean;
 }
 
 export const Tile = React.forwardRef(
-  ({ item, selected, name, breakpoint, onChange }: TileProps, forwardedRef: React.Ref<HTMLInputElement>) => {
+  ({ item, selected, name, breakpoint, onChange, readOnly }: TileProps, forwardedRef: React.Ref<HTMLInputElement>) => {
     const internalRef = useRef<HTMLInputElement>(null);
     const isVisualRefresh = useVisualRefresh();
 
@@ -34,12 +35,13 @@ export const Tile = React.forwardRef(
           { [styles['has-metadata']]: item.description || item.image },
           { [styles.selected]: selected },
           { [styles.disabled]: !!item.disabled },
+          { [styles.readonly]: readOnly },
           { [styles.refresh]: isVisualRefresh },
           styles[`breakpoint-${breakpoint}`]
         )}
         data-value={item.value}
         onClick={() => {
-          if (item.disabled) {
+          if (item.disabled || readOnly) {
             return;
           }
           internalRef.current?.focus();
@@ -58,6 +60,7 @@ export const Tile = React.forwardRef(
             description={item.description}
             disabled={item.disabled}
             controlId={item.controlId}
+            readOnly={readOnly}
           />
         </div>
         {item.image && <div className={clsx(styles.image, { [styles.disabled]: !!item.disabled })}>{item.image}</div>}

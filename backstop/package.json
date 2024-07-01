@@ -1,7 +1,0 @@
-{
-  "name": "@cloudscape-design/components-backstop",
-  "version": "1.0.0",
-  "devDependencies": {
-    "backstopjs": "6.3.23"
-  }
-}

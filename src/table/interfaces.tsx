@@ -292,8 +292,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
    *                **Deprecated**, replaced by `borderless` and `container`.
    * * `stacked` - Use this variant adjacent to other stacked containers (such as a container,
    *               table).
-   * * `full-page` – Use this variant when the table is the entire content of a page. Full page variants
-   *                 implement the high contrast header and content behavior automatically.
+   * * `full-page` – Use this variant when the table is the entire content of a page.
    * @visualrefresh `embedded`, `stacked`, and `full-page` variants
    */
   variant?: TableProps.Variant;
