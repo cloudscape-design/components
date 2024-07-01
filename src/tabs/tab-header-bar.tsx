@@ -398,6 +398,7 @@ export function TabHeaderBar({
       'aria-controls': `${idNamespace}-${tab.id}-panel`,
       'data-testid': tab.id,
       id: getTabElementId({ namespace: idNamespace, tabId: tab.id }),
+      onClick: clickTab,
     };
 
     const tabHeaderContainerAriaProps = hasActionOrDismissible
@@ -416,11 +417,6 @@ export function TabHeaderBar({
 
     if (tab.disabled) {
       commonProps['aria-disabled'] = 'true';
-      commonProps.onClick = (event: React.MouseEvent) => {
-        event.preventDefault();
-      };
-    } else {
-      commonProps.onClick = clickTab;
     }
 
     const setElement = (tabElement: null | HTMLElement) => {
