@@ -9,7 +9,7 @@ import InternalKeyValuePairs from './internal';
 
 export { KeyValuePairsProps };
 
-export default function KeyValuePairs({ columns, items, ...rest }: KeyValuePairsProps) {
+export default function KeyValuePairs({ columns = 1, items, ...rest }: KeyValuePairsProps) {
   const { __internalRootRef } = useBaseComponent('KeyValuePairs');
   const baseProps = getBaseProps(rest);
 

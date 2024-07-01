@@ -8,8 +8,6 @@ import { InfoLinkLabelContext } from '../internal/context/info-link-label-contex
 import ColumnLayout from '../column-layout/internal';
 import Box from '../box/internal';
 
-export { KeyValuePairsProps };
-
 const InternalKeyValuePair = ({ label, info, value }: KeyValuePairsProps.Pair) => (
   <>
     <dt className={styles.term}>
@@ -30,7 +28,10 @@ const InternalKeyValuePairGroup = ({ label, value }: { label?: React.ReactNode; 
 );
 
 const InternalKeyValuePairs = React.forwardRef(
-  ({ columns = 1, items, className, ...rest }: KeyValuePairsProps, ref: React.Ref<HTMLDivElement>) => {
+  (
+    { columns, items, className, ...rest }: KeyValuePairsProps & Required<Pick<KeyValuePairsProps, 'columns'>>,
+    ref: React.Ref<HTMLDivElement>
+  ) => {
     return (
       <div {...rest} className={clsx(styles['key-value-pairs'], className)} ref={ref}>
         {/*
