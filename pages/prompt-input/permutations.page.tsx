@@ -66,6 +66,7 @@ export default function PromptInputPermutations() {
           render={permutation => (
             <PromptInput
               ariaLabel="Prompt input field"
+              actionButtonAriaLabel="Action button aria label"
               onChange={() => {
                 /*empty handler to suppress react controlled property warning*/
               }}

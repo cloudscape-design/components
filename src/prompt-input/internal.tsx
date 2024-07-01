@@ -83,7 +83,7 @@ const InternalPromptInput = React.forwardRef(
         // TODO: calculatenodeheight for this newHeight
         const newHeight = Math.min(
           textareaRef.current.scrollHeight + PADDING,
-          (maxRows ?? 3) * LINE_HEIGHT + PADDING + PADDING / 2
+          (maxRows ?? 3) * (LINE_HEIGHT + PADDING / 2) + PADDING
         );
         textareaRef.current.style.height = `${newHeight}px`;
       }
