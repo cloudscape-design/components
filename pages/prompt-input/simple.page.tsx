@@ -42,6 +42,8 @@ export default function PromptInputPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [textareaValue]);
 
+  const ref = React.createRef<HTMLTextAreaElement>();
+
   return (
     <div style={{ padding: 10 }}>
       <h1>PromptInput demo</h1>
@@ -63,6 +65,8 @@ export default function PromptInputPage() {
         <button id="placeholder-text-button" onClick={() => setUrlParams({ hasText: true })}>
           Fill with placeholder text
         </button>
+
+        <button onClick={() => ref.current?.focus()}>Focus component</button>
 
         <ColumnLayout columns={2}>
           <FormField
@@ -87,6 +91,7 @@ export default function PromptInputPage() {
               readOnly={isReadOnly}
               invalid={isInvalid || textareaValue.length > MAX_CHARS}
               warning={hasWarning}
+              ref={ref}
             />
           </FormField>
           <div />

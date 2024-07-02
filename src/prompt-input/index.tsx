@@ -8,29 +8,36 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 
 export { PromptInputProps };
 
-export default function PromptInput({
-  autoComplete,
-  autoFocus,
-  disableBrowserAutocorrect,
-  disableActionButton,
-  spellcheck,
-  readOnly,
-  ...props
-}: PromptInputProps) {
-  const baseComponentProps = useBaseComponent('PromptInput', {
-    props: { readOnly, autoComplete, autoFocus, disableBrowserAutocorrect, disableActionButton, spellcheck },
-  });
-  return (
-    <InternalPromptInput
-      readOnly={readOnly}
-      autoComplete={autoComplete}
-      autoFocus={autoFocus}
-      disableBrowserAutocorrect={disableBrowserAutocorrect}
-      disableActionButton={disableActionButton}
-      spellcheck={spellcheck}
-      {...props}
-      {...baseComponentProps}
-    />
-  );
-}
+const PromptInput = React.forwardRef(
+  (
+    {
+      autoComplete,
+      autoFocus,
+      disableBrowserAutocorrect,
+      disableActionButton,
+      spellcheck,
+      readOnly,
+      ...props
+    }: PromptInputProps,
+    ref: React.Ref<PromptInputProps.Ref>
+  ) => {
+    const baseComponentProps = useBaseComponent('PromptInput', {
+      props: { readOnly, autoComplete, autoFocus, disableBrowserAutocorrect, disableActionButton, spellcheck },
+    });
+    return (
+      <InternalPromptInput
+        readOnly={readOnly}
+        autoComplete={autoComplete}
+        autoFocus={autoFocus}
+        disableBrowserAutocorrect={disableBrowserAutocorrect}
+        disableActionButton={disableActionButton}
+        spellcheck={spellcheck}
+        {...props}
+        {...baseComponentProps}
+        ref={ref}
+      />
+    );
+  }
+);
 applyDisplayName(PromptInput, 'PromptInput');
+export default PromptInput;
