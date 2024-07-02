@@ -67,7 +67,9 @@ export interface ButtonGroupProps extends BaseComponentProps {
 export interface InternalButtonGroupProps extends ButtonGroupProps, InternalBaseComponentProps {}
 
 export namespace ButtonGroupProps {
-  export type Variant = 'icon';
+  // Fixes documenter output.
+  // When a union only has one element the resulting type for it is not string but object.
+  export type Variant = 'icon' | 'icon';
 
   export type Item = IconButton | MenuDropdown | Group;
 
@@ -87,6 +89,7 @@ export namespace ButtonGroupProps {
     // Defaults to "success"
     // The status indicator type in the popover feedback
     popoverFeedbackType?: 'success' | 'error';
+    hidden?: boolean;
   }
 
   export interface MenuDropdown {

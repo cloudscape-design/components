@@ -22,6 +22,7 @@ const permutations = createPermutations<ButtonGroupProps>([
               id: 'thumbs-up',
               text: 'Like',
               feedbackText: 'Liked',
+              inlineFeedback: true,
             },
             {
               type: 'icon-button',

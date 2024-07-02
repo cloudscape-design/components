@@ -5,27 +5,60 @@ import ButtonGroup, { ButtonGroupProps } from '~components/button-group';
 import { Button } from '~components';
 import ScreenshotArea from '../utils/screenshot-area';
 
+const groupDefault: ButtonGroupProps.Item = {
+  type: 'group',
+  text: 'Vote',
+  items: [
+    {
+      type: 'icon-button',
+      id: 'like',
+      iconName: 'thumbs-up',
+      text: 'Like',
+      feedbackText: 'Helpful',
+      inlineFeedback: true,
+    },
+    {
+      type: 'icon-button',
+      id: 'dislike',
+      iconName: 'thumbs-down',
+      text: 'Dislike',
+      feedbackText: 'Not helpful',
+      inlineFeedback: true,
+    },
+  ],
+};
+
+const groupLike: ButtonGroupProps.Item = {
+  type: 'group',
+  text: 'Vote',
+  items: [
+    {
+      type: 'icon-button',
+      id: 'like',
+      iconName: 'thumbs-up',
+      text: 'Like',
+      feedbackText: 'Helpful',
+      inlineFeedback: true,
+    },
+  ],
+};
+
+const groupDislike: ButtonGroupProps.Item = {
+  type: 'group',
+  text: 'Vote',
+  items: [
+    {
+      type: 'icon-button',
+      id: 'dislike',
+      iconName: 'thumbs-down',
+      text: 'Dislike',
+      feedbackText: 'Not helpful',
+      inlineFeedback: true,
+    },
+  ],
+};
+
 const items: ButtonGroupProps.Item[] = [
-  {
-    type: 'group',
-    text: 'Vote',
-    items: [
-      {
-        type: 'icon-button',
-        id: 'like',
-        iconName: 'thumbs-up',
-        text: 'Like',
-        feedbackText: 'Liked',
-      },
-      {
-        type: 'icon-button',
-        id: 'dislike',
-        iconName: 'thumbs-down',
-        text: 'Dislike',
-        feedbackText: 'Disliked',
-      },
-    ],
-  },
   {
     type: 'icon-button',
     id: 'copy',
@@ -86,9 +119,15 @@ const items: ButtonGroupProps.Item[] = [
 
 export default function ButtonGroupPage() {
   const ref = React.useRef<ButtonGroupProps.Ref>(null);
+  const [feedback, setFeedback] = React.useState<string>('');
+  const group = feedback === 'like' ? groupLike : feedback === 'dislike' ? groupDislike : groupDefault;
 
   const onItemClick: ButtonGroupProps['onItemClick'] = event => {
     document.querySelector('#last-clicked')!.textContent = event.detail.id;
+
+    if (event.detail.id === 'like' || event.detail.id === 'dislike') {
+      setFeedback(event.detail.id);
+    }
   };
 
   const onFocusOnCopyButtonClick = () => {
@@ -104,7 +143,13 @@ export default function ButtonGroupPage() {
       <ScreenshotArea disableAnimations={true}>
         <article>
           <h1>Button Group test page</h1>
-          <ButtonGroup ariaLabel="Chat actions" variant="icon" items={items} onItemClick={onItemClick} ref={ref} />
+          <ButtonGroup
+            ariaLabel="Chat actions"
+            variant="icon"
+            items={[group, ...items]}
+            onItemClick={onItemClick}
+            ref={ref}
+          />
           <br />
           <Button onClick={onFocusOnCopyButtonClick}>Focus on copy</Button>&nbsp;
           <Button onClick={onFocusOnSearchButtonClick}>Focus on item in the menu</Button>

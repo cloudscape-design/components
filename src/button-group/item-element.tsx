@@ -27,13 +27,16 @@ const ItemElement = forwardRef(
     const buttonRef = useRef<HTMLDivElement>(null);
     const [clickIdx, setClickIdx] = useState(0);
     const [showTooltip, setShowTooltip] = useState(false);
-    const [isActionPopover, setIsActionPopover] = useState(false);
+    const [showFeedback, setShowFeedback] = useState(false);
+    const feedbackText = 'feedbackText' in item && item.feedbackText;
+    const inlineFeedback = 'inlineFeedback' in item && item.inlineFeedback;
+    const showInlineFeedback = showFeedback && inlineFeedback;
 
     const onClickHandler = (event: CustomEvent<ClickDetail>) => {
       setClickIdx(idx => idx + 1);
 
-      if ('feedbackText' in item && item.feedbackText) {
-        setIsActionPopover(true);
+      if (feedbackText) {
+        setShowFeedback(true);
         setShowTooltip(true);
       } else {
         setShowTooltip(false);
@@ -44,13 +47,13 @@ const ItemElement = forwardRef(
 
     const onShowTooltip = () => {
       if (!showTooltip) {
-        setIsActionPopover(false);
+        setShowFeedback(false);
         setShowTooltip(true);
       }
     };
 
     const onHideTooltip = () => {
-      if (!isActionPopover) {
+      if (!showFeedback) {
         setShowTooltip(false);
       }
     };
@@ -61,8 +64,12 @@ const ItemElement = forwardRef(
       }
 
       const close = () => {
+        if (showInlineFeedback) {
+          return;
+        }
+
         setShowTooltip(false);
-        setIsActionPopover(false);
+        setShowFeedback(false);
       };
 
       const currentRef = buttonRef.current;
@@ -97,13 +104,11 @@ const ItemElement = forwardRef(
         window.removeEventListener('keydown', handleKeyDownEvent);
         window.removeEventListener('tooltip:toggle', handleTooltipToogleEvent as any);
       };
-    }, [item.id, showTooltip]);
+    }, [item.id, showInlineFeedback, showTooltip]);
 
     useEffect(() => {
       window.dispatchEvent(new CustomEvent('tooltip:toggle', { detail: { open: showTooltip, trackKey: item.id } }));
     }, [showTooltip, item.id]);
-
-    const feedbackText = 'feedbackText' in item && item.feedbackText;
 
     return (
       <div
@@ -115,7 +120,7 @@ const ItemElement = forwardRef(
         className={styles['item-wrapper']}
       >
         {item.type === 'icon-button' ? (
-          <IconButtonItem ref={ref} item={item} onItemClick={onClickHandler} />
+          <IconButtonItem ref={ref} item={item} onItemClick={onClickHandler} showInlineFeedback={showInlineFeedback} />
         ) : (
           <MenuDropdownItem
             ref={ref}
@@ -124,19 +129,19 @@ const ItemElement = forwardRef(
             dropdownExpandToViewport={dropdownExpandToViewport}
           />
         )}
-        {showTooltip && (
+        {showTooltip && !showInlineFeedback && (
           <>
             <Tooltip
               trackRef={buttonRef}
               trackKey={item.id}
               value={
-                (isActionPopover && feedbackText && (
+                (showFeedback && feedbackText && (
                   <StatusIndicator type={item.popoverFeedbackType ?? 'success'}>{item.feedbackText}</StatusIndicator>
                 )) ||
                 item.text
               }
             />
-            <LiveRegion key={clickIdx}>{isActionPopover && feedbackText}</LiveRegion>
+            <LiveRegion key={clickIdx}>{showFeedback && feedbackText}</LiveRegion>
           </>
         )}
       </div>
