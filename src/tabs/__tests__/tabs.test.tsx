@@ -1151,9 +1151,10 @@ describe('Tabs', () => {
         );
 
         expect(wrapper.findTabLinkById('second')!.getElement()).toHaveAttribute('aria-describedby');
-        expect(wrapper.findTabLinkById('second')!.find('span[hidden]')!.getElement()).toHaveTextContent(
-          'disabled reason'
-        );
+        const describedBy = wrapper.findTabLinkById('second')!.getElement().getAttribute('aria-describedby');
+        expect(
+          wrapper.findTabLinkById('second')!.find(`[data-describedby-id="${describedBy}"]`)!.getElement()
+        ).toHaveTextContent('disabled reason');
       });
 
       test('shows active tab content when disabled with reason tab is focused', () => {

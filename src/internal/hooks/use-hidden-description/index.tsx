@@ -11,7 +11,7 @@ export default function useHiddenDescription(description?: string) {
       'aria-describedby': description ? id : undefined,
     },
     descriptionEl: description ? (
-      <span id={id} hidden={true}>
+      <span id={id} data-describedby-id={id} hidden={true}>
         {description}
       </span>
     ) : null,
