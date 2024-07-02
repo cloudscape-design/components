@@ -21,7 +21,9 @@ export default function InternalSegmentedControl({
     return option.id === selectedId;
   });
   const currentSelectedOption = selectedOptions.length ? selectedOptions[0] : null;
-  const enabledSegments = (options || []).filter(option => !option.disabled);
+  const enabledSegments = (options || []).filter(
+    option => !option.disabled || (option.disabled && !!option.disabledReason)
+  );
 
   const moveHighlight = (event: React.KeyboardEvent<HTMLButtonElement>, activeIndex: number) => {
     if (event.keyCode !== KeyCode.right && event.keyCode !== KeyCode.left) {
@@ -59,6 +61,7 @@ export default function InternalSegmentedControl({
               key={index}
               id={option.id}
               disabled={!!option.disabled}
+              disabledReason={option.disabledReason}
               iconName={option.iconName}
               iconAlt={option.iconAlt}
               iconUrl={option.iconUrl}
@@ -74,6 +77,10 @@ export default function InternalSegmentedControl({
                 }
               }}
               onClick={() => {
+                if (option.disabled) {
+                  return;
+                }
+
                 if (selectedId !== option.id) {
                   fireNonCancelableEvent(onChange, { selectedId: option.id });
                 }

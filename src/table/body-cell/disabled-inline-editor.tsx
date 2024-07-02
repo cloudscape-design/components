@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
-import useHiddenDescription from '../../button-dropdown/utils/use-hidden-description';
+import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import Icon from '../../icon/internal';
 import PopoverContainer from '../../popover/container';
 import PopoverBody from '../../popover/body';

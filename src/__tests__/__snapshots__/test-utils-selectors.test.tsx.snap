@@ -437,6 +437,7 @@ Object {
     "awsui_view-button_1vtzr",
   ],
   "segmented-control": Array [
+    "awsui_disabled-reason-tooltip_8cbea",
     "awsui_root_8cbea",
     "awsui_segment_8cbea",
     "awsui_selected_8cbea",
