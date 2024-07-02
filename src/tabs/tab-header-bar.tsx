@@ -32,7 +32,7 @@ import { ButtonProps } from '../button/interfaces';
 
 const tabSelector = `.${styles['tabs-tab-link']}`;
 const focusedTabSelector = `[role="tab"].${styles['tabs-tab-focused']}`;
-const focusableTabSelector = `[role="tab"].${styles['tabs-tab-focusable']}`;
+const focusableTabSelector = `.${styles['tabs-tab-focusable']}`;
 
 function dismissButton(
   dismissLabel: TabsProps.Tab['dismissLabel'],
@@ -263,16 +263,10 @@ export function TabHeaderBar({
     }
     function isElementFocusable(element: HTMLElement) {
       if (element instanceof HTMLButtonElement) {
-        return !(
-          element.disabled ||
-          (element.closest(`.${styles['tabs-tab-disabled']}`) && !element.closest(`.${styles['tabs-tab-focusable']}`))
-        );
-      }
-      if (element instanceof HTMLAnchorElement) {
-        return element.matches(focusableTabSelector);
+        return !element.disabled || element.closest(focusableTabSelector);
       }
 
-      return false;
+      return element.matches(focusableTabSelector);
     }
     return getAllFocusables(target).filter(el => isElementRegistered(el) && isElementFocusable(el));
   }
