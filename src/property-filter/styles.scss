@@ -76,16 +76,35 @@
     margin-inline: calc(-1 * #{awsui.$space-m} + -1 * #{awsui.$space-xxs});
     margin-block-start: awsui.$space-s;
   }
-  &-form {
+  &-list {
     display: flex;
-    align-items: flex-end;
-    gap: awsui.$space-s;
+    flex-direction: column;
+    gap: awsui.$space-m;
 
-    @media (max-width: 800px) {
+    &-item {
+      display: flex;
       flex-direction: column;
-      align-items: stretch;
+      gap: awsui.$space-xs;
       padding-block-end: awsui.$space-xs;
       border-block-end: 1px solid awsui.$color-border-divider-default;
+    }
+  }
+  &-table {
+    border-spacing: awsui.$space-s 0;
+
+    &-header-cell,
+    &-cell {
+      vertical-align: bottom;
+    }
+    &-header-cell {
+      text-align: start;
+    }
+    &-cell {
+      padding-block-end: awsui.$space-s;
+    }
+
+    @media (max-width: 800px) {
+      //
     }
   }
   &-operation {
