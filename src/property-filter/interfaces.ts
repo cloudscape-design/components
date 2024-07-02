@@ -298,6 +298,11 @@ export namespace PropertyFilterProps {
      * Sets focus on the underlying input control.
      */
     focus(): void;
+
+    /**
+     * TODO: Announces the count text...
+     */
+    reannounceCountText(): void;
   }
 }
 
