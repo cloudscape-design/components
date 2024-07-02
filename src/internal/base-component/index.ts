@@ -40,9 +40,14 @@ export function getBaseProps(props: BaseComponentProps) {
 }
 
 export interface BasePropsWithAnalyticsMetadata {
+  analyticsMetadata?: AnalyticsMetadata;
   __analyticsMetadata?: AnalyticsMetadata;
 }
 
-export function getAnalyticsMetadataProps(props?: unknown) {
-  return (props as BasePropsWithAnalyticsMetadata | undefined)?.__analyticsMetadata;
+/**
+ * Helper function to merge beta analytics metadata with the public analytics metadata api.
+ * Beta analytics metadata will override the public values to allow for safe migration.
+ */
+export function getAnalyticsMetadataProps(props?: BasePropsWithAnalyticsMetadata) {
+  return { ...props?.analyticsMetadata, ...props?.__analyticsMetadata };
 }

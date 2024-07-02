@@ -5469,6 +5469,24 @@ Object {
   "name": "Container",
   "properties": Array [
     Object {
+      "analyticsTag": "",
+      "description": "",
+      "inlineType": Object {
+        "name": "ContainerProps.AnalyticsMetadata",
+        "properties": Array [
+          Object {
+            "name": "instanceIdentifier",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "analyticsMetadata",
+      "optional": true,
+      "type": "ContainerProps.AnalyticsMetadata",
+    },
+    Object {
       "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
@@ -6987,6 +7005,24 @@ The event \`detail\` contains the current value of the \`expanded\` property.",
   "name": "ExpandableSection",
   "properties": Array [
     Object {
+      "analyticsTag": "",
+      "description": "",
+      "inlineType": Object {
+        "name": "ExpandableSectionProps.AnalyticsMetadata",
+        "properties": Array [
+          Object {
+            "name": "instanceIdentifier",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "analyticsMetadata",
+      "optional": true,
+      "type": "ExpandableSectionProps.AnalyticsMetadata",
+    },
+    Object {
       "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
@@ -7498,6 +7534,29 @@ Object {
   "name": "Form",
   "properties": Array [
     Object {
+      "analyticsTag": "",
+      "description": "",
+      "inlineType": Object {
+        "name": "FormProps.AnalyticsMetadata",
+        "properties": Array [
+          Object {
+            "name": "flowType",
+            "optional": true,
+            "type": "FlowType",
+          },
+          Object {
+            "name": "instanceIdentifier",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "analyticsMetadata",
+      "optional": true,
+      "type": "FormProps.AnalyticsMetadata",
+    },
+    Object {
       "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
@@ -7576,6 +7635,24 @@ Object {
   "functions": Array [],
   "name": "FormField",
   "properties": Array [
+    Object {
+      "analyticsTag": "",
+      "description": "",
+      "inlineType": Object {
+        "name": "FormFieldProps.AnalyticsMetadata",
+        "properties": Array [
+          Object {
+            "name": "instanceIdentifier",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "analyticsMetadata",
+      "optional": true,
+      "type": "FormFieldProps.AnalyticsMetadata",
+    },
     Object {
       "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
@@ -14575,6 +14652,24 @@ scroll parent scrolls to reveal the first row of the table.",
   "name": "Table",
   "properties": Array [
     Object {
+      "analyticsTag": "",
+      "description": "",
+      "inlineType": Object {
+        "name": "TableProps.AnalyticsMetadata",
+        "properties": Array [
+          Object {
+            "name": "instanceIdentifier",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "analyticsMetadata",
+      "optional": true,
+      "type": "TableProps.AnalyticsMetadata",
+    },
+    Object {
       "description": "Specifies alternative text for the selection components (checkboxes and radio buttons) as follows:
 * \`itemSelectionLabel\` ((SelectionState, Item) => string) - Specifies the alternative text for an item.
 * \`allItemsSelectionLabel\` ((SelectionState) => string) - Specifies the alternative text for multi-selection column header.
@@ -17662,6 +17757,29 @@ Defaults to \`false\`.
       "type": "boolean",
     },
     Object {
+      "analyticsTag": "",
+      "description": "",
+      "inlineType": Object {
+        "name": "WizardProps.AnalyticsMetadata",
+        "properties": Array [
+          Object {
+            "name": "flowType",
+            "optional": true,
+            "type": "FlowType",
+          },
+          Object {
+            "name": "instanceIdentifier",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "analyticsMetadata",
+      "optional": true,
+      "type": "WizardProps.AnalyticsMetadata",
+    },
+    Object {
       "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
@@ -17776,6 +17894,7 @@ Use this if you need to wait for a response from the server before the user can 
       "type": "boolean",
     },
     Object {
+      "analyticsTag": "",
       "description": "Array of step objects. Each object represents a step in the wizard with the following properties:
 - \`title\` (string) - Text that's displayed as the title in the navigation pane and form header.
 - \`info\` (ReactNode) - (Optional) Area for a page level info link that's displayed in the form header.
@@ -17786,7 +17905,7 @@ Use this if you need to wait for a response from the server before the user can 
    Use this for rendering actionable server-side validation failure messages.
 - \`isOptional\` (boolean) - Specifies whether the step is optional or required. If set to \`true\`, the text from \`i18nStrings.optional\`
    is rendered next to the \`title\` in the navigation step label and the form header title.
-",
+- \`analyticsMetadata\` (WizardProps.StepAnalyticsMetadata) - (Optional) Specifies additional analytics-related metadata.",
       "name": "steps",
       "optional": false,
       "type": "ReadonlyArray<WizardProps.Step>",

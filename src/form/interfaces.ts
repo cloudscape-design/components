@@ -3,6 +3,14 @@
 import React from 'react';
 
 import { BaseComponentProps } from '../internal/base-component';
+import { FlowType } from '../internal/analytics/interfaces';
+
+export namespace FormProps {
+  export interface AnalyticsMetadata {
+    instanceIdentifier?: string;
+    flowType?: FlowType;
+  }
+}
 
 export interface FormProps extends BaseComponentProps {
   /**
@@ -43,4 +51,9 @@ export interface FormProps extends BaseComponentProps {
    * @deprecated You can safely remove this property as there is no longer any visual difference between `full-page` and `embedded` variants.
    */
   variant?: 'full-page' | 'embedded';
+
+  /**
+   * @analytics
+   */
+  analyticsMetadata?: FormProps.AnalyticsMetadata;
 }

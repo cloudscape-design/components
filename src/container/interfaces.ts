@@ -1,10 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+import { BaseComponentProps } from '../internal/base-component';
 
 import { BaseComponentProps } from '../internal/base-component';
 
 export interface ContainerProps extends BaseComponentProps {
+  /**
+   * @analytics
+   */
+  analyticsMetadata?: ContainerProps.AnalyticsMetadata;
+
   /**
    * Heading element of the container. Use the [header component](/components/header/).
    */
@@ -71,6 +77,9 @@ export interface ContainerProps extends BaseComponentProps {
 }
 
 export namespace ContainerProps {
+  export interface AnalyticsMetadata {
+    instanceIdentifier?: string;
+  }
   export interface Media {
     /**
      * Use this slot to render your media element. We support `img`, `video`, `picture`, and `iframe` elements.

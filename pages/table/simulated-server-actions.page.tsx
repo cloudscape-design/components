@@ -98,7 +98,7 @@ export default function TableLatencyMetricsPage() {
           Refresh the table without user interaction
         </Button>
         <Table<Instance>
-          {...{ __analyticsMetadata: { instanceIdentifier: 'the-instances-table' } }}
+          analyticsMetadata={{ instanceIdentifier: 'the-instances-table' }}
           variant="full-page"
           {...collectionProps}
           onSortingChange={e => {
