@@ -25,7 +25,6 @@ import {
   InternalFreeTextFiltering,
   InternalToken,
   InternalTokenGroup,
-  TokenGroup,
 } from './interfaces';
 import { TokenButton } from './token';
 import { getQueryActions, parseText, getAutosuggestOptions, getAllowedOperators } from './controller';
@@ -456,13 +455,14 @@ const PropertyFilter = React.forwardRef(
                 renderItem={(token, tokenIndex) => (
                   <TokenButton
                     token={token}
+                    allTokens={internalQuery.tokens}
                     first={tokenIndex === 0}
                     operation={internalQuery.operation}
                     removeToken={() => {
                       removeToken(tokenIndex);
                       setRemovedTokenIndex(tokenIndex);
                     }}
-                    setToken={(newToken: TokenGroup) => setToken(tokenIndex, newToken)}
+                    setToken={(newToken, newStandalone) => setToken(tokenIndex, newToken, newStandalone)}
                     setOperation={setOperation}
                     filteringProperties={internalProperties}
                     filteringOptions={internalOptions}

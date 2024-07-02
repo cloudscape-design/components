@@ -123,9 +123,9 @@ export const columnDefinitions = [
   {
     id: 'lasteventat',
     sortingField: 'lasteventat',
-    header: 'Last event occurrence',
+    header: 'Last event at',
     type: 'datetime',
-    propertyLabel: 'Last event occurrence',
+    propertyLabel: 'Last event at',
     cell: (item: TableItem) => item.lasteventat?.toISOString(),
   },
 ].map((item, ind) => ({ order: ind + 1, ...item }));

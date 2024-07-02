@@ -41,12 +41,15 @@ export const getQueryActions = (
       fireNonCancelableEvent(onChange, { tokens, operation });
     }
   };
-  const setToken = (index: number, newTokenGroup: TokenGroup) => {
+  const setToken = (index: number, newTokenGroup: TokenGroup, newStandalone: Token[] = []) => {
     const newTokens: (Token | TokenGroup)[] = query.tokenGroups
       ? [...query.tokenGroups]
       : query.tokens.map(t => ({ operation: 'and', tokens: [t] }));
     if (newTokens && index < newTokens.length) {
       newTokens[index] = newTokenGroup;
+    }
+    for (const token of newStandalone) {
+      newTokens.push(token);
     }
     fireOnChange(newTokens, query.operation);
   };
@@ -75,6 +78,7 @@ export const getQueryActions = (
       : query.tokens.map(t => ({ operation: 'and', tokens: [t] }));
     fireOnChange(tokens, newOperation);
   };
+
   return {
     setToken,
     removeToken,

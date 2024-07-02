@@ -39,12 +39,14 @@ interface TokenProps {
   operation: JoinOperation;
   removeToken: () => void;
   setOperation: (newOperation: JoinOperation) => void;
-  setToken: (newToken: TokenGroup) => void;
+  setToken: (newToken: TokenGroup, newStandalone?: Token[]) => void;
   token: InternalTokenGroup;
+  allTokens: readonly InternalTokenGroup[];
 }
 
 export const TokenButton = ({
   token,
+  allTokens,
   operation = 'and',
   first,
   removeToken,
@@ -71,6 +73,16 @@ export const TokenButton = ({
     }
   }
   traverse(token);
+
+  const singleTokens: InternalTokenGroup[] = [];
+  for (const tokenOrGroup of allTokens) {
+    if (tokenOrGroup === token) {
+      continue;
+    }
+    if ('operation' in tokenOrGroup && tokenOrGroup.tokens.length === 1) {
+      singleTokens.push(tokenOrGroup);
+    }
+  }
 
   const externalToken = flatTokens[0];
   const formattedToken = getFormattedToken(token);

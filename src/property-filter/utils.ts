@@ -10,6 +10,9 @@ import {
   Token,
 } from './interfaces';
 
+export const DROPDOWN_WIDTH_OPTIONS_LIST = 300;
+export const DROPDOWN_WIDTH_CUSTOM_FORM = 200;
+
 // Finds the longest property the filtering text starts from.
 export function matchFilteringProperty(
   filteringProperties: readonly InternalFilteringProperty[],
@@ -100,14 +103,19 @@ export function getFormattedToken(group: InternalTokenGroup) {
       firstLevelTokens.push(tokenOrGroup);
     }
   }
-  const firstToken = firstLevelTokens[0];
-  const valueFormatter = firstToken.property?.getValueFormatter(firstToken.operator);
-  const propertyLabel = firstToken.property && firstToken.property.propertyLabel;
-  const tokenValue = valueFormatter ? valueFormatter(firstToken.value) : firstToken.value;
+
   // TODO: use i18n
-  const suffix = firstLevelTokens.length > 1 ? ` ${group.operation} …${firstLevelTokens.length - 1} more` : '';
-  const label = `${propertyLabel ?? ''} ${firstToken.operator} ${tokenValue}${suffix}`;
-  return { property: propertyLabel ?? '', operator: firstToken.operator, value: tokenValue, suffix, label };
+  // const suffix = firstLevelTokens.length > 1 ? ` ${group.operation} …${firstLevelTokens.length - 1} more` : '';
+  // const label = `${propertyLabel ?? ''} ${firstToken.operator} ${tokenValue}${suffix}`;
+  const label = firstLevelTokens
+    .map(token => {
+      const valueFormatter = token.property?.getValueFormatter(token.operator);
+      const propertyLabel = token.property && token.property.propertyLabel;
+      const tokenValue = valueFormatter ? valueFormatter(token.value) : token.value;
+      return `${propertyLabel ?? ''} ${token.operator} ${tokenValue}`;
+    })
+    .join(` ${group.operation} `);
+  return { property: label, operator: '', value: '', suffix: '', label };
 }
 
 export function trimStart(source: string): string {

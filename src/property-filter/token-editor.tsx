@@ -16,6 +16,7 @@ import {
   InternalToken,
   InternalTokenGroup,
   LoadItemsDetail,
+  Token,
   TokenGroup,
 } from './interfaces';
 import styles from './styles.css.js';
@@ -30,8 +31,15 @@ import { NonCancelableEventHandler } from '../internal/events';
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
 import InternalButton from '../button/internal';
 import InternalFormField from '../form-field/internal';
-import { matchTokenValue } from './utils';
-import InternalBox from '../box/internal';
+import { DROPDOWN_WIDTH_CUSTOM_FORM, matchTokenValue } from './utils';
+import ButtonTrigger from '../internal/components/button-trigger';
+import Dropdown from '../internal/components/dropdown';
+import { useFormFieldContext } from '../contexts/form-field';
+import { PropertyEditorForm } from './property-editor';
+import ScreenreaderOnly from '../internal/components/screenreader-only';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { joinStrings } from '../internal/utils/strings';
+import InternalButtonDropdown from '../button-dropdown/internal';
 
 interface PropertyInputProps {
   asyncProps: null | DropdownStatusProps;
@@ -120,7 +128,6 @@ function OperatorInput({ property, operator, onChangeOperator, i18nStrings, free
   return (
     <InternalSelect
       options={operatorOptions}
-      triggerVariant="option"
       selectedOption={
         operator
           ? {
@@ -139,11 +146,11 @@ interface ValueInputProps {
   asyncProps: DropdownStatusProps;
   filteringOptions: readonly InternalFilteringOption[];
   i18nStrings: I18nStrings;
-  onChangeValue: (value: string) => void;
+  onChangeValue: (value: unknown) => void;
   onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
   operator: undefined | ComparisonOperator;
   property: null | InternalFilteringProperty;
-  value: undefined | string;
+  value: unknown;
 }
 
 function ValueInput({
@@ -169,9 +176,43 @@ function ValueInput({
   const [matchedOption] = valueOptions.filter(option => option.value === value);
 
   const OperatorForm = property?.propertyKey && operator && property?.getValueFormRenderer(operator);
+  const formattedValue = property?.getValueFormatter(operator)?.(value) ?? value;
+  const [isDropdownOpen, setDropdownOpen] = useState(false);
+  const formFieldProps = useFormFieldContext({});
+  const valueId = useUniqueId();
 
   return OperatorForm ? (
-    <OperatorForm value={value} onChange={onChangeValue} operator={operator} />
+    <Dropdown
+      minWidth={DROPDOWN_WIDTH_CUSTOM_FORM}
+      stretchBeyondTriggerWidth={true}
+      open={isDropdownOpen}
+      onDropdownClose={() => setDropdownOpen(false)}
+      trigger={
+        <>
+          <ButtonTrigger
+            onClick={() => setDropdownOpen(true)}
+            ariaHasPopup="dialog"
+            pressed={isDropdownOpen}
+            ariaLabelledby={joinStrings(formFieldProps.ariaLabelledby, formattedValue ? valueId : undefined)}
+          >
+            {typeof formattedValue === 'string' ? formattedValue : ''}
+          </ButtonTrigger>
+          <ScreenreaderOnly id={valueId}>{formattedValue}</ScreenreaderOnly>
+        </>
+      }
+    >
+      <PropertyEditorForm
+        value={value}
+        property={property}
+        customForm={(value, onChange) => <OperatorForm value={value} onChange={onChange} operator={operator} />}
+        onCancel={() => setDropdownOpen(false)}
+        onSubmit={value => {
+          onChangeValue(value);
+          setDropdownOpen(false);
+        }}
+        i18nStrings={i18nStrings}
+      />
+    </Dropdown>
   ) : (
     <InternalAutosuggest
       enteredTextLabel={i18nStrings.enteredTextLabel ?? (value => value)}
@@ -197,7 +238,7 @@ interface TokenEditorProps {
   filteringOptions: readonly InternalFilteringOption[];
   i18nStrings: I18nStrings;
   onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
-  setToken: (newToken: TokenGroup) => void;
+  setToken: (newToken: TokenGroup, newStandalone?: Token[]) => void;
   token: InternalTokenGroup;
   triggerComponent?: React.ReactNode;
 }
@@ -231,6 +272,8 @@ export function TokenEditor({
     popoverRef.current && popoverRef.current.dismissPopover();
   };
 
+  const [removedFromGroup, setRemovedFromGroup] = useState<InternalToken[]>([]);
+
   const groups = temp.map((temporaryToken, index) => {
     const setTemporaryToken = (newToken: InternalToken) => {
       setTemp(prev => {
@@ -261,11 +304,11 @@ export function TokenEditor({
     };
 
     const value = temporaryToken.value;
-    const onChangeValue = (newValue: string) => {
+    const onChangeValue = (newValue: unknown) => {
       setTemporaryToken({ ...temporaryToken, value: newValue });
     };
 
-    return { property, onChangePropertyKey, operator, onChangeOperator, value, onChangeValue };
+    return { token: temporaryToken, property, onChangePropertyKey, operator, onChangeOperator, value, onChangeValue };
   });
 
   const operationOptions = [{ value: 'and' }, { value: 'or' }];
@@ -277,88 +320,101 @@ export function TokenEditor({
       triggerType="text"
       header={i18nStrings.editTokenHeader}
       size="large"
+      __maxSize={true}
+      fixedWidth={true}
       position="right"
       dismissAriaLabel={i18nStrings.dismissAriaLabel}
       __onOpen={() => setTemp(firstLevelTokens)}
       renderWithPortal={expandToViewport}
       content={
         <div className={styles['token-editor']}>
-          <InternalBox margin={{ bottom: 's' }}>
-            {/* TODO: i18n */}
-            <InternalFormField label="Operation">
-              <InternalSelect
-                options={operationOptions}
-                selectedOption={operationOptions.find(option => option.value === operation)!}
-                onChange={event => setOperation(event.detail.selectedOption.value as 'and' | 'or')}
-              />
-            </InternalFormField>
-          </InternalBox>
+          {/* TODO: i18n */}
+          <div className={styles['token-editor-operation']}>
+            <InternalSelect
+              options={operationOptions}
+              selectedOption={operationOptions.find(option => option.value === operation)!}
+              onChange={event => setOperation(event.detail.selectedOption.value as 'and' | 'or')}
+              ariaLabel="Operation"
+            />
+          </div>
 
           {groups.map((group, index) => (
-            <div key={index} className={styles['token-editor-form']}>
-              <InternalFormField label={i18nStrings.propertyText} className={styles['token-editor-field-property']}>
-                <PropertyInput
-                  property={group.property}
-                  onChangePropertyKey={group.onChangePropertyKey}
-                  asyncProps={asyncProperties ? asyncProps : null}
-                  filteringProperties={filteringProperties}
-                  onLoadItems={onLoadItems}
-                  customGroupsText={customGroupsText}
-                  i18nStrings={i18nStrings}
-                  freeTextFiltering={freeTextFiltering}
-                />
-              </InternalFormField>
+            <React.Fragment key={index}>
+              <div className={styles['token-editor-form']}>
+                <InternalFormField label={i18nStrings.propertyText} className={styles['token-editor-field-property']}>
+                  <PropertyInput
+                    property={group.property}
+                    onChangePropertyKey={group.onChangePropertyKey}
+                    asyncProps={asyncProperties ? asyncProps : null}
+                    filteringProperties={filteringProperties}
+                    onLoadItems={onLoadItems}
+                    customGroupsText={customGroupsText}
+                    i18nStrings={i18nStrings}
+                    freeTextFiltering={freeTextFiltering}
+                  />
+                </InternalFormField>
 
-              <InternalFormField label={i18nStrings.operatorText} className={styles['token-editor-field-operator']}>
-                <OperatorInput
-                  property={group.property}
-                  operator={group.operator}
-                  onChangeOperator={group.onChangeOperator}
-                  i18nStrings={i18nStrings}
-                  freeTextFiltering={freeTextFiltering}
-                />
-              </InternalFormField>
+                <InternalFormField label={i18nStrings.operatorText} className={styles['token-editor-field-operator']}>
+                  <OperatorInput
+                    property={group.property}
+                    operator={group.operator}
+                    onChangeOperator={group.onChangeOperator}
+                    i18nStrings={i18nStrings}
+                    freeTextFiltering={freeTextFiltering}
+                  />
+                </InternalFormField>
 
-              <InternalFormField label={i18nStrings.valueText} className={styles['token-editor-field-value']}>
-                <ValueInput
-                  property={group.property}
-                  operator={group.operator}
-                  value={group.value}
-                  onChangeValue={group.onChangeValue}
-                  asyncProps={asyncProps}
-                  filteringOptions={filteringOptions}
-                  onLoadItems={onLoadItems}
-                  i18nStrings={i18nStrings}
-                />
-              </InternalFormField>
+                <InternalFormField label={i18nStrings.valueText} className={styles['token-editor-field-value']}>
+                  <ValueInput
+                    property={group.property}
+                    operator={group.operator}
+                    value={group.value}
+                    onChangeValue={group.onChangeValue}
+                    asyncProps={asyncProps}
+                    filteringOptions={filteringOptions}
+                    onLoadItems={onLoadItems}
+                    i18nStrings={i18nStrings}
+                  />
+                </InternalFormField>
 
-              {/* TODO: i18n */}
-              {groups.length > 1 && (
-                <InternalBox margin={{ top: 'xs' }}>
-                  <InternalButton
-                    iconName="remove"
-                    onClick={() =>
-                      setTemp(prev => {
-                        const copy = [...prev];
-                        copy.splice(index, 1);
-                        return copy;
-                      })
-                    }
-                  >
-                    Remove token
-                  </InternalButton>
-                </InternalBox>
-              )}
-            </div>
+                {/* TODO: i18n */}
+                {groups.length > 1 && (
+                  <div className={styles['token-editor-remove-token']}>
+                    <InternalButtonDropdown
+                      mainAction={{
+                        text: 'Remove token',
+                        onClick: () =>
+                          setTemp(prev => {
+                            const copy = [...prev];
+                            copy.splice(index, 1);
+                            return copy;
+                          }),
+                      }}
+                      items={[{ id: 'remove-from-group', text: 'Remove from group' }]}
+                      onItemClick={() => {
+                        setTemp(prev => {
+                          const copy = [...prev];
+                          copy.splice(index, 1);
+                          return copy;
+                        });
+                        setRemovedFromGroup(prev => [...prev, group.token]);
+                      }}
+                    />
+                  </div>
+                )}
+              </div>
+            </React.Fragment>
           ))}
 
           {/* TODO: i18n */}
-          <InternalButton
-            iconName="add-plus"
-            onClick={() => setTemp(prev => [...prev, { property: null, operator: ':', value: null }])}
-          >
-            Add token
-          </InternalButton>
+          <div className={styles['token-editor-add-token']}>
+            <InternalButton
+              iconName="add-plus"
+              onClick={() => setTemp(prev => [...prev, { property: null, operator: ':', value: null }])}
+            >
+              Add token
+            </InternalButton>
+          </div>
 
           <div className={styles['token-editor-actions']}>
             <InternalButton
@@ -373,10 +429,17 @@ export function TokenEditor({
               className={styles['token-editor-submit']}
               formAction="none"
               onClick={() => {
-                setToken({
-                  operation,
-                  tokens: temp.map(temporaryToken => matchTokenValue(temporaryToken, filteringOptions)),
-                });
+                setToken(
+                  {
+                    operation,
+                    tokens: temp.map(temporaryToken => matchTokenValue(temporaryToken, filteringOptions)),
+                  },
+                  removedFromGroup.map(t => ({
+                    propertyKey: t.property?.propertyKey,
+                    operator: t.operator,
+                    value: t.value,
+                  }))
+                );
                 closePopover();
               }}
             >
