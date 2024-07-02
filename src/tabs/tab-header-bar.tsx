@@ -320,7 +320,6 @@ export function TabHeaderBar({
   function renderTabHeader(tab: TabsProps.Tab) {
     const { dismissible, dismissLabel, dismissDisabled, action, onDismiss } = tab;
     const isActive = activeTabId === tab.id && !tab.disabled;
-    const hasActionOrDismissibleForTab = action || dismissible;
 
     const clickTab = (event: React.MouseEvent) => {
       if (tab.disabled) {
@@ -358,7 +357,6 @@ export function TabHeaderBar({
       [styles.refresh]: isVisualRefresh,
       [styles['tabs-tab-active']]: isActive,
       [styles['tabs-tab-disabled']]: tab.disabled,
-      [styles['tabs-tab-no-actions']]: !hasActionOrDismissibleForTab,
     });
 
     const tabHeaderContainerClasses = clsx({
@@ -366,7 +364,6 @@ export function TabHeaderBar({
       [styles.refresh]: isVisualRefresh,
       [styles['tabs-tab-active']]: isActive,
       [styles['tabs-tab-disabled']]: tab.disabled,
-      [styles['tabs-tab-no-actions']]: !hasActionOrDismissibleForTab,
     });
 
     const tabActionClasses = clsx({
