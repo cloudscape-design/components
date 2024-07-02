@@ -38,6 +38,7 @@ const IconButtonItem = forwardRef(
         className={styles.item}
         __focusable={showInlineFeedback}
         __iconWithLabel={showInlineFeedback}
+        __pressed={showInlineFeedback}
       >
         {showInlineFeedback && item.feedbackText ? item.feedbackText : item.text}
       </InternalButton>
