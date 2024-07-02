@@ -36,6 +36,7 @@ const DatePicker = React.forwardRef(
       locale = '',
       startOfWeek,
       isDateEnabled,
+      dateDisabledReason,
       nextMonthAriaLabel,
       previousMonthAriaLabel,
       todayAriaLabel,
@@ -202,6 +203,7 @@ const DatePicker = React.forwardRef(
                     ariaLabelledby={ariaLabelledby}
                     granularity={granularity}
                     isDateEnabled={isDateEnabled}
+                    dateDisabledReason={dateDisabledReason}
                     i18nStrings={{
                       ...i18nStrings,
                       todayAriaLabel: i18nStrings?.todayAriaLabel ?? todayAriaLabel,

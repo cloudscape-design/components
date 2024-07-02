@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useMemo } from 'react';
+import React, { useMemo, forwardRef, useRef, useState, TdHTMLAttributes } from 'react';
 import styles from './styles.css.js';
 import {
   isSameMonth,
@@ -19,6 +19,10 @@ import { getDateLabel, renderDayName } from '../../../calendar/utils/intl';
 import clsx from 'clsx';
 import { formatDate } from '../../../internal/utils/date-time';
 import ScreenreaderOnly from '../../../internal/components/screenreader-only/index.js';
+import { applyDisplayName } from '../../../internal/utils/apply-display-name';
+import useHiddenDescription from '../../../internal/hooks/use-hidden-description';
+import Tooltip from '../../../internal/components/tooltip';
+import { useMergeRefs } from '../../../internal/hooks/use-merge-refs';
 
 /**
  * Calendar grid supports two mechanisms of keyboard navigation:
@@ -51,6 +55,7 @@ export interface GridProps {
   onFocusedDateChange: React.Dispatch<React.SetStateAction<Date | null>>;
 
   isDateEnabled: DateRangePickerProps.IsDateEnabledFunction;
+  dateDisabledReason: DateRangePickerProps.DateDisabledReasonFunction;
 
   locale: string;
   startOfWeek: DayIndex;
@@ -59,6 +64,74 @@ export interface GridProps {
 
   className?: string;
 }
+
+interface GridCellProps extends TdHTMLAttributes<HTMLTableCellElement> {
+  disabledReason?: string;
+}
+
+const GridCell = forwardRef((props: GridCellProps, focusedDateRef: React.Ref<HTMLTableCellElement>) => {
+  const { disabledReason, ...rest } = props;
+  const isDisabledWithReason = !!disabledReason;
+  const { targetProps, descriptionEl } = useHiddenDescription(disabledReason);
+  const ref = useRef<HTMLTableCellElement>(null);
+  const [showTooltip, setShowTooltip] = useState(false);
+
+  return (
+    <td
+      ref={useMergeRefs(focusedDateRef, ref)}
+      {...rest}
+      {...(isDisabledWithReason ? targetProps : {})}
+      onFocus={event => {
+        if (rest.onFocus) {
+          rest.onFocus(event);
+        }
+
+        if (isDisabledWithReason) {
+          setShowTooltip(true);
+        }
+      }}
+      onBlur={event => {
+        if (rest.onBlur) {
+          rest.onBlur(event);
+        }
+
+        if (isDisabledWithReason) {
+          setShowTooltip(false);
+        }
+      }}
+      onMouseEnter={event => {
+        if (rest.onMouseEnter) {
+          rest.onMouseEnter(event);
+        }
+
+        if (isDisabledWithReason) {
+          setShowTooltip(true);
+        }
+      }}
+      onMouseLeave={event => {
+        if (rest.onMouseLeave) {
+          rest.onMouseLeave(event);
+        }
+
+        if (isDisabledWithReason) {
+          setShowTooltip(false);
+        }
+      }}
+    >
+      {props.children}
+      {isDisabledWithReason && (
+        <>
+          {descriptionEl}
+          {showTooltip && (
+            <Tooltip className={styles['disabled-reason-tooltip']} trackRef={ref} value={disabledReason!} />
+          )}
+        </>
+      )}
+    </td>
+  );
+});
+
+applyDisplayName(GridCell, 'GridCell');
 
 export function Grid({
   baseDate,
@@ -75,6 +148,7 @@ export function Grid({
   onFocusedDateChange,
 
   isDateEnabled,
+  dateDisabledReason,
 
   locale,
   startOfWeek,
@@ -128,7 +202,9 @@ export function Grid({
                     : !selectedStartDate || !selectedEndDate;
 
                 const isEnabled = !isDateEnabled || isDateEnabled(date);
-                const isFocusable = isFocused && isEnabled;
+                const disabledReason = dateDisabledReason(date);
+                const isDisabledWithReason = !isEnabled && !!disabledReason;
+                const isFocusable = isFocused && (isEnabled || isDisabledWithReason);
 
                 const baseClasses = {
                   [styles.day]: true,
@@ -159,10 +235,10 @@ export function Grid({
 
                 // Can't be focused.
                 let tabIndex = undefined;
-                if (isFocusable && isEnabled) {
+                if (isFocusable && (isEnabled || isDisabledWithReason)) {
                   // Next focus target.
                   tabIndex = 0;
-                } else if (isEnabled) {
+                } else if (isEnabled || isDisabledWithReason) {
                   // Can be focused programmatically.
                   tabIndex = -1;
                 }
@@ -174,7 +250,7 @@ export function Grid({
                 }
 
                 return (
-                  <td
+                  <GridCell
                     ref={isFocused ? focusedDateRef : undefined}
                     key={`${weekIndex}:${dateIndex}`}
                     className={clsx(baseClasses, {
@@ -201,13 +277,14 @@ export function Grid({
                     data-date={formatDate(date)}
                     aria-disabled={!isEnabled}
                     tabIndex={tabIndex}
+                    disabledReason={isDisabledWithReason ? disabledReason : undefined}
                     {...handlers}
                   >
                     <span className={styles['day-inner']} aria-hidden="true">
                       {date.getDate()}
                     </span>
                     <ScreenreaderOnly>{dayAnnouncement}</ScreenreaderOnly>
-                  </td>
+                  </GridCell>
                 );
               })}
             </tr>

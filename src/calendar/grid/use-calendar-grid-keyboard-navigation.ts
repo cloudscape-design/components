@@ -22,6 +22,7 @@ export default function useCalendarGridKeyboardNavigation({
   focusableDate,
   granularity,
   isDateEnabled,
+  isDateFocusable,
   onChangePage,
   onFocusDate,
   onSelectDate,
@@ -29,7 +30,10 @@ export default function useCalendarGridKeyboardNavigation({
   baseDate: Date;
   focusableDate: Date | null;
   granularity: CalendarProps.Granularity;
+  // determines if a date could be selected by user actions
   isDateEnabled: CalendarProps.IsDateEnabledFunction;
+  // a date could be not enabled (isDateEnabled returns false), but focusable if it's disabled with reason
+  isDateFocusable: CalendarProps.IsDateEnabledFunction;
   onChangePage: (date: Date) => void;
   onFocusDate: (date: null | Date) => void;
   onSelectDate: (date: Date) => void;
@@ -56,13 +60,17 @@ export default function useCalendarGridKeyboardNavigation({
 
     handleKey(event, {
       onActivate: () => {
+        if (!isDateEnabled(focusableDate)) {
+          return;
+        }
+
         onFocusDate(null);
         onSelectDate(focusableDate);
       },
-      onBlockEnd: () => (updatedFocusDate = moveDown(focusableDate, isDateEnabled)),
-      onBlockStart: () => (updatedFocusDate = moveUp(focusableDate, isDateEnabled)),
-      onInlineStart: () => (updatedFocusDate = moveLeft(focusableDate, isDateEnabled)),
-      onInlineEnd: () => (updatedFocusDate = moveRight(focusableDate, isDateEnabled)),
+      onBlockEnd: () => (updatedFocusDate = moveDown(focusableDate, isDateFocusable)),
+      onBlockStart: () => (updatedFocusDate = moveUp(focusableDate, isDateFocusable)),
+      onInlineStart: () => (updatedFocusDate = moveLeft(focusableDate, isDateFocusable)),
+      onInlineEnd: () => (updatedFocusDate = moveRight(focusableDate, isDateFocusable)),
     });
 
     if (!updatedFocusDate) {

@@ -29,6 +29,13 @@ export interface DateRangePickerBaseProps {
   isDateEnabled?: DateRangePickerProps.IsDateEnabledFunction;
 
   /**
+   * Provides a reason why a particular date in the calendar is not enabled (only when `isDateEnabled` returns `false`).
+   * If provided, the date becomes focusable.
+   * @param date
+   */
+  dateDisabledReason?: DateRangePickerProps.DateDisabledReasonFunction;
+
+  /**
    * The locale to be used for rendering month names and defining the
    * starting date of the week. If not provided, it will be determined
    * from the page and browser locales. Supported values and formats
@@ -236,6 +243,10 @@ export namespace DateRangePickerProps {
 
   export interface IsDateEnabledFunction {
     (date: Date): boolean;
+  }
+
+  export interface DateDisabledReasonFunction {
+    (date: Date): string;
   }
 
   export interface GetTimeOffsetFunction {

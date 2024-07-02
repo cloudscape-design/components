@@ -27,6 +27,7 @@ export default function Calendar({
   locale = '',
   startOfWeek,
   isDateEnabled = () => true,
+  dateDisabledReason = () => '',
   ariaLabel,
   ariaLabelledby,
   ariaDescribedby,
@@ -60,6 +61,8 @@ export default function Calendar({
 
   const isMonthPicker = granularity === 'month';
 
+  const isDateFocusable = (date: Date) => isDateEnabled(date) || (!isDateEnabled(date) && !!dateDisabledReason(date));
+
   const baseDate = isMonthPicker
     ? getBaseMonth(displayedDate, isDateEnabled)
     : getBaseDay(displayedDate, isDateEnabled);
@@ -86,14 +89,14 @@ export default function Calendar({
   }, [memoizedValue]);
 
   const selectFocusedDate = (selected: Date | null, baseDate: Date): Date | null => {
-    if (selected && isDateEnabled(selected) && isSamePage(selected, baseDate)) {
+    if (selected && isDateFocusable(selected) && isSamePage(selected, baseDate)) {
       return selected;
     }
     const today = new Date();
-    if (isDateEnabled(today) && isSamePage(today, baseDate)) {
+    if (isDateFocusable(today) && isSamePage(today, baseDate)) {
       return today;
     }
-    if (isDateEnabled(baseDate)) {
+    if (isDateFocusable(baseDate)) {
       return baseDate;
     }
     return null;
@@ -135,6 +138,7 @@ export default function Calendar({
     focusableDate,
     granularity,
     isDateEnabled,
+    isDateFocusable,
     onChangePage: onChangePageHandler,
     onFocusDate: onGridFocusDateHandler,
     onSelectDate: onGridSelectDateHandler,
@@ -163,6 +167,7 @@ export default function Calendar({
         <div onBlur={onGridBlur} ref={gridWrapperRef}>
           <Grid
             isDateEnabled={isDateEnabled}
+            dateDisabledReason={dateDisabledReason}
             focusedDate={focusedDate}
             focusableDate={focusableDate}
             onSelectDate={onGridSelectDateHandler}

@@ -26,6 +26,7 @@ export interface DateRangePickerDropdownProps
     Required<DateRangePickerProps>,
     | 'locale'
     | 'isDateEnabled'
+    | 'dateDisabledReason'
     | 'isValidRange'
     | 'value'
     | 'relativeOptions'
@@ -50,6 +51,7 @@ export function DateRangePickerDropdown({
   locale = '',
   startOfWeek,
   isDateEnabled,
+  dateDisabledReason,
   isValidRange,
   value,
   onClear: clearValue,
@@ -171,6 +173,7 @@ export function DateRangePickerDropdown({
                       locale={locale}
                       startOfWeek={startOfWeek}
                       isDateEnabled={isDateEnabled}
+                      dateDisabledReason={dateDisabledReason}
                       i18nStrings={i18nStrings}
                       dateOnly={dateOnly}
                       timeInputFormat={timeInputFormat}

@@ -203,3 +203,7 @@
   @include in-range-border-radius(end, start);
   @include in-range-border-radius(start, start);
 }
+
+.disabled-reason-tooltip {
+  /* used in test-utils or tests */
+}
