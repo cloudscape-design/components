@@ -22,6 +22,7 @@ const InternalPromptInput = React.forwardRef(
       actionButtonIconName,
       actionButtonIconUrl,
       actionButtonIconSvg,
+      actionButtonIconAlt,
       ariaLabel,
       autoComplete = true,
       autoFocus,
@@ -94,22 +95,10 @@ const InternalPromptInput = React.forwardRef(
         adjustTextareaHeight();
       };
 
-      const handleFontLoad = () => {
-        adjustTextareaHeight();
-      };
-
       window.addEventListener('resize', handleResize);
-
-      if (document.fonts) {
-        document.fonts.addEventListener('loadingdone', handleFontLoad);
-      }
 
       return () => {
         window.removeEventListener('resize', handleResize);
-
-        if (document.fonts) {
-          document.fonts.removeEventListener('loadingdone', handleFontLoad);
-        }
       };
     }, [adjustTextareaHeight]);
 
@@ -164,6 +153,7 @@ const InternalPromptInput = React.forwardRef(
               iconName={actionButtonIconName}
               iconUrl={actionButtonIconUrl}
               iconSvg={actionButtonIconSvg}
+              iconAlt={actionButtonIconAlt}
               onClick={() => fireNonCancelableEvent(onAction, { value })}
               variant="icon"
             />

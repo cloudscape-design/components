@@ -59,6 +59,11 @@ export interface PromptInputProps
    */
   actionButtonIconSvg?: React.ReactNode;
   /**
+   * Specifies alternate text for a custom icon. We recommend that you provide this for accessibility.
+   * This property is ignored if you use a predefined icon or if you set your custom icon using the `iconSvg` slot.
+   */
+  actionButtonIconAlt?: string;
+  /**
    * Adds an aria-label to the action button.
    * @i18n
    */

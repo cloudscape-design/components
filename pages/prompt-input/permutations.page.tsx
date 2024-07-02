@@ -48,6 +48,7 @@ const permutations = createPermutations<PromptInputProps>([
   {
     value: [''],
     actionButtonIconUrl: [img],
+    actionButtonIconAlt: ['Letter A'],
     disabled: [false, true],
     placeholder: [
       'Short placeholder',
