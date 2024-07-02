@@ -226,7 +226,6 @@ $label-horizontal-spacing: awsui.$space-xs;
 .tabs-tab-disabled {
   &,
   &:hover {
-    pointer-events: none;
     cursor: default;
     color: awsui.$color-text-interactive-disabled;
     font-weight: awsui.$font-tabs-disabled-weight;
@@ -242,4 +241,8 @@ $label-horizontal-spacing: awsui.$space-xs;
 
 .tabs-header-with-divider {
   border-block-end: awsui.$border-divider-section-width solid $separator-color;
+}
+
+.tabs-tab-focusable {
+  /* used to manage focusable logic */
 }

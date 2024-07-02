@@ -9,7 +9,7 @@ import ItemsList from '../items-list';
 import MobileExpandableGroup from '../mobile-expandable-group/mobile-expandable-group';
 import { CategoryProps } from '../interfaces';
 import Tooltip from '../tooltip.js';
-import useHiddenDescription from '../utils/use-hidden-description.js';
+import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import { getMenuItemProps } from '../utils/menu-item.js';
 
 const MobileExpandableCategoryElement = ({
