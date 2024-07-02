@@ -32,7 +32,7 @@ const ItemElement = forwardRef(
     const onClickHandler = (event: CustomEvent<ClickDetail>) => {
       setClickIdx(idx => idx + 1);
 
-      if ('actionPopoverText' in item && item.actionPopoverText) {
+      if ('feedbackText' in item && item.feedbackText) {
         setIsActionPopover(true);
         setShowTooltip(true);
       } else {
@@ -103,7 +103,7 @@ const ItemElement = forwardRef(
       window.dispatchEvent(new CustomEvent('tooltip:toggle', { detail: { open: showTooltip, trackKey: item.id } }));
     }, [showTooltip, item.id]);
 
-    const actionPopoverText = 'actionPopoverText' in item && item.actionPopoverText;
+    const feedbackText = 'feedbackText' in item && item.feedbackText;
 
     return (
       <div
@@ -130,15 +130,13 @@ const ItemElement = forwardRef(
               trackRef={buttonRef}
               trackKey={item.id}
               value={
-                (isActionPopover && actionPopoverText && (
-                  <StatusIndicator type={item.popoverFeedbackType ?? 'success'}>
-                    {item.actionPopoverText}
-                  </StatusIndicator>
+                (isActionPopover && feedbackText && (
+                  <StatusIndicator type={item.popoverFeedbackType ?? 'success'}>{item.feedbackText}</StatusIndicator>
                 )) ||
-                (item.disabled && item.disabledReason ? item.disabledReason : item.text)
+                item.text
               }
             />
-            <LiveRegion key={clickIdx}>{isActionPopover && actionPopoverText}</LiveRegion>
+            <LiveRegion key={clickIdx}>{isActionPopover && feedbackText}</LiveRegion>
           </>
         )}
       </div>

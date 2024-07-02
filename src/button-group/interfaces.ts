@@ -29,7 +29,7 @@ export interface ButtonGroupProps extends BaseComponentProps {
    * * `iconAlt` (optional, string) - Specifies alternate text for the icon when using `iconUrl`.
    * * `iconUrl` (optional, string) - Specifies the URL of a custom icon.
    * * `iconSvg` (optional, ReactNode) - Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/icon/).
-   * * `actionPopoverText` (optional, string) - Text that appears when the user clicks the button. Use to provide feedback to the user.
+   * * `feedbackText` (optional, string) - Text that appears when the user clicks the button. Use to provide feedback to the user.
    *
    * ### type="group"
    * * `text` (string) - The name of the group rendered as ARIA label for this group.
@@ -75,21 +75,15 @@ export namespace ButtonGroupProps {
     type: 'icon-button';
     id: string;
     text: string;
-    // Instructs icon button to display its text inline and not as tooltip.
-    // When true, the text is shown adjacent to the button's icon and the button has no tooltip.
-    inlineText?: boolean;
     disabled?: boolean;
-    // Works pretty much the same as in button dropdown items.
-    // When the item is disabled it shows a tooltip with explanation.
-    // We expect this feature to be added to all buttons in the future.
-    disabledReason?: string;
     loading?: boolean;
     loadingText?: string;
     iconName?: IconProps.Name;
     iconAlt?: string;
     iconUrl?: string;
     iconSvg?: React.ReactNode;
-    actionPopoverText?: string;
+    feedbackText?: string;
+    inlineFeedback?: boolean;
     // Defaults to "success"
     // The status indicator type in the popover feedback
     popoverFeedbackType?: 'success' | 'error';

@@ -14,7 +14,7 @@ describe('IconButtonItem', () => {
     loading: false,
     loadingText: 'Loading...',
     disabled: false,
-    actionPopoverText: 'Action Popover',
+    feedbackText: 'Action Popover',
   };
 
   test('renders the button', () => {
