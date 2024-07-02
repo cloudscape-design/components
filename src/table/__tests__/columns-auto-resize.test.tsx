@@ -4,7 +4,7 @@ import * as React from 'react';
 import { render, act } from '@testing-library/react';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import Table, { TableProps } from '../../../lib/components/table';
-import { fireMousedown, fireMouseMove, fireMouseup, fakeBoundingClientRect } from './utils/resize-actions';
+import { firePointerdown, firePointermove, firePointerup, fakeBoundingClientRect } from './utils/resize-actions';
 
 let overflowParent: HTMLElement | null = null;
 jest.mock('../../../lib/components/internal/utils/scrollable-containers', () => ({
@@ -51,8 +51,8 @@ afterEach(() => {
 test('should not auto-grow when the cursor stops inside table container', () => {
   const { wrapper } = renderTable(<Table {...defaultProps} />);
 
-  fireMousedown(wrapper.findColumnResizer(1)!);
-  fireMouseMove(50);
+  firePointerdown(wrapper.findColumnResizer(1)!);
+  firePointermove(50);
   const widthBefore = wrapper.findColumnHeaders()[0].getElement().style.width;
   tick();
   expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: widthBefore });
@@ -62,8 +62,8 @@ test('should auto-grow the column width when the cursor moves out of table bound
   const onChange = jest.fn();
   const { wrapper } = renderTable(<Table {...defaultProps} onColumnWidthsChange={event => onChange(event.detail)} />);
 
-  fireMousedown(wrapper.findColumnResizer(1)!);
-  fireMouseMove(450);
+  firePointerdown(wrapper.findColumnResizer(1)!);
+  firePointermove(450);
   expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '150px' });
   expect(overflowParent!.scrollLeft).toEqual(0);
   tick();
@@ -72,7 +72,7 @@ test('should auto-grow the column width when the cursor moves out of table bound
   tick();
   expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '160px' });
   expect(overflowParent!.scrollLeft).toEqual(10);
-  fireMouseup(160);
+  firePointerup(160);
   tick();
   expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '160px' });
   expect(onChange).toHaveBeenCalledTimes(1);
@@ -82,12 +82,12 @@ test('should auto-grow the column width when the cursor moves out of table bound
 test('should cancel auto-grow when the cursor returns back into the container', () => {
   const { wrapper } = renderTable(<Table {...defaultProps} />);
 
-  fireMousedown(wrapper.findColumnResizer(1)!);
-  fireMouseMove(450);
+  firePointerdown(wrapper.findColumnResizer(1)!);
+  firePointermove(450);
   tick();
   expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '155px' });
   tick();
-  fireMouseMove(390);
+  firePointermove(390);
   expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '390px' });
   tick();
   expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '390px' });
@@ -96,11 +96,11 @@ test('should cancel auto-grow when the cursor returns back into the container', 
 test('should continue auto-growing when cursor moves and then stops outside of the container again', () => {
   const { wrapper } = renderTable(<Table {...defaultProps} />);
 
-  fireMousedown(wrapper.findColumnResizer(1)!);
-  fireMouseMove(450);
+  firePointerdown(wrapper.findColumnResizer(1)!);
+  firePointermove(450);
   tick();
   expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '155px' });
-  fireMouseMove(410);
+  firePointermove(410);
   expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '155px' });
   tick();
   expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '160px' });

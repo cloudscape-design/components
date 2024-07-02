@@ -104,7 +104,7 @@ export function Resizer({
       elements.scrollParent.scrollLeft += AUTO_GROW_INCREMENT * (getIsRtl(elements.scrollParent) ? -1 : 1);
     };
 
-    const onMouseMove = (event: MouseEvent) => {
+    const onPointerMove = (event: PointerEvent) => {
       clearTimeout(autoGrowTimeout.current);
       const offset = getLogicalPageX(event);
       if (offset > inlineEndEdge) {
@@ -114,7 +114,7 @@ export function Resizer({
       }
     };
 
-    const onMouseUp = (event: MouseEvent) => {
+    const onPointerUp = (event: PointerEvent) => {
       resizeColumn(getLogicalPageX(event));
       setIsDragging(false);
       onWidthUpdateCommit();
@@ -161,8 +161,8 @@ export function Resizer({
 
     if (isDragging) {
       document.body.classList.add(styles['resize-active']);
-      document.addEventListener('mousemove', onMouseMove);
-      document.addEventListener('mouseup', onMouseUp);
+      document.addEventListener('pointermove', onPointerMove);
+      document.addEventListener('pointerup', onPointerUp);
     }
     if (resizerHasFocus) {
       document.body.classList.add(styles['resize-active-with-focus']);
@@ -176,8 +176,8 @@ export function Resizer({
       clearTimeout(autoGrowTimeout.current);
       document.body.classList.remove(styles['resize-active']);
       document.body.classList.remove(styles['resize-active-with-focus']);
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
+      document.removeEventListener('pointermove', onPointerMove);
+      document.removeEventListener('pointerup', onPointerUp);
       elements.header.removeEventListener('keydown', onKeyDown);
     };
   }, [minWidth, isDragging, isKeyboardDragging, resizerHasFocus, onWidthUpdate, onWidthUpdateCommit]);
@@ -192,7 +192,7 @@ export function Resizer({
           styles.resizer,
           (resizerHasFocus || showFocusRing || isKeyboardDragging) && styles['has-focus']
         )}
-        onMouseDown={event => {
+        onPointerDown={event => {
           if (event.button !== 0) {
             return;
           }
