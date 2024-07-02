@@ -105,7 +105,6 @@ $label-horizontal-spacing: awsui.$space-xs;
   &,
   & > button {
     background-color: transparent;
-    text-align: stretch;
   }
 
   & > .tabs-tab-dismiss,
@@ -243,8 +242,4 @@ $label-horizontal-spacing: awsui.$space-xs;
 
 .tabs-header-with-divider {
   border-block-end: awsui.$border-divider-section-width solid $separator-color;
-}
-
-.tabs-tab-no-actions {
-  /* Used as a selector for tests */
 }
