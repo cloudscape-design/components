@@ -80,8 +80,6 @@ const InternalPromptInput = React.forwardRef(
       if (textareaRef.current) {
         textareaRef.current.style.height = 'auto';
 
-        // eslint-disable-next-line no-warning-comments
-        // TODO: calculatenodeheight for this newHeight
         const newHeight = Math.min(
           textareaRef.current.scrollHeight + PADDING,
           (maxRows ?? 3) * (LINE_HEIGHT + PADDING / 2) + PADDING

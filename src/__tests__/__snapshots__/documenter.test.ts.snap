@@ -11456,6 +11456,13 @@ about modifiers (that is, CTRL, ALT, SHIFT, META, etc.).",
       "type": "string",
     },
     Object {
+      "description": "Specifies alternate text for a custom icon. We recommend that you provide this for accessibility.
+This property is ignored if you use a predefined icon or if you set your custom icon using the \`iconSvg\` slot.",
+      "name": "actionButtonIconAlt",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Determines what icon to display in the action button.",
       "inlineType": Object {
         "name": "IconProps.Name",
