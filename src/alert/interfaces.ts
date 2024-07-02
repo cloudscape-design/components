@@ -5,6 +5,10 @@ import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
 
 export namespace AlertProps {
+  export interface AnalyticsMetadata {
+    instanceIdentifier?: string;
+  }
+
   export type Type = 'success' | 'error' | 'warning' | 'info';
 
   export interface Ref {
@@ -16,6 +20,11 @@ export namespace AlertProps {
 }
 
 export interface AlertProps extends BaseComponentProps {
+  /**
+   * @analytics
+   */
+  analyticsMetadata?: AlertProps.AnalyticsMetadata;
+
   /**
    * Specifies the type of message you want to display.
    */

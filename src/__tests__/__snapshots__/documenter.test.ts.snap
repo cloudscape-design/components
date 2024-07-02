@@ -27,6 +27,23 @@ when the \`dismissible\` property is set to \`true\`.",
   "name": "Alert",
   "properties": Array [
     Object {
+      "description": "",
+      "inlineType": Object {
+        "name": "AlertProps.AnalyticsMetadata",
+        "properties": Array [
+          Object {
+            "name": "instanceIdentifier",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "analyticsMetadata",
+      "optional": true,
+      "type": "AlertProps.AnalyticsMetadata",
+    },
+    Object {
       "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
@@ -5431,6 +5448,23 @@ Object {
   "name": "Container",
   "properties": Array [
     Object {
+      "description": "",
+      "inlineType": Object {
+        "name": "ContainerProps.AnalyticsMetadata",
+        "properties": Array [
+          Object {
+            "name": "instanceIdentifier",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "analyticsMetadata",
+      "optional": true,
+      "type": "ContainerProps.AnalyticsMetadata",
+    },
+    Object {
       "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
@@ -6901,6 +6935,23 @@ The event \`detail\` contains the current value of the \`expanded\` property.",
   "name": "ExpandableSection",
   "properties": Array [
     Object {
+      "description": "",
+      "inlineType": Object {
+        "name": "ExpandableSectionProps.AnalyticsMetadata",
+        "properties": Array [
+          Object {
+            "name": "instanceIdentifier",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "analyticsMetadata",
+      "optional": true,
+      "type": "ExpandableSectionProps.AnalyticsMetadata",
+    },
+    Object {
       "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
@@ -7366,6 +7417,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Specifies flash messages that appear in the same order that they are listed.
 The value is an array of flash message definition objects.
 A flash message object contains the following properties:
+* \`analyticsMetadata\` (AnalyticsMetadata) - (Optional) Specifies additional analytics related metadata.
 * \`header\` (ReactNode) - Specifies the heading text.
 * \`content\` (ReactNode) - Specifies the primary text displayed in the flash element.
 * \`type\` (string) - Indicates the type of the message to be displayed. Allowed values are as follows: \`success, error, warning, info\`. The default is \`info\`.
@@ -7387,8 +7439,7 @@ If the \`action\` property is set, this property is ignored. **Deprecated**, rep
   using the \`action\` property. **Deprecated**, replaced by \`action\`.
 * \`id\` (string) - Specifies a unique flash message identifier. This property is used in two ways:
   1. As a [keys](https://reactjs.org/docs/lists-and-keys.html#keys) source for React rendering.
-  2. To identify which flash message will be removed from the DOM when it is dismissed, to animate it out.
-",
+  2. To identify which flash message will be removed from the DOM when it is dismissed, to animate it out.",
       "name": "items",
       "optional": false,
       "type": "ReadonlyArray<FlashbarProps.MessageDefinition>",
@@ -7411,6 +7462,28 @@ Object {
   "functions": Array [],
   "name": "Form",
   "properties": Array [
+    Object {
+      "description": "",
+      "inlineType": Object {
+        "name": "AnalyticsMetadata",
+        "properties": Array [
+          Object {
+            "name": "flowType",
+            "optional": true,
+            "type": "FlowType",
+          },
+          Object {
+            "name": "instanceIdentifier",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "analyticsMetadata",
+      "optional": true,
+      "type": "AnalyticsMetadata",
+    },
     Object {
       "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
@@ -7490,6 +7563,23 @@ Object {
   "functions": Array [],
   "name": "FormField",
   "properties": Array [
+    Object {
+      "description": "",
+      "inlineType": Object {
+        "name": "FormFieldProps.AnalyticsMetadata",
+        "properties": Array [
+          Object {
+            "name": "instanceIdentifier",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "analyticsMetadata",
+      "optional": true,
+      "type": "FormFieldProps.AnalyticsMetadata",
+    },
     Object {
       "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
@@ -13897,6 +13987,23 @@ scroll parent scrolls to reveal the first row of the table.",
   "name": "Table",
   "properties": Array [
     Object {
+      "description": "",
+      "inlineType": Object {
+        "name": "TableProps.AnalyticsMetadata",
+        "properties": Array [
+          Object {
+            "name": "instanceIdentifier",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "analyticsMetadata",
+      "optional": true,
+      "type": "TableProps.AnalyticsMetadata",
+    },
+    Object {
       "description": "Specifies alternative text for the selection components (checkboxes and radio buttons) as follows:
 * \`itemSelectionLabel\` ((SelectionState, Item) => string) - Specifies the alternative text for an item.
 * \`allItemsSelectionLabel\` ((SelectionState) => string) - Specifies the alternative text for multi-selection column header.
@@ -16550,6 +16657,28 @@ Defaults to \`false\`.
       "type": "boolean",
     },
     Object {
+      "description": "",
+      "inlineType": Object {
+        "name": "AnalyticsMetadata",
+        "properties": Array [
+          Object {
+            "name": "flowType",
+            "optional": true,
+            "type": "FlowType",
+          },
+          Object {
+            "name": "instanceIdentifier",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "analyticsMetadata",
+      "optional": true,
+      "type": "AnalyticsMetadata",
+    },
+    Object {
       "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
@@ -16674,7 +16803,7 @@ Use this if you need to wait for a response from the server before the user can 
    Use this for rendering actionable server-side validation failure messages.
 - \`isOptional\` (boolean) - Specifies whether the step is optional or required. If set to \`true\`, the text from \`i18nStrings.optional\`
    is rendered next to the \`title\` in the navigation step label and the form header title.
-",
+- \`analyticsMetadata\` (WizardProps.StepAnalyticsMetadata) - (Optional) Specifies additional analytics related metadata.",
       "name": "steps",
       "optional": false,
       "type": "ReadonlyArray<WizardProps.Step>",

@@ -1,11 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { BaseComponentProps } from '../internal/base-component';
 import React from 'react';
 import { ButtonProps } from '../button/interfaces';
+import { BaseComponentProps } from '../internal/base-component';
 
 export namespace FlashbarProps {
+  export interface MessageAnalyticsMetadata {
+    instanceIdentifier?: string;
+  }
   export interface MessageDefinition {
+    analyticsMetadata?: MessageAnalyticsMetadata;
     header?: React.ReactNode;
     content?: React.ReactNode;
     dismissible?: boolean;
@@ -42,6 +46,7 @@ export interface FlashbarProps extends BaseComponentProps {
    * The value is an array of flash message definition objects.
    *
    * A flash message object contains the following properties:
+   * * `analyticsMetadata` (AnalyticsMetadata) - (Optional) Specifies additional analytics related metadata.
    * * `header` (ReactNode) - Specifies the heading text.
    * * `content` (ReactNode) - Specifies the primary text displayed in the flash element.
    * * `type` (string) - Indicates the type of the message to be displayed. Allowed values are as follows: `success, error, warning, info`. The default is `info`.
@@ -64,6 +69,7 @@ export interface FlashbarProps extends BaseComponentProps {
    * * `id` (string) - Specifies a unique flash message identifier. This property is used in two ways:
    *   1. As a [keys](https://reactjs.org/docs/lists-and-keys.html#keys) source for React rendering.
    *   2. To identify which flash message will be removed from the DOM when it is dismissed, to animate it out.
+   * @analytics
    */
   items: ReadonlyArray<FlashbarProps.MessageDefinition>;
 

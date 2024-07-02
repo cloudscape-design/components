@@ -2,25 +2,26 @@
 // SPDX-License-Identifier: Apache-2.0
 
 export type FunnelType = 'single-page' | 'multi-page';
+export type FlowType = 'create';
 export interface AnalyticsMetadata {
   instanceIdentifier?: string;
-  flowType?: 'create' | 'edit';
+  flowType?: FlowType;
   errorContext?: string;
 }
 
 // Common properties for all funnels
 export interface BaseFunnelProps {
-  funnelIdentifier?: AnalyticsMetadata['instanceIdentifier'];
+  funnelIdentifier?: string;
   funnelInteractionId: string;
   currentDocument?: Document;
 }
 
 export interface FunnelErrorProps extends BaseFunnelProps {
-  funnelErrorContext?: AnalyticsMetadata['errorContext'];
+  funnelErrorContext?: string;
 }
 
 export interface FunnelStartProps extends Omit<BaseFunnelProps, 'funnelInteractionId'> {
-  flowType?: AnalyticsMetadata['flowType'];
+  flowType?: FlowType;
   funnelNameSelector: string;
   totalFunnelSteps: number;
   optionalStepNumbers: number[];
@@ -62,7 +63,7 @@ export type FunnelStartMethod = (props: FunnelStartProps) => string;
 
 // Define individual method props by extending the base
 export interface FunnelStepProps extends BaseFunnelProps {
-  stepIdentifier?: AnalyticsMetadata['instanceIdentifier'];
+  stepIdentifier?: string;
   stepNumber: number;
   stepName?: string | undefined;
   stepNameSelector?: string;
@@ -78,12 +79,12 @@ export interface FunnelStepNavigationProps extends FunnelStepProps {
 }
 
 export interface FunnelStepErrorProps extends FunnelStepProps {
-  stepErrorContext?: AnalyticsMetadata['errorContext'];
+  stepErrorContext?: string;
   stepErrorSelector: string;
 }
 
 export interface FunnelSubStepProps extends FunnelStepProps {
-  subStepIdentifier?: AnalyticsMetadata['instanceIdentifier'];
+  subStepIdentifier?: string;
   subStepSelector: string;
   subStepName?: string | undefined;
   subStepNameSelector: string;
@@ -91,17 +92,17 @@ export interface FunnelSubStepProps extends FunnelStepProps {
 }
 
 export interface FunnelSubStepErrorProps extends FunnelSubStepProps {
-  subStepErrorContext?: AnalyticsMetadata['errorContext'];
-  fieldIdentifier?: AnalyticsMetadata['instanceIdentifier'];
-  fieldErrorContext?: AnalyticsMetadata['errorContext'];
+  subStepErrorContext?: string;
+  fieldIdentifier?: string;
+  fieldErrorContext?: string;
   fieldLabelSelector: string;
   fieldErrorSelector: string;
 }
 
 export interface OptionalFunnelSubStepErrorProps extends FunnelSubStepProps {
-  subStepErrorContext?: AnalyticsMetadata['errorContext'];
-  fieldIdentifier?: AnalyticsMetadata['instanceIdentifier'];
-  fieldErrorContext?: AnalyticsMetadata['errorContext'];
+  subStepErrorContext?: string;
+  fieldIdentifier?: string;
+  fieldErrorContext?: string;
   fieldLabelSelector?: string;
   fieldErrorSelector?: string;
 }
@@ -118,13 +119,13 @@ export interface StepConfiguration {
   number: number;
   name: string;
   isOptional: boolean;
-  stepIdentifier?: AnalyticsMetadata['instanceIdentifier'];
+  stepIdentifier?: string;
 }
 
 export interface SubStepConfiguration {
   number: number;
   name: string;
-  subStepIdentifier?: AnalyticsMetadata['instanceIdentifier'];
+  subStepIdentifier?: string;
 }
 
 // Define the interface using the method type

@@ -328,9 +328,7 @@ describe('Multi-page create', () => {
         stepNumber: 1,
         subStepName: 'Container 1 - header',
         subStepIdentifier: 'step1-container1',
-        fieldErrorContext: 'errors.triggered',
         fieldIdentifier: 'field1',
-        subStepErrorContext: 'errors.fields',
       });
 
       expect(funnelSubStepErrorEvent.resolvedProps).toEqual({
@@ -355,7 +353,6 @@ describe('Multi-page create', () => {
       expect(funnelErrorEvent.props).toEqual({
         funnelIdentifier: FUNNEL_IDENTIFIER,
         funnelInteractionId: FUNNEL_INTERACTION_ID,
-        funnelErrorContext: 'errors.validation',
       });
     })
   );
