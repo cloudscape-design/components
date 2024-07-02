@@ -282,21 +282,21 @@
     @include mixins.base-thumb-styles();
   }
 
-  &:hover::-webkit-slider-thumb {
+  &:not(&.disabled):hover::-webkit-slider-thumb {
     @include mixins.base-thumb-hover-styles();
   }
 
-  &:hover::-moz-range-thumb {
+  &:not(&.disabled):hover::-moz-range-thumb {
     @include mixins.base-thumb-hover-styles();
   }
 
-  &:focus::-webkit-slider-thumb,
-  &:active::-webkit-slider-thumb {
+  &:not(&.disabled):focus::-webkit-slider-thumb,
+  &:not(&.disabled):active::-webkit-slider-thumb {
     @include mixins.base-thumb-focus-styles();
   }
 
-  &:focus::-moz-range-thumb,
-  &:active::-moz-range-thumb {
+  &:not(&.disabled):focus::-moz-range-thumb,
+  &:not(&.disabled):active::-moz-range-thumb {
     @include mixins.base-thumb-focus-styles();
   }
 }
