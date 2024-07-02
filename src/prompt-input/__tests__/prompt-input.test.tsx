@@ -10,7 +10,12 @@ import PromptInputWrapper from '../../../lib/components/test-utils/dom/prompt-in
 
 import PromptInput, { PromptInputProps } from '../../../lib/components/prompt-input';
 
-const renderPromptInput = (promptInputProps: PromptInputProps) => {
+jest.mock('@cloudscape-design/component-toolkit', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit'),
+  useContainerQuery: () => [800, () => {}],
+}));
+
+const renderPromptInput = (promptInputProps: PromptInputProps & React.RefAttributes<HTMLTextAreaElement>) => {
   const { container } = render(<PromptInput {...promptInputProps} />);
   return { wrapper: new PromptInputWrapper(container)!, container };
 };
@@ -23,6 +28,16 @@ describe('value', () => {
   test('can be obtained through getTextareaValue API', () => {
     const { wrapper } = renderPromptInput({ value: 'value' });
     expect(wrapper.getTextareaValue()).toBe('value');
+  });
+});
+
+describe('ref', () => {
+  test('can be used to focus the component', () => {
+    const ref = React.createRef<HTMLTextAreaElement>();
+    const { wrapper } = renderPromptInput({ value: '', ref });
+    expect(document.activeElement).not.toBe(wrapper.findNativeTextarea().getElement());
+    ref.current?.focus();
+    expect(document.activeElement).toBe(wrapper.findNativeTextarea().getElement());
   });
 });
 
