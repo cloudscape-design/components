@@ -90,13 +90,22 @@
     }
   }
   &-table {
+    display: table;
     border-spacing: awsui.$space-s 0;
+
+    &-row {
+      display: table-row;
+    }
 
     &-header-cell,
     &-cell {
+      display: table-cell;
       vertical-align: bottom;
     }
     &-header-cell {
+      color: awsui.$color-text-column-header;
+      font-weight: awsui.$font-weight-heading-s;
+      padding-block: awsui.$space-scaled-xxs;
       text-align: start;
     }
     &-cell {

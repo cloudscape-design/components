@@ -510,76 +510,72 @@ function TokenEditorFields({ fields, removeButton, operationSelector, property, 
   }
 
   return (
-    <table className={styles['token-editor-table']}>
-      <thead>
-        <tr>
-          <th className={styles['token-editor-table-header-cell']}>
-            <ScreenreaderOnly>{removeButton.label}</ScreenreaderOnly>
-          </th>
-          <th className={styles['token-editor-table-header-cell']}>
-            <ScreenreaderOnly>{operationSelector.label}</ScreenreaderOnly>
-          </th>
-          <th className={styles['token-editor-table-header-cell']}>{property.label}</th>
-          <th className={styles['token-editor-table-header-cell']}>{operator.label}</th>
-          <th className={styles['token-editor-table-header-cell']}>{value.label}</th>
-        </tr>
-      </thead>
+    <div className={styles['token-editor-table']}>
+      <div className={styles['token-editor-table-row']}>
+        <div className={styles['token-editor-table-header-cell']}>
+          <ScreenreaderOnly>{removeButton.label}</ScreenreaderOnly>
+        </div>
+        <div className={styles['token-editor-table-header-cell']}>
+          <ScreenreaderOnly>{operationSelector.label}</ScreenreaderOnly>
+        </div>
+        <div className={styles['token-editor-table-header-cell']}>{property.label}</div>
+        <div className={styles['token-editor-table-header-cell']}>{operator.label}</div>
+        <div className={styles['token-editor-table-header-cell']}>{value.label}</div>
+      </div>
 
-      <tbody>
-        {indices.map(index => (
-          <tr key={index}>
-            <td className={styles['token-editor-table-cell']}>
-              <div className={styles['token-editor-remove-token']}>
-                <InternalButton
-                  variant="icon"
-                  iconName="close"
-                  onClick={() => removeButton.onRemove(index)}
-                  ariaLabel={removeButton.label}
+      {indices.map(index => (
+        <div key={index} className={styles['token-editor-table-row']}>
+          <div className={styles['token-editor-table-cell']}>
+            <div className={styles['token-editor-remove-token']}>
+              <InternalButton
+                variant="icon"
+                iconName="close"
+                onClick={() => removeButton.onRemove(index)}
+                ariaLabel={removeButton.label}
+              />
+            </div>
+          </div>
+
+          <div className={styles['token-editor-table-cell']}>
+            {index > 0 && (
+              <div className={styles['token-editor-operation']}>
+                <InternalSelect
+                  options={operationOptions}
+                  selectedOption={operationOptions.find(option => option.value === operationSelector.selectedOption)!}
+                  onChange={event => operationSelector.onSelect(event.detail.selectedOption.value as 'and' | 'or')}
+                  ariaLabel={operationSelector.label}
                 />
               </div>
-            </td>
+            )}
+          </div>
 
-            <td className={styles['token-editor-table-cell']}>
-              {index > 0 && (
-                <div className={styles['token-editor-operation']}>
-                  <InternalSelect
-                    options={operationOptions}
-                    selectedOption={operationOptions.find(option => option.value === operationSelector.selectedOption)!}
-                    onChange={event => operationSelector.onSelect(event.detail.selectedOption.value as 'and' | 'or')}
-                    ariaLabel={operationSelector.label}
-                  />
-                </div>
-              )}
-            </td>
+          <div className={styles['token-editor-table-cell']}>
+            <InternalFormField
+              label={property.label}
+              className={styles['token-editor-field-property']}
+              __hideLabel={true}
+            >
+              {property.render(index)}
+            </InternalFormField>
+          </div>
 
-            <td className={styles['token-editor-table-cell']}>
-              <InternalFormField
-                label={property.label}
-                className={styles['token-editor-field-property']}
-                __hideLabel={true}
-              >
-                {property.render(index)}
-              </InternalFormField>
-            </td>
+          <div className={styles['token-editor-table-cell']}>
+            <InternalFormField
+              label={operator.label}
+              className={styles['token-editor-field-operator']}
+              __hideLabel={true}
+            >
+              {operator.render(index)}
+            </InternalFormField>
+          </div>
 
-            <td className={styles['token-editor-table-cell']}>
-              <InternalFormField
-                label={operator.label}
-                className={styles['token-editor-field-operator']}
-                __hideLabel={true}
-              >
-                {operator.render(index)}
-              </InternalFormField>
-            </td>
-
-            <td className={styles['token-editor-table-cell']}>
-              <InternalFormField label={value.label} className={styles['token-editor-field-value']} __hideLabel={true}>
-                {value.render(index)}
-              </InternalFormField>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+          <div className={styles['token-editor-table-cell']}>
+            <InternalFormField label={value.label} className={styles['token-editor-field-value']} __hideLabel={true}>
+              {value.render(index)}
+            </InternalFormField>
+          </div>
+        </div>
+      ))}
+    </div>
   );
 }
