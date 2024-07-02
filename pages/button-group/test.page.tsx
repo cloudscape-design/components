@@ -39,6 +39,7 @@ const groupLike: ButtonGroupProps.Item = {
       text: 'Like',
       feedbackText: 'Helpful',
       inlineFeedback: true,
+      disabled: true,
     },
   ],
 };
@@ -54,6 +55,7 @@ const groupDislike: ButtonGroupProps.Item = {
       text: 'Dislike',
       feedbackText: 'Not helpful',
       inlineFeedback: true,
+      disabled: true,
     },
   ],
 };
