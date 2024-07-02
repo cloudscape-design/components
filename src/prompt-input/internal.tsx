@@ -11,6 +11,7 @@ import clsx from 'clsx';
 import styles from './styles.css.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { convertAutoComplete } from '../input/utils';
+import { useDensityMode } from '@cloudscape-design/component-toolkit/internal';
 
 export interface InternalPromptInputProps extends PromptInputProps, InternalBaseComponentProps {}
 
@@ -51,6 +52,8 @@ const InternalPromptInput = React.forwardRef(
     const baseProps = getBaseProps(rest);
 
     const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+    const isCompactMode = useDensityMode(textareaRef) === 'compact';
 
     useForwardFocus(ref, textareaRef);
 
@@ -102,7 +105,7 @@ const InternalPromptInput = React.forwardRef(
 
     useEffect(() => {
       adjustTextareaHeight();
-    }, [value, adjustTextareaHeight, maxRows]);
+    }, [value, adjustTextareaHeight, maxRows, isCompactMode]);
 
     const attributes: React.TextareaHTMLAttributes<HTMLTextAreaElement> = {
       'aria-label': ariaLabel,
