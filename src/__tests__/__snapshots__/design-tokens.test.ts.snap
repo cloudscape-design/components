@@ -1728,6 +1728,13 @@ Object {
             "light": "#545b64",
           },
         },
+        "color-text-button-normal-disabled": Object {
+          "$description": "The text color of normal buttons in disabled state.",
+          "$value": Object {
+            "dark": "#879596",
+            "light": "#879596",
+          },
+        },
         "color-text-button-normal-hover": Object {
           "$description": "The hover text color of normal buttons.",
           "$value": Object {
@@ -1747,6 +1754,13 @@ Object {
           "$value": Object {
             "dark": "#16191f",
             "light": "#ffffff",
+          },
+        },
+        "color-text-button-primary-disabled": Object {
+          "$description": "The text color of primary buttons in disabled state.",
+          "$value": Object {
+            "dark": "#879596",
+            "light": "#879596",
           },
         },
         "color-text-button-primary-hover": Object {
@@ -4086,6 +4100,13 @@ Object {
             "light": "#545b64",
           },
         },
+        "color-text-button-normal-disabled": Object {
+          "$description": "The text color of normal buttons in disabled state.",
+          "$value": Object {
+            "dark": "#879596",
+            "light": "#879596",
+          },
+        },
         "color-text-button-normal-hover": Object {
           "$description": "The hover text color of normal buttons.",
           "$value": Object {
@@ -4105,6 +4126,13 @@ Object {
           "$value": Object {
             "dark": "#16191f",
             "light": "#ffffff",
+          },
+        },
+        "color-text-button-primary-disabled": Object {
+          "$description": "The text color of primary buttons in disabled state.",
+          "$value": Object {
+            "dark": "#879596",
+            "light": "#879596",
           },
         },
         "color-text-button-primary-hover": Object {
@@ -6444,6 +6472,13 @@ Object {
             "light": "#545b64",
           },
         },
+        "color-text-button-normal-disabled": Object {
+          "$description": "The text color of normal buttons in disabled state.",
+          "$value": Object {
+            "dark": "#879596",
+            "light": "#879596",
+          },
+        },
         "color-text-button-normal-hover": Object {
           "$description": "The hover text color of normal buttons.",
           "$value": Object {
@@ -6463,6 +6498,13 @@ Object {
           "$value": Object {
             "dark": "#16191f",
             "light": "#ffffff",
+          },
+        },
+        "color-text-button-primary-disabled": Object {
+          "$description": "The text color of primary buttons in disabled state.",
+          "$value": Object {
+            "dark": "#879596",
+            "light": "#879596",
           },
         },
         "color-text-button-primary-hover": Object {
@@ -8802,6 +8844,13 @@ Object {
             "light": "#545b64",
           },
         },
+        "color-text-button-normal-disabled": Object {
+          "$description": "The text color of normal buttons in disabled state.",
+          "$value": Object {
+            "dark": "#879596",
+            "light": "#879596",
+          },
+        },
         "color-text-button-normal-hover": Object {
           "$description": "The hover text color of normal buttons.",
           "$value": Object {
@@ -8821,6 +8870,13 @@ Object {
           "$value": Object {
             "dark": "#16191f",
             "light": "#ffffff",
+          },
+        },
+        "color-text-button-primary-disabled": Object {
+          "$description": "The text color of primary buttons in disabled state.",
+          "$value": Object {
+            "dark": "#879596",
+            "light": "#879596",
           },
         },
         "color-text-button-primary-hover": Object {
@@ -11160,6 +11216,13 @@ Object {
             "light": "#d5dbdb",
           },
         },
+        "color-text-button-normal-disabled": Object {
+          "$description": "The text color of normal buttons in disabled state.",
+          "$value": Object {
+            "dark": "#879596",
+            "light": "#879596",
+          },
+        },
         "color-text-button-normal-hover": Object {
           "$description": "The hover text color of normal buttons.",
           "$value": Object {
@@ -11179,6 +11242,13 @@ Object {
           "$value": Object {
             "dark": "#16191f",
             "light": "#16191f",
+          },
+        },
+        "color-text-button-primary-disabled": Object {
+          "$description": "The text color of primary buttons in disabled state.",
+          "$value": Object {
+            "dark": "#879596",
+            "light": "#879596",
           },
         },
         "color-text-button-primary-hover": Object {
@@ -13518,6 +13588,13 @@ Object {
         "light": "#545b64",
       },
     },
+    "color-text-button-normal-disabled": Object {
+      "$description": "The text color of normal buttons in disabled state.",
+      "$value": Object {
+        "dark": "#879596",
+        "light": "#879596",
+      },
+    },
     "color-text-button-normal-hover": Object {
       "$description": "The hover text color of normal buttons.",
       "$value": Object {
@@ -13537,6 +13614,13 @@ Object {
       "$value": Object {
         "dark": "#16191f",
         "light": "#ffffff",
+      },
+    },
+    "color-text-button-primary-disabled": Object {
+      "$description": "The text color of primary buttons in disabled state.",
+      "$value": Object {
+        "dark": "#879596",
+        "light": "#879596",
       },
     },
     "color-text-button-primary-hover": Object {
@@ -15881,6 +15965,13 @@ Object {
             "light": "#414d5c",
           },
         },
+        "color-text-button-normal-disabled": Object {
+          "$description": "The text color of normal buttons in disabled state.",
+          "$value": Object {
+            "dark": "#7d8998",
+            "light": "#7d8998",
+          },
+        },
         "color-text-button-normal-hover": Object {
           "$description": "The hover text color of normal buttons.",
           "$value": Object {
@@ -15900,6 +15991,13 @@ Object {
           "$value": Object {
             "dark": "#000716",
             "light": "#ffffff",
+          },
+        },
+        "color-text-button-primary-disabled": Object {
+          "$description": "The text color of primary buttons in disabled state.",
+          "$value": Object {
+            "dark": "#7d8998",
+            "light": "#7d8998",
           },
         },
         "color-text-button-primary-hover": Object {
@@ -18239,6 +18337,13 @@ Object {
             "light": "#d1d5db",
           },
         },
+        "color-text-button-normal-disabled": Object {
+          "$description": "The text color of normal buttons in disabled state.",
+          "$value": Object {
+            "dark": "#7d8998",
+            "light": "#7d8998",
+          },
+        },
         "color-text-button-normal-hover": Object {
           "$description": "The hover text color of normal buttons.",
           "$value": Object {
@@ -18258,6 +18363,13 @@ Object {
           "$value": Object {
             "dark": "#000716",
             "light": "#000716",
+          },
+        },
+        "color-text-button-primary-disabled": Object {
+          "$description": "The text color of primary buttons in disabled state.",
+          "$value": Object {
+            "dark": "#7d8998",
+            "light": "#7d8998",
           },
         },
         "color-text-button-primary-hover": Object {
@@ -20597,6 +20709,13 @@ Object {
             "light": "#0972d3",
           },
         },
+        "color-text-button-normal-disabled": Object {
+          "$description": "The text color of normal buttons in disabled state.",
+          "$value": Object {
+            "dark": "#7d8998",
+            "light": "#7d8998",
+          },
+        },
         "color-text-button-normal-hover": Object {
           "$description": "The hover text color of normal buttons.",
           "$value": Object {
@@ -20616,6 +20735,13 @@ Object {
           "$value": Object {
             "dark": "#000716",
             "light": "#ffffff",
+          },
+        },
+        "color-text-button-primary-disabled": Object {
+          "$description": "The text color of primary buttons in disabled state.",
+          "$value": Object {
+            "dark": "#7d8998",
+            "light": "#7d8998",
           },
         },
         "color-text-button-primary-hover": Object {
@@ -22955,6 +23081,13 @@ Object {
             "light": "#fbfbfb",
           },
         },
+        "color-text-button-normal-disabled": Object {
+          "$description": "The text color of normal buttons in disabled state.",
+          "$value": Object {
+            "dark": "#7d8998",
+            "light": "#7d8998",
+          },
+        },
         "color-text-button-normal-hover": Object {
           "$description": "The hover text color of normal buttons.",
           "$value": Object {
@@ -22974,6 +23107,13 @@ Object {
           "$value": Object {
             "dark": "#000716",
             "light": "#ffffff",
+          },
+        },
+        "color-text-button-primary-disabled": Object {
+          "$description": "The text color of primary buttons in disabled state.",
+          "$value": Object {
+            "dark": "#7d8998",
+            "light": "#7d8998",
           },
         },
         "color-text-button-primary-hover": Object {
@@ -25313,6 +25453,13 @@ Object {
             "light": "#414d5c",
           },
         },
+        "color-text-button-normal-disabled": Object {
+          "$description": "The text color of normal buttons in disabled state.",
+          "$value": Object {
+            "dark": "#7d8998",
+            "light": "#7d8998",
+          },
+        },
         "color-text-button-normal-hover": Object {
           "$description": "The hover text color of normal buttons.",
           "$value": Object {
@@ -25332,6 +25479,13 @@ Object {
           "$value": Object {
             "dark": "#000716",
             "light": "#ffffff",
+          },
+        },
+        "color-text-button-primary-disabled": Object {
+          "$description": "The text color of primary buttons in disabled state.",
+          "$value": Object {
+            "dark": "#7d8998",
+            "light": "#7d8998",
           },
         },
         "color-text-button-primary-hover": Object {
@@ -27671,6 +27825,13 @@ Object {
             "light": "#539fe5",
           },
         },
+        "color-text-button-normal-disabled": Object {
+          "$description": "The text color of normal buttons in disabled state.",
+          "$value": Object {
+            "dark": "#7d8998",
+            "light": "#7d8998",
+          },
+        },
         "color-text-button-normal-hover": Object {
           "$description": "The hover text color of normal buttons.",
           "$value": Object {
@@ -27690,6 +27851,13 @@ Object {
           "$value": Object {
             "dark": "#000716",
             "light": "#000716",
+          },
+        },
+        "color-text-button-primary-disabled": Object {
+          "$description": "The text color of primary buttons in disabled state.",
+          "$value": Object {
+            "dark": "#7d8998",
+            "light": "#7d8998",
           },
         },
         "color-text-button-primary-hover": Object {
@@ -30029,6 +30197,13 @@ Object {
             "light": "#539fe5",
           },
         },
+        "color-text-button-normal-disabled": Object {
+          "$description": "The text color of normal buttons in disabled state.",
+          "$value": Object {
+            "dark": "#7d8998",
+            "light": "#7d8998",
+          },
+        },
         "color-text-button-normal-hover": Object {
           "$description": "The hover text color of normal buttons.",
           "$value": Object {
@@ -30048,6 +30223,13 @@ Object {
           "$value": Object {
             "dark": "#000716",
             "light": "#000716",
+          },
+        },
+        "color-text-button-primary-disabled": Object {
+          "$description": "The text color of primary buttons in disabled state.",
+          "$value": Object {
+            "dark": "#7d8998",
+            "light": "#7d8998",
           },
         },
         "color-text-button-primary-hover": Object {
@@ -32387,6 +32569,13 @@ Object {
         "light": "#0972d3",
       },
     },
+    "color-text-button-normal-disabled": Object {
+      "$description": "The text color of normal buttons in disabled state.",
+      "$value": Object {
+        "dark": "#7d8998",
+        "light": "#7d8998",
+      },
+    },
     "color-text-button-normal-hover": Object {
       "$description": "The hover text color of normal buttons.",
       "$value": Object {
@@ -32406,6 +32595,13 @@ Object {
       "$value": Object {
         "dark": "#000716",
         "light": "#ffffff",
+      },
+    },
+    "color-text-button-primary-disabled": Object {
+      "$description": "The text color of primary buttons in disabled state.",
+      "$value": Object {
+        "dark": "#7d8998",
+        "light": "#7d8998",
       },
     },
     "color-text-button-primary-hover": Object {

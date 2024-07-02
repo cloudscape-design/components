@@ -54,6 +54,11 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    */
   disabled?: boolean;
   /**
+   * Provides a reason why the button dropdown is disabled (only when `disabled` is `true`).
+   * If provided, the disabled button becomes focusable.
+   */
+  disabledReason?: string;
+  /**
    * Renders the button as being in a loading state. It takes precedence over the `disabled` if both are set to `true`.
    * It prevents clicks.
    */
@@ -117,6 +122,7 @@ export namespace ButtonDropdownProps {
     onClick?: CancelableEventHandler<ButtonProps.ClickDetail>;
     onFollow?: CancelableEventHandler<ButtonProps.FollowDetail>;
     disabled?: boolean;
+    disabledReason?: string;
     loading?: boolean;
     loadingText?: string;
     href?: string;
@@ -279,6 +285,7 @@ export interface CustomTriggerProps {
   testUtilsClass: string;
   ariaLabel: string | undefined;
   disabled: boolean;
+  disabledReason?: string;
   isOpen: boolean;
   onClick: () => void;
   ariaExpanded: boolean;

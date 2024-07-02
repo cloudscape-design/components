@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ComponentWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
+import { ComponentWrapper, ElementWrapper, usesDom, createWrapper } from '@cloudscape-design/test-utils-core/dom';
 import styles from '../../../button/styles.selectors.js';
+import buttonTestUtilsStyles from '../../../button/test-classes/styles.selectors.js';
 import spinnerStyles from '../../../spinner/styles.selectors.js';
 
 export default class ButtonWrapper extends ComponentWrapper<HTMLButtonElement> {
@@ -18,5 +19,9 @@ export default class ButtonWrapper extends ComponentWrapper<HTMLButtonElement> {
   @usesDom
   isDisabled(): boolean {
     return this.element.disabled || this.element.getAttribute('aria-disabled') === 'true';
+  }
+
+  findDisabledReason(): ElementWrapper | null {
+    return createWrapper().find(`.${buttonTestUtilsStyles['disabled-reason-tooltip']}`);
   }
 }

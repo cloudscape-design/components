@@ -22,6 +22,7 @@ const Button = React.forwardRef(
       loading = false,
       loadingText,
       disabled = false,
+      disabledReason,
       wrapText = true,
       href,
       target,
@@ -58,6 +59,7 @@ const Button = React.forwardRef(
         loading={loading}
         loadingText={loadingText}
         disabled={disabled}
+        disabledReason={disabledReason}
         wrapText={wrapText}
         href={href}
         target={target}

@@ -20,7 +20,7 @@ $variants: (
     'active-color': awsui.$color-text-button-normal-active,
     'disabled-background': awsui.$color-background-button-normal-disabled,
     'disabled-border-color': awsui.$color-border-button-normal-disabled,
-    'disabled-color': awsui.$color-text-interactive-disabled,
+    'disabled-color': awsui.$color-text-button-normal-disabled,
   ),
   'primary': (
     'default-background': awsui.$color-background-button-primary-default,
@@ -34,7 +34,7 @@ $variants: (
     'active-color': awsui.$color-text-button-primary-active,
     'disabled-background': awsui.$color-background-button-primary-disabled,
     'disabled-border-color': awsui.$color-border-button-primary-disabled,
-    'disabled-color': awsui.$color-text-interactive-disabled,
+    'disabled-color': awsui.$color-text-button-primary-disabled,
   ),
   'link': (
     'default-background': transparent,

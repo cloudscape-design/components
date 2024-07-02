@@ -65,7 +65,6 @@
     border-color: map.get($variant, 'disabled-border-color');
     color: map.get($variant, 'disabled-color');
     text-decoration: none;
-    pointer-events: none;
     cursor: auto;
   }
 }
@@ -164,4 +163,8 @@
     margin-inline-end: auto;
     inset-inline: 0;
   }
+}
+
+.link.disabled {
+  pointer-events: none;
 }
