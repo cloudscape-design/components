@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { ButtonDropdownProps, LinkItem } from '../interfaces';
+import { traverseItems } from './create-items-tree';
 
 export const isItemGroup = (item: ButtonDropdownProps.ItemOrGroup): item is ButtonDropdownProps.ItemGroup =>
   item && (item as ButtonDropdownProps.ItemGroup).items !== undefined;
@@ -35,4 +36,14 @@ export function indexEquals(left: number[], right: number[]) {
   }
 
   return true;
+}
+
+export function hasCheckboxItems(items: ButtonDropdownProps.Items) {
+  let hasCheckboxItems = false;
+  traverseItems(items, item => {
+    if (item.itemType === 'checkbox') {
+      hasCheckboxItems = true;
+    }
+  });
+  return hasCheckboxItems;
 }
