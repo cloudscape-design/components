@@ -17,24 +17,28 @@ import { KeyCode } from '../internal/keycode';
 import { hasModifierKeys } from '../internal/events';
 import { circleIndex } from '../internal/utils/circle-index';
 import { getAllFocusables } from '../internal/components/focus-lock/utils';
+import { nodeBelongs } from '../internal/utils/node-belongs';
 import handleKey from '../internal/utils/handle-key';
 
 const InternalButtonGroup = forwardRef(
   (
     {
-      ariaLabel,
       items = [],
       onItemClick,
-      __internalRootRef = null,
+      ariaLabel,
+      ariaLabelledby,
       dropdownExpandToViewport,
+      __internalRootRef = null,
       ...props
     }: InternalButtonGroupProps,
     ref: React.Ref<ButtonGroupProps.Ref>
   ) => {
+    const baseProps = getBaseProps(props);
+    const focusedItemIdRef = useRef<null | string>(null);
+    const navigationAPI = useRef<SingleTabStopNavigationAPI>(null);
     const containerObjectRef = useRef<HTMLDivElement>(null);
     const containerRef = useMergeRefs(containerObjectRef, __internalRootRef);
     const itemsRef = useRef<Record<string, ButtonProps.Ref | null>>({});
-    const baseProps = getBaseProps(props);
 
     useImperativeHandle(ref, () => ({
       focus: id => {
@@ -83,28 +87,43 @@ const InternalButtonGroup = forwardRef(
       });
     };
 
-    const navigationAPI = useRef<SingleTabStopNavigationAPI>(null);
-
     function getNextFocusTarget(): null | HTMLElement {
-      if (!containerObjectRef.current) {
-        return null;
+      const nextTarget = (() => {
+        if (!containerObjectRef.current) {
+          return null;
+        }
+        if (document.activeElement && containerObjectRef.current.contains(document.activeElement)) {
+          return document.activeElement as HTMLElement;
+        }
+        const buttons: HTMLButtonElement[] = Array.from(containerObjectRef.current.querySelectorAll(`.${styles.item}`));
+        const activeButtons = buttons.filter(button => !button.disabled);
+
+        return (
+          activeButtons.find(button => button.dataset.testid === focusedItemIdRef.current) ?? activeButtons[0] ?? null
+        );
+      })();
+      if (nextTarget) {
+        focusedItemIdRef.current = nextTarget.dataset.testid ?? null;
       }
-      if (
-        containerObjectRef.current.contains(document.activeElement) &&
-        document.activeElement?.matches(`.${styles.item}`)
-      ) {
-        return document.activeElement as HTMLElement;
+      return nextTarget;
+    }
+
+    function onUnregisterFocusable(focusableElement: HTMLElement) {
+      const isUnregisteringFocusedNode = nodeBelongs(focusableElement, document.activeElement);
+      if (isUnregisteringFocusedNode) {
+        // Wait for unmounted node to get removed from the DOM.
+        setTimeout(() => navigationAPI.current?.getFocusTarget()?.focus(), 0);
       }
-      const items: HTMLButtonElement[] = Array.from(containerObjectRef.current.querySelectorAll(`.${styles.item}`));
-      return items.filter(item => !item.disabled)[0];
     }
 
     useEffect(() => {
       navigationAPI.current?.updateFocusTarget();
     });
+
     function onFocus() {
       navigationAPI.current?.updateFocusTarget();
     }
+
     function onBlur() {
       navigationAPI.current?.updateFocusTarget();
     }
@@ -118,31 +137,36 @@ const InternalButtonGroup = forwardRef(
       if (!containerObjectRef.current || !focusTarget) {
         return;
       }
-      if (!document.activeElement || !navigationAPI.current?.isRegistered(document.activeElement)) {
-        return;
-      }
       event.preventDefault();
 
       const focusables = getFocusablesFrom(containerObjectRef.current);
       const activeIndex = focusables.indexOf(focusTarget);
       handleKey(event as any, {
-        onHome: () => focusItem(focusables[0]),
-        onEnd: () => focusItem(focusables[focusables.length - 1]),
-        onInlineStart: () => focusItem(focusables[circleIndex(activeIndex - 1, [0, focusables.length - 1])]),
-        onInlineEnd: () => focusItem(focusables[circleIndex(activeIndex + 1, [0, focusables.length - 1])]),
+        onHome: () => focusElement(focusables[0]),
+        onEnd: () => focusElement(focusables[focusables.length - 1]),
+        onInlineStart: () => focusElement(focusables[circleIndex(activeIndex - 1, [0, focusables.length - 1])]),
+        onInlineEnd: () => focusElement(focusables[circleIndex(activeIndex + 1, [0, focusables.length - 1])]),
       });
     }
-    function focusItem(element?: HTMLElement) {
-      element?.focus();
+
+    function focusElement(element: HTMLElement) {
+      element.focus();
     }
+
     // List all non-disabled and registered focusables: those are eligible for keyboard navigation.
     function getFocusablesFrom(target: HTMLElement) {
       function isElementRegistered(element: HTMLElement) {
         return navigationAPI.current?.isRegistered(element) ?? false;
       }
+
       function isElementDisabled(element: HTMLElement) {
-        return element instanceof HTMLButtonElement ? element.disabled : false;
+        if (element instanceof HTMLButtonElement) {
+          return element.disabled;
+        }
+
+        return false;
       }
+
       return getAllFocusables(target).filter(el => isElementRegistered(el) && !isElementDisabled(el));
     }
 
@@ -150,9 +174,10 @@ const InternalButtonGroup = forwardRef(
       <div
         {...baseProps}
         className={clsx(styles.root, baseProps.className)}
+        ref={containerRef}
         role="toolbar"
         aria-label={ariaLabel}
-        ref={containerRef}
+        aria-labelledby={ariaLabelledby}
         onFocus={onFocus}
         onBlur={onBlur}
         onKeyDown={onKeyDown}
@@ -161,6 +186,7 @@ const InternalButtonGroup = forwardRef(
           ref={navigationAPI}
           navigationActive={true}
           getNextFocusTarget={getNextFocusTarget}
+          onUnregisterFocusable={onUnregisterFocusable}
         >
           {items.map((itemOrGroup, index) => {
             const content =
@@ -168,7 +194,7 @@ const InternalButtonGroup = forwardRef(
                 <div key={itemOrGroup.text} role="group" aria-label={itemOrGroup.text} className={styles.group}>
                   {itemOrGroup.items.map(item => (
                     <ItemElement
-                      key={item.id}
+                      key={item.type === 'feedback' ? item.text : item.id}
                       item={item}
                       onItemClick={onItemClick}
                       dropdownExpandToViewport={dropdownExpandToViewport}
@@ -184,9 +210,18 @@ const InternalButtonGroup = forwardRef(
                   ref={element => onSetButtonRef(itemOrGroup, element)}
                 />
               );
+
+            const isGroupBefore = items[index - 1]?.type === 'group';
+            const isGroupNow = items[index]?.type === 'group';
+            const shouldAddDivider = isGroupBefore || (!isGroupBefore && isGroupNow && index !== 0);
+
             return (
-              <React.Fragment key={itemOrGroup.type === 'group' ? itemOrGroup.text : itemOrGroup.id}>
-                {items[index - 1]?.type === 'group' && <div className={styles.divider} />}
+              <React.Fragment
+                key={
+                  itemOrGroup.type === 'group' || itemOrGroup.type === 'feedback' ? itemOrGroup.text : itemOrGroup.id
+                }
+              >
+                {shouldAddDivider && <div className={styles.divider} />}
                 {content}
               </React.Fragment>
             );

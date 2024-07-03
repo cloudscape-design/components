@@ -4,7 +4,6 @@
 */
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
-@use '../internal/hooks/focus-visible' as focus-visible;
 
 .root {
   @include styles.styles-reset;
@@ -16,20 +15,7 @@
 }
 
 .item-wrapper {
-  display: flex;
-}
-
-.feedback {
-  display: flex;
-  align-items: center;
-  gap: awsui.$space-xs;
-  color: awsui.$color-text-interactive-default;
-
-  outline: none;
-
-  @include focus-visible.when-visible {
-    @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
-  }
+  display: inline-block;
 }
 
 .item {

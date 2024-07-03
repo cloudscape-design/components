@@ -67,6 +67,10 @@
     text-decoration: none;
     pointer-events: none;
     cursor: auto;
+    &.pressed {
+      color: awsui.$color-text-interactive-default;
+      font-weight: normal;
+    }
   }
 }
 

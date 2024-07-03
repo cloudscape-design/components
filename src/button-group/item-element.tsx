@@ -116,7 +116,7 @@ const ItemElement = forwardRef(
         className={styles['item-wrapper']}
       >
         {item.type === 'icon-button' && <IconButtonItem ref={ref} item={item} onItemClick={onClickHandler} />}
-        {item.type === 'feedback' && <FeedbackItem item={item} />}
+        {item.type === 'feedback' && <FeedbackItem ref={ref} item={item} onItemClick={onClickHandler} />}
         {item.type === 'menu-dropdown' && (
           <MenuDropdownItem
             ref={ref}
