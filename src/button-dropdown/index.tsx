@@ -3,6 +3,7 @@
 import React from 'react';
 import { ButtonDropdownProps } from './interfaces';
 import InternalButtonDropdown from './internal';
+import { hasCheckboxItems } from './utils/utils';
 import { getBaseProps } from '../internal/base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
@@ -30,6 +31,10 @@ const ButtonDropdown = React.forwardRef(
   ) => {
     const baseComponentProps = useBaseComponent('ButtonDropdown', {
       props: { expandToViewport, expandableGroups, variant },
+      metadata: {
+        mainAction: !!mainAction,
+        checkboxItems: hasCheckboxItems(items),
+      },
     });
     const baseProps = getBaseProps(props);
     return (
