@@ -101,7 +101,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
       padding-inline-start: awsui.$space-xxs;
     }
     &:not(.header-deprecated) {
-      padding-inline-start: calc(#{awsui.$space-xxs} + #{$icon-total-space-normal});
+      padding-inline-start: $icon-total-space-normal;
     }
   }
 
