@@ -182,7 +182,7 @@
   &.filled {
     background: awsui.$color-background-slider-handle-default;
 
-    &.readonly:not(.tick-disabled) {
+    &.readonly:not(.disabled) {
       background: awsui.$color-foreground-control-read-only;
     }
   }
@@ -282,21 +282,21 @@
     @include mixins.base-thumb-styles();
   }
 
-  &:not(&.disabled):hover::-webkit-slider-thumb {
+  &:hover::-webkit-slider-thumb {
     @include mixins.base-thumb-hover-styles();
   }
 
-  &:not(&.disabled):hover::-moz-range-thumb {
+  &:hover::-moz-range-thumb {
     @include mixins.base-thumb-hover-styles();
   }
 
-  &:not(&.disabled):focus::-webkit-slider-thumb,
-  &:not(&.disabled):active::-webkit-slider-thumb {
+  &:focus::-webkit-slider-thumb,
+  &:active::-webkit-slider-thumb {
     @include mixins.base-thumb-focus-styles();
   }
 
-  &:not(&.disabled):focus::-moz-range-thumb,
-  &:not(&.disabled):active::-moz-range-thumb {
+  &:focus::-moz-range-thumb,
+  &:active::-moz-range-thumb {
     @include mixins.base-thumb-focus-styles();
   }
 }
