@@ -51,9 +51,9 @@ export default function InternalSegmentedControl({
       {options &&
         options.map((option: SegmentedControlProps.Option, index) => {
           const isActive = selectedId === option.id;
-          const enabledSegmentIndex = focusableSegments.indexOf(option);
+          const focusableSegmentIndex = focusableSegments.indexOf(option);
           let tabIndex = isActive ? 0 : -1;
-          if (currentSelectedOption === null && enabledSegmentIndex === 0) {
+          if (currentSelectedOption === null && focusableSegmentIndex === 0) {
             tabIndex = 0;
           }
           return (
@@ -85,7 +85,7 @@ export default function InternalSegmentedControl({
                   fireNonCancelableEvent(onChange, { selectedId: option.id });
                 }
               }}
-              onKeyDown={event => moveHighlight(event, enabledSegmentIndex)}
+              onKeyDown={event => moveHighlight(event, focusableSegmentIndex)}
             />
           );
         })}
