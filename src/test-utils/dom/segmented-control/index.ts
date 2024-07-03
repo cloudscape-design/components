@@ -21,7 +21,7 @@ export default class SegmentedControlWrapper extends ComponentWrapper {
   }
 
   /**
-   * Finds the segment with the given ID and returns the element.
+   * Finds the segment with the given ID.
    *
    * @param id ID of the element to return
    */

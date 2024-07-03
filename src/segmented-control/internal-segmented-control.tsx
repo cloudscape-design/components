@@ -21,7 +21,7 @@ export default function InternalSegmentedControl({
     return option.id === selectedId;
   });
   const currentSelectedOption = selectedOptions.length ? selectedOptions[0] : null;
-  const enabledSegments = (options || []).filter(
+  const focusableSegments = (options || []).filter(
     option => !option.disabled || (option.disabled && !!option.disabledReason)
   );
 
@@ -33,11 +33,11 @@ export default function InternalSegmentedControl({
     let nextIndex = activeIndex;
 
     handleKey(event, {
-      onInlineStart: () => (nextIndex = activeIndex === 0 ? enabledSegments.length - 1 : activeIndex - 1),
-      onInlineEnd: () => (nextIndex = activeIndex + 1 === enabledSegments.length ? 0 : activeIndex + 1),
+      onInlineStart: () => (nextIndex = activeIndex === 0 ? focusableSegments.length - 1 : activeIndex - 1),
+      onInlineEnd: () => (nextIndex = activeIndex + 1 === focusableSegments.length ? 0 : activeIndex + 1),
     });
 
-    const nextSegmentId = enabledSegments[nextIndex].id;
+    const nextSegmentId = focusableSegments[nextIndex].id;
     segmentByIdRef.current[nextSegmentId]?.focus();
   };
 
@@ -51,7 +51,7 @@ export default function InternalSegmentedControl({
       {options &&
         options.map((option: SegmentedControlProps.Option, index) => {
           const isActive = selectedId === option.id;
-          const enabledSegmentIndex = enabledSegments.indexOf(option);
+          const enabledSegmentIndex = focusableSegments.indexOf(option);
           let tabIndex = isActive ? 0 : -1;
           if (currentSelectedOption === null && enabledSegmentIndex === 0) {
             tabIndex = 0;

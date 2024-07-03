@@ -118,7 +118,40 @@ describe('Segment disabled property', () => {
   });
 
   describe('Disabled with reason', () => {
-    test('has no disabled property when disabled with reason', () => {
+    test('should behave as normal when disabledReason is provided without disabled: true', () => {
+      const onChange = jest.fn();
+      const { segmentedControlWrapper } = renderSegmentedControl(
+        <SegmentedControl
+          selectedId="seg-2"
+          options={defaultOptions.map(option => {
+            if (option.id === 'seg-2') {
+              return {
+                ...option,
+                disabledReason: 'disabled reason',
+              };
+            }
+
+            return option;
+          })}
+          onChange={onChange}
+        />
+      );
+
+      expect(segmentedControlWrapper.findSegmentById('seg-2')!.getElement()).not.toHaveAttribute(
+        'aria-disabled',
+        'true'
+      );
+
+      segmentedControlWrapper.findSegmentById('seg-2')!.focus();
+
+      expect(segmentedControlWrapper.findSegmentById('seg-2')!.findDisabledReason()).toBe(null);
+
+      segmentedControlWrapper.findSegmentById('seg-1')!.click();
+
+      expect(onChange).toHaveBeenCalled();
+    });
+
+    test('has no disabled attribute when disabled with reason', () => {
       const { segmentedControlWrapper } = renderSegmentedControl(
         <SegmentedControl
           selectedId="seg-2"
