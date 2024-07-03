@@ -14365,7 +14365,7 @@ Object {
         "color-background-button-primary-disabled": Object {
           "$description": "The background color of primary buttons in disabled state.",
           "$value": Object {
-            "dark": "#354150",
+            "dark": "#232f3e",
             "light": "#e9ebed",
           },
         },
@@ -14666,7 +14666,7 @@ Object {
         "color-border-button-primary-disabled": Object {
           "$description": "The border color of primary buttons in disabled state.",
           "$value": Object {
-            "dark": "#354150",
+            "dark": "#232f3e",
             "light": "#e9ebed",
           },
         },
@@ -16737,8 +16737,8 @@ Object {
         "color-background-button-primary-disabled": Object {
           "$description": "The background color of primary buttons in disabled state.",
           "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
+            "dark": "#232f3e",
+            "light": "#232f3e",
           },
         },
         "color-background-button-primary-hover": Object {
@@ -17038,8 +17038,8 @@ Object {
         "color-border-button-primary-disabled": Object {
           "$description": "The border color of primary buttons in disabled state.",
           "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
+            "dark": "#232f3e",
+            "light": "#232f3e",
           },
         },
         "color-border-container-top": Object {
@@ -19109,7 +19109,7 @@ Object {
         "color-background-button-primary-disabled": Object {
           "$description": "The background color of primary buttons in disabled state.",
           "$value": Object {
-            "dark": "#354150",
+            "dark": "#232f3e",
             "light": "#e9ebed",
           },
         },
@@ -19410,7 +19410,7 @@ Object {
         "color-border-button-primary-disabled": Object {
           "$description": "The border color of primary buttons in disabled state.",
           "$value": Object {
-            "dark": "#354150",
+            "dark": "#232f3e",
             "light": "#e9ebed",
           },
         },
@@ -21481,7 +21481,7 @@ Object {
         "color-background-button-primary-disabled": Object {
           "$description": "The background color of primary buttons in disabled state.",
           "$value": Object {
-            "dark": "#354150",
+            "dark": "#232f3e",
             "light": "#e9ebed",
           },
         },
@@ -21782,7 +21782,7 @@ Object {
         "color-border-button-primary-disabled": Object {
           "$description": "The border color of primary buttons in disabled state.",
           "$value": Object {
-            "dark": "#354150",
+            "dark": "#232f3e",
             "light": "#e9ebed",
           },
         },
@@ -23853,7 +23853,7 @@ Object {
         "color-background-button-primary-disabled": Object {
           "$description": "The background color of primary buttons in disabled state.",
           "$value": Object {
-            "dark": "#354150",
+            "dark": "#232f3e",
             "light": "#e9ebed",
           },
         },
@@ -24154,7 +24154,7 @@ Object {
         "color-border-button-primary-disabled": Object {
           "$description": "The border color of primary buttons in disabled state.",
           "$value": Object {
-            "dark": "#354150",
+            "dark": "#232f3e",
             "light": "#e9ebed",
           },
         },
@@ -26225,8 +26225,8 @@ Object {
         "color-background-button-primary-disabled": Object {
           "$description": "The background color of primary buttons in disabled state.",
           "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
+            "dark": "#232f3e",
+            "light": "#232f3e",
           },
         },
         "color-background-button-primary-hover": Object {
@@ -26526,8 +26526,8 @@ Object {
         "color-border-button-primary-disabled": Object {
           "$description": "The border color of primary buttons in disabled state.",
           "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
+            "dark": "#232f3e",
+            "light": "#232f3e",
           },
         },
         "color-border-container-top": Object {
@@ -28597,8 +28597,8 @@ Object {
         "color-background-button-primary-disabled": Object {
           "$description": "The background color of primary buttons in disabled state.",
           "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
+            "dark": "#232f3e",
+            "light": "#232f3e",
           },
         },
         "color-background-button-primary-hover": Object {
@@ -28898,8 +28898,8 @@ Object {
         "color-border-button-primary-disabled": Object {
           "$description": "The border color of primary buttons in disabled state.",
           "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
+            "dark": "#232f3e",
+            "light": "#232f3e",
           },
         },
         "color-border-container-top": Object {
@@ -30969,7 +30969,7 @@ Object {
     "color-background-button-primary-disabled": Object {
       "$description": "The background color of primary buttons in disabled state.",
       "$value": Object {
-        "dark": "#354150",
+        "dark": "#232f3e",
         "light": "#e9ebed",
       },
     },
@@ -31270,7 +31270,7 @@ Object {
     "color-border-button-primary-disabled": Object {
       "$description": "The border color of primary buttons in disabled state.",
       "$value": Object {
-        "dark": "#354150",
+        "dark": "#232f3e",
         "light": "#e9ebed",
       },
     },
