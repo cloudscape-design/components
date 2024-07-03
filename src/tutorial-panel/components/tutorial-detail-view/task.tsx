@@ -58,7 +58,11 @@ export function Task({ task, taskIndex, currentTaskIndex, expanded, onToggleExpa
 
         <div className={styles['expandable-section-wrapper']}>
           <InternalExpandableSection
-            headerText={i18nStrings.labelTotalSteps(task.steps.length)}
+            header={
+              <span className={styles['expandable-section-header']}>
+                {i18nStrings.labelTotalSteps(task.steps.length)}
+              </span>
+            }
             expanded={expanded}
             onChange={onExpandChange}
             headerAriaLabel={joinStrings(

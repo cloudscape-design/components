@@ -82,6 +82,10 @@
   inline-size: 100%;
 }
 
+.expandable-section-header {
+  @include styles.font(body-m);
+}
+
 .step-title,
 .feedback-link,
 .dismiss-button,
