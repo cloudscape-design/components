@@ -11,11 +11,9 @@ const IconButtonItem = forwardRef(
   (
     {
       item,
-      showInlineFeedback,
       onItemClick,
     }: {
       item: ButtonGroupProps.IconButton;
-      showInlineFeedback?: boolean;
       onItemClick?: (event: CustomEvent<ClickDetail>) => void;
     },
     ref: React.Ref<ButtonProps.Ref>
@@ -36,11 +34,8 @@ const IconButtonItem = forwardRef(
         ref={ref}
         data-testid={item.id}
         className={styles.item}
-        __focusable={showInlineFeedback}
-        __iconWithLabel={showInlineFeedback}
-        __pressed={showInlineFeedback}
       >
-        {showInlineFeedback && item.feedbackText ? item.feedbackText : item.text}
+        {item.text}
       </InternalButton>
     );
   }

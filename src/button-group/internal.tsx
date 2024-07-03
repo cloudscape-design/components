@@ -16,8 +16,8 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { KeyCode } from '../internal/keycode';
 import { hasModifierKeys } from '../internal/events';
 import { circleIndex } from '../internal/utils/circle-index';
-import handleKey from '../internal/utils/handle-key';
 import { getAllFocusables } from '../internal/components/focus-lock/utils';
+import handleKey from '../internal/utils/handle-key';
 
 const InternalButtonGroup = forwardRef(
   (
@@ -43,7 +43,7 @@ const InternalButtonGroup = forwardRef(
     }));
 
     const onSetButtonRef = (
-      item: ButtonGroupProps.IconButton | ButtonGroupProps.MenuDropdown,
+      item: ButtonGroupProps.IconButton | ButtonGroupProps.Feedback | ButtonGroupProps.MenuDropdown,
       element: ButtonProps.Ref | null
     ) => {
       const isItemGroup = (item: ButtonDropdownProps.ItemOrGroup): item is ButtonDropdownProps.ItemGroup => {
@@ -63,7 +63,9 @@ const InternalButtonGroup = forwardRef(
         }
       };
 
-      const getAllIds = (item: ButtonGroupProps.IconButton | ButtonGroupProps.MenuDropdown) => {
+      const getAllIds = (
+        item: ButtonGroupProps.IconButton | ButtonGroupProps.Feedback | ButtonGroupProps.MenuDropdown
+      ) => {
         if (item.type === 'icon-button') {
           return [item.id];
         } else {

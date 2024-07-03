@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import ButtonGroup, { ButtonGroupProps } from '~components/button-group';
-import { Button } from '~components';
 import ScreenshotArea from '../utils/screenshot-area';
+import { Button } from '~components';
 
 const groupDefault: ButtonGroupProps.Item = {
   type: 'group',
@@ -14,16 +14,12 @@ const groupDefault: ButtonGroupProps.Item = {
       id: 'like',
       iconName: 'thumbs-up',
       text: 'Like',
-      feedbackText: 'Helpful',
-      inlineFeedback: true,
     },
     {
       type: 'icon-button',
       id: 'dislike',
       iconName: 'thumbs-down',
       text: 'Dislike',
-      feedbackText: 'Not helpful',
-      inlineFeedback: true,
     },
   ],
 };
@@ -33,13 +29,10 @@ const groupLike: ButtonGroupProps.Item = {
   text: 'Vote',
   items: [
     {
-      type: 'icon-button',
+      type: 'feedback',
       id: 'like',
-      iconName: 'thumbs-up',
-      text: 'Like',
-      feedbackText: 'Helpful',
-      inlineFeedback: true,
-      disabled: true,
+      iconName: 'thumbs-up-filled',
+      text: 'Helpful',
     },
   ],
 };
@@ -49,13 +42,10 @@ const groupDislike: ButtonGroupProps.Item = {
   text: 'Vote',
   items: [
     {
-      type: 'icon-button',
+      type: 'feedback',
       id: 'dislike',
-      iconName: 'thumbs-down',
-      text: 'Dislike',
-      feedbackText: 'Not helpful',
-      inlineFeedback: true,
-      disabled: true,
+      iconName: 'thumbs-down-filled',
+      text: 'Not helpful',
     },
   ],
 };
@@ -66,7 +56,7 @@ const items: ButtonGroupProps.Item[] = [
     id: 'copy',
     iconName: 'copy',
     text: 'Copy',
-    feedbackText: 'Copied',
+    popoverFeedbackText: 'Copied',
   },
   {
     type: 'group',
@@ -77,7 +67,7 @@ const items: ButtonGroupProps.Item[] = [
         id: 'add',
         iconName: 'add-plus',
         text: 'Add',
-        feedbackText: 'Added',
+        popoverFeedbackText: 'Added',
         disabled: true,
       },
       {
@@ -85,7 +75,7 @@ const items: ButtonGroupProps.Item[] = [
         id: 'remove',
         iconName: 'remove',
         text: 'Remove',
-        feedbackText: 'Removed',
+        popoverFeedbackText: 'Removed',
         popoverFeedbackType: 'error',
       },
     ],

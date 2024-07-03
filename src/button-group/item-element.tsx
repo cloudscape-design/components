@@ -4,6 +4,7 @@ import React, { forwardRef, useEffect, useRef, useState } from 'react';
 import { ButtonGroupProps } from './interfaces.js';
 import { ButtonProps } from '../button/interfaces.js';
 import { ClickDetail, fireCancelableEvent } from '../internal/events/index.js';
+import FeedbackItem from './feedback-item.js';
 import IconButtonItem from './icon-button-item.js';
 import MenuDropdownItem from './menu-dropdown-item.js';
 import LiveRegion from '../internal/components/live-region/index.js';
@@ -18,7 +19,7 @@ const ItemElement = forwardRef(
       onItemClick,
       dropdownExpandToViewport,
     }: {
-      item: ButtonGroupProps.IconButton | ButtonGroupProps.MenuDropdown;
+      item: ButtonGroupProps.IconButton | ButtonGroupProps.Feedback | ButtonGroupProps.MenuDropdown;
       onItemClick?: (event: CustomEvent) => void;
       dropdownExpandToViewport?: boolean;
     },
@@ -28,14 +29,13 @@ const ItemElement = forwardRef(
     const [clickIdx, setClickIdx] = useState(0);
     const [showTooltip, setShowTooltip] = useState(false);
     const [showFeedback, setShowFeedback] = useState(false);
-    const feedbackText = 'feedbackText' in item && item.feedbackText;
-    const inlineFeedback = 'inlineFeedback' in item && item.inlineFeedback;
-    const showInlineFeedback = showFeedback && inlineFeedback;
+    const popoverFeedbackText = 'popoverFeedbackText' in item && item.popoverFeedbackText;
+    const feedbackItem = item.type === 'feedback';
 
     const onClickHandler = (event: CustomEvent<ClickDetail>) => {
       setClickIdx(idx => idx + 1);
 
-      if (feedbackText) {
+      if (popoverFeedbackText) {
         setShowFeedback(true);
         setShowTooltip(true);
       } else {
@@ -64,10 +64,6 @@ const ItemElement = forwardRef(
       }
 
       const close = () => {
-        if (showInlineFeedback) {
-          return;
-        }
-
         setShowTooltip(false);
         setShowFeedback(false);
       };
@@ -104,7 +100,7 @@ const ItemElement = forwardRef(
         window.removeEventListener('keydown', handleKeyDownEvent);
         window.removeEventListener('tooltip:toggle', handleTooltipToogleEvent as any);
       };
-    }, [item.id, showInlineFeedback, showTooltip]);
+    }, [item.id, showTooltip]);
 
     useEffect(() => {
       window.dispatchEvent(new CustomEvent('tooltip:toggle', { detail: { open: showTooltip, trackKey: item.id } }));
@@ -119,9 +115,9 @@ const ItemElement = forwardRef(
         onBlur={onHideTooltip}
         className={styles['item-wrapper']}
       >
-        {item.type === 'icon-button' ? (
-          <IconButtonItem ref={ref} item={item} onItemClick={onClickHandler} showInlineFeedback={showInlineFeedback} />
-        ) : (
+        {item.type === 'icon-button' && <IconButtonItem ref={ref} item={item} onItemClick={onClickHandler} />}
+        {item.type === 'feedback' && <FeedbackItem item={item} />}
+        {item.type === 'menu-dropdown' && (
           <MenuDropdownItem
             ref={ref}
             item={item}
@@ -129,19 +125,21 @@ const ItemElement = forwardRef(
             dropdownExpandToViewport={dropdownExpandToViewport}
           />
         )}
-        {showTooltip && !showInlineFeedback && (
+        {showTooltip && !feedbackItem && (
           <>
             <Tooltip
               trackRef={buttonRef}
               trackKey={item.id}
               value={
-                (showFeedback && feedbackText && (
-                  <StatusIndicator type={item.popoverFeedbackType ?? 'success'}>{item.feedbackText}</StatusIndicator>
+                (showFeedback && popoverFeedbackText && (
+                  <StatusIndicator type={item.popoverFeedbackType ?? 'success'}>
+                    {item.popoverFeedbackText}
+                  </StatusIndicator>
                 )) ||
                 item.text
               }
             />
-            <LiveRegion key={clickIdx}>{showFeedback && feedbackText}</LiveRegion>
+            <LiveRegion key={clickIdx}>{showFeedback && popoverFeedbackText}</LiveRegion>
           </>
         )}
       </div>
