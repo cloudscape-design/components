@@ -300,6 +300,13 @@ Object {
             "light": "#1d8102",
           },
         },
+        "color-background-notification-grey": Object {
+          "$description": "Background color for grey notifications. For example: grey badges.",
+          "$value": Object {
+            "dark": "#687078",
+            "light": "#545b64",
+          },
+        },
         "color-background-notification-red": Object {
           "$description": "Background color for red notifications. For example: red badges and error flash messages.",
           "$value": Object {
@@ -2656,6 +2663,13 @@ Object {
           "$value": Object {
             "dark": "#1d8102",
             "light": "#1d8102",
+          },
+        },
+        "color-background-notification-grey": Object {
+          "$description": "Background color for grey notifications. For example: grey badges.",
+          "$value": Object {
+            "dark": "#687078",
+            "light": "#545b64",
           },
         },
         "color-background-notification-red": Object {
@@ -5016,6 +5030,13 @@ Object {
             "light": "#1d8102",
           },
         },
+        "color-background-notification-grey": Object {
+          "$description": "Background color for grey notifications. For example: grey badges.",
+          "$value": Object {
+            "dark": "#687078",
+            "light": "#545b64",
+          },
+        },
         "color-background-notification-red": Object {
           "$description": "Background color for red notifications. For example: red badges and error flash messages.",
           "$value": Object {
@@ -7372,6 +7393,13 @@ Object {
           "$value": Object {
             "dark": "#1d8102",
             "light": "#1d8102",
+          },
+        },
+        "color-background-notification-grey": Object {
+          "$description": "Background color for grey notifications. For example: grey badges.",
+          "$value": Object {
+            "dark": "#687078",
+            "light": "#545b64",
           },
         },
         "color-background-notification-red": Object {
@@ -9732,6 +9760,13 @@ Object {
             "light": "#1d8102",
           },
         },
+        "color-background-notification-grey": Object {
+          "$description": "Background color for grey notifications. For example: grey badges.",
+          "$value": Object {
+            "dark": "#687078",
+            "light": "#687078",
+          },
+        },
         "color-background-notification-red": Object {
           "$description": "Background color for red notifications. For example: red badges and error flash messages.",
           "$value": Object {
@@ -12088,6 +12123,13 @@ Object {
       "$value": Object {
         "dark": "#1d8102",
         "light": "#1d8102",
+      },
+    },
+    "color-background-notification-grey": Object {
+      "$description": "Background color for grey notifications. For example: grey badges.",
+      "$value": Object {
+        "dark": "#687078",
+        "light": "#545b64",
       },
     },
     "color-background-notification-red": Object {
@@ -14453,6 +14495,13 @@ Object {
             "light": "#037f0c",
           },
         },
+        "color-background-notification-grey": Object {
+          "$description": "Background color for grey notifications. For example: grey badges.",
+          "$value": Object {
+            "dark": "#5f6b7a",
+            "light": "#414d5c",
+          },
+        },
         "color-background-notification-red": Object {
           "$description": "Background color for red notifications. For example: red badges and error flash messages.",
           "$value": Object {
@@ -16809,6 +16858,13 @@ Object {
           "$value": Object {
             "dark": "#037f0c",
             "light": "#037f0c",
+          },
+        },
+        "color-background-notification-grey": Object {
+          "$description": "Background color for grey notifications. For example: grey badges.",
+          "$value": Object {
+            "dark": "#5f6b7a",
+            "light": "#5f6b7a",
           },
         },
         "color-background-notification-red": Object {
@@ -19169,6 +19225,13 @@ Object {
             "light": "#037f0c",
           },
         },
+        "color-background-notification-grey": Object {
+          "$description": "Background color for grey notifications. For example: grey badges.",
+          "$value": Object {
+            "dark": "#5f6b7a",
+            "light": "#414d5c",
+          },
+        },
         "color-background-notification-red": Object {
           "$description": "Background color for red notifications. For example: red badges and error flash messages.",
           "$value": Object {
@@ -21525,6 +21588,13 @@ Object {
           "$value": Object {
             "dark": "#037f0c",
             "light": "#037f0c",
+          },
+        },
+        "color-background-notification-grey": Object {
+          "$description": "Background color for grey notifications. For example: grey badges.",
+          "$value": Object {
+            "dark": "#5f6b7a",
+            "light": "#414d5c",
           },
         },
         "color-background-notification-red": Object {
@@ -23885,6 +23955,13 @@ Object {
             "light": "#037f0c",
           },
         },
+        "color-background-notification-grey": Object {
+          "$description": "Background color for grey notifications. For example: grey badges.",
+          "$value": Object {
+            "dark": "#5f6b7a",
+            "light": "#414d5c",
+          },
+        },
         "color-background-notification-red": Object {
           "$description": "Background color for red notifications. For example: red badges and error flash messages.",
           "$value": Object {
@@ -26241,6 +26318,13 @@ Object {
           "$value": Object {
             "dark": "#037f0c",
             "light": "#037f0c",
+          },
+        },
+        "color-background-notification-grey": Object {
+          "$description": "Background color for grey notifications. For example: grey badges.",
+          "$value": Object {
+            "dark": "#5f6b7a",
+            "light": "#5f6b7a",
           },
         },
         "color-background-notification-red": Object {
@@ -28601,6 +28685,13 @@ Object {
             "light": "#037f0c",
           },
         },
+        "color-background-notification-grey": Object {
+          "$description": "Background color for grey notifications. For example: grey badges.",
+          "$value": Object {
+            "dark": "#5f6b7a",
+            "light": "#5f6b7a",
+          },
+        },
         "color-background-notification-red": Object {
           "$description": "Background color for red notifications. For example: red badges and error flash messages.",
           "$value": Object {
@@ -30957,6 +31048,13 @@ Object {
       "$value": Object {
         "dark": "#037f0c",
         "light": "#037f0c",
+      },
+    },
+    "color-background-notification-grey": Object {
+      "$description": "Background color for grey notifications. For example: grey badges.",
+      "$value": Object {
+        "dark": "#5f6b7a",
+        "light": "#414d5c",
       },
     },
     "color-background-notification-red": Object {
