@@ -132,16 +132,6 @@ export default function DescriptionPage() {
             variant="primary"
           />
         </div>
-        <div style={{ float: isRightAligned ? 'right' : undefined, marginBottom: '100px' }}>
-          <ButtonDropdown
-            items={actionsItems}
-            ariaLabel="Instance actions"
-            mainAction={{ text: 'Launch instance' }}
-            variant="primary"
-            disabled={true}
-            disabledReason="disabled reason"
-          />
-        </div>
       </ScreenshotArea>
     </>
   );
