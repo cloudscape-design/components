@@ -21,6 +21,7 @@ export default function InternalCopyToClipboard({
   copySuccessText,
   copyErrorText,
   textToCopy,
+  popoverRenderWithPortal,
   __internalRootRef = null,
   ...restProps
 }: InternalCopyToClipboardProps) {
@@ -64,7 +65,7 @@ export default function InternalCopyToClipboard({
       position="top"
       triggerType="custom"
       dismissButton={false}
-      renderWithPortal={true}
+      renderWithPortal={popoverRenderWithPortal}
       content={<InternalStatusIndicator type={status}>{statusText}</InternalStatusIndicator>}
     >
       <InternalButton
