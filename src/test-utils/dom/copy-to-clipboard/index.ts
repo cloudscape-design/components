@@ -12,9 +12,9 @@ export default class CopyToClipboardWrapper extends ComponentWrapper {
     return this.findComponent(`.${ButtonWrapper.rootSelector}`, ButtonWrapper)!;
   }
 
-  findStatusText(): null | ElementWrapper {
+  findStatusText(options = { popoverRenderWithPortal: false }): null | ElementWrapper {
     return this.findComponent(`.${PopoverWrapper.rootSelector}`, PopoverWrapper)!.findContent({
-      renderWithPortal: true,
+      renderWithPortal: options.popoverRenderWithPortal,
     });
   }
 
