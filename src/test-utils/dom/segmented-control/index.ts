@@ -23,7 +23,7 @@ export default class SegmentedControlWrapper extends ComponentWrapper {
   /**
    * Finds the segment with the given ID.
    *
-   * @param id ID of the element to return
+   * @param id ID of the element to return.
    */
   findSegmentById(id: string): SegmentWrapper | null {
     return this.findComponent(`.${styles.segment}[data-testid="${id}"]`, SegmentWrapper);
