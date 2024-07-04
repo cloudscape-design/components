@@ -458,8 +458,8 @@ const PropertyFilter = React.forwardRef(
                     allTokens={internalQuery.tokens}
                     first={tokenIndex === 0}
                     operation={internalQuery.operation}
-                    removeToken={() => {
-                      removeToken(tokenIndex);
+                    removeToken={(inTokenIndex: number) => {
+                      removeToken(tokenIndex, inTokenIndex);
                       setRemovedTokenIndex(tokenIndex);
                     }}
                     setToken={(newToken, newStandalone) => setToken(tokenIndex, newToken, newStandalone)}

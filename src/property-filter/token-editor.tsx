@@ -327,7 +327,7 @@ export function TokenEditor({
           <TokenEditorFields
             fields={groups.length}
             removeButton={{
-              label: 'Remove filter',
+              label: 'Remove',
               onRemove: index =>
                 setTemp(prev => {
                   const copy = [...prev];
@@ -451,9 +451,9 @@ interface TokenEditorLayout {
 }
 
 function TokenEditorFields({ fields, removeButton, operationSelector, property, operator, value }: TokenEditorLayout) {
-  const breakpoint = 800;
+  const breakpoint = 912;
   const [isNarrow, setIsNarrow] = useState(window.innerWidth <= breakpoint);
-  const operationOptions = [{ value: 'and' }, { value: 'or' }];
+  // const operationOptions = [{ value: 'and' }, { value: 'or' }];
 
   useEffect(() => {
     const onWindowResize = () => {
@@ -475,7 +475,7 @@ function TokenEditorFields({ fields, removeButton, operationSelector, property, 
       <div className={styles['token-editor-list']}>
         {indices.map(index => (
           <div key={index} className={styles['token-editor-list-item']}>
-            {index > 0 && (
+            {/* {index > 0 && (
               <div className={styles['token-editor-operation']}>
                 <InternalSelect
                   options={operationOptions}
@@ -484,7 +484,7 @@ function TokenEditorFields({ fields, removeButton, operationSelector, property, 
                   ariaLabel={operationSelector.label}
                 />
               </div>
-            )}
+            )} */}
 
             <InternalFormField label={property.label} className={styles['token-editor-field-property']}>
               {property.render(index)}
@@ -512,31 +512,21 @@ function TokenEditorFields({ fields, removeButton, operationSelector, property, 
   return (
     <div className={styles['token-editor-table']}>
       <div className={styles['token-editor-table-row']}>
-        <div className={styles['token-editor-table-header-cell']}>
+        {/* <div className={styles['token-editor-table-header-cell']}>
           <ScreenreaderOnly>{removeButton.label}</ScreenreaderOnly>
-        </div>
-        <div className={styles['token-editor-table-header-cell']}>
-          <ScreenreaderOnly>{operationSelector.label}</ScreenreaderOnly>
-        </div>
+        </div> */}
+
         <div className={styles['token-editor-table-header-cell']}>{property.label}</div>
         <div className={styles['token-editor-table-header-cell']}>{operator.label}</div>
         <div className={styles['token-editor-table-header-cell']}>{value.label}</div>
+        <div className={styles['token-editor-table-header-cell']}>
+          <ScreenreaderOnly>{operationSelector.label}</ScreenreaderOnly>
+        </div>
       </div>
 
       {indices.map(index => (
         <div key={index} className={styles['token-editor-table-row']}>
-          <div className={styles['token-editor-table-cell']}>
-            <div className={styles['token-editor-remove-token']}>
-              <InternalButton
-                variant="icon"
-                iconName="close"
-                onClick={() => removeButton.onRemove(index)}
-                ariaLabel={removeButton.label}
-              />
-            </div>
-          </div>
-
-          <div className={styles['token-editor-table-cell']}>
+          {/* <div className={styles['token-editor-table-cell']}>
             {index > 0 && (
               <div className={styles['token-editor-operation']}>
                 <InternalSelect
@@ -547,7 +537,7 @@ function TokenEditorFields({ fields, removeButton, operationSelector, property, 
                 />
               </div>
             )}
-          </div>
+          </div> */}
 
           <div className={styles['token-editor-table-cell']}>
             <InternalFormField
@@ -573,6 +563,19 @@ function TokenEditorFields({ fields, removeButton, operationSelector, property, 
             <InternalFormField label={value.label} className={styles['token-editor-field-value']} __hideLabel={true}>
               {value.render(index)}
             </InternalFormField>
+          </div>
+
+          <div className={styles['token-editor-table-cell']}>
+            <div className={styles['token-editor-remove-token']}>
+              <InternalButton
+                variant="normal"
+                // iconName="close"
+                onClick={() => removeButton.onRemove(index)}
+                // ariaLabel={removeButton.label}
+              >
+                {removeButton.label}
+              </InternalButton>
+            </div>
           </div>
         </div>
       ))}

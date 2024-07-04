@@ -91,6 +91,7 @@
   }
   &-table {
     display: table;
+    margin-inline: calc(-1 * #{awsui.$space-s});
     border-spacing: awsui.$space-s 0;
 
     &-row {
@@ -112,7 +113,7 @@
       padding-block-end: awsui.$space-s;
     }
 
-    @media (max-width: 800px) {
+    @media (max-width: 912px) {
       //
     }
   }
@@ -120,10 +121,10 @@
     align-self: flex-start;
   }
   &-add-token {
-    margin-block-start: awsui.$space-xxs;
+    // margin-block-start: awsui.$space-xxs;
   }
   &-remove-token {
-    /* used for testing */
+    padding-block-start: awsui.$space-xs;
   }
 }
 .property-editor {

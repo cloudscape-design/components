@@ -37,7 +37,7 @@ interface TokenProps {
   i18nStrings: I18nStrings;
   onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
   operation: JoinOperation;
-  removeToken: () => void;
+  removeToken: (index: number) => void;
   setOperation: (newOperation: JoinOperation) => void;
   setToken: (newToken: TokenGroup, newStandalone?: Token[]) => void;
   token: InternalTokenGroup;
@@ -84,45 +84,71 @@ export const TokenButton = ({
     }
   }
 
+  const firstLevelTokens: InternalToken[] = [];
+  for (const tokenOrGroup of token.tokens) {
+    if ('operation' in tokenOrGroup) {
+      // ignore as deeply nested tokens are not supported
+    } else {
+      firstLevelTokens.push(tokenOrGroup);
+    }
+  }
+
   const externalToken = flatTokens[0];
   const formattedToken = getFormattedToken(token);
   return (
     <FilteringToken
+      tokens={firstLevelTokens.map(t => {
+        const formatted = getFormattedToken({ operation: 'and', tokens: [t] });
+        return {
+          content: (
+            <TokenEditor
+              setToken={setToken}
+              triggerComponent={
+                <span className={styles['token-trigger']}>
+                  <TokenTrigger
+                    property={formatted.property}
+                    operator={formatted.operator}
+                    value={formatted.value}
+                    suffix={formatted.suffix}
+                  />
+                </span>
+              }
+              filteringProperties={filteringProperties}
+              filteringOptions={filteringOptions}
+              token={token}
+              asyncProps={asyncProps}
+              onLoadItems={onLoadItems}
+              i18nStrings={i18nStrings}
+              asyncProperties={asyncProperties}
+              customGroupsText={customGroupsText}
+              freeTextFiltering={freeTextFiltering}
+              expandToViewport={expandToViewport}
+            />
+          ),
+        };
+      })}
       ariaLabel={formattedToken.label}
       showOperation={!first && !hideOperations}
       operation={operation}
+      groupOperation={token.operation}
       andText={i18nStrings.operationAndText ?? ''}
       orText={i18nStrings.operationOrText ?? ''}
       dismissAriaLabel={i18nStrings?.removeTokenButtonAriaLabel?.(externalToken)}
       operatorAriaLabel={i18nStrings.tokenOperatorAriaLabel}
-      onChange={setOperation}
-      onDismiss={removeToken}
+      onChangeOperation={setOperation}
+      onChangeGroupOperation={operation =>
+        setToken({
+          operation,
+          tokens: firstLevelTokens.map(t => ({
+            propertyKey: t.property?.propertyKey,
+            operator: t.operator,
+            value: t.value,
+          })),
+        })
+      }
+      onDismissToken={removeToken}
       disabled={disabled}
-    >
-      <TokenEditor
-        setToken={setToken}
-        triggerComponent={
-          <span className={styles['token-trigger']}>
-            <TokenTrigger
-              property={formattedToken.property}
-              operator={formattedToken.operator}
-              value={formattedToken.value}
-              suffix={formattedToken.suffix}
-            />
-          </span>
-        }
-        filteringProperties={filteringProperties}
-        filteringOptions={filteringOptions}
-        token={token}
-        asyncProps={asyncProps}
-        onLoadItems={onLoadItems}
-        i18nStrings={i18nStrings}
-        asyncProperties={asyncProperties}
-        customGroupsText={customGroupsText}
-        freeTextFiltering={freeTextFiltering}
-        expandToViewport={expandToViewport}
-      />
-    </FilteringToken>
+    />
   );
 };
 

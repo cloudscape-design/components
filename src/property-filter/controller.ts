@@ -53,11 +53,19 @@ export const getQueryActions = (
     }
     fireOnChange(newTokens, query.operation);
   };
-  const removeToken = (index: number) => {
+  const removeToken = (index: number, inTokenIndex: number) => {
     const newTokens: (Token | TokenGroup)[] = query.tokenGroups
       ? [...query.tokenGroups]
       : query.tokens.map(t => ({ operation: 'and', tokens: [t] }));
-    newTokens.splice(index, 1);
+
+    const targetToken = newTokens[index];
+    if ('operation' in targetToken && targetToken.tokens.length > 1) {
+      const newNestedTokens = [...targetToken.tokens];
+      newNestedTokens.splice(inTokenIndex, 1);
+      newTokens[index] = { ...targetToken, tokens: newNestedTokens };
+    } else {
+      newTokens.splice(index, 1);
+    }
     fireOnChange(newTokens, query.operation);
     inputRef.current?.focus({ preventDropdown: true });
   };
