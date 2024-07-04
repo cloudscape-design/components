@@ -3,8 +3,13 @@
 
 import React from 'react';
 import { act, render } from '@testing-library/react';
-import createWrapper, { PropertyFilterWrapper } from '../../../lib/components/test-utils/dom';
+import createWrapper, {
+  ElementWrapper,
+  FormFieldWrapper,
+  PropertyFilterWrapper,
+} from '../../../lib/components/test-utils/dom';
 import PropertyFilter from '../../../lib/components/property-filter';
+import DropdownWrapper from '../../../lib/components/test-utils/dom/internal/dropdown';
 import styles from '../../../lib/components/property-filter/styles.selectors.js';
 import { FilteringProperty, PropertyFilterProps, Ref } from '../../../lib/components/property-filter/interfaces.js';
 import { createDefaultProps } from './common';
@@ -28,6 +33,14 @@ function openTokenEditor(wrapper: PropertyFilterWrapper, index = 0) {
   act(() => popoverWrapper.findTrigger().click());
   const contentWrapper = popoverWrapper.findContent()!;
   return [contentWrapper, popoverWrapper] as const;
+}
+
+function findTokenSubmitButton(wrapper: ElementWrapper) {
+  return wrapper.findButton(`.${styles['token-editor-submit']}`)!;
+}
+
+function findPropertySubmitButton(wrapper: ElementWrapper) {
+  return wrapper.findButton(`.${styles['property-editor-submit']}`)!;
 }
 
 describe('extended operators', () => {
@@ -65,19 +78,50 @@ describe('extended operators', () => {
   });
 
   test('property filter uses operator form in the token editor', () => {
+    const onChange = jest.fn();
     const { propertyFilterWrapper: wrapper } = renderComponent({
       ...extendedOperatorProps,
       query: {
+        operation: 'and',
         tokens: [
           { propertyKey: 'index', value: 1, operator: '>' },
           { propertyKey: 'index', value: 2, operator: '<' },
         ],
-        operation: 'and',
       },
+      onChange,
     });
+
+    // Ensure token editors have respective custom forms
     expect(wrapper.findTokens()).toHaveLength(2);
-    expect(openTokenEditor(wrapper, 0)[0].find('[data-testid="change+"]')).not.toBe(null);
-    expect(openTokenEditor(wrapper, 1)[0].find('[data-testid="change-"]')).not.toBe(null);
+    const [editorPlus, editorMinus] = [openTokenEditor(wrapper, 0)[0], openTokenEditor(wrapper, 1)[0]];
+    expect(editorPlus.find('[data-testid="change+"]')).not.toBe(null);
+    expect(editorMinus.find('[data-testid="change-"]')).not.toBe(null);
+
+    // Click on value field.
+    const valueFormField = editorPlus.findAllByClassName(FormFieldWrapper.rootSelector)[2];
+    valueFormField.find('button')!.click();
+
+    // Click change+ button
+    const valueDropdown = new DropdownWrapper(valueFormField.find(`.${DropdownWrapper.rootSelector}`)!.getElement());
+    valueDropdown.findOpenDropdown()!.find('button[data-testid="change+"]')!.click();
+
+    // Click value apply button
+    findPropertySubmitButton(valueDropdown.findOpenDropdown()!).click();
+
+    // Click token editor apply button
+    findTokenSubmitButton(editorPlus).click();
+
+    expect(onChange).toBeCalledWith(
+      expect.objectContaining({
+        detail: {
+          operation: 'and',
+          tokens: [
+            { propertyKey: 'index', value: 2, operator: '>' },
+            { propertyKey: 'index', value: 2, operator: '<' },
+          ],
+        },
+      })
+    );
   });
 
   test('extended operator form takes value/onChange state', () => {

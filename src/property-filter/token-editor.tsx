@@ -161,6 +161,7 @@ function ValueInput({
   const OperatorForm = property?.propertyKey && operator && property?.getValueFormRenderer(operator);
   const formattedValue = property?.getValueFormatter(operator)?.(value) ?? value;
   const [isDropdownOpen, setDropdownOpen] = useState(false);
+  const onDropdownClose = () => setDropdownOpen(false);
   const formFieldProps = useFormFieldContext({});
   const valueId = useUniqueId();
 
@@ -169,7 +170,7 @@ function ValueInput({
       minWidth={DROPDOWN_WIDTH_CUSTOM_FORM}
       stretchBeyondTriggerWidth={true}
       open={isDropdownOpen}
-      onDropdownClose={() => setDropdownOpen(false)}
+      onDropdownClose={onDropdownClose}
       trigger={
         <>
           <ButtonTrigger
@@ -188,10 +189,10 @@ function ValueInput({
         value={value}
         property={property}
         customForm={(value, onChange) => <OperatorForm value={value} onChange={onChange} operator={operator} />}
-        onCancel={() => setDropdownOpen(false)}
+        onCancel={onDropdownClose}
         onSubmit={value => {
           onChangeValue(value);
-          setDropdownOpen(false);
+          onDropdownClose();
         }}
         i18nStrings={i18nStrings}
       />
