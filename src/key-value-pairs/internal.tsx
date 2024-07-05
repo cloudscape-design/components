@@ -8,18 +8,25 @@ import { InfoLinkLabelContext } from '../internal/context/info-link-label-contex
 import ColumnLayout from '../column-layout/internal';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import Box from '../box/internal';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 
-const InternalKeyValuePair = ({ label, info, value }: KeyValuePairsProps.Pair) => (
-  <>
-    <dt className={styles.term}>
-      <label className={styles['key-label']}>{label}</label>
-      <InfoLinkLabelContext.Provider value={label}>
-        {info && <span className={styles.info}>{info}</span>}
-      </InfoLinkLabelContext.Provider>
-    </dt>
-    <dd className={styles.detail}>{value}</dd>
-  </>
-);
+const InternalKeyValuePair = ({ label, info, value }: KeyValuePairsProps.Pair) => {
+  const kvPairId = useUniqueId('kv-pair-');
+
+  return (
+    <>
+      <dt className={styles.term}>
+        <label className={styles['key-label']} id={kvPairId}>
+          {label}
+        </label>
+        <InfoLinkLabelContext.Provider value={kvPairId}>
+          {info && <span className={styles.info}>{info}</span>}
+        </InfoLinkLabelContext.Provider>
+      </dt>
+      <dd className={styles.detail}>{value}</dd>
+    </>
+  );
+};
 
 const InternalKeyValuePairGroup = ({ label, value }: { label?: React.ReactNode; value: React.ReactNode }) => (
   <>
