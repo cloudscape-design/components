@@ -11,6 +11,16 @@ import TopNavigationWrapper, {
   OverflowMenu as OverflowMenuWrapper,
 } from '../../../lib/components/test-utils/dom/top-navigation';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
+  warnOnce: jest.fn(),
+}));
+
+afterEach(() => {
+  (warnOnce as jest.Mock).mockReset();
+});
 
 export const I18N_STRINGS: TopNavigationProps.I18nStrings = {
   searchIconAriaLabel: 'Search',
@@ -204,8 +214,7 @@ describe('TopNavigation Component', () => {
   });
 
   test('throws warning when menu-dropdown item with checkbox is provided', () => {
-    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
-    expect(console.warn).toHaveBeenCalledTimes(0);
+    expect(warnOnce).toHaveBeenCalledTimes(0);
     renderTopNavigation({
       identity: { href: '#' },
       utilities: [
@@ -218,23 +227,71 @@ describe('TopNavigation Component', () => {
         },
       ],
     });
-    expect(console.warn).toHaveBeenCalledTimes(1);
-    expect(console.warn).toHaveBeenCalledWith(
-      '[AwsUi] [TopNavigation] The TopNavigation component does not support menu-dropdown items with `itemType` equal to `checkbox`, this might change in the future.'
+    expect(warnOnce).toHaveBeenCalledWith(
+      'TopNavigation',
+      'The TopNavigation component does not support menu-dropdown items with `itemType` equal to `checkbox`.'
     );
-    consoleWarnSpy.mockRestore();
+  });
+
+  test('throws warning when menu-dropdown item with checkbox is provided (nested)', () => {
+    expect(warnOnce).toHaveBeenCalledTimes(0);
+    renderTopNavigation({
+      identity: { href: '#' },
+      utilities: [
+        {
+          type: 'menu-dropdown',
+          text: 'Menu dropdown',
+          title: 'Jane Doe',
+          description: 'jane.doe@example.com',
+          items: [
+            {
+              id: 'group',
+              itemType: 'group',
+              items: [{ id: 'one', text: 'First', itemType: 'checkbox', checked: true }],
+            },
+          ],
+        },
+      ],
+    });
+    expect(warnOnce).toHaveBeenCalledWith(
+      'TopNavigation',
+      'The TopNavigation component does not support menu-dropdown items with `itemType` equal to `checkbox`.'
+    );
+  });
+
+  test('excludes checkbox items', () => {
+    const rendered = renderTopNavigation({
+      identity: { href: '#' },
+      utilities: [
+        {
+          type: 'menu-dropdown',
+          text: 'Menu dropdown',
+          title: 'Jane Doe',
+          description: 'jane.doe@example.com',
+          items: [
+            { itemType: 'checkbox', id: 'checkbox', text: 'Root checkbox', checked: true },
+            {
+              id: 'group',
+              itemType: 'group',
+              items: [{ id: 'checkbox-nested', text: 'First', itemType: 'checkbox', checked: false }],
+            },
+          ],
+        },
+      ],
+    });
+    const dropdown = rendered.findUtility(1)!.findMenuDropdownType()!;
+    dropdown.openDropdown();
+    expect(dropdown.findItemById('checkbox')).toBeNull();
+    expect(dropdown.findItemById('checkbox-nested')).toBeNull();
   });
 });
 
 describe('URL sanitization', () => {
-  let consoleWarnSpy: jest.SpyInstance;
   let consoleErrorSpy: jest.SpyInstance;
   beforeEach(() => {
-    consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
     consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
   });
   afterEach(() => {
-    consoleWarnSpy?.mockRestore();
     consoleErrorSpy?.mockRestore();
   });
 
@@ -243,7 +300,7 @@ describe('URL sanitization', () => {
       const element = renderTopNavigation({ identity: { href: 'javascript:void(0)' } });
       expect((element.findIdentityLink().getElement() as HTMLAnchorElement).href).toBe('javascript:void(0)');
 
-      expect(console.warn).toHaveBeenCalledTimes(0);
+      expect(warnOnce).toHaveBeenCalledTimes(0);
     });
 
     test('throws an error when a dangerous javascript: URL is passed', () => {
@@ -251,9 +308,9 @@ describe('URL sanitization', () => {
         'A javascript: URL was blocked as a security precaution.'
       );
 
-      expect(console.warn).toHaveBeenCalledTimes(1);
-      expect(console.warn).toHaveBeenCalledWith(
-        `[AwsUi] [TopNavigation] A javascript: URL was blocked as a security precaution. The URL was "javascript:alert('Hello from the identity!')".`
+      expect(warnOnce).toHaveBeenCalledWith(
+        'TopNavigation',
+        `A javascript: URL was blocked as a security precaution. The URL was "javascript:alert('Hello from the identity!')".`
       );
     });
   });
@@ -265,7 +322,7 @@ describe('URL sanitization', () => {
         utilities: [{ type: 'button', href: 'javascript:void(0)' }],
       });
       expect(element.findUtility(1)!.findButtonLinkType()!.getElement().href).toBe('javascript:void(0)');
-      expect(console.warn).toHaveBeenCalledTimes(0);
+      expect(warnOnce).toHaveBeenCalledTimes(0);
     });
 
     test('throws an error when a dangerous javascript: URL is passed', () => {
@@ -273,9 +330,9 @@ describe('URL sanitization', () => {
         renderTopNavigation({ identity: { href: "javascript:alert('Hello from the utility button!')" } })
       ).toThrow('A javascript: URL was blocked as a security precaution.');
 
-      expect(console.warn).toHaveBeenCalledTimes(1);
-      expect(console.warn).toHaveBeenCalledWith(
-        `[AwsUi] [TopNavigation] A javascript: URL was blocked as a security precaution. The URL was "javascript:alert('Hello from the utility button!')".`
+      expect(warnOnce).toHaveBeenCalledWith(
+        'TopNavigation',
+        `A javascript: URL was blocked as a security precaution. The URL was "javascript:alert('Hello from the utility button!')".`
       );
     });
   });
@@ -292,7 +349,7 @@ describe('URL sanitization', () => {
       });
 
       expect(dropdown.findItemById('test')!.find<HTMLAnchorElement>('a')!.getElement().href).toBe('javascript:void(0)');
-      expect(console.warn).toHaveBeenCalledTimes(0);
+      expect(warnOnce).toHaveBeenCalledTimes(0);
     });
 
     test('throws an error when a dangerous javascript: URL is passed', () => {
@@ -308,9 +365,9 @@ describe('URL sanitization', () => {
         })
       ).toThrow('A javascript: URL was blocked as a security precaution.');
 
-      expect(console.warn).toHaveBeenCalledTimes(1);
-      expect(console.warn).toHaveBeenCalledWith(
-        `[AwsUi] [TopNavigation] A javascript: URL was blocked as a security precaution. The URL was "javascript:alert('Hello from a utility menu item!')".`
+      expect(warnOnce).toHaveBeenCalledWith(
+        'TopNavigation',
+        `A javascript: URL was blocked as a security precaution. The URL was "javascript:alert('Hello from a utility menu item!')".`
       );
     });
   });
@@ -338,7 +395,7 @@ describe('URL sanitization', () => {
       });
       expect(dropdown.findItemById('test')!.find<HTMLAnchorElement>('a')!.getElement().href).toBe('javascript:void(0)');
 
-      expect(console.warn).toHaveBeenCalledTimes(0);
+      expect(warnOnce).toHaveBeenCalledTimes(0);
     });
 
     test('throws an error when a dangerous javascript: URL is passed', () => {
@@ -366,9 +423,9 @@ describe('URL sanitization', () => {
         })
       ).toThrow('A javascript: URL was blocked as a security precaution.');
 
-      expect(console.warn).toHaveBeenCalledTimes(1);
-      expect(console.warn).toHaveBeenCalledWith(
-        `[AwsUi] [TopNavigation] A javascript: URL was blocked as a security precaution. The URL was "javascript:alert('Hello from a nested utility menu item!')".`
+      expect(warnOnce).toHaveBeenCalledWith(
+        'TopNavigation',
+        `A javascript: URL was blocked as a security precaution. The URL was "javascript:alert('Hello from a nested utility menu item!')".`
       );
     });
   });
