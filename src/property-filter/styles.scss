@@ -101,9 +101,6 @@
 
 .token-trigger {
   @include styles.text-wrapping;
-
-  // Setting line height to match line height of the Select component used for operation selector.
-  line-height: awsui.$line-height-body-m;
 }
 
 .remove-all,
