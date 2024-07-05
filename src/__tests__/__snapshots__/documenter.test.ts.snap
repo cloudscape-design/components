@@ -8557,13 +8557,17 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
 They could be combined.
 Each item has \`type\` prop, which might be either \`group\` or \`pair\`. Defaults to \`pair\` if not specified.
 Each key-value pair definition has the following properties:
+  * \`type\` (string) - (Optional) Item type (pair).
   * \`label\` (string) - The key label.
   * \`info\` (React.ReactNode) - (Optional) Area next to the key to display an info link.
   * \`value\` (React.ReactNode) - The corresponding value for the key.
+
 Each group definition has the following properties:
-* \`title\` (string) - (Optional) An optional title for this column.
-* \`items\` (ReadonlyArray<KeyValuePairProps.KeyValuePair>) - An array of
-    key-value pair items.",
+  * \`type\` (string) - Item type (group).
+  * \`title\` (string) - (Optional) An optional title for this column.
+  * \`items\` (ReadonlyArray<KeyValuePairProps.KeyValuePair>) - An array of
+    key-value pair items.
+",
       "name": "items",
       "optional": false,
       "type": "ReadonlyArray<KeyValuePairsProps.Item>",
