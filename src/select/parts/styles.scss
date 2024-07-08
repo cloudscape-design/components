@@ -131,6 +131,13 @@ $checkbox-size: awsui.$size-control;
 }
 
 .inline-label {
+  // Stepped gradient background for inline label overlap between input and background.
+  background-image: linear-gradient(
+    to bottom,
+    transparent calc(100% - (styles.$control-border-width + 3px)),
+    awsui.$color-background-input-default 1px
+  );
+  background-position: bottom;
   box-sizing: border-box;
   display: inline-block;
   color: awsui.$color-text-form-label;
@@ -143,20 +150,13 @@ $checkbox-size: awsui.$size-control;
   margin-block-start: awsui.$space-scaled-xs;
   padding-inline: awsui.$space-scaled-xxs;
   max-inline-size: calc(100% - (2 * awsui.$space-field-horizontal));
-  // Stepped gradient background for inline label overlap between input and background.
-  background-image: linear-gradient(
-    to bottom,
-    transparent calc(100% - (styles.$control-border-width + 3px)),
-    awsui.$color-background-input-default 1px
-  );
-  background-position: bottom;
   z-index: 1;
 
   &.inline-label-disabled {
-    background-image: linear-gradient(
-      to bottom,
-      transparent calc(100% - (styles.$control-border-width + 3px)),
-      awsui.$color-background-input-disabled 1px
-    );
+    background: awsui.$color-background-container-header;
+    border-start-start-radius: 2px;
+    border-start-end-radius: 2px;
+    border-end-start-radius: 2px;
+    border-end-end-radius: 2px;
   }
 }
