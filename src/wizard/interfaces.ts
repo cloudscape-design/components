@@ -15,6 +15,9 @@ export namespace WizardProps {
 
 export interface WizardProps extends BaseComponentProps {
   /**
+   * Specifies additional analytics-related metadata.
+   * * `instanceIdentifier` - A unique string that identifies this component instance in a console.
+   * * `flowType` - Identifies the type of flow represented by the component.
    * @analytics
    */
   analyticsMetadata?: WizardProps.AnalyticsMetadata;

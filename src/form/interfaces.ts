@@ -53,6 +53,9 @@ export interface FormProps extends BaseComponentProps {
   variant?: 'full-page' | 'embedded';
 
   /**
+   * Specifies additional analytics-related metadata.
+   * * `instanceIdentifier` - A unique string that identifies this component instance in a console.
+   * * `flowType` - Identifies the type of flow represented by the component.
    * @analytics
    */
   analyticsMetadata?: FormProps.AnalyticsMetadata;

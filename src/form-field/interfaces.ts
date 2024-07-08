@@ -8,11 +8,6 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 
 export interface FormFieldProps extends BaseComponentProps {
   /**
-   * @analytics
-   */
-  analyticsMetadata?: FormFieldProps.AnalyticsMetadata;
-
-  /**
    * The ID of the primary form control. You can use this to set the
    * `for` attribute of a label for accessibility.
    *
@@ -87,10 +82,6 @@ export interface FormFieldProps extends BaseComponentProps {
 }
 
 export namespace FormFieldProps {
-  export interface AnalyticsMetadata {
-    instanceIdentifier?: string;
-  }
-
   export interface I18nStrings {
     /**
      * Provides a text alternative for the error icon in the error message.

@@ -23,6 +23,8 @@ export interface TableForwardRefType {
 
 export interface TableProps<T = any> extends BaseComponentProps {
   /**
+   * Specifies additional analytics-related metadata.
+   * * `instanceIdentifier` - A unique string that identifies this component instance in a console.
    * @analytics
    */
   analyticsMetadata?: TableProps.AnalyticsMetadata;
