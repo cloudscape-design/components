@@ -78,8 +78,8 @@ export const InternalButton = React.forwardRef(
     checkSafeUrl('Button', href);
     const isAnchor = Boolean(href);
     const isNotInteractive = loading || disabled;
-    const hasAriaDisabled = (loading && !disabled) || (disabled && __focusable) || (disabled && !!disabledReason);
-    const isDisabledWithReason = !!disabledReason && disabled;
+    const isDisabledWithReason = (variant === 'normal' || variant === 'primary') && !!disabledReason && disabled;
+    const hasAriaDisabled = (loading && !disabled) || (disabled && __focusable) || isDisabledWithReason;
     const shouldHaveContent =
       children && ['icon', 'inline-icon', 'flashbar-icon', 'modal-dismiss'].indexOf(variant) === -1;
 

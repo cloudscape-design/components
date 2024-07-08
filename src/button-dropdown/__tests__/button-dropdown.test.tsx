@@ -100,42 +100,63 @@ const items: ButtonDropdownProps.Items = [
           expect(renderedItems.length).toEqual(0);
           expect(wrapper.findOpenDropdown()).toBe(null);
         });
+      });
+    });
 
-        describe('disabled with reason', () => {
-          // disabledReason behavior is already tested for button component, which acts as the trigger for this component
-          // here we need to check the basic logic without diving deep into details
-          test('open tooltip on mouseenter', () => {
-            const wrapper = renderButtonDropdown({
-              ...props,
-              items,
-              disabled: true,
-              disabledReason: 'disabled reason',
-            });
+    (['normal', 'primary'] as Array<ButtonDropdownProps['variant']>).forEach(variant => {
+      describe(`"${variant}" variant 'disabled with reason`, () => {
+        const props = { expandToViewport, variant };
 
-            fireEvent.mouseEnter(wrapper.findTriggerButton()!.getElement());
-
-            expect(wrapper.findTriggerButton()!.findDisabledReason()).not.toBeNull();
-            expect(wrapper.findTriggerButton()!.findDisabledReason()!.getElement()).toHaveTextContent('reason');
+        // disabledReason behavior is already tested for button component, which acts as the trigger for this component
+        // here we need to check the basic logic without diving deep into details
+        test('open tooltip on mouseenter', () => {
+          const wrapper = renderButtonDropdown({
+            ...props,
+            items,
+            disabled: true,
+            disabledReason: 'disabled reason',
           });
 
-          test('close tooltip on mouseleave', () => {
-            const wrapper = renderButtonDropdown({
-              ...props,
-              items,
-              disabled: true,
-              disabledReason: 'disabled reason',
-            });
+          fireEvent.mouseEnter(wrapper.findTriggerButton()!.getElement());
 
-            fireEvent.mouseEnter(wrapper.findTriggerButton()!.getElement());
-
-            expect(wrapper.findTriggerButton()!.findDisabledReason()).not.toBeNull();
-            expect(wrapper.findTriggerButton()!.findDisabledReason()!.getElement()).toHaveTextContent('reason');
-
-            fireEvent.mouseLeave(wrapper.findTriggerButton()!.getElement());
-
-            expect(wrapper.findTriggerButton()!.findDisabledReason()).toBeNull();
-          });
+          expect(wrapper.findTriggerButton()!.findDisabledReason()).not.toBeNull();
+          expect(wrapper.findTriggerButton()!.findDisabledReason()!.getElement()).toHaveTextContent('reason');
         });
+
+        test('close tooltip on mouseleave', () => {
+          const wrapper = renderButtonDropdown({
+            ...props,
+            items,
+            disabled: true,
+            disabledReason: 'disabled reason',
+          });
+
+          fireEvent.mouseEnter(wrapper.findTriggerButton()!.getElement());
+
+          expect(wrapper.findTriggerButton()!.findDisabledReason()).not.toBeNull();
+          expect(wrapper.findTriggerButton()!.findDisabledReason()!.getElement()).toHaveTextContent('reason');
+
+          fireEvent.mouseLeave(wrapper.findTriggerButton()!.getElement());
+
+          expect(wrapper.findTriggerButton()!.findDisabledReason()).toBeNull();
+        });
+      });
+    });
+
+    describe(`"icon" variant 'disabled with reason`, () => {
+      const props = { expandToViewport, variant: 'icon' as ButtonDropdownProps['variant'] };
+
+      test('does not open tooltip on mouseenter', () => {
+        const wrapper = renderButtonDropdown({
+          ...props,
+          items,
+          disabled: true,
+          disabledReason: 'disabled reason',
+        });
+
+        fireEvent.mouseEnter(wrapper.findTriggerButton()!.getElement());
+
+        expect(wrapper.findTriggerButton()!.findDisabledReason()).toBeNull();
       });
     });
 
