@@ -5,6 +5,7 @@
 
 @use '../../internal/styles/index' as styles;
 @use '../../internal/styles/tokens' as awsui;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 //stylelint-disable-next-line selector-combinator-disallowed-list,selector-max-universal
 .resize-active:not(.resize-active-with-focus) * {
@@ -65,10 +66,11 @@ th:not(:last-child) > .divider {
   &:hover + .divider {
     border-inline-start: $active-separator-width solid awsui.$color-border-divider-active;
   }
-  // stylelint-disable-next-line selector-combinator-disallowed-list
-  body[data-awsui-focus-visible='true'] &.has-focus {
-    @include styles.focus-highlight(calc(#{awsui.$space-table-header-focus-outline-gutter} - 2px));
-    position: absolute;
+  @include focus-visible.when-visible {
+    &.has-focus {
+      @include styles.focus-highlight(calc(#{awsui.$space-table-header-focus-outline-gutter} - 2px));
+      position: absolute;
+    }
   }
 }
 
