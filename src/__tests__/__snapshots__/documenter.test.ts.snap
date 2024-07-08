@@ -11369,6 +11369,12 @@ about modifiers (that is, CTRL, ALT, SHIFT, META, etc.).",
       "parameters": Array [],
       "returnType": "void",
     },
+    Object {
+      "description": "Selects all text in the textarea control.",
+      "name": "select",
+      "parameters": Array [],
+      "returnType": "void",
+    },
   ],
   "name": "PromptInput",
   "properties": Array [
