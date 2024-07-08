@@ -8,14 +8,15 @@
 @use '../../hooks/focus-visible' as focus-visible;
 @use '../../../token-group/constants' as constants;
 
-.root,
-.token-content-root {
+.root {
+  /* used in test utils */
+}
+.root-styles {
   display: flex;
   align-content: stretch;
 }
 
-.token,
-.grouped-token {
+.token {
   flex-grow: 1;
   border-block: awsui.$border-field-width solid constants.$token-border-color;
   border-inline: awsui.$border-field-width solid constants.$token-border-color;
@@ -28,17 +29,11 @@
   border-end-end-radius: awsui.$border-radius-token;
   color: awsui.$color-text-body-default;
   box-sizing: border-box;
-}
-.token {
+
   &.grouped {
     background: none;
-  }
-}
-.grouped-token {
-  flex-grow: 1;
-  justify-content: space-between;
-  &.first {
-    margin-inline-start: 30px;
+    flex-grow: 1;
+    justify-content: space-between;
   }
 }
 
@@ -52,14 +47,10 @@
   /* used in test-utils */
 }
 
-.token-content,
-.grouped-token-content {
+.token-content {
   padding-block: styles.$control-padding-vertical;
   padding-inline: styles.$control-padding-horizontal;
-}
-.token-content {
   display: flex;
-  // flex-direction: column;
   flex-direction: row;
   flex-wrap: wrap;
   gap: awsui.$space-xs;

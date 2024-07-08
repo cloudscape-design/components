@@ -2,11 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
-
-import InternalSelect from '../../../select/internal';
 import InternalIcon from '../../../icon/internal';
-
 import styles from './styles.css.js';
+import InternalSelect from '../../../select/internal';
 
 export namespace FilteringTokenProps {
   export type Operation = 'and' | 'or';
@@ -33,9 +31,8 @@ interface TokenItem {
   content: React.ReactNode;
 }
 
-// TODO: decompose common pieces
 // TODO: use semantic role for nested tokens too
-// TODO: add filtering token permutations
+// TODO: update component tests
 export default function FilteringToken({
   tokens,
   ariaLabel,
@@ -52,86 +49,155 @@ export default function FilteringToken({
   onDismissToken,
 }: FilteringTokenProps) {
   return (
-    <div className={styles.root} role="group" aria-label={ariaLabel}>
-      {showOperation && (
-        <InternalSelect
-          __inFilteringToken={true}
-          className={styles.select}
-          options={[
-            { value: 'and', label: andText },
-            { value: 'or', label: orText },
-          ]}
-          selectedOption={{ value: operation, label: operation === 'and' ? andText : orText }}
-          onChange={e => onChangeOperation(e.detail.selectedOption.value as FilteringTokenProps.Operation)}
-          disabled={disabled}
-          ariaLabel={operatorAriaLabel}
-        />
-      )}
+    <TokenGroup
+      ariaLabel={ariaLabel}
+      operation={
+        showOperation && (
+          <OperationSelector
+            operation={operation}
+            onChange={onChangeOperation}
+            ariaLabel={operatorAriaLabel ?? ''}
+            andText={andText}
+            orText={orText}
+            disabled={disabled}
+          />
+        )
+      }
+      dismissButton={
+        tokens.length === 1 && (
+          <TokenDismissButton
+            ariaLabel={dismissAriaLabel ?? ''}
+            onDismiss={() => onDismissToken(0)}
+            disabled={disabled}
+          />
+        )
+      }
+      grouped={tokens.length > 1}
+      disabled={disabled}
+      className={styles.root}
+    >
+      {tokens.length === 1
+        ? tokens[0].content
+        : tokens.map((token, index) => (
+            <TokenGroup
+              key={index}
+              ariaLabel={''}
+              operation={
+                index !== 0 && (
+                  <OperationSelector
+                    operation={groupOperation}
+                    onChange={onChangeGroupOperation}
+                    ariaLabel={operatorAriaLabel ?? ''}
+                    andText={andText}
+                    orText={orText}
+                    disabled={disabled}
+                  />
+                )
+              }
+              dismissButton={
+                <TokenDismissButton
+                  ariaLabel={dismissAriaLabel ?? ''}
+                  onDismiss={() => onDismissToken(index)}
+                  disabled={disabled}
+                />
+              }
+              grouped={false}
+              disabled={disabled}
+            >
+              {token.content}
+            </TokenGroup>
+          ))}
+    </TokenGroup>
+  );
+}
+
+function TokenGroup({
+  ariaLabel,
+  children,
+  operation,
+  dismissButton,
+  grouped,
+  disabled,
+  className,
+}: {
+  ariaLabel?: string;
+  children: React.ReactNode;
+  operation: React.ReactNode;
+  dismissButton: React.ReactNode;
+  grouped: boolean;
+  disabled?: boolean;
+  className?: string;
+}) {
+  return (
+    <div className={clsx(styles['root-styles'], className)} role="group" aria-label={ariaLabel}>
+      {operation}
+
       <div
         className={clsx(
           styles.token,
-          showOperation && styles['show-operation'],
+          !!operation && styles['show-operation'],
           disabled && styles['token-disabled'],
-          tokens.length > 1 && styles.grouped
+          grouped && styles.grouped
         )}
         aria-disabled={disabled}
       >
-        <div className={styles['token-content']}>
-          {tokens.length === 1
-            ? tokens[0].content
-            : tokens.map((token, index) => (
-                <div key={index} className={styles['token-content-root']}>
-                  {index !== 0 && (
-                    <InternalSelect
-                      __inFilteringToken={true}
-                      className={styles.select}
-                      options={[
-                        { value: 'and', label: andText },
-                        { value: 'or', label: orText },
-                      ]}
-                      selectedOption={{ value: groupOperation, label: groupOperation === 'and' ? andText : orText }}
-                      onChange={e =>
-                        onChangeGroupOperation(e.detail.selectedOption.value as FilteringTokenProps.Operation)
-                      }
-                      disabled={disabled}
-                      ariaLabel={operatorAriaLabel}
-                    />
-                  )}
-                  <div
-                    className={clsx(
-                      styles['grouped-token'],
-                      index !== 0 && styles['show-operation'],
-                      disabled && styles['token-disabled']
-                      // index === 0 && styles.first
-                    )}
-                    aria-disabled={disabled}
-                  >
-                    <div className={styles['token-content']}>{token.content}</div>
-                    <button
-                      type="button"
-                      className={styles['dismiss-button']}
-                      aria-label={dismissAriaLabel}
-                      onClick={() => onDismissToken(index)}
-                      disabled={disabled}
-                    >
-                      <InternalIcon name="close" />
-                    </button>
-                  </div>
-                </div>
-              ))}
-        </div>
-        {tokens.length === 1 && (
-          <button
-            type="button"
-            className={styles['dismiss-button']}
-            aria-label={dismissAriaLabel}
-            onClick={() => onDismissToken(0)}
-            disabled={disabled}
-          >
-            <InternalIcon name="close" />
-          </button>
-        )}
+        <div className={styles['token-content']}>{children}</div>
+
+        {dismissButton}
       </div>
     </div>
+  );
+}
+
+function OperationSelector({
+  operation,
+  onChange,
+  ariaLabel,
+  andText,
+  orText,
+  disabled,
+}: {
+  operation: FilteringTokenProps.Operation;
+  onChange: (operation: FilteringTokenProps.Operation) => void;
+  andText: string;
+  orText: string;
+  ariaLabel: string;
+  disabled?: boolean;
+}) {
+  return (
+    <InternalSelect
+      __inFilteringToken={true}
+      className={styles.select}
+      options={[
+        { value: 'and', label: andText },
+        { value: 'or', label: orText },
+      ]}
+      selectedOption={{ value: operation, label: operation === 'and' ? andText : orText }}
+      onChange={e => onChange(e.detail.selectedOption.value as FilteringTokenProps.Operation)}
+      disabled={disabled}
+      ariaLabel={ariaLabel}
+    />
+  );
+}
+
+function TokenDismissButton({
+  ariaLabel,
+  onDismiss,
+  disabled,
+}: {
+  ariaLabel: string;
+  onDismiss: () => void;
+  disabled?: boolean;
+}) {
+  return (
+    <button
+      type="button"
+      className={styles['dismiss-button']}
+      aria-label={ariaLabel}
+      onClick={onDismiss}
+      disabled={disabled}
+    >
+      <InternalIcon name="close" />
+    </button>
   );
 }
