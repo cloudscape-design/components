@@ -1,12 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { Ref, useCallback, useEffect, useRef } from 'react';
+import React, { Ref, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
 import { getBaseProps } from '../internal/base-component';
 import InternalButton from '../button/internal';
 import { fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
 import { PromptInputProps } from './interfaces';
 import { useFormFieldContext } from '../internal/context/form-field-context';
-import useForwardFocus from '../internal/hooks/forward-focus';
 import clsx from 'clsx';
 import styles from './styles.css.js';
 import testutilStyles from './test-classes/styles.css.js';
@@ -60,7 +59,18 @@ const InternalPromptInput = React.forwardRef(
     const PADDING = tokens.spaceScaledXxs;
     const LINE_HEIGHT = tokens.lineHeightBodyM;
 
-    useForwardFocus(ref, textareaRef);
+    useImperativeHandle(
+      ref,
+      () => ({
+        focus(...args: Parameters<HTMLElement['focus']>) {
+          textareaRef.current?.focus(...args);
+        },
+        select() {
+          textareaRef.current?.select();
+        },
+      }),
+      [textareaRef]
+    );
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
       if (onKeyDown) {

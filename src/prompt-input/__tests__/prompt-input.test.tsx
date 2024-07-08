@@ -39,6 +39,23 @@ describe('ref', () => {
     ref.current?.focus();
     expect(document.activeElement).toBe(wrapper.findNativeTextarea().getElement());
   });
+
+  test('can be used to select all text', () => {
+    const ref = React.createRef<HTMLTextAreaElement>();
+    const { wrapper } = renderPromptInput({ value: 'Test', ref });
+    const textarea = wrapper.findNativeTextarea().getElement();
+
+    // Make sure no text is selected
+    textarea.selectionStart = textarea.selectionEnd = 0;
+    textarea.blur();
+    expect(textarea.selectionStart).toBe(0);
+    expect(textarea.selectionEnd).toBe(0);
+
+    // Select all text
+    ref.current!.select();
+    expect(textarea.selectionStart).toBe(0);
+    expect(textarea.selectionEnd).toBe(4);
+  });
 });
 
 describe('disableBrowserAutocorrect', () => {
