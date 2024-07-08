@@ -3,6 +3,7 @@
 import { act, Simulate } from 'react-dom/test-utils';
 import { ComponentWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
 import styles from '../../../prompt-input/styles.selectors.js';
+import testutilStyles from '../../../prompt-input/test-classes/styles.selectors.js';
 
 export default class PromptInputWrapper extends ComponentWrapper {
   static rootSelector = styles.root;
@@ -11,8 +12,8 @@ export default class PromptInputWrapper extends ComponentWrapper {
     return this.find<HTMLTextAreaElement>(`.${styles.textarea}`)!;
   }
 
-  findSubmitButton(): ElementWrapper<HTMLButtonElement> {
-    return this.findByClassName<HTMLButtonElement>(styles['action-button'])!;
+  findActionButton(): ElementWrapper<HTMLButtonElement> {
+    return this.findByClassName<HTMLButtonElement>(testutilStyles['action-button'])!;
   }
 
   /**

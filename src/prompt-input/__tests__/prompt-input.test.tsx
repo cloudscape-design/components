@@ -69,22 +69,22 @@ describe('disableBrowserAutocorrect', () => {
 describe('action button', () => {
   test('not present if not added to props', () => {
     const { wrapper } = renderPromptInput({ value: '' });
-    expect(wrapper.findSubmitButton()).not.toBeInTheDocument();
+    expect(wrapper.findActionButton()).not.toBeInTheDocument();
   });
 
   test('present when added', () => {
     const { wrapper } = renderPromptInput({ value: '', actionButtonIconName: 'send' });
-    expect(wrapper.findSubmitButton().getElement()).toBeInTheDocument();
+    expect(wrapper.findActionButton().getElement()).toBeInTheDocument();
   });
 
   test('disabled when in disabled state', () => {
     const { wrapper } = renderPromptInput({ value: '', actionButtonIconName: 'send', disabled: true });
-    expect(wrapper.findSubmitButton().getElement()).toHaveAttribute('disabled');
+    expect(wrapper.findActionButton().getElement()).toHaveAttribute('disabled');
   });
 
   test('disabled when in read-only state', () => {
     const { wrapper } = renderPromptInput({ value: '', actionButtonIconName: 'send', readOnly: true });
-    expect(wrapper.findSubmitButton().getElement()).toHaveAttribute('disabled');
+    expect(wrapper.findActionButton().getElement()).toHaveAttribute('disabled');
   });
 });
 
@@ -115,7 +115,7 @@ describe('prompt input in form', () => {
 
   test('should submit the form when clicking the action button', () => {
     const [wrapper, submitSpy] = renderPromptInputInForm();
-    wrapper.findSubmitButton().click();
+    wrapper.findActionButton().click();
     expect(submitSpy).toHaveBeenCalled();
     expect(console.error).toHaveBeenCalledTimes(1);
     expect(console.error).toHaveBeenCalledWith(
@@ -170,7 +170,7 @@ describe('events', () => {
     });
 
     act(() => {
-      wrapper.findSubmitButton().click();
+      wrapper.findActionButton().click();
     });
 
     expect(onAction).toHaveBeenCalled();
@@ -237,7 +237,7 @@ describe('a11y', () => {
       expect(wrapper.findNativeTextarea().getElement()).toHaveAttribute('aria-describedby', 'my-custom-id');
     });
     test('can be customized without controlId', () => {
-      const { wrapper } = renderPromptInput({ value: '', id: undefined, ariaDescribedby: 'my-custom-id' });
+      const { wrapper } = renderPromptInput({ value: '', controlId: undefined, ariaDescribedby: 'my-custom-id' });
 
       expect(wrapper.findNativeTextarea().getElement()).toHaveAttribute('aria-describedby', 'my-custom-id');
     });

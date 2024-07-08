@@ -12,7 +12,7 @@ class PromptInputPage extends BasePageObject {
   }
 
   async clickActionButton() {
-    await this.click(promptInputWrapper.findSubmitButton().toSelector());
+    await this.click(promptInputWrapper.findActionButton().toSelector());
   }
 
   async disableFormSubmitting() {

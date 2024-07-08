@@ -17,12 +17,25 @@ const PromptInput = React.forwardRef(
       disableActionButton,
       spellcheck,
       readOnly,
+      actionButtonIconName,
+      minRows,
+      maxRows,
       ...props
     }: PromptInputProps,
     ref: React.Ref<PromptInputProps.Ref>
   ) => {
     const baseComponentProps = useBaseComponent('PromptInput', {
-      props: { readOnly, autoComplete, autoFocus, disableBrowserAutocorrect, disableActionButton, spellcheck },
+      props: {
+        readOnly,
+        autoComplete,
+        autoFocus,
+        disableBrowserAutocorrect,
+        disableActionButton,
+        spellcheck,
+        actionButtonIconName,
+        minRows,
+        maxRows,
+      },
     });
     return (
       <InternalPromptInput
@@ -32,6 +45,9 @@ const PromptInput = React.forwardRef(
         disableBrowserAutocorrect={disableBrowserAutocorrect}
         disableActionButton={disableActionButton}
         spellcheck={spellcheck}
+        actionButtonIconName={actionButtonIconName}
+        minRows={minRows}
+        maxRows={maxRows}
         {...props}
         {...baseComponentProps}
         ref={ref}

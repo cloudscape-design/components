@@ -65,5 +65,9 @@ export const colorChartsThresholdNeutral: string;
 // Spacing
 export const spaceXs: string;
 export const spaceXxxs: string;
+export const spaceScaledXxs: string;
 export const spaceScaledXs: string;
 export const spaceScaledS: string;
+
+// Line height
+export const lineHeightBodyM: string;
