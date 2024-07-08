@@ -12,6 +12,7 @@
 }
 
 $checkbox-size: awsui.$size-control;
+$inlineLabel-border-radius: 2px;
 
 .item {
   display: flex;
@@ -155,9 +156,9 @@ $checkbox-size: awsui.$size-control;
 
   &.inline-label-disabled {
     background: awsui.$color-background-container-header;
-    border-start-start-radius: 2px;
-    border-start-end-radius: 2px;
-    border-end-start-radius: 2px;
-    border-end-end-radius: 2px;
+    border-start-start-radius: $inlineLabel-border-radius;
+    border-start-end-radius: $inlineLabel-border-radius;
+    border-end-start-radius: $inlineLabel-border-radius;
+    border-end-end-radius: $inlineLabel-border-radius;
   }
 }
