@@ -93,8 +93,6 @@ export const TokenButton = ({
     }
   }
 
-  const externalToken = flatTokens[0];
-  const formattedToken = getFormattedToken(token);
   return (
     <FilteringToken
       tokens={firstLevelTokens.map(t => {
@@ -125,16 +123,17 @@ export const TokenButton = ({
               expandToViewport={expandToViewport}
             />
           ),
+          ariaLabel: formatted.label,
+          dismissAriaLabel: i18nStrings?.removeTokenButtonAriaLabel?.(t) ?? '',
         };
       })}
-      ariaLabel={formattedToken.label}
+      groupAriaLabel={`Token group with ${firstLevelTokens.length} tokens`}
       showOperation={!first && !hideOperations}
       operation={operation}
       groupOperation={token.operation}
       andText={i18nStrings.operationAndText ?? ''}
       orText={i18nStrings.operationOrText ?? ''}
-      dismissAriaLabel={i18nStrings?.removeTokenButtonAriaLabel?.(externalToken)}
-      operatorAriaLabel={i18nStrings.tokenOperatorAriaLabel}
+      operationAriaLabel={i18nStrings.tokenOperatorAriaLabel ?? ''}
       onChangeOperation={setOperation}
       onChangeGroupOperation={operation =>
         setToken({

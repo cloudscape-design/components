@@ -12,15 +12,13 @@ export namespace FilteringTokenProps {
 
 export interface FilteringTokenProps {
   tokens: TokenItem[];
-  ariaLabel?: string;
   operation: FilteringTokenProps.Operation;
   groupOperation: FilteringTokenProps.Operation;
   showOperation: boolean;
   andText: string;
   orText: string;
-  dismissAriaLabel?: string;
-  operatorAriaLabel?: string;
-  editTokenAriaLabel?: string;
+  groupAriaLabel: string;
+  operationAriaLabel: string;
   disabled?: boolean;
   onChangeOperation: (operation: FilteringTokenProps.Operation) => void;
   onChangeGroupOperation: (operation: FilteringTokenProps.Operation) => void;
@@ -29,20 +27,20 @@ export interface FilteringTokenProps {
 
 interface TokenItem {
   content: React.ReactNode;
+  ariaLabel: string;
+  dismissAriaLabel: string;
 }
 
-// TODO: use semantic role for nested tokens too
 // TODO: update component tests
 export default function FilteringToken({
   tokens,
-  ariaLabel,
   showOperation,
   operation,
   groupOperation,
   andText,
   orText,
-  dismissAriaLabel,
-  operatorAriaLabel,
+  groupAriaLabel,
+  operationAriaLabel,
   disabled,
   onChangeOperation,
   onChangeGroupOperation,
@@ -50,13 +48,13 @@ export default function FilteringToken({
 }: FilteringTokenProps) {
   return (
     <TokenGroup
-      ariaLabel={ariaLabel}
+      ariaLabel={tokens.length === 1 ? tokens[0].ariaLabel : groupAriaLabel}
       operation={
         showOperation && (
           <OperationSelector
             operation={operation}
             onChange={onChangeOperation}
-            ariaLabel={operatorAriaLabel ?? ''}
+            ariaLabel={operationAriaLabel}
             andText={andText}
             orText={orText}
             disabled={disabled}
@@ -66,7 +64,7 @@ export default function FilteringToken({
       dismissButton={
         tokens.length === 1 && (
           <TokenDismissButton
-            ariaLabel={dismissAriaLabel ?? ''}
+            ariaLabel={tokens[0].dismissAriaLabel}
             onDismiss={() => onDismissToken(0)}
             disabled={disabled}
           />
@@ -81,13 +79,13 @@ export default function FilteringToken({
         : tokens.map((token, index) => (
             <TokenGroup
               key={index}
-              ariaLabel={''}
+              ariaLabel={token.ariaLabel}
               operation={
                 index !== 0 && (
                   <OperationSelector
                     operation={groupOperation}
                     onChange={onChangeGroupOperation}
-                    ariaLabel={operatorAriaLabel ?? ''}
+                    ariaLabel={operationAriaLabel}
                     andText={andText}
                     orText={orText}
                     disabled={disabled}
@@ -96,7 +94,7 @@ export default function FilteringToken({
               }
               dismissButton={
                 <TokenDismissButton
-                  ariaLabel={dismissAriaLabel ?? ''}
+                  ariaLabel={token.dismissAriaLabel}
                   onDismiss={() => onDismissToken(index)}
                   disabled={disabled}
                 />
