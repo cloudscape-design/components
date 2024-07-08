@@ -130,24 +130,37 @@ const permutations = createPermutations<Partial<PropertyFilterProps>>([
   },
 ]);
 
+const groupPermutations = permutations.map(permutation => {
+  const query = permutation.query ?? { operation: 'and', tokens: [] };
+  query.tokenGroups = [{ operation: query.operation === 'and' ? 'or' : 'and', tokens: query.tokens }];
+  return { ...permutation, enableTokenGroups: true };
+});
+
 export default function () {
+  const commonProps = {
+    countText: '5 matches',
+    i18nStrings,
+    query: { operation: 'and', tokens: [] },
+    onChange: () => {},
+    filteringProperties,
+    filteringOptions,
+  } as const;
   return (
     <>
       <h1>Token visuals screenshot page</h1>
       <ScreenshotArea disableAnimations={true}>
         <PermutationsView
           permutations={permutations}
-          render={permutation => (
-            <PropertyFilter
-              countText={`5 matches`}
-              i18nStrings={i18nStrings}
-              query={{ tokens: [], operation: 'and' }}
-              onChange={() => {}}
-              filteringProperties={filteringProperties}
-              filteringOptions={filteringOptions}
-              {...permutation}
-            />
-          )}
+          render={permutation => <PropertyFilter {...commonProps} {...permutation} />}
+        />
+        <br />
+        <br />
+        <hr />
+        <br />
+        <br />
+        <PermutationsView
+          permutations={groupPermutations}
+          render={permutation => <PropertyFilter {...commonProps} {...permutation} />}
         />
       </ScreenshotArea>
     </>

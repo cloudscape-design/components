@@ -23,11 +23,11 @@ import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 export const getQueryActions = (
   query: Query,
   onChange: NonCancelableEventHandler<Query>,
+  enableTokenGroups: boolean,
   inputRef: React.RefObject<AutosuggestInputRef>
 ) => {
-  const supportsGroups = !!query.tokenGroups;
   const fireOnChange = (tokenGroups: readonly (Token | TokenGroup)[], operation: JoinOperation) => {
-    if (supportsGroups) {
+    if (enableTokenGroups) {
       fireNonCancelableEvent(onChange, { tokens: [], operation, tokenGroups });
     } else {
       const tokens: Token[] = [];

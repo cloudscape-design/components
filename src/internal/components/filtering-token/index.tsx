@@ -33,6 +33,9 @@ interface TokenItem {
   content: React.ReactNode;
 }
 
+// TODO: decompose common pieces
+// TODO: use semantic role for nested tokens too
+// TODO: add filtering token permutations
 export default function FilteringToken({
   tokens,
   ariaLabel,

@@ -105,6 +105,7 @@ const PropertyFilter = React.forwardRef(
       expandToViewport,
       tokenLimitShowFewerAriaLabel,
       tokenLimitShowMoreAriaLabel,
+      enableTokenGroups = false,
       ...rest
     }: PropertyFilterProps,
     ref: React.Ref<Ref>
@@ -175,6 +176,7 @@ const PropertyFilter = React.forwardRef(
     const { addToken, removeToken, setToken, setOperation, removeAllTokens } = getQueryActions(
       query,
       onChange,
+      enableTokenGroups,
       inputRef
     );
     const [filteringText, setFilteringText] = useState<string>('');
