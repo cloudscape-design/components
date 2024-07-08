@@ -94,5 +94,10 @@ export namespace PromptInputProps {
      * Sets input focus on the textarea control.
      */
     focus(): void;
+
+    /**
+     * Selects all text in the textarea control.
+     */
+    select(): void;
   }
 }

@@ -67,6 +67,7 @@ export default function PromptInputPage() {
         </button>
 
         <button onClick={() => ref.current?.focus()}>Focus component</button>
+        <button onClick={() => ref.current?.select()}>Select all text</button>
 
         <ColumnLayout columns={2}>
           <FormField
