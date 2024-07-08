@@ -31,7 +31,6 @@ interface TokenItem {
   dismissAriaLabel: string;
 }
 
-// TODO: update component tests
 export default function FilteringToken({
   tokens,
   showOperation,
