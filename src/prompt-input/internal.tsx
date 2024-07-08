@@ -9,9 +9,11 @@ import { useFormFieldContext } from '../internal/context/form-field-context';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import clsx from 'clsx';
 import styles from './styles.css.js';
+import testutilStyles from './test-classes/styles.css.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { convertAutoComplete } from '../input/utils';
 import { useDensityMode } from '@cloudscape-design/component-toolkit/internal';
+import * as tokens from '../internal/generated/styles/tokens';
 
 export interface InternalPromptInputProps extends PromptInputProps, InternalBaseComponentProps {}
 
@@ -30,7 +32,7 @@ const InternalPromptInput = React.forwardRef(
       disableActionButton,
       disableBrowserAutocorrect,
       disabled,
-      maxRows,
+      maxRows = 3,
       minRows,
       name,
       onAction,
@@ -55,6 +57,9 @@ const InternalPromptInput = React.forwardRef(
 
     const isCompactMode = useDensityMode(textareaRef) === 'compact';
 
+    const PADDING = tokens.spaceScaledXxs;
+    const LINE_HEIGHT = tokens.lineHeightBodyM;
+
     useForwardFocus(ref, textareaRef);
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -78,18 +83,15 @@ const InternalPromptInput = React.forwardRef(
     };
 
     const adjustTextareaHeight = useCallback(() => {
-      const PADDING = 4;
-      const LINE_HEIGHT = 20;
       if (textareaRef.current) {
         textareaRef.current.style.height = 'auto';
 
-        const newHeight = Math.min(
-          textareaRef.current.scrollHeight + PADDING,
-          (maxRows ?? 3) * (LINE_HEIGHT + PADDING / 2) + PADDING
-        );
-        textareaRef.current.style.height = `${newHeight}px`;
+        const maxRowsHeight = `calc(${maxRows} * (${LINE_HEIGHT} + ${PADDING} / 2) + ${PADDING})`;
+        const scrollHeight = `calc(${textareaRef.current.scrollHeight}px + ${PADDING})`;
+
+        textareaRef.current.style.height = `min(${scrollHeight}, ${maxRowsHeight})`;
       }
-    }, [maxRows]);
+    }, [maxRows, LINE_HEIGHT, PADDING]);
 
     useEffect(() => {
       const handleResize = () => {
@@ -148,7 +150,7 @@ const InternalPromptInput = React.forwardRef(
         {hasActionButton && (
           <div className={styles.button}>
             <InternalButton
-              className={styles['action-button']}
+              className={testutilStyles['action-button']}
               ariaLabel={actionButtonAriaLabel}
               disabled={disabled || readOnly || disableActionButton}
               iconName={actionButtonIconName}
