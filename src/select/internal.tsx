@@ -49,6 +49,7 @@ const InternalSelect = React.forwardRef(
       ariaRequired,
       placeholder,
       disabled,
+      readOnly,
       ariaLabel,
       statusType = 'finished',
       empty,
@@ -166,6 +167,7 @@ const InternalSelect = React.forwardRef(
         ref={triggerRef}
         placeholder={placeholder}
         disabled={disabled}
+        readOnly={readOnly}
         triggerVariant={triggerVariant}
         triggerProps={getTriggerProps(disabled, autoFocus)}
         selectedOption={selectedOption}

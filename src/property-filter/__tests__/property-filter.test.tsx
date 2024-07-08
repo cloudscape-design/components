@@ -710,11 +710,12 @@ describe('property filter parts', () => {
         expect(valueSelectWrapper.findNativeInput().getElement()).toHaveAttribute('value', '123');
 
         // Change property
+        // This preserves operator but not value because the value type between properties can be different.
         act(() => propertySelectWrapper.openDropdown());
         act(() => propertySelectWrapper.selectOption(2));
         expect(propertySelectWrapper.findTrigger().getElement()).toHaveTextContent('string-other');
         expect(operatorSelectWrapper.findTrigger().getElement()).toHaveTextContent('=Equals');
-        expect(valueSelectWrapper.findNativeInput().getElement()).toHaveAttribute('value', '123');
+        expect(valueSelectWrapper.findNativeInput().getElement()).toHaveAttribute('value', '');
       });
     });
     describe('exit actions', () => {
@@ -1166,126 +1167,6 @@ describe('property filter parts', () => {
       wrapper.focus();
       expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-expanded', 'true');
       expect(wrapper.findDropdown().findOpenDropdown()!.getElement()).toHaveTextContent('Empty');
-    });
-  });
-
-  describe('properties compatibility', () => {
-    test('properties with the same primitive operators are compatible', () => {
-      const { propertyFilterWrapper: wrapper } = renderComponent({
-        filteringProperties: [
-          {
-            key: 'string-1',
-            propertyLabel: 'string-1',
-            operators: ['!:', ':', '=', '!='],
-            groupValuesLabel: '',
-          },
-          {
-            key: 'string-2',
-            propertyLabel: 'string-2',
-            operators: ['=', '!=', '!:', ':'],
-            groupValuesLabel: '',
-          },
-          {
-            key: 'string-3',
-            propertyLabel: 'string-3',
-            operators: [{ operator: '!=' }, { operator: '=' }, { operator: '!:' }, { operator: ':' }],
-            groupValuesLabel: '',
-          },
-          {
-            key: 'number',
-            propertyLabel: 'number',
-            operators: ['>', '<', '=', '!=', '>=', '<='],
-            groupValuesLabel: '',
-          },
-        ],
-        query: { tokens: [{ propertyKey: 'string-1', value: '', operator: '=' }], operation: 'or' },
-      });
-      const [contentWrapper] = openTokenEditor(wrapper);
-      const propertySelectWrapper = findPropertySelector(contentWrapper);
-      act(() => propertySelectWrapper.openDropdown());
-      expect(
-        propertySelectWrapper
-          .findDropdown()
-          .findOptions()!
-          .filter(optionWrapper => optionWrapper.getElement().getAttribute('aria-disabled') !== 'true')
-          .map(optionWrapper => optionWrapper.getElement().textContent)
-      ).toEqual(['All properties', 'string-1', 'string-2', 'string-3']);
-    });
-
-    test('properties with the same extended operators are compatible', () => {
-      function DateForm() {
-        return null;
-      }
-      const { propertyFilterWrapper: wrapper } = renderComponent({
-        filteringProperties: [
-          {
-            key: 'date-1',
-            propertyLabel: 'date-1',
-            operators: [
-              { operator: '=', form: DateForm },
-              { operator: '!=', form: DateForm },
-            ],
-            groupValuesLabel: '',
-          },
-          {
-            key: 'date-2',
-            propertyLabel: 'date-2',
-            operators: [
-              { operator: '!=', form: DateForm },
-              { operator: '=', form: DateForm },
-            ],
-            groupValuesLabel: '',
-          },
-          {
-            key: 'other-date-1',
-            propertyLabel: 'other-date-1',
-            operators: ['=', '!='],
-            groupValuesLabel: '',
-          },
-          {
-            key: 'other-date-2',
-            propertyLabel: 'other-date-2',
-            operators: [{ operator: '=' }, { operator: '!=' }],
-            groupValuesLabel: '',
-          },
-          {
-            key: 'other-date-3',
-            propertyLabel: 'other-date-3',
-            operators: [
-              { operator: '=', form: () => null },
-              { operator: '!=', form: () => null },
-            ],
-            groupValuesLabel: '',
-          },
-          {
-            key: 'other-date-4',
-            propertyLabel: 'other-date-4',
-            operators: [{ operator: '=', form: DateForm }],
-            groupValuesLabel: '',
-          },
-          {
-            key: 'other-date-5',
-            propertyLabel: 'other-date-5',
-            operators: [
-              { operator: '=', form: DateForm },
-              { operator: '!=', form: DateForm },
-              { operator: '>=', form: DateForm },
-            ],
-            groupValuesLabel: '',
-          },
-        ],
-        query: { tokens: [{ propertyKey: 'date-1', value: '', operator: '=' }], operation: 'or' },
-      });
-      const [contentWrapper] = openTokenEditor(wrapper);
-      const propertySelectWrapper = findPropertySelector(contentWrapper);
-      act(() => propertySelectWrapper.openDropdown());
-      expect(
-        propertySelectWrapper
-          .findDropdown()
-          .findOptions()!
-          .filter(optionWrapper => optionWrapper.getElement().getAttribute('aria-disabled') !== 'true')
-          .map(optionWrapper => optionWrapper.getElement().textContent)
-      ).toEqual(['All properties', 'date-1', 'date-2']);
     });
   });
 

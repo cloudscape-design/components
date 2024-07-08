@@ -33,6 +33,7 @@ const Table = React.forwardRef(
       },
       metadata: {
         expandableRows: !!props.expandableRows,
+        progressiveLoading: !!props.getLoadingStatus,
         inlineEdit: props.columnDefinitions.some(def => !!def.editConfig),
         disabledInlineEdit: props.columnDefinitions.some(def => !!def.editConfig?.disabledReason),
       },

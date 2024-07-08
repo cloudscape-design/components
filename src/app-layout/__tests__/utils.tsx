@@ -9,9 +9,13 @@ import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
 import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
 import { findUpUntil } from '../../../lib/components/internal/utils/dom';
 import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
+import visualRefreshToolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/trigger-button/styles.css.js';
 import testutilStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
 import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
 import iconStyles from '../../../lib/components/icon/styles.css.js';
+import { awsuiGlobalFlagsSymbol, FlagsHolder } from '../../../lib/components/internal/utils/global-flags';
+
+declare const window: Window & FlagsHolder;
 
 // Mock element queries result. Note that in order to work, this mock should be applied first, before the AppLayout is required
 jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
@@ -39,45 +43,48 @@ export function renderComponent(jsx: React.ReactElement) {
   return { wrapper, rerender, isUsingGridLayout, isUsingMobile, container };
 }
 
-export function describeEachThemeAppLayout(isMobile: boolean, callback: (theme: string) => void) {
-  for (const theme of ['refresh', 'classic']) {
-    describe(`${isMobile ? 'Mobile' : 'Desktop'}, Theme=${theme}`, () => {
-      beforeEach(() => {
-        (useMobile as jest.Mock).mockReturnValue(isMobile);
-        (useVisualRefresh as jest.Mock).mockReturnValue(theme === 'refresh');
-      });
-      afterEach(() => {
-        (useMobile as jest.Mock).mockReset();
-        (useVisualRefresh as jest.Mock).mockReset();
-      });
-      test('mocks applied correctly', () => {
-        const { isUsingGridLayout, isUsingMobile } = renderComponent(<AppLayout />);
-        expect(isUsingGridLayout).toEqual(theme === 'refresh');
-        expect(isUsingMobile).toEqual(isMobile);
-      });
-      callback(theme);
-    });
-  }
+type Theme = 'refresh' | 'refresh-toolbar' | 'classic';
+type Size = 'desktop' | 'mobile';
+
+interface AppLayoutTestConfig {
+  themes: Array<Theme>;
+  sizes: Array<Size>;
 }
 
-export function describeEachAppLayout(callback: (size: 'desktop' | 'mobile') => void) {
-  for (const theme of ['refresh', 'classic']) {
-    for (const size of ['desktop', 'mobile'] as const) {
+type AppLayoutTestSuite = (config: { theme: Theme; size: Size }) => void;
+
+const defaultTestConfig: AppLayoutTestConfig = {
+  themes: ['classic', 'refresh', 'refresh-toolbar'],
+  sizes: ['desktop', 'mobile'],
+};
+
+export function describeEachAppLayout(callback: AppLayoutTestSuite): void;
+export function describeEachAppLayout(config: Partial<AppLayoutTestConfig>, callback: AppLayoutTestSuite): void;
+export function describeEachAppLayout(
+  ...args: [AppLayoutTestSuite] | [Partial<AppLayoutTestConfig>, AppLayoutTestSuite]
+) {
+  const config = args.length === 1 ? defaultTestConfig : { ...defaultTestConfig, ...args[0] };
+  const callback = args.length === 1 ? args[0] : args[1];
+
+  for (const theme of config.themes) {
+    for (const size of config.sizes) {
       describe(`Theme=${theme}, Size=${size}`, () => {
         beforeEach(() => {
           (useMobile as jest.Mock).mockReturnValue(size === 'mobile');
-          (useVisualRefresh as jest.Mock).mockReturnValue(theme === 'refresh');
+          (useVisualRefresh as jest.Mock).mockReturnValue(theme !== 'classic');
+          window[awsuiGlobalFlagsSymbol] = { appLayoutWidget: theme === 'refresh-toolbar' };
         });
         afterEach(() => {
           (useMobile as jest.Mock).mockReset();
           (useVisualRefresh as jest.Mock).mockReset();
+          delete window[awsuiGlobalFlagsSymbol];
         });
         test('mocks applied correctly', () => {
           const { isUsingGridLayout, isUsingMobile } = renderComponent(<AppLayout />);
           expect(isUsingGridLayout).toEqual(theme === 'refresh');
           expect(isUsingMobile).toEqual(size === 'mobile');
         });
-        callback(size);
+        callback({ theme, size });
       });
     }
   }
@@ -106,6 +113,8 @@ export function isDrawerTriggerWithBadge(wrapper: AppLayoutWrapper, triggerId: s
   return (
     // Visual refresh implementation
     trigger.getElement().classList.contains(visualRefreshStyles.badge) ||
+    // Visual refresh toolbar implementation
+    trigger.getElement().classList.contains(visualRefreshToolbarStyles.badge) ||
     // Classic implementation
     !!trigger.findByClassName(iconStyles.badge)
   );
@@ -113,8 +122,13 @@ export function isDrawerTriggerWithBadge(wrapper: AppLayoutWrapper, triggerId: s
 
 export function getActiveDrawerWidth(wrapper: AppLayoutWrapper): string {
   const drawerElement = wrapper.findActiveDrawer()!.getElement();
-  const value = drawerElement.style.getPropertyValue(customCssProps.drawerSize);
+  let value = drawerElement.style.getPropertyValue(customCssProps.drawerSize);
   // Visual refresh implementation
+  if (value) {
+    return value;
+  }
+  // Visual refresh toolbar implementation
+  value = wrapper.getElement()!.style.getPropertyValue(customCssProps.toolsWidth);
   if (value) {
     return value;
   }

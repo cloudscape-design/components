@@ -5,6 +5,7 @@ import { BreadcrumbGroupProps } from './interfaces';
 import { applyDisplayName } from '../internal/utils/apply-display-name.js';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { InternalBreadcrumbGroup } from './internal';
+import { useSetGlobalBreadcrumbs } from '../internal/plugins/helpers/use-global-breadcrumbs';
 
 export { BreadcrumbGroupProps };
 
@@ -12,7 +13,13 @@ export default function BreadcrumbGroup<T extends BreadcrumbGroupProps.Item = Br
   items = [],
   ...props
 }: BreadcrumbGroupProps<T>) {
+  const registeredGlobally = useSetGlobalBreadcrumbs({ items, ...props });
   const baseComponentProps = useBaseComponent('BreadcrumbGroup');
+
+  if (registeredGlobally) {
+    return <></>;
+  }
+
   return <InternalBreadcrumbGroup items={items} {...props} {...baseComponentProps} />;
 }
 

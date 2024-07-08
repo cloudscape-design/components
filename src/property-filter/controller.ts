@@ -3,7 +3,6 @@
 
 import {
   ComparisonOperator,
-  ExtendedOperatorForm,
   GroupText,
   I18nStrings,
   InternalFilteringOption,
@@ -207,35 +206,6 @@ export const getAllValueSuggestions = (
   });
   return [defaultGroup, ...Object.keys(customGroups).map(group => customGroups[group])];
 };
-
-export function createPropertiesCompatibilityMap(
-  filteringProperties: readonly InternalFilteringProperty[]
-): (propertyA: string, propertyB: string) => boolean {
-  const lookup: {
-    [propertyKey: string]: { operator: string; form: ExtendedOperatorForm<any> | null }[];
-  } = {};
-
-  for (const property of filteringProperties) {
-    lookup[property.propertyKey] = (property.operators || [])
-      .map(operator => ({ operator, form: property.getValueFormRenderer(operator) }))
-      .sort((a, b) => a.operator.localeCompare(b.operator));
-  }
-
-  return (propertyA: string, propertyB: string) => {
-    if (lookup[propertyA].length !== lookup[propertyB].length) {
-      return false;
-    }
-    for (let i = 0; i < lookup[propertyA].length; i++) {
-      if (lookup[propertyA][i].operator !== lookup[propertyB][i].operator) {
-        return false;
-      }
-      if (lookup[propertyA][i].form !== lookup[propertyB][i].form) {
-        return false;
-      }
-    }
-    return true;
-  };
-}
 
 const filteringPropertyToAutosuggestOption = (filteringProperty: InternalFilteringProperty) => ({
   value: filteringProperty.propertyLabel,

@@ -22,12 +22,7 @@ import {
 } from './interfaces';
 import styles from './styles.css.js';
 import { useLoadItems } from './use-load-items';
-import {
-  createPropertiesCompatibilityMap,
-  getAllowedOperators,
-  operatorToDescription,
-  getPropertySuggestions,
-} from './controller';
+import { getAllowedOperators, operatorToDescription, getPropertySuggestions } from './controller';
 import { NonCancelableEventHandler } from '../internal/events';
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
 import InternalButton from '../button/internal';
@@ -74,18 +69,6 @@ function PropertyInput({
       dontCloseOnSelect: true,
     })
   );
-
-  // Disallow selecting properties that have different representation.
-  const checkPropertiesCompatible = createPropertiesCompatibilityMap(filteringProperties);
-  propertyOptions.forEach(optionGroup => {
-    if ('options' in optionGroup) {
-      optionGroup.options.forEach(option => {
-        if (property?.propertyKey && option.value) {
-          option.disabled = !checkPropertiesCompatible(option.value, property.propertyKey);
-        }
-      });
-    }
-  });
 
   const allPropertiesOption = {
     label: i18nStrings.allPropertiesLabel,
@@ -280,7 +263,6 @@ export function TokenEditor({
         return copy;
       });
     };
-
     const property = temporaryToken.property;
     const onChangePropertyKey = (newPropertyKey: undefined | string) => {
       const filteringProperty = filteringProperties.reduce<InternalFilteringProperty | undefined>(
@@ -293,7 +275,7 @@ export function TokenEditor({
           ? temporaryToken.operator
           : allowedOperators[0];
       const matchedProperty = filteringProperties.find(property => property.propertyKey === newPropertyKey) ?? null;
-      setTemporaryToken({ ...temporaryToken, property: matchedProperty, operator });
+      setTemporaryToken({ ...temporaryToken, property: matchedProperty, operator, value: null });
     };
 
     const operator = temporaryToken.operator;

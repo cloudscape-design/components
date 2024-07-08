@@ -49,13 +49,13 @@ describe('File upload dropzone', () => {
     expect(screen.getByText('visible')).toBeDefined();
   });
 
-  test('Dropzone does not show if multiple files dragged into non-multiple zone', () => {
+  test('Dropzone shows if multiple files dragged into non-multiple zone', () => {
     render(<TestDropzoneVisible />);
     expect(screen.getByText('hidden')).toBeDefined();
 
     fireEvent(document, createDragEvent('dragover', [file1, file2]));
 
-    expect(screen.getByText('hidden')).toBeDefined();
+    expect(screen.getByText('visible')).toBeDefined();
   });
 
   test('Dropzone shows if multiple files dragged into multiple zone', () => {

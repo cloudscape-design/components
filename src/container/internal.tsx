@@ -143,6 +143,7 @@ export default function InternalContainer({
                   [styles['with-toolbar']]: hasToolbar,
                   [styles['with-hidden-content']]: !children || __hiddenContent,
                   [styles['header-with-media']]: hasMedia,
+                  [styles['header-full-page']]: __fullPage && isRefresh,
                 })}
                 {...stickyStyles}
                 ref={headerMergedRef}

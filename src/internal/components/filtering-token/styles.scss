@@ -16,6 +16,7 @@
 
 .token,
 .grouped-token {
+  flex-grow: 1;
   border-block: awsui.$border-field-width solid constants.$token-border-color;
   border-inline: awsui.$border-field-width solid constants.$token-border-color;
   display: flex;
@@ -26,7 +27,6 @@
   border-end-start-radius: awsui.$border-radius-token;
   border-end-end-radius: awsui.$border-radius-token;
   color: awsui.$color-text-body-default;
-  block-size: 100%;
   box-sizing: border-box;
 }
 .token {

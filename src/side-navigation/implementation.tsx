@@ -75,7 +75,4 @@ export function SideNavigationImplementation({
   );
 }
 
-export const createWidgetizedSideNavigation = createWidgetizedComponent<
-  SideNavigationInternalProps,
-  typeof SideNavigationImplementation
->(SideNavigationImplementation);
+export const createWidgetizedSideNavigation = createWidgetizedComponent(SideNavigationImplementation);

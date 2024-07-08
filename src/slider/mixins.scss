@@ -6,6 +6,7 @@
 @use '../internal/styles/tokens' as awsui;
 
 $thumb-size: awsui.$space-m;
+$thumb-readonly-size: awsui.$space-s;
 $border-radius-slider-thumb: 50%;
 
 @mixin base-thumb-styles {
@@ -46,9 +47,31 @@ $border-radius-slider-thumb: 50%;
   border-inline-width: 2px;
 }
 
+@mixin base-thumb-focus-readonly-styles {
+  block-size: $thumb-readonly-size;
+  inline-size: $thumb-readonly-size;
+  box-shadow:
+    0px 0 0 2px awsui.$color-background-slider-handle-ring,
+    0 0 0 4px awsui.$color-foreground-control-read-only;
+  background: awsui.$color-foreground-control-read-only;
+
+  border-color: awsui.$color-background-slider-handle-active;
+  border-block-width: 2px;
+  border-inline-width: 2px;
+}
+
 @mixin base-thumb-disabled-styles {
   background-color: awsui.$color-background-control-disabled;
   border-color: awsui.$color-background-control-disabled;
+  box-shadow: none;
+  pointer-events: none;
+}
+
+@mixin base-thumb-readonly-styles {
+  block-size: $thumb-readonly-size;
+  inline-size: $thumb-readonly-size;
+  background-color: awsui.$color-foreground-control-read-only;
+  border-color: awsui.$color-foreground-control-read-only;
   box-shadow: none;
   pointer-events: none;
 }

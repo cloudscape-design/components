@@ -123,6 +123,9 @@
   background-color: awsui.$color-background-container-header;
   border-start-start-radius: awsui.$border-radius-container;
   border-start-end-radius: awsui.$border-radius-container;
+  &.header-full-page {
+    background-color: awsui.$color-background-layout-main;
+  }
 
   &.header-with-media {
     background: none;

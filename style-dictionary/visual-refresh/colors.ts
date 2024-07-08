@@ -89,6 +89,12 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundTilesDisabled: { light: '{colorGrey200}', dark: '{colorGrey750}' },
   colorBackgroundToggleCheckedDisabled: { light: '{colorBlue300}', dark: '{colorBlue800}' },
   colorBackgroundToggleDefault: { light: '{colorGrey600}', dark: '{colorGrey500}' },
+  colorBackgroundAvatarGenAi:
+    'radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)',
+  colorBackgroundAvatarDefault: '{colorGrey600}',
+  colorTextAvatar: '{colorWhite}',
+  colorBackgroundLoadingBarGenAi:
+    'linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)',
   colorBorderButtonNormalActive: { light: '{colorBlue800}', dark: '{colorBlue400}' },
   colorBorderButtonNormalDefault: { light: '{colorBlue600}', dark: '{colorBlue500}' },
   colorBorderButtonNormalDisabled: { light: '{colorGrey400}', dark: '{colorGrey550}' },
@@ -145,6 +151,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBorderTutorial: { light: '{colorGrey300}', dark: '{colorGrey600}' },
   colorForegroundControlDefault: { light: '{colorWhite}', dark: '{colorGrey900}' },
   colorForegroundControlDisabled: { light: '{colorWhite}', dark: '{colorGrey800}' },
+  colorForegroundControlReadOnly: { light: '{colorGrey550}', dark: '{colorGrey450}' },
   colorShadowDefault: '{colorGreyTransparentHeavy}',
   colorShadowMedium: '{colorGreyTransparent}',
   colorShadowSide: '{colorGreyTransparentLight}',

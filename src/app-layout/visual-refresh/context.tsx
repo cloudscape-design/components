@@ -23,7 +23,6 @@ import { useMobile } from '../../internal/hooks/use-mobile';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 import useResize from '../utils/use-resize';
 import styles from './styles.css.js';
-import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import useBackgroundOverlap from './use-background-overlap';
 import { useDrawers } from '../utils/use-drawers';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
@@ -65,8 +64,8 @@ interface AppLayoutInternals extends AppLayoutPropsWithDefaults {
   mainElement: React.Ref<HTMLDivElement>;
   mainOffsetLeft: number;
   navigationRefs: FocusControlRefs;
-  notificationsElement: React.Ref<HTMLDivElement>;
   notificationsHeight: number;
+  setNotificationsHeight: (height: number) => void;
   offsetBottom: number;
   setSplitPanelReportedSize: (value: number) => void;
   setSplitPanelReportedHeaderHeight: (value: number) => void;
@@ -297,6 +296,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       activeDrawerSize,
       ...drawersProps
     } = useDrawers(props, props.ariaLabels, {
+      disableDrawersMerge: true,
       ariaLabels: props.ariaLabels,
       toolsHide,
       toolsOpen: isToolsOpen,
@@ -384,21 +384,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       [isMobile, navigationOpen, isToolsOpen, activeDrawer]
     );
 
-    /**
-     * Because the notifications slot does not give us any direction insight into
-     * what the state of the child content is we need to have a mechanism for
-     * tracking the height of the notifications and whether or not it has content.
-     * The height of the notifications is an integer that will be used as a custom
-     * property on the Layout component to determine what the sticky offset should
-     * be if there are sticky notifications. This could be any number including
-     * zero based on how the child content renders. The hasNotificationsContent boolean
-     * is simply centralizing the logic of the notifications height being > 0 such
-     * that it is not repeated in various components (such as MobileToolbar) that need to
-     * know if the notifications slot is empty.
-     */
-    const [notificationsContainerQuery, notificationsElement] = useContainerQuery(rect => rect.contentBoxHeight);
-
-    const notificationsHeight = notificationsContainerQuery ?? 0;
+    const [notificationsHeight, setNotificationsHeight] = useState(0);
     const hasNotificationsContent = notificationsHeight > 0;
     /**
      * Determine the offsetBottom value based on the presence of a footer element and
@@ -557,8 +543,8 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           minContentWidth,
           navigationHide,
           navigationRefs,
-          notificationsElement,
           notificationsHeight,
+          setNotificationsHeight,
           offsetBottom,
           setSplitPanelReportedSize,
           setSplitPanelReportedHeaderHeight,
