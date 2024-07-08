@@ -24,11 +24,12 @@ export function useDropzoneVisible(multiple: boolean) {
       event.preventDefault();
 
       let files = 0;
-      for (let item = 0; item < (event.dataTransfer?.items.length || 0); item++) {
-        if (event.dataTransfer?.items[item].kind === 'file') {
+      for (let item = 0; item < (event.dataTransfer?.types.length || 0); item++) {
+        if (event.dataTransfer?.types[item] === 'Files') {
           files++;
         }
       }
+
       if (files > 0 && (multiple || files === 1)) {
         setDropzoneVisible(true);
         dragTimer && clearTimeout(dragTimer);
