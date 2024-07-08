@@ -38,7 +38,7 @@ export namespace KeyValuePairsProps {
     items: ReadonlyArray<Pair>;
   }
 
-  export interface Pair {
+  export interface Pair extends BaseComponentProps {
     type?: 'pair';
     label: string;
     value: React.ReactNode;

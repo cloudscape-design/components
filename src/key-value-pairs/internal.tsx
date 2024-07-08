@@ -10,16 +10,16 @@ import { LinkDefaultVariantContext } from '../internal/context/link-default-vari
 import Box from '../box/internal';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 
-const InternalKeyValuePair = ({ label, info, value }: KeyValuePairsProps.Pair) => {
+const InternalKeyValuePair = ({ label, info, value, id }: KeyValuePairsProps.Pair) => {
   const kvPairId = useUniqueId('kv-pair-');
 
   return (
     <>
       <dt className={styles.term}>
-        <label className={styles['key-label']} id={kvPairId}>
+        <label className={styles['key-label']} id={id || kvPairId}>
           {label}
         </label>
-        <InfoLinkLabelContext.Provider value={kvPairId}>
+        <InfoLinkLabelContext.Provider value={id || kvPairId}>
           {info && <span className={styles.info}>{info}</span>}
         </InfoLinkLabelContext.Provider>
       </dt>
