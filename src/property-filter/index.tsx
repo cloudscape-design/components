@@ -223,7 +223,7 @@ const PropertyFilter = React.forwardRef(
         }
       };
 
-      const tokensOrGroups = query.tokenGroups ?? query.tokens;
+      const tokensOrGroups = enableTokenGroups ? query.tokenGroups ?? query.tokens : query.tokens;
       if (query.tokens.length > 0 && query.tokenGroups) {
         warnOnce(
           'PropertyFilter',
@@ -231,7 +231,7 @@ const PropertyFilter = React.forwardRef(
         );
       }
       const internalQuery: InternalQuery = {
-        supportsGroups: !!query.tokenGroups,
+        supportsGroups: enableTokenGroups,
         operation: query.operation,
         tokens: tokensOrGroups.map(tokenOrGroup => {
           const internalTokenOrGroup = toInternalTokens(tokenOrGroup);
