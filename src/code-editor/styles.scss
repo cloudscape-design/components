@@ -6,7 +6,7 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles/foundation' as foundation;
-@use '../internal/hooks/focus-visible' as focus-visible;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use './ace-editor';
 @use './pane';
 
