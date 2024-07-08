@@ -134,7 +134,7 @@ $checkbox-size: awsui.$size-control;
   // Stepped gradient background for inline label overlap between input and background.
   background-image: linear-gradient(
     to bottom,
-    transparent calc(100% - (styles.$control-border-width + 3px)),
+    transparent calc(100% - (styles.$control-border-width + 5px)),
     awsui.$color-background-input-default 1px
   );
   background-position: bottom;
@@ -148,6 +148,7 @@ $checkbox-size: awsui.$size-control;
   position: relative;
   inset-inline-start: calc(styles.$control-border-width + awsui.$space-field-horizontal - awsui.$space-scaled-xxs);
   margin-block-start: awsui.$space-scaled-xs;
+  padding-block-end: 2px;
   padding-inline: awsui.$space-scaled-xxs;
   max-inline-size: calc(100% - (2 * awsui.$space-field-horizontal));
   z-index: 1;
