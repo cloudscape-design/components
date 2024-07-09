@@ -227,7 +227,7 @@ export const InternalButton = React.forwardRef(
         <button
           {...buttonProps}
           type={formAction === 'none' ? 'button' : 'submit'}
-          disabled={disabled && !__focusable && !disabledReason}
+          disabled={disabled && !__focusable && !isDisabledWithReason}
           aria-disabled={hasAriaDisabled ? true : undefined}
           onFocus={isDisabledWithReason ? () => setShowTooltip(true) : undefined}
           onBlur={isDisabledWithReason ? () => setShowTooltip(false) : undefined}
