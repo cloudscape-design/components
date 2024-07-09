@@ -13,7 +13,7 @@ export interface ScreenreaderOnlyProps {
 
 /**
  * Makes content now shown on a screen but still announced by screen-reader users.
- * The component is suitable when the aria-label cannot be used, e.g. to avoid elemnts being announced as "blank".
+ * The component is suitable when the aria-label cannot be used, e.g. to avoid elements being announced as "blank".
  *
  * To exclude screenreader-only content use `:not(.${screenreaderOnlyStyles.root})` selector, for example:
  *
