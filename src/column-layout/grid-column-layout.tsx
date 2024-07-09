@@ -20,7 +20,7 @@ const COLUMN_DEFS: Record<number, GridProps.ElementDefinition | undefined> = {
 
 interface GridColumnLayoutProps
   extends Required<Pick<InternalColumnLayoutProps, 'columns' | 'variant' | 'borders' | 'disableGutters'>>,
-    Pick<InternalColumnLayoutProps, 'tagOverride'> {
+    Pick<InternalColumnLayoutProps, '__tagOverride'> {
   children: React.ReactNode;
   __breakpoint?: ColumnLayoutBreakpoint;
 }
@@ -32,7 +32,7 @@ export default function GridColumnLayout({
   disableGutters,
   __breakpoint,
   children,
-  tagOverride,
+  __tagOverride,
 }: GridColumnLayoutProps) {
   const isTextGridVariant = variant === 'text-grid';
   const shouldDisableGutters = !isTextGridVariant && disableGutters;
@@ -56,7 +56,7 @@ export default function GridColumnLayout({
       })}
       __breakpoint={__breakpoint || breakpoint}
       __responsiveClassName={breakpoint => breakpoint && styles[`grid-breakpoint-${breakpoint}`]}
-      tagOverride={tagOverride}
+      __tagOverride={__tagOverride}
     >
       {children}
     </InternalGrid>

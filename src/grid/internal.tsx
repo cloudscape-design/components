@@ -23,7 +23,7 @@ export interface InternalGridProps extends GridProps, InternalBaseComponentProps
   /**
    * Overrides the default wrapper HTML tag.
    */
-  tagOverride?: string;
+  __tagOverride?: string;
 }
 
 const InternalGrid = React.forwardRef(
@@ -33,7 +33,7 @@ const InternalGrid = React.forwardRef(
       gridDefinition = [],
       disableGutters = false,
       children,
-      tagOverride,
+      __tagOverride,
       __responsiveClassName,
       __internalRootRef = null,
       ...restProps
@@ -52,7 +52,7 @@ const InternalGrid = React.forwardRef(
    Flattening the children allows us to "see through" React Fragments and nested arrays.
    */
     const flattenedChildren = flattenChildren(children);
-    const Tag = (tagOverride ?? 'div') as 'div';
+    const Tag = (__tagOverride ?? 'div') as 'div';
 
     if (isDevelopment) {
       const columnCount = gridDefinition.length;

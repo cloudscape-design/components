@@ -21,7 +21,7 @@ export default function ColumnLayout({
   disableGutters = false,
   minColumnWidth,
   children,
-  tagOverride,
+  __tagOverride,
   __breakpoint,
   __internalRootRef,
   ...restProps
@@ -37,7 +37,7 @@ export default function ColumnLayout({
           variant={variant}
           minColumnWidth={minColumnWidth}
           disableGutters={disableGutters}
-          tagOverride={tagOverride}
+          __tagOverride={__tagOverride}
         >
           {children}
         </FlexibleColumnLayout>
@@ -48,7 +48,7 @@ export default function ColumnLayout({
           borders={borders}
           disableGutters={disableGutters}
           __breakpoint={__breakpoint}
-          tagOverride={tagOverride}
+          __tagOverride={__tagOverride}
         >
           {children}
         </GridColumnLayout>

@@ -31,7 +31,7 @@ export function calculcateCssColumnCount(
 interface FlexibleColumnLayoutProps
   extends Pick<
     InternalColumnLayoutProps,
-    'minColumnWidth' | 'columns' | 'variant' | 'borders' | 'disableGutters' | 'tagOverride'
+    'minColumnWidth' | 'columns' | 'variant' | 'borders' | 'disableGutters' | '__tagOverride'
   > {
   children: React.ReactNode;
 }
@@ -42,7 +42,7 @@ export default function FlexibleColumnLayout({
   disableGutters,
   variant,
   children,
-  tagOverride,
+  __tagOverride,
 }: FlexibleColumnLayoutProps) {
   const [containerWidth, containerRef] = useContainerQuery(rect => rect.contentBoxWidth);
 
@@ -51,7 +51,7 @@ export default function FlexibleColumnLayout({
 
   // Flattening the children allows us to "see through" React Fragments and nested arrays.
   const flattenedChildren = flattenChildren(children);
-  const Tag = (tagOverride ?? 'div') as 'div';
+  const Tag = (__tagOverride ?? 'div') as 'div';
 
   return (
     <Tag

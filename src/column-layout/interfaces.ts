@@ -53,5 +53,5 @@ export interface InternalColumnLayoutProps extends ColumnLayoutProps, InternalBa
   /**
    * Overrides the default wrapper HTML tag.
    */
-  tagOverride?: 'dl';
+  __tagOverride?: 'dl';
 }
