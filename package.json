@@ -9,6 +9,7 @@
   "files": [],
   "scripts": {
     "quick-build": "gulp quick-build",
+    "postinstall": "node ./scripts/install-peer-dependency.js",
     "build": "cross-env NODE_ENV=production gulp build",
     "test": "TZ=UTC gulp test",
     "test:unit": "TZ=UTC gulp test:unit",
