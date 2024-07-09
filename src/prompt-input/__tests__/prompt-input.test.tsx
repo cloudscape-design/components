@@ -83,6 +83,21 @@ describe('disableBrowserAutocorrect', () => {
   });
 });
 
+describe('autocomplete', () => {
+  test('is disabled by default', () => {
+    const { wrapper } = renderPromptInput({ value: '' });
+    const textarea = wrapper.findNativeTextarea().getElement();
+    expect(textarea).toHaveAttribute('autocomplete', 'off');
+  });
+
+  test('can be enabled', () => {
+    const { wrapper } = renderPromptInput({ value: '', autoComplete: true });
+    const textarea = wrapper.findNativeTextarea().getElement();
+
+    expect(textarea).toHaveAttribute('autocomplete', 'on');
+  });
+});
+
 describe('action button', () => {
   test('not present if not added to props', () => {
     const { wrapper } = renderPromptInput({ value: '' });

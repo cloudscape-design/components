@@ -26,7 +26,7 @@ const InternalPromptInput = React.forwardRef(
       actionButtonIconSvg,
       actionButtonIconAlt,
       ariaLabel,
-      autoComplete = true,
+      autoComplete,
       autoFocus,
       disableActionButton,
       disableBrowserAutocorrect,
@@ -127,7 +127,7 @@ const InternalPromptInput = React.forwardRef(
       name,
       placeholder,
       autoFocus,
-      className: clsx(styles.textarea, {
+      className: clsx(styles.textarea, testutilStyles.textarea, {
         [styles['textarea-readonly']]: readOnly,
         [styles['textarea-invalid']]: invalid,
         [styles['textarea-warning']]: warning && !invalid,
@@ -155,7 +155,11 @@ const InternalPromptInput = React.forwardRef(
     }
 
     return (
-      <div {...baseProps} className={clsx(styles.root, baseProps.className)} ref={__internalRootRef}>
+      <div
+        {...baseProps}
+        className={clsx(styles.root, testutilStyles.root, baseProps.className)}
+        ref={__internalRootRef}
+      >
         <textarea ref={textareaRef} id={controlId} {...attributes} />
         {hasActionButton && (
           <div className={styles.button}>
