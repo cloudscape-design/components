@@ -358,8 +358,9 @@ const permutations = createPermutations<KeyValuePairsProps>([
 export default function KeyValueScenario() {
   return (
     <article>
-      <h1>KeyValuePairs permutations</h1>
+      <h1>KeyValuePairs</h1>
       <ScreenshotArea>
+        <h2>Permutations</h2>
         <PermutationsView permutations={permutations} render={permutation => <KeyValuePairs {...permutation} />} />
       </ScreenshotArea>
     </article>
