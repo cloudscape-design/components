@@ -33,3 +33,10 @@
   word-spacing: normal;
   @include typography.default-text-style;
 }
+
+@mixin styles-reset-dl {
+  margin-block-start: 0;
+  margin-block-end: 0;
+  margin-inline-start: 0;
+  margin-inline-end: 0;
+}
