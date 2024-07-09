@@ -9,9 +9,12 @@
 @use '../../../token-group/constants' as constants;
 
 .root {
-  /* used in test utils */
+  /* used in test-utils */
 }
-.root-styles {
+.parent {
+  /* used in test-utils */
+}
+.container {
   display: flex;
   align-content: stretch;
 }

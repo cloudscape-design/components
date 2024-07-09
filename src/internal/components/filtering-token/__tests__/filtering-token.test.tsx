@@ -43,55 +43,93 @@ function renderToken(props: Partial<FilteringTokenProps>): FilteringTokenWrapper
   return new FilteringTokenWrapper(container.querySelector<HTMLElement>(`.${FilteringTokenWrapper.rootSelector}`)!);
 }
 
-describe('Property filter token component: single token', () => {
-  it('renders a single token as role="group" with token ARIA label and dismiss button', () => {
-    const token = renderToken({ tokens: [token1] });
-    expect(token.getElement()).toHaveAttribute('role', 'group');
-    expect(token.getElement()).toHaveAccessibleName('filter property1 = value');
-    expect(token.findLabel()!.getElement()).toHaveTextContent('property1 = value');
-    expect(token.findRemoveButton()!.getElement()).toHaveAccessibleName('remove filter property1 = value');
-  });
-
-  it('fires onDismiss when the remove button is pressed', () => {
-    const onDismissToken = jest.fn();
-    const token = renderToken({ tokens: [token1], onDismissToken });
-    token.findRemoveButton().click();
-    expect(onDismissToken).toHaveBeenCalledTimes(1);
-    expect(onDismissToken).toHaveBeenCalledWith(0);
-  });
-
-  it('hides operation selector if showOperation is false', () => {
-    const token = renderToken({ tokens: [token1], showOperation: false });
-    expect(token.findTokenOperation()!).toBeNull();
-  });
-
-  it('shows operation selector if showOperation is true', () => {
-    const onChangeOperation = jest.fn();
-    const token = renderToken({ tokens: [token1], showOperation: true, onChangeOperation });
-    expect(token.findTokenOperation()!.findTrigger().getElement()).toHaveTextContent('und');
-    expect(token.findTokenOperation()!.findTrigger().getElement()).toHaveAccessibleName('operation und');
-
-    token.findTokenOperation()!.openDropdown();
-    const operationSelector = token.findTokenOperation()!;
-    expect(operationSelector.findDropdown().findOptionByValue('and')!.getElement()).toHaveTextContent('und');
-    expect(operationSelector.findDropdown().findOptionByValue('or')!.getElement()).toHaveTextContent('oder');
-
-    operationSelector.selectOptionByValue('or');
-    expect(onChangeOperation).toHaveBeenCalledTimes(1);
-    expect(onChangeOperation).toHaveBeenCalledWith('or');
-  });
+test('renders a single token as role="group" with token ARIA label and dismiss button', () => {
+  const token = renderToken({ tokens: [token1] });
+  expect(token.getElement()).toHaveAttribute('role', 'group');
+  expect(token.getElement()).toHaveAccessibleName('filter property1 = value');
+  expect(token.findLabel()!.getElement()).toHaveTextContent('property1 = value');
+  expect(token.findRemoveButton()!.getElement()).toHaveAccessibleName('remove filter property1 = value');
+  expect(token.findTokenOperation()!).toBeNull();
 });
 
-describe('Property filter token component: token group', () => {
-  it('renders 3 tokens as role="group" with group ARIA label no dismiss button', () => {
-    const token = renderToken({ tokens: [token1, token2, token3], groupAriaLabel: 'filter group with 3 tokens' });
-    expect(token.getElement()).toHaveAttribute('role', 'group');
-    expect(token.getElement()).toHaveAccessibleName('filter group with 3 tokens');
-    expect(token.findLabel()!.getElement()).toHaveTextContent('property1 = value');
+test('renders 3 tokens as role="group" with group ARIA label no dismiss button', () => {
+  const token = renderToken({ tokens: [token1, token2, token3], groupAriaLabel: 'filter group with 3 tokens' });
+  expect(token.getElement()).toHaveAttribute('role', 'group');
+  expect(token.getElement()).toHaveAccessibleName('filter group with 3 tokens');
+  expect(token.findLabel()!.getElement()).toHaveTextContent('property1 = value');
+  expect(token.findRemoveButton()).toBe(null);
+  expect(token.findTokenOperation()!).toBeNull();
+});
 
-    // TODO: fix
-    // expect(token.findRemoveButton()).toBe(null);
+test('nested tokens rendered as role="group" with token ARIA label and dismiss button', () => {
+  const token = renderToken({ tokens: [token1, token2, token3], groupAriaLabel: 'filter group with 3 tokens' });
+  const groupTokens = token.findGroupTokens();
+  expect(groupTokens).toHaveLength(3);
+
+  for (let index = 0; index < groupTokens.length; index++) {
+    expect(groupTokens[index].getElement()).toHaveAttribute('role', 'group');
+    expect(groupTokens[index].getElement()).toHaveAccessibleName(`filter property${index + 1} = value`);
+    expect(groupTokens[index].findLabel()!.getElement()).toHaveTextContent(`property${index + 1} = value`);
+    expect(groupTokens[index].findRemoveButton()!.getElement()).toHaveAccessibleName(
+      `remove filter property${index + 1} = value`
+    );
+  }
+});
+
+test('fires root onDismiss when the remove button is pressed', () => {
+  const onDismissToken = jest.fn();
+  const token = renderToken({ tokens: [token1], onDismissToken });
+  token.findRemoveButton().click();
+  expect(onDismissToken).toHaveBeenCalledTimes(1);
+  expect(onDismissToken).toHaveBeenCalledWith(0);
+});
+
+test('fires grouped onDismiss when the remove button is pressed', () => {
+  const onDismissToken = jest.fn();
+  const token = renderToken({ tokens: [token1, token2], onDismissToken });
+  token.findGroupTokens()[1].findRemoveButton().click();
+  expect(onDismissToken).toHaveBeenCalledTimes(1);
+  expect(onDismissToken).toHaveBeenCalledWith(1);
+});
+
+test.each([1, 2])('shows root operation selector if showOperation is true, slice=%s', slice => {
+  const onChangeOperation = jest.fn();
+  const token = renderToken({ tokens: [token1, token2].slice(slice), showOperation: true, onChangeOperation });
+  expect(token.findTokenOperation()!.findTrigger().getElement()).toHaveTextContent('und');
+  expect(token.findTokenOperation()!.findTrigger().getElement()).toHaveAccessibleName('operation und');
+
+  token.findTokenOperation()!.openDropdown();
+  const operationSelector = token.findTokenOperation()!;
+  expect(operationSelector.findDropdown().findOptionByValue('and')!.getElement()).toHaveTextContent('und');
+  expect(operationSelector.findDropdown().findOptionByValue('or')!.getElement()).toHaveTextContent('oder');
+
+  operationSelector.selectOptionByValue('or');
+  expect(onChangeOperation).toHaveBeenCalledTimes(1);
+  expect(onChangeOperation).toHaveBeenCalledWith('or');
+});
+
+test('shows operation selector for 2 and 3 grouped tokens', () => {
+  const onChangeGroupOperation = jest.fn();
+  const token = renderToken({
+    tokens: [token1, token2, token3],
+    groupAriaLabel: 'filter group with 3 tokens',
+    onChangeGroupOperation,
   });
+  const groupTokens = token.findGroupTokens();
 
-  // TODO: more tests
+  expect(groupTokens[0].findTokenOperation()).toBe(null);
+  expect(groupTokens[1].findTokenOperation()).not.toBe(null);
+  expect(groupTokens[2].findTokenOperation()).not.toBe(null);
+
+  expect(groupTokens[1].findTokenOperation()!.findTrigger().getElement()).toHaveTextContent('oder');
+  expect(groupTokens[1].findTokenOperation()!.findTrigger().getElement()).toHaveAccessibleName('operation oder');
+
+  groupTokens[1].findTokenOperation()!.openDropdown();
+  const operationSelector = groupTokens[1].findTokenOperation()!;
+  expect(operationSelector.findDropdown().findOptionByValue('and')!.getElement()).toHaveTextContent('und');
+  expect(operationSelector.findDropdown().findOptionByValue('or')!.getElement()).toHaveTextContent('oder');
+
+  operationSelector.selectOptionByValue('and');
+  expect(onChangeGroupOperation).toHaveBeenCalledTimes(1);
+  expect(onChangeGroupOperation).toHaveBeenCalledWith('and');
 });

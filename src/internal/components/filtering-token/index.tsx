@@ -56,6 +56,7 @@ export default function FilteringToken({
             ariaLabel={operationAriaLabel}
             andText={andText}
             orText={orText}
+            parent={true}
             disabled={disabled}
           />
         )
@@ -65,13 +66,14 @@ export default function FilteringToken({
           <TokenDismissButton
             ariaLabel={tokens[0].dismissAriaLabel}
             onDismiss={() => onDismissToken(0)}
+            parent={true}
             disabled={disabled}
           />
         )
       }
+      parent={true}
       grouped={tokens.length > 1}
       disabled={disabled}
-      className={styles.root}
     >
       {tokens.length === 1
         ? tokens[0].content
@@ -87,6 +89,7 @@ export default function FilteringToken({
                     ariaLabel={operationAriaLabel}
                     andText={andText}
                     orText={orText}
+                    parent={false}
                     disabled={disabled}
                   />
                 )
@@ -95,9 +98,11 @@ export default function FilteringToken({
                 <TokenDismissButton
                   ariaLabel={token.dismissAriaLabel}
                   onDismiss={() => onDismissToken(index)}
+                  parent={false}
                   disabled={disabled}
                 />
               }
+              parent={false}
               grouped={false}
               disabled={disabled}
             >
@@ -113,32 +118,36 @@ function TokenGroup({
   children,
   operation,
   dismissButton,
+  parent,
   grouped,
   disabled,
-  className,
 }: {
   ariaLabel?: string;
   children: React.ReactNode;
   operation: React.ReactNode;
   dismissButton: React.ReactNode;
+  parent: boolean;
   grouped: boolean;
   disabled?: boolean;
-  className?: string;
 }) {
   return (
-    <div className={clsx(styles['root-styles'], className)} role="group" aria-label={ariaLabel}>
+    <div
+      className={clsx(styles.container, parent && styles.root, parent && styles.parent)}
+      role="group"
+      aria-label={ariaLabel}
+    >
       {operation}
 
       <div
         className={clsx(
           styles.token,
           !!operation && styles['show-operation'],
-          disabled && styles['token-disabled'],
-          grouped && styles.grouped
+          grouped && styles.grouped,
+          disabled && styles['token-disabled']
         )}
         aria-disabled={disabled}
       >
-        <div className={styles['token-content']}>{children}</div>
+        <div className={clsx(styles['token-content'], parent && styles.parent)}>{children}</div>
 
         {dismissButton}
       </div>
@@ -152,6 +161,7 @@ function OperationSelector({
   ariaLabel,
   andText,
   orText,
+  parent,
   disabled,
 }: {
   operation: FilteringTokenProps.Operation;
@@ -159,12 +169,13 @@ function OperationSelector({
   andText: string;
   orText: string;
   ariaLabel: string;
+  parent: boolean;
   disabled?: boolean;
 }) {
   return (
     <InternalSelect
       __inFilteringToken={true}
-      className={styles.select}
+      className={clsx(styles.select, parent && styles.parent)}
       options={[
         { value: 'and', label: andText },
         { value: 'or', label: orText },
@@ -180,16 +191,18 @@ function OperationSelector({
 function TokenDismissButton({
   ariaLabel,
   onDismiss,
+  parent,
   disabled,
 }: {
   ariaLabel: string;
   onDismiss: () => void;
+  parent: boolean;
   disabled?: boolean;
 }) {
   return (
     <button
       type="button"
-      className={styles['dismiss-button']}
+      className={clsx(styles['dismiss-button'], parent && styles.parent)}
       aria-label={ariaLabel}
       onClick={onDismiss}
       disabled={disabled}
