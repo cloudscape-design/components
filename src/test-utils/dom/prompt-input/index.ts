@@ -2,14 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import { act, Simulate } from 'react-dom/test-utils';
 import { ComponentWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
-import styles from '../../../prompt-input/styles.selectors.js';
 import testutilStyles from '../../../prompt-input/test-classes/styles.selectors.js';
 
 export default class PromptInputWrapper extends ComponentWrapper {
-  static rootSelector = styles.root;
+  static rootSelector = testutilStyles.root;
 
   findNativeTextarea(): ElementWrapper<HTMLTextAreaElement> {
-    return this.find<HTMLTextAreaElement>(`.${styles.textarea}`)!;
+    return this.findByClassName<HTMLTextAreaElement>(testutilStyles.textarea)!;
   }
 
   findActionButton(): ElementWrapper<HTMLButtonElement> {
