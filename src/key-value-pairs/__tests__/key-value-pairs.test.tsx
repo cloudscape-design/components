@@ -4,10 +4,11 @@ import * as React from 'react';
 import { render } from '@testing-library/react';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import KeyValuePairs from '../../../lib/components/key-value-pairs';
+import Link from '../../../lib/components/link';
 
 function renderKeyValuePairs(jsx: React.ReactElement) {
-  const { container } = render(jsx);
-  return { wrapper: createWrapper(container).findKeyValuePairs()! };
+  const { container, ...rest } = render(jsx);
+  return { wrapper: createWrapper(container).findKeyValuePairs()!, ...rest };
 }
 
 describe('KeyValuePairs', () => {
@@ -35,12 +36,21 @@ describe('KeyValuePairs', () => {
             {
               label: 'Label for key',
               value: 'Value',
-              info: 'Info',
+              info: (
+                <Link variant="info" href="#">
+                  Info
+                </Link>
+              ),
             },
           ]}
         />
       );
 
+      const labelId = wrapper.findItems()[0]!.findLabel()!.getElement().getAttribute('id');
+
+      expect(wrapper.findItems()[0]!.findInfo()!.find('a')!.getElement().getAttribute('aria-labelledby')).toContain(
+        labelId
+      );
       expect(wrapper.findItems()[0]!.findInfo()!.getElement()).toHaveTextContent('Info');
     });
   });
