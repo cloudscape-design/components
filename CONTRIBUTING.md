@@ -219,6 +219,25 @@ If the changes are expected, call this out in your pull request comments.
 └── style-dictionary            - style dictionary tokens and roles
 ```
 
+### Using a peer dependency from a branch
+
+In package.json update the dependency version to a git path. For example:
+
+```
+"dependencies": {
+    "@cloudscape-design/collection-hooks": "github:cloudscape-design/collection-hooks#feature-branch",
+}
+```
+
+Add `scripts/install-peer-dependency.js` as postinstall:
+```
+"scripts": {
+    "postinstall": "node ./scripts/install-peer-dependency.js collection-hooks",
+}
+```
+
+Run `npm install`.
+
 ## Code of Conduct
 
 This project has adopted the [Amazon Open Source Code of Conduct](https://aws.github.io/code-of-conduct).

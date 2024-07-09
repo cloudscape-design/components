@@ -9,7 +9,8 @@
   "files": [],
   "scripts": {
     "quick-build": "gulp quick-build",
-    "build": "node ./scripts/install-peer-dependency.js && cross-env NODE_ENV=production gulp build",
+    "postinstall": "node ./scripts/install-peer-dependency.js collection-hooks",
+    "build": "cross-env NODE_ENV=production gulp build",
     "test": "TZ=UTC gulp test",
     "test:unit": "TZ=UTC gulp test:unit",
     "test:a11y": "gulp test:a11y",
@@ -25,7 +26,7 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@cloudscape-design/collection-hooks": "^1.0.0",
+    "@cloudscape-design/collection-hooks": "github:cloudscape-design/collection-hooks#property-filter-token-groups",
     "@cloudscape-design/component-toolkit": "^1.0.0-beta",
     "@cloudscape-design/test-utils-core": "^1.0.0",
     "@cloudscape-design/theming-runtime": "^1.0.0",
