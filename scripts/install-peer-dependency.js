@@ -4,56 +4,43 @@
 
 const { execSync } = require('child_process');
 const path = require('path');
-const fs = require('fs');
 const os = require('os');
 
 const args = process.argv.slice(2);
 if (args.length < 1) {
-  console.error('Usage: install-peer-dependency.js <package-name>');
+  console.error('Usage: install-peer-dependency.js <package-name>:<target-branch>');
   process.exit(1);
 }
-const packageName = args[0];
-const nodeModulesPath = path.join(__dirname, '..', 'node_modules');
-const packagePath = path.join(nodeModulesPath, '@cloudscape-design', packageName);
+const [packageName, targetBranch] = args[0].split(':');
+const targetRepository = `https://github.com/cloudscape-design/${packageName}.git`;
+const nodeModulesPackagePath = path.join(__dirname, '..', 'node_modules', '@cloudscape-design', packageName);
 const tempDir = path.join(os.tmpdir(), `temp-${packageName}`);
 
-// Ensure the package is installed
-if (!fs.existsSync(packagePath)) {
-  console.error(`${packageName} is not installed in node_modules.`);
-  process.exit(1);
-}
-
-// Ensure temp directory is clean
-if (fs.existsSync(tempDir)) {
-  fs.rmdirSync(tempDir, { recursive: true });
-}
-
-// Copy package to temp directory
-console.log(`Copying ${packageName} to temporary directory...`);
-execCommand(`cp -R ${packagePath} ${tempDir}`);
-
-// Change to temp directory
+// Clone the repository and checkout the branch
+console.log(`Cloning ${packageName}:${targetBranch}...`);
+execCommand(`git clone ${targetRepository} ${tempDir}`);
 process.chdir(tempDir);
+execCommand(`git checkout ${targetBranch}`);
 
-// Install dependencies and build in the temp directory
+// Install dependencies and build
 console.log(`Installing dependencies and building ${packageName}...`);
-execCommand('npm install', { stdio: 'inherit' });
-execCommand('npm run build', { stdio: 'inherit' });
+execCommand('npm install');
+execCommand('npm run build');
 
-// Remove existing package in node_modules
+// Remove existing peer dependency in node_modules
 console.log(`Removing existing ${packageName} from node_modules...`);
-execCommand(`rm -rf ${packagePath}`);
+execCommand(`rm -rf ${nodeModulesPackagePath}`);
 
-// Copy built package back to node_modules
-console.log(`Copying built ${packageName} back to node_modules...`);
-fs.mkdirSync(packagePath, { recursive: true });
-execCommand(`cp -R ${path.join(tempDir, 'lib')}/* ${packagePath}`);
+// Copy built peer dependency to node_modules
+console.log(`Copying built ${targetRepository} to node_modules...`);
+execCommand(`mkdir -p ${nodeModulesPackagePath}`);
+execCommand(`cp -R ${tempDir}/lib/* ${nodeModulesPackagePath}`);
 
 // Clean up
 console.log('Cleaning up...');
 execCommand(`rm -rf ${tempDir}`);
 
-console.log(`${packageName} has been successfully built and copied back to node_modules!`);
+console.log(`${packageName} has been successfully installed from branch ${targetBranch}!`);
 
 function execCommand(command, options = {}) {
   try {

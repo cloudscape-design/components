@@ -221,18 +221,17 @@ If the changes are expected, call this out in your pull request comments.
 
 ### Using a peer dependency from a branch
 
-In package.json update the dependency version to a git path. For example:
-
-```
-"dependencies": {
-    "@cloudscape-design/collection-hooks": "github:cloudscape-design/collection-hooks#feature-branch",
-}
-```
-
 Add `scripts/install-peer-dependency.js` as postinstall:
 ```
 "scripts": {
-    "postinstall": "node ./scripts/install-peer-dependency.js collection-hooks",
+    "postinstall": "node ./scripts/install-peer-dependency.js <package-name>:<target-branch>",
+}
+```
+
+For example:
+```
+"scripts": {
+    "postinstall": "node ./scripts/install-peer-dependency.js collection-hooks:new-feature",
 }
 ```
 
