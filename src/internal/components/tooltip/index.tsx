@@ -11,8 +11,9 @@ import popoverStyles from '../../../popover/styles.css.js';
 import styles from './styles.css.js';
 
 export interface TooltipProps {
-  value: number | string;
+  value: React.ReactNode;
   trackRef: React.RefObject<HTMLElement | SVGElement>;
+  trackKey?: string | number;
   position?: 'top' | 'right' | 'bottom' | 'left';
   className?: string;
   contentAttributes?: React.HTMLAttributes<HTMLDivElement>;
@@ -21,18 +22,23 @@ export interface TooltipProps {
 export default function Tooltip({
   value,
   trackRef,
+  trackKey,
   className,
   contentAttributes = {},
   position = 'top',
 }: TooltipProps) {
+  if (!trackKey && (typeof value === 'string' || typeof value === 'number')) {
+    trackKey = value;
+  }
+
   return (
     <Portal>
-      <div className={clsx(styles.root, className)} {...contentAttributes}>
+      <div className={clsx(styles.root, className)} {...contentAttributes} data-testid={trackKey}>
         <Transition in={true}>
           {() => (
             <PopoverContainer
               trackRef={trackRef}
-              trackKey={value}
+              trackKey={trackKey}
               size="small"
               fixedWidth={false}
               position={position}
