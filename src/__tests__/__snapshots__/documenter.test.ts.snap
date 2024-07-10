@@ -14718,6 +14718,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
 - \`label\` (ReactNode) - Tab label shown in the UI.
 - \`content\` (ReactNode) - (Optional) Tab content to render in the container.
 - \`disabled\` (boolean) - (Optional) Specifies if this tab is disabled.
+- \`disabledReason\` (string) - (Optional) Displays tooltip near the tab when disabled. Use to provide additional context.
 - \`dismissible\` (boolean) - (Optional) Determines whether the tab includes a dismiss icon button. By default, the dismiss button is not included.
 - \`dismissLabel\` (boolean) - (Optional) Specifies an aria-label for the dismiss icon button.
 - \`dismissDisabled\` (boolean) - (Optional) Determines whether the dismiss button is disabled.
