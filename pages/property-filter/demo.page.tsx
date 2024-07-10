@@ -82,6 +82,8 @@ export default function () {
                 i18nStrings={i18nStrings}
                 expandToViewport={true}
                 filteringEmpty="No properties"
+                enableTokenGroups={true}
+                tokenLimit={2}
               />
             }
             columnDefinitions={columnDefinitions.slice(0, 2)}

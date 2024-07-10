@@ -124,7 +124,12 @@ export const TokenButton = ({
             />
           ),
           ariaLabel: formatted.label,
-          dismissAriaLabel: i18nStrings?.removeTokenButtonAriaLabel?.(t) ?? '',
+          dismissAriaLabel:
+            i18nStrings?.removeTokenButtonAriaLabel?.({
+              propertyKey: getFormattedToken({ operation: 'and', tokens: [t] }).label,
+              operator: getFormattedToken({ operation: 'and', tokens: [t] }).label,
+              value: getFormattedToken({ operation: 'and', tokens: [t] }).label,
+            }) ?? '',
         };
       })}
       groupAriaLabel={`Token group with ${firstLevelTokens.length} tokens`}

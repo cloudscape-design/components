@@ -164,7 +164,7 @@ export const i18nStrings: PropertyFilterProps.I18nStrings = {
   tokenLimitShowFewer: 'Show fewer',
   clearFiltersText: 'Clear filters',
   tokenOperatorAriaLabel: 'Boolean Operator',
-  removeTokenButtonAriaLabel: () => 'Remove token',
+  removeTokenButtonAriaLabel: token => `remove filter ${token.propertyKey}`,
   enteredTextLabel: (text: string) => `Use: "${text}"`,
 };
 
