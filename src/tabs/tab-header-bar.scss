@@ -147,15 +147,16 @@ $label-horizontal-spacing: awsui.$space-xs;
 .tabs-tab:not(:last-child) {
   & > .tabs-tab-header-container {
     margin-inline-end: calc(-1 * #{awsui.$border-divider-section-width});
+    // This is the divider for the tab
     &:before {
       content: '';
       position: absolute;
       border-inline-end: awsui.$border-divider-section-width solid $separator-color;
-      inset: calc(#{awsui.$space-scaled-s}) 0;
+      inset: awsui.$space-scaled-s 0;
       opacity: 1;
     }
 
-    &.refresh:before {
+    &.refresh:not(.compact):before {
       inset: calc(#{awsui.$space-scaled-s} - #{awsui.$border-active-width}) 0;
     }
   }
