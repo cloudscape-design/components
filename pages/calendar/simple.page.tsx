@@ -24,6 +24,17 @@ export default function CalendarPage() {
           ariaLabel="Certificate expiration date, calendar"
           startOfWeek={1}
           isDateEnabled={date => date.getDay() !== 6 && date.getDay() !== 0}
+          dateDisabledReason={date => {
+            if (date.getDay() === 6) {
+              return 'Saturday';
+            }
+
+            if (date.getDay() === 0) {
+              return 'Sunday';
+            }
+
+            return '';
+          }}
           i18nStrings={i18nStrings}
         />
         <Calendar
