@@ -27,7 +27,6 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { getAllFocusables } from '../internal/components/focus-lock/utils';
 import { nodeBelongs } from '../internal/utils/node-belongs';
 import { ButtonProps } from '../button/interfaces';
-import { useDensityMode } from '@cloudscape-design/component-toolkit/internal';
 
 const tabSelector = `.${styles['tabs-tab-link']}`;
 
@@ -80,7 +79,6 @@ export function TabHeaderBar({
   const [widthChange, containerMeasureRef] = useContainerQuery<number>(rect => rect.contentBoxWidth);
   const containerRef = useMergeRefs(containerObjectRef, containerMeasureRef);
   const tabRefs = useRef<Map<string, HTMLElement>>(new Map());
-  const isCompactMode = useDensityMode(headerBarRef as any) === 'compact';
   const [horizontalOverflow, setHorizontalOverflow] = useState(false);
   const [inlineStartOverflow, setInlineStartOverflow] = useState(false);
   const [inlineEndOverflow, setInlineEndOverflow] = useState(false);
@@ -364,7 +362,6 @@ export function TabHeaderBar({
     const tabHeaderContainerClasses = clsx({
       [styles['tabs-tab-header-container']]: true,
       [styles.refresh]: isVisualRefresh,
-      [styles.compact]: isCompactMode,
       [styles['tabs-tab-active']]: isActive,
       [styles['tabs-tab-disabled']]: tab.disabled,
     });
