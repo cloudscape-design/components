@@ -75,40 +75,45 @@ export default function FilteringToken({
       grouped={tokens.length > 1}
       disabled={disabled}
     >
-      {tokens.length === 1
-        ? tokens[0].content
-        : tokens.map((token, index) => (
-            <TokenGroup
-              key={index}
-              ariaLabel={token.ariaLabel}
-              operation={
-                index !== 0 && (
-                  <OperationSelector
-                    operation={groupOperation}
-                    onChange={onChangeGroupOperation}
-                    ariaLabel={operationAriaLabel}
-                    andText={andText}
-                    orText={orText}
+      {tokens.length === 1 ? (
+        tokens[0].content
+      ) : (
+        <ul className={styles.list}>
+          {tokens.map((token, index) => (
+            <li key={index}>
+              <TokenGroup
+                ariaLabel={token.ariaLabel}
+                operation={
+                  index !== 0 && (
+                    <OperationSelector
+                      operation={groupOperation}
+                      onChange={onChangeGroupOperation}
+                      ariaLabel={operationAriaLabel}
+                      andText={andText}
+                      orText={orText}
+                      parent={false}
+                      disabled={disabled}
+                    />
+                  )
+                }
+                dismissButton={
+                  <TokenDismissButton
+                    ariaLabel={token.dismissAriaLabel}
+                    onDismiss={() => onDismissToken(index)}
                     parent={false}
                     disabled={disabled}
                   />
-                )
-              }
-              dismissButton={
-                <TokenDismissButton
-                  ariaLabel={token.dismissAriaLabel}
-                  onDismiss={() => onDismissToken(index)}
-                  parent={false}
-                  disabled={disabled}
-                />
-              }
-              parent={false}
-              grouped={false}
-              disabled={disabled}
-            >
-              {token.content}
-            </TokenGroup>
+                }
+                parent={false}
+                grouped={false}
+                disabled={disabled}
+              >
+                {token.content}
+              </TokenGroup>
+            </li>
           ))}
+        </ul>
+      )}
     </TokenGroup>
   );
 }
