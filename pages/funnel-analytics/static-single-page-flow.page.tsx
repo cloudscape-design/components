@@ -146,9 +146,6 @@ export default function StaticSinglePageCreatePage() {
                   }
                   errorText={value === 'error' ? 'Trigger error' : ''}
                   label="This is an ordinary text field"
-                  analyticsMetadata={{
-                    instanceIdentifier: 'field1',
-                  }}
                 >
                   <Input
                     data-testid="field1"

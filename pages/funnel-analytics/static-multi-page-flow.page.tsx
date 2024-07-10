@@ -53,9 +53,6 @@ export default function MultiPageCreate() {
                 }
                 errorText={value === 'error' ? 'Trigger error' : ''}
                 label="Field 1"
-                analyticsMetadata={{
-                  instanceIdentifier: 'field1',
-                }}
               >
                 <Input
                   data-testid="field1"
