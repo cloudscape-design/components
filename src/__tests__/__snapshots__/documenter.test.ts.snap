@@ -3104,6 +3104,14 @@ The text will also be added to the \`title\` attribute of the button.",
       "type": "boolean",
     },
     Object {
+      "description": "Provides a reason why the button is disabled (only when \`disabled\` is \`true\`).
+If provided, the button becomes focusable.
+Applicable for all button variants, except link.",
+      "name": "disabledReason",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Specifies whether the linked URL, when selected, will prompt the user to download instead of navigate.
 You can specify a string value that will be suggested as the name of the downloaded file.
 This property only applies when an \`href\` is provided.",
@@ -3503,6 +3511,13 @@ Use this to provide an accessible name for buttons that don't have visible text.
       "type": "boolean",
     },
     Object {
+      "description": "Provides a reason why the button dropdown is disabled (only when \`disabled\` is \`true\`).
+If provided, the disabled button becomes focusable.",
+      "name": "disabledReason",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "defaultValue": "false",
       "description": "By default, the dropdown height is constrained to fit inside the height of its next scrollable container element.
 Enabling this property will allow the dropdown to extend beyond that container by using fixed positioning and
@@ -3612,6 +3627,11 @@ The main action also supports the following properties of the [button](/componen
             "name": "disabled",
             "optional": true,
             "type": "false | true",
+          },
+          Object {
+            "name": "disabledReason",
+            "optional": true,
+            "type": "string",
           },
           Object {
             "name": "download",

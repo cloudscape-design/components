@@ -30,6 +30,7 @@ const InternalButtonDropdown = React.forwardRef(
       loading = false,
       loadingText,
       disabled = false,
+      disabledReason,
       expandableGroups = false,
       children,
       onItemClick,
@@ -129,6 +130,7 @@ const InternalButtonDropdown = React.forwardRef(
       loading,
       loadingText,
       disabled,
+      disabledReason,
       onClick: (event: Event) => {
         event.preventDefault();
         clickHandler();
@@ -172,6 +174,7 @@ const InternalButtonDropdown = React.forwardRef(
             triggerRef,
             ariaLabel,
             disabled,
+            disabledReason,
             isOpen,
           })}
         </div>
