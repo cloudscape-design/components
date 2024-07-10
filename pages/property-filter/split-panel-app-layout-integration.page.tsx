@@ -36,19 +36,7 @@ export default function () {
         </Box>
       ),
       filteringProperties,
-      defaultQuery: {
-        tokens: [],
-        tokenGroups: [
-          {
-            operation: 'or',
-            tokens: [
-              { propertyKey: 'state', operator: '=', value: '0' },
-              { propertyKey: 'state', operator: '=', value: '1' },
-            ],
-          },
-        ],
-        operation: 'or',
-      },
+      defaultQuery: { tokens: [{ propertyKey: 'averagelatency', operator: '!=', value: '30' }], operation: 'and' },
     },
     sorting: {},
   });

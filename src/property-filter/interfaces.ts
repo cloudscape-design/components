@@ -281,7 +281,6 @@ export namespace PropertyFilterProps {
     tokenLimitShowFewer?: string;
     clearFiltersText?: string;
     tokenOperatorAriaLabel?: string;
-    // TODO: add token group as second argument
     removeTokenButtonAriaLabel?: (token: PropertyFilterProps.Token) => string;
     enteredTextLabel?: AutosuggestProps.EnteredTextLabel;
   }
