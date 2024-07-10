@@ -198,8 +198,8 @@ function getViewportRect(window: Window): BoundingBox {
   return {
     insetBlockStart: 0,
     insetInlineStart: 0,
-    inlineSize: window.innerWidth,
-    blockSize: window.innerHeight,
+    inlineSize: window.visualViewport?.width ?? window.innerWidth,
+    blockSize: window.visualViewport?.height ?? window.innerHeight,
   };
 }
 

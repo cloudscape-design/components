@@ -79,7 +79,7 @@ export default function createItemsTree(items: ButtonDropdownProps.Items): Items
   };
 }
 
-function traverseItems(
+export function traverseItems(
   items: ButtonDropdownProps.Items,
   act: (item: ButtonDropdownProps.ItemOrGroup, index: TreeIndex) => void,
   parentIndex: TreeIndex = []

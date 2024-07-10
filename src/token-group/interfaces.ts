@@ -59,6 +59,11 @@ export interface TokenGroupProps extends BaseComponentProps {
    * Use to assign unique labels when there are multiple token groups with the same `limitShowMore` label on one page.
    */
   limitShowMoreAriaLabel?: string;
+  /**
+   * Specifies if the control is read-only, which prevents the
+   * user from modifying the value. A read-only control is still focusable.
+   */
+  readOnly?: boolean;
 }
 
 export namespace TokenGroupProps {

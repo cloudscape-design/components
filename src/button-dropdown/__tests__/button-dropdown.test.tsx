@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import { act, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 
 import ButtonDropdown, { ButtonDropdownProps } from '../../../lib/components/button-dropdown';
 import createWrapper, { ButtonWrapper, IconWrapper } from '../../../lib/components/test-utils/dom';
@@ -100,6 +100,63 @@ const items: ButtonDropdownProps.Items = [
           expect(renderedItems.length).toEqual(0);
           expect(wrapper.findOpenDropdown()).toBe(null);
         });
+      });
+    });
+
+    (['normal', 'primary'] as Array<ButtonDropdownProps['variant']>).forEach(variant => {
+      describe(`"${variant}" variant 'disabled with reason`, () => {
+        const props = { expandToViewport, variant };
+
+        // disabledReason behavior is already tested for button component, which acts as the trigger for this component
+        // here we need to check the basic logic without diving deep into details
+        test('open tooltip on mouseenter', () => {
+          const wrapper = renderButtonDropdown({
+            ...props,
+            items,
+            disabled: true,
+            disabledReason: 'disabled reason',
+          });
+
+          fireEvent.mouseEnter(wrapper.findTriggerButton()!.getElement());
+
+          expect(wrapper.findTriggerButton()!.findDisabledReason()).not.toBeNull();
+          expect(wrapper.findTriggerButton()!.findDisabledReason()!.getElement()).toHaveTextContent('reason');
+        });
+
+        test('close tooltip on mouseleave', () => {
+          const wrapper = renderButtonDropdown({
+            ...props,
+            items,
+            disabled: true,
+            disabledReason: 'disabled reason',
+          });
+
+          fireEvent.mouseEnter(wrapper.findTriggerButton()!.getElement());
+
+          expect(wrapper.findTriggerButton()!.findDisabledReason()).not.toBeNull();
+          expect(wrapper.findTriggerButton()!.findDisabledReason()!.getElement()).toHaveTextContent('reason');
+
+          fireEvent.mouseLeave(wrapper.findTriggerButton()!.getElement());
+
+          expect(wrapper.findTriggerButton()!.findDisabledReason()).toBeNull();
+        });
+      });
+    });
+
+    describe(`"icon" variant 'disabled with reason`, () => {
+      const props = { expandToViewport, variant: 'icon' as ButtonDropdownProps['variant'] };
+
+      test('does not open tooltip on mouseenter', () => {
+        const wrapper = renderButtonDropdown({
+          ...props,
+          items,
+          disabled: true,
+          disabledReason: 'disabled reason',
+        });
+
+        fireEvent.mouseEnter(wrapper.findTriggerButton()!.getElement());
+
+        expect(wrapper.findTriggerButton()!.findDisabledReason()).toBeNull();
       });
     });
 
@@ -219,6 +276,36 @@ describe('with main action', () => {
 
     const mainAction = new ButtonWrapper(wrapper.findMainAction()!.getElement());
     expect(mainAction.isDisabled()).toBe(true);
+  });
+
+  describe('disabled with reason', () => {
+    // disabledReason behavior is already tested for button component, which acts as the trigger for this component
+    // here we need to check the basic logic without diving deep into details
+    test('open tooltip on mouseenter', () => {
+      const wrapper = renderSplitButtonDropdown({
+        mainAction: { text: 'Main', disabled: true, disabledReason: 'disabled reason' },
+      });
+
+      fireEvent.mouseEnter(wrapper.findMainAction()!.getElement());
+
+      expect(wrapper.findMainAction()!.findDisabledReason()).not.toBeNull();
+      expect(wrapper.findMainAction()!.findDisabledReason()!.getElement()).toHaveTextContent('reason');
+    });
+
+    test('close tooltip on mouseleave', () => {
+      const wrapper = renderSplitButtonDropdown({
+        mainAction: { text: 'Main', disabled: true, disabledReason: 'disabled reason' },
+      });
+
+      fireEvent.mouseEnter(wrapper.findMainAction()!.getElement());
+
+      expect(wrapper.findMainAction()!.findDisabledReason()).not.toBeNull();
+      expect(wrapper.findMainAction()!.findDisabledReason()!.getElement()).toHaveTextContent('reason');
+
+      fireEvent.mouseLeave(wrapper.findMainAction()!.getElement());
+
+      expect(wrapper.findMainAction()!.findDisabledReason()).toBeNull();
+    });
   });
 
   test('main action can be set as loading', () => {

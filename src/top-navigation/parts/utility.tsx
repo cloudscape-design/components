@@ -111,11 +111,14 @@ export default function Utility({ hideText, definition, offsetRight }: UtilityPr
     const title = definition.title || definition.text;
     const shouldShowTitle = shouldHideText || !definition.text;
 
+    const items = excludeCheckboxes(definition.items);
+
     checkSafeUrlRecursively(definition.items);
 
     return (
       <MenuDropdown
         {...definition}
+        items={items}
         title={shouldShowTitle ? title : ''}
         ariaLabel={ariaLabel}
         offsetRight={offsetRight}
@@ -138,4 +141,21 @@ function checkSafeUrlRecursively(itemOrGroup: MenuDropdownProps['items']) {
       checkSafeUrlRecursively(item.items);
     }
   }
+}
+
+function excludeCheckboxes(items: MenuDropdownProps['items']): MenuDropdownProps['items'] {
+  return items
+    .map(item => {
+      if (item.itemType === 'checkbox') {
+        return null;
+      }
+      if ('items' in item) {
+        return {
+          ...item,
+          items: excludeCheckboxes(item.items),
+        };
+      }
+      return item;
+    })
+    .filter(item => item !== null) as MenuDropdownProps['items'];
 }

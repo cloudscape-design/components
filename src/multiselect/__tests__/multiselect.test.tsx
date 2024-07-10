@@ -94,6 +94,12 @@ test('does not open dropdown when disabled', () => {
   expect(wrapper.findDropdown().findOpenDropdown()).toEqual(null);
 });
 
+test('does not open dropdown when readOnly', () => {
+  const { wrapper } = renderMultiselect(<Multiselect selectedOptions={[]} options={defaultOptions} readOnly={true} />);
+  wrapper.openDropdown();
+  expect(wrapper.findDropdown().findOpenDropdown()).toEqual(null);
+});
+
 test('renders lang on options', () => {
   const { wrapper } = renderMultiselect(<Multiselect selectedOptions={[]} options={defaultOptions} />);
   wrapper.openDropdown();
@@ -285,6 +291,19 @@ describe('Token group', () => {
         options={defaultOptions}
         i18nStrings={i18nStrings}
         tokenLimit={1}
+      />
+    );
+    expect(wrapper.findTokenToggle()!.getElement()).toHaveTextContent('Show more (+1)');
+  });
+
+  test('displays show more button when tokenLimit is collapsed (readOnly state)', () => {
+    const { wrapper } = renderMultiselect(
+      <Multiselect
+        selectedOptions={defaultOptions.slice(0, 2)}
+        options={defaultOptions}
+        i18nStrings={i18nStrings}
+        tokenLimit={1}
+        readOnly={true}
       />
     );
     expect(wrapper.findTokenToggle()!.getElement()).toHaveTextContent('Show more (+1)');

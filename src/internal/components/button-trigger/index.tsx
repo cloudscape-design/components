@@ -59,7 +59,7 @@ const ButtonTrigger = (
   ref: React.Ref<HTMLButtonElement>
 ) => {
   const baseProps = getBaseProps(restProps);
-  const attributes: ButtonHTMLAttributes<HTMLButtonElement> = {
+  let attributes: ButtonHTMLAttributes<HTMLButtonElement> = {
     ...baseProps,
     type: 'button',
     className: clsx(
@@ -70,25 +70,32 @@ const ButtonTrigger = (
       invalid && styles.invalid,
       warning && !invalid && styles.warning,
       !hideCaret && styles['has-caret'],
-      readOnly && styles['read-only'],
+      readOnly && styles.readonly,
       inFilteringToken && styles['in-filtering-token'],
       inlineTokens && styles['inline-tokens']
     ),
-    disabled: disabled || readOnly,
+    disabled: disabled,
     'aria-expanded': pressed,
     'aria-label': ariaLabel,
     'aria-labelledby': ariaLabelledby,
     'aria-describedby': ariaDescribedby,
     'aria-haspopup': ariaHasPopup ?? 'listbox',
     'aria-controls': ariaControls,
-    onKeyDown: onKeyDown && (event => fireKeyboardEvent(onKeyDown, event)),
-    onKeyUp: onKeyUp && (event => fireKeyboardEvent(onKeyUp, event)),
-    onMouseDown: onMouseDown && (event => fireCancelableEvent(onMouseDown, {}, event)),
-    onClick: onClick && (event => fireCancelableEvent(onClick, {}, event)),
-    onFocus: onFocus && (event => fireCancelableEvent(onFocus, {}, event)),
-    onBlur: onBlur && (event => fireCancelableEvent(onBlur, { relatedTarget: event.relatedTarget }, event)),
+    'aria-disabled': readOnly && !disabled ? 'true' : undefined,
     autoFocus,
   };
+
+  if (!readOnly) {
+    attributes = {
+      ...attributes,
+      onKeyDown: onKeyDown && (event => fireKeyboardEvent(onKeyDown, event)),
+      onKeyUp: onKeyUp && (event => fireKeyboardEvent(onKeyUp, event)),
+      onMouseDown: onMouseDown && (event => fireCancelableEvent(onMouseDown, {}, event)),
+      onClick: onClick && (event => fireCancelableEvent(onClick, {}, event)),
+      onFocus: onFocus && (event => fireCancelableEvent(onFocus, {}, event)),
+      onBlur: onBlur && (event => fireCancelableEvent(onBlur, { relatedTarget: event.relatedTarget }, event)),
+    };
+  }
 
   if (invalid) {
     attributes['aria-invalid'] = invalid;
@@ -99,7 +106,7 @@ const ButtonTrigger = (
       {children}
       {!hideCaret && (
         <span className={styles.arrow}>
-          <InternalIcon name="caret-down-filled" variant={disabled ? 'disabled' : 'normal'} />
+          <InternalIcon name="caret-down-filled" variant={disabled || readOnly ? 'disabled' : 'normal'} />
         </span>
       )}
     </button>

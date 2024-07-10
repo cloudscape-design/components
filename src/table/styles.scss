@@ -156,6 +156,9 @@ filter search icon.
   border-end-start-radius: 0;
   border-end-end-radius: 0;
   background: awsui.$color-background-table-header;
+  &.variant-full-page {
+    background: awsui.$color-background-layout-main;
+  }
   &.variant-stacked,
   &.variant-container {
     & > .table {

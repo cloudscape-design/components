@@ -71,6 +71,15 @@ const permutations = createPermutations<SliderProps>([
     valueFormatter: [undefined, value => `${value} is the value.`],
     referenceValues: [undefined, [-2, -1, 0, 1, 2]],
   },
+  {
+    value: [0],
+    min: [-3],
+    max: [3],
+    valueFormatter: [undefined, value => `${value} is the value.`],
+    referenceValues: [undefined, [-2, -1, 0, 1, 2]],
+    disabled: [false, true],
+    readOnly: [true],
+  },
 ]);
 
 export default function SliderPermutations() {

@@ -18,6 +18,12 @@ export default class ButtonDropdownWrapper extends ComponentWrapper {
     )!;
   }
 
+  findTriggerButton(): ButtonWrapper | null {
+    return (
+      this.findByClassName(styles['dropdown-trigger'])?.findComponent(`.${buttonStyles.button}`, ButtonWrapper) ?? null
+    );
+  }
+
   findMainAction(): null | ButtonWrapper {
     return (
       this.findByClassName(styles['split-trigger'])?.findComponent(`.${buttonStyles.button}`, ButtonWrapper) ?? null
@@ -86,7 +92,7 @@ export default class ButtonDropdownWrapper extends ComponentWrapper {
   }
 
   /**
-   * Finds the disabled reason tooltip. Returns null if no disabled item with `disabledReason` is highlighted.
+   * Finds the disabled reason tooltip for a dropdown item. Returns null if no disabled item with `disabledReason` is highlighted.
    */
   findDisabledReason(): ElementWrapper | null {
     return createWrapper().find(`[data-testid="button-dropdown-disabled-reason"]`);
