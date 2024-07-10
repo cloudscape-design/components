@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useRef } from 'react';
 import clsx from 'clsx';
 import styles from './styles.css.js';
 import Option from '../../internal/components/option';
@@ -10,6 +10,9 @@ import { DropdownOption, OptionDefinition } from '../../internal/components/opti
 import CheckboxIcon from '../../internal/components/checkbox-icon';
 import InternalIcon from '../../icon/internal.js';
 import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option.js';
+import useHiddenDescription from '../../internal/hooks/use-hidden-description';
+import Tooltip from '../../internal/components/tooltip';
+import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 
 export interface ItemProps {
   option: DropdownOption;
@@ -50,6 +53,11 @@ const Item = (
   const isChild = option.type === 'child';
   const wrappedOption: OptionDefinition = option.option;
   const disabled = option.disabled || wrappedOption.disabled;
+  const disabledReason = disabled && wrappedOption.disabledReason ? wrappedOption.disabledReason : '';
+  const isDisabledWithReason = !!disabledReason;
+  const internalRef = useRef<HTMLDivElement>(null);
+
+  const { descriptionEl, descriptionId } = useHiddenDescription(disabledReason);
 
   return (
     <SelectableItem
@@ -60,13 +68,14 @@ const Item = (
       disabled={option.disabled}
       isParent={isParent}
       isChild={isChild}
-      ref={ref}
+      ref={useMergeRefs(ref, internalRef)}
       virtualPosition={virtualPosition}
       padBottom={padBottom}
       screenReaderContent={screenReaderContent}
       ariaPosinset={ariaPosinset}
       ariaSetsize={ariaSetsize}
       highlightType={highlightType}
+      ariaDescribedby={isDisabledWithReason ? descriptionId : ''}
       {...baseProps}
     >
       <div className={clsx(styles.item, !isParent && wrappedOption.labelTag && styles['show-label-tag'])}>
@@ -89,6 +98,19 @@ const Item = (
           <div className={styles['selected-icon']}>
             <InternalIcon name="check" />
           </div>
+        )}
+        {isDisabledWithReason && (
+          <>
+            {descriptionEl}
+            {highlighted && (
+              <Tooltip
+                className={styles['disabled-reason-tooltip']}
+                trackRef={internalRef}
+                value={disabledReason!}
+                position="right"
+              />
+            )}
+          </>
         )}
       </div>
     </SelectableItem>

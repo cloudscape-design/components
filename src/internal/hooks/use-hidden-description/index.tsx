@@ -15,5 +15,6 @@ export default function useHiddenDescription(description?: string) {
         {description}
       </span>
     ) : null,
+    descriptionId: id,
   };
 }
