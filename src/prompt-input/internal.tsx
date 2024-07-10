@@ -13,6 +13,7 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { convertAutoComplete } from '../input/utils';
 import { useDensityMode } from '@cloudscape-design/component-toolkit/internal';
 import * as tokens from '../internal/generated/styles/tokens';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 
 export interface InternalPromptInputProps extends PromptInputProps, InternalBaseComponentProps {}
 
@@ -54,9 +55,10 @@ const InternalPromptInput = React.forwardRef(
 
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+    const isRefresh = useVisualRefresh();
     const isCompactMode = useDensityMode(textareaRef) === 'compact';
 
-    const PADDING = tokens.spaceScaledXxs;
+    const PADDING = isRefresh ? tokens.spaceXxs : tokens.spaceXxxs;
     const LINE_HEIGHT = tokens.lineHeightBodyM;
 
     useImperativeHandle(
@@ -95,10 +97,8 @@ const InternalPromptInput = React.forwardRef(
     const adjustTextareaHeight = useCallback(() => {
       if (textareaRef.current) {
         textareaRef.current.style.height = 'auto';
-
         const maxRowsHeight = `calc(${maxRows} * (${LINE_HEIGHT} + ${PADDING} / 2) + ${PADDING})`;
         const scrollHeight = `calc(${textareaRef.current.scrollHeight}px + ${PADDING})`;
-
         textareaRef.current.style.height = `min(${scrollHeight}, ${maxRowsHeight})`;
       }
     }, [maxRows, LINE_HEIGHT, PADDING]);
@@ -164,7 +164,7 @@ const InternalPromptInput = React.forwardRef(
         {hasActionButton && (
           <div className={styles.button}>
             <InternalButton
-              className={testutilStyles['action-button']}
+              className={clsx(styles['action-button'], testutilStyles['action-button'])}
               ariaLabel={actionButtonAriaLabel}
               disabled={disabled || readOnly || disableActionButton}
               iconName={actionButtonIconName}
