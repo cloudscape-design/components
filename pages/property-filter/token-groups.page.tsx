@@ -68,7 +68,6 @@ export default function () {
         toolsHide={true}
         content={
           <Table<TableItem>
-            className="main-content"
             stickyHeader={true}
             header={<Header headingTagOverride={'h1'}>Instances</Header>}
             items={items}
