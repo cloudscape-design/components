@@ -97,7 +97,7 @@ const InternalPromptInput = React.forwardRef(
     const adjustTextareaHeight = useCallback(() => {
       if (textareaRef.current) {
         textareaRef.current.style.height = 'auto';
-        const maxRowsHeight = `calc(${maxRows} * (${LINE_HEIGHT} + ${PADDING} / 2) + ${PADDING})`;
+        const maxRowsHeight = `calc(${maxRows <= 0 ? 3 : maxRows} * (${LINE_HEIGHT} + ${PADDING} / 2) + ${PADDING})`;
         const scrollHeight = `calc(${textareaRef.current.scrollHeight}px + ${PADDING})`;
         textareaRef.current.style.height = `min(${scrollHeight}, ${maxRowsHeight})`;
       }
