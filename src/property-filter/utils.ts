@@ -9,6 +9,9 @@ import {
   Token,
 } from './interfaces';
 
+export const DROPDOWN_WIDTH_OPTIONS_LIST = 300;
+export const DROPDOWN_WIDTH_CUSTOM_FORM = 200;
+
 // Finds the longest property the filtering text starts from.
 export function matchFilteringProperty(
   filteringProperties: readonly InternalFilteringProperty[],
@@ -95,7 +98,7 @@ export function getFormattedToken(token: InternalToken) {
   const propertyLabel = token.property && token.property.propertyLabel;
   const tokenValue = valueFormatter ? valueFormatter(token.value) : token.value;
   const label = `${propertyLabel ?? ''} ${token.operator} ${tokenValue}`;
-  return { property: propertyLabel ?? '', operator: token.operator, value: tokenValue, label };
+  return { property: label, operator: token.operator, value: tokenValue, label };
 }
 
 export function trimStart(source: string): string {

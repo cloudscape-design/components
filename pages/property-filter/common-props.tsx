@@ -123,9 +123,9 @@ export const columnDefinitions = [
   {
     id: 'lasteventat',
     sortingField: 'lasteventat',
-    header: 'Last event occurrence',
+    header: 'Last event at',
     type: 'datetime',
-    propertyLabel: 'Last event occurrence',
+    propertyLabel: 'Last event at',
     cell: (item: TableItem) => item.lasteventat?.toISOString(),
   },
 ].map((item, ind) => ({ order: ind + 1, ...item }));
@@ -163,8 +163,9 @@ export const i18nStrings: PropertyFilterProps.I18nStrings = {
   tokenLimitShowMore: 'Show more',
   tokenLimitShowFewer: 'Show fewer',
   clearFiltersText: 'Clear filters',
-  tokenOperatorAriaLabel: 'Boolean Operator',
-  removeTokenButtonAriaLabel: () => 'Remove token',
+  tokenOperatorAriaLabel: 'operation',
+  tokenGroupAriaLabel: tokens => `filter group with ${tokens.length} filters`,
+  removeTokenButtonAriaLabel: token => `remove filter ${token.propertyKey} ${token.operator} ${token.value}`,
   enteredTextLabel: (text: string) => `Use: "${text}"`,
 };
 

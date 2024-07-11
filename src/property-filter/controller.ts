@@ -12,6 +12,7 @@ import {
   ParsedText,
   Query,
   Token,
+  TokenGroup,
 } from './interfaces';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { AutosuggestProps } from '../autosuggest/interfaces';
@@ -21,35 +22,70 @@ import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 export const getQueryActions = (
   query: Query,
   onChange: NonCancelableEventHandler<Query>,
+  enableTokenGroups: boolean,
   inputRef: React.RefObject<AutosuggestInputRef>
 ) => {
-  const { tokens, operation } = query;
-  const fireOnChange = (tokens: readonly Token[], operation: JoinOperation) =>
-    fireNonCancelableEvent(onChange, { tokens, operation });
-  const setToken = (index: number, newToken: Token) => {
-    const newTokens = [...tokens];
-    if (newTokens && index < newTokens.length) {
-      newTokens[index] = newToken;
+  const fireOnChange = (tokenGroups: readonly (Token | TokenGroup)[], operation: JoinOperation) => {
+    if (enableTokenGroups) {
+      fireNonCancelableEvent(onChange, { tokens: [], operation, tokenGroups });
+    } else {
+      const tokens: Token[] = [];
+      for (const tokenOrGroup of tokenGroups) {
+        if ('operation' in tokenOrGroup && 'operator' in tokenOrGroup.tokens[0]) {
+          tokens.push(tokenOrGroup.tokens[0]);
+        } else if ('operator' in tokenOrGroup) {
+          tokens.push(tokenOrGroup);
+        }
+      }
+      fireNonCancelableEvent(onChange, { tokens, operation });
     }
-    fireOnChange(newTokens, operation);
   };
-  const removeToken = (index: number) => {
-    const newTokens = tokens.filter((_, i) => i !== index);
-    fireOnChange(newTokens, operation);
+  const setToken = (index: number, newTokenGroup: TokenGroup, newStandalone: Token[] = []) => {
+    const newTokens: (Token | TokenGroup)[] = query.tokenGroups
+      ? [...query.tokenGroups]
+      : query.tokens.map(t => ({ operation: 'and', tokens: [t] }));
+    if (newTokens && index < newTokens.length) {
+      newTokens[index] = newTokenGroup;
+    }
+    for (const token of newStandalone) {
+      newTokens.push(token);
+    }
+    fireOnChange(newTokens, query.operation);
+  };
+  const removeToken = (index: number, inTokenIndex: number) => {
+    const newTokens: (Token | TokenGroup)[] = query.tokenGroups
+      ? [...query.tokenGroups]
+      : query.tokens.map(t => ({ operation: 'and', tokens: [t] }));
+
+    const targetToken = newTokens[index];
+    if ('operation' in targetToken && targetToken.tokens.length > 1) {
+      const newNestedTokens = [...targetToken.tokens];
+      newNestedTokens.splice(inTokenIndex, 1);
+      newTokens[index] = { ...targetToken, tokens: newNestedTokens };
+    } else {
+      newTokens.splice(index, 1);
+    }
+    fireOnChange(newTokens, query.operation);
     inputRef.current?.focus({ preventDropdown: true });
   };
   const removeAllTokens = () => {
-    fireOnChange([], operation);
+    fireOnChange([], query.operation);
     inputRef.current?.focus({ preventDropdown: true });
   };
-  const addToken = (newToken: Token) => {
-    const newTokens = [...tokens];
-    newTokens.push(newToken);
-    fireOnChange(newTokens, operation);
+  const addToken = (newTokenGroup: TokenGroup) => {
+    const newTokens: (Token | TokenGroup)[] = query.tokenGroups
+      ? [...query.tokenGroups]
+      : query.tokens.map(t => ({ operation: 'and', tokens: [t] }));
+    newTokens.push(newTokenGroup);
+    fireOnChange(newTokens, query.operation);
   };
   const setOperation = (newOperation: JoinOperation) => {
+    const tokens: (Token | TokenGroup)[] = query.tokenGroups
+      ? [...query.tokenGroups]
+      : query.tokens.map(t => ({ operation: 'and', tokens: [t] }));
     fireOnChange(tokens, newOperation);
   };
+
   return {
     setToken,
     removeToken,

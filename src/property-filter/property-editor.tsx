@@ -17,6 +17,15 @@ interface PropertyEditorProps<TokenValue> {
   i18nStrings: I18nStrings;
 }
 
+interface PropertyEditorFormProps<TokenValue> {
+  property: InternalFilteringProperty;
+  value?: null | TokenValue;
+  customForm: (value: null | TokenValue, onChange: (value: TokenValue) => void) => React.ReactNode;
+  onCancel: () => void;
+  onSubmit: (value: null | TokenValue) => void;
+  i18nStrings: I18nStrings;
+}
+
 export function PropertyEditor<TokenValue = any>({
   property,
   operator,
@@ -26,21 +35,38 @@ export function PropertyEditor<TokenValue = any>({
   onSubmit,
   i18nStrings,
 }: PropertyEditorProps<TokenValue>) {
-  const [value, onChange] = useState<null | TokenValue>(null);
-  const submitToken = () => onSubmit({ propertyKey: property.propertyKey, operator, value });
+  return (
+    <PropertyEditorForm
+      property={property}
+      customForm={(value, onChange) => operatorForm({ value, onChange, operator, filter })}
+      onCancel={onCancel}
+      onSubmit={value => onSubmit({ propertyKey: property.propertyKey, operator, value })}
+      i18nStrings={i18nStrings}
+    />
+  );
+}
+
+export function PropertyEditorForm<TokenValue = any>({
+  property,
+  value,
+  customForm,
+  onCancel,
+  onSubmit,
+  i18nStrings,
+}: PropertyEditorFormProps<TokenValue>) {
+  const [tempValue, onTempValueChange] = useState<null | TokenValue>(value ?? null);
+  const onChange = (value: TokenValue) => onTempValueChange(value);
   return (
     <div className={styles['property-editor']}>
       <div className={styles['property-editor-form']}>
-        <InternalFormField label={property.groupValuesLabel}>
-          {operatorForm({ value, onChange, operator, filter })}
-        </InternalFormField>
+        <InternalFormField label={property.groupValuesLabel}>{customForm(tempValue, onChange)}</InternalFormField>
       </div>
 
       <div className={styles['property-editor-actions']}>
         <InternalButton variant="link" className={styles['property-editor-cancel']} onClick={onCancel}>
           {i18nStrings.cancelActionText}
         </InternalButton>
-        <InternalButton className={styles['property-editor-submit']} onClick={submitToken}>
+        <InternalButton className={styles['property-editor-submit']} onClick={() => onSubmit(tempValue)}>
           {i18nStrings.applyActionText}
         </InternalButton>
       </div>

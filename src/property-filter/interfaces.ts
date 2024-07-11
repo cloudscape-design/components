@@ -20,6 +20,7 @@ import {
   PropertyFilterProperty,
   PropertyFilterToken,
 } from '@cloudscape-design/collection-hooks';
+import { PropertyFilterQuery, PropertyFilterTokenGroup } from '@cloudscape-design/collection-hooks/cjs/interfaces';
 
 export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewport, FormFieldControlProps {
   /**
@@ -208,10 +209,17 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
    * Use to assign unique labels when there are multiple token groups with the same `tokenLimitShowMore` label on one page.
    */
   tokenLimitShowMoreAriaLabel?: string;
+
+  /**
+   * TBA
+   */
+  enableTokenGroups?: boolean;
 }
 
 export namespace PropertyFilterProps {
   export type Token = PropertyFilterToken;
+  export type TokenGroup = PropertyFilterTokenGroup;
+  export type Query = PropertyFilterQuery;
   export type JoinOperation = PropertyFilterOperation;
   export type ComparisonOperator = PropertyFilterOperator;
   export type ExtendedOperator<TokenValue> = PropertyFilterOperatorExtended<TokenValue>;
@@ -221,11 +229,6 @@ export namespace PropertyFilterProps {
   export type FilteringOption = PropertyFilterOption;
   export type FilteringProperty = PropertyFilterProperty;
   export type FreeTextFiltering = PropertyFilterFreeTextFiltering;
-
-  export interface Query {
-    tokens: ReadonlyArray<PropertyFilterProps.Token>;
-    operation: PropertyFilterProps.JoinOperation;
-  }
 
   export interface LoadItemsDetail {
     filteringProperty?: FilteringProperty;
@@ -278,6 +281,7 @@ export namespace PropertyFilterProps {
     tokenLimitShowFewer?: string;
     clearFiltersText?: string;
     tokenOperatorAriaLabel?: string;
+    tokenGroupAriaLabel?: (tokens: readonly PropertyFilterProps.Token[]) => string;
     removeTokenButtonAriaLabel?: (token: PropertyFilterProps.Token) => string;
     enteredTextLabel?: AutosuggestProps.EnteredTextLabel;
   }
@@ -304,6 +308,7 @@ export namespace PropertyFilterProps {
 // Re-exported namespace interfaces to use module-style imports internally
 
 export type Token = PropertyFilterProps.Token;
+export type TokenGroup = PropertyFilterProps.TokenGroup;
 export type JoinOperation = PropertyFilterProps.JoinOperation;
 export type ComparisonOperator = PropertyFilterProps.ComparisonOperator;
 export type ExtendedOperator<TokenValue> = PropertyFilterOperatorExtended<TokenValue>;
@@ -353,8 +358,14 @@ export interface InternalToken<TokenValue = any> {
 }
 
 export interface InternalQuery {
+  supportsGroups: boolean;
   operation: PropertyFilterOperation;
-  tokens: readonly InternalToken[];
+  tokens: readonly InternalTokenGroup[];
+}
+
+export interface InternalTokenGroup {
+  operation: PropertyFilterOperation;
+  tokens: readonly (InternalTokenGroup | InternalToken)[];
 }
 
 export type ParsedText =

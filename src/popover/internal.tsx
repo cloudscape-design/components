@@ -26,6 +26,7 @@ import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-
 
 export interface InternalPopoverProps extends PopoverProps, InternalBaseComponentProps {
   __onOpen?: NonCancelableEventHandler<null>;
+  __maxSize?: boolean;
 }
 
 export interface InternalPopoverRef {
@@ -52,6 +53,7 @@ function InternalPopover(
     renderWithPortal = false,
 
     __onOpen,
+    __maxSize,
     __internalRootRef = null,
     ...restProps
   }: InternalPopoverProps,
@@ -150,7 +152,7 @@ function InternalPopover(
     >
       {visible && (
         <PopoverContainer
-          size={size}
+          size={__maxSize ? 'max' : size}
           fixedWidth={fixedWidth}
           position={position}
           trackRef={triggerRef}
