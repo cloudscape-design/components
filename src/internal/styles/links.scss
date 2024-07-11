@@ -8,7 +8,7 @@
 @use './motion' as styles;
 @use './typography/' as typography;
 @use './forms/' as mixins;
-@use '../hooks/focus-visible/' as focus-visible;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../../link/constants.scss' as constants;
 
 @mixin link-variant-style($variant) {

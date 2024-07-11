@@ -6,7 +6,7 @@
 /* stylelint-disable selector-max-type */
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
-@use '../internal/hooks/focus-visible' as focus-visible;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 $separator-color: awsui.$color-border-tabs-divider;
 $label-horizontal-spacing: awsui.$space-xs;
