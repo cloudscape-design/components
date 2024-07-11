@@ -330,7 +330,7 @@ describe('Multi-page create', () => {
         subStepName: 'Container 1 - header',
         subStepIdentifier: 'step1-container1',
         fieldErrorContext: null,
-        fieldIdentifier: 'field1',
+        fieldIdentifier: null,
         subStepErrorContext: null,
       });
 

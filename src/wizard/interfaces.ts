@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { FlowType } from '../internal/analytics/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
-import { FlowType } from '../internal/analytics/interfaces';
 
 export namespace WizardProps {
   export interface AnalyticsMetadata {

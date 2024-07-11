@@ -292,7 +292,7 @@ describe('Single-page create', () => {
         stepNumber: 1,
         subStepName: 'Container 1 - header',
         fieldErrorContext: null,
-        fieldIdentifier: 'field1',
+        fieldIdentifier: null,
         subStepErrorContext: null,
       });
 
