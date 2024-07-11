@@ -41,12 +41,10 @@ interface TokenProps {
   setOperation: (newOperation: JoinOperation) => void;
   setToken: (newToken: TokenGroup, newStandalone?: Token[]) => void;
   token: InternalTokenGroup;
-  allTokens: readonly InternalTokenGroup[];
 }
 
 export const TokenButton = ({
   token,
-  allTokens,
   operation = 'and',
   first,
   removeToken,
@@ -64,26 +62,6 @@ export const TokenButton = ({
   freeTextFiltering,
   expandToViewport,
 }: TokenProps) => {
-  const flatTokens: Token[] = [];
-  function traverse(tokenOrGroup: InternalTokenGroup | InternalToken) {
-    if ('operation' in tokenOrGroup) {
-      tokenOrGroup.tokens.forEach(traverse);
-    } else {
-      flatTokens.push({ ...tokenOrGroup, propertyKey: tokenOrGroup.property?.propertyKey });
-    }
-  }
-  traverse(token);
-
-  const singleTokens: InternalTokenGroup[] = [];
-  for (const tokenOrGroup of allTokens) {
-    if (tokenOrGroup === token) {
-      continue;
-    }
-    if ('operation' in tokenOrGroup && tokenOrGroup.tokens.length === 1) {
-      singleTokens.push(tokenOrGroup);
-    }
-  }
-
   const firstLevelTokens: InternalToken[] = [];
   for (const tokenOrGroup of token.tokens) {
     if ('operation' in tokenOrGroup) {
@@ -92,23 +70,22 @@ export const TokenButton = ({
       firstLevelTokens.push(tokenOrGroup);
     }
   }
-
+  const externalTokens = firstLevelTokens.map(t => ({
+    propertyKey: t.property?.propertyKey,
+    operator: t.operator,
+    value: t.value,
+  }));
   return (
     <FilteringToken
-      tokens={firstLevelTokens.map(t => {
-        const formatted = getFormattedToken({ operation: 'and', tokens: [t] });
+      tokens={firstLevelTokens.map((t, index) => {
+        const formatted = getFormattedToken(t);
         return {
           content: (
             <TokenEditor
               setToken={setToken}
               triggerComponent={
                 <span className={styles['token-trigger']}>
-                  <TokenTrigger
-                    property={formatted.property}
-                    operator={formatted.operator}
-                    value={formatted.value}
-                    suffix={formatted.suffix}
-                  />
+                  <TokenTrigger property={formatted.property} operator={formatted.operator} value={formatted.value} />
                 </span>
               }
               filteringProperties={filteringProperties}
@@ -124,15 +101,10 @@ export const TokenButton = ({
             />
           ),
           ariaLabel: formatted.label,
-          dismissAriaLabel:
-            i18nStrings?.removeTokenButtonAriaLabel?.({
-              propertyKey: getFormattedToken({ operation: 'and', tokens: [t] }).label,
-              operator: getFormattedToken({ operation: 'and', tokens: [t] }).label,
-              value: getFormattedToken({ operation: 'and', tokens: [t] }).label,
-            }) ?? '',
+          dismissAriaLabel: i18nStrings?.removeTokenButtonAriaLabel?.(externalTokens[index]) ?? '',
         };
       })}
-      groupAriaLabel={`Token group with ${firstLevelTokens.length} tokens`}
+      groupAriaLabel={i18nStrings.tokenGroupAriaLabel?.(externalTokens) ?? ''}
       showOperation={!first && !hideOperations}
       operation={operation}
       groupOperation={token.operation}
@@ -160,12 +132,10 @@ const TokenTrigger = ({
   property,
   operator,
   value,
-  suffix,
 }: {
   property?: string;
   operator?: ComparisonOperator;
   value: string;
-  suffix: string;
 }) => {
   if (property) {
     property += ' ';
@@ -177,7 +147,6 @@ const TokenTrigger = ({
       {property}
       <span className={styles['token-operator']}>{operatorText}</span>
       {value}
-      {suffix}
     </>
   );
 };

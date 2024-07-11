@@ -8,34 +8,34 @@ export default class FilteringTokenWrapper extends ComponentWrapper {
   static rootSelector = styles.root;
 
   findLabel(): ElementWrapper {
-    return this.find(`.${styles['token-content']}.${styles.parent}`)!;
+    return this.findByClassName(styles['token-content'])!;
   }
 
   findRemoveButton(): ElementWrapper<HTMLButtonElement> {
-    return this.find<HTMLButtonElement>(`.${styles['dismiss-button']}.${styles.parent}`)!;
-  }
-
-  findTokenOperation(): SelectWrapper | null {
-    return this.findComponent(`.${styles.select}.${styles.parent}`, SelectWrapper);
-  }
-
-  findGroupTokens(): Array<FilteringGroupedTokenWrapper> {
-    return this.findAll(`.${styles.container}`).map(w => new FilteringGroupedTokenWrapper(w.getElement()));
-  }
-}
-
-export class FilteringGroupedTokenWrapper extends ComponentWrapper {
-  static rootSelector = styles.container;
-
-  findLabel(): ElementWrapper {
-    return this.find(`.${styles['token-content']}`)!;
-  }
-
-  findRemoveButton(): ElementWrapper<HTMLButtonElement> {
-    return this.find<HTMLButtonElement>(`.${styles['dismiss-button']}`)!;
+    return this.findByClassName<HTMLButtonElement>(styles['dismiss-button'])!;
   }
 
   findTokenOperation(): SelectWrapper | null {
     return this.findComponent(`.${styles.select}`, SelectWrapper);
+  }
+
+  findGroupTokens(): Array<FilteringGroupedTokenWrapper> {
+    return this.findAllByClassName(styles['inner-root']).map(w => new FilteringGroupedTokenWrapper(w.getElement()));
+  }
+}
+
+export class FilteringGroupedTokenWrapper extends ComponentWrapper {
+  static rootSelector = styles['inner-root'];
+
+  findLabel(): ElementWrapper {
+    return this.findByClassName(styles['inner-token-content'])!;
+  }
+
+  findRemoveButton(): ElementWrapper<HTMLButtonElement> {
+    return this.findByClassName<HTMLButtonElement>(styles['inner-dismiss-button'])!;
+  }
+
+  findTokenOperation(): SelectWrapper | null {
+    return this.findComponent(`.${styles['inner-select']}`, SelectWrapper);
   }
 }

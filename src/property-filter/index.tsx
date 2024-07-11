@@ -457,7 +457,6 @@ const PropertyFilter = React.forwardRef(
                 renderItem={(token, tokenIndex) => (
                   <TokenButton
                     token={token}
-                    allTokens={internalQuery.tokens}
                     first={tokenIndex === 0}
                     operation={internalQuery.operation}
                     removeToken={(inTokenIndex: number) => {
