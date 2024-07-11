@@ -598,6 +598,22 @@ describe('Axes', () => {
     expect(wrapper.findYTicks()[2].getElement()).toHaveTextContent('40.00');
   });
 
+  test('can have tick formatter for y axis when fitHeight is true', () => {
+    const { wrapper } = renderMixedChart(
+      <MixedLineBarChart
+        series={[lineSeries]}
+        fitHeight={true}
+        xDomain={[0, 12]}
+        yDomain={[0, 100]}
+        i18nStrings={{ yTickFormatter: (value: number) => value.toFixed(2) }}
+      />
+    );
+
+    expect(wrapper.findYTicks()[0].getElement()).toHaveTextContent('0.00');
+    expect(wrapper.findYTicks()[1].getElement()).toHaveTextContent('10.00');
+    expect(wrapper.findYTicks()[2].getElement()).toHaveTextContent('20.00');
+  });
+
   describe('can have tick formatter for x axis', () => {
     test('numeric axis', () => {
       const { wrapper } = renderMixedChart(

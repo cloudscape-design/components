@@ -197,7 +197,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
 
   const plotMeasureRef = useRef<SVGLineElement>(null);
   const measuredHeight = useHeightMeasure(() => plotMeasureRef.current, !fitHeight);
-  const plotHeight = fitHeight ? measuredHeight ?? 0 : explicitPlotHeight;
+  const plotHeight = fitHeight ? (measuredHeight || explicitPlotHeight) ?? 0 : explicitPlotHeight;
 
   const leftAxisProps = !horizontalBars
     ? getYAxisProps(plotHeight, [plotHeight, 0])
