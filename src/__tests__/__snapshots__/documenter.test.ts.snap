@@ -5471,7 +5471,7 @@ Object {
     Object {
       "analyticsTag": "",
       "description": "Specifies additional analytics-related metadata.
-* \`instanceIdentifier\` - A unique string that identifies this component instance in a console.",
+* \`instanceIdentifier\` - A unique string that identifies this component instance in your application.",
       "inlineType": Object {
         "name": "ContainerProps.AnalyticsMetadata",
         "properties": Array [
@@ -7008,7 +7008,7 @@ The event \`detail\` contains the current value of the \`expanded\` property.",
     Object {
       "analyticsTag": "",
       "description": "Specifies additional analytics-related metadata.
-* \`instanceIdentifier\` - A unique string that identifies this component instance in a console.",
+* \`instanceIdentifier\` - A unique string that identifies this component instance in your application.",
       "inlineType": Object {
         "name": "ExpandableSectionProps.AnalyticsMetadata",
         "properties": Array [
@@ -7538,7 +7538,7 @@ Object {
     Object {
       "analyticsTag": "",
       "description": "Specifies additional analytics-related metadata.
-* \`instanceIdentifier\` - A unique string that identifies this component instance in a console.
+* \`instanceIdentifier\` - A unique string that identifies this component instance in your application.
 * \`flowType\` - Identifies the type of flow represented by the component.",
       "inlineType": Object {
         "name": "FormProps.AnalyticsMetadata",
@@ -14640,7 +14640,7 @@ scroll parent scrolls to reveal the first row of the table.",
     Object {
       "analyticsTag": "",
       "description": "Specifies additional analytics-related metadata.
-* \`instanceIdentifier\` - A unique string that identifies this component instance in a console.",
+* \`instanceIdentifier\` - A unique string that identifies this component instance in your application.",
       "inlineType": Object {
         "name": "TableProps.AnalyticsMetadata",
         "properties": Array [
@@ -17746,7 +17746,7 @@ Defaults to \`false\`.
     Object {
       "analyticsTag": "",
       "description": "Specifies additional analytics-related metadata.
-* \`instanceIdentifier\` - A unique string that identifies this component instance in a console.
+* \`instanceIdentifier\` - A unique string that identifies this component instance in your application.
 * \`flowType\` - Identifies the type of flow represented by the component.",
       "inlineType": Object {
         "name": "WizardProps.AnalyticsMetadata",

@@ -8,7 +8,7 @@ import { BaseComponentProps } from '../internal/base-component';
 export interface ContainerProps extends BaseComponentProps {
   /**
    * Specifies additional analytics-related metadata.
-   * * `instanceIdentifier` - A unique string that identifies this component instance in a console.
+   * * `instanceIdentifier` - A unique string that identifies this component instance in your application.
    * @analytics
    */
   analyticsMetadata?: ContainerProps.AnalyticsMetadata;
