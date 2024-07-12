@@ -1,7 +1,6 @@
 build
 node_modules
 coverage
-backstop/report
 .idea
 # build output
 lib
@@ -12,3 +11,7 @@ src/test-utils/selectors
 src/icon/generated
 src/internal/generated/custom-css-properties/index.*
 vendor/generated-*.txt
+# IDEs
+.vscode
+# System
+.DS_Store

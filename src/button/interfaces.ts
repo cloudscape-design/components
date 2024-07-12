@@ -11,6 +11,12 @@ export interface ButtonProps extends BaseComponentProps {
    */
   disabled?: boolean;
   /**
+   * Provides a reason why the button is disabled (only when `disabled` is `true`).
+   * If provided, the button becomes focusable.
+   * Applicable for all button variants, except link.
+   */
+  disabledReason?: string;
+  /**
    * Renders the button as being in a loading state. It takes precedence over the `disabled` if both are set to `true`.
    * It prevents users from clicking the button, but it can still be focused.
    */

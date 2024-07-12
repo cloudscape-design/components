@@ -6,6 +6,7 @@ import { NonCancelableCustomEvent } from '~components';
 import Input, { InputProps } from '~components/input';
 import TopNavigation from '~components/top-navigation';
 import { I18N_STRINGS } from './common';
+import ScreenshotArea from '../utils/screenshot-area';
 
 export default function () {
   const inputRef = useRef<InputProps.Ref>(null);
@@ -17,60 +18,62 @@ export default function () {
   return (
     <article>
       <h1>TopNavigation Integ Page</h1>
-      <TopNavigation
-        i18nStrings={I18N_STRINGS}
-        identity={{
-          href: '#',
-          title: 'Title with an href',
-        }}
-        search={
-          <Input
-            ref={inputRef}
-            type="search"
-            placeholder="Search..."
-            value={inputValue}
-            onChange={event => setInputValue(event.detail.value)}
-          />
-        }
-        utilities={[
-          {
-            type: 'button',
-            variant: 'primary-button',
-            text: 'New thing',
-            iconName: 'add-plus',
-            disableTextCollapse: true,
-            onClick: onUtilityClick,
-          },
-          {
-            type: 'button',
-            text: 'Docs',
-            href: 'https://docs.aws.amazon.com/',
-            external: true,
-            externalIconAriaLabel: 'opens in a new tab',
-            onClick: onUtilityClick,
-          },
-          {
-            type: 'button',
-            ariaLabel: 'Notifications',
-            iconName: 'notification',
-            disableUtilityCollapse: true,
-            href: '/should-not-navigate',
-            onClick: evt => {
-              evt.preventDefault();
-              onUtilityClick(evt);
+      <ScreenshotArea>
+        <TopNavigation
+          i18nStrings={I18N_STRINGS}
+          identity={{
+            href: '#',
+            title: 'Title with an href',
+          }}
+          search={
+            <Input
+              ref={inputRef}
+              type="search"
+              placeholder="Search..."
+              value={inputValue}
+              onChange={event => setInputValue(event.detail.value)}
+            />
+          }
+          utilities={[
+            {
+              type: 'button',
+              variant: 'primary-button',
+              text: 'New thing',
+              iconName: 'add-plus',
+              disableTextCollapse: true,
+              onClick: onUtilityClick,
             },
-          },
-          {
-            type: 'menu-dropdown',
-            text: 'John Doe',
-            title: 'John Doe',
-            description: 'john.doe@example.com',
-            iconName: 'envelope',
-            items: [{ id: 'signout', text: 'Sign out' }],
-            onItemClick: onUtilityClick,
-          },
-        ]}
-      />
+            {
+              type: 'button',
+              text: 'Docs',
+              href: 'https://docs.aws.amazon.com/',
+              external: true,
+              externalIconAriaLabel: 'opens in a new tab',
+              onClick: onUtilityClick,
+            },
+            {
+              type: 'button',
+              ariaLabel: 'Notifications',
+              iconName: 'notification',
+              disableUtilityCollapse: true,
+              href: '/should-not-navigate',
+              onClick: evt => {
+                evt.preventDefault();
+                onUtilityClick(evt);
+              },
+            },
+            {
+              type: 'menu-dropdown',
+              text: 'John Doe',
+              title: 'John Doe',
+              description: 'john.doe@example.com',
+              iconName: 'envelope',
+              items: [{ id: 'signout', text: 'Sign out' }],
+              onItemClick: onUtilityClick,
+            },
+          ]}
+        />
+      </ScreenshotArea>
       <code>
         <pre id="events">{events.join('\n')}</pre>
       </code>

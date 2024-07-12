@@ -288,7 +288,8 @@
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "向左滚动",
-    "i18nStrings.scrollRightAriaLabel": "向右滚动"
+    "i18nStrings.scrollRightAriaLabel": "向右滚动",
+    "i18nStrings.tabsWithActionsAriaRoleDescription": "带有操作的选项卡"
   },
   "tag-editor": {
     "i18nStrings.keyPlaceholder": "输入键",

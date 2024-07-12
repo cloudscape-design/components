@@ -7,7 +7,7 @@ import { act } from 'react-dom/test-utils';
 import { describeEachAppLayout, renderComponent, isDrawerClosed } from './utils';
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 
-describeEachAppLayout(() => {
+describeEachAppLayout({ themes: ['classic', 'refresh'] }, () => {
   test('opens tools drawer', () => {
     let ref: AppLayoutProps.Ref | null = null;
     const { wrapper } = renderComponent(<AppLayout ref={newRef => (ref = newRef)} />);

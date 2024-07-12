@@ -12,6 +12,7 @@ export interface AbstractSwitchProps extends React.HTMLAttributes<HTMLElement>, 
   outlineClassName: string;
   showOutline?: boolean;
   disabled?: boolean;
+  readOnly?: boolean;
   nativeControl: (props: React.InputHTMLAttributes<HTMLInputElement>) => React.ReactElement;
   styledControl: React.ReactElement;
   label?: React.ReactNode;
@@ -34,6 +35,7 @@ export default function AbstractSwitch({
   outlineClassName,
   showOutline,
   disabled,
+  readOnly,
   nativeControl,
   styledControl,
   label,
@@ -74,7 +76,7 @@ export default function AbstractSwitch({
       <span
         className={styles['label-wrapper']}
         aria-disabled={disabled ? 'true' : undefined}
-        onClick={disabled ? undefined : onClick}
+        onClick={disabled || readOnly ? undefined : onClick}
       >
         <span className={clsx(styles.control, controlClassName)}>
           {styledControl}

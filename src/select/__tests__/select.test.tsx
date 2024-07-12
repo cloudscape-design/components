@@ -450,6 +450,87 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
       wrapper.openDropdown();
       expect(wrapper.findDropdown({ expandToViewport })?.findOpenDropdown()).toBeFalsy();
     });
+
+    describe('Disabled item with reason', () => {
+      test('has no tooltip open by default', () => {
+        const { wrapper } = renderSelect({
+          options: [{ label: 'First', value: '1', disabled: true, disabledReason: 'disabled reason' }],
+        });
+        wrapper.openDropdown();
+
+        expect(wrapper.findDropdown({ expandToViewport }).findOption(1)!.findDisabledReason()).toBe(null);
+      });
+
+      test('has no tooltip without disabledReason', () => {
+        const { wrapper } = renderSelect({
+          options: [{ label: 'First', value: '1', disabled: true }],
+        });
+        wrapper.openDropdown();
+        wrapper.findTrigger()!.keydown(KeyCode.down);
+
+        expect(wrapper.findDropdown({ expandToViewport }).findOption(1)!.findDisabledReason()).toBe(null);
+      });
+
+      test('open tooltip when the item is highlighted', () => {
+        const { wrapper } = renderSelect({
+          options: [{ label: 'First', value: '1', disabled: true, disabledReason: 'disabled reason' }],
+        });
+        wrapper.openDropdown();
+        wrapper.findTrigger().keydown(KeyCode.down);
+
+        expect(
+          wrapper.findDropdown({ expandToViewport }).findOption(1)!.findDisabledReason()!.getElement()
+        ).toHaveTextContent('disabled reason');
+      });
+
+      test('has no disabledReason a11y attributes by default', () => {
+        const { wrapper } = renderSelect({
+          options: defaultOptions,
+        });
+        wrapper.openDropdown();
+
+        expect(
+          wrapper.findDropdown({ expandToViewport })!.find('[data-test-index="1"]')!.getElement()
+        ).not.toHaveAttribute('aria-describedby');
+        expect(wrapper.findDropdown({ expandToViewport })!.find('[data-test-index="1"]')!.find('span[hidden]')).toBe(
+          null
+        );
+      });
+
+      test('has disabledReason a11y attributes', () => {
+        const { wrapper } = renderSelect({
+          options: [{ label: 'First', value: '1', disabled: true, disabledReason: 'disabled reason' }],
+        });
+        wrapper.openDropdown();
+
+        expect(wrapper.findDropdown({ expandToViewport })!.find('[data-test-index="1"]')!.getElement()).toHaveAttribute(
+          'aria-describedby'
+        );
+        expect(
+          wrapper.findDropdown({ expandToViewport })!.find('[data-test-index="1"]')!.find('span[hidden]')!.getElement()
+        ).toHaveTextContent('disabled reason');
+      });
+
+      test('can not select disabled with reason option', () => {
+        const onChange = jest.fn();
+        const { wrapper } = renderSelect({
+          options: [{ label: 'First', value: '1', disabled: true, disabledReason: 'disabled reason' }],
+          onChange,
+        });
+        wrapper.openDropdown();
+        wrapper.selectOptionByValue('1', { expandToViewport });
+        expect(onChange).not.toHaveBeenCalled();
+      });
+
+      test('click on disabled with reason option does not close dropdown', () => {
+        const { wrapper } = renderSelect({
+          options: [{ label: 'First', value: '1', disabled: true, disabledReason: 'disabled reason' }],
+        });
+        wrapper.openDropdown();
+        wrapper.selectOptionByValue('1', { expandToViewport });
+        expect(wrapper.findDropdown({ expandToViewport })?.findOpenDropdown()).toBeTruthy();
+      });
+    });
   });
 
   describe('Inline Label', () => {

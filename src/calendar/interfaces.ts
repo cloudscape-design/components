@@ -20,6 +20,13 @@ export interface CalendarProps extends BaseComponentProps {
   isDateEnabled?: CalendarProps.IsDateEnabledFunction;
 
   /**
+   * Provides a reason why a particular date in the calendar is not enabled (only when `isDateEnabled` returns `false`).
+   * If provided, the date becomes focusable.
+   * @param date
+   */
+  dateDisabledReason?: CalendarProps.DateDisabledReasonFunction;
+
+  /**
    * Specifies the locale to use to render month names and determine the starting day of the week.
    * If you don't provide this, the locale is determined by the page and browser locales.
    * Supported values and formats are listed in the
@@ -96,6 +103,10 @@ export namespace CalendarProps {
 
   export interface IsDateEnabledFunction {
     (date: Date): boolean;
+  }
+
+  export interface DateDisabledReasonFunction {
+    (date: Date): string;
   }
 
   export type Granularity = 'day' | 'month';

@@ -82,6 +82,7 @@ Object {
   "button": Array [
     "awsui_button_vjswe",
     "awsui_content_vjswe",
+    "awsui_disabled-reason-tooltip_1ueyk",
     "awsui_icon-left_vjswe",
   ],
   "button-dropdown": Array [
@@ -102,6 +103,7 @@ Object {
     "awsui_calendar-next-btn_1ykar",
     "awsui_calendar-prev-btn_1ykar",
     "awsui_calendar-row_1ykar",
+    "awsui_disabled-reason-tooltip_1ykar",
     "awsui_root_1ykar",
   ],
   "cards": Array [
@@ -166,6 +168,7 @@ Object {
   ],
   "column-layout": Array [
     "awsui_column-layout_vvxn7",
+    "awsui_item_zqq3x",
   ],
   "container": Array [
     "awsui_content-wrapper_14iqq",
@@ -204,6 +207,7 @@ Object {
     "awsui_custom-range-duration-input_16zmw",
     "awsui_custom-range-unit-select_16zmw",
     "awsui_day_1mfbn",
+    "awsui_disabled-reason-tooltip_1mfbn",
     "awsui_dropdown_mgja0",
     "awsui_end-date-input_mgja0",
     "awsui_end-date_1mfbn",
@@ -363,6 +367,13 @@ Object {
     "awsui_value_10ipo",
     "awsui_wrapper_1wepg",
   ],
+  "key-value-pairs": Array [
+    "awsui_detail_1y9fy",
+    "awsui_group-list-item_1y9fy",
+    "awsui_info_1y9fy",
+    "awsui_key-label_1y9fy",
+    "awsui_key-value-pairs_1y9fy",
+  ],
   "line-chart": Array [
     "awsui_root_g9v3m",
   ],
@@ -437,11 +448,13 @@ Object {
     "awsui_view-button_1vtzr",
   ],
   "segmented-control": Array [
+    "awsui_disabled-reason-tooltip_8cbea",
     "awsui_root_8cbea",
     "awsui_segment_8cbea",
     "awsui_selected_8cbea",
   ],
   "select": Array [
+    "awsui_disabled-reason-tooltip_dwuol",
     "awsui_placeholder_dwuol",
     "awsui_root_r2vco",
   ],
@@ -506,9 +519,14 @@ Object {
     "awsui_wrapper_wih1l",
   ],
   "tabs": Array [
+    "awsui_disabled-reason-tooltip_14rmt",
     "awsui_root_14rmt",
     "awsui_tabs-content-active_14rmt",
+    "awsui_tabs-tab-action_14rmt",
     "awsui_tabs-tab-active_14rmt",
+    "awsui_tabs-tab-dismiss_14rmt",
+    "awsui_tabs-tab-focused_14rmt",
+    "awsui_tabs-tab-header-container_14rmt",
     "awsui_tabs-tab-link_14rmt",
     "awsui_tabs-tab_14rmt",
   ],

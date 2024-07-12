@@ -28,6 +28,7 @@ export interface DateRangePickerCalendarProps extends BaseComponentProps {
   locale?: string;
   startOfWeek?: number;
   isDateEnabled?: (date: Date) => boolean;
+  dateDisabledReason?: (date: Date) => string;
   i18nStrings?: RangeCalendarI18nStrings;
   dateOnly?: boolean;
   timeInputFormat?: TimeInputProps.Format;
@@ -40,6 +41,7 @@ export default function DateRangePickerCalendar({
   locale = '',
   startOfWeek,
   isDateEnabled = () => true,
+  dateDisabledReason = () => '',
   i18nStrings,
   dateOnly = false,
   timeInputFormat = 'hh:mm:ss',
@@ -238,6 +240,7 @@ export default function DateRangePickerCalendar({
               focusedDate={focusedDate}
               onFocusedDateChange={setFocusedDate}
               isDateEnabled={isDateEnabled}
+              dateDisabledReason={dateDisabledReason}
               onSelectDate={onSelectDateHandler}
               onChangeMonth={setCurrentMonth}
               startOfWeek={normalizedStartOfWeek}

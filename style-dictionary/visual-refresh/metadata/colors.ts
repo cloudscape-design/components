@@ -182,6 +182,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorBackgroundNotificationGrey: {
+    description: 'Background color for grey notifications. For example: grey badges.',
+    public: true,
+    themeable: true,
+  },
   colorBackgroundPopover: {
     description: 'Background color for the popover container.',
     public: true,
@@ -233,17 +238,22 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
   },
   colorBackgroundAvatarDefault: {
-    description: 'The default background color of avatar.',
+    description: 'The default background color of avatars.',
     themeable: false,
     public: true,
   },
   colorBackgroundAvatarGenAi: {
-    description: 'The gen-ai background color of avatar.',
+    description: 'The gen-ai background color of avatars.',
     themeable: false,
     public: true,
   },
   colorTextAvatar: {
-    description: 'The text and icon color of avatar.',
+    description: 'The text and icon color of avatars.',
+    themeable: false,
+    public: true,
+  },
+  colorBackgroundLoadingBarGenAi: {
+    description: 'The background color of gen-ai loading bars.',
     themeable: false,
     public: true,
   },
@@ -258,6 +268,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  colorTextButtonNormalDisabled: {
+    description: 'The text color of normal buttons in disabled state.',
+    themeable: true,
+    public: true,
+  },
   colorBorderButtonNormalHover: {
     description: 'The border color of normal buttons in hover state.',
     themeable: true,
@@ -265,6 +280,11 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   colorBorderButtonPrimaryDisabled: {
     description: 'The border color of primary buttons in disabled state.',
+    themeable: true,
+    public: true,
+  },
+  colorTextButtonPrimaryDisabled: {
+    description: 'The text color of primary buttons in disabled state.',
     themeable: true,
     public: true,
   },
@@ -381,6 +401,12 @@ const metadata: StyleDictionary.MetadataIndex = {
   colorForegroundControlDisabled: {
     description:
       'The color used to mark disabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.',
+    public: true,
+    themeable: true,
+  },
+  colorForegroundControlReadOnly: {
+    description:
+      'The color used to mark readonly form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.',
     public: true,
     themeable: true,
   },

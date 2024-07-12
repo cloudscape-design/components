@@ -9,7 +9,7 @@ import Tooltip from '../tooltip';
 
 import { ButtonDropdownProps } from '../interfaces';
 import { getItemTarget } from '../utils/utils';
-import useHiddenDescription from '../utils/use-hidden-description';
+import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import InternalIcon, { InternalIconProps } from '../../icon/internal';
 import { useDropdownContext } from '../../internal/components/dropdown/context';
 import { getMenuItemProps, getMenuItemCheckboxProps } from '../utils/menu-item';

@@ -109,6 +109,7 @@ const DateRangePicker = React.forwardRef(
       locale = '',
       startOfWeek,
       isDateEnabled = () => true,
+      dateDisabledReason = () => '',
       value,
       placeholder,
       readOnly = false,
@@ -287,9 +288,7 @@ const DateRangePicker = React.forwardRef(
           })}
           hideCaret={true}
           onClick={() => {
-            if (!readOnly && !disabled) {
-              setIsDropDownOpen(true);
-            }
+            setIsDropDownOpen(true);
           }}
           disabled={disabled}
           readOnly={readOnly}
@@ -339,6 +338,7 @@ const DateRangePicker = React.forwardRef(
                 value={value}
                 showClearButton={showClearButton}
                 isDateEnabled={isDateEnabled}
+                dateDisabledReason={dateDisabledReason}
                 i18nStrings={i18nStrings}
                 onClear={onClear}
                 onApply={onApply}

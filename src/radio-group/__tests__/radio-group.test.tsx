@@ -110,6 +110,53 @@ describe('items', () => {
     expect(onChange).not.toHaveBeenCalled();
   });
 
+  test('Adds aria-readonly when readOnly is set to true', () => {
+    const { wrapper } = renderRadioGroup(<RadioGroup value="val1" name="test" items={defaultItems} readOnly={true} />);
+
+    expect(wrapper.getElement()).toHaveAttribute('aria-readonly', 'true');
+  });
+
+  test('Adds aria-disabled to items when readOnly is true', () => {
+    const { wrapper } = renderRadioGroup(<RadioGroup value="val1" name="test" items={defaultItems} readOnly={true} />);
+    const items = wrapper.findButtons();
+
+    expect(items[0].findNativeInput().getElement()).toHaveAttribute('aria-disabled', 'true');
+  });
+
+  test('Does not add aria-disabled to items when readOnly is true and disabled is true', () => {
+    const { wrapper } = renderRadioGroup(
+      <RadioGroup
+        value="val1"
+        name="test"
+        items={[{ ...defaultItems[0], disabled: true }, defaultItems[1]]}
+        readOnly={true}
+      />
+    );
+    const items = wrapper.findButtons();
+
+    expect(items[0].findNativeInput().getElement()).not.toHaveAttribute('aria-disabled');
+    expect(items[0].findNativeInput().getElement()).toHaveAttribute('disabled');
+  });
+
+  test('does not trigger change handler if readOnly', () => {
+    const onChange = jest.fn();
+    const { wrapper } = renderRadioGroup(
+      <RadioGroup value="val2" name="test" items={defaultItems} readOnly={true} onChange={onChange} />
+    );
+
+    act(() => wrapper.findButtons()[0].findLabel().click());
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  test('can receive focus if readOnly', () => {
+    let radioGroupRef: RadioGroupProps.Ref | null = null;
+    const { wrapper } = renderRadioGroup(
+      <RadioGroup value={null} items={defaultItems} ref={ref => (radioGroupRef = ref)} readOnly={true} />
+    );
+    radioGroupRef!.focus();
+    expect(wrapper.findInputByValue('val1')!.getElement()).toHaveFocus();
+  });
+
   test('displays the proper label', () => {
     const { wrapper } = renderRadioGroup(<RadioGroup value={null} items={[{ value: '1', label: 'Please select' }]} />);
 

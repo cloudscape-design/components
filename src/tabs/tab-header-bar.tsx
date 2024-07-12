@@ -25,9 +25,31 @@ import {
 } from '../internal/context/single-tab-stop-navigation-context';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { getAllFocusables } from '../internal/components/focus-lock/utils';
+import useHiddenDescription from '../internal/hooks/use-hidden-description';
+import Tooltip from '../internal/components/tooltip';
+import { nodeBelongs } from '../internal/utils/node-belongs';
+import { ButtonProps } from '../button/interfaces';
 
-const tabSelector = '[role="tab"]';
-const activeTabSelector = '[role="tab"][aria-selected="true"]';
+const tabSelector = `.${styles['tabs-tab-link']}`;
+const focusedTabSelector = `[role="tab"].${styles['tabs-tab-focused']}`;
+const focusableTabSelector = `.${styles['tabs-tab-focusable']}`;
+
+function dismissButton(
+  dismissLabel: TabsProps.Tab['dismissLabel'],
+  dismissDisabled: TabsProps.Tab['dismissDisabled'],
+  onDismiss: TabsProps.Tab['onDismiss']
+) {
+  return (
+    <InternalButton
+      onClick={onDismiss}
+      variant="icon"
+      iconName="close"
+      formAction="none"
+      ariaLabel={dismissLabel}
+      disabled={dismissDisabled}
+    />
+  );
+}
 
 export interface TabHeaderBarProps {
   onChange: (changeDetail: TabsProps.ChangeDetail) => void;
@@ -64,6 +86,20 @@ export function TabHeaderBar({
   const [horizontalOverflow, setHorizontalOverflow] = useState(false);
   const [inlineStartOverflow, setInlineStartOverflow] = useState(false);
   const [inlineEndOverflow, setInlineEndOverflow] = useState(false);
+  const [focusedTabId, setFocusedTabId] = useState(activeTabId);
+  const [previousActiveTabId, setPreviousActiveTabId] = useState<string | undefined>(activeTabId);
+  const hasActionOrDismissible = tabs.some(tab => tab.action || tab.dismissible);
+  const tabActionAttributes = hasActionOrDismissible
+    ? {
+        role: 'application',
+        'aria-roledescription': i18n(
+          'i18nStrings.tabsWithActionsAriaRoleDescription',
+          i18nStrings?.tabsWithActionsAriaRoleDescription
+        ),
+      }
+    : {
+        role: 'tablist',
+      };
 
   useEffect(() => {
     if (headerBarRef.current) {
@@ -78,8 +114,8 @@ export function TabHeaderBar({
       return;
     }
     const activeTabRef = tabRefs.current.get(activeTabId);
-    if (activeTabRef && activeTabRef.parentElement && headerBarRef.current) {
-      scrollIntoView(activeTabRef.parentElement, headerBarRef.current, smooth);
+    if (activeTabRef && headerBarRef.current) {
+      scrollIntoView(activeTabRef, headerBarRef.current, smooth);
     }
   };
 
@@ -143,7 +179,20 @@ export function TabHeaderBar({
       return null;
     }
     const tabElements: HTMLButtonElement[] = Array.from(containerObjectRef.current.querySelectorAll(tabSelector));
-    return tabElements.find(tab => tab.matches(activeTabSelector)) ?? tabElements.find(tab => !tab.disabled) ?? null;
+    return tabElements.find(tab => tab.matches(focusedTabSelector)) ?? tabElements.find(tab => !tab.disabled) ?? null;
+  }
+
+  function onUnregisterFocusable(focusableElement: HTMLElement) {
+    const isUnregisteringFocusedNode = nodeBelongs(focusableElement, document.activeElement);
+    const isFocusableActionOrDismissible = !focusableElement.classList.contains(styles['tabs-tab-link']);
+    if (isUnregisteringFocusedNode && !isFocusableActionOrDismissible) {
+      // Wait for unmounted node to get removed from the DOM.
+      requestAnimationFrame(() => {
+        const nextFocusTarget = navigationAPI.current?.getFocusTarget();
+        const tabLinkButton = nextFocusTarget?.querySelector(`.${styles['tabs-tab-link']}`) as HTMLElement;
+        tabLinkButton?.focus();
+      });
+    }
   }
 
   useEffect(() => {
@@ -157,8 +206,20 @@ export function TabHeaderBar({
   }
 
   function onKeyDown(event: React.KeyboardEvent) {
-    const focusTarget = navigationAPI.current?.getFocusTarget();
+    const focusTarget = document.activeElement;
     const specialKeys = [KeyCode.right, KeyCode.left, KeyCode.end, KeyCode.home, KeyCode.pageUp, KeyCode.pageDown];
+    const isActionOpen = document.querySelector(`.${styles['tabs-tab-action']} [aria-expanded="true"]`);
+    const isDismissOrActionFocused = !focusTarget?.classList.contains(styles['tabs-tab-link']);
+
+    if (isActionOpen) {
+      return;
+    }
+    if (event.key === 'Tab' && !event.shiftKey && isDismissOrActionFocused) {
+      event.preventDefault();
+      const panelId = `${idNamespace}-${activeTabId}-panel`;
+      const panel = document.getElementById(panelId);
+      panel?.focus();
+    }
     if (hasModifierKeys(event) || specialKeys.indexOf(event.keyCode) === -1) {
       return;
     }
@@ -168,7 +229,7 @@ export function TabHeaderBar({
     event.preventDefault();
 
     const focusables = getFocusablesFrom(containerObjectRef.current);
-    const activeIndex = focusables.indexOf(focusTarget);
+    const activeIndex = document.activeElement instanceof HTMLElement ? focusables.indexOf(document.activeElement) : -1;
     handleKey(event as any, {
       onHome: () => focusElement(focusables[0]),
       onEnd: () => focusElement(focusables[focusables.length - 1]),
@@ -182,9 +243,15 @@ export function TabHeaderBar({
     element.focus();
     // If focusable element is a tab - fire the onChange for it.
     const tabsById = tabs.reduce((map, tab) => map.set(tab.id, tab), new Map<string, TabsProps.Tab>());
-    for (const [tabId, tabTriggerElement] of tabRefs.current.entries()) {
-      if (tabId !== activeTabId && tabTriggerElement === element) {
-        onChange({ activeTabId: tabId, activeTabHref: tabsById.get(tabId)?.href });
+    for (const [tabId, focusTargetTabTriggerElement] of tabRefs.current.entries()) {
+      const focusTargetTabLabelElement = focusTargetTabTriggerElement?.querySelector(`.${styles['tabs-tab-link']}`);
+      if (tabId !== activeTabId && focusTargetTabLabelElement === element) {
+        setPreviousActiveTabId(tabId);
+        setFocusedTabId(tabId);
+
+        if (!tabsById.get(tabId)?.disabled) {
+          onChange({ activeTabId: tabId, activeTabHref: tabsById.get(tabId)?.href });
+        }
         break;
       }
     }
@@ -194,14 +261,17 @@ export function TabHeaderBar({
     function isElementRegistered(element: HTMLElement) {
       return navigationAPI.current?.isRegistered(element) ?? false;
     }
-    function isElementDisabled(element: HTMLElement) {
+    function isElementFocusable(element: HTMLElement) {
       if (element instanceof HTMLButtonElement) {
-        return element.disabled && element.getAttribute('aria-selected') !== 'true';
+        return !element.disabled || element.closest(focusableTabSelector);
       }
-      return false;
+
+      return element.matches(focusableTabSelector);
     }
-    return getAllFocusables(target).filter(el => isElementRegistered(el) && !isElementDisabled(el));
+    return getAllFocusables(target).filter(el => isElementRegistered(el) && isElementFocusable(el));
   }
+
+  const TabList = hasActionOrDismissible ? 'div' : 'ul';
 
   return (
     //converted span to div as list should not be a child of span for HTML validation
@@ -223,20 +293,21 @@ export function TabHeaderBar({
         ref={navigationAPI}
         navigationActive={true}
         getNextFocusTarget={getNextFocusTarget}
+        onUnregisterFocusable={onUnregisterFocusable}
       >
-        <ul
-          role="tablist"
+        <TabList
+          {...tabActionAttributes}
           className={styles['tabs-header-list']}
           aria-label={ariaLabel}
           aria-labelledby={ariaLabelledby}
-          ref={headerBarRef}
+          ref={headerBarRef as never}
           onScroll={onScroll}
           onKeyDown={onKeyDown}
           onFocus={onFocus}
           onBlur={onBlur}
         >
           {tabs.map(renderTabHeader)}
-        </ul>
+        </TabList>
       </SingleTabStopNavigationProvider>
       {horizontalOverflow && (
         <span className={rightButtonClasses}>
@@ -255,6 +326,9 @@ export function TabHeaderBar({
   );
 
   function renderTabHeader(tab: TabsProps.Tab) {
+    const { dismissible, dismissLabel, dismissDisabled, action, onDismiss } = tab;
+    const isActive = activeTabId === tab.id && !tab.disabled;
+
     const clickTab = (event: React.MouseEvent) => {
       if (tab.disabled) {
         event.preventDefault();
@@ -282,6 +356,8 @@ export function TabHeaderBar({
         return;
       }
 
+      setFocusedTabId(tab.id);
+      setPreviousActiveTabId(tab.id);
       onChange({ activeTabId: tab.id, activeTabHref: tab.href });
     };
 
@@ -289,23 +365,49 @@ export function TabHeaderBar({
       [styles['tabs-tab-link']]: true,
       [styles.refresh]: isVisualRefresh,
       [styles['tabs-tab-active']]: activeTabId === tab.id && !tab.disabled,
+      [styles['tabs-tab-focused']]: focusedTabId === tab.id,
+      [styles['tabs-tab-active']]: isActive,
       [styles['tabs-tab-disabled']]: tab.disabled,
+      [styles['tabs-tab-focusable']]: !tab.disabled || (tab.disabled && !!tab.disabledReason),
+    });
+
+    const tabHeaderContainerClasses = clsx({
+      [styles['tabs-tab-header-container']]: true,
+      [styles.refresh]: isVisualRefresh,
+      [styles['tabs-tab-active']]: isActive,
+      [styles['tabs-tab-disabled']]: tab.disabled,
+      [styles['tabs-tab-focusable']]: !tab.disabled || (tab.disabled && !!tab.disabledReason),
+    });
+
+    const tabActionClasses = clsx({
+      [styles['tabs-tab-action']]: true,
+      [styles['tabs-tab-active']]: isActive,
     });
 
     const commonProps: (JSX.IntrinsicElements['a'] | JSX.IntrinsicElements['button']) & { 'data-testid': string } = {
       className: classes,
-      role: 'tab',
-      'aria-selected': tab.id === activeTabId,
       'aria-controls': `${idNamespace}-${tab.id}-panel`,
       'data-testid': tab.id,
       id: getTabElementId({ namespace: idNamespace, tabId: tab.id }),
-      children: <span className={styles['tabs-tab-label']}>{tab.label}</span>,
+      onClick: clickTab,
     };
+
+    const tabHeaderContainerAriaProps = hasActionOrDismissible
+      ? {
+          role: 'group',
+          'aria-labelledby': commonProps.id,
+        }
+      : {};
+
+    if (!hasActionOrDismissible) {
+      commonProps['aria-selected'] = activeTabId === tab.id;
+      commonProps.role = 'tab';
+    } else {
+      commonProps['aria-expanded'] = activeTabId === tab.id;
+    }
 
     if (tab.disabled) {
       commonProps['aria-disabled'] = 'true';
-    } else {
-      commonProps.onClick = clickTab;
     }
 
     const setElement = (tabElement: null | HTMLElement) => {
@@ -315,10 +417,46 @@ export function TabHeaderBar({
       tabRefs.current.set(tab.id, tabElement as HTMLElement);
     };
 
+    const handleDismiss: ButtonProps['onClick'] = event => {
+      if (!containerObjectRef.current || !onDismiss) {
+        return;
+      }
+      const tabElements = getFocusablesFrom(containerObjectRef.current).filter(el =>
+        el.classList.contains(styles['tabs-tab-link'])
+      );
+      const activeTabIndex = tabElements.findIndex(el => el.dataset.testid === tab.id);
+      tabElements.splice(activeTabIndex, 1);
+      let nextActive: HTMLElement | undefined;
+      if (previousActiveTabId && previousActiveTabId !== tab.id) {
+        nextActive = tabElements.find(el => el.dataset.testid === previousActiveTabId);
+      } else {
+        nextActive = tabElements[Math.min(tabElements.length - 1, activeTabIndex)];
+      }
+      if (nextActive && nextActive.dataset.testid) {
+        onChange({ activeTabId: nextActive.dataset.testid });
+        nextActive.focus();
+      }
+      onDismiss(event);
+    };
+
+    const TabItem = hasActionOrDismissible ? 'div' : 'li';
     return (
-      <li className={styles['tabs-tab']} role="presentation" key={tab.id}>
-        <TabTrigger ref={setElement} tab={tab} elementProps={commonProps} />
-      </li>
+      <TabItem
+        ref={(element: any) => tabRefs.current.set(tab.id, element as HTMLElement)}
+        className={styles['tabs-tab']}
+        role="presentation"
+        key={tab.id}
+      >
+        <div className={tabHeaderContainerClasses} {...tabHeaderContainerAriaProps}>
+          <TabTrigger ref={setElement} tab={tab} elementProps={commonProps} />
+          {action && <span className={tabActionClasses}>{action}</span>}
+          {dismissible && (
+            <span className={styles['tabs-tab-dismiss']}>
+              {dismissButton(dismissLabel, dismissDisabled, handleDismiss)}
+            </span>
+          )}
+        </div>
+      </TabItem>
     );
   }
 }
@@ -332,12 +470,55 @@ const TabTrigger = forwardRef(
     ref: React.Ref<HTMLElement>
   ) => {
     const refObject = useRef<HTMLElement>(null);
+    const tabLabelRefObject = useRef<HTMLElement>(null);
     const mergedRef = useMergeRefs(refObject, ref);
     const { tabIndex } = useSingleTabStopNavigation(refObject);
+    const isDisabledWithReason = tab.disabled && !!tab.disabledReason;
+    const [showTooltip, setShowTooltip] = useState(false);
+    const { targetProps, descriptionEl } = useHiddenDescription(tab.disabledReason);
+    const children = (
+      <>
+        <span className={styles['tabs-tab-label']} ref={tabLabelRefObject}>
+          {tab.label}
+        </span>
+        {isDisabledWithReason && (
+          <>
+            {descriptionEl}
+            {showTooltip && (
+              <Tooltip
+                className={styles['disabled-reason-tooltip']}
+                trackRef={tabLabelRefObject}
+                value={tab.disabledReason!}
+              />
+            )}
+          </>
+        )}
+      </>
+    );
+
+    const handlers = {
+      onFocus: () => setShowTooltip(true),
+      onBlur: () => setShowTooltip(false),
+      onMouseEnter: () => setShowTooltip(true),
+      onMouseLeave: () => setShowTooltip(false),
+    };
+
+    const commonProps = {
+      ...elementProps,
+      ...(isDisabledWithReason ? targetProps : {}),
+      ...(isDisabledWithReason ? handlers : {}),
+      ref: mergedRef,
+      tabIndex: tabIndex,
+    };
+
     return tab.href ? (
-      <a {...elementProps} href={tab.href} ref={mergedRef} tabIndex={tabIndex} />
+      <a {...commonProps} href={tab.href}>
+        {children}
+      </a>
     ) : (
-      <button {...elementProps} type="button" disabled={tab.disabled} ref={mergedRef} tabIndex={tabIndex} />
+      <button {...commonProps} type="button" disabled={tab.disabled && !isDisabledWithReason}>
+        {children}
+      </button>
     );
   }
 );

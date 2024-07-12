@@ -162,3 +162,7 @@ $inlineLabel-border-radius: 2px;
     border-end-end-radius: $inlineLabel-border-radius;
   }
 }
+
+.disabled-reason-tooltip {
+  /* used in test-utils or tests */
+}
