@@ -8,6 +8,7 @@ import IconButtonItem from './icon-button-item.js';
 import MenuDropdownItem from './menu-dropdown-item.js';
 import Tooltip from '../internal/components/tooltip/index.js';
 import styles from './styles.css.js';
+import LiveRegion from '../internal/components/live-region/index.js';
 
 const ItemElement = forwardRef(
   (
@@ -118,7 +119,11 @@ const ItemElement = forwardRef(
           />
         )}
         {showTooltip && (
-          <Tooltip trackRef={buttonRef} trackKey={item.id} value={(showFeedback && feedbackPopover) || item.text} />
+          <Tooltip
+            trackRef={buttonRef}
+            trackKey={item.id}
+            value={(showFeedback && <LiveRegion visible={true}>{feedbackPopover}</LiveRegion>) || item.text}
+          />
         )}
       </div>
     );
