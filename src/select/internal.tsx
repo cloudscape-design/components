@@ -28,7 +28,6 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { OptionGroup } from '../internal/components/option/interfaces.js';
 import { SomeRequired } from '../internal/types';
-import ScreenreaderOnly from '../internal/components/screenreader-only/index.js';
 import { joinStrings } from '../internal/utils/strings/join-strings.js';
 import { useInternalI18n } from '../i18n/context.js';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
@@ -274,7 +273,9 @@ const InternalSelect = React.forwardRef(
             highlightType={highlightType}
           />
         </Dropdown>
-        <ScreenreaderOnly id={selectAriaLabelId}>{ariaLabel || inlineLabelText}</ScreenreaderOnly>
+        <div hidden={true} id={selectAriaLabelId}>
+          {ariaLabel || inlineLabelText}
+        </div>
       </div>
     );
   }

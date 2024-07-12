@@ -135,7 +135,7 @@ $inlineLabel-border-radius: 2px;
   // Stepped gradient background for inline label overlap between input and background.
   background-image: linear-gradient(
     to bottom,
-    transparent calc(100% - (styles.$control-border-width + 5px)),
+    transparent calc(100% - (awsui.$border-field-width + awsui.$border-control-focus-ring-shadow-spread + 5px)),
     awsui.$color-background-input-default 1px
   );
   background-position: bottom;
