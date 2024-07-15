@@ -89,8 +89,6 @@ export class FilteringTokenWrapper extends ComponentWrapper {
 }
 
 export class PropertyFilterEditorDropdownWrapper extends ComponentWrapper {
-  static rootSelector = styles['token-editor'];
-
   findHeader(): ElementWrapper {
     return this.findByClassName(popoverStyles.header)!;
   }
