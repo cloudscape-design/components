@@ -27,7 +27,6 @@ const InternalButtonGroup = forwardRef(
       onItemClick,
       ariaLabel,
       ariaLabelledby,
-      dropdownExpandToViewport,
       __internalRootRef = null,
       ...props
     }: InternalButtonGroupProps,
@@ -189,13 +188,12 @@ const InternalButtonGroup = forwardRef(
           {items.map((itemOrGroup, index) => {
             const content =
               itemOrGroup.type === 'group' ? (
-                <div key={itemOrGroup.text} role="group" aria-label={itemOrGroup.text} className={styles.group}>
+                <div key={index} role="group" aria-label={itemOrGroup.text} className={styles.group}>
                   {itemOrGroup.items.map(item => (
                     <ItemElement
-                      key={item.text}
+                      key={item.id}
                       item={item}
                       onItemClick={onItemClick}
-                      dropdownExpandToViewport={dropdownExpandToViewport}
                       ref={element => onSetButtonRef(item, element)}
                     />
                   ))}
@@ -204,7 +202,6 @@ const InternalButtonGroup = forwardRef(
                 <ItemElement
                   item={itemOrGroup}
                   onItemClick={onItemClick}
-                  dropdownExpandToViewport={dropdownExpandToViewport}
                   ref={element => onSetButtonRef(itemOrGroup, element)}
                 />
               );
@@ -214,7 +211,7 @@ const InternalButtonGroup = forwardRef(
             const shouldAddDivider = isGroupBefore || (!isGroupBefore && isGroupNow && index !== 0);
 
             return (
-              <React.Fragment key={itemOrGroup.type === 'group' ? itemOrGroup.text : itemOrGroup.id}>
+              <React.Fragment key={itemOrGroup.type === 'group' ? index : itemOrGroup.id}>
                 {shouldAddDivider && <div className={styles.divider} />}
                 {content}
               </React.Fragment>
