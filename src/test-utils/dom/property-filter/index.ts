@@ -59,15 +59,6 @@ export default class PropertyFilterWrapper extends AutosuggestWrapper {
   findConstraint(): ElementWrapper | null {
     return this.findByClassName(styles.constraint);
   }
-
-  /**
-   * Returns dropdown content of editing token if opened or `null` otherwise.
-   */
-  findEditorDropdown(options = { expandToViewport: false }): null | PropertyFilterEditorDropdownWrapper {
-    const root = options.expandToViewport ? createWrapper() : this;
-    const popoverBody = root.findByClassName(popoverStyles.body);
-    return popoverBody ? new PropertyFilterEditorDropdownWrapper(popoverBody.getElement()) : null;
-  }
 }
 
 export class FilteringTokenWrapper extends ComponentWrapper {
@@ -83,6 +74,15 @@ export class FilteringTokenWrapper extends ComponentWrapper {
 
   findTokenOperation(): SelectWrapper | null {
     return this.findComponent(`.${filteringTokenStyles.select}`, SelectWrapper);
+  }
+
+  /**
+   * Returns dropdown content of editing token if opened or `null` otherwise.
+   */
+  findEditorDropdown(options = { expandToViewport: false }): null | PropertyFilterEditorDropdownWrapper {
+    const root = options.expandToViewport ? createWrapper() : this;
+    const popoverBody = root.findByClassName(popoverStyles.body);
+    return popoverBody ? new PropertyFilterEditorDropdownWrapper(popoverBody.getElement()) : null;
   }
 }
 

@@ -71,12 +71,12 @@ function renderComponent(props?: Partial<PropertyFilterProps & { ref: React.Ref<
 function openEditor(tokenIndex: number, { expandToViewport }: { expandToViewport: boolean }) {
   const propertyFilter = createWrapper().findPropertyFilter()!;
   propertyFilter.findTokens()[tokenIndex].findLabel()!.click();
-  return findEditor({ expandToViewport })!;
+  return findEditor(tokenIndex, { expandToViewport })!;
 }
 
-function findEditor({ expandToViewport }: { expandToViewport: boolean }) {
+function findEditor(tokenIndex: number, { expandToViewport }: { expandToViewport: boolean }) {
   const propertyFilter = createWrapper().findPropertyFilter()!;
-  const editor = propertyFilter.findEditorDropdown({ expandToViewport })!;
+  const editor = propertyFilter.findTokens()[tokenIndex].findEditorDropdown({ expandToViewport })!;
   return editor
     ? {
         textContent: editor.getElement().textContent,
@@ -212,7 +212,7 @@ describe.each([false, true])('token editor, expandToViewport=%s', expandToViewpo
       act(() => editor.propertySelect.openDropdown());
       act(() => editor.propertySelect.selectOption(1));
       act(() => editor.dismissButton.click());
-      expect(findEditor({ expandToViewport })).toBeNull();
+      expect(findEditor(0, { expandToViewport })).toBeNull();
       expect(handleChange).not.toHaveBeenCalled();
     });
 
@@ -230,7 +230,7 @@ describe.each([false, true])('token editor, expandToViewport=%s', expandToViewpo
       act(() => editor.propertySelect.openDropdown());
       act(() => editor.propertySelect.selectOption(1));
       act(() => editor.cancelButton.click());
-      expect(findEditor({ expandToViewport })).toBeNull();
+      expect(findEditor(0, { expandToViewport })).toBeNull();
       expect(handleChange).not.toHaveBeenCalled();
     });
 
@@ -248,7 +248,7 @@ describe.each([false, true])('token editor, expandToViewport=%s', expandToViewpo
       act(() => editor.propertySelect.selectOption(1));
       act(() => editor.valueAutosuggest.setInputValue('123'));
       act(() => editor.submitButton.click());
-      expect(findEditor({ expandToViewport })).toBeNull();
+      expect(findEditor(0, { expandToViewport })).toBeNull();
       expect(handleChange).toHaveBeenCalledWith(
         expect.objectContaining({
           detail: { operation: 'or', tokens: [{ operator: ':', propertyKey: undefined, value: '123' }] },
