@@ -1,13 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
+import { ComponentWrapper, ElementWrapper, createWrapper } from '@cloudscape-design/test-utils-core/dom';
 
 import styles from '../../../property-filter/styles.selectors.js';
+import filteringTokenStyles from '../../../internal/components/filtering-token/styles.selectors.js';
+import popoverStyles from '../../../popover/styles.selectors.js';
 import tokenListSelectors from '../../../internal/components/token-list/styles.selectors.js';
 import textFilterStyles from '../../../text-filter/styles.selectors.js';
 import AutosuggestWrapper from '../autosuggest';
-import FilteringTokenWrapper from '../internal/filtering-token';
 import ButtonWrapper from '../button';
+import SelectWrapper from '../select';
 import FormFieldWrapper from '../form-field';
 
 export default class PropertyFilterWrapper extends AutosuggestWrapper {
@@ -58,13 +60,44 @@ export default class PropertyFilterWrapper extends AutosuggestWrapper {
     return this.findByClassName(styles.constraint);
   }
 
-  findEditorDropdown(): null | PropertyFilterEditorDropdownWrapper {
-    return this.findComponent(`.${styles['token-editor']}`, PropertyFilterEditorDropdownWrapper);
+  /**
+   * Returns dropdown content of editing token if opened or `null` otherwise.
+   */
+  findEditorDropdown(options = { expandToViewport: false }): null | PropertyFilterEditorDropdownWrapper {
+    const root = options.expandToViewport ? createWrapper() : this;
+    const popoverBody = root.findByClassName(popoverStyles.body);
+    return popoverBody ? new PropertyFilterEditorDropdownWrapper(popoverBody.getElement()) : null;
+  }
+}
+
+export class FilteringTokenWrapper extends ComponentWrapper {
+  static rootSelector = filteringTokenStyles.root;
+
+  findLabel(): ElementWrapper {
+    const label = this.findByClassName(filteringTokenStyles['token-content'])!;
+    const trigger = label.findPopover()?.findTrigger() ?? null;
+    return trigger ?? label;
+  }
+
+  findRemoveButton(): ElementWrapper<HTMLButtonElement> {
+    return this.findByClassName<HTMLButtonElement>(filteringTokenStyles['dismiss-button'])!;
+  }
+
+  findTokenOperation(): SelectWrapper | null {
+    return this.findComponent(`.${filteringTokenStyles.select}`, SelectWrapper);
   }
 }
 
 export class PropertyFilterEditorDropdownWrapper extends ComponentWrapper {
   static rootSelector = styles['token-editor'];
+
+  findHeader(): ElementWrapper {
+    return this.findByClassName(popoverStyles.header)!;
+  }
+
+  findDismissButton(): ButtonWrapper {
+    return this.findComponent(`.${popoverStyles['dismiss-control']}`, ButtonWrapper)!;
+  }
 
   findPropertyField(): FormFieldWrapper {
     return this.findComponent(`.${styles['token-editor-field-property']}`, FormFieldWrapper)!;
@@ -75,7 +108,7 @@ export class PropertyFilterEditorDropdownWrapper extends ComponentWrapper {
   }
 
   findValueField(): FormFieldWrapper {
-    return this.findComponent(`.${styles['token-editor-field-operator']}`, FormFieldWrapper)!;
+    return this.findComponent(`.${styles['token-editor-field-value']}`, FormFieldWrapper)!;
   }
 
   findCancelButton(): ButtonWrapper {

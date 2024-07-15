@@ -4,13 +4,8 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
 
-import createWrapper, {
-  ElementWrapper,
-  PropertyFilterWrapper,
-  PopoverWrapper,
-} from '../../../lib/components/test-utils/dom';
+import createWrapper from '../../../lib/components/test-utils/dom';
 import PropertyFilter from '../../../lib/components/property-filter';
-import styles from '../../../lib/components/property-filter/styles.selectors.js';
 import {
   FilteringProperty,
   FilteringOption,
@@ -18,13 +13,6 @@ import {
   Ref,
 } from '../../../lib/components/property-filter/interfaces';
 import { createDefaultProps, i18nStrings } from './common';
-
-const states: Record<string, string> = {
-  0: 'Stopped',
-  1: 'Stopping',
-  2: 'Running',
-};
-const getStateLabel = (value: string) => (value !== undefined ? states[value] : 'Unknown');
 
 const filteringProperties: readonly FilteringProperty[] = [
   {
@@ -61,12 +49,6 @@ const filteringProperties: readonly FilteringProperty[] = [
     operators: ['!:', ':', '=', '!='],
     groupValuesLabel: 'Edge case values',
   },
-  {
-    key: 'state',
-    propertyLabel: 'state',
-    operators: [{ operator: '=', format: getStateLabel }],
-    groupValuesLabel: 'State values',
-  },
 ];
 
 const filteringOptions: readonly FilteringOption[] = [
@@ -78,84 +60,75 @@ const filteringOptions: readonly FilteringOption[] = [
   { propertyKey: 'other-string', value: 'value2' },
   { propertyKey: 'missing-property', value: 'value' },
   { propertyKey: 'default-operator', value: 'value' },
-  { propertyKey: 'state', value: '0', label: getStateLabel('0') },
-  { propertyKey: 'state', value: '1', label: getStateLabel('1') },
-  { propertyKey: 'state', value: '2', label: getStateLabel('2') },
 ];
 
 const defaultProps = createDefaultProps(filteringProperties, filteringOptions);
 
-const renderComponent = (props?: Partial<PropertyFilterProps & { ref: React.Ref<Ref> }>) => {
-  const { container } = render(<PropertyFilter {...defaultProps} {...props} />);
-  return { container, propertyFilterWrapper: createWrapper(container).findPropertyFilter()! };
-};
-
-function findPropertyField(wrapper: ElementWrapper) {
-  return wrapper.findFormField(`.${styles['token-editor-field-property']}`)!;
-}
-function findOperatorField(wrapper: ElementWrapper) {
-  return wrapper.findFormField(`.${styles['token-editor-field-operator']}`)!;
-}
-function findValueField(wrapper: ElementWrapper) {
-  return wrapper.findFormField(`.${styles['token-editor-field-value']}`)!;
+function renderComponent(props?: Partial<PropertyFilterProps & { ref: React.Ref<Ref> }>) {
+  render(<PropertyFilter {...defaultProps} {...props} />);
 }
 
-function findPropertySelector(wrapper: ElementWrapper) {
-  return findPropertyField(wrapper).findControl()!.findSelect()!;
-}
-function findOperatorSelector(wrapper: ElementWrapper) {
-  return findOperatorField(wrapper).findControl()!.findSelect()!;
-}
-function findValueSelector(wrapper: ElementWrapper) {
-  return findValueField(wrapper).findControl()!.findAutosuggest()!;
+function openEditor(tokenIndex: number, { expandToViewport }: { expandToViewport: boolean }) {
+  const propertyFilter = createWrapper().findPropertyFilter()!;
+  propertyFilter.findTokens()[tokenIndex].findLabel()!.click();
+  return findEditor({ expandToViewport })!;
 }
 
-function openTokenEditor(wrapper: PropertyFilterWrapper, index = 0) {
-  const tokenWrapper = createWrapper(wrapper.findTokens()![index].getElement());
-  const popoverWrapper = tokenWrapper.findPopover()!;
-  act(() => popoverWrapper.findTrigger().click());
-  const contentWrapper = popoverWrapper.findContent()!;
-  return [contentWrapper, popoverWrapper] as const;
+function findEditor({ expandToViewport }: { expandToViewport: boolean }) {
+  const propertyFilter = createWrapper().findPropertyFilter()!;
+  const editor = propertyFilter.findEditorDropdown({ expandToViewport })!;
+  return editor
+    ? {
+        textContent: editor.getElement().textContent,
+        header: editor.findHeader(),
+        dismissButton: editor.findDismissButton(),
+        propertyField: editor.findPropertyField(),
+        propertySelect: editor.findPropertyField().findControl()!.findSelect()!,
+        operatorField: editor.findOperatorField(),
+        operatorSelect: editor.findOperatorField().findControl()!.findSelect()!,
+        valueField: editor.findValueField(),
+        valueAutosuggest: editor.findValueField().findControl()!.findAutosuggest()!,
+        cancelButton: editor.findCancelButton(),
+        submitButton: editor.findSubmitButton(),
+      }
+    : null;
 }
 
-describe('token editor', () => {
+describe.each([false, true])('token editor, expandToViewport=%s', expandToViewport => {
   test('uses i18nStrings to populate header', () => {
-    const { propertyFilterWrapper: wrapper } = renderComponent({
+    renderComponent({
       query: { tokens: [{ value: 'first', operator: '!:' }], operation: 'or' },
     });
-    const [, popoverWrapper] = openTokenEditor(wrapper);
-    expect(popoverWrapper.findHeader()!.getElement()).toHaveTextContent(i18nStrings.editTokenHeader);
+    const editor = openEditor(0, { expandToViewport });
+    expect(editor.header.getElement()).toHaveTextContent(i18nStrings.editTokenHeader);
   });
 
   describe('form controls content', () => {
     test('default', () => {
-      const { propertyFilterWrapper: wrapper } = renderComponent({
+      renderComponent({
         query: { tokens: [{ propertyKey: 'string', value: 'first', operator: '!:' }], operation: 'or' },
       });
-      const [contentWrapper] = openTokenEditor(wrapper);
-      expect(contentWrapper.getElement()).toHaveTextContent('PropertystringOperator!:Does not containValueCancelApply');
-      const propertySelectWrapper = findPropertySelector(contentWrapper);
-      act(() => propertySelectWrapper.openDropdown());
+      const editor = openEditor(0, { expandToViewport });
+      expect(editor.textContent).toBe('Edit filterPropertystringOperator!:Does not containValueCancelApply');
+      act(() => editor.propertySelect.openDropdown());
       expect(
-        propertySelectWrapper
+        editor.propertySelect
           .findDropdown()
           .findOptions()!
           .map(optionWrapper => optionWrapper.getElement().textContent)
-      ).toEqual(['All properties', 'string', 'string-other', 'default', 'string!=', 'state', 'range']);
+      ).toEqual(['All properties', 'string', 'string-other', 'default', 'string!=', 'range']);
 
-      const operatorSelectWrapper = findOperatorSelector(contentWrapper);
-      act(() => operatorSelectWrapper.openDropdown());
+      act(() => editor.operatorSelect.openDropdown());
       expect(
-        operatorSelectWrapper
+        editor.operatorSelect
           .findDropdown()
           .findOptions()!
           .map(optionWrapper => optionWrapper.getElement().textContent)
       ).toEqual(['=Equals', '!=Does not equal', ':Contains', '!:Does not contain']);
 
-      const valueSelectWrapper = findValueSelector(contentWrapper);
-      act(() => valueSelectWrapper.focus());
+      act(() => editor.valueAutosuggest.focus());
       expect(
-        valueSelectWrapper
+        editor.valueAutosuggest
           .findDropdown()
           .findOptions()!
           .map(optionWrapper => optionWrapper.getElement().textContent)
@@ -163,35 +136,31 @@ describe('token editor', () => {
     });
 
     test('with free text disabled', () => {
-      const { propertyFilterWrapper: wrapper } = renderComponent({
+      renderComponent({
         disableFreeTextFiltering: true,
         query: { tokens: [{ propertyKey: 'string', value: 'first', operator: '!:' }], operation: 'or' },
       });
-      const [contentWrapper] = openTokenEditor(wrapper);
-      expect(contentWrapper.getElement()).toHaveTextContent('PropertystringOperator!:Does not containValueCancelApply');
-      const propertySelectWrapper = findPropertySelector(contentWrapper);
-      act(() => propertySelectWrapper.openDropdown());
+      const editor = openEditor(0, { expandToViewport });
+      expect(editor.textContent).toBe('Edit filterPropertystringOperator!:Does not containValueCancelApply');
+      act(() => editor.propertySelect.openDropdown());
       expect(
-        propertySelectWrapper
+        editor.propertySelect
           .findDropdown()
           .findOptions()!
           .map(optionWrapper => optionWrapper.getElement().textContent)
-      ).toEqual(['string', 'string-other', 'default', 'string!=', 'state', 'range']);
+      ).toEqual(['string', 'string-other', 'default', 'string!=', 'range']);
     });
 
     test('with custom free text operators', () => {
-      const { propertyFilterWrapper: wrapper } = renderComponent({
+      renderComponent({
         freeTextFiltering: { operators: ['=', '!=', ':', '!:'] },
         query: { tokens: [{ value: 'first', operator: '!=' }], operation: 'or' },
       });
-      const [contentWrapper] = openTokenEditor(wrapper);
-      expect(contentWrapper.getElement()).toHaveTextContent(
-        'PropertyAll propertiesOperator!=Does not equalValueCancelApply'
-      );
-      const operatorSelectWrapper = findOperatorSelector(contentWrapper);
-      act(() => operatorSelectWrapper.openDropdown());
+      const editor = openEditor(0, { expandToViewport });
+      expect(editor.textContent).toBe('Edit filterPropertyAll propertiesOperator!=Does not equalValueCancelApply');
+      act(() => editor.operatorSelect.openDropdown());
       expect(
-        operatorSelectWrapper
+        editor.operatorSelect
           .findDropdown()
           .findOptions()!
           .map(optionWrapper => optionWrapper.getElement().textContent)
@@ -199,107 +168,87 @@ describe('token editor', () => {
     });
 
     test('preserves fields, when one is edited', () => {
-      const { propertyFilterWrapper: wrapper } = renderComponent({
+      renderComponent({
         disableFreeTextFiltering: true,
         query: { tokens: [{ propertyKey: 'string', value: 'first', operator: ':' }], operation: 'or' },
       });
-      const [contentWrapper] = openTokenEditor(wrapper);
-      const propertySelectWrapper = findPropertySelector(contentWrapper);
-      const operatorSelectWrapper = findOperatorSelector(contentWrapper);
-      const valueSelectWrapper = findValueSelector(contentWrapper);
+      const editor = openEditor(0, { expandToViewport });
 
       // Change operator
-      act(() => operatorSelectWrapper.openDropdown());
-      act(() => operatorSelectWrapper.selectOption(1));
-      expect(propertySelectWrapper.findTrigger().getElement()).toHaveTextContent('string');
-      expect(operatorSelectWrapper.findTrigger().getElement()).toHaveTextContent('=Equals');
-      expect(valueSelectWrapper.findNativeInput().getElement()).toHaveAttribute('value', 'first');
+      act(() => editor.operatorSelect.openDropdown());
+      act(() => editor.operatorSelect.selectOption(1));
+      expect(editor.propertySelect.findTrigger().getElement()).toHaveTextContent('string');
+      expect(editor.operatorSelect.findTrigger().getElement()).toHaveTextContent('=Equals');
+      expect(editor.valueAutosuggest.findNativeInput().getElement()).toHaveAttribute('value', 'first');
 
       // Change value
-      act(() => valueSelectWrapper.setInputValue('123'));
-      expect(propertySelectWrapper.findTrigger().getElement()).toHaveTextContent('string');
-      expect(operatorSelectWrapper.findTrigger().getElement()).toHaveTextContent('=Equals');
-      expect(valueSelectWrapper.findNativeInput().getElement()).toHaveAttribute('value', '123');
+      act(() => editor.valueAutosuggest.setInputValue('123'));
+      expect(editor.propertySelect.findTrigger().getElement()).toHaveTextContent('string');
+      expect(editor.operatorSelect.findTrigger().getElement()).toHaveTextContent('=Equals');
+      expect(editor.valueAutosuggest.findNativeInput().getElement()).toHaveAttribute('value', '123');
 
       // Change property
       // This preserves operator but not value because the value type between properties can be different.
-      act(() => propertySelectWrapper.openDropdown());
-      act(() => propertySelectWrapper.selectOption(2));
-      expect(propertySelectWrapper.findTrigger().getElement()).toHaveTextContent('string-other');
-      expect(operatorSelectWrapper.findTrigger().getElement()).toHaveTextContent('=Equals');
-      expect(valueSelectWrapper.findNativeInput().getElement()).toHaveAttribute('value', '');
+      act(() => editor.propertySelect.openDropdown());
+      act(() => editor.propertySelect.selectOption(2));
+      expect(editor.propertySelect.findTrigger().getElement()).toHaveTextContent('string-other');
+      expect(editor.operatorSelect.findTrigger().getElement()).toHaveTextContent('=Equals');
+      expect(editor.valueAutosuggest.findNativeInput().getElement()).toHaveAttribute('value', '');
     });
   });
 
   describe('exit actions', () => {
-    let wrapper: PropertyFilterWrapper;
-    let contentWrapper: ElementWrapper;
-    let popoverWrapper: PopoverWrapper;
-    const handleChange = jest.fn();
-    beforeEach(() => {
-      handleChange.mockReset();
-      const { propertyFilterWrapper } = renderComponent({
+    test('dismiss button closes the popover and discards the changes', () => {
+      const handleChange = jest.fn();
+      renderComponent({
         onChange: handleChange,
         query: { tokens: [{ propertyKey: 'string', value: 'first', operator: '!:' }], operation: 'or' },
       });
-      wrapper = propertyFilterWrapper;
-      const openResult = openTokenEditor(wrapper);
-      contentWrapper = openResult[0];
-      popoverWrapper = openResult[1];
-    });
+      const editor = openEditor(0, { expandToViewport });
 
-    test('dismiss button closes the popover and discards the changes', () => {
-      const valueAutosuggestWrapper = findValueSelector(contentWrapper);
-      act(() => valueAutosuggestWrapper.setInputValue('123'));
-      const operatorSelectWrapper = findOperatorSelector(contentWrapper);
-      act(() => operatorSelectWrapper.openDropdown());
-      act(() => operatorSelectWrapper.selectOption(1));
-      const propertySelectWrapper = findPropertySelector(contentWrapper);
-      act(() => propertySelectWrapper.openDropdown());
-      act(() => propertySelectWrapper.selectOption(1));
-
-      act(() => popoverWrapper.findDismissButton()!.click());
-      expect(popoverWrapper.findContent()).toBeNull();
+      act(() => editor.valueAutosuggest.setInputValue('123'));
+      act(() => editor.operatorSelect.openDropdown());
+      act(() => editor.operatorSelect.selectOption(1));
+      act(() => editor.propertySelect.openDropdown());
+      act(() => editor.propertySelect.selectOption(1));
+      act(() => editor.dismissButton.click());
+      expect(findEditor({ expandToViewport })).toBeNull();
       expect(handleChange).not.toHaveBeenCalled();
-
-      const openResult = openTokenEditor(wrapper);
-      contentWrapper = openResult[0];
-      expect(contentWrapper.getElement()).toHaveTextContent('PropertystringOperator!:Does not containValueCancelApply');
     });
 
     test('cancel button closes the popover and discards the changes', () => {
-      const valueAutosuggestWrapper = findValueSelector(contentWrapper);
-      act(() => valueAutosuggestWrapper.setInputValue('123'));
-      const operatorSelectWrapper = findOperatorSelector(contentWrapper);
-      act(() => operatorSelectWrapper.openDropdown());
-      act(() => operatorSelectWrapper.selectOption(1));
-      const propertySelectWrapper = findPropertySelector(contentWrapper);
-      act(() => propertySelectWrapper.openDropdown());
-      act(() => propertySelectWrapper.selectOption(1));
+      const handleChange = jest.fn();
+      renderComponent({
+        onChange: handleChange,
+        query: { tokens: [{ propertyKey: 'string', value: 'first', operator: '!:' }], operation: 'or' },
+      });
+      const editor = openEditor(0, { expandToViewport });
 
-      act(() => contentWrapper.findButton(`.${styles['token-editor-cancel']}`)!.click());
-      popoverWrapper = wrapper.findTokens()[0]!.find('*')!.findPopover()!;
-      expect(popoverWrapper.findContent()).toBeNull();
+      act(() => editor.valueAutosuggest.setInputValue('123'));
+      act(() => editor.operatorSelect.openDropdown());
+      act(() => editor.operatorSelect.selectOption(1));
+      act(() => editor.propertySelect.openDropdown());
+      act(() => editor.propertySelect.selectOption(1));
+      act(() => editor.cancelButton.click());
+      expect(findEditor({ expandToViewport })).toBeNull();
       expect(handleChange).not.toHaveBeenCalled();
-
-      const openResult = openTokenEditor(wrapper);
-      contentWrapper = openResult[0];
-      expect(contentWrapper.getElement()).toHaveTextContent('PropertystringOperator!:Does not containValueCancelApply');
     });
 
     test('submit button closes the popover and saves the changes', () => {
-      const operatorSelectWrapper = findOperatorSelector(contentWrapper);
-      act(() => operatorSelectWrapper.openDropdown());
-      act(() => operatorSelectWrapper.selectOption(1));
-      const propertySelectWrapper = findPropertySelector(contentWrapper);
-      act(() => propertySelectWrapper.openDropdown());
-      act(() => propertySelectWrapper.selectOption(1));
-      const valueAutosuggestWrapper = findValueSelector(contentWrapper);
-      act(() => valueAutosuggestWrapper.setInputValue('123'));
+      const handleChange = jest.fn();
+      renderComponent({
+        onChange: handleChange,
+        query: { tokens: [{ propertyKey: 'string', value: 'first', operator: '!:' }], operation: 'or' },
+      });
+      const editor = openEditor(0, { expandToViewport });
 
-      act(() => contentWrapper.findButton(`.${styles['token-editor-submit']}`)!.click());
-      popoverWrapper = wrapper.findTokens()[0]!.find('*')!.findPopover()!;
-      expect(popoverWrapper.findContent()).toBeNull();
+      act(() => editor.operatorSelect.openDropdown());
+      act(() => editor.operatorSelect.selectOption(1));
+      act(() => editor.propertySelect.openDropdown());
+      act(() => editor.propertySelect.selectOption(1));
+      act(() => editor.valueAutosuggest.setInputValue('123'));
+      act(() => editor.submitButton.click());
+      expect(findEditor({ expandToViewport })).toBeNull();
       expect(handleChange).toHaveBeenCalledWith(
         expect.objectContaining({
           detail: { operation: 'or', tokens: [{ operator: ':', propertyKey: undefined, value: '123' }] },
