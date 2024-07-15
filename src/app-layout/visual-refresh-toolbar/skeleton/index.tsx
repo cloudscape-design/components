@@ -84,7 +84,7 @@ export function SkeletonLayout({
         {notifications}
         <div className={clsx(styles.main, { [styles['main-disable-paddings']]: disableContentPaddings })} style={style}>
           {contentHeader && <div className={styles['content-header']}>{contentHeader}</div>}
-          <div className={testutilStyles.content}>{content}</div>
+          <div className={clsx(styles.content, testutilStyles.content)}>{content}</div>
         </div>
         {bottomSplitPanel && (
           <div

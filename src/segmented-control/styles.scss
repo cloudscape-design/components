@@ -40,3 +40,7 @@
     grid-template-columns: repeatValue(1fr, $i);
   }
 }
+
+.disabled-reason-tooltip {
+  /* used in test-utils or tests */
+}

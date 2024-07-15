@@ -3104,6 +3104,14 @@ The text will also be added to the \`title\` attribute of the button.",
       "type": "boolean",
     },
     Object {
+      "description": "Provides a reason why the button is disabled (only when \`disabled\` is \`true\`).
+If provided, the button becomes focusable.
+Applicable for all button variants, except link.",
+      "name": "disabledReason",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Specifies whether the linked URL, when selected, will prompt the user to download instead of navigate.
 You can specify a string value that will be suggested as the name of the downloaded file.
 This property only applies when an \`href\` is provided.",
@@ -3503,6 +3511,13 @@ Use this to provide an accessible name for buttons that don't have visible text.
       "type": "boolean",
     },
     Object {
+      "description": "Provides a reason why the button dropdown is disabled (only when \`disabled\` is \`true\`).
+If provided, the disabled button becomes focusable.",
+      "name": "disabledReason",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "defaultValue": "false",
       "description": "By default, the dropdown height is constrained to fit inside the height of its next scrollable container element.
 Enabling this property will allow the dropdown to extend beyond that container by using fixed positioning and
@@ -3612,6 +3627,11 @@ The main action also supports the following properties of the [button](/componen
             "name": "disabled",
             "optional": true,
             "type": "false | true",
+          },
+          Object {
+            "name": "disabledReason",
+            "optional": true,
+            "type": "string",
           },
           Object {
             "name": "download",
@@ -3778,6 +3798,24 @@ The event \`detail\` contains the current value of the field.",
       "name": "className",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Provides a reason why a particular date in the calendar is not enabled (only when \`isDateEnabled\` returns \`false\`).
+If provided, the date becomes focusable.",
+      "inlineType": Object {
+        "name": "CalendarProps.DateDisabledReasonFunction",
+        "parameters": Array [
+          Object {
+            "name": "date",
+            "type": "Date",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "dateDisabledReason",
+      "optional": true,
+      "type": "CalendarProps.DateDisabledReasonFunction",
     },
     Object {
       "defaultValue": "\\"day\\"",
@@ -6050,6 +6088,24 @@ is provided by its parent form field component.
       "type": "string",
     },
     Object {
+      "description": "Provides a reason why a particular date in the calendar is not enabled (only when \`isDateEnabled\` returns \`false\`).
+If provided, the date becomes focusable.",
+      "inlineType": Object {
+        "name": "CalendarProps.DateDisabledReasonFunction",
+        "parameters": Array [
+          Object {
+            "name": "date",
+            "type": "Date",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "dateDisabledReason",
+      "optional": true,
+      "type": "CalendarProps.DateDisabledReasonFunction",
+    },
+    Object {
       "defaultValue": "false",
       "description": "Specifies if the control is disabled, which prevents the
 user from modifying the value and prevents the value from
@@ -6406,6 +6462,25 @@ is provided by its parent form field component.
       "name": "customAbsoluteRangeControl",
       "optional": true,
       "type": "DateRangePickerProps.AbsoluteRangeControl",
+    },
+    Object {
+      "defaultValue": "() => ''",
+      "description": "Provides a reason why a particular date in the calendar is not enabled (only when \`isDateEnabled\` returns \`false\`).
+If provided, the date becomes focusable.",
+      "inlineType": Object {
+        "name": "DateRangePickerProps.DateDisabledReasonFunction",
+        "parameters": Array [
+          Object {
+            "name": "date",
+            "type": "Date",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "dateDisabledReason",
+      "optional": true,
+      "type": "DateRangePickerProps.DateDisabledReasonFunction",
     },
     Object {
       "defaultValue": "false",
@@ -8522,6 +8597,62 @@ with the input using \`ariaDescribedby\`.",
 }
 `;
 
+exports[`Documenter definition for key-value-pairs matches the snapshot: key-value-pairs 1`] = `
+Object {
+  "events": Array [],
+  "functions": Array [],
+  "name": "KeyValuePairs",
+  "properties": Array [
+    Object {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "defaultValue": "1",
+      "description": "Specifies the number of columns in each grid row.
+Valid values are any integer between 1 and 4. It defaults to 1.",
+      "name": "columns",
+      "optional": true,
+      "type": "number",
+    },
+    Object {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "An array of either key-value pairs individual items or groups.
+They could be combined.
+Each item has \`type\` prop, which might be either \`group\` or \`pair\`. Defaults to \`pair\` if not specified.
+Each key-value pair definition has the following properties:
+  * \`type\` (string) - (Optional) Item type (pair).
+  * \`label\` (string) - The key label.
+  * \`info\` (React.ReactNode) - (Optional) Area next to the key to display an info link.
+  * \`value\` (React.ReactNode) - The corresponding value for the key.
+
+Each group definition has the following properties:
+  * \`type\` (string) - Item type (group).
+  * \`title\` (string) - (Optional) An optional title for this column.
+  * \`items\` (ReadonlyArray<KeyValuePairProps.KeyValuePair>) - An array of
+    key-value pair items.
+",
+      "name": "items",
+      "optional": false,
+      "type": "ReadonlyArray<KeyValuePairsProps.Item>",
+    },
+  ],
+  "regions": Array [],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Documenter definition for line-chart matches the snapshot: line-chart 1`] = `
 Object {
   "events": Array [
@@ -10118,6 +10249,7 @@ The options can be grouped using \`OptionGroup\` objects.
 - \`lang\` (string) - (Optional) The language of the option, provided as a BCP 47 language tag.
 - \`description\` (string) - (Optional) Further information about the option that appears below the label.
 - \`disabled\` (boolean) - (Optional) Determines whether the option is disabled.
+- \`disabledReason\` (string) - (Optional) Displays tooltip near the item when disabled. Use to provide additional context.
 - \`labelTag\` (string) - (Optional) A label tag that provides additional guidance, shown next to the label.
 - \`tags\` [string[]] - (Optional) A list of tags giving further guidance about the option.
 - \`filteringTags\` [string[]] - (Optional) A list of additional tags used for automatic filtering.
@@ -12481,6 +12613,7 @@ the label is visible and attached to the select component, unless \`ariaLabelled
       "description": "An array of objects representing options. Each segment has the following properties:
 - \`id\` (string) - The ID of the segment.
 - \`disabled\` [boolean] - (Optional) Determines whether the segment is disabled, which prevents the user from selecting it.
+- \`disabledReason\` (string) - (Optional) Displays tooltip near the segment when disabled. Use to provide additional context.
 - \`iconName\` (string) - (Optional) Specifies the name of the icon, used with the [icon component](/components/icon/).
 - \`iconAlt\` (string) - (Optional) Specifies alternate text for the icon when using \`iconUrl\`, or \`iconName\` without \`text\`.
            This is required when you use an icon without \`text\`.
@@ -12777,6 +12910,7 @@ The options can be grouped using \`OptionGroup\` objects.
 - \`lang\` (string) - (Optional) The language of the option, provided as a BCP 47 language tag.
 - \`description\` (string) - (Optional) Further information about the option that appears below the label.
 - \`disabled\` (boolean) - (Optional) Determines whether the option is disabled.
+- \`disabledReason\` (string) - (Optional) Displays tooltip near the item when disabled. Use to provide additional context.
 - \`labelTag\` (string) - (Optional) A label tag that provides additional guidance, shown next to the label.
 - \`tags\` [string[]] - (Optional) A list of tags giving further guidance about the option.
 - \`filteringTags\` [string[]] - (Optional) A list of additional tags used for automatic filtering.
@@ -14587,6 +14721,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
 - \`label\` (ReactNode) - Tab label shown in the UI.
 - \`content\` (ReactNode) - (Optional) Tab content to render in the container.
 - \`disabled\` (boolean) - (Optional) Specifies if this tab is disabled.
+- \`disabledReason\` (string) - (Optional) Displays tooltip near the tab when disabled. Use to provide additional context.
 - \`dismissible\` (boolean) - (Optional) Determines whether the tab includes a dismiss icon button. By default, the dismiss button is not included.
 - \`dismissLabel\` (boolean) - (Optional) Specifies an aria-label for the dismiss icon button.
 - \`dismissDisabled\` (boolean) - (Optional) Determines whether the dismiss button is disabled.

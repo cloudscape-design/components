@@ -1,8 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
+import { ComponentWrapper, ElementWrapper, createWrapper } from '@cloudscape-design/test-utils-core/dom';
 import ButtonWrapper from '../button';
 import styles from '../../../tabs/styles.selectors.js';
+
+export class TabWrapper extends ComponentWrapper {
+  findDisabledReason(): ElementWrapper | null {
+    return createWrapper().find(`.${styles['disabled-reason-tooltip']}`);
+  }
+}
 
 export default class TabsWrapper extends ComponentWrapper<HTMLButtonElement> {
   static rootSelector: string = styles.root;
@@ -19,8 +25,8 @@ export default class TabsWrapper extends ComponentWrapper<HTMLButtonElement> {
    *
    * @param index 1-based index of the clickable element to return
    */
-  findTabLinkByIndex(index: number): ElementWrapper<HTMLAnchorElement | HTMLButtonElement> | null {
-    return this.find(`.${styles['tabs-tab']}:nth-child(${index}) .${styles['tabs-tab-link']}`);
+  findTabLinkByIndex(index: number): TabWrapper | null {
+    return this.findComponent(`.${styles['tabs-tab']}:nth-child(${index}) .${styles['tabs-tab-link']}`, TabWrapper);
   }
 
   /**
@@ -37,8 +43,15 @@ export default class TabsWrapper extends ComponentWrapper<HTMLButtonElement> {
    *
    * @param id ID of the clickable element to return
    */
-  findTabLinkById(id: string): ElementWrapper<HTMLAnchorElement | HTMLButtonElement> | null {
-    return this.find(`.${styles['tabs-tab-link']}[data-testid="${id}"]`);
+  findTabLinkById(id: string): TabWrapper | null {
+    return this.findComponent(`.${styles['tabs-tab-link']}[data-testid="${id}"]`, TabWrapper);
+  }
+
+  /**
+   * Finds the currently focused tab, which might not be active if disabled with a reason.
+   */
+  findFocusedTab(): ElementWrapper<HTMLAnchorElement | HTMLButtonElement> | null {
+    return this.find(`.${styles['tabs-tab-focused']}`);
   }
 
   /**

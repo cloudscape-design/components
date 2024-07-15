@@ -268,6 +268,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  colorTextButtonNormalDisabled: {
+    description: 'The text color of normal buttons in disabled state.',
+    themeable: true,
+    public: true,
+  },
   colorBorderButtonNormalHover: {
     description: 'The border color of normal buttons in hover state.',
     themeable: true,
@@ -275,6 +280,11 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   colorBorderButtonPrimaryDisabled: {
     description: 'The border color of primary buttons in disabled state.',
+    themeable: true,
+    public: true,
+  },
+  colorTextButtonPrimaryDisabled: {
+    description: 'The text color of primary buttons in disabled state.',
     themeable: true,
     public: true,
   },

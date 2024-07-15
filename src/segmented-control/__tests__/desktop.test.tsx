@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+import { fireEvent } from '@testing-library/react';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 import { renderSegmentedControl } from './utils';
 import { SegmentedControlWrapper } from '../../../lib/components/test-utils/dom';
@@ -114,6 +115,328 @@ describe('Segment disabled property', () => {
     );
     getSegmentWrapper(segmentedControlWrapper, 0).getElement().click();
     expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { selectedId: 'seg-1' } }));
+  });
+
+  describe('Disabled with reason', () => {
+    test('should behave as normal when disabledReason is provided without disabled: true', () => {
+      const onChange = jest.fn();
+      const { segmentedControlWrapper } = renderSegmentedControl(
+        <SegmentedControl
+          selectedId="seg-2"
+          options={defaultOptions.map(option => {
+            if (option.id === 'seg-2') {
+              return {
+                ...option,
+                disabledReason: 'disabled reason',
+              };
+            }
+
+            return option;
+          })}
+          onChange={onChange}
+        />
+      );
+
+      expect(segmentedControlWrapper.findSegmentById('seg-2')!.getElement()).not.toHaveAttribute(
+        'aria-disabled',
+        'true'
+      );
+
+      segmentedControlWrapper.findSegmentById('seg-2')!.focus();
+
+      expect(segmentedControlWrapper.findSegmentById('seg-2')!.findDisabledReason()).toBe(null);
+
+      segmentedControlWrapper.findSegmentById('seg-1')!.click();
+
+      expect(onChange).toHaveBeenCalled();
+    });
+
+    test('has no disabled attribute when disabled with reason', () => {
+      const { segmentedControlWrapper } = renderSegmentedControl(
+        <SegmentedControl
+          selectedId="seg-2"
+          options={defaultOptions.map(option => {
+            if (option.id === 'seg-2') {
+              return {
+                ...option,
+                disabled: true,
+                disabledReason: 'disabled reason',
+              };
+            }
+
+            return option;
+          })}
+        />
+      );
+      expect(segmentedControlWrapper.findSegmentById('seg-2')!.getElement()).not.toHaveAttribute('disabled');
+    });
+
+    test('has aria-disabled property when disabled with reason', () => {
+      const { segmentedControlWrapper } = renderSegmentedControl(
+        <SegmentedControl
+          selectedId="seg-2"
+          options={defaultOptions.map(option => {
+            if (option.id === 'seg-2') {
+              return {
+                ...option,
+                disabled: true,
+                disabledReason: 'disabled reason',
+              };
+            }
+
+            return option;
+          })}
+        />
+      );
+      expect(segmentedControlWrapper.findSegmentById('seg-2')!.getElement()).toHaveAttribute('aria-disabled', 'true');
+    });
+
+    test('has no tooltip open by default', () => {
+      const { segmentedControlWrapper } = renderSegmentedControl(
+        <SegmentedControl
+          selectedId="seg-2"
+          options={defaultOptions.map(option => {
+            if (option.id === 'seg-2') {
+              return {
+                ...option,
+                disabled: true,
+                disabledReason: 'disabled reason',
+              };
+            }
+
+            return option;
+          })}
+        />
+      );
+      expect(segmentedControlWrapper.findSegmentById('seg-2')!.findDisabledReason()).toBe(null);
+    });
+
+    test('has no tooltip without disabledReason', () => {
+      const { segmentedControlWrapper } = renderSegmentedControl(
+        <SegmentedControl
+          selectedId="seg-1"
+          options={defaultOptions.map(option => {
+            if (option.id === 'seg-2') {
+              return {
+                ...option,
+                disabled: true,
+              };
+            }
+
+            return option;
+          })}
+        />
+      );
+
+      segmentedControlWrapper.findSegmentById('seg-2')!.focus();
+
+      expect(segmentedControlWrapper.findSegmentById('seg-2')!.findDisabledReason()).toBe(null);
+    });
+
+    test('open tooltip on focus', () => {
+      const { segmentedControlWrapper } = renderSegmentedControl(
+        <SegmentedControl
+          selectedId="seg-1"
+          options={defaultOptions.map(option => {
+            if (option.id === 'seg-2') {
+              return {
+                ...option,
+                disabled: true,
+                disabledReason: 'disabled reason',
+              };
+            }
+
+            return option;
+          })}
+        />
+      );
+
+      segmentedControlWrapper.findSegmentById('seg-2')!.focus();
+
+      expect(segmentedControlWrapper.findSegmentById('seg-2')!.findDisabledReason()!.getElement()).toHaveTextContent(
+        'disabled reason'
+      );
+    });
+
+    test('closes tooltip on blur', () => {
+      const { segmentedControlWrapper } = renderSegmentedControl(
+        <SegmentedControl
+          selectedId="seg-1"
+          options={defaultOptions.map(option => {
+            if (option.id === 'seg-2') {
+              return {
+                ...option,
+                disabled: true,
+                disabledReason: 'disabled reason',
+              };
+            }
+
+            return option;
+          })}
+        />
+      );
+
+      segmentedControlWrapper.findSegmentById('seg-2')!.focus();
+
+      expect(segmentedControlWrapper.findSegmentById('seg-2')!.findDisabledReason()!.getElement()).toHaveTextContent(
+        'disabled reason'
+      );
+
+      segmentedControlWrapper.findSegmentById('seg-2')!.blur();
+
+      expect(segmentedControlWrapper.findSegmentById('seg-2')!.findDisabledReason()).toBe(null);
+    });
+
+    test('open tooltip on mouseenter', () => {
+      const { segmentedControlWrapper } = renderSegmentedControl(
+        <SegmentedControl
+          selectedId="seg-1"
+          options={defaultOptions.map(option => {
+            if (option.id === 'seg-2') {
+              return {
+                ...option,
+                disabled: true,
+                disabledReason: 'disabled reason',
+              };
+            }
+
+            return option;
+          })}
+        />
+      );
+
+      fireEvent.mouseEnter(segmentedControlWrapper.findSegmentById('seg-2')!.getElement());
+
+      expect(segmentedControlWrapper.findSegmentById('seg-2')!.findDisabledReason()!.getElement()).toHaveTextContent(
+        'disabled reason'
+      );
+    });
+
+    test('close tooltip on mouseleave', () => {
+      const { segmentedControlWrapper } = renderSegmentedControl(
+        <SegmentedControl
+          selectedId="seg-1"
+          options={defaultOptions.map(option => {
+            if (option.id === 'seg-2') {
+              return {
+                ...option,
+                disabled: true,
+                disabledReason: 'disabled reason',
+              };
+            }
+
+            return option;
+          })}
+        />
+      );
+
+      fireEvent.mouseEnter(segmentedControlWrapper.findSegmentById('seg-2')!.getElement());
+
+      expect(segmentedControlWrapper.findSegmentById('seg-2')!.findDisabledReason()!.getElement()).toHaveTextContent(
+        'disabled reason'
+      );
+
+      fireEvent.mouseLeave(segmentedControlWrapper.findSegmentById('seg-2')!.getElement());
+
+      expect(segmentedControlWrapper.findSegmentById('seg-2')!.findDisabledReason()).toBe(null);
+    });
+
+    test('has no aria-describedby by default', () => {
+      const { segmentedControlWrapper } = renderSegmentedControl(
+        <SegmentedControl selectedId="seg-1" options={defaultOptions} />
+      );
+
+      expect(segmentedControlWrapper.findSegmentById('seg-2')!.getElement()).not.toHaveAttribute('aria-describedby');
+    });
+
+    test('has no aria-describedby without disabledReason', () => {
+      const { segmentedControlWrapper } = renderSegmentedControl(
+        <SegmentedControl
+          selectedId="seg-1"
+          options={defaultOptions.map(option => {
+            if (option.id === 'seg-2') {
+              return {
+                ...option,
+                disabled: true,
+              };
+            }
+
+            return option;
+          })}
+        />
+      );
+
+      expect(segmentedControlWrapper.findSegmentById('seg-2')!.getElement()).not.toHaveAttribute('aria-describedby');
+    });
+
+    test('has aria-describedby with disabledReason', () => {
+      const { segmentedControlWrapper } = renderSegmentedControl(
+        <SegmentedControl
+          selectedId="seg-1"
+          options={defaultOptions.map(option => {
+            if (option.id === 'seg-2') {
+              return {
+                ...option,
+                disabled: true,
+                disabledReason: 'disabled reason',
+              };
+            }
+
+            return option;
+          })}
+        />
+      );
+
+      expect(segmentedControlWrapper.findSegmentById('seg-2')!.getElement()).toHaveAttribute('aria-describedby');
+    });
+
+    test('has hidden element (linked to aria-describedby) with disabledReason', () => {
+      const { segmentedControlWrapper } = renderSegmentedControl(
+        <SegmentedControl
+          selectedId="seg-1"
+          options={defaultOptions.map(option => {
+            if (option.id === 'seg-2') {
+              return {
+                ...option,
+                disabled: true,
+                disabledReason: 'disabled reason',
+              };
+            }
+
+            return option;
+          })}
+        />
+      );
+
+      expect(segmentedControlWrapper.findSegmentById('seg-2')!.find('span[hidden]')!.getElement()).toHaveTextContent(
+        'disabled reason'
+      );
+    });
+
+    test('does not trigger onChange on disabled with reason segment', () => {
+      const onChange = jest.fn();
+      const { segmentedControlWrapper } = renderSegmentedControl(
+        <SegmentedControl
+          selectedId="seg-1"
+          options={defaultOptions.map(option => {
+            if (option.id === 'seg-2') {
+              return {
+                ...option,
+                disabled: true,
+                disabledReason: 'disabled reason',
+              };
+            }
+
+            return option;
+          })}
+          onChange={onChange}
+        />
+      );
+
+      segmentedControlWrapper.findSegmentById('seg-2')!.click();
+
+      expect(onChange).not.toHaveBeenCalled();
+    });
   });
 });
 

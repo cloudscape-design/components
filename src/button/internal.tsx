@@ -1,10 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { fireCancelableEvent, isPlainLeftClick } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import styles from './styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
 import { ButtonIconProps, LeftIcon, RightIcon } from './icon-helper';
 import { ButtonProps } from './interfaces';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -23,6 +24,8 @@ import { FunnelMetrics } from '../internal/analytics';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
 import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
+import Tooltip from '../internal/components/tooltip/index.js';
+import useHiddenDescription from '../internal/hooks/use-hidden-description';
 
 export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   variant?: ButtonProps['variant'] | 'flashbar-icon' | 'breadcrumb-group' | 'menu-trigger' | 'modal-dismiss';
@@ -50,6 +53,7 @@ export const InternalButton = React.forwardRef(
       loading = false,
       loadingText,
       disabled = false,
+      disabledReason,
       wrapText = true,
       href,
       target,
@@ -69,10 +73,13 @@ export const InternalButton = React.forwardRef(
     }: InternalButtonProps,
     ref: React.Ref<ButtonProps.Ref>
   ) => {
+    const [showTooltip, setShowTooltip] = useState(false);
+
     checkSafeUrl('Button', href);
     const isAnchor = Boolean(href);
     const isNotInteractive = loading || disabled;
-    const hasAriaDisabled = (loading && !disabled) || (disabled && __focusable);
+    const isDisabledWithReason = (variant === 'normal' || variant === 'primary') && !!disabledReason && disabled;
+    const hasAriaDisabled = (loading && !disabled) || (disabled && __focusable) || isDisabledWithReason;
     const shouldHaveContent =
       children && ['icon', 'inline-icon', 'flashbar-icon', 'modal-dismiss'].indexOf(variant) === -1;
 
@@ -97,6 +104,8 @@ export const InternalButton = React.forwardRef(
       }),
       [loading, disabled]
     );
+
+    const { targetProps, descriptionEl } = useHiddenDescription(disabledReason);
 
     const handleClick = (event: React.MouseEvent) => {
       if (isNotInteractive) {
@@ -134,6 +143,7 @@ export const InternalButton = React.forwardRef(
       [styles['button-no-wrap']]: !wrapText,
       [styles['button-no-text']]: !shouldHaveContent,
       [styles['full-width']]: shouldHaveContent && fullWidth,
+      [styles.link]: isAnchor,
     });
 
     const explicitTabIndex =
@@ -211,15 +221,33 @@ export const InternalButton = React.forwardRef(
         </>
       );
     }
+
     return (
       <>
         <button
           {...buttonProps}
           type={formAction === 'none' ? 'button' : 'submit'}
-          disabled={disabled && !__focusable}
+          disabled={disabled && !__focusable && !isDisabledWithReason}
           aria-disabled={hasAriaDisabled ? true : undefined}
+          onFocus={isDisabledWithReason ? () => setShowTooltip(true) : undefined}
+          onBlur={isDisabledWithReason ? () => setShowTooltip(false) : undefined}
+          onMouseEnter={isDisabledWithReason ? () => setShowTooltip(true) : undefined}
+          onMouseLeave={isDisabledWithReason ? () => setShowTooltip(false) : undefined}
+          {...(isDisabledWithReason ? targetProps : {})}
         >
           {buttonContent}
+          {isDisabledWithReason && (
+            <>
+              {descriptionEl}
+              {showTooltip && (
+                <Tooltip
+                  className={testUtilStyles['disabled-reason-tooltip']}
+                  trackRef={buttonRef}
+                  value={disabledReason!}
+                />
+              )}
+            </>
+          )}
         </button>
         {loading && loadingText && <LiveRegion>{loadingText}</LiveRegion>}
       </>

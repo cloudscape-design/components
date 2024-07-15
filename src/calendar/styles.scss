@@ -203,3 +203,7 @@
 
   @include styles.styles-reset;
 }
+
+.disabled-reason-tooltip {
+  /* used in test-utils or tests */
+}
