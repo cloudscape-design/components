@@ -164,6 +164,7 @@ function ValueInput({
   const onDropdownClose = () => setDropdownOpen(false);
   const formFieldProps = useFormFieldContext({});
   const valueId = useUniqueId();
+  const ariaLabelledby = joinStrings(formFieldProps.ariaLabelledby, formattedValue ? valueId : undefined);
 
   return OperatorForm ? (
     <Dropdown
@@ -171,13 +172,15 @@ function ValueInput({
       stretchBeyondTriggerWidth={true}
       open={isDropdownOpen}
       onDropdownClose={onDropdownClose}
+      dropdownContentRole="dialog"
+      ariaLabelledby={ariaLabelledby}
       trigger={
         <>
           <ButtonTrigger
             onClick={() => setDropdownOpen(true)}
             ariaHasPopup="dialog"
             pressed={isDropdownOpen}
-            ariaLabelledby={joinStrings(formFieldProps.ariaLabelledby, formattedValue ? valueId : undefined)}
+            ariaLabelledby={ariaLabelledby}
           >
             {typeof formattedValue === 'string' ? formattedValue : ''}
           </ButtonTrigger>
