@@ -49,20 +49,6 @@ export interface ButtonGroupProps extends BaseComponentProps {
    * Called when the user clicks on an item, and the item is not disabled. The event detail object contains the id of the clicked item.
    */
   onItemClick?: NonCancelableEventHandler<ButtonGroupProps.ItemClickDetails>;
-  /**
-   * Use this property to determine dropdown placement strategy for all menu dropdown items.
-   *
-   * By default, the dropdown height is constrained to fit inside the height of its next scrollable container element.
-   * Enabling this property will allow the dropdown to extend beyond that container by using fixed positioning and
-   * [React Portals](https://reactjs.org/docs/portals.html).
-   *
-   * Set this property if the dropdown would otherwise be constrained by a scrollable container,
-   * for example inside table and split view layouts.
-   *
-   * However, use discretion. We recommend you don't enable this property unless necessary
-   * because fixed positioning results in a slight, visible lag when scrolling complex pages.
-   */
-  dropdownExpandToViewport?: boolean;
 }
 
 export interface InternalButtonGroupProps extends ButtonGroupProps, InternalBaseComponentProps {}
@@ -85,8 +71,7 @@ export namespace ButtonGroupProps {
     iconAlt?: string;
     iconUrl?: string;
     iconSvg?: React.ReactNode;
-    feedbackPopover?: React.ReactNode;
-    hidden?: boolean;
+    popoverFeedback?: React.ReactNode;
   }
 
   export interface MenuDropdown {
@@ -98,6 +83,20 @@ export namespace ButtonGroupProps {
     loading?: boolean;
     loadingText?: string;
     items: ReadonlyArray<ButtonDropdownProps.ItemOrGroup>;
+    /**
+     * Use this property to determine dropdown placement strategy for all menu dropdown items.
+     *
+     * By default, the dropdown height is constrained to fit inside the height of its next scrollable container element.
+     * Enabling this property will allow the dropdown to extend beyond that container by using fixed positioning and
+     * [React Portals](https://reactjs.org/docs/portals.html).
+     *
+     * Set this property if the dropdown would otherwise be constrained by a scrollable container,
+     * for example inside table and split view layouts.
+     *
+     * However, use discretion. We recommend you don't enable this property unless necessary
+     * because fixed positioning results in a slight, visible lag when scrolling complex pages.
+     */
+    dropdownExpandToViewport?: boolean;
   }
 
   export interface Group {

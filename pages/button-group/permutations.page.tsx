@@ -6,132 +6,74 @@ import PermutationsView from '../utils/permutations-view';
 import createPermutations from '../utils/permutations';
 import { ButtonGroup, ButtonGroupProps, StatusIndicator } from '~components';
 
-const permutations = createPermutations<ButtonGroupProps>([
+const itemPremutations = createPermutations<ButtonGroupProps.IconButton | ButtonGroupProps.MenuDropdown>([
   {
-    variant: ['icon'],
-    ariaLabel: ['Chat actions'],
+    type: ['icon-button'],
+    id: ['test'],
+    iconName: ['treeview-expand'],
+    text: ['Text'],
+    disabled: [false, true],
+    loading: [false, true],
+    popoverFeedback: [
+      undefined,
+      'Popover feedback',
+      <StatusIndicator type="success" key={'success'}>
+        Liked
+      </StatusIndicator>,
+      <StatusIndicator type="error" key={'error'}>
+        Error
+      </StatusIndicator>,
+    ],
+  },
+]).map((item, index) => ({ ...item, id: `icon-button-${index}` }));
+
+const menuDropdownPermutations = createPermutations<ButtonGroupProps.MenuDropdown>([
+  {
+    type: ['menu-dropdown'],
+    id: ['more-actions'],
+    text: ['More actions'],
+    loading: [false, true],
     dropdownExpandToViewport: [true, false],
     items: [
       [
         {
-          type: 'group',
-          text: 'Vote',
-          items: [
-            {
-              type: 'icon-button',
-              id: 'thumbs-up',
-              text: 'Like',
-              feedbackPopover: <StatusIndicator type="success">Liked</StatusIndicator>,
-            },
-            {
-              type: 'icon-button',
-              id: 'thumbs-down',
-              iconName: 'thumbs-down',
-              text: 'Dislike',
-              feedbackPopover: <StatusIndicator type="success">Disliked</StatusIndicator>,
-            },
-          ],
+          id: 'cut',
+          iconName: 'delete-marker',
+          text: 'Cut',
         },
         {
-          type: 'icon-button',
-          id: 'expand',
-          iconName: 'treeview-expand',
-          text: 'View',
-        },
-        {
-          type: 'icon-button',
-          id: 'favorite',
-          iconName: 'star',
-          text: 'Favorite',
-          feedbackPopover: <StatusIndicator type="info">Added to favorites</StatusIndicator>,
-          loading: true,
-        },
-        {
-          type: 'icon-button',
-          id: 'script',
-          iconName: 'script',
-          text: 'Script',
+          id: 'paste',
+          iconName: 'add-plus',
+          text: 'Paste',
           disabled: true,
+          disabledReason: 'No content to paste',
         },
-      ],
-      [
         {
-          type: 'group',
-          text: 'Vote',
+          text: 'Misc',
           items: [
-            {
-              type: 'icon-button',
-              id: 'thumbs-up',
-              iconName: 'thumbs-up',
-              text: 'Like',
-              feedbackPopover: 'Liked',
-            },
-            {
-              type: 'icon-button',
-              id: 'thumbs-down',
-              iconName: 'thumbs-down',
-              text: 'Dislike',
-              feedbackPopover: 'Disliked',
-            },
-          ],
-        },
-        {
-          type: 'icon-button',
-          id: 'copy',
-          iconName: 'copy',
-          text: 'Copy',
-          feedbackPopover: 'Copied',
-        },
-        {
-          type: 'group',
-          text: 'Actions',
-          items: [
-            {
-              type: 'icon-button',
-              id: 'add',
-              iconName: 'add-plus',
-              text: 'Add',
-              feedbackPopover: 'Added',
-              disabled: true,
-            },
-            {
-              type: 'icon-button',
-              id: 'remove',
-              iconName: 'remove',
-              text: 'Remove',
-              feedbackPopover: <StatusIndicator type="error">Added to favorites</StatusIndicator>,
-            },
-          ],
-        },
-        {
-          type: 'menu-dropdown',
-          id: 'more-actions',
-          text: 'More actions',
-          items: [
-            {
-              id: 'cut',
-              iconName: 'delete-marker',
-              text: 'Cut',
-            },
-            {
-              id: 'paste',
-              iconName: 'add-plus',
-              text: 'Paste',
-              disabled: true,
-              disabledReason: 'No content to paste',
-            },
-            {
-              text: 'Misc',
-              items: [
-                { id: 'edit', iconName: 'edit', text: 'Edit' },
-                { id: 'open', iconName: 'file-open', text: 'Open' },
-                { id: 'search', iconName: 'search', text: 'Search' },
-              ],
-            },
+            { id: 'edit', iconName: 'edit', text: 'Edit' },
+            { id: 'open', iconName: 'file-open', text: 'Open' },
+            { id: 'search', iconName: 'search', text: 'Search' },
           ],
         },
       ],
     ],
+  },
+]).map((item, index) => ({ ...item, id: `menu-dropdown-${index}` }));
+
+const groupPermutations = createPermutations<ButtonGroupProps.Group>([
+  {
+    type: ['group'],
+    text: ['Vote'],
+    items: [itemPremutations, menuDropdownPermutations],
+  },
+]);
+
+const permutations = createPermutations<ButtonGroupProps>([
+  {
+    variant: ['icon'],
+    ariaLabel: ['Chat actions'],
+    items: [groupPermutations],
   },
 ]);
 
@@ -142,7 +84,7 @@ export default function () {
       <ScreenshotArea disableAnimations={true}>
         <PermutationsView
           permutations={permutations}
-          render={permutation => <span>{<ButtonGroup {...permutation} />}</span>}
+          render={permutation => <div>{<ButtonGroup {...permutation} />}</div>}
         />
       </ScreenshotArea>
     </>

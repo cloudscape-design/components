@@ -15,21 +15,19 @@ const ItemElement = forwardRef(
     {
       item,
       onItemClick,
-      dropdownExpandToViewport,
     }: {
       item: ButtonGroupProps.IconButton | ButtonGroupProps.MenuDropdown;
       onItemClick?: (event: CustomEvent) => void;
-      dropdownExpandToViewport?: boolean;
     },
     ref: React.Ref<ButtonProps.Ref>
   ) => {
     const buttonRef = useRef<HTMLDivElement>(null);
     const [showTooltip, setShowTooltip] = useState(false);
     const [showFeedback, setShowFeedback] = useState(false);
-    const feedbackPopover = 'feedbackPopover' in item && item.feedbackPopover;
+    const popoverFeedback = 'popoverFeedback' in item && item.popoverFeedback;
 
     const onClickHandler = (event: CustomEvent<ClickDetail>) => {
-      if (feedbackPopover) {
+      if (popoverFeedback) {
         setShowFeedback(true);
         setShowTooltip(true);
       } else {
@@ -40,6 +38,10 @@ const ItemElement = forwardRef(
     };
 
     const onShowTooltip = () => {
+      if (item.id === 'icon-button-0') {
+        console.log('SHOW TOOLTIP');
+      }
+
       if (!showTooltip) {
         setShowFeedback(false);
         setShowTooltip(true);
@@ -100,6 +102,10 @@ const ItemElement = forwardRef(
       window.dispatchEvent(new CustomEvent('tooltip:toggle', { detail: { open: showTooltip, trackKey: item.id } }));
     }, [showTooltip, item.id]);
 
+    if (item.id === 'icon-button-0') {
+      console.log(item.id, showTooltip, showFeedback, popoverFeedback);
+    }
+
     return (
       <div
         ref={buttonRef}
@@ -115,14 +121,14 @@ const ItemElement = forwardRef(
             ref={ref}
             item={item}
             onItemClick={onItemClick}
-            dropdownExpandToViewport={dropdownExpandToViewport}
+            dropdownExpandToViewport={item.dropdownExpandToViewport}
           />
         )}
         {showTooltip && (
           <Tooltip
             trackRef={buttonRef}
             trackKey={item.id}
-            value={(showFeedback && <LiveRegion visible={true}>{feedbackPopover}</LiveRegion>) || item.text}
+            value={(showFeedback && <LiveRegion visible={true}>{popoverFeedback}</LiveRegion>) || item.text}
           />
         )}
       </div>
