@@ -3,8 +3,9 @@
 import React from 'react';
 import { render, act } from '@testing-library/react';
 
-import FilteringToken, { FilteringTokenProps } from '../../../../../lib/components/internal/components/filtering-token';
-import FilteringTokenWrapper from '../../../../../lib/components/test-utils/dom/internal/filtering-token';
+import Popover from '../../../../lib/components/popover/internal';
+import FilteringToken, { FilteringTokenProps } from '../../../../lib/components/property-filter/filtering-token';
+import { FilteringTokenWrapper } from '../../../../lib/components/test-utils/dom/property-filter';
 
 const DEFAULT_PROPS: FilteringTokenProps = {
   andText: 'and',
@@ -51,7 +52,7 @@ describe('Property filter token component', () => {
   });
 
   it('renders the token content', () => {
-    const token = renderToken({ showOperation: true, children: 'Hello world' });
+    const token = renderToken({ showOperation: true, children: <Popover content="">Hello world</Popover> });
     expect(token.findLabel().getElement()).toHaveTextContent('Hello world');
   });
 

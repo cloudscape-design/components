@@ -3,8 +3,8 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import InternalSelect from '../../../select/internal';
-import InternalIcon from '../../../icon/internal';
+import InternalSelect from '../../select/internal';
+import InternalIcon from '../../icon/internal';
 
 import styles from './styles.css.js';
 

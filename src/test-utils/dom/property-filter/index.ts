@@ -3,7 +3,7 @@
 import { ComponentWrapper, ElementWrapper, createWrapper } from '@cloudscape-design/test-utils-core/dom';
 
 import styles from '../../../property-filter/styles.selectors.js';
-import filteringTokenStyles from '../../../internal/components/filtering-token/styles.selectors.js';
+import filteringTokenStyles from '../../../property-filter/filtering-token/styles.selectors.js';
 import popoverStyles from '../../../popover/styles.selectors.js';
 import tokenListSelectors from '../../../internal/components/token-list/styles.selectors.js';
 import textFilterStyles from '../../../text-filter/styles.selectors.js';
@@ -74,9 +74,7 @@ export class FilteringTokenWrapper extends ComponentWrapper {
   static rootSelector = filteringTokenStyles.root;
 
   findLabel(): ElementWrapper {
-    const label = this.findByClassName(filteringTokenStyles['token-content'])!;
-    const trigger = label.findPopover()?.findTrigger() ?? null;
-    return trigger ?? label;
+    return this.findByClassName(filteringTokenStyles['token-content'])!.findByClassName(popoverStyles.trigger)!;
   }
 
   findRemoveButton(): ElementWrapper<HTMLButtonElement> {
