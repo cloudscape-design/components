@@ -9,13 +9,22 @@ import InternalKeyValuePairs from './internal';
 
 export { KeyValuePairsProps };
 
-export default function KeyValuePairs({ columns = 1, items, ...rest }: KeyValuePairsProps) {
+export default function KeyValuePairs({ columns = 1, items, ariaLabel, ariaLabelledby, ...rest }: KeyValuePairsProps) {
   const { __internalRootRef } = useBaseComponent('KeyValuePairs', {
     props: { columns },
   });
   const baseProps = getBaseProps(rest);
 
-  return <InternalKeyValuePairs columns={columns} items={items} {...baseProps} ref={__internalRootRef} />;
+  return (
+    <InternalKeyValuePairs
+      columns={columns}
+      items={items}
+      ariaLabel={ariaLabel}
+      ariaLabelledby={ariaLabelledby}
+      {...baseProps}
+      ref={__internalRootRef}
+    />
+  );
 }
 
 applyDisplayName(KeyValuePairs, 'KeyValuePairs');

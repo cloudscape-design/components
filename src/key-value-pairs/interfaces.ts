@@ -27,6 +27,17 @@ export interface KeyValuePairsProps extends BaseComponentProps {
    *     key-value pair items.
    */
   items: ReadonlyArray<KeyValuePairsProps.Item>;
+  /**
+   * Provides an `aria-label` to the Key-value pairs container.
+   * Don't use `ariaLabel` and `ariaLabelledby` at the same time.
+   */
+  ariaLabel?: string;
+  /**
+   * Sets the `aria-labelledby` property on the Key-value pairs container.
+   * If there's a visible label element that you can reference, use this instead of `ariaLabel`.
+   * Don't use `ariaLabel` and `ariaLabelledby` at the same time.
+   */
+  ariaLabelledby?: string;
 }
 
 export namespace KeyValuePairsProps {
