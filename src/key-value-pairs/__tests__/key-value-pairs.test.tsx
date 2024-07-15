@@ -157,4 +157,25 @@ describe('KeyValuePairs', () => {
       expect(wrapper.findItems()[1]!.findValue()!.getElement()).toHaveTextContent('Value');
     });
   });
+
+  test('renders attributes for assistive technology when set', () => {
+    const ariaLabel = 'awesome label';
+    const ariaLabelledby = 'awesome labelled by';
+
+    const { wrapper } = renderKeyValuePairs(
+      <KeyValuePairs
+        ariaLabel={ariaLabel}
+        ariaLabelledby={ariaLabelledby}
+        items={[
+          {
+            label: 'Label for key',
+            value: 'Value',
+          },
+        ]}
+      />
+    );
+
+    expect(wrapper.getElement()).toHaveAttribute('aria-label', ariaLabel);
+    expect(wrapper.getElement()).toHaveAttribute('aria-labelledby', ariaLabelledby);
+  });
 });
