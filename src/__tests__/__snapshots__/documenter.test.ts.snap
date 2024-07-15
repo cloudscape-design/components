@@ -8604,6 +8604,21 @@ Object {
   "name": "KeyValuePairs",
   "properties": Array [
     Object {
+      "description": "Provides an \`aria-label\` to the Key-value pairs container.
+Don't use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Sets the \`aria-labelledby\` property on the Key-value pairs container.
+If there's a visible label element that you can reference, use this instead of \`ariaLabel\`.
+Don't use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
+      "name": "ariaLabelledby",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
