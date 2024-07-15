@@ -56,21 +56,36 @@ $cell-offset: calc(#{awsui.$space-m} + #{awsui.$space-xs});
   inset-block: 0;
   display: flex;
   align-items: center;
-  margin-inline-start: calc(-1 * #{$cell-offset});
 }
 
 @mixin cell-padding-inline-start($padding) {
+  $max-nesting-levels: 9;
+  $offset-padding: calc($padding - 1 * awsui.$border-divider-list-width);
+
   > .body-cell-content {
-    padding-inline-start: calc(#{$padding} - 1 * #{awsui.$border-divider-list-width});
+    margin-inline-start: $offset-padding;
+  }
+  > .expandable-toggle-wrapper {
+    margin-inline-start: $offset-padding;
   }
 
-  @for $i from 0 through 9 {
-    &.expandable-level-#{$i} > .body-cell-content {
-      padding-inline-start: calc($padding + $i * $cell-offset - 1 * awsui.$border-divider-list-width);
+  @for $i from 0 through $max-nesting-levels {
+    &.expandable-level-#{$i} {
+      > .body-cell-content {
+        margin-inline-start: calc($offset-padding + $i * $cell-offset);
+      }
+      > .expandable-toggle-wrapper {
+        margin-inline-start: calc($offset-padding + ($i - 1) * $cell-offset);
+      }
     }
   }
-  &.expandable-level-next > .body-cell-content {
-    padding-inline-start: calc(#{$padding} + 9 * #{$cell-offset} - 1 * #{awsui.$border-divider-list-width});
+  &.expandable-level-next {
+    > .body-cell-content {
+      margin-inline-start: calc(#{$offset-padding} + #{$max-nesting-levels} * #{$cell-offset});
+    }
+    > .expandable-toggle-wrapper {
+      margin-inline-start: calc(#{$offset-padding} + (#{$max-nesting-levels} - 1) * #{$cell-offset});
+    }
   }
 }
 @mixin cell-padding-inline-end($padding) {
