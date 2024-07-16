@@ -102,7 +102,7 @@ export namespace ButtonGroupProps {
   export interface Group {
     type: 'group';
     text: string;
-    items: ReadonlyArray<IconButton | MenuDropdown>;
+    items: ReadonlyArray<ButtonGroupProps.Item>;
   }
 
   export interface ItemClickDetails {
