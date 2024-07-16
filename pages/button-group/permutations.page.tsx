@@ -6,7 +6,7 @@ import PermutationsView from '../utils/permutations-view';
 import createPermutations from '../utils/permutations';
 import { ButtonGroup, ButtonGroupProps, SpaceBetween, StatusIndicator } from '~components';
 
-const itemPremutations = createPermutations<ButtonGroupProps.IconButton | ButtonGroupProps.MenuDropdown>([
+const itemPremutations = createPermutations<ButtonGroupProps.IconButton>([
   {
     type: ['icon-button'],
     id: ['test'],
@@ -63,7 +63,7 @@ const menuDropdownPermutations = createPermutations<ButtonGroupProps.MenuDropdow
   },
 ]).map((item, index) => ({ ...item, id: `menu-dropdown-${index}` }));
 
-const items: ButtonGroupProps.Item[] = [
+const items: ButtonGroupProps.ItemOrGroup[] = [
   {
     type: 'group',
     text: 'Vote',
