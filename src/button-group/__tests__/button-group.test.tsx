@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react';
+import { act, fireEvent, render } from '@testing-library/react';
 import { KeyCode } from '@cloudscape-design/component-toolkit/internal';
 import ButtonGroup, { ButtonGroupProps } from '../../../lib/components/button-group';
 import buttonStyles from '../../../lib/components/button/styles.css.js';
@@ -85,7 +85,6 @@ describe('focus', () => {
     const ref: { current: ButtonGroupProps.Ref | null } = { current: null };
     const wrapper = renderButtonGroup({ variant: 'icon', items: items1, ariaLabel: 'Chat actions' }, ref);
     ref.current?.focus('copy');
-    console.log(wrapper.getElement());
 
     fireEvent.keyDown(wrapper.getElement(), { keyCode: KeyCode.right });
     expect(wrapper.findButtonById('edit')!.getElement()).toHaveFocus();
@@ -133,7 +132,8 @@ describe('tooltips', () => {
   test('shows popover on click', () => {
     const wrapper = renderButtonGroup({ variant: 'icon', items: items1, ariaLabel: 'Chat actions' });
     const button = wrapper.findButtonById('test-button')!;
-    fireEvent.click(button.getElement());
+
+    button.click();
     fireEvent.pointerLeave(button.getElement());
 
     expect(wrapper.findTooltip()).not.toBeNull();
@@ -143,7 +143,7 @@ describe('tooltips', () => {
   test('shows no popover on click if popover not defined', () => {
     const wrapper = renderButtonGroup({ variant: 'icon', items: items1, ariaLabel: 'Chat actions' });
     const button = wrapper.findButtonById('search')!;
-    fireEvent.click(button.getElement());
+    button.click();
 
     expect(wrapper.findTooltip()).toBeNull();
   });
@@ -151,7 +151,7 @@ describe('tooltips', () => {
   test('closes popover on pointer down', () => {
     const wrapper = renderButtonGroup({ variant: 'icon', items: items1, ariaLabel: 'Chat actions' });
     const button = wrapper.findButtonById('test-button')!;
-    fireEvent.click(button.getElement());
+    button.click();
 
     expect(wrapper.findTooltip()).not.toBeNull();
     fireEvent.pointerDown(document);
@@ -161,7 +161,7 @@ describe('tooltips', () => {
   test('not closes popover on pointer down on the button', () => {
     const wrapper = renderButtonGroup({ variant: 'icon', items: items1, ariaLabel: 'Chat actions' });
     const button = wrapper.findButtonById('test-button')!;
-    fireEvent.click(button.getElement());
+    button.click();
 
     expect(wrapper.findTooltip()).not.toBeNull();
     fireEvent.pointerDown(button.getElement());
@@ -171,17 +171,19 @@ describe('tooltips', () => {
   test('closes popover on toggle event', () => {
     const wrapper = renderButtonGroup({ variant: 'icon', items: items1, ariaLabel: 'Chat actions' });
     const button = wrapper.findButtonById('test-button')!;
-    fireEvent.click(button.getElement());
+    button.click();
 
     expect(wrapper.findTooltip()).not.toBeNull();
-    window.dispatchEvent(new CustomEvent('btngroup-tooltip:toggle', { detail: { open: true, trackKey: '123' } }));
+    act(() => {
+      window.dispatchEvent(new CustomEvent('btngroup-tooltip:toggle', { detail: { open: true, trackKey: '123' } }));
+    });
     expect(wrapper.findTooltip()).toBeNull();
   });
 
   test('closes popover on esc key', () => {
     const wrapper = renderButtonGroup({ variant: 'icon', items: items1, ariaLabel: 'Chat actions' });
     const button = wrapper.findButtonById('test-button')!;
-    fireEvent.click(button.getElement());
+    button.click();
 
     expect(wrapper.findTooltip()).not.toBeNull();
     fireEvent.keyDown(window, { key: 'Escape' });

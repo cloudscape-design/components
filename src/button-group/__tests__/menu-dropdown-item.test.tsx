@@ -6,26 +6,26 @@ import { ButtonGroupProps } from '../../../lib/components/button-group/interface
 import MenuDropdownItem from '../../../lib/components/button-group/menu-dropdown-item';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
-describe('MenuDropdownItem', () => {
-  const item: ButtonGroupProps.MenuDropdown = {
-    type: 'menu-dropdown',
-    id: 'more-buttons',
-    text: 'More buttons',
-    items: [
-      { id: '1', text: 'Item 1' },
-      { id: '2', text: 'Item 2' },
-      { id: '3', text: 'Item 3' },
-      {
-        id: '4',
-        text: 'Group',
-        items: [
-          { id: '5', text: 'Item 5' },
-          { id: '6', text: 'Item 6' },
-        ],
-      },
-    ],
-  };
+const item: ButtonGroupProps.MenuDropdown = {
+  type: 'menu-dropdown',
+  id: 'more-buttons',
+  text: 'More buttons',
+  items: [
+    { id: '1', text: 'Item 1' },
+    { id: '2', text: 'Item 2' },
+    { id: '3', text: 'Item 3' },
+    {
+      id: '4',
+      text: 'Group',
+      items: [
+        { id: '5', text: 'Item 5' },
+        { id: '6', text: 'Item 6' },
+      ],
+    },
+  ],
+};
 
+describe('MenuDropdownItem', () => {
   test('renders the button', () => {
     const { container } = render(<MenuDropdownItem item={item} />);
 

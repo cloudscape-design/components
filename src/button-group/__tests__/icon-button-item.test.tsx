@@ -11,18 +11,18 @@ const renderButtonGroup = (props: ButtonGroupProps, ref?: React.Ref<ButtonGroupP
   return createWrapper(renderResult.container).findButtonGroup()!;
 };
 
-describe('IconButtonItem', () => {
-  const item: ButtonGroupProps.IconButton = {
-    type: 'icon-button',
-    id: 'test-button',
-    text: 'Test Button',
-    iconName: 'add-plus',
-    loading: false,
-    loadingText: 'Loading...',
-    disabled: false,
-    popoverFeedback: 'Action Popover',
-  };
+const item: ButtonGroupProps.IconButton = {
+  type: 'icon-button',
+  id: 'test-button',
+  text: 'Test Button',
+  iconName: 'add-plus',
+  loading: false,
+  loadingText: 'Loading...',
+  disabled: false,
+  popoverFeedback: 'Action Popover',
+};
 
+describe('IconButtonItem', () => {
   test('renders the button', () => {
     const wrapper = renderButtonGroup({ variant: 'icon', items: [item], ariaLabel: 'Chat actions' });
 
