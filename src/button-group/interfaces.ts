@@ -79,7 +79,6 @@ export namespace ButtonGroupProps {
     id: string;
     text: string;
     disabled?: boolean;
-    disabledReason?: string;
     loading?: boolean;
     loadingText?: string;
     items: ReadonlyArray<ButtonDropdownProps.ItemOrGroup>;
@@ -96,7 +95,7 @@ export namespace ButtonGroupProps {
      * However, use discretion. We recommend you don't enable this property unless necessary
      * because fixed positioning results in a slight, visible lag when scrolling complex pages.
      */
-    dropdownExpandToViewport?: boolean;
+    expandToViewport?: boolean;
   }
 
   export interface Group {

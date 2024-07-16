@@ -12,11 +12,11 @@ const MenuDropdownItem = React.forwardRef(
     {
       item,
       onItemClick,
-      dropdownExpandToViewport,
+      expandToViewport,
     }: {
       item: ButtonGroupProps.MenuDropdown;
       onItemClick?: CancelableEventHandler<ButtonGroupProps.ItemClickDetails>;
-      dropdownExpandToViewport?: boolean;
+      expandToViewport?: boolean;
     },
     ref: React.Ref<ButtonDropdownProps.Ref>
   ) => {
@@ -33,7 +33,7 @@ const MenuDropdownItem = React.forwardRef(
         disabled={item?.disabled}
         items={item.items}
         onItemClick={onClickHandler}
-        expandToViewport={dropdownExpandToViewport}
+        expandToViewport={expandToViewport}
         ariaLabel={item.text}
         data-testid={item.id}
         className={styles.item}
