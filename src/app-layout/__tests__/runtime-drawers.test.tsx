@@ -71,6 +71,31 @@ describeEachAppLayout(({ theme, size }) => {
     expect(wrapper.findDrawersTriggers()).toHaveLength(2);
   });
 
+  test('update rendered drawers via runtime config', async () => {
+    awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
+    const { wrapper } = await renderComponent(<AppLayout />);
+    // the 2nd trigger is for tools
+    expect(wrapper.findDrawersTriggers()).toHaveLength(2);
+
+    awsuiPlugins.appLayout.updateDrawer({
+      id: 'test',
+      badge: true,
+      ariaLabels: {
+        triggerButton: 'test-trigger-button',
+      },
+    });
+    await delay();
+
+    if (theme !== 'classic' && size === 'desktop') {
+      expect(wrapper.find('[class*=awsui_dot_]')?.getElement()).toBeInTheDocument();
+    }
+
+    expect(wrapper.findDrawerTriggerById(drawerDefaults.id)!.getElement()).toHaveAttribute(
+      'aria-label',
+      'test-trigger-button'
+    );
+  });
+
   test('combines runtime drawers with the tools', async () => {
     awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, ariaLabels: { triggerButton: 'Runtime drawer' } });
     const { wrapper } = await renderComponent(<AppLayout tools="test" ariaLabels={{ toolsToggle: 'Tools' }} />);

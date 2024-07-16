@@ -24,10 +24,13 @@ export interface DrawerConfig {
   unmountContent: (container: HTMLElement) => void;
 }
 
+export type UpdateDrawerConfig = Partial<Omit<DrawerConfig, 'onResize' | 'mountContent' | 'unmountContent'>>;
+
 export type DrawersRegistrationListener = (drawers: Array<DrawerConfig>) => void;
 
 export interface DrawersApiPublic {
   registerDrawer(config: DrawerConfig): void;
+  updateDrawer(config: UpdateDrawerConfig): void;
 }
 
 export interface DrawersApiInternal {
@@ -48,6 +51,23 @@ export class DrawersController {
     this.scheduleUpdate();
   };
 
+  updateDrawer = (config: UpdateDrawerConfig) => {
+    const updateDrawerConfig = config as Partial<DrawerConfig>;
+    if (updateDrawerConfig?.onResize || updateDrawerConfig?.mountContent || updateDrawerConfig?.unmountContent) {
+      throw new Error('[AwsUi] [runtime drawers] cannot update drawer functions');
+    }
+    const drawerIndex = this.drawers.findIndex(({ id }) => id === config?.id);
+    if (drawerIndex >= 0) {
+      const drawers = this.drawers.slice();
+      const oldDrawerConfig = drawers[drawerIndex];
+      drawers[drawerIndex] = { ...oldDrawerConfig, ...config };
+      this.drawers = drawers;
+      this.scheduleUpdate();
+    } else {
+      throw new Error(`[AwsUi] [runtime drawers] drawer with id ${config.id} not found`);
+    }
+  };
+
   onDrawersRegistered = (listener: DrawersRegistrationListener) => {
     if (this.drawersRegistrationListener !== null) {
       console.warn('[AwsUi] [runtime drawers] multiple app layout instances detected');
@@ -65,6 +85,7 @@ export class DrawersController {
 
   installPublic(api: Partial<DrawersApiPublic> = {}): DrawersApiPublic {
     api.registerDrawer ??= this.registerDrawer;
+    api.updateDrawer ??= this.updateDrawer;
     return api as DrawersApiPublic;
   }
 

@@ -7,7 +7,7 @@ import createWrapper from '../../../lib/components/test-utils/selectors';
 const wrapper = createWrapper().findAppLayout();
 
 for (const visualRefresh of [true, false]) {
-  for (const pageName of ['runtime-drawers', 'runtime-drawers-imperative']) {
+  for (const pageName of ['runtime-drawers', 'runtime-drawers-imperative', 'runtime-drawers-with-updates']) {
     describe(`page=${pageName} visualRefresh=${visualRefresh}`, () => {
       function setupTest(testFn: (page: BasePageObject) => Promise<void>) {
         return useBrowser(async browser => {
