@@ -1,16 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-
-test('true', () => {
-  expect(true).toBeTruthy();
-});
-
-/*
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { ButtonGroupProps } from '../../../lib/components/button-group/interfaces';
-import IconButtonItem from '../../../lib/components/button-group/icon-button-item';
+import createWrapper from '../../../lib/components/test-utils/dom';
+import ButtonGroup from '../../../lib/components/button-group';
 
+const renderButtonGroup = (props: ButtonGroupProps, ref?: React.Ref<ButtonGroupProps.Ref>) => {
+  const renderResult = render(<ButtonGroup ref={ref} {...props} />);
+  return createWrapper(renderResult.container).findButtonGroup()!;
+};
 
 describe('IconButtonItem', () => {
   const item: ButtonGroupProps.IconButton = {
@@ -25,63 +24,9 @@ describe('IconButtonItem', () => {
   };
 
   test('renders the button', () => {
-    render(<IconButtonItem item={item} />);
-    const button = screen.getByTestId('test-button');
+    const wrapper = renderButtonGroup({ variant: 'icon', items: [item], ariaLabel: 'Chat actions' });
 
-    expect(button).toBeInTheDocument();
-  });
-
-  test('shows the tooltip on hover', () => {
-    render(<IconButtonItem item={item} />);
-
-    const button = screen.getByTestId('test-button');
-    fireEvent.pointerEnter(button);
-
-    expect(screen.getByText('Test Button')).toBeInTheDocument();
-  });
-
-  test('shows the action popover text on click', () => {
-    const onItemClick = jest.fn();
-    render(<IconButtonItem item={item} onItemClick={onItemClick} />);
-
-    const button = screen.getByTestId('test-button');
-    fireEvent.click(button);
-
-    expect(screen.getByText('Action Popover')).toBeInTheDocument();
-    expect(onItemClick).toHaveBeenCalled();
-  });
-
-  test('shows the action popover text on click after pointer leaves', () => {
-    const onItemClick = jest.fn();
-    render(<IconButtonItem item={item} onItemClick={onItemClick} />);
-
-    const button = screen.getByTestId('test-button');
-    fireEvent.click(button);
-    fireEvent.pointerLeave(button);
-
-    expect(screen.getByText('Action Popover')).toBeInTheDocument();
-    expect(onItemClick).toHaveBeenCalled();
-  });
-
-  test('handles click event correctly', () => {
-    const onItemClick = jest.fn();
-    render(<IconButtonItem item={item} onItemClick={onItemClick} />);
-
-    const button = screen.getByTestId('test-button');
-    fireEvent.click(button);
-
-    expect(onItemClick).toHaveBeenCalled();
-  });
-
-  test('closes the popover when document pointerdown called', () => {
-    render(<IconButtonItem item={item} />);
-
-    const button = screen.getByTestId('test-button');
-    fireEvent.click(button);
-    expect(screen.getByText('Action Popover')).toBeInTheDocument();
-
-    fireEvent.pointerDown(document);
-    expect(screen.queryByText('Action Popover')).not.toBeInTheDocument();
+    expect(wrapper.findButtonById('test-button')).not.toBeNull();
+    expect(wrapper.findTooltip()).toBeNull();
   });
 });
-*/

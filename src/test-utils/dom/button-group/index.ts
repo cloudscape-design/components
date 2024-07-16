@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 import styles from '../../../button-group/styles.selectors.js';
-import tooltipStyles from '../../../button-group/tooltip/styles.selectors.js';
 import ButtonDropdownWrapper from '../button-dropdown/index.js';
 import ButtonWrapper from '../button/index.js';
 import createWrapper from '../index.js';
@@ -39,6 +38,6 @@ export default class ButtonGroupWrapper extends ComponentWrapper {
    * Finds the currently opened tooltip.
    */
   findTooltip(): null | ElementWrapper {
-    return createWrapper().findByClassName(tooltipStyles.body);
+    return createWrapper().findByClassName(styles.tooltip);
   }
 }
