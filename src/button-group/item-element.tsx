@@ -16,7 +16,7 @@ const ItemElement = forwardRef(
       item,
       onItemClick,
     }: {
-      item: ButtonGroupProps.IconButton | ButtonGroupProps.MenuDropdown;
+      item: ButtonGroupProps.Item;
       onItemClick?: (event: CustomEvent) => void;
     },
     ref: React.Ref<ButtonProps.Ref>

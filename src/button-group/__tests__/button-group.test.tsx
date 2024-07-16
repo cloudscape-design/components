@@ -12,7 +12,7 @@ const renderButtonGroup = (props: ButtonGroupProps, ref?: React.Ref<ButtonGroupP
   return createWrapper(renderResult.container).findButtonGroup()!;
 };
 
-const items1: ButtonGroupProps.Item[] = [
+const items1: ButtonGroupProps.ItemOrGroup[] = [
   {
     type: 'group',
     text: 'Feedback',

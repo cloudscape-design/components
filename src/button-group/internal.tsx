@@ -45,10 +45,7 @@ const InternalButtonGroup = forwardRef(
       },
     }));
 
-    const onSetButtonRef = (
-      item: ButtonGroupProps.IconButton | ButtonGroupProps.MenuDropdown,
-      element: ButtonProps.Ref | null
-    ) => {
+    const onSetButtonRef = (item: ButtonGroupProps.Item, element: ButtonProps.Ref | null) => {
       const isItemGroup = (item: ButtonDropdownProps.ItemOrGroup): item is ButtonDropdownProps.ItemGroup => {
         return 'items' in item;
       };
@@ -66,7 +63,7 @@ const InternalButtonGroup = forwardRef(
         }
       };
 
-      const getAllIds = (item: ButtonGroupProps.IconButton | ButtonGroupProps.MenuDropdown) => {
+      const getAllIds = (item: ButtonGroupProps.Item) => {
         if (item.type === 'icon-button') {
           return [item.id];
         } else {

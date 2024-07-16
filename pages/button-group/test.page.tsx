@@ -5,7 +5,7 @@ import ButtonGroup, { ButtonGroupProps } from '~components/button-group';
 import ScreenshotArea from '../utils/screenshot-area';
 import { Button, StatusIndicator } from '~components';
 
-const items: ButtonGroupProps.Item[] = [
+const items: ButtonGroupProps.ItemOrGroup[] = [
   {
     type: 'group',
     text: 'Vote',

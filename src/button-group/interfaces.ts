@@ -44,7 +44,7 @@ export interface ButtonGroupProps extends BaseComponentProps {
    * * `disabled` (optional, boolean) - The disabled state indication for the menu button.
    * * `items` (ButtonDropdownProps.ItemOrGroup[]) - The array of dropdown items that belong to this menu.
    */
-  items: ReadonlyArray<ButtonGroupProps.Item>;
+  items: ReadonlyArray<ButtonGroupProps.ItemOrGroup>;
   /**
    * Called when the user clicks on an item, and the item is not disabled. The event detail object contains the id of the clicked item.
    */
@@ -58,7 +58,8 @@ export namespace ButtonGroupProps {
   // When a union only has one element the resulting type for it is not string but object.
   export type Variant = 'icon' | 'icon';
 
-  export type Item = IconButton | MenuDropdown | Group;
+  export type ItemOrGroup = Item | Group;
+  export type Item = IconButton | MenuDropdown;
 
   export interface IconButton {
     type: 'icon-button';
