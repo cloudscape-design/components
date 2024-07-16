@@ -77,7 +77,8 @@
     "i18nStrings.preferencesModalWrapLines": "Satırları kaydır",
     "i18nStrings.preferencesModalTheme": "Tema",
     "i18nStrings.preferencesModalLightThemes": "Açık temalar",
-    "i18nStrings.preferencesModalDarkThemes": "Koyu temalar"
+    "i18nStrings.preferencesModalDarkThemes": "Koyu temalar",
+    "i18nStrings.cursorPositionAriaLabel": "İmleç {row}. satırda"
   },
   "collection-preferences": {
     "title": "Tercihler",
@@ -90,6 +91,15 @@
     "stripedRowsPreference.description": "Dönüşümlü renklere sahip satırlar eklemek için seçin",
     "contentDensityPreference.label": "Kompakt mod",
     "contentDensityPreference.description": "İçeriği daha yoğun ve daha kompakt bir modda görüntülemek için seçin",
+    "stickyColumnsPreference.firstColumns.title": "İlk sütunları yapıştırın",
+    "stickyColumnsPreference.firstColumns.description": "Tablo içeriğini yatay olarak kaydırırken ilk sütunları görünür halde tutun.",
+    "stickyColumnsPreference.firstColumns.options[0].label": "Hiçbiri",
+    "stickyColumnsPreference.firstColumns.options[1].label": "İlk sütun",
+    "stickyColumnsPreference.firstColumns.options[2].label": "İlk iki sütun",
+    "stickyColumnsPreference.lastColumns.title": "Son sütunu yapıştırın",
+    "stickyColumnsPreference.lastColumns.description": "Tablo içeriğini yatay olarak kaydırırken son sütunu görünür tutun.",
+    "stickyColumnsPreference.lastColumns.options[0].label": "Hiçbiri",
+    "stickyColumnsPreference.lastColumns.options[1].label": "Son sütun",
     "contentDisplayPreference.title": "Sütun tercihleri",
     "contentDisplayPreference.description": "Sütunların görünürlüğünü ve sırasını özelleştirin.",
     "contentDisplayPreference.dragHandleAriaLabel": "Sürükleme tutamacı",

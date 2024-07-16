@@ -77,7 +77,8 @@
     "i18nStrings.preferencesModalWrapLines": "Ajustar líneas",
     "i18nStrings.preferencesModalTheme": "Tema",
     "i18nStrings.preferencesModalLightThemes": "Temas claros",
-    "i18nStrings.preferencesModalDarkThemes": "Temas oscuros"
+    "i18nStrings.preferencesModalDarkThemes": "Temas oscuros",
+    "i18nStrings.cursorPositionAriaLabel": "Cursor en fila {row}"
   },
   "collection-preferences": {
     "title": "Preferencias",
@@ -90,6 +91,15 @@
     "stripedRowsPreference.description": "Seleccione para agregar filas sombreadas alternativas",
     "contentDensityPreference.label": "Modo compacto",
     "contentDensityPreference.description": "Seleccione para mostrar contenido en un modo más denso y compacto",
+    "stickyColumnsPreference.firstColumns.title": "Pegar las primeras columnas",
+    "stickyColumnsPreference.firstColumns.description": "Mantenga las primeras columnas visibles mientras desplaza horizontalmente el contenido de la tabla.",
+    "stickyColumnsPreference.firstColumns.options[0].label": "Ninguno",
+    "stickyColumnsPreference.firstColumns.options[1].label": "Primera columna",
+    "stickyColumnsPreference.firstColumns.options[2].label": "Primeras dos columnas",
+    "stickyColumnsPreference.lastColumns.title": "Pegar la última columna",
+    "stickyColumnsPreference.lastColumns.description": "Mantenga visible la última columna mientras desplaza horizontalmente el contenido de la tabla.",
+    "stickyColumnsPreference.lastColumns.options[0].label": "Ninguno",
+    "stickyColumnsPreference.lastColumns.options[1].label": "Última columna",
     "contentDisplayPreference.title": "Preferencias de columnas",
     "contentDisplayPreference.description": "Personalice la visibilidad y el orden de las columnas.",
     "contentDisplayPreference.dragHandleAriaLabel": "Arrastrar controlador",

@@ -77,7 +77,8 @@
     "i18nStrings.preferencesModalWrapLines": "换行",
     "i18nStrings.preferencesModalTheme": "主题",
     "i18nStrings.preferencesModalLightThemes": "浅色主题",
-    "i18nStrings.preferencesModalDarkThemes": "深色主题"
+    "i18nStrings.preferencesModalDarkThemes": "深色主题",
+    "i18nStrings.cursorPositionAriaLabel": "光标位于第 {row} 行"
   },
   "collection-preferences": {
     "title": "首选项",
@@ -90,6 +91,15 @@
     "stripedRowsPreference.description": "选择添加交替阴影行",
     "contentDensityPreference.label": "紧凑模式",
     "contentDensityPreference.description": "选择以更密集、更紧凑的模式显示内容",
+    "stickyColumnsPreference.firstColumns.title": "粘贴前几列",
+    "stickyColumnsPreference.firstColumns.description": "水平滚动表格内容时，保持前几列可见。",
+    "stickyColumnsPreference.firstColumns.options[0].label": "无",
+    "stickyColumnsPreference.firstColumns.options[1].label": "第一列",
+    "stickyColumnsPreference.firstColumns.options[2].label": "前两列",
+    "stickyColumnsPreference.lastColumns.title": "粘贴最后一列",
+    "stickyColumnsPreference.lastColumns.description": "水平滚动表格内容时，保持最后一列可见。",
+    "stickyColumnsPreference.lastColumns.options[0].label": "无",
+    "stickyColumnsPreference.lastColumns.options[1].label": "最后一列",
     "contentDisplayPreference.title": "列首选项",
     "contentDisplayPreference.description": "自定义列的可见性和顺序。",
     "contentDisplayPreference.dragHandleAriaLabel": "拖动手柄",

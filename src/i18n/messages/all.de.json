@@ -77,7 +77,8 @@
     "i18nStrings.preferencesModalWrapLines": "Zeilenumbruch",
     "i18nStrings.preferencesModalTheme": "Themen",
     "i18nStrings.preferencesModalLightThemes": "Hellere Themen",
-    "i18nStrings.preferencesModalDarkThemes": "Dunkles Design"
+    "i18nStrings.preferencesModalDarkThemes": "Dunkles Design",
+    "i18nStrings.cursorPositionAriaLabel": "Cursor in Zeile {row}"
   },
   "collection-preferences": {
     "title": "Präferenzen",
@@ -90,6 +91,15 @@
     "stripedRowsPreference.description": "Auswählen, um alternative schattierte Zeilen hinzuzufügen",
     "contentDensityPreference.label": "Kompakter Modus",
     "contentDensityPreference.description": "Auswählen, um Inhalte in einem dichteren, kompakteren Modus anzuzeigen",
+    "stickyColumnsPreference.firstColumns.title": "Erste Spalte(n) fixieren",
+    "stickyColumnsPreference.firstColumns.description": "Durch das Fixieren bleibt/bleiben die erste(n) Spalte(n) immer sichtbar, während Sie horizontal durch den Tabelleninhalt blättern.",
+    "stickyColumnsPreference.firstColumns.options[0].label": "Keine",
+    "stickyColumnsPreference.firstColumns.options[1].label": "Erste Spalte",
+    "stickyColumnsPreference.firstColumns.options[2].label": "Erste beide Spalten",
+    "stickyColumnsPreference.lastColumns.title": "Letzte Spalte fixieren",
+    "stickyColumnsPreference.lastColumns.description": "Durch das Fixieren bleibt die letzte Spalte immer sichtbar, während Sie horizontal durch den Tabelleninhalt blättern.",
+    "stickyColumnsPreference.lastColumns.options[0].label": "Keine",
+    "stickyColumnsPreference.lastColumns.options[1].label": "Letzte Spalte",
     "contentDisplayPreference.title": "Spalteneinstellungen",
     "contentDisplayPreference.description": "Passen Sie die Sichtbarkeit und Reihenfolge der Spalten an.",
     "contentDisplayPreference.dragHandleAriaLabel": "Ziehpunkt",

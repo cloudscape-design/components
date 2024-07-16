@@ -77,7 +77,8 @@
     "i18nStrings.preferencesModalWrapLines": "Retour à la ligne",
     "i18nStrings.preferencesModalTheme": "Thème",
     "i18nStrings.preferencesModalLightThemes": "Thèmes clairs",
-    "i18nStrings.preferencesModalDarkThemes": "Thèmes sombres"
+    "i18nStrings.preferencesModalDarkThemes": "Thèmes sombres",
+    "i18nStrings.cursorPositionAriaLabel": "Curseur sur la ligne {row}"
   },
   "collection-preferences": {
     "title": "Préférences",
@@ -90,6 +91,15 @@
     "stripedRowsPreference.description": "Sélectionner pour ajouter des lignes ombragées alternées",
     "contentDensityPreference.label": "Mode compact",
     "contentDensityPreference.description": "Sélectionner pour afficher le contenu dans un mode plus dense et plus compact",
+    "stickyColumnsPreference.firstColumns.title": "Coller les premières colonnes",
+    "stickyColumnsPreference.firstColumns.description": "Gardez les premières colonnes visibles tout en faisant défiler le contenu du tableau horizontalement.",
+    "stickyColumnsPreference.firstColumns.options[0].label": "Aucun",
+    "stickyColumnsPreference.firstColumns.options[1].label": "Première colonne",
+    "stickyColumnsPreference.firstColumns.options[2].label": "Deux premières colonnes",
+    "stickyColumnsPreference.lastColumns.title": "Coller la dernière colonne",
+    "stickyColumnsPreference.lastColumns.description": "Gardez la dernière colonne visible lorsque vous faites défiler le contenu du tableau horizontalement.",
+    "stickyColumnsPreference.lastColumns.options[0].label": "Aucun",
+    "stickyColumnsPreference.lastColumns.options[1].label": "Dernière colonne",
     "contentDisplayPreference.title": "Préférences de colonne",
     "contentDisplayPreference.description": "Personnalisez la visibilité et l'ordre des colonnes.",
     "contentDisplayPreference.dragHandleAriaLabel": "Faire glisser",
