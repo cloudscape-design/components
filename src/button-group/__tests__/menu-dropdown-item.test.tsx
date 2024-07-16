@@ -4,6 +4,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { ButtonGroupProps } from '../../../lib/components/button-group/interfaces';
 import MenuDropdownItem from '../../../lib/components/button-group/menu-dropdown-item';
+import createWrapper from '../../../lib/components/test-utils/dom';
 
 describe('MenuDropdownItem', () => {
   const item: ButtonGroupProps.MenuDropdown = {
@@ -29,5 +30,15 @@ describe('MenuDropdownItem', () => {
     const { container } = render(<MenuDropdownItem item={item} />);
 
     expect(container).toBeInTheDocument();
+  });
+
+  test('handles click event correctly', () => {
+    const onItemClick = jest.fn();
+    const { container } = render(<MenuDropdownItem item={item} onItemClick={onItemClick} />);
+    const buttonDropdown = createWrapper(container).findButtonDropdown()!;
+    buttonDropdown.openDropdown();
+    buttonDropdown.findItemById('1')!.click();
+
+    expect(onItemClick).toHaveBeenCalled();
   });
 });

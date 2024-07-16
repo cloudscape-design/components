@@ -40,10 +40,6 @@ const ItemElement = forwardRef(
     };
 
     const onShowTooltip = () => {
-      if (item.id === 'icon-button-0') {
-        console.log('SHOW TOOLTIP');
-      }
-
       if (!showTooltip) {
         setShowFeedback(false);
         setShowTooltip(true);
@@ -72,41 +68,37 @@ const ItemElement = forwardRef(
           return;
         }
 
-        if (close) {
-          close();
-        }
+        close();
       };
 
       const handleKeyDownEvent = (event: KeyboardEvent) => {
-        if (event.key === 'Escape' && close) {
+        if (event.key === 'Escape') {
           close();
         }
       };
 
       const handleTooltipToogleEvent = (event: CustomEvent) => {
-        if (event.detail.trackKey !== item.id && event.detail.open && close) {
+        if (event.detail.trackKey !== item.id && event.detail.open) {
           close();
         }
       };
 
       window.addEventListener('pointerdown', handlePointerDownEvent);
       window.addEventListener('keydown', handleKeyDownEvent);
-      window.addEventListener('tooltip:toggle', handleTooltipToogleEvent as any);
+      window.addEventListener('btngroup-tooltip:toggle', handleTooltipToogleEvent as any);
 
       return () => {
         window.removeEventListener('pointerdown', handlePointerDownEvent);
         window.removeEventListener('keydown', handleKeyDownEvent);
-        window.removeEventListener('tooltip:toggle', handleTooltipToogleEvent as any);
+        window.removeEventListener('btngroup-tooltip:toggle', handleTooltipToogleEvent as any);
       };
     }, [item.id, showTooltip]);
 
     useEffect(() => {
-      window.dispatchEvent(new CustomEvent('tooltip:toggle', { detail: { open: showTooltip, trackKey: item.id } }));
+      window.dispatchEvent(
+        new CustomEvent('btngroup-tooltip:toggle', { detail: { open: showTooltip, trackKey: item.id } })
+      );
     }, [showTooltip, item.id]);
-
-    if (item.id === 'icon-button-0') {
-      console.log(item.id, showTooltip, showFeedback, popoverFeedback);
-    }
 
     return (
       <div
@@ -126,6 +118,7 @@ const ItemElement = forwardRef(
             trackRef={buttonRef}
             trackKey={item.id}
             value={(showFeedback && <LiveRegion visible={true}>{popoverFeedback}</LiveRegion>) || item.text}
+            className={styles.tooltip}
           />
         )}
       </div>

@@ -89,6 +89,7 @@ const InternalButtonGroup = forwardRef(
         if (!containerObjectRef.current) {
           return null;
         }
+
         if (document.activeElement && containerObjectRef.current.contains(document.activeElement)) {
           return document.activeElement as HTMLElement;
         }
@@ -99,9 +100,11 @@ const InternalButtonGroup = forwardRef(
           activeButtons.find(button => button.dataset.testid === focusedItemIdRef.current) ?? activeButtons[0] ?? null
         );
       })();
+
       if (nextTarget) {
         focusedItemIdRef.current = nextTarget.dataset.testid ?? null;
       }
+
       return nextTarget;
     }
 
