@@ -69,7 +69,7 @@ $border-radius: awsui.$border-radius-item;
   border-start-end-radius: $border-radius;
   border-end-start-radius: $border-radius;
   border-end-end-radius: $border-radius;
-  @include focus-visible.when-visible {
+  @include focus-visible.when-visible-unfocused {
     @include styles.focus-highlight(0px, $border-radius);
   }
 }
