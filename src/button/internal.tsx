@@ -27,8 +27,10 @@ import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-
 import Tooltip from '../internal/components/tooltip/index.js';
 import useHiddenDescription from '../internal/hooks/use-hidden-description';
 
+type InternalVariant = ButtonProps['variant'] | 'flashbar-icon' | 'breadcrumb-group' | 'menu-trigger' | 'modal-dismiss';
+
 export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
-  variant?: ButtonProps['variant'] | 'flashbar-icon' | 'breadcrumb-group' | 'menu-trigger' | 'modal-dismiss';
+  variant?: InternalVariant;
   badge?: boolean;
   __nativeAttributes?:
     | (React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>)
@@ -66,6 +68,7 @@ export const InternalButton = React.forwardRef(
       ariaControls,
       fullWidth,
       badge,
+      pressed,
       __nativeAttributes,
       __internalRootRef = null,
       __focusable = false,
@@ -74,6 +77,8 @@ export const InternalButton = React.forwardRef(
     ref: React.Ref<ButtonProps.Ref>
   ) => {
     const [showTooltip, setShowTooltip] = useState(false);
+    const toggleButtonVariants: Array<InternalVariant> = ['normal-toggle', 'icon-toggle', 'inline-icon-toggle'];
+    const isButtonToggle = toggleButtonVariants.includes(variant);
 
     checkSafeUrl('Button', href);
     const isAnchor = Boolean(href);
@@ -144,6 +149,7 @@ export const InternalButton = React.forwardRef(
       [styles['button-no-text']]: !shouldHaveContent,
       [styles['full-width']]: shouldHaveContent && fullWidth,
       [styles.link]: isAnchor,
+      [styles.pressed]: isButtonToggle && pressed,
     });
 
     const explicitTabIndex =
@@ -229,6 +235,7 @@ export const InternalButton = React.forwardRef(
           type={formAction === 'none' ? 'button' : 'submit'}
           disabled={disabled && !__focusable && !isDisabledWithReason}
           aria-disabled={hasAriaDisabled ? true : undefined}
+          aria-pressed={isButtonToggle ? pressed ?? false : undefined}
           onFocus={isDisabledWithReason ? () => setShowTooltip(true) : undefined}
           onBlur={isDisabledWithReason ? () => setShowTooltip(false) : undefined}
           onMouseEnter={isDisabledWithReason ? () => setShowTooltip(true) : undefined}

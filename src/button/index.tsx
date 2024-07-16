@@ -37,6 +37,7 @@ const Button = React.forwardRef(
       ariaControls,
       fullWidth,
       form,
+      pressed,
       ...props
     }: ButtonProps,
     ref: React.Ref<ButtonProps.Ref>
@@ -74,6 +75,7 @@ const Button = React.forwardRef(
         ariaControls={ariaControls}
         fullWidth={fullWidth}
         form={form}
+        pressed={pressed}
       >
         {children}
       </InternalButton>

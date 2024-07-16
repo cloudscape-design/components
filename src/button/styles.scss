@@ -21,6 +21,12 @@
   padding-inline: map.get($variant, 'padding');
   font-weight: map.get($variant, 'font-weight');
 
+  &.pressed {
+    background: map.get($variant, 'pressed-background');
+    border-color: map.get($variant, 'pressed-border-color');
+    color: map.get($variant, 'pressed-color');
+  }
+
   &:hover {
     background: map.get($variant, 'hover-background');
     color: map.get($variant, 'hover-color');

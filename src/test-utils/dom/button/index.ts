@@ -21,6 +21,11 @@ export default class ButtonWrapper extends ComponentWrapper<HTMLButtonElement> {
     return this.element.disabled || this.element.getAttribute('aria-disabled') === 'true';
   }
 
+  @usesDom
+  isPressed(): boolean {
+    return this.element.classList.contains(styles.pressed) && this.element.getAttribute('aria-pressed') === 'true';
+  }
+
   findDisabledReason(): ElementWrapper | null {
     return createWrapper().find(`.${buttonTestUtilsStyles['disabled-reason-tooltip']}`);
   }
