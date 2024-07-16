@@ -99,19 +99,17 @@ export default function ButtonGroupPage() {
   };
 
   return (
-    <>
-      <ScreenshotArea disableAnimations={true}>
-        <article>
-          <h1>Button Group test page</h1>
-          <ButtonGroup ariaLabel="Chat actions" variant="icon" items={items} onItemClick={onItemClick} ref={ref} />
-          <br />
-          <Button onClick={onFocusOnCopyButtonClick}>Focus on copy</Button>&nbsp;
-          <Button onClick={onFocusOnSearchButtonClick}>Focus on item in the menu</Button>
-          <br />
-          <br />
-          <div id="last-clicked"></div>
-        </article>
-      </ScreenshotArea>
-    </>
+    <ScreenshotArea disableAnimations={true}>
+      <article>
+        <h1>Button Group test page</h1>
+        <ButtonGroup ariaLabel="Chat actions" variant="icon" items={items} onItemClick={onItemClick} ref={ref} />
+        <br />
+        <Button onClick={onFocusOnCopyButtonClick}>Focus on copy</Button>&nbsp;
+        <Button onClick={onFocusOnSearchButtonClick}>Focus on item in the menu</Button>
+        <br />
+        <br />
+        <div id="last-clicked"></div>
+      </article>
+    </ScreenshotArea>
   );
 }
