@@ -15,6 +15,8 @@ import { TOOLS_DRAWER_ID } from '../../../lib/components/app-layout/utils/use-dr
 import { awsuiPlugins, awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
 import { DrawerConfig } from '../../../lib/components/internal/plugins/controllers/drawers';
 import createWrapper from '../../../lib/components/test-utils/dom';
+import triggerStyles from '../../../lib/components/app-layout/visual-refresh/styles.selectors.js';
+import toolbarTriggerStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/trigger-button/styles.selectors.js';
 
 beforeEach(() => {
   awsuiPluginsInternal.appLayout.clearRegisteredDrawers();
@@ -26,10 +28,10 @@ jest.mock('@cloudscape-design/component-toolkit', () => ({
 }));
 
 async function renderComponent(jsx: React.ReactElement) {
-  const { container, rerender } = render(jsx);
+  const { container, rerender, debug } = render(jsx);
   const wrapper = createWrapper(container).findAppLayout()!;
   await delay();
-  return { wrapper, rerender };
+  return { wrapper, rerender, debug };
 }
 
 function delay() {
@@ -70,6 +72,58 @@ describeEachAppLayout(({ theme, size }) => {
     const { wrapper } = await renderComponent(<AppLayout />);
     // the 2nd trigger is for tools
     expect(wrapper.findDrawersTriggers()).toHaveLength(2);
+  });
+
+  test('update rendered drawers via runtime config', async () => {
+    awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, resizable: true });
+    const { wrapper } = await renderComponent(<AppLayout />);
+    // the 2nd trigger is for tools
+    expect(wrapper.findDrawersTriggers()).toHaveLength(2);
+    const drawerTrigger = wrapper.findDrawerTriggerById(drawerDefaults.id);
+
+    if (theme !== 'classic' && size === 'desktop') {
+      const triggerParent = drawerTrigger?.getElement().parentElement;
+      const triggerParentWrapper = createWrapper(triggerParent!);
+
+      awsuiPlugins.appLayout.updateDrawer({
+        id: drawerDefaults.id,
+        badge: true,
+      });
+      await delay();
+
+      const dotElement = triggerParentWrapper
+        ?.findByClassName((theme === 'refresh' ? triggerStyles : toolbarTriggerStyles).dot)
+        ?.getElement();
+
+      expect(dotElement).toBeInTheDocument();
+
+      awsuiPlugins.appLayout.updateDrawer({
+        id: drawerDefaults.id,
+        badge: false,
+      });
+      await delay();
+
+      expect(dotElement).not.toBeInTheDocument();
+    }
+
+    if (size === 'desktop') {
+      drawerTrigger?.click();
+      await delay();
+
+      const resizeHandle = wrapper.findActiveDrawerResizeHandle()?.getElement();
+      expect(resizeHandle).toBeInTheDocument();
+
+      expect(getActiveDrawerWidth(wrapper)).toEqual('290px');
+
+      awsuiPlugins.appLayout.updateDrawer({
+        id: drawerDefaults.id,
+        resizable: false,
+        defaultSize: 350,
+      });
+      await delay();
+
+      expect(getActiveDrawerWidth(wrapper)).toEqual('350px');
+    }
   });
 
   test('combines runtime drawers with the tools', async () => {

@@ -24,10 +24,13 @@ export interface DrawerConfig {
   unmountContent: (container: HTMLElement) => void;
 }
 
+export type UpdateDrawerConfig = Pick<DrawerConfig, 'id' | 'badge' | 'resizable' | 'defaultSize'>;
+
 export type DrawersRegistrationListener = (drawers: Array<DrawerConfig>) => void;
 
 export interface DrawersApiPublic {
   registerDrawer(config: DrawerConfig): void;
+  updateDrawer(config: UpdateDrawerConfig): void;
 }
 
 export interface DrawersApiInternal {
@@ -48,6 +51,31 @@ export class DrawersController {
     this.scheduleUpdate();
   };
 
+  updateDrawer = (config: UpdateDrawerConfig) => {
+    const { id: drawerId, resizable, badge, defaultSize } = config;
+    const drawerIndex = this.drawers.findIndex(({ id }) => id === drawerId);
+    const oldDrawerConfig = this.drawers?.[drawerIndex];
+    if (drawerIndex >= 0 && oldDrawerConfig) {
+      const drawers = this.drawers.slice();
+      const drawerConfig = { ...oldDrawerConfig };
+      if (typeof resizable === 'boolean') {
+        drawerConfig.resizable = resizable;
+      }
+      if (typeof badge === 'boolean') {
+        drawerConfig.badge = badge;
+      }
+      if (typeof defaultSize === 'number') {
+        drawerConfig.defaultSize = defaultSize;
+      }
+
+      drawers[drawerIndex] = drawerConfig;
+      this.drawers = drawers;
+      this.scheduleUpdate();
+    } else {
+      throw new Error(`[AwsUi] [runtime drawers] drawer with id ${drawerId} not found`);
+    }
+  };
+
   onDrawersRegistered = (listener: DrawersRegistrationListener) => {
     if (this.drawersRegistrationListener !== null) {
       console.warn('[AwsUi] [runtime drawers] multiple app layout instances detected');
@@ -65,6 +93,7 @@ export class DrawersController {
 
   installPublic(api: Partial<DrawersApiPublic> = {}): DrawersApiPublic {
     api.registerDrawer ??= this.registerDrawer;
+    api.updateDrawer ??= this.updateDrawer;
     return api as DrawersApiPublic;
   }
 
