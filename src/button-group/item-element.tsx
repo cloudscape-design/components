@@ -25,6 +25,8 @@ const ItemElement = forwardRef(
     const [showTooltip, setShowTooltip] = useState(false);
     const [showFeedback, setShowFeedback] = useState(false);
     const popoverFeedback = 'popoverFeedback' in item && item.popoverFeedback;
+    const isIconButton = item.type === 'icon-button';
+    const isMenuDropdown = item.type === 'menu-dropdown';
 
     const onClickHandler = (event: CustomEvent<ClickDetail>) => {
       if (popoverFeedback) {
@@ -115,16 +117,11 @@ const ItemElement = forwardRef(
         onBlur={onHideTooltip}
         className={styles['item-wrapper']}
       >
-        {item.type === 'icon-button' && <IconButtonItem ref={ref} item={item} onItemClick={onClickHandler} />}
-        {item.type === 'menu-dropdown' && (
-          <MenuDropdownItem
-            ref={ref}
-            item={item}
-            onItemClick={onItemClick}
-            dropdownExpandToViewport={item.dropdownExpandToViewport}
-          />
+        {isIconButton && <IconButtonItem ref={ref} item={item} onItemClick={onClickHandler} />}
+        {isMenuDropdown && (
+          <MenuDropdownItem ref={ref} item={item} onItemClick={onItemClick} expandToViewport={item.expandToViewport} />
         )}
-        {showTooltip && (
+        {showTooltip && !isMenuDropdown && (
           <Tooltip
             trackRef={buttonRef}
             trackKey={item.id}
