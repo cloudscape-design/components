@@ -98,6 +98,9 @@ export interface I18nFormatArgTypes {
     "i18nStrings.preferencesModalTheme": never;
     "i18nStrings.preferencesModalLightThemes": never;
     "i18nStrings.preferencesModalDarkThemes": never;
+    "i18nStrings.cursorPositionAriaLabel": {
+      "row": string | number;
+    }
   }
   "collection-preferences": {
     "title": never;
@@ -110,6 +113,15 @@ export interface I18nFormatArgTypes {
     "stripedRowsPreference.description": never;
     "contentDensityPreference.label": never;
     "contentDensityPreference.description": never;
+    "stickyColumnsPreference.firstColumns.title": never;
+    "stickyColumnsPreference.firstColumns.description": never;
+    "stickyColumnsPreference.firstColumns.options[0].label": never;
+    "stickyColumnsPreference.firstColumns.options[1].label": never;
+    "stickyColumnsPreference.firstColumns.options[2].label": never;
+    "stickyColumnsPreference.lastColumns.title": never;
+    "stickyColumnsPreference.lastColumns.description": never;
+    "stickyColumnsPreference.lastColumns.options[0].label": never;
+    "stickyColumnsPreference.lastColumns.options[1].label": never;
     "contentDisplayPreference.title": never;
     "contentDisplayPreference.description": never;
     "contentDisplayPreference.dragHandleAriaLabel": never;

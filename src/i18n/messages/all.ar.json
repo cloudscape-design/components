@@ -1,0 +1,380 @@
+{
+  "[charts]": {
+    "loadingText": "جار التحميل المُخطط",
+    "errorText": "لا يمكن جلب البيانات. حاول مرة أخرى لاحقًا.",
+    "recoveryText": "إعادة المحاولة",
+    "i18nStrings.filterLabel": "تصفية البيانات المعروضة",
+    "i18nStrings.filterPlaceholder": "تصفية البيانات",
+    "i18nStrings.legendAriaLabel": "بيانات المُخطط",
+    "i18nStrings.chartAriaRoleDescription": "المخطط",
+    "i18nStrings.xAxisAriaRoleDescription": "المحور السيني",
+    "i18nStrings.yAxisAriaRoleDescription": "المحور الصادي"
+  },
+  "alert": {
+    "dismissAriaLabel": "تجاهل التنبيه"
+  },
+  "annotation-context": {
+    "i18nStrings.nextButtonText": "الخطوة التالية",
+    "i18nStrings.previousButtonText": "الخطوة السابقة",
+    "i18nStrings.finishButtonText": "إنهاء",
+    "i18nStrings.labelDismissAnnotation": "إغلاق الشرح",
+    "i18nStrings.stepCounterText": "الخطوة رقم {stepNumber} من أصل {totalStepCount}",
+    "i18nStrings.taskTitle": "المهمة رقم {taskNumber}: {taskTitle}",
+    "i18nStrings.labelHotspot": "{openState, select, true {إغلاق الشرح للخطوة رقم {stepNumber} من أصل {totalStepCount}} false {فتح الشرح للخطوة رقم {stepNumber} من أصل {totalStepCount}} other {}}"
+  },
+  "app-layout": {
+    "ariaLabels.drawers": "القوائم الجانبية",
+    "ariaLabels.drawersOverflow": "تجاوز سعة القوائم الجانبية",
+    "ariaLabels.drawersOverflowWithBadge": "تجاوز سعة القوائم الجانبية مع وجود شارة",
+    "ariaLabels.navigation": "التنقل الجانبي",
+    "ariaLabels.navigationClose": "إغلاق التنقل الجانبي",
+    "ariaLabels.navigationToggle": "فتح التنقل الجانبي",
+    "ariaLabels.notifications": "الإشعارات",
+    "ariaLabels.tools": "لوحة المساعدة",
+    "ariaLabels.toolsClose": "إغلاق لوحة المساعدة",
+    "ariaLabels.toolsToggle": "فتح لوحة المساعدة"
+  },
+  "area-chart": {
+    "i18nStrings.detailTotalLabel": "المجموع"
+  },
+  "attribute-editor": {
+    "removeButtonText": "إزالة"
+  },
+  "autosuggest": {
+    "errorIconAriaLabel": "خطأ",
+    "selectedAriaLabel": "مُحدَّد",
+    "enteredTextLabel": "استخدم: \"{value}\"",
+    "recoveryText": "إعادة المحاولة"
+  },
+  "breadcrumb-group": {
+    "expandAriaLabel": "عرض المسار"
+  },
+  "calendar": {
+    "nextMonthAriaLabel": "الشهر التالي",
+    "previousMonthAriaLabel": "الشهر السابق",
+    "todayAriaLabel": "اليوم",
+    "i18nStrings.nextYearAriaLabel": "العام المقبل",
+    "i18nStrings.previousYearAriaLabel": "العام السابق",
+    "i18nStrings.currentMonthAriaLabel": "الشهر الحالي"
+  },
+  "cards": {
+    "ariaLabels.selectionGroupLabel": "تحديد العنصر"
+  },
+  "code-editor": {
+    "i18nStrings.loadingState": "جار تحميل محرر الأكواد",
+    "i18nStrings.errorState": "حدث خطأ أثناء تحميل محرر الأكواد.",
+    "i18nStrings.errorStateRecovery": "إعادة المحاولة",
+    "i18nStrings.editorGroupAriaLabel": "محرر الأكواد",
+    "i18nStrings.statusBarGroupAriaLabel": "شريط الحالة",
+    "i18nStrings.cursorPosition": "السطر {row}، العمود {column}",
+    "i18nStrings.errorsTab": "الأخطاء",
+    "i18nStrings.warningsTab": "التحذيرات",
+    "i18nStrings.preferencesButtonAriaLabel": "التفضيلات",
+    "i18nStrings.paneCloseButtonAriaLabel": "إغلاق",
+    "i18nStrings.preferencesModalHeader": "التفضيلات",
+    "i18nStrings.preferencesModalCancel": "إلغاء",
+    "i18nStrings.preferencesModalConfirm": "تأكيد",
+    "i18nStrings.preferencesModalWrapLines": "ترحيل الكلمات من نهاية السطر",
+    "i18nStrings.preferencesModalTheme": "الشكل",
+    "i18nStrings.preferencesModalLightThemes": "الأشكال فاتحة اللون",
+    "i18nStrings.preferencesModalDarkThemes": "الأشكال قاتمة اللون",
+    "i18nStrings.cursorPositionAriaLabel": "المؤشر على السطر رقم {row}"
+  },
+  "collection-preferences": {
+    "title": "التفضيلات",
+    "confirmLabel": "تأكيد",
+    "cancelLabel": "إلغاء",
+    "pageSizePreference.title": "حجم الصفحة",
+    "wrapLinesPreference.label": "ترحيل الكلمات من نهاية السطر",
+    "wrapLinesPreference.description": "حدد لرؤية النص كله وترحيل الكلمات من نهاية الأسطر إلى السطر التالي",
+    "stripedRowsPreference.label": "الصفوف المختلفة الألوان",
+    "stripedRowsPreference.description": "حدد لإضافة «صفوف مظللة» بديلة",
+    "contentDensityPreference.label": "الوضع المدمج",
+    "contentDensityPreference.description": "حدد الوضع المدمج لعرض المحتوى في وضع أكثر كثافة وصِغرًا",
+    "stickyColumnsPreference.firstColumns.title": "تثبيت العمود (الأعمدة) الأول",
+    "stickyColumnsPreference.firstColumns.description": "اجعل العمود (الأعمدة) الأول مرئيًا أثناء التمرير الأفقي لمحتوى الجدول.",
+    "stickyColumnsPreference.firstColumns.options[0].label": "عدم تثبيت العمود (الأعمدة)",
+    "stickyColumnsPreference.firstColumns.options[1].label": "العمود الأول",
+    "stickyColumnsPreference.firstColumns.options[2].label": "أول عمودين",
+    "stickyColumnsPreference.lastColumns.title": "تثبيت العمود الأخير",
+    "stickyColumnsPreference.lastColumns.description": "اجعل العمود الأخير مرئيًا أثناء التمرير الأفقي لمحتوى الجدول.",
+    "stickyColumnsPreference.lastColumns.options[0].label": "عدم تثبيت العمود (الأعمدة)",
+    "stickyColumnsPreference.lastColumns.options[1].label": "العمود الأخير",
+    "contentDisplayPreference.title": "تفضيلات الأعمدة",
+    "contentDisplayPreference.description": "تخصيص رؤية الأعمدة وترتيبها.",
+    "contentDisplayPreference.dragHandleAriaLabel": "مؤشر السحب للتعبئة التلقائية",
+    "contentDisplayPreference.dragHandleAriaDescription": "استخدم زر Space أو Enter لتنشيط السحب لأحد العناصر، ثم استخدم مفاتيح الأسهم لتحريك موضع العنصر. لإكمال تحريك الموضع، استخدم زر Space أو Enter، أو استخدم Escape لتجاهل الحركة.",
+    "contentDisplayPreference.liveAnnouncementDndStarted": "العنصر المسحوب في الموضع {position} من أصل {total}",
+    "contentDisplayPreference.liveAnnouncementDndDiscarded": "تم إلغاء إعادة الترتيب",
+    "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {نقل العنصر مرة أخرى إلى الموضع {currentPosition} من أصل {total}} false {نقل العنصر إلى الموضع {currentPosition} من أصل {total}} other {}}",
+    "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {تم نقل العنصر مرة أخرى إلى موضعه الأصلي {initialPosition} من أصل {total}} false {تم نقل العنصر من الموضع {initialPosition} إلى الموضع {finalPosition} من أصل {total}} other {}}"
+  },
+  "copy-to-clipboard": {
+    "i18nStrings.copyButtonText": "نسخ"
+  },
+  "date-range-picker": {
+    "i18nStrings.relativeModeTitle": "الوضع النسبي",
+    "i18nStrings.absoluteModeTitle": "الوضع المُطلق",
+    "i18nStrings.relativeRangeSelectionHeading": "اختر النطاق",
+    "i18nStrings.cancelButtonLabel": "إلغاء",
+    "i18nStrings.clearButtonLabel": "مسح وإغلاق",
+    "i18nStrings.applyButtonLabel": "استخدام",
+    "i18nStrings.customRelativeRangeOptionLabel": "النطاق المُخصص",
+    "i18nStrings.customRelativeRangeOptionDescription": "تعيين نطاق مخصص في الماضي",
+    "i18nStrings.customRelativeRangeUnitLabel": "الوحدة الزمنية",
+    "i18nStrings.customRelativeRangeDurationLabel": "المُدَّة",
+    "i18nStrings.customRelativeRangeDurationPlaceholder": "إدخال المُدَّة",
+    "i18nStrings.startDateLabel": "تاريخ البدء",
+    "i18nStrings.startTimeLabel": "وقت البدء",
+    "i18nStrings.endDateLabel": "تاريخ الانتهاء",
+    "i18nStrings.endTimeLabel": "وقت الانتهاء",
+    "i18nStrings.dateTimeConstraintText": "استخدم الصيغة YYYY/MM/DD للتاريخ، وصيغة 24 ساعة للوقت.",
+    "i18nStrings.errorIconAriaLabel": "خطأ",
+    "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "النطاق المحدد من {startDate} إلى {endDate}",
+    "i18nStrings.formatRelativeRange": "{unit, select, second {{amount, plural, zero {آخر {amount} ثواني} one {آخر {amount} ثانية} other {آخر {amount} ثواني}}} minute {{amount, plural, zero {آخر {amount} دقائق} one {آخر {amount} دقيقة} other {آخر {amount} دقائق}}} hour {{amount, plural, zero {آخر {amount} ساعات} one {آخر {amount} ساعة} other {آخر {amount} ساعات}}} day {{amount, plural, zero {آخر {amount} أيام} one {آخر {amount} يوم} other {آخر {amount} أيام}}} week {{amount, plural, zero {آخر {amount} أسابيع} one {آخر {amount} أسبوع} other {آخر {amount} أسابيع}}} month {{amount, plural, zero {آخر {amount} أشهر} one {آخر {amount} شهر} other {آخر {amount} أشهر}}} year {{amount, plural, zero {آخر {amount} سنوات} one {آخر {amount} سنة} other {آخر {amount} سنوات}}} other {}}",
+    "i18nStrings.formatUnit": "{unit, select, second {{amount, plural, zero {ثواني} one {ثانية} other {ثواني}}} minute {{amount, plural, zero {دقائق} one {دقيقة} other {دقائق}}} hour {{amount, plural, zero {ساعات} one {ساعة} other {ساعات}}} day {{amount, plural, zero {أيام} one {يوم} other {أيام}}} week {{amount, plural, zero {أسابيع} one {أسبوع} other {أسابيع}}} month {{amount, plural, zero {شهور} one {شهر} other {شهور}}} year {{amount, plural, zero {سنوات} one {سنة} other {سنوات}}} other {}}"
+  },
+  "drawer": {
+    "i18nStrings.loadingText": "جار تحميل المحتوى"
+  },
+  "flashbar": {
+    "i18nStrings.ariaLabel": "الإشعارات",
+    "i18nStrings.errorIconAriaLabel": "خطأ",
+    "i18nStrings.inProgressIconAriaLabel": "قيد التقدم",
+    "i18nStrings.infoIconAriaLabel": "المعلومات",
+    "i18nStrings.notificationBarAriaLabel": "جميع الإشعارات",
+    "i18nStrings.notificationBarText": "الإشعارات",
+    "i18nStrings.successIconAriaLabel": "نجاح",
+    "i18nStrings.warningIconAriaLabel": "تحذير"
+  },
+  "form-field": {
+    "i18nStrings.errorIconAriaLabel": "خطأ",
+    "i18nStrings.warningIconAriaLabel": "تحذير"
+  },
+  "form": {
+    "errorIconAriaLabel": "خطأ"
+  },
+  "help-panel": {
+    "loadingText": "جار تحميل المحتوى"
+  },
+  "input": {
+    "clearAriaLabel": "مسح"
+  },
+  "link": {
+    "externalIconAriaLabel": "تفتح الصفحة في علامة تبويب جديدة"
+  },
+  "modal": {
+    "closeAriaLabel": "إغلاق النموذج"
+  },
+  "multiselect": {
+    "deselectAriaLabel": "إزالة {option__label}"
+  },
+  "pagination": {
+    "ariaLabels.nextPageLabel": "الصفحة التالية",
+    "ariaLabels.pageLabel": "صفحة رقم {pageNumber} من إجمالي عدد الصفحات",
+    "ariaLabels.previousPageLabel": "الصفحة السابقة"
+  },
+  "pie-chart": {
+    "i18nStrings.detailsValue": "عمود القيمة",
+    "i18nStrings.detailsPercentage": "النسبة المئوية",
+    "i18nStrings.chartAriaRoleDescription": "مخطط دائري",
+    "i18nStrings.segmentAriaRoleDescription": "جزء"
+  },
+  "popover": {
+    "dismissAriaLabel": "إغلاق النافذة المنبثقة"
+  },
+  "property-filter": {
+    "i18nStrings.allPropertiesLabel": "جميع الخصائص",
+    "i18nStrings.applyActionText": "استخدام",
+    "i18nStrings.cancelActionText": "إلغاء",
+    "i18nStrings.clearFiltersText": "مسح عوامل التصفية",
+    "i18nStrings.editTokenHeader": "تعديل عامل التصفية",
+    "i18nStrings.groupPropertiesText": "الخصائص",
+    "i18nStrings.groupValuesText": "القيم",
+    "i18nStrings.operationAndText": "و",
+    "i18nStrings.operationOrText": "أو",
+    "i18nStrings.operatorContainsText": "تحتوي على",
+    "i18nStrings.operatorDoesNotContainText": "لا تحتوي على",
+    "i18nStrings.operatorDoesNotEqualText": "لا تساوي",
+    "i18nStrings.operatorEqualsText": "تساوي",
+    "i18nStrings.operatorGreaterOrEqualText": "أكبر من أو تساوي",
+    "i18nStrings.operatorGreaterText": "أكبر من",
+    "i18nStrings.operatorLessOrEqualText": "أقل من أو تساوي",
+    "i18nStrings.operatorLessText": "أقل من",
+    "i18nStrings.operatorStartsWithText": "تبدأ بـ",
+    "i18nStrings.operatorDoesNotStartWithText": "لا تبدأ بـ",
+    "i18nStrings.operatorText": "عامل التصفية",
+    "i18nStrings.operatorsText": "عوامل التصفية",
+    "i18nStrings.propertyText": "الخاصية",
+    "i18nStrings.tokenLimitShowFewer": "إظهار عدد أقل من عوامل التصفية",
+    "i18nStrings.tokenLimitShowMore": "عرض المزيد من عوامل التصفية",
+    "i18nStrings.valueText": "عمود القيمة",
+    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {إزالة عامل التصفية، {token__propertyKey} تساوي {token__value}} not_equals {إزالة عامل التصفية، {token__propertyKey} لا تساوي {token__value}} greater_than {إزالة عامل التصفية، {token__propertyKey} أكبر من {token__value}} greater_than_equal {إزالة عامل التصفية، {token__propertyKey} أكبر من أو تساوي {token__value}} less_than {إزالة عامل التصفية، {token__propertyKey} أقل من {token__value}} less_than_equal {إزالة عامل التصفية، {token__propertyKey} أقل من أو تساوي {token__value}} contains {إزالة عامل التصفية، {token__propertyKey} تحتوي على {token__value}} not_contains {إزالة عامل التصفية، {token__propertyKey} لا تحتوي على {token__value}} starts_with {إزالة عامل التصفية، {token__propertyKey} تبدأ بـ {token__value}} not_starts_with {إزالة عامل التصفية، {token__propertyKey} لا تبدأ بـ {token__value}} other {}}"
+  },
+  "s3-resource-selector": {
+    "i18nStrings.inContextSelectPlaceholder": "اختر إصدارًا",
+    "i18nStrings.inContextBrowseButton": "استعراض S3",
+    "i18nStrings.inContextViewButton": "عرض",
+    "i18nStrings.inContextViewButtonAriaLabel": "عرض (يفتح في علامة تبويب جديدة)",
+    "i18nStrings.inContextLoadingText": "جار تحميل المورد",
+    "i18nStrings.inContextUriLabel": "S3 URI",
+    "i18nStrings.inContextVersionSelectLabel": "إصدار الكائن",
+    "i18nStrings.modalTitle": "اختيار كائن في S3",
+    "i18nStrings.modalCancelButton": "إلغاء",
+    "i18nStrings.modalSubmitButton": "اختيار",
+    "i18nStrings.modalBreadcrumbRootItem": "حاويات S3",
+    "i18nStrings.selectionBuckets": "الحاويات",
+    "i18nStrings.selectionObjects": "الكائنات",
+    "i18nStrings.selectionVersions": "الإصدارات",
+    "i18nStrings.selectionBucketsSearchPlaceholder": "البحث عن حاوية",
+    "i18nStrings.selectionObjectsSearchPlaceholder": "البحث عن الكائن بالبادئة",
+    "i18nStrings.selectionVersionsSearchPlaceholder": "البحث عن الإصدار",
+    "i18nStrings.selectionBucketsLoading": "جار تحميل الحاويات",
+    "i18nStrings.selectionBucketsNoItems": "لا توجد حاويات",
+    "i18nStrings.selectionObjectsLoading": "جار تحميل الكائنات",
+    "i18nStrings.selectionObjectsNoItems": "لا توجد كائنات",
+    "i18nStrings.selectionVersionsLoading": "جار تحميل الإصدارات",
+    "i18nStrings.selectionVersionsNoItems": "لا توجد إصدارات",
+    "i18nStrings.filteringNoMatches": "لا توجد تطابقات",
+    "i18nStrings.filteringCantFindMatch": "لا يمكننا العثور على تطابق.",
+    "i18nStrings.clearFilterButtonText": "مسح عامل التصفية",
+    "i18nStrings.columnBucketID": "المُعرِّف (ID)",
+    "i18nStrings.columnBucketName": "الاسم",
+    "i18nStrings.columnBucketCreationDate": "تاريخ الإنشاء",
+    "i18nStrings.columnBucketRegion": "المنطقة",
+    "i18nStrings.columnObjectKey": "عمود المُدخلات الرئيسي",
+    "i18nStrings.columnObjectLastModified": "آخر تعديل",
+    "i18nStrings.columnObjectSize": "الحجم",
+    "i18nStrings.columnVersionID": "مُعرِّف الإصدار",
+    "i18nStrings.columnVersionLastModified": "آخر تعديل",
+    "i18nStrings.columnVersionSize": "الحجم",
+    "i18nStrings.validationPathMustBegin": "يجب أن يبدأ المسار بـ s3:// ليكون صالحًا.",
+    "i18nStrings.validationBucketLowerCase": "يجب أن يبدأ اسم الحاوية بحرف صغير أو رقم.",
+    "i18nStrings.validationBucketMustNotContain": "يجب ألا يحتوي اسم الحاوية على أحرف كبيرة.",
+    "i18nStrings.validationBucketLength": "يجب أن يتكون اسم الحاوية من 3 إلى 63 حرفًا.",
+    "i18nStrings.validationBucketMustComplyDns": "يجب أن يتوافق اسم الحاوية مع اصطلاحات تسمية DNS.",
+    "i18nStrings.labelSortedDescending": "{columnName}, مُرتَّب تنازليًّا",
+    "i18nStrings.labelSortedAscending": "{columnName}، مُرتَّب تصاعديًا",
+    "i18nStrings.labelNotSorted": "{columnName}، بلا ترتيب",
+    "i18nStrings.labelsBucketsSelection.selectionGroupLabel": "الحاويات",
+    "i18nStrings.labelsBucketsSelection.itemSelectionLabel": "{item__Name}",
+    "i18nStrings.labelsObjectsSelection.selectionGroupLabel": "الكائنات",
+    "i18nStrings.labelsObjectsSelection.itemSelectionLabel": "{item__Key}",
+    "i18nStrings.labelsVersionsSelection.selectionGroupLabel": "الإصدارات",
+    "i18nStrings.labelsVersionsSelection.itemSelectionLabel": "{item__VersionId}",
+    "i18nStrings.labelFiltering": "البحث عن {itemsType}",
+    "i18nStrings.labelRefresh": "تحديث البيانات",
+    "i18nStrings.labelBreadcrumbs": "التنقل في S3",
+    "i18nStrings.filteringCounterText": "{count, plural, one {تطابق واحد} other {{count} تطابق}}"
+  },
+  "select": {
+    "errorIconAriaLabel": "خطأ",
+    "selectedAriaLabel": "مُحدَّد",
+    "recoveryText": "إعادة المحاولة"
+  },
+  "slider": {
+    "i18nStrings.valueTextRange": "{value}، بين {previousValue} و{nextValue}"
+  },
+  "split-panel": {
+    "i18nStrings.closeButtonAriaLabel": "إغلاق اللوحة",
+    "i18nStrings.openButtonAriaLabel": "فتح اللوحة",
+    "i18nStrings.preferencesTitle": "تفضيلات اللوحة المنقسمة",
+    "i18nStrings.preferencesPositionLabel": "موضع اللوحة المنقسمة",
+    "i18nStrings.preferencesPositionDescription": "اختر موضع اللوحة المقسمة الافتراضي للخدمة.",
+    "i18nStrings.preferencesPositionSide": "جانبي",
+    "i18nStrings.preferencesPositionBottom": "سُفلي",
+    "i18nStrings.preferencesConfirm": "تأكيد",
+    "i18nStrings.preferencesCancel": "إلغاء",
+    "i18nStrings.resizeHandleAriaLabel": "تغيير حجم اللوحة المنقسمة"
+  },
+  "table": {
+    "ariaLabels.resizerRoleDescription": "زر تغيير الحجم",
+    "ariaLabels.submittingEditText": "إرسال عملية التحرير",
+    "ariaLabels.successfulEditLabel": "تم التعديل بنجاح",
+    "ariaLabels.expandButtonLabel": "توسيع",
+    "ariaLabels.collapseButtonLabel": "تحجيم",
+    "columnDefinitions.editConfig.errorIconAriaLabel": "خطأ",
+    "columnDefinitions.editConfig.editIconAriaLabel": "قابل للتعديل"
+  },
+  "tabs": {
+    "i18nStrings.scrollLeftAriaLabel": "التمرير إلى اليسار",
+    "i18nStrings.scrollRightAriaLabel": "التمرير إلى اليمين",
+    "i18nStrings.tabsWithActionsAriaRoleDescription": "علامات تبويب مع خيارات تفاعلية"
+  },
+  "tag-editor": {
+    "i18nStrings.keyPlaceholder": "إدخال المعلومات الرئيسية",
+    "i18nStrings.valuePlaceholder": "إدخال القيمة",
+    "i18nStrings.addButton": "إضافة علامة جديدة",
+    "i18nStrings.removeButton": "إزالة",
+    "i18nStrings.removeButtonAriaLabel": "إزالة {tag__key}",
+    "i18nStrings.undoButton": "تراجع",
+    "i18nStrings.undoPrompt": "ستتم إزالة هذه العلامة عند حفظ التغييرات",
+    "i18nStrings.loading": "تحميل العلامات المرتبطة بهذا المورد",
+    "i18nStrings.keyHeader": "عمود المُدخلات الرئيسي",
+    "i18nStrings.valueHeader": "عمود القيمة",
+    "i18nStrings.optional": "اختيارية",
+    "i18nStrings.keySuggestion": "تخصيص المُدخلات الرئيسية للعلامة",
+    "i18nStrings.valueSuggestion": "تخصيص قيمة العلامة",
+    "i18nStrings.emptyTags": "لا توجد علامات مرتبطة بالمورد.",
+    "i18nStrings.tooManyKeysSuggestion": "لديك مُدخلات رئيسية أكثر مما يمكن عرضه",
+    "i18nStrings.tooManyValuesSuggestion": "لديك قيم أكثر مما يمكن عرضها",
+    "i18nStrings.keysSuggestionLoading": "جار تحميل المُدخلات الرئيسية للعلامات",
+    "i18nStrings.keysSuggestionError": "لا يمكن استرداد أعمدة المُدخلات الرئيسية للعلامات",
+    "i18nStrings.valuesSuggestionLoading": "جار تحميل قيم العلامات",
+    "i18nStrings.valuesSuggestionError": "لا يمكن استرداد قيم العلامات",
+    "i18nStrings.emptyKeyError": "يجب تحديد أحد المُدخلات الرئيسية للعلامات",
+    "i18nStrings.maxKeyCharLengthError": "الحد الأقصى لعدد الأحرف التي يمكنك استخدامها في المُدخلات الرئيسية للعلامات هو 128 حرف.",
+    "i18nStrings.maxValueCharLengthError": "الحد الأقصى لعدد الأحرف التي يمكنك استخدامها في قيمة العلامات هو 256.",
+    "i18nStrings.duplicateKeyError": "يجب تحديد إدخال مُميَّز للعلامات.",
+    "i18nStrings.invalidKeyError": "إدخال غير صالح. تقتصر المُدخلات على الرموز المميزة والأرقام والمساحة الفارغة وأي من الرموز التالية: _.:/=+@-",
+    "i18nStrings.invalidValueError": "قيمة غير صالحة. تقتصر القيم على الرموز المميزة والأرقام والمسافة الفارغة وأي من الرموز التالية: _.:/=+@-",
+    "i18nStrings.awsPrefixError": "لا يمكن البدء بـ aws:",
+    "i18nStrings.tagLimitReached": "{tagLimit, plural, one {لقد وصلت إلى الحد الأقصى المُكون من علامة واحدة.} other {لقد وصلت إلى الحد الأقصى المُكون من {tagLimit} علامات.}}",
+    "i18nStrings.tagLimitExceeded": "{tagLimit, plural, one {لقد تجاوزت الحد الأقصى المُكون من علامة واحدة.} other {لقد تجاوزت الحد الأقصى المُكون من {tagLimit} علامات.}}",
+    "i18nStrings.tagLimit": "{tagLimitAvailable, select, true {{availableTags, plural, other {يمكنك إضافة ما يصل إلى {tagLimit} علامات.}}} false {{availableTags, plural, one {يمكنك إضافة علامة واحدة أخرى.} other {يمكنك إضافة علامات أكثر بما يصل إلى {availableTags}.}}} other {}}"
+  },
+  "token-group": {
+    "i18nStrings.limitShowFewer": "إظهار عدد أقل من عوامل التصفية",
+    "i18nStrings.limitShowMore": "عرض المزيد من عوامل التصفية"
+  },
+  "top-navigation": {
+    "i18nStrings.searchIconAriaLabel": "بحث",
+    "i18nStrings.searchDismissIconAriaLabel": "إغلاق البحث",
+    "i18nStrings.overflowMenuTriggerText": "المزيد",
+    "i18nStrings.overflowMenuDismissIconAriaLabel": "إغلاق القائمة",
+    "i18nStrings.overflowMenuBackIconAriaLabel": "العودة إلى الصفحة السابقة",
+    "i18nStrings.overflowMenuTitleText": "الكل"
+  },
+  "tutorial-panel": {
+    "i18nStrings.loadingText": "جار التحميل",
+    "i18nStrings.tutorialListTitle": "اختر البرنامج التعليمي",
+    "i18nStrings.tutorialListDownloadLinkText": "تنزيل نسخة PDF",
+    "i18nStrings.labelTutorialListDownloadLink": "تنزيل نسخة PDF من هذا البرنامج التعليمي",
+    "i18nStrings.tutorialCompletedText": "اكتمل البرنامج التعليمي",
+    "i18nStrings.learnMoreLinkText": "تعرَّف على المزيد",
+    "i18nStrings.startTutorialButtonText": "بدء البرنامج التعليمي",
+    "i18nStrings.restartTutorialButtonText": "إعادة بدء البرنامج التعليمي",
+    "i18nStrings.completionScreenTitle": "تهانينا! لقد أكملت البرنامج التعليمي.",
+    "i18nStrings.feedbackLinkText": "التعليقات والملاحظات",
+    "i18nStrings.dismissTutorialButtonText": "إنهاء البرنامج التعليمي",
+    "i18nStrings.taskTitle": "المهمة رقم {taskNumber}: {taskTitle}",
+    "i18nStrings.stepTitle": "الخطوة رقم {stepNumber}: {stepTitle}",
+    "i18nStrings.labelExitTutorial": "إنهاء البرنامج التعليمي",
+    "i18nStrings.labelTotalSteps": "إجمالي الخطوات: {totalStepCount}",
+    "i18nStrings.labelsTaskStatus.pending": "قيد الانتظار",
+    "i18nStrings.labelsTaskStatus.in-progress": "قيد التقدم",
+    "i18nStrings.labelsTaskStatus.success": "نجاح"
+  },
+  "wizard": {
+    "i18nStrings.stepNumberLabel": "الخطوة رقم {stepNumber}",
+    "i18nStrings.collapsedStepsLabel": "الخطوة رقم {stepNumber} من أصل {stepsCount}",
+    "i18nStrings.skipToButtonLabel": "تخطي المهمة الحالية والانتقال إلى {task__title}",
+    "i18nStrings.navigationAriaLabel": "الخطوات",
+    "i18nStrings.cancelButton": "إلغاء",
+    "i18nStrings.previousButton": "الخطوة السابقة",
+    "i18nStrings.nextButton": "الخطوة التالية",
+    "i18nStrings.optional": "اختيارية",
+    "i18nStrings.nextButtonLoadingAnnouncement": "تحميل الخطوة التالية",
+    "i18nStrings.submitButtonLoadingAnnouncement": "إرسال النموذج"
+  }
+}
