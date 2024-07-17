@@ -23,7 +23,7 @@ export default class ButtonWrapper extends ComponentWrapper<HTMLButtonElement> {
 
   @usesDom
   isPressed(): boolean {
-    return this.element.classList.contains(styles.pressed) && this.element.getAttribute('aria-pressed') === 'true';
+    return this.element.classList.contains(styles.pressed);
   }
 
   findDisabledReason(): ElementWrapper | null {
