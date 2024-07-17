@@ -64,6 +64,16 @@ test('renders stub icon when no icon specified', () => {
   expect(wrapper.findMenuById('search')?.findAll(`.${buttonStyles.icon}`)).toHaveLength(1);
 });
 
+test('handles menu click event correctly', () => {
+  const onItemClick = jest.fn();
+  const wrapper = renderButtonGroup({ variant: 'icon', items: items1, ariaLabel: 'Chat actions', onItemClick });
+  const buttonDropdown = wrapper.findMenuById('misc')!;
+  buttonDropdown.openDropdown();
+  buttonDropdown.findItemById('edit')!.click();
+
+  expect(onItemClick).toHaveBeenCalled();
+});
+
 describe('focus', () => {
   test('focuses the correct item', () => {
     const ref: { current: ButtonGroupProps.Ref | null } = { current: null };
