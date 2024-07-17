@@ -8,6 +8,7 @@ import { ChartScale, NumericChartScale } from '../../internal/components/cartesi
 import { findNavigableSeries, isXThreshold, isYThreshold, nextValidDomainIndex } from '../utils';
 import { ScaledPoint } from '../make-scaled-series';
 import { ScaledBarGroup } from '../make-scaled-bar-groups';
+import { circleIndex } from '../../internal/utils/circle-index';
 
 export type UseNavigationProps<T extends ChartDataTypes> = Pick<
   ChartContainerProps<T>,
@@ -295,15 +296,4 @@ export function useNavigation<T extends ChartDataTypes>({
   );
 
   return { isGroupNavigation, onFocus, onKeyDown, xIndex };
-}
-
-// Returns given index if it is in range or the opposite range boundary otherwise.
-function circleIndex(index: number, [from, to]: [number, number]): number {
-  if (index < from) {
-    return to;
-  }
-  if (index > to) {
-    return from;
-  }
-  return index;
 }

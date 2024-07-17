@@ -29,6 +29,7 @@ import useHiddenDescription from '../internal/hooks/use-hidden-description';
 import Tooltip from '../internal/components/tooltip';
 import { nodeBelongs } from '../internal/utils/node-belongs';
 import { ButtonProps } from '../button/interfaces';
+import { circleIndex } from '../internal/utils/circle-index';
 
 const tabSelector = `.${styles['tabs-tab-link']}`;
 const focusedTabSelector = `[role="tab"].${styles['tabs-tab-focused']}`;
@@ -525,14 +526,4 @@ const TabTrigger = forwardRef(
 
 export function getTabElementId({ namespace, tabId }: { namespace: string; tabId: string }) {
   return namespace + '-' + tabId;
-}
-
-function circleIndex(index: number, [from, to]: [number, number]): number {
-  if (index < from) {
-    return to;
-  }
-  if (index > to) {
-    return from;
-  }
-  return index;
 }
