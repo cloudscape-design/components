@@ -654,6 +654,42 @@ describe('Button Component', () => {
     });
   });
 
+  describe('toggle button', () => {
+    const toggleVariants: Array<ButtonProps.Variant> = ['normal-toggle', 'icon-toggle', 'inline-icon-toggle'];
+    const nonToggleVariants: Array<ButtonProps.Variant> = [
+      'normal',
+      'primary',
+      'link',
+      'icon',
+      'inline-icon',
+      'inline-link',
+    ];
+
+    describe('non-toggle variants do not have toggle button attributes', () => {
+      test.each(nonToggleVariants)('%s variant', variant => {
+        const wrapper = renderButton({ variant, children: 'Content' });
+
+        expect(wrapper.getElement()).not.toHaveAttribute('aria-pressed');
+      });
+    });
+
+    describe('toggle variants have toggle button attributes by default', () => {
+      test.each(toggleVariants)('%s variant', variant => {
+        const wrapper = renderButton({ variant, children: 'Content' });
+
+        expect(wrapper.getElement()).toHaveAttribute('aria-pressed', 'false');
+      });
+    });
+
+    describe('toggle variants have pressed state attributes when provided', () => {
+      test.each(toggleVariants)('%s variant', variant => {
+        const wrapper = renderButton({ variant, children: 'Content', pressed: true });
+
+        expect(wrapper.isPressed()).toBe(true);
+      });
+    });
+  });
+
   test.each(['normal', 'primary', 'link'] as const)(
     'Assigns full-width class for buttons with content, variant=%s',
     variant => {
