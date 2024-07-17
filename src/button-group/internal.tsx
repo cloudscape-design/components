@@ -23,7 +23,14 @@ import handleKey from '../internal/utils/handle-key';
 
 const InternalButtonGroup = forwardRef(
   (
-    { items = [], onItemClick, ariaLabel, __internalRootRef = null, ...props }: InternalButtonGroupProps,
+    {
+      items = [],
+      onItemClick,
+      ariaLabel,
+      dropdownExpandToViewport,
+      __internalRootRef = null,
+      ...props
+    }: InternalButtonGroupProps,
     ref: React.Ref<ButtonGroupProps.Ref>
   ) => {
     const baseProps = getBaseProps(props);
@@ -187,6 +194,7 @@ const InternalButtonGroup = forwardRef(
                       key={item.id}
                       item={item}
                       onItemClick={onItemClick}
+                      dropdownExpandToViewport={dropdownExpandToViewport}
                       ref={element => onSetButtonRef(item, element)}
                     />
                   ))}
@@ -195,6 +203,7 @@ const InternalButtonGroup = forwardRef(
                 <ItemElement
                   item={itemOrGroup}
                   onItemClick={onItemClick}
+                  dropdownExpandToViewport={dropdownExpandToViewport}
                   ref={element => onSetButtonRef(itemOrGroup, element)}
                 />
               );

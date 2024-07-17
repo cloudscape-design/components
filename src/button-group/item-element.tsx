@@ -16,9 +16,11 @@ const ItemElement = forwardRef(
   (
     {
       item,
+      dropdownExpandToViewport,
       onItemClick,
     }: {
       item: ButtonGroupProps.Item;
+      dropdownExpandToViewport?: boolean;
       onItemClick?: (event: CustomEvent) => void;
     },
     ref: React.Ref<ButtonProps.Ref>
@@ -113,7 +115,12 @@ const ItemElement = forwardRef(
       >
         {isIconButton && <IconButtonItem ref={ref} item={item} onItemClick={onClickHandler} />}
         {isMenuDropdown && (
-          <MenuDropdownItem ref={ref} item={item} onItemClick={onItemClick} expandToViewport={item.expandToViewport} />
+          <MenuDropdownItem
+            ref={ref}
+            item={item}
+            onItemClick={onItemClick}
+            expandToViewport={dropdownExpandToViewport}
+          />
         )}
         {showTooltip && !isMenuDropdown && (
           <Tooltip
