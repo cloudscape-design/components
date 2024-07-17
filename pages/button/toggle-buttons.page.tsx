@@ -12,6 +12,9 @@ const ToggleButtonsPage = () => {
 
   return (
     <div role="group" aria-label="Website feedback form">
+      <div style={{ marginBottom: '20px' }}>
+        <Box variant="h1">Toggle buttons usage example</Box>
+      </div>
       <Box variant="h2">Did this page help you?</Box>
       <div style={{ marginTop: '16px', marginBottom: '20px' }}>
         <SpaceBetween size="xs" direction="horizontal">
