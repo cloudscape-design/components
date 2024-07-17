@@ -18,6 +18,7 @@ import {
   Token,
 } from './interfaces';
 import styles from './styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
 import { useLoadItems } from './use-load-items';
 import { getAllowedOperators, operatorToDescription, getPropertySuggestions } from './controller';
 import { NonCancelableEventHandler } from '../internal/events';
@@ -25,6 +26,7 @@ import { DropdownStatusProps } from '../internal/components/dropdown-status/inte
 import InternalButton from '../button/internal';
 import InternalFormField from '../form-field/internal';
 import { matchTokenValue } from './utils';
+import clsx from 'clsx';
 
 interface PropertyInputProps {
   asyncProps: null | DropdownStatusProps;
@@ -242,7 +244,10 @@ export function TokenEditor({
       content={
         <div className={styles['token-editor']}>
           <div className={styles['token-editor-form']}>
-            <InternalFormField label={i18nStrings.propertyText} className={styles['token-editor-field-property']}>
+            <InternalFormField
+              label={i18nStrings.propertyText}
+              className={clsx(styles['token-editor-field-property'], testUtilStyles['token-editor-field-property'])}
+            >
               <PropertyInput
                 property={property}
                 onChangePropertyKey={onChangePropertyKey}
@@ -255,7 +260,10 @@ export function TokenEditor({
               />
             </InternalFormField>
 
-            <InternalFormField label={i18nStrings.operatorText} className={styles['token-editor-field-operator']}>
+            <InternalFormField
+              label={i18nStrings.operatorText}
+              className={clsx(styles['token-editor-field-operator'], testUtilStyles['token-editor-field-operator'])}
+            >
               <OperatorInput
                 property={property}
                 operator={operator}
@@ -265,7 +273,10 @@ export function TokenEditor({
               />
             </InternalFormField>
 
-            <InternalFormField label={i18nStrings.valueText} className={styles['token-editor-field-value']}>
+            <InternalFormField
+              label={i18nStrings.valueText}
+              className={clsx(styles['token-editor-field-value'], testUtilStyles['token-editor-field-value'])}
+            >
               <ValueInput
                 property={property}
                 operator={operator}
@@ -283,13 +294,13 @@ export function TokenEditor({
             <InternalButton
               formAction="none"
               variant="link"
-              className={styles['token-editor-cancel']}
+              className={clsx(styles['token-editor-cancel'], testUtilStyles['token-editor-cancel'])}
               onClick={closePopover}
             >
               {i18nStrings.cancelActionText}
             </InternalButton>
             <InternalButton
-              className={styles['token-editor-submit']}
+              className={clsx(styles['token-editor-submit'], testUtilStyles['token-editor-submit'])}
               formAction="none"
               onClick={() => {
                 setToken(matchTokenValue(temporaryToken, filteringOptions));

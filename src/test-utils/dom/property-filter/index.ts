@@ -3,7 +3,7 @@
 import { ComponentWrapper, ElementWrapper, createWrapper } from '@cloudscape-design/test-utils-core/dom';
 
 import styles from '../../../property-filter/styles.selectors.js';
-import filteringTokenStyles from '../../../property-filter/filtering-token/styles.selectors.js';
+import testUtilStyles from '../../../property-filter/test-classes/styles.selectors.js';
 import popoverStyles from '../../../popover/styles.selectors.js';
 import tokenListSelectors from '../../../internal/components/token-list/styles.selectors.js';
 import textFilterStyles from '../../../text-filter/styles.selectors.js';
@@ -62,18 +62,18 @@ export default class PropertyFilterWrapper extends AutosuggestWrapper {
 }
 
 export class FilteringTokenWrapper extends ComponentWrapper {
-  static rootSelector = filteringTokenStyles.root;
+  static rootSelector = testUtilStyles['filtering-token'];
 
   findLabel(): ElementWrapper {
-    return this.findByClassName(filteringTokenStyles['token-content'])!.findByClassName(popoverStyles.trigger)!;
+    return this.findByClassName(testUtilStyles['filtering-token-content'])!.findByClassName(popoverStyles.trigger)!;
   }
 
   findRemoveButton(): ElementWrapper<HTMLButtonElement> {
-    return this.findByClassName<HTMLButtonElement>(filteringTokenStyles['dismiss-button'])!;
+    return this.findByClassName<HTMLButtonElement>(testUtilStyles['filtering-token-dismiss-button'])!;
   }
 
   findTokenOperation(): SelectWrapper | null {
-    return this.findComponent(`.${filteringTokenStyles.select}`, SelectWrapper);
+    return this.findComponent(`.${testUtilStyles['filtering-token-select']}`, SelectWrapper);
   }
 
   /**
@@ -96,22 +96,22 @@ export class PropertyFilterEditorDropdownWrapper extends ComponentWrapper {
   }
 
   findPropertyField(): FormFieldWrapper {
-    return this.findComponent(`.${styles['token-editor-field-property']}`, FormFieldWrapper)!;
+    return this.findComponent(`.${testUtilStyles['token-editor-field-property']}`, FormFieldWrapper)!;
   }
 
   findOperatorField(): FormFieldWrapper {
-    return this.findComponent(`.${styles['token-editor-field-operator']}`, FormFieldWrapper)!;
+    return this.findComponent(`.${testUtilStyles['token-editor-field-operator']}`, FormFieldWrapper)!;
   }
 
   findValueField(): FormFieldWrapper {
-    return this.findComponent(`.${styles['token-editor-field-value']}`, FormFieldWrapper)!;
+    return this.findComponent(`.${testUtilStyles['token-editor-field-value']}`, FormFieldWrapper)!;
   }
 
   findCancelButton(): ButtonWrapper {
-    return this.findComponent(`.${styles['token-editor-cancel']}`, ButtonWrapper)!;
+    return this.findComponent(`.${testUtilStyles['token-editor-cancel']}`, ButtonWrapper)!;
   }
 
   findSubmitButton(): ButtonWrapper {
-    return this.findComponent(`.${styles['token-editor-submit']}`, ButtonWrapper)!;
+    return this.findComponent(`.${testUtilStyles['token-editor-submit']}`, ButtonWrapper)!;
   }
 }
