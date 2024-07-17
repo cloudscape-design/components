@@ -6,6 +6,8 @@ import { ButtonDropdownProps } from '../button-dropdown/interfaces';
 import { CancelableEventHandler, fireCancelableEvent } from '../internal/events';
 import ButtonDropdown from '../button-dropdown/internal';
 import styles from './styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
+import clsx from 'clsx';
 
 const MenuDropdownItem = React.forwardRef(
   (
@@ -36,7 +38,7 @@ const MenuDropdownItem = React.forwardRef(
         expandToViewport={expandToViewport}
         ariaLabel={item.text}
         data-testid={item.id}
-        className={styles.item}
+        className={clsx(styles.item, testUtilStyles['button-group-item'])}
       />
     );
   }
