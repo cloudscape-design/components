@@ -110,7 +110,13 @@ const InternalButtonGroup = forwardRef(
       const isUnregisteringFocusedNode = nodeBelongs(focusableElement, document.activeElement);
       if (isUnregisteringFocusedNode) {
         // Wait for unmounted node to get removed from the DOM.
-        setTimeout(() => navigationAPI.current?.getFocusTarget()?.focus(), 0);
+        // Only refocus when the node is actually removed (no such ID anymore).
+        setTimeout(() => {
+          const target = navigationAPI.current?.getFocusTarget();
+          if (target && target.dataset.testid !== focusableElement.dataset.testid) {
+            target.focus();
+          }
+        }, 0);
       }
     }
 

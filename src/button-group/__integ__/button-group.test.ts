@@ -6,6 +6,8 @@ import createWrapper from '../../../lib/components/test-utils/selectors';
 
 const buttonGroup = createWrapper().findButtonGroup();
 const likeButton = buttonGroup.findButtonById('like');
+const dislikeButton = buttonGroup.findButtonById('dislike');
+const copyButton = buttonGroup.findButtonById('copy');
 const actionsMenu = buttonGroup.findMenuById('more-actions');
 
 function setup(options: { dropdownExpandToViewport?: boolean }, testFn: (page: BasePageObject) => Promise<void>) {
@@ -68,7 +70,29 @@ test.each([false, true])(
 test(
   'shows tooltip when a button is focused',
   setup({}, async page => {
+    await page.click(likeButton.toSelector());
+    await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Liked');
+
     await page.click(createWrapper().find('[data-testid="focus-on-copy"]').toSelector());
     await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Copy');
+  })
+);
+
+test(
+  'hides popover after clicking outside',
+  setup({}, async page => {
+    await page.click(likeButton.toSelector());
+    await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Liked');
+
+    await page.click(createWrapper().find('#last-clicked').toSelector());
+    await expect(page.isExisting(buttonGroup.findTooltip().toSelector())).resolves.toBe(false);
+  })
+);
+
+test(
+  'keeps focus in button group when action gets removed',
+  setup({}, async page => {
+    await page.click(dislikeButton.toSelector());
+    await expect(page.isFocused(copyButton.toSelector())).resolves.toBe(true);
   })
 );
