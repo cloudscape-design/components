@@ -81,7 +81,7 @@ const ItemElement = forwardRef(
         }
       };
 
-      const handleTooltipToogleEvent = (event: CustomEvent) => {
+      const handleTooltipToggleEvent = (event: CustomEvent) => {
         if (event.detail.trackKey !== item.id && event.detail.open) {
           close();
         }
@@ -89,12 +89,12 @@ const ItemElement = forwardRef(
 
       window.addEventListener('pointerdown', handlePointerDownEvent);
       window.addEventListener('keydown', handleKeyDownEvent);
-      window.addEventListener('btngroup-tooltip:toggle', handleTooltipToogleEvent as any);
+      window.addEventListener('btngroup-tooltip:toggle', handleTooltipToggleEvent as any);
 
       return () => {
         window.removeEventListener('pointerdown', handlePointerDownEvent);
         window.removeEventListener('keydown', handleKeyDownEvent);
-        window.removeEventListener('btngroup-tooltip:toggle', handleTooltipToogleEvent as any);
+        window.removeEventListener('btngroup-tooltip:toggle', handleTooltipToggleEvent as any);
       };
     }, [item.id, showTooltip, setShowTooltip, setShowFeedback]);
 
