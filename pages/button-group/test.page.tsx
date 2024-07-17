@@ -1,9 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import * as React from 'react';
+import React, { useContext } from 'react';
 import ButtonGroup, { ButtonGroupProps } from '~components/button-group';
-import ScreenshotArea from '../utils/screenshot-area';
-import { Button, StatusIndicator } from '~components';
+import { Box, Button, SpaceBetween, StatusIndicator } from '~components';
+import AppContext, { AppContextType } from '../app/app-context';
+
+type PageContext = React.Context<
+  AppContextType<{
+    dropdownExpandToViewport?: boolean;
+  }>
+>;
 
 const items: ButtonGroupProps.ItemOrGroup[] = [
   {
@@ -84,6 +90,9 @@ const items: ButtonGroupProps.ItemOrGroup[] = [
 ];
 
 export default function ButtonGroupPage() {
+  const {
+    urlParams: { dropdownExpandToViewport = true },
+  } = useContext(AppContext as PageContext);
   const ref = React.useRef<ButtonGroupProps.Ref>(null);
 
   const onItemClick: ButtonGroupProps['onItemClick'] = event => {
@@ -99,17 +108,26 @@ export default function ButtonGroupPage() {
   };
 
   return (
-    <ScreenshotArea disableAnimations={true}>
-      <article>
-        <h1>Button Group test page</h1>
-        <ButtonGroup ariaLabel="Chat actions" variant="icon" items={items} onItemClick={onItemClick} ref={ref} />
-        <br />
-        <Button onClick={onFocusOnCopyButtonClick}>Focus on copy</Button>&nbsp;
+    <Box margin="m">
+      <h1>Button Group test page</h1>
+      <SpaceBetween size="m" direction="vertical">
+        <Button data-testid="focus-before">Focus before</Button>
+
+        <Box margin={{ vertical: 'xl' }}>
+          <ButtonGroup
+            ariaLabel="Chat actions"
+            variant="icon"
+            items={items}
+            onItemClick={onItemClick}
+            ref={ref}
+            dropdownExpandToViewport={dropdownExpandToViewport}
+          />
+        </Box>
+
+        <Button onClick={onFocusOnCopyButtonClick}>Focus on copy</Button>
         <Button onClick={onFocusOnSearchButtonClick}>Focus on item in the menu</Button>
-        <br />
-        <br />
         <div id="last-clicked"></div>
-      </article>
-    </ScreenshotArea>
+      </SpaceBetween>
+    </Box>
   );
 }
