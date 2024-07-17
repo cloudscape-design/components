@@ -23,14 +23,7 @@ import handleKey from '../internal/utils/handle-key';
 
 const InternalButtonGroup = forwardRef(
   (
-    {
-      items = [],
-      onItemClick,
-      ariaLabel,
-      ariaLabelledby,
-      __internalRootRef = null,
-      ...props
-    }: InternalButtonGroupProps,
+    { items = [], onItemClick, ariaLabel, __internalRootRef = null, ...props }: InternalButtonGroupProps,
     ref: React.Ref<ButtonGroupProps.Ref>
   ) => {
     const baseProps = getBaseProps(props);
@@ -175,7 +168,6 @@ const InternalButtonGroup = forwardRef(
         ref={containerRef}
         role="toolbar"
         aria-label={ariaLabel}
-        aria-labelledby={ariaLabelledby}
         onFocus={onFocus}
         onBlur={onBlur}
         onKeyDown={onKeyDown}
