@@ -103,10 +103,6 @@ export default function ButtonGroupPage() {
     ref.current?.focus('copy');
   };
 
-  const onFocusOnSearchButtonClick = () => {
-    ref.current?.focus('search');
-  };
-
   return (
     <Box margin="m">
       <h1>Button Group test page</h1>
@@ -124,8 +120,10 @@ export default function ButtonGroupPage() {
           />
         </Box>
 
-        <Button onClick={onFocusOnCopyButtonClick}>Focus on copy</Button>
-        <Button onClick={onFocusOnSearchButtonClick}>Focus on item in the menu</Button>
+        <Button onClick={onFocusOnCopyButtonClick} data-testid="focus-on-copy">
+          Focus on copy
+        </Button>
+
         <div id="last-clicked"></div>
       </SpaceBetween>
     </Box>

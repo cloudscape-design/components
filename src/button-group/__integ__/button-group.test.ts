@@ -64,3 +64,11 @@ test.each([false, true])(
     })();
   }
 );
+
+test(
+  'shows tooltip when a button is focused',
+  setup({}, async page => {
+    await page.click(createWrapper().find('[data-testid="focus-on-copy"]').toSelector());
+    await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Copy');
+  })
+);
