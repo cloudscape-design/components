@@ -81,28 +81,14 @@ const ItemElement = forwardRef(
         }
       };
 
-      const handleTooltipToggleEvent = (event: CustomEvent) => {
-        if (event.detail.trackKey !== item.id && event.detail.open) {
-          close();
-        }
-      };
-
       window.addEventListener('pointerdown', handlePointerDownEvent);
       window.addEventListener('keydown', handleKeyDownEvent);
-      window.addEventListener('btngroup-tooltip:toggle', handleTooltipToggleEvent as any);
 
       return () => {
         window.removeEventListener('pointerdown', handlePointerDownEvent);
         window.removeEventListener('keydown', handleKeyDownEvent);
-        window.removeEventListener('btngroup-tooltip:toggle', handleTooltipToggleEvent as any);
       };
     }, [item.id, showTooltip, setShowTooltip, setShowFeedback]);
-
-    useEffect(() => {
-      window.dispatchEvent(
-        new CustomEvent('btngroup-tooltip:toggle', { detail: { open: showTooltip, trackKey: item.id } })
-      );
-    }, [showTooltip, item.id]);
 
     return (
       <div
