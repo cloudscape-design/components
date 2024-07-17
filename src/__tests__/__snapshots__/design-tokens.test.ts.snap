@@ -15975,14 +15975,14 @@ Object {
         "color-text-body-default": Object {
           "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
           "$value": Object {
-            "dark": "#b6bec9",
+            "dark": "#dcdce0",
             "light": "#0f141a",
           },
         },
         "color-text-body-secondary": Object {
           "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
           "$value": Object {
-            "dark": "#b6bec9",
+            "dark": "#dcdce0",
             "light": "#424650",
           },
         },
@@ -16115,7 +16115,7 @@ Object {
         "color-text-group-label": Object {
           "$description": "The default color for group labels. For example: group label in dropdown part of button dropdown, select, and multiselect, and group label in table and cards' preferences content selector.",
           "$value": Object {
-            "dark": "#b6bec9",
+            "dark": "#dcdce0",
             "light": "#424650",
           },
         },
@@ -16143,8 +16143,8 @@ Object {
         "color-text-home-header-secondary": Object {
           "$description": "The color of the home header's secondary text, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#b6bec9",
-            "light": "#b6bec9",
+            "dark": "#dcdce0",
+            "light": "#dcdce0",
           },
         },
         "color-text-input-disabled": Object {
@@ -18354,15 +18354,15 @@ Object {
         "color-text-body-default": Object {
           "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
           "$value": Object {
-            "dark": "#b6bec9",
-            "light": "#b6bec9",
+            "dark": "#dcdce0",
+            "light": "#dcdce0",
           },
         },
         "color-text-body-secondary": Object {
           "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
           "$value": Object {
-            "dark": "#b6bec9",
-            "light": "#b6bec9",
+            "dark": "#dcdce0",
+            "light": "#dcdce0",
           },
         },
         "color-text-breadcrumb-current": Object {
@@ -18494,8 +18494,8 @@ Object {
         "color-text-group-label": Object {
           "$description": "The default color for group labels. For example: group label in dropdown part of button dropdown, select, and multiselect, and group label in table and cards' preferences content selector.",
           "$value": Object {
-            "dark": "#b6bec9",
-            "light": "#b6bec9",
+            "dark": "#dcdce0",
+            "light": "#dcdce0",
           },
         },
         "color-text-heading-default": Object {
@@ -18522,8 +18522,8 @@ Object {
         "color-text-home-header-secondary": Object {
           "$description": "The color of the home header's secondary text, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#b6bec9",
-            "light": "#b6bec9",
+            "dark": "#dcdce0",
+            "light": "#dcdce0",
           },
         },
         "color-text-input-disabled": Object {
@@ -19495,7 +19495,7 @@ Object {
           "$description": "The default color for dividers. For example: dividers in column layout, expanding sections, side nav, help panel, between table rows and dropdown items, and inside containers.",
           "$value": Object {
             "dark": "#424650",
-            "light": "#b6bec9",
+            "light": "#dcdce0",
           },
         },
         "color-border-divider-secondary": Object {
@@ -20733,14 +20733,14 @@ Object {
         "color-text-body-default": Object {
           "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
           "$value": Object {
-            "dark": "#b6bec9",
+            "dark": "#dcdce0",
             "light": "#0f141a",
           },
         },
         "color-text-body-secondary": Object {
           "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
           "$value": Object {
-            "dark": "#b6bec9",
+            "dark": "#dcdce0",
             "light": "#424650",
           },
         },
@@ -20873,7 +20873,7 @@ Object {
         "color-text-group-label": Object {
           "$description": "The default color for group labels. For example: group label in dropdown part of button dropdown, select, and multiselect, and group label in table and cards' preferences content selector.",
           "$value": Object {
-            "dark": "#b6bec9",
+            "dark": "#dcdce0",
             "light": "#424650",
           },
         },
@@ -20901,8 +20901,8 @@ Object {
         "color-text-home-header-secondary": Object {
           "$description": "The color of the home header's secondary text, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#b6bec9",
-            "light": "#b6bec9",
+            "dark": "#dcdce0",
+            "light": "#dcdce0",
           },
         },
         "color-text-input-disabled": Object {
@@ -23119,7 +23119,7 @@ Object {
         "color-text-body-secondary": Object {
           "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
           "$value": Object {
-            "dark": "#b6bec9",
+            "dark": "#dcdce0",
             "light": "#424650",
           },
         },
@@ -23252,7 +23252,7 @@ Object {
         "color-text-group-label": Object {
           "$description": "The default color for group labels. For example: group label in dropdown part of button dropdown, select, and multiselect, and group label in table and cards' preferences content selector.",
           "$value": Object {
-            "dark": "#b6bec9",
+            "dark": "#dcdce0",
             "light": "#424650",
           },
         },
@@ -23280,8 +23280,8 @@ Object {
         "color-text-home-header-secondary": Object {
           "$description": "The color of the home header's secondary text, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#b6bec9",
-            "light": "#b6bec9",
+            "dark": "#dcdce0",
+            "light": "#dcdce0",
           },
         },
         "color-text-input-disabled": Object {
@@ -25498,7 +25498,7 @@ Object {
         "color-text-body-secondary": Object {
           "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
           "$value": Object {
-            "dark": "#b6bec9",
+            "dark": "#dcdce0",
             "light": "#424650",
           },
         },
@@ -25631,7 +25631,7 @@ Object {
         "color-text-group-label": Object {
           "$description": "The default color for group labels. For example: group label in dropdown part of button dropdown, select, and multiselect, and group label in table and cards' preferences content selector.",
           "$value": Object {
-            "dark": "#b6bec9",
+            "dark": "#dcdce0",
             "light": "#424650",
           },
         },
@@ -25659,8 +25659,8 @@ Object {
         "color-text-home-header-secondary": Object {
           "$description": "The color of the home header's secondary text, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#b6bec9",
-            "light": "#b6bec9",
+            "dark": "#dcdce0",
+            "light": "#dcdce0",
           },
         },
         "color-text-input-disabled": Object {
@@ -27870,15 +27870,15 @@ Object {
         "color-text-body-default": Object {
           "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
           "$value": Object {
-            "dark": "#b6bec9",
-            "light": "#b6bec9",
+            "dark": "#dcdce0",
+            "light": "#dcdce0",
           },
         },
         "color-text-body-secondary": Object {
           "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
           "$value": Object {
-            "dark": "#b6bec9",
-            "light": "#b6bec9",
+            "dark": "#dcdce0",
+            "light": "#dcdce0",
           },
         },
         "color-text-breadcrumb-current": Object {
@@ -28010,8 +28010,8 @@ Object {
         "color-text-group-label": Object {
           "$description": "The default color for group labels. For example: group label in dropdown part of button dropdown, select, and multiselect, and group label in table and cards' preferences content selector.",
           "$value": Object {
-            "dark": "#b6bec9",
-            "light": "#b6bec9",
+            "dark": "#dcdce0",
+            "light": "#dcdce0",
           },
         },
         "color-text-heading-default": Object {
@@ -28038,8 +28038,8 @@ Object {
         "color-text-home-header-secondary": Object {
           "$description": "The color of the home header's secondary text, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#b6bec9",
-            "light": "#b6bec9",
+            "dark": "#dcdce0",
+            "light": "#dcdce0",
           },
         },
         "color-text-input-disabled": Object {
@@ -30249,15 +30249,15 @@ Object {
         "color-text-body-default": Object {
           "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
           "$value": Object {
-            "dark": "#b6bec9",
-            "light": "#b6bec9",
+            "dark": "#dcdce0",
+            "light": "#dcdce0",
           },
         },
         "color-text-body-secondary": Object {
           "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
           "$value": Object {
-            "dark": "#b6bec9",
-            "light": "#b6bec9",
+            "dark": "#dcdce0",
+            "light": "#dcdce0",
           },
         },
         "color-text-breadcrumb-current": Object {
@@ -30389,8 +30389,8 @@ Object {
         "color-text-group-label": Object {
           "$description": "The default color for group labels. For example: group label in dropdown part of button dropdown, select, and multiselect, and group label in table and cards' preferences content selector.",
           "$value": Object {
-            "dark": "#b6bec9",
-            "light": "#b6bec9",
+            "dark": "#dcdce0",
+            "light": "#dcdce0",
           },
         },
         "color-text-heading-default": Object {
@@ -30417,8 +30417,8 @@ Object {
         "color-text-home-header-secondary": Object {
           "$description": "The color of the home header's secondary text, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#b6bec9",
-            "light": "#b6bec9",
+            "dark": "#dcdce0",
+            "light": "#dcdce0",
           },
         },
         "color-text-input-disabled": Object {
@@ -31390,7 +31390,7 @@ Object {
       "$description": "The default color for dividers. For example: dividers in column layout, expanding sections, side nav, help panel, between table rows and dropdown items, and inside containers.",
       "$value": Object {
         "dark": "#424650",
-        "light": "#b6bec9",
+        "light": "#dcdce0",
       },
     },
     "color-border-divider-secondary": Object {
@@ -32628,14 +32628,14 @@ Object {
     "color-text-body-default": Object {
       "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
       "$value": Object {
-        "dark": "#b6bec9",
+        "dark": "#dcdce0",
         "light": "#0f141a",
       },
     },
     "color-text-body-secondary": Object {
       "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
       "$value": Object {
-        "dark": "#b6bec9",
+        "dark": "#dcdce0",
         "light": "#424650",
       },
     },
@@ -32768,7 +32768,7 @@ Object {
     "color-text-group-label": Object {
       "$description": "The default color for group labels. For example: group label in dropdown part of button dropdown, select, and multiselect, and group label in table and cards' preferences content selector.",
       "$value": Object {
-        "dark": "#b6bec9",
+        "dark": "#dcdce0",
         "light": "#424650",
       },
     },
@@ -32796,8 +32796,8 @@ Object {
     "color-text-home-header-secondary": Object {
       "$description": "The color of the home header's secondary text, displayed on the Service's home page.",
       "$value": Object {
-        "dark": "#b6bec9",
-        "light": "#b6bec9",
+        "dark": "#dcdce0",
+        "light": "#dcdce0",
       },
     },
     "color-text-input-disabled": Object {
