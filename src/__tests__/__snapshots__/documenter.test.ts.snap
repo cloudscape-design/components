@@ -3791,16 +3791,27 @@ Object {
       "type": "string",
     },
     Object {
-      "name": "ariaLabelledby",
-      "optional": true,
-      "type": "string",
-    },
-    Object {
       "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Use this property to determine dropdown placement strategy for all menu dropdown items.
+By default, the dropdown height is constrained to fit inside the height of its next scrollable container element.
+Enabling this property will allow the dropdown to extend beyond that container by using fixed positioning and
+[React Portals](https://reactjs.org/docs/portals.html).
+
+Set this property if the dropdown would otherwise be constrained by a scrollable container,
+for example inside table and split view layouts.
+
+However, use discretion. We recommend you don't enable this property unless necessary
+because fixed positioning results in a slight, visible lag when scrolling complex pages.
+",
+      "name": "dropdownExpandToViewport",
+      "optional": true,
+      "type": "boolean",
     },
     Object {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
