@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import styles from './styles.css.js';
 import { Offset } from '../interfaces';
-import { isModifierKey } from '../../hooks/focus-visible';
+import { isModifierKey } from '@cloudscape-design/component-toolkit/internal';
 
 export interface FocusOutlineProps {
   elementKey?: null | string | number | boolean;

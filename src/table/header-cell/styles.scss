@@ -3,7 +3,7 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-@use '../../internal/hooks/focus-visible' as focus-visible;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../../internal/styles/tokens' as awsui;
 @use '../../internal/styles' as styles;
 
@@ -11,9 +11,10 @@
   @include focus-visible.when-visible {
     @content;
   }
-  // stylelint-disable-next-line selector-combinator-disallowed-list
-  body[data-awsui-focus-visible='true'] &.header-cell-fake-focus {
-    @content;
+  &.header-cell-fake-focus {
+    @include focus-visible.when-visible-unfocused {
+      @content;
+    }
   }
 }
 

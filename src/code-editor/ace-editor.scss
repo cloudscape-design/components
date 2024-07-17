@@ -6,7 +6,7 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 @use './background-inline-svg.scss' as utils;
-@use '../internal/hooks/focus-visible' as focus-visible;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 /* stylelint-disable selector-combinator-disallowed-list, @cloudscape-design/no-implicit-descendant */
 

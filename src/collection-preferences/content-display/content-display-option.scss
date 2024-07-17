@@ -5,15 +5,9 @@
 
 @use '../../internal/styles' as styles;
 @use '../../internal/styles/tokens' as awsui;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 $border-radius: awsui.$border-radius-item;
-
-@mixin focus-visible {
-  // stylelint-disable-next-line selector-combinator-disallowed-list
-  body[data-awsui-focus-visible='true'] & {
-    @content;
-  }
-}
 
 @mixin animated {
   @include styles.with-motion {
@@ -75,7 +69,7 @@ $border-radius: awsui.$border-radius-item;
   border-start-end-radius: $border-radius;
   border-end-start-radius: $border-radius;
   border-end-end-radius: $border-radius;
-  @include focus-visible {
+  @include focus-visible.when-visible-unfocused {
     @include styles.focus-highlight(0px, $border-radius);
   }
 }
