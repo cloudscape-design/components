@@ -94,7 +94,7 @@ const ItemElement = forwardRef(
         window.removeEventListener('keydown', handleKeyDownEvent);
         window.removeEventListener('btngroup-tooltip:toggle', handleTooltipToogleEvent as any);
       };
-    }, [item.id, showTooltip]);
+    }, [item.id, showTooltip, setShowTooltip, setShowFeedback]);
 
     useEffect(() => {
       window.dispatchEvent(
