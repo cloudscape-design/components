@@ -3,7 +3,7 @@
 import { AreaChartProps } from '../interfaces';
 import React, { useEffect, useMemo, useRef, RefObject, MouseEvent } from 'react';
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
-import { findClosest, circleIndex } from './utils';
+import { findClosest } from './utils';
 
 import { KeyCode } from '../../internal/keycode';
 import { XDomain, XScaleType, YDomain, YScaleType } from '../../internal/components/cartesian-chart/interfaces';
@@ -18,6 +18,7 @@ import { useHeightMeasure } from '../../internal/hooks/container-queries/use-hei
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 import { nodeBelongs } from '../../internal/utils/node-belongs';
 import handleKey from '../../internal/utils/handle-key';
+import { circleIndex } from '../../internal/utils/circle-index';
 
 const MAX_HOVER_MARGIN = 6;
 const SVG_HOVER_THROTTLE = 25;
