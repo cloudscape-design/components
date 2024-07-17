@@ -10,12 +10,29 @@ import { getBaseProps } from '../internal/base-component';
 
 export { ButtonGroupProps };
 
-const ButtonGroup = React.forwardRef((props: ButtonGroupProps, ref: React.Ref<ButtonGroupProps.Ref>) => {
-  const baseProps = getBaseProps(props);
-  const baseComponentProps = useBaseComponent('ButtonGroup');
-  const filteredProps = getExternalProps(props);
-  return <InternalButtonGroup {...baseProps} {...baseComponentProps} {...filteredProps} ref={ref} />;
-});
+const ButtonGroup = React.forwardRef(
+  ({ variant, dropdownExpandToViewport, ...rest }: ButtonGroupProps, ref: React.Ref<ButtonGroupProps.Ref>) => {
+    const baseProps = getBaseProps(rest);
+    const baseComponentProps = useBaseComponent('ButtonGroup', {
+      props: {
+        variant,
+        dropdownExpandToViewport,
+      },
+    });
+
+    const externalProps = getExternalProps(rest);
+    return (
+      <InternalButtonGroup
+        {...baseProps}
+        {...baseComponentProps}
+        {...externalProps}
+        ref={ref}
+        variant={variant}
+        dropdownExpandToViewport={dropdownExpandToViewport}
+      />
+    );
+  }
+);
 
 applyDisplayName(ButtonGroup, 'ButtonGroup');
 export default ButtonGroup;
