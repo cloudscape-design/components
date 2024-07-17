@@ -6,6 +6,8 @@ import { InternalButton } from '../button/internal.js';
 import { ButtonProps } from '../button/interfaces.js';
 import { ClickDetail } from '../internal/events/index.js';
 import styles from './styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
+import clsx from 'clsx';
 
 const IconButtonItem = forwardRef(
   (
@@ -33,7 +35,7 @@ const IconButtonItem = forwardRef(
         onClick={onItemClick}
         ref={ref}
         data-testid={item.id}
-        className={styles.item}
+        className={clsx(styles.item, testUtilStyles['button-group-item'])}
       >
         {item.text}
       </InternalButton>

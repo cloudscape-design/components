@@ -8,7 +8,9 @@ import IconButtonItem from './icon-button-item.js';
 import MenuDropdownItem from './menu-dropdown-item.js';
 import Tooltip from '../internal/components/tooltip/index.js';
 import styles from './styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
 import LiveRegion from '../internal/components/live-region/index.js';
+import clsx from 'clsx';
 
 const ItemElement = forwardRef(
   (
@@ -118,7 +120,7 @@ const ItemElement = forwardRef(
             trackRef={buttonRef}
             trackKey={item.id}
             value={(showFeedback && <LiveRegion visible={true}>{popoverFeedback}</LiveRegion>) || item.text}
-            className={styles.tooltip}
+            className={clsx(styles.tooltip, testUtilStyles['button-group-tooltip'])}
           />
         )}
       </div>

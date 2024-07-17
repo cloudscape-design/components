@@ -6,6 +6,7 @@ import { ButtonGroupProps, InternalButtonGroupProps } from './interfaces';
 import { ButtonProps } from '../button/interfaces';
 import ItemElement from './item-element.js';
 import styles from './styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
 import clsx from 'clsx';
 import { ButtonDropdownProps } from '../button-dropdown/interfaces';
 import {
@@ -170,7 +171,7 @@ const InternalButtonGroup = forwardRef(
     return (
       <div
         {...baseProps}
-        className={clsx(styles.root, baseProps.className)}
+        className={clsx(styles.root, testUtilStyles['button-group'], baseProps.className)}
         ref={containerRef}
         role="toolbar"
         aria-label={ariaLabel}
