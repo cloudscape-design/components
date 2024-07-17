@@ -3319,6 +3319,12 @@ It prevents users from clicking the button, but it can still be focused.",
       "type": "string",
     },
     Object {
+      "description": "Sets the button to pressed state. Use only for button toggle variants (normal-toggle, icon-toggle, inline-icon-toggle).",
+      "name": "pressed",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "description": "Adds a \`rel\` attribute to the link. By default, the component sets the \`rel\` attribute to \\"noopener noreferrer\\" when \`target\` is \`\\"_blank\\"\`.
 If the \`rel\` property is provided, it overrides the default behavior.",
       "name": "rel",
@@ -3340,7 +3346,10 @@ This property only applies when an \`href\` is provided.",
 * \`link\` for tertiary buttons.
 * \`icon\` to display an icon only (no text).
 * \`inline-icon\` to display an icon-only (no text) button within a text context.
-* \`inline-link\` to display a tertiary button with no outer padding.",
+* \`inline-link\` to display a tertiary button with no outer padding.
+*  \`normal-toggle\` for secondary toggle buttons.
+*  \`icon-toggle\` to display toggle icon only (no text).
+*  \`inline-icon-toggle\` to display toggle icon-only (no text) button within a text context.",
       "inlineType": Object {
         "name": "ButtonProps.Variant",
         "type": "union",
@@ -3351,11 +3360,12 @@ This property only applies when an \`href\` is provided.",
           "icon",
           "inline-icon",
           "inline-link",
+          "ButtonProps.VariantToggle",
         ],
       },
       "name": "variant",
       "optional": true,
-      "type": "string",
+      "type": "ButtonProps.Variant",
     },
     Object {
       "defaultValue": "true",
