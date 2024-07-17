@@ -4,7 +4,7 @@
 */
 @use 'sass:map';
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
-@use '../internal/hooks/focus-visible' as focus-visible;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
 @use '../internal/styles/typography' as typography;

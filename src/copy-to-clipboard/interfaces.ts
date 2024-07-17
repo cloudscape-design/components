@@ -39,6 +39,15 @@ export interface CopyToClipboardProps extends BaseComponentProps {
    * The message shown when the text is not copied due to an error, see [https://w3c.github.io/clipboard-apis/#dom-clipboard-writetext](https://w3c.github.io/clipboard-apis/#dom-clipboard-writetext).
    */
   copyErrorText: string;
+
+  /**
+   * By default, the popover is constrained to fit inside its parent
+   * [stacking context](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/The_stacking_context).
+   * Enabling this property will allow the popover to be rendered in the root stack context using
+   * [React Portals](https://reactjs.org/docs/portals.html).
+   * Enable this setting if you need the popover to ignore its parent stacking context.
+   */
+  popoverRenderWithPortal?: boolean;
 }
 
 export namespace CopyToClipboardProps {

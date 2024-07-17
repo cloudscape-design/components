@@ -7,7 +7,7 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
 @use '../button/constants' as constants;
-@use '../internal/hooks/focus-visible' as focus-visible;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 $segment-properties: (
   'default-background': awsui.$color-background-segment-default,

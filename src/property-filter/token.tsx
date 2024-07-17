@@ -16,7 +16,7 @@ import {
 import styles from './styles.css.js';
 import { TokenEditor } from './token-editor';
 
-import FilteringToken from '../internal/components/filtering-token';
+import FilteringToken from './filtering-token';
 import { NonCancelableEventHandler } from '../internal/events';
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
 import { getFormattedToken } from './utils';
