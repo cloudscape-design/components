@@ -681,7 +681,15 @@ describe('Button Component', () => {
       });
     });
 
-    describe('toggle variants have pressed state attributes when provided', () => {
+    describe('non-toggle variants do not have toggle button pressed state attributes when provided', () => {
+      test.each(nonToggleVariants)('%s variant', variant => {
+        const wrapper = renderButton({ variant, children: 'Content', pressed: true });
+
+        expect(wrapper.isPressed()).toBe(false);
+      });
+    });
+
+    describe('toggle variants have toggle button pressed state attributes when provided', () => {
       test.each(toggleVariants)('%s variant', variant => {
         const wrapper = renderButton({ variant, children: 'Content', pressed: true });
 
