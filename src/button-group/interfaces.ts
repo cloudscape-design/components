@@ -17,6 +17,20 @@ export interface ButtonGroupProps extends BaseComponentProps {
    */
   variant: ButtonGroupProps.Variant;
   /**
+   * Use this property to determine dropdown placement strategy for all menu dropdown items.
+   *
+   * By default, the dropdown height is constrained to fit inside the height of its next scrollable container element.
+   * Enabling this property will allow the dropdown to extend beyond that container by using fixed positioning and
+   * [React Portals](https://reactjs.org/docs/portals.html).
+   *
+   * Set this property if the dropdown would otherwise be constrained by a scrollable container,
+   * for example inside table and split view layouts.
+   *
+   * However, use discretion. We recommend you don't enable this property unless necessary
+   * because fixed positioning results in a slight, visible lag when scrolling complex pages.
+   */
+  dropdownExpandToViewport?: boolean;
+  /**
    * Array of objects of type "icon-button", "group", or "menu-dropdown".
    *
    * ### type="icon-button"
@@ -82,20 +96,6 @@ export namespace ButtonGroupProps {
     loading?: boolean;
     loadingText?: string;
     items: ReadonlyArray<ButtonDropdownProps.ItemOrGroup>;
-    /**
-     * Use this property to determine dropdown placement strategy for all menu dropdown items.
-     *
-     * By default, the dropdown height is constrained to fit inside the height of its next scrollable container element.
-     * Enabling this property will allow the dropdown to extend beyond that container by using fixed positioning and
-     * [React Portals](https://reactjs.org/docs/portals.html).
-     *
-     * Set this property if the dropdown would otherwise be constrained by a scrollable container,
-     * for example inside table and split view layouts.
-     *
-     * However, use discretion. We recommend you don't enable this property unless necessary
-     * because fixed positioning results in a slight, visible lag when scrolling complex pages.
-     */
-    expandToViewport?: boolean;
   }
 
   export interface Group {
