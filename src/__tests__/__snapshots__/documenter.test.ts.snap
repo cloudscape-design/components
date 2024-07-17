@@ -5765,6 +5765,17 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     Object {
+      "defaultValue": "false",
+      "description": "By default, the popover is constrained to fit inside its parent
+[stacking context](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/The_stacking_context).
+Enabling this property will allow the popover to be rendered in the root stack context using
+[React Portals](https://reactjs.org/docs/portals.html).
+Enable this setting if you need the popover to ignore its parent stacking context.",
+      "name": "popoverRenderWithPortal",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "description": "The text content to be copied. It is displayed next to the copy button when \`variant=\\"inline\\"\`, and is not shown otherwise.",
       "name": "textToCopy",
       "optional": false,

@@ -9,13 +9,24 @@ import { getExternalProps } from '../internal/utils/external-props';
 
 export { CopyToClipboardProps };
 
-export default function CopyToClipboard({ variant = 'button', ...restProps }: CopyToClipboardProps) {
+export default function CopyToClipboard({
+  variant = 'button',
+  popoverRenderWithPortal = false,
+  ...restProps
+}: CopyToClipboardProps) {
   const baseProps = useBaseComponent('CopyToClipboard', {
     props: { variant },
   });
   const filteredProps = getExternalProps(restProps);
 
-  return <InternalCopyToClipboard variant={variant} {...baseProps} {...filteredProps} />;
+  return (
+    <InternalCopyToClipboard
+      variant={variant}
+      popoverRenderWithPortal={popoverRenderWithPortal}
+      {...baseProps}
+      {...filteredProps}
+    />
+  );
 }
 
 applyDisplayName(CopyToClipboard, 'CopyToClipboard');
