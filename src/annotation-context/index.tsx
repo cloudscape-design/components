@@ -109,7 +109,7 @@ export default function AnnotationContext({
       setOpen(true);
       fireNonCancelableEvent(onStepChange, { step: newStepIndex, reason: 'auto-fallback' });
     }
-  }, [annotations, isCurrentHotspotAvailable, currentId, currentStepIndex, id2index, onStepChange]);
+  }, [annotations, isCurrentHotspotAvailable, currentId, currentStepIndex, id2index, onStepChange, availableHotspots]);
 
   const onDismiss = useCallback(() => {
     setOpen(false);
