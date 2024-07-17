@@ -89,6 +89,19 @@ const permutations = createPermutations<ButtonProps>([
     loading: [false, true],
     disabled: [false, true],
   },
+  {
+    variant: ['normal-toggle'],
+    iconName: ['heart-filled'],
+    pressed: [false, true],
+    ariaLabel: ['Toggle button'],
+    children: ['Toggle button', undefined],
+  },
+  {
+    variant: ['icon-toggle', 'inline-icon-toggle'],
+    iconName: ['heart-filled'],
+    ariaLabel: ['Toggle button'],
+    pressed: [false, true],
+  },
 ]);
 
 export default function ButtonPermutations() {
