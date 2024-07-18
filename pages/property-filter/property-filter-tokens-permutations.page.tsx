@@ -33,6 +33,7 @@ const defaultTokenProps: FilteringTokenProps = {
   andText: 'und',
   orText: 'oder',
   groupAriaLabel: 'filter group with 0 tokens',
+  groupEditAriaLabel: 'edit token group',
   operationAriaLabel: 'operation',
   onChangeOperation: () => {},
   onChangeGroupOperation: () => {},

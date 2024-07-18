@@ -25,6 +25,7 @@ import styles from './styles.css.js';
 
 export interface InternalPopoverProps extends PopoverProps, InternalBaseComponentProps {
   __onOpen?: NonCancelableEventHandler<null>;
+  __triggerTypeFlex?: boolean;
 }
 
 export interface InternalPopoverRef {
@@ -51,11 +52,14 @@ function InternalPopover(
     renderWithPortal = false,
 
     __onOpen,
+    __triggerTypeFlex,
     __internalRootRef = null,
     ...restProps
   }: InternalPopoverProps,
   ref: React.Ref<InternalPopoverRef>
 ) {
+  const internalTriggerType = __triggerTypeFlex ? 'flex' : triggerType;
+
   const baseProps = getBaseProps(restProps);
   const triggerRef = useRef<HTMLElement | null>(null);
   const popoverRef = useRef<HTMLDivElement | null>(null);
@@ -67,12 +71,12 @@ function InternalPopover(
   const [visible, setVisible] = useState(false);
 
   const focusTrigger = useCallback(() => {
-    if (triggerType === 'text') {
+    if (internalTriggerType === 'text') {
       triggerRef.current?.focus();
     } else {
       triggerRef.current && getFirstFocusable(triggerRef.current)?.focus();
     }
-  }, [triggerType]);
+  }, [internalTriggerType]);
 
   const onTriggerClick = useCallback(() => {
     fireNonCancelableEvent(__onOpen);
@@ -134,7 +138,7 @@ function InternalPopover(
     ref: triggerRef as any,
     onClick: onTriggerClick,
     onKeyDown: onTriggerKeyDown,
-    className: clsx(styles.trigger, styles[`trigger-type-${triggerType}`]),
+    className: clsx(styles.trigger, styles[`trigger-type-${internalTriggerType}`]),
   };
   const { tabIndex: triggerTabIndex } = useSingleTabStopNavigation(triggerRef);
 
@@ -178,7 +182,7 @@ function InternalPopover(
   return (
     <span
       {...baseProps}
-      className={clsx(styles.root, baseProps.className)}
+      className={clsx(styles.root, baseProps.className, internalTriggerType === 'flex' && styles['root-flex'])}
       ref={mergedRef}
       onMouseDown={() => {
         // Indicate there was a click inside popover recently, including nested portals.
@@ -187,7 +191,7 @@ function InternalPopover(
         });
       }}
     >
-      {triggerType === 'text' ? (
+      {internalTriggerType === 'text' ? (
         <button
           {...triggerProps}
           className={clsx(triggerProps.className, wrapTriggerText === false && styles['overflow-ellipsis'])}

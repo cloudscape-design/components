@@ -23,6 +23,7 @@ export interface FilteringTokenProps {
   orText: string;
   groupAriaLabel: string;
   operationAriaLabel: string;
+  groupEditAriaLabel: string;
   disabled?: boolean;
   onChangeOperation: (operation: FilteringTokenProps.Operation) => void;
   onChangeGroupOperation: (operation: FilteringTokenProps.Operation) => void;
@@ -55,6 +56,7 @@ const FilteringToken = forwardRef(
       orText,
       groupAriaLabel,
       operationAriaLabel,
+      groupEditAriaLabel,
       disabled,
       onChangeOperation,
       onChangeGroupOperation,
@@ -96,14 +98,18 @@ const FilteringToken = forwardRef(
             />
           )
         }
-        dismissButton={
-          tokens.length === 1 && (
+        tokenAction={
+          tokens.length === 1 ? (
             <TokenDismissButton
               ariaLabel={tokens[0].dismissAriaLabel}
-              onDismiss={() => onDismissToken(0)}
+              onClick={() => onDismissToken(0)}
               parent={true}
               disabled={disabled}
             />
+          ) : (
+            <InternalPopover ref={popoverRef} {...popoverProps} __triggerTypeFlex={true}>
+              <TokenEditButton ariaLabel={groupEditAriaLabel} disabled={disabled} />
+            </InternalPopover>
           )
         }
         parent={true}
@@ -133,10 +139,10 @@ const FilteringToken = forwardRef(
                       />
                     )
                   }
-                  dismissButton={
+                  tokenAction={
                     <TokenDismissButton
                       ariaLabel={token.dismissAriaLabel}
-                      onDismiss={() => onDismissToken(index)}
+                      onClick={() => onDismissToken(index)}
                       parent={false}
                       disabled={disabled}
                     />
@@ -162,7 +168,7 @@ function TokenGroup({
   ariaLabel,
   children,
   operation,
-  dismissButton,
+  tokenAction,
   parent,
   grouped,
   disabled,
@@ -170,7 +176,7 @@ function TokenGroup({
   ariaLabel?: string;
   children: React.ReactNode;
   operation: React.ReactNode;
-  dismissButton: React.ReactNode;
+  tokenAction: React.ReactNode;
   parent: boolean;
   grouped: boolean;
   disabled?: boolean;
@@ -206,7 +212,7 @@ function TokenGroup({
           {children}
         </div>
 
-        {dismissButton}
+        {tokenAction}
       </div>
     </div>
   );
@@ -251,12 +257,12 @@ function OperationSelector({
 
 function TokenDismissButton({
   ariaLabel,
-  onDismiss,
+  onClick,
   parent,
   disabled,
 }: {
   ariaLabel: string;
-  onDismiss: () => void;
+  onClick: () => void;
   parent: boolean;
   disabled?: boolean;
 }) {
@@ -269,10 +275,23 @@ function TokenDismissButton({
           : clsx(styles['inner-dismiss-button'], testUtilStyles['filtering-token-inner-dismiss-button'])
       )}
       aria-label={ariaLabel}
-      onClick={onDismiss}
+      onClick={onClick}
       disabled={disabled}
     >
       <InternalIcon name="close" />
+    </button>
+  );
+}
+
+function TokenEditButton({ ariaLabel, disabled }: { ariaLabel: string; disabled?: boolean }) {
+  return (
+    <button
+      type="button"
+      className={clsx(styles['edit-button'], testUtilStyles['filtering-token-edit-button'])}
+      aria-label={ariaLabel}
+      disabled={disabled}
+    >
+      <InternalIcon name="edit" />
     </button>
   );
 }

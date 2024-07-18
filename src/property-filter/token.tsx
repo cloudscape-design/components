@@ -113,6 +113,7 @@ export const TokenButton = ({
       // by the property filter component yet.
       groupOperation={operation}
       groupAriaLabel={''}
+      groupEditAriaLabel={''}
       onChangeGroupOperation={() => {}}
     />
   );

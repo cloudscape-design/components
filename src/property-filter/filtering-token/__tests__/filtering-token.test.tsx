@@ -33,6 +33,7 @@ const defaultProps: FilteringTokenProps = {
   andText: 'und',
   orText: 'oder',
   groupAriaLabel: 'filter group with 0 tokens',
+  groupEditAriaLabel: 'edit token group',
   operationAriaLabel: 'operation',
   onChangeOperation: () => {},
   onChangeGroupOperation: () => {},
@@ -144,7 +145,26 @@ test.each([false, true])(
   editorExpandToViewport => {
     const token = renderToken({ tokens: [token1], editorExpandToViewport });
 
+    expect(token.findLabel()!.getElement()).toHaveTextContent('property1 = value');
+
     token.findLabel().click();
+    const editor = token.findEditorDropdown({ expandToViewport: editorExpandToViewport })!;
+
+    expect(editor).not.toBe(null);
+    expect(editor.getElement()).toHaveTextContent('Token editor headerToken editor content');
+    expect(editor.findHeader().getElement()).toHaveTextContent('Token editor header');
+    expect(editor.findDismissButton().getElement()).toHaveAccessibleName('dismiss editor');
+  }
+);
+
+test.each([false, true])(
+  'opens token editor by clicking on token edit button, editorExpandToViewport=%s',
+  editorExpandToViewport => {
+    const token = renderToken({ tokens: [token1, token2], editorExpandToViewport });
+
+    expect(token.findEditButton()!.getElement()).toHaveAccessibleName('edit token group');
+
+    token.findEditButton().click();
     const editor = token.findEditorDropdown({ expandToViewport: editorExpandToViewport })!;
 
     expect(editor).not.toBe(null);

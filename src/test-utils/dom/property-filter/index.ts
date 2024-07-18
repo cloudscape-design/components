@@ -73,6 +73,10 @@ export class FilteringTokenWrapper extends ComponentWrapper {
     return this.findByClassName<HTMLButtonElement>(testUtilStyles['filtering-token-dismiss-button'])!;
   }
 
+  findEditButton(): ElementWrapper<HTMLButtonElement> {
+    return this.findByClassName<HTMLButtonElement>(testUtilStyles['filtering-token-edit-button'])!;
+  }
+
   findTokenOperation(): SelectWrapper | null {
     return this.findComponent(`.${testUtilStyles['filtering-token-select']}`, SelectWrapper);
   }
