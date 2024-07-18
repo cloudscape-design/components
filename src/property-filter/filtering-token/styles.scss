@@ -16,7 +16,6 @@
 
 .token,
 .inner-token {
-  flex-grow: 1;
   border-block: awsui.$border-field-width solid constants.$token-border-color;
   border-inline: awsui.$border-field-width solid constants.$token-border-color;
   display: flex;
@@ -31,7 +30,6 @@
 
   &.grouped {
     background: none;
-    flex-grow: 1;
     justify-content: space-between;
   }
 }
