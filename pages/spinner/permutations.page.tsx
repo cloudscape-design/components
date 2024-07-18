@@ -7,6 +7,7 @@ import Spinner, { SpinnerProps } from '~components/spinner';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
+
 import styles from './styles.scss';
 
 const permutations = createPermutations<SpinnerProps>([

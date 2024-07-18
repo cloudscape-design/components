@@ -8,6 +8,7 @@ import SpaceBetween from '~components/space-between';
 import { StickyColumnsModel, useStickyCellStyles, useStickyColumns } from '~components/table/sticky-columns';
 
 import { generateItems, Instance } from '../table/generate-data';
+
 import styles from './styles.scss';
 
 const items = generateItems(50);

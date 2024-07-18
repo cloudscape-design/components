@@ -12,6 +12,7 @@ import SideNavigation from '~components/side-navigation';
 import SpaceBetween from '~components/space-between';
 
 import ScreenshotArea from '../utils/screenshot-area';
+
 import styles from './styles.scss';
 
 export default function ContentHeaderVisualContextDemo() {

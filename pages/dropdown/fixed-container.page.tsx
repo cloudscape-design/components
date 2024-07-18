@@ -5,8 +5,9 @@ import React, { useEffect, useState } from 'react';
 import Dropdown from '~components/internal/components/dropdown';
 
 import ScreenshotArea from '../utils/screenshot-area';
-import styles from './fixed-container.scss';
 import ListContent from './list-content';
+
+import styles from './fixed-container.scss';
 
 export default function () {
   const [open, setOpen] = useState(false);

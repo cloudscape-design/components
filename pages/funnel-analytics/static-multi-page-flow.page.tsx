@@ -16,9 +16,10 @@ import {
 import { setFunnelMetrics } from '~components/internal/analytics';
 
 import { i18nStrings } from '../wizard/common';
-import styles from '../wizard/styles.scss';
 import { getAnalyticsProps } from './metadata';
 import { MockedFunnelMetrics } from './mock-funnel';
+
+import styles from '../wizard/styles.scss';
 
 setFunnelMetrics(MockedFunnelMetrics);
 

@@ -10,6 +10,7 @@ import properties from '~components/internal/generated/custom-css-properties';
 import { annotationContextStrings } from '../onboarding/i18n';
 import tutorials from '../onboarding/tutorials';
 import ScreenshotArea from '../utils/screenshot-area';
+
 import styles from './styles.scss';
 
 const tutorial = tutorials(() => {})[0];

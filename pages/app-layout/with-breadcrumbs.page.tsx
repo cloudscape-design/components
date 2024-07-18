@@ -6,8 +6,9 @@ import AppLayout from '~components/app-layout';
 import BreadcrumbGroup from '~components/breadcrumb-group';
 
 import ScreenshotArea from '../utils/screenshot-area';
-import styles from './styles.scss';
 import label from './utils/labels';
+
+import styles from './styles.scss';
 
 function Breadcrumbs() {
   return (

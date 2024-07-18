@@ -7,6 +7,7 @@ import Box, { BoxProps } from '~components/box';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
+
 import styles from './style.scss';
 
 const permutations = createPermutations<BoxProps>([

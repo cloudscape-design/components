@@ -5,8 +5,9 @@ import React, { useState } from 'react';
 import AppLayout from '~components/app-layout';
 import Header from '~components/header';
 
-import styles from './styles.scss';
 import labels from './utils/labels';
+
+import styles from './styles.scss';
 
 function Counter({ id }: { id: string }) {
   const [count, setCount] = useState(0);

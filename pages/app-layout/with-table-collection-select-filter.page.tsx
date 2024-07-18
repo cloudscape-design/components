@@ -23,6 +23,7 @@ import { pageSizeOptions } from '../table/shared-configs';
 import { Breadcrumbs, Navigation, Tools } from './utils/content-blocks';
 import labels from './utils/labels';
 import * as toolsContent from './utils/tools-content';
+
 import styles from './with-table-collection-select-filter.scss';
 
 const instanceTypes = new Set(allItems.map(item => item.instancetype));

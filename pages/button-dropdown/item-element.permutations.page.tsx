@@ -10,6 +10,7 @@ import img from '../icon/custom-icon.png';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
+
 import styles from './styles.scss';
 
 const permutations = createPermutations<ItemProps>([

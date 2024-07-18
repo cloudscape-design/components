@@ -12,6 +12,7 @@ import StatusIndicator from '~components/status-indicator';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
+
 import styles from './positioning.scss';
 
 type PopoverPlacementContext = React.Context<AppContextType<{ position?: string; placement?: string }>>;

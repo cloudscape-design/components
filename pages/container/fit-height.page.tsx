@@ -11,6 +11,7 @@ import SpaceBetween from '~components/space-between';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
+
 import styles from './fit-height.scss';
 
 type DemoContext = React.Context<AppContextType<{ hideFooters: boolean; disableContentPaddings: boolean }>>;

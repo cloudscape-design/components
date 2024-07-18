@@ -7,8 +7,9 @@ import Header from '~components/header';
 import SpaceBetween from '~components/space-between';
 
 import ScreenshotArea from '../utils/screenshot-area';
-import styles from './styles.scss';
 import { navigateToItem, TextSample } from './utils';
+
+import styles from './styles.scss';
 
 const TextContent = () => {
   return (

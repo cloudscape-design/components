@@ -9,8 +9,9 @@ import DateInput from '~components/date-input';
 import Multiselect from '~components/multiselect';
 import { ExtendedOperatorFormProps } from '~components/property-filter/interfaces';
 
-import styles from './custom-forms.scss';
 import { allItems } from './table.data';
+
+import styles from './custom-forms.scss';
 
 export function YesNoForm({ value, onChange }: ExtendedOperatorFormProps<boolean>) {
   return (

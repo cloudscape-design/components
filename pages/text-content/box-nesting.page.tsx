@@ -7,6 +7,7 @@ import TextContent from '~components/text-content';
 
 import createPermutations from '../utils/permutations';
 import ScreenshotArea from '../utils/screenshot-area';
+
 import styles from './style.scss';
 
 const colorPermutations = createPermutations<BoxProps>([

@@ -14,6 +14,7 @@ import Header from './components/header';
 import IndexPage from './components/index-page';
 import PageView from './components/page-view';
 import StrictModeWrapper from './components/strict-mode-wrapper';
+
 // screenshot test overrides
 import styles from './styles.scss';
 

@@ -7,9 +7,10 @@ import AppLayout from '~components/app-layout';
 import Flashbar from '~components/flashbar';
 
 import ScreenshotArea from '../utils/screenshot-area';
-import styles from './styles.scss';
 import { Breadcrumbs } from './utils/content-blocks';
 import labels from './utils/labels';
+
+import styles from './styles.scss';
 
 export default function () {
   const [isSticky, setSticky] = useState(true);

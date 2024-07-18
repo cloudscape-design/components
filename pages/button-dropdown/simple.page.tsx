@@ -5,6 +5,7 @@ import * as React from 'react';
 import ButtonDropdown, { ButtonDropdownProps } from '~components/button-dropdown';
 
 import ScreenshotArea from '../utils/screenshot-area';
+
 import styles from './styles.scss';
 
 const items: ButtonDropdownProps['items'] = [

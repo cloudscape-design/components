@@ -5,6 +5,7 @@ import React from 'react';
 import Toggle from '~components/toggle';
 
 import ScreenshotArea from '../utils/screenshot-area';
+
 import styles from './styles.scss';
 
 export default function ToggleLabelWidthScenario() {

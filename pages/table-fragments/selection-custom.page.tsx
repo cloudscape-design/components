@@ -9,6 +9,7 @@ import { focusMarkers, SelectionControl, useSelection, useSelectionFocusMove } f
 
 import AppContext, { AppContextType } from '../app/app-context';
 import { generateItems, Instance } from '../table/generate-data';
+
 import styles from './styles.scss';
 
 type PageContext = React.Context<

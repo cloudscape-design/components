@@ -5,8 +5,9 @@ import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 
 import AppContext from '../app-context';
-import styles from './header.scss';
 import ThemeSwitcher from './theme-switcher';
+
+import styles from './header.scss';
 
 export default function Header({ sticky }: { sticky?: boolean }) {
   const { mode } = useContext(AppContext);

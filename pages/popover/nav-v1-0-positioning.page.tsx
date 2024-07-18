@@ -5,6 +5,7 @@ import React from 'react';
 import Popover from '~components/popover';
 
 import ScreenshotArea from '../utils/screenshot-area';
+
 import styles from './nav-v1-0-positioning.scss';
 
 export default function () {

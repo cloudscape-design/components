@@ -5,6 +5,7 @@ import React from 'react';
 import RadioGroup, { RadioGroupProps } from '~components/radio-group';
 
 import ScreenshotArea from '../utils/screenshot-area';
+
 import styles from './styles.scss';
 
 const items: RadioGroupProps.RadioButtonDefinition[] = [

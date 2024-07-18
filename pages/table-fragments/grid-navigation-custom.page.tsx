@@ -42,6 +42,7 @@ import appLayoutLabels from '../app-layout/utils/labels';
 import { contentDisplayPreferenceI18nStrings } from '../common/i18n-strings';
 import { generateItems, id as generateId, Instance } from '../table/generate-data';
 import { stateToStatusIndicator } from '../table/shared-configs';
+
 import styles from './styles.scss';
 
 interface ExtendedWindow extends Window {

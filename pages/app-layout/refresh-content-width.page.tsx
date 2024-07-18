@@ -12,6 +12,7 @@ import labels from './utils/labels';
 import * as toolsContent from './utils/tools-content';
 import ContentType = AppLayoutProps.ContentType;
 import ScreenshotArea from '../utils/screenshot-area';
+
 import styles from './styles.scss';
 
 export default function () {

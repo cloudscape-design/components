@@ -7,6 +7,7 @@ import Grid from '~components/grid';
 import SpaceBetween from '~components/space-between';
 
 import ScreenshotArea from '../utils/screenshot-area';
+
 import styles from './styles.scss';
 
 const ExampleContent = () => <div className={styles.box}>This is some text.</div>;

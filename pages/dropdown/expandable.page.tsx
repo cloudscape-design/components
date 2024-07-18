@@ -15,6 +15,7 @@ import AppContext, { AppContextType } from '../app/app-context';
 import { i18nStrings as propertyFilterI18n } from '../property-filter/common-props';
 import ScreenshotArea from '../utils/screenshot-area';
 import { SampleDropdown, SampleModal } from './common';
+
 import styles from './styles.scss';
 
 const autosuggestOptions = [

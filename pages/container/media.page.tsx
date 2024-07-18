@@ -16,6 +16,7 @@ import ScreenshotArea from '../utils/screenshot-area';
 import image43 from './images/4-3.png';
 import image916 from './images/9-16.png';
 import image169 from './images/16-9.png';
+
 import styles from './media.scss';
 
 type DemoContext = React.Context<

@@ -13,6 +13,7 @@ import SpaceBetween from '~components/space-between';
 import Tiles from '~components/tiles';
 
 import ScreenshotArea from '../utils/screenshot-area';
+
 import styles from './styles.scss';
 
 export default function FormScenario() {

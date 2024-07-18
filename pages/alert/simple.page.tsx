@@ -10,6 +10,7 @@ import Link from '~components/link';
 import SpaceBetween from '~components/space-between';
 
 import ScreenshotArea from '../utils/screenshot-area';
+
 import styles from './styles.scss';
 
 export default function AlertScenario() {

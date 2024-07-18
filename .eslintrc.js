@@ -208,7 +208,7 @@ module.exports = {
               // Anything not matched in another group.
               ['^'],
               // Styles come last.
-              ['^.+\\.?(css.js)$'],
+              ['^.+\\.?(css.js)$', '^.+\\.?(scss)$'],
             ],
           },
         ],

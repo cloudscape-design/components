@@ -8,6 +8,7 @@ import Toggle from '~components/toggle';
 import Wizard, { WizardProps } from '~components/wizard';
 
 import { i18nStrings } from './common';
+
 import styles from './styles.scss';
 
 const steps: WizardProps.Step[] = [

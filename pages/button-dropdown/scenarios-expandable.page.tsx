@@ -5,8 +5,9 @@ import * as React from 'react';
 import ButtonDropdown from '~components/button-dropdown';
 
 import ScreenshotArea from '../utils/screenshot-area';
-import styles from './styles.scss';
 import buttonDropdownItems, { largeGroupItems, nestedExpandableGroupItems } from './utils/button-dropdown-items';
+
+import styles from './styles.scss';
 
 export default function ButtonDropdownScenario() {
   return (

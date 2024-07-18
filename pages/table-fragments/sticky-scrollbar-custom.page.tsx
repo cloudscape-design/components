@@ -7,6 +7,7 @@ import { useScrollSync } from '~components/internal/hooks/use-scroll-sync';
 import { StickyScrollbar } from '~components/table/sticky-scrollbar';
 
 import { generateItems, Instance } from '../table/generate-data';
+
 import styles from './styles.scss';
 
 const items = generateItems(50);

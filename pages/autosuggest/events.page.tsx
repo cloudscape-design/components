@@ -5,6 +5,7 @@ import React, { useContext, useState } from 'react';
 import Autosuggest, { AutosuggestProps } from '~components/autosuggest';
 
 import AppContext, { AppContextType } from '../app/app-context';
+
 import styles from './styles.scss';
 
 type AutosuggestEventsPageContext = React.Context<AppContextType<{ expandToViewport: boolean }>>;

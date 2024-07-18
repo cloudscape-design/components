@@ -8,6 +8,7 @@ import Popover, { PopoverProps } from '~components/popover';
 import SegmentedControl, { SegmentedControlProps } from '~components/segmented-control';
 
 import ScreenshotArea from '../utils/screenshot-area';
+
 import styles from './positioning.scss';
 
 export default function () {

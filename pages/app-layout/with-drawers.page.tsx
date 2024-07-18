@@ -7,10 +7,11 @@ import { AppLayoutProps } from '~components/app-layout';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
-import styles from './styles.scss';
 import { Breadcrumbs, Containers } from './utils/content-blocks';
 import { drawerItems, drawerLabels } from './utils/drawers';
 import appLayoutLabels from './utils/labels';
+
+import styles from './styles.scss';
 
 type DemoContext = React.Context<
   AppContextType<{

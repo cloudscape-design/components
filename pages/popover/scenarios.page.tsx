@@ -13,6 +13,7 @@ import Spinner from '~components/spinner';
 import StatusIndicator from '~components/status-indicator';
 
 import ScreenshotArea from '../utils/screenshot-area';
+
 import styles from './scenarios.scss';
 
 export default function () {

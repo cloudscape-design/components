@@ -8,6 +8,7 @@ import HelpPanel from '~components/help-panel';
 import Icon from '~components/icon';
 
 import ScreenshotArea from '../utils/screenshot-area';
+
 import styles from './styles.scss';
 
 const mainContent = (

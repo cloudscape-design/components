@@ -5,6 +5,7 @@ import React from 'react';
 import Checkbox from '~components/checkbox';
 
 import ScreenshotArea from '../utils/screenshot-area';
+
 import styles from './styles.scss';
 
 export default function CheckboxLabelWidthScenario() {
