@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useImperativeHandle, useRef, forwardRef, useEffect } from 'react';
+import React, { useImperativeHandle, useRef, forwardRef, useEffect, useState } from 'react';
 import { getBaseProps } from '../internal/base-component';
 import { ButtonGroupProps, InternalButtonGroupProps } from './interfaces';
 import { ButtonProps } from '../button/interfaces';
@@ -34,7 +34,7 @@ const InternalButtonGroup = forwardRef(
     ref: React.Ref<ButtonGroupProps.Ref>
   ) => {
     const baseProps = getBaseProps(props);
-    const focusedItemIdRef = useRef<null | string>(null);
+    const [focusedItemId, setFocusedItemId] = useState<null | string>(null);
     const navigationAPI = useRef<SingleTabStopNavigationAPI>(null);
     const containerObjectRef = useRef<HTMLDivElement>(null);
     const containerRef = useMergeRefs(containerObjectRef, __internalRootRef);
@@ -83,27 +83,12 @@ const InternalButtonGroup = forwardRef(
     };
 
     function getNextFocusTarget(): null | HTMLElement {
-      const nextTarget = (() => {
-        if (!containerObjectRef.current) {
-          return null;
-        }
-
-        if (document.activeElement && nodeBelongs(containerObjectRef.current, document.activeElement)) {
-          return document.activeElement as HTMLElement;
-        }
+      if (containerObjectRef.current) {
         const buttons: HTMLButtonElement[] = Array.from(containerObjectRef.current.querySelectorAll(`.${styles.item}`));
         const activeButtons = buttons.filter(button => !button.disabled);
-
-        return (
-          activeButtons.find(button => button.dataset.testid === focusedItemIdRef.current) ?? activeButtons[0] ?? null
-        );
-      })();
-
-      if (nextTarget) {
-        focusedItemIdRef.current = nextTarget.dataset.testid ?? null;
+        return activeButtons.find(button => button.dataset.testid === focusedItemId) ?? activeButtons[0] ?? null;
       }
-
-      return nextTarget;
+      return null;
     }
 
     function onUnregisterFocusable(focusableElement: HTMLElement) {
@@ -124,7 +109,10 @@ const InternalButtonGroup = forwardRef(
       navigationAPI.current?.updateFocusTarget();
     });
 
-    function onFocus() {
+    function onFocus(event: React.FocusEvent) {
+      if (event.target instanceof HTMLElement && event.target.dataset.testid) {
+        setFocusedItemId(event.target.dataset.testid);
+      }
       navigationAPI.current?.updateFocusTarget();
     }
 
