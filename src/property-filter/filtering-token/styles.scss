@@ -8,6 +8,13 @@
 @use '../../internal/styles/tokens' as awsui;
 @use '../../token-group/constants' as constants;
 
+$token-padding-block: styles.$control-padding-vertical;
+$token-padding-inline: styles.$control-padding-horizontal;
+$token-grouped-padding-block: 2px;
+$token-grouped-padding-inline: styles.$control-padding-horizontal;
+$inner-token-padding-block: 1px;
+$inner-token-padding-inline: styles.$control-padding-horizontal;
+
 .root,
 .inner-root {
   @include styles.styles-reset;
@@ -57,10 +64,19 @@
   /* used in test-utils */
 }
 
-.token-content,
+.token-content {
+  padding-block: $token-padding-block;
+  padding-inline: $token-padding-inline;
+
+  &-grouped {
+    padding-block: $token-grouped-padding-block;
+    padding-inline: $token-grouped-padding-inline;
+  }
+}
+
 .inner-token-content {
-  padding-block: styles.$control-padding-vertical;
-  padding-inline: styles.$control-padding-horizontal;
+  padding-block: $inner-token-padding-block;
+  padding-inline: $inner-token-padding-inline;
 }
 
 .edit-button,
@@ -90,6 +106,11 @@
     cursor: pointer;
     color: awsui.$color-text-interactive-hover;
   }
+
+  &:disabled {
+    color: awsui.$color-text-interactive-disabled;
+    border-color: awsui.$color-border-control-disabled;
+  }
 }
 
 .token-disabled {
@@ -97,10 +118,4 @@
   background-color: awsui.$color-background-container-content;
   color: awsui.$color-text-disabled;
   pointer-events: none;
-
-  > .dismiss-button,
-  > .inner-dismiss-button {
-    color: awsui.$color-text-interactive-disabled;
-    border-color: awsui.$color-border-control-disabled;
-  }
 }

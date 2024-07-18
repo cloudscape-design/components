@@ -206,7 +206,8 @@ function TokenGroup({
           className={clsx(
             parent
               ? clsx(styles['token-content'], testUtilStyles['filtering-token-content'])
-              : clsx(styles['inner-token-content'], testUtilStyles['filtering-token-inner-content'])
+              : clsx(styles['inner-token-content'], testUtilStyles['filtering-token-inner-content']),
+            grouped && styles['token-content-grouped']
           )}
         >
           {children}
