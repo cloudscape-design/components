@@ -71,15 +71,17 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
       }}
     >
       {!isMobile && activeDrawer?.resizable && (
-        <PanelResizeHandle
-          ref={drawersFocusControl.refs.slider}
-          position="side"
-          className={testutilStyles['drawers-slider']}
-          ariaLabel={activeDrawer?.ariaLabels?.resizeHandle}
-          ariaValuenow={resizeProps.relativeSize}
-          onKeyDown={resizeProps.onKeyDown}
-          onPointerDown={resizeProps.onPointerDown}
-        />
+        <div className={styles['drawer-slider']}>
+          <PanelResizeHandle
+            ref={drawersFocusControl.refs.slider}
+            position="side"
+            className={testutilStyles['drawers-slider']}
+            ariaLabel={activeDrawer?.ariaLabels?.resizeHandle}
+            ariaValuenow={resizeProps.relativeSize}
+            onKeyDown={resizeProps.onKeyDown}
+            onPointerDown={resizeProps.onPointerDown}
+          />
+        </div>
       )}
       <div className={styles['drawer-content-container']}>
         <div className={clsx(styles['drawer-close-button'])}>
