@@ -34,6 +34,7 @@ import { PropertyEditorForm } from './property-editor';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { joinStrings } from '../internal/utils/strings';
+import FocusLock from '../internal/components/focus-lock';
 
 interface PropertyInputProps {
   asyncProps: null | DropdownStatusProps;
@@ -188,17 +189,19 @@ function ValueInput({
         </>
       }
     >
-      <PropertyEditorForm
-        value={value}
-        property={property}
-        customForm={(value, onChange) => <OperatorForm value={value} onChange={onChange} operator={operator} />}
-        onCancel={onDropdownClose}
-        onSubmit={value => {
-          onChangeValue(value);
-          onDropdownClose();
-        }}
-        i18nStrings={i18nStrings}
-      />
+      <FocusLock className={styles['focus-lock']} autoFocus={true}>
+        <PropertyEditorForm
+          value={value}
+          property={property}
+          customForm={(value, onChange) => <OperatorForm value={value} onChange={onChange} operator={operator} />}
+          onCancel={onDropdownClose}
+          onSubmit={value => {
+            onChangeValue(value);
+            onDropdownClose();
+          }}
+          i18nStrings={i18nStrings}
+        />
+      </FocusLock>
     </Dropdown>
   ) : (
     <InternalAutosuggest
