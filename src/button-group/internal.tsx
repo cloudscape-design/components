@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useImperativeHandle, useRef, forwardRef, useEffect, useState } from 'react';
+import React, { useImperativeHandle, useRef, forwardRef, useEffect, useState, useMemo } from 'react';
 import { getBaseProps } from '../internal/base-component';
 import { ButtonGroupProps, InternalButtonGroupProps } from './interfaces';
 import { ButtonProps } from '../button/interfaces';
@@ -15,12 +15,12 @@ import { hasModifierKeys } from '../internal/events';
 import { circleIndex } from '../internal/utils/circle-index';
 import { getAllFocusables } from '../internal/components/focus-lock/utils';
 import { nodeBelongs } from '../internal/utils/node-belongs';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import ItemElement from './item-element.js';
 import testUtilStyles from './test-classes/styles.css.js';
 import handleKey from '../internal/utils/handle-key';
 import Tooltip from '../internal/components/tooltip/index.js';
 import LiveRegion from '../internal/components/live-region/index.js';
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import clsx from 'clsx';
 import styles from './styles.css.js';
 
@@ -42,21 +42,24 @@ const InternalButtonGroup = forwardRef(
     const containerObjectRef = useRef<HTMLDivElement>(null);
     const containerRef = useMergeRefs(containerObjectRef, __internalRootRef);
     const itemsRef = useRef<Record<string, ButtonProps.Ref | null>>({});
-    const itemsDataRef = useRef<Record<string, ButtonGroupProps.Item>>({});
     const itemWrappersRef = useRef<Record<string, HTMLDivElement | null>>({});
     const [tooltipItemId, setTooltipItemId] = useState<string | null>(null);
     const [isFeedbackTooltip, setIsFeedbackTooltip] = useState(false);
+    const allItems = useMemo(
+      () =>
+        items.reduce<Record<string, ButtonGroupProps.Item>>((acc, curr) => {
+          const itemsToAdd = curr.type === 'group' ? curr.items : [curr];
+          itemsToAdd.forEach(item => (acc[item.id] = item));
+          return acc;
+        }, {}),
+      [items]
+    );
 
     useImperativeHandle(ref, () => ({
       focus: id => {
         itemsRef.current[id]?.focus();
       },
     }));
-
-    const onSetItemRef = (item: ButtonGroupProps.Item, element: ButtonProps.Ref | null) => {
-      itemsDataRef.current[item.id] = item;
-      itemsRef.current[item.id] = element;
-    };
 
     function getNextFocusTarget(): null | HTMLElement {
       if (containerObjectRef.current) {
@@ -175,7 +178,7 @@ const InternalButtonGroup = forwardRef(
     }, [tooltipItemId]);
 
     const onClickHandler = (itemId: string, event: CustomEvent<ButtonGroupProps.ItemClickDetails | ClickDetail>) => {
-      const tooltipItem = itemsDataRef.current[itemId];
+      const tooltipItem = allItems[itemId];
       const popoverFeedback = tooltipItem && 'popoverFeedback' in tooltipItem && tooltipItem.popoverFeedback;
 
       if (popoverFeedback) {
@@ -207,7 +210,7 @@ const InternalButtonGroup = forwardRef(
       setIsFeedbackTooltip(false);
     };
 
-    const tooltipItem = tooltipItemId ? itemsDataRef.current[tooltipItemId] : undefined;
+    const tooltipItem = tooltipItemId ? allItems[tooltipItemId] : undefined;
 
     return (
       <div
@@ -241,7 +244,7 @@ const InternalButtonGroup = forwardRef(
                   item={item}
                   dropdownExpandToViewport={dropdownExpandToViewport}
                   onItemClick={event => onClickHandler(item.id, event)}
-                  ref={element => onSetItemRef(item, element)}
+                  ref={element => (itemsRef.current[item.id] = element)}
                 />
               </div>
             );
