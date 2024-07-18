@@ -3106,7 +3106,7 @@ The text will also be added to the \`title\` attribute of the button.",
     Object {
       "description": "Provides a reason why the button is disabled (only when \`disabled\` is \`true\`).
 If provided, the button becomes focusable.
-Applicable for all button variants, except link.",
+Applicable for all button variants, except link and icon.",
       "name": "disabledReason",
       "optional": true,
       "type": "string",

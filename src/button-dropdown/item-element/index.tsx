@@ -121,7 +121,7 @@ function MenuItem({ item, disabled, highlighted }: MenuItemProps) {
   const { position } = useDropdownContext();
   const tooltipPosition = position === 'bottom-left' || position === 'top-left' ? 'left' : 'right';
   return isDisabledWithReason ? (
-    <Tooltip content={item.disabledReason} position={tooltipPosition}>
+    <Tooltip content={item.disabledReason} position={tooltipPosition} className={styles['item-tooltip-wrapper']}>
       {menuItem}
       {descriptionEl}
     </Tooltip>
