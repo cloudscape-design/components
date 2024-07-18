@@ -5,6 +5,7 @@ import { StyleDictionary } from '../utils/interfaces';
 import { expandColorDictionary } from '../utils';
 
 const tokens: StyleDictionary.ColorsDictionary = {
+  colorGreyOpaque15: 'rgba(22, 25, 31, 0.15)',
   colorGreyOpaque25: 'rgba(255, 255, 255, 0.25)',
   colorGreyOpaque40: 'rgba(0, 0, 0, 0.4)',
   colorGreyOpaque50: 'rgba(0, 0, 0, 0.5)',
