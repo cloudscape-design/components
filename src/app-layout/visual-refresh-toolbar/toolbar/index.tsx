@@ -42,7 +42,7 @@ export function AppLayoutToolbarImplementation({ appLayoutInternals }: AppLayout
     onActiveDrawerChange,
   } = appLayoutInternals;
   // TODO: expose configuration property
-  const pinnedToolbar = false;
+  const pinnedToolbar = true;
   const ref = useRef<HTMLElement>(null);
   useResizeObserver(ref, entry => setToolbarHeight(entry.borderBoxHeight));
   useEffect(() => {
