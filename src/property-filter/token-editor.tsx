@@ -189,7 +189,7 @@ function ValueInput({
         </>
       }
     >
-      <FocusLock className={styles['focus-lock']} autoFocus={true}>
+      <FocusLock autoFocus={true}>
         <PropertyEditorForm
           value={value}
           property={property}
