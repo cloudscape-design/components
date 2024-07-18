@@ -3,9 +3,10 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import styles from '../../../lib/components/container/styles.selectors.js';
 import createWrapper from '../../../lib/components/test-utils/selectors';
 import { viewports } from '../../app-layout/__integ__/constants';
+
+import styles from '../../../lib/components/container/styles.selectors.js';
 
 const tableWrapper = createWrapper().findTable();
 

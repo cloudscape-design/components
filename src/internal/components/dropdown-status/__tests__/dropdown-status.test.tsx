@@ -7,8 +7,9 @@ import {
   DropdownStatusPropsExtended,
   useDropdownStatus,
 } from '../../../../../lib/components/internal/components/dropdown-status';
-import statusIconStyles from '../../../../../lib/components/status-indicator/styles.selectors.js';
 import createWrapper from '../../../../../lib/components/test-utils/dom';
+
+import statusIconStyles from '../../../../../lib/components/status-indicator/styles.selectors.js';
 function StatusRender(props: DropdownStatusPropsExtended) {
   const { isSticky, content } = useDropdownStatus(props);
   return (

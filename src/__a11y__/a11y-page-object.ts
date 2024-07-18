@@ -5,8 +5,9 @@ import fs from 'fs';
 
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 
-import tableStyles from '../../lib/components/table/styles.selectors.js';
 import { runOptions, spec } from './axe';
+
+import tableStyles from '../../lib/components/table/styles.selectors.js';
 
 declare const axe: typeof Axe;
 

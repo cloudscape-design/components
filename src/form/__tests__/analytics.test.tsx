@@ -7,13 +7,14 @@ import Button from '../../../lib/components/button';
 import Container from '../../../lib/components/container';
 import Form from '../../../lib/components/form';
 import Header from '../../../lib/components/header';
-import headerStyles from '../../../lib/components/header/styles.selectors.js';
 import { FunnelMetrics } from '../../../lib/components/internal/analytics';
 import { useFunnel } from '../../../lib/components/internal/analytics/hooks/use-funnel';
 import Modal from '../../../lib/components/modal';
-import modalStyles from '../../../lib/components/modal/styles.selectors.js';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { mockFunnelMetrics, mockInnerText } from '../../internal/analytics/__tests__/mocks';
+
+import headerStyles from '../../../lib/components/header/styles.selectors.js';
+import modalStyles from '../../../lib/components/modal/styles.selectors.js';
 
 mockInnerText();
 

@@ -2,6 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
 
+import CollectionPreferencesWrapper from '../collection-preferences';
+import ContainerWrapper from '../container';
+import PaginationWrapper from '../pagination';
+import PropertyFilterWrapper from '../property-filter';
+import TextFilterWrapper from '../text-filter';
+
 import bodyCellStyles from '../../../table/body-cell/styles.selectors.js';
 import expandableRowsStyles from '../../../table/expandable-rows/styles.selectors.js';
 import headerCellStyles from '../../../table/header-cell/styles.selectors.js';
@@ -9,11 +15,6 @@ import progressiveLoadingStyles from '../../../table/progressive-loading/styles.
 import resizerStyles from '../../../table/resizer/styles.selectors.js';
 import selectionStyles from '../../../table/selection/styles.selectors.js';
 import styles from '../../../table/styles.selectors.js';
-import CollectionPreferencesWrapper from '../collection-preferences';
-import ContainerWrapper from '../container';
-import PaginationWrapper from '../pagination';
-import PropertyFilterWrapper from '../property-filter';
-import TextFilterWrapper from '../text-filter';
 
 export default class TableWrapper extends ComponentWrapper {
   static rootSelector: string = styles.root;

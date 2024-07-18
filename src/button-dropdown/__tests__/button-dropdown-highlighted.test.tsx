@@ -4,9 +4,10 @@ import React from 'react';
 import { act, fireEvent, render } from '@testing-library/react';
 
 import ButtonDropdown, { ButtonDropdownProps } from '../../../lib/components/button-dropdown';
-import styles from '../../../lib/components/button-dropdown/category-elements/styles.selectors.js';
 import createWrapper, { ButtonDropdownWrapper } from '../../../lib/components/test-utils/dom';
 import { KeyCode } from '../../internal/keycode';
+
+import styles from '../../../lib/components/button-dropdown/category-elements/styles.selectors.js';
 
 const renderButtonDropdown = (props: ButtonDropdownProps) => {
   const renderResult = render(<ButtonDropdown {...props} />);

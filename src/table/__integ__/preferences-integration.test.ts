@@ -3,8 +3,9 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import headerCellStyles from '../../../lib/components/table/header-cell/styles.selectors.js';
 import createWrapper from '../../../lib/components/test-utils/selectors';
+
+import headerCellStyles from '../../../lib/components/table/header-cell/styles.selectors.js';
 
 const wrapper = createWrapper().findTable();
 const preferences = wrapper.findCollectionPreferences();

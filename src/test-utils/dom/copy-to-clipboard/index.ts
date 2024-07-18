@@ -2,9 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import testStyles from '../../../copy-to-clipboard/test-classes/styles.selectors.js';
 import ButtonWrapper from '../button';
 import PopoverWrapper from '../popover';
+
+import testStyles from '../../../copy-to-clipboard/test-classes/styles.selectors.js';
 
 export default class CopyToClipboardWrapper extends ComponentWrapper {
   static rootSelector: string = testStyles.root;

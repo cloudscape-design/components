@@ -13,9 +13,10 @@ import {
   PropertyFilterProps,
   Ref,
 } from '../../../lib/components/property-filter/interfaces';
-import styles from '../../../lib/components/property-filter/styles.selectors.js';
 import createWrapper, { ElementWrapper, PropertyFilterWrapper } from '../../../lib/components/test-utils/dom';
 import { createDefaultProps } from './common';
+
+import styles from '../../../lib/components/property-filter/styles.selectors.js';
 
 const states: Record<string, string> = {
   0: 'Stopped',

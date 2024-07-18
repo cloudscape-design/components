@@ -9,10 +9,10 @@ import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 import '../../__a11y__/to-validate-a11y';
 import Autosuggest, { AutosuggestProps } from '../../../lib/components/autosuggest';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
-import statusIconStyles from '../../../lib/components/status-indicator/styles.selectors.js';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
 import itemStyles from '../../../lib/components/internal/components/selectable-item/styles.css.js';
+import statusIconStyles from '../../../lib/components/status-indicator/styles.selectors.js';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => {
   const originalModule = jest.requireActual('@cloudscape-design/component-toolkit/internal');

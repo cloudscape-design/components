@@ -3,8 +3,9 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import styles from '../../../lib/components/tabs/styles.selectors.js';
 import createWrapper from '../../../lib/components/test-utils/selectors';
+
+import styles from '../../../lib/components/tabs/styles.selectors.js';
 
 const wrapper = createWrapper().findTabs();
 

@@ -3,8 +3,9 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import styles from '../../../lib/components/icon/styles.selectors.js';
 import createWrapper from '../../../lib/components/test-utils/selectors';
+
+import styles from '../../../lib/components/icon/styles.selectors.js';
 
 const dynamicIconSelector = createWrapper().findIcon('#dynamic-test-2').toSelector();
 const staticIconSelector = createWrapper().findIcon('#static-test').toSelector();

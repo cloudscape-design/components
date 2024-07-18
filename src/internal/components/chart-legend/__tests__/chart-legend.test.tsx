@@ -7,8 +7,9 @@ import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
 import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
 import ChartLegend from '../../../../../lib/components/internal/components/chart-legend';
-import styles from '../../../../../lib/components/internal/components/chart-legend/styles.selectors.js';
 import createWrapper from '../../../../../lib/components/test-utils/dom';
+
+import styles from '../../../../../lib/components/internal/components/chart-legend/styles.selectors.js';
 
 const series = [
   { label: 'Chocolate', color: 'chocolate', type: 'line', datum: { title: 's1' } },

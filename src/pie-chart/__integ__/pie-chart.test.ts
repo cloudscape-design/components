@@ -3,8 +3,9 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import chartPlotStyles from '../../../lib/components/internal/components/chart-plot/styles.selectors.js';
 import createWrapper, { PieChartWrapper } from '../../../lib/components/test-utils/selectors';
+
+import chartPlotStyles from '../../../lib/components/internal/components/chart-plot/styles.selectors.js';
 
 class PieChartPageObject extends BasePageObject {
   constructor(

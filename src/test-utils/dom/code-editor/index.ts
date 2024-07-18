@@ -4,8 +4,9 @@ import { act } from 'react-dom/test-utils';
 
 import { ComponentWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
 
-import styles from '../../../code-editor/styles.selectors.js';
 import ButtonWrapper from '../button';
+
+import styles from '../../../code-editor/styles.selectors.js';
 
 export default class CodeEditorWrapper extends ComponentWrapper {
   static rootSelector: string = styles['code-editor'];

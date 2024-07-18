@@ -5,6 +5,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import FileUpload, { FileUploadProps } from '../../../lib/components/file-upload';
 import { Dropzone, useDropzoneVisible } from '../../../lib/components/file-upload/dropzone';
+
 import selectors from '../../../lib/components/file-upload/dropzone/styles.selectors.js';
 
 const file1 = new File([new Blob(['Test content 1'], { type: 'text/plain' })], 'test-file-1.txt', {

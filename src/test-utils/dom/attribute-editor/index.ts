@@ -2,10 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import styles from '../../../attribute-editor/styles.selectors.js';
-import gridstyles from '../../../grid/styles.selectors.js';
 import ButtonWrapper from '../button';
 import FormFieldWrapper from '../form-field';
+
+import styles from '../../../attribute-editor/styles.selectors.js';
+import gridstyles from '../../../grid/styles.selectors.js';
 
 export class AttributeEditorRowWrapper extends ElementWrapper {
   /**

@@ -7,10 +7,11 @@ import { fireEvent, render } from '@testing-library/react';
 
 import '../../__a11y__/to-validate-a11y';
 import Calendar, { CalendarProps } from '../../../lib/components/calendar';
-import styles from '../../../lib/components/calendar/styles.selectors.js';
-import screenreaderOnlyStyles from '../../../lib/components/internal/components/screenreader-only/styles.selectors.js';
 import { KeyCode } from '../../../lib/components/internal/keycode';
 import createWrapper, { CalendarWrapper } from '../../../lib/components/test-utils/dom';
+
+import styles from '../../../lib/components/calendar/styles.selectors.js';
+import screenreaderOnlyStyles from '../../../lib/components/internal/components/screenreader-only/styles.selectors.js';
 
 // The calendar is mostly tested here: src/date-picker/__tests__/date-picker-calendar.test.tsx
 

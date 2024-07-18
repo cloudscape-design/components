@@ -2,13 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
+import ButtonWrapper from '../button';
+
 import fileUploadInputSelectors from '../../../file-upload/file-input/styles.selectors.js';
 import fileUploadOptionSelectors from '../../../file-upload/file-option/styles.selectors.js';
 import fileUploadSelectors from '../../../file-upload/styles.selectors.js';
 import formFieldStyles from '../../../form-field/styles.selectors.js';
 import tokenListSelectors from '../../../internal/components/token-list/styles.selectors.js';
 import tokenGroupSelectors from '../../../token-group/styles.selectors.js';
-import ButtonWrapper from '../button';
 
 export default class FileUploadWrapper extends ComponentWrapper<HTMLElement> {
   static rootSelector: string = fileUploadSelectors.root;

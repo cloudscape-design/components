@@ -4,12 +4,13 @@ import { act } from 'react-dom/test-utils';
 
 import { ComponentWrapper, createWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
 
+import ButtonWrapper from '../button/index.js';
+
 import buttonStyles from '../../../button/styles.selectors.js';
 import categoryStyles from '../../../button-dropdown/category-elements/styles.selectors.js';
 import itemStyles from '../../../button-dropdown/item-element/styles.selectors.js';
 import styles from '../../../button-dropdown/styles.selectors.js';
 import dropdownStyles from '../../../internal/components/dropdown/styles.selectors.js';
-import ButtonWrapper from '../button/index.js';
 
 export default class ButtonDropdownWrapper extends ComponentWrapper {
   static rootSelector: string = styles['button-dropdown'];

@@ -3,8 +3,9 @@
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 import { escapeSelector } from '@cloudscape-design/test-utils-core/utils';
 
-import styles from '../../../tiles/styles.selectors.js';
 import TileWrapper from './tile';
+
+import styles from '../../../tiles/styles.selectors.js';
 
 export default class TilesWrapper extends ComponentWrapper {
   static rootSelector: string = styles.root;

@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import styles from '../../../progress-bar/styles.selectors.js';
 import ButtonWrapper from '../button';
+
+import styles from '../../../progress-bar/styles.selectors.js';
 
 export default class ProgressBarWrapper extends ComponentWrapper {
   static rootSelector = styles.root;

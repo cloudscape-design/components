@@ -4,12 +4,13 @@ import * as React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 
 import { TableBodyCell, TableBodyCellProps } from '../../../lib/components/table/body-cell';
-import styles from '../../../lib/components/table/body-cell/styles.selectors.js';
 import { useStickyColumns } from '../../../lib/components/table/sticky-columns';
 import wrapper from '../../../lib/components/test-utils/dom';
 import { renderHook } from '../../__tests__/render-hook';
 import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
 import { TableProps } from '../interfaces';
+
+import styles from '../../../lib/components/table/body-cell/styles.selectors.js';
 
 const tableRole = 'table';
 

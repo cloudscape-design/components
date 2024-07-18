@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 
-import selectors from '../../../../lib/components/flashbar/styles.selectors.js';
 import createWrapper from '../../../../lib/components/test-utils/selectors';
+
+import selectors from '../../../../lib/components/flashbar/styles.selectors.js';
 
 export const flashbar = createWrapper().findFlashbar();
 

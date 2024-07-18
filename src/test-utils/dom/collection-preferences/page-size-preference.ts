@@ -2,10 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import styles from '../../../collection-preferences/styles.selectors.js';
 import FormFieldWrapper from '../form-field';
 import RadioGroupWrapper from '../radio-group';
 import RadioButtonWrapper from '../radio-group/radio-button';
+
+import styles from '../../../collection-preferences/styles.selectors.js';
 
 export default class PageSizePreferenceWrapper extends ComponentWrapper {
   static rootSelector = styles['page-size'];

@@ -2,12 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, createWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import buttonDropdownStyles from '../../../button-dropdown/styles.selectors.js';
-import menuDropdownStyles from '../../../internal/components/menu-dropdown/styles.selectors.js';
-import styles from '../../../top-navigation/styles.selectors.js';
 import ButtonWrapper from '../button';
 import ButtonDropdownWrapper from '../button-dropdown';
 import LinkWrapper from '../link';
+
+import buttonDropdownStyles from '../../../button-dropdown/styles.selectors.js';
+import menuDropdownStyles from '../../../internal/components/menu-dropdown/styles.selectors.js';
+import styles from '../../../top-navigation/styles.selectors.js';
 
 export default class TopNavigationWrapper extends ComponentWrapper {
   static rootSelector = `${styles['top-navigation']}:not(.${styles.hidden})`;

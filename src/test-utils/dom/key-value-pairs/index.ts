@@ -2,9 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
+import BoxWrapper from '../box';
+
 import columnLayoutStyles from '../../../column-layout/flexible-column-layout/styles.selectors.js';
 import styles from '../../../key-value-pairs/styles.selectors.js';
-import BoxWrapper from '../box';
 
 export class KeyValuePairsPairWrapper extends ComponentWrapper {
   findLabel(): ElementWrapper | null {

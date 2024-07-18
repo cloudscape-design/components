@@ -7,10 +7,10 @@ import '../../__a11y__/to-validate-a11y';
 import FormField from '../../../lib/components/form-field';
 import createWrapper, { ToggleWrapper } from '../../../lib/components/test-utils/dom';
 import Toggle, { ToggleProps } from '../../../lib/components/toggle';
-import styles from '../../../lib/components/toggle/styles.selectors.js';
 import { createCommonTests } from '../../checkbox/__tests__/common-tests';
 
 import abstractSwitchStyles from '../../../lib/components/internal/components/abstract-switch/styles.css.js';
+import styles from '../../../lib/components/toggle/styles.selectors.js';
 
 function renderToggle(jsx: React.ReactElement) {
   const { container, rerender } = render(jsx);

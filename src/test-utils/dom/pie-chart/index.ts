@@ -2,10 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
+import CommonChartWrapper from '../internal/charts';
+
 import chartPlotStyles from '../../../internal/components/chart-plot/styles.selectors.js';
 import chartWrapperStyles from '../../../internal/components/chart-wrapper/styles.selectors.js';
 import styles from '../../../pie-chart/styles.selectors.js';
-import CommonChartWrapper from '../internal/charts';
 
 export default class PieChartWrapper extends CommonChartWrapper {
   static rootSelector: string = styles.root;

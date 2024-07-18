@@ -5,16 +5,17 @@ import { act } from 'react-dom/test-utils';
 import { ComponentWrapper, createWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
 import { escapeSelector } from '@cloudscape-design/test-utils-core/utils';
 
+import InputWrapper from '../input';
+import DropdownWrapper from '../internal/dropdown';
+import OptionWrapper from '../internal/option';
+import OptionsListWrapper from '../internal/options-list';
+
 import mainStyles from '../../../autosuggest/styles.selectors.js';
 import dropdownStyles from '../../../internal/components/dropdown/styles.selectors.js';
 import dropdownStatusStyles from '../../../internal/components/dropdown-status/styles.selectors.js';
 import footerStyles from '../../../internal/components/dropdown-status/styles.selectors.js';
 import optionStyles from '../../../internal/components/option/styles.selectors.js';
 import selectableStyles from '../../../internal/components/selectable-item/styles.selectors.js';
-import InputWrapper from '../input';
-import DropdownWrapper from '../internal/dropdown';
-import OptionWrapper from '../internal/option';
-import OptionsListWrapper from '../internal/options-list';
 
 export class AutosuggestDropdownWrapper extends ComponentWrapper {
   findOptions(): Array<OptionWrapper> {

@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, createWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import styles from '../../../calendar/styles.selectors.js';
 import ButtonWrapper from '../button';
+
+import styles from '../../../calendar/styles.selectors.js';
 
 export class CalendarDateWrapper extends ComponentWrapper {
   findDisabledReason(): ElementWrapper | null {

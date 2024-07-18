@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import styles from '../../../toggle/styles.selectors.js';
 import AbstractSwitchWrapper from '../internal/abstract-switch';
+
+import styles from '../../../toggle/styles.selectors.js';
 
 export default class ToggleWrapper extends ComponentWrapper {
   static rootSelector = styles.root;

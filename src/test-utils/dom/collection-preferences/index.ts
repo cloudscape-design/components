@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, createWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import styles from '../../../collection-preferences/styles.selectors.js';
 import ButtonWrapper from '../button';
 import CheckboxWrapper from '../checkbox';
 import ModalWrapper from '../modal';
@@ -10,6 +9,8 @@ import ContentDisplayPreferenceWrapper from './content-display-preference';
 import PageSizePreferenceWrapper from './page-size-preference';
 import StickyColumnsPreferenceWrapper from './sticky-columns-preference';
 import VisibleContentPreferenceWrapper from './visible-content-preference';
+
+import styles from '../../../collection-preferences/styles.selectors.js';
 
 class PreferencesModalWrapper extends ModalWrapper {
   static rootSelector = styles['modal-root'];

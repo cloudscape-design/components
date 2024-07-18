@@ -2,9 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
+import TokenWrapper from './token';
+
 import tokenListSelectors from '../../../internal/components/token-list/styles.selectors.js';
 import selectors from '../../../token-group/styles.selectors.js';
-import TokenWrapper from './token';
 
 export default class TokenGroupWrapper extends ComponentWrapper {
   static rootSelector: string = selectors.root;

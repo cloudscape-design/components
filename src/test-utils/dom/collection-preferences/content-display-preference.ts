@@ -2,9 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
+import ToggleWrapper from '../toggle';
+
 import styles from '../../../collection-preferences/styles.selectors.js';
 import dragHandleStyles from '../../../internal/components/drag-handle/styles.selectors.js';
-import ToggleWrapper from '../toggle';
 
 const getClassName = (suffix: string): string => styles[`content-display-${suffix}`];
 

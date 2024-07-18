@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
 import { ResizableBox, ResizeBoxProps } from '../../../../lib/components/code-editor/resizable-box';
+
 import styles from '../../../../lib/components/code-editor/resizable-box/styles.selectors.js';
 
 const defaultProps: ResizeBoxProps = {

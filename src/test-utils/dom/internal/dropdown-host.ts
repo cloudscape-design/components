@@ -5,13 +5,14 @@ import { act } from 'react-dom/test-utils';
 import { ComponentWrapper, createWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
 import { escapeSelector } from '@cloudscape-design/test-utils-core/utils';
 
+import DropdownWrapper from './dropdown';
+import OptionWrapper from './option';
+import OptionsListWrapper from './options-list';
+
 import dropdownStyles from '../../../internal/components/dropdown/styles.selectors.js';
 import footerStyles from '../../../internal/components/dropdown-status/styles.selectors.js';
 import optionStyles from '../../../internal/components/option/styles.selectors.js';
 import selectableStyles from '../../../internal/components/selectable-item/styles.selectors.js';
-import DropdownWrapper from './dropdown';
-import OptionWrapper from './option';
-import OptionsListWrapper from './options-list';
 
 export default abstract class DropdownHostComponentWrapper extends ComponentWrapper {
   abstract findTrigger(): ElementWrapper;

@@ -5,11 +5,12 @@ import { render } from '@testing-library/react';
 
 import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import calendarStyles from '../../../lib/components/calendar/styles.selectors.js';
 import DatePicker, { DatePickerProps } from '../../../lib/components/date-picker';
-import screenreaderOnlyStyles from '../../../lib/components/internal/components/screenreader-only/styles.selectors.js';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import DatePickerWrapper from '../../../lib/components/test-utils/dom/date-picker';
+
+import calendarStyles from '../../../lib/components/calendar/styles.selectors.js';
+import screenreaderOnlyStyles from '../../../lib/components/internal/components/screenreader-only/styles.selectors.js';
 
 export const outsideId = 'outside';
 

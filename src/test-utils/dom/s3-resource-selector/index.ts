@@ -2,15 +2,16 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import inContextStyles from '../../../s3-resource-selector/s3-in-context/styles.selectors.js';
-import modalStyles from '../../../s3-resource-selector/s3-modal/styles.selectors.js';
-import styles from '../../../s3-resource-selector/styles.selectors.js';
 import createWrapper from '../';
 import ButtonWrapper from '../button';
 import InputWrapper from '../input';
 import ModalWrapper from '../modal';
 import SelectWrapper from '../select';
 import TableWrapper from '../table';
+
+import inContextStyles from '../../../s3-resource-selector/s3-in-context/styles.selectors.js';
+import modalStyles from '../../../s3-resource-selector/s3-modal/styles.selectors.js';
+import styles from '../../../s3-resource-selector/styles.selectors.js';
 
 class S3ModalWrapper extends ModalWrapper {
   findSubmitButton(): ButtonWrapper {

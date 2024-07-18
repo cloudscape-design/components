@@ -4,13 +4,14 @@ import React, { useState } from 'react';
 import { render, screen } from '@testing-library/react';
 
 import TestI18nProvider from '../../../lib/components/i18n/testing';
-import optionSelectors from '../../../lib/components/internal/components/option/styles.selectors.js';
-import tokenListSelectors from '../../../lib/components/internal/components/token-list/styles.selectors.js';
 import createWrapper, { IconWrapper, TokenGroupWrapper } from '../../../lib/components/test-utils/dom';
 import TokenGroup, { TokenGroupProps } from '../../../lib/components/token-group';
-import selectors from '../../../lib/components/token-group/styles.selectors.js';
 import { Token } from '../../../lib/components/token-group/token';
 import { getIconHTML } from '../../icon/__tests__/utils';
+
+import optionSelectors from '../../../lib/components/internal/components/option/styles.selectors.js';
+import tokenListSelectors from '../../../lib/components/internal/components/token-list/styles.selectors.js';
+import selectors from '../../../lib/components/token-group/styles.selectors.js';
 
 function renderTokenGroup(props: TokenGroupProps = {}): TokenGroupWrapper {
   const { container } = render(<TokenGroup {...props} />);

@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import styles from '../../../alert/styles.selectors.js';
 import ButtonWrapper from '../button';
+
+import styles from '../../../alert/styles.selectors.js';
 
 export default class AlertWrapper extends ComponentWrapper {
   static rootSelector: string = styles.root;

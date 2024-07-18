@@ -4,8 +4,9 @@ import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objec
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import { PropertyFilterProps } from '../../../lib/components/property-filter/interfaces';
-import styles from '../../../lib/components/property-filter/styles.selectors.js';
 import createWrapper from '../../../lib/components/test-utils/selectors';
+
+import styles from '../../../lib/components/property-filter/styles.selectors.js';
 
 interface ExtendedWindow {
   loadItemsCalls: PropertyFilterProps.LoadItemsDetail[];

@@ -3,8 +3,9 @@
 import { BasePageObject, ElementRect } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import styles from '../../../lib/components/popover/styles.selectors.js';
 import createWrapper from '../../../lib/components/test-utils/selectors';
+
+import styles from '../../../lib/components/popover/styles.selectors.js';
 
 const wrapper = createWrapper();
 const triggerSelector = wrapper.findPopover().findTrigger().toSelector();

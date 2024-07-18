@@ -2,10 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import attributeEditorStyles from '../../../attribute-editor/styles.selectors.js';
-import styles from '../../../tag-editor/styles.selectors.js';
 import AttributeEditorWrapper, { AttributeEditorRowWrapper } from '../attribute-editor';
 import LinkWrapper from '../link';
+
+import attributeEditorStyles from '../../../attribute-editor/styles.selectors.js';
+import styles from '../../../tag-editor/styles.selectors.js';
 
 export class TagEditorRowWrapper extends AttributeEditorRowWrapper {
   findUndoButton(): LinkWrapper | null {

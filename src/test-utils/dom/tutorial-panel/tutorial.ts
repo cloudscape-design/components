@@ -2,10 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import styles from '../../../tutorial-panel/components/tutorial-list/styles.selectors.js';
 import ButtonWrapper from '../button';
 import { AlertWrapper } from '../index.js';
 import LinkWrapper from '../link';
+
+import styles from '../../../tutorial-panel/components/tutorial-list/styles.selectors.js';
 
 export default class TutorialItemWrapper extends ComponentWrapper {
   static rootSelector: string = styles['tutorial-box'];

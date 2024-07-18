@@ -2,16 +2,17 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
 
+import InputWrapper from '../input';
+import DropdownHostComponentWrapper from '../internal/dropdown-host';
+import TokenGroupWrapper from '../token-group';
+import TokenWrapper from '../token-group/token';
+
 import inputStyles from '../../../input/styles.selectors.js';
 import buttonTriggerStyles from '../../../internal/components/button-trigger/styles.selectors.js';
 import dropdownStatusStyles from '../../../internal/components/dropdown-status/styles.selectors.js';
 import footerStyles from '../../../internal/components/dropdown-status/styles.selectors.js';
 import multiselectStyles from '../../../multiselect/styles.selectors.js';
 import tokenGroupStyles from '../../../token-group/styles.selectors.js';
-import InputWrapper from '../input';
-import DropdownHostComponentWrapper from '../internal/dropdown-host';
-import TokenGroupWrapper from '../token-group';
-import TokenWrapper from '../token-group/token';
 
 export default class MultiselectWrapper extends DropdownHostComponentWrapper {
   static rootSelector: string = multiselectStyles.root;

@@ -9,7 +9,6 @@ import { createWrapper } from '@cloudscape-design/test-utils-core/dom.js';
 
 import DatePicker, { DatePickerProps } from '../../../lib/components/date-picker';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
-import screenreaderOnlyStyles from '../../../lib/components/internal/components/screenreader-only/styles.selectors.js';
 import { KeyCode } from '../../../lib/components/internal/keycode';
 import { padLeftZeros } from '../../../lib/components/internal/utils/strings/pad-left-zeros';
 import DatePickerWrapper from '../../../lib/components/test-utils/dom/date-picker';
@@ -21,6 +20,8 @@ import {
   findFocusedDate,
   renderDatePicker,
 } from './common';
+
+import screenreaderOnlyStyles from '../../../lib/components/internal/components/screenreader-only/styles.selectors.js';
 
 function getCurrentMonthLabelText(wrapper: DatePickerWrapper) {
   return findCurrentDate(wrapper).find(`.${screenreaderOnlyStyles.root}`)?.getElement().textContent;

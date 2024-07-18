@@ -3,8 +3,9 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import styles from '../../../lib/components/table/styles.selectors.js';
 import createWrapper from '../../../lib/components/test-utils/selectors';
+
+import styles from '../../../lib/components/table/styles.selectors.js';
 
 test(
   'allows to scroll overflowing table by focusing the wrapper',

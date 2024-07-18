@@ -2,10 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import testutilStyles from '../../../app-layout/test-classes/styles.selectors.js';
-import splitPanelTestUtilStyles from '../../../split-panel/test-classes/styles.selectors.js';
 import ButtonDropdownWrapper from '../button-dropdown';
 import SplitPanelWrapper from '../split-panel';
+
+import testutilStyles from '../../../app-layout/test-classes/styles.selectors.js';
+import splitPanelTestUtilStyles from '../../../split-panel/test-classes/styles.selectors.js';
 
 export default class AppLayoutWrapper extends ComponentWrapper {
   static rootSelector = testutilStyles.root;
