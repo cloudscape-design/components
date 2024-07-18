@@ -146,7 +146,7 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   }
   :not(.drawer-closed) > .drawer-content-bottom > & {
     background-color: awsui.$color-background-layout-panel-content;
-    border-block-end: awsui.$border-panel-header-width solid awsui.$color-border-divider-default;
+    border-block-end: awsui.$border-panel-header-width solid awsui.$color-border-panel-header;
   }
 }
 
@@ -197,7 +197,7 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
     padding-block: 0;
     padding-inline-end: awsui.$space-m;
     padding-inline-start: awsui.$space-panel-side-left;
-    border-block-end: awsui.$border-panel-header-width solid awsui.$color-border-divider-default;
+    border-block-end: awsui.$border-panel-header-width solid awsui.$color-border-panel-header;
   }
   > .pane-content-wrapper-side {
     padding-block: 0;

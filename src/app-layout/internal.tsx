@@ -4,6 +4,7 @@ import React from 'react';
 
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { getGlobalFlag } from '../internal/utils/global-flags';
+import VisualContext from '../internal/components/visual-context';
 import ClassicAppLayout from './classic';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from './interfaces';
 import RefreshedAppLayout from './visual-refresh';
@@ -13,7 +14,11 @@ export const AppLayoutInternal = React.forwardRef<AppLayoutProps.Ref, AppLayoutP
   const isRefresh = useVisualRefresh();
   if (isRefresh) {
     if (getGlobalFlag('appLayoutWidget')) {
-      return <ToolbarAppLayout ref={ref} {...props} />;
+      return (
+        <VisualContext contextName="toolbar">
+          <ToolbarAppLayout ref={ref} {...props} />
+        </VisualContext>
+      );
     } else {
       return <RefreshedAppLayout ref={ref} {...props} />;
     }
