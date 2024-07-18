@@ -5,7 +5,6 @@ import { ButtonGroupProps } from './interfaces.js';
 import { InternalButton } from '../button/internal.js';
 import { ButtonProps } from '../button/interfaces.js';
 import { CancelableEventHandler, ClickDetail } from '../internal/events/index.js';
-import { isDevelopment } from '../internal/is-development.js';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
@@ -24,7 +23,7 @@ const IconButtonItem = forwardRef(
   ) => {
     const hasIcon = item.iconName || item.iconUrl || item.iconSvg;
 
-    if (isDevelopment && !hasIcon) {
+    if (!hasIcon) {
       warnOnce('ButtonGroup', `Missing icon for item with id: ${item.id}`);
     }
 
