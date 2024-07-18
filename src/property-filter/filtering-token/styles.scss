@@ -10,6 +10,8 @@
 
 .root,
 .inner-root {
+  @include styles.styles-reset;
+
   display: flex;
   align-content: stretch;
 }
