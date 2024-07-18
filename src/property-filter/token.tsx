@@ -65,36 +65,50 @@ export const TokenButton = ({
   const formattedToken = getFormattedToken(token);
   return (
     <FilteringToken
-      ariaLabel={formattedToken.label}
+      tokens={[
+        {
+          content: (
+            <TokenEditor
+              setToken={setToken}
+              triggerComponent={
+                <span className={styles['token-trigger']}>
+                  <TokenTrigger
+                    property={formattedToken.property}
+                    operator={token.operator}
+                    value={formattedToken.value}
+                  />
+                </span>
+              }
+              filteringProperties={filteringProperties}
+              filteringOptions={filteringOptions}
+              token={token}
+              asyncProps={asyncProps}
+              onLoadItems={onLoadItems}
+              i18nStrings={i18nStrings}
+              asyncProperties={asyncProperties}
+              customGroupsText={customGroupsText}
+              freeTextFiltering={freeTextFiltering}
+              expandToViewport={expandToViewport}
+            />
+          ),
+          ariaLabel: formattedToken.label,
+          dismissAriaLabel: i18nStrings?.removeTokenButtonAriaLabel?.(externalToken) ?? '',
+        },
+      ]}
       showOperation={!first && !hideOperations}
       operation={operation}
       andText={i18nStrings.operationAndText ?? ''}
       orText={i18nStrings.operationOrText ?? ''}
-      dismissAriaLabel={i18nStrings?.removeTokenButtonAriaLabel?.(externalToken)}
-      operatorAriaLabel={i18nStrings.tokenOperatorAriaLabel}
-      onChange={setOperation}
-      onDismiss={removeToken}
+      operationAriaLabel={i18nStrings.tokenOperatorAriaLabel ?? ''}
+      onChangeOperation={setOperation}
+      onDismissToken={removeToken}
       disabled={disabled}
-    >
-      <TokenEditor
-        setToken={setToken}
-        triggerComponent={
-          <span className={styles['token-trigger']}>
-            <TokenTrigger property={formattedToken.property} operator={token.operator} value={formattedToken.value} />
-          </span>
-        }
-        filteringProperties={filteringProperties}
-        filteringOptions={filteringOptions}
-        token={token}
-        asyncProps={asyncProps}
-        onLoadItems={onLoadItems}
-        i18nStrings={i18nStrings}
-        asyncProperties={asyncProperties}
-        customGroupsText={customGroupsText}
-        freeTextFiltering={freeTextFiltering}
-        expandToViewport={expandToViewport}
-      />
-    </FilteringToken>
+      // The properties below are only relevant for grouped tokens that are not supported
+      // by the property filter component yet.
+      groupOperation={operation}
+      groupAriaLabel={''}
+      onChangeGroupOperation={() => {}}
+    />
   );
 };
 

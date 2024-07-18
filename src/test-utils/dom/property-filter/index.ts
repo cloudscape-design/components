@@ -77,6 +77,12 @@ export class FilteringTokenWrapper extends ComponentWrapper {
     return this.findComponent(`.${testUtilStyles['filtering-token-select']}`, SelectWrapper);
   }
 
+  findGroupTokens(): Array<FilteringGroupedTokenWrapper> {
+    return this.findAllByClassName(testUtilStyles['filtering-token-inner']).map(
+      w => new FilteringGroupedTokenWrapper(w.getElement())
+    );
+  }
+
   /**
    * Returns dropdown content of editing token if opened or `null` otherwise.
    */
@@ -84,6 +90,22 @@ export class FilteringTokenWrapper extends ComponentWrapper {
     const root = options.expandToViewport ? createWrapper() : this;
     const popoverBody = root.findByClassName(popoverStyles.body);
     return popoverBody ? new PropertyFilterEditorDropdownWrapper(popoverBody.getElement()) : null;
+  }
+}
+
+export class FilteringGroupedTokenWrapper extends ComponentWrapper {
+  static rootSelector = testUtilStyles['filtering-token-inner'];
+
+  findLabel(): ElementWrapper {
+    return this.findByClassName(testUtilStyles['filtering-token-inner-content'])!;
+  }
+
+  findRemoveButton(): ElementWrapper<HTMLButtonElement> {
+    return this.findByClassName<HTMLButtonElement>(testUtilStyles['filtering-token-inner-dismiss-button'])!;
+  }
+
+  findTokenOperation(): SelectWrapper | null {
+    return this.findComponent(`.${testUtilStyles['filtering-token-inner-select']}`, SelectWrapper);
   }
 }
 
