@@ -31,31 +31,31 @@ export interface ButtonGroupProps extends BaseComponentProps {
    */
   dropdownExpandToViewport?: boolean;
   /**
-   * Array of objects of type "icon-button", "group", or "menu-dropdown".
+   * Array of objects of type "icon-button", or "menu-dropdown" or "group".
    *
    * ### type="icon-button"
    * * `id` (string) - The unique identifier of the button, used as detail in `onItemClick` handler and to focus the button using `ref.focus(id)`.
    * * `text` (string) - The name shown as a tooltip or menu text for this button.
+   * * `disabled` (optional, boolean) - The disabled state indication for the button.
    * * `loading` (optional, boolean) - The loading state indication for the button.
    * * `loadingText` (optional, string) - The loading text announced to screen-readers.
-   * * `disabled` (optional, boolean) - The disabled state indication for the button.
    * * `iconName` (optional, string) - Specifies the name of the icon, used with the [icon component](/components/icon/).
    * * `iconAlt` (optional, string) - Specifies alternate text for the icon when using `iconUrl`.
    * * `iconUrl` (optional, string) - Specifies the URL of a custom icon.
    * * `iconSvg` (optional, ReactNode) - Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/icon/).
-   * * `feedbackText` (optional, string) - Text that appears when the user clicks the button. Use to provide feedback to the user.
+   * * `popoverFeedback` (optional, string) - Text that appears when the user clicks the button. Use to provide feedback to the user.
+   *
+   * ### type="menu-dropdown""
+   * * `id` (string) - The unique identifier of the button, used to focus the button using `ref.focus(id)`.
+   * * `text` (string) - The name of the menu button shown as a tooltip.
+   * * `disabled` (optional, boolean) - The disabled state indication for the menu button.
+   * * `loading` (optional, boolean) - The loading state indication for the menu button.
+   * * `loadingText` (optional, string) - The loading text announced to screen-readers.
+   * * `items` (ButtonDropdownProps.ItemOrGroup[]) - The array of dropdown items that belong to this menu.
    *
    * ### type="group"
    * * `text` (string) - The name of the group rendered as ARIA label for this group.
    * * `items` ((ButtonGroupProps.IconButton | ButtonGroupProps.MenuDropdown)[]) - The array of items that belong to this group.
-   *
-   * ### type="button-dropdown"
-   * * `id` (string) - The unique identifier of the button, used to focus the button using `ref.focus(id)`.
-   * * `text` (string) - The name of the menu button shown as a tooltip.
-   * * `loading` (optional, boolean) - The loading state indication for the menu button.
-   * * `loadingText` (optional, string) - The loading text announced to screen-readers.
-   * * `disabled` (optional, boolean) - The disabled state indication for the menu button.
-   * * `items` (ButtonDropdownProps.ItemOrGroup[]) - The array of dropdown items that belong to this menu.
    */
   items: ReadonlyArray<ButtonGroupProps.ItemOrGroup>;
   /**
