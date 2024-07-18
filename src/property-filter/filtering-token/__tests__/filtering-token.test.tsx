@@ -4,24 +4,23 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import Popover from '../../../../lib/components/popover/internal';
 import FilteringToken, { FilteringTokenProps } from '../../../../lib/components/property-filter/filtering-token';
 import { FilteringTokenWrapper } from '../../../../lib/components/test-utils/dom/property-filter';
 
 const token1 = {
-  content: <Popover>property1 = value</Popover>,
+  content: 'property1 = value',
   ariaLabel: 'filter property1 = value',
   dismissAriaLabel: 'remove filter property1 = value',
 } as const;
 
 const token2 = {
-  content: <Popover>property2 = value</Popover>,
+  content: 'property2 = value',
   ariaLabel: 'filter property2 = value',
   dismissAriaLabel: 'remove filter property2 = value',
 } as const;
 
 const token3 = {
-  content: <Popover>property3 = value</Popover>,
+  content: 'property3 = value',
   ariaLabel: 'filter property3 = value',
   dismissAriaLabel: 'remove filter property3 = value',
 } as const;
@@ -38,6 +37,10 @@ const defaultProps: FilteringTokenProps = {
   onChangeOperation: () => {},
   onChangeGroupOperation: () => {},
   onDismissToken: () => {},
+  editorContent: 'Token editor content',
+  editorHeader: 'Token editor header',
+  editorDismissAriaLabel: 'dismiss editor',
+  editorExpandToViewport: false,
 };
 
 function renderToken(props: Partial<FilteringTokenProps>): FilteringTokenWrapper {
@@ -58,7 +61,7 @@ test('renders 3 tokens as role="group" with group ARIA label no dismiss button',
   const token = renderToken({ tokens: [token1, token2, token3], groupAriaLabel: 'filter group with 3 tokens' });
   expect(token.getElement()).toHaveAttribute('role', 'group');
   expect(token.getElement()).toHaveAccessibleName('filter group with 3 tokens');
-  expect(token.findLabel()!.getElement()).toHaveTextContent('property1 = value');
+  expect(token.findLabel()).toBe(null);
   expect(token.findRemoveButton()).toBe(null);
   expect(token.findTokenOperation()!).toBeNull();
 });
@@ -135,3 +138,18 @@ test('shows operation selector for 2 and 3 grouped tokens', () => {
   expect(onChangeGroupOperation).toHaveBeenCalledTimes(1);
   expect(onChangeGroupOperation).toHaveBeenCalledWith('and');
 });
+
+test.each([false, true])(
+  'opens token editor by clicking on token label, editorExpandToViewport=%s',
+  editorExpandToViewport => {
+    const token = renderToken({ tokens: [token1], editorExpandToViewport });
+
+    token.findLabel().click();
+    const editor = token.findEditorDropdown({ expandToViewport: editorExpandToViewport })!;
+
+    expect(editor).not.toBe(null);
+    expect(editor.getElement()).toHaveTextContent('Token editor headerToken editor content');
+    expect(editor.findHeader().getElement()).toHaveTextContent('Token editor header');
+    expect(editor.findDismissButton().getElement()).toHaveAccessibleName('dismiss editor');
+  }
+);

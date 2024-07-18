@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { Popover } from '~components';
 import FilteringToken, { FilteringTokenProps } from '~components/property-filter/filtering-token';
 import TokenList, { TokenListProps } from '~components/internal/components/token-list';
 import ScreenshotArea from '../utils/screenshot-area';
@@ -9,19 +8,19 @@ import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 
 const token1 = {
-  content: <Popover content="Token editor">property1 = value</Popover>,
+  content: 'property1 = value',
   ariaLabel: 'filter property1 = value',
   dismissAriaLabel: 'remove filter property1 = value',
 } as const;
 
 const token2 = {
-  content: <Popover content="Token editor">property2 = value</Popover>,
+  content: 'property2 = value',
   ariaLabel: 'filter property2 = value',
   dismissAriaLabel: 'remove filter property2 = value',
 } as const;
 
 const token3 = {
-  content: <Popover content="Token editor">very-long-property-name-3 = very-long-property-value</Popover>,
+  content: 'very-long-property-name-3 = very-long-property-value',
   ariaLabel: 'filter property3 = value',
   dismissAriaLabel: 'remove filter property3 = value',
 } as const;
@@ -39,6 +38,10 @@ const defaultTokenProps: FilteringTokenProps = {
   onChangeGroupOperation: () => {},
   onDismissToken: () => {},
   disabled: false,
+  editorContent: 'Token editor content',
+  editorHeader: 'Token editor header',
+  editorDismissAriaLabel: 'dismiss token editor',
+  editorExpandToViewport: false,
 };
 
 const tokenPermutations = createPermutations<Partial<FilteringTokenProps>>([

@@ -1,10 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+
+import React, { useRef, useState } from 'react';
 
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
 import { NonCancelableEventHandler } from '../internal/events';
-import FilteringToken from './filtering-token';
+import FilteringToken, { FilteringTokenRef } from './filtering-token';
 import {
   ComparisonOperator,
   GroupText,
@@ -61,35 +62,20 @@ export const TokenButton = ({
   freeTextFiltering,
   expandToViewport,
 }: TokenProps) => {
+  const tokenRef = useRef<FilteringTokenRef>(null);
   const externalToken = { ...token, propertyKey: token.property?.propertyKey };
   const formattedToken = getFormattedToken(token);
+  const [temporaryToken, setTemporaryToken] = useState<InternalToken>(token);
+
   return (
     <FilteringToken
+      ref={tokenRef}
       tokens={[
         {
           content: (
-            <TokenEditor
-              setToken={setToken}
-              triggerComponent={
-                <span className={styles['token-trigger']}>
-                  <TokenTrigger
-                    property={formattedToken.property}
-                    operator={token.operator}
-                    value={formattedToken.value}
-                  />
-                </span>
-              }
-              filteringProperties={filteringProperties}
-              filteringOptions={filteringOptions}
-              token={token}
-              asyncProps={asyncProps}
-              onLoadItems={onLoadItems}
-              i18nStrings={i18nStrings}
-              asyncProperties={asyncProperties}
-              customGroupsText={customGroupsText}
-              freeTextFiltering={freeTextFiltering}
-              expandToViewport={expandToViewport}
-            />
+            <span className={styles['token-trigger']}>
+              <TokenTrigger property={formattedToken.property} operator={token.operator} value={formattedToken.value} />
+            </span>
           ),
           ariaLabel: formattedToken.label,
           dismissAriaLabel: i18nStrings?.removeTokenButtonAriaLabel?.(externalToken) ?? '',
@@ -103,6 +89,26 @@ export const TokenButton = ({
       onChangeOperation={setOperation}
       onDismissToken={removeToken}
       disabled={disabled}
+      editorContent={
+        <TokenEditor
+          setToken={setToken}
+          filteringProperties={filteringProperties}
+          filteringOptions={filteringOptions}
+          temporaryToken={temporaryToken}
+          onChangeTemporaryToken={setTemporaryToken}
+          asyncProps={asyncProps}
+          onLoadItems={onLoadItems}
+          i18nStrings={i18nStrings}
+          asyncProperties={asyncProperties}
+          customGroupsText={customGroupsText}
+          freeTextFiltering={freeTextFiltering}
+          onDismiss={() => tokenRef.current?.closeEditor()}
+        />
+      }
+      editorHeader={i18nStrings.editTokenHeader ?? ''}
+      editorDismissAriaLabel={i18nStrings.dismissAriaLabel ?? ''}
+      editorExpandToViewport={!!expandToViewport}
+      onEditorOpen={() => setTemporaryToken(token)}
       // The properties below are only relevant for grouped tokens that are not supported
       // by the property filter component yet.
       groupOperation={operation}

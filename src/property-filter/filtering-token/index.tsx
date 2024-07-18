@@ -1,14 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React from 'react';
+import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 import clsx from 'clsx';
 
 import InternalIcon from '../../icon/internal';
+import InternalPopover, { InternalPopoverProps, InternalPopoverRef } from '../../popover/internal';
 import InternalSelect from '../../select/internal';
 
 import testUtilStyles from '../test-classes/styles.css.js';
-import styles from './styles.css.js';
 
 export namespace FilteringTokenProps {
   export type Operation = 'and' | 'or';
@@ -27,6 +27,15 @@ export interface FilteringTokenProps {
   onChangeOperation: (operation: FilteringTokenProps.Operation) => void;
   onChangeGroupOperation: (operation: FilteringTokenProps.Operation) => void;
   onDismissToken: (tokenIndex: number) => void;
+  editorContent: React.ReactNode;
+  editorHeader: string;
+  editorDismissAriaLabel: string;
+  editorExpandToViewport: boolean;
+  onEditorOpen?: () => void;
+}
+
+export interface FilteringTokenRef {
+  closeEditor(): void;
 }
 
 interface TokenItem {
@@ -35,92 +44,119 @@ interface TokenItem {
   dismissAriaLabel: string;
 }
 
-export default function FilteringToken({
-  tokens,
-  showOperation,
-  operation,
-  groupOperation,
-  andText,
-  orText,
-  groupAriaLabel,
-  operationAriaLabel,
-  disabled,
-  onChangeOperation,
-  onChangeGroupOperation,
-  onDismissToken,
-}: FilteringTokenProps) {
-  return (
-    <TokenGroup
-      ariaLabel={tokens.length === 1 ? tokens[0].ariaLabel : groupAriaLabel}
-      operation={
-        showOperation && (
-          <OperationSelector
-            operation={operation}
-            onChange={onChangeOperation}
-            ariaLabel={operationAriaLabel}
-            andText={andText}
-            orText={orText}
-            parent={true}
-            disabled={disabled}
-          />
-        )
-      }
-      dismissButton={
-        tokens.length === 1 && (
-          <TokenDismissButton
-            ariaLabel={tokens[0].dismissAriaLabel}
-            onDismiss={() => onDismissToken(0)}
-            parent={true}
-            disabled={disabled}
-          />
-        )
-      }
-      parent={true}
-      grouped={tokens.length > 1}
-      disabled={disabled}
-    >
-      {tokens.length === 1 ? (
-        tokens[0].content
-      ) : (
-        <ul className={styles.list}>
-          {tokens.map((token, index) => (
-            <li key={index}>
-              <TokenGroup
-                ariaLabel={token.ariaLabel}
-                operation={
-                  index !== 0 && (
-                    <OperationSelector
-                      operation={groupOperation}
-                      onChange={onChangeGroupOperation}
-                      ariaLabel={operationAriaLabel}
-                      andText={andText}
-                      orText={orText}
+const FilteringToken = forwardRef(
+  (
+    {
+      tokens,
+      showOperation,
+      operation,
+      groupOperation,
+      andText,
+      orText,
+      groupAriaLabel,
+      operationAriaLabel,
+      disabled,
+      onChangeOperation,
+      onChangeGroupOperation,
+      onDismissToken,
+      editorContent,
+      editorHeader,
+      editorDismissAriaLabel,
+      editorExpandToViewport,
+      onEditorOpen,
+    }: FilteringTokenProps,
+    ref: React.Ref<FilteringTokenRef>
+  ) => {
+    const popoverRef = useRef<InternalPopoverRef>(null);
+    const popoverProps: InternalPopoverProps = {
+      content: editorContent,
+      triggerType: 'text',
+      header: editorHeader,
+      size: 'large',
+      position: 'right',
+      dismissAriaLabel: editorDismissAriaLabel,
+      renderWithPortal: editorExpandToViewport,
+      __onOpen: onEditorOpen,
+    };
+    useImperativeHandle(ref, () => ({ closeEditor: () => popoverRef.current?.dismissPopover() }));
+
+    return (
+      <TokenGroup
+        ariaLabel={tokens.length === 1 ? tokens[0].ariaLabel : groupAriaLabel}
+        operation={
+          showOperation && (
+            <OperationSelector
+              operation={operation}
+              onChange={onChangeOperation}
+              ariaLabel={operationAriaLabel}
+              andText={andText}
+              orText={orText}
+              parent={true}
+              disabled={disabled}
+            />
+          )
+        }
+        dismissButton={
+          tokens.length === 1 && (
+            <TokenDismissButton
+              ariaLabel={tokens[0].dismissAriaLabel}
+              onDismiss={() => onDismissToken(0)}
+              parent={true}
+              disabled={disabled}
+            />
+          )
+        }
+        parent={true}
+        grouped={tokens.length > 1}
+        disabled={disabled}
+      >
+        {tokens.length === 1 ? (
+          <InternalPopover ref={popoverRef} {...popoverProps}>
+            {tokens[0].content}
+          </InternalPopover>
+        ) : (
+          <ul className={styles.list}>
+            {tokens.map((token, index) => (
+              <li key={index}>
+                <TokenGroup
+                  ariaLabel={token.ariaLabel}
+                  operation={
+                    index !== 0 && (
+                      <OperationSelector
+                        operation={groupOperation}
+                        onChange={onChangeGroupOperation}
+                        ariaLabel={operationAriaLabel}
+                        andText={andText}
+                        orText={orText}
+                        parent={false}
+                        disabled={disabled}
+                      />
+                    )
+                  }
+                  dismissButton={
+                    <TokenDismissButton
+                      ariaLabel={token.dismissAriaLabel}
+                      onDismiss={() => onDismissToken(index)}
                       parent={false}
                       disabled={disabled}
                     />
-                  )
-                }
-                dismissButton={
-                  <TokenDismissButton
-                    ariaLabel={token.dismissAriaLabel}
-                    onDismiss={() => onDismissToken(index)}
-                    parent={false}
-                    disabled={disabled}
-                  />
-                }
-                parent={false}
-                grouped={false}
-                disabled={disabled}
-              >
-                {token.content}
-              </TokenGroup>
-            </li>
-          ))}
-        </ul>
-      )}
-    </TokenGroup>
-  );
-}
+                  }
+                  parent={false}
+                  grouped={false}
+                  disabled={disabled}
+                >
+                  {token.content}
+                </TokenGroup>
+              </li>
+            ))}
+          </ul>
+        )}
+      </TokenGroup>
+    );
+  }
+);
+
+export default FilteringToken;
 
 function TokenGroup({
   ariaLabel,
