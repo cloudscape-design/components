@@ -20,6 +20,7 @@ import testUtilStyles from './test-classes/styles.css.js';
 import handleKey from '../internal/utils/handle-key';
 import Tooltip from '../internal/components/tooltip/index.js';
 import LiveRegion from '../internal/components/live-region/index.js';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import clsx from 'clsx';
 import styles from './styles.css.js';
 
@@ -246,8 +247,13 @@ const InternalButtonGroup = forwardRef(
             );
 
             const isGroupBefore = items[index - 1]?.type === 'group';
-            const isGroupNow = items[index]?.type === 'group';
+            const currentItem = items[index];
+            const isGroupNow = currentItem?.type === 'group';
             const shouldAddDivider = isGroupBefore || (!isGroupBefore && isGroupNow && index !== 0);
+
+            if (isGroupNow && currentItem.items.length === 0) {
+              warnOnce('ButtonGroup', 'Empty group detected. Empty groups are not allowed.');
+            }
 
             return (
               <React.Fragment key={itemOrGroup.type === 'group' ? index : itemOrGroup.id}>
