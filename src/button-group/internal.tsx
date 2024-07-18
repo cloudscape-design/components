@@ -174,7 +174,7 @@ const InternalButtonGroup = forwardRef(
     }, [tooltipItemId]);
 
     const onClickHandler = (itemId: string, event: CustomEvent<ButtonGroupProps.ItemClickDetails | ClickDetail>) => {
-      const tooltipItem = tooltipItemId ? itemsDataRef.current[itemId] : undefined;
+      const tooltipItem = itemsDataRef.current[itemId];
       const popoverFeedback = tooltipItem && 'popoverFeedback' in tooltipItem && tooltipItem.popoverFeedback;
 
       if (popoverFeedback) {
@@ -188,12 +188,21 @@ const InternalButtonGroup = forwardRef(
       fireCancelableEvent(onItemClick, { id: 'id' in event.detail ? event.detail.id : itemId }, event);
     };
 
-    const onShowTooltip = (itemId: string, show: boolean) => {
+    const onShowTooltip = (itemId: string | null, show: boolean) => {
       if (isFeedbackTooltip && tooltipItemId && itemsRef.current[tooltipItemId]) {
         return;
       }
 
-      setTooltipItemId(show ? itemId : null);
+      if (tooltipItemId !== itemId) {
+        if (show) {
+          setTooltipItemId(itemId);
+        }
+      } else {
+        if (!show) {
+          setTooltipItemId(null);
+        }
+      }
+
       setIsFeedbackTooltip(false);
     };
 
