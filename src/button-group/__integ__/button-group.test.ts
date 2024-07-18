@@ -86,6 +86,11 @@ test(
 
     await page.click(createWrapper().find('#last-clicked').toSelector());
     await expect(page.isExisting(buttonGroup.findTooltip().toSelector())).resolves.toBe(false);
+
+    await page.click(actionsMenu.toSelector());
+    await page.click(actionsMenu.findItemById('cut').toSelector());
+    await page.click(createWrapper().find('#last-clicked').toSelector());
+    await expect(page.isExisting(buttonGroup.findTooltip().toSelector())).resolves.toBe(false);
   })
 );
 
