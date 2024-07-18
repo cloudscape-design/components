@@ -7,14 +7,14 @@ import { createHashHistory } from 'history';
 
 import { applyDensity, applyMode, disableMotion } from '@cloudscape-design/global-styles';
 
-// import font-size reset and Ember font
-import '@cloudscape-design/global-styles/index.css';
 import AppContext, { AppContextProvider, parseQuery } from './app-context';
 import Header from './components/header';
 import IndexPage from './components/index-page';
 import PageView from './components/page-view';
 import StrictModeWrapper from './components/strict-mode-wrapper';
 
+// import font-size reset and Ember font
+import '@cloudscape-design/global-styles/index.css';
 // screenshot test overrides
 import styles from './styles.scss';
 
