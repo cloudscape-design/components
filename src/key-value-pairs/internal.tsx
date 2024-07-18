@@ -37,12 +37,25 @@ const InternalKeyValuePairGroup = ({ label, value }: { label?: React.ReactNode; 
 
 const InternalKeyValuePairs = React.forwardRef(
   (
-    { columns, items, className, ...rest }: KeyValuePairsProps & Required<Pick<KeyValuePairsProps, 'columns'>>,
+    {
+      columns,
+      items,
+      className,
+      ariaLabel,
+      ariaLabelledby,
+      ...rest
+    }: KeyValuePairsProps & Required<Pick<KeyValuePairsProps, 'columns'>>,
     ref: React.Ref<HTMLDivElement>
   ) => {
     return (
       <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
-        <div {...rest} className={clsx(styles['key-value-pairs'], className)} ref={ref}>
+        <div
+          {...rest}
+          className={clsx(styles['key-value-pairs'], className)}
+          aria-label={ariaLabel}
+          aria-labelledby={ariaLabelledby}
+          ref={ref}
+        >
           {/*
           minColumnWidth={150} is set to use FlexibleColumnLayout which has only 1 nested div wrapper for column items,
           otherwise GridColumnLayout will be used, which has 2 nested div, therefore it is not a11y compatible for dl -> dt/dd relationship
