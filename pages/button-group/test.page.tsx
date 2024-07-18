@@ -55,7 +55,6 @@ const removeButton: ButtonGroupProps.Item = {
   id: 'remove',
   iconName: 'remove',
   text: 'Remove',
-  popoverFeedback: 'Removed',
 };
 
 const moreActionsMenu: ButtonGroupProps.MenuDropdown = {
@@ -110,6 +109,10 @@ export default function ButtonGroupPage() {
     ref.current?.focus('copy');
   };
 
+  const onFocusOnMoreActionsButtonClick = () => {
+    ref.current?.focus('more-actions');
+  };
+
   const [items, setItems] = useState([feedbackGroup, copyButton, actionsGroup]);
 
   return (
@@ -131,6 +134,10 @@ export default function ButtonGroupPage() {
 
         <Button onClick={onFocusOnCopyButtonClick} data-testid="focus-on-copy">
           Focus on copy
+        </Button>
+
+        <Button onClick={onFocusOnMoreActionsButtonClick} data-testid="focus-on-more-actions">
+          Focus on more actions
         </Button>
 
         <div id="last-clicked"></div>

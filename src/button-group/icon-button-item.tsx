@@ -4,7 +4,7 @@ import React, { forwardRef } from 'react';
 import { ButtonGroupProps } from './interfaces.js';
 import { InternalButton } from '../button/internal.js';
 import { ButtonProps } from '../button/interfaces.js';
-import { ClickDetail } from '../internal/events/index.js';
+import { CancelableEventHandler, ClickDetail } from '../internal/events/index.js';
 import { isDevelopment } from '../internal/is-development.js';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import styles from './styles.css.js';
@@ -18,7 +18,7 @@ const IconButtonItem = forwardRef(
       onItemClick,
     }: {
       item: ButtonGroupProps.IconButton;
-      onItemClick?: (event: CustomEvent<ClickDetail>) => void;
+      onItemClick?: CancelableEventHandler<ClickDetail>;
     },
     ref: React.Ref<ButtonProps.Ref>
   ) => {

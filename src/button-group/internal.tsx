@@ -4,11 +4,7 @@ import React, { useImperativeHandle, useRef, forwardRef, useEffect, useState } f
 import { getBaseProps } from '../internal/base-component';
 import { ButtonGroupProps, InternalButtonGroupProps } from './interfaces';
 import { ButtonProps } from '../button/interfaces';
-import ItemElement from './item-element.js';
-import styles from './styles.css.js';
-import testUtilStyles from './test-classes/styles.css.js';
-import clsx from 'clsx';
-import { ButtonDropdownProps } from '../button-dropdown/interfaces';
+import { ClickDetail, fireCancelableEvent } from '../internal/events/index.js';
 import {
   SingleTabStopNavigationAPI,
   SingleTabStopNavigationProvider,
@@ -19,7 +15,13 @@ import { hasModifierKeys } from '../internal/events';
 import { circleIndex } from '../internal/utils/circle-index';
 import { getAllFocusables } from '../internal/components/focus-lock/utils';
 import { nodeBelongs } from '../internal/utils/node-belongs';
+import ItemElement from './item-element.js';
+import testUtilStyles from './test-classes/styles.css.js';
 import handleKey from '../internal/utils/handle-key';
+import Tooltip from '../internal/components/tooltip/index.js';
+import LiveRegion from '../internal/components/live-region/index.js';
+import clsx from 'clsx';
+import styles from './styles.css.js';
 
 const InternalButtonGroup = forwardRef(
   (
@@ -39,6 +41,10 @@ const InternalButtonGroup = forwardRef(
     const containerObjectRef = useRef<HTMLDivElement>(null);
     const containerRef = useMergeRefs(containerObjectRef, __internalRootRef);
     const itemsRef = useRef<Record<string, ButtonProps.Ref | null>>({});
+    const itemsDataRef = useRef<Record<string, ButtonGroupProps.Item>>({});
+    const itemWrappersRef = useRef<Record<string, HTMLDivElement | null>>({});
+    const [tooltipItemId, setTooltipItemId] = useState<string | null>(null);
+    const [isFeedbackTooltip, setIsFeedbackTooltip] = useState(false);
 
     useImperativeHandle(ref, () => ({
       focus: id => {
@@ -46,40 +52,9 @@ const InternalButtonGroup = forwardRef(
       },
     }));
 
-    const onSetButtonRef = (item: ButtonGroupProps.Item, element: ButtonProps.Ref | null) => {
-      const isItemGroup = (item: ButtonDropdownProps.ItemOrGroup): item is ButtonDropdownProps.ItemGroup => {
-        return 'items' in item;
-      };
-
-      const getAllIdsItemOrGroup = (item: ButtonDropdownProps.ItemOrGroup): string[] => {
-        if (isItemGroup(item)) {
-          const values = item.items.flatMap(getAllIdsItemOrGroup);
-          if (typeof item.id !== 'undefined') {
-            values.push(item.id);
-          }
-
-          return values;
-        } else {
-          return [item.id];
-        }
-      };
-
-      const getAllIds = (item: ButtonGroupProps.Item) => {
-        if (item.type === 'icon-button') {
-          return [item.id];
-        } else {
-          const values = getAllIdsItemOrGroup(item);
-          if (typeof item.id !== 'undefined') {
-            values.push(item.id);
-          }
-
-          return values;
-        }
-      };
-
-      getAllIds(item).forEach(id => {
-        itemsRef.current[id] = element;
-      });
+    const onSetItemRef = (item: ButtonGroupProps.Item, element: ButtonProps.Ref | null) => {
+      itemsDataRef.current[item.id] = item;
+      itemsRef.current[item.id] = element;
     };
 
     function getNextFocusTarget(): null | HTMLElement {
@@ -162,6 +137,68 @@ const InternalButtonGroup = forwardRef(
       return getAllFocusables(target).filter(el => isElementRegistered(el) && !isElementDisabled(el));
     }
 
+    useEffect(() => {
+      if (!tooltipItemId) {
+        return;
+      }
+
+      const close = () => {
+        setTooltipItemId(null);
+        setIsFeedbackTooltip(false);
+      };
+
+      const handlePointerDownEvent = (event: PointerEvent) => {
+        if (
+          event.target &&
+          (itemWrappersRef.current[tooltipItemId] as HTMLElement)?.contains(event.target as HTMLElement)
+        ) {
+          return;
+        }
+
+        close();
+      };
+
+      const handleKeyDownEvent = (event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+          close();
+        }
+      };
+
+      window.addEventListener('pointerdown', handlePointerDownEvent);
+      window.addEventListener('keydown', handleKeyDownEvent);
+
+      return () => {
+        window.removeEventListener('pointerdown', handlePointerDownEvent);
+        window.removeEventListener('keydown', handleKeyDownEvent);
+      };
+    }, [tooltipItemId]);
+
+    const onClickHandler = (itemId: string, event: CustomEvent<ButtonGroupProps.ItemClickDetails | ClickDetail>) => {
+      const tooltipItem = tooltipItemId ? itemsDataRef.current[itemId] : undefined;
+      const popoverFeedback = tooltipItem && 'popoverFeedback' in tooltipItem && tooltipItem.popoverFeedback;
+
+      if (popoverFeedback) {
+        setTooltipItemId(itemId);
+        setIsFeedbackTooltip(true);
+      } else {
+        setTooltipItemId(null);
+        setIsFeedbackTooltip(false);
+      }
+
+      fireCancelableEvent(onItemClick, { id: 'id' in event.detail ? event.detail.id : itemId }, event);
+    };
+
+    const onShowTooltip = (itemId: string, show: boolean) => {
+      if (isFeedbackTooltip && tooltipItemId && itemsRef.current[tooltipItemId]) {
+        return;
+      }
+
+      setTooltipItemId(show ? itemId : null);
+      setIsFeedbackTooltip(false);
+    };
+
+    const tooltipItem = tooltipItemId ? itemsDataRef.current[tooltipItemId] : undefined;
+
     return (
       <div
         {...baseProps}
@@ -180,27 +217,24 @@ const InternalButtonGroup = forwardRef(
           onUnregisterFocusable={onUnregisterFocusable}
         >
           {items.map((itemOrGroup, index) => {
-            const content =
-              itemOrGroup.type === 'group' ? (
-                <div key={index} role="group" aria-label={itemOrGroup.text} className={styles.group}>
-                  {itemOrGroup.items.map(item => (
-                    <ItemElement
-                      key={item.id}
-                      item={item}
-                      onItemClick={onItemClick}
-                      dropdownExpandToViewport={dropdownExpandToViewport}
-                      ref={element => onSetButtonRef(item, element)}
-                    />
-                  ))}
-                </div>
-              ) : (
+            const itemContent = (item: ButtonGroupProps.Item) => (
+              <div
+                key={item.id}
+                className={styles['item-wrapper']}
+                ref={element => (itemWrappersRef.current[item.id] = element)}
+                onPointerEnter={() => onShowTooltip(item.id, true)}
+                onPointerLeave={() => onShowTooltip(item.id, false)}
+                onFocus={() => onShowTooltip(item.id, true)}
+                onBlur={() => onShowTooltip(item.id, false)}
+              >
                 <ItemElement
-                  item={itemOrGroup}
-                  onItemClick={onItemClick}
+                  item={item}
                   dropdownExpandToViewport={dropdownExpandToViewport}
-                  ref={element => onSetButtonRef(itemOrGroup, element)}
+                  onItemClick={event => onClickHandler(item.id, event)}
+                  ref={element => onSetItemRef(item, element)}
                 />
-              );
+              </div>
+            );
 
             const isGroupBefore = items[index - 1]?.type === 'group';
             const isGroupNow = items[index]?.type === 'group';
@@ -209,11 +243,34 @@ const InternalButtonGroup = forwardRef(
             return (
               <React.Fragment key={itemOrGroup.type === 'group' ? index : itemOrGroup.id}>
                 {shouldAddDivider && <div className={styles.divider} />}
-                {content}
+                {itemOrGroup.type === 'group' ? (
+                  <div key={index} role="group" aria-label={itemOrGroup.text} className={styles.group}>
+                    {itemOrGroup.items.map(item => (
+                      <React.Fragment key={item.id}>{itemContent(item)}</React.Fragment>
+                    ))}
+                  </div>
+                ) : (
+                  <React.Fragment key={itemOrGroup.id}>{itemContent(itemOrGroup)}</React.Fragment>
+                )}
               </React.Fragment>
             );
           })}
         </SingleTabStopNavigationProvider>
+        {tooltipItemId &&
+          itemWrappersRef.current[tooltipItemId] &&
+          tooltipItem &&
+          !(tooltipItem.type === 'menu-dropdown') &&
+          (!isFeedbackTooltip || ('popoverFeedback' in tooltipItem && tooltipItem.popoverFeedback)) && (
+            <Tooltip
+              trackRef={{ current: itemWrappersRef.current[tooltipItemId] }}
+              trackKey={tooltipItemId}
+              value={
+                (isFeedbackTooltip && <LiveRegion visible={true}>{tooltipItem.popoverFeedback}</LiveRegion>) ||
+                tooltipItem.text
+              }
+              className={clsx(styles.tooltip, testUtilStyles['button-group-tooltip'])}
+            />
+          )}
       </div>
     );
   }
