@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { canUseDOM, Coordinates, subtract as getCoordinatesDelta } from '@dnd-kit/utilities';
 import { KeyboardCode } from '@dnd-kit/core';
+import { canUseDOM, Coordinates, subtract as getCoordinatesDelta } from '@dnd-kit/utilities';
 
 function isDocumentScrollingElement(element: Element | null) {
   if (!canUseDOM || !element) {

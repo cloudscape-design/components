@@ -1,17 +1,19 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useState, useEffect, useMemo, ReactNode } from 'react';
+import React, { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import clsx from 'clsx';
+
+import InternalBox from '../box/internal';
 import { ExpandableSectionProps } from '../expandable-section/interfaces';
 import InternalExpandableSection from '../expandable-section/internal';
 import InternalIcon from '../icon/internal';
-import InternalBox from '../box/internal';
-import { SideNavigationProps } from './interfaces';
-import styles from './styles.css.js';
-import { NonCancelableCustomEvent, isPlainLeftClick } from '../internal/events';
-import { hasActiveLink } from './util';
-import { checkSafeUrl } from '../internal/utils/check-safe-url';
+import { isPlainLeftClick, NonCancelableCustomEvent } from '../internal/events';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { checkSafeUrl } from '../internal/utils/check-safe-url';
+import { SideNavigationProps } from './interfaces';
+import { hasActiveLink } from './util';
+
+import styles from './styles.css.js';
 
 interface BaseItemComponentProps {
   activeHref?: string;

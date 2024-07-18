@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import Box from '~components/box';
 import Container from '~components/container';
 import Header from '~components/header';
-import Box from '~components/box';
-import ScreenshotArea from '../utils/screenshot-area';
 import PieChart from '~components/pie-chart';
 
+import ScreenshotArea from '../utils/screenshot-area';
 import { commonProps, overlappingData } from './common';
 
 export default function () {

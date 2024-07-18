@@ -2,25 +2,28 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
-import styles from './styles.css.js';
-import { ButtonDropdownProps, InternalButtonDropdownProps } from './interfaces';
+
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
+import InternalBox from '../box/internal';
+import { ButtonProps } from '../button/interfaces';
+import { InternalButton, InternalButtonProps } from '../button/internal';
+import { useFunnel } from '../internal/analytics/hooks/use-funnel.js';
 import { getBaseProps } from '../internal/base-component';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import Dropdown from '../internal/components/dropdown';
+import OptionsList from '../internal/components/options-list';
+import useForwardFocus from '../internal/hooks/forward-focus';
+import { useMobile } from '../internal/hooks/use-mobile';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
+import { isDevelopment } from '../internal/is-development';
+import { checkSafeUrl } from '../internal/utils/check-safe-url';
+import { ButtonDropdownProps, InternalButtonDropdownProps } from './interfaces';
 import ItemsList from './items-list';
 import { useButtonDropdown } from './utils/use-button-dropdown';
-import OptionsList from '../internal/components/options-list';
-import { InternalButton, InternalButtonProps } from '../button/internal';
-import { ButtonProps } from '../button/interfaces';
-import { useMobile } from '../internal/hooks/use-mobile';
-import useForwardFocus from '../internal/hooks/forward-focus';
-import InternalBox from '../box/internal';
-import { checkSafeUrl } from '../internal/utils/check-safe-url';
-import { isDevelopment } from '../internal/is-development';
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
-import { useFunnel } from '../internal/analytics/hooks/use-funnel.js';
 import { isLinkItem } from './utils/utils.js';
+
+import styles from './styles.css.js';
 
 const InternalButtonDropdown = React.forwardRef(
   (

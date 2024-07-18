@@ -2,13 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useEffect, useImperativeHandle, useRef } from 'react';
 
-import OptionsList from '../internal/components/options-list';
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
+import OptionsList from '../internal/components/options-list';
+import { useVirtual } from '../internal/hooks/use-virtual';
 import AutosuggestOption from './autosuggest-option';
 import { getOptionProps, ListProps } from './plain-list';
+
 import styles from './styles.css.js';
-import { useVirtual } from '../internal/hooks/use-virtual';
-import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
 const VirtualList = ({
   autosuggestItemsState,

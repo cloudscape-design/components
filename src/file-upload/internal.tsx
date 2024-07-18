@@ -2,28 +2,30 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { ForwardedRef, useRef, useState } from 'react';
-import { FileUploadProps } from './interfaces';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-
-import { FileOption } from './file-option';
-import { ButtonProps } from '../button/interfaces';
-import InternalSpaceBetween from '../space-between/internal';
-import styles from './styles.css.js';
-import { fireNonCancelableEvent } from '../internal/events';
-import { getBaseProps } from '../internal/base-component';
-import checkControlled from '../internal/hooks/check-controlled';
 import clsx from 'clsx';
+
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
+import InternalBox from '../box/internal';
+import { ButtonProps } from '../button/interfaces';
+import { useFormFieldContext } from '../contexts/form-field';
+import { ConstraintText, FormFieldError, FormFieldWarning } from '../form-field/internal';
+import { getBaseProps } from '../internal/base-component';
+import TokenList from '../internal/components/token-list';
+import { fireNonCancelableEvent } from '../internal/events';
+import checkControlled from '../internal/hooks/check-controlled';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { joinStrings } from '../internal/utils/strings';
+import InternalSpaceBetween from '../space-between/internal';
+import { Token } from '../token-group/token';
 import { Dropzone, useDropzoneVisible } from './dropzone';
 import FileInput from './file-input';
-import TokenList from '../internal/components/token-list';
-import { Token } from '../token-group/token';
-import { ConstraintText, FormFieldError, FormFieldWarning } from '../form-field/internal';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { joinStrings } from '../internal/utils/strings';
-import { useFormFieldContext } from '../contexts/form-field';
-import InternalBox from '../box/internal';
+import { FileOption } from './file-option';
+import { FileUploadProps } from './interfaces';
+
+import styles from './styles.css.js';
 
 type InternalFileUploadProps = FileUploadProps & InternalBaseComponentProps;
 

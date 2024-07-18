@@ -1,12 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useRef } from 'react';
-import Button from '~components/button';
-import Table, { TableProps } from '~components/table';
-import SpaceBetween from '~components/space-between';
-import ScreenshotArea from '../utils/screenshot-area';
-import AppContext, { AppContextType } from '../app/app-context';
+
 import { Checkbox } from '~components';
+import Button from '~components/button';
+import SpaceBetween from '~components/space-between';
+import Table, { TableProps } from '~components/table';
+
+import AppContext, { AppContextType } from '../app/app-context';
+import ScreenshotArea from '../utils/screenshot-area';
 
 type PageContext = React.Context<
   AppContextType<{

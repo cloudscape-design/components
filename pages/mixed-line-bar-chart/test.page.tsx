@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import Grid from '~components/grid';
 import Box from '~components/box';
 import Button from '~components/button';
+import Grid from '~components/grid';
 import MixedLineBarChart from '~components/mixed-line-bar-chart';
 import { colorChartsThresholdInfo } from '~design-tokens';
-import ScreenshotArea from '../utils/screenshot-area';
 
+import ScreenshotArea from '../utils/screenshot-area';
 import { barChartInstructions, commonProps, data3, data4 } from './common';
 
 export default function () {

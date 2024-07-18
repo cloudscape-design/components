@@ -1,36 +1,39 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { Ref, useEffect, useRef, useState } from 'react';
-import styles from './styles.css.js';
-import { DateRangePickerProps } from './interfaces';
-import { normalizeLocale } from '../internal/utils/locale';
-import useForwardFocus from '../internal/hooks/forward-focus';
-import { KeyCode } from '../internal/keycode';
 import clsx from 'clsx';
-import { getBaseProps } from '../internal/base-component';
-import checkControlled from '../internal/hooks/check-controlled';
-import InternalBox from '../box/internal';
-import { DateRangePickerDropdown } from './dropdown';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import Dropdown from '../internal/components/dropdown';
-import { useFocusTracker } from '../internal/hooks/use-focus-tracker';
-import { useMobile } from '../internal/hooks/use-mobile';
-import ButtonTrigger from '../internal/components/button-trigger';
-import { useFormFieldContext } from '../internal/context/form-field-context';
-import InternalIcon from '../icon/internal';
-import { normalizeTimeOffset, shiftTimeOffset } from './time-offset';
-import useBaseComponent from '../internal/hooks/use-base-component';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { fireNonCancelableEvent } from '../internal/events';
-import { isDevelopment } from '../internal/is-development.js';
+
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
+import InternalBox from '../box/internal';
+import { useInternalI18n } from '../i18n/context';
+import InternalIcon from '../icon/internal';
+import { getBaseProps } from '../internal/base-component';
+import ButtonTrigger from '../internal/components/button-trigger';
+import Dropdown from '../internal/components/dropdown';
+import { useFormFieldContext } from '../internal/context/form-field-context';
+import ResetContextsForModal from '../internal/context/reset-contexts-for-modal.js';
+import { fireNonCancelableEvent } from '../internal/events';
+import checkControlled from '../internal/hooks/check-controlled';
+import useForwardFocus from '../internal/hooks/forward-focus';
+import useBaseComponent from '../internal/hooks/use-base-component';
+import { useFocusTracker } from '../internal/hooks/use-focus-tracker';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { useMobile } from '../internal/hooks/use-mobile';
 import { usePrevious } from '../internal/hooks/use-previous';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { joinStrings } from '../internal/utils/strings/join-strings';
+import { isDevelopment } from '../internal/is-development.js';
+import { KeyCode } from '../internal/keycode';
+import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { formatDateRange, isIsoDateOnly } from '../internal/utils/date-time';
-import { useInternalI18n } from '../i18n/context';
+import { normalizeLocale } from '../internal/utils/locale';
+import { joinStrings } from '../internal/utils/strings/join-strings';
+import { DateRangePickerDropdown } from './dropdown';
+import { DateRangePickerProps } from './interfaces';
+import { normalizeTimeOffset, shiftTimeOffset } from './time-offset';
 import { formatValue } from './utils';
-import ResetContextsForModal from '../internal/context/reset-contexts-for-modal.js';
+
+import styles from './styles.css.js';
 
 export { DateRangePickerProps };
 

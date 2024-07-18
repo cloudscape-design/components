@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
+
+import Button from '~components/button';
 import Dropdown from '~components/internal/components/dropdown';
 import Modal from '~components/modal';
-import Button from '~components/button';
 
 export function SampleDropdown({ id, children }: { id: string; children: React.ReactNode }) {
   const [isOpened, setOpened] = useState(false);

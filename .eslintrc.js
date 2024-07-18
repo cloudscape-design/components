@@ -196,7 +196,7 @@ module.exports = {
       files: ['src/**', 'pages/**'],
       rules: {
         'simple-import-sort/imports': [
-          'error',
+          'warn',
           {
             groups: [
               // External packages come first.

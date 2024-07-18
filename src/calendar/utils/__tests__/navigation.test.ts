@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { moveNextDay, movePrevDay, moveNextWeek, movePrevWeek, getBaseDay } from '../navigation';
+import { getBaseDay, moveNextDay, moveNextWeek, movePrevDay, movePrevWeek } from '../navigation';
 
 jest.mock('date-fns', () => ({ ...jest.requireActual('date-fns'), startOfMonth: () => new Date('2022-01-01') }));
 

@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
+import { IconProps } from '../icon/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
-import { IconProps } from '../icon/interfaces';
 
 export interface TokenGroupProps extends BaseComponentProps {
   /**

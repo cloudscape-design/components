@@ -2,17 +2,18 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { ChangeEvent, ForwardedRef, useEffect, useRef, useState } from 'react';
+import clsx from 'clsx';
 
 import InternalButton from '../../button/internal';
-import styles from './styles.css.js';
 import { useFormFieldContext } from '../../contexts/form-field';
-import { useUniqueId } from '../../internal/hooks/use-unique-id';
-import { FormFieldValidationControlProps } from '../../internal/context/form-field-context';
-import { joinStrings } from '../../internal/utils/strings';
 import ScreenreaderOnly from '../../internal/components/screenreader-only';
-import { FileUploadProps } from '../interfaces';
+import { FormFieldValidationControlProps } from '../../internal/context/form-field-context';
 import useForwardFocus from '../../internal/hooks/forward-focus';
-import clsx from 'clsx';
+import { useUniqueId } from '../../internal/hooks/use-unique-id';
+import { joinStrings } from '../../internal/utils/strings';
+import { FileUploadProps } from '../interfaces';
+
+import styles from './styles.css.js';
 
 interface FileInputProps extends FormFieldValidationControlProps {
   accept?: string;

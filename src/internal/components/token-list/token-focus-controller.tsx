@@ -2,7 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { useEffect, useRef } from 'react';
+
 import { getFirstFocusable } from '../focus-lock/utils.js';
+
 import styles from './styles.css.js';
 
 const tokenSelector = `.${styles['list-item']}`;

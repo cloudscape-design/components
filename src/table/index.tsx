@@ -1,11 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { TableForwardRefType, TableProps } from './interfaces';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import InternalTable, { InternalTableAsSubstep } from './internal';
-import useBaseComponent from '../internal/hooks/use-base-component';
+
 import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
+import useBaseComponent from '../internal/hooks/use-base-component';
+import { applyDisplayName } from '../internal/utils/apply-display-name';
+import { TableForwardRefType, TableProps } from './interfaces';
+import InternalTable, { InternalTableAsSubstep } from './internal';
 
 export { TableProps };
 const Table = React.forwardRef(

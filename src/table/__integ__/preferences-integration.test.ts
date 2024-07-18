@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
-import createWrapper from '../../../lib/components/test-utils/selectors';
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
+import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
+
 import headerCellStyles from '../../../lib/components/table/header-cell/styles.selectors.js';
+import createWrapper from '../../../lib/components/test-utils/selectors';
 
 const wrapper = createWrapper().findTable();
 const preferences = wrapper.findCollectionPreferences();

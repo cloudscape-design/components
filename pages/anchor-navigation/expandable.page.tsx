@@ -1,12 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
+import { ExpandableSection } from '~components';
 import AnchorNavigation from '~components/anchor-navigation';
-import { TextSample, navigateToItem } from './utils';
 import SpaceBetween from '~components/space-between';
+
 import ScreenshotArea from '../utils/screenshot-area';
 import styles from './styles.scss';
-import { ExpandableSection } from '~components';
+import { navigateToItem, TextSample } from './utils';
 
 const TextContent = () => {
   return (

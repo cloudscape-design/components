@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { createSingletonState } from '@cloudscape-design/component-toolkit/internal';
+
 import { getMatchingBreakpoint, mobileBreakpoint } from '../../breakpoints';
 
 function getIsMobile() {

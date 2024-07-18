@@ -2,10 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import { act, fireEvent, render, screen } from '@testing-library/react';
+
 import Flashbar, { FlashbarProps } from '../../../lib/components/flashbar';
 import awsuiPlugins from '../../../lib/components/internal/plugins';
-import { ActionConfig } from '../../../lib/components/internal/plugins/controllers/action-buttons';
 import { awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
+import { ActionConfig } from '../../../lib/components/internal/plugins/controllers/action-buttons';
 import createWrapper, { ElementWrapper } from '../../../lib/components/test-utils/dom';
 
 const defaultAction: ActionConfig = {

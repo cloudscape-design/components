@@ -1,14 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import React, { memo, useRef } from 'react';
 import clsx from 'clsx';
-import React, { useRef, memo } from 'react';
 
 import InternalBox from '../../../box/internal';
-import { KeyCode } from '../../keycode';
-import SeriesMarker, { ChartSeriesMarkerType } from '../chart-series-marker';
-import styles from './styles.css.js';
 import { useInternalI18n } from '../../../i18n/context';
+import { KeyCode } from '../../keycode';
 import handleKey from '../../utils/handle-key';
+import SeriesMarker, { ChartSeriesMarkerType } from '../chart-series-marker';
+
+import styles from './styles.css.js';
 
 export interface ChartLegendItem<T> {
   label: string;

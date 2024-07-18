@@ -2,11 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
-
 import { MixedLineBarChartProps } from './interfaces';
 import InternalMixedLineBarChart from './internal';
-import useBaseComponent from '../internal/hooks/use-base-component';
 
 export { MixedLineBarChartProps };
 

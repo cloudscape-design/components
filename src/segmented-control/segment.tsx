@@ -2,12 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
-import { SegmentedControlProps } from './interfaces';
+
 import InternalIcon from '../icon/internal';
-import styles from './styles.css.js';
-import useHiddenDescription from '../internal/hooks/use-hidden-description';
 import Tooltip from '../internal/components/tooltip';
+import useHiddenDescription from '../internal/hooks/use-hidden-description';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { SegmentedControlProps } from './interfaces';
+
+import styles from './styles.css.js';
 
 export interface SegmentProps extends SegmentedControlProps.Option {
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;

@@ -2,12 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
-import { describeWithAppLayoutFeatureFlagEnabled } from '../../internal/widgets/__tests__/utils';
+
+import { SplitPanelContextProvider } from '../../../lib/components/internal/context/split-panel-context';
 import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
-import createWrapper from '../../../lib/components/test-utils/dom';
 import { createWidgetizedSplitPanel } from '../../../lib/components/split-panel/implementation';
 import { SplitPanelProps } from '../../../lib/components/split-panel/interfaces';
-import { SplitPanelContextProvider } from '../../../lib/components/internal/context/split-panel-context';
+import createWrapper from '../../../lib/components/test-utils/dom';
+import { describeWithAppLayoutFeatureFlagEnabled } from '../../internal/widgets/__tests__/utils';
 import { defaultSplitPanelContextProps } from './helpers';
 
 const LoaderSkeleton = React.forwardRef<HTMLElement, SplitPanelProps>(() => {

@@ -1,9 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { act } from 'react-dom/test-utils';
+
 import { ComponentWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
-import ButtonWrapper from '../button';
+
 import styles from '../../../code-editor/styles.selectors.js';
+import ButtonWrapper from '../button';
 
 export default class CodeEditorWrapper extends ComponentWrapper {
   static rootSelector: string = styles['code-editor'];

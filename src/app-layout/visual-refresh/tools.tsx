@@ -2,14 +2,16 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
+
 import { InternalButton } from '../../button/internal';
-import { useAppLayoutInternals } from './context';
-import TriggerButton from './trigger-button';
-import styles from './styles.css.js';
-import testutilStyles from '../test-classes/styles.css.js';
-import splitPanelTestUtilStyles from '../../split-panel/test-classes/styles.css.js';
 import { Transition } from '../../internal/components/transition';
 import customCssProps from '../../internal/generated/custom-css-properties';
+import { useAppLayoutInternals } from './context';
+import TriggerButton from './trigger-button';
+
+import splitPanelTestUtilStyles from '../../split-panel/test-classes/styles.css.js';
+import testutilStyles from '../test-classes/styles.css.js';
+import styles from './styles.css.js';
 
 interface ToolsProps {
   children: React.ReactNode;

@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { CollectionPreferencesProps } from '../../../lib/components/collection-preferences';
 import { CollectionPreferencesWrapper, RadioGroupWrapper } from '../../../lib/components/test-utils/dom';
+import { pageSizePreference, renderCollectionPreferences } from './shared';
+
 import styles from '../../../lib/components/collection-preferences/styles.css.js';
-import { renderCollectionPreferences, pageSizePreference } from './shared';
 
 function renderwithPageSizeSelection(props: Partial<CollectionPreferencesProps>): CollectionPreferencesWrapper {
   return renderCollectionPreferences({ pageSizePreference, ...props });

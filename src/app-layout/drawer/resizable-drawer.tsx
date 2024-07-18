@@ -1,19 +1,19 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import React, { useRef } from 'react';
-
-import { getLimitedValue } from '../../split-panel/utils/size-utils';
-import { usePointerEvents } from '../utils/use-pointer-events';
-import { useKeyboardEvents } from '../utils/use-keyboard-events';
-import { SizeControlProps } from '../utils/interfaces';
-import { Drawer } from './index';
-import testutilStyles from '../test-classes/styles.css.js';
+import clsx from 'clsx';
 
 import PanelResizeHandle from '../../internal/components/panel-resize-handle';
-import styles from './styles.css.js';
-import { ResizableDrawerProps } from './interfaces';
+import { getLimitedValue } from '../../split-panel/utils/size-utils';
+import { SizeControlProps } from '../utils/interfaces';
 import { TOOLS_DRAWER_ID } from '../utils/use-drawers';
+import { useKeyboardEvents } from '../utils/use-keyboard-events';
+import { usePointerEvents } from '../utils/use-pointer-events';
+import { Drawer } from './index';
+import { ResizableDrawerProps } from './interfaces';
+
+import testutilStyles from '../test-classes/styles.css.js';
+import styles from './styles.css.js';
 
 export const ResizableDrawer = ({
   onResize,

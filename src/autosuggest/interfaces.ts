@@ -1,16 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
+import { BaseInputProps, InputAutoCorrect, InputClearLabel, InputKeyEvents, InputProps } from '../input/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
-import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
-import { OptionDefinition, OptionGroup } from '../internal/components/option/interfaces';
 import {
   BaseDropdownHostProps,
-  OptionsLoadItemsDetail,
   OptionsFilteringType,
+  OptionsLoadItemsDetail,
 } from '../internal/components/dropdown/interfaces';
 import { DropdownStatusProps } from '../internal/components/dropdown-status';
-import { BaseInputProps, InputAutoCorrect, InputClearLabel, InputKeyEvents, InputProps } from '../input/interfaces';
+import { OptionDefinition, OptionGroup } from '../internal/components/option/interfaces';
+import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
 import { NonCancelableEventHandler } from '../internal/events';
 
 export interface AutosuggestProps

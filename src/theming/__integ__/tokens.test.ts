@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
+
 import { preset } from '../../../lib/components/internal/generated/theming/index.cjs';
 
 class ColorTokensMosaikPage extends BasePageObject {

@@ -2,15 +2,18 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
-import styles from './styles.css.js';
-import testutilStyles from '../../test-classes/styles.css.js';
-import { DrawerTriggers } from './drawer-triggers';
-import TriggerButton from './trigger-button';
-import { ToolbarSlot } from '../skeleton/slot-wrappers';
+
+import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
+
+import { InternalBreadcrumbGroup } from '../../../breadcrumb-group/internal';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { AppLayoutInternals } from '../interfaces';
-import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
-import { InternalBreadcrumbGroup } from '../../../breadcrumb-group/internal';
+import { ToolbarSlot } from '../skeleton/slot-wrappers';
+import { DrawerTriggers } from './drawer-triggers';
+import TriggerButton from './trigger-button';
+
+import testutilStyles from '../../test-classes/styles.css.js';
+import styles from './styles.css.js';
 
 interface AppLayoutToolbarImplementationProps {
   appLayoutInternals: AppLayoutInternals;

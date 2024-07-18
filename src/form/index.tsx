@@ -1,19 +1,19 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect } from 'react';
+
+import { FunnelMetrics } from '../internal/analytics';
+import { AnalyticsFunnel, AnalyticsFunnelStep } from '../internal/analytics/components/analytics-funnel';
+import { useFunnel, useFunnelNameSelector, useFunnelStep } from '../internal/analytics/hooks/use-funnel';
+import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
+import { ButtonContext, ButtonContextProps } from '../internal/context/button-context';
+import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { FormProps } from './interfaces';
 import InternalForm from './internal';
-import useBaseComponent from '../internal/hooks/use-base-component';
 
-import { AnalyticsFunnel, AnalyticsFunnelStep } from '../internal/analytics/components/analytics-funnel';
-import { ButtonContext, ButtonContextProps } from '../internal/context/button-context';
-import { useFunnel, useFunnelNameSelector, useFunnelStep } from '../internal/analytics/hooks/use-funnel';
-
-import formStyles from './styles.css.js';
 import headerStyles from '../header/styles.css.js';
-import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
-import { FunnelMetrics } from '../internal/analytics';
+import formStyles from './styles.css.js';
 
 export { FormProps };
 

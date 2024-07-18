@@ -1,13 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { InternalContainerAsSubstep } from './internal';
-import { ContainerProps } from './interfaces';
-import { getExternalProps } from '../internal/utils/external-props';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import useBaseComponent from '../internal/hooks/use-base-component';
+
 import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
+import useBaseComponent from '../internal/hooks/use-base-component';
+import { applyDisplayName } from '../internal/utils/apply-display-name';
+import { getExternalProps } from '../internal/utils/external-props';
+import { ContainerProps } from './interfaces';
+import { InternalContainerAsSubstep } from './internal';
 
 export { ContainerProps };
 

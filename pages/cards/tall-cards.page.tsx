@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import Cards, { CardsProps } from '~components/cards';
+
 import { Button, Header } from '~components';
+import Cards, { CardsProps } from '~components/cards';
 
 interface Item {
   id: number;

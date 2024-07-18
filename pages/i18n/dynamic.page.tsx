@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useState } from 'react';
+
 import { TagEditor } from '~components';
 import { I18nProvider, I18nProviderProps, importMessages } from '~components/i18n';
 

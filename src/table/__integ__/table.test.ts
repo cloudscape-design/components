@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
-import createWrapper from '../../../lib/components/test-utils/selectors';
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
+import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
+
 import styles from '../../../lib/components/table/styles.selectors.js';
+import createWrapper from '../../../lib/components/test-utils/selectors';
 
 test(
   'displays no match state when filter is applied and allows to reset the filter',

@@ -1,10 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
+import Box from '~components/box';
 import Link from '~components/link';
 import SpaceBetween from '~components/space-between';
+
 import ScreenshotArea from '../utils/screenshot-area';
-import Box from '~components/box';
 
 export default function () {
   return (

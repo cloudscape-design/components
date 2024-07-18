@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useState } from 'react';
-import Button from '~components/button';
+
 import Box from '~components/box';
+import Button from '~components/button';
 import Modal from '~components/modal';
 
 export default function ButtonsPerformanceMarkPage() {

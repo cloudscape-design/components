@@ -3,9 +3,9 @@
 
 import fs from 'fs';
 import glob from 'glob';
-import path from 'path';
-import { transformSync, types, PluginObj, NodePath } from '@babel/core';
 import { flatten, zip } from 'lodash';
+import path from 'path';
+import { NodePath, PluginObj, transformSync, types } from '@babel/core';
 
 const defaultPlugins = [require('@babel/plugin-syntax-typescript')] as const;
 

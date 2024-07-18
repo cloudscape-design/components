@@ -1,9 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import ScreenshotArea from '../utils/screenshot-area';
+
 import Popover from '~components/popover';
 import Table from '~components/table';
+
+import ScreenshotArea from '../utils/screenshot-area';
 
 export default function () {
   const [renderWithPortal, setRenderWithPortal] = React.useState(false);

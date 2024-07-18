@@ -1,16 +1,18 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef, useState } from 'react';
+
 import Button from '../../button/internal';
 import FormField from '../../form-field/internal';
-import SpaceBetween from '../../space-between/internal';
-import { useClickAway } from './click-away';
-import { TableProps } from '../interfaces';
-import styles from './styles.css.js';
-import { Optional } from '../../internal/types';
+import { useInternalI18n } from '../../i18n/context';
 import FocusLock, { FocusLockRef } from '../../internal/components/focus-lock';
 import LiveRegion from '../../internal/components/live-region';
-import { useInternalI18n } from '../../i18n/context';
+import { Optional } from '../../internal/types';
+import SpaceBetween from '../../space-between/internal';
+import { TableProps } from '../interfaces';
+import { useClickAway } from './click-away';
+
+import styles from './styles.css.js';
 
 // A function that does nothing
 const noop = () => undefined;

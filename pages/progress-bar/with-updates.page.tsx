@@ -1,11 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState, useRef } from 'react';
+import React, { useRef, useState } from 'react';
+
+import Box from '~components/box';
+import Button from '~components/button';
+import Header from '~components/header';
 import ProgressBar from '~components/progress-bar';
 import SpaceBetween from '~components/space-between';
-import Header from '~components/header';
-import Button from '~components/button';
-import Box from '~components/box';
 
 export default function ProgressBarWithUpdates() {
   const [progressStep1, setProgressStep1] = useState(0);

@@ -3,8 +3,9 @@
 import * as React from 'react';
 import clone from 'lodash/clone';
 import { render } from '@testing-library/react';
-import createWrapper, { CardsWrapper } from '../../../lib/components/test-utils/dom';
+
 import Cards, { CardsProps } from '../../../lib/components/cards';
+import createWrapper, { CardsWrapper } from '../../../lib/components/test-utils/dom';
 
 interface Item {
   id: number;

@@ -1,37 +1,38 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
-import styles from './styles.css.js';
 
-import Dropdown from '../internal/components/dropdown';
-import { useDropdownStatus } from '../internal/components/dropdown-status';
-import Filter from './parts/filter';
-import Trigger from './parts/trigger';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
+import { useInternalI18n } from '../i18n/context.js';
 import { getBaseProps } from '../internal/base-component';
-import { SelectProps } from './interfaces';
-import { prepareOptions } from '../internal/components/option/utils/prepare-options';
-import { useSelect } from './utils/use-select';
-import { checkOptionValueField } from './utils/check-option-value-field';
-import { useNativeSearch } from './utils/use-native-search';
-import { fireNonCancelableEvent } from '../internal/events';
-import { useLoadItems } from './utils/use-load-items';
-import { useAnnouncement } from './utils/use-announcement';
-import { useFormFieldContext } from '../internal/context/form-field-context';
-import PlainList, { SelectListProps } from './parts/plain-list';
-import VirtualList from './parts/virtual-list';
+import Dropdown from '../internal/components/dropdown';
 import DropdownFooter from '../internal/components/dropdown-footer';
+import { useDropdownStatus } from '../internal/components/dropdown-status';
+import { OptionGroup } from '../internal/components/option/interfaces.js';
+import { prepareOptions } from '../internal/components/option/utils/prepare-options';
+import ScreenreaderOnly from '../internal/components/screenreader-only/index.js';
+import { useFormFieldContext } from '../internal/context/form-field-context';
+import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { OptionGroup } from '../internal/components/option/interfaces.js';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { SomeRequired } from '../internal/types';
-import ScreenreaderOnly from '../internal/components/screenreader-only/index.js';
 import { joinStrings } from '../internal/utils/strings/join-strings.js';
-import { useInternalI18n } from '../i18n/context.js';
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { SelectProps } from './interfaces';
+import Filter from './parts/filter';
+import PlainList, { SelectListProps } from './parts/plain-list';
+import Trigger from './parts/trigger';
+import VirtualList from './parts/virtual-list';
+import { checkOptionValueField } from './utils/check-option-value-field';
+import { useAnnouncement } from './utils/use-announcement';
+import { useLoadItems } from './utils/use-load-items';
+import { useNativeSearch } from './utils/use-native-search';
+import { useSelect } from './utils/use-select';
+
+import styles from './styles.css.js';
 
 export interface InternalSelectProps extends SomeRequired<SelectProps, 'options'>, InternalBaseComponentProps {
   __inFilteringToken?: boolean;

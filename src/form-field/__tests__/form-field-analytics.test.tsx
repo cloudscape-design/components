@@ -3,19 +3,16 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
 
-import FormField from '../../../lib/components/form-field';
 import ExpandableSection from '../../../lib/components/expandable-section';
-
+import FormField from '../../../lib/components/form-field';
 import { FunnelMetrics } from '../../../lib/components/internal/analytics';
-import { DATA_ATTR_FIELD_LABEL, DATA_ATTR_FIELD_ERROR } from '../../../lib/components/internal/analytics/selectors';
-import { useFunnel } from '../../../lib/components/internal/analytics/hooks/use-funnel';
-
 import {
   AnalyticsFunnel,
   AnalyticsFunnelStep,
   AnalyticsFunnelSubStep,
 } from '../../../lib/components/internal/analytics/components/analytics-funnel';
-
+import { useFunnel } from '../../../lib/components/internal/analytics/hooks/use-funnel';
+import { DATA_ATTR_FIELD_ERROR, DATA_ATTR_FIELD_LABEL } from '../../../lib/components/internal/analytics/selectors';
 import { mockFunnelMetrics } from '../../internal/analytics/__tests__/mocks';
 
 describe('FormField Analytics', () => {

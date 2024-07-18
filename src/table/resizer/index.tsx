@@ -1,16 +1,19 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import React, { useEffect, useRef, useState } from 'react';
-import styles from './styles.css.js';
-import { KeyCode } from '../../internal/keycode';
-import { DEFAULT_COLUMN_WIDTH } from '../use-column-widths';
+import clsx from 'clsx';
+
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
-import { useUniqueId } from '../../internal/hooks/use-unique-id';
-import { getHeaderWidth, getResizerElements } from './resizer-lookup';
-import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context.js';
 import { getIsRtl, getLogicalBoundingClientRect, getLogicalPageX } from '@cloudscape-design/component-toolkit/internal';
+
+import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context.js';
+import { useUniqueId } from '../../internal/hooks/use-unique-id';
+import { KeyCode } from '../../internal/keycode';
 import handleKey, { isEventLike } from '../../internal/utils/handle-key';
+import { DEFAULT_COLUMN_WIDTH } from '../use-column-widths';
+import { getHeaderWidth, getResizerElements } from './resizer-lookup';
+
+import styles from './styles.css.js';
 
 interface ResizerProps {
   onWidthUpdate: (newWidth: number) => void;

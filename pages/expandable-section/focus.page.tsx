@@ -1,10 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext } from 'react';
-import AppContext, { AppContextType } from '../app/app-context';
 
 import ExpandableSection, { ExpandableSectionProps } from '~components/expandable-section';
 
+import AppContext, { AppContextType } from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
 import { headerActions, headerInfo } from './common';
 

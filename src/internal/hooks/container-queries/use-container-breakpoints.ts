@@ -1,8 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { Breakpoint, getMatchingBreakpoint } from '../../breakpoints';
+
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+
+import { Breakpoint, getMatchingBreakpoint } from '../../breakpoints';
 
 /**
  * Re-renders the component when the breakpoint for the component changes. Scopes the re-renders to the specific

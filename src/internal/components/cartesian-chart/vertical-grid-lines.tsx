@@ -3,6 +3,7 @@
 import React, { memo } from 'react';
 
 import { NumericChartScale } from './scales';
+
 import styles from './styles.css.js';
 
 export default memo(VerticalGridLines) as typeof VerticalGridLines;

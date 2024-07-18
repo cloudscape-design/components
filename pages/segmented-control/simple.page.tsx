@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import SegmentedControl from '~components/segmented-control';
+
 import Input from '~components/input';
+import SegmentedControl from '~components/segmented-control';
 
 export default function SegmentedControlPage() {
   const [selectedId, setSelectedId] = useState<string | null>('seg-4');

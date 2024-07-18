@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { lazy, Suspense } from 'react';
-import ErrorBoundary from './error-boundary';
+
 import pagesContext from '../pages-context';
+import ErrorBoundary from './error-boundary';
 
 const pagesComponents: Record<string, ReturnType<typeof lazy>> = {};
 

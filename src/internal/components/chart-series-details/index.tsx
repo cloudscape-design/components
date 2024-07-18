@@ -3,12 +3,13 @@
 import React, { forwardRef, memo, ReactNode, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
-import { BaseComponentProps, getBaseProps } from '../../base-component';
-import ChartSeriesMarker, { ChartSeriesMarkerType } from '../chart-series-marker';
-import styles from './styles.css.js';
 import InternalExpandableSection from '../../../expandable-section/internal';
-import getSeriesDetailsText from './series-details-text';
+import { BaseComponentProps, getBaseProps } from '../../base-component';
 import { useMergeRefs } from '../../hooks/use-merge-refs';
+import ChartSeriesMarker, { ChartSeriesMarkerType } from '../chart-series-marker';
+import getSeriesDetailsText from './series-details-text';
+
+import styles from './styles.css.js';
 
 interface ChartDetailPair {
   key: ReactNode;

@@ -1,14 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import React, { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
+
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+
 import OptionsList from '../../internal/components/options-list';
+import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
+import { useVirtual } from '../../internal/hooks/use-virtual';
 import { renderOptions } from '../utils/render-options';
 import { SelectListProps } from './plain-list';
 
 import styles from './styles.css.js';
-import { useVirtual } from '../../internal/hooks/use-virtual';
-import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
 const VirtualList = (props: SelectListProps, ref: React.Ref<SelectListProps.SelectListRef>) => {
   return props.menuProps.open ? <VirtualListOpen {...props} ref={ref} /> : <VirtualListClosed {...props} ref={ref} />;

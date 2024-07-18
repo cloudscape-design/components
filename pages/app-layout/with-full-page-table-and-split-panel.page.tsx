@@ -1,17 +1,19 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useState } from 'react';
-import AppLayout, { AppLayoutProps } from '~components/app-layout';
-import SplitPanel from '~components/split-panel';
-import Header from '~components/header';
-import labels from './utils/labels';
-import Table from '~components/table';
-import { splitPaneli18nStrings } from './utils/strings';
-import ScreenshotArea from '../utils/screenshot-area';
-import Popover from '~components/popover';
-import AppContext, { AppContextType } from '../app/app-context';
-import Button from '~components/button';
+
 import { Drawer } from '~components';
+import AppLayout, { AppLayoutProps } from '~components/app-layout';
+import Button from '~components/button';
+import Header from '~components/header';
+import Popover from '~components/popover';
+import SplitPanel from '~components/split-panel';
+import Table from '~components/table';
+
+import AppContext, { AppContextType } from '../app/app-context';
+import ScreenshotArea from '../utils/screenshot-area';
+import labels from './utils/labels';
+import { splitPaneli18nStrings } from './utils/strings';
 
 type DemoPageContext = React.Context<
   AppContextType<{

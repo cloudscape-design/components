@@ -2,12 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
+
+import '../../__a11y__/to-validate-a11y';
 import Alert, { AlertProps } from '../../../lib/components/alert';
 import Button from '../../../lib/components/button';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import styles from '../../../lib/components/alert/styles.css.js';
 import { DATA_ATTR_ANALYTICS_ALERT } from '../../../lib/components/internal/analytics/selectors';
-import '../../__a11y__/to-validate-a11y';
+import createWrapper from '../../../lib/components/test-utils/dom';
+
+import styles from '../../../lib/components/alert/styles.css.js';
 
 function renderAlert(props: AlertProps = {}) {
   const { container } = render(<Alert {...props} />);

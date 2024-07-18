@@ -2,12 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { KeyboardEventHandler, useRef, useState } from 'react';
 
-import Arrow from '../popover/arrow';
-import PopoverContainer from '../popover/container';
-import PopoverBody from '../popover/body';
+import { useReducedMotion } from '@cloudscape-design/component-toolkit/internal';
+
 import Portal from '../internal/components/portal';
 import { usePortalModeClasses } from '../internal/hooks/use-portal-mode-classes';
-import { useReducedMotion } from '@cloudscape-design/component-toolkit/internal';
+import Arrow from '../popover/arrow';
+import PopoverBody from '../popover/body';
+import PopoverContainer from '../popover/container';
 
 export interface TooltipProps {
   children?: React.ReactNode;

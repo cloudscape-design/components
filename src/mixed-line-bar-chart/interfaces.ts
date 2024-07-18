@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { ReactNode } from 'react';
+
 import { CartesianChartProps } from '../internal/components/cartesian-chart/interfaces';
 
 export type ChartDataTypes = number | string | Date;

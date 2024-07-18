@@ -2,14 +2,16 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
-import { getBaseProps } from '../internal/base-component';
+
 import InternalAlert from '../alert/internal';
 import InternalBox from '../box/internal';
-import styles from './styles.css.js';
-import { FormProps } from './interfaces';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import LiveRegion from '../internal/components/live-region';
 import { useInternalI18n } from '../i18n/context';
+import { getBaseProps } from '../internal/base-component';
+import LiveRegion from '../internal/components/live-region';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { FormProps } from './interfaces';
+
+import styles from './styles.css.js';
 
 type InternalFormProps = FormProps & InternalBaseComponentProps;
 

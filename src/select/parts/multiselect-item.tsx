@@ -2,16 +2,18 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef } from 'react';
 import clsx from 'clsx';
-import styles from './styles.css.js';
-import Option from '../../internal/components/option';
-import SelectableItem from '../../internal/components/selectable-item';
+
 import { getBaseProps } from '../../internal/base-component';
-import { OptionDefinition } from '../../internal/components/option/interfaces';
 import CheckboxIcon from '../../internal/components/checkbox-icon';
-import { ItemProps } from './item';
+import Option from '../../internal/components/option';
+import { OptionDefinition } from '../../internal/components/option/interfaces';
+import SelectableItem from '../../internal/components/selectable-item';
+import Tooltip from '../../internal/components/tooltip';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
-import Tooltip from '../../internal/components/tooltip';
+import { ItemProps } from './item';
+
+import styles from './styles.css.js';
 interface MultiselectItemProps extends ItemProps {
   indeterminate?: boolean;
 }

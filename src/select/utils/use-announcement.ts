@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { OptionDefinition, OptionGroup } from '../../internal/components/option/interfaces';
-import { SelectProps } from '../interfaces';
 import { useEffect, useRef } from 'react';
+
+import { OptionDefinition, OptionGroup } from '../../internal/components/option/interfaces';
 import defaultOptionDescription from '../../internal/components/option/option-announcer';
+import { SelectProps } from '../interfaces';
 
 interface OptionHolder {
   option?: OptionDefinition | OptionGroup;

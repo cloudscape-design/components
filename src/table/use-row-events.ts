@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { fireNonCancelableEvent, fireCancelableEvent } from '../internal/events/index';
-import { TableProps } from './interfaces';
+import { fireCancelableEvent, fireNonCancelableEvent } from '../internal/events/index';
 import { findUpUntil } from '../internal/utils/dom';
+import { TableProps } from './interfaces';
+
 import styles from './styles.css.js';
 
 export function useRowEvents<T>({ onRowClick, onRowContextMenu }: Pick<TableProps, 'onRowClick' | 'onRowContextMenu'>) {

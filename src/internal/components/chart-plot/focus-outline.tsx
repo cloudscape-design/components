@@ -2,9 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef, useState } from 'react';
 
-import styles from './styles.css.js';
-import { Offset } from '../interfaces';
 import { isModifierKey } from '@cloudscape-design/component-toolkit/internal';
+
+import { Offset } from '../interfaces';
+
+import styles from './styles.css.js';
 
 export interface FocusOutlineProps {
   elementKey?: null | string | number | boolean;

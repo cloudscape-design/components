@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
 
-import { ScaledBarGroup } from '../make-scaled-bar-groups';
-import { ScaledPoint } from '../make-scaled-series';
-
-import styles from '../styles.css.js';
 import { ChartPlotRef } from '../../internal/components/chart-plot';
 import { VerticalMarkerX } from '../interfaces';
+import { ScaledBarGroup } from '../make-scaled-bar-groups';
+import { ScaledPoint } from '../make-scaled-series';
 import { isYThreshold } from '../utils';
+
+import styles from '../styles.css.js';
 
 const MAX_HOVER_MARGIN = 6;
 const POPOVER_DEADZONE = 12;

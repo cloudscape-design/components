@@ -1,7 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
 import { ProgressBarProps } from '~components/progress-bar';
+
 import createPermutations from '../utils/permutations';
 
 const repeat = (text: string, times: number): string => {

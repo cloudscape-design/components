@@ -1,14 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useEffect } from 'react';
-
-import { HotspotProps } from './interfaces';
-import styles from './styles.css.js';
-import { hotspotContext as hotspotContextType } from '../annotation-context/context';
 import clsx from 'clsx';
+
+import { hotspotContext as hotspotContextType } from '../annotation-context/context';
 import { getBaseProps } from '../internal/base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
+import { applyDisplayName } from '../internal/utils/apply-display-name';
+import { HotspotProps } from './interfaces';
+
+import styles from './styles.css.js';
 
 export { HotspotProps };
 

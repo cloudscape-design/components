@@ -2,19 +2,21 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect } from 'react';
 import clsx from 'clsx';
-import styles from './styles.css.js';
+
+import InternalAlert from '../../alert/internal';
 import InternalBox from '../../box/internal';
 import { InternalButton } from '../../button/internal';
-import InternalSpaceBetween from '../../space-between/internal';
-import PopoverContainer from '../../popover/container';
-import PopoverBody from '../../popover/body';
 import { HotspotProps } from '../../hotspot/interfaces';
-import { AnnotationContextProps } from '../interfaces';
-import InternalAlert from '../../alert/internal';
-import { InternalPosition } from '../../popover/interfaces';
-import { scrollElementIntoView } from '../../internal/utils/scrollable-containers';
 import { useUniqueId } from '../../internal/hooks/use-unique-id/index.js';
+import { scrollElementIntoView } from '../../internal/utils/scrollable-containers';
 import { joinStrings } from '../../internal/utils/strings/join-strings.js';
+import PopoverBody from '../../popover/body';
+import PopoverContainer from '../../popover/container';
+import { InternalPosition } from '../../popover/interfaces';
+import InternalSpaceBetween from '../../space-between/internal';
+import { AnnotationContextProps } from '../interfaces';
+
+import styles from './styles.css.js';
 
 export interface AnnotationPopoverProps {
   title: string;

@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import optionStyles from '../../../../lib/components/internal/components/option/styles.selectors.js';
 import { MultiselectWrapper } from '../../../../lib/components/test-utils/selectors';
 import SelectPageObject from '../../../select/__integ__/page-objects/select-page';
-import optionStyles from '../../../../lib/components/internal/components/option/styles.selectors.js';
 
 export default class MultiselectPageObject extends SelectPageObject<MultiselectWrapper> {
   getOptionInGroup(groupNumber: number, optionNumber: number) {

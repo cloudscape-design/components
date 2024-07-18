@@ -2,9 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { useRef } from 'react';
-import { AutosuggestProps } from './interfaces';
+
 import { OptionsLoadItemsDetail } from '../internal/components/dropdown/interfaces';
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
+import { AutosuggestProps } from './interfaces';
 
 export interface UseAutosuggestLoadMoreProps {
   options?: AutosuggestProps.Options;

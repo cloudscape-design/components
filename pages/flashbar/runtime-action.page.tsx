@@ -2,13 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render, unmountComponentAtNode } from 'react-dom';
-import Flashbar, { FlashbarProps } from '~components/flashbar';
+
 import Button from '~components/button';
-import SpaceBetween from '~components/space-between';
+import Flashbar, { FlashbarProps } from '~components/flashbar';
 import awsuiPlugins from '~components/internal/plugins';
-import ScreenshotArea from '../utils/screenshot-area';
+import SpaceBetween from '~components/space-between';
+
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
+import ScreenshotArea from '../utils/screenshot-area';
 
 awsuiPlugins.flashbar.registerAction({
   id: 'awsui/flashbar-test-action',

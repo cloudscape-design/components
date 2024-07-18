@@ -1,10 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef, useState } from 'react';
-import { useCollection } from '@cloudscape-design/collection-hooks';
 import range from 'lodash/range';
-import Cards, { CardsProps } from '~components/cards';
+
+import { useCollection } from '@cloudscape-design/collection-hooks';
+
 import { Header, TextFilter } from '~components';
+import Cards, { CardsProps } from '~components/cards';
+
 import ScreenshotArea from '../utils/screenshot-area';
 
 interface Item {

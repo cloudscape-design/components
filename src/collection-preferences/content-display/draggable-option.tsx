@@ -1,11 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+import clsx from 'clsx';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { OptionWithVisibility } from './utils';
+
 import ContentDisplayOption, { getClassName } from './content-display-option';
-import clsx from 'clsx';
+import { OptionWithVisibility } from './utils';
+
 import styles from '../styles.css.js';
 
 export default function DraggableOption({

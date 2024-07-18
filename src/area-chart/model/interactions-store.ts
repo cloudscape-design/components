@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ChartModel } from './index';
-import { AreaChartProps } from '../interfaces';
 import AsyncStore from '../async-store';
+import { AreaChartProps } from '../interfaces';
+import { ChartModel } from './index';
 
 const initialState = Object.freeze({
   highlightedX: null,

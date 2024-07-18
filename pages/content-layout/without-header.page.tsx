@@ -1,16 +1,18 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState, useContext } from 'react';
+import React, { useContext, useState } from 'react';
+
 import AppLayout from '~components/app-layout';
-import ContentLayout from '~components/content-layout';
 import Container from '~components/container';
-import Toggle from '~components/toggle';
+import ContentLayout from '~components/content-layout';
 import Flashbar from '~components/flashbar';
 import Header from '~components/header';
-import { Breadcrumbs } from '../app-layout/utils/content-blocks';
-import ScreenshotArea from '../utils/screenshot-area';
-import appLayoutLabels from '../app-layout/utils/labels';
+import Toggle from '~components/toggle';
+
 import AppContext, { AppContextType } from '../app/app-context';
+import { Breadcrumbs } from '../app-layout/utils/content-blocks';
+import appLayoutLabels from '../app-layout/utils/labels';
+import ScreenshotArea from '../utils/screenshot-area';
 
 type DemoContext = React.Context<
   AppContextType<{ hasBreadcrumbs: boolean; hasNotifications: boolean; disableOverlap: boolean }>

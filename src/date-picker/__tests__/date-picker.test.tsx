@@ -2,11 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import { render } from '@testing-library/react';
-import createWrapper from '../../../lib/components/test-utils/dom';
+
 import DatePicker, { DatePickerProps } from '../../../lib/components/date-picker';
-import DatePickerWrapper from '../../../lib/components/test-utils/dom/date-picker';
 import FormField from '../../../lib/components/form-field';
 import { NonCancelableEventHandler } from '../../../lib/components/internal/events';
+import createWrapper from '../../../lib/components/test-utils/dom';
+import DatePickerWrapper from '../../../lib/components/test-utils/dom/date-picker';
 
 const defaultProps: DatePickerProps = {
   todayAriaLabel: 'Today',

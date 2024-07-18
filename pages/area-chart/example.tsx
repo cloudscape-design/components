@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import AreaChart, { AreaChartProps } from '~components/area-chart';
 import Box from '~components/box';
 import Button from '~components/button';
-import AreaChart, { AreaChartProps } from '~components/area-chart';
 import Container from '~components/container';
 import Header from '~components/header';
 

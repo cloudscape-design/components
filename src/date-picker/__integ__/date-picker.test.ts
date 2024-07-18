@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
-import DatePickerPage from './page-objects/date-picker-page';
+
 import createWrapper from '../../../lib/components/test-utils/selectors';
+import DatePickerPage from './page-objects/date-picker-page';
 
 describe('Date Picker', () => {
   const setupTest = (testFn: (page: DatePickerPage) => Promise<void>) => {

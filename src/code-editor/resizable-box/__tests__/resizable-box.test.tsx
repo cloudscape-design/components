@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
+
 import { ResizableBox, ResizeBoxProps } from '../../../../lib/components/code-editor/resizable-box';
 import styles from '../../../../lib/components/code-editor/resizable-box/styles.selectors.js';
 

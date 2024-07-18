@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { useContext, createContext } from 'react';
+import { createContext, useContext } from 'react';
 
 import { InternalButtonProps } from '../../button/internal';
 

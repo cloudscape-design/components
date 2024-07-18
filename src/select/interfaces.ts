@@ -1,16 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
 import { BaseComponentProps } from '../internal/base-component';
-import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
-import { NonCancelableEventHandler } from '../internal/events';
-import { OptionDefinition, OptionGroup as OptionGroupDefinition } from '../internal/components/option/interfaces';
-import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
 import {
   BaseDropdownHostProps,
   OptionsFilteringType,
   OptionsLoadItemsDetail,
 } from '../internal/components/dropdown/interfaces';
+import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
+import { OptionDefinition, OptionGroup as OptionGroupDefinition } from '../internal/components/option/interfaces';
+import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
+import { NonCancelableEventHandler } from '../internal/events';
 
 export interface BaseSelectProps
   extends BaseDropdownHostProps,

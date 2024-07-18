@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { CollectionPreferencesProps } from '../interfaces';
-import { DragEndEvent, DragOverEvent, DragStartEvent } from '@dnd-kit/core';
 import { useRef } from 'react';
+import { DragEndEvent, DragOverEvent, DragStartEvent } from '@dnd-kit/core';
+
+import { CollectionPreferencesProps } from '../interfaces';
 
 export default function useLiveAnnouncements({
   isDragging,

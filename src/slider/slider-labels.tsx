@@ -3,9 +3,10 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import styles from './styles.css.js';
-import { useMobile } from '../internal/hooks/use-mobile/index.js';
 import customCssProps from '../internal/generated/custom-css-properties/index.js';
+import { useMobile } from '../internal/hooks/use-mobile/index.js';
+
+import styles from './styles.css.js';
 
 export interface SliderLabelProps {
   min: number;

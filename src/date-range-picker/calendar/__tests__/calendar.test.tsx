@@ -3,18 +3,20 @@
 import * as React from 'react';
 import Mockdate from 'mockdate';
 import { fireEvent, render } from '@testing-library/react';
-import DateRangePickerWrapper from '../../../../lib/components/test-utils/dom/date-range-picker';
-import DateRangePicker, { DateRangePickerProps } from '../../../../lib/components/date-range-picker';
-import styles from '../../../../lib/components/date-range-picker/styles.selectors.js';
-import gridDayStyles from '../../../../lib/components/date-range-picker/calendar/grids/styles.selectors.js';
-import { KeyCode } from '../../../../lib/components/internal/keycode';
-import { NonCancelableEventHandler } from '../../../../lib/components/internal/events';
+
 import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
-import createWrapper from '../../../../lib/components/test-utils/dom';
-import { i18nStrings } from '../../__tests__/i18n-strings';
-import { changeMode } from '../../__tests__/change-mode';
-import { isValidRange } from '../../__tests__/is-valid-range';
+
+import DateRangePicker, { DateRangePickerProps } from '../../../../lib/components/date-range-picker';
+import gridDayStyles from '../../../../lib/components/date-range-picker/calendar/grids/styles.selectors.js';
+import styles from '../../../../lib/components/date-range-picker/styles.selectors.js';
 import screenreaderOnlyStyles from '../../../../lib/components/internal/components/screenreader-only/styles.selectors.js';
+import { NonCancelableEventHandler } from '../../../../lib/components/internal/events';
+import { KeyCode } from '../../../../lib/components/internal/keycode';
+import createWrapper from '../../../../lib/components/test-utils/dom';
+import DateRangePickerWrapper from '../../../../lib/components/test-utils/dom/date-range-picker';
+import { changeMode } from '../../__tests__/change-mode';
+import { i18nStrings } from '../../__tests__/i18n-strings';
+import { isValidRange } from '../../__tests__/is-valid-range';
 
 beforeEach(() => Mockdate.set(new Date('2020-10-20T12:30:20')));
 afterEach(() => Mockdate.reset());

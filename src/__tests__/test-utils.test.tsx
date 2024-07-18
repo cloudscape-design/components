@@ -5,10 +5,11 @@
 // of the project. To make use of the generated wrapper file, tests live outside
 // of the test-utils folder.
 import React from 'react';
-import Button from '../../lib/components/button';
-import createWrapper from '../../lib/components/test-utils/dom';
 import { render } from 'react-dom';
 import { render as renderTestingLibrary } from '@testing-library/react';
+
+import Button from '../../lib/components/button';
+import createWrapper from '../../lib/components/test-utils/dom';
 
 describe('createWrapper', () => {
   let spy: jest.SpyInstance;

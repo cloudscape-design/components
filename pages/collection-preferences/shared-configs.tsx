@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { CollectionPreferencesProps } from '~components/collection-preferences';
+
 import Checkbox from '~components/checkbox';
+import { CollectionPreferencesProps } from '~components/collection-preferences';
 
 export const baseProperties: CollectionPreferencesProps<boolean> = {
   title: 'Preferences',

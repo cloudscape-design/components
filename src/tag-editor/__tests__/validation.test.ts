@@ -2,14 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
   awsPrefixCheck,
-  emptyKeyCheck,
-  maxKeyLengthCheck,
   duplicateKeyCheck,
-  maxValueLengthCheck,
+  emptyKeyCheck,
   invalidCharCheck,
+  maxKeyLengthCheck,
+  maxValueLengthCheck,
   validate,
 } from '../../../lib/components/tag-editor/validation';
-
 import { i18nStrings, MAX_KEY_LENGTH, MAX_VALUE_LENGTH } from './common';
 
 let mockFormatFn = jest.fn();

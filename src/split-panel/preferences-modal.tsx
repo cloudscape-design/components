@@ -5,15 +5,14 @@ import React, { useState } from 'react';
 import InternalBox from '../box/internal';
 import { InternalButton } from '../button/internal';
 import InternalFormField from '../form-field/internal';
-import InternalModal from '../modal/internal';
-import InternalTiles from '../tiles/internal';
-import InternalSpaceBetween from '../space-between/internal';
-
-import sidePositionIconClassic from './icons/side-position';
-import bottomPositionIconClassic from './icons/bottom-icon';
-import sidePositionIconRefresh from './icons/side-position-refresh';
-import bottomPositionIconRefresh from './icons/bottom-icon-refresh';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import InternalModal from '../modal/internal';
+import InternalSpaceBetween from '../space-between/internal';
+import InternalTiles from '../tiles/internal';
+import bottomPositionIconClassic from './icons/bottom-icon';
+import bottomPositionIconRefresh from './icons/bottom-icon-refresh';
+import sidePositionIconClassic from './icons/side-position';
+import sidePositionIconRefresh from './icons/side-position-refresh';
 
 interface PreferencesModali18nStrings {
   header?: string;

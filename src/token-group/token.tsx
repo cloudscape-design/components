@@ -4,11 +4,12 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import DismissButton from './dismiss-button';
-import styles from './styles.css.js';
 import { FormFieldError, FormFieldWarning } from '../form-field/internal';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { getBaseProps } from '../internal/base-component';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
+import DismissButton from './dismiss-button';
+
+import styles from './styles.css.js';
 
 interface TokenProps {
   children: React.ReactNode;

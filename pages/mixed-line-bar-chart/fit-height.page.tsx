@@ -3,10 +3,11 @@
 import React, { useContext } from 'react';
 
 import { Box, Button, Checkbox, MixedLineBarChart, SpaceBetween } from '~components';
+import { colorChartsThresholdInfo } from '~design-tokens';
+
 import AppContext, { AppContextType } from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
 import { barChartInstructions, commonProps, data3, data4 } from './common';
-import { colorChartsThresholdInfo } from '~design-tokens';
 
 type DemoContext = React.Context<
   AppContextType<{ fitHeight: boolean; hideFilter: boolean; hideLegend: boolean; minHeight: number }>

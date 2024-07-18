@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
-import EventsSelectPage from './page-objects/events-select-page';
+
 import createWrapper from '../../../lib/components/test-utils/selectors';
+import EventsSelectPage from './page-objects/events-select-page';
 
 function setupTest(
   testFn: (page: EventsSelectPage) => Promise<void>,

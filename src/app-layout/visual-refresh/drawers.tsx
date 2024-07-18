@@ -2,19 +2,22 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef } from 'react';
 import clsx from 'clsx';
-import customCssProps from '../../internal/generated/custom-css-properties';
+
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+
 import { InternalButton } from '../../button/internal';
+import customCssProps from '../../internal/generated/custom-css-properties';
+import { getLimitedValue } from '../../split-panel/utils/size-utils';
+import { splitItems } from '../drawer/drawers-helpers';
+import OverflowMenu from '../drawer/overflow-menu';
+import { TOOLS_DRAWER_ID } from '../utils/use-drawers';
+import { useAppLayoutInternals } from './context';
 import SplitPanel from './split-panel';
 import TriggerButton from './trigger-button';
-import { useAppLayoutInternals } from './context';
-import styles from './styles.css.js';
-import testutilStyles from '../test-classes/styles.css.js';
+
 import splitPanelTestUtilStyles from '../../split-panel/test-classes/styles.css.js';
-import { useContainerQuery } from '@cloudscape-design/component-toolkit';
-import OverflowMenu from '../drawer/overflow-menu';
-import { splitItems } from '../drawer/drawers-helpers';
-import { TOOLS_DRAWER_ID } from '../utils/use-drawers';
-import { getLimitedValue } from '../../split-panel/utils/size-utils';
+import testutilStyles from '../test-classes/styles.css.js';
+import styles from './styles.css.js';
 
 /**
  * The Drawers root component is mounted in the AppLayout index file. It will only

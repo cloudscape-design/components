@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
-import createWrapper from '../../../lib/components/test-utils/selectors';
+
 import styles from '../../../lib/components/tabs/styles.selectors.js';
+import createWrapper from '../../../lib/components/test-utils/selectors';
 
 const wrapper = createWrapper().findTabs();
 

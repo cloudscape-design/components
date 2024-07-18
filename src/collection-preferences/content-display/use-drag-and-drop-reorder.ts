@@ -12,8 +12,9 @@ import {
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
-import { CollectionPreferencesProps } from '../interfaces';
 import { hasSortableData } from '@dnd-kit/sortable';
+
+import { CollectionPreferencesProps } from '../interfaces';
 import { KeyboardSensor } from './keyboard-sensor';
 
 enum KeyboardCode {

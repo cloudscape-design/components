@@ -2,16 +2,17 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { act, render } from '@testing-library/react';
+
+import { ObjectsTable } from '../../../../lib/components/s3-resource-selector/s3-modal/objects-table';
 import createWrapper from '../../../../lib/components/test-utils/dom';
 import { getIconHTML } from '../../../icon/__tests__/utils';
-import { ObjectsTable } from '../../../../lib/components/s3-resource-selector/s3-modal/objects-table';
 import { i18nStrings, objects } from '../../__tests__/fixtures';
 import {
   getColumnAriaLabels,
   getElementsText,
+  getHeaderVisibleText,
   getTableBodyContent,
   getTableColumnContent,
-  getHeaderVisibleText,
 } from './utils';
 
 async function renderTable(jsx: React.ReactElement) {

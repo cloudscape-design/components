@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
+
 import styles from '../../../area-chart/styles.selectors.js';
 import chartPlotStyles from '../../../internal/components/chart-plot/styles.selectors.js';
 import { BaseCartesianChartWrapper } from '../mixed-line-bar-chart/index.js';

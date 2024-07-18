@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { act, render } from '@testing-library/react';
-import createWrapper, { ElementWrapper } from '../../../../lib/components/test-utils/dom';
+
 import { S3Modal } from '../../../../lib/components/s3-resource-selector/s3-modal';
+import createWrapper, { ElementWrapper } from '../../../../lib/components/test-utils/dom';
 import { buckets, objects, versions, waitForFetch } from '../../__tests__/fixtures';
 import { getElementsText, modalDefaultProps, navigateToTableItem } from './utils';
 

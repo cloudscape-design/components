@@ -1,11 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
-import Input, { InputProps } from '../../../lib/components/input';
+import { fireEvent, render } from '@testing-library/react';
+
 import FormField from '../../../lib/components/form-field';
-import styles from '../../../lib/components/input/styles.css.js';
+import Input, { InputProps } from '../../../lib/components/input';
 import createWrapper from '../../../lib/components/test-utils/dom';
+
+import styles from '../../../lib/components/input/styles.css.js';
 
 function renderInput(props: Omit<InputProps, 'value'> & { value?: string } & React.RefAttributes<InputProps.Ref> = {}) {
   const { container, rerender } = render(<Input value="" onChange={jest.fn()} {...props} />);

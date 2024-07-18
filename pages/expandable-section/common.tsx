@@ -1,10 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import Link from '~components/link';
 import React from 'react';
+
 import Button from '~components/button';
-import StatusIndicator from '~components/status-indicator';
+import Link from '~components/link';
 import SpaceBetween from '~components/space-between';
+import StatusIndicator from '~components/status-indicator';
 
 export const headerInfo = <Link variant="info">info</Link>;
 

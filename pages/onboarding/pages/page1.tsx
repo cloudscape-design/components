@@ -1,5 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import React, { useState } from 'react';
+
 import {
   Button,
   Checkbox,
@@ -12,10 +14,8 @@ import {
   SelectProps,
   SpaceBetween,
 } from '~components';
-import React, { useState } from 'react';
-
-import Link from '~components/link';
 import { CancelableEventHandler } from '~components/internal/events';
+import Link from '~components/link';
 
 const availableRegions = [
   { label: 'US East (N. Virginia) us-east-1', value: '1' },

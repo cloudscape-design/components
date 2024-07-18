@@ -1,8 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import { i18nStrings } from './common';
+
 import { Container, FormField, Header, Input, Link, Wizard, WizardProps } from '~components';
+
+import { i18nStrings } from './common';
 
 export default function WizardPage() {
   const [activeStepIndex, setActiveStepIndex] = useState(0);

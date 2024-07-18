@@ -1,18 +1,20 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import React, { useRef } from 'react';
-import { ToggleButton, CloseButton, togglesConfig } from '../toggles';
+import clsx from 'clsx';
+
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+import { useDensityMode } from '@cloudscape-design/component-toolkit/internal';
+
+import { AppLayoutProps } from '../interfaces';
+import { CloseButton, ToggleButton, togglesConfig } from '../toggles';
+import { TOOLS_DRAWER_ID } from '../utils/use-drawers';
+import { splitItems } from './drawers-helpers';
+import { DesktopDrawerProps, DrawerTriggersBarProps } from './interfaces';
+import OverflowMenu from './overflow-menu';
 
 import testutilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';
-import { DesktopDrawerProps, DrawerTriggersBarProps } from './interfaces';
-import OverflowMenu from './overflow-menu';
-import { useContainerQuery } from '@cloudscape-design/component-toolkit';
-import { useDensityMode } from '@cloudscape-design/component-toolkit/internal';
-import { splitItems } from './drawers-helpers';
-import { TOOLS_DRAWER_ID } from '../utils/use-drawers';
-import { AppLayoutProps } from '../interfaces';
 
 // We are using two landmarks per drawer, i.e. two NAVs and two ASIDEs, because of several
 // known bugs in NVDA that cause focus changes within a container to sometimes not be

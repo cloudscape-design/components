@@ -7,19 +7,19 @@ import { useComponentMetadata } from '@cloudscape-design/component-toolkit/inter
 
 import InternalForm from '../form/internal';
 import InternalHeader from '../header/internal';
-import { useMobile } from '../internal/hooks/use-mobile';
-import WizardActions from './wizard-actions';
-import { WizardProps } from './interfaces';
-import WizardFormHeader from './wizard-form-header';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { FunnelMetrics } from '../internal/analytics';
 import { AnalyticsFunnelStep } from '../internal/analytics/components/analytics-funnel';
+import { useFunnel, useFunnelStep } from '../internal/analytics/hooks/use-funnel';
 import { DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_STEP_NAME } from '../internal/analytics/selectors';
-import { PACKAGE_VERSION } from '../internal/environment';
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
+import { PACKAGE_VERSION } from '../internal/environment';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useMobile } from '../internal/hooks/use-mobile';
+import { WizardProps } from './interfaces';
+import WizardActions from './wizard-actions';
+import WizardFormHeader from './wizard-form-header';
 
 import styles from './styles.css.js';
-import { useFunnel, useFunnelStep } from '../internal/analytics/hooks/use-funnel';
-import { FunnelMetrics } from '../internal/analytics';
 
 interface WizardFormProps extends InternalBaseComponentProps {
   steps: ReadonlyArray<WizardProps.Step>;

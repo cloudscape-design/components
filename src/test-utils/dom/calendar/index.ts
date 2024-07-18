@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ComponentWrapper, ElementWrapper, createWrapper } from '@cloudscape-design/test-utils-core/dom';
+import { ComponentWrapper, createWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
+
 import styles from '../../../calendar/styles.selectors.js';
 import ButtonWrapper from '../button';
 

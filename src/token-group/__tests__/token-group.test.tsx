@@ -2,14 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 import { render, screen } from '@testing-library/react';
-import TokenGroup, { TokenGroupProps } from '../../../lib/components/token-group';
-import { Token } from '../../../lib/components/token-group/token';
-import createWrapper, { TokenGroupWrapper, IconWrapper } from '../../../lib/components/test-utils/dom';
 
-import selectors from '../../../lib/components/token-group/styles.selectors.js';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 import optionSelectors from '../../../lib/components/internal/components/option/styles.selectors.js';
 import tokenListSelectors from '../../../lib/components/internal/components/token-list/styles.selectors.js';
-import TestI18nProvider from '../../../lib/components/i18n/testing';
+import createWrapper, { IconWrapper, TokenGroupWrapper } from '../../../lib/components/test-utils/dom';
+import TokenGroup, { TokenGroupProps } from '../../../lib/components/token-group';
+import selectors from '../../../lib/components/token-group/styles.selectors.js';
+import { Token } from '../../../lib/components/token-group/token';
 import { getIconHTML } from '../../icon/__tests__/utils';
 
 function renderTokenGroup(props: TokenGroupProps = {}): TokenGroupWrapper {

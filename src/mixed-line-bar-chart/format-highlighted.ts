@@ -1,10 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ChartDataTypes, InternalChartSeries, MixedLineBarChartProps } from './interfaces';
-import { ChartSeriesDetailItem } from '../internal/components/chart-series-details';
-import { CartesianChartProps } from '../internal/components/cartesian-chart/interfaces';
-import { isDataSeries, isXThreshold, isYThreshold, matchesX } from './utils';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
+import { CartesianChartProps } from '../internal/components/cartesian-chart/interfaces';
+import { ChartSeriesDetailItem } from '../internal/components/chart-series-details';
+import { ChartDataTypes, InternalChartSeries, MixedLineBarChartProps } from './interfaces';
+import { isDataSeries, isXThreshold, isYThreshold, matchesX } from './utils';
 
 export interface HighlightDetails {
   position: string;

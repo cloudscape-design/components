@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { setTimeOffset, shiftTimeOffset, normalizeTimeOffset } from '../time-offset';
+import { normalizeTimeOffset, setTimeOffset, shiftTimeOffset } from '../time-offset';
 
 describe('Date range picker', () => {
   describe('time offset handling', () => {

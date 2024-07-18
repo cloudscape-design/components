@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 import { render } from '@testing-library/react';
-import createWrapper from '../../../lib/components/test-utils/dom';
+
 import Autosuggest from '../../../lib/components/autosuggest';
+import createWrapper from '../../../lib/components/test-utils/dom';
 import TokenGroup from '../../../lib/components/token-group';
 
 const wrapper = createWrapper();

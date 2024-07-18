@@ -2,12 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import * as React from 'react';
-import { render, fireEvent, cleanup, waitFor } from '@testing-library/react';
-import { TableProps } from '../interfaces';
-
-import createWrapper from '../../../lib/components/test-utils/dom';
+import { cleanup, fireEvent, render, waitFor } from '@testing-library/react';
 
 import { InlineEditor } from '../../../lib/components/table/body-cell/inline-editor';
+import createWrapper from '../../../lib/components/test-utils/dom';
+import { TableProps } from '../interfaces';
 
 const handleSubmitEdit = jest.fn((): Promise<void> => {
   return new Promise(resolve => setTimeout(resolve, 500));

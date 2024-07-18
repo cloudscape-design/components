@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
+import { Container, Flashbar, Header, Hotspot, SpaceBetween } from '~components';
 import Link from '~components/link';
-import { SpaceBetween, Container, Header, Hotspot, Flashbar } from '~components';
 
 export function PageTwo({ onFollowLink }: { onFollowLink: () => void }) {
   return (

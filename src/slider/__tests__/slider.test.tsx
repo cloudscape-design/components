@@ -1,16 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { screen, render, act, fireEvent } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 
-import SliderWrapper from '../../../lib/components/test-utils/dom/slider';
-import createWrapper, { ElementWrapper } from '../../../lib/components/test-utils/dom';
-
-import Slider, { SliderProps } from '../../../lib/components/slider';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
-import styles from '../../../lib/components/slider/styles.css.js';
-import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
+
 import TestI18nProvider from '../../../lib/components/i18n/testing';
+import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
+import Slider, { SliderProps } from '../../../lib/components/slider';
+import createWrapper, { ElementWrapper } from '../../../lib/components/test-utils/dom';
+import SliderWrapper from '../../../lib/components/test-utils/dom/slider';
+
+import styles from '../../../lib/components/slider/styles.css.js';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),

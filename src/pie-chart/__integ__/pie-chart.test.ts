@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
-import createWrapper, { PieChartWrapper } from '../../../lib/components/test-utils/selectors';
+import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
+
 import chartPlotStyles from '../../../lib/components/internal/components/chart-plot/styles.selectors.js';
+import createWrapper, { PieChartWrapper } from '../../../lib/components/test-utils/selectors';
 
 class PieChartPageObject extends BasePageObject {
   constructor(

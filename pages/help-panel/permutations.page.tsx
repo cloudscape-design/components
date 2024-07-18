@@ -1,12 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import HelpPanel from '~components/help-panel';
+
+import { Link } from '~components';
 import Box from '~components/box';
+import HelpPanel from '~components/help-panel';
 import Icon from '~components/icon';
+
 import ScreenshotArea from '../utils/screenshot-area';
 import styles from './styles.scss';
-import { Link } from '~components';
 
 const mainContent = (
   <div>

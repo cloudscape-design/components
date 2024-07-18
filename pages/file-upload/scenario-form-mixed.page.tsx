@@ -1,8 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { FormEvent, useEffect, useRef, useState } from 'react';
+
 import { Alert, Box, Button, Checkbox, FileUpload, FileUploadProps, Form, FormField, Header, Input } from '~components';
 import SpaceBetween from '~components/space-between';
+
 import { PageNotifications, useContractFilesForm } from './page-helpers';
 import { i18nStrings } from './shared';
 import { validateContractFiles, validateContractFilesInForm } from './validations';

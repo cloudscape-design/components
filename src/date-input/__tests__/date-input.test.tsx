@@ -1,8 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
+
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
+
 import DateInput, { DateInputProps } from '../../../lib/components/date-input';
 import createWrapper from '../../../lib/components/test-utils/dom';
 

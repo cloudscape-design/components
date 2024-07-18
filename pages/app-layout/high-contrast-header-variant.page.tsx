@@ -1,12 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext } from 'react';
-import { AppLayout, ContentLayout, Header, Toggle, ColumnLayout, Box, Container } from '~components';
 
-import { Breadcrumbs, Notifications } from '../app-layout/utils/content-blocks';
-import ScreenshotArea from '../utils/screenshot-area';
-import appLayoutLabels from '../app-layout/utils/labels';
+import { AppLayout, Box, ColumnLayout, Container, ContentLayout, Header, Toggle } from '~components';
+
 import AppContext, { AppContextType } from '../app/app-context';
+import { Breadcrumbs, Notifications } from '../app-layout/utils/content-blocks';
+import appLayoutLabels from '../app-layout/utils/labels';
+import ScreenshotArea from '../utils/screenshot-area';
 
 type DemoContext = React.Context<
   AppContextType<{

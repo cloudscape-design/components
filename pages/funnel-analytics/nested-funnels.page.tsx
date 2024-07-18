@@ -2,20 +2,20 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { i18nStrings } from '../wizard/common';
-
 import {
   Box,
   BreadcrumbGroup,
+  Container,
   Form,
+  FormField,
+  Header,
+  Input,
+  SpaceBetween,
   Wizard,
   WizardProps,
-  Input,
-  Container,
-  Header,
-  SpaceBetween,
-  FormField,
 } from '~components';
+
+import { i18nStrings } from '../wizard/common';
 
 export default function WizardPage() {
   const steps: WizardProps.Step[] = [

@@ -1,20 +1,23 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import AppLayout from '~components/app-layout';
-import SplitPanel from '~components/split-panel';
-import Box from '~components/box';
-import Table from '~components/table';
-import PropertyFilter from '~components/property-filter';
-import Header from '~components/header';
-import Button from '~components/button';
-import ScreenshotArea from '../utils/screenshot-area';
-import { Navigation, Tools, Breadcrumbs } from '../app-layout/utils/content-blocks';
-import * as toolsContent from '../app-layout/utils/tools-content';
-import labels from '../app-layout/utils/labels';
-import { allItems, states, TableItem } from './table.data';
-import { columnDefinitions, i18nStrings, filteringProperties } from './common-props';
+
 import { useCollection } from '@cloudscape-design/collection-hooks';
+
+import AppLayout from '~components/app-layout';
+import Box from '~components/box';
+import Button from '~components/button';
+import Header from '~components/header';
+import PropertyFilter from '~components/property-filter';
+import SplitPanel from '~components/split-panel';
+import Table from '~components/table';
+
+import { Breadcrumbs, Navigation, Tools } from '../app-layout/utils/content-blocks';
+import labels from '../app-layout/utils/labels';
+import * as toolsContent from '../app-layout/utils/tools-content';
+import ScreenshotArea from '../utils/screenshot-area';
+import { columnDefinitions, filteringProperties, i18nStrings } from './common-props';
+import { allItems, states, TableItem } from './table.data';
 
 export default function () {
   const { items, collectionProps, actions, propertyFilterProps } = useCollection(allItems, {

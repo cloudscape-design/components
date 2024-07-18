@@ -2,10 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
+
 import InlineStartLabels from '../../../../../lib/components/internal/components/cartesian-chart/inline-start-labels';
 import {
-  getVisibleTicks,
   getSVGTextSize,
+  getVisibleTicks,
 } from '../../../../../lib/components/internal/components/cartesian-chart/label-utils';
 import { NumericChartScale } from '../../../../../lib/components/internal/components/cartesian-chart/scales';
 

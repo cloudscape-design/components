@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 
-import Container from '~components/container';
-import Header from '~components/header';
-import Grid from '~components/grid';
 import Box from '~components/box';
+import Container from '~components/container';
+import Grid from '~components/grid';
+import Header from '~components/header';
 import PieChart, { PieChartProps } from '~components/pie-chart';
-import ScreenshotArea from '../utils/screenshot-area';
 
+import ScreenshotArea from '../utils/screenshot-area';
 import { commonProps } from './common';
 
 const data: Array<PieChartProps.Datum> = [

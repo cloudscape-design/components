@@ -2,8 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
+
 import Trigger, { TriggerProps } from '../../../lib/components/select/parts/trigger';
 import createWrapper from '../../../lib/components/test-utils/dom';
+
 import buttonTriggerStyles from '../../../lib/components/internal/components/button-trigger/styles.css.js';
 
 function renderComponent(props: TriggerProps) {

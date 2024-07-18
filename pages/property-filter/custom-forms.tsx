@@ -2,11 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useEffect, useState } from 'react';
-import { ExtendedOperatorFormProps } from '~components/property-filter/interfaces';
+
+import { FormField, RadioGroup, TimeInput } from '~components';
 import Calendar from '~components/calendar';
 import DateInput from '~components/date-input';
 import Multiselect from '~components/multiselect';
-import { FormField, RadioGroup, TimeInput } from '~components';
+import { ExtendedOperatorFormProps } from '~components/property-filter/interfaces';
+
 import styles from './custom-forms.scss';
 import { allItems } from './table.data';
 

@@ -1,10 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { useRef, useEffect } from 'react';
+import { useEffect, useRef } from 'react';
+
 import { FunnelMetrics } from '../internal/analytics';
-import { WizardProps } from './interfaces';
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
+import { WizardProps } from './interfaces';
 
 export function useFunnelChangeEvent(
   funnelInteractionId: string | undefined,

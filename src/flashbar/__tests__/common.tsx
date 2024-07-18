@@ -1,11 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import createWrapper, { FlashbarWrapper } from '../../../lib/components/test-utils/dom';
 import { render } from '@testing-library/react';
-import { FlashbarProps } from '../interfaces';
+
 import Button from '../../../lib/components/button';
 import Flashbar from '../../../lib/components/flashbar';
+import createWrapper, { FlashbarWrapper } from '../../../lib/components/test-utils/dom';
+import { FlashbarProps } from '../interfaces';
 
 export function createFlashbarWrapper(element: React.ReactElement) {
   return createWrapper(render(element).container).findFlashbar()!;

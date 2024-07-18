@@ -1,14 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import React, { forwardRef, useContext, useImperativeHandle, useRef, useState } from 'react';
+import clsx from 'clsx';
+
 import { StickyHeaderContext } from '../container/use-sticky-header';
+import { getVisualContextClassname } from '../internal/components/visual-context';
 import { TableProps } from './interfaces';
+import { getTableRoleProps, TableRole } from './table-role';
 import Thead, { TheadProps } from './thead';
 import { useStickyHeader } from './use-sticky-header';
+
 import styles from './styles.css.js';
-import { getVisualContextClassname } from '../internal/components/visual-context';
-import { TableRole, getTableRoleProps } from './table-role';
 
 export interface StickyHeaderRef {
   scrollToTop(): void;

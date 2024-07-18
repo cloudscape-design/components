@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { act } from '@testing-library/react';
+
 import { ElementWrapper } from '../../../../lib/components/test-utils/dom';
 
 export function fireMousedown(wrapper: ElementWrapper, button = 0) {

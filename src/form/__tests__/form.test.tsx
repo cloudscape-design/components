@@ -2,10 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import Form, { FormProps } from '../../../lib/components/form';
+
 import alertStyles from '../../../lib/components/alert/styles.selectors.js';
+import Form, { FormProps } from '../../../lib/components/form';
 import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.selectors.js';
+import createWrapper from '../../../lib/components/test-utils/dom';
 
 function renderForm(props: FormProps = {}) {
   const { container } = render(<Form {...props} errorIconAriaLabel="Error icon" />);

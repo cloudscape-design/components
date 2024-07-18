@@ -1,14 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import Input from '~components/input';
+
 import Box from '~components/box';
-import SpaceBetween from '~components/space-between';
-import FormField from '~components/form-field';
-import Slider, { SliderProps } from '~components/slider';
-import Select, { SelectProps } from '~components/select';
 import Button from '~components/button';
+import FormField from '~components/form-field';
 import Grid from '~components/grid';
+import Input from '~components/input';
+import Select, { SelectProps } from '~components/select';
+import Slider, { SliderProps } from '~components/slider';
+import SpaceBetween from '~components/space-between';
 
 import styles from './styles.scss';
 

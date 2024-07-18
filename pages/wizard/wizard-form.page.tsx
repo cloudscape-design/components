@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
+
 import Wizard, { WizardProps } from '~components/wizard';
 
 import { i18nStrings } from './common';

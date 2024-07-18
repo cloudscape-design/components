@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { CodeEditorProps } from '~components';
+
 import 'ace-builds/css/ace.css';
 import 'ace-builds/css/theme/dawn.css';
 import 'ace-builds/css/theme/tomorrow_night_bright.css';

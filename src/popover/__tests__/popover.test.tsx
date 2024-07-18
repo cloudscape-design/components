@@ -2,13 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { act, render } from '@testing-library/react';
-import createWrapper, { ElementWrapper, PopoverWrapper } from '../../../lib/components/test-utils/dom';
-import Popover, { PopoverProps } from '../../../lib/components/popover';
-import '../../__a11y__/to-validate-a11y';
 
-import styles from '../../../lib/components/popover/styles.selectors.js';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
+
+import '../../__a11y__/to-validate-a11y';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
+import Popover, { PopoverProps } from '../../../lib/components/popover';
+import styles from '../../../lib/components/popover/styles.selectors.js';
+import createWrapper, { ElementWrapper, PopoverWrapper } from '../../../lib/components/test-utils/dom';
 import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
 
 jest.mock('../../../lib/components/popover/utils/positions', () => ({

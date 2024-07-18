@@ -1,9 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useState } from 'react';
+
 import { Button, Link, SpaceBetween } from '~components';
-import { Theme, applyTheme, generateThemeStylesheet } from '~components/theming';
+import { applyTheme, generateThemeStylesheet, Theme } from '~components/theming';
 import * as Tokens from '~design-tokens';
+
 import ScreenshotArea from '../utils/screenshot-area';
 
 const colorGreen900 = '#172211';

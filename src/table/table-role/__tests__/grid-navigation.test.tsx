@@ -2,10 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useRef } from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react';
-import { GridNavigationProvider } from '../../../../lib/components/table/table-role';
+import { fireEvent, render, waitFor } from '@testing-library/react';
+
 import { KeyCode } from '../../../../lib/components/internal/keycode';
-import { Button, Cell, TestTable, actionsColumn, idColumn, items, nameColumn, valueColumn } from './stubs';
+import { GridNavigationProvider } from '../../../../lib/components/table/table-role';
+import { actionsColumn, Button, Cell, idColumn, items, nameColumn, TestTable, valueColumn } from './stubs';
 
 function readActiveElement() {
   return document.activeElement ? formatElement(document.activeElement) : null;

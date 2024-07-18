@@ -1,10 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
 import { AppLayout, ContentLayout, Header, SplitPanel } from '~components';
-import appLayoutLabels from './utils/labels';
-import { Breadcrumbs, Containers } from './utils/content-blocks';
+
 import ScreenshotArea from '../utils/screenshot-area';
+import { Breadcrumbs, Containers } from './utils/content-blocks';
+import appLayoutLabels from './utils/labels';
 
 export default function WithDrawers() {
   return (

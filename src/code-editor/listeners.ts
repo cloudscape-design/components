@@ -2,10 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import { useEffect } from 'react';
 import { Ace } from 'ace-builds';
-import { CodeEditorProps } from './interfaces';
+
+import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
+
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
-import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
+import { CodeEditorProps } from './interfaces';
 
 export function useChangeEffect(
   editor: null | Ace.Editor,

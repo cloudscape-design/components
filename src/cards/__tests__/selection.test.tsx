@@ -1,10 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
+import range from 'lodash/range';
 import { render } from '@testing-library/react';
+
 import Cards, { CardsProps } from '../../../lib/components/cards';
 import { CardsWrapper } from '../../../lib/components/test-utils/dom';
-import range from 'lodash/range';
 
 interface Item {
   description: string;

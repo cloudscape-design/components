@@ -1,8 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useState } from 'react';
-import Select, { SelectProps } from '~components/select';
+
 import Box from '~components/box';
+import Select, { SelectProps } from '~components/select';
+
 import AppContext, { AppContextType } from '../app/app-context';
 import { useOptionsLoader } from '../common/options-loader';
 import { groupsRaw } from './mock/data';

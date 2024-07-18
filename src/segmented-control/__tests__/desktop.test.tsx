@@ -2,10 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { fireEvent } from '@testing-library/react';
+
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
-import { renderSegmentedControl } from './utils';
-import { SegmentedControlWrapper } from '../../../lib/components/test-utils/dom';
+
 import SegmentedControl, { SegmentedControlProps } from '../../../lib/components/segmented-control';
+import { SegmentedControlWrapper } from '../../../lib/components/test-utils/dom';
+import { renderSegmentedControl } from './utils';
+
 import styles from '../../../lib/components/segmented-control/styles.css.js';
 
 const defaultOptions: SegmentedControlProps.Option[] = [

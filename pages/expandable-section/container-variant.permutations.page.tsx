@@ -1,11 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
 import ExpandableSection, { ExpandableSectionProps } from '~components/expandable-section';
 
-import ScreenshotArea from '../utils/screenshot-area';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
+import ScreenshotArea from '../utils/screenshot-area';
 import { headerActions, headerInfo, headerTextActions } from './common';
 
 const permutations = createPermutations<ExpandableSectionProps>([

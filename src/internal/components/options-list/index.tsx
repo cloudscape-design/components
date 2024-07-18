@@ -1,20 +1,23 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
-import { useMergeRefs } from '../../hooks/use-merge-refs';
 import React, { useEffect, useRef } from 'react';
+import clsx from 'clsx';
+
+import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
+
 import { BaseComponentProps, getBaseProps } from '../../base-component';
 import {
+  BaseKeyDetail,
+  CancelableEventHandler,
+  fireKeyboardEvent,
   fireNonCancelableEvent,
   NonCancelableEventHandler,
-  CancelableEventHandler,
-  BaseKeyDetail,
-  fireKeyboardEvent,
 } from '../../events';
+import { useMergeRefs } from '../../hooks/use-merge-refs';
 import { findUpUntil } from '../../utils/dom';
-import styles from './styles.css.js';
 import { DropdownStatusProps } from '../dropdown-status';
-import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
+
+import styles from './styles.css.js';
 
 export interface OptionsListProps extends BaseComponentProps {
   open?: boolean;

@@ -2,10 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 import { act, render } from '@testing-library/react';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import RadioGroup, { RadioGroupProps } from '../../../lib/components/radio-group';
-import RadioButtonWrapper from '../../../lib/components/test-utils/dom/radio-group/radio-button';
+
 import '../../__a11y__/to-validate-a11y';
+import RadioGroup, { RadioGroupProps } from '../../../lib/components/radio-group';
+import createWrapper from '../../../lib/components/test-utils/dom';
+import RadioButtonWrapper from '../../../lib/components/test-utils/dom/radio-group/radio-button';
 import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
 
 const defaultItems: RadioGroupProps.RadioButtonDefinition[] = [

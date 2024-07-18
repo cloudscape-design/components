@@ -3,9 +3,9 @@
 
 import React, { Ref } from 'react';
 
-import { DateInputProps } from './interfaces';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
+import { applyDisplayName } from '../internal/utils/apply-display-name';
+import { DateInputProps } from './interfaces';
 import InternalDateInput from './internal';
 
 export { DateInputProps };

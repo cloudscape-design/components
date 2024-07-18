@@ -1,11 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useState } from 'react';
-import Popover from '~components/popover';
-import AppContext, { AppContextType } from '../app/app-context';
-import SpaceBetween from '~components/space-between';
+
 import Button from '~components/button';
 import Modal from '~components/modal';
+import Popover from '~components/popover';
+import SpaceBetween from '~components/space-between';
+
+import AppContext, { AppContextType } from '../app/app-context';
 
 type NestedPopoversContext = React.Context<
   AppContextType<{

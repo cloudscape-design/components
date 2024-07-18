@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { SpaceBetween, Container, Header, Hotspot, Box } from '~components';
+
+import { Box, Container, Header, Hotspot, SpaceBetween } from '~components';
 
 export function PageFour() {
   return (

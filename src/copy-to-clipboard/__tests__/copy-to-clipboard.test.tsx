@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render, waitFor } from '@testing-library/react';
+
 import CopyToClipboard from '../../../lib/components/copy-to-clipboard';
 import createWrapper from '../../../lib/components/test-utils/dom';
 

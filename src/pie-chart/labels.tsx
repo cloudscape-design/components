@@ -4,12 +4,14 @@ import React, { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { arc, PieArcDatum } from 'd3-shape';
 
-import { PieChartProps } from './interfaces';
-import styles from './styles.css.js';
-import { InternalChartDatum } from './pie-chart';
-import { Dimension, balanceLabelNodes, computeSmartAngle } from './utils';
-import ResponsiveText from './responsive-text';
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
+
+import { PieChartProps } from './interfaces';
+import { InternalChartDatum } from './pie-chart';
+import ResponsiveText from './responsive-text';
+import { balanceLabelNodes, computeSmartAngle, Dimension } from './utils';
+
+import styles from './styles.css.js';
 
 export interface LabelsProps<T> {
   pieData: PieArcDatum<InternalChartDatum<T>>[];

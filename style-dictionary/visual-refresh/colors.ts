@@ -1,8 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { StyleDictionary } from '../utils/interfaces';
-
 import { expandColorDictionary } from '../utils';
+import { StyleDictionary } from '../utils/interfaces';
 
 const tokens: StyleDictionary.ColorsDictionary = {
   colorGreyOpaque25: 'rgba(255, 255, 255, 0.25)',

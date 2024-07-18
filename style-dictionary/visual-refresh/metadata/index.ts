@@ -2,8 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import mapValues from 'lodash/mapValues';
 import merge from 'lodash/merge';
+
 import { StyleDictionary } from '../../utils/interfaces';
 import { expandMetadata } from '../../utils/metadata';
+import theme from '../index';
 import borders from './borders';
 import colorCharts from './color-charts';
 import colorPalette from './color-palette';
@@ -13,7 +15,6 @@ import shadows from './shadows';
 import sizes from './sizes';
 import spacing from './spacing';
 import typography from './typography';
-import theme from '../index';
 
 const allTokens = mapValues(theme.tokens, () => ({}));
 

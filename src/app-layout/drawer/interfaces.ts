@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { togglesConfig } from '../toggles';
-import { AppLayoutProps } from '../interfaces';
 
+import { AppLayoutProps } from '../interfaces';
+import { togglesConfig } from '../toggles';
 import { FocusControlRefs } from '../utils/use-focus-control';
 
 export interface DesktopDrawerProps {

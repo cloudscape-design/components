@@ -1,17 +1,20 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
+
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
-import SplitPanel, { SplitPanelProps } from '../../../lib/components/split-panel';
-import {
-  SplitPanelContextProvider,
-  SplitPanelContextProps,
-} from '../../../lib/components/internal/context/split-panel-context';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import styles from '../../../lib/components/split-panel/styles.css.js';
-import { defaultSplitPanelContextProps } from './helpers';
+
 import TestI18nProvider from '../../../lib/components/i18n/testing';
+import {
+  SplitPanelContextProps,
+  SplitPanelContextProvider,
+} from '../../../lib/components/internal/context/split-panel-context';
+import SplitPanel, { SplitPanelProps } from '../../../lib/components/split-panel';
+import createWrapper from '../../../lib/components/test-utils/dom';
+import { defaultSplitPanelContextProps } from './helpers';
+
+import styles from '../../../lib/components/split-panel/styles.css.js';
 
 const onKeyDown = jest.fn();
 jest.mock('../../../lib/components/app-layout/utils/use-keyboard-events', () => ({

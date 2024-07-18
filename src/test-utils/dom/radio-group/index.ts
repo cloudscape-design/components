@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 import { escapeSelector } from '@cloudscape-design/test-utils-core/utils';
-import RadioButtonWrapper from './radio-button';
+
 import styles from '../../../radio-group/styles.selectors.js';
+import RadioButtonWrapper from './radio-button';
 
 export default class RadioGroupWrapper extends ComponentWrapper {
   static rootSelector: string = styles.root;

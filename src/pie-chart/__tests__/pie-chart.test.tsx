@@ -1,16 +1,19 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+import { act } from 'react-dom/test-utils';
 import { fireEvent, render } from '@testing-library/react';
+
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
+
+import TestI18nProvider from '../../../lib/components/i18n/testing';
+import PieChart, { PieChartProps } from '../../../lib/components/pie-chart';
 import createWrapper, { ElementWrapper } from '../../../lib/components/test-utils/dom';
 import { PieChartWrapper } from '../../../lib/components/test-utils/dom';
-import PieChart, { PieChartProps } from '../../../lib/components/pie-chart';
-import styles from '../../../lib/components/pie-chart/styles.css.js';
-import chartWrapperStyles from '../../../lib/components/internal/components/chart-wrapper/styles.css.js';
 import * as colors from '../../../lib/design-tokens';
-import { act } from 'react-dom/test-utils';
-import TestI18nProvider from '../../../lib/components/i18n/testing';
+
+import chartWrapperStyles from '../../../lib/components/internal/components/chart-wrapper/styles.css.js';
+import styles from '../../../lib/components/pie-chart/styles.css.js';
 
 const variants: Array<PieChartProps<PieChartProps.Datum>['variant']> = ['pie', 'donut'];
 const sizes: Array<PieChartProps<PieChartProps.Datum>['size']> = ['small', 'medium', 'large'];

@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
+
 import ChartFilter, { ChartFilterProps } from '../../../../../lib/components/internal/components/chart-filter';
 import createWrapper from '../../../../../lib/components/test-utils/dom';
 import tokenGroupStyles from '../../../../../lib/components/token-group/styles.selectors.js';

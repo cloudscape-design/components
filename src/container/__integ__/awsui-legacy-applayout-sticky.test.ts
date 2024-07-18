@@ -1,11 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
-import createWrapper from '../../../lib/components/test-utils/selectors';
-import { viewports } from '../../app-layout/__integ__/constants';
+import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import appLayoutSelectors from '../../../lib/components/app-layout/test-classes/styles.selectors.js';
+import createWrapper from '../../../lib/components/test-utils/selectors';
+import { viewports } from '../../app-layout/__integ__/constants';
 
 const appLayoutWrapper = createWrapper().findAppLayout();
 const containerWrapper = appLayoutWrapper.findContentRegion().findContainer();

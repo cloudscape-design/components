@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 import range from 'lodash/range';
+
 import ScreenshotArea from './screenshot-area';
 
 const CHUNK_SIZE = 400;

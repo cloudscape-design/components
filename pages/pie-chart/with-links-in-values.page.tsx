@@ -4,9 +4,9 @@ import React from 'react';
 
 import Link from '~components/link';
 import PieChart from '~components/pie-chart';
-import ScreenshotArea from '../utils/screenshot-area';
-import FocusTarget from '../common/focus-target';
 
+import FocusTarget from '../common/focus-target';
+import ScreenshotArea from '../utils/screenshot-area';
 import { commonProps, data1, FoodData, segmentDescription1 } from './common';
 
 export default function () {

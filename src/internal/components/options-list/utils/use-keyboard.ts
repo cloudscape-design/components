@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { useCallback } from 'react';
-import { KeyCode } from '../../../keycode';
+
 import { BaseKeyDetail, CancelableEventHandler } from '../../../events';
+import { KeyCode } from '../../../keycode';
 
 const HOME = 36;
 const END = 35;

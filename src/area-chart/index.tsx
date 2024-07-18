@@ -2,11 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
-
 import { AreaChartProps } from './interfaces';
 import InternalAreaChart from './internal';
-import useBaseComponent from '../internal/hooks/use-base-component';
 
 export { AreaChartProps };
 

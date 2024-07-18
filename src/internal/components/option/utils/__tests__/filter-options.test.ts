@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { matchesString, filterOptions } from '../filter-options';
+import { filterOptions, matchesString } from '../filter-options';
 
 describe('matchesString', () => {
   test('should return false when value is undefined', () => {

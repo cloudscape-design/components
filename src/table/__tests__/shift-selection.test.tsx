@@ -3,6 +3,7 @@
 import * as React from 'react';
 import clone from 'lodash/clone';
 import { render } from '@testing-library/react';
+
 import Table, { TableProps } from '../../../lib/components/table';
 import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/dom';
 

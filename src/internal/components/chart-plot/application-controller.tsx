@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
+
 import styles from './styles.css.js';
 
 export interface ApplicationRef {

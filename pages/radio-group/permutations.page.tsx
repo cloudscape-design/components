@@ -1,8 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
 import Link from '~components/link';
 import RadioGroup, { RadioGroupProps } from '~components/radio-group';
+
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';

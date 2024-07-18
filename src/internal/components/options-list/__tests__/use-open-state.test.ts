@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { renderHook, act } from '../../../../__tests__/render-hook';
+import { act, renderHook } from '../../../../__tests__/render-hook';
 import { useOpenState } from '../utils/use-open-state';
 
 describe('useOpenState', () => {

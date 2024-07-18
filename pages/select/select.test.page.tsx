@@ -2,8 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import range from 'lodash/range';
-import Select from '~components/select';
+
 import Box from '~components/box';
+import Select from '~components/select';
+
 import ScreenshotArea from '../utils/screenshot-area';
 
 const options = [

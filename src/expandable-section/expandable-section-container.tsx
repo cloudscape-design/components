@@ -1,11 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { InternalContainerAsSubstep } from '../container/internal';
 import React from 'react';
-import { InternalVariant } from './interfaces';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 
+import { InternalContainerAsSubstep } from '../container/internal';
 import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { InternalVariant } from './interfaces';
 
 export interface ExpandableSectionContainerProps extends InternalBaseComponentProps {
   className?: string;

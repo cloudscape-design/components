@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import { render } from '@testing-library/react';
+
 import '../__a11y__/to-validate-a11y';
 
 describe('a11y validator', () => {

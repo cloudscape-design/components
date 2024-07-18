@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render, act, waitFor } from '@testing-library/react';
+import { act, render, waitFor } from '@testing-library/react';
 
 import { TagControl, TagControlProps } from '../../../lib/components/tag-editor/internal';
 import createWrapper, { AutosuggestWrapper } from '../../../lib/components/test-utils/dom';
