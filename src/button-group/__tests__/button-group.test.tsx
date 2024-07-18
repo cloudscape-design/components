@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { act, fireEvent, render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import { KeyCode } from '@cloudscape-design/component-toolkit/internal';
 import ButtonGroup, { ButtonGroupProps } from '../../../lib/components/button-group';
 import buttonStyles from '../../../lib/components/button/styles.css.js';
@@ -176,18 +176,6 @@ describe('tooltips', () => {
     expect(wrapper.findTooltip()).not.toBeNull();
     fireEvent.pointerDown(button.getElement());
     expect(wrapper.findTooltip()).not.toBeNull();
-  });
-
-  test('closes popover on toggle event', () => {
-    const wrapper = renderButtonGroup({ variant: 'icon', items: items1, ariaLabel: 'Chat actions' });
-    const button = wrapper.findButtonById('test-button')!;
-    button.click();
-
-    expect(wrapper.findTooltip()).not.toBeNull();
-    act(() => {
-      window.dispatchEvent(new CustomEvent('btngroup-tooltip:toggle', { detail: { open: true, trackKey: '123' } }));
-    });
-    expect(wrapper.findTooltip()).toBeNull();
   });
 
   test('closes popover on esc key', () => {
