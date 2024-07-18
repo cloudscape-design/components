@@ -8,6 +8,7 @@ import ButtonDropdown from '../button-dropdown/internal';
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 import clsx from 'clsx';
+import InternalButton from '../button/internal';
 
 const MenuDropdownItem = React.forwardRef(
   (
@@ -37,8 +38,20 @@ const MenuDropdownItem = React.forwardRef(
         onItemClick={onClickHandler}
         expandToViewport={expandToViewport}
         ariaLabel={item.text}
+        className={testUtilStyles['button-group-item']}
         data-testid={item.id}
-        className={clsx(styles.item, testUtilStyles['button-group-item'])}
+        customTriggerBuilder={({ onClick, triggerRef, ariaLabel, ariaExpanded, testUtilsClass }) => (
+          <InternalButton
+            ref={triggerRef}
+            variant="icon"
+            ariaLabel={ariaLabel}
+            ariaExpanded={ariaExpanded}
+            className={clsx(styles.item, testUtilsClass)}
+            data-testid={item.id}
+            iconName="ellipsis"
+            onClick={onClick}
+          />
+        )}
       />
     );
   }
