@@ -41,6 +41,7 @@ const IconButtonItem = forwardRef(
         ref={ref}
         data-testid={item.id}
         className={clsx(styles.item, testUtilStyles['button-group-item'])}
+        __title=""
       >
         {item.text}
       </InternalButton>
