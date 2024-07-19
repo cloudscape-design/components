@@ -1,10 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useImperativeHandle, useRef, forwardRef, useEffect, useState, useMemo } from 'react';
+import React, { useImperativeHandle, useRef, forwardRef, useEffect, useState } from 'react';
 import { getBaseProps } from '../internal/base-component';
 import { ButtonGroupProps, InternalButtonGroupProps } from './interfaces';
 import { ButtonProps } from '../button/interfaces';
-import { ClickDetail, fireCancelableEvent } from '../internal/events/index.js';
 import {
   SingleTabStopNavigationAPI,
   SingleTabStopNavigationProvider,
@@ -40,18 +39,8 @@ const InternalButtonGroup = forwardRef(
     const containerObjectRef = useRef<HTMLDivElement>(null);
     const containerRef = useMergeRefs(containerObjectRef, __internalRootRef);
     const itemsRef = useRef<Record<string, ButtonProps.Ref | null>>({});
-    const itemWrappersRef = useRef<Record<string, HTMLDivElement | null>>({});
     const [tooltipItemId, setTooltipItemId] = useState<string | null>(null);
     const [isFeedbackTooltip, setIsFeedbackTooltip] = useState(false);
-    const itemsById = useMemo(
-      () =>
-        items.reduce<Record<string, ButtonGroupProps.Item>>((acc, curr) => {
-          const itemsToAdd = curr.type === 'group' ? curr.items : [curr];
-          itemsToAdd.forEach(item => (acc[item.id] = item));
-          return acc;
-        }, {}),
-      [items]
-    );
 
     useImperativeHandle(ref, () => ({
       focus: id => {
@@ -139,75 +128,6 @@ const InternalButtonGroup = forwardRef(
       return getAllFocusables(target).filter(el => isElementRegistered(el) && !isElementDisabled(el));
     }
 
-    useEffect(() => {
-      if (!tooltipItemId) {
-        return;
-      }
-
-      const close = () => {
-        setTooltipItemId(null);
-        setIsFeedbackTooltip(false);
-      };
-
-      const handlePointerDownEvent = (event: PointerEvent) => {
-        if (
-          event.target &&
-          (itemWrappersRef.current[tooltipItemId] as HTMLElement)?.contains(event.target as HTMLElement)
-        ) {
-          return;
-        }
-
-        close();
-      };
-
-      const handleKeyDownEvent = (event: KeyboardEvent) => {
-        if (event.key === 'Escape') {
-          close();
-        }
-      };
-
-      window.addEventListener('pointerdown', handlePointerDownEvent);
-      window.addEventListener('keydown', handleKeyDownEvent);
-
-      return () => {
-        window.removeEventListener('pointerdown', handlePointerDownEvent);
-        window.removeEventListener('keydown', handleKeyDownEvent);
-      };
-    }, [tooltipItemId]);
-
-    const onClickHandler = (itemId: string, event: CustomEvent<ButtonGroupProps.ItemClickDetails | ClickDetail>) => {
-      const tooltipItem = itemsById[itemId];
-      const popoverFeedback = tooltipItem && 'popoverFeedback' in tooltipItem && tooltipItem.popoverFeedback;
-
-      if (popoverFeedback) {
-        setTooltipItemId(itemId);
-        setIsFeedbackTooltip(true);
-      } else {
-        setTooltipItemId(null);
-        setIsFeedbackTooltip(false);
-      }
-
-      fireCancelableEvent(onItemClick, { id: 'id' in event.detail ? event.detail.id : itemId }, event);
-    };
-
-    const onShowTooltip = (itemId: string | null, show: boolean) => {
-      if (isFeedbackTooltip && tooltipItemId && itemsRef.current[tooltipItemId]) {
-        return;
-      }
-
-      if (tooltipItemId !== itemId) {
-        if (show) {
-          setTooltipItemId(itemId);
-        }
-      } else {
-        if (!show) {
-          setTooltipItemId(null);
-        }
-      }
-
-      setIsFeedbackTooltip(false);
-    };
-
     return (
       <div
         {...baseProps}
@@ -227,24 +147,17 @@ const InternalButtonGroup = forwardRef(
         >
           {items.map((itemOrGroup, index) => {
             const itemContent = (item: ButtonGroupProps.Item) => (
-              <div
+              <ItemElement
                 key={item.id}
-                className={styles['item-wrapper']}
-                ref={element => (itemWrappersRef.current[item.id] = element)}
-                onPointerEnter={() => onShowTooltip(item.id, true)}
-                onPointerLeave={() => onShowTooltip(item.id, false)}
-                onFocus={() => onShowTooltip(item.id, true)}
-                onBlur={() => onShowTooltip(item.id, false)}
-              >
-                <ItemElement
-                  item={item}
-                  tooltipItemId={tooltipItemId}
-                  isFeedbackTooltip={isFeedbackTooltip}
-                  dropdownExpandToViewport={dropdownExpandToViewport}
-                  onItemClick={event => onClickHandler(item.id, event)}
-                  ref={element => (itemsRef.current[item.id] = element)}
-                />
-              </div>
+                item={item}
+                tooltipItemId={tooltipItemId}
+                isFeedbackTooltip={isFeedbackTooltip}
+                dropdownExpandToViewport={dropdownExpandToViewport}
+                setTooltipItemId={setTooltipItemId}
+                setIsFeedbackTooltip={setIsFeedbackTooltip}
+                onItemClick={onItemClick}
+                ref={element => (itemsRef.current[item.id] = element)}
+              />
             );
 
             const isGroupBefore = items[index - 1]?.type === 'group';
