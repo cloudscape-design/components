@@ -19,19 +19,21 @@ const ItemElement = forwardRef(
     },
     ref: React.Ref<HTMLDivElement>
   ) => {
-    return (
-      <>
-        {item.type === 'icon-button' && <IconButtonItem ref={ref} item={item} onItemClick={onItemClick} />}
-        {item.type === 'menu-dropdown' && (
+    switch (item.type) {
+      case 'icon-button':
+        return <IconButtonItem ref={ref} item={item} onItemClick={onItemClick} />;
+      case 'menu-dropdown':
+        return (
           <MenuDropdownItem
             ref={ref}
             item={item}
             onItemClick={onItemClick}
             expandToViewport={dropdownExpandToViewport}
           />
-        )}
-      </>
-    );
+        );
+      default:
+        return null;
+    }
   }
 );
 
