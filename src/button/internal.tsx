@@ -6,7 +6,7 @@ import { fireCancelableEvent, isPlainLeftClick } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
-import analyticsLabels from './analytics-metadata/styles.css.js';
+import analyticsSelectors from './analytics-metadata/styles.css.js';
 import { ButtonIconProps, LeftIcon, RightIcon } from './icon-helper';
 import { ButtonProps } from './interfaces';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -191,7 +191,7 @@ export const InternalButton = React.forwardRef(
       onClick: handleClick,
       [DATA_ATTR_FUNNEL_VALUE]: uniqueId,
       ...getAnalyticsMetadataAttribute(analyticsMetadata),
-      ...getAnalyticsLabelAttribute(children ? `.${analyticsLabels.label}` : ''),
+      ...getAnalyticsLabelAttribute(children ? `.${analyticsSelectors.label}` : ''),
     } as const;
 
     const iconProps: ButtonIconProps = {
@@ -209,7 +209,7 @@ export const InternalButton = React.forwardRef(
     const buttonContent = (
       <>
         <LeftIcon {...iconProps} />
-        {shouldHaveContent && <span className={clsx(styles.content, analyticsLabels.label)}>{children}</span>}
+        {shouldHaveContent && <span className={clsx(styles.content, analyticsSelectors.label)}>{children}</span>}
         <RightIcon {...iconProps} />
       </>
     );
