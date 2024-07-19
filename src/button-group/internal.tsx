@@ -37,7 +37,7 @@ const InternalButtonGroup = forwardRef(
     ref: React.Ref<ButtonGroupProps.Ref>
   ) => {
     const baseProps = getBaseProps(props);
-    const [focusedItemId, setFocusedItemId] = useState<null | string>(null);
+    const focusedIdRef = useRef<null | string>(null);
     const navigationAPI = useRef<SingleTabStopNavigationAPI>(null);
     const containerObjectRef = useRef<HTMLDivElement>(null);
     const containerRef = useMergeRefs(containerObjectRef, __internalRootRef);
@@ -65,7 +65,7 @@ const InternalButtonGroup = forwardRef(
       if (containerObjectRef.current) {
         const buttons: HTMLButtonElement[] = Array.from(containerObjectRef.current.querySelectorAll(`.${styles.item}`));
         const activeButtons = buttons.filter(button => !button.disabled);
-        return activeButtons.find(button => button.dataset.testid === focusedItemId) ?? activeButtons[0] ?? null;
+        return activeButtons.find(button => button.dataset.testid === focusedIdRef.current) ?? activeButtons[0] ?? null;
       }
       return null;
     }
@@ -90,7 +90,7 @@ const InternalButtonGroup = forwardRef(
 
     function onFocus(event: React.FocusEvent) {
       if (event.target instanceof HTMLElement && event.target.dataset.testid) {
-        setFocusedItemId(event.target.dataset.testid);
+        focusedIdRef.current = event.target.dataset.testid;
       }
       navigationAPI.current?.updateFocusTarget();
     }
