@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect } from 'react';
+import React from 'react';
 import { ButtonGroupProps } from './interfaces';
 import { ButtonDropdownProps } from '../button-dropdown/interfaces';
 import { CancelableEventHandler, fireCancelableEvent } from '../internal/events';
@@ -9,22 +9,24 @@ import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 import clsx from 'clsx';
 import InternalButton from '../button/internal';
+import Tooltip from '../internal/components/tooltip';
 
 const MenuDropdownItem = React.forwardRef(
   (
     {
       item,
+      tooltipItemId,
       onItemClick,
-      onDrowdownOpen,
       expandToViewport,
     }: {
       item: ButtonGroupProps.MenuDropdown;
+      tooltipItemId: string | null;
       onItemClick?: CancelableEventHandler<ButtonGroupProps.ItemClickDetails>;
-      onDrowdownOpen: (id: string, open: boolean) => void;
       expandToViewport?: boolean;
     },
     ref: React.Ref<ButtonDropdownProps.Ref>
   ) => {
+    const containerRef = React.useRef<HTMLDivElement>(null);
     const onClickHandler = (event: CustomEvent<ButtonDropdownProps.ItemClickDetails>) => {
       fireCancelableEvent(onItemClick, { id: event.detail.id }, event);
     };
@@ -43,8 +45,15 @@ const MenuDropdownItem = React.forwardRef(
         className={testUtilStyles['button-group-item']}
         data-testid={item.id}
         customTriggerBuilder={({ onClick, isOpen, triggerRef, ariaLabel, ariaExpanded, testUtilsClass }) => (
-          <>
-            <InternalOpenEventEmitter isOpen={isOpen} item={item} onDrowdownOpen={onDrowdownOpen} />
+          <div ref={containerRef}>
+            {!isOpen && tooltipItemId === item.id && (
+              <Tooltip
+                trackRef={containerRef}
+                trackKey={item.id}
+                value={item.text}
+                className={clsx(styles.tooltip, testUtilStyles['button-group-tooltip'])}
+              />
+            )}
             <InternalButton
               ref={triggerRef}
               variant="icon"
@@ -56,27 +65,11 @@ const MenuDropdownItem = React.forwardRef(
               onClick={onClick}
               __title=""
             />
-          </>
+          </div>
         )}
       />
     );
   }
 );
-
-function InternalOpenEventEmitter({
-  item,
-  isOpen,
-  onDrowdownOpen,
-}: {
-  item: ButtonGroupProps.MenuDropdown;
-  isOpen: boolean;
-  onDrowdownOpen: (id: string, open: boolean) => void;
-}) {
-  useEffect(() => {
-    onDrowdownOpen(item.id, isOpen);
-  }, [isOpen, item.id, onDrowdownOpen]);
-
-  return null;
-}
 
 export default MenuDropdownItem;

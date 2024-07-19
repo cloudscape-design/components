@@ -10,27 +10,37 @@ const ItemElement = forwardRef(
   (
     {
       item,
+      tooltipItemId,
+      isFeedbackTooltip,
       dropdownExpandToViewport,
       onItemClick,
-      onDrowdownOpen,
     }: {
       item: ButtonGroupProps.Item;
+      tooltipItemId: string | null;
+      isFeedbackTooltip: boolean;
       dropdownExpandToViewport?: boolean;
       onItemClick?: CancelableEventHandler<ButtonGroupProps.ItemClickDetails | ClickDetail>;
-      onDrowdownOpen: (id: string, open: boolean) => void;
     },
     ref: React.Ref<HTMLDivElement>
   ) => {
     switch (item.type) {
       case 'icon-button':
-        return <IconButtonItem ref={ref} item={item} onItemClick={onItemClick} />;
+        return (
+          <IconButtonItem
+            ref={ref}
+            item={item}
+            onItemClick={onItemClick}
+            tooltipItemId={tooltipItemId}
+            isFeedbackTooltip={isFeedbackTooltip}
+          />
+        );
       case 'menu-dropdown':
         return (
           <MenuDropdownItem
             ref={ref}
             item={item}
+            tooltipItemId={tooltipItemId}
             onItemClick={onItemClick}
-            onDrowdownOpen={onDrowdownOpen}
             expandToViewport={dropdownExpandToViewport}
           />
         );
