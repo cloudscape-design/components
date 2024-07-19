@@ -5,7 +5,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 
 import FilteringToken, { FilteringTokenProps } from '../../../../lib/components/property-filter/filtering-token';
-import { FilteringTokenWrapper } from '../../../../lib/components/test-utils/dom/property-filter';
+import { InternalFilteringTokenWrapper as FilteringTokenWrapper } from '../../../../lib/components/test-utils/dom/property-filter';
 
 const token1 = {
   content: 'property1 = value',

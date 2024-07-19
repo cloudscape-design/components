@@ -73,18 +73,8 @@ export class FilteringTokenWrapper extends ComponentWrapper {
     return this.findByClassName<HTMLButtonElement>(testUtilStyles['filtering-token-dismiss-button'])!;
   }
 
-  findEditButton(): ElementWrapper<HTMLButtonElement> {
-    return this.findByClassName<HTMLButtonElement>(testUtilStyles['filtering-token-edit-button'])!;
-  }
-
   findTokenOperation(): SelectWrapper | null {
     return this.findComponent(`.${testUtilStyles['filtering-token-select']}`, SelectWrapper);
-  }
-
-  findGroupTokens(): Array<FilteringGroupedTokenWrapper> {
-    return this.findAllByClassName(testUtilStyles['filtering-token-inner']).map(
-      w => new FilteringGroupedTokenWrapper(w.getElement())
-    );
   }
 
   /**
@@ -94,6 +84,20 @@ export class FilteringTokenWrapper extends ComponentWrapper {
     const root = options.expandToViewport ? createWrapper() : this;
     const popoverBody = root.findByClassName(popoverStyles.body);
     return popoverBody ? new PropertyFilterEditorDropdownWrapper(popoverBody.getElement()) : null;
+  }
+}
+
+// The internal wrapper has two extra methods that are not available publicly
+// until the property filter token grouping is supported.
+export class InternalFilteringTokenWrapper extends FilteringTokenWrapper {
+  findEditButton(): ElementWrapper<HTMLButtonElement> {
+    return this.findByClassName<HTMLButtonElement>(testUtilStyles['filtering-token-edit-button'])!;
+  }
+
+  findGroupTokens(): Array<FilteringGroupedTokenWrapper> {
+    return this.findAllByClassName(testUtilStyles['filtering-token-inner']).map(
+      w => new FilteringGroupedTokenWrapper(w.getElement())
+    );
   }
 }
 
