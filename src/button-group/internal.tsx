@@ -45,7 +45,7 @@ const InternalButtonGroup = forwardRef(
     const itemWrappersRef = useRef<Record<string, HTMLDivElement | null>>({});
     const [tooltipItemId, setTooltipItemId] = useState<string | null>(null);
     const [isFeedbackTooltip, setIsFeedbackTooltip] = useState(false);
-    const allItems = useMemo(
+    const itemsById = useMemo(
       () =>
         items.reduce<Record<string, ButtonGroupProps.Item>>((acc, curr) => {
           const itemsToAdd = curr.type === 'group' ? curr.items : [curr];
@@ -178,7 +178,7 @@ const InternalButtonGroup = forwardRef(
     }, [tooltipItemId]);
 
     const onClickHandler = (itemId: string, event: CustomEvent<ButtonGroupProps.ItemClickDetails | ClickDetail>) => {
-      const tooltipItem = allItems[itemId];
+      const tooltipItem = itemsById[itemId];
       const popoverFeedback = tooltipItem && 'popoverFeedback' in tooltipItem && tooltipItem.popoverFeedback;
 
       if (popoverFeedback) {
@@ -210,7 +210,7 @@ const InternalButtonGroup = forwardRef(
       setIsFeedbackTooltip(false);
     };
 
-    const tooltipItem = tooltipItemId ? allItems[tooltipItemId] : undefined;
+    const tooltipItem = tooltipItemId ? itemsById[tooltipItemId] : undefined;
 
     return (
       <div
@@ -263,12 +263,10 @@ const InternalButtonGroup = forwardRef(
                 {shouldAddDivider && <div className={styles.divider} />}
                 {itemOrGroup.type === 'group' ? (
                   <div key={index} role="group" aria-label={itemOrGroup.text} className={styles.group}>
-                    {itemOrGroup.items.map(item => (
-                      <React.Fragment key={item.id}>{itemContent(item)}</React.Fragment>
-                    ))}
+                    {itemOrGroup.items.map(item => itemContent(item))}
                   </div>
                 ) : (
-                  <React.Fragment key={itemOrGroup.id}>{itemContent(itemOrGroup)}</React.Fragment>
+                  itemContent(itemOrGroup)
                 )}
               </React.Fragment>
             );
