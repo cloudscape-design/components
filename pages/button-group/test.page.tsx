@@ -85,10 +85,23 @@ const moreActionsMenu: ButtonGroupProps.MenuDropdown = {
   ],
 };
 
+const moreActionsMenu2: ButtonGroupProps.MenuDropdown = {
+  type: 'menu-dropdown',
+  id: 'more-actions2',
+  text: 'More actions',
+  items: [
+    {
+      id: 'cut',
+      iconName: 'delete-marker',
+      text: 'Cut',
+    },
+  ],
+};
+
 const actionsGroup: ButtonGroupProps.Group = {
   type: 'group',
   text: 'Actions',
-  items: [addButton, removeButton, moreActionsMenu],
+  items: [addButton, removeButton, moreActionsMenu, moreActionsMenu2],
 };
 
 export default function ButtonGroupPage() {
