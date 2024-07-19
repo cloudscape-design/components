@@ -69,6 +69,9 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   }
   &.drawer-closed {
     overflow: hidden;
+    &.with-toolbar {
+      display: none;
+    }
   }
   &.drawer-closed:hover {
     background: awsui.$color-background-layout-panel-hover;

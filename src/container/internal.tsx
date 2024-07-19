@@ -12,7 +12,6 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { getGlobalFlag } from '../internal/utils/global-flags';
 import { ContainerProps } from './interfaces';
 import { StickyHeaderContext, useStickyHeader } from './use-sticky-header';
 
@@ -102,7 +101,6 @@ export default function InternalContainer({
   const shouldHaveStickyStyles = isSticky && !isMobile;
 
   const hasMedia = !!media?.content;
-  const hasToolbar = getGlobalFlag('appLayoutWidget');
   const mediaPosition = media?.position ?? 'top';
   return (
     <div
@@ -142,7 +140,6 @@ export default function InternalContainer({
                   [styles['header-dynamic-height']]: hasDynamicHeight,
                   [styles['header-stuck']]: isStuck,
                   [styles['with-paddings']]: !disableHeaderPaddings,
-                  [styles['with-toolbar']]: hasToolbar,
                   [styles['with-hidden-content']]: !children || __hiddenContent,
                   [styles['header-with-media']]: hasMedia,
                   [styles['header-full-page']]: __fullPage && isRefresh,
