@@ -14,7 +14,6 @@ import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 import { useModalContext } from '../internal/context/modal-context';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { ContainerHeaderContextProvider } from '../internal/context/container-header';
-import { getGlobalFlag } from '../internal/utils/global-flags';
 
 export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>, InternalBaseComponentProps {
   __stickyHeader?: boolean;
@@ -100,7 +99,6 @@ export default function InternalContainer({
   const shouldHaveStickyStyles = isSticky && !isMobile;
 
   const hasMedia = !!media?.content;
-  const hasToolbar = getGlobalFlag('appLayoutWidget');
   const mediaPosition = media?.position ?? 'top';
   return (
     <div
@@ -140,7 +138,6 @@ export default function InternalContainer({
                   [styles['header-dynamic-height']]: hasDynamicHeight,
                   [styles['header-stuck']]: isStuck,
                   [styles['with-paddings']]: !disableHeaderPaddings,
-                  [styles['with-toolbar']]: hasToolbar,
                   [styles['with-hidden-content']]: !children || __hiddenContent,
                   [styles['header-with-media']]: hasMedia,
                   [styles['header-full-page']]: __fullPage && isRefresh,

@@ -11,6 +11,7 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
+import { getGlobalFlag } from '../internal/utils/global-flags';
 
 interface SplitPanelContentBottomProps extends SplitPanelContentProps {
   state: TransitionStatus;
@@ -33,6 +34,7 @@ export function SplitPanelContentBottom({
   onToggle,
 }: SplitPanelContentBottomProps) {
   const isRefresh = useVisualRefresh();
+  const hasToolbar = getGlobalFlag('appLayoutWidget');
   const { bottomOffset, leftOffset, rightOffset, disableContentPaddings, contentWrapperPaddings, reportHeaderHeight } =
     useSplitPanelContext();
   const transitionContentBottomRef = useMergeRefs(splitPanelRef || null, transitioningElementRef);
@@ -62,6 +64,7 @@ export function SplitPanelContentBottom({
         [styles['drawer-disable-content-paddings']]: disableContentPaddings,
         [styles.animating]: isRefresh && (state === 'entering' || state === 'exiting'),
         [styles.refresh]: isRefresh,
+        [styles['with-toolbar']]: hasToolbar,
       })}
       onClick={() => !isOpen && onToggle()}
       style={{
