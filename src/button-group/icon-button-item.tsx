@@ -9,18 +9,25 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 import clsx from 'clsx';
+import Tooltip from '../internal/components/tooltip/index.js';
+import LiveRegion from '../internal/components/live-region/index.js';
 
 const IconButtonItem = forwardRef(
   (
     {
       item,
+      tooltipItemId,
+      isFeedbackTooltip,
       onItemClick,
     }: {
       item: ButtonGroupProps.IconButton;
+      tooltipItemId: string | null;
+      isFeedbackTooltip: boolean;
       onItemClick?: CancelableEventHandler<ClickDetail>;
     },
     ref: React.Ref<ButtonProps.Ref>
   ) => {
+    const containerRef = React.useRef<HTMLDivElement>(null);
     const hasIcon = item.iconName || item.iconUrl || item.iconSvg;
 
     if (!hasIcon) {
@@ -28,23 +35,33 @@ const IconButtonItem = forwardRef(
     }
 
     return (
-      <InternalButton
-        variant="icon"
-        loading={item.loading}
-        loadingText={item.loadingText}
-        disabled={item.disabled}
-        iconName={hasIcon ? item.iconName : 'close'}
-        iconAlt={item.text}
-        iconSvg={item.iconSvg}
-        ariaLabel={item.text}
-        onClick={onItemClick}
-        ref={ref}
-        data-testid={item.id}
-        className={clsx(styles.item, testUtilStyles['button-group-item'])}
-        __title=""
-      >
-        {item.text}
-      </InternalButton>
+      <div ref={containerRef}>
+        <InternalButton
+          variant="icon"
+          loading={item.loading}
+          loadingText={item.loadingText}
+          disabled={item.disabled}
+          iconName={hasIcon ? item.iconName : 'close'}
+          iconAlt={item.text}
+          iconSvg={item.iconSvg}
+          ariaLabel={item.text}
+          onClick={onItemClick}
+          ref={ref}
+          data-testid={item.id}
+          className={clsx(styles.item, testUtilStyles['button-group-item'])}
+          __title=""
+        >
+          {item.text}
+        </InternalButton>
+        {tooltipItemId === item.id && !item.disabled && (!isFeedbackTooltip || item.popoverFeedback) && (
+          <Tooltip
+            trackRef={containerRef}
+            trackKey={tooltipItemId}
+            value={(isFeedbackTooltip && <LiveRegion visible={true}>{item.popoverFeedback}</LiveRegion>) || item.text}
+            className={clsx(styles.tooltip, testUtilStyles['button-group-tooltip'])}
+          />
+        )}
+      </div>
     );
   }
 );
