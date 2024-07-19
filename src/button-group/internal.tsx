@@ -277,6 +277,7 @@ const InternalButtonGroup = forwardRef(
         {tooltipItemId &&
           itemWrappersRef.current[tooltipItemId] &&
           tooltipItem &&
+          !tooltipItem.disabled &&
           !(tooltipItem.type === 'menu-dropdown') &&
           (!isFeedbackTooltip || ('popoverFeedback' in tooltipItem && tooltipItem.popoverFeedback)) && (
             <Tooltip
