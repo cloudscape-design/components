@@ -45,6 +45,7 @@ export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   __iconClass?: string;
   __focusable?: boolean;
   __injectAnalyticsComponentMetadata?: boolean;
+  __title?: string;
 } & InternalBaseComponentProps<HTMLAnchorElement | HTMLButtonElement>;
 
 export const InternalButton = React.forwardRef(
@@ -80,6 +81,7 @@ export const InternalButton = React.forwardRef(
       __internalRootRef = null,
       __focusable = false,
       __injectAnalyticsComponentMetadata = false,
+      __title,
       ...props
     }: InternalButtonProps,
     ref: React.Ref<ButtonProps.Ref>
@@ -189,7 +191,7 @@ export const InternalButton = React.forwardRef(
       'aria-expanded': ariaExpanded,
       'aria-controls': ariaControls,
       // add ariaLabel as `title` as visible hint text
-      title: ariaLabel,
+      title: __title ?? ariaLabel,
       className: buttonClass,
       onClick: handleClick,
       [DATA_ATTR_FUNNEL_VALUE]: uniqueId,
