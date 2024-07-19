@@ -21,6 +21,15 @@ $inner-token-padding-inline: styles.$control-padding-horizontal;
 
   display: flex;
   align-content: stretch;
+
+  // Make tokens larger so that individual and group tokens appear of the same size.
+  &.has-groups {
+    min-block-size: calc(2px + #{awsui.$size-vertical-input});
+
+    &.compact-mode {
+      min-block-size: calc(2px + 2 * #{styles.$control-border-width} + #{awsui.$size-vertical-input});
+    }
+  }
 }
 
 .token,
@@ -65,6 +74,9 @@ $inner-token-padding-inline: styles.$control-padding-horizontal;
 }
 
 .token-content {
+  display: flex;
+  align-items: center;
+
   padding-block: $token-padding-block;
   padding-inline: $token-padding-inline;
 

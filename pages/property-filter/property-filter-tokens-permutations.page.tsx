@@ -25,7 +25,7 @@ const token3 = {
   dismissAriaLabel: 'remove filter property3 = value',
 } as const;
 
-const defaultTokenProps: FilteringTokenProps = {
+const tokenProps: FilteringTokenProps = {
   tokens: [],
   operation: 'and',
   groupOperation: 'or',
@@ -43,6 +43,7 @@ const defaultTokenProps: FilteringTokenProps = {
   editorHeader: 'Token editor header',
   editorDismissAriaLabel: 'dismiss token editor',
   editorExpandToViewport: false,
+  hasGroups: false,
 };
 
 const tokenPermutations = createPermutations<Partial<FilteringTokenProps>>([
@@ -65,6 +66,7 @@ const tokenPermutations = createPermutations<Partial<FilteringTokenProps>>([
     operation: ['and'],
     groupOperation: ['or'],
     showOperation: [false, true],
+    hasGroups: [true],
   },
   // Group token with or disabled
   {
@@ -73,6 +75,7 @@ const tokenPermutations = createPermutations<Partial<FilteringTokenProps>>([
     groupOperation: ['and'],
     showOperation: [true],
     disabled: [false, true],
+    hasGroups: [true],
   },
   // Large token group
   {
@@ -84,10 +87,11 @@ const tokenPermutations = createPermutations<Partial<FilteringTokenProps>>([
     operation: ['and'],
     groupOperation: ['or'],
     showOperation: [true],
+    hasGroups: [true],
   },
 ]);
 
-const defaultTokenListProps: TokenListProps<React.ReactNode> = {
+const tokenListProps: TokenListProps<React.ReactNode> = {
   items: [],
   alignment: 'inline',
   renderItem: item => item,
@@ -102,9 +106,9 @@ const tokenListPermutations = createPermutations<Partial<TokenListProps<React.Re
   {
     items: [
       [
-        <FilteringToken key="1" {...defaultTokenProps} tokens={[token1]} />,
-        <FilteringToken key="2" {...defaultTokenProps} showOperation={true} tokens={[token2]} />,
-        <FilteringToken key="3" {...defaultTokenProps} showOperation={true} tokens={[token3]} />,
+        <FilteringToken key="1" {...tokenProps} tokens={[token1]} hasGroups={false} />,
+        <FilteringToken key="2" {...tokenProps} showOperation={true} tokens={[token2]} hasGroups={false} />,
+        <FilteringToken key="3" {...tokenProps} showOperation={true} tokens={[token3]} hasGroups={false} />,
       ],
     ],
     limit: [3, 2],
@@ -113,19 +117,19 @@ const tokenListPermutations = createPermutations<Partial<TokenListProps<React.Re
   {
     items: [
       [
-        <FilteringToken key="2" {...defaultTokenProps} tokens={[token1, token2]} />,
-        <FilteringToken key="1" {...defaultTokenProps} showOperation={true} tokens={[token1]} />,
-        <FilteringToken key="3" {...defaultTokenProps} showOperation={true} tokens={[token2]} />,
+        <FilteringToken key="2" {...tokenProps} tokens={[token1, token2]} hasGroups={true} />,
+        <FilteringToken key="1" {...tokenProps} showOperation={true} tokens={[token1]} hasGroups={true} />,
+        <FilteringToken key="3" {...tokenProps} showOperation={true} tokens={[token2]} hasGroups={true} />,
       ],
       [
-        <FilteringToken key="1" {...defaultTokenProps} tokens={[token1]} />,
-        <FilteringToken key="2" {...defaultTokenProps} showOperation={true} tokens={[token1, token2]} />,
-        <FilteringToken key="3" {...defaultTokenProps} showOperation={true} tokens={[token2]} />,
+        <FilteringToken key="1" {...tokenProps} tokens={[token1]} hasGroups={true} />,
+        <FilteringToken key="2" {...tokenProps} showOperation={true} tokens={[token1, token2]} hasGroups={true} />,
+        <FilteringToken key="3" {...tokenProps} showOperation={true} tokens={[token2]} hasGroups={true} />,
       ],
       [
-        <FilteringToken key="1" {...defaultTokenProps} tokens={[token1]} />,
-        <FilteringToken key="3" {...defaultTokenProps} showOperation={true} tokens={[token2]} />,
-        <FilteringToken key="2" {...defaultTokenProps} showOperation={true} tokens={[token1, token2]} />,
+        <FilteringToken key="1" {...tokenProps} tokens={[token1]} hasGroups={true} />,
+        <FilteringToken key="3" {...tokenProps} showOperation={true} tokens={[token2]} hasGroups={true} />,
+        <FilteringToken key="2" {...tokenProps} showOperation={true} tokens={[token1, token2]} hasGroups={true} />,
       ],
     ],
   },
@@ -138,7 +142,7 @@ export default function () {
       <ScreenshotArea disableAnimations={true}>
         <PermutationsView
           permutations={tokenPermutations}
-          render={permutation => <FilteringToken {...defaultTokenProps} {...permutation} />}
+          render={permutation => <FilteringToken {...tokenProps} {...permutation} />}
         />
 
         <br />
@@ -147,7 +151,7 @@ export default function () {
 
         <PermutationsView
           permutations={tokenListPermutations}
-          render={permutation => <TokenList {...defaultTokenListProps} {...permutation} />}
+          render={permutation => <TokenList {...tokenListProps} {...permutation} />}
         />
       </ScreenshotArea>
     </>

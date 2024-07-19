@@ -42,6 +42,7 @@ const defaultProps: FilteringTokenProps = {
   editorHeader: 'Token editor header',
   editorDismissAriaLabel: 'dismiss editor',
   editorExpandToViewport: false,
+  hasGroups: false,
 };
 
 function renderToken(props: Partial<FilteringTokenProps>): FilteringTokenWrapper {

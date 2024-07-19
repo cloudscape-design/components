@@ -11,8 +11,7 @@
 @use './motion';
 
 $padding-inline-inner-filtering-token: styles.$control-padding-horizontal;
-$padding-block-inner-filtering-token: 1px;
-$size-inner-filtering-token: 22px;
+$padding-block-inner-filtering-token: 0px;
 
 .button-trigger {
   @include styles.styles-reset;
@@ -42,7 +41,7 @@ $size-inner-filtering-token: 22px;
     border-start-end-radius: 0;
     border-end-end-radius: 0;
     block-size: 100%;
-    min-block-size: $size-inner-filtering-token;
+    min-block-size: unset;
 
     @include focus-visible.when-visible {
       @include styles.focus-highlight(awsui.$space-filtering-token-operation-select-focus-outline-gutter);

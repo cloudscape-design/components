@@ -4,11 +4,10 @@
 import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 import clsx from 'clsx';
 
+import { useDensityMode } from '@cloudscape-design/component-toolkit/internal';
+
 import InternalIcon from '../../icon/internal';
 import InternalPopover, { InternalPopoverProps, InternalPopoverRef } from '../../popover/internal';
-import InternalSelect from '../../select/internal';
-
-import testUtilStyles from '../test-classes/styles.css.js';
 
 export namespace FilteringTokenProps {
   export type Operation = 'and' | 'or';
@@ -33,6 +32,7 @@ export interface FilteringTokenProps {
   editorDismissAriaLabel: string;
   editorExpandToViewport: boolean;
   onEditorOpen?: () => void;
+  hasGroups: boolean;
 }
 
 export interface FilteringTokenRef {
@@ -57,7 +57,7 @@ const FilteringToken = forwardRef(
       groupAriaLabel,
       operationAriaLabel,
       groupEditAriaLabel,
-      disabled,
+      disabled = false,
       onChangeOperation,
       onChangeGroupOperation,
       onDismissToken,
@@ -66,6 +66,7 @@ const FilteringToken = forwardRef(
       editorDismissAriaLabel,
       editorExpandToViewport,
       onEditorOpen,
+      hasGroups,
     }: FilteringTokenProps,
     ref: React.Ref<FilteringTokenRef>
   ) => {
@@ -115,6 +116,7 @@ const FilteringToken = forwardRef(
         parent={true}
         grouped={tokens.length > 1}
         disabled={disabled}
+        hasGroups={hasGroups}
       >
         {tokens.length === 1 ? (
           <InternalPopover ref={popoverRef} {...popoverProps}>
@@ -150,6 +152,7 @@ const FilteringToken = forwardRef(
                   parent={false}
                   grouped={false}
                   disabled={disabled}
+                  hasGroups={false}
                 >
                   {token.content}
                 </TokenGroup>
@@ -172,6 +175,7 @@ function TokenGroup({
   parent,
   grouped,
   disabled,
+  hasGroups,
 }: {
   ariaLabel?: string;
   children: React.ReactNode;
@@ -179,14 +183,20 @@ function TokenGroup({
   tokenAction: React.ReactNode;
   parent: boolean;
   grouped: boolean;
-  disabled?: boolean;
+  disabled: boolean;
+  hasGroups: boolean;
 }) {
+  const groupRef = useRef<HTMLDivElement>(null);
+  const isCompactMode = useDensityMode(groupRef) === 'compact';
   return (
     <div
+      ref={groupRef}
       className={clsx(
         parent
           ? clsx(styles.root, testUtilStyles['filtering-token'])
-          : clsx(styles['inner-root'], testUtilStyles['filtering-token-inner'])
+          : clsx(styles['inner-root'], testUtilStyles['filtering-token-inner']),
+        hasGroups && styles['has-groups'],
+        isCompactMode && styles['compact-mode']
       )}
       role="group"
       aria-label={ariaLabel}
