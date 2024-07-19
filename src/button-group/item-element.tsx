@@ -12,10 +12,12 @@ const ItemElement = forwardRef(
       item,
       dropdownExpandToViewport,
       onItemClick,
+      onDrowdownOpen,
     }: {
       item: ButtonGroupProps.Item;
       dropdownExpandToViewport?: boolean;
       onItemClick?: CancelableEventHandler<ButtonGroupProps.ItemClickDetails | ClickDetail>;
+      onDrowdownOpen: (id: string, open: boolean) => void;
     },
     ref: React.Ref<HTMLDivElement>
   ) => {
@@ -28,6 +30,7 @@ const ItemElement = forwardRef(
             ref={ref}
             item={item}
             onItemClick={onItemClick}
+            onDrowdownOpen={onDrowdownOpen}
             expandToViewport={dropdownExpandToViewport}
           />
         );
