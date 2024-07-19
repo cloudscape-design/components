@@ -12,6 +12,10 @@ const renderButtonGroup = (props: ButtonGroupProps, ref?: React.Ref<ButtonGroupP
   return createWrapper(renderResult.container).findButtonGroup()!;
 };
 
+const timeout = async (duration = 0) => {
+  await new Promise(resolve => setTimeout(resolve, duration));
+};
+
 const items1: ButtonGroupProps.ItemOrGroup[] = [
   {
     type: 'group',
@@ -43,9 +47,9 @@ const items1: ButtonGroupProps.ItemOrGroup[] = [
     id: 'misc',
     text: 'Misc',
     items: [
-      { id: 'edit', iconName: 'edit', text: 'Edit' },
-      { id: 'open', iconName: 'file-open', text: 'Open' },
-      { id: 'upload', iconName: 'upload', text: 'Upload' },
+      { id: 'menu-edit', iconName: 'edit', text: 'Edit' },
+      { id: 'menu-open', iconName: 'file-open', text: 'Open' },
+      { id: 'menu-upload', iconName: 'upload', text: 'Upload' },
     ],
   },
 ];
@@ -69,7 +73,7 @@ test('handles menu click event correctly', () => {
   const wrapper = renderButtonGroup({ variant: 'icon', items: items1, ariaLabel: 'Chat actions', onItemClick });
   const buttonDropdown = wrapper.findMenuById('misc')!;
   buttonDropdown.openDropdown();
-  buttonDropdown.findItemById('edit')!.click();
+  buttonDropdown.findItemById('menu-edit')!.click();
 
   expect(onItemClick).toHaveBeenCalled();
 });
@@ -91,25 +95,32 @@ describe('focus', () => {
     expect(wrapper.findMenuById('misc')!.getElement().getElementsByTagName('button')[0]).toHaveFocus();
   });
 
-  test('focuses the correct item', () => {
+  test('focuses the correct item with keyboard', async () => {
     const ref: { current: ButtonGroupProps.Ref | null } = { current: null };
     const wrapper = renderButtonGroup({ variant: 'icon', items: items1, ariaLabel: 'Chat actions' }, ref);
     ref.current?.focus('copy');
 
     fireEvent.keyDown(wrapper.getElement(), { keyCode: KeyCode.right });
+    await timeout();
     expect(wrapper.findButtonById('edit')!.getElement()).toHaveFocus();
     fireEvent.keyDown(wrapper.getElement(), { keyCode: KeyCode.left });
+    await timeout();
     expect(wrapper.findButtonById('copy')!.getElement()).toHaveFocus();
     fireEvent.keyDown(wrapper.getElement(), { keyCode: KeyCode.home });
+    await timeout();
     expect(wrapper.findButtonById('like')!.getElement()).toHaveFocus();
     fireEvent.keyDown(wrapper.getElement(), { keyCode: KeyCode.end });
+    await timeout();
     expect(wrapper.findMenuById('misc')!.getElement().getElementsByTagName('button')[0]).toHaveFocus();
     ref.current?.focus('like');
     fireEvent.keyDown(wrapper.getElement(), { keyCode: KeyCode.right });
+    await timeout();
     expect(wrapper.findButtonById('copy')!.getElement()).toHaveFocus();
     fireEvent.keyDown(wrapper.getElement(), { keyCode: KeyCode.space });
+    await timeout();
     expect(wrapper.findButtonById('copy')!.getElement()).toHaveFocus();
     fireEvent.keyDown(wrapper.getElement(), { keyCode: KeyCode.left, ctrlKey: true });
+    await timeout();
     expect(wrapper.findButtonById('copy')!.getElement()).toHaveFocus();
   });
 });
