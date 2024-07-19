@@ -176,6 +176,9 @@ $cell-offset: calc(#{awsui.$space-m} + #{awsui.$space-xs});
   &:first-child:not(.is-visual-refresh) {
     @include cell-padding-inline-start($cell-edge-horizontal-padding);
   }
+  &-align-top {
+    vertical-align: top;
+  }
   &-first-row {
     border-block-start: $border-placeholder;
   }

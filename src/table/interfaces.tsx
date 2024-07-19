@@ -427,6 +427,7 @@ export namespace TableProps {
     maxWidth?: number | string;
     editConfig?: EditConfig<ItemType>;
     isRowHeader?: boolean;
+    verticalAlign?: VerticalAlignType;
     cell(item: ItemType): React.ReactNode;
   } & SortingColumn<ItemType>;
 
@@ -435,6 +436,7 @@ export namespace TableProps {
     last?: number;
   }
 
+  export type VerticalAlignType = 'center' | 'top';
   export type SelectionType = 'single' | 'multi';
   export type Variant = 'container' | 'embedded' | 'borderless' | 'stacked' | 'full-page';
   export interface SelectionState<T> {

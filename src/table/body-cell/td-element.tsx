@@ -9,6 +9,7 @@ import { ExpandToggleButton } from '../expandable-rows/expand-toggle-button';
 import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
 import { getTableCellRoleProps, TableRole } from '../table-role';
 import { getStickyClassNames } from '../utils';
+import { TableProps } from '../interfaces.js';
 
 import styles from './styles.css.js';
 
@@ -45,6 +46,7 @@ export interface TableTdElementProps {
   onExpandableItemToggle?: () => void;
   expandButtonLabel?: string;
   collapseButtonLabel?: string;
+  verticalAlign?: TableProps.VerticalAlignType;
 }
 
 export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElementProps>(
@@ -79,6 +81,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       onExpandableItemToggle,
       expandButtonLabel,
       collapseButtonLabel,
+      verticalAlign,
     },
     ref
   ) => {
@@ -115,6 +118,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           hasFooter && styles['has-footer'],
           level !== undefined && styles['body-cell-expandable'],
           level !== undefined && styles[`expandable-level-${getLevelClassSuffix(level)}`],
+          verticalAlign === 'top' && styles['body-cell-align-top'],
           stickyStyles.className
         )}
         onClick={onClick}

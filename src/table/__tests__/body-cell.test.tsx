@@ -350,4 +350,17 @@ describe('TableBodyCell', () => {
     setCurrentTarget(null);
     expect(tableCell).not.toHaveAttribute('tabIndex');
   });
+
+  describe('vertical align', () => {
+    const verticalAlignTopClass = `.${styles['body-cell-align-top']}`;
+    test('verticalAlign style is not present by default', () => {
+      const { container } = render(<TestComponent />);
+      expect(container.querySelector(verticalAlignTopClass)!).not.toBeInTheDocument();
+    });
+
+    test('verticalAlign style works as expected when defined', () => {
+      const { container } = render(<TestComponent verticalAlign="top" />);
+      expect(container.querySelector(verticalAlignTopClass)!).toBeInTheDocument();
+    });
+  });
 });
