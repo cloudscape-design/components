@@ -44,6 +44,7 @@ const InternalButtonGroup = forwardRef(
     const itemsRef = useRef<Record<string, ButtonProps.Ref | null>>({});
     const itemWrappersRef = useRef<Record<string, HTMLDivElement | null>>({});
     const [tooltipItemId, setTooltipItemId] = useState<string | null>(null);
+    const [dropdownItemId, setDropdownItemId] = useState<string | null>(null);
     const [isFeedbackTooltip, setIsFeedbackTooltip] = useState(false);
     const itemsById = useMemo(
       () =>
@@ -210,7 +211,23 @@ const InternalButtonGroup = forwardRef(
       setIsFeedbackTooltip(false);
     };
 
+    const onDropdownOpen = (id: string, open: boolean) => {
+      const dropdownItemIdValue = open ? id : null;
+      if (dropdownItemIdValue === dropdownItemId) {
+        return;
+      } else if (dropdownItemId && dropdownItemId !== id) {
+        return;
+      } else if (dropdownItemId && !open) {
+        setDropdownItemId(null);
+        setTooltipItemId(null);
+        setIsFeedbackTooltip(false);
+      } else {
+        setDropdownItemId(dropdownItemIdValue);
+      }
+    };
+
     const tooltipItem = tooltipItemId ? itemsById[tooltipItemId] : undefined;
+    const popoverFeedback = tooltipItem && 'popoverFeedback' in tooltipItem && tooltipItem.popoverFeedback;
 
     return (
       <div
@@ -244,6 +261,7 @@ const InternalButtonGroup = forwardRef(
                   item={item}
                   dropdownExpandToViewport={dropdownExpandToViewport}
                   onItemClick={event => onClickHandler(item.id, event)}
+                  onDrowdownOpen={onDropdownOpen}
                   ref={element => (itemsRef.current[item.id] = element)}
                 />
               </div>
@@ -275,15 +293,14 @@ const InternalButtonGroup = forwardRef(
         {tooltipItemId &&
           itemWrappersRef.current[tooltipItemId] &&
           tooltipItem &&
+          (!dropdownItemId || dropdownItemId !== tooltipItemId) &&
           !tooltipItem.disabled &&
-          !(tooltipItem.type === 'menu-dropdown') &&
-          (!isFeedbackTooltip || ('popoverFeedback' in tooltipItem && tooltipItem.popoverFeedback)) && (
+          (!isFeedbackTooltip || popoverFeedback) && (
             <Tooltip
               trackRef={{ current: itemWrappersRef.current[tooltipItemId] }}
               trackKey={tooltipItemId}
               value={
-                (isFeedbackTooltip && <LiveRegion visible={true}>{tooltipItem.popoverFeedback}</LiveRegion>) ||
-                tooltipItem.text
+                (isFeedbackTooltip && <LiveRegion visible={true}>{popoverFeedback}</LiveRegion>) || tooltipItem.text
               }
               className={clsx(styles.tooltip, testUtilStyles['button-group-tooltip'])}
             />
