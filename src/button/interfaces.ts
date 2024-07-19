@@ -5,7 +5,7 @@ import { IconProps } from '../icon/interfaces';
 import React from 'react';
 import { BaseNavigationDetail, CancelableEventHandler, ClickDetail as _ClickDetail } from '../internal/events';
 
-export interface ButtonProps extends BaseComponentProps {
+export interface BaseButtonProps {
   /**
    * Renders the button as disabled and prevents clicks.
    */
@@ -29,10 +29,6 @@ export interface ButtonProps extends BaseComponentProps {
    * Displays an icon next to the text. You can use the `iconAlign` property to position the icon.
    */
   iconName?: IconProps.Name;
-  /**
-   * Specifies the alignment of the icon.
-   */
-  iconAlign?: ButtonProps.IconAlign;
   /**
    * Specifies the URL of a custom icon. Use this property if the icon you want isn't available.
    *
@@ -66,10 +62,6 @@ export interface ButtonProps extends BaseComponentProps {
    * This property is ignored if you use a predefined icon or if you set your custom icon using the `iconSvg` slot.
    */
   iconAlt?: string;
-  /**
-   * The form action that is performed by a button click.
-   */
-  formAction?: ButtonProps.FormAction;
 
   /**
    * Adds `aria-label` to the button element. Use this to provide an accessible name for buttons
@@ -82,6 +74,60 @@ export interface ButtonProps extends BaseComponentProps {
    * Adds `aria-describedby` to the button.
    */
   ariaDescribedby?: string;
+
+  /**
+   * Specifies if the `text` content wraps. If you set it to `false`, it prevents the text from wrapping.
+   */
+  wrapText?: boolean;
+
+  /** Determines the general styling of the button as follows:
+   * * `primary` for primary buttons.
+   * * `normal` for secondary buttons.
+   * * `link` for tertiary buttons.
+   * * `icon` to display an icon only (no text).
+   * * `inline-icon` to display an icon-only (no text) button within a text context.
+   * * `inline-link` to display a tertiary button with no outer padding.
+   */
+  variant?: ButtonProps.Variant;
+
+  /**
+   * Text displayed in the button element.
+   * @displayname text
+   */
+  children?: React.ReactNode;
+
+  /**
+   * Called when the user clicks on the button and the button is not disabled or in loading state.
+   */
+  onClick?: CancelableEventHandler<ButtonProps.ClickDetail>;
+
+  /**
+   * Called when the user clicks on the button with the left mouse button without pressing
+   * modifier keys (that is, CTRL, ALT, SHIFT, META), and the button has an `href` set.
+   */
+  onFollow?: CancelableEventHandler<ButtonProps.FollowDetail>;
+
+  /**
+   * Adds `aria-controls` to the button. Use when the button controls the contents or presence of an element.
+   */
+  ariaControls?: string;
+
+  /**
+   * Sets the button width to be 100% of the parent container width. Button content is centered.
+   */
+  fullWidth?: boolean;
+}
+
+export interface ButtonProps extends BaseComponentProps, BaseButtonProps {
+  /**
+   * Specifies the alignment of the icon.
+   */
+  iconAlign?: ButtonProps.IconAlign;
+
+  /**
+   * The form action that is performed by a button click.
+   */
+  formAction?: ButtonProps.FormAction;
 
   /**
    * Applies button styling to a link. Use this property if you need a link styled as a button (`variant=link`).
@@ -108,57 +154,15 @@ export interface ButtonProps extends BaseComponentProps {
    **/
   download?: boolean | string;
 
-  /**
-   * Specifies if the `text` content wraps. If you set it to `false`, it prevents the text from wrapping.
-   */
-  wrapText?: boolean;
-
-  /** Determines the general styling of the button as follows:
-   * * `primary` for primary buttons.
-   * * `normal` for secondary buttons.
-   * * `link` for tertiary buttons.
-   * * `icon` to display an icon only (no text).
-   * * `inline-icon` to display an icon-only (no text) button within a text context.
-   * * `inline-link` to display a tertiary button with no outer padding.
-   */
-  variant?: ButtonProps.Variant;
-
   /** The id of the <form> element to associate with the button. The value of this attribute must be the id of a <form> in the same document.
    *  Use when a button is not the ancestor of a form element, such as when used in a modal.
    */
   form?: string;
 
   /**
-   * Text displayed in the button element.
-   * @displayname text
-   */
-  children?: React.ReactNode;
-
-  /**
-   * Called when the user clicks on the button and the button is not disabled or in loading state.
-   */
-  onClick?: CancelableEventHandler<ButtonProps.ClickDetail>;
-
-  /**
-   * Called when the user clicks on the button with the left mouse button without pressing
-   * modifier keys (that is, CTRL, ALT, SHIFT, META), and the button has an `href` set.
-   */
-  onFollow?: CancelableEventHandler<ButtonProps.FollowDetail>;
-
-  /**
    * Adds aria-expanded to the button element. Use when the button controls an expandable element.
    */
   ariaExpanded?: boolean;
-
-  /**
-   * Adds `aria-controls` to the button. Use when the button controls the contents or presence of an element.
-   */
-  ariaControls?: string;
-
-  /**
-   * Sets the button width to be 100% of the parent container width. Button content is centered.
-   */
-  fullWidth?: boolean;
 }
 
 export namespace ButtonProps {
