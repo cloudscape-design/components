@@ -15,12 +15,12 @@ const MenuDropdownItem = React.forwardRef(
   (
     {
       item,
-      tooltipItemId,
+      showTooltip,
       onItemClick,
       expandToViewport,
     }: {
       item: ButtonGroupProps.MenuDropdown;
-      tooltipItemId: string | null;
+      showTooltip: boolean;
       onItemClick?: CancelableEventHandler<ButtonGroupProps.ItemClickDetails>;
       expandToViewport?: boolean;
     },
@@ -46,7 +46,7 @@ const MenuDropdownItem = React.forwardRef(
         data-testid={item.id}
         customTriggerBuilder={({ onClick, isOpen, triggerRef, ariaLabel, ariaExpanded, testUtilsClass }) => (
           <div ref={containerRef}>
-            {!isOpen && tooltipItemId === item.id && (
+            {!isOpen && showTooltip && (
               <Tooltip
                 trackRef={containerRef}
                 trackKey={item.id}

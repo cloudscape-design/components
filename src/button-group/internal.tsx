@@ -39,8 +39,7 @@ const InternalButtonGroup = forwardRef(
     const containerObjectRef = useRef<HTMLDivElement>(null);
     const containerRef = useMergeRefs(containerObjectRef, __internalRootRef);
     const itemsRef = useRef<Record<string, ButtonProps.Ref | null>>({});
-    const [tooltipItemId, setTooltipItemId] = useState<string | null>(null);
-    const [isFeedbackTooltip, setIsFeedbackTooltip] = useState(false);
+    const [feedbackItemId, setFeedbackItemId] = useState<string | null>(null);
 
     useImperativeHandle(ref, () => ({
       focus: id => {
@@ -150,11 +149,9 @@ const InternalButtonGroup = forwardRef(
               <ItemElement
                 key={item.id}
                 item={item}
-                tooltipItemId={tooltipItemId}
-                isFeedbackTooltip={isFeedbackTooltip}
                 dropdownExpandToViewport={dropdownExpandToViewport}
-                setTooltipItemId={setTooltipItemId}
-                setIsFeedbackTooltip={setIsFeedbackTooltip}
+                feedbackItemId={feedbackItemId}
+                setFeedbackItemId={setFeedbackItemId}
                 onItemClick={onItemClick}
                 ref={element => (itemsRef.current[item.id] = element)}
               />
