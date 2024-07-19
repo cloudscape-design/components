@@ -1,13 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
-export function useObservedElement(selector: string) {
+export function useObservedElement(rootElementRef: React.RefObject<HTMLElement>, selector: string) {
   const getElement = useCallback(() => {
+    const document = rootElementRef.current?.ownerDocument ?? window.document;
     return document.querySelector(selector);
-  }, [selector]);
+  }, [rootElementRef, selector]);
 
   const [height, setHeight] = useState(0);
 
