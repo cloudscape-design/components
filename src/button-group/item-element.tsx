@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { forwardRef, useEffect } from 'react';
+import React, { forwardRef, useEffect, useImperativeHandle } from 'react';
 import { ButtonGroupProps } from './interfaces.js';
+import { ButtonProps } from '../button/interfaces.js';
 import { ClickDetail, fireCancelableEvent, NonCancelableEventHandler } from '../internal/events/index.js';
 import IconButtonItem from './icon-button-item.js';
 import MenuDropdownItem from './menu-dropdown-item.js';
@@ -11,42 +12,48 @@ const ItemElement = forwardRef(
   (
     {
       item,
-      tooltipItemId,
-      isFeedbackTooltip,
       dropdownExpandToViewport,
-      setTooltipItemId,
-      setIsFeedbackTooltip,
+      feedbackItemId,
+      setFeedbackItemId,
       onItemClick,
     }: {
       item: ButtonGroupProps.Item;
-      tooltipItemId: string | null;
-      isFeedbackTooltip: boolean;
       dropdownExpandToViewport?: boolean;
-      setTooltipItemId: (id: string | null) => void;
-      setIsFeedbackTooltip: (isFeedbackTooltip: boolean) => void;
+      feedbackItemId: string | null;
+      setFeedbackItemId: (id: string | null) => void;
       onItemClick?: NonCancelableEventHandler<ButtonGroupProps.ItemClickDetails> | undefined;
     },
-    ref: React.Ref<HTMLDivElement>
+    ref: React.Ref<ButtonProps.Ref>
   ) => {
     const containerRef = React.useRef<HTMLDivElement>(null);
+    const buttonRef = React.useRef<HTMLButtonElement>(null);
+    const [showTooltip, setShowTooltip] = React.useState(false);
+
+    useImperativeHandle(ref, () => ({
+      focus: () => {
+        buttonRef.current?.focus();
+      },
+    }));
 
     useEffect(() => {
       return () => {
-        if (item.id === tooltipItemId) {
-          setTooltipItemId(null);
-          setIsFeedbackTooltip(false);
+        if (!showTooltip) {
+          return;
         }
+
+        setShowTooltip(false);
+        setFeedbackItemId(null);
       };
-    }, [item.id, setIsFeedbackTooltip, setTooltipItemId, tooltipItemId]);
+    }, [item.id, setFeedbackItemId, showTooltip]);
 
     useEffect(() => {
-      if (!tooltipItemId || tooltipItemId !== item.id) {
+      if (!showTooltip) {
         return;
       }
 
       const close = () => {
-        setTooltipItemId(null);
-        setIsFeedbackTooltip(false);
+        setShowTooltip(false);
+        setFeedbackItemId(null);
       };
 
       const handlePointerDownEvent = (event: PointerEvent) => {
@@ -70,35 +77,30 @@ const ItemElement = forwardRef(
         window.removeEventListener('pointerdown', handlePointerDownEvent);
         window.removeEventListener('keydown', handleKeyDownEvent);
       };
-    }, [item.id, setIsFeedbackTooltip, setTooltipItemId, tooltipItemId]);
+    }, [item.id, setFeedbackItemId, showTooltip]);
 
     const onShowTooltip = (show: boolean) => {
-      if (isFeedbackTooltip && tooltipItemId) {
+      if (feedbackItemId && (feedbackItemId !== item.id || (feedbackItemId && showTooltip))) {
         return;
       }
 
-      if (tooltipItemId !== item.id) {
-        if (show) {
-          setTooltipItemId(item.id);
-        }
-      } else {
-        if (!show) {
-          setTooltipItemId(null);
-        }
+      if (show) {
+        buttonRef.current?.focus();
       }
 
-      setIsFeedbackTooltip(false);
+      setShowTooltip(show);
+      setFeedbackItemId(null);
     };
 
     const onClickHandler = (event: CustomEvent<ButtonGroupProps.ItemClickDetails | ClickDetail>) => {
       const popoverFeedback = 'popoverFeedback' in item && item.popoverFeedback;
 
       if (popoverFeedback) {
-        setTooltipItemId(item.id);
-        setIsFeedbackTooltip(true);
+        setShowTooltip(true);
+        setFeedbackItemId(item.id);
       } else {
-        setTooltipItemId(null);
-        setIsFeedbackTooltip(false);
+        setShowTooltip(false);
+        setFeedbackItemId(null);
       }
 
       fireCancelableEvent(onItemClick, { id: 'id' in event.detail ? event.detail.id : item.id }, event);
@@ -116,18 +118,18 @@ const ItemElement = forwardRef(
       >
         {item.type === 'icon-button' && (
           <IconButtonItem
-            ref={ref}
+            ref={buttonRef}
             item={item}
             onItemClick={onClickHandler}
-            tooltipItemId={tooltipItemId}
-            isFeedbackTooltip={isFeedbackTooltip}
+            showTooltip={showTooltip}
+            feedbackItemId={feedbackItemId}
           />
         )}
         {item.type === 'menu-dropdown' && (
           <MenuDropdownItem
-            ref={ref}
+            ref={buttonRef}
             item={item}
-            tooltipItemId={tooltipItemId}
+            showTooltip={showTooltip}
             onItemClick={onClickHandler}
             expandToViewport={dropdownExpandToViewport}
           />

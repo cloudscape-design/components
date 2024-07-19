@@ -16,19 +16,20 @@ const IconButtonItem = forwardRef(
   (
     {
       item,
-      tooltipItemId,
-      isFeedbackTooltip,
+      showTooltip,
+      feedbackItemId,
       onItemClick,
     }: {
       item: ButtonGroupProps.IconButton;
-      tooltipItemId: string | null;
-      isFeedbackTooltip: boolean;
+      showTooltip: boolean;
+      feedbackItemId: string | null;
       onItemClick?: CancelableEventHandler<ClickDetail>;
     },
     ref: React.Ref<ButtonProps.Ref>
   ) => {
     const containerRef = React.useRef<HTMLDivElement>(null);
     const hasIcon = item.iconName || item.iconUrl || item.iconSvg;
+    const isFeedbackTooltip = feedbackItemId === item.id;
 
     if (!hasIcon) {
       warnOnce('ButtonGroup', `Missing icon for item with id: ${item.id}`);
@@ -53,10 +54,10 @@ const IconButtonItem = forwardRef(
         >
           {item.text}
         </InternalButton>
-        {tooltipItemId === item.id && !item.disabled && (!isFeedbackTooltip || item.popoverFeedback) && (
+        {showTooltip && !item.disabled && (!isFeedbackTooltip || item.popoverFeedback) && (
           <Tooltip
             trackRef={containerRef}
-            trackKey={tooltipItemId}
+            trackKey={item.id}
             value={(isFeedbackTooltip && <LiveRegion visible={true}>{item.popoverFeedback}</LiveRegion>) || item.text}
             className={clsx(styles.tooltip, testUtilStyles['button-group-tooltip'])}
           />
