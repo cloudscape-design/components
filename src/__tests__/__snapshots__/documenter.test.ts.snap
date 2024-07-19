@@ -12860,6 +12860,11 @@ The function will be called when a user clicks on the trigger button.",
             "type": "string",
           },
           Object {
+            "name": "modalLastUpdatedText",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
             "name": "modalSubmitButton",
             "optional": true,
             "type": "string",
