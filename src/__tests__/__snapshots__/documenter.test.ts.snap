@@ -14708,7 +14708,8 @@ add a meaningful description to the whole selection.
        The \`cellContext\` object contains the following properties:
     * \`cellContext.currentValue\` - State to keep track of a value in input fields while editing.
     * \`cellContext.setValue\` - Function to update \`currentValue\`. This should be called when the value in input field changes.
-* \`isRowHeader\` (boolean) - Specifies that cells in this column should be used as row headers.",
+* \`isRowHeader\` (boolean) - Specifies that cells in this column should be used as row headers.
+* \`verticalAlign\` ('middle' | 'top') - Determines the alignment of the content in the table cell.",
       "name": "columnDefinitions",
       "optional": false,
       "type": "ReadonlyArray<TableProps.ColumnDefinition<T>>",
