@@ -33,13 +33,15 @@ export function IframeWrapper({ id, AppComponent }: { id: string; AppComponent: 
 
   useEffect(() => {
     const iframeEl = iframeRef.current;
-    if (!iframeEl) {
+    if (!iframeEl || !iframeEl.contentDocument) {
       return;
     }
-    const innerAppRoot = iframeEl.contentDocument!.createElement('div');
-    iframeEl.contentDocument!.body.appendChild(innerAppRoot);
-    copyStyles(document, iframeEl.contentDocument!);
-    const syncClassesCleanup = syncClasses(document.body, iframeEl.contentDocument!.body);
+    const iframeDocument = iframeEl.contentDocument;
+    const innerAppRoot = iframeDocument.createElement('div');
+    iframeDocument.body.appendChild(innerAppRoot);
+    copyStyles(document, iframeDocument);
+    iframeDocument.dir = document.dir;
+    const syncClassesCleanup = syncClasses(document.body, iframeDocument.body);
     ReactDOM.render(<AppComponent />, innerAppRoot);
     return () => {
       syncClassesCleanup();
@@ -47,5 +49,5 @@ export function IframeWrapper({ id, AppComponent }: { id: string; AppComponent: 
     };
   }, [AppComponent, urlParams.visualRefresh]);
 
-  return <iframe id={id} ref={iframeRef} className={styles['full-screen']}></iframe>;
+  return <iframe id={id} title={id} ref={iframeRef} className={styles['full-screen']}></iframe>;
 }

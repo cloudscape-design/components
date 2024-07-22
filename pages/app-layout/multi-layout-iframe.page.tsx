@@ -6,11 +6,13 @@ import { Breadcrumbs, Containers, Navigation, Tools } from './utils/content-bloc
 import * as toolsContent from './utils/tools-content';
 import { IframeWrapper } from './utils/iframe-wrapper';
 import ScreenshotArea from '../utils/screenshot-area';
+import labels from './utils/labels';
 
 function InnerApp() {
   return (
     <AppLayout
       data-testid="secondary-layout"
+      ariaLabels={labels}
       breadcrumbs={<Breadcrumbs />}
       navigationHide={true}
       content={<Containers />}
@@ -24,6 +26,7 @@ export default function () {
     <ScreenshotArea gutters={false}>
       <AppLayout
         data-testid="main-layout"
+        ariaLabels={labels}
         navigation={<Navigation />}
         toolsHide={true}
         disableContentPaddings={true}
