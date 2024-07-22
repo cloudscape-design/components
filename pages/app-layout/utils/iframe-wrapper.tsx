@@ -2,7 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
+
 import AppContext from '../../app/app-context';
+
 import styles from './iframe-wrapper.scss';
 
 function copyStyles(srcDoc: Document, targetDoc: Document) {
@@ -16,6 +18,7 @@ function copyStyles(srcDoc: Document, targetDoc: Document) {
 }
 
 function syncClasses(from: HTMLElement, to: HTMLElement) {
+  to.className = from.className;
   const observer = new MutationObserver(() => {
     to.className = from.className;
   });
