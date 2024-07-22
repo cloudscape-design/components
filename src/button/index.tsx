@@ -74,6 +74,7 @@ const Button = React.forwardRef(
         ariaControls={ariaControls}
         fullWidth={fullWidth}
         form={form}
+        __injectAnalyticsComponentMetadata={true}
       >
         {children}
       </InternalButton>

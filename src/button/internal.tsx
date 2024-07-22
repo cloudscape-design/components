@@ -6,6 +6,7 @@ import { fireCancelableEvent, isPlainLeftClick } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
+import analyticsSelectors from './analytics-metadata/styles.css.js';
 import { ButtonIconProps, LeftIcon, RightIcon } from './icon-helper';
 import { ButtonProps } from './interfaces';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -26,6 +27,11 @@ import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
 import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
 import Tooltip from '../internal/components/tooltip/index.js';
 import useHiddenDescription from '../internal/hooks/use-hidden-description';
+import {
+  getAnalyticsMetadataAttribute,
+  getAnalyticsLabelAttribute,
+} from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+import { GeneratedAnalyticsMetadataButtonFragment } from './analytics-metadata/interfaces';
 
 export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   variant?: ButtonProps['variant'] | 'flashbar-icon' | 'breadcrumb-group' | 'menu-trigger' | 'modal-dismiss';
@@ -35,6 +41,7 @@ export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
     | Record<`data-${string}`, string>;
   __iconClass?: string;
   __focusable?: boolean;
+  __injectAnalyticsComponentMetadata?: boolean;
 } & InternalBaseComponentProps<HTMLAnchorElement | HTMLButtonElement>;
 
 export const InternalButton = React.forwardRef(
@@ -69,6 +76,7 @@ export const InternalButton = React.forwardRef(
       __nativeAttributes,
       __internalRootRef = null,
       __focusable = false,
+      __injectAnalyticsComponentMetadata = false,
       ...props
     }: InternalButtonProps,
     ref: React.Ref<ButtonProps.Ref>
@@ -152,6 +160,20 @@ export const InternalButton = React.forwardRef(
       tabIndex: isAnchor && isNotInteractive ? -1 : explicitTabIndex,
     });
 
+    const analyticsMetadata: GeneratedAnalyticsMetadataButtonFragment = disabled
+      ? {}
+      : {
+          action: 'click',
+          detail: { label: '' },
+        };
+    if (__injectAnalyticsComponentMetadata) {
+      analyticsMetadata.component = {
+        name: 'awsui.Button',
+        label: '',
+        properties: { variant, disabled: `${disabled}` },
+      };
+    }
+
     const buttonProps = {
       ...props,
       ...__nativeAttributes,
@@ -168,6 +190,8 @@ export const InternalButton = React.forwardRef(
       className: buttonClass,
       onClick: handleClick,
       [DATA_ATTR_FUNNEL_VALUE]: uniqueId,
+      ...getAnalyticsMetadataAttribute(analyticsMetadata),
+      ...getAnalyticsLabelAttribute(children ? `.${analyticsSelectors.label}` : ''),
     } as const;
 
     const iconProps: ButtonIconProps = {
@@ -185,7 +209,7 @@ export const InternalButton = React.forwardRef(
     const buttonContent = (
       <>
         <LeftIcon {...iconProps} />
-        {shouldHaveContent && <span className={styles.content}>{children}</span>}
+        {shouldHaveContent && <span className={clsx(styles.content, analyticsSelectors.label)}>{children}</span>}
         <RightIcon {...iconProps} />
       </>
     );
