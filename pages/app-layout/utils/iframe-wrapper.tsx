@@ -15,6 +15,18 @@ function copyStyles(srcDoc: Document, targetDoc: Document) {
   }
 }
 
+function syncClasses(from: HTMLElement, to: HTMLElement) {
+  const observer = new MutationObserver(() => {
+    to.className = from.className;
+  });
+
+  observer.observe(from, { attributes: true, attributeFilter: ['class'] });
+
+  return () => {
+    observer.disconnect();
+  };
+}
+
 export function IframeWrapper({ id, AppComponent }: { id: string; AppComponent: React.ComponentType }) {
   const { urlParams } = useContext(AppContext);
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -24,15 +36,13 @@ export function IframeWrapper({ id, AppComponent }: { id: string; AppComponent: 
     if (!iframeEl) {
       return;
     }
-    console.log('Mounting iframe');
     const innerAppRoot = iframeEl.contentDocument!.createElement('div');
     iframeEl.contentDocument!.body.appendChild(innerAppRoot);
     copyStyles(document, iframeEl.contentDocument!);
-    if (urlParams.visualRefresh) {
-      iframeEl.contentDocument!.body.className = 'awsui-visual-refresh';
-    }
+    const syncClassesCleanup = syncClasses(document.body, iframeEl.contentDocument!.body);
     ReactDOM.render(<AppComponent />, innerAppRoot);
     return () => {
+      syncClassesCleanup();
       ReactDOM.unmountComponentAtNode(innerAppRoot);
     };
   }, [AppComponent, urlParams.visualRefresh]);
