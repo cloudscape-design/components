@@ -1,25 +1,27 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useImperativeHandle, useRef, forwardRef, useEffect, useState } from 'react';
-import { getBaseProps } from '../internal/base-component';
-import { ButtonGroupProps, InternalButtonGroupProps } from './interfaces';
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import clsx from 'clsx';
+
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
 import { ButtonProps } from '../button/interfaces';
+import { getBaseProps } from '../internal/base-component';
+import { getAllFocusables } from '../internal/components/focus-lock/utils';
 import {
   SingleTabStopNavigationAPI,
   SingleTabStopNavigationProvider,
 } from '../internal/context/single-tab-stop-navigation-context';
+import { hasModifierKeys } from '../internal/events';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { KeyCode } from '../internal/keycode';
-import { hasModifierKeys } from '../internal/events';
 import { circleIndex } from '../internal/utils/circle-index';
-import { getAllFocusables } from '../internal/components/focus-lock/utils';
-import { nodeBelongs } from '../internal/utils/node-belongs';
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
-import ItemElement from './item-element.js';
-import testUtilStyles from './test-classes/styles.css.js';
 import handleKey from '../internal/utils/handle-key';
-import clsx from 'clsx';
+import { ButtonGroupProps, InternalButtonGroupProps } from './interfaces';
+import ItemElement from './item-element.js';
+
 import styles from './styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
 
 const InternalButtonGroup = forwardRef(
   (
@@ -56,17 +58,11 @@ const InternalButtonGroup = forwardRef(
       return null;
     }
 
-    function onUnregisterFocusable(focusableElement: HTMLElement) {
-      const isUnregisteringFocusedNode = nodeBelongs(focusableElement, document.activeElement);
-      if (isUnregisteringFocusedNode) {
-        // Wait for unmounted node to get removed from the DOM.
-        // Only refocus when the node is actually removed (no such ID anymore).
-        setTimeout(() => {
-          const target = navigationAPI.current?.getFocusTarget();
-          if (target && target.dataset.testid !== focusableElement.dataset.testid) {
-            target.focus();
-          }
-        }, 0);
+    function onUnregisterActive(focusableElement: HTMLElement) {
+      // Only refocus when the node is actually removed (no such ID anymore).
+      const target = navigationAPI.current?.getFocusTarget();
+      if (target && target.dataset.testid !== focusableElement.dataset.testid) {
+        target.focus();
       }
     }
 
@@ -146,7 +142,7 @@ const InternalButtonGroup = forwardRef(
           ref={navigationAPI}
           navigationActive={true}
           getNextFocusTarget={getNextFocusTarget}
-          onUnregisterFocusable={onUnregisterFocusable}
+          onUnregisterActive={onUnregisterActive}
         >
           {items.map((itemOrGroup, index) => {
             const itemContent = (item: ButtonGroupProps.Item) => (

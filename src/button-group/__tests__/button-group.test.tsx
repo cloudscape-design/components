@@ -2,10 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
+
 import { KeyCode } from '@cloudscape-design/component-toolkit/internal';
+
 import ButtonGroup, { ButtonGroupProps } from '../../../lib/components/button-group';
-import buttonStyles from '../../../lib/components/button/styles.css.js';
 import createWrapper from '../../../lib/components/test-utils/dom';
+
+import buttonStyles from '../../../lib/components/button/styles.css.js';
 
 const renderButtonGroup = (props: ButtonGroupProps, ref?: React.Ref<ButtonGroupProps.Ref>) => {
   const renderResult = render(<ButtonGroup ref={ref} {...props} />);

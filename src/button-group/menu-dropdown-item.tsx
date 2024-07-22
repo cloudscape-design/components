@@ -1,15 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { ButtonGroupProps } from './interfaces';
+import clsx from 'clsx';
+
+import InternalButton from '../button/internal';
 import { ButtonDropdownProps } from '../button-dropdown/interfaces';
-import { CancelableEventHandler, fireCancelableEvent } from '../internal/events';
 import ButtonDropdown from '../button-dropdown/internal';
+import Tooltip from '../internal/components/tooltip';
+import { CancelableEventHandler, fireCancelableEvent } from '../internal/events';
+import { ButtonGroupProps } from './interfaces';
+
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
-import clsx from 'clsx';
-import InternalButton from '../button/internal';
-import Tooltip from '../internal/components/tooltip';
 
 const MenuDropdownItem = React.forwardRef(
   (

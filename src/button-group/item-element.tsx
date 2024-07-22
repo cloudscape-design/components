@@ -1,11 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
-import { ButtonGroupProps } from './interfaces.js';
+
 import { ButtonProps } from '../button/interfaces.js';
 import { ClickDetail, fireCancelableEvent, NonCancelableEventHandler } from '../internal/events/index.js';
 import IconButtonItem from './icon-button-item.js';
+import { ButtonGroupProps } from './interfaces.js';
 import MenuDropdownItem from './menu-dropdown-item.js';
+
 import styles from './styles.css.js';
 
 const ItemElement = forwardRef(
