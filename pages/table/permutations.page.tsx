@@ -71,7 +71,7 @@ const VERTICAL_ALIGN_COLUMNS: TableProps.ColumnDefinition<any>[] = [
     id: 'type',
     header: 'Type',
     cell: item => (
-      <FormField errorText={`${item.text} error text`}>
+      <FormField errorText={`${item.text} error text`} i18nStrings={{ errorIconAriaLabel: 'Error' }}>
         <Input ariaLabel="vertical align error input" readOnly={true} value={item.text} />
       </FormField>
     ),
