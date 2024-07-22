@@ -200,7 +200,7 @@ module.exports = {
           {
             groups: [
               // External packages come first.
-              ['^react', '^\\w', '^(?!@cloudscape)@?\\w'],
+              ['^react', '^(?!@cloudscape)@?\\w'],
               // Cloudscape packages.
               ['^@cloudscape'],
               // Things that start with a letter (or digit or underscore), or `~` followed by a letter.
