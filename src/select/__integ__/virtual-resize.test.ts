@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
-import SelectPage from './page-objects/select-page';
+
 import createWrapper from '../../../lib/components/test-utils/selectors';
+import SelectPage from './page-objects/select-page';
 
 interface ExtendedWindow extends Window {
   __shrinkComponent?: (shrunk: boolean) => void;

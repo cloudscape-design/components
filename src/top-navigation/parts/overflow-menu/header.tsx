@@ -3,6 +3,7 @@
 import React from 'react';
 
 import InternalButton from '../../../button/internal';
+
 import styles from '../../styles.css.js';
 export interface HeaderProps {
   dismissIconAriaLabel?: string;

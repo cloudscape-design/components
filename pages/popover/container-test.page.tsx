@@ -1,10 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import ScreenshotArea from '../utils/screenshot-area';
-import PopoverContainer from '~components/popover/container';
-import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
 import clsx from 'clsx';
+
+import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
+
+import PopoverContainer from '~components/popover/container';
+
+import ScreenshotArea from '../utils/screenshot-area';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore

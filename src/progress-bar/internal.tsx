@@ -2,13 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
+
 import { BoxProps } from '../box/interfaces';
 import InternalBox from '../box/internal';
 import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
 import InternalStatusIndicator from '../status-indicator/internal';
-
 import { ProgressBarProps } from './interfaces';
+
 import styles from './styles.css.js';
 
 const MAX_VALUE = 100;

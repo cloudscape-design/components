@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
 import { BaseComponentProps } from '../internal/base-component';
-import { NonCancelableEventHandler, CancelableEventHandler } from '../internal/events';
+import { CancelableEventHandler, NonCancelableEventHandler } from '../internal/events';
 import { Optional } from '../internal/types';
 import ColumnDisplayProperties = TableProps.ColumnDisplayProperties;
 

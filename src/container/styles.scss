@@ -205,10 +205,6 @@
   }
 
   &-variant-full-page {
-    &.with-toolbar {
-      padding-block-start: awsui.$space-scaled-s;
-    }
-
     &.header-stuck {
       box-shadow: none;
 

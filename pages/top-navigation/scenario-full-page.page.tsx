@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 
-import TopNavigation from '~components/top-navigation';
-import ScreenshotArea from '../utils/screenshot-area';
 import Input from '~components/input';
+import TopNavigation from '~components/top-navigation';
 
+import ScreenshotArea from '../utils/screenshot-area';
 import { I18N_STRINGS, profileActions } from './common';
 import logo from './logos/simple-logo.svg';
 

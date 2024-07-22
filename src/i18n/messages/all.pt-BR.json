@@ -77,7 +77,8 @@
     "i18nStrings.preferencesModalWrapLines": "Quebrar linhas",
     "i18nStrings.preferencesModalTheme": "Tema",
     "i18nStrings.preferencesModalLightThemes": "Temas claros",
-    "i18nStrings.preferencesModalDarkThemes": "Temas escuros"
+    "i18nStrings.preferencesModalDarkThemes": "Temas escuros",
+    "i18nStrings.cursorPositionAriaLabel": "Cursor na linha {row}"
   },
   "collection-preferences": {
     "title": "Preferências",
@@ -90,6 +91,15 @@
     "stripedRowsPreference.description": "Selecione para adicionar linhas esmaecidas alternadas.",
     "contentDensityPreference.label": "Modo compacto",
     "contentDensityPreference.description": "Selecione para exibir o conteúdo em um modo mais denso e compacto.",
+    "stickyColumnsPreference.firstColumns.title": "Colar a(s) primeira(s) coluna(s)",
+    "stickyColumnsPreference.firstColumns.description": "Mantenha a(s) primeira(s) coluna(s) visível(is) enquanto rola horizontalmente o conteúdo da tabela.",
+    "stickyColumnsPreference.firstColumns.options[0].label": "Nenhum",
+    "stickyColumnsPreference.firstColumns.options[1].label": "Primeira coluna",
+    "stickyColumnsPreference.firstColumns.options[2].label": "Primeiras duas colunas",
+    "stickyColumnsPreference.lastColumns.title": "Colar a última coluna",
+    "stickyColumnsPreference.lastColumns.description": "Mantenha a última coluna visível enquanto rola horizontalmente o conteúdo da tabela.",
+    "stickyColumnsPreference.lastColumns.options[0].label": "Nenhum",
+    "stickyColumnsPreference.lastColumns.options[1].label": "Última coluna",
     "contentDisplayPreference.title": "Preferências de coluna",
     "contentDisplayPreference.description": "Personalize a visibilidade e a ordem das colunas.",
     "contentDisplayPreference.dragHandleAriaLabel": "Ícone de arrastar",

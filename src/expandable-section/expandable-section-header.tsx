@@ -1,14 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ExpandableSectionProps, InternalVariant } from './interfaces';
 import React, { KeyboardEventHandler, MouseEventHandler, ReactNode } from 'react';
-import InternalIcon from '../icon/internal';
 import clsx from 'clsx';
-import styles from './styles.css.js';
-import InternalHeader, { Description as HeaderDescription } from '../header/internal';
-import { isDevelopment } from '../internal/is-development';
+
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
+import InternalHeader, { Description as HeaderDescription } from '../header/internal';
+import InternalIcon from '../icon/internal';
+import { isDevelopment } from '../internal/is-development';
+import { ExpandableSectionProps, InternalVariant } from './interfaces';
 import { variantSupportsDescription, variantSupportsInteractiveElements } from './utils';
+
+import styles from './styles.css.js';
 
 export const componentName = 'ExpandableSection';
 

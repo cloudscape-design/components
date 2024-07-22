@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { isDevelopment } from '../../is-development';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
 import { NonCancelableEventHandler } from '../../events';
+import { isDevelopment } from '../../is-development';
 
 export default function checkControlled<ValueType, EventDetailType>(
   componentName: string,

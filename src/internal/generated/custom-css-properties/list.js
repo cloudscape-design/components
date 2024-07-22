@@ -67,5 +67,8 @@ const customCssPropertiesList = [
   'sliderTooltipPosition',
   'togglesLeftWidth',
   'togglesRightWidth',
+  // Prompt input
+  'promptInputMaxRows',
+  'promptInputScrollHeight',
 ];
 module.exports = customCssPropertiesList;

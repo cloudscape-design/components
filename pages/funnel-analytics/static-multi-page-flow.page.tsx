@@ -1,24 +1,25 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
+
 import {
   BreadcrumbGroup,
   Container,
+  FormField,
+  Header,
   Input,
   Link,
-  FormField,
   SpaceBetween,
   Wizard,
   WizardProps,
-  Header,
 } from '~components';
+import { setFunnelMetrics } from '~components/internal/analytics';
 
 import { i18nStrings } from '../wizard/common';
-import styles from '../wizard/styles.scss';
-
-import { setFunnelMetrics } from '~components/internal/analytics';
-import { MockedFunnelMetrics } from './mock-funnel';
 import { getAnalyticsProps } from './metadata';
+import { MockedFunnelMetrics } from './mock-funnel';
+
+import styles from '../wizard/styles.scss';
 
 setFunnelMetrics(MockedFunnelMetrics);
 

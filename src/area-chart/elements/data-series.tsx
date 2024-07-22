@@ -4,13 +4,13 @@ import React, { memo } from 'react';
 import clsx from 'clsx';
 
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
-import AreaSeries from './area-series';
-import ThresholdSeries from './threshold-series';
+import { useSelector } from '../async-store';
 import { AreaChartProps } from '../interfaces';
 import { ChartModel } from '../model';
+import AreaSeries from './area-series';
+import ThresholdSeries from './threshold-series';
 
 import styles from '../styles.css.js';
-import { useSelector } from '../async-store';
 
 export default memo(DataSeries) as typeof DataSeries;
 

@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState, useCallback, useMemo } from 'react';
-import AttributeEditor, { AttributeEditorProps } from '~components/attribute-editor';
+import React, { useCallback, useMemo, useState } from 'react';
+
 import { Box, Input, InputProps, Link, NonCancelableCustomEvent } from '~components';
+import AttributeEditor, { AttributeEditorProps } from '~components/attribute-editor';
 
 interface Tag {
   key?: string;

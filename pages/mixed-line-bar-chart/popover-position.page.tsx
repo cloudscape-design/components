@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import MixedLineBarChart from '~components/mixed-line-bar-chart';
-import ScreenshotArea from '../utils/screenshot-area';
-
-import { barChartInstructions, commonProps, data3, data4 } from './common';
 import ExpandableSection from '~components/expandable-section';
+import MixedLineBarChart from '~components/mixed-line-bar-chart';
+
 import FocusTarget from '../common/focus-target';
+import ScreenshotArea from '../utils/screenshot-area';
+import { barChartInstructions, commonProps, data3, data4 } from './common';
 
 export default function () {
   return (

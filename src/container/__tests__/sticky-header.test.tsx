@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { act, renderHook } from '../../__tests__/render-hook';
 import { useStickyHeader } from '../use-sticky-header';
-import { renderHook, act } from '../../__tests__/render-hook';
 jest.mock('../../../lib/components/container/use-sticky-header', () => ({
   useStickyHeader: () => ({ isSticky: true }),
 }));

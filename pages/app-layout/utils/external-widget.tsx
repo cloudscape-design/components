@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useImperativeHandle, useState } from 'react';
 import ReactDOM, { unmountComponentAtNode } from 'react-dom';
+
 import Drawer from '~components/drawer';
 import awsuiPlugins from '~components/internal/plugins';
 

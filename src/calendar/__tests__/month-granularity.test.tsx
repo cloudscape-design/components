@@ -3,11 +3,13 @@
 
 import * as React from 'react';
 import { render } from '@testing-library/react';
+
+import Calendar, { CalendarProps } from '../../../lib/components/calendar';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
+import createWrapper from '../../../lib/components/test-utils/dom';
+
 import styles from '../../../lib/components/calendar/styles.selectors.js';
 import screenreaderOnlyStyles from '../../../lib/components/internal/components/screenreader-only/styles.selectors.js';
-import Calendar, { CalendarProps } from '../../../lib/components/calendar';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import TestI18nProvider from '../../../lib/components/i18n/testing';
 
 const defaultProps: CalendarProps = {
   granularity: 'month',

@@ -1,16 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import React, { useContext } from 'react';
-import { getBaseProps } from '../internal/base-component';
-import styles from './styles.css.js';
+import clsx from 'clsx';
 
-import { TutorialPanelProps } from './interfaces';
-import TutorialList from './components/tutorial-list';
-import TutorialDetailView from './components/tutorial-detail-view';
 import { hotspotContext } from '../annotation-context/context';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
+import { getBaseProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
+import { applyDisplayName } from '../internal/utils/apply-display-name';
+import TutorialDetailView from './components/tutorial-detail-view';
+import TutorialList from './components/tutorial-list';
+import { TutorialPanelProps } from './interfaces';
+
+import styles from './styles.css.js';
 
 export { TutorialPanelProps };
 

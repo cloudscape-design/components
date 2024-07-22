@@ -1,11 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef } from 'react';
+
+import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
 import InternalSpaceBetween from '../space-between/internal';
-import styles from './styles.css.js';
-import { ButtonProps } from '../button/interfaces';
 import Unmount from './unmount';
+
+import styles from './styles.css.js';
 
 interface WizardActionsProps {
   cancelButtonText?: string;

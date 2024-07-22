@@ -1,11 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 import InternalSpaceBetween from '../space-between/internal';
 import InternalToggle from '../toggle/internal';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
-
 import { CollectionPreferencesProps } from './interfaces';
+
 import styles from './styles.css.js';
 
 const isVisible = (id: string, visibleIds: ReadonlyArray<string>) => visibleIds.indexOf(id) !== -1;

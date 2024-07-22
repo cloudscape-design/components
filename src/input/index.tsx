@@ -1,13 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import React, { Ref, useImperativeHandle, useRef } from 'react';
+import clsx from 'clsx';
+
 import { getBaseProps } from '../internal/base-component';
-import InternalInput from './internal';
-import { InputProps } from './interfaces';
-import styles from './styles.css.js';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
+import { applyDisplayName } from '../internal/utils/apply-display-name';
+import { InputProps } from './interfaces';
+import InternalInput from './internal';
+
+import styles from './styles.css.js';
 
 export { InputProps };
 

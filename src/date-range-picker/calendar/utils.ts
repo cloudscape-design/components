@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { addMonths, isSameMonth, startOfMonth } from 'date-fns';
-import { DateRangePickerProps } from '../interfaces';
+
 import { parseDate } from '../../internal/utils/date-time';
+import { DateRangePickerProps } from '../interfaces';
 
 export function findDateToFocus(
   selected: Date | null,

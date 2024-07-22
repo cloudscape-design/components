@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
+
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
 
 import MaskedInput, { MaskedInputProps } from '../../../../../lib/components/internal/components/masked-input';

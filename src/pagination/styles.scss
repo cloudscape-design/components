@@ -5,7 +5,7 @@
 
 @use '../internal/styles/index' as styles;
 @use '../internal/styles/tokens' as awsui;
-@use '../internal/hooks/focus-visible/index' as focus-visible;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 .root {
   @include styles.styles-reset;

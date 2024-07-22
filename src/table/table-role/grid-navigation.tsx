@@ -3,6 +3,18 @@
 
 import React, { useRef } from 'react';
 import { useEffect, useMemo } from 'react';
+
+import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
+
+import { getAllFocusables } from '../../internal/components/focus-lock/utils';
+import {
+  SingleTabStopNavigationAPI,
+  SingleTabStopNavigationProvider,
+} from '../../internal/context/single-tab-stop-navigation-context';
+import { KeyCode } from '../../internal/keycode';
+import handleKey, { isEventLike } from '../../internal/utils/handle-key';
+import { nodeBelongs } from '../../internal/utils/node-belongs';
+import { FocusedCell, GridNavigationProps } from './interfaces';
 import {
   defaultIsSuppressed,
   findTableRowByAriaRowIndex,
@@ -12,16 +24,6 @@ import {
   isElementDisabled,
   isTableCell,
 } from './utils';
-import { FocusedCell, GridNavigationProps } from './interfaces';
-import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
-import { nodeBelongs } from '../../internal/utils/node-belongs';
-import { getAllFocusables } from '../../internal/components/focus-lock/utils';
-import {
-  SingleTabStopNavigationProvider,
-  SingleTabStopNavigationAPI,
-} from '../../internal/context/single-tab-stop-navigation-context';
-import handleKey, { isEventLike } from '../../internal/utils/handle-key';
-import { KeyCode } from '../../internal/keycode';
 
 /**
  * Makes table navigable with keyboard commands.
@@ -61,7 +63,7 @@ export function GridNavigationProvider({ keyboardNavigation, pageSize, getTable,
       getNextFocusTarget={gridNavigation.getNextFocusTarget}
       isElementSuppressed={gridNavigation.isElementSuppressed}
       onRegisterFocusable={gridNavigation.onRegisterFocusable}
-      onUnregisterFocusable={gridNavigation.onUnregisterFocusable}
+      onUnregisterActive={gridNavigation.onUnregisterActive}
     >
       {children}
     </SingleTabStopNavigationProvider>
@@ -128,17 +130,11 @@ class GridNavigationProcessor {
     }
   };
 
-  public onUnregisterFocusable = (focusable: Element) => {
-    const isUnregisteringFocusedNode = nodeBelongs(focusable, document.activeElement);
-    if (isUnregisteringFocusedNode) {
-      // Wait for unmounted node to get removed from the DOM.
-      setTimeout(() => {
-        // If the focused cell appears to be no longer attached to the table we need to re-apply
-        // focus to a cell with the same or closest position.
-        if (this.focusedCell && !nodeBelongs(this.table, this.focusedCell.element)) {
-          this.moveFocusBy(this.focusedCell, { x: 0, y: 0 });
-        }
-      }, 0);
+  public onUnregisterActive = () => {
+    // If the focused cell appears to be no longer attached to the table we need to re-apply
+    // focus to a cell with the same or closest position.
+    if (this.focusedCell && !nodeBelongs(this.table, this.focusedCell.element)) {
+      this.moveFocusBy(this.focusedCell, { x: 0, y: 0 });
     }
   };
 

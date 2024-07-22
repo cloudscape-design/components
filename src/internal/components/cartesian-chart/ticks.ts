@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { add, differenceInDays } from 'date-fns';
+
 import { ChartScale, NumericChartScale } from '../../components/cartesian-chart/scales';
-import { differenceInDays, add } from 'date-fns';
 import { X_TICK_COUNT_RATIO, Y_TICK_COUNT_RATIO } from './constants';
 import { ChartDataTypes } from './interfaces';
 

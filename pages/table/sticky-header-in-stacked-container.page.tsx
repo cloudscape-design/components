@@ -1,12 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
+import ButtonDropdown, { ButtonDropdownProps } from '~components/button-dropdown';
+import Container from '~components/container';
 import Header from '~components/header';
 import Table from '~components/table';
+
 import ScreenshotArea from '../utils/screenshot-area';
 import { generateItems } from './generate-data';
-import Container from '~components/container';
-import ButtonDropdown, { ButtonDropdownProps } from '~components/button-dropdown';
 
 const tableItems = generateItems(10);
 const dropdownItems: Array<ButtonDropdownProps.Item> = [

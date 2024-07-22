@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useRef, useState } from 'react';
-import { GridNavigationProvider } from '../../../../lib/components/table/table-role';
+
 import { useSingleTabStopNavigation } from '../../../../lib/components/internal/context/single-tab-stop-navigation-context';
+import { GridNavigationProvider } from '../../../../lib/components/table/table-role';
 
 export interface Item {
   id: string;

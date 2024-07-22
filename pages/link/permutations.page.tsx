@@ -2,10 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
+
 import Link, { LinkProps } from '~components/link';
+
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
+
 import styles from './styles.scss';
 
 const permutations = createPermutations<LinkProps>([

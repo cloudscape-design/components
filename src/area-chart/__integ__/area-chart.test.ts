@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
+
 import AreaChartPageObject from './page-objects/area-chart-page';
 
 function setupTest(url: string, name: string, testFn: (page: AreaChartPageObject) => Promise<void>) {

@@ -1,8 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import { Box, Link, Checkbox, SpaceBetween } from '~components';
+
+import { Box, Checkbox, Link, SpaceBetween } from '~components';
 import RangeCalendar, { DateRangePickerCalendarProps } from '~components/date-range-picker/calendar';
+
 import { i18nStrings, i18nStringsDateOnly } from './common';
 
 export default function RangeCalendarScenario() {

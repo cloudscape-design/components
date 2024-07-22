@@ -2,11 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 import { fireEvent, render as testingLibraryRender, screen } from '@testing-library/react';
+
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
+import '../../__a11y__/to-validate-a11y';
 import FileUpload, { FileUploadProps } from '../../../lib/components/file-upload';
 import createWrapper from '../../../lib/components/test-utils/dom';
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
 import tokenListSelectors from '../../../lib/components/internal/components/token-list/styles.selectors.js';
-import '../../__a11y__/to-validate-a11y';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),

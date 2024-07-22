@@ -3,10 +3,9 @@
 import React, { memo } from 'react';
 
 import VerticalMarker from '../../internal/components/cartesian-chart/vertical-marker';
-
+import { useSelector } from '../async-store';
 import { AreaChartProps } from '../interfaces';
 import { ChartModel } from '../model';
-import { useSelector } from '../async-store';
 
 export default memo(AreaVerticalMarker) as typeof AreaVerticalMarker;
 

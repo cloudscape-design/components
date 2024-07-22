@@ -3,17 +3,16 @@
 import React, { forwardRef, useState } from 'react';
 import clsx from 'clsx';
 
+import { ButtonDropdownProps } from '../../../button-dropdown/interfaces';
+import { isLinkItem } from '../../../button-dropdown/utils/utils';
+import InternalIcon from '../../../icon/internal';
 import { fireCancelableEvent, isPlainLeftClick } from '../../../internal/events';
 import { useUniqueId } from '../../../internal/hooks/use-unique-id';
-
 import { LinkProps } from '../../../link/interfaces';
-import { ButtonDropdownProps } from '../../../button-dropdown/interfaces';
-import InternalIcon from '../../../icon/internal';
-
-import { useNavigate } from './router';
 import { TopNavigationProps } from '../../interfaces';
+import { useNavigate } from './router';
+
 import styles from '../../styles.css.js';
-import { isLinkItem } from '../../../button-dropdown/utils/utils';
 
 interface ListItemProps {
   startIcon?: React.ReactNode;

@@ -1,13 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
-import { KeyCode } from '../../../lib/components/internal/keycode';
+import { render } from '@testing-library/react';
 
 import ButtonDropdown, { ButtonDropdownProps } from '../../../lib/components/button-dropdown';
-import createWrapper, { ButtonDropdownWrapper } from '../../../lib/components/test-utils/dom';
 import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
+import { KeyCode } from '../../../lib/components/internal/keycode';
+import createWrapper, { ButtonDropdownWrapper } from '../../../lib/components/test-utils/dom';
 
 const renderOpenButtonDropdown = (props: ButtonDropdownProps) => {
   const renderResult = render(<ButtonDropdown {...props} />);

@@ -2,14 +2,16 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import * as React from 'react';
-import MockDate from 'mockdate';
 import { fireEvent, render } from '@testing-library/react';
-import Calendar, { CalendarProps } from '../../../lib/components/calendar';
-import styles from '../../../lib/components/calendar/styles.selectors.js';
-import createWrapper, { CalendarWrapper } from '../../../lib/components/test-utils/dom';
+import MockDate from 'mockdate';
+
 import '../../__a11y__/to-validate-a11y';
-import screenreaderOnlyStyles from '../../../lib/components/internal/components/screenreader-only/styles.selectors.js';
+import Calendar, { CalendarProps } from '../../../lib/components/calendar';
 import { KeyCode } from '../../../lib/components/internal/keycode';
+import createWrapper, { CalendarWrapper } from '../../../lib/components/test-utils/dom';
+
+import styles from '../../../lib/components/calendar/styles.selectors.js';
+import screenreaderOnlyStyles from '../../../lib/components/internal/components/screenreader-only/styles.selectors.js';
 
 // The calendar is mostly tested here: src/date-picker/__tests__/date-picker-calendar.test.tsx
 

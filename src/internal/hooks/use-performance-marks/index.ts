@@ -2,9 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { useEffect, useRef } from 'react';
-import { useRandomId } from '../use-unique-id';
-import { useEffectOnUpdate } from '../use-effect-on-update';
+
 import { useModalContext } from '../../context/modal-context';
+import { useEffectOnUpdate } from '../use-effect-on-update';
+import { useRandomId } from '../use-unique-id';
 
 /*
 This hook allows setting an HTML attribute after the first render, without rerendering the component.

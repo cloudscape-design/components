@@ -2,22 +2,23 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useEffect, useRef, useState } from 'react';
-import { DateRangePickerProps } from './interfaces';
-import Calendar from './calendar';
+import clsx from 'clsx';
+
+import InternalAlert from '../alert/internal';
+import InternalBox from '../box/internal';
 import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
+import { useInternalI18n } from '../i18n/context';
 import FocusLock from '../internal/components/focus-lock';
-import InternalBox from '../box/internal';
+import LiveRegion from '../internal/components/live-region';
 import InternalSpaceBetween from '../space-between/internal';
+import Calendar from './calendar';
+import { DateRangePickerProps } from './interfaces';
+import ModeSwitcher from './mode-switcher';
+import RelativeRangePicker from './relative-range';
+import { getDefaultMode, joinAbsoluteValue, splitAbsoluteValue } from './utils';
 
 import styles from './styles.css.js';
-import RelativeRangePicker from './relative-range';
-import ModeSwitcher from './mode-switcher';
-import clsx from 'clsx';
-import InternalAlert from '../alert/internal';
-import LiveRegion from '../internal/components/live-region';
-import { getDefaultMode, joinAbsoluteValue, splitAbsoluteValue } from './utils';
-import { useInternalI18n } from '../i18n/context';
 
 export const VALID_RANGE: DateRangePickerProps.ValidRangeResult = { valid: true };
 

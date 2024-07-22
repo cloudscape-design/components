@@ -1,14 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useMemo } from 'react';
+import clsx from 'clsx';
 import { arc, PieArcDatum } from 'd3-shape';
 
-import { PieChartProps } from './interfaces';
-import { Dimension } from './utils';
-import { InternalChartDatum } from './pie-chart';
-import styles from './styles.css.js';
-import clsx from 'clsx';
 import { useInternalI18n } from '../i18n/context';
+import { PieChartProps } from './interfaces';
+import { InternalChartDatum } from './pie-chart';
+import { Dimension } from './utils';
+
+import styles from './styles.css.js';
 
 interface SegmentsProps<T> {
   pieData: Array<PieArcDatum<InternalChartDatum<T>>>;

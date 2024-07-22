@@ -1,29 +1,30 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import clsx from 'clsx';
 
-import { getBaseProps } from '../internal/base-component';
-import { fireNonCancelableEvent } from '../internal/events';
-import ChartStatusContainer, { getChartStatus } from '../internal/components/chart-status-container';
-import { useControllable } from '../internal/hooks/use-controllable';
-import { usePrevious } from '../internal/hooks/use-previous';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { ChartDataTypes, MixedLineBarChartProps } from './interfaces';
-import InternalChartLegend from './chart-legend';
-import ChartContainer from './chart-container';
-import styles from './styles.css.js';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { isDevelopment } from '../internal/is-development';
-import createCategoryColorScale from '../internal/utils/create-category-color-scale';
-import { ScaledPoint } from './make-scaled-series';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { SomeRequired } from '../internal/types';
-import { chartLegendMap, isXThreshold, isYThreshold } from './utils';
-import { nodeBelongs } from '../internal/utils/node-belongs';
+import { getBaseProps } from '../internal/base-component';
 import Filter from '../internal/components/chart-filter';
+import ChartStatusContainer, { getChartStatus } from '../internal/components/chart-status-container';
 import { ChartWrapper } from '../internal/components/chart-wrapper';
+import { fireNonCancelableEvent } from '../internal/events';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useControllable } from '../internal/hooks/use-controllable';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { usePrevious } from '../internal/hooks/use-previous';
+import { isDevelopment } from '../internal/is-development';
+import { SomeRequired } from '../internal/types';
+import createCategoryColorScale from '../internal/utils/create-category-color-scale';
+import { nodeBelongs } from '../internal/utils/node-belongs';
+import ChartContainer from './chart-container';
+import InternalChartLegend from './chart-legend';
+import { ChartDataTypes, MixedLineBarChartProps } from './interfaces';
+import { ScaledPoint } from './make-scaled-series';
+import { chartLegendMap, isXThreshold, isYThreshold } from './utils';
+
+import styles from './styles.css.js';
 
 type InternalMixedLineBarChartProps<T extends ChartDataTypes> = SomeRequired<
   MixedLineBarChartProps<T>,

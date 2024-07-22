@@ -1,11 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { RefObject, useState, useLayoutEffect, useCallback, useEffect, createContext } from 'react';
-import { findUpUntil } from '../internal/utils/dom';
-import { getOverflowParents } from '../internal/utils/scrollable-containers';
+import { createContext, RefObject, useCallback, useEffect, useLayoutEffect, useState } from 'react';
+
+import * as tokens from '../internal/generated/styles/tokens';
 import { useMobile } from '../internal/hooks/use-mobile';
 import globalVars from '../internal/styles/global-vars';
-import * as tokens from '../internal/generated/styles/tokens';
+import { findUpUntil } from '../internal/utils/dom';
+import { getOverflowParents } from '../internal/utils/scrollable-containers';
 
 interface StickyHeaderContextProps {
   isStuck: boolean;

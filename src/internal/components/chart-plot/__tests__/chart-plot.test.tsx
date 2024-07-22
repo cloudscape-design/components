@@ -1,15 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+import { act } from 'react-dom/test-utils';
 import { render } from '@testing-library/react';
-import { ElementWrapper } from '../../../../../lib/components/test-utils/dom';
+
+import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
+
 import ChartPlot, { ChartPlotRef } from '../../../../../lib/components/internal/components/chart-plot';
+import { ElementWrapper } from '../../../../../lib/components/test-utils/dom';
+import createBBoxMock from './bbox-mock';
+
 import styles from '../../../../../lib/components/internal/components/chart-plot/styles.css.js';
 import liveRegionStyles from '../../../../../lib/components/internal/components/live-region/styles.css.js';
-
-import createBBoxMock from './bbox-mock';
-import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
-import { act } from 'react-dom/test-utils';
 
 function renderPlot(jsx: React.ReactElement) {
   const { container, rerender } = render(jsx);

@@ -1,11 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import * as React from 'react';
+import clsx from 'clsx';
+
 import { IconProps } from '../icon/interfaces';
 import InternalIcon from '../icon/internal';
 import InternalSpinner from '../spinner/internal';
 import { ButtonProps } from './interfaces';
+
 import styles from './styles.css.js';
 
 export interface ButtonIconProps {

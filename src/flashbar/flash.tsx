@@ -1,29 +1,30 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { FlashbarProps } from './interfaces';
 import React from 'react';
-import InternalSpinner from '../spinner/internal';
-import InternalIcon from '../icon/internal';
 import clsx from 'clsx';
-import styles from './styles.css.js';
-import { InternalButton } from '../button/internal';
+
 import { useComponentMetadata, warnOnce } from '@cloudscape-design/component-toolkit/internal';
-import { isDevelopment } from '../internal/is-development';
-import { throttle } from '../internal/utils/throttle';
-import LiveRegion from '../internal/components/live-region';
-import { ButtonProps } from '../button/interfaces';
-import { getVisualContextClassname } from '../internal/components/visual-context';
 
-import { sendDismissMetric } from './internal/analytics';
-
-import { FOCUS_THROTTLE_DELAY } from './utils';
-import { DATA_ATTR_ANALYTICS_FLASHBAR } from '../internal/analytics/selectors';
-import { createUseDiscoveredAction } from '../internal/plugins/helpers';
-import { awsuiPluginsInternal } from '../internal/plugins/api';
 import { ActionsWrapper } from '../alert/actions-wrapper';
+import { ButtonProps } from '../button/interfaces';
+import { InternalButton } from '../button/internal';
+import InternalIcon from '../icon/internal';
+import { DATA_ATTR_ANALYTICS_FLASHBAR } from '../internal/analytics/selectors';
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import LiveRegion from '../internal/components/live-region';
+import { getVisualContextClassname } from '../internal/components/visual-context';
 import { PACKAGE_VERSION } from '../internal/environment';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { isDevelopment } from '../internal/is-development';
+import { awsuiPluginsInternal } from '../internal/plugins/api';
+import { createUseDiscoveredAction } from '../internal/plugins/helpers';
+import { throttle } from '../internal/utils/throttle';
+import InternalSpinner from '../spinner/internal';
+import { FlashbarProps } from './interfaces';
+import { sendDismissMetric } from './internal/analytics';
+import { FOCUS_THROTTLE_DELAY } from './utils';
+
+import styles from './styles.css.js';
 
 const ICON_TYPES = {
   success: 'status-positive',

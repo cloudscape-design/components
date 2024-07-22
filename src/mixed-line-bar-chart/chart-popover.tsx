@@ -4,13 +4,13 @@ import React, { useState } from 'react';
 import clsx from 'clsx';
 
 import ChartPopover from '../internal/components/chart-popover';
+import ChartPopoverFooter from '../internal/components/chart-popover-footer';
 import ChartSeriesDetails, { ExpandedSeries } from '../internal/components/chart-series-details';
+import { Transition } from '../internal/components/transition';
+import { HighlightDetails } from './format-highlighted';
 import { ChartDataTypes, MixedLineBarChartProps } from './interfaces';
 
 import styles from './styles.css.js';
-import { Transition } from '../internal/components/transition';
-import { HighlightDetails } from './format-highlighted';
-import ChartPopoverFooter from '../internal/components/chart-popover-footer';
 
 export interface MixedChartPopoverProps<T extends ChartDataTypes> {
   containerRef: React.RefObject<HTMLDivElement>;

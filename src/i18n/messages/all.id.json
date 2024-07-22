@@ -77,7 +77,8 @@
     "i18nStrings.preferencesModalWrapLines": "Bungkus baris",
     "i18nStrings.preferencesModalTheme": "Tema",
     "i18nStrings.preferencesModalLightThemes": "Tema terang",
-    "i18nStrings.preferencesModalDarkThemes": "Tema gelap"
+    "i18nStrings.preferencesModalDarkThemes": "Tema gelap",
+    "i18nStrings.cursorPositionAriaLabel": "Kursor pada baris {row}"
   },
   "collection-preferences": {
     "title": "Preferensi",
@@ -90,6 +91,15 @@
     "stripedRowsPreference.description": "Pilih untuk menambahkan baris berbayang bergantian",
     "contentDensityPreference.label": "Mode ringkas",
     "contentDensityPreference.description": "Pilih untuk menampilkan konten dalam mode yang lebih padat dan ringkas",
+    "stickyColumnsPreference.firstColumns.title": "Lekatkan kolom pertama",
+    "stickyColumnsPreference.firstColumns.description": "Jaga agar kolom pertama tetap terlihat saat menggulir konten tabel secara horizontal.",
+    "stickyColumnsPreference.firstColumns.options[0].label": "Tidak ada",
+    "stickyColumnsPreference.firstColumns.options[1].label": "Kolom pertama",
+    "stickyColumnsPreference.firstColumns.options[2].label": "Dua kolom pertama",
+    "stickyColumnsPreference.lastColumns.title": "Lekatkan kolom terakhir",
+    "stickyColumnsPreference.lastColumns.description": "Jaga agar kolom terakhir tetap terlihat saat menggulir konten tabel secara horizontal.",
+    "stickyColumnsPreference.lastColumns.options[0].label": "Tidak ada",
+    "stickyColumnsPreference.lastColumns.options[1].label": "Kolom terakhir",
     "contentDisplayPreference.title": "Preferensi kolom",
     "contentDisplayPreference.description": "Sesuaikan visibilitas dan urutan kolom.",
     "contentDisplayPreference.dragHandleAriaLabel": "Tuas seret",

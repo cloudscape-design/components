@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { useCallback, useState } from 'react';
-import { TableProps } from './interfaces';
+
 import { CancelableEventHandler, fireCancelableEvent } from '../internal/events';
+import { TableProps } from './interfaces';
 
 export interface CellId {
   rowIndex: number;

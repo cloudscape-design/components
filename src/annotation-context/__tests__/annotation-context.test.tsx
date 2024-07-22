@@ -2,11 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 import { render } from '@testing-library/react';
+
 import AnnotationContext from '../../../lib/components/annotation-context';
 import Hotspot from '../../../lib/components/hotspot';
 import createWrapper from '../../../lib/components/test-utils/dom';
-import { getTutorial, getTutorialWithMultipleStepsPerHotspot, i18nStrings } from './data';
 import { AnnotationContextProps } from '../interfaces';
+import { getTutorial, getTutorialWithMultipleStepsPerHotspot, i18nStrings } from './data';
 import Tutorial = AnnotationContextProps.Tutorial;
 
 const noop = () => {};

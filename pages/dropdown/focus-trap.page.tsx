@@ -1,10 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext } from 'react';
-import Dropdown from '~components/internal/components/dropdown';
 import { useState } from 'react';
+
+import { Box, Button, SpaceBetween } from '~components';
+import Dropdown from '~components/internal/components/dropdown';
+
 import AppContext, { AppContextType } from '../app/app-context';
-import { Box, SpaceBetween, Button } from '~components';
 
 type PageContext = React.Context<
   AppContextType<{

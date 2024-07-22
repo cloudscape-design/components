@@ -1,8 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import TextContent from '~components/text-content';
+
 import Icon from '~components/icon';
+import TextContent from '~components/text-content';
+
 import ScreenshotArea from '../utils/screenshot-area';
 
 export default function TextContentPermutations() {

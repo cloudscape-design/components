@@ -1,8 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
+
 import { FileUpload, Header } from '~components';
 import SpaceBetween from '~components/space-between';
+
 import { i18nStrings } from './shared';
 
 export default function FileUploadTestPage() {

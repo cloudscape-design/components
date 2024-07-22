@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useState } from 'react';
+
 import customCssProps from '../../internal/generated/custom-css-properties';
 
 export default function useBackgroundOverlap({

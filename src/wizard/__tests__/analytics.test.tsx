@@ -3,18 +3,16 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
 
+import Container from '../../../lib/components/container';
+import Form from '../../../lib/components/form';
+import Header from '../../../lib/components/header';
+import { FunnelMetrics, setFunnelMetrics } from '../../../lib/components/internal/analytics';
+import { useFunnel } from '../../../lib/components/internal/analytics/hooks/use-funnel';
+import { FUNNEL_KEY_STEP_NAME, getFunnelKeySelector } from '../../../lib/components/internal/analytics/selectors';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import Wizard, { WizardProps } from '../../../lib/components/wizard';
-import Form from '../../../lib/components/form';
-import Container from '../../../lib/components/container';
-import Header from '../../../lib/components/header';
-
-import { FunnelMetrics, setFunnelMetrics } from '../../../lib/components/internal/analytics';
-import { getFunnelKeySelector, FUNNEL_KEY_STEP_NAME } from '../../../lib/components/internal/analytics/selectors';
-import { useFunnel } from '../../../lib/components/internal/analytics/hooks/use-funnel';
-
-import { DEFAULT_I18N_SETS, DEFAULT_STEPS } from './common';
 import { mockInnerText } from '../../internal/analytics/__tests__/mocks';
+import { DEFAULT_I18N_SETS, DEFAULT_STEPS } from './common';
 
 const mockedFunnelInteractionId = 'mocked-funnel-id';
 function mockFunnelMetrics() {

@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef } from 'react';
 import { render, screen } from '@testing-library/react';
-import { usePortalModeClasses } from '../../../../../lib/components/internal/hooks/use-portal-mode-classes';
+
 import VisualContext from '../../../../../lib/components/internal/components/visual-context';
+import { usePortalModeClasses } from '../../../../../lib/components/internal/hooks/use-portal-mode-classes';
 import { useVisualRefresh } from '../../../../../lib/components/internal/hooks/use-visual-mode';
 
 jest.mock('../../../../../lib/components/internal/hooks/use-visual-mode', () => {

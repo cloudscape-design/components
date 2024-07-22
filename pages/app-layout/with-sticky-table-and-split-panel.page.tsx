@@ -1,19 +1,21 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
+
 import AppLayout from '~components/app-layout';
+import Button from '~components/button';
 import Header from '~components/header';
 import Link from '~components/link';
-import ScreenshotArea from '../utils/screenshot-area';
-import { Breadcrumbs, Navigation, Tools, Footer, Notifications } from './utils/content-blocks';
-import * as toolsContent from './utils/tools-content';
-import labels from './utils/labels';
+import SpaceBetween from '~components/space-between';
+import SplitPanel from '~components/split-panel';
 import Table from '~components/table';
+
 import { generateItems, Instance } from '../table/generate-data';
 import { columnsConfig } from '../table/shared-configs';
-import Button from '~components/button';
-import SplitPanel from '~components/split-panel';
-import SpaceBetween from '~components/space-between';
+import ScreenshotArea from '../utils/screenshot-area';
+import { Breadcrumbs, Footer, Navigation, Notifications, Tools } from './utils/content-blocks';
+import labels from './utils/labels';
+import * as toolsContent from './utils/tools-content';
 
 const maxItemCount = 30;
 const defaultItems = generateItems(maxItemCount);

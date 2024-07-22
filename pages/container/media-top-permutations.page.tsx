@@ -1,17 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import ScreenshotArea from '../utils/screenshot-area';
 
 import { ContainerProps } from '~components/container';
+
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
-
-import image169 from './images/16-9.png';
+import ScreenshotArea from '../utils/screenshot-area';
+import { PermutationContainer, PermutationIframe } from './common';
 import image43 from './images/4-3.png';
 import image916 from './images/9-16.png';
+import image169 from './images/16-9.png';
 import imageVideo from './images/video.png';
-import { PermutationContainer, PermutationIframe } from './common';
 
 const permutations = createPermutations<ContainerProps.Media>([
   {

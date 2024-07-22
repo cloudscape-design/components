@@ -2,9 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
-import styles from './styles.css.js';
-import { useUniqueId } from '../../hooks/use-unique-id';
+
 import { InternalBaseComponentProps } from '../../hooks/use-base-component/index.js';
+import { useUniqueId } from '../../hooks/use-unique-id';
+
+import styles from './styles.css.js';
 
 export interface AbstractSwitchProps extends React.HTMLAttributes<HTMLElement>, InternalBaseComponentProps {
   controlId?: string;

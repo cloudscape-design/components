@@ -1,13 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
-import LinkWrapper from '../../link';
+
 import ButtonWrapper from '../../button';
 import ButtonDropdownWrapper from '../../button-dropdown';
+import LinkWrapper from '../../link';
 
-import styles from '../../../../top-navigation/1.0-beta/styles.selectors.js';
 import buttonDropdownStyles from '../../../../button-dropdown/styles.selectors.js';
 import menuDropdownStyles from '../../../../internal/components/menu-dropdown/styles.selectors.js';
+import styles from '../../../../top-navigation/1.0-beta/styles.selectors.js';
 
 export default class TopNavigationWrapper extends ComponentWrapper {
   static rootSelector = `${styles['top-navigation']}:not(.${styles.hidden})`;

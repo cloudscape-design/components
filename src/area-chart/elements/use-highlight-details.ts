@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { useSelector } from '../async-store';
+import { useInternalI18n } from '../../i18n/context';
 import { CartesianChartProps } from '../../internal/components/cartesian-chart/interfaces';
 import { ChartSeriesDetailItem } from '../../internal/components/chart-series-details';
-import { useInternalI18n } from '../../i18n/context';
+import { useSelector } from '../async-store';
 import { AreaChartProps } from '../interfaces';
 import { ChartModel } from '../model';
 

@@ -1,19 +1,21 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import clsx from 'clsx';
+
 import ButtonTrigger from '../../internal/components/button-trigger';
-import { SelectProps } from '../interfaces';
-import { MultiselectProps } from '../../multiselect/interfaces';
-import styles from './styles.css.js';
+import Option from '../../internal/components/option';
 import { OptionDefinition } from '../../internal/components/option/interfaces';
 import { FormFieldValidationControlProps } from '../../internal/context/form-field-context';
-import Option from '../../internal/components/option';
+import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
-import { SelectTriggerProps } from '../utils/use-select';
-import { joinStrings } from '../../internal/utils/strings';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
+import { joinStrings } from '../../internal/utils/strings';
+import { MultiselectProps } from '../../multiselect/interfaces';
+import { SelectProps } from '../interfaces';
+import { SelectTriggerProps } from '../utils/use-select';
+
+import styles from './styles.css.js';
 
 export interface TriggerProps extends FormFieldValidationControlProps {
   placeholder: string | undefined;

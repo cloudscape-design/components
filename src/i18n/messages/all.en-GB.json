@@ -77,7 +77,8 @@
     "i18nStrings.preferencesModalWrapLines": "Wrap lines",
     "i18nStrings.preferencesModalTheme": "Theme",
     "i18nStrings.preferencesModalLightThemes": "Light themes",
-    "i18nStrings.preferencesModalDarkThemes": "Dark themes"
+    "i18nStrings.preferencesModalDarkThemes": "Dark themes",
+    "i18nStrings.cursorPositionAriaLabel": "Cursor on row {row}"
   },
   "collection-preferences": {
     "title": "Preferences",
@@ -90,6 +91,15 @@
     "stripedRowsPreference.description": "Select to add alternating shaded rows",
     "contentDensityPreference.label": "Compact mode",
     "contentDensityPreference.description": "Select to display content in a denser, more compact mode",
+    "stickyColumnsPreference.firstColumns.title": "Stick first column(s)",
+    "stickyColumnsPreference.firstColumns.description": "Keep the first column(s) visible while horizontally scrolling the table content.",
+    "stickyColumnsPreference.firstColumns.options[0].label": "None",
+    "stickyColumnsPreference.firstColumns.options[1].label": "First column",
+    "stickyColumnsPreference.firstColumns.options[2].label": "First two columns",
+    "stickyColumnsPreference.lastColumns.title": "Stick last column",
+    "stickyColumnsPreference.lastColumns.description": "Keep the last column visible while horizontally scrolling the table content.",
+    "stickyColumnsPreference.lastColumns.options[0].label": "None",
+    "stickyColumnsPreference.lastColumns.options[1].label": "Last column",
     "contentDisplayPreference.title": "Column preferences",
     "contentDisplayPreference.description": "Customise the columns visibility and order.",
     "contentDisplayPreference.dragHandleAriaLabel": "Drag handle",

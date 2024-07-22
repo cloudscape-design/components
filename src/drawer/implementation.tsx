@@ -1,15 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import React from 'react';
-import { getBaseProps } from '../internal/base-component';
-import InternalStatusIndicator from '../status-indicator/internal';
-import styles from './styles.css.js';
-import { DrawerProps } from './interfaces';
-import LiveRegion from '../internal/components/live-region';
+import clsx from 'clsx';
+
 import { useInternalI18n } from '../i18n/context';
+import { getBaseProps } from '../internal/base-component';
+import LiveRegion from '../internal/components/live-region';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { createWidgetizedComponent } from '../internal/widgets';
+import InternalStatusIndicator from '../status-indicator/internal';
+import { DrawerProps } from './interfaces';
+
+import styles from './styles.css.js';
 
 export type DrawerInternalProps = DrawerProps & InternalBaseComponentProps;
 

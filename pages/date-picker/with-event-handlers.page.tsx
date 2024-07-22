@@ -1,7 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState, useRef, useContext } from 'react';
-import { Box, Link, DatePicker } from '~components';
+import React, { useContext, useRef, useState } from 'react';
+
+import { Box, DatePicker, Link } from '~components';
+
 import AppContext, { AppContextType } from '../app/app-context';
 import i18nStrings from './i18n-strings';
 

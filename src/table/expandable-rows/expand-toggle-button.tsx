@@ -2,10 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useRef } from 'react';
-import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
-import styles from './styles.css.js';
-import InternalIcon from '../../icon/internal';
 import clsx from 'clsx';
+
+import InternalIcon from '../../icon/internal';
+import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
+
+import styles from './styles.css.js';
 
 export function ExpandToggleButton({
   isExpanded,

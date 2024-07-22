@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
-import createWrapper from '../../../lib/components/test-utils/dom';
+
 import CodeEditor, { CodeEditorProps } from '../../../lib/components/code-editor';
+import createWrapper from '../../../lib/components/test-utils/dom';
 import { i18nStrings } from './common';
 
 export let annotationCallback: (event?: any) => void;

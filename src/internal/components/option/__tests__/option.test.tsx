@@ -2,12 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
+
 import Option, { OptionProps } from '../../../../../lib/components/internal/components/option';
 import { OptionDefinition } from '../../../../../lib/components/internal/components/option/interfaces';
-import OptionWrapper from '../../../../../lib/components/test-utils/dom/internal/option';
 import CheckboxWrapper from '../../../../../lib/components/test-utils/dom/checkbox';
-import styles from '../../../../../lib/components/internal/components/option/styles.selectors.js';
+import OptionWrapper from '../../../../../lib/components/test-utils/dom/internal/option';
+
 import iconStyles from '../../../../../lib/components/icon/styles.selectors.js';
+import styles from '../../../../../lib/components/internal/components/option/styles.selectors.js';
 
 function renderOption(props: OptionProps = {}): OptionWrapper {
   const renderResult = render(<Option {...props} />);

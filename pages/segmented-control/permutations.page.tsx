@@ -1,11 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
 import SegmentedControl, { SegmentedControlProps } from '~components/segmented-control';
-import ScreenshotArea from '../utils/screenshot-area';
+
+import img from '../icon/custom-icon.png';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
-import img from '../icon/custom-icon.png';
+import ScreenshotArea from '../utils/screenshot-area';
 
 const iconSvg = (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" focusable="false">

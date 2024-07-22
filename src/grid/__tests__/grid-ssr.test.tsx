@@ -6,7 +6,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
+
 import Grid from '../../../lib/components/grid';
+
 import styles from '../../../lib/components/grid/styles.css.js';
 
 test('renders static grid server-side', () => {

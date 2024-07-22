@@ -1,13 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import styles from './styles.css.js';
-import { TutorialPanelProps } from '../../interfaces';
-import InternalStatusIndicator from '../../../status-indicator/internal';
-import InternalSpaceBetween from '../../../space-between/internal';
-import InternalLink from '../../../link/internal';
 import clsx from 'clsx';
+
 import InternalBox from '../../../box/internal';
+import InternalLink from '../../../link/internal';
+import InternalSpaceBetween from '../../../space-between/internal';
+import InternalStatusIndicator from '../../../status-indicator/internal';
+import { TutorialPanelProps } from '../../interfaces';
+
+import styles from './styles.css.js';
 
 interface CongratulationScreenProps {
   children: React.ReactNode;

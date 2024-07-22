@@ -1,9 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useState } from 'react';
+
 import Autosuggest, { AutosuggestProps } from '~components/autosuggest';
-import styles from './styles.scss';
+
 import AppContext, { AppContextType } from '../app/app-context';
+
+import styles from './styles.scss';
 
 type AutosuggestEventsPageContext = React.Context<AppContextType<{ expandToViewport: boolean }>>;
 

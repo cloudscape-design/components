@@ -1,13 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
 import AppLayout from '~components/app-layout';
-import labels from './utils/labels';
-import Table from '~components/table';
-import { generateItems, Instance } from '../table/generate-data';
-import { columnsConfig } from '../table/shared-configs';
 import ExpandableSection from '~components/expandable-section';
 import Header from '~components/header';
+import Table from '~components/table';
+
+import { generateItems, Instance } from '../table/generate-data';
+import { columnsConfig } from '../table/shared-configs';
+import labels from './utils/labels';
 
 const items = generateItems(20);
 

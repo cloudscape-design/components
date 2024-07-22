@@ -2,11 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
+
 import Tooltip, { TooltipProps } from '../../../../../lib/components/internal/components/tooltip';
 import StatusIndicator from '../../../../../lib/components/status-indicator';
 import createWrapper, { ElementWrapper, PopoverWrapper } from '../../../../../lib/components/test-utils/dom';
-import styles from '../../../../../lib/components/popover/styles.selectors.js';
+
 import tooltipStyles from '../../../../../lib/components/internal/components/tooltip/styles.selectors.js';
+import styles from '../../../../../lib/components/popover/styles.selectors.js';
 
 class TooltipInternalWrapper extends PopoverWrapper {
   findTooltip(): ElementWrapper | null {

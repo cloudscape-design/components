@@ -2,10 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext } from 'react';
 
-import { createLinearTimeLatencyProps } from './series';
 import { AreaChart, Box, Button, Checkbox, SpaceBetween } from '~components';
+
 import AppContext, { AppContextType } from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
+import { createLinearTimeLatencyProps } from './series';
 
 type DemoContext = React.Context<
   AppContextType<{ fitHeight: boolean; hideFilter: boolean; hideLegend: boolean; minHeight: number }>

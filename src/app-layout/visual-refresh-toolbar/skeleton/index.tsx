@@ -2,8 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
-import { AppLayoutPropsWithDefaults } from '../../interfaces';
+
 import customCssProps from '../../../internal/generated/custom-css-properties';
+import { AppLayoutPropsWithDefaults } from '../../interfaces';
+
 import testutilStyles from '../../test-classes/styles.css.js';
 import styles from './styles.css.js';
 
@@ -84,7 +86,7 @@ export function SkeletonLayout({
         {notifications}
         <div className={clsx(styles.main, { [styles['main-disable-paddings']]: disableContentPaddings })} style={style}>
           {contentHeader && <div className={styles['content-header']}>{contentHeader}</div>}
-          <div className={testutilStyles.content}>{content}</div>
+          <div className={clsx(styles.content, testutilStyles.content)}>{content}</div>
         </div>
         {bottomSplitPanel && (
           <div

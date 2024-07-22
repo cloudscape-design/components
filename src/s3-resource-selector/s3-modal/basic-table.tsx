@@ -1,20 +1,22 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+
 import { useCollection } from '@cloudscape-design/collection-hooks';
+import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
+
 import { InternalButton } from '../../button/internal';
 import InternalHeader from '../../header/internal';
+import { ComponentFormatFunction } from '../../i18n/context';
+import useForwardFocus, { ForwardFocusRef } from '../../internal/hooks/forward-focus';
 import { PaginationProps } from '../../pagination/interfaces';
 import InternalPagination from '../../pagination/internal';
 import { TableProps } from '../../table/interfaces';
 import InternalTable from '../../table/internal';
 import { TextFilterProps } from '../../text-filter/interfaces';
 import InternalTextFilter from '../../text-filter/internal';
-import useForwardFocus, { ForwardFocusRef } from '../../internal/hooks/forward-focus';
 import { S3ResourceSelectorProps } from '../interfaces';
 import { EmptyState } from './empty-state';
-import { ComponentFormatFunction } from '../../i18n/context';
-import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
 interface BasicS3TableStrings<T> {
   labelRefresh?: string;

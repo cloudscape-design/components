@@ -1,13 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
+import { DropdownOption } from '~components/internal/components/option/interfaces';
 import Item from '~components/select/parts/item';
+import { ItemProps } from '~components/select/parts/item';
 import SpaceBetween from '~components/space-between';
+
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
-import { ItemProps } from '~components/select/parts/item';
-import { DropdownOption } from '~components/internal/components/option/interfaces';
 
 const options: Record<string, DropdownOption> = {
   simpleOption: {

@@ -3,19 +3,18 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { InternalBaseComponentProps } from '../../internal/hooks/use-base-component';
 import { getBaseProps } from '../../internal/base-component';
-import { fireCancelableEvent, isPlainLeftClick } from '../../internal/events';
-import VisualContext from '../../internal/components/visual-context';
 import Portal from '../../internal/components/portal';
-
+import VisualContext from '../../internal/components/visual-context';
+import { fireCancelableEvent, isPlainLeftClick } from '../../internal/events';
+import { InternalBaseComponentProps } from '../../internal/hooks/use-base-component';
+import { checkSafeUrl } from '../../internal/utils/check-safe-url';
 import { TopNavigationProps } from './interfaces';
-import { useTopNavigation } from './use-top-navigation.js';
-import Utility from './parts/utility';
 import OverflowMenu from './parts/overflow-menu';
+import Utility from './parts/utility';
+import { useTopNavigation } from './use-top-navigation.js';
 
 import styles from './styles.css.js';
-import { checkSafeUrl } from '../../internal/utils/check-safe-url';
 
 export type InternalTopNavigationProps = TopNavigationProps & InternalBaseComponentProps;
 

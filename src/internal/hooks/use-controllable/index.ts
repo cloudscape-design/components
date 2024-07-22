@@ -1,8 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { isDevelopment } from '../../is-development';
+
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
+import { isDevelopment } from '../../is-development';
 
 interface PropertyDescription {
   componentName: string;

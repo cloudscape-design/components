@@ -2,11 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
-import { getAllComponents, requireComponent, supportsDOMProperties } from './utils';
-import { getRequiredPropsForComponent } from './required-props-for-components';
-import { COMPONENT_METADATA_KEY } from '@cloudscape-design/component-toolkit/internal';
 import { pascalCase } from 'change-case';
+
+import { COMPONENT_METADATA_KEY } from '@cloudscape-design/component-toolkit/internal';
+
 import { PACKAGE_VERSION } from '../../lib/components/internal/environment';
+import { getRequiredPropsForComponent } from './required-props-for-components';
+import { getAllComponents, requireComponent, supportsDOMProperties } from './utils';
 
 describe('useBaseComponent hook is used in all allowlisted public components', () => {
   const componentRoot = document.createElement('div');

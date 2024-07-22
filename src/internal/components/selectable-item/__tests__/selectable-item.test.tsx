@@ -4,6 +4,7 @@ import * as React from 'react';
 import { render } from '@testing-library/react';
 
 import SelectableItem from '../../../../../lib/components/internal/components/selectable-item';
+
 import styles from '../../../../../lib/components/internal/components/selectable-item/styles.selectors.js';
 
 function getAriaAttributeNames(element: null | Element): string[] {

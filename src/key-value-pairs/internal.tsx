@@ -2,13 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
-import styles from './styles.css.js';
-import { KeyValuePairsProps } from './interfaces';
-import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
-import ColumnLayout from '../column-layout/internal';
-import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
+
 import Box from '../box/internal';
+import ColumnLayout from '../column-layout/internal';
+import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
+import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { KeyValuePairsProps } from './interfaces';
+
+import styles from './styles.css.js';
 
 const InternalKeyValuePair = ({ label, info, value, id }: KeyValuePairsProps.Pair) => {
   const kvPairId = useUniqueId('kv-pair-');
@@ -37,12 +39,25 @@ const InternalKeyValuePairGroup = ({ label, value }: { label?: React.ReactNode; 
 
 const InternalKeyValuePairs = React.forwardRef(
   (
-    { columns, items, className, ...rest }: KeyValuePairsProps & Required<Pick<KeyValuePairsProps, 'columns'>>,
+    {
+      columns,
+      items,
+      className,
+      ariaLabel,
+      ariaLabelledby,
+      ...rest
+    }: KeyValuePairsProps & Required<Pick<KeyValuePairsProps, 'columns'>>,
     ref: React.Ref<HTMLDivElement>
   ) => {
     return (
       <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
-        <div {...rest} className={clsx(styles['key-value-pairs'], className)} ref={ref}>
+        <div
+          {...rest}
+          className={clsx(styles['key-value-pairs'], className)}
+          aria-label={ariaLabel}
+          aria-labelledby={ariaLabelledby}
+          ref={ref}
+        >
           {/*
           minColumnWidth={150} is set to use FlexibleColumnLayout which has only 1 nested div wrapper for column items,
           otherwise GridColumnLayout will be used, which has 2 nested div, therefore it is not a11y compatible for dl -> dt/dd relationship

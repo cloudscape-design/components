@@ -3,9 +3,10 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import InternalSelect from '../../../select/internal';
-import InternalIcon from '../../../icon/internal';
+import InternalIcon from '../../icon/internal';
+import InternalSelect from '../../select/internal';
 
+import testUtilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';
 
 export namespace FilteringTokenProps {
@@ -42,11 +43,11 @@ export default function FilteringToken({
   onDismiss,
 }: FilteringTokenProps) {
   return (
-    <div className={styles.root} role="group" aria-label={ariaLabel}>
+    <div className={clsx(styles.root, testUtilStyles['filtering-token'])} role="group" aria-label={ariaLabel}>
       {showOperation && (
         <InternalSelect
           __inFilteringToken={true}
-          className={styles.select}
+          className={clsx(styles.select, testUtilStyles['filtering-token-select'])}
           options={[
             { value: 'and', label: andText },
             { value: 'or', label: orText },
@@ -61,10 +62,10 @@ export default function FilteringToken({
         className={clsx(styles.token, showOperation && styles['show-operation'], disabled && styles['token-disabled'])}
         aria-disabled={disabled}
       >
-        <div className={styles['token-content']}>{children}</div>
+        <div className={clsx(styles['token-content'], testUtilStyles['filtering-token-content'])}>{children}</div>
         <button
           type="button"
-          className={styles['dismiss-button']}
+          className={clsx(styles['dismiss-button'], testUtilStyles['filtering-token-dismiss-button'])}
           aria-label={dismissAriaLabel}
           onClick={onDismiss}
           disabled={disabled}

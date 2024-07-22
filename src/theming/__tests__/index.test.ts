@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { Theme, applyTheme, generateThemeStylesheet } from '../../../lib/components/theming';
+import { applyTheme, generateThemeStylesheet, Theme } from '../../../lib/components/theming';
 
 const findStyleNode = () => document.head.querySelector('style');
 const attachNonceMetaElement = (nonce: string) => {

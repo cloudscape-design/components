@@ -2,14 +2,17 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import { render } from '@testing-library/react';
-import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import Multiselect, { MultiselectProps } from '../../../lib/components/multiselect';
-import tokenGroupStyles from '../../../lib/components/token-group/styles.css.js';
-import selectPartsStyles from '../../../lib/components/select/parts/styles.css.js';
-import '../../__a11y__/to-validate-a11y';
-import statusIconStyles from '../../../lib/components/status-indicator/styles.selectors.js';
+
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
+
+import '../../__a11y__/to-validate-a11y';
+import Multiselect, { MultiselectProps } from '../../../lib/components/multiselect';
+import createWrapper from '../../../lib/components/test-utils/dom';
+
+import selectPartsStyles from '../../../lib/components/select/parts/styles.css.js';
+import tokenGroupStyles from '../../../lib/components/token-group/styles.css.js';
+import statusIconStyles from '../../../lib/components/status-indicator/styles.selectors.js';
 
 const defaultOptions: MultiselectProps.Options = [
   { label: 'First', value: '1' },

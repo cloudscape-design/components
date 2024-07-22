@@ -2,15 +2,16 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect } from 'react';
 import clsx from 'clsx';
-import styles from './styles.css.js';
 
 import InternalIcon from '../../icon/internal';
+import useHiddenDescription from '../../internal/hooks/use-hidden-description';
+import { CategoryProps } from '../interfaces';
 import ItemsList from '../items-list';
 import MobileExpandableGroup from '../mobile-expandable-group/mobile-expandable-group';
-import { CategoryProps } from '../interfaces';
 import Tooltip from '../tooltip.js';
-import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import { getMenuItemProps } from '../utils/menu-item.js';
+
+import styles from './styles.css.js';
 
 const MobileExpandableCategoryElement = ({
   item,

@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import type { TutorialPanelProps } from '~components/tutorial-panel';
 import type { AnnotationContextProps } from '~components/annotation-context';
+import type { TutorialPanelProps } from '~components/tutorial-panel';
 
 export const tutorialPanelStrings: TutorialPanelProps.I18nStrings = {
   labelsTaskStatus: { pending: 'Pending', 'in-progress': 'In progress', success: 'Success' },

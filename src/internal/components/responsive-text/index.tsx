@@ -1,8 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { memo, useEffect, useRef } from 'react';
-import { getTextWidth } from './responsive-text-utils';
+
 import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
+
+import { getTextWidth } from './responsive-text-utils';
 
 interface ResponsiveTextProps {
   x: number;

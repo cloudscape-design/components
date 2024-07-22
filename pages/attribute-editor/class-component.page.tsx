@@ -1,12 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import AttributeEditor, { AttributeEditorProps } from '~components/attribute-editor';
-import Input, { InputProps } from '~components/input';
-import Link from '~components/link';
-import Box from '~components/box';
 
+import AttributeEditor, { AttributeEditorProps } from '~components/attribute-editor';
+import Box from '~components/box';
+import Input, { InputProps } from '~components/input';
 import { NonCancelableEventHandler } from '~components/internal/events';
+import Link from '~components/link';
 
 interface Item {
   key?: string;

@@ -3,13 +3,15 @@
 
 import React, {
   createContext,
+  forwardRef,
   useContext,
+  useImperativeHandle,
   useLayoutEffect,
   useRef,
   useState,
-  useImperativeHandle,
-  forwardRef,
 } from 'react';
+
+import { nodeBelongs } from '../utils/node-belongs';
 
 export type FocusableChangeHandler = (isFocusable: boolean) => void;
 
@@ -61,7 +63,7 @@ export interface SingleTabStopNavigationProviderProps {
   getNextFocusTarget: () => null | HTMLElement;
   isElementSuppressed?(focusableElement: Element): boolean;
   onRegisterFocusable?(focusableElement: Element): void;
-  onUnregisterFocusable?(focusableElement: Element): void;
+  onUnregisterActive?(focusableElement: Element): void;
 }
 
 export interface SingleTabStopNavigationAPI {
@@ -78,7 +80,7 @@ export const SingleTabStopNavigationProvider = forwardRef(
       getNextFocusTarget,
       isElementSuppressed,
       onRegisterFocusable,
-      onUnregisterFocusable,
+      onUnregisterActive,
     }: SingleTabStopNavigationProviderProps,
     ref: React.Ref<SingleTabStopNavigationAPI>
   ) => {
@@ -90,6 +92,14 @@ export const SingleTabStopNavigationProvider = forwardRef(
     const focusablesState = useRef(new WeakMap<Element, boolean>());
     // A reference to the currently focused element.
     const focusTarget = useRef<null | HTMLElement>(null);
+
+    function onUnregisterFocusable(focusableElement: Element) {
+      const isUnregisteringFocusedNode = nodeBelongs(focusableElement, document.activeElement);
+      if (isUnregisteringFocusedNode) {
+        // Wait for unmounted node to get removed from the DOM.
+        requestAnimationFrame(() => onUnregisterActive?.(focusableElement));
+      }
+    }
 
     // Register a focusable element to allow navigating into it.
     // The focusable element tabIndex is only set to 0 if the element matches the focus target.

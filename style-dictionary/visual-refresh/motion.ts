@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { StyleDictionary } from '../utils/interfaces';
 import { expandMotionDictionary } from '../utils';
 import { tokenStylesSuffix } from '../utils/environment';
+import { StyleDictionary } from '../utils/interfaces';
 
 const tokens: StyleDictionary.MotionDictionary = {
   motionDurationExtraFast: { default: '45ms', disabled: '0ms' },

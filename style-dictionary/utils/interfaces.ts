@@ -1,23 +1,23 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { GlobalValue, ModeValue, TokenCategory } from '@cloudscape-design/theming-build';
+
 import {
-  ColorPaletteTokenName,
-  ColorChartsTokenName,
-  ColorsTokenName,
   BordersTokenName,
-  TypographyTokenName,
+  ColorChartsTokenName,
+  ColorPaletteTokenName,
+  ColorScopeTokenName,
+  ColorsTokenName,
+  DensityScopeTokenName,
+  GlobalScopeTokenName,
+  MotionScopeTokenName,
   MotionTokenName,
+  ShadowsTokenName,
   SizesTokenName,
   SpacingTokenName,
-  GlobalScopeTokenName,
-  ColorScopeTokenName,
-  DensityScopeTokenName,
-  MotionScopeTokenName,
-  ShadowsTokenName,
   TokenName,
+  TypographyTokenName,
 } from './token-names';
-
-import { GlobalValue, ModeValue, TokenCategory } from '@cloudscape-design/theming-build';
 
 export namespace StyleDictionary {
   export type GlobalEntry = GlobalValue;

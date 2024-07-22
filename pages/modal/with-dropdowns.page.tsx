@@ -1,18 +1,19 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
+
 import {
-  Modal,
-  Button,
-  SpaceBetween,
   Autosuggest,
+  Button,
   ButtonDropdown,
   DatePicker,
   DateRangePicker,
   DateRangePickerProps,
+  Modal,
   Multiselect,
   MultiselectProps,
   Popover,
+  SpaceBetween,
 } from '~components';
 
 export default function () {

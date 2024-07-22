@@ -2,12 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
+
 import FormField, { FormFieldProps } from '../../../lib/components/form-field';
-import createWrapper, { ElementWrapper } from '../../../lib/components/test-utils/dom';
 import {
-  useFormFieldContext,
   FormFieldValidationControlProps,
+  useFormFieldContext,
 } from '../../../lib/components/internal/context/form-field-context';
+import createWrapper, { ElementWrapper } from '../../../lib/components/test-utils/dom';
+
 import styles from '../../../lib/components/form-field/styles.css.js';
 
 const errorSelector = `:scope > .${styles.hints} .${styles.error}`;

@@ -2,13 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { ReactNode, useContext, useState } from 'react';
 
-import MixedLineBarChart, { MixedLineBarChartProps } from '~components/mixed-line-bar-chart';
-import ScreenshotArea from '../utils/screenshot-area';
-import { commonProps, barChartInstructions } from './common';
-import rawCostsData from '../common/popover-drilldown-sample-data';
-import SpaceBetween from '~components/space-between';
 import Link from '~components/link';
+import MixedLineBarChart, { MixedLineBarChartProps } from '~components/mixed-line-bar-chart';
+import SpaceBetween from '~components/space-between';
+
 import AppContext, { AppContextType } from '../app/app-context';
+import rawCostsData from '../common/popover-drilldown-sample-data';
+import ScreenshotArea from '../utils/screenshot-area';
+import { barChartInstructions, commonProps } from './common';
 
 type DemoContext = React.Context<
   AppContextType<{

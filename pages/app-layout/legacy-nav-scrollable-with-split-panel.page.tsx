@@ -1,13 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
+
 import AppLayout from '~components/app-layout';
-import SplitPanel from '~components/split-panel';
 import Header from '~components/header';
+import SplitPanel from '~components/split-panel';
+
 import ScreenshotArea from '../utils/screenshot-area';
-import { Containers, Navigation, Tools, Breadcrumbs, Footer } from './utils/content-blocks';
-import * as toolsContent from './utils/tools-content';
+import { Breadcrumbs, Containers, Footer, Navigation, Tools } from './utils/content-blocks';
 import labels from './utils/labels';
+import * as toolsContent from './utils/tools-content';
 
 const DEMO_CONTENT = (
   <div>

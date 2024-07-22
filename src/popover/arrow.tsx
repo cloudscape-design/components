@@ -3,9 +3,10 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import styles from './styles.css.js';
-import { InternalPosition } from './interfaces';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { InternalPosition } from './interfaces';
+
+import styles from './styles.css.js';
 
 export interface ArrowProps {
   position: InternalPosition | null;

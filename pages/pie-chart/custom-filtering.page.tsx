@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 
+import Box from '~components/box';
 import Container from '~components/container';
 import Header from '~components/header';
-import Box from '~components/box';
-import Toggle from '~components/toggle';
 import PieChart from '~components/pie-chart';
-import ScreenshotArea from '../utils/screenshot-area';
+import Toggle from '~components/toggle';
 
+import ScreenshotArea from '../utils/screenshot-area';
 import { commonProps, data1, FoodData } from './common';
 
 export default function () {

@@ -2,9 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import { range } from 'lodash';
-import { SpaceBetween, Flashbar, AppLayout } from '~components';
-import { generateItem, i18nStrings } from './common';
+
+import { AppLayout, Flashbar, SpaceBetween } from '~components';
+
 import appLayoutLabels from '../app-layout/utils/labels';
+import { generateItem, i18nStrings } from './common';
 
 export default function StickyFlashbar() {
   const items = [

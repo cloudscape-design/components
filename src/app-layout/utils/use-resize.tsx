@@ -1,16 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import PanelResizeHandle from '../../internal/components/panel-resize-handle';
 import { getLimitedValue } from '../../split-panel/utils/size-utils';
-import { usePointerEvents } from './use-pointer-events';
-import { useKeyboardEvents } from './use-keyboard-events';
 import { AppLayoutProps } from '../interfaces';
+import { SizeControlProps } from './interfaces';
+import { FocusControlRefs } from './use-focus-control';
+import { useKeyboardEvents } from './use-keyboard-events';
+import { usePointerEvents } from './use-pointer-events';
 
 import testutilStyles from '../test-classes/styles.css.js';
-import { FocusControlRefs } from './use-focus-control';
-import { SizeControlProps } from './interfaces';
 
 export interface DrawerResizeProps {
   activeDrawer: AppLayoutProps.Drawer | undefined;

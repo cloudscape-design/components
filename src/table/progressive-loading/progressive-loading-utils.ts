@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
 import { TableProps, TableRow } from '../interfaces';
 
 export function useProgressiveLoadingProps<T>({

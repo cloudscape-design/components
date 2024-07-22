@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render, waitFor } from '@testing-library/react';
+
 import CopyToClipboard from '../../../lib/components/copy-to-clipboard';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
@@ -69,34 +70,60 @@ describe('CopyToClipboard', () => {
     expect(wrapper.findTextToCopy()!.getElement().textContent).toBe('Text to copy');
   });
 
-  test('copies to clipboard and shows success message', async () => {
-    const { container } = render(<CopyToClipboard {...defaultProps} />);
-    const wrapper = createWrapper(container).findCopyToClipboard()!;
-
-    wrapper.findCopyButton().click();
-    await waitFor(() => expect(wrapper.findStatusText()!.getElement().textContent).toBe('Copied to clipboard'));
-  });
-
-  test('fails to copy to clipboard and shows error message', async () => {
-    const { container } = render(<CopyToClipboard {...defaultProps} textToCopy="Text to copy with error" />);
-    const wrapper = createWrapper(container).findCopyToClipboard()!;
-
-    wrapper.findCopyButton().click();
-    await waitFor(() => expect(wrapper.findStatusText()!.getElement().textContent).toBe('Failed to copy to clipboard'));
-  });
-
-  describe('when the clipboard API is not available', () => {
-    beforeEach(() => Object.assign(global.navigator, { clipboard: undefined }));
-    afterEach(() => Object.assign(global.navigator, { clipboard: originalNavigatorClipboard }));
-
-    test('fails to copy to clipboard and shows error message', async () => {
-      const { container } = render(<CopyToClipboard {...defaultProps} textToCopy="Text to copy with error" />);
+  describe.each([false, true])('popoverRenderWithPortal set to %s', (popoverRenderWithPortal: boolean) => {
+    test('copies to clipboard and shows success message', async () => {
+      const { container } = render(
+        <CopyToClipboard {...defaultProps} popoverRenderWithPortal={popoverRenderWithPortal} />
+      );
       const wrapper = createWrapper(container).findCopyToClipboard()!;
 
       wrapper.findCopyButton().click();
       await waitFor(() =>
-        expect(wrapper.findStatusText()!.getElement().textContent).toBe('Failed to copy to clipboard')
+        expect(wrapper.findStatusText({ popoverRenderWithPortal })!.getElement().textContent).toBe(
+          'Copied to clipboard'
+        )
       );
+    });
+
+    test('fails to copy to clipboard and shows error message', async () => {
+      const { container } = render(
+        <CopyToClipboard
+          {...defaultProps}
+          popoverRenderWithPortal={popoverRenderWithPortal}
+          textToCopy="Text to copy with error"
+        />
+      );
+      const wrapper = createWrapper(container).findCopyToClipboard()!;
+
+      wrapper.findCopyButton().click();
+      await waitFor(() =>
+        expect(wrapper.findStatusText({ popoverRenderWithPortal })!.getElement().textContent).toBe(
+          'Failed to copy to clipboard'
+        )
+      );
+    });
+
+    describe('when the clipboard API is not available', () => {
+      beforeEach(() => Object.assign(global.navigator, { clipboard: undefined }));
+      afterEach(() => Object.assign(global.navigator, { clipboard: originalNavigatorClipboard }));
+
+      test('fails to copy to clipboard and shows error message', async () => {
+        const { container } = render(
+          <CopyToClipboard
+            {...defaultProps}
+            popoverRenderWithPortal={popoverRenderWithPortal}
+            textToCopy="Text to copy with error"
+          />
+        );
+        const wrapper = createWrapper(container).findCopyToClipboard()!;
+
+        wrapper.findCopyButton().click();
+        await waitFor(() =>
+          expect(wrapper.findStatusText({ popoverRenderWithPortal })!.getElement().textContent).toBe(
+            'Failed to copy to clipboard'
+          )
+        );
+      });
     });
   });
 });

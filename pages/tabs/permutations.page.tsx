@@ -1,11 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import ScreenshotArea from '../utils/screenshot-area';
+
+import ButtonDropdown from '~components/button-dropdown';
 import Tabs, { TabsProps } from '~components/tabs';
+
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
-import ButtonDropdown from '~components/button-dropdown';
+import ScreenshotArea from '../utils/screenshot-area';
 
 const permutations = createPermutations<TabsProps>([
   {

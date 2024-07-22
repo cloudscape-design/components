@@ -6,8 +6,8 @@ import { render } from '@testing-library/react';
 import {
   balanceLabelNodes,
   computeSmartAngle,
-  getDimensionsBySize,
   dimensionsBySize,
+  getDimensionsBySize,
   minLabelLineAngularPadding,
   refreshDimensionsBySize,
 } from '../../../lib/components/pie-chart/utils';

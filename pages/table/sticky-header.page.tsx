@@ -1,8 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
+
 import Header from '~components/header';
 import Table, { TableProps } from '~components/table';
+
 import ScreenshotArea from '../utils/screenshot-area';
 import { generateItems } from './generate-data';
 import { columnsConfig } from './shared-configs';

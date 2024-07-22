@@ -4,21 +4,21 @@ import React from 'react';
 
 import { Box, Toggle } from '~components';
 import MixedLineBarChart, { MixedLineBarChartProps } from '~components/mixed-line-bar-chart';
-import { colorChartsThresholdNeutral, colorChartsStatusHigh } from '~design-tokens';
+import { colorChartsStatusHigh, colorChartsThresholdNeutral } from '~design-tokens';
+
+import {
+  commonProps,
+  data1,
+  data2,
+  data3,
+  data4,
+  dateTimeFormatter,
+  latencyData,
+  logarithmicData,
+} from '../mixed-line-bar-chart/common';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
-
-import {
-  data1,
-  data2,
-  commonProps,
-  logarithmicData,
-  latencyData,
-  dateTimeFormatter,
-  data3,
-  data4,
-} from '../mixed-line-bar-chart/common';
 
 const timeLatencyData = latencyData.map(({ time, p90 }) => ({ x: time, y: p90 }));
 

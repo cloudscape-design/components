@@ -2,15 +2,16 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import { render } from '@testing-library/react';
-import WizardWrapper from '../../../lib/components/test-utils/dom/wizard';
-import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import Button from '../../../lib/components/button';
-import Wizard, { WizardProps } from '../../../lib/components/wizard';
-import TestI18nProvider from '../../../lib/components/i18n/testing';
-import styles from '../../../lib/components/wizard/styles.selectors.js';
 
+import Button from '../../../lib/components/button';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
+import createWrapper from '../../../lib/components/test-utils/dom';
+import WizardWrapper from '../../../lib/components/test-utils/dom/wizard';
+import Wizard, { WizardProps } from '../../../lib/components/wizard';
 import { DEFAULT_I18N_SETS, DEFAULT_STEPS } from './common';
+
+import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
+import styles from '../../../lib/components/wizard/styles.selectors.js';
 
 declare global {
   interface Window {

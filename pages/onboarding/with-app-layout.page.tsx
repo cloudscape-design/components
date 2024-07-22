@@ -6,17 +6,15 @@ import { Button, Header, NonCancelableCustomEvent, SpaceBetween, Tabs } from '~c
 import AnnotationContext from '~components/annotation-context';
 import AppLayout, { AppLayoutProps } from '~components/app-layout';
 import TutorialPanel, { TutorialPanelProps } from '~components/tutorial-panel';
-import ScreenshotArea from '../utils/screenshot-area';
-import tutorialData from './tutorials';
 
+import labels from '../app-layout/utils/labels';
+import ScreenshotArea from '../utils/screenshot-area';
+import { annotationContextStrings, tutorialPanelStrings } from './i18n';
 import { PageOne } from './pages/page1';
 import { PageTwo } from './pages/page2';
 import { PageThree } from './pages/page3';
 import { PageFour } from './pages/page4';
-
-import labels from '../app-layout/utils/labels';
-
-import { annotationContextStrings, tutorialPanelStrings } from './i18n';
+import tutorialData from './tutorials';
 
 function useAvailableTutorials(showToolsPanel: () => void) {
   const [tutorials, setTutorials] = useState(() => tutorialData(showToolsPanel));

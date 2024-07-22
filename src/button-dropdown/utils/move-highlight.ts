@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { isItemGroup, indexEquals } from './utils';
 import { ButtonDropdownProps } from '../interfaces';
 import { TreeIndex } from './create-items-tree';
+import { indexEquals, isItemGroup } from './utils';
 
 // While every menu item except the edge ones have successors and predecessors,
 // there are rules determining what items are eligible for highlighting for the

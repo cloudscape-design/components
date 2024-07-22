@@ -1,13 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import Wizard, { WizardProps } from '~components/wizard';
 
-import { i18nStrings } from '../wizard/common';
 import Alert from '~components/alert';
 import Container from '~components/container';
 import Header from '~components/header';
 import Link from '~components/link';
+import Wizard, { WizardProps } from '~components/wizard';
+
+import { i18nStrings } from '../wizard/common';
 
 export default function WizardPage() {
   const [errorMode, setErrorMode] = useState(0);

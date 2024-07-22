@@ -2,17 +2,20 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { waitFor } from '@testing-library/react';
+
+import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
+import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
+
+import MixedLineBarChart, { MixedLineBarChartProps } from '../../../lib/components/mixed-line-bar-chart';
+import positions from '../../../lib/components/popover/utils/positions';
 import { ElementWrapper } from '../../../lib/components/test-utils/dom';
 import { MixedLineBarChartWrapper } from '../../../lib/components/test-utils/dom';
-import MixedLineBarChart, { MixedLineBarChartProps } from '../../../lib/components/mixed-line-bar-chart';
-import styles from '../../../lib/components/mixed-line-bar-chart/styles.css.js';
-import cartesianStyles from '../../../lib/components/internal/components/cartesian-chart/styles.css.js';
-import chartWrapperStyles from '../../../lib/components/internal/components/chart-wrapper/styles.css.js';
 import { lineSeries3, renderMixedChart } from './common';
 import createComputedTextLengthMock from './computed-text-length-mock';
-import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
-import positions from '../../../lib/components/popover/utils/positions';
-import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
+
+import cartesianStyles from '../../../lib/components/internal/components/cartesian-chart/styles.css.js';
+import chartWrapperStyles from '../../../lib/components/internal/components/chart-wrapper/styles.css.js';
+import styles from '../../../lib/components/mixed-line-bar-chart/styles.css.js';
 
 jest.mock('../../../lib/components/popover/utils/positions', () => {
   return {

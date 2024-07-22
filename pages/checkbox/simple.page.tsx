@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import FormField from '~components/form-field';
+
 import Checkbox from '~components/checkbox';
+import FormField from '~components/form-field';
 
 export default function CheckboxSimpleScenario() {
   const [state, setState] = useState({ checked: false, indeterminate: false });

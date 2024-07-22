@@ -1,14 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { ThemeBuilder } from '@cloudscape-design/theming-build';
-import { createColorMode, createDensityMode, createMotionMode } from '../utils/modes';
+
 import {
-  createTopNavigationContext,
+  createAlertContext,
   createCompactTableContext,
   createFlashbarContext,
   createFlashbarWarningContext,
-  createAlertContext,
+  createTopNavigationContext,
 } from '../utils/contexts';
+import { createColorMode, createDensityMode, createMotionMode } from '../utils/modes';
 
 const modes = [
   createColorMode('.awsui-dark-mode'),

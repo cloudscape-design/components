@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef } from 'react';
-import { render, act } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
+
 import { useMobile } from '../index';
 
 function Demo() {

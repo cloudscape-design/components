@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import SideNavigation, { SideNavigationProps } from '~components/side-navigation';
+
 import Badge from '~components/badge';
+import SideNavigation, { SideNavigationProps } from '~components/side-navigation';
 
 const items: SideNavigationProps.Item[] = [
   {

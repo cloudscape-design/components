@@ -1,9 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { MixedLineBarChartProps } from '../../../lib/components/mixed-line-bar-chart/interfaces';
 import { ChartScale } from '../../../lib/components/internal/components/cartesian-chart/scales';
+import { MixedLineBarChartProps } from '../../../lib/components/mixed-line-bar-chart/interfaces';
 import makeScaledBarGroups from '../../../lib/components/mixed-line-bar-chart/make-scaled-bar-groups';
-
 import { barSeries, barSeries2, lineSeries1, lineSeries3, thresholdSeries } from './common';
 
 function createInternalSeries<T>(externalSeries: readonly MixedLineBarChartProps.ChartSeries<T>[]) {

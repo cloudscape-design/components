@@ -1,9 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import createWrapper from '../../../../lib/components/test-utils/selectors';
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
+
+import createWrapper from '../../../../lib/components/test-utils/selectors';
 import DatePickerWrapper from '../../../../lib/components/test-utils/selectors/date-picker';
 import DropdownWrapper from '../../../../lib/components/test-utils/selectors/internal/dropdown';
+
 import styles from '../../../../lib/components/date-picker/styles.selectors.js';
 
 export default class DatePickerPage extends BasePageObject {

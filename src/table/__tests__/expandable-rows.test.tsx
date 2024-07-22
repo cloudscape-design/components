@@ -1,11 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { render, fireEvent } from '@testing-library/react';
-import Table, { TableProps } from '../../../lib/components/table';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import { fireEvent, render } from '@testing-library/react';
+
 import TestI18nProvider from '../../../lib/components/i18n/testing';
 import { KeyCode } from '../../../lib/components/internal/keycode';
+import Table, { TableProps } from '../../../lib/components/table';
+import createWrapper from '../../../lib/components/test-utils/dom';
 
 interface Instance {
   name: string;

@@ -3,8 +3,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import Utility, { UtilityProps } from '../../../lib/components/top-navigation/parts/utility';
 import { TopNavigationUtilityWrapper } from '../../../lib/components/test-utils/dom/top-navigation';
+import Utility, { UtilityProps } from '../../../lib/components/top-navigation/parts/utility';
 
 type Optional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 

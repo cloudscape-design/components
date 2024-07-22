@@ -1,16 +1,19 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
+
+import { useCollection } from '@cloudscape-design/collection-hooks';
+
 import AppLayout from '~components/app-layout';
-import SplitPanel from '~components/split-panel';
 import Header from '~components/header';
-import { Navigation, Tools, Breadcrumbs, Footer } from './utils/content-blocks';
-import * as toolsContent from './utils/tools-content';
-import labels from './utils/labels';
+import SplitPanel from '~components/split-panel';
 import Table from '~components/table';
+
 import { generateItems, Instance } from '../table/generate-data';
 import { columnsConfig } from '../table/shared-configs';
-import { useCollection } from '@cloudscape-design/collection-hooks';
+import { Breadcrumbs, Footer, Navigation, Tools } from './utils/content-blocks';
+import labels from './utils/labels';
+import * as toolsContent from './utils/tools-content';
 
 const allItems = generateItems();
 const PAGE_SIZE = 12;

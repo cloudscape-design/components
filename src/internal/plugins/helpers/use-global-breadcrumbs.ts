@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { awsuiPluginsInternal } from '../api';
-import { getGlobalFlag } from '../../utils/global-flags';
+
 import { BreadcrumbGroupProps } from '../../../breadcrumb-group/interfaces';
+import { getGlobalFlag } from '../../utils/global-flags';
+import { awsuiPluginsInternal } from '../api';
 import { BreadcrumbsGlobalRegistration } from '../controllers/breadcrumbs';
 
 function useSetGlobalBreadcrumbsImplementation(props: BreadcrumbGroupProps<any>) {

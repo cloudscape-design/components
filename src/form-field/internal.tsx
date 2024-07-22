@@ -3,22 +3,11 @@
 import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
-import { getBaseProps } from '../internal/base-component';
-import { FormFieldContext, useFormFieldContext } from '../internal/context/form-field-context';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import InternalGrid from '../grid/internal';
-import InternalIcon from '../icon/internal';
-import { getAriaDescribedBy, getGridDefinition, getSlotIds } from './util';
-
-import styles from './styles.css.js';
-import { InternalFormFieldProps } from './interfaces';
-import { joinStrings } from '../internal/utils/strings';
 import { useInternalI18n } from '../i18n/context';
-import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
-
+import InternalIcon from '../icon/internal';
 import { FunnelMetrics } from '../internal/analytics';
 import { useFunnel, useFunnelStep, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 import {
@@ -28,7 +17,17 @@ import {
   getNameFromSelector,
   getSubStepAllSelector,
 } from '../internal/analytics/selectors';
+import { getBaseProps } from '../internal/base-component';
 import LiveRegion from '../internal/components/live-region';
+import { FormFieldContext, useFormFieldContext } from '../internal/context/form-field-context';
+import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { joinStrings } from '../internal/utils/strings';
+import { InternalFormFieldProps } from './interfaces';
+import { getAriaDescribedBy, getGridDefinition, getSlotIds } from './util';
+
+import styles from './styles.css.js';
 
 interface FormFieldErrorProps {
   id?: string;

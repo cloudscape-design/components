@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { isItemGroup } from './utils';
 import { ButtonDropdownProps } from '../interfaces';
+import { isItemGroup } from './utils';
 
 // The function turns a tree of items into a structure optimized for lookup of
 // items and corresponding indices as well as iteration on indices in the given order.

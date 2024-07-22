@@ -1,10 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext } from 'react';
-import { THEME, ALWAYS_VISUAL_REFRESH } from '~components/internal/environment';
-import SpaceBetween from '~components/space-between';
-import AppContext from '../app-context';
+
 import { Density, Mode } from '@cloudscape-design/global-styles';
+
+import { ALWAYS_VISUAL_REFRESH, THEME } from '~components/internal/environment';
+import SpaceBetween from '~components/space-between';
+
+import AppContext from '../app-context';
 
 export default function ThemeSwitcher() {
   const { mode, urlParams, setUrlParams, setMode } = useContext(AppContext);

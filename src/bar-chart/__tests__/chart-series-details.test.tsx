@@ -1,11 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { MixedLineBarChartProps } from '../../../lib/components/mixed-line-bar-chart';
+import { render } from '@testing-library/react';
+
 import BarChart, { BarChartProps } from '../../../lib/components/bar-chart';
+import { MixedLineBarChartProps } from '../../../lib/components/mixed-line-bar-chart';
 import { BarChartWrapper } from '../../../lib/components/test-utils/dom';
 import testChartSeriesDetails from '../../mixed-line-bar-chart/__tests__/test-chart-series-details';
-import { render } from '@testing-library/react';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),

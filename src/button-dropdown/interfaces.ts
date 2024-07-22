@@ -1,12 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { BaseComponentProps } from '../internal/base-component';
-import { BaseNavigationDetail, CancelableEventHandler } from '../internal/events';
-import { IconProps } from '../icon/interfaces';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { ExpandToViewport } from '../internal/components/dropdown/interfaces';
+
 import { ButtonProps } from '../button/interfaces';
+import { IconProps } from '../icon/interfaces';
+import { BaseComponentProps } from '../internal/base-component';
+import { ExpandToViewport } from '../internal/components/dropdown/interfaces';
+import { BaseNavigationDetail, CancelableEventHandler } from '../internal/events';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 
 export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewport {
   /**

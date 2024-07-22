@@ -2,9 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
-import InternalLink from '../link/internal';
+
 import InternalBox from '../box/internal';
+import InternalLink from '../link/internal';
 import { WizardProps } from './interfaces';
+
 import styles from './styles.css.js';
 
 interface NavigationProps {

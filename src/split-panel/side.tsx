@@ -2,11 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
+
 import { ButtonProps } from '../button/interfaces';
 import InternalButton from '../button/internal';
+import { useSplitPanelContext } from '../internal/context/split-panel-context';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { SplitPanelContentProps } from './interfaces';
-import { useSplitPanelContext } from '../internal/context/split-panel-context';
+
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 

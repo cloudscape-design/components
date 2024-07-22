@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { Ace } from 'ace-builds';
+
 import { PaneStatus, supportsKeyboardAccessibility } from './util';
 
 export function setupEditor(

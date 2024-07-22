@@ -2,9 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
+
+import '../../../../__a11y__/to-validate-a11y';
 import AbstractSwitch, { AbstractSwitchProps } from '../../../../../lib/components/internal/components/abstract-switch';
 import AbstractSwitchWrapper from '../../../../../lib/components/test-utils/dom/internal/abstract-switch';
-import '../../../../__a11y__/to-validate-a11y';
 
 function renderAbstractSwitch(props: AbstractSwitchProps) {
   const { container } = render(<AbstractSwitch {...props} />);

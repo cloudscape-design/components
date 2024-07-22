@@ -3,14 +3,15 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 import Mockdate from 'mockdate';
-import createWrapper, { DateRangePickerWrapper } from '../../../lib/components/test-utils/dom';
-import DateRangePicker, { DateRangePickerProps } from '../../../lib/components/date-range-picker';
-import { NonCancelableEventHandler } from '../../../lib/components/internal/events';
-import { i18nStrings } from './i18n-strings';
-import { changeMode } from './change-mode';
-import { isValidRange } from './is-valid-range';
+
 import '../../__a11y__/to-validate-a11y';
+import DateRangePicker, { DateRangePickerProps } from '../../../lib/components/date-range-picker';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
+import { NonCancelableEventHandler } from '../../../lib/components/internal/events';
+import createWrapper, { DateRangePickerWrapper } from '../../../lib/components/test-utils/dom';
+import { changeMode } from './change-mode';
+import { i18nStrings } from './i18n-strings';
+import { isValidRange } from './is-valid-range';
 
 const defaultProps: DateRangePickerProps = {
   locale: 'en-US',

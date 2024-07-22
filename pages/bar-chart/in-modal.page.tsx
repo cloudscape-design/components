@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 
-import ScreenshotArea from '../utils/screenshot-area';
 import { Button, Modal } from '~components';
+
+import ScreenshotArea from '../utils/screenshot-area';
 import DrilldownChart from './drilldown-chart';
 
 export default function () {

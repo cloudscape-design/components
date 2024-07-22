@@ -3,9 +3,10 @@
 import React, { useContext } from 'react';
 
 import { Box, Button, Checkbox, PieChart, SegmentedControl, SpaceBetween } from '~components';
+
 import AppContext, { AppContextType } from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
-import { FoodData, commonProps, data1 } from './common';
+import { commonProps, data1, FoodData } from './common';
 
 type DemoContext = React.Context<
   AppContextType<{

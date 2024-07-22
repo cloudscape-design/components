@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { NonCancelableEventHandler } from '../../events';
 import React from 'react';
+
+import { NonCancelableEventHandler } from '../../events';
 
 export type OptionsFilteringType = 'none' | 'auto' | 'manual';
 export interface OptionsLoadItemsDetail {

@@ -2,12 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 import { range } from 'lodash';
+
+import Box from '~components/box';
+import Icon from '~components/icon';
+import TokenList from '~components/internal/components/token-list';
+import SpaceBetween from '~components/space-between';
 import { TokenGroupProps } from '~components/token-group';
 import { Token } from '~components/token-group/token';
-import TokenList from '~components/internal/components/token-list';
-import Box from '~components/box';
-import SpaceBetween from '~components/space-between';
-import Icon from '~components/icon';
+
 import styles from './styles.scss';
 
 const i18nStrings: TokenGroupProps.I18nStrings = {

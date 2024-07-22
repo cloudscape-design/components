@@ -4,6 +4,7 @@ import * as React from 'react';
 
 import Input from '~components/input';
 import TopNavigation from '~components/top-navigation';
+
 import ScreenshotArea from '../utils/screenshot-area';
 import { I18N_STRINGS } from './common';
 import logo from './logos/simple-logo.svg';

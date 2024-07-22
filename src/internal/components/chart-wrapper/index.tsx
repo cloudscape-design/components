@@ -4,10 +4,11 @@
 import React, { forwardRef } from 'react';
 import clsx from 'clsx';
 
-import styles from './styles.css.js';
-import { BaseComponentProps, getBaseProps } from '../../base-component/index.js';
 import InternalBox from '../../../box/internal.js';
 import InternalSpaceBetween from '../../../space-between/internal.js';
+import { BaseComponentProps, getBaseProps } from '../../base-component/index.js';
+
+import styles from './styles.css.js';
 
 interface ChartWrapperProps extends BaseComponentProps {
   fitHeight: boolean;

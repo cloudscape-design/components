@@ -1,16 +1,18 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { Ref, useRef } from 'react';
-import { getBaseProps } from '../internal/base-component';
-import { fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
-import { TextareaProps } from './interfaces';
-import { useFormFieldContext } from '../internal/context/form-field-context';
-import useForwardFocus from '../internal/hooks/forward-focus';
 import clsx from 'clsx';
-import styles from './styles.css.js';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import useBaseComponent from '../internal/hooks/use-base-component';
+
 import { convertAutoComplete } from '../input/utils';
+import { getBaseProps } from '../internal/base-component';
+import { useFormFieldContext } from '../internal/context/form-field-context';
+import { fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
+import useForwardFocus from '../internal/hooks/forward-focus';
+import useBaseComponent from '../internal/hooks/use-base-component';
+import { applyDisplayName } from '../internal/utils/apply-display-name';
+import { TextareaProps } from './interfaces';
+
+import styles from './styles.css.js';
 
 export { TextareaProps };
 

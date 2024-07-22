@@ -1,7 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
+
 import Select, { SelectProps } from '~components/select';
+
 import styles from './styles.scss';
 
 const options: SelectProps.Options = [...Array(50)].map((_, index) => ({

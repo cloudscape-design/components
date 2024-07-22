@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import React from 'react';
+
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
 export default function useContainerWidth(
   defaultValue = 0,

@@ -2,34 +2,33 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { Ref, useMemo, useRef } from 'react';
+import clsx from 'clsx';
 
-import { useAutosuggestItems } from '../autosuggest/options-controller';
 import { AutosuggestItem, AutosuggestProps } from '../autosuggest/interfaces';
-
-import { useDropdownStatus } from '../internal/components/dropdown-status';
-import DropdownFooter from '../internal/components/dropdown-footer';
-
-import { useUniqueId } from '../internal/hooks/use-unique-id';
-import {
-  fireNonCancelableEvent,
-  CancelableEventHandler,
-  NonCancelableCustomEvent,
-  BaseKeyDetail,
-} from '../internal/events';
+import { useAutosuggestLoadMore } from '../autosuggest/load-more-controller';
+import { useAutosuggestItems } from '../autosuggest/options-controller';
+import AutosuggestOptionsList from '../autosuggest/options-list';
 import { BaseChangeDetail } from '../input/interfaces';
-import autosuggestStyles from '../autosuggest/styles.css.js';
-import styles from './styles.css.js';
+import AutosuggestInput, { AutosuggestInputRef } from '../internal/components/autosuggest-input';
+import { OptionsLoadItemsDetail } from '../internal/components/dropdown/interfaces';
+import DropdownFooter from '../internal/components/dropdown-footer';
+import { useDropdownStatus } from '../internal/components/dropdown-status';
+import { getFirstFocusable } from '../internal/components/focus-lock/utils';
+import {
+  BaseKeyDetail,
+  CancelableEventHandler,
+  fireNonCancelableEvent,
+  NonCancelableCustomEvent,
+} from '../internal/events';
 import { fireCancelableEvent } from '../internal/events/index';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import AutosuggestOptionsList from '../autosuggest/options-list';
-import { useAutosuggestLoadMore } from '../autosuggest/load-more-controller';
-import { OptionsLoadItemsDetail } from '../internal/components/dropdown/interfaces';
-import AutosuggestInput, { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import clsx from 'clsx';
-import { getFirstFocusable } from '../internal/components/focus-lock/utils';
-import { filterOptions } from './filter-options';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { joinStrings } from '../internal/utils/strings';
+import { filterOptions } from './filter-options';
+
+import autosuggestStyles from '../autosuggest/styles.css.js';
+import styles from './styles.css.js';
 
 const DROPDOWN_WIDTH_OPTIONS_LIST = 300;
 const DROPDOWN_WIDTH_CUSTOM_FORM = 200;

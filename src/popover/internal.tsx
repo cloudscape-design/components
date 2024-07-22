@@ -1,28 +1,27 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useEffect, useRef, useState, useImperativeHandle } from 'react';
+import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { KeyCode } from '../internal/keycode';
-import { getBaseProps } from '../internal/base-component';
-
-import Arrow from './arrow';
-import Portal from '../internal/components/portal';
-import { PopoverProps } from './interfaces';
-import PopoverContainer from './container';
-import PopoverBody from './body';
-
-import styles from './styles.css.js';
-import { NonCancelableEventHandler, fireNonCancelableEvent } from '../internal/events/index';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { usePortalModeClasses } from '../internal/hooks/use-portal-mode-classes';
 import { useInternalI18n } from '../i18n/context';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { getBaseProps } from '../internal/base-component';
 import { getFirstFocusable } from '../internal/components/focus-lock/utils';
+import Portal from '../internal/components/portal';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import ResetContextsForModal from '../internal/context/reset-contexts-for-modal';
 import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
+import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events/index';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { usePortalModeClasses } from '../internal/hooks/use-portal-mode-classes';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { KeyCode } from '../internal/keycode';
+import Arrow from './arrow';
+import PopoverBody from './body';
+import PopoverContainer from './container';
+import { PopoverProps } from './interfaces';
+
+import styles from './styles.css.js';
 
 export interface InternalPopoverProps extends PopoverProps, InternalBaseComponentProps {
   __onOpen?: NonCancelableEventHandler<null>;

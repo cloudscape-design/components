@@ -1,32 +1,34 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import React, { Ref, useCallback, useRef, useState } from 'react';
-import styles from './styles.css.js';
-import { DatePickerProps } from './interfaces';
-import InternalCalendar from '../calendar/internal';
-import { normalizeLocale } from '../internal/utils/locale';
-import { InputProps } from '../input/interfaces';
-import { KeyCode } from '../internal/keycode';
-import { fireNonCancelableEvent } from '../internal/events';
-import Dropdown from '../internal/components/dropdown';
-import InternalDateInput from '../date-input/internal';
-import { getBaseProps } from '../internal/base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name.js';
-import checkControlled from '../internal/hooks/check-controlled';
-import { useFocusTracker } from '../internal/hooks/use-focus-tracker.js';
-import useForwardFocus from '../internal/hooks/forward-focus';
+import clsx from 'clsx';
+
 import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
-import useBaseComponent from '../internal/hooks/use-base-component';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import FocusLock from '../internal/components/focus-lock';
-import { parseDate } from '../internal/utils/date-time';
-import LiveRegion from '../internal/components/live-region';
+import InternalCalendar from '../calendar/internal';
 import { useFormFieldContext } from '../contexts/form-field.js';
+import InternalDateInput from '../date-input/internal';
 import { useLocale } from '../i18n/context.js';
+import { InputProps } from '../input/interfaces';
+import { getBaseProps } from '../internal/base-component';
+import Dropdown from '../internal/components/dropdown';
+import FocusLock from '../internal/components/focus-lock';
+import LiveRegion from '../internal/components/live-region';
+import { fireNonCancelableEvent } from '../internal/events';
+import checkControlled from '../internal/hooks/check-controlled';
+import useForwardFocus from '../internal/hooks/forward-focus';
+import useBaseComponent from '../internal/hooks/use-base-component';
+import { useFocusTracker } from '../internal/hooks/use-focus-tracker.js';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { KeyCode } from '../internal/keycode';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { parseDate } from '../internal/utils/date-time';
+import { normalizeLocale } from '../internal/utils/locale';
+import { DatePickerProps } from './interfaces';
 import { getBaseDateLabel, getSelectedDateLabel, isValidFullDate } from './utils';
+
+import styles from './styles.css.js';
 
 export { DatePickerProps };
 

@@ -1,19 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { Ref, useState, useLayoutEffect } from 'react';
-import { useMergeRefs } from '../../hooks/use-merge-refs';
-
-import { getBaseProps } from '../../base-component';
-import { fireCancelableEvent, fireNonCancelableEvent } from '../../events';
-
-import { useFormFieldContext } from '../../context/form-field-context';
+import React, { Ref, useLayoutEffect, useState } from 'react';
 
 import InternalInput from '../../../input/internal';
-
+import { getBaseProps } from '../../base-component';
+import { useFormFieldContext } from '../../context/form-field-context';
+import { fireCancelableEvent, fireNonCancelableEvent } from '../../events';
+import { useMergeRefs } from '../../hooks/use-merge-refs';
+import { MaskedInputProps } from './interfaces';
 import useMask from './use-mask';
 import MaskFormat from './utils/mask-format';
-
-import { MaskedInputProps } from './interfaces';
 
 const MaskedInput = React.forwardRef(
   (

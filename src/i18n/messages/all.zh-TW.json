@@ -77,7 +77,8 @@
     "i18nStrings.preferencesModalWrapLines": "換行",
     "i18nStrings.preferencesModalTheme": "佈景主題",
     "i18nStrings.preferencesModalLightThemes": "淺色佈景主題",
-    "i18nStrings.preferencesModalDarkThemes": "深色佈景主題"
+    "i18nStrings.preferencesModalDarkThemes": "深色佈景主題",
+    "i18nStrings.cursorPositionAriaLabel": "列 {row} 上的游標"
   },
   "collection-preferences": {
     "title": "偏好設定",
@@ -90,6 +91,15 @@
     "stripedRowsPreference.description": "選取以新增加網底的列",
     "contentDensityPreference.label": "精簡模式",
     "contentDensityPreference.description": "選擇以更密集、更精簡的模式顯示內容",
+    "stickyColumnsPreference.firstColumns.title": "貼上第一欄",
+    "stickyColumnsPreference.firstColumns.description": "水平捲動資料表內容時，保持第一欄可見。",
+    "stickyColumnsPreference.firstColumns.options[0].label": "無",
+    "stickyColumnsPreference.firstColumns.options[1].label": "第一欄",
+    "stickyColumnsPreference.firstColumns.options[2].label": "前兩欄",
+    "stickyColumnsPreference.lastColumns.title": "貼上最後一欄",
+    "stickyColumnsPreference.lastColumns.description": "水平捲動資料表內容時，保持最後一欄可見。",
+    "stickyColumnsPreference.lastColumns.options[0].label": "無",
+    "stickyColumnsPreference.lastColumns.options[1].label": "最後一欄",
     "contentDisplayPreference.title": "欄偏好設定",
     "contentDisplayPreference.description": "自訂欄的可見性和順序。",
     "contentDisplayPreference.dragHandleAriaLabel": "拖曳控點",

@@ -1,11 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { CollectionPreferencesProps } from '../../../lib/components/collection-preferences';
+
 import Checkbox from '../../../lib/components/checkbox';
+import { CollectionPreferencesProps } from '../../../lib/components/collection-preferences';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { CollectionPreferencesWrapper } from '../../../lib/components/test-utils/dom';
-
 import { renderCollectionPreferences } from './shared';
 
 const customPreferencesProps = (

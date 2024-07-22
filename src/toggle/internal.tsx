@@ -1,15 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import React, { useRef } from 'react';
-import AbstractSwitch from '../internal/components/abstract-switch';
-import useForwardFocus from '../internal/hooks/forward-focus';
-import { fireNonCancelableEvent } from '../internal/events';
+import clsx from 'clsx';
+
 import { getBaseProps } from '../internal/base-component';
-import styles from './styles.css.js';
+import AbstractSwitch from '../internal/components/abstract-switch';
+import { useFormFieldContext } from '../internal/context/form-field-context';
+import { fireNonCancelableEvent } from '../internal/events';
+import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { ToggleProps } from './interfaces';
-import { useFormFieldContext } from '../internal/context/form-field-context';
+
+import styles from './styles.css.js';
 
 type InternalToggleProps = ToggleProps & InternalBaseComponentProps;
 

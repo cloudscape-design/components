@@ -1,19 +1,19 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { KeyCode } from '../../../internal/keycode';
-import { isSameMonth, isAfter, isBefore, addMonths, min, max } from 'date-fns';
+import { addMonths, isAfter, isBefore, isSameMonth, max, min } from 'date-fns';
 
-import { DateRangePickerProps, DayIndex } from '../../interfaces';
-import InternalSpaceBetween from '../../../space-between/internal';
-import { Grid } from './grid';
-import styles from '../../styles.css.js';
-
-import { hasValue } from '../../../internal/utils/has-value';
+import { getBaseDay, moveNextDay, moveNextWeek, movePrevDay, movePrevWeek } from '../../../calendar/utils/navigation';
 import { useDateCache } from '../../../internal/hooks/use-date-cache';
-import { moveNextDay, movePrevDay, moveNextWeek, movePrevWeek, getBaseDay } from '../../../calendar/utils/navigation';
-import { findDateToFocus } from '../utils';
+import { KeyCode } from '../../../internal/keycode';
 import handleKey from '../../../internal/utils/handle-key';
+import { hasValue } from '../../../internal/utils/has-value';
+import InternalSpaceBetween from '../../../space-between/internal';
+import { DateRangePickerProps, DayIndex } from '../../interfaces';
+import { findDateToFocus } from '../utils';
+import { Grid } from './grid';
+
+import styles from '../../styles.css.js';
 
 function isVisible(date: Date, baseDate: Date, isSingleGrid: boolean) {
   if (isSingleGrid) {

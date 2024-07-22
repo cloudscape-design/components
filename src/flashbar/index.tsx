@@ -1,12 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect } from 'react';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { FlashbarProps } from './interfaces';
-import CollapsibleFlashbar from './collapsible-flashbar';
-import NonCollapsibleFlashbar from './non-collapsible-flashbar';
 
+import { applyDisplayName } from '../internal/utils/apply-display-name';
+import CollapsibleFlashbar from './collapsible-flashbar';
+import { FlashbarProps } from './interfaces';
 import { sendRenderMetric } from './internal/analytics';
+import NonCollapsibleFlashbar from './non-collapsible-flashbar';
 
 export { FlashbarProps };
 

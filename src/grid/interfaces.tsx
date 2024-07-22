@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { Breakpoint as _Breakpoint } from '../internal/breakpoints';
+
 import { BaseComponentProps } from '../internal/base-component';
+import { Breakpoint as _Breakpoint } from '../internal/breakpoints';
 
 export interface GridProps extends BaseComponentProps {
   /**
