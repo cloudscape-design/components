@@ -64,7 +64,7 @@ const VERTICAL_ALIGN_COLUMNS: TableProps.ColumnDefinition<any>[] = [
   {
     id: 'variable',
     header: 'Property',
-    cell: item => <Input readOnly={true} value={item.number} />,
+    cell: item => <Input ariaLabel="vertical align input" readOnly={true} value={item.number} />,
     verticalAlign: 'top',
   },
   {
@@ -72,7 +72,7 @@ const VERTICAL_ALIGN_COLUMNS: TableProps.ColumnDefinition<any>[] = [
     header: 'Type',
     cell: item => (
       <FormField errorText={`${item.text} error text`}>
-        <Input readOnly={true} value={item.text} />
+        <Input ariaLabel="vertical align error input" readOnly={true} value={item.text} />
       </FormField>
     ),
     verticalAlign: 'top',
