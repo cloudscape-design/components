@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { getGlobalFlag } from '@cloudscape-design/component-toolkit/internal';
+
 import { useVisualRefresh } from '../hooks/use-visual-mode';
-import { getGlobalFlag } from '../utils/global-flags';
 
 // Built-in React.FunctionComponent has always present `children` property which is not desired
 type FunctionComponent<Props> = (props: Props) => JSX.Element;

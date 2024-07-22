@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { getGlobalFlag } from '@cloudscape-design/component-toolkit/internal';
+
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { getGlobalFlag } from '../internal/utils/global-flags';
 import ClassicAppLayout from './classic';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from './interfaces';
 import RefreshedAppLayout from './visual-refresh';
