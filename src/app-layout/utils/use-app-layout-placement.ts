@@ -9,8 +9,8 @@ import { useObservedElement } from './use-observed-element';
 
 export function useAppLayoutPlacement(headerSelector: string, footerSelector: string) {
   const mainElementRef = useRef<HTMLElement>(null);
-  const headerHeight = useObservedElement(headerSelector);
-  const footerHeight = useObservedElement(footerSelector);
+  const headerHeight = useObservedElement(mainElementRef, headerSelector);
+  const footerHeight = useObservedElement(mainElementRef, footerSelector);
   const [offsets, setOffsets] = useState({
     insetInlineStart: 0,
     insetInlineEnd: 0,
