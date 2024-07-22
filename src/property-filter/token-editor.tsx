@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
 
-import InternalAutosuggest from '../autosuggest/internal';
+import React from 'react';
+import clsx from 'clsx';
+
 import InternalAutosuggest from '../autosuggest/internal';
 import InternalButton from '../button/internal';
 import InternalFormField from '../form-field/internal';
@@ -10,6 +11,7 @@ import { DropdownStatusProps } from '../internal/components/dropdown-status/inte
 import { NonCancelableEventHandler } from '../internal/events';
 import { SelectProps } from '../select/interfaces';
 import InternalSelect from '../select/internal';
+import { getAllowedOperators, getPropertySuggestions, operatorToDescription } from './controller';
 import {
   ComparisonOperator,
   GroupText,

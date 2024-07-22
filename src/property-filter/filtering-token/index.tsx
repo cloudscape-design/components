@@ -8,6 +8,10 @@ import { useDensityMode } from '@cloudscape-design/component-toolkit/internal';
 
 import InternalIcon from '../../icon/internal';
 import InternalPopover, { InternalPopoverProps, InternalPopoverRef } from '../../popover/internal';
+import InternalSelect from '../../select/internal';
+
+import testUtilStyles from '../test-classes/styles.css.js';
+import styles from './styles.css.js';
 
 export namespace FilteringTokenProps {
   export type Operation = 'and' | 'or';
