@@ -1,16 +1,19 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { forwardRef } from 'react';
-import { ButtonGroupProps } from './interfaces.js';
-import { InternalButton } from '../button/internal.js';
-import { ButtonProps } from '../button/interfaces.js';
-import { CancelableEventHandler, ClickDetail } from '../internal/events/index.js';
+import clsx from 'clsx';
+
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
+import { ButtonProps } from '../button/interfaces.js';
+import { InternalButton } from '../button/internal.js';
+import LiveRegion from '../internal/components/live-region/index.js';
+import Tooltip from '../internal/components/tooltip/index.js';
+import { CancelableEventHandler, ClickDetail } from '../internal/events/index.js';
+import { ButtonGroupProps } from './interfaces.js';
+
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
-import clsx from 'clsx';
-import Tooltip from '../internal/components/tooltip/index.js';
-import LiveRegion from '../internal/components/live-region/index.js';
 
 const IconButtonItem = forwardRef(
   (
