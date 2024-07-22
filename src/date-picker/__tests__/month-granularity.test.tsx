@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
-import MockDate from 'mockdate';
 import { render } from '@testing-library/react';
+import MockDate from 'mockdate';
 
 import { createWrapper } from '@cloudscape-design/test-utils-core/dom.js';
 

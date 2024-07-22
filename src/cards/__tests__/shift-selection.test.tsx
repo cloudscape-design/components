@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import clone from 'lodash/clone';
 import { render } from '@testing-library/react';
+import clone from 'lodash/clone';
 
 import Cards, { CardsProps } from '../../../lib/components/cards';
 import createWrapper, { CardsWrapper } from '../../../lib/components/test-utils/dom';

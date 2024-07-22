@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import Mockdate from 'mockdate';
 import { render } from '@testing-library/react';
+import Mockdate from 'mockdate';
 
 import '../../__a11y__/to-validate-a11y';
 import DateRangePicker, { DateRangePickerProps } from '../../../lib/components/date-range-picker';

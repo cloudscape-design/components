@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import Mockdate from 'mockdate';
 import { fireEvent, render } from '@testing-library/react';
+import Mockdate from 'mockdate';
 
 import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 

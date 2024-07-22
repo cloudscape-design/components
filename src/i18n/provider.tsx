@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useContext } from 'react';
-import IntlMessageFormat from 'intl-messageformat';
 import { MessageFormatElement } from '@formatjs/icu-messageformat-parser';
+import IntlMessageFormat from 'intl-messageformat';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 

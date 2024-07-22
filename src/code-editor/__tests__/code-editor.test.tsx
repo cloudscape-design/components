@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { Ace } from 'ace-builds';
 import { act, fireEvent, render } from '@testing-library/react';
+import { Ace } from 'ace-builds';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { createWrapper } from '@cloudscape-design/test-utils-core/dom';

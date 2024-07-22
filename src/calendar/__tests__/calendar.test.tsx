@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import * as React from 'react';
-import MockDate from 'mockdate';
 import { fireEvent, render } from '@testing-library/react';
+import MockDate from 'mockdate';
 
 import '../../__a11y__/to-validate-a11y';
 import Calendar, { CalendarProps } from '../../../lib/components/calendar';

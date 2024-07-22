@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useLayoutEffect } from 'react';
-import times from 'lodash/times';
 import { render, screen } from '@testing-library/react';
+import times from 'lodash/times';
 
 import { ContainerQueryEntry } from '@cloudscape-design/component-toolkit';
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';

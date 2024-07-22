@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { cloneDeep } from 'lodash';
 import { render } from '@testing-library/react';
+import { cloneDeep } from 'lodash';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';

@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import range from 'lodash/range';
 import { render } from '@testing-library/react';
+import range from 'lodash/range';
 
 import { useCollection } from '@cloudscape-design/collection-hooks';
 

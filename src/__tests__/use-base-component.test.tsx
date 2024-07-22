@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { pascalCase } from 'change-case';
 import { render } from '@testing-library/react';
+import { pascalCase } from 'change-case';
 
 import { COMPONENT_METADATA_KEY } from '@cloudscape-design/component-toolkit/internal';
 
