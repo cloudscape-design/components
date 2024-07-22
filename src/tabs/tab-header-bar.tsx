@@ -22,7 +22,6 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { KeyCode } from '../internal/keycode';
 import { circleIndex } from '../internal/utils/circle-index';
 import handleKey from '../internal/utils/handle-key';
-import { nodeBelongs } from '../internal/utils/node-belongs';
 import { TabsProps } from './interfaces';
 import {
   hasHorizontalOverflow,
@@ -186,16 +185,12 @@ export function TabHeaderBar({
     return tabElements.find(tab => tab.matches(focusedTabSelector)) ?? tabElements.find(tab => !tab.disabled) ?? null;
   }
 
-  function onUnregisterFocusable(focusableElement: HTMLElement) {
-    const isUnregisteringFocusedNode = nodeBelongs(focusableElement, document.activeElement);
+  function onUnregisterActive(focusableElement: HTMLElement) {
     const isFocusableActionOrDismissible = !focusableElement.classList.contains(styles['tabs-tab-link']);
-    if (isUnregisteringFocusedNode && !isFocusableActionOrDismissible) {
-      // Wait for unmounted node to get removed from the DOM.
-      requestAnimationFrame(() => {
-        const nextFocusTarget = navigationAPI.current?.getFocusTarget();
-        const tabLinkButton = nextFocusTarget?.querySelector(`.${styles['tabs-tab-link']}`) as HTMLElement;
-        tabLinkButton?.focus();
-      });
+    if (!isFocusableActionOrDismissible) {
+      const nextFocusTarget = navigationAPI.current?.getFocusTarget();
+      const tabLinkButton = nextFocusTarget?.querySelector(`.${styles['tabs-tab-link']}`) as HTMLElement;
+      tabLinkButton?.focus();
     }
   }
 
@@ -297,7 +292,7 @@ export function TabHeaderBar({
         ref={navigationAPI}
         navigationActive={true}
         getNextFocusTarget={getNextFocusTarget}
-        onUnregisterFocusable={onUnregisterFocusable}
+        onUnregisterActive={onUnregisterActive}
       >
         <TabList
           {...tabActionAttributes}
