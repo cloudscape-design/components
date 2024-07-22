@@ -1,10 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
+
 import AppLayout from '~components/app-layout';
-import SpaceBetween from '~components/space-between';
-import labels from './utils/labels';
 import BreadcrumbGroup from '~components/breadcrumb-group';
+import SpaceBetween from '~components/space-between';
+
+import labels from './utils/labels';
 
 export default function () {
   const [extraBreadcrumb, setExtraBreadcrumb] = useState(false);

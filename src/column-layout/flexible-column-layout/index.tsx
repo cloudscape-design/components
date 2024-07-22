@@ -1,11 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import clsx from 'clsx';
 import flattenChildren from 'react-keyed-flatten-children';
-import { InternalColumnLayoutProps } from '../interfaces';
-import styles from './styles.css.js';
+import clsx from 'clsx';
+
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+
+import { InternalColumnLayoutProps } from '../interfaces';
+
+import styles from './styles.css.js';
 
 const isOdd = (value: number): boolean => value % 2 !== 0;
 

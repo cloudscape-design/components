@@ -1,20 +1,22 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import React, { useContext } from 'react';
-import { getBaseProps } from '../internal/base-component';
+import clsx from 'clsx';
+
 import { StickyHeaderContext } from '../container/use-sticky-header';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { HeaderProps } from './interfaces';
-import styles from './styles.css.js';
-import { SomeRequired } from '../internal/types';
-import { useMobile } from '../internal/hooks/use-mobile';
-import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
-import { CollectionLabelContext } from '../internal/context/collection-label-context';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_SUBSTEP_NAME } from '../internal/analytics/selectors';
+import { getBaseProps } from '../internal/base-component';
+import { CollectionLabelContext } from '../internal/context/collection-label-context';
 import { useContainerHeader } from '../internal/context/container-header';
+import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useMobile } from '../internal/hooks/use-mobile';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { SomeRequired } from '../internal/types';
+import { HeaderProps } from './interfaces';
+
+import styles from './styles.css.js';
 
 interface InternalHeaderProps extends SomeRequired<HeaderProps, 'variant'>, InternalBaseComponentProps {
   __disableActionsWrapping?: boolean;

@@ -3,19 +3,20 @@
 
 import React from 'react';
 import { isSameMonth, isSameYear } from 'date-fns';
-import { CalendarProps } from '../interfaces';
-import {
-  moveNextDay,
-  movePrevDay,
-  moveNextWeek,
-  movePrevWeek,
-  moveNextMonth,
-  movePrevMonth,
-  moveMonthDown,
-  moveMonthUp,
-} from '../utils/navigation';
+
 import { KeyCode } from '../../internal/keycode';
 import handleKey from '../../internal/utils/handle-key';
+import { CalendarProps } from '../interfaces';
+import {
+  moveMonthDown,
+  moveMonthUp,
+  moveNextDay,
+  moveNextMonth,
+  moveNextWeek,
+  movePrevDay,
+  movePrevMonth,
+  movePrevWeek,
+} from '../utils/navigation';
 
 export default function useCalendarGridKeyboardNavigation({
   baseDate,

@@ -1,13 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { ElementWrapper, usesDom, createWrapper } from '@cloudscape-design/test-utils-core/dom';
-import styles from '../../../date-picker/styles.selectors.js';
-import calendarStyles from '../../../calendar/styles.selectors.js';
+import { createWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
+
 import ButtonWrapper from '../button';
 import CalendarWrapper from '../calendar';
 import BaseInputWrapper from '../input/base-input';
 import DropdownWrapper from '../internal/dropdown';
+
+import calendarStyles from '../../../calendar/styles.selectors.js';
+import styles from '../../../date-picker/styles.selectors.js';
 
 export default class DatePickerWrapper extends BaseInputWrapper {
   static rootSelector: string = styles.root;

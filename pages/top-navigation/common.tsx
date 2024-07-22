@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
 import { TopNavigationProps } from '~components/top-navigation';
 
 export const I18N_STRINGS: TopNavigationProps.I18nStrings = {

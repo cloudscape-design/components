@@ -1,14 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import AppLayout from '~components/app-layout';
-import Header from '~components/header';
-import ScreenshotArea from '../utils/screenshot-area';
-import { Navigation, Tools, Breadcrumbs } from './utils/content-blocks';
-import * as toolsContent from './utils/tools-content';
-import labels from './utils/labels';
-import Box from '~components/box';
+
 import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
+
+import AppLayout from '~components/app-layout';
+import Box from '~components/box';
+import Header from '~components/header';
+
+import ScreenshotArea from '../utils/screenshot-area';
+import { Breadcrumbs, Navigation, Tools } from './utils/content-blocks';
+import labels from './utils/labels';
+import * as toolsContent from './utils/tools-content';
 
 export default function () {
   return (

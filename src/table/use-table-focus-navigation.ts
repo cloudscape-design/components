@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { RefObject, useCallback, useEffect, useMemo } from 'react';
+
 import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
 import { TableProps } from './interfaces';
 

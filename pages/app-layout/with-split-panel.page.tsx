@@ -1,17 +1,19 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useState } from 'react';
+
 import AppLayout, { AppLayoutProps } from '~components/app-layout';
-import SplitPanel from '~components/split-panel';
 import Header from '~components/header';
-import SpaceBetween from '~components/space-between';
 import Popover from '~components/popover';
+import SpaceBetween from '~components/space-between';
+import SplitPanel from '~components/split-panel';
 import Toggle from '~components/toggle';
+
 import AppContext, { AppContextType } from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
-import { Containers, Navigation, Tools, Breadcrumbs } from './utils/content-blocks';
-import * as toolsContent from './utils/tools-content';
+import { Breadcrumbs, Containers, Navigation, Tools } from './utils/content-blocks';
 import labels from './utils/labels';
+import * as toolsContent from './utils/tools-content';
 
 type SplitPanelDemoContext = React.Context<
   AppContextType<{

@@ -1,14 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import startOfWeek from 'date-fns/startOfWeek';
-import endOfWeek from 'date-fns/endOfWeek';
-import startOfMonth from 'date-fns/startOfMonth';
 import endOfMonth from 'date-fns/endOfMonth';
+import endOfWeek from 'date-fns/endOfWeek';
 import enLocale from 'date-fns/locale/en-GB';
-import { Box, DateRangePicker, DateRangePickerProps, Link, FormField } from '~components';
-import { i18nStrings, isValid } from './common';
+import startOfMonth from 'date-fns/startOfMonth';
+import startOfWeek from 'date-fns/startOfWeek';
+
+import { Box, DateRangePicker, DateRangePickerProps, FormField, Link } from '~components';
 import { formatDate } from '~components/internal/utils/date-time';
+
+import { i18nStrings, isValid } from './common';
 
 export default function DatePickerScenario() {
   const [value, setValue] = useState<DateRangePickerProps['value']>(null);

@@ -1,15 +1,18 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import React, { useLayoutEffect, useRef, useState } from 'react';
-import { getBaseProps } from '../internal/base-component';
+import clsx from 'clsx';
+
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
-import styles from './styles.css.js';
-import icons from './generated/icons';
+
+import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { IconProps } from './interfaces';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import icons from './generated/icons';
+import { IconProps } from './interfaces';
+
+import styles from './styles.css.js';
 
 type InternalIconProps = IconProps &
   InternalBaseComponentProps & {

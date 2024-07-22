@@ -1,23 +1,25 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useState } from 'react';
-import styles from './styles.css.js';
-import { TutorialPanelProps } from '../../interfaces';
+import { CSSTransition } from 'react-transition-group';
+import clsx from 'clsx';
+
+import InternalAlert from '../../../alert/internal';
+import { HotspotContext } from '../../../annotation-context/context.js';
 import InternalBox from '../../../box/internal';
 import { InternalButton } from '../../../button/internal';
-import InternalStatusIndicator from '../../../status-indicator/internal';
-import InternalSpaceBetween from '../../../space-between/internal';
-import { fireNonCancelableEvent } from '../../../internal/events/index.js';
-import clsx from 'clsx';
-import InternalAlert from '../../../alert/internal';
-import InternalLink from '../../../link/internal';
-import { useUniqueId } from '../../../internal/hooks/use-unique-id/index.js';
-import { CSSTransition } from 'react-transition-group';
-import { HotspotContext } from '../../../annotation-context/context.js';
 import InternalIcon from '../../../icon/internal';
+import LiveRegion from '../../../internal/components/live-region/index.js';
+import { fireNonCancelableEvent } from '../../../internal/events/index.js';
+import { useUniqueId } from '../../../internal/hooks/use-unique-id/index.js';
 import { useVisualRefresh } from '../../../internal/hooks/use-visual-mode';
 import { checkSafeUrl } from '../../../internal/utils/check-safe-url';
-import LiveRegion from '../../../internal/components/live-region/index.js';
+import InternalLink from '../../../link/internal';
+import InternalSpaceBetween from '../../../space-between/internal';
+import InternalStatusIndicator from '../../../status-indicator/internal';
+import { TutorialPanelProps } from '../../interfaces';
+
+import styles from './styles.css.js';
 
 export interface TutorialListProps {
   loading?: boolean;

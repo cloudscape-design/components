@@ -1,26 +1,28 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import React, { ReactNode, useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { TransitionGroup } from 'react-transition-group';
+import clsx from 'clsx';
+
+import { useInternalI18n } from '../i18n/context';
+import { IconProps } from '../icon/interfaces';
+import InternalIcon from '../icon/internal';
+import { animate, getDOMRects } from '../internal/animate';
+import { Transition } from '../internal/components/transition';
+import { getVisualContextClassname } from '../internal/components/visual-context';
 import customCssProps from '../internal/generated/custom-css-properties';
+import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { findUpUntil } from '../internal/utils/dom';
+import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
+import { throttle } from '../internal/utils/throttle';
+import { useFlashbar } from './common';
 import { Flash, focusFlashById } from './flash';
 import { FlashbarProps } from './interfaces';
-import InternalIcon from '../icon/internal';
-import { TransitionGroup } from 'react-transition-group';
-import { Transition } from '../internal/components/transition';
-import styles from './styles.css.js';
-import { counterTypes, getFlashTypeCount, getItemColor, getVisibleCollapsedItems, StackableItem } from './utils';
-import { animate, getDOMRects } from '../internal/animate';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { IconProps } from '../icon/interfaces';
 import { sendToggleMetric } from './internal/analytics';
-import { useFlashbar } from './common';
-import { throttle } from '../internal/utils/throttle';
-import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
-import { findUpUntil } from '../internal/utils/dom';
-import { useInternalI18n } from '../i18n/context';
-import { getVisualContextClassname } from '../internal/components/visual-context';
-import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
+import { counterTypes, getFlashTypeCount, getItemColor, getVisibleCollapsedItems, StackableItem } from './utils';
+
+import styles from './styles.css.js';
 
 export { FlashbarProps };
 

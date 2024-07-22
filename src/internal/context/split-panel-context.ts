@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, createContext } from 'react';
+import React, { createContext, useContext } from 'react';
+
 import { SplitPanelFocusControlRefs } from '../../app-layout/utils/use-split-panel-focus-control';
 
 export interface SplitPanelSideToggleProps {

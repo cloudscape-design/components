@@ -1,8 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef, useState } from 'react';
-import styles from './styles.css.js';
+
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
+
+import styles from './styles.css.js';
 
 export interface ResizeBoxProps {
   children: React.ReactNode;

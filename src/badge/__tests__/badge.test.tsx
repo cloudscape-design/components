@@ -2,8 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
+
 import Badge, { BadgeProps } from '../../../lib/components/badge';
 import createWrapper from '../../../lib/components/test-utils/dom';
+
 import styles from '../../../lib/components/badge/styles.css.js';
 
 function getNativeSpan(container: HTMLElement) {

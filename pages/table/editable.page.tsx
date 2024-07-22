@@ -1,18 +1,20 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { ForwardedRef, forwardRef, useContext, useEffect, useRef, useState } from 'react';
+
+import { Box, Button, Checkbox, Link, Modal, SpaceBetween } from '~components';
+import Alert from '~components/alert';
+import Autosuggest, { AutosuggestProps } from '~components/autosuggest';
 import Header from '~components/header';
 import Input from '~components/input';
-import Alert from '~components/alert';
-import Table, { TableProps } from '~components/table';
-import Select, { SelectProps } from '~components/select';
-import TimeInput, { TimeInputProps } from '~components/time-input';
-import Autosuggest, { AutosuggestProps } from '~components/autosuggest';
 import Multiselect, { MultiselectProps } from '~components/multiselect';
-import { Link, Box, Button, Modal, SpaceBetween, Checkbox } from '~components';
-import { initialItems, DistributionInfo, tlsVersions, originSuggestions, tagOptions } from './editable-data';
-import ScreenshotArea from '../utils/screenshot-area';
+import Select, { SelectProps } from '~components/select';
+import Table, { TableProps } from '~components/table';
+import TimeInput, { TimeInputProps } from '~components/time-input';
+
 import AppContext, { AppContextType } from '../app/app-context';
+import ScreenshotArea from '../utils/screenshot-area';
+import { DistributionInfo, initialItems, originSuggestions, tagOptions, tlsVersions } from './editable-data';
 
 type PageContext = React.Context<
   AppContextType<{

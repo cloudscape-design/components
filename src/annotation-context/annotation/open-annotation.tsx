@@ -1,10 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef } from 'react';
+
 import { HotspotProps } from '../../hotspot/interfaces';
 import { AnnotationContextProps } from '../interfaces';
-import AnnotationTrigger from './annotation-trigger';
 import { AnnotationPopover } from './annotation-popover';
+import AnnotationTrigger from './annotation-trigger';
 
 export interface AnnotationProps {
   title: string;

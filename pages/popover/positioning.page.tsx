@@ -6,8 +6,10 @@ import clsx from 'clsx';
 import { NonCancelableCustomEvent } from '~components';
 import Popover, { PopoverProps } from '~components/popover';
 import SegmentedControl, { SegmentedControlProps } from '~components/segmented-control';
-import styles from './positioning.scss';
+
 import ScreenshotArea from '../utils/screenshot-area';
+
+import styles from './positioning.scss';
 
 export default function () {
   const [renderWithPortal, setRenderWithPortal] = React.useState(false);

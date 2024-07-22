@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { WizardProps } from '../interfaces';
+
 import Container from '../../../lib/components/container';
 import Header from '../../../lib/components/header';
+import { WizardProps } from '../interfaces';
 
 export const DEFAULT_I18N_SETS = [
   {

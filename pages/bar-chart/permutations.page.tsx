@@ -3,22 +3,22 @@
 import React from 'react';
 
 import BarChart, { BarChartProps } from '~components/bar-chart';
-import { colorChartsThresholdNeutral, colorChartsThresholdInfo } from '~design-tokens';
+import { colorChartsThresholdInfo, colorChartsThresholdNeutral } from '~design-tokens';
+
+import {
+  commonProps,
+  data1,
+  data2,
+  dateTimeFormatter,
+  latencyData,
+  multipleBarsData,
+  multipleNegativeBarsData,
+  multipleNegativeBarsDataWithThreshold,
+  negativeData,
+} from '../mixed-line-bar-chart/common';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
-
-import {
-  data1,
-  data2,
-  commonProps,
-  latencyData,
-  dateTimeFormatter,
-  multipleBarsData,
-  multipleNegativeBarsData,
-  negativeData,
-  multipleNegativeBarsDataWithThreshold,
-} from '../mixed-line-bar-chart/common';
 import { smallBarsData } from './common';
 
 const timeLatencyData = latencyData.map(({ time, p90 }) => ({ x: time, y: p90 }));

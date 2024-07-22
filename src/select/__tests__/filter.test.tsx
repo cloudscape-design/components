@@ -2,10 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
+
 import Filter, { FilterProps } from '../../../lib/components/select/parts/filter';
 import createWrapper, { InputWrapper } from '../../../lib/components/test-utils/dom';
-import styles from '../../../lib/components/select/parts/styles.css.js';
+
 import inputStyles from '../../../lib/components/input/styles.css.js';
+import styles from '../../../lib/components/select/parts/styles.css.js';
 
 function renderComponent(props: FilterProps) {
   const renderResult = render(<Filter {...props} />);

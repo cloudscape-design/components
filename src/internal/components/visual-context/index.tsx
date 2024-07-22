@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import React, { useLayoutEffect, useState } from 'react';
+import clsx from 'clsx';
+
 import { findUpUntil } from '../../utils/dom';
 
 interface VisualContextProps {

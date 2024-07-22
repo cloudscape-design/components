@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
-import AutosuggestPage from './page-objects/autosuggest-page';
+
 import createWrapper from '../../../lib/components/test-utils/selectors';
+import AutosuggestPage from './page-objects/autosuggest-page';
 
 function setupTest(testFn: (page: AutosuggestPage) => Promise<void>, url = '/#/light/autosuggest/simple') {
   return useBrowser(async browser => {

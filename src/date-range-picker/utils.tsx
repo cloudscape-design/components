@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { DateRangePickerProps } from './interfaces';
-import { setTimeOffset } from './time-offset';
 import { joinDateTime, splitDateTime } from '../internal/utils/date-time';
 import { normalizeTimeString } from '../internal/utils/date-time/join-date-time';
+import { DateRangePickerProps } from './interfaces';
+import { setTimeOffset } from './time-offset';
 
 export function formatValue(
   value: null | DateRangePickerProps.Value,

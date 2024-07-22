@@ -2,25 +2,25 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import Container from '~components/container';
-import Header from '~components/header';
-import Grid from '~components/grid';
-import Box from '~components/box';
 import BarChart from '~components/bar-chart';
-import ScreenshotArea from '../utils/screenshot-area';
+import Box from '~components/box';
+import Container from '~components/container';
+import Grid from '~components/grid';
+import Header from '~components/header';
 
 import {
-  data3,
-  commonProps,
-  latencyData,
-  dateTimeFormatter,
-  logarithmicData,
+  barChartInstructions,
   barTimeData,
   barTimeSeries,
-  barChartInstructions,
-  multipleNegativeBarsDataWithThreshold,
+  commonProps,
+  data3,
+  dateTimeFormatter,
+  latencyData,
+  logarithmicData,
   multipleBarsDataWithThreshold,
+  multipleNegativeBarsDataWithThreshold,
 } from '../mixed-line-bar-chart/common';
+import ScreenshotArea from '../utils/screenshot-area';
 
 const timeData = latencyData.slice(0, 10);
 

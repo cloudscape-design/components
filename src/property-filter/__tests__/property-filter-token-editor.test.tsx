@@ -4,14 +4,14 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
 
-import createWrapper from '../../../lib/components/test-utils/dom';
 import PropertyFilter from '../../../lib/components/property-filter';
 import {
-  FilteringProperty,
   FilteringOption,
+  FilteringProperty,
   PropertyFilterProps,
   Ref,
 } from '../../../lib/components/property-filter/interfaces';
+import createWrapper from '../../../lib/components/test-utils/dom';
 import { createDefaultProps, i18nStrings } from './common';
 
 const filteringProperties: readonly FilteringProperty[] = [

@@ -3,6 +3,7 @@
 
 import * as React from 'react';
 import { render } from '@testing-library/react';
+
 import Multiselect from '../../../lib/components/multiselect';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { MultiselectProps } from '../interfaces';

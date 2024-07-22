@@ -3,6 +3,18 @@
 
 import React, { useRef } from 'react';
 import { useEffect, useMemo } from 'react';
+
+import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
+
+import { getAllFocusables } from '../../internal/components/focus-lock/utils';
+import {
+  SingleTabStopNavigationAPI,
+  SingleTabStopNavigationProvider,
+} from '../../internal/context/single-tab-stop-navigation-context';
+import { KeyCode } from '../../internal/keycode';
+import handleKey, { isEventLike } from '../../internal/utils/handle-key';
+import { nodeBelongs } from '../../internal/utils/node-belongs';
+import { FocusedCell, GridNavigationProps } from './interfaces';
 import {
   defaultIsSuppressed,
   findTableRowByAriaRowIndex,
@@ -12,16 +24,6 @@ import {
   isElementDisabled,
   isTableCell,
 } from './utils';
-import { FocusedCell, GridNavigationProps } from './interfaces';
-import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
-import { nodeBelongs } from '../../internal/utils/node-belongs';
-import { getAllFocusables } from '../../internal/components/focus-lock/utils';
-import {
-  SingleTabStopNavigationProvider,
-  SingleTabStopNavigationAPI,
-} from '../../internal/context/single-tab-stop-navigation-context';
-import handleKey, { isEventLike } from '../../internal/utils/handle-key';
-import { KeyCode } from '../../internal/keycode';
 
 /**
  * Makes table navigable with keyboard commands.

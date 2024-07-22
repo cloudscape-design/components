@@ -2,13 +2,16 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 import range from 'lodash/range';
+
+import { useCollection } from '@cloudscape-design/collection-hooks';
+
 import Cards, { CardsProps } from '~components/cards';
 import Header from '~components/header';
-import Toggle from '~components/toggle';
-import { EmptyState, getMatchesCountText, paginationLabels } from '../table/shared-configs';
-import { useCollection } from '@cloudscape-design/collection-hooks';
 import Pagination from '~components/pagination';
 import TextFilter from '~components/text-filter';
+import Toggle from '~components/toggle';
+
+import { EmptyState, getMatchesCountText, paginationLabels } from '../table/shared-configs';
 
 interface Item {
   number: number;

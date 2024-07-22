@@ -5,26 +5,26 @@ import React from 'react';
 import { Box, Toggle } from '~components';
 import LineChart, { LineChartProps } from '~components/line-chart';
 import {
-  colorChartsThresholdNegative,
-  colorChartsThresholdPositive,
-  colorChartsThresholdNeutral,
-  colorChartsThresholdInfo,
   colorChartsStatusHigh,
+  colorChartsThresholdInfo,
+  colorChartsThresholdNegative,
+  colorChartsThresholdNeutral,
+  colorChartsThresholdPositive,
 } from '~design-tokens';
-import createPermutations from '../utils/permutations';
-import PermutationsView from '../utils/permutations-view';
-import ScreenshotArea from '../utils/screenshot-area';
 
 import {
+  commonProps,
   data1,
   data2,
-  commonProps,
-  logarithmicData,
-  latencyData,
   dateTimeFormatter,
+  latencyData,
+  logarithmicData,
   multipleBarsData,
   negativeData,
 } from '../mixed-line-bar-chart/common';
+import createPermutations from '../utils/permutations';
+import PermutationsView from '../utils/permutations-view';
+import ScreenshotArea from '../utils/screenshot-area';
 
 const timeLatencyData = latencyData.map(({ time, p90 }) => ({ x: time, y: p90 }));
 const multipleStringSeries = multipleBarsData.map(series => ({ ...series, type: 'line' as const }));

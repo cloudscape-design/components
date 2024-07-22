@@ -1,10 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext } from 'react';
-import ScreenshotArea from '../utils/screenshot-area';
-import AppContext, { AppContextType } from '../app/app-context';
+
 import Popover from '~components/popover';
 import SpaceBetween from '~components/space-between';
+
+import AppContext, { AppContextType } from '../app/app-context';
+import ScreenshotArea from '../utils/screenshot-area';
 
 type NestedPopoversContext = React.Context<
   AppContextType<{

@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { DrawersApiInternal, DrawersApiPublic, DrawersController } from './controllers/drawers';
-import { ActionsApiInternal, ActionsApiPublic, ActionButtonsController } from './controllers/action-buttons';
-import { BreadcrumbsApiInternal, BreadcrumbsController } from './controllers/breadcrumbs';
 import { BreadcrumbGroupProps } from '../../breadcrumb-group/interfaces';
+import { ActionButtonsController, ActionsApiInternal, ActionsApiPublic } from './controllers/action-buttons';
+import { BreadcrumbsApiInternal, BreadcrumbsController } from './controllers/breadcrumbs';
+import { DrawersApiInternal, DrawersApiPublic, DrawersController } from './controllers/drawers';
 
 const storageKey = Symbol.for('awsui-plugin-api');
 

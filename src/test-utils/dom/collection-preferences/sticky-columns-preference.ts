@@ -1,8 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
+
 import FormFieldWrapper from '../form-field';
 import RadioGroupWrapper from '../radio-group';
+
 import styles from '../../../collection-preferences/styles.selectors.js';
 
 export default class StickyColumnsPreferenceWrapper extends ComponentWrapper {

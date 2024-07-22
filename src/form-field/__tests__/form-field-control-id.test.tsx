@@ -2,9 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
+
 import FormField, { FormFieldProps } from '../../../lib/components/form-field';
 import Input from '../../../lib/components/input';
 import createWrapper from '../../../lib/components/test-utils/dom';
+
 import styles from '../../../lib/components/form-field/styles.css.js';
 
 const testInput = <Input value="follow me on tiktok" onChange={() => {}} />;

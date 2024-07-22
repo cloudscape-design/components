@@ -1,12 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { TopNavigationProps } from './interfaces';
+
 import styles from './styles.css.js';
-import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
 export interface UseTopNavigationParams {
   identity: TopNavigationProps['identity'];

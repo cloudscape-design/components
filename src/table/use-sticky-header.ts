@@ -1,9 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { useLayoutEffect, RefObject, useCallback } from 'react';
-import stickyScrolling, { calculateScrollingOffset, scrollUpBy } from './sticky-scrolling';
-import { useMobile } from '../internal/hooks/use-mobile';
+import { RefObject, useCallback, useLayoutEffect } from 'react';
+
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
+
+import { useMobile } from '../internal/hooks/use-mobile';
+import stickyScrolling, { calculateScrollingOffset, scrollUpBy } from './sticky-scrolling';
 
 export const useStickyHeader = (
   tableRef: RefObject<HTMLElement>,

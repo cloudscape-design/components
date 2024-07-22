@@ -1,19 +1,20 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { useUniqueId } from '../../internal/hooks/use-unique-id';
-
-import { CollectionPreferencesProps } from '../interfaces';
-import styles from '../styles.css.js';
-import { getSortedOptions, OptionWithVisibility } from './utils';
 import { DndContext, DragOverlay } from '@dnd-kit/core';
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
+
+import { useInternalI18n } from '../../i18n/context';
+import Portal from '../../internal/components/portal';
+import { useUniqueId } from '../../internal/hooks/use-unique-id';
+import { CollectionPreferencesProps } from '../interfaces';
+import ContentDisplayOption from './content-display-option';
 import DraggableOption from './draggable-option';
 import useDragAndDropReorder from './use-drag-and-drop-reorder';
 import useLiveAnnouncements from './use-live-announcements';
-import Portal from '../../internal/components/portal';
-import ContentDisplayOption from './content-display-option';
-import { useInternalI18n } from '../../i18n/context';
+import { getSortedOptions, OptionWithVisibility } from './utils';
+
+import styles from '../styles.css.js';
 
 const componentPrefix = 'content-display';
 

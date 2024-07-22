@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { BaseComponentProps } from '../internal/base-component';
 import React from 'react';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+
 import { AnalyticsMetadata } from '../internal/analytics/interfaces';
+import { BaseComponentProps } from '../internal/base-component';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 
 export interface FormFieldProps extends BaseComponentProps {
   /**

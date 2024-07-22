@@ -17,7 +17,14 @@ module.exports = {
       jsx: true,
     },
   },
-  plugins: ['unicorn', 'react-hooks', '@cloudscape-design/eslint-plugin', 'no-unsanitized', 'header'],
+  plugins: [
+    'unicorn',
+    'react-hooks',
+    '@cloudscape-design/eslint-plugin',
+    'no-unsanitized',
+    'header',
+    'simple-import-sort',
+  ],
   rules: {
     '@typescript-eslint/no-empty-function': 'off',
     '@typescript-eslint/no-namespace': 'off',
@@ -81,6 +88,7 @@ module.exports = {
       [' Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.', ' SPDX-License-Identifier: Apache-2.0'],
     ],
     'no-warning-comments': 'warn',
+    'simple-import-sort/imports': 'warn',
   },
   settings: {
     react: {
@@ -179,6 +187,28 @@ module.exports = {
                 message:
                   '`react-virtual` gets shipped as a bundled dependency. Use `src/internal/vendor/react-virtual` as import source.',
               },
+            ],
+          },
+        ],
+      },
+    },
+    {
+      files: ['src/**', 'pages/**'],
+      rules: {
+        'simple-import-sort/imports': [
+          'warn',
+          {
+            groups: [
+              // External packages come first.
+              ['^react', '^(?!@cloudscape)@?\\w'],
+              // Cloudscape packages.
+              ['^@cloudscape'],
+              // Things that start with a letter (or digit or underscore), or `~` followed by a letter.
+              ['^~\\w'],
+              // Anything not matched in another group.
+              ['^'],
+              // Styles come last.
+              ['^.+\\.?(css)$', '^.+\\.?(css.js)$', '^.+\\.?(scss)$', '^.+\\.?(selectors.js)$'],
             ],
           },
         ],

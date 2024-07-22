@@ -1,7 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useState } from 'react';
+
 import Autosuggest, { AutosuggestProps } from '~components/autosuggest';
+
 import ScreenshotArea from '../utils/screenshot-area';
 
 const options = [

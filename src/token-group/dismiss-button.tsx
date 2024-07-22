@@ -1,8 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { forwardRef, Ref } from 'react';
-import styles from './styles.css.js';
+
 import InternalIcon from '../icon/internal';
+
+import styles from './styles.css.js';
 
 interface DismissButtonProps {
   disabled?: boolean;

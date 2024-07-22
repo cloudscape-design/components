@@ -2,41 +2,39 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
-import { useFormFieldContext } from '../internal/context/form-field-context';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
+import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
-import { fireNonCancelableEvent } from '../internal/events';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { isGroup } from '../internal/components/option/utils/filter-options';
-
-import DropdownFooter from '../internal/components/dropdown-footer/index.js';
-import { prepareOptions } from '../internal/components/option/utils/prepare-options';
-import { OptionDefinition, OptionGroup } from '../internal/components/option/interfaces';
 import Dropdown from '../internal/components/dropdown';
+import DropdownFooter from '../internal/components/dropdown-footer/index.js';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
-
-import { useSelect, MenuProps } from '../select/utils/use-select';
-import { useNativeSearch } from '../select/utils/use-native-search';
-import { useLoadItems } from '../select/utils/use-load-items';
-import { useAnnouncement } from '../select/utils/use-announcement';
-import { findOptionIndex } from '../select/utils/connect-options';
+import { OptionDefinition, OptionGroup } from '../internal/components/option/interfaces';
+import { isGroup } from '../internal/components/option/utils/filter-options';
+import { prepareOptions } from '../internal/components/option/utils/prepare-options';
+import ScreenreaderOnly from '../internal/components/screenreader-only';
+import { useFormFieldContext } from '../internal/context/form-field-context';
+import { fireNonCancelableEvent } from '../internal/events';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { joinStrings } from '../internal/utils/strings';
+import Filter from '../select/parts/filter';
 import PlainList, { SelectListProps } from '../select/parts/plain-list';
+import Trigger from '../select/parts/trigger';
 import VirtualList from '../select/parts/virtual-list';
 import { checkOptionValueField } from '../select/utils/check-option-value-field.js';
-import Filter from '../select/parts/filter';
-import Trigger from '../select/parts/trigger';
-
-import InternalTokenGroup from '../token-group/internal';
+import { findOptionIndex } from '../select/utils/connect-options';
+import { useAnnouncement } from '../select/utils/use-announcement';
+import { useLoadItems } from '../select/utils/use-load-items';
+import { useNativeSearch } from '../select/utils/use-native-search';
+import { MenuProps, useSelect } from '../select/utils/use-select';
 import { TokenGroupProps } from '../token-group/interfaces';
-
+import InternalTokenGroup from '../token-group/internal';
 import { MultiselectProps } from './interfaces';
+
 import styles from './styles.css.js';
-import ScreenreaderOnly from '../internal/components/screenreader-only';
-import { joinStrings } from '../internal/utils/strings';
-import { useInternalI18n } from '../i18n/context';
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 type InternalMultiselectProps = MultiselectProps & InternalBaseComponentProps & { inlineTokens?: boolean };
 

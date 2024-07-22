@@ -1,7 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
+
 import RadioGroup from '~components/radio-group';
+
 import styles from './styles.scss';
 
 export default function RadiosPage() {

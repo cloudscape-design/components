@@ -2,14 +2,16 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
-import InternalSelect, { InternalSelectProps } from '../select/internal';
+
 import InternalFormField from '../form-field/internal';
-import { SegmentedControlProps } from './interfaces';
-import InternalSegmentedControlComponent from './internal-segmented-control';
 import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
-import styles from './styles.css.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import InternalSelect, { InternalSelectProps } from '../select/internal';
+import { SegmentedControlProps } from './interfaces';
+import InternalSegmentedControlComponent from './internal-segmented-control';
+
+import styles from './styles.css.js';
 
 type InternalSegmentedControlProps = SegmentedControlProps & InternalBaseComponentProps;
 

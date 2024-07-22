@@ -2,12 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render, waitFor } from '@testing-library/react';
-import createWrapper, { AttributeEditorWrapper } from '../../../lib/components/test-utils/dom';
+
 import AttributeEditor, { AttributeEditorProps } from '../../../lib/components/attribute-editor';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
+import Input from '../../../lib/components/input';
+import createWrapper, { AttributeEditorWrapper } from '../../../lib/components/test-utils/dom';
+
 import styles from '../../../lib/components/attribute-editor/styles.css.js';
 import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
-import Input from '../../../lib/components/input';
-import TestI18nProvider from '../../../lib/components/i18n/testing';
 
 interface Item {
   key: string;

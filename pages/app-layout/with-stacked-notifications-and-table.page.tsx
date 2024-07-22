@@ -1,10 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
+
+import { AppLayout, Box, Button, Flashbar, Header, SpaceBetween, SplitPanel, Table, Toggle } from '~components';
+import { FlashbarProps } from '~components/flashbar';
+
 import ScreenshotArea from '../utils/screenshot-area';
 import labels from './utils/labels';
-import { FlashbarProps } from '~components/flashbar';
-import { AppLayout, Box, Button, Flashbar, Header, SpaceBetween, SplitPanel, Table, Toggle } from '~components';
 
 export default function () {
   const [notifications, setNotifications] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);

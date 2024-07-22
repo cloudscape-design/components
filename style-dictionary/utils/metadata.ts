@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { kebabCase } from 'lodash';
+
 import { StyleDictionary } from './interfaces';
 import { TokenName } from './token-names';
 

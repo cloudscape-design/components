@@ -1,15 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
 import AppLayout from '~components/app-layout';
-import SplitPanel from '~components/split-panel';
-import ScreenshotArea from '../utils/screenshot-area';
-import { Breadcrumbs, Navigation } from '../app-layout/utils/content-blocks';
-import labels from '../app-layout/utils/labels';
+import Container from '~components/container';
 import CopyToClipboard from '~components/copy-to-clipboard';
 import Header from '~components/header';
 import SpaceBetween from '~components/space-between';
-import Container from '~components/container';
+import SplitPanel from '~components/split-panel';
+
+import { Breadcrumbs, Navigation } from '../app-layout/utils/content-blocks';
+import labels from '../app-layout/utils/labels';
+import ScreenshotArea from '../utils/screenshot-area';
 
 export default function () {
   return (

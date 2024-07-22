@@ -2,8 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
+
 import ColumnLayout, { ColumnLayoutProps } from '../../../lib/components/column-layout';
 import createWrapper from '../../../lib/components/test-utils/dom';
+
 import styles from '../../../lib/components/column-layout/flexible-column-layout/styles.css.js';
 
 jest.mock('@cloudscape-design/component-toolkit', () => ({

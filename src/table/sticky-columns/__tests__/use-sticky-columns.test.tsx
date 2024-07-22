@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import {
-  useStickyColumns,
   StickyColumnsModel,
   useStickyCellStyles,
+  useStickyColumns,
 } from '../../../../lib/components/table/sticky-columns';
 import { updateCellOffsets } from '../../../../lib/components/table/sticky-columns/utils';
 import { getStickyClassNames } from '../../../../lib/components/table/utils';

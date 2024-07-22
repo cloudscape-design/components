@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render, act } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 
 import Popover from '../../../../lib/components/popover/internal';
 import FilteringToken, { FilteringTokenProps } from '../../../../lib/components/property-filter/filtering-token';

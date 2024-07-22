@@ -1,18 +1,21 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef } from 'react';
-import { useContainerQuery } from '@cloudscape-design/component-toolkit';
-import { splitItems } from '../../drawer/drawers-helpers';
 import clsx from 'clsx';
-import styles from './styles.css.js';
+
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+
 import { useMobile } from '../../../internal/hooks/use-mobile';
+import { splitItems } from '../../drawer/drawers-helpers';
+import OverflowMenu from '../../drawer/overflow-menu';
+import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../../interfaces';
 import { TOOLS_DRAWER_ID } from '../../utils/use-drawers';
 import { Focusable } from '../../utils/use-focus-control';
-import OverflowMenu from '../../drawer/overflow-menu';
 import TriggerButton from './trigger-button';
-import testutilStyles from '../../test-classes/styles.css.js';
+
 import splitPanelTestUtilStyles from '../../../split-panel/test-classes/styles.css.js';
-import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../../interfaces';
+import testutilStyles from '../../test-classes/styles.css.js';
+import styles from './styles.css.js';
 
 interface DrawerTriggersProps {
   ariaLabels: AppLayoutPropsWithDefaults['ariaLabels'];

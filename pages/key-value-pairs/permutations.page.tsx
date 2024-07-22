@@ -1,13 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import KeyValuePairs, { KeyValuePairsProps } from '~components/key-value-pairs';
-import ScreenshotArea from '../utils/screenshot-area';
-import StatusIndicator from '~components/status-indicator';
-import Link from '~components/link';
+
 import { CopyToClipboard, ProgressBar } from '~components';
-import PermutationsView from '../utils/permutations-view';
+import KeyValuePairs, { KeyValuePairsProps } from '~components/key-value-pairs';
+import Link from '~components/link';
+import StatusIndicator from '~components/status-indicator';
+
 import createPermutations from '../utils/permutations';
+import PermutationsView from '../utils/permutations-view';
+import ScreenshotArea from '../utils/screenshot-area';
 
 const permutations = createPermutations<KeyValuePairsProps>([
   {

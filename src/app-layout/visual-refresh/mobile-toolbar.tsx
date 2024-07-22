@@ -2,12 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
-import { highContrastHeaderClassName } from '../../internal/utils/content-header-utils';
+
 import { InternalButton } from '../../button/internal';
-import { MobileTriggers as DrawersMobileTriggers } from './drawers';
+import { highContrastHeaderClassName } from '../../internal/utils/content-header-utils';
 import { useAppLayoutInternals } from './context';
-import styles from './styles.css.js';
+import { MobileTriggers as DrawersMobileTriggers } from './drawers';
+
 import testutilStyles from '../test-classes/styles.css.js';
+import styles from './styles.css.js';
 
 export default function MobileToolbar() {
   const {

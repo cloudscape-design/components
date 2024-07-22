@@ -1,13 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef, useState } from 'react';
+
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
-import { useControllable } from '../../internal/hooks/use-controllable';
+
 import { fireNonCancelableEvent } from '../../internal/events';
+import { useControllable } from '../../internal/hooks/use-controllable';
 import { awsuiPluginsInternal } from '../../internal/plugins/api';
 import { sortByPriority } from '../../internal/plugins/helpers/utils';
-import { convertRuntimeDrawers, DrawersLayout } from '../runtime-api';
 import { AppLayoutProps } from '../interfaces';
+import { convertRuntimeDrawers, DrawersLayout } from '../runtime-api';
 import { togglesConfig } from '../toggles';
 
 export const TOOLS_DRAWER_ID = 'awsui-internal-tools';

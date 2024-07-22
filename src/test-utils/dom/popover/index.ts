@@ -1,8 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
-import styles from '../../../popover/styles.selectors.js';
+
 import createWrapper, { ButtonWrapper } from '../index.js';
+
+import styles from '../../../popover/styles.selectors.js';
 
 export default class PopoverWrapper extends ComponentWrapper {
   static rootSelector: string = styles.root;

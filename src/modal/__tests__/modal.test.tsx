@@ -1,22 +1,23 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { act, render, fireEvent } from '@testing-library/react';
-import Modal, { ModalProps } from '../../../lib/components/modal';
-import FormField from '../../../lib/components/form-field';
-import Input from '../../../lib/components/input';
-import Select from '../../../lib/components/select';
-import Multiselect from '../../../lib/components/multiselect';
+import { act, fireEvent, render } from '@testing-library/react';
+
 import Autosuggest from '../../../lib/components/autosuggest';
+import ButtonDropdown from '../../../lib/components/button-dropdown';
 import DatePicker from '../../../lib/components/date-picker';
 import DateRangePicker from '../../../lib/components/date-range-picker';
-import ButtonDropdown from '../../../lib/components/button-dropdown';
+import FormField from '../../../lib/components/form-field';
+import Input from '../../../lib/components/input';
+import Modal, { ModalProps } from '../../../lib/components/modal';
+import Multiselect from '../../../lib/components/multiselect';
 import Popover from '../../../lib/components/popover';
+import Select from '../../../lib/components/select';
 import StatusIndicator from '../../../lib/components/status-indicator';
 import createWrapper, { ElementWrapper, ModalWrapper } from '../../../lib/components/test-utils/dom';
+import { KeyCode } from '../../internal/keycode';
 
 import styles from '../../../lib/components/modal/styles.css.js';
-import { KeyCode } from '../../internal/keycode';
 
 class ModalInternalWrapper extends ModalWrapper {
   findDialog(): ElementWrapper {

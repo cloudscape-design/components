@@ -1,13 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import Wizard, { WizardProps } from '~components/wizard';
-import Toggle from '~components/toggle';
+
 import Button from '~components/button';
 import Link from '~components/link';
-import styles from './styles.scss';
+import Toggle from '~components/toggle';
+import Wizard, { WizardProps } from '~components/wizard';
 
 import { i18nStrings } from './common';
+
+import styles from './styles.scss';
 
 const steps: WizardProps.Step[] = [
   {

@@ -3,12 +3,14 @@
 import React, { useState } from 'react';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 
-import ButtonDropdown, { ButtonDropdownProps } from '../../../lib/components/button-dropdown';
-import createWrapper, { ButtonWrapper, IconWrapper } from '../../../lib/components/test-utils/dom';
-import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
-import iconStyles from '../../../lib/components/icon/styles.css.js';
-import { KeyCode } from '../../../lib/components/internal/keycode';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
+import ButtonDropdown, { ButtonDropdownProps } from '../../../lib/components/button-dropdown';
+import { KeyCode } from '../../../lib/components/internal/keycode';
+import createWrapper, { ButtonWrapper, IconWrapper } from '../../../lib/components/test-utils/dom';
+
+import iconStyles from '../../../lib/components/icon/styles.css.js';
+import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),

@@ -1,11 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
 import { Box, DateRangePicker, DateRangePickerProps, SpaceBetween } from '~components';
-import { i18nStrings, isValid } from './common';
-import ScreenshotArea from '../utils/screenshot-area';
-import PermutationsView from '../utils/permutations-view';
+
 import createPermutations from '../utils/permutations';
+import PermutationsView from '../utils/permutations-view';
+import ScreenshotArea from '../utils/screenshot-area';
+import { i18nStrings, isValid } from './common';
 
 const permutations = createPermutations<
   Pick<DateRangePickerProps, 'absoluteFormat' | 'dateOnly' | 'hideTimeOffset' | 'value'>

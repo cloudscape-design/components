@@ -1,14 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect } from 'react';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { AlertProps } from './interfaces';
-import InternalAlert from './internal';
-import useBaseComponent from '../internal/hooks/use-base-component';
+
 import { FunnelMetrics } from '../internal/analytics';
 import { useFunnel, useFunnelStep, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 import { getNameFromSelector, getSubStepAllSelector } from '../internal/analytics/selectors';
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
+import useBaseComponent from '../internal/hooks/use-base-component';
+import { applyDisplayName } from '../internal/utils/apply-display-name';
+import { AlertProps } from './interfaces';
+import InternalAlert from './internal';
 
 export { AlertProps };
 

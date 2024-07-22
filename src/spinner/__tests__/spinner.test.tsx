@@ -2,7 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
+
 import Spinner from '../../../lib/components/spinner';
+
 import styles from '../../../lib/components/spinner/styles.css.js';
 
 describe('Spinner', () => {

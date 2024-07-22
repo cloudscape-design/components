@@ -2,12 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect } from 'react';
 import { render } from '@testing-library/react';
-import Table, { TableProps } from '../../../lib/components/table';
-import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/dom';
-import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
+
 import { ContainerQueryEntry } from '@cloudscape-design/component-toolkit';
+import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
+
+import Table, { TableProps } from '../../../lib/components/table';
+import { useStickyCellStyles, useStickyColumns } from '../../../lib/components/table/sticky-columns';
+import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/dom';
+
 import styles from '../../../lib/components/table/styles.css.js';
-import { useStickyColumns, useStickyCellStyles } from '../../../lib/components/table/sticky-columns';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),

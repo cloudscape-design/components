@@ -2,13 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
-import createWrapper, { ExpandableSectionWrapper } from '../../../lib/components/test-utils/dom';
-import ExpandableSection, { ExpandableSectionProps } from '../../../lib/components/expandable-section';
+
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
+import '../../__a11y__/to-validate-a11y';
 import Button from '../../../lib/components/button';
+import ExpandableSection, { ExpandableSectionProps } from '../../../lib/components/expandable-section';
 import Header from '../../../lib/components/header';
 import Link from '../../../lib/components/link';
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
-import '../../__a11y__/to-validate-a11y';
+import createWrapper, { ExpandableSectionWrapper } from '../../../lib/components/test-utils/dom';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),

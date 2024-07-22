@@ -1,6 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
+import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
+import { NonCancelableEventHandler } from '../internal/events';
+import FilteringToken from './filtering-token';
 import {
   ComparisonOperator,
   GroupText,
@@ -13,13 +17,10 @@ import {
   LoadItemsDetail,
   Token,
 } from './interfaces';
-import styles from './styles.css.js';
 import { TokenEditor } from './token-editor';
-
-import FilteringToken from './filtering-token';
-import { NonCancelableEventHandler } from '../internal/events';
-import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
 import { getFormattedToken } from './utils';
+
+import styles from './styles.css.js';
 
 interface TokenProps {
   asyncProperties?: boolean;

@@ -1,11 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
 import Alert from '~components/alert';
 import S3ResourceSelector from '~components/s3-resource-selector';
+
 import ScreenshotArea from '../utils/screenshot-area';
-import { fetchBuckets, fetchObjects, fetchVersions } from './data/request';
 import { i18nStrings } from './data/i18n-strings';
+import { fetchBuckets, fetchObjects, fetchVersions } from './data/request';
 
 export default function () {
   return (

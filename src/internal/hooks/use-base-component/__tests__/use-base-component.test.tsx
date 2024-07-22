@@ -2,15 +2,17 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 import { render } from '@testing-library/react';
+
+import { COMPONENT_METADATA_KEY } from '@cloudscape-design/component-toolkit/internal';
+
+import { Button } from '../../../../../lib/components';
+import Portal from '../../../../../lib/components/internal/components/portal';
+import { PACKAGE_VERSION } from '../../../../../lib/components/internal/environment';
 import useBaseComponent, {
   InternalBaseComponentProps,
 } from '../../../../../lib/components/internal/hooks/use-base-component';
-import { COMPONENT_METADATA_KEY } from '@cloudscape-design/component-toolkit/internal';
-import { PACKAGE_VERSION } from '../../../../../lib/components/internal/environment';
 import { useTelemetry } from '../../../../../lib/components/internal/hooks/use-telemetry';
 import createWrapper from '../../../../../lib/components/test-utils/dom';
-import Portal from '../../../../../lib/components/internal/components/portal';
-import { Button } from '../../../../../lib/components';
 
 jest.mock('../../../../../lib/components/internal/hooks/use-telemetry', () => {
   return { useTelemetry: jest.fn(() => null) };

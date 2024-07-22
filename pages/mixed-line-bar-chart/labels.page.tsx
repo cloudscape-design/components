@@ -1,18 +1,18 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState, useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import range from 'lodash/range';
 
-import Container from '~components/container';
-import Header from '~components/header';
 import Box from '~components/box';
-import Input from '~components/input';
-import Select from '~components/select';
+import Container from '~components/container';
 import FormField from '~components/form-field';
-import SpaceBetween from '~components/space-between';
+import Header from '~components/header';
+import Input from '~components/input';
 import MixedLineBarChart from '~components/mixed-line-bar-chart';
-import ScreenshotArea from '../utils/screenshot-area';
+import Select from '~components/select';
+import SpaceBetween from '~components/space-between';
 
+import ScreenshotArea from '../utils/screenshot-area';
 import { commonProps } from './common';
 
 const scaleOptions = [

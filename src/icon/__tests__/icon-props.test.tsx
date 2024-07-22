@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
+
 import Icon, { IconProps } from '../../../lib/components/icon';
 import InternalIcon from '../../../lib/components/icon/internal';
 

@@ -2,15 +2,18 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
-import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
+
 import {
   activateAnalyticsMetadata,
   GeneratedAnalyticsMetadataFragment,
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
+
 import Button, { ButtonProps } from '../../../lib/components/button';
 import InternalButton from '../../../lib/components/button/internal';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
+
 import labels from '../../../lib/components/button/analytics-metadata/styles.css.js';
 
 function renderButton(props: ButtonProps = {}) {

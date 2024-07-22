@@ -1,10 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { MixedLineBarChartProps } from '~components/mixed-line-bar-chart';
 
 import Box from '~components/box';
 import Button from '~components/button';
+import { MixedLineBarChartProps } from '~components/mixed-line-bar-chart';
 
 type BarSeries<T> = MixedLineBarChartProps.BarDataSeries<T> | MixedLineBarChartProps.ThresholdSeries;
 type LineSeries<T> = MixedLineBarChartProps.LineDataSeries<T> | MixedLineBarChartProps.ThresholdSeries;

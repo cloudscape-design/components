@@ -1,15 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef, useState } from 'react';
+
 import Alert, { AlertProps } from '~components/alert';
 import Button from '~components/button';
-import Link from '~components/link';
-import ScreenshotArea from '../utils/screenshot-area';
-import SpaceBetween from '~components/space-between';
-import styles from './styles.scss';
-
 import { I18nProvider } from '~components/i18n';
 import messages from '~components/i18n/messages/all.en';
+import Link from '~components/link';
+import SpaceBetween from '~components/space-between';
+
+import ScreenshotArea from '../utils/screenshot-area';
+
+import styles from './styles.scss';
 
 export default function AlertScenario() {
   const [visible, setVisible] = useState(true);

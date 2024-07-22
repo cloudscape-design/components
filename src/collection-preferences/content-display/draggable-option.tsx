@@ -3,9 +3,11 @@
 import React from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { OptionWithVisibility } from './utils';
-import ContentDisplayOption, { getClassName } from './content-display-option';
 import clsx from 'clsx';
+
+import ContentDisplayOption, { getClassName } from './content-display-option';
+import { OptionWithVisibility } from './utils';
+
 import styles from '../styles.css.js';
 
 export default function DraggableOption({

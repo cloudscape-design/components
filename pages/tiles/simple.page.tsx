@@ -1,9 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
+
 import Tiles from '~components/tiles';
-import img from './assets/amazon.svg';
+
 import ScreenshotArea from '../utils/screenshot-area';
+import img from './assets/amazon.svg';
 
 export default function TilesPage() {
   const [value, setValue] = useState<string>('bar');

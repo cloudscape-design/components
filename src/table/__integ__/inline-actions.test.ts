@@ -1,8 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
-import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/selectors/index.js';
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
+import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
+
+import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/selectors/index.js';
+
 import styles from '../../../lib/components/table/styles.selectors.js';
 
 const tableWithDropdownActions = createWrapper().findTable('[data-testid="table-with-dropdown-actions"]')!;

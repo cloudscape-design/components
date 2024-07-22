@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useImperativeHandle } from 'react';
-import { render, act } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
+
 import { useControllable } from '../index';
 
 interface Props {

@@ -2,12 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import * as React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
+
 import Box from '../../../lib/components/box';
 import Select from '../../../lib/components/select';
-
 import createWrapper from '../../../lib/components/test-utils/dom';
-
 import { useClickAway } from '../body-cell/click-away';
 
 const onHookClickAway = jest.fn() as () => void;

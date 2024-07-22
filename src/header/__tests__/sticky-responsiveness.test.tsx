@@ -2,10 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
+
 import { StickyHeaderContext } from '../../../lib/components/container/use-sticky-header';
 import Header from '../../../lib/components/header';
+import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
+import createWrapper from '../../../lib/components/test-utils/dom';
+
 import styles from '../../../lib/components/header/styles.css.js';
 
 jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => ({

@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import merge from 'lodash/merge';
+
+import { expandColorDictionary } from '../utils';
 import { StyleDictionary } from '../utils/interfaces';
 import { tokens as parentTokens } from '../visual-refresh/color-charts';
-import merge from 'lodash/merge';
-import { expandColorDictionary } from '../utils';
 
 const tokens: StyleDictionary.ColorChartsDictionary = {
   colorChartsLineGrid: { dark: '{colorGrey650}' },

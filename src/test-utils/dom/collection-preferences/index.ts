@@ -1,13 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ComponentWrapper, ElementWrapper, createWrapper } from '@cloudscape-design/test-utils-core/dom';
+import { ComponentWrapper, createWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
+
 import ButtonWrapper from '../button';
 import CheckboxWrapper from '../checkbox';
 import ModalWrapper from '../modal';
-import VisibleContentPreferenceWrapper from './visible-content-preference';
+import ContentDisplayPreferenceWrapper from './content-display-preference';
 import PageSizePreferenceWrapper from './page-size-preference';
 import StickyColumnsPreferenceWrapper from './sticky-columns-preference';
-import ContentDisplayPreferenceWrapper from './content-display-preference';
+import VisibleContentPreferenceWrapper from './visible-content-preference';
+
 import styles from '../../../collection-preferences/styles.selectors.js';
 
 class PreferencesModalWrapper extends ModalWrapper {

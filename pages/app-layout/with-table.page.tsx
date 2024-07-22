@@ -1,18 +1,20 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useState } from 'react';
+
 import AppLayout from '~components/app-layout';
+import Button from '~components/button';
 import Header from '~components/header';
 import Link from '~components/link';
-import ScreenshotArea from '../utils/screenshot-area';
-import { Breadcrumbs, Navigation, Tools, Footer, Notifications } from './utils/content-blocks';
-import * as toolsContent from './utils/tools-content';
-import labels from './utils/labels';
 import Table from '~components/table';
+
+import AppContext, { AppContextType } from '../app/app-context';
 import { generateItems, Instance } from '../table/generate-data';
 import { columnsConfig } from '../table/shared-configs';
-import Button from '~components/button';
-import AppContext, { AppContextType } from '../app/app-context';
+import ScreenshotArea from '../utils/screenshot-area';
+import { Breadcrumbs, Footer, Navigation, Notifications, Tools } from './utils/content-blocks';
+import labels from './utils/labels';
+import * as toolsContent from './utils/tools-content';
 
 type PageContext = React.Context<AppContextType<{ stickyNotifications: boolean }>>;
 

@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
+
 import {
   Box,
   BreadcrumbGroup,
@@ -17,14 +18,13 @@ import {
   S3ResourceSelectorProps,
   SpaceBetween,
 } from '~components';
-
-import { fetchBuckets, fetchObjects, fetchVersions } from '../s3-resource-selector/data/request';
-import { i18nStrings } from '../s3-resource-selector/data/i18n-strings';
-import { SelfDismissibleAlert, uriToConsoleUrl } from '../s3-resource-selector/shared';
-
 import { setFunnelMetrics } from '~components/internal/analytics';
-import { MockedFunnelMetrics } from './mock-funnel';
+
+import { i18nStrings } from '../s3-resource-selector/data/i18n-strings';
+import { fetchBuckets, fetchObjects, fetchVersions } from '../s3-resource-selector/data/request';
+import { SelfDismissibleAlert, uriToConsoleUrl } from '../s3-resource-selector/shared';
 import { getAnalyticsProps } from './metadata';
+import { MockedFunnelMetrics } from './mock-funnel';
 
 setFunnelMetrics(MockedFunnelMetrics);
 

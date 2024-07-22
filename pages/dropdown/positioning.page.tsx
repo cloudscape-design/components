@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 
-import Dropdown from '~components/internal/components/dropdown';
 import Button from '~components/button';
+import Dropdown from '~components/internal/components/dropdown';
 
 import ListContent from './list-content';
 

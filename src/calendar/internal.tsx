@@ -2,25 +2,27 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useEffect, useRef, useState } from 'react';
+import clsx from 'clsx';
 import { addMonths, addYears, isSameDay, isSameMonth, isSameYear } from 'date-fns';
-import styles from './styles.css.js';
-import CalendarHeader from './header';
-import Grid from './grid';
-import { normalizeLocale } from '../internal/utils/locale';
-import { formatDate, parseDate } from '../internal/utils/date-time';
+
+import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events/index.js';
 import checkControlled from '../internal/hooks/check-controlled/index.js';
-import clsx from 'clsx';
-import { CalendarProps } from './interfaces.js';
-import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
-import { getBaseDay, getBaseMonth } from './utils/navigation';
 import { useDateCache } from '../internal/hooks/use-date-cache/index.js';
 import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
-import useCalendarLabels from './use-calendar-labels';
-import useCalendarGridRows from './grid/use-calendar-grid-rows';
-import useCalendarGridKeyboardNavigation from './grid/use-calendar-grid-keyboard-navigation';
+import { formatDate, parseDate } from '../internal/utils/date-time';
+import { normalizeLocale } from '../internal/utils/locale';
+import Grid from './grid';
 import CalendarGridHeader from './grid/calendar-grid-header';
+import useCalendarGridKeyboardNavigation from './grid/use-calendar-grid-keyboard-navigation';
+import useCalendarGridRows from './grid/use-calendar-grid-rows';
+import CalendarHeader from './header';
+import { CalendarProps } from './interfaces.js';
+import useCalendarLabels from './use-calendar-labels';
+import { getBaseDay, getBaseMonth } from './utils/navigation';
+
+import styles from './styles.css.js';
 
 export default function Calendar({
   value,

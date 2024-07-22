@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { setupTest } from './pages/interactive-page';
 import { FOCUS_THROTTLE_DELAY } from '../utils';
+import { setupTest } from './pages/interactive-page';
 
 test(
   'a flash with ariaRole="status" produces no duplicate interactive content',

@@ -1,12 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
+
+import { Checkbox, NonCancelableCustomEvent, SpaceBetween } from '~components';
 import Box from '~components/box';
 import Wizard, { WizardProps } from '~components/wizard';
-import styles from './styles.scss';
 
 import { i18nStrings } from './common';
-import { Checkbox, NonCancelableCustomEvent, SpaceBetween } from '~components';
+
+import styles from './styles.scss';
 
 const steps: WizardProps.Step[] = [
   {

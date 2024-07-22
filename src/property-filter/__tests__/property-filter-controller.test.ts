@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { getAllowedOperators, getAutosuggestOptions, parseText } from '../controller';
 import {
   ComparisonOperator,
   FilteringProperty,
@@ -9,7 +10,6 @@ import {
   InternalFreeTextFiltering,
   ParsedText,
 } from '../interfaces';
-import { parseText, getAllowedOperators, getAutosuggestOptions } from '../controller';
 import { i18nStrings, toInternalProperties } from './common';
 
 const filteringProperties = toInternalProperties([

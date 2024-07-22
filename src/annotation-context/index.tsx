@@ -2,14 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { OpenAnnotation } from './annotation/open-annotation';
-import { ClosedAnnotation } from './annotation/closed-annotation';
-import { AnnotationContextProps } from './interfaces';
-import { HotspotContext, hotspotContext } from './context';
-import { fireNonCancelableEvent } from '../internal/events';
 import { HotspotProps } from '../hotspot/interfaces';
+import { fireNonCancelableEvent } from '../internal/events';
 import { useTelemetry } from '../internal/hooks/use-telemetry';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
+import { ClosedAnnotation } from './annotation/closed-annotation';
+import { OpenAnnotation } from './annotation/open-annotation';
+import { HotspotContext, hotspotContext } from './context';
+import { AnnotationContextProps } from './interfaces';
 import { getStepInfo } from './utils';
 
 export { AnnotationContextProps };

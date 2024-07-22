@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import VisualContext from '~components/internal/components/visual-context';
 import OverflowMenu from '~components/top-navigation/parts/overflow-menu';
 
-import { profileActions, MobileViewPort } from './common';
+import { MobileViewPort, profileActions } from './common';
 
 export default function TopNavigationOverflowMenuPage() {
   const [showOverflowMenu, setShowOverflowMenu] = useState(false);

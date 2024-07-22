@@ -1,15 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext } from 'react';
+
 import AppLayout from '~components/app-layout';
 import Header from '~components/header';
 import Table from '~components/table';
-import ScreenshotArea from '../utils/screenshot-area';
+
+import AppContext from '../app/app-context';
 import { generateItems, Instance } from '../table/generate-data';
 import { columnsConfig } from '../table/shared-configs';
+import ScreenshotArea from '../utils/screenshot-area';
 import { Breadcrumbs } from './utils/content-blocks';
 import labels from './utils/labels';
-import AppContext from '../app/app-context';
 
 const items = generateItems(20);
 

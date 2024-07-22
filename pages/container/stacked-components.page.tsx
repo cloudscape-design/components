@@ -1,11 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
 import Container from '~components/container';
-import Header from '~components/header';
 import ExpandableSection from '~components/expandable-section';
+import Header from '~components/header';
 import SpaceBetween from '~components/space-between';
 import Tabs from '~components/tabs';
+
 import ScreenshotArea from '../utils/screenshot-area';
 
 function StackedContainer() {

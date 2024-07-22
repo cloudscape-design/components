@@ -1,13 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import ScreenshotArea from '../utils/screenshot-area';
-import Tabs, { TabsProps } from '~components/tabs';
+
+import ButtonDropdown from '~components/button-dropdown';
 import SpaceBetween from '~components/space-between';
+import Tabs, { TabsProps } from '~components/tabs';
+import { colorBackgroundLayoutMain } from '~design-tokens';
+
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
-import { colorBackgroundLayoutMain } from '~design-tokens';
-import ButtonDropdown from '~components/button-dropdown';
+import ScreenshotArea from '../utils/screenshot-area';
 
 const permutations = createPermutations<TabsProps>([
   {

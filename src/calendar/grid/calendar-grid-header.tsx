@@ -3,8 +3,10 @@
 
 import React from 'react';
 import clsx from 'clsx';
+
 import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { renderDayName } from '../utils/intl';
+
 import styles from '../styles.css.js';
 
 export default function CalendarGridHeader({ locale, rows }: { locale: string; rows: Date[][] }) {

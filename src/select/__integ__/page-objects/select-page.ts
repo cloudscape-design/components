@@ -1,7 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { strict as assert } from 'assert';
+
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
+
 import { SelectWrapper } from '../../../../lib/components/test-utils/selectors';
 
 export default class SelectPageObject<Wrapper extends SelectWrapper = SelectWrapper> extends BasePageObject {

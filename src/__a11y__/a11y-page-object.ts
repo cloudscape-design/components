@@ -1,11 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import fs from 'fs';
 import * as Axe from 'axe-core';
+import fs from 'fs';
+
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 
+import { runOptions, spec } from './axe';
+
 import tableStyles from '../../lib/components/table/styles.selectors.js';
-import { spec, runOptions } from './axe';
 
 declare const axe: typeof Axe;
 

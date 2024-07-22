@@ -1,29 +1,32 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import ScreenshotArea from '../utils/screenshot-area';
+
 import { useCollection } from '@cloudscape-design/collection-hooks';
+
+import Box from '~components/box';
 import Button from '~components/button';
 import CollectionPreferences, { CollectionPreferencesProps } from '~components/collection-preferences';
 import Header from '~components/header';
-import SpaceBetween from '~components/space-between';
+import Input from '~components/input';
 import Pagination from '~components/pagination';
 import Select from '~components/select';
-import Box from '~components/box';
-import Input from '~components/input';
+import SpaceBetween from '~components/space-between';
 import Table, { TableProps } from '~components/table';
 import TextFilter from '~components/text-filter';
-import { Instance, generateItems } from './generate-data';
+
+import { contentDisplayPreferenceI18nStrings } from '../common/i18n-strings';
+import ScreenshotArea from '../utils/screenshot-area';
+import { generateItems, Instance } from './generate-data';
 import {
   columnsConfig,
-  EmptyState,
-  getMatchesCountText,
-  paginationLabels,
-  pageSizeOptions,
   contentDisplayPreference,
   defaultPreferences,
+  EmptyState,
+  getMatchesCountText,
+  pageSizeOptions,
+  paginationLabels,
 } from './shared-configs';
-import { contentDisplayPreferenceI18nStrings } from '../common/i18n-strings';
 
 const allItems = generateItems();
 const ariaLabels: TableProps<Instance>['ariaLabels'] = {

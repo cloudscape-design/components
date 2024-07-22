@@ -3,9 +3,11 @@
 
 /* eslint-disable @cloudscape-design/prefer-live-region */
 
-import clsx from 'clsx';
 import React, { memo, useEffect, useRef } from 'react';
+import clsx from 'clsx';
+
 import ScreenreaderOnly, { ScreenreaderOnlyProps } from '../screenreader-only';
+
 import styles from './styles.css.js';
 
 export interface LiveRegionProps extends ScreenreaderOnlyProps {

@@ -1,16 +1,18 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import AnchorNavigation from '~components/anchor-navigation';
 
+import AnchorNavigation from '~components/anchor-navigation';
 import Box from '~components/box';
 import FormField from '~components/form-field';
+import VisualContext from '~components/internal/components/visual-context';
 import RadioGroup from '~components/radio-group';
 import Select, { SelectProps } from '~components/select';
 import SideNavigation from '~components/side-navigation';
 import SpaceBetween from '~components/space-between';
-import VisualContext from '~components/internal/components/visual-context';
+
 import ScreenshotArea from '../utils/screenshot-area';
+
 import styles from './styles.scss';
 
 export default function ContentHeaderVisualContextDemo() {

@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { useCallback, useRef } from 'react';
+
 import debounce from '../../debounce';
 
 export function useDebounceCallback<T extends (...args: any[]) => void>(callback: T, delay?: number): T {

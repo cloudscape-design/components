@@ -2,9 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 import { act, render } from '@testing-library/react';
+
 import createWrapper, { ElementWrapper, TilesWrapper } from '../../../lib/components/test-utils/dom';
 import TileWrapper from '../../../lib/components/test-utils/dom/tiles/tile';
 import Tiles, { TilesProps } from '../../../lib/components/tiles';
+
 import styles from '../../../lib/components/tiles/styles.css.js';
 
 class TilesInternalWrapper extends TilesWrapper {

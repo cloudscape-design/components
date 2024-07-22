@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
+
 import DropdownFooter from '../../../../../lib/components/internal/components/dropdown-footer';
 import DropdownWrapper from '../../../../../lib/components/test-utils/dom/internal/dropdown';
 

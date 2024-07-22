@@ -2,11 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import { render, screen } from '@testing-library/react';
-import ProgressBarWrapper from '../../../lib/components/test-utils/dom/progress-bar';
-import createWrapper from '../../../lib/components/test-utils/dom';
+
 import ProgressBar, { ProgressBarProps } from '../../../lib/components/progress-bar';
-import styles from '../../../lib/components/progress-bar/styles.css.js';
+import createWrapper from '../../../lib/components/test-utils/dom';
+import ProgressBarWrapper from '../../../lib/components/test-utils/dom/progress-bar';
+
 import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
+import styles from '../../../lib/components/progress-bar/styles.css.js';
 
 const standaloneAndKeyvalueVariants: Array<ProgressBarProps.Variant> = ['standalone', 'key-value'];
 const allVariants: Array<ProgressBarProps.Variant> = [...standaloneAndKeyvalueVariants, 'flash'];

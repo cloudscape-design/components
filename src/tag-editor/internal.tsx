@@ -6,7 +6,6 @@ import { AutosuggestProps } from '../autosuggest/interfaces';
 import InternalAutosuggest from '../autosuggest/internal';
 import { InputProps } from '../input/interfaces';
 import { DropdownStatusProps } from '../internal/components/dropdown-status';
-
 import { KeyCode } from '../internal/keycode';
 import { makeCancellable, PromiseCancelledSignal } from '../internal/utils/promises';
 

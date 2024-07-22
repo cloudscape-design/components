@@ -3,12 +3,14 @@
 import * as React from 'react';
 import { act } from 'react-dom/test-utils';
 import { fireEvent, render as renderJsx } from '@testing-library/react';
-import AutosuggestInputWrapper from '../../../../../lib/components/test-utils/dom/internal/autosuggest-input';
+
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
+
 import AutosuggestInput, {
   AutosuggestInputRef,
 } from '../../../../../lib/components/internal/components/autosuggest-input';
 import Dropdown from '../../../../../lib/components/internal/components/dropdown';
-import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
+import AutosuggestInputWrapper from '../../../../../lib/components/test-utils/dom/internal/autosuggest-input';
 
 function render(jsx: React.ReactElement) {
   const { container, rerender, getByTestId } = renderJsx(jsx);

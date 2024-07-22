@@ -12,12 +12,14 @@ jest.mock('../../../lib/components/internal/utils/scrollable-containers', () => 
 });
 
 import React from 'react';
+import { render } from '@testing-library/react';
+
+import { disableMotion } from '@cloudscape-design/global-styles';
+
 import Flashbar from '../../../lib/components/flashbar';
-import { createFlashbarWrapper, findList, testFlashDismissal } from './common';
 import createWrapper, { FlashbarWrapper } from '../../../lib/components/test-utils/dom';
 import { FlashbarProps } from '../interfaces';
-import { render } from '@testing-library/react';
-import { disableMotion } from '@cloudscape-design/global-styles';
+import { createFlashbarWrapper, findList, testFlashDismissal } from './common';
 
 const sampleItems: Record<FlashbarProps.Type, FlashbarProps.MessageDefinition> = {
   error: { type: 'error', header: 'Error', content: 'There was an error' },

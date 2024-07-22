@@ -1,9 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { SplitPanelProvider, SplitPanelProviderProps } from '../../split-panel';
 import { AppLayoutInternals } from '../interfaces';
+
 import styles from './styles.css.js';
 
 interface AppLayoutSplitPanelDrawerSideImplementationProps {

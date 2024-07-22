@@ -1,11 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import InternalColumnLayout from './internal';
-import { getExternalProps } from '../internal/utils/external-props';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
+
 import useBaseComponent from '../internal/hooks/use-base-component';
+import { applyDisplayName } from '../internal/utils/apply-display-name';
+import { getExternalProps } from '../internal/utils/external-props';
 import { ColumnLayoutProps } from './interfaces';
+import InternalColumnLayout from './internal';
 
 export { ColumnLayoutProps };
 

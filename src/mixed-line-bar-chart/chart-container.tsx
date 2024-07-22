@@ -2,39 +2,38 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
 
-import { getXTickCount, getYTickCount, createXTicks, createYTicks } from '../internal/components/cartesian-chart/ticks';
-import ChartPlot, { ChartPlotRef } from '../internal/components/chart-plot';
 import AxisLabel from '../internal/components/cartesian-chart/axis-label';
-import LabelsMeasure from '../internal/components/cartesian-chart/labels-measure';
-import InlineStartLabels from '../internal/components/cartesian-chart/inline-start-labels';
 import BlockEndLabels, { useBLockEndLabels } from '../internal/components/cartesian-chart/block-end-labels';
-import VerticalGridLines from '../internal/components/cartesian-chart/vertical-grid-lines';
+import { CartesianChartContainer } from '../internal/components/cartesian-chart/chart-container';
 import EmphasizedBaseline from '../internal/components/cartesian-chart/emphasized-baseline';
 import HighlightedPoint from '../internal/components/cartesian-chart/highlighted-point';
-import VerticalMarker from '../internal/components/cartesian-chart/vertical-marker';
+import InlineStartLabels from '../internal/components/cartesian-chart/inline-start-labels';
+import { CartesianChartProps } from '../internal/components/cartesian-chart/interfaces';
+import LabelsMeasure from '../internal/components/cartesian-chart/labels-measure';
 import { ChartScale, NumericChartScale } from '../internal/components/cartesian-chart/scales';
-import MixedChartPopover from './chart-popover';
-import { ChartDataTypes, InternalChartSeries, MixedLineBarChartProps, ScaleType, VerticalMarkerX } from './interfaces';
-import { computeDomainX, computeDomainY } from './domain';
-import { isXThreshold } from './utils';
-import makeScaledSeries, { ScaledPoint } from './make-scaled-series';
-import makeScaledBarGroups, { ScaledBarGroup } from './make-scaled-bar-groups';
-import formatHighlighted from './format-highlighted';
-import DataSeries from './data-series';
+import { createXTicks, createYTicks, getXTickCount, getYTickCount } from '../internal/components/cartesian-chart/ticks';
+import VerticalGridLines from '../internal/components/cartesian-chart/vertical-grid-lines';
+import VerticalMarker from '../internal/components/cartesian-chart/vertical-marker';
+import ChartPlot, { ChartPlotRef } from '../internal/components/chart-plot';
+import { useHeightMeasure } from '../internal/hooks/container-queries/use-height-measure';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { nodeBelongs } from '../internal/utils/node-belongs';
+import useContainerWidth from '../internal/utils/use-container-width';
 import BarGroups from './bar-groups';
+import MixedChartPopover from './chart-popover';
+import DataSeries from './data-series';
+import { computeDomainX, computeDomainY } from './domain';
+import formatHighlighted from './format-highlighted';
 import { useMouseHover } from './hooks/use-mouse-hover';
 import { useNavigation } from './hooks/use-navigation';
 import { usePopover } from './hooks/use-popover';
-
-import { CartesianChartProps } from '../internal/components/cartesian-chart/interfaces';
-import useContainerWidth from '../internal/utils/use-container-width';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { nodeBelongs } from '../internal/utils/node-belongs';
-import { CartesianChartContainer } from '../internal/components/cartesian-chart/chart-container';
-import { useHeightMeasure } from '../internal/hooks/container-queries/use-height-measure';
-import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
+import { ChartDataTypes, InternalChartSeries, MixedLineBarChartProps, ScaleType, VerticalMarkerX } from './interfaces';
+import makeScaledBarGroups, { ScaledBarGroup } from './make-scaled-bar-groups';
+import makeScaledSeries, { ScaledPoint } from './make-scaled-series';
+import { isXThreshold } from './utils';
 
 const INLINE_START_LABELS_MARGIN = 16;
 const BLOCK_END_LABELS_OFFSET = 12;

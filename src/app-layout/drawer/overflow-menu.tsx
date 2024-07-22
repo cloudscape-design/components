@@ -1,10 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import InternalButtonDropdown from '../../button-dropdown/internal';
+
 import { ButtonDropdownProps, InternalButtonDropdownProps } from '../../button-dropdown/interfaces';
+import InternalButtonDropdown from '../../button-dropdown/internal';
 import { CancelableEventHandler } from '../../internal/events';
 import { AppLayoutProps } from '../interfaces';
+
 import testutilStyles from '../test-classes/styles.css.js';
 
 interface OverflowMenuProps {

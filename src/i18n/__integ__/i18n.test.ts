@@ -3,8 +3,9 @@
 
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
-import createWrapper from '../../../lib/components/test-utils/selectors';
+
 import jaStaticMessages from '../../../lib/components/i18n/messages/all.ja.json';
+import createWrapper from '../../../lib/components/test-utils/selectors';
 
 const wrapper = createWrapper().findTagEditor();
 

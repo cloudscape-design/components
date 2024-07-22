@@ -1,23 +1,22 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+import type { Activators, SensorInstance } from '@dnd-kit/core';
+import { defaultCoordinates } from '@dnd-kit/core';
+import { KeyboardSensorOptions, KeyboardSensorProps } from '@dnd-kit/core';
 import {
-  subtract as getCoordinatesDelta,
+  Coordinates,
   getOwnerDocument,
   getWindow,
   isKeyboardEvent,
-  Coordinates,
+  subtract as getCoordinatesDelta,
 } from '@dnd-kit/utilities';
 
-import { defaultCoordinates } from '@dnd-kit/core';
-import { applyScroll } from './utilities/scroll';
+import { scrollElementIntoView } from '../../../internal/utils/scrollable-containers';
+import { defaultKeyboardCodes } from './defaults';
 import { EventName } from './utilities/events';
 import { Listeners } from './utilities/listeners';
-import type { Activators, SensorInstance } from '@dnd-kit/core';
-import { KeyboardSensorOptions, KeyboardSensorProps } from '@dnd-kit/core';
-
-import { defaultKeyboardCodes } from './defaults';
-import { scrollElementIntoView } from '../../../internal/utils/scrollable-containers';
+import { applyScroll } from './utilities/scroll';
 
 // Slightly modified version of @dnd-kit's KeyboardSensor:
 // https://github.com/clauderic/dnd-kit/blob/master/packages/core/src/sensors/keyboard/KeyboardSensor.ts

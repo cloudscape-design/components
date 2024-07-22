@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { SideNavigationProps } from './interfaces';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
+import { SideNavigationProps } from './interfaces';
 
 type ExpandableItem = SideNavigationProps.Section | SideNavigationProps.ExpandableLinkGroup;
 

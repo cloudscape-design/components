@@ -2,7 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 import MockDate from 'mockdate';
+
 import { Box, DatePicker } from '~components';
+
 import ScreenshotArea from '../utils/screenshot-area';
 
 // Mock the date in order to have the current day styling in place for screenshot testing.

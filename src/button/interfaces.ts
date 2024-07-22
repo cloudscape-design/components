@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { BaseComponentProps } from '../internal/base-component';
-import { IconProps } from '../icon/interfaces';
 import React from 'react';
+
+import { IconProps } from '../icon/interfaces';
+import { BaseComponentProps } from '../internal/base-component';
 import { BaseNavigationDetail, CancelableEventHandler, ClickDetail as _ClickDetail } from '../internal/events';
 
 export interface ButtonProps extends BaseComponentProps {

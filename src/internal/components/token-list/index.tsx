@@ -2,13 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useState } from 'react';
-
-import TokenLimitToggle from './token-limit-toggle';
-import styles from './styles.css.js';
-import { TokenListProps } from './interfaces';
-import { useUniqueId } from '../../hooks/use-unique-id';
 import clsx from 'clsx';
+
+import { useUniqueId } from '../../hooks/use-unique-id';
+import { TokenListProps } from './interfaces';
 import { useTokenFocusController } from './token-focus-controller';
+import TokenLimitToggle from './token-limit-toggle';
+
+import styles from './styles.css.js';
 
 export default function TokenList<Item>({
   items,

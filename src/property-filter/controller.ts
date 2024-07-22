@@ -1,6 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { AutosuggestProps } from '../autosuggest/interfaces';
+import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
+import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import {
   ComparisonOperator,
   GroupText,
@@ -13,10 +16,7 @@ import {
   Query,
   Token,
 } from './interfaces';
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
-import { AutosuggestProps } from '../autosuggest/interfaces';
 import { matchFilteringProperty, matchOperator, matchOperatorPrefix, removeOperator, trimStart } from './utils';
-import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 
 export const getQueryActions = (
   query: Query,

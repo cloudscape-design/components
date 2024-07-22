@@ -3,11 +3,13 @@
 
 import React from 'react';
 import { act, render } from '@testing-library/react';
-import createWrapper, { PropertyFilterWrapper } from '../../../lib/components/test-utils/dom';
+
 import PropertyFilter from '../../../lib/components/property-filter';
-import styles from '../../../lib/components/property-filter/styles.selectors.js';
 import { FilteringProperty, PropertyFilterProps, Ref } from '../../../lib/components/property-filter/interfaces.js';
+import createWrapper, { PropertyFilterWrapper } from '../../../lib/components/test-utils/dom';
 import { createDefaultProps } from './common';
+
+import styles from '../../../lib/components/property-filter/styles.selectors.js';
 
 const defaultProps = createDefaultProps([], []);
 

@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { join } from 'path';
 import { buildThemedComponents as themingCoreBuild } from '@cloudscape-design/theming-build';
+import { join } from 'path';
+
 import { preset, TypedOverride } from './internal/template/internal/generated/theming/index.cjs';
 
 const internalDir = join(__dirname, './internal');

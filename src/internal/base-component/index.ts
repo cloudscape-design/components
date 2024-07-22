@@ -2,11 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { initAwsUiVersions } from '@cloudscape-design/component-toolkit/internal';
+
+import { AnalyticsMetadata } from '../analytics/interfaces';
 import { PACKAGE_SOURCE, PACKAGE_VERSION } from '../environment';
 
 // these styles needed to be imported for every public component
 import './styles.css.js';
-import { AnalyticsMetadata } from '../analytics/interfaces';
 
 initAwsUiVersions(PACKAGE_SOURCE, PACKAGE_VERSION);
 

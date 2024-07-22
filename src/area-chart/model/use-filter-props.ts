@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { useCallback, useEffect } from 'react';
+
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../internal/events';
 import { useControllable } from '../../internal/hooks/use-controllable';
 import { AreaChartProps } from '../interfaces';

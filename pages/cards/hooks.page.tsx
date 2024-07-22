@@ -1,16 +1,19 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
+
 import { useCollection } from '@cloudscape-design/collection-hooks';
+
 import Button from '~components/button';
 import Cards, { CardsProps } from '~components/cards';
+import CollectionPreferences, { CollectionPreferencesProps } from '~components/collection-preferences';
 import Header from '~components/header';
 import Link from '~components/link';
-import CollectionPreferences, { CollectionPreferencesProps } from '~components/collection-preferences';
 import Pagination from '~components/pagination';
 import TextFilter from '~components/text-filter';
-import { Instance, generateItems } from '../table/generate-data';
-import { EmptyState, getMatchesCountText, paginationLabels, pageSizeOptions } from '../table/shared-configs';
+
+import { generateItems, Instance } from '../table/generate-data';
+import { EmptyState, getMatchesCountText, pageSizeOptions, paginationLabels } from '../table/shared-configs';
 import ScreenshotArea from '../utils/screenshot-area';
 
 export const cardDefinition: CardsProps.CardDefinition<Instance> = {

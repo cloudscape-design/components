@@ -1,13 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render, act } from '@testing-library/react';
-import styles from '../../../lib/components/breadcrumb-group/styles.css.js';
-import itemStyles from '../../../lib/components/breadcrumb-group/item/styles.css.js';
-import TestI18nProvider from '../../../lib/components/i18n/testing';
+import { act, render } from '@testing-library/react';
 
 import BreadcrumbGroup, { BreadcrumbGroupProps } from '../../../lib/components/breadcrumb-group';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 import createWrapper, { BreadcrumbGroupWrapper } from '../../../lib/components/test-utils/dom';
+
+import itemStyles from '../../../lib/components/breadcrumb-group/item/styles.css.js';
+import styles from '../../../lib/components/breadcrumb-group/styles.css.js';
 
 const renderBreadcrumbGroup = (props: BreadcrumbGroupProps) => {
   const renderResult = render(<BreadcrumbGroup {...props} />);

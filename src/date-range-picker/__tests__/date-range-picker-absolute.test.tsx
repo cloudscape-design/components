@@ -2,13 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import { render } from '@testing-library/react';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import DateRangePicker, { DateRangePickerProps } from '../../../lib/components/date-range-picker';
-import { i18nStrings } from './i18n-strings';
-import { isValidRange } from './is-valid-range';
+
 import '../../__a11y__/to-validate-a11y';
+import DateRangePicker, { DateRangePickerProps } from '../../../lib/components/date-range-picker';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
 import { KeyCode } from '../../../lib/components/internal/keycode';
+import createWrapper from '../../../lib/components/test-utils/dom';
+import { i18nStrings } from './i18n-strings';
+import { isValidRange } from './is-valid-range';
 
 const defaultProps: DateRangePickerProps = {
   locale: 'en-US',

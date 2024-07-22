@@ -1,14 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import React, { useRef } from 'react';
+import clsx from 'clsx';
+
 import AbstractSwitch from '../internal/components/abstract-switch';
+import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { RadioGroupProps } from './interfaces';
+
 import styles from './styles.css.js';
-import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
 
 interface RadioButtonProps extends RadioGroupProps.RadioButtonDefinition {
   name: string;

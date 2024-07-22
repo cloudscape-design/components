@@ -1,13 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { useCallback } from 'react';
-import styles from '../styles.css.js';
-import { SizeControlProps } from './interfaces';
+
 import {
   getIsRtl,
-  getLogicalClientX,
   getLogicalBoundingClientRect,
+  getLogicalClientX,
 } from '@cloudscape-design/component-toolkit/internal';
+
+import { SizeControlProps } from './interfaces';
+
+import styles from '../styles.css.js';
 
 export const usePointerEvents = ({
   position,

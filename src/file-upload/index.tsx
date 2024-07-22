@@ -2,11 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
+
+import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
+import { getExternalProps } from '../internal/utils/external-props';
 import { FileUploadProps } from './interfaces';
 import InternalFileUpload from './internal';
-import useBaseComponent from '../internal/hooks/use-base-component';
-import { getExternalProps } from '../internal/utils/external-props';
 
 export { FileUploadProps };
 

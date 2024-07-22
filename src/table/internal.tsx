@@ -1,57 +1,60 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import React, { useCallback, useImperativeHandle, useRef } from 'react';
-import { TableForwardRefType, TableProps, TableRow } from './interfaces';
-import { getVisualContextClassname } from '../internal/components/visual-context';
-import InternalContainer, { InternalContainerProps } from '../container/internal';
-import { getAnalyticsMetadataProps, getBaseProps } from '../internal/base-component';
-import ToolsHeader from './tools-header';
-import Thead, { TheadProps } from './thead';
-import { TableBodyCell } from './body-cell';
-import { checkSortingState, getColumnKey, getItemKey, getVisibleColumnDefinitions, toContainerVariant } from './utils';
-import { useRowEvents } from './use-row-events';
-import { SelectionControl, focusMarkers, useSelectionFocusMove, useSelection } from './selection';
-import { fireNonCancelableEvent } from '../internal/events';
-import { isDevelopment } from '../internal/is-development';
-import { ColumnWidthDefinition, ColumnWidthsProvider, DEFAULT_COLUMN_WIDTH } from './use-column-widths';
-import { useScrollSync } from '../internal/hooks/use-scroll-sync';
-import { ResizeTracker } from './resizer';
-import styles from './styles.css.js';
-import headerStyles from '../header/styles.css.js';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import StickyHeader, { StickyHeaderRef } from './sticky-header';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import useMouseDownTarget from '../internal/hooks/use-mouse-down-target';
-import LiveRegion from '../internal/components/live-region';
-import useTableFocusNavigation from './use-table-focus-navigation';
-import { SomeRequired } from '../internal/types';
-import { TableTdElement } from './body-cell/td-element';
-import { useStickyColumns } from './sticky-columns';
-import { StickyScrollbar } from './sticky-scrollbar';
-import { checkColumnWidths } from './column-widths-utils';
-import { useMobile } from '../internal/hooks/use-mobile';
+import clsx from 'clsx';
+
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
+import InternalContainer, { InternalContainerProps } from '../container/internal';
+import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
+import { getAnalyticsMetadataProps, getBaseProps } from '../internal/base-component';
+import LiveRegion from '../internal/components/live-region';
+import { getVisualContextClassname } from '../internal/components/visual-context';
+import { CollectionLabelContext } from '../internal/context/collection-label-context';
+import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
+import { fireNonCancelableEvent } from '../internal/events';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { useMobile } from '../internal/hooks/use-mobile';
+import useMouseDownTarget from '../internal/hooks/use-mouse-down-target';
+import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
+import { usePrevious } from '../internal/hooks/use-previous';
+import { useScrollSync } from '../internal/hooks/use-scroll-sync';
+import { useTableInteractionMetrics } from '../internal/hooks/use-table-interaction-metrics';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { isDevelopment } from '../internal/is-development';
+import { SomeRequired } from '../internal/types';
+import { TableBodyCell } from './body-cell';
+import { TableTdElement } from './body-cell/td-element';
+import { checkColumnWidths } from './column-widths-utils';
+import { useExpandableTableProps } from './expandable-rows/expandable-rows-utils';
+import { TableForwardRefType, TableProps, TableRow } from './interfaces';
+import { NoDataCell } from './no-data-cell';
+import { ItemsLoader } from './progressive-loading/items-loader';
+import { useProgressiveLoadingProps } from './progressive-loading/progressive-loading-utils';
+import { ResizeTracker } from './resizer';
+import { focusMarkers, SelectionControl, useSelection, useSelectionFocusMove } from './selection';
+import { useStickyColumns } from './sticky-columns';
+import StickyHeader, { StickyHeaderRef } from './sticky-header';
+import { StickyScrollbar } from './sticky-scrollbar';
 import {
-  GridNavigationProvider,
-  TableRole,
   getTableRoleProps,
   getTableRowRoleProps,
   getTableWrapperRoleProps,
+  GridNavigationProvider,
+  TableRole,
 } from './table-role';
+import Thead, { TheadProps } from './thead';
+import ToolsHeader from './tools-header';
 import { useCellEditing } from './use-cell-editing';
-import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
-import { CollectionLabelContext } from '../internal/context/collection-label-context';
-import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
-import { NoDataCell } from './no-data-cell';
-import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
-import { useExpandableTableProps } from './expandable-rows/expandable-rows-utils';
-import { ItemsLoader } from './progressive-loading/items-loader';
-import { useProgressiveLoadingProps } from './progressive-loading/progressive-loading-utils';
-import { usePrevious } from '../internal/hooks/use-previous';
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
-import { useTableInteractionMetrics } from '../internal/hooks/use-table-interaction-metrics';
+import { ColumnWidthDefinition, ColumnWidthsProvider, DEFAULT_COLUMN_WIDTH } from './use-column-widths';
+import { useRowEvents } from './use-row-events';
+import useTableFocusNavigation from './use-table-focus-navigation';
+import { checkSortingState, getColumnKey, getItemKey, getVisibleColumnDefinitions, toContainerVariant } from './utils';
+
+import headerStyles from '../header/styles.css.js';
+import styles from './styles.css.js';
 
 const GRID_NAVIGATION_PAGE_SIZE = 10;
 const SELECTION_COLUMN_WIDTH = 54;

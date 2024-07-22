@@ -1,22 +1,24 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useState } from 'react';
+
 import {
   AppLayout,
   ContentLayout,
+  Drawer,
   Header,
   HelpPanel,
-  Drawer,
   Link,
   SpaceBetween,
   SplitPanel,
   Toggle,
 } from '~components';
-import appLayoutLabels from './utils/labels';
 import { AppLayoutProps } from '~components/app-layout';
-import { Breadcrumbs, Containers } from './utils/content-blocks';
+
 import './utils/external-widget';
 import AppContext, { AppContextType } from '../app/app-context';
+import { Breadcrumbs, Containers } from './utils/content-blocks';
+import appLayoutLabels from './utils/labels';
 
 type DemoContext = React.Context<
   AppContextType<{

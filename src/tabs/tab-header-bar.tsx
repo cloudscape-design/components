@@ -1,34 +1,37 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef, useState, useEffect, forwardRef } from 'react';
-import { TabsProps } from './interfaces';
+import React, { forwardRef, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
-import styles from './styles.css.js';
-import { InternalButton } from '../button/internal';
-import handleKey from '../internal/utils/handle-key';
-import { KeyCode } from '../internal/keycode';
-import {
-  onPaginationClick,
-  hasHorizontalOverflow,
-  hasInlineStartOverflow,
-  hasInlineEndOverflow,
-  scrollIntoView,
-} from './scroll-utils';
-import { hasModifierKeys, isPlainLeftClick } from '../internal/events';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { useInternalI18n } from '../i18n/context';
+
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+
+import { ButtonProps } from '../button/interfaces';
+import { InternalButton } from '../button/internal';
+import { useInternalI18n } from '../i18n/context';
+import { getAllFocusables } from '../internal/components/focus-lock/utils';
+import Tooltip from '../internal/components/tooltip';
 import {
   SingleTabStopNavigationAPI,
   SingleTabStopNavigationProvider,
   useSingleTabStopNavigation,
 } from '../internal/context/single-tab-stop-navigation-context';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { getAllFocusables } from '../internal/components/focus-lock/utils';
+import { hasModifierKeys, isPlainLeftClick } from '../internal/events';
 import useHiddenDescription from '../internal/hooks/use-hidden-description';
-import Tooltip from '../internal/components/tooltip';
-import { ButtonProps } from '../button/interfaces';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { KeyCode } from '../internal/keycode';
 import { circleIndex } from '../internal/utils/circle-index';
+import handleKey from '../internal/utils/handle-key';
+import { TabsProps } from './interfaces';
+import {
+  hasHorizontalOverflow,
+  hasInlineEndOverflow,
+  hasInlineStartOverflow,
+  onPaginationClick,
+  scrollIntoView,
+} from './scroll-utils';
+
+import styles from './styles.css.js';
 
 const tabSelector = `.${styles['tabs-tab-link']}`;
 const focusedTabSelector = `[role="tab"].${styles['tabs-tab-focused']}`;

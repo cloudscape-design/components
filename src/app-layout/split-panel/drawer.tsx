@@ -1,9 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import React from 'react';
-import styles from './styles.css.js';
+import clsx from 'clsx';
+
 import { useSplitPanelContext } from '../../internal/context/split-panel-context';
+
+import styles from './styles.css.js';
 
 interface SideSplitPanelDrawer {
   displayed: boolean;

@@ -1,12 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef, useState } from 'react';
-import { NonCancelableCustomEvent } from '~components';
 
+import { NonCancelableCustomEvent } from '~components';
 import Input, { InputProps } from '~components/input';
 import TopNavigation from '~components/top-navigation';
-import { I18N_STRINGS } from './common';
+
 import ScreenshotArea from '../utils/screenshot-area';
+import { I18N_STRINGS } from './common';
 
 export default function () {
   const inputRef = useRef<InputProps.Ref>(null);

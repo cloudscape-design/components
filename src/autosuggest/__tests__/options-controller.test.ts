@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { useAutosuggestItems, UseAutosuggestItemsProps } from '../options-controller';
-import { renderHook, act } from '../../__tests__/render-hook';
+import { act, renderHook } from '../../__tests__/render-hook';
 import { AutosuggestItem, AutosuggestProps } from '../interfaces';
+import { useAutosuggestItems, UseAutosuggestItemsProps } from '../options-controller';
 
 const options = [{ value: 'Option 0' }, { label: 'Group 1', options: [{ value: 'Option 1' }, { value: 'Option 2' }] }];
 

@@ -2,12 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
-import { useAppLayoutInternals } from './context';
-import styles from './styles.css.js';
-import { SPLIT_PANEL_MIN_WIDTH, SplitPanelProvider, SplitPanelProviderProps } from '../split-panel';
-import { AppLayoutProps } from '../interfaces';
+
 import { Transition } from '../../internal/components/transition';
 import customCssProps from '../../internal/generated/custom-css-properties';
+import { AppLayoutProps } from '../interfaces';
+import { SPLIT_PANEL_MIN_WIDTH, SplitPanelProvider, SplitPanelProviderProps } from '../split-panel';
+import { useAppLayoutInternals } from './context';
+
+import styles from './styles.css.js';
 
 /**
  * If there is no Split Panel in the AppLayout context then the SplitPanel

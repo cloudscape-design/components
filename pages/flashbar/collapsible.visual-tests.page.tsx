@@ -1,11 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import Flashbar from '~components/flashbar';
 import React from 'react';
+
 import { Box } from '~components';
+import Flashbar from '~components/flashbar';
+
+import FocusTarget from '../common/focus-target';
 import ScreenshotArea from '../utils/screenshot-area';
 import { sampleNotifications } from './common';
-import FocusTarget from '../common/focus-target';
 
 const items = [
   { ...sampleNotifications.warning, id: '2' },

@@ -1,9 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import Tabs, { TabsProps } from '~components/tabs';
-import styles from './responsive.scss';
+
 import { ButtonDropdown } from '~components';
+import Tabs, { TabsProps } from '~components/tabs';
+
+import styles from './responsive.scss';
 
 export default function TabsDemoPage() {
   const defaultTabs: Array<TabsProps.Tab> = [

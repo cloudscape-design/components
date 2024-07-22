@@ -1,14 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { Ref, useRef, useState, useImperativeHandle, useEffect } from 'react';
+import React, { Ref, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import clsx from 'clsx';
 
-import Dropdown from '../dropdown';
-
-import { FormFieldValidationControlProps, useFormFieldContext } from '../../context/form-field-context';
-import { BaseComponentProps, getBaseProps } from '../../base-component';
-import { BaseKeyDetail, fireCancelableEvent, fireNonCancelableEvent, NonCancelableEventHandler } from '../../events';
-import InternalInput, { InternalInputProps } from '../../../input/internal';
+import { AutosuggestProps } from '../../../autosuggest/interfaces';
 import {
   BaseChangeDetail,
   BaseInputProps,
@@ -16,13 +12,17 @@ import {
   InputClearLabel,
   InputKeyEvents,
 } from '../../../input/interfaces';
-import { AutosuggestProps } from '../../../autosuggest/interfaces';
-import { ExpandToViewport } from '../dropdown/interfaces';
+import InternalInput, { InternalInputProps } from '../../../input/internal';
+import { BaseComponentProps, getBaseProps } from '../../base-component';
+import { FormFieldValidationControlProps, useFormFieldContext } from '../../context/form-field-context';
+import { BaseKeyDetail, fireCancelableEvent, fireNonCancelableEvent, NonCancelableEventHandler } from '../../events';
 import { InternalBaseComponentProps } from '../../hooks/use-base-component';
 import { KeyCode } from '../../keycode';
-import styles from './styles.css.js';
-import clsx from 'clsx';
 import { nodeBelongs } from '../../utils/node-belongs';
+import Dropdown from '../dropdown';
+import { ExpandToViewport } from '../dropdown/interfaces';
+
+import styles from './styles.css.js';
 
 export interface AutosuggestInputProps
   extends BaseComponentProps,

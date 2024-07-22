@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { TokenCategory } from '@cloudscape-design/theming-build';
+
 import { StyleDictionary } from './interfaces';
 
 const expandColorEntry = (entry: StyleDictionary.ColorModeEntry): StyleDictionary.ExpandedColorModeEntry => {

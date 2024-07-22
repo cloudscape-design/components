@@ -1,10 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import styles from './styles.scss';
+
 import ButtonDropdown from '~components/button-dropdown';
-import buttonDropdownItems from './utils/button-dropdown-items';
+
 import ScreenshotArea from '../utils/screenshot-area';
+import buttonDropdownItems from './utils/button-dropdown-items';
+
+import styles from './styles.scss';
 
 export default function ButtonDropdownScenario() {
   return (

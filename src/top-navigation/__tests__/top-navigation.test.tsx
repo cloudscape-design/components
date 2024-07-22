@@ -2,16 +2,17 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { act, render } from '@testing-library/react';
-import Input from '../../../lib/components/input';
 
-import TopNavigation, { TopNavigationProps } from '../../../lib/components/top-navigation';
-import OverflowMenu from '../../../lib/components/top-navigation/parts/overflow-menu';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
+import TestI18nProvider from '../../../lib/components/i18n/testing';
+import Input from '../../../lib/components/input';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import TopNavigationWrapper, {
   OverflowMenu as OverflowMenuWrapper,
 } from '../../../lib/components/test-utils/dom/top-navigation';
-import TestI18nProvider from '../../../lib/components/i18n/testing';
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import TopNavigation, { TopNavigationProps } from '../../../lib/components/top-navigation';
+import OverflowMenu from '../../../lib/components/top-navigation/parts/overflow-menu';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),

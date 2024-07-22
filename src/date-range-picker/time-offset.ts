@@ -1,9 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { DateRangePickerProps } from './interfaces';
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
-import { formatTimeOffsetISO, parseTimezoneOffset, shiftTimezoneOffset } from '../internal/utils/date-time';
 import { addMinutes } from 'date-fns';
+
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
+import { formatTimeOffsetISO, parseTimezoneOffset, shiftTimezoneOffset } from '../internal/utils/date-time';
+import { DateRangePickerProps } from './interfaces';
 
 /**
  * Appends a time zone offset to an offset-less date string.

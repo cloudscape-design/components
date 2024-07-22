@@ -1,25 +1,28 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { Ace } from 'ace-builds';
 import { act, fireEvent, render } from '@testing-library/react';
-import { KeyCode } from '../../internal/keycode';
+import { Ace } from 'ace-builds';
+
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { createWrapper } from '@cloudscape-design/test-utils-core/dom';
+
+import '../../__a11y__/to-validate-a11y';
 import CodeEditor, { CodeEditorProps } from '../../../lib/components/code-editor';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
+import { CodeEditorWrapper, ElementWrapper } from '../../../lib/components/test-utils/dom';
+import { KeyCode } from '../../internal/keycode';
 import {
   aceMock,
-  editorMock,
-  defaultProps,
-  renderCodeEditor,
   annotationCallback as emulateAceAnnotationEvent,
+  defaultProps,
+  editorMock,
+  renderCodeEditor,
 } from './util';
-import { CodeEditorWrapper, ElementWrapper } from '../../../lib/components/test-utils/dom';
-import styles from '../../../lib/components/code-editor/styles.css.js';
+
 import resizableStyles from '../../../lib/components/code-editor/resizable-box/styles.css.js';
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import styles from '../../../lib/components/code-editor/styles.css.js';
 import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
-import { createWrapper } from '@cloudscape-design/test-utils-core/dom';
-import '../../__a11y__/to-validate-a11y';
-import TestI18nProvider from '../../../lib/components/i18n/testing';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),

@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import Button from '~components/button';
-import Box from '~components/box';
+
 import { Modal, SpaceBetween, Tabs } from '~components';
+import Box from '~components/box';
+import Button from '~components/button';
 
 export default function ButtonsPerformanceMarkPage() {
   const [loading, setLoading] = useState(true);

@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import * as React from 'react';
-import { render, fireEvent } from '@testing-library/react';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import { fireEvent, render } from '@testing-library/react';
 
-import useTableFocusNavigation from '../use-table-focus-navigation';
+import createWrapper from '../../../lib/components/test-utils/dom';
 import { renderHook } from '../../__tests__/render-hook';
+import useTableFocusNavigation from '../use-table-focus-navigation';
 
 const focusFn = jest.fn();
 const rootRemoveEventListener = jest.fn();

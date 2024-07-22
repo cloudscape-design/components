@@ -2,12 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useCallback } from 'react';
+
+import { useInternalI18n } from '../../../i18n/context';
 import InternalIcon from '../../../icon/internal';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../events';
 import { I18nStrings } from './interfaces';
 
 import styles from './styles.css.js';
-import { useInternalI18n } from '../../../i18n/context';
 interface TokenLimitToggleProps {
   controlId?: string;
   allHidden: boolean;

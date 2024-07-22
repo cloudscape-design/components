@@ -2,7 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useLayoutEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
+
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
 import { isDevelopment } from '../../is-development';
 
 export interface PortalProps {

@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
 import { AnnotationContextProps } from '../../../lib/components/annotation-context/interfaces';
 import { TutorialPanelProps } from '../../../lib/components/tutorial-panel/interfaces';
 

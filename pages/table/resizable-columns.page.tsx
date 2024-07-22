@@ -3,17 +3,19 @@
 import React, { useContext, useState } from 'react';
 import range from 'lodash/range';
 import zipObject from 'lodash/zipObject';
+
 import Button from '~components/button';
 import Checkbox from '~components/checkbox';
 import ColumnLayout from '~components/column-layout';
 import Container from '~components/container';
 import Header from '~components/header';
+import { NonCancelableCustomEvent } from '~components/interfaces';
 import Link from '~components/link';
 import SpaceBetween from '~components/space-between';
 import Table, { TableProps } from '~components/table';
-import { NonCancelableCustomEvent } from '~components/interfaces';
-import ScreenshotArea from '../utils/screenshot-area';
+
 import AppContext, { AppContextType } from '../app/app-context';
+import ScreenshotArea from '../utils/screenshot-area';
 
 declare global {
   interface Window {

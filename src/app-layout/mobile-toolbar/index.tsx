@@ -1,16 +1,18 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import React, { useEffect } from 'react';
+import clsx from 'clsx';
+
 import { ButtonProps } from '../../button/interfaces';
+import { splitItems } from '../drawer/drawers-helpers';
+import OverflowMenu from '../drawer/overflow-menu';
 import { AppLayoutProps } from '../interfaces';
 import { ToggleButton, togglesConfig } from '../toggles';
-import OverflowMenu from '../drawer/overflow-menu';
-import styles from './styles.css.js';
+import { TOOLS_DRAWER_ID } from '../utils/use-drawers';
+
 import sharedStyles from '../styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
-import { splitItems } from '../drawer/drawers-helpers';
-import { TOOLS_DRAWER_ID } from '../utils/use-drawers';
+import styles from './styles.css.js';
 
 interface MobileToggleProps {
   className?: string;

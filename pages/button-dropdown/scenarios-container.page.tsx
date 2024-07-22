@@ -2,10 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import clsx from 'clsx';
-import styles from './styles.scss';
+
 import ButtonDropdown from '~components/button-dropdown';
+
 import ScreenshotArea from '../utils/screenshot-area';
 import buttonDropdownItems from './utils/button-dropdown-items';
+
+import styles from './styles.scss';
 
 export default function ButtonDropdownScenario() {
   return (

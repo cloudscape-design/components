@@ -1,19 +1,22 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { Ref, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
-import { getBaseProps } from '../internal/base-component';
-import InternalButton from '../button/internal';
-import { fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
-import { PromptInputProps } from './interfaces';
-import { useFormFieldContext } from '../internal/context/form-field-context';
 import clsx from 'clsx';
+
+import { useDensityMode } from '@cloudscape-design/component-toolkit/internal';
+
+import InternalButton from '../button/internal';
+import { convertAutoComplete } from '../input/utils';
+import { getBaseProps } from '../internal/base-component';
+import { useFormFieldContext } from '../internal/context/form-field-context';
+import { fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
+import * as tokens from '../internal/generated/styles/tokens';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { PromptInputProps } from './interfaces';
+
 import styles from './styles.css.js';
 import testutilStyles from './test-classes/styles.css.js';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { convertAutoComplete } from '../input/utils';
-import { useDensityMode } from '@cloudscape-design/component-toolkit/internal';
-import * as tokens from '../internal/generated/styles/tokens';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 
 export interface InternalPromptInputProps extends PromptInputProps, InternalBaseComponentProps {}
 

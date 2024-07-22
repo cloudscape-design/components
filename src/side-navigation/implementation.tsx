@@ -1,16 +1,18 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useMemo, useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import clsx from 'clsx';
+
 import { getBaseProps } from '../internal/base-component';
-import { fireNonCancelableEvent, fireCancelableEvent } from '../internal/events';
-import { SideNavigationProps } from './interfaces';
-import { Header, NavigationItemsList } from './parts';
-import { generateExpandableItemsMapping, checkDuplicateHrefs } from './util';
-import styles from './styles.css.js';
+import { fireCancelableEvent, fireNonCancelableEvent } from '../internal/events';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { isDevelopment } from '../internal/is-development';
 import { createWidgetizedComponent } from '../internal/widgets';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { SideNavigationProps } from './interfaces';
+import { Header, NavigationItemsList } from './parts';
+import { checkDuplicateHrefs, generateExpandableItemsMapping } from './util';
+
+import styles from './styles.css.js';
 
 export type SideNavigationInternalProps = SideNavigationProps & InternalBaseComponentProps;
 

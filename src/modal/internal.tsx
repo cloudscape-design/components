@@ -1,32 +1,33 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef } from 'react';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import clsx from 'clsx';
 
-import { getBaseProps } from '../internal/base-component';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { fireNonCancelableEvent } from '../internal/events';
-import { KeyCode } from '../internal/keycode';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+
 import { InternalButton } from '../button/internal';
 import InternalHeader from '../header/internal';
+import { useInternalI18n } from '../i18n/context';
+import { FunnelNameSelectorContext } from '../internal/analytics/context/analytics-context';
+import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
+import { getBaseProps } from '../internal/base-component';
+import FocusLock from '../internal/components/focus-lock';
 import Portal from '../internal/components/portal';
+import { ModalContext } from '../internal/context/modal-context';
+import ResetContextsForModal from '../internal/context/reset-contexts-for-modal';
+import { fireNonCancelableEvent } from '../internal/events';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useIntersectionObserver } from '../internal/hooks/use-intersection-observer';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-
+import { KeyCode } from '../internal/keycode';
+import { SomeRequired } from '../internal/types';
 import { disableBodyScrolling, enableBodyScrolling } from './body-scroll';
 import { ModalProps } from './interfaces';
+
 import styles from './styles.css.js';
-import { SomeRequired } from '../internal/types';
-import FocusLock from '../internal/components/focus-lock';
-import { useInternalI18n } from '../i18n/context';
-import { useIntersectionObserver } from '../internal/hooks/use-intersection-observer';
-import { useContainerQuery } from '@cloudscape-design/component-toolkit';
-import { FunnelNameSelectorContext } from '../internal/analytics/context/analytics-context';
-import { ModalContext } from '../internal/context/modal-context';
-import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
-import ResetContextsForModal from '../internal/context/reset-contexts-for-modal';
 
 type InternalModalProps = SomeRequired<ModalProps, 'size'> & InternalBaseComponentProps;
 

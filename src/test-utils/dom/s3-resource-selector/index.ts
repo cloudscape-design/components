@@ -1,15 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ElementWrapper, ComponentWrapper } from '@cloudscape-design/test-utils-core/dom';
+import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
+
 import createWrapper from '../';
-import InputWrapper from '../input';
-import SelectWrapper from '../select';
 import ButtonWrapper from '../button';
+import InputWrapper from '../input';
 import ModalWrapper from '../modal';
+import SelectWrapper from '../select';
 import TableWrapper from '../table';
-import styles from '../../../s3-resource-selector/styles.selectors.js';
+
 import inContextStyles from '../../../s3-resource-selector/s3-in-context/styles.selectors.js';
 import modalStyles from '../../../s3-resource-selector/s3-modal/styles.selectors.js';
+import styles from '../../../s3-resource-selector/styles.selectors.js';
 
 class S3ModalWrapper extends ModalWrapper {
   findSubmitButton(): ButtonWrapper {

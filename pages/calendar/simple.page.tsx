@@ -1,8 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
+
 import Calendar from '~components/calendar';
 import Dropdown from '~components/internal/components/dropdown';
+
 import i18nStrings from './i18n-strings';
 
 export default function CalendarPage() {

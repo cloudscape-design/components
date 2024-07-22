@@ -2,11 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
-import { DEBOUNCE_DEFAULT_DELAY } from '../../../lib/components/internal/debounce';
-import FormField from '../../../lib/components/form-field';
-import TextFilter, { TextFilterProps } from '../../../lib/components/text-filter';
-import createWrapper from '../../../lib/components/test-utils/dom';
+
 import '../../__a11y__/to-validate-a11y';
+import FormField from '../../../lib/components/form-field';
+import { DEBOUNCE_DEFAULT_DELAY } from '../../../lib/components/internal/debounce';
+import createWrapper from '../../../lib/components/test-utils/dom';
+import TextFilter, { TextFilterProps } from '../../../lib/components/text-filter';
 
 function renderTextFilter(jsx: React.ReactElement) {
   const { container } = render(jsx);

@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ElementWrapper, TableWrapper } from '../../../../lib/components/test-utils/dom';
 import { buckets, i18nStrings, objects, versions, waitForFetch } from '../../__tests__/fixtures';
+
 import screenreaderOnlyStyles from '../../../../lib/components/internal/components/screenreader-only/styles.selectors.js';
 
 export const modalDefaultProps = {

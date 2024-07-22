@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import Autosuggest from '~components/autosuggest';
-import Alert from '~components/alert';
 import React, { useState } from 'react';
+
+import Alert from '~components/alert';
+import Autosuggest from '~components/autosuggest';
 
 export default function () {
   const [isSubmitted, setSubmitted] = useState(false);

@@ -1,9 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import ScreenshotArea from '../utils/screenshot-area';
 import React from 'react';
+
 import Box from '~components/box';
 import Popover from '~components/popover';
+
+import ScreenshotArea from '../utils/screenshot-area';
 
 export default function () {
   const content = 'Nothing to see here';
