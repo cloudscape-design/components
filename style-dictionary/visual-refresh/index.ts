@@ -8,7 +8,6 @@ import {
   createFlashbarContext,
   createFlashbarWarningContext,
   createHeaderContext,
-  createToolbarContext,
   createTopNavigationContext,
 } from '../utils/contexts';
 import { createColorMode, createDensityMode, createMotionMode } from '../utils/modes';
@@ -55,8 +54,6 @@ export function buildVisualRefresh(builder: ThemeBuilder) {
     selector: '.awsui-context-content-header .awsui-context-alert',
     tokens: alertHeaderContextTokens,
   });
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  builder.addContext(createToolbarContext(require('./contexts/toolbar').tokens));
 
   return builder.build();
 }

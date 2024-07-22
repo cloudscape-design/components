@@ -49,11 +49,3 @@ export const createAlertContext = (tokens: TokenCategory<string, GlobalValue | M
     tokens,
   };
 };
-
-export const createToolbarContext = (tokens: TokenCategory<string, GlobalValue | ModeValue>) => {
-  return {
-    id: 'toolbar',
-    selector: '.awsui-context-toolbar',
-    tokens,
-  };
-};

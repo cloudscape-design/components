@@ -7,6 +7,7 @@ import { getBaseProps } from '../internal/base-component';
 import { fireCancelableEvent, fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { isDevelopment } from '../internal/is-development';
+import { getGlobalFlag } from '../internal/utils/global-flags';
 import { createWidgetizedComponent } from '../internal/widgets';
 import { SideNavigationProps } from './interfaces';
 import { Header, NavigationItemsList } from './parts';
@@ -27,6 +28,7 @@ export function SideNavigationImplementation({
 }: SideNavigationInternalProps) {
   const baseProps = getBaseProps(props);
   const parentMap = useMemo(() => generateExpandableItemsMapping(items), [items]);
+  const hasToolbar = getGlobalFlag('appLayoutWidget');
 
   if (isDevelopment) {
     // This code should be wiped in production anyway.
@@ -58,7 +60,11 @@ export function SideNavigationImplementation({
   );
 
   return (
-    <div {...baseProps} className={clsx(styles.root, baseProps.className)} ref={__internalRootRef}>
+    <div
+      {...baseProps}
+      className={clsx(styles.root, baseProps.className, hasToolbar && styles['with-toolbar'])}
+      ref={__internalRootRef}
+    >
       {header && (
         <Header definition={header} activeHref={activeHref} fireChange={onChangeHandler} fireFollow={onFollowHandler} />
       )}

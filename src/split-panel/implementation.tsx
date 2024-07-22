@@ -16,6 +16,7 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import globalVars from '../internal/styles/global-vars';
+import { getGlobalFlag } from '../internal/utils/global-flags';
 import { createWidgetizedForwardRef } from '../internal/widgets';
 import { SplitPanelContentBottom } from './bottom';
 import { SplitPanelProps } from './interfaces';
@@ -52,6 +53,7 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
     } = useSplitPanelContext();
     const baseProps = getBaseProps(restProps);
     const i18n = useInternalI18n('split-panel');
+    const hasToolbar = getGlobalFlag('appLayoutWidget');
     const [isPreferencesOpen, setPreferencesOpen] = useState<boolean>(false);
 
     const appLayoutMaxWidth = isRefresh && position === 'bottom' ? contentWidthStyles : undefined;
@@ -80,7 +82,7 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
     const panelHeaderId = useUniqueId('split-panel-header');
 
     const wrappedHeader = (
-      <div className={styles.header} style={appLayoutMaxWidth}>
+      <div className={clsx(styles.header, hasToolbar && styles['with-toolbar'])} style={appLayoutMaxWidth}>
         <h2 className={clsx(styles['header-text'], testUtilStyles['header-text'])} id={panelHeaderId}>
           {header}
         </h2>
