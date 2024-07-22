@@ -39,7 +39,7 @@ const InternalButtonGroup = forwardRef(
     const containerObjectRef = useRef<HTMLDivElement>(null);
     const containerRef = useMergeRefs(containerObjectRef, __internalRootRef);
     const itemsRef = useRef<Record<string, ButtonProps.Ref | null>>({});
-    const [feedbackItemId, setFeedbackItemId] = useState<string | null>(null);
+    const [tooltip, setTooltip] = useState<null | { item: string; feedback: boolean }>(null);
 
     useImperativeHandle(ref, () => ({
       focus: id => {
@@ -94,6 +94,10 @@ const InternalButtonGroup = forwardRef(
       if (!containerObjectRef.current || !focusTarget) {
         return;
       }
+      // Ignore navigation when the focused element is not an item.
+      if (document.activeElement && !document.activeElement.matches(`.${styles.item}`)) {
+        return;
+      }
       event.preventDefault();
 
       const focusables = getFocusablesFrom(containerObjectRef.current);
@@ -107,10 +111,7 @@ const InternalButtonGroup = forwardRef(
     }
 
     function focusElement(element: HTMLElement) {
-      setFeedbackItemId(null);
-      setTimeout(() => {
-        element.focus();
-      }, 0);
+      element.focus();
     }
 
     // List all non-disabled and registered focusables: those are eligible for keyboard navigation.
@@ -153,8 +154,8 @@ const InternalButtonGroup = forwardRef(
                 key={item.id}
                 item={item}
                 dropdownExpandToViewport={dropdownExpandToViewport}
-                feedbackItemId={feedbackItemId}
-                setFeedbackItemId={setFeedbackItemId}
+                tooltip={tooltip}
+                setTooltip={setTooltip}
                 onItemClick={onItemClick}
                 ref={element => (itemsRef.current[item.id] = element)}
               />

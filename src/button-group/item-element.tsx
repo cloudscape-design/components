@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { forwardRef, useEffect, useImperativeHandle } from 'react';
+import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 import { ButtonGroupProps } from './interfaces.js';
 import { ButtonProps } from '../button/interfaces.js';
 import { ClickDetail, fireCancelableEvent, NonCancelableEventHandler } from '../internal/events/index.js';
@@ -13,21 +13,20 @@ const ItemElement = forwardRef(
     {
       item,
       dropdownExpandToViewport,
-      feedbackItemId,
-      setFeedbackItemId,
+      tooltip,
+      setTooltip,
       onItemClick,
     }: {
       item: ButtonGroupProps.Item;
       dropdownExpandToViewport?: boolean;
-      feedbackItemId: string | null;
-      setFeedbackItemId: (id: string | null) => void;
+      tooltip: null | { item: string; feedback: boolean };
+      setTooltip: (tooltip: null | { item: string; feedback: boolean }) => void;
       onItemClick?: NonCancelableEventHandler<ButtonGroupProps.ItemClickDetails> | undefined;
     },
     ref: React.Ref<ButtonProps.Ref>
   ) => {
-    const containerRef = React.useRef<HTMLDivElement>(null);
-    const buttonRef = React.useRef<HTMLButtonElement>(null);
-    const [showTooltip, setShowTooltip] = React.useState(false);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const buttonRef = useRef<HTMLButtonElement>(null);
 
     useImperativeHandle(ref, () => ({
       focus: () => {
@@ -36,24 +35,12 @@ const ItemElement = forwardRef(
     }));
 
     useEffect(() => {
-      return () => {
-        if (!showTooltip) {
-          return;
-        }
-
-        setShowTooltip(false);
-        setFeedbackItemId(null);
-      };
-    }, [item.id, setFeedbackItemId, showTooltip]);
-
-    useEffect(() => {
-      if (!showTooltip) {
+      if (tooltip?.item !== item.id) {
         return;
       }
 
       const close = () => {
-        setShowTooltip(false);
-        setFeedbackItemId(null);
+        setTooltip(null);
       };
 
       const handlePointerDownEvent = (event: PointerEvent) => {
@@ -77,30 +64,25 @@ const ItemElement = forwardRef(
         window.removeEventListener('pointerdown', handlePointerDownEvent);
         window.removeEventListener('keydown', handleKeyDownEvent);
       };
-    }, [item.id, setFeedbackItemId, showTooltip]);
+    }, [item.id, tooltip, setTooltip]);
 
-    const onShowTooltip = (show: boolean) => {
-      if (feedbackItemId && (feedbackItemId !== item.id || (feedbackItemId && showTooltip))) {
-        return;
+    const onShowTooltipSoft = (show: boolean) => {
+      if (!tooltip?.feedback) {
+        setTooltip(show ? { item: item.id, feedback: false } : null);
       }
+    };
 
-      if (show) {
-        buttonRef.current?.focus();
-      }
-
-      setShowTooltip(show);
-      setFeedbackItemId(null);
+    const onShowTooltipHard = (show: boolean) => {
+      setTooltip(show ? { item: item.id, feedback: false } : null);
     };
 
     const onClickHandler = (event: CustomEvent<ButtonGroupProps.ItemClickDetails | ClickDetail>) => {
       const popoverFeedback = 'popoverFeedback' in item && item.popoverFeedback;
 
       if (popoverFeedback) {
-        setShowTooltip(true);
-        setFeedbackItemId(item.id);
+        setTooltip({ item: item.id, feedback: true });
       } else {
-        setShowTooltip(false);
-        setFeedbackItemId(null);
+        setTooltip(null);
       }
 
       fireCancelableEvent(onItemClick, { id: 'id' in event.detail ? event.detail.id : item.id }, event);
@@ -111,25 +93,25 @@ const ItemElement = forwardRef(
         key={item.id}
         className={styles['item-wrapper']}
         ref={containerRef}
-        onPointerEnter={() => onShowTooltip(true)}
-        onPointerLeave={() => onShowTooltip(false)}
-        onFocus={() => onShowTooltip(true)}
-        onBlur={() => onShowTooltip(false)}
+        onPointerEnter={() => onShowTooltipSoft(true)}
+        onPointerLeave={() => onShowTooltipSoft(false)}
+        onFocus={() => onShowTooltipHard(true)}
+        onBlur={() => onShowTooltipHard(false)}
       >
         {item.type === 'icon-button' && (
           <IconButtonItem
             ref={buttonRef}
             item={item}
             onItemClick={onClickHandler}
-            showTooltip={showTooltip}
-            feedbackItemId={feedbackItemId}
+            showTooltip={tooltip?.item === item.id}
+            showFeedback={!!tooltip?.feedback}
           />
         )}
         {item.type === 'menu-dropdown' && (
           <MenuDropdownItem
             ref={buttonRef}
             item={item}
-            showTooltip={showTooltip}
+            showTooltip={tooltip?.item === item.id}
             onItemClick={onClickHandler}
             expandToViewport={dropdownExpandToViewport}
           />
