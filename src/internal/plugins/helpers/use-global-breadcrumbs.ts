@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
+import { getGlobalFlag } from '@cloudscape-design/component-toolkit/internal';
+
 import { BreadcrumbGroupProps } from '../../../breadcrumb-group/interfaces';
-import { getGlobalFlag } from '../../utils/global-flags';
 import { awsuiPluginsInternal } from '../api';
 import { BreadcrumbsGlobalRegistration } from '../controllers/breadcrumbs';
 
