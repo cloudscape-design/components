@@ -55,6 +55,9 @@ test.each([false, true])(
       await page.keys(['Enter']);
       await expect(page.getFocusedElementText()).resolves.toBe('Cut');
 
+      await page.keys(['ArrowLeft']);
+      await expect(page.getFocusedElementText()).resolves.toBe('Cut');
+
       await page.keys(['Enter']);
       await expect(page.isFocused(actionsMenu.find('button').toSelector())).resolves.toBe(true);
 
@@ -99,5 +102,32 @@ test(
   setup({}, async page => {
     await page.click(dislikeButton.toSelector());
     await expect(page.isFocused(copyButton.toSelector())).resolves.toBe(true);
+  })
+);
+
+test(
+  'shows one tooltip at a time',
+  setup({}, async page => {
+    await page.click(createWrapper().find('[data-testid="focus-before"]').toSelector());
+
+    await page.keys(['Tab']);
+    await expect(page.isFocused(likeButton.toSelector())).resolves.toBe(true);
+
+    await page.keys(['ArrowRight', 'ArrowRight']);
+    await expect(page.isFocused(copyButton.toSelector())).resolves.toBe(true);
+    await expect(page.getElementsCount(buttonGroup.findTooltip().toSelector())).resolves.toBe(1);
+    await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Copy');
+
+    await page.keys(['Enter']);
+    await expect(page.getElementsCount(buttonGroup.findTooltip().toSelector())).resolves.toBe(1);
+    await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Copied');
+
+    await page.keys(['ArrowRight']);
+    await expect(page.getElementsCount(buttonGroup.findTooltip().toSelector())).resolves.toBe(1);
+    await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Remove');
+
+    await page.keys(['ArrowRight']);
+    await expect(page.getElementsCount(buttonGroup.findTooltip().toSelector())).resolves.toBe(1);
+    await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('More actions');
   })
 );
