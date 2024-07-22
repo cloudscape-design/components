@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import { ToggleButtonProps } from './interfaces';
 import InternalButton from '../button/internal';
 import { fireNonCancelableEvent } from '../internal/events';
+import { getToggleIcon } from './util';
 
 import styles from './styles.css.js';
 
@@ -31,9 +32,9 @@ export const InternalToggleButton = React.forwardRef(
       <InternalButton
         className={clsx(className, styles[`variant-${variant}`], { [styles.pressed]: pressed })}
         variant={variant}
-        iconName={pressed ? pressedIconName : defaultIconName}
-        iconUrl={pressed ? pressedIconUrl : defaultIconUrl}
-        iconSvg={pressed ? pressedIconSvg : defaultIconSvg}
+        iconName={getToggleIcon(pressed, defaultIconName, pressedIconName)}
+        iconUrl={getToggleIcon(pressed, defaultIconUrl, pressedIconUrl)}
+        iconSvg={getToggleIcon(pressed, defaultIconSvg, pressedIconSvg)}
         aria-pressed={pressed}
         onClick={event => {
           if (onClick) {
