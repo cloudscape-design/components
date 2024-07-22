@@ -61,7 +61,7 @@ export function GridNavigationProvider({ keyboardNavigation, pageSize, getTable,
       getNextFocusTarget={gridNavigation.getNextFocusTarget}
       isElementSuppressed={gridNavigation.isElementSuppressed}
       onRegisterFocusable={gridNavigation.onRegisterFocusable}
-      onUnregisterFocusable={gridNavigation.onUnregisterFocusable}
+      onUnregisterActive={gridNavigation.onUnregisterActive}
     >
       {children}
     </SingleTabStopNavigationProvider>
@@ -128,17 +128,11 @@ class GridNavigationProcessor {
     }
   };
 
-  public onUnregisterFocusable = (focusable: Element) => {
-    const isUnregisteringFocusedNode = nodeBelongs(focusable, document.activeElement);
-    if (isUnregisteringFocusedNode) {
-      // Wait for unmounted node to get removed from the DOM.
-      setTimeout(() => {
-        // If the focused cell appears to be no longer attached to the table we need to re-apply
-        // focus to a cell with the same or closest position.
-        if (this.focusedCell && !nodeBelongs(this.table, this.focusedCell.element)) {
-          this.moveFocusBy(this.focusedCell, { x: 0, y: 0 });
-        }
-      }, 0);
+  public onUnregisterActive = () => {
+    // If the focused cell appears to be no longer attached to the table we need to re-apply
+    // focus to a cell with the same or closest position.
+    if (this.focusedCell && !nodeBelongs(this.table, this.focusedCell.element)) {
+      this.moveFocusBy(this.focusedCell, { x: 0, y: 0 });
     }
   };
 
