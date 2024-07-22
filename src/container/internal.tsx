@@ -3,6 +3,8 @@
 import React, { useRef } from 'react';
 import clsx from 'clsx';
 
+import { getAnalyticsLabelAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
 import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 import { getBaseProps } from '../internal/base-component';
 import { ContainerHeaderContextProvider } from '../internal/context/container-header';
@@ -15,6 +17,7 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { ContainerProps } from './interfaces';
 import { StickyHeaderContext, useStickyHeader } from './use-sticky-header';
 
+import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
 export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>, InternalBaseComponentProps {
@@ -116,6 +119,9 @@ export default function InternalContainer({
         isRefresh && styles.refresh
       )}
       ref={mergedRef}
+      {...getAnalyticsLabelAttribute(
+        `.${analyticsSelectors.header} h1, .${analyticsSelectors.header} h2, .${analyticsSelectors.header} h3`
+      )}
     >
       {hasMedia && (
         <div
@@ -134,16 +140,22 @@ export default function InternalContainer({
           <ContainerHeaderContextProvider>
             <StickyHeaderContext.Provider value={{ isStuck }}>
               <div
-                className={clsx(isRefresh && styles.refresh, styles.header, styles[`header-variant-${variant}`], {
-                  [styles['header-sticky-disabled']]: __stickyHeader && !isSticky,
-                  [styles['header-sticky-enabled']]: isSticky,
-                  [styles['header-dynamic-height']]: hasDynamicHeight,
-                  [styles['header-stuck']]: isStuck,
-                  [styles['with-paddings']]: !disableHeaderPaddings,
-                  [styles['with-hidden-content']]: !children || __hiddenContent,
-                  [styles['header-with-media']]: hasMedia,
-                  [styles['header-full-page']]: __fullPage && isRefresh,
-                })}
+                className={clsx(
+                  isRefresh && styles.refresh,
+                  styles.header,
+                  analyticsSelectors.header,
+                  styles[`header-variant-${variant}`],
+                  {
+                    [styles['header-sticky-disabled']]: __stickyHeader && !isSticky,
+                    [styles['header-sticky-enabled']]: isSticky,
+                    [styles['header-dynamic-height']]: hasDynamicHeight,
+                    [styles['header-stuck']]: isStuck,
+                    [styles['with-paddings']]: !disableHeaderPaddings,
+                    [styles['with-hidden-content']]: !children || __hiddenContent,
+                    [styles['header-with-media']]: hasMedia,
+                    [styles['header-full-page']]: __fullPage && isRefresh,
+                  }
+                )}
                 {...stickyStyles}
                 ref={headerMergedRef}
               >
