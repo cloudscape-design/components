@@ -93,8 +93,9 @@ export default class A11yPageObject extends BasePageObject {
   }
 
   public async assertNoAxeViolations() {
+    const currentUrl = await this.browser.getUrl();
     const result = await this.getAxeResults();
-    const violations = result.violations;
+    const violations = result.violations.filter(violation => landmarkViolationFilter(violation, currentUrl));
     const incomplete = result.incomplete.filter(ariaLevelViolationsFilter);
 
     expect(violations).toHaveLength(0);
@@ -112,5 +113,15 @@ function ariaLevelViolationsFilter(violation: Axe.Result) {
     violation.id === 'aria-valid-attr-value' &&
     violation.nodes.every(node => node.all.every(entry => entry.id === 'aria-level')) &&
     violation.nodes.every(node => node.html.startsWith('<tr'))
+  );
+}
+
+// There is a known issue when multiple app layout instances rendered on the page. Skip them for pages matching this pattern
+function landmarkViolationFilter(violation: Axe.Result, currentUrl: string) {
+  return (
+    !currentUrl.includes('app-layout/multi') ||
+    (violation.id !== 'landmark-main-is-top-level' &&
+      violation.id !== 'landmark-unique' &&
+      violation.id !== 'landmark-no-duplicate-main')
   );
 }
