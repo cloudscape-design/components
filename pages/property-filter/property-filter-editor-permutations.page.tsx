@@ -106,6 +106,7 @@ const defaultProps: TokenEditorProps = {
   filteringOptions: [],
   i18nStrings,
   i18nStringsExt: {
+    tokenEditorTokenGroupLabel: token => `"${token.property ?? 'All properties'} ${token.operator} ${token.value}"`,
     tokenEditorRemoveFilterLabel: 'Remove', // TODO: include index or token?
     tokenEditorRemoveFromGroupFilterLabel: 'Remove from group', // TODO: include index or token?
     tokenEditorRemoveMoreFilterLabel: 'More actions', // TODO: include index or token?

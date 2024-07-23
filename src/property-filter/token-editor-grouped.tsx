@@ -176,6 +176,7 @@ export interface TokenEditorProps {
   filteringOptions: readonly InternalFilteringOption[];
   i18nStrings: I18nStrings;
   i18nStringsExt: {
+    tokenEditorTokenGroupLabel: (token: { property: string; operator: string; value: string }) => string;
     tokenEditorRemoveFilterLabel: string; // TODO: include index or token?
     tokenEditorRemoveFromGroupFilterLabel: string; // TODO: include index or token?
     tokenEditorRemoveMoreFilterLabel: string; // TODO: include index or token?
@@ -246,6 +247,7 @@ export function TokenEditor({
     <div className={styles['token-editor-grouped']}>
       <TokenEditorFields
         fields={groups.length}
+        groupLabel={index => i18nStringsExt.tokenEditorTokenGroupLabel(getFormattedToken(groups[index].token))}
         removeButton={{
           labelRemove: i18nStringsExt.tokenEditorRemoveFilterLabel,
           labelRemoveFromGroup: i18nStringsExt.tokenEditorRemoveFromGroupFilterLabel,
@@ -350,6 +352,7 @@ export function TokenEditor({
 
 interface TokenEditorLayout {
   fields: number;
+  groupLabel: (index: number) => string;
   removeButton: {
     labelRemove: string;
     labelRemoveFromGroup: string;
@@ -371,7 +374,7 @@ interface TokenEditorLayout {
   };
 }
 
-function TokenEditorFields({ fields, removeButton, property, operator, value }: TokenEditorLayout) {
+function TokenEditorFields({ fields, groupLabel, removeButton, property, operator, value }: TokenEditorLayout) {
   const breakpoint = 912;
   const [isNarrow, setIsNarrow] = useState(window.innerWidth <= breakpoint);
 
@@ -394,7 +397,12 @@ function TokenEditorFields({ fields, removeButton, property, operator, value }: 
     return (
       <div className={styles['token-editor-grouped-list']}>
         {indices.map(index => (
-          <div key={index} className={styles['token-editor-grouped-list-item']}>
+          <div
+            key={index}
+            className={styles['token-editor-grouped-list-item']}
+            role="group"
+            aria-label={groupLabel(index)}
+          >
             <InternalFormField label={property.label} className={styles['token-editor-grouped-field-property']}>
               {property.render(index)}
             </InternalFormField>
@@ -441,7 +449,12 @@ function TokenEditorFields({ fields, removeButton, property, operator, value }: 
       </div>
 
       {indices.map(index => (
-        <div key={index} className={styles['token-editor-grouped-table-row']}>
+        <div
+          key={index}
+          className={styles['token-editor-grouped-table-row']}
+          role="group"
+          aria-label={groupLabel(index)}
+        >
           <div className={styles['token-editor-grouped-table-cell']}>
             <InternalFormField
               label={property.label}
