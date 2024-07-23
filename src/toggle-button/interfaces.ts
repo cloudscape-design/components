@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { BaseComponentProps } from '../internal/base-component';
 import { BaseButtonProps } from '../button/interfaces';
 import { IconProps } from '../icon/interfaces';
+import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
 
 export interface ToggleButtonProps extends BaseComponentProps, BaseButtonProps {

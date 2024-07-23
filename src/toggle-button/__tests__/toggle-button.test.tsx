@@ -2,9 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
+
+import createWrapper from '../../../lib/components/test-utils/dom';
 import ToggleButton, { ToggleButtonProps } from '../../../lib/components/toggle-button';
 import { getToggleIcon } from '../../../lib/components/toggle-button/util';
-import createWrapper from '../../../lib/components/test-utils/dom';
 
 function renderToggleButton(props: ToggleButtonProps = { pressed: false }) {
   const renderResult = render(<ToggleButton {...props} />);

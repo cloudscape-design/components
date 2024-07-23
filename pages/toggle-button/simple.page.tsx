@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
+
 import ToggleButton from '~components/toggle-button';
 
 export default function ToggleButtonSimpleScenario() {
@@ -13,8 +14,8 @@ export default function ToggleButtonSimpleScenario() {
         pressed={pressed}
         iconName="star"
         pressedIconName="star-filled"
-        onClick={() => {
-          setPressed(prevState => !prevState);
+        onChange={event => {
+          setPressed(event.detail.pressed);
         }}
       >
         Toggle button

@@ -3,9 +3,9 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { ToggleButtonProps } from './interfaces';
 import InternalButton from '../button/internal';
 import { fireNonCancelableEvent } from '../internal/events';
+import { ToggleButtonProps } from './interfaces';
 import { getToggleIcon } from './util';
 
 import styles from './styles.css.js';
