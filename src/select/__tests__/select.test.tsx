@@ -540,7 +540,7 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
     test('should render', () => {
       const testLabel = 'Test label';
       const { wrapper } = renderSelect({ inlineLabelText: testLabel });
-      const labelElement = wrapper.findByClassName(selectPartsStyles['inline-label']);
+      const labelElement = wrapper.findInlineLabel();
       expect(labelElement).not.toBeNull();
       expect(labelElement?.getElement()).toHaveTextContent(testLabel);
       expect(labelElement?.getElement().tagName).toBe('LABEL');
@@ -549,10 +549,7 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
       const testLabel = 'Test label';
       const { wrapper } = renderSelect({ inlineLabelText: testLabel });
 
-      const labelForAttribute = wrapper
-        .findByClassName(selectPartsStyles['inline-label'])!
-        .getElement()!
-        .getAttribute('for');
+      const labelForAttribute = wrapper.findInlineLabel()!.getElement()!.getAttribute('for');
       const triggerId = wrapper.findTrigger().getElement()!.id;
 
       expect(labelForAttribute).toBe(triggerId);
