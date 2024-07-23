@@ -10210,7 +10210,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     Object {
-      "description": "Adds an small label inline with the input for saving vertical space in a compact UI.
+      "description": "Adds a small label inline with the input for saving vertical space in the UI.
 For use with collection select filters only.",
       "name": "inlineLabelText",
       "optional": true,
@@ -12885,7 +12885,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     Object {
-      "description": "Adds an small label inline with the input for saving vertical space in a compact UI.
+      "description": "Adds a small label inline with the input for saving vertical space in the UI.
 For use with collection select filters only.",
       "name": "inlineLabelText",
       "optional": true,
