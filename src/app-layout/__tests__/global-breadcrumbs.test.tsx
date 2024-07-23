@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+/* eslint simple-import-sort/imports: 0 */
 import React, { useState } from 'react';
 import { act, render, cleanup, waitFor } from '@testing-library/react';
 import { describeEachAppLayout } from './utils';

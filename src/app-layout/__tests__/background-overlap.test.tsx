@@ -2,10 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useLayoutEffect } from 'react';
 import { render, screen } from '@testing-library/react';
-import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
-import { useDynamicOverlap } from '../../../lib/components/internal/hooks/use-dynamic-overlap';
-import { useAppLayoutInternals } from '../../../lib/components/app-layout/visual-refresh/context';
+
 import { ContainerQueryEntry } from '@cloudscape-design/component-toolkit';
+
+import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
+import { useAppLayoutInternals } from '../../../lib/components/app-layout/visual-refresh/context';
+import { useDynamicOverlap } from '../../../lib/components/internal/hooks/use-dynamic-overlap';
 
 jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => ({
   ...jest.requireActual('../../../lib/components/internal/hooks/use-visual-mode'),
