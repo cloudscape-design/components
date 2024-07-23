@@ -211,7 +211,7 @@ export type ColorChartsTokenName =
   | 'colorChartsPaletteCategorical49'
   | 'colorChartsPaletteCategorical50';
 export type ColorsTokenName =
-  | 'colorGreyOpaque15'
+  | 'colorGreyOpaque10'
   | 'colorGreyOpaque25'
   | 'colorGreyOpaque40'
   | 'colorGreyOpaque50'

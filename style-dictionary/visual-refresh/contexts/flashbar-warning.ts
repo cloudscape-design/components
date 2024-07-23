@@ -22,7 +22,7 @@ export const sharedTokens: StyleDictionary.ColorsDictionary = {
 
   // Progress bar should be using variant="flash", but this makes them use a white background.
   colorBackgroundProgressBarContentInFlash: '{colorGrey900}',
-  colorBackgroundProgressBarLayoutInFlash: '{colorGreyOpaque15}',
+  colorBackgroundProgressBarLayoutInFlash: '{colorGreyOpaque10}',
 
   // Expandable sections
   colorTextExpandableSectionDefault: '{colorTextNotificationYellow}',
