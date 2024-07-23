@@ -3,13 +3,13 @@
 import React from 'react';
 
 import ChartPopover from '../../internal/components/chart-popover';
+import ChartPopoverFooter from '../../internal/components/chart-popover-footer';
 import ChartSeriesDetails from '../../internal/components/chart-series-details';
-
 import { AreaChartProps } from '../interfaces';
 import { ChartModel } from '../model';
-import styles from '../styles.css.js';
 import { HighlightDetails } from './use-highlight-details';
-import ChartPopoverFooter from '../../internal/components/chart-popover-footer';
+
+import styles from '../styles.css.js';
 
 export default function AreaChartPopover<T extends AreaChartProps.DataTypes>({
   model,

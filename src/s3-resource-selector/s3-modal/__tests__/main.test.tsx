@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render, screen, act } from '@testing-library/react';
-import createWrapper from '../../../../lib/components/test-utils/dom';
+import { act, render, screen } from '@testing-library/react';
+
 import { S3Modal } from '../../../../lib/components/s3-resource-selector/s3-modal';
+import createWrapper from '../../../../lib/components/test-utils/dom';
 import { i18nStrings, waitForFetch } from '../../__tests__/fixtures';
 import { modalDefaultProps, navigateToTableItem } from './utils';
 

@@ -1,8 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { addMonths } from 'date-fns';
 import React from 'react';
+import { addMonths } from 'date-fns';
+
 import { InternalButton } from '../../../button/internal';
+
 import styles from '../../styles.css.js';
 
 interface HeaderButtonProps {

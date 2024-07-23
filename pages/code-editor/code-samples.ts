@@ -5,9 +5,9 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
 // @ts-ignore
-import buildSample from './samples/build.js';
-// @ts-ignore
 import awsTemplateSample from './samples/aws-template.yml';
+// @ts-ignore
+import buildSample from './samples/build.js';
 // @ts-ignore
 import sayHelloSample from './samples/say-hello';
 

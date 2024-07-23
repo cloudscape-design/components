@@ -1,11 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef, useState } from 'react';
+
 import { AppLayout, ContentLayout, Header, HelpPanel, Link } from '~components';
-import appLayoutLabels from './utils/labels';
 import { AppLayoutProps } from '~components/app-layout';
-import { Breadcrumbs, Containers } from './utils/content-blocks';
+
 import './utils/external-widget';
+import { Breadcrumbs, Containers } from './utils/content-blocks';
+import appLayoutLabels from './utils/labels';
 
 export default function WithDrawers() {
   const appLayoutRef = useRef<AppLayoutProps.Ref>(null);

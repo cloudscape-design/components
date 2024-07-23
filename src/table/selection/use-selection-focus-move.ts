@@ -1,10 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { KeyboardEvent } from 'react';
+
 import { findUpUntil } from '../../internal/utils/dom';
 import { TableProps } from '../interfaces';
-import selectionStyles from './styles.css.js';
 import { SELECTION_ITEM } from './utils';
+
+import selectionStyles from './styles.css.js';
 
 // The hooks moves focus between multi-selection checkboxes.
 // Not eligible for tables with grid navigation.

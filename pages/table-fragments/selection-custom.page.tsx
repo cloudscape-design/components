@@ -1,13 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useState } from 'react';
-import { ColumnLayout, Container, ContentLayout, FormField, Header, Link, Select } from '~components';
-import { SelectionControl, focusMarkers, useSelectionFocusMove, useSelection } from '~components/table/selection';
-import styles from './styles.scss';
-import { generateItems, Instance } from '../table/generate-data';
-import AppContext, { AppContextType } from '../app/app-context';
-import ScreenreaderOnly from '~components/internal/components/screenreader-only';
 import clsx from 'clsx';
+
+import { ColumnLayout, Container, ContentLayout, FormField, Header, Link, Select } from '~components';
+import ScreenreaderOnly from '~components/internal/components/screenreader-only';
+import { focusMarkers, SelectionControl, useSelection, useSelectionFocusMove } from '~components/table/selection';
+
+import AppContext, { AppContextType } from '../app/app-context';
+import { generateItems, Instance } from '../table/generate-data';
+
+import styles from './styles.scss';
 
 type PageContext = React.Context<
   AppContextType<{

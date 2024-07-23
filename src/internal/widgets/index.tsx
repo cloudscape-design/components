@@ -1,7 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { getGlobalFlag } from '../utils/global-flags';
+
+import { getGlobalFlag } from '@cloudscape-design/component-toolkit/internal';
+
 import { useVisualRefresh } from '../hooks/use-visual-mode';
 
 // Built-in React.FunctionComponent has always present `children` property which is not desired

@@ -1,17 +1,20 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useState } from 'react';
-import Table, { TableProps } from '~components/table';
+
+import { useCollection } from '@cloudscape-design/collection-hooks';
+
+import { Checkbox, FormField, Select } from '~components';
 import Header from '~components/header';
-import SpaceBetween from '~components/space-between';
 import Input from '~components/input';
 import Link from '~components/link';
-import ScreenshotArea from '../utils/screenshot-area';
-import { columnsConfig } from './shared-configs';
-import { generateItems, Instance } from './generate-data';
-import { useCollection } from '@cloudscape-design/collection-hooks';
-import { Checkbox, FormField, Select } from '~components';
+import SpaceBetween from '~components/space-between';
+import Table, { TableProps } from '~components/table';
+
 import AppContext, { AppContextType } from '../app/app-context';
+import ScreenshotArea from '../utils/screenshot-area';
+import { generateItems, Instance } from './generate-data';
+import { columnsConfig } from './shared-configs';
 
 type DemoContext = React.Context<
   AppContextType<{

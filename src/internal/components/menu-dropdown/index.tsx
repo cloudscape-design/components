@@ -1,16 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import React from 'react';
+import clsx from 'clsx';
 
-import { MenuDropdownProps, ButtonTriggerProps } from './interfaces';
-import { getBaseProps } from '../../base-component';
-import { applyDisplayName } from '../../utils/apply-display-name';
+import { CustomTriggerProps } from '../../../button-dropdown/interfaces';
 import InternalButtonDropdown from '../../../button-dropdown/internal';
 import InternalIcon from '../../../icon/internal';
+import { getBaseProps } from '../../base-component';
+import { applyDisplayName } from '../../utils/apply-display-name';
+import { ButtonTriggerProps, MenuDropdownProps } from './interfaces';
+
 import buttonDropdownStyles from '../../../button-dropdown/styles.css.js';
 import styles from './styles.css.js';
-import { CustomTriggerProps } from '../../../button-dropdown/interfaces';
 
 export { MenuDropdownProps };
 

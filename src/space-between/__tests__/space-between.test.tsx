@@ -2,9 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
+
 import SpaceBetween from '../../../lib/components/space-between';
-import styles from '../../../lib/components/space-between/styles.css.js';
 import createWrapper from '../../../lib/components/test-utils/dom';
+
+import styles from '../../../lib/components/space-between/styles.css.js';
 
 describe('SpaceBetween', () => {
   test('Renders the direction correctly', function () {

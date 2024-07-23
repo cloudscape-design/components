@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { fireEvent } from '@testing-library/react';
+
 import { KeyCode } from '../../internal/keycode';
 import { editorMock, renderCodeEditor } from './util';
 

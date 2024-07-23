@@ -2,10 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import { act, fireEvent, render, screen } from '@testing-library/react';
+
 import Alert from '../../../lib/components/alert';
 import awsuiPlugins from '../../../lib/components/internal/plugins';
-import { ActionConfig } from '../../../lib/components/internal/plugins/controllers/action-buttons';
 import { awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
+import { ActionConfig } from '../../../lib/components/internal/plugins/controllers/action-buttons';
 
 const defaultAction: ActionConfig = {
   id: 'test-action',

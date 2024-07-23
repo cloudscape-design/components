@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import Box from '~components/box';
+
 import { Header, Link, Modal, SpaceBetween, Table, Tabs } from '~components';
+import Box from '~components/box';
 
 export default function TablePerformanceMarkPage() {
   const [loading, setLoading] = useState(true);

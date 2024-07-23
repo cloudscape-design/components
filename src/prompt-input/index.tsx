@@ -1,10 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { PromptInputProps } from './interfaces';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import InternalPromptInput from './internal';
+
 import useBaseComponent from '../internal/hooks/use-base-component';
+import { applyDisplayName } from '../internal/utils/apply-display-name';
+import { PromptInputProps } from './interfaces';
+import InternalPromptInput from './internal';
 
 export { PromptInputProps };
 

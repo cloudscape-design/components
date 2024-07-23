@@ -1,16 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render, act, fireEvent } from '@testing-library/react';
+import { act, fireEvent, render } from '@testing-library/react';
 
+import ButtonDropdown from '../../../lib/components/button-dropdown';
 import { ButtonDropdownProps, InternalButtonDropdownProps } from '../../../lib/components/button-dropdown/interfaces';
 import InternalButtonDropdown from '../../../lib/components/button-dropdown/internal';
 import createWrapper, { ButtonDropdownWrapper, ElementWrapper } from '../../../lib/components/test-utils/dom';
-import styles from '../../../lib/components/button-dropdown/styles.css.js';
-import itemStyles from '../../../lib/components/button-dropdown/item-element/styles.css.js';
-import categoryElementStyles from '../../../lib/components/button-dropdown/category-elements/styles.css.js';
 import { KeyCode } from '../../internal/keycode';
-import ButtonDropdown from '../../../lib/components/button-dropdown';
+
+import categoryElementStyles from '../../../lib/components/button-dropdown/category-elements/styles.css.js';
+import itemStyles from '../../../lib/components/button-dropdown/item-element/styles.css.js';
+import styles from '../../../lib/components/button-dropdown/styles.css.js';
 
 const items: ButtonDropdownProps.Items = [
   { id: 'i1', text: 'item1', description: 'Item 1 description' },

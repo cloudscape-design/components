@@ -2,10 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
-import createWrapper, { TableWrapper } from '../../../../lib/components/test-utils/dom';
+
 import { BucketsTable } from '../../../../lib/components/s3-resource-selector/s3-modal/buckets-table';
+import createWrapper, { TableWrapper } from '../../../../lib/components/test-utils/dom';
 import { buckets, i18nStrings, waitForFetch } from '../../__tests__/fixtures';
-import { getColumnAriaLabels, getTableBodyContent, getHeaderVisibleText } from './utils';
+import { getColumnAriaLabels, getHeaderVisibleText, getTableBodyContent } from './utils';
 
 async function renderTable(jsx: React.ReactElement) {
   const { container } = render(jsx);

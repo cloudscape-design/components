@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback } from 'react';
 
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import InternalIcon from '../icon/internal';
+import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import InternalLink from '../link/internal';
 
 import styles from './styles.css.js';

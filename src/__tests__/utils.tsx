@@ -2,9 +2,10 @@
 /* eslint-disable header/header */
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import path from 'path';
-import fs from 'fs';
 import React from 'react';
+import fs from 'fs';
+import path from 'path';
+
 import { SplitPanelContextProvider } from '../../lib/components/internal/context/split-panel-context';
 import { defaultSplitPanelContextProps } from './required-props-for-components';
 

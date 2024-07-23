@@ -1,24 +1,25 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { AreaChartProps } from '../interfaces';
-import React, { useEffect, useMemo, useRef, RefObject, MouseEvent } from 'react';
-import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
-import { findClosest } from './utils';
+import React, { MouseEvent, RefObject, useEffect, useMemo, useRef } from 'react';
 
-import { KeyCode } from '../../internal/keycode';
+import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
+import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
+
 import { XDomain, XScaleType, YDomain, YScaleType } from '../../internal/components/cartesian-chart/interfaces';
-import computeChartProps from './compute-chart-props';
-import createSeriesDecorator from './create-series-decorator';
-import InteractionsStore from './interactions-store';
-import { ChartModel } from './index';
 import { ChartPlotRef } from '../../internal/components/chart-plot';
+import { useHeightMeasure } from '../../internal/hooks/container-queries/use-height-measure';
+import { KeyCode } from '../../internal/keycode';
+import { circleIndex } from '../../internal/utils/circle-index';
+import handleKey from '../../internal/utils/handle-key';
+import { nodeBelongs } from '../../internal/utils/node-belongs';
 import { throttle } from '../../internal/utils/throttle';
 import { useReaction } from '../async-store';
-import { useHeightMeasure } from '../../internal/hooks/container-queries/use-height-measure';
-import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
-import { nodeBelongs } from '../../internal/utils/node-belongs';
-import handleKey from '../../internal/utils/handle-key';
-import { circleIndex } from '../../internal/utils/circle-index';
+import { AreaChartProps } from '../interfaces';
+import computeChartProps from './compute-chart-props';
+import createSeriesDecorator from './create-series-decorator';
+import { ChartModel } from './index';
+import InteractionsStore from './interactions-store';
+import { findClosest } from './utils';
 
 const MAX_HOVER_MARGIN = 6;
 const SVG_HOVER_THROTTLE = 25;

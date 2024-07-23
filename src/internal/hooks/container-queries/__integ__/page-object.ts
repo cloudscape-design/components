@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
+
 import createWrapper from '../../../../../lib/components/test-utils/selectors';
 
 export class PageObject extends BasePageObject {

@@ -1,26 +1,26 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import { render, act } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
-import { ElementWrapper } from '../../../lib/components/test-utils/dom';
+
 import { ChartScale, NumericChartScale } from '../../../lib/components/internal/components/cartesian-chart/scales';
 import { useNavigation, UseNavigationProps } from '../../../lib/components/mixed-line-bar-chart/hooks/use-navigation';
-
 import { ChartDataTypes } from '../../../lib/components/mixed-line-bar-chart/interfaces';
 import makeScaledBarGroups from '../../../lib/components/mixed-line-bar-chart/make-scaled-bar-groups';
 import makeScaledSeries from '../../../lib/components/mixed-line-bar-chart/make-scaled-series';
+import { ElementWrapper } from '../../../lib/components/test-utils/dom';
+import { VerticalMarkerX } from '../interfaces';
 import {
+  barSeries,
+  barSeries2,
   lineSeries1,
   lineSeries2,
   lineSeries3,
-  barSeries,
-  barSeries2,
   thresholdSeries,
   xThresholdSeries1,
 } from './common';
-import { VerticalMarkerX } from '../interfaces';
 
 const xScale = new ChartScale('linear', [0, 3], [0, 3]);
 const yScale = new NumericChartScale('linear', [0, 15], [0, 15], null);

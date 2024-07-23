@@ -3,6 +3,7 @@
 
 import * as React from 'react';
 import { render } from '@testing-library/react';
+
 import Select from '../../../lib/components/select';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { SelectProps } from '../interfaces';

@@ -1,12 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import FormField, { FormFieldProps } from '~components/form-field';
-import Input, { InputProps } from '~components/input';
+
 import Button from '~components/button';
 import ColumnLayout from '~components/column-layout';
-import ScreenshotArea from '../utils/screenshot-area';
+import FormField, { FormFieldProps } from '~components/form-field';
+import Input, { InputProps } from '~components/input';
 import TextContent from '~components/text-content';
+
+import ScreenshotArea from '../utils/screenshot-area';
 
 const defaultInputProps = {
   value: '',

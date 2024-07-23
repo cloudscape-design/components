@@ -1,11 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef, useState } from 'react';
-import FocusLock, { FocusLockRef } from '~components/internal/components/focus-lock';
+
+import Box from '~components/box';
+import Button from '~components/button';
 import FormField from '~components/form-field';
 import Input from '~components/input';
-import Button from '~components/button';
-import Box from '~components/box';
+import FocusLock, { FocusLockRef } from '~components/internal/components/focus-lock';
 import SpaceBetween from '~components/space-between';
 
 export default function FocusLockPage() {

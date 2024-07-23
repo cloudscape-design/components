@@ -2,11 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef } from 'react';
 import clsx from 'clsx';
-import handleKey from '../internal/utils/handle-key';
-import { KeyCode } from '../internal/keycode';
+
 import { fireNonCancelableEvent } from '../internal/events';
+import { KeyCode } from '../internal/keycode';
+import handleKey from '../internal/utils/handle-key';
 import { SegmentedControlProps } from './interfaces';
 import { Segment } from './segment';
+
 import styles from './styles.css.js';
 
 export default function InternalSegmentedControl({

@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
-import SelectPageObject from './page-objects/select-page';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
+
 import createWrapper from '../../../lib/components/test-utils/selectors';
+import SelectPageObject from './page-objects/select-page';
 
 test(
   'allows filtering for options which have labels with spaces',

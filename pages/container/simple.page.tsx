@@ -1,11 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
 import Container from '~components/container';
-import Header from '~components/header';
 import ExpandableSection from '~components/expandable-section';
+import Header from '~components/header';
 import Link from '~components/link';
 import SpaceBetween from '~components/space-between';
+
 import ScreenshotArea from '../utils/screenshot-area';
 
 export default function SimpleContainers() {

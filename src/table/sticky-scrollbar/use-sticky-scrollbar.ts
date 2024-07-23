@@ -1,13 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ResizeObserver } from '@juggle/resize-observer';
 import { RefObject, useEffect, useState } from 'react';
-import styles from './styles.css.js';
+import { ResizeObserver } from '@juggle/resize-observer';
+
+import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
+
+import globalVars from '../../internal/styles/global-vars';
+import { browserScrollbarSize } from '../../internal/utils/browser-scrollbar-size';
 import { getContainingBlock } from '../../internal/utils/dom';
 import { getOverflowParents } from '../../internal/utils/scrollable-containers';
-import { browserScrollbarSize } from '../../internal/utils/browser-scrollbar-size';
-import globalVars from '../../internal/styles/global-vars';
-import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
+
+import styles from './styles.css.js';
 
 export const updatePosition = (
   tableEl: HTMLElement | null,

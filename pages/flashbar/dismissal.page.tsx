@@ -1,11 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import ScreenshotArea from '../utils/screenshot-area';
-import Flashbar from '~components/flashbar';
 import { useState } from 'react';
 import range from 'lodash/range';
+
+import Flashbar from '~components/flashbar';
+
 import FocusTarget from '../common/focus-target';
+import ScreenshotArea from '../utils/screenshot-area';
 
 function generateArray<T>(count: number, func: (index: number) => T): Array<T> {
   return range(count).map((_, index) => func(index));

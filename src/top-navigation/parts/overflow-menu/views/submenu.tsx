@@ -3,17 +3,16 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { useNavigate } from '../router';
+import FocusLock from '../../../../internal/components/focus-lock';
+import { fireCancelableEvent, isPlainLeftClick } from '../../../../internal/events';
+import { useUniqueId } from '../../../../internal/hooks/use-unique-id';
+import { TopNavigationProps } from '../../../interfaces';
+import { View } from '..';
 import Header from '../header';
 import { SubmenuItem } from '../menu-item';
-import { useUniqueId } from '../../../../internal/hooks/use-unique-id';
-import FocusLock from '../../../../internal/components/focus-lock';
+import { useNavigate } from '../router';
 
-import { TopNavigationProps } from '../../../interfaces';
-
-import { View } from '..';
 import styles from '../../../styles.css.js';
-import { fireCancelableEvent, isPlainLeftClick } from '../../../../internal/events';
 
 interface SubmenuViewProps extends View {
   definition: TopNavigationProps.MenuDropdownUtility;

@@ -3,17 +3,20 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 import Mockdate from 'mockdate';
-import createWrapper from '../../../lib/components/test-utils/dom';
+
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
 import DateRangePicker, { DateRangePickerProps } from '../../../lib/components/date-range-picker';
 import FormField from '../../../lib/components/form-field';
-import DateRangePickerWrapper from '../../../lib/components/test-utils/dom/date-range-picker';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 import { NonCancelableEventHandler } from '../../../lib/components/internal/events';
+import createWrapper from '../../../lib/components/test-utils/dom';
+import DateRangePickerWrapper from '../../../lib/components/test-utils/dom/date-range-picker';
+import { changeMode } from './change-mode';
 import { i18nStrings } from './i18n-strings';
 import { isValidRange } from './is-valid-range';
-import { changeMode } from './change-mode';
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
 import styles from '../../../lib/components/date-range-picker/styles.css.js';
-import TestI18nProvider from '../../../lib/components/i18n/testing';
 import segmentedStyles from '../../../lib/components/segmented-control/styles.css.js';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({

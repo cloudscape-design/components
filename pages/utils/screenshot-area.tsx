@@ -1,10 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import React from 'react';
-import { colorTextStatusError } from '~design-tokens';
-import styles from './screenshot-area.scss';
+import clsx from 'clsx';
+
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+
+import { colorTextStatusError } from '~design-tokens';
+
+import styles from './screenshot-area.scss';
 
 // replicates the same constant from BrowserTestTools package
 const MAX_PAGE_HEIGHT = 16000;

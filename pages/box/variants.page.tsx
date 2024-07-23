@@ -1,10 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
 import Box, { BoxProps } from '~components/box';
+
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
+
 import styles from './style.scss';
 
 const variant = ['div', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'p', 'strong', 'small', 'code', 'pre', 'samp'] as const;

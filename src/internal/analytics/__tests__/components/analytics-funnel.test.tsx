@@ -1,10 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render, fireEvent, waitFor, act } from '@testing-library/react';
+import { act, fireEvent, render, waitFor } from '@testing-library/react';
 
+import Button from '../../../../../lib/components/button';
+import Cards from '../../../../../lib/components/cards';
+import Container from '../../../../../lib/components/container';
+import ExpandableSection from '../../../../../lib/components/expandable-section';
+import FormField from '../../../../../lib/components/form-field';
+import Header from '../../../../../lib/components/header';
 import { FunnelMetrics } from '../../../../../lib/components/internal/analytics';
-import { DATA_ATTR_FUNNEL_INTERACTION_ID } from '../../../../../lib/components/internal/analytics/selectors';
 import {
   AnalyticsFunnel,
   AnalyticsFunnelStep,
@@ -12,15 +17,9 @@ import {
   CREATION_EDIT_FLOW_DONE_EVENT_NAME,
 } from '../../../../../lib/components/internal/analytics/components/analytics-funnel';
 import { useFunnel, useFunnelSubStep } from '../../../../../lib/components/internal/analytics/hooks/use-funnel';
-import Button from '../../../../../lib/components/button';
-import FormField from '../../../../../lib/components/form-field';
-import Container from '../../../../../lib/components/container';
-import Cards from '../../../../../lib/components/cards';
-import Table from '../../../../../lib/components/table';
-import Header from '../../../../../lib/components/header';
+import { DATA_ATTR_FUNNEL_INTERACTION_ID } from '../../../../../lib/components/internal/analytics/selectors';
 import Modal from '../../../../../lib/components/modal';
-import ExpandableSection from '../../../../../lib/components/expandable-section';
-
+import Table from '../../../../../lib/components/table';
 import { mockedFunnelInteractionId, mockFunnelMetrics, mockInnerText } from '../mocks';
 
 describe('AnalyticsFunnel', () => {

@@ -1,13 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
+import Box from '~components/box';
+import { ItemProps } from '~components/button-dropdown/interfaces';
+import ItemElement from '~components/button-dropdown/item-element';
+
+import img from '../icon/custom-icon.png';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
-import Box from '~components/box';
-import ItemElement from '~components/button-dropdown/item-element';
-import { ItemProps } from '~components/button-dropdown/interfaces';
-import img from '../icon/custom-icon.png';
+
 import styles from './styles.scss';
 
 const permutations = createPermutations<ItemProps>([

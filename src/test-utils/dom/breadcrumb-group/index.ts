@@ -1,9 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
+
 import ButtonDropdownWrapper from '../button-dropdown';
-import styles from '../../../breadcrumb-group/styles.selectors.js';
+
 import itemStyles from '../../../breadcrumb-group/item/styles.selectors.js';
+import styles from '../../../breadcrumb-group/styles.selectors.js';
 import buttonDropdownStyles from '../../../button-dropdown/styles.selectors.js';
 
 export default class BreadcrumbGroupWrapper extends ComponentWrapper {

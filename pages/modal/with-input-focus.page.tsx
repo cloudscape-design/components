@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState, useRef, useEffect } from 'react';
-import { Modal, Button, Input, FormField, InputProps } from '~components';
+import React, { useEffect, useRef, useState } from 'react';
+
+import { Button, FormField, Input, InputProps, Modal } from '~components';
 
 export default function () {
   const [visible, setVisible] = useState(false);

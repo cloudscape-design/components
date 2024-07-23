@@ -2,16 +2,17 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useState } from 'react';
 
-import Popover from '~components/popover';
+import { Select } from '~components';
 import Box from '~components/box';
 import Button from '~components/button';
 import ColumnLayout from '~components/column-layout';
 import Link from '~components/link';
+import Popover from '~components/popover';
 import SpaceBetween from '~components/space-between';
-import StatusIndicator from '~components/status-indicator';
 import Spinner from '~components/spinner';
+import StatusIndicator from '~components/status-indicator';
+
 import ScreenshotArea from '../utils/screenshot-area';
-import { Select } from '~components';
 
 import styles from './scenarios.scss';
 

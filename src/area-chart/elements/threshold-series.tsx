@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { memo } from 'react';
+
 import { ChartScale } from '../../internal/components/cartesian-chart/scales';
 import { ChartModel } from '../model';
 

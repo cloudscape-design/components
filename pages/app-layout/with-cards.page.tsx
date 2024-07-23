@@ -1,16 +1,18 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
+import range from 'lodash/range';
+
 import AppLayout from '~components/app-layout';
+import Button from '~components/button';
+import Cards, { CardsProps } from '~components/cards';
 import Header from '~components/header';
 import Link from '~components/link';
-import Cards, { CardsProps } from '~components/cards';
+
 import ScreenshotArea from '../utils/screenshot-area';
-import { Breadcrumbs, Navigation, Tools, Footer, Notifications } from './utils/content-blocks';
-import * as toolsContent from './utils/tools-content';
+import { Breadcrumbs, Footer, Navigation, Notifications, Tools } from './utils/content-blocks';
 import labels from './utils/labels';
-import Button from '~components/button';
-import range from 'lodash/range';
+import * as toolsContent from './utils/tools-content';
 
 interface Item {
   number: number;

@@ -3,11 +3,11 @@
 import React from 'react';
 
 import BarChart, { BarChartProps } from '~components/bar-chart';
+
+import { commonProps, multipleNegativeBarsData as data } from '../mixed-line-bar-chart/common';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
-
-import { commonProps, multipleNegativeBarsData as data } from '../mixed-line-bar-chart/common';
 
 const thresholdSeries = { type: 'threshold', title: 'Limit', y: 4 } as const;
 

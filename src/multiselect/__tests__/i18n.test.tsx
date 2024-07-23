@@ -2,12 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import { render } from '@testing-library/react';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import Multiselect, { MultiselectProps } from '../../../lib/components/multiselect';
+
 import '../../__a11y__/to-validate-a11y';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
-import statusIconStyles from '../../../lib/components/status-indicator/styles.selectors.js';
+import Multiselect, { MultiselectProps } from '../../../lib/components/multiselect';
+import createWrapper from '../../../lib/components/test-utils/dom';
+
 import itemStyles from '../../../lib/components/internal/components/selectable-item/styles.selectors.js';
+import statusIconStyles from '../../../lib/components/status-indicator/styles.selectors.js';
 
 const defaultOptions: MultiselectProps.Options = [
   { label: 'First', value: '1' },

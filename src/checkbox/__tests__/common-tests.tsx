@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+import { render } from '@testing-library/react';
+
 import AbstractSwitchWrapper from '../../../lib/components/test-utils/dom/internal/abstract-switch';
 import { BaseCheckboxProps } from '../base-checkbox';
-import { render } from '@testing-library/react';
 
 export function createCommonTests(Component: React.ComponentType<BaseCheckboxProps>) {
   function renderComponent(jsx: React.ReactElement) {

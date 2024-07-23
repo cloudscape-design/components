@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { addMinutes } from 'date-fns';
+
 import { joinDateTime } from '.';
 import { formatDate } from './format-date';
 import { formatTime } from './format-time';

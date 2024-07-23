@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { PropertyFilterProps } from '~components/property-filter';
-import { states, TableItem } from './table.data';
+
 import {
   DateForm,
   DateTimeForm,
@@ -11,6 +11,7 @@ import {
   YesNoForm,
   yesNoFormat,
 } from './custom-forms';
+import { states, TableItem } from './table.data';
 
 const getStateLabel = (value: TableItem['state']) => (value !== undefined && states[value]) || 'Unknown';
 

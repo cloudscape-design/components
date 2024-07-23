@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useState } from 'react';
-import { getLimitedValue } from '../../split-panel/utils/size-utils';
+
 import { SplitPanelContextBaseProps, SplitPanelContextProvider } from '../../internal/context/split-panel-context';
+import { getLimitedValue } from '../../split-panel/utils/size-utils';
 import { SPLIT_PANEL_MIN_HEIGHT, SPLIT_PANEL_MIN_WIDTH } from './constants';
 
 export interface SplitPanelProviderProps extends SplitPanelContextBaseProps {

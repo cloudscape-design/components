@@ -2,13 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
-import { BaseComponentProps, getBaseProps } from '../internal/base-component';
-import styles from './styles.css.js';
-import InternalIcon from '../icon/internal';
-import InternalSpinner from '../spinner/internal';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+
 import { IconProps } from '../icon/interfaces';
+import InternalIcon from '../icon/internal';
+import { BaseComponentProps, getBaseProps } from '../internal/base-component';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { SomeRequired } from '../internal/types';
+import InternalSpinner from '../spinner/internal';
+
+import styles from './styles.css.js';
 
 const typeToIcon: (size: IconProps.Size) => Record<StatusIndicatorProps.Type, JSX.Element> = size => ({
   error: <InternalIcon name="status-negative" size={size} />,

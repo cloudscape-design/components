@@ -1,20 +1,22 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useReducer, useRef } from 'react';
+
 import { BreadcrumbGroupImplementation } from '../../breadcrumb-group/implementation';
 import { InternalButton } from '../../button/internal';
-import InternalModal from '../../modal/internal';
-import InternalSpaceBetween from '../../space-between/internal';
+import { useInternalI18n } from '../../i18n/context';
 import { ForwardFocusRef } from '../../internal/hooks/forward-focus';
 import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
+import InternalModal from '../../modal/internal';
+import InternalSpaceBetween from '../../space-between/internal';
 import { S3ResourceSelectorProps } from '../interfaces';
+import { joinObjectPath } from '../utils';
 import { BucketsTable } from './buckets-table';
 import { ObjectsTable } from './objects-table';
 import { VersionsTable } from './versions-table';
+
 import styles from './styles.css.js';
-import { joinObjectPath } from '../utils';
-import { useInternalI18n } from '../../i18n/context';
 
 export interface S3ModalProps {
   alert: React.ReactNode;

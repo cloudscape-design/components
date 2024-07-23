@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
+
 import StatusIndicator from '../../../lib/components/status-indicator';
 import createWrapper from '../../../lib/components/test-utils/dom';
 

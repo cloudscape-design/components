@@ -1,9 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useState } from 'react';
-import { Box, DateRangePicker, DateRangePickerProps, SpaceBetween, Grid } from '~components';
-import { i18nStrings, isValid } from './common';
+
+import { Box, DateRangePicker, DateRangePickerProps, Grid, SpaceBetween } from '~components';
+
 import AppContext, { AppContextType } from '../app/app-context';
+import { i18nStrings, isValid } from './common';
 
 const locales = [
   'ar',

@@ -3,11 +3,14 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
-import Tabs, { TabsProps } from '../../../lib/components/tabs';
-import styles from '../../../lib/components/tabs/styles.css.js';
-import createWrapper, { TabsWrapper } from '../../../lib/components/test-utils/dom';
+
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
+
 import TestI18nProvider from '../../../lib/components/i18n/testing';
+import Tabs, { TabsProps } from '../../../lib/components/tabs';
+import createWrapper, { TabsWrapper } from '../../../lib/components/test-utils/dom';
+
+import styles from '../../../lib/components/tabs/styles.css.js';
 
 let mockHorizontalOverflow = false;
 jest.mock('../../../lib/components/tabs/scroll-utils', () => {

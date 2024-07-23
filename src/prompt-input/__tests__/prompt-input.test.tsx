@@ -1,14 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { render, act } from '@testing-library/react';
-import { KeyCode } from '../../../lib/components/internal/keycode';
-import '../../__a11y__/to-validate-a11y';
+import { act, render } from '@testing-library/react';
 
+import '../../__a11y__/to-validate-a11y';
+import { KeyCode } from '../../../lib/components/internal/keycode';
+import PromptInput, { PromptInputProps } from '../../../lib/components/prompt-input';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import PromptInputWrapper from '../../../lib/components/test-utils/dom/prompt-input';
-
-import PromptInput, { PromptInputProps } from '../../../lib/components/prompt-input';
 
 jest.mock('@cloudscape-design/component-toolkit', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit'),

@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import InputPage from '../../../input/__integ__/page-objects/input';
 import createWrapper from '../../../../lib/components/test-utils/selectors';
+import InputPage from '../../../input/__integ__/page-objects/input';
 
 export default class AutosuggestPage extends InputPage {
   constructor(browser: ConstructorParameters<typeof InputPage>[0], expandToViewport = false) {

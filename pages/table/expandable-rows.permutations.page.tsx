@@ -1,14 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import Table, { TableProps } from '~components/table';
-import ScreenshotArea from '../utils/screenshot-area';
-import { Box, Input, Link } from '~components';
-import { columnLabel } from './shared-configs';
 import { range } from 'lodash';
+
+import { Box, Input, Link } from '~components';
+import Table, { TableProps } from '~components/table';
+
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
+import ScreenshotArea from '../utils/screenshot-area';
 import { ariaLabels } from './expandable-rows/common';
+import { columnLabel } from './shared-configs';
 
 interface Instance {
   name: string;

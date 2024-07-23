@@ -2,14 +2,17 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
+
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
+import { BarChartProps } from '../../../lib/components/bar-chart/interfaces.js';
+import { LineChartProps } from '../../../lib/components/line-chart/interfaces.js';
 import Link from '../../../lib/components/link';
 import { MixedLineBarChartProps } from '../../../lib/components/mixed-line-bar-chart';
-import chartSeriesDetailsStyles from '../../../lib/components/internal/components/chart-series-details/styles.css.js';
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
-import { MixedLineBarChartWrapper } from '../../../lib/components/test-utils/dom/index.js';
-import { BarChartProps } from '../../../lib/components/bar-chart/interfaces.js';
 import { BarChartWrapper, LineChartWrapper } from '../../../lib/components/test-utils/dom';
-import { LineChartProps } from '../../../lib/components/line-chart/interfaces.js';
+import { MixedLineBarChartWrapper } from '../../../lib/components/test-utils/dom/index.js';
+
+import chartSeriesDetailsStyles from '../../../lib/components/internal/components/chart-series-details/styles.css.js';
 
 export const commonChartProps = {
   height: 250,

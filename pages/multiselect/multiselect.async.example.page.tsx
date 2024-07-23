@@ -1,12 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useState } from 'react';
-import Multiselect, { MultiselectProps } from '~components/multiselect';
+
 import Box from '~components/box';
-import { i18nStrings } from './constants';
-import { groupsRaw } from '../select/mock/data';
+import Multiselect, { MultiselectProps } from '~components/multiselect';
+
 import AppContext, { AppContextType } from '../app/app-context';
 import { useOptionsLoader } from '../common/options-loader';
+import { groupsRaw } from '../select/mock/data';
+import { i18nStrings } from './constants';
 
 const allOptions = JSON.parse(JSON.stringify(groupsRaw)) as unknown as MultiselectProps.OptionGroup[];
 

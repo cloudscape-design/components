@@ -1,18 +1,20 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+import clsx from 'clsx';
+
+import InternalContainer from '../container/internal';
 import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
-import InternalContainer from '../container/internal';
-import { TabsProps } from './interfaces';
-import clsx from 'clsx';
-import styles from './styles.css.js';
-import { getTabElementId, TabHeaderBar } from './tab-header-bar';
-import { useControllable } from '../internal/hooks/use-controllable';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { checkSafeUrl } from '../internal/utils/check-safe-url';
+import { useControllable } from '../internal/hooks/use-controllable';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { applyDisplayName } from '../internal/utils/apply-display-name';
+import { checkSafeUrl } from '../internal/utils/check-safe-url';
+import { TabsProps } from './interfaces';
+import { getTabElementId, TabHeaderBar } from './tab-header-bar';
+
+import styles from './styles.css.js';
 
 export { TabsProps };
 

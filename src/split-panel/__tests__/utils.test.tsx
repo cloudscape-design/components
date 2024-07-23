@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { KeyCode } from '../../internal/keycode';
-import { useKeyboardEvents } from '../../app-layout/utils/use-keyboard-events';
 import { fireEvent } from '@testing-library/react';
+
+import { useKeyboardEvents } from '../../app-layout/utils/use-keyboard-events';
+import { KeyCode } from '../../internal/keycode';
 
 const sizeControlProps: any = {
   panelRef: { current: { clientHeight: 100, clientWidth: 100 } },

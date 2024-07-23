@@ -3,31 +3,34 @@
 import React, {
   createContext,
   useCallback,
+  useContext,
   useEffect,
-  useLayoutEffect,
   useImperativeHandle,
+  useLayoutEffect,
   useRef,
   useState,
-  useContext,
 } from 'react';
-import { DynamicOverlapContext } from '../../internal/context/dynamic-overlap-context';
-import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
-import { fireNonCancelableEvent } from '../../internal/events';
-import { FocusControlRefs, useFocusControl } from '../utils/use-focus-control';
-import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
-import { getSplitPanelPosition } from './split-panel';
-import { useControllable } from '../../internal/hooks/use-controllable';
-import { SplitPanelFocusControlRefs, useSplitPanelFocusControl } from '../utils/use-split-panel-focus-control';
-import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
-import { useMobile } from '../../internal/hooks/use-mobile';
+
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
-import useResize from '../utils/use-resize';
-import styles from './styles.css.js';
-import useBackgroundOverlap from './use-background-overlap';
-import { useDrawers } from '../utils/use-drawers';
-import { useUniqueId } from '../../internal/hooks/use-unique-id';
-import { SPLIT_PANEL_MIN_WIDTH } from '../split-panel';
 import { getOffsetInlineStart } from '@cloudscape-design/component-toolkit/internal';
+
+import { DynamicOverlapContext } from '../../internal/context/dynamic-overlap-context';
+import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
+import { fireNonCancelableEvent } from '../../internal/events';
+import { useControllable } from '../../internal/hooks/use-controllable';
+import { useMobile } from '../../internal/hooks/use-mobile';
+import { useUniqueId } from '../../internal/hooks/use-unique-id';
+import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
+import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
+import { SPLIT_PANEL_MIN_WIDTH } from '../split-panel';
+import { useDrawers } from '../utils/use-drawers';
+import { FocusControlRefs, useFocusControl } from '../utils/use-focus-control';
+import useResize from '../utils/use-resize';
+import { SplitPanelFocusControlRefs, useSplitPanelFocusControl } from '../utils/use-split-panel-focus-control';
+import { getSplitPanelPosition } from './split-panel';
+import useBackgroundOverlap from './use-background-overlap';
+
+import styles from './styles.css.js';
 
 interface AppLayoutInternals extends AppLayoutPropsWithDefaults {
   activeDrawerId: string | null;

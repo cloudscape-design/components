@@ -1,11 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { Ace } from 'ace-builds';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { Ace } from 'ace-builds';
+
 import { useCurrentMode } from '@cloudscape-design/component-toolkit/internal';
-import { getAceTheme, getDefaultConfig, getDefaultTheme } from './util';
+
 import { CodeEditorProps } from './interfaces';
+import { getAceTheme, getDefaultConfig, getDefaultTheme } from './util';
 
 export function useEditor(ace: any, themes?: CodeEditorProps.AvailableThemes, loading?: boolean) {
   const editorRef = useRef<HTMLDivElement>(null);

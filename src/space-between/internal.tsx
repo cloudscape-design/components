@@ -1,12 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import React from 'react';
-import { getBaseProps } from '../internal/base-component';
-import styles from './styles.css.js';
 import flattenChildren from 'react-keyed-flatten-children';
-import { SpaceBetweenProps } from './interfaces';
+import clsx from 'clsx';
+
+import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { SpaceBetweenProps } from './interfaces';
+
+import styles from './styles.css.js';
 
 type InternalSpaceBetweenProps = SpaceBetweenProps & InternalBaseComponentProps;
 

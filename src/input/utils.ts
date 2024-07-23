@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { useCallback, RefObject } from 'react';
+import { RefObject, useCallback } from 'react';
+
 import { InternalInputProps } from './internal';
 
 export const useSearchProps = (

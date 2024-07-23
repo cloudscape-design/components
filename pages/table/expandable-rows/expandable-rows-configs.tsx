@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
+
 import {
   CollectionPreferences,
   CollectionPreferencesProps,
@@ -13,9 +14,10 @@ import {
   StatusIndicator,
   TableProps,
 } from '~components';
-import { Instance } from './common';
-import { columnLabel } from '../shared-configs';
+
 import { contentDisplayPreferenceI18nStrings } from '../../common/i18n-strings';
+import { columnLabel } from '../shared-configs';
+import { Instance } from './common';
 
 export function createColumns(): TableProps.ColumnDefinition<Instance>[] {
   return [

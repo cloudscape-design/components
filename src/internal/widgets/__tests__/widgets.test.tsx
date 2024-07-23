@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
+
 import { useVisualRefresh } from '../../../../lib/components/internal/hooks/use-visual-mode';
 import { createWidgetizedComponent, createWidgetizedForwardRef } from '../../../../lib/components/internal/widgets';
 import { describeWithAppLayoutFeatureFlagEnabled } from './utils';

@@ -2,13 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
-import { describeWithAppLayoutFeatureFlagEnabled } from '../../internal/widgets/__tests__/utils';
-import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { createWidgetizedBreadcrumbGroup } from '../../../lib/components/breadcrumb-group/implementation';
+
 import { BreadcrumbGroupProps } from '../../../lib/components/breadcrumb-group';
+import { createWidgetizedBreadcrumbGroup } from '../../../lib/components/breadcrumb-group/implementation';
 import { BreadcrumbGroupSkeleton } from '../../../lib/components/breadcrumb-group/skeleton';
 import { getFunnelNameSelector } from '../../../lib/components/internal/analytics/selectors';
+import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
+import createWrapper from '../../../lib/components/test-utils/dom';
+import { describeWithAppLayoutFeatureFlagEnabled } from '../../internal/widgets/__tests__/utils';
 
 function renderComponent(jsx: React.ReactElement) {
   const { container } = render(jsx);

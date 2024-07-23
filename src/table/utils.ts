@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { InternalContainerProps } from '../container/internal';
-import { StickyColumnsCellState } from './sticky-columns';
-import { TableProps } from './interfaces';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
+import { InternalContainerProps } from '../container/internal';
+import { TableProps } from './interfaces';
+import { StickyColumnsCellState } from './sticky-columns';
 
 export const applyTrackBy = <T>(trackBy: TableProps.TrackBy<T>, item: T) => {
   if (typeof trackBy === 'function') {

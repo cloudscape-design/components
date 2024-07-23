@@ -3,11 +3,12 @@
 import * as React from 'react';
 
 import TopNavigation from '~components/top-navigation';
-import logo from './logos/simple-logo.svg';
+
+import { I18N_STRINGS } from './common';
 import longLogo from './logos/long-logo.svg';
 import narrowLogo from './logos/narrow-logo.svg';
+import logo from './logos/simple-logo.svg';
 import tallLogo from './logos/tall-logo.svg';
-import { I18N_STRINGS } from './common';
 
 export default function TopNavigationPage() {
   return (

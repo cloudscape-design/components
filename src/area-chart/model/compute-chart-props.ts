@@ -1,8 +1,5 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { AreaChartProps } from '../interfaces';
-import { computePlotPoints, computeDomainX, computeDomainY } from './utils';
-
 import {
   ChartDomain,
   XDomain,
@@ -10,13 +7,15 @@ import {
   YDomain,
   YScaleType,
 } from '../../internal/components/cartesian-chart/interfaces';
+import { ChartScale, NumericChartScale } from '../../internal/components/cartesian-chart/scales';
 import {
   createXTicks,
   createYTicks,
   getXTickCount,
   getYTickCount,
 } from '../../internal/components/cartesian-chart/ticks';
-import { ChartScale, NumericChartScale } from '../../internal/components/cartesian-chart/scales';
+import { AreaChartProps } from '../interfaces';
+import { computeDomainX, computeDomainY, computePlotPoints } from './utils';
 
 export default function computeChartProps<T extends AreaChartProps.DataTypes>({
   isRtl,

@@ -2,18 +2,21 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 import { act, render } from '@testing-library/react';
-import createWrapper, { ElementWrapper, PropertyFilterWrapper } from '../../../lib/components/test-utils/dom';
-import PropertyFilter from '../../../lib/components/property-filter';
-import styles from '../../../lib/components/property-filter/styles.selectors.js';
+
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
+
+import '../../__a11y__/to-validate-a11y';
+import PropertyFilter from '../../../lib/components/property-filter';
 import {
-  FilteringProperty,
   FilteringOption,
+  FilteringProperty,
   PropertyFilterProps,
   Ref,
 } from '../../../lib/components/property-filter/interfaces';
+import createWrapper, { ElementWrapper, PropertyFilterWrapper } from '../../../lib/components/test-utils/dom';
 import { createDefaultProps } from './common';
-import '../../__a11y__/to-validate-a11y';
+
+import styles from '../../../lib/components/property-filter/styles.selectors.js';
 
 const states: Record<string, string> = {
   0: 'Stopped',

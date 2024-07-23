@@ -2,16 +2,18 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useCallback, useRef, useState } from 'react';
-import { BoundingBox, InternalPosition, Offset, PopoverProps } from './interfaces';
-import { calculatePosition, getDimensions, getOffsetDimensions } from './utils/positions';
+
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
+import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
+
+import { getContainingBlock } from '../internal/utils/dom';
 import {
   calculateScroll,
   getFirstScrollableParent,
   scrollRectangleIntoView,
 } from '../internal/utils/scrollable-containers';
-import { getContainingBlock } from '../internal/utils/dom';
-import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
+import { BoundingBox, InternalPosition, Offset, PopoverProps } from './interfaces';
+import { calculatePosition, getDimensions, getOffsetDimensions } from './utils/positions';
 
 export default function usePopoverPosition({
   popoverRef,

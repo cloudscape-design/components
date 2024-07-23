@@ -2,16 +2,19 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
-import { AreaChartWrapper } from '../../../lib/components/test-utils/dom';
-import AreaChart, { AreaChartProps } from '../../../lib/components/area-chart';
-import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
-import popoverStyles from '../../../lib/components/popover/styles.css.js';
-import chartWrapperStyles from '../../../lib/components/internal/components/chart-wrapper/styles.css.js';
-import cartesianStyles from '../../../lib/components/internal/components/cartesian-chart/styles.css.js';
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
-import TestI18nProvider from '../../../lib/components/i18n/testing';
 import { cloneDeep } from 'lodash';
+
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
+
 import '../../__a11y__/to-validate-a11y';
+import AreaChart, { AreaChartProps } from '../../../lib/components/area-chart';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
+import { AreaChartWrapper } from '../../../lib/components/test-utils/dom';
+
+import cartesianStyles from '../../../lib/components/internal/components/cartesian-chart/styles.css.js';
+import chartWrapperStyles from '../../../lib/components/internal/components/chart-wrapper/styles.css.js';
+import popoverStyles from '../../../lib/components/popover/styles.css.js';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),

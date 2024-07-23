@@ -1,10 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import pagesContext from '../pages-context';
 import { Link } from 'react-router-dom';
+
 import { PACKAGE_VERSION } from '~components/internal/environment';
 import AwsUiLink from '~components/link';
+
+import pagesContext from '../pages-context';
 
 interface TreeItem {
   name: string;

@@ -1,12 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { forwardRef } from 'react';
-import { useStickyScrollbar } from './use-sticky-scrollbar';
-import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import clsx from 'clsx';
-import styles from './styles.css.js';
-import { browserScrollbarSize } from '../../internal/utils/browser-scrollbar-size';
+
+import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
+import { browserScrollbarSize } from '../../internal/utils/browser-scrollbar-size';
+import { useStickyScrollbar } from './use-sticky-scrollbar';
+
+import styles from './styles.css.js';
 
 interface StickyScrollbarProps {
   wrapperRef: React.RefObject<HTMLDivElement>;

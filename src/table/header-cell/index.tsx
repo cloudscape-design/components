@@ -1,19 +1,21 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import React, { useRef } from 'react';
+import clsx from 'clsx';
+
+import { useInternalI18n } from '../../i18n/context';
 import InternalIcon from '../../icon/internal';
+import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
+import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { KeyCode } from '../../internal/keycode';
 import { TableProps } from '../interfaces';
-import { getSortingIconName, getSortingStatus, isSorted } from './utils';
-import styles from './styles.css.js';
 import { Divider, Resizer } from '../resizer';
-import { useUniqueId } from '../../internal/hooks/use-unique-id';
-import { useInternalI18n } from '../../i18n/context';
 import { StickyColumnsModel } from '../sticky-columns';
 import { TableRole } from '../table-role';
 import { TableThElement } from './th-element';
-import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
+import { getSortingIconName, getSortingStatus, isSorted } from './utils';
+
+import styles from './styles.css.js';
 
 export interface TableHeaderCellProps<ItemType> {
   className?: string;

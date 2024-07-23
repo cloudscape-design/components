@@ -2,14 +2,16 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import range from 'lodash/range';
+
+import { Link } from '~components';
 import Box from '~components/box';
 import Button from '~components/button';
-import Header from '~components/header';
 import Cards, { CardsProps } from '~components/cards/index';
+import Header from '~components/header';
+
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
-import { Link } from '~components';
 
 interface Item {
   number: number;

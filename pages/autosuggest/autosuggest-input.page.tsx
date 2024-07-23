@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
+
 import Box from '~components/box';
 import AutosuggestInput from '~components/internal/components/autosuggest-input';
 

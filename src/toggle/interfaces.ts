@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { BaseCheckboxProps } from '../checkbox/base-checkbox';
 import React from 'react';
+
+import { BaseCheckboxProps } from '../checkbox/base-checkbox';
 import { NonCancelableEventHandler } from '../internal/events';
 
 export interface ToggleProps extends BaseCheckboxProps {

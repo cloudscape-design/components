@@ -1,11 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { getBaseProps } from '../internal/base-component';
 import clsx from 'clsx';
-import styles from './styles.css.js';
-import { BoxProps } from './interfaces';
+
+import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { BoxProps } from './interfaces';
+
+import styles from './styles.css.js';
 
 type InternalBoxProps = BoxProps & InternalBaseComponentProps;
 

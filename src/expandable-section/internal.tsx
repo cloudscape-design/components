@@ -5,18 +5,17 @@ import { CSSTransition } from 'react-transition-group';
 import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component';
+import { fireNonCancelableEvent } from '../internal/events';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useControllable } from '../internal/hooks/use-controllable';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { KeyCode } from '../internal/keycode';
-import { fireNonCancelableEvent } from '../internal/events';
-
-import { ExpandableSectionProps, InternalVariant } from './interfaces';
-
-import styles from './styles.css.js';
 import { ExpandableSectionContainer } from './expandable-section-container';
 import { ExpandableSectionHeader } from './expandable-section-header';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { ExpandableSectionProps, InternalVariant } from './interfaces';
 import { variantSupportsDescription } from './utils';
+
+import styles from './styles.css.js';
 
 export type InternalExpandableSectionProps = Omit<ExpandableSectionProps, 'variant'> &
   InternalBaseComponentProps & {

@@ -2,10 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
+
 import customCssProps from '../../internal/generated/custom-css-properties';
 import { useAppLayoutInternals } from './context';
-import styles from './styles.css.js';
+
 import testutilStyles from '../test-classes/styles.css.js';
+import styles from './styles.css.js';
 
 interface LayoutProps {
   children: React.ReactNode;

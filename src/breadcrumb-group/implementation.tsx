@@ -1,21 +1,23 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import styles from './styles.css.js';
 import clsx from 'clsx';
-import InternalIcon from '../icon/internal';
-import InternalButtonDropdown from '../button-dropdown/internal';
-import { CustomTriggerProps, LinkItem } from '../button-dropdown/interfaces';
+
 import { InternalButton } from '../button/internal';
-import { BreadcrumbItem } from './item/item';
-import { BreadcrumbGroupProps, EllipsisDropdownProps, InternalBreadcrumbGroupProps } from './interfaces';
-import { fireCancelableEvent } from '../internal/events';
+import { CustomTriggerProps, LinkItem } from '../button-dropdown/interfaces';
+import InternalButtonDropdown from '../button-dropdown/internal';
+import { useInternalI18n } from '../i18n/context';
+import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
+import { fireCancelableEvent } from '../internal/events';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
-import { useInternalI18n } from '../i18n/context';
 import { createWidgetizedComponent } from '../internal/widgets';
+import { BreadcrumbGroupProps, EllipsisDropdownProps, InternalBreadcrumbGroupProps } from './interfaces';
+import { BreadcrumbItem } from './item/item';
 import { getEventDetail } from './utils';
+
+import styles from './styles.css.js';
 
 /**
  * Provided for backwards compatibility

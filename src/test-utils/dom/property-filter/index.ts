@@ -1,16 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ComponentWrapper, ElementWrapper, createWrapper } from '@cloudscape-design/test-utils-core/dom';
+import { ComponentWrapper, createWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import styles from '../../../property-filter/styles.selectors.js';
-import testUtilStyles from '../../../property-filter/test-classes/styles.selectors.js';
-import popoverStyles from '../../../popover/styles.selectors.js';
-import tokenListSelectors from '../../../internal/components/token-list/styles.selectors.js';
-import textFilterStyles from '../../../text-filter/styles.selectors.js';
 import AutosuggestWrapper from '../autosuggest';
 import ButtonWrapper from '../button';
-import SelectWrapper from '../select';
 import FormFieldWrapper from '../form-field';
+import SelectWrapper from '../select';
+
+import tokenListSelectors from '../../../internal/components/token-list/styles.selectors.js';
+import popoverStyles from '../../../popover/styles.selectors.js';
+import styles from '../../../property-filter/styles.selectors.js';
+import testUtilStyles from '../../../property-filter/test-classes/styles.selectors.js';
+import textFilterStyles from '../../../text-filter/styles.selectors.js';
 
 export default class PropertyFilterWrapper extends AutosuggestWrapper {
   static rootSelector = styles.root;

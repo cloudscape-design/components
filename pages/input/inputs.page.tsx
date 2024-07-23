@@ -1,12 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import Input from '~components/input';
-import Textarea from '~components/textarea';
-import Container from '~components/container';
+
 import Button from '~components/button';
-import SpaceBetween from '~components/space-between';
+import Container from '~components/container';
 import FormField from '~components/form-field';
+import Input from '~components/input';
+import SpaceBetween from '~components/space-between';
+import Textarea from '~components/textarea';
 
 function Inputs() {
   const [inputValue, setInputValue] = useState('something');

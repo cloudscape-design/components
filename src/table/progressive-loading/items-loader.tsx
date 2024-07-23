@@ -1,11 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import styles from './styles.css.js';
-import LiveRegion from '../../internal/components/live-region';
+
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
+import LiveRegion from '../../internal/components/live-region';
 import { TableProps } from '../interfaces';
 import { applyTrackBy } from '../utils';
+
+import styles from './styles.css.js';
 
 interface ItemsLoaderProps<T> {
   item: null | T;

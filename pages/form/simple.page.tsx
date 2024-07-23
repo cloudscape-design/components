@@ -1,17 +1,20 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import Header from '~components/header';
-import Form from '~components/form';
-import Link from '~components/link';
+
 import Button from '~components/button';
-import FormField from '~components/form-field';
-import Input from '~components/input';
-import SpaceBetween from '~components/space-between';
 import Container from '~components/container';
-import ScreenshotArea from '../utils/screenshot-area';
-import styles from './styles.scss';
+import Form from '~components/form';
+import FormField from '~components/form-field';
+import Header from '~components/header';
+import Input from '~components/input';
+import Link from '~components/link';
+import SpaceBetween from '~components/space-between';
 import Tiles from '~components/tiles';
+
+import ScreenshotArea from '../utils/screenshot-area';
+
+import styles from './styles.scss';
 
 export default function FormScenario() {
   const [value, setValue] = useState<string>('bar');

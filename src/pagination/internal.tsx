@@ -1,15 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import React from 'react';
+import clsx from 'clsx';
+
+import { useInternalI18n } from '../i18n/context';
 import InternalIcon from '../icon/internal';
-import { fireNonCancelableEvent } from '../internal/events';
 import { getBaseProps } from '../internal/base-component';
-import styles from './styles.css.js';
-import { getPaginationState, range } from './utils';
+import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { PaginationProps } from './interfaces';
-import { useInternalI18n } from '../i18n/context';
+import { getPaginationState, range } from './utils';
+
+import styles from './styles.css.js';
 
 const defaultAriaLabels: Required<PaginationProps.Labels> = {
   nextPageLabel: '',

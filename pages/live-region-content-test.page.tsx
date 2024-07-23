@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect } from 'react';
+
 import { Box, SpaceBetween } from '~components';
 import LiveRegion from '~components/internal/components/live-region';
 

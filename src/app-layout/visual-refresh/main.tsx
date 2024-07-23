@@ -2,12 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
-import { useAppLayoutInternals } from './context';
+
 import customCssProps from '../../internal/generated/custom-css-properties';
-import { getStickyOffsetVars } from '../utils/sticky-offsets';
-import styles from './styles.css.js';
-import testutilStyles from '../test-classes/styles.css.js';
 import * as tokens from '../../internal/generated/styles/tokens';
+import { getStickyOffsetVars } from '../utils/sticky-offsets';
+import { useAppLayoutInternals } from './context';
+
+import testutilStyles from '../test-classes/styles.css.js';
+import styles from './styles.css.js';
 
 export default function Main() {
   const {

@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import styles from './styles.css.js';
 import { browserScrollbarSize } from '../internal/utils/browser-scrollbar-size';
+
+import styles from './styles.css.js';
 
 // Read this before making changes to the code below.
 //

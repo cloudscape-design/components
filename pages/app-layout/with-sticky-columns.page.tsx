@@ -1,17 +1,19 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
+
 import AppLayout from '~components/app-layout';
-import SplitPanel from '~components/split-panel';
-import Header from '~components/header';
-import labels from './utils/labels';
-import Table from '~components/table';
-import { splitPaneli18nStrings } from './utils/strings';
-import CollectionPreferences, { CollectionPreferencesProps } from '~components/collection-preferences';
-import { columnsConfig } from '../table/shared-configs';
-import { generateItems } from '../table/generate-data';
 import Box from '~components/box';
+import CollectionPreferences, { CollectionPreferencesProps } from '~components/collection-preferences';
+import Header from '~components/header';
 import Link from '~components/link';
+import SplitPanel from '~components/split-panel';
+import Table from '~components/table';
+
+import { generateItems } from '../table/generate-data';
+import { columnsConfig } from '../table/shared-configs';
+import labels from './utils/labels';
+import { splitPaneli18nStrings } from './utils/strings';
 
 export default function () {
   const visibleContentOptions: ReadonlyArray<CollectionPreferencesProps.VisibleContentOptionsGroup> = [

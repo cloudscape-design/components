@@ -1,16 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import React from 'react';
+import { TransitionGroup } from 'react-transition-group';
+import clsx from 'clsx';
+
+import { useInternalI18n } from '../i18n/context';
+import { Transition } from '../internal/components/transition';
+import { useFlashbar } from './common';
+import { TIMEOUT_FOR_ENTERING_ANIMATION } from './constant';
 import { Flash } from './flash';
 import { FlashbarProps } from './interfaces';
-import { TIMEOUT_FOR_ENTERING_ANIMATION } from './constant';
-import { TransitionGroup } from 'react-transition-group';
-import { Transition } from '../internal/components/transition';
 
 import styles from './styles.css.js';
-import { useFlashbar } from './common';
-import { useInternalI18n } from '../i18n/context';
 
 export { FlashbarProps };
 

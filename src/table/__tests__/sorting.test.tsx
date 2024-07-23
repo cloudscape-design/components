@@ -2,13 +2,16 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import { fireEvent, render } from '@testing-library/react';
+
+import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
+
 import Table from '../../../lib/components/table';
 import { TableProps } from '../../../lib/components/table/interfaces';
-import tableStyles from '../../../lib/components/table/styles.css.js';
+import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/dom';
+
 import headerCellStyles from '../../../lib/components/table/header-cell/styles.css.js';
 import resizerStyles from '../../../lib/components/table/resizer/styles.css.js';
-import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/dom';
-import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
+import tableStyles from '../../../lib/components/table/styles.css.js';
 
 interface Item {
   id: number;

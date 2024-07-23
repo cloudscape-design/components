@@ -1,46 +1,46 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useEffect, useMemo, useRef, useState, forwardRef } from 'react';
+import React, { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Ace } from 'ace-builds';
 import clsx from 'clsx';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 
-import { getBaseProps } from '../internal/base-component';
-import { KeyCode } from '../internal/keycode';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { CodeEditorProps } from './interfaces';
-import { Pane } from './pane';
-import { useChangeEffect } from './listeners';
-import { PaneStatus, getLanguageLabel, getDefaultTheme, DEFAULT_AVAILABLE_THEMES } from './util';
-import { fireNonCancelableEvent } from '../internal/events';
-import { setupEditor } from './setup-editor';
-import { ResizableBox } from './resizable-box';
-import PreferencesModal from './preferences-modal';
-import LoadingScreen from './loading-screen';
-import ErrorScreen from './error-screen';
-
-import useBaseComponent from '../internal/hooks/use-base-component';
-import useForwardFocus from '../internal/hooks/forward-focus';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { useCurrentMode } from '@cloudscape-design/component-toolkit/internal';
-import { useInternalI18n } from '../i18n/context';
-import { StatusBar } from './status-bar';
-import { useFormFieldContext } from '../internal/context/form-field-context';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { useControllable } from '../internal/hooks/use-controllable';
-import LiveRegion from '../internal/components/live-region';
-
-import styles from './styles.css.js';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+import { useCurrentMode } from '@cloudscape-design/component-toolkit/internal';
+
+import { useInternalI18n } from '../i18n/context';
+import { getBaseProps } from '../internal/base-component';
+import LiveRegion from '../internal/components/live-region';
+import { useFormFieldContext } from '../internal/context/form-field-context';
+import { fireNonCancelableEvent } from '../internal/events';
+import useForwardFocus from '../internal/hooks/forward-focus';
+import useBaseComponent from '../internal/hooks/use-base-component';
+import { useControllable } from '../internal/hooks/use-controllable';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { KeyCode } from '../internal/keycode';
+import { applyDisplayName } from '../internal/utils/apply-display-name';
+import ErrorScreen from './error-screen';
+import { CodeEditorProps } from './interfaces';
+import { useChangeEffect } from './listeners';
+import LoadingScreen from './loading-screen';
+import { Pane } from './pane';
+import PreferencesModal from './preferences-modal';
+import { ResizableBox } from './resizable-box';
+import { setupEditor } from './setup-editor';
+import { StatusBar } from './status-bar';
 import {
   useEditor,
-  useSyncEditorSize,
   useSyncEditorLabels,
-  useSyncEditorValue,
   useSyncEditorLanguage,
-  useSyncEditorWrapLines,
+  useSyncEditorSize,
   useSyncEditorTheme,
+  useSyncEditorValue,
+  useSyncEditorWrapLines,
 } from './use-editor';
+import { DEFAULT_AVAILABLE_THEMES, getDefaultTheme, getLanguageLabel, PaneStatus } from './util';
+
+import styles from './styles.css.js';
 
 export { CodeEditorProps };
 

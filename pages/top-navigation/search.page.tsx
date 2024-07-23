@@ -2,11 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 
-import TopNavigation from '~components/top-navigation';
-import Input from '~components/input';
 import Autosuggest from '~components/autosuggest';
-import logo from './logos/simple-logo.svg';
+import Input from '~components/input';
+import TopNavigation from '~components/top-navigation';
+
 import { I18N_STRINGS } from './common';
+import logo from './logos/simple-logo.svg';
 
 export default function TopNavigationPage() {
   const [valueAutosuggest, setValueAutosuggest] = useState('');

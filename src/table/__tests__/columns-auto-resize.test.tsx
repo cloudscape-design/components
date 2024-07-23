@@ -1,10 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { render, act } from '@testing-library/react';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import { act, render } from '@testing-library/react';
+
 import Table, { TableProps } from '../../../lib/components/table';
-import { fireMousedown, fireMouseMove, fireMouseup, fakeBoundingClientRect } from './utils/resize-actions';
+import createWrapper from '../../../lib/components/test-utils/dom';
+import { fakeBoundingClientRect, fireMousedown, fireMouseMove, fireMouseup } from './utils/resize-actions';
 
 let overflowParent: HTMLElement | null = null;
 jest.mock('../../../lib/components/internal/utils/scrollable-containers', () => ({

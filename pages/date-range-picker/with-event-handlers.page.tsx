@@ -1,9 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState, useRef, useContext } from 'react';
-import { Box, Link, DateRangePicker, DateRangePickerProps } from '~components';
-import { i18nStrings, relativeOptions, isValid } from './common';
+import React, { useContext, useRef, useState } from 'react';
+
+import { Box, DateRangePicker, DateRangePickerProps, Link } from '~components';
+
 import AppContext, { AppContextType } from '../app/app-context';
+import { i18nStrings, isValid, relativeOptions } from './common';
 
 type DateRangePickerEventsPageContext = React.Context<AppContextType<{ expandToViewport: boolean }>>;
 

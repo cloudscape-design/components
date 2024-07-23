@@ -1,43 +1,44 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import React, { useImperativeHandle, useRef, useState } from 'react';
 import clsx from 'clsx';
-import React, { useRef, useState, useImperativeHandle } from 'react';
 
-import InternalSpaceBetween from '../space-between/internal';
-import { InternalButton } from '../button/internal';
-import { getBaseProps } from '../internal/base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { KeyCode } from '../internal/keycode';
-import { useUniqueId } from '../internal/hooks/use-unique-id/index';
-import { fireNonCancelableEvent } from '../internal/events';
-
-import {
-  PropertyFilterProps,
-  ParsedText,
-  Ref,
-  ComparisonOperator,
-  Token,
-  InternalFilteringProperty,
-  InternalFilteringOption,
-  FilteringProperty,
-  ExtendedOperator,
-  InternalQuery,
-  InternalFreeTextFiltering,
-} from './interfaces';
-import { TokenButton } from './token';
-import { getQueryActions, parseText, getAutosuggestOptions, getAllowedOperators } from './controller';
-import { useLoadItems } from './use-load-items';
-import styles from './styles.css.js';
-import useBaseComponent from '../internal/hooks/use-base-component';
-import PropertyFilterAutosuggest, { PropertyFilterAutosuggestProps } from './property-filter-autosuggest';
-import { PropertyEditor } from './property-editor';
-import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
-import { matchTokenValue } from './utils';
 import { PropertyFilterOperator } from '@cloudscape-design/collection-hooks';
+
+import { InternalButton } from '../button/internal';
 import { useInternalI18n } from '../i18n/context';
+import { getBaseProps } from '../internal/base-component';
+import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 import TokenList from '../internal/components/token-list';
-import { SearchResults } from '../text-filter/search-results';
+import { fireNonCancelableEvent } from '../internal/events';
+import useBaseComponent from '../internal/hooks/use-base-component';
+import { useUniqueId } from '../internal/hooks/use-unique-id/index';
+import { KeyCode } from '../internal/keycode';
+import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { joinStrings } from '../internal/utils/strings';
+import InternalSpaceBetween from '../space-between/internal';
+import { SearchResults } from '../text-filter/search-results';
+import { getAllowedOperators, getAutosuggestOptions, getQueryActions, parseText } from './controller';
+import {
+  ComparisonOperator,
+  ExtendedOperator,
+  FilteringProperty,
+  InternalFilteringOption,
+  InternalFilteringProperty,
+  InternalFreeTextFiltering,
+  InternalQuery,
+  ParsedText,
+  PropertyFilterProps,
+  Ref,
+  Token,
+} from './interfaces';
+import { PropertyEditor } from './property-editor';
+import PropertyFilterAutosuggest, { PropertyFilterAutosuggestProps } from './property-filter-autosuggest';
+import { TokenButton } from './token';
+import { useLoadItems } from './use-load-items';
+import { matchTokenValue } from './utils';
+
+import styles from './styles.css.js';
 
 export { PropertyFilterProps };
 

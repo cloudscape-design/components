@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { FlashbarProps } from './interfaces';
 import { IconProps } from '../icon/interfaces';
+import { FlashbarProps } from './interfaces';
 
 export const FOCUS_THROTTLE_DELAY = 2000;
 

@@ -1,8 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import range from 'lodash/range';
+
 import { AreaChartProps } from '~components/area-chart';
 import { XScaleType, YScaleType } from '~components/internal/components/cartesian-chart/interfaces';
+
 import pseudoRandom from '../utils/pseudo-random';
 import { numberFormatter } from './example';
 

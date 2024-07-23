@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render as reactRender } from '@testing-library/react';
+
 import Flashbar from '../../../lib/components/flashbar';
 import createWrapper from '../../../lib/components/test-utils/dom';
 

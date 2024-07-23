@@ -1,21 +1,23 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import useBaseComponent from '../internal/hooks/use-base-component';
+
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
+import { NonCancelableCustomEvent } from '../internal/events';
+import useBaseComponent from '../internal/hooks/use-base-component';
+import { useControllable } from '../internal/hooks/use-controllable';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { useMobile } from '../internal/hooks/use-mobile';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { isDevelopment } from '../internal/is-development';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
+import { applyDefaults } from './defaults';
 import { AppLayoutProps } from './interfaces';
 import { AppLayoutInternal } from './internal';
-import { applyDefaults } from './defaults';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { useControllable } from '../internal/hooks/use-controllable';
-import { useMobile } from '../internal/hooks/use-mobile';
-import { NonCancelableCustomEvent } from '../internal/events';
-import { isDevelopment } from '../internal/is-development';
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { useAppLayoutPlacement } from './utils/use-app-layout-placement';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 
 export { AppLayoutProps };
 

@@ -1,14 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState, useContext } from 'react';
-import { AppLayout, Box, Button, ColumnLayout, Container, Header, SpaceBetween, Table, Wizard } from '~components';
-import { columnsConfig } from '../table/shared-configs';
-import { generateItems, Instance } from '../table/generate-data';
-import labels from './utils/labels';
-import { Breadcrumbs } from './utils/content-blocks';
-import AppContext, { AppContextType } from '../app/app-context';
+import React, { useContext, useState } from 'react';
 
+import { AppLayout, Box, Button, ColumnLayout, Container, Header, SpaceBetween, Table, Wizard } from '~components';
+
+import AppContext, { AppContextType } from '../app/app-context';
+import { generateItems, Instance } from '../table/generate-data';
+import { columnsConfig } from '../table/shared-configs';
 import ScreenshotArea from '../utils/screenshot-area';
+import { Breadcrumbs } from './utils/content-blocks';
+import labels from './utils/labels';
 
 type DemoContext = React.Context<
   AppContextType<{ hasBreadcrumbs: boolean; hasNotifications: boolean; disableOverlap: boolean }>

@@ -2,14 +2,16 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import range from 'lodash/range';
+
 import Box from '~components/box';
-import { TableProps } from '~components/table';
-import { PaginationProps } from '~components/pagination';
 import { CollectionPreferencesProps } from '~components/collection-preferences';
-import { Instance, InstanceState } from './generate-data';
 import Link from '~components/link';
+import { PaginationProps } from '~components/pagination';
 import StatusIndicator, { StatusIndicatorProps } from '~components/status-indicator';
+import { TableProps } from '~components/table';
+
 import { contentDisplayPreferenceI18nStrings } from '../common/i18n-strings';
+import { Instance, InstanceState } from './generate-data';
 
 export function EmptyState({
   title,

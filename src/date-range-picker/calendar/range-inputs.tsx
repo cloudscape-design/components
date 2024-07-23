@@ -2,14 +2,16 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
-import styles from '../styles.css.js';
-import { BaseComponentProps } from '../../internal/base-component';
-import { RangeCalendarI18nStrings } from '../interfaces';
-import InternalFormField from '../../form-field/internal';
+
 import InternalDateInput from '../../date-input/internal';
+import InternalFormField from '../../form-field/internal';
+import { useInternalI18n } from '../../i18n/context.js';
+import { BaseComponentProps } from '../../internal/base-component';
 import { TimeInputProps } from '../../time-input/interfaces';
 import InternalTimeInput from '../../time-input/internal';
-import { useInternalI18n } from '../../i18n/context.js';
+import { RangeCalendarI18nStrings } from '../interfaces';
+
+import styles from '../styles.css.js';
 
 type I18nStrings = Pick<
   RangeCalendarI18nStrings,

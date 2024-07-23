@@ -1,14 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import React, { useRef } from 'react';
-import styles from './styles.css.js';
-import { getStickyClassNames } from '../utils';
-import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
-import { TableRole, getTableCellRoleProps } from '../table-role';
-import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
+import clsx from 'clsx';
+
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
+import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import { ExpandToggleButton } from '../expandable-rows/expand-toggle-button';
+import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
+import { getTableCellRoleProps, TableRole } from '../table-role';
+import { getStickyClassNames } from '../utils';
+
+import styles from './styles.css.js';
 
 export interface TableTdElementProps {
   className?: string;

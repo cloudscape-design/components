@@ -1,14 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
+
 import AppLayout from '~components/app-layout';
 import Box from '~components/box';
 import Button from '~components/button';
 import Flashbar from '~components/flashbar';
 
-import { Navigation, Tools, Breadcrumbs } from './utils/content-blocks';
-import * as toolsContent from './utils/tools-content';
+import { Breadcrumbs, Navigation, Tools } from './utils/content-blocks';
 import labels from './utils/labels';
+import * as toolsContent from './utils/tools-content';
 
 export default function () {
   const [maxContentWidth, setMaxContentWidth] = useState<number | undefined>(undefined);

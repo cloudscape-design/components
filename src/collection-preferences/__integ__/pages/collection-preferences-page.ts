@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
+
 import { CollectionPreferencesWrapper } from '../../../../lib/components/test-utils/selectors';
 
 export const collectionPreferencesPageMixin = (Base: BasePageObject & any) =>

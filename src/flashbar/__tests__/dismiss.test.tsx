@@ -2,10 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useState } from 'react';
+import { render } from '@testing-library/react';
+
+import { disableMotion } from '@cloudscape-design/global-styles';
+
 import Flashbar, { FlashbarProps } from '../../../lib/components/flashbar';
 import createWrapper from '../../../lib/components/test-utils/dom';
-import { disableMotion } from '@cloudscape-design/global-styles';
-import { render } from '@testing-library/react';
 
 const defaultItems: FlashbarProps.MessageDefinition[] = [
   {

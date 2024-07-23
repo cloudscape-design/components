@@ -3,11 +3,11 @@
 import React from 'react';
 
 import { useOpenState } from '../../internal/components/options-list/utils/use-open-state';
-import { ButtonDropdownProps, ButtonDropdownSettings, GroupToggle, HighlightProps, ItemActivate } from '../interfaces';
-import { fireCancelableEvent, CancelableEventHandler, isPlainLeftClick } from '../../internal/events';
+import { CancelableEventHandler, fireCancelableEvent, isPlainLeftClick } from '../../internal/events';
 import { KeyCode } from '../../internal/keycode';
-import { getItemTarget, isCheckboxItem, isItemGroup, isLinkItem } from './utils';
+import { ButtonDropdownProps, ButtonDropdownSettings, GroupToggle, HighlightProps, ItemActivate } from '../interfaces';
 import useHighlightedMenu from './use-highlighted-menu';
+import { getItemTarget, isCheckboxItem, isItemGroup, isLinkItem } from './utils';
 
 interface UseButtonDropdownOptions extends ButtonDropdownSettings {
   items: ButtonDropdownProps.Items;

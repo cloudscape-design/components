@@ -2,9 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
+
 import createWrapper from '../../../lib/components/test-utils/selectors';
-import mobileStyles from '../../../lib/components/app-layout/mobile-toolbar/styles.selectors.js';
 import { viewports } from './constants';
+
+import mobileStyles from '../../../lib/components/app-layout/mobile-toolbar/styles.selectors.js';
 
 const wrapper = createWrapper().findAppLayout();
 class AppLayoutSplitViewPage extends BasePageObject {

@@ -1,12 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+import { render } from '@testing-library/react';
 
-import createWrapper from '../../../lib/components/test-utils/dom';
-import Table, { TableProps } from '../../../lib/components/table';
 import Header from '../../../lib/components/header';
 import Modal from '../../../lib/components/modal';
-import { render } from '@testing-library/react';
+import Table, { TableProps } from '../../../lib/components/table';
+import createWrapper from '../../../lib/components/test-utils/dom';
+
 import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
 
 interface Item {

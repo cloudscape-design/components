@@ -2,12 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import { render } from '@testing-library/react';
+
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
+
+import { AutosuggestProps } from '../../../lib/components/autosuggest/interfaces';
+import PropertyFilterAutosuggest from '../../../lib/components/property-filter/property-filter-autosuggest';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import AutosuggestWrapper from '../../../lib/components/test-utils/dom/autosuggest';
-import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
-import { AutosuggestProps } from '../../../lib/components/autosuggest/interfaces';
-
-import PropertyFilterAutosuggest from '../../../lib/components/property-filter/property-filter-autosuggest';
 
 const options: AutosuggestProps.Options = [
   { value: '123', label: '123' },

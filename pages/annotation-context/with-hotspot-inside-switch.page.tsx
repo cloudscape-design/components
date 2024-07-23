@@ -8,8 +8,9 @@ import Hotspot from '~components/hotspot';
 import RadioGroup from '~components/radio-group';
 import SpaceBetween from '~components/space-between';
 import Toggle from '~components/toggle';
-import tutorials from '../onboarding/tutorials';
+
 import { annotationContextStrings } from '../onboarding/i18n';
+import tutorials from '../onboarding/tutorials';
 
 const tutorial = tutorials(() => {})[0];
 const noop = () => {};

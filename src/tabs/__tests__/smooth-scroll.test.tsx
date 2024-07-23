@@ -3,7 +3,9 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { waitFor } from '@testing-library/react';
+
 import { isMotionDisabled } from '@cloudscape-design/component-toolkit/internal';
+
 import nativeSupport from '../../../lib/components/tabs/native-smooth-scroll-supported';
 import smoothScroll from '../../../lib/components/tabs/smooth-scroll';
 import createWrapper from '../../../lib/components/test-utils/dom';

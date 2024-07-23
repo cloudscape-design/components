@@ -2,15 +2,17 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef } from 'react';
 import clsx from 'clsx';
+
 import { InternalButton } from '../../../button/internal';
-import styles from './styles.css.js';
-import sharedStyles from '../../styles.css.js';
-import testutilStyles from '../../test-classes/styles.css.js';
-import { TOOLS_DRAWER_ID } from '../../utils/use-drawers';
 import PanelResizeHandle from '../../../internal/components/panel-resize-handle';
 import { createWidgetizedComponent } from '../../../internal/widgets';
+import { TOOLS_DRAWER_ID } from '../../utils/use-drawers';
 import { AppLayoutInternals } from '../interfaces';
 import { useResize } from './use-resize';
+
+import sharedStyles from '../../styles.css.js';
+import testutilStyles from '../../test-classes/styles.css.js';
+import styles from './styles.css.js';
 
 interface AppLayoutDrawerImplementationProps {
   appLayoutInternals: AppLayoutInternals;

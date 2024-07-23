@@ -3,7 +3,7 @@
 import { Ace } from 'ace-builds';
 
 import { AceModes } from './ace-modes';
-import { LightThemes, DarkThemes } from './ace-themes';
+import { DarkThemes, LightThemes } from './ace-themes';
 import { CodeEditorProps } from './interfaces';
 
 export type PaneStatus = 'error' | 'warning' | 'hidden';

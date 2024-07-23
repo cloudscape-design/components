@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { act } from '@testing-library/react';
+
 import { S3ResourceSelectorProps } from '../../../lib/components/s3-resource-selector';
 
 export async function waitForFetch() {

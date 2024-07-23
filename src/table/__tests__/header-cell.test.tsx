@@ -2,15 +2,16 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import { fireEvent, render } from '@testing-library/react';
+
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 import { TableHeaderCell, TableHeaderCellProps } from '../../../lib/components/table/header-cell';
-import { TableProps } from '../interfaces';
+import { useStickyColumns } from '../../../lib/components/table/sticky-columns';
 import { renderHook } from '../../__tests__/render-hook';
+import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
+import { TableProps } from '../interfaces';
 
 import styles from '../../../lib/components/table/header-cell/styles.css.js';
 import resizerStyles from '../../../lib/components/table/resizer/styles.css.js';
-import { useStickyColumns } from '../../../lib/components/table/sticky-columns';
-import TestI18nProvider from '../../../lib/components/i18n/testing';
-import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
 
 const tableRole = 'table';
 

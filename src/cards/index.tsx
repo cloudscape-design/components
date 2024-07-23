@@ -1,35 +1,38 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import React, { FocusEventHandler, useCallback, useImperativeHandle, useRef } from 'react';
-import { CardsForwardRefType, CardsProps } from './interfaces';
-import styles from './styles.css.js';
-import { getCardsPerRow } from './cards-layout-helper';
-import { getBaseProps } from '../internal/base-component';
-import ToolsHeader from '../table/tools-header';
-import { getItemKey } from '../table/utils';
-import {
-  SelectionControl,
-  SelectionControlProps,
-  focusMarkers,
-  useSelectionFocusMove,
-  useSelection,
-} from '../table/selection';
-import { InternalContainerAsSubstep } from '../container/internal';
-import InternalStatusIndicator from '../status-indicator/internal';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import stickyScrolling from '../table/sticky-scrolling';
-import useBaseComponent from '../internal/hooks/use-base-component';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import LiveRegion from '../internal/components/live-region';
-import useMouseDownTarget from '../internal/hooks/use-mouse-down-target';
-import { useMobile } from '../internal/hooks/use-mobile';
-import { useInternalI18n } from '../i18n/context';
+import clsx from 'clsx';
+
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+
+import { InternalContainerAsSubstep } from '../container/internal';
+import { useInternalI18n } from '../i18n/context';
 import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
+import { getBaseProps } from '../internal/base-component';
+import LiveRegion from '../internal/components/live-region';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
+import useBaseComponent from '../internal/hooks/use-base-component';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { useMobile } from '../internal/hooks/use-mobile';
+import useMouseDownTarget from '../internal/hooks/use-mouse-down-target';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { applyDisplayName } from '../internal/utils/apply-display-name';
+import InternalStatusIndicator from '../status-indicator/internal';
+import {
+  focusMarkers,
+  SelectionControl,
+  SelectionControlProps,
+  useSelection,
+  useSelectionFocusMove,
+} from '../table/selection';
+import stickyScrolling from '../table/sticky-scrolling';
+import ToolsHeader from '../table/tools-header';
+import { getItemKey } from '../table/utils';
+import { getCardsPerRow } from './cards-layout-helper';
+import { CardsForwardRefType, CardsProps } from './interfaces';
+
+import styles from './styles.css.js';
 
 export { CardsProps };
 

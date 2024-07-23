@@ -1,11 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import styles from './styles.css.js';
-import clsx from 'clsx';
 import React from 'react';
+import clsx from 'clsx';
+
 import { IconProps } from '../../../icon/interfaces';
 import InternalIcon from '../../../icon/internal';
 import HighlightMatch from './highlight-match';
+
+import styles from './styles.css.js';
 
 interface LabelProps {
   label?: string;

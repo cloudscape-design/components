@@ -1,10 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef, useLayoutEffect } from 'react';
+import React, { useLayoutEffect, useRef } from 'react';
 import clsx from 'clsx';
-import styles from './styles.css.js';
+
 import { BaseComponentProps, getBaseProps } from '../../base-component';
 import { HighlightType } from '../options-list/utils/use-highlight-option.js';
+
+import styles from './styles.css.js';
 
 export type SelectableItemProps = BaseComponentProps & {
   children: React.ReactNode;

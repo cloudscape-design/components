@@ -2,14 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
-import {
-  hotspotContext as HotspotContext,
-  HotspotContext as HotspotContextType,
-} from '../../../lib/components/annotation-context/context';
-import TutorialPanel, { TutorialPanelProps } from '../../../lib/components/tutorial-panel';
 
-import { getTutorials, i18nStrings } from './data';
+import {
+  HotspotContext as HotspotContextType,
+  hotspotContext as HotspotContext,
+} from '../../../lib/components/annotation-context/context';
 import createWrapper from '../../../lib/components/test-utils/dom';
+import TutorialPanel, { TutorialPanelProps } from '../../../lib/components/tutorial-panel';
+import { getTutorials, i18nStrings } from './data';
 
 function getContext(props?: Partial<HotspotContextType>): HotspotContextType {
   return {

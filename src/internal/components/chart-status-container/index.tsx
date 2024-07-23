@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useMemo } from 'react';
 
+import { useInternalI18n } from '../../../i18n/context';
+import InternalLink from '../../../link/internal';
+import InternalStatusIndicator from '../../../status-indicator/internal';
 import { BaseComponentProps } from '../../base-component';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../events';
-import InternalStatusIndicator from '../../../status-indicator/internal';
-import InternalLink from '../../../link/internal';
 
 import styles from './styles.css.js';
-import { useInternalI18n } from '../../../i18n/context';
 
 interface ChartStatusContainerProps extends BaseComponentProps {
   statusType: 'loading' | 'finished' | 'error';

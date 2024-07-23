@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
+
+import Button from '~components/button';
 import ExpandableSection from '~components/expandable-section';
 import SpaceBetween from '~components/space-between';
-import Button from '~components/button';
 import StatusIndicator from '~components/status-indicator';
 
 import ScreenshotArea from '../utils/screenshot-area';

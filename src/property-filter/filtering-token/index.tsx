@@ -3,11 +3,11 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import InternalSelect from '../../select/internal';
 import InternalIcon from '../../icon/internal';
+import InternalSelect from '../../select/internal';
 
-import styles from './styles.css.js';
 import testUtilStyles from '../test-classes/styles.css.js';
+import styles from './styles.css.js';
 
 export namespace FilteringTokenProps {
   export type Operation = 'and' | 'or';

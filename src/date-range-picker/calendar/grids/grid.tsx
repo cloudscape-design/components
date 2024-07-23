@@ -1,28 +1,30 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useMemo, forwardRef, useRef, useState, TdHTMLAttributes } from 'react';
-import styles from './styles.css.js';
+import React, { forwardRef, TdHTMLAttributes, useMemo, useRef, useState } from 'react';
+import clsx from 'clsx';
 import {
-  isSameMonth,
+  addDays,
+  addWeeks,
+  getDaysInMonth,
   isAfter,
   isBefore,
-  isSameDay,
-  addWeeks,
-  addDays,
   isLastDayOfMonth,
-  getDaysInMonth,
+  isSameDay,
+  isSameMonth,
   isToday,
 } from 'date-fns';
 import { getCalendarMonth } from 'mnth';
-import { DateRangePickerProps, DayIndex } from '../../interfaces';
+
 import { getDateLabel, renderDayName } from '../../../calendar/utils/intl';
-import clsx from 'clsx';
-import { formatDate } from '../../../internal/utils/date-time';
 import ScreenreaderOnly from '../../../internal/components/screenreader-only/index.js';
-import { applyDisplayName } from '../../../internal/utils/apply-display-name';
-import useHiddenDescription from '../../../internal/hooks/use-hidden-description';
 import Tooltip from '../../../internal/components/tooltip';
+import useHiddenDescription from '../../../internal/hooks/use-hidden-description';
 import { useMergeRefs } from '../../../internal/hooks/use-merge-refs';
+import { applyDisplayName } from '../../../internal/utils/apply-display-name';
+import { formatDate } from '../../../internal/utils/date-time';
+import { DateRangePickerProps, DayIndex } from '../../interfaces';
+
+import styles from './styles.css.js';
 
 /**
  * Calendar grid supports two mechanisms of keyboard navigation:

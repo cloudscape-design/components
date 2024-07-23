@@ -2,15 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 
-import Container from '~components/container';
-import Header from '~components/header';
-import Grid from '~components/grid';
-import Select, { SelectProps } from '~components/select';
-import FormField from '~components/form-field';
 import Box from '~components/box';
+import Container from '~components/container';
+import FormField from '~components/form-field';
+import Grid from '~components/grid';
+import Header from '~components/header';
 import PieChart from '~components/pie-chart';
-import ScreenshotArea from '../utils/screenshot-area';
+import Select, { SelectProps } from '~components/select';
 
+import ScreenshotArea from '../utils/screenshot-area';
 import { commonProps, data1, data2, data3, FoodData, segmentDescription1 } from './common';
 
 const statusMap: Record<string, 'finished' | 'loading' | 'error'> = {

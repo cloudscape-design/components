@@ -2,14 +2,17 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import { render } from '@testing-library/react';
-import createWrapper from '../../../lib/components/test-utils/dom';
+
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
+
+import '../../__a11y__/to-validate-a11y';
 import Autosuggest, { AutosuggestProps } from '../../../lib/components/autosuggest';
+import createWrapper from '../../../lib/components/test-utils/dom';
+
 import styles from '../../../lib/components/autosuggest/styles.css.js';
 import itemStyles from '../../../lib/components/internal/components/selectable-item/styles.css.js';
-import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
-import '../../__a11y__/to-validate-a11y';
 import statusIconStyles from '../../../lib/components/status-indicator/styles.selectors.js';
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 const defaultOptions: AutosuggestProps.Options = [
   { value: '1', label: 'One' },

@@ -1,10 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import ScreenshotArea from '../utils/screenshot-area';
-import Popover from '~components/popover';
+
 import Button from '~components/button';
 import Modal from '~components/modal';
+import Popover from '~components/popover';
+
+import ScreenshotArea from '../utils/screenshot-area';
 
 export default function () {
   const [visible, setVisible] = useState(false);

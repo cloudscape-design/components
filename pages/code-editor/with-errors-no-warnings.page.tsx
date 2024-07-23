@@ -1,13 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
 import Button from '~components/button';
 import CodeEditor, { CodeEditorProps } from '~components/code-editor';
 import SpaceBetween from '~components/space-between';
+
 import ScreenshotArea from '../utils/screenshot-area';
 import { i18nStrings, themes } from './base-props';
-
-import { buildSample, awsTemplateSample } from './code-samples';
+import { awsTemplateSample, buildSample } from './code-samples';
 
 interface IState {
   ace: any;

@@ -2,9 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import { render } from '@testing-library/react';
-import createWrapper from '../../../lib/components/test-utils/dom';
+
 import KeyValuePairs from '../../../lib/components/key-value-pairs';
 import Link from '../../../lib/components/link';
+import createWrapper from '../../../lib/components/test-utils/dom';
 
 function renderKeyValuePairs(jsx: React.ReactElement) {
   const { container, ...rest } = render(jsx);

@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { renderHook } from '../../__tests__/render-hook';
-import { useAnnouncement } from '../utils/use-announcement';
-import { flattenOptions } from '../../internal/components/option/utils/flatten-options';
 import { DropdownOption, OptionDefinition, OptionGroup } from '../../internal/components/option/interfaces';
+import { flattenOptions } from '../../internal/components/option/utils/flatten-options';
+import { useAnnouncement } from '../utils/use-announcement';
 
 const options = [
   {

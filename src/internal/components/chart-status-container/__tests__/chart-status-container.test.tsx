@@ -2,8 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
-import createWrapper from '../../../../../lib/components/test-utils/dom';
+
 import ChartStatusContainer from '../../../../../lib/components/internal/components/chart-status-container';
+import createWrapper from '../../../../../lib/components/test-utils/dom';
+
 import styles from '../../../../../lib/components/internal/components/chart-status-container/styles.css.js';
 
 const commonProps = {

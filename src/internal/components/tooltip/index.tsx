@@ -3,10 +3,11 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { Transition } from '../transition';
-import PopoverContainer from '../../../popover/container';
 import PopoverBody from '../../../popover/body';
+import PopoverContainer from '../../../popover/container';
 import Portal from '../portal';
+import { Transition } from '../transition';
+
 import popoverStyles from '../../../popover/styles.css.js';
 import styles from './styles.css.js';
 

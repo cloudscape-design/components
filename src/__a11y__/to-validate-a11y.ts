@@ -3,7 +3,8 @@
 
 import Axe from 'axe-core';
 import { HtmlValidate } from 'html-validate';
-import { uniq, compact } from 'lodash';
+import { compact, uniq } from 'lodash';
+
 import { runOptions, spec } from './axe';
 
 declare global {

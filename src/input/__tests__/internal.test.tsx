@@ -2,11 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
-import createWrapper, { InputWrapper } from '../../../lib/components/test-utils/dom';
+
 import InternalFormField from '../../../lib/components/form-field/internal';
 import InternalInput from '../../../lib/components/input/internal';
-import styles from '../../../lib/components/input/styles.css.js';
 import { DEBOUNCE_DEFAULT_DELAY } from '../../../lib/components/internal/debounce';
+import createWrapper, { InputWrapper } from '../../../lib/components/test-utils/dom';
+
+import styles from '../../../lib/components/input/styles.css.js';
 
 function renderInput(jsx: React.ReactElement) {
   render(jsx);

@@ -3,13 +3,13 @@
 import React, { memo, useRef } from 'react';
 import clsx from 'clsx';
 
-import { ChartDataTypes } from './interfaces';
-import { ChartScale, NumericChartScale } from './scales';
+import { useInternalI18n } from '../../../i18n/context';
 import { TICK_LENGTH, TICK_LINE_HEIGHT, TICK_MARGIN } from './constants';
+import { ChartDataTypes } from './interfaces';
+import { FormattedTick, formatTicks, getVisibleTicks } from './label-utils';
+import { ChartScale, NumericChartScale } from './scales';
 
 import styles from './styles.css.js';
-import { formatTicks, getVisibleTicks, FormattedTick } from './label-utils';
-import { useInternalI18n } from '../../../i18n/context';
 
 interface BlockEndLabelsProps {
   axis?: 'x' | 'y';

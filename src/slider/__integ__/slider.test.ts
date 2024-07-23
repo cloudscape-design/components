@@ -1,8 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
-import createWrapper from '../../../lib/components/test-utils/selectors/index.js';
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
+import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
+
+import createWrapper from '../../../lib/components/test-utils/selectors/index.js';
+
 import tooltipStyles from '../../../lib/components/internal/components/tooltip/styles.selectors.js';
 
 const sliderWrapper = createWrapper().findSlider();

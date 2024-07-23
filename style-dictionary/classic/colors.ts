@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import merge from 'lodash/merge';
+
+import { expandColorDictionary } from '../utils';
 import { StyleDictionary } from '../utils/interfaces';
 import { tokens as parentTokens } from '../visual-refresh/colors';
-import merge from 'lodash/merge';
-import { expandColorDictionary } from '../utils';
 
 const tokens: StyleDictionary.ColorsDictionary = {
   colorGreyOpaque70: 'rgba(255, 255, 255, 0.7)',

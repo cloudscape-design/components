@@ -1,26 +1,30 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
+
+import { useCollection } from '@cloudscape-design/collection-hooks';
+
 import AppLayout from '~components/app-layout';
 import Box from '~components/box';
-import FormField from '~components/form-field';
-import Table from '~components/table';
-import Link from '~components/link';
-import SpaceBetween from '~components/space-between';
-import Pagination from '~components/pagination';
-import Input from '~components/input';
-import Header from '~components/header';
 import Button from '~components/button';
-import Select from '~components/select';
-import { Navigation, Tools, Breadcrumbs } from './utils/content-blocks';
-import * as toolsContent from './utils/tools-content';
-import labels from './utils/labels';
-import { allItems, states, TableItem } from '../property-filter/table.data';
-import { columnDefinitions, filteringProperties } from '../property-filter/common-props';
-import { useCollection } from '@cloudscape-design/collection-hooks';
-import styles from './with-table-collection-select-filter.scss';
 import CollectionPreferences from '~components/collection-preferences';
+import FormField from '~components/form-field';
+import Header from '~components/header';
+import Input from '~components/input';
+import Link from '~components/link';
+import Pagination from '~components/pagination';
+import Select from '~components/select';
+import SpaceBetween from '~components/space-between';
+import Table from '~components/table';
+
+import { columnDefinitions, filteringProperties } from '../property-filter/common-props';
+import { allItems, states, TableItem } from '../property-filter/table.data';
 import { pageSizeOptions } from '../table/shared-configs';
+import { Breadcrumbs, Navigation, Tools } from './utils/content-blocks';
+import labels from './utils/labels';
+import * as toolsContent from './utils/tools-content';
+
+import styles from './with-table-collection-select-filter.scss';
 
 const instanceTypes = new Set(allItems.map(item => item.instancetype));
 const instanceOptions = Array.from(instanceTypes).map(type => {

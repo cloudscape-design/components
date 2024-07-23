@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import { render } from '@testing-library/react';
-import createWrapper, { PaginationWrapper } from '../../../lib/components/test-utils/dom';
+
 import Pagination from '../../../lib/components/pagination';
+import createWrapper, { PaginationWrapper } from '../../../lib/components/test-utils/dom';
 
 const getItemsContent = (wrapper: PaginationWrapper) =>
   wrapper

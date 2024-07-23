@@ -1,14 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState, useContext } from 'react';
-import Icon, { IconProps } from '~components/icon';
-import TextContent from '~components/text-content';
+import React, { useContext, useState } from 'react';
+
 import Box from '~components/box';
-import ScreenshotArea from '../utils/screenshot-area';
-import SpaceBetween from '~components/space-between';
-import customIcon from './custom-icon.png';
+import Icon, { IconProps } from '~components/icon';
 import icons from '~components/icon/generated/icons';
+import SpaceBetween from '~components/space-between';
+import TextContent from '~components/text-content';
+
 import AppContext, { AppContextType } from '../app/app-context';
+import ScreenshotArea from '../utils/screenshot-area';
+import customIcon from './custom-icon.png';
 
 const UNITS = 'px';
 const tagVariants = ['h1', 'h2', 'h3', 'h4', 'h5', 'p', 'div', 'span', 'small'] as const;

@@ -2,12 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
+
 import { InternalButton } from '../../../button/internal';
 import { findUpUntil } from '../../../internal/utils/dom';
-import styles from './styles.css.js';
-import testutilStyles from '../../test-classes/styles.css.js';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { AppLayoutInternals } from '../interfaces';
+
+import testutilStyles from '../../test-classes/styles.css.js';
+import styles from './styles.css.js';
 
 interface AppLayoutNavigationImplementationProps {
   appLayoutInternals: AppLayoutInternals;

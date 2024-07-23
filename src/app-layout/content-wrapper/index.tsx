@@ -1,9 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import React from 'react';
-import styles from './styles.css.js';
+import clsx from 'clsx';
+
 import { AppLayoutProps } from '../interfaces';
+
+import styles from './styles.css.js';
 
 export interface ContentWrapperProps {
   className?: string;

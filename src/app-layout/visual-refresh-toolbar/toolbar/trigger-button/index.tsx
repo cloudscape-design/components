@@ -2,10 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
-import Icon from '../../../../icon/internal';
-import styles from './styles.css.js';
+
 import { ButtonProps } from '../../../../button/interfaces';
 import { IconProps } from '../../../../icon/interfaces';
+import Icon from '../../../../icon/internal';
+
+import styles from './styles.css.js';
 
 export interface TriggerButtonProps {
   ariaLabel?: string;

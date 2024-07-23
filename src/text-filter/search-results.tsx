@@ -2,8 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
-import styles from './styles.css.js';
+
 import LiveRegion from '../internal/components/live-region';
+
+import styles from './styles.css.js';
 
 // Debounce delay for live region (based on testing with VoiceOver)
 const LIVE_REGION_DELAY = 2000;
