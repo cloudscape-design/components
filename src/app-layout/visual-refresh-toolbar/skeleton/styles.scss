@@ -23,9 +23,9 @@
 
   // mobile grid
   grid-template-areas:
-    'topBar    topBar     topBar'
-    '.      notifications .'
-    '.          main      .';
+    'toolbar    toolbar     toolbar'
+    '.       notifications  .'
+    '.           main       .';
   grid-template-columns:
     awsui.$space-layout-content-horizontal
     1fr
