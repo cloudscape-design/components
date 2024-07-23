@@ -87,6 +87,36 @@ export class FilteringTokenWrapper extends ComponentWrapper {
   }
 }
 
+// The internal wrapper has two extra methods that are not available publicly
+// until the property filter token grouping is supported.
+export class InternalFilteringTokenWrapper extends FilteringTokenWrapper {
+  findEditButton(): ElementWrapper<HTMLButtonElement> {
+    return this.findByClassName<HTMLButtonElement>(testUtilStyles['filtering-token-edit-button'])!;
+  }
+
+  findGroupTokens(): Array<FilteringGroupedTokenWrapper> {
+    return this.findAllByClassName(testUtilStyles['filtering-token-inner']).map(
+      w => new FilteringGroupedTokenWrapper(w.getElement())
+    );
+  }
+}
+
+export class FilteringGroupedTokenWrapper extends ComponentWrapper {
+  static rootSelector = testUtilStyles['filtering-token-inner'];
+
+  findLabel(): ElementWrapper {
+    return this.findByClassName(testUtilStyles['filtering-token-inner-content'])!;
+  }
+
+  findRemoveButton(): ElementWrapper<HTMLButtonElement> {
+    return this.findByClassName<HTMLButtonElement>(testUtilStyles['filtering-token-inner-dismiss-button'])!;
+  }
+
+  findTokenOperation(): SelectWrapper | null {
+    return this.findComponent(`.${testUtilStyles['filtering-token-inner-select']}`, SelectWrapper);
+  }
+}
+
 export class PropertyFilterEditorDropdownWrapper extends ComponentWrapper {
   findHeader(): ElementWrapper {
     return this.findByClassName(popoverStyles.header)!;

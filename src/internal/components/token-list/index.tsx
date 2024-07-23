@@ -11,6 +11,8 @@ import TokenLimitToggle from './token-limit-toggle';
 
 import styles from './styles.css.js';
 
+export { TokenListProps };
+
 export default function TokenList<Item>({
   items,
   alignment,

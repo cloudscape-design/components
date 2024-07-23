@@ -23,8 +23,9 @@ import { PopoverProps } from './interfaces';
 
 import styles from './styles.css.js';
 
-export interface InternalPopoverProps extends PopoverProps, InternalBaseComponentProps {
+export interface InternalPopoverProps extends Omit<PopoverProps, 'triggerType'>, InternalBaseComponentProps {
   __onOpen?: NonCancelableEventHandler<null>;
+  triggerType?: PopoverProps.TriggerType | 'filtering-token';
 }
 
 export interface InternalPopoverRef {
@@ -178,7 +179,11 @@ function InternalPopover(
   return (
     <span
       {...baseProps}
-      className={clsx(styles.root, baseProps.className)}
+      className={clsx(
+        styles.root,
+        baseProps.className,
+        triggerType === 'filtering-token' && styles['root-filtering-token']
+      )}
       ref={mergedRef}
       onMouseDown={() => {
         // Indicate there was a click inside popover recently, including nested portals.
