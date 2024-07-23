@@ -3,11 +3,12 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 import clsx from 'clsx';
 
+import { getGlobalFlag } from '@cloudscape-design/component-toolkit/internal';
+
 import { getBaseProps } from '../internal/base-component';
 import { fireCancelableEvent, fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { isDevelopment } from '../internal/is-development';
-import { getGlobalFlag } from '../internal/utils/global-flags';
 import { createWidgetizedComponent } from '../internal/widgets';
 import { SideNavigationProps } from './interfaces';
 import { Header, NavigationItemsList } from './parts';
