@@ -3,14 +3,13 @@
 import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
-import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
+import { getGlobalFlag, useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
 import { TransitionStatus } from '../internal/components/transition';
 import { useSplitPanelContext } from '../internal/context/split-panel-context';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { getGlobalFlag } from '../internal/utils/global-flags';
 import { SplitPanelContentProps } from './interfaces';
 
 import styles from './styles.css.js';

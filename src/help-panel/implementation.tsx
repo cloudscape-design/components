@@ -3,6 +3,8 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { getGlobalFlag } from '@cloudscape-design/component-toolkit/internal';
+
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
 import LiveRegion from '../internal/components/live-region';
@@ -27,9 +29,10 @@ export function HelpPanelImplementation({
 }: HelpPanelInternalProps) {
   const baseProps = getBaseProps(restProps);
   const i18n = useInternalI18n('help-panel');
+  const hasToolbar = getGlobalFlag('appLayoutWidget');
   const containerProps = {
     ...baseProps,
-    className: clsx(baseProps.className, styles['help-panel']),
+    className: clsx(baseProps.className, styles['help-panel'], hasToolbar && styles['with-toolbar']),
   };
   return loading ? (
     <div {...containerProps} ref={__internalRootRef}>
@@ -39,7 +42,7 @@ export function HelpPanelImplementation({
     </div>
   ) : (
     <div {...containerProps} ref={__internalRootRef}>
-      {header && <div className={styles.header}>{header}</div>}
+      {header && <div className={clsx(styles.header)}>{header}</div>}
       <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
         <div className={styles.content}>{children}</div>
       </LinkDefaultVariantContext.Provider>

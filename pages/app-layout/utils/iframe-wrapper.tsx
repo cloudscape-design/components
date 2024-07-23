@@ -1,9 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
-
-import AppContext from '../../app/app-context';
 
 import styles from './iframe-wrapper.scss';
 
@@ -31,15 +29,26 @@ function syncClasses(from: HTMLElement, to: HTMLElement) {
 }
 
 export function IframeWrapper({ id, AppComponent }: { id: string; AppComponent: React.ComponentType }) {
-  const { urlParams } = useContext(AppContext);
-  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const iframeEl = iframeRef.current;
-    if (!iframeEl || !iframeEl.contentDocument) {
+    const container = ref.current;
+    if (!container) {
       return;
     }
-    const iframeDocument = iframeEl.contentDocument;
+    const iframeEl = container.ownerDocument.createElement('iframe');
+    iframeEl.className = styles['full-screen'];
+    iframeEl.id = id;
+    iframeEl.title = id;
+    iframeEl.srcdoc = '<!DOCTYPE html>';
+    container.appendChild(iframeEl);
+
+    const iframeDocument = iframeEl.contentDocument!;
+    // Prevent iframe document instance from reload
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=543435
+    iframeDocument.open();
+    iframeDocument.close();
+
     const innerAppRoot = iframeDocument.createElement('div');
     iframeDocument.body.appendChild(innerAppRoot);
     copyStyles(document, iframeDocument);
@@ -49,8 +58,9 @@ export function IframeWrapper({ id, AppComponent }: { id: string; AppComponent: 
     return () => {
       syncClassesCleanup();
       ReactDOM.unmountComponentAtNode(innerAppRoot);
+      container.removeChild(iframeEl);
     };
-  }, [AppComponent, urlParams.visualRefresh]);
+  }, [id, AppComponent]);
 
-  return <iframe id={id} title={id} ref={iframeRef} className={styles['full-screen']}></iframe>;
+  return <div ref={ref}></div>;
 }

@@ -8,13 +8,32 @@
 @use '../../internal/styles/tokens' as awsui;
 @use '../../token-group/constants' as constants;
 
-.root {
+$token-padding-block: styles.$control-padding-vertical;
+$token-padding-inline: styles.$control-padding-horizontal;
+$token-grouped-padding-block: 2px;
+$token-grouped-padding-inline: styles.$control-padding-horizontal;
+$inner-token-padding-block: 1px;
+$inner-token-padding-inline: styles.$control-padding-horizontal;
+
+.root,
+.inner-root {
+  @include styles.styles-reset;
+
   display: flex;
   align-content: stretch;
+
+  // Make tokens larger so that individual and group tokens appear of the same size.
+  &.has-groups {
+    min-block-size: calc(2px + #{awsui.$size-vertical-input});
+
+    &.compact-mode {
+      min-block-size: calc(2px + 2 * #{styles.$control-border-width} + #{awsui.$size-vertical-input});
+    }
+  }
 }
 
-.token {
-  flex-grow: 1;
+.token,
+.inner-token {
   border-block: awsui.$border-field-width solid constants.$token-border-color;
   border-inline: awsui.$border-field-width solid constants.$token-border-color;
   display: flex;
@@ -26,6 +45,21 @@
   border-end-end-radius: awsui.$border-radius-token;
   color: awsui.$color-text-body-default;
   box-sizing: border-box;
+
+  &.grouped {
+    justify-content: space-between;
+  }
+}
+
+.list {
+  list-style: none;
+  margin-block: 0;
+  margin-inline: 0;
+  padding-block: 0;
+  padding-inline: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: awsui.$space-xs;
 }
 
 .show-operation {
@@ -34,16 +68,32 @@
   border-end-start-radius: 0;
 }
 
-.select {
+.select,
+.inner-select {
   /* used in test-utils */
 }
 
 .token-content {
-  padding-block: styles.$control-padding-vertical;
-  padding-inline: styles.$control-padding-horizontal;
+  display: flex;
+  align-items: center;
+
+  padding-block: $token-padding-block;
+  padding-inline: $token-padding-inline;
+
+  &-grouped {
+    padding-block: $token-grouped-padding-block;
+    padding-inline: $token-grouped-padding-inline;
+  }
 }
 
-.dismiss-button {
+.inner-token-content {
+  padding-block: $inner-token-padding-block;
+  padding-inline: $inner-token-padding-inline;
+}
+
+.edit-button,
+.dismiss-button,
+.inner-dismiss-button {
   inline-size: 30px;
   margin-block: 0;
   margin-inline: 0;
@@ -68,6 +118,11 @@
     cursor: pointer;
     color: awsui.$color-text-interactive-hover;
   }
+
+  &:disabled {
+    color: awsui.$color-text-interactive-disabled;
+    border-color: awsui.$color-border-control-disabled;
+  }
 }
 
 .token-disabled {
@@ -75,9 +130,4 @@
   background-color: awsui.$color-background-container-content;
   color: awsui.$color-text-disabled;
   pointer-events: none;
-
-  > .dismiss-button {
-    color: awsui.$color-text-interactive-disabled;
-    border-color: awsui.$color-border-control-disabled;
-  }
 }

@@ -46,21 +46,27 @@
   &-form {
     margin-block-end: awsui.$space-scaled-l;
   }
+
   &-field-property {
     /* used in test-utils */
   }
+
   &-field-operator {
     margin-block-start: awsui.$space-scaled-l;
   }
+
   &-field-value {
     margin-block-start: awsui.$space-scaled-l;
   }
+
   &-cancel {
     margin-inline-end: awsui.$space-xs;
   }
+
   &-submit {
     /* used in test-utils */
   }
+
   &-actions {
     display: flex;
     justify-content: flex-end;
@@ -68,6 +74,7 @@
     border-block-start: 1px solid #{awsui.$color-border-dropdown-item-default};
   }
 }
+
 .token-editor {
   &-actions {
     // The below code cancels horizontal padding of the popover and horizontal margin of the token-editor.
@@ -75,6 +82,7 @@
     margin-inline: calc(-1 * #{awsui.$space-m} + -1 * #{awsui.$space-xxs});
   }
 }
+
 .property-editor {
   padding-block: awsui.$space-m;
   padding-inline: awsui.$space-m;
@@ -104,7 +112,6 @@
 }
 
 .remove-all,
-.token-label,
 .join-operation,
 .custom-filter-actions {
   /* used in test-utils */

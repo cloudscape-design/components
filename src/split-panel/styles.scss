@@ -93,6 +93,9 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   border-block-start: none;
   box-shadow: awsui.$shadow-split-side;
   block-size: 100%;
+  &.with-toolbar {
+    box-shadow: none;
+  }
 }
 
 .slider-wrapper-bottom {
@@ -146,7 +149,10 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   }
   :not(.drawer-closed) > .drawer-content-bottom > & {
     background-color: awsui.$color-background-layout-panel-content;
-    border-block-end: awsui.$border-panel-header-width solid awsui.$color-border-divider-default;
+    border-block-end: awsui.$border-panel-header-width solid awsui.$color-border-panel-header;
+  }
+  .with-toolbar:not(.drawer-closed) > .drawer-content-bottom > & {
+    border-color: transparent;
   }
 }
 
@@ -156,6 +162,9 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   margin-block-start: awsui.$space-panel-split-top;
   position: relative;
   z-index: 0; // the content inside .content-bottom should not be above pane-header-wrapper-bottom
+  .with-toolbar > .drawer-content-bottom > & {
+    margin-block-start: 0px;
+  }
   .drawer-mobile > .drawer-content-bottom > & {
     padding-block: 0;
     padding-inline: awsui.$space-l;
@@ -197,7 +206,10 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
     padding-block: 0;
     padding-inline-end: awsui.$space-m;
     padding-inline-start: awsui.$space-panel-side-left;
-    border-block-end: awsui.$border-panel-header-width solid awsui.$color-border-divider-default;
+    border-block-end: awsui.$border-panel-header-width solid awsui.$color-border-panel-header;
+  }
+  &.with-toolbar > .pane-header-wrapper-side {
+    border-color: transparent;
   }
   > .pane-content-wrapper-side {
     padding-block: 0;
@@ -205,6 +217,9 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
     padding-inline-end: awsui.$space-panel-side-right;
     margin-block-start: awsui.$space-panel-split-top;
     margin-block-end: awsui.$space-panel-split-bottom;
+  }
+  &.with-toolbar > .pane-content-wrapper-side {
+    margin-block-start: 0px;
   }
 }
 
@@ -217,6 +232,9 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   inline-size: 100%;
   margin-block: awsui.$size-vertical-panel-icon-offset;
   margin-inline: 0;
+  &.with-toolbar {
+    margin-block: constants.$toolbar-vertical-panel-icon-offset;
+  }
 
   &-text {
     @include styles.font-panel-header;

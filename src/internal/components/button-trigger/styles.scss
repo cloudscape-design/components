@@ -10,6 +10,9 @@
 
 @use './motion';
 
+$padding-inline-inner-filtering-token: styles.$control-padding-horizontal;
+$padding-block-inner-filtering-token: 0px;
+
 .button-trigger {
   @include styles.styles-reset;
 
@@ -29,6 +32,21 @@
   border-block: styles.$control-border-width solid awsui.$color-border-input-default;
   border-inline: styles.$control-border-width solid awsui.$color-border-input-default;
   min-block-size: awsui.$size-vertical-input;
+
+  &.in-filtering-token {
+    padding-block: $padding-block-inner-filtering-token;
+    padding-inline: $padding-inline-inner-filtering-token;
+
+    border-color: tokenGroup.$token-border-color;
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+    block-size: 100%;
+    min-block-size: unset;
+
+    @include focus-visible.when-visible {
+      @include styles.focus-highlight(awsui.$space-filtering-token-operation-select-focus-outline-gutter);
+    }
+  }
 
   &.has-caret {
     padding-inline-end: styles.$control-icon-horizontal-padding;
@@ -59,12 +77,15 @@
 
   &.disabled {
     @include styles.form-disabled-element;
+
     > .arrow {
       color: awsui.$color-text-button-inline-icon-disabled;
     }
+
     &.in-filtering-token {
       border-color: awsui.$color-border-control-disabled;
     }
+
     > .placeholder {
       @include styles.form-placeholder-disabled;
     }
@@ -83,6 +104,7 @@
     @include focus-visible.when-visible {
       @include styles.form-focus-element();
     }
+
     &:invalid {
       // discard built-in invalid styles, customers should use `invalid` property only (AWSUI-3947)
       box-shadow: none;
@@ -96,16 +118,6 @@
     &.warning,
     &.warning:focus {
       @include styles.form-warning-control();
-    }
-  }
-
-  &.in-filtering-token {
-    border-color: tokenGroup.$token-border-color;
-    border-start-end-radius: 0;
-    border-end-end-radius: 0;
-    block-size: 100%;
-    @include focus-visible.when-visible {
-      @include styles.focus-highlight(awsui.$space-filtering-token-operation-select-focus-outline-gutter);
     }
   }
 
