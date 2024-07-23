@@ -4,11 +4,21 @@ import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
 import { KeyCode } from '@cloudscape-design/component-toolkit/internal';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import ButtonGroup, { ButtonGroupProps } from '../../../lib/components/button-group';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
 import buttonStyles from '../../../lib/components/button/styles.css.js';
+
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
+  warnOnce: jest.fn(),
+}));
+
+afterEach(() => {
+  (warnOnce as jest.Mock).mockReset();
+});
 
 const defaultProps: ButtonGroupProps = {
   variant: 'icon',
@@ -52,6 +62,14 @@ const items1: ButtonGroupProps.ItemOrGroup[] = [
       { id: 'menu-open', iconName: 'file-open', text: 'Open' },
       { id: 'menu-upload', iconName: 'upload', text: 'Upload' },
     ],
+  },
+];
+
+const emptyGroup: ButtonGroupProps.ItemOrGroup[] = [
+  {
+    type: 'group',
+    text: 'Feedback',
+    items: [],
   },
 ];
 
@@ -213,5 +231,23 @@ describe('tooltips', () => {
       rerender(<ButtonGroup {...defaultProps} items={items.map(item => ({ ...item, [property]: item.id === id }))} />);
       expect(wrapper.findTooltip()).toBeNull();
     });
+  });
+});
+
+describe('dev warnings', () => {
+  const componentName = 'ButtonGroup';
+
+  test('missing icon warning', () => {
+    renderButtonGroup({ items: items1 });
+
+    expect(warnOnce).toHaveBeenCalledTimes(1);
+    expect(warnOnce).toHaveBeenCalledWith(componentName, 'Missing icon for item with id: search');
+  });
+
+  test('empty group warning', () => {
+    renderButtonGroup({ items: emptyGroup });
+
+    expect(warnOnce).toHaveBeenCalledTimes(1);
+    expect(warnOnce).toHaveBeenCalledWith(componentName, 'Empty group detected. Empty groups are not allowed.');
   });
 });
