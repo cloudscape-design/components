@@ -17055,8 +17055,8 @@ It prevents users from clicking the button, but it can still be focused.",
       "type": "string",
     },
     Object {
-      "description": "Specifies the URL of a custom icon in pressed state. Use this property if the icon you want isn't available.
-If you set both \`pressedIconUrl\` and \`pressedIconSvg\`, \`pressedIconUrl\` will take precedence.
+      "description": "Specifies the URL of a custom icon in pressed state. Use this property if the icon needed for your use case isn't available.
+\`pressedIconUrl\` will take precedence if you set both \`pressedIconUrl\` and \`pressedIconSvg\`.
 ",
       "name": "pressedIconUrl",
       "optional": true,
@@ -17123,10 +17123,10 @@ In most cases, they aren't needed, as the \`svg\` element inherits styles from t
       "description": "Specifies the SVG of a custom icon in pressed state.
 Use this property if you want your custom icon to inherit colors dictated by variant or hover states.
 When this property is set, the component will be decorated with \`aria-hidden=\\"true\\"\`. Ensure that the \`svg\` element:
-- has attribute \`focusable=\\"false\\"\`.
-- has \`viewBox=\\"0 0 16 16\\"\`.
+- has attribute \`focusable=\\"false\\"\`
+- has \`viewBox=\\"0 0 16 16\\"\`
 
-If you set the \`svg\` element as the root node of the slot, the component will automatically
+If you set the \`svg\` element as the root node of the slot, the component will automatically:
 - set \`stroke=\\"currentColor\\"\`, \`fill=\\"none\\"\`, and \`vertical-align=\\"top\\"\`.
 - set the stroke width based on the size of the icon.
 - set the width and height of the SVG element based on the size of the icon.
