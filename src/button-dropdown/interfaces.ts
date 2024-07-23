@@ -11,7 +11,7 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 
 export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewport {
   /**
-   * Array of objects with a number of suppoted types.
+   * Array of objects with a number of supported types.
    *
    * The following properties are supported across all types:
    *
