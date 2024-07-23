@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import stylelint from 'stylelint';
+
 import { configBasedir } from './common.js';
 
 // This is for prettier format: https://github.com/prettier/prettier/issues/2330

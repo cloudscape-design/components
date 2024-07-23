@@ -195,7 +195,13 @@ const InternalButtonDropdown = React.forwardRef(
       trigger = (
         <div role="group" aria-label={ariaLabel} className={styles['split-trigger-wrapper']}>
           <div
-            className={clsx(styles['trigger-item'], styles['split-trigger'])}
+            className={clsx(
+              styles['trigger-item'],
+              styles['split-trigger'],
+              styles[`variant-${variant}`],
+              mainActionProps.disabled && styles.disabled,
+              mainActionProps.loading && styles.loading
+            )}
             // Close dropdown upon main action click unless event is cancelled.
             onClick={closeDropdown}
             // Prevent keyboard events from propagation to the button dropdown handler.
@@ -218,7 +224,10 @@ const InternalButtonDropdown = React.forwardRef(
             className={clsx(
               styles['trigger-item'],
               styles['dropdown-trigger'],
-              isVisualRefresh && styles['visual-refresh']
+              isVisualRefresh && styles['visual-refresh'],
+              styles[`variant-${variant}`],
+              baseTriggerProps.disabled && styles.disabled,
+              baseTriggerProps.loading && styles.loading
             )}
           >
             <InternalButton ref={triggerRef} {...baseTriggerProps} />

@@ -25,7 +25,7 @@
     grid-row: 1;
     display: grid;
     grid-template-columns: awsui.$space-m 1fr auto awsui.$space-m;
-    grid-template-rows: awsui.$size-vertical-panel-icon-offset auto 1fr;
+    grid-template-rows: constants.$toolbar-vertical-panel-icon-offset auto 1fr;
     overflow-y: auto;
 
     > .drawer-close-button {

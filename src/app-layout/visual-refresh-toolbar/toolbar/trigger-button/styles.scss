@@ -10,30 +10,24 @@
 @mixin trigger-selected-styles {
   background: awsui.$color-background-layout-toggle-selected-default;
   color: awsui.$color-text-layout-toggle-selected;
-  border-block: awsui.$border-field-width solid awsui.$color-background-layout-toggle-selected-default;
-  border-inline: awsui.$border-field-width solid awsui.$color-background-layout-toggle-selected-default;
 
   &:hover {
     background: awsui.$color-background-layout-toggle-selected-hover;
-    border-color: awsui.$color-background-layout-toggle-selected-hover;
   }
   &:active {
     background: awsui.$color-background-layout-toggle-selected-active;
-    border-color: awsui.$color-background-layout-toggle-selected-active;
   }
 }
 
 @mixin trigger-button-styles {
   background: transparent;
   color: awsui.$color-text-interactive-default;
-  border-block: awsui.$border-field-width solid transparent;
-  border-inline: awsui.$border-field-width solid transparent;
   border-start-start-radius: 50%;
   border-start-end-radius: 50%;
   border-end-start-radius: 50%;
   border-end-end-radius: 50%;
-  block-size: awsui.$space-layout-toggle-diameter;
-  inline-size: awsui.$space-layout-toggle-diameter;
+  block-size: 34px;
+  inline-size: 34px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -42,13 +36,11 @@
   &:hover {
     background: awsui.$color-background-input-disabled;
     color: awsui.$color-text-interactive-hover;
-    border-color: awsui.$color-background-input-disabled;
   }
 
   &:active {
     background: awsui.$color-background-control-disabled;
     color: awsui.$color-text-interactive-hover;
-    border-color: awsui.$color-background-control-disabled;
   }
 }
 
@@ -61,12 +53,12 @@
   justify-content: center;
   align-items: center;
   clip-path: path(
-    'M34.2193 10.1845C33.3961 10.579 32.4739 10.8 31.5 10.8C28.0206 10.8 25.2 7.97939 25.2 4.5C25.2 3.52614 25.421 2.6039 25.8155 1.78066C23.4518 0.639587 20.8006 0 18 0C8.05887 0 0 8.05887 0 18C0 27.9411 8.05887 36 18 36C27.9411 36 36 27.9411 36 18C36 15.1994 35.3604 12.5482 34.2193 10.1845Z'
+    'M32.185 9.34876C31.1913 10.1916 29.905 10.7 28.4999 10.7C25.3519 10.7 22.7999 8.14803 22.7999 5C22.7999 3.68192 23.2473 2.46833 23.9985 1.50281C21.8642 0.537421 19.4948 0 17 0C7.61116 0 0 7.61116 0 17C0 26.3888 7.61116 34 17 34C26.3888 34 34 26.3888 34 17C34 14.2479 33.346 11.6485 32.185 9.34876Z'
   );
 
   @include styles.with-direction('rtl') {
     clip-path: path(
-      'M1.78066 10.1845C2.6039 10.579 3.52615 10.8 4.5 10.8C7.97939 10.8 10.8 7.97939 10.8 4.5C10.8 3.52614 10.579 2.6039 10.1845 1.78066C12.5482 0.639587 15.1994 0 18 0C27.9411 0 36 8.05887 36 18C36 27.9411 27.9411 36 18 36C8.05887 36 0 27.9411 0 18C0 15.1994 0.639587 12.5482 1.78066 10.1845Z'
+      'M1.81502 9.34876C2.80869 10.1916 4.09501 10.7 5.50007 10.7C8.6481 10.7 11.2001 8.14803 11.2001 5C11.2001 3.68192 10.7527 2.46833 10.0015 1.50281C12.1358 0.537421 14.5052 0 17 0C26.3888 0 34 7.61116 34 17C34 26.3888 26.3888 34 17 34C7.61116 34 0 26.3888 0 17C0 14.2479 0.653984 11.6485 1.81502 9.34876Z'
     );
   }
 }
@@ -78,6 +70,8 @@ handleSplitPanelMaxWidth function in the context.
 */
 .trigger {
   @include trigger-button-styles();
+  border-block: none;
+  border-inline: none;
   cursor: pointer;
   pointer-events: auto;
 
@@ -114,8 +108,8 @@ handleSplitPanelMaxWidth function in the context.
 
 .dot {
   position: absolute;
-  inline-size: 9px;
-  block-size: 9px;
+  inline-size: 8px;
+  block-size: 8px;
   border-start-start-radius: 8px;
   border-start-end-radius: 8px;
   border-end-start-radius: 8px;

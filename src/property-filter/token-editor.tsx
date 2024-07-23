@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef, useState } from 'react';
+
+import React from 'react';
 import clsx from 'clsx';
 
 import InternalAutosuggest from '../autosuggest/internal';
@@ -8,7 +9,6 @@ import InternalButton from '../button/internal';
 import InternalFormField from '../form-field/internal';
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
 import { NonCancelableEventHandler } from '../internal/events';
-import InternalPopover, { InternalPopoverRef } from '../popover/internal';
 import { SelectProps } from '../select/interfaces';
 import InternalSelect from '../select/internal';
 import { getAllowedOperators, getPropertySuggestions, operatorToDescription } from './controller';
@@ -176,14 +176,14 @@ interface TokenEditorProps {
   customGroupsText: readonly GroupText[];
   disabled?: boolean;
   freeTextFiltering: InternalFreeTextFiltering;
-  expandToViewport?: boolean;
   filteringProperties: readonly InternalFilteringProperty[];
   filteringOptions: readonly InternalFilteringOption[];
   i18nStrings: I18nStrings;
   onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
   setToken: (newToken: Token) => void;
-  token: InternalToken;
-  triggerComponent?: React.ReactNode;
+  onDismiss: () => void;
+  temporaryToken: InternalToken;
+  onChangeTemporaryToken: (token: InternalToken) => void;
 }
 
 export function TokenEditor({
@@ -191,21 +191,15 @@ export function TokenEditor({
   asyncProps,
   customGroupsText,
   freeTextFiltering,
-  expandToViewport,
   filteringProperties,
   filteringOptions,
   i18nStrings,
   onLoadItems,
   setToken,
-  token,
-  triggerComponent,
+  onDismiss,
+  temporaryToken,
+  onChangeTemporaryToken,
 }: TokenEditorProps) {
-  const [temporaryToken, setTemporaryToken] = useState<InternalToken>(token);
-  const popoverRef = useRef<InternalPopoverRef>(null);
-  const closePopover = () => {
-    popoverRef.current && popoverRef.current.dismissPopover();
-  };
-
   const property = temporaryToken.property;
   const onChangePropertyKey = (newPropertyKey: undefined | string) => {
     const filteringProperty = filteringProperties.reduce<InternalFilteringProperty | undefined>(
@@ -218,103 +212,88 @@ export function TokenEditor({
         ? temporaryToken.operator
         : allowedOperators[0];
     const matchedProperty = filteringProperties.find(property => property.propertyKey === newPropertyKey) ?? null;
-    setTemporaryToken({ ...temporaryToken, property: matchedProperty, operator, value: null });
+    onChangeTemporaryToken({ ...temporaryToken, property: matchedProperty, operator, value: null });
   };
 
   const operator = temporaryToken.operator;
   const onChangeOperator = (newOperator: ComparisonOperator) => {
-    setTemporaryToken({ ...temporaryToken, operator: newOperator });
+    onChangeTemporaryToken({ ...temporaryToken, operator: newOperator });
   };
 
   const value = temporaryToken.value;
   const onChangeValue = (newValue: string) => {
-    setTemporaryToken({ ...temporaryToken, value: newValue });
+    onChangeTemporaryToken({ ...temporaryToken, value: newValue });
   };
 
   return (
-    <InternalPopover
-      ref={popoverRef}
-      className={styles['token-label']}
-      triggerType="text"
-      header={i18nStrings.editTokenHeader}
-      size="large"
-      position="right"
-      dismissAriaLabel={i18nStrings.dismissAriaLabel}
-      __onOpen={() => setTemporaryToken(token)}
-      renderWithPortal={expandToViewport}
-      content={
-        <div className={styles['token-editor']}>
-          <div className={styles['token-editor-form']}>
-            <InternalFormField
-              label={i18nStrings.propertyText}
-              className={clsx(styles['token-editor-field-property'], testUtilStyles['token-editor-field-property'])}
-            >
-              <PropertyInput
-                property={property}
-                onChangePropertyKey={onChangePropertyKey}
-                asyncProps={asyncProperties ? asyncProps : null}
-                filteringProperties={filteringProperties}
-                onLoadItems={onLoadItems}
-                customGroupsText={customGroupsText}
-                i18nStrings={i18nStrings}
-                freeTextFiltering={freeTextFiltering}
-              />
-            </InternalFormField>
+    <div className={styles['token-editor']}>
+      <div className={styles['token-editor-form']}>
+        <InternalFormField
+          label={i18nStrings.propertyText}
+          className={clsx(styles['token-editor-field-property'], testUtilStyles['token-editor-field-property'])}
+        >
+          <PropertyInput
+            property={property}
+            onChangePropertyKey={onChangePropertyKey}
+            asyncProps={asyncProperties ? asyncProps : null}
+            filteringProperties={filteringProperties}
+            onLoadItems={onLoadItems}
+            customGroupsText={customGroupsText}
+            i18nStrings={i18nStrings}
+            freeTextFiltering={freeTextFiltering}
+          />
+        </InternalFormField>
 
-            <InternalFormField
-              label={i18nStrings.operatorText}
-              className={clsx(styles['token-editor-field-operator'], testUtilStyles['token-editor-field-operator'])}
-            >
-              <OperatorInput
-                property={property}
-                operator={operator}
-                onChangeOperator={onChangeOperator}
-                i18nStrings={i18nStrings}
-                freeTextFiltering={freeTextFiltering}
-              />
-            </InternalFormField>
+        <InternalFormField
+          label={i18nStrings.operatorText}
+          className={clsx(styles['token-editor-field-operator'], testUtilStyles['token-editor-field-operator'])}
+        >
+          <OperatorInput
+            property={property}
+            operator={operator}
+            onChangeOperator={onChangeOperator}
+            i18nStrings={i18nStrings}
+            freeTextFiltering={freeTextFiltering}
+          />
+        </InternalFormField>
 
-            <InternalFormField
-              label={i18nStrings.valueText}
-              className={clsx(styles['token-editor-field-value'], testUtilStyles['token-editor-field-value'])}
-            >
-              <ValueInput
-                property={property}
-                operator={operator}
-                value={value}
-                onChangeValue={onChangeValue}
-                asyncProps={asyncProps}
-                filteringOptions={filteringOptions}
-                onLoadItems={onLoadItems}
-                i18nStrings={i18nStrings}
-              />
-            </InternalFormField>
-          </div>
+        <InternalFormField
+          label={i18nStrings.valueText}
+          className={clsx(styles['token-editor-field-value'], testUtilStyles['token-editor-field-value'])}
+        >
+          <ValueInput
+            property={property}
+            operator={operator}
+            value={value}
+            onChangeValue={onChangeValue}
+            asyncProps={asyncProps}
+            filteringOptions={filteringOptions}
+            onLoadItems={onLoadItems}
+            i18nStrings={i18nStrings}
+          />
+        </InternalFormField>
+      </div>
 
-          <div className={styles['token-editor-actions']}>
-            <InternalButton
-              formAction="none"
-              variant="link"
-              className={clsx(styles['token-editor-cancel'], testUtilStyles['token-editor-cancel'])}
-              onClick={closePopover}
-            >
-              {i18nStrings.cancelActionText}
-            </InternalButton>
-            <InternalButton
-              className={clsx(styles['token-editor-submit'], testUtilStyles['token-editor-submit'])}
-              formAction="none"
-              onClick={() => {
-                setToken(matchTokenValue(temporaryToken, filteringOptions));
-                closePopover();
-              }}
-            >
-              {i18nStrings.applyActionText}
-            </InternalButton>
-          </div>
-        </div>
-      }
-    >
-      {triggerComponent}
-    </InternalPopover>
+      <div className={styles['token-editor-actions']}>
+        <InternalButton
+          formAction="none"
+          variant="link"
+          className={clsx(styles['token-editor-cancel'], testUtilStyles['token-editor-cancel'])}
+          onClick={onDismiss}
+        >
+          {i18nStrings.cancelActionText}
+        </InternalButton>
+        <InternalButton
+          className={clsx(styles['token-editor-submit'], testUtilStyles['token-editor-submit'])}
+          formAction="none"
+          onClick={() => {
+            setToken(matchTokenValue(temporaryToken, filteringOptions));
+            onDismiss();
+          }}
+        >
+          {i18nStrings.applyActionText}
+        </InternalButton>
+      </div>
+    </div>
   );
 }

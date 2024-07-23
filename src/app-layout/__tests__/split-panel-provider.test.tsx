@@ -2,9 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { act, render } from '@testing-library/react';
-import createWrapper, { SplitPanelWrapper } from '../../../lib/components/test-utils/dom';
+
 import { SplitPanelProvider, SplitPanelProviderProps } from '../../../lib/components/app-layout/split-panel';
 import SplitPanel, { SplitPanelProps } from '../../../lib/components/split-panel';
+import createWrapper, { SplitPanelWrapper } from '../../../lib/components/test-utils/dom';
 
 const defaultSplitPanelProps: SplitPanelProps = {
   header: '',

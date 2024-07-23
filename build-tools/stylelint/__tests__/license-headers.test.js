@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import stylelint from 'stylelint';
+
 import { configBasedir } from './common.js';
 
 function runPlugin(code, header, fix = false) {

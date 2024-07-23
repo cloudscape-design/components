@@ -13,6 +13,9 @@
   padding-block-end: 0;
   padding-inline-end: awsui.$space-panel-side-right;
   padding-inline-start: awsui.$space-panel-side-left;
+  &.with-toolbar {
+    padding-block-start: awsui.$space-static-m;
+  }
 
   /* stylelint-disable @cloudscape-design/no-implicit-descendant, selector-max-type */
   hr {
@@ -115,33 +118,38 @@
     font-weight: styles.$font-weight-bold;
   }
   /* stylelint-enable @cloudscape-design/no-implicit-descendant, selector-max-type */
+}
 
-  & > .header {
-    @include styles.font-panel-header;
-    color: awsui.$color-text-heading-default;
-    padding-block-end: awsui.$space-panel-header-vertical;
-    padding-inline: awsui.$space-panel-side-left calc(#{awsui.$space-xl} + #{awsui.$space-scaled-xxl});
-    // padding to make sure the header doesn't overlap with the close icon
-    border-block: none;
-    border-inline: none;
-    border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-panel-header;
-    margin-block-start: 0;
-    margin-block-end: awsui.$space-panel-content-top;
-    margin-inline-end: calc(-1 * #{awsui.$space-panel-side-right});
-    margin-inline-start: calc(-1 * #{awsui.$space-panel-side-left});
-
-    /* stylelint-disable @cloudscape-design/no-implicit-descendant, selector-max-type */
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-      @include styles.font-panel-header;
-      padding-block: 0;
-      margin-block: 0;
-    }
-    /* stylelint-enable @cloudscape-design/no-implicit-descendant, selector-max-type */
+.header {
+  @include styles.font-panel-header;
+  color: awsui.$color-text-heading-default;
+  padding-block-end: awsui.$space-panel-header-vertical;
+  padding-inline: awsui.$space-panel-side-left calc(#{awsui.$space-xl} + #{awsui.$space-scaled-xxl});
+  // padding to make sure the header doesn't overlap with the close icon
+  border-block: none;
+  border-inline: none;
+  border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-panel-header;
+  margin-block-start: 0;
+  margin-block-end: awsui.$space-panel-content-top;
+  margin-inline-end: calc(-1 * #{awsui.$space-panel-side-right});
+  margin-inline-start: calc(-1 * #{awsui.$space-panel-side-left});
+  .with-toolbar > & {
+    border-color: transparent;
+    padding-block-end: awsui.$space-static-m;
+    margin-block-end: 0px;
   }
+
+  /* stylelint-disable @cloudscape-design/no-implicit-descendant, selector-max-type */
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @include styles.font-panel-header;
+    padding-block: 0;
+    margin-block: 0;
+  }
+  /* stylelint-enable @cloudscape-design/no-implicit-descendant, selector-max-type */
 }
 
 .content {

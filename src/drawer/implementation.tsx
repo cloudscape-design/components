@@ -7,6 +7,7 @@ import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
 import LiveRegion from '../internal/components/live-region';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { getGlobalFlag } from '../internal/utils/global-flags';
 import { createWidgetizedComponent } from '../internal/widgets';
 import InternalStatusIndicator from '../status-indicator/internal';
 import { DrawerProps } from './interfaces';
@@ -25,9 +26,10 @@ export function DrawerImplementation({
 }: DrawerInternalProps) {
   const baseProps = getBaseProps(restProps);
   const i18n = useInternalI18n('drawer');
+  const hasToolbar = getGlobalFlag('appLayoutWidget');
   const containerProps = {
     ...baseProps,
-    className: clsx(baseProps.className, styles.drawer),
+    className: clsx(baseProps.className, styles.drawer, hasToolbar && styles['with-toolbar']),
   };
   return loading ? (
     <div {...containerProps} ref={__internalRootRef}>
