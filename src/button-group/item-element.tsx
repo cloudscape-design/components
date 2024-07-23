@@ -83,8 +83,6 @@ const ItemElement = forwardRef(
 
       if (popoverFeedback) {
         setTooltip({ item: item.id, feedback: true });
-      } else {
-        setTooltip(null);
       }
 
       fireCancelableEvent(onItemClick, { id: 'id' in event.detail ? event.detail.id : item.id }, event);

@@ -56,7 +56,7 @@ const IconButtonItem = forwardRef(
         >
           {item.text}
         </InternalButton>
-        {showTooltip && !item.disabled && (!showFeedback || item.popoverFeedback) && (
+        {showTooltip && !item.disabled && !item.loading && (!showFeedback || item.popoverFeedback) && (
           <Tooltip
             trackRef={containerRef}
             trackKey={item.id}

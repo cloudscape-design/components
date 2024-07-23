@@ -1,10 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import React from 'react';
-import ScreenshotArea from '../utils/screenshot-area';
-import PermutationsView from '../utils/permutations-view';
-import createPermutations from '../utils/permutations';
+
 import { ButtonGroup, ButtonGroupProps } from '~components';
+
+import createPermutations from '../utils/permutations';
+import PermutationsView from '../utils/permutations-view';
+import ScreenshotArea from '../utils/screenshot-area';
 
 const feedbackGroup: ButtonGroupProps.Group = {
   type: 'group',

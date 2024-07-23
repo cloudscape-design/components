@@ -1,8 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import React, { useContext, useState } from 'react';
-import ButtonGroup, { ButtonGroupProps } from '~components/button-group';
+
 import { Box, Button, SpaceBetween, StatusIndicator } from '~components';
+import ButtonGroup, { ButtonGroupProps } from '~components/button-group';
+
 import AppContext, { AppContextType } from '../app/app-context';
 
 type PageContext = React.Context<
@@ -50,11 +53,25 @@ const addButton: ButtonGroupProps.Item = {
   disabled: true,
 };
 
+const sendButton: ButtonGroupProps.Item = {
+  type: 'icon-button',
+  id: 'send',
+  iconName: 'send',
+  text: 'Send',
+};
+
 const removeButton: ButtonGroupProps.Item = {
   type: 'icon-button',
   id: 'remove',
   iconName: 'remove',
   text: 'Remove',
+};
+
+const redoButton: ButtonGroupProps.Item = {
+  type: 'icon-button',
+  id: 'redo',
+  iconName: 'redo',
+  text: 'Redo',
 };
 
 const moreActionsMenu: ButtonGroupProps.MenuDropdown = {
@@ -85,36 +102,37 @@ const moreActionsMenu: ButtonGroupProps.MenuDropdown = {
   ],
 };
 
-const moreActionsMenu2: ButtonGroupProps.MenuDropdown = {
-  type: 'menu-dropdown',
-  id: 'more-actions2',
-  text: 'More actions',
-  items: [
-    {
-      id: 'cut',
-      iconName: 'delete-marker',
-      text: 'Cut',
-    },
-  ],
-};
-
-const actionsGroup: ButtonGroupProps.Group = {
-  type: 'group',
-  text: 'Actions',
-  items: [addButton, removeButton, moreActionsMenu, moreActionsMenu2],
-};
-
 export default function ButtonGroupPage() {
   const {
     urlParams: { dropdownExpandToViewport = true },
   } = useContext(AppContext as PageContext);
   const ref = React.useRef<ButtonGroupProps.Ref>(null);
 
+  const [items, setItems] = useState([
+    feedbackGroup,
+    copyButton,
+    addButton,
+    sendButton,
+    redoButton,
+    removeButton,
+    moreActionsMenu,
+  ]);
+
   const onItemClick: ButtonGroupProps['onItemClick'] = event => {
     document.querySelector('#last-clicked')!.textContent = event.detail.id;
 
     if (event.detail.id === 'dislike') {
-      setItems([copyButton, actionsGroup]);
+      setItems(prev => prev.filter(item => item.type !== 'group'));
+    }
+    if (event.detail.id === 'redo') {
+      setItems(prev =>
+        prev.map(item => (item.type === 'icon-button' && item.id === 'redo' ? { ...item, disabled: true } : item))
+      );
+    }
+    if (event.detail.id === 'remove') {
+      setItems(prev =>
+        prev.map(item => (item.type === 'icon-button' && item.id === 'remove' ? { ...item, loading: true } : item))
+      );
     }
   };
 
@@ -125,8 +143,6 @@ export default function ButtonGroupPage() {
   const onFocusOnMoreActionsButtonClick = () => {
     ref.current?.focus('more-actions');
   };
-
-  const [items, setItems] = useState([feedbackGroup, copyButton, actionsGroup]);
 
   return (
     <Box margin="m">

@@ -48,7 +48,7 @@ const MenuDropdownItem = React.forwardRef(
         data-testid={item.id}
         customTriggerBuilder={({ onClick, isOpen, triggerRef, ariaLabel, ariaExpanded, testUtilsClass }) => (
           <div ref={containerRef}>
-            {!isOpen && showTooltip && (
+            {!isOpen && showTooltip && !item.disabled && !item.loading && (
               <Tooltip
                 trackRef={containerRef}
                 trackKey={item.id}
