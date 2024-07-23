@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
-import { waitFor } from '@testing-library/react';
-import { act } from 'react-dom/test-utils';
-import { describeEachAppLayout, renderComponent, isDrawerClosed } from './utils';
+import { act, waitFor } from '@testing-library/react';
+
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
+import { describeEachAppLayout, isDrawerClosed, renderComponent } from './utils';
 
 describeEachAppLayout({ themes: ['classic', 'refresh'] }, () => {
   test('opens tools drawer', () => {

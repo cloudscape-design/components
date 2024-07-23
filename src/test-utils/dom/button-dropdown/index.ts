@@ -1,9 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { act } from 'react-dom/test-utils';
-
 import { ComponentWrapper, createWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
 
+import { act } from '../../utils';
 import ButtonWrapper from '../button/index.js';
 
 import buttonStyles from '../../../button/styles.selectors.js';

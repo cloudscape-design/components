@@ -1,8 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { act, Simulate } from 'react-dom/test-utils';
+import { Simulate } from 'react-dom/test-utils';
 
 import { ComponentWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
+
+import { act } from '../../utils';
 
 import inputSelectors from '../../../input/styles.selectors.js';
 
