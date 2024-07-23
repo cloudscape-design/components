@@ -9950,6 +9950,11 @@ Object {
   "events": Array [
     Object {
       "cancelable": false,
+      "description": "Called when input focus is removed from the UI control.",
+      "name": "onBlur",
+    },
+    Object {
+      "cancelable": false,
       "description": "Called when the user selects or deselects an option.
 The event \`detail\` contains the current \`selectedOptions\`.",
       "detailInlineType": Object {
@@ -9966,6 +9971,49 @@ The event \`detail\` contains the current \`selectedOptions\`.",
       "detailType": "MultiselectProps.MultiselectChangeDetail",
       "name": "onChange",
     },
+    Object {
+      "cancelable": false,
+      "description": "Called when input focus is set onto the UI control.",
+      "name": "onFocus",
+    },
+    Object {
+      "cancelable": false,
+      "description": "Use this event to implement the asynchronous behavior for the component.
+The event is called in the following situations:
+* The user scrolls to the end of the list of options, if \`statusType\` is set to \`pending\`.
+* The user clicks on the recovery button in the error state.
+* The user types inside the input field.
+* The user focuses the input field.
+
+The detail object contains the following properties:
+* \`filteringText\` - The value that you need to use to fetch options.
+* \`firstPage\` - Indicates that you should fetch the first page of options that match the \`filteringText\`.
+* \`samePage\` - Indicates that you should fetch the same page that you have previously fetched (for example, when the user clicks on the recovery button).
+",
+      "detailInlineType": Object {
+        "name": "OptionsLoadItemsDetail",
+        "properties": Array [
+          Object {
+            "name": "filteringText",
+            "optional": false,
+            "type": "string",
+          },
+          Object {
+            "name": "firstPage",
+            "optional": false,
+            "type": "boolean",
+          },
+          Object {
+            "name": "samePage",
+            "optional": false,
+            "type": "boolean",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "OptionsLoadItemsDetail",
+      "name": "onLoadItems",
+    },
   ],
   "functions": Array [
     Object {
@@ -9978,10 +10026,61 @@ The event \`detail\` contains the current \`selectedOptions\`.",
   "name": "Multiselect",
   "properties": Array [
     Object {
+      "description": "Adds \`aria-describedby\` to the component. If you're using this component within a form field,
+don't set this property because the form field component automatically sets it.
+Use this property if the component isn't surrounded by a form field, or you want to override the value
+automatically set by the form field (for example, if you have two components within a single form field).
+
+To use it correctly, define an ID for each element that you want to use as a description
+and set the property to a string of each ID separated by spaces (for example, \`\\"id1 id2 id3\\"\`).
+",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds \`aria-label\` to the select element.
+Use this if you don't have a visible label for this control.",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds \`aria-labelledby\` to the component. If you're using this component within a form field,
+don't set this property because the form field component automatically sets it.
+Use this property if the component isn't using \`inlineLabelText\` and isn't surrounded by a form field, or you want to override the value
+automatically set by the form field (for example, if you have two components within a single form field).
+
+To use it correctly, define an ID for the element you want to use as label and set the property to that ID.
+",
+      "name": "ariaLabelledby",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds \`aria-required\` to the native input element.",
+      "name": "ariaRequired",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "description": "Automatically focuses the trigger when component is mounted.",
       "name": "autoFocus",
       "optional": true,
       "type": "boolean",
+    },
+    Object {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Specifies the ID for the trigger component. It uses an automatically generated ID by default.",
+      "name": "controlId",
+      "optional": true,
+      "type": "string",
     },
     Object {
       "description": "Specifies an \`aria-label\` for the token deselection button.",
@@ -10000,6 +10099,100 @@ The event \`detail\` contains the current \`selectedOptions\`.",
       "name": "deselectAriaLabel",
       "optional": true,
       "type": "MultiselectProps.DeselectAriaLabelFunction",
+    },
+    Object {
+      "description": "Determines whether the whole select component is disabled.",
+      "name": "disabled",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Provides a text alternative for the error icon in the error message.",
+      "i18nTag": true,
+      "name": "errorIconAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Specifies the text to display when a data fetching error occurs. Make sure that you provide \`recoveryText\`.",
+      "name": "errorText",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "By default, the dropdown height is constrained to fit inside the height of its next scrollable container element.
+Enabling this property will allow the dropdown to extend beyond that container by using fixed positioning and
+[React Portals](https://reactjs.org/docs/portals.html).
+Set this property if the dropdown would otherwise be constrained by a scrollable container,
+for example inside table and split view layouts.
+
+However, use discretion. We recommend you don't enable this property unless necessary
+because fixed positioning results in a slight, visible lag when scrolling complex pages.
+",
+      "name": "expandToViewport",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Adds an \`aria-label\` on the built-in filtering input if filtering is enabled.",
+      "name": "filteringAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds an \`aria-label\` to the clear button inside the search input.",
+      "i18nTag": true,
+      "name": "filteringClearAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Specifies the placeholder to display in the filtering input if filtering is enabled.",
+      "name": "filteringPlaceholder",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Specifies the text to display with the number of matches at the bottom of the dropdown menu while filtering.",
+      "name": "filteringResultsText",
+      "optional": true,
+      "type": "(matchesCount: number, totalCount: number) => string",
+    },
+    Object {
+      "defaultValue": "'none'",
+      "description": "Determines how filtering is applied to the list of \`options\`:
+* \`auto\` - The component will automatically filter options based on user input.
+* \`manual\` - You will set up \`onChange\` or \`onLoadItems\` event listeners and filter options on your side or request
+them from server.
+
+By default the component will filter the provided \`options\` based on the value of the filtering input field.
+Only options that have a \`value\`, \`label\`, \`description\` or \`labelTag\` that contains the input value as a substring
+are displayed in the list of options.
+
+If you set this property to \`manual\`, this default filtering mechanism is disabled and all provided \`options\` are
+displayed in the dropdown list. In that case make sure that you use the \`onChange\` or \`onLoadItems\` events in order
+to set the \`options\` property to the options that are relevant for the user, given the filtering input value.
+
+Note: Manual filtering doesn't disable match highlighting.
+",
+      "inlineType": Object {
+        "name": "OptionsFilteringType",
+        "type": "union",
+        "values": Array [
+          "none",
+          "auto",
+          "manual",
+        ],
+      },
+      "name": "filteringType",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Specifies the text to display at the bottom of the dropdown menu after pagination has reached the end.",
+      "name": "finishedText",
+      "optional": true,
+      "type": "string",
     },
     Object {
       "defaultValue": "false",
@@ -10034,11 +10227,143 @@ because it will be added by the component automatically.",
       "type": "MultiselectProps.I18nStrings",
     },
     Object {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Overrides the invalidation state. Usually the invalid state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.",
+      "name": "invalid",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "defaultValue": "true",
       "description": "Determines whether the dropdown list stays open after the user selects an item.",
       "name": "keepOpen",
       "optional": true,
       "type": "boolean",
+    },
+    Object {
+      "description": "Specifies the text to display when in the loading state.",
+      "name": "loadingText",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "deprecatedTag": "Has no effect.",
+      "description": "",
+      "name": "name",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "defaultValue": "[]",
+      "description": "Specifies an array of options that are displayed to the user as a dropdown list.
+The options can be grouped using \`OptionGroup\` objects.
+#### Option
+- \`value\` (string) - The returned value of the option when selected.
+- \`label\` (string) - (Optional) Option text displayed to the user.
+- \`lang\` (string) - (Optional) The language of the option, provided as a BCP 47 language tag.
+- \`description\` (string) - (Optional) Further information about the option that appears below the label.
+- \`disabled\` (boolean) - (Optional) Determines whether the option is disabled.
+- \`disabledReason\` (string) - (Optional) Displays tooltip near the item when disabled. Use to provide additional context.
+- \`labelTag\` (string) - (Optional) A label tag that provides additional guidance, shown next to the label.
+- \`tags\` [string[]] - (Optional) A list of tags giving further guidance about the option.
+- \`filteringTags\` [string[]] - (Optional) A list of additional tags used for automatic filtering.
+- \`iconName\` (string) - (Optional) Specifies the name of an [icon](/components/icon/) to display in the option.
+- \`iconAlt\` (string) - (Optional) Specifies alternate text for a custom icon, for use with \`iconUrl\`.
+- \`iconUrl\` (string) - (Optional) URL of a custom icon.
+- \`iconSvg\` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the \`svg\` slot of the [icon component](/components/icon/).
+
+#### OptionGroup
+- \`label\` (string) - Option group text displayed to the user.
+- \`disabled\` (boolean) - (Optional) Determines whether the option group is disabled.
+- \`options\` (Option[]) - (Optional) The options under this group.
+
+Note: Only one level of option nesting is supported.
+
+If you want to use the built-in filtering capabilities of this component, provide
+a list of all valid options here and they will be automatically filtered based on the user's filtering input.
+
+Alternatively, you can listen to the \`onChange\` or \`onLoadItems\` event and set new options
+on your own.
+",
+      "inlineType": Object {
+        "name": "SelectProps.Options",
+        "properties": Array [],
+        "type": "object",
+      },
+      "name": "options",
+      "optional": true,
+      "type": "SelectProps.Options",
+    },
+    Object {
+      "description": "Specifies the hint text that's displayed in the field when no option has been selected.",
+      "name": "placeholder",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Specifies if the control is read-only, which prevents the
+user from both modifying the value and opening the dropdown. A read-only control is still focusable.",
+      "name": "readOnly",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Specifies the text for the recovery button. The text is displayed next to the error text.
+Use the \`onLoadItems\` event to perform a recovery action (for example, retrying the request).",
+      "i18nTag": true,
+      "name": "recoveryText",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Overrides the element that is announced to screen readers
+when the highlighted option changes. By default, this announces
+the option's name and properties, and its selected state if
+the \`selectedLabel\` property is defined.
+The highlighted option is provided, and its group (if groups
+are used and it differs from the group of the previously highlighted option).
+For more information, see the
+[accessibility guidelines](/components/select/?tabId=usage#accessibility-guidelines).
+",
+      "inlineType": Object {
+        "name": "SelectProps.ContainingOptionAndGroupString",
+        "parameters": Array [
+          Object {
+            "name": "option",
+            "type": "SelectProps.Option",
+          },
+          Object {
+            "name": "group",
+            "type": "SelectProps.OptionGroup",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "renderHighlightedAriaLive",
+      "optional": true,
+      "type": "SelectProps.ContainingOptionAndGroupString",
+    },
+    Object {
+      "description": "Specifies the localized string that describes an option as being selected.
+This is required to provide a good screen reader experience. For more information, see the
+[accessibility guidelines](/components/select/?tabId=usage#accessibility-guidelines).",
+      "i18nTag": true,
+      "name": "selectedAriaLabel",
+      "optional": true,
+      "type": "string",
     },
     Object {
       "defaultValue": "[]",
@@ -10047,6 +10372,27 @@ Provide an empty array to clear the selection.",
       "name": "selectedOptions",
       "optional": false,
       "type": "ReadonlyArray<MultiselectProps.Option>",
+    },
+    Object {
+      "defaultValue": "'finished'",
+      "description": "Specifies the current status of loading more options.
+* \`pending\` - Indicates that no request in progress, but more options may be loaded.
+* \`loading\` - Indicates that data fetching is in progress.
+* \`finished\` - Indicates that pagination has finished and no more requests are expected.
+* \`error\` - Indicates that an error occurred during fetch. You should use \`recoveryText\` to enable the user to recover.",
+      "inlineType": Object {
+        "name": "DropdownStatusProps.StatusType",
+        "type": "union",
+        "values": Array [
+          "pending",
+          "loading",
+          "finished",
+          "error",
+        ],
+      },
+      "name": "statusType",
+      "optional": true,
+      "type": "string",
     },
     Object {
       "description": "Specifies the maximum number of displayed tokens. If the property isn't set, all of the tokens are displayed.",
@@ -10068,8 +10414,47 @@ Use to assign unique labels when there are multiple token groups with the same \
       "optional": true,
       "type": "string",
     },
+    Object {
+      "description": "If you have more than 500 options, enable this flag to apply a performance optimization
+that makes the filtering experience smoother. We don't recommend enabling the feature if you
+have less than 500 options, because the improvements to performance are offset by a
+visible scrolling lag.
+When you set this flag to \`true\`, it removes options that are not currently in view from the DOM.
+If your test accesses such options, you need to first scroll the options container
+to the correct offset, before performing any operations on them. Use the element returned
+by the \`findOptionsContainer\` test utility for this.
+",
+      "name": "virtualScroll",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Overrides the warning state. Usually the warning state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.
+When you use it, provide additional context with
+information on the input state, and associate it
+with the input using \`ariaDescribedby\`.",
+      "name": "warning",
+      "optional": true,
+      "type": "boolean",
+    },
   ],
-  "regions": Array [],
+  "regions": Array [
+    Object {
+      "description": "Displayed when there are no options to display.
+This is only shown when \`statusType\` is set to \`finished\` or not set at all.",
+      "isDefault": false,
+      "name": "empty",
+    },
+    Object {
+      "description": "Displayed for \`filteringType=\\"auto\\"\` when there are no matches for the filtering.",
+      "isDefault": false,
+      "name": "noMatch",
+    },
+  ],
   "releaseStatus": "stable",
 }
 `;

@@ -93,11 +93,6 @@ export interface BaseSelectProps
    */
   filteringClearAriaLabel?: string;
   /**
-   * Adds a small label inline with the input for saving vertical space in the UI.
-   * For use with collection select filters only.
-   */
-  inlineLabelText?: string;
-  /**
    * @deprecated Has no effect.
    */
   name?: string;
@@ -168,6 +163,11 @@ export interface BaseSelectProps
 }
 
 export interface SelectProps extends BaseSelectProps {
+  /**
+   * Adds a small label inline with the input for saving vertical space in the UI.
+   * For use with collection select filters only.
+   */
+  inlineLabelText?: string;
   /**
    * Defines the variant of the trigger. You can use a simple label or the entire option (`label | option`)
    */
