@@ -81,6 +81,11 @@ export interface AutosuggestProps
   enteredTextLabel?: AutosuggestProps.EnteredTextLabel;
 
   /**
+   * Specifies whether to display the custom value indicator (for example, `Use "${value}"`).
+   */
+  hideEnteredTextLabel?: boolean;
+
+  /**
    * Specifies the text to display with the number of matches at the bottom of the dropdown menu while filtering.
    */
   filteringResultsText?: (matchesCount: number, totalCount: number) => string;
