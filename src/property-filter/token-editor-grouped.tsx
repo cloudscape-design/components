@@ -1,0 +1,500 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React, { useEffect, useState } from 'react';
+
+import InternalAutosuggest from '../autosuggest/internal';
+import InternalButton from '../button/internal';
+import InternalButtonDropdown from '../button-dropdown/internal';
+import InternalFormField from '../form-field/internal';
+import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
+import { NonCancelableEventHandler } from '../internal/events';
+import { SelectProps } from '../select/interfaces';
+import InternalSelect from '../select/internal';
+import { getAllowedOperators, getPropertySuggestions, operatorToDescription } from './controller';
+import {
+  ComparisonOperator,
+  GroupText,
+  I18nStrings,
+  InternalFilteringOption,
+  InternalFilteringProperty,
+  InternalFreeTextFiltering,
+  InternalToken,
+  LoadItemsDetail,
+} from './interfaces';
+import { useLoadItems } from './use-load-items';
+import { getFormattedToken } from './utils';
+
+import styles from './styles.css.js';
+
+interface PropertyInputProps {
+  asyncProps: null | DropdownStatusProps;
+  customGroupsText: readonly GroupText[];
+  freeTextFiltering: InternalFreeTextFiltering;
+  filteringProperties: readonly InternalFilteringProperty[];
+  i18nStrings: I18nStrings;
+  onChangePropertyKey: (propertyKey: undefined | string) => void;
+  onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
+  property: null | InternalFilteringProperty;
+}
+
+function PropertyInput({
+  property,
+  onChangePropertyKey,
+  asyncProps,
+  filteringProperties,
+  onLoadItems,
+  customGroupsText,
+  i18nStrings,
+  freeTextFiltering,
+}: PropertyInputProps) {
+  const propertySelectHandlers = useLoadItems(onLoadItems);
+  const asyncPropertySelectProps = asyncProps ? { ...asyncProps, ...propertySelectHandlers } : {};
+  const propertyOptions: (SelectProps.Option | SelectProps.OptionGroup)[] = getPropertySuggestions(
+    filteringProperties,
+    customGroupsText,
+    i18nStrings,
+    ({ propertyKey, propertyLabel }) => ({
+      value: propertyKey,
+      label: propertyLabel,
+      dontCloseOnSelect: true,
+    })
+  );
+
+  const allPropertiesOption = {
+    label: i18nStrings.allPropertiesLabel,
+    value: undefined,
+  };
+  if (!freeTextFiltering.disabled) {
+    propertyOptions.unshift(allPropertiesOption);
+  }
+  return (
+    <InternalSelect
+      options={propertyOptions}
+      selectedOption={
+        property
+          ? {
+              value: property.propertyKey ?? undefined,
+              label: property.propertyLabel,
+            }
+          : allPropertiesOption
+      }
+      onChange={e => onChangePropertyKey(e.detail.selectedOption.value)}
+      {...asyncPropertySelectProps}
+    />
+  );
+}
+
+interface OperatorInputProps {
+  i18nStrings: I18nStrings;
+  onChangeOperator: (operator: ComparisonOperator) => void;
+  operator: undefined | ComparisonOperator;
+  property: null | InternalFilteringProperty;
+  freeTextFiltering: InternalFreeTextFiltering;
+}
+
+function OperatorInput({ property, operator, onChangeOperator, i18nStrings, freeTextFiltering }: OperatorInputProps) {
+  const operatorOptions = (property ? getAllowedOperators(property) : freeTextFiltering.operators).map(operator => ({
+    value: operator,
+    label: operator,
+    description: operatorToDescription(operator, i18nStrings),
+  }));
+  return (
+    <InternalSelect
+      options={operatorOptions}
+      triggerVariant="label"
+      selectedOption={
+        operator
+          ? {
+              value: operator,
+              label: operator,
+              description: operatorToDescription(operator, i18nStrings),
+            }
+          : null
+      }
+      onChange={e => onChangeOperator(e.detail.selectedOption.value as ComparisonOperator)}
+    />
+  );
+}
+
+interface ValueInputProps {
+  asyncProps: DropdownStatusProps;
+  filteringOptions: readonly InternalFilteringOption[];
+  i18nStrings: I18nStrings;
+  onChangeValue: (value: string) => void;
+  onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
+  operator: undefined | ComparisonOperator;
+  property: null | InternalFilteringProperty;
+  value: undefined | string;
+}
+
+function ValueInput({
+  property,
+  operator,
+  value,
+  onChangeValue,
+  asyncProps,
+  filteringOptions,
+  onLoadItems,
+  i18nStrings,
+}: ValueInputProps) {
+  const valueOptions = property
+    ? filteringOptions
+        .filter(option => option.property?.propertyKey === property.propertyKey)
+        .map(({ label, value }) => ({ label, value }))
+    : [];
+
+  const valueAutosuggestHandlers = useLoadItems(onLoadItems, '', property?.externalProperty);
+  const asyncValueAutosuggestProps = property?.propertyKey
+    ? { ...valueAutosuggestHandlers, ...asyncProps }
+    : { empty: asyncProps.empty };
+  const [matchedOption] = valueOptions.filter(option => option.value === value);
+
+  const OperatorForm = property?.propertyKey && operator && property?.getValueFormRenderer(operator);
+
+  return OperatorForm ? (
+    <OperatorForm value={value} onChange={onChangeValue} operator={operator} />
+  ) : (
+    <InternalAutosuggest
+      enteredTextLabel={i18nStrings.enteredTextLabel ?? (value => value)}
+      value={matchedOption?.label ?? value ?? ''}
+      clearAriaLabel={i18nStrings.clearAriaLabel}
+      onChange={e => onChangeValue(e.detail.value)}
+      disabled={!operator}
+      options={valueOptions}
+      {...asyncValueAutosuggestProps}
+      virtualScroll={true}
+    />
+  );
+}
+
+export interface TokenEditorProps {
+  asyncProperties?: boolean;
+  asyncProps: DropdownStatusProps;
+  customGroupsText: readonly GroupText[];
+  freeTextFiltering: InternalFreeTextFiltering;
+  filteringProperties: readonly InternalFilteringProperty[];
+  filteringOptions: readonly InternalFilteringOption[];
+  i18nStrings: I18nStrings;
+  i18nStringsExt: {
+    tokenEditorRemoveFilterLabel: string; // TODO: include index or token?
+    tokenEditorRemoveFromGroupFilterLabel: string; // TODO: include index or token?
+    tokenEditorRemoveMoreFilterLabel: string; // TODO: include index or token?
+    tokenEditorAddNewFilterLabel: string;
+    tokenEditorAddExistingFilterLabel: (token: { property: string; operator: string; value: string }) => string;
+    tokenEditorAddFilterMoreLabel: string;
+  };
+  onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
+  onSubmit: () => void;
+  onDismiss: () => void;
+  standaloneTokens: InternalToken[];
+  onChangeStandalone: (newStandalone: InternalToken[]) => void;
+  tempGroup: InternalToken[];
+  onChangeTempGroup: (token: InternalToken[]) => void;
+}
+
+export function TokenEditor({
+  asyncProperties,
+  asyncProps,
+  customGroupsText,
+  freeTextFiltering,
+  filteringProperties,
+  filteringOptions,
+  i18nStrings,
+  i18nStringsExt,
+  onLoadItems,
+  onSubmit,
+  onDismiss,
+  standaloneTokens,
+  onChangeStandalone,
+  tempGroup,
+  onChangeTempGroup,
+}: TokenEditorProps) {
+  const groups = tempGroup.map((temporaryToken, index) => {
+    const setTemporaryToken = (newToken: InternalToken) => {
+      const copy = [...tempGroup];
+      copy[index] = newToken;
+      onChangeTempGroup(copy);
+    };
+    const property = temporaryToken.property;
+    const onChangePropertyKey = (newPropertyKey: undefined | string) => {
+      const filteringProperty = filteringProperties.reduce<InternalFilteringProperty | undefined>(
+        (acc, property) => (property.propertyKey === newPropertyKey ? property : acc),
+        undefined
+      );
+      const allowedOperators = filteringProperty ? getAllowedOperators(filteringProperty) : freeTextFiltering.operators;
+      const operator =
+        temporaryToken.operator && allowedOperators.indexOf(temporaryToken.operator) !== -1
+          ? temporaryToken.operator
+          : allowedOperators[0];
+      const matchedProperty = filteringProperties.find(property => property.propertyKey === newPropertyKey) ?? null;
+      setTemporaryToken({ ...temporaryToken, property: matchedProperty, operator, value: null });
+    };
+
+    const operator = temporaryToken.operator;
+    const onChangeOperator = (newOperator: ComparisonOperator) => {
+      setTemporaryToken({ ...temporaryToken, operator: newOperator });
+    };
+
+    const value = temporaryToken.value;
+    const onChangeValue = (newValue: unknown) => {
+      setTemporaryToken({ ...temporaryToken, value: newValue });
+    };
+
+    return { token: temporaryToken, property, onChangePropertyKey, operator, onChangeOperator, value, onChangeValue };
+  });
+  return (
+    <div className={styles['token-editor-grouped']}>
+      <TokenEditorFields
+        fields={groups.length}
+        removeButton={{
+          labelRemove: i18nStringsExt.tokenEditorRemoveFilterLabel,
+          labelRemoveFromGroup: i18nStringsExt.tokenEditorRemoveFromGroupFilterLabel,
+          labelRemoveMore: i18nStringsExt.tokenEditorRemoveMoreFilterLabel,
+          onRemove: index => {
+            const copy = [...tempGroup];
+            copy.splice(index, 1);
+            onChangeTempGroup(copy);
+          },
+          onRemoveFromGroup: index => {
+            const removedToken = tempGroup[index];
+            const copy = [...tempGroup];
+            copy.splice(index, 1);
+            onChangeTempGroup(copy);
+            onChangeStandalone([...standaloneTokens, removedToken]);
+          },
+        }}
+        property={{
+          label: i18nStrings.propertyText ?? '',
+          render: index => (
+            <PropertyInput
+              property={groups[index].property}
+              onChangePropertyKey={groups[index].onChangePropertyKey}
+              asyncProps={asyncProperties ? asyncProps : null}
+              filteringProperties={filteringProperties}
+              onLoadItems={onLoadItems}
+              customGroupsText={customGroupsText}
+              i18nStrings={i18nStrings}
+              freeTextFiltering={freeTextFiltering}
+            />
+          ),
+        }}
+        operator={{
+          label: i18nStrings.operatorText ?? '',
+          render: index => (
+            <OperatorInput
+              property={groups[index].property}
+              operator={groups[index].operator}
+              onChangeOperator={groups[index].onChangeOperator}
+              i18nStrings={i18nStrings}
+              freeTextFiltering={freeTextFiltering}
+            />
+          ),
+        }}
+        value={{
+          label: i18nStrings.valueText ?? '',
+          render: index => (
+            <ValueInput
+              property={groups[index].property}
+              operator={groups[index].operator}
+              value={groups[index].value}
+              onChangeValue={groups[index].onChangeValue}
+              asyncProps={asyncProps}
+              filteringOptions={filteringOptions}
+              onLoadItems={onLoadItems}
+              i18nStrings={i18nStrings}
+            />
+          ),
+        }}
+      />
+
+      <div className={styles['token-editor-grouped-add-token']}>
+        <InternalButtonDropdown
+          variant="normal"
+          ariaLabel={i18nStringsExt.tokenEditorAddFilterMoreLabel}
+          items={standaloneTokens.map((token, index) => ({
+            id: index.toString(),
+            text: i18nStringsExt.tokenEditorAddExistingFilterLabel(getFormattedToken(token)),
+          }))}
+          onItemClick={({ detail }) => {
+            const index = parseInt(detail.id);
+            const addedToken = standaloneTokens[index];
+            const copy = [...standaloneTokens];
+            copy.splice(index, 1);
+            onChangeStandalone(copy);
+            onChangeTempGroup([...tempGroup, addedToken]);
+          }}
+          disabled={standaloneTokens.length === 0}
+          mainAction={{
+            text: i18nStringsExt.tokenEditorAddNewFilterLabel,
+            onClick: () => onChangeTempGroup([...tempGroup, { property: null, operator: ':', value: null }]),
+          }}
+        />
+      </div>
+
+      <div className={styles['token-editor-grouped-actions']}>
+        <InternalButton
+          formAction="none"
+          variant="link"
+          className={styles['token-editor-grouped-cancel']}
+          onClick={onDismiss}
+        >
+          {i18nStrings.cancelActionText}
+        </InternalButton>
+        <InternalButton className={styles['token-editor-grouped-submit']} formAction="none" onClick={onSubmit}>
+          {i18nStrings.applyActionText}
+        </InternalButton>
+      </div>
+    </div>
+  );
+}
+
+interface TokenEditorLayout {
+  fields: number;
+  removeButton: {
+    labelRemove: string;
+    labelRemoveFromGroup: string;
+    labelRemoveMore: string;
+    onRemove: (index: number) => void;
+    onRemoveFromGroup: (index: number) => void;
+  };
+  property: {
+    label: string;
+    render: (index: number) => React.ReactNode;
+  };
+  operator: {
+    label: string;
+    render: (index: number) => React.ReactNode;
+  };
+  value: {
+    label: string;
+    render: (index: number) => React.ReactNode;
+  };
+}
+
+function TokenEditorFields({ fields, removeButton, property, operator, value }: TokenEditorLayout) {
+  const breakpoint = 912;
+  const [isNarrow, setIsNarrow] = useState(window.innerWidth <= breakpoint);
+
+  useEffect(() => {
+    const onWindowResize = () => {
+      setIsNarrow(window.innerWidth <= breakpoint);
+    };
+    window.addEventListener('resize', onWindowResize);
+    return () => {
+      window.removeEventListener('resize', onWindowResize);
+    };
+  }, []);
+
+  const indices: number[] = [];
+  for (let i = 0; i < fields; i++) {
+    indices.push(i);
+  }
+
+  if (isNarrow) {
+    return (
+      <div className={styles['token-editor-grouped-list']}>
+        {indices.map(index => (
+          <div key={index} className={styles['token-editor-grouped-list-item']}>
+            <InternalFormField label={property.label} className={styles['token-editor-grouped-field-property']}>
+              {property.render(index)}
+            </InternalFormField>
+
+            <InternalFormField label={operator.label} className={styles['token-editor-grouped-field-operator']}>
+              {operator.render(index)}
+            </InternalFormField>
+
+            <InternalFormField label={value.label} className={styles['token-editor-grouped-field-value']}>
+              {value.render(index)}
+            </InternalFormField>
+
+            <div className={styles['token-editor-grouped-remove-token']}>
+              <InternalButtonDropdown
+                variant="normal"
+                ariaLabel={removeButton.labelRemoveMore}
+                items={[{ id: 'remove-from-group', text: removeButton.labelRemoveFromGroup }]}
+                onItemClick={({ detail }) => {
+                  switch (detail.id) {
+                    case 'remove-from-group':
+                      return removeButton.onRemoveFromGroup(index);
+                  }
+                }}
+                disabled={fields === 1}
+                mainAction={{
+                  text: removeButton.labelRemove,
+                  onClick: () => removeButton.onRemove(index),
+                  disabled: fields === 1,
+                }}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className={styles['token-editor-grouped-table']}>
+      <div className={styles['token-editor-grouped-table-row']}>
+        <div className={styles['token-editor-grouped-table-header-cell']}>{property.label}</div>
+        <div className={styles['token-editor-grouped-table-header-cell']}>{operator.label}</div>
+        <div className={styles['token-editor-grouped-table-header-cell']}>{value.label}</div>
+      </div>
+
+      {indices.map(index => (
+        <div key={index} className={styles['token-editor-grouped-table-row']}>
+          <div className={styles['token-editor-grouped-table-cell']}>
+            <InternalFormField
+              label={property.label}
+              className={styles['token-editor-grouped-field-property']}
+              __hideLabel={true}
+            >
+              {property.render(index)}
+            </InternalFormField>
+          </div>
+
+          <div className={styles['token-editor-grouped-table-cell']}>
+            <InternalFormField
+              label={operator.label}
+              className={styles['token-editor-grouped-field-operator']}
+              __hideLabel={true}
+            >
+              {operator.render(index)}
+            </InternalFormField>
+          </div>
+
+          <div className={styles['token-editor-grouped-table-cell']}>
+            <InternalFormField
+              label={value.label}
+              className={styles['token-editor-grouped-field-value']}
+              __hideLabel={true}
+            >
+              {value.render(index)}
+            </InternalFormField>
+          </div>
+
+          <div className={styles['token-editor-grouped-table-cell']}>
+            <div className={styles['token-editor-grouped-remove-token']}>
+              <InternalButtonDropdown
+                variant="icon"
+                ariaLabel={removeButton.labelRemoveMore}
+                items={[
+                  { id: 'remove', text: removeButton.labelRemove },
+                  { id: 'remove-from-group', text: removeButton.labelRemoveFromGroup },
+                ]}
+                onItemClick={({ detail }) => {
+                  switch (detail.id) {
+                    case 'remove':
+                      return removeButton.onRemove(index);
+                    case 'remove-from-group':
+                      return removeButton.onRemoveFromGroup(index);
+                  }
+                }}
+                disabled={fields === 1}
+              />
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}

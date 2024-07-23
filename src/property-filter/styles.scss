@@ -83,6 +83,111 @@
   }
 }
 
+.token-editor-grouped {
+  display: flex;
+  flex-direction: column;
+  gap: awsui.$space-s;
+  user-select: text;
+  margin-block: awsui.$space-xxs;
+  margin-inline: awsui.$space-xxs;
+
+  &-form {
+    margin-block-end: awsui.$space-scaled-l;
+  }
+
+  &-field-property {
+    flex-grow: 2;
+  }
+
+  &-field-operator {
+    flex-grow: 1;
+  }
+
+  &-field-value {
+    flex-grow: 2;
+  }
+
+  &-cancel {
+    margin-inline-end: awsui.$space-xs;
+  }
+
+  &-submit {
+    /* used in test-utils */
+  }
+
+  &-actions {
+    display: flex;
+    justify-content: flex-end;
+    padding-block-start: awsui.$space-s;
+    border-block-start: 1px solid #{awsui.$color-border-dropdown-item-default};
+
+    // The below code cancels horizontal padding of the popover and horizontal margin of the token-editor.
+    padding-inline-end: calc(#{awsui.$space-m} + #{awsui.$space-xxs});
+    margin-inline: calc(-1 * #{awsui.$space-m} + -1 * #{awsui.$space-xxs});
+    margin-block-start: awsui.$space-s;
+  }
+
+  &-list {
+    display: flex;
+    flex-direction: column;
+    gap: awsui.$space-m;
+
+    &-item {
+      display: flex;
+      flex-direction: column;
+      gap: awsui.$space-xs;
+      padding-block-end: awsui.$space-xs;
+      border-block-end: 1px solid awsui.$color-border-divider-default;
+    }
+  }
+
+  &-table {
+    @include styles.styles-reset;
+
+    display: table;
+    margin-inline: calc(-1 * #{awsui.$space-s});
+    border-spacing: awsui.$space-s 0;
+
+    &-row {
+      display: table-row;
+    }
+
+    &-header-cell,
+    &-cell {
+      display: table-cell;
+      vertical-align: bottom;
+    }
+
+    &-header-cell {
+      color: awsui.$color-text-column-header;
+      font-weight: awsui.$font-weight-heading-s;
+      padding-block: awsui.$space-scaled-xxs;
+      text-align: start;
+    }
+
+    &-cell {
+      padding-block-end: awsui.$space-s;
+    }
+
+    @media (max-width: 912px) {
+      //
+    }
+  }
+
+  &-operation {
+    align-self: flex-start;
+  }
+
+  &-add-token {
+    // margin-block-start: awsui.$space-xxs;
+  }
+
+  &-remove-token {
+    align-self: flex-end;
+    padding-block-start: awsui.$space-xs;
+  }
+}
+
 .property-editor {
   padding-block: awsui.$space-m;
   padding-inline: awsui.$space-m;
