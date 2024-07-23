@@ -88,7 +88,7 @@ module.exports = {
       [' Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.', ' SPDX-License-Identifier: Apache-2.0'],
     ],
     'no-warning-comments': 'warn',
-    'simple-import-sort/imports': 'warn',
+    'simple-import-sort/imports': 'error',
   },
   settings: {
     react: {
@@ -196,7 +196,7 @@ module.exports = {
       files: ['src/**', 'pages/**'],
       rules: {
         'simple-import-sort/imports': [
-          'warn',
+          'error',
           {
             groups: [
               // External packages come first.
