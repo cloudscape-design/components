@@ -1,7 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
+
 import Toggle from '~components/toggle';
+
 import ScreenshotArea from '../utils/screenshot-area';
 
 export default function ToggleFocusScenario() {

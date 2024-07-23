@@ -1,10 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
 import AppLayout from '~components/app-layout';
+
 import ScreenshotArea from '../utils/screenshot-area';
 import { Notifications } from './utils/content-blocks';
 import labels from './utils/labels';
+
 import styles from './styles.scss';
 
 export default function () {

@@ -3,10 +3,10 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-@use '../../styles' as styles;
-@use '../../styles/tokens' as awsui;
-@use '../../hooks/focus-visible' as focus-visible;
-@use '../../../token-group/constants' as constants;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use '../../internal/styles' as styles;
+@use '../../internal/styles/tokens' as awsui;
+@use '../../token-group/constants' as constants;
 
 .root {
   display: flex;

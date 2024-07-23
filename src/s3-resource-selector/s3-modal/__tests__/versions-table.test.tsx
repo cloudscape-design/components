@@ -2,10 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { act, render } from '@testing-library/react';
-import createWrapper from '../../../../lib/components/test-utils/dom';
+
 import { VersionsTable } from '../../../../lib/components/s3-resource-selector/s3-modal/versions-table';
+import createWrapper from '../../../../lib/components/test-utils/dom';
 import { i18nStrings, versions } from '../../__tests__/fixtures';
-import { getColumnAriaLabels, getTableBodyContent, getHeaderVisibleText } from './utils';
+import { getColumnAriaLabels, getHeaderVisibleText, getTableBodyContent } from './utils';
 
 async function renderTable(jsx: React.ReactElement) {
   const { container } = render(jsx);

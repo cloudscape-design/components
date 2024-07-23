@@ -2,13 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useContext } from 'react';
-import IntlMessageFormat from 'intl-messageformat';
 import { MessageFormatElement } from '@formatjs/icu-messageformat-parser';
+import IntlMessageFormat from 'intl-messageformat';
+
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { useTelemetry } from '../internal/hooks/use-telemetry';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { InternalI18nContext, FormatFunction, CustomHandler } from './context';
+import { CustomHandler, FormatFunction, InternalI18nContext } from './context';
 import { getMatchableLocales } from './get-matchable-locales';
 
 export interface I18nProviderProps {

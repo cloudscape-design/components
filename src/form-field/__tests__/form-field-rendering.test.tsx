@@ -2,8 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
+
 import FormField, { FormFieldProps } from '../../../lib/components/form-field';
 import createWrapper, { FormFieldWrapper } from '../../../lib/components/test-utils/dom';
+
 import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
 
 function renderFormField(props: FormFieldProps = {}) {

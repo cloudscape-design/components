@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { AreaChartProps } from '../interfaces';
-import { ChartScale, NumericChartScale } from '../../internal/components/cartesian-chart/scales';
 import { ChartDataTypes, XDomain, YDomain, YScaleType } from '../../internal/components/cartesian-chart/interfaces';
+import { ChartScale, NumericChartScale } from '../../internal/components/cartesian-chart/scales';
+import { AreaChartProps } from '../interfaces';
 import { ChartModel } from './index';
 
 // A sufficiently small value.
@@ -167,17 +167,6 @@ export function findClosest<T>(sortedArray: readonly T[], target: number, getter
     }
   }
   return delta(sortedArray[lo]) < delta(sortedArray[hi]) ? sortedArray[lo] : sortedArray[hi];
-}
-
-// Returns given index if it is in range or the opposite range boundary otherwise.
-export function circleIndex(index: number, [from, to]: [number, number]): number {
-  if (index < from) {
-    return to;
-  }
-  if (index > to) {
-    return from;
-  }
-  return index;
 }
 
 // Compares all x-values between series to ensure they are consistent.

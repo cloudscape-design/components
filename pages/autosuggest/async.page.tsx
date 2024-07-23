@@ -1,11 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useState } from 'react';
-import Autosuggest from '~components/autosuggest';
-import { useOptionsLoader } from '../common/options-loader';
-import AppContext, { AppContextType } from '../app/app-context';
 import { range } from 'lodash';
+
+import Autosuggest from '~components/autosuggest';
 import { AutosuggestProps } from '~components/autosuggest/interfaces';
+
+import AppContext, { AppContextType } from '../app/app-context';
+import { useOptionsLoader } from '../common/options-loader';
 
 const sourceItems = range(0, 100).map(index => ({ value: `Option #${index}` }));
 

@@ -2,12 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
-import createWrapper from '../../../lib/components/test-utils/dom';
+
 import Container from '../../../lib/components/container';
 import ExpandableSection from '../../../lib/components/expandable-section';
 import Header from '../../../lib/components/header';
-import styles from '../../../lib/components/header/styles.css.js';
 import { DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_SUBSTEP_NAME } from '../../../lib/components/internal/analytics/selectors';
+import createWrapper from '../../../lib/components/test-utils/dom';
+
+import styles from '../../../lib/components/header/styles.css.js';
 
 function renderHeader(jsx: React.ReactElement) {
   const { container } = render(jsx);

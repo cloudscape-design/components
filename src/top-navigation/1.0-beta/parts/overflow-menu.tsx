@@ -2,11 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { TopNavigationProps } from '../interfaces';
-import MenuDropdown from '../../../internal/components/menu-dropdown';
-import { BaseComponentProps } from '../../../internal/base-component';
 import { ButtonDropdownProps } from '../../../button-dropdown/interfaces';
+import { BaseComponentProps } from '../../../internal/base-component';
+import MenuDropdown from '../../../internal/components/menu-dropdown';
 import { fireCancelableEvent } from '../../../internal/events';
+import { TopNavigationProps } from '../interfaces';
+
 import styles from '../styles.css.js';
 
 export interface OverflowMenuProps extends BaseComponentProps {

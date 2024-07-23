@@ -1,10 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useState } from 'react';
-import CodeEditor, { CodeEditorProps } from '~components/code-editor';
-import { i18nStrings } from './base-props';
-import ScreenshotArea from '../utils/screenshot-area';
 
+import CodeEditor, { CodeEditorProps } from '~components/code-editor';
+
+import ScreenshotArea from '../utils/screenshot-area';
+import { i18nStrings } from './base-props';
 import { sayHelloSample } from './code-samples';
 
 export default function () {

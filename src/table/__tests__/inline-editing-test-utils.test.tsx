@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
-import createWrapper from '../../../lib/components/test-utils/dom';
+
 import Table, { TableProps } from '../../../lib/components/table';
+import createWrapper from '../../../lib/components/test-utils/dom';
 
 interface Item {
   id: number;

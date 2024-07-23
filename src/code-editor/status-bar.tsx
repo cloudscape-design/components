@@ -2,13 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
-import styles from './styles.css.js';
-import LiveRegion from '../internal/components/live-region/index';
-import { TabButton } from './tab-button';
+
 import { InternalButton } from '../button/internal';
-import { CodeEditorProps } from './interfaces';
 import { useInternalI18n } from '../i18n/context.js';
+import LiveRegion from '../internal/components/live-region/index';
+import { CodeEditorProps } from './interfaces';
+import { TabButton } from './tab-button';
 import { getStatusButtonId, PaneStatus } from './util';
+
+import styles from './styles.css.js';
 
 interface StatusBarProps {
   languageLabel: string;

@@ -1,14 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import clsx from 'clsx';
 import flattenChildren from 'react-keyed-flatten-children';
-import InternalGrid from '../grid/internal';
+import clsx from 'clsx';
+
 import { GridProps } from '../grid/interfaces';
+import InternalGrid from '../grid/internal';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
-import { repeat } from './util';
 import { InternalColumnLayoutProps } from './interfaces';
 import { COLUMN_TRIGGERS, ColumnLayoutBreakpoint } from './internal';
+import { repeat } from './util';
+
 import styles from './styles.css.js';
 
 const COLUMN_DEFS: Record<number, GridProps.ElementDefinition | undefined> = {

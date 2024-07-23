@@ -1,11 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
+
 import createWrapper, { AreaChartWrapper } from '../../../../lib/components/test-utils/selectors';
 import ChartFilterWrapper from '../../../../lib/components/test-utils/selectors/internal/chart-filter';
 import ChartLegendWrapper from '../../../../lib/components/test-utils/selectors/internal/chart-legend';
-import seriesDetailStyles from '../../../../lib/components/internal/components/chart-series-details/styles.selectors.js';
+
 import cartesianChartStyles from '../../../../lib/components/internal/components/cartesian-chart/styles.selectors.js';
+import seriesDetailStyles from '../../../../lib/components/internal/components/chart-series-details/styles.selectors.js';
 
 export default class AreaChartPageObject extends BasePageObject {
   chart: AreaChartWrapper;

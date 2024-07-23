@@ -1,10 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
 import AppLayout from '~components/app-layout';
 import BreadcrumbGroup from '~components/breadcrumb-group';
+
 import ScreenshotArea from '../utils/screenshot-area';
 import label from './utils/labels';
+
 import styles from './styles.scss';
 
 function Breadcrumbs() {

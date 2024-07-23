@@ -1,12 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { mockPerformanceMetrics } from '../../../analytics/__tests__/mocks';
+import { PerformanceMetrics } from '../../../../../lib/components/internal/analytics';
 import {
-  UseTableInteractionMetricsProps,
   useTableInteractionMetrics,
+  UseTableInteractionMetricsProps,
 } from '../../../../../lib/components/internal/hooks/use-table-interaction-metrics';
 import { renderHook } from '../../../../__tests__/render-hook';
-import { PerformanceMetrics } from '../../../../../lib/components/internal/analytics';
+import { mockPerformanceMetrics } from '../../../analytics/__tests__/mocks';
 
 beforeEach(() => {
   jest.resetAllMocks();

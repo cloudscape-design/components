@@ -2,12 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
+
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
 
-import createWrapper, { ExpandableSectionWrapper } from '../../../lib/components/test-utils/dom';
-import ExpandableSection, { ExpandableSectionProps } from '../../../lib/components/expandable-section';
 import Button from '../../../lib/components/button';
+import ExpandableSection, { ExpandableSectionProps } from '../../../lib/components/expandable-section';
 import Link from '../../../lib/components/link';
+import createWrapper, { ExpandableSectionWrapper } from '../../../lib/components/test-utils/dom';
 
 function renderExpandableSection(props: ExpandableSectionProps = {}): ExpandableSectionWrapper {
   const { container } = render(<ExpandableSection {...props} />);

@@ -4,13 +4,14 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import MockDate from 'mockdate';
+
 import { createWrapper } from '@cloudscape-design/test-utils-core/dom.js';
-import DatePickerWrapper from '../../../lib/components/test-utils/dom/date-picker';
+
 import DatePicker, { DatePickerProps } from '../../../lib/components/date-picker';
-import { KeyCode } from '../../../lib/components/internal/keycode';
-import screenreaderOnlyStyles from '../../../lib/components/internal/components/screenreader-only/styles.selectors.js';
-import { padLeftZeros } from '../../../lib/components/internal/utils/strings/pad-left-zeros';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
+import { KeyCode } from '../../../lib/components/internal/keycode';
+import { padLeftZeros } from '../../../lib/components/internal/utils/strings/pad-left-zeros';
+import DatePickerWrapper from '../../../lib/components/test-utils/dom/date-picker';
 import {
   findCalendarDates,
   findCalendarHeaderText,
@@ -19,6 +20,8 @@ import {
   findFocusedDate,
   renderDatePicker,
 } from './common';
+
+import screenreaderOnlyStyles from '../../../lib/components/internal/components/screenreader-only/styles.selectors.js';
 
 function getCurrentMonthLabelText(wrapper: DatePickerWrapper) {
   return findCurrentDate(wrapper).find(`.${screenreaderOnlyStyles.root}`)?.getElement().textContent;

@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { isDevelopment } from '../../internal/is-development';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
+import { isDevelopment } from '../../internal/is-development';
 
 export function checkOptionValueField<ValueType extends ReadonlyArray<any>>(
   componentName: string,

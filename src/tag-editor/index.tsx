@@ -3,28 +3,27 @@
 import React, { useCallback, useImperativeHandle, useLayoutEffect, useMemo, useRef } from 'react';
 import clsx from 'clsx';
 
-import { getBaseProps } from '../internal/base-component';
-import { fireNonCancelableEvent, NonCancelableCustomEvent } from '../internal/events';
+import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
-import { InputProps } from '../input/interfaces';
-import { AutosuggestProps } from '../autosuggest/interfaces';
 import { AttributeEditorProps } from '../attribute-editor/interfaces';
 import InternalAttributeEditor from '../attribute-editor/internal';
-import InternalStatusIndicator from '../status-indicator/internal';
+import { AutosuggestProps } from '../autosuggest/interfaces';
 import InternalBox from '../box/internal';
 import { FormFieldError } from '../form-field/internal';
-
-import { TagControl, UndoButton } from './internal';
+import { useInternalI18n } from '../i18n/context';
+import { InputProps } from '../input/interfaces';
+import { getBaseProps } from '../internal/base-component';
+import LiveRegion from '../internal/components/live-region';
+import { fireNonCancelableEvent, NonCancelableCustomEvent } from '../internal/events';
+import useBaseComponent from '../internal/hooks/use-base-component';
+import { applyDisplayName } from '../internal/utils/apply-display-name';
+import InternalStatusIndicator from '../status-indicator/internal';
 import { TagEditorProps } from './interfaces';
-import { validate, ValidationError } from './validation';
+import { TagControl, UndoButton } from './internal';
 import { findIndex, useMemoizedArray } from './utils';
+import { validate, ValidationError } from './validation';
 
 import styles from './styles.css.js';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import useBaseComponent from '../internal/hooks/use-base-component';
-import LiveRegion from '../internal/components/live-region';
-import { useInternalI18n } from '../i18n/context';
-import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
 export { TagEditorProps };
 

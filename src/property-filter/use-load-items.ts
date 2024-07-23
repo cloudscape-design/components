@@ -2,9 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { useRef } from 'react';
 
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events/index';
 import { AutosuggestProps } from '../autosuggest/interfaces';
-
+import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events/index';
 import { ComparisonOperator, FilteringProperty, LoadItemsDetail } from './interfaces';
 
 /**

@@ -1,16 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
 import { BaseComponentProps } from '../internal/base-component';
-import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
-import { NonCancelableEventHandler } from '../internal/events';
-import { OptionDefinition, OptionGroup as OptionGroupDefinition } from '../internal/components/option/interfaces';
-import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
 import {
   BaseDropdownHostProps,
   OptionsFilteringType,
   OptionsLoadItemsDetail,
 } from '../internal/components/dropdown/interfaces';
+import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
+import { OptionDefinition, OptionGroup as OptionGroupDefinition } from '../internal/components/option/interfaces';
+import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
+import { NonCancelableEventHandler } from '../internal/events';
 
 export interface BaseSelectProps
   extends BaseDropdownHostProps,
@@ -117,6 +118,16 @@ export interface BaseSelectProps
    * Use this if you don't have a visible label for this control.
    */
   ariaLabel?: string;
+  /**
+   * Adds `aria-labelledby` to the component. If you're using this component within a form field,
+   * don't set this property because the form field component automatically sets it.
+   *
+   * Use this property if the component isn't using `inlineLabelText` and isn't surrounded by a form field, or you want to override the value
+   * automatically set by the form field (for example, if you have two components within a single form field).
+   *
+   * To use it correctly, define an ID for the element you want to use as label and set the property to that ID.
+   */
+  ariaLabelledby?: string;
   /**
    * Specifies the localized string that describes an option as being selected.
    * This is required to provide a good screen reader experience. For more information, see the

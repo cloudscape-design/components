@@ -2,29 +2,31 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { KeyboardEventHandler, useRef, useState } from 'react';
 
-import Arrow from '../popover/arrow';
-import PopoverContainer from '../popover/container';
-import PopoverBody from '../popover/body';
+import { useReducedMotion } from '@cloudscape-design/component-toolkit/internal';
+
 import Portal from '../internal/components/portal';
 import { usePortalModeClasses } from '../internal/hooks/use-portal-mode-classes';
-import { useReducedMotion } from '@cloudscape-design/component-toolkit/internal';
+import Arrow from '../popover/arrow';
+import PopoverBody from '../popover/body';
+import PopoverContainer from '../popover/container';
 
 export interface TooltipProps {
   children?: React.ReactNode;
   content?: React.ReactNode;
   position?: 'top' | 'right' | 'bottom' | 'left';
+  className?: string;
 }
 
 const DEFAULT_OPEN_TIMEOUT_IN_MS = 120;
 
-export default function Tooltip({ children, content, position = 'right' }: TooltipProps) {
+export default function Tooltip({ children, content, position = 'right', className }: TooltipProps) {
   const ref = useRef<HTMLSpanElement | null>(null);
   const isReducedMotion = useReducedMotion(ref);
   const { open, triggerProps } = useTooltipOpen(isReducedMotion ? 0 : DEFAULT_OPEN_TIMEOUT_IN_MS);
   const portalClasses = usePortalModeClasses(ref);
 
   return (
-    <span ref={ref} {...triggerProps}>
+    <span ref={ref} {...triggerProps} className={className}>
       {children}
       {open && (
         <Portal>

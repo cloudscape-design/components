@@ -2,9 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import AsyncStore, { ReadonlyAsyncStore } from '../../area-chart/async-store';
 import clsx from 'clsx';
+
 import { useResizeObserver, useStableCallback } from '@cloudscape-design/component-toolkit/internal';
+import { getLogicalBoundingClientRect, getScrollInlineStart } from '@cloudscape-design/component-toolkit/internal';
+
+import AsyncStore, { ReadonlyAsyncStore } from '../../area-chart/async-store';
 import {
   CellOffsets,
   StickyColumnsCellState,
@@ -13,7 +16,6 @@ import {
   StickyColumnsWrapperState,
 } from './interfaces';
 import { isCellStatesEqual, isWrapperStatesEqual, updateCellOffsets } from './utils';
-import { getScrollInlineStart, getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
 // We allow the table to have a minimum of 148px of available space besides the sum of the widths of the sticky columns
 // This value is an UX recommendation and is approximately 1/3 of our smallest breakpoint (465px)

@@ -1,13 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
-import styles from '../../../tutorial-panel/styles.selectors.js';
-import listStyles from '../../../tutorial-panel/components/tutorial-list/styles.selectors.js';
-import detailStyles from '../../../tutorial-panel/components/tutorial-detail-view/styles.selectors.js';
-import LinkWrapper from '../link';
-import TutorialItemWrapper from './tutorial';
+
 import ButtonWrapper from '../button';
 import ExpandableSectionWrapper from '../expandable-section';
+import LinkWrapper from '../link';
+import TutorialItemWrapper from './tutorial';
+
+import detailStyles from '../../../tutorial-panel/components/tutorial-detail-view/styles.selectors.js';
+import listStyles from '../../../tutorial-panel/components/tutorial-list/styles.selectors.js';
+import styles from '../../../tutorial-panel/styles.selectors.js';
 
 export default class TutorialPanelWrapper extends ComponentWrapper {
   static rootSelector: string = styles['tutorial-panel'];

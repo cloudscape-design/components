@@ -1,13 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render, act } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
+
 import { KeyCode } from '../../internal/keycode';
 import Mock = jest.Mock;
 
 import ButtonDropdown, { ButtonDropdownProps } from '../../../lib/components/button-dropdown';
-import createWrapper, { ButtonDropdownWrapper } from '../../../lib/components/test-utils/dom';
 import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
+import createWrapper, { ButtonDropdownWrapper } from '../../../lib/components/test-utils/dom';
 
 jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
   useMobile: jest.fn().mockReturnValue(false),

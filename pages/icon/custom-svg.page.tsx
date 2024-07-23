@@ -1,8 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
 import Icon from '~components/icon';
 import SpaceBetween from '~components/space-between';
+
 import ScreenshotArea from '../utils/screenshot-area';
 
 const sizes = ['small', 'normal', 'big', 'large'] as const;

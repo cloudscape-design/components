@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { BarChart, Tabs } from '~components';
 import Box from '~components/box';
 
 import { barChartInstructions, commonProps, data3 } from './common';
-import { BarChart, Tabs } from '~components';
 
 export default function () {
   return (

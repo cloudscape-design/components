@@ -1,11 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import React from 'react';
+import clsx from 'clsx';
+
 import { getBaseProps } from '../internal/base-component';
-import styles from './styles.css.js';
-import { SpinnerProps } from './interfaces';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { SpinnerProps } from './interfaces';
+
+import styles from './styles.css.js';
 
 interface InternalSpinnerProps extends SpinnerProps, InternalBaseComponentProps {}
 

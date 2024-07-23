@@ -1,30 +1,31 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { PieArcDatum } from 'd3-shape';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import clsx from 'clsx';
+import { PieArcDatum } from 'd3-shape';
+
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
 
-import { KeyCode } from '../internal/keycode';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
+import InternalBox from '../box/internal';
+import { useInternalI18n } from '../i18n/context';
+import ChartPlot, { ChartPlotRef } from '../internal/components/chart-plot';
 import ChartPopover from '../internal/components/chart-popover';
+import ChartPopoverFooter from '../internal/components/chart-popover-footer';
 import SeriesDetails from '../internal/components/chart-series-details';
 import SeriesMarker from '../internal/components/chart-series-marker';
-import InternalBox from '../box/internal';
-
-import Labels from './labels';
-import { PieChartProps, SeriesInfo } from './interfaces';
-import styles from './styles.css.js';
-import { defaultDetails, getDimensionsBySize } from './utils';
-import Segments from './segments';
-import ChartPlot, { ChartPlotRef } from '../internal/components/chart-plot';
-import { SomeRequired } from '../internal/types';
-import { useInternalI18n } from '../i18n/context';
-import { nodeBelongs } from '../internal/utils/node-belongs';
-import clsx from 'clsx';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { useHeightMeasure } from '../internal/hooks/container-queries/use-height-measure';
-import ChartPopoverFooter from '../internal/components/chart-popover-footer';
 import LiveRegion from '../internal/components/live-region';
+import { useHeightMeasure } from '../internal/hooks/container-queries/use-height-measure';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { KeyCode } from '../internal/keycode';
+import { SomeRequired } from '../internal/types';
+import { nodeBelongs } from '../internal/utils/node-belongs';
+import { PieChartProps, SeriesInfo } from './interfaces';
+import Labels from './labels';
+import Segments from './segments';
+import { defaultDetails, getDimensionsBySize } from './utils';
+
+import styles from './styles.css.js';
 
 export interface InternalChartDatum<T> {
   index: number;

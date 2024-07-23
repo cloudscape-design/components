@@ -2,15 +2,17 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 import clsx from 'clsx';
+
 import InternalCheckbox from '../checkbox/internal';
 import InternalColumnLayout from '../column-layout/internal';
 import InternalFormField from '../form-field/internal';
+import { useInternalI18n } from '../i18n/context';
+import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import InternalRadioGroup from '../radio-group/internal';
 import InternalSpaceBetween from '../space-between/internal';
-import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import { CollectionPreferencesProps } from './interfaces';
+
 import styles from './styles.css.js';
-import { useInternalI18n } from '../i18n/context';
 
 export const copyPreferences = ({
   pageSize,

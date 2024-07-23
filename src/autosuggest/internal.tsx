@@ -4,32 +4,31 @@
 import React, { Ref, useImperativeHandle, useRef } from 'react';
 import clsx from 'clsx';
 
-import { useAutosuggestItems } from './options-controller';
-import { AutosuggestItem, AutosuggestProps } from './interfaces';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { useDropdownStatus } from '../internal/components/dropdown-status';
+import { useFormFieldContext } from '../contexts/form-field';
+import { useInternalI18n } from '../i18n/context';
+import { BaseChangeDetail } from '../input/interfaces';
+import AutosuggestInput, { AutosuggestInputRef } from '../internal/components/autosuggest-input';
+import { OptionsLoadItemsDetail } from '../internal/components/dropdown/interfaces';
 import DropdownFooter from '../internal/components/dropdown-footer';
-
-import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { useDropdownStatus } from '../internal/components/dropdown-status';
 import {
   BaseKeyDetail,
   fireCancelableEvent,
   fireNonCancelableEvent,
   NonCancelableCustomEvent,
 } from '../internal/events';
-import { BaseChangeDetail } from '../input/interfaces';
-import { checkOptionValueField } from '../select/utils/check-option-value-field';
 import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import AutosuggestOptionsList from './options-list';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { checkOptionValueField } from '../select/utils/check-option-value-field';
+import { AutosuggestItem, AutosuggestProps } from './interfaces';
 import { useAutosuggestLoadMore } from './load-more-controller';
-import { OptionsLoadItemsDetail } from '../internal/components/dropdown/interfaces';
-import AutosuggestInput, { AutosuggestInputRef } from '../internal/components/autosuggest-input';
-import { useFormFieldContext } from '../contexts/form-field';
-import { useInternalI18n } from '../i18n/context';
+import { useAutosuggestItems } from './options-controller';
+import AutosuggestOptionsList from './options-list';
 
 import styles from './styles.css.js';
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 export interface InternalAutosuggestProps extends AutosuggestProps, InternalBaseComponentProps {}
 

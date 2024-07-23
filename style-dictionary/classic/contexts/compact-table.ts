@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import merge from 'lodash/merge';
+
+import { expandDensityDictionary } from '../../utils';
 import { StyleDictionary } from '../../utils/interfaces';
 import { tokens as parentTokens } from '../spacing';
-import merge from 'lodash/merge';
-import { expandDensityDictionary } from '../../utils';
 
 const spacingTokens: StyleDictionary.SpacingDictionary = {
   spaceScaledXxxs: '{spaceNone}',

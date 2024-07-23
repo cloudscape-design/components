@@ -1,10 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
-import Textarea, { TextareaProps } from '../../../lib/components/textarea';
-import styles from '../../../lib/components/textarea/styles.css.js';
+import { fireEvent, render } from '@testing-library/react';
+
 import createWrapper from '../../../lib/components/test-utils/dom';
+import Textarea, { TextareaProps } from '../../../lib/components/textarea';
+
+import styles from '../../../lib/components/textarea/styles.css.js';
 
 function renderTextarea(
   props: Omit<TextareaProps, 'value'> & { value?: string } & React.RefAttributes<HTMLTextAreaElement> = {}

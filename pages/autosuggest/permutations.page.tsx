@@ -2,11 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import range from 'lodash/range';
+
+import Autosuggest, { AutosuggestProps } from '~components/autosuggest';
+
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 import img from './images/icon.png';
-import Autosuggest, { AutosuggestProps } from '~components/autosuggest';
 
 const enteredTextLabel = (value: string) => `Use: ${value}`;
 const permutations = createPermutations<AutosuggestProps>([

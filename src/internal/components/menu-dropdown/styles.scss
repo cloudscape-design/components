@@ -5,7 +5,7 @@
 
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
-@use '../../hooks/focus-visible' as focus-visible;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 .button {
   @include styles.styles-reset;

@@ -2,14 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import OptionComponent from '../internal/components/option';
-import SelectableItem from '../internal/components/selectable-item';
 import { BaseComponentProps, getBaseProps } from '../internal/base-component';
+import OptionComponent from '../internal/components/option';
 import { getTestOptionIndexes } from '../internal/components/options-list/utils/test-indexes';
+import { HighlightType } from '../internal/components/options-list/utils/use-highlight-option';
+import SelectableItem from '../internal/components/selectable-item';
+import { AutosuggestItem } from './interfaces';
 
 import styles from './styles.css.js';
-import { AutosuggestItem } from './interfaces';
-import { HighlightType } from '../internal/components/options-list/utils/use-highlight-option';
 
 export interface AutosuggestOptionProps extends BaseComponentProps {
   nativeAttributes?: React.HTMLAttributes<HTMLDivElement>;

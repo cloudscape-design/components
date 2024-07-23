@@ -1,27 +1,30 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef, useState } from 'react';
+
 import { useCollection } from '@cloudscape-design/collection-hooks';
+
 import Box from '~components/box';
 import Button from '~components/button';
 import CollectionPreferences, { CollectionPreferencesProps } from '~components/collection-preferences';
 import Header from '~components/header';
+import { setPerformanceMetrics } from '~components/internal/analytics';
 import Pagination from '~components/pagination';
 import SpaceBetween from '~components/space-between';
 import Table from '~components/table';
 import TextFilter from '~components/text-filter';
-import { setPerformanceMetrics } from '~components/internal/analytics';
-import { Instance, generateItems } from './generate-data';
+
+import { contentDisplayPreferenceI18nStrings } from '../common/i18n-strings';
+import { generateItems, Instance } from './generate-data';
 import {
   columnsConfig,
-  EmptyState,
-  getMatchesCountText,
-  paginationLabels,
-  pageSizeOptions,
   contentDisplayPreference,
   defaultPreferences,
+  EmptyState,
+  getMatchesCountText,
+  pageSizeOptions,
+  paginationLabels,
 } from './shared-configs';
-import { contentDisplayPreferenceI18nStrings } from '../common/i18n-strings';
 
 const allItems = generateItems();
 

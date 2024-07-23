@@ -1,12 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { add } from 'date-fns';
 import React from 'react';
-import styles from '../../styles.css.js';
+import { add } from 'date-fns';
+
 import { renderMonthAndYear } from '../../../calendar/utils/intl';
-import { PrevMonthButton, NextMonthButton } from './header-button';
-import LiveRegion from '../../../internal/components/live-region';
 import { useInternalI18n } from '../../../i18n/context.js';
+import LiveRegion from '../../../internal/components/live-region';
+import { NextMonthButton, PrevMonthButton } from './header-button';
+
+import styles from '../../styles.css.js';
 
 interface CalendarHeaderProps {
   baseDate: Date;

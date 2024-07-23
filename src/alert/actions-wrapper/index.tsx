@@ -1,9 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import React from 'react';
-import styles from './styles.css.js';
+import clsx from 'clsx';
+
 import InternalButton, { InternalButtonProps } from '../../button/internal';
+
+import styles from './styles.css.js';
 
 function createActionButton(
   testUtilClasses: ActionsWrapperProps['testUtilClasses'],

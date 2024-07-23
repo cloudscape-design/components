@@ -3,8 +3,8 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 
-import Dropdown from '~components/internal/components/dropdown';
 import Button from '~components/button';
+import Dropdown from '~components/internal/components/dropdown';
 
 import ListContent from './list-content';
 

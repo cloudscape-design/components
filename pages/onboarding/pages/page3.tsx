@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import { SpaceBetween, Container, Header, Hotspot, Button, StatusIndicator } from '~components';
+
+import { Button, Container, Header, Hotspot, SpaceBetween, StatusIndicator } from '~components';
 
 export function PageThree({ onProceed }: { onProceed: () => void }) {
   const [fileState, setFileState] = useState('not set');

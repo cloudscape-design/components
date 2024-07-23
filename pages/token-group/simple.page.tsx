@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import TokenGroup, { TokenGroupProps } from '~components/token-group';
+
 import Box from '~components/box';
+import TokenGroup, { TokenGroupProps } from '~components/token-group';
 
 const generateItems = (numberOfItems: number) => {
   return [...new Array(numberOfItems)].map((_item, index) => ({

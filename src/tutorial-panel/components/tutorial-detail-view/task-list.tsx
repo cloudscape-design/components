@@ -1,14 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useEffect, useState } from 'react';
-import styles from './styles.css.js';
-import { TutorialPanelProps } from '../../interfaces';
-import { InternalButton } from '../../../button/internal';
-import InternalBox from '../../../box/internal';
-import InternalSpaceBetween from '../../../space-between/internal';
+
 import { HotspotContext } from '../../../annotation-context/context';
-import { Task } from './task';
 import { getStepInfo } from '../../../annotation-context/utils';
+import InternalBox from '../../../box/internal';
+import { InternalButton } from '../../../button/internal';
+import InternalSpaceBetween from '../../../space-between/internal';
+import { TutorialPanelProps } from '../../interfaces';
+import { Task } from './task';
+
+import styles from './styles.css.js';
 
 export interface TaskListProps {
   tasks: ReadonlyArray<TutorialPanelProps.Task>;

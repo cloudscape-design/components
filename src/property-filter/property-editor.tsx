@@ -2,10 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useState } from 'react';
-import { I18nStrings, Token, ExtendedOperatorForm, ComparisonOperator, InternalFilteringProperty } from './interfaces';
-import styles from './styles.css.js';
+
 import InternalButton from '../button/internal';
 import InternalFormField from '../form-field/internal';
+import { ComparisonOperator, ExtendedOperatorForm, I18nStrings, InternalFilteringProperty, Token } from './interfaces';
+
+import styles from './styles.css.js';
 
 interface PropertyEditorProps<TokenValue> {
   property: InternalFilteringProperty;

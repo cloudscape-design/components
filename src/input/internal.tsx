@@ -2,19 +2,21 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { Ref, useRef } from 'react';
 import clsx from 'clsx';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+
+import InternalButton from '../button/internal';
+import { useInternalI18n } from '../i18n/context';
 import { IconProps } from '../icon/interfaces';
 import InternalIcon from '../icon/internal';
-import InternalButton from '../button/internal';
-import { fireNonCancelableEvent, fireKeyboardEvent, NonCancelableEventHandler } from '../internal/events';
-import { InputProps, BaseInputProps, InputAutoCorrect, BaseChangeDetail } from './interfaces';
 import { BaseComponentProps, getBaseProps } from '../internal/base-component';
-import { useSearchProps, convertAutoComplete } from './utils';
-import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
 import { FormFieldValidationControlProps, useFormFieldContext } from '../internal/context/form-field-context';
+import { fireKeyboardEvent, fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { BaseChangeDetail, BaseInputProps, InputAutoCorrect, InputProps } from './interfaces';
+import { convertAutoComplete, useSearchProps } from './utils';
+
 import styles from './styles.css.js';
-import { useInternalI18n } from '../i18n/context';
 
 export interface InternalInputProps
   extends BaseComponentProps,

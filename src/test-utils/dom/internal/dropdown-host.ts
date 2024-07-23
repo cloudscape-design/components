@@ -1,16 +1,18 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { act } from 'react-dom/test-utils';
-import { ComponentWrapper, ElementWrapper, usesDom, createWrapper } from '@cloudscape-design/test-utils-core/dom';
+
+import { ComponentWrapper, createWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
 import { escapeSelector } from '@cloudscape-design/test-utils-core/utils';
 
 import DropdownWrapper from './dropdown';
-import OptionsListWrapper from './options-list';
 import OptionWrapper from './option';
-import selectableStyles from '../../../internal/components/selectable-item/styles.selectors.js';
+import OptionsListWrapper from './options-list';
+
 import dropdownStyles from '../../../internal/components/dropdown/styles.selectors.js';
 import footerStyles from '../../../internal/components/dropdown-status/styles.selectors.js';
 import optionStyles from '../../../internal/components/option/styles.selectors.js';
+import selectableStyles from '../../../internal/components/selectable-item/styles.selectors.js';
 
 export default abstract class DropdownHostComponentWrapper extends ComponentWrapper {
   abstract findTrigger(): ElementWrapper;

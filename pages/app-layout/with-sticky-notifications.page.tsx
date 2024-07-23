@@ -1,12 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import React, { useState } from 'react';
+import clsx from 'clsx';
+
 import AppLayout from '~components/app-layout';
 import Flashbar from '~components/flashbar';
-import labels from './utils/labels';
-import { Breadcrumbs } from './utils/content-blocks';
+
 import ScreenshotArea from '../utils/screenshot-area';
+import { Breadcrumbs } from './utils/content-blocks';
+import labels from './utils/labels';
+
 import styles from './styles.scss';
 
 export default function () {

@@ -3,29 +3,25 @@
 import React, { useRef } from 'react';
 import clsx from 'clsx';
 
-import { getBaseProps } from '../internal/base-component';
-import { fireNonCancelableEvent } from '../internal/events';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { useContainerBreakpoints } from '../internal/hooks/container-queries';
-import { useControllable } from '../internal/hooks/use-controllable';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-
 import { useInternalI18n } from '../i18n/context';
-
 import { FunnelMetrics } from '../internal/analytics';
 import { useFunnel } from '../internal/analytics/hooks/use-funnel';
 import { getNameFromSelector, getSubStepAllSelector } from '../internal/analytics/selectors';
-
+import { getBaseProps } from '../internal/base-component';
+import { fireNonCancelableEvent } from '../internal/events';
+import { useContainerBreakpoints } from '../internal/hooks/container-queries';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useControllable } from '../internal/hooks/use-controllable';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { useFunnelChangeEvent } from './analytics';
+import { WizardProps } from './interfaces';
 import WizardForm, { STEP_NAME_SELECTOR } from './wizard-form';
 import WizardNavigation from './wizard-navigation';
 
-import { WizardProps } from './interfaces';
-
 import styles from './styles.css.js';
-import { useFunnelChangeEvent } from './analytics';
 
 type InternalWizardProps = WizardProps & InternalBaseComponentProps;
 

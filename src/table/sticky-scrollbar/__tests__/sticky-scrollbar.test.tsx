@@ -3,8 +3,10 @@
 
 import React from 'react';
 import { render } from '@testing-library/react';
-import { StickyScrollbar } from '../../../../lib/components/table/sticky-scrollbar';
+
 import { browserScrollbarSize } from '../../../../lib/components/internal/utils/browser-scrollbar-size';
+import { StickyScrollbar } from '../../../../lib/components/table/sticky-scrollbar';
+
 import styles from '../../../../lib/components/table/sticky-scrollbar/styles.css.js';
 
 jest.mock('../../../../lib/components/internal/utils/browser-scrollbar-size');

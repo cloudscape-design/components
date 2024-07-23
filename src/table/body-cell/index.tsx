@@ -1,17 +1,19 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
-import styles from './styles.css.js';
 import React, { useEffect, useRef, useState } from 'react';
-import Icon from '../../icon/internal';
-import { TableProps } from '../interfaces';
-import { TableTdElement, TableTdElementProps } from './td-element';
-import { InlineEditor } from './inline-editor';
-import LiveRegion from '../../internal/components/live-region/index.js';
+import clsx from 'clsx';
+
 import { useInternalI18n } from '../../i18n/context';
-import { usePrevious } from '../../internal/hooks/use-previous';
+import Icon from '../../icon/internal';
+import LiveRegion from '../../internal/components/live-region/index.js';
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context.js';
+import { usePrevious } from '../../internal/hooks/use-previous';
+import { TableProps } from '../interfaces';
 import { DisabledInlineEditor } from './disabled-inline-editor';
+import { InlineEditor } from './inline-editor';
+import { TableTdElement, TableTdElementProps } from './td-element';
+
+import styles from './styles.css.js';
 
 const submitHandlerFallback = () => {
   throw new Error('The function `handleSubmit` is required for editable columns');

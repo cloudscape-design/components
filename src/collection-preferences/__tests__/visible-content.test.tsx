@@ -3,6 +3,7 @@
 import { CollectionPreferencesProps } from '../../../lib/components/collection-preferences';
 import { CollectionPreferencesWrapper } from '../../../lib/components/test-utils/dom';
 import { renderCollectionPreferences, visibleContentPreference } from './shared';
+
 import styles from '../../../lib/components/collection-preferences/styles.css.js';
 
 function renderWithContentSelection(props: Partial<CollectionPreferencesProps>): CollectionPreferencesWrapper {

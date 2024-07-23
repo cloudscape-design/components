@@ -3,26 +3,27 @@
 import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { isDevelopment } from '../internal/is-development';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
+
 import { getBaseProps } from '../internal/base-component';
 import ChartStatusContainer, { getChartStatus } from '../internal/components/chart-status-container';
-
+import { ChartWrapper } from '../internal/components/chart-wrapper';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { isDevelopment } from '../internal/is-development';
+import { SomeRequired } from '../internal/types';
+import { nodeBelongs } from '../internal/utils/node-belongs';
+import ChartContainer from './chart-container';
 import AreaChartFilter from './elements/area-chart-filter';
 import AreaChartLegend from './elements/area-chart-legend';
 import { AreaChartProps } from './interfaces';
-import ChartContainer from './chart-container';
-import styles from './styles.css.js';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import useChartModel from './model/use-chart-model';
 import useFilterProps from './model/use-filter-props';
 import useHighlightProps from './model/use-highlight-props';
 import { isSeriesValid } from './model/utils';
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { SomeRequired } from '../internal/types';
-import { nodeBelongs } from '../internal/utils/node-belongs';
-import { ChartWrapper } from '../internal/components/chart-wrapper';
-import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
+
+import styles from './styles.css.js';
 
 type InternalAreaChartProps<T extends AreaChartProps.DataTypes> = SomeRequired<
   AreaChartProps<T>,

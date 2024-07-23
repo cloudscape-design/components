@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { memo } from 'react';
 
+import ChartFilter from '../../internal/components/chart-filter';
 import { AreaChartProps } from '../interfaces';
 import { ChartModel } from '../model';
-import ChartFilter from '../../internal/components/chart-filter';
 
 export default memo(AreaChartFilter) as typeof AreaChartFilter;
 

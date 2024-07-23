@@ -1,11 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
+import useBaseComponent from '../internal/hooks/use-base-component';
+import { applyDisplayName } from '../internal/utils/apply-display-name';
+import { getExternalProps } from '../internal/utils/external-props';
 import { AutosuggestProps } from './interfaces';
 import InternalAutosuggest from './internal';
-import { getExternalProps } from '../internal/utils/external-props';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import useBaseComponent from '../internal/hooks/use-base-component';
 
 export { AutosuggestProps };
 

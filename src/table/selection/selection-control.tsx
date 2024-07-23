@@ -1,15 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import React, { KeyboardEvent, KeyboardEventHandler, MouseEvent, useContext } from 'react';
-import { KeyCode } from '../../internal/keycode';
-import { useUniqueId } from '../../internal/hooks/use-unique-id';
+import clsx from 'clsx';
+
 import InternalCheckbox from '../../checkbox/internal';
+import { SingleTabStopNavigationContext } from '../../internal/context/single-tab-stop-navigation-context';
+import { useUniqueId } from '../../internal/hooks/use-unique-id';
+import { KeyCode } from '../../internal/keycode';
 import RadioButton from '../../radio-group/radio-button';
+import { SelectionProps } from './interfaces';
 
 import styles from './styles.css.js';
-import { SelectionProps } from './interfaces';
-import { SingleTabStopNavigationContext } from '../../internal/context/single-tab-stop-navigation-context';
 
 export interface SelectionControlProps extends SelectionProps {
   onShiftToggle?(shiftPressed: boolean): void;

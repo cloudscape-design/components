@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { AttributeEditorForwardRefType, AttributeEditorProps } from './interfaces';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import InternalAttributeEditor from './internal';
 import useBaseComponent from '../internal/hooks/use-base-component';
+import { applyDisplayName } from '../internal/utils/apply-display-name';
+import { AttributeEditorForwardRefType, AttributeEditorProps } from './interfaces';
+import InternalAttributeEditor from './internal';
 
 const AttributeEditor = React.forwardRef(
   <T,>(

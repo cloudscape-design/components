@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { BaseComponentProps } from '../internal/base-component';
-import { IconProps } from '../icon/interfaces';
 import React from 'react';
+
+import { IconProps } from '../icon/interfaces';
+import { BaseComponentProps } from '../internal/base-component';
 import { BaseNavigationDetail, CancelableEventHandler, ClickDetail as _ClickDetail } from '../internal/events';
 
 export interface ButtonProps extends BaseComponentProps {
@@ -13,7 +14,7 @@ export interface ButtonProps extends BaseComponentProps {
   /**
    * Provides a reason why the button is disabled (only when `disabled` is `true`).
    * If provided, the button becomes focusable.
-   * Applicable for all button variants, except link.
+   * Applicable for all button variants, except link and icon.
    */
   disabledReason?: string;
   /**

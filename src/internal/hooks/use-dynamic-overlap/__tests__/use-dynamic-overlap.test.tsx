@@ -2,9 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useLayoutEffect, useState } from 'react';
 import { render, screen } from '@testing-library/react';
+
 import { ContainerQueryEntry } from '@cloudscape-design/component-toolkit';
-import { useDynamicOverlap } from '../../../../../lib/components/internal/hooks/use-dynamic-overlap';
+
 import { DynamicOverlapContext } from '../../../../../lib/components/internal/context/dynamic-overlap-context';
+import { useDynamicOverlap } from '../../../../../lib/components/internal/hooks/use-dynamic-overlap';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),

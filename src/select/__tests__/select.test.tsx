@@ -2,13 +2,16 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import { render, waitFor } from '@testing-library/react';
-import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import Select, { SelectProps } from '../../../lib/components/select';
-import selectPartsStyles from '../../../lib/components/select/parts/styles.css.js';
-import '../../__a11y__/to-validate-a11y';
-import statusIconStyles from '../../../lib/components/status-indicator/styles.selectors.js';
+
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
+
+import '../../__a11y__/to-validate-a11y';
+import Select, { SelectProps } from '../../../lib/components/select';
+import createWrapper from '../../../lib/components/test-utils/dom';
+
+import selectPartsStyles from '../../../lib/components/select/parts/styles.css.js';
+import statusIconStyles from '../../../lib/components/status-indicator/styles.selectors.js';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => {
   const originalModule = jest.requireActual('@cloudscape-design/component-toolkit/internal');

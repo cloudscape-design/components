@@ -1,11 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { TableProps } from '../table/interfaces';
-import { PaginationProps } from '../pagination/interfaces';
+
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
 import { BaseModalProps } from '../modal/interfaces';
+import { PaginationProps } from '../pagination/interfaces';
+import { TableProps } from '../table/interfaces';
 
 export interface S3ResourceSelectorProps extends BaseComponentProps, BaseModalProps {
   /**

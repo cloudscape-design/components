@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import { Modal, Button, ModalProps } from '~components';
+
+import { Button, Modal, ModalProps } from '~components';
 
 const getModalRoot: ModalProps['getModalRoot'] = async () => {
   await new Promise(resolve => setTimeout(resolve, 1000));

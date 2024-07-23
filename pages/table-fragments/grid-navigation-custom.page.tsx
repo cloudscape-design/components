@@ -1,6 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useMemo, useRef, useState } from 'react';
+import { orderBy, range } from 'lodash';
+
 import {
   AppLayout,
   Button,
@@ -22,12 +24,9 @@ import {
   SpaceBetween,
   StatusIndicator,
 } from '~components';
+import { useSingleTabStopNavigation } from '~components/internal/context/single-tab-stop-navigation-context';
 import { useEffectOnUpdate } from '~components/internal/hooks/use-effect-on-update';
-import styles from './styles.scss';
-import { id as generateId, generateItems, Instance } from '../table/generate-data';
-import AppContext, { AppContextType } from '../app/app-context';
 import {
-  TableRole,
   getTableCellRoleProps,
   getTableColHeaderRoleProps,
   getTableHeaderRowRoleProps,
@@ -35,12 +34,16 @@ import {
   getTableRowRoleProps,
   getTableWrapperRoleProps,
   GridNavigationProvider,
+  TableRole,
 } from '~components/table/table-role';
-import { useSingleTabStopNavigation } from '~components/internal/context/single-tab-stop-navigation-context';
-import { orderBy, range } from 'lodash';
+
+import AppContext, { AppContextType } from '../app/app-context';
 import appLayoutLabels from '../app-layout/utils/labels';
-import { stateToStatusIndicator } from '../table/shared-configs';
 import { contentDisplayPreferenceI18nStrings } from '../common/i18n-strings';
+import { generateItems, id as generateId, Instance } from '../table/generate-data';
+import { stateToStatusIndicator } from '../table/shared-configs';
+
+import styles from './styles.scss';
 
 interface ExtendedWindow extends Window {
   refreshItems: () => void;

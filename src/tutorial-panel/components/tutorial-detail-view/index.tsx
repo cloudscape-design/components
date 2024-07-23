@@ -1,16 +1,18 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useMemo } from 'react';
-import { TutorialPanelProps } from '../../interfaces';
+
+import { HotspotContext } from '../../../annotation-context/context';
 import InternalBox from '../../../box/internal';
 import { InternalButton } from '../../../button/internal';
-import InternalSpaceBetween from '../../../space-between/internal';
-import styles from './styles.css.js';
 import { fireNonCancelableEvent } from '../../../internal/events/index';
-import { HotspotContext } from '../../../annotation-context/context';
+import { useVisualRefresh } from '../../../internal/hooks/use-visual-mode';
+import InternalSpaceBetween from '../../../space-between/internal';
+import { TutorialPanelProps } from '../../interfaces';
 import { CongratulationScreen } from './congratulation-screen';
 import { TaskList } from './task-list';
-import { useVisualRefresh } from '../../../internal/hooks/use-visual-mode';
+
+import styles from './styles.css.js';
 
 export default function TutorialDetailView({
   tutorial,

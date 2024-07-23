@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
-import { useMergeRefs } from '../../hooks/use-merge-refs';
 
+import { useMergeRefs } from '../../hooks/use-merge-refs';
 import TabTrap from '../tab-trap/index';
 import { getFirstFocusable, getLastFocusable } from './utils';
 

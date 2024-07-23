@@ -1,11 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { useState } from 'react';
+
 import { fireNonCancelableEvent } from '../../internal/events';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
+import { joinStrings } from '../../internal/utils/strings';
 import { TableProps } from '../interfaces';
 import { getTrackableValue } from '../utils';
-import { joinStrings } from '../../internal/utils/strings';
 import { SelectionProps } from './interfaces';
 import { ItemSet } from './utils';
 

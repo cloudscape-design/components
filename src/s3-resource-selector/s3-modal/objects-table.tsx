@@ -1,16 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { S3ResourceSelectorProps } from '../interfaces';
-import { compareDates, getColumnAriaLabel, includes } from './table-utils';
+
+import { useInternalI18n } from '../../i18n/context';
 import InternalIcon from '../../icon/internal';
+import { ForwardFocusRef } from '../../internal/hooks/forward-focus';
 import InternalLink from '../../link/internal';
 import { TableProps } from '../../table/interfaces';
-import { ForwardFocusRef } from '../../internal/hooks/forward-focus';
-import { formatSize, formatDefault } from './column-formats';
-import { BasicS3Table, getSharedI18Strings } from './basic-table';
+import { S3ResourceSelectorProps } from '../interfaces';
 import { joinObjectPath } from '../utils';
-import { useInternalI18n } from '../../i18n/context';
+import { BasicS3Table, getSharedI18Strings } from './basic-table';
+import { formatDefault, formatSize } from './column-formats';
+import { compareDates, getColumnAriaLabel, includes } from './table-utils';
 
 interface ObjectsTableProps {
   forwardFocusRef: React.Ref<ForwardFocusRef>;

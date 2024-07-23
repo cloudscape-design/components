@@ -2,14 +2,16 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useEffect, useMemo } from 'react';
 import clsx from 'clsx';
-import styles from './styles.css.js';
-import testUtilsStyles from './test-classes/styles.css.js';
-import { AnchorNavigationProps } from './interfaces';
-import { checkSafeUrl } from '../internal/utils/check-safe-url';
-import useScrollSpy from './use-scroll-spy.js';
+
+import { getBaseProps } from '../internal/base-component/index.js';
 import { fireCancelableEvent, fireNonCancelableEvent, isPlainLeftClick } from '../internal/events/index';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
-import { getBaseProps } from '../internal/base-component/index.js';
+import { checkSafeUrl } from '../internal/utils/check-safe-url';
+import { AnchorNavigationProps } from './interfaces';
+import useScrollSpy from './use-scroll-spy.js';
+
+import styles from './styles.css.js';
+import testUtilsStyles from './test-classes/styles.css.js';
 
 export default function InternalAnchorNavigation({
   anchors,

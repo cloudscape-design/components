@@ -1,17 +1,19 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import React, { useEffect, useRef } from 'react';
-import { fireNonCancelableEvent } from '../internal/events';
-import useForwardFocus from '../internal/hooks/forward-focus';
+import clsx from 'clsx';
+
 import { getBaseProps } from '../internal/base-component';
 import AbstractSwitch from '../internal/components/abstract-switch';
-import { CheckboxProps } from './interfaces';
-import styles from './styles.css.js';
 import CheckboxIcon from '../internal/components/checkbox-icon';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
+import { fireNonCancelableEvent } from '../internal/events';
+import useForwardFocus from '../internal/hooks/forward-focus';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { CheckboxProps } from './interfaces';
+
+import styles from './styles.css.js';
 
 interface InternalProps extends CheckboxProps, InternalBaseComponentProps {
   tabIndex?: -1;

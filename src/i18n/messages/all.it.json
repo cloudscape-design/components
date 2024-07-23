@@ -77,7 +77,8 @@
     "i18nStrings.preferencesModalWrapLines": "Righe a capo",
     "i18nStrings.preferencesModalTheme": "Tema",
     "i18nStrings.preferencesModalLightThemes": "Temi chiari",
-    "i18nStrings.preferencesModalDarkThemes": "Temi scuri"
+    "i18nStrings.preferencesModalDarkThemes": "Temi scuri",
+    "i18nStrings.cursorPositionAriaLabel": "Cursore sulla riga {row}"
   },
   "collection-preferences": {
     "title": "Preferenze",
@@ -90,6 +91,15 @@
     "stripedRowsPreference.description": "Seleziona per aggiungere le righe ombreggiate alternate",
     "contentDensityPreference.label": "Modalità compatta",
     "contentDensityPreference.description": "Seleziona per visualizzare i contenuti in una modalità più densa e compatta",
+    "stickyColumnsPreference.firstColumns.title": "Fissa la prima colonna o (o le colonne)",
+    "stickyColumnsPreference.firstColumns.description": "Mantieni visibili la prima colonna (o le colonne) mentre scorri orizzontalmente il contenuto della tabella.",
+    "stickyColumnsPreference.firstColumns.options[0].label": "Nessuno",
+    "stickyColumnsPreference.firstColumns.options[1].label": "Prima colonna",
+    "stickyColumnsPreference.firstColumns.options[2].label": "Prime due colonne",
+    "stickyColumnsPreference.lastColumns.title": "Attacca l'ultima colonna",
+    "stickyColumnsPreference.lastColumns.description": "Mantieni visibile l'ultima colonna mentre scorri orizzontalmente il contenuto della tabella.",
+    "stickyColumnsPreference.lastColumns.options[0].label": "Nessuno",
+    "stickyColumnsPreference.lastColumns.options[1].label": "Ultima colonna",
     "contentDisplayPreference.title": "Preferenze di colonna",
     "contentDisplayPreference.description": "Personalizza la visibilità e l'ordine delle colonne.",
     "contentDisplayPreference.dragHandleAriaLabel": "Punto di trascinamento",

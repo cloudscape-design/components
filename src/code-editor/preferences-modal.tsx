@@ -7,12 +7,12 @@ import { InternalButton } from '../button/internal';
 import InternalCheckbox from '../checkbox/internal';
 import InternalColumnLayout from '../column-layout/internal';
 import InternalFormField from '../form-field/internal';
+import { NonCancelableCustomEvent } from '../internal/events';
 import InternalModal from '../modal/internal';
 import { SelectProps } from '../select/interfaces';
 import InternalSelect from '../select/internal';
 import InternalSpaceBetween from '../space-between/internal';
-import { NonCancelableCustomEvent } from '../internal/events';
-import { LightThemes, DarkThemes } from './ace-themes';
+import { DarkThemes, LightThemes } from './ace-themes';
 import { CodeEditorProps } from './interfaces';
 
 interface PreferencesModali18nStrings {

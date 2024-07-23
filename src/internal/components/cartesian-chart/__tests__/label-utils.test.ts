@@ -1,10 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { NumericChartScale } from '../../../../../lib/components/internal/components/cartesian-chart/scales';
 import {
   formatTicks,
   getVisibleTicks,
 } from '../../../../../lib/components/internal/components/cartesian-chart/label-utils';
+import { NumericChartScale } from '../../../../../lib/components/internal/components/cartesian-chart/scales';
 
 describe('formatTicks', () => {
   it('uses formatter or falls back to toString', () => {

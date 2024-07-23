@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import Tabs from '~components/tabs';
+
 import AppLayout from '~components/app-layout';
+import Tabs from '~components/tabs';
 
 export default function TabsInHelpPanelDemoPage() {
   const [toolsOpen, setToolsOpen] = useState(true);

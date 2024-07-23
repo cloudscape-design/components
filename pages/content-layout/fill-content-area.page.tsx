@@ -1,14 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
 import AppLayout from '~components/app-layout';
-import Header from '~components/header';
-import ContentLayout from '~components/content-layout';
-import ScreenshotArea from '../utils/screenshot-area';
-import { Navigation, Tools, Breadcrumbs } from '../app-layout/utils/content-blocks';
-import * as toolsContent from '../app-layout/utils/tools-content';
-import labels from '../app-layout/utils/labels';
 import Box from '~components/box';
+import ContentLayout from '~components/content-layout';
+import Header from '~components/header';
+
+import { Breadcrumbs, Navigation, Tools } from '../app-layout/utils/content-blocks';
+import labels from '../app-layout/utils/labels';
+import * as toolsContent from '../app-layout/utils/tools-content';
+import ScreenshotArea from '../utils/screenshot-area';
 
 export default function () {
   return (

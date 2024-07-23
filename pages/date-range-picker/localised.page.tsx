@@ -1,9 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
+
 import { Box, DateRangePicker, DateRangePickerProps, Link } from '~components';
-import { makeIsValidFunction } from './is-valid-range';
+
 import { relativeOptions } from './common';
+import { makeIsValidFunction } from './is-valid-range';
 
 const localisedUnits = {
   second: ['Sekunde', 'Sekunden'],

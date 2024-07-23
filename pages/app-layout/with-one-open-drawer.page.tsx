@@ -1,12 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState, useRef } from 'react';
+import React, { useRef, useState } from 'react';
+
 import { AppLayout, ContentLayout, Header } from '~components';
 import { AppLayoutProps } from '~components/app-layout';
-import appLayoutLabels from './utils/labels';
-import { Breadcrumbs, Containers } from './utils/content-blocks';
+
 import ScreenshotArea from '../utils/screenshot-area';
+import { Breadcrumbs, Containers } from './utils/content-blocks';
 import { drawerItems, drawerLabels } from './utils/drawers';
+import appLayoutLabels from './utils/labels';
 
 export default function WithDrawers() {
   const [activeDrawerId, setActiveDrawerId] = useState<string | null>(drawerItems[0].id);

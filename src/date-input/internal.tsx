@@ -1,19 +1,19 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import React, { Ref } from 'react';
 import clsx from 'clsx';
 import { getDaysInMonth } from 'date-fns';
-import React, { Ref } from 'react';
-import { fireNonCancelableEvent } from '../internal/events';
-import { displayToIso, isoToDisplay, parseDate } from '../internal/utils/date-time';
 
+import { CalendarProps } from '../calendar/interfaces';
 import MaskedInput from '../internal/components/masked-input';
 import { MaskArgs } from '../internal/components/masked-input/utils/mask-format';
+import { fireNonCancelableEvent } from '../internal/events';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { displayToIso, isoToDisplay, parseDate } from '../internal/utils/date-time';
+import { DateInputProps } from './interfaces';
 
 import styles from './styles.css.js';
-import { DateInputProps } from './interfaces';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { CalendarProps } from '../calendar/interfaces';
 
 type InternalDateInputProps = DateInputProps &
   InternalBaseComponentProps & {

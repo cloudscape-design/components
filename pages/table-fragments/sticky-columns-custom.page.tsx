@@ -1,12 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import SpaceBetween from '~components/space-between';
-import { Box, Checkbox, Container, Link } from '~components';
-import { useStickyColumns, useStickyCellStyles, StickyColumnsModel } from '~components/table/sticky-columns';
-import styles from './styles.scss';
-import { generateItems, Instance } from '../table/generate-data';
 import clsx from 'clsx';
+
+import { Box, Checkbox, Container, Link } from '~components';
+import SpaceBetween from '~components/space-between';
+import { StickyColumnsModel, useStickyCellStyles, useStickyColumns } from '~components/table/sticky-columns';
+
+import { generateItems, Instance } from '../table/generate-data';
+
+import styles from './styles.scss';
 
 const items = generateItems(50);
 const columnDefinitions = [

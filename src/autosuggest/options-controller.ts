@@ -2,16 +2,18 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { useMemo, useState } from 'react';
-import { filterOptions } from './utils/utils';
+
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
+import { useInternalI18n } from '../i18n/context';
 import { generateTestIndexes } from '../internal/components/options-list/utils/test-indexes';
-import { AutosuggestItem, AutosuggestProps } from './interfaces';
 import {
   HighlightedOptionHandlers,
   HighlightedOptionState,
   useHighlightedOption,
 } from '../internal/components/options-list/utils/use-highlight-option';
-import { useInternalI18n } from '../i18n/context';
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { AutosuggestItem, AutosuggestProps } from './interfaces';
+import { filterOptions } from './utils/utils';
 
 type Options = AutosuggestProps.Options;
 

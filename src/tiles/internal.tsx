@@ -1,19 +1,19 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import React from 'react';
+import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component';
-import { TilesProps } from './interfaces';
-import styles from './styles.css.js';
-
 import { useFormFieldContext } from '../internal/context/form-field-context';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
+import useRadioGroupForwardFocus from '../internal/hooks/forward-focus/radio-group';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { TilesProps } from './interfaces';
 import { Tile } from './tile';
-import useRadioGroupForwardFocus from '../internal/hooks/forward-focus/radio-group';
+
+import styles from './styles.css.js';
 
 const COLUMN_TRIGGERS: TilesProps.Breakpoint[] = ['default', 'xxs', 'xs'];
 

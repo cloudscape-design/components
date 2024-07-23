@@ -1,9 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
-import testStyles from '../../../copy-to-clipboard/test-classes/styles.selectors.js';
+
 import ButtonWrapper from '../button';
 import PopoverWrapper from '../popover';
+
+import testStyles from '../../../copy-to-clipboard/test-classes/styles.selectors.js';
 
 export default class CopyToClipboardWrapper extends ComponentWrapper {
   static rootSelector: string = testStyles.root;
@@ -12,9 +14,9 @@ export default class CopyToClipboardWrapper extends ComponentWrapper {
     return this.findComponent(`.${ButtonWrapper.rootSelector}`, ButtonWrapper)!;
   }
 
-  findStatusText(): null | ElementWrapper {
+  findStatusText(options = { popoverRenderWithPortal: false }): null | ElementWrapper {
     return this.findComponent(`.${PopoverWrapper.rootSelector}`, PopoverWrapper)!.findContent({
-      renderWithPortal: true,
+      renderWithPortal: options.popoverRenderWithPortal,
     });
   }
 

@@ -1,11 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import SpaceBetween from '~components/space-between';
-import ScreenshotArea from '../utils/screenshot-area';
-import styles from './styles.scss';
-import Grid from '~components/grid';
+
 import ColumnLayout from '~components/column-layout';
+import Grid from '~components/grid';
+import SpaceBetween from '~components/space-between';
+
+import ScreenshotArea from '../utils/screenshot-area';
+
+import styles from './styles.scss';
 
 const ExampleContent = () => <div className={styles.box}>This is some text.</div>;
 const NullComponent = () => null;

@@ -1,11 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { useState } from 'react';
+
+import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
+
 import { makeCancellable, PromiseCancelledSignal } from '../../internal/utils/promises';
 import { SelectProps } from '../../select/interfaces';
-import { extractBucketName, validate } from './validation';
 import { S3ResourceSelectorProps } from '../interfaces';
-import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
+import { extractBucketName, validate } from './validation';
 
 export function useVersionsFetch(fetchVersions: S3ResourceSelectorProps['fetchVersions']) {
   const [loading, setLoading] = useState(false);

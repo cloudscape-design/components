@@ -2,18 +2,20 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
-import useHiddenDescription from '../../internal/hooks/use-hidden-description';
+
 import Icon from '../../icon/internal';
-import PopoverContainer from '../../popover/container';
-import PopoverBody from '../../popover/body';
 import Portal from '../../internal/components/portal';
+import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
+import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import { usePortalModeClasses } from '../../internal/hooks/use-portal-mode-classes';
 import Arrow from '../../popover/arrow';
+import PopoverBody from '../../popover/body';
+import PopoverContainer from '../../popover/container';
 import { useClickAway } from './click-away';
-import { TableTdElement, TableTdElementProps } from './td-element';
 import { TableBodyCellProps } from './index';
+import { TableTdElement, TableTdElementProps } from './td-element';
+
 import styles from './styles.css.js';
-import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
 
 interface DisabledInlineEditorProps<ItemType> extends TableBodyCellProps<ItemType> {
   editDisabledReason: string;

@@ -1,20 +1,21 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import React, { useRef } from 'react';
-import { ContainerProps } from './interfaces';
+import clsx from 'clsx';
+
+import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 import { getBaseProps } from '../internal/base-component';
+import { ContainerHeaderContextProvider } from '../internal/context/container-header';
+import { useModalContext } from '../internal/context/modal-context';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { StickyHeaderContext, useStickyHeader } from './use-sticky-header';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useMobile } from '../internal/hooks/use-mobile';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import styles from './styles.css.js';
-import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
-import { useModalContext } from '../internal/context/modal-context';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { ContainerHeaderContextProvider } from '../internal/context/container-header';
-import { getGlobalFlag } from '../internal/utils/global-flags';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { ContainerProps } from './interfaces';
+import { StickyHeaderContext, useStickyHeader } from './use-sticky-header';
+
+import styles from './styles.css.js';
 
 export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>, InternalBaseComponentProps {
   __stickyHeader?: boolean;
@@ -100,7 +101,6 @@ export default function InternalContainer({
   const shouldHaveStickyStyles = isSticky && !isMobile;
 
   const hasMedia = !!media?.content;
-  const hasToolbar = getGlobalFlag('appLayoutWidget');
   const mediaPosition = media?.position ?? 'top';
   return (
     <div
@@ -140,7 +140,6 @@ export default function InternalContainer({
                   [styles['header-dynamic-height']]: hasDynamicHeight,
                   [styles['header-stuck']]: isStuck,
                   [styles['with-paddings']]: !disableHeaderPaddings,
-                  [styles['with-toolbar']]: hasToolbar,
                   [styles['with-hidden-content']]: !children || __hiddenContent,
                   [styles['header-with-media']]: hasMedia,
                   [styles['header-full-page']]: __fullPage && isRefresh,

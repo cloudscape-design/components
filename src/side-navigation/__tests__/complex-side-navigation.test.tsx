@@ -2,12 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import { render } from '@testing-library/react';
+
+import '../../__a11y__/to-validate-a11y';
 import Badge from '../../../lib/components/badge';
 import Popover from '../../../lib/components/popover';
 import SideNavigation, { SideNavigationProps } from '../../../lib/components/side-navigation';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { SideNavigationItemWrapper } from '../../../lib/components/test-utils/dom/side-navigation';
-import '../../__a11y__/to-validate-a11y';
 
 function renderSideNavigation(props: SideNavigationProps = {}) {
   const { container } = render(<SideNavigation {...props} />);

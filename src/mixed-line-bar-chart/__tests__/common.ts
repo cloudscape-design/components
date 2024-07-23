@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { render } from '@testing-library/react';
+
 import { MixedLineBarChartProps } from '../../../lib/components/mixed-line-bar-chart';
 import { MixedLineBarChartWrapper } from '../../../lib/components/test-utils/dom';
 

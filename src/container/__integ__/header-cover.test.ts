@@ -1,9 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
+import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
+
 import createWrapper from '../../../lib/components/test-utils/selectors';
 import { viewports } from '../../app-layout/__integ__/constants';
+
 import styles from '../../../lib/components/container/styles.selectors.js';
 
 const tableWrapper = createWrapper().findTable();

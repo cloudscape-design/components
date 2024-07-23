@@ -1,16 +1,18 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
+
 import {
   Box,
+  Checkbox,
   DateRangePicker,
   DateRangePickerProps,
-  Link,
-  Checkbox,
-  SpaceBetween,
-  SegmentedControl,
   FormField,
+  Link,
+  SegmentedControl,
+  SpaceBetween,
 } from '~components';
+
 import { i18nStrings, i18nStringsDateOnly, isValid, relativeOptions } from './common';
 
 export default function DatePickerScenario() {

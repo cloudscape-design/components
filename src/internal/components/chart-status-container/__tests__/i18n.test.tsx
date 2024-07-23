@@ -2,9 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
-import createWrapper from '../../../../../lib/components/test-utils/dom';
+
 import TestI18nProvider from '../../../../../lib/components/i18n/testing';
 import ChartStatusContainer from '../../../../../lib/components/internal/components/chart-status-container';
+import createWrapper from '../../../../../lib/components/test-utils/dom';
+
 import styles from '../../../../../lib/components/internal/components/chart-status-container/styles.css.js';
 
 function renderStatusContainer(jsx: React.ReactElement) {

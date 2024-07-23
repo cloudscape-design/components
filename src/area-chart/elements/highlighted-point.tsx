@@ -3,9 +3,8 @@
 import React, { forwardRef, memo } from 'react';
 
 import HighlightedPoint from '../../internal/components/cartesian-chart/highlighted-point';
-
-import { ChartModel } from '../model';
 import { useSelector } from '../async-store';
+import { ChartModel } from '../model';
 
 export default memo(forwardRef(AreaHighlightedPoint));
 

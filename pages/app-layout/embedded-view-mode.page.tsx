@@ -1,17 +1,19 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import { columnsConfig } from '../table/shared-configs';
-import { generateItems } from '../table/generate-data';
-import { splitPaneli18nStrings } from './utils/strings';
+
 import AppLayout from '~components/app-layout';
 import Box from '~components/box';
 import BreadcrumbGroup from '~components/breadcrumb-group';
 import Button from '~components/button';
 import Header from '~components/header';
-import labels from './utils/labels';
 import SplitPanel from '~components/split-panel';
 import Table from '~components/table';
+
+import { generateItems } from '../table/generate-data';
+import { columnsConfig } from '../table/shared-configs';
+import labels from './utils/labels';
+import { splitPaneli18nStrings } from './utils/strings';
 
 export default function () {
   const [navigationOpen, setNavigationOpen] = useState(false);

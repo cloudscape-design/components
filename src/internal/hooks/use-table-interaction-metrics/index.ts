@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { useEffect, useRef } from 'react';
-import { useEffectOnUpdate } from '../use-effect-on-update';
+
 import { PerformanceMetrics } from '../../analytics';
+import { useEffectOnUpdate } from '../use-effect-on-update';
 
 /*
 If the last user interaction is more than this time ago, it is not considered

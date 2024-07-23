@@ -3,12 +3,11 @@
 import React, { useCallback, useState } from 'react';
 
 import { AreaChartProps } from '~components/area-chart';
+import ButtonDropdown from '~components/button-dropdown';
 import { NonCancelableEventHandler } from '~components/internal/events';
 import SpaceBetween from '~components/space-between';
-import ButtonDropdown from '~components/button-dropdown';
 
 import ScreenshotArea from '../utils/screenshot-area';
-
 import Example from './example';
 import { createLinearTimeLatencyProps, createLogXYProps } from './series';
 

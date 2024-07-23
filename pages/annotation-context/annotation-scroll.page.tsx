@@ -6,10 +6,12 @@ import clsx from 'clsx';
 import AnnotationContext from '~components/annotation-context';
 import Hotspot from '~components/hotspot';
 import properties from '~components/internal/generated/custom-css-properties';
-import styles from './styles.scss';
-import tutorials from '../onboarding/tutorials';
+
 import { annotationContextStrings } from '../onboarding/i18n';
+import tutorials from '../onboarding/tutorials';
 import ScreenshotArea from '../utils/screenshot-area';
+
+import styles from './styles.scss';
 
 const tutorial = tutorials(() => {})[0];
 

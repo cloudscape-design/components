@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { Link, TutorialPanelProps, Box } from '~components';
+
+import { Box, Link, TutorialPanelProps } from '~components';
 
 const tutorials = (showToolsPanel: () => void) =>
   [

@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 
-import Grid from '~components/grid';
 import Box from '~components/box';
 import Button from '~components/button';
+import Grid from '~components/grid';
 import PieChart, { PieChartProps } from '~components/pie-chart';
-import ScreenshotArea from '../utils/screenshot-area';
 
+import ScreenshotArea from '../utils/screenshot-area';
 import { commonProps, data1 } from './common';
 
 interface FoodData {

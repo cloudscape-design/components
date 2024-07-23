@@ -1,9 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import { Box, DateRangePicker, DateRangePickerProps, Link, FormField } from '~components';
+
+import { Box, DateRangePicker, DateRangePickerProps, FormField, Link } from '~components';
+
 import ScreenshotArea from '../utils/screenshot-area';
-import { i18nStrings, relativeOptions, isValid } from './common';
+import { i18nStrings, isValid, relativeOptions } from './common';
 
 export default function DatePickerScenario() {
   const [value, setValue] = useState<DateRangePickerProps['value']>({

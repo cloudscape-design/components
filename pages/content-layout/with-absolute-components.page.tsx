@@ -1,15 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
+
 import AppLayout from '~components/app-layout';
 import ButtonDropdown, { ButtonDropdownProps } from '~components/button-dropdown';
 import ContentLayout from '~components/content-layout';
 import Flashbar from '~components/flashbar';
 import Select, { SelectProps } from '~components/select';
 import SpaceBetween from '~components/space-between';
-import ScreenshotArea from '../utils/screenshot-area';
+
 import { Breadcrumbs } from '../app-layout/utils/content-blocks';
 import labels from '../app-layout/utils/labels';
+import ScreenshotArea from '../utils/screenshot-area';
 
 const dropdownItems: ButtonDropdownProps.Items = [
   { id: '1', text: 'Item 1' },

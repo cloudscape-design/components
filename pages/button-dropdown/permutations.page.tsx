@@ -1,10 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
+import ButtonDropdown, { ButtonDropdownProps } from '~components/button-dropdown';
+
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
-import ButtonDropdown, { ButtonDropdownProps } from '~components/button-dropdown';
 
 const permutations = createPermutations<ButtonDropdownProps>([
   {

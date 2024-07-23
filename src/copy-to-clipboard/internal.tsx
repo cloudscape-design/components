@@ -1,16 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import { CopyToClipboardProps } from './interfaces';
+import clsx from 'clsx';
+
 import InternalButton from '../button/internal';
+import { getBaseProps } from '../internal/base-component';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import InternalPopover from '../popover/internal';
 import InternalStatusIndicator from '../status-indicator/internal';
+import { CopyToClipboardProps } from './interfaces';
 
 import styles from './styles.css.js';
 import testStyles from './test-classes/styles.css.js';
-import clsx from 'clsx';
-import { getBaseProps } from '../internal/base-component';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 
 export interface InternalCopyToClipboardProps extends CopyToClipboardProps, InternalBaseComponentProps {}
 
@@ -21,6 +22,7 @@ export default function InternalCopyToClipboard({
   copySuccessText,
   copyErrorText,
   textToCopy,
+  popoverRenderWithPortal,
   __internalRootRef = null,
   ...restProps
 }: InternalCopyToClipboardProps) {
@@ -64,7 +66,7 @@ export default function InternalCopyToClipboard({
       position="top"
       triggerType="custom"
       dismissButton={false}
-      renderWithPortal={true}
+      renderWithPortal={popoverRenderWithPortal}
       content={<InternalStatusIndicator type={status}>{statusText}</InternalStatusIndicator>}
     >
       <InternalButton

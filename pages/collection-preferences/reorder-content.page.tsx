@@ -1,7 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
 import CollectionPreferences from '~components/collection-preferences';
+
+import { contentDisplayPreferenceI18nStrings } from '../common/i18n-strings';
+import ScreenshotArea from '../utils/screenshot-area';
 import {
   baseProperties,
   contentDensityPreference,
@@ -9,8 +13,6 @@ import {
   pageSizePreference,
   wrapLinesPreference,
 } from './shared-configs';
-import ScreenshotArea from '../utils/screenshot-area';
-import { contentDisplayPreferenceI18nStrings } from '../common/i18n-strings';
 
 const shortOptionsList = [
   {

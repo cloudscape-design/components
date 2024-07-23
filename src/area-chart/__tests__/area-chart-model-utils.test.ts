@@ -1,15 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ChartScale, NumericChartScale } from '../../../lib/components/internal/components/cartesian-chart/scales';
 import { ChartModel } from '../../../lib/components/area-chart/model';
 import {
   computeDomainX,
   computeDomainY,
   computePlotPoints,
   findClosest,
-  circleIndex,
   isSeriesValid,
 } from '../../../lib/components/area-chart/model/utils';
+import { ChartScale, NumericChartScale } from '../../../lib/components/internal/components/cartesian-chart/scales';
 
 function getPointIndices(matrix: ChartModel.PlotPoint<number>[][]) {
   const indices = [];
@@ -241,18 +240,6 @@ describe('AreaChart findClosest', () => {
   it('finds closest in an desc sorted array', () => {
     const closest = findClosest([6, 5, 3.5, 3, 2, 1], 4, x => x);
     expect(closest).toBe(3.5);
-  });
-});
-
-describe('AreaChart circleIndex', () => {
-  it('returns same index if in range', () => {
-    expect(circleIndex(1, [1, 5])).toBe(1);
-    expect(circleIndex(5, [1, 5])).toBe(5);
-  });
-
-  it('returns opposite boundary if not in range', () => {
-    expect(circleIndex(0, [1, 5])).toBe(5);
-    expect(circleIndex(6, [1, 5])).toBe(1);
   });
 });
 

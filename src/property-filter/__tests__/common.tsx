@@ -1,7 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { FilteringProperty, InternalFilteringProperty, Token } from '../interfaces';
+import React, { useState } from 'react';
+
+import PropertyFilter from '../../../lib/components/property-filter';
+import { FilteringProperty, InternalFilteringProperty, PropertyFilterProps, Token } from '../interfaces';
 
 export const i18nStrings = {
   dismissAriaLabel: 'Dismiss',
@@ -39,6 +42,21 @@ export const i18nStrings = {
   enteredTextLabel: (text: string) => `Use: "${text}"`,
 } as const;
 
+export const createDefaultProps = (
+  filteringProperties: PropertyFilterProps['filteringProperties'],
+  filteringOptions: PropertyFilterProps['filteringOptions']
+): PropertyFilterProps => ({
+  id: 'property-filter',
+  filteringEmpty: 'Empty',
+  filteringProperties,
+  filteringOptions,
+  filteringPlaceholder: 'Search',
+  filteringAriaLabel: 'your choice',
+  onChange: () => {},
+  query: { tokens: [], operation: 'and' },
+  i18nStrings,
+});
+
 export function toInternalProperties(properties: FilteringProperty[]): InternalFilteringProperty[] {
   return properties.map(property => ({
     propertyKey: property.key,
@@ -51,4 +69,9 @@ export function toInternalProperties(properties: FilteringProperty[]): InternalF
     getValueFormRenderer: () => null,
     externalProperty: property,
   }));
+}
+
+export function StatefulPropertyFilter(props: Omit<PropertyFilterProps, 'onChange'>) {
+  const [query, setQuery] = useState<PropertyFilterProps.Query>(props.query);
+  return <PropertyFilter {...props} query={query} onChange={e => setQuery(e.detail)} />;
 }

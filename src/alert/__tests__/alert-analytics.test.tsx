@@ -3,16 +3,14 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
 
-import { FunnelMetrics } from '../../../lib/components/internal/analytics';
-import { useFunnel } from '../../../lib/components/internal/analytics/hooks/use-funnel';
 import Alert from '../../../lib/components/alert';
-
+import { FunnelMetrics } from '../../../lib/components/internal/analytics';
 import {
   AnalyticsFunnel,
   AnalyticsFunnelStep,
   AnalyticsFunnelSubStep,
 } from '../../../lib/components/internal/analytics/components/analytics-funnel';
-
+import { useFunnel } from '../../../lib/components/internal/analytics/hooks/use-funnel';
 import { mockFunnelMetrics } from '../../internal/analytics/__tests__/mocks';
 
 describe('Alert Analytics', () => {

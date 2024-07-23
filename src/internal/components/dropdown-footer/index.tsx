@@ -3,9 +3,10 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import styles from './styles.css.js';
 import DropdownStatus from '../dropdown-status/index.js';
 import LiveRegion from '../live-region/index.js';
+
+import styles from './styles.css.js';
 
 interface DropdownFooter {
   content?: React.ReactNode | null;

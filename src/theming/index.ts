@@ -4,6 +4,7 @@ import {
   applyTheme as coreApplyTheme,
   generateThemeStylesheet as coreGenerateThemeStylesheet,
 } from '@cloudscape-design/theming-runtime';
+
 import { preset, TypedOverride } from '../internal/generated/theming';
 
 export type Theme = TypedOverride;

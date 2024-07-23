@@ -61,6 +61,8 @@ $border-radius-slider-thumb: 50%;
 }
 
 @mixin base-thumb-disabled-styles {
+  block-size: $thumb-size;
+  inline-size: $thumb-size;
   background-color: awsui.$color-background-control-disabled;
   border-color: awsui.$color-background-control-disabled;
   box-shadow: none;

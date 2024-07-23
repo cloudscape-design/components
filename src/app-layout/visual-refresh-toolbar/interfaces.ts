@@ -2,11 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
+
+import { BreadcrumbGroupProps } from '../../breadcrumb-group/interfaces';
+import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
 import { FocusControlState } from '../utils/use-focus-control';
 import { SplitPanelFocusControlState } from '../utils/use-split-panel-focus-control';
-import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
-import { BreadcrumbGroupProps } from '../../breadcrumb-group/interfaces';
 import { VerticalLayoutOutput } from './compute-layout';
 
 // Widgetization notice: structures in this file are shared multiple app layout instances, possibly different minor versions.

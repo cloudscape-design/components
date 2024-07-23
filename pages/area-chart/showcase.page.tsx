@@ -6,10 +6,10 @@ import SpaceBetween from '~components/space-between';
 
 import Example from './example';
 import {
-  createLinearTimeLatencyProps,
-  createLinearCloseProps,
-  createLogXYProps,
   createCategoricalProps,
+  createLinearCloseProps,
+  createLinearTimeLatencyProps,
+  createLogXYProps,
 } from './series';
 
 const linearLatencyProps = createLinearTimeLatencyProps();

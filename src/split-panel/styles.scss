@@ -5,7 +5,7 @@
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
-@use '../internal/hooks/focus-visible' as focus-visible;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../app-layout/constants' as constants;
 
 @import './motion';
@@ -69,6 +69,9 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   }
   &.drawer-closed {
     overflow: hidden;
+    &.with-toolbar {
+      display: none;
+    }
   }
   &.drawer-closed:hover {
     background: awsui.$color-background-layout-panel-hover;

@@ -146,6 +146,10 @@
   margin-block-end: awsui.$space-content-header-padding-bottom;
 }
 
+.content {
+  display: contents;
+}
+
 /* stylelint-disable-next-line selector-combinator-disallowed-list, selector-max-universal */
 .unfocusable-mobile * {
   visibility: hidden;

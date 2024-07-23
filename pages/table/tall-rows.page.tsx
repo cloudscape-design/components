@@ -1,11 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { range } from 'lodash';
 import React, { useState } from 'react';
-import Header from '~components/header';
-import Table, { TableProps } from '~components/table';
+import { range } from 'lodash';
+
 import Box from '~components/box';
+import Header from '~components/header';
 import Link from '~components/link';
+import Table, { TableProps } from '~components/table';
+
 import { generateItems, Instance } from './generate-data';
 import { columnsConfig } from './shared-configs';
 

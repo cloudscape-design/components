@@ -2,14 +2,16 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 import { render } from '@testing-library/react';
-import createWrapper, { CheckboxWrapper } from '../../../lib/components/test-utils/dom';
-import FormField from '../../../lib/components/form-field';
+
 import Checkbox, { CheckboxProps } from '../../../lib/components/checkbox';
 import InternalCheckbox from '../../../lib/components/checkbox/internal';
-import styles from '../../../lib/components/internal/components/checkbox-icon/styles.selectors.js';
-import abstractSwitchStyles from '../../../lib/components/internal/components/abstract-switch/styles.css.js';
-import { createCommonTests } from './common-tests';
+import FormField from '../../../lib/components/form-field';
+import createWrapper, { CheckboxWrapper } from '../../../lib/components/test-utils/dom';
 import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
+import { createCommonTests } from './common-tests';
+
+import abstractSwitchStyles from '../../../lib/components/internal/components/abstract-switch/styles.css.js';
+import styles from '../../../lib/components/internal/components/checkbox-icon/styles.selectors.js';
 
 function renderCheckbox(jsx: React.ReactElement) {
   const { container, rerender } = render(jsx);

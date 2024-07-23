@@ -1,27 +1,30 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useState } from 'react';
+
 import { useCollection } from '@cloudscape-design/collection-hooks';
+
+import { Box, Checkbox } from '~components';
 import Button from '~components/button';
 import CollectionPreferences, { CollectionPreferencesProps } from '~components/collection-preferences';
 import Header from '~components/header';
 import Pagination from '~components/pagination';
 import Table, { TableProps } from '~components/table';
 import TextFilter from '~components/text-filter';
-import { Instance, generateItems } from './generate-data';
+
+import AppContext, { AppContextType } from '../app/app-context';
+import { contentDisplayPreferenceI18nStrings } from '../common/i18n-strings';
+import ScreenshotArea from '../utils/screenshot-area';
+import { generateItems, Instance } from './generate-data';
 import {
   columnsConfig,
-  EmptyState,
-  getMatchesCountText,
-  paginationLabels,
-  pageSizeOptions,
   contentDisplayPreference,
   defaultPreferences,
+  EmptyState,
+  getMatchesCountText,
+  pageSizeOptions,
+  paginationLabels,
 } from './shared-configs';
-import ScreenshotArea from '../utils/screenshot-area';
-import { contentDisplayPreferenceI18nStrings } from '../common/i18n-strings';
-import { Box, Checkbox } from '~components';
-import AppContext, { AppContextType } from '../app/app-context';
 
 type PageContext = React.Context<
   AppContextType<{

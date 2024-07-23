@@ -1,13 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
 import InternalLink from '../../../link/internal';
-
 import InternalStatusIndicator from '../../../status-indicator/internal';
-import { NonCancelableEventHandler, fireNonCancelableEvent } from '../../events';
+import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../events';
 import { usePrevious } from '../../hooks/use-previous';
-
 import { DropdownStatusProps } from './interfaces';
+
 import styles from './styles.css.js';
 
 export { DropdownStatusProps };

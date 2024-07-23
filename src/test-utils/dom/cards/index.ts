@@ -1,12 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
-import styles from '../../../cards/styles.selectors.js';
-import tableStyles from '../../../table/styles.selectors.js';
+
 import CollectionPreferencesWrapper from '../collection-preferences';
 import ContainerWrapper from '../container';
 import PaginationWrapper from '../pagination';
 import TextFilterWrapper from '../text-filter';
+
+import styles from '../../../cards/styles.selectors.js';
+import tableStyles from '../../../table/styles.selectors.js';
 
 export class CardSectionWrapper extends ComponentWrapper {
   findSectionHeader(): ElementWrapper | null {

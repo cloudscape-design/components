@@ -1,21 +1,23 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+
 import InternalBox from '../../box/internal';
 import { InternalButton } from '../../button/internal';
 import InternalFormField from '../../form-field/internal';
+import { useInternalI18n } from '../../i18n/context';
 import { InputProps } from '../../input/interfaces';
-import InternalSelect from '../../select/internal';
-import InternalStatusIndicator from '../../status-indicator/internal';
+import LiveRegion from '../../internal/components/live-region';
 import { NonCancelableCustomEvent } from '../../internal/events';
 import useForwardFocus from '../../internal/hooks/forward-focus';
-import { useVersionsFetch } from './use-versions-fetch';
+import InternalSelect from '../../select/internal';
+import InternalStatusIndicator from '../../status-indicator/internal';
 import { S3ResourceSelectorProps } from '../interfaces';
-import { validate, getErrorText } from './validation';
-import styles from './styles.css.js';
 import { SearchInput } from './search-input';
-import LiveRegion from '../../internal/components/live-region';
-import { useInternalI18n } from '../../i18n/context';
+import { useVersionsFetch } from './use-versions-fetch';
+import { getErrorText, validate } from './validation';
+
+import styles from './styles.css.js';
 
 interface S3InContextProps {
   i18nStrings: S3ResourceSelectorProps.I18nStrings | undefined;

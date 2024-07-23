@@ -1,11 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef } from 'react';
+
 import { Box, Link } from '~components';
-import styles from './styles.scss';
-import { generateItems, Instance } from '../table/generate-data';
-import { StickyScrollbar } from '~components/table/sticky-scrollbar';
 import { useScrollSync } from '~components/internal/hooks/use-scroll-sync';
+import { StickyScrollbar } from '~components/table/sticky-scrollbar';
+
+import { generateItems, Instance } from '../table/generate-data';
+
+import styles from './styles.scss';
 
 const items = generateItems(50);
 const columnDefinitions = [

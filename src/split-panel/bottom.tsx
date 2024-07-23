@@ -1,14 +1,18 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import React, { useEffect, useRef } from 'react';
+import clsx from 'clsx';
+
+import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
+
+import { TransitionStatus } from '../internal/components/transition';
+import { useSplitPanelContext } from '../internal/context/split-panel-context';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useMobile } from '../internal/hooks/use-mobile';
-import { TransitionStatus } from '../internal/components/transition';
-import { SplitPanelContentProps } from './interfaces';
-import { useSplitPanelContext } from '../internal/context/split-panel-context';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
+import { getGlobalFlag } from '../internal/utils/global-flags';
+import { SplitPanelContentProps } from './interfaces';
+
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
@@ -33,6 +37,7 @@ export function SplitPanelContentBottom({
   onToggle,
 }: SplitPanelContentBottomProps) {
   const isRefresh = useVisualRefresh();
+  const hasToolbar = getGlobalFlag('appLayoutWidget');
   const { bottomOffset, leftOffset, rightOffset, disableContentPaddings, contentWrapperPaddings, reportHeaderHeight } =
     useSplitPanelContext();
   const transitionContentBottomRef = useMergeRefs(splitPanelRef || null, transitioningElementRef);
@@ -62,6 +67,7 @@ export function SplitPanelContentBottom({
         [styles['drawer-disable-content-paddings']]: disableContentPaddings,
         [styles.animating]: isRefresh && (state === 'entering' || state === 'exiting'),
         [styles.refresh]: isRefresh,
+        [styles['with-toolbar']]: hasToolbar,
       })}
       onClick={() => !isOpen && onToggle()}
       style={{

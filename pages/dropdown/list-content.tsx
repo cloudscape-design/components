@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import repeatString from 'lodash/repeat';
+
 import styles from './styles.scss';
 
 const ListContent = ({ n, withSpaces = false, repeat = 1 }: { n: number; withSpaces?: boolean; repeat?: number }) => (

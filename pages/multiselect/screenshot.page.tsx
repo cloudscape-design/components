@@ -1,9 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
+
 import Multiselect, { MultiselectProps } from '~components/multiselect';
+
 import ScreenshotArea from '../utils/screenshot-area';
-import { i18nStrings, deselectAriaLabel } from './constants';
+import { deselectAriaLabel, i18nStrings } from './constants';
 
 const options: MultiselectProps.Options = [
   { value: 'first', label: 'Simple' },

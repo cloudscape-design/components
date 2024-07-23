@@ -1,16 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { MixedLineBarChartProps } from '../../../lib/components/mixed-line-bar-chart/interfaces';
 import { computeDomainX, computeDomainY } from '../../../lib/components/mixed-line-bar-chart/domain';
-
+import { MixedLineBarChartProps } from '../../../lib/components/mixed-line-bar-chart/interfaces';
 import {
   barSeries,
   barSeries2,
   lineSeries1,
   lineSeries2,
   lineSeries3,
-  thresholdSeries,
   stackedDateBarSeries,
+  thresholdSeries,
   xThresholdSeries1,
   xThresholdSeries2,
 } from './common';

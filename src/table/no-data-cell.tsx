@@ -1,11 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import React, { useRef } from 'react';
-import InternalStatusIndicator from '../status-indicator/internal';
-import styles from './styles.css.js';
-import LiveRegion from '../internal/components/live-region';
+import clsx from 'clsx';
+
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
+
+import LiveRegion from '../internal/components/live-region';
+import InternalStatusIndicator from '../status-indicator/internal';
+
+import styles from './styles.css.js';
 
 interface NoDataCellProps {
   totalColumnsCount: number;

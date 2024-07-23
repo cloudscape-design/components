@@ -1,15 +1,18 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useLayoutEffect } from 'react';
-import times from 'lodash/times';
-import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 import { render, screen } from '@testing-library/react';
-import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/dom';
-import Table, { TableProps } from '../../../lib/components/table';
-import resizerStyles from '../../../lib/components/table/resizer/styles.css.js';
-import { fireMousedown, fireMouseup, fireMouseMove, fakeBoundingClientRect } from './utils/resize-actions';
-import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
+import times from 'lodash/times';
+
 import { ContainerQueryEntry } from '@cloudscape-design/component-toolkit';
+import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
+import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
+
+import Table, { TableProps } from '../../../lib/components/table';
+import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/dom';
+import { fakeBoundingClientRect, fireMousedown, fireMouseMove, fireMouseup } from './utils/resize-actions';
+
+import resizerStyles from '../../../lib/components/table/resizer/styles.css.js';
 
 jest.mock('../../../lib/components/internal/utils/scrollable-containers', () => ({
   ...jest.requireActual('../../../lib/components/internal/utils/scrollable-containers'),

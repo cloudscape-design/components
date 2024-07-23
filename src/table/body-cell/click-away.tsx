@@ -1,8 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { useEffect, useRef } from 'react';
-import { nodeBelongs } from '../../internal/utils/node-belongs';
+
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
+
+import { nodeBelongs } from '../../internal/utils/node-belongs';
 
 export function useClickAway(onClick: () => void) {
   const awayRef = useRef<any>(null);

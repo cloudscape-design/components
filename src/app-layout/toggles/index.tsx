@@ -1,12 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import React from 'react';
+import clsx from 'clsx';
+
 import { ButtonProps } from '../../button/interfaces';
 import { InternalButton } from '../../button/internal';
 import InternalIcon from '../../icon/internal';
 import { AppLayoutProps } from '../interfaces';
 import { AppLayoutButtonProps } from './interfaces';
+
 import styles from './styles.css.js';
 
 export const togglesConfig = {

@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
-import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/selectors/index.js';
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
+import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
+
 import { TableInteractionProps } from '../../../lib/components/internal/analytics/interfaces.js';
+import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/selectors/index.js';
 
 const setupTest = (
   testFn: (parameters: {

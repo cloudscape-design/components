@@ -1,9 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
-import selectors from '../../../token-group/styles.selectors.js';
-import tokenListSelectors from '../../../internal/components/token-list/styles.selectors.js';
+
 import TokenWrapper from './token';
+
+import tokenListSelectors from '../../../internal/components/token-list/styles.selectors.js';
+import selectors from '../../../token-group/styles.selectors.js';
 
 export default class TokenGroupWrapper extends ComponentWrapper {
   static rootSelector: string = selectors.root;

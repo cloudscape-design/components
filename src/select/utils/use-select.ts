@@ -1,24 +1,25 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { RefObject } from 'react';
-import { DropdownProps } from '../../internal/components/dropdown/interfaces';
-import { DropdownOption, OptionDefinition, OptionGroup } from '../../internal/components/option/interfaces';
-import { isInteractive, isGroupInteractive, isGroup } from '../../internal/components/option/utils/filter-options';
 import { useEffect, useRef } from 'react';
-import { useHighlightedOption } from '../../internal/components/options-list/utils/use-highlight-option';
-import { useOpenState } from '../../internal/components/options-list/utils/use-open-state';
-import { useMenuKeyboard, useTriggerKeyboard } from '../../internal/components/options-list/utils/use-keyboard';
-import { getOptionId } from '../../internal/components/options-list/utils/use-ids';
-import { connectOptionsByValue } from './connect-options';
-import useForwardFocus from '../../internal/hooks/forward-focus';
+
+import { ButtonTriggerProps } from '../../internal/components/button-trigger';
+import { DropdownProps } from '../../internal/components/dropdown/interfaces';
+import { DropdownStatusProps } from '../../internal/components/dropdown-status';
+import { DropdownOption, OptionDefinition, OptionGroup } from '../../internal/components/option/interfaces';
+import { isGroup, isGroupInteractive, isInteractive } from '../../internal/components/option/utils/filter-options';
 import { OptionsListProps } from '../../internal/components/options-list';
+import { useHighlightedOption } from '../../internal/components/options-list/utils/use-highlight-option';
+import { getOptionId } from '../../internal/components/options-list/utils/use-ids';
+import { useMenuKeyboard, useTriggerKeyboard } from '../../internal/components/options-list/utils/use-keyboard';
+import { useOpenState } from '../../internal/components/options-list/utils/use-open-state';
+import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../internal/events';
+import useForwardFocus from '../../internal/hooks/forward-focus';
+import { usePrevious } from '../../internal/hooks/use-previous';
+import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { FilterProps } from '../parts/filter';
 import { ItemProps } from '../parts/item';
-import { usePrevious } from '../../internal/hooks/use-previous';
-import { NonCancelableEventHandler, fireNonCancelableEvent } from '../../internal/events';
-import { useUniqueId } from '../../internal/hooks/use-unique-id';
-import { DropdownStatusProps } from '../../internal/components/dropdown-status';
-import { ButtonTriggerProps } from '../../internal/components/button-trigger';
+import { connectOptionsByValue } from './connect-options';
 
 export type MenuProps = Omit<OptionsListProps, 'children'> & { ref: React.RefObject<HTMLUListElement> };
 export type GetOptionProps = (option: DropdownOption, index: number) => ItemProps;

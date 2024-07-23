@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
-import FormField, { FormFieldProps } from '../../lib/components/form-field';
-import createWrapper, { ElementWrapper } from '../../lib/components/test-utils/dom';
 
+import FormField, { FormFieldProps } from '../../lib/components/form-field';
 import { FormFieldValidationControlProps } from '../../lib/components/internal/context/form-field-context';
+import createWrapper, { ElementWrapper } from '../../lib/components/test-utils/dom';
 import { getRequiredPropsForComponent } from './required-props-for-components';
 import { requireComponent } from './utils';
 

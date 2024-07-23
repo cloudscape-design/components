@@ -2,18 +2,21 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef } from 'react';
 import clsx from 'clsx';
-import { ContentLayoutProps } from './interfaces';
+
+import { useCurrentMode } from '@cloudscape-design/component-toolkit/internal';
+
+import InternalGrid from '../grid/internal';
 import { getBaseProps } from '../internal/base-component';
-import { highContrastHeaderClassName } from '../internal/utils/content-header-utils';
+import customCssProps from '../internal/generated/custom-css-properties';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useDynamicOverlap } from '../internal/hooks/use-dynamic-overlap';
-import { useCurrentMode } from '@cloudscape-design/component-toolkit/internal';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import customCssProps from '../internal/generated/custom-css-properties';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { highContrastHeaderClassName } from '../internal/utils/content-header-utils';
+import { ContentLayoutProps } from './interfaces';
+
 import styles from './styles.css.js';
 import testutilStyles from './test-classes/styles.css.js';
-import InternalGrid from '../grid/internal';
 
 type InternalContentLayoutProps = ContentLayoutProps & InternalBaseComponentProps;
 

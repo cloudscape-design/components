@@ -1,15 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import React, { memo, useCallback } from 'react';
 import clsx from 'clsx';
-import React, { useCallback, memo } from 'react';
 
-import { NonCancelableEventHandler } from '../../events';
 import InternalFormField from '../../../form-field/internal';
+import { useInternalI18n } from '../../../i18n/context';
+import { MultiselectProps } from '../../../multiselect/interfaces';
 import InternalMultiselect from '../../../multiselect/internal';
 import { BaseComponentProps, getBaseProps } from '../../base-component';
-import { MultiselectProps } from '../../../multiselect/interfaces';
+import { NonCancelableEventHandler } from '../../events';
 import SeriesMarker, { ChartSeriesMarkerType } from '../chart-series-marker';
-import { useInternalI18n } from '../../../i18n/context';
 
 import styles from './styles.css.js';
 

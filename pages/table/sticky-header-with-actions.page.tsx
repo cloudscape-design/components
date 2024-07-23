@@ -1,10 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import Header from '~components/header';
+
 import ButtonDropdown, { ButtonDropdownProps } from '~components/button-dropdown';
+import Header from '~components/header';
 import Table from '~components/table';
-import { Instance, generateItems } from '../table/generate-data';
+
+import { generateItems, Instance } from '../table/generate-data';
 import { columnsConfig, selectionLabels } from '../table/shared-configs';
 import ScreenshotArea from '../utils/screenshot-area';
 

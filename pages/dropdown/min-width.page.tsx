@@ -1,8 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import Dropdown from '~components/internal/components/dropdown';
 import { useState } from 'react';
+
+import Dropdown from '~components/internal/components/dropdown';
+
 import ListContent from './list-content';
 
 export default function DropdownScenario() {

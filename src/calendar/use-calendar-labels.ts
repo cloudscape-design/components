@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { CalendarProps } from './interfaces';
 import { useInternalI18n } from '../i18n/context.js';
+import { CalendarProps } from './interfaces';
 import { getDateLabel, renderMonthAndYear } from './utils/intl';
 
 export default function useCalendarLabels({

@@ -1,18 +1,20 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import PropertyFilter from '~components/property-filter';
-import Table from '~components/table';
-import Button from '~components/button';
-import Box from '~components/box';
-import Header from '~components/header';
-import ScreenshotArea from '../utils/screenshot-area';
-import { allItems, TableItem } from './table.data';
-import { columnDefinitions, i18nStrings, filteringProperties } from './common-props';
+
 import { useCollection } from '@cloudscape-design/collection-hooks';
 
+import Box from '~components/box';
+import Button from '~components/button';
+import Header from '~components/header';
 import { I18nProvider } from '~components/i18n';
 import messages from '~components/i18n/messages/all.en';
+import PropertyFilter from '~components/property-filter';
+import Table from '~components/table';
+
+import ScreenshotArea from '../utils/screenshot-area';
+import { columnDefinitions, filteringProperties, i18nStrings } from './common-props';
+import { allItems, TableItem } from './table.data';
 
 export default function () {
   const [locale, setLocale] = useState('en');
