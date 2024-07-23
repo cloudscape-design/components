@@ -111,6 +111,13 @@ Object {
             "light": "#fafafa",
           },
         },
+        "color-background-button-normal-pressed": Object {
+          "$description": "The background color of normal buttons in pressed state.",
+          "$value": Object {
+            "dark": "#21252c",
+            "light": "#fafafa",
+          },
+        },
         "color-background-button-primary-active": Object {
           "$description": "The background color of primary buttons in active state.",
           "$value": Object {
@@ -431,6 +438,13 @@ Object {
           "$value": Object {
             "dark": "#aab7b8",
             "light": "#16191f",
+          },
+        },
+        "color-border-button-normal-pressed": Object {
+          "$description": "The border color of normal buttons in pressed state.",
+          "$value": Object {
+            "dark": "#879596",
+            "light": "#545b64",
           },
         },
         "color-border-button-primary-disabled": Object {
@@ -1749,6 +1763,13 @@ Object {
             "light": "#16191f",
           },
         },
+        "color-text-button-normal-pressed": Object {
+          "$description": "The pressed text color of normal buttons.",
+          "$value": Object {
+            "dark": "#fafafa",
+            "light": "#16191f",
+          },
+        },
         "color-text-button-primary-active": Object {
           "$description": "The active text color of primary buttons.",
           "$value": Object {
@@ -1922,6 +1943,13 @@ Object {
           "$value": Object {
             "dark": "#fafafa",
             "light": "#fafafa",
+          },
+        },
+        "color-text-interactive-pressed": Object {
+          "$description": "The color of clickable elements in pressed state.",
+          "$value": Object {
+            "dark": "#fafafa",
+            "light": "#16191f",
           },
         },
         "color-text-label": Object {
@@ -2490,6 +2518,13 @@ Object {
             "light": "#fafafa",
           },
         },
+        "color-background-button-normal-pressed": Object {
+          "$description": "The background color of normal buttons in pressed state.",
+          "$value": Object {
+            "dark": "#21252c",
+            "light": "#fafafa",
+          },
+        },
         "color-background-button-primary-active": Object {
           "$description": "The background color of primary buttons in active state.",
           "$value": Object {
@@ -2810,6 +2845,13 @@ Object {
           "$value": Object {
             "dark": "#aab7b8",
             "light": "#16191f",
+          },
+        },
+        "color-border-button-normal-pressed": Object {
+          "$description": "The border color of normal buttons in pressed state.",
+          "$value": Object {
+            "dark": "#879596",
+            "light": "#545b64",
           },
         },
         "color-border-button-primary-disabled": Object {
@@ -4128,6 +4170,13 @@ Object {
             "light": "#16191f",
           },
         },
+        "color-text-button-normal-pressed": Object {
+          "$description": "The pressed text color of normal buttons.",
+          "$value": Object {
+            "dark": "#fafafa",
+            "light": "#16191f",
+          },
+        },
         "color-text-button-primary-active": Object {
           "$description": "The active text color of primary buttons.",
           "$value": Object {
@@ -4301,6 +4350,13 @@ Object {
           "$value": Object {
             "dark": "#fafafa",
             "light": "#fafafa",
+          },
+        },
+        "color-text-interactive-pressed": Object {
+          "$description": "The color of clickable elements in pressed state.",
+          "$value": Object {
+            "dark": "#fafafa",
+            "light": "#16191f",
           },
         },
         "color-text-label": Object {
@@ -4869,6 +4925,13 @@ Object {
             "light": "#fafafa",
           },
         },
+        "color-background-button-normal-pressed": Object {
+          "$description": "The background color of normal buttons in pressed state.",
+          "$value": Object {
+            "dark": "#21252c",
+            "light": "#fafafa",
+          },
+        },
         "color-background-button-primary-active": Object {
           "$description": "The background color of primary buttons in active state.",
           "$value": Object {
@@ -5189,6 +5252,13 @@ Object {
           "$value": Object {
             "dark": "#aab7b8",
             "light": "#16191f",
+          },
+        },
+        "color-border-button-normal-pressed": Object {
+          "$description": "The border color of normal buttons in pressed state.",
+          "$value": Object {
+            "dark": "#879596",
+            "light": "#545b64",
           },
         },
         "color-border-button-primary-disabled": Object {
@@ -6507,6 +6577,13 @@ Object {
             "light": "#16191f",
           },
         },
+        "color-text-button-normal-pressed": Object {
+          "$description": "The pressed text color of normal buttons.",
+          "$value": Object {
+            "dark": "#fafafa",
+            "light": "#16191f",
+          },
+        },
         "color-text-button-primary-active": Object {
           "$description": "The active text color of primary buttons.",
           "$value": Object {
@@ -6680,6 +6757,13 @@ Object {
           "$value": Object {
             "dark": "#fafafa",
             "light": "#fafafa",
+          },
+        },
+        "color-text-interactive-pressed": Object {
+          "$description": "The color of clickable elements in pressed state.",
+          "$value": Object {
+            "dark": "#fafafa",
+            "light": "#16191f",
           },
         },
         "color-text-label": Object {
@@ -7248,6 +7332,13 @@ Object {
             "light": "#fafafa",
           },
         },
+        "color-background-button-normal-pressed": Object {
+          "$description": "The background color of normal buttons in pressed state.",
+          "$value": Object {
+            "dark": "#21252c",
+            "light": "#fafafa",
+          },
+        },
         "color-background-button-primary-active": Object {
           "$description": "The background color of primary buttons in active state.",
           "$value": Object {
@@ -7568,6 +7659,13 @@ Object {
           "$value": Object {
             "dark": "#aab7b8",
             "light": "#16191f",
+          },
+        },
+        "color-border-button-normal-pressed": Object {
+          "$description": "The border color of normal buttons in pressed state.",
+          "$value": Object {
+            "dark": "#879596",
+            "light": "#545b64",
           },
         },
         "color-border-button-primary-disabled": Object {
@@ -8886,6 +8984,13 @@ Object {
             "light": "#16191f",
           },
         },
+        "color-text-button-normal-pressed": Object {
+          "$description": "The pressed text color of normal buttons.",
+          "$value": Object {
+            "dark": "#fafafa",
+            "light": "#16191f",
+          },
+        },
         "color-text-button-primary-active": Object {
           "$description": "The active text color of primary buttons.",
           "$value": Object {
@@ -9058,6 +9163,13 @@ Object {
           "$description": "The hover color of clickable elements in the flashbar. For example: The dismiss icon button in a flashbar.",
           "$value": Object {
             "dark": "#16191f",
+            "light": "#16191f",
+          },
+        },
+        "color-text-interactive-pressed": Object {
+          "$description": "The color of clickable elements in pressed state.",
+          "$value": Object {
+            "dark": "#fafafa",
             "light": "#16191f",
           },
         },
@@ -9627,6 +9739,13 @@ Object {
             "light": "#21252c",
           },
         },
+        "color-background-button-normal-pressed": Object {
+          "$description": "The background color of normal buttons in pressed state.",
+          "$value": Object {
+            "dark": "#21252c",
+            "light": "#21252c",
+          },
+        },
         "color-background-button-primary-active": Object {
           "$description": "The background color of primary buttons in active state.",
           "$value": Object {
@@ -9947,6 +10066,13 @@ Object {
           "$value": Object {
             "dark": "#aab7b8",
             "light": "#aab7b8",
+          },
+        },
+        "color-border-button-normal-pressed": Object {
+          "$description": "The border color of normal buttons in pressed state.",
+          "$value": Object {
+            "dark": "#879596",
+            "light": "#879596",
           },
         },
         "color-border-button-primary-disabled": Object {
@@ -11265,6 +11391,13 @@ Object {
             "light": "#fafafa",
           },
         },
+        "color-text-button-normal-pressed": Object {
+          "$description": "The pressed text color of normal buttons.",
+          "$value": Object {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
         "color-text-button-primary-active": Object {
           "$description": "The active text color of primary buttons.",
           "$value": Object {
@@ -11435,6 +11568,13 @@ Object {
         },
         "color-text-interactive-inverted-hover": Object {
           "$description": "The hover color of clickable elements in the flashbar. For example: The dismiss icon button in a flashbar.",
+          "$value": Object {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-interactive-pressed": Object {
+          "$description": "The color of clickable elements in pressed state.",
           "$value": Object {
             "dark": "#fafafa",
             "light": "#fafafa",
@@ -12006,6 +12146,13 @@ Object {
         "light": "#fafafa",
       },
     },
+    "color-background-button-normal-pressed": Object {
+      "$description": "The background color of normal buttons in pressed state.",
+      "$value": Object {
+        "dark": "#21252c",
+        "light": "#fafafa",
+      },
+    },
     "color-background-button-primary-active": Object {
       "$description": "The background color of primary buttons in active state.",
       "$value": Object {
@@ -12326,6 +12473,13 @@ Object {
       "$value": Object {
         "dark": "#aab7b8",
         "light": "#16191f",
+      },
+    },
+    "color-border-button-normal-pressed": Object {
+      "$description": "The border color of normal buttons in pressed state.",
+      "$value": Object {
+        "dark": "#879596",
+        "light": "#545b64",
       },
     },
     "color-border-button-primary-disabled": Object {
@@ -13644,6 +13798,13 @@ Object {
         "light": "#16191f",
       },
     },
+    "color-text-button-normal-pressed": Object {
+      "$description": "The pressed text color of normal buttons.",
+      "$value": Object {
+        "dark": "#fafafa",
+        "light": "#16191f",
+      },
+    },
     "color-text-button-primary-active": Object {
       "$description": "The active text color of primary buttons.",
       "$value": Object {
@@ -13817,6 +13978,13 @@ Object {
       "$value": Object {
         "dark": "#fafafa",
         "light": "#fafafa",
+      },
+    },
+    "color-text-interactive-pressed": Object {
+      "$description": "The color of clickable elements in pressed state.",
+      "$value": Object {
+        "dark": "#fafafa",
+        "light": "#16191f",
       },
     },
     "color-text-label": Object {
@@ -14390,6 +14558,13 @@ Object {
             "light": "rgba(0, 7, 22, 0.05)",
           },
         },
+        "color-background-button-normal-pressed": Object {
+          "$description": "The background color of normal buttons in pressed state.",
+          "$value": Object {
+            "dark": "#192534",
+            "light": "#f2f8fd",
+          },
+        },
         "color-background-button-primary-active": Object {
           "$description": "The background color of primary buttons in active state.",
           "$value": Object {
@@ -14710,6 +14885,13 @@ Object {
           "$value": Object {
             "dark": "#ffffff",
             "light": "#000716",
+          },
+        },
+        "color-border-button-normal-pressed": Object {
+          "$description": "The border color of normal buttons in pressed state.",
+          "$value": Object {
+            "dark": "#539fe5",
+            "light": "#0972d3",
           },
         },
         "color-border-button-primary-disabled": Object {
@@ -16028,6 +16210,13 @@ Object {
             "light": "#000716",
           },
         },
+        "color-text-button-normal-pressed": Object {
+          "$description": "The pressed text color of normal buttons.",
+          "$value": Object {
+            "dark": "#89bdee",
+            "light": "#033160",
+          },
+        },
         "color-text-button-primary-active": Object {
           "$description": "The active text color of primary buttons.",
           "$value": Object {
@@ -16201,6 +16390,13 @@ Object {
           "$value": Object {
             "dark": "#fbfbfb",
             "light": "#fbfbfb",
+          },
+        },
+        "color-text-interactive-pressed": Object {
+          "$description": "The color of clickable elements in pressed state.",
+          "$value": Object {
+            "dark": "#fbfbfb",
+            "light": "#000716",
           },
         },
         "color-text-label": Object {
@@ -16769,6 +16965,13 @@ Object {
             "light": "rgba(255, 255, 255, 0.1)",
           },
         },
+        "color-background-button-normal-pressed": Object {
+          "$description": "The background color of normal buttons in pressed state.",
+          "$value": Object {
+            "dark": "#192534",
+            "light": "#192534",
+          },
+        },
         "color-background-button-primary-active": Object {
           "$description": "The background color of primary buttons in active state.",
           "$value": Object {
@@ -17089,6 +17292,13 @@ Object {
           "$value": Object {
             "dark": "#ffffff",
             "light": "#ffffff",
+          },
+        },
+        "color-border-button-normal-pressed": Object {
+          "$description": "The border color of normal buttons in pressed state.",
+          "$value": Object {
+            "dark": "#539fe5",
+            "light": "#539fe5",
           },
         },
         "color-border-button-primary-disabled": Object {
@@ -18407,6 +18617,13 @@ Object {
             "light": "#ffffff",
           },
         },
+        "color-text-button-normal-pressed": Object {
+          "$description": "The pressed text color of normal buttons.",
+          "$value": Object {
+            "dark": "#89bdee",
+            "light": "#89bdee",
+          },
+        },
         "color-text-button-primary-active": Object {
           "$description": "The active text color of primary buttons.",
           "$value": Object {
@@ -18577,6 +18794,13 @@ Object {
         },
         "color-text-interactive-inverted-hover": Object {
           "$description": "The hover color of clickable elements in the flashbar. For example: The dismiss icon button in a flashbar.",
+          "$value": Object {
+            "dark": "#fbfbfb",
+            "light": "#fbfbfb",
+          },
+        },
+        "color-text-interactive-pressed": Object {
+          "$description": "The color of clickable elements in pressed state.",
           "$value": Object {
             "dark": "#fbfbfb",
             "light": "#fbfbfb",
@@ -19148,6 +19372,13 @@ Object {
             "light": "#f2f8fd",
           },
         },
+        "color-background-button-normal-pressed": Object {
+          "$description": "The background color of normal buttons in pressed state.",
+          "$value": Object {
+            "dark": "#192534",
+            "light": "#f2f8fd",
+          },
+        },
         "color-background-button-primary-active": Object {
           "$description": "The background color of primary buttons in active state.",
           "$value": Object {
@@ -19468,6 +19699,13 @@ Object {
           "$value": Object {
             "dark": "#89bdee",
             "light": "#033160",
+          },
+        },
+        "color-border-button-normal-pressed": Object {
+          "$description": "The border color of normal buttons in pressed state.",
+          "$value": Object {
+            "dark": "#539fe5",
+            "light": "#0972d3",
           },
         },
         "color-border-button-primary-disabled": Object {
@@ -20786,6 +21024,13 @@ Object {
             "light": "#033160",
           },
         },
+        "color-text-button-normal-pressed": Object {
+          "$description": "The pressed text color of normal buttons.",
+          "$value": Object {
+            "dark": "#89bdee",
+            "light": "#033160",
+          },
+        },
         "color-text-button-primary-active": Object {
           "$description": "The active text color of primary buttons.",
           "$value": Object {
@@ -20959,6 +21204,13 @@ Object {
           "$value": Object {
             "dark": "#fbfbfb",
             "light": "#fbfbfb",
+          },
+        },
+        "color-text-interactive-pressed": Object {
+          "$description": "The color of clickable elements in pressed state.",
+          "$value": Object {
+            "dark": "#fbfbfb",
+            "light": "#000716",
           },
         },
         "color-text-label": Object {
@@ -21527,6 +21779,13 @@ Object {
             "light": "rgba(0, 7, 22, 0.15)",
           },
         },
+        "color-background-button-normal-pressed": Object {
+          "$description": "The background color of normal buttons in pressed state.",
+          "$value": Object {
+            "dark": "#192534",
+            "light": "#f2f8fd",
+          },
+        },
         "color-background-button-primary-active": Object {
           "$description": "The background color of primary buttons in active state.",
           "$value": Object {
@@ -21847,6 +22106,13 @@ Object {
           "$value": Object {
             "dark": "#ffffff",
             "light": "#ffffff",
+          },
+        },
+        "color-border-button-normal-pressed": Object {
+          "$description": "The border color of normal buttons in pressed state.",
+          "$value": Object {
+            "dark": "#539fe5",
+            "light": "#0972d3",
           },
         },
         "color-border-button-primary-disabled": Object {
@@ -23165,6 +23431,13 @@ Object {
             "light": "#ffffff",
           },
         },
+        "color-text-button-normal-pressed": Object {
+          "$description": "The pressed text color of normal buttons.",
+          "$value": Object {
+            "dark": "#89bdee",
+            "light": "#033160",
+          },
+        },
         "color-text-button-primary-active": Object {
           "$description": "The active text color of primary buttons.",
           "$value": Object {
@@ -23338,6 +23611,13 @@ Object {
           "$value": Object {
             "dark": "#fbfbfb",
             "light": "#fbfbfb",
+          },
+        },
+        "color-text-interactive-pressed": Object {
+          "$description": "The color of clickable elements in pressed state.",
+          "$value": Object {
+            "dark": "#fbfbfb",
+            "light": "#000716",
           },
         },
         "color-text-label": Object {
@@ -23906,6 +24186,13 @@ Object {
             "light": "rgba(0, 7, 22, 0.05)",
           },
         },
+        "color-background-button-normal-pressed": Object {
+          "$description": "The background color of normal buttons in pressed state.",
+          "$value": Object {
+            "dark": "#192534",
+            "light": "#f2f8fd",
+          },
+        },
         "color-background-button-primary-active": Object {
           "$description": "The background color of primary buttons in active state.",
           "$value": Object {
@@ -24226,6 +24513,13 @@ Object {
           "$value": Object {
             "dark": "#000716",
             "light": "#000716",
+          },
+        },
+        "color-border-button-normal-pressed": Object {
+          "$description": "The border color of normal buttons in pressed state.",
+          "$value": Object {
+            "dark": "#539fe5",
+            "light": "#0972d3",
           },
         },
         "color-border-button-primary-disabled": Object {
@@ -25544,6 +25838,13 @@ Object {
             "light": "#000716",
           },
         },
+        "color-text-button-normal-pressed": Object {
+          "$description": "The pressed text color of normal buttons.",
+          "$value": Object {
+            "dark": "#89bdee",
+            "light": "#033160",
+          },
+        },
         "color-text-button-primary-active": Object {
           "$description": "The active text color of primary buttons.",
           "$value": Object {
@@ -25716,6 +26017,13 @@ Object {
           "$description": "The hover color of clickable elements in the flashbar. For example: The dismiss icon button in a flashbar.",
           "$value": Object {
             "dark": "#000716",
+            "light": "#000716",
+          },
+        },
+        "color-text-interactive-pressed": Object {
+          "$description": "The color of clickable elements in pressed state.",
+          "$value": Object {
+            "dark": "#fbfbfb",
             "light": "#000716",
           },
         },
@@ -26285,6 +26593,13 @@ Object {
             "light": "#192534",
           },
         },
+        "color-background-button-normal-pressed": Object {
+          "$description": "The background color of normal buttons in pressed state.",
+          "$value": Object {
+            "dark": "#192534",
+            "light": "#192534",
+          },
+        },
         "color-background-button-primary-active": Object {
           "$description": "The background color of primary buttons in active state.",
           "$value": Object {
@@ -26605,6 +26920,13 @@ Object {
           "$value": Object {
             "dark": "#89bdee",
             "light": "#89bdee",
+          },
+        },
+        "color-border-button-normal-pressed": Object {
+          "$description": "The border color of normal buttons in pressed state.",
+          "$value": Object {
+            "dark": "#539fe5",
+            "light": "#539fe5",
           },
         },
         "color-border-button-primary-disabled": Object {
@@ -27923,6 +28245,13 @@ Object {
             "light": "#89bdee",
           },
         },
+        "color-text-button-normal-pressed": Object {
+          "$description": "The pressed text color of normal buttons.",
+          "$value": Object {
+            "dark": "#89bdee",
+            "light": "#89bdee",
+          },
+        },
         "color-text-button-primary-active": Object {
           "$description": "The active text color of primary buttons.",
           "$value": Object {
@@ -28093,6 +28422,13 @@ Object {
         },
         "color-text-interactive-inverted-hover": Object {
           "$description": "The hover color of clickable elements in the flashbar. For example: The dismiss icon button in a flashbar.",
+          "$value": Object {
+            "dark": "#fbfbfb",
+            "light": "#fbfbfb",
+          },
+        },
+        "color-text-interactive-pressed": Object {
+          "$description": "The color of clickable elements in pressed state.",
           "$value": Object {
             "dark": "#fbfbfb",
             "light": "#fbfbfb",
@@ -28664,6 +29000,13 @@ Object {
             "light": "#192534",
           },
         },
+        "color-background-button-normal-pressed": Object {
+          "$description": "The background color of normal buttons in pressed state.",
+          "$value": Object {
+            "dark": "#192534",
+            "light": "#192534",
+          },
+        },
         "color-background-button-primary-active": Object {
           "$description": "The background color of primary buttons in active state.",
           "$value": Object {
@@ -28984,6 +29327,13 @@ Object {
           "$value": Object {
             "dark": "#89bdee",
             "light": "#89bdee",
+          },
+        },
+        "color-border-button-normal-pressed": Object {
+          "$description": "The border color of normal buttons in pressed state.",
+          "$value": Object {
+            "dark": "#539fe5",
+            "light": "#539fe5",
           },
         },
         "color-border-button-primary-disabled": Object {
@@ -30302,6 +30652,13 @@ Object {
             "light": "#89bdee",
           },
         },
+        "color-text-button-normal-pressed": Object {
+          "$description": "The pressed text color of normal buttons.",
+          "$value": Object {
+            "dark": "#89bdee",
+            "light": "#89bdee",
+          },
+        },
         "color-text-button-primary-active": Object {
           "$description": "The active text color of primary buttons.",
           "$value": Object {
@@ -30472,6 +30829,13 @@ Object {
         },
         "color-text-interactive-inverted-hover": Object {
           "$description": "The hover color of clickable elements in the flashbar. For example: The dismiss icon button in a flashbar.",
+          "$value": Object {
+            "dark": "#fbfbfb",
+            "light": "#fbfbfb",
+          },
+        },
+        "color-text-interactive-pressed": Object {
+          "$description": "The color of clickable elements in pressed state.",
           "$value": Object {
             "dark": "#fbfbfb",
             "light": "#fbfbfb",
@@ -31043,6 +31407,13 @@ Object {
         "light": "#f2f8fd",
       },
     },
+    "color-background-button-normal-pressed": Object {
+      "$description": "The background color of normal buttons in pressed state.",
+      "$value": Object {
+        "dark": "#192534",
+        "light": "#f2f8fd",
+      },
+    },
     "color-background-button-primary-active": Object {
       "$description": "The background color of primary buttons in active state.",
       "$value": Object {
@@ -31363,6 +31734,13 @@ Object {
       "$value": Object {
         "dark": "#89bdee",
         "light": "#033160",
+      },
+    },
+    "color-border-button-normal-pressed": Object {
+      "$description": "The border color of normal buttons in pressed state.",
+      "$value": Object {
+        "dark": "#539fe5",
+        "light": "#0972d3",
       },
     },
     "color-border-button-primary-disabled": Object {
@@ -32681,6 +33059,13 @@ Object {
         "light": "#033160",
       },
     },
+    "color-text-button-normal-pressed": Object {
+      "$description": "The pressed text color of normal buttons.",
+      "$value": Object {
+        "dark": "#89bdee",
+        "light": "#033160",
+      },
+    },
     "color-text-button-primary-active": Object {
       "$description": "The active text color of primary buttons.",
       "$value": Object {
@@ -32854,6 +33239,13 @@ Object {
       "$value": Object {
         "dark": "#fbfbfb",
         "light": "#fbfbfb",
+      },
+    },
+    "color-text-interactive-pressed": Object {
+      "$description": "The color of clickable elements in pressed state.",
+      "$value": Object {
+        "dark": "#fbfbfb",
+        "light": "#000716",
       },
     },
     "color-text-label": Object {
