@@ -4,7 +4,7 @@ import { OptionDefinition, OptionGroup as OptionGroupDefinition } from '../inter
 import { NonCancelableEventHandler } from '../internal/events';
 import { BaseSelectProps } from '../select/interfaces';
 
-export interface MultiselectProps extends BaseSelectProps {
+export interface MultiselectProps extends Omit<BaseSelectProps, 'inlineLabelText'> {
   /**
    * Specifies the currently selected options.
    * Provide an empty array to clear the selection.
