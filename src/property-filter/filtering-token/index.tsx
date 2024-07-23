@@ -112,7 +112,7 @@ const FilteringToken = forwardRef(
               disabled={disabled}
             />
           ) : (
-            <InternalPopover ref={popoverRef} {...popoverProps} __triggerTypeFlex={true}>
+            <InternalPopover ref={popoverRef} {...popoverProps} triggerType="filtering-token">
               <TokenEditButton ariaLabel={groupEditAriaLabel} disabled={disabled} />
             </InternalPopover>
           )
