@@ -113,7 +113,7 @@ function ariaLevelViolationsFilter(violation: Axe.Result) {
 // There is a known issue when multiple app layout instances rendered on the page. Skip them for pages matching this pattern
 function landmarkViolationFilter(violation: Axe.Result, currentUrl: string) {
   return (
-    !currentUrl.includes('app-layout/multi') ||
+    !currentUrl.includes('app-layout/multi-layout-simple') ||
     (violation.id !== 'landmark-main-is-top-level' &&
       violation.id !== 'landmark-unique' &&
       violation.id !== 'landmark-no-duplicate-main')
