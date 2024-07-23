@@ -1,11 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import React from 'react';
-import FilteringToken, { FilteringTokenProps } from '~components/property-filter/filtering-token';
+
 import TokenList, { TokenListProps } from '~components/internal/components/token-list';
-import ScreenshotArea from '../utils/screenshot-area';
+import FilteringToken, { FilteringTokenProps } from '~components/property-filter/filtering-token';
+
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
+import ScreenshotArea from '../utils/screenshot-area';
 
 const token1 = {
   content: 'property1 = value',
@@ -30,8 +33,8 @@ const tokenProps: FilteringTokenProps = {
   operation: 'and',
   groupOperation: 'or',
   showOperation: false,
-  andText: 'und',
-  orText: 'oder',
+  andText: 'and',
+  orText: 'or',
   groupAriaLabel: 'filter group with 0 tokens',
   groupEditAriaLabel: 'edit token group',
   operationAriaLabel: 'operation',
