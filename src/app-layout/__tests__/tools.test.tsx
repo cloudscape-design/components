@@ -3,9 +3,8 @@
 
 import React from 'react';
 import { act, waitFor } from '@testing-library/react';
-
+import { describeEachAppLayout, renderComponent, isDrawerClosed } from './utils';
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
-import { describeEachAppLayout, isDrawerClosed, renderComponent } from './utils';
 
 describeEachAppLayout({ themes: ['classic', 'refresh'] }, () => {
   test('opens tools drawer', () => {

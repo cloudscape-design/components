@@ -2,28 +2,27 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 import { act, within } from '@testing-library/react';
-
-import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
-import { findUpUntil } from '../../../lib/components/internal/utils/dom';
-import SideNavigation from '../../../lib/components/side-navigation';
-import SplitPanel from '../../../lib/components/split-panel';
-import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
 import {
   describeEachAppLayout,
   isDrawerClosed,
-  manyDrawers,
   renderComponent,
-  splitPanelI18nStrings,
   testDrawer,
+  manyDrawers,
+  splitPanelI18nStrings,
   testDrawerWithoutLabels,
 } from './utils';
-
+import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
+import SplitPanel from '../../../lib/components/split-panel';
+import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
+import styles from '../../../lib/components/app-layout/styles.css.js';
 import drawersMobileStyles from '../../../lib/components/app-layout/mobile-toolbar/styles.css.js';
 import toolbarStyles from '../../../lib/components/app-layout/mobile-toolbar/styles.css.js';
-import styles from '../../../lib/components/app-layout/styles.css.js';
-import testUtilsStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
-import visualRefreshRefactoredStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
 import iconStyles from '../../../lib/components/icon/styles.css.js';
+import testUtilsStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
+
+import visualRefreshRefactoredStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
+import { findUpUntil } from '../../../lib/components/internal/utils/dom';
+import SideNavigation from '../../../lib/components/side-navigation';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
