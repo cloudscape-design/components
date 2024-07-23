@@ -48,6 +48,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     name,
     disabled,
     disableBrowserAutocorrect = false,
+    hideEnteredTextLabel = false,
     autoFocus,
     readOnly,
     ariaLabel,
@@ -91,7 +92,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     filterText: value,
     filteringType,
     enteredTextLabel,
-    hideEnteredTextLabel: false,
+    hideEnteredTextLabel: hideEnteredTextLabel,
     onSelectItem: (option: AutosuggestItem) => {
       const value = option.value || '';
       fireNonCancelableEvent(onChange, { value });
@@ -179,7 +180,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   const highlightedOptionIdSource = useUniqueId();
   const highlightedOptionId = autosuggestItemsState.highlightedOption ? highlightedOptionIdSource : undefined;
 
-  const isEmpty = !value && !autosuggestItemsState.items.length;
+  const isEmpty = !autosuggestItemsState.items.length;
   const isFiltered = !!value && value.length !== 0;
   const filteredText = isFiltered
     ? filteringResultsText?.(autosuggestItemsState.items.length, options?.length ?? 0)
