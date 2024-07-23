@@ -78,8 +78,8 @@ const VERTICAL_ALIGN_COLUMNS: TableProps.ColumnDefinition<any>[] = [
     verticalAlign: 'top',
   },
   {
-    id: 'type',
-    header: 'Type',
+    id: 'type-2',
+    header: 'Value',
     cell: item => item.text,
     verticalAlign: 'top',
   },
