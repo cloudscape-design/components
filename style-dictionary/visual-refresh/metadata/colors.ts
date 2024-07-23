@@ -23,6 +23,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  colorBackgroundButtonNormalPressed: {
+    description: 'The background color of normal buttons in pressed state.',
+    themeable: true,
+    public: true,
+  },
   colorBackgroundButtonPrimaryActive: {
     description: 'The background color of primary buttons in active state.',
     themeable: true,
@@ -263,6 +268,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
   },
   colorBorderButtonNormalDefault: { description: 'The border color of normal buttons.', themeable: true, public: true },
+  colorBorderButtonNormalPressed: {
+    description: 'The border color of normal buttons in pressed state.',
+    themeable: true,
+    public: true,
+  },
   colorBorderButtonNormalDisabled: {
     description: 'The border color of normal buttons in disabled state.',
     themeable: true,
@@ -443,6 +453,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  colorTextButtonNormalPressed: {
+    description: 'The pressed text color of normal buttons.',
+    themeable: true,
+    public: true,
+  },
   colorTextButtonNormalDefault: {
     description: 'The default text color of normal buttons.',
     themeable: true,
@@ -606,6 +621,11 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   colorTextInteractiveHover: {
     description: 'The color of clickable elements on hover. For example: icons on hover.',
+    public: true,
+    themeable: true,
+  },
+  colorTextInteractivePressed: {
+    description: 'The color of clickable elements in pressed state.',
     public: true,
     themeable: true,
   },
