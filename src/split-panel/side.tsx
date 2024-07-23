@@ -3,11 +3,12 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { getGlobalFlag } from '@cloudscape-design/component-toolkit/internal';
+
 import { ButtonProps } from '../button/interfaces';
 import InternalButton from '../button/internal';
 import { useSplitPanelContext } from '../internal/context/split-panel-context';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { getGlobalFlag } from '../internal/utils/global-flags';
 import { SplitPanelContentProps } from './interfaces';
 
 import styles from './styles.css.js';
