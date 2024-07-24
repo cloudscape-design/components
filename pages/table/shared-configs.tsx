@@ -67,6 +67,16 @@ export const columnLabel = (column: string) => (sortState: TableProps.LabelData)
   return `${column}, ${sortState.sorted ? `sorted ${ascending ? 'ascending' : 'descending'}` : 'not sorted'}.`;
 };
 
+const DynamicDNS = ({ dnsName }: { dnsName: string }) => {
+  const [name, setName] = React.useState('');
+  React.useEffect(() => {
+    setTimeout(() => {
+      setName(dnsName);
+    }, 1000);
+  });
+  return <span>{name}</span>;
+};
+
 export const columnsConfig: TableProps.ColumnDefinition<Instance>[] = [
   {
     id: 'id',
@@ -79,7 +89,7 @@ export const columnsConfig: TableProps.ColumnDefinition<Instance>[] = [
   {
     id: 'dnsName',
     header: 'DNS name',
-    cell: item => item.dnsName || '-',
+    cell: item => <DynamicDNS dnsName={item.dnsName || '-'} />,
     ariaLabel: columnLabel('dnsName'),
     sortingField: 'dnsName',
   },
