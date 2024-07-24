@@ -417,6 +417,7 @@ function TokenEditorFields({ fields, groupLabel, removeButton, property, operato
                 styles['token-editor-grouped-field-property'],
                 testUtilStyles['token-editor-field-property']
               )}
+              data-testindex={index}
             >
               {property.render(index)}
             </InternalFormField>
@@ -427,6 +428,7 @@ function TokenEditorFields({ fields, groupLabel, removeButton, property, operato
                 styles['token-editor-grouped-field-operator'],
                 testUtilStyles['token-editor-field-operator']
               )}
+              data-testindex={index}
             >
               {operator.render(index)}
             </InternalFormField>
@@ -434,6 +436,7 @@ function TokenEditorFields({ fields, groupLabel, removeButton, property, operato
             <InternalFormField
               label={value.label}
               className={clsx(styles['token-editor-grouped-field-value'], testUtilStyles['token-editor-field-value'])}
+              data-testindex={index}
             >
               {value.render(index)}
             </InternalFormField>
@@ -456,6 +459,7 @@ function TokenEditorFields({ fields, groupLabel, removeButton, property, operato
                   disabled: fields === 1,
                 }}
                 className={testUtilStyles['token-editor-token-remove-actions']}
+                data-testindex={index}
               />
             </div>
           </div>
@@ -486,6 +490,7 @@ function TokenEditorFields({ fields, groupLabel, removeButton, property, operato
                 styles['token-editor-grouped-field-property'],
                 testUtilStyles['token-editor-field-property']
               )}
+              data-testindex={index}
               __hideLabel={true}
             >
               {property.render(index)}
@@ -497,8 +502,9 @@ function TokenEditorFields({ fields, groupLabel, removeButton, property, operato
               label={operator.label}
               className={clsx(
                 styles['token-editor-grouped-field-operator'],
-                testUtilStyles['token-editor-field-property']
+                testUtilStyles['token-editor-field-operator']
               )}
+              data-testindex={index}
               __hideLabel={true}
             >
               {operator.render(index)}
@@ -508,10 +514,8 @@ function TokenEditorFields({ fields, groupLabel, removeButton, property, operato
           <div className={styles['token-editor-grouped-table-cell']}>
             <InternalFormField
               label={value.label}
-              className={clsx(
-                styles['token-editor-grouped-field-value'],
-                testUtilStyles['token-editor-field-property']
-              )}
+              className={clsx(styles['token-editor-grouped-field-value'], testUtilStyles['token-editor-field-value'])}
+              data-testindex={index}
               __hideLabel={true}
             >
               {value.render(index)}
@@ -537,6 +541,7 @@ function TokenEditorFields({ fields, groupLabel, removeButton, property, operato
                 }}
                 disabled={fields === 1}
                 className={testUtilStyles['token-editor-token-remove-actions']}
+                data-testindex={index}
               />
             </div>
           </div>
