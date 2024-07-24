@@ -95,7 +95,13 @@ export function getFormattedToken(token: InternalToken) {
   const propertyLabel = token.property && token.property.propertyLabel;
   const tokenValue = valueFormatter ? valueFormatter(token.value) : token.value;
   const label = `${propertyLabel ?? ''} ${token.operator} ${tokenValue}`;
-  return { property: propertyLabel ?? '', operator: token.operator, value: tokenValue, label };
+  return {
+    propertyKey: token.property?.propertyKey,
+    propertyLabel: propertyLabel ?? '',
+    operator: token.operator,
+    value: tokenValue,
+    label,
+  };
 }
 
 export function trimStart(source: string): string {
