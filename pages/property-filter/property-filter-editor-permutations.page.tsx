@@ -4,7 +4,7 @@
 import React, { useState } from 'react';
 import { format } from 'date-fns';
 
-import { Calendar, CalendarProps, DatePicker, FormField, TimeInput } from '~components';
+import { DatePicker, FormField, TimeInput } from '~components';
 import { I18nProvider } from '~components/i18n';
 import messages from '~components/i18n/messages/all.en';
 import { InternalFilteringProperty } from '~components/property-filter/interfaces';
@@ -47,19 +47,11 @@ const dateProperty: InternalFilteringProperty = {
   getValueFormatter: () => (value: Date) => format(value, 'yyyy-MM-dd'),
   getValueFormRenderer:
     () =>
-    ({ value, filter }) => {
-      const props: CalendarProps = {
-        value: value ? format(value, 'yyyy-MM-dd') : '',
-        onChange: () => {},
-        locale: 'en-GB',
-        ariaLabel: 'Scheduled launch date, calendar',
-      };
-      return typeof filter === 'string' ? (
-        <Calendar {...props} />
-      ) : (
-        <DatePicker {...props} openCalendarAriaLabel={openCalendarAriaLabel} />
-      );
-    },
+    ({ value }) => (
+      <FormField>
+        <DatePicker value={value ? format(value, 'yyyy-MM-dd') : ''} openCalendarAriaLabel={openCalendarAriaLabel} />
+      </FormField>
+    ),
   externalProperty,
 };
 
@@ -72,24 +64,16 @@ const dateTimeProperty: InternalFilteringProperty = {
   getValueFormatter: () => (value: Date) => format(value, 'yyyy-MM-dd hh:mm'),
   getValueFormRenderer:
     () =>
-    ({ value }) => {
-      const props: CalendarProps = {
-        value: value ? format(value, 'yyyy-MM-dd') : '',
-        onChange: () => {},
-        locale: 'en-GB',
-        ariaLabel: 'Scheduled launch date, calendar',
-      };
-      return (
-        <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
-          <FormField description="Date">
-            <DatePicker {...props} openCalendarAriaLabel={openCalendarAriaLabel} />
-          </FormField>
-          <FormField description="Time">
-            <TimeInput value={value ? format(value, 'hh:mm:ss') : ''} />
-          </FormField>
-        </div>
-      );
-    },
+    ({ value }) => (
+      <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+        <FormField description="Date">
+          <DatePicker value={value ? format(value, 'yyyy-MM-dd') : ''} openCalendarAriaLabel={openCalendarAriaLabel} />
+        </FormField>
+        <FormField description="Time">
+          <TimeInput value={value ? format(value, 'hh:mm:ss') : ''} />
+        </FormField>
+      </div>
+    ),
   externalProperty,
 };
 
@@ -105,7 +89,9 @@ const defaultProps: TokenEditorProps = {
   filteringOptions: [],
   i18nStrings,
   i18nStringsExt: {
+    // TODO: remove this?
     tokenEditorTokenGroupLabel: token => `"${token.property ?? 'All properties'} ${token.operator} ${token.value}"`,
+    // TODO: reuse existing?
     tokenEditorRemoveFilterLabel: 'Remove', // TODO: include index or token?
     tokenEditorRemoveFromGroupFilterLabel: 'Remove from group', // TODO: include index or token?
     tokenEditorRemoveMoreFilterLabel: 'More actions', // TODO: include index or token?
