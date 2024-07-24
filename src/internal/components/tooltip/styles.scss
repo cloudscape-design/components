@@ -6,3 +6,8 @@
 .root {
   /* used in tests */
 }
+
+// When used in modal we need z-index to be higher than modal's
+.popover {
+  z-index: 7000;
+}

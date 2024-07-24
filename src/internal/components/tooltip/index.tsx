@@ -38,6 +38,7 @@ export default function Tooltip({
         <Transition in={true}>
           {() => (
             <PopoverContainer
+              className={styles.popover}
               trackRef={trackRef}
               trackKey={trackKey}
               size="small"
