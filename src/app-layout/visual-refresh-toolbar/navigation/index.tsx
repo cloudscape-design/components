@@ -37,6 +37,7 @@ export function AppLayoutNavigationImplementation({ appLayoutInternals }: AppLay
         styles.navigation,
         {
           [styles['is-navigation-open']]: navigationOpen,
+          [testutilStyles['drawer-closed']]: !navigationOpen,
         },
         testutilStyles.navigation
       )}

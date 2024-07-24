@@ -294,6 +294,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
             )
           }
           contentHeader={contentHeader}
+          // delay rendering the content until registration of this instance is complete
           content={registered ? content : null}
           navigation={resolvedNavigation && <AppLayoutNavigation appLayoutInternals={appLayoutInternals} />}
           navigationOpen={navigationOpen}

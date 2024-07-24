@@ -31,13 +31,14 @@ export interface AppLayoutWidgetApiInternal<Props = unknown> {
     forceDeduplicationType: RegistrationType | undefined,
     onPropsChange: RegistrationChangeHandler<Props>
   ): () => void;
+  getStateForTesting(): { registrations: Array<RegistrationInternal<Props>> };
 }
 
 export class AppLayoutWidgetController<Props = unknown> {
   #registrations: Array<RegistrationInternal<Props>> = [];
 
   #findPrimary = () => {
-    const forcedPrimary = this.#registrations.some(registration => registration.forceType === 'primary');
+    const forcedPrimary = this.#registrations.find(registration => registration.forceType === 'primary');
     if (forcedPrimary) {
       return forcedPrimary;
     }
@@ -72,6 +73,11 @@ export class AppLayoutWidgetController<Props = unknown> {
     forceType: RegistrationType | undefined,
     onRegistrationChange: RegistrationChangeHandler<Props>
   ): (() => void) => {
+    const hasForcedPrimary = this.#registrations.some(instance => instance.forceType === 'primary');
+    if (forceType === 'primary' && hasForcedPrimary) {
+      throw new Error('Double primary registration attempt');
+    }
+
     const registration: RegistrationInternal<Props> = {
       forceType,
       onChange: onRegistrationChange,
@@ -84,10 +90,6 @@ export class AppLayoutWidgetController<Props = unknown> {
         },
       },
     };
-    const hasForcedPrimary = this.#registrations.some(instance => instance.forceType === 'primary');
-    if (forceType === 'primary' && hasForcedPrimary) {
-      throw new Error('Double primary registration attempt');
-    }
     this.#registrations.push(registration);
 
     this.#update();
@@ -98,10 +100,17 @@ export class AppLayoutWidgetController<Props = unknown> {
     };
   };
 
+  getStateForTesting = () => {
+    return {
+      registrations: this.#registrations,
+    };
+  };
+
   installInternal = (
     internalApi: Partial<AppLayoutWidgetApiInternal<Props>> = {}
   ): AppLayoutWidgetApiInternal<Props> => {
     internalApi.register ??= this.register;
+    internalApi.getStateForTesting ??= this.getStateForTesting;
     return internalApi as AppLayoutWidgetApiInternal<Props>;
   };
 }

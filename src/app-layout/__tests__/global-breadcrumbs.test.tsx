@@ -69,6 +69,13 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     expect(findAppLayoutBreadcrumbItems()).toHaveLength(2);
   });
 
+  test('no relocation happens on the initial render', () => {
+    render(<AppLayout content={<BreadcrumbGroup items={defaultBreadcrumbs} />} />);
+    expect(findAllBreadcrumbsInstances()).toHaveLength(1);
+    expect(wrapper.findAppLayout()!.findBreadcrumbs()).toBeFalsy();
+    expect(wrapper.findAppLayout()!.findContentRegion().findBreadcrumbGroup()).toBeTruthy();
+  });
+
   test('renders breadcrumbs adjacent to app layout', async () => {
     await renderAsync(
       <>
