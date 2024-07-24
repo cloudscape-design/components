@@ -74,18 +74,8 @@ const ItemElement = forwardRef(
       }
     };
 
-    const onShowTooltipHard = (show: boolean) => {
-      if (!show && item.id !== tooltip?.item) {
-        return;
-      }
-
-      setTooltip(show ? { item: item.id, feedback: false } : null);
-    };
-
     const onClickHandler = (event: CustomEvent<ButtonGroupProps.ItemClickDetails | ClickDetail>) => {
-      const popoverFeedback = 'popoverFeedback' in item && item.popoverFeedback;
-
-      if (popoverFeedback) {
+      if ('popoverFeedback' in item && item.popoverFeedback) {
         setTooltip({ item: item.id, feedback: true });
       }
 
@@ -99,8 +89,6 @@ const ItemElement = forwardRef(
         ref={containerRef}
         onPointerEnter={() => onShowTooltipSoft(true)}
         onPointerLeave={() => onShowTooltipSoft(false)}
-        onFocus={() => onShowTooltipHard(true)}
-        onBlur={() => onShowTooltipHard(false)}
       >
         {item.type === 'icon-button' && (
           <IconButtonItem
