@@ -75,6 +75,10 @@ const ItemElement = forwardRef(
     };
 
     const onShowTooltipHard = (show: boolean) => {
+      if (!show && item.id !== tooltip?.item) {
+        return;
+      }
+
       setTooltip(show ? { item: item.id, feedback: false } : null);
     };
 
