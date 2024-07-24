@@ -2,12 +2,17 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
 import { getBaseProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
+import { GeneratedAnalyticsMetadataButtonDropdownComponent } from './analytics-metadata/interfaces';
 import { ButtonDropdownProps } from './interfaces';
 import InternalButtonDropdown from './internal';
 import { hasCheckboxItems } from './utils/utils';
+
+import analyticsSelectors from './analytics-metadata/styles.css.js';
 
 export { ButtonDropdownProps };
 
@@ -39,6 +44,13 @@ const ButtonDropdown = React.forwardRef(
       },
     });
     const baseProps = getBaseProps(props);
+
+    const analyticsComponentMetadata: GeneratedAnalyticsMetadataButtonDropdownComponent = {
+      name: 'awsui.ButtonDropdown',
+      label: `.${analyticsSelectors['trigger-label']}`,
+      properties: { variant, disabled: `${disabled}` },
+    };
+
     return (
       <InternalButtonDropdown
         {...baseProps}
@@ -56,6 +68,9 @@ const ButtonDropdown = React.forwardRef(
         onItemClick={onItemClick}
         onItemFollow={onItemFollow}
         mainAction={mainAction}
+        {...getAnalyticsMetadataAttribute({
+          component: analyticsComponentMetadata,
+        })}
       >
         {children}
       </InternalButtonDropdown>

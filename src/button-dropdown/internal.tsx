@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalBox from '../box/internal';
 import { ButtonProps } from '../button/interfaces';
@@ -18,11 +19,13 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
 import { isDevelopment } from '../internal/is-development';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
+import { GeneratedAnalyticsMetadataButtonDropdownExpand } from './analytics-metadata/interfaces.js';
 import { ButtonDropdownProps, InternalButtonDropdownProps } from './interfaces';
 import ItemsList from './items-list';
 import { useButtonDropdown } from './utils/use-button-dropdown';
 import { isLinkItem } from './utils/utils.js';
 
+import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
 const InternalButtonDropdown = React.forwardRef(
@@ -127,7 +130,11 @@ const InternalButtonDropdown = React.forwardRef(
           };
 
     const baseTriggerProps: InternalButtonProps = {
-      className: clsx(styles['trigger-button'], styles['test-utils-button-trigger']),
+      className: clsx(
+        styles['trigger-button'],
+        styles['test-utils-button-trigger'],
+        analyticsSelectors['trigger-label']
+      ),
       ...iconProps,
       variant: triggerVariant,
       loading,
@@ -167,6 +174,17 @@ const InternalButtonDropdown = React.forwardRef(
     };
 
     let trigger: React.ReactNode = null;
+
+    const analyticsMetadata: GeneratedAnalyticsMetadataButtonDropdownExpand | Record<string, never> = disabled
+      ? {}
+      : {
+          action: 'expand',
+          detail: {
+            expanded: `${!isOpen}`,
+            label: `.${analyticsSelectors['trigger-label']}`,
+          },
+        };
+
     if (customTriggerBuilder) {
       trigger = (
         <div className={styles['dropdown-trigger']}>
@@ -207,12 +225,18 @@ const InternalButtonDropdown = React.forwardRef(
             // Prevent keyboard events from propagation to the button dropdown handler.
             onKeyDown={e => e.stopPropagation()}
             onKeyUp={e => e.stopPropagation()}
+            {...getAnalyticsMetadataAttribute({
+              action: 'click',
+              detail: {
+                label: `.${analyticsSelectors['main-action-label']}`,
+              },
+            })}
           >
             <InternalButton
               ref={mainActionRef}
               {...mainActionProps}
               {...mainActionIconProps}
-              className={styles['trigger-button']}
+              className={clsx(styles['trigger-button'])}
               variant={variant}
               ariaLabel={mainActionAriaLabel}
               formAction="none"
@@ -229,6 +253,7 @@ const InternalButtonDropdown = React.forwardRef(
               baseTriggerProps.disabled && styles.disabled,
               baseTriggerProps.loading && styles.loading
             )}
+            {...getAnalyticsMetadataAttribute(analyticsMetadata)}
           >
             <InternalButton ref={triggerRef} {...baseTriggerProps} />
           </div>
@@ -236,7 +261,7 @@ const InternalButtonDropdown = React.forwardRef(
       );
     } else {
       trigger = (
-        <div className={styles['dropdown-trigger']}>
+        <div className={styles['dropdown-trigger']} {...getAnalyticsMetadataAttribute(analyticsMetadata)}>
           <InternalButton ref={triggerRef} id={triggerId} {...baseTriggerProps} badge={triggerHasBadge()}>
             {children}
           </InternalButton>

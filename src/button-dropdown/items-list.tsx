@@ -25,6 +25,7 @@ export default function ItemsList({
   hasCategoryHeader = false,
   expandToViewport = false,
   variant = 'normal',
+  position,
 }: ItemListProps) {
   const isMobile = useMobile();
 
@@ -44,6 +45,7 @@ export default function ItemsList({
           showDivider={showDivider}
           hasCategoryHeader={hasCategoryHeader}
           variant={variant}
+          position={`${position ? `${position},` : ''}${index + 1}`}
         />
       );
     }
@@ -63,6 +65,7 @@ export default function ItemsList({
             highlightItem={highlightItem}
             disabled={item.disabled ?? false}
             variant={variant}
+            position={`${position ? `${position},` : ''}${index + 1}`}
           />
         ) : (
           <ExpandableCategoryElement
@@ -79,6 +82,7 @@ export default function ItemsList({
             disabled={item.disabled ?? false}
             expandToViewport={expandToViewport}
             variant={variant}
+            position={`${position ? `${position},` : ''}${index + 1}`}
           />
         )
       ) : null;
@@ -97,6 +101,7 @@ export default function ItemsList({
         highlightItem={highlightItem}
         disabled={item.disabled ?? false}
         variant={variant}
+        position={`${position ? `${position},` : ''}${index + 1}`}
       />
     );
   });

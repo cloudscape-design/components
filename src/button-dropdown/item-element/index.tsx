@@ -3,9 +3,12 @@
 import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
 import InternalIcon, { InternalIconProps } from '../../icon/internal';
 import { useDropdownContext } from '../../internal/components/dropdown/context';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
+import { GeneratedAnalyticsMetadataButtonDropdownClick } from '../analytics-metadata/interfaces';
 import { ItemProps } from '../interfaces';
 import { ButtonDropdownProps } from '../interfaces';
 import Tooltip from '../tooltip';
@@ -13,9 +16,11 @@ import { getMenuItemCheckboxProps, getMenuItemProps } from '../utils/menu-item';
 import { isCheckboxItem, isLinkItem } from '../utils/utils';
 import { getItemTarget } from '../utils/utils';
 
+import analyticsLabels from '../analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
 const ItemElement = ({
+  position = '1',
   item,
   disabled,
   onItemActivate,
@@ -60,6 +65,18 @@ const ItemElement = ({
       onClick={onClick}
       onMouseEnter={onHover}
       onTouchStart={onHover}
+      {...getAnalyticsMetadataAttribute(
+        disabled
+          ? {}
+          : ({
+              action: 'click',
+              detail: {
+                position,
+                id: item.id,
+                label: `.${analyticsLabels['menu-item']}`,
+              },
+            } as GeneratedAnalyticsMetadataButtonDropdownClick)
+      )}
     >
       <MenuItem item={item} disabled={disabled} highlighted={highlighted} />
     </li>
@@ -93,7 +110,7 @@ function MenuItem({ item, disabled, highlighted }: MenuItemProps) {
   const isDisabledWithReason = disabled && item.disabledReason;
   const { targetProps, descriptionEl } = useHiddenDescription(item.disabledReason);
   const menuItemProps: React.HTMLAttributes<HTMLSpanElement & HTMLAnchorElement> = {
-    className: styles['menu-item'],
+    className: clsx(styles['menu-item'], analyticsLabels['menu-item']),
     lang: item.lang,
     ref: menuItemRef,
     // We are using the roving tabindex technique to manage the focus state of the dropdown.
