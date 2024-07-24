@@ -1,13 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback } from 'react';
-import styles from './styles.css.js';
-import { TutorialPanelProps } from '../../interfaces';
+
 import InternalBox from '../../../box/internal';
-import InternalStatusIndicator from '../../../status-indicator/internal';
-import InternalSpaceBetween from '../../../space-between/internal';
 import InternalExpandableSection from '../../../expandable-section/internal';
 import { joinStrings } from '../../../internal/utils/strings/join-strings.js';
+import InternalSpaceBetween from '../../../space-between/internal';
+import InternalStatusIndicator from '../../../status-indicator/internal';
+import { TutorialPanelProps } from '../../interfaces';
+
+import styles from './styles.css.js';
 
 function getStatusIndicatorType(taskIndex: number, currentTaskIndex: number) {
   if (taskIndex < currentTaskIndex) {

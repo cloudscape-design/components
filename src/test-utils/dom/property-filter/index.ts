@@ -1,16 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ComponentWrapper, ElementWrapper, createWrapper } from '@cloudscape-design/test-utils-core/dom';
+import { ComponentWrapper, createWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import styles from '../../../property-filter/styles.selectors.js';
-import testUtilStyles from '../../../property-filter/test-classes/styles.selectors.js';
-import popoverStyles from '../../../popover/styles.selectors.js';
-import tokenListSelectors from '../../../internal/components/token-list/styles.selectors.js';
-import textFilterStyles from '../../../text-filter/styles.selectors.js';
 import AutosuggestWrapper from '../autosuggest';
 import ButtonWrapper from '../button';
-import SelectWrapper from '../select';
 import FormFieldWrapper from '../form-field';
+import SelectWrapper from '../select';
+
+import tokenListSelectors from '../../../internal/components/token-list/styles.selectors.js';
+import popoverStyles from '../../../popover/styles.selectors.js';
+import styles from '../../../property-filter/styles.selectors.js';
+import testUtilStyles from '../../../property-filter/test-classes/styles.selectors.js';
+import textFilterStyles from '../../../text-filter/styles.selectors.js';
 
 export default class PropertyFilterWrapper extends AutosuggestWrapper {
   static rootSelector = styles.root;
@@ -83,6 +84,36 @@ export class FilteringTokenWrapper extends ComponentWrapper {
     const root = options.expandToViewport ? createWrapper() : this;
     const popoverBody = root.findByClassName(popoverStyles.body);
     return popoverBody ? new PropertyFilterEditorDropdownWrapper(popoverBody.getElement()) : null;
+  }
+}
+
+// The internal wrapper has two extra methods that are not available publicly
+// until the property filter token grouping is supported.
+export class InternalFilteringTokenWrapper extends FilteringTokenWrapper {
+  findEditButton(): ElementWrapper<HTMLButtonElement> {
+    return this.findByClassName<HTMLButtonElement>(testUtilStyles['filtering-token-edit-button'])!;
+  }
+
+  findGroupTokens(): Array<FilteringGroupedTokenWrapper> {
+    return this.findAllByClassName(testUtilStyles['filtering-token-inner']).map(
+      w => new FilteringGroupedTokenWrapper(w.getElement())
+    );
+  }
+}
+
+export class FilteringGroupedTokenWrapper extends ComponentWrapper {
+  static rootSelector = testUtilStyles['filtering-token-inner'];
+
+  findLabel(): ElementWrapper {
+    return this.findByClassName(testUtilStyles['filtering-token-inner-content'])!;
+  }
+
+  findRemoveButton(): ElementWrapper<HTMLButtonElement> {
+    return this.findByClassName<HTMLButtonElement>(testUtilStyles['filtering-token-inner-dismiss-button'])!;
+  }
+
+  findTokenOperation(): SelectWrapper | null {
+    return this.findComponent(`.${testUtilStyles['filtering-token-inner-select']}`, SelectWrapper);
   }
 }
 

@@ -1,8 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import ScreenshotArea from './utils/screenshot-area';
+
 import Grid from '~components/grid';
+
+import ScreenshotArea from './utils/screenshot-area';
 
 export default function GridPage() {
   return (

@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import { render } from '@testing-library/react';
+
 import SideNavigation, { SideNavigationProps } from '../../../lib/components/side-navigation';
 import createWrapper from '../../../lib/components/test-utils/dom';
 

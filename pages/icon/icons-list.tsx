@@ -1,9 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
 import Icon, { IconProps } from '~components/icon';
 import icons from '~components/icon/generated/icons';
+
 import ScreenshotArea from '../utils/screenshot-area';
+
 import styles from './icons-list.scss';
 
 const sizes = ['small', 'normal', 'big', 'large'] as const;

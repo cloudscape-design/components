@@ -2,14 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { act, render } from '@testing-library/react';
-import { InternalButton } from '../../../lib/components/button/internal';
-import Button from '../../../lib/components/button';
-import styles from '../../../lib/components/button/styles.css.js';
 
-import { AnalyticsFunnel } from '../../../lib/components/internal/analytics/components/analytics-funnel';
+import Button from '../../../lib/components/button';
+import { InternalButton } from '../../../lib/components/button/internal';
 import { FunnelMetrics } from '../../../lib/components/internal/analytics';
-import { mockFunnelMetrics, mockedFunnelInteractionId } from '../../internal/analytics/__tests__/mocks';
+import { AnalyticsFunnel } from '../../../lib/components/internal/analytics/components/analytics-funnel';
 import createWrapper from '../../../lib/components/test-utils/dom';
+import { mockedFunnelInteractionId, mockFunnelMetrics } from '../../internal/analytics/__tests__/mocks';
+
+import styles from '../../../lib/components/button/styles.css.js';
 
 test('specific properties take precedence over nativeAttributes', () => {
   const { container } = render(

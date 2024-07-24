@@ -1,10 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { isIsoDateOnly } from './is-iso-date-only';
+import { DateRangePickerProps } from '../../../date-range-picker/interfaces';
 import formatDateIso from './format-date-iso';
 import formatDateLocalized from './format-date-localized';
-import { DateRangePickerProps } from '../../../date-range-picker/interfaces';
+import { isIsoDateOnly } from './is-iso-date-only';
 
 export function formatDateRange({
   startDate,

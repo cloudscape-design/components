@@ -2,14 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import Box from '~components/box';
-import LineChart from '~components/line-chart';
-import ExpandableSection from '~components/expandable-section';
-
 import { MixedLineBarChartProps } from '~components';
-import ScreenshotArea from '../utils/screenshot-area';
+import Box from '~components/box';
+import ExpandableSection from '~components/expandable-section';
+import LineChart from '~components/line-chart';
 
-import { data1, data2, commonProps, lineChartInstructions } from '../mixed-line-bar-chart/common';
+import { commonProps, data1, data2, lineChartInstructions } from '../mixed-line-bar-chart/common';
+import ScreenshotArea from '../utils/screenshot-area';
 
 type ExpectedSeries = MixedLineBarChartProps.LineDataSeries<number> | MixedLineBarChartProps.ThresholdSeries;
 

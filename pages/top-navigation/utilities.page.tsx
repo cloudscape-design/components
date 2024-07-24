@@ -2,11 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext } from 'react';
 
+import { Box, ButtonDropdownProps, Checkbox } from '~components';
 import Input from '~components/input';
 import TopNavigation from '~components/top-navigation';
-import { I18N_STRINGS } from './common';
+
 import AppContext, { AppContextType } from '../app/app-context';
-import { Box, ButtonDropdownProps, Checkbox } from '~components';
+import { I18N_STRINGS } from './common';
 
 type PageContext = React.Context<
   AppContextType<{

@@ -1,18 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import React, { useEffect, useRef, useState } from 'react';
-import { fireCancelableEvent, isPlainLeftClick } from '../internal/events';
-import useForwardFocus from '../internal/hooks/forward-focus';
-import styles from './styles.css.js';
-import testUtilStyles from './test-classes/styles.css.js';
-import { ButtonIconProps, LeftIcon, RightIcon } from './icon-helper';
-import { ButtonProps } from './interfaces';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { checkSafeUrl } from '../internal/utils/check-safe-url';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import LiveRegion from '../internal/components/live-region';
-import { useButtonContext } from '../internal/context/button-context';
+import clsx from 'clsx';
+
+import {
+  getAnalyticsLabelAttribute,
+  getAnalyticsMetadataAttribute,
+} from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
+import { FunnelMetrics } from '../internal/analytics';
 import { useFunnel, useFunnelStep, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 import {
   DATA_ATTR_FUNNEL_VALUE,
@@ -20,12 +16,25 @@ import {
   getNameFromSelector,
   getSubStepAllSelector,
 } from '../internal/analytics/selectors';
-import { FunnelMetrics } from '../internal/analytics';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
-import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
+import LiveRegion from '../internal/components/live-region';
 import Tooltip from '../internal/components/tooltip/index.js';
+import { useButtonContext } from '../internal/context/button-context';
+import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
+import { fireCancelableEvent, isPlainLeftClick } from '../internal/events';
+import useForwardFocus from '../internal/hooks/forward-focus';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import useHiddenDescription from '../internal/hooks/use-hidden-description';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { checkSafeUrl } from '../internal/utils/check-safe-url';
+import { GeneratedAnalyticsMetadataButtonFragment } from './analytics-metadata/interfaces';
+import { ButtonIconProps, LeftIcon, RightIcon } from './icon-helper';
+import { ButtonProps } from './interfaces';
+
+import analyticsSelectors from './analytics-metadata/styles.css.js';
+import styles from './styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
 
 export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   variant?: ButtonProps['variant'] | 'flashbar-icon' | 'breadcrumb-group' | 'menu-trigger' | 'modal-dismiss';
@@ -35,6 +44,7 @@ export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
     | Record<`data-${string}`, string>;
   __iconClass?: string;
   __focusable?: boolean;
+  __injectAnalyticsComponentMetadata?: boolean;
 } & InternalBaseComponentProps<HTMLAnchorElement | HTMLButtonElement>;
 
 export const InternalButton = React.forwardRef(
@@ -69,6 +79,7 @@ export const InternalButton = React.forwardRef(
       __nativeAttributes,
       __internalRootRef = null,
       __focusable = false,
+      __injectAnalyticsComponentMetadata = false,
       ...props
     }: InternalButtonProps,
     ref: React.Ref<ButtonProps.Ref>
@@ -152,6 +163,20 @@ export const InternalButton = React.forwardRef(
       tabIndex: isAnchor && isNotInteractive ? -1 : explicitTabIndex,
     });
 
+    const analyticsMetadata: GeneratedAnalyticsMetadataButtonFragment = disabled
+      ? {}
+      : {
+          action: 'click',
+          detail: { label: '' },
+        };
+    if (__injectAnalyticsComponentMetadata) {
+      analyticsMetadata.component = {
+        name: 'awsui.Button',
+        label: '',
+        properties: { variant, disabled: `${disabled}` },
+      };
+    }
+
     const buttonProps = {
       ...props,
       ...__nativeAttributes,
@@ -168,6 +193,8 @@ export const InternalButton = React.forwardRef(
       className: buttonClass,
       onClick: handleClick,
       [DATA_ATTR_FUNNEL_VALUE]: uniqueId,
+      ...getAnalyticsMetadataAttribute(analyticsMetadata),
+      ...getAnalyticsLabelAttribute(children ? `.${analyticsSelectors.label}` : ''),
     } as const;
 
     const iconProps: ButtonIconProps = {
@@ -185,7 +212,7 @@ export const InternalButton = React.forwardRef(
     const buttonContent = (
       <>
         <LeftIcon {...iconProps} />
-        {shouldHaveContent && <span className={styles.content}>{children}</span>}
+        {shouldHaveContent && <span className={clsx(styles.content, analyticsSelectors.label)}>{children}</span>}
         <RightIcon {...iconProps} />
       </>
     );

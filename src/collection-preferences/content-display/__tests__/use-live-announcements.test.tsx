@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import useLiveAnnouncements from '../use-live-announcements';
-import { render } from '@testing-library/react';
 import { DragEndEvent, DragOverEvent, DragStartEvent } from '@dnd-kit/core';
+import { render } from '@testing-library/react';
+
+import useLiveAnnouncements from '../use-live-announcements';
 
 const liveAnnouncementDndStarted = jest.fn();
 const liveAnnouncementDndItemReordered = jest.fn();

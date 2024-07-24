@@ -1,12 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
 import AppLayout from '~components/app-layout';
+import Flashbar from '~components/flashbar';
+
+import ScreenshotArea from '../utils/screenshot-area';
 import { Breadcrumbs } from './utils/content-blocks';
 import label from './utils/labels';
+
 import styles from './styles.scss';
-import ScreenshotArea from '../utils/screenshot-area';
-import Flashbar from '~components/flashbar';
 
 export default function () {
   return (

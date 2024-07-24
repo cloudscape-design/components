@@ -1,12 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
 import { useCollection } from '@cloudscape-design/collection-hooks';
+
 import Box from '~components/box';
 import Button from '~components/button';
-import Table from '~components/table';
-import { columnsConfig, EmptyState } from './shared-configs';
 import Header from '~components/header';
+import Table from '~components/table';
+
+import { columnsConfig, EmptyState } from './shared-configs';
 
 export default function () {
   const { collectionProps } = useCollection([], {

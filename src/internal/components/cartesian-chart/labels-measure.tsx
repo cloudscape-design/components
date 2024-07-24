@@ -1,13 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { memo, useEffect, Fragment } from 'react';
+import React, { Fragment, memo, useEffect } from 'react';
 import clsx from 'clsx';
 
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+
+import { ChartDataTypes } from '../../../mixed-line-bar-chart/interfaces';
 import { ChartScale, NumericChartScale } from './scales';
 
 import styles from './styles.css.js';
-import { ChartDataTypes } from '../../../mixed-line-bar-chart/interfaces';
-import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
 interface LabelsMeasureProps {
   scale: ChartScale | NumericChartScale;

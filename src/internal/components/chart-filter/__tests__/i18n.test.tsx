@@ -2,9 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
+
+import TestI18nProvider from '../../../../../lib/components/i18n/testing';
 import ChartFilter from '../../../../../lib/components/internal/components/chart-filter';
 import createWrapper from '../../../../../lib/components/test-utils/dom';
-import TestI18nProvider from '../../../../../lib/components/i18n/testing';
 
 const datum0 = {};
 const datum1 = {};

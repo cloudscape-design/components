@@ -1,20 +1,22 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useImperativeHandle, useState } from 'react';
-import { useControllable } from '../../internal/hooks/use-controllable';
-import { fireNonCancelableEvent } from '../../internal/events';
-import { useFocusControl } from '../utils/use-focus-control';
-import { useMobile } from '../../internal/hooks/use-mobile';
-import { useSplitPanelFocusControl } from '../utils/use-split-panel-focus-control';
-import { useDrawers } from '../utils/use-drawers';
-import { useUniqueId } from '../../internal/hooks/use-unique-id';
-import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
-import { computeHorizontalLayout, computeVerticalLayout } from './compute-layout';
-import { SplitPanelProviderProps } from '../split-panel';
+
 import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
-import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
+import { fireNonCancelableEvent } from '../../internal/events';
+import { useControllable } from '../../internal/hooks/use-controllable';
+import { useMobile } from '../../internal/hooks/use-mobile';
+import { useUniqueId } from '../../internal/hooks/use-unique-id';
+import { useGetGlobalBreadcrumbs } from '../../internal/plugins/helpers/use-global-breadcrumbs';
 import globalVars from '../../internal/styles/global-vars';
-import { SkeletonLayout } from './skeleton';
+import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
+import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
+import { SplitPanelProviderProps } from '../split-panel';
+import { useDrawers } from '../utils/use-drawers';
+import { useFocusControl } from '../utils/use-focus-control';
+import { useSplitPanelFocusControl } from '../utils/use-split-panel-focus-control';
+import { computeHorizontalLayout, computeVerticalLayout } from './compute-layout';
+import { AppLayoutInternals } from './interfaces';
 import {
   AppLayoutDrawer,
   AppLayoutNavigation,
@@ -23,8 +25,7 @@ import {
   AppLayoutSplitPanelSide,
   AppLayoutToolbar,
 } from './internal';
-import { AppLayoutInternals } from './interfaces';
-import { useGetGlobalBreadcrumbs } from '../../internal/plugins/helpers/use-global-breadcrumbs';
+import { SkeletonLayout } from './skeleton';
 
 const AppLayoutVisualRefreshToolbar = React.forwardRef(
   (

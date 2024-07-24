@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { CollectionPreferencesProps } from '../../../lib/components/collection-preferences';
 import { CollectionPreferencesWrapper } from '../../../lib/components/test-utils/dom';
-import { renderCollectionPreferences, contentDensityPreference } from './shared';
+import { contentDensityPreference, renderCollectionPreferences } from './shared';
 
 function renderWithContentDensity(props: Partial<CollectionPreferencesProps>): CollectionPreferencesWrapper {
   return renderCollectionPreferences({ contentDensityPreference, ...props });

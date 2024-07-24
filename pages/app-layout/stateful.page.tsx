@@ -1,9 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
+
 import AppLayout from '~components/app-layout';
 import Header from '~components/header';
+
 import labels from './utils/labels';
+
 import styles from './styles.scss';
 
 function Counter({ id }: { id: string }) {

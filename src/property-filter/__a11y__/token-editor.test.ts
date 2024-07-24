@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
-import A11yPageObject from '../../__a11y__/a11y-page-object';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
+import A11yPageObject from '../../__a11y__/a11y-page-object';
 
 const wrapper = createWrapper().findPropertyFilter();
 const popoverWrapper = createWrapper(wrapper.findTokens().get(1).toSelector()).findPopover();

@@ -2,9 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import { render } from '@testing-library/react';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import Select, { SelectProps } from '../../../lib/components/select';
+
 import '../../__a11y__/to-validate-a11y';
+import Select, { SelectProps } from '../../../lib/components/select';
+import createWrapper from '../../../lib/components/test-utils/dom';
 
 const VALUE_WITH_SPECIAL_CHARS = 'Option 4, test"2';
 const defaultOptions: SelectProps.Options = [

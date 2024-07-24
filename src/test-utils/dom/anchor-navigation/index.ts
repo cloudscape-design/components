@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
+
 import testUtilStyles from '../../../anchor-navigation/test-classes/styles.selectors.js';
 
 export default class AnchorNavigationWrapper extends ComponentWrapper {

@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 
+import { Modal } from '~components';
 import Box from '~components/box';
 import Button from '~components/button';
 import MixedLineBarChart from '~components/mixed-line-bar-chart';
 import { colorChartsThresholdInfo } from '~design-tokens';
 
 import { barChartInstructions, commonProps, data3, data4 } from './common';
-import { Modal } from '~components';
 
 export default function () {
   const [isOpen, setIsOpen] = useState(true);

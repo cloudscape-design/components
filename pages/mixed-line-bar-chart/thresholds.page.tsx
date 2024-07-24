@@ -2,25 +2,25 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import Grid from '~components/grid';
 import Box from '~components/box';
-import MixedLineBarChart from '~components/mixed-line-bar-chart';
+import Grid from '~components/grid';
 import LineChart from '~components/line-chart';
-import ScreenshotArea from '../utils/screenshot-area';
-import { colorChartsThresholdInfo, colorChartsThresholdPositive, colorChartsThresholdNegative } from '~design-tokens';
+import MixedLineBarChart from '~components/mixed-line-bar-chart';
+import { colorChartsThresholdInfo, colorChartsThresholdNegative, colorChartsThresholdPositive } from '~design-tokens';
 
+import ScreenshotArea from '../utils/screenshot-area';
 import {
-  latencyData,
-  dateTimeFormatter,
+  barChartInstructions,
+  commonProps,
   data1,
   data2,
   data3,
   data5,
   data6,
-  multipleBarsData,
-  commonProps,
-  barChartInstructions,
+  dateTimeFormatter,
+  latencyData,
   lineChartInstructions,
+  multipleBarsData,
 } from './common';
 
 export default function () {

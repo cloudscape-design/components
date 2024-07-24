@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { useMemo } from 'react';
-import { normalizeStartOfWeek } from '../../internal/utils/locale/index.js';
 import { getCalendarMonth } from 'mnth';
+
+import { normalizeStartOfWeek } from '../../internal/utils/locale/index.js';
 import { CalendarProps } from '../interfaces.js';
 
 export default function useCalendarGridRows({

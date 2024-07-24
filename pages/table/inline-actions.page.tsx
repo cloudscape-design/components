@@ -1,18 +1,20 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext } from 'react';
+
+import { Checkbox } from '~components';
 import Box from '~components/box';
 import Button from '~components/button';
 import ButtonDropdown from '~components/button-dropdown';
 import Header from '~components/header';
+import Link from '~components/link';
 import SpaceBetween from '~components/space-between';
 import Table, { TableProps } from '~components/table';
-import ScreenshotArea from '../utils/screenshot-area';
-import { Instance, generateItems } from './generate-data';
-import { columnsConfig, selectionLabels } from './shared-configs';
-import Link from '~components/link';
+
 import AppContext, { AppContextType } from '../app/app-context';
-import { Checkbox } from '~components';
+import ScreenshotArea from '../utils/screenshot-area';
+import { generateItems, Instance } from './generate-data';
+import { columnsConfig, selectionLabels } from './shared-configs';
 
 type PageContext = React.Context<
   AppContextType<{

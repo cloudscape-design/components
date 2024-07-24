@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import range from 'lodash/range';
-import Select, { SelectProps } from '~components/select';
+
 import { DropdownStatusProps } from '~components/internal/components/dropdown-status';
+import Select, { SelectProps } from '~components/select';
 
 interface APIResponse {
   items: NonNullable<SelectProps['options']>;

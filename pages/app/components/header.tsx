@@ -1,11 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import React, { useContext } from 'react';
-import styles from './header.scss';
 import { Link } from 'react-router-dom';
-import ThemeSwitcher from './theme-switcher';
+import clsx from 'clsx';
+
 import AppContext from '../app-context';
+import ThemeSwitcher from './theme-switcher';
+
+import styles from './header.scss';
 
 export default function Header({ sticky }: { sticky?: boolean }) {
   const { mode } = useContext(AppContext);

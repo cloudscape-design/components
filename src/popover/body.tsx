@@ -3,14 +3,14 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
-import { KeyCode } from '../internal/keycode';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
+import { useInternalI18n } from '../i18n/context';
 import FocusLock from '../internal/components/focus-lock';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { KeyCode } from '../internal/keycode';
 
 import styles from './styles.css.js';
-import { useInternalI18n } from '../i18n/context';
 
 export interface PopoverBodyProps {
   dismissButton: boolean;

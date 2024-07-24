@@ -1,25 +1,26 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext } from 'react';
+
 import {
   AppLayout,
-  ContentLayout,
-  Header,
-  Toggle,
   ColumnLayout,
-  FormField,
-  Select,
   Container,
+  ContentLayout,
+  FormField,
+  Header,
   Input,
+  Select,
+  Toggle,
 } from '~components';
 import { ContentLayoutProps } from '~components/content-layout';
 
-import { Breadcrumbs, Notifications } from '../app-layout/utils/content-blocks';
-import ScreenshotArea from '../utils/screenshot-area';
-import appLayoutLabels from '../app-layout/utils/labels';
 import AppContext, { AppContextType } from '../app/app-context';
-import heroHeaderImgLight from './hero-header-light.png';
+import { Breadcrumbs, Notifications } from '../app-layout/utils/content-blocks';
+import appLayoutLabels from '../app-layout/utils/labels';
+import ScreenshotArea from '../utils/screenshot-area';
 import heroHeaderImgDark from './hero-header-dark.png';
+import heroHeaderImgLight from './hero-header-light.png';
 
 type DemoContext = React.Context<
   AppContextType<{

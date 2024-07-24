@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
 import { TableProps } from './interfaces';
 
 export function checkColumnWidths(columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<any>>) {

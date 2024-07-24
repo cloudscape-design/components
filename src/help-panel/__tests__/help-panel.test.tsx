@@ -2,9 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
-import createWrapper from '../../../lib/components/test-utils/dom';
+
 import HelpPanel from '../../../lib/components/help-panel';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
+import createWrapper from '../../../lib/components/test-utils/dom';
 
 function renderHelpPanel(jsx: React.ReactElement) {
   const { container } = render(jsx);

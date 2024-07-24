@@ -3,24 +3,24 @@
 import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { getBaseProps } from '../internal/base-component';
-import { fireCancelableEvent, isPlainLeftClick } from '../internal/events';
-import VisualContext from '../internal/components/visual-context';
-import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
+import { isDevelopment, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { TopNavigationProps } from './interfaces';
-import { useTopNavigation } from './use-top-navigation.js';
-import Utility from './parts/utility';
-import OverflowMenu from './parts/overflow-menu';
+import { hasCheckboxItems } from '../button-dropdown/utils/utils';
+import { useInternalI18n } from '../i18n/context';
+import { getBaseProps } from '../internal/base-component';
 import { ButtonTrigger } from '../internal/components/menu-dropdown';
+import VisualContext from '../internal/components/visual-context';
+import { fireCancelableEvent, isPlainLeftClick } from '../internal/events';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
+import { SomeRequired } from '../internal/types';
+import { checkSafeUrl } from '../internal/utils/check-safe-url';
+import { TopNavigationProps } from './interfaces';
+import OverflowMenu from './parts/overflow-menu';
+import Utility from './parts/utility';
+import { useTopNavigation } from './use-top-navigation.js';
 
 import styles from './styles.css.js';
-import { checkSafeUrl } from '../internal/utils/check-safe-url';
-import { SomeRequired } from '../internal/types';
-import { useInternalI18n } from '../i18n/context';
-import { isDevelopment, warnOnce } from '@cloudscape-design/component-toolkit/internal';
-import { hasCheckboxItems } from '../button-dropdown/utils/utils';
 
 export type InternalTopNavigationProps = SomeRequired<TopNavigationProps, 'utilities'> & InternalBaseComponentProps;
 

@@ -1,11 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
+import { fireNonCancelableEvent } from '../internal/events';
 import { DrawerConfig as RuntimeDrawerConfig } from '../internal/plugins/controllers/drawers';
 import { RuntimeContentWrapper } from '../internal/plugins/helpers';
 import { sortByPriority } from '../internal/plugins/helpers/utils';
 import { AppLayoutProps } from './interfaces';
-import { fireNonCancelableEvent } from '../internal/events';
 
 export interface DrawersLayout {
   before: Array<AppLayoutProps.Drawer>;

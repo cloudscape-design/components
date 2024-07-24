@@ -2,10 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
+import { render } from '@testing-library/react';
+
 import LineChart, { LineChartProps } from '../../../lib/components/line-chart';
 import { MixedLineBarChartProps } from '../../../lib/components/mixed-line-bar-chart';
 import { LineChartWrapper } from '../../../lib/components/test-utils/dom';
-import { render } from '@testing-library/react';
 import testChartSeriesDetails from '../../mixed-line-bar-chart/__tests__/test-chart-series-details';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({

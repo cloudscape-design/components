@@ -3,12 +3,13 @@
 
 import React from 'react';
 
-import { FileMetadata, FileUploadProps } from '../interfaces';
 import InternalBox from '../../box/internal';
 import InternalSpaceBetween from '../../space-between/internal';
-import styles from './styles.css.js';
 import * as defaultFormatters from '../default-formatters';
+import { FileMetadata, FileUploadProps } from '../interfaces';
 import { FileOptionThumbnail } from './thumbnail';
+
+import styles from './styles.css.js';
 
 interface FileOptionProps {
   file: File;

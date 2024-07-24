@@ -1,16 +1,18 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { TdHTMLAttributes, useRef, forwardRef, useState } from 'react';
-import styles from '../styles.css.js';
-import { DatePickerProps } from '../../date-picker/interfaces';
-import { CalendarProps } from '../interfaces';
+import React, { forwardRef, TdHTMLAttributes, useRef, useState } from 'react';
 import clsx from 'clsx';
-import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update.js';
+
+import { DatePickerProps } from '../../date-picker/interfaces';
 import ScreenreaderOnly from '../../internal/components/screenreader-only/index.js';
-import { applyDisplayName } from '../../internal/utils/apply-display-name';
-import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import Tooltip from '../../internal/components/tooltip';
+import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update.js';
+import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
+import { applyDisplayName } from '../../internal/utils/apply-display-name';
+import { CalendarProps } from '../interfaces';
+
+import styles from '../styles.css.js';
 
 /**
  * Calendar grid supports two mechanisms of keyboard navigation:

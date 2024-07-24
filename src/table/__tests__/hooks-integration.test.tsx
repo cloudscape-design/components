@@ -1,13 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import range from 'lodash/range';
 import { render } from '@testing-library/react';
+import range from 'lodash/range';
+
 import { useCollection } from '@cloudscape-design/collection-hooks';
-import Table, { TableProps } from '../../../lib/components/table';
-import TextFilter from '../../../lib/components/text-filter';
+
 import Pagination from '../../../lib/components/pagination';
+import Table, { TableProps } from '../../../lib/components/table';
 import createWrapper from '../../../lib/components/test-utils/dom';
+import TextFilter from '../../../lib/components/text-filter';
 
 interface Item {
   id: string;

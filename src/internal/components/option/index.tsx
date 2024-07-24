@@ -2,12 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
-import styles from './styles.css.js';
-import { OptionProps } from './interfaces';
-import { Label, LabelTag, Description, Tags, FilteringTags, OptionIcon } from './option-parts';
-import { getBaseProps } from '../../base-component';
+
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
+import { getBaseProps } from '../../base-component';
 import { isDevelopment } from '../../is-development';
+import { OptionProps } from './interfaces';
+import { Description, FilteringTags, Label, LabelTag, OptionIcon, Tags } from './option-parts';
+
+import styles from './styles.css.js';
 
 export { OptionProps };
 

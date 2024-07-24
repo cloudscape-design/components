@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { DependencyList, RefObject, useEffect, useRef } from 'react';
+
 import { Focusable } from './use-focus-control';
 
 export type SplitPanelLastInteraction = { type: 'open' } | { type: 'close' } | { type: 'position' };

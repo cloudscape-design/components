@@ -1,10 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useState } from 'react';
-import { Theme, applyTheme, generateThemeStylesheet } from '~components/theming';
-import * as Tokens from '~design-tokens';
+
 import { preset } from '~components/internal/generated/theming';
+import { applyTheme, generateThemeStylesheet, Theme } from '~components/theming';
+import * as Tokens from '~design-tokens';
+
 import ScreenshotArea from '../utils/screenshot-area';
+
 import styles from './styles.scss';
 
 const isColor: (token: string) => boolean = token => token.slice(0, 5) === 'color';

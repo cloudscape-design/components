@@ -3,24 +3,22 @@
 import React, { useImperativeHandle, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { getBaseProps } from '../internal/base-component';
-
+import InternalBox from '../box/internal';
 import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
-
-import { AttributeEditorForwardRefType, AttributeEditorProps } from './interfaces';
+import { getBaseProps } from '../internal/base-component';
+import LiveRegion from '../internal/components/live-region';
+import { useContainerBreakpoints } from '../internal/hooks/container-queries';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { usePrevious } from '../internal/hooks/use-previous';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { SomeRequired } from '../internal/types';
 import { AdditionalInfo } from './additional-info';
+import { AttributeEditorForwardRefType, AttributeEditorProps } from './interfaces';
 import { Row } from './row';
 
 import styles from './styles.css.js';
-import { useContainerBreakpoints } from '../internal/hooks/container-queries';
-import InternalBox from '../box/internal';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { SomeRequired } from '../internal/types';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { usePrevious } from '../internal/hooks/use-previous';
-import LiveRegion from '../internal/components/live-region';
 
 type InternalAttributeEditorProps<T> = SomeRequired<AttributeEditorProps<T>, 'items'> & InternalBaseComponentProps;
 

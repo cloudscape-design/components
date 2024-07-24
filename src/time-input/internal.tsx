@@ -1,16 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import React, { Ref, useRef } from 'react';
-
-import useForwardFocus from '../internal/hooks/forward-focus';
+import clsx from 'clsx';
 
 import MaskedInput from '../internal/components/masked-input';
 import { MaskArgs } from '../internal/components/masked-input/utils/mask-format';
-
-import { TimeInputProps } from './interfaces';
-import styles from './styles.css.js';
+import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { TimeInputProps } from './interfaces';
+
+import styles from './styles.css.js';
 
 const getMaskArgs = (format: string, use24Hour: boolean): MaskArgs => {
   const segments = [

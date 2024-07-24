@@ -2,20 +2,21 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { act, render } from '@testing-library/react';
-import Link, { LinkProps } from '../../../lib/components/link';
-import styles from '../../../lib/components/link/styles.css.js';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { linkRelExpectations, linkTargetExpectations } from '../../__tests__/target-rel-test-helper';
-import TestI18nProvider from '../../../lib/components/i18n/testing';
+
+import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils.js';
+
 import FormField from '../../../lib/components/form-field';
 import Header from '../../../lib/components/header';
-
-import { AnalyticsFunnel } from '../../../lib/components/internal/analytics/components/analytics-funnel';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 import { FunnelMetrics } from '../../../lib/components/internal/analytics';
-
+import { AnalyticsFunnel } from '../../../lib/components/internal/analytics/components/analytics-funnel';
+import Link, { LinkProps } from '../../../lib/components/link';
+import createWrapper from '../../../lib/components/test-utils/dom';
+import { linkRelExpectations, linkTargetExpectations } from '../../__tests__/target-rel-test-helper';
 import { mockedFunnelInteractionId, mockFunnelMetrics } from '../../internal/analytics/__tests__/mocks';
 import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
-import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils.js';
+
+import styles from '../../../lib/components/link/styles.css.js';
 
 function renderLink(props: LinkProps = {}) {
   const renderResult = render(<Link {...props} />);

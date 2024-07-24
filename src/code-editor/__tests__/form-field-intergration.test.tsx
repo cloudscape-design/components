@@ -2,9 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
-import createWrapper from '../../../lib/components/test-utils/dom';
+
 import CodeEditor from '../../../lib/components/code-editor';
 import FormField from '../../../lib/components/form-field';
+import createWrapper from '../../../lib/components/test-utils/dom';
 import { defaultProps, editorMock } from './util';
 
 beforeEach(() => {

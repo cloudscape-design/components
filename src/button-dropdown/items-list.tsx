@@ -1,13 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
+import { useMobile } from '../internal/hooks/use-mobile';
+import CategoryElement from './category-elements/category-element';
+import ExpandableCategoryElement from './category-elements/expandable-category-element';
+import MobileExpandableCategoryElement from './category-elements/mobile-expandable-category-element';
 import { ItemListProps } from './interfaces';
 import ItemElement from './item-element';
-import ExpandableCategoryElement from './category-elements/expandable-category-element';
-import CategoryElement from './category-elements/category-element';
 import { isItemGroup } from './utils/utils';
-import { useMobile } from '../internal/hooks/use-mobile';
-import MobileExpandableCategoryElement from './category-elements/mobile-expandable-category-element';
 
 export default function ItemsList({
   items,
@@ -24,6 +25,7 @@ export default function ItemsList({
   hasCategoryHeader = false,
   expandToViewport = false,
   variant = 'normal',
+  position,
 }: ItemListProps) {
   const isMobile = useMobile();
 
@@ -43,6 +45,7 @@ export default function ItemsList({
           showDivider={showDivider}
           hasCategoryHeader={hasCategoryHeader}
           variant={variant}
+          position={`${position ? `${position},` : ''}${index + 1}`}
         />
       );
     }
@@ -62,6 +65,7 @@ export default function ItemsList({
             highlightItem={highlightItem}
             disabled={item.disabled ?? false}
             variant={variant}
+            position={`${position ? `${position},` : ''}${index + 1}`}
           />
         ) : (
           <ExpandableCategoryElement
@@ -78,6 +82,7 @@ export default function ItemsList({
             disabled={item.disabled ?? false}
             expandToViewport={expandToViewport}
             variant={variant}
+            position={`${position ? `${position},` : ''}${index + 1}`}
           />
         )
       ) : null;
@@ -96,6 +101,7 @@ export default function ItemsList({
         highlightItem={highlightItem}
         disabled={item.disabled ?? false}
         variant={variant}
+        position={`${position ? `${position},` : ''}${index + 1}`}
       />
     );
   });

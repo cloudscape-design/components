@@ -1,7 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
+
 import { DateRangePicker, DateRangePickerProps, FormField } from '~components';
+
 import ScreenshotArea from '../utils/screenshot-area';
 import { i18nStrings, isValid, relativeOptions } from './common';
 

@@ -3,15 +3,17 @@
 
 import React from 'react';
 import { act, render } from '@testing-library/react';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import PropertyFilter from '../../../lib/components/property-filter';
+
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
+
+import PropertyFilter from '../../../lib/components/property-filter';
 import {
-  FilteringProperty,
   FilteringOption,
+  FilteringProperty,
   PropertyFilterProps,
   Ref,
 } from '../../../lib/components/property-filter/interfaces';
+import createWrapper from '../../../lib/components/test-utils/dom';
 import { createDefaultProps } from './common';
 
 const states: Record<string, string> = {

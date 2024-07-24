@@ -1,11 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
 import AppLayout from '../../../lib/components/app-layout';
-import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
 import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
-import { renderComponent } from './utils';
+import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
 import { highContrastHeaderClassName } from '../../../lib/components/internal/utils/content-header-utils';
+import { renderComponent } from './utils';
+
 import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
 
 jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => ({

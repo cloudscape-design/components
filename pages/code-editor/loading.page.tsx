@@ -1,7 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
 import CodeEditor from '~components/code-editor';
+
 import ScreenshotArea from '../utils/screenshot-area';
 import { i18nStrings } from './base-props';
 

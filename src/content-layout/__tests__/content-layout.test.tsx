@@ -2,12 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
+
 import ContentLayout, { ContentLayoutProps } from '../../../lib/components/content-layout';
-import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import styles from '../../../lib/components/content-layout/styles.selectors.js';
 import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
+import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
 import { highContrastHeaderClassName } from '../../../lib/components/internal/utils/content-header-utils';
+import createWrapper from '../../../lib/components/test-utils/dom';
+
+import styles from '../../../lib/components/content-layout/styles.selectors.js';
 
 jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => ({
   useVisualRefresh: jest.fn().mockReturnValue(false),

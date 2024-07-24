@@ -2,18 +2,19 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
+
 import CollectionPreferences from '../../../lib/components/collection-preferences';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { CollectionPreferencesWrapper } from '../../../lib/components/test-utils/dom';
 import {
-  renderCollectionPreferences,
-  visibleContentPreference,
-  pageSizePreference,
-  wrapLinesPreference,
-  stripedRowsPreference,
   contentDisplayPreference,
+  pageSizePreference,
+  renderCollectionPreferences,
+  stripedRowsPreference,
+  visibleContentPreference,
+  wrapLinesPreference,
 } from './shared';
-import TestI18nProvider from '../../../lib/components/i18n/testing';
 
 const expectVisibleModal = (wrapper: CollectionPreferencesWrapper, visible = true) => {
   if (visible) {

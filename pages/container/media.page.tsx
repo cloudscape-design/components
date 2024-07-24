@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext } from 'react';
-import AppContext, { AppContextType } from '../app/app-context';
+
 import { ContainerProps } from '~components/container';
 import Container from '~components/container';
 import FormField from '~components/form-field';
@@ -9,11 +9,13 @@ import Header from '~components/header';
 import Input from '~components/input';
 import Link from '~components/link';
 import RadioGroup from '~components/radio-group';
-import ScreenshotArea from '../utils/screenshot-area';
 import SpaceBetween from '~components/space-between';
-import image169 from './images/16-9.png';
+
+import AppContext, { AppContextType } from '../app/app-context';
+import ScreenshotArea from '../utils/screenshot-area';
 import image43 from './images/4-3.png';
 import image916 from './images/9-16.png';
+import image169 from './images/16-9.png';
 
 import styles from './media.scss';
 

@@ -1,11 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import Multiselect, { MultiselectProps } from '~components/multiselect';
-import { NonCancelableCustomEvent } from '~components/interfaces';
-import { SelectProps } from '~components/select';
-import { generateOptions } from '../select/generate-options';
+
 import Box from '~components/box';
+import { NonCancelableCustomEvent } from '~components/interfaces';
+import Multiselect, { MultiselectProps } from '~components/multiselect';
+import { SelectProps } from '~components/select';
+
+import { generateOptions } from '../select/generate-options';
 import { i18nStrings } from './constants';
 
 const { options } = generateOptions(50);

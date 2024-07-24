@@ -1,14 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useMemo, useState } from 'react';
+
+import { ChartScale, NumericChartScale } from '../../internal/components/cartesian-chart/scales';
 import { KeyCode } from '../../internal/keycode';
+import { circleIndex } from '../../internal/utils/circle-index';
 import { ChartContainerProps } from '../chart-container';
 import { ChartDataTypes, MixedLineBarChartProps, VerticalMarkerX } from '../interfaces';
-import { ChartScale, NumericChartScale } from '../../internal/components/cartesian-chart/scales';
-import { findNavigableSeries, isXThreshold, isYThreshold, nextValidDomainIndex } from '../utils';
-import { ScaledPoint } from '../make-scaled-series';
 import { ScaledBarGroup } from '../make-scaled-bar-groups';
-import { circleIndex } from '../../internal/utils/circle-index';
+import { ScaledPoint } from '../make-scaled-series';
+import { findNavigableSeries, isXThreshold, isYThreshold, nextValidDomainIndex } from '../utils';
 
 export type UseNavigationProps<T extends ChartDataTypes> = Pick<
   ChartContainerProps<T>,

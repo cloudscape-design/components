@@ -1,11 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { contentDisplayPreference, renderCollectionPreferences } from '../../__tests__/shared';
+import { fireEvent } from '@testing-library/react';
+
 import { CollectionPreferencesProps } from '../../../../lib/components';
 import ContentDisplayPreferenceWrapper, {
   ContentDisplayOptionWrapper,
 } from '../../../../lib/components/test-utils/dom/collection-preferences/content-display-preference';
-import { fireEvent } from '@testing-library/react';
+import { contentDisplayPreference, renderCollectionPreferences } from '../../__tests__/shared';
 
 describe('Content Display preference', () => {
   describe('Rendering', () => {

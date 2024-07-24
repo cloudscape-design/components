@@ -1,17 +1,19 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import React, { useState } from 'react';
-import { DateRangePickerProps } from '../interfaces';
+import clsx from 'clsx';
+
 import InternalBox from '../../box/internal';
 import InternalFormField from '../../form-field/internal';
+import { useInternalI18n } from '../../i18n/context';
 import InternalInput from '../../input/internal';
 import { RadioGroupProps } from '../../radio-group/interfaces';
 import InternalRadioGroup from '../../radio-group/internal';
 import InternalSelect from '../../select/internal';
 import InternalSpaceBetween from '../../space-between/internal';
+import { DateRangePickerProps } from '../interfaces';
+
 import styles from './styles.css.js';
-import { useInternalI18n } from '../../i18n/context';
 
 export interface RelativeRangePickerProps {
   dateOnly: boolean;

@@ -1,9 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState, useEffect } from 'react';
-import { Cards, BarChart, Table, Button, ButtonDropdown, Box, SpaceBetween } from '~components';
+import React, { useEffect, useState } from 'react';
+
+import { BarChart, Box, Button, ButtonDropdown, Cards, SpaceBetween, Table } from '~components';
+
 import { cardDefinition } from './cards/hooks.page';
-import { data3, commonProps, barChartInstructions } from './mixed-line-bar-chart/common';
+import { barChartInstructions, commonProps, data3 } from './mixed-line-bar-chart/common';
 import { generateItems } from './table/generate-data';
 import { columnsConfig } from './table/shared-configs';
 

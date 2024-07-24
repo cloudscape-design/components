@@ -2,13 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
-import styles from './styles.css.js';
-import { KeyValuePairsProps } from './interfaces';
-import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
-import ColumnLayout from '../column-layout/internal';
-import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
+
 import Box from '../box/internal';
+import ColumnLayout from '../column-layout/internal';
+import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
+import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { KeyValuePairsProps } from './interfaces';
+
+import styles from './styles.css.js';
 
 const InternalKeyValuePair = ({ label, info, value, id }: KeyValuePairsProps.Pair) => {
   const kvPairId = useUniqueId('kv-pair-');

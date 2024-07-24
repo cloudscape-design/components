@@ -1,20 +1,22 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import fs from 'fs';
 import * as Axe from 'axe-core';
+import fs from 'fs';
+
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 
+import { runOptions, spec } from './axe';
+
 import tableStyles from '../../lib/components/table/styles.selectors.js';
-import { spec, runOptions } from './axe';
 
 declare const axe: typeof Axe;
 
 export default class A11yPageObject extends BasePageObject {
   getUndefinedTexts() {
     return this.browser.execute(function findUndefinedNodes() {
-      const result = [];
+      const result: string[] = [];
       const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_ALL, null);
-      let node;
+      let node: Node | null;
       while ((node = walker.nextNode())) {
         if (node instanceof Element) {
           for (const attrName of node.getAttributeNames()) {
@@ -45,14 +47,11 @@ export default class A11yPageObject extends BasePageObject {
       // Adding parts of spec that are not serializable.
       if (spec.checks) {
         // Skip color contrast results where the contrast ratio couldn't be calculated
-        // and skip color contrast results due to orange vs white (known violation)
         spec.checks.push({
           id: 'color-contrast',
-          after: (results: Axe.CheckResult[]) =>
-            results
-              .filter(result => result.data && result.data.bgColor && result.data.fgColor)
-              .filter(result => !(result.data.bgColor === '#ec7211' && result.data.fgColor === '#ffffff'))
-              .filter(result => !(result.data.bgColor === '#ffffff' && result.data.fgColor === '#ec7211')),
+          after: (results: Axe.CheckResult[]) => {
+            return results.filter(result => result.data && result.data.bgColor && result.data.fgColor);
+          },
         });
       }
 
@@ -63,9 +62,8 @@ export default class A11yPageObject extends BasePageObject {
         error => done(error)
       );
     };
-    // executeAsync has incorrect typings: https://github.com/webdriverio/webdriverio/issues/6206
-    const response = (await this.browser.executeAsync(
-      runAxe as any,
+    const response = await this.browser.executeAsync(
+      runAxe,
       {
         exclude: [
           // Our custom header and footer
@@ -75,13 +73,11 @@ export default class A11yPageObject extends BasePageObject {
           ['.ace_editor'],
           // Duplicate table for sticky table header
           [`.${tableStyles['header-secondary']}`],
-          // Element added by focus trap library has a tabindex=1, which is a critical violation
-          ['[data-focus-guard=true]'],
         ],
-      } as Axe.ContextObject,
+      },
       spec,
       runOptions
-    )) as AxeResult;
+    );
 
     if ('error' in response) {
       throw response.error;
@@ -91,8 +87,9 @@ export default class A11yPageObject extends BasePageObject {
   }
 
   public async assertNoAxeViolations() {
+    const currentUrl = await this.browser.getUrl();
     const result = await this.getAxeResults();
-    const violations = result.violations;
+    const violations = result.violations.filter(violation => landmarkViolationFilter(violation, currentUrl));
     const incomplete = result.incomplete.filter(ariaLevelViolationsFilter);
 
     expect(violations).toHaveLength(0);
@@ -110,5 +107,15 @@ function ariaLevelViolationsFilter(violation: Axe.Result) {
     violation.id === 'aria-valid-attr-value' &&
     violation.nodes.every(node => node.all.every(entry => entry.id === 'aria-level')) &&
     violation.nodes.every(node => node.html.startsWith('<tr'))
+  );
+}
+
+// There is a known issue when multiple app layout instances rendered on the page. Skip them for pages matching this pattern
+function landmarkViolationFilter(violation: Axe.Result, currentUrl: string) {
+  return (
+    !currentUrl.includes('app-layout/multi-layout-simple') ||
+    (violation.id !== 'landmark-main-is-top-level' &&
+      violation.id !== 'landmark-unique' &&
+      violation.id !== 'landmark-no-duplicate-main')
   );
 }

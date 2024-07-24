@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import setOptions from './utils/intl-polyfill';
 import { normalizeLocale } from '../../../../../lib/components/internal/utils/locale';
+import setOptions from './utils/intl-polyfill';
 
 function withDocumentLang(lang: string, callback: () => void) {
   const htmlElement = document.querySelector('html');

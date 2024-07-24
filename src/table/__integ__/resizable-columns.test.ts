@@ -2,9 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
+
 import createWrapper from '../../../lib/components/test-utils/selectors';
-import styles from '../../../lib/components/table/styles.selectors.js';
+
 import scrollbarStyles from '../../../lib/components/table/sticky-scrollbar/styles.selectors.js';
+import styles from '../../../lib/components/table/styles.selectors.js';
 
 declare global {
   interface Window {

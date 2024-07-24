@@ -2,14 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
-import { ScaleContinuousNumeric, ScaleTime } from '../internal/vendor/d3-scale';
 
 import { ChartScale, NumericChartScale } from '../internal/components/cartesian-chart/scales';
-import { ChartDataTypes, MixedLineBarChartProps } from './interfaces';
-import { matchesX, getKeyValue, StackedBarValues } from './utils';
-import styles from './styles.css.js';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { ScaleContinuousNumeric, ScaleTime } from '../internal/vendor/d3-scale';
 import { createOneSideRoundedRectPath } from './create-one-side-rounded-rect-path';
+import { ChartDataTypes, MixedLineBarChartProps } from './interfaces';
+import { getKeyValue, matchesX, StackedBarValues } from './utils';
+
+import styles from './styles.css.js';
 
 export interface BarSeriesProps<T> {
   axis: 'x' | 'y';

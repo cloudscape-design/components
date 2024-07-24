@@ -1,11 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
+
 import ButtonWrapper from '../button';
-import styles from '../../../internal/components/chart-popover/styles.selectors.js';
-import popoverStyles from '../../../popover/styles.selectors.js';
-import chartSeriesDetailsStyles from '../../../internal/components/chart-series-details/styles.selectors.js';
+
 import expandableSectionHeaderStyles from '../../../expandable-section/styles.selectors.js';
+import styles from '../../../internal/components/chart-popover/styles.selectors.js';
+import chartSeriesDetailsStyles from '../../../internal/components/chart-series-details/styles.selectors.js';
+import popoverStyles from '../../../popover/styles.selectors.js';
 
 export class ChartPopoverSeriesItemWrapper extends ElementWrapper {
   findKey(): ElementWrapper {

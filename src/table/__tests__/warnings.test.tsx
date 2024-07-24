@@ -2,8 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import { render } from '@testing-library/react';
-import Table from '../../../lib/components/table';
+
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
+import Table from '../../../lib/components/table';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({

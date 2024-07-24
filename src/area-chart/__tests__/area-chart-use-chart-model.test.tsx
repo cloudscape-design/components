@@ -1,15 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState, useImperativeHandle, useRef } from 'react';
+import React, { useImperativeHandle, useRef, useState } from 'react';
+import { fireEvent, render } from '@testing-library/react';
 
-import useChartModel, { UseChartModelProps } from '../../../lib/components/area-chart/model/use-chart-model';
 import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
-import { ChartDataTypes } from '../../../lib/components/internal/components/cartesian-chart/interfaces';
-import { render, fireEvent } from '@testing-library/react';
-import { AreaChartProps } from '../../../lib/components/area-chart/interfaces';
+
 import { useReaction } from '../../../lib/components/area-chart/async-store';
+import { AreaChartProps } from '../../../lib/components/area-chart/interfaces';
 import { ChartModel } from '../../../lib/components/area-chart/model';
+import useChartModel, { UseChartModelProps } from '../../../lib/components/area-chart/model/use-chart-model';
+import { ChartDataTypes } from '../../../lib/components/internal/components/cartesian-chart/interfaces';
 import PlotPoint = ChartModel.PlotPoint;
 
 class UseChartModelWrapper extends ElementWrapper {

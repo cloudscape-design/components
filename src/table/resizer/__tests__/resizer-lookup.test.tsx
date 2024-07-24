@@ -1,11 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { render } from '@testing-library/react';
-import { getResizerElements, getHeaderWidth } from '../../../../lib/components/table/resizer/resizer-lookup';
-import tableStyles from '../../../../lib/components/table/styles.css.js';
-import resizerStyles from '../../../../lib/components/table/resizer/styles.css.js';
 import React from 'react';
+import { render } from '@testing-library/react';
+
+import { getHeaderWidth, getResizerElements } from '../../../../lib/components/table/resizer/resizer-lookup';
+
+import resizerStyles from '../../../../lib/components/table/resizer/styles.css.js';
+import tableStyles from '../../../../lib/components/table/styles.css.js';
 
 jest.mock('../../../../lib/components/internal/utils/scrollable-containers', () => ({
   getOverflowParents: jest.fn(() => {

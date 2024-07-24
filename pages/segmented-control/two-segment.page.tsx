@@ -1,8 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useRef } from 'react';
-import SegmentedControl from '~components/segmented-control';
+
 import Input from '~components/input';
+import SegmentedControl from '~components/segmented-control';
+
 import AppContext, { AppContextType } from '../app/app-context';
 
 type PageContext = React.Context<

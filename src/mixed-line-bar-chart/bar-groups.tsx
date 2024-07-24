@@ -3,8 +3,8 @@
 import React from 'react';
 
 import { ChartDataTypes } from './interfaces';
-
 import { ScaledBarGroup } from './make-scaled-bar-groups';
+
 import styles from './styles.css.js';
 
 const OUTLINE_PADDING = 2;

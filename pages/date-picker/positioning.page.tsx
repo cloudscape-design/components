@@ -1,7 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
 import { Box, DatePicker } from '~components';
+
 import i18nStrings from './i18n-strings';
 
 export default function DatePickerScenario() {

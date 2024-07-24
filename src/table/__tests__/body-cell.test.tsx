@@ -1,14 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { render, fireEvent, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
+
 import { TableBodyCell, TableBodyCellProps } from '../../../lib/components/table/body-cell';
-import { TableProps } from '../interfaces';
-import { renderHook } from '../../__tests__/render-hook';
 import { useStickyColumns } from '../../../lib/components/table/sticky-columns';
 import wrapper from '../../../lib/components/test-utils/dom';
-import styles from '../../../lib/components/table/body-cell/styles.selectors.js';
+import { renderHook } from '../../__tests__/render-hook';
 import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
+import { TableProps } from '../interfaces';
+
+import styles from '../../../lib/components/table/body-cell/styles.selectors.js';
 
 const tableRole = 'table';
 

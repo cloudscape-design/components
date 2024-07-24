@@ -2,10 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { ButtonHTMLAttributes } from 'react';
 import clsx from 'clsx';
-import { BaseComponentProps, getBaseProps } from '../../base-component';
+
 import InternalIcon from '../../../icon/internal';
+import { BaseComponentProps, getBaseProps } from '../../base-component';
+import { BaseKeyDetail, CancelableEventHandler, fireCancelableEvent, fireKeyboardEvent } from '../../events';
+
 import styles from './styles.css.js';
-import { fireKeyboardEvent, fireCancelableEvent, CancelableEventHandler, BaseKeyDetail } from '../../events';
 
 export interface ButtonTriggerProps extends BaseComponentProps {
   children?: React.ReactNode;

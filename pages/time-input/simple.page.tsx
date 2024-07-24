@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import { Box } from '~components';
 
+import { Box } from '~components';
 import TimeInput from '~components/time-input';
 
 export default function TimeInputScenario() {

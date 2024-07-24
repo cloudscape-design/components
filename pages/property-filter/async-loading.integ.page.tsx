@@ -1,15 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState, useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import range from 'lodash/range';
 
 import PropertyFilter from '~components/property-filter';
 import { PropertyFilterProps } from '~components/property-filter/interfaces';
 
 import AppContext, { AppContextType } from '../app/app-context';
+import { useOptionsLoader } from '../common/options-loader';
 import ScreenshotArea from '../utils/screenshot-area';
 import { i18nStrings } from './common-props';
-import { useOptionsLoader } from '../common/options-loader';
 
 type PropertyFilterDemoContext = React.Context<
   AppContextType<{

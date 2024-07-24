@@ -3,15 +3,17 @@
 import React, { useContext } from 'react';
 import clsx from 'clsx';
 
-import Popover from '~components/popover';
 import Box from '~components/box';
-import styles from './positioning.scss';
-import ScreenshotArea from '../utils/screenshot-area';
 import ColumnLayout from '~components/column-layout';
 import Link from '~components/link';
+import Popover from '~components/popover';
 import SpaceBetween from '~components/space-between';
 import StatusIndicator from '~components/status-indicator';
+
 import AppContext, { AppContextType } from '../app/app-context';
+import ScreenshotArea from '../utils/screenshot-area';
+
+import styles from './positioning.scss';
 
 type PopoverPlacementContext = React.Context<AppContextType<{ position?: string; placement?: string }>>;
 

@@ -1,8 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
+import { HeaderNextButton, HeaderPrevButton } from './header-button';
+
 import styles from '../styles.css.js';
-import { HeaderPrevButton, HeaderNextButton } from './header-button';
 
 interface CalendarHeaderProps {
   formattedDate: string;

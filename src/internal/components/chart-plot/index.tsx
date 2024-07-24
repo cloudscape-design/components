@@ -3,15 +3,15 @@
 import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import styles from './styles.css.js';
+import { useInternalI18n } from '../../../i18n/context';
 import { useUniqueId } from '../../hooks/use-unique-id';
-
 import { KeyCode } from '../../keycode';
+import { Offset } from '../interfaces';
 import LiveRegion from '../live-region/index';
 import ApplicationController, { ApplicationRef } from './application-controller';
 import FocusOutline from './focus-outline';
-import { Offset } from '../interfaces';
-import { useInternalI18n } from '../../../i18n/context';
+
+import styles from './styles.css.js';
 
 const DEFAULT_PLOT_FOCUS_OFFSET = 3;
 const DEFAULT_ELEMENT_FOCUS_OFFSET = 3;

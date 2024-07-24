@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef } from 'react';
+
 import { useScrollSync } from '~components/internal/hooks/use-scroll-sync';
 let n = 0;
 export default function App() {

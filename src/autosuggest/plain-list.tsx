@@ -2,14 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef } from 'react';
 
+import { getBaseProps } from '../internal/base-component';
 import OptionsList, { OptionsListProps } from '../internal/components/options-list';
 import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
-import { getBaseProps } from '../internal/base-component';
-
 import AutosuggestOption from './autosuggest-option';
 import { AutosuggestItem } from './interfaces';
-import styles from './styles.css.js';
 import { AutosuggestItemsState } from './options-controller';
+
+import styles from './styles.css.js';
 
 export interface ListProps {
   autosuggestItemsState: AutosuggestItemsState;

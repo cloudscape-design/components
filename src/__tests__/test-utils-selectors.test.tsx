@@ -1,11 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { NodePath, PluginObj, transformSync, types } from '@babel/core';
 import fs from 'fs';
 import glob from 'glob';
-import path from 'path';
-import { transformSync, types, PluginObj, NodePath } from '@babel/core';
 import { flatten, zip } from 'lodash';
+import path from 'path';
 
 const defaultPlugins = [require('@babel/plugin-syntax-typescript')] as const;
 

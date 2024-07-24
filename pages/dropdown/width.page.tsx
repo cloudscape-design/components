@@ -1,12 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useState } from 'react';
-import Select, { SelectProps } from '~components/select';
-import Multiselect, { MultiselectProps } from '~components/multiselect';
+
 import Autosuggest from '~components/autosuggest';
-import AppContext, { AppContextType } from '../app/app-context';
-import SpaceBetween from '~components/space-between';
 import ColumnLayout from '~components/column-layout';
+import Multiselect, { MultiselectProps } from '~components/multiselect';
+import Select, { SelectProps } from '~components/select';
+import SpaceBetween from '~components/space-between';
+
+import AppContext, { AppContextType } from '../app/app-context';
 
 type DemoContext = React.Context<
   AppContextType<{

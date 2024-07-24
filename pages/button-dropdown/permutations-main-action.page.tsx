@@ -2,11 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 
-import ButtonDropdown, { ButtonDropdownProps } from '~components/button-dropdown';
 import { Box, SpaceBetween } from '~components';
+import ButtonDropdown, { ButtonDropdownProps } from '~components/button-dropdown';
+
 import createPermutations from '../utils/permutations';
-import ScreenshotArea from '../utils/screenshot-area';
 import PermutationsView from '../utils/permutations-view';
+import ScreenshotArea from '../utils/screenshot-area';
 
 const launchInstanceItem = {
   text: 'Launch instance',

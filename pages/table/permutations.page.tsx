@@ -2,10 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import range from 'lodash/range';
+
+import Header from '~components/header';
 import Link from '~components/link';
 import PropertyFilter from '~components/property-filter';
-import Header from '~components/header';
 import Table, { TableProps } from '~components/table';
+
 import { i18nStrings } from '../property-filter/common-props';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';

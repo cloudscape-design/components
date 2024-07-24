@@ -3,6 +3,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
+
 import createWrapper from '../../../lib/components/test-utils/selectors';
 
 const tokenGroupWrapper = createWrapper().findTokenGroup('#test');

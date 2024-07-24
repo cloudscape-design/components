@@ -1,10 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
+
 import Box from '~components/box';
+import Button from '~components/button';
 import ColumnLayout from '~components/column-layout';
 import Container from '~components/container';
-import Button from '~components/button';
 import ExpandableSection from '~components/expandable-section';
 import Header from '~components/header';
 import Link from '~components/link';
@@ -12,6 +13,7 @@ import Modal from '~components/modal';
 import SpaceBetween from '~components/space-between';
 import Table, { TableProps } from '~components/table';
 import Tabs, { TabsProps } from '~components/tabs';
+
 import ScreenshotArea from '../utils/screenshot-area';
 
 export default function () {

@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { OptionDefinition, OptionGroup as OptionGroupDefinition } from '../internal/components/option/interfaces';
 import { NonCancelableEventHandler } from '../internal/events';
-
 import { BaseSelectProps } from '../select/interfaces';
 
 export interface MultiselectProps extends BaseSelectProps {

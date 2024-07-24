@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
 import Autosuggest from '~components/autosuggest';
 import Box from '~components/box';
 import Button from '~components/button';
@@ -8,15 +9,17 @@ import ButtonDropdown from '~components/button-dropdown';
 import Checkbox from '~components/checkbox';
 import FormField from '~components/form-field';
 import Input from '~components/input';
+import VisualContext from '~components/internal/components/visual-context';
 import Multiselect from '~components/multiselect';
 import RadioGroup from '~components/radio-group';
-import Select from '~components/select';
 import SegmentedControl from '~components/segmented-control';
+import Select from '~components/select';
 import SpaceBetween from '~components/space-between';
 import Textarea from '~components/textarea';
 import Tiles from '~components/tiles';
-import VisualContext from '~components/internal/components/visual-context';
+
 import ScreenshotArea from '../utils/screenshot-area';
+
 import styles from './styles.scss';
 
 const options = [

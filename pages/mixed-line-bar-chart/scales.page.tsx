@@ -2,21 +2,21 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import Container from '~components/container';
-import Header from '~components/header';
-import Grid from '~components/grid';
 import Box from '~components/box';
+import Container from '~components/container';
+import Grid from '~components/grid';
+import Header from '~components/header';
 import MixedLineBarChart from '~components/mixed-line-bar-chart';
-import ScreenshotArea from '../utils/screenshot-area';
 
+import ScreenshotArea from '../utils/screenshot-area';
 import {
-  logarithmicData,
+  commonProps,
   data2,
   data3,
-  commonProps,
-  latencyData,
   dateTimeFormatter,
+  latencyData,
   lineChartInstructions,
+  logarithmicData,
 } from './common';
 
 export default function () {

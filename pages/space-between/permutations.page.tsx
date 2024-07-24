@@ -1,12 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
+import Container from '~components/container';
 import SpaceBetween, { SpaceBetweenProps } from '~components/space-between';
+
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
+
 import styles from './styles.scss';
-import Container from '~components/container';
 
 const ExampleContent = ({ renderNull }: { renderNull?: boolean }) =>
   renderNull ? null : <div className={styles.box}>This is some text.</div>;

@@ -1,15 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { render } from '@testing-library/react';
 import * as React from 'react';
+import { render } from '@testing-library/react';
+
 import Autosuggest from '../../../lib/components/autosuggest';
-import Input from '../../../lib/components/input';
 import DatePicker from '../../../lib/components/date-picker';
+import Input from '../../../lib/components/input';
 import PropertyFilter from '../../../lib/components/property-filter';
-import TextFilter from '../../../lib/components/text-filter';
-import TimeInput from '../../../lib/components/time-input';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import BaseInputWrapper from '../../../lib/components/test-utils/dom/input/base-input';
+import TextFilter from '../../../lib/components/text-filter';
+import TimeInput from '../../../lib/components/time-input';
 
 function renderInputs(jsx: React.ReactElement) {
   const { container } = render(jsx);

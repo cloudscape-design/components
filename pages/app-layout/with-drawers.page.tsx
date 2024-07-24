@@ -1,14 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState, useContext, useRef } from 'react';
-import { AppLayout, ContentLayout, Header, SpaceBetween, SplitPanel, Toggle, Button } from '~components';
+import React, { useContext, useRef, useState } from 'react';
+
+import { AppLayout, Button, ContentLayout, Header, SpaceBetween, SplitPanel, Toggle } from '~components';
 import { AppLayoutProps } from '~components/app-layout';
-import appLayoutLabels from './utils/labels';
-import { Breadcrumbs, Containers } from './utils/content-blocks';
-import ScreenshotArea from '../utils/screenshot-area';
+
 import AppContext, { AppContextType } from '../app/app-context';
-import styles from './styles.scss';
+import ScreenshotArea from '../utils/screenshot-area';
+import { Breadcrumbs, Containers } from './utils/content-blocks';
 import { drawerItems, drawerLabels } from './utils/drawers';
+import appLayoutLabels from './utils/labels';
+
+import styles from './styles.scss';
 
 type DemoContext = React.Context<
   AppContextType<{

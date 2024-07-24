@@ -1,10 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import OptionsList from '~components/internal/components/options-list';
-import Dropdown from '~components/internal/components/dropdown';
-import Button from '~components/button';
 import { useCallback, useState } from 'react';
+
+import Button from '~components/button';
+import Dropdown from '~components/internal/components/dropdown';
+import OptionsList from '~components/internal/components/options-list';
 
 interface ExtendedWindow extends Window {
   __loadMoreCalls?: number;

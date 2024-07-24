@@ -1,30 +1,31 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState, useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
+
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
+import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component/index.js';
-import { fireNonCancelableEvent } from '../internal/events/index.js';
+import Tooltip from '../internal/components/tooltip/index.js';
 import { useFormFieldContext } from '../internal/context/form-field-context.js';
+import { fireNonCancelableEvent } from '../internal/events/index.js';
+import customCssProps from '../internal/generated/custom-css-properties/index.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
-import Tooltip from '../internal/components/tooltip/index.js';
-import customCssProps from '../internal/generated/custom-css-properties/index.js';
-import { useInternalI18n } from '../i18n/context';
-
-import styles from './styles.css.js';
 import { SliderProps } from './interfaces.js';
 import SliderLabels from './slider-labels.js';
 import SliderTickMarks from './tick-marks.js';
 import {
+  findLowerAndHigherValues,
   getPercent,
   getStepArray,
-  findLowerAndHigherValues,
-  valuesAreValid,
-  THUMB_SIZE,
   THUMB_READONLY_SIZE,
+  THUMB_SIZE,
+  valuesAreValid,
 } from './utils.js';
+
+import styles from './styles.css.js';
 
 export interface InternalSliderProps extends SliderProps, InternalBaseComponentProps {}
 

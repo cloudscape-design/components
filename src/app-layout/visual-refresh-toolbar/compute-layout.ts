@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { SPLIT_PANEL_MIN_WIDTH } from '../split-panel';
 import { AppLayoutPropsWithDefaults } from '../interfaces';
+import { SPLIT_PANEL_MIN_WIDTH } from '../split-panel';
 
 interface HorizontalLayoutInput {
   navigationOpen: boolean;

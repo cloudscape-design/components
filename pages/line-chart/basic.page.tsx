@@ -2,21 +2,21 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import Container from '~components/container';
-import Header from '~components/header';
-import Grid from '~components/grid';
 import Box from '~components/box';
+import Container from '~components/container';
+import Grid from '~components/grid';
+import Header from '~components/header';
 import LineChart from '~components/line-chart';
-import ScreenshotArea from '../utils/screenshot-area';
 
 import {
+  barChartInstructions,
+  commonProps,
   data1,
   data2,
   data3,
-  commonProps,
   lineChartInstructions,
-  barChartInstructions,
 } from '../mixed-line-bar-chart/common';
+import ScreenshotArea from '../utils/screenshot-area';
 
 export default function () {
   return (

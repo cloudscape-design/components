@@ -1,10 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useState, useEffect, useRef } from 'react';
-import Header from '~components/header';
-import SpaceBetween from '~components/space-between';
-import { EmptyState, getMatchesCountText, renderAriaLive } from './shared-configs';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { isEqual } from 'lodash';
+
 import { useCollection } from '@cloudscape-design/collection-hooks';
+
 import {
   Alert,
   AppLayout,
@@ -22,16 +22,19 @@ import {
   Select,
   StatusIndicator,
   Table,
-  Toggle,
   TableProps,
+  Toggle,
 } from '~components';
-import AppContext, { AppContextType } from '../app/app-context';
-import { allInstances } from './expandable-rows/expandable-rows-data';
-import messages from '~components/i18n/messages/all.en';
+import Header from '~components/header';
 import I18nProvider from '~components/i18n';
+import messages from '~components/i18n/messages/all.en';
+import SpaceBetween from '~components/space-between';
+
+import AppContext, { AppContextType } from '../app/app-context';
+import { ariaLabels, getHeaderCounterText, Instance } from './expandable-rows/common';
 import { createColumns, createPreferences, filteringProperties } from './expandable-rows/expandable-rows-configs';
-import { Instance, ariaLabels, getHeaderCounterText } from './expandable-rows/common';
-import { isEqual } from 'lodash';
+import { allInstances } from './expandable-rows/expandable-rows-data';
+import { EmptyState, getMatchesCountText, renderAriaLive } from './shared-configs';
 
 type LoadingState = Map<string, { pages: number; status: TableProps.LoadingStatus }>;
 

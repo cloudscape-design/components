@@ -2,9 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
+
 import customCssProps from '../internal/generated/custom-css-properties/index.js';
-import styles from './styles.css.js';
 import { getStepArray } from './utils.js';
+
+import styles from './styles.css.js';
 
 export interface SliderTicksProps {
   hideFillLine?: boolean;

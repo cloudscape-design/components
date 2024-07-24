@@ -2,20 +2,21 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import { render } from '@testing-library/react';
+
+import { setGlobalFlag } from '@cloudscape-design/component-toolkit/internal/testing';
+
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
-import { SplitPanelProps } from '../../../lib/components/split-panel';
-import createWrapper, { AppLayoutWrapper, ElementWrapper } from '../../../lib/components/test-utils/dom';
+import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
 import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
 import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
 import { findUpUntil } from '../../../lib/components/internal/utils/dom';
+import { SplitPanelProps } from '../../../lib/components/split-panel';
+import createWrapper, { AppLayoutWrapper, ElementWrapper } from '../../../lib/components/test-utils/dom';
+
+import testutilStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
 import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
 import visualRefreshToolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/trigger-button/styles.css.js';
-import testutilStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
-import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
 import iconStyles from '../../../lib/components/icon/styles.css.js';
-import { awsuiGlobalFlagsSymbol, FlagsHolder } from '../../../lib/components/internal/utils/global-flags';
-
-declare const window: Window & FlagsHolder;
 
 // Mock element queries result. Note that in order to work, this mock should be applied first, before the AppLayout is required
 jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
@@ -72,12 +73,12 @@ export function describeEachAppLayout(
         beforeEach(() => {
           (useMobile as jest.Mock).mockReturnValue(size === 'mobile');
           (useVisualRefresh as jest.Mock).mockReturnValue(theme !== 'classic');
-          window[awsuiGlobalFlagsSymbol] = { appLayoutWidget: theme === 'refresh-toolbar' };
+          setGlobalFlag('appLayoutWidget', theme === 'refresh-toolbar');
         });
         afterEach(() => {
           (useMobile as jest.Mock).mockReset();
           (useVisualRefresh as jest.Mock).mockReset();
-          delete window[awsuiGlobalFlagsSymbol];
+          setGlobalFlag('appLayoutWidget', undefined);
         });
         test('mocks applied correctly', () => {
           const { isUsingGridLayout, isUsingMobile } = renderComponent(<AppLayout />);

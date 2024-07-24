@@ -4,18 +4,19 @@ import React, { Suspense, useContext, useEffect } from 'react';
 import { render } from 'react-dom';
 import { HashRouter, Redirect } from 'react-router-dom';
 import { createHashHistory } from 'history';
-import { applyMode, applyDensity, disableMotion } from '@cloudscape-design/global-styles';
+
+import { applyDensity, applyMode, disableMotion } from '@cloudscape-design/global-styles';
+
+import AppContext, { AppContextProvider, parseQuery } from './app-context';
+import Header from './components/header';
+import IndexPage from './components/index-page';
+import PageView from './components/page-view';
+import StrictModeWrapper from './components/strict-mode-wrapper';
 
 // import font-size reset and Ember font
 import '@cloudscape-design/global-styles/index.css';
 // screenshot test overrides
 import styles from './styles.scss';
-
-import PageView from './components/page-view';
-import IndexPage from './components/index-page';
-import Header from './components/header';
-import StrictModeWrapper from './components/strict-mode-wrapper';
-import AppContext, { AppContextProvider, parseQuery } from './app-context';
 
 interface GlobalFlags {
   appLayoutWidget?: boolean;

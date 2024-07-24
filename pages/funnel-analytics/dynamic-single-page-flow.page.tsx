@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 
+import { Box, BreadcrumbGroup, Button, Form, SpaceBetween } from '~components';
 import Container from '~components/container';
 import Header from '~components/header';
-import { Box, BreadcrumbGroup, Button, Form, SpaceBetween } from '~components';
 
 export default function WizardPage() {
   const [containerCount, setContainerCount] = useState(2);

@@ -2,6 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { useContext } from 'react';
+
+import { nodeBelongs } from '../../utils/node-belongs';
+import { FunnelMetrics } from '../';
 import {
   FunnelContext,
   FunnelNameSelectorContext,
@@ -14,8 +17,6 @@ import {
   getNameFromSelector,
   getSubStepAllSelector,
 } from '../selectors';
-import { FunnelMetrics } from '../';
-import { nodeBelongs } from '../../utils/node-belongs';
 
 /**
  * Custom React Hook to manage and interact with FunnelSubStep.

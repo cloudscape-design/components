@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import { fireEvent, render } from '@testing-library/react';
+
 import OptionsList from '../../../../../lib/components/internal/components/options-list';
 
 function renderList(jsx: React.ReactElement) {

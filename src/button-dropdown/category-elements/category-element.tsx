@@ -1,10 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { CategoryProps } from '../interfaces';
 import React from 'react';
 import clsx from 'clsx';
-import styles from './styles.css.js';
+
+import { CategoryProps } from '../interfaces';
 import ItemsList from '../items-list';
+
+import styles from './styles.css.js';
 
 const CategoryElement = ({
   item,
@@ -18,6 +20,7 @@ const CategoryElement = ({
   highlightItem,
   disabled,
   variant,
+  position,
 }: CategoryProps) => {
   // Hide the category title element from screen readers because it will be
   // provided as an ARIA label.
@@ -47,6 +50,7 @@ const CategoryElement = ({
             categoryDisabled={disabled}
             hasCategoryHeader={!!item.text}
             variant={variant}
+            position={position}
           />
         )}
       </ul>

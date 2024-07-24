@@ -2,9 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render, waitFor } from '@testing-library/react';
-import ResponsiveText from '../../../lib/components/pie-chart/responsive-text';
-import { renderTextContent } from '../../../lib/components/internal/components/responsive-text/index';
+
 import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
+
+import { renderTextContent } from '../../../lib/components/internal/components/responsive-text/index';
+import ResponsiveText from '../../../lib/components/pie-chart/responsive-text';
 
 jest.mock('../../../lib/components/internal/components/responsive-text/index', () => ({
   ...jest.requireActual('../../../lib/components/internal/components/responsive-text/index'),

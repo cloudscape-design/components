@@ -1,9 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import Button from '~components/button';
-import styles from './styles.scss';
 import range from 'lodash/range';
+
+import Button from '~components/button';
+
+import styles from './styles.scss';
 
 const LIST_ID = 'expanded-list-id';
 

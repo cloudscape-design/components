@@ -2,15 +2,19 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect } from 'react';
 import clsx from 'clsx';
-import styles from './styles.css.js';
+
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalIcon from '../../icon/internal';
+import useHiddenDescription from '../../internal/hooks/use-hidden-description';
+import { GeneratedAnalyticsMetadataButtonDropdownExpand } from '../analytics-metadata/interfaces.js';
+import { CategoryProps } from '../interfaces';
 import ItemsList from '../items-list';
 import MobileExpandableGroup from '../mobile-expandable-group/mobile-expandable-group';
-import { CategoryProps } from '../interfaces';
 import Tooltip from '../tooltip.js';
-import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import { getMenuItemProps } from '../utils/menu-item.js';
+
+import styles from './styles.css.js';
 
 const MobileExpandableCategoryElement = ({
   item,
@@ -24,6 +28,7 @@ const MobileExpandableCategoryElement = ({
   highlightItem,
   disabled,
   variant,
+  position,
 }: CategoryProps) => {
   const highlighted = isHighlighted(item);
   const expanded = isExpanded(item);
@@ -64,6 +69,19 @@ const MobileExpandableCategoryElement = ({
       ref={triggerRef}
       {...getMenuItemProps({ parent: true, disabled, expanded })}
       {...(isDisabledWithReason ? targetProps : {})}
+      {...getAnalyticsMetadataAttribute(
+        disabled
+          ? {}
+          : ({
+              action: 'expand',
+              detail: {
+                position: position || '0',
+                label: '',
+                id: item.id || '',
+                expanded: `${!expanded}`,
+              },
+            } as GeneratedAnalyticsMetadataButtonDropdownExpand)
+      )}
     >
       {item.text}
       <span
@@ -104,6 +122,7 @@ const MobileExpandableCategoryElement = ({
               highlightItem={highlightItem}
               hasCategoryHeader={true}
               variant={variant}
+              position={position}
             />
           </ul>
         )}

@@ -4,6 +4,7 @@ import React, { memo } from 'react';
 import clsx from 'clsx';
 
 import { BaseComponentProps } from '../../base-component';
+
 import styles from './styles.css.js';
 
 export type ChartSeriesMarkerType = 'line' | 'rectangle' | 'dashed' | 'hollow-rectangle';

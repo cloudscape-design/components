@@ -2,9 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext } from 'react';
 
-import ScreenshotArea from '../utils/screenshot-area';
 import SpaceBetween from '~components/space-between';
+
 import AppContext, { AppContextType } from '../app/app-context';
+import ScreenshotArea from '../utils/screenshot-area';
 import DrilldownChart, { DrilldownChartProps } from './drilldown-chart';
 
 type DemoContext = React.Context<AppContextType<DrilldownChartProps>>;

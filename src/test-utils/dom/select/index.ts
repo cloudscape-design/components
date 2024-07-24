@@ -1,14 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
-import selectStyles from '../../../select/styles.selectors.js';
-import selectPartsStyles from '../../../select/parts/styles.selectors.js';
+
+import InputWrapper from '../input';
+import DropdownHostComponentWrapper from '../internal/dropdown-host';
+
 import inputStyles from '../../../input/styles.selectors.js';
 import buttonTriggerStyles from '../../../internal/components/button-trigger/styles.selectors.js';
 import dropdownStatusStyles from '../../../internal/components/dropdown-status/styles.selectors.js';
 import footerStyles from '../../../internal/components/dropdown-status/styles.selectors.js';
-import InputWrapper from '../input';
-import DropdownHostComponentWrapper from '../internal/dropdown-host';
+import selectPartsStyles from '../../../select/parts/styles.selectors.js';
+import selectStyles from '../../../select/styles.selectors.js';
 
 export default class SelectWrapper extends DropdownHostComponentWrapper {
   static rootSelector: string = selectStyles.root;

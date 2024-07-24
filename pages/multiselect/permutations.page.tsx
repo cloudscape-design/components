@@ -1,12 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
 import { OptionDefinition, OptionGroup } from '~components/internal/components/option/interfaces';
 import Multiselect, { MultiselectProps } from '~components/multiselect';
+
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
-import { i18nStrings, deselectAriaLabel } from './constants';
+import { deselectAriaLabel, i18nStrings } from './constants';
 
 const options: MultiselectProps.Options = [
   { value: 'first', label: 'Simple' },

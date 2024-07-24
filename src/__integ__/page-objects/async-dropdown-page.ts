@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
-import SelectWrapper from '../../../lib/components/test-utils/selectors/select';
+
 import AutosuggestWrapper from '../../../lib/components/test-utils/selectors/autosuggest';
+import SelectWrapper from '../../../lib/components/test-utils/selectors/select';
 
 interface APIResponse {
   items: NonNullable<Array<any>>;

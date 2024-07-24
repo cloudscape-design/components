@@ -1,16 +1,18 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import ScreenshotArea from '../utils/screenshot-area';
+
 import CollectionPreferences from '~components/collection-preferences';
+
+import ScreenshotArea from '../utils/screenshot-area';
 import {
   baseProperties,
   contentDensityPreference,
   customPreference,
   pageSizePreference,
-  wrapLinesPreference,
-  visibleContentPreference,
   stickyColumnsPreference,
+  visibleContentPreference,
+  wrapLinesPreference,
 } from './shared-configs';
 
 export default function CollectionPreferencesPermutations() {

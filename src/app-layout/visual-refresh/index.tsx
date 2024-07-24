@@ -1,10 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { AppLayoutInternalsProvider } from './context';
+
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
 import Background from './background';
 import Breadcrumbs from './breadcrumbs';
+import { AppLayoutInternalsProvider } from './context';
 import Drawers from './drawers';
 import Header from './header';
 import Layout from './layout';

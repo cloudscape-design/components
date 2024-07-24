@@ -3,9 +3,11 @@
 import * as React from 'react';
 import { useRef, useState } from 'react';
 import { range } from 'lodash';
-import { Box, Button, SpaceBetween, Flashbar, FlashbarProps, Toggle } from '~components';
-import { generateItem, i18nStrings } from './common';
+
+import { Box, Button, Flashbar, FlashbarProps, SpaceBetween, Toggle } from '~components';
+
 import ScreenshotArea from '../utils/screenshot-area';
+import { generateItem, i18nStrings } from './common';
 
 export default function InteractiveFlashbar() {
   const dismiss = (index: string) => {

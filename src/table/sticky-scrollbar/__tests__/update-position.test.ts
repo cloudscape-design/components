@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { updatePosition } from '../../../../lib/components/table/sticky-scrollbar/use-sticky-scrollbar';
 import globalVars from '../../../../lib/components/internal/styles/global-vars';
+import { updatePosition } from '../../../../lib/components/table/sticky-scrollbar/use-sticky-scrollbar';
 
 describe('updatePosition', () => {
   function setupElements() {

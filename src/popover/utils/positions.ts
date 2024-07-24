@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { PopoverProps, InternalPosition, BoundingBox, Dimensions } from '../interfaces';
+import { BoundingBox, Dimensions, InternalPosition, PopoverProps } from '../interfaces';
 
 // A structure describing how the popover should be positioned
 interface CalculatedPosition {

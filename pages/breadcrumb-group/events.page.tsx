@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import { SpaceBetween } from '~components';
 
+import { SpaceBetween } from '~components';
 import BreadcrumbGroup, { BreadcrumbGroupProps } from '~components/breadcrumb-group';
+
 import ScreenshotArea from '../utils/screenshot-area';
 const items = [
   'First that is very very very very very very long long long text',

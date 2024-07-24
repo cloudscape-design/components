@@ -3,12 +3,13 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { LineChartProps } from './interfaces';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { getBaseProps } from '../internal/base-component';
-import styles from './styles.css.js';
-import InternalMixedLineBarChart from '../mixed-line-bar-chart/internal';
 import useBaseComponent from '../internal/hooks/use-base-component';
+import { applyDisplayName } from '../internal/utils/apply-display-name';
+import InternalMixedLineBarChart from '../mixed-line-bar-chart/internal';
+import { LineChartProps } from './interfaces';
+
+import styles from './styles.css.js';
 
 export { LineChartProps };
 

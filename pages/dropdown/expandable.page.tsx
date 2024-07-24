@@ -1,19 +1,22 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useState } from 'react';
-import styles from './styles.scss';
-import Autosuggest from '~components/autosuggest';
-import Select, { SelectProps } from '~components/select';
-import ButtonDropdown from '~components/button-dropdown';
-import SpaceBetween from '~components/space-between';
-import PropertyFilter, { PropertyFilterProps } from '~components/property-filter';
-import Popover from '~components/popover';
-import Button from '~components/button';
-import { i18nStrings as propertyFilterI18n } from '../property-filter/common-props';
 import { range } from 'lodash';
+
+import Autosuggest from '~components/autosuggest';
+import Button from '~components/button';
+import ButtonDropdown from '~components/button-dropdown';
+import Popover from '~components/popover';
+import PropertyFilter, { PropertyFilterProps } from '~components/property-filter';
+import Select, { SelectProps } from '~components/select';
+import SpaceBetween from '~components/space-between';
+
 import AppContext, { AppContextType } from '../app/app-context';
-import { SampleDropdown, SampleModal } from './common';
+import { i18nStrings as propertyFilterI18n } from '../property-filter/common-props';
 import ScreenshotArea from '../utils/screenshot-area';
+import { SampleDropdown, SampleModal } from './common';
+
+import styles from './styles.scss';
 
 const autosuggestOptions = [
   { value: 'Option 0', tags: ['tag1', 'tag2'], filteringTags: ['bla', 'opt'], description: 'description1' },

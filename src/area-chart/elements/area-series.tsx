@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { memo } from 'react';
-import { line, area } from 'd3-shape';
+import { area, line } from 'd3-shape';
+
 import { ChartModel } from '../model';
 
 export interface AreaSeriesProps<T> {

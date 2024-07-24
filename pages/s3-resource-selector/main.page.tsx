@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
+
 import Box from '~components/box';
 import Container from '~components/container';
 import FormField from '~components/form-field';
@@ -8,8 +9,8 @@ import Header from '~components/header';
 import { NonCancelableCustomEvent } from '~components/interfaces';
 import S3ResourceSelector, { S3ResourceSelectorProps } from '~components/s3-resource-selector';
 
-import { fetchBuckets, fetchObjects, fetchVersions } from './data/request';
 import { i18nStrings } from './data/i18n-strings';
+import { fetchBuckets, fetchObjects, fetchVersions } from './data/request';
 import { SelfDismissibleAlert, uriToConsoleUrl } from './shared';
 
 export default function S3PickerExample() {

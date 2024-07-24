@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { FunnelBreadcrumbItem } from './item/funnel';
+
 import { BreadcrumbGroupProps, InternalBreadcrumbGroupProps } from './interfaces';
+import { FunnelBreadcrumbItem } from './item/funnel';
 
 export function BreadcrumbGroupSkeleton<T extends BreadcrumbGroupProps.Item = BreadcrumbGroupProps.Item>({
   items,

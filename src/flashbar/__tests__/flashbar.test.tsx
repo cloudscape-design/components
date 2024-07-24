@@ -2,14 +2,17 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render as reactRender, waitFor } from '@testing-library/react';
-import Flashbar, { FlashbarProps } from '../../../lib/components/flashbar';
-import { mockInnerText } from '../../internal/analytics/__tests__/mocks';
-import Button from '../../../lib/components/button';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import styles from '../../../lib/components/flashbar/styles.css.js';
-import { createFlashbarWrapper, findList, testFlashDismissal } from './common';
-import { DATA_ATTR_ANALYTICS_FLASHBAR } from '../../../lib/components/internal/analytics/selectors';
+
 import { disableMotion } from '@cloudscape-design/global-styles';
+
+import Button from '../../../lib/components/button';
+import Flashbar, { FlashbarProps } from '../../../lib/components/flashbar';
+import { DATA_ATTR_ANALYTICS_FLASHBAR } from '../../../lib/components/internal/analytics/selectors';
+import createWrapper from '../../../lib/components/test-utils/dom';
+import { mockInnerText } from '../../internal/analytics/__tests__/mocks';
+import { createFlashbarWrapper, findList, testFlashDismissal } from './common';
+
+import styles from '../../../lib/components/flashbar/styles.css.js';
 
 // The non-collapsible flashbar only uses animations in Visual Refresh,
 // so in order to enable them, we need to mock `useVisualRefresh`

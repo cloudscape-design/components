@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { forwardRef } from 'react';
-import styles from './styles.css.js';
 import clsx from 'clsx';
+
+import styles from './styles.css.js';
 
 interface CartesianChartContainerProps {
   minHeight: number;

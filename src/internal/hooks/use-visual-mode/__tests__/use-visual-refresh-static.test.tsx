@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+
 import { useVisualRefresh } from '../../../../../lib/components/internal/hooks/use-visual-mode';
 
 jest.mock('../../../../../lib/components/internal/environment', () => ({ ALWAYS_VISUAL_REFRESH: true }));

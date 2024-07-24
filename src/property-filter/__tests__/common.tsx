@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useState } from 'react';
-import { FilteringProperty, InternalFilteringProperty, PropertyFilterProps, Token } from '../interfaces';
+
 import PropertyFilter from '../../../lib/components/property-filter';
+import { FilteringProperty, InternalFilteringProperty, PropertyFilterProps, Token } from '../interfaces';
 
 export const i18nStrings = {
   dismissAriaLabel: 'Dismiss',

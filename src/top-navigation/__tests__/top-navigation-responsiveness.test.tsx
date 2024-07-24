@@ -1,11 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { TopNavigationProps } from '../../../lib/components/top-navigation/interfaces';
 import {
   determineBestResponsiveState,
   generateResponsiveStateKeys,
   TopNavigationSizeConfiguration,
 } from '../../../lib/components/top-navigation/use-top-navigation';
-import { TopNavigationProps } from '../../../lib/components/top-navigation/interfaces';
 
 function testResponsiveness(
   componentConfig: {

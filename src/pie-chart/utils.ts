@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentFormatFunction } from '../i18n/context';
 import { PieChartProps } from './interfaces';
+
 import styles from './styles.css.js';
 
 export interface Dimension {

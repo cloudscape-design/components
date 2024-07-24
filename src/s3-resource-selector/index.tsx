@@ -1,19 +1,21 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
-import React, { useState, useRef, useEffect } from 'react';
+
 import InternalBox from '../box/internal';
+import { useFormFieldContext } from '../contexts/form-field';
 import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { S3InContext, S3InContextRef } from './s3-in-context';
-import { S3ResourceSelectorProps } from './interfaces';
-import { S3Modal, S3ModalProps } from './s3-modal';
-import styles from './styles.css.js';
 import useBaseComponent from '../internal/hooks/use-base-component';
+import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
-import { useFormFieldContext } from '../contexts/form-field';
+import { S3ResourceSelectorProps } from './interfaces';
+import { S3InContext, S3InContextRef } from './s3-in-context';
+import { S3Modal, S3ModalProps } from './s3-modal';
+
+import styles from './styles.css.js';
 
 export { S3ResourceSelectorProps };
 

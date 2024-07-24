@@ -1,12 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { BaseComponentProps } from '../internal/base-component';
-import { BaseNavigationDetail, CancelableEventHandler } from '../internal/events';
-import { IconProps } from '../icon/interfaces';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { ExpandToViewport } from '../internal/components/dropdown/interfaces';
+
 import { ButtonProps } from '../button/interfaces';
+import { IconProps } from '../icon/interfaces';
+import { BaseComponentProps } from '../internal/base-component';
+import { ExpandToViewport } from '../internal/components/dropdown/interfaces';
+import { BaseNavigationDetail, CancelableEventHandler } from '../internal/events';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 
 export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewport {
   /**
@@ -214,6 +215,7 @@ export interface CategoryProps extends HighlightProps {
   lastInDropdown: boolean;
   expandToViewport?: boolean;
   variant?: ItemListProps['variant'];
+  position?: string;
 }
 
 export interface ItemListProps extends HighlightProps {
@@ -226,6 +228,7 @@ export interface ItemListProps extends HighlightProps {
   lastInDropdown: boolean;
   expandToViewport?: boolean;
   variant?: InternalButtonDropdownProps['variant'];
+  position?: string;
 }
 
 export interface LinkItem extends ButtonDropdownProps.Item {
@@ -242,6 +245,7 @@ export interface ItemProps {
   hasCategoryHeader: boolean;
   isKeyboardHighlighted?: boolean;
   variant?: ItemListProps['variant'];
+  position?: string;
 }
 
 export interface InternalItem extends ButtonDropdownProps.Item {

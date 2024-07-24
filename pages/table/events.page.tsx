@@ -1,10 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import Header from '~components/header';
-import Table, { TableProps } from '~components/table';
-import { NonCancelableCustomEvent } from '~components/interfaces';
 import range from 'lodash/range';
+
+import Header from '~components/header';
+import { NonCancelableCustomEvent } from '~components/interfaces';
+import Table, { TableProps } from '~components/table';
+
 import { ariaLabels, Item } from './shared-configs';
 const items = createSimpleItems(5);
 

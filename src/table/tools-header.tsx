@@ -1,11 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
 import React, { useContext } from 'react';
-import { useContainerBreakpoints } from '../internal/hooks/container-queries';
-import styles from './styles.css.js';
+import clsx from 'clsx';
+
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
+import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
+
+import styles from './styles.css.js';
 
 interface ToolsHeaderProps {
   header: React.ReactNode;

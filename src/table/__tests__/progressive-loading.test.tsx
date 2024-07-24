@@ -2,11 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import { render } from '@testing-library/react';
-import Table, { TableProps } from '../../../lib/components/table';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
+
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { ComponentWrapper } from '@cloudscape-design/test-utils-core/dom.js';
+
+import Table, { TableProps } from '../../../lib/components/table';
+import createWrapper from '../../../lib/components/test-utils/dom';
+
+import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),

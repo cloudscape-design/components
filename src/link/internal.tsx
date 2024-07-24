@@ -2,31 +2,32 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useRef } from 'react';
 import clsx from 'clsx';
-import InternalIcon from '../icon/internal';
-import styles from './styles.css.js';
-import { getBaseProps } from '../internal/base-component';
-import { fireCancelableEvent, fireNonCancelableEvent, isPlainLeftClick } from '../internal/events';
-import useForwardFocus from '../internal/hooks/forward-focus';
-import { KeyCode } from '../internal/keycode';
-import { LinkProps } from './interfaces';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { checkSafeUrl } from '../internal/utils/check-safe-url';
-import { useInternalI18n } from '../i18n/context';
-import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
-import { useFunnel, useFunnelStep, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 
+import { useInternalI18n } from '../i18n/context';
+import InternalIcon from '../icon/internal';
 import { FunnelMetrics } from '../internal/analytics';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { useFunnel, useFunnelStep, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 import {
   DATA_ATTR_FUNNEL_VALUE,
   getFunnelValueSelector,
   getNameFromSelector,
   getSubStepAllSelector,
 } from '../internal/analytics/selectors';
+import { getBaseProps } from '../internal/base-component';
+import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
+import { fireCancelableEvent, fireNonCancelableEvent, isPlainLeftClick } from '../internal/events';
+import useForwardFocus from '../internal/hooks/forward-focus';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { KeyCode } from '../internal/keycode';
+import { checkSafeUrl } from '../internal/utils/check-safe-url';
+import { LinkProps } from './interfaces';
+
+import styles from './styles.css.js';
 
 type InternalLinkProps = InternalBaseComponentProps<HTMLAnchorElement> &
   Omit<LinkProps, 'variant'> & {

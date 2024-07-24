@@ -1,9 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback } from 'react';
-import styles from './styles.css.js';
-import { AnnotationIcon } from './annotation-icon';
+
 import { AnnotationContextProps } from '../interfaces';
+import { AnnotationIcon } from './annotation-icon';
+
+import styles from './styles.css.js';
 
 export interface AnnotationTriggerProps {
   open: boolean;

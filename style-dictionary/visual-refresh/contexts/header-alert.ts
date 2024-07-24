@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import merge from 'lodash/merge';
+
+import { expandColorDictionary, pickState } from '../../utils';
 import { StyleDictionary } from '../../utils/interfaces';
 import { expandedColorTokens as alertTokens } from './alert';
-import merge from 'lodash/merge';
-import { expandColorDictionary, pickState } from '../../utils';
 
 const darkModeColorValues = pickState(alertTokens, 'dark');
 

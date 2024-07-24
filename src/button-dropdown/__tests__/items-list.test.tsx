@@ -3,8 +3,9 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import { ButtonDropdownProps } from '../interfaces';
 import ItemsList from '../../../lib/components/button-dropdown/items-list';
+import { ButtonDropdownProps } from '../interfaces';
+
 import itemElementStyles from '../../../lib/components/button-dropdown/item-element/styles.css.js';
 
 function renderItemsList(items: ButtonDropdownProps.Items): HTMLElement {

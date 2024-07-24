@@ -1,13 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { act, render, fireEvent } from '@testing-library/react';
+import { act, fireEvent, render } from '@testing-library/react';
+
 import Button, { ButtonProps } from '../../../lib/components/button';
 import InternalButton from '../../../lib/components/button/internal';
 import createWrapper, { ButtonWrapper } from '../../../lib/components/test-utils/dom';
-import styles from '../../../lib/components/button/styles.css.js';
 import { buttonRelExpectations, buttonTargetExpectations } from '../../__tests__/target-rel-test-helper';
 import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
+
+import styles from '../../../lib/components/button/styles.css.js';
 
 function renderWrappedButton(props: ButtonProps = {}) {
   const onClickSpy = jest.fn();

@@ -4,8 +4,8 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import range from 'lodash/range';
 
 import { NonCancelableCustomEvent } from '~components';
-import TagEditor, { TagEditorProps } from '~components/tag-editor';
 import Button from '~components/button';
+import TagEditor, { TagEditorProps } from '~components/tag-editor';
 
 import { I18N_STRINGS } from './shared';
 

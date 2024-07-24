@@ -1,10 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
 import { getLimitedValue } from '../../../split-panel/utils/size-utils';
 import { SizeControlProps } from '../../utils/interfaces';
-import { usePointerEvents } from '../../utils/use-pointer-events';
 import { useKeyboardEvents } from '../../utils/use-keyboard-events';
+import { usePointerEvents } from '../../utils/use-pointer-events';
 
 interface ResizeProps {
   currentWidth: number;

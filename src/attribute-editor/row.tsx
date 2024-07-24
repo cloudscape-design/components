@@ -1,18 +1,20 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import InternalBox from '../box/internal';
-import styles from './styles.css.js';
 import React, { useCallback } from 'react';
-import InternalFormField from '../form-field/internal';
-import InternalColumnLayout, { ColumnLayoutBreakpoint } from '../column-layout/internal';
-import { AttributeEditorProps } from './interfaces';
-import { ButtonProps } from '../button/interfaces';
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
-import InternalGrid from '../grid/internal';
-import { InternalButton } from '../button/internal';
 import clsx from 'clsx';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
+
+import InternalBox from '../box/internal';
+import { ButtonProps } from '../button/interfaces';
+import { InternalButton } from '../button/internal';
+import InternalColumnLayout, { ColumnLayoutBreakpoint } from '../column-layout/internal';
+import InternalFormField from '../form-field/internal';
+import InternalGrid from '../grid/internal';
 import { useInternalI18n } from '../i18n/context';
+import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { AttributeEditorProps } from './interfaces';
+
+import styles from './styles.css.js';
 
 const Divider = () => <InternalBox className={styles.divider} padding={{ top: 'l' }} />;
 

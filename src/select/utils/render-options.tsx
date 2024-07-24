@@ -1,12 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
+import { DropdownOption } from '../../internal/components/option/interfaces';
+import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option';
 import { VirtualItem } from '../../internal/vendor/react-virtual';
 import Item from '../parts/item';
 import MutliselectItem from '../parts/multiselect-item';
-import { DropdownOption } from '../../internal/components/option/interfaces';
 import { getItemProps } from './get-item-props';
-import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option';
 
 export interface RenderOptionProps {
   options: ReadonlyArray<DropdownOption>;

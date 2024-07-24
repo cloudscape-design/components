@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { screen } from '@testing-library/react';
+
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { i18nStrings } from './common';
 import { renderCodeEditor } from './util';

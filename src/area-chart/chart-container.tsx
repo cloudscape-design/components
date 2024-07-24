@@ -1,25 +1,24 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState, useEffect, memo, useRef, useMemo } from 'react';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
 
-import ChartPlot from '../internal/components/chart-plot';
 import AxisLabel from '../internal/components/cartesian-chart/axis-label';
-import LabelsMeasure from '../internal/components/cartesian-chart/labels-measure';
-import InlineStartLabels from '../internal/components/cartesian-chart/inline-start-labels';
 import BlockEndLabels, { useBLockEndLabels } from '../internal/components/cartesian-chart/block-end-labels';
+import { CartesianChartContainer } from '../internal/components/cartesian-chart/chart-container';
 import EmphasizedBaseline from '../internal/components/cartesian-chart/emphasized-baseline';
-import { AreaChartProps } from './interfaces';
-import { ChartModel } from './model';
-import AreaDataSeries from './elements/data-series';
-import AreaChartPopover from './elements/chart-popover';
-import AreaHighlightedPoint from './elements/highlighted-point';
-import AreaVerticalMarker from './elements/vertical-marker';
-
-import useHighlightDetails from './elements/use-highlight-details';
+import InlineStartLabels from '../internal/components/cartesian-chart/inline-start-labels';
+import LabelsMeasure from '../internal/components/cartesian-chart/labels-measure';
+import ChartPlot from '../internal/components/chart-plot';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import useContainerWidth from '../internal/utils/use-container-width';
 import { useSelector } from './async-store';
-import { CartesianChartContainer } from '../internal/components/cartesian-chart/chart-container';
+import AreaChartPopover from './elements/chart-popover';
+import AreaDataSeries from './elements/data-series';
+import AreaHighlightedPoint from './elements/highlighted-point';
+import useHighlightDetails from './elements/use-highlight-details';
+import AreaVerticalMarker from './elements/vertical-marker';
+import { AreaChartProps } from './interfaces';
+import { ChartModel } from './model';
 
 const DEFAULT_CHART_WIDTH = 500;
 const INLINE_START_LABELS_MARGIN = 16;

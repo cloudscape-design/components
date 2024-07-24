@@ -1,10 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useState } from 'react';
-import ScreenshotArea from '../utils/screenshot-area';
+
+import CodeEditor, { CodeEditorProps } from '~components/code-editor';
+
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
-import CodeEditor, { CodeEditorProps } from '~components/code-editor';
+import ScreenshotArea from '../utils/screenshot-area';
 import { i18nStrings, themes } from './base-props';
 
 const language = 'javascript';

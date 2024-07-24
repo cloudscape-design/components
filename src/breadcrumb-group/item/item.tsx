@@ -1,15 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef, useState } from 'react';
-import { BreadcrumbGroupProps, BreadcrumbItemProps } from '../interfaces';
-import InternalIcon from '../../icon/internal';
-import styles from './styles.css.js';
 import clsx from 'clsx';
-import { fireCancelableEvent, isPlainLeftClick } from '../../internal/events';
 
+import InternalIcon from '../../icon/internal';
 import Tooltip from '../../internal/components/tooltip';
+import { fireCancelableEvent, isPlainLeftClick } from '../../internal/events';
+import { BreadcrumbGroupProps, BreadcrumbItemProps } from '../interfaces';
 import { getEventDetail } from '../utils';
 import { FunnelBreadcrumbItem } from './funnel';
+
+import styles from './styles.css.js';
 
 type BreadcrumbItemWithPopoverProps<T extends BreadcrumbGroupProps.Item> = React.HTMLAttributes<HTMLElement> & {
   item: T;

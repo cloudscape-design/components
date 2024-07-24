@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState, useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
+
 import Link from '~components/link';
 
 export default function LinkIntegrationTestPage() {

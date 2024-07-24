@@ -2,18 +2,18 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
+
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
 
-import { getBaseProps } from '../../base-component';
-
-import { PopoverProps } from '../../../popover/interfaces';
-import PopoverContainer from '../../../popover/container';
 import PopoverBody from '../../../popover/body';
-import popoverStyles from '../../../popover/styles.css.js';
+import PopoverContainer from '../../../popover/container';
+import { PopoverProps } from '../../../popover/interfaces';
+import { getBaseProps } from '../../base-component';
 import { useMergeRefs } from '../../hooks/use-merge-refs';
-
-import styles from './styles.css.js';
 import { nodeBelongs } from '../../utils/node-belongs';
+
+import popoverStyles from '../../../popover/styles.css.js';
+import styles from './styles.css.js';
 
 export interface ChartPopoverProps extends PopoverProps {
   /** Title of the popover */

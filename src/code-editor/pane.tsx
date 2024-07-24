@@ -1,17 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef, useState } from 'react';
-import clsx from 'clsx';
 import { Ace } from 'ace-builds';
-
-import { KeyCode } from '../internal/keycode';
-import FocusLock from '../internal/components/focus-lock';
+import clsx from 'clsx';
 
 import { InternalButton } from '../button/internal';
+import FocusLock from '../internal/components/focus-lock';
+import { KeyCode } from '../internal/keycode';
 import { ResizableBox } from './resizable-box';
+import { getStatusButtonId, PaneStatus } from './util';
 
 import styles from './styles.css.js';
-import { getStatusButtonId, PaneStatus } from './util';
 
 const ANNOTATION_ITEM_HEIGHT = 31;
 const PANE_ANNOTATIONS_PADDING = 12;

@@ -1,17 +1,18 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import ScreenshotArea from '../utils/screenshot-area';
 
 import Checkbox from '~components/checkbox';
 import FormField, { FormFieldProps } from '~components/form-field';
 import Icon from '~components/icon';
 import Input from '~components/input';
+import Link from '~components/link';
 import RadioGroup from '~components/radio-group';
 import Textarea from '~components/textarea';
-import PermutationsView from '../utils/permutations-view';
+
 import createPermutations from '../utils/permutations';
-import Link from '~components/link';
+import PermutationsView from '../utils/permutations-view';
+import ScreenshotArea from '../utils/screenshot-area';
 
 /* eslint-disable react/jsx-key */
 const permutations = createPermutations<FormFieldProps>([

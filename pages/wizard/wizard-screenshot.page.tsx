@@ -2,10 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 import repeat from 'lodash/repeat';
-import Wizard, { WizardProps } from '~components/wizard';
-import Link from '~components/link';
-import ScreenshotArea from '../utils/screenshot-area';
 
+import Link from '~components/link';
+import Wizard, { WizardProps } from '~components/wizard';
+
+import ScreenshotArea from '../utils/screenshot-area';
 import { i18nStrings } from './common';
 
 const steps: WizardProps.Step[] = [

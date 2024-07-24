@@ -1,28 +1,29 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { InternalButton } from '../button/internal';
-import { getBaseProps } from '../internal/base-component';
-import { useSplitPanelContext } from '../internal/context/split-panel-context';
+import { getGlobalFlag } from '@cloudscape-design/component-toolkit/internal';
 
-import { SplitPanelProps } from './interfaces';
-import PanelResizeHandle from '../internal/components/panel-resize-handle';
-import PreferencesModal from './preferences-modal';
-import { usePointerEvents } from '../app-layout/utils/use-pointer-events';
-import { useKeyboardEvents } from '../app-layout/utils/use-keyboard-events';
 import { SizeControlProps } from '../app-layout/utils/interfaces';
-
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { Transition } from '../internal/components/transition';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { SplitPanelContentSide } from './side';
-import { SplitPanelContentBottom } from './bottom';
+import { useKeyboardEvents } from '../app-layout/utils/use-keyboard-events';
+import { usePointerEvents } from '../app-layout/utils/use-pointer-events';
+import { InternalButton } from '../button/internal';
 import { useInternalI18n } from '../i18n/context';
+import { getBaseProps } from '../internal/base-component';
+import PanelResizeHandle from '../internal/components/panel-resize-handle';
+import { Transition } from '../internal/components/transition';
+import { useSplitPanelContext } from '../internal/context/split-panel-context';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import globalVars from '../internal/styles/global-vars';
 import { createWidgetizedForwardRef } from '../internal/widgets';
+import { SplitPanelContentBottom } from './bottom';
+import { SplitPanelProps } from './interfaces';
+import PreferencesModal from './preferences-modal';
+import { SplitPanelContentSide } from './side';
+
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
@@ -53,6 +54,7 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
     } = useSplitPanelContext();
     const baseProps = getBaseProps(restProps);
     const i18n = useInternalI18n('split-panel');
+    const hasToolbar = getGlobalFlag('appLayoutWidget');
     const [isPreferencesOpen, setPreferencesOpen] = useState<boolean>(false);
 
     const appLayoutMaxWidth = isRefresh && position === 'bottom' ? contentWidthStyles : undefined;
@@ -81,7 +83,7 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
     const panelHeaderId = useUniqueId('split-panel-header');
 
     const wrappedHeader = (
-      <div className={styles.header} style={appLayoutMaxWidth}>
+      <div className={clsx(styles.header, hasToolbar && styles['with-toolbar'])} style={appLayoutMaxWidth}>
         <h2 className={clsx(styles['header-text'], testUtilStyles['header-text'])} id={panelHeaderId}>
           {header}
         </h2>

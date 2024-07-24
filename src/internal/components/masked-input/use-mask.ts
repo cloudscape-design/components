@@ -1,15 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { RefObject } from 'react';
-import { InputProps } from '../../../input/interfaces';
-import { NonCancelableEventHandler, CancelableEventHandler } from '../../events';
-import { KeyCode } from '../../keycode';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
-import { isCommand, isDigit } from './utils/keys';
 
+import { InputProps } from '../../../input/interfaces';
+import { CancelableEventHandler, NonCancelableEventHandler } from '../../events';
+import { KeyCode } from '../../keycode';
+import { backspaceHandler, enterHandler, HandlerResult, keyHandler } from './keyboard-handler';
+import { isCommand, isDigit } from './utils/keys';
 import MaskFormat from './utils/mask-format';
-import { backspaceHandler, HandlerResult, keyHandler, enterHandler } from './keyboard-handler';
 
 interface UseMaskHook {
   value: string;

@@ -1,11 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+
+import Checkbox from '~components/checkbox';
 import ColumnLayout from '~components/column-layout';
 import FormField from '~components/form-field';
 import PromptInput from '~components/prompt-input';
 import SpaceBetween from '~components/space-between';
-import Checkbox from '~components/checkbox';
+
 import AppContext, { AppContextType } from '../app/app-context';
 
 const MAX_CHARS = 200;

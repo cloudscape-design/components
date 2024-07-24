@@ -3,15 +3,16 @@
 import React, { memo, useRef } from 'react';
 import clsx from 'clsx';
 
-import { ChartScale, NumericChartScale } from './scales';
+import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
+
+import { useInternalI18n } from '../../../i18n/context';
+import { ChartDataTypes } from '../../../mixed-line-bar-chart/interfaces';
+import ResponsiveText from '../responsive-text';
 import { TICK_LENGTH, TICK_LINE_HEIGHT, TICK_MARGIN } from './constants';
+import { formatTicks, getSVGTextSize, getVisibleTicks } from './label-utils';
+import { ChartScale, NumericChartScale } from './scales';
 
 import styles from './styles.css.js';
-import { formatTicks, getSVGTextSize, getVisibleTicks } from './label-utils';
-import { ChartDataTypes } from '../../../mixed-line-bar-chart/interfaces';
-import { useInternalI18n } from '../../../i18n/context';
-import ResponsiveText from '../responsive-text';
-import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
 
 const OFFSET_PX = 12;
 

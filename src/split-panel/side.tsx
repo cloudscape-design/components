@@ -2,11 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
+
+import { getGlobalFlag } from '@cloudscape-design/component-toolkit/internal';
+
 import { ButtonProps } from '../button/interfaces';
 import InternalButton from '../button/internal';
+import { useSplitPanelContext } from '../internal/context/split-panel-context';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { SplitPanelContentProps } from './interfaces';
-import { useSplitPanelContext } from '../internal/context/split-panel-context';
+
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
@@ -31,12 +35,14 @@ export function SplitPanelContentSide({
 }: SplitPanelContentSideProps) {
   const { topOffset, bottomOffset } = useSplitPanelContext();
   const isRefresh = useVisualRefresh();
+  const hasToolbar = getGlobalFlag('appLayoutWidget');
   return (
     <div
       {...baseProps}
       className={clsx(baseProps.className, styles.drawer, styles['position-side'], testUtilStyles.root, {
         [testUtilStyles['open-position-side']]: isOpen,
         [styles['drawer-closed']]: !isOpen,
+        [styles['with-toolbar']]: hasToolbar,
       })}
       style={{
         width: isOpen && isRefresh ? cappedSize : undefined,
@@ -68,7 +74,7 @@ export function SplitPanelContentSide({
             ref={isRefresh ? null : toggleRef}
           />
         )}
-        <div className={styles['content-side']} aria-hidden={!isOpen}>
+        <div className={clsx(styles['content-side'], hasToolbar && styles['with-toolbar'])} aria-hidden={!isOpen}>
           <div className={styles['pane-header-wrapper-side']}>{header}</div>
           <div className={styles['pane-content-wrapper-side']}>{children}</div>
         </div>

@@ -2,7 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { act, render, screen } from '@testing-library/react';
+
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
 import Portal, { PortalProps } from '../../../../../lib/components/internal/components/portal';
 
 function renderPortal(props: PortalProps) {

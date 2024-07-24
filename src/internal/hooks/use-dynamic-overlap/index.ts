@@ -1,11 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { useContext, useLayoutEffect } from 'react';
+import { useCallback, useRef } from 'react';
 
-import { DynamicOverlapContext } from '../../context/dynamic-overlap-context';
-import { useRef, useCallback } from 'react';
 import { ContainerQueryEntry } from '@cloudscape-design/component-toolkit';
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
+
+import { DynamicOverlapContext } from '../../context/dynamic-overlap-context';
 
 export interface UseDynamicOverlapProps {
   /**

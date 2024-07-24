@@ -1,11 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { DateRangePickerProps } from './interfaces';
+
+import { useInternalI18n } from '../i18n/context';
 import InternalSegmentedControl from '../segmented-control/internal';
+import { DateRangePickerProps } from './interfaces';
 
 import styles from './styles.css.js';
-import { useInternalI18n } from '../i18n/context';
 
 interface ModeSwitcherProps extends Pick<DateRangePickerProps, 'i18nStrings'> {
   mode: 'absolute' | 'relative';

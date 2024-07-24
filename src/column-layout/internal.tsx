@@ -2,10 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
+
 import { getBaseProps } from '../internal/base-component';
-import { InternalColumnLayoutProps } from './interfaces';
 import FlexibleColumnLayout from './flexible-column-layout';
 import GridColumnLayout from './grid-column-layout';
+import { InternalColumnLayoutProps } from './interfaces';
+
 import styles from './styles.css.js';
 
 export const COLUMN_TRIGGERS = ['default', 'xxs', 'xs'] as const;

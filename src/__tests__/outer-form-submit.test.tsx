@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
-import { getAllComponents, requireComponent } from './utils';
+
 import { getRequiredPropsForComponent } from './required-props-for-components';
+import { getAllComponents, requireComponent } from './utils';
 
 const skippedComponents = ['button'];
 

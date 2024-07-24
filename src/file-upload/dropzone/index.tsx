@@ -2,9 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useEffect, useState } from 'react';
-import styles from './styles.css.js';
 import clsx from 'clsx';
+
 import InternalIcon from '../../icon/internal';
+
+import styles from './styles.css.js';
 
 interface DropzoneProps {
   onChange: (files: File[]) => void;

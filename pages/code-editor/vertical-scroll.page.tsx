@@ -1,15 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useState } from 'react';
+
+import Box from '~components/box';
 import CodeEditor, { CodeEditorProps } from '~components/code-editor';
+
 import { i18nStrings } from './base-props';
+import { sayHelloSample } from './code-samples';
 
 import 'ace-builds/css/ace.css';
 import 'ace-builds/css/theme/dawn.css';
 import 'ace-builds/css/theme/tomorrow_night_bright.css';
-import Box from '~components/box';
-
-import { sayHelloSample } from './code-samples';
 
 export default function () {
   const [ace, setAce] = useState<CodeEditorProps['ace']>();

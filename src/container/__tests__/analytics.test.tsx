@@ -1,20 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render, act } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 
 import Container from '../../../lib/components/container';
-import Modal from '../../../lib/components/modal';
-
 import { FunnelMetrics } from '../../../lib/components/internal/analytics';
-import { DATA_ATTR_FUNNEL_SUBSTEP } from '../../../lib/components/internal/analytics/selectors';
-
-import { mockFunnelMetrics } from '../../internal/analytics/__tests__/mocks';
-
 import {
   AnalyticsFunnel,
   AnalyticsFunnelStep,
 } from '../../../lib/components/internal/analytics/components/analytics-funnel';
+import { DATA_ATTR_FUNNEL_SUBSTEP } from '../../../lib/components/internal/analytics/selectors';
+import Modal from '../../../lib/components/modal';
+import { mockFunnelMetrics } from '../../internal/analytics/__tests__/mocks';
 
 describe('Funnel Analytics', () => {
   beforeEach(() => {

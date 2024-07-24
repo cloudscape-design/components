@@ -2,13 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import { render } from '@testing-library/react';
+
 import Cards, { CardsProps } from '../../../lib/components/cards';
 import Header from '../../../lib/components/header';
-import { CardsWrapper, PaginationWrapper } from '../../../lib/components/test-utils/dom';
-import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
-import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
+import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
+import { CardsWrapper, PaginationWrapper } from '../../../lib/components/test-utils/dom';
+
 import styles from '../../../lib/components/cards/styles.css.js';
+import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
 
 jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
   useMobile: jest.fn(),

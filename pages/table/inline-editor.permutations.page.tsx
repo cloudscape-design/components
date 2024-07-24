@@ -1,12 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
+import { Box, Input, Multiselect, Select, TableProps } from '~components';
 import { TableBodyCell } from '~components/table/body-cell';
+import { useStickyColumns } from '~components/table/sticky-columns';
+
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
-import { useStickyColumns } from '~components/table/sticky-columns';
-import { Box, Select, Multiselect, Input, TableProps } from '~components';
 
 const baseColumnDefinition = {
   cell: () => 'Editable cell content shown inline when not editing',
