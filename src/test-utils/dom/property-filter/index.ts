@@ -164,22 +164,22 @@ export class InternalPropertyFilterEditorDropdownWrapper extends ComponentWrappe
   }
 
   findPropertyField(index = 1): FormFieldWrapper {
-    const dataIndex = `[data-index="${index - 1}"]`;
+    const dataIndex = `[data-testindex="${index - 1}"]`;
     return this.findComponent(`.${testUtilStyles['token-editor-field-property']}${dataIndex}`, FormFieldWrapper)!;
   }
 
   findOperatorField(index = 1): FormFieldWrapper {
-    const dataIndex = `[data-index="${index - 1}"]`;
+    const dataIndex = `[data-testindex="${index - 1}"]`;
     return this.findComponent(`.${testUtilStyles['token-editor-field-operator']}${dataIndex}`, FormFieldWrapper)!;
   }
 
   findValueField(index = 1): FormFieldWrapper {
-    const dataIndex = `[data-index="${index - 1}"]`;
+    const dataIndex = `[data-testindex="${index - 1}"]`;
     return this.findComponent(`.${testUtilStyles['token-editor-field-value']}${dataIndex}`, FormFieldWrapper)!;
   }
 
   findTokenRemoveActions(index = 1): ButtonDropdownWrapper {
-    const dataIndex = `[data-index="${index - 1}"]`;
+    const dataIndex = `[data-testindex="${index - 1}"]`;
     const buttonDropdown = this.find(`.${testUtilStyles['token-editor-token-remove-actions']}${dataIndex}`)!;
     return new ButtonDropdownWrapper(buttonDropdown.getElement());
   }
