@@ -5,6 +5,10 @@ import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import {
+  GeneratedAnalyticsMetadataFragment,
+  getAnalyticsMetadataAttribute,
+} from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalContainer, { InternalContainerProps } from '../container/internal';
 import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
@@ -25,6 +29,7 @@ import { useTableInteractionMetrics } from '../internal/hooks/use-table-interact
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { isDevelopment } from '../internal/is-development';
 import { SomeRequired } from '../internal/types';
+import { GeneratedAnalyticsMetadataTableComponent } from './analytics-metadata/interfaces';
 import { TableBodyCell } from './body-cell';
 import { TableTdElement } from './body-cell/td-element';
 import { checkColumnWidths } from './column-widths-utils';
@@ -540,6 +545,8 @@ const InternalTable = React.forwardRef(
                                     onFocusDown={moveFocusDown}
                                     onFocusUp={moveFocusUp}
                                     {...getItemSelectionProps(row.item)}
+                                    rowIndex={rowIndex}
+                                    itemKey={`${getTableItemKey(row.item)}`}
                                   />
                                 </TableTdElement>
                               )}
@@ -550,6 +557,21 @@ const InternalTable = React.forwardRef(
                                 const isEditable = !!column.editConfig && !cellEditing.isLoading;
                                 const cellExpandableProps =
                                   isExpandable && colIndex === 0 ? expandableProps : undefined;
+
+                                const analyticsMetadata: GeneratedAnalyticsMetadataFragment = {
+                                  component: {
+                                    innerContext: {
+                                      position: `${rowIndex + 1},${colIndex + 1}`,
+                                      columnId: column.id ? `${column.id}` : '',
+                                      columnLabel: {
+                                        selector: `table thead tr th:nth-child(${colIndex + (selectionType ? 2 : 1)})`,
+                                        root: 'component',
+                                      },
+                                      item: `${getTableItemKey(row.item)}`,
+                                    } as GeneratedAnalyticsMetadataTableComponent['innerContext'],
+                                  },
+                                };
+
                                 return (
                                   <TableBodyCell
                                     key={getColumnKey(column, colIndex)}
@@ -581,6 +603,7 @@ const InternalTable = React.forwardRef(
                                     colIndex={colIndex + colIndexOffset}
                                     verticalAlign={column.verticalAlign}
                                     {...cellExpandableProps}
+                                    {...getAnalyticsMetadataAttribute(analyticsMetadata)}
                                   />
                                 );
                               })}
