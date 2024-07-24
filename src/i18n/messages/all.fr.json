@@ -161,7 +161,7 @@
     "clearAriaLabel": "Effacer"
   },
   "link": {
-    "externalIconAriaLabel": "Elle s'ouvre dans un nouvel onglet"
+    "externalIconAriaLabel": "S’ouvre dans un nouvel onglet"
   },
   "modal": {
     "closeAriaLabel": "Fermer le modal"
@@ -223,6 +223,7 @@
     "i18nStrings.modalCancelButton": "Annuler",
     "i18nStrings.modalSubmitButton": "Choisir",
     "i18nStrings.modalBreadcrumbRootItem": "Compartiments S3",
+    "i18nStrings.modalLastUpdatedText": "Dernière mise à jour",
     "i18nStrings.selectionBuckets": "Compartiments",
     "i18nStrings.selectionObjects": "Objets",
     "i18nStrings.selectionVersions": "Versions",
