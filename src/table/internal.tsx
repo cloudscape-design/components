@@ -579,6 +579,7 @@ const InternalTable = React.forwardRef(
                                     submitEdit={cellEditing.submitEdit}
                                     columnId={column.id ?? colIndex}
                                     colIndex={colIndex + colIndexOffset}
+                                    verticalAlign={column.verticalAlign}
                                     {...cellExpandableProps}
                                   />
                                 );

@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
 import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import { ExpandToggleButton } from '../expandable-rows/expand-toggle-button';
+import { TableProps } from '../interfaces.js';
 import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
 import { getTableCellRoleProps, TableRole } from '../table-role';
 import { getStickyClassNames } from '../utils';
@@ -45,6 +46,7 @@ export interface TableTdElementProps {
   onExpandableItemToggle?: () => void;
   expandButtonLabel?: string;
   collapseButtonLabel?: string;
+  verticalAlign?: TableProps.VerticalAlign;
 }
 
 export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElementProps>(
@@ -79,6 +81,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       onExpandableItemToggle,
       expandButtonLabel,
       collapseButtonLabel,
+      verticalAlign,
     },
     ref
   ) => {
@@ -115,6 +118,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           hasFooter && styles['has-footer'],
           level !== undefined && styles['body-cell-expandable'],
           level !== undefined && styles[`expandable-level-${getLevelClassSuffix(level)}`],
+          verticalAlign === 'top' && styles['body-cell-align-top'],
           stickyStyles.className
         )}
         onClick={onClick}

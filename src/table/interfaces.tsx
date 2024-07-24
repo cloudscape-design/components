@@ -106,6 +106,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
    *     * `cellContext.currentValue` - State to keep track of a value in input fields while editing.
    *     * `cellContext.setValue` - Function to update `currentValue`. This should be called when the value in input field changes.
    * * `isRowHeader` (boolean) - Specifies that cells in this column should be used as row headers.
+   * * `verticalAlign` ('middle' | 'top') - Determines the alignment of the content in the table cell.
    */
   columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T>>;
   /**
@@ -427,6 +428,7 @@ export namespace TableProps {
     maxWidth?: number | string;
     editConfig?: EditConfig<ItemType>;
     isRowHeader?: boolean;
+    verticalAlign?: VerticalAlign;
     cell(item: ItemType): React.ReactNode;
   } & SortingColumn<ItemType>;
 
@@ -435,6 +437,7 @@ export namespace TableProps {
     last?: number;
   }
 
+  export type VerticalAlign = 'middle' | 'top';
   export type SelectionType = 'single' | 'multi';
   export type Variant = 'container' | 'embedded' | 'borderless' | 'stacked' | 'full-page';
   export interface SelectionState<T> {
