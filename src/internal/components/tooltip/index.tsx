@@ -43,6 +43,7 @@ export default function Tooltip({
               size="small"
               fixedWidth={false}
               position={position}
+              zIndex={7000}
               arrow={position => (
                 <div className={clsx(popoverStyles.arrow, popoverStyles[`arrow-position-${position}`])}>
                   <div className={popoverStyles['arrow-outer']} />
