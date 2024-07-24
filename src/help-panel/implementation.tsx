@@ -3,12 +3,13 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { getGlobalFlag } from '@cloudscape-design/component-toolkit/internal';
+
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
 import LiveRegion from '../internal/components/live-region';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { getGlobalFlag } from '../internal/utils/global-flags';
 import { createWidgetizedComponent } from '../internal/widgets';
 import InternalStatusIndicator from '../status-indicator/internal';
 import { HelpPanelProps } from './interfaces';
