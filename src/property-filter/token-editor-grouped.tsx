@@ -176,7 +176,6 @@ export interface TokenEditorProps {
   filteringOptions: readonly InternalFilteringOption[];
   i18nStrings: I18nStrings;
   i18nStringsExt: {
-    tokenEditorTokenGroupLabel: (token: { property: string; operator: string; value: string }) => string;
     tokenEditorRemoveFilterLabel: string; // TODO: include index or token?
     tokenEditorRemoveFromGroupFilterLabel: string; // TODO: include index or token?
     tokenEditorRemoveMoreFilterLabel: string; // TODO: include index or token?
