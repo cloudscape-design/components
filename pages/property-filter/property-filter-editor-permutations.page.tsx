@@ -5,6 +5,8 @@ import React, { useState } from 'react';
 import { format } from 'date-fns';
 
 import { Calendar, CalendarProps, DatePicker, FormField, TimeInput } from '~components';
+import { I18nProvider } from '~components/i18n';
+import messages from '~components/i18n/messages/all.en';
 import { InternalFilteringProperty } from '~components/property-filter/interfaces';
 import { TokenEditor, TokenEditorProps } from '~components/property-filter/token-editor-grouped';
 
@@ -48,11 +50,6 @@ const dateProperty: InternalFilteringProperty = {
         onChange: () => {},
         locale: 'en-GB',
         ariaLabel: 'Scheduled launch date, calendar',
-        i18nStrings: {
-          previousMonthAriaLabel: 'Previous month',
-          nextMonthAriaLabel: 'Next month',
-          todayAriaLabel: 'Today',
-        },
       };
       return typeof filter === 'string' ? <Calendar {...props} /> : <DatePicker {...props} />;
     },
@@ -74,11 +71,6 @@ const dateTimeProperty: InternalFilteringProperty = {
         onChange: () => {},
         locale: 'en-GB',
         ariaLabel: 'Scheduled launch date, calendar',
-        i18nStrings: {
-          previousMonthAriaLabel: 'Previous month',
-          nextMonthAriaLabel: 'Next month',
-          todayAriaLabel: 'Today',
-        },
       };
       return (
         <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
@@ -182,15 +174,17 @@ function TokenEditorStateful(props: TokenEditorProps) {
 export default function () {
   return (
     <>
-      <h1>Property filter editor permutations</h1>
-      <ScreenshotArea disableAnimations={true}>
-        <div className={styles['token-editor-container']}>
-          <PermutationsView
-            permutations={tokenPermutations}
-            render={permutation => <TokenEditorStateful {...defaultProps} {...permutation} />}
-          />
-        </div>
-      </ScreenshotArea>
+      <I18nProvider messages={[messages]} locale="en">
+        <h1>Property filter editor permutations</h1>
+        <ScreenshotArea disableAnimations={true}>
+          <div className={styles['token-editor-container']}>
+            <PermutationsView
+              permutations={tokenPermutations}
+              render={permutation => <TokenEditorStateful {...defaultProps} {...permutation} />}
+            />
+          </div>
+        </ScreenshotArea>
+      </I18nProvider>
     </>
   );
 }
