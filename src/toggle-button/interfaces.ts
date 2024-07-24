@@ -24,7 +24,7 @@ export interface ToggleButtonProps extends BaseComponentProps, BaseButtonProps {
   /**
    * Specifies the URL of a custom icon in pressed state. Use this property if the icon needed for your use case isn't available.
    *
-   * `pressedIconUrl` will take precedence if you set both `pressedIconUrl` and `pressedIconSvg`.
+   * `pressedIconSvg` will take precedence if you set both `pressedIconUrl` and `pressedIconSvg`.
    */
   pressedIconUrl?: string;
   /**
@@ -43,7 +43,7 @@ export interface ToggleButtonProps extends BaseComponentProps, BaseButtonProps {
    * If you don't want these styles to be automatically set, wrap the `svg` element into a `span`.
    * You can still set the stroke to `currentColor` to inherit the color of the surrounding elements.
    *
-   * If you set both `iconUrl` and `iconSvg`, `iconSvg` will take precedence.
+   * If you set both `pressedIconUrl` and `pressedIconSvg`, `pressedIconSvg` will take precedence.
    *
    * *Note:* Remember to remove any additional elements (for example: `defs`) and related CSS classes from SVG files exported from design software.
    * In most cases, they aren't needed, as the `svg` element inherits styles from the icon component.
