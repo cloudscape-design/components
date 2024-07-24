@@ -3,9 +3,15 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import {
+  getAnalyticsLabelAttribute,
+  getAnalyticsMetadataAttribute,
+} from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
 import { InternalBaseComponentProps } from '../../hooks/use-base-component/index.js';
 import { useUniqueId } from '../../hooks/use-unique-id';
 
+import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
 export interface AbstractSwitchProps extends React.HTMLAttributes<HTMLElement>, InternalBaseComponentProps {
@@ -74,18 +80,33 @@ export default function AbstractSwitch({
   }
 
   return (
-    <span {...rest} className={clsx(styles.wrapper, rest.className)} ref={__internalRootRef}>
+    <span
+      {...rest}
+      className={clsx(styles.wrapper, rest.className)}
+      ref={__internalRootRef}
+      {...getAnalyticsLabelAttribute(label ? `.${analyticsSelectors.label}` : `.${analyticsSelectors['native-input']}`)}
+    >
       <span
         className={styles['label-wrapper']}
         aria-disabled={disabled ? 'true' : undefined}
         onClick={disabled || readOnly ? undefined : onClick}
+        {...getAnalyticsMetadataAttribute(
+          disabled || readOnly
+            ? {}
+            : {
+                action: 'select',
+                detail: {
+                  label: label ? `.${analyticsSelectors.label}` : `.${analyticsSelectors['native-input']}`,
+                },
+              }
+        )}
       >
         <span className={clsx(styles.control, controlClassName)}>
           {styledControl}
           {nativeControl({
             id,
             disabled,
-            className: styles['native-input'],
+            className: clsx(styles['native-input'], analyticsSelectors['native-input']),
             'aria-describedby': ariaDescriptions.length ? joinString(ariaDescriptions) : undefined,
             'aria-labelledby': ariaLabelledByIds.length ? joinString(ariaLabelledByIds) : undefined,
             'aria-label': ariaLabel,
@@ -95,7 +116,10 @@ export default function AbstractSwitch({
         </span>
         <span className={clsx(styles.content, !label && !description && styles['empty-content'])}>
           {label && (
-            <span id={labelId} className={clsx(styles.label, { [styles['label-disabled']]: disabled })}>
+            <span
+              id={labelId}
+              className={clsx(styles.label, analyticsSelectors.label, { [styles['label-disabled']]: disabled })}
+            >
               {label}
             </span>
           )}
