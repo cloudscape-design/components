@@ -1,6 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import React, { useEffect, useState } from 'react';
+import clsx from 'clsx';
 
 import InternalAutosuggest from '../autosuggest/internal';
 import InternalButton from '../button/internal';
@@ -26,6 +28,7 @@ import { useLoadItems } from './use-load-items';
 import { getFormattedToken } from './utils';
 
 import styles from './styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
 
 interface PropertyInputProps {
   asyncProps: null | DropdownStatusProps;
@@ -310,7 +313,7 @@ export function TokenEditor({
         }}
       />
 
-      <div className={styles['token-editor-grouped-add-token']}>
+      <div className={clsx(styles['token-editor-grouped-add-token'], testUtilStyles['token-editor-token-add-actions'])}>
         <InternalButtonDropdown
           variant="normal"
           ariaLabel={i18nStringsExt.tokenEditorAddTokenActionsLabel}
@@ -338,12 +341,16 @@ export function TokenEditor({
         <InternalButton
           formAction="none"
           variant="link"
-          className={styles['token-editor-grouped-cancel']}
+          className={clsx(styles['token-editor-grouped-cancel'], testUtilStyles['token-editor-cancel'])}
           onClick={onDismiss}
         >
           {i18nStrings.cancelActionText}
         </InternalButton>
-        <InternalButton className={styles['token-editor-grouped-submit']} formAction="none" onClick={onSubmit}>
+        <InternalButton
+          className={clsx(styles['token-editor-grouped-submit'], testUtilStyles['token-editor-submit'])}
+          formAction="none"
+          onClick={onSubmit}
+        >
           {i18nStrings.applyActionText}
         </InternalButton>
       </div>
@@ -404,15 +411,30 @@ function TokenEditorFields({ fields, groupLabel, removeButton, property, operato
             role="group"
             aria-label={groupLabel(index)}
           >
-            <InternalFormField label={property.label} className={styles['token-editor-grouped-field-property']}>
+            <InternalFormField
+              label={property.label}
+              className={clsx(
+                styles['token-editor-grouped-field-property'],
+                testUtilStyles['token-editor-field-property']
+              )}
+            >
               {property.render(index)}
             </InternalFormField>
 
-            <InternalFormField label={operator.label} className={styles['token-editor-grouped-field-operator']}>
+            <InternalFormField
+              label={operator.label}
+              className={clsx(
+                styles['token-editor-grouped-field-operator'],
+                testUtilStyles['token-editor-field-operator']
+              )}
+            >
               {operator.render(index)}
             </InternalFormField>
 
-            <InternalFormField label={value.label} className={styles['token-editor-grouped-field-value']}>
+            <InternalFormField
+              label={value.label}
+              className={clsx(styles['token-editor-grouped-field-value'], testUtilStyles['token-editor-field-value'])}
+            >
               {value.render(index)}
             </InternalFormField>
 
@@ -433,6 +455,7 @@ function TokenEditorFields({ fields, groupLabel, removeButton, property, operato
                   onClick: () => removeButton.onRemove(index),
                   disabled: fields === 1,
                 }}
+                className={testUtilStyles['token-editor-token-remove-actions']}
               />
             </div>
           </div>
@@ -459,7 +482,10 @@ function TokenEditorFields({ fields, groupLabel, removeButton, property, operato
           <div className={styles['token-editor-grouped-table-cell']}>
             <InternalFormField
               label={property.label}
-              className={styles['token-editor-grouped-field-property']}
+              className={clsx(
+                styles['token-editor-grouped-field-property'],
+                testUtilStyles['token-editor-field-property']
+              )}
               __hideLabel={true}
             >
               {property.render(index)}
@@ -469,7 +495,10 @@ function TokenEditorFields({ fields, groupLabel, removeButton, property, operato
           <div className={styles['token-editor-grouped-table-cell']}>
             <InternalFormField
               label={operator.label}
-              className={styles['token-editor-grouped-field-operator']}
+              className={clsx(
+                styles['token-editor-grouped-field-operator'],
+                testUtilStyles['token-editor-field-property']
+              )}
               __hideLabel={true}
             >
               {operator.render(index)}
@@ -479,7 +508,10 @@ function TokenEditorFields({ fields, groupLabel, removeButton, property, operato
           <div className={styles['token-editor-grouped-table-cell']}>
             <InternalFormField
               label={value.label}
-              className={styles['token-editor-grouped-field-value']}
+              className={clsx(
+                styles['token-editor-grouped-field-value'],
+                testUtilStyles['token-editor-field-property']
+              )}
               __hideLabel={true}
             >
               {value.render(index)}
@@ -504,6 +536,7 @@ function TokenEditorFields({ fields, groupLabel, removeButton, property, operato
                   }
                 }}
                 disabled={fields === 1}
+                className={testUtilStyles['token-editor-token-remove-actions']}
               />
             </div>
           </div>
