@@ -331,6 +331,10 @@ export type Ref = PropertyFilterProps.Ref;
 
 // Utility types
 
+export interface FormattedToken extends Token {
+  propertyLabel: string;
+}
+
 export interface InternalFilteringProperty<TokenValue = any> {
   propertyKey: string;
   propertyLabel: string;

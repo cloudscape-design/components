@@ -89,16 +89,14 @@ const defaultProps: TokenEditorProps = {
   filteringOptions: [],
   i18nStrings,
   i18nStringsExt: {
-    // TODO: remove this?
-    tokenEditorTokenGroupLabel: token => `"${token.property ?? 'All properties'} ${token.operator} ${token.value}"`,
-    // TODO: reuse existing?
-    tokenEditorRemoveFilterLabel: 'Remove', // TODO: include index or token?
-    tokenEditorRemoveFromGroupFilterLabel: 'Remove from group', // TODO: include index or token?
-    tokenEditorRemoveMoreFilterLabel: 'More actions', // TODO: include index or token?
-    tokenEditorAddNewFilterLabel: 'Add new filter',
-    tokenEditorAddExistingFilterLabel: token =>
-      `Add "${token.property ?? 'All properties'} ${token.operator} ${token.value}" to group`,
-    tokenEditorAddFilterMoreLabel: 'More actions',
+    tokenEditorTokenActionsLabel: token =>
+      `Filter remove actions for ${token.propertyLabel} ${token.operator} ${token.value}`,
+    tokenEditorTokenRemoveLabel: () => 'Remove filter',
+    tokenEditorTokenRemoveFromGroupLabel: () => 'Remove filter from group',
+    tokenEditorAddNewTokenLabel: 'Add new filter',
+    tokenEditorAddTokenActionsLabel: 'Add filter actions',
+    tokenEditorAddExistingTokenLabel: token =>
+      `Add filter ${token.propertyLabel} ${token.operator} ${token.value} to group`,
   },
   onSubmit: () => {},
   onDismiss: () => {},
