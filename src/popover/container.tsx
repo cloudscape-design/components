@@ -39,7 +39,6 @@ export interface PopoverContainerProps {
   // Do not use this if the popover is open on hover, in order to avoid unexpected movement.
   allowScrollToFit?: boolean;
   allowVerticalOverflow?: boolean;
-  className?: string;
 }
 
 export default function PopoverContainer({
@@ -56,7 +55,6 @@ export default function PopoverContainer({
   keepPosition,
   allowScrollToFit,
   allowVerticalOverflow,
-  className,
 }: PopoverContainerProps) {
   const bodyRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
@@ -132,7 +130,7 @@ export default function PopoverContainer({
     <div
       ref={popoverRef}
       style={{ ...popoverStyle, zIndex }}
-      className={clsx(styles.container, isRefresh && styles.refresh, className)}
+      className={clsx(styles.container, isRefresh && styles.refresh)}
     >
       <div
         ref={arrowRef}

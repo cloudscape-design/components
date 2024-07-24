@@ -38,12 +38,12 @@ export default function Tooltip({
         <Transition in={true}>
           {() => (
             <PopoverContainer
-              className={styles.popover}
               trackRef={trackRef}
               trackKey={trackKey}
               size="small"
               fixedWidth={false}
               position={position}
+              zIndex={7000}
               arrow={position => (
                 <div className={clsx(popoverStyles.arrow, popoverStyles[`arrow-position-${position}`])}>
                   <div className={popoverStyles['arrow-outer']} />
