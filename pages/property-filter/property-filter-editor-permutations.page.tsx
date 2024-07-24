@@ -24,6 +24,9 @@ const externalProperty = {
   groupValuesLabel: '',
 } as const;
 
+const openCalendarAriaLabel = (selectedDate: string | null) =>
+  'Choose Date' + (selectedDate ? `, selected date is ${selectedDate}` : '');
+
 const nameProperty: InternalFilteringProperty = {
   propertyKey: 'name',
   propertyLabel: 'Name',
@@ -51,7 +54,11 @@ const dateProperty: InternalFilteringProperty = {
         locale: 'en-GB',
         ariaLabel: 'Scheduled launch date, calendar',
       };
-      return typeof filter === 'string' ? <Calendar {...props} /> : <DatePicker {...props} />;
+      return typeof filter === 'string' ? (
+        <Calendar {...props} />
+      ) : (
+        <DatePicker {...props} openCalendarAriaLabel={openCalendarAriaLabel} />
+      );
     },
   externalProperty,
 };
@@ -75,7 +82,7 @@ const dateTimeProperty: InternalFilteringProperty = {
       return (
         <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
           <FormField description="Date">
-            <DatePicker {...props} />
+            <DatePicker {...props} openCalendarAriaLabel={openCalendarAriaLabel} />
           </FormField>
           <FormField description="Time">
             <TimeInput value={value ? format(value, 'hh:mm:ss') : ''} />
