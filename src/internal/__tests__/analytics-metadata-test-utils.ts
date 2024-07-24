@@ -22,11 +22,11 @@ const validateComponentName = (metadata: Array<GeneratedAnalyticsMetadataFragmen
 const validateLabels = (labelSelectors: Array<string>, labelsClassNames: Record<string, string>) => {
   const allowedClassNames = Object.values(labelsClassNames);
   const classNames = labelSelectors.reduce((acc: Array<string>, current) => {
-    const parts = current.split(/\s+/);
-    parts.forEach(part => {
-      const classes = part.split('.').filter(className => !!className);
-      acc = [...acc, ...classes];
-    });
+    const parts = current
+      .split(/\s+/)
+      .filter(part => part.startsWith('.'))
+      .map(part => part.replace('.', ''));
+    acc = [...acc, ...parts];
     return acc;
   }, []);
   const wrongClassNames = classNames.filter(className => !allowedClassNames.includes(className));
