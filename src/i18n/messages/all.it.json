@@ -223,6 +223,7 @@
     "i18nStrings.modalCancelButton": "Annulla",
     "i18nStrings.modalSubmitButton": "Scegli",
     "i18nStrings.modalBreadcrumbRootItem": "Bucket S3",
+    "i18nStrings.modalLastUpdatedText": "Ultimo aggiornamento",
     "i18nStrings.selectionBuckets": "Bucket",
     "i18nStrings.selectionObjects": "Oggetti",
     "i18nStrings.selectionVersions": "Versioni",

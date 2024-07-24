@@ -223,6 +223,7 @@
     "i18nStrings.modalCancelButton": "İptal",
     "i18nStrings.modalSubmitButton": "Seç",
     "i18nStrings.modalBreadcrumbRootItem": "S3 bucket'ları",
+    "i18nStrings.modalLastUpdatedText": "Son güncelleme",
     "i18nStrings.selectionBuckets": "Bucket'lar",
     "i18nStrings.selectionObjects": "Nesneler",
     "i18nStrings.selectionVersions": "Sürümler",

@@ -274,6 +274,7 @@ export interface I18nFormatArgTypes {
     "i18nStrings.modalCancelButton": never;
     "i18nStrings.modalSubmitButton": never;
     "i18nStrings.modalBreadcrumbRootItem": never;
+    "i18nStrings.modalLastUpdatedText": never;
     "i18nStrings.selectionBuckets": never;
     "i18nStrings.selectionObjects": never;
     "i18nStrings.selectionVersions": never;

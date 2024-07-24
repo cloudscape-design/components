@@ -223,6 +223,7 @@
     "i18nStrings.modalCancelButton": "Batalkan",
     "i18nStrings.modalSubmitButton": "Pilih",
     "i18nStrings.modalBreadcrumbRootItem": "Bucket S3",
+    "i18nStrings.modalLastUpdatedText": "Terakhir diperbarui",
     "i18nStrings.selectionBuckets": "Bucket",
     "i18nStrings.selectionObjects": "Objek",
     "i18nStrings.selectionVersions": "Versi",
