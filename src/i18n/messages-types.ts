@@ -258,7 +258,7 @@ export interface I18nFormatArgTypes {
     "i18nStrings.valueText": never;
     "i18nStrings.removeTokenButtonAriaLabel": {
       "token__operator": string;
-      "token__propertyKey": string | number;
+      "token__propertyLabel": string | number;
       "token__value": string | number;
     }
   }
