@@ -471,6 +471,7 @@ Object {
   ],
   "select": Array [
     "awsui_disabled-reason-tooltip_dwuol",
+    "awsui_inline-label_dwuol",
     "awsui_placeholder_dwuol",
     "awsui_root_r2vco",
   ],
