@@ -35,26 +35,22 @@ describe('ToggleButton Component', () => {
     expect(wrapper.isPressed()).toBe(true);
   });
 
-  test('should fire onClick and onChange events on click', () => {
-    const onClick = jest.fn();
+  test('should fire onChange on click', () => {
     const onChange = jest.fn();
     const { wrapper } = renderToggleButton({
       children: 'button',
       pressed: false,
       iconName: 'star',
       pressedIconName: 'star-filled',
-      onClick,
       onChange,
     });
 
     wrapper.click();
 
-    expect(onClick).toHaveBeenCalled();
     expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { pressed: true } }));
   });
 
-  test('should not fire onChange and onClick events if disabled', () => {
-    const onClick = jest.fn();
+  test('should not fire onChange if disabled', () => {
     const onChange = jest.fn();
     const { wrapper } = renderToggleButton({
       children: 'button',
@@ -62,13 +58,11 @@ describe('ToggleButton Component', () => {
       iconName: 'star',
       pressedIconName: 'star-filled',
       disabled: true,
-      onClick,
       onChange,
     });
 
     wrapper.click();
 
-    expect(onClick).not.toHaveBeenCalled();
     expect(onChange).not.toHaveBeenCalled();
   });
 

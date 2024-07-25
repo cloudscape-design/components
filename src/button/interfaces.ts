@@ -98,17 +98,6 @@ export interface BaseButtonProps {
   children?: React.ReactNode;
 
   /**
-   * Called when the user clicks on the button and the button is not disabled or in loading state.
-   */
-  onClick?: CancelableEventHandler<ButtonProps.ClickDetail>;
-
-  /**
-   * Called when the user clicks on the button with the left mouse button without pressing
-   * modifier keys (that is, CTRL, ALT, SHIFT, META), and the button has an `href` set.
-   */
-  onFollow?: CancelableEventHandler<ButtonProps.FollowDetail>;
-
-  /**
    * Adds `aria-controls` to the button. Use when the button controls the contents or presence of an element.
    */
   ariaControls?: string;
@@ -164,6 +153,17 @@ export interface ButtonProps extends BaseComponentProps, BaseButtonProps {
    * Adds aria-expanded to the button element. Use when the button controls an expandable element.
    */
   ariaExpanded?: boolean;
+
+  /**
+   * Called when the user clicks on the button and the button is not disabled or in loading state.
+   */
+  onClick?: CancelableEventHandler<ButtonProps.ClickDetail>;
+
+  /**
+   * Called when the user clicks on the button with the left mouse button without pressing
+   * modifier keys (that is, CTRL, ALT, SHIFT, META), and the button has an `href` set.
+   */
+  onFollow?: CancelableEventHandler<ButtonProps.FollowDetail>;
 }
 
 export namespace ButtonProps {

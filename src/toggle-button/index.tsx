@@ -29,8 +29,6 @@ const ToggleButton = React.forwardRef(
       wrapText = true,
       ariaLabel,
       ariaDescribedby,
-      onClick,
-      onFollow,
       ariaControls,
       fullWidth,
       pressed = false,
@@ -61,8 +59,6 @@ const ToggleButton = React.forwardRef(
         wrapText={wrapText}
         ariaLabel={ariaLabel}
         ariaDescribedby={ariaDescribedby}
-        onClick={onClick}
-        onFollow={onFollow}
         ariaControls={ariaControls}
         fullWidth={fullWidth}
         pressedIconName={pressedIconName}
