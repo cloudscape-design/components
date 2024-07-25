@@ -81,16 +81,6 @@ export interface BaseButtonProps {
    */
   wrapText?: boolean;
 
-  /** Determines the general styling of the button as follows:
-   * * `primary` for primary buttons.
-   * * `normal` for secondary buttons.
-   * * `link` for tertiary buttons.
-   * * `icon` to display an icon only (no text).
-   * * `inline-icon` to display an icon-only (no text) button within a text context.
-   * * `inline-link` to display a tertiary button with no outer padding.
-   */
-  variant?: ButtonProps.Variant;
-
   /**
    * Text displayed in the button element.
    * @displayname text
@@ -164,6 +154,16 @@ export interface ButtonProps extends BaseComponentProps, BaseButtonProps {
    * Sets the button width to be 100% of the parent container width. Button content is centered.
    */
   fullWidth?: boolean;
+
+  /** Determines the general styling of the button as follows:
+   * * `primary` for primary buttons.
+   * * `normal` for secondary buttons.
+   * * `link` for tertiary buttons.
+   * * `icon` to display an icon only (no text).
+   * * `inline-icon` to display an icon-only (no text) button within a text context.
+   * * `inline-link` to display a tertiary button with no outer padding.
+   */
+  variant?: ButtonProps.Variant;
 }
 
 export namespace ButtonProps {
