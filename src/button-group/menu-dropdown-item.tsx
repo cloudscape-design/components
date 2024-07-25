@@ -49,6 +49,7 @@ const MenuDropdownItem = React.forwardRef(
               ref={triggerRef}
               variant="icon"
               ariaLabel={ariaLabel}
+              data-testid={item.id}
               ariaExpanded={ariaExpanded}
               className={clsx(testUtilStyles.item, testUtilsClass)}
               iconName="ellipsis"
