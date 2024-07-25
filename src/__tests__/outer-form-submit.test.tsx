@@ -6,7 +6,7 @@ import { render } from '@testing-library/react';
 import { getRequiredPropsForComponent } from './required-props-for-components';
 import { getAllComponents, requireComponent } from './utils';
 
-const skippedComponents = ['button', 'toggle-button'];
+const skippedComponents = ['button'];
 
 describe('Check outer form submission', () => {
   getAllComponents()

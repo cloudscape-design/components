@@ -35,7 +35,9 @@ export const InternalToggleButton = React.forwardRef(
         iconUrl={getToggleIcon(pressed, defaultIconUrl, pressedIconUrl)}
         iconSvg={getToggleIcon(pressed, defaultIconSvg, pressedIconSvg)}
         aria-pressed={pressed}
-        onClick={() => {
+        onClick={event => {
+          event.preventDefault();
+
           fireNonCancelableEvent(onChange, { pressed: !pressed });
         }}
         {...rest}
