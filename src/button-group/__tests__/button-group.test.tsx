@@ -114,6 +114,16 @@ describe('focus', () => {
     expect(wrapper.findMenuById('misc')!.getElement().getElementsByTagName('button')[0]).toHaveFocus();
   });
 
+  test('focus visible state triggers the tooltip', () => {
+    const ref: { current: ButtonGroupProps.Ref | null } = { current: null };
+    const wrapper = renderButtonGroup({ items: items1 }, ref);
+    ref.current?.focus('copy');
+
+    expect(wrapper.findTooltip()).toBeNull();
+    fireEvent.keyDown(wrapper.getElement(), { keyCode: KeyCode.down });
+    expect(wrapper.findTooltip()).not.toBeNull();
+  });
+
   test('focuses the correct item with keyboard', async () => {
     const ref: { current: ButtonGroupProps.Ref | null } = { current: null };
     const wrapper = renderButtonGroup({ items: items1 }, ref);
