@@ -16717,12 +16717,6 @@ Applicable for all button variants, except link and icon.",
       "type": "string",
     },
     Object {
-      "description": "Sets the button width to be 100% of the parent container width. Button content is centered.",
-      "name": "fullWidth",
-      "optional": true,
-      "type": "boolean",
-    },
-    Object {
       "description": "Specifies alternate text for a custom icon. We recommend that you provide this for accessibility.
 This property is ignored if you use a predefined icon or if you set your custom icon using the \`iconSvg\` slot.",
       "name": "iconAlt",
