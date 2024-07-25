@@ -33,7 +33,7 @@ describe('Form field', () => {
       ],
     });
   });
-  test('does not render metada when internal version is used', () => {
+  test('does not render metadata when internal version is used', () => {
     const renderResult = render(<InternalFormField label="form field label" />);
     const element = createWrapper(renderResult.container).findFormField()!.getElement()!;
     validateComponentNameAndLabels(element, labels);

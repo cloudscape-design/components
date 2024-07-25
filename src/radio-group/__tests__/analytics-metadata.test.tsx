@@ -113,7 +113,7 @@ describe('Checkbox renders correct analytics metadata', () => {
         ],
       });
     });
-    test('witharia label', () => {
+    test('with aria label', () => {
       const renderResult = render(
         <FormField label="form field label">
           <RadioGroup items={items} value="2" ariaLabel="aria label" />
