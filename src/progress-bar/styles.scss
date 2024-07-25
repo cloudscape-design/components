@@ -37,7 +37,7 @@
 
 .label {
   &-flash {
-    color: inherit;
+    color: 'inherit';
     font-weight: styles.$font-weight-bold;
   }
   &-key-value {
@@ -94,11 +94,14 @@ $background-color-in-flash: awsui.$color-background-progress-bar-layout-in-flash
 $bar-color: awsui.$color-background-progress-bar-content-default;
 $bar-color-in-flash: awsui.$color-background-progress-bar-content-in-flash;
 
+// Current version of Edge has a known bug with CSS variables used in pseudo elements.
+$bar-color-edge: #0073bb;
+$bar-color-edge-in-flash: rgba(255, 255, 255, 0.7);
+
 .progress {
   inline-size: 100%;
   margin-inline-end: awsui.$space-s;
   min-inline-size: 0;
-
   @include general-progress-background-style;
   background-color: $background-color;
 
@@ -107,8 +110,7 @@ $bar-color-in-flash: awsui.$color-background-progress-bar-content-in-flash;
     background-color: $background-color;
   }
 
-  &::-webkit-progress-value,
-  &::-moz-progress-bar {
+  &::-webkit-progress-value {
     @include general-progress-bar-style;
     background-color: $bar-color;
   }
@@ -120,17 +122,42 @@ $bar-color-in-flash: awsui.$color-background-progress-bar-content-in-flash;
     border-end-end-radius: 10px;
   }
 
+  &::-moz-progress-bar {
+    @include general-progress-bar-style;
+    background-color: $bar-color;
+  }
+
+  &::-ms-fill {
+    @include general-progress-bar-style;
+    background-color: $bar-color-edge;
+    border-block: none;
+    border-inline: none;
+  }
+
+  &.complete::-ms-fill {
+    border-start-start-radius: 10px;
+    border-start-end-radius: 10px;
+    border-end-start-radius: 10px;
+    border-end-end-radius: 10px;
+  }
+
   &.progress-in-flash {
     background-color: $background-color-in-flash;
-    &::-moz-progress-bar {
-      background-color: $bar-color-in-flash;
-    }
 
     &::-webkit-progress-bar {
       background-color: $background-color-in-flash;
     }
+
     &::-webkit-progress-value {
       background-color: $bar-color-in-flash;
+    }
+
+    &::-moz-progress-bar {
+      background-color: $bar-color-in-flash;
+    }
+
+    &::-ms-fill {
+      background-color: $bar-color-edge-in-flash;
     }
   }
 }
