@@ -3,6 +3,8 @@
 import React, { useRef } from 'react';
 import clsx from 'clsx';
 
+import { copyAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
 import AbstractSwitch from '../internal/components/abstract-switch';
 import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
@@ -20,7 +22,7 @@ interface RadioButtonProps extends RadioGroupProps.RadioButtonDefinition {
 }
 
 export default React.forwardRef(function RadioButton(
-  { name, label, value, checked, description, disabled, controlId, onChange, readOnly }: RadioButtonProps,
+  { name, label, value, checked, description, disabled, controlId, onChange, readOnly, ...rest }: RadioButtonProps,
   ref: React.Ref<HTMLInputElement>
 ) {
   const isVisualRefresh = useVisualRefresh();
@@ -39,6 +41,7 @@ export default React.forwardRef(function RadioButton(
       disabled={disabled}
       readOnly={readOnly}
       controlId={controlId}
+      {...copyAnalyticsMetadataAttribute(rest)}
       nativeControl={nativeControlProps => (
         <input
           {...nativeControlProps}

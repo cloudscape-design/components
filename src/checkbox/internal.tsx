@@ -3,6 +3,11 @@
 import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
+import {
+  GeneratedAnalyticsMetadataFragment,
+  getAnalyticsMetadataAttribute,
+} from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
 import { getBaseProps } from '../internal/base-component';
 import AbstractSwitch from '../internal/components/abstract-switch';
 import CheckboxIcon from '../internal/components/checkbox-icon';
@@ -11,6 +16,10 @@ import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-
 import { fireNonCancelableEvent } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import {
+  GeneratedAnalyticsMetadataCheckboxComponent,
+  GeneratedAnalyticsMetadataCheckboxSelect,
+} from './analytics-metadata/interfaces';
 import { CheckboxProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -18,6 +27,7 @@ import styles from './styles.css.js';
 interface InternalProps extends CheckboxProps, InternalBaseComponentProps {
   tabIndex?: -1;
   showOutline?: boolean;
+  __injectAnalyticsComponentMetadata?: boolean;
 }
 
 const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
@@ -40,6 +50,7 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
       showOutline,
       ariaControls,
       __internalRootRef,
+      __injectAnalyticsComponentMetadata = false,
       ...rest
     },
     ref
@@ -55,6 +66,20 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
     });
 
     const { tabIndex } = useSingleTabStopNavigation(checkboxRef, { tabIndex: explicitTabIndex });
+
+    const analyticsMetadata: GeneratedAnalyticsMetadataFragment = {};
+    const analyticsComponentMetadata: GeneratedAnalyticsMetadataCheckboxComponent = {
+      name: 'awsui.Checkbox',
+      label: '',
+    };
+    if (__injectAnalyticsComponentMetadata) {
+      analyticsMetadata.component = analyticsComponentMetadata;
+    }
+    if (!disabled && !readOnly) {
+      analyticsMetadata.detail = {
+        selected: `${!checked}`,
+      } as Partial<GeneratedAnalyticsMetadataCheckboxSelect['detail']>;
+    }
 
     return (
       <AbstractSwitch
@@ -101,6 +126,7 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
           <CheckboxIcon checked={checked} indeterminate={indeterminate} disabled={disabled} readOnly={readOnly} />
         }
         __internalRootRef={__internalRootRef}
+        {...getAnalyticsMetadataAttribute(analyticsMetadata)}
       />
     );
   }

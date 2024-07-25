@@ -11,7 +11,7 @@ export { CheckboxProps };
 
 const Checkbox = React.forwardRef(({ ...props }: CheckboxProps, ref: React.Ref<CheckboxProps.Ref>) => {
   const baseComponentProps = useBaseComponent('Checkbox');
-  return <InternalCheckbox {...props} {...baseComponentProps} ref={ref} />;
+  return <InternalCheckbox {...props} {...baseComponentProps} ref={ref} __injectAnalyticsComponentMetadata={true} />;
 });
 
 applyDisplayName(Checkbox, 'Checkbox');
