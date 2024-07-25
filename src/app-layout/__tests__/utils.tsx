@@ -15,7 +15,8 @@ import createWrapper, { AppLayoutWrapper, ElementWrapper } from '../../../lib/co
 
 import testutilStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
 import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
-import visualRefreshToolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/trigger-button/styles.css.js';
+import visualRefreshToolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/skeleton/styles.css.js';
+import visualRefreshToolbarTriggerButtonStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/trigger-button/styles.css.js';
 import iconStyles from '../../../lib/components/icon/styles.css.js';
 
 // Mock element queries result. Note that in order to work, this mock should be applied first, before the AppLayout is required
@@ -39,9 +40,8 @@ export function renderComponent(jsx: React.ReactElement) {
   const wrapper = createWrapper(container).findAppLayout()!;
 
   const isUsingGridLayout = wrapper.getElement().classList.contains(visualRefreshStyles.layout);
-  const isUsingMobile = !!wrapper.findByClassName(testutilStyles['mobile-bar']);
 
-  return { wrapper, rerender, isUsingGridLayout, isUsingMobile, container };
+  return { wrapper, rerender, isUsingGridLayout, container };
 }
 
 type Theme = 'refresh' | 'refresh-toolbar' | 'classic';
@@ -81,9 +81,10 @@ export function describeEachAppLayout(
           setGlobalFlag('appLayoutWidget', undefined);
         });
         test('mocks applied correctly', () => {
-          const { isUsingGridLayout, isUsingMobile } = renderComponent(<AppLayout />);
-          expect(isUsingGridLayout).toEqual(theme === 'refresh');
-          expect(isUsingMobile).toEqual(size === 'mobile');
+          const { wrapper } = renderComponent(<AppLayout />);
+          expect(!!wrapper.matches(`.${visualRefreshStyles.layout}`)).toEqual(theme === 'refresh');
+          expect(!!wrapper.matches(`.${visualRefreshToolbarStyles.root}`)).toEqual(theme === 'refresh-toolbar');
+          expect(!!wrapper.findByClassName(testutilStyles['mobile-bar'])).toEqual(size === 'mobile');
         });
         callback({ theme, size });
       });
@@ -115,7 +116,7 @@ export function isDrawerTriggerWithBadge(wrapper: AppLayoutWrapper, triggerId: s
     // Visual refresh implementation
     trigger.getElement().classList.contains(visualRefreshStyles.badge) ||
     // Visual refresh toolbar implementation
-    trigger.getElement().classList.contains(visualRefreshToolbarStyles.badge) ||
+    trigger.getElement().classList.contains(visualRefreshToolbarTriggerButtonStyles.badge) ||
     // Classic implementation
     !!trigger.findByClassName(iconStyles.badge)
   );
