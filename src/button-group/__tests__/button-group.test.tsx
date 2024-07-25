@@ -89,6 +89,7 @@ test('handles menu click event correctly', () => {
   buttonDropdown.findItemById('menu-open')!.click();
 
   expect(onItemClick).toHaveBeenCalledWith(expect.objectContaining({ detail: { id: 'menu-open' } }));
+  expect(buttonDropdown!.getElement().getElementsByTagName('button')[0]).toHaveFocus();
 });
 
 describe('focus', () => {
