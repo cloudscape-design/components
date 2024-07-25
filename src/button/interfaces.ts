@@ -101,11 +101,6 @@ export interface BaseButtonProps {
    * Adds `aria-controls` to the button. Use when the button controls the contents or presence of an element.
    */
   ariaControls?: string;
-
-  /**
-   * Sets the button width to be 100% of the parent container width. Button content is centered.
-   */
-  fullWidth?: boolean;
 }
 
 export interface ButtonProps extends BaseComponentProps, BaseButtonProps {
@@ -164,6 +159,11 @@ export interface ButtonProps extends BaseComponentProps, BaseButtonProps {
    * modifier keys (that is, CTRL, ALT, SHIFT, META), and the button has an `href` set.
    */
   onFollow?: CancelableEventHandler<ButtonProps.FollowDetail>;
+
+  /**
+   * Sets the button width to be 100% of the parent container width. Button content is centered.
+   */
+  fullWidth?: boolean;
 }
 
 export namespace ButtonProps {
