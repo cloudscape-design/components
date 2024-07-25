@@ -150,7 +150,7 @@ describe('Pagination renders correct analytics metadata', () => {
   });
 });
 
-test('Internal Button does not render "component" metadata', () => {
+test('Internal Pagination does not render "component" metadata', () => {
   const renderResult = render(<InternalPagination pagesCount={300} currentPageIndex={2} />);
   const wrapper = createWrapper(renderResult.container).findPagination()!;
   validateComponentNameAndLabels(wrapper.getElement(), {});
