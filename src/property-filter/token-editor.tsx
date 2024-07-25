@@ -40,7 +40,7 @@ interface PropertyInputProps {
   property: null | InternalFilteringProperty;
 }
 
-function PropertyInput({
+export function PropertyInput({
   property,
   onChangePropertyKey,
   asyncProps,
@@ -93,9 +93,17 @@ interface OperatorInputProps {
   operator: undefined | ComparisonOperator;
   property: null | InternalFilteringProperty;
   freeTextFiltering: InternalFreeTextFiltering;
+  triggerVariant: 'option' | 'label';
 }
 
-function OperatorInput({ property, operator, onChangeOperator, i18nStrings, freeTextFiltering }: OperatorInputProps) {
+export function OperatorInput({
+  property,
+  operator,
+  onChangeOperator,
+  i18nStrings,
+  freeTextFiltering,
+  triggerVariant,
+}: OperatorInputProps) {
   const operatorOptions = (property ? getAllowedOperators(property) : freeTextFiltering.operators).map(operator => ({
     value: operator,
     label: operator,
@@ -104,7 +112,7 @@ function OperatorInput({ property, operator, onChangeOperator, i18nStrings, free
   return (
     <InternalSelect
       options={operatorOptions}
-      triggerVariant="option"
+      triggerVariant={triggerVariant}
       selectedOption={
         operator
           ? {
@@ -130,7 +138,7 @@ interface ValueInputProps {
   value: undefined | string;
 }
 
-function ValueInput({
+export function ValueInput({
   property,
   operator,
   value,
@@ -264,6 +272,7 @@ export function TokenEditor({
             onChangeOperator={onChangeOperator}
             i18nStrings={i18nStrings}
             freeTextFiltering={freeTextFiltering}
+            triggerVariant="option"
           />
         </InternalFormField>
 
