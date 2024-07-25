@@ -31,10 +31,6 @@ const renderButtonGroup = (props: Partial<ButtonGroupProps>, ref?: React.Ref<But
   return createWrapper(renderResult.container).findButtonGroup()!;
 };
 
-const timeout = async (duration = 0) => {
-  await new Promise(resolve => setTimeout(resolve, duration));
-};
-
 const items: ButtonGroupProps.ItemOrGroup[] = [
   {
     type: 'group',
@@ -112,32 +108,25 @@ describe('focus', () => {
     expect(wrapper.findMenuById('misc')!.getElement().getElementsByTagName('button')[0]).toHaveFocus();
   });
 
-  test('focuses the correct item with keyboard', async () => {
+  test('focuses the correct item with keyboard', () => {
     const ref: { current: ButtonGroupProps.Ref | null } = { current: null };
     const wrapper = renderButtonGroup({ items }, ref);
     ref.current?.focus('copy');
 
     fireEvent.keyDown(wrapper.getElement(), { keyCode: KeyCode.right });
-    await timeout();
     expect(wrapper.findButtonById('edit')!.getElement()).toHaveFocus();
     fireEvent.keyDown(wrapper.getElement(), { keyCode: KeyCode.left });
-    await timeout();
     expect(wrapper.findButtonById('copy')!.getElement()).toHaveFocus();
     fireEvent.keyDown(wrapper.getElement(), { keyCode: KeyCode.home });
-    await timeout();
     expect(wrapper.findButtonById('like')!.getElement()).toHaveFocus();
     fireEvent.keyDown(wrapper.getElement(), { keyCode: KeyCode.end });
-    await timeout();
     expect(wrapper.findMenuById('misc')!.getElement().getElementsByTagName('button')[0]).toHaveFocus();
     ref.current?.focus('like');
     fireEvent.keyDown(wrapper.getElement(), { keyCode: KeyCode.right });
-    await timeout();
     expect(wrapper.findButtonById('copy')!.getElement()).toHaveFocus();
     fireEvent.keyDown(wrapper.getElement(), { keyCode: KeyCode.space });
-    await timeout();
     expect(wrapper.findButtonById('copy')!.getElement()).toHaveFocus();
     fireEvent.keyDown(wrapper.getElement(), { keyCode: KeyCode.left, ctrlKey: true });
-    await timeout();
     expect(wrapper.findButtonById('copy')!.getElement()).toHaveFocus();
   });
 });
