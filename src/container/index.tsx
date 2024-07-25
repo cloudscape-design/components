@@ -34,7 +34,7 @@ export default function Container({
 
   const analyticsComponentMetadata: GeneratedAnalyticsMetadataContainerComponent = {
     name: 'awsui.Container',
-    label: '',
+    label: { root: 'self' },
   };
 
   return (

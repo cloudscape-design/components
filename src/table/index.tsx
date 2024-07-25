@@ -46,7 +46,7 @@ const Table = React.forwardRef(
 
     const analyticsComponentMetadata: GeneratedAnalyticsMetadataTableComponent = {
       name: 'awsui.Table',
-      label: '',
+      label: { root: 'self' },
       properties: {
         selectionType: props.selectionType || 'none',
         itemsCount: `${items.length}`,
