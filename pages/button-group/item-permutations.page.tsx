@@ -3,7 +3,9 @@
 
 import React from 'react';
 
-import { ButtonGroup, ButtonGroupProps, SpaceBetween, StatusIndicator } from '~components';
+import ButtonGroup, { ButtonGroupProps } from '~components/button-group';
+import SpaceBetween from '~components/space-between';
+import StatusIndicator from '~components/status-indicator';
 
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';

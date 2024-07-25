@@ -3,8 +3,11 @@
 
 import React, { useContext, useState } from 'react';
 
-import { Box, Button, SpaceBetween, StatusIndicator } from '~components';
+import Box from '~components/box';
+import Button from '~components/button';
 import ButtonGroup, { ButtonGroupProps } from '~components/button-group';
+import SpaceBetween from '~components/space-between';
+import StatusIndicator from '~components/status-indicator';
 
 import AppContext, { AppContextType } from '../app/app-context';
 

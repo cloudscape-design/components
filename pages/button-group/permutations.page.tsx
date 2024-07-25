@@ -3,7 +3,7 @@
 
 import React from 'react';
 
-import { ButtonGroup, ButtonGroupProps } from '~components';
+import ButtonGroup, { ButtonGroupProps } from '~components/button-group';
 
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
