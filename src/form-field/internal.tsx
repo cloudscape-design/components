@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { copyAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalGrid from '../grid/internal';
 import { useInternalI18n } from '../i18n/context';
@@ -27,6 +28,7 @@ import { joinStrings } from '../internal/utils/strings';
 import { InternalFormFieldProps } from './interfaces';
 import { getAriaDescribedBy, getGridDefinition, getSlotIds } from './util';
 
+import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
 interface FormFieldErrorProps {
@@ -216,10 +218,15 @@ export default function InternalFormField({
       className={clsx(baseProps.className, styles.root)}
       ref={__internalRootRef}
       {...analyticsAttributes}
+      {...copyAnalyticsMetadataAttribute(rest)}
     >
       <div className={clsx(styles['label-wrapper'], __hideLabel && styles['visually-hidden'])}>
         {label && (
-          <label className={styles.label} id={slotIds.label} htmlFor={generatedControlId}>
+          <label
+            className={clsx(styles.label, analyticsSelectors.label)}
+            id={slotIds.label}
+            htmlFor={generatedControlId}
+          >
             {label}
           </label>
         )}
