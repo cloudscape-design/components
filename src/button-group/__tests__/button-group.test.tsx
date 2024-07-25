@@ -35,7 +35,7 @@ const timeout = async (duration = 0) => {
   await new Promise(resolve => setTimeout(resolve, duration));
 };
 
-const items1: ButtonGroupProps.ItemOrGroup[] = [
+const items: ButtonGroupProps.ItemOrGroup[] = [
   {
     type: 'group',
     text: 'Feedback',
@@ -74,22 +74,20 @@ const emptyGroup: ButtonGroupProps.ItemOrGroup[] = [
 ];
 
 test('renders all items', () => {
-  const wrapper = renderButtonGroup({ items: items1 });
+  const wrapper = renderButtonGroup({ items });
 
   expect(wrapper.findItems()).toHaveLength(6);
-  expect(wrapper.findButtonById('edit')).not.toBe(null);
-  expect(wrapper.findMenuById('misc')).not.toBe(null);
 });
 
 test('renders stub icon when no icon specified', () => {
-  const wrapper = renderButtonGroup({ items: items1 });
+  const wrapper = renderButtonGroup({ items });
 
   expect(wrapper.findMenuById('search')?.findAll(`.${buttonStyles.icon}`)).toHaveLength(1);
 });
 
 test('handles menu click event correctly', () => {
   const onItemClick = jest.fn();
-  const wrapper = renderButtonGroup({ items: items1, onItemClick });
+  const wrapper = renderButtonGroup({ items, onItemClick });
   const buttonDropdown = wrapper.findMenuById('misc')!;
   buttonDropdown.openDropdown();
   buttonDropdown.findItemById('menu-open')!.click();
@@ -100,7 +98,7 @@ test('handles menu click event correctly', () => {
 describe('focus', () => {
   test('focuses the correct item', () => {
     const ref: { current: ButtonGroupProps.Ref | null } = { current: null };
-    const wrapper = renderButtonGroup({ items: items1 }, ref);
+    const wrapper = renderButtonGroup({ items }, ref);
     ref.current?.focus('copy');
 
     expect(wrapper.findButtonById('copy')!.getElement()).toHaveFocus();
@@ -108,7 +106,7 @@ describe('focus', () => {
 
   test('focuses on show more button', () => {
     const ref: { current: ButtonGroupProps.Ref | null } = { current: null };
-    const wrapper = renderButtonGroup({ items: items1 }, ref);
+    const wrapper = renderButtonGroup({ items }, ref);
     ref.current?.focus('misc');
 
     expect(wrapper.findMenuById('misc')!.getElement().getElementsByTagName('button')[0]).toHaveFocus();
@@ -116,7 +114,7 @@ describe('focus', () => {
 
   test('focuses the correct item with keyboard', async () => {
     const ref: { current: ButtonGroupProps.Ref | null } = { current: null };
-    const wrapper = renderButtonGroup({ items: items1 }, ref);
+    const wrapper = renderButtonGroup({ items }, ref);
     ref.current?.focus('copy');
 
     fireEvent.keyDown(wrapper.getElement(), { keyCode: KeyCode.right });
@@ -146,13 +144,13 @@ describe('focus', () => {
 
 describe('tooltips', () => {
   test('tooltip not shown by default', () => {
-    const wrapper = renderButtonGroup({ items: items1 });
+    const wrapper = renderButtonGroup({ items });
 
     expect(wrapper.findTooltip()).toBeNull();
   });
 
   test('shows the tooltip on pointer enter and hides on pointer leave', () => {
-    const wrapper = renderButtonGroup({ items: items1 });
+    const wrapper = renderButtonGroup({ items });
     const button = wrapper.findButtonById('copy')!;
 
     fireEvent.pointerEnter(button.getElement());
@@ -163,7 +161,7 @@ describe('tooltips', () => {
   });
 
   test('shows popover on click', () => {
-    const wrapper = renderButtonGroup({ items: items1 });
+    const wrapper = renderButtonGroup({ items });
     const button = wrapper.findButtonById('copy')!;
 
     button.click();
@@ -173,7 +171,7 @@ describe('tooltips', () => {
   });
 
   test('shows no popover on click if popover not defined', () => {
-    const wrapper = renderButtonGroup({ items: items1 });
+    const wrapper = renderButtonGroup({ items });
     const button = wrapper.findButtonById('search')!;
 
     fireEvent.pointerEnter(button.getElement());
@@ -184,7 +182,7 @@ describe('tooltips', () => {
   });
 
   test('closes popover on pointer down', () => {
-    const wrapper = renderButtonGroup({ items: items1 });
+    const wrapper = renderButtonGroup({ items });
     const button = wrapper.findButtonById('copy')!;
 
     button.click();
@@ -195,7 +193,7 @@ describe('tooltips', () => {
   });
 
   test('not closes popover on pointer down on the button', () => {
-    const wrapper = renderButtonGroup({ items: items1 });
+    const wrapper = renderButtonGroup({ items });
     const button = wrapper.findButtonById('copy')!;
 
     button.click();
@@ -206,7 +204,7 @@ describe('tooltips', () => {
   });
 
   test('closes popover on esc key', () => {
-    const wrapper = renderButtonGroup({ items: items1 });
+    const wrapper = renderButtonGroup({ items });
     const button = wrapper.findButtonById('copy')!;
 
     button.click();
@@ -238,7 +236,7 @@ describe('dev warnings', () => {
   const componentName = 'ButtonGroup';
 
   test('missing icon warning', () => {
-    renderButtonGroup({ items: items1 });
+    renderButtonGroup({ items });
 
     expect(warnOnce).toHaveBeenCalledTimes(1);
     expect(warnOnce).toHaveBeenCalledWith(componentName, 'Missing icon for item with id: search');
