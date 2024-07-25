@@ -3,6 +3,8 @@
 import React, { useRef } from 'react';
 import clsx from 'clsx';
 
+import { copyAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
 import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import { ExpandToggleButton } from '../expandable-rows/expand-toggle-button';
@@ -82,6 +84,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       expandButtonLabel,
       collapseButtonLabel,
       verticalAlign,
+      ...rest
     },
     ref
   ) => {
@@ -127,6 +130,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
         ref={mergedRef}
         {...nativeAttributes}
         tabIndex={cellTabIndex === -1 ? undefined : cellTabIndex}
+        {...copyAnalyticsMetadataAttribute(rest)}
       >
         {level !== undefined && isExpandable && (
           <div className={styles['expandable-toggle-wrapper']}>

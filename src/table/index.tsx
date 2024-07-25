@@ -2,9 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
 import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
+import { GeneratedAnalyticsMetadataTableComponent } from './analytics-metadata/interfaces';
+import { getSortingColumnId } from './header-cell/utils';
 import { TableForwardRefType, TableProps } from './interfaces';
 import InternalTable, { InternalTableAsSubstep } from './internal';
 
@@ -40,6 +44,23 @@ const Table = React.forwardRef(
       },
     });
 
+    const analyticsComponentMetadata: GeneratedAnalyticsMetadataTableComponent = {
+      name: 'awsui.Table',
+      label: '',
+      properties: {
+        selectionType: props.selectionType || 'none',
+        itemsCount: `${items.length}`,
+        selectedItemsCount: `${selectedItems.length}`,
+        variant,
+      },
+    };
+
+    const sortingColumnId = getSortingColumnId(props.columnDefinitions, props.sortingColumn);
+    if (sortingColumnId) {
+      analyticsComponentMetadata.properties.sortingColumnId = sortingColumnId;
+      analyticsComponentMetadata.properties.sortingDescending = `${props.sortingDescending || false}`;
+    }
+
     const tableProps: Parameters<typeof InternalTable<T>>[0] = {
       items,
       selectedItems,
@@ -49,6 +70,7 @@ const Table = React.forwardRef(
       ...props,
       ...baseComponentProps,
       ref,
+      ...getAnalyticsMetadataAttribute({ component: analyticsComponentMetadata }),
     };
 
     if (variant === 'borderless' || variant === 'embedded') {
