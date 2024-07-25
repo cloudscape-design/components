@@ -3786,7 +3786,8 @@ Object {
   "name": "ButtonGroup",
   "properties": Array [
     Object {
-      "description": "Adds \`aria-label\` to the button group toolbar element.",
+      "description": "Adds \`aria-label\` to the button group toolbar element.
+Use this to provide a unique accessible name for buttons groups on the page.",
       "name": "ariaLabel",
       "optional": true,
       "type": "string",
