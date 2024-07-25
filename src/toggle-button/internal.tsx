@@ -3,8 +3,6 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
-
 import InternalButton from '../button/internal';
 import { fireNonCancelableEvent } from '../internal/events';
 import { ToggleButtonProps } from './interfaces';
@@ -29,18 +27,6 @@ export const InternalToggleButton = React.forwardRef(
     }: ToggleButtonProps,
     ref: React.Ref<ToggleButtonProps.Ref>
   ) => {
-    if (defaultIconName && !pressedIconName) {
-      warnOnce('ToggleButton', '`pressedIconName` must be provided for `pressed` state.');
-    }
-
-    if (defaultIconSvg && !pressedIconSvg) {
-      warnOnce('ToggleButton', '`pressedIconSvg` must be provided for `pressed` state.');
-    }
-
-    if (defaultIconUrl && !pressedIconUrl) {
-      warnOnce('ToggleButton', '`pressedIconUrl` must be provided for `pressed` state.');
-    }
-
     return (
       <InternalButton
         className={clsx(className, styles[`variant-${variant}`], { [styles.pressed]: pressed })}
