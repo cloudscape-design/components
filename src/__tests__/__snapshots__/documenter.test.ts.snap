@@ -3788,7 +3788,7 @@ Object {
     Object {
       "description": "Adds \`aria-label\` to the button group toolbar element.",
       "name": "ariaLabel",
-      "optional": false,
+      "optional": true,
       "type": "string",
     },
     Object {

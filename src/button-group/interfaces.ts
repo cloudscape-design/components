@@ -11,7 +11,7 @@ export interface ButtonGroupProps extends BaseComponentProps {
   /**
    * Adds `aria-label` to the button group toolbar element.
    */
-  ariaLabel: string;
+  ariaLabel?: string;
   /**
    * Determines the general styling of the button dropdown.
    * * `icon` for icon buttons.
