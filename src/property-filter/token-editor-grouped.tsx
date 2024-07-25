@@ -9,7 +9,9 @@ import InternalButton from '../button/internal';
 import InternalButtonDropdown from '../button-dropdown/internal';
 import InternalFormField from '../form-field/internal';
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
+import { FormFieldContext } from '../internal/context/form-field-context';
 import { NonCancelableEventHandler } from '../internal/events';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { SelectProps } from '../select/interfaces';
 import InternalSelect from '../select/internal';
 import { getAllowedOperators, getPropertySuggestions, operatorToDescription } from './controller';
@@ -401,6 +403,10 @@ function TokenEditorFields({ fields, groupLabel, removeButton, property, operato
     indices.push(i);
   }
 
+  const propertyLabelId = useUniqueId();
+  const operatorLabelId = useUniqueId();
+  const valueLabelId = useUniqueId();
+
   if (isNarrow) {
     return (
       <div className={styles['token-editor-grouped-list']}>
@@ -471,9 +477,15 @@ function TokenEditorFields({ fields, groupLabel, removeButton, property, operato
   return (
     <div className={styles['token-editor-grouped-table']}>
       <div className={styles['token-editor-grouped-table-row']}>
-        <div className={styles['token-editor-grouped-table-header-cell']}>{property.label}</div>
-        <div className={styles['token-editor-grouped-table-header-cell']}>{operator.label}</div>
-        <div className={styles['token-editor-grouped-table-header-cell']}>{value.label}</div>
+        <div id={propertyLabelId} className={styles['token-editor-grouped-table-header-cell']}>
+          {property.label}
+        </div>
+        <div id={operatorLabelId} className={styles['token-editor-grouped-table-header-cell']}>
+          {operator.label}
+        </div>
+        <div id={valueLabelId} className={styles['token-editor-grouped-table-header-cell']}>
+          {value.label}
+        </div>
       </div>
 
       {indices.map(index => (
@@ -484,42 +496,42 @@ function TokenEditorFields({ fields, groupLabel, removeButton, property, operato
           aria-label={groupLabel(index)}
         >
           <div className={styles['token-editor-grouped-table-cell']}>
-            <InternalFormField
-              label={property.label}
-              className={clsx(
-                styles['token-editor-grouped-field-property'],
-                testUtilStyles['token-editor-field-property']
-              )}
-              data-testindex={index}
-              __hideLabel={true}
-            >
-              {property.render(index)}
-            </InternalFormField>
+            <FormFieldContext.Provider value={{ ariaLabelledby: propertyLabelId }}>
+              <InternalFormField
+                className={clsx(
+                  styles['token-editor-grouped-field-property'],
+                  testUtilStyles['token-editor-field-property']
+                )}
+                data-testindex={index}
+              >
+                {property.render(index)}
+              </InternalFormField>
+            </FormFieldContext.Provider>
           </div>
 
           <div className={styles['token-editor-grouped-table-cell']}>
-            <InternalFormField
-              label={operator.label}
-              className={clsx(
-                styles['token-editor-grouped-field-operator'],
-                testUtilStyles['token-editor-field-operator']
-              )}
-              data-testindex={index}
-              __hideLabel={true}
-            >
-              {operator.render(index)}
-            </InternalFormField>
+            <FormFieldContext.Provider value={{ ariaLabelledby: operatorLabelId }}>
+              <InternalFormField
+                className={clsx(
+                  styles['token-editor-grouped-field-operator'],
+                  testUtilStyles['token-editor-field-operator']
+                )}
+                data-testindex={index}
+              >
+                {operator.render(index)}
+              </InternalFormField>
+            </FormFieldContext.Provider>
           </div>
 
           <div className={styles['token-editor-grouped-table-cell']}>
-            <InternalFormField
-              label={value.label}
-              className={clsx(styles['token-editor-grouped-field-value'], testUtilStyles['token-editor-field-value'])}
-              data-testindex={index}
-              __hideLabel={true}
-            >
-              {value.render(index)}
-            </InternalFormField>
+            <FormFieldContext.Provider value={{ ariaLabelledby: valueLabelId }}>
+              <InternalFormField
+                className={clsx(styles['token-editor-grouped-field-value'], testUtilStyles['token-editor-field-value'])}
+                data-testindex={index}
+              >
+                {value.render(index)}
+              </InternalFormField>
+            </FormFieldContext.Provider>
           </div>
 
           <div className={styles['token-editor-grouped-table-cell']}>
