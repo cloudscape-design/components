@@ -8,7 +8,6 @@ import AppLayout from '~components/app-layout';
 import Box from '~components/box';
 import Button from '~components/button';
 import CollectionPreferences from '~components/collection-preferences';
-import FormField from '~components/form-field';
 import Header from '~components/header';
 import Input from '~components/input';
 import Link from '~components/link';
@@ -121,29 +120,28 @@ export default function () {
                   clearAriaLabel="clear"
                 />
               </div>
-              <div className="select-filter">
-                <FormField label={'Filter instance type'}>
-                  <Select
-                    data-testid="instance-type-filter"
-                    options={instanceOptions}
-                    selectedAriaLabel="Selected"
-                    selectedOption={instanceOptions[0]}
-                    onChange={() => {}}
-                    expandToViewport={true}
-                  />
-                </FormField>
+              <div className={styles['select-filter']}>
+                <Select
+                  data-testid="instance-type-filter"
+                  inlineLabelText="Instance type"
+                  options={instanceOptions}
+                  selectedAriaLabel="Selected"
+                  selectedOption={instanceOptions[0]}
+                  onChange={() => {}}
+                  expandToViewport={true}
+                />
               </div>
-              <div className="select-filter">
-                <FormField label={'Filter status'}>
-                  <Select
-                    data-testid="state-filter"
-                    options={stateOptions}
-                    selectedAriaLabel="Selected"
-                    selectedOption={stateOptions[0]}
-                    onChange={() => {}}
-                    expandToViewport={true}
-                  />
-                </FormField>
+              <div className={styles['select-filter']}>
+                <Select
+                  disabled={true}
+                  data-testid="state-filter"
+                  inlineLabelText="Filtrar secuencias de registros por nombre"
+                  options={stateOptions}
+                  selectedAriaLabel="Selected"
+                  selectedOption={stateOptions[0]}
+                  onChange={() => {}}
+                  expandToViewport={true}
+                />
               </div>
             </div>
           }

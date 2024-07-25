@@ -4,9 +4,11 @@ import { strict as assert } from 'assert';
 
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 
-import { SelectWrapper } from '../../../../lib/components/test-utils/selectors';
+import { MultiselectWrapper, SelectWrapper } from '../../../../lib/components/test-utils/selectors';
 
-export default class SelectPageObject<Wrapper extends SelectWrapper = SelectWrapper> extends BasePageObject {
+export default class SelectPageObject<
+  Wrapper extends SelectWrapper | MultiselectWrapper = SelectWrapper,
+> extends BasePageObject {
   constructor(
     browser: ConstructorParameters<typeof BasePageObject>[0],
     protected wrapper: Wrapper

@@ -12,7 +12,6 @@ import DropdownFooter from '../internal/components/dropdown-footer';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
 import { OptionGroup } from '../internal/components/option/interfaces.js';
 import { prepareOptions } from '../internal/components/option/utils/prepare-options';
-import ScreenreaderOnly from '../internal/components/screenreader-only/index.js';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
@@ -47,6 +46,7 @@ const InternalSelect = React.forwardRef(
       filteringAriaLabel,
       filteringClearAriaLabel,
       filteringResultsText,
+      inlineLabelText,
       ariaRequired,
       placeholder,
       disabled,
@@ -174,6 +174,7 @@ const InternalSelect = React.forwardRef(
         selectedOption={selectedOption}
         isOpen={isOpen}
         inFilteringToken={__inFilteringToken}
+        inlineLabelText={inlineLabelText}
         {...formFieldContext}
         controlId={controlId}
         ariaLabelledby={joinStrings(formFieldContext.ariaLabelledby, selectAriaLabelId)}
@@ -275,7 +276,9 @@ const InternalSelect = React.forwardRef(
             highlightType={highlightType}
           />
         </Dropdown>
-        <ScreenreaderOnly id={selectAriaLabelId}>{ariaLabel}</ScreenreaderOnly>
+        <div hidden={true} id={selectAriaLabelId}>
+          {ariaLabel || inlineLabelText}
+        </div>
       </div>
     );
   }
