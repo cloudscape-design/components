@@ -2,11 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
-
 import { getBaseProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { isDevelopment } from '../internal/is-development';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { ToggleButtonProps } from './interfaces';
 import { InternalToggleButton } from './internal';
@@ -43,20 +40,6 @@ const ToggleButton = React.forwardRef(
       props: { iconName, pressedIconName, pressed, variant, wrapText },
     });
     const baseProps = getBaseProps(props);
-
-    if (isDevelopment) {
-      if (iconName && !pressedIconName) {
-        warnOnce('ToggleButton', '`pressedIconName` must be provided for `pressed` state.');
-      }
-
-      if (iconSvg && !pressedIconSvg) {
-        warnOnce('ToggleButton', '`pressedIconSvg` must be provided for `pressed` state.');
-      }
-
-      if (iconUrl && !pressedIconUrl) {
-        warnOnce('ToggleButton', '`pressedIconUrl` must be provided for `pressed` state.');
-      }
-    }
 
     return (
       <InternalToggleButton

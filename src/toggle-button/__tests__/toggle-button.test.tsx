@@ -3,9 +3,16 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
 import createWrapper from '../../../lib/components/test-utils/dom';
 import ToggleButton, { ToggleButtonProps } from '../../../lib/components/toggle-button';
 import { getToggleIcon } from '../../../lib/components/toggle-button/util';
+
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
+  warnOnce: jest.fn(),
+}));
 
 function renderToggleButton(props: ToggleButtonProps = { pressed: false }) {
   const renderResult = render(<ToggleButton {...props} />);
@@ -13,6 +20,10 @@ function renderToggleButton(props: ToggleButtonProps = { pressed: false }) {
 }
 
 describe('ToggleButton Component', () => {
+  afterEach(() => {
+    (warnOnce as jest.Mock).mockReset();
+  });
+
   test('should have toggle button attributes by default', () => {
     const { wrapper } = renderToggleButton({
       children: 'button',
@@ -64,6 +75,45 @@ describe('ToggleButton Component', () => {
     wrapper.click();
 
     expect(onChange).not.toHaveBeenCalled();
+  });
+
+  test('throws a warning when pressedIconName icon is not set', () => {
+    renderToggleButton({
+      children: 'button',
+      pressed: false,
+      iconName: 'star',
+      pressedIconName: undefined,
+    });
+
+    expect(warnOnce).toHaveBeenCalledWith('ToggleButton', '`pressedIconName` must be provided for `pressed` state.');
+  });
+
+  test('throws a warning when pressedIconSvg icon is not set', () => {
+    const svg = (
+      <svg className="test-svg">
+        <circle className="test-svg-inner" cx="8" cy="8" r="7" />
+      </svg>
+    );
+    renderToggleButton({
+      children: 'button',
+      pressed: false,
+      iconSvg: svg,
+      pressedIconSvg: undefined,
+    });
+
+    expect(warnOnce).toHaveBeenCalledWith('ToggleButton', '`pressedIconSvg` must be provided for `pressed` state.');
+  });
+
+  test('throws a warning when pressedIconUrl icon is not set', () => {
+    const url = 'data:image/png;base64,aaaa';
+    renderToggleButton({
+      children: 'button',
+      pressed: false,
+      iconUrl: url,
+      pressedIconUrl: undefined,
+    });
+
+    expect(warnOnce).toHaveBeenCalledWith('ToggleButton', '`pressedIconUrl` must be provided for `pressed` state.');
   });
 
   describe('icon switch behavior', () => {
