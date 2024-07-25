@@ -9,6 +9,7 @@ import {
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
+import FormField from '../../../lib/components/form-field';
 import RadioGroup, { RadioGroupProps } from '../../../lib/components/radio-group';
 import InternalRadioGroup from '../../../lib/components/radio-group/internal';
 import createWrapper from '../../../lib/components/test-utils/dom';
@@ -84,6 +85,60 @@ describe('Checkbox renders correct analytics metadata', () => {
     expect(getGeneratedAnalyticsMetadata(wrapper.findInputByValue('second')!.getElement())).toEqual(
       getMetadata('Second choice', '2', 'second', true)
     );
+  });
+  describe('when rendered in a form field', () => {
+    test('without aria label', () => {
+      const renderResult = render(
+        <FormField label="form field label">
+          <RadioGroup items={items} value="2" />
+        </FormField>
+      );
+      const element = createWrapper(renderResult.container).findRadioGroup()!.getElement()!;
+      expect(getGeneratedAnalyticsMetadata(element)).toEqual({
+        contexts: [
+          {
+            type: 'component',
+            detail: {
+              name: 'awsui.RadioGroup',
+              label: 'form field label',
+            },
+          },
+          {
+            type: 'component',
+            detail: {
+              name: 'awsui.FormField',
+              label: 'form field label',
+            },
+          },
+        ],
+      });
+    });
+    test('witharia label', () => {
+      const renderResult = render(
+        <FormField label="form field label">
+          <RadioGroup items={items} value="2" ariaLabel="aria label" />
+        </FormField>
+      );
+      const element = createWrapper(renderResult.container).findRadioGroup()!.getElement()!;
+      expect(getGeneratedAnalyticsMetadata(element)).toEqual({
+        contexts: [
+          {
+            type: 'component',
+            detail: {
+              name: 'awsui.RadioGroup',
+              label: 'aria label',
+            },
+          },
+          {
+            type: 'component',
+            detail: {
+              name: 'awsui.FormField',
+              label: 'form field label',
+            },
+          },
+        ],
+      });
+    });
   });
 });
 
