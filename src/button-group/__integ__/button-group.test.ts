@@ -10,6 +10,7 @@ const likeButton = buttonGroup.findButtonById('like');
 const dislikeButton = buttonGroup.findButtonById('dislike');
 const copyButton = buttonGroup.findButtonById('copy');
 const sendButton = buttonGroup.findButtonById('send');
+const removeButton = buttonGroup.findButtonById('remove');
 const actionsMenu = buttonGroup.findMenuById('more-actions');
 
 function setup(options: { dropdownExpandToViewport?: boolean }, testFn: (page: BasePageObject) => Promise<void>) {
@@ -79,6 +80,10 @@ test(
     await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Liked');
 
     await page.click(createWrapper().find('[data-testid="focus-on-copy"]').toSelector());
+    await expect(page.isFocused(copyButton.toSelector())).resolves.toBe(true);
+
+    await page.keys(['Tab', 'Enter']);
+    await expect(page.isFocused(copyButton.toSelector())).resolves.toBe(true);
     await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Copy');
   })
 );
@@ -137,6 +142,48 @@ test(
 test(
   'keeps showing tooltip after clicking on a button with no popover feedback',
   setup({}, async page => {
+    await page.hoverElement(sendButton.toSelector());
+    await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Send');
+
+    await page.click(sendButton.toSelector());
+    await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Send');
+  })
+);
+
+test(
+  'does not show tooltip over a menu after a menu item is clicked',
+  setup({}, async page => {
+    await page.click(actionsMenu.toSelector());
+    await expect(page.isExisting(actionsMenu.findOpenDropdown().toSelector())).resolves.toBe(true);
+    await expect(page.isExisting(buttonGroup.findTooltip().toSelector())).resolves.toBe(false);
+
+    await page.click(actionsMenu.findItemById('edit').toSelector());
+    await expect(page.isExisting(actionsMenu.findOpenDropdown().toSelector())).resolves.toBe(false);
+    await expect(page.isExisting(buttonGroup.findTooltip().toSelector())).resolves.toBe(false);
+  })
+);
+
+test(
+  'hides tooltip when focus moves to the next component from menu dropdown',
+  setup({}, async page => {
+    await page.click(actionsMenu.toSelector());
+    await expect(page.isExisting(actionsMenu.findOpenDropdown().toSelector())).resolves.toBe(true);
+
+    await page.keys(['ArrowDown', 'ArrowDown']);
+    await expect(page.getFocusedElementText()).resolves.toBe('Edit');
+
+    await page.keys(['Tab']);
+    await expect(page.getFocusedElementText()).resolves.toBe('Focus on copy');
+    await expect(page.isExisting(buttonGroup.findTooltip().toSelector())).resolves.toBe(false);
+  })
+);
+
+test(
+  'shows a tooltip when clicking a button after triggering another button to start loading',
+  setup({}, async page => {
+    await page.click(removeButton.toSelector());
+    await expect(page.isExisting(buttonGroup.findTooltip().toSelector())).resolves.toBe(false);
+
     await page.hoverElement(sendButton.toSelector());
     await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Send');
 

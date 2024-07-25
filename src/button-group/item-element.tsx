@@ -3,7 +3,8 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 
 import { ButtonProps } from '../button/interfaces.js';
-import { ClickDetail, fireCancelableEvent, NonCancelableEventHandler } from '../internal/events/index.js';
+import { ClickDetail, fireCancelableEvent, NonCancelableEventHandler } from '../internal/events';
+import { useFocusVisibleState } from '../internal/hooks/use-focus-visible-state/index.js';
 import IconButtonItem from './icon-button-item.js';
 import { ButtonGroupProps } from './interfaces.js';
 import MenuDropdownItem from './menu-dropdown-item.js';
@@ -29,6 +30,7 @@ const ItemElement = forwardRef(
   ) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const buttonRef = useRef<HTMLButtonElement>(null);
+    const focusVisible = useFocusVisibleState();
 
     useImperativeHandle(ref, () => ({
       focus: () => {
@@ -74,8 +76,16 @@ const ItemElement = forwardRef(
       }
     };
 
+    const onShowTooltipHard = (show: boolean) => {
+      if (focusVisible) {
+        setTooltip(show ? { item: item.id, feedback: false } : null);
+      }
+    };
+
     const onClickHandler = (event: CustomEvent<ButtonGroupProps.ItemClickDetails | ClickDetail>) => {
-      if ('popoverFeedback' in item && item.popoverFeedback) {
+      const popoverFeedback = 'popoverFeedback' in item && item.popoverFeedback;
+
+      if (popoverFeedback) {
         setTooltip({ item: item.id, feedback: true });
       }
 
@@ -89,6 +99,8 @@ const ItemElement = forwardRef(
         ref={containerRef}
         onPointerEnter={() => onShowTooltipSoft(true)}
         onPointerLeave={() => onShowTooltipSoft(false)}
+        onFocus={() => onShowTooltipHard(true)}
+        onBlur={() => onShowTooltipHard(false)}
       >
         {item.type === 'icon-button' && (
           <IconButtonItem
