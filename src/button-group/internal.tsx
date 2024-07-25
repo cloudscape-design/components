@@ -51,7 +51,9 @@ const InternalButtonGroup = forwardRef(
 
     function getNextFocusTarget(): null | HTMLElement {
       if (containerObjectRef.current) {
-        const buttons: HTMLButtonElement[] = Array.from(containerObjectRef.current.querySelectorAll(`.${styles.item}`));
+        const buttons: HTMLButtonElement[] = Array.from(
+          containerObjectRef.current.querySelectorAll(`.${testUtilStyles.item}`)
+        );
         const activeButtons = buttons.filter(button => !button.disabled);
         return activeButtons.find(button => button.dataset.testid === focusedIdRef.current) ?? activeButtons[0] ?? null;
       }
@@ -93,7 +95,7 @@ const InternalButtonGroup = forwardRef(
         return;
       }
       // Ignore navigation when the focused element is not an item.
-      if (document.activeElement && !document.activeElement.matches(`.${styles.item}`)) {
+      if (document.activeElement && !document.activeElement.matches(`.${testUtilStyles.item}`)) {
         return;
       }
       event.preventDefault();

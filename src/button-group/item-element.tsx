@@ -85,7 +85,7 @@ const ItemElement = forwardRef(
     const onClickHandler = (event: CustomEvent<ButtonGroupProps.ItemClickDetails | ClickDetail>) => {
       const hasPopoverFeedback = 'popoverFeedback' in item && item.popoverFeedback;
 
-      if (popoverFeedback) {
+      if (hasPopoverFeedback) {
         setTooltip({ item: item.id, feedback: true });
       }
 

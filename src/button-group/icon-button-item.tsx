@@ -12,7 +12,6 @@ import Tooltip from '../internal/components/tooltip/index.js';
 import { CancelableEventHandler, ClickDetail } from '../internal/events/index.js';
 import { ButtonGroupProps } from './interfaces.js';
 
-import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
 const IconButtonItem = forwardRef(
@@ -51,7 +50,7 @@ const IconButtonItem = forwardRef(
           onClick={onItemClick}
           ref={ref}
           data-testid={item.id}
-          className={clsx(styles.item, testUtilStyles['button-group-item'])}
+          className={clsx(testUtilStyles.item, testUtilStyles['button-group-item'])}
           __title=""
         >
           {item.text}
@@ -61,7 +60,7 @@ const IconButtonItem = forwardRef(
             trackRef={containerRef}
             trackKey={item.id}
             value={(showFeedback && <LiveRegion visible={true}>{item.popoverFeedback}</LiveRegion>) || item.text}
-            className={clsx(styles.tooltip, testUtilStyles['button-group-tooltip'])}
+            className={clsx(testUtilStyles.tooltip, testUtilStyles['button-group-tooltip'])}
           />
         )}
       </div>

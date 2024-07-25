@@ -10,7 +10,6 @@ import Tooltip from '../internal/components/tooltip';
 import { CancelableEventHandler, fireCancelableEvent } from '../internal/events';
 import { ButtonGroupProps } from './interfaces';
 
-import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
 const MenuDropdownItem = React.forwardRef(
@@ -53,7 +52,7 @@ const MenuDropdownItem = React.forwardRef(
                 trackRef={containerRef}
                 trackKey={item.id}
                 value={item.text}
-                className={clsx(styles.tooltip, testUtilStyles['button-group-tooltip'])}
+                className={clsx(testUtilStyles.tooltip, testUtilStyles['button-group-tooltip'])}
               />
             )}
             <InternalButton
@@ -61,7 +60,7 @@ const MenuDropdownItem = React.forwardRef(
               variant="icon"
               ariaLabel={ariaLabel}
               ariaExpanded={ariaExpanded}
-              className={clsx(styles.item, testUtilsClass)}
+              className={clsx(testUtilStyles.item, testUtilsClass)}
               data-testid={item.id}
               iconName="ellipsis"
               onClick={onClick}
