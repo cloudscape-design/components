@@ -13,7 +13,6 @@ import {
   SingleTabStopNavigationProvider,
 } from '../internal/context/single-tab-stop-navigation-context';
 import { hasModifierKeys } from '../internal/events';
-import { useFocusVisibleState } from '../internal/hooks/use-focus-visible-state';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { KeyCode } from '../internal/keycode';
 import { circleIndex } from '../internal/utils/circle-index';
@@ -37,8 +36,6 @@ const InternalButtonGroup = forwardRef(
     ref: React.Ref<ButtonGroupProps.Ref>
   ) => {
     const baseProps = getBaseProps(props);
-    const focusVisible = useFocusVisibleState();
-    const focusVisibleRef = useRef<boolean>(focusVisible);
     const focusedIdRef = useRef<null | string>(null);
     const navigationAPI = useRef<SingleTabStopNavigationAPI>(null);
     const containerObjectRef = useRef<HTMLDivElement>(null);
@@ -52,31 +49,6 @@ const InternalButtonGroup = forwardRef(
       },
     }));
 
-    useEffect(() => {
-      if (!tooltip?.item) {
-        return;
-      }
-      const allItems = items.flatMap(item => (item.type === 'group' ? item.items : [item]));
-
-      if (!allItems.find(item => item.id === tooltip.item)) {
-        setTooltip(null);
-      }
-    }, [items, tooltip?.item]);
-
-    useEffect(() => {
-      if (focusVisible && !focusVisibleRef.current) {
-        focusVisibleRef.current = focusVisible;
-
-        if (focusedIdRef.current && tooltip?.item !== focusedIdRef.current) {
-          setTooltip({ item: focusedIdRef.current, feedback: false });
-        }
-
-        return;
-      }
-
-      focusVisibleRef.current = focusVisible;
-    }, [focusVisible, tooltip?.item]);
-
     function getNextFocusTarget(): null | HTMLElement {
       if (containerObjectRef.current) {
         const buttons: HTMLButtonElement[] = Array.from(containerObjectRef.current.querySelectorAll(`.${styles.item}`));
@@ -89,7 +61,6 @@ const InternalButtonGroup = forwardRef(
     function onUnregisterActive(focusableElement: HTMLElement) {
       // Only refocus when the node is actually removed (no such ID anymore).
       const target = navigationAPI.current?.getFocusTarget();
-
       if (target && target.dataset.testid !== focusableElement.dataset.testid) {
         target.focus();
       }
@@ -101,25 +72,12 @@ const InternalButtonGroup = forwardRef(
 
     function onFocus(event: React.FocusEvent) {
       if (event.target instanceof HTMLElement && event.target.dataset.testid) {
-        const item = event.target.dataset.testid;
-        focusedIdRef.current = item;
-
-        if (focusVisible) {
-          setTooltip({ item, feedback: false });
-        }
+        focusedIdRef.current = event.target.dataset.testid;
       }
-
       navigationAPI.current?.updateFocusTarget();
     }
 
-    function onBlur(event: React.FocusEvent) {
-      if (event.target instanceof HTMLElement && event.target.dataset.testid) {
-        const item = event.target.dataset.testid;
-        if (item === tooltip?.item) {
-          setTooltip(null);
-        }
-      }
-
+    function onBlur() {
       navigationAPI.current?.updateFocusTarget();
     }
 
