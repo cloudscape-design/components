@@ -77,10 +77,9 @@ const ItemElement = forwardRef(
     };
 
     const onShowTooltipHard = (show: boolean) => {
-      if (show && !focusVisible) {
-        return;
+      if (focusVisible) {
+        setTooltip(show ? { item: item.id, feedback: false } : null);
       }
-      setTooltip(show ? { item: item.id, feedback: false } : null);
     };
 
     const onClickHandler = (event: CustomEvent<ButtonGroupProps.ItemClickDetails | ClickDetail>) => {
