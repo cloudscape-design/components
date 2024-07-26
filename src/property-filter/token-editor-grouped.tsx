@@ -1,15 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 
 import InternalButton from '../button/internal';
+import { ButtonDropdownProps } from '../button-dropdown/interfaces';
 import InternalButtonDropdown from '../button-dropdown/internal';
 import InternalFormField from '../form-field/internal';
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
 import { FormFieldContext } from '../internal/context/form-field-context';
 import { NonCancelableEventHandler } from '../internal/events';
+import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { getAllowedOperators } from './controller';
 import {
@@ -230,179 +232,176 @@ function TokenEditorFields({
   renderValue,
   i18nStrings,
 }: TokenEditorLayout) {
-  const breakpoint = 912;
-  const [isNarrow, setIsNarrow] = useState(window.innerWidth <= breakpoint);
-
-  useEffect(() => {
-    const onWindowResize = () => {
-      setIsNarrow(window.innerWidth <= breakpoint);
-    };
-    window.addEventListener('resize', onWindowResize);
-    return () => {
-      window.removeEventListener('resize', onWindowResize);
-    };
-  }, []);
+  const [breakpoint, breakpointRef] = useContainerBreakpoints(['xs']);
+  const isNarrow = breakpoint === 'default';
 
   const propertyLabelId = useUniqueId();
   const operatorLabelId = useUniqueId();
   const valueLabelId = useUniqueId();
-
-  if (isNarrow) {
-    return (
-      <div className={styles['token-editor-grouped-list']}>
-        {tokens.map((token, index) => (
-          <div
-            key={index}
-            className={styles['token-editor-grouped-list-item']}
-            role="group"
-            aria-label={`${token.propertyLabel} ${token.operator} ${token.value}`}
-          >
-            <InternalFormField
-              label={i18nStrings.propertyText}
-              className={clsx(
-                styles['token-editor-grouped-field-property'],
-                testUtilStyles['token-editor-field-property']
-              )}
-              data-testindex={index}
-            >
-              {renderProperty(index)}
-            </InternalFormField>
-
-            <InternalFormField
-              label={i18nStrings.operatorText}
-              className={clsx(
-                styles['token-editor-grouped-field-operator'],
-                testUtilStyles['token-editor-field-operator']
-              )}
-              data-testindex={index}
-            >
-              {renderOperator(index)}
-            </InternalFormField>
-
-            <InternalFormField
-              label={i18nStrings.valueText}
-              className={clsx(styles['token-editor-grouped-field-value'], testUtilStyles['token-editor-field-value'])}
-              data-testindex={index}
-            >
-              {renderValue(index)}
-            </InternalFormField>
-
-            {supportsGroups && (
-              <div className={styles['token-editor-grouped-remove-token']}>
-                <InternalButtonDropdown
-                  variant="normal"
-                  ariaLabel={i18nStrings.tokenEditorTokenActionsLabel(token)}
-                  items={[{ id: 'remove-from-group', text: i18nStrings.tokenEditorTokenRemoveFromGroupLabel(token) }]}
-                  onItemClick={({ detail }) => {
-                    switch (detail.id) {
-                      case 'remove-from-group':
-                        return onRemoveFromGroup(index);
-                    }
-                  }}
-                  disabled={tokens.length === 1}
-                  mainAction={{
-                    text: i18nStrings.tokenEditorTokenRemoveLabel(token),
-                    onClick: () => onRemove(index),
-                    disabled: tokens.length === 1,
-                  }}
-                  className={testUtilStyles['token-editor-token-remove-actions']}
-                  data-testindex={index}
-                />
-              </div>
-            )}
-          </div>
-        ))}
+  const headers = (
+    <div className={styles['token-editor-grouped-grid-group']}>
+      <div id={propertyLabelId} className={styles['token-editor-grouped-grid-header']}>
+        {i18nStrings.propertyText}
       </div>
-    );
-  }
+      <div id={operatorLabelId} className={styles['token-editor-grouped-grid-header']}>
+        {i18nStrings.operatorText}
+      </div>
+      <div id={valueLabelId} className={styles['token-editor-grouped-grid-header']}>
+        {i18nStrings.valueText}
+      </div>
+      <div className={styles['token-editor-grouped-grid-header']}></div>
+    </div>
+  );
 
   return (
-    <div className={styles['token-editor-grouped-table']}>
-      <div className={styles['token-editor-grouped-table-row']}>
-        <div id={propertyLabelId} className={styles['token-editor-grouped-table-header-cell']}>
-          {i18nStrings.propertyText}
-        </div>
-        <div id={operatorLabelId} className={styles['token-editor-grouped-table-header-cell']}>
-          {i18nStrings.operatorText}
-        </div>
-        <div id={valueLabelId} className={styles['token-editor-grouped-table-header-cell']}>
-          {i18nStrings.valueText}
-        </div>
-      </div>
+    <div
+      className={clsx(styles['token-editor-grouped-grid'], isNarrow && styles['token-editor-narrow'])}
+      ref={breakpointRef}
+    >
+      {!isNarrow && headers}
 
       {tokens.map((token, index) => (
         <div
           key={index}
-          className={styles['token-editor-grouped-table-row']}
           role="group"
           aria-label={`${token.propertyLabel} ${token.operator} ${token.value}`}
+          className={styles['token-editor-grouped-grid-group']}
         >
-          <div className={styles['token-editor-grouped-table-cell']}>
-            <FormFieldContext.Provider value={{ ariaLabelledby: propertyLabelId }}>
-              <InternalFormField
-                className={clsx(
-                  styles['token-editor-grouped-field-property'],
-                  testUtilStyles['token-editor-field-property']
-                )}
-                data-testindex={index}
-              >
-                {renderProperty(index)}
-              </InternalFormField>
-            </FormFieldContext.Provider>
+          <div className={styles['token-editor-grouped-grid-cell']}>
+            <TokenEditorField
+              isNarrow={isNarrow}
+              label={i18nStrings.propertyText}
+              labelId={propertyLabelId}
+              className={clsx(
+                styles['token-editor-grouped-field-property'],
+                testUtilStyles['token-editor-field-property']
+              )}
+              index={index}
+            >
+              {renderProperty(index)}
+            </TokenEditorField>
           </div>
 
-          <div className={styles['token-editor-grouped-table-cell']}>
-            <FormFieldContext.Provider value={{ ariaLabelledby: operatorLabelId }}>
-              <InternalFormField
-                className={clsx(
-                  styles['token-editor-grouped-field-operator'],
-                  testUtilStyles['token-editor-field-operator']
-                )}
-                data-testindex={index}
-              >
-                {renderOperator(index)}
-              </InternalFormField>
-            </FormFieldContext.Provider>
+          <div className={styles['token-editor-grouped-grid-cell']}>
+            <TokenEditorField
+              isNarrow={isNarrow}
+              label={i18nStrings.operatorText}
+              labelId={operatorLabelId}
+              className={clsx(
+                styles['token-editor-grouped-field-operator'],
+                testUtilStyles['token-editor-field-operator']
+              )}
+              index={index}
+            >
+              {renderOperator(index)}
+            </TokenEditorField>
           </div>
 
-          <div className={styles['token-editor-grouped-table-cell']}>
-            <FormFieldContext.Provider value={{ ariaLabelledby: valueLabelId }}>
-              <InternalFormField
-                className={clsx(styles['token-editor-grouped-field-value'], testUtilStyles['token-editor-field-value'])}
-                data-testindex={index}
-              >
-                {renderValue(index)}
-              </InternalFormField>
-            </FormFieldContext.Provider>
+          <div className={styles['token-editor-grouped-grid-cell']}>
+            <TokenEditorField
+              isNarrow={isNarrow}
+              label={i18nStrings.valueText}
+              labelId={valueLabelId}
+              className={clsx(styles['token-editor-grouped-field-value'], testUtilStyles['token-editor-field-value'])}
+              index={index}
+            >
+              {renderValue(index)}
+            </TokenEditorField>
           </div>
 
-          {supportsGroups && (
-            <div className={styles['token-editor-grouped-table-cell']}>
+          <div className={styles['token-editor-grouped-grid-cell']}>
+            {supportsGroups && (
               <div className={styles['token-editor-grouped-remove-token']}>
-                <InternalButtonDropdown
-                  variant="icon"
+                <TokenEditorRemoveActions
+                  isNarrow={isNarrow}
                   ariaLabel={i18nStrings.tokenEditorTokenActionsLabel(token)}
+                  disabled={tokens.length === 1}
                   items={[
                     { id: 'remove', text: i18nStrings.tokenEditorTokenRemoveLabel(token) },
                     { id: 'remove-from-group', text: i18nStrings.tokenEditorTokenRemoveFromGroupLabel(token) },
                   ]}
-                  onItemClick={({ detail }) => {
-                    switch (detail.id) {
+                  onItemClick={itemId => {
+                    switch (itemId) {
                       case 'remove':
                         return onRemove(index);
                       case 'remove-from-group':
                         return onRemoveFromGroup(index);
                     }
                   }}
-                  disabled={tokens.length === 1}
-                  className={testUtilStyles['token-editor-token-remove-actions']}
-                  data-testindex={index}
+                  index={index}
                 />
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       ))}
     </div>
+  );
+}
+
+function TokenEditorField({
+  isNarrow,
+  label,
+  labelId,
+  children,
+  className,
+  index,
+}: {
+  isNarrow: boolean;
+  label: React.ReactNode;
+  labelId: string;
+  children: React.ReactNode;
+  className: string;
+  index: number;
+}) {
+  return isNarrow ? (
+    <InternalFormField label={label} className={className} data-testindex={index}>
+      {children}
+    </InternalFormField>
+  ) : (
+    <FormFieldContext.Provider value={{ ariaLabelledby: labelId }}>
+      <InternalFormField className={className} data-testindex={index}>
+        {children}
+      </InternalFormField>
+    </FormFieldContext.Provider>
+  );
+}
+
+function TokenEditorRemoveActions({
+  isNarrow,
+  ariaLabel,
+  disabled,
+  items,
+  onItemClick,
+  index,
+}: {
+  isNarrow: boolean;
+  ariaLabel: string;
+  disabled: boolean;
+  items: ButtonDropdownProps.Item[];
+  onItemClick: (itemId: string) => void;
+  index: number;
+}) {
+  return isNarrow ? (
+    <InternalButtonDropdown
+      variant="normal"
+      ariaLabel={ariaLabel}
+      items={items.slice(1)}
+      onItemClick={({ detail }) => onItemClick(detail.id)}
+      disabled={disabled}
+      mainAction={{ text: items[0].text, onClick: () => onItemClick(items[0].id), disabled }}
+      className={testUtilStyles['token-editor-token-remove-actions']}
+      data-testindex={index}
+    />
+  ) : (
+    <InternalButtonDropdown
+      variant="icon"
+      ariaLabel={ariaLabel}
+      items={items}
+      onItemClick={({ detail }) => onItemClick(detail.id)}
+      disabled={disabled}
+      className={testUtilStyles['token-editor-token-remove-actions']}
+      data-testindex={index}
+    />
   );
 }
