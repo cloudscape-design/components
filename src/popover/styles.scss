@@ -17,6 +17,10 @@
   color: inherit;
 }
 
+.root-filtering-token {
+  display: flex;
+}
+
 .trigger {
   display: inline-block;
   max-inline-size: 100%;
@@ -48,6 +52,10 @@
   @include focus-visible.when-visible {
     @include styles.focus-highlight(1px);
   }
+}
+
+.trigger-type-filtering-token {
+  display: flex;
 }
 
 .popover-inline-content {

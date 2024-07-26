@@ -3,11 +3,14 @@
 import React, { KeyboardEvent, KeyboardEventHandler, MouseEvent, useContext } from 'react';
 import clsx from 'clsx';
 
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
 import InternalCheckbox from '../../checkbox/internal';
 import { SingleTabStopNavigationContext } from '../../internal/context/single-tab-stop-navigation-context';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { KeyCode } from '../../internal/keycode';
 import RadioButton from '../../radio-group/radio-button';
+import { GeneratedAnalyticsMetadataTableSelect } from '../analytics-metadata/interfaces';
 import { SelectionProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -19,6 +22,8 @@ export interface SelectionControlProps extends SelectionProps {
   ariaLabel?: string;
   tabIndex?: -1;
   focusedComponent?: null | string;
+  rowIndex?: number;
+  itemKey?: string;
 }
 
 export function SelectionControl({
@@ -30,6 +35,8 @@ export function SelectionControl({
   name,
   ariaLabel,
   focusedComponent,
+  rowIndex,
+  itemKey,
   ...sharedProps
 }: SelectionControlProps) {
   const controlId = useUniqueId();
@@ -98,6 +105,14 @@ export function SelectionControl({
         className={clsx(styles.label, styles.root)}
         aria-label={ariaLabel}
         title={ariaLabel}
+        {...(rowIndex !== undefined && !sharedProps.disabled
+          ? getAnalyticsMetadataAttribute({
+              detail: {
+                position: `${rowIndex + 1}`,
+                item: itemKey || '',
+              },
+            } as Partial<GeneratedAnalyticsMetadataTableSelect>)
+          : {})}
       >
         {selector}
       </label>

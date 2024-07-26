@@ -58,7 +58,8 @@ $dropdown-trigger-icon-offset: 2px;
   display: flex;
 
   & > .trigger-item {
-    & > button:focus {
+    & > .trigger-button:focus,
+    & > .trigger-button:hover {
       z-index: 1;
     }
   }
@@ -83,6 +84,23 @@ $dropdown-trigger-icon-offset: 2px;
       & > .trigger-button {
         padding-inline-end: calc(#{awsui.$space-s} - #{$dropdown-trigger-icon-offset});
       }
+    }
+  }
+
+  & > .trigger-item.disabled,
+  & > .trigger-item.loading {
+    & > .trigger-button:not(:focus) {
+      z-index: -1;
+    }
+  }
+
+  & > .trigger-item.variant-normal {
+    &:not(:last-child) > .trigger-button {
+      margin-inline-end: 0;
+    }
+
+    &:not(:first-child) > .trigger-button {
+      margin-inline-start: calc(#{styles.$control-border-width} * -1);
     }
   }
 }

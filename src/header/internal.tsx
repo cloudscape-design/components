@@ -3,6 +3,8 @@
 import React, { useContext } from 'react';
 import clsx from 'clsx';
 
+import { getAnalyticsLabelAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
 import { StickyHeaderContext } from '../container/use-sticky-header';
 import { DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_SUBSTEP_NAME } from '../internal/analytics/selectors';
 import { getBaseProps } from '../internal/base-component';
@@ -16,6 +18,7 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { SomeRequired } from '../internal/types';
 import { HeaderProps } from './interfaces';
 
+import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
 interface InternalHeaderProps extends SomeRequired<HeaderProps, 'variant'>, InternalBaseComponentProps {
@@ -71,10 +74,17 @@ export default function InternalHeader({
         )}
       >
         <div className={clsx(styles.title, styles[`title-variant-${variantOverride}`], isRefresh && styles.refresh)}>
-          <HeadingTag className={clsx(styles.heading, styles[`heading-variant-${variantOverride}`])}>
+          <HeadingTag
+            className={clsx(styles.heading, styles[`heading-variant-${variantOverride}`])}
+            {...getAnalyticsLabelAttribute(`.${analyticsSelectors['heading-text']}`)}
+          >
             <span
               {...(isInContainer ? { [DATA_ATTR_FUNNEL_KEY]: FUNNEL_KEY_SUBSTEP_NAME } : {})}
-              className={clsx(styles['heading-text'], styles[`heading-text-variant-${variantOverride}`])}
+              className={clsx(
+                styles['heading-text'],
+                analyticsSelectors['heading-text'],
+                styles[`heading-text-variant-${variantOverride}`]
+              )}
               id={headingId}
             >
               {children}

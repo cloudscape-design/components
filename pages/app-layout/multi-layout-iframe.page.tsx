@@ -1,15 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
 import AppLayout from '~components/app-layout';
 import Header from '~components/header';
-import SpaceBetween from '~components/space-between';
 import ScreenreaderOnly from '~components/internal/components/screenreader-only';
-import { Breadcrumbs, Containers, Navigation, Tools } from './utils/content-blocks';
-import * as toolsContent from './utils/tools-content';
-import { IframeWrapper } from './utils/iframe-wrapper';
+import SpaceBetween from '~components/space-between';
+
 import ScreenshotArea from '../utils/screenshot-area';
+import { Breadcrumbs, Containers, Navigation, Tools } from './utils/content-blocks';
+import { IframeWrapper } from './utils/iframe-wrapper';
 import labels from './utils/labels';
+import * as toolsContent from './utils/tools-content';
 
 function InnerApp() {
   return (

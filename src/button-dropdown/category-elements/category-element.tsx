@@ -20,6 +20,7 @@ const CategoryElement = ({
   highlightItem,
   disabled,
   variant,
+  position,
 }: CategoryProps) => {
   // Hide the category title element from screen readers because it will be
   // provided as an ARIA label.
@@ -49,6 +50,7 @@ const CategoryElement = ({
             categoryDisabled={disabled}
             hasCategoryHeader={!!item.text}
             variant={variant}
+            position={position}
           />
         )}
       </ul>

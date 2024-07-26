@@ -3,9 +3,12 @@
 import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
 import InternalIcon from '../../icon/internal';
 import Dropdown from '../../internal/components/dropdown';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
+import { GeneratedAnalyticsMetadataButtonDropdownExpand } from '../analytics-metadata/interfaces.js';
 import { CategoryProps } from '../interfaces';
 import ItemsList from '../items-list';
 import Tooltip from '../tooltip.js';
@@ -26,6 +29,7 @@ const ExpandableCategoryElement = ({
   disabled,
   expandToViewport,
   variant,
+  position,
 }: CategoryProps) => {
   const highlighted = isHighlighted(item);
   const expanded = isExpanded(item);
@@ -67,6 +71,19 @@ const ExpandableCategoryElement = ({
       ref={triggerRef}
       {...getMenuItemProps({ parent: true, expanded, disabled })}
       {...(isDisabledWithReason ? targetProps : {})}
+      {...getAnalyticsMetadataAttribute(
+        disabled
+          ? {}
+          : ({
+              action: 'expand',
+              detail: {
+                position: position || '0',
+                label: '',
+                id: item.id || '',
+                expanded: `${!expanded}`,
+              },
+            } as GeneratedAnalyticsMetadataButtonDropdownExpand)
+      )}
     >
       {item.text}
       <span className={clsx(styles['expand-icon'], styles['expand-icon-right'])}>
@@ -113,6 +130,7 @@ const ExpandableCategoryElement = ({
               lastInDropdown={lastInDropdown}
               highlightItem={highlightItem}
               variant={variant}
+              position={position}
             />
           </ul>
         )}

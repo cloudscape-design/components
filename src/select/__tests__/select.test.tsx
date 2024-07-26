@@ -536,6 +536,26 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
     });
   });
 
+  describe('Inline Label', () => {
+    test('should render', () => {
+      const testLabel = 'Test label';
+      const { wrapper } = renderSelect({ inlineLabelText: testLabel });
+      const labelElement = wrapper.findInlineLabel();
+      expect(labelElement).not.toBeNull();
+      expect(labelElement?.getElement()).toHaveTextContent(testLabel);
+      expect(labelElement?.getElement().tagName).toBe('LABEL');
+    });
+    test('associate label with trigger button', () => {
+      const testLabel = 'Test label';
+      const { wrapper } = renderSelect({ inlineLabelText: testLabel });
+
+      const labelForAttribute = wrapper.findInlineLabel()!.getElement()!.getAttribute('for');
+      const triggerId = wrapper.findTrigger().getElement()!.id;
+
+      expect(labelForAttribute).toBe(triggerId);
+    });
+  });
+
   test('should render with focus when autoFocus=true', () => {
     const { wrapper } = renderSelect({ autoFocus: true });
     expect(wrapper.findTrigger().getElement()).toHaveFocus();

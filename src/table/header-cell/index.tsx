@@ -3,11 +3,14 @@
 import React, { useRef } from 'react';
 import clsx from 'clsx';
 
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
 import { useInternalI18n } from '../../i18n/context';
 import InternalIcon from '../../icon/internal';
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { KeyCode } from '../../internal/keycode';
+import { GeneratedAnalyticsMetadataTableSort } from '../analytics-metadata/interfaces';
 import { TableProps } from '../interfaces';
 import { Divider, Resizer } from '../resizer';
 import { StickyColumnsModel } from '../sticky-columns';
@@ -15,6 +18,7 @@ import { TableRole } from '../table-role';
 import { TableThElement } from './th-element';
 import { getSortingIconName, getSortingStatus, isSorted } from './utils';
 
+import analyticsSelectors from '../analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
 export interface TableHeaderCellProps<ItemType> {
@@ -105,6 +109,17 @@ export function TableHeaderCell<ItemType>({
       columnId={columnId}
       stickyState={stickyState}
       tableRole={tableRole}
+      {...(sortingDisabled
+        ? {}
+        : getAnalyticsMetadataAttribute({
+            action: 'sort',
+            detail: {
+              position: `${colIndex + 1}`,
+              columnId: column.id ? `${column.id}` : '',
+              label: `.${analyticsSelectors['header-cell-text']}`,
+              sortingDescending: `${!sortingDescending}`,
+            },
+          } as GeneratedAnalyticsMetadataTableSort))}
     >
       <div
         ref={clickableHeaderRef}
@@ -131,7 +146,14 @@ export function TableHeaderCell<ItemType>({
             }
           : {})}
       >
-        <div className={clsx(styles['header-cell-text'], wrapLines && styles['header-cell-text-wrap'])} id={headerId}>
+        <div
+          className={clsx(
+            styles['header-cell-text'],
+            analyticsSelectors['header-cell-text'],
+            wrapLines && styles['header-cell-text-wrap']
+          )}
+          id={headerId}
+        >
           {column.header}
           {isEditable && !isExpandable ? (
             <span

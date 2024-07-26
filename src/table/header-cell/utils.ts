@@ -32,3 +32,17 @@ export const isSorted = <T>(column: TableProps.ColumnDefinition<T>, sortingColum
   column === sortingColumn ||
   (column.sortingField !== undefined && column.sortingField === sortingColumn.sortingField) ||
   (column.sortingComparator !== undefined && column.sortingComparator === sortingColumn.sortingComparator);
+export const getSortingColumnId = <T>(
+  columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T>> = [],
+  sortingColumn?: TableProps.SortingColumn<T>
+) => {
+  if (!sortingColumn) {
+    return null;
+  }
+  for (let i = 0; i < columnDefinitions.length; i++) {
+    if (isSorted(columnDefinitions[i], sortingColumn)) {
+      return columnDefinitions[i].id || null;
+    }
+  }
+  return null;
+};

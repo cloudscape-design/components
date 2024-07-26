@@ -3,6 +3,8 @@
 import React, { useRef } from 'react';
 import clsx from 'clsx';
 
+import { copyAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
 import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
@@ -40,6 +42,7 @@ export function TableThElement({
   cellRef,
   tableRole,
   children,
+  ...props
 }: TableThElementProps) {
   const stickyStyles = useStickyCellStyles({
     stickyColumns: stickyState,
@@ -71,6 +74,7 @@ export function TableThElement({
       ref={mergedRef}
       {...getTableColHeaderRoleProps({ tableRole, sortingStatus, colIndex })}
       tabIndex={cellTabIndex === -1 ? undefined : cellTabIndex}
+      {...copyAnalyticsMetadataAttribute(props)}
     >
       {children}
     </th>

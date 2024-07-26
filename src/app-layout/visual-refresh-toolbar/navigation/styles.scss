@@ -6,6 +6,7 @@
 @use '../../../internal/styles' as styles;
 @use '../../../internal/styles/tokens' as awsui;
 @use '../../../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use '../../constants.scss' as constants;
 
 .navigation {
   position: sticky;
@@ -67,5 +68,5 @@
 .hide-navigation {
   position: absolute;
   inset-inline-end: awsui.$space-m;
-  inset-block-start: awsui.$size-vertical-panel-icon-offset;
+  inset-block-start: constants.$toolbar-vertical-panel-icon-offset;
 }

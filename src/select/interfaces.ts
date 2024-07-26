@@ -154,6 +154,21 @@ export interface BaseSelectProps
 
 export interface SelectProps extends BaseSelectProps {
   /**
+   * Adds a small label inline with the input for saving vertical space in the UI.
+   * For use with collection select filters only.
+   */
+  inlineLabelText?: string;
+  /**
+   * Adds `aria-labelledby` to the component. If you're using this component within a form field,
+   * don't set this property because the form field component automatically sets it.
+   *
+   * Use this property if the component isn't using `inlineLabelText` and isn't surrounded by a form field, or you want to override the value
+   * automatically set by the form field (for example, if you have two components within a single form field).
+   *
+   * To use it correctly, define an ID for the element you want to use as label and set the property to that ID.
+   */
+  ariaLabelledby?: string;
+  /**
    * Defines the variant of the trigger. You can use a simple label or the entire option (`label | option`)
    */
   triggerVariant?: SelectProps.TriggerVariant;
