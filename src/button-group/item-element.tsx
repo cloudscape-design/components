@@ -3,12 +3,20 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 
 import { ButtonProps } from '../button/interfaces.js';
-import { ClickDetail, fireCancelableEvent } from '../internal/events';
+import { ClickDetail, fireCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import IconButtonItem from './icon-button-item.js';
-import { ButtonGroupProps, ItemElementProps } from './interfaces.js';
+import { ButtonGroupProps } from './interfaces.js';
 import MenuDropdownItem from './menu-dropdown-item.js';
 
 import styles from './styles.css.js';
+
+interface ItemElementProps {
+  item: ButtonGroupProps.Item;
+  dropdownExpandToViewport?: boolean;
+  tooltip: null | { item: string; feedback: boolean };
+  setTooltip: (tooltip: null | { item: string; feedback: boolean }) => void;
+  onItemClick?: NonCancelableEventHandler<ButtonGroupProps.ItemClickDetails> | undefined;
+}
 
 const ItemElement = forwardRef(
   (

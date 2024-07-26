@@ -7,10 +7,17 @@ import InternalButton from '../button/internal';
 import { ButtonDropdownProps } from '../button-dropdown/interfaces';
 import ButtonDropdown from '../button-dropdown/internal';
 import Tooltip from '../internal/components/tooltip';
-import { fireCancelableEvent } from '../internal/events';
-import { MenuDropdownItemProps } from './interfaces';
+import { CancelableEventHandler, fireCancelableEvent } from '../internal/events';
+import { ButtonGroupProps } from './interfaces';
 
 import testUtilStyles from './test-classes/styles.css.js';
+
+interface MenuDropdownItemProps {
+  item: ButtonGroupProps.MenuDropdown;
+  showTooltip: boolean;
+  onItemClick?: CancelableEventHandler<ButtonGroupProps.ItemClickDetails>;
+  expandToViewport?: boolean;
+}
 
 const MenuDropdownItem = React.forwardRef(
   (

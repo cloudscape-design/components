@@ -4,7 +4,7 @@
 import { ButtonDropdownProps } from '../button-dropdown/interfaces';
 import { IconProps } from '../icon/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
-import { CancelableEventHandler, NonCancelableEventHandler } from '../internal/events';
+import { NonCancelableEventHandler } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 
 export interface ButtonGroupProps extends BaseComponentProps {
@@ -119,19 +119,4 @@ export namespace ButtonGroupProps {
      */
     focus(itemId: string): void;
   }
-}
-
-export interface MenuDropdownItemProps {
-  item: ButtonGroupProps.MenuDropdown;
-  showTooltip: boolean;
-  onItemClick?: CancelableEventHandler<ButtonGroupProps.ItemClickDetails>;
-  expandToViewport?: boolean;
-}
-
-export interface ItemElementProps {
-  item: ButtonGroupProps.Item;
-  dropdownExpandToViewport?: boolean;
-  tooltip: null | { item: string; feedback: boolean };
-  setTooltip: (tooltip: null | { item: string; feedback: boolean }) => void;
-  onItemClick?: NonCancelableEventHandler<ButtonGroupProps.ItemClickDetails> | undefined;
 }
