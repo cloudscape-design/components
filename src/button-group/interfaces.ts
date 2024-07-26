@@ -10,7 +10,7 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 export interface ButtonGroupProps extends BaseComponentProps {
   /**
    * Adds `aria-label` to the button group toolbar element.
-   * Use this to provide a unique accessible name for buttons groups on the page.
+   * Use this to provide a unique accessible name for button groups on the page.
    */
   ariaLabel?: string;
   /**
