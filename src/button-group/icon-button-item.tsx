@@ -50,6 +50,7 @@ const IconButtonItem = forwardRef(
           onClick={onItemClick}
           ref={ref}
           data-testid={item.id}
+          data-itemid={item.id}
           className={clsx(testUtilStyles.item, testUtilStyles['button-group-item'])}
           __title=""
         >

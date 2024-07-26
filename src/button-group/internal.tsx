@@ -55,7 +55,7 @@ const InternalButtonGroup = forwardRef(
           containerObjectRef.current.querySelectorAll(`.${testUtilStyles.item}`)
         );
         const activeButtons = buttons.filter(button => !button.disabled);
-        return activeButtons.find(button => button.dataset.testid === focusedIdRef.current) ?? activeButtons[0] ?? null;
+        return activeButtons.find(button => button.dataset.itemid === focusedIdRef.current) ?? activeButtons[0] ?? null;
       }
       return null;
     }
@@ -64,7 +64,7 @@ const InternalButtonGroup = forwardRef(
       // Only refocus when the node is actually removed (no such ID anymore).
       const target = navigationAPI.current?.getFocusTarget();
 
-      if (target && target.dataset.testid !== focusableElement.dataset.testid) {
+      if (target && target.dataset.itemid !== focusableElement.dataset.itemid) {
         target.focus();
       }
     }
@@ -74,8 +74,8 @@ const InternalButtonGroup = forwardRef(
     });
 
     function onFocus(event: React.FocusEvent) {
-      if (event.target instanceof HTMLElement && event.target.dataset.testid) {
-        focusedIdRef.current = event.target.dataset.testid;
+      if (event.target instanceof HTMLElement && event.target.dataset.itemid) {
+        focusedIdRef.current = event.target.dataset.itemid;
       }
 
       navigationAPI.current?.updateFocusTarget();
