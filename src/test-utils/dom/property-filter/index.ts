@@ -178,15 +178,15 @@ export class InternalPropertyFilterEditorDropdownWrapper extends ComponentWrappe
     return this.findComponent(`.${testUtilStyles['token-editor-field-value']}${dataIndex}`, FormFieldWrapper)!;
   }
 
-  findTokenRemoveActions(index = 1): ButtonDropdownWrapper {
+  findTokenRemoveActions(index = 1): null | ButtonDropdownWrapper {
     const dataIndex = `[data-testindex="${index - 1}"]`;
     const buttonDropdown = this.find(`.${testUtilStyles['token-editor-token-remove-actions']}${dataIndex}`)!;
-    return new ButtonDropdownWrapper(buttonDropdown.getElement());
+    return buttonDropdown ? new ButtonDropdownWrapper(buttonDropdown.getElement()) : null;
   }
 
-  findTokenAddActions(): ButtonDropdownWrapper {
+  findTokenAddActions(): null | ButtonDropdownWrapper {
     const buttonDropdown = this.find(`.${testUtilStyles['token-editor-token-add-actions']}`)!;
-    return new ButtonDropdownWrapper(buttonDropdown.getElement());
+    return buttonDropdown ? new ButtonDropdownWrapper(buttonDropdown.getElement()) : null;
   }
 
   findCancelButton(): ButtonWrapper {

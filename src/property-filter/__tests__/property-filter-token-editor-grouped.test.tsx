@@ -74,8 +74,7 @@ const defaultProps: TokenEditorProps = {
     valueText: 'Value',
     cancelActionText: 'Cancel',
     applyActionText: 'Apply',
-    tokenEditorTokenActionsLabel: token =>
-      `Filter remove actions for ${token.propertyLabel} ${token.operator} ${token.value}`,
+    tokenEditorTokenActionsLabel: token => `Remove actions ${token.propertyLabel} ${token.operator} ${token.value}`,
     tokenEditorTokenRemoveLabel: () => 'Remove filter',
     tokenEditorTokenRemoveFromGroupLabel: () => 'Remove filter from group',
     tokenEditorAddNewTokenLabel: 'Add new filter',
@@ -100,22 +99,27 @@ describe.each(['xs', 'default'] as const)('breakpoints = %s', breakpoint => {
   const isNarrow = breakpoint === 'default';
 
   function findRemoveAction(wrapper: InternalPropertyFilterEditorDropdownWrapper, index: number) {
-    wrapper.findTokenRemoveActions(index).openDropdown();
+    wrapper.findTokenRemoveActions(index)!.openDropdown();
     return isNarrow
-      ? wrapper.findTokenRemoveActions(index).findMainAction()!
-      : wrapper.findTokenRemoveActions(index).findItems()[0];
+      ? wrapper.findTokenRemoveActions(index)!.findMainAction()!
+      : wrapper.findTokenRemoveActions(index)!.findItems()[0];
   }
   function findRemoveFromGroupAction(wrapper: InternalPropertyFilterEditorDropdownWrapper, index: number) {
-    wrapper.findTokenRemoveActions(index).openDropdown();
-    return wrapper.findTokenRemoveActions(index).findItems()[isNarrow ? 0 : 1];
+    wrapper.findTokenRemoveActions(index)!.openDropdown();
+    return wrapper.findTokenRemoveActions(index)!.findItems()[isNarrow ? 0 : 1];
   }
 
   beforeEach(() => {
     jest.mocked(useContainerBreakpoints).mockReturnValue([breakpoint, () => {}]);
   });
 
-  test('renders token editor with a single property', () => {
-    const wrapper = renderComponent({});
+  test.each([false, true])('renders token editor with a single property, supportsGroups=%s', supportsGroups => {
+    const wrapper = renderComponent({ supportsGroups });
+    const propertyField = wrapper.findPropertyField();
+    const operatorField = wrapper.findOperatorField();
+    const valueField = wrapper.findValueField();
+    const removeActions = wrapper.findTokenRemoveActions();
+    const addActions = wrapper.findTokenAddActions();
 
     // Not supported yet because the standalone editor does not include the popover
     // This can be uncommented when defining the test against the property filter
@@ -124,23 +128,22 @@ describe.each(['xs', 'default'] as const)('breakpoints = %s', breakpoint => {
     // expect(wrapper.findDismissButton().getElement()).toHaveAccessibleName('Close token editor');
 
     // Token inputs
-    expect(wrapper.findPropertyField().findControl()!.find('button')!.getElement()).toHaveAccessibleName(
-      'Property Name'
-    );
-    expect(wrapper.findOperatorField().findControl()!.find('button')!.getElement()).toHaveAccessibleName('Operator =');
-    expect(wrapper.findValueField().findControl()!.find('input')!.getElement()).toHaveAccessibleName('Value');
-    expect(wrapper.findValueField().findControl()!.find('input')!.getElement()).toHaveValue('John');
+    expect(propertyField.findControl()!.find('button')!.getElement()).toHaveAccessibleName('Property Name');
+    expect(operatorField.findControl()!.find('button')!.getElement()).toHaveAccessibleName('Operator =');
+    expect(valueField.findControl()!.find('input')!.getElement()).toHaveAccessibleName('Value');
+    expect(valueField.findControl()!.find('input')!.getElement()).toHaveValue('John');
 
-    // Remove actions
-    expect(wrapper.findTokenRemoveActions().findNativeButton().getElement()).toHaveAccessibleName(
-      'Filter remove actions for Name = John'
-    );
-    expect(wrapper.findTokenRemoveActions().findNativeButton().getElement()).toBeDisabled();
+    if (supportsGroups) {
+      expect(removeActions!.findNativeButton().getElement()).toHaveAccessibleName('Remove actions Name = John');
+      expect(removeActions!.findNativeButton().getElement()).toBeDisabled();
 
-    // Add actions
-    expect(wrapper.findTokenAddActions().findNativeButton().getElement()).toHaveAccessibleName('Add filter actions');
-    expect(wrapper.findTokenAddActions().findNativeButton().getElement()).toBeDisabled();
-    expect(wrapper.findTokenAddActions().findMainAction()!.getElement()).toHaveTextContent('Add new filter');
+      expect(addActions!.findNativeButton().getElement()).toHaveAccessibleName('Add filter actions');
+      expect(addActions!.findNativeButton().getElement()).toBeDisabled();
+      expect(addActions!.findMainAction()!.getElement()).toHaveTextContent('Add new filter');
+    } else {
+      expect(removeActions).toBe(null);
+      expect(addActions).toBe(null);
+    }
 
     // Form actions
     expect(wrapper.findCancelButton().getElement()).toHaveTextContent('Cancel');
@@ -265,7 +268,7 @@ describe.each(['xs', 'default'] as const)('breakpoints = %s', breakpoint => {
       onChangeTempGroup,
     });
 
-    wrapper.findTokenAddActions().findMainAction()!.click();
+    wrapper.findTokenAddActions()!.findMainAction()!.click();
     wrapper.findSubmitButton().click();
 
     expect(onChangeTempGroup).toHaveBeenCalledTimes(1);
@@ -289,8 +292,8 @@ describe.each(['xs', 'default'] as const)('breakpoints = %s', breakpoint => {
       onChangeStandalone,
     });
 
-    wrapper.findTokenAddActions().openDropdown();
-    wrapper.findTokenAddActions().findItems()[0].click();
+    wrapper.findTokenAddActions()!.openDropdown();
+    wrapper.findTokenAddActions()!.findItems()[0].click();
     wrapper.findSubmitButton().click();
 
     expect(onChangeTempGroup).toHaveBeenCalledTimes(1);
