@@ -637,7 +637,7 @@ describe('Details popover', () => {
 
   test('artificial mouseover event during touch does not open popover', () => {
     const { wrapper } = renderPieChart(<PieChart data={defaultData} />);
-    const element = wrapper.findSegmentLabels()[1].getElement();
+    const element = wrapper.findSegments()[1].getElement();
     element.dispatchEvent(new TouchEvent('touchstart', { bubbles: true }));
     element.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
     expect(wrapper.findDetailPopover()?.findContent()).toBeFalsy();
