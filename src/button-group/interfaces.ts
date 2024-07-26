@@ -28,7 +28,7 @@ export interface ButtonGroupProps extends BaseComponentProps {
    * Set this property if the dropdown would otherwise be constrained by a scrollable container,
    * for example inside table and split view layouts.
    *
-   * However, use discretion. We recommend you don't enable this property unless necessary
+   * We recommend you use discretion, and don't enable this property unless necessary
    * because fixed positioning results in a slight, visible lag when scrolling complex pages.
    */
   dropdownExpandToViewport?: boolean;
@@ -41,7 +41,7 @@ export interface ButtonGroupProps extends BaseComponentProps {
    * * `text` (string) - The name shown as a tooltip or menu text for this button.
    * * `disabled` (optional, boolean) - The disabled state indication for the button.
    * * `loading` (optional, boolean) - The loading state indication for the button.
-   * * `loadingText` (optional, string) - The loading text announced to screen-readers.
+   * * `loadingText` (optional, string) - The loading text announced to screen readers.
    * * `iconName` (optional, string) - Specifies the name of the icon, used with the [icon component](/components/icon/).
    * * `iconAlt` (optional, string) - Specifies alternate text for the icon when using `iconUrl`.
    * * `iconUrl` (optional, string) - Specifies the URL of a custom icon.
@@ -54,7 +54,7 @@ export interface ButtonGroupProps extends BaseComponentProps {
    * * `text` (string) - The name of the menu button shown as a tooltip.
    * * `disabled` (optional, boolean) - The disabled state indication for the menu button.
    * * `loading` (optional, boolean) - The loading state indication for the menu button.
-   * * `loadingText` (optional, string) - The loading text announced to screen-readers.
+   * * `loadingText` (optional, string) - The loading text announced to screen readers.
    * * `items` (ButtonDropdownProps.ItemOrGroup[]) - The array of dropdown items that belong to this menu.
    *
    * group
