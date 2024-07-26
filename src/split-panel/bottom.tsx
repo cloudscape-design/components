@@ -3,8 +3,9 @@
 import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
-import { getGlobalFlag, useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
+import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
+import { isAppLayoutToolbarEnabled } from '../app-layout/utils/feature-flags';
 import { TransitionStatus } from '../internal/components/transition';
 import { useSplitPanelContext } from '../internal/context/split-panel-context';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
@@ -36,7 +37,6 @@ export function SplitPanelContentBottom({
   onToggle,
 }: SplitPanelContentBottomProps) {
   const isRefresh = useVisualRefresh();
-  const hasToolbar = getGlobalFlag('appLayoutWidget');
   const { bottomOffset, leftOffset, rightOffset, disableContentPaddings, contentWrapperPaddings, reportHeaderHeight } =
     useSplitPanelContext();
   const transitionContentBottomRef = useMergeRefs(splitPanelRef || null, transitioningElementRef);
@@ -66,7 +66,7 @@ export function SplitPanelContentBottom({
         [styles['drawer-disable-content-paddings']]: disableContentPaddings,
         [styles.animating]: isRefresh && (state === 'entering' || state === 'exiting'),
         [styles.refresh]: isRefresh,
-        [styles['with-toolbar']]: hasToolbar,
+        [styles['with-toolbar']]: isAppLayoutToolbarEnabled(),
       })}
       onClick={() => !isOpen && onToggle()}
       style={{

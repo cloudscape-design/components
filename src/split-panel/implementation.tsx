@@ -3,8 +3,7 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { getGlobalFlag } from '@cloudscape-design/component-toolkit/internal';
-
+import { isAppLayoutToolbarEnabled } from '../app-layout/utils/feature-flags';
 import { SizeControlProps } from '../app-layout/utils/interfaces';
 import { useKeyboardEvents } from '../app-layout/utils/use-keyboard-events';
 import { usePointerEvents } from '../app-layout/utils/use-pointer-events';
@@ -54,7 +53,6 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
     } = useSplitPanelContext();
     const baseProps = getBaseProps(restProps);
     const i18n = useInternalI18n('split-panel');
-    const hasToolbar = getGlobalFlag('appLayoutWidget');
     const [isPreferencesOpen, setPreferencesOpen] = useState<boolean>(false);
 
     const appLayoutMaxWidth = isRefresh && position === 'bottom' ? contentWidthStyles : undefined;
@@ -83,7 +81,10 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
     const panelHeaderId = useUniqueId('split-panel-header');
 
     const wrappedHeader = (
-      <div className={clsx(styles.header, hasToolbar && styles['with-toolbar'])} style={appLayoutMaxWidth}>
+      <div
+        className={clsx(styles.header, isAppLayoutToolbarEnabled() && styles['with-toolbar'])}
+        style={appLayoutMaxWidth}
+      >
         <h2 className={clsx(styles['header-text'], testUtilStyles['header-text'])} id={panelHeaderId}>
           {header}
         </h2>

@@ -3,8 +3,7 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 import clsx from 'clsx';
 
-import { getGlobalFlag } from '@cloudscape-design/component-toolkit/internal';
-
+import { isAppLayoutToolbarEnabled } from '../app-layout/utils/feature-flags';
 import { getBaseProps } from '../internal/base-component';
 import { fireCancelableEvent, fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -29,7 +28,6 @@ export function SideNavigationImplementation({
 }: SideNavigationInternalProps) {
   const baseProps = getBaseProps(props);
   const parentMap = useMemo(() => generateExpandableItemsMapping(items), [items]);
-  const hasToolbar = getGlobalFlag('appLayoutWidget');
 
   if (isDevelopment) {
     // This code should be wiped in production anyway.
@@ -63,7 +61,7 @@ export function SideNavigationImplementation({
   return (
     <div
       {...baseProps}
-      className={clsx(styles.root, baseProps.className, hasToolbar && styles['with-toolbar'])}
+      className={clsx(styles.root, baseProps.className, isAppLayoutToolbarEnabled() && styles['with-toolbar'])}
       ref={__internalRootRef}
     >
       {header && (
