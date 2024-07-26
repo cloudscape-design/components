@@ -15,7 +15,7 @@ export default function () {
     <article>
       <h1>Text wrapping example</h1>
       <ScreenshotArea>
-        <h2>Simple key-value-pairs</h2>
+        <h2>Key-value-pairs with a long description</h2>
         <div style={{ maxWidth: '600px' }}>
           <KeyValuePairs
             columns={3}
