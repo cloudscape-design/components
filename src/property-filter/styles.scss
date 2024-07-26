@@ -6,6 +6,8 @@
 @use '../internal/styles/index' as styles;
 @use '../internal/styles/tokens' as awsui;
 
+$operator-field-width: 120px;
+
 .root {
   @include styles.styles-reset;
 }
@@ -127,38 +129,29 @@
     margin-block-start: awsui.$space-s;
   }
 
-  &-list {
-    display: flex;
-    flex-direction: column;
-    gap: awsui.$space-m;
-
-    &-item {
-      display: flex;
-      flex-direction: column;
-      gap: awsui.$space-xs;
-      padding-block-end: awsui.$space-xs;
-      border-block-end: 1px solid awsui.$color-border-divider-default;
-    }
-  }
-
-  &-table {
+  &-grid {
     @include styles.styles-reset;
 
-    display: table;
-    margin-inline: calc(-1 * #{awsui.$space-s});
-    border-spacing: awsui.$space-s 0;
+    display: grid;
+    gap: awsui.$space-s;
+    grid-template-columns: 2fr $operator-field-width 3fr min-content;
 
-    &-row {
-      display: table-row;
+    &-group {
+      display: contents;
     }
 
-    &-header-cell,
-    &-cell {
-      display: table-cell;
-      vertical-align: bottom;
+    &.token-editor-narrow {
+      grid-template-columns: 1fr;
+      gap: awsui.$space-m;
+
+      > .token-editor-grouped-group {
+        display: flex;
+        flex-direction: column;
+        gap: awsui.$space-s;
+      }
     }
 
-    &-header-cell {
+    &-header {
       color: awsui.$color-text-column-header;
       font-weight: awsui.$font-weight-heading-s;
       padding-block: awsui.$space-scaled-xxs;
@@ -166,25 +159,14 @@
     }
 
     &-cell {
-      padding-block-end: awsui.$space-s;
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-end;
     }
-
-    @media (max-width: 912px) {
-      //
-    }
-  }
-
-  &-operation {
-    align-self: flex-start;
   }
 
   &-add-token {
-    // margin-block-start: awsui.$space-xxs;
-  }
-
-  &-remove-token {
-    align-self: flex-end;
-    padding-block-start: awsui.$space-xs;
+    margin-block-start: awsui.$space-s;
   }
 }
 

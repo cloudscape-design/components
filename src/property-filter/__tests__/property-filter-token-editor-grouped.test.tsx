@@ -7,10 +7,16 @@ import { format } from 'date-fns';
 
 import DatePicker from '../../../lib/components/date-picker';
 import FormField from '../../../lib/components/form-field';
+import { useContainerBreakpoints } from '../../../lib/components/internal/hooks/container-queries';
 import { InternalFilteringProperty } from '../../../lib/components/property-filter/interfaces';
 import { TokenEditor, TokenEditorProps } from '../../../lib/components/property-filter/token-editor-grouped';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { InternalPropertyFilterEditorDropdownWrapper } from '../../../lib/components/test-utils/dom/property-filter';
+
+jest.mock('../../../lib/components/internal/hooks/container-queries', () => ({
+  ...jest.requireActual('../../../lib/components/internal/hooks/container-queries'),
+  useContainerBreakpoints: jest.fn().mockReturnValue(['xs', () => {}]),
+}));
 
 const externalProperty = {
   key: '',
@@ -90,21 +96,22 @@ function renderComponent(props?: Partial<TokenEditorProps>) {
   return new InternalPropertyFilterEditorDropdownWrapper(container);
 }
 
-describe.each([500, 1000])('window size = %spx', width => {
+describe.each(['xs', 'default'] as const)('breakpoints = %s', breakpoint => {
+  const isNarrow = breakpoint === 'default';
+
   function findRemoveAction(wrapper: InternalPropertyFilterEditorDropdownWrapper, index: number) {
     wrapper.findTokenRemoveActions(index).openDropdown();
-    return width === 500
+    return isNarrow
       ? wrapper.findTokenRemoveActions(index).findMainAction()!
       : wrapper.findTokenRemoveActions(index).findItems()[0];
   }
   function findRemoveFromGroupAction(wrapper: InternalPropertyFilterEditorDropdownWrapper, index: number) {
     wrapper.findTokenRemoveActions(index).openDropdown();
-    return wrapper.findTokenRemoveActions(index).findItems()[width === 500 ? 0 : 1];
+    return wrapper.findTokenRemoveActions(index).findItems()[isNarrow ? 0 : 1];
   }
 
   beforeEach(() => {
-    Object.defineProperty(window, 'innerWidth', { value: width });
-    window.dispatchEvent(new CustomEvent('resize'));
+    jest.mocked(useContainerBreakpoints).mockReturnValue([breakpoint, () => {}]);
   });
 
   test('renders token editor with a single property', () => {
