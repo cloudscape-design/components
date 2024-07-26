@@ -48,10 +48,6 @@ function MobileTriggerButton({ tooltipText, item }: MobileTriggerProps) {
   }));
 
   useEffect(() => {
-    //is something like this needed to close outside tooltips that might be open?
-    // if (tooltip?.item !== item.id) {
-    //   return;
-    // }
 
     const close = () => {
       setShowTooltip(false);
