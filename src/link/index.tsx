@@ -21,12 +21,12 @@ const Link = React.forwardRef(
     const analyticsMetadata: GeneratedAnalyticsMetadataLinkFragment = {
       action: 'click',
       detail: {
-        label: '',
+        label: { root: 'self' },
         external: `${external}`,
       },
       component: {
         name: 'awsui.Link',
-        label: '',
+        label: { root: 'self' },
         properties: { variant: props.variant || 'secondary' },
       },
     };

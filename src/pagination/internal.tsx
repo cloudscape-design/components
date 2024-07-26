@@ -69,7 +69,7 @@ function PageButton({
           : getAnalyticsMetadataAttribute({
               action: 'click',
               detail: {
-                label: '',
+                label: { root: 'self' },
               },
             } as GeneratedAnalyticsMetadataPaginationClick))}
       >
