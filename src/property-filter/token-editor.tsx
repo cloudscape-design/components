@@ -21,10 +21,8 @@ import {
   InternalFreeTextFiltering,
   InternalToken,
   LoadItemsDetail,
-  Token,
 } from './interfaces';
 import { useLoadItems } from './use-load-items';
-import { matchTokenValue } from './utils';
 
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
@@ -188,7 +186,7 @@ interface TokenEditorProps {
   filteringOptions: readonly InternalFilteringOption[];
   i18nStrings: I18nStrings;
   onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
-  setToken: (newToken: Token) => void;
+  onSubmit: () => void;
   onDismiss: () => void;
   temporaryToken: InternalToken;
   onChangeTemporaryToken: (token: InternalToken) => void;
@@ -203,7 +201,7 @@ export function TokenEditor({
   filteringOptions,
   i18nStrings,
   onLoadItems,
-  setToken,
+  onSubmit,
   onDismiss,
   temporaryToken,
   onChangeTemporaryToken,
@@ -233,14 +231,9 @@ export function TokenEditor({
     onChangeTemporaryToken({ ...temporaryToken, value: newValue });
   };
 
-  const onApply = () => {
-    setToken(matchTokenValue(temporaryToken, filteringOptions));
-    onDismiss();
-  };
-
   const onFormSubmit = (event: FormEvent) => {
     event.preventDefault();
-    onApply();
+    onSubmit();
   };
 
   return (
@@ -305,7 +298,7 @@ export function TokenEditor({
         <InternalButton
           className={clsx(styles['token-editor-submit'], testUtilStyles['token-editor-submit'])}
           formAction="none"
-          onClick={onApply}
+          onClick={onSubmit}
         >
           {i18nStrings.applyActionText}
         </InternalButton>
