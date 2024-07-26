@@ -223,6 +223,7 @@
     "i18nStrings.modalCancelButton": "取消",
     "i18nStrings.modalSubmitButton": "選擇",
     "i18nStrings.modalBreadcrumbRootItem": "S3 儲存貯體",
+    "i18nStrings.modalLastUpdatedText": "最後更新",
     "i18nStrings.selectionBuckets": "儲存貯體",
     "i18nStrings.selectionObjects": "物件",
     "i18nStrings.selectionVersions": "版本",

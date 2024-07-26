@@ -223,6 +223,7 @@
     "i18nStrings.modalCancelButton": "キャンセル",
     "i18nStrings.modalSubmitButton": "選択",
     "i18nStrings.modalBreadcrumbRootItem": "S3 バケット",
+    "i18nStrings.modalLastUpdatedText": "最終更新日",
     "i18nStrings.selectionBuckets": "バケット",
     "i18nStrings.selectionObjects": "オブジェクト",
     "i18nStrings.selectionVersions": "バージョン",

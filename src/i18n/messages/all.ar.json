@@ -223,6 +223,7 @@
     "i18nStrings.modalCancelButton": "إلغاء",
     "i18nStrings.modalSubmitButton": "اختيار",
     "i18nStrings.modalBreadcrumbRootItem": "حاويات S3",
+    "i18nStrings.modalLastUpdatedText": "آخر تحديث",
     "i18nStrings.selectionBuckets": "الحاويات",
     "i18nStrings.selectionObjects": "الكائنات",
     "i18nStrings.selectionVersions": "الإصدارات",

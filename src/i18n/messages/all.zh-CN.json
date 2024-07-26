@@ -223,6 +223,7 @@
     "i18nStrings.modalCancelButton": "取消",
     "i18nStrings.modalSubmitButton": "选择",
     "i18nStrings.modalBreadcrumbRootItem": "S3 存储桶",
+    "i18nStrings.modalLastUpdatedText": "上次更新时间",
     "i18nStrings.selectionBuckets": "存储桶",
     "i18nStrings.selectionObjects": "对象",
     "i18nStrings.selectionVersions": "版本",

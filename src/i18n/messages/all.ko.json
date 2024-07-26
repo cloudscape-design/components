@@ -223,6 +223,7 @@
     "i18nStrings.modalCancelButton": "취소",
     "i18nStrings.modalSubmitButton": "선택",
     "i18nStrings.modalBreadcrumbRootItem": "S3 버킷",
+    "i18nStrings.modalLastUpdatedText": "최종 업데이트 날짜",
     "i18nStrings.selectionBuckets": "버킷",
     "i18nStrings.selectionObjects": "객체",
     "i18nStrings.selectionVersions": "버전",
