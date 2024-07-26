@@ -7,7 +7,7 @@ import Header from '~components/header';
 import SpaceBetween from '~components/space-between';
 
 import ScreenshotArea from '../utils/screenshot-area';
-import { Containers, Navigation, Tools } from './utils/content-blocks';
+import { Breadcrumbs, Containers, Navigation, Tools } from './utils/content-blocks';
 import labels from './utils/labels';
 import * as toolsContent from './utils/tools-content';
 
@@ -24,6 +24,7 @@ export default function () {
           <AppLayout
             data-testid="secondary-layout"
             ariaLabels={labels}
+            breadcrumbs={<Breadcrumbs />}
             navigationHide={true}
             content={
               <SpaceBetween size="s">
