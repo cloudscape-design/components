@@ -12,6 +12,7 @@ import { splitItems } from '../drawer/drawers-helpers';
 import OverflowMenu from '../drawer/overflow-menu';
 import { TOOLS_DRAWER_ID } from '../utils/use-drawers';
 import { useAppLayoutInternals } from './context';
+import MobileTriggerButton from './mobile-trigger-button';
 import SplitPanel from './split-panel';
 import TriggerButton from './trigger-button';
 
@@ -238,6 +239,7 @@ function DesktopTriggers() {
           return (
             <TriggerButton
               ariaLabel={item.ariaLabels?.triggerButton}
+              tooltipText={item.ariaLabels?.drawerName}
               ariaExpanded={item.id === activeDrawerId}
               ariaControls={activeDrawerId === item.id ? item.id : undefined}
               className={clsx(
@@ -310,7 +312,6 @@ export function MobileTriggers() {
     drawersAriaLabel,
     drawersOverflowAriaLabel,
     drawersOverflowWithBadgeAriaLabel,
-    drawersRefs,
     handleDrawersClick,
     hasDrawerViewportOverlay,
   } = useAppLayoutInternals();
@@ -339,25 +340,7 @@ export function MobileTriggers() {
     >
       <div className={styles['drawers-mobile-triggers-container']} role="toolbar" aria-orientation="horizontal">
         {visibleItems.map(item => (
-          <InternalButton
-            ariaExpanded={item.id === activeDrawerId}
-            ariaLabel={item.ariaLabels?.triggerButton}
-            className={clsx(
-              styles['drawers-trigger'],
-              testutilStyles['drawers-trigger'],
-              item.id === TOOLS_DRAWER_ID && testutilStyles['tools-toggle']
-            )}
-            disabled={hasDrawerViewportOverlay}
-            ref={item.id === previousActiveDrawerId.current ? drawersRefs.toggle : undefined}
-            formAction="none"
-            iconName={item.trigger.iconName}
-            iconSvg={item.trigger.iconSvg}
-            badge={item.badge}
-            key={item.id}
-            onClick={() => handleDrawersClick(item.id)}
-            variant="icon"
-            __nativeAttributes={{ 'aria-haspopup': true, 'data-testid': `awsui-app-layout-trigger-${item.id}` }}
-          />
+          <MobileTriggerButton key={item.id} item={item} />
         ))}
         {overflowItems.length > 0 && (
           <OverflowMenu
