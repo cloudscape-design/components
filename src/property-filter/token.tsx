@@ -20,6 +20,7 @@ import {
   Token,
 } from './interfaces';
 import { TokenEditor } from './token-editor';
+import { matchTokenValue } from './utils';
 
 import styles from './styles.css.js';
 
@@ -89,7 +90,6 @@ export const TokenButton = ({
       disabled={disabled}
       editorContent={
         <TokenEditor
-          setToken={setToken}
           filteringProperties={filteringProperties}
           filteringOptions={filteringOptions}
           temporaryToken={temporaryToken}
@@ -101,6 +101,10 @@ export const TokenButton = ({
           customGroupsText={customGroupsText}
           freeTextFiltering={freeTextFiltering}
           onDismiss={() => tokenRef.current?.closeEditor()}
+          onSubmit={() => {
+            setToken(matchTokenValue(temporaryToken, filteringOptions));
+            tokenRef.current?.closeEditor();
+          }}
         />
       }
       editorHeader={i18nStrings.editTokenHeader ?? ''}
