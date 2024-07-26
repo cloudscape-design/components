@@ -10,7 +10,7 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 export interface ButtonGroupProps extends BaseComponentProps {
   /**
    * Adds `aria-label` to the button group toolbar element.
-   * Use this to provide a unique accessible name for button groups on the page.
+   * Use this to provide a unique accessible name for each button group on the page.
    */
   ariaLabel?: string;
   /**
@@ -50,7 +50,7 @@ export interface ButtonGroupProps extends BaseComponentProps {
    *
    * ### menu-dropdown
    *
-   * * `id` (string) - The unique identifier of the button, used to focus the button using `ref.focus(id)`.
+   * * `id` (string) - The unique identifier of the button, used as detail in `onItemClick`.
    * * `text` (string) - The name of the menu button shown as a tooltip.
    * * `disabled` (optional, boolean) - The disabled state indication for the menu button.
    * * `loading` (optional, boolean) - The loading state indication for the menu button.
