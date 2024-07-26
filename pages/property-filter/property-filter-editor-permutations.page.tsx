@@ -78,6 +78,7 @@ const dateTimeProperty: InternalFilteringProperty = {
 };
 
 const defaultProps: TokenEditorProps = {
+  supportsGroups: true,
   asyncProps: {},
   customGroupsText: [],
   freeTextFiltering: {
@@ -87,8 +88,8 @@ const defaultProps: TokenEditorProps = {
   },
   filteringProperties: [nameProperty, dateProperty],
   filteringOptions: [],
-  i18nStrings,
-  i18nStringsExt: {
+  i18nStrings: {
+    ...i18nStrings,
     tokenEditorTokenActionsLabel: token =>
       `Filter remove actions for ${token.propertyLabel} ${token.operator} ${token.value}`,
     tokenEditorTokenRemoveLabel: () => 'Remove filter',
@@ -110,6 +111,7 @@ const tokenPermutations = createPermutations<Partial<TokenEditorProps>>([
   // Single name property
   {
     tempGroup: [[{ property: nameProperty, operator: '=', value: 'John' }]],
+    supportsGroups: [false, true],
   },
   // Single date property
   {

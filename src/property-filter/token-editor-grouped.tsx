@@ -29,22 +29,24 @@ import { getFormattedToken } from './utils';
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
+interface I18nStringsExt {
+  tokenEditorTokenActionsLabel: (token: FormattedToken) => string;
+  tokenEditorTokenRemoveLabel: (token: FormattedToken) => string;
+  tokenEditorTokenRemoveFromGroupLabel: (token: FormattedToken) => string;
+  tokenEditorAddNewTokenLabel: string;
+  tokenEditorAddTokenActionsLabel: string;
+  tokenEditorAddExistingTokenLabel: (token: FormattedToken) => string;
+}
+
 export interface TokenEditorProps {
+  supportsGroups: boolean;
   asyncProperties?: boolean;
   asyncProps: DropdownStatusProps;
   customGroupsText: readonly GroupText[];
   freeTextFiltering: InternalFreeTextFiltering;
   filteringProperties: readonly InternalFilteringProperty[];
   filteringOptions: readonly InternalFilteringOption[];
-  i18nStrings: I18nStrings;
-  i18nStringsExt: {
-    tokenEditorTokenActionsLabel: (token: FormattedToken) => string;
-    tokenEditorTokenRemoveLabel: (token: FormattedToken) => string;
-    tokenEditorTokenRemoveFromGroupLabel: (token: FormattedToken) => string;
-    tokenEditorAddNewTokenLabel: string;
-    tokenEditorAddTokenActionsLabel: string;
-    tokenEditorAddExistingTokenLabel: (token: FormattedToken) => string;
-  };
+  i18nStrings: I18nStrings & I18nStringsExt;
   onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
   onSubmit: () => void;
   onDismiss: () => void;
@@ -55,6 +57,7 @@ export interface TokenEditorProps {
 }
 
 export function TokenEditor({
+  supportsGroups,
   asyncProperties,
   asyncProps,
   customGroupsText,
@@ -62,7 +65,6 @@ export function TokenEditor({
   filteringProperties,
   filteringOptions,
   i18nStrings,
-  i18nStringsExt,
   onLoadItems,
   onSubmit,
   onDismiss,
@@ -107,94 +109,84 @@ export function TokenEditor({
   return (
     <div className={styles['token-editor-grouped']}>
       <TokenEditorFields
-        fields={groups.length}
-        groupLabel={index => getFormattedToken(groups[index].token).label}
-        removeButton={{
-          labelRemove: index => i18nStringsExt.tokenEditorTokenRemoveLabel(getFormattedToken(groups[index].token)),
-          labelRemoveFromGroup: index =>
-            i18nStringsExt.tokenEditorTokenRemoveFromGroupLabel(getFormattedToken(groups[index].token)),
-          labelRemoveMore: index => i18nStringsExt.tokenEditorTokenActionsLabel(getFormattedToken(groups[index].token)),
-          onRemove: index => {
-            const copy = [...tempGroup];
-            copy.splice(index, 1);
-            onChangeTempGroup(copy);
-          },
-          onRemoveFromGroup: index => {
-            const removedToken = tempGroup[index];
-            const copy = [...tempGroup];
-            copy.splice(index, 1);
-            onChangeTempGroup(copy);
-            onChangeStandalone([...standaloneTokens, removedToken]);
-          },
+        supportsGroups={supportsGroups}
+        tokens={groups.map(group => getFormattedToken(group.token))}
+        onRemove={index => {
+          const copy = [...tempGroup];
+          copy.splice(index, 1);
+          onChangeTempGroup(copy);
         }}
-        property={{
-          label: i18nStrings.propertyText ?? '',
-          render: index => (
-            <PropertyInput
-              property={groups[index].property}
-              onChangePropertyKey={groups[index].onChangePropertyKey}
-              asyncProps={asyncProperties ? asyncProps : null}
-              filteringProperties={filteringProperties}
-              onLoadItems={onLoadItems}
-              customGroupsText={customGroupsText}
-              i18nStrings={i18nStrings}
-              freeTextFiltering={freeTextFiltering}
-            />
-          ),
+        onRemoveFromGroup={index => {
+          const removedToken = tempGroup[index];
+          const copy = [...tempGroup];
+          copy.splice(index, 1);
+          onChangeTempGroup(copy);
+          onChangeStandalone([...standaloneTokens, removedToken]);
         }}
-        operator={{
-          label: i18nStrings.operatorText ?? '',
-          render: index => (
-            <OperatorInput
-              property={groups[index].property}
-              operator={groups[index].operator}
-              onChangeOperator={groups[index].onChangeOperator}
-              i18nStrings={i18nStrings}
-              freeTextFiltering={freeTextFiltering}
-              triggerVariant="label"
-            />
-          ),
-        }}
-        value={{
-          label: i18nStrings.valueText ?? '',
-          render: index => (
-            <ValueInput
-              property={groups[index].property}
-              operator={groups[index].operator}
-              value={groups[index].value}
-              onChangeValue={groups[index].onChangeValue}
-              asyncProps={asyncProps}
-              filteringOptions={filteringOptions}
-              onLoadItems={onLoadItems}
-              i18nStrings={i18nStrings}
-            />
-          ),
-        }}
+        renderProperty={index => (
+          <PropertyInput
+            property={groups[index].property}
+            onChangePropertyKey={groups[index].onChangePropertyKey}
+            asyncProps={asyncProperties ? asyncProps : null}
+            filteringProperties={filteringProperties}
+            onLoadItems={onLoadItems}
+            customGroupsText={customGroupsText}
+            i18nStrings={i18nStrings}
+            freeTextFiltering={freeTextFiltering}
+          />
+        )}
+        renderOperator={index => (
+          <OperatorInput
+            property={groups[index].property}
+            operator={groups[index].operator}
+            onChangeOperator={groups[index].onChangeOperator}
+            i18nStrings={i18nStrings}
+            freeTextFiltering={freeTextFiltering}
+            triggerVariant="label"
+          />
+        )}
+        renderValue={index => (
+          <ValueInput
+            property={groups[index].property}
+            operator={groups[index].operator}
+            value={groups[index].value}
+            onChangeValue={groups[index].onChangeValue}
+            asyncProps={asyncProps}
+            filteringOptions={filteringOptions}
+            onLoadItems={onLoadItems}
+            i18nStrings={i18nStrings}
+          />
+        )}
+        i18nStrings={i18nStrings}
       />
 
-      <div className={clsx(styles['token-editor-grouped-add-token'], testUtilStyles['token-editor-token-add-actions'])}>
-        <InternalButtonDropdown
-          variant="normal"
-          ariaLabel={i18nStringsExt.tokenEditorAddTokenActionsLabel}
-          items={standaloneTokens.map((token, index) => ({
-            id: index.toString(),
-            text: i18nStringsExt.tokenEditorAddExistingTokenLabel(getFormattedToken(token)),
-          }))}
-          onItemClick={({ detail }) => {
-            const index = parseInt(detail.id);
-            const addedToken = standaloneTokens[index];
-            const copy = [...standaloneTokens];
-            copy.splice(index, 1);
-            onChangeStandalone(copy);
-            onChangeTempGroup([...tempGroup, addedToken]);
-          }}
-          disabled={standaloneTokens.length === 0}
-          mainAction={{
-            text: i18nStringsExt.tokenEditorAddNewTokenLabel,
-            onClick: () => onChangeTempGroup([...tempGroup, { property: null, operator: ':', value: null }]),
-          }}
-        />
-      </div>
+      {supportsGroups && (
+        <div
+          className={clsx(styles['token-editor-grouped-add-token'], testUtilStyles['token-editor-token-add-actions'])}
+        >
+          <InternalButtonDropdown
+            variant="normal"
+            ariaLabel={i18nStrings.tokenEditorAddTokenActionsLabel}
+            items={standaloneTokens.map((token, index) => ({
+              id: index.toString(),
+              text: i18nStrings.tokenEditorAddExistingTokenLabel(getFormattedToken(token)),
+            }))}
+            onItemClick={({ detail }) => {
+              const index = parseInt(detail.id);
+              const addedToken = standaloneTokens[index];
+              const copy = [...standaloneTokens];
+              copy.splice(index, 1);
+              onChangeStandalone(copy);
+              onChangeTempGroup([...tempGroup, addedToken]);
+            }}
+            disabled={standaloneTokens.length === 0}
+            mainAction={{
+              text: i18nStrings.tokenEditorAddNewTokenLabel,
+              onClick: () => onChangeTempGroup([...tempGroup, { property: null, operator: ':', value: null }]),
+            }}
+          />
+        </div>
+      )}
 
       <div className={styles['token-editor-grouped-actions']}>
         <InternalButton
@@ -218,30 +210,26 @@ export function TokenEditor({
 }
 
 interface TokenEditorLayout {
-  fields: number;
-  groupLabel: (index: number) => string;
-  removeButton: {
-    labelRemove: (index: number) => string;
-    labelRemoveFromGroup: (index: number) => string;
-    labelRemoveMore: (index: number) => string;
-    onRemove: (index: number) => void;
-    onRemoveFromGroup: (index: number) => void;
-  };
-  property: {
-    label: string;
-    render: (index: number) => React.ReactNode;
-  };
-  operator: {
-    label: string;
-    render: (index: number) => React.ReactNode;
-  };
-  value: {
-    label: string;
-    render: (index: number) => React.ReactNode;
-  };
+  tokens: FormattedToken[];
+  supportsGroups: boolean;
+  onRemove: (index: number) => void;
+  onRemoveFromGroup: (index: number) => void;
+  renderProperty: (index: number) => React.ReactNode;
+  renderOperator: (index: number) => React.ReactNode;
+  renderValue: (index: number) => React.ReactNode;
+  i18nStrings: I18nStrings & I18nStringsExt;
 }
 
-function TokenEditorFields({ fields, groupLabel, removeButton, property, operator, value }: TokenEditorLayout) {
+function TokenEditorFields({
+  tokens,
+  supportsGroups,
+  onRemove,
+  onRemoveFromGroup,
+  renderProperty,
+  renderOperator,
+  renderValue,
+  i18nStrings,
+}: TokenEditorLayout) {
   const breakpoint = 912;
   const [isNarrow, setIsNarrow] = useState(window.innerWidth <= breakpoint);
 
@@ -255,11 +243,6 @@ function TokenEditorFields({ fields, groupLabel, removeButton, property, operato
     };
   }, []);
 
-  const indices: number[] = [];
-  for (let i = 0; i < fields; i++) {
-    indices.push(i);
-  }
-
   const propertyLabelId = useUniqueId();
   const operatorLabelId = useUniqueId();
   const valueLabelId = useUniqueId();
@@ -267,64 +250,66 @@ function TokenEditorFields({ fields, groupLabel, removeButton, property, operato
   if (isNarrow) {
     return (
       <div className={styles['token-editor-grouped-list']}>
-        {indices.map(index => (
+        {tokens.map((token, index) => (
           <div
             key={index}
             className={styles['token-editor-grouped-list-item']}
             role="group"
-            aria-label={groupLabel(index)}
+            aria-label={`${token.propertyLabel} ${token.operator} ${token.value}`}
           >
             <InternalFormField
-              label={property.label}
+              label={i18nStrings.propertyText}
               className={clsx(
                 styles['token-editor-grouped-field-property'],
                 testUtilStyles['token-editor-field-property']
               )}
               data-testindex={index}
             >
-              {property.render(index)}
+              {renderProperty(index)}
             </InternalFormField>
 
             <InternalFormField
-              label={operator.label}
+              label={i18nStrings.operatorText}
               className={clsx(
                 styles['token-editor-grouped-field-operator'],
                 testUtilStyles['token-editor-field-operator']
               )}
               data-testindex={index}
             >
-              {operator.render(index)}
+              {renderOperator(index)}
             </InternalFormField>
 
             <InternalFormField
-              label={value.label}
+              label={i18nStrings.valueText}
               className={clsx(styles['token-editor-grouped-field-value'], testUtilStyles['token-editor-field-value'])}
               data-testindex={index}
             >
-              {value.render(index)}
+              {renderValue(index)}
             </InternalFormField>
 
-            <div className={styles['token-editor-grouped-remove-token']}>
-              <InternalButtonDropdown
-                variant="normal"
-                ariaLabel={removeButton.labelRemoveMore(index)}
-                items={[{ id: 'remove-from-group', text: removeButton.labelRemoveFromGroup(index) }]}
-                onItemClick={({ detail }) => {
-                  switch (detail.id) {
-                    case 'remove-from-group':
-                      return removeButton.onRemoveFromGroup(index);
-                  }
-                }}
-                disabled={fields === 1}
-                mainAction={{
-                  text: removeButton.labelRemove(index),
-                  onClick: () => removeButton.onRemove(index),
-                  disabled: fields === 1,
-                }}
-                className={testUtilStyles['token-editor-token-remove-actions']}
-                data-testindex={index}
-              />
-            </div>
+            {supportsGroups && (
+              <div className={styles['token-editor-grouped-remove-token']}>
+                <InternalButtonDropdown
+                  variant="normal"
+                  ariaLabel={i18nStrings.tokenEditorTokenActionsLabel(token)}
+                  items={[{ id: 'remove-from-group', text: i18nStrings.tokenEditorTokenRemoveFromGroupLabel(token) }]}
+                  onItemClick={({ detail }) => {
+                    switch (detail.id) {
+                      case 'remove-from-group':
+                        return onRemoveFromGroup(index);
+                    }
+                  }}
+                  disabled={tokens.length === 1}
+                  mainAction={{
+                    text: i18nStrings.tokenEditorTokenRemoveLabel(token),
+                    onClick: () => onRemove(index),
+                    disabled: tokens.length === 1,
+                  }}
+                  className={testUtilStyles['token-editor-token-remove-actions']}
+                  data-testindex={index}
+                />
+              </div>
+            )}
           </div>
         ))}
       </div>
@@ -335,22 +320,22 @@ function TokenEditorFields({ fields, groupLabel, removeButton, property, operato
     <div className={styles['token-editor-grouped-table']}>
       <div className={styles['token-editor-grouped-table-row']}>
         <div id={propertyLabelId} className={styles['token-editor-grouped-table-header-cell']}>
-          {property.label}
+          {i18nStrings.propertyText}
         </div>
         <div id={operatorLabelId} className={styles['token-editor-grouped-table-header-cell']}>
-          {operator.label}
+          {i18nStrings.operatorText}
         </div>
         <div id={valueLabelId} className={styles['token-editor-grouped-table-header-cell']}>
-          {value.label}
+          {i18nStrings.valueText}
         </div>
       </div>
 
-      {indices.map(index => (
+      {tokens.map((token, index) => (
         <div
           key={index}
           className={styles['token-editor-grouped-table-row']}
           role="group"
-          aria-label={groupLabel(index)}
+          aria-label={`${token.propertyLabel} ${token.operator} ${token.value}`}
         >
           <div className={styles['token-editor-grouped-table-cell']}>
             <FormFieldContext.Provider value={{ ariaLabelledby: propertyLabelId }}>
@@ -361,7 +346,7 @@ function TokenEditorFields({ fields, groupLabel, removeButton, property, operato
                 )}
                 data-testindex={index}
               >
-                {property.render(index)}
+                {renderProperty(index)}
               </InternalFormField>
             </FormFieldContext.Provider>
           </div>
@@ -375,7 +360,7 @@ function TokenEditorFields({ fields, groupLabel, removeButton, property, operato
                 )}
                 data-testindex={index}
               >
-                {operator.render(index)}
+                {renderOperator(index)}
               </InternalFormField>
             </FormFieldContext.Provider>
           </div>
@@ -386,34 +371,36 @@ function TokenEditorFields({ fields, groupLabel, removeButton, property, operato
                 className={clsx(styles['token-editor-grouped-field-value'], testUtilStyles['token-editor-field-value'])}
                 data-testindex={index}
               >
-                {value.render(index)}
+                {renderValue(index)}
               </InternalFormField>
             </FormFieldContext.Provider>
           </div>
 
-          <div className={styles['token-editor-grouped-table-cell']}>
-            <div className={styles['token-editor-grouped-remove-token']}>
-              <InternalButtonDropdown
-                variant="icon"
-                ariaLabel={removeButton.labelRemoveMore(index)}
-                items={[
-                  { id: 'remove', text: removeButton.labelRemove(index) },
-                  { id: 'remove-from-group', text: removeButton.labelRemoveFromGroup(index) },
-                ]}
-                onItemClick={({ detail }) => {
-                  switch (detail.id) {
-                    case 'remove':
-                      return removeButton.onRemove(index);
-                    case 'remove-from-group':
-                      return removeButton.onRemoveFromGroup(index);
-                  }
-                }}
-                disabled={fields === 1}
-                className={testUtilStyles['token-editor-token-remove-actions']}
-                data-testindex={index}
-              />
+          {supportsGroups && (
+            <div className={styles['token-editor-grouped-table-cell']}>
+              <div className={styles['token-editor-grouped-remove-token']}>
+                <InternalButtonDropdown
+                  variant="icon"
+                  ariaLabel={i18nStrings.tokenEditorTokenActionsLabel(token)}
+                  items={[
+                    { id: 'remove', text: i18nStrings.tokenEditorTokenRemoveLabel(token) },
+                    { id: 'remove-from-group', text: i18nStrings.tokenEditorTokenRemoveFromGroupLabel(token) },
+                  ]}
+                  onItemClick={({ detail }) => {
+                    switch (detail.id) {
+                      case 'remove':
+                        return onRemove(index);
+                      case 'remove-from-group':
+                        return onRemoveFromGroup(index);
+                    }
+                  }}
+                  disabled={tokens.length === 1}
+                  className={testUtilStyles['token-editor-token-remove-actions']}
+                  data-testindex={index}
+                />
+              </div>
             </div>
-          </div>
+          )}
         </div>
       ))}
     </div>
