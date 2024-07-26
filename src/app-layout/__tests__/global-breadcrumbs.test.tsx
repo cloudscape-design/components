@@ -16,6 +16,13 @@ const defaultBreadcrumbs: Array<BreadcrumbGroupProps.Item> = [
   { text: 'Page', href: '/home/page' },
 ];
 
+const defaultAppLayoutProps = {
+  // Suppress warning in runtime drawers API
+  __disableRuntimeDrawers: true,
+  // Suppress warning about duplicate tools which are rendered by default
+  toolsHide: true,
+};
+
 function findAllBreadcrumbsInstances() {
   return wrapper.findAllByClassName(BreadcrumbGroupWrapper.rootSelector);
 }
@@ -28,10 +35,14 @@ function findRootBreadcrumb() {
   return wrapper.findAppLayout()!.findBreadcrumbs()!.findBreadcrumbGroup()!.findBreadcrumbLink(1)!;
 }
 
-function renderAsync(jsx: React.ReactElement) {
-  render(jsx);
+function delay() {
   // longer than a setTimeout(..., 0) used inside the implementation
   return act(() => new Promise(resolve => setTimeout(resolve, 10)));
+}
+
+function renderAsync(jsx: React.ReactElement) {
+  render(jsx);
+  return delay();
 }
 
 afterEach(() => {
@@ -122,23 +133,54 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     expect(findRootBreadcrumb().getElement()).toHaveTextContent('Second');
   });
 
-  test('when multiple app layouts rendered, only the first instance receives breadcrumbs', async () => {
+  test('when multiple app layouts rendered, only the last instance receives breadcrumbs', async () => {
     await renderAsync(
       <>
-        <AppLayout data-testid="first" />
-        <AppLayout data-testid="second" content={<BreadcrumbGroup items={defaultBreadcrumbs} />} />
+        <AppLayout {...defaultAppLayoutProps} data-testid="first" />
+        <AppLayout
+          {...defaultAppLayoutProps}
+          data-testid="second"
+          content={<BreadcrumbGroup items={defaultBreadcrumbs} />}
+        />
       </>
     );
     expect(findAllBreadcrumbsInstances()).toHaveLength(1);
+    expect(wrapper.find('[data-testid="first"]')!.findAppLayout()!.findBreadcrumbs()).toBeFalsy();
     expect(
       wrapper
-        .find('[data-testid="first"]')!
+        .find('[data-testid="second"]')!
         .findAppLayout()!
         .findBreadcrumbs()!
         .findBreadcrumbGroup()!
         .findBreadcrumbLinks()
     ).toHaveLength(2);
-    expect(wrapper.find('[data-testid="second"]')!.findAppLayout()!.findBreadcrumbs()).toBeFalsy();
+  });
+
+  test('when multiple nested app layouts rendered, the inner instance receives breadcrumbs', async () => {
+    await renderAsync(
+      <>
+        <AppLayout
+          {...defaultAppLayoutProps}
+          data-testid="first"
+          content={
+            <AppLayout
+              {...defaultAppLayoutProps}
+              data-testid="second"
+              breadcrumbs={<BreadcrumbGroup items={defaultBreadcrumbs} />}
+            />
+          }
+        />
+      </>
+    );
+    expect(findAllBreadcrumbsInstances()).toHaveLength(1);
+    expect(
+      wrapper
+        .find('[data-testid="second"]')!
+        .findAppLayout()!
+        .findBreadcrumbs()!
+        .findBreadcrumbGroup()!
+        .findBreadcrumbLinks()
+    ).toHaveLength(2);
   });
 
   test('updates when a single breadcrumbs instance changes', async () => {

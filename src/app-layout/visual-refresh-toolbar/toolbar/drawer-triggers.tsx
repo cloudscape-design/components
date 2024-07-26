@@ -17,24 +17,25 @@ import splitPanelTestUtilStyles from '../../../split-panel/test-classes/styles.c
 import testutilStyles from '../../test-classes/styles.css.js';
 import styles from './styles.css.js';
 
+export interface SplitPanelToggleProps {
+  displayed: boolean;
+  ariaLabel: string | undefined;
+  controlId: string | undefined;
+  active: boolean;
+  position: AppLayoutProps.SplitPanelPosition;
+}
+
 interface DrawerTriggersProps {
   ariaLabels: AppLayoutPropsWithDefaults['ariaLabels'];
 
   activeDrawerId: string | null;
-  drawersFocusRef: React.Ref<Focusable>;
+  drawersFocusRef: React.Ref<Focusable> | undefined;
   drawers: ReadonlyArray<AppLayoutProps.Drawer>;
-  onActiveDrawerChange: (drawerId: string | null) => void;
+  onActiveDrawerChange: ((drawerId: string | null) => void) | undefined;
 
-  splitPanelToggleProps:
-    | undefined
-    | {
-        ariaLabel: string | undefined;
-        controlId: string | undefined;
-        active: boolean;
-        position: AppLayoutProps.SplitPanelPosition;
-      };
-  splitPanelFocusRef: React.Ref<Focusable>;
-  onSplitPanelToggle: () => void;
+  splitPanelToggleProps: SplitPanelToggleProps | undefined;
+  splitPanelFocusRef: React.Ref<Focusable> | undefined;
+  onSplitPanelToggle: (() => void) | undefined;
 }
 
 export function DrawerTriggers({
@@ -108,7 +109,7 @@ export function DrawerTriggers({
             ariaExpanded={splitPanelToggleProps.active}
             className={clsx(styles['drawers-trigger'], splitPanelTestUtilStyles['open-button'])}
             iconName={splitPanelToggleProps.position === 'side' ? 'view-vertical' : 'view-horizontal'}
-            onClick={() => onSplitPanelToggle()}
+            onClick={() => onSplitPanelToggle?.()}
             selected={splitPanelToggleProps.active}
             ref={splitPanelFocusRef}
           />
@@ -127,7 +128,7 @@ export function DrawerTriggers({
               iconName={item.trigger.iconName}
               iconSvg={item.trigger.iconSvg}
               key={item.id}
-              onClick={() => onActiveDrawerChange(activeDrawerId !== item.id ? item.id : null)}
+              onClick={() => onActiveDrawerChange?.(activeDrawerId !== item.id ? item.id : null)}
               ref={item.id === previousActiveDrawerId.current ? drawersFocusRef : undefined}
               selected={item.id === activeDrawerId}
               badge={item.badge}
@@ -150,7 +151,7 @@ export function DrawerTriggers({
                 onClick={onClick}
               />
             )}
-            onItemClick={event => onActiveDrawerChange(event.detail.id)}
+            onItemClick={event => onActiveDrawerChange?.(event.detail.id)}
           />
         )}
       </div>

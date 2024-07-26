@@ -40,14 +40,17 @@ export function useSetGlobalBreadcrumbs<T extends BreadcrumbGroupProps.Item>(pro
   return useSetGlobalBreadcrumbsImplementation(props);
 }
 
-export function useGetGlobalBreadcrumbs() {
+export function useGetGlobalBreadcrumbs(enabled: boolean) {
   const [discoveredBreadcrumbs, setDiscoveredBreadcrumbs] = useState<BreadcrumbGroupProps<any> | null>(null);
 
   useEffect(() => {
+    if (!enabled) {
+      return;
+    }
     return awsuiPluginsInternal.breadcrumbs.registerAppLayout(breadcrumbs => {
       setDiscoveredBreadcrumbs(breadcrumbs);
     });
-  }, []);
+  }, [enabled]);
 
   return discoveredBreadcrumbs;
 }
