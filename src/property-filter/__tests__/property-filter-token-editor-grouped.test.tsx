@@ -51,6 +51,7 @@ const dateProperty: InternalFilteringProperty = {
 };
 
 const defaultProps: TokenEditorProps = {
+  supportsGroups: true,
   asyncProps: {},
   customGroupsText: [],
   freeTextFiltering: {
@@ -67,8 +68,6 @@ const defaultProps: TokenEditorProps = {
     valueText: 'Value',
     cancelActionText: 'Cancel',
     applyActionText: 'Apply',
-  },
-  i18nStringsExt: {
     tokenEditorTokenActionsLabel: token =>
       `Filter remove actions for ${token.propertyLabel} ${token.operator} ${token.value}`,
     tokenEditorTokenRemoveLabel: () => 'Remove filter',
