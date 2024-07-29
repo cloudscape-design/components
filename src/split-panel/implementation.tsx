@@ -8,7 +8,6 @@ import { SizeControlProps } from '../app-layout/utils/interfaces';
 import { useKeyboardEvents } from '../app-layout/utils/use-keyboard-events';
 import { usePointerEvents } from '../app-layout/utils/use-pointer-events';
 import { InternalButton } from '../button/internal';
-import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
 import PanelResizeHandle from '../internal/components/panel-resize-handle';
 import { Transition } from '../internal/components/transition';
@@ -30,7 +29,7 @@ export { SplitPanelProps };
 
 export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanelProps>(
   (
-    { header, children, hidePreferencesButton = false, closeBehavior = 'collapse', i18nStrings, ...restProps },
+    { header, children, hidePreferencesButton = false, closeBehavior = 'collapse', i18nStrings = {}, ...restProps },
     __internalRootRef
   ) => {
     const isRefresh = useVisualRefresh();
@@ -52,12 +51,11 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
       refs,
     } = useSplitPanelContext();
     const baseProps = getBaseProps(restProps);
-    const i18n = useInternalI18n('split-panel');
     const [isPreferencesOpen, setPreferencesOpen] = useState<boolean>(false);
 
     const appLayoutMaxWidth = isRefresh && position === 'bottom' ? contentWidthStyles : undefined;
 
-    const openButtonAriaLabel = i18n('i18nStrings.openButtonAriaLabel', i18nStrings?.openButtonAriaLabel);
+    const openButtonAriaLabel = i18nStrings.openButtonAriaLabel;
     useEffect(() => {
       setSplitPanelToggle({ displayed: closeBehavior === 'collapse', ariaLabel: openButtonAriaLabel });
     }, [setSplitPanelToggle, openButtonAriaLabel, closeBehavior]);
@@ -97,7 +95,7 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
                 variant="icon"
                 onClick={() => setPreferencesOpen(true)}
                 formAction="none"
-                ariaLabel={i18n('i18nStrings.preferencesTitle', i18nStrings?.preferencesTitle)}
+                ariaLabel={i18nStrings.preferencesTitle}
                 ref={refs.preferences}
               />
               <span className={styles.divider} />
@@ -117,7 +115,7 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
               variant="icon"
               onClick={onToggle}
               formAction="none"
-              ariaLabel={i18n('i18nStrings.closeButtonAriaLabel', i18nStrings?.closeButtonAriaLabel)}
+              ariaLabel={i18nStrings.closeButtonAriaLabel}
               ariaExpanded={isOpen}
             />
           ) : position === 'side' ? null : (
@@ -126,7 +124,7 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
               iconName="angle-up"
               variant="icon"
               formAction="none"
-              ariaLabel={i18n('i18nStrings.openButtonAriaLabel', i18nStrings?.openButtonAriaLabel)}
+              ariaLabel={i18nStrings.openButtonAriaLabel}
               ref={refs.toggle}
               ariaExpanded={isOpen}
             />
@@ -139,7 +137,7 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
       <PanelResizeHandle
         ref={refs.slider}
         className={testUtilStyles.slider}
-        ariaLabel={i18n('i18nStrings.resizeHandleAriaLabel', i18nStrings?.resizeHandleAriaLabel)}
+        ariaLabel={i18nStrings.resizeHandleAriaLabel}
         // Allows us to use the logical left/right keys to move the slider left/right,
         // but match aria keyboard behavior of using left/right to decrease/increase
         // the slider value.
@@ -204,7 +202,7 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
                 splitPanelRef={mergedRef}
                 cappedSize={size}
                 onToggle={onToggle}
-                openButtonAriaLabel={i18n('i18nStrings.openButtonAriaLabel', i18nStrings?.openButtonAriaLabel)}
+                openButtonAriaLabel={openButtonAriaLabel}
                 toggleRef={refs.toggle}
                 header={wrappedHeader}
                 panelHeaderId={panelHeaderId}
@@ -238,16 +236,13 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
                 disabledSidePosition={position === 'bottom' && isForcedPosition}
                 isRefresh={isRefresh}
                 i18nStrings={{
-                  header: i18n('i18nStrings.preferencesTitle', i18nStrings?.preferencesTitle),
-                  confirm: i18n('i18nStrings.preferencesConfirm', i18nStrings?.preferencesConfirm),
-                  cancel: i18n('i18nStrings.preferencesCancel', i18nStrings?.preferencesCancel),
-                  positionLabel: i18n('i18nStrings.preferencesPositionLabel', i18nStrings?.preferencesPositionLabel),
-                  positionDescription: i18n(
-                    'i18nStrings.preferencesPositionDescription',
-                    i18nStrings?.preferencesPositionDescription
-                  ),
-                  positionBottom: i18n('i18nStrings.preferencesPositionBottom', i18nStrings?.preferencesPositionBottom),
-                  positionSide: i18n('i18nStrings.preferencesPositionSide', i18nStrings?.preferencesPositionSide),
+                  header: i18nStrings.preferencesTitle,
+                  confirm: i18nStrings.preferencesConfirm,
+                  cancel: i18nStrings.preferencesCancel,
+                  positionLabel: i18nStrings.preferencesPositionLabel,
+                  positionDescription: i18nStrings.preferencesPositionDescription,
+                  positionBottom: i18nStrings.preferencesPositionBottom,
+                  positionSide: i18nStrings.preferencesPositionSide,
                 }}
                 onConfirm={preferences => {
                   onPreferencesChange({ ...preferences });
