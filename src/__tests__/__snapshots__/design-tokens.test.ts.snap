@@ -114,8 +114,8 @@ Object {
         "color-background-button-normal-pressed": Object {
           "$description": "The background color of normal buttons in pressed state.",
           "$value": Object {
-            "dark": "#21252c",
-            "light": "#fafafa",
+            "dark": "#16191f",
+            "light": "#eaeded",
           },
         },
         "color-background-button-primary-active": Object {
@@ -2521,8 +2521,8 @@ Object {
         "color-background-button-normal-pressed": Object {
           "$description": "The background color of normal buttons in pressed state.",
           "$value": Object {
-            "dark": "#21252c",
-            "light": "#fafafa",
+            "dark": "#16191f",
+            "light": "#eaeded",
           },
         },
         "color-background-button-primary-active": Object {
@@ -4928,8 +4928,8 @@ Object {
         "color-background-button-normal-pressed": Object {
           "$description": "The background color of normal buttons in pressed state.",
           "$value": Object {
-            "dark": "#21252c",
-            "light": "#fafafa",
+            "dark": "#16191f",
+            "light": "#eaeded",
           },
         },
         "color-background-button-primary-active": Object {
@@ -7335,8 +7335,8 @@ Object {
         "color-background-button-normal-pressed": Object {
           "$description": "The background color of normal buttons in pressed state.",
           "$value": Object {
-            "dark": "#21252c",
-            "light": "#fafafa",
+            "dark": "#16191f",
+            "light": "#eaeded",
           },
         },
         "color-background-button-primary-active": Object {
@@ -9742,8 +9742,8 @@ Object {
         "color-background-button-normal-pressed": Object {
           "$description": "The background color of normal buttons in pressed state.",
           "$value": Object {
-            "dark": "#21252c",
-            "light": "#21252c",
+            "dark": "#16191f",
+            "light": "#16191f",
           },
         },
         "color-background-button-primary-active": Object {
@@ -12149,8 +12149,8 @@ Object {
     "color-background-button-normal-pressed": Object {
       "$description": "The background color of normal buttons in pressed state.",
       "$value": Object {
-        "dark": "#21252c",
-        "light": "#fafafa",
+        "dark": "#16191f",
+        "light": "#eaeded",
       },
     },
     "color-background-button-primary-active": Object {
@@ -14561,8 +14561,8 @@ Object {
         "color-background-button-normal-pressed": Object {
           "$description": "The background color of normal buttons in pressed state.",
           "$value": Object {
-            "dark": "#192534",
-            "light": "#f2f8fd",
+            "dark": "#354150",
+            "light": "#d3e7f9",
           },
         },
         "color-background-button-primary-active": Object {
@@ -16968,8 +16968,8 @@ Object {
         "color-background-button-normal-pressed": Object {
           "$description": "The background color of normal buttons in pressed state.",
           "$value": Object {
-            "dark": "#192534",
-            "light": "#192534",
+            "dark": "#354150",
+            "light": "#354150",
           },
         },
         "color-background-button-primary-active": Object {
@@ -19375,8 +19375,8 @@ Object {
         "color-background-button-normal-pressed": Object {
           "$description": "The background color of normal buttons in pressed state.",
           "$value": Object {
-            "dark": "#192534",
-            "light": "#f2f8fd",
+            "dark": "#354150",
+            "light": "#d3e7f9",
           },
         },
         "color-background-button-primary-active": Object {
@@ -21782,8 +21782,8 @@ Object {
         "color-background-button-normal-pressed": Object {
           "$description": "The background color of normal buttons in pressed state.",
           "$value": Object {
-            "dark": "#192534",
-            "light": "#f2f8fd",
+            "dark": "#354150",
+            "light": "#d3e7f9",
           },
         },
         "color-background-button-primary-active": Object {
@@ -24189,8 +24189,8 @@ Object {
         "color-background-button-normal-pressed": Object {
           "$description": "The background color of normal buttons in pressed state.",
           "$value": Object {
-            "dark": "#192534",
-            "light": "#f2f8fd",
+            "dark": "#354150",
+            "light": "#d3e7f9",
           },
         },
         "color-background-button-primary-active": Object {
@@ -26596,8 +26596,8 @@ Object {
         "color-background-button-normal-pressed": Object {
           "$description": "The background color of normal buttons in pressed state.",
           "$value": Object {
-            "dark": "#192534",
-            "light": "#192534",
+            "dark": "#354150",
+            "light": "#354150",
           },
         },
         "color-background-button-primary-active": Object {
@@ -29003,8 +29003,8 @@ Object {
         "color-background-button-normal-pressed": Object {
           "$description": "The background color of normal buttons in pressed state.",
           "$value": Object {
-            "dark": "#192534",
-            "light": "#192534",
+            "dark": "#354150",
+            "light": "#354150",
           },
         },
         "color-background-button-primary-active": Object {
@@ -31410,8 +31410,8 @@ Object {
     "color-background-button-normal-pressed": Object {
       "$description": "The background color of normal buttons in pressed state.",
       "$value": Object {
-        "dark": "#192534",
-        "light": "#f2f8fd",
+        "dark": "#354150",
+        "light": "#d3e7f9",
       },
     },
     "color-background-button-primary-active": Object {
