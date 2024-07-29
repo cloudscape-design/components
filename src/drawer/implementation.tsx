@@ -3,8 +3,7 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { getGlobalFlag } from '@cloudscape-design/component-toolkit/internal';
-
+import { isAppLayoutToolbarEnabled } from '../app-layout/utils/feature-flags';
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
 import LiveRegion from '../internal/components/live-region';
@@ -27,10 +26,9 @@ export function DrawerImplementation({
 }: DrawerInternalProps) {
   const baseProps = getBaseProps(restProps);
   const i18n = useInternalI18n('drawer');
-  const hasToolbar = getGlobalFlag('appLayoutWidget');
   const containerProps = {
     ...baseProps,
-    className: clsx(baseProps.className, styles.drawer, hasToolbar && styles['with-toolbar']),
+    className: clsx(baseProps.className, styles.drawer, isAppLayoutToolbarEnabled() && styles['with-toolbar']),
   };
   return loading ? (
     <div {...containerProps} ref={__internalRootRef}>

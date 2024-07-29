@@ -20,6 +20,7 @@ import styles from './styles.scss';
 
 interface GlobalFlags {
   appLayoutWidget?: boolean;
+  appLayoutToolbar?: boolean;
 }
 const awsuiVisualRefreshFlag = Symbol.for('awsui-visual-refresh-flag');
 const awsuiGlobalFlagsSymbol = Symbol.for('awsui-global-flags');
@@ -91,7 +92,7 @@ function App() {
 }
 
 const history = createHashHistory();
-const { direction, visualRefresh, appLayoutWidget } = parseQuery(history.location.search);
+const { direction, visualRefresh, appLayoutWidget, appLayoutToolbar } = parseQuery(history.location.search);
 
 // The VR class needs to be set before any React rendering occurs.
 window[awsuiVisualRefreshFlag] = () => visualRefresh;
@@ -99,6 +100,7 @@ if (!window[awsuiGlobalFlagsSymbol]) {
   window[awsuiGlobalFlagsSymbol] = {};
 }
 window[awsuiGlobalFlagsSymbol].appLayoutWidget = appLayoutWidget;
+window[awsuiGlobalFlagsSymbol].appLayoutToolbar = appLayoutToolbar;
 
 // Apply the direction value to the HTML element dir attribute
 document.documentElement.setAttribute('dir', direction);

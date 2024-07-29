@@ -2,8 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
-import { getGlobalFlag } from '@cloudscape-design/component-toolkit/internal';
-
+import { isAppLayoutToolbarEnabled } from '../../../app-layout/utils/feature-flags';
 import { BreadcrumbGroupProps } from '../../../breadcrumb-group/interfaces';
 import { awsuiPluginsInternal } from '../api';
 import { BreadcrumbsGlobalRegistration } from '../controllers/breadcrumbs';
@@ -32,7 +31,7 @@ function useSetGlobalBreadcrumbsImplementation(props: BreadcrumbGroupProps<any>)
 
 export function useSetGlobalBreadcrumbs<T extends BreadcrumbGroupProps.Item>(props: BreadcrumbGroupProps<T>) {
   // avoid additional side effects when this feature is not active
-  if (!getGlobalFlag('appLayoutWidget')) {
+  if (!isAppLayoutToolbarEnabled()) {
     return false;
   }
   // getGlobalFlag() value does not change without full page reload
