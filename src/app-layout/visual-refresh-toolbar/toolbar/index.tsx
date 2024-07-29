@@ -50,7 +50,9 @@ interface AppLayoutToolbarImplementationProps {
 
 export function AppLayoutToolbarImplementation({
   appLayoutInternals,
-  toolbarProps,
+  // the value could be undefined if this component is loaded as a widget by a different app layout version
+  // not testable in a single-version setup
+  toolbarProps = {},
 }: AppLayoutToolbarImplementationProps) {
   const {
     breadcrumbs,
