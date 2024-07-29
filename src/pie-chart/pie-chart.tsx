@@ -129,6 +129,7 @@ export default <T extends PieChartProps.Datum>({
 
   const popoverDismissedRecently = useRef(false);
   const escapePressed = useRef(false);
+  const duringTouch = useRef(false);
 
   const highlightSegment = useCallback(
     (internalDatum: InternalChartDatum<T>) => {
@@ -203,6 +204,10 @@ export default <T extends PieChartProps.Datum>({
         escapePressed.current = false;
         return;
       }
+      if (duringTouch.current) {
+        duringTouch.current = false;
+        return;
+      }
       if (pinnedSegment !== null) {
         return;
       }
@@ -210,6 +215,9 @@ export default <T extends PieChartProps.Datum>({
     },
     [pinnedSegment, highlightSegment]
   );
+  const onTouchStart = useCallback(() => {
+    duringTouch.current = true;
+  }, []);
 
   const onKeyDown = useCallback(
     (event: React.KeyboardEvent) => {
@@ -327,6 +335,7 @@ export default <T extends PieChartProps.Datum>({
             segmentAriaRoleDescription={i18nStrings?.segmentAriaRoleDescription}
             onMouseDown={onMouseDown}
             onMouseOver={onMouseOver}
+            onTouchStart={onTouchStart}
           />
           {hasLabels && (
             <Labels
