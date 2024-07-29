@@ -20,7 +20,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundButtonNormalDefault: { light: '{colorWhite}', dark: '{colorGrey800}' },
   colorBackgroundButtonNormalDisabled: { light: '{colorWhite}', dark: '{colorGrey800}' },
   colorBackgroundButtonNormalHover: { light: '{colorBlue100}', dark: '{colorGrey750}' },
-  colorBackgroundButtonNormalPressed: { light: '{colorBlue100}', dark: '{colorGrey750}' },
+  colorBackgroundButtonNormalPressed: { light: '{colorBlue200}', dark: '{colorGrey650}' },
   colorBackgroundButtonPrimaryActive: { light: '{colorBlue800}', dark: '{colorBlue500}' },
   colorBackgroundButtonPrimaryDefault: '{colorBorderButtonNormalDefault}',
   colorBackgroundButtonPrimaryDisabled: { light: '{colorGrey200}', dark: '{colorGrey700}' },
