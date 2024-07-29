@@ -183,7 +183,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     const { registered, toolbarProps } = useMultiAppLayout({
       forceDeduplicationType,
       ariaLabels: ariaLabelsWithDrawers,
-      navigation,
+      navigation: resolvedNavigation,
       navigationOpen,
       onNavigationToggle,
       navigationFocusRef: navigationFocusControl.refs.toggle,
