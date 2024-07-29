@@ -2,6 +2,8 @@
  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  SPDX-License-Identifier: Apache-2.0
 */
+@use '../../internal/styles/tokens.scss' as awsui;
+@use '../../internal/styles' as styles;
 
 .modal-actions {
   justify-content: flex-end;
@@ -9,4 +11,11 @@
 
 .submit-button {
   /* used in test-utils */
+}
+
+.last-updated-caption {
+  @include styles.font-body-s;
+
+  text-align: end;
+  color: awsui.$color-text-status-inactive;
 }

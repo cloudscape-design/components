@@ -218,6 +218,7 @@ export namespace S3ResourceSelectorProps {
     modalCancelButton?: string;
     modalSubmitButton?: string;
     modalBreadcrumbRootItem?: string;
+    modalLastUpdatedText?: string;
 
     selectionBuckets?: string;
     selectionObjects?: string;
