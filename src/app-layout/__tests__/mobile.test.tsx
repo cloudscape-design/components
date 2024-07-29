@@ -2,8 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 /* eslint simple-import-sort/imports: 0 */
 import React, { useState } from 'react';
-import { act } from 'react-dom/test-utils';
-import { within } from '@testing-library/react';
+import { act, within } from '@testing-library/react';
 import {
   describeEachAppLayout,
   isDrawerClosed,

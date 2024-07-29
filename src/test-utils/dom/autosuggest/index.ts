@@ -1,9 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { act } from 'react-dom/test-utils';
-
 import { ComponentWrapper, createWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
-import { escapeSelector } from '@cloudscape-design/test-utils-core/utils';
+import { act, escapeSelector } from '@cloudscape-design/test-utils-core/utils';
 
 import InputWrapper from '../input';
 import DropdownWrapper from '../internal/dropdown';
