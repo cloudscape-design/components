@@ -38,7 +38,7 @@ describe('ColumnLayout (with CSS grid) component', () => {
     });
 
     expect(wrapper.getElement().childElementCount).toBe(4);
-    expect(getGridColumns()).toBe('repeat(2, 1fr)');
+    expect(getGridColumns()).toBe('repeat(2, minmax(0, 1fr))');
   });
 
   it('wraps columns if necessary', () => {
@@ -57,6 +57,6 @@ describe('ColumnLayout (with CSS grid) component', () => {
       ),
     });
 
-    expect(getGridColumns()).toBe('repeat(4, 1fr)');
+    expect(getGridColumns()).toBe('repeat(4, minmax(0, 1fr))');
   });
 });
