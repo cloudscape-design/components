@@ -1,6 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { LabelIdentifier } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
 export interface GeneratedAnalyticsMetadataButtonDropdownClick {
   action: 'click';
   detail: {
@@ -13,7 +15,7 @@ export interface GeneratedAnalyticsMetadataButtonDropdownClick {
 export interface GeneratedAnalyticsMetadataButtonDropdownExpand {
   action: 'expand';
   detail: {
-    label: string;
+    label: string | LabelIdentifier;
     expanded: string;
     position?: string;
     id?: string;

@@ -80,7 +80,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
         {...defaultAppLayoutProps}
         data-testid="first"
         toolsHide={true}
-        content={<AppLayout data-testid="second" tools="testing tools" />}
+        content={<AppLayout data-testid="second" navigationHide={true} tools="testing tools" />}
       />
     );
     expect(firstLayout.findTools()).toBeFalsy();
@@ -97,7 +97,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
         data-testid="first"
         toolsHide={true}
         splitPanel={<SplitPanel header="Testing">Dummy content</SplitPanel>}
-        content={<AppLayout data-testid="second" />}
+        content={<AppLayout navigationHide={true} data-testid="second" />}
       />
     );
     expect(firstLayout.findSplitPanel()).toBeTruthy();

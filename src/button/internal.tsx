@@ -167,12 +167,12 @@ export const InternalButton = React.forwardRef(
       ? {}
       : {
           action: 'click',
-          detail: { label: '' },
+          detail: { label: { root: 'self' } },
         };
     if (__injectAnalyticsComponentMetadata) {
       analyticsMetadata.component = {
         name: 'awsui.Button',
-        label: '',
+        label: { root: 'self' },
         properties: { variant, disabled: `${disabled}` },
       };
     }

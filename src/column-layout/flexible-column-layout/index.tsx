@@ -64,7 +64,7 @@ export default function FlexibleColumnLayout({
         styles[`grid-variant-${variant}`],
         shouldDisableGutters && [styles['grid-no-gutters']]
       )}
-      style={{ gridTemplateColumns: `repeat(${columnCount}, 1fr)` }}
+      style={{ gridTemplateColumns: `repeat(${columnCount}, minmax(0, 1fr))` }}
     >
       {flattenedChildren.map((child, i) => {
         // If this react child is a primitive value, the key will be undefined
