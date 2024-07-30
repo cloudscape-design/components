@@ -87,13 +87,6 @@ $dropdown-trigger-icon-offset: 2px;
     }
   }
 
-  & > .trigger-item.disabled,
-  & > .trigger-item.loading {
-    & > .trigger-button:not(:focus) {
-      z-index: -1;
-    }
-  }
-
   & > .trigger-item.variant-normal {
     &:not(:last-child) > .trigger-button {
       margin-inline-end: 0;
