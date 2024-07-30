@@ -111,13 +111,6 @@ Object {
             "light": "#fafafa",
           },
         },
-        "color-background-button-normal-pressed": Object {
-          "$description": "The background color of normal buttons in pressed state.",
-          "$value": Object {
-            "dark": "#16191f",
-            "light": "#eaeded",
-          },
-        },
         "color-background-button-primary-active": Object {
           "$description": "The background color of primary buttons in active state.",
           "$value": Object {
@@ -391,6 +384,13 @@ Object {
             "light": "#fffce9",
           },
         },
+        "color-background-toggle-button-normal-pressed": Object {
+          "$description": "The background color of normal toggle buttons in pressed state.",
+          "$value": Object {
+            "dark": "#16191f",
+            "light": "#eaeded",
+          },
+        },
         "color-background-toggle-checked-disabled": Object {
           "$description": "The background color of checked toggles in disabled state.",
           "$value": Object {
@@ -438,13 +438,6 @@ Object {
           "$value": Object {
             "dark": "#aab7b8",
             "light": "#16191f",
-          },
-        },
-        "color-border-button-normal-pressed": Object {
-          "$description": "The border color of normal buttons in pressed state.",
-          "$value": Object {
-            "dark": "#879596",
-            "light": "#545b64",
           },
         },
         "color-border-button-primary-disabled": Object {
@@ -578,6 +571,13 @@ Object {
           "$value": Object {
             "dark": "#e0ca57",
             "light": "#906806",
+          },
+        },
+        "color-border-toggle-button-normal-pressed": Object {
+          "$description": "The border color of normal toggle buttons in pressed state.",
+          "$value": Object {
+            "dark": "#879596",
+            "light": "#545b64",
           },
         },
         "color-charts-blue-1-1000": Object {
@@ -1763,13 +1763,6 @@ Object {
             "light": "#16191f",
           },
         },
-        "color-text-button-normal-pressed": Object {
-          "$description": "The pressed text color of normal buttons.",
-          "$value": Object {
-            "dark": "#fafafa",
-            "light": "#16191f",
-          },
-        },
         "color-text-button-primary-active": Object {
           "$description": "The active text color of primary buttons.",
           "$value": Object {
@@ -1945,13 +1938,6 @@ Object {
             "light": "#fafafa",
           },
         },
-        "color-text-interactive-pressed": Object {
-          "$description": "The color of clickable elements in pressed state.",
-          "$value": Object {
-            "dark": "#fafafa",
-            "light": "#16191f",
-          },
-        },
         "color-text-label": Object {
           "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
           "$value": Object {
@@ -2069,6 +2055,20 @@ Object {
           "$value": Object {
             "dark": "#e0ca57",
             "light": "#906806",
+          },
+        },
+        "color-text-toggle-button-icon-pressed": Object {
+          "$description": "The pressed text color of icon toggle buttons.",
+          "$value": Object {
+            "dark": "#fafafa",
+            "light": "#16191f",
+          },
+        },
+        "color-text-toggle-button-normal-pressed": Object {
+          "$description": "The pressed text color of normal toggle buttons.",
+          "$value": Object {
+            "dark": "#fafafa",
+            "light": "#16191f",
           },
         },
         "color-text-top-navigation-title": Object {
@@ -2518,13 +2518,6 @@ Object {
             "light": "#fafafa",
           },
         },
-        "color-background-button-normal-pressed": Object {
-          "$description": "The background color of normal buttons in pressed state.",
-          "$value": Object {
-            "dark": "#16191f",
-            "light": "#eaeded",
-          },
-        },
         "color-background-button-primary-active": Object {
           "$description": "The background color of primary buttons in active state.",
           "$value": Object {
@@ -2798,6 +2791,13 @@ Object {
             "light": "#fffce9",
           },
         },
+        "color-background-toggle-button-normal-pressed": Object {
+          "$description": "The background color of normal toggle buttons in pressed state.",
+          "$value": Object {
+            "dark": "#16191f",
+            "light": "#eaeded",
+          },
+        },
         "color-background-toggle-checked-disabled": Object {
           "$description": "The background color of checked toggles in disabled state.",
           "$value": Object {
@@ -2845,13 +2845,6 @@ Object {
           "$value": Object {
             "dark": "#aab7b8",
             "light": "#16191f",
-          },
-        },
-        "color-border-button-normal-pressed": Object {
-          "$description": "The border color of normal buttons in pressed state.",
-          "$value": Object {
-            "dark": "#879596",
-            "light": "#545b64",
           },
         },
         "color-border-button-primary-disabled": Object {
@@ -2985,6 +2978,13 @@ Object {
           "$value": Object {
             "dark": "#e0ca57",
             "light": "#906806",
+          },
+        },
+        "color-border-toggle-button-normal-pressed": Object {
+          "$description": "The border color of normal toggle buttons in pressed state.",
+          "$value": Object {
+            "dark": "#879596",
+            "light": "#545b64",
           },
         },
         "color-charts-blue-1-1000": Object {
@@ -4170,13 +4170,6 @@ Object {
             "light": "#16191f",
           },
         },
-        "color-text-button-normal-pressed": Object {
-          "$description": "The pressed text color of normal buttons.",
-          "$value": Object {
-            "dark": "#fafafa",
-            "light": "#16191f",
-          },
-        },
         "color-text-button-primary-active": Object {
           "$description": "The active text color of primary buttons.",
           "$value": Object {
@@ -4352,13 +4345,6 @@ Object {
             "light": "#fafafa",
           },
         },
-        "color-text-interactive-pressed": Object {
-          "$description": "The color of clickable elements in pressed state.",
-          "$value": Object {
-            "dark": "#fafafa",
-            "light": "#16191f",
-          },
-        },
         "color-text-label": Object {
           "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
           "$value": Object {
@@ -4476,6 +4462,20 @@ Object {
           "$value": Object {
             "dark": "#e0ca57",
             "light": "#906806",
+          },
+        },
+        "color-text-toggle-button-icon-pressed": Object {
+          "$description": "The pressed text color of icon toggle buttons.",
+          "$value": Object {
+            "dark": "#fafafa",
+            "light": "#16191f",
+          },
+        },
+        "color-text-toggle-button-normal-pressed": Object {
+          "$description": "The pressed text color of normal toggle buttons.",
+          "$value": Object {
+            "dark": "#fafafa",
+            "light": "#16191f",
           },
         },
         "color-text-top-navigation-title": Object {
@@ -4925,13 +4925,6 @@ Object {
             "light": "#fafafa",
           },
         },
-        "color-background-button-normal-pressed": Object {
-          "$description": "The background color of normal buttons in pressed state.",
-          "$value": Object {
-            "dark": "#16191f",
-            "light": "#eaeded",
-          },
-        },
         "color-background-button-primary-active": Object {
           "$description": "The background color of primary buttons in active state.",
           "$value": Object {
@@ -5205,6 +5198,13 @@ Object {
             "light": "#fffce9",
           },
         },
+        "color-background-toggle-button-normal-pressed": Object {
+          "$description": "The background color of normal toggle buttons in pressed state.",
+          "$value": Object {
+            "dark": "#16191f",
+            "light": "#eaeded",
+          },
+        },
         "color-background-toggle-checked-disabled": Object {
           "$description": "The background color of checked toggles in disabled state.",
           "$value": Object {
@@ -5252,13 +5252,6 @@ Object {
           "$value": Object {
             "dark": "#aab7b8",
             "light": "#16191f",
-          },
-        },
-        "color-border-button-normal-pressed": Object {
-          "$description": "The border color of normal buttons in pressed state.",
-          "$value": Object {
-            "dark": "#879596",
-            "light": "#545b64",
           },
         },
         "color-border-button-primary-disabled": Object {
@@ -5392,6 +5385,13 @@ Object {
           "$value": Object {
             "dark": "#e0ca57",
             "light": "#906806",
+          },
+        },
+        "color-border-toggle-button-normal-pressed": Object {
+          "$description": "The border color of normal toggle buttons in pressed state.",
+          "$value": Object {
+            "dark": "#879596",
+            "light": "#545b64",
           },
         },
         "color-charts-blue-1-1000": Object {
@@ -6577,13 +6577,6 @@ Object {
             "light": "#16191f",
           },
         },
-        "color-text-button-normal-pressed": Object {
-          "$description": "The pressed text color of normal buttons.",
-          "$value": Object {
-            "dark": "#fafafa",
-            "light": "#16191f",
-          },
-        },
         "color-text-button-primary-active": Object {
           "$description": "The active text color of primary buttons.",
           "$value": Object {
@@ -6759,13 +6752,6 @@ Object {
             "light": "#fafafa",
           },
         },
-        "color-text-interactive-pressed": Object {
-          "$description": "The color of clickable elements in pressed state.",
-          "$value": Object {
-            "dark": "#fafafa",
-            "light": "#16191f",
-          },
-        },
         "color-text-label": Object {
           "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
           "$value": Object {
@@ -6883,6 +6869,20 @@ Object {
           "$value": Object {
             "dark": "#e0ca57",
             "light": "#906806",
+          },
+        },
+        "color-text-toggle-button-icon-pressed": Object {
+          "$description": "The pressed text color of icon toggle buttons.",
+          "$value": Object {
+            "dark": "#fafafa",
+            "light": "#16191f",
+          },
+        },
+        "color-text-toggle-button-normal-pressed": Object {
+          "$description": "The pressed text color of normal toggle buttons.",
+          "$value": Object {
+            "dark": "#fafafa",
+            "light": "#16191f",
           },
         },
         "color-text-top-navigation-title": Object {
@@ -7332,13 +7332,6 @@ Object {
             "light": "#fafafa",
           },
         },
-        "color-background-button-normal-pressed": Object {
-          "$description": "The background color of normal buttons in pressed state.",
-          "$value": Object {
-            "dark": "#16191f",
-            "light": "#eaeded",
-          },
-        },
         "color-background-button-primary-active": Object {
           "$description": "The background color of primary buttons in active state.",
           "$value": Object {
@@ -7612,6 +7605,13 @@ Object {
             "light": "#fffce9",
           },
         },
+        "color-background-toggle-button-normal-pressed": Object {
+          "$description": "The background color of normal toggle buttons in pressed state.",
+          "$value": Object {
+            "dark": "#16191f",
+            "light": "#eaeded",
+          },
+        },
         "color-background-toggle-checked-disabled": Object {
           "$description": "The background color of checked toggles in disabled state.",
           "$value": Object {
@@ -7659,13 +7659,6 @@ Object {
           "$value": Object {
             "dark": "#aab7b8",
             "light": "#16191f",
-          },
-        },
-        "color-border-button-normal-pressed": Object {
-          "$description": "The border color of normal buttons in pressed state.",
-          "$value": Object {
-            "dark": "#879596",
-            "light": "#545b64",
           },
         },
         "color-border-button-primary-disabled": Object {
@@ -7799,6 +7792,13 @@ Object {
           "$value": Object {
             "dark": "#e0ca57",
             "light": "#906806",
+          },
+        },
+        "color-border-toggle-button-normal-pressed": Object {
+          "$description": "The border color of normal toggle buttons in pressed state.",
+          "$value": Object {
+            "dark": "#879596",
+            "light": "#545b64",
           },
         },
         "color-charts-blue-1-1000": Object {
@@ -8984,13 +8984,6 @@ Object {
             "light": "#16191f",
           },
         },
-        "color-text-button-normal-pressed": Object {
-          "$description": "The pressed text color of normal buttons.",
-          "$value": Object {
-            "dark": "#fafafa",
-            "light": "#16191f",
-          },
-        },
         "color-text-button-primary-active": Object {
           "$description": "The active text color of primary buttons.",
           "$value": Object {
@@ -9166,13 +9159,6 @@ Object {
             "light": "#16191f",
           },
         },
-        "color-text-interactive-pressed": Object {
-          "$description": "The color of clickable elements in pressed state.",
-          "$value": Object {
-            "dark": "#fafafa",
-            "light": "#16191f",
-          },
-        },
         "color-text-label": Object {
           "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
           "$value": Object {
@@ -9290,6 +9276,20 @@ Object {
           "$value": Object {
             "dark": "#e0ca57",
             "light": "#906806",
+          },
+        },
+        "color-text-toggle-button-icon-pressed": Object {
+          "$description": "The pressed text color of icon toggle buttons.",
+          "$value": Object {
+            "dark": "#fafafa",
+            "light": "#16191f",
+          },
+        },
+        "color-text-toggle-button-normal-pressed": Object {
+          "$description": "The pressed text color of normal toggle buttons.",
+          "$value": Object {
+            "dark": "#fafafa",
+            "light": "#16191f",
           },
         },
         "color-text-top-navigation-title": Object {
@@ -9739,13 +9739,6 @@ Object {
             "light": "#21252c",
           },
         },
-        "color-background-button-normal-pressed": Object {
-          "$description": "The background color of normal buttons in pressed state.",
-          "$value": Object {
-            "dark": "#16191f",
-            "light": "#16191f",
-          },
-        },
         "color-background-button-primary-active": Object {
           "$description": "The background color of primary buttons in active state.",
           "$value": Object {
@@ -10019,6 +10012,13 @@ Object {
             "light": "#1d1906",
           },
         },
+        "color-background-toggle-button-normal-pressed": Object {
+          "$description": "The background color of normal toggle buttons in pressed state.",
+          "$value": Object {
+            "dark": "#16191f",
+            "light": "#16191f",
+          },
+        },
         "color-background-toggle-checked-disabled": Object {
           "$description": "The background color of checked toggles in disabled state.",
           "$value": Object {
@@ -10066,13 +10066,6 @@ Object {
           "$value": Object {
             "dark": "#aab7b8",
             "light": "#aab7b8",
-          },
-        },
-        "color-border-button-normal-pressed": Object {
-          "$description": "The border color of normal buttons in pressed state.",
-          "$value": Object {
-            "dark": "#879596",
-            "light": "#879596",
           },
         },
         "color-border-button-primary-disabled": Object {
@@ -10206,6 +10199,13 @@ Object {
           "$value": Object {
             "dark": "#e0ca57",
             "light": "#e0ca57",
+          },
+        },
+        "color-border-toggle-button-normal-pressed": Object {
+          "$description": "The border color of normal toggle buttons in pressed state.",
+          "$value": Object {
+            "dark": "#879596",
+            "light": "#879596",
           },
         },
         "color-charts-blue-1-1000": Object {
@@ -11391,13 +11391,6 @@ Object {
             "light": "#fafafa",
           },
         },
-        "color-text-button-normal-pressed": Object {
-          "$description": "The pressed text color of normal buttons.",
-          "$value": Object {
-            "dark": "#fafafa",
-            "light": "#fafafa",
-          },
-        },
         "color-text-button-primary-active": Object {
           "$description": "The active text color of primary buttons.",
           "$value": Object {
@@ -11573,13 +11566,6 @@ Object {
             "light": "#fafafa",
           },
         },
-        "color-text-interactive-pressed": Object {
-          "$description": "The color of clickable elements in pressed state.",
-          "$value": Object {
-            "dark": "#fafafa",
-            "light": "#fafafa",
-          },
-        },
         "color-text-label": Object {
           "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
           "$value": Object {
@@ -11697,6 +11683,20 @@ Object {
           "$value": Object {
             "dark": "#e0ca57",
             "light": "#e0ca57",
+          },
+        },
+        "color-text-toggle-button-icon-pressed": Object {
+          "$description": "The pressed text color of icon toggle buttons.",
+          "$value": Object {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-toggle-button-normal-pressed": Object {
+          "$description": "The pressed text color of normal toggle buttons.",
+          "$value": Object {
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-text-top-navigation-title": Object {
@@ -12146,13 +12146,6 @@ Object {
         "light": "#fafafa",
       },
     },
-    "color-background-button-normal-pressed": Object {
-      "$description": "The background color of normal buttons in pressed state.",
-      "$value": Object {
-        "dark": "#16191f",
-        "light": "#eaeded",
-      },
-    },
     "color-background-button-primary-active": Object {
       "$description": "The background color of primary buttons in active state.",
       "$value": Object {
@@ -12426,6 +12419,13 @@ Object {
         "light": "#fffce9",
       },
     },
+    "color-background-toggle-button-normal-pressed": Object {
+      "$description": "The background color of normal toggle buttons in pressed state.",
+      "$value": Object {
+        "dark": "#16191f",
+        "light": "#eaeded",
+      },
+    },
     "color-background-toggle-checked-disabled": Object {
       "$description": "The background color of checked toggles in disabled state.",
       "$value": Object {
@@ -12473,13 +12473,6 @@ Object {
       "$value": Object {
         "dark": "#aab7b8",
         "light": "#16191f",
-      },
-    },
-    "color-border-button-normal-pressed": Object {
-      "$description": "The border color of normal buttons in pressed state.",
-      "$value": Object {
-        "dark": "#879596",
-        "light": "#545b64",
       },
     },
     "color-border-button-primary-disabled": Object {
@@ -12613,6 +12606,13 @@ Object {
       "$value": Object {
         "dark": "#e0ca57",
         "light": "#906806",
+      },
+    },
+    "color-border-toggle-button-normal-pressed": Object {
+      "$description": "The border color of normal toggle buttons in pressed state.",
+      "$value": Object {
+        "dark": "#879596",
+        "light": "#545b64",
       },
     },
     "color-charts-blue-1-1000": Object {
@@ -13798,13 +13798,6 @@ Object {
         "light": "#16191f",
       },
     },
-    "color-text-button-normal-pressed": Object {
-      "$description": "The pressed text color of normal buttons.",
-      "$value": Object {
-        "dark": "#fafafa",
-        "light": "#16191f",
-      },
-    },
     "color-text-button-primary-active": Object {
       "$description": "The active text color of primary buttons.",
       "$value": Object {
@@ -13980,13 +13973,6 @@ Object {
         "light": "#fafafa",
       },
     },
-    "color-text-interactive-pressed": Object {
-      "$description": "The color of clickable elements in pressed state.",
-      "$value": Object {
-        "dark": "#fafafa",
-        "light": "#16191f",
-      },
-    },
     "color-text-label": Object {
       "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
       "$value": Object {
@@ -14104,6 +14090,20 @@ Object {
       "$value": Object {
         "dark": "#e0ca57",
         "light": "#906806",
+      },
+    },
+    "color-text-toggle-button-icon-pressed": Object {
+      "$description": "The pressed text color of icon toggle buttons.",
+      "$value": Object {
+        "dark": "#fafafa",
+        "light": "#16191f",
+      },
+    },
+    "color-text-toggle-button-normal-pressed": Object {
+      "$description": "The pressed text color of normal toggle buttons.",
+      "$value": Object {
+        "dark": "#fafafa",
+        "light": "#16191f",
       },
     },
     "color-text-top-navigation-title": Object {
@@ -14558,13 +14558,6 @@ Object {
             "light": "rgba(0, 7, 22, 0.05)",
           },
         },
-        "color-background-button-normal-pressed": Object {
-          "$description": "The background color of normal buttons in pressed state.",
-          "$value": Object {
-            "dark": "#354150",
-            "light": "#d3e7f9",
-          },
-        },
         "color-background-button-primary-active": Object {
           "$description": "The background color of primary buttons in active state.",
           "$value": Object {
@@ -14838,6 +14831,13 @@ Object {
             "light": "#fffce9",
           },
         },
+        "color-background-toggle-button-normal-pressed": Object {
+          "$description": "The background color of normal toggle buttons in pressed state.",
+          "$value": Object {
+            "dark": "#354150",
+            "light": "#d3e7f9",
+          },
+        },
         "color-background-toggle-checked-disabled": Object {
           "$description": "The background color of checked toggles in disabled state.",
           "$value": Object {
@@ -14885,13 +14885,6 @@ Object {
           "$value": Object {
             "dark": "#ffffff",
             "light": "#000716",
-          },
-        },
-        "color-border-button-normal-pressed": Object {
-          "$description": "The border color of normal buttons in pressed state.",
-          "$value": Object {
-            "dark": "#539fe5",
-            "light": "#0972d3",
           },
         },
         "color-border-button-primary-disabled": Object {
@@ -15025,6 +15018,13 @@ Object {
           "$value": Object {
             "dark": "#e0ca57",
             "light": "#8d6605",
+          },
+        },
+        "color-border-toggle-button-normal-pressed": Object {
+          "$description": "The border color of normal toggle buttons in pressed state.",
+          "$value": Object {
+            "dark": "#539fe5",
+            "light": "#0972d3",
           },
         },
         "color-charts-blue-1-1000": Object {
@@ -16210,13 +16210,6 @@ Object {
             "light": "#000716",
           },
         },
-        "color-text-button-normal-pressed": Object {
-          "$description": "The pressed text color of normal buttons.",
-          "$value": Object {
-            "dark": "#89bdee",
-            "light": "#033160",
-          },
-        },
         "color-text-button-primary-active": Object {
           "$description": "The active text color of primary buttons.",
           "$value": Object {
@@ -16392,13 +16385,6 @@ Object {
             "light": "#fbfbfb",
           },
         },
-        "color-text-interactive-pressed": Object {
-          "$description": "The color of clickable elements in pressed state.",
-          "$value": Object {
-            "dark": "#fbfbfb",
-            "light": "#000716",
-          },
-        },
         "color-text-label": Object {
           "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
           "$value": Object {
@@ -16516,6 +16502,20 @@ Object {
           "$value": Object {
             "dark": "#e0ca57",
             "light": "#8d6605",
+          },
+        },
+        "color-text-toggle-button-icon-pressed": Object {
+          "$description": "The pressed text color of icon toggle buttons.",
+          "$value": Object {
+            "dark": "#fbfbfb",
+            "light": "#000716",
+          },
+        },
+        "color-text-toggle-button-normal-pressed": Object {
+          "$description": "The pressed text color of normal toggle buttons.",
+          "$value": Object {
+            "dark": "#89bdee",
+            "light": "#033160",
           },
         },
         "color-text-top-navigation-title": Object {
@@ -16965,13 +16965,6 @@ Object {
             "light": "rgba(255, 255, 255, 0.1)",
           },
         },
-        "color-background-button-normal-pressed": Object {
-          "$description": "The background color of normal buttons in pressed state.",
-          "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
-          },
-        },
         "color-background-button-primary-active": Object {
           "$description": "The background color of primary buttons in active state.",
           "$value": Object {
@@ -17245,6 +17238,13 @@ Object {
             "light": "#1d1906",
           },
         },
+        "color-background-toggle-button-normal-pressed": Object {
+          "$description": "The background color of normal toggle buttons in pressed state.",
+          "$value": Object {
+            "dark": "#354150",
+            "light": "#354150",
+          },
+        },
         "color-background-toggle-checked-disabled": Object {
           "$description": "The background color of checked toggles in disabled state.",
           "$value": Object {
@@ -17292,13 +17292,6 @@ Object {
           "$value": Object {
             "dark": "#ffffff",
             "light": "#ffffff",
-          },
-        },
-        "color-border-button-normal-pressed": Object {
-          "$description": "The border color of normal buttons in pressed state.",
-          "$value": Object {
-            "dark": "#539fe5",
-            "light": "#539fe5",
           },
         },
         "color-border-button-primary-disabled": Object {
@@ -17432,6 +17425,13 @@ Object {
           "$value": Object {
             "dark": "#e0ca57",
             "light": "#e0ca57",
+          },
+        },
+        "color-border-toggle-button-normal-pressed": Object {
+          "$description": "The border color of normal toggle buttons in pressed state.",
+          "$value": Object {
+            "dark": "#539fe5",
+            "light": "#539fe5",
           },
         },
         "color-charts-blue-1-1000": Object {
@@ -18617,13 +18617,6 @@ Object {
             "light": "#ffffff",
           },
         },
-        "color-text-button-normal-pressed": Object {
-          "$description": "The pressed text color of normal buttons.",
-          "$value": Object {
-            "dark": "#89bdee",
-            "light": "#89bdee",
-          },
-        },
         "color-text-button-primary-active": Object {
           "$description": "The active text color of primary buttons.",
           "$value": Object {
@@ -18799,13 +18792,6 @@ Object {
             "light": "#fbfbfb",
           },
         },
-        "color-text-interactive-pressed": Object {
-          "$description": "The color of clickable elements in pressed state.",
-          "$value": Object {
-            "dark": "#fbfbfb",
-            "light": "#fbfbfb",
-          },
-        },
         "color-text-label": Object {
           "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
           "$value": Object {
@@ -18923,6 +18909,20 @@ Object {
           "$value": Object {
             "dark": "#e0ca57",
             "light": "#e0ca57",
+          },
+        },
+        "color-text-toggle-button-icon-pressed": Object {
+          "$description": "The pressed text color of icon toggle buttons.",
+          "$value": Object {
+            "dark": "#fbfbfb",
+            "light": "#fbfbfb",
+          },
+        },
+        "color-text-toggle-button-normal-pressed": Object {
+          "$description": "The pressed text color of normal toggle buttons.",
+          "$value": Object {
+            "dark": "#89bdee",
+            "light": "#89bdee",
           },
         },
         "color-text-top-navigation-title": Object {
@@ -19372,13 +19372,6 @@ Object {
             "light": "#f2f8fd",
           },
         },
-        "color-background-button-normal-pressed": Object {
-          "$description": "The background color of normal buttons in pressed state.",
-          "$value": Object {
-            "dark": "#354150",
-            "light": "#d3e7f9",
-          },
-        },
         "color-background-button-primary-active": Object {
           "$description": "The background color of primary buttons in active state.",
           "$value": Object {
@@ -19652,6 +19645,13 @@ Object {
             "light": "#fffce9",
           },
         },
+        "color-background-toggle-button-normal-pressed": Object {
+          "$description": "The background color of normal toggle buttons in pressed state.",
+          "$value": Object {
+            "dark": "#354150",
+            "light": "#d3e7f9",
+          },
+        },
         "color-background-toggle-checked-disabled": Object {
           "$description": "The background color of checked toggles in disabled state.",
           "$value": Object {
@@ -19699,13 +19699,6 @@ Object {
           "$value": Object {
             "dark": "#89bdee",
             "light": "#033160",
-          },
-        },
-        "color-border-button-normal-pressed": Object {
-          "$description": "The border color of normal buttons in pressed state.",
-          "$value": Object {
-            "dark": "#539fe5",
-            "light": "#0972d3",
           },
         },
         "color-border-button-primary-disabled": Object {
@@ -19839,6 +19832,13 @@ Object {
           "$value": Object {
             "dark": "#e0ca57",
             "light": "#8d6605",
+          },
+        },
+        "color-border-toggle-button-normal-pressed": Object {
+          "$description": "The border color of normal toggle buttons in pressed state.",
+          "$value": Object {
+            "dark": "#539fe5",
+            "light": "#0972d3",
           },
         },
         "color-charts-blue-1-1000": Object {
@@ -21024,13 +21024,6 @@ Object {
             "light": "#033160",
           },
         },
-        "color-text-button-normal-pressed": Object {
-          "$description": "The pressed text color of normal buttons.",
-          "$value": Object {
-            "dark": "#89bdee",
-            "light": "#033160",
-          },
-        },
         "color-text-button-primary-active": Object {
           "$description": "The active text color of primary buttons.",
           "$value": Object {
@@ -21206,13 +21199,6 @@ Object {
             "light": "#fbfbfb",
           },
         },
-        "color-text-interactive-pressed": Object {
-          "$description": "The color of clickable elements in pressed state.",
-          "$value": Object {
-            "dark": "#fbfbfb",
-            "light": "#000716",
-          },
-        },
         "color-text-label": Object {
           "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
           "$value": Object {
@@ -21330,6 +21316,20 @@ Object {
           "$value": Object {
             "dark": "#e0ca57",
             "light": "#8d6605",
+          },
+        },
+        "color-text-toggle-button-icon-pressed": Object {
+          "$description": "The pressed text color of icon toggle buttons.",
+          "$value": Object {
+            "dark": "#fbfbfb",
+            "light": "#000716",
+          },
+        },
+        "color-text-toggle-button-normal-pressed": Object {
+          "$description": "The pressed text color of normal toggle buttons.",
+          "$value": Object {
+            "dark": "#89bdee",
+            "light": "#033160",
           },
         },
         "color-text-top-navigation-title": Object {
@@ -21779,13 +21779,6 @@ Object {
             "light": "rgba(0, 7, 22, 0.15)",
           },
         },
-        "color-background-button-normal-pressed": Object {
-          "$description": "The background color of normal buttons in pressed state.",
-          "$value": Object {
-            "dark": "#354150",
-            "light": "#d3e7f9",
-          },
-        },
         "color-background-button-primary-active": Object {
           "$description": "The background color of primary buttons in active state.",
           "$value": Object {
@@ -22059,6 +22052,13 @@ Object {
             "light": "#fffce9",
           },
         },
+        "color-background-toggle-button-normal-pressed": Object {
+          "$description": "The background color of normal toggle buttons in pressed state.",
+          "$value": Object {
+            "dark": "#354150",
+            "light": "#d3e7f9",
+          },
+        },
         "color-background-toggle-checked-disabled": Object {
           "$description": "The background color of checked toggles in disabled state.",
           "$value": Object {
@@ -22106,13 +22106,6 @@ Object {
           "$value": Object {
             "dark": "#ffffff",
             "light": "#ffffff",
-          },
-        },
-        "color-border-button-normal-pressed": Object {
-          "$description": "The border color of normal buttons in pressed state.",
-          "$value": Object {
-            "dark": "#539fe5",
-            "light": "#0972d3",
           },
         },
         "color-border-button-primary-disabled": Object {
@@ -22246,6 +22239,13 @@ Object {
           "$value": Object {
             "dark": "#e0ca57",
             "light": "#8d6605",
+          },
+        },
+        "color-border-toggle-button-normal-pressed": Object {
+          "$description": "The border color of normal toggle buttons in pressed state.",
+          "$value": Object {
+            "dark": "#539fe5",
+            "light": "#0972d3",
           },
         },
         "color-charts-blue-1-1000": Object {
@@ -23431,13 +23431,6 @@ Object {
             "light": "#ffffff",
           },
         },
-        "color-text-button-normal-pressed": Object {
-          "$description": "The pressed text color of normal buttons.",
-          "$value": Object {
-            "dark": "#89bdee",
-            "light": "#033160",
-          },
-        },
         "color-text-button-primary-active": Object {
           "$description": "The active text color of primary buttons.",
           "$value": Object {
@@ -23613,13 +23606,6 @@ Object {
             "light": "#fbfbfb",
           },
         },
-        "color-text-interactive-pressed": Object {
-          "$description": "The color of clickable elements in pressed state.",
-          "$value": Object {
-            "dark": "#fbfbfb",
-            "light": "#000716",
-          },
-        },
         "color-text-label": Object {
           "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
           "$value": Object {
@@ -23737,6 +23723,20 @@ Object {
           "$value": Object {
             "dark": "#e0ca57",
             "light": "#8d6605",
+          },
+        },
+        "color-text-toggle-button-icon-pressed": Object {
+          "$description": "The pressed text color of icon toggle buttons.",
+          "$value": Object {
+            "dark": "#fbfbfb",
+            "light": "#000716",
+          },
+        },
+        "color-text-toggle-button-normal-pressed": Object {
+          "$description": "The pressed text color of normal toggle buttons.",
+          "$value": Object {
+            "dark": "#89bdee",
+            "light": "#033160",
           },
         },
         "color-text-top-navigation-title": Object {
@@ -24186,13 +24186,6 @@ Object {
             "light": "rgba(0, 7, 22, 0.05)",
           },
         },
-        "color-background-button-normal-pressed": Object {
-          "$description": "The background color of normal buttons in pressed state.",
-          "$value": Object {
-            "dark": "#354150",
-            "light": "#d3e7f9",
-          },
-        },
         "color-background-button-primary-active": Object {
           "$description": "The background color of primary buttons in active state.",
           "$value": Object {
@@ -24466,6 +24459,13 @@ Object {
             "light": "#fffce9",
           },
         },
+        "color-background-toggle-button-normal-pressed": Object {
+          "$description": "The background color of normal toggle buttons in pressed state.",
+          "$value": Object {
+            "dark": "#354150",
+            "light": "#d3e7f9",
+          },
+        },
         "color-background-toggle-checked-disabled": Object {
           "$description": "The background color of checked toggles in disabled state.",
           "$value": Object {
@@ -24513,13 +24513,6 @@ Object {
           "$value": Object {
             "dark": "#000716",
             "light": "#000716",
-          },
-        },
-        "color-border-button-normal-pressed": Object {
-          "$description": "The border color of normal buttons in pressed state.",
-          "$value": Object {
-            "dark": "#539fe5",
-            "light": "#0972d3",
           },
         },
         "color-border-button-primary-disabled": Object {
@@ -24653,6 +24646,13 @@ Object {
           "$value": Object {
             "dark": "#e0ca57",
             "light": "#8d6605",
+          },
+        },
+        "color-border-toggle-button-normal-pressed": Object {
+          "$description": "The border color of normal toggle buttons in pressed state.",
+          "$value": Object {
+            "dark": "#539fe5",
+            "light": "#0972d3",
           },
         },
         "color-charts-blue-1-1000": Object {
@@ -25838,13 +25838,6 @@ Object {
             "light": "#000716",
           },
         },
-        "color-text-button-normal-pressed": Object {
-          "$description": "The pressed text color of normal buttons.",
-          "$value": Object {
-            "dark": "#89bdee",
-            "light": "#033160",
-          },
-        },
         "color-text-button-primary-active": Object {
           "$description": "The active text color of primary buttons.",
           "$value": Object {
@@ -26020,13 +26013,6 @@ Object {
             "light": "#000716",
           },
         },
-        "color-text-interactive-pressed": Object {
-          "$description": "The color of clickable elements in pressed state.",
-          "$value": Object {
-            "dark": "#fbfbfb",
-            "light": "#000716",
-          },
-        },
         "color-text-label": Object {
           "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
           "$value": Object {
@@ -26144,6 +26130,20 @@ Object {
           "$value": Object {
             "dark": "#e0ca57",
             "light": "#8d6605",
+          },
+        },
+        "color-text-toggle-button-icon-pressed": Object {
+          "$description": "The pressed text color of icon toggle buttons.",
+          "$value": Object {
+            "dark": "#fbfbfb",
+            "light": "#000716",
+          },
+        },
+        "color-text-toggle-button-normal-pressed": Object {
+          "$description": "The pressed text color of normal toggle buttons.",
+          "$value": Object {
+            "dark": "#89bdee",
+            "light": "#033160",
           },
         },
         "color-text-top-navigation-title": Object {
@@ -26593,13 +26593,6 @@ Object {
             "light": "#192534",
           },
         },
-        "color-background-button-normal-pressed": Object {
-          "$description": "The background color of normal buttons in pressed state.",
-          "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
-          },
-        },
         "color-background-button-primary-active": Object {
           "$description": "The background color of primary buttons in active state.",
           "$value": Object {
@@ -26873,6 +26866,13 @@ Object {
             "light": "#1d1906",
           },
         },
+        "color-background-toggle-button-normal-pressed": Object {
+          "$description": "The background color of normal toggle buttons in pressed state.",
+          "$value": Object {
+            "dark": "#354150",
+            "light": "#354150",
+          },
+        },
         "color-background-toggle-checked-disabled": Object {
           "$description": "The background color of checked toggles in disabled state.",
           "$value": Object {
@@ -26920,13 +26920,6 @@ Object {
           "$value": Object {
             "dark": "#89bdee",
             "light": "#89bdee",
-          },
-        },
-        "color-border-button-normal-pressed": Object {
-          "$description": "The border color of normal buttons in pressed state.",
-          "$value": Object {
-            "dark": "#539fe5",
-            "light": "#539fe5",
           },
         },
         "color-border-button-primary-disabled": Object {
@@ -27060,6 +27053,13 @@ Object {
           "$value": Object {
             "dark": "#e0ca57",
             "light": "#e0ca57",
+          },
+        },
+        "color-border-toggle-button-normal-pressed": Object {
+          "$description": "The border color of normal toggle buttons in pressed state.",
+          "$value": Object {
+            "dark": "#539fe5",
+            "light": "#539fe5",
           },
         },
         "color-charts-blue-1-1000": Object {
@@ -28245,13 +28245,6 @@ Object {
             "light": "#89bdee",
           },
         },
-        "color-text-button-normal-pressed": Object {
-          "$description": "The pressed text color of normal buttons.",
-          "$value": Object {
-            "dark": "#89bdee",
-            "light": "#89bdee",
-          },
-        },
         "color-text-button-primary-active": Object {
           "$description": "The active text color of primary buttons.",
           "$value": Object {
@@ -28427,13 +28420,6 @@ Object {
             "light": "#fbfbfb",
           },
         },
-        "color-text-interactive-pressed": Object {
-          "$description": "The color of clickable elements in pressed state.",
-          "$value": Object {
-            "dark": "#fbfbfb",
-            "light": "#fbfbfb",
-          },
-        },
         "color-text-label": Object {
           "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
           "$value": Object {
@@ -28551,6 +28537,20 @@ Object {
           "$value": Object {
             "dark": "#e0ca57",
             "light": "#e0ca57",
+          },
+        },
+        "color-text-toggle-button-icon-pressed": Object {
+          "$description": "The pressed text color of icon toggle buttons.",
+          "$value": Object {
+            "dark": "#fbfbfb",
+            "light": "#fbfbfb",
+          },
+        },
+        "color-text-toggle-button-normal-pressed": Object {
+          "$description": "The pressed text color of normal toggle buttons.",
+          "$value": Object {
+            "dark": "#89bdee",
+            "light": "#89bdee",
           },
         },
         "color-text-top-navigation-title": Object {
@@ -29000,13 +29000,6 @@ Object {
             "light": "#192534",
           },
         },
-        "color-background-button-normal-pressed": Object {
-          "$description": "The background color of normal buttons in pressed state.",
-          "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
-          },
-        },
         "color-background-button-primary-active": Object {
           "$description": "The background color of primary buttons in active state.",
           "$value": Object {
@@ -29280,6 +29273,13 @@ Object {
             "light": "#1d1906",
           },
         },
+        "color-background-toggle-button-normal-pressed": Object {
+          "$description": "The background color of normal toggle buttons in pressed state.",
+          "$value": Object {
+            "dark": "#354150",
+            "light": "#354150",
+          },
+        },
         "color-background-toggle-checked-disabled": Object {
           "$description": "The background color of checked toggles in disabled state.",
           "$value": Object {
@@ -29327,13 +29327,6 @@ Object {
           "$value": Object {
             "dark": "#89bdee",
             "light": "#89bdee",
-          },
-        },
-        "color-border-button-normal-pressed": Object {
-          "$description": "The border color of normal buttons in pressed state.",
-          "$value": Object {
-            "dark": "#539fe5",
-            "light": "#539fe5",
           },
         },
         "color-border-button-primary-disabled": Object {
@@ -29467,6 +29460,13 @@ Object {
           "$value": Object {
             "dark": "#e0ca57",
             "light": "#e0ca57",
+          },
+        },
+        "color-border-toggle-button-normal-pressed": Object {
+          "$description": "The border color of normal toggle buttons in pressed state.",
+          "$value": Object {
+            "dark": "#539fe5",
+            "light": "#539fe5",
           },
         },
         "color-charts-blue-1-1000": Object {
@@ -30652,13 +30652,6 @@ Object {
             "light": "#89bdee",
           },
         },
-        "color-text-button-normal-pressed": Object {
-          "$description": "The pressed text color of normal buttons.",
-          "$value": Object {
-            "dark": "#89bdee",
-            "light": "#89bdee",
-          },
-        },
         "color-text-button-primary-active": Object {
           "$description": "The active text color of primary buttons.",
           "$value": Object {
@@ -30834,13 +30827,6 @@ Object {
             "light": "#fbfbfb",
           },
         },
-        "color-text-interactive-pressed": Object {
-          "$description": "The color of clickable elements in pressed state.",
-          "$value": Object {
-            "dark": "#fbfbfb",
-            "light": "#fbfbfb",
-          },
-        },
         "color-text-label": Object {
           "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
           "$value": Object {
@@ -30958,6 +30944,20 @@ Object {
           "$value": Object {
             "dark": "#e0ca57",
             "light": "#e0ca57",
+          },
+        },
+        "color-text-toggle-button-icon-pressed": Object {
+          "$description": "The pressed text color of icon toggle buttons.",
+          "$value": Object {
+            "dark": "#fbfbfb",
+            "light": "#fbfbfb",
+          },
+        },
+        "color-text-toggle-button-normal-pressed": Object {
+          "$description": "The pressed text color of normal toggle buttons.",
+          "$value": Object {
+            "dark": "#89bdee",
+            "light": "#89bdee",
           },
         },
         "color-text-top-navigation-title": Object {
@@ -31407,13 +31407,6 @@ Object {
         "light": "#f2f8fd",
       },
     },
-    "color-background-button-normal-pressed": Object {
-      "$description": "The background color of normal buttons in pressed state.",
-      "$value": Object {
-        "dark": "#354150",
-        "light": "#d3e7f9",
-      },
-    },
     "color-background-button-primary-active": Object {
       "$description": "The background color of primary buttons in active state.",
       "$value": Object {
@@ -31687,6 +31680,13 @@ Object {
         "light": "#fffce9",
       },
     },
+    "color-background-toggle-button-normal-pressed": Object {
+      "$description": "The background color of normal toggle buttons in pressed state.",
+      "$value": Object {
+        "dark": "#354150",
+        "light": "#d3e7f9",
+      },
+    },
     "color-background-toggle-checked-disabled": Object {
       "$description": "The background color of checked toggles in disabled state.",
       "$value": Object {
@@ -31734,13 +31734,6 @@ Object {
       "$value": Object {
         "dark": "#89bdee",
         "light": "#033160",
-      },
-    },
-    "color-border-button-normal-pressed": Object {
-      "$description": "The border color of normal buttons in pressed state.",
-      "$value": Object {
-        "dark": "#539fe5",
-        "light": "#0972d3",
       },
     },
     "color-border-button-primary-disabled": Object {
@@ -31874,6 +31867,13 @@ Object {
       "$value": Object {
         "dark": "#e0ca57",
         "light": "#8d6605",
+      },
+    },
+    "color-border-toggle-button-normal-pressed": Object {
+      "$description": "The border color of normal toggle buttons in pressed state.",
+      "$value": Object {
+        "dark": "#539fe5",
+        "light": "#0972d3",
       },
     },
     "color-charts-blue-1-1000": Object {
@@ -33059,13 +33059,6 @@ Object {
         "light": "#033160",
       },
     },
-    "color-text-button-normal-pressed": Object {
-      "$description": "The pressed text color of normal buttons.",
-      "$value": Object {
-        "dark": "#89bdee",
-        "light": "#033160",
-      },
-    },
     "color-text-button-primary-active": Object {
       "$description": "The active text color of primary buttons.",
       "$value": Object {
@@ -33241,13 +33234,6 @@ Object {
         "light": "#fbfbfb",
       },
     },
-    "color-text-interactive-pressed": Object {
-      "$description": "The color of clickable elements in pressed state.",
-      "$value": Object {
-        "dark": "#fbfbfb",
-        "light": "#000716",
-      },
-    },
     "color-text-label": Object {
       "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
       "$value": Object {
@@ -33365,6 +33351,20 @@ Object {
       "$value": Object {
         "dark": "#e0ca57",
         "light": "#8d6605",
+      },
+    },
+    "color-text-toggle-button-icon-pressed": Object {
+      "$description": "The pressed text color of icon toggle buttons.",
+      "$value": Object {
+        "dark": "#fbfbfb",
+        "light": "#000716",
+      },
+    },
+    "color-text-toggle-button-normal-pressed": Object {
+      "$description": "The pressed text color of normal toggle buttons.",
+      "$value": Object {
+        "dark": "#89bdee",
+        "light": "#033160",
       },
     },
     "color-text-top-navigation-title": Object {

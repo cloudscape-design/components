@@ -23,8 +23,8 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
-  colorBackgroundButtonNormalPressed: {
-    description: 'The background color of normal buttons in pressed state.',
+  colorBackgroundToggleButtonNormalPressed: {
+    description: 'The background color of normal toggle buttons in pressed state.',
     themeable: true,
     public: true,
   },
@@ -268,8 +268,8 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
   },
   colorBorderButtonNormalDefault: { description: 'The border color of normal buttons.', themeable: true, public: true },
-  colorBorderButtonNormalPressed: {
-    description: 'The border color of normal buttons in pressed state.',
+  colorBorderToggleButtonNormalPressed: {
+    description: 'The border color of normal toggle buttons in pressed state.',
     themeable: true,
     public: true,
   },
@@ -453,8 +453,8 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
-  colorTextButtonNormalPressed: {
-    description: 'The pressed text color of normal buttons.',
+  colorTextToggleButtonNormalPressed: {
+    description: 'The pressed text color of normal toggle buttons.',
     themeable: true,
     public: true,
   },
@@ -624,8 +624,8 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
-  colorTextInteractivePressed: {
-    description: 'The color of clickable elements in pressed state.',
+  colorTextToggleButtonIconPressed: {
+    description: 'The pressed text color of icon toggle buttons.',
     public: true,
     themeable: true,
   },
