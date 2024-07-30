@@ -257,7 +257,7 @@ describe.each([false, true])('token editor, expandToViewport=%s', expandToViewpo
       );
     });
 
-    test('enter keydown closes the popover and saves the changes', () => {
+    test('form submit closes the popover and saves the changes', () => {
       const handleChange = jest.fn();
       renderComponent({
         onChange: handleChange,
