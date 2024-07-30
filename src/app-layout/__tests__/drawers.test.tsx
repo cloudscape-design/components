@@ -11,8 +11,11 @@ import {
   findActiveDrawerLandmark,
 } from './utils';
 
-import { act } from '@testing-library/react';
+import { act, waitFor } from '@testing-library/react';
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
+
+import tooltipStyles from '../../../lib/components/internal/components/tooltip/styles.selectors.js';
+import popoverStyles from '../../../lib/components/popover/styles.css.js';
 
 jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
   useMobile: jest.fn().mockReturnValue(true),
@@ -153,6 +156,7 @@ describeEachAppLayout(({ size }) => {
     expect(wrapper.findActiveDrawerCloseButton()!.getElement()).not.toHaveFocus();
     act(() => ref!.focusToolsClose());
     expect(wrapper.findActiveDrawerCloseButton()!.getElement()).toHaveFocus();
+    expect(wrapper!.findByClassName(tooltipStyles.root)).toBeNull();
   });
 
   test('registers public drawers api', () => {
@@ -168,5 +172,39 @@ describeEachAppLayout(({ size }) => {
     drawerTrigger.click();
     expect(drawerTrigger!.getElement()).toHaveAttribute('aria-controls', 'security');
     expect(wrapper.findActiveDrawer()!.getElement()).toHaveAttribute('id', 'security');
+  });
+
+  testIf(size !== 'mobile')('tooltip renders correctly on pointerdown events', () => {
+    const { wrapper } = renderComponent(<AppLayout drawers={[testDrawer]} />);
+    const drawerTrigger = wrapper.findDrawerTriggerById('security')!;
+
+    drawerTrigger!.fireEvent(new MouseEvent('pointerdown', { bubbles: true }));
+    waitFor(() => {
+      expect(wrapper!.findByClassName(tooltipStyles.root)).toBeTruthy();
+      expect(wrapper!.findByClassName(popoverStyles.content)).toBeTruthy();
+    });
+
+    const otherEl = wrapper!.findNavigation();
+    expect(otherEl).toBeTruthy();
+    otherEl.fireEvent(new MouseEvent('pointerdown', { bubbles: true }));
+    waitFor(() => {
+      expect(wrapper!.findByClassName(tooltipStyles.root)).toBeNull();
+    });
+  });
+
+  testIf(size !== 'mobile')('tooltip renders correctly on focus and blue events', () => {
+    const { wrapper } = renderComponent(<AppLayout drawers={[testDrawer]} />);
+    const drawerTrigger = wrapper.findDrawerTriggerById('security')!;
+
+    drawerTrigger!.focus();
+    waitFor(() => {
+      expect(wrapper!.findByClassName(tooltipStyles.root)).toBeTruthy();
+      expect(wrapper!.findByClassName(popoverStyles.content)).toBeTruthy();
+    });
+
+    drawerTrigger!.blur();
+    waitFor(() => {
+      expect(wrapper!.findByClassName(tooltipStyles.root)).toBeNull();
+    });
   });
 });

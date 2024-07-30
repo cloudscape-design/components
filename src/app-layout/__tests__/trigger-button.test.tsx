@@ -2,108 +2,234 @@
 // SPDX-License-Identifier: Apache-2.0
 /* eslint simple-import-sort/imports: 0 */
 import React from 'react';
-// import { ButtonProps } from '../../button/interfaces.js';
-import TriggerButton from '../visual-refresh/trigger-button';
-// import TriggerButton, {  TriggerButtonProps } from '../visual-refresh/trigger-button';
-import { render } from '@testing-library/react';
-// import createWrapper from '../../../lib/components/test-utils/dom';
+import { ButtonProps } from '../../../lib/components/button';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
+import TriggerButton, { TriggerButtonProps } from '../../../lib/components/app-layout/visual-refresh/trigger-button';
+import tooltipStyles from '../../../lib/components/internal/components/tooltip/styles.selectors.js';
+import popoverStyles from '../../../lib/components/popover/styles.css.js';
 
-// const wrappers = {
-//   triggerButton: createWrapper().findButton(),
-//   triggerWrapper: createWrapper().findByClassName("trigger-wrapper"),
-//   tooltip: createWrapper().findByClassName(tooltipStyles.root),
-//   tooltipContent: createWrapper().findByClassName(popoverStyles.content),
-// };
+import { act, render, waitFor } from '@testing-library/react';
+import createWrapper from '../../../lib/components/test-utils/dom';
+import { IconProps } from '../../../lib/components/icon/interfaces.js';
 
-// const testIf = (condition: boolean) => (condition ? test : test.skip);
+const mockProps = {
+  ariaLabel: 'Aria label',
+  className: 'class-from-props',
+  iconName: 'bug',
+  testId: 'mockTestId',
+};
+const mockOtherEl = {
+  class: 'other-el-class',
+  text: 'other-element',
+};
 
-// const mockProps = {
-//   ariaLabel: "Aria label",
-//   className: "class-from-props",
-// iconName: "external",
-// iconSvg?: React.ReactNode;
-// ariaExpanded: boolean | undefined;
-// ariaControls?: string;
-// testId: "mockTestId",
-// tooltipText?: string;
-// selected?: boolean;
-// badge?: boolean;
-// highContrastHeader?: boolean;
-// }
+function delay() {
+  return act(() => new Promise(resolve => setTimeout(resolve)));
+}
 
-// function renderTriggerButton(props:  TriggerButtonProps | {} = {}) {
-//   const renderProps = {...mockProps, ...props};
-//   const renderResult = render(
-//       <TriggerButton {...mockProps as any} />
-//   );
-//   return {
-//     wrapper: createWrapper(renderResult.container),
-//     ...renderResult,
-//   }
-// }
+async function renderTriggerButton(props: Partial<TriggerButtonProps> = {}, ref: React.Ref<ButtonProps.Ref>) {
+  const renderProps = { ...mockProps, ...props };
+  const { container, rerender, getByTestId, getByText } = render(
+    <div>
+      <TriggerButton {...(renderProps as TriggerButtonProps)} ref={ref} />
+      <span className={mockOtherEl.class}>{mockOtherEl.text}</span>
+    </div>
+  );
+  const wrapper = createWrapper(container).findByClassName('trigger-wrapper');
+  await delay();
+  return { wrapper, rerender, container, getByTestId, getByText };
+}
 
 describe('Toolbar desktop trigger-button', () => {
-  it('renders correctly with iconName', () => {
-    const mockButtonClick = jest.fn();
-    const result = render(<TriggerButton ariaExpanded={false} onClick={mockButtonClick} />);
-    expect(result.container).toBeTruthy();
-    // const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
-    // console.log(ref)
-    // const result = renderTriggerButton({} as TriggerButtonProps, ref as any);
-    // const button = result.wrapper.findButton();
-    // expect(button).toBeTruthy();
-    // expect(button!.getElement().ariaLabel).toEqual(mockProps.ariaLabel);
-    // expect(result.wrapper.findIcon()).toBeTruthy();
-    // expect(result.wrapper.findByClassName(tooltipStyles.root)).toBeNull();
+  it('renders correctly with iconName', async () => {
+    const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
+    const { container, wrapper, getByTestId } = await renderTriggerButton(
+      {
+        iconName: 'bug',
+      },
+      ref as any
+    );
+    expect(container).toBeTruthy();
+    waitFor(() => {
+      const button = wrapper!.find('button[type="button"]');
+      expect(wrapper!.findByClassName('trigger-wrapper')).toBeTruthy();
+      expect(getByTestId(mockProps.testId)).toBeTruthy();
+      expect(button).toBeTruthy();
+      expect(button!.getElement().ariaLabel).toEqual(mockProps.ariaLabel);
+      expect(wrapper!.findIcon()).toBeTruthy();
+      expect(wrapper!.findByClassName(tooltipStyles.root)).toBeNull();
+    });
   });
 
-  // it("renders correctly with iconSvg", () => {
-  //   const iconTestId="icon-test-id"
-  //   const icon = (
-  //     <svg data-testid={iconTestId} viewBox="0 0 24 24">
-  //       <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" />
-  //     </svg>
-  //   );
-  //   const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
-  //   const result = renderTriggerButton({
-  //     iconSvg: icon,
-  //   } as TriggerButtonProps, ref);
-  //   const button = result.wrapper.findButton();
-  //   expect(button).toBeTruthy();
-  //   expect(button!.getElement().ariaLabel).toEqual(mockProps.ariaLabel);
-  //   expect(wrapper.findIcon()).toBeTruthy();
-  //   expect(result.getByTestId(iconTestId)).toBeTruthy();
-  //   expect(wrapper.findByClassName(tooltipStyles.root)).toBeNull();
-  // });
+  it('renders correctly with iconSvg', async () => {
+    const iconTestId = 'icon-test-id';
+    const icon = (
+      <svg data-testid={iconTestId} viewBox="0 0 24 24">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" />
+      </svg>
+    );
+    const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
+    const { container, wrapper, getByTestId } = await renderTriggerButton(
+      {
+        iconSvg: icon,
+      },
+      ref as any
+    );
+    expect(container).toBeTruthy();
+    waitFor(() => {
+      const button = wrapper!.findButton();
+      expect(wrapper!.findByClassName('trigger-wrapper')).toBeTruthy();
+      expect(getByTestId(mockProps.testId)).toBeTruthy();
+      expect(button).toBeTruthy();
+      expect(button!.getElement().ariaLabel).toEqual(mockProps.ariaLabel);
+      expect(wrapper!.findIcon()).toBeTruthy();
+      expect(getByTestId(iconTestId)).toBeTruthy();
+      expect(wrapper!.findByClassName(tooltipStyles.root)).toBeNull();
+    });
+  });
 
-  // it("does not render without either an iconName or iconSVG prop", () => {
-  //   const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
-  //   const result = renderTriggerButton({
-  //     iconName: "",
-  //     iconSvg: "",
-  //   }, ref);
-  //   expect(result.wrapper.findButton()).toBeNull();
-  //   expect(wrapper.findIcon()).toBeTruthy();
-  //   expect(wrapper.findByClassName(tooltipStyles.root)).toBeNull();
-  // })
+  it.skip('does not render without either an iconName or iconSVG prop', async () => {
+    const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
+    const { container, wrapper, getByTestId } = await renderTriggerButton(
+      {
+        iconName: '' as IconProps.Name,
+      },
+      ref as any
+    );
+    expect(container).toBeTruthy();
+    waitFor(() => {
+      const button = wrapper!.find('button[type="button"]');
+      expect(wrapper!.findByClassName('trigger-wrapper')).toBeTruthy();
+      expect(getByTestId(mockProps.testId)).toBeTruthy();
+      expect(button).toBeTruthy();
+      expect(wrapper!.findByClassName(tooltipStyles.root)).toBeNull();
+    });
+  });
 
-  // describe("Trigger wrapper events", () => {
-  //   it("SDFSD", () => {
-  //     const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
-  //     const wrapper = renderTriggerButton({} as TriggerButtonProps, ref)
-  //     expect(wrapper.findTooltip()).toBeNull();
+  it('renders correctly with badge', async () => {
+    const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
+    const { container, wrapper } = await renderTriggerButton(
+      {
+        badge: true,
+      },
+      ref as any
+    );
+    expect(container).toBeTruthy();
+    waitFor(() => {
+      const button = wrapper!.find('button[type="button"]');
+      expect(wrapper!.findByClassName('trigger-wrapper')).toBeTruthy();
+      expect(button).toBeTruthy();
+      expect(button!.findBadge()).toBeTruthy();
+    });
+  });
 
-  //   })
-  // })
+  describe('Trigger wrapper events', () => {
+    it('Shows tooltip on pointerEnter and closes on pointerLeave', async () => {
+      const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
+      const mockTooltipText = 'Mock Tooltip';
+      const { container, wrapper, getByText } = await renderTriggerButton(
+        {
+          tooltipText: mockTooltipText,
+        },
+        ref as any
+      );
+      expect(container).toBeTruthy();
+      waitFor(() => {
+        expect(wrapper!.findByClassName(tooltipStyles.root)).toBeNull();
+        const triggerWrapper = wrapper!.findByClassName('trigger-wrapper');
+        expect(triggerWrapper).toBeTruthy();
+        triggerWrapper!.fireEvent(new MouseEvent('pointerdown', { bubbles: true }));
+        waitFor(() => {
+          expect(wrapper!.findByClassName(tooltipStyles.root)).toBeTruthy();
+          expect(wrapper!.findByClassName(popoverStyles.content)).toBeTruthy();
+          expect(getByText(mockTooltipText)).toBeTruthy();
+        });
 
-  // describe('Ref', () => {
-  //   test('can be used to focus the component', () => {
-  //     const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
-  //     const wrapper = renderWrappedTriggerButton({} as TriggerButtonProps, ref)
-  //     const triggerButton = wrapper.findTrigger().getElement();
-  //     expect(document.activeElement).not.toBe(triggerButton);
-  //     (ref.current as any)!.focus();
-  //     expect(document.activeElement).toBe(triggerButton);
-  //   });
-  // })
+        const otherEl = wrapper!.findByClassName(mockOtherEl.class);
+        otherEl!.fireEvent(new MouseEvent('pointerdown', { bubbles: true }));
+        waitFor(() => {
+          expect(wrapper!.findByClassName(tooltipStyles.root)).toBeNull();
+        });
+      });
+    });
+
+    it('Shows tooltip on focus and removes on escape', async () => {
+      const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
+      const mockTooltipText = 'Mock Tooltip';
+      const { container, wrapper, getByText } = await renderTriggerButton(
+        {
+          tooltipText: mockTooltipText,
+        },
+        ref as any
+      );
+      expect(container).toBeTruthy();
+      waitFor(() => {
+        expect(wrapper!.findByClassName(tooltipStyles.root)).toBeNull();
+        const triggerWrapper = wrapper!.findByClassName('trigger-wrapper');
+        expect(triggerWrapper).toBeTruthy();
+        triggerWrapper!.focus();
+        waitFor(() => {
+          expect(wrapper!.findByClassName(tooltipStyles.root)).toBeTruthy();
+          expect(wrapper!.findByClassName(popoverStyles.content)).toBeTruthy();
+          expect(getByText(mockTooltipText)).toBeTruthy();
+        });
+
+        triggerWrapper!.keydown(KeyCode.escape);
+        waitFor(() => {
+          expect(wrapper!.findByClassName(tooltipStyles.root)).toBeNull();
+        });
+      });
+    });
+
+    it('Shows tooltip on focus and removes on blur', async () => {
+      const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
+      const mockTooltipText = 'Mock Tooltip';
+      const { container, wrapper, getByText } = await renderTriggerButton(
+        {
+          tooltipText: mockTooltipText,
+        },
+        ref as any
+      );
+      expect(container).toBeTruthy();
+      waitFor(() => {
+        expect(wrapper!.findByClassName(tooltipStyles.root)).toBeNull();
+        const triggerWrapper = wrapper!.findByClassName('trigger-wrapper');
+        expect(triggerWrapper).toBeTruthy();
+        triggerWrapper!.focus();
+        waitFor(() => {
+          expect(wrapper!.findByClassName(tooltipStyles.root)).toBeTruthy();
+          expect(wrapper!.findByClassName(popoverStyles.content)).toBeTruthy();
+          expect(getByText(mockTooltipText)).toBeTruthy();
+        });
+
+        triggerWrapper!.blur();
+        waitFor(() => {
+          expect(wrapper!.findByClassName(tooltipStyles.root)).toBeNull();
+        });
+      });
+    });
+  });
+
+  it('Is focusable using the forwarded ref and tooltip does not show', async () => {
+    const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
+    const { container, wrapper, getByTestId } = await renderTriggerButton(
+      {
+        iconName: 'bug',
+      },
+      ref as any
+    );
+    expect(container).toBeTruthy();
+    waitFor(() => {
+      const button = wrapper!.find('button[type="button"]');
+      expect(wrapper!.findByClassName('trigger-wrapper')).toBeTruthy();
+      expect(getByTestId(mockProps.testId)).toBeTruthy();
+      expect(button).toBeTruthy();
+      expect(document.activeElement).not.toBe(button!.getElement());
+      (ref.current as any)?.focus();
+      waitFor(() => {
+        expect(document.activeElement).toBe(button!.getElement());
+        expect(wrapper!.findByClassName(tooltipStyles.root)).toBeNull();
+      });
+    });
+  });
 });

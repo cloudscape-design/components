@@ -238,6 +238,7 @@ function DesktopTriggers() {
           return (
             <TriggerButton
               ariaLabel={item.ariaLabels?.triggerButton}
+              tooltipText={item.ariaLabels?.drawerName}
               ariaExpanded={item.id === activeDrawerId}
               ariaControls={activeDrawerId === item.id ? item.id : undefined}
               className={clsx(
