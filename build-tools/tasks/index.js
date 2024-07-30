@@ -20,4 +20,5 @@ module.exports = {
   licenses: require('./licenses'),
   themeableSource: require('./themeable-source'),
   bundleVendorFiles: require('./bundle-vendor-files'),
+  copyBuildTools: require('./copy-build-tools'),
 };

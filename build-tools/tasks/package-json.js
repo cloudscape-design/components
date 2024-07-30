@@ -105,6 +105,10 @@ module.exports = parallel([
     ),
     generatePackageJson(path.join(workspace.targetPath, theme.designTokensDir), theme.designTokensPackageJson),
   ]),
+  generatePackageJson(path.join(workspace.targetPath, 'build-tools'), {
+    name: '@cloudscape-design/build-tools',
+    bin: { 'awsui-unlock-package-lock': './scripts/unlock-package-lock.js' },
+  }),
   generatePackageJson(path.join(workspace.targetPath, 'components-definitions'), {
     name: '@cloudscape-design/components-definitions',
   }),

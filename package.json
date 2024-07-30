@@ -150,7 +150,7 @@
       "stylelint --fix"
     ],
     "package-lock.json": [
-      "node ./scripts/unlock-package-lock.js"
+      "node ./build-tools/scripts/unlock-package-lock.js"
     ]
   },
   "browserslist": [
