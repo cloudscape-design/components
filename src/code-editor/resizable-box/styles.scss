@@ -2,6 +2,7 @@
  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  SPDX-License-Identifier: Apache-2.0
 */
+@use '../../internal/styles' as styles;
 @use '../../internal/styles/tokens' as awsui;
 @use '../background-inline-svg.scss' as utils;
 
@@ -28,6 +29,10 @@
     $path: '../assets/resize-handler.svg',
     $stroke: 'colorStrokeCodeEditorResizeHandler'
   );
+
+  @include styles.with-direction('rtl') {
+    transform: scaleX(-1);
+  }
 
   cursor: ns-resize;
 }
