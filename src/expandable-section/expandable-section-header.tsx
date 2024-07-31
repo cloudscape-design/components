@@ -228,6 +228,7 @@ export const ExpandableSectionHeader = ({
   onKeyDown,
   onClick,
 }: ExpandableSectionHeaderProps) => {
+  const alwaysShowDivider = variant === 'default' && headerActions;
   const icon = (
     <InternalIcon
       size={variant === 'container' ? 'medium' : 'normal'}
@@ -263,7 +264,7 @@ export const ExpandableSectionHeader = ({
   const wrapperClassName = clsx(
     styles.wrapper,
     styles[`wrapper-${variant}`],
-    (expanded || headerActions !== undefined) && styles['wrapper-expanded']
+    (expanded || alwaysShowDivider) && styles['wrapper-expanded']
   );
   if (variant === 'navigation') {
     return (
