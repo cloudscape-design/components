@@ -11,9 +11,9 @@ import ScreenshotArea from '../utils/screenshot-area';
 const permutations = createPermutations<ToggleButtonProps>([
   {
     variant: ['normal'],
-    children: ['Favourite', undefined],
+    children: ['Favorite', undefined],
     iconName: ['star'],
-    ariaLabel: ['Favourite'],
+    ariaLabel: ['Favorite'],
     pressedIconName: ['star-filled'],
     pressed: [false, true],
     disabled: [false, true],
@@ -21,7 +21,7 @@ const permutations = createPermutations<ToggleButtonProps>([
   {
     variant: ['icon'],
     iconName: ['star'],
-    ariaLabel: ['Favourite'],
+    ariaLabel: ['Favorite'],
     pressedIconName: ['star-filled'],
     pressed: [false, true],
     disabled: [false, true],
