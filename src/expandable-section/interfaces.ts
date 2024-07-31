@@ -97,7 +97,7 @@ export interface ExpandableSectionProps extends BaseComponentProps {
   headerInfo?: React.ReactNode;
 
   /**
-   * Actions for the header. Use with the container variant.
+   * Actions for the header. Use with the default or container variant.
    */
   headerActions?: React.ReactNode;
 }

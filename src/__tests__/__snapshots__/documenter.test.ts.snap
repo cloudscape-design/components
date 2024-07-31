@@ -7101,7 +7101,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "name": "header",
     },
     Object {
-      "description": "Actions for the header. Use with the container variant.",
+      "description": "Actions for the header. Use with the default or container variant.",
       "isDefault": false,
       "name": "headerActions",
     },
