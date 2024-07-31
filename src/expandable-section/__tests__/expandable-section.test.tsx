@@ -31,7 +31,7 @@ const containerizedVariants: ExpandableSectionProps.Variant[] = ['container', 's
 describe('Expandable Section', () => {
   const variantsWithDescription: ExpandableSectionProps.Variant[] = [...containerizedVariants, 'default', 'footer'];
   const variantsWithoutDescription: ExpandableSectionProps.Variant[] = ['navigation'];
-  const nonContainerVariants: ExpandableSectionProps.Variant[] = ['footer', 'navigation'];
+  const nonContainerVariants: ExpandableSectionProps.Variant[] = ['default', 'footer', 'navigation'];
 
   describe('variant property', () => {
     test('has one trigger button and no div=[role=button] for variant navigation', () => {
@@ -164,15 +164,17 @@ describe('Expandable Section', () => {
             const header = wrapper.findHeader().getElement();
             expect(header).not.toHaveTextContent('Info');
           });
-          test('Action buttons', () => {
-            const wrapper = renderExpandableSection({
-              variant,
-              headerText: 'Test Header',
-              headerInfo: <Button>Action</Button>,
+          if (variant !== 'default') {
+            test('Action buttons', () => {
+              const wrapper = renderExpandableSection({
+                variant,
+                headerText: 'Test Header',
+                headerInfo: <Button>Action</Button>,
+              });
+              const header = wrapper.findHeader().getElement();
+              expect(header).not.toHaveTextContent('Action');
             });
-            const header = wrapper.findHeader().getElement();
-            expect(header).not.toHaveTextContent('Action');
-          });
+          }
         });
       }
     });
@@ -295,7 +297,7 @@ describe('Expandable Section', () => {
           expect(warnOnce).toHaveBeenCalledTimes(1);
           expect(warnOnce).toHaveBeenCalledWith(
             componentName,
-            'The `headerCounter`, `headerInfo` and `headerActions` props are only supported for the "container" variant.'
+            expect.stringMatching(/only supported for the "container" variant./)
           );
         };
 
@@ -307,9 +309,11 @@ describe('Expandable Section', () => {
             test('headerInfo', () => {
               testWarnings({ variant, headerInfo: <Link>Info</Link> });
             });
-            test('headerActions', () => {
-              testWarnings({ variant, headerActions: <Button>Action</Button> });
-            });
+            if (variant !== 'default') {
+              test('headerActions', () => {
+                testWarnings({ variant, headerActions: <Button>Action</Button> });
+              });
+            }
           });
         }
       });

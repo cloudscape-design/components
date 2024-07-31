@@ -22,8 +22,6 @@ export interface ExpandableSectionProps extends BaseComponentProps {
    */
   defaultExpanded?: boolean;
 
-  disableLine?: boolean;
-
   /**
    * Determines whether the component is in the expanded state (that is, with content visible). The component operates in a controlled
    * manner if you provide a value for this property.

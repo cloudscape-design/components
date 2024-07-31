@@ -2,9 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { Header } from '~components';
+import Button from '~components/button';
 import Container from '~components/container';
 import ExpandableSection, { ExpandableSectionProps } from '~components/expandable-section';
+import Header from '~components/header';
 import Table from '~components/table';
 
 import createPermutations from '../utils/permutations';
@@ -139,6 +140,13 @@ const permutations = createPermutations<ExpandableSectionProps>([
     defaultExpanded: [false],
     variant: ['default', 'footer'],
     header: ['Deprecated header prop'],
+    children: ['Sample content'],
+  },
+  {
+    defaultExpanded: [false, true],
+    variant: ['default'],
+    headerText: ['Default with action'],
+    headerActions: [<Button variant="inline-link">Some action</Button>],
     children: ['Sample content'],
   },
 ]);

@@ -9,7 +9,7 @@ import InternalHeader, { Description as HeaderDescription } from '../header/inte
 import InternalIcon from '../icon/internal';
 import { isDevelopment } from '../internal/is-development';
 import { ExpandableSectionProps, InternalVariant } from './interfaces';
-import { variantSupportsDescription, variantSupportsInteractiveElements } from './utils';
+import { variantSupportsActions, variantSupportsDescription, variantSupportsInfoLink } from './utils';
 
 import styles from './styles.css.js';
 
@@ -28,7 +28,6 @@ interface ExpandableDefaultHeaderProps {
   onClick: MouseEventHandler;
   icon: JSX.Element;
   variant: InternalVariant;
-  disableLine?: boolean;
 }
 
 interface ExpandableNavigationHeaderProps extends Omit<ExpandableDefaultHeaderProps, 'onKeyUp' | 'onKeyDown'> {
@@ -136,7 +135,7 @@ const ExpandableHeaderTextWrapper = ({
 }: ExpandableHeaderTextWrapperProps) => {
   const isContainer = variant === 'container';
   const HeadingTag = headingTagOverride || 'div';
-  const supportsInteractiveElements = variantSupportsInteractiveElements(variant);
+  const supportsInteractiveElements = variantSupportsActions(variant);
   const restrictClickableArea = supportsInteractiveElements && (headerInfo || headerActions);
   const actions = supportsInteractiveElements && headerActions;
   const description = variantSupportsDescription(variant) && headerDescription && (
@@ -228,7 +227,6 @@ export const ExpandableSectionHeader = ({
   onKeyUp,
   onKeyDown,
   onClick,
-  disableLine,
 }: ExpandableSectionHeaderProps) => {
   const icon = (
     <InternalIcon
@@ -245,14 +243,17 @@ export const ExpandableSectionHeader = ({
     ariaLabel: ariaLabel,
     onClick: onClick,
     variant,
-    disableLine: disableLine,
   };
 
-  if ((headerCounter || headerInfo || headerActions) && !variantSupportsInteractiveElements(variant) && isDevelopment) {
+  if ((headerCounter || headerInfo) && !variantSupportsInfoLink(variant) && isDevelopment) {
     warnOnce(
       componentName,
-      'The `headerCounter`, `headerInfo` and `headerActions` props are only supported for the "container" variant.'
+      'The `headerCounter` and `headerInfo` props are only supported for the "container" variant.'
     );
+  }
+
+  if (headerActions && !variantSupportsActions(variant) && isDevelopment) {
+    warnOnce(componentName, `The \`headerActions\` prop is only supported for the "container" variant.`);
   }
 
   if (headerDescription && !variantSupportsDescription(variant) && isDevelopment) {
@@ -262,7 +263,7 @@ export const ExpandableSectionHeader = ({
   const wrapperClassName = clsx(
     styles.wrapper,
     styles[`wrapper-${variant}`],
-    (expanded || (headerActions !== undefined && disableLine === false)) && styles['wrapper-expanded']
+    (expanded || headerActions !== undefined) && styles['wrapper-expanded']
   );
   if (variant === 'navigation') {
     return (
