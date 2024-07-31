@@ -20,7 +20,6 @@ const ToggleButton = React.forwardRef(
       pressedIconUrl,
       iconSvg,
       pressedIconSvg,
-      iconAlt,
       variant = 'normal',
       loading = false,
       loadingText,
@@ -49,7 +48,6 @@ const ToggleButton = React.forwardRef(
         iconName={iconName}
         iconUrl={iconUrl}
         iconSvg={iconSvg}
-        iconAlt={iconAlt}
         variant={variant}
         loading={loading}
         loadingText={loadingText}

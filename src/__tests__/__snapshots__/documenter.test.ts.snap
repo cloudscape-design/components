@@ -16711,20 +16711,13 @@ The text will also be added to the \`title\` attribute of the button.",
     Object {
       "description": "Provides a reason why the button is disabled (only when \`disabled\` is \`true\`).
 If provided, the button becomes focusable.
-Applicable for all button variants, except link and icon.",
+Applicable only for the normal toggle-button variant.",
       "name": "disabledReason",
       "optional": true,
       "type": "string",
     },
     Object {
-      "description": "Specifies alternate text for a custom icon. We recommend that you provide this for accessibility.
-This property is ignored if you use a predefined icon or if you set your custom icon using the \`iconSvg\` slot.",
-      "name": "iconAlt",
-      "optional": true,
-      "type": "string",
-    },
-    Object {
-      "description": "Displays an icon next to the text. You can use the \`iconAlign\` property to position the icon.",
+      "description": "Displays an icon next to the text.",
       "inlineType": Object {
         "name": "IconProps.Name",
         "type": "union",
