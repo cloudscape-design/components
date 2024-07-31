@@ -295,10 +295,7 @@ describe('Expandable Section', () => {
         const testWarnings = (props: ExpandableSectionProps) => {
           render(<ExpandableSection {...props} />);
           expect(warnOnce).toHaveBeenCalledTimes(1);
-          expect(warnOnce).toHaveBeenCalledWith(
-            componentName,
-            expect.stringMatching(/only supported for the "container" variant./)
-          );
+          expect(warnOnce).toHaveBeenCalledWith(componentName, expect.stringMatching(/only supported for the/));
         };
 
         for (const variant of nonContainerVariants) {

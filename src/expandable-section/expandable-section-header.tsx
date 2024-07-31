@@ -254,7 +254,7 @@ export const ExpandableSectionHeader = ({
   }
 
   if (headerActions && !variantSupportsActions(variant) && isDevelopment) {
-    warnOnce(componentName, `The \`headerActions\` prop is only supported for the "container" variant.`);
+    warnOnce(componentName, `The \`headerActions\` prop is only supported for the "container" and "default" variants.`);
   }
 
   if (headerDescription && !variantSupportsDescription(variant) && isDevelopment) {
