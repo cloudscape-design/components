@@ -253,8 +253,8 @@ function DesktopTriggers() {
               ref={item.id === previousActiveDrawerId.current ? drawersRefs.toggle : undefined}
               selected={item.id === activeDrawerId}
               badge={item.badge}
-              testId={`awsui-app-layout-trigger-${item.id}`}
               highContrastHeader={headerVariant === 'high-contrast'}
+              testId={`awsui-app-layout-trigger-${item.id}`}
             />
           );
         })}
@@ -273,6 +273,7 @@ function DesktopTriggers() {
                 iconName="ellipsis"
                 onClick={onClick}
                 highContrastHeader={headerVariant === 'high-contrast'}
+                testId={`awsui-app-layout-trigger-overflow-menu`}
               />
             )}
             onItemClick={({ detail }) => {
@@ -291,6 +292,7 @@ function DesktopTriggers() {
             selected={hasSplitPanel && isSplitPanelOpen}
             ref={splitPanelRefs.toggle}
             highContrastHeader={headerVariant === 'high-contrast'}
+            testId={`awsui-app-layout-trigger-split-panel`}
           />
         )}
       </div>
@@ -340,7 +342,8 @@ export function MobileTriggers() {
     >
       <div className={styles['drawers-mobile-triggers-container']} role="toolbar" aria-orientation="horizontal">
         {visibleItems.map(item => (
-          <InternalButton
+          <TriggerButton
+            isMobile={true}
             ariaExpanded={item.id === activeDrawerId}
             ariaLabel={item.ariaLabels?.triggerButton}
             className={clsx(
@@ -350,14 +353,12 @@ export function MobileTriggers() {
             )}
             disabled={hasDrawerViewportOverlay}
             ref={item.id === previousActiveDrawerId.current ? drawersRefs.toggle : undefined}
-            formAction="none"
             iconName={item.trigger.iconName}
             iconSvg={item.trigger.iconSvg}
             badge={item.badge}
             key={item.id}
+            testId={`awsui-app-layout-trigger-${item.id}`}
             onClick={() => handleDrawersClick(item.id)}
-            variant="icon"
-            __nativeAttributes={{ 'aria-haspopup': true, 'data-testid': `awsui-app-layout-trigger-${item.id}` }}
           />
         ))}
         {overflowItems.length > 0 && (

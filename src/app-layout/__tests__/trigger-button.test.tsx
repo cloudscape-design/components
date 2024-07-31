@@ -3,20 +3,22 @@
 /* eslint simple-import-sort/imports: 0 */
 import React from 'react';
 import { ButtonProps } from '../../../lib/components/button';
+import { IconProps } from '../../../lib/components/icon/interfaces.js';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 import TriggerButton, { TriggerButtonProps } from '../../../lib/components/app-layout/visual-refresh/trigger-button';
+import triggerButtonStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
 import tooltipStyles from '../../../lib/components/internal/components/tooltip/styles.selectors.js';
-import popoverStyles from '../../../lib/components/popover/styles.css.js';
 
-import { act, render, waitFor } from '@testing-library/react';
+import { act, render, fireEvent } from '@testing-library/react';
 import createWrapper from '../../../lib/components/test-utils/dom';
-import { IconProps } from '../../../lib/components/icon/interfaces.js';
 
+const mockDrawerId = 'mock-drawer-id';
+const mockTestId = `awsui-app-layout-trigger-${mockDrawerId}`;
 const mockProps = {
   ariaLabel: 'Aria label',
   className: 'class-from-props',
   iconName: 'bug',
-  testId: 'mockTestId',
+  testId: mockTestId,
 };
 const mockOtherEl = {
   class: 'other-el-class',
@@ -35,30 +37,28 @@ async function renderTriggerButton(props: Partial<TriggerButtonProps> = {}, ref:
       <span className={mockOtherEl.class}>{mockOtherEl.text}</span>
     </div>
   );
-  const wrapper = createWrapper(container).findByClassName('trigger-wrapper');
+  const wrapper = createWrapper(container).findByClassName(triggerButtonStyles['trigger-wrapper'])!;
   await delay();
-  return { wrapper, rerender, container, getByTestId, getByText };
+  return { wrapper, rerender, getByTestId, getByText };
 }
 
-describe('Toolbar desktop trigger-button', () => {
+describe.each([true, false])('Toolbar trigger-button with isMobile=%s', isMobile => {
   it('renders correctly with iconName', async () => {
     const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
-    const { container, wrapper, getByTestId } = await renderTriggerButton(
+    const { wrapper, getByTestId } = await renderTriggerButton(
       {
-        iconName: 'bug',
+        isMobile,
       },
       ref as any
     );
-    expect(container).toBeTruthy();
-    waitFor(() => {
-      const button = wrapper!.find('button[type="button"]');
-      expect(wrapper!.findByClassName('trigger-wrapper')).toBeTruthy();
-      expect(getByTestId(mockProps.testId)).toBeTruthy();
-      expect(button).toBeTruthy();
-      expect(button!.getElement().ariaLabel).toEqual(mockProps.ariaLabel);
-      expect(wrapper!.findIcon()).toBeTruthy();
-      expect(wrapper!.findByClassName(tooltipStyles.root)).toBeNull();
-    });
+
+    expect(wrapper).not.toBeNull();
+    const button = wrapper.find('button');
+    expect(getByTestId(mockTestId)).toBeTruthy();
+    expect(button).toBeTruthy();
+    expect(button!.getElement().getAttribute('aria-label')).toEqual(mockProps.ariaLabel);
+    expect(wrapper!.findIcon()).toBeTruthy();
+    expect(wrapper!.findByClassName(tooltipStyles.root)).toBeNull();
   });
 
   it('renders correctly with iconSvg', async () => {
@@ -69,167 +69,179 @@ describe('Toolbar desktop trigger-button', () => {
       </svg>
     );
     const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
-    const { container, wrapper, getByTestId } = await renderTriggerButton(
+    const { wrapper, getByTestId } = await renderTriggerButton(
       {
         iconSvg: icon,
+        isMobile,
       },
       ref as any
     );
-    expect(container).toBeTruthy();
-    waitFor(() => {
-      const button = wrapper!.findButton();
-      expect(wrapper!.findByClassName('trigger-wrapper')).toBeTruthy();
-      expect(getByTestId(mockProps.testId)).toBeTruthy();
-      expect(button).toBeTruthy();
-      expect(button!.getElement().ariaLabel).toEqual(mockProps.ariaLabel);
-      expect(wrapper!.findIcon()).toBeTruthy();
-      expect(getByTestId(iconTestId)).toBeTruthy();
-      expect(wrapper!.findByClassName(tooltipStyles.root)).toBeNull();
-    });
+
+    expect(wrapper).not.toBeNull();
+    const button = wrapper.find('button');
+    expect(getByTestId(mockTestId)).toBeTruthy();
+    expect(button).toBeTruthy();
+    expect(button!.getElement().getAttribute('aria-label')).toEqual(mockProps.ariaLabel);
+    expect(wrapper!.findIcon()).toBeTruthy();
+    expect(wrapper!.findByClassName(tooltipStyles.root)).toBeNull();
+    expect(getByTestId(iconTestId)).toBeTruthy();
+    expect(wrapper!.findByClassName(tooltipStyles.root)).toBeNull();
+  });
+
+  it.each([true, false])('renders correctly and with when disabled is %s', async disabledValue => {
+    const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
+    const mockClickSpy = jest.fn();
+    const { wrapper } = await renderTriggerButton(
+      {
+        isMobile,
+        disabled: disabledValue,
+        onClick: mockClickSpy,
+      },
+      ref as any
+    );
+    expect(wrapper).not.toBeNull();
+    const button = wrapper.find('button')!;
+    button.click();
+    expect(mockClickSpy).toBeCalledTimes(disabledValue ? 0 : 1);
   });
 
   it.skip('does not render without either an iconName or iconSVG prop', async () => {
     const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
-    const { container, wrapper, getByTestId } = await renderTriggerButton(
+    const { wrapper, getByTestId } = await renderTriggerButton(
       {
         iconName: '' as IconProps.Name,
+        isMobile,
       },
       ref as any
     );
-    expect(container).toBeTruthy();
-    waitFor(() => {
-      const button = wrapper!.find('button[type="button"]');
-      expect(wrapper!.findByClassName('trigger-wrapper')).toBeTruthy();
-      expect(getByTestId(mockProps.testId)).toBeTruthy();
-      expect(button).toBeTruthy();
-      expect(wrapper!.findByClassName(tooltipStyles.root)).toBeNull();
-    });
+    expect(wrapper).not.toBeNull();
+    const button = wrapper.find('button');
+    expect(button).toBeTruthy();
+    expect(getByTestId(mockTestId)).toBeTruthy();
+    expect(button!.getElement().getAttribute('aria-label')).toEqual(mockProps.ariaLabel);
+    expect(wrapper!.findByClassName(tooltipStyles.root)).toBeNull();
   });
 
   it('renders correctly with badge', async () => {
     const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
-    const { container, wrapper } = await renderTriggerButton(
+    const { wrapper, getByTestId } = await renderTriggerButton(
       {
         badge: true,
+        isMobile,
       },
       ref as any
     );
-    expect(container).toBeTruthy();
-    waitFor(() => {
-      const button = wrapper!.find('button[type="button"]');
-      expect(wrapper!.findByClassName('trigger-wrapper')).toBeTruthy();
-      expect(button).toBeTruthy();
-      expect(button!.findBadge()).toBeTruthy();
-    });
+
+    expect(wrapper).not.toBeNull();
+    const button = wrapper.find('button');
+    expect(getByTestId(mockTestId)).toBeTruthy();
+    expect(button).toBeTruthy();
+    expect(button!.getElement().getAttribute('aria-label')).toEqual(mockProps.ariaLabel);
+    expect(wrapper!.findIcon()).toBeTruthy();
+    expect(wrapper.findByClassName(triggerButtonStyles.dot)).toBeTruthy();
+    expect(wrapper!.findByClassName(tooltipStyles.root)).toBeNull();
   });
 
   describe('Trigger wrapper events', () => {
     it('Shows tooltip on pointerEnter and closes on pointerLeave', async () => {
       const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
       const mockTooltipText = 'Mock Tooltip';
-      const { container, wrapper, getByText } = await renderTriggerButton(
+      const { wrapper, getByText } = await renderTriggerButton(
         {
           tooltipText: mockTooltipText,
+          isMobile,
+          badge: true,
         },
         ref as any
       );
-      expect(container).toBeTruthy();
-      waitFor(() => {
-        expect(wrapper!.findByClassName(tooltipStyles.root)).toBeNull();
-        const triggerWrapper = wrapper!.findByClassName('trigger-wrapper');
-        expect(triggerWrapper).toBeTruthy();
-        triggerWrapper!.fireEvent(new MouseEvent('pointerdown', { bubbles: true }));
-        waitFor(() => {
-          expect(wrapper!.findByClassName(tooltipStyles.root)).toBeTruthy();
-          expect(wrapper!.findByClassName(popoverStyles.content)).toBeTruthy();
-          expect(getByText(mockTooltipText)).toBeTruthy();
-        });
-
-        const otherEl = wrapper!.findByClassName(mockOtherEl.class);
-        otherEl!.fireEvent(new MouseEvent('pointerdown', { bubbles: true }));
-        waitFor(() => {
-          expect(wrapper!.findByClassName(tooltipStyles.root)).toBeNull();
-        });
-      });
+      expect(wrapper!.findByClassName('awsui-app-layout-trigger-tooltip')).toBeNull();
+      expect(() => getByText(mockTooltipText)).toThrow();
+      fireEvent.pointerEnter(wrapper!.getElement());
+      expect(getByText(mockTooltipText)).toBeTruthy();
+      fireEvent.pointerLeave(wrapper!.getElement());
+      expect(wrapper.findByClassName('awsui-app-layout-trigger-tooltip')).toBeNull();
+      expect(() => getByText(mockTooltipText)).toThrow();
     });
 
-    it('Shows tooltip on focus and removes on escape', async () => {
+    it('Shows tooltip on pointerEnter and closes on e', async () => {
       const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
       const mockTooltipText = 'Mock Tooltip';
-      const { container, wrapper, getByText } = await renderTriggerButton(
+      const { wrapper, getByText } = await renderTriggerButton(
         {
           tooltipText: mockTooltipText,
+          isMobile,
+          badge: true,
         },
         ref as any
       );
-      expect(container).toBeTruthy();
-      waitFor(() => {
-        expect(wrapper!.findByClassName(tooltipStyles.root)).toBeNull();
-        const triggerWrapper = wrapper!.findByClassName('trigger-wrapper');
-        expect(triggerWrapper).toBeTruthy();
-        triggerWrapper!.focus();
-        waitFor(() => {
-          expect(wrapper!.findByClassName(tooltipStyles.root)).toBeTruthy();
-          expect(wrapper!.findByClassName(popoverStyles.content)).toBeTruthy();
-          expect(getByText(mockTooltipText)).toBeTruthy();
-        });
+      expect(wrapper!.findByClassName('awsui-app-layout-trigger-tooltip')).toBeNull();
+      expect(() => getByText(mockTooltipText)).toThrow();
+      fireEvent.pointerEnter(wrapper!.getElement());
+      expect(getByText(mockTooltipText)).toBeTruthy();
+      fireEvent.pointerLeave(wrapper!.getElement());
+      expect(wrapper.findByClassName('awsui-app-layout-trigger-tooltip')).toBeNull();
+      expect(() => getByText(mockTooltipText)).toThrow();
+    });
 
-        triggerWrapper!.keydown(KeyCode.escape);
-        waitFor(() => {
-          expect(wrapper!.findByClassName(tooltipStyles.root)).toBeNull();
-        });
-      });
+    it('Shows tooltip on focus and removes on key escape', async () => {
+      const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
+      const mockTooltipText = 'Mock Tooltip';
+      const { wrapper, getByText } = await renderTriggerButton(
+        {
+          tooltipText: mockTooltipText,
+          isMobile,
+          badge: true,
+        },
+        ref as any
+      );
+      expect(wrapper!.findByClassName('awsui-app-layout-trigger-tooltip')).toBeNull();
+      expect(() => getByText(mockTooltipText)).toThrow();
+      fireEvent.focus(wrapper!.getElement());
+      expect(getByText(mockTooltipText)).toBeTruthy();
+      fireEvent.keyDown(wrapper!.getElement(), { key: 'Escape', code: KeyCode.escape });
+      expect(wrapper.findByClassName('awsui-app-layout-trigger-tooltip')).toBeNull();
+      expect(() => getByText(mockTooltipText)).toThrow();
     });
 
     it('Shows tooltip on focus and removes on blur', async () => {
       const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
       const mockTooltipText = 'Mock Tooltip';
-      const { container, wrapper, getByText } = await renderTriggerButton(
+      const { wrapper, getByText } = await renderTriggerButton(
         {
           tooltipText: mockTooltipText,
+          isMobile,
+          badge: true,
         },
         ref as any
       );
-      expect(container).toBeTruthy();
-      waitFor(() => {
-        expect(wrapper!.findByClassName(tooltipStyles.root)).toBeNull();
-        const triggerWrapper = wrapper!.findByClassName('trigger-wrapper');
-        expect(triggerWrapper).toBeTruthy();
-        triggerWrapper!.focus();
-        waitFor(() => {
-          expect(wrapper!.findByClassName(tooltipStyles.root)).toBeTruthy();
-          expect(wrapper!.findByClassName(popoverStyles.content)).toBeTruthy();
-          expect(getByText(mockTooltipText)).toBeTruthy();
-        });
-
-        triggerWrapper!.blur();
-        waitFor(() => {
-          expect(wrapper!.findByClassName(tooltipStyles.root)).toBeNull();
-        });
-      });
+      expect(wrapper!.findByClassName('awsui-app-layout-trigger-tooltip')).toBeNull();
+      expect(() => getByText(mockTooltipText)).toThrow();
+      fireEvent.focus(wrapper!.getElement());
+      expect(getByText(mockTooltipText)).toBeTruthy();
+      fireEvent.blur(wrapper!.getElement());
+      expect(wrapper.findByClassName('awsui-app-layout-trigger-tooltip')).toBeNull();
+      expect(() => getByText(mockTooltipText)).toThrow();
     });
   });
 
   it('Is focusable using the forwarded ref and tooltip does not show', async () => {
     const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
-    const { container, wrapper, getByTestId } = await renderTriggerButton(
+    const mockTooltipText = 'Mock Tooltip';
+    const { wrapper, getByTestId, getByText } = await renderTriggerButton(
       {
         iconName: 'bug',
+        isMobile,
+        tooltipText: mockTooltipText,
       },
       ref as any
     );
-    expect(container).toBeTruthy();
-    waitFor(() => {
-      const button = wrapper!.find('button[type="button"]');
-      expect(wrapper!.findByClassName('trigger-wrapper')).toBeTruthy();
-      expect(getByTestId(mockProps.testId)).toBeTruthy();
-      expect(button).toBeTruthy();
-      expect(document.activeElement).not.toBe(button!.getElement());
-      (ref.current as any)?.focus();
-      waitFor(() => {
-        expect(document.activeElement).toBe(button!.getElement());
-        expect(wrapper!.findByClassName(tooltipStyles.root)).toBeNull();
-      });
-    });
+
+    const button = wrapper!.find('button');
+    expect(getByTestId(mockTestId)).toBeTruthy();
+    expect(button).toBeTruthy();
+    expect(document.activeElement).not.toBe(button!.getElement());
+    (ref.current as any)?.focus();
+    expect(document.activeElement).toBe(button!.getElement());
+    expect(() => getByText(mockTooltipText)).toThrow();
   });
 });
