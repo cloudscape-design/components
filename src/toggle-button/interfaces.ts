@@ -17,6 +17,11 @@ export interface ToggleButtonProps extends BaseComponentProps, BaseButtonProps {
   variant?: ToggleButtonProps.Variant;
 
   /**
+   * Displays an icon next to the text.
+   */
+  iconName?: IconProps.Name;
+
+  /**
    * Displays an icon next to the text in pressed state.
    */
   pressedIconName?: IconProps.Name;
@@ -54,6 +59,13 @@ export interface ToggleButtonProps extends BaseComponentProps, BaseButtonProps {
    * Sets the toggle button to pressed state.
    */
   pressed: boolean;
+
+  /**
+   * Provides a reason why the button is disabled (only when `disabled` is `true`).
+   * If provided, the button becomes focusable.
+   * Applicable only for the normal toggle-button variant.
+   */
+  disabledReason?: string;
 
   /**
    * Called when the user changes their selection.

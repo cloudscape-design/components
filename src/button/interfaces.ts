@@ -58,11 +58,6 @@ export interface BaseButtonProps {
    * In most cases, they aren't needed, as the `svg` element inherits styles from the icon component.
    */
   iconSvg?: React.ReactNode;
-  /**
-   * Specifies alternate text for a custom icon. We recommend that you provide this for accessibility.
-   * This property is ignored if you use a predefined icon or if you set your custom icon using the `iconSvg` slot.
-   */
-  iconAlt?: string;
 
   /**
    * Adds `aria-label` to the button element. Use this to provide an accessible name for buttons
@@ -164,6 +159,12 @@ export interface ButtonProps extends BaseComponentProps, BaseButtonProps {
    * * `inline-link` to display a tertiary button with no outer padding.
    */
   variant?: ButtonProps.Variant;
+
+  /**
+   * Specifies alternate text for a custom icon. We recommend that you provide this for accessibility.
+   * This property is ignored if you use a predefined icon or if you set your custom icon using the `iconSvg` slot.
+   */
+  iconAlt?: string;
 }
 
 export namespace ButtonProps {
