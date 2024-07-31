@@ -27,6 +27,7 @@ function renderExpandableSection(props: ExpandableSectionProps = {}): Expandable
 }
 
 const containerizedVariants: ExpandableSectionProps.Variant[] = ['container', 'stacked'];
+const variantsWithActions: ExpandableSectionProps.Variant[] = ['container', 'stacked', 'default'];
 
 describe('Expandable Section', () => {
   const variantsWithDescription: ExpandableSectionProps.Variant[] = [...containerizedVariants, 'default', 'footer'];
@@ -95,7 +96,7 @@ describe('Expandable Section', () => {
       }
     });
     describe('populates action buttons slot correctly', () => {
-      for (const variant of containerizedVariants) {
+      for (const variant of variantsWithActions) {
         test(`${variant} variant`, () => {
           const wrapper = renderExpandableSection({
             headerText: 'Test Header',
