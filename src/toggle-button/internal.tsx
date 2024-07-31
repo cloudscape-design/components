@@ -48,6 +48,7 @@ export const InternalToggleButton = React.forwardRef(
       <InternalButton
         className={clsx(className, styles[`variant-${variant}`], { [styles.pressed]: pressed })}
         variant={variant}
+        formAction="none"
         iconName={getToggleIcon(pressed, defaultIconName, pressedIconName)}
         iconUrl={getToggleIcon(pressed, defaultIconUrl, pressedIconUrl)}
         iconSvg={getToggleIcon(pressed, defaultIconSvg, pressedIconSvg)}
