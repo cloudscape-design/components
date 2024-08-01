@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useState } from 'react';
+import React, { Ref, useEffect, useState } from 'react';
 import clsx from 'clsx';
 
 import { ButtonProps } from '../../button/interfaces';
@@ -8,7 +8,6 @@ import { InternalButton } from '../../button/internal';
 import { IconProps } from '../../icon/interfaces';
 import Icon from '../../icon/internal';
 import Tooltip from '../../internal/components/tooltip';
-import { CancelableEventHandler, ClickDetail } from '../../internal/events';
 
 import styles from './styles.css.js';
 
@@ -30,13 +29,18 @@ export interface TriggerButtonProps {
   ariaExpanded: boolean | undefined;
   /**
    * Set to true if this component used in a mobile layout
-   * 
-
+   *
    * It will then render a different InternalButton that is optimumn for the mobile experience
    */
   isMobile?: boolean;
   ariaControls?: string;
   disabled?: boolean;
+  /**
+   * If the button is expected to have a tooltip. When false it will not set the event listeners
+   *
+   * defaults to false
+   */
+  hasTooltip?: boolean;
   /**
    * This text allows for a customized tooltip.
    *
@@ -47,8 +51,11 @@ export interface TriggerButtonProps {
    * Ovewrwrites any internal testIds when provided
    */
   testId?: string;
-  onClick: React.MouseEventHandler<HTMLButtonElement> | CancelableEventHandler<ClickDetail>;
+  /**
+   * If button is selected. Used only for desktop and applies a selected class
+   */
   selected?: boolean;
+  onClick: () => void;
   badge?: boolean;
   highContrastHeader?: boolean;
 }
@@ -62,6 +69,7 @@ function TriggerButton(
     ariaExpanded,
     ariaControls,
     onClick,
+    hasTooltip = false,
     tooltipText,
     testId,
     disabled = false,
@@ -73,35 +81,8 @@ function TriggerButton(
   ref: React.Ref<ButtonProps.Ref>
 ) {
   const containerRef = React.useRef(null);
-  const tooltipValue = tooltipText ? tooltipText : ariaLabel ?? '';
+  const tooltipValue = tooltipText ? tooltipText : ariaLabel ? ariaLabel : '';
   const [showTooltip, setShowTooltip] = useState<boolean>(false);
-
-  useEffect(() => {
-    const close = () => {
-      setShowTooltip(false);
-    };
-
-    const handlePointerDownEvent = (event: PointerEvent) => {
-      if (event.target && containerRef && (containerRef.current as any)?.contains(event.target as HTMLElement)) {
-        return;
-      }
-      close();
-    };
-
-    const handleKeyDownEvent = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        close();
-      }
-    };
-
-    window.addEventListener('pointerdown', handlePointerDownEvent);
-    window.addEventListener('keydown', handleKeyDownEvent);
-
-    return () => {
-      window.removeEventListener('pointerdown', handlePointerDownEvent);
-      window.removeEventListener('keydown', handleKeyDownEvent);
-    };
-  }, [containerRef]);
 
   const onShowTooltipSoft = (show: boolean) => {
     setShowTooltip(show);
@@ -111,17 +92,51 @@ function TriggerButton(
     setShowTooltip(show);
   };
 
+  useEffect(() => {
+    if (showTooltip) {
+      const close = () => {
+        setShowTooltip(false);
+      };
+
+      const handlePointerDownEvent = (event: PointerEvent) => {
+        if (event.target && containerRef && (containerRef.current as any)?.contains(event.target as HTMLElement)) {
+          return;
+        }
+        close();
+      };
+
+      const handleKeyDownEvent = (event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+          close();
+        }
+      };
+
+      window.addEventListener('pointerdown', handlePointerDownEvent);
+      window.addEventListener('keydown', handleKeyDownEvent);
+
+      return () => {
+        window.removeEventListener('pointerdown', handlePointerDownEvent);
+        window.removeEventListener('keydown', handleKeyDownEvent);
+      };
+    }
+  }, [containerRef, showTooltip]);
+
   return (
     <div
       ref={containerRef}
-      onPointerEnter={() => onShowTooltipSoft(true)}
-      onPointerLeave={() => onShowTooltipSoft(false)}
-      onFocus={({ currentTarget, target }) => {
-        if (currentTarget === target) {
-          onShowTooltipHard(true);
-        }
-      }}
-      onBlur={() => onShowTooltipHard(false)}
+      {...(hasTooltip
+        ? {
+            onPointerEnter: () => onShowTooltipSoft(true),
+            onPointerLeave: () => onShowTooltipSoft(false),
+            onFocus: ({ target, currentTarget }) => {
+              if (currentTarget === target) {
+                onShowTooltipHard(true);
+              }
+            },
+            onBlur: () => onShowTooltipHard(false),
+          }
+        : {})}
+      data-testid={`${testId ? `${testId}-wrapper` : 'awsui-app-layout-trigger-wrapper'}${hasTooltip ? '-with-possible-tooltip' : ''}`}
       className={clsx(styles['trigger-wrapper'], !highContrastHeader && styles['remove-high-contrast-header'])}
     >
       {isMobile ? (
@@ -135,9 +150,16 @@ function TriggerButton(
           iconName={iconName}
           iconSvg={iconSvg}
           badge={badge}
-          onClick={onClick as CancelableEventHandler}
+          onClick={onClick}
           variant="icon"
-          __nativeAttributes={{ 'aria-haspopup': true, 'data-testid': testId }}
+          __nativeAttributes={{
+            'aria-haspopup': true,
+            ...(testId
+              ? {
+                  'data-testid': testId,
+                }
+              : {}),
+          }}
         />
       ) : (
         <button
@@ -154,24 +176,19 @@ function TriggerButton(
             },
             className
           )}
-          onClick={onClick as React.MouseEventHandler}
-          ref={ref as React.Ref<HTMLButtonElement>}
+          onClick={onClick}
+          ref={ref as Ref<HTMLButtonElement>}
           type="button"
           data-testid={testId}
         >
           <span className={clsx(badge && styles['trigger-badge-wrapper'])}>
-            <Icon name={iconName} svg={iconSvg} />
+            {(iconName || iconSvg) && <Icon name={iconName} svg={iconSvg} />}
           </span>
         </button>
       )}
       {badge && <div className={styles.dot} />}
       {showTooltip && containerRef && containerRef.current && tooltipValue && (
-        <Tooltip
-          trackRef={containerRef}
-          position="left"
-          value={tooltipValue}
-          className="awsui-app-layout-trigger-tooltip"
-        />
+        <Tooltip trackRef={containerRef} position="left" value={tooltipValue} className={styles['trigger-tooltip']} />
       )}
     </div>
   );

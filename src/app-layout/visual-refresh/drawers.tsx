@@ -239,6 +239,7 @@ function DesktopTriggers() {
             <TriggerButton
               ariaLabel={item.ariaLabels?.triggerButton}
               tooltipText={item.ariaLabels?.drawerName}
+              hasTooltip={true}
               ariaExpanded={item.id === activeDrawerId}
               ariaControls={activeDrawerId === item.id ? item.id : undefined}
               className={clsx(
@@ -273,7 +274,6 @@ function DesktopTriggers() {
                 iconName="ellipsis"
                 onClick={onClick}
                 highContrastHeader={headerVariant === 'high-contrast'}
-                testId={`awsui-app-layout-trigger-overflow-menu`}
               />
             )}
             onItemClick={({ detail }) => {
@@ -292,7 +292,6 @@ function DesktopTriggers() {
             selected={hasSplitPanel && isSplitPanelOpen}
             ref={splitPanelRefs.toggle}
             highContrastHeader={headerVariant === 'high-contrast'}
-            testId={`awsui-app-layout-trigger-split-panel`}
           />
         )}
       </div>
@@ -345,6 +344,8 @@ export function MobileTriggers() {
           <TriggerButton
             isMobile={true}
             ariaExpanded={item.id === activeDrawerId}
+            hasTooltip={true}
+            tooltipText={item.ariaLabels?.drawerName}
             ariaLabel={item.ariaLabels?.triggerButton}
             className={clsx(
               styles['drawers-trigger'],
