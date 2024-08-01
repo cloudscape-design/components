@@ -1,13 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useEffect, useState } from 'react';
+
 import { AppLayout, ContentLayout, Header, HelpPanel, Link, SpaceBetween, Toggle } from '~components';
-import appLayoutLabels from './utils/labels';
 import { AppLayoutProps } from '~components/app-layout';
-import { Breadcrumbs, Containers } from './utils/content-blocks';
+import awsuiPlugins from '~components/internal/plugins';
+
 import './utils/external-widget';
 import AppContext, { AppContextType } from '../app/app-context';
-import awsuiPlugins from '~components/internal/plugins';
+import { Breadcrumbs, Containers } from './utils/content-blocks';
+import appLayoutLabels from './utils/labels';
 
 type DemoContext = React.Context<
   AppContextType<{
@@ -67,30 +69,28 @@ export default function WithDrawers() {
                   Use Tools
                 </Toggle>
 
-                <SpaceBetween size="xs">
-                  <Header variant="h2">Security Drawer Updates</Header>
-                  <Toggle
-                    data-testid="show-badge-toggle"
-                    checked={showBadge}
-                    onChange={({ detail }) => setUrlParams({ showBadge: detail.checked })}
-                  >
-                    Show Badge
-                  </Toggle>
-                  <Toggle
-                    data-testid="turn-off-resize-toggle"
-                    checked={turnOffResizable}
-                    onChange={({ detail }) => setUrlParams({ turnOffResizable: detail.checked })}
-                  >
-                    Turn off Resize
-                  </Toggle>
-                  <Toggle
-                    data-testid="increase-drawer-size-toggle"
-                    checked={increaseDrawerSize}
-                    onChange={({ detail }) => setUrlParams({ increaseDrawerSize: detail.checked })}
-                  >
-                    Increase Drawer Size
-                  </Toggle>
-                </SpaceBetween>
+                <Header variant="h2">Security Drawer Updates</Header>
+                <Toggle
+                  data-testid="show-badge-toggle"
+                  checked={showBadge}
+                  onChange={({ detail }) => setUrlParams({ showBadge: detail.checked })}
+                >
+                  Show Badge
+                </Toggle>
+                <Toggle
+                  data-testid="turn-off-resize-toggle"
+                  checked={turnOffResizable}
+                  onChange={({ detail }) => setUrlParams({ turnOffResizable: detail.checked })}
+                >
+                  Turn off Resize
+                </Toggle>
+                <Toggle
+                  data-testid="increase-drawer-size-toggle"
+                  checked={increaseDrawerSize}
+                  onChange={({ detail }) => setUrlParams({ increaseDrawerSize: detail.checked })}
+                >
+                  Increase Drawer Size
+                </Toggle>
               </SpaceBetween>
             </SpaceBetween>
           }

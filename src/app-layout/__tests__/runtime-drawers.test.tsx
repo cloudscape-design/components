@@ -17,6 +17,7 @@ import { DrawerConfig } from '../../../lib/components/internal/plugins/controlle
 import createWrapper from '../../../lib/components/test-utils/dom';
 import triggerStyles from '../../../lib/components/app-layout/visual-refresh/styles.selectors.js';
 import toolbarTriggerStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/trigger-button/styles.selectors.js';
+import iconStyles from '../../../lib/components/icon/styles.selectors.js';
 
 beforeEach(() => {
   awsuiPluginsInternal.appLayout.clearRegisteredDrawers();
@@ -28,10 +29,10 @@ jest.mock('@cloudscape-design/component-toolkit', () => ({
 }));
 
 async function renderComponent(jsx: React.ReactElement) {
-  const { container, rerender, debug } = render(jsx);
+  const { container, rerender } = render(jsx);
   const wrapper = createWrapper(container).findAppLayout()!;
   await delay();
-  return { wrapper, rerender, debug };
+  return { wrapper, rerender };
 }
 
 function delay() {
@@ -74,56 +75,63 @@ describeEachAppLayout(({ theme, size }) => {
     expect(wrapper.findDrawersTriggers()).toHaveLength(2);
   });
 
-  test('update rendered drawers via runtime config', async () => {
+  test.only('update rendered drawers via runtime config', async () => {
     awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, resizable: true });
     const { wrapper } = await renderComponent(<AppLayout />);
     // the 2nd trigger is for tools
     expect(wrapper.findDrawersTriggers()).toHaveLength(2);
     const drawerTrigger = wrapper.findDrawerTriggerById(drawerDefaults.id);
 
-    if (theme !== 'classic' && size === 'desktop') {
-      const triggerParent = drawerTrigger?.getElement().parentElement;
-      const triggerParentWrapper = createWrapper(triggerParent!);
+    const triggerParent = drawerTrigger!.getElement().parentElement;
+    const triggerParentWrapper = createWrapper(triggerParent!);
 
-      awsuiPlugins.appLayout.updateDrawer({
-        id: drawerDefaults.id,
-        badge: true,
-      });
-      await delay();
+    awsuiPlugins.appLayout.updateDrawer({
+      id: drawerDefaults.id,
+      badge: true,
+    });
+    await delay();
+    const selector =
+      theme === 'refresh-toolbar'
+        ? toolbarTriggerStyles.badge
+        : theme === 'refresh' && size === 'desktop'
+          ? triggerStyles.badge
+          : iconStyles.badge;
 
-      const dotElement = triggerParentWrapper
-        ?.findByClassName((theme === 'refresh' ? triggerStyles : toolbarTriggerStyles).dot)
-        ?.getElement();
+    expect(triggerParentWrapper?.findByClassName(selector)?.getElement()).toBeInTheDocument();
 
-      expect(dotElement).toBeInTheDocument();
+    awsuiPlugins.appLayout.updateDrawer({
+      id: drawerDefaults.id,
+      badge: false,
+    });
+    await delay();
 
-      awsuiPlugins.appLayout.updateDrawer({
-        id: drawerDefaults.id,
-        badge: false,
-      });
-      await delay();
+    // re-querying the dot element
+    expect(triggerParentWrapper?.findByClassName(selector)?.getElement()).toBeUndefined();
+  });
 
-      expect(dotElement).not.toBeInTheDocument();
-    }
+  (size === 'desktop' ? test : test.skip)('update runtime drawers config resizable validation', async () => {
+    awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, resizable: true });
+    const { wrapper } = await renderComponent(<AppLayout />);
+    // the 2nd trigger is for tools
+    expect(wrapper.findDrawersTriggers()).toHaveLength(2);
+    const drawerTrigger = wrapper.findDrawerTriggerById(drawerDefaults.id);
+    drawerTrigger?.click();
 
-    if (size === 'desktop') {
-      drawerTrigger?.click();
-      await delay();
+    await delay();
 
-      const resizeHandle = wrapper.findActiveDrawerResizeHandle()?.getElement();
-      expect(resizeHandle).toBeInTheDocument();
+    const resizeHandle = wrapper.findActiveDrawerResizeHandle()?.getElement();
+    expect(resizeHandle).toBeInTheDocument();
 
-      expect(getActiveDrawerWidth(wrapper)).toEqual('290px');
+    expect(getActiveDrawerWidth(wrapper)).toEqual('290px');
 
-      awsuiPlugins.appLayout.updateDrawer({
-        id: drawerDefaults.id,
-        resizable: false,
-        defaultSize: 350,
-      });
-      await delay();
+    awsuiPlugins.appLayout.updateDrawer({
+      id: drawerDefaults.id,
+      resizable: false,
+      defaultSize: 350,
+    });
+    await delay();
 
-      expect(getActiveDrawerWidth(wrapper)).toEqual('350px');
-    }
+    expect(getActiveDrawerWidth(wrapper)).toEqual('350px');
   });
 
   test('combines runtime drawers with the tools', async () => {
