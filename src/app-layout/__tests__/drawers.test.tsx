@@ -11,11 +11,12 @@ import {
   findActiveDrawerLandmark,
 } from './utils';
 
-import { act, waitFor } from '@testing-library/react';
+import { act, render, waitFor, fireEvent } from '@testing-library/react';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils.js';
+import { createWrapper } from '@cloudscape-design/test-utils-core/dom.js';
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 
 import tooltipStyles from '../../../lib/components/internal/components/tooltip/styles.selectors.js';
-import popoverStyles from '../../../lib/components/popover/styles.css.js';
 
 jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
   useMobile: jest.fn().mockReturnValue(true),
@@ -28,7 +29,9 @@ jest.mock('@cloudscape-design/component-toolkit', () => ({
   useContainerQuery: () => [100, () => {}],
 }));
 
-describeEachAppLayout(({ size }) => {
+const mockEventBubble = { currentTarget: 'must-match', target: 'must-match', bubbles: true };
+
+describeEachAppLayout(({ size, theme }) => {
   test(`should not render drawer when it is not defined`, () => {
     const { wrapper, rerender } = renderComponent(<AppLayout toolsHide={true} drawers={[testDrawer]} />);
     expect(wrapper.findDrawersTriggers()).toHaveLength(1);
@@ -174,37 +177,67 @@ describeEachAppLayout(({ size }) => {
     expect(wrapper.findActiveDrawer()!.getElement()).toHaveAttribute('id', 'security');
   });
 
-  testIf(size !== 'mobile')('tooltip renders correctly on pointerdown events', () => {
-    const { wrapper } = renderComponent(<AppLayout drawers={[testDrawer]} />);
-    const drawerTrigger = wrapper.findDrawerTriggerById('security')!;
+  testIf(theme === 'refresh')('tooltip renders correctly on focus & blur events', async () => {
+    const { container, findByTestId } = render(<AppLayout drawers={[testDrawer]} />);
+    const wrapper = createWrapper(container);
+    const testDrawerTriggerWrapper = wrapper!.find(
+      `[data-testid="awsui-app-layout-trigger-${testDrawer.id}-wrapper-with-possible-tooltip"]`
+    );
+    expect(testDrawerTriggerWrapper).not.toBeNull();
+    expect(wrapper!.find(`[data-testid="${testDrawer.ariaLabels?.drawerName}"]`)).toBeNull();
+    fireEvent.focus(testDrawerTriggerWrapper!.getElement(), mockEventBubble);
 
-    drawerTrigger!.fireEvent(new MouseEvent('pointerdown', { bubbles: true }));
-    waitFor(() => {
-      expect(wrapper!.findByClassName(tooltipStyles.root)).toBeTruthy();
-      expect(wrapper!.findByClassName(popoverStyles.content)).toBeTruthy();
+    await waitFor(() => {
+      expect(findByTestId(testDrawer.ariaLabels?.drawerName)).toBeTruthy();
     });
 
-    const otherEl = wrapper!.findNavigation();
-    expect(otherEl).toBeTruthy();
-    otherEl.fireEvent(new MouseEvent('pointerdown', { bubbles: true }));
-    waitFor(() => {
-      expect(wrapper!.findByClassName(tooltipStyles.root)).toBeNull();
+    fireEvent.blur(testDrawerTriggerWrapper!.getElement(), mockEventBubble);
+    await waitFor(() => {
+      expect(wrapper!.find(`[data-testid="${testDrawer.ariaLabels?.drawerName}"]`)).toBeNull();
     });
   });
 
-  testIf(size !== 'mobile')('tooltip renders correctly on focus and blue events', () => {
-    const { wrapper } = renderComponent(<AppLayout drawers={[testDrawer]} />);
-    const drawerTrigger = wrapper.findDrawerTriggerById('security')!;
+  testIf(theme === 'refresh')('tooltip renders correctly on pointer events', async () => {
+    const { container, findByTestId } = render(<AppLayout drawers={[testDrawer]} />);
+    const wrapper = createWrapper(container);
+    const testDrawerTriggerWrapper = wrapper!.find(
+      `[data-testid="awsui-app-layout-trigger-${testDrawer.id}-wrapper-with-possible-tooltip"]`
+    );
+    expect(testDrawerTriggerWrapper).not.toBeNull();
+    expect(wrapper!.find(`[data-testid="${testDrawer.ariaLabels?.drawerName}"]`)).toBeNull();
+    fireEvent.pointerEnter(testDrawerTriggerWrapper!.getElement(), mockEventBubble);
 
-    drawerTrigger!.focus();
-    waitFor(() => {
-      expect(wrapper!.findByClassName(tooltipStyles.root)).toBeTruthy();
-      expect(wrapper!.findByClassName(popoverStyles.content)).toBeTruthy();
+    await waitFor(() => {
+      expect(findByTestId(testDrawer.ariaLabels?.drawerName)).toBeTruthy();
     });
 
-    drawerTrigger!.blur();
-    waitFor(() => {
-      expect(wrapper!.findByClassName(tooltipStyles.root)).toBeNull();
+    fireEvent.pointerLeave(testDrawerTriggerWrapper!.getElement(), mockEventBubble);
+    await waitFor(() => {
+      expect(wrapper!.find(`[data-testid="${testDrawer.ariaLabels?.drawerName}"]`)).toBeNull();
+    });
+  });
+
+  testIf(theme === 'refresh')('tooltip renders correctly on focus & blur events', async () => {
+    const { container, findByTestId } = render(<AppLayout drawers={[testDrawer]} />);
+    const wrapper = createWrapper(container);
+    const testDrawerTriggerWrapper = wrapper!.find(
+      `[data-testid="awsui-app-layout-trigger-${testDrawer.id}-wrapper-with-possible-tooltip"]`
+    );
+    expect(testDrawerTriggerWrapper).not.toBeNull();
+    expect(wrapper!.find(`[data-testid="${testDrawer.ariaLabels?.drawerName}"]`)).toBeNull();
+    fireEvent.focus(testDrawerTriggerWrapper!.getElement(), mockEventBubble);
+
+    await waitFor(() => {
+      expect(findByTestId(testDrawer.ariaLabels?.drawerName)).toBeTruthy();
+    });
+
+    fireEvent.keyDown(testDrawerTriggerWrapper!.getElement(), {
+      ...mockEventBubble,
+      key: 'Escape',
+      code: KeyCode.escape,
+    });
+    await waitFor(() => {
+      expect(wrapper!.find(`[data-testid="${testDrawer.ariaLabels?.drawerName}"]`)).toBeNull();
     });
   });
 });
