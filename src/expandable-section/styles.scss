@@ -169,6 +169,10 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    column-gap: awsui.$space-xs;
+    row-gap: awsui.$space-scaled-xxxs;
   }
 
   &-button,
