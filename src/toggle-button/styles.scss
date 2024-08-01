@@ -1,0 +1,18 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/tokens' as awsui;
+
+.variant-normal.pressed {
+  background: awsui.$color-background-toggle-button-normal-pressed;
+  border-color: awsui.$color-border-toggle-button-normal-pressed;
+  color: awsui.$color-text-toggle-button-normal-pressed;
+}
+
+.variant-icon.pressed {
+  background: transparent;
+  border-color: transparent;
+  color: awsui.$color-text-toggle-button-icon-pressed;
+}
