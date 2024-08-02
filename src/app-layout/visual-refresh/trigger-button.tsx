@@ -93,7 +93,7 @@ function TriggerButton(
   };
 
   useEffect(() => {
-    if (showTooltip) {
+    if (hasTooltip && tooltipValue) {
       const close = () => {
         setShowTooltip(false);
       };
@@ -119,7 +119,7 @@ function TriggerButton(
         window.removeEventListener('keydown', handleKeyDownEvent);
       };
     }
-  }, [containerRef, showTooltip]);
+  }, [containerRef, hasTooltip, tooltipValue]);
 
   return (
     <div
@@ -162,33 +162,40 @@ function TriggerButton(
           }}
         />
       ) : (
-        <button
-          aria-expanded={ariaExpanded}
-          aria-controls={ariaControls}
-          aria-haspopup={true}
-          aria-label={ariaLabel}
-          disabled={disabled}
-          className={clsx(
-            styles.trigger,
-            {
-              [styles.selected]: selected,
-              [styles.badge]: badge,
-            },
-            className
-          )}
-          onClick={onClick}
-          ref={ref as Ref<HTMLButtonElement>}
-          type="button"
-          data-testid={testId}
-        >
-          <span className={clsx(badge && styles['trigger-badge-wrapper'])}>
-            {(iconName || iconSvg) && <Icon name={iconName} svg={iconSvg} />}
-          </span>
-        </button>
+        <>
+          <button
+            aria-expanded={ariaExpanded}
+            aria-controls={ariaControls}
+            aria-haspopup={true}
+            aria-label={ariaLabel}
+            disabled={disabled}
+            className={clsx(
+              styles.trigger,
+              {
+                [styles.selected]: selected,
+                [styles.badge]: badge,
+              },
+              className
+            )}
+            onClick={onClick}
+            ref={ref as Ref<HTMLButtonElement>}
+            type="button"
+            data-testid={testId}
+          >
+            <span className={clsx(badge && styles['trigger-badge-wrapper'])}>
+              {(iconName || iconSvg) && <Icon name={iconName} svg={iconSvg} />}
+            </span>
+          </button>
+          {badge && <div className={styles.dot} />}
+        </>
       )}
-      {badge && <div className={styles.dot} />}
       {showTooltip && containerRef && containerRef.current && tooltipValue && (
-        <Tooltip trackRef={containerRef} position="left" value={tooltipValue} className={styles['trigger-tooltip']} />
+        <Tooltip
+          trackRef={containerRef}
+          value={tooltipValue}
+          className={styles['trigger-tooltip']}
+          {...(isMobile ? {} : { position: 'left' })}
+        />
       )}
     </div>
   );
