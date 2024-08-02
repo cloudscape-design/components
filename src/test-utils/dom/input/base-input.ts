@@ -3,7 +3,7 @@
 import { Simulate } from 'react-dom/test-utils';
 
 import { ComponentWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
-import { act } from '@cloudscape-design/test-utils-core/utils';
+import { act } from '@cloudscape-design/test-utils-core/utils-dom';
 
 import inputSelectors from '../../../input/styles.selectors.js';
 
