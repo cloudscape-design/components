@@ -75,7 +75,7 @@ describeEachAppLayout(({ theme, size }) => {
     expect(wrapper.findDrawersTriggers()).toHaveLength(2);
   });
 
-  test.only('update rendered drawers via runtime config', async () => {
+  test('update rendered drawers via runtime config', async () => {
     awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, resizable: true });
     const { wrapper } = await renderComponent(<AppLayout />);
     // the 2nd trigger is for tools
@@ -90,14 +90,14 @@ describeEachAppLayout(({ theme, size }) => {
       badge: true,
     });
     await delay();
-    const selector =
+    const badgeSelector =
       theme === 'refresh-toolbar'
         ? toolbarTriggerStyles.badge
         : theme === 'refresh' && size === 'desktop'
           ? triggerStyles.badge
           : iconStyles.badge;
 
-    expect(triggerParentWrapper?.findByClassName(selector)?.getElement()).toBeInTheDocument();
+    expect(triggerParentWrapper!.findByClassName(badgeSelector)!.getElement()).toBeInTheDocument();
 
     awsuiPlugins.appLayout.updateDrawer({
       id: drawerDefaults.id,
@@ -106,7 +106,7 @@ describeEachAppLayout(({ theme, size }) => {
     await delay();
 
     // re-querying the dot element
-    expect(triggerParentWrapper?.findByClassName(selector)?.getElement()).toBeUndefined();
+    expect(triggerParentWrapper!.findByClassName(badgeSelector)).toBeNull();
   });
 
   (size === 'desktop' ? test : test.skip)('update runtime drawers config resizable validation', async () => {
