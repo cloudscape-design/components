@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
-import { act, render } from '@testing-library/react';
+import { act, fireEvent, render } from '@testing-library/react';
 
 import PropertyFilter from '../../../lib/components/property-filter';
 import {
@@ -90,6 +90,7 @@ function findEditor(tokenIndex: number, { expandToViewport }: { expandToViewport
         valueAutosuggest: editor.findValueField().findControl()!.findAutosuggest()!,
         cancelButton: editor.findCancelButton(),
         submitButton: editor.findSubmitButton(),
+        form: editor.findForm(),
       }
     : null;
 }
@@ -248,6 +249,28 @@ describe.each([false, true])('token editor, expandToViewport=%s', expandToViewpo
       act(() => editor.propertySelect.selectOption(1));
       act(() => editor.valueAutosuggest.setInputValue('123'));
       act(() => editor.submitButton.click());
+      expect(findEditor(0, { expandToViewport })).toBeNull();
+      expect(handleChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: { operation: 'or', tokens: [{ operator: ':', propertyKey: undefined, value: '123' }] },
+        })
+      );
+    });
+
+    test('form submit closes the popover and saves the changes', () => {
+      const handleChange = jest.fn();
+      renderComponent({
+        onChange: handleChange,
+        query: { tokens: [{ propertyKey: 'string', value: 'first', operator: '!:' }], operation: 'or' },
+      });
+      const editor = openEditor(0, { expandToViewport });
+
+      act(() => editor.operatorSelect.openDropdown());
+      act(() => editor.operatorSelect.selectOption(1));
+      act(() => editor.propertySelect.openDropdown());
+      act(() => editor.propertySelect.selectOption(1));
+      act(() => editor.valueAutosuggest.setInputValue('123'));
+      fireEvent.submit(editor.form!.getElement());
       expect(findEditor(0, { expandToViewport })).toBeNull();
       expect(handleChange).toHaveBeenCalledWith(
         expect.objectContaining({

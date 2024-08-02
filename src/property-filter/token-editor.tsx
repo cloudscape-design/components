@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React from 'react';
+import React, { FormEvent } from 'react';
 import clsx from 'clsx';
 
 import InternalAutosuggest from '../autosuggest/internal';
@@ -225,9 +225,19 @@ export function TokenEditor({
     onChangeTemporaryToken({ ...temporaryToken, value: newValue });
   };
 
+  const onApply = () => {
+    setToken(matchTokenValue(temporaryToken, filteringOptions));
+    onDismiss();
+  };
+
+  const onFormSubmit = (event: FormEvent) => {
+    event.preventDefault();
+    onApply();
+  };
+
   return (
     <div className={styles['token-editor']}>
-      <div className={styles['token-editor-form']}>
+      <form className={styles['token-editor-form']} onSubmit={onFormSubmit}>
         <InternalFormField
           label={i18nStrings.propertyText}
           className={clsx(styles['token-editor-field-property'], testUtilStyles['token-editor-field-property'])}
@@ -272,7 +282,7 @@ export function TokenEditor({
             i18nStrings={i18nStrings}
           />
         </InternalFormField>
-      </div>
+      </form>
 
       <div className={styles['token-editor-actions']}>
         <InternalButton
@@ -286,10 +296,7 @@ export function TokenEditor({
         <InternalButton
           className={clsx(styles['token-editor-submit'], testUtilStyles['token-editor-submit'])}
           formAction="none"
-          onClick={() => {
-            setToken(matchTokenValue(temporaryToken, filteringOptions));
-            onDismiss();
-          }}
+          onClick={onApply}
         >
           {i18nStrings.applyActionText}
         </InternalButton>

@@ -126,6 +126,10 @@ export class PropertyFilterEditorDropdownWrapper extends ComponentWrapper {
     return this.findComponent(`.${popoverStyles['dismiss-control']}`, ButtonWrapper)!;
   }
 
+  findForm(): ElementWrapper {
+    return this.findByClassName(styles['token-editor-form'])!;
+  }
+
   findPropertyField(): FormFieldWrapper {
     return this.findComponent(`.${testUtilStyles['token-editor-field-property']}`, FormFieldWrapper)!;
   }
