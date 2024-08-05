@@ -27,6 +27,7 @@ function renderExpandableSection(props: ExpandableSectionProps = {}): Expandable
 }
 
 const containerizedVariants: ExpandableSectionProps.Variant[] = ['container', 'stacked'];
+const variantsWithActions: ExpandableSectionProps.Variant[] = ['container', 'stacked', 'default'];
 
 describe('Expandable Section', () => {
   const variantsWithDescription: ExpandableSectionProps.Variant[] = [...containerizedVariants, 'default', 'footer'];
@@ -95,7 +96,7 @@ describe('Expandable Section', () => {
       }
     });
     describe('populates action buttons slot correctly', () => {
-      for (const variant of containerizedVariants) {
+      for (const variant of variantsWithActions) {
         test(`${variant} variant`, () => {
           const wrapper = renderExpandableSection({
             headerText: 'Test Header',
@@ -164,15 +165,17 @@ describe('Expandable Section', () => {
             const header = wrapper.findHeader().getElement();
             expect(header).not.toHaveTextContent('Info');
           });
-          test('Action buttons', () => {
-            const wrapper = renderExpandableSection({
-              variant,
-              headerText: 'Test Header',
-              headerInfo: <Button>Action</Button>,
+          if (variant !== 'default') {
+            test('Action buttons', () => {
+              const wrapper = renderExpandableSection({
+                variant,
+                headerText: 'Test Header',
+                headerInfo: <Button>Action</Button>,
+              });
+              const header = wrapper.findHeader().getElement();
+              expect(header).not.toHaveTextContent('Action');
             });
-            const header = wrapper.findHeader().getElement();
-            expect(header).not.toHaveTextContent('Action');
-          });
+          }
         });
       }
     });
@@ -293,10 +296,7 @@ describe('Expandable Section', () => {
         const testWarnings = (props: ExpandableSectionProps) => {
           render(<ExpandableSection {...props} />);
           expect(warnOnce).toHaveBeenCalledTimes(1);
-          expect(warnOnce).toHaveBeenCalledWith(
-            componentName,
-            'The `headerCounter`, `headerInfo` and `headerActions` props are only supported for the "container" variant.'
-          );
+          expect(warnOnce).toHaveBeenCalledWith(componentName, expect.stringMatching(/only supported for the/));
         };
 
         for (const variant of nonContainerVariants) {
@@ -307,9 +307,11 @@ describe('Expandable Section', () => {
             test('headerInfo', () => {
               testWarnings({ variant, headerInfo: <Link>Info</Link> });
             });
-            test('headerActions', () => {
-              testWarnings({ variant, headerActions: <Button>Action</Button> });
-            });
+            if (variant !== 'default') {
+              test('headerActions', () => {
+                testWarnings({ variant, headerActions: <Button>Action</Button> });
+              });
+            }
           });
         }
       });

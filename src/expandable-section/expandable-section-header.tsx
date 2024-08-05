@@ -9,7 +9,7 @@ import InternalHeader, { Description as HeaderDescription } from '../header/inte
 import InternalIcon from '../icon/internal';
 import { isDevelopment } from '../internal/is-development';
 import { ExpandableSectionProps, InternalVariant } from './interfaces';
-import { variantSupportsDescription, variantSupportsInteractiveElements } from './utils';
+import { variantSupportsActions, variantSupportsDescription, variantSupportsInfoLink } from './utils';
 
 import styles from './styles.css.js';
 
@@ -135,7 +135,7 @@ const ExpandableHeaderTextWrapper = ({
 }: ExpandableHeaderTextWrapperProps) => {
   const isContainer = variant === 'container';
   const HeadingTag = headingTagOverride || 'div';
-  const supportsInteractiveElements = variantSupportsInteractiveElements(variant);
+  const supportsInteractiveElements = variantSupportsActions(variant);
   const restrictClickableArea = supportsInteractiveElements && (headerInfo || headerActions);
   const actions = supportsInteractiveElements && headerActions;
   const description = variantSupportsDescription(variant) && headerDescription && (
@@ -228,6 +228,7 @@ export const ExpandableSectionHeader = ({
   onKeyDown,
   onClick,
 }: ExpandableSectionHeaderProps) => {
+  const alwaysShowDivider = variant === 'default' && headerActions;
   const icon = (
     <InternalIcon
       size={variant === 'container' ? 'medium' : 'normal'}
@@ -245,18 +246,26 @@ export const ExpandableSectionHeader = ({
     variant,
   };
 
-  if ((headerCounter || headerInfo || headerActions) && !variantSupportsInteractiveElements(variant) && isDevelopment) {
+  if ((headerCounter || headerInfo) && !variantSupportsInfoLink(variant) && isDevelopment) {
     warnOnce(
       componentName,
-      'The `headerCounter`, `headerInfo` and `headerActions` props are only supported for the "container" variant.'
+      'The `headerCounter` and `headerInfo` props are only supported for the "container" variant.'
     );
+  }
+
+  if (headerActions && !variantSupportsActions(variant) && isDevelopment) {
+    warnOnce(componentName, `The \`headerActions\` prop is only supported for the "container" and "default" variants.`);
   }
 
   if (headerDescription && !variantSupportsDescription(variant) && isDevelopment) {
     warnOnce(componentName, `The \`headerDescription\` prop is not supported for the ${variant} variant.`);
   }
 
-  const wrapperClassName = clsx(styles.wrapper, styles[`wrapper-${variant}`], expanded && styles['wrapper-expanded']);
+  const wrapperClassName = clsx(
+    styles.wrapper,
+    styles[`wrapper-${variant}`],
+    (expanded || alwaysShowDivider) && styles['wrapper-expanded']
+  );
   if (variant === 'navigation') {
     return (
       <ExpandableNavigationHeader

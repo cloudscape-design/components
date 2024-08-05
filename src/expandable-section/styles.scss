@@ -169,6 +169,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
   }
 
   &-button,
@@ -223,6 +224,14 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   &-text {
     /* used in test-utils */
   }
+}
+
+// Make sure that actions can wrap for default expandable section headers.
+// The compact variant is used in chart popovers and should not wrap.
+:not(.wrapper-compact) > .header-actions-wrapper {
+  flex-wrap: wrap;
+  column-gap: awsui.$space-xs;
+  row-gap: awsui.$space-scaled-xxxs;
 }
 
 .content {
