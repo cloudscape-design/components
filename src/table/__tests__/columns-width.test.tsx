@@ -219,8 +219,8 @@ describe('with stickyHeader=true', () => {
     expect(extractSize(fakeHeader)).toEqual([
       { minWidth: '', width: '200px', maxWidth: '' },
       { minWidth: '', width: '300px', maxWidth: '' },
-      { minWidth: '', width: '', maxWidth: '' },
-      { minWidth: '', width: '', maxWidth: '' },
+      { minWidth: '', width: '100px', maxWidth: '' },
+      { minWidth: '', width: '120px', maxWidth: '' },
     ]);
   });
 });

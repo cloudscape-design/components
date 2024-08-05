@@ -3,11 +3,13 @@
 import React, { useRef } from 'react';
 import clsx from 'clsx';
 
+import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { useInternalI18n } from '../../i18n/context';
 import InternalIcon from '../../icon/internal';
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
+import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { KeyCode } from '../../internal/keycode';
 import { GeneratedAnalyticsMetadataTableSort } from '../analytics-metadata/interfaces';
@@ -96,11 +98,25 @@ export function TableHeaderCell<ItemType>({
   const clickableHeaderRef = useRef<HTMLDivElement>(null);
   const { tabIndex: clickableHeaderTabIndex } = useSingleTabStopNavigation(clickableHeaderRef, { tabIndex });
 
+  const cellRefObject = useRef<HTMLElement>(null);
+  const cellRefCombined = useMergeRefs(cellRef, cellRefObject);
+
+  // Keep sticky and non-sticky headers in sync for dynamic cell
+  // content changes. This is only needed when:
+  // - This is the non-sticky version of a sticky header (hidden === true), and
+  // - Columns are not resizable
+  useResizeObserver(cellRefObject, entry => {
+    if (!hidden || resizableColumns) {
+      return;
+    }
+    updateColumn(columnId, entry.borderBoxWidth);
+  });
+
   return (
     <TableThElement
       className={className}
       style={style}
-      cellRef={cellRef}
+      cellRef={cellRefCombined}
       sortingStatus={sortingStatus}
       sortingDisabled={sortingDisabled}
       focusedComponent={focusedComponent}
