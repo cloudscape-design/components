@@ -9,12 +9,12 @@
 
 .root {
   display: flex;
-  flex-wrap: wrap;
   gap: awsui.$space-scaled-xs;
 
   &.horizontal {
     gap: awsui.$space-xs;
     flex-direction: row;
+    flex-wrap: wrap;
   }
   &.vertical {
     flex-direction: column;
@@ -32,11 +32,11 @@
   &.horizontal,
   &.vertical {
     display: flex;
-    flex-wrap: wrap;
     gap: awsui.$space-xs;
   }
   &.horizontal {
     flex-direction: row;
+    flex-wrap: wrap;
   }
   &.vertical {
     flex-direction: column;
