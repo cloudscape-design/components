@@ -14,6 +14,7 @@ import { NonCancelableEventHandler } from '../internal/events';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { getAllowedOperators } from './controller';
+import { getFormattedToken } from './i18n-utils';
 import {
   ComparisonOperator,
   FormattedToken,
@@ -26,7 +27,6 @@ import {
   LoadItemsDetail,
 } from './interfaces';
 import { OperatorInput, PropertyInput, ValueInput } from './token-editor';
-import { getFormattedToken } from './utils';
 
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
@@ -112,7 +112,7 @@ export function TokenEditor({
     <div className={styles['token-editor-grouped']}>
       <TokenEditorFields
         supportsGroups={supportsGroups}
-        tokens={groups.map(group => getFormattedToken(group.token))}
+        tokens={groups.map(group => getFormattedToken(group.token, i18nStrings))}
         onRemove={index => {
           const copy = [...tempGroup];
           copy.splice(index, 1);
@@ -171,7 +171,7 @@ export function TokenEditor({
             ariaLabel={i18nStrings.tokenEditorAddTokenActionsLabel}
             items={standaloneTokens.map((token, index) => ({
               id: index.toString(),
-              text: i18nStrings.tokenEditorAddExistingTokenLabel(getFormattedToken(token)),
+              text: i18nStrings.tokenEditorAddExistingTokenLabel(getFormattedToken(token, i18nStrings)),
             }))}
             onItemClick={({ detail }) => {
               const index = parseInt(detail.id);
