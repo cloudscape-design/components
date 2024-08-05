@@ -12272,7 +12272,7 @@ operations are communicated to the user in another way.",
           Object {
             "name": "removeTokenButtonAriaLabel",
             "optional": true,
-            "type": "(token: PropertyFilterProps.Token) => string",
+            "type": "(token: PropertyFilterProps.FormattedToken) => string",
           },
           Object {
             "name": "tokenLimitShowFewer",

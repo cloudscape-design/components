@@ -6,8 +6,9 @@ import React, { useRef, useState } from 'react';
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
 import { NonCancelableEventHandler } from '../internal/events';
 import FilteringToken, { FilteringTokenRef } from './filtering-token';
+import { getFormattedToken } from './i18n-utils';
 import {
-  ComparisonOperator,
+  FormattedToken,
   GroupText,
   I18nStrings,
   InternalFilteringOption,
@@ -19,7 +20,6 @@ import {
   Token,
 } from './interfaces';
 import { TokenEditor } from './token-editor';
-import { getFormattedToken } from './utils';
 
 import styles from './styles.css.js';
 
@@ -63,10 +63,8 @@ export const TokenButton = ({
   expandToViewport,
 }: TokenProps) => {
   const tokenRef = useRef<FilteringTokenRef>(null);
-  const externalToken = { ...token, propertyKey: token.property?.propertyKey };
-  const formattedToken = getFormattedToken(token);
+  const formattedToken = getFormattedToken(token, i18nStrings);
   const [temporaryToken, setTemporaryToken] = useState<InternalToken>(token);
-
   return (
     <FilteringToken
       ref={tokenRef}
@@ -74,11 +72,11 @@ export const TokenButton = ({
         {
           content: (
             <span className={styles['token-trigger']}>
-              <TokenTrigger property={formattedToken.property} operator={token.operator} value={formattedToken.value} />
+              <TokenTrigger token={formattedToken} />
             </span>
           ),
-          ariaLabel: formattedToken.label,
-          dismissAriaLabel: i18nStrings?.removeTokenButtonAriaLabel?.(externalToken) ?? '',
+          ariaLabel: `${formattedToken.propertyLabel} ${formattedToken.operator} ${formattedToken.value}`,
+          dismissAriaLabel: i18nStrings?.removeTokenButtonAriaLabel?.(formattedToken) ?? '',
         },
       ]}
       showOperation={!first && !hideOperations}
@@ -120,23 +118,15 @@ export const TokenButton = ({
   );
 };
 
-const TokenTrigger = ({
-  property,
-  operator,
-  value,
-}: {
-  property?: string;
-  operator?: ComparisonOperator;
-  value: string;
-}) => {
-  if (property) {
-    property += ' ';
+const TokenTrigger = ({ token: { propertyLabel, operator, value } }: { token: FormattedToken }) => {
+  if (propertyLabel) {
+    propertyLabel += ' ';
   }
-  const freeTextContainsToken = operator === ':' && !property;
+  const freeTextContainsToken = operator === ':' && !propertyLabel;
   const operatorText = freeTextContainsToken ? '' : operator + ' ';
   return (
     <>
-      {property}
+      {propertyLabel}
       <span className={styles['token-operator']}>{operatorText}</span>
       {value}
     </>

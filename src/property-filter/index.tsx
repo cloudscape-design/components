@@ -19,6 +19,7 @@ import { joinStrings } from '../internal/utils/strings';
 import InternalSpaceBetween from '../space-between/internal';
 import { SearchResults } from '../text-filter/search-results';
 import { getAllowedOperators, getAutosuggestOptions, getQueryActions, parseText } from './controller';
+import { getI18nToken } from './i18n-utils';
 import {
   ComparisonOperator,
   ExtendedOperator,
@@ -41,36 +42,6 @@ import { matchTokenValue } from './utils';
 import styles from './styles.css.js';
 
 export { PropertyFilterProps };
-
-function getOperatorI18nString(operator: ComparisonOperator): string {
-  switch (operator) {
-    case '=':
-      return 'equals';
-    case '!=':
-      return 'not_equals';
-    case '>':
-      return 'greater_than';
-    case '>=':
-      return 'greater_than_equal';
-    case '<':
-      return 'less_than';
-    case '<=':
-      return 'less_than_equal';
-    case ':':
-      return 'contains';
-    case '!:':
-      return 'not_contains';
-    case '^':
-      return 'starts_with';
-    case '!^':
-      return 'not_starts_with';
-    // The line is ignored from coverage because it is not reachable.
-    // The purpose of it is to prevent TS errors if ComparisonOperator type gets extended.
-    /* istanbul ignore next */
-    default:
-      return operator;
-  }
-}
 
 const PropertyFilter = React.forwardRef(
   (
@@ -155,16 +126,6 @@ const PropertyFilter = React.forwardRef(
       tokenLimitShowFewer: i18n('i18nStrings.tokenLimitShowFewer', rest.i18nStrings?.tokenLimitShowFewer),
       tokenLimitShowMore: i18n('i18nStrings.tokenLimitShowMore', rest.i18nStrings?.tokenLimitShowMore),
       valueText: i18n('i18nStrings.valueText', rest.i18nStrings?.valueText),
-      removeTokenButtonAriaLabel: i18n(
-        'i18nStrings.removeTokenButtonAriaLabel',
-        rest.i18nStrings?.removeTokenButtonAriaLabel,
-        format => token =>
-          format({
-            token__operator: getOperatorI18nString(token.operator),
-            token__propertyKey: token.propertyKey ?? '',
-            token__value: token.value,
-          })
-      ),
     };
 
     useImperativeHandle(ref, () => ({ focus: () => inputRef.current?.focus() }), []);
@@ -210,6 +171,7 @@ const PropertyFilter = React.forwardRef(
           property: token.propertyKey ? getProperty(token.propertyKey) : null,
           operator: token.operator,
           value: token.value,
+          __source: token,
         })),
       };
 
@@ -221,6 +183,12 @@ const PropertyFilter = React.forwardRef(
 
       return { internalProperties: [...propertyByKey.values()], internalOptions, internalQuery, internalFreeText };
     })();
+
+    i18nStrings.removeTokenButtonAriaLabel = i18n(
+      'i18nStrings.removeTokenButtonAriaLabel',
+      rest.i18nStrings?.removeTokenButtonAriaLabel,
+      format => token => format(getI18nToken(token))
+    );
 
     const parsedText = parseText(filteringText, internalProperties, internalFreeText);
     const autosuggestOptions = getAutosuggestOptions(

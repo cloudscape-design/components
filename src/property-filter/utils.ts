@@ -90,14 +90,6 @@ export function matchTokenValue(
   return bestMatch;
 }
 
-export function getFormattedToken(token: InternalToken) {
-  const valueFormatter = token.property?.getValueFormatter(token.operator);
-  const propertyLabel = token.property && token.property.propertyLabel;
-  const tokenValue = valueFormatter ? valueFormatter(token.value) : token.value;
-  const label = `${propertyLabel ?? ''} ${token.operator} ${tokenValue}`;
-  return { property: propertyLabel ?? '', operator: token.operator, value: tokenValue, label };
-}
-
 export function trimStart(source: string): string {
   let spacesLength = 0;
   for (let i = 0; i < source.length; i++) {

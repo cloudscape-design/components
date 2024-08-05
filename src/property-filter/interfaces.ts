@@ -280,8 +280,15 @@ export namespace PropertyFilterProps {
     tokenLimitShowFewer?: string;
     clearFiltersText?: string;
     tokenOperatorAriaLabel?: string;
-    removeTokenButtonAriaLabel?: (token: PropertyFilterProps.Token) => string;
+    removeTokenButtonAriaLabel?: (token: FormattedToken) => string;
     enteredTextLabel?: AutosuggestProps.EnteredTextLabel;
+  }
+
+  export interface FormattedToken {
+    propertyKey?: string;
+    propertyLabel: string;
+    operator: ComparisonOperator;
+    value: string;
   }
 
   export interface GroupText {
@@ -319,6 +326,7 @@ export type LoadItemsDetail = PropertyFilterProps.LoadItemsDetail;
 export type I18nStrings = PropertyFilterProps.I18nStrings;
 export type GroupText = PropertyFilterProps.GroupText;
 export type FilteringChangeDetail = PropertyFilterProps.FilteringChangeDetail;
+export type FormattedToken = PropertyFilterProps.FormattedToken;
 export type Ref = PropertyFilterProps.Ref;
 
 // Utility types
