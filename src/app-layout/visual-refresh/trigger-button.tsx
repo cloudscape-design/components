@@ -56,6 +56,7 @@ export interface TriggerButtonProps {
    */
   selected?: boolean;
   onClick: () => void;
+  onCustomFocus?: (event: CustomEvent<{ source: string }>) => void;
   badge?: boolean;
   highContrastHeader?: boolean;
 }
@@ -69,6 +70,7 @@ function TriggerButton(
     ariaExpanded,
     ariaControls,
     onClick,
+    onCustomFocus,
     hasTooltip = false,
     tooltipText,
     testId,
@@ -90,6 +92,12 @@ function TriggerButton(
 
   const onShowTooltipHard = (show: boolean) => {
     setShowTooltip(show);
+  };
+
+  const handleFocus = (event: KeyboardEvent | PointerEvent) => {
+    if ((event as any)?.relatedTarget?.ariaLabel !== 'Close tools') {
+      onShowTooltipHard(true);
+    }
   };
 
   useEffect(() => {
@@ -119,7 +127,7 @@ function TriggerButton(
         window.removeEventListener('keydown', handleKeyDownEvent);
       };
     }
-  }, [containerRef, hasTooltip, tooltipValue]);
+  }, [containerRef, hasTooltip, tooltipValue, onCustomFocus]);
 
   return (
     <div
@@ -128,11 +136,7 @@ function TriggerButton(
         ? {
             onPointerEnter: () => onShowTooltipSoft(true),
             onPointerLeave: () => onShowTooltipSoft(false),
-            onFocus: ({ target, currentTarget }) => {
-              if (currentTarget === target) {
-                onShowTooltipHard(true);
-              }
-            },
+            onFocus: e => handleFocus(e as any),
             onBlur: () => onShowTooltipHard(false),
           }
         : {})}
