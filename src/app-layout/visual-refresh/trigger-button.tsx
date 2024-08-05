@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { Ref, useEffect, useState } from 'react';
+import React, { Ref, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { ButtonProps } from '../../button/interfaces';
@@ -56,7 +56,6 @@ export interface TriggerButtonProps {
    */
   selected?: boolean;
   onClick: () => void;
-  onCustomFocus?: (event: CustomEvent<{ source: string }>) => void;
   badge?: boolean;
   highContrastHeader?: boolean;
 }
@@ -70,7 +69,6 @@ function TriggerButton(
     ariaExpanded,
     ariaControls,
     onClick,
-    onCustomFocus,
     hasTooltip = false,
     tooltipText,
     testId,
@@ -82,9 +80,17 @@ function TriggerButton(
   }: TriggerButtonProps,
   ref: React.Ref<ButtonProps.Ref>
 ) {
-  const containerRef = React.useRef(null);
+  const skipNextEventRef = useRef(false);
+  const containerRef = useRef(null);
   const tooltipValue = tooltipText ? tooltipText : ariaLabel ? ariaLabel : '';
   const [showTooltip, setShowTooltip] = useState<boolean>(false);
+
+  useImperativeHandle(ref, () => ({
+    focus: () => {
+      skipNextEventRef.current = true;
+      containerRef.current.focus();
+    },
+  }));
 
   const onShowTooltipSoft = (show: boolean) => {
     setShowTooltip(show);
@@ -94,10 +100,30 @@ function TriggerButton(
     setShowTooltip(show);
   };
 
-  const handleFocus = (event: KeyboardEvent | PointerEvent) => {
-    if ((event as any)?.relatedTarget?.ariaLabel !== 'Close tools') {
+  const handleFocus = () => {
+    // debugger;
+
+    // false, true when focus after drawer close
+    // true, true, when focus on selected button and closes drawer
+    // false, false when focus on trigger button when clsoed
+
+    console.log('handleFocus', skipNextEventRef.current);
+    if (!selected && !skipNextEventRef.current) {
       onShowTooltipHard(true);
     }
+    skipNextEventRef.current = false;
+  };
+
+  const handleBlur = () => {
+    // debugger;
+
+    // false, true when tabbing to next button
+    console.log('handleBlur', skipNextEventRef.current);
+    // if (selected && !skipNextEventRef.current) {
+
+    //   skipNextEventRef.current = true;
+    // }
+    onShowTooltipHard(false);
   };
 
   useEffect(() => {
@@ -127,7 +153,7 @@ function TriggerButton(
         window.removeEventListener('keydown', handleKeyDownEvent);
       };
     }
-  }, [containerRef, hasTooltip, tooltipValue, onCustomFocus]);
+  }, [containerRef, hasTooltip, tooltipValue]);
 
   return (
     <div
@@ -136,8 +162,8 @@ function TriggerButton(
         ? {
             onPointerEnter: () => onShowTooltipSoft(true),
             onPointerLeave: () => onShowTooltipSoft(false),
-            onFocus: e => handleFocus(e as any),
-            onBlur: () => onShowTooltipHard(false),
+            onFocus: handleFocus,
+            onBlur: handleBlur,
           }
         : {})}
       data-testid={`${testId ? `${testId}-wrapper` : 'awsui-app-layout-trigger-wrapper'}${hasTooltip ? '-with-possible-tooltip' : ''}`}
