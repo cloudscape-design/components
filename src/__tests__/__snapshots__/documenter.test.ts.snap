@@ -3865,7 +3865,6 @@ group
         "type": "union",
         "values": Array [
           "icon",
-          "icon",
         ],
       },
       "name": "variant",
