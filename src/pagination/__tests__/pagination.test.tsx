@@ -188,6 +188,7 @@ test('should not fire nextPageClick event when clicking next page with the last 
         <Pagination currentPageIndex={1} pagesCount={10} openEnd={openEnd} disabled={true} onChange={onChange} />
       );
 
+      expect(wrapper.isDisabled()).toBe(true);
       expect(wrapper.findPreviousPageButton().getElement()).toBeDisabled();
       expect(wrapper.findNextPageButton().getElement()).toBeDisabled();
 
