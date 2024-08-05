@@ -373,3 +373,41 @@ test.each([false, true])(
     );
   }
 );
+
+describe('percentage column widths', () => {
+  test(
+    'supports percentage column width',
+    useBrowser({ width: 1200, height: 800 }, async browser => {
+      const page = new TablePage(browser);
+      await browser.url('#/light/table/resizable-columns-percentage');
+      await page.waitForVisible(wrapper.toSelector());
+
+      await expect(page.getColumnWidth(1)).resolves.toBe(338);
+      await expect(page.getColumnWidth(2)).resolves.toBe(120);
+    })
+  );
+  test(
+    'column widths are fixed on browser resize',
+    useBrowser({ width: 1200, height: 800 }, async browser => {
+      const page = new TablePage(browser);
+      await browser.url('#/light/table/resizable-columns-percentage');
+      await page.waitForVisible(wrapper.toSelector());
+
+      await page.setWindowSize({ width: 1400, height: 800 });
+      await expect(page.getColumnWidth(1)).resolves.toBe(338);
+      await expect(page.getColumnWidth(2)).resolves.toBe(120);
+    })
+  );
+
+  test(
+    'column widths are maintained when other columns resize',
+    useBrowser({ width: 1200, height: 800 }, async browser => {
+      const page = new TablePage(browser);
+      await browser.url('#/light/table/resizable-columns-percentage');
+      await page.waitForVisible(wrapper.toSelector());
+
+      await page.resizeColumn(2, 500);
+      await expect(page.getColumnWidth(1)).resolves.toBe(338);
+    })
+  );
+});

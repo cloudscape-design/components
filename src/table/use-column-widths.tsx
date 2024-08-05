@@ -16,6 +16,9 @@ export interface ColumnWidthDefinition {
   width?: string | number;
 }
 
+const treatAsNumber = (value: number | string | undefined) =>
+  typeof value === 'number' || (value && parseInt(value, 10).toString() === value);
+
 function readWidths(
   getCell: (columnId: PropertyKey) => null | HTMLElement,
   visibleColumns: readonly ColumnWidthDefinition[]
@@ -23,8 +26,8 @@ function readWidths(
   const result = new Map<PropertyKey, number>();
   for (let index = 0; index < visibleColumns.length; index++) {
     const column = visibleColumns[index];
-    let width = (column.width as number) || 0;
-    const minWidth = (column.minWidth as number) || width || DEFAULT_COLUMN_WIDTH;
+    let width = (treatAsNumber(column.width) && (column.width as number)) || 0;
+    const minWidth = (treatAsNumber(column.minWidth) && (column.minWidth as number)) || width || DEFAULT_COLUMN_WIDTH;
     if (
       !width && // read width from the DOM if it is missing in the config
       index !== visibleColumns.length - 1 // skip reading for the last column, because it expands to fully fit the container
