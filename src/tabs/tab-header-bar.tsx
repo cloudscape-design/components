@@ -32,6 +32,7 @@ import {
 } from './scroll-utils';
 
 import styles from './styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
 
 const tabSelector = `.${styles['tabs-tab-link']}`;
 const focusedTabSelector = `[role="tab"].${styles['tabs-tab-focused']}`;
@@ -50,6 +51,7 @@ function dismissButton(
       formAction="none"
       ariaLabel={dismissLabel}
       disabled={dismissDisabled}
+      className={testUtilStyles['tab-dismiss-button']}
     />
   );
 }

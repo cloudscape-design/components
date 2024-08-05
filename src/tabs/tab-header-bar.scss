@@ -32,10 +32,14 @@ $label-horizontal-spacing: awsui.$space-xs;
   // do not use pointer-events none because it disables scroll by sliding
 
   // Hide scrollbar in all browsers
-  -ms-overflow-style: none; /* Internet Explorer 10+ */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  /* Internet Explorer 10+ */
+  scrollbar-width: none;
+
+  /* Firefox */
   &::-webkit-scrollbar {
-    display: none; /* Safari and Chrome */
+    display: none;
+    /* Safari and Chrome */
   }
 }
 
@@ -45,8 +49,10 @@ $label-horizontal-spacing: awsui.$space-xs;
   padding-block: 0;
   padding-inline: awsui.$space-xxs;
   display: flex;
+
   &-left {
     border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-control-disabled;
+
     &-scrollable {
       z-index: 1;
       box-shadow:
@@ -54,8 +60,10 @@ $label-horizontal-spacing: awsui.$space-xs;
         1px 0px 0px 0px awsui.$color-border-tabs-shadow;
     }
   }
+
   &-right {
     border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-control-disabled;
+
     &-scrollable {
       z-index: 1;
       box-shadow:
@@ -85,11 +93,6 @@ $label-horizontal-spacing: awsui.$space-xs;
   position: relative;
 
   @include styles.text-wrapping;
-}
-
-.tabs-tab-dismiss,
-.tabs-tab-action {
-  /* Used as a selector for tests */
 }
 
 .tabs-tab-header-container {
@@ -147,6 +150,7 @@ $label-horizontal-spacing: awsui.$space-xs;
 .tabs-tab:not(:last-child) {
   & > .tabs-tab-header-container {
     margin-inline-end: calc(-1 * #{awsui.$border-divider-section-width});
+
     // This is the divider for the tab
     &:before {
       content: '';
@@ -211,6 +215,7 @@ $label-horizontal-spacing: awsui.$space-xs;
 // Remediate focus shadow
 .tabs-tab:first-child {
   margin-inline-start: 1px;
+
   & > .tabs-tab-header-container {
     padding-inline-start: calc(#{$label-horizontal-spacing} - 1px);
   }
@@ -219,6 +224,7 @@ $label-horizontal-spacing: awsui.$space-xs;
 // Remediate focus shadow
 .tabs-tab:last-child {
   margin-inline-end: 1px;
+
   & > .tabs-tab-header-container {
     padding-inline-end: calc(#{$label-horizontal-spacing} - 1px);
   }
@@ -235,6 +241,7 @@ $label-horizontal-spacing: awsui.$space-xs;
 
 .tabs-tab-active:not(.tabs-tab-disabled) {
   color: awsui.$color-text-accent;
+
   &:after {
     opacity: 1;
   }
