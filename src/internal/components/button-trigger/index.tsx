@@ -1,11 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { ButtonHTMLAttributes } from 'react';
+import React, { ButtonHTMLAttributes, useRef } from 'react';
 import clsx from 'clsx';
 
 import InternalIcon from '../../../icon/internal';
 import { BaseComponentProps, getBaseProps } from '../../base-component';
+import { useSingleTabStopNavigation } from '../../context/single-tab-stop-navigation-context';
 import { BaseKeyDetail, CancelableEventHandler, fireCancelableEvent, fireKeyboardEvent } from '../../events';
+import { useMergeRefs } from '../../hooks/use-merge-refs';
 
 import styles from './styles.css.js';
 
@@ -103,8 +105,12 @@ const ButtonTrigger = (
     attributes['aria-invalid'] = invalid;
   }
 
+  const refObject = useRef<HTMLButtonElement>(null);
+  const mergedRef = useMergeRefs(ref, refObject);
+  const { tabIndex } = useSingleTabStopNavigation(refObject);
+
   return (
-    <button ref={ref} {...attributes}>
+    <button ref={mergedRef} {...attributes} tabIndex={tabIndex}>
       {children}
       {!hideCaret && (
         <span className={styles.arrow}>
