@@ -17,7 +17,7 @@ import { KeyCode } from '../internal/keycode';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { joinStrings } from '../internal/utils/strings';
 import InternalSpaceBetween from '../space-between/internal';
-import { SearchResults } from '../text-filter/search-results';
+import { SearchResults, SearchResultsProps } from '../text-filter/search-results';
 import { getAllowedOperators, getAutosuggestOptions, getQueryActions, parseText } from './controller';
 import { getI18nToken } from './i18n-utils';
 import {
@@ -84,6 +84,7 @@ const PropertyFilter = React.forwardRef(
     const [removedTokenIndex, setRemovedTokenIndex] = useState<null | number>(null);
 
     const inputRef = useRef<AutosuggestInputRef>(null);
+    const searchResultsRef = useRef<SearchResultsProps.Ref>(null);
     const baseProps = getBaseProps(rest);
 
     const i18n = useInternalI18n('property-filter');
@@ -128,7 +129,16 @@ const PropertyFilter = React.forwardRef(
       valueText: i18n('i18nStrings.valueText', rest.i18nStrings?.valueText),
     };
 
-    useImperativeHandle(ref, () => ({ focus: () => inputRef.current?.focus() }), []);
+    useImperativeHandle(
+      ref,
+      () => ({
+        focus: () => inputRef.current?.focus(),
+        renderCountTextAriaLive: () => {
+          searchResultsRef.current?.renderCountTextAriaLive();
+        },
+      }),
+      []
+    );
     const showResults = !!query.tokens?.length && !disabled && !!countText;
     const { addToken, removeToken, setToken, setOperation, removeAllTokens } = getQueryActions(
       query,
@@ -375,7 +385,9 @@ const PropertyFilter = React.forwardRef(
           />
           {showResults ? (
             <div className={styles.results}>
-              <SearchResults id={searchResultsId}>{countText}</SearchResults>
+              <SearchResults id={searchResultsId} ref={searchResultsRef}>
+                {countText}
+              </SearchResults>
             </div>
           ) : null}
         </div>

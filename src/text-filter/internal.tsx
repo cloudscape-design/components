@@ -1,17 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React, { useImperativeHandle, useRef } from 'react';
 import clsx from 'clsx';
 
 import InternalInput from '../input/internal';
 import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
-import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { joinStrings } from '../internal/utils/strings';
 import { TextFilterProps } from './interfaces';
-import { SearchResults } from './search-results';
+import { SearchResults, SearchResultsProps } from './search-results';
 
 import styles from './styles.css.js';
 
@@ -37,8 +36,21 @@ const InternalTextFilter = React.forwardRef(
     ref: React.Ref<TextFilterProps.Ref>
   ) => {
     const baseProps = getBaseProps(rest);
+    const searchResultsRef = useRef<SearchResultsProps.Ref>(null);
     const inputRef = useRef<HTMLInputElement>(null);
-    useForwardFocus(ref, inputRef);
+
+    useImperativeHandle(
+      ref,
+      () => ({
+        focus: () => {
+          inputRef.current?.focus();
+        },
+        renderCountTextAriaLive: () => {
+          searchResultsRef.current?.renderCountTextAriaLive();
+        },
+      }),
+      []
+    );
 
     const searchResultsId = useUniqueId('text-filter-search-results');
     const showResults = filteringText && countText && !disabled;
@@ -62,7 +74,11 @@ const InternalTextFilter = React.forwardRef(
           onChange={event => fireNonCancelableEvent(onChange, { filteringText: event.detail.value })}
           __onDelayedInput={event => fireNonCancelableEvent(onDelayedChange, { filteringText: event.detail.value })}
         />
-        {showResults ? <SearchResults id={searchResultsId}>{countText}</SearchResults> : null}
+        {showResults ? (
+          <SearchResults id={searchResultsId} ref={searchResultsRef}>
+            {countText}
+          </SearchResults>
+        ) : null}
       </div>
     );
   }
