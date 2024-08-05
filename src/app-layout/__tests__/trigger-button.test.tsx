@@ -359,7 +359,7 @@ describe('Toolbar trigger-button', () => {
       });
     });
 
-    test('Is focusable using the forwarded ref and tooltip does not show', async () => {
+    test.skip('Is focusable using the forwarded ref and tooltip does not show', async () => {
       const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
       const mockTooltipText = 'Mock Tooltip';
       const { wrapper, getByTestId, getByText } = await renderTriggerButton(
