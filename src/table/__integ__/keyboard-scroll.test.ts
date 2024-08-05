@@ -19,15 +19,22 @@ test(
 
     await expect(page.isFocused(wrapperSelector)).resolves.toBeTruthy();
 
+    let leftBefore = 0;
+    let leftAfter = 0;
+
     await page.keys('ArrowRight');
-    await page.waitForJsTimers();
-    const { left } = await page.getElementScroll(wrapperSelector);
-    expect(left).toBeGreaterThan(0);
+    await page.waitForAssertion(async () => {
+      const result = await page.getElementScroll(wrapperSelector);
+      leftBefore = result.left;
+      expect(leftBefore).toBeGreaterThan(0);
+    });
 
     await page.keys('ArrowLeft');
-    await page.waitForJsTimers();
-    const { left: leftAgain } = await page.getElementScroll(wrapperSelector);
-    expect(leftAgain).toBeLessThan(left);
+    await page.waitForAssertion(async () => {
+      const result = await page.getElementScroll(wrapperSelector);
+      leftAfter = result.left;
+      expect(leftAfter).toBeLessThan(leftBefore);
+    });
 
     await page.setWindowSize({ width: 800, height: 871 });
     await page.click('h1');
