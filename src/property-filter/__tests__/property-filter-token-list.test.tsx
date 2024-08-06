@@ -74,11 +74,18 @@ describe('filtering tokens', () => {
       expect(wrapper.findTokens()![0].getElement()).toHaveTextContent('range > value');
     });
 
-    test('property token with missing property key', () => {
+    test('property token with missing property key and operator :', () => {
       const { propertyFilterWrapper: wrapper } = renderComponent({
         query: { tokens: [{ propertyKey: undefined, value: 'value', operator: ':' }], operation: 'or' },
       });
-      expect(wrapper.findTokens()![0].getElement().textContent).toBe(': value');
+      expect(wrapper.findTokens()![0].getElement().textContent).toBe('value');
+    });
+
+    test('property token with missing property key and operator !:', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        query: { tokens: [{ propertyKey: undefined, value: 'value', operator: '!:' }], operation: 'or' },
+      });
+      expect(wrapper.findTokens()![0].getElement().textContent).toBe('!: value');
     });
   });
 

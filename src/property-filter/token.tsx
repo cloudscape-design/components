@@ -128,7 +128,7 @@ const TokenTrigger = ({
   if (propertyLabel) {
     propertyLabel += ' ';
   }
-  const freeTextContainsToken = operator === ':' && !propertyLabel;
+  const freeTextContainsToken = operator === ':' && allProperties;
   const operatorText = freeTextContainsToken ? '' : operator + ' ';
   return (
     <>
