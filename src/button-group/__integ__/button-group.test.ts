@@ -156,9 +156,37 @@ test(
     await expect(page.isExisting(actionsMenu.findOpenDropdown().toSelector())).resolves.toBe(true);
     await expect(page.isExisting(buttonGroup.findTooltip().toSelector())).resolves.toBe(false);
 
+    // No tooltip is shown after menu closes.
     await page.click(actionsMenu.findItemById('edit').toSelector());
     await expect(page.isExisting(actionsMenu.findOpenDropdown().toSelector())).resolves.toBe(false);
-    await expect(page.isExisting(buttonGroup.findTooltip().toSelector())).resolves.toBe(true);
+    await expect(page.isExisting(buttonGroup.findTooltip().toSelector())).resolves.toBe(false);
+
+    // The tooltip is shown when the menu trigger is hovered.
+    await page.hoverElement(actionsMenu.toSelector());
+    await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('More actions');
+  })
+);
+
+test(
+  'shows tooltip over a menu after a menu item is pressed',
+  setup({}, async page => {
+    await page.click(actionsMenu.toSelector());
+    await expect(page.isExisting(actionsMenu.findOpenDropdown().toSelector())).resolves.toBe(true);
+    await expect(page.isExisting(buttonGroup.findTooltip().toSelector())).resolves.toBe(false);
+
+    // No tooltip is shown after menu closes with item selection.
+    await page.click(actionsMenu.findItemById('edit').toSelector());
+    await page.keys(['ArrowDown', 'ArrowDown', 'Enter']);
+    await expect(page.isExisting(buttonGroup.findTooltip().toSelector())).resolves.toBe(false);
+
+    // No tooltip is shown after menu closes with Escape.
+    await page.click(actionsMenu.toSelector());
+    await page.keys(['Escape']);
+    await expect(page.isExisting(buttonGroup.findTooltip().toSelector())).resolves.toBe(false);
+
+    // The tooltip is shown when the menu trigger is refocused.
+    await page.keys(['ArrowLeft', 'ArrowRight']);
+    await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('More actions');
   })
 );
 
