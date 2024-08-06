@@ -32,16 +32,23 @@ import {
 } from './scroll-utils';
 
 import styles from './styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
 
 const tabSelector = `.${styles['tabs-tab-link']}`;
 const focusedTabSelector = `[role="tab"].${styles['tabs-tab-focused']}`;
 const focusableTabSelector = `.${styles['tabs-tab-focusable']}`;
 
-function dismissButton(
-  dismissLabel: TabsProps.Tab['dismissLabel'],
-  dismissDisabled: TabsProps.Tab['dismissDisabled'],
-  onDismiss: TabsProps.Tab['onDismiss']
-) {
+function dismissButton({
+  dismissLabel,
+  dismissDisabled,
+  onDismiss,
+  tabId,
+}: {
+  dismissLabel?: string;
+  dismissDisabled?: boolean;
+  onDismiss: ButtonProps['onClick'];
+  tabId: string;
+}) {
   return (
     <InternalButton
       onClick={onDismiss}
@@ -50,6 +57,8 @@ function dismissButton(
       formAction="none"
       ariaLabel={dismissLabel}
       disabled={dismissDisabled}
+      className={testUtilStyles['tab-dismiss-button']}
+      data-testid={`awsui-tab-dismiss-button-${tabId}`}
     />
   );
 }
@@ -451,7 +460,7 @@ export function TabHeaderBar({
           {action && <span className={tabActionClasses}>{action}</span>}
           {dismissible && (
             <span className={styles['tabs-tab-dismiss']}>
-              {dismissButton(dismissLabel, dismissDisabled, handleDismiss)}
+              {dismissButton({ dismissLabel, dismissDisabled, onDismiss: handleDismiss, tabId: tab.id })}
             </span>
           )}
         </div>

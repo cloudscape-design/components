@@ -788,15 +788,13 @@ describe('Tabs', () => {
       expect(requestAnimationFrameSpy).not.toBeCalledTimes(0);
       requestAnimationFrameSpy.mockRestore();
     });
+
     test('renders the correct dismiss label', () => {
       const dismissibleButton = renderTabs(
         <Tabs tabs={actionDismissibleTabs} />
       ).wrapper.findDismissibleButtonByTabIndex(1);
       expect(dismissibleButton).toBeTruthy();
-      expect(dismissibleButton?.getElement().firstElementChild).toHaveAttribute(
-        'aria-label',
-        'first-tab-dismissible-button'
-      );
+      expect(dismissibleButton?.getElement()).toHaveAttribute('aria-label', 'first-tab-dismissible-button');
     });
 
     test('does not render the dismiss button when dismissible false', () => {
@@ -814,10 +812,9 @@ describe('Tabs', () => {
 
     test('calls onDismiss event', () => {
       const consoleSpy = jest.spyOn(console, 'log').mockImplementation();
-      const dismissibleButtonWrapper = renderTabs(
+      const dismissibleButton = renderTabs(
         <Tabs tabs={actionDismissibleTabs} activeTabId="first" />
       ).wrapper.findDismissibleButtonByTabId('first');
-      const dismissibleButton = dismissibleButtonWrapper?.find('button');
       dismissibleButton?.click();
       expect(consoleSpy).toHaveBeenCalledWith('I have been called!');
       consoleSpy.mockClear();

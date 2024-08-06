@@ -87,11 +87,6 @@ $label-horizontal-spacing: awsui.$space-xs;
   @include styles.text-wrapping;
 }
 
-.tabs-tab-dismiss,
-.tabs-tab-action {
-  /* Used as a selector for tests */
-}
-
 .tabs-tab-header-container {
   position: relative;
 
