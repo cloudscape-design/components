@@ -10479,6 +10479,7 @@ The options can be grouped using \`OptionGroup\` objects.
 - \`label\` (string) - Option group text displayed to the user.
 - \`disabled\` (boolean) - (Optional) Determines whether the option group is disabled.
 - \`options\` (Option[]) - (Optional) The options under this group.
+- \`labelTag\` (string) - (Optional) A label tag that provides additional guidance, shown next to the label.
 - \`tags\` [string[]] - (Optional) A list of tags giving further guidance about the group.
 
 Note: Only one level of option nesting is supported.
@@ -13659,6 +13660,7 @@ The options can be grouped using \`OptionGroup\` objects.
 - \`label\` (string) - Option group text displayed to the user.
 - \`disabled\` (boolean) - (Optional) Determines whether the option group is disabled.
 - \`options\` (Option[]) - (Optional) The options under this group.
+- \`labelTag\` (string) - (Optional) A label tag that provides additional guidance, shown next to the label.
 - \`tags\` [string[]] - (Optional) A list of tags giving further guidance about the group.
 
 Note: Only one level of option nesting is supported.

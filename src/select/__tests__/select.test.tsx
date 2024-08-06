@@ -56,6 +56,7 @@ const groupOptions: SelectProps.Options = [
       { label: 'Third', value: '3' },
       { label: 'Fourth', value: '4' },
     ],
+    labelTag: 'Label tag',
   },
   { label: 'Fifth', value: '5' },
   {
@@ -65,7 +66,7 @@ const groupOptions: SelectProps.Options = [
       { label: 'sixth', value: '6' },
       { label: 'seventh', value: '7', disabled: true },
     ],
-    tags: ['One', 'Two'],
+    tags: ['Tag1', 'Tag2'],
   },
 ];
 
@@ -583,10 +584,21 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
     expect(wrapper.findTrigger().getElement()).toHaveFocus();
   });
 
+  test('group options can have label tag', () => {
+    const { wrapper } = renderSelect({ options: groupOptions });
+    wrapper.openDropdown();
+
+    expect(wrapper.findDropdown({ expandToViewport }).findOptionByValue('group')!.getElement().textContent).toBe(
+      'First categoryLabel tag'
+    );
+  });
+
   test('group options can have tags', () => {
     const { wrapper } = renderSelect({ options: groupOptions });
     wrapper.openDropdown();
 
-    expect(wrapper.findDropdown().findOptionByValue('group2')!.getElement().textContent).toBe('Second categoryOneTwo');
+    expect(wrapper.findDropdown({ expandToViewport }).findOptionByValue('group2')!.getElement().textContent).toBe(
+      'Second categoryTag1Tag2'
+    );
   });
 });

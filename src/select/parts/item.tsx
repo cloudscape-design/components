@@ -86,16 +86,13 @@ const Item = (
             <CheckboxIcon checked={selected || false} disabled={option.disabled} />
           </div>
         )}
-        {isParent ? (
-          <span>{wrappedOption.label || wrappedOption.value}</span>
-        ) : (
-          <Option
-            option={{ ...wrappedOption, disabled }}
-            highlightedOption={highlighted}
-            selectedOption={selected}
-            highlightText={filteringValue}
-          />
-        )}
+        <Option
+          option={{ ...wrappedOption, disabled }}
+          highlightedOption={highlighted}
+          selectedOption={selected}
+          highlightText={filteringValue}
+          isGroupOption={isParent}
+        />
         {!hasCheckbox && !isParent && selected && (
           <div className={styles['selected-icon']}>
             <InternalIcon name="check" />
