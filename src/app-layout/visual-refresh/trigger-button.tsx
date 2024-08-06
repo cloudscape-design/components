@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { Ref, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import React, { Ref, useEffect, useState } from 'react';
 import clsx from 'clsx';
 
 import { ButtonProps } from '../../button/interfaces';
@@ -80,17 +80,9 @@ function TriggerButton(
   }: TriggerButtonProps,
   ref: React.Ref<ButtonProps.Ref>
 ) {
-  const skipNextEventRef = useRef(false);
-  const containerRef = useRef(null);
+  const containerRef = React.useRef(null);
   const tooltipValue = tooltipText ? tooltipText : ariaLabel ? ariaLabel : '';
   const [showTooltip, setShowTooltip] = useState<boolean>(false);
-
-  useImperativeHandle(ref, () => ({
-    focus: () => {
-      skipNextEventRef.current = true;
-      containerRef.current.focus();
-    },
-  }));
 
   const onShowTooltipSoft = (show: boolean) => {
     setShowTooltip(show);
@@ -100,30 +92,11 @@ function TriggerButton(
     setShowTooltip(show);
   };
 
-  const handleFocus = () => {
-    // debugger;
-
-    // false, true when focus after drawer close
-    // true, true, when focus on selected button and closes drawer
-    // false, false when focus on trigger button when clsoed
-
-    console.log('handleFocus', skipNextEventRef.current);
-    if (!selected && !skipNextEventRef.current) {
+  const handleFocus = (event: KeyboardEvent | PointerEvent) => {
+    if ((event as any)?.relatedTarget?.ariaLabel !== 'Close tools') {
+      console.log({ ...event });
       onShowTooltipHard(true);
     }
-    skipNextEventRef.current = false;
-  };
-
-  const handleBlur = () => {
-    // debugger;
-
-    // false, true when tabbing to next button
-    console.log('handleBlur', skipNextEventRef.current);
-    // if (selected && !skipNextEventRef.current) {
-
-    //   skipNextEventRef.current = true;
-    // }
-    onShowTooltipHard(false);
   };
 
   useEffect(() => {
@@ -162,8 +135,8 @@ function TriggerButton(
         ? {
             onPointerEnter: () => onShowTooltipSoft(true),
             onPointerLeave: () => onShowTooltipSoft(false),
-            onFocus: handleFocus,
-            onBlur: handleBlur,
+            onFocus: e => handleFocus(e as any),
+            onBlur: () => onShowTooltipHard(false),
           }
         : {})}
       data-testid={`${testId ? `${testId}-wrapper` : 'awsui-app-layout-trigger-wrapper'}${hasTooltip ? '-with-possible-tooltip' : ''}`}

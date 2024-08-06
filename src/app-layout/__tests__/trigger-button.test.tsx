@@ -359,9 +359,8 @@ describe('Toolbar trigger-button', () => {
       });
     });
 
-    test.skip('Is focusable using the forwarded ref and tooltip does not show', async () => {
+    test('Is focusable using the forwarded ref and tooltip does not show', async () => {
       const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
-      const mockTooltipText = 'Mock Tooltip';
       const { wrapper, getByTestId, getByText } = await renderTriggerButton(
         {
           isMobile,
@@ -375,6 +374,7 @@ describe('Toolbar trigger-button', () => {
       expect(document.activeElement).not.toBe(button!.getElement());
       (ref.current as any)?.focus();
       expect(document.activeElement).toBe(button!.getElement());
+      //TODO: determine why tooltip is not showing... or use a more specific focus event
       expect(() => getByText(mockTooltipText)).toThrow();
     });
   });
