@@ -125,7 +125,7 @@ function ActiveDrawer() {
             formAction="none"
             iconName={isMobile ? 'close' : 'angle-right'}
             onClick={() => {
-              handleDrawersClick(activeDrawerId);
+              handleDrawersClick(activeDrawerId, true);
               handleToolsClick(false);
             }}
             ref={drawersRefs.close}
@@ -343,7 +343,6 @@ export function MobileTriggers() {
       <div className={styles['drawers-mobile-triggers-container']} role="toolbar" aria-orientation="horizontal">
         {visibleItems.map(item => (
           <TriggerButton
-            isMobile={true}
             ariaExpanded={item.id === activeDrawerId}
             hasTooltip={true}
             tooltipText={item.ariaLabels?.drawerName}

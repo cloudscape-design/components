@@ -28,12 +28,6 @@ export interface TriggerButtonProps {
    */
   iconSvg?: React.ReactNode;
   ariaExpanded: boolean | undefined;
-  /**
-   * Set to true if this component used in a mobile layout
-   *
-   * It will then render a different InternalButton that is optimumn for the mobile experience
-   */
-  isMobile?: boolean;
   ariaControls?: string;
   disabled?: boolean;
   /**
@@ -74,7 +68,6 @@ function TriggerButton(
     tooltipText,
     testId,
     disabled = false,
-    isMobile = false,
     badge,
     selected = false,
     highContrastHeader,
@@ -85,10 +78,7 @@ function TriggerButton(
   const tooltipValue = tooltipText ? tooltipText : ariaLabel ? ariaLabel : '';
   const [showTooltip, setShowTooltip] = useState<boolean>(false);
 
-  const {
-    hasOpenDrawer,
-    // isMobile,
-  } = useAppLayoutInternals();
+  const { hasOpenDrawer, isMobile } = useAppLayoutInternals();
 
   const onShowTooltipSoft = (show: boolean) => {
     setShowTooltip(show);
@@ -136,14 +126,12 @@ function TriggerButton(
   return (
     <div
       ref={containerRef}
-      {...(hasTooltip
-        ? {
-            onPointerEnter: () => onShowTooltipSoft(true),
-            onPointerLeave: () => onShowTooltipSoft(false),
-            onFocus: e => handleFocus(e as any),
-            onBlur: () => onShowTooltipHard(false),
-          }
-        : {})}
+      {...(hasTooltip && {
+        onPointerEnter: () => onShowTooltipSoft(true),
+        onPointerLeave: () => onShowTooltipSoft(false),
+        onFocus: e => handleFocus(e as any),
+        onBlur: () => onShowTooltipHard(false),
+      })}
       data-testid={`${testId ? `${testId}-wrapper` : 'awsui-app-layout-trigger-wrapper'}${hasTooltip ? '-with-possible-tooltip' : ''}`}
       className={clsx(styles['trigger-wrapper'], !highContrastHeader && styles['remove-high-contrast-header'])}
     >
@@ -162,11 +150,9 @@ function TriggerButton(
           variant="icon"
           __nativeAttributes={{
             'aria-haspopup': true,
-            ...(testId
-              ? {
-                  'data-testid': testId,
-                }
-              : {}),
+            ...(testId && {
+              'data-testid': testId,
+            }),
           }}
         />
       ) : (
@@ -202,7 +188,7 @@ function TriggerButton(
           trackRef={containerRef}
           value={tooltipValue}
           className={styles['trigger-tooltip']}
-          {...(isMobile ? {} : { position: 'left' })}
+          {...(!isMobile && { position: 'left' })}
         />
       )}
     </div>
