@@ -88,6 +88,11 @@ function TriggerButton(
     setShowTooltip(show);
   };
 
+  /**
+   * Takes the drawer being closed and the data-shift-focus value from a close button on that drawer that persists
+   * on the event relatedTarget to determine not to show the tooltip
+   * @param event
+   */
   const handleFocus = (event: KeyboardEvent | PointerEvent) => {
     if (hasOpenDrawer || (event as any)?.relatedTarget?.dataset?.shiftFocus !== 'last-opened-toolbar-trigger-button') {
       onShowTooltipHard(true);
