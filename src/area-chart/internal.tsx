@@ -190,6 +190,7 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
             i18nStrings={i18nStrings}
             fitHeight={fitHeight}
             minHeight={height}
+            isRTL={isRtl}
           />
         ) : null
       }

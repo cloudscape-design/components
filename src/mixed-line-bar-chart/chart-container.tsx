@@ -629,6 +629,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
             width={plotWidth}
             offsetLeft={inlineStartLabelsWidth + BLOCK_END_LABELS_OFFSET}
             offsetRight={BLOCK_END_LABELS_OFFSET}
+            isRTL={isRtl}
           />
         </ChartPlot>
       }
