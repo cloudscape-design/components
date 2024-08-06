@@ -93,8 +93,8 @@ function TriggerButton(
   };
 
   const handleFocus = (event: KeyboardEvent | PointerEvent) => {
+    // console.log({ ...event });
     if ((event as any)?.relatedTarget?.ariaLabel !== 'Close tools') {
-      console.log({ ...event });
       onShowTooltipHard(true);
     }
   };
