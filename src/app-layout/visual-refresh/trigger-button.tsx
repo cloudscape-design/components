@@ -8,6 +8,7 @@ import { InternalButton } from '../../button/internal';
 import { IconProps } from '../../icon/interfaces';
 import Icon from '../../icon/internal';
 import Tooltip from '../../internal/components/tooltip';
+import { useAppLayoutInternals } from './context';
 
 import styles from './styles.css.js';
 
@@ -84,6 +85,11 @@ function TriggerButton(
   const tooltipValue = tooltipText ? tooltipText : ariaLabel ? ariaLabel : '';
   const [showTooltip, setShowTooltip] = useState<boolean>(false);
 
+  const {
+    hasOpenDrawer,
+    // isMobile,
+  } = useAppLayoutInternals();
+
   const onShowTooltipSoft = (show: boolean) => {
     setShowTooltip(show);
   };
@@ -93,8 +99,7 @@ function TriggerButton(
   };
 
   const handleFocus = (event: KeyboardEvent | PointerEvent) => {
-    // console.log({ ...event });
-    if ((event as any)?.relatedTarget?.ariaLabel !== 'Close tools') {
+    if (hasOpenDrawer || (event as any)?.relatedTarget?.dataset?.shiftFocus !== 'last-opened-toolbar-trigger-button') {
       onShowTooltipHard(true);
     }
   };
