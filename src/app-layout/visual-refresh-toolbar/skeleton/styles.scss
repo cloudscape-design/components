@@ -13,6 +13,12 @@
   }
 }
 
+@mixin mobile-only {
+  @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
+    @content;
+  }
+}
+
 .root {
   @include styles.styles-reset;
   color: awsui.$color-text-body-default;
@@ -152,8 +158,7 @@
 
 /* stylelint-disable-next-line selector-combinator-disallowed-list, selector-max-universal */
 .unfocusable-mobile * {
-  visibility: hidden;
-  @include desktop-only {
-    visibility: visible;
+  @include mobile-only {
+    visibility: hidden;
   }
 }
