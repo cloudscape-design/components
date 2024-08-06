@@ -9,6 +9,7 @@ export interface BaseOption {
   label?: string;
   disabled?: boolean;
   disabledReason?: string;
+  tags?: ReadonlyArray<string>;
 }
 
 export interface OptionDefinition extends BaseOption {
@@ -20,7 +21,6 @@ export interface OptionDefinition extends BaseOption {
   iconName?: IconProps.Name;
   iconUrl?: string;
   iconSvg?: React.ReactNode;
-  tags?: ReadonlyArray<string>;
   filteringTags?: ReadonlyArray<string>;
   __labelPrefix?: string;
 }

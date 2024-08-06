@@ -39,6 +39,7 @@ const groupOptions: MultiselectProps.Options = [
       { label: 'sixth', value: '6' },
       { label: 'seventh', value: '7', disabled: true },
     ],
+    tags: ['One', 'Two'],
   },
 ];
 function renderMultiselect(jsx: React.ReactElement) {
@@ -775,4 +776,11 @@ describe('Disabled item with reason', () => {
     wrapper.selectOptionByValue('1');
     expect(onChange).not.toHaveBeenCalled();
   });
+});
+
+test('group options can have tags', () => {
+  const { wrapper } = renderMultiselect(<Multiselect options={groupOptions} selectedOptions={[]} />);
+  wrapper.openDropdown();
+
+  expect(wrapper.findDropdown().findOptionByValue('group2')!.getElement().textContent).toBe('Second categoryOneTwo');
 });
