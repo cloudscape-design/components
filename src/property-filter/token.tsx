@@ -72,7 +72,7 @@ export const TokenButton = ({
         {
           content: (
             <span className={styles['token-trigger']}>
-              <TokenTrigger token={formattedToken} />
+              <TokenTrigger token={formattedToken} allProperties={token.property === null} />
             </span>
           ),
           ariaLabel: `${formattedToken.propertyLabel} ${formattedToken.operator} ${formattedToken.value}`,
@@ -118,7 +118,13 @@ export const TokenButton = ({
   );
 };
 
-const TokenTrigger = ({ token: { propertyLabel, operator, value } }: { token: FormattedToken }) => {
+const TokenTrigger = ({
+  token: { propertyLabel, operator, value },
+  allProperties,
+}: {
+  token: FormattedToken;
+  allProperties: boolean;
+}) => {
   if (propertyLabel) {
     propertyLabel += ' ';
   }
@@ -126,7 +132,7 @@ const TokenTrigger = ({ token: { propertyLabel, operator, value } }: { token: Fo
   const operatorText = freeTextContainsToken ? '' : operator + ' ';
   return (
     <>
-      {propertyLabel}
+      {allProperties ? '' : propertyLabel}
       <span className={styles['token-operator']}>{operatorText}</span>
       {value}
     </>

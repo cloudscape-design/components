@@ -73,6 +73,13 @@ describe('filtering tokens', () => {
       });
       expect(wrapper.findTokens()![0].getElement()).toHaveTextContent('range > value');
     });
+
+    test('property token with missing property key', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        query: { tokens: [{ propertyKey: undefined, value: 'value', operator: ':' }], operation: 'or' },
+      });
+      expect(wrapper.findTokens()![0].getElement().textContent).toBe(': value');
+    });
   });
 
   describe('join operation control', () => {
