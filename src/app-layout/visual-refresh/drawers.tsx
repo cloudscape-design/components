@@ -129,6 +129,7 @@ function ActiveDrawer() {
               handleToolsClick(false);
             }}
             ref={drawersRefs.close}
+            data-shift-focus="last-opened-toolbar-trigger-button"
             variant="icon"
           />
         </div>
