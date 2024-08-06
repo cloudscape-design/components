@@ -93,6 +93,7 @@ function applyToolsDrawer(toolsProps: ToolsProps, runtimeDrawers: DrawersLayout)
 
 type UseDrawersProps = Pick<AppLayoutProps, 'drawers' | 'activeDrawerId' | 'onDrawerChange'> & {
   __disableRuntimeDrawers?: boolean;
+  __activeDrawersLimit?: number;
 };
 
 export function useDrawers(
@@ -101,6 +102,7 @@ export function useDrawers(
     activeDrawerId: controlledActiveDrawerId,
     onDrawerChange,
     __disableRuntimeDrawers: disableRuntimeDrawers,
+    __activeDrawersLimit: activeDrawersLimit,
   }: UseDrawersProps,
   ariaLabels: AppLayoutProps['ariaLabels'],
   toolsProps: ToolsProps
@@ -110,6 +112,7 @@ export function useDrawers(
     controlledProp: 'activeDrawerId',
     changeHandler: 'onChange',
   });
+  const [activeDrawersIds, setActiveDrawersIds] = useState<Array<string>>([]);
   const [drawerSizes, setDrawerSizes] = useState<Record<string, number>>({});
 
   function onActiveDrawerResize({ id, size }: { id: string; size: number }) {
@@ -118,6 +121,22 @@ export function useDrawers(
   }
 
   function onActiveDrawerChange(newDrawerId: string | null) {
+    if ((activeDrawersLimit ?? 0) > 1) {
+      if (newDrawerId === null) {
+        setActiveDrawersIds([]);
+      } else {
+        setActiveDrawersIds(oldIds => {
+          const newIds = [...oldIds, newDrawerId];
+          if (newIds.length > activeDrawersLimit!) {
+            newIds.shift();
+          }
+          return newIds;
+        });
+      }
+
+      return;
+    }
+
     setActiveDrawerId(newDrawerId);
     if (hasOwnDrawers) {
       fireNonCancelableEvent(onDrawerChange, { activeDrawerId: newDrawerId });
@@ -134,6 +153,7 @@ export function useDrawers(
   // support toolsOpen in runtime-drawers-only mode
   let activeDrawerIdResolved = toolsProps?.toolsOpen && !hasOwnDrawers ? TOOLS_DRAWER_ID : activeDrawerId;
   const activeDrawer = combinedDrawers?.find(drawer => drawer.id === activeDrawerIdResolved);
+  const activeDrawers = combinedDrawers?.filter(drawer => activeDrawersIds.includes(drawer.id));
   // ensure that id is only defined when the drawer exists
   activeDrawerIdResolved = activeDrawer?.id ?? null;
 
@@ -141,13 +161,18 @@ export function useDrawers(
     ? drawerSizes[activeDrawerIdResolved] ?? activeDrawer?.defaultSize ?? toolsProps.toolsWidth
     : 0;
   const minDrawerSize = Math.min(activeDrawer?.defaultSize ?? 290, 290);
+  const minDrawersSizes = activeDrawers?.map(drawer => Math.min(drawer?.defaultSize ?? 290, 290));
 
   return {
     ariaLabelsWithDrawers: ariaLabels,
     drawers: combinedDrawers || undefined,
     activeDrawer,
     activeDrawerId: activeDrawerIdResolved,
+    activeDrawers,
+    activeDrawersIds,
+    drawerSizes,
     activeDrawerSize,
+    minDrawersSizes,
     minDrawerSize,
     onActiveDrawerChange,
     onActiveDrawerResize,

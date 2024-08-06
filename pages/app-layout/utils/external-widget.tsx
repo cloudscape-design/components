@@ -62,6 +62,8 @@ awsuiPlugins.appLayout.registerDrawer({
 awsuiPlugins.appLayout.registerDrawer({
   id: 'circle',
 
+  resizable: true,
+
   ariaLabels: {
     closeButton: 'Close button',
     content: 'Content',

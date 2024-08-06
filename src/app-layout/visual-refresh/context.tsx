@@ -2,11 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, {
   createContext,
+  RefObject,
   useCallback,
   useContext,
   useEffect,
   useImperativeHandle,
   useLayoutEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -25,7 +27,6 @@ import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
 import { SPLIT_PANEL_MIN_WIDTH } from '../split-panel';
 import { useDrawers } from '../utils/use-drawers';
 import { FocusControlRefs, useFocusControl } from '../utils/use-focus-control';
-import useResize from '../utils/use-resize';
 import { SplitPanelFocusControlRefs, useSplitPanelFocusControl } from '../utils/use-split-panel-focus-control';
 import { getSplitPanelPosition } from './split-panel';
 import useBackgroundOverlap from './use-background-overlap';
@@ -34,16 +35,16 @@ import styles from './styles.css.js';
 
 interface AppLayoutInternals extends AppLayoutPropsWithDefaults {
   activeDrawerId: string | null;
+  activeDrawersIds: Array<string> | null;
   drawers: Array<AppLayoutProps.Drawer> | undefined;
   drawersAriaLabel: string | undefined;
   drawersOverflowAriaLabel: string | undefined;
   drawersOverflowWithBadgeAriaLabel: string | undefined;
   drawersRefs: FocusControlRefs;
-  drawerSize: number;
   drawersMinWidth: number;
   drawersMaxWidth: number;
   drawerRef: React.Ref<HTMLElement>;
-  resizeHandle: React.ReactElement;
+  activeDrawersRefs: Record<string, RefObject<HTMLDivElement>>;
   drawersTriggerCount: number;
   handleDrawersClick: (activeDrawerId: string | null, skipFocusControl?: boolean) => void;
   handleSplitPanelClick: () => void;
@@ -85,6 +86,8 @@ interface AppLayoutInternals extends AppLayoutPropsWithDefaults {
   splitPanelRefs: SplitPanelFocusControlRefs;
   toolsControlId: string;
   toolsRefs: FocusControlRefs;
+  onActiveDrawerResize: ({ id, size }: { id: string; size: number }) => void;
+  drawerSizes: Record<string, number>;
   __embeddedViewMode?: boolean;
 }
 
@@ -296,7 +299,11 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       minDrawerSize: drawersMinWidth,
       onActiveDrawerChange,
       onActiveDrawerResize,
-      activeDrawerSize,
+      // activeDrawerSize,
+      // activeDrawers,
+      activeDrawersIds,
+      drawerSizes,
+      // minDrawersSizes,
       ...drawersProps
     } = useDrawers(props, props.ariaLabels, {
       disableDrawersMerge: true,
@@ -318,15 +325,15 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     } = useFocusControl(!!activeDrawerId, true, activeDrawerId);
 
     const drawerRef = useRef<HTMLDivElement>(null);
-    const { resizeHandle, drawerSize } = useResize(drawerRef, {
-      onActiveDrawerResize,
-      activeDrawerSize,
-      activeDrawer,
-      drawersRefs,
-      isToolsOpen,
-      drawersMaxWidth,
-      drawersMinWidth,
-    });
+
+    const activeDrawersRefs = useMemo(() => {
+      const refs: Record<string, RefObject<HTMLDivElement>> = {};
+      activeDrawersIds.forEach(activeDrawerId => {
+        refs[activeDrawerId] = React.createRef();
+      });
+
+      return refs;
+    }, [activeDrawersIds]);
 
     const handleDrawersClick = (id: string | null, skipFocusControl?: boolean) => {
       const newActiveDrawerId = id !== activeDrawerId ? id : null;
@@ -431,6 +438,8 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       function handleSplitPanelMaxWidth() {
         const contentGapRight = 50; // Approximately 24px when rendered but doubled for safety
         const toolsFormOffsetWidth = 120; // Approximately 60px when rendered but doubled for safety
+        // FIXME !!!
+        const drawerSize = 0;
         const getPanelOffsetWidth = () => {
           if (drawers) {
             return activeDrawerId ? drawerSize : 0;
@@ -453,7 +462,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       },
       [
         activeDrawerId,
-        drawerSize,
         drawers,
         navigationOpen,
         isToolsOpen,
@@ -507,6 +515,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
         value={{
           ...props,
           activeDrawerId,
+          activeDrawersIds,
           contentType,
           drawers,
           drawersAriaLabel: drawersProps.ariaLabelsWithDrawers?.drawers,
@@ -515,9 +524,8 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           drawersRefs,
           drawersMinWidth,
           drawersMaxWidth,
-          drawerSize,
+          activeDrawersRefs,
           drawerRef,
-          resizeHandle,
           drawersTriggerCount,
           headerHeight: placement.insetBlockStart,
           footerHeight: placement.insetBlockEnd,
@@ -568,6 +576,8 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           toolsOpen: isToolsOpen,
           toolsWidth,
           toolsRefs,
+          onActiveDrawerResize,
+          drawerSizes,
           __embeddedViewMode,
         }}
       >

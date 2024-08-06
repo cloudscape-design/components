@@ -348,4 +348,5 @@ export type AppLayoutPropsWithDefaults = SomeRequired<
     insetInlineEnd: number;
     inlineSize: number;
   };
+  __activeDrawersLimit: number;
 };

@@ -11,6 +11,7 @@ import { getLimitedValue } from '../../split-panel/utils/size-utils';
 import { splitItems } from '../drawer/drawers-helpers';
 import OverflowMenu from '../drawer/overflow-menu';
 import { TOOLS_DRAWER_ID } from '../utils/use-drawers';
+import useResize from '../utils/use-resize';
 import { useAppLayoutInternals } from './context';
 import SplitPanel from './split-panel';
 import TriggerButton from './trigger-button';
@@ -27,6 +28,7 @@ import styles from './styles.css.js';
  */
 export default function Drawers() {
   const {
+    activeDrawersIds,
     disableBodyScroll,
     drawers,
     drawersTriggerCount,
@@ -52,15 +54,14 @@ export default function Drawers() {
       })}
     >
       <SplitPanel.Side />
-      <ActiveDrawer />
+      {activeDrawersIds?.map(activeDrawerId => <ActiveDrawer key={activeDrawerId} activeDrawerId={activeDrawerId} />)}
       {!isMobile && <DesktopTriggers />}
     </div>
   );
 }
 
-function ActiveDrawer() {
+function ActiveDrawer({ activeDrawerId }: { activeDrawerId: string }) {
   const {
-    activeDrawerId,
     ariaLabels,
     drawers,
     drawersRefs,
@@ -71,14 +72,26 @@ function ActiveDrawer() {
     navigationOpen,
     navigationHide,
     loseDrawersFocus,
-    resizeHandle,
-    drawerSize,
     drawersMinWidth,
     drawersMaxWidth,
-    drawerRef,
+    onActiveDrawerResize,
+    isToolsOpen,
+    drawerSizes,
+    toolsWidth,
+    activeDrawersRefs,
   } = useAppLayoutInternals();
 
-  const activeDrawer = drawers?.find(item => item.id === activeDrawerId) ?? null;
+  const activeDrawer = drawers?.find(item => item.id === activeDrawerId);
+
+  const { resizeHandle, drawerSize } = useResize(activeDrawersRefs[activeDrawerId]!, {
+    onActiveDrawerResize,
+    activeDrawerSize: drawerSizes[activeDrawerId ?? ''] ?? activeDrawer?.defaultSize ?? toolsWidth,
+    activeDrawer,
+    drawersRefs,
+    isToolsOpen,
+    drawersMaxWidth,
+    drawersMinWidth,
+  });
 
   const computedAriaLabels = {
     closeButton: activeDrawerId ? activeDrawer?.ariaLabels?.closeButton : ariaLabels?.toolsClose,
@@ -106,7 +119,7 @@ function ActiveDrawer() {
       style={{
         ...(!isMobile && drawerSize && { [customCssProps.drawerSize]: `${size}px` }),
       }}
-      ref={drawerRef}
+      ref={activeDrawersRefs[activeDrawerId]}
       onBlur={e => {
         if (!e.relatedTarget || !e.currentTarget.contains(e.relatedTarget)) {
           loseDrawersFocus();

@@ -110,6 +110,7 @@ const AppLayout = React.forwardRef(
       ...rest,
       ariaLabels,
       placement,
+      __activeDrawersLimit: 2,
     };
 
     const baseProps = getBaseProps(rest);
