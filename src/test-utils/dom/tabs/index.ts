@@ -76,7 +76,7 @@ export default class TabsWrapper extends ComponentWrapper<HTMLButtonElement> {
    */
   findDismissibleButtonByTabId(id: string): ButtonWrapper | null {
     return this.findComponent(
-      `.${styles['tabs-tab-link']}[data-testid="${id}"] ~ .${styles['tabs-tab-dismiss']} .${testUtilStyles['tab-dismiss-button']}`,
+      `.${testUtilStyles['tab-dismiss-button']}[data-testid="awsui-tab-dismiss-button-${id}"]`,
       ButtonWrapper
     );
   }
