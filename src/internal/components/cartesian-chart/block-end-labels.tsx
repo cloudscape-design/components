@@ -22,6 +22,7 @@ interface BlockEndLabelsProps {
   offsetRight?: number;
   virtualTextRef: React.Ref<SVGTextElement>;
   formattedTicks: readonly FormattedTick[];
+  isRTL?: boolean;
 }
 
 export function useBLockEndLabels({
@@ -76,13 +77,17 @@ function BlockEndLabels({
   offsetRight = 0,
   virtualTextRef,
   formattedTicks,
+  isRTL = false,
 }: BlockEndLabelsProps) {
   const i18n = useInternalI18n('[charts]');
 
   const xOffset = scale.isCategorical() && axis === 'x' ? Math.max(0, scale.d3Scale.bandwidth() - 1) / 2 : 0;
 
-  const from = 0 - offsetLeft - xOffset;
-  const until = width + offsetRight - xOffset;
+  const offsetInlineStart = isRTL ? offsetRight : offsetLeft;
+  const offsetInlineEnd = isRTL ? offsetLeft : offsetRight;
+
+  const from = 0 - offsetInlineStart - xOffset;
+  const until = width + offsetInlineEnd - xOffset;
   const balanceLabels = axis === 'x' && scale.scaleType !== 'log';
   const visibleTicks = getVisibleTicks(formattedTicks, from, until, balanceLabels);
 
