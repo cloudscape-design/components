@@ -46,6 +46,28 @@ const defaultOptions: SelectProps.Options = [
     ],
   },
 ];
+const groupOptions: SelectProps.Options = [
+  {
+    label: 'First category',
+    value: 'group',
+    options: [
+      { label: 'First', value: '1' },
+      { label: 'Second', value: '2' },
+      { label: 'Third', value: '3' },
+      { label: 'Fourth', value: '4' },
+    ],
+  },
+  { label: 'Fifth', value: '5' },
+  {
+    label: 'Second category',
+    value: 'group2',
+    options: [
+      { label: 'sixth', value: '6' },
+      { label: 'seventh', value: '7', disabled: true },
+    ],
+    tags: ['One', 'Two'],
+  },
+];
 
 describe.each([false, true])('expandToViewport=%s', expandToViewport => {
   const defaultProps = {
@@ -559,5 +581,12 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
   test('should render with focus when autoFocus=true', () => {
     const { wrapper } = renderSelect({ autoFocus: true });
     expect(wrapper.findTrigger().getElement()).toHaveFocus();
+  });
+
+  test('group options can have tags', () => {
+    const { wrapper } = renderSelect({ options: groupOptions });
+    wrapper.openDropdown();
+
+    expect(wrapper.findDropdown().findOptionByValue('group2')!.getElement().textContent).toBe('Second categoryOneTwo');
   });
 });

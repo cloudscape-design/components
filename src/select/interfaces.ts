@@ -41,6 +41,7 @@ export interface BaseSelectProps
    * - `label` (string) - Option group text displayed to the user.
    * - `disabled` (boolean) - (Optional) Determines whether the option group is disabled.
    * - `options` (Option[]) - (Optional) The options under this group.
+   * - `tags` [string[]] - (Optional) A list of tags giving further guidance about the group.
    *
    * Note: Only one level of option nesting is supported.
    *
