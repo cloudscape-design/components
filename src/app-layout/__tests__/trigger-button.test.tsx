@@ -71,7 +71,6 @@ describe('Toolbar trigger-button', () => {
         const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
         const { wrapper, getByTestId } = await renderTriggerButton(
           {
-            isMobile,
             hasTooltip: false,
             badge: false,
           },
@@ -96,13 +95,7 @@ describe('Toolbar trigger-button', () => {
 
       test('renders correctly with iconName', async () => {
         const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
-        const { wrapper, getByTestId } = await renderTriggerButton(
-          {
-            isMobile,
-          },
-          {},
-          ref as any
-        );
+        const { wrapper, getByTestId } = await renderTriggerButton({}, {}, ref as any);
 
         expect(wrapper).not.toBeNull();
         const button = wrapper.find('button');
