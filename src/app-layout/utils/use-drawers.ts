@@ -121,26 +121,25 @@ export function useDrawers(
   }
 
   function onActiveDrawerChange(newDrawerId: string | null) {
-    if ((activeDrawersLimit ?? 0) > 1) {
-      if (!newDrawerId) {
-        return;
-      }
-
-      if (activeDrawersIds.includes(newDrawerId)) {
-        setActiveDrawersIds(oldIds => oldIds.filter(id => id !== newDrawerId));
-      } else {
-        setActiveDrawersIds(oldIds => {
-          const newIds = [newDrawerId, ...oldIds];
-          if (newIds.length > activeDrawersLimit!) {
-            newIds.pop();
-          }
-          return newIds;
-        });
-      }
-
+    if (!newDrawerId) {
       return;
     }
 
+    if (activeDrawersIds.includes(newDrawerId)) {
+      setActiveDrawersIds(oldIds => oldIds.filter(id => id !== newDrawerId));
+    } else {
+      setActiveDrawersIds(oldIds => {
+        const newIds = [newDrawerId, ...oldIds];
+        if (newIds.length > activeDrawersLimit!) {
+          newIds.pop();
+        }
+        return newIds;
+      });
+    }
+
+    return;
+
+    // TODO
     setActiveDrawerId(newDrawerId);
     if (hasOwnDrawers) {
       fireNonCancelableEvent(onDrawerChange, { activeDrawerId: newDrawerId });
