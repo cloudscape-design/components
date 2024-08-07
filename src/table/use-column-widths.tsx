@@ -5,7 +5,7 @@ import React, { createContext, useContext, useEffect, useRef, useState } from 'r
 import { useResizeObserver, useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
-import { setElementWidths } from './column-widths-utils';
+import { setElementWidths, treatAsNumber } from './column-widths-utils';
 
 export const DEFAULT_COLUMN_WIDTH = 120;
 
@@ -15,9 +15,6 @@ export interface ColumnWidthDefinition {
   maxWidth?: string | number;
   width?: string | number;
 }
-
-const treatAsNumber = (value: number | string | undefined) =>
-  typeof value === 'number' || (value && parseInt(value, 10).toString() === value);
 
 function readWidths(
   getCell: (columnId: PropertyKey) => null | HTMLElement,

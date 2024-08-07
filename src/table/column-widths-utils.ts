@@ -40,3 +40,6 @@ function checkProperty(column: TableProps.ColumnDefinition<any>, name: 'width' |
     );
   }
 }
+
+export const treatAsNumber = (value: number | string | undefined) =>
+  typeof value === 'number' || (value && parseFloat(value).toString() === value) || false;
