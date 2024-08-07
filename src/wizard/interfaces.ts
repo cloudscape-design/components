@@ -2,10 +2,26 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { FlowType } from '../internal/analytics/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
 
+export namespace WizardProps {
+  export interface AnalyticsMetadata {
+    instanceIdentifier?: string;
+    flowType?: FlowType;
+  }
+}
+
 export interface WizardProps extends BaseComponentProps {
+  /**
+   * Specifies additional analytics-related metadata.
+   * * `instanceIdentifier` - A unique string that identifies this component instance in your application.
+   * * `flowType` - Identifies the type of flow represented by the component.
+   * @analytics
+   */
+  analyticsMetadata?: WizardProps.AnalyticsMetadata;
+
   /**
    * Array of step objects. Each object represents a step in the wizard with the following properties:
    *
@@ -18,6 +34,8 @@ export interface WizardProps extends BaseComponentProps {
    *    Use this for rendering actionable server-side validation failure messages.
    * - `isOptional` (boolean) - Specifies whether the step is optional or required. If set to `true`, the text from `i18nStrings.optional`
    *    is rendered next to the `title` in the navigation step label and the form header title.
+   * - `analyticsMetadata` (WizardProps.StepAnalyticsMetadata) - (Optional) Specifies additional analytics-related metadata.
+   * @analytics
    */
   steps: ReadonlyArray<WizardProps.Step>;
 
@@ -111,6 +129,9 @@ export interface WizardProps extends BaseComponentProps {
 }
 
 export namespace WizardProps {
+  export interface StepAnalyticsMetadata {
+    instanceIdentifier?: string;
+  }
   export interface Step {
     title: string;
     info?: React.ReactNode;
@@ -118,6 +139,7 @@ export namespace WizardProps {
     content: React.ReactNode;
     errorText?: React.ReactNode;
     isOptional?: boolean;
+    analyticsMetadata?: StepAnalyticsMetadata;
   }
 
   export interface I18nStrings {

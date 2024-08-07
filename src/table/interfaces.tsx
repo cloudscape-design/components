@@ -23,6 +23,12 @@ export interface TableForwardRefType {
 
 export interface TableProps<T = any> extends BaseComponentProps {
   /**
+   * Specifies additional analytics-related metadata.
+   * * `instanceIdentifier` - A unique string that identifies this component instance in your application.
+   * @analytics
+   */
+  analyticsMetadata?: TableProps.AnalyticsMetadata;
+  /**
    * Heading element of the table container. Use the [header component](/components/header/).
    */
   header?: React.ReactNode;
@@ -373,6 +379,10 @@ export interface TableProps<T = any> extends BaseComponentProps {
 }
 
 export namespace TableProps {
+  export interface AnalyticsMetadata {
+    instanceIdentifier?: string;
+  }
+
   export type TrackBy<T> = string | ((item: T) => string);
 
   export interface CellContext<V> {

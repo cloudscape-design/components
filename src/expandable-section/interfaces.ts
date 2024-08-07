@@ -6,6 +6,10 @@ import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
 
 export namespace ExpandableSectionProps {
+  export interface AnalyticsMetadata {
+    instanceIdentifier?: string;
+  }
+
   export type Variant = 'default' | 'footer' | 'container' | 'navigation' | 'stacked';
   export interface ChangeDetail {
     expanded: boolean;
@@ -16,6 +20,13 @@ export namespace ExpandableSectionProps {
 export type InternalVariant = ExpandableSectionProps.Variant | 'compact';
 
 export interface ExpandableSectionProps extends BaseComponentProps {
+  /**
+   * Specifies additional analytics-related metadata.
+   * * `instanceIdentifier` - A unique string that identifies this component instance in your application.
+   * @analytics
+   */
+  analyticsMetadata?: ExpandableSectionProps.AnalyticsMetadata;
+
   /**
    * Determines whether the component initially displays in expanded state (that is, with content visible). The component operates in an uncontrolled
    * manner even if you provide a value for this property.

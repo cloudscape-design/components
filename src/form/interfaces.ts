@@ -2,7 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { FlowType } from '../internal/analytics/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
+
+export namespace FormProps {
+  export interface AnalyticsMetadata {
+    instanceIdentifier?: string;
+    flowType?: FlowType;
+  }
+}
 
 export interface FormProps extends BaseComponentProps {
   /**
@@ -43,4 +51,12 @@ export interface FormProps extends BaseComponentProps {
    * @deprecated You can safely remove this property as there is no longer any visual difference between `full-page` and `embedded` variants.
    */
   variant?: 'full-page' | 'embedded';
+
+  /**
+   * Specifies additional analytics-related metadata.
+   * * `instanceIdentifier` - A unique string that identifies this component instance in your application.
+   * * `flowType` - Identifies the type of flow represented by the component.
+   * @analytics
+   */
+  analyticsMetadata?: FormProps.AnalyticsMetadata;
 }
