@@ -299,11 +299,8 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       minDrawerSize: drawersMinWidth,
       onActiveDrawerChange,
       onActiveDrawerResize,
-      // activeDrawerSize,
-      // activeDrawers,
       activeDrawersIds,
       drawerSizes,
-      // minDrawersSizes,
       ...drawersProps
     } = useDrawers(props, props.ariaLabels, {
       disableDrawersMerge: true,
