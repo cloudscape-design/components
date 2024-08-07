@@ -408,12 +408,23 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       }
     }
 
+    const activeDrawersWidth = useMemo(() => {
+      let result = 0;
+
+      (activeDrawersIds ?? []).forEach(drawerId => {
+        const activeDrawer = drawers?.find(item => item.id === drawerId);
+        result += drawerSizes[drawerId ?? ''] ?? activeDrawer?.defaultSize ?? toolsWidth;
+      });
+
+      return result;
+    }, [activeDrawersIds, drawerSizes, drawers, toolsWidth]);
+
     /**
      * Warning! This is a hack! In order to accurately calculate if there is adequate
      * horizontal space for the Split Panel to be in the side position we need two values
      * that are not available in JavaScript.
      *
-     * The first is the the content gap on the right which is stored in a design token
+     * The first is the content gap on the right which is stored in a design token
      * and applied in the Layout CSS:
      *
      * $contentGapRight: #{awsui.$space-layout-content-horizontal};
@@ -435,11 +446,9 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       function handleSplitPanelMaxWidth() {
         const contentGapRight = 50; // Approximately 24px when rendered but doubled for safety
         const toolsFormOffsetWidth = 120; // Approximately 60px when rendered but doubled for safety
-        // FIXME !!!
-        const drawerSize = 0;
         const getPanelOffsetWidth = () => {
           if (drawers) {
-            return activeDrawerId ? drawerSize : 0;
+            return activeDrawersIds.length > 0 ? activeDrawersWidth : 0;
           }
           return isToolsOpen ? toolsWidth : 0;
         };
@@ -466,6 +475,8 @@ export const AppLayoutInternalsProvider = React.forwardRef(
         mainOffsetLeft,
         minContentWidth,
         toolsWidth,
+        activeDrawersIds,
+        activeDrawersWidth,
       ]
     );
 
