@@ -4,9 +4,10 @@ import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react
 
 import { ButtonProps } from '../button/interfaces.js';
 import { ClickDetail, fireCancelableEvent, NonCancelableEventHandler } from '../internal/events';
-import IconButtonItem from './icon-button-item.js';
-import { ButtonGroupProps } from './interfaces.js';
-import MenuDropdownItem from './menu-dropdown-item.js';
+import { nodeBelongs } from '../internal/utils/node-belongs';
+import IconButtonItem from './icon-button-item';
+import { ButtonGroupProps } from './interfaces';
+import MenuDropdownItem from './menu-dropdown-item';
 
 import styles from './styles.css.js';
 
@@ -95,7 +96,14 @@ const ItemElement = forwardRef(
         ref={containerRef}
         onPointerEnter={() => onShowTooltipSoft(true)}
         onPointerLeave={() => onShowTooltipSoft(false)}
-        onFocus={() => onShowTooltipHard(true)}
+        onFocus={event => {
+          // Showing no tooltip when the focus comes from inside the container.
+          // This is needed to prevent the tooltip after a menu closes with item selection or Escape.
+          if (event && event.relatedTarget && nodeBelongs(containerRef.current, event.relatedTarget)) {
+            return;
+          }
+          onShowTooltipHard(true);
+        }}
         onBlur={() => onShowTooltipHard(false)}
       >
         {item.type === 'icon-button' && (
