@@ -178,6 +178,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       placement,
       splitPanelOpen,
       splitPanelPosition: splitPanelPreferences?.position,
+      isMobile,
     });
 
     const { registered, toolbarProps } = useMultiAppLayout({
@@ -303,8 +304,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
           toolsOpen={!!activeDrawer}
           toolsWidth={activeDrawerSize}
           sideSplitPanel={
-            splitPanelPosition === 'side' &&
-            splitPanel && (
+            splitPanelPosition === 'side' && (
               <AppLayoutSplitPanelSide
                 appLayoutInternals={appLayoutInternals}
                 splitPanelInternals={splitPanelInternals}

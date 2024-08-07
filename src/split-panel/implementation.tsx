@@ -10,7 +10,6 @@ import { usePointerEvents } from '../app-layout/utils/use-pointer-events';
 import { InternalButton } from '../button/internal';
 import { getBaseProps } from '../internal/base-component';
 import PanelResizeHandle from '../internal/components/panel-resize-handle';
-import { Transition } from '../internal/components/transition';
 import { useSplitPanelContext } from '../internal/context/split-panel-context';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
@@ -67,6 +66,7 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
       panelRef: splitPanelRefObject,
       handleRef: refs.slider,
       onResize,
+      hasTransitions: true,
     };
     const onSliderPointerDown = usePointerEvents(sizeControlProps);
     const onKeyDown = useKeyboardEvents(sizeControlProps);
@@ -185,77 +185,71 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
      * is still needed for the early return to prevent execution
      * of the following code.
      */
-    if (isRefresh && !isOpen && position === 'side') {
+    if (isRefresh && !isAppLayoutToolbarEnabled() && !isOpen && position === 'side') {
       return <></>;
     }
 
     return (
-      <Transition in={isOpen ?? false}>
-        {(state, transitioningElementRef) => (
-          <>
-            {position === 'side' && (
-              <SplitPanelContentSide
-                style={contentStyle}
-                resizeHandle={resizeHandle}
-                baseProps={baseProps}
-                isOpen={isOpen}
-                splitPanelRef={mergedRef}
-                cappedSize={size}
-                onToggle={onToggle}
-                openButtonAriaLabel={openButtonAriaLabel}
-                toggleRef={refs.toggle}
-                header={wrappedHeader}
-                panelHeaderId={panelHeaderId}
-              >
-                {children}
-              </SplitPanelContentSide>
-            )}
-
-            {position === 'bottom' && (
-              <SplitPanelContentBottom
-                style={contentStyle}
-                resizeHandle={resizeHandle}
-                baseProps={baseProps}
-                isOpen={isOpen}
-                splitPanelRef={mergedRef}
-                cappedSize={size}
-                onToggle={onToggle}
-                header={wrappedHeader}
-                panelHeaderId={panelHeaderId}
-                state={state}
-                transitioningElementRef={transitioningElementRef}
-                appLayoutMaxWidth={appLayoutMaxWidth}
-              >
-                {children}
-              </SplitPanelContentBottom>
-            )}
-            {isPreferencesOpen && (
-              <PreferencesModal
-                visible={true}
-                preferences={{ position }}
-                disabledSidePosition={position === 'bottom' && isForcedPosition}
-                isRefresh={isRefresh}
-                i18nStrings={{
-                  header: i18nStrings.preferencesTitle,
-                  confirm: i18nStrings.preferencesConfirm,
-                  cancel: i18nStrings.preferencesCancel,
-                  positionLabel: i18nStrings.preferencesPositionLabel,
-                  positionDescription: i18nStrings.preferencesPositionDescription,
-                  positionBottom: i18nStrings.preferencesPositionBottom,
-                  positionSide: i18nStrings.preferencesPositionSide,
-                }}
-                onConfirm={preferences => {
-                  onPreferencesChange({ ...preferences });
-                  setPreferencesOpen(false);
-                }}
-                onDismiss={() => {
-                  setPreferencesOpen(false);
-                }}
-              />
-            )}
-          </>
+      <>
+        {position === 'side' && (
+          <SplitPanelContentSide
+            style={contentStyle}
+            resizeHandle={resizeHandle}
+            baseProps={baseProps}
+            isOpen={isOpen}
+            splitPanelRef={mergedRef}
+            cappedSize={size}
+            onToggle={onToggle}
+            openButtonAriaLabel={openButtonAriaLabel}
+            toggleRef={refs.toggle}
+            header={wrappedHeader}
+            panelHeaderId={panelHeaderId}
+          >
+            {children}
+          </SplitPanelContentSide>
         )}
-      </Transition>
+
+        {position === 'bottom' && (
+          <SplitPanelContentBottom
+            style={contentStyle}
+            resizeHandle={resizeHandle}
+            baseProps={baseProps}
+            isOpen={isOpen}
+            splitPanelRef={mergedRef}
+            cappedSize={size}
+            onToggle={onToggle}
+            header={wrappedHeader}
+            panelHeaderId={panelHeaderId}
+            appLayoutMaxWidth={appLayoutMaxWidth}
+          >
+            {children}
+          </SplitPanelContentBottom>
+        )}
+        {isPreferencesOpen && (
+          <PreferencesModal
+            visible={true}
+            preferences={{ position }}
+            disabledSidePosition={position === 'bottom' && isForcedPosition}
+            isRefresh={isRefresh}
+            i18nStrings={{
+              header: i18nStrings.preferencesTitle,
+              confirm: i18nStrings.preferencesConfirm,
+              cancel: i18nStrings.preferencesCancel,
+              positionLabel: i18nStrings.preferencesPositionLabel,
+              positionDescription: i18nStrings.preferencesPositionDescription,
+              positionBottom: i18nStrings.preferencesPositionBottom,
+              positionSide: i18nStrings.preferencesPositionSide,
+            }}
+            onConfirm={preferences => {
+              onPreferencesChange({ ...preferences });
+              setPreferencesOpen(false);
+            }}
+            onDismiss={() => {
+              setPreferencesOpen(false);
+            }}
+          />
+        )}
+      </>
     );
   }
 );
