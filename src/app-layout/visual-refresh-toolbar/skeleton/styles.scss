@@ -74,16 +74,17 @@
 .navigation,
 .tools {
   grid-row: 1 / -1;
-  grid-column: 1/ -1;
+  grid-column: 1 / -1;
   background: awsui.$color-background-container-content;
   z-index: 850;
+  opacity: 1;
 }
 
 .navigation {
   @include desktop-only {
     grid-area: navigation;
     inline-size: var(#{custom-props.$navigationWidth});
-    border-inline-end: 1px solid awsui.$color-border-divider-panel-side;
+    border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
   }
 }
 
@@ -91,14 +92,15 @@
   @include desktop-only {
     grid-area: tools;
     inline-size: var(#{custom-props.$toolsWidth});
-    border-inline-start: 1px solid awsui.$color-border-divider-panel-side;
+    border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
   }
 }
 
 .split-panel-side {
   @include desktop-only {
     grid-area: sideSplitPanel;
-    border-inline-start: 1px solid awsui.$color-border-divider-panel-side;
+    border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+    opacity: 1;
   }
 }
 
@@ -114,13 +116,19 @@
 }
 
 .panel-hidden {
-  display: none;
+  border-block: none;
+  border-inline: none;
+  opacity: 0;
+  z-index: 0;
+  &.navigation {
+    inline-size: 0px;
+  }
 }
 
 .toolbar-container {
   grid-area: toolbar;
   block-size: 48px;
-  border-block-end: 1px solid awsui.$color-border-divider-panel-bottom;
+  border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
 }
 
 .notifications-container {

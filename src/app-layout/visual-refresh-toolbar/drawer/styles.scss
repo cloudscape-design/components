@@ -4,6 +4,7 @@
 */
 @use '../../../internal/styles/tokens' as awsui;
 @use '../../../internal/styles' as styles;
+@use '../../../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '../../constants.scss' as constants;
 
 .drawer {
@@ -37,9 +38,6 @@
     > .drawer-content {
       grid-column: 1 / span 4;
       grid-row: 1 / span 2;
-      &.drawer-content-hidden {
-        display: none;
-      }
     }
   }
 
