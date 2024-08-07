@@ -10,6 +10,7 @@ import { useSplitPanelContext } from '../internal/context/split-panel-context';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { SplitPanelContentProps } from './interfaces';
 
+import sharedStyles from '../app-layout/styles.css.js';
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
@@ -38,13 +39,21 @@ export function SplitPanelContentSide({
   return (
     <div
       {...baseProps}
-      className={clsx(baseProps.className, styles.drawer, styles['position-side'], testUtilStyles.root, {
-        [testUtilStyles['open-position-side']]: isOpen,
-        [styles['drawer-closed']]: !isOpen,
-        [styles['with-toolbar']]: isToolbar,
-      })}
+      className={clsx(
+        baseProps.className,
+        styles.drawer,
+        styles['position-side'],
+        testUtilStyles.root,
+        sharedStyles['with-motion'],
+        {
+          [testUtilStyles['open-position-side']]: isOpen,
+          [styles['drawer-closed']]: !isOpen,
+          [styles['with-toolbar']]: isToolbar,
+          [styles.refresh]: isRefresh,
+        }
+      )}
       style={{
-        width: isOpen && isRefresh ? cappedSize : undefined,
+        width: isOpen ? cappedSize : '0px',
         maxWidth: isRefresh ? '100%' : undefined,
         ...style,
       }}
@@ -73,7 +82,11 @@ export function SplitPanelContentSide({
             ref={isRefresh ? null : toggleRef}
           />
         )}
-        <div className={clsx(styles['content-side'], isToolbar && styles['with-toolbar'])} aria-hidden={!isOpen}>
+        <div
+          className={clsx(styles['content-side'], isToolbar && styles['with-toolbar'])}
+          aria-hidden={!isOpen}
+          style={{ width: isToolbar ? cappedSize : '0px' }} // to prevent text wrapping upon entering
+        >
           <div className={styles['pane-header-wrapper-side']}>{header}</div>
           <div className={styles['pane-content-wrapper-side']}>{children}</div>
         </div>
