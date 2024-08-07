@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
@@ -62,6 +62,7 @@ export default function Drawers() {
 
 function ActiveDrawer({ activeDrawerId }: { activeDrawerId: string }) {
   const {
+    activeDrawersIds,
     ariaLabels,
     drawers,
     drawersRefs,
@@ -83,13 +84,25 @@ function ActiveDrawer({ activeDrawerId }: { activeDrawerId: string }) {
 
   const activeDrawer = drawers?.find(item => item.id === activeDrawerId);
 
+  const remainingActiveDrawersWidth = useMemo(() => {
+    const remainingActiveDrawersIds = (activeDrawersIds ?? []).filter(id => id !== activeDrawerId);
+    let result = 0;
+
+    remainingActiveDrawersIds.forEach(drawerId => {
+      const activeDrawer = drawers?.find(item => item.id === drawerId);
+      result += drawerSizes[drawerId ?? ''] ?? activeDrawer?.defaultSize ?? toolsWidth;
+    });
+
+    return result;
+  }, [activeDrawerId, activeDrawersIds, drawerSizes, drawers, toolsWidth]);
+
   const { resizeHandle, drawerSize } = useResize(activeDrawersRefs[activeDrawerId]!, {
     onActiveDrawerResize,
     activeDrawerSize: drawerSizes[activeDrawerId ?? ''] ?? activeDrawer?.defaultSize ?? toolsWidth,
     activeDrawer,
     drawersRefs,
     isToolsOpen,
-    drawersMaxWidth,
+    drawersMaxWidth: drawersMaxWidth - remainingActiveDrawersWidth,
     drawersMinWidth,
   });
 
@@ -103,7 +116,7 @@ function ActiveDrawer({ activeDrawerId }: { activeDrawerId: string }) {
   const isToolsDrawer = activeDrawerId === TOOLS_DRAWER_ID;
   const toolsContent = drawers?.find(drawer => drawer.id === TOOLS_DRAWER_ID)?.content;
 
-  const size = getLimitedValue(drawersMinWidth, drawerSize, drawersMaxWidth);
+  const size = getLimitedValue(drawersMinWidth, drawerSize, drawersMaxWidth - remainingActiveDrawersWidth);
 
   return (
     <aside
