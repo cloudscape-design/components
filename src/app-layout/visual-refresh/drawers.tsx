@@ -184,7 +184,7 @@ function ActiveDrawer({ activeDrawerId }: { activeDrawerId: string }) {
  */
 function DesktopTriggers() {
   const {
-    activeDrawerId,
+    activeDrawersIds,
     drawers,
     drawersAriaLabel,
     drawersOverflowAriaLabel,
@@ -208,6 +208,8 @@ function DesktopTriggers() {
 
   const hasMultipleTriggers = drawersTriggerCount > 1;
   const hasSplitPanel = splitPanel && splitPanelDisplayed && splitPanelPosition === 'side';
+  // TODO: is that is right way to determine an active drawer?
+  const activeDrawerId = activeDrawersIds[activeDrawersIds.length - 1];
 
   const previousActiveDrawerId = useRef(activeDrawerId);
   const [containerHeight, triggersContainerRef] = useContainerQuery(rect => rect.contentBoxHeight);
@@ -264,8 +266,8 @@ function DesktopTriggers() {
           return (
             <TriggerButton
               ariaLabel={item.ariaLabels?.triggerButton}
-              ariaExpanded={item.id === activeDrawerId}
-              ariaControls={activeDrawerId === item.id ? item.id : undefined}
+              ariaExpanded={activeDrawersIds?.includes(item.id)}
+              ariaControls={activeDrawersIds?.includes(item.id) ? item.id : undefined}
               className={clsx(
                 styles['drawers-trigger'],
                 testutilStyles['drawers-trigger'],
@@ -276,7 +278,7 @@ function DesktopTriggers() {
               key={item.id}
               onClick={() => handleDrawersClick(item.id)}
               ref={item.id === previousActiveDrawerId.current ? drawersRefs.toggle : undefined}
-              selected={item.id === activeDrawerId}
+              selected={activeDrawersIds?.includes(item.id)}
               badge={item.badge}
               testId={`awsui-app-layout-trigger-${item.id}`}
               highContrastHeader={headerVariant === 'high-contrast'}
@@ -331,7 +333,7 @@ function DesktopTriggers() {
  */
 export function MobileTriggers() {
   const {
-    activeDrawerId,
+    activeDrawersIds,
     drawers,
     drawersAriaLabel,
     drawersOverflowAriaLabel,
@@ -340,6 +342,9 @@ export function MobileTriggers() {
     handleDrawersClick,
     hasDrawerViewportOverlay,
   } = useAppLayoutInternals();
+
+  // TODO: is that is right way to determine an active drawer?
+  const activeDrawerId = activeDrawersIds[activeDrawersIds.length - 1];
 
   const previousActiveDrawerId = useRef(activeDrawerId);
 

@@ -35,7 +35,7 @@ import styles from './styles.css.js';
 
 interface AppLayoutInternals extends AppLayoutPropsWithDefaults {
   activeDrawerId: string | null;
-  activeDrawersIds: Array<string> | null;
+  activeDrawersIds: Array<string>;
   drawers: Array<AppLayoutProps.Drawer> | undefined;
   drawersAriaLabel: string | undefined;
   drawersOverflowAriaLabel: string | undefined;
