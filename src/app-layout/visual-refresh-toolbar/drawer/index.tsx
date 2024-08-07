@@ -70,6 +70,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
       style={{
         blockSize: `calc(100vh - ${placement.insetBlockStart}px - ${placement.insetBlockEnd}px)`,
         insetBlockStart: placement.insetBlockStart,
+        width: isMobile ? '100%' : `${activeDrawerSize}px`,
       }}
     >
       {!isMobile && activeDrawer?.resizable && (
@@ -100,17 +101,9 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
             variant="icon"
           />
         </div>
-        {toolsContent && (
-          <div
-            className={clsx(
-              styles['drawer-content'],
-              activeDrawerId !== TOOLS_DRAWER_ID && styles['drawer-content-hidden']
-            )}
-          >
-            {toolsContent}
-          </div>
-        )}
-        {activeDrawerId !== TOOLS_DRAWER_ID && <div className={styles['drawer-content']}>{activeDrawer?.content}</div>}
+        <div className={styles['drawer-content']}>
+          {activeDrawerId === TOOLS_DRAWER_ID ? toolsContent : activeDrawer?.content}
+        </div>
       </div>
     </aside>
   );

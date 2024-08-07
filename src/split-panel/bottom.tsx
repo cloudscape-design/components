@@ -6,27 +6,22 @@ import clsx from 'clsx';
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
 import { isAppLayoutToolbarEnabled } from '../app-layout/utils/feature-flags';
-import { TransitionStatus } from '../internal/components/transition';
 import { useSplitPanelContext } from '../internal/context/split-panel-context';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { SplitPanelContentProps } from './interfaces';
 
+import sharedStyles from '../app-layout/styles.css.js';
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
 interface SplitPanelContentBottomProps extends SplitPanelContentProps {
-  state: TransitionStatus;
-  transitioningElementRef: React.Ref<any>;
   appLayoutMaxWidth: React.CSSProperties | undefined;
 }
 
 export function SplitPanelContentBottom({
   baseProps,
   isOpen,
-  state,
-  transitioningElementRef,
   splitPanelRef,
   cappedSize,
   header,
@@ -39,7 +34,6 @@ export function SplitPanelContentBottom({
   const isRefresh = useVisualRefresh();
   const { bottomOffset, leftOffset, rightOffset, disableContentPaddings, contentWrapperPaddings, reportHeaderHeight } =
     useSplitPanelContext();
-  const transitionContentBottomRef = useMergeRefs(splitPanelRef || null, transitioningElementRef);
   const isMobile = useMobile();
 
   const headerRef = useRef<HTMLDivElement>(null);
@@ -59,23 +53,29 @@ export function SplitPanelContentBottom({
   return (
     <div
       {...baseProps}
-      className={clsx(baseProps.className, styles.drawer, styles['position-bottom'], testUtilStyles.root, {
-        [testUtilStyles['open-position-bottom']]: isOpen,
-        [styles['drawer-closed']]: !isOpen,
-        [styles['drawer-mobile']]: isMobile,
-        [styles['drawer-disable-content-paddings']]: disableContentPaddings,
-        [styles.animating]: isRefresh && (state === 'entering' || state === 'exiting'),
-        [styles.refresh]: isRefresh,
-        [styles['with-toolbar']]: isAppLayoutToolbarEnabled(),
-      })}
+      className={clsx(
+        baseProps.className,
+        styles.drawer,
+        styles['position-bottom'],
+        testUtilStyles.root,
+        sharedStyles['with-motion'],
+        {
+          [testUtilStyles['open-position-bottom']]: isOpen,
+          [styles['drawer-closed']]: !isOpen,
+          [styles['drawer-mobile']]: isMobile,
+          [styles['drawer-disable-content-paddings']]: disableContentPaddings,
+          [styles.refresh]: isRefresh,
+          [styles['with-toolbar']]: isAppLayoutToolbarEnabled(),
+        }
+      )}
       onClick={() => !isOpen && onToggle()}
       style={{
         insetBlockEnd: bottomOffset,
         insetInlineStart: leftOffset,
         insetInlineEnd: rightOffset,
-        blockSize: isOpen ? cappedSize : undefined,
+        blockSize: isOpen ? cappedSize : isAppLayoutToolbarEnabled() ? '0px' : undefined,
       }}
-      ref={transitionContentBottomRef}
+      ref={splitPanelRef}
     >
       {isOpen && <div className={styles['slider-wrapper-bottom']}>{resizeHandle}</div>}
       <div className={styles['drawer-content-bottom']} aria-labelledby={panelHeaderId} role="region">
