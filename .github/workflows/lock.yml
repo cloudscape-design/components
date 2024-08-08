@@ -17,6 +17,11 @@ jobs:
   lock-discussion:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout the PR branch
+        uses: actions/checkout@v4
+        with:
+          path: 'components'
+
       - name: Setup lock-discussion project
         run: |
           echo "the PWD is : ${PWD}"
