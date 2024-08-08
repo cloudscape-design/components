@@ -12,6 +12,7 @@ on:
 
 permissions:
   discussions: write
+  contents: read
 
 jobs:
   lock-discussion:
