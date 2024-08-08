@@ -9,8 +9,8 @@ export function findUpUntil(node: HTMLElement, callback: (element: HTMLElement) 
     // If a component is used within an svg (i.e. as foreignObject), then it will
     // have some ancestor nodes that are SVGElement. We want to skip those,
     // as they have very different properties to HTMLElements.
-    while (current && !(current instanceof HTMLElement)) {
-      current = (current as Element).parentElement;
+    while (isHTMLElement(current)) {
+      current = current.parentElement;
     }
   }
   return current;
@@ -61,4 +61,37 @@ export function parseCssVariable(value: string) {
 
   const match = expr.body.match(cssVariableExpression);
   return match ? match[1] : value;
+}
+
+// We avoid instanceof Node/HTMLElement/SVGElement checks as the interfaces are tied to the window they are created in.
+// If an element was moved to an iframe after it was created, then element instanceof HTMLElement
+// will be false since the interface has a different window.
+
+export function isNode(target: any): target is Node {
+  return (
+    target !== null &&
+    typeof target === 'object' &&
+    typeof target.nodeType === 'number' &&
+    typeof target.nodeName === 'string' &&
+    typeof target.parentNode === 'object'
+  );
+}
+
+export function isHTMLElement(target: any): target is HTMLElement {
+  return (
+    target !== null &&
+    typeof target === 'object' &&
+    target.nodeType === Node.ELEMENT_NODE &&
+    typeof target.style === 'object' &&
+    typeof target.ownerDocument === 'object'
+  );
+}
+
+export function isSVGElement(target: any): target is SVGElement {
+  return (
+    target !== null &&
+    typeof target === 'object' &&
+    target.nodeType === Node.ELEMENT_NODE &&
+    typeof target.ownerSVGElement === 'object'
+  );
 }
