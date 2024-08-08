@@ -63,9 +63,8 @@ export function parseCssVariable(value: string) {
   return match ? match[1] : value;
 }
 
-// We avoid instanceof Node/HTMLElement/SVGElement checks as the interfaces are tied to the window they are created in.
-// If an element was moved to an iframe after it was created, then element instanceof HTMLElement
-// will be false since the interface has a different window.
+// The instanceof Node/HTMLElement/SVGElement checks can fail if the target element
+// belongs to a different window than the respective type.
 
 export function isNode(target: any): target is Node {
   return (
