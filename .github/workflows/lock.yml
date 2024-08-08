@@ -32,4 +32,6 @@ jobs:
       - name: Run lock discussion
         run: |
           cd lock-discussion
-          npm run lock --TOKEN=${{ secrets.GITHUB_TOKEN }}
+          npm run lock
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
