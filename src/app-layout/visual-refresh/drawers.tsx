@@ -65,14 +65,13 @@ function ActiveDrawer({ activeDrawerId }: { activeDrawerId: string }) {
     activeDrawersIds,
     ariaLabels,
     drawers,
-    drawersRefs,
     handleDrawersClick,
     handleToolsClick,
     hasDrawerViewportOverlay,
     isMobile,
     navigationOpen,
     navigationHide,
-    loseDrawersFocus,
+    drawersFocusControl,
     drawersMinWidth,
     drawersMaxWidth,
     onActiveDrawerResize,
@@ -95,6 +94,8 @@ function ActiveDrawer({ activeDrawerId }: { activeDrawerId: string }) {
 
     return result;
   }, [activeDrawerId, activeDrawersIds, drawerSizes, drawers, toolsWidth]);
+
+  const drawersRefs = drawersFocusControl[activeDrawerId].refs;
 
   const { resizeHandle, drawerSize } = useResize(activeDrawersRefs[activeDrawerId]!, {
     onActiveDrawerResize,
@@ -135,7 +136,7 @@ function ActiveDrawer({ activeDrawerId }: { activeDrawerId: string }) {
       ref={activeDrawersRefs[activeDrawerId]}
       onBlur={e => {
         if (!e.relatedTarget || !e.currentTarget.contains(e.relatedTarget)) {
-          loseDrawersFocus();
+          drawersFocusControl[activeDrawerId].loseFocus();
         }
       }}
     >
@@ -189,7 +190,7 @@ function DesktopTriggers() {
     drawersAriaLabel,
     drawersOverflowAriaLabel,
     drawersOverflowWithBadgeAriaLabel,
-    drawersRefs,
+    drawersFocusControl,
     drawersTriggerCount,
     handleDrawersClick,
     handleSplitPanelClick,
@@ -210,6 +211,7 @@ function DesktopTriggers() {
   const hasSplitPanel = splitPanel && splitPanelDisplayed && splitPanelPosition === 'side';
   // TODO: is that is right way to determine an active drawer?
   const activeDrawerId = activeDrawersIds[activeDrawersIds.length - 1];
+  const drawersRefs = drawersFocusControl[activeDrawerId]?.refs;
 
   const previousActiveDrawerId = useRef(activeDrawerId);
   const [containerHeight, triggersContainerRef] = useContainerQuery(rect => rect.contentBoxHeight);
@@ -277,7 +279,7 @@ function DesktopTriggers() {
               iconSvg={item.trigger.iconSvg}
               key={item.id}
               onClick={() => handleDrawersClick(item.id)}
-              ref={item.id === previousActiveDrawerId.current ? drawersRefs.toggle : undefined}
+              ref={item.id === previousActiveDrawerId.current ? drawersRefs?.toggle : undefined}
               selected={activeDrawersIds?.includes(item.id)}
               badge={item.badge}
               testId={`awsui-app-layout-trigger-${item.id}`}
@@ -338,13 +340,14 @@ export function MobileTriggers() {
     drawersAriaLabel,
     drawersOverflowAriaLabel,
     drawersOverflowWithBadgeAriaLabel,
-    drawersRefs,
+    drawersFocusControl,
     handleDrawersClick,
     hasDrawerViewportOverlay,
   } = useAppLayoutInternals();
 
   // TODO: is that is right way to determine an active drawer?
   const activeDrawerId = activeDrawersIds[activeDrawersIds.length - 1];
+  const drawersRefs = drawersFocusControl[activeDrawerId].refs;
 
   const previousActiveDrawerId = useRef(activeDrawerId);
 
