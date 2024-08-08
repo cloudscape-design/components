@@ -160,7 +160,7 @@ describe.each([true, false])('StickyHeader=%s', sticky => {
     return setupTest(async page => {
       if (sticky) {
         await page.toggleStickyHeader();
-        await page.windowScrollTo({ top: 400 });
+        await page.windowScrollTo({ top: 421 });
         await expect(page.getHeaderTopOffset()).resolves.toEqual(0);
       }
       await testFn(page);
