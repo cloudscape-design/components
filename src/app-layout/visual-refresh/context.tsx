@@ -413,7 +413,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     const activeDrawersWidth = useMemo(() => {
       let result = 0;
 
-      (activeDrawersIds ?? []).forEach(drawerId => {
+      activeDrawersIds.forEach(drawerId => {
         const activeDrawer = drawers?.find(item => item.id === drawerId);
         result += drawerSizes[drawerId ?? ''] ?? activeDrawer?.defaultSize ?? toolsWidth;
       });
