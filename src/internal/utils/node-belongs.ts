@@ -13,7 +13,7 @@ import { findUpUntil } from './dom';
  * @param target Node that is checked to be a descendant of the container
  */
 export function nodeBelongs(container: Node | null, target: Node | EventTarget | null): boolean {
-  if (!(target instanceof Node)) {
+  if (!target || !('nodeType' in target)) {
     return false;
   }
   const portal = findUpUntil(
