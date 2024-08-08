@@ -21,4 +21,8 @@ describe('treatAsNumber', () => {
     expect(treatAsNumber('nothing')).toBe(false);
     expect(treatAsNumber('')).toBe(false);
   });
+  test('NaN', () => {
+    expect(treatAsNumber('NaN')).toBe(false);
+    expect(treatAsNumber(NaN)).toBe(false);
+  });
 });

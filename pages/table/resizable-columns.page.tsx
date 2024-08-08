@@ -31,12 +31,17 @@ interface Item {
   state: string;
 }
 
-const columnsConfig: TableProps.ColumnDefinition<Item>[] = [
+interface ColumnDefinition extends TableProps.ColumnDefinition<Item> {
+  percentageWidth?: string;
+}
+
+const columnsConfig: ColumnDefinition[] = [
   {
     id: 'name',
     header: 'Name',
     cell: item => <Link href={`#${item.id}`}>{item.text}</Link>,
     width: 200,
+    percentageWidth: '20%',
   },
   {
     id: 'region',
@@ -50,6 +55,7 @@ const columnsConfig: TableProps.ColumnDefinition<Item>[] = [
     id: 'description',
     header: 'Description',
     minWidth: 100,
+    percentageWidth: '30%',
     cell: item => item.description,
   },
   {
@@ -102,6 +108,7 @@ type PageContext = React.Context<
     withColumnIds?: boolean;
     withSelection?: boolean;
     enableKeyboardNavigation?: boolean;
+    percentageWidths?: boolean;
   }>
 >;
 
@@ -115,6 +122,7 @@ export default function App() {
     withColumnIds = true,
     withSelection = false,
     enableKeyboardNavigation = false,
+    percentageWidths = false,
   } = urlParams;
 
   const [renderKey, setRenderKey] = useState(0);
@@ -186,6 +194,12 @@ export default function App() {
             >
               Keyboard navigation
             </Checkbox>
+            <Checkbox
+              checked={percentageWidths}
+              onChange={event => setUrlParams({ percentageWidths: event.detail.checked })}
+            >
+              Percentage widths
+            </Checkbox>
           </div>
           <div>
             {columnsConfig.map(column => (
@@ -215,7 +229,9 @@ export default function App() {
           key={renderKey}
           header={<Header>Simple table</Header>}
           stickyHeader={stickyHeader}
-          columnDefinitions={columns.map(col => (withColumnIds ? col : { ...col, id: undefined }))}
+          columnDefinitions={columns
+            .map(col => (withColumnIds ? col : { ...col, id: undefined }))
+            .map(col => ({ ...col, width: percentageWidths ? col.percentageWidth ?? col.width : col.width }))}
           resizableColumns={resizableColumns}
           columnDisplay={withColumnIds ? columnDisplay : undefined}
           selectionType={withSelection ? 'single' : undefined}
