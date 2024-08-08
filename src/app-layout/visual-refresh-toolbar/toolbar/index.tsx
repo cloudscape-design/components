@@ -48,6 +48,30 @@ interface AppLayoutToolbarImplementationProps {
   toolbarProps: ToolbarProps;
 }
 
+// support compatibility with changes before this commit: cf0f2b0755af1a28ac7c3c9476418a7ea807d0fd
+function convertLegacyProps(toolbarProps: ToolbarProps, legacyProps: AppLayoutInternals): ToolbarProps {
+  return {
+    ariaLabels: toolbarProps.ariaLabels ?? legacyProps.ariaLabels,
+    activeDrawerId: toolbarProps.activeDrawerId ?? legacyProps.activeDrawer?.id,
+    drawers: toolbarProps.drawers ?? legacyProps.drawers,
+    drawersFocusRef: toolbarProps.drawersFocusRef ?? legacyProps.drawersFocusControl?.refs.toggle,
+    onActiveDrawerChange: toolbarProps.onActiveDrawerChange ?? legacyProps.onActiveDrawerChange,
+    hasNavigation: toolbarProps.hasNavigation ?? !!legacyProps.navigation,
+    navigationOpen: toolbarProps.navigationOpen ?? legacyProps.navigationOpen,
+    navigationFocusRef: toolbarProps.navigationFocusRef ?? legacyProps.navigationFocusControl?.refs.toggle,
+    onNavigationToggle: toolbarProps.onNavigationToggle ?? legacyProps.onNavigationToggle,
+    hasSplitPanel: toolbarProps.hasSplitPanel ?? true,
+    splitPanelFocusRef: legacyProps.splitPanelFocusControl?.refs.toggle,
+    splitPanelToggleProps: toolbarProps.splitPanelToggleProps ?? {
+      ...legacyProps.splitPanelToggleConfig,
+      active: legacyProps.splitPanelOpen,
+      controlId: legacyProps.splitPanelControlId,
+      position: legacyProps.splitPanelPosition,
+    },
+    onSplitPanelToggle: toolbarProps.onSplitPanelToggle ?? legacyProps.onSplitPanelToggle,
+  };
+}
+
 export function AppLayoutToolbarImplementation({
   appLayoutInternals,
   // the value could be undefined if this component is loaded as a widget by a different app layout version
@@ -77,7 +101,7 @@ export function AppLayoutToolbarImplementation({
     splitPanelFocusRef,
     splitPanelToggleProps,
     onSplitPanelToggle,
-  } = toolbarProps;
+  } = convertLegacyProps(toolbarProps, appLayoutInternals);
   // TODO: expose configuration property
   const pinnedToolbar = true;
   const ref = useRef<HTMLElement>(null);
