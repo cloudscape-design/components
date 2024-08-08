@@ -123,7 +123,7 @@ const AppLayout = React.forwardRef(
         ? (event: NonCancelableCustomEvent<AppLayoutProps.DrawersChangeDetail>) => {
             const activeDrawersIds = event?.detail?.activeDrawersIds ?? [];
             fireNonCancelableEvent(controlledOnDrawerChange, {
-              activeDrawerId: activeDrawersIds ? activeDrawersIds[0] : null,
+              activeDrawerId: activeDrawersIds?.length ? activeDrawersIds[0] : null,
             });
           }
         : undefined,
