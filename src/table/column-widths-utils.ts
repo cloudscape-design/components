@@ -41,5 +41,13 @@ function checkProperty(column: TableProps.ColumnDefinition<any>, name: 'width' |
   }
 }
 
-export const treatAsNumber = (value: number | string | undefined) =>
-  typeof value === 'number' || (value && parseFloat(value).toString() === value) || false;
+export function treatAsNumber(value: number | string | undefined) {
+  if (typeof value === 'number') {
+    return !isNaN(value);
+  }
+  if (value) {
+    const parsed = parseFloat(value);
+    return !isNaN(parsed) && parsed.toString() === value;
+  }
+  return false;
+}
