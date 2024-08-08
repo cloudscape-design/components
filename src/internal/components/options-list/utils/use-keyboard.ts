@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { useCallback } from 'react';
+import { useCallback, useContext } from 'react';
 
+import { SingleTabStopNavigationContext } from '../../../context/single-tab-stop-navigation-context';
 import { BaseKeyDetail, CancelableEventHandler } from '../../../events';
 import { KeyCode } from '../../../keycode';
 
@@ -70,14 +71,17 @@ interface UseTriggerKeyboard {
 }
 
 export const useTriggerKeyboard: UseTriggerKeyboard = ({ openDropdown, goHome }) => {
+  const singleTabStopNavigation = useContext(SingleTabStopNavigationContext);
   return useCallback(
     (e: CustomEvent<BaseKeyDetail>) => {
       switch (e.detail.keyCode) {
         case KeyCode.up:
         case KeyCode.down:
-          e.preventDefault();
-          goHome();
-          openDropdown();
+          if (!singleTabStopNavigation.navigationActive) {
+            e.preventDefault();
+            goHome();
+            openDropdown();
+          }
           break;
         case KeyCode.space:
         case KeyCode.enter:
@@ -86,6 +90,6 @@ export const useTriggerKeyboard: UseTriggerKeyboard = ({ openDropdown, goHome })
           break;
       }
     },
-    [openDropdown, goHome]
+    [openDropdown, goHome, singleTabStopNavigation.navigationActive]
   );
 };
