@@ -32,6 +32,7 @@ async function lockDiscussions(ids) {
 }
 
 async function main () {
+  console.log("TOKEN: ", process.env.TOKEN);
   const unlockedNodes = []
   const oneDay = 1000 * 60 * 60 * 24; // one day in ms
   const today = new Date();
