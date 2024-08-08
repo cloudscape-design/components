@@ -130,10 +130,15 @@ interface PageConfig {
   withColumnIds?: boolean;
   withSelection?: boolean;
   enableKeyboardNavigation?: boolean;
+  percentageWidths?: boolean;
 }
 
-const setupTest = (testFn: (page: TablePage) => Promise<void>, config?: PageConfig) => {
-  return useBrowser({ ...defaultScreen }, async browser => {
+const setupTest = (
+  testFn: (page: TablePage) => Promise<void>,
+  config?: PageConfig,
+  screenSize?: { width?: number; height?: number }
+) => {
+  return useBrowser({ ...defaultScreen, ...screenSize }, async browser => {
     const page = new TablePage(browser);
     const params = new URLSearchParams({
       visualRefresh: 'false',
@@ -142,6 +147,7 @@ const setupTest = (testFn: (page: TablePage) => Promise<void>, config?: PageConf
       withSelection: config?.withSelection !== undefined ? String(config.withSelection) : 'false',
       enableKeyboardNavigation:
         config?.enableKeyboardNavigation !== undefined ? String(config.enableKeyboardNavigation) : 'false',
+      percentageWidths: config?.percentageWidths !== undefined ? String(config.percentageWidths) : 'false',
     }).toString();
     await browser.url(`#/light/table/resizable-columns?${params}`);
     await page.waitForVisible(tableWrapper.findBodyCell(2, 1).toSelector());
@@ -377,37 +383,38 @@ test.each([false, true])(
 describe('percentage column widths', () => {
   test(
     'supports percentage column width',
-    useBrowser({ width: 1200, height: 800 }, async browser => {
-      const page = new TablePage(browser);
-      await browser.url('#/light/table/resizable-columns-percentage');
-      await page.waitForVisible(wrapper.toSelector());
-
-      await expect(page.getColumnWidth(1)).resolves.toBe(338);
-      await expect(page.getColumnWidth(2)).resolves.toBe(120);
-    })
+    setupTest(
+      async page => {
+        await expect(page.getColumnWidth(1)).resolves.toBe(234);
+        await expect(page.getColumnWidth(3)).resolves.toBe(350);
+      },
+      { percentageWidths: true },
+      { width: 1200 }
+    )
   );
-  test(
-    'column widths are fixed on browser resize',
-    useBrowser({ width: 1200, height: 800 }, async browser => {
-      const page = new TablePage(browser);
-      await browser.url('#/light/table/resizable-columns-percentage');
-      await page.waitForVisible(wrapper.toSelector());
 
-      await page.setWindowSize({ width: 1400, height: 800 });
-      await expect(page.getColumnWidth(1)).resolves.toBe(338);
-      await expect(page.getColumnWidth(2)).resolves.toBe(120);
-    })
+  test(
+    'percentage column widths do not change on browser resize',
+    setupTest(
+      async page => {
+        await page.setWindowSize({ ...defaultScreen, width: 1400 });
+        await expect(page.getColumnWidth(1)).resolves.toBe(234);
+        await expect(page.getColumnWidth(3)).resolves.toBe(350);
+      },
+      { percentageWidths: true },
+      { width: 1200 }
+    )
   );
 
   test(
     'column widths are maintained when other columns resize',
-    useBrowser({ width: 1200, height: 800 }, async browser => {
-      const page = new TablePage(browser);
-      await browser.url('#/light/table/resizable-columns-percentage');
-      await page.waitForVisible(wrapper.toSelector());
-
-      await page.resizeColumn(2, 500);
-      await expect(page.getColumnWidth(1)).resolves.toBe(338);
-    })
+    setupTest(
+      async page => {
+        await page.resizeColumn(2, 600);
+        await expect(page.getColumnWidth(1)).resolves.toBe(234);
+      },
+      { percentageWidths: true },
+      { width: 1200 }
+    )
   );
 });
