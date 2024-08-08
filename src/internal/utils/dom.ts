@@ -84,7 +84,8 @@ export function isHTMLElement(target: any): target is HTMLElement {
       typeof target === 'object' &&
       target.nodeType === Node.ELEMENT_NODE &&
       typeof target.style === 'object' &&
-      typeof target.ownerDocument === 'object')
+      typeof target.ownerDocument === 'object' &&
+      !isSVGElement(target))
   );
 }
 
