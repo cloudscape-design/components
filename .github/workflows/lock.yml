@@ -20,6 +20,7 @@ jobs:
       - name: Setup lock-discussion project
         run: |
           echo "the PWD is : ${PWD}"
+          ls
           cp -r components/.github/workflows/lock-discussion lock-discussion
           cd lock-discussion
           npm i --force
