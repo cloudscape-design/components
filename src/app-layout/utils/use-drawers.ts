@@ -8,7 +8,7 @@ import { fireNonCancelableEvent } from '../../internal/events';
 import { useControllable } from '../../internal/hooks/use-controllable';
 import { awsuiPluginsInternal } from '../../internal/plugins/api';
 import { sortByPriority } from '../../internal/plugins/helpers/utils';
-import { AppLayoutProps } from '../interfaces';
+import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
 import { convertRuntimeDrawers, DrawersLayout } from '../runtime-api';
 import { togglesConfig } from '../toggles';
 
@@ -94,6 +94,8 @@ function applyToolsDrawer(toolsProps: ToolsProps, runtimeDrawers: DrawersLayout)
 type UseDrawersProps = Pick<AppLayoutProps, 'drawers' | 'activeDrawerId' | 'onDrawerChange'> & {
   __disableRuntimeDrawers?: boolean;
   __activeDrawersLimit?: number;
+  __activeDrawersIds?: AppLayoutPropsWithDefaults['__activeDrawersIds'];
+  __onDrawersChange?: AppLayoutPropsWithDefaults['__onDrawersChange'];
 };
 
 export function useDrawers(
@@ -103,16 +105,27 @@ export function useDrawers(
     onDrawerChange,
     __disableRuntimeDrawers: disableRuntimeDrawers,
     __activeDrawersLimit: activeDrawersLimit,
+    __activeDrawersIds,
+    __onDrawersChange,
   }: UseDrawersProps,
   ariaLabels: AppLayoutProps['ariaLabels'],
   toolsProps: ToolsProps
 ) {
-  const [activeDrawerId = null, setActiveDrawerId] = useControllable(controlledActiveDrawerId, onDrawerChange, null, {
+  const [activeDrawerId = null] = useControllable(controlledActiveDrawerId, onDrawerChange, null, {
     componentName: 'AppLayout',
     controlledProp: 'activeDrawerId',
     changeHandler: 'onChange',
   });
-  const [activeDrawersIds, setActiveDrawersIds] = useState<Array<string>>([]);
+  const [activeDrawersIds = [], setActiveDrawersIds] = useControllable<Array<string>>(
+    __activeDrawersIds!,
+    __onDrawersChange,
+    [],
+    {
+      componentName: 'AppLayout',
+      controlledProp: 'activeDrawerId',
+      changeHandler: 'onChange',
+    }
+  );
   const [drawerSizes, setDrawerSizes] = useState<Record<string, number>>({});
 
   function onActiveDrawerResize({ id, size }: { id: string; size: number }) {
@@ -125,24 +138,21 @@ export function useDrawers(
       return;
     }
 
+    let newActiveDrawersIds = [];
     if (activeDrawersIds.includes(newDrawerId)) {
-      setActiveDrawersIds(oldIds => oldIds.filter(id => id !== newDrawerId));
+      newActiveDrawersIds = activeDrawersIds.filter(id => id !== newDrawerId);
     } else {
-      setActiveDrawersIds(oldIds => {
-        const newIds = [newDrawerId, ...oldIds];
-        if (newIds.length > activeDrawersLimit!) {
-          newIds.pop();
-        }
-        return newIds;
-      });
+      const temp = [newDrawerId, ...activeDrawersIds];
+      if (temp.length > activeDrawersLimit!) {
+        temp.pop();
+      }
+      newActiveDrawersIds = temp;
     }
 
-    return;
+    setActiveDrawersIds(newActiveDrawersIds);
 
-    // TODO
-    setActiveDrawerId(newDrawerId);
     if (hasOwnDrawers) {
-      fireNonCancelableEvent(onDrawerChange, { activeDrawerId: newDrawerId });
+      fireNonCancelableEvent(__onDrawersChange, { activeDrawersIds: newActiveDrawersIds });
     } else if (!toolsProps.toolsHide) {
       toolsProps.onToolsToggle(newDrawerId === TOOLS_DRAWER_ID);
     }

@@ -6,7 +6,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
-import { NonCancelableCustomEvent } from '../internal/events';
+import { fireNonCancelableEvent, NonCancelableCustomEvent } from '../internal/events';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useControllable } from '../internal/hooks/use-controllable';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
@@ -33,6 +33,8 @@ const AppLayout = React.forwardRef(
       minContentWidth,
       navigationOpen: controlledNavigationOpen,
       onNavigationChange: controlledOnNavigationChange,
+      activeDrawerId: controlledActiveDrawerId,
+      onDrawerChange: controlledOnDrawerChange,
       ...rest
     }: AppLayoutProps,
     ref: React.Ref<AppLayoutProps.Ref>
@@ -99,7 +101,7 @@ const AppLayout = React.forwardRef(
 
     const [rootRef, placement] = useAppLayoutPlacement(headerSelector, footerSelector);
 
-    // This re-builds the props including the default values
+    // This re-builds the props including the default values and internal props
     const props = {
       contentType,
       navigationWidth,
@@ -110,7 +112,21 @@ const AppLayout = React.forwardRef(
       ...rest,
       ariaLabels,
       placement,
-      __activeDrawersLimit: 2,
+      // disable multiple active drawers for controlled app layout (at least until a new public API is introduced)
+      __activeDrawersLimit: controlledOnDrawerChange ? 1 : 2,
+      __activeDrawersIds: controlledActiveDrawerId
+        ? [controlledActiveDrawerId]
+        : controlledActiveDrawerId === undefined
+          ? undefined
+          : [],
+      __onDrawersChange: controlledOnDrawerChange
+        ? (event: NonCancelableCustomEvent<AppLayoutProps.DrawersChangeDetail>) => {
+            const activeDrawersIds = event?.detail?.activeDrawersIds ?? [];
+            fireNonCancelableEvent(controlledOnDrawerChange, {
+              activeDrawerId: activeDrawersIds ? activeDrawersIds[0] : null,
+            });
+          }
+        : undefined,
     };
 
     const baseProps = getBaseProps(rest);

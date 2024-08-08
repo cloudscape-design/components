@@ -335,6 +335,10 @@ export namespace AppLayoutProps {
   export interface DrawerChangeDetail {
     activeDrawerId: string | null;
   }
+
+  export interface DrawersChangeDetail {
+    activeDrawersIds: Array<string> | null;
+  }
 }
 
 export type AppLayoutPropsWithDefaults = SomeRequired<
@@ -349,4 +353,6 @@ export type AppLayoutPropsWithDefaults = SomeRequired<
     inlineSize: number;
   };
   __activeDrawersLimit: number;
+  __activeDrawersIds?: Array<string> | null;
+  __onDrawersChange?: NonCancelableEventHandler<AppLayoutProps.DrawersChangeDetail>;
 };
