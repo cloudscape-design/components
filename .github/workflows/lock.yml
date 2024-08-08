@@ -20,10 +20,11 @@ jobs:
       - name: Setup lock-discussion project
         run: |
           echo "the PWD is : ${PWD}"
-          cd ./.github/workflows/lock-discussion
+          cp -r components/.github/workflows/lock-discussion lock-discussion
+          cd lock-discussion
           npm i --force
 
       - name: Run lock discussion
         run: |
-          cd ./.github/workflows/lock-discussion
+          cd lock-discussion
           npm run lock --TOKEN=${{ secrets.GITHUB_TOKEN }}
