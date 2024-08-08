@@ -19,11 +19,10 @@ jobs:
     steps:
       - name: Setup lock-discussion project
         run: |
-          cp -r components/.github/workflows/lock-discussion lock-discussion
-          cd lock-discussion
+          cd components/.github/workflows/lock-discussion 
           npm i --force
 
       - name: Run lock discussion
         run: |
-          cd lock-discussion
+          cd components/.github/workflows/lock-discussion 
           npm run lock --TOKEN=${{ secrets.GITHUB_TOKEN }}
