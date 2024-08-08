@@ -66,35 +66,38 @@ export function parseCssVariable(value: string) {
 // The instanceof Node/HTMLElement/SVGElement checks can fail if the target element
 // belongs to a different window than the respective type.
 
-export function isNode(target: any): target is Node {
+export function isNode(target: unknown): target is Node {
   return (
     target instanceof Node ||
     (target !== null &&
       typeof target === 'object' &&
+      'nodeType' in target &&
       typeof target.nodeType === 'number' &&
+      'nodeName' in target &&
       typeof target.nodeName === 'string' &&
+      'parentNode' in target &&
       typeof target.parentNode === 'object')
   );
 }
 
-export function isHTMLElement(target: any): target is HTMLElement {
+export function isHTMLElement(target: unknown): target is HTMLElement {
   return (
     target instanceof HTMLElement ||
-    (target !== null &&
-      typeof target === 'object' &&
+    (isNode(target) &&
       target.nodeType === Node.ELEMENT_NODE &&
+      'style' in target &&
       typeof target.style === 'object' &&
       typeof target.ownerDocument === 'object' &&
       !isSVGElement(target))
   );
 }
 
-export function isSVGElement(target: any): target is SVGElement {
+export function isSVGElement(target: unknown): target is SVGElement {
   return (
     target instanceof SVGElement ||
-    (target !== null &&
-      typeof target === 'object' &&
+    (isNode(target) &&
       target.nodeType === Node.ELEMENT_NODE &&
+      'ownerSVGElement' in target &&
       typeof target.ownerSVGElement === 'object')
   );
 }

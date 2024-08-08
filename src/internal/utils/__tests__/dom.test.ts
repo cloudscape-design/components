@@ -106,3 +106,19 @@ test('an SVGElement is recognized as a Node and SVGElement', () => {
   expect(isHTMLElement(rect)).toBe(false);
   expect(isSVGElement(rect)).toBe(true);
 });
+
+test('an object is recognized as Node', () => {
+  expect(isNode({ nodeType: 3, nodeName: '', parentNode: {} })).toBe(true);
+});
+
+test('an object is recognized as HTMLElement', () => {
+  const node = { nodeType: 1, nodeName: '', parentNode: {} };
+  expect(isHTMLElement({ ...node, style: {}, ownerDocument: {} })).toBe(true);
+  expect(isHTMLElement({ ...node, style: {}, ownerDocument: {}, ownerSVGElement: {} })).toBe(false);
+});
+
+test('an object is recognized as SVGElement', () => {
+  const node = { nodeType: 1, nodeName: '', parentNode: {} };
+  expect(isSVGElement({ ...node, style: {}, ownerDocument: {} })).toBe(false);
+  expect(isSVGElement({ ...node, style: {}, ownerDocument: {}, ownerSVGElement: {} })).toBe(true);
+});
