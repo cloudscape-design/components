@@ -179,7 +179,7 @@ function ActiveDrawer({ activeDrawerId }: { activeDrawerId: string }) {
 
 /**
  * The DesktopTriggers will render the trigger buttons for Tools, Drawers, and the
- * SplitPanel in non mobile viewports. Changes to the activeDrawerId need to be
+ * SplitPanel in non-mobile viewports. Changes to the activeDrawerId need to be
  * tracked by the previousActiveDrawerId property in order to appropriately apply
  * the ref required to manage focus control.
  */
