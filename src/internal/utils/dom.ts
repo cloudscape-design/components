@@ -9,8 +9,8 @@ export function findUpUntil(node: HTMLElement, callback: (element: HTMLElement) 
     // If a component is used within an svg (i.e. as foreignObject), then it will
     // have some ancestor nodes that are SVGElement. We want to skip those,
     // as they have very different properties to HTMLElements.
-    while (isHTMLElement(current)) {
-      current = current.parentElement;
+    while (current && !isHTMLElement(current)) {
+      current = (current as Element).parentElement;
     }
   }
   return current;
@@ -69,29 +69,32 @@ export function parseCssVariable(value: string) {
 
 export function isNode(target: any): target is Node {
   return (
-    target !== null &&
-    typeof target === 'object' &&
-    typeof target.nodeType === 'number' &&
-    typeof target.nodeName === 'string' &&
-    typeof target.parentNode === 'object'
+    target instanceof Node ||
+    (target !== null &&
+      typeof target === 'object' &&
+      typeof target.nodeType === 'number' &&
+      typeof target.nodeName === 'string' &&
+      typeof target.parentNode === 'object')
   );
 }
 
 export function isHTMLElement(target: any): target is HTMLElement {
   return (
-    target !== null &&
-    typeof target === 'object' &&
-    target.nodeType === Node.ELEMENT_NODE &&
-    typeof target.style === 'object' &&
-    typeof target.ownerDocument === 'object'
+    target instanceof HTMLElement ||
+    (target !== null &&
+      typeof target === 'object' &&
+      target.nodeType === Node.ELEMENT_NODE &&
+      typeof target.style === 'object' &&
+      typeof target.ownerDocument === 'object')
   );
 }
 
 export function isSVGElement(target: any): target is SVGElement {
   return (
-    target !== null &&
-    typeof target === 'object' &&
-    target.nodeType === Node.ELEMENT_NODE &&
-    typeof target.ownerSVGElement === 'object'
+    target instanceof SVGElement ||
+    (target !== null &&
+      typeof target === 'object' &&
+      target.nodeType === Node.ELEMENT_NODE &&
+      typeof target.ownerSVGElement === 'object')
   );
 }
