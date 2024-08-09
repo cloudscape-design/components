@@ -208,7 +208,7 @@ function DesktopTriggers() {
 
   const hasMultipleTriggers = drawersTriggerCount > 1;
   const hasSplitPanel = splitPanel && splitPanelDisplayed && splitPanelPosition === 'side';
-  // TODO: is that is right way to determine an active drawer?
+  // leftmost active drawer
   const activeDrawerId = activeDrawersIds[0];
 
   const previousActiveDrawerId = useRef(activeDrawerId);
@@ -343,7 +343,7 @@ export function MobileTriggers() {
     hasDrawerViewportOverlay,
   } = useAppLayoutInternals();
 
-  // TODO: is that is right way to determine an active drawer?
+  // leftmost active drawer
   const activeDrawerId = activeDrawersIds[0];
 
   const previousActiveDrawerId = useRef(activeDrawerId);

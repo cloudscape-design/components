@@ -61,9 +61,6 @@ export function useMultipleFocusControl(
         if (restoreFocus && previousFocusedElement.current && document.contains(previousFocusedElement.current)) {
           previousFocusedElement.current.focus();
           previousFocusedElement.current = undefined;
-        } else {
-          // TODO: need to clarify what is it for
-          // ref.toggle.current?.focus();
         }
       }
       shouldFocus.current = false;
