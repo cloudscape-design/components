@@ -5,7 +5,7 @@ import React, { createContext, useContext, useEffect, useRef, useState } from 'r
 import { useResizeObserver, useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
-import { setElementWidths } from './column-widths-utils';
+import { setElementWidths, treatAsNumber } from './column-widths-utils';
 
 export const DEFAULT_COLUMN_WIDTH = 120;
 
@@ -23,8 +23,8 @@ function readWidths(
   const result = new Map<PropertyKey, number>();
   for (let index = 0; index < visibleColumns.length; index++) {
     const column = visibleColumns[index];
-    let width = (column.width as number) || 0;
-    const minWidth = (column.minWidth as number) || width || DEFAULT_COLUMN_WIDTH;
+    let width = (treatAsNumber(column.width) && (column.width as number)) || 0;
+    const minWidth = (treatAsNumber(column.minWidth) && (column.minWidth as number)) || width || DEFAULT_COLUMN_WIDTH;
     if (
       !width && // read width from the DOM if it is missing in the config
       index !== visibleColumns.length - 1 // skip reading for the last column, because it expands to fully fit the container
@@ -102,7 +102,7 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
       return { width: cellsRef.current.get(column.id)?.offsetWidth || (columnWidths?.get(column.id) ?? column.width) };
     }
 
-    if (resizableColumns && columnWidths) {
+    if (resizableColumns && columnWidths && columnWidths.has(column.id)) {
       const isLastColumn = column.id === visibleColumns[visibleColumns.length - 1]?.id;
       const totalWidth = visibleColumns.reduce(
         (sum, { id }) => sum + (columnWidths.get(id) || DEFAULT_COLUMN_WIDTH),
@@ -180,7 +180,7 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
     setColumnWidths(() => readWidths(getCell, visibleColumns));
     // This code is intended to run only at the first render and should not re-run when table props change
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [visibleColumns]);
 
   function updateColumn(columnId: PropertyKey, newWidth: number) {
     setColumnWidths(columnWidths => updateWidths(visibleColumns, columnWidths ?? new Map(), newWidth, columnId));
