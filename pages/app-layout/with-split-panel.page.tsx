@@ -1,17 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useState } from 'react';
 
+import React, { useContext } from 'react';
+
+import { Box } from '~components';
 import AppLayout, { AppLayoutProps } from '~components/app-layout';
-import Header from '~components/header';
 import Popover from '~components/popover';
-import SpaceBetween from '~components/space-between';
 import SplitPanel from '~components/split-panel';
-import Toggle from '~components/toggle';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
-import { Breadcrumbs, Containers, Navigation, Tools } from './utils/content-blocks';
+import { Breadcrumbs, Navigation, Tools } from './utils/content-blocks';
 import labels from './utils/labels';
 import * as toolsContent from './utils/tools-content';
 
@@ -23,6 +22,7 @@ type SplitPanelDemoContext = React.Context<
   }>
 >;
 
+// Split panel has a lot of content so that it has a scrollbar.
 const DEMO_CONTENT = (
   <div>
     <Popover
@@ -78,9 +78,6 @@ const DEMO_CONTENT = (
 
 export default function () {
   const { urlParams, setUrlParams } = useContext(AppContext as SplitPanelDemoContext);
-  const [splitPanelEnabled, setSplitPanelEnabled] = useState(urlParams.splitPanelEnabled ?? true);
-  const [toolsPanelEnabled, setToolsPanelEnabled] = useState(urlParams.toolsEnabled ?? true);
-
   return (
     <ScreenshotArea gutters={false}>
       <AppLayout
@@ -88,7 +85,7 @@ export default function () {
         breadcrumbs={<Breadcrumbs />}
         navigation={<Navigation />}
         tools={<Tools>{toolsContent.long}</Tools>}
-        toolsHide={!toolsPanelEnabled}
+        toolsHide={!(urlParams.toolsEnabled ?? true)}
         splitPanelPreferences={{
           position: urlParams.splitPanelPosition,
         }}
@@ -97,57 +94,40 @@ export default function () {
           setUrlParams({ splitPanelPosition: position === 'side' ? position : undefined });
         }}
         splitPanel={
-          splitPanelEnabled && (
-            <SplitPanel
-              header="Split panel header withlongwordthatshouldbesplitinsteadofmakingthepanelscroll"
-              i18nStrings={{
-                preferencesTitle: 'Preferences',
-                preferencesPositionLabel: 'Split panel position',
-                preferencesPositionDescription: 'Choose the default split panel position for the service.',
-                preferencesPositionSide: 'Side',
-                preferencesPositionBottom: 'Bottom',
-                preferencesConfirm: 'Confirm',
-                preferencesCancel: 'Cancel',
-                closeButtonAriaLabel: 'Close panel',
-                openButtonAriaLabel: 'Open panel',
-                resizeHandleAriaLabel: 'Slider',
-              }}
-            >
-              {DEMO_CONTENT}
-            </SplitPanel>
-          )
+          <SplitPanel
+            header="Split panel header withlongwordthatshouldbesplitinsteadofmakingthepanelscroll"
+            i18nStrings={{
+              preferencesTitle: 'Preferences',
+              preferencesPositionLabel: 'Split panel position',
+              preferencesPositionDescription: 'Choose the default split panel position for the service.',
+              preferencesPositionSide: 'Side',
+              preferencesPositionBottom: 'Bottom',
+              preferencesConfirm: 'Confirm',
+              preferencesCancel: 'Cancel',
+              closeButtonAriaLabel: 'Close panel',
+              openButtonAriaLabel: 'Open panel',
+              resizeHandleAriaLabel: 'Slider',
+            }}
+          >
+            {DEMO_CONTENT}
+          </SplitPanel>
         }
+        // Page has a lot of content too, can find dimensions and split panel size so that there is no page scrollbar
+        // when split panel is at bottom and there is scrollnar when split panel is on the side.
         content={
-          <>
-            <div style={{ marginBottom: '1rem' }}>
-              <Header variant="h1" description="Basic demo with split panel">
-                Demo page
-              </Header>
-            </div>
-            <SpaceBetween size="l">
-              <Toggle
-                id="enable-split-panel"
-                checked={splitPanelEnabled}
-                onChange={e => {
-                  setSplitPanelEnabled(e.detail.checked);
-                  setUrlParams({ splitPanelEnabled: e.detail.checked });
-                }}
-              >
-                Enable split panel
-              </Toggle>
-              <Toggle
-                id="enable-tools-panel"
-                checked={toolsPanelEnabled}
-                onChange={e => {
-                  setToolsPanelEnabled(e.detail.checked);
-                  setUrlParams({ toolsEnabled: e.detail.checked });
-                }}
-              >
-                Enable tools panel
-              </Toggle>
-              <Containers />
-            </SpaceBetween>
-          </>
+          <Box fontSize="heading-xl">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua. Augue neque gravida in fermentum. Suspendisse sed nisi lacus sed viverra tellus in hac.
+            Nec sagittis aliquam malesuada bibendum arcu vitae elementum. Lectus proin nibh nisl condimentum id
+            venenatis. Penatibus et magnis dis parturient montes nascetur ridiculus mus mauris. Nisi porta lorem mollis
+            aliquam ut porttitor leo a. Facilisi morbi tempus iaculis urna. Odio tempor orci dapibus ultrices in iaculis
+            nunc. The end Ut diam quam nulla porttitor massa id neque. Duis at tellus at urna condimentum mattis
+            pellentesque id nibh. Metus vulputate eu scelerisque felis imperdiet proin fermentum. Orci porta non
+            pulvinar neque laoreet suspendisse interdum consectetur libero. Varius quam quisque id diam vel. Risus
+            viverra adipiscing at in. Orci sagittis eu volutpat odio facilisis mauris. Mauris vitae ultricies leo
+            integer malesuada nunc. Orci sagittis eu volutpat odio facilisis mauris. Mauris vitae ultricies leo integer
+            malesuada nunc.
+          </Box>
         }
       />
     </ScreenshotArea>
