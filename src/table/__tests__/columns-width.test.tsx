@@ -177,15 +177,6 @@ test('prints a warning when resizable columns have non-numeric minWidth', () => 
   );
 });
 
-test('prints a warning when resizable columns have non-numeric width', () => {
-  const columns: TableProps.ColumnDefinition<Item>[] = [{ header: 'id', cell: item => item.id, width: '50%' }];
-  renderTable(<Table columnDefinitions={columns} items={defaultItems} resizableColumns={true} />);
-  expect(warnOnce).toHaveBeenCalledWith(
-    'Table',
-    expect.stringContaining('requires width property to be a number, got 50%')
-  );
-});
-
 describe('with stickyHeader=true', () => {
   const originalFn = window.CSS.supports;
   beforeEach(() => {

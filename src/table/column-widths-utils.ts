@@ -8,7 +8,6 @@ import { TableProps } from './interfaces';
 export function checkColumnWidths(columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<any>>) {
   for (const column of columnDefinitions) {
     checkProperty(column, 'minWidth');
-    checkProperty(column, 'width');
   }
 }
 
