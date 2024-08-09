@@ -109,6 +109,7 @@ type PageContext = React.Context<
     withSelection?: boolean;
     enableKeyboardNavigation?: boolean;
     percentageWidths?: boolean;
+    columnDisplay?: string;
   }>
 >;
 
@@ -123,17 +124,15 @@ export default function App() {
     withSelection = false,
     enableKeyboardNavigation = false,
     percentageWidths = false,
+    columnDisplay: columnDisplayStr = 'name,region,description,state',
   } = urlParams;
 
   const [renderKey, setRenderKey] = useState(0);
   const [columns, setColumns] = useState(columnsConfig);
-  const [columnDisplay, setColumnDisplay] = useState([
-    { id: 'name', visible: true },
-    { id: 'region', visible: true },
-    { id: 'description', visible: true },
-    { id: 'state', visible: true },
-    { id: 'extra', visible: false },
-  ]);
+  const columnDisplay = ['name', 'region', 'description', 'state', 'extra'].map(id => ({
+    id,
+    visible: columnDisplayStr.split(',').includes(id),
+  }));
 
   const [sorting, setSorting] = useState<TableProps.SortingState<any>>();
 
@@ -207,11 +206,12 @@ export default function App() {
                 key={column.id}
                 id={`toggle-${column.id}`}
                 checked={!!columnDisplay.find(({ id }) => id === column.id)?.visible}
-                onChange={event =>
-                  setColumnDisplay(visible =>
-                    visible.map(item => (item.id === column.id ? { ...item, visible: event.detail.checked } : item))
-                  )
-                }
+                onChange={event => {
+                  const newColumnDisplay = columnDisplay
+                    .filter(({ id, visible }) => (id === column.id ? event.detail.checked : visible))
+                    .map(({ id }) => id);
+                  setUrlParams({ columnDisplay: newColumnDisplay.join(',') });
+                }}
               >
                 {column.header}
               </Checkbox>
