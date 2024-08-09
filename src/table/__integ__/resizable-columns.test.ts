@@ -131,6 +131,7 @@ interface PageConfig {
   withSelection?: boolean;
   enableKeyboardNavigation?: boolean;
   percentageWidths?: boolean;
+  columnDisplay?: string;
 }
 
 const setupTest = (
@@ -148,6 +149,8 @@ const setupTest = (
       enableKeyboardNavigation:
         config?.enableKeyboardNavigation !== undefined ? String(config.enableKeyboardNavigation) : 'false',
       percentageWidths: config?.percentageWidths !== undefined ? String(config.percentageWidths) : 'false',
+      columnDisplay:
+        config?.columnDisplay !== undefined ? String(config.columnDisplay) : 'name,region,description,state',
     }).toString();
     await browser.url(`#/light/table/resizable-columns?${params}`);
     await page.waitForVisible(tableWrapper.findBodyCell(2, 1).toSelector());
@@ -389,6 +392,18 @@ describe('percentage column widths', () => {
         await expect(page.getColumnWidth(3)).resolves.toBe(350);
       },
       { percentageWidths: true },
+      { width: 1200 }
+    )
+  );
+  test(
+    'supports percentage column width when dynamically adding a column',
+    setupTest(
+      async page => {
+        await page.toggleColumn('description');
+        await expect(page.getColumnWidth(1)).resolves.toBe(234);
+        await expect(page.getColumnWidth(3)).resolves.toBe(350);
+      },
+      { percentageWidths: true, columnDisplay: 'name,region,state' },
       { width: 1200 }
     )
   );

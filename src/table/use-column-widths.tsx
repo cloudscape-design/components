@@ -102,7 +102,7 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
       return { width: cellsRef.current.get(column.id)?.offsetWidth || (columnWidths?.get(column.id) ?? column.width) };
     }
 
-    if (resizableColumns && columnWidths) {
+    if (resizableColumns && columnWidths && columnWidths.has(column.id)) {
       const isLastColumn = column.id === visibleColumns[visibleColumns.length - 1]?.id;
       const totalWidth = visibleColumns.reduce(
         (sum, { id }) => sum + (columnWidths.get(id) || DEFAULT_COLUMN_WIDTH),
@@ -180,7 +180,7 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
     setColumnWidths(() => readWidths(getCell, visibleColumns));
     // This code is intended to run only at the first render and should not re-run when table props change
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [visibleColumns]);
 
   function updateColumn(columnId: PropertyKey, newWidth: number) {
     setColumnWidths(columnWidths => updateWidths(visibleColumns, columnWidths ?? new Map(), newWidth, columnId));
