@@ -1,0 +1,17 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+// Imitate popover container
+.token-editor-container {
+  max-inline-size: 912px;
+
+  @media (max-width: 912px) {
+    max-inline-size: 310px;
+  }
+
+  &.fixed-width {
+    inline-size: 912px;
+  }
+}

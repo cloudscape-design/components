@@ -454,6 +454,8 @@ Object {
     "awsui_token-editor-field-value_1heb1",
     "awsui_token-editor-form_1wzqe",
     "awsui_token-editor-submit_1heb1",
+    "awsui_token-editor-token-add-actions_1heb1",
+    "awsui_token-editor-token-remove-actions_1heb1",
   ],
   "radio-group": Array [
     "awsui_radio_1mabk",
