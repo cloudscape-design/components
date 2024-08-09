@@ -1835,7 +1835,7 @@ Enabling this property will allow the dropdown to extend beyond that container b
 Set this property if the dropdown would otherwise be constrained by a scrollable container,
 for example inside table and split view layouts.
 
-However, use discretion. We recommend you don't enable this property unless necessary
+We recommend you use discretion, and don't enable this property unless necessary
 because fixed positioning results in a slight, visible lag when scrolling complex pages.
 ",
       "name": "expandToViewport",
@@ -3525,7 +3525,7 @@ Enabling this property will allow the dropdown to extend beyond that container b
 Set this property if the dropdown would otherwise be constrained by a scrollable container,
 for example inside table and split view layouts.
 
-However, use discretion. We recommend you don't enable this property unless necessary
+We recommend you use discretion, and don't enable this property unless necessary
 because fixed positioning results in a slight, visible lag when scrolling complex pages.
 ",
       "name": "expandToViewport",
@@ -3549,7 +3549,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     Object {
-      "description": "Array of objects with a number of suppoted types.
+      "description": "Array of objects with a number of supported types.
 The following properties are supported across all types:
 
 - \`type\` (string) - The type of the item. Can be \`action\`, \`group\`, \`checkbox\`. Defaults to \`action\` if \`items\` undefined and \`group\` otherwise.
@@ -3745,6 +3745,134 @@ The main action also supports the following properties of the [button](/componen
       "name": "children",
     },
   ],
+  "releaseStatus": "stable",
+}
+`;
+
+exports[`Documenter definition for button-group matches the snapshot: button-group 1`] = `
+Object {
+  "events": Array [
+    Object {
+      "cancelable": false,
+      "description": "Called when the user clicks on an item, and the item is not disabled. The event detail object contains the id of the clicked item.",
+      "detailInlineType": Object {
+        "name": "InternalButtonGroupProps.ItemClickDetails",
+        "properties": Array [
+          Object {
+            "name": "id",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "InternalButtonGroupProps.ItemClickDetails",
+      "name": "onItemClick",
+    },
+  ],
+  "functions": Array [
+    Object {
+      "description": "Focuses button group item by id.",
+      "name": "focus",
+      "parameters": Array [
+        Object {
+          "name": "itemId",
+          "type": "string",
+        },
+      ],
+      "returnType": "void",
+    },
+  ],
+  "name": "ButtonGroup",
+  "properties": Array [
+    Object {
+      "description": "Adds \`aria-label\` to the button group toolbar element.
+Use this to provide a unique accessible name for each button group on the page.",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Use this property to determine dropdown placement strategy for all menu dropdown items.
+By default, the dropdown height is constrained to fit inside the height of its next scrollable container element.
+Enabling this property will allow the dropdown to extend beyond that container by using fixed positioning and
+[React Portals](https://reactjs.org/docs/portals.html).
+
+Set this property if the dropdown would otherwise be constrained by a scrollable container,
+for example inside table and split view layouts.
+
+We recommend you use discretion, and don't enable this property unless necessary
+because fixed positioning results in a slight, visible lag when scrolling complex pages.
+",
+      "name": "dropdownExpandToViewport",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Array of objects with a number of supported types.
+### icon-button
+
+* \`id\` (string) - The unique identifier of the button, used as detail in \`onItemClick\` handler and to focus the button using \`ref.focus(id)\`.
+* \`text\` (string) - The name shown as a tooltip or menu text for this button.
+* \`disabled\` (optional, boolean) - The disabled state indication for the button.
+* \`loading\` (optional, boolean) - The loading state indication for the button.
+* \`loadingText\` (optional, string) - The loading text announced to screen readers.
+* \`iconName\` (optional, string) - Specifies the name of the icon, used with the [icon component](/components/icon/).
+* \`iconAlt\` (optional, string) - Specifies alternate text for the icon when using \`iconUrl\`.
+* \`iconUrl\` (optional, string) - Specifies the URL of a custom icon.
+* \`iconSvg\` (optional, ReactNode) - Custom SVG icon. Equivalent to the \`svg\` slot of the [icon component](/components/icon/).
+* \`popoverFeedback\` (optional, string) - Text that appears when the user clicks the button. Use to provide feedback to the user.
+
+### menu-dropdown
+
+* \`id\` (string) - The unique identifier of the button, used as detail in \`onItemClick\`.
+* \`text\` (string) - The name of the menu button shown as a tooltip.
+* \`disabled\` (optional, boolean) - The disabled state indication for the menu button.
+* \`loading\` (optional, boolean) - The loading state indication for the menu button.
+* \`loadingText\` (optional, string) - The loading text announced to screen readers.
+* \`items\` (ButtonDropdownProps.ItemOrGroup[]) - The array of dropdown items that belong to this menu.
+
+group
+
+* \`text\` (string) - The name of the group rendered as ARIA label for this group.
+* \`items\` ((ButtonGroupProps.IconButton | ButtonGroupProps.MenuDropdown)[]) - The array of items that belong to this group.
+",
+      "name": "items",
+      "optional": false,
+      "type": "ReadonlyArray<ButtonGroupProps.ItemOrGroup>",
+    },
+    Object {
+      "description": "Determines the general styling of the button dropdown.
+* \`icon\` for icon buttons.",
+      "inlineType": Object {
+        "name": "ButtonGroupProps.Variant",
+        "type": "union",
+        "values": Array [
+          "icon",
+        ],
+      },
+      "name": "variant",
+      "optional": false,
+      "type": "string",
+    },
+  ],
+  "regions": Array [],
   "releaseStatus": "stable",
 }
 `;
@@ -6152,7 +6280,7 @@ Enabling this property will allow the dropdown to extend beyond that container b
 Set this property if the dropdown would otherwise be constrained by a scrollable container,
 for example inside table and split view layouts.
 
-However, use discretion. We recommend you don't enable this property unless necessary
+We recommend you use discretion, and don't enable this property unless necessary
 because fixed positioning results in a slight, visible lag when scrolling complex pages.
 ",
       "name": "expandToViewport",
@@ -6540,7 +6668,7 @@ Enabling this property will allow the dropdown to extend beyond that container b
 Set this property if the dropdown would otherwise be constrained by a scrollable container,
 for example inside table and split view layouts.
 
-However, use discretion. We recommend you don't enable this property unless necessary
+We recommend you use discretion, and don't enable this property unless necessary
 because fixed positioning results in a slight, visible lag when scrolling complex pages.
 ",
       "name": "expandToViewport",
@@ -10189,7 +10317,7 @@ Enabling this property will allow the dropdown to extend beyond that container b
 Set this property if the dropdown would otherwise be constrained by a scrollable container,
 for example inside table and split view layouts.
 
-However, use discretion. We recommend you don't enable this property unless necessary
+We recommend you use discretion, and don't enable this property unless necessary
 because fixed positioning results in a slight, visible lag when scrolling complex pages.
 ",
       "name": "expandToViewport",
@@ -12065,7 +12193,7 @@ Enabling this property will allow the dropdown to extend beyond that container b
 Set this property if the dropdown would otherwise be constrained by a scrollable container,
 for example inside table and split view layouts.
 
-However, use discretion. We recommend you don't enable this property unless necessary
+We recommend you use discretion, and don't enable this property unless necessary
 because fixed positioning results in a slight, visible lag when scrolling complex pages.
 ",
       "name": "expandToViewport",
@@ -13400,7 +13528,7 @@ Enabling this property will allow the dropdown to extend beyond that container b
 Set this property if the dropdown would otherwise be constrained by a scrollable container,
 for example inside table and split view layouts.
 
-However, use discretion. We recommend you don't enable this property unless necessary
+We recommend you use discretion, and don't enable this property unless necessary
 because fixed positioning results in a slight, visible lag when scrolling complex pages.
 ",
       "name": "expandToViewport",

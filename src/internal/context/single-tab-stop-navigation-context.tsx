@@ -97,7 +97,7 @@ export const SingleTabStopNavigationProvider = forwardRef(
       const isUnregisteringFocusedNode = nodeBelongs(focusableElement, document.activeElement);
       if (isUnregisteringFocusedNode) {
         // Wait for unmounted node to get removed from the DOM.
-        requestAnimationFrame(() => onUnregisterActive?.(focusableElement));
+        setTimeout(() => onUnregisterActive?.(focusableElement), 0);
       }
     }
 
