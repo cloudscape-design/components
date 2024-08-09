@@ -71,10 +71,11 @@ function ActiveDrawer({ activeDrawerId }: { activeDrawerId: string }) {
     isMobile,
     navigationOpen,
     navigationHide,
-    drawersFocusControl,
+    drawersRefs,
     drawersMinWidth,
     drawersMaxWidth,
     onActiveDrawerResize,
+    loseDrawersFocus,
     isToolsOpen,
     drawerSizes,
     toolsWidth,
@@ -95,13 +96,11 @@ function ActiveDrawer({ activeDrawerId }: { activeDrawerId: string }) {
     return result;
   }, [activeDrawerId, activeDrawersIds, drawerSizes, drawers, toolsWidth]);
 
-  const drawersRefs = drawersFocusControl[activeDrawerId].refs;
-
   const { resizeHandle, drawerSize } = useResize(activeDrawersRefs[activeDrawerId]!, {
     onActiveDrawerResize,
     activeDrawerSize: drawerSizes[activeDrawerId ?? ''] ?? activeDrawer?.defaultSize ?? toolsWidth,
     activeDrawer,
-    drawersRefs,
+    drawersRefs: drawersRefs[activeDrawerId],
     isToolsOpen,
     drawersMaxWidth: drawersMaxWidth - remainingActiveDrawersWidth,
     drawersMinWidth,
@@ -136,7 +135,7 @@ function ActiveDrawer({ activeDrawerId }: { activeDrawerId: string }) {
       ref={activeDrawersRefs[activeDrawerId]}
       onBlur={e => {
         if (!e.relatedTarget || !e.currentTarget.contains(e.relatedTarget)) {
-          drawersFocusControl[activeDrawerId].loseFocus();
+          loseDrawersFocus();
         }
       }}
     >
@@ -155,7 +154,7 @@ function ActiveDrawer({ activeDrawerId }: { activeDrawerId: string }) {
               handleDrawersClick(activeDrawerId);
               handleToolsClick(false);
             }}
-            ref={drawersRefs.close}
+            ref={drawersRefs[activeDrawerId].close}
             variant="icon"
           />
         </div>
@@ -190,7 +189,7 @@ function DesktopTriggers() {
     drawersAriaLabel,
     drawersOverflowAriaLabel,
     drawersOverflowWithBadgeAriaLabel,
-    drawersFocusControl,
+    drawersRefs,
     drawersTriggerCount,
     handleDrawersClick,
     handleSplitPanelClick,
@@ -211,7 +210,6 @@ function DesktopTriggers() {
   const hasSplitPanel = splitPanel && splitPanelDisplayed && splitPanelPosition === 'side';
   // TODO: is that is right way to determine an active drawer?
   const activeDrawerId = activeDrawersIds[0];
-  const drawersRefs = drawersFocusControl[activeDrawerId]?.refs;
 
   const previousActiveDrawerId = useRef(activeDrawerId);
   const [containerHeight, triggersContainerRef] = useContainerQuery(rect => rect.contentBoxHeight);
@@ -279,7 +277,7 @@ function DesktopTriggers() {
               iconSvg={item.trigger.iconSvg}
               key={item.id}
               onClick={() => handleDrawersClick(item.id)}
-              ref={item.id === previousActiveDrawerId.current ? drawersRefs?.toggle : undefined}
+              ref={item.id === previousActiveDrawerId.current ? drawersRefs[activeDrawerId]?.toggle : undefined}
               selected={activeDrawersIds?.includes(item.id)}
               badge={item.badge}
               testId={`awsui-app-layout-trigger-${item.id}`}
@@ -340,14 +338,13 @@ export function MobileTriggers() {
     drawersAriaLabel,
     drawersOverflowAriaLabel,
     drawersOverflowWithBadgeAriaLabel,
-    drawersFocusControl,
+    drawersRefs,
     handleDrawersClick,
     hasDrawerViewportOverlay,
   } = useAppLayoutInternals();
 
   // TODO: is that is right way to determine an active drawer?
   const activeDrawerId = activeDrawersIds[0];
-  const drawersRefs = drawersFocusControl[activeDrawerId].refs;
 
   const previousActiveDrawerId = useRef(activeDrawerId);
 
@@ -382,7 +379,7 @@ export function MobileTriggers() {
               item.id === TOOLS_DRAWER_ID && testutilStyles['tools-toggle']
             )}
             disabled={hasDrawerViewportOverlay}
-            ref={item.id === previousActiveDrawerId.current ? drawersRefs.toggle : undefined}
+            ref={item.id === previousActiveDrawerId.current ? drawersRefs[activeDrawerId].toggle : undefined}
             formAction="none"
             iconName={item.trigger.iconName}
             iconSvg={item.trigger.iconSvg}

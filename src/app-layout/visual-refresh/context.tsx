@@ -26,12 +26,7 @@ import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
 import { SPLIT_PANEL_MIN_WIDTH } from '../split-panel';
 import { useDrawers } from '../utils/use-drawers';
-import {
-  FocusControlRefs,
-  FocusControlState,
-  useFocusControl,
-  useMultipleFocusControl,
-} from '../utils/use-focus-control';
+import { FocusControlRefs, useFocusControl, useMultipleFocusControl } from '../utils/use-focus-control';
 import { SplitPanelFocusControlRefs, useSplitPanelFocusControl } from '../utils/use-split-panel-focus-control';
 import { getSplitPanelPosition } from './split-panel';
 import useBackgroundOverlap from './use-background-overlap';
@@ -91,7 +86,8 @@ interface AppLayoutInternals extends AppLayoutPropsWithDefaults {
   toolsRefs: FocusControlRefs;
   onActiveDrawerResize: ({ id, size }: { id: string; size: number }) => void;
   drawerSizes: Record<string, number>;
-  drawersFocusControl: Record<string, FocusControlState>;
+  drawersRefs: Record<string, FocusControlRefs>;
+  loseDrawersFocus: () => void;
   __embeddedViewMode?: boolean;
 }
 
@@ -319,7 +315,11 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     const [drawersMaxWidth, setDrawersMaxWidth] = useState(toolsWidth);
     const hasDrawers = !!drawers && drawers.length > 0;
 
-    const drawersFocusControl = useMultipleFocusControl(true, activeDrawersIds);
+    const {
+      refs: drawersRefs,
+      setFocus: focusDrawersButtons,
+      loseFocus: loseDrawersFocus,
+    } = useMultipleFocusControl(true, activeDrawersIds);
 
     const drawerRef = useRef<HTMLDivElement>(null);
 
@@ -337,9 +337,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
 
       onActiveDrawerChange(newActiveDrawerId);
 
-      if (newActiveDrawerId) {
-        !skipFocusControl && drawersFocusControl[newActiveDrawerId]?.setFocus();
-      }
+      !skipFocusControl && focusDrawersButtons();
     };
 
     let drawersTriggerCount = drawers ? drawers.length : !toolsHide ? 1 : 0;
@@ -499,14 +497,13 @@ export const AppLayoutInternalsProvider = React.forwardRef(
             handleToolsClick(true);
           },
           focusToolsClose: () => {
-            if (hasDrawers && !!activeDrawersIds.length) {
-              // FIXME: is that a right way to do that?
-              drawersFocusControl[activeDrawersIds[0]].setFocus(true);
+            if (hasDrawers) {
+              focusDrawersButtons({ force: true });
             } else {
               focusToolsButtons(true);
             }
           },
-          focusActiveDrawer: () => drawersFocusControl[activeDrawersIds[0]]?.setFocus(true),
+          focusActiveDrawer: () => focusDrawersButtons({ force: true }),
           focusSplitPanel: () => splitPanelRefs.slider.current?.focus(),
         };
       },
@@ -514,11 +511,10 @@ export const AppLayoutInternalsProvider = React.forwardRef(
         isMobile,
         handleNavigationClick,
         handleToolsClick,
-        hasDrawers,
-        activeDrawersIds,
-        drawersFocusControl,
         focusToolsButtons,
+        focusDrawersButtons,
         splitPanelRefs.slider,
+        hasDrawers,
       ]
     );
 
@@ -588,8 +584,9 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           toolsRefs,
           onActiveDrawerResize,
           drawerSizes,
+          drawersRefs,
+          loseDrawersFocus,
           __embeddedViewMode,
-          drawersFocusControl,
         }}
       >
         <DynamicOverlapContext.Provider value={updateBackgroundOverlapHeight}>
