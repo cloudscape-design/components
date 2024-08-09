@@ -54,7 +54,9 @@ export default function Drawers() {
       })}
     >
       <SplitPanel.Side />
-      {activeDrawersIds?.map(activeDrawerId => <ActiveDrawer key={activeDrawerId} activeDrawerId={activeDrawerId} />)}
+      {activeDrawersIds
+        ?.filter(drawerId => !!drawers.find(drawer => drawer.id === drawerId))
+        .map(activeDrawerId => <ActiveDrawer key={activeDrawerId} activeDrawerId={activeDrawerId} />)}
       {!isMobile && <DesktopTriggers />}
     </div>
   );
