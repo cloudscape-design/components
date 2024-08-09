@@ -138,7 +138,7 @@ export function useDrawers(
       return;
     }
 
-    let newActiveDrawersIds = [];
+    let newActiveDrawersIds: Array<string>;
     if (activeDrawersIds.includes(newDrawerId)) {
       newActiveDrawersIds = activeDrawersIds.filter(id => id !== newDrawerId);
     } else {
