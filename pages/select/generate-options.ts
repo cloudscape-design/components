@@ -67,6 +67,8 @@ const randomOptionGroup = (): SelectProps.OptionGroup => {
       return randomOption();
     }),
     disabled: chance10(),
+    labelTag: chance50() ? 'Label tag' : undefined,
+    tags: chance50() ? ['Tag'] : undefined,
   };
 };
 
