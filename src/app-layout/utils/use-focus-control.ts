@@ -61,6 +61,9 @@ export function useMultipleFocusControl(
         if (restoreFocus && previousFocusedElement.current && document.contains(previousFocusedElement.current)) {
           previousFocusedElement.current.focus();
           previousFocusedElement.current = undefined;
+        } else {
+          // TODO: pay attention to this use cases when implement refresh toolbar
+          // refs.toggle.current?.focus();
         }
       }
       shouldFocus.current = false;
