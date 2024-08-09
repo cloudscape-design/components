@@ -381,7 +381,7 @@ export function MobileTriggers() {
               item.id === TOOLS_DRAWER_ID && testutilStyles['tools-toggle']
             )}
             disabled={hasDrawerViewportOverlay}
-            ref={item.id === previousActiveDrawerId.current ? drawersRefs[activeDrawerId].toggle : undefined}
+            ref={item.id === previousActiveDrawerId.current ? drawersRefs[activeDrawerId]?.toggle : undefined}
             formAction="none"
             iconName={item.trigger.iconName}
             iconSvg={item.trigger.iconSvg}
