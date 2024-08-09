@@ -10,6 +10,7 @@ import SpaceBetween from '~components/space-between';
 import StatusIndicator from '~components/status-indicator';
 
 import AppContext, { AppContextType } from '../app/app-context';
+import ScreenshotArea from '../utils/screenshot-area';
 
 type PageContext = React.Context<
   AppContextType<{
@@ -148,7 +149,7 @@ export default function ButtonGroupPage() {
   };
 
   return (
-    <Box margin="m">
+    <ScreenshotArea disableAnimations={true}>
       <h1>Button Group test page</h1>
       <SpaceBetween size="m" direction="vertical">
         <Button data-testid="focus-before">Focus before</Button>
@@ -174,6 +175,6 @@ export default function ButtonGroupPage() {
 
         <div id="last-clicked"></div>
       </SpaceBetween>
-    </Box>
+    </ScreenshotArea>
   );
 }
