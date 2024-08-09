@@ -63,7 +63,7 @@ export const useAutosuggestItems = ({
   const enteredItemLabel = i18n('enteredTextLabel', enteredTextLabel?.(filterValue), format =>
     format({ value: filterValue })
   );
-  if (!enteredItemLabel) {
+  if (!hideEnteredTextLabel && !enteredItemLabel) {
     warnOnce('Autosuggest', 'A value for enteredTextLabel must be provided.');
   }
 

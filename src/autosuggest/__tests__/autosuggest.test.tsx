@@ -123,6 +123,21 @@ test('entered text option should not get screenreader override', () => {
   ).toBeFalsy();
 });
 
+test('should not show entered text if hideEnteredText is true', () => {
+  const { wrapper } = renderAutosuggest(<Autosuggest hideEnteredTextLabel={true} {...defaultProps} value="1" />);
+  wrapper.setInputValue('test');
+  expect(wrapper.findEnteredTextOption()).toBe(null);
+});
+
+test('should show other options if hideEnteredText is true', () => {
+  const { wrapper } = renderAutosuggest(
+    <Autosuggest hideEnteredTextLabel={true} options={defaultOptions} {...defaultProps} value="1" />
+  );
+  wrapper.setInputValue('1');
+  expect(wrapper.findEnteredTextOption()).toBeNull();
+  expect(wrapper.findDropdown().findOpenDropdown()).not.toBe(null);
+});
+
 test('should not close dropdown when no realted target in blur', () => {
   const { wrapper, container } = renderAutosuggest(
     <div>
