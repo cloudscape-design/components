@@ -75,6 +75,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBorderInputFocused: '{colorBorderItemFocused}',
   colorBorderItemFocused: { light: '{colorBlue600}' },
   colorBorderItemPlaceholder: '{colorTransparent}',
+  colorBorderLayout: { light: '{colorGrey300}', dark: '{colorGrey650}' },
   colorBorderNotificationStackBar: '{colorGrey700}',
   colorBorderPanelHeader: '{colorBorderDividerDefault}',
   colorBorderPopover: { light: '{colorGrey300}', dark: '{colorGrey600}' },
