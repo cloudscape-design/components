@@ -44,7 +44,7 @@ const dateProperty: InternalFilteringProperty = {
   groupValuesLabel: 'Date values',
   operators: ['=', '!='],
   defaultOperator: '=',
-  getValueFormatter: () => (value: Date) => format(value, 'yyyy-MM-dd'),
+  getValueFormatter: () => (value: Date) => (value ? format(value, 'yyyy-MM-dd') : ''),
   getValueFormRenderer:
     () =>
     ({ value }) => (
@@ -61,7 +61,7 @@ const dateTimeProperty: InternalFilteringProperty = {
   groupValuesLabel: 'Date time values',
   operators: ['=', '!='],
   defaultOperator: '=',
-  getValueFormatter: () => (value: Date) => format(value, 'yyyy-MM-dd hh:mm'),
+  getValueFormatter: () => (value: Date) => (value ? format(value, 'yyyy-MM-dd hh:mm') : ''),
   getValueFormRenderer:
     () =>
     ({ value }) => (
