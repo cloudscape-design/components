@@ -294,7 +294,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
 
     const {
       drawers,
-      activeDrawer,
+      activeDrawers,
       activeDrawerId,
       minDrawerSize: drawersMinWidth,
       onActiveDrawerChange,
@@ -345,11 +345,11 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       drawersTriggerCount++;
     }
     const hasOpenDrawer =
-      !!activeDrawerId ||
+      !!activeDrawersIds?.length ||
       (!toolsHide && isToolsOpen) ||
       (splitPanelDisplayed && splitPanelPosition === 'side' && isSplitPanelOpen);
     const hasDrawerViewportOverlay =
-      isMobile && (!!activeDrawerId || (!navigationHide && navigationOpen) || (!toolsHide && isToolsOpen));
+      isMobile && (!!activeDrawersIds?.length || (!navigationHide && navigationOpen) || (!toolsHide && isToolsOpen));
 
     const layoutElement = useRef<HTMLDivElement>(null);
     const mainElement = useRef<HTMLDivElement>(null);
@@ -377,7 +377,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
      */
     useEffect(
       function handleBodyScroll() {
-        if (isMobile && (navigationOpen || isToolsOpen || !!activeDrawer)) {
+        if (isMobile && (navigationOpen || isToolsOpen || !!activeDrawers?.length)) {
           document.body.classList.add(styles['block-body-scroll']);
         } else {
           document.body.classList.remove(styles['block-body-scroll']);
@@ -388,7 +388,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           document.body.classList.remove(styles['block-body-scroll']);
         };
       },
-      [isMobile, navigationOpen, isToolsOpen, activeDrawer]
+      [isMobile, navigationOpen, isToolsOpen, activeDrawers]
     );
 
     const [notificationsHeight, setNotificationsHeight] = useState(0);
