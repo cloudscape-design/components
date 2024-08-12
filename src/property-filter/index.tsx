@@ -13,7 +13,6 @@ import TokenList from '../internal/components/token-list';
 import { fireNonCancelableEvent } from '../internal/events';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useUniqueId } from '../internal/hooks/use-unique-id/index';
-import { KeyCode } from '../internal/keycode';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { joinStrings } from '../internal/utils/strings';
 import InternalSpaceBetween from '../space-between/internal';
@@ -235,12 +234,6 @@ const PropertyFilter = React.forwardRef(
       addToken(newToken);
       setFilteringText('');
     };
-    const ignoreKeyDown = useRef<boolean>(false);
-    const handleKeyDown: PropertyFilterAutosuggestProps['onKeyDown'] = event => {
-      if (filteringText && !ignoreKeyDown.current && event.detail.keyCode === KeyCode.enter) {
-        createToken(filteringText);
-      }
-    };
     const getLoadMoreDetail = (parsedText: ParsedText, filteringText: string) => {
       const loadMoreDetail: {
         filteringProperty: FilteringProperty | undefined;
@@ -282,14 +275,11 @@ const PropertyFilter = React.forwardRef(
           }
         : {};
     const handleSelected: PropertyFilterAutosuggestProps['onOptionClick'] = event => {
-      // The ignoreKeyDown flag makes sure `createToken` routine runs only once. Autosuggest's `onKeyDown` fires,
-      // when an item is selected from the list using "enter" key.
-      ignoreKeyDown.current = true;
-      setTimeout(() => {
-        ignoreKeyDown.current = false;
-      }, 0);
       const { detail: option } = event;
       const value = option.value || '';
+      if (!value) {
+        return;
+      }
 
       if (!('keepOpenOnSelect' in option)) {
         createToken(value);
@@ -340,7 +330,6 @@ const PropertyFilter = React.forwardRef(
             controlId={rest.controlId}
             value={filteringText}
             disabled={disabled}
-            onKeyDown={handleKeyDown}
             {...autosuggestOptions}
             onChange={event => setFilteringText(event.detail.value)}
             empty={filteringEmpty}
