@@ -114,15 +114,13 @@ export function TokenEditor({
         supportsGroups={supportsGroups}
         tokens={groups.map(group => getFormattedToken(group.token, i18nStrings))}
         onRemove={index => {
-          const copy = [...tempGroup];
-          copy.splice(index, 1);
-          onChangeTempGroup(copy);
+          const updated = tempGroup.filter((_, existingIndex) => existingIndex !== index);
+          onChangeTempGroup(updated);
         }}
         onRemoveFromGroup={index => {
           const removedToken = tempGroup[index];
-          const copy = [...tempGroup];
-          copy.splice(index, 1);
-          onChangeTempGroup(copy);
+          const updated = tempGroup.filter((_, existingIndex) => existingIndex !== index);
+          onChangeTempGroup(updated);
           onChangeStandalone([...standaloneTokens, removedToken]);
         }}
         renderProperty={index => (
@@ -175,11 +173,12 @@ export function TokenEditor({
             }))}
             onItemClick={({ detail }) => {
               const index = parseInt(detail.id);
-              const addedToken = standaloneTokens[index];
-              const copy = [...standaloneTokens];
-              copy.splice(index, 1);
-              onChangeStandalone(copy);
-              onChangeTempGroup([...tempGroup, addedToken]);
+              if (!isNaN(index) && standaloneTokens[index]) {
+                const addedToken = standaloneTokens[index];
+                const updated = standaloneTokens.filter((_, existingIndex) => existingIndex !== index);
+                onChangeStandalone(updated);
+                onChangeTempGroup([...tempGroup, addedToken]);
+              }
             }}
             disabled={standaloneTokens.length === 0}
             mainAction={{

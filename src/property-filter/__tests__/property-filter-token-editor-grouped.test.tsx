@@ -306,4 +306,19 @@ describe.each(['xs', 'default'] as const)('breakpoints = %s', breakpoint => {
     expect(onChangeStandalone).toHaveBeenCalledTimes(1);
     expect(onChangeStandalone).toHaveBeenCalledWith([]);
   });
+
+  test('add standalone property menu items have indices as IDs', () => {
+    const wrapper = renderComponent({
+      tempGroup: [],
+      standaloneTokens: [
+        { property: nameProperty, operator: '=', value: '1' },
+        { property: nameProperty, operator: '=', value: '2' },
+      ],
+    });
+    const tokenActions = wrapper.findTokenAddActions()!;
+
+    tokenActions.openDropdown();
+    expect(tokenActions.findItemById('0')!.getElement().textContent).toBe('Add filter Name = 1 to group');
+    expect(tokenActions.findItemById('1')!.getElement().textContent).toBe('Add filter Name = 2 to group');
+  });
 });
