@@ -301,6 +301,13 @@ function DesktopTriggers() {
 }
 
 /**
+ * The VISIBLE_MOBILE_TOOLBAR_TRIGGERS_COUNT is used to reduce the number
+ * of triggers that are initially visible on the mobile toolbar, the rest
+ * are then placed into an overflow menu
+ */
+export const VISIBLE_MOBILE_TOOLBAR_TRIGGERS_COUNT = 2;
+
+/**
  * The MobileTriggers will be mounted inside of the AppBar component and
  * only rendered when Drawers are defined in mobile viewports. The same logic
  * will in the AppBar component will suppress the rendering of the legacy
@@ -328,7 +335,7 @@ export function MobileTriggers() {
     previousActiveDrawerId.current = activeDrawerId;
   }
 
-  const { visibleItems, overflowItems } = splitItems(drawers, 2, activeDrawerId);
+  const { visibleItems, overflowItems } = splitItems(drawers, VISIBLE_MOBILE_TOOLBAR_TRIGGERS_COUNT, activeDrawerId);
   const overflowMenuHasBadge = !!overflowItems.find(item => item.badge);
 
   return (

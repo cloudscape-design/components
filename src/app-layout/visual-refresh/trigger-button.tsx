@@ -188,10 +188,11 @@ function TriggerButton(
           {badge && <div className={styles.dot} />}
         </>
       )}
-      {showTooltip && containerRef && containerRef.current && tooltipValue && (
+      {showTooltip && containerRef && containerRef.current && tooltipValue && !(isMobile && hasOpenDrawer) && (
         <Tooltip
           trackRef={containerRef}
           value={tooltipValue}
+          data-testid={'awsui-app-layout-drawer-trigger-tooltip'}
           className={styles['trigger-tooltip']}
           {...(!isMobile && { position: 'left' })}
         />

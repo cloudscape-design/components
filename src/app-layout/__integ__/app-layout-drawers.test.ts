@@ -229,4 +229,14 @@ describe('Visual refresh only', () => {
       await expect(width).toBeGreaterThan(newWidth);
     })
   );
+
+  test(
+    'pushes content over with disableContentPaddings',
+    setupTest({ disableContentPaddings: 'true', visualRefresh: 'true' }, async page => {
+      const width = await page.getMainContentWidth();
+      await page.openFirstDrawer();
+      const newWidth = await page.getMainContentWidth();
+      await expect(width).toBeGreaterThan(newWidth);
+    })
+  );
 });
