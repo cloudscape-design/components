@@ -439,7 +439,6 @@ export namespace TableProps {
     isRowHeader?: boolean;
     verticalAlign?: VerticalAlign;
     cell(item: ItemType): React.ReactNode;
-    hasDynamicContent?: boolean;
   } & SortingColumn<ItemType>;
 
   export interface StickyColumns {
