@@ -99,18 +99,36 @@ function TriggerButton(
    */
   const handleFocus = useCallback(
     (event: KeyboardEvent | PointerEvent) => {
-      if (
-        (isMobile && (hasOpenDrawer || isForPreviousActiveDrawer)) ||
-        (event as any)?.relatedTarget?.dataset?.shiftFocus !== 'last-opened-toolbar-trigger-button'
-      ) {
+      // Create a more descriptive variable name for the event object
+      const eventWithRelatedTarget = event as any;
+
+      // Extract the condition for showing the tooltip hard into a separate function
+      const shouldShowTooltipHard = () => {
+        return eventWithRelatedTarget?.relatedTarget?.dataset?.shiftFocus !== 'last-opened-toolbar-trigger-button';
+      };
+
+      // Extract the condition for mobile devices and open drawers into a separate function
+      const isMobileWithOpenDrawerCondition = () => {
+        return isMobile && (!hasOpenDrawer || isForPreviousActiveDrawer);
+      };
+
+      // Handle the logic based on the extracted conditions
+      if (isMobileWithOpenDrawerCondition()) {
+        if (shouldShowTooltipHard()) {
+          onShowTooltipHard(true);
+        } else {
+          // This removes any tooltip that is already showing
+          onShowTooltipHard(false);
+        }
+      } else if (shouldShowTooltipHard()) {
         onShowTooltipHard(true);
       } else {
-        //this removes any tooltip that is already showing
+        // This removes any tooltip that is already showing
         onShowTooltipHard(false);
       }
     },
     [
-      //to assert reference equality check
+      // To assert reference equality check
       isMobile,
       hasOpenDrawer,
       isForPreviousActiveDrawer,

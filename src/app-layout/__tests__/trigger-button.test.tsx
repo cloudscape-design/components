@@ -25,6 +25,7 @@ const mockProps = {
   testId: mockTestId,
   tooltipText: mockTooltipText,
   hasTooltip: true,
+  isForPreviousActiveDrawer: false,
 };
 const mockOtherEl = {
   class: 'other-el-class',
@@ -33,6 +34,21 @@ const mockOtherEl = {
 const mockUseLayoutInternalValues = {
   hasOpenDrawer: false,
   isMobile: false,
+};
+
+const mockEventBubble = {
+  bubbles: true,
+  isTrusted: true,
+  relatedTarget: null,
+};
+
+const mockEventBubbleWithShiftFocus = {
+  ...mockEventBubble,
+  relatedTarget: {
+    dataset: {
+      shiftFocus: 'last-opened-toolbar-trigger-button',
+    },
+  },
 };
 
 function delay() {
@@ -175,67 +191,7 @@ describe('Toolbar trigger-button', () => {
         expect(button?.findIcon()).toBeNull();
       });
 
-      test('renders correctly with ariaLabel as fallback for tooltipText', async () => {
-        const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
-        const { wrapper, getByText, getByTestId } = await renderTriggerButton(
-          {
-            tooltipText: '',
-          },
-          {
-            isMobile,
-            hasOpenDrawer,
-          },
-          ref as any
-        );
-        expect(wrapper!.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
-        expect(getByTestId(mockTestId)).toBeTruthy();
-        expect(() => getByText(mockTooltipText)).toThrow();
-        expect(() => getByText(mockProps.ariaLabel)).toThrow();
-        fireEvent.pointerEnter(wrapper!.getElement());
-        expect(getByText(mockProps.ariaLabel)).toBeTruthy();
-      });
-
-      describe('Trigger wrapper events', () => {
-        test('Shows tooltip on pointerEnter and closes on pointerLeave', async () => {
-          const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
-          const { wrapper, getByText, getByTestId } = await renderTriggerButton(
-            {},
-            {
-              isMobile,
-              hasOpenDrawer,
-            },
-            ref as any
-          );
-          expect(getByTestId(mockTestId)).toBeTruthy();
-          expect(wrapper!.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
-          expect(() => getByText(mockTooltipText)).toThrow();
-          fireEvent.pointerEnter(wrapper!.getElement());
-          expect(getByText(mockTooltipText)).toBeTruthy();
-          fireEvent.pointerLeave(wrapper!.getElement());
-          expect(wrapper.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
-          expect(() => getByText(mockTooltipText)).toThrow();
-        });
-
-        test('Shows tooltip on pointerDown and closes on pointerDown elsewhere', async () => {
-          const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
-          const { wrapper, getByText, getByTestId } = await renderTriggerButton(
-            {},
-            {
-              isMobile,
-              hasOpenDrawer,
-            },
-            ref as any
-          );
-          expect(getByTestId(mockTestId)).toBeTruthy();
-          expect(wrapper!.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
-          expect(() => getByText(mockTooltipText)).toThrow();
-          fireEvent.pointerEnter(wrapper!.getElement());
-          expect(getByText(mockTooltipText)).toBeTruthy();
-          fireEvent.pointerDown(getByText(mockOtherEl.text));
-          expect(wrapper.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
-          expect(() => getByText(mockTooltipText)).toThrow();
-        });
-
+      describe('Shared trigger wrapper events', () => {
         test('Does not show tooltip on pointerEnter when hasTooltip is false', async () => {
           const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
           const { wrapper, getByText, getByTestId } = await renderTriggerButton(
@@ -275,26 +231,6 @@ describe('Toolbar trigger-button', () => {
           expect(wrapper.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
         });
 
-        test('Shows tooltip on focus and removes on key escape', async () => {
-          const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
-          const { wrapper, getByText, getByTestId } = await renderTriggerButton(
-            {},
-            {
-              isMobile,
-              hasOpenDrawer,
-            },
-            ref as any
-          );
-          expect(getByTestId(mockTestId)).toBeTruthy();
-          expect(wrapper!.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
-          expect(() => getByText(mockTooltipText)).toThrow();
-          fireEvent.focus(wrapper!.getElement());
-          expect(getByText(mockTooltipText)).toBeTruthy();
-          fireEvent.keyDown(wrapper!.getElement(), { key: 'Escape', code: KeyCode.escape });
-          expect(wrapper.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
-          expect(() => getByText(mockTooltipText)).toThrow();
-        });
-
         test('Does not show tooltip on focus when no ariaLabel nor tooltipText', async () => {
           const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
           const { wrapper, getByTestId } = await renderTriggerButton(
@@ -313,87 +249,7 @@ describe('Toolbar trigger-button', () => {
           fireEvent.focus(wrapper!.getElement());
           expect(wrapper.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
         });
-
-        test('Shows tooltip on focus and removes on blur', async () => {
-          const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
-          const { wrapper, getByText, getByTestId } = await renderTriggerButton(
-            {},
-            {
-              isMobile,
-              hasOpenDrawer,
-            },
-            ref as any
-          );
-          expect(getByTestId(mockTestId)).toBeTruthy();
-          expect(wrapper!.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
-          expect(() => getByText(mockTooltipText)).toThrow();
-          fireEvent.focus(wrapper!.getElement());
-          expect(getByText(mockTooltipText)).toBeTruthy();
-          fireEvent.blur(wrapper!.getElement());
-          expect(wrapper.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
-          expect(() => getByText(mockTooltipText)).toThrow();
-        });
-
-        test('Shows tooltip on focus and removes on outside click', async () => {
-          const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
-          const { wrapper, getByText, getByTestId } = await renderTriggerButton(
-            {},
-            {
-              isMobile,
-              hasOpenDrawer,
-            },
-            ref as any
-          );
-          expect(getByTestId(mockTestId)).toBeTruthy();
-          expect(wrapper!.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
-          expect(() => getByText(mockTooltipText)).toThrow();
-          fireEvent.focus(wrapper!.getElement());
-          expect(getByText(mockTooltipText)).toBeTruthy();
-          fireEvent.click(getByText(mockOtherEl.text));
-          expect(wrapper.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
-        });
       });
-    });
-
-    test('Is focusable using the forwarded ref and tooltip shows when the drawer is open', async () => {
-      const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
-      const { wrapper, getByTestId, getByText } = await renderTriggerButton(
-        {},
-        {
-          isMobile,
-          hasOpenDrawer: true,
-        },
-        ref as any
-      );
-      expect(getByTestId(mockTestId)).toBeTruthy();
-      const button = wrapper!.find('button');
-      expect(getByTestId(mockTestId)).toBeTruthy();
-      expect(button).toBeTruthy();
-      expect(document.activeElement).not.toBe(button!.getElement());
-      (ref.current as any)?.focus();
-      expect(document.activeElement).toBe(button!.getElement());
-      expect(getByText(mockTooltipText)).toBeTruthy();
-    });
-
-    test.skip('Is focusable using the forwarded ref and tooltip shows when the drawer is closed', async () => {
-      const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
-      const { wrapper, getByTestId, getByText } = await renderTriggerButton(
-        {},
-        {
-          isMobile,
-          hasOpenDrawer: false,
-        },
-        ref as any
-      );
-      expect(getByTestId(mockTestId)).toBeTruthy();
-      const button = wrapper!.find('button');
-      expect(getByTestId(mockTestId)).toBeTruthy();
-      expect(button).toBeTruthy();
-      expect(document.activeElement).not.toBe(button!.getElement());
-      //TODO find way to simulate rprogrammable focus with the right event data
-      (ref.current as any)?.focus({ relatedTarget: { dataset: { shiftFocus: 'last-opened-toolbar-trigger-button' } } });
-      expect(document.activeElement).toBe(button!.getElement());
-      expect(() => getByText(mockTooltipText)).toThrow();
     });
   });
 
@@ -418,5 +274,385 @@ describe('Toolbar trigger-button', () => {
     expect(wrapper!.findIcon()).toBeTruthy();
     expect(wrapper.findByClassName(visualRefreshStyles.dot)).toBeTruthy();
     expect(wrapper!.findByClassName(tooltipStyles.root)).toBeNull();
+  });
+
+  test('Is focusable using the forwarded ref and tooltip shows when the drawer is open and mobile', async () => {
+    const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
+    const { wrapper, getByTestId, getByText } = await renderTriggerButton(
+      {},
+      {
+        isMobile: true,
+        hasOpenDrawer: true,
+      },
+      ref as any
+    );
+    expect(getByTestId(mockTestId)).toBeTruthy();
+    const button = wrapper!.find('button');
+    expect(getByTestId(mockTestId)).toBeTruthy();
+    expect(button).toBeTruthy();
+    expect(document.activeElement).not.toBe(button!.getElement());
+    (ref.current as any)?.focus();
+    expect(document.activeElement).toBe(button!.getElement());
+    expect(() => getByText(mockTooltipText)).toThrow();
+  });
+
+  test('Is focusable using the forwarded ref and tooltip shows when the drawer is closed on mobile', async () => {
+    const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
+    const { wrapper, getByTestId, getByText } = await renderTriggerButton(
+      {},
+      {
+        isMobile: true,
+        hasOpenDrawer: false,
+      },
+      ref as any
+    );
+    expect(getByTestId(mockTestId)).toBeTruthy();
+    const button = wrapper!.find('button');
+    expect(getByTestId(mockTestId)).toBeTruthy();
+    expect(button).toBeTruthy();
+    expect(document.activeElement).not.toBe(button!.getElement());
+    (ref.current as any)?.focus(mockEventBubbleWithShiftFocus);
+    expect(document.activeElement).toBe(button!.getElement());
+    expect(getByText(mockTooltipText)).toBeInTheDocument();
+  });
+
+  test('Shows tooltip on focus and removes on key escape when drawer is open on mobile', async () => {
+    const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
+    const { wrapper, getByText, getByTestId } = await renderTriggerButton(
+      {},
+      {
+        isMobile: true,
+        hasOpenDrawer: true,
+      },
+      ref as any
+    );
+    expect(getByTestId(mockTestId)).toBeTruthy();
+    expect(wrapper!.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
+    expect(() => getByText(mockTooltipText)).toThrow();
+    fireEvent.focus(wrapper!.getElement());
+    expect(wrapper.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
+    expect(() => getByText(mockTooltipText)).toThrow();
+  });
+
+  test('Shows tooltip on focus and removes on key escape when drawer is closed on mobile', async () => {
+    const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
+    const { wrapper, getByText, getByTestId } = await renderTriggerButton(
+      {},
+      {
+        isMobile: true,
+        hasOpenDrawer: false,
+      },
+      ref as any
+    );
+    expect(getByTestId(mockTestId)).toBeTruthy();
+    expect(wrapper!.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
+    expect(() => getByText(mockTooltipText)).toThrow();
+    fireEvent.focus(wrapper!.getElement());
+    expect(getByText(mockTooltipText)).toBeTruthy();
+    fireEvent.keyDown(wrapper!.getElement(), { key: 'Escape', code: KeyCode.escape });
+    expect(wrapper.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
+    expect(() => getByText(mockTooltipText)).toThrow();
+  });
+
+  test('Is focusable using the forwarded ref and tooltip shows when the drawer is closed', async () => {
+    const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
+    const { wrapper, getByTestId, getByText } = await renderTriggerButton(
+      {},
+      {
+        isMobile: false,
+        hasOpenDrawer: false,
+      },
+      ref as any
+    );
+    expect(getByTestId(mockTestId)).toBeTruthy();
+    const button = wrapper!.find('button');
+    expect(getByTestId(mockTestId)).toBeTruthy();
+    expect(button).toBeTruthy();
+    expect(document.activeElement).not.toBe(button!.getElement());
+    //TODO find way to simulate rprogrammable focus with the right event data
+    (ref.current as any)?.focus({ relatedTarget: { dataset: { shiftFocus: 'last-opened-toolbar-trigger-button' } } });
+    expect(document.activeElement).toBe(button!.getElement());
+    expect(getByText(mockTooltipText)).toBeInTheDocument();
+  });
+
+  test('Shows tooltip on pointerEnter and closes on pointerLeave', async () => {
+    const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
+    const { wrapper, getByText, getByTestId } = await renderTriggerButton(
+      {
+        isForPreviousActiveDrawer: false,
+      },
+      {
+        isMobile: true,
+        hasOpenDrawer: false,
+      },
+      ref as any
+    );
+    expect(getByTestId(mockTestId)).toBeTruthy();
+    expect(wrapper!.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
+    expect(() => getByText(mockTooltipText)).toThrow();
+    fireEvent.pointerEnter(wrapper!.getElement(), mockEventBubble);
+    expect(getByText(mockTooltipText)).toBeTruthy();
+    fireEvent.pointerLeave(wrapper!.getElement(), mockEventBubble);
+    expect(wrapper.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
+    expect(() => getByText(mockTooltipText)).toThrow();
+  });
+
+  test('Shows tooltip on pointerEnter and closes on pointerLeave', async () => {
+    const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
+    const { wrapper, getByText, getByTestId } = await renderTriggerButton(
+      {
+        isForPreviousActiveDrawer: false,
+      },
+      {
+        isMobile: true,
+        hasOpenDrawer: true,
+      },
+      ref as any
+    );
+    expect(getByTestId(mockTestId)).toBeTruthy();
+    expect(wrapper!.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
+    expect(() => getByText(mockTooltipText)).toThrow();
+    fireEvent.pointerEnter(wrapper!.getElement(), mockEventBubble);
+    expect(() => getByText(mockTooltipText)).toThrow();
+  });
+
+  test('Shows tooltip on focus and removes on blur on mobile with no open drawer', async () => {
+    const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
+    const { wrapper, getByText, getByTestId } = await renderTriggerButton(
+      {},
+      {
+        isMobile: true,
+        hasOpenDrawer: false,
+      },
+      ref as any
+    );
+    expect(getByTestId(mockTestId)).toBeTruthy();
+    expect(wrapper!.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
+    expect(() => getByText(mockTooltipText)).toThrow();
+    fireEvent.focus(wrapper!.getElement());
+    expect(getByText(mockTooltipText)).toBeTruthy();
+    fireEvent.blur(wrapper!.getElement());
+    expect(wrapper.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
+    expect(() => getByText(mockTooltipText)).toThrow();
+  });
+
+  test('Shows tooltip on focus and removes on blur on mobile with open drawer', async () => {
+    const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
+    const { wrapper, getByText, getByTestId } = await renderTriggerButton(
+      {},
+      {
+        isMobile: true,
+        hasOpenDrawer: true,
+      },
+      ref as any
+    );
+    expect(getByTestId(mockTestId)).toBeTruthy();
+    expect(wrapper!.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
+    expect(() => getByText(mockTooltipText)).toThrow();
+    fireEvent.focus(wrapper!.getElement());
+    expect(() => getByText(mockTooltipText)).toThrow();
+  });
+
+  test('Shows tooltip on focus and removes on outside click on mobile with no open drawer', async () => {
+    const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
+    const { wrapper, getByText, getByTestId } = await renderTriggerButton(
+      {},
+      {
+        isMobile: true,
+        hasOpenDrawer: false,
+      },
+      ref as any
+    );
+    expect(getByTestId(mockTestId)).toBeTruthy();
+    expect(wrapper!.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
+    expect(() => getByText(mockTooltipText)).toThrow();
+    fireEvent.focus(wrapper!.getElement());
+    expect(getByText(mockTooltipText)).toBeTruthy();
+    fireEvent.click(getByText(mockOtherEl.text));
+    expect(wrapper.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
+  });
+
+  describe.each([true, false])('Desktop only with hasOpenDrawer=%s', hasOpenDrawer => {
+    test('Shows tooltip on pointerDown and closes on pointerDown elsewhere', async () => {
+      const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
+      const { wrapper, getByText, getByTestId } = await renderTriggerButton(
+        {},
+        {
+          isMobile: false,
+          hasOpenDrawer,
+        },
+        ref as any
+      );
+      expect(getByTestId(mockTestId)).toBeTruthy();
+      expect(wrapper!.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
+      expect(() => getByText(mockTooltipText)).toThrow();
+      fireEvent.pointerEnter(wrapper!.getElement(), mockEventBubble);
+      expect(getByText(mockTooltipText)).toBeTruthy();
+      fireEvent.pointerEnter(getByText(mockOtherEl.text), mockEventBubble);
+      expect(wrapper.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
+    });
+
+    test('Shows tooltip on focus and removes on key escape when drawer is closed', async () => {
+      const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
+      const { wrapper, getByText, getByTestId } = await renderTriggerButton(
+        {},
+        {
+          isMobile: false,
+          hasOpenDrawer,
+        },
+        ref as any
+      );
+      expect(getByTestId(mockTestId)).toBeTruthy();
+      expect(wrapper!.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
+      expect(() => getByText(mockTooltipText)).toThrow();
+      fireEvent.focus(wrapper!.getElement());
+      expect(getByText(mockTooltipText)).toBeTruthy();
+      fireEvent.keyDown(wrapper!.getElement(), { key: 'Escape', code: KeyCode.escape });
+      expect(wrapper.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
+      expect(() => getByText(mockTooltipText)).toThrow();
+    });
+
+    test('renders correctly with ariaLabel as fallback for tooltipText', async () => {
+      const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
+      const { wrapper, getByText, getByTestId } = await renderTriggerButton(
+        {
+          tooltipText: '',
+          isForPreviousActiveDrawer: false,
+        },
+        {
+          isMobile: false,
+          hasOpenDrawer,
+        },
+        ref as any
+      );
+      expect(wrapper!.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
+      const mockTooltipWrapper = getByTestId(mockTestId);
+      expect(mockTooltipWrapper).toBeTruthy();
+      expect(() => getByText(mockTooltipText)).toThrow();
+      expect(() => getByText(mockProps.ariaLabel)).toThrow();
+      fireEvent.pointerEnter(mockTooltipWrapper, mockEventBubble);
+      expect(getByText(mockProps.ariaLabel)).toBeTruthy();
+    });
+
+    test('Shows tooltip on focus and removes on key escape on desktop', async () => {
+      const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
+      const { wrapper, getByText, getByTestId } = await renderTriggerButton(
+        {},
+        {
+          isMobile: false,
+          hasOpenDrawer,
+        },
+        ref as any
+      );
+      expect(getByTestId(mockTestId)).toBeTruthy();
+      expect(wrapper!.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
+      expect(() => getByText(mockTooltipText)).toThrow();
+      fireEvent.focus(wrapper!.getElement());
+      expect(getByText(mockTooltipText)).toBeTruthy();
+      fireEvent.keyDown(wrapper!.getElement(), { key: 'Escape', code: KeyCode.escape });
+      expect(wrapper.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
+      expect(() => getByText(mockTooltipText)).toThrow();
+    });
+
+    test('Shows tooltip on pointerEnter and closes on pointerLeave', async () => {
+      const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
+      const { wrapper, getByText, getByTestId } = await renderTriggerButton(
+        {
+          isForPreviousActiveDrawer: false,
+        },
+        {
+          isMobile: false,
+          hasOpenDrawer,
+        },
+        ref as any
+      );
+      expect(getByTestId(mockTestId)).toBeTruthy();
+      expect(wrapper!.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
+      expect(() => getByText(mockTooltipText)).toThrow();
+      fireEvent.pointerEnter(wrapper!.getElement(), mockEventBubble);
+      expect(getByText(mockTooltipText)).toBeTruthy();
+      fireEvent.pointerLeave(wrapper!.getElement(), mockEventBubble);
+      expect(wrapper.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
+      expect(() => getByText(mockTooltipText)).toThrow();
+    });
+
+    test('Shows tooltip on focus and removes on blur', async () => {
+      const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
+      const { wrapper, getByText, getByTestId } = await renderTriggerButton(
+        {},
+        {
+          isMobile: false,
+          hasOpenDrawer,
+        },
+        ref as any
+      );
+      expect(getByTestId(mockTestId)).toBeTruthy();
+      expect(wrapper!.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
+      expect(() => getByText(mockTooltipText)).toThrow();
+      fireEvent.focus(wrapper!.getElement());
+      expect(getByText(mockTooltipText)).toBeTruthy();
+      fireEvent.blur(wrapper!.getElement());
+      expect(wrapper.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
+      expect(() => getByText(mockTooltipText)).toThrow();
+    });
+
+    test('Shows tooltip on focus and removes on outside click', async () => {
+      const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
+      const { wrapper, getByText, getByTestId } = await renderTriggerButton(
+        {},
+        {
+          isMobile: false,
+          hasOpenDrawer,
+        },
+        ref as any
+      );
+      expect(getByTestId(mockTestId)).toBeTruthy();
+      expect(wrapper!.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
+      expect(() => getByText(mockTooltipText)).toThrow();
+      fireEvent.focus(wrapper!.getElement());
+      expect(getByText(mockTooltipText)).toBeTruthy();
+      fireEvent.click(getByText(mockOtherEl.text));
+      expect(wrapper.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
+    });
+  });
+
+  test('Shows tooltip on pointerDown and closes on pointerDown elsewhere on mobile with closed drawer', async () => {
+    const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
+    const { wrapper, getByText, getByTestId } = await renderTriggerButton(
+      {},
+      {
+        isMobile: true,
+        hasOpenDrawer: false,
+      },
+      ref as any
+    );
+    expect(getByTestId(mockTestId)).toBeTruthy();
+    expect(wrapper!.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
+    expect(() => getByText(mockTooltipText)).toThrow();
+    fireEvent.pointerEnter(wrapper!.getElement(), mockEventBubble);
+    expect(getByText(mockTooltipText)).toBeTruthy();
+    fireEvent.pointerEnter(getByText(mockOtherEl.text), mockEventBubble);
+    expect(wrapper.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
+  });
+
+  test('renders correctly with ariaLabel as fallback for tooltipText on mobile without open drawer', async () => {
+    const ref = React.createRef<React.Ref<ButtonProps.Ref>>();
+    const { wrapper, getByText, getByTestId } = await renderTriggerButton(
+      {
+        tooltipText: '',
+        isForPreviousActiveDrawer: false,
+      },
+      {
+        isMobile: true,
+        hasOpenDrawer: false,
+      },
+      ref as any
+    );
+    expect(wrapper!.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
+    const mockTooltipWrapper = getByTestId(mockTestId);
+    expect(mockTooltipWrapper).toBeTruthy();
+    expect(() => getByText(mockTooltipText)).toThrow();
+    expect(() => getByText(mockProps.ariaLabel)).toThrow();
+    fireEvent.pointerEnter(mockTooltipWrapper, mockEventBubble);
   });
 });
