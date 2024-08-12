@@ -129,8 +129,9 @@ export function useDrawers(
   const [drawerSizes, setDrawerSizes] = useState<Record<string, number>>({});
 
   function onActiveDrawerResize({ id, size }: { id: string; size: number }) {
+    const currentActiveDrawer = combinedDrawers?.find(drawer => drawer.id === id);
     setDrawerSizes(oldSizes => ({ ...oldSizes, [id]: size }));
-    fireNonCancelableEvent(drawers?.find(drawer => drawer.id === id)?.onResize, { id, size });
+    fireNonCancelableEvent(currentActiveDrawer?.onResize, { id, size });
   }
 
   function onActiveDrawerChange(newDrawerId: string | null) {
@@ -142,11 +143,7 @@ export function useDrawers(
     if (activeDrawersIds.includes(newDrawerId)) {
       newActiveDrawersIds = activeDrawersIds.filter(id => id !== newDrawerId);
     } else {
-      const temp = [newDrawerId, ...activeDrawersIds];
-      if (temp.length > activeDrawersLimit!) {
-        temp.pop();
-      }
-      newActiveDrawersIds = temp;
+      newActiveDrawersIds = [newDrawerId, ...activeDrawersIds].slice(0, activeDrawersLimit!);
     }
 
     setActiveDrawersIds(newActiveDrawersIds);
@@ -165,8 +162,12 @@ export function useDrawers(
     : applyToolsDrawer(toolsProps, runtimeDrawers);
   // support toolsOpen in runtime-drawers-only mode
   let activeDrawerIdResolved = toolsProps?.toolsOpen && !hasOwnDrawers ? TOOLS_DRAWER_ID : activeDrawerId;
+  const activeDrawersIdsResolved =
+    toolsProps?.toolsOpen && !hasOwnDrawers && !activeDrawersIds.includes(TOOLS_DRAWER_ID)
+      ? [TOOLS_DRAWER_ID, ...activeDrawersIds].slice(0, activeDrawersLimit!)
+      : activeDrawersIds;
   const activeDrawer = combinedDrawers?.find(drawer => drawer.id === activeDrawerIdResolved);
-  const activeDrawers = combinedDrawers?.filter(drawer => activeDrawersIds.includes(drawer.id));
+  const activeDrawers = combinedDrawers?.filter(drawer => activeDrawersIdsResolved.includes(drawer.id));
   // ensure that id is only defined when the drawer exists
   activeDrawerIdResolved = activeDrawer?.id ?? null;
 
@@ -182,7 +183,7 @@ export function useDrawers(
     activeDrawer,
     activeDrawerId: activeDrawerIdResolved,
     activeDrawers,
-    activeDrawersIds,
+    activeDrawersIds: activeDrawersIdsResolved,
     drawerSizes,
     activeDrawerSize,
     minDrawersSizes,
