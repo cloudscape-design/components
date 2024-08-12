@@ -498,12 +498,14 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           },
           focusToolsClose: () => {
             if (hasDrawers) {
-              focusDrawersButtons({ force: true });
+              focusDrawersButtons({ force: true, drawerId: activeDrawersIds[0] });
             } else {
               focusToolsButtons(true);
             }
           },
-          focusActiveDrawer: () => focusDrawersButtons({ force: true }),
+          focusActiveDrawer: () => {
+            focusDrawersButtons({ force: true, drawerId: activeDrawersIds[0] });
+          },
           focusSplitPanel: () => splitPanelRefs.slider.current?.focus(),
         };
       },
@@ -511,10 +513,11 @@ export const AppLayoutInternalsProvider = React.forwardRef(
         isMobile,
         handleNavigationClick,
         handleToolsClick,
-        focusToolsButtons,
-        focusDrawersButtons,
-        splitPanelRefs.slider,
         hasDrawers,
+        focusDrawersButtons,
+        activeDrawersIds,
+        focusToolsButtons,
+        splitPanelRefs.slider,
       ]
     );
 
