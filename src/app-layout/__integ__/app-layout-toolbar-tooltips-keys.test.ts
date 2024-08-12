@@ -58,63 +58,69 @@ describe(`AppLayout toolbar tooltips visualRefresh='true'`, () => {
         page.isExisting(`.${visualRefreshStyles['drawers-desktop-triggers-container']}`)
       ).resolves.toBeTruthy();
 
-      drawerIds.map(async (drawerId: string) => {
-        //best way to avoid tab navigation errors is to start with a click to open then close the drawer, asserting button is focuses
-        await page.pause(100);
-        await page.click(`button[data-testid='awsui-app-layout-trigger-${drawerId}']`); //opens
-        await page.click(`button[data-testid='awsui-app-layout-trigger-${drawerId}']`); //close drawer
-        await expect(page.isExisting(`.${visualRefreshStyles['trigger-tooltip']}`)).resolves.toBeTruthy();
-        await expect(
-          page.getElementsCount(wrapper.findByClassName(visualRefreshStyles['trigger-tooltip']).toSelector())
-        ).resolves.toBe(1);
-        await page.keys('Space');
-        await expect(page.isExisting(wrapper.findActiveDrawer().toSelector())).resolves.toBeTruthy();
-        await page.keys('Tab'); //navigate to close button
-        await expect(
-          page.isFocused(
-            wrapper.findActiveDrawer().findByClassName(visualRefreshStyles['drawer-close-button']).toSelector()
-          )
-        ).resolves.toBeTruthy();
-
-        //jump back to toolbar and navigate down the triggers
-        drawerIds.map(async (nestedDrawerId: string) => {
+      for (const drawerId of drawerIds) {
+        async () => {
+          //best way to avoid tab navigation errors is to start with a click to open then close the drawer, asserting button is focuses
           await page.pause(100);
-          await page.keys('Tab'); //navigate to next button
-          await expect(
-            page.isFocused(wrapper.findDrawerTriggerById(nestedDrawerId).toSelector())
-          ).resolves.toBeTruthy();
+          await page.click(`button[data-testid='awsui-app-layout-trigger-${drawerId}']`); //opens
+          await page.click(`button[data-testid='awsui-app-layout-trigger-${drawerId}']`); //close drawer
           await expect(page.isExisting(`.${visualRefreshStyles['trigger-tooltip']}`)).resolves.toBeTruthy();
           await expect(
             page.getElementsCount(wrapper.findByClassName(visualRefreshStyles['trigger-tooltip']).toSelector())
           ).resolves.toBe(1);
-        });
-
-        //now navigate back up
-        [...drawerIds.reverse().slice(1)].map(async (reverseNestedDrawerId: string) => {
-          await page.pause(100);
-          await page.keys('Shift+Tab'); //navigate to last button
+          await page.keys('Space');
+          await expect(page.isExisting(wrapper.findActiveDrawer().toSelector())).resolves.toBeTruthy();
+          await page.keys('Tab'); //navigate to close button
           await expect(
-            page.isFocused(wrapper.findDrawerTriggerById(reverseNestedDrawerId).toSelector())
+            page.isFocused(
+              wrapper.findActiveDrawer().findByClassName(visualRefreshStyles['drawer-close-button']).toSelector()
+            )
           ).resolves.toBeTruthy();
-          await expect(page.isExisting(`.${visualRefreshStyles['trigger-tooltip']}`)).resolves.toBeTruthy();
+
+          //jump back to toolbar and navigate down the triggers
+          for (const nestedDrawerId of drawerIds) {
+            async () => {
+              await page.pause(100);
+              await page.keys('Tab'); //navigate to next button
+              await expect(
+                page.isFocused(wrapper.findDrawerTriggerById(nestedDrawerId).toSelector())
+              ).resolves.toBeTruthy();
+              await expect(page.isExisting(`.${visualRefreshStyles['trigger-tooltip']}`)).resolves.toBeTruthy();
+              await expect(
+                page.getElementsCount(wrapper.findByClassName(visualRefreshStyles['trigger-tooltip']).toSelector())
+              ).resolves.toBe(1);
+            };
+          }
+
+          //now navigate back up
+          for (const reverseNestedDrawerId of [...drawerIds.reverse().slice(1)]) {
+            async () => {
+              await page.pause(100);
+              await page.keys('Shift+Tab'); //navigate to last button
+              await expect(
+                page.isFocused(wrapper.findDrawerTriggerById(reverseNestedDrawerId).toSelector())
+              ).resolves.toBeTruthy();
+              await expect(page.isExisting(`.${visualRefreshStyles['trigger-tooltip']}`)).resolves.toBeTruthy();
+              await expect(
+                page.getElementsCount(wrapper.findByClassName(visualRefreshStyles['trigger-tooltip']).toSelector())
+              ).resolves.toBe(1);
+            };
+          }
+
+          await page.pause(100);
+          await page.keys('Shift+Tab');
           await expect(
-            page.getElementsCount(wrapper.findByClassName(visualRefreshStyles['trigger-tooltip']).toSelector())
-          ).resolves.toBe(1);
-        });
+            page.isFocused(
+              wrapper.findActiveDrawer().findByClassName(visualRefreshStyles['drawer-close-button']).toSelector()
+            )
+          ).resolves.toBeTruthy();
+          await page.keys('Space'); //close drawer
 
-        await page.pause(100);
-        await page.keys('Shift+Tab');
-        await expect(
-          page.isFocused(
-            wrapper.findActiveDrawer().findByClassName(visualRefreshStyles['drawer-close-button']).toSelector()
-          )
-        ).resolves.toBeTruthy();
-        await page.keys('Space'); //close drawer
-
-        await expect(page.isExisting(wrapper.findActiveDrawer().toSelector())).resolves.toBeFalsy();
-        await expect(page.isFocused(wrapper.findDrawerTriggerById(drawerId).toSelector())).resolves.toBeTruthy();
-        await expect(page.isExisting(`.${visualRefreshStyles['trigger-tooltip']}`)).resolves.toBeFalsy();
-      });
+          await expect(page.isExisting(wrapper.findActiveDrawer().toSelector())).resolves.toBeFalsy();
+          await expect(page.isFocused(wrapper.findDrawerTriggerById(drawerId).toSelector())).resolves.toBeTruthy();
+          await expect(page.isExisting(`.${visualRefreshStyles['trigger-tooltip']}`)).resolves.toBeFalsy();
+        };
+      }
     })
   );
 

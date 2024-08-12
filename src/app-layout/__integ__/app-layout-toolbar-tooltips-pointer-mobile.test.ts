@@ -95,23 +95,25 @@ describe(`AppLayout toolbar tooltips visualRefresh='true'`, () => {
         page.isExisting(`.${visualRefreshStyles[`drawers-mobile-triggers-container`]}`)
       ).resolves.toBeTruthy();
 
-      mobileDrawerTriggerIds.map(async (drawerId: string) => {
-        await page.pause(100);
-        await expect(page.isExisting(wrapper.findDrawerTriggerById(drawerId).toSelector())).resolves.toBeTruthy();
-        await page.pointerDown(wrapper.findDrawerTriggerById(drawerId).toSelector());
-        await expect(page.isExisting(`.${visualRefreshStyles['trigger-tooltip']}`)).resolves.toBeTruthy();
-        await expect(
-          page.getElementsCount(wrapper.findByClassName(visualRefreshStyles['trigger-tooltip']).toSelector())
-        ).resolves.toBe(1);
-        await page.pointerUp();
-        await expect(page.isExisting(`.${visualRefreshStyles['trigger-tooltip']}`)).resolves.toBeFalsy();
-        await page.click(`button[data-testid='awsui-app-layout-trigger-${drawerId}']`);
-        await expect(page.isExisting(`.${visualRefreshStyles['trigger-tooltip']}`)).resolves.toBeFalsy();
-        await expect(page.isExisting(wrapper.findActiveDrawer().toSelector())).resolves.toBeTruthy();
-        await page.click(wrapper.findActiveDrawerCloseButton().toSelector());
-        await expect(page.isExisting(wrapper.findActiveDrawer().toSelector())).resolves.toBeFalsy();
-        await expect(page.isExisting(`.${visualRefreshStyles['trigger-tooltip']}`)).resolves.toBeFalsy();
-      });
+      for (const drawerId of mobileDrawerTriggerIds) {
+        async () => {
+          await page.pause(100);
+          await expect(page.isExisting(wrapper.findDrawerTriggerById(drawerId).toSelector())).resolves.toBeTruthy();
+          await page.pointerDown(wrapper.findDrawerTriggerById(drawerId).toSelector());
+          await expect(page.isExisting(`.${visualRefreshStyles['trigger-tooltip']}`)).resolves.toBeTruthy();
+          await expect(
+            page.getElementsCount(wrapper.findByClassName(visualRefreshStyles['trigger-tooltip']).toSelector())
+          ).resolves.toBe(1);
+          await page.pointerUp();
+          await expect(page.isExisting(`.${visualRefreshStyles['trigger-tooltip']}`)).resolves.toBeFalsy();
+          await page.click(`button[data-testid='awsui-app-layout-trigger-${drawerId}']`);
+          await expect(page.isExisting(`.${visualRefreshStyles['trigger-tooltip']}`)).resolves.toBeFalsy();
+          await expect(page.isExisting(wrapper.findActiveDrawer().toSelector())).resolves.toBeTruthy();
+          await page.click(wrapper.findActiveDrawerCloseButton().toSelector());
+          await expect(page.isExisting(wrapper.findActiveDrawer().toSelector())).resolves.toBeFalsy();
+          await expect(page.isExisting(`.${visualRefreshStyles['trigger-tooltip']}`)).resolves.toBeFalsy();
+        };
+      }
     })
   );
 });
