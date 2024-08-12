@@ -4,6 +4,7 @@ import React from 'react';
 import clsx from 'clsx';
 
 import Box from '../box/internal';
+import { InternalColumnLayoutProps } from '../column-layout/interfaces';
 import ColumnLayout from '../column-layout/internal';
 import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
@@ -45,10 +46,22 @@ const InternalKeyValuePairs = React.forwardRef(
       className,
       ariaLabel,
       ariaLabelledby,
+      variant,
       ...rest
     }: KeyValuePairsProps & Required<Pick<KeyValuePairsProps, 'columns'>>,
     ref: React.Ref<HTMLDivElement>
   ) => {
+    const columnLayoutProps: InternalColumnLayoutProps = {
+      __tagOverride: 'dl',
+      columns: Math.min(columns, 4),
+    };
+    if (variant === 'compact') {
+      columnLayoutProps.variant = 'default';
+      columnLayoutProps.borders = 'vertical';
+    } else {
+      columnLayoutProps.variant = 'text-grid';
+      columnLayoutProps.minColumnWidth = 150;
+    }
     return (
       <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
         <div
@@ -62,7 +75,7 @@ const InternalKeyValuePairs = React.forwardRef(
           minColumnWidth={150} is set to use FlexibleColumnLayout which has only 1 nested div wrapper for column items,
           otherwise GridColumnLayout will be used, which has 2 nested div, therefore it is not a11y compatible for dl -> dt/dd relationship
         */}
-          <ColumnLayout __tagOverride="dl" columns={Math.min(columns, 4)} variant="text-grid" minColumnWidth={150}>
+          <ColumnLayout {...{ ...columnLayoutProps }}>
             {items.map((pair, index) => {
               if (pair.type === 'group') {
                 return (

@@ -39,9 +39,14 @@ export interface KeyValuePairsProps extends BaseComponentProps {
    * Don't use `ariaLabel` and `ariaLabelledby` at the same time.
    */
   ariaLabelledby?: string;
-}
 
+  /**
+   * Specifies the content type. This determines the spacing of the grid.
+   */
+  variant?: KeyValuePairsProps.Variant;
+}
 export namespace KeyValuePairsProps {
+  export type Variant = 'default' | 'compact';
   export type Item = Group | Pair;
 
   export interface Group {
