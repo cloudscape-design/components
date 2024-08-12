@@ -11,8 +11,8 @@ export interface BaseOption {
   disabledReason?: string;
 }
 
-export interface OptionDefinition extends BaseOption {
-  value?: string;
+export interface OptionDefinition<ValueType extends string = string> extends BaseOption {
+  value?: ValueType;
   lang?: string;
   labelTag?: string;
   description?: string;
@@ -29,8 +29,8 @@ export interface InternalOptionDefinition extends OptionDefinition {
   __customIcon?: React.ReactNode;
 }
 
-export interface OptionGroup extends BaseOption {
-  options: ReadonlyArray<OptionDefinition>;
+export interface OptionGroup<ValueType extends string = string> extends BaseOption {
+  options: ReadonlyArray<OptionDefinition<ValueType>>;
 }
 
 export interface DropdownOption {
