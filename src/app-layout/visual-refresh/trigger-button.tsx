@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { Ref, useEffect, useState } from 'react';
+import React, { Ref, useCallback, useEffect, useState } from 'react';
 import clsx from 'clsx';
 
 import { ButtonProps } from '../../button/interfaces';
@@ -53,6 +53,10 @@ export interface TriggerButtonProps {
   onClick: () => void;
   badge?: boolean;
   highContrastHeader?: boolean;
+  /**
+   * set to true if the trigger button was used to open the last active drawer
+   */
+  isForPreviousActiveDrawer?: boolean;
 }
 
 function TriggerButton(
@@ -71,13 +75,13 @@ function TriggerButton(
     badge,
     selected = false,
     highContrastHeader,
+    isForPreviousActiveDrawer = false,
   }: TriggerButtonProps,
   ref: React.Ref<ButtonProps.Ref>
 ) {
   const containerRef = React.useRef(null);
   const tooltipValue = tooltipText ? tooltipText : ariaLabel ? ariaLabel : '';
   const [showTooltip, setShowTooltip] = useState<boolean>(false);
-
   const { hasOpenDrawer, isMobile } = useAppLayoutInternals();
 
   const onShowTooltipSoft = (show: boolean) => {
@@ -93,11 +97,25 @@ function TriggerButton(
    * on the event relatedTarget to determine not to show the tooltip
    * @param event
    */
-  const handleFocus = (event: KeyboardEvent | PointerEvent) => {
-    if (hasOpenDrawer || (event as any)?.relatedTarget?.dataset?.shiftFocus !== 'last-opened-toolbar-trigger-button') {
-      onShowTooltipHard(true);
-    }
-  };
+  const handleFocus = useCallback(
+    (event: KeyboardEvent | PointerEvent) => {
+      if (
+        (isMobile && (hasOpenDrawer || isForPreviousActiveDrawer)) ||
+        (event as any)?.relatedTarget?.dataset?.shiftFocus !== 'last-opened-toolbar-trigger-button'
+      ) {
+        onShowTooltipHard(true);
+      } else {
+        //this removes any tooltip that is already showing
+        onShowTooltipHard(false);
+      }
+    },
+    [
+      //to assert reference equality check
+      isMobile,
+      hasOpenDrawer,
+      isForPreviousActiveDrawer,
+    ]
+  );
 
   useEffect(() => {
     if (hasTooltip && tooltipValue) {

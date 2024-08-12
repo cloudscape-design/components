@@ -4,7 +4,11 @@ import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objec
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
+import { drawerIds as drawerIdObj } from '../../../lib/dev-pages/pages/app-layout/utils/drawer-ids';
 import { viewports } from './constants';
+
+//Must align with variable in '../../../lib/components/app-layout/visual-refresh/drawers.js';
+const VISIBLE_MOBILE_TOOLBAR_TRIGGERS_COUNT = 2;
 
 const wrapper = createWrapper().findAppLayout();
 
@@ -23,6 +27,9 @@ function setupTest(
     await testFn(page);
   });
 }
+
+const drawerIds = Object.values(drawerIdObj);
+const mobileDrawerTriggerIds = drawerIds.slice(0, VISIBLE_MOBILE_TOOLBAR_TRIGGERS_COUNT);
 
 [true, false].forEach(visualRefresh =>
   describe(`visualRefresh=${visualRefresh}`, () => {
@@ -94,7 +101,9 @@ function setupTest(
             async page => {
               const triggerSelector = wrapper.findDrawerTriggerById('pro-help').toSelector();
               await page.click(triggerSelector);
+
               await page.keys('Enter');
+              // await page.pause(100);
               await expect(page.isFocused(triggerSelector)).resolves.toBe(true);
               await page.keys('Enter');
               await expect(page.isFocused(wrapper.findActiveDrawerCloseButton().toSelector())).resolves.toBe(true);
@@ -223,16 +232,12 @@ function setupTest(
             'moves focus to close button when panel is opened from button',
             setupTest(
               async page => {
-                await page.click(
-                  wrapper.findContentRegion().findButton('[data-testid="open-drawer-button-2"]').toSelector()
-                );
+                const drawerIdIndex = 1; //using the pro-help drawer trigger because the drawer does not have a slider element
+                const firstDrawerTriggerSelector = `button[data-testid='awsui-app-layout-trigger-${mobileDrawerTriggerIds[drawerIdIndex]}']`;
+                await page.click(firstDrawerTriggerSelector);
                 await expect(page.isFocused(wrapper.findActiveDrawerCloseButton().toSelector())).resolves.toBe(true);
                 await page.keys('Enter');
-                await expect(
-                  page.isFocused(
-                    wrapper.findContentRegion().findButton('[data-testid="open-drawer-button-2"]').toSelector()
-                  )
-                ).resolves.toBe(true);
+                await expect(page.isFocused(firstDrawerTriggerSelector)).resolves.toBe(true);
               },
               { pageName: 'with-drawers', visualRefresh, mobile }
             )
@@ -259,18 +264,11 @@ function setupTest(
               'moves focus back to last opened button when panel is closed',
               setupTest(
                 async page => {
-                  await page.click(
-                    wrapper.findContentRegion().findButton('[data-testid="open-drawer-button"]').toSelector()
-                  );
-                  await page.click(
-                    wrapper.findContentRegion().findButton('[data-testid="open-drawer-button-2"]').toSelector()
-                  );
-
+                  await page.click(`button[data-testid='awsui-app-layout-trigger-${mobileDrawerTriggerIds[0]}']`);
+                  await page.click(`button[data-testid='awsui-app-layout-trigger-${mobileDrawerTriggerIds[1]}']`);
                   await page.click(wrapper.findActiveDrawerCloseButton().toSelector());
                   await expect(
-                    page.isFocused(
-                      wrapper.findContentRegion().findButton('[data-testid="open-drawer-button-2"]').toSelector()
-                    )
+                    page.isFocused(`button[data-testid='awsui-app-layout-trigger-${mobileDrawerTriggerIds[1]}']`)
                   ).resolves.toBe(true);
                 },
                 { pageName: 'with-drawers', visualRefresh, mobile }

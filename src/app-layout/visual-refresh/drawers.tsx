@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
@@ -125,7 +125,7 @@ function ActiveDrawer() {
             formAction="none"
             iconName={isMobile ? 'close' : 'angle-right'}
             onClick={() => {
-              handleDrawersClick(activeDrawerId, true);
+              handleDrawersClick(activeDrawerId);
               handleToolsClick(false);
             }}
             ref={drawersRefs.close}
@@ -217,6 +217,12 @@ function DesktopTriggers() {
   const { visibleItems, overflowItems } = splitItems(drawers ?? undefined, getIndexOfOverflowItem(), activeDrawerId);
   const overflowMenuHasBadge = !!overflowItems.find(item => item.badge);
 
+  useEffect(() => {
+    if (activeDrawerId === null && previousActiveDrawerId && previousActiveDrawerId.current) {
+      drawersRefs.toggle.current?.focus();
+    }
+  }, [activeDrawerId, previousActiveDrawerId, drawersRefs]);
+
   return (
     <aside
       className={clsx(styles['drawers-desktop-triggers-container'], {
@@ -248,6 +254,7 @@ function DesktopTriggers() {
                 testutilStyles['drawers-trigger'],
                 item.id === TOOLS_DRAWER_ID && testutilStyles['tools-toggle']
               )}
+              isForPreviousActiveDrawer={previousActiveDrawerId?.current === item.id}
               iconName={item.trigger.iconName}
               iconSvg={item.trigger.iconSvg}
               key={item.id}
@@ -327,6 +334,12 @@ export function MobileTriggers() {
 
   const previousActiveDrawerId = useRef(activeDrawerId);
 
+  useEffect(() => {
+    if (activeDrawerId === null && previousActiveDrawerId && previousActiveDrawerId.current) {
+      drawersRefs.toggle.current?.focus();
+    }
+  }, [activeDrawerId, previousActiveDrawerId, drawersRefs]);
+
   if (!drawers) {
     return null;
   }
@@ -365,6 +378,7 @@ export function MobileTriggers() {
             iconSvg={item.trigger.iconSvg}
             badge={item.badge}
             key={item.id}
+            isForPreviousActiveDrawer={previousActiveDrawerId?.current === item.id}
             testId={`awsui-app-layout-trigger-${item.id}`}
             onClick={() => handleDrawersClick(item.id)}
           />
