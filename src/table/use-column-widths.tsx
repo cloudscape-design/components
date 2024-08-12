@@ -178,7 +178,8 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
       return;
     }
     setColumnWidths(() => readWidths(getCell, visibleColumns));
-    // This code is intended to run only at the first render and should not re-run when table props change
+    // This code is intended to run only at the first render (or when rendering a column that was not previously rendered)
+    // and should otherwise not re-run when table props change
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visibleColumns]);
 
