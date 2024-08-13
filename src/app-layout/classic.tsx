@@ -213,7 +213,7 @@ const ClassicAppLayout = React.forwardRef(
     const effectiveNavigationWidth = navigationHide ? 0 : navigationOpen ? navigationWidth : closedDrawerWidth;
 
     const getEffectiveToolsWidth = () => {
-      if (activeDrawerSize) {
+      if (activeDrawerSize && activeDrawer) {
         return activeDrawerSize;
       }
 
