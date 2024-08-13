@@ -164,6 +164,11 @@ filter search icon.
     & > .table {
       padding-inline: awsui.$space-table-horizontal;
     }
+
+    &:not(.table-has-header) {
+      border-start-start-radius: awsui.$border-radius-container;
+      border-start-end-radius: awsui.$border-radius-container;
+    }
   }
   &::-webkit-scrollbar {
     display: none; /* Safari and Chrome */
