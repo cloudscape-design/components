@@ -11,7 +11,7 @@ import { useMobile } from '../internal/hooks/use-mobile';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { SplitPanelContentProps } from './interfaces';
 
-import sharedStyles from '../app-layout/styles.css.js';
+import sharedStyles from '../app-layout/resize/styles.css.js';
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 

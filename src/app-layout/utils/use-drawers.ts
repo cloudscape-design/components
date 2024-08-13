@@ -139,7 +139,7 @@ export function useDrawers(
 
   const activeDrawerSize = activeDrawerIdResolved
     ? drawerSizes[activeDrawerIdResolved] ?? activeDrawer?.defaultSize ?? toolsProps.toolsWidth
-    : 0;
+    : toolsProps.toolsWidth;
   const minDrawerSize = Math.min(activeDrawer?.defaultSize ?? 290, 290);
 
   return {

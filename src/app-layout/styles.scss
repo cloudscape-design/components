@@ -7,39 +7,6 @@
 @use '../internal/styles/tokens' as awsui;
 @use './constants' as constants;
 
-.with-motion {
-  @include styles.with-motion {
-    transition: awsui.$motion-duration-refresh-only-medium;
-    transition-property: border-color, opacity, block-size, inline-size;
-  }
-}
-
-/* stylelint-disable selector-combinator-disallowed-list, selector-max-type, selector-max-universal */
-// these styles are expected to apply to the entire document, so they do not follow the scoping rules
-.resize {
-  &-active * {
-    user-select: none;
-    // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant
-    .with-motion {
-      // stylelint-disable-next-line @cloudscape-design/no-motion-outside-of-mixin
-      transition: none;
-      // stylelint-disable-next-line @cloudscape-design/no-motion-outside-of-mixin
-      animation: none;
-    }
-  }
-  &-active iframe {
-    // Prevents iframes from eating the mouseup event if the cursor is on top of it.
-    pointer-events: none;
-  }
-  &-side * {
-    cursor: ew-resize;
-  }
-  &-bottom * {
-    cursor: ns-resize;
-  }
-}
-/* stylelint-enable selector-combinator-disallowed-list, selector-max-type, selector-max-universal */
-
 .root {
   display: flex;
   flex-direction: column;
