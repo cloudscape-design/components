@@ -44,6 +44,9 @@ interface TokenProps {
   token: InternalToken;
 }
 
+const emptyHandler = () => {};
+const emptyLabel = () => '';
+
 export const TokenButton = ({
   token,
   operation = 'and',
@@ -98,18 +101,18 @@ export const TokenButton = ({
           // This property will be needed when supportsGroups={true}
           standaloneTokens={[]}
           // This property will be needed when supportsGroups={true}
-          onChangeStandalone={() => {}}
+          onChangeStandalone={emptyHandler}
           asyncProps={asyncProps}
           onLoadItems={onLoadItems}
           i18nStrings={{
             ...i18nStrings,
             // These properties will be needed when supportsGroups={true}
-            tokenEditorTokenActionsLabel: () => '',
-            tokenEditorTokenRemoveLabel: () => '',
-            tokenEditorTokenRemoveFromGroupLabel: () => '',
+            tokenEditorTokenActionsLabel: emptyLabel,
+            tokenEditorTokenRemoveLabel: emptyLabel,
+            tokenEditorTokenRemoveFromGroupLabel: emptyLabel,
             tokenEditorAddNewTokenLabel: '',
             tokenEditorAddTokenActionsLabel: '',
-            tokenEditorAddExistingTokenLabel: () => '',
+            tokenEditorAddExistingTokenLabel: emptyLabel,
           }}
           asyncProperties={asyncProperties}
           customGroupsText={customGroupsText}
