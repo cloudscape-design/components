@@ -315,14 +315,13 @@ describeEachAppLayout(({ theme, size }) => {
 
     wrapper.findDrawerTriggerById(drawerDefaults.id)!.click();
     expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('runtime drawer content');
-    expect(onToolsChange).toHaveBeenCalledWith({ open: false });
+    expect(onToolsChange).not.toHaveBeenCalled();
 
     onToolsChange.mockClear();
     rerender(<AppLayout tools="Tools content" toolsOpen={true} onToolsChange={event => onToolsChange(event.detail)} />);
     expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('Tools content');
     expect(wrapper.findDrawerTriggerById(TOOLS_DRAWER_ID)!.getElement()).toHaveAttribute('aria-expanded', 'true');
-    expect(wrapper.findDrawerTriggerById(drawerDefaults.id)!.getElement()).toHaveAttribute('aria-expanded', 'false');
-    expect(onToolsChange).not.toHaveBeenCalled();
+    expect(onToolsChange).toHaveBeenCalledWith({ open: true });
   });
 
   // skipping these on mobile, because drawers toggles are hidden when mobile mode is used

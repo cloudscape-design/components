@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
@@ -47,14 +47,14 @@ function getToolsDrawerItem(props: ToolsProps): AppLayoutProps.Drawer | null {
 
 function useRuntimeDrawers(
   disableRuntimeDrawers: boolean | undefined,
-  activeDrawerId: string | null,
+  activeDrawersIds: Array<string>,
   onActiveDrawerChange: (newDrawerId: string | null) => void
 ) {
   const [runtimeDrawers, setRuntimeDrawers] = useState<DrawersLayout>({ before: [], after: [] });
   const onActiveDrawerChangeStable = useStableCallback(onActiveDrawerChange);
 
-  const drawerWasOpenRef = useRef(false);
-  drawerWasOpenRef.current = drawerWasOpenRef.current || !!activeDrawerId;
+  const openedDrawersRef = useRef<Array<string>>(activeDrawersIds);
+  openedDrawersRef.current = activeDrawersIds;
 
   useEffect(() => {
     if (disableRuntimeDrawers) {
@@ -62,11 +62,11 @@ function useRuntimeDrawers(
     }
     const unsubscribe = awsuiPluginsInternal.appLayout.onDrawersRegistered(drawers => {
       setRuntimeDrawers(convertRuntimeDrawers(drawers));
-      if (!drawerWasOpenRef.current) {
-        const defaultActiveDrawer = sortByPriority(drawers).find(drawer => drawer.defaultActive);
-        if (defaultActiveDrawer) {
-          onActiveDrawerChangeStable(defaultActiveDrawer.id);
-        }
+      const defaultActiveDrawer = sortByPriority(drawers).find(
+        drawer => !openedDrawersRef.current.includes(drawer.id) && drawer.defaultActive
+      );
+      if (defaultActiveDrawer) {
+        onActiveDrawerChangeStable(defaultActiveDrawer.id);
       }
     });
     return () => {
@@ -116,17 +116,57 @@ export function useDrawers(
     controlledProp: 'activeDrawerId',
     changeHandler: 'onChange',
   });
+  const activeDrawersIdsDefault = toolsProps.toolsOpen ? [TOOLS_DRAWER_ID] : [];
   const [activeDrawersIds = [], setActiveDrawersIds] = useControllable<Array<string>>(
     __activeDrawersIds!,
     __onDrawersChange,
-    [],
+    activeDrawersIdsDefault,
     {
       componentName: 'AppLayout',
       controlledProp: 'activeDrawerId',
       changeHandler: 'onChange',
     }
   );
+
   const [drawerSizes, setDrawerSizes] = useState<Record<string, number>>({});
+  const hasOwnDrawers = !!drawers;
+
+  const onActiveDrawerChange = useCallback(
+    (newDrawerId: string | null) => {
+      let newActiveDrawersIds: Array<string>;
+      if (newDrawerId && activeDrawersIds.includes(newDrawerId)) {
+        newActiveDrawersIds = activeDrawersIds.filter(id => id !== newDrawerId);
+      } else if (newDrawerId) {
+        newActiveDrawersIds = [newDrawerId, ...activeDrawersIds].slice(0, activeDrawersLimit!);
+      } else {
+        newActiveDrawersIds = [];
+      }
+
+      setActiveDrawersIds(newActiveDrawersIds);
+
+      if (hasOwnDrawers) {
+        fireNonCancelableEvent(__onDrawersChange, { activeDrawersIds: newActiveDrawersIds });
+      }
+
+      if (!toolsProps.toolsHide && newDrawerId === TOOLS_DRAWER_ID) {
+        toolsProps.onToolsToggle(!activeDrawersIds.includes(TOOLS_DRAWER_ID));
+      }
+    },
+    [__onDrawersChange, activeDrawersIds, activeDrawersLimit, hasOwnDrawers, setActiveDrawersIds, toolsProps]
+  );
+
+  useEffect(() => {
+    if (toolsProps.toolsHide || toolsProps.toolsOpen === undefined) {
+      return;
+    }
+
+    if (
+      (toolsProps.toolsOpen && !activeDrawersIds.includes(TOOLS_DRAWER_ID)) ||
+      (!toolsProps.toolsOpen && activeDrawersIds.includes(TOOLS_DRAWER_ID))
+    ) {
+      onActiveDrawerChange(TOOLS_DRAWER_ID);
+    }
+  }, [toolsProps.toolsHide, toolsProps.toolsOpen, activeDrawersIds, onActiveDrawerChange]);
 
   function onActiveDrawerResize({ id, size }: { id: string; size: number }) {
     const currentActiveDrawer = combinedDrawers?.find(drawer => drawer.id === id);
@@ -134,40 +174,14 @@ export function useDrawers(
     fireNonCancelableEvent(currentActiveDrawer?.onResize, { id, size });
   }
 
-  function onActiveDrawerChange(newDrawerId: string | null) {
-    if (!newDrawerId) {
-      return;
-    }
-
-    let newActiveDrawersIds: Array<string>;
-    if (activeDrawersIds.includes(newDrawerId)) {
-      newActiveDrawersIds = activeDrawersIds.filter(id => id !== newDrawerId);
-    } else {
-      newActiveDrawersIds = [newDrawerId, ...activeDrawersIds].slice(0, activeDrawersLimit!);
-    }
-
-    setActiveDrawersIds(newActiveDrawersIds);
-
-    if (hasOwnDrawers) {
-      fireNonCancelableEvent(__onDrawersChange, { activeDrawersIds: newActiveDrawersIds });
-    } else if (!toolsProps.toolsHide) {
-      toolsProps.onToolsToggle(newDrawerId === TOOLS_DRAWER_ID);
-    }
-  }
-
-  const hasOwnDrawers = !!drawers;
-  const runtimeDrawers = useRuntimeDrawers(disableRuntimeDrawers, activeDrawerId, onActiveDrawerChange);
+  const runtimeDrawers = useRuntimeDrawers(disableRuntimeDrawers, activeDrawersIds, onActiveDrawerChange);
   const combinedDrawers = drawers
     ? [...runtimeDrawers.before, ...drawers, ...runtimeDrawers.after]
     : applyToolsDrawer(toolsProps, runtimeDrawers);
   // support toolsOpen in runtime-drawers-only mode
   let activeDrawerIdResolved = toolsProps?.toolsOpen && !hasOwnDrawers ? TOOLS_DRAWER_ID : activeDrawerId;
-  const activeDrawersIdsResolved =
-    toolsProps?.toolsOpen && !hasOwnDrawers && !activeDrawersIds.includes(TOOLS_DRAWER_ID)
-      ? [TOOLS_DRAWER_ID, ...activeDrawersIds].slice(0, activeDrawersLimit!)
-      : activeDrawersIds;
   const activeDrawer = combinedDrawers?.find(drawer => drawer.id === activeDrawerIdResolved);
-  const activeDrawers = combinedDrawers?.filter(drawer => activeDrawersIdsResolved.includes(drawer.id));
+  const activeDrawers = combinedDrawers?.filter(drawer => activeDrawersIds.includes(drawer.id));
   // ensure that id is only defined when the drawer exists
   activeDrawerIdResolved = activeDrawer?.id ?? null;
 
@@ -183,7 +197,7 @@ export function useDrawers(
     activeDrawer,
     activeDrawerId: activeDrawerIdResolved,
     activeDrawers,
-    activeDrawersIds: activeDrawersIdsResolved,
+    activeDrawersIds,
     drawerSizes,
     activeDrawerSize,
     minDrawersSizes,
