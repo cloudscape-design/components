@@ -143,7 +143,7 @@ export function TokenEditor({
             onChangeOperator={groups[index].onChangeOperator}
             i18nStrings={i18nStrings}
             freeTextFiltering={freeTextFiltering}
-            triggerVariant="label"
+            triggerVariant={supportsGroups ? 'label' : 'option'}
           />
         )}
         renderValue={index => (
@@ -255,7 +255,11 @@ function TokenEditorFields({
 
   return (
     <form
-      className={clsx(styles['token-editor-grid'], isNarrow && styles['token-editor-narrow'])}
+      className={clsx(
+        styles['token-editor-grid'],
+        isNarrow && styles['token-editor-narrow'],
+        styles['token-editor-form']
+      )}
       ref={breakpointRef}
       onSubmit={event => {
         event.preventDefault();

@@ -88,7 +88,7 @@ $operator-field-width: 120px;
   margin-inline: awsui.$space-xxs;
 
   &-form {
-    margin-block-end: awsui.$space-scaled-l;
+    /* used in test-utils */
   }
 
   &-field-property {
