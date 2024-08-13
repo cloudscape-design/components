@@ -81,7 +81,7 @@ export interface AutosuggestProps
   enteredTextLabel?: AutosuggestProps.EnteredTextLabel;
 
   /**
-   * Specifies whether to display the custom value indicator (for example, `Use "${value}"`).
+   * Hides the custom value indicator controlled with the `enteredTextLabel` property.
    */
   hideEnteredTextLabel?: boolean;
 

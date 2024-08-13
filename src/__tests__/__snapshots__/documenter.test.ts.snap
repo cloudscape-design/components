@@ -1886,7 +1886,7 @@ Note: Manual filtering doesn't disable match highlighting.
     },
     Object {
       "defaultValue": "false",
-      "description": "Specifies whether to display the custom value indicator (for example, \`Use \\"\${value}\\"\`).",
+      "description": "Hides the custom value indicator controlled with the \`enteredTextLabel\` property.",
       "name": "hideEnteredTextLabel",
       "optional": true,
       "type": "boolean",
