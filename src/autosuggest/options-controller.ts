@@ -87,11 +87,19 @@ export const useAutosuggestItems = ({
   });
 
   const selectHighlightedOptionWithKeyboard = () => {
-    if (highlightedOptionState.highlightedOption && isInteractive(highlightedOptionState.highlightedOption)) {
-      onSelectItem(highlightedOptionState.highlightedOption);
-      return true;
+    if (highlightedOptionState.highlightedOption && !isInteractive(highlightedOptionState.highlightedOption)) {
+      // skip selection when a non-interactive item is active
+      return false;
     }
-    return false;
+    onSelectItem(
+      highlightedOptionState.highlightedOption ?? {
+        // put use-entered item as a fallback
+        value: filterValue,
+        type: 'use-entered',
+        option: { value: filterValue },
+      }
+    );
+    return true;
   };
 
   const highlightVisibleOptionWithMouse = (index: number) => {
