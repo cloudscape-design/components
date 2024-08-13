@@ -6,22 +6,22 @@ import { IconProps } from '../../../icon/interfaces';
 import { BaseComponentProps } from '../../base-component';
 
 export interface BaseOption {
+  value?: string;
   label?: string;
+  lang?: string;
+  description?: string;
   disabled?: boolean;
   disabledReason?: string;
   labelTag?: string;
   tags?: ReadonlyArray<string>;
-}
-
-export interface OptionDefinition extends BaseOption {
-  value?: string;
-  lang?: string;
-  description?: string;
+  filteringTags?: ReadonlyArray<string>;
   iconAlt?: string;
   iconName?: IconProps.Name;
   iconUrl?: string;
   iconSvg?: React.ReactNode;
-  filteringTags?: ReadonlyArray<string>;
+}
+
+export interface OptionDefinition extends BaseOption {
   __labelPrefix?: string;
 }
 
