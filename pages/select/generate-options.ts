@@ -51,6 +51,7 @@ const randomOption = (): OptionDefinition => {
     value: generateValue(),
     label: generateLabel(),
     disabled: chance10(),
+    disabledReason: 'Disabled reason',
     description: generateDescription(),
     iconName: generateIcon(),
     tags: generateTags(),
@@ -62,13 +63,11 @@ const randomOption = (): OptionDefinition => {
 const randomOptionGroup = (): SelectProps.OptionGroup => {
   const childCount = getRandomInt(8);
   return {
+    ...randomOption(),
     label: 'group_' + generateLabel(),
     options: [...Array(childCount)].map(() => {
       return randomOption();
     }),
-    disabled: chance10(),
-    labelTag: chance50() ? 'Label tag' : undefined,
-    tags: chance50() ? ['Tag'] : undefined,
   };
 };
 

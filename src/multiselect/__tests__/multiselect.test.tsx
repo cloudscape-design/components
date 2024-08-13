@@ -30,7 +30,6 @@ const groupOptions: MultiselectProps.Options = [
       { label: 'Third', value: '3' },
       { label: 'Fourth', value: '4' },
     ],
-    labelTag: 'Label tag',
   },
   { label: 'Fifth', value: '5' },
   {
@@ -40,7 +39,6 @@ const groupOptions: MultiselectProps.Options = [
       { label: 'sixth', value: '6' },
       { label: 'seventh', value: '7', disabled: true },
     ],
-    tags: ['Tag1', 'Tag2'],
   },
 ];
 function renderMultiselect(jsx: React.ReactElement) {
@@ -779,16 +777,37 @@ describe('Disabled item with reason', () => {
   });
 });
 
-test('group options can have label tag', () => {
-  const { wrapper } = renderMultiselect(<Multiselect options={groupOptions} selectedOptions={[]} />);
+test('group options can have description, label tag, tags, disabled reason', () => {
+  const { wrapper } = renderMultiselect(
+    <Multiselect
+      options={[
+        {
+          label: 'First category',
+          value: 'group1',
+          options: [{ value: '1.1' }],
+        },
+        {
+          label: 'Second category',
+          value: 'group2',
+          description: 'Description',
+          labelTag: 'Label tag',
+          tags: ['Tag 1', 'Tag 2'],
+          disabled: true,
+          disabledReason: 'Disabled reason',
+          options: [{ value: '2.1' }],
+        },
+      ]}
+      selectedOptions={[]}
+    />
+  );
   wrapper.openDropdown();
 
-  expect(wrapper.findDropdown().findOptionByValue('group')!.getElement().textContent).toBe('First categoryLabel tag');
-});
+  const groupOption = wrapper.findDropdown().findOptionByValue('group2')!;
 
-test('group options can have tags', () => {
-  const { wrapper } = renderMultiselect(<Multiselect options={groupOptions} selectedOptions={[]} />);
-  wrapper.openDropdown();
-
-  expect(wrapper.findDropdown().findOptionByValue('group2')!.getElement().textContent).toBe('Second categoryTag1Tag2');
+  expect(groupOption.findLabel()!.getElement().textContent).toBe('Second category');
+  expect(groupOption.findDescription()!.getElement().textContent).toBe('Description');
+  expect(groupOption.findLabelTag()!.getElement().textContent).toBe('Label tag');
+  expect(groupOption.findTags()![0].getElement().textContent).toBe('Tag 1');
+  expect(groupOption.findTags()![1].getElement().textContent).toBe('Tag 2');
+  expect(groupOption.find('span[hidden]')!.getElement()).toHaveTextContent('Disabled reason');
 });

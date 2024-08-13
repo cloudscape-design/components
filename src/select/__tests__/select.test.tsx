@@ -46,29 +46,6 @@ const defaultOptions: SelectProps.Options = [
     ],
   },
 ];
-const groupOptions: SelectProps.Options = [
-  {
-    label: 'First category',
-    value: 'group',
-    options: [
-      { label: 'First', value: '1' },
-      { label: 'Second', value: '2' },
-      { label: 'Third', value: '3' },
-      { label: 'Fourth', value: '4' },
-    ],
-    labelTag: 'Label tag',
-  },
-  { label: 'Fifth', value: '5' },
-  {
-    label: 'Second category',
-    value: 'group2',
-    options: [
-      { label: 'sixth', value: '6' },
-      { label: 'seventh', value: '7', disabled: true },
-    ],
-    tags: ['Tag1', 'Tag2'],
-  },
-];
 
 describe.each([false, true])('expandToViewport=%s', expandToViewport => {
   const defaultProps = {
@@ -584,21 +561,32 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
     expect(wrapper.findTrigger().getElement()).toHaveFocus();
   });
 
-  test('group options can have label tag', () => {
-    const { wrapper } = renderSelect({ options: groupOptions });
+  test('group options can have description, label tag, tags, disabled reason', () => {
+    const { wrapper } = renderSelect({
+      options: [
+        {
+          label: 'First category',
+          value: 'group1',
+          options: [{ value: '1.1' }],
+        },
+        {
+          label: 'Second category',
+          value: 'group2',
+          description: 'Description',
+          labelTag: 'Label tag',
+          tags: ['Tag 1', 'Tag 2'],
+          options: [{ value: '2.1' }],
+        },
+      ],
+    });
     wrapper.openDropdown();
 
-    expect(wrapper.findDropdown({ expandToViewport }).findOptionByValue('group')!.getElement().textContent).toBe(
-      'First categoryLabel tag'
-    );
-  });
+    const groupOption = wrapper.findDropdown({ expandToViewport }).findOptionByValue('group2')!;
 
-  test('group options can have tags', () => {
-    const { wrapper } = renderSelect({ options: groupOptions });
-    wrapper.openDropdown();
-
-    expect(wrapper.findDropdown({ expandToViewport }).findOptionByValue('group2')!.getElement().textContent).toBe(
-      'Second categoryTag1Tag2'
-    );
+    expect(groupOption.findLabel()!.getElement().textContent).toBe('Second category');
+    expect(groupOption.findDescription()!.getElement().textContent).toBe('Description');
+    expect(groupOption.findLabelTag()!.getElement().textContent).toBe('Label tag');
+    expect(groupOption.findTags()![0].getElement().textContent).toBe('Tag 1');
+    expect(groupOption.findTags()![1].getElement().textContent).toBe('Tag 2');
   });
 });
