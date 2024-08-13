@@ -6,6 +6,8 @@
 @use '../internal/styles/index' as styles;
 @use '../internal/styles/tokens' as awsui;
 
+$operator-field-width: 120px;
+
 .root {
   @include styles.styles-reset;
 }
@@ -80,6 +82,91 @@
     // The below code cancels horizontal padding of the popover and horizontal margin of the token-editor.
     padding-inline-end: calc(#{awsui.$space-m} + #{awsui.$space-xxs});
     margin-inline: calc(-1 * #{awsui.$space-m} + -1 * #{awsui.$space-xxs});
+  }
+}
+
+.token-editor-grouped {
+  display: flex;
+  flex-direction: column;
+  gap: awsui.$space-s;
+  user-select: text;
+  margin-block: awsui.$space-xxs;
+  margin-inline: awsui.$space-xxs;
+
+  &-form {
+    margin-block-end: awsui.$space-scaled-l;
+  }
+
+  &-field-property {
+    flex-grow: 2;
+  }
+
+  &-field-operator {
+    flex-grow: 1;
+  }
+
+  &-field-value {
+    flex-grow: 2;
+  }
+
+  &-cancel {
+    margin-inline-end: awsui.$space-xs;
+  }
+
+  &-submit {
+    /* used in test-utils */
+  }
+
+  &-actions {
+    display: flex;
+    justify-content: flex-end;
+    padding-block-start: awsui.$space-s;
+    border-block-start: 1px solid #{awsui.$color-border-dropdown-item-default};
+
+    // The below code cancels horizontal padding of the popover and horizontal margin of the token-editor.
+    padding-inline-end: calc(#{awsui.$space-m} + #{awsui.$space-xxs});
+    margin-inline: calc(-1 * #{awsui.$space-m} + -1 * #{awsui.$space-xxs});
+    margin-block-start: awsui.$space-s;
+  }
+
+  &-grid {
+    @include styles.styles-reset;
+
+    display: grid;
+    gap: awsui.$space-s;
+    grid-template-columns: 2fr $operator-field-width 3fr min-content;
+
+    &-group {
+      display: contents;
+    }
+
+    &.token-editor-narrow {
+      grid-template-columns: 1fr;
+      gap: awsui.$space-m;
+
+      > .token-editor-grouped-group {
+        display: flex;
+        flex-direction: column;
+        gap: awsui.$space-s;
+      }
+    }
+
+    &-header {
+      color: awsui.$color-text-column-header;
+      font-weight: awsui.$font-weight-heading-s;
+      padding-block: awsui.$space-scaled-xxs;
+      text-align: start;
+    }
+
+    &-cell {
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-end;
+    }
+  }
+
+  &-add-token {
+    margin-block-start: awsui.$space-s;
   }
 }
 

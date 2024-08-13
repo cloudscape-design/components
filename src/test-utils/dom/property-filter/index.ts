@@ -4,6 +4,7 @@ import { ComponentWrapper, createWrapper, ElementWrapper } from '@cloudscape-des
 
 import AutosuggestWrapper from '../autosuggest';
 import ButtonWrapper from '../button';
+import ButtonDropdownWrapper from '../button-dropdown';
 import FormFieldWrapper from '../form-field';
 import SelectWrapper from '../select';
 
@@ -140,6 +141,52 @@ export class PropertyFilterEditorDropdownWrapper extends ComponentWrapper {
 
   findValueField(): FormFieldWrapper {
     return this.findComponent(`.${testUtilStyles['token-editor-field-value']}`, FormFieldWrapper)!;
+  }
+
+  findCancelButton(): ButtonWrapper {
+    return this.findComponent(`.${testUtilStyles['token-editor-cancel']}`, ButtonWrapper)!;
+  }
+
+  findSubmitButton(): ButtonWrapper {
+    return this.findComponent(`.${testUtilStyles['token-editor-submit']}`, ButtonWrapper)!;
+  }
+}
+
+// The internal wrapper has extra methods that are not available publicly
+// until the property filter token grouping is supported.
+export class InternalPropertyFilterEditorDropdownWrapper extends ComponentWrapper {
+  findHeader(): ElementWrapper {
+    return this.findByClassName(popoverStyles.header)!;
+  }
+
+  findDismissButton(): ButtonWrapper {
+    return this.findComponent(`.${popoverStyles['dismiss-control']}`, ButtonWrapper)!;
+  }
+
+  findPropertyField(index = 1): FormFieldWrapper {
+    const dataIndex = `[data-testindex="${index - 1}"]`;
+    return this.findComponent(`.${testUtilStyles['token-editor-field-property']}${dataIndex}`, FormFieldWrapper)!;
+  }
+
+  findOperatorField(index = 1): FormFieldWrapper {
+    const dataIndex = `[data-testindex="${index - 1}"]`;
+    return this.findComponent(`.${testUtilStyles['token-editor-field-operator']}${dataIndex}`, FormFieldWrapper)!;
+  }
+
+  findValueField(index = 1): FormFieldWrapper {
+    const dataIndex = `[data-testindex="${index - 1}"]`;
+    return this.findComponent(`.${testUtilStyles['token-editor-field-value']}${dataIndex}`, FormFieldWrapper)!;
+  }
+
+  findTokenRemoveActions(index = 1): null | ButtonDropdownWrapper {
+    const dataIndex = `[data-testindex="${index - 1}"]`;
+    const buttonDropdown = this.find(`.${testUtilStyles['token-editor-token-remove-actions']}${dataIndex}`)!;
+    return buttonDropdown ? new ButtonDropdownWrapper(buttonDropdown.getElement()) : null;
+  }
+
+  findTokenAddActions(): null | ButtonDropdownWrapper {
+    const buttonDropdown = this.find(`.${testUtilStyles['token-editor-token-add-actions']}`)!;
+    return buttonDropdown ? new ButtonDropdownWrapper(buttonDropdown.getElement()) : null;
   }
 
   findCancelButton(): ButtonWrapper {

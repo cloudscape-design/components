@@ -21,10 +21,8 @@ import {
   InternalFreeTextFiltering,
   InternalToken,
   LoadItemsDetail,
-  Token,
 } from './interfaces';
 import { useLoadItems } from './use-load-items';
-import { matchTokenValue } from './utils';
 
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
@@ -40,7 +38,7 @@ interface PropertyInputProps {
   property: null | InternalFilteringProperty;
 }
 
-function PropertyInput({
+export function PropertyInput({
   property,
   onChangePropertyKey,
   asyncProps,
@@ -93,9 +91,17 @@ interface OperatorInputProps {
   operator: undefined | ComparisonOperator;
   property: null | InternalFilteringProperty;
   freeTextFiltering: InternalFreeTextFiltering;
+  triggerVariant: 'option' | 'label';
 }
 
-function OperatorInput({ property, operator, onChangeOperator, i18nStrings, freeTextFiltering }: OperatorInputProps) {
+export function OperatorInput({
+  property,
+  operator,
+  onChangeOperator,
+  i18nStrings,
+  freeTextFiltering,
+  triggerVariant,
+}: OperatorInputProps) {
   const operatorOptions = (property ? getAllowedOperators(property) : freeTextFiltering.operators).map(operator => ({
     value: operator,
     label: operator,
@@ -104,7 +110,7 @@ function OperatorInput({ property, operator, onChangeOperator, i18nStrings, free
   return (
     <InternalSelect
       options={operatorOptions}
-      triggerVariant="option"
+      triggerVariant={triggerVariant}
       selectedOption={
         operator
           ? {
@@ -130,7 +136,7 @@ interface ValueInputProps {
   value: undefined | string;
 }
 
-function ValueInput({
+export function ValueInput({
   property,
   operator,
   value,
@@ -180,7 +186,7 @@ interface TokenEditorProps {
   filteringOptions: readonly InternalFilteringOption[];
   i18nStrings: I18nStrings;
   onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
-  setToken: (newToken: Token) => void;
+  onSubmit: () => void;
   onDismiss: () => void;
   temporaryToken: InternalToken;
   onChangeTemporaryToken: (token: InternalToken) => void;
@@ -195,7 +201,7 @@ export function TokenEditor({
   filteringOptions,
   i18nStrings,
   onLoadItems,
-  setToken,
+  onSubmit,
   onDismiss,
   temporaryToken,
   onChangeTemporaryToken,
@@ -225,14 +231,9 @@ export function TokenEditor({
     onChangeTemporaryToken({ ...temporaryToken, value: newValue });
   };
 
-  const onApply = () => {
-    setToken(matchTokenValue(temporaryToken, filteringOptions));
-    onDismiss();
-  };
-
   const onFormSubmit = (event: FormEvent) => {
     event.preventDefault();
-    onApply();
+    onSubmit();
   };
 
   return (
@@ -264,6 +265,7 @@ export function TokenEditor({
             onChangeOperator={onChangeOperator}
             i18nStrings={i18nStrings}
             freeTextFiltering={freeTextFiltering}
+            triggerVariant="option"
           />
         </InternalFormField>
 
@@ -296,7 +298,7 @@ export function TokenEditor({
         <InternalButton
           className={clsx(styles['token-editor-submit'], testUtilStyles['token-editor-submit'])}
           formAction="none"
-          onClick={onApply}
+          onClick={onSubmit}
         >
           {i18nStrings.applyActionText}
         </InternalButton>
