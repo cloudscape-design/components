@@ -9,7 +9,7 @@ import DatePicker from '../../../lib/components/date-picker';
 import FormField from '../../../lib/components/form-field';
 import { useContainerBreakpoints } from '../../../lib/components/internal/hooks/container-queries';
 import { InternalFilteringProperty } from '../../../lib/components/property-filter/interfaces';
-import { TokenEditor, TokenEditorProps } from '../../../lib/components/property-filter/token-editor-grouped';
+import { TokenEditor, TokenEditorProps } from '../../../lib/components/property-filter/token-editor';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { InternalPropertyFilterEditorDropdownWrapper } from '../../../lib/components/test-utils/dom/property-filter';
 
