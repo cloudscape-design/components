@@ -38,8 +38,16 @@ export default class AlertWrapper extends ComponentWrapper {
     return this.findByClassName(styles.header);
   }
 
+  findReplacementHeader(): ElementWrapper | null {
+    return this.findByClassName(styles['header-replacement']);
+  }
+
   findContent(): ElementWrapper {
     return this.findByClassName(styles.content)!;
+  }
+
+  findReplacementContent(): ElementWrapper {
+    return this.findByClassName(styles['content-replacement'])!;
   }
 
   findActionSlot(): ElementWrapper | null {

@@ -41,23 +41,21 @@ interface ActionsWrapperProps {
   onButtonClick: InternalButtonProps['onClick'];
 }
 
-export function ActionsWrapper({
-  className,
-  testUtilClasses,
-  action,
-  discoveredActions,
-  buttonText,
-  onButtonClick,
-}: ActionsWrapperProps) {
-  const actionButton = createActionButton(testUtilClasses, action, buttonText, onButtonClick);
-  if (!actionButton && discoveredActions.length === 0) {
-    return null;
-  }
+export const ActionsWrapper = React.forwardRef(
+  (
+    { className, testUtilClasses, action, discoveredActions, buttonText, onButtonClick }: ActionsWrapperProps,
+    ref: React.Ref<HTMLDivElement>
+  ) => {
+    const actionButton = createActionButton(testUtilClasses, action, buttonText, onButtonClick);
+    if (!actionButton && discoveredActions.length === 0) {
+      return null;
+    }
 
-  return (
-    <div className={clsx(styles.root, className)}>
-      {actionButton}
-      {discoveredActions}
-    </div>
-  );
-}
+    return (
+      <div className={clsx(styles.root, className)} ref={ref}>
+        {actionButton}
+        {discoveredActions}
+      </div>
+    );
+  }
+);

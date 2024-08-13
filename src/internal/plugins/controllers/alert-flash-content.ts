@@ -1,0 +1,89 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import debounce from '../../debounce';
+
+// this code should not depend on React typings, because it is portable between major versions
+interface RefShim<T> {
+  current: T | null;
+}
+
+export interface AlertFlashContentContext {
+  type: string;
+  headerRef: RefShim<HTMLElement>;
+  contentRef: RefShim<HTMLElement>;
+  actionsRef: RefShim<HTMLElement>;
+}
+
+export type ReplacementType = 'original' | 'remove' | ((container: HTMLElement) => void);
+export type ReplacementTypeSafe = 'original' | 'remove' | true;
+
+type RegisterReplacement = (type: 'header' | 'content', doReplacement: ReplacementType) => void;
+
+export interface AlertFlashContentResult {
+  update: () => void;
+  unmount: (refs: { replacementHeaderRef: RefShim<HTMLElement>; replacementContentRef: RefShim<HTMLElement> }) => void;
+}
+
+export interface AlertFlashContentConfig {
+  id: string;
+  runReplacer: (context: AlertFlashContentContext, registerReplacement: RegisterReplacement) => AlertFlashContentResult;
+}
+
+export interface AlertFlashContentRegistrationListener {
+  (provider?: AlertFlashContentConfig): void | (() => void);
+  cleanup?: void | (() => void);
+}
+
+export interface AlertFlashContentApiPublic {
+  registerContentReplacer(config: AlertFlashContentConfig): void;
+}
+
+export interface AlertFlashContentApiInternal {
+  clearRegisteredReplacer(): void;
+  onContentRegistered(listener: AlertFlashContentRegistrationListener): () => void;
+}
+
+export class AlertFlashContentController {
+  private listeners: Array<AlertFlashContentRegistrationListener> = [];
+  private provider?: AlertFlashContentConfig;
+
+  private scheduleUpdate = debounce(() => {
+    this.listeners.forEach(listener => {
+      listener.cleanup = listener(this.provider);
+    });
+  }, 0);
+
+  registerContentReplacer = (content: AlertFlashContentConfig) => {
+    if (this.provider) {
+      console.warn(
+        `Cannot call \`registerContentReplacer\` with new provider: provider with id \`${this.provider.id}\` already registered.`
+      );
+    }
+    this.provider = content;
+    this.scheduleUpdate();
+  };
+
+  clearRegisteredReplacer = () => {
+    this.provider = undefined;
+  };
+
+  onContentRegistered = (listener: AlertFlashContentRegistrationListener) => {
+    this.listeners.push(listener);
+    this.scheduleUpdate();
+    return () => {
+      listener.cleanup?.();
+      this.listeners = this.listeners.filter(item => item !== listener);
+    };
+  };
+
+  installPublic(api: Partial<AlertFlashContentApiPublic> = {}): AlertFlashContentApiPublic {
+    api.registerContentReplacer ??= this.registerContentReplacer;
+    return api as AlertFlashContentApiPublic;
+  }
+
+  installInternal(internalApi: Partial<AlertFlashContentApiInternal> = {}): AlertFlashContentApiInternal {
+    internalApi.clearRegisteredReplacer ??= this.clearRegisteredReplacer;
+    internalApi.onContentRegistered ??= this.onContentRegistered;
+    return internalApi as AlertFlashContentApiInternal;
+  }
+}

@@ -11,10 +11,24 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 
 import styles from '../../../lib/components/alert/styles.css.js';
 
+let useVisualRefresh = false;
+jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => {
+  const originalVisualModeModule = jest.requireActual('../../../lib/components/internal/hooks/use-visual-mode');
+  return {
+    __esModule: true,
+    ...originalVisualModeModule,
+    useVisualRefresh: (...args: any) => useVisualRefresh || originalVisualModeModule.useVisualRefresh(...args),
+  };
+});
+
 function renderAlert(props: AlertProps = {}) {
   const { container } = render(<Alert {...props} />);
   return { wrapper: createWrapper(container).findAlert()!, container };
 }
+
+beforeEach(() => {
+  useVisualRefresh = false;
+});
 
 describe('Alert Component', () => {
   describe('structure', () => {
@@ -152,5 +166,11 @@ describe('Alert Component', () => {
       const wrapper = createWrapper(container).findAlert()!;
       expect(wrapper.getElement()).toHaveAttribute(DATA_ATTR_ANALYTICS_ALERT, 'success');
     });
+  });
+
+  test('visual refresh rendering for coverage', () => {
+    useVisualRefresh = true;
+    const { wrapper } = renderAlert({ header: 'Hello' });
+    expect(wrapper.findHeader()!.getElement()).toHaveTextContent('Hello');
   });
 });
