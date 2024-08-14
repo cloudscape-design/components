@@ -150,6 +150,11 @@ export function useDrawers(
         fireNonCancelableEvent(__onDrawersChange, { activeDrawersIds: newActiveDrawersIds });
       }
 
+      // close the tools drawer when it occupies the rightmost position, and a new drawer takes the leftmost position.
+      if (activeDrawersIds.includes(TOOLS_DRAWER_ID) && !newActiveDrawersIds.includes(TOOLS_DRAWER_ID)) {
+        toolsProps.onToolsToggle(false);
+      }
+
       if (!toolsProps.toolsHide && newDrawerId === TOOLS_DRAWER_ID) {
         toolsProps.onToolsToggle(!activeDrawersIds.includes(TOOLS_DRAWER_ID));
       }

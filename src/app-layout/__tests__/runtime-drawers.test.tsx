@@ -248,7 +248,7 @@ describeEachAppLayout(({ theme, size }) => {
     expect(wrapper.findActiveDrawer()!.getElement()).toBeInTheDocument();
   });
 
-  test('does not open defaultActive drawer if the tools are already open', async () => {
+  test('open defaultActive drawer if the tools are already open', async () => {
     const { wrapper } = await renderComponent(
       <AppLayout
         toolsOpen={true}
@@ -261,8 +261,7 @@ describeEachAppLayout(({ theme, size }) => {
     expect(wrapper.findActiveDrawer()).toBeFalsy();
     awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, defaultActive: true });
     await delay();
-    expect(wrapper.findDrawerTriggerById(TOOLS_DRAWER_ID)!.getElement()).toHaveAttribute('aria-expanded', 'true');
-    expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('Tools content');
+    expect(wrapper.findActiveDrawers()).toHaveLength(2);
   });
 
   test('allows controlled toolsOpen when runtime drawers exist', async () => {
@@ -351,7 +350,6 @@ describeEachAppLayout(({ theme, size }) => {
         <AppLayout tools="Tools content" toolsOpen={false} onToolsChange={event => onToolsChange(event.detail)} />
       );
       wrapper.findDrawerTriggerById(drawerDefaults.id)!.click();
-      expect(onToolsChange).toHaveBeenCalledWith({ open: false });
       expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('runtime drawer content');
 
       onToolsChange.mockReset();
@@ -359,14 +357,24 @@ describeEachAppLayout(({ theme, size }) => {
       expect(onToolsChange).toHaveBeenCalledWith({ open: true });
     });
 
-    test('should fire tools close event when switching from tools to another drawer', async () => {
-      awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
+    test('should fire tools close event when opening more than 2 drawers', async () => {
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'first',
+        mountContent: container => (container.textContent = 'first drawer content'),
+      });
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'second',
+        mountContent: container => (container.textContent = 'second drawer content'),
+      });
       const onToolsChange = jest.fn();
       const { wrapper } = await renderComponent(
         <AppLayout tools="Tools content" toolsOpen={true} onToolsChange={event => onToolsChange(event.detail)} />
       );
 
-      wrapper.findDrawerTriggerById(drawerDefaults.id)!.click();
+      wrapper.findDrawerTriggerById('first')!.click();
+      wrapper.findDrawerTriggerById('second')!.click();
       expect(onToolsChange).toHaveBeenCalledWith({ open: false });
     });
 
@@ -437,7 +445,7 @@ describeEachAppLayout(({ theme, size }) => {
     expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('second drawer content');
   });
 
-  test('only the first defaultActive drawer gets open', async () => {
+  test('multiple active drawers are opening', async () => {
     awsuiPlugins.appLayout.registerDrawer({
       ...drawerDefaults,
       id: 'first',
@@ -445,6 +453,7 @@ describeEachAppLayout(({ theme, size }) => {
       mountContent: container => (container.textContent = 'first drawer content'),
     });
     const { wrapper } = await renderComponent(<AppLayout toolsHide={true} />);
+    expect(wrapper.findActiveDrawers()).toHaveLength(1);
     expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('first drawer content');
     awsuiPlugins.appLayout.registerDrawer({
       ...drawerDefaults,
@@ -453,7 +462,9 @@ describeEachAppLayout(({ theme, size }) => {
       mountContent: container => (container.textContent = 'second drawer content'),
     });
     await delay();
-    expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('first drawer content');
+    expect(wrapper.findActiveDrawers()).toHaveLength(2);
+    expect(wrapper.findActiveDrawers()[0]!.getElement()).toHaveTextContent('second drawer content');
+    expect(wrapper.findActiveDrawers()[1]!.getElement()).toHaveTextContent('first drawer content');
   });
 
   test('opens default active drawer if it loaded late', async () => {
