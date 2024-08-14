@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React, { RefObject, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
@@ -10,7 +10,10 @@ import { splitItems } from '../../drawer/drawers-helpers';
 import OverflowMenu from '../../drawer/overflow-menu';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../../interfaces';
 import { TOOLS_DRAWER_ID } from '../../utils/use-drawers';
-import { Focusable } from '../../utils/use-focus-control';
+import {
+  Focusable,
+  // , FocusControlState
+} from '../../utils/use-focus-control';
 import TriggerButton from './trigger-button';
 
 import splitPanelTestUtilStyles from '../../../split-panel/test-classes/styles.css.js';
@@ -29,20 +32,23 @@ interface DrawerTriggersProps {
   ariaLabels: AppLayoutPropsWithDefaults['ariaLabels'];
 
   activeDrawerId: string | null;
-  drawersFocusRef: React.Ref<Focusable> | undefined;
-  drawers: ReadonlyArray<AppLayoutProps.Drawer>;
-  onActiveDrawerChange: ((drawerId: string | null) => void) | undefined;
 
+  drawers: ReadonlyArray<AppLayoutProps.Drawer>;
+  drawerToggleRef: any; //React.Ref<Focusable> | undefined;
+  // drawerRef: React.Ref<Focusable> | undefined;
+
+  // drawersFocusControl?: FocusControlState;
   splitPanelToggleProps: SplitPanelToggleProps | undefined;
-  splitPanelFocusRef: React.Ref<Focusable> | undefined;
+  splitPanelFocusRef: RefObject<Focusable> | undefined;
   onSplitPanelToggle: (() => void) | undefined;
+  onActiveDrawerChange?: (drawerId: string | null) => void;
 }
 
 export function DrawerTriggers({
   ariaLabels,
   activeDrawerId,
   drawers,
-  drawersFocusRef,
+  drawerToggleRef,
   onActiveDrawerChange,
   splitPanelFocusRef,
   splitPanelToggleProps,
@@ -53,6 +59,16 @@ export function DrawerTriggers({
 
   const previousActiveDrawerId = useRef(activeDrawerId);
   const [containerWidth, triggersContainerRef] = useContainerQuery(rect => rect.contentBoxWidth);
+  const hasOpenDrawer = !!activeDrawerId && activeDrawerId !== null;
+
+  console.log({ drawerToggleRef, activeDrawerId, previousActiveDrawerId });
+  useEffect(() => {
+    if (activeDrawerId === null && previousActiveDrawerId && previousActiveDrawerId.current) {
+      console.log('drawer closed', { activeDrawerId, drawerToggleRef, previousActiveDrawerId });
+      // drawerToggleRef.
+    }
+  }, [activeDrawerId, previousActiveDrawerId, drawerToggleRef]);
+
   if (!drawers && !splitPanelToggleProps) {
     return null;
   }
@@ -109,11 +125,16 @@ export function DrawerTriggers({
             onClick={() => onSplitPanelToggle?.()}
             selected={splitPanelToggleProps.active}
             ref={splitPanelFocusRef}
+            // hasTooltip
+            // hasOpenDrawer={activeDrawerId !== null}
+            // isMobile={isMobile}
           />
         )}
         {visibleItems.map(item => {
           return (
             <TriggerButton
+              hasTooltip={true}
+              hasOpenDrawer={hasOpenDrawer}
               ariaLabel={item.ariaLabels?.triggerButton}
               ariaExpanded={item.id === activeDrawerId}
               ariaControls={activeDrawerId === item.id ? item.id : undefined}
@@ -125,8 +146,9 @@ export function DrawerTriggers({
               iconName={item.trigger.iconName}
               iconSvg={item.trigger.iconSvg}
               key={item.id}
+              isForPreviousActiveDrawer={previousActiveDrawerId?.current === item.id}
               onClick={() => onActiveDrawerChange?.(activeDrawerId !== item.id ? item.id : null)}
-              ref={item.id === previousActiveDrawerId.current ? drawersFocusRef : undefined}
+              ref={item.id === previousActiveDrawerId.current ? drawerToggleRef : undefined}
               selected={item.id === activeDrawerId}
               badge={item.badge}
               testId={`awsui-app-layout-trigger-${item.id}`}

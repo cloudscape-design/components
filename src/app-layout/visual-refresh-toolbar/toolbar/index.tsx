@@ -8,7 +8,7 @@ import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal
 import { InternalBreadcrumbGroup } from '../../../breadcrumb-group/internal';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { AppLayoutProps } from '../../interfaces';
-import { Focusable } from '../../utils/use-focus-control';
+import { Focusable, FocusControlState } from '../../utils/use-focus-control';
 import { AppLayoutInternals } from '../interfaces';
 import { ToolbarSlot } from '../skeleton/slot-wrappers';
 import { DrawerTriggers, SplitPanelToggleProps } from './drawer-triggers';
@@ -33,13 +33,15 @@ export interface ToolbarProps {
   // split panel
   hasSplitPanel?: boolean;
   splitPanelToggleProps?: SplitPanelToggleProps;
-  splitPanelFocusRef?: React.Ref<Focusable>;
+  splitPanelFocusRef?: React.Ref<Focusable> | null;
   onSplitPanelToggle?: () => void;
 
   // drawers
   activeDrawerId?: string | null;
   drawers?: ReadonlyArray<AppLayoutProps.Drawer>;
-  drawersFocusRef?: React.Ref<Focusable>;
+  //needs focus control for both the drawer and the drawer triggers
+  // drawersFocusRef?: React.Ref<Focusable>;
+  drawersFocusControl?: FocusControlState;
   onActiveDrawerChange?: (drawerId: string | null) => void;
 }
 
@@ -54,7 +56,8 @@ function convertLegacyProps(toolbarProps: ToolbarProps, legacyProps: AppLayoutIn
     ariaLabels: toolbarProps.ariaLabels ?? legacyProps.ariaLabels,
     activeDrawerId: toolbarProps.activeDrawerId ?? legacyProps.activeDrawer?.id,
     drawers: toolbarProps.drawers ?? legacyProps.drawers,
-    drawersFocusRef: toolbarProps.drawersFocusRef ?? legacyProps.drawersFocusControl?.refs.toggle,
+    drawersFocusControl: toolbarProps.drawersFocusControl ?? legacyProps.drawersFocusControl,
+    // drawersFocusRef: toolbarProps.drawersFocusRef ?? legacyProps.drawersFocusControl?.refs.toggle,
     onActiveDrawerChange: toolbarProps.onActiveDrawerChange ?? legacyProps.onActiveDrawerChange,
     hasNavigation: toolbarProps.hasNavigation ?? !!legacyProps.navigation,
     navigationOpen: toolbarProps.navigationOpen ?? legacyProps.navigationOpen,
@@ -91,7 +94,8 @@ export function AppLayoutToolbarImplementation({
     ariaLabels,
     activeDrawerId,
     drawers,
-    drawersFocusRef,
+    //drawersFocusRef,
+    drawersFocusControl,
     onActiveDrawerChange,
     hasNavigation,
     navigationOpen,
@@ -178,10 +182,10 @@ export function AppLayoutToolbarImplementation({
               ariaLabels={ariaLabels}
               activeDrawerId={activeDrawerId ?? null}
               drawers={drawers ?? []}
-              drawersFocusRef={drawersFocusRef}
+              drawerToggleRef={drawersFocusControl?.refs.toggle}
               onActiveDrawerChange={onActiveDrawerChange}
               splitPanelToggleProps={splitPanelToggleProps?.displayed ? splitPanelToggleProps : undefined}
-              splitPanelFocusRef={splitPanelFocusRef}
+              splitPanelFocusRef={splitPanelFocusRef as any}
               onSplitPanelToggle={onSplitPanelToggle}
             />
           </span>

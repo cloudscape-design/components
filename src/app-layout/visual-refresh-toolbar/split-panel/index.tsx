@@ -19,7 +19,14 @@ export function AppLayoutSplitPanelDrawerSideImplementation({
   appLayoutInternals,
   splitPanelInternals,
 }: AppLayoutSplitPanelDrawerSideImplementationProps) {
-  const { splitPanelControlId, placement } = appLayoutInternals;
+  const { splitPanelControlId, placement, splitPanelOpen, splitPanelFocusControl } = appLayoutInternals;
+
+  React.useEffect(() => {
+    if (splitPanelOpen && splitPanelFocusControl?.refs?.slider?.current) {
+      splitPanelFocusControl.refs.slider.current.focus();
+    }
+  }, [splitPanelFocusControl.refs.slider, splitPanelOpen]);
+
   return (
     <SplitPanelProvider {...splitPanelInternals}>
       <section
