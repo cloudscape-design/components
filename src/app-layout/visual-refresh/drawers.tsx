@@ -68,7 +68,6 @@ function ActiveDrawer({ activeDrawerId }: { activeDrawerId: string }) {
     ariaLabels,
     drawers,
     handleDrawersClick,
-    handleToolsClick,
     hasDrawerViewportOverlay,
     isMobile,
     navigationOpen,
@@ -154,7 +153,6 @@ function ActiveDrawer({ activeDrawerId }: { activeDrawerId: string }) {
             iconName={isMobile ? 'close' : 'angle-right'}
             onClick={() => {
               handleDrawersClick(activeDrawerId);
-              handleToolsClick(false);
             }}
             ref={drawersRefs[activeDrawerId].close}
             variant="icon"

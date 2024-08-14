@@ -6,6 +6,7 @@ import { useStableCallback } from '@cloudscape-design/component-toolkit/internal
 
 import { fireNonCancelableEvent } from '../../internal/events';
 import { useControllable } from '../../internal/hooks/use-controllable';
+import { usePrevious } from '../../internal/hooks/use-previous';
 import { awsuiPluginsInternal } from '../../internal/plugins/api';
 import { sortByPriority } from '../../internal/plugins/helpers/utils';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
@@ -127,6 +128,7 @@ export function useDrawers(
       changeHandler: 'onChange',
     }
   );
+  const toolsOpenPrevious = usePrevious(toolsProps.toolsOpen);
 
   const [drawerSizes, setDrawerSizes] = useState<Record<string, number>>({});
   const hasOwnDrawers = !!drawers;
@@ -156,7 +158,7 @@ export function useDrawers(
   );
 
   useEffect(() => {
-    if (toolsProps.toolsHide || toolsProps.toolsOpen === undefined) {
+    if (toolsProps.toolsHide || toolsProps.toolsOpen === undefined || toolsProps.toolsOpen === toolsOpenPrevious) {
       return;
     }
 
@@ -166,7 +168,7 @@ export function useDrawers(
     ) {
       onActiveDrawerChange(TOOLS_DRAWER_ID);
     }
-  }, [toolsProps.toolsHide, toolsProps.toolsOpen, activeDrawersIds, onActiveDrawerChange]);
+  }, [toolsProps.toolsHide, toolsProps.toolsOpen, activeDrawersIds, onActiveDrawerChange, toolsOpenPrevious]);
 
   function onActiveDrawerResize({ id, size }: { id: string; size: number }) {
     const currentActiveDrawer = combinedDrawers?.find(drawer => drawer.id === id);
