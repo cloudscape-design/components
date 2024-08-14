@@ -275,7 +275,7 @@ function TokenEditorFields({
           aria-label={`${token.propertyLabel} ${token.operator} ${token.value}`}
           className={styles['token-editor-grid-group']}
         >
-          <div className={styles['token-editor-grid-cell']}>
+          <div className={clsx(styles['token-editor-grid-cell'], isNarrow && styles['token-editor-narrow'])}>
             <TokenEditorField
               isNarrow={isNarrow}
               label={i18nStrings.propertyText}
@@ -287,7 +287,7 @@ function TokenEditorFields({
             </TokenEditorField>
           </div>
 
-          <div className={styles['token-editor-grid-cell']}>
+          <div className={clsx(styles['token-editor-grid-cell'], isNarrow && styles['token-editor-narrow'])}>
             <TokenEditorField
               isNarrow={isNarrow}
               label={i18nStrings.operatorText}
@@ -299,7 +299,7 @@ function TokenEditorFields({
             </TokenEditorField>
           </div>
 
-          <div className={styles['token-editor-grid-cell']}>
+          <div className={clsx(styles['token-editor-grid-cell'], isNarrow && styles['token-editor-narrow'])}>
             <TokenEditorField
               isNarrow={isNarrow}
               label={i18nStrings.valueText}
@@ -312,7 +312,7 @@ function TokenEditorFields({
           </div>
 
           {supportsGroups && (
-            <div className={styles['token-editor-grid-cell']}>
+            <div className={clsx(styles['token-editor-grid-cell'], isNarrow && styles['token-editor-narrow'])}>
               <div className={styles['token-editor-remove-token']}>
                 <TokenEditorRemoveActions
                   isNarrow={isNarrow}
@@ -357,7 +357,7 @@ function TokenEditorField({
   index: number;
 }) {
   return isNarrow ? (
-    <InternalFormField label={label} className={className} data-testindex={index}>
+    <InternalFormField label={label} className={className} stretch={true} data-testindex={index}>
       {children}
     </InternalFormField>
   ) : (

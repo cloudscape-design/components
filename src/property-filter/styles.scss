@@ -128,14 +128,14 @@ $operator-field-width: 120px;
 
     display: grid;
     gap: awsui.$space-s;
-    grid-template-columns: 2fr $operator-field-width 3fr min-content;
+    grid-template-columns: minmax(100px, 2fr) minmax(100px, $operator-field-width) minmax(100px, 3fr) min-content;
 
     &-group {
       display: contents;
     }
 
     &.token-editor-narrow {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(100px, 1fr);
       gap: awsui.$space-m;
 
       > .token-editor-group {
@@ -153,9 +153,11 @@ $operator-field-width: 120px;
     }
 
     &-cell {
-      display: flex;
-      align-items: flex-end;
-      justify-content: flex-end;
+      &:not(.token-editor-narrow) {
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-end;
+      }
     }
   }
 
