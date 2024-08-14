@@ -125,16 +125,15 @@ export function DrawerTriggers({
             onClick={() => onSplitPanelToggle?.()}
             selected={splitPanelToggleProps.active}
             ref={splitPanelFocusRef}
-            // hasTooltip
-            // hasOpenDrawer={activeDrawerId !== null}
-            // isMobile={isMobile}
+            hasTooltip={true}
+            hasOpenDrawer={activeDrawerId !== null}
+            isMobile={isMobile}
+            isForPreviousActiveDrawer={false}
           />
         )}
         {visibleItems.map(item => {
           return (
             <TriggerButton
-              hasTooltip={true}
-              hasOpenDrawer={hasOpenDrawer}
               ariaLabel={item.ariaLabels?.triggerButton}
               ariaExpanded={item.id === activeDrawerId}
               ariaControls={activeDrawerId === item.id ? item.id : undefined}
@@ -146,12 +145,16 @@ export function DrawerTriggers({
               iconName={item.trigger.iconName}
               iconSvg={item.trigger.iconSvg}
               key={item.id}
-              isForPreviousActiveDrawer={previousActiveDrawerId?.current === item.id}
               onClick={() => onActiveDrawerChange?.(activeDrawerId !== item.id ? item.id : null)}
               ref={item.id === previousActiveDrawerId.current ? drawerToggleRef : undefined}
               selected={item.id === activeDrawerId}
               badge={item.badge}
               testId={`awsui-app-layout-trigger-${item.id}`}
+              hasTooltip={true}
+              hasOpenDrawer={hasOpenDrawer}
+              tooltipText={item.ariaLabels?.drawerName}
+              isMobile={isMobile}
+              isForPreviousActiveDrawer={previousActiveDrawerId?.current === item.id}
             />
           );
         })}
