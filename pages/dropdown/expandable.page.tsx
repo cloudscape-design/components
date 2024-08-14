@@ -19,7 +19,12 @@ import { SampleDropdown, SampleModal } from './common';
 import styles from './styles.scss';
 
 const autosuggestOptions = [
-  { value: 'Option 0', tags: ['tag1', 'tag2'], filteringTags: ['bla', 'opt'], description: 'description1' },
+  {
+    value: 'Option 0',
+    tags: ['tag1', 'tag2'],
+    filteringTags: ['bla', 'opt'],
+    description: 'description1 long enough to stretch the dropdown beyond the trigger width',
+  },
   { value: 'Option 1', labelTag: 'This is a label tag' },
   { value: 'Option 2' },
   { value: 'Option 3', description: 'description2' },
@@ -177,89 +182,104 @@ const components = {
   },
 };
 
-type DropdownExpandableContext = React.Context<
-  AppContextType<{
-    componentType: keyof typeof components;
-    expandToViewport: boolean;
-  }>
->;
+interface DemoConfiguration {
+  componentType: keyof typeof components;
+  expandToViewport: boolean;
+}
 
-export default function ButtonDropdownScenario() {
+export type DropdownExpandableContext = React.Context<AppContextType<DemoConfiguration>>;
+
+export function Configurator({
+  componentType,
+  expandToViewport,
+  onChange,
+}: DemoConfiguration & {
+  onChange: (value: Partial<DemoConfiguration>) => void;
+}) {
+  return (
+    <SpaceBetween size="m" direction="horizontal">
+      <select
+        value={componentType}
+        onChange={event => onChange({ componentType: event.target.value as DemoConfiguration['componentType'] })}
+        aria-label="select component"
+      >
+        {Object.keys(components).map(key => (
+          <option key={key} value={key}>
+            {key}
+          </option>
+        ))}
+      </select>
+      <label>
+        <input
+          type="checkbox"
+          checked={expandToViewport}
+          onChange={event => onChange({ expandToViewport: event.target.checked })}
+        />{' '}
+        expandToViewport
+      </label>
+    </SpaceBetween>
+  );
+}
+
+export function DropdownsDemo({ componentType, expandToViewport }: DemoConfiguration) {
+  const Component = components[componentType];
+  return (
+    <div className={styles['wide-container']}>
+      <div className={styles.row}>
+        <Component id="top-left" expandToViewport={expandToViewport} />
+        <Component id="top-right" expandToViewport={expandToViewport} />
+      </div>
+      <div className={styles.row}>
+        <SampleModal id="show-modal">
+          <SpaceBetween direction="horizontal" size="m">
+            <Component id="in-modal" expandToViewport={expandToViewport} />
+            <Popover
+              size="medium"
+              header="Sample popover"
+              content={<Component id="in-modal-and-popover" expandToViewport={expandToViewport} />}
+              dismissAriaLabel="Close"
+              triggerType="custom"
+            >
+              <Button>Show popover</Button>
+            </Popover>
+            <SampleDropdown id="show-in-modal-dropdown">
+              <Component id="in-modal-and-dropdown" expandToViewport={expandToViewport} />
+            </SampleDropdown>
+          </SpaceBetween>
+        </SampleModal>
+
+        <SampleDropdown id="show-dropdown">
+          <Component id="in-dropdown" expandToViewport={expandToViewport} />
+        </SampleDropdown>
+
+        <Popover
+          size="medium"
+          header="Sample popover"
+          content={<Component id="in-popover" expandToViewport={expandToViewport} />}
+          dismissAriaLabel="Close"
+          triggerType="custom"
+        >
+          <Button id="show-popover">Show popover</Button>
+        </Popover>
+      </div>
+      <div className={styles.row}>
+        <Component id="bottom-left" expandToViewport={expandToViewport} />
+        <Component id="bottom-right" expandToViewport={expandToViewport} />
+      </div>
+    </div>
+  );
+}
+
+export default function () {
   const {
     urlParams: { componentType = 'Autosuggest', expandToViewport = true },
     setUrlParams,
   } = useContext(AppContext as DropdownExpandableContext);
-
-  const Component = components[componentType];
-
   return (
     <ScreenshotArea>
       <h1>Expandable dropdown scenarios</h1>
-      <SpaceBetween size="m" direction="horizontal">
-        <select
-          value={componentType}
-          onChange={e => setUrlParams({ componentType: e.target.value as any })}
-          aria-label="select component"
-        >
-          {Object.keys(components).map(key => (
-            <option key={key} value={key}>
-              {key}
-            </option>
-          ))}
-        </select>
-        <label>
-          <input
-            type="checkbox"
-            checked={expandToViewport}
-            onChange={e => setUrlParams({ expandToViewport: !!e.target.checked })}
-          />{' '}
-          expandToViewport
-        </label>
-      </SpaceBetween>
-
-      <div className={styles['wide-container']}>
-        <div className={styles.row}>
-          <Component id="top-left" expandToViewport={expandToViewport} />
-          <Component id="top-right" expandToViewport={expandToViewport} />
-        </div>
-        <div className={styles.row}>
-          <SampleModal id="show-modal">
-            <SpaceBetween direction="horizontal" size="m">
-              <Component id="in-modal" expandToViewport={expandToViewport} />
-              <Popover
-                size="medium"
-                header="Sample popover"
-                content={<Component id="in-modal-and-popover" expandToViewport={expandToViewport} />}
-                dismissAriaLabel="Close"
-                triggerType="custom"
-              >
-                <Button>Show popover</Button>
-              </Popover>
-              <SampleDropdown id="show-in-modal-dropdown">
-                <Component id="in-modal-and-dropdown" expandToViewport={expandToViewport} />
-              </SampleDropdown>
-            </SpaceBetween>
-          </SampleModal>
-
-          <SampleDropdown id="show-dropdown">
-            <Component id="in-dropdown" expandToViewport={expandToViewport} />
-          </SampleDropdown>
-
-          <Popover
-            size="medium"
-            header="Sample popover"
-            content={<Component id="in-popover" expandToViewport={expandToViewport} />}
-            dismissAriaLabel="Close"
-            triggerType="custom"
-          >
-            <Button id="show-popover">Show popover</Button>
-          </Popover>
-        </div>
-        <div className={styles.row}>
-          <Component id="bottom-left" expandToViewport={expandToViewport} />
-          <Component id="bottom-right" expandToViewport={expandToViewport} />
-        </div>
-      </div>
+      <Configurator componentType={componentType} expandToViewport={expandToViewport} onChange={setUrlParams} />
+      <DropdownsDemo componentType={componentType} expandToViewport={expandToViewport} />
     </ScreenshotArea>
   );
 }

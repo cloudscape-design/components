@@ -31,28 +31,35 @@ import { DropdownProps } from './interfaces';
 import styles from './styles.css.js';
 
 interface DropdownContainerProps {
+  triggerRef: React.RefObject<HTMLElement>;
   children?: React.ReactNode;
-  renderWithPortal?: boolean;
+  renderWithPortal: boolean;
   id?: string;
   referrerId?: string;
   open?: boolean;
 }
 
-const DropdownContainer = ({ children, renderWithPortal = false, id, referrerId, open }: DropdownContainerProps) => {
-  if (renderWithPortal) {
-    if (open) {
-      return createPortal(
-        <div id={id} data-awsui-referrer-id={referrerId}>
-          {children}
-        </div>,
-        document.body
-      );
-    } else {
-      return null;
-    }
-  } else {
+const DropdownContainer = ({
+  triggerRef,
+  children,
+  renderWithPortal,
+  id,
+  referrerId,
+  open,
+}: DropdownContainerProps) => {
+  if (!renderWithPortal) {
     return <>{children}</>;
   }
+  if (!open) {
+    return null;
+  }
+  const currentDocument = triggerRef.current?.ownerDocument ?? document;
+  return createPortal(
+    <div id={id} data-awsui-referrer-id={referrerId}>
+      {children}
+    </div>,
+    currentDocument.body
+  );
 };
 
 interface TransitionContentProps {
@@ -431,6 +438,7 @@ const Dropdown = ({
       />
 
       <DropdownContainer
+        triggerRef={triggerRef}
         renderWithPortal={expandToViewport && !interior}
         id={dropdownId}
         referrerId={referrerId}
