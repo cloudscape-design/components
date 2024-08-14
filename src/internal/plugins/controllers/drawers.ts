@@ -1,5 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import type { TrustedHTML } from 'trusted-types/lib';
+
 import debounce from '../../debounce';
 import { NonCancelableEventHandler } from '../../events';
 
@@ -18,7 +20,7 @@ export interface DrawerConfig {
   orderPriority?: number;
   defaultActive?: boolean;
   trigger: {
-    iconSvg: string;
+    iconSvg: string | TrustedHTML;
   };
   mountContent: (container: HTMLElement) => void;
   unmountContent: (container: HTMLElement) => void;
