@@ -75,7 +75,7 @@ function renderNewAppLayout({
         ariaLabels: {},
         activeDrawerId: null,
         drawers: [],
-        drawersFocusRef: { current: null },
+        drawersFocusControl: { refs: { toggle: { current: null } } } as FocusControlState,
         onActiveDrawerChange: () => {},
         hasNavigation: true,
         navigationOpen: false,
