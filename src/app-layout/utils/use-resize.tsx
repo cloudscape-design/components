@@ -23,7 +23,7 @@ export interface DrawerResizeProps {
 }
 
 function useResize(
-  drawerRefObject: React.RefObject<HTMLDivElement>,
+  drawerRefObject: React.RefObject<HTMLDivElement> | undefined,
   {
     activeDrawer,
     activeDrawerSize,
@@ -61,7 +61,7 @@ function useResize(
   const sizeControlProps: SizeControlProps = {
     position: 'side',
     panelRef: drawerRefObject,
-    handleRef: drawersRefs.slider,
+    handleRef: drawersRefs?.slider,
     onResize: setSidePanelWidth,
     hasTransitions: true,
   };
@@ -71,7 +71,7 @@ function useResize(
 
   const resizeHandle = (
     <PanelResizeHandle
-      ref={drawersRefs.slider}
+      ref={drawersRefs?.slider}
       position="side"
       ariaLabel={activeDrawer?.ariaLabels?.resizeHandle}
       ariaValuenow={relativeSize}

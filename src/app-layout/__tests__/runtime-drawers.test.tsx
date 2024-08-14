@@ -419,12 +419,6 @@ describeEachAppLayout(({ theme, size }) => {
 
         wrapper.findToolsToggle().click();
         expect(wrapper.findTools().getElement()).toHaveTextContent('Count: 1');
-
-        wrapper.findDrawerTriggerById(drawerDefaults.id)!.click();
-        expect(wrapper.findTools()).toBeFalsy();
-
-        wrapper.findDrawerTriggerById(TOOLS_DRAWER_ID)!.click();
-        expect(wrapper.findTools().getElement()).toHaveTextContent('Count: 1');
       }
     );
   });

@@ -45,6 +45,11 @@ export default function Drawers() {
     return null;
   }
 
+  const toolsDrawerIndex = activeDrawersIds.findIndex(id => id === TOOLS_DRAWER_ID);
+  const activeDrawersIdsBefore =
+    toolsDrawerIndex === -1 ? activeDrawersIds : activeDrawersIds.slice(0, toolsDrawerIndex);
+  const activeDrawersIdsAfter = toolsDrawerIndex === -1 ? [] : activeDrawersIds.slice(toolsDrawerIndex + 1);
+
   return (
     <div
       className={clsx(styles['drawers-container'], {
@@ -54,15 +59,19 @@ export default function Drawers() {
       })}
     >
       <SplitPanel.Side />
-      {activeDrawersIds
-        ?.filter(drawerId => !!drawers.find(drawer => drawer.id === drawerId))
-        .map(activeDrawerId => <ActiveDrawer key={activeDrawerId} activeDrawerId={activeDrawerId} />)}
+      {activeDrawersIdsBefore.map(activeDrawerId => (
+        <ActiveDrawer key={activeDrawerId} activeDrawerId={activeDrawerId} />
+      ))}
+      <ActiveDrawer key={TOOLS_DRAWER_ID} activeDrawerId={toolsDrawerIndex === -1 ? undefined : TOOLS_DRAWER_ID} />
+      {activeDrawersIdsAfter.map(activeDrawerId => (
+        <ActiveDrawer key={activeDrawerId} activeDrawerId={activeDrawerId} />
+      ))}
       {!isMobile && <DesktopTriggers />}
     </div>
   );
 }
 
-function ActiveDrawer({ activeDrawerId }: { activeDrawerId: string }) {
+function ActiveDrawer({ activeDrawerId }: { activeDrawerId?: string }) {
   const {
     activeDrawersIds,
     ariaLabels,
@@ -97,11 +106,11 @@ function ActiveDrawer({ activeDrawerId }: { activeDrawerId: string }) {
     return result;
   }, [activeDrawerId, activeDrawersIds, drawerSizes, drawers, toolsWidth]);
 
-  const { resizeHandle, drawerSize } = useResize(activeDrawersRefs[activeDrawerId]!, {
+  const { resizeHandle, drawerSize } = useResize(activeDrawersRefs[activeDrawerId ?? ''], {
     onActiveDrawerResize,
     activeDrawerSize: drawerSizes[activeDrawerId ?? ''] ?? activeDrawer?.defaultSize ?? toolsWidth,
     activeDrawer,
-    drawersRefs: drawersRefs[activeDrawerId],
+    drawersRefs: drawersRefs[activeDrawerId ?? ''],
     isToolsOpen,
     drawersMaxWidth: drawersMaxWidth - remainingActiveDrawersWidth,
     drawersMinWidth,
@@ -133,7 +142,7 @@ function ActiveDrawer({ activeDrawerId }: { activeDrawerId: string }) {
       style={{
         ...(!isMobile && drawerSize && { [customCssProps.drawerSize]: `${size}px` }),
       }}
-      ref={activeDrawersRefs[activeDrawerId]}
+      ref={activeDrawersRefs[activeDrawerId ?? '']}
       onBlur={e => {
         if (!e.relatedTarget || !e.currentTarget.contains(e.relatedTarget)) {
           loseDrawersFocus();
@@ -152,9 +161,9 @@ function ActiveDrawer({ activeDrawerId }: { activeDrawerId: string }) {
             formAction="none"
             iconName={isMobile ? 'close' : 'angle-right'}
             onClick={() => {
-              handleDrawersClick(activeDrawerId);
+              activeDrawerId && handleDrawersClick(activeDrawerId);
             }}
-            ref={drawersRefs[activeDrawerId].close}
+            ref={drawersRefs[activeDrawerId ?? '']?.close}
             variant="icon"
           />
         </div>
