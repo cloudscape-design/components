@@ -259,6 +259,7 @@ describe.each([true, false])('StickyHeader=%s', sticky => {
     setupStickyTest(async page => {
       const prevDateColumnWidth = await page.getColumnWidth(4);
       await page.setWindowSize({ ...defaultScreen, width: defaultScreen.width + 200 });
+      await page.pause(1000);
       const dateColumnWidth = await page.getColumnWidth(4);
       expect(dateColumnWidth).toBeGreaterThan(prevDateColumnWidth);
     })
@@ -269,6 +270,7 @@ describe.each([true, false])('StickyHeader=%s', sticky => {
     setupStickyTest(async page => {
       const prevDateColumnWidth = await page.getColumnWidth(4);
       await page.setWindowSize({ ...defaultScreen, width: defaultScreen.width - 200 });
+      await page.pause(1000);
       const dateColumnWidth = await page.getColumnWidth(4);
       expect(dateColumnWidth).toBeLessThan(prevDateColumnWidth);
     })
@@ -287,12 +289,12 @@ describe('sticky header sync', () => {
   test.each([1680, 620])('sticky and real column headers must have identical widths for screen width %s', width =>
     setupTest(
       async page => {
-        await page.setWindowSize({ ...defaultScreen, width });
         const stickyHeaderWidths = await page.getFirstTableHeaderWidths();
         const realHeaderWidths = await page.getLastTableHeaderWidths();
         expect(stickyHeaderWidths).toEqual(realHeaderWidths);
       },
-      { stickyHeader: true }
+      { stickyHeader: true },
+      { width }
     )()
   );
 

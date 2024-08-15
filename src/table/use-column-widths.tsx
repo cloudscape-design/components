@@ -16,25 +16,19 @@ export interface ColumnWidthDefinition {
   width?: string | number;
 }
 
-function readWidths(
+function readWidth(
   getCell: (columnId: PropertyKey) => null | HTMLElement,
-  visibleColumns: readonly ColumnWidthDefinition[]
+  column: ColumnWidthDefinition,
+  isLastColumn: boolean
 ) {
-  const result = new Map<PropertyKey, number>();
-  for (let index = 0; index < visibleColumns.length; index++) {
-    const column = visibleColumns[index];
-    let width = (treatAsNumber(column.width) && (column.width as number)) || 0;
-    const minWidth = (treatAsNumber(column.minWidth) && (column.minWidth as number)) || width || DEFAULT_COLUMN_WIDTH;
-    if (
-      !width && // read width from the DOM if it is missing in the config
-      index !== visibleColumns.length - 1 // skip reading for the last column, because it expands to fully fit the container
-    ) {
-      const colEl = getCell(column.id);
-      width = colEl ? getLogicalBoundingClientRect(colEl).inlineSize : DEFAULT_COLUMN_WIDTH;
-    }
-    result.set(column.id, Math.max(width, minWidth));
+  let width = (treatAsNumber(column.width) && (column.width as number)) || 0;
+  const minWidth = (treatAsNumber(column.minWidth) && (column.minWidth as number)) || width || DEFAULT_COLUMN_WIDTH;
+  // read width from the DOM if it is missing in the config
+  if (!width && !isLastColumn) {
+    const colEl = getCell(column.id);
+    width = colEl ? getLogicalBoundingClientRect(colEl).inlineSize : DEFAULT_COLUMN_WIDTH;
   }
-  return result;
+  return Math.max(width, minWidth);
 }
 
 function updateWidths(
@@ -76,7 +70,7 @@ interface WidthProviderProps {
 }
 
 export function ColumnWidthsProvider({ visibleColumns, resizableColumns, containerRef, children }: WidthProviderProps) {
-  const visibleColumnsRef = useRef<PropertyKey[] | null>(null);
+  const visibleColumnsRef = useRef(new Set<PropertyKey>());
   const containerWidthRef = useRef(0);
   const [columnWidths, setColumnWidths] = useState<null | Map<PropertyKey, number>>(null);
 
@@ -145,8 +139,7 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
     updateColumnWidths();
   });
 
-  // The widths of the dynamically added columns (after the first render) if not set explicitly
-  // will default to the DEFAULT_COLUMN_WIDTH.
+  // Re-calculate widths of any "new" columns - either on first render, or dynamically added
   useEffect(() => {
     updateColumnWidths();
 
@@ -155,33 +148,21 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
     }
     let updated = false;
     const newColumnWidths = new Map(columnWidths);
-    const lastVisible = visibleColumnsRef.current;
-    if (lastVisible) {
-      for (let index = 0; index < visibleColumns.length; index++) {
-        const column = visibleColumns[index];
-        if (!columnWidths?.get(column.id) && lastVisible.indexOf(column.id) === -1) {
-          updated = true;
-          newColumnWidths.set(column.id, (column.width as number) || DEFAULT_COLUMN_WIDTH);
-        }
-      }
-      if (updated) {
-        setColumnWidths(newColumnWidths);
+    for (let index = 0; index < visibleColumns.length; index++) {
+      const column = visibleColumns[index];
+      if (!columnWidths?.get(column.id) && !visibleColumnsRef.current.has(column.id)) {
+        updated = true;
+        newColumnWidths.set(
+          column.id,
+          readWidth(getCell, column, index === visibleColumns.length - 1) || DEFAULT_COLUMN_WIDTH
+        );
       }
     }
-    visibleColumnsRef.current = visibleColumns.map(column => column.id);
+    if (updated) {
+      setColumnWidths(newColumnWidths);
+    }
+    visibleColumnsRef.current = new Set(visibleColumns.map(column => column.id));
   }, [columnWidths, resizableColumns, visibleColumns, updateColumnWidths]);
-
-  // Read the actual column widths after the first render to employ the browser defaults for
-  // those columns without explicit width.
-  useEffect(() => {
-    if (!resizableColumns) {
-      return;
-    }
-    setColumnWidths(() => readWidths(getCell, visibleColumns));
-    // This code is intended to run only at the first render (or when rendering a column that was not previously rendered)
-    // and should otherwise not re-run when table props change
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [visibleColumns]);
 
   function updateColumn(columnId: PropertyKey, newWidth: number) {
     setColumnWidths(columnWidths => updateWidths(visibleColumns, columnWidths ?? new Map(), newWidth, columnId));
