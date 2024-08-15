@@ -44,6 +44,9 @@ interface TokenProps {
   token: InternalToken;
 }
 
+const emptyHandler = () => {};
+const emptyLabel = () => '';
+
 export const TokenButton = ({
   token,
   operation = 'and',
@@ -90,13 +93,27 @@ export const TokenButton = ({
       disabled={disabled}
       editorContent={
         <TokenEditor
+          supportsGroups={false}
           filteringProperties={filteringProperties}
           filteringOptions={filteringOptions}
-          temporaryToken={temporaryToken}
-          onChangeTemporaryToken={setTemporaryToken}
+          tempGroup={[temporaryToken]}
+          onChangeTempGroup={newGroup => setTemporaryToken(newGroup[0])}
+          // This property will be needed when supportsGroups={true}
+          standaloneTokens={[]}
+          // This property will be needed when supportsGroups={true}
+          onChangeStandalone={emptyHandler}
           asyncProps={asyncProps}
           onLoadItems={onLoadItems}
-          i18nStrings={i18nStrings}
+          i18nStrings={{
+            ...i18nStrings,
+            // These properties will be needed when supportsGroups={true}
+            tokenEditorTokenActionsLabel: emptyLabel,
+            tokenEditorTokenRemoveLabel: emptyLabel,
+            tokenEditorTokenRemoveFromGroupLabel: emptyLabel,
+            tokenEditorAddNewTokenLabel: '',
+            tokenEditorAddTokenActionsLabel: '',
+            tokenEditorAddExistingTokenLabel: emptyLabel,
+          }}
           asyncProperties={asyncProperties}
           customGroupsText={customGroupsText}
           freeTextFiltering={freeTextFiltering}
