@@ -10,10 +10,7 @@ import { splitItems } from '../../drawer/drawers-helpers';
 import OverflowMenu from '../../drawer/overflow-menu';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../../interfaces';
 import { TOOLS_DRAWER_ID } from '../../utils/use-drawers';
-import {
-  Focusable,
-  // , FocusControlState
-} from '../../utils/use-focus-control';
+import { Focusable } from '../../utils/use-focus-control';
 import TriggerButton from './trigger-button';
 
 import splitPanelTestUtilStyles from '../../../split-panel/test-classes/styles.css.js';
@@ -30,16 +27,14 @@ export interface SplitPanelToggleProps {
 
 interface DrawerTriggersProps {
   ariaLabels: AppLayoutPropsWithDefaults['ariaLabels'];
-
   activeDrawerId: string | null;
-
   drawers: ReadonlyArray<AppLayoutProps.Drawer>;
   drawerToggleRef: any; //React.Ref<Focusable> | undefined;
-  // drawerRef: React.Ref<Focusable> | undefined;
-
-  // drawersFocusControl?: FocusControlState;
   splitPanelToggleProps: SplitPanelToggleProps | undefined;
-  splitPanelFocusRef: RefObject<Focusable> | undefined;
+  splitPanelToggleRef: RefObject<Focusable> | undefined;
+  splitPanelResizeRef: RefObject<Focusable> | undefined;
+  splitPanelOpen?: boolean;
+  splitPanelPosition?: AppLayoutProps.SplitPanelPreferences['position'];
   onSplitPanelToggle: (() => void) | undefined;
   onActiveDrawerChange?: (drawerId: string | null) => void;
 }
@@ -50,31 +45,59 @@ export function DrawerTriggers({
   drawers,
   drawerToggleRef,
   onActiveDrawerChange,
-  splitPanelFocusRef,
+  splitPanelToggleRef,
+  splitPanelResizeRef,
+  splitPanelOpen,
+  splitPanelPosition = 'bottom',
   splitPanelToggleProps,
   onSplitPanelToggle,
 }: DrawerTriggersProps) {
   const isMobile = useMobile();
+  const [splitPanelInitiallyOpened, setSplitPanelInitiallyOpened] = React.useState(false);
   const hasMultipleTriggers = drawers.length > 1;
 
   const previousActiveDrawerId = useRef(activeDrawerId);
+
   const [containerWidth, triggersContainerRef] = useContainerQuery(rect => rect.contentBoxWidth);
-  const hasOpenDrawer = !!activeDrawerId && activeDrawerId !== null;
-
-  console.log({ drawerToggleRef, activeDrawerId, previousActiveDrawerId });
-  useEffect(() => {
-    if (activeDrawerId === null && previousActiveDrawerId && previousActiveDrawerId.current) {
-      console.log('drawer closed', { activeDrawerId, drawerToggleRef, previousActiveDrawerId });
-      // drawerToggleRef.
-    }
-  }, [activeDrawerId, previousActiveDrawerId, drawerToggleRef]);
-
-  if (!drawers && !splitPanelToggleProps) {
-    return null;
-  }
 
   if (activeDrawerId) {
     previousActiveDrawerId.current = activeDrawerId;
+  }
+
+  useEffect(() => {
+    const focusDrawerToggle = () => {
+      if (activeDrawerId === null && previousActiveDrawerId && previousActiveDrawerId.current) {
+        drawerToggleRef?.current?.focus();
+      }
+    };
+
+    focusDrawerToggle();
+  }, [activeDrawerId, previousActiveDrawerId, drawerToggleRef]);
+
+  useEffect(() => {
+    const focusSplitPanel = () => {
+      if (splitPanelInitiallyOpened) {
+        if (splitPanelToggleProps?.active && splitPanelOpen && splitPanelResizeRef?.current) {
+          splitPanelResizeRef.current.focus();
+        } else if (!splitPanelOpen && splitPanelToggleRef?.current) {
+          splitPanelToggleRef?.current?.focus();
+        }
+      } else if (splitPanelOpen) {
+        setSplitPanelInitiallyOpened(true);
+      }
+    };
+
+    focusSplitPanel();
+  }, [
+    splitPanelOpen,
+    splitPanelInitiallyOpened,
+    splitPanelResizeRef,
+    splitPanelToggleRef,
+    splitPanelToggleProps?.active,
+  ]);
+
+  if (!drawers && !splitPanelToggleProps) {
+    return null;
   }
 
   const getIndexOfOverflowItem = () => {
@@ -100,6 +123,9 @@ export function DrawerTriggers({
   const overflowMenuHasBadge = !!overflowItems.find(item => item.badge);
   const toolsOnlyMode = drawers.length === 1 && drawers[0].id === TOOLS_DRAWER_ID;
 
+  const hasOpenDrawer =
+    (!!activeDrawerId && activeDrawerId !== null) || (splitPanelPosition === 'side' && splitPanelOpen);
+
   return (
     <aside
       className={styles['drawers-desktop-triggers-container']}
@@ -124,11 +150,11 @@ export function DrawerTriggers({
             iconName={splitPanelToggleProps.position === 'side' ? 'view-vertical' : 'view-horizontal'}
             onClick={() => onSplitPanelToggle?.()}
             selected={splitPanelToggleProps.active}
-            ref={splitPanelFocusRef}
+            ref={splitPanelToggleRef}
             hasTooltip={true}
-            hasOpenDrawer={activeDrawerId !== null}
+            hideTooltipOnFocus={splitPanelOpen && !!splitPanelResizeRef?.current}
+            hasOpenDrawer={splitPanelOpen}
             isMobile={isMobile}
-            isForPreviousActiveDrawer={false}
           />
         )}
         {visibleItems.map(item => {
@@ -150,11 +176,13 @@ export function DrawerTriggers({
               selected={item.id === activeDrawerId}
               badge={item.badge}
               testId={`awsui-app-layout-trigger-${item.id}`}
+              hideTooltipOnFocus={
+                activeDrawerId === null && previousActiveDrawerId && item.id === previousActiveDrawerId.current
+              }
               hasTooltip={true}
               hasOpenDrawer={hasOpenDrawer}
               tooltipText={item.ariaLabels?.drawerName}
               isMobile={isMobile}
-              isForPreviousActiveDrawer={previousActiveDrawerId?.current === item.id}
             />
           );
         })}

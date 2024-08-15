@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { InternalButton } from '../../../button/internal';
@@ -52,15 +52,15 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
     onResize: size => onActiveDrawerResize({ id: activeDrawerId!, size }),
   });
 
-  // useEffect(() => {
-  //   if (activeDrawer) {
-  //     if (activeDrawer.resizable) {
-  //       drawersFocusControl.refs.slider.current?.focus();
-  //     } else {
-  //       drawersFocusControl.refs.close.current?.focus();
-  //     }
-  //   }
-  // }, [activeDrawer, drawersFocusControl.refs.slider, drawersFocusControl.refs.close]);
+  useEffect(() => {
+    const { resizable } = activeDrawer || {};
+    const { slider, close } = drawersFocusControl?.refs || {};
+
+    if (activeDrawer) {
+      const focusElement = resizable ? slider?.current : close?.current;
+      focusElement?.focus();
+    }
+  }, [activeDrawer, drawersFocusControl?.refs]);
 
   return (
     <aside

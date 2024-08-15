@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { Ref, useCallback, useEffect, useState } from 'react';
+import React, { Ref, useEffect, useMemo, useState } from 'react';
 import clsx from 'clsx';
 
 import { ButtonProps } from '../../../../button/interfaces';
@@ -52,10 +52,6 @@ export interface TriggerButtonProps {
   badge?: boolean;
   highContrastHeader?: boolean;
   /**
-   * set to true if the trigger button was used to open the last active drawer
-   */
-  isForPreviousActiveDrawer?: boolean;
-  /**
    * If the AppLayout has a drawer that is open
    * Used to hide tooltips in certian conditions
    */
@@ -65,6 +61,24 @@ export interface TriggerButtonProps {
    * Used to determine what and where to render tooltips
    */
   isMobile?: boolean;
+  /**
+   * @prop {boolean} [disableTooltipOnProgrammaticFocus]
+   * Determines whether the tooltip should be hidden or disabled when the button
+   * receives focus due to a programmatic event or trigger, rather than user
+   * interaction (e.g., mouse hover or keyboard focus).
+   *
+   * When set to `true`, the tooltip will not be displayed if the button is focused
+   * programmatically, for example, by calling the `focus()` method on the button
+   * element from JavaScript code.
+   *
+   * This prop can be useful in situations where you want to prevent the tooltip
+   * from appearing when the focus is set on the button as a result of some
+   * programmatic logic or event, rather than user-initiated actions.
+   *
+   * If not provided or set to `false`, the tooltip will behave as usual and
+   * be displayed on both user-initiated focus and programmatic focus events.
+   */
+  hideTooltipOnFocus?: boolean;
 }
 
 function TriggerButton(
@@ -77,13 +91,13 @@ function TriggerButton(
     ariaControls,
     onClick,
     hasTooltip = false,
+    hideTooltipOnFocus = false,
     tooltipText,
     testId,
     disabled = false,
     badge,
     selected = false,
     highContrastHeader,
-    isForPreviousActiveDrawer = false,
     hasOpenDrawer = false,
     isMobile = false,
   }: TriggerButtonProps,
@@ -92,66 +106,45 @@ function TriggerButton(
   const containerRef = React.useRef(null);
   const tooltipValue = tooltipText ? tooltipText : ariaLabel ? ariaLabel : '';
   const [showTooltip, setShowTooltip] = useState<boolean>(false);
+  //there is an override to used to hide the tooltip on certan programatic focus events
+  const [showTooltipOverride, setShowTooltipOverride] = useState<boolean>(false);
 
   const onShowTooltipSoft = (show: boolean) => {
+    setShowTooltipOverride(false);
     setShowTooltip(show);
   };
 
   const onShowTooltipHard = (show: boolean) => {
-    setShowTooltip(show);
+    if (!setShowTooltipOverride) {
+      setShowTooltip(show);
+    }
   };
 
-  /**
-   * Takes the drawer being closed and the data-shift-focus value from a close button on that drawer that persists
-   * on the event relatedTarget to determine not to show the tooltip
-   * @param event
-   */
-  const handleFocus = useCallback(
-    (event: KeyboardEvent | PointerEvent) => {
-      // Create a more descriptive variable name for the event object
-      const eventWithRelatedTarget = event as any;
-
-      // Extract the condition for showing the tooltip hard into a separate function
-      const shouldShowTooltipHard = () => {
-        return eventWithRelatedTarget?.relatedTarget?.dataset?.shiftFocus !== 'last-opened-toolbar-trigger-button';
-      };
-
-      // Extract the condition for mobile devices and open drawers into a separate function
-      const isMobileWithOpenDrawerCondition = () => {
-        return isMobile && (!hasOpenDrawer || isForPreviousActiveDrawer);
-      };
-
-      // Handle the logic based on the extracted conditions
-      if (isMobileWithOpenDrawerCondition()) {
-        if (shouldShowTooltipHard()) {
-          onShowTooltipHard(true);
-        } else {
-          // This removes any tooltip that is already showing
-          onShowTooltipHard(false);
-        }
-      } else if (shouldShowTooltipHard()) {
-        onShowTooltipHard(true);
-      } else {
-        // This removes any tooltip that is already showing
-        onShowTooltipHard(false);
-      }
-    },
-    [
-      // To assert reference equality check
-      isMobile,
-      hasOpenDrawer,
-      isForPreviousActiveDrawer,
-    ]
-  );
-
   const handleOnClick = () => {
+    setShowTooltipOverride(false);
     onShowTooltipHard(false);
     onClick();
   };
 
+  const handleOnBlur = () => {
+    setShowTooltipOverride(false);
+    setShowTooltip(false);
+  };
+
+  const handleOnFocus = ({ relatedTarget }: Partial<FocusEvent>) => {
+    if (relatedTarget !== null) {
+      setShowTooltip(true);
+    }
+  };
+
+  const renderTooltip = useMemo(() => {
+    return hasTooltip && showTooltip && !!containerRef?.current && tooltipValue && !(isMobile && hasOpenDrawer);
+  }, [hasTooltip, showTooltip, containerRef, tooltipValue, isMobile, hasOpenDrawer]);
+
   useEffect(() => {
     if (hasTooltip && tooltipValue) {
       const close = () => {
+        setShowTooltipOverride(false);
         setShowTooltip(false);
       };
 
@@ -178,14 +171,20 @@ function TriggerButton(
     }
   }, [containerRef, hasTooltip, tooltipValue]);
 
+  useEffect(() => {
+    if (hideTooltipOnFocus && !showTooltipOverride) {
+      setShowTooltipOverride(true);
+    }
+  }, [hideTooltipOnFocus, showTooltipOverride]);
+
   return (
     <div
       ref={containerRef}
       {...(hasTooltip && {
         onPointerEnter: () => onShowTooltipSoft(true),
         onPointerLeave: () => onShowTooltipSoft(false),
-        onFocus: e => handleFocus(e as any),
-        onBlur: () => onShowTooltipHard(false),
+        onFocus: e => handleOnFocus(e),
+        onBlur: () => handleOnBlur(),
       })}
       data-testid={`${testId ? `${testId}-wrapper` : 'awsui-app-layout-trigger-wrapper'}${hasTooltip ? '-with-possible-tooltip' : ''}`}
       className={clsx(styles['trigger-wrapper'], !highContrastHeader && styles['remove-high-contrast-header'])}
@@ -215,7 +214,7 @@ function TriggerButton(
       </button>
       {badge && <div className={styles.dot} />}
 
-      {showTooltip && containerRef && containerRef.current && tooltipValue && !(isMobile && hasOpenDrawer) && (
+      {renderTooltip && (
         <Tooltip
           trackRef={containerRef}
           value={tooltipValue}

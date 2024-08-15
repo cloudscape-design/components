@@ -25,7 +25,8 @@ interface SharedProps {
   drawersFocusControl: FocusControlState;
   splitPanel: React.ReactNode;
   splitPanelToggleProps: SplitPanelToggleProps;
-  splitPanelFocusRef: React.Ref<Focusable> | undefined;
+  splitPanelToggleRef: React.Ref<Focusable> | undefined;
+  splitPanelResizeRef: React.Ref<Focusable> | undefined;
   onSplitPanelToggle: () => void;
 }
 
@@ -48,7 +49,6 @@ function mergeProps(ownProps: SharedProps, additionalProps: ReadonlyArray<Partia
     if (props.drawers && !checkAlreadyExists(!!toolbar.drawers, 'tools or drawers')) {
       toolbar.drawers = props.drawers;
       toolbar.activeDrawerId = props.activeDrawerId;
-      // toolbar.drawersFocusRef = props.drawersFocusRef;
       toolbar.onActiveDrawerChange = props.onActiveDrawerChange;
     }
     if (props.navigation && !checkAlreadyExists(!!toolbar.hasNavigation, 'navigation')) {
@@ -59,7 +59,8 @@ function mergeProps(ownProps: SharedProps, additionalProps: ReadonlyArray<Partia
     }
     if (props.splitPanel && !checkAlreadyExists(!!toolbar.hasSplitPanel, 'splitPanel')) {
       toolbar.hasSplitPanel = true;
-      toolbar.splitPanelFocusRef = props.splitPanelFocusRef;
+      toolbar.splitPanelToggleRef = props.splitPanelToggleRef;
+      toolbar.splitPanelResizeRef = props.splitPanelResizeRef;
       toolbar.splitPanelToggleProps = props.splitPanelToggleProps;
       toolbar.onSplitPanelToggle = props.onSplitPanelToggle;
     }

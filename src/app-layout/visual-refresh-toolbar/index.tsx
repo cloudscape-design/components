@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useImperativeHandle, useState } from 'react';
+import React, { useCallback, useImperativeHandle, useState } from 'react';
 
 import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
@@ -72,15 +72,19 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     const [toolbarHeight, setToolbarHeight] = useState(0);
     const [notificationsHeight, setNotificationsHeight] = useState(0);
 
-    const onNavigationToggle = (open: boolean) => {
-      fireNonCancelableEvent(onNavigationChange, { open });
-    };
+    const onNavigationToggle = useCallback(
+      (open: boolean) => {
+        fireNonCancelableEvent(onNavigationChange, { open });
+      },
+      [onNavigationChange]
+    );
 
     const [toolsOpen = false, setToolsOpen] = useControllable(controlledToolsOpen, onToolsChange, false, {
       componentName: 'AppLayout',
       controlledProp: 'toolsOpen',
       changeHandler: 'onToolsChange',
     });
+
     const onToolsToggle = (open: boolean) => {
       setToolsOpen(open);
       drawersFocusControl.setFocus();
@@ -160,13 +164,32 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     const navigationFocusControl = useFocusControl(navigationOpen);
     const splitPanelFocusControl = useSplitPanelFocusControl([splitPanelPreferences, splitPanelOpen]);
 
-    useImperativeHandle(forwardRef, () => ({
-      closeNavigationIfNecessary: () => isMobile && onNavigationToggle(false),
-      openTools: () => onToolsToggle(true),
-      focusToolsClose: () => drawersFocusControl.setFocus(true),
-      focusActiveDrawer: () => drawersFocusControl.setFocus(true),
-      focusSplitPanel: () => splitPanelFocusControl.refs.slider.current?.focus(),
-    }));
+    const useImperativeHandleDependencies = [
+      isMobile,
+      onNavigationToggle,
+      onToolsToggle,
+      drawersFocusControl,
+      splitPanelFocusControl.refs.slider,
+    ];
+
+    /**
+     * The useImperativeHandle hook in conjunction with the forwardRef function
+     * in the AppLayout component definition expose the following callable
+     * functions to component consumers when they put a ref as a property on
+     * their component implementation.
+     */
+    useImperativeHandle(
+      forwardRef,
+      () => ({
+        closeNavigationIfNecessary: () => isMobile && onNavigationToggle(false),
+        openTools: () => onToolsToggle(true),
+        focusToolsClose: () => drawersFocusControl.setFocus(true),
+        focusActiveDrawer: () => drawersFocusControl.setFocus(true),
+        focusSplitPanel: () => splitPanelFocusControl.refs.slider.current?.focus(),
+      }),
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      useImperativeHandleDependencies
+    );
 
     const resolvedNavigation = navigationHide ? null : navigation ?? <></>;
     const { maxDrawerSize, maxSplitPanelSize, splitPanelForcedPosition, splitPanelPosition } = computeHorizontalLayout({
@@ -201,7 +224,8 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
         controlId: splitPanelControlId,
         position: splitPanelPosition,
       },
-      splitPanelFocusRef: splitPanelFocusControl.refs.toggle,
+      splitPanelToggleRef: splitPanelFocusControl.refs.toggle,
+      splitPanelResizeRef: splitPanelFocusControl.refs.slider,
       onSplitPanelToggle: onSplitPanelToggleHandler,
     });
 

@@ -77,6 +77,7 @@ handleSplitPanelMaxWidth function in the context.
 
   @include focus-visible.when-visible {
     @include styles.focus-highlight(3px);
+    color: red;
   }
 
   &:focus {

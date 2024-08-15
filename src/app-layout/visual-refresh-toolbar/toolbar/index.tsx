@@ -33,14 +33,13 @@ export interface ToolbarProps {
   // split panel
   hasSplitPanel?: boolean;
   splitPanelToggleProps?: SplitPanelToggleProps;
-  splitPanelFocusRef?: React.Ref<Focusable> | null;
+  splitPanelToggleRef?: React.Ref<Focusable> | null;
+  splitPanelResizeRef?: React.Ref<Focusable> | null;
   onSplitPanelToggle?: () => void;
 
   // drawers
   activeDrawerId?: string | null;
   drawers?: ReadonlyArray<AppLayoutProps.Drawer>;
-  //needs focus control for both the drawer and the drawer triggers
-  // drawersFocusRef?: React.Ref<Focusable>;
   drawersFocusControl?: FocusControlState;
   onActiveDrawerChange?: (drawerId: string | null) => void;
 }
@@ -64,7 +63,8 @@ function convertLegacyProps(toolbarProps: ToolbarProps, legacyProps: AppLayoutIn
     navigationFocusRef: toolbarProps.navigationFocusRef ?? legacyProps.navigationFocusControl?.refs.toggle,
     onNavigationToggle: toolbarProps.onNavigationToggle ?? legacyProps.onNavigationToggle,
     hasSplitPanel: toolbarProps.hasSplitPanel ?? true,
-    splitPanelFocusRef: legacyProps.splitPanelFocusControl?.refs.toggle,
+    splitPanelToggleRef: legacyProps.splitPanelFocusControl?.refs.toggle,
+    splitPanelResizeRef: legacyProps.splitPanelFocusControl?.refs.slider,
     splitPanelToggleProps: toolbarProps.splitPanelToggleProps ?? {
       ...legacyProps.splitPanelToggleConfig,
       active: legacyProps.splitPanelOpen,
@@ -87,6 +87,8 @@ export function AppLayoutToolbarImplementation({
     verticalOffsets,
     isMobile,
     toolbarState,
+    splitPanelOpen,
+    splitPanelPosition,
     setToolbarState,
     setToolbarHeight,
   } = appLayoutInternals;
@@ -94,7 +96,6 @@ export function AppLayoutToolbarImplementation({
     ariaLabels,
     activeDrawerId,
     drawers,
-    //drawersFocusRef,
     drawersFocusControl,
     onActiveDrawerChange,
     hasNavigation,
@@ -102,7 +103,8 @@ export function AppLayoutToolbarImplementation({
     navigationFocusRef,
     onNavigationToggle,
     hasSplitPanel,
-    splitPanelFocusRef,
+    splitPanelToggleRef,
+    splitPanelResizeRef,
     splitPanelToggleProps,
     onSplitPanelToggle,
   } = convertLegacyProps(toolbarProps, appLayoutInternals);
@@ -185,7 +187,10 @@ export function AppLayoutToolbarImplementation({
               drawerToggleRef={drawersFocusControl?.refs.toggle}
               onActiveDrawerChange={onActiveDrawerChange}
               splitPanelToggleProps={splitPanelToggleProps?.displayed ? splitPanelToggleProps : undefined}
-              splitPanelFocusRef={splitPanelFocusRef as any}
+              splitPanelToggleRef={splitPanelToggleRef as any}
+              splitPanelResizeRef={splitPanelResizeRef as any}
+              splitPanelOpen={splitPanelOpen}
+              splitPanelPosition={splitPanelPosition}
               onSplitPanelToggle={onSplitPanelToggle}
             />
           </span>
