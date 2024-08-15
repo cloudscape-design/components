@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef } from 'react';
+import React, { Ref, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
@@ -25,7 +25,7 @@ export interface ToolbarProps {
   hasNavigation?: boolean;
   navigationOpen?: boolean;
   onNavigationToggle?: (open: boolean) => void;
-  navigationFocusRef?: React.Ref<Focusable>;
+  navigationFocusRef?: Ref<Focusable>;
 
   // breadcrumbs
   hasBreadcrumbsPortal?: boolean;
@@ -33,8 +33,8 @@ export interface ToolbarProps {
   // split panel
   hasSplitPanel?: boolean;
   splitPanelToggleProps?: SplitPanelToggleProps;
-  splitPanelToggleRef?: React.Ref<Focusable> | null;
-  splitPanelResizeRef?: React.Ref<Focusable> | null;
+  splitPanelToggleRef?: Ref<Focusable> | null;
+  splitPanelResizeRef?: Ref<Focusable> | null;
   onSplitPanelToggle?: () => void;
 
   // drawers

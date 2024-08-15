@@ -120,6 +120,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     );
 
     const onSplitPanelToggleHandler = () => {
+      splitPanelFocusControl.setLastInteraction({ type: splitPanelOpen ? 'close' : 'open' });
       setSplitPanelOpen(!splitPanelOpen);
       fireNonCancelableEvent(onSplitPanelToggle, { open: !splitPanelOpen });
     };
@@ -171,7 +172,6 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       drawersFocusControl,
       splitPanelFocusControl.refs.slider,
     ];
-
     /**
      * The useImperativeHandle hook in conjunction with the forwardRef function
      * in the AppLayout component definition expose the following callable

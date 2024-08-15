@@ -29,7 +29,7 @@ interface DrawerTriggersProps {
   ariaLabels: AppLayoutPropsWithDefaults['ariaLabels'];
   activeDrawerId: string | null;
   drawers: ReadonlyArray<AppLayoutProps.Drawer>;
-  drawerToggleRef: any; //React.Ref<Focusable> | undefined;
+  drawerToggleRef: RefObject<Focusable> | undefined;
   splitPanelToggleProps: SplitPanelToggleProps | undefined;
   splitPanelToggleRef: RefObject<Focusable> | undefined;
   splitPanelResizeRef: RefObject<Focusable> | undefined;
@@ -66,7 +66,12 @@ export function DrawerTriggers({
 
   useEffect(() => {
     const focusDrawerToggle = () => {
-      if (activeDrawerId === null && previousActiveDrawerId && previousActiveDrawerId.current) {
+      if (
+        activeDrawerId === null &&
+        previousActiveDrawerId &&
+        previousActiveDrawerId.current &&
+        drawerToggleRef?.current
+      ) {
         drawerToggleRef?.current?.focus();
       }
     };
@@ -76,10 +81,21 @@ export function DrawerTriggers({
 
   useEffect(() => {
     const focusSplitPanel = () => {
+      //for debugging
+      console.log('splitpanelfocusfired');
+      console.log({
+        splitPanelOpen,
+        splitPanelInitiallyOpened,
+        splitPanelResizeRef,
+        splitPanelToggleRef,
+        splitPanelToggleProps,
+      });
       if (splitPanelInitiallyOpened) {
         if (splitPanelToggleProps?.active && splitPanelOpen && splitPanelResizeRef?.current) {
           splitPanelResizeRef.current.focus();
         } else if (!splitPanelOpen && splitPanelToggleRef?.current) {
+          //does not return focus when bottom position nor when mobile
+          console.log('should focus. issue with ref', splitPanelToggleRef?.current);
           splitPanelToggleRef?.current?.focus();
         }
       } else if (splitPanelOpen) {
@@ -93,6 +109,7 @@ export function DrawerTriggers({
     splitPanelInitiallyOpened,
     splitPanelResizeRef,
     splitPanelToggleRef,
+    splitPanelToggleProps,
     splitPanelToggleProps?.active,
   ]);
 
@@ -153,7 +170,7 @@ export function DrawerTriggers({
             ref={splitPanelToggleRef}
             hasTooltip={true}
             hideTooltipOnFocus={splitPanelOpen && !!splitPanelResizeRef?.current}
-            hasOpenDrawer={splitPanelOpen}
+            hasOpenDrawer={splitPanelPosition === 'bottom' && splitPanelOpen}
             isMobile={isMobile}
           />
         )}

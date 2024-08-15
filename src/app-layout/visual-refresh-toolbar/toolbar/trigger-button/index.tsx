@@ -82,7 +82,30 @@ export interface TriggerButtonProps {
 }
 
 function TriggerButton(
-  {
+  // {
+  //   ariaLabel,
+  //   className,
+  //   iconName,
+  //   iconSvg,
+  //   ariaExpanded,
+  //   ariaControls,
+  //   onClick,
+  //   hasTooltip = false,
+  //   hideTooltipOnFocus = false,
+  //   tooltipText,
+  //   testId,
+  //   disabled = false,
+  //   badge,
+  //   selected = false,
+  //   highContrastHeader,
+  //   hasOpenDrawer = false,
+  //   isMobile = false,
+  // }: TriggerButtonProps,
+  props: TriggerButtonProps,
+  ref: React.Ref<ButtonProps.Ref>
+) {
+  console.log(props);
+  const {
     ariaLabel,
     className,
     iconName,
@@ -100,9 +123,7 @@ function TriggerButton(
     highContrastHeader,
     hasOpenDrawer = false,
     isMobile = false,
-  }: TriggerButtonProps,
-  ref: React.Ref<ButtonProps.Ref>
-) {
+  } = props;
   const containerRef = React.useRef(null);
   const tooltipValue = tooltipText ? tooltipText : ariaLabel ? ariaLabel : '';
   const [showTooltip, setShowTooltip] = useState<boolean>(false);
@@ -132,6 +153,7 @@ function TriggerButton(
   };
 
   const handleOnFocus = ({ relatedTarget }: Partial<FocusEvent>) => {
+    console.log('focus recieved');
     if (relatedTarget !== null) {
       setShowTooltip(true);
     }
