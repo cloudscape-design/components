@@ -802,13 +802,17 @@ test('group options can have description, label tag, tags, disabled reason', () 
   );
   wrapper.openDropdown();
 
+  // Moving focus to the second group to make the disabled reason visible.
+  wrapper.findTrigger()!.keydown(KeyCode.down);
+  wrapper.findDropdown().find('ul')!.keydown(KeyCode.down);
+  wrapper.findDropdown().find('ul')!.keydown(KeyCode.down);
+
   const groupOption = wrapper.findDropdown().findOptionByValue('group2')!;
-  const groupOptionByIndex = wrapper.findDropdown()!.find('[data-group-index="2"]')!;
 
   expect(groupOption.findLabel()!.getElement().textContent).toBe('Second category');
   expect(groupOption.findDescription()!.getElement().textContent).toBe('Description');
   expect(groupOption.findLabelTag()!.getElement().textContent).toBe('Label tag');
   expect(groupOption.findTags()![0].getElement().textContent).toBe('Tag 1');
   expect(groupOption.findTags()![1].getElement().textContent).toBe('Tag 2');
-  expect(groupOptionByIndex.find('span[hidden]')!.getElement()).toHaveTextContent('Disabled reason');
+  expect(groupOption.findDisabledReason()!.getElement().textContent).toBe('Disabled reason');
 });
