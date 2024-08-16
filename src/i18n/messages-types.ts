@@ -253,10 +253,13 @@ export interface I18nFormatArgTypes {
     "i18nStrings.operatorText": never;
     "i18nStrings.operatorsText": never;
     "i18nStrings.propertyText": never;
+    "i18nStrings.removeTokenButtonAriaLabel": {
+      "token__formattedText": string | number;
+    }
     "i18nStrings.tokenLimitShowFewer": never;
     "i18nStrings.tokenLimitShowMore": never;
     "i18nStrings.valueText": never;
-    "i18nStrings.removeTokenButtonAriaLabel": {
+    "i18nStrings.formatToken": {
       "token__operator": string;
       "token__propertyLabel": string | number;
       "token__value": string | number;

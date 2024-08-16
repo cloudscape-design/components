@@ -8,6 +8,8 @@ import AppLayout from '~components/app-layout';
 import Box from '~components/box';
 import Button from '~components/button';
 import Header from '~components/header';
+import I18nProvider from '~components/i18n';
+import messages from '~components/i18n/messages/all.en';
 import PropertyFilter from '~components/property-filter';
 import SplitPanel from '~components/split-panel';
 import Table from '~components/table';
@@ -16,7 +18,7 @@ import { Breadcrumbs, Navigation, Tools } from '../app-layout/utils/content-bloc
 import labels from '../app-layout/utils/labels';
 import * as toolsContent from '../app-layout/utils/tools-content';
 import ScreenshotArea from '../utils/screenshot-area';
-import { columnDefinitions, filteringProperties, i18nStrings } from './common-props';
+import { columnDefinitions, filteringProperties } from './common-props';
 import { allItems, states, TableItem } from './table.data';
 
 export default function () {
@@ -53,53 +55,54 @@ export default function () {
 
   return (
     <ScreenshotArea gutters={false}>
-      <AppLayout
-        ariaLabels={labels}
-        breadcrumbs={<Breadcrumbs />}
-        navigation={<Navigation />}
-        tools={<Tools>{toolsContent.long}</Tools>}
-        splitPanelOpen={true}
-        splitPanel={
-          <SplitPanel
-            header="Split panel header"
-            i18nStrings={{
-              preferencesTitle: 'Preferences',
-              preferencesPositionLabel: 'Split panel position',
-              preferencesPositionDescription: 'Choose the default split panel position for the service.',
-              preferencesPositionSide: 'Side',
-              preferencesPositionBottom: 'Bottom',
-              preferencesConfirm: 'Confirm',
-              preferencesCancel: 'Cancel',
-              closeButtonAriaLabel: 'Close panel',
-              openButtonAriaLabel: 'Open panel',
-              resizeHandleAriaLabel: 'Slider',
-            }}
-          >
-            {' '}
-          </SplitPanel>
-        }
-        content={
-          <Table<TableItem>
-            className="main-content"
-            stickyHeader={true}
-            header={<Header headingTagOverride={'h1'}>Instances</Header>}
-            items={items}
-            {...collectionProps}
-            filter={
-              <PropertyFilter
-                {...propertyFilterProps}
-                filteringOptions={filteringOptions}
-                virtualScroll={true}
-                countText={`${items.length} matches`}
-                i18nStrings={i18nStrings}
-                expandToViewport={true}
-                filteringEmpty="No properties"
-              />
-            }
-            columnDefinitions={columnDefinitions.slice(0, 2)}
-          />
-        }
-      />
+      <I18nProvider messages={[messages]} locale="en">
+        <AppLayout
+          ariaLabels={labels}
+          breadcrumbs={<Breadcrumbs />}
+          navigation={<Navigation />}
+          tools={<Tools>{toolsContent.long}</Tools>}
+          splitPanelOpen={true}
+          splitPanel={
+            <SplitPanel
+              header="Split panel header"
+              i18nStrings={{
+                preferencesTitle: 'Preferences',
+                preferencesPositionLabel: 'Split panel position',
+                preferencesPositionDescription: 'Choose the default split panel position for the service.',
+                preferencesPositionSide: 'Side',
+                preferencesPositionBottom: 'Bottom',
+                preferencesConfirm: 'Confirm',
+                preferencesCancel: 'Cancel',
+                closeButtonAriaLabel: 'Close panel',
+                openButtonAriaLabel: 'Open panel',
+                resizeHandleAriaLabel: 'Slider',
+              }}
+            >
+              {' '}
+            </SplitPanel>
+          }
+          content={
+            <Table<TableItem>
+              className="main-content"
+              stickyHeader={true}
+              header={<Header headingTagOverride={'h1'}>Instances</Header>}
+              items={items}
+              {...collectionProps}
+              filter={
+                <PropertyFilter
+                  {...propertyFilterProps}
+                  filteringOptions={filteringOptions}
+                  virtualScroll={true}
+                  countText={`${items.length} matches`}
+                  expandToViewport={true}
+                  filteringEmpty="No properties"
+                />
+              }
+              columnDefinitions={columnDefinitions.slice(0, 2)}
+            />
+          }
+        />
+      </I18nProvider>
     </ScreenshotArea>
   );
 }

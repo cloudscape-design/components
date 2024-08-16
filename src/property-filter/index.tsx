@@ -18,7 +18,7 @@ import { joinStrings } from '../internal/utils/strings';
 import InternalSpaceBetween from '../space-between/internal';
 import { SearchResults } from '../text-filter/search-results';
 import { getAllowedOperators, getAutosuggestOptions, getQueryActions, parseText } from './controller';
-import { getI18nToken } from './i18n-utils';
+import { getI18nTokenFormatted, getI18nTokenPreFormatted } from './i18n-utils';
 import {
   ComparisonOperator,
   ExtendedOperator,
@@ -183,10 +183,16 @@ const PropertyFilter = React.forwardRef(
       return { internalProperties: [...propertyByKey.values()], internalOptions, internalQuery, internalFreeText };
     })();
 
+    i18nStrings.formatToken = i18n(
+      'i18nStrings.formatToken',
+      rest.i18nStrings?.formatToken,
+      format => token => format(getI18nTokenPreFormatted(token))
+    );
+
     i18nStrings.removeTokenButtonAriaLabel = i18n(
       'i18nStrings.removeTokenButtonAriaLabel',
       rest.i18nStrings?.removeTokenButtonAriaLabel,
-      format => token => format(getI18nToken(token))
+      format => token => format(getI18nTokenFormatted(token))
     );
 
     const parsedText = parseText(filteringText, internalProperties, internalFreeText);

@@ -1,12 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { ComparisonOperator, FormattedToken, I18nStrings, InternalToken } from './interfaces';
+import { ComparisonOperator, FormattedToken, I18nStrings, InternalToken, PreFormattedToken } from './interfaces';
 
-export function getI18nToken(token: FormattedToken): {
-  token__operator: string;
+export function getI18nTokenPreFormatted(token: PreFormattedToken): {
   token__propertyKey: string;
   token__propertyLabel: string;
+  token__operator: string;
   token__value: string;
 } {
   return {
@@ -17,11 +17,28 @@ export function getI18nToken(token: FormattedToken): {
   };
 }
 
+export function getI18nTokenFormatted(token: FormattedToken): {
+  token__formattedText: string;
+  token__propertyKey: string;
+  token__propertyLabel: string;
+  token__operator: string;
+  token__value: string;
+} {
+  return { ...getI18nTokenPreFormatted(token), token__formattedText: token.formattedTokenText };
+}
+
 export function getFormattedToken(token: InternalToken, i18nStrings: I18nStrings): FormattedToken {
   const valueFormatter = token.property?.getValueFormatter(token.operator);
   const propertyLabel = token.property ? token.property.propertyLabel : i18nStrings.allPropertiesLabel ?? '';
   const tokenValue = valueFormatter ? valueFormatter(token.value) : token.value;
-  return { propertyKey: token.property?.propertyKey, propertyLabel, operator: token.operator, value: tokenValue };
+  const preFormatted = {
+    propertyKey: token.property?.propertyKey,
+    propertyLabel,
+    operator: token.operator,
+    value: tokenValue,
+  };
+  const formatter = i18nStrings.formatToken ?? (token => `${token.propertyLabel} ${token.operator} ${token.value}`);
+  return { ...preFormatted, formattedTokenText: formatter(preFormatted) };
 }
 
 function getOperatorI18nString(operator: ComparisonOperator): string {

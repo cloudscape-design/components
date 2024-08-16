@@ -276,6 +276,8 @@ export namespace PropertyFilterProps {
     applyActionText?: string;
     allPropertiesLabel?: string;
 
+    formatToken?: (token: PreFormattedToken) => string;
+
     tokenLimitShowMore?: string;
     tokenLimitShowFewer?: string;
     clearFiltersText?: string;
@@ -284,11 +286,15 @@ export namespace PropertyFilterProps {
     enteredTextLabel?: AutosuggestProps.EnteredTextLabel;
   }
 
-  export interface FormattedToken {
+  export interface PreFormattedToken {
     propertyKey?: string;
     propertyLabel: string;
     operator: ComparisonOperator;
     value: string;
+  }
+
+  export interface FormattedToken extends PreFormattedToken {
+    formattedTokenText: string;
   }
 
   export interface GroupText {
@@ -326,6 +332,7 @@ export type LoadItemsDetail = PropertyFilterProps.LoadItemsDetail;
 export type I18nStrings = PropertyFilterProps.I18nStrings;
 export type GroupText = PropertyFilterProps.GroupText;
 export type FilteringChangeDetail = PropertyFilterProps.FilteringChangeDetail;
+export type PreFormattedToken = PropertyFilterProps.PreFormattedToken;
 export type FormattedToken = PropertyFilterProps.FormattedToken;
 export type Ref = PropertyFilterProps.Ref;
 

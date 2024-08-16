@@ -8,7 +8,6 @@ import { NonCancelableEventHandler } from '../internal/events';
 import FilteringToken, { FilteringTokenRef } from './filtering-token';
 import { getFormattedToken } from './i18n-utils';
 import {
-  FormattedToken,
   GroupText,
   I18nStrings,
   InternalFilteringOption,
@@ -17,6 +16,7 @@ import {
   InternalToken,
   JoinOperation,
   LoadItemsDetail,
+  PreFormattedToken,
   Token,
 } from './interfaces';
 import { TokenEditor } from './token-editor';
@@ -79,7 +79,7 @@ export const TokenButton = ({
               <TokenTrigger token={formattedToken} allProperties={token.property === null} />
             </span>
           ),
-          ariaLabel: `${formattedToken.propertyLabel} ${formattedToken.operator} ${formattedToken.value}`,
+          ariaLabel: formattedToken.formattedTokenText,
           dismissAriaLabel: i18nStrings?.removeTokenButtonAriaLabel?.(formattedToken) ?? '',
         },
       ]}
@@ -143,7 +143,7 @@ const TokenTrigger = ({
   token: { propertyLabel, operator, value },
   allProperties,
 }: {
-  token: FormattedToken;
+  token: PreFormattedToken;
   allProperties: boolean;
 }) => {
   if (propertyLabel) {
