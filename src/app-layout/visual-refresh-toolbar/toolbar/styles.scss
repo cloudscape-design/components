@@ -57,7 +57,8 @@
   }
 }
 
-.drawers-desktop-triggers-container {
+.drawers-desktop-triggers-container,
+.drawers-mobile-triggers-container {
   @include styles.styles-reset;
   background-color: transparent;
   box-sizing: border-box;

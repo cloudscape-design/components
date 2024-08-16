@@ -145,7 +145,7 @@ export function DrawerTriggers({
 
   return (
     <aside
-      className={styles['drawers-desktop-triggers-container']}
+      className={styles[`drawers-${isMobile ? 'mobile' : 'desktop'}-triggers-container`]}
       aria-label={ariaLabels?.drawers}
       ref={triggersContainerRef}
       role="region"
@@ -169,6 +169,7 @@ export function DrawerTriggers({
             selected={splitPanelToggleProps.active}
             ref={splitPanelToggleRef}
             hasTooltip={true}
+            testId={`awsui-app-layout-trigger-slide-panel`}
             hideTooltipOnFocus={splitPanelOpen && !!splitPanelResizeRef?.current}
             hasOpenDrawer={splitPanelPosition === 'bottom' && splitPanelOpen}
             isMobile={isMobile}
