@@ -561,7 +561,7 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
     expect(wrapper.findTrigger().getElement()).toHaveFocus();
   });
 
-  test('group options can have description, label tag, tags, disabled reason', () => {
+  test('group options can have description, label tag, tags', () => {
     const { wrapper } = renderSelect({
       options: [
         {
