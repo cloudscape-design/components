@@ -21,7 +21,6 @@ interface SharedProps {
   activeDrawerId: string | null;
   drawers: ReadonlyArray<AppLayoutProps.Drawer> | undefined;
   onActiveDrawerChange: ((drawerId: string | null) => void) | undefined;
-  // drawersFocusRef: React.Ref<Focusable> | undefined;
   drawersFocusControl: FocusControlState;
   splitPanel: React.ReactNode;
   splitPanelToggleProps: SplitPanelToggleProps;

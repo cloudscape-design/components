@@ -11,7 +11,9 @@ import {
   findActiveDrawerLandmark,
 } from './utils';
 
-import { act } from '@testing-library/react';
+import { act, render, waitFor, fireEvent } from '@testing-library/react';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils.js';
+import { createWrapper } from '@cloudscape-design/test-utils-core/dom.js';
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 
 jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
@@ -25,7 +27,9 @@ jest.mock('@cloudscape-design/component-toolkit', () => ({
   useContainerQuery: () => [100, () => {}],
 }));
 
-describeEachAppLayout(({ size }) => {
+const mockEventBubble = { currentTarget: 'must-match', target: 'must-match', bubbles: true };
+
+describeEachAppLayout(({ size, theme }) => {
   test(`should not render drawer when it is not defined`, () => {
     const { wrapper, rerender } = renderComponent(<AppLayout toolsHide={true} drawers={[testDrawer]} />);
     expect(wrapper.findDrawersTriggers()).toHaveLength(1);
@@ -129,7 +133,7 @@ describeEachAppLayout(({ size }) => {
     expect(wrapper.findActiveDrawerCloseButton()!.getElement()).toHaveFocus();
   });
 
-  test('moves focus on focusToolsClose if tools are rendered as part of drawers', () => {
+  testIf(theme !== 'refresh-toolbar')('moves focus on focusToolsClose if tools are rendered as part of drawers', () => {
     let ref: AppLayoutProps.Ref | null = null;
     const { wrapper, rerender } = renderComponent(
       <AppLayout
@@ -168,5 +172,29 @@ describeEachAppLayout(({ size }) => {
     drawerTrigger.click();
     expect(drawerTrigger!.getElement()).toHaveAttribute('aria-controls', 'security');
     expect(wrapper.findActiveDrawer()!.getElement()).toHaveAttribute('id', 'security');
+  });
+
+  testIf(['refresh-toolbar'].includes(theme))('tooltip renders correctly on focus & blur events', async () => {
+    const { container, findByTestId } = render(<AppLayout drawers={[testDrawer]} />);
+    const wrapper = createWrapper(container);
+    const testDrawerTriggerWrapper = wrapper!.find(
+      `[data-testid="awsui-app-layout-trigger-${testDrawer.id}-wrapper-with-possible-tooltip"]`
+    );
+    expect(testDrawerTriggerWrapper).not.toBeNull();
+    expect(wrapper!.find(`[data-testid="${testDrawer.ariaLabels?.drawerName}"]`)).toBeNull();
+    fireEvent.focus(testDrawerTriggerWrapper!.getElement(), mockEventBubble);
+
+    await waitFor(() => {
+      expect(findByTestId(testDrawer.ariaLabels?.drawerName)).toBeTruthy();
+    });
+
+    fireEvent.keyDown(testDrawerTriggerWrapper!.getElement(), {
+      ...mockEventBubble,
+      key: 'Escape',
+      code: KeyCode.escape,
+    });
+    await waitFor(() => {
+      expect(wrapper!.find(`[data-testid="${testDrawer.ariaLabels?.drawerName}"]`)).toBeNull();
+    });
   });
 });

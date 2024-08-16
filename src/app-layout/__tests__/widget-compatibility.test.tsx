@@ -82,7 +82,7 @@ function renderNewAppLayout({
         navigationFocusRef: { current: null },
         onNavigationToggle: () => {},
         hasSplitPanel: true,
-        splitPanelFocusRef: { current: null },
+        splitPanelToggleRef: { current: null },
         splitPanelToggleProps: { displayed: true, ariaLabel: '', controlId: '', position: 'side', active: false },
         onSplitPanelToggle: () => {},
         ...toolbarProps,
