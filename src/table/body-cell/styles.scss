@@ -84,7 +84,8 @@ $cell-negative-space-vertical: 2px;
   }
   &.expandable-level-next {
     > .body-cell-content {
-      margin-inline-start: calc(#{$offset-padding} + #{$max-nesting-levels} * #{$cell-offset});
+      padding-inline-start: calc(#{$offset-padding} / 2);
+      margin-inline-start: calc(#{$offset-padding} / 2 + #{$max-nesting-levels} * #{$cell-offset});
     }
     > .expandable-toggle-wrapper {
       margin-inline-start: calc(#{$offset-padding} + (#{$max-nesting-levels} - 1) * #{$cell-offset});
