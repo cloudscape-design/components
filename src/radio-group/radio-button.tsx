@@ -19,10 +19,23 @@ interface RadioButtonProps extends RadioGroupProps.RadioButtonDefinition {
   checked: boolean;
   onChange?: NonCancelableEventHandler<RadioGroupProps.ChangeDetail>;
   readOnly?: boolean;
+  className?: string;
 }
 
 export default React.forwardRef(function RadioButton(
-  { name, label, value, checked, description, disabled, controlId, onChange, readOnly, ...rest }: RadioButtonProps,
+  {
+    name,
+    label,
+    value,
+    checked,
+    description,
+    disabled,
+    controlId,
+    onChange,
+    readOnly,
+    className,
+    ...rest
+  }: RadioButtonProps,
   ref: React.Ref<HTMLInputElement>
 ) {
   const isVisualRefresh = useVisualRefresh();
@@ -33,7 +46,7 @@ export default React.forwardRef(function RadioButton(
 
   return (
     <AbstractSwitch
-      className={clsx(styles.radio, description && styles['radio--has-description'])}
+      className={clsx(styles.radio, description && styles['radio--has-description'], className)}
       controlClassName={styles['radio-control']}
       outlineClassName={styles.outline}
       label={label}
