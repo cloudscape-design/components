@@ -8,7 +8,7 @@ import { DatePicker, FormField, TimeInput } from '~components';
 import { I18nProvider } from '~components/i18n';
 import messages from '~components/i18n/messages/all.en';
 import { InternalFilteringProperty } from '~components/property-filter/interfaces';
-import { TokenEditor, TokenEditorProps } from '~components/property-filter/token-editor-grouped';
+import { TokenEditor, TokenEditorProps } from '~components/property-filter/token-editor';
 
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
