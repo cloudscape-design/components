@@ -29,6 +29,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
     drawersFocusControl,
     isMobile,
     placement,
+    verticalOffsets,
     onActiveDrawerChange,
     onActiveDrawerResize,
   } = appLayoutInternals;
@@ -57,7 +58,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
       id={activeDrawerId}
       aria-hidden={!activeDrawer}
       aria-label={computedAriaLabels.content}
-      className={clsx(styles.drawer, {
+      className={clsx(styles.drawer, sharedStyles['with-motion'], {
         [testutilStyles['active-drawer']]: !toolsOnlyMode && activeDrawerId,
         [testutilStyles.tools]: isToolsDrawer,
       })}
@@ -68,8 +69,8 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
         }
       }}
       style={{
-        blockSize: `calc(100vh - ${placement.insetBlockStart}px - ${placement.insetBlockEnd}px)`,
-        insetBlockStart: placement.insetBlockStart,
+        blockSize: `calc(100vh - ${verticalOffsets.drawers}px - ${placement.insetBlockEnd}px)`,
+        insetBlockStart: verticalOffsets.drawers,
       }}
     >
       {!isMobile && activeDrawer?.resizable && (

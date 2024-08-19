@@ -75,14 +75,15 @@
   flex-direction: row;
   gap: awsui.$space-xs;
   justify-content: flex-end;
+  block-size: 100%;
+}
 
-  &:not(.has-multiple-triggers).has-open-drawer {
-    opacity: 0;
-  }
-
-  &:not(.has-multiple-triggers):not(.has-open-drawer) {
-    opacity: 1;
-  }
+.group-divider {
+  // border-left: 1px solid awsui.$color-border-layout;
+  // border-right: 1px solid awsui.$color-border-layout;
+  block-size: 90%;
+  background-color: awsui.$color-border-layout;
+  inline-size: awsui.$border-divider-section-width;
 }
 
 .drawers-trigger {

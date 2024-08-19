@@ -41,7 +41,7 @@
   // desktop grid
   @include desktop-only {
     grid-template-areas:
-      'navigation toolbar      toolbar       toolbar   toolbar         tools'
+      'toolbar    toolbar      toolbar       toolbar   toolbar         toolbar'
       'navigation .         notifications    .         sideSplitPanel  tools'
       'navigation .             main         .         sideSplitPanel  tools';
     grid-template-columns:
@@ -76,10 +76,11 @@
   grid-row: 1 / -1;
   grid-column: 1 / -1;
   background: awsui.$color-background-container-content;
-  z-index: 850;
+  z-index: constants.$drawer-z-index;
   opacity: 1;
   @include mobile-only {
     inline-size: 100%;
+    z-index: constants.$drawer-z-index-mobile;
   }
 }
 

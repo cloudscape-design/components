@@ -153,14 +153,14 @@ export function AppLayoutToolbarImplementation({
       }}
     >
       <div className={styles['toolbar-container']}>
-        {hasNavigation && !navigationOpen && (
+        {hasNavigation && (
           <nav className={clsx(styles['universal-toolbar-nav'], testutilStyles['drawer-closed'])}>
             <TriggerButton
               ariaLabel={ariaLabels?.navigationToggle ?? undefined}
               ariaExpanded={false}
               iconName="menu"
               className={testutilStyles['navigation-toggle']}
-              onClick={() => onNavigationToggle?.(true)}
+              onClick={() => onNavigationToggle?.(!navigationOpen)}
               ref={navigationFocusRef}
               selected={navigationOpen}
             />
