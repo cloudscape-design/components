@@ -41,7 +41,7 @@ const getMetadataContexts = (label: string, variant: string, disabled?: boolean)
 };
 
 const items: ButtonDropdownProps['items'] = [
-  { text: 'Delete', id: 'rm', disabled: false },
+  { text: 'Delete', id: 'rm', disabled: false, href: '#' },
   { text: 'Rename', id: 'rn', disabled: true },
   {
     text: 'Instances',
@@ -155,7 +155,7 @@ describe('Button Dropdown renders correct analytics metadata', () => {
       validateComponentNameAndLabels(enabledSimpleItem, labels);
       expect(getGeneratedAnalyticsMetadata(enabledSimpleItem)).toEqual({
         action: 'click',
-        detail: { label: 'Delete', id: 'rm', position: '1' },
+        detail: { label: 'Delete', id: 'rm', position: '1', href: '#' },
         ...getMetadataContexts(label, 'normal'),
       });
 
@@ -177,7 +177,7 @@ describe('Button Dropdown renders correct analytics metadata', () => {
       validateComponentNameAndLabels(enabledSimpleItem, labels);
       expect(getGeneratedAnalyticsMetadata(enabledSimpleItem)).toEqual({
         action: 'click',
-        detail: { label: 'Delete', id: 'rm', position: '1' },
+        detail: { label: 'Delete', id: 'rm', position: '1', href: '#' },
         ...getMetadataContexts(label, 'normal'),
       });
     });
@@ -192,7 +192,7 @@ describe('Button Dropdown renders correct analytics metadata', () => {
       validateComponentNameAndLabels(enabledNestedItem, labels);
       expect(getGeneratedAnalyticsMetadata(enabledNestedItem)).toEqual({
         action: 'click',
-        detail: { label: 'Restart', id: 'restart', position: '3,2' },
+        detail: { label: 'Restart', id: 'restart', position: '3,2', href: '' },
         ...getMetadataContexts(label, 'normal'),
       });
 
@@ -240,7 +240,7 @@ describe('Button Dropdown renders correct analytics metadata', () => {
       validateComponentNameAndLabels(enabledNestedItem, labels);
       expect(getGeneratedAnalyticsMetadata(enabledNestedItem)).toEqual({
         action: 'click',
-        detail: { label: 'Restart', id: 'restart', position: '3,2' },
+        detail: { label: 'Restart', id: 'restart', position: '3,2', href: '' },
         ...getMetadataContexts(label, 'normal'),
       });
     });

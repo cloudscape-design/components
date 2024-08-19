@@ -9,7 +9,7 @@ import InternalIcon, { InternalIconProps } from '../../icon/internal';
 import { useDropdownContext } from '../../internal/components/dropdown/context';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import { GeneratedAnalyticsMetadataButtonDropdownClick } from '../analytics-metadata/interfaces';
-import { ItemProps } from '../interfaces';
+import { ItemProps, LinkItem } from '../interfaces';
 import { ButtonDropdownProps } from '../interfaces';
 import Tooltip from '../tooltip';
 import { getMenuItemCheckboxProps, getMenuItemProps } from '../utils/menu-item';
@@ -74,6 +74,7 @@ const ItemElement = ({
                 position,
                 id: item.id,
                 label: `.${analyticsLabels['menu-item']}`,
+                href: (item as LinkItem).href || '',
               },
             } as GeneratedAnalyticsMetadataButtonDropdownClick)
       )}
