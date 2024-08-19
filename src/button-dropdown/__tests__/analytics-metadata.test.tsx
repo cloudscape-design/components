@@ -247,14 +247,36 @@ describe('Button Dropdown renders correct analytics metadata', () => {
   });
 });
 
-test('Internal Button Dropdown does not render "component" metadata', () => {
-  const renderResult = render(<InternalButtonDropdown items={items}>Action text</InternalButtonDropdown>);
-  const wrapper = createWrapper(renderResult.container).findButtonDropdown()!.findTriggerButton()!;
-  expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual({
-    action: 'expand',
-    detail: {
-      label: 'Action text',
-      expanded: 'true',
-    },
+describe('Internal Button Dropdown', () => {
+  test('does not render "component" metadata', () => {
+    const renderResult = render(<InternalButtonDropdown items={items}>Action text</InternalButtonDropdown>);
+    const wrapper = createWrapper(renderResult.container).findButtonDropdown()!.findTriggerButton()!;
+    expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual({
+      action: 'expand',
+      detail: {
+        label: 'Action text',
+        expanded: 'true',
+      },
+    });
+  });
+  test('accepts analyticsMetadataTransformer', () => {
+    const renderResult = render(
+      <InternalButtonDropdown
+        analyticsMetadataTransformer={md => {
+          delete md!.detail!.id;
+          return md;
+        }}
+        items={items}
+      >
+        Action text
+      </InternalButtonDropdown>
+    );
+    const wrapper = createWrapper(renderResult.container).findButtonDropdown()!;
+    wrapper.openDropdown();
+    const enabledSimpleItem = wrapper.findItemById('rm')!.getElement();
+    expect(getGeneratedAnalyticsMetadata(enabledSimpleItem)).toEqual({
+      action: 'click',
+      detail: { label: 'Delete', position: '1', href: '#' },
+    });
   });
 });
