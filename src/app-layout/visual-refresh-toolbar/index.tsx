@@ -185,7 +185,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
         openTools: () => onToolsToggle(true),
         focusToolsClose: () => drawersFocusControl.setFocus(true),
         focusActiveDrawer: () => drawersFocusControl.setFocus(true),
-        focusSplitPanel: () => splitPanelFocusControl.refs.slider.current?.focus(),
+        focusSplitPanel: () => null, // splitPanelFocusControl.refs.slider.current?.focus(),
       }),
       // eslint-disable-next-line react-hooks/exhaustive-deps
       useImperativeHandleDependencies
