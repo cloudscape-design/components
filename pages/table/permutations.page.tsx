@@ -10,7 +10,7 @@ import Link from '~components/link';
 import PropertyFilter from '~components/property-filter';
 import Table, { TableProps } from '~components/table';
 
-import { i18nStrings } from '../property-filter/common-props';
+import { i18nStrings, labels as propertyFilterLabels } from '../property-filter/common-props';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
@@ -267,6 +267,7 @@ const permutations = createPermutations<TableProps>([
             groupValuesLabel: 'Number values',
           },
         ]}
+        {...propertyFilterLabels}
         i18nStrings={i18nStrings}
         query={{
           operation: 'or',
