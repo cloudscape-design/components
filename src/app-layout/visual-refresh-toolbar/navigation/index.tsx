@@ -8,6 +8,7 @@ import { findUpUntil } from '../../../internal/utils/dom';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { AppLayoutInternals } from '../interfaces';
 
+import sharedStyles from '../../resize/styles.css.js';
 import testutilStyles from '../../test-classes/styles.css.js';
 import styles from './styles.css.js';
 
@@ -16,8 +17,16 @@ interface AppLayoutNavigationImplementationProps {
 }
 
 export function AppLayoutNavigationImplementation({ appLayoutInternals }: AppLayoutNavigationImplementationProps) {
-  const { ariaLabels, onNavigationToggle, isMobile, navigationOpen, navigation, navigationFocusControl, placement } =
-    appLayoutInternals;
+  const {
+    ariaLabels,
+    onNavigationToggle,
+    isMobile,
+    navigationOpen,
+    navigation,
+    navigationFocusControl,
+    placement,
+    verticalOffsets,
+  } = appLayoutInternals;
 
   // Close the Navigation drawer on mobile when a user clicks a link inside.
   const onNavigationClick = (event: React.MouseEvent) => {
@@ -39,13 +48,14 @@ export function AppLayoutNavigationImplementation({ appLayoutInternals }: AppLay
           [styles['is-navigation-open']]: navigationOpen,
           [testutilStyles['drawer-closed']]: !navigationOpen,
         },
-        testutilStyles.navigation
+        testutilStyles.navigation,
+        sharedStyles['with-motion']
       )}
       aria-hidden={!navigationOpen}
       onClick={onNavigationClick}
       style={{
-        blockSize: `calc(100vh - ${placement.insetBlockStart}px - ${placement.insetBlockEnd}px)`,
-        insetBlockStart: placement.insetBlockStart,
+        blockSize: `calc(100vh - ${verticalOffsets.drawers}px - ${placement.insetBlockEnd}px)`,
+        insetBlockStart: verticalOffsets.drawers,
       }}
     >
       <div className={clsx(styles['animated-content'])}>
