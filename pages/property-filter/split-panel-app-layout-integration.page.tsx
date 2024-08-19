@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useState } from 'react';
 
 import { useCollection } from '@cloudscape-design/collection-hooks';
 
@@ -22,6 +22,7 @@ import { columnDefinitions, filteringProperties } from './common-props';
 import { allItems, states, TableItem } from './table.data';
 
 export default function () {
+  const [splitPanelOpen, setSplitPanelOpen] = useState(true);
   const { items, collectionProps, actions, propertyFilterProps } = useCollection(allItems, {
     propertyFiltering: {
       empty: 'empty',
@@ -61,7 +62,8 @@ export default function () {
           breadcrumbs={<Breadcrumbs />}
           navigation={<Navigation />}
           tools={<Tools>{toolsContent.long}</Tools>}
-          splitPanelOpen={true}
+          splitPanelOpen={splitPanelOpen}
+          onSplitPanelToggle={({ detail }) => setSplitPanelOpen(detail.open)}
           splitPanel={
             <SplitPanel
               header="Split panel header"

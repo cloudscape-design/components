@@ -174,18 +174,19 @@ describe('i18n', () => {
             'i18nStrings.tokenLimitShowFewer': 'Custom Show fewer',
             'i18nStrings.tokenLimitShowMore': 'Custom Show more',
             'i18nStrings.valueText': 'Custom Value',
-            'i18nStrings.removeTokenButtonAriaLabel': `{token__operator, select, 
-              equals {Remove filter, {token__propertyLabel} Custom equals {token__value}}
-              not_equals {Remove filter, {token__propertyLabel} Custom does not equal {token__value}}
-              greater_than {Remove filter, {token__propertyLabel} Custom greater than {token__value}}
-              greater_than_equal {Remove filter, {token__propertyLabel} Custom greater than or equals {token__value}}
-              less_than {Remove filter, {token__propertyLabel} Custom less than {token__value}}
-              less_than_equal {Remove filter, {token__propertyLabel} Custom less than or equals {token__value}}
-              contains {Remove filter, {token__propertyLabel} Custom contains {token__value}}
-              not_contains {Remove filter, {token__propertyLabel} Custom does not contain {token__value}}
-              starts_with {Remove filter, {token__propertyLabel} Custom starts with {token__value}}
-              not_starts_with {Remove filter, {token__propertyLabel} Custom does not start with {token__value}}
+            'i18nStrings.formatToken': `{token__operator, select, 
+              equals {{token__propertyLabel} Custom equals {token__value}}
+              not_equals {{token__propertyLabel} Custom does not equal {token__value}}
+              greater_than {{token__propertyLabel} Custom greater than {token__value}}
+              greater_than_equal {{token__propertyLabel} Custom greater than or equals {token__value}}
+              less_than {{token__propertyLabel} Custom less than {token__value}}
+              less_than_equal {{token__propertyLabel} Custom less than or equals {token__value}}
+              contains {{token__propertyLabel} Custom contains {token__value}}
+              not_contains {{token__propertyLabel} Custom does not contain {token__value}}
+              starts_with {{token__propertyLabel} Custom starts with {token__value}}
+              not_starts_with {{token__propertyLabel} Custom does not start with {token__value}}
               other {}}`,
+            'i18nStrings.removeTokenButtonAriaLabel': `Remove filter, {token__formattedText}`,
           },
         }}
       >
@@ -214,24 +215,27 @@ describe('i18n', () => {
       </TestI18nProvider>
     );
     const wrapper = createWrapper(container).findPropertyFilter()!;
+    const token = (index: number) => wrapper.findTokens()[index];
+
     expect(wrapper.findRemoveAllButton()!.getElement()).toHaveTextContent('Custom Clear filters');
     expect(wrapper.findTokenToggle()!.getElement()).toHaveTextContent('Custom Show more');
     wrapper.findTokenToggle()!.click();
     expect(wrapper.findTokenToggle()!.getElement()).toHaveTextContent('Custom Show fewer');
 
-    const getRemoveButton = (index: number) => wrapper.findTokens()[index].findRemoveButton().getElement();
-    expect(getRemoveButton(0)).toHaveAccessibleName('Remove filter, String Custom equals value1');
-    expect(getRemoveButton(1)).toHaveAccessibleName('Remove filter, String Custom does not equal value2');
-    expect(getRemoveButton(2)).toHaveAccessibleName('Remove filter, String Custom contains value3');
-    expect(getRemoveButton(3)).toHaveAccessibleName('Remove filter, String Custom does not contain value4');
-    expect(getRemoveButton(4)).toHaveAccessibleName('Remove filter, String Custom starts with value5');
-    expect(getRemoveButton(5)).toHaveAccessibleName('Remove filter, String Custom does not start with value6');
-    expect(getRemoveButton(6)).toHaveAccessibleName('Remove filter, Range Custom greater than 1');
-    expect(getRemoveButton(7)).toHaveAccessibleName('Remove filter, Range Custom less than 2');
-    expect(getRemoveButton(8)).toHaveAccessibleName('Remove filter, Range Custom greater than or equals 3');
-    expect(getRemoveButton(9)).toHaveAccessibleName('Remove filter, Range Custom less than or equals 4');
-    expect(getRemoveButton(10)).toHaveAccessibleName('Remove filter, Custom Custom equals empty');
-    expect(getRemoveButton(11)).toHaveAccessibleName('Remove filter, Custom All properties Custom contains all');
+    expect(token(0).getElement().textContent).toBe('String = value1');
+    expect(token(0).getElement()).toHaveAccessibleName('String Custom equals value1');
+    expect(token(1).getElement()).toHaveAccessibleName('String Custom does not equal value2');
+    expect(token(2).getElement()).toHaveAccessibleName('String Custom contains value3');
+    expect(token(3).getElement()).toHaveAccessibleName('String Custom does not contain value4');
+    expect(token(4).getElement()).toHaveAccessibleName('String Custom starts with value5');
+    expect(token(5).getElement()).toHaveAccessibleName('String Custom does not start with value6');
+    expect(token(6).getElement()).toHaveAccessibleName('Range Custom greater than 1');
+    expect(token(7).getElement()).toHaveAccessibleName('Range Custom less than 2');
+    expect(token(8).getElement()).toHaveAccessibleName('Range Custom greater than or equals 3');
+    expect(token(9).getElement()).toHaveAccessibleName('Range Custom less than or equals 4');
+    expect(token(10).getElement()).toHaveAccessibleName('Custom Custom equals empty');
+    expect(token(11).getElement()).toHaveAccessibleName('Custom All properties Custom contains all');
+    expect(token(0).findRemoveButton().getElement()).toHaveAccessibleName('Remove filter, String Custom equals value1');
 
     const tokenOperation = wrapper.findTokens()[1].findTokenOperation()!;
     tokenOperation.openDropdown();

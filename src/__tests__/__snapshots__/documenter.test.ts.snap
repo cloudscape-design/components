@@ -12376,6 +12376,11 @@ operations are communicated to the user in another way.",
             "type": "string",
           },
           Object {
+            "name": "formatToken",
+            "optional": true,
+            "type": "(token: PropertyFilterProps.PreFormattedToken) => string",
+          },
+          Object {
             "name": "groupPropertiesText",
             "optional": true,
             "type": "string",
