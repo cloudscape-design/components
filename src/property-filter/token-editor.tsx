@@ -11,7 +11,7 @@ import InternalFormField from '../form-field/internal.js';
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces.js';
 import { FormFieldContext } from '../internal/context/form-field-context.js';
 import { NonCancelableEventHandler } from '../internal/events/index.js';
-import { useContainerBreakpoints } from '../internal/hooks/container-queries/index.js';
+import { useMobile } from '../internal/hooks/use-mobile/index.js';
 import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
 import { getAllowedOperators } from './controller.js';
 import { getFormattedToken } from './i18n-utils.js';
@@ -224,8 +224,8 @@ function TokenEditorFields({
   renderValue,
   i18nStrings,
 }: TokenEditorLayout) {
-  const [breakpoint, breakpointRef] = useContainerBreakpoints(['xs']);
-  const isNarrow = breakpoint === 'default' || !supportsGroups;
+  const isMobile = useMobile();
+  const isNarrow = isMobile || !supportsGroups;
 
   const propertyLabelId = useUniqueId();
   const operatorLabelId = useUniqueId();
@@ -252,7 +252,6 @@ function TokenEditorFields({
         isNarrow && styles['token-editor-narrow'],
         styles['token-editor-form']
       )}
-      ref={breakpointRef}
       onSubmit={event => {
         event.preventDefault();
         onSubmit();

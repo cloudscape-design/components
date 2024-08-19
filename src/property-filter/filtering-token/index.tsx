@@ -123,7 +123,7 @@ const FilteringToken = forwardRef(
         hasGroups={hasGroups}
       >
         {tokens.length === 1 ? (
-          <InternalPopover ref={popoverRef} {...popoverProps}>
+          <InternalPopover ref={popoverRef} {...popoverProps} size="content">
             {tokens[0].content}
           </InternalPopover>
         ) : (
