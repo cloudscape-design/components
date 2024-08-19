@@ -15,10 +15,10 @@ import SplitPanel from '~components/split-panel';
 import Table from '~components/table';
 
 import { Breadcrumbs, Navigation, Tools } from '../app-layout/utils/content-blocks';
-import labels from '../app-layout/utils/labels';
+import appLayoutLabels from '../app-layout/utils/labels';
 import * as toolsContent from '../app-layout/utils/tools-content';
 import ScreenshotArea from '../utils/screenshot-area';
-import { columnDefinitions, filteringProperties } from './common-props';
+import { columnDefinitions, filteringProperties, labels } from './common-props';
 import { allItems, states, TableItem } from './table.data';
 
 export default function () {
@@ -58,7 +58,7 @@ export default function () {
     <ScreenshotArea gutters={false}>
       <I18nProvider messages={[messages]} locale="en">
         <AppLayout
-          ariaLabels={labels}
+          ariaLabels={appLayoutLabels}
           breadcrumbs={<Breadcrumbs />}
           navigation={<Navigation />}
           tools={<Tools>{toolsContent.long}</Tools>}
@@ -92,6 +92,7 @@ export default function () {
               {...collectionProps}
               filter={
                 <PropertyFilter
+                  {...labels}
                   {...propertyFilterProps}
                   filteringOptions={filteringOptions}
                   virtualScroll={true}

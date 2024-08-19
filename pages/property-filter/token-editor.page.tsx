@@ -6,7 +6,12 @@ import PropertyFilter from '~components/property-filter';
 import { PropertyFilterProps } from '~components/property-filter/interfaces';
 
 import ScreenshotArea from '../utils/screenshot-area';
-import { columnDefinitions, filteringProperties as commonFilteringProperties, i18nStrings } from './common-props';
+import {
+  columnDefinitions,
+  filteringProperties as commonFilteringProperties,
+  i18nStrings,
+  labels,
+} from './common-props';
 
 const filteringProperties: readonly PropertyFilterProps.FilteringProperty[] = columnDefinitions.map(def => ({
   key: def.id,
@@ -36,6 +41,7 @@ export default function () {
           filteringOptions={[]}
           virtualScroll={true}
           countText="5 matches"
+          {...labels}
           i18nStrings={{
             ...i18nStrings,
             editTokenHeader: 'Edit filter editTokenHeadereditTokenHeadereditTokenHeadereditTokenHeader',
@@ -60,6 +66,7 @@ export default function () {
           filteringOptions={[]}
           virtualScroll={true}
           countText="5 matches"
+          {...labels}
           i18nStrings={i18nStrings}
         />
         <PropertyFilter
@@ -73,6 +80,7 @@ export default function () {
           filteringOptions={[]}
           virtualScroll={true}
           countText="5 matches"
+          {...labels}
           i18nStrings={i18nStrings}
         />
         <PropertyFilter
@@ -86,6 +94,7 @@ export default function () {
           filteringOptions={[]}
           virtualScroll={true}
           countText="5 matches"
+          {...labels}
           i18nStrings={i18nStrings}
         />
         <PropertyFilter
@@ -103,6 +112,7 @@ export default function () {
           freeTextFiltering={{ operators: [':', '!:', '=', '!=', '^', '!^'] }}
           virtualScroll={true}
           countText="5 matches"
+          {...labels}
           i18nStrings={i18nStrings}
         />
       </ScreenshotArea>
