@@ -42,10 +42,10 @@ interface TokenProps {
   setOperation: (newOperation: JoinOperation) => void;
   setToken: (newToken: Token) => void;
   token: InternalToken;
+  enableTokenGroups: boolean;
 }
 
 const emptyHandler = () => {};
-const emptyLabel = () => '';
 
 export const TokenButton = ({
   token,
@@ -65,6 +65,7 @@ export const TokenButton = ({
   disabled,
   freeTextFiltering,
   expandToViewport,
+  enableTokenGroups,
 }: TokenProps) => {
   const tokenRef = useRef<FilteringTokenRef>(null);
   const formattedToken = getFormattedToken(token, i18nStrings);
@@ -93,7 +94,7 @@ export const TokenButton = ({
       disabled={disabled}
       editorContent={
         <TokenEditor
-          supportsGroups={false}
+          supportsGroups={enableTokenGroups}
           filteringProperties={filteringProperties}
           filteringOptions={filteringOptions}
           tempGroup={[temporaryToken]}
@@ -104,16 +105,7 @@ export const TokenButton = ({
           onChangeStandalone={emptyHandler}
           asyncProps={asyncProps}
           onLoadItems={onLoadItems}
-          i18nStrings={{
-            ...i18nStrings,
-            // These properties will be needed when supportsGroups={true}
-            tokenEditorTokenActionsLabel: emptyLabel,
-            tokenEditorTokenRemoveLabel: emptyLabel,
-            tokenEditorTokenRemoveFromGroupLabel: emptyLabel,
-            tokenEditorAddNewTokenLabel: '',
-            tokenEditorAddTokenActionsLabel: '',
-            tokenEditorAddExistingTokenLabel: emptyLabel,
-          }}
+          i18nStrings={i18nStrings}
           asyncProperties={asyncProperties}
           customGroupsText={customGroupsText}
           freeTextFiltering={freeTextFiltering}

@@ -23,6 +23,7 @@ import {
   ComparisonOperator,
   ExtendedOperator,
   FilteringProperty,
+  FormattedToken,
   InternalFilteringOption,
   InternalFilteringProperty,
   InternalFreeTextFiltering,
@@ -40,12 +41,22 @@ import { matchTokenValue } from './utils';
 
 import styles from './styles.css.js';
 
-type PropertyFilterInternalProps = SomeRequired<
+export interface I18nStringsExt {
+  tokenEditorTokenActionsLabel?: (token: FormattedToken) => string;
+  tokenEditorTokenRemoveLabel?: (token: FormattedToken) => string;
+  tokenEditorTokenRemoveFromGroupLabel?: (token: FormattedToken) => string;
+  tokenEditorAddNewTokenLabel?: string;
+  tokenEditorAddTokenActionsLabel?: string;
+  tokenEditorAddExistingTokenLabel?: (token: FormattedToken) => string;
+}
+
+export type PropertyFilterInternalProps = SomeRequired<
   PropertyFilterProps,
   'filteringOptions' | 'customGroupsText' | 'disableFreeTextFiltering'
 > &
   InternalBaseComponentProps & {
     enableTokenGroups?: boolean;
+    i18nStringsExt?: I18nStringsExt;
   };
 
 const PropertyFilterInternal = React.forwardRef(
@@ -79,6 +90,8 @@ const PropertyFilterInternal = React.forwardRef(
       expandToViewport,
       tokenLimitShowFewerAriaLabel,
       tokenLimitShowMoreAriaLabel,
+      enableTokenGroups = false,
+      i18nStringsExt = {},
       __internalRootRef,
       ...rest
     }: PropertyFilterInternalProps,
@@ -90,7 +103,7 @@ const PropertyFilterInternal = React.forwardRef(
     const baseProps = getBaseProps(rest);
 
     const i18n = useInternalI18n('property-filter');
-    const i18nStrings: PropertyFilterProps.I18nStrings = {
+    const i18nStrings: PropertyFilterProps.I18nStrings & I18nStringsExt = {
       ...rest.i18nStrings,
       allPropertiesLabel: i18n('i18nStrings.allPropertiesLabel', rest.i18nStrings?.allPropertiesLabel),
       applyActionText: i18n('i18nStrings.applyActionText', rest.i18nStrings?.applyActionText),
@@ -129,6 +142,7 @@ const PropertyFilterInternal = React.forwardRef(
       tokenLimitShowFewer: i18n('i18nStrings.tokenLimitShowFewer', rest.i18nStrings?.tokenLimitShowFewer),
       tokenLimitShowMore: i18n('i18nStrings.tokenLimitShowMore', rest.i18nStrings?.tokenLimitShowMore),
       valueText: i18n('i18nStrings.valueText', rest.i18nStrings?.valueText),
+      ...i18nStringsExt,
     };
 
     useImperativeHandle(ref, () => ({ focus: () => inputRef.current?.focus() }), []);
@@ -408,6 +422,7 @@ const PropertyFilterInternal = React.forwardRef(
                     freeTextFiltering={internalFreeText}
                     disabled={disabled}
                     expandToViewport={expandToViewport}
+                    enableTokenGroups={enableTokenGroups}
                   />
                 )}
                 i18nStrings={{

@@ -26,19 +26,11 @@ import {
   InternalToken,
   LoadItemsDetail,
 } from './interfaces.js';
+import { I18nStringsExt } from './internal.js';
 import { OperatorInput, PropertyInput, ValueInput } from './token-editor-inputs.js';
 
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
-
-interface I18nStringsExt {
-  tokenEditorTokenActionsLabel: (token: FormattedToken) => string;
-  tokenEditorTokenRemoveLabel: (token: FormattedToken) => string;
-  tokenEditorTokenRemoveFromGroupLabel: (token: FormattedToken) => string;
-  tokenEditorAddNewTokenLabel: string;
-  tokenEditorAddTokenActionsLabel: string;
-  tokenEditorAddExistingTokenLabel: (token: FormattedToken) => string;
-}
 
 export interface TokenEditorProps {
   supportsGroups: boolean;
@@ -168,7 +160,7 @@ export function TokenEditor({
             ariaLabel={i18nStrings.tokenEditorAddTokenActionsLabel}
             items={standaloneTokens.map((token, index) => ({
               id: index.toString(),
-              text: i18nStrings.tokenEditorAddExistingTokenLabel(getFormattedToken(token, i18nStrings)),
+              text: i18nStrings.tokenEditorAddExistingTokenLabel?.(getFormattedToken(token, i18nStrings)) ?? '',
             }))}
             onItemClick={({ detail }) => {
               const index = parseInt(detail.id);
@@ -181,7 +173,7 @@ export function TokenEditor({
             }}
             disabled={standaloneTokens.length === 0}
             mainAction={{
-              text: i18nStrings.tokenEditorAddNewTokenLabel,
+              text: i18nStrings?.tokenEditorAddNewTokenLabel ?? '',
               onClick: () => onChangeTempGroup([...tempGroup, { property: null, operator: ':', value: null }]),
             }}
           />
@@ -316,11 +308,11 @@ function TokenEditorFields({
               <div className={styles['token-editor-remove-token']}>
                 <TokenEditorRemoveActions
                   isNarrow={isNarrow}
-                  ariaLabel={i18nStrings.tokenEditorTokenActionsLabel(token)}
+                  ariaLabel={i18nStrings.tokenEditorTokenActionsLabel?.(token) ?? ''}
                   disabled={tokens.length === 1}
                   items={[
-                    { id: 'remove', text: i18nStrings.tokenEditorTokenRemoveLabel(token) },
-                    { id: 'remove-from-group', text: i18nStrings.tokenEditorTokenRemoveFromGroupLabel(token) },
+                    { id: 'remove', text: i18nStrings.tokenEditorTokenRemoveLabel?.(token) ?? '' },
+                    { id: 'remove-from-group', text: i18nStrings.tokenEditorTokenRemoveFromGroupLabel?.(token) ?? '' },
                   ]}
                   onItemClick={itemId => {
                     switch (itemId) {
