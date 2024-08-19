@@ -45,37 +45,62 @@ function getToolsDrawerItem(props: ToolsProps): AppLayoutProps.Drawer | null {
   };
 }
 
+const DRAWERS_LIMIT = 2;
+
 function useRuntimeDrawers(
   disableRuntimeDrawers: boolean | undefined,
   activeDrawerId: string | null,
-  onActiveDrawerChange: (newDrawerId: string | null) => void
+  onActiveDrawerChange: (newDrawerId: string | null) => void,
+  activeGlobalDrawersIds: Array<string>,
+  setActiveGlobalDrawersIds: (newDrawerId: string) => void
 ) {
-  const [runtimeDrawers, setRuntimeDrawers] = useState<DrawersLayout>({ before: [], after: [] });
-  const onActiveDrawerChangeStable = useStableCallback(onActiveDrawerChange);
+  const [runtimeLocalDrawers, setRuntimeLocalDrawers] = useState<DrawersLayout>({ before: [], after: [] });
+  const [runtimeGlobalDrawers, setRuntimeGlobalDrawers] = useState<DrawersLayout>({ before: [], after: [] });
+  const onLocalDrawerChangeStable = useStableCallback(onActiveDrawerChange);
+  const onGlobalDrawersChangeStable = useStableCallback(setActiveGlobalDrawersIds);
 
-  const drawerWasOpenRef = useRef(false);
-  drawerWasOpenRef.current = drawerWasOpenRef.current || !!activeDrawerId;
+  const localDrawerWasOpenRef = useRef(false);
+  localDrawerWasOpenRef.current = localDrawerWasOpenRef.current || !!activeDrawerId;
+
+  const globalDrawersWereOpenRef = useRef(false);
 
   useEffect(() => {
     if (disableRuntimeDrawers) {
       return;
     }
     const unsubscribe = awsuiPluginsInternal.appLayout.onDrawersRegistered(drawers => {
-      setRuntimeDrawers(convertRuntimeDrawers(drawers));
-      if (!drawerWasOpenRef.current) {
-        const defaultActiveDrawer = sortByPriority(drawers).find(drawer => drawer.defaultActive);
-        if (defaultActiveDrawer) {
-          onActiveDrawerChangeStable(defaultActiveDrawer.id);
+      const localDrawers = drawers.filter(drawer => drawer.type !== 'global');
+      const globalDrawers = drawers.filter(drawer => drawer.type === 'global');
+      setRuntimeLocalDrawers(convertRuntimeDrawers(localDrawers));
+      setRuntimeGlobalDrawers(convertRuntimeDrawers(globalDrawers));
+      if (!localDrawerWasOpenRef.current) {
+        const defaultActiveLocalDrawer = sortByPriority(localDrawers).find(drawer => drawer.defaultActive);
+        if (defaultActiveLocalDrawer) {
+          onLocalDrawerChangeStable(defaultActiveLocalDrawer.id);
         }
+      }
+
+      // TODO handle more than 2 drawers with defaultActive: true
+      if (!globalDrawersWereOpenRef.current) {
+        const defaultActiveGlobalDrawers = sortByPriority(globalDrawers).filter(
+          drawer => drawer.defaultActive && !activeGlobalDrawersIds.includes(drawer.id)
+        );
+        defaultActiveGlobalDrawers.forEach(drawer => {
+          onGlobalDrawersChangeStable(drawer.id);
+        });
+        globalDrawersWereOpenRef.current = true;
       }
     });
     return () => {
       unsubscribe();
-      setRuntimeDrawers({ before: [], after: [] });
+      setRuntimeLocalDrawers({ before: [], after: [] });
     };
-  }, [disableRuntimeDrawers, onActiveDrawerChangeStable]);
+  }, [activeGlobalDrawersIds, disableRuntimeDrawers, onGlobalDrawersChangeStable, onLocalDrawerChangeStable]);
 
-  return runtimeDrawers;
+  return {
+    local: runtimeLocalDrawers,
+    global: runtimeGlobalDrawers,
+  };
 }
 
 function applyToolsDrawer(toolsProps: ToolsProps, runtimeDrawers: DrawersLayout) {
@@ -110,6 +135,7 @@ export function useDrawers(
     controlledProp: 'activeDrawerId',
     changeHandler: 'onChange',
   });
+  const [activeGlobalDrawersIds, setActiveGlobalDrawersIds] = useState<Array<string>>([]);
   const [drawerSizes, setDrawerSizes] = useState<Record<string, number>>({});
 
   function onActiveDrawerResize({ id, size }: { id: string; size: number }) {
@@ -126,16 +152,32 @@ export function useDrawers(
     }
   }
 
+  function onActiveGlobalDrawersChange(drawerId: string) {
+    if (activeGlobalDrawersIds.includes(drawerId)) {
+      setActiveGlobalDrawersIds(currentState => currentState.filter(id => id !== drawerId));
+    } else {
+      setActiveGlobalDrawersIds(currentState => [drawerId, ...currentState].slice(0, DRAWERS_LIMIT!));
+    }
+  }
+
   const hasOwnDrawers = !!drawers;
-  const runtimeDrawers = useRuntimeDrawers(disableRuntimeDrawers, activeDrawerId, onActiveDrawerChange);
-  const combinedDrawers = drawers
-    ? [...runtimeDrawers.before, ...drawers, ...runtimeDrawers.after]
-    : applyToolsDrawer(toolsProps, runtimeDrawers);
+  const { local: runtimeLocalDrawers, global: runtimeGlobalDrawers } = useRuntimeDrawers(
+    disableRuntimeDrawers,
+    activeDrawerId,
+    onActiveDrawerChange,
+    activeGlobalDrawersIds,
+    onActiveGlobalDrawersChange
+  );
+  const combinedLocalDrawers = drawers
+    ? [...runtimeLocalDrawers.before, ...drawers, ...runtimeLocalDrawers.after]
+    : applyToolsDrawer(toolsProps, runtimeLocalDrawers);
+  const combinedGlobalDrawers = [...runtimeGlobalDrawers.before, ...runtimeGlobalDrawers.after];
   // support toolsOpen in runtime-drawers-only mode
   let activeDrawerIdResolved = toolsProps?.toolsOpen && !hasOwnDrawers ? TOOLS_DRAWER_ID : activeDrawerId;
-  const activeDrawer = combinedDrawers?.find(drawer => drawer.id === activeDrawerIdResolved);
+  const activeDrawer = combinedLocalDrawers?.find(drawer => drawer.id === activeDrawerIdResolved);
   // ensure that id is only defined when the drawer exists
   activeDrawerIdResolved = activeDrawer?.id ?? null;
+  const activeGlobalDrawers = combinedGlobalDrawers.filter(drawer => activeGlobalDrawersIds.includes(drawer.id));
 
   const activeDrawerSize = activeDrawerIdResolved
     ? drawerSizes[activeDrawerIdResolved] ?? activeDrawer?.defaultSize ?? toolsProps.toolsWidth
@@ -144,12 +186,16 @@ export function useDrawers(
 
   return {
     ariaLabelsWithDrawers: ariaLabels,
-    drawers: combinedDrawers || undefined,
+    drawers: combinedLocalDrawers || undefined,
     activeDrawer,
     activeDrawerId: activeDrawerIdResolved,
+    globalDrawers: combinedGlobalDrawers,
+    activeGlobalDrawers: activeGlobalDrawers,
+    activeGlobalDrawersIds,
     activeDrawerSize,
     minDrawerSize,
     onActiveDrawerChange,
     onActiveDrawerResize,
+    onActiveGlobalDrawersChange,
   };
 }

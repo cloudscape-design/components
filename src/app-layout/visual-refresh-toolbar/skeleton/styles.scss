@@ -41,9 +41,9 @@
   // desktop grid
   @include desktop-only {
     grid-template-areas:
-      'navigation toolbar      toolbar       toolbar   toolbar         tools'
-      'navigation .         notifications    .         sideSplitPanel  tools'
-      'navigation .             main         .         sideSplitPanel  tools';
+      'navigation toolbar      toolbar       toolbar   toolbar         toolbar toolbar'
+      'navigation .         notifications    .         sideSplitPanel  tools global-tools'
+      'navigation .             main         .         sideSplitPanel  tools global-tools';
     grid-template-columns:
       min-content
       minmax(#{awsui.$space-layout-content-horizontal}, 1fr)
@@ -91,6 +91,16 @@
   @include desktop-only {
     grid-area: tools;
     inline-size: var(#{custom-props.$toolsWidth});
+    border-inline-start: 1px solid awsui.$color-border-divider-panel-side;
+  }
+}
+
+.global-tools {
+  @include desktop-only {
+    display: flex;
+    grid-area: global-tools;
+    // FIXME
+    inline-size: 290px;
     border-inline-start: 1px solid awsui.$color-border-divider-panel-side;
   }
 }

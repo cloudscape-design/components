@@ -33,6 +33,7 @@ interface SkeletonLayoutProps
   splitPanelOpen?: boolean;
   sideSplitPanel?: React.ReactNode;
   bottomSplitPanel?: React.ReactNode;
+  globalTools?: React.ReactNode;
 }
 
 export function SkeletonLayout({
@@ -44,6 +45,7 @@ export function SkeletonLayout({
   navigationOpen,
   navigationWidth,
   tools,
+  globalTools,
   toolsOpen,
   toolsWidth,
   toolbar,
@@ -103,6 +105,7 @@ export function SkeletonLayout({
         </div>
       )}
       {tools && <div className={clsx(styles.tools, !toolsOpen && styles['panel-hidden'])}>{tools}</div>}
+      {globalTools && <div className={clsx(styles['global-tools'])}>{globalTools}</div>}
     </div>
   );
 }

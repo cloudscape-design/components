@@ -41,6 +41,9 @@ export interface ToolbarProps {
   drawers?: ReadonlyArray<AppLayoutProps.Drawer>;
   drawersFocusRef?: React.Ref<Focusable>;
   onActiveDrawerChange?: (drawerId: string | null) => void;
+  globalDrawers?: ReadonlyArray<AppLayoutProps.Drawer> | undefined;
+  activeGlobalDrawersIds?: ReadonlyArray<string>;
+  onActiveGlobalDrawersChange?: ((drawerId: string) => void) | undefined;
 }
 
 interface AppLayoutToolbarImplementationProps {
@@ -56,6 +59,9 @@ function convertLegacyProps(toolbarProps: ToolbarProps, legacyProps: AppLayoutIn
     drawers: toolbarProps.drawers ?? legacyProps.drawers,
     drawersFocusRef: toolbarProps.drawersFocusRef ?? legacyProps.drawersFocusControl?.refs.toggle,
     onActiveDrawerChange: toolbarProps.onActiveDrawerChange ?? legacyProps.onActiveDrawerChange,
+    globalDrawers: toolbarProps.globalDrawers ?? legacyProps.globalDrawers,
+    activeGlobalDrawersIds: toolbarProps.activeGlobalDrawersIds ?? legacyProps.activeGlobalDrawersIds,
+    onActiveGlobalDrawersChange: toolbarProps.onActiveGlobalDrawersChange ?? legacyProps.onActiveGlobalDrawersChange,
     hasNavigation: toolbarProps.hasNavigation ?? !!legacyProps.navigation,
     navigationOpen: toolbarProps.navigationOpen ?? legacyProps.navigationOpen,
     navigationFocusRef: toolbarProps.navigationFocusRef ?? legacyProps.navigationFocusControl?.refs.toggle,
@@ -93,6 +99,9 @@ export function AppLayoutToolbarImplementation({
     drawers,
     drawersFocusRef,
     onActiveDrawerChange,
+    globalDrawers,
+    activeGlobalDrawersIds,
+    onActiveGlobalDrawersChange,
     hasNavigation,
     navigationOpen,
     navigationFocusRef,
@@ -183,6 +192,9 @@ export function AppLayoutToolbarImplementation({
               splitPanelToggleProps={splitPanelToggleProps?.displayed ? splitPanelToggleProps : undefined}
               splitPanelFocusRef={splitPanelFocusRef}
               onSplitPanelToggle={onSplitPanelToggle}
+              globalDrawers={globalDrawers ?? []}
+              activeGlobalDrawersIds={activeGlobalDrawersIds ?? []}
+              onActiveGlobalDrawersChange={onActiveGlobalDrawersChange}
             />
           </span>
         )}

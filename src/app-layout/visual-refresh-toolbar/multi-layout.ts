@@ -21,6 +21,9 @@ interface SharedProps {
   activeDrawerId: string | null;
   drawers: ReadonlyArray<AppLayoutProps.Drawer> | undefined;
   onActiveDrawerChange: ((drawerId: string | null) => void) | undefined;
+  globalDrawers: ReadonlyArray<AppLayoutProps.Drawer> | undefined;
+  activeGlobalDrawersIds: ReadonlyArray<string>;
+  onActiveGlobalDrawersChange: ((drawerId: string) => void) | undefined;
   drawersFocusRef: React.Ref<Focusable> | undefined;
   splitPanel: React.ReactNode;
   splitPanelToggleProps: SplitPanelToggleProps;
@@ -46,6 +49,9 @@ function mergeProps(ownProps: SharedProps, additionalProps: ReadonlyArray<Partia
     if (props.drawers && !checkAlreadyExists(!!toolbar.drawers, 'tools or drawers')) {
       toolbar.drawers = props.drawers;
       toolbar.activeDrawerId = props.activeDrawerId;
+      toolbar.globalDrawers = props.globalDrawers;
+      toolbar.activeGlobalDrawersIds = props.activeGlobalDrawersIds ?? [];
+      toolbar.onActiveGlobalDrawersChange = props.onActiveGlobalDrawersChange;
       toolbar.drawersFocusRef = props.drawersFocusRef;
       toolbar.onActiveDrawerChange = props.onActiveDrawerChange;
     }

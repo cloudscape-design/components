@@ -5,6 +5,7 @@ import { NonCancelableEventHandler } from '../../events';
 
 export interface DrawerConfig {
   id: string;
+  type?: 'local' | 'global';
   ariaLabels: {
     content?: string;
     closeButton?: string;

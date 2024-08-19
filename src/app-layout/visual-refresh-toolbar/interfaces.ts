@@ -31,6 +31,9 @@ export interface AppLayoutInternals {
   maxDrawerSize: number;
   drawers: ReadonlyArray<AppLayoutProps.Drawer>;
   drawersFocusControl: FocusControlState;
+  activeGlobalDrawersIds: ReadonlyArray<string>;
+  activeGlobalDrawers: ReadonlyArray<AppLayoutProps.Drawer>;
+  globalDrawers: ReadonlyArray<AppLayoutProps.Drawer>;
   stickyNotifications: AppLayoutPropsWithDefaults['stickyNotifications'];
   breadcrumbs: React.ReactNode;
   discoveredBreadcrumbs: BreadcrumbGroupProps | null;
@@ -43,4 +46,5 @@ export interface AppLayoutInternals {
   onNavigationToggle: (open: boolean) => void;
   onActiveDrawerChange: (newDrawerId: string | null) => void;
   onActiveDrawerResize: (detail: { id: string; size: number }) => void;
+  onActiveGlobalDrawersChange: (newDrawerId: string) => void;
 }

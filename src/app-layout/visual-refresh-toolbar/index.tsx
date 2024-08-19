@@ -93,8 +93,12 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       minDrawerSize,
       activeDrawerSize,
       ariaLabelsWithDrawers,
+      globalDrawers,
+      activeGlobalDrawers,
+      activeGlobalDrawersIds,
       onActiveDrawerChange,
       onActiveDrawerResize,
+      onActiveGlobalDrawersChange,
     } = useDrawers(rest, ariaLabels, {
       ariaLabels,
       toolsHide,
@@ -192,6 +196,9 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       // only pass it down if there are non-empty drawers or tools
       drawers: drawers?.length || !toolsHide ? drawers : undefined,
       onActiveDrawerChange,
+      globalDrawers,
+      activeGlobalDrawersIds,
+      onActiveGlobalDrawersChange,
       drawersFocusRef: drawersFocusControl.refs.toggle,
       splitPanel,
       splitPanelToggleProps: {
@@ -230,6 +237,10 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       minDrawerSize,
       maxDrawerSize,
       drawers: drawers!,
+      globalDrawers,
+      activeGlobalDrawers,
+      activeGlobalDrawersIds,
+      onActiveGlobalDrawersChange,
       drawersFocusControl,
       splitPanelPosition,
       splitPanelToggleConfig,
@@ -300,6 +311,22 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
           navigationOpen={navigationOpen}
           navigationWidth={navigationWidth}
           tools={activeDrawer && <AppLayoutDrawer appLayoutInternals={appLayoutInternals} />}
+          globalTools={
+            !!activeGlobalDrawers.length &&
+            activeGlobalDrawers.map(activeGlobalDrawer => (
+              <AppLayoutDrawer
+                key={activeGlobalDrawer.id}
+                appLayoutInternals={{
+                  ...appLayoutInternals,
+                  activeDrawer: activeGlobalDrawer,
+                  drawers: globalDrawers,
+                  onActiveDrawerChange: () => {
+                    onActiveGlobalDrawersChange(activeGlobalDrawer.id);
+                  },
+                }}
+              />
+            ))
+          }
           toolsOpen={!!activeDrawer}
           toolsWidth={activeDrawerSize}
           sideSplitPanel={

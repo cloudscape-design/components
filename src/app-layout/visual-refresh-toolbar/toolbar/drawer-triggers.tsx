@@ -33,6 +33,10 @@ interface DrawerTriggersProps {
   drawers: ReadonlyArray<AppLayoutProps.Drawer>;
   onActiveDrawerChange: ((drawerId: string | null) => void) | undefined;
 
+  activeGlobalDrawersIds: ReadonlyArray<string>;
+  globalDrawers: ReadonlyArray<AppLayoutProps.Drawer>;
+  onActiveGlobalDrawersChange?: (newDrawerId: string) => void;
+
   splitPanelToggleProps: SplitPanelToggleProps | undefined;
   splitPanelFocusRef: React.Ref<Focusable> | undefined;
   onSplitPanelToggle: (() => void) | undefined;
@@ -47,6 +51,9 @@ export function DrawerTriggers({
   splitPanelFocusRef,
   splitPanelToggleProps,
   onSplitPanelToggle,
+  activeGlobalDrawersIds,
+  globalDrawers,
+  onActiveGlobalDrawersChange,
 }: DrawerTriggersProps) {
   const isMobile = useMobile();
   const hasMultipleTriggers = drawers.length > 1;
@@ -151,6 +158,27 @@ export function DrawerTriggers({
             onItemClick={event => onActiveDrawerChange?.(event.detail.id)}
           />
         )}
+        {/* handle overflow later on when requirements are ready */}
+        {globalDrawers.map(item => {
+          return (
+            <TriggerButton
+              ariaLabel={item.ariaLabels?.triggerButton}
+              ariaExpanded={activeGlobalDrawersIds.includes(item.id)}
+              ariaControls={activeGlobalDrawersIds.includes(item.id) ? item.id : undefined}
+              className={clsx(styles['drawers-trigger'], !toolsOnlyMode && testutilStyles['drawers-trigger'])}
+              iconName={item.trigger.iconName}
+              iconSvg={item.trigger.iconSvg}
+              key={item.id}
+              onClick={() => {
+                onActiveGlobalDrawersChange && onActiveGlobalDrawersChange(item.id);
+              }}
+              ref={item.id === previousActiveDrawerId.current ? drawersFocusRef : undefined}
+              selected={activeGlobalDrawersIds.includes(item.id)}
+              badge={item.badge}
+              testId={`awsui-app-layout-trigger-${item.id}`}
+            />
+          );
+        })}
       </div>
     </aside>
   );
