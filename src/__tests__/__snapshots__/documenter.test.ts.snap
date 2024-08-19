@@ -12321,7 +12321,10 @@ operations are communicated to the user in another way.",
       "type": "boolean",
     },
     Object {
-      "description": "An object containing all the necessary localized strings required by the component.",
+      "description": "An object containing all the necessary localized strings required by the component.
+The properties \`filteringAriaLabel\` and \`filteringPlaceholder\` on \`i18nStrings\` are deprecated.
+Provide these properties at the top-level instead.
+",
       "i18nTag": true,
       "inlineType": Object {
         "name": "PropertyFilterProps.I18nStrings",
