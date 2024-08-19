@@ -10,7 +10,17 @@ import ScreenshotArea from './utils/screenshot-area';
 
 const permutations = createPermutations<BadgeProps>([
   {
-    color: ['blue', 'grey', 'green', 'red'],
+    color: [
+      'blue',
+      'grey',
+      'green',
+      'red',
+      'severity-critical',
+      'severity-high',
+      'severity-medium',
+      'severity-low',
+      'severity-informational',
+    ],
     children: [
       'ABC',
       'Badge With A Very Long Text',

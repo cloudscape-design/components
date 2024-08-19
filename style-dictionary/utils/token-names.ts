@@ -465,7 +465,17 @@ export type ColorsTokenName =
   | 'colorDropzoneBackgroundActive'
   | 'colorDropzoneBackgroundHover'
   | 'colorDropzoneTextActive'
-  | 'colorDropzoneTextHover';
+  | 'colorDropzoneTextHover'
+  | 'colorBackgroundSeverityCritical'
+  | 'colorTextSeverityCritical'
+  | 'colorBackgroundSeverityHigh'
+  | 'colorTextSeverityHigh'
+  | 'colorBackgroundSeverityMedium'
+  | 'colorTextSeverityMedium'
+  | 'colorBackgroundSeverityLow'
+  | 'colorTextSeverityLow'
+  | 'colorBackgroundSeverityInformational'
+  | 'colorTextSeverityInformational';
 export type TypographyTokenName =
   | 'fontBoxValueLargeWeight'
   | 'fontButtonLetterSpacing'

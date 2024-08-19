@@ -35,4 +35,29 @@
   &.badge-color-red {
     background-color: awsui.$color-background-notification-red;
   }
+
+  &.badge-color-severity-critical {
+    background-color: awsui.$color-background-severity-critical;
+    color: awsui.$color-text-severity-critical;
+  }
+
+  &.badge-color-severity-high {
+    background-color: awsui.$color-background-severity-high;
+    color: awsui.$color-text-severity-high;
+  }
+
+  &.badge-color-severity-medium {
+    background-color: awsui.$color-background-severity-medium;
+    color: awsui.$color-text-severity-medium;
+  }
+
+  &.badge-color-severity-low {
+    background-color: awsui.$color-background-severity-low;
+    color: awsui.$color-text-severity-low;
+  }
+
+  &.badge-color-severity-informational {
+    background-color: awsui.$color-background-severity-informational;
+    color: awsui.$color-text-severity-informational;
+  }
 }

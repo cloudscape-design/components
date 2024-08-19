@@ -33,7 +33,19 @@ describe('Badge', () => {
     });
   });
 
-  (['blue', 'grey', 'green', 'red'] as Array<BadgeProps['color']>).forEach(color => {
+  (
+    [
+      'blue',
+      'grey',
+      'green',
+      'red',
+      'severity-critical',
+      'severity-high',
+      'severity-medium',
+      'severity-low',
+      'severity-informational',
+    ] as Array<BadgeProps['color']>
+  ).forEach(color => {
     test(`renders color ${color} correctly`, () => {
       const badge = renderBadge(<Badge color={color}>20</Badge>);
       expect(badge).toHaveClass(styles[`badge-color-${color}`]);
