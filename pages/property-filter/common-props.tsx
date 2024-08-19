@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { PropertyFilterProps } from '~components/property-filter';
+import { I18nStringsExt } from '~components/property-filter/internal';
 
 import {
   DateForm,
@@ -131,7 +132,7 @@ export const columnDefinitions = [
   },
 ].map((item, ind) => ({ order: ind + 1, ...item }));
 
-export const i18nStrings: PropertyFilterProps.I18nStrings = {
+export const i18nStrings: PropertyFilterProps.I18nStrings & I18nStringsExt = {
   filteringAriaLabel: 'your choice',
   dismissAriaLabel: 'Dismiss',
 
@@ -167,6 +168,15 @@ export const i18nStrings: PropertyFilterProps.I18nStrings = {
   tokenOperatorAriaLabel: 'Boolean Operator',
   removeTokenButtonAriaLabel: () => 'Remove token',
   enteredTextLabel: (text: string) => `Use: "${text}"`,
+
+  tokenEditorTokenActionsLabel: token =>
+    `Filter remove actions for ${token.propertyLabel} ${token.operator} ${token.value}`,
+  tokenEditorTokenRemoveLabel: () => 'Remove filter',
+  tokenEditorTokenRemoveFromGroupLabel: () => 'Remove filter from group',
+  tokenEditorAddNewTokenLabel: 'Add new filter',
+  tokenEditorAddTokenActionsLabel: 'Add filter actions',
+  tokenEditorAddExistingTokenLabel: token =>
+    `Add filter ${token.propertyLabel} ${token.operator} ${token.value} to group`,
 };
 
 export const filteringProperties: readonly PropertyFilterProps.FilteringProperty[] = columnDefinitions.map(def => {
