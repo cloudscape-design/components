@@ -99,8 +99,6 @@
   @include desktop-only {
     display: flex;
     grid-area: global-tools;
-    // FIXME
-    inline-size: 290px;
     border-inline-start: 1px solid awsui.$color-border-divider-panel-side;
   }
 }

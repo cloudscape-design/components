@@ -34,6 +34,7 @@ export interface AppLayoutInternals {
   activeGlobalDrawersIds: ReadonlyArray<string>;
   activeGlobalDrawers: ReadonlyArray<AppLayoutProps.Drawer>;
   globalDrawers: ReadonlyArray<AppLayoutProps.Drawer>;
+  activeGlobalDrawersSizes: Record<string, number>;
   stickyNotifications: AppLayoutPropsWithDefaults['stickyNotifications'];
   breadcrumbs: React.ReactNode;
   discoveredBreadcrumbs: BreadcrumbGroupProps | null;

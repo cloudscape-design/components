@@ -96,6 +96,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       globalDrawers,
       activeGlobalDrawers,
       activeGlobalDrawersIds,
+      activeGlobalDrawersSizes,
       onActiveDrawerChange,
       onActiveDrawerResize,
       onActiveGlobalDrawersChange,
@@ -240,6 +241,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       globalDrawers,
       activeGlobalDrawers,
       activeGlobalDrawersIds,
+      activeGlobalDrawersSizes,
       onActiveGlobalDrawersChange,
       drawersFocusControl,
       splitPanelPosition,
@@ -316,10 +318,12 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
             activeGlobalDrawers.map(activeGlobalDrawer => (
               <AppLayoutDrawer
                 key={activeGlobalDrawer.id}
+                isGlobal={true}
                 appLayoutInternals={{
                   ...appLayoutInternals,
                   activeDrawer: activeGlobalDrawer,
                   drawers: globalDrawers,
+                  activeDrawerSize: activeGlobalDrawersSizes[activeGlobalDrawer.id ?? ''] ?? 0,
                   onActiveDrawerChange: () => {
                     onActiveGlobalDrawersChange(activeGlobalDrawer.id);
                   },

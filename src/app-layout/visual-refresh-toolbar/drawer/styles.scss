@@ -5,6 +5,7 @@
 @use '../../../internal/styles/tokens' as awsui;
 @use '../../../internal/styles' as styles;
 @use '../../constants.scss' as constants;
+@use '../../../internal/generated/custom-css-properties/index.scss' as custom-props;
 
 .drawer {
   position: sticky;
@@ -12,6 +13,7 @@
   background-color: awsui.$color-background-container-content;
   display: grid;
   grid-template-columns: awsui.$space-m 1fr;
+  inline-size: var(#{custom-props.$drawerSize});
 
   block-size: 100%;
   overflow: hidden;

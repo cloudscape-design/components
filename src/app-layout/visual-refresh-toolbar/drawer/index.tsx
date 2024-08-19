@@ -5,6 +5,7 @@ import clsx from 'clsx';
 
 import { InternalButton } from '../../../button/internal';
 import PanelResizeHandle from '../../../internal/components/panel-resize-handle';
+import customCssProps from '../../../internal/generated/custom-css-properties';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { TOOLS_DRAWER_ID } from '../../utils/use-drawers';
 import { AppLayoutInternals } from '../interfaces';
@@ -16,9 +17,10 @@ import styles from './styles.css.js';
 
 interface AppLayoutDrawerImplementationProps {
   appLayoutInternals: AppLayoutInternals;
+  isGlobal?: boolean;
 }
 
-export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutDrawerImplementationProps) {
+export function AppLayoutDrawerImplementation({ appLayoutInternals, isGlobal }: AppLayoutDrawerImplementationProps) {
   const {
     activeDrawer,
     minDrawerSize,
@@ -70,6 +72,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
       style={{
         blockSize: `calc(100vh - ${placement.insetBlockStart}px - ${placement.insetBlockEnd}px)`,
         insetBlockStart: placement.insetBlockStart,
+        ...(!isMobile && isGlobal && { [customCssProps.drawerSize]: `${activeDrawerSize}px` }),
       }}
     >
       {!isMobile && activeDrawer?.resizable && (
