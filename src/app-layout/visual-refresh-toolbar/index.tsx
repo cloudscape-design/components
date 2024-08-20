@@ -14,7 +14,7 @@ import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
 import { SplitPanelProviderProps } from '../split-panel';
 import { useDrawers } from '../utils/use-drawers';
-import { useFocusControl } from '../utils/use-focus-control';
+import { useFocusControl, useMultipleFocusControl } from '../utils/use-focus-control';
 import { useSplitPanelFocusControl } from '../utils/use-split-panel-focus-control';
 import { computeHorizontalLayout, computeVerticalLayout } from './compute-layout';
 import { AppLayoutInternals } from './interfaces';
@@ -161,6 +161,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       displayed: false,
     });
 
+    const globalDrawersFocusControl = useMultipleFocusControl(true, activeGlobalDrawersIds);
     const drawersFocusControl = useFocusControl(!!activeDrawer?.id);
     const navigationFocusControl = useFocusControl(navigationOpen);
     const splitPanelFocusControl = useSplitPanelFocusControl([splitPanelPreferences, splitPanelOpen]);
@@ -247,6 +248,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       activeGlobalDrawersSizes,
       onActiveGlobalDrawersChange,
       drawersFocusControl,
+      globalDrawersFocusControl,
       splitPanelPosition,
       splitPanelToggleConfig,
       splitPanelOpen,

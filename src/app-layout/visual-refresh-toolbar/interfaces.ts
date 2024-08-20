@@ -6,7 +6,7 @@ import React from 'react';
 import { BreadcrumbGroupProps } from '../../breadcrumb-group/interfaces';
 import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
-import { FocusControlState } from '../utils/use-focus-control';
+import { FocusControlMultipleStates, FocusControlState } from '../utils/use-focus-control';
 import { SplitPanelFocusControlState } from '../utils/use-split-panel-focus-control';
 import { VerticalLayoutOutput } from './compute-layout';
 
@@ -32,6 +32,7 @@ export interface AppLayoutInternals {
   maxGlobalDrawersSizes: Record<string, number>;
   drawers: ReadonlyArray<AppLayoutProps.Drawer>;
   drawersFocusControl: FocusControlState;
+  globalDrawersFocusControl: FocusControlMultipleStates;
   activeGlobalDrawersIds: ReadonlyArray<string>;
   activeGlobalDrawers: ReadonlyArray<AppLayoutProps.Drawer>;
   globalDrawers: ReadonlyArray<AppLayoutProps.Drawer>;

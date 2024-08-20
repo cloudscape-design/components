@@ -29,6 +29,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals, isGlobal }: 
     ariaLabels,
     drawers,
     drawersFocusControl,
+    globalDrawersFocusControl,
     isMobile,
     placement,
     onActiveDrawerChange,
@@ -37,7 +38,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals, isGlobal }: 
     activeGlobalDrawersSizes,
   } = appLayoutInternals;
   const drawerRef = useRef<HTMLDivElement>(null);
-  const activeDrawerId = activeDrawer?.id;
+  const activeDrawerId = activeDrawer?.id ?? '';
 
   const computedAriaLabels = {
     closeButton: activeDrawer ? activeDrawer.ariaLabels?.closeButton : ariaLabels?.toolsClose,
@@ -49,12 +50,13 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals, isGlobal }: 
   const toolsContent = drawers?.find(drawer => drawer.id === TOOLS_DRAWER_ID)?.content;
   const activeDrawerSize = isGlobal ? activeGlobalDrawersSizes[activeDrawerId ?? ''] ?? 0 : activeLocalDrawerSize;
   const maxDrawerSize = isGlobal ? maxGlobalDrawersSizes[activeDrawerId ?? ''] ?? 0 : maxLocalDrawerSize;
+  const refs = isGlobal ? globalDrawersFocusControl.refs[activeDrawerId] : drawersFocusControl.refs;
   const resizeProps = useResize({
     currentWidth: activeDrawerSize,
     minWidth: minDrawerSize,
     maxWidth: maxDrawerSize,
     panelRef: drawerRef,
-    handleRef: drawersFocusControl.refs.slider,
+    handleRef: refs.slider,
     onResize: size => onActiveDrawerResize({ id: activeDrawerId!, size }),
   });
 
@@ -70,7 +72,11 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals, isGlobal }: 
       ref={drawerRef}
       onBlur={e => {
         if (!e.relatedTarget || !e.currentTarget.contains(e.relatedTarget)) {
-          drawersFocusControl.loseFocus();
+          if (isGlobal) {
+            globalDrawersFocusControl.loseFocus();
+          } else {
+            drawersFocusControl.loseFocus();
+          }
         }
       }}
       style={{
@@ -82,7 +88,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals, isGlobal }: 
       {!isMobile && activeDrawer?.resizable && (
         <div className={styles['drawer-slider']}>
           <PanelResizeHandle
-            ref={drawersFocusControl.refs.slider}
+            ref={refs.slider}
             position="side"
             className={testutilStyles['drawers-slider']}
             ariaLabel={activeDrawer?.ariaLabels?.resizeHandle}
@@ -103,7 +109,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals, isGlobal }: 
             formAction="none"
             iconName={isMobile ? 'close' : 'angle-right'}
             onClick={() => onActiveDrawerChange(null)}
-            ref={drawersFocusControl.refs.close}
+            ref={refs.close}
             variant="icon"
           />
         </div>
