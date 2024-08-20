@@ -3,7 +3,10 @@
 import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
-import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+import {
+  GeneratedAnalyticsMetadataFragment,
+  getAnalyticsMetadataAttribute,
+} from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalIcon, { InternalIconProps } from '../../icon/internal';
 import { useDropdownContext } from '../../internal/components/dropdown/context';
@@ -29,6 +32,7 @@ const ItemElement = ({
   showDivider,
   hasCategoryHeader,
   isKeyboardHighlighted = false,
+  analyticsMetadataTransformer = (metadata: GeneratedAnalyticsMetadataFragment) => metadata,
   variant = 'normal',
 }: ItemProps) => {
   const isLink = isLinkItem(item);
@@ -68,7 +72,7 @@ const ItemElement = ({
       {...getAnalyticsMetadataAttribute(
         disabled
           ? {}
-          : ({
+          : (analyticsMetadataTransformer!({
               action: 'click',
               detail: {
                 position,
@@ -76,7 +80,7 @@ const ItemElement = ({
                 label: `.${analyticsLabels['menu-item']}`,
                 href: (item as LinkItem).href || '',
               },
-            } as GeneratedAnalyticsMetadataButtonDropdownClick)
+            }) as GeneratedAnalyticsMetadataButtonDropdownClick)
       )}
     >
       <MenuItem item={item} disabled={disabled} highlighted={highlighted} />

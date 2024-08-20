@@ -56,7 +56,10 @@ export namespace BreadcrumbGroupProps {
 }
 
 export type InternalBreadcrumbGroupProps<T extends BreadcrumbGroupProps.Item = BreadcrumbGroupProps.Item> =
-  BreadcrumbGroupProps<T> & InternalBaseComponentProps;
+  BreadcrumbGroupProps<T> &
+    InternalBaseComponentProps & {
+      __injectAnalyticsComponentMetadata?: boolean;
+    };
 
 export interface BreadcrumbItemProps<T extends BreadcrumbGroupProps.Item> {
   item: T;

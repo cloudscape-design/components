@@ -8,6 +8,8 @@ import createWrapper, { BreadcrumbGroupWrapper } from '../../../lib/components/t
 import AppLayout from '../../../lib/components/app-layout';
 import BreadcrumbGroup, { BreadcrumbGroupProps } from '../../../lib/components/breadcrumb-group';
 import { awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
+import { activateAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
 const wrapper = createWrapper();
 
@@ -256,5 +258,29 @@ describe('without feature flag', () => {
     expect(findAllBreadcrumbsInstances()).toHaveLength(1);
     expect(wrapper.findAppLayout()!.findBreadcrumbs()).toBeFalsy();
     expect(wrapper.findAppLayout()!.findContentRegion().findBreadcrumbGroup()).toBeTruthy();
+  });
+});
+
+test('renders analytics metadata information', async () => {
+  activateAnalyticsMetadata(true);
+  await renderAsync(<AppLayout content={<BreadcrumbGroup items={defaultBreadcrumbs} />} />);
+  const breadcrumbsWrapper = wrapper.findAppLayout()!.findContentRegion().findBreadcrumbGroup()!;
+  const firstBreadcrumb = breadcrumbsWrapper.findBreadcrumbLink(1)!.getElement();
+  expect(getGeneratedAnalyticsMetadata(firstBreadcrumb)).toEqual({
+    action: 'click',
+    detail: {
+      position: '1',
+      label: 'Home',
+      href: '/home',
+    },
+    contexts: [
+      {
+        type: 'component',
+        detail: {
+          name: 'awsui.BreadcrumbGroup',
+          label: 'Home...Page',
+        },
+      },
+    ],
   });
 });
