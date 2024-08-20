@@ -327,18 +327,6 @@ const permutations = createPermutations<TableProps>([
     ],
     stickyHeader: [true],
   },
-  {
-    columnDefinitions: [PROPERTY_COLUMNS],
-    items: [
-      [
-        {
-          name: 'Color',
-          value: '#000000',
-          type: 'String',
-        },
-      ],
-    ],
-  },
 ]);
 /* eslint-enable react/jsx-key */
 
