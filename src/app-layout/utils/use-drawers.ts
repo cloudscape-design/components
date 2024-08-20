@@ -80,7 +80,6 @@ function useRuntimeDrawers(
         }
       }
 
-      // TODO handle more than 2 drawers with defaultActive: true
       if (!globalDrawersWereOpenRef.current) {
         const defaultActiveGlobalDrawers = sortByPriority(globalDrawers).filter(
           drawer => drawer.defaultActive && !activeGlobalDrawersIds.includes(drawer.id)
