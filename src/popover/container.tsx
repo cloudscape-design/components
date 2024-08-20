@@ -30,6 +30,8 @@ export interface PopoverContainerProps {
   arrow: (position: InternalPosition | null) => React.ReactNode;
   children: React.ReactNode;
   renderWithPortal?: boolean;
+  // The "content" size is a special one that does not have the associated container-body-size-{size} class.
+  // It can be used to create larger popovers where the responsiveness is handled by the content.
   size: PopoverProps.Size | 'content';
   fixedWidth: boolean;
   variant?: 'annotation';
