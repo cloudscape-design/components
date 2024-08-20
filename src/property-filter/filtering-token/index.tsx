@@ -37,6 +37,7 @@ export interface FilteringTokenProps {
   editorExpandToViewport: boolean;
   onEditorOpen?: () => void;
   hasGroups: boolean;
+  popoverSize: InternalPopoverProps['size'];
 }
 
 export interface FilteringTokenRef {
@@ -71,6 +72,7 @@ const FilteringToken = forwardRef(
       editorExpandToViewport,
       onEditorOpen,
       hasGroups,
+      popoverSize,
     }: FilteringTokenProps,
     ref: React.Ref<FilteringTokenRef>
   ) => {
@@ -79,7 +81,7 @@ const FilteringToken = forwardRef(
       content: editorContent,
       triggerType: 'text',
       header: editorHeader,
-      size: 'large',
+      size: popoverSize,
       position: 'right',
       dismissAriaLabel: editorDismissAriaLabel,
       renderWithPortal: editorExpandToViewport,
@@ -123,7 +125,7 @@ const FilteringToken = forwardRef(
         hasGroups={hasGroups}
       >
         {tokens.length === 1 ? (
-          <InternalPopover ref={popoverRef} {...popoverProps} size="content">
+          <InternalPopover ref={popoverRef} {...popoverProps}>
             {tokens[0].content}
           </InternalPopover>
         ) : (

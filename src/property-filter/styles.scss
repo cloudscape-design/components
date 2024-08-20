@@ -135,7 +135,7 @@ $operator-field-width: 120px;
     }
 
     &.token-editor-narrow {
-      grid-template-columns: minmax(min-content, 1fr);
+      grid-template-columns: minmax(100px, 1fr);
       gap: awsui.$space-m;
 
       > .token-editor-group {

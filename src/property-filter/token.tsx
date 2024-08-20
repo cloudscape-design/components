@@ -127,6 +127,7 @@ export const TokenButton = ({
       groupEditAriaLabel={''}
       onChangeGroupOperation={() => {}}
       hasGroups={false}
+      popoverSize={enableTokenGroups ? 'content' : 'large'}
     />
   );
 };

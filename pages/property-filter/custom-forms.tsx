@@ -191,11 +191,12 @@ function formatTimezoneOffset(isoDate: string, offsetInMinutes?: number) {
 const allOwners = [...new Set(allItems.map(({ owner }) => owner))];
 
 export function OwnerMultiSelectForm({ value, onChange }: ExtendedOperatorFormProps<string[]>) {
+  value = value && Array.isArray(value) ? value : [];
   return (
-    <FormField>
+    <FormField stretch={true}>
       <Multiselect
         options={allOwners.map(owner => ({ value: owner, label: owner }))}
-        selectedOptions={value?.map(owner => ({ value: owner, label: owner })) ?? []}
+        selectedOptions={value.map(owner => ({ value: owner, label: owner })) ?? []}
         onChange={event =>
           onChange(
             event.detail.selectedOptions
@@ -210,5 +211,5 @@ export function OwnerMultiSelectForm({ value, onChange }: ExtendedOperatorFormPr
 }
 
 export function formatOwners(owners: string[]) {
-  return owners.join(', ');
+  return owners && Array.isArray(owners) ? owners.join(', ') : '';
 }
