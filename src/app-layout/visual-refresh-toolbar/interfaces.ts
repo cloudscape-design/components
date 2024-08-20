@@ -29,6 +29,7 @@ export interface AppLayoutInternals {
   activeDrawerSize: number;
   minDrawerSize: number;
   maxDrawerSize: number;
+  maxGlobalDrawersSizes: Record<string, number>;
   drawers: ReadonlyArray<AppLayoutProps.Drawer>;
   drawersFocusControl: FocusControlState;
   activeGlobalDrawersIds: ReadonlyArray<string>;

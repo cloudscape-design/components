@@ -174,16 +174,18 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     }));
 
     const resolvedNavigation = navigationHide ? null : navigation ?? <></>;
-    const { maxDrawerSize, maxSplitPanelSize, splitPanelForcedPosition, splitPanelPosition } = computeHorizontalLayout({
-      activeDrawerSize,
-      splitPanelSize,
-      minContentWidth,
-      navigationOpen: !!resolvedNavigation && navigationOpen,
-      navigationWidth,
-      placement,
-      splitPanelOpen,
-      splitPanelPosition: splitPanelPreferences?.position,
-    });
+    const { maxDrawerSize, maxSplitPanelSize, splitPanelForcedPosition, splitPanelPosition, maxGlobalDrawersSizes } =
+      computeHorizontalLayout({
+        activeDrawerSize,
+        splitPanelSize,
+        minContentWidth,
+        navigationOpen: !!resolvedNavigation && navigationOpen,
+        navigationWidth,
+        placement,
+        splitPanelOpen,
+        splitPanelPosition: splitPanelPreferences?.position,
+        activeGlobalDrawersSizes,
+      });
 
     const { registered, toolbarProps } = useMultiAppLayout({
       forceDeduplicationType,
@@ -237,6 +239,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       activeDrawerSize,
       minDrawerSize,
       maxDrawerSize,
+      maxGlobalDrawersSizes,
       drawers: drawers!,
       globalDrawers,
       activeGlobalDrawers,
@@ -323,7 +326,6 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
                   ...appLayoutInternals,
                   activeDrawer: activeGlobalDrawer,
                   drawers: globalDrawers,
-                  activeDrawerSize: activeGlobalDrawersSizes[activeGlobalDrawer.id ?? ''] ?? 0,
                   onActiveDrawerChange: () => {
                     onActiveGlobalDrawersChange(activeGlobalDrawer.id);
                   },

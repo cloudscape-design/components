@@ -24,8 +24,8 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals, isGlobal }: 
   const {
     activeDrawer,
     minDrawerSize,
-    activeDrawerSize,
-    maxDrawerSize,
+    activeDrawerSize: activeLocalDrawerSize,
+    maxDrawerSize: maxLocalDrawerSize,
     ariaLabels,
     drawers,
     drawersFocusControl,
@@ -33,6 +33,8 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals, isGlobal }: 
     placement,
     onActiveDrawerChange,
     onActiveDrawerResize,
+    maxGlobalDrawersSizes,
+    activeGlobalDrawersSizes,
   } = appLayoutInternals;
   const drawerRef = useRef<HTMLDivElement>(null);
   const activeDrawerId = activeDrawer?.id;
@@ -45,6 +47,8 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals, isGlobal }: 
   const isToolsDrawer = activeDrawer?.id === TOOLS_DRAWER_ID;
   const toolsOnlyMode = drawers.length === 1 && drawers[0].id === TOOLS_DRAWER_ID;
   const toolsContent = drawers?.find(drawer => drawer.id === TOOLS_DRAWER_ID)?.content;
+  const activeDrawerSize = isGlobal ? activeGlobalDrawersSizes[activeDrawerId ?? ''] ?? 0 : activeLocalDrawerSize;
+  const maxDrawerSize = isGlobal ? maxGlobalDrawersSizes[activeDrawerId ?? ''] ?? 0 : maxLocalDrawerSize;
   const resizeProps = useResize({
     currentWidth: activeDrawerSize,
     minWidth: minDrawerSize,

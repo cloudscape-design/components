@@ -13,6 +13,7 @@ interface HorizontalLayoutInput {
   splitPanelOpen: boolean;
   splitPanelPosition: 'side' | 'bottom' | undefined;
   splitPanelSize: number;
+  activeGlobalDrawersSizes: Record<string, number>;
 }
 
 export function computeHorizontalLayout({
@@ -24,20 +25,28 @@ export function computeHorizontalLayout({
   splitPanelOpen,
   splitPanelPosition,
   splitPanelSize,
+  activeGlobalDrawersSizes,
 }: HorizontalLayoutInput) {
   const contentPadding = 2 * 24; // space-xl
   const activeNavigationWidth = navigationOpen ? navigationWidth : 0;
 
-  const resizableSpaceAvailable = Math.max(
+  let resizableSpaceAvailable = Math.max(
     0,
     placement.inlineSize - minContentWidth - contentPadding - activeNavigationWidth
   );
+  const totalActiveDrawersSize = Object.values(activeGlobalDrawersSizes).reduce((acc, size) => acc + size, 0);
 
   const splitPanelForcedPosition = resizableSpaceAvailable - activeDrawerSize < SPLIT_PANEL_MIN_WIDTH;
   const resolvedSplitPanelPosition = splitPanelForcedPosition ? 'bottom' : splitPanelPosition ?? 'bottom';
   const sideSplitPanelSize = resolvedSplitPanelPosition === 'side' && splitPanelOpen ? splitPanelSize ?? 0 : 0;
   const maxSplitPanelSize = resizableSpaceAvailable - activeDrawerSize;
-  const maxDrawerSize = resizableSpaceAvailable - sideSplitPanelSize;
+  resizableSpaceAvailable -= sideSplitPanelSize;
+  const maxDrawerSize = resizableSpaceAvailable - totalActiveDrawersSize;
+  const maxGlobalDrawersSizes: Record<string, number> = {};
+  for (const [globalDrawerId, globalDrawerSize] of Object.entries(activeGlobalDrawersSizes)) {
+    maxGlobalDrawersSizes[globalDrawerId] =
+      resizableSpaceAvailable - activeDrawerSize - totalActiveDrawersSize + globalDrawerSize;
+  }
 
   return {
     splitPanelPosition: resolvedSplitPanelPosition,
@@ -45,6 +54,7 @@ export function computeHorizontalLayout({
     sideSplitPanelSize,
     maxSplitPanelSize,
     maxDrawerSize,
+    maxGlobalDrawersSizes,
   };
 }
 
