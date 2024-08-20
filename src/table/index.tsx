@@ -47,7 +47,7 @@ const Table = React.forwardRef(
         hasStickyColumns,
         hasFilterSlot: !!props.filter,
         hasPaginationSlot: !!props.pagination,
-        itemCount: items.length,
+        itemCount: props.totalItemsCount ?? items.length,
       },
     });
 
