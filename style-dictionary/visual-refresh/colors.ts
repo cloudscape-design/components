@@ -266,11 +266,11 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundSeverityHigh: { light: '{colorChartsRed600}', dark: '{colorChartsRed500}' },
   colorTextSeverityHigh: { light: '{colorGrey900}', dark: '{colorGrey100}' },
   colorBackgroundSeverityMedium: { light: '{colorChartsOrange400}', dark: '{colorChartsOrange600}' },
-  colorTextSeverityMedium: { light: '{colorGrey900}', dark: '{colorGrey900}' },
+  colorTextSeverityMedium: '{colorGrey900}',
   colorBackgroundSeverityLow: { light: '{colorChartsYellow300}', dark: '{colorChartsYellow700}' },
-  colorTextSeverityLow: { light: '{colorGrey900}', dark: '{colorGrey900}' },
+  colorTextSeverityLow: '{colorGrey900}',
   colorBackgroundSeverityInformational: { light: '{colorGrey550}', dark: '{colorGrey600}' },
-  colorTextSeverityInformational: { light: '{colorGrey100}', dark: '{colorGrey100}' },
+  colorTextSeverityInformational: '{colorGrey100}',
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(tokens);
