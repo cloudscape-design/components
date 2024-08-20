@@ -97,10 +97,14 @@ export default function () {
         <PropertyFilterInternal
           className="property-filter-group-editor"
           query={{
-            tokens: [{ propertyKey: 'instanceid', operator: '=', value: 'i123' }],
+            tokens: [
+              { propertyKey: 'instanceid', operator: '=', value: 'i123' },
+              { propertyKey: 'lasteventat', operator: '>', value: '2022-01-01T00:00:00' },
+            ],
             operation: 'and',
           }}
           {...commonProps}
+          filteringProperties={commonFilteringProperties}
           customGroupsText={[]}
           enableTokenGroups={true}
         />

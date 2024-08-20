@@ -7,7 +7,7 @@ import { format } from 'date-fns';
 
 import DatePicker from '../../../lib/components/date-picker';
 import FormField from '../../../lib/components/form-field';
-import { useContainerBreakpoints } from '../../../lib/components/internal/hooks/container-queries';
+import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
 import PropertyFilter from '../../../lib/components/property-filter';
 import {
   FilteringOption,
@@ -21,9 +21,9 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 import { InternalPropertyFilterEditorDropdownWrapper } from '../../../lib/components/test-utils/dom/property-filter';
 import { createDefaultProps, i18nStrings } from './common';
 
-jest.mock('../../../lib/components/internal/hooks/container-queries', () => ({
-  ...jest.requireActual('../../../lib/components/internal/hooks/container-queries'),
-  useContainerBreakpoints: jest.fn().mockReturnValue(['xs', () => {}]),
+jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
+  ...jest.requireActual('../../../lib/components/internal/hooks/use-mobile'),
+  useMobile: jest.fn().mockReturnValue(true),
 }));
 
 const filteringProperties: readonly FilteringProperty[] = [
@@ -370,22 +370,20 @@ function renderTokenEditor(props?: Partial<TokenEditorProps>) {
   return new InternalPropertyFilterEditorDropdownWrapper(container);
 }
 
-describe.each(['xs', 'default'] as const)('breakpoints = %s', breakpoint => {
-  const isNarrow = breakpoint === 'default';
-
+describe.each([false, true] as const)('isMobile = %s', isMobile => {
   function findRemoveAction(wrapper: InternalPropertyFilterEditorDropdownWrapper, index: number) {
     wrapper.findTokenRemoveActions(index)!.openDropdown();
-    return isNarrow
+    return isMobile
       ? wrapper.findTokenRemoveActions(index)!.findMainAction()!
       : wrapper.findTokenRemoveActions(index)!.findItems()[0];
   }
   function findRemoveFromGroupAction(wrapper: InternalPropertyFilterEditorDropdownWrapper, index: number) {
     wrapper.findTokenRemoveActions(index)!.openDropdown();
-    return wrapper.findTokenRemoveActions(index)!.findItems()[isNarrow ? 0 : 1];
+    return wrapper.findTokenRemoveActions(index)!.findItems()[isMobile ? 0 : 1];
   }
 
   beforeEach(() => {
-    jest.mocked(useContainerBreakpoints).mockReturnValue([breakpoint, () => {}]);
+    jest.mocked(useMobile).mockReturnValue(isMobile);
   });
 
   test.each([false, true])('renders token editor with a single property, supportsGroups=%s', supportsGroups => {
