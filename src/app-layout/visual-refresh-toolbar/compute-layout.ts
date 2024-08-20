@@ -42,11 +42,16 @@ export function computeHorizontalLayout({
   const maxSplitPanelSize = resizableSpaceAvailable - activeDrawerSize;
   resizableSpaceAvailable -= sideSplitPanelSize;
   const maxDrawerSize = resizableSpaceAvailable - totalActiveDrawersSize;
-  const maxGlobalDrawersSizes: Record<string, number> = {};
-  for (const [globalDrawerId, globalDrawerSize] of Object.entries(activeGlobalDrawersSizes)) {
-    maxGlobalDrawersSizes[globalDrawerId] =
-      resizableSpaceAvailable - activeDrawerSize - totalActiveDrawersSize + globalDrawerSize;
-  }
+  const maxGlobalDrawersSizes: Record<string, number> = Object.keys(activeGlobalDrawersSizes).reduce(
+    (acc, drawerId) => {
+      return {
+        ...acc,
+        [drawerId]:
+          resizableSpaceAvailable - activeDrawerSize - totalActiveDrawersSize + activeGlobalDrawersSizes[drawerId],
+      };
+    },
+    {}
+  );
 
   return {
     splitPanelPosition: resolvedSplitPanelPosition,
