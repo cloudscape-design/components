@@ -117,6 +117,7 @@ function applyToolsDrawer(toolsProps: ToolsProps, runtimeDrawers: DrawersLayout)
 
 type UseDrawersProps = Pick<AppLayoutProps, 'drawers' | 'activeDrawerId' | 'onDrawerChange'> & {
   __disableRuntimeDrawers?: boolean;
+  onGlobalDrawerFocus: (drawerId?: string) => void;
 };
 
 export function useDrawers(
@@ -124,6 +125,7 @@ export function useDrawers(
     drawers,
     activeDrawerId: controlledActiveDrawerId,
     onDrawerChange,
+    onGlobalDrawerFocus,
     __disableRuntimeDrawers: disableRuntimeDrawers,
   }: UseDrawersProps,
   ariaLabels: AppLayoutProps['ariaLabels'],
@@ -154,8 +156,10 @@ export function useDrawers(
   function onActiveGlobalDrawersChange(drawerId: string) {
     if (activeGlobalDrawersIds.includes(drawerId)) {
       setActiveGlobalDrawersIds(currentState => currentState.filter(id => id !== drawerId));
+      onGlobalDrawerFocus();
     } else {
       setActiveGlobalDrawersIds(currentState => [drawerId, ...currentState].slice(0, DRAWERS_LIMIT!));
+      onGlobalDrawerFocus(drawerId);
     }
   }
 
