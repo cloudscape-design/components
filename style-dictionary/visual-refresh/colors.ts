@@ -264,12 +264,12 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundSeverityCritical: { light: '{colorChartsRed1000}', dark: '{colorChartsRed300}' },
   colorTextSeverityCritical: { light: '{colorGrey100}', dark: '{colorBlack}' },
   colorBackgroundSeverityHigh: { light: '{colorChartsRed600}', dark: '{colorChartsRed500}' },
-  colorTextSeverityHigh: { light: '{colorGrey900}', dark: '{colorGrey100}' },
+  colorTextSeverityHigh: { light: '{colorGrey100}', dark: '{colorGrey900}' },
   colorBackgroundSeverityMedium: { light: '{colorChartsOrange400}', dark: '{colorChartsOrange600}' },
   colorTextSeverityMedium: '{colorGrey900}',
   colorBackgroundSeverityLow: { light: '{colorChartsYellow300}', dark: '{colorChartsYellow700}' },
   colorTextSeverityLow: '{colorGrey900}',
-  colorBackgroundSeverityInformational: { light: '{colorGrey550}', dark: '{colorGrey600}' },
+  colorBackgroundSeverityInformational: { light: '{colorGrey600}', dark: '{colorGrey550}' },
   colorTextSeverityInformational: '{colorGrey100}',
 };
 
