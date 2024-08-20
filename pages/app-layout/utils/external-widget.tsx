@@ -82,6 +82,18 @@ awsuiPlugins.appLayout.registerDrawer({
   unmountContent: container => unmountComponentAtNode(container),
 });
 
+const Counter: React.FC = ({ children }) => {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <span data-testid="count">{count}</span>
+      <button onClick={() => setCount(count + 1)}>+</button>
+      {children}
+    </div>
+  );
+};
+
 awsuiPlugins.appLayout.registerDrawer({
   id: 'circle-global',
   type: 'global',
@@ -104,7 +116,7 @@ awsuiPlugins.appLayout.registerDrawer({
   },
 
   mountContent: container => {
-    ReactDOM.render(<>global widget content circle 1</>, container);
+    ReactDOM.render(<Counter>global widget content circle 1</Counter>, container);
   },
   unmountContent: container => unmountComponentAtNode(container),
 });
@@ -131,7 +143,7 @@ awsuiPlugins.appLayout.registerDrawer({
   },
 
   mountContent: container => {
-    ReactDOM.render(<>global widget content circle 2</>, container);
+    ReactDOM.render(<Counter>global widget content circle 2</Counter>, container);
   },
   unmountContent: container => unmountComponentAtNode(container),
 });

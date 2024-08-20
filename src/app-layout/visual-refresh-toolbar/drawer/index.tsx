@@ -18,9 +18,14 @@ import styles from './styles.css.js';
 interface AppLayoutDrawerImplementationProps {
   appLayoutInternals: AppLayoutInternals;
   isGlobal?: boolean;
+  show: boolean;
 }
 
-export function AppLayoutDrawerImplementation({ appLayoutInternals, isGlobal }: AppLayoutDrawerImplementationProps) {
+export function AppLayoutDrawerImplementation({
+  appLayoutInternals,
+  isGlobal,
+  show,
+}: AppLayoutDrawerImplementationProps) {
   const {
     activeDrawer,
     minDrawerSize,
@@ -56,17 +61,17 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals, isGlobal }: 
     minWidth: minDrawerSize,
     maxWidth: maxDrawerSize,
     panelRef: drawerRef,
-    handleRef: refs.slider,
+    handleRef: refs?.slider,
     onResize: size => onActiveDrawerResize({ id: activeDrawerId!, size }),
   });
 
   return (
     <aside
       id={activeDrawerId}
-      aria-hidden={!activeDrawer}
+      aria-hidden={!show}
       aria-label={computedAriaLabels.content}
       className={clsx(styles.drawer, sharedStyles['with-motion'], {
-        [testutilStyles['active-drawer']]: !toolsOnlyMode && activeDrawerId,
+        [testutilStyles['active-drawer']]: !toolsOnlyMode && show,
         [testutilStyles.tools]: isToolsDrawer,
       })}
       ref={drawerRef}
@@ -88,7 +93,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals, isGlobal }: 
       {!isMobile && activeDrawer?.resizable && (
         <div className={styles['drawer-slider']}>
           <PanelResizeHandle
-            ref={refs.slider}
+            ref={refs?.slider}
             position="side"
             className={testutilStyles['drawers-slider']}
             ariaLabel={activeDrawer?.ariaLabels?.resizeHandle}
@@ -109,7 +114,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals, isGlobal }: 
             formAction="none"
             iconName={isMobile ? 'close' : 'angle-right'}
             onClick={() => onActiveDrawerChange(null)}
-            ref={refs.close}
+            ref={refs?.close}
             variant="icon"
           />
         </div>

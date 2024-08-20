@@ -52,10 +52,10 @@ export function useMultipleFocusControl(
         const ref = refs[drawerId];
         previousFocusedElement.current =
           document.activeElement !== document.body ? (document.activeElement as HTMLElement) : undefined;
-        if (ref.slider.current) {
+        if (ref?.slider?.current) {
           ref.slider.current?.focus();
         } else {
-          ref.close.current?.focus();
+          ref?.close?.current?.focus();
         }
       } else {
         if (restoreFocus && previousFocusedElement.current && document.contains(previousFocusedElement.current)) {
