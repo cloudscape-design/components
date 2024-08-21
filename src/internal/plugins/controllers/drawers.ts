@@ -29,19 +29,24 @@ export type UpdateDrawerConfig = Pick<DrawerConfig, 'id' | 'badge' | 'resizable'
 
 export type DrawersRegistrationListener = (drawers: Array<DrawerConfig>) => void;
 
+export type DrawersOpenedListener = (drawerId: string) => void;
+
 export interface DrawersApiPublic {
   registerDrawer(config: DrawerConfig): void;
   updateDrawer(config: UpdateDrawerConfig): void;
+  openDrawer(drawerId: string): void;
 }
 
 export interface DrawersApiInternal {
   clearRegisteredDrawers(): void;
   onDrawersRegistered(listener: DrawersRegistrationListener): () => void;
+  onDrawerOpened(listener: DrawersOpenedListener): () => void;
 }
 
 export class DrawersController {
   private drawers: Array<DrawerConfig> = [];
   private drawersRegistrationListener: DrawersRegistrationListener | null = null;
+  private drawerOpenedListener: DrawersOpenedListener | null = null;
 
   scheduleUpdate = debounce(() => {
     this.drawersRegistrationListener?.(this.drawers);
@@ -92,15 +97,33 @@ export class DrawersController {
     this.drawers = [];
   };
 
+  onDrawerOpened = (listener: DrawersOpenedListener) => {
+    if (this.drawerOpenedListener !== null) {
+      console.warn('[AwsUi] [runtime drawers] multiple app layout instances detected');
+    }
+
+    this.drawerOpenedListener = listener;
+
+    return () => {
+      this.drawerOpenedListener = null;
+    };
+  };
+
+  openDrawer = (drawerId: string) => {
+    this.drawerOpenedListener?.(drawerId);
+  };
+
   installPublic(api: Partial<DrawersApiPublic> = {}): DrawersApiPublic {
     api.registerDrawer ??= this.registerDrawer;
     api.updateDrawer ??= this.updateDrawer;
+    api.openDrawer ??= this.openDrawer;
     return api as DrawersApiPublic;
   }
 
   installInternal(internalApi: Partial<DrawersApiInternal> = {}): DrawersApiInternal {
     internalApi.clearRegisteredDrawers ??= this.clearRegisteredDrawers;
     internalApi.onDrawersRegistered ??= this.onDrawersRegistered;
+    internalApi.onDrawerOpened ??= this.onDrawerOpened;
     return internalApi as DrawersApiInternal;
   }
 }

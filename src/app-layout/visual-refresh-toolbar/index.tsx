@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useImperativeHandle, useState } from 'react';
+import React, { useEffect, useImperativeHandle, useState } from 'react';
 
 import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
@@ -8,6 +8,7 @@ import { fireNonCancelableEvent } from '../../internal/events';
 import { useControllable } from '../../internal/hooks/use-controllable';
 import { useMobile } from '../../internal/hooks/use-mobile';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
+import { awsuiPluginsInternal } from '../../internal/plugins/api';
 import { useGetGlobalBreadcrumbs } from '../../internal/plugins/helpers/use-global-breadcrumbs';
 import globalVars from '../../internal/styles/global-vars';
 import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
@@ -112,6 +113,23 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       toolsWidth,
       onToolsToggle,
     });
+
+    useEffect(() => {
+      const unsubscribe = awsuiPluginsInternal.appLayout.onDrawerOpened(drawerId => {
+        const localDrawer = drawers?.find(drawer => drawer.id === drawerId);
+        const globalDrawer = globalDrawers?.find(drawer => drawer.id === drawerId);
+        if (localDrawer) {
+          onActiveDrawerChange(drawerId);
+        }
+        if (globalDrawer) {
+          onActiveGlobalDrawersChange(drawerId);
+        }
+      });
+
+      return () => {
+        unsubscribe();
+      };
+    }, [drawers, globalDrawers, onActiveDrawerChange, onActiveGlobalDrawersChange]);
 
     const [splitPanelOpen = false, setSplitPanelOpen] = useControllable(
       controlledSplitPanelOpen,

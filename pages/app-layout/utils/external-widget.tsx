@@ -97,7 +97,7 @@ const Counter: React.FC = ({ children }) => {
 awsuiPlugins.appLayout.registerDrawer({
   id: 'circle-global',
   type: 'global',
-  defaultActive: true,
+  defaultActive: false,
   resizable: true,
   defaultSize: 350,
 
@@ -124,7 +124,7 @@ awsuiPlugins.appLayout.registerDrawer({
 awsuiPlugins.appLayout.registerDrawer({
   id: 'circle2-global',
   type: 'global',
-  defaultActive: true,
+  defaultActive: false,
   resizable: true,
   defaultSize: 320,
 
