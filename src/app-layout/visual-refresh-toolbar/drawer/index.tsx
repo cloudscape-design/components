@@ -85,7 +85,7 @@ export function AppLayoutDrawerImplementation({
         }
       }}
       style={{
-        blockSize: `calc(100vh - ${placement.insetBlockStart}px - ${placement.insetBlockEnd}px)`,
+        blockSize: show ? `calc(100vh - ${placement.insetBlockStart}px - ${placement.insetBlockEnd}px)` : 0,
         insetBlockStart: placement.insetBlockStart,
         ...(!isMobile && isGlobal && { [customCssProps.drawerSize]: `${activeDrawerSize}px` }),
       }}
