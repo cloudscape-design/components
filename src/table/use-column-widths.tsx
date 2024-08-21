@@ -99,7 +99,11 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
     }
 
     if (sticky) {
-      return { width: cellsRef.current.get(column.id)?.offsetWidth || (columnWidths?.get(column.id) ?? column.width) };
+      return {
+        width:
+          cellsRef.current.get(column.id)?.getBoundingClientRect().width ||
+          (columnWidths?.get(column.id) ?? column.width),
+      };
     }
 
     if (resizableColumns && columnWidths) {
@@ -124,6 +128,8 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
   // Imperatively sets width style for a cell avoiding React state.
   // This allows setting the style as soon container's size change is observed.
   const updateColumnWidths = useStableCallback(() => {
+    console.log('set widths');
+
     for (const { id } of visibleColumns) {
       const element = cellsRef.current.get(id);
       if (element) {
@@ -133,6 +139,7 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
     // Sticky column widths must be synchronized once all real column widths are assigned.
     for (const { id } of visibleColumns) {
       const element = stickyCellsRef.current.get(id);
+      console.log('set width', id, getColumnStyles(true, id));
       if (element) {
         setElementWidths(element, getColumnStyles(true, id));
       }
