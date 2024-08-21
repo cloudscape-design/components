@@ -22,7 +22,7 @@ export default class PropertyFilterWrapper extends AutosuggestWrapper {
   }
 
   findTokens(): Array<FilteringTokenWrapper> {
-    return this.findAllByClassName(FilteringTokenWrapper.rootSelector).map(
+    return this.findAllByClassName(tokenListSelectors['list-item']).map(
       (elementWrapper: ElementWrapper) => new FilteringTokenWrapper(elementWrapper.getElement())
     );
   }
