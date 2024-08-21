@@ -340,6 +340,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
               />
             ))
           }
+          globalToolsOpen={!!activeGlobalDrawersIds.length}
           toolsOpen={!!activeDrawer}
           toolsWidth={activeDrawerSize}
           sideSplitPanel={

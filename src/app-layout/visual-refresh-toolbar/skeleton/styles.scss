@@ -72,7 +72,8 @@
 }
 
 .navigation,
-.tools {
+.tools,
+.global-tools {
   grid-row: 1 / -1;
   grid-column: 1/ -1;
   background: awsui.$color-background-container-content;
