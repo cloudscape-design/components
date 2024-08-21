@@ -146,13 +146,13 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
   // Observes container size and requests an update to the last cell width as it depends on the container's width.
   useResizeObserver(containerRef, ({ contentBoxWidth: containerWidth }) => {
     containerWidthRef.current = containerWidth;
-    updateColumnWidths();
+    requestAnimationFrame(() => updateColumnWidths());
   });
 
   // The widths of the dynamically added columns (after the first render) if not set explicitly
   // will default to the DEFAULT_COLUMN_WIDTH.
   useEffect(() => {
-    requestAnimationFrame(() => updateColumnWidths());
+    updateColumnWidths();
 
     if (!resizableColumns) {
       return;
