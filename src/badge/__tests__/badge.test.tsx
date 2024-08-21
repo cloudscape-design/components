@@ -43,7 +43,7 @@ describe('Badge', () => {
       'severity-high',
       'severity-medium',
       'severity-low',
-      'severity-informational',
+      'severity-neutral',
     ] as Array<BadgeProps['color']>
   ).forEach(color => {
     test(`renders color ${color} correctly`, () => {

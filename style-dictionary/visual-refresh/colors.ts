@@ -269,8 +269,8 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextSeverityMedium: '{colorGrey900}',
   colorBackgroundSeverityLow: { light: '{colorChartsYellow300}', dark: '{colorChartsYellow700}' },
   colorTextSeverityLow: '{colorGrey900}',
-  colorBackgroundSeverityInformational: { light: '{colorGrey600}', dark: '{colorGrey550}' },
-  colorTextSeverityInformational: '{colorGrey100}',
+  colorBackgroundSeverityNeutral: { light: '{colorGrey600}', dark: '{colorGrey550}' },
+  colorTextSeverityNeutral: '{colorGrey100}',
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(tokens);

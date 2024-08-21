@@ -19,7 +19,7 @@ const permutations = createPermutations<BadgeProps>([
       'severity-high',
       'severity-medium',
       'severity-low',
-      'severity-informational',
+      'severity-neutral',
     ],
     children: [
       'ABC',

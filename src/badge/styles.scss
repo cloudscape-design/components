@@ -56,8 +56,8 @@
     color: awsui.$color-text-severity-low;
   }
 
-  &.badge-color-severity-informational {
-    background-color: awsui.$color-background-severity-informational;
-    color: awsui.$color-text-severity-informational;
+  &.badge-color-severity-neutral {
+    background-color: awsui.$color-background-severity-neutral;
+    color: awsui.$color-text-severity-neutral;
   }
 }

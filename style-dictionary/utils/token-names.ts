@@ -474,8 +474,8 @@ export type ColorsTokenName =
   | 'colorTextSeverityMedium'
   | 'colorBackgroundSeverityLow'
   | 'colorTextSeverityLow'
-  | 'colorBackgroundSeverityInformational'
-  | 'colorTextSeverityInformational';
+  | 'colorBackgroundSeverityNeutral'
+  | 'colorTextSeverityNeutral';
 export type TypographyTokenName =
   | 'fontBoxValueLargeWeight'
   | 'fontButtonLetterSpacing'

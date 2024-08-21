@@ -2111,7 +2111,7 @@ Object {
           "severity-high",
           "severity-medium",
           "severity-low",
-          "severity-informational",
+          "severity-neutral",
         ],
       },
       "name": "color",

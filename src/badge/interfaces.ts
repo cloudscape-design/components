@@ -17,7 +17,7 @@ export interface BadgeProps extends BaseComponentProps {
     | 'severity-high'
     | 'severity-medium'
     | 'severity-low'
-    | 'severity-informational';
+    | 'severity-neutral';
 
   /**
    * Text displayed inside the badge.
