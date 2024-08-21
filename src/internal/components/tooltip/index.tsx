@@ -3,12 +3,12 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import PopoverArrow from '../../../popover/arrow';
 import PopoverBody from '../../../popover/body';
 import PopoverContainer from '../../../popover/container';
 import Portal from '../portal';
 import { Transition } from '../transition';
 
-import popoverStyles from '../../../popover/styles.css.js';
 import styles from './styles.css.js';
 
 export interface TooltipProps {
@@ -44,12 +44,7 @@ export default function Tooltip({
               fixedWidth={false}
               position={position}
               zIndex={7000}
-              arrow={position => (
-                <div className={clsx(popoverStyles.arrow, popoverStyles[`arrow-position-${position}`])}>
-                  <div className={popoverStyles['arrow-outer']} />
-                  <div className={popoverStyles['arrow-inner']} />
-                </div>
-              )}
+              arrow={position => <PopoverArrow position={position} />}
             >
               <PopoverBody dismissButton={false} dismissAriaLabel={undefined} onDismiss={undefined} header={undefined}>
                 {value}
