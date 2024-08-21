@@ -3,8 +3,8 @@
 
 import React, { useEffect, useState } from 'react';
 
-import { FormField, RadioGroup, TimeInput } from '~components';
-import Calendar from '~components/calendar';
+import { DatePicker, FormField, RadioGroup, TimeInput, TimeInputProps } from '~components';
+import Calendar, { CalendarProps } from '~components/calendar';
 import DateInput from '~components/date-input';
 import Multiselect from '~components/multiselect';
 import { ExtendedOperatorFormProps } from '~components/property-filter/interfaces';
@@ -35,7 +35,13 @@ export function yesNoFormat(value: null | boolean) {
   return value === true ? 'Yes' : 'No';
 }
 
-export function DateTimeForm({ filter, operator, value, onChange }: ExtendedOperatorFormProps<string>) {
+export function DateTimeForm({
+  filter,
+  operator,
+  value,
+  onChange,
+  legacy,
+}: ExtendedOperatorFormProps<string> & { legacy?: boolean }) {
   // Using the most reasonable default time per operator.
   const defaultTime = operator === '<' || operator === '>=' ? undefined : '23:59:59';
   const [{ dateValue, timeValue }, setState] = useState(parseValue(value ?? '', defaultTime));
@@ -72,31 +78,49 @@ export function DateTimeForm({ filter, operator, value, onChange }: ExtendedOper
     [dateValue, timeValue]
   );
 
+  const calendarProps: CalendarProps = {
+    value: dateValue,
+    locale: 'en-GB',
+    onChange: event => onChangeDate(event.detail.value),
+  };
+  const timeInputProps: TimeInputProps = {
+    format: 'hh:mm:ss',
+    placeholder: 'hh:mm:ss',
+    value: timeValue,
+    onChange: event => onChangeTime(event.detail.value),
+  };
+
   return (
     <div className={styles['date-time-form']}>
-      <FormField description="Date">
-        <DateInput placeholder="YYYY/MM/DD" onChange={event => onChangeDate(event.detail.value)} value={dateValue} />
-      </FormField>
+      {typeof filter === 'undefined' && !legacy ? (
+        <>
+          <FormField description="Date">
+            <DatePicker placeholder="YYYY/MM/DD" {...calendarProps} />
+          </FormField>
 
-      <FormField description="Time">
-        <TimeInput
-          format="hh:mm:ss"
-          placeholder="hh:mm:ss"
-          value={timeValue}
-          onChange={event => onChangeTime(event.detail.value)}
-        />
-      </FormField>
+          <FormField description="Time">
+            <TimeInput {...timeInputProps} />
+          </FormField>
+        </>
+      ) : (
+        <>
+          <FormField description="Date">
+            <DateInput placeholder="YYYY/MM/DD" {...calendarProps} />
+          </FormField>
 
-      <Calendar
-        value={dateValue}
-        locale="en-GB"
-        previousMonthAriaLabel="Previous month"
-        nextMonthAriaLabel="Next month"
-        todayAriaLabel="Today"
-        onChange={event => onChangeDate(event.detail.value)}
-      />
+          <FormField description="Time">
+            <TimeInput {...timeInputProps} />
+          </FormField>
+
+          <Calendar {...calendarProps} />
+        </>
+      )}
     </div>
   );
+}
+
+export function DateTimeFormLegacy(props: ExtendedOperatorFormProps<string>) {
+  return <DateTimeForm {...props} legacy={true} />;
 }
 
 export function DateForm({ filter, value, onChange }: ExtendedOperatorFormProps<string>) {
@@ -124,6 +148,19 @@ export function DateForm({ filter, value, onChange }: ExtendedOperatorFormProps<
     [dateValue]
   );
 
+  if (typeof filter === 'undefined') {
+    return (
+      <FormField>
+        <DatePicker
+          name="date"
+          placeholder="YYYY/MM/DD"
+          onChange={event => onChangeDate(event.detail.value)}
+          value={dateValue}
+        />
+      </FormField>
+    );
+  }
+
   return (
     <div className={styles['date-form']}>
       <FormField>
@@ -135,14 +172,7 @@ export function DateForm({ filter, value, onChange }: ExtendedOperatorFormProps<
         />
       </FormField>
 
-      <Calendar
-        value={dateValue}
-        locale="en-GB"
-        previousMonthAriaLabel="Previous month"
-        nextMonthAriaLabel="Next month"
-        todayAriaLabel="Today"
-        onChange={event => onChangeDate(event.detail.value)}
-      />
+      <Calendar value={dateValue} locale="en-GB" onChange={event => onChangeDate(event.detail.value)} />
     </div>
   );
 }
