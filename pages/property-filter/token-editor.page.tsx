@@ -76,7 +76,7 @@ export default function () {
         <PropertyFilter
           className="property-filter-custom-prop-datetime"
           query={{
-            tokens: [{ propertyKey: 'lasteventat', operator: '>', value: '2022-01-01T00:00:00' }],
+            tokens: [{ propertyKey: 'lasteventat-legacy', operator: '>', value: '2022-01-01T00:00:00' }],
             operation: 'and',
           }}
           {...commonProps}

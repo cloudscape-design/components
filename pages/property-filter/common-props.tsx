@@ -6,6 +6,7 @@ import { I18nStringsExt } from '~components/property-filter/internal';
 import {
   DateForm,
   DateTimeForm,
+  DateTimeFormLegacy,
   formatDateTime,
   formatOwners,
   OwnerMultiSelectForm,
@@ -130,6 +131,14 @@ export const columnDefinitions = [
     propertyLabel: 'Last event occurrence',
     cell: (item: TableItem) => item.lasteventat?.toISOString(),
   },
+  {
+    id: 'lasteventat-legacy',
+    sortingField: 'lasteventat',
+    header: 'Last event occurrence (legacy)',
+    type: 'datetime-legacy',
+    propertyLabel: 'Last event occurrence (legacy)',
+    cell: (item: TableItem) => item.lasteventat?.toISOString(),
+  },
 ].map((item, ind) => ({ order: ind + 1, ...item }));
 
 export const i18nStrings: PropertyFilterProps.I18nStrings & I18nStringsExt = {
@@ -205,12 +214,12 @@ export const filteringProperties: readonly PropertyFilterProps.FilteringProperty
     }));
   }
 
-  if (def.type === 'datetime') {
+  if (def.type === 'datetime' || def.type === 'datetime-legacy') {
     groupValuesLabel = `${def.propertyLabel} value`;
     defaultOperator = '>';
     operators = ['<', '<=', '>', '>='].map(operator => ({
       operator,
-      form: DateTimeForm,
+      form: def.type === 'datetime' ? DateTimeForm : DateTimeFormLegacy,
       format: formatDateTime,
       match: 'datetime',
     }));
